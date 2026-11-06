@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.kafu.sony-fx3-fx6-github-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/scripts/realtime_github_sync.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>StartInterval</key>
+    <integer>60</integer>
+    <key>WatchPaths</key>
+    <array>
+        <string>/Volumes/KAFU2T/AI/Projects/Mac/reports</string>
+        <string>/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027</string>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/tmp/sony-fx3-fx6-github-sync.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/sony-fx3-fx6-github-sync.err.log</string>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>

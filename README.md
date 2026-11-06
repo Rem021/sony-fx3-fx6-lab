@@ -1,13 +1,26 @@
-# Sony FX3 & FX6 Porting and QEMU Virtual Machine Lab (`sony-fx3-fx6-lab`)
+<div align="center">
 
-> **Sony Cinema Line ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) System Emulation, Reverse Engineering, Recovery Tooling, and Cross-Model Firmware Porting Research**
+<img src="assets/hero-banner.svg" alt="sony-fx3-fx6-lab — Sony FX3 & FX6 QEMU Emulation and Firmware Porting Lab" width="100%" />
 
-[![Platform](https://img.shields.io/badge/Host-macOS%20Apple%20Silicon%20(MTTCG)-blue)](#)
-[![Target](https://img.shields.io/badge/SoC-Sony%20CXD90057%20(AArch64)-orange)](#)
-[![FX3 VM](https://img.shields.io/badge/FX3%20Menu%20VM-Interactive%20Web%20UI%20(r10%20Deployed)-success)](#track-2-fx3-native-firmware-virtual-machine--interactive-web-menu-emulator)
-[![FX6 Port](https://img.shields.io/badge/FX6%20on%20FX3%20VM-Booted%20to%20MEDIA__START%20(180s%20Stable)-yellow)](#track-1-fx6-system-porting-onto-the-fixed-fx3-virtual-machine-active-frontier)
+<br/>
 
-**[English Documentation](#english-documentation) | [简体中文文档](#简体中文文档)**
+[![Release](https://img.shields.io/badge/Release-v1.0.0-F59E0B?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Rem021/sony-fx3-fx6-lab/releases/tag/v1.0.0)
+[![Platform](https://img.shields.io/badge/Host-macOS%20Apple%20Silicon%20(MTTCG)-38BDF8?style=for-the-badge&logo=apple&logoColor=white)](#)
+[![Target](https://img.shields.io/badge/SoC-Sony%20CXD90057%20(AArch64)-F97316?style=for-the-badge&logo=arm&logoColor=white)](#)
+[![FX3 VM](https://img.shields.io/badge/FX3%20Menu%20VM-Interactive%20Web%20UI%20(r10)-10B981?style=for-the-badge)](#track-2-fx3-native-firmware-virtual-machine--interactive-web-menu-emulator)
+[![FX6 Port](https://img.shields.io/badge/FX6%20on%20FX3%20VM-MEDIA__START%20(180s%20Stable)-818CF8?style=for-the-badge)](#track-1-fx6-system-porting-onto-the-fixed-fx3-virtual-machine-active-frontier)
+[![Clean Room](https://img.shields.io/badge/BYOF-0%20Proprietary%20Bytes-C084FC?style=for-the-badge)](docs/BYOF-REPRODUCTION.md)
+
+<p align="center">
+  <a href="#english-documentation"><b>🇺🇸 English Documentation</b></a> ·
+  <a href="#简体中文文档"><b>🇨🇳 简体中文文档</b></a> ·
+  <a href="#track-1-fx6-system-porting-onto-the-fixed-fx3-virtual-machine-active-frontier"><b>Track 1: FX6-on-FX3 Port</b></a> ·
+  <a href="#track-2-fx3-native-firmware-virtual-machine--interactive-web-menu-emulator"><b>Track 2: FX3 Web Menu VM</b></a> ·
+  <a href="#track-3-fx6-601-to-fx3-702-full-system-hardware-compatibility-matrix"><b>Track 3: eMMC & Calibration Matrix</b></a> ·
+  <a href="#track-4-fx3-offline-recovery-adapter-v05--usb-service-protocol-stage-1286"><b>Track 4: Recovery Adapter</b></a>
+</p>
+
+</div>
 
 ---
 
@@ -40,7 +53,12 @@ The project encompasses four major engineering tracks:
 > - [reports/2026-11-05-fx6-boot-gate-audit/REPORT.md](reports/2026-11-05-fx6-boot-gate-audit/REPORT.md) — *Audit of Three Architectural Boot Routes for FX6 on Fixed FX3 VM*
 > - [work/.../fx6-66ed0f78-audit/REPORT.md](work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-66ed0f78-audit/REPORT.md) — *Independent Read-Only Audit of 180s Run `cp-bind-66ed0f78`*
 
+<div align="center">
+  <img src="assets/boot-pipeline.svg" alt="FX6-on-FX3 QEMU Hybrid Boot & Execution Pipeline" width="100%" />
+</div>
+
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0F172A', 'primaryTextColor': '#F8FAFC', 'primaryBorderColor': '#38BDF8', 'lineColor': '#64748B'}}}%%
 flowchart LR
     A["Fixed FX3 QEMU Platform\n(5 GiB DDR @ 0x400000000)"] --> B["Agnostic CP Helper\n(FX3 0x..20c8 / FX6 0x..2f70)"]
     B --> C["FX6 bootin + im.elf\n+ /usr/lib/appFw.so"]
@@ -49,6 +67,16 @@ flowchart LR
     E --> F["Bypass Async Log Future\n+ UPM DFS + Backup BRK"]
     F --> G["180s Stable Run\nFX3_MEDIA_START_BRANCH\n+ Native Key Input ACK"]
     G --> H["Current Frontier:\nDMM Scanout & Boot-Screen\nBackup Key Contract"]
+
+    classDef plat fill:#1E293B,stroke:#F59E0B,stroke-width:1.5px,color:#F8FAFC;
+    classDef shim fill:#1E1B4B,stroke:#818CF8,stroke-width:1.5px,color:#E0E7FF;
+    classDef ok fill:#064E3B,stroke:#10B981,stroke-width:2px,color:#D1FAE5;
+    classDef front fill:#0C4A6E,stroke:#38BDF8,stroke-width:1.5px,color:#E0F2FE;
+
+    class A,B plat;
+    class C,D,E,F shim;
+    class G ok;
+    class H front;
 ```
 
 #### 1.1 Audit of the Three Boot Routes

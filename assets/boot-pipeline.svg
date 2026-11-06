@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgBoot" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="stageCard" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="280" rx="18" fill="url(#bgBoot)" stroke="#334155" stroke-width="1.5"/>
+
+  <text x="40" y="42" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif" font-size="20" font-weight="800">FX6-on-FX3 QEMU Hybrid Boot &amp; Execution Pipeline · 跨机型混合引导闭环</text>
+  <text x="40" y="64" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif" font-size="13.5">Verified 180-second zero-crash execution path from CXD90057 kernel bring-up to FX6 appFw.so &amp; native key input ACK</text>
+
+  <g transform="translate(32, 84)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <!-- Stage 1 -->
+    <g transform="translate(0, 0)">
+      <rect width="176" height="160" rx="12" fill="url(#stageCard)" stroke="#F59E0B" stroke-width="1.2"/>
+      <text x="14" y="28" fill="#FBBF24" font-size="11.5" font-weight="800">STAGE 01 · PLATFORM</text>
+      <text x="14" y="54" fill="#FFFFFF" font-size="14.5" font-weight="700">CXD90057 QEMU</text>
+      <text x="14" y="76" fill="#94A3B8" font-size="11.5">5 GiB High DDR Mapping</text>
+      <text x="14" y="102" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• DDR @ 0x400000000</text>
+      <text x="14" y="122" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• ESRAM + SCU + UIPC</text>
+      <text x="14" y="142" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• GPE v13/v14 + DMM</text>
+    </g>
+
+    <!-- Stage 2 -->
+    <g transform="translate(192, 0)">
+      <rect width="176" height="160" rx="12" fill="url(#stageCard)" stroke="#38BDF8" stroke-width="1.2"/>
+      <text x="14" y="28" fill="#38BDF8" font-size="11.5" font-weight="800">STAGE 02 · CP SHIM</text>
+      <text x="14" y="54" fill="#FFFFFF" font-size="14.5" font-weight="700">Agnostic CP Bind</text>
+      <text x="14" y="76" fill="#94A3B8" font-size="11.5">Dual-Offset RTOS Bridge</text>
+      <text x="14" y="102" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• FX3: 0x..20c8</text>
+      <text x="14" y="122" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• FX6: 0x..2f70</text>
+      <text x="14" y="142" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• Backup Sync ACK</text>
+    </g>
+
+    <!-- Stage 3 -->
+    <g transform="translate(384, 0)">
+      <rect width="176" height="160" rx="12" fill="url(#stageCard)" stroke="#818CF8" stroke-width="1.2"/>
+      <text x="14" y="28" fill="#A5B4FC" font-size="11.5" font-weight="800">STAGE 03 · CAPID</text>
+      <text x="14" y="54" fill="#FFFFFF" font-size="14.5" font-weight="700">Audio Pre-Init</text>
+      <text x="14" y="76" fill="#94A3B8" font-size="11.5">Prevent Assert 0x2fd</text>
+      <text x="14" y="102" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• Cmd 0x032d200d</text>
+      <text x="14" y="122" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• Reply 0x132d OK</text>
+      <text x="14" y="142" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• Unblocks bootin</text>
+    </g>
+
+    <!-- Stage 4 -->
+    <g transform="translate(576, 0)">
+      <rect width="176" height="160" rx="12" fill="url(#stageCard)" stroke="#C084FC" stroke-width="1.2"/>
+      <text x="14" y="28" fill="#D8B4FE" font-size="11.5" font-weight="800">STAGE 04 · CLOSURE</text>
+      <text x="14" y="54" fill="#FFFFFF" font-size="14.5" font-weight="700">FX6 UI &amp; GRM</text>
+      <text x="14" y="76" fill="#94A3B8" font-size="11.5">Full Shared Lib Closure</text>
+      <text x="14" y="102" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• /usr/lib/appFw.so</text>
+      <text x="14" y="122" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• libgrm / libuxengine</text>
+      <text x="14" y="142" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• libstella / liblibra</text>
+    </g>
+
+    <!-- Stage 5 -->
+    <g transform="translate(768, 0)">
+      <rect width="176" height="160" rx="12" fill="url(#stageCard)" stroke="#F43F5E" stroke-width="1.2"/>
+      <text x="14" y="28" fill="#FDA4AF" font-size="11.5" font-weight="800">STAGE 05 · GATES</text>
+      <text x="14" y="54" fill="#FFFFFF" font-size="14.5" font-weight="700">3 Gate Bypasses</text>
+      <text x="14" y="76" fill="#94A3B8" font-size="11.5">Runtime Trap Resolution</text>
+      <text x="14" y="102" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• Async Log Future</text>
+      <text x="14" y="122" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• UPM DFS Clock Gate</text>
+      <text x="14" y="142" fill="#CBD5E1" font-family="ui-monospace, monospace" font-size="11">• Backup ID BRK #0x1</text>
+    </g>
+
+    <!-- Stage 6 -->
+    <g transform="translate(960, 0)">
+      <rect width="176" height="160" rx="12" fill="url(#stageCard)" stroke="#10B981" stroke-width="1.5"/>
+      <text x="14" y="28" fill="#34D399" font-size="11.5" font-weight="800">STAGE 06 · ACTIVE</text>
+      <text x="14" y="54" fill="#FFFFFF" font-size="14.5" font-weight="700">MEDIA_START</text>
+      <text x="14" y="76" fill="#34D399" font-size="11.5">180s Stable Execution</text>
+      <text x="14" y="102" fill="#D1FAE5" font-family="ui-monospace, monospace" font-size="11">✓ im.elf Alive 180s+</text>
+      <text x="14" y="122" fill="#D1FAE5" font-family="ui-monospace, monospace" font-size="11">✓ Key Input ACKed</text>
+      <text x="14" y="142" fill="#D1FAE5" font-family="ui-monospace, monospace" font-size="11">✓ OSD Plane Probed</text>
+    </g>
+  </g>
+</svg>

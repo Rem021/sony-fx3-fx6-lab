@@ -821,3 +821,67 @@ osal_dynamic_id(0x31, ...)
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 26. reset_bsem / alloc_fblock
+
+### 26.1 调用链
+
+`osal_dynamic_id` 在 0x76e8 调用的不是 0x50b8，而是 **0x5100**：
+
+```text
+0x76e4: mov w0, w25
+0x76e8: bl 0x5100 <reset_bsem+0x408>
+0x76ec: mov x4, x0
+0x76f0: cbnz x0, success
+...
+0x7700: mov w20, #-0x3ff   ; -1023
+0x770c: bl uipc_oom
+```
+
+### 26.2 0x5100 是 bsem 分配器
+
+```text
+0x5128: add x0, x20, #0xc0
+0x512c: add x23, x0, #0x10
+0x5130: bl osal_lock
+0x5134: ldr x21, [x23, x19, lsl #3]
+0x5138: cbz x21, 0x51c8
+...
+0x51c8: mov x1, #0
+0x51cc: mov w0, #0
+0x51d0: bl alloc_fblock@plt
+0x51d4: mov x22, x0
+0x51d8: cbz x0, 0x5224
+...
+```
+
+即：
+
+```text
+reset_bsem(index) 
+  -> 表项为空
+  -> alloc_fblock(NULL, 0)
+  -> 返回 NULL
+  -> osal_dynamic_id 返回 -1023
+```
+
+### 26.3 新结论
+
+- `-1023` 是 **bsem 对象分配失败**；
+- 不是 ID 类型校验，也不是 libosal 版本；
+- `alloc_fblock` 是更底层 allocator，返回 NULL；
+- 需要查 `alloc_fblock` 的 provider/内存池，而不是 patch `osal_dynamic_id`。
+
+### 26.4 下一步
+
+1. 查 `alloc_fblock` 的 provider（libosal_utm/osal_utm.ko）和失败条件；
+2. 检查其固定块池是否初始化/耗尽；
+3. 若只是池未初始化，补初始化或扩大池；
+4. 仍不改原固件/QEMU/DTB。
+
+## 27. 边界
+
+- 候选 CPIO 只改本地库/kmod/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

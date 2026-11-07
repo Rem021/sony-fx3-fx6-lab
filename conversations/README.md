@@ -54,8 +54,8 @@
 
 | # | Conversation Title | Agent | Messages | Updated (UTC) | Archive Link |
 |---|---|---|---|---|---|
-| 1 | **现在这个项目整体什么进度啊？** | `antigravity` | 3 | `2026-11-07T14:36Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/现在这个项目整体什么进度啊？-antigravity_.md) |
-| 2 | **Phayen｜固件研究并行进度** | `codex` | 12 | `2026-11-07T14:36Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/Phayen｜固件研究并行进度-codex_62270b.md) |
+| 1 | **现在这个项目整体什么进度啊？** | `antigravity` | 5 | `2026-11-07T14:56Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/现在这个项目整体什么进度啊？-antigravity_.md) |
+| 2 | **Phayen｜固件研究并行进度** | `codex` | 28 | `2026-11-07T14:56Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/Phayen｜固件研究并行进度-codex_62270b.md) |
 | 3 | **现在整体什么进度了呢** | `antigravity` | 12 | `2026-11-07T12:53Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/现在整体什么进度了呢-antigravity_.md) |
 | 4 | **Phayen｜FX3 适配 FX6 固件与刷机评估** | `antigravity` | 13 | `2026-11-07T10:08Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/Phayen｜FX3-适配-FX6-固件与刷机评估-antigravity_.md) |
 | 5 | **FX3｜虚拟机菜单修复续接** | `claude` | 78 | `2026-11-06T15:53Z` | [View Archive](../conversations/04-fx3-vm-menu-and-gpe/FX3｜虚拟机菜单修复续接-claude_9e4c5.md) |

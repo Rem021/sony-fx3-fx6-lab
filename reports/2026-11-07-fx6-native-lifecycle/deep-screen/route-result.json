@@ -1,0 +1,173 @@
+{
+  "input": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "registry": {
+    "vma": "0x293bed8",
+    "got": "0x2ee2100",
+    "stride": "0x38"
+  },
+  "screens": [
+    {
+      "name": "void procam_shooting_controller::open_screen(const ds_screen_id&, const ds_screen_id&, const ds_screen_id&)",
+      "screen_id": 2,
+      "row_vma": "0x293bf48",
+      "presenter_factory": "0xdd3fa4",
+      "controller_factory": "0xdb2524",
+      "presenter_constructor": "0xdd3df8",
+      "controller_open_request": "0xfb2f88",
+      "descriptor_words_at_row_0x10": [
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x1",
+        "0x2",
+        "0x0",
+        "0x1",
+        "0x4",
+        "0x0",
+        "0xc3f"
+      ],
+      "diagnostic_adrp": "0xfb2fb8",
+      "name_vma": "0x23cf458"
+    },
+    {
+      "name": "void procam_big6_menu_home_controller::open_screen(const ds_screen_id&, const ds_screen_id&, const ds_screen_id&)",
+      "screen_id": 10,
+      "row_vma": "0x293c108",
+      "presenter_factory": "0xde1244",
+      "controller_factory": "0xdb2f28",
+      "presenter_constructor": "0xde10f4",
+      "controller_open_request": "0xf2dec0",
+      "descriptor_words_at_row_0x10": [
+        "0x1",
+        "0x1",
+        "0x0",
+        "0x1",
+        "0xa",
+        "0x4",
+        "0x0",
+        "0x0",
+        "0x1",
+        "0xb02"
+      ],
+      "diagnostic_adrp": "0xf2def0",
+      "name_vma": "0x23bdf80"
+    },
+    {
+      "name": "void procam_menu_layer_1st_controller::open_screen(const ds_screen_id&, const ds_screen_id&, const ds_screen_id&)",
+      "screen_id": 15,
+      "row_vma": "0x293c220",
+      "presenter_factory": "0xdd75a4",
+      "controller_factory": "0xdb3584",
+      "presenter_constructor": "0xdd7470",
+      "controller_open_request": "0xf5dce0",
+      "descriptor_words_at_row_0x10": [
+        "0x2",
+        "0x2",
+        "0x0",
+        "0x1",
+        "0xf",
+        "0x3",
+        "0x0",
+        "0x0",
+        "0x1",
+        "0xa8b"
+      ],
+      "diagnostic_adrp": "0xf5dd10",
+      "name_vma": "0x23c3838"
+    }
+  ],
+  "direct_call_edges_verified": [
+    {
+      "pc": "0xc0b1f8",
+      "target": "0xdf92cc"
+    },
+    {
+      "pc": "0xc0b520",
+      "target": "0xc0b12c"
+    },
+    {
+      "pc": "0xc0b528",
+      "target": "0xc0a69c"
+    },
+    {
+      "pc": "0xc0a6cc",
+      "target": "0xc09da0"
+    },
+    {
+      "pc": "0xc09e0c",
+      "target": "0xde31ac"
+    },
+    {
+      "pc": "0xc09e48",
+      "target": "0xb173c0"
+    },
+    {
+      "pc": "0xc0b484",
+      "target": "0xb19290"
+    },
+    {
+      "pc": "0xc0b4d4",
+      "target": "0xb188c0"
+    },
+    {
+      "pc": "0xdf690c",
+      "target": "0xde3584"
+    },
+    {
+      "pc": "0xdf6930",
+      "target": "0xde34fc"
+    },
+    {
+      "pc": "0xde1264",
+      "target": "0xde10f4"
+    },
+    {
+      "pc": "0xdd4010",
+      "target": "0xdd3df8"
+    },
+    {
+      "pc": "0xdd75c4",
+      "target": "0xdd7470"
+    }
+  ],
+  "diagnostic_bindings": [
+    {
+      "diagnostic_adrp": "0xdf6734",
+      "name_vma": "0x23af830",
+      "name": "void presenter_controller_manager::open_screen_ii(const ds_screen_id&, const ds_screen_id&, const ds_screen_id&, presenter_controller_manager::restore_mode_t, i_controller*&, i_presenter* (&)[2], i_presenter* (&)[2], std::deque<presenter_controller_manager::ds_screen_id_group>*)"
+    },
+    {
+      "diagnostic_adrp": "0xdf7964",
+      "name_vma": "0x23afb18",
+      "name": "void presenter_controller_manager::open_screen_internal(const ds_screen_id&, const ds_screen_id&, const ds_screen_id&, bool, bool, bool)"
+    },
+    {
+      "diagnostic_adrp": "0x1009548",
+      "name_vma": "0x23d7e68",
+      "name": "void rep_boot_controller::open_screen(const ds_screen_id&, const ds_screen_id&, const ds_screen_id&)"
+    },
+    {
+      "diagnostic_adrp": "0x1009c94",
+      "name_vma": "0x23d7ef0",
+      "name": "bool rep_boot_controller::process_MODEL_POWER_ON_COMP(const ds_event&)"
+    }
+  ],
+  "native_entry_points": {
+    "app_ctor": "0xc0b12c",
+    "app_run": "0xc0a69c",
+    "app_init": "0xc09da0",
+    "manager_offset_in_app": "0xa40",
+    "manager_ctor": "0xdf92cc",
+    "manager_initialize": "0xde31ac",
+    "grm_trigger_register_call": "0xc09e48",
+    "grm_trigger_callback": "0xc091d0",
+    "manager_open_internal": "0xdf790c",
+    "manager_open_ii": "0xdf6680",
+    "boot_power_on_complete_handler": "0x1009be0"
+  },
+  "boundary": "Static control flow only. No VM, screen opening, frame output, or event delivery proved."
+}

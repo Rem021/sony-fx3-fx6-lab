@@ -1,5 +1,7 @@
 # Sony FX3 & FX6 Porting and QEMU Virtual Machine Lab (`sony-fx3-fx6-lab`)
 
+> **2026-11-07 deeper follow-up / 深入研究第二轮**：[原厂生命周期与屏幕状态机](reports/2026-11-07-fx6-native-lifecycle/README.md) 已确认 288–290 越过 UI 线程与 UXEngine，定位 MWF 空日志对象、原厂模块初始化缺口及 Kikilog 设备契约；原厂菜单尚未通过可见/交互验收。
+
 > **2026-11-07 evidence correction / 证据纠正**：[FX6 原生 UI 并行复核](reports/2026-11-07-fx6-parallel-native-ui/README.md) 核实旧三屏地址来自 FX3，当前网页帧来自宿主绘图；本轮已定位真实 FX6 presenter、原厂线程观察点及候选成员元数据问题，尚未证明 FX6 原厂菜单可见或可交互。Previous rendered previews do not establish native FX6 menu execution.
 
 > **Sony Cinema Line ILME-FX3 (Ver. 7.02) & ILME-FX6 (Ver. 6.01) System Emulation, Reverse Engineering, Recovery Tooling, and Cross-Model Firmware Porting Research**

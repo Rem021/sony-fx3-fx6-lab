@@ -1,0 +1,619 @@
+{
+  "runs": [
+    {
+      "run": "cp-bind-9a736b1c",
+      "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-288.json",
+      "serial": {
+        "bytes": 110798,
+        "sha256": "3a6541ec1492b8e2a5815341850d6cd8f04832261dff56b9ff77e48d26084563"
+      },
+      "evidence": [
+        {
+          "line": 1481,
+          "text": "Exception> FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f6a823044"
+        },
+        {
+          "line": 1482,
+          "text": "FX6_APP_CONFIG_HOLD real_returned"
+        },
+        {
+          "line": 1493,
+          "text": "FX6_GRM_FBRM_CB_FIRE cb=0x7f7149a16c user=0x7f6400bc80 (1024x540 fmt=2)"
+        },
+        {
+          "line": 1494,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6400ced0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1495,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6400d070 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1496,
+          "text": "mpMemoryHeap on 0x0000007F613FF010-0x0000007F61BFF010 (8388608) for 50-4194303 kbyte res."
+        },
+        {
+          "line": 1497,
+          "text": "mpMemoryHeap2 on 0x0000007F61BFF010-0x0000007F61FFF010 (4194304) for 0-50 kbyte res."
+        },
+        {
+          "line": 1498,
+          "text": "mpTextHeap on 0x0000007F61FFF010-0x0000007F62BFF010 (12582912) for 0-4194303 kbyte res."
+        },
+        {
+          "line": 1499,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6400ff20 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1500,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f64010300 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1501,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f640106e0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1502,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f64010ac0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1503,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f64010ea0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1504,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f64011280 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1505,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f64011660 x=0 y=0 w=1024 h=540"
+        }
+      ]
+    },
+    {
+      "run": "cp-bind-93fb917b",
+      "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-289.json",
+      "serial": {
+        "bytes": 96274,
+        "sha256": "ca96a4493630d5b525194ca3fadb6f9caa0744483d58a9b248646f460cfd38fe"
+      },
+      "evidence": [
+        {
+          "line": 1181,
+          "text": "FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f941fc044"
+        },
+        {
+          "line": 1182,
+          "text": "FX6_APP_CONFIG_HOLD real_returned"
+        },
+        {
+          "line": 1193,
+          "text": "FX6_GRM_FBRM_CB_FIRE cb=0x7f9ae7316c user=0x7f8c00bc80 (1024x540 fmt=2)"
+        },
+        {
+          "line": 1194,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c00ced0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1195,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c00d070 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1196,
+          "text": "mpMemoryHeap on 0x0000007F89FFF010-0x0000007F8A7FF010 (8388608) for 50-4194303 kbyte res."
+        },
+        {
+          "line": 1197,
+          "text": "mpMemoryHeap2 on 0x0000007F8A7FF010-0x0000007F8ABFF010 (4194304) for 0-50 kbyte res."
+        },
+        {
+          "line": 1198,
+          "text": "mpTextHeap on 0x0000007F8ABFF010-0x0000007F8B7FF010 (12582912) for 0-4194303 kbyte res."
+        },
+        {
+          "line": 1199,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c00ff20 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1200,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c010300 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1201,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c0106e0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1202,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c010ac0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1203,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c010ea0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1204,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c011280 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1205,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f8c011660 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1264,
+          "text": "APPFW_SEGV sig=11 addr=0x10 pc=7f9ab53908 sp=7f93513bb0"
+        },
+        {
+          "line": 1298,
+          "text": "APPFW_PC_MODULE /usr/lib/libMWF.so base=0x7f9ab15000"
+        },
+        {
+          "line": 1299,
+          "text": "APPFW_LR_MODULE /usr/lib/libMWF.so base=0x7f9ab15000"
+        }
+      ]
+    },
+    {
+      "run": "cp-bind-8d4a255b",
+      "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-290.json",
+      "serial": {
+        "bytes": 100698,
+        "sha256": "4a655844a8a23ed3df401cc4ad651d9b38f186a23fdc1ec0e16ab6aacf0daa48"
+      },
+      "evidence": [
+        {
+          "line": 1227,
+          "text": "FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f7a988044"
+        },
+        {
+          "line": 1228,
+          "text": "FX6_APP_CONFIG_HOLD real_returned"
+        },
+        {
+          "line": 1239,
+          "text": "FX6_GRM_FBRM_CB_FIRE cb=0x7f815ff16c user=0x7f7400bc80 (1024x540 fmt=2)"
+        },
+        {
+          "line": 1240,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f7400ced0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1241,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f7400d070 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1242,
+          "text": "mpMemoryHeap on 0x0000007F717FF010-0x0000007F71FFF010 (8388608) for 50-4194303 kbyte res."
+        },
+        {
+          "line": 1243,
+          "text": "mpMemoryHeap2 on 0x0000007F71FFF010-0x0000007F723FF010 (4194304) for 0-50 kbyte res."
+        },
+        {
+          "line": 1244,
+          "text": "mpTextHeap on 0x0000007F723FF010-0x0000007F72FFF010 (12582912) for 0-4194303 kbyte res."
+        },
+        {
+          "line": 1245,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f7400ff20 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1246,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f74010300 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1247,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f740106e0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1248,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f74010ac0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1249,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f74010ea0 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1250,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f74011280 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1251,
+          "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f74011660 x=0 y=0 w=1024 h=540"
+        },
+        {
+          "line": 1266,
+          "text": "APPFW_SEGV sig=11 addr=0x10 pc=7f812df908 sp=7f79c9fbb0"
+        },
+        {
+          "line": 1298,
+          "text": "APPFW_PC_MODULE /usr/lib/libMWF.so base=0x7f812a1000"
+        },
+        {
+          "line": 1299,
+          "text": "APPFW_LR_MODULE /usr/lib/libMWF.so base=0x7f812a1000"
+        }
+      ]
+    }
+  ],
+  "members": [
+    {
+      "cpio": "guest-hybrid-fx6kernel-capid-grmreal288-fast-init.cpio",
+      "payloads": {
+        "usr/lib/libMWF.so": {
+          "bytes": 353120,
+          "sha256": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 72296,
+          "sha256": "46161fe7ff7fe40edb9b5fc1648e9b5c5ac23994d8e73e3d4ed2a2ac6ef7fe75"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92488,
+          "sha256": "0a4eb7a70b38aed52b644dfc044515197334a7d3842ef254e56e5ff809376ea6"
+        }
+      }
+    },
+    {
+      "cpio": "guest-hybrid-fx6kernel-capid-grmreal289-native.cpio",
+      "payloads": {
+        "usr/lib/libMWF.so": {
+          "bytes": 353120,
+          "sha256": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 72168,
+          "sha256": "46974fad8e0c1cd23460036bfc18f2566599482650157bc1b1d678d274685798"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92488,
+          "sha256": "0a4eb7a70b38aed52b644dfc044515197334a7d3842ef254e56e5ff809376ea6"
+        }
+      }
+    },
+    {
+      "cpio": "guest-hybrid-fx6kernel-capid-grmreal290-upm.cpio",
+      "payloads": {
+        "usr/lib/libMWF.so": {
+          "bytes": 353120,
+          "sha256": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 72168,
+          "sha256": "46974fad8e0c1cd23460036bfc18f2566599482650157bc1b1d678d274685798"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92488,
+          "sha256": "0a4eb7a70b38aed52b644dfc044515197334a7d3842ef254e56e5ff809376ea6"
+        }
+      }
+    }
+  ],
+  "sources": {
+    "appfw-launch288.c": {
+      "bytes": 12398,
+      "sha256": "862547d6460cbdd7e1f7fbb26b254aa16e0e9c272000a0207323f54fc9c012a9"
+    },
+    "libgrm-fbinit25-289.c": {
+      "bytes": 58055,
+      "sha256": "849ff8bff38ed2206925f75847257b057b3347ec3817dde46ff52fe9ed43cae3"
+    },
+    "observe_mwf_lifecycle.c": {
+      "bytes": 3102,
+      "sha256": "0bff05e1a6331e1e1f21a0b3eb7a8f9d8bfb283e97f58a5757b95a46711f8269"
+    }
+  },
+  "mwf": {
+    "init_array": [
+      "0x243f8"
+    ],
+    "getflag_instruction": "w0, [x0, #0x10]",
+    "initialize_calls": [
+      {
+        "site": "0x27d88",
+        "target": "0x22b60",
+        "symbol": "_ZN3MWF9MwfCommon4InitEv"
+      },
+      {
+        "site": "0x27d8c",
+        "target": "0x236c0",
+        "symbol": "_ZN7Monitor4InitEv"
+      },
+      {
+        "site": "0x27d94",
+        "target": "0x22d10",
+        "symbol": "_Znwm"
+      },
+      {
+        "site": "0x27db4",
+        "target": "0x22260",
+        "symbol": "_ZN3MWF9ObjThreadC1EPFPvS1_ES1_N12DefObjThread19OBJ_THREAD_PRIORITYEPKc"
+      },
+      {
+        "site": "0x27dbc",
+        "target": "0x22cb0",
+        "symbol": "_ZN3MWF9ObjThread11StartThreadEv"
+      },
+      {
+        "site": "0x27dc0",
+        "target": "0x23800",
+        "symbol": "_ZN11ObjLog_Mcmd4InitEv"
+      },
+      {
+        "site": "0x27dc4",
+        "target": "0x21850",
+        "symbol": "_ZN3MWF8RsrcMcmd4InitEv"
+      },
+      {
+        "site": "0x27dc8",
+        "target": "0x21ce0",
+        "symbol": "_ZN3MWF7InhMcmd4InitEv"
+      },
+      {
+        "site": "0x27dcc",
+        "target": "0x23280",
+        "symbol": "_ZN3MWF10ObjIf_Mcmd4InitEv"
+      },
+      {
+        "site": "0x27dd0",
+        "target": "0x218d0",
+        "symbol": "_ZN3MWF5ObjIf4InitEv"
+      },
+      {
+        "site": "0x27ddc",
+        "target": "0x23960",
+        "symbol": "_ZN3MWF14EventIdFactory10InitializeEji"
+      },
+      {
+        "site": "0x27de0",
+        "target": "0x237d0",
+        "symbol": "_ZN3MWF12RsrcRelation10InitializeEv"
+      },
+      {
+        "site": "0x27dec",
+        "target": "0x21cf0",
+        "symbol": "_ZN3MWF7InhInfo10InitializeEv"
+      },
+      {
+        "site": "0x27dfc",
+        "target": "0x22d60",
+        "symbol": "_ZdlPvm"
+      },
+      {
+        "site": "0x27e04",
+        "target": "0x23e50",
+        "symbol": "_Unwind_Resume"
+      }
+    ],
+    "rsrc_mcmd_calls": [
+      {
+        "site": "0x393bc",
+        "target": "0x22ce0",
+        "symbol": "_ZN3MWF6RsrcDP10InitializeEv"
+      },
+      {
+        "site": "0x393dc",
+        "target": "0x240c0",
+        "symbol": "_ZN6MonLib9MonCmdAddEPKcPFbiPPcES1_"
+      }
+    ],
+    "rsrcdp_initialize_calls": [
+      {
+        "site": "0x38cd0",
+        "target": "0x22d10",
+        "symbol": "_Znwm"
+      },
+      {
+        "site": "0x38ce0",
+        "target": "0x23730",
+        "symbol": "_ZN7MonCtrlC1EPKcb"
+      },
+      {
+        "site": "0x38cf4",
+        "target": "0x22d10",
+        "symbol": "_Znwm"
+      },
+      {
+        "site": "0x38d04",
+        "target": "0x23730",
+        "symbol": "_ZN7MonCtrlC1EPKcb"
+      },
+      {
+        "site": "0x38d18",
+        "target": "0x22d10",
+        "symbol": "_Znwm"
+      },
+      {
+        "site": "0x38d28",
+        "target": "0x23730",
+        "symbol": "_ZN7MonCtrlC1EPKcb"
+      },
+      {
+        "site": "0x38d3c",
+        "target": "0x22d10",
+        "symbol": "_Znwm"
+      },
+      {
+        "site": "0x38d4c",
+        "target": "0x23730",
+        "symbol": "_ZN7MonCtrlC1EPKcb"
+      },
+      {
+        "site": "0x38d60",
+        "target": "0x22d10",
+        "symbol": "_Znwm"
+      },
+      {
+        "site": "0x38d70",
+        "target": "0x23730",
+        "symbol": "_ZN7MonCtrlC1EPKcb"
+      },
+      {
+        "site": "0x38d90",
+        "target": "0x23f50",
+        "symbol": "__cxa_guard_acquire"
+      },
+      {
+        "site": "0x38da0",
+        "target": "0x21ab0",
+        "symbol": "_ZN7MonCtrl10GetFlagPtrEv"
+      },
+      {
+        "site": "0x38db8",
+        "target": "0x21ab0",
+        "symbol": "_ZN7MonCtrl10GetFlagPtrEv"
+      },
+      {
+        "site": "0x38dcc",
+        "target": "0x21ab0",
+        "symbol": "_ZN7MonCtrl10GetFlagPtrEv"
+      },
+      {
+        "site": "0x38de0",
+        "target": "0x21ab0",
+        "symbol": "_ZN7MonCtrl10GetFlagPtrEv"
+      },
+      {
+        "site": "0x38df4",
+        "target": "0x21ab0",
+        "symbol": "_ZN7MonCtrl10GetFlagPtrEv"
+      },
+      {
+        "site": "0x38e04",
+        "target": "0x22520",
+        "symbol": "__cxa_guard_release"
+      },
+      {
+        "site": "0x38e4c",
+        "target": "0x38e28",
+        "symbol": null
+      },
+      {
+        "site": "0x38e80",
+        "target": "0x21960",
+        "symbol": "_ZN6MonLib9MonFlgAddEPKcPNS_9s_fltdescE"
+      },
+      {
+        "site": "0x38e90",
+        "target": "0x22d60",
+        "symbol": "_ZdlPvm"
+      },
+      {
+        "site": "0x38e98",
+        "target": "0x23e50",
+        "symbol": "_Unwind_Resume"
+      },
+      {
+        "site": "0x38e9c",
+        "target": "0x38e84",
+        "symbol": null
+      },
+      {
+        "site": "0x38ea0",
+        "target": "0x38e84",
+        "symbol": null
+      },
+      {
+        "site": "0x38ea4",
+        "target": "0x38e84",
+        "symbol": null
+      },
+      {
+        "site": "0x38ea8",
+        "target": "0x38e84",
+        "symbol": null
+      },
+      {
+        "site": "0x38eb4",
+        "target": "0x224e0",
+        "symbol": "__cxa_guard_abort"
+      },
+      {
+        "site": "0x38ebc",
+        "target": "0x38e98",
+        "symbol": null
+      }
+    ],
+    "rsrcdp_myprintf_calls": [
+      {
+        "site": "0x38f10",
+        "target": "0x22290",
+        "symbol": "_ZNK7MonCtrl7GetFlagEv"
+      },
+      {
+        "site": "0x38f20",
+        "target": "0x22160",
+        "symbol": "_ZNK7MonCtrl19ConPutMessageHeaderEv"
+      },
+      {
+        "site": "0x38f2c",
+        "target": "0x24230",
+        "symbol": "_ZNK7MonCtrl9ConPutStrEPKc"
+      },
+      {
+        "site": "0x38f38",
+        "target": "0x24230",
+        "symbol": "_ZNK7MonCtrl9ConPutStrEPKc"
+      },
+      {
+        "site": "0x38f40",
+        "target": "0x21e10",
+        "symbol": "_ZNK7MonCtrl11ConPutSpaceEv"
+      },
+      {
+        "site": "0x38f60",
+        "target": "0x230e0",
+        "symbol": "_ZNK7MonCtrl10ConVPrintfEPKcSt9__va_list"
+      },
+      {
+        "site": "0x38f80",
+        "target": "0x38f0c",
+        "symbol": null
+      },
+      {
+        "site": "0x38f8c",
+        "target": "0x38f0c",
+        "symbol": null
+      },
+      {
+        "site": "0x38f98",
+        "target": "0x38f0c",
+        "symbol": null
+      },
+      {
+        "site": "0x38fa4",
+        "target": "0x38f0c",
+        "symbol": null
+      }
+    ],
+    "error_pointer_got_relocation": [
+      {
+        "r_offset": 409352,
+        "r_info": 5763846112257,
+        "r_info_sym": 1342,
+        "r_info_type": 1025,
+        "r_addend": 0,
+        "symbol": "_ZN3MWF6RsrcDP10smp_monErrE"
+      }
+    ]
+  },
+  "fx6_donor_imdb": {
+    "bytes": 79728,
+    "sha256": "a088ef303793497a443e89d6de4c8f12e07ec791c945f54e2dc1b52cd42db896",
+    "module_at_0x1f280": "0xaadb",
+    "init_at_0x1f288": "0xaae5",
+    "module_string": "libMWF.so",
+    "init_string": "MWF_Init"
+  }
+}

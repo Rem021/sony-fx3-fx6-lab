@@ -392,3 +392,94 @@ APPFW_SEGV sig=11 addr=0x10
 - 未改 QEMU 命令、DTB、平台参数；
 - 未写 shim/解析器；未跑 pmemsave；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 14. 调试 patch 迭代（167–170）
+
+### 14.1 launcher maps-first patch
+
+把 `appfw-launch` 的 `0x1018f6c b.ne` 改成 NOP（跳过 31 次寄存器打印）：
+- overlay/全量重打均未可靠覆盖 `/usr/bin/appfw-launch`；
+- 最后改为 **直接 patch CPIO 成员数据**，生成 167；
+- 167 确认 `APPFW_PC_MODULE`/`APPFW_PC_MAP` 可以输出。
+
+167 结果：
+
+```text
+APPFW_SEGV sig=11 addr=0x230 pc=... 
+APPFW_PC_MODULE /usr/lib/libgemini-grm.so base=...
+APPFW_PC_MAP ... libgemini-grm.so
+```
+
+即早期 crash = **libgemini-grm.so+0x8cc0**。
+
+### 14.2 预 patch libgemini+0x8cc0
+
+`0x8cc0` 指令：
+
+```text
+strb w19,[x20,#0x230]
+```
+
+x20=NULL，addr=0x230。把 CPIO 内 `libgemini-grm.so` 该 4 字节改成 NOP，生成 168。
+
+结果：
+
+```text
+uxengine_init2 returned
+patched gemini 0x8cc0 ...
+GraphicsEngine ctor=...
+```
+
+**越过了早期 gemini 崩溃**，进入 GraphicsEngine ctor。
+
+### 14.3 后续 crash
+
+168 在 ctor 后新 crash：
+
+```text
+APPFW_SEGV addr=0x10 pc=... 
+```
+
+组合 launcher noloop + gemini patch（169）拿到：
+
+```text
+APPFW_PC_MODULE /usr/lib/libgrm.so base=...
+pc offset = 0x22c28
+```
+
+`libgrm+0x22c28` = `FBResourceManager::getScreenRotate()` 内的：
+
+```text
+ldr w0,[x0,#8]
+```
+
+`bl 0x205b0` 返回的 x0 被当指针；addr=0x10。
+
+把该 4 字节改成 NOP，生成 170。
+
+### 14.4 170 结果
+
+```text
+uxengine_init2 returned
+GraphicsEngine ctor=...
+osal_alloc_sem_id -1023 x5
+APPFW_SEGV addr=0x1b7f94027f8 pc=...
+```
+
+- crash 从 `libgrm+0x22c28` 转移；
+- 但 170 的 handler 没输出 `PC_MODULE/PC_MAP`（可能 handler 自身在异常状态）；
+- 尚未取得可见画面。
+
+### 14.5 下一步
+
+1. 用 169 的 maps-first handler 继续跑 170 的库 patch，拿新 PC_MODULE；
+2. 若仍是空成员，继续 patch；
+3. 每轮只加一个 NOP，保持 FX3 平台/QEMU/DTB 不变；
+4. 直到 `createScreen3D` 返回非 NULL，再做 OSD ring 抓帧。
+
+## 15. 边界
+
+- 上述只改本地候选 CPIO 的库/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

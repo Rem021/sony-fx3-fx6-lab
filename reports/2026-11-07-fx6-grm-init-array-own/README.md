@@ -366,7 +366,7 @@ libux_core:
 |---:|---|---|---|---|---|
 | 1 | libuxengine | `0x74ab8` | `br x2`，GOT `0xc1fc0` | symbol `_ITM_registerTMCloneTable` | **不调用三目标**（间接到 ITM 表） |
 | 2 | libuxengine | `0x70a20` | `br x17`，PLT `0xc2e38` | `ux::core::Vector2::Vector2()` | **不调用三目标** |
-| 3 | libux_core | `0x23e28` | `br x2`，GOT `0x460fa0` | 无符号/无 reloc；形态像 destructor registry | **无法判定**（GOT 目标未解析；不是三目标地址） |
+| 3 | libux_core | `0x23e28` | `br x2`，`.data.rel.ro 0x460fa0` | 数组 `0x486b0..0x486b0` 长度 0；`br` 不可达 | **不调用三目标**（空析构表，GOT 未读取） |
 | 4 | libux_core | `0x22ac0` | `br x17`，PLT `0x470bf8` | `__cxa_atexit` | **不调用三目标** |
 | 5 | libux_core | `0x22480` | `br x17`，PLT `0x4708d8` | `ux::core::Color::Color(unsigned char, ...)` | **不调用三目标** |
 | 6 | libux_core | `0x228f0` | `br x17`，PLT `0x470b10` | `ux::core::ID::ID()` | **不调用三目标** |
@@ -375,8 +375,8 @@ libux_core:
 计数：
 
 ```text
-不调用三目标：6 项
-无法判定：1 项
+不调用三目标：7 项
+无法判定：0 项
 调用三目标：0 项
 ```
 
@@ -391,11 +391,10 @@ libux_core:
   - 目标 `ux::core::Vector2::Vector2()`；
   - 不是三目标。
 - `0x23e28`：
-  - 与 `0x74ab8` 同形态：计算 `0x486b0` 数组长度，若为 0 返回；
-  - 从 GOT `0x460fa0` 取函数指针，`br x2`；
-  - GOT `0x460fa0` 在 `.rela.dyn/.rela.plt` 中没有对应符号；无法静态解析；
-  - 从形态看像 `__cxa_finalize`/destructor registry，但**不能确认**；
-  - 不是三目标地址；分类“无法判定”。
+  - 计算 `0x486b0 - 0x486b0 = 0`，`cbz x1, 0x23e60` 直接到 `ret`；
+  - `0x460fa0` 实际在 `.data.rel.ro`，不在 `.got`；无 reloc/符号；
+  - 由于长度 0，`ldr x2,[0x460fa0]`/`br x2` **不可达**；
+  - 分类改为“不调用三目标”。
 - `0x22ac0`：PLT `__cxa_atexit`，不是三目标。
 - `0x22480`：PLT `ux::core::Color::Color(unsigned char, ...)`，不是三目标。
 - `0x228f0`：PLT `ux::core::ID::ID()`，不是三目标。
@@ -404,8 +403,8 @@ libux_core:
 ### 11.3 对“InitializeIF/sys_createApplication 未使用”的影响
 
 - 7 个 helper 中 **0 个调用三目标**；
-- 6 个可解析为 ITM/`__cxa_atexit`/`Vector2`/`Color`/`ID` 等静态初始化/析构/工具函数；
-- 1 个（`0x23e28`）GOT 目标无符号，但形态是 destructor registry，不是 framebuffer 初始化；
+- 7 个均可解释为静态初始化/析构/工具函数（`0x23e28` 是空析构表，GOT 未读取）；
+- 没有 framebuffer 初始化入口；
 - 结合 §10 的 14 个 init 函数（无直接/PLT/adrp-add 到三目标），**没有新增证据表明 `InitializeIF`/`sys_createApplication` 被调用**；
 - “未使用”假设继续得到支持，但仍不是运行时证明。
 
@@ -416,17 +415,17 @@ libux_core:
 - 7 个 helper 的入口反汇编；
 - PLT 名称（`Vector2`/`Color`/`ID`/`__cxa_atexit`）；
 - GOT `0xc1fc0` 符号 `_ITM_registerTMCloneTable`；
-- `0x23e28` 的 GOT `0x460fa0` 无符号/无 reloc；
+- `0x23e28` 的数组长度 0；`0x460fa0` 在 `.data.rel.ro`、无符号/无 reloc；
 - 0 个 helper 直接/间接落到三目标地址。
 
 **推断**：
 
-- `0x23e28` 可能是 `__cxa_finalize`/destructor registry，但不是 framebuffer 初始化；
+- `0x23e28` 是空析构表；`0x460fa0` 未被读取；
 - 7 个 helper 都是静态初始化/析构链，不是 UI/framebuffer 入口。
 
 **缺失**：
 
-- `0x460fa0` 的精确符号/运行时值；
+- `0x460fa0` 的具体用途（不影响结论）；
 - 运行时 `[0x486f0]` 值；
 - 运行时 `GRM_fbrmInitialize` 是否命中；
 - 仍未执行任何运行时断点。
@@ -434,6 +433,107 @@ libux_core:
 ### 11.5 运行时待批准方案（未执行）
 
 沿用 §10.5：
+
+```text
+断点 InitializeIF 0x2764c
+先读 [0x486f0]（own_）
+若为 0：确认 own_ 未初始化
+再断 GraphicsSystemCore::Initialize 0x27ef0
+再断 GRM_fbrmInitialize 0x23374
+```
+
+本轮**未执行**任何运行时步骤。
+
+## 12. §12：0x23e28 的 0x460fa0 与 0x486b0 数组
+
+时间：2026-11-07 16:30 PT。本节只补 §11 的最后一个缺口，不再扩展。
+
+### 12.1 结论
+
+1. **`0x23e28` 的数组长度是 0。**
+   反汇编：
+   ```text
+   0x23e28: adrp x1, #0x48000
+   0x23e2c: adrp x0, #0x48000
+   0x23e30: add  x1, x1, #0x6b0
+   0x23e34: add  x0, x0, #0x6b0
+   0x23e38: sub  x1, x1, x0      ; = 0
+   0x23e3c: asr  x1, x1, #3
+   0x23e40: add  x1, x1, x1, lsr #63
+   0x23e44: asr  x1, x1, #1
+   0x23e48: cbz  x1, 0x23e60     ; 必跳
+   0x23e4c: adrp x2, #0x46000
+   0x23e50: ldr  x2, [x2, #0xfa0]
+   0x23e54: cbz  x2, 0x23e60
+   0x23e58: br   x2              ; 不可达
+   0x23e60: ret
+   ```
+   `0x23e60` 是 `ret`；因此 `0x460fa0` 的 load 和 `br x2` **永远不会执行**。
+
+2. **`0x460fa0` 实际在 `.data.rel.ro`，不在 `.got`。**
+   - `.data.rel.ro`：`0x45750 + 0x11f0`，覆盖 `0x45750..0x46940`；`0x460fa0` 在其中；
+   - `.got`：`0x46c40..0x46fe8`；
+   - `.got.plt`：`0x46fe8..0x484f8`；
+   - `.rela.dyn`/`.rela.plt` 没有指向 `0x460fa0` 的条目；
+   - 没有附近符号；`.dynsym`/`.symtab` 未给出它的语义。
+
+3. **`0x486b0` 在 `.bss`，且代码范围是空区间。**
+   - `.bss`：`0x486b0..0x48868`（size 0x1b8）；
+   - `0x23e28` 的 start/end 都是 `0x486b0`，长度 0；
+   - 因此数组没有表项，也不会指向 `InitializeIF`/`sys_createApplication`/`GraphicsEngine` 初始化。
+
+4. **§11 分类已更新：**
+   - `0x23e28` 从“无法判定”改为 **不调用三目标**；
+   - 7 个 helper 计数变为 **不调用 7 / 无法判定 0 / 调用 0**。
+
+### 12.2 证据表
+
+| 项 | 结果 |
+|---|---|
+| `0x23e28` 数组 start | `0x486b0` |
+| `0x23e28` 数组 end | `0x486b0` |
+| `sub` 结果 | `0` |
+| `cbz x1, 0x23e60` | 必跳 |
+| `0x23e60` | `ret` |
+| `0x460fa0` section | `.data.rel.ro`（0x45750 + 0x11f0） |
+| `.got` range | `0x46c40..0x46fe8` |
+| `.rela.dyn/.rela.plt` @ 0x460fa0 | 无 |
+| `.dynsym/.symtab` 附近符号 | 无 |
+| `0x486b0` section | `.bss`（0x486b0..0x48868） |
+| 数组表项 | 0（start=end） |
+| 三目标引用 | 无 |
+
+### 12.3 对“未使用”假设的影响
+
+- `0x23e28` 不再是一个未解析的间接调用；它是 **空析构表**；
+- 7 个 helper 全部可解释为静态初始化/析构/工具函数；
+- 没有新增证据表明 `InitializeIF`/`sys_createApplication` 被调用；
+- “未使用”假设继续得到支持；仍是静态结论，不是运行时证明。
+
+### 12.4 实测 vs 推断 vs 缺失
+
+**实测**：
+
+- `0x23e28` 的起止地址都是 `0x486b0`，长度 0；
+- `cbz` 到 `ret`，`br x2` 不可达；
+- `0x460fa0` 在 `.data.rel.ro`，无 reloc/符号；
+- `.bss`/`.got`/`.got.plt` 范围；
+- §11 分类与计数已更新。
+
+**推断**：
+
+- `0x23e28` 是空析构表/`__cxa_finalize` 风格 registry；
+- `0x460fa0` 是未使用的静态槽位；
+- 不是 framebuffer 初始化入口。
+
+**缺失**：
+
+- `0x460fa0` 的具体用途（不影响结论）；
+- 运行时 `[0x486f0]` 值；
+- 运行时 `GRM_fbrmInitialize` 是否命中；
+- 运行时断点仍待批准。
+
+### 12.5 运行时待批准方案（未执行）
 
 ```text
 断点 InitializeIF 0x2764c

@@ -185,3 +185,64 @@ FAT32；可用现有 `extract_fat32.py` 的 `PyFatFS(offset=512)` 逻辑展开�
 - 未写 shim/解析器代码（仅一次性只读提取脚本）；
 - 未跑 pmemsave/解析器；
 - 未触碰用户三问（FX6 运行时库 / FDAT 解包 / 平台策略）。
+
+## 8. 更正：nflasha15 已有 libosal，但不导出 osal_alloc_sem_id
+
+时间：2026-11-07。此更正不推翻 WBI2 解包结果，但修正“缺失库在 nflasha5”的表述。
+
+### 8.1 已存在的 libosal
+
+`nflasha15-files/lib/` 里早就有：
+
+```text
+libosal_utm.so   10K   sha256 a7ced89e...
+libosal_uipc.so  43K   sha256 fe248d22...
+libosal_udate.so 27K
+libosal_ulogio.so 39K
+```
+
+都是 ELF64 AArch64 shared object。
+
+### 8.2 但没有 osal_alloc_sem_id 导出
+
+`nm -D`：
+
+```text
+libosal_utm.so  -> 无 osal_alloc_sem_id
+libosal_uipc.so -> 只有 check_dynamic_sem_id (0x74d0)
+```
+
+进一步搜 `nflasha15-files`/`nested-files` 的 `.so`/`.ko`：
+
+- 没有 `osal_alloc_sem_id` 的 `T/W` 定义；
+- 只有若干 `.so` 里出现该字符串（日志/未解析引用）；
+- 没有找到实际的导出实现。
+
+### 8.3 WBI2 里的字符串是什么意思
+
+`wbi2-payload` 的 7 处 `osal_alloc_sem_id`：
+
+```text
+[UDATE] %s osal_alloc_sem_id err=%d
+```
+
+这是 **libgrm 的错误日志字符串**，不是 `libosal_utm.so` 的导出符号。`libosal_utm.so`/`libosal_uipc.so` 的字符串多为 `DT_NEEDED` 名称或其他库的 dynstr，不能直接证明实现存在。
+
+### 8.4 修正后的判断
+
+- WBI2 payload 仍确认包含 `libosal_utm.so`/`libosal_uipc.so` 名称与 OSAL 错误日志；
+- 但 **没有隔离出带有 `osal_alloc_sem_id` 导出的 ELF**；
+- 既有 `nflasha15` 的 `libosal_utm.so`/`libosal_uipc.so` **也不导出该符号**；
+- 因此“缺失库在 nflasha5”只能作为线索，不能作为已解决结论；
+- 真正阻塞仍是：`osal_alloc_sem_id` 的 provider 尚未定位。
+
+### 8.5 下一步
+
+1. 检查 `nflasha15-files/kmod/osal_utm.ko`/`osal_uipc.ko` 是否以 kernel symbol/ioctl 形式提供 sem 分配；
+2. 在 WBI2 payload 里优先找 **SONAME=libosal_utm.so** 的 ELF，而不是只搜字符串；
+3. 若 WBI2 是 load-address 内存镜像，按段 flags/相邻关系重建完整库，而不是按段独立解析；
+4. 仍不启动 VM、不跑 pmemsave。
+
+## 9. 边界补充
+
+本轮只读解包；原固件未改；没有运行 VM；没有写 shim/解析器；FDAT 解包已获准并执行，FX6 运行时库与平台策略两问仍未定。

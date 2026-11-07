@@ -1,0 +1,215 @@
+{
+  "donor": {
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "packed_appfw": {
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "packed_matches_donor": true,
+  "packed_fbinit9": {
+    "bytes": 72296,
+    "sha256": "46161fe7ff7fe40edb9b5fc1648e9b5c5ac23994d8e73e3d4ed2a2ac6ef7fe75"
+  },
+  "packed_osal_utm": {
+    "bytes": 10216,
+    "sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2"
+  },
+  "application_init_calls": [
+    {
+      "site": "0xc0b07c",
+      "target": "0xb18cc0",
+      "symbol": "snprintf"
+    },
+    {
+      "site": "0xc0b098",
+      "target": "0xb197e0",
+      "symbol": "osal_valloc_msg_wait"
+    },
+    {
+      "site": "0xc0b0cc",
+      "target": "0xb18cc0",
+      "symbol": "snprintf"
+    },
+    {
+      "site": "0xc0b0e0",
+      "target": "0xb18e40",
+      "symbol": "osal_snd_sync_msg"
+    },
+    {
+      "site": "0xc0b0f0",
+      "target": "0xb19d40",
+      "symbol": "osal_free_msg"
+    },
+    {
+      "site": "0xc0b104",
+      "target": "0xc0afec",
+      "symbol": null
+    },
+    {
+      "site": "0xc0b118",
+      "target": "0x222dd58",
+      "symbol": null
+    }
+  ],
+  "ui_worker_calls": [
+    {
+      "site": "0xc0b484",
+      "target": "0xb19290",
+      "symbol": "uxengine_init2"
+    },
+    {
+      "site": "0xc0b488",
+      "target": "0xc0b258",
+      "symbol": null
+    },
+    {
+      "site": "0xc0b494",
+      "target": "0xb17270",
+      "symbol": "_ZN2ux4core6Kernel23sys_setCurrentDirectoryEPKc"
+    },
+    {
+      "site": "0xc0b498",
+      "target": "0xb17dc0",
+      "symbol": "_ZN8UXEngine6gfxengEv"
+    },
+    {
+      "site": "0xc0b49c",
+      "target": "0xb17a50",
+      "symbol": "_ZN2ux6gfxeng14GraphicsEngine28getAreaCheckExtensionManagerEv"
+    },
+    {
+      "site": "0xc0b4b0",
+      "target": "0xb18170",
+      "symbol": "_ZN2ux6gfxeng25AreaCheckExtensionManager16setCheckDataPathEPKc"
+    },
+    {
+      "site": "0xc0b4c0",
+      "target": "0xb180a0",
+      "symbol": "_ZN2ux6gfxeng25AreaCheckExtensionManager10setLogPathEPKc"
+    },
+    {
+      "site": "0xc0b4c4",
+      "target": "0xb17c40",
+      "symbol": "_ZN8UXEngine6resmgrEv"
+    },
+    {
+      "site": "0xc0b4d4",
+      "target": "0xb188c0",
+      "symbol": "_ZN2ux6resmgr15ResourceManager11setDatabaseEPKc"
+    },
+    {
+      "site": "0xc0b4d8",
+      "target": "0xb17c40",
+      "symbol": "_ZN8UXEngine6resmgrEv"
+    },
+    {
+      "site": "0xc0b4e0",
+      "target": "0xb19a20",
+      "symbol": "_ZN2ux6resmgr15ResourceManager28sys_setFontNameWithNamespaceEt"
+    },
+    {
+      "site": "0xc0b4f8",
+      "target": "0xb19150",
+      "symbol": "strncmp"
+    },
+    {
+      "site": "0xc0b520",
+      "target": "0xc0b12c",
+      "symbol": null
+    },
+    {
+      "site": "0xc0b528",
+      "target": "0xc0a69c",
+      "symbol": null
+    },
+    {
+      "site": "0xc0b530",
+      "target": "0xc0af00",
+      "symbol": null
+    }
+  ],
+  "thread_creation_calls": [
+    {
+      "site": "0x222dc60",
+      "target": "0x2167784",
+      "symbol": null
+    },
+    {
+      "site": "0x222dcf4",
+      "target": "0xb18650",
+      "symbol": "osal_create_waitable_thread"
+    },
+    {
+      "site": "0x222dd18",
+      "target": "0xb186e0",
+      "symbol": "osal_set_cpu"
+    },
+    {
+      "site": "0x222dd54",
+      "target": "0x222dca8",
+      "symbol": null
+    }
+  ],
+  "thread_trampoline_calls": [
+    {
+      "site": "0x222dbec",
+      "target": "0x2167784",
+      "symbol": null
+    },
+    {
+      "site": "0x222dc00",
+      "target": "0x21be660",
+      "symbol": null
+    },
+    {
+      "site": "0x222dc18",
+      "target": "0x21bd7a4",
+      "symbol": null
+    }
+  ],
+  "ui_worker_pointer_at_0x2ef00e8": "0xc0b470",
+  "thread_type_zero_template": {
+    "name": "AppFw",
+    "priority": 1,
+    "cpu": 15,
+    "flags": 1
+  },
+  "arenas": [
+    {
+      "name": "mpMemoryHeap",
+      "bytes": 8388608,
+      "field_0x10": 51200,
+      "field_0x14": 4294967295,
+      "field_0x18": 255
+    },
+    {
+      "name": "mpMemoryHeap2",
+      "bytes": 4194304,
+      "field_0x10": 0,
+      "field_0x14": 51200,
+      "field_0x18": 255
+    },
+    {
+      "name": "mpTextHeap",
+      "bytes": 12582912,
+      "field_0x10": 0,
+      "field_0x14": 4294967295,
+      "field_0x18": 255
+    }
+  ],
+  "total_arena_bytes": 25165824,
+  "source": {
+    "bytes": 58024,
+    "sha256": "64241d9d0067f816bd181624c30b3051e8ce6903578fdb21d76dc2473fd5a6e4"
+  },
+  "serial": {
+    "bytes": 117647,
+    "sha256": "9a07fc21e1d4beab71e79e4839c5b6d402156c03d540535c8fc4290bf884015c"
+  },
+  "init_markers": [
+    "Exception> FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f75b32044",
+    "FX6_APP_CONFIG_HOLD real_returned"
+  ]
+}

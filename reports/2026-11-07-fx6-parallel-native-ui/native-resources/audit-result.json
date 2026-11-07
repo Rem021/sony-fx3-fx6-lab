@@ -1,0 +1,541 @@
+{
+  "fx6": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "old_documented_tables": [
+    {
+      "vma": "0x451ab28",
+      "fx6_storage": "zero-fill/BSS"
+    },
+    {
+      "vma": "0x44af468",
+      "fx6_storage": "zero-fill/BSS"
+    },
+    {
+      "vma": "0x452ac48",
+      "fx6_storage": "zero-fill/BSS"
+    },
+    {
+      "vma": "0x44c0978",
+      "fx6_storage": "zero-fill/BSS"
+    },
+    {
+      "vma": "0x44c20d8",
+      "fx6_storage": "zero-fill/BSS"
+    }
+  ],
+  "screens": [
+    {
+      "name": "procam_big6_menu_home_presenter",
+      "constructor_vma": "0xde10f4",
+      "constructor_assert_name_adrp_vma": "0xde1228",
+      "constructor_name_vma": "0x23afed8",
+      "count_instruction_vma": "0xde11dc",
+      "table_got_vma": "0x2ee57b8",
+      "table_vma": "0x2e9e210",
+      "count": 98,
+      "stride": "0x48",
+      "validated_name_records": 98,
+      "first_names": [
+        "No463_BLOCK_TOUCH",
+        "No1_BG",
+        "No28_BG"
+      ],
+      "last_names": [
+        "No103_BUTTON_03",
+        "No101_BUTTON_01",
+        "No2_MESSAGE_REQUEST"
+      ],
+      "name_sequence_sha256": "1e772448a81e171061b09f07dd7c21f1eeea9c5cfac667baa89017f182efc2a7"
+    },
+    {
+      "name": "procam_shooting_presenter",
+      "constructor_vma": "0xdd3df8",
+      "constructor_assert_name_adrp_vma": "0xdd3f88",
+      "constructor_name_vma": "0x23af4e8",
+      "count_instruction_vma": "0xdd3f3c",
+      "table_got_vma": "0x2eee798",
+      "table_vma": "0x2e94910",
+      "count": 356,
+      "stride": "0x48",
+      "validated_name_records": 356,
+      "first_names": [
+        "No91_touch_feedback_frame",
+        "No88_face_frame",
+        "No87_line_mask"
+      ],
+      "last_names": [
+        "No1080_message_request",
+        "No2093_message_request",
+        "No102_direct_menu_list"
+      ],
+      "name_sequence_sha256": "e3bf3521a02a019d6da794d2c75fd57cba6091336ef9db6ec0964e50807aed8e"
+    },
+    {
+      "name": "procam_menu_layer_1st_presenter",
+      "constructor_vma": "0xdd7470",
+      "constructor_assert_name_adrp_vma": "0xdd7588",
+      "constructor_name_vma": "0x23b0070",
+      "count_instruction_vma": "0xdd7548",
+      "table_got_vma": "0x2eec5a0",
+      "table_vma": "0x2ea02f8",
+      "count": 35,
+      "stride": "0x48",
+      "validated_name_records": 35,
+      "first_names": [
+        "No1_WID_NINEPATCHIMAGE_STAGE1_BG",
+        "No25_Gridlist",
+        "No35_itemtouchbutton8"
+      ],
+      "last_names": [
+        "No11_Upperoutsideline",
+        "No17_Rightoutsideline",
+        "No13_Leftoutsideline"
+      ],
+      "name_sequence_sha256": "4fa9cf7db5659154a390732df36a342e209d1b2d368c268e41afd0e4f174d518"
+    }
+  ],
+  "legacy_name_presence_in_fx6": {
+    "scr7286_0001": false,
+    "No113_SelectButton": false,
+    "rep_menu": false,
+    "rep_shooting_presenter": false
+  },
+  "reference": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+    "bytes": 79015712,
+    "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+  },
+  "reference_legacy_name_presence": {
+    "scr7286_0001": true,
+    "No113_SelectButton": true,
+    "rep_menu": true,
+    "rep_shooting_presenter": true
+  },
+  "resources": [
+    {
+      "name": "HeiseiKakuGothW5-SJ_wIcon.ltt",
+      "exists": true,
+      "bytes": 851496,
+      "sha256": "dda0a2400add24d829d958adf338899c80b20adc122cf2946d8f0c99f8b0fed3"
+    },
+    {
+      "name": "MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+      "exists": true,
+      "bytes": 1552252,
+      "sha256": "3cf4238d210dbd472fd207969eec9660eedd335905137b38566e04a8c8e04448"
+    },
+    {
+      "name": "MYingHeiC-GB18030-SJ_wIcon.ltt",
+      "exists": true,
+      "bytes": 2054740,
+      "sha256": "3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1"
+    },
+    {
+      "name": "MYingHeiC-KSX1001-SJ_wIcon.ltt",
+      "exists": true,
+      "bytes": 924104,
+      "sha256": "96a5e21ce562965d0d6c96c711f1a9d7c5e65cee32b80c2dbd793d8b1e440351"
+    },
+    {
+      "name": "UniversOTS-SJ_wIcon.ltt",
+      "exists": true,
+      "bytes": 611416,
+      "sha256": "eea4d814854d2cefc18e5631c82138b2b69824687cd31002b7df34eae025dd0d"
+    },
+    {
+      "name": "color_cmn.uxc",
+      "exists": true,
+      "bytes": 288,
+      "sha256": "ea2e508f9ba567655dd36be6245ada221e595e83f8343b733f3894109f9dd230"
+    },
+    {
+      "name": "fontlist.dat",
+      "exists": true,
+      "bytes": 322,
+      "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f"
+    },
+    {
+      "name": "global.xdb",
+      "exists": true,
+      "bytes": 1792,
+      "sha256": "577461fc6bfd968e0cb84ec374aa4c76f621349532cac41f8f74736792c74871"
+    },
+    {
+      "name": "image_00_169.uxc",
+      "exists": true,
+      "bytes": 3941000,
+      "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+    },
+    {
+      "name": "lang.uxb",
+      "exists": true,
+      "bytes": 2896,
+      "sha256": "f75bf3899607e7a9470d897a0bfe0ca4a6d10550ffdc7e1a1f7c36b4e2ca429e"
+    },
+    {
+      "name": "lang_cmn.uxc",
+      "exists": true,
+      "bytes": 1048,
+      "sha256": "ad547c47444e134bcf3622b84344d82273d4c5d04fd3775a7cf6fb58f5db63c5"
+    },
+    {
+      "name": "string_arabic.uxc",
+      "exists": true,
+      "bytes": 168716,
+      "sha256": "2e05ca10f42e18f09d2c5c860cdd851ba50a78c650ab1eb689b2811b855c2244"
+    },
+    {
+      "name": "string_arabic_2.uxc",
+      "exists": true,
+      "bytes": 174488,
+      "sha256": "4fb61769f8a8ffd5b57609b65e3120062782b346729acc37a882df66d9af30da"
+    },
+    {
+      "name": "string_brazilianportuguese.uxc",
+      "exists": true,
+      "bytes": 130104,
+      "sha256": "3155568f5200d9610620d8bb3d289e57e08d805fc31f8e937fe715c02780494c"
+    },
+    {
+      "name": "string_brazilianportuguese_2.uxc",
+      "exists": true,
+      "bytes": 133072,
+      "sha256": "cacdc38ee21051e5c6dd42da3b80fb052ea732232c6baf232f0cdb812f2e5598"
+    },
+    {
+      "name": "string_czech.uxc",
+      "exists": true,
+      "bytes": 130428,
+      "sha256": "e8410a3f6bf22308437b469fe7c4871da99dd86f574dc1c80e7c151935db0ab8"
+    },
+    {
+      "name": "string_czech_2.uxc",
+      "exists": true,
+      "bytes": 133032,
+      "sha256": "d4569774f27b82eaf39b614c5f431cb60c64f708ab70faea3aebd5361fc6ae00"
+    },
+    {
+      "name": "string_danish.uxc",
+      "exists": true,
+      "bytes": 123024,
+      "sha256": "2f460f127eaee24a6d2e50e8f0c94d3bcb3bd470281705d2481fda0f83cbc974"
+    },
+    {
+      "name": "string_danish_2.uxc",
+      "exists": true,
+      "bytes": 124416,
+      "sha256": "0bc5a2c21641c8fcfb8a1b64033fac42db1727be9d78d068e85a4a41bc95b8ce"
+    },
+    {
+      "name": "string_dutch.uxc",
+      "exists": true,
+      "bytes": 125944,
+      "sha256": "45136039fb087f6f9a30a2dfa8a4a5fe94e4d5777af8f27097d845305a986f86"
+    },
+    {
+      "name": "string_dutch_2.uxc",
+      "exists": true,
+      "bytes": 127216,
+      "sha256": "01e6e82885d14bc54edee177969e1b593adc21c181f5d4f6f9c6fb27941d35d7"
+    },
+    {
+      "name": "string_english.uxc",
+      "exists": true,
+      "bytes": 118208,
+      "sha256": "5e88dd707cb46a2998fe4e55c800da6ce7a8538fd32705856aa9004af739c739"
+    },
+    {
+      "name": "string_english_2.uxc",
+      "exists": true,
+      "bytes": 118676,
+      "sha256": "3f11f9200f576575347658afcc8317cb0b4a4220a92ac50e985a44a835d23fe2"
+    },
+    {
+      "name": "string_finnish.uxc",
+      "exists": true,
+      "bytes": 125716,
+      "sha256": "a9ca63e85bbfb5528f24a7ab625a27d0e1d35c90ba9ae58210ed4e41f4d73b29"
+    },
+    {
+      "name": "string_finnish_2.uxc",
+      "exists": true,
+      "bytes": 128500,
+      "sha256": "11b096fb79ad835dd17293867ab532215b5e8e0fa42fda68b0278fa5f9f927a1"
+    },
+    {
+      "name": "string_french.uxc",
+      "exists": true,
+      "bytes": 134248,
+      "sha256": "205f980c597172ef157a6b26034b2ed74326b33b0987af89b7226bd0d4c6c1c7"
+    },
+    {
+      "name": "string_french_2.uxc",
+      "exists": true,
+      "bytes": 135260,
+      "sha256": "a283e78015ef17d9fd0749d1af3bffebad206347dd31d1061a1dcd92bee99fb6"
+    },
+    {
+      "name": "string_german.uxc",
+      "exists": true,
+      "bytes": 125836,
+      "sha256": "fc9247345dd685d2a1d368225754ea2dc5245046eed361aef74e68af1a5bb02d"
+    },
+    {
+      "name": "string_german_2.uxc",
+      "exists": true,
+      "bytes": 127028,
+      "sha256": "8c4e5bbc4bcb8e054a205a15daef7aba84faeb509a6e14c498300514f5cf6b47"
+    },
+    {
+      "name": "string_greek.uxc",
+      "exists": true,
+      "bytes": 171252,
+      "sha256": "244939d72bb3a7f8dd3cce68c97ba1b3e31359b3337a938f9a260c1e185ac415"
+    },
+    {
+      "name": "string_greek_2.uxc",
+      "exists": true,
+      "bytes": 175232,
+      "sha256": "afba4e5771af23a1072c17eea1315092b800406b31e2b273e2ba68dcd403eab1"
+    },
+    {
+      "name": "string_hindi.uxc",
+      "exists": true,
+      "bytes": 208852,
+      "sha256": "f3b8615b59d6ea18dad6aa7993dbe4bd3e3d405ac8bd91131fa3afc2b657f058"
+    },
+    {
+      "name": "string_hindi_2.uxc",
+      "exists": true,
+      "bytes": 213748,
+      "sha256": "891e1175ec1da9cb94b9d2ed74c62a08f3ff3675fbc190b2328437617d69dded"
+    },
+    {
+      "name": "string_hungarian.uxc",
+      "exists": true,
+      "bytes": 132016,
+      "sha256": "2f002a7767645eff26bc0dc4c6bbbc08a3445436f162143bc90ce2d8c586446c"
+    },
+    {
+      "name": "string_hungarian_2.uxc",
+      "exists": true,
+      "bytes": 134360,
+      "sha256": "7c94574b1d063150fbcd4954de470a2f6ab54b94ecec5e4bb94616010ee9f529"
+    },
+    {
+      "name": "string_indonesia.uxc",
+      "exists": true,
+      "bytes": 120672,
+      "sha256": "75fd23e8565b388bb223f4b335c68c41529feee2a1afb9a3459b6a484661c5a9"
+    },
+    {
+      "name": "string_indonesia_2.uxc",
+      "exists": true,
+      "bytes": 123472,
+      "sha256": "791c6f4913f81b8fc4f6ba8c65e1fb7280f11c66fca300b35283535551d11abb"
+    },
+    {
+      "name": "string_italian.uxc",
+      "exists": true,
+      "bytes": 131476,
+      "sha256": "81ae4b0c1c5b4f256e9e006d2e91d63a2de75362d1800e5884fb90d8538c0609"
+    },
+    {
+      "name": "string_italian_2.uxc",
+      "exists": true,
+      "bytes": 135920,
+      "sha256": "3252c74bedcdb1edb89ac0a377dddf83563044b184456b6febea27db6cd5521e"
+    },
+    {
+      "name": "string_japanese.uxc",
+      "exists": true,
+      "bytes": 141692,
+      "sha256": "9b47630ebe8e011a9d0bdb7a2fda06574f5187222b92d60bf6887042fe186d35"
+    },
+    {
+      "name": "string_japanese_2.uxc",
+      "exists": true,
+      "bytes": 144720,
+      "sha256": "98315732d7e29078a98dc32c077a799f8831d8bb3d96ec26ca2110ed8e36aa26"
+    },
+    {
+      "name": "string_korean.uxc",
+      "exists": true,
+      "bytes": 131808,
+      "sha256": "3077a7875ff925d4736035c8d5b826248602636ecd13600a34656fb7b532b0bf"
+    },
+    {
+      "name": "string_korean_2.uxc",
+      "exists": true,
+      "bytes": 132368,
+      "sha256": "e2af6ba596a1ae3549df0c1fd20fa784da8817a46617647e894aa5155da65cdf"
+    },
+    {
+      "name": "string_malay.uxc",
+      "exists": true,
+      "bytes": 120400,
+      "sha256": "f6eaf39a632c4efcfc9a95788fe3063cf1ad4637a8fca4dd3654c58f5487c6a8"
+    },
+    {
+      "name": "string_malay_2.uxc",
+      "exists": true,
+      "bytes": 121476,
+      "sha256": "ebe9bc88266228d6fd9d7b85ed0f565cb428be91c15171f18b4cca7661950d19"
+    },
+    {
+      "name": "string_norwegian.uxc",
+      "exists": true,
+      "bytes": 121228,
+      "sha256": "631c7bd6f2ddc38ca3a054cc00e86092888721ed68e7a3807402f76aad525fd8"
+    },
+    {
+      "name": "string_norwegian_2.uxc",
+      "exists": true,
+      "bytes": 123996,
+      "sha256": "8f5ce732270408ff06b56203cc86afa764704d1f81c18b8d29d90bf9ffdc74ac"
+    },
+    {
+      "name": "string_persian.uxc",
+      "exists": true,
+      "bytes": 169656,
+      "sha256": "cdcb54112e44390b1b4e4da07b659a0eaa04944d517edd113d5dfedec0ae3682"
+    },
+    {
+      "name": "string_persian_2.uxc",
+      "exists": true,
+      "bytes": 172428,
+      "sha256": "5f9d544331e0c90325154235d19658b3e74383a1411d913495758001af10d633"
+    },
+    {
+      "name": "string_polish.uxc",
+      "exists": true,
+      "bytes": 129912,
+      "sha256": "78ec44b99ea68e6142a3519abcc699ce336a820ede2fb122f37cf558a8323ef6"
+    },
+    {
+      "name": "string_polish_2.uxc",
+      "exists": true,
+      "bytes": 131612,
+      "sha256": "d971ae21150e166022f8844414bc362f6c3abd49591e7cd336e3e01d9041cd06"
+    },
+    {
+      "name": "string_portuguese.uxc",
+      "exists": true,
+      "bytes": 130596,
+      "sha256": "06a1b650fc4041a7ffe52fbc62e28b0ad7805945cbe9fdb1e6269512234f21cf"
+    },
+    {
+      "name": "string_portuguese_2.uxc",
+      "exists": true,
+      "bytes": 132980,
+      "sha256": "4eb3448ac0de3c3c9a87902e8ed6916d09a641032ea6f3ed2ac21314b377daa0"
+    },
+    {
+      "name": "string_russian.uxc",
+      "exists": true,
+      "bytes": 169936,
+      "sha256": "dd65d2a04c86909d92e6b4c458e370ec0e2389392c13ca0a3fcb5f5e84ccb84d"
+    },
+    {
+      "name": "string_russian_2.uxc",
+      "exists": true,
+      "bytes": 171880,
+      "sha256": "f4c2ed4124dd2389bb4a7442b37c6494ba87cca860818a8763231239c26e5d4a"
+    },
+    {
+      "name": "string_simplifiedchinese.uxc",
+      "exists": true,
+      "bytes": 118644,
+      "sha256": "ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f"
+    },
+    {
+      "name": "string_simplifiedchinese_2.uxc",
+      "exists": true,
+      "bytes": 122084,
+      "sha256": "058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3"
+    },
+    {
+      "name": "string_spanish.uxc",
+      "exists": true,
+      "bytes": 132120,
+      "sha256": "90af47898d1d91250fcdc154ba192835fa0cfeea646a0327022722ad01f1d00b"
+    },
+    {
+      "name": "string_spanish_2.uxc",
+      "exists": true,
+      "bytes": 133088,
+      "sha256": "7df05d2c9121e9ad761e14c76db3c58ec7c2f80b9901a3ec4321e9b875dfcb62"
+    },
+    {
+      "name": "string_swedish.uxc",
+      "exists": true,
+      "bytes": 123648,
+      "sha256": "3fb9023913ef463867be2c2edd0566ea68b70331e46363f41dc603c59929ca4e"
+    },
+    {
+      "name": "string_swedish_2.uxc",
+      "exists": true,
+      "bytes": 124812,
+      "sha256": "2be26ea97414a0639b5481d1d09ef624b78084fe84164e8985aa5df9dddf8a12"
+    },
+    {
+      "name": "string_thai.uxc",
+      "exists": true,
+      "bytes": 213336,
+      "sha256": "115c3c323ff42903e0dff71b68dd08e2123009a010710b55028e1634db9a7a81"
+    },
+    {
+      "name": "string_thai_2.uxc",
+      "exists": true,
+      "bytes": 215988,
+      "sha256": "001474a4da9d37063ab4100fb6f9267d4d11d40649dddcb7710d1cee9606d4c5"
+    },
+    {
+      "name": "string_traditionalchinese.uxc",
+      "exists": true,
+      "bytes": 119168,
+      "sha256": "8c34b415ce4d19fd40ca22d00c4543c64eb4741b96250de13b93ec473b25b18b"
+    },
+    {
+      "name": "string_traditionalchinese_2.uxc",
+      "exists": true,
+      "bytes": 121824,
+      "sha256": "07fa20ae03457465a8c4922f479d6cfe1280980a70ac43797081e87654680c6d"
+    },
+    {
+      "name": "string_turkish.uxc",
+      "exists": true,
+      "bytes": 127080,
+      "sha256": "28ce253522bca594bc314d7388cdd6be1190ded08293ad9a434f1160d7590ca8"
+    },
+    {
+      "name": "string_turkish_2.uxc",
+      "exists": true,
+      "bytes": 129516,
+      "sha256": "0751b30358a9d73f87b1ab7b3c0ac3231e53fa39dafe40bd5b7cd188bcc76af6"
+    },
+    {
+      "name": "string_ukrainian.uxc",
+      "exists": true,
+      "bytes": 169748,
+      "sha256": "362a45686ed81aa2d49a31cbdd76303418ad0ecd979789698fdfad9b612305c9"
+    },
+    {
+      "name": "string_ukrainian_2.uxc",
+      "exists": true,
+      "bytes": 175588,
+      "sha256": "4dfa0850ecef3e5b25e8ee1ed0cb6f87286d66cbc6e652ca628db409a6c228c3"
+    },
+    {
+      "name": "style_cmn.uxc",
+      "exists": true,
+      "bytes": 1980,
+      "sha256": "b22501655d3d933fdf5a8f6aed6de0aa944b691f4ecb9625c64111e7483ba2c1"
+    }
+  ],
+  "resource_closure_missing": [],
+  "boundary": "Static donor identity/descriptor/resource audit only; no guest execution or screen opening proved."
+}

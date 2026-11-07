@@ -5,8 +5,8 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-07T08:08:20.988Z`
-- **Updated At**: `2026-11-07T12:19:52.935Z`
-- **Captured Messages (User / Assistant)**: `10`
+- **Updated At**: `2026-11-07T12:53:01.757Z`
+- **Captured Messages (User / Assistant)**: `12`
 
 ---
 
@@ -106,5 +106,35 @@ This request was blocked by Gemini's filters. They can occasionally trigger by m
 ## 👤 User / Coordinator
 
 继续
+
+---
+
+## 🤖 Assistant
+
+已启动后台同步与 Web 预览重启任务（`task-521`），等待其完成后继续向您汇报最新进展。
+
+---
+
+## 🤖 Assistant
+
+FX6 原厂菜单的 **UXEngine 原生矢量字体渲染管线（`UniversOTS-SJ_wIcon.ltt`）** 与 **交互式 Web 预览（`127.0.0.1:8768`）** 已完成全面修复与验证：
+
+### 1. 原厂字体渲染管线彻底修复（Candidates 268 → 271 → 272）
+- **根因定位与修复**（[`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c)）：
+  - **解除宽度压缩与重影**：在 `_ZN3grm3bmp10BitmapImpl6createEPvssssii` 中保留 `info + 0x1c = 2`，使 `BitmapImpl::getRowBytes()` 返回完整的 `stride * 4` 字节行宽，避免 `TextRM` / `iType` 字体光栅化器因半行宽截断而将同一行文字折叠渲染两次。
+  - **解码 8-bit Alpha 矢量字形位图**：确认 `RenderTextLineCommand::run()` -> `ITextHandler::draw()` 输出的字形缓存为 **8-bit Alpha 覆盖率位图**（`row8 = bits + sy * (stride * 4)`，`a = row8[sx]`），在 `GRM_gpermRectblit` 中按 `a` 进行平滑抗锯齿 Alpha 混合，彻底消除了 Candidate 267 的洋红/青色边缘与黑色底框，且完全移除了此前的软件 `5x7` 像素字体叠画。
+- **Candidate 270 / 271 实机 VM 验证结果**：
+  - **Candidate 270**（[`EVIDENCE-270-NATIVE-TEXT-PERFECT.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-270-NATIVE-TEXT-PERFECT.md)、[`fx6-270-native-text-perfect-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-270-native-text-perfect-1024x540.png)，Run `cp-bind-1909f83b`）：14 路原生 `view_string` 100% 原始宽度、纯白抗锯齿输出，`0 SEGV / 0 Assertion`。
+  - **Candidate 271**（[`EVIDENCE-271-FULL-BIG6.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-271-FULL-BIG6.md)、[`fx6-271-full-big6-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-271-full-big6-1024x540.png)，Run `cp-bind-0e41049a`）：完整点亮 **25 路原生 `view_string` (`MultiLineTextSprite`) + 22 路 `view_icon`**，涵盖：
+    - 顶栏：`ILME-FX6   TC 01:02:24:18   XAVC-I 4K 10BIT` 与 `STBY   SLOT A/B 118m   19.5V`
+    - 六宫格 Big6 卡片（标题 + 大号主参数 + 子状态）：`FPS / 23.98p / S&Q: 60FPS`、`SHUTTER / 180.0 deg / MODE: ANGLE`、`ISO / GAIN / 800 EI / CINE EI / HIGH`、`ND FILTER / 1/16 ND / AUTO / CLEAR`、`BASE LOOK / S-CINETONE / 3D LUT: ON`、`WHITE BAL / 5600K / MODE: PRESET`
+    - 中央 16:9 监看视窗 HUD、CH1/CH2 音频电平表与底栏导航提示。
+  - **Candidate 272**（`guest-hybrid-fx6kernel-capid-grmreal272-live-big6.cpio`，SHA-256 `b131a48f870d4c4adc8bef533077c7ba206a945d26f3ac28e346e65c9c00f16e`）：在 `_ZN13app_adjchk_ui4view13update_screenEv` 中接入了物理按键信箱（`0x41df00000` / `0x41e000f00`）对原生 `view_string` 对象的实时重绘更新。
+
+### 2. 交互式 Web 预览（`127.0.0.1:8768` / `FX6菜单.command`）同步升级
+- 已更新 [`run_fx6_menu_trial.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/run_fx6_menu_trial.py) 并重启 `http://127.0.0.1:8768/` 服务：
+  - 默认首帧直接加载 **Candidate 271 实机捕获的 25 路原生 FX6 字体帧**（[`fx6-271-native-big6-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-271-native-big6-1024x540.png)，SHA-256 前缀 `6f73d6de949b0ee4`）。
+  - 点击 7 个按键（`MENU` / `UP` / `DOWN` / `LEFT` / `RIGHT` / `SET` / `BACK`）或直接点击 6 个参数卡片时，直接从 Sony 原厂 `UniversOTS-SJ_wIcon.ltt` 容器（偏移 `0xd230`）内存加载原厂 **`Univers OTS-SJ`** 矢量字体实时渲染，并同步向 QEMU 物理内存按键门控注入指令。
+- 您现在可以直接刷新或打开 **`http://127.0.0.1:8768/`**（或双击 [`FX6菜单.command`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/FX6菜单.command)）体验原厂字体版 FX6 菜单与按键交互。
 
 ---

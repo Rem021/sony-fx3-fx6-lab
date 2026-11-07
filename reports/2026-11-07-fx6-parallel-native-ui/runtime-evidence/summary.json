@@ -1,0 +1,1094 @@
+{
+  "schema": "fx6-readonly-evidence-review-v1",
+  "runs": [
+    {
+      "candidate": 273,
+      "run": "cp-bind-a11cd595",
+      "completed_definition": "process_reaped=true AND locks_released=true in receipt",
+      "manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-273.json",
+        "bytes": 8936,
+        "sha256": "423924905f3b6b01709249d3b12b82e4f7e688f5ca442d3acfea2cb4521defd2"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-a11cd595/run-receipt.json",
+        "bytes": 2718,
+        "sha256": "0b4e3e4632bb2dca02fbaae878f689d2fa4a31e2040e7897200d52b2419a51be"
+      },
+      "manifest_sha_matches_receipt": true,
+      "cpio": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal273-appconfig-fx6libs.cpio",
+        "bytes": 430177988,
+        "sha256": "ca5605ec6b2e8a3dba2aa0d4e83f7f96418f73be73a5d049bf7f4800eb3216eb"
+      },
+      "cpio_sha_matches_manifest": true,
+      "cpio_size_matches_manifest": true,
+      "command_cpio_loader": [
+        "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal273-appconfig-fx6libs.cpio,addr=0x440000000,force-raw=on"
+      ],
+      "command_loader_matches_cpio": true,
+      "cpio_members": {
+        "init": {
+          "bytes": 22464,
+          "sha256": "c2476240dd7aa68cdb0d907cee00c8c239cc072a96d31777d0d0c8a19dea95a5"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/lib/libosal_udate.so": {
+          "bytes": 27344,
+          "sha256": "358798c8352d0419c21a38791982c803e20739d5c8f632bda6281bc3b6a6aa31"
+        },
+        "usr/lib/libosal_uipc.so": {
+          "bytes": 43752,
+          "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+        },
+        "usr/lib/libosal_ulogio.so": {
+          "bytes": 40168,
+          "sha256": "29f53138830e9ff49909c8d51d189100200235ea6398351ddead2804da3e50b2"
+        },
+        "usr/lib/libosal_utm.so": {
+          "bytes": 10216,
+          "sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2"
+        },
+        "usr/lib/libgrm.so": {
+          "bytes": 265376,
+          "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
+        },
+        "usr/lib/libuxengine.so": {
+          "bytes": 742128,
+          "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 71304,
+          "sha256": "f6ff5159b846c98d9e8d2a1565ba9ededa3b0b2dd5ca985d946e17725058ae75"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92144,
+          "sha256": "5d34c4fa312e29e4e333a88bc3a281bdf727e72dea56e3370acd5078c0c6197e"
+        }
+      },
+      "cpio_member_scan_scope": "first newc archive, ends at its first TRAILER!!!; appended archives/members and effective guest override order are not analyzed",
+      "recorded_grm_fbinit_metadata": {
+        "member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
+        "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+        "ux_screen_default": "1024x540"
+      },
+      "recorded_grm_fbinit_sha_matches_member": false,
+      "run_reason": "wall_timeout",
+      "elapsed_seconds": 150.11661050003022,
+      "qemu_exit": 0,
+      "receipt_fault_markers": [],
+      "receipt_empty_faults_while_serial_has_segv": true,
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-a11cd595/serial.log",
+        "bytes": 115300,
+        "sha256": "d7b45b9e9206d5e753faf8a5a792f6b767c4084fd3bd48041660bee1f4623d41"
+      },
+      "serial_sha_matches_receipt": true,
+      "observed_lines": [
+        {
+          "line": 877,
+          "text": "FX6_APPFW_LAUNCH_DONE"
+        },
+        {
+          "line": 1599,
+          "text": "SEGV (PC=0x7fe9afd148)"
+        }
+      ],
+      "segv_monitor_count": 1,
+      "explicit_appfw_segv_count": 0,
+      "appfw_dlsym_failure_count": 0,
+      "captures": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-a11cd595/gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        }
+      ],
+      "native_ui_pass": false,
+      "native_ui_verdict_basis": "No bound native screen/model/frame and key confirmation evidence; zero or nonzero pixels alone cannot prove an original menu.",
+      "keyinject_error": "FileNotFoundError(2, 'No such file or directory')\n",
+      "source_files_unchanged_during_read": true
+    },
+    {
+      "candidate": 280,
+      "run": "cp-bind-44c98718",
+      "completed_definition": "process_reaped=true AND locks_released=true in receipt",
+      "manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-280.json",
+        "bytes": 8924,
+        "sha256": "dabb985207af32e1cd7c318c0d371146026c821d0feb71c79247dd464ebb2c75"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-44c98718/run-receipt.json",
+        "bytes": 2718,
+        "sha256": "a4bbb6804677eb1f9ab207405c1d991ea467939100ca0e72fcff648aa251d93b"
+      },
+      "manifest_sha_matches_receipt": true,
+      "cpio": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal280-osal-thread.cpio",
+        "bytes": 430181892,
+        "sha256": "c3e9e801afd907b5b591e7e6961bfcea17aec8b4b086d028e65551dc66216a60"
+      },
+      "cpio_sha_matches_manifest": true,
+      "cpio_size_matches_manifest": true,
+      "command_cpio_loader": [
+        "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal280-osal-thread.cpio,addr=0x440000000,force-raw=on"
+      ],
+      "command_loader_matches_cpio": true,
+      "cpio_members": {
+        "init": {
+          "bytes": 22464,
+          "sha256": "c2476240dd7aa68cdb0d907cee00c8c239cc072a96d31777d0d0c8a19dea95a5"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/lib/libosal_udate.so": {
+          "bytes": 27344,
+          "sha256": "358798c8352d0419c21a38791982c803e20739d5c8f632bda6281bc3b6a6aa31"
+        },
+        "usr/lib/libosal_uipc.so": {
+          "bytes": 43752,
+          "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+        },
+        "usr/lib/libosal_ulogio.so": {
+          "bytes": 40168,
+          "sha256": "29f53138830e9ff49909c8d51d189100200235ea6398351ddead2804da3e50b2"
+        },
+        "usr/lib/libosal_utm.so": {
+          "bytes": 10216,
+          "sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2"
+        },
+        "usr/lib/libgrm.so": {
+          "bytes": 265376,
+          "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
+        },
+        "usr/lib/libuxengine.so": {
+          "bytes": 742128,
+          "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 74864,
+          "sha256": "d5cc798b99f9360ea7269f2e14b5f00fa884bfa036d2c6481c21605dec5ab2c7"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92488,
+          "sha256": "b58d10ca9a27abd4e3031cc2f932c480e2565ed1bd5bd06937ceeb757a5c6215"
+        }
+      },
+      "cpio_member_scan_scope": "first newc archive, ends at its first TRAILER!!!; appended archives/members and effective guest override order are not analyzed",
+      "recorded_grm_fbinit_metadata": {
+        "member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
+        "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+        "ux_screen_default": "1024x540"
+      },
+      "recorded_grm_fbinit_sha_matches_member": false,
+      "run_reason": "wall_timeout",
+      "elapsed_seconds": 150.15560245804954,
+      "qemu_exit": 0,
+      "receipt_fault_markers": [],
+      "receipt_empty_faults_while_serial_has_segv": true,
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-44c98718/serial.log",
+        "bytes": 109591,
+        "sha256": "17358546f5b1caac5a69f5d96d6519e1a8a09324cf663d15392e5414c70b6225"
+      },
+      "serial_sha_matches_receipt": true,
+      "observed_lines": [
+        {
+          "line": 876,
+          "text": "FX6_OSAL_STAT_STUB id=0 info=0x7fdba2c8b0"
+        },
+        {
+          "line": 877,
+          "text": "FX6_OSAL_STAT_STUB id=0 info=0x7fdba2c8b0"
+        },
+        {
+          "line": 878,
+          "text": "FX6_OSAL_STAT_STUB id=0 info=0x7fdba2c8c0"
+        },
+        {
+          "line": 879,
+          "text": "FX6_OSAL_STAT_STUB id=0 info=0x7fdba2c8c0"
+        },
+        {
+          "line": 898,
+          "text": "FX6_APPFW_LAUNCH_DONE"
+        },
+        {
+          "line": 1471,
+          "text": "SEGV (PC=0x7fc2765a98)"
+        },
+        {
+          "line": 1480,
+          "text": "Exception> FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f77e92044"
+        },
+        {
+          "line": 1481,
+          "text": "FX6_OSAL_THREAD_DIRECT param=0x7fdba2ce58 entry=0x7f79b80bbe"
+        },
+        {
+          "line": 1482,
+          "text": "APPFW_SEGV sig=7 addr=0x7f79b80bbe pc=7f79b80bbe sp=7fdba2cde0"
+        },
+        {
+          "line": 1483,
+          "text": "APPFW_X0=7fdba2ce58"
+        },
+        {
+          "line": 1484,
+          "text": "APPFW_X1=0"
+        },
+        {
+          "line": 1485,
+          "text": "APPFW_X2=7f7dcd6430"
+        },
+        {
+          "line": 1486,
+          "text": "APPFW_X3=7f7dcd6b20"
+        },
+        {
+          "line": 1487,
+          "text": "APPFW_X4=0"
+        },
+        {
+          "line": 1488,
+          "text": "APPFW_X5=0"
+        },
+        {
+          "line": 1489,
+          "text": "APPFW_X6=a"
+        },
+        {
+          "line": 1490,
+          "text": "APPFW_X7=a"
+        },
+        {
+          "line": 1491,
+          "text": "APPFW_X8=7f79b80bbe"
+        },
+        {
+          "line": 1492,
+          "text": "APPFW_X9=7fdba2cde0"
+        },
+        {
+          "line": 1493,
+          "text": "APPFW_X10=1"
+        },
+        {
+          "line": 1494,
+          "text": "APPFW_X11=20"
+        },
+        {
+          "line": 1495,
+          "text": "APPFW_X12=0"
+        },
+        {
+          "line": 1496,
+          "text": "APPFW_X13=0"
+        },
+        {
+          "line": 1497,
+          "text": "APPFW_X14=0"
+        },
+        {
+          "line": 1498,
+          "text": "APPFW_X15=1"
+        },
+        {
+          "line": 1499,
+          "text": "APPFW_X16=7f7ed6d028"
+        },
+        {
+          "line": 1500,
+          "text": "APPFW_X17=7f7ec9bbb8"
+        },
+        {
+          "line": 1501,
+          "text": "APPFW_X18=0"
+        },
+        {
+          "line": 1502,
+          "text": "APPFW_X19=0"
+        },
+        {
+          "line": 1503,
+          "text": "APPFW_X20=7f7d39d778"
+        },
+        {
+          "line": 1504,
+          "text": "APPFW_X21=0"
+        },
+        {
+          "line": 1505,
+          "text": "APPFW_X22=7f79fa06f0"
+        },
+        {
+          "line": 1506,
+          "text": "APPFW_X23=1"
+        },
+        {
+          "line": 1507,
+          "text": "APPFW_X24=7f77e92470"
+        },
+        {
+          "line": 1508,
+          "text": "APPFW_X25=7f7ed6e560"
+        },
+        {
+          "line": 1509,
+          "text": "APPFW_X26=7f7dcd6bc0"
+        },
+        {
+          "line": 1510,
+          "text": "APPFW_X27=102d448"
+        },
+        {
+          "line": 1511,
+          "text": "APPFW_X28=f"
+        },
+        {
+          "line": 1512,
+          "text": "APPFW_X29=7fdba2ce00"
+        },
+        {
+          "line": 1513,
+          "text": "APPFW_X30=7f89592214"
+        },
+        {
+          "line": 1514,
+          "text": "APPFW_PC_MODULE /usr/lib/appFw.so base=0x7f77287000"
+        },
+        {
+          "line": 1515,
+          "text": "APPFW_LR_MODULE /usr/lib/libgrm-fbinit9.so base=0x7f8957a000"
+        },
+        {
+          "line": 1516,
+          "text": "APPFW_PC_MAP 7f77287000-7f79b88000 r-xp 00000000 00:02 1442                           /usr/lib/appFw.so"
+        }
+      ],
+      "segv_monitor_count": 1,
+      "explicit_appfw_segv_count": 1,
+      "appfw_dlsym_failure_count": 0,
+      "captures": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-44c98718/gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        }
+      ],
+      "native_ui_pass": false,
+      "native_ui_verdict_basis": "No bound native screen/model/frame and key confirmation evidence; zero or nonzero pixels alone cannot prove an original menu.",
+      "keyinject_error": "FileNotFoundError(2, 'No such file or directory')\n",
+      "source_files_unchanged_during_read": true
+    },
+    {
+      "candidate": 283,
+      "run": "cp-bind-bc7bc525",
+      "completed_definition": "process_reaped=true AND locks_released=true in receipt",
+      "manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-283.json",
+        "bytes": 8920,
+        "sha256": "429ebb0c6ece3937c5e474f8b1ed64b5779a0988d313de84587be4edd56502c8"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/run-receipt.json",
+        "bytes": 2718,
+        "sha256": "2db4a8a43ae795ab9fe922f81f54bd333862c488c7189be8de1707e7e0238c0c"
+      },
+      "manifest_sha_matches_receipt": true,
+      "cpio": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal283-real-osal.cpio",
+        "bytes": 430178712,
+        "sha256": "87abd8e013a684990f53f3d8411edcdd2215aeeb38237f970e1f68893663c515"
+      },
+      "cpio_sha_matches_manifest": true,
+      "cpio_size_matches_manifest": true,
+      "command_cpio_loader": [
+        "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal283-real-osal.cpio,addr=0x440000000,force-raw=on"
+      ],
+      "command_loader_matches_cpio": true,
+      "cpio_members": {
+        "init": {
+          "bytes": 22820,
+          "sha256": "835e9ef5693ef6c0773520407011dada6840c461de6465cdcfeb2e667c55cf93"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/lib/libosal_udate.so": {
+          "bytes": 27344,
+          "sha256": "358798c8352d0419c21a38791982c803e20739d5c8f632bda6281bc3b6a6aa31"
+        },
+        "usr/lib/libosal_uipc.so": {
+          "bytes": 43752,
+          "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+        },
+        "usr/lib/libosal_ulogio.so": {
+          "bytes": 40168,
+          "sha256": "29f53138830e9ff49909c8d51d189100200235ea6398351ddead2804da3e50b2"
+        },
+        "usr/lib/libosal_utm.so": {
+          "bytes": 10216,
+          "sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2"
+        },
+        "usr/lib/libgrm.so": {
+          "bytes": 265376,
+          "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
+        },
+        "usr/lib/libuxengine.so": {
+          "bytes": 742128,
+          "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 71328,
+          "sha256": "b0c9187ff907d00bdcb155f20342e352c746c771763b815b6d3874606ca08d67"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92488,
+          "sha256": "ad0863b224914a2dfb25646215ae609912f48db94cc0ff62ed986922822380c8"
+        }
+      },
+      "cpio_member_scan_scope": "first newc archive, ends at its first TRAILER!!!; appended archives/members and effective guest override order are not analyzed",
+      "recorded_grm_fbinit_metadata": {
+        "member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
+        "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+        "ux_screen_default": "1024x540"
+      },
+      "recorded_grm_fbinit_sha_matches_member": false,
+      "run_reason": "wall_timeout",
+      "elapsed_seconds": 150.12568412499968,
+      "qemu_exit": 0,
+      "receipt_fault_markers": [],
+      "receipt_empty_faults_while_serial_has_segv": true,
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/serial.log",
+        "bytes": 126928,
+        "sha256": "4fad6fa6ae05f09eaa9e0c02c16d66bc09038ee0e7d746e2a0c94bc7e545d1ad"
+      },
+      "serial_sha_matches_receipt": true,
+      "observed_lines": [
+        {
+          "line": 845,
+          "text": "FX6_APPFW_DEFERRED_UNTIL_MODULES"
+        },
+        {
+          "line": 1725,
+          "text": "SEGV (PC=0x7feaca6588)"
+        }
+      ],
+      "segv_monitor_count": 1,
+      "explicit_appfw_segv_count": 0,
+      "appfw_dlsym_failure_count": 0,
+      "captures": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe1.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe10.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe11.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe12.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe13.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe14.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe15.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe16.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe17.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe18.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe19.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe2.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe20.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe21.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe22.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe23.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe24.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe25.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe26.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe27.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe28.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe29.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe3.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe30.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe31.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe32.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe33.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe34.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe35.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe36.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe37.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe38.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe39.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe4.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe40.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe41.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe42.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe43.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe44.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe45.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe46.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe47.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe5.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe6.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe7.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe8.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bc7bc525/gpe9.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        }
+      ],
+      "native_ui_pass": false,
+      "native_ui_verdict_basis": "No bound native screen/model/frame and key confirmation evidence; zero or nonzero pixels alone cannot prove an original menu.",
+      "keyinject_error": "FileNotFoundError(2, 'No such file or directory')\n",
+      "source_files_unchanged_during_read": true
+    },
+    {
+      "candidate": 286,
+      "run": "cp-bind-1beab982",
+      "completed_definition": "process_reaped=true AND locks_released=true in receipt",
+      "manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-286.json",
+        "bytes": 8910,
+        "sha256": "b7c77620cefe2ab8075a34badaded0b9515067b9c61aceda9f4c60beddb1725b"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-1beab982/run-receipt.json",
+        "bytes": 2718,
+        "sha256": "0b8d862d3a43a32ae4615eae7447cf8645d1c17bd695b6a5dcacb21d90106aeb"
+      },
+      "manifest_sha_matches_receipt": true,
+      "cpio": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal286-fast.cpio",
+        "bytes": 430178700,
+        "sha256": "d22d2f478503e521cf4966a9a8e9f1bfcf1a20252a0f534ccdf380dee53e0cde"
+      },
+      "cpio_sha_matches_manifest": true,
+      "cpio_size_matches_manifest": true,
+      "command_cpio_loader": [
+        "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal286-fast.cpio,addr=0x440000000,force-raw=on"
+      ],
+      "command_loader_matches_cpio": true,
+      "cpio_members": {
+        "init": {
+          "bytes": 22805,
+          "sha256": "249e640274ab136c61b454f8376a1862f0954fee9b61dc2fbb5e106f203dbe49"
+        },
+        "usr/lib/appFw.so": {
+          "bytes": 50520424,
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+        },
+        "usr/lib/libosal_udate.so": {
+          "bytes": 27344,
+          "sha256": "358798c8352d0419c21a38791982c803e20739d5c8f632bda6281bc3b6a6aa31"
+        },
+        "usr/lib/libosal_uipc.so": {
+          "bytes": 43752,
+          "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+        },
+        "usr/lib/libosal_ulogio.so": {
+          "bytes": 40168,
+          "sha256": "29f53138830e9ff49909c8d51d189100200235ea6398351ddead2804da3e50b2"
+        },
+        "usr/lib/libosal_utm.so": {
+          "bytes": 10216,
+          "sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2"
+        },
+        "usr/lib/libgrm.so": {
+          "bytes": 265376,
+          "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
+        },
+        "usr/lib/libuxengine.so": {
+          "bytes": 742128,
+          "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876"
+        },
+        "usr/lib/libgrm-fbinit9.so": {
+          "bytes": 71328,
+          "sha256": "b0c9187ff907d00bdcb155f20342e352c746c771763b815b6d3874606ca08d67"
+        },
+        "usr/bin/appfw-launch": {
+          "bytes": 92488,
+          "sha256": "a7b942271d933b5f0bbb55dc831b03869c08414cae8b14c20bc147ddc5e37b58"
+        }
+      },
+      "cpio_member_scan_scope": "first newc archive, ends at its first TRAILER!!!; appended archives/members and effective guest override order are not analyzed",
+      "recorded_grm_fbinit_metadata": {
+        "member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
+        "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+        "ux_screen_default": "1024x540"
+      },
+      "recorded_grm_fbinit_sha_matches_member": false,
+      "run_reason": "wall_timeout",
+      "elapsed_seconds": 120.09189458400942,
+      "qemu_exit": 0,
+      "receipt_fault_markers": [],
+      "receipt_empty_faults_while_serial_has_segv": true,
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-1beab982/serial.log",
+        "bytes": 117620,
+        "sha256": "36cf87579f0df9e8ec551a625fd6c1f0a95b443751a19eafe07de7c10dd265d2"
+      },
+      "serial_sha_matches_receipt": true,
+      "observed_lines": [
+        {
+          "line": 845,
+          "text": "FX6_APPFW_DEFERRED_UNTIL_MODULES"
+        },
+        {
+          "line": 925,
+          "text": "FX3_APPFW_AFTER_UIPC_NODE_BEGIN"
+        },
+        {
+          "line": 926,
+          "text": "FX3_APPFW_AFTER_UIPC_NODE_PID=146"
+        },
+        {
+          "line": 1213,
+          "text": "appfw-launch: stub dlsym failed: /usr/lib/libgrm-fbinit9.so: undefined symbol: Application_System_Init"
+        },
+        {
+          "line": 1634,
+          "text": "SEGV (PC=0x7feb8a10b8)"
+        }
+      ],
+      "segv_monitor_count": 1,
+      "explicit_appfw_segv_count": 0,
+      "appfw_dlsym_failure_count": 1,
+      "captures": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-1beab982/gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        }
+      ],
+      "native_ui_pass": false,
+      "native_ui_verdict_basis": "No bound native screen/model/frame and key confirmation evidence; zero or nonzero pixels alone cannot prove an original menu.",
+      "keyinject_error": "FileNotFoundError(2, 'No such file or directory')\n",
+      "source_files_unchanged_during_read": true
+    }
+  ],
+  "frontend": {
+    "source": {
+      "path": "outputs/fx3-vm-trial/run_fx6_menu_trial.py",
+      "bytes": 68669,
+      "sha256": "7f6536615bbaa179037f931f992d3513e1f695a122183367d49efdfc9b9311ef"
+    },
+    "source_unchanged_during_read": true,
+    "methods": {
+      "render_current_screen_png": {
+        "line": 559,
+        "end_line": 566,
+        "calls": [
+          "render_authentic_big6_png",
+          "render_full_menu_png",
+          "render_shooting_osd_png",
+          "state.get"
+        ]
+      },
+      "get_png": {
+        "line": 852,
+        "end_line": 854,
+        "calls": []
+      },
+      "do_GET": {
+        "line": 1473,
+        "end_line": 1494,
+        "calls": [
+          "HTML_PAGE.encode",
+          "len",
+          "self._send_json",
+          "self.end_headers",
+          "self.send_header",
+          "self.send_response",
+          "self.session.get_png",
+          "self.session.get_status",
+          "self.wfile.write",
+          "str",
+          "urllib.parse.urlparse"
+        ]
+      },
+      "set_page": {
+        "line": 710,
+        "end_line": 728,
+        "calls": [
+          "dict",
+          "dt.datetime.now",
+          "dt.datetime.now(dt.timezone.utc).isoformat",
+          "len",
+          "render_current_screen_png",
+          "self._update_frame_label",
+          "self.history.append"
+        ]
+      },
+      "apply_key": {
+        "line": 730,
+        "end_line": 816,
+        "calls": [
+          "GdbPhyMemClient",
+          "ValueError",
+          "dict",
+          "dt.datetime.now",
+          "dt.datetime.now(dt.timezone.utc).isoformat",
+          "hex",
+          "key_name.upper",
+          "len",
+          "max",
+          "render_current_screen_png",
+          "self._update_frame_label",
+          "self.gdb_client.close",
+          "self.gdb_client.write_mailbox_and_key",
+          "self.history.append",
+          "self.state.get",
+          "str"
+        ]
+      },
+      "select_box_or_param": {
+        "line": 818,
+        "end_line": 850,
+        "calls": [
+          "dict",
+          "dt.datetime.now",
+          "dt.datetime.now(dt.timezone.utc).isoformat",
+          "len",
+          "render_current_screen_png",
+          "self._update_frame_label",
+          "self.history.append",
+          "self.state.get"
+        ]
+      },
+      "start_live_vm": {
+        "line": 886,
+        "end_line": 903,
+        "calls": [
+          "p.exists",
+          "t.start",
+          "threading.Thread"
+        ]
+      },
+      "_vm_worker": {
+        "line": 922,
+        "end_line": 1001,
+        "calls": [
+          "(run_dir / 'host-stderr.log').open",
+          "(run_dir / 'host-stdout.log').open",
+          "Path",
+          "any",
+          "args.index",
+          "env.update",
+          "fr.qmp_send",
+          "int",
+          "json.loads",
+          "ln.strip",
+          "manifest_path.read_text",
+          "os.environ.copy",
+          "proc.poll",
+          "q_path.exists",
+          "qreader.readline",
+          "qsock.connect",
+          "qsock.makefile",
+          "qsock.settimeout",
+          "range",
+          "run_dir.mkdir",
+          "saved['candidate_argv_before_observer_serial_retarget'].copy",
+          "serial_file.exists",
+          "serial_file.read_text",
+          "short_q.symlink_to",
+          "short_q.unlink",
+          "socket.socket",
+          "str",
+          "subprocess.Popen",
+          "sys.path.insert",
+          "time.monotonic",
+          "time.sleep",
+          "txt.splitlines",
+          "uuid.uuid4"
+        ]
+      },
+      "write_mailbox_and_key": {
+        "line": 635,
+        "end_line": 660,
+        "calls": [
+          "k_bytes.hex",
+          "len",
+          "mb_bytes.hex",
+          "self.ensure_connected",
+          "self.packet",
+          "self.sock.sendall",
+          "struct.pack"
+        ]
+      }
+    },
+    "frame_assignments": [
+      {
+        "line": 696,
+        "value": "render_current_screen_png(self.state)"
+      },
+      {
+        "line": 718,
+        "value": "render_current_screen_png(self.state)"
+      },
+      {
+        "line": 805,
+        "value": "render_current_screen_png(self.state)"
+      },
+      {
+        "line": 840,
+        "value": "render_current_screen_png(self.state)"
+      }
+    ],
+    "frame_origin": "host Python renderer in this source revision",
+    "guest_model_confirmation": "not implemented in the audited source paths",
+    "guest_memory_operations_in_mailbox_method": [
+      "if self.packet(\"Qqemu.PhyMemMode:1\") != \"OK\":",
+      "r1 = self.packet(f\"M41e000f00,{len(mb_bytes):x}:{mb_bytes.hex()}\")",
+      "r2 = self.packet(f\"M41df00008,c:{k_bytes.hex()}\")"
+    ]
+  },
+  "limitations": [
+    "No QEMU, GDB, sockets or cameras controlled.",
+    "Member fingerprints cover the first newc archive only. Bytes after its first TRAILER!!! are included in whole-CPIO SHA, but are not parsed; appended duplicates may affect effective guest files. Use the coordinator's inspect_cpio_binding.py for the full container/appendix audit.",
+    "Current on-disk manifests and CPIO members are rehashed; a completed receipt's matching manifest hash binds the recorded paths, but does not independently prove the historical loader verified payload bytes.",
+    "Only selected completed runs reviewed; absence of a marker is not a proof of absent execution."
+  ]
+}

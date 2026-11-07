@@ -1,5 +1,7 @@
 # FX6 `UXEngine` & `GraphicsEngine` Native UI Thread Initialization Assist Report
 
+> **2026-11-07 归属与证据纠正**：本报告 10.7 中 `scr7286_0001` / `rep_shooting` / `rep_menu` 的地址取自 79 MB FX3 `appFw.so`，不能用于当前 50.5 MB FX6 donor；网页三屏由宿主 Python 绘制，不能作为 FX6 原厂菜单运行证据。真实 FX6 `procam_*` 入口、指纹与验证边界见[并行复核报告](../2026-11-07-fx6-parallel-native-ui/README.md)。以下保留历史研究过程，不表示上述结论已经通过原生菜单验收。
+
 ## 1. Breakthrough Summary (Candidate `199` .. `218`)
 
 1. **Candidate `199` (`cp-bind-31312fbb`, `guest-hybrid-fx6kernel-capid-grmreal199-sem.cpio`)**:

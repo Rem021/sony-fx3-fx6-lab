@@ -1,0 +1,161 @@
+{
+  "schema": "fx6-cpio-member-binding-audit-v1",
+  "created_utc": "2026-11-07T14:31:12.662183+00:00",
+  "scope": "offline provenance only; no guest execution or authorization decision",
+  "manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-287.json",
+    "sha256": "5fa1145c1820d7bf6ba263afda23d3d90d10188cc3c9e4dfeb95d4b6404cc8c1"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal287-entry.cpio",
+    "bytes": 430179668,
+    "sha256": "4a3bc5d90ef5990c83a9950bda12a90413d06d0df7f9521b67e40653aa6ba47d"
+  },
+  "container_binding_matches": true,
+  "loader_binding_matches": true,
+  "archive_trailer_count": 1,
+  "distinct_member_count": 1223,
+  "index_semantics": "last archive occurrence; does not emulate kernel hardlink or filesystem extraction",
+  "member_claims": [
+    {
+      "field": "real_libgrm",
+      "claimed_member": "usr/lib/libgrm.so",
+      "expected_sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b",
+      "actual_sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b",
+      "status": "match"
+    },
+    {
+      "field": "fx6_remote_board",
+      "claimed_member": "usr/lib/libInfraAppRemoteBoard.so",
+      "expected_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+      "actual_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+      "status": "match"
+    },
+    {
+      "field": "fx6_libra",
+      "claimed_member": "usr/lib/liblibra.so",
+      "expected_sha256": "3dffc66daede059cbbdde30d3106185cb3f634cc0309dff69d5a63758ceb5d90",
+      "actual_sha256": "3dffc66daede059cbbdde30d3106185cb3f634cc0309dff69d5a63758ceb5d90",
+      "status": "match"
+    },
+    {
+      "field": "fx6_libstella",
+      "claimed_member": "usr/lib/libstella.so",
+      "expected_sha256": "d8d1966ecb0e5b90c66046b9b771c60da3557f1a60d5b3b7b5ff2441264840db",
+      "actual_sha256": "d8d1966ecb0e5b90c66046b9b771c60da3557f1a60d5b3b7b5ff2441264840db",
+      "status": "match"
+    },
+    {
+      "field": "fx6_grm_ma",
+      "claimed_member": "usr/kmod/grm_ma.ko",
+      "expected_sha256": "81e0bf8754a898d4b70d3c1d46f7a6da4728a449bf575eaa6a6c9b2493f33a33",
+      "actual_sha256": "81e0bf8754a898d4b70d3c1d46f7a6da4728a449bf575eaa6a6c9b2493f33a33",
+      "status": "match"
+    },
+    {
+      "field": "grm_fbinit",
+      "claimed_member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
+      "expected_sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+      "status": "member_not_found_exactly",
+      "diagnostic_candidate_member": "usr/lib/libgrm-fbinit9.so",
+      "diagnostic_actual_sha256": "46161fe7ff7fe40edb9b5fc1648e9b5c5ac23994d8e73e3d4ed2a2ac6ef7fe75"
+    },
+    {
+      "field": "backup_bug_skip",
+      "claimed_member": "usr/kmod/backup.ko",
+      "expected_sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+      "actual_sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+      "status": "match"
+    },
+    {
+      "field": "appfw_future_skip",
+      "claimed_member": "usr/lib/appFw.so",
+      "expected_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+      "actual_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "status": "sha256_mismatch"
+    },
+    {
+      "field": "upm_callsite_skip",
+      "claimed_member": "usr/kmod/upm.ko",
+      "expected_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+      "actual_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+      "status": "match"
+    }
+  ],
+  "selected_actual_members": {
+    "init": {
+      "bytes": 22805,
+      "sha256": "249e640274ab136c61b454f8376a1862f0954fee9b61dc2fbb5e106f203dbe49",
+      "archive_index": 0,
+      "offset": 3904,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": []
+    },
+    "usr/bin/appfw-launch": {
+      "bytes": 92488,
+      "sha256": "a7b942271d933b5f0bbb55dc831b03869c08414cae8b14c20bc147ddc5e37b58",
+      "archive_index": 0,
+      "offset": 416167612,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": []
+    },
+    "usr/lib/appFw.so": {
+      "bytes": 50520424,
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "archive_index": 0,
+      "offset": 62765096,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": []
+    },
+    "usr/lib/AppConfig.so": null,
+    "usr/lib/libgrm-fbinit9.so": {
+      "bytes": 72296,
+      "sha256": "46161fe7ff7fe40edb9b5fc1648e9b5c5ac23994d8e73e3d4ed2a2ac6ef7fe75",
+      "archive_index": 0,
+      "offset": 416095184,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": [
+        "FX6_APP_CONFIG_ENTRY",
+        "FX6_APP_CONFIG_HOLD"
+      ]
+    },
+    "usr/lib/libuxengine.so": {
+      "bytes": 742128,
+      "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876",
+      "archive_index": 0,
+      "offset": 415352920,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": []
+    },
+    "usr/share/app/global.xdb": {
+      "bytes": 1792,
+      "sha256": "577461fc6bfd968e0cb84ec374aa4c76f621349532cac41f8f74736792c74871",
+      "archive_index": 0,
+      "offset": 239994872,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": []
+    }
+  },
+  "selected_member_histories": {},
+  "diagnostic_marker_members": {
+    "usr/lib/libgrm-fbinit9.so": {
+      "bytes": 72296,
+      "sha256": "46161fe7ff7fe40edb9b5fc1648e9b5c5ac23994d8e73e3d4ed2a2ac6ef7fe75",
+      "archive_index": 0,
+      "offset": 416095184,
+      "regular_file": true,
+      "hardlink_count": 1,
+      "diagnostic_markers": [
+        "FX6_APP_CONFIG_ENTRY",
+        "FX6_APP_CONFIG_HOLD"
+      ]
+    }
+  },
+  "verdict": "binding_inconsistent"
+}

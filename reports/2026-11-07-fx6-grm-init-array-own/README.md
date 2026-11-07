@@ -366,7 +366,7 @@ libux_core:
 |---:|---|---|---|---|---|
 | 1 | libuxengine | `0x74ab8` | `br x2`，GOT `0xc1fc0` | symbol `_ITM_registerTMCloneTable` | **不调用三目标**（间接到 ITM 表） |
 | 2 | libuxengine | `0x70a20` | `br x17`，PLT `0xc2e38` | `ux::core::Vector2::Vector2()` | **不调用三目标** |
-| 3 | libux_core | `0x23e28` | `br x2`，`.data.rel.ro 0x460fa0` | 数组 `0x486b0..0x486b0` 长度 0；`br` 不可达 | **不调用三目标**（空析构表，GOT 未读取） |
+| 3 | libux_core | `0x23e28` | `br x2`，`.got 0x46fa0` | 数组 `0x486b0..0x486b0` 长度 0；`br` 不可达 | **不调用三目标**（空析构表，GOT 未读取） |
 | 4 | libux_core | `0x22ac0` | `br x17`，PLT `0x470bf8` | `__cxa_atexit` | **不调用三目标** |
 | 5 | libux_core | `0x22480` | `br x17`，PLT `0x4708d8` | `ux::core::Color::Color(unsigned char, ...)` | **不调用三目标** |
 | 6 | libux_core | `0x228f0` | `br x17`，PLT `0x470b10` | `ux::core::ID::ID()` | **不调用三目标** |
@@ -392,8 +392,8 @@ libux_core:
   - 不是三目标。
 - `0x23e28`：
   - 计算 `0x486b0 - 0x486b0 = 0`，`cbz x1, 0x23e60` 直接到 `ret`；
-  - `0x460fa0` 实际在 `.data.rel.ro`，不在 `.got`；无 reloc/符号；
-  - 由于长度 0，`ldr x2,[0x460fa0]`/`br x2` **不可达**；
+  - `0x46fa0` 实际在 `.got`，不在 `.data.rel.ro`；无 reloc/符号；
+  - 由于长度 0，`ldr x2,[0x46fa0]`/`br x2` **不可达**；
   - 分类改为“不调用三目标”。
 - `0x22ac0`：PLT `__cxa_atexit`，不是三目标。
 - `0x22480`：PLT `ux::core::Color::Color(unsigned char, ...)`，不是三目标。
@@ -415,17 +415,17 @@ libux_core:
 - 7 个 helper 的入口反汇编；
 - PLT 名称（`Vector2`/`Color`/`ID`/`__cxa_atexit`）；
 - GOT `0xc1fc0` 符号 `_ITM_registerTMCloneTable`；
-- `0x23e28` 的数组长度 0；`0x460fa0` 在 `.data.rel.ro`、无符号/无 reloc；
+- `0x23e28` 的数组长度 0；`0x46fa0` 在 `.got`、无符号/无 reloc；
 - 0 个 helper 直接/间接落到三目标地址。
 
 **推断**：
 
-- `0x23e28` 是空析构表；`0x460fa0` 未被读取；
+- `0x23e28` 是空析构表；`0x46fa0` 未被读取；
 - 7 个 helper 都是静态初始化/析构链，不是 UI/framebuffer 入口。
 
 **缺失**：
 
-- `0x460fa0` 的具体用途（不影响结论）；
+- `0x46fa0` 的具体用途（不影响结论）；
 - 运行时 `[0x486f0]` 值；
 - 运行时 `GRM_fbrmInitialize` 是否命中；
 - 仍未执行任何运行时断点。
@@ -444,7 +444,7 @@ libux_core:
 
 本轮**未执行**任何运行时步骤。
 
-## 12. §12：0x23e28 的 0x460fa0 与 0x486b0 数组
+## 12. §12：0x23e28 的 0x46fa0 与 0x486b0 数组
 
 时间：2026-11-07 16:30 PT。本节只补 §11 的最后一个缺口，不再扩展。
 
@@ -468,13 +468,13 @@ libux_core:
    0x23e58: br   x2              ; 不可达
    0x23e60: ret
    ```
-   `0x23e60` 是 `ret`；因此 `0x460fa0` 的 load 和 `br x2` **永远不会执行**。
+   `0x23e60` 是 `ret`；因此 `0x46fa0` 的 load 和 `br x2` **永远不会执行**。
 
-2. **`0x460fa0` 实际在 `.data.rel.ro`，不在 `.got`。**
-   - `.data.rel.ro`：`0x45750 + 0x11f0`，覆盖 `0x45750..0x46940`；`0x460fa0` 在其中；
-   - `.got`：`0x46c40..0x46fe8`；
+2. **`0x46fa0` 实际在 `.got`，不在 `.data.rel.ro`。**
+   - `.got`：`0x46c40..0x46fe8`；`0x46fa0` 在其中；
+   - `.data.rel.ro`：`0x45750 + 0x11f0`，覆盖 `0x45750..0x46940`；`0x46fa0` 不在其中；
    - `.got.plt`：`0x46fe8..0x484f8`；
-   - `.rela.dyn`/`.rela.plt` 没有指向 `0x460fa0` 的条目；
+   - `.rela.dyn`/`.rela.plt` 没有指向 `0x46fa0` 的条目；
    - 没有附近符号；`.dynsym`/`.symtab` 未给出它的语义。
 
 3. **`0x486b0` 在 `.bss`，且代码范围是空区间。**
@@ -495,9 +495,9 @@ libux_core:
 | `sub` 结果 | `0` |
 | `cbz x1, 0x23e60` | 必跳 |
 | `0x23e60` | `ret` |
-| `0x460fa0` section | `.data.rel.ro`（0x45750 + 0x11f0） |
+| `0x46fa0` section | `.got`（0x46c40..0x46fe8） |
 | `.got` range | `0x46c40..0x46fe8` |
-| `.rela.dyn/.rela.plt` @ 0x460fa0 | 无 |
+| `.rela.dyn/.rela.plt` @ 0x46fa0 | 无 |
 | `.dynsym/.symtab` 附近符号 | 无 |
 | `0x486b0` section | `.bss`（0x486b0..0x48868） |
 | 数组表项 | 0（start=end） |
@@ -516,19 +516,19 @@ libux_core:
 
 - `0x23e28` 的起止地址都是 `0x486b0`，长度 0；
 - `cbz` 到 `ret`，`br x2` 不可达；
-- `0x460fa0` 在 `.data.rel.ro`，无 reloc/符号；
+- `0x46fa0` 在 `.got`，无 reloc/符号；
 - `.bss`/`.got`/`.got.plt` 范围；
 - §11 分类与计数已更新。
 
 **推断**：
 
 - `0x23e28` 是空析构表/`__cxa_finalize` 风格 registry；
-- `0x460fa0` 是未使用的静态槽位；
+- `0x46fa0` 是未使用的静态槽位；
 - 不是 framebuffer 初始化入口。
 
 **缺失**：
 
-- `0x460fa0` 的具体用途（不影响结论）；
+- `0x46fa0` 的具体用途（不影响结论）；
 - 运行时 `[0x486f0]` 值；
 - 运行时 `GRM_fbrmInitialize` 是否命中；
 - 运行时断点仍待批准。
@@ -544,3 +544,111 @@ libux_core:
 ```
 
 本轮**未执行**任何运行时步骤。
+
+## 13. §13：0x46fa0 最终定位与独立复核
+
+时间：2026-11-07 16:30 PT。§12 的槽位地址写作 `0x460fa0`，本轮校正为 **`0x46fa0`**；结论不变，且现在可以定性。
+
+### 13.1 地址校正
+
+`0x23e28` 的指令是：
+
+```text
+0x23e4c: adrp x2, #0x46000
+0x23e50: ldr  x2, [x2, #0xfa0]
+```
+
+`adrp` 得到页 `0x46000`，加 `0xfa0` 后的实际地址是：
+
+```text
+0x46000 + 0xfa0 = 0x46fa0
+```
+
+不是 `0x460fa0`。因此：
+
+- `0x46fa0` 在 **`.got`**（`0x46c40..0x46fe8`）内；
+- `0x460fa0` 不在任何 section；§12 把它当 `.data.rel.ro` 是地址笔误；
+- §11/§12 已按 `0x46fa0` 修正；结论“空数组、br 不可达、不调用三目标”不变。
+
+### 13.2 公开方法复核
+
+本轮先查了识别无名数据槽位的常用方法，再用于 `libux_core`：
+
+- **`DT_RELR` packed relative relocations**：如果槽位由 packed reloc 填充，`readelf -r` 可能不直接显示，需要解析 `DT_RELR/DT_RELRSZ`（[binutils DT_RELR patch](https://sourceware.org/pipermail/binutils/2022-January/119212.html)）。
+- **`__cxa_atexit`/`__cxa_finalize` DSO 析构注册表**：`__cxa_atexit` 注册 destructor，`__cxa_finalize` 在 DSO 卸载时调用；`DT_FINI_ARRAY` 与 `__cxa_finalize` 是两条相关但不同的收尾路径（[GCC 讨论](https://gcc.gnu.org/pipermail/gcc-help/2010-February/093154.html)、[Itanium C++ ABI DSO destructor](https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor)）。
+- **相邻 `.got` 槽位的 reloc 模式**：如果槽位有 `GLOB_DAT`/`JUMP_SLOT`，`readelf -r` 会给出符号；如果相邻槽位都没有 reloc 且为零，通常是未使用的 GOT padding。
+- **跨库 addend 扫描**：其他库若持有指向该槽位的相对指针，会在 `.rela.dyn` 的 `r_addend` 中出现 `0x46fa0`。
+
+### 13.3 穷尽结果
+
+| 方法 | 结果 |
+|---|---|
+| `DT_RELR` / `DT_RELRSZ` | 都是 **0**；无 `.relr.dyn` |
+| `.rela.dyn`/`.rela.plt` @ `0x46fa0` | **无条目** |
+| `.got` 槽值 `0x46fa0` | **0x0000000000000000** |
+| `.got` 相邻槽 `0x46f80..0x46fc0` | 全 0 |
+| `.dynsym`/`.symtab` 附近符号 | 无；最近只有 `__end__` 等 BSS 边界 |
+| `__cxa_finalize` | 弱导入 `__cxa_finalize@GLIBC_2.17`，但无 GOT reloc 指向 `0x46fa0` |
+| `_ITM_registerTMCloneTable` | 弱导入；与 `0x46fa0` 无 reloc 关联 |
+| `DT_FINI_ARRAY` | `0x45740`，size 8；与 `0x46fa0` 无联动 |
+| 跨库 `r_addend == 0x46fa0` | **0 个** |
+| `0x23e28` 数组 | start=end=`0x486b0`，长度 0 |
+| `0x23e28` 的 `br x2` | 不可达（`cbz` 到 `0x23e60 ret`） |
+
+### 13.4 定性
+
+`0x46fa0` 是一个 **零值、无 relocation、无符号的 `.got` 槽位**。
+
+- 它不是 `InitializeIF`/`sys_createApplication`/`GraphicsEngine` 初始化指针；
+- 它没有 `__cxa_finalize`/`_ITM`/`DT_FINI_ARRAY` 的 reloc 关联；
+- 由于 `0x23e28` 的数组长度为 0，`ldr x2,[0x46fa0]`/`br x2` 不会执行；
+- 即使假设数组非空，槽值为 0，`cbz x2` 也会跳到 `ret`，不会调用任何函数；
+- 因此它最多是 **未使用的 GOT padding/保留槽**；无法从静态信息给出更具体的名字，但**不影响“不调用三目标”的结论**。
+
+### 13.5 独立复核抽查
+
+| 检查点 | 复核结果 |
+|---|---|
+| `0x23e28` start/end | 都是 `0x486b0`；`sub = 0` |
+| `cbz x1` 目标 | `0x23e60`，该处为 `ret` |
+| `.got` 范围 | `0x46c40..0x46fe8` |
+| `.got.plt` 范围 | `0x46fe8..0x484f8` |
+| `.data.rel.ro` 范围 | `0x45750..0x46940` |
+| `.bss` 范围 | `0x486b0..0x48868` |
+| `0x46fa0` | 在 `.got`；值为 0；无 reloc |
+| `0x486b0` | 在 `.bss`；数组无表项 |
+| `0x46fa0` 跨库引用 | 0 |
+| `0x23e28` 目标调用 | 0 |
+
+### 13.6 实测 vs 推断 vs 缺失
+
+**实测**：
+
+- 实际地址 `0x46fa0`（不是 `0x460fa0`）；
+- `.got`/`.got.plt`/`.data.rel.ro`/`.bss` 范围；
+- `0x46fa0` 槽值 0、无 reloc、无符号；
+- `DT_RELR` 为 0；无 `.relr.dyn`；
+- `DT_FINI_ARRAY=0x45740`；
+- 跨库 addend 0 个；
+- `0x23e28` 长度 0、`br` 不可达。
+
+**推断**：
+
+- `0x46fa0` 是未使用的 GOT padding/保留槽；
+- 它不承载可命名的析构/初始化函数指针；
+- `0x23e28` 是空析构表。
+
+**缺失**：
+
+- `0x46fa0` 的更具体用途（没有符号/reloc，静态不可命名；不影响结论）；
+- 运行时 `[0x486f0]` 值；
+- 运行时 `GRM_fbrmInitialize` 是否命中；
+- 运行时断点仍待用户批准。
+
+### 13.7 结论不变
+
+- `0x23e28` 仍为 **不调用三目标**；
+- 7 个 helper 计数仍为 **不调用 7 / 无法判定 0 / 调用 0**；
+- `0x46fa0` 的最终定性是 **零值、无 reloc、未使用的 `.got` 槽**，不改变任何结论。
+
+本轮**未执行**任何运行时步骤，也未开 §14。

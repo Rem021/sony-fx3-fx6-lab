@@ -384,7 +384,10 @@ flowchart LR
 
 1. **阶段一：QEMU 混合镜像全闭环验证（当前正在推进的 `cp-helper-agnostic` 线）**
    - 在 `grmreal46` / `grmreal54`（已集成 **P3 RemoteBoard 切除**、**P5/P6 CAPID `0x32d`/TC/Peaking 完结垫片**、**P7 `fx6_cp_backup_sync100_agnostic.ko`**、**P8 `appFw.so` `0x2159c50` future skip**、**P9 `upm.ko` `0x136b8` DFS call-site skip**）基础上，合入 **P1 (`nflasha20` $\to$ `nflasha30`)**、**P2 (`nflasha21` loopback)** 与 **P4 (`appFw.so` 电子 ND Clear 锁定补丁 `0x2111358`/`0x21113f0`)**。
-   - 为无头 QEMU 的 `libgrm.so` `FrameBuffer` 提供一块映射于保留物理内存（如 `0x41df10000`）的 `1024×540×4` (`2,211,840 B`) 像素后备缓冲区（填入 `FrameBuffer` 对象 `+0x08` 像素指针与 `+0x68` onscreen BMP 句柄），导出首帧 FX6 Big6 菜单画面回执。
+   - **Round 239 ~ Round 243 (`libgrm-fbinit31.so`, [`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c)) 已完成验证里程碑**：
+     - **Round 239 (`cp-bind-88c9bd94`) ~ Round 240 (`cp-bind-a96c53de`)**：保留 `BitmapImpl` `[b + 0x08]` (`info`) 与 `[b + 0x38]` (`pthread_mutex_t`)，加入 `stella::LinearList::remove` 与 `libra::HashRecord` 指针校验，首次完整跑通 `GraphicsEngine::drawFramebuffer()` 并抵达 `andromeda::Window::swap()`；
+     - **Round 241 (`cp-bind-508c609a`)**：导出 `GRM_fbrmRegisterChangeFramebufferCb` 立即同步触发 `{1024, 540, 2, 0}` 屏幕尺寸回调，解除 `GraphicsContextGRM` 的 `0×0` 裁剪，首次原生触发 `GRM_gpermFillrect` 与 `GRM_gpermDrawFlush` 并写入 `552,960` 个非零像素；
+     - **Round 242 (`cp-bind-c83142b7`) ~ Round 243 (`cp-bind-9bc1d1b2`)**：加入 `stella::TreeNode` / `TreeWalker` 场景图遍历防护（修正 4 字节对齐 ARM64 虚表函数指针校验 `(u & 3UL) == 0` 及 `FlaggedList` 低 3 位标志位掩码 `& ~7UL`），成功绘制 `1024×540` 背景 (`245,760` 像素 `0xff101820`) + `640×480` 前景控件 (`307,200` 像素 `0xff000000`)，并在 `125s` 窗口内连续稳定运行 **1,980+ 帧 (`FX6_OSD_FLUSH update #1980 prims=2 nz_pixels=552960`) 零崩溃**（预览图见 [`fx6-round243-gpe0.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-round243-gpe0.png)）。
 2. **阶段二：真机零持久写备份提取（Tier-0 Redline Backup）**
    - 在任何真机挂载实验前，必须先将 FX3 本机的 `Sector 0` (`512 B`)、`p1` (`23.94 MiB`)、`p2` (`20 MiB`, 含 `Backup.bin`/`psd.bin`/`defdet.bin`)、`p6` (`25 MiB` `Jiritsu`)、`p12` (`40 MiB` `/cert`)、`p18` (`20 MiB` `/lens/lensfile.bin`) 与 SPI NOR (`ddrtraining.dat` + `loader_nor.bin`) 完整读回宿主机并校验 SHA256。
 3. **阶段三：真机 RAM / 外置存储 Overlay 挂载验证（不改 `Sector 0`、不碰 NOR、不改 `p3`/`p8`）**

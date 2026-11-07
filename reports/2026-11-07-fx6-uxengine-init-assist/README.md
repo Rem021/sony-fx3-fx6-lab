@@ -866,10 +866,55 @@ int GRM_gpermRectblit(int plane, void *src, const GRM_Rect16 *sr, const GRM_Rect
    ```
    `libgemini-grm.so` 首次原生调用 `GRM_gpermFillrect` 与 `GRM_gpermDrawFlush`，向 `gpe0.bin` / `gpe1.bin` / `dmm0400.bin` / `dmm0403.bin` 写入 **`552,960` 个非零像素 (`1024×540`)**！
 
-### 9.3 Round 242 (`libgrm-fbinit30.so`)：`stella::TreeNode` 场景图遍历防护
+### 9.3 Round 242 (`cp-bind-c83142b7`, `libgrm-fbinit30.so`)：`stella::TreeNode` 场景图遍历防护首验（640+ 帧零崩溃）
 1. **Round 241 后续停点 (`libstella.so + 0x30038`, `addr=0x18`, `X0=0x7f9c0ce2f8`)**：
    - 位于 `_ZNK6stella8TreeNode19getFirstActiveChildEv + 0x0c`，在遍历场景图时遇到 `vptr == NULL` 的未完全初始化 `TreeNode` (`0x7f9c0ce2f8`)，读取 `*(vptr + 0x18)` (`getChildNodes`) 触发 `addr=0x18`。
-2. **Round 242 修复 ([`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c) / `/tmp/libgrm-fbinit30.so`)**：
-   - 导出 `_ZNK6stella8TreeNode19getFirstActiveChildEv`、`_ZNK6stella8TreeNode13getFirstChildEv`、`_ZNK6stella8TreeNode20getNextActiveSiblingEv`、`_ZNK6stella8TreeNode14getNextSiblingEv`、`_ZN6stella10TreeWalker8traverseEPNS_8TreeNodeEb`、`_ZN9andromeda14NodeWalkerBase5visitERN6stella8TreeNodeE` 等全套场景图遍历防护，遇到 `vptr == NULL` 的无效节点时自动跳过并继续遍历后续有效兄弟/子节点，同时将全屏背景清屏与前景控件矩形/位图赋予区分色值。
+2. **Round 242 实测结果 (`runs/cp-bind-c83142b7/serial.log`)**：
+   - 导出 `_ZNK6stella8TreeNode19getFirstActiveChildEv`、`_ZNK6stella8TreeNode20getNextActiveSiblingEv`、`_ZN6stella10TreeWalker8traverseEPNS_8TreeNodeEb` 等防护函数后，**彻底消除 `libstella.so + 0x30038` 崩溃**，渲染主循环连续稳定运行 **640+ 帧 (`FX6_OSD_FLUSH update #640 prims=1 nz_pixels=552960`) 零崩溃**！
+   - 同时定位出 `libgrm-fbinit30.so` 中 `prims` 停留在 `1` 的原因：`valid_ptr` 使用了 8 字节对齐判断 `(u & 7UL) == 0`，而 ARM64 代码段函数指针为 4 字节对齐（如 `TCompositeNode<Node2D>::getChildNodes` `0x1af84`、`TCompositeNode<NodeBase>::getChildNodes` `0x1bccc`、`CollectDirtyWalker::visitPost` `0x2116c` 末尾均为 `4` 或 `c`），导致 `valid_treenode` 将合法节点的虚表函数指针误判为未对齐；此外 `stella::FlaggedList` 头指针低 3 位（`& 7UL`）用于存储 `active/modified` 标志位，需先掩码 `& ~7UL` 再做指针校验。
+
+### 9.4 Round 243 (`cp-bind-9bc1d1b2`, `libgrm-fbinit31.so`)：前景 `640×480` 控件绘制成功、精准跳过损坏兄弟节点并连续稳定运行 1,980+ 帧
+1. **Round 243 源码升级 ([`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c) v31)**：
+   - 将 `valid_ptr` 对齐检查从 `(u & 7UL) == 0` 修正为 **`(u & 3UL) == 0`**，放行所有 4 字节对齐的 ARM64 虚表函数指针；
+   - 在 `valid_treenode_children` 中对 `FlaggedList` 头指针执行 **`uptr head_raw = *(const uptr *)list & ~7UL`** 掩码后再校验；
+   - 导出 `_ZNK9andromeda14Render2DWalker13skipRenderingERNS_8NodeBaseE` 返回 `0`，防止 `Render2DWalker` 因脏矩形裁剪跳过 2D 控件绘制。
+2. **Round 243 实测串口日志 (`runs/cp-bind-9bc1d1b2/serial.log`)**：
+   ```text
+   1557: FX6_GPE_FILLRECT #1 (0,0,1024,540) argb=0x00000000 out=0xff101820
+   1558: FX6_OSD_FLUSH fillrect #4 prims=1 nz_pixels=552960
+   1559: FX6_OSD_FLUSH getOffscreen #5 prims=1 nz_pixels=552960
+   1560: FX6_GPE_FILLRECT #2 (0,0,640,480) argb=0xff000000 out=0xff000000
+   1561: FX6_OSD_FLUSH fillrect #6 prims=2 nz_pixels=552960
+   1562: FX6_OSD_FLUSH gpermDrawFlush #7 prims=2 nz_pixels=552960
+   1563: FX6_TREENODE_SKIP nextActive=0x7fa81ca2f8 from=0x7fa81ca028
+   1564: FX6_OSD_FLUSH update #8 prims=2 nz_pixels=552960
+   ...
+   1693: FX6_OSD_FLUSH update #1980 prims=2 nz_pixels=552960
+   ```
+3. **Round 243 核心验证结论**：
+   - **前景控件首次落盘**：除 `1024×540` 全屏底色 (`0xff101820`) 外，场景图中的首个 2D 控件节点 `0x7fa81ca028` (`Widget #00`) 原生触发 `FX6_GPE_FILLRECT #2 (0,0,640,480) argb=0xff000000`；
+   - **精准跳过损坏兄弟节点**：在从 `0x7fa81ca028` (`Widget #00`) 遍历下一个兄弟节点 `0x7fa81ca2f8` (`Widget #01`，偏移恰为 `+0x2d0 = sizeof(view_icon)`) 时，`_ZNK6stella8TreeNode20getNextActiveSiblingEv` 精准捕获 `0x7fa81ca2f8` 的空虚表指针并打印 `FX6_TREENODE_SKIP nextActive=0x7fa81ca2f8 from=0x7fa81ca028`；
+   - **1,980+ 帧连续渲染零崩溃**：在 `125s` 运行窗口内完成 **1,980 次 `FX6_OSD_FLUSH update`**，全程零 SEGV、零 Abort；
+   - **QMP 物理显存导出像素分布 (`runs/cp-bind-9bc1d1b2/gpe0.bin`, PNG 预览见 [`fx6-round243-gpe0.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-round243-gpe0.png))**：
+     - `0xff000000`（左上角 `640×480` 前景控件矩形区域）：**`307,200` 像素** (`640 × 480 = 307,200`)；
+     - `0xff101820`（右侧与底部 `1024×540` 背景区域）：**`245,760` 像素** (`552,960 - 307,200 = 245,760`)；
+     - 非零像素总计：**`552,960` 像素 (`100%` 满帧覆盖)**。
+
+### 9.5 `AdjChkConfig.so` 22 控件表结构 (`0x221a0`) 与后续前景文字/准星控件激活路径
+通过对 `AdjChkConfig.so` 中 `presenter_jiritsu` 与 `view::create_screen` 的符号及数据表分析，确认当前屏幕上创建的 22 个控件（`0x221a0`，每项 `0x28` 字节）布局如下：
+
+| 控件编号 | 类型 (`type`) | 类名与对象尺寸 | 坐标 `(x, y)` | 尺寸 `(w, h)` | 初始可见性 | 用途说明 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Widget #00** | `0` | `view_icon` (`0x2d0` B) | `(0, 0)` | `640 × 480` | `1` (可见) | 主视口背景层（已在 Round 243 成功绘制为 `307,200` 像素前景矩形） |
+| **Widget #01 ~ #12** | `1` | `view_string` (`0x460` B) | `(5, 5..435)` | `630 × 40/100` | `0` (默认隐藏) | Jiritsu 状态与检测结果多行文本 (`MultiLineTextSprite`) |
+| **Widget #13 ~ #16** | `1` | `view_string` (`0x460` B) | `(100, 32..366)` | `440 × 80` | `0` (默认隐藏) | Scenario 模式 4 行大字号状态文本 (`MultiLineTextSprite`) |
+| **Widget #17** | `0` | `view_icon` (`0x2d0` B) | `(310, 230)` | `20 × 20` | `1` (被 `close_tp_check` 隐藏) | 触控校准/准星底框 (`20×20` 白色底框) |
+| **Widget #18 ~ #21** | `0` | `view_icon` (`0x2d0` B) | `(310/321, 230/241)` | `8×8` / `9×9` | `1` (被 `close_tp_check` 隐藏) | 触控校准中心十字准星 4 个象限色块 |
+
+**为什么默认仅 Widget #00 可见？**
+- `presenter_jiritsu::C1` 在调用 `view::create_screen` 创建完 22 个控件后，立即顺序调用了 `close_jiritsu()`、`close_tp_check()`、`close_scenario()`，将 Widget #01~#21 的可见标志（`param + 0x20`）全部清零隐藏；
+- 随后调用 `_ZN13app_adjchk_ui17presenter_jiritsu16need_to_autobootEv`，因默认返回 `0`，未自动调用 `open_scenario_ui()` / `open_tp_check()` / `open_jiritsu()`。
+- **下一步直接激活前景准星与文本控件的钩子方案**：在 `libgrm-fbinit` 中导出 `_ZN13app_adjchk_ui17presenter_jiritsu16need_to_autobootEv` 返回 `1`（或在 `_ZN13app_adjchk_ui17presenter_jiritsu14close_tp_checkEv` 中直接转调 `_ZN13app_adjchk_ui17presenter_jiritsu13open_tp_checkEv`），即可直接点亮 `(310, 230)` 处的十字准星控件组（Widget #17~#21）与 Scenario 文本层！
+
 
 

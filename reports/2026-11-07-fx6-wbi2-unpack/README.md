@@ -970,3 +970,100 @@ screen map：pgList::Leave() 仍使用无效 this
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 30. 协同报告与 181–183
+
+参考协同笔记：
+
+```text
+reports/2026-11-07-fx6-uxengine-init-assist/README.md
+```
+
+关键点：
+
+1. `libgrm-fbinit9.so` 必须在 `libgrm.so`/`libux_core.so` 之前加载，否则 `RTLD_NOW` 已把 GOT 绑到原生 libgrm。
+2. 真机 `grm_init()`（libgrm 0x26f90）才会初始化 `FBResourceManager`、`FrameBuffer`；appfw-launch 没调用它。
+3. `pgList::Leave()` 不能单独 ret，否则 `pgList::Clear()`（libuxengine 0x83404）的 while 循环死等；要跳过清理应 patch `Clear()` 本身。
+4. appfw-launch 对 `[0x48800]/[0x48810]` 的零写入会与线程 117 的原生 UXEngine 初始化竞争。
+
+### 30.1 181：/etc/ld.so.preload
+
+在 CPIO 加 `/etc/ld.so.preload`：
+
+```text
+/usr/lib/libgrm-fbinit9.so
+```
+
+并 patch：
+
+```text
+libosal_uipc+0x80a0 alloc_fblock -> malloc (sem)
+libuxengine+0x83404 pgList::Clear -> ret
+appfw-launch+0x8f24 -> ldr x3,[x2,#0x1a8] (addr=LR)
+```
+
+结果：
+
+```text
+GraphicsEngine ctor=...
+（无 -1023）
+```
+
+仍无 ctor returned。
+
+### 30.2 182：init 启动行加 LD_PRELOAD
+
+把 `init` 中两处：
+
+```text
+/usr/bin/appfw-launch > /tmp/appfw-launch.log 2>&1 &
+```
+
+改成：
+
+```text
+LD_PRELOAD=/usr/lib/libgrm-fbinit9.so /usr/bin/appfw-launch > ...
+```
+
+结果（182）：
+
+```text
+APPFW_SEGV addr=pc=... 
+APPFW_PC_MODULE /usr/lib/libgemini-grm.so
+```
+
+早期 gemini 0x8cc0 崩溃复现。
+
+### 30.3 183：补回 gemini NOP
+
+在 182 上把 `libgemini-grm+0x8cc0` 改 NOP。
+
+结果：
+
+```text
+appfw-launch: preload /usr/lib/libgrm.so=...
+appfw-launch: preload /usr/lib/libgrm-fbinit9.so=...
+appfw-launch: GraphicsEngine ctor=...
+APPFW_SEGV addr=pc=0x7faf714c28
+```
+
+- 无 `-1023`；
+- ctor 仍崩，PC `0x7faf714c28`；
+- 由 ctor 地址 `0x7faf66750c` 反推 base `0x7faf5e4000`，偏移 **0x130c28**；
+- 该偏移已超 libuxengine 文件 .text，但可能落在其映射/BSS 或坏返回地址；
+- 仍无可见画面。
+
+### 30.4 当前结论
+
+- sem 和 fbinit preload 都在推进；
+- 剩余有两个架构冲突：
+  1. appfw-launch 的 `0x48800/0x48810` 零写入与线程 117 竞争；
+  2. appfw-launch 手动 `GraphicsEngine` ctor 可能与 UXEngine 原生创建冲突。
+- 下一步应优先 **跳过 appfw-launch 的 0x48800/0x48810 写入和手动 ctor**，让线程 117 的 `UXEngine::initialize()` 自行创建 GraphicsEngine/Screen。
+
+## 31. 边界
+
+- 候选 CPIO 只改本地库/launcher/init 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

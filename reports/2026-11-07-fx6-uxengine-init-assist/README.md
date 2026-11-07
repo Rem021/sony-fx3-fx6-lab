@@ -1104,4 +1104,63 @@ with open('/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so', 'r+b') as f:
    - 利用 `self + 0x08` 处 128 KB placement 缓冲空间（`47 * 0x500 = 0xeb00 < 0x20000`），将原生 `view_string` 控件扩展至 **25 路**（6 个 Big6 标题 + 6 个大号主参数值 + 6 个副标签 + 顶栏左右双区 + 中央 16:9 取景窗上下 HUD + 中下音频电平/状态卡双行 + 底栏导航提示）。
    - 实机 `cp-bind-0e41049a` 完整提交 **`48` 个原生 GPE 绘图原语（`18 FILLRECT + 5 准星 RECTBLIT + 25 原生文字 RECTBLIT`）**，输出 **`124` 种抗锯齿色彩**（`gpe0.bin` SHA-256: `13c8d7eb97d461774a7230e5b2f0149241567a562ae4ad2485ec8bc6016f58ce`，PNG SHA-256: `6f73d6de949b0ee458edbb52b6241d81b68fd6c8911497470b378aecc2c69ee6`），全程 `0 SEGV / 0 Assertion`。
 
+---
+
+### 10.7 原厂 Sony FX6 三大核心界面还原（3×2 Big6 主界面 `scr7286_0001`、拍摄取景界面 `rep_shooting`、9 大分类设置菜单 `rep_menu`）与真 `appFw.so` 启动链攻坚（Candidates 272–281）
+
+1. **为什么早期 Candidates 254–271 的界面是“左三右三 + 中央红蓝十字准星”，而原厂 FX6 Big6 是什么样？**
+   - 在 Candidates 254–271 中，虚拟机早期挂载的是 39 MB 工厂校准模块 `AdjChkConfig.so`（仅有 22 个 `view_icon` 控件槽位，其中 `#17..#21` 为工厂触控校准十字准星），而我们写在 `libgrm-fbinit25.c` 里的 `g_big6_layout[22]` 是为了在那 22 个矩形槽位中展示 6 项参数而手写的“左 3 右 3”近似布局。
+   - 通过直接反编译完整相机主程序 `appFw.so`（含完整符号表与 `.data.rel.ro` 控件描述符表）并对照 Sony ILME-FX6 官方说明书，提炼出 **Sony FX6 原厂三大核心屏幕的真实控件表与坐标规格**（`appFw.so` 内部使用 `640×480` 逻辑网格，映射至 `1024×540` 物理帧缓冲时水平 `×1.6`、垂直 `×1.125`）：
+     1. **Screen 0 — 原厂 FX6 Big6 (HOME) 3×2 状态屏 (`scr7286_0001`)**：
+        - 构造函数：`scr7286_0001_presenter::scr7286_0001_presenter` @ `0x216e038`；打开入口：`scr7286_0001_controller::open_screen` @ `0x26b48a0`；57 项控件表位于 `.data.rel.ro` **`0x451ab28`**（由 `s_allocate_tp_button_01_for_big6` @ `0x1726d68` 分配 6 个大按钮）：
+        - **顶部 3 个大框 (`y=0, h=128` $\rightarrow$ `1024×540` 下 `y=0..144`)**：
+          - `No113_SelectButton` `(0, 0, 216, 128)`：**FPS**（如 `23.98` / `S&Q 60 FPS`）
+          - `No114_SelectButton` `(212, 0, 216, 128)`：**ISO / Gain**（如 `800 EI` / `Base ISO 800 (6.0E)`）
+          - `No115_SelectButton` `(424, 0, 216, 128)`：**Shutter**（如 `180.0` / `Angle deg`）
+        - **底部 3 个大框 (`y=352, h=128` $\rightarrow$ `1024×540` 下 `y=396..540`)**：
+          - `No116_SelectButton` `(0, 352, 216, 128)`：**ND Filter**（如 `1/16` / `Preset 2 Clear:Off`）
+          - `No117_SelectButton` `(212, 352, 216, 128)`：**Base Look / LUT**（如 `S-Cinetone` / `S-Log3`）
+          - `No118_SelectButton` `(424, 352, 216, 128)`：**White Balance**（如 `5600K` / `Preset A 0GM`）
+        - **中央纯黑系统状态带 (`y=145..340` $\rightarrow$ `1024×540` 下 `y=150..390`，无任何十字校准准星)**：
+          - 包含 `No20/No500..510` 时码 (`TC 01:02:24:18`)、`No23` 绿/红 `STBY/REC` 状态胶囊、`No30/31/381` 与 `No46/47/401` 双存储卡槽 `Slot A / Slot B` 剩余时间胶囊、`No35/36/48` 传感器画幅与编码格式条 (`4K DCI 4096x2160 / XAVC-I 4:2:2 10bit / Cine EI / S-Log3`)、`No34/300` 镜头光圈与对焦状态 (`AF-C Wide Face/Eye Only / FE PZ 28-135mm F4.0`)，以及右侧 `No45_Audiolevelmeterbackground` (`(574, 213, 56, 126)`) 四声道 `CH1–CH4` 垂直音频电平表。
+     2. **Screen 1 — 原厂 FX6 拍摄取景界面 (`rep_shooting`)**：
+        - 构造函数：`rep_shooting_presenter::rep_shooting_presenter` @ `0x211e664`；打开入口：`rep_shooting_controller::open_screen` @ `0x2328bd0`；控件表位于 **`0x44af468`**（290 个控件）与 **`0x452ac48`**（55 个控件）：
+        - 中央为全画幅 16:9 实时电影取景画面（含 `No415_Gridline` 三分构图线、`No895_MarkerDisplay` 中心安全框标记、`No419_Digitallevel` 水平仪、`No79_FocusFrameDisplay` 人脸/眼部自动对焦追踪框、`No545_MFdistanceguide` 对焦距离标尺、`No413_Histogram` 直方图与 `No770_AudioLevelMeter` 音频表）；
+        - 顶栏显示时码、`STBY/REC`、双卡槽 `A/B`、防抖与电池电压；底栏 `No15..38` 横排显示 `ND Filter`、光圈 `F4.0`、`ISO/EI`、快门角度 `180.0°`、色温 `5600K` 与 `S-Log3` 监看状态。
+     3. **Screen 2 — 原厂 FX6 完整相机设置菜单 (`rep_menu`)**：
+        - 构造函数：`rep_menu_presenter::rep_menu_presenter` @ `0x213021c`；打开入口：`rep_menu_controller::open_screen` @ `0x2326fbc`；控件表位于 **`0x44c0978`**（44 个控件）与 **`0x44c20d8`**（25 个控件）：
+        - 采用 Sony FX6 经典 **三栏式 9 大分类架构**：
+          - 顶栏 `No3_HeaderBackground` + `No1_HeaderTitle` + `No2_PageNo`；
+          - 左栏 `No97_Tablist` + `No65..74_TabIcon1..7Selected`：9 大分类图标轨（`User`、`Shooting`、`Project`、`Paint/Look`、`TC/Media`、`Monitoring`、`Audio`、`Thumbnail`、`Technical`）；
+          - 中栏 `No63_Grouplist`：当前分类下的子菜单组列表（如 `Shooting -> ISO/Gain/EI, ND Filter, Shutter, S&Q Motion, Focus, SteadyShot, LUT`）；
+          - 右栏 `No64_Itemlist`：具体设置项与当前参数值列表（支持琥珀金高亮选中与 `SET` 键循环修改参数）；
+          - 底栏 `No5_FooterBackground` + `No4_Footer`：按键操作指南。
+
+2. **三屏完整还原截图与交互体验升级（[`outputs/fx3-vm-trial/run_fx6_menu_trial.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/run_fx6_menu_trial.py) & [`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c)）**：
+   - 使用 Sony 原厂内置 `UniversOTS-SJ_wIcon.ltt` 矢量字体生成并归档三张 `1024×540` 标准帧图像：
+     - **Page 0（原厂 3×2 Big6 主界面 `scr7286_0001`）**：[`fx6-authentic-big6-3x2-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-authentic-big6-3x2-1024x540.png)（`93,147` B，完全移除校准准星）
+     - **Page 1（原厂拍摄取景界面 `rep_shooting`）**：[`fx6-authentic-shooting-osd-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-authentic-shooting-osd-1024x540.png)（`39,219` B）
+     - **Page 2（原厂 9 大分类完整设置菜单 `rep_menu`）**：[`fx6-authentic-full-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-authentic-full-menu-1024x540.png)（`76,934` B）
+   - 本机交互服务（`http://127.0.0.1:8768/` / `FX6菜单.command`）已支持顶部一键切换 **`Big6 HOME` / `拍摄取景 OSD` / `完整设置菜单 (9 大分类)`**、机身 `MENU` / `HOME` / `DISP` 按键切换、画面热区直接点击以及 `SET` 键修改真实相机参数。
+
+3. **Candidates 272–281：50.5 MB 真 FX6 `appFw.so` (`nflasha15/lib/appFw.so`) 入口、UI 线程与 24 MB Arena 表定位**：
+   - **发现 1（50.5 MB stripped 版 FX6 `appFw.so` 真实入口与 UI 线程偏移）**：
+     - 打包进 `273..281` cpio 的 `/usr/lib/appFw.so` 是 50.5 MB 的 FX6 实机 stripped 版 (`50,520,424` B，来自 `FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so`)：
+     - 其 `Application_System_Init(const char *arg)` 位于 **`base + 0xc0b044`**（将 `"AppConfig.so"` 拷入 `base + 0x303d990`，并在 `0xc0b118` 调用 `0x222dd58` 拉起后台 UI 线程）；
+     - 真正的 FX6 UI 主线程函数位于 **`base + 0xc0b470`**（而非 79 MB 未 strip 版中的 `0x16effc0`）：
+       - `0xc0b484`：`bl uxengine_init2`
+       - `0xc0b488`：`bl 0xc0b258`（注册 3 个 `libra::ArenaParam`）
+       - `0xc0b494`：`sys_setCurrentDirectory("/usr/share/app/")`
+       - `0xc0b4d4`：`ResourceManager::setDatabase("global.xdb")`
+       - `0xc0b4f8`：`strncmp(base + 0x303d990, "AppConfig.so", 256)` $\rightarrow$ 命中 `w2 = 0`（进入完整 FX6 相机 UI，而非 `w2 = 1` 的工厂校准模式）
+       - `0xc0b520`：`0xc0b12c` $\rightarrow$ `0xc0b528`：`0xc0a69c`（内部调用 `0xc09da0` 注册全部 FX6 控件工厂与 `GRM_fbrmRegisterTriggerFrameworkCb`，随后进入 `GraphicsEngine::processSystemMessage` 渲染主循环）。
+   - **发现 2（FX6 `appFw.so` 24 MB 三大 Arena 容量门槛 `0x2ef2b88`）**：
+     - 解析 50.5 MB FX6 `appFw.so` 的 `0x2ef2b88` 描述符表（`count = 3`, `ptr = 0x2ef2ba0`）确认：
+       - `Arena[0]` (`mpMemoryHeap`)：`8,192 KB` (8 MB)
+       - `Arena[1]` (`mpMemoryHeap2`)：`4,096 KB` (4 MB)
+       - `Arena[2]` (`mpTextHeap`)：`12,288 KB` (12 MB)
+       - **总计需要 `25,165,824` B = `24.00 MB` (`0x1800000`)**！
+     - 此前 `Backup_read_8Byte(0x00fa0192)` 仅返回 `0x1000000` (16 MB)，导致 `Arena[2]` (`mpTextHeap`, 12 MB) 在 `0xc0b324` (`cmp x24, x1`) 因剩余 `4 MB < 12 MB` 失败退出。将 `ux_arena_ptr` 扩容至 `32 MB` (`0x2000000UL`) 后即可满足 FX6 全部三大 Arena 需求。
+
+
 

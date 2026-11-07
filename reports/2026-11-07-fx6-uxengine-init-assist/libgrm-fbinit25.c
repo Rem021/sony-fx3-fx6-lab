@@ -235,13 +235,16 @@ int GRM_fbrmRegisterChangeFramebufferCb(void (*cb)(void *, GRM_FBRMScreenInfoRec
     return 0;
 }
 
-/* ---- FX6 Arena + Backup + MA bridge ---- */
-static unsigned char ux_arena_buf[0x1000000] __attribute__((aligned(4096)));
+/* ---- FX6 Arena + Backup + MA bridge (mpMemoryHeap 8MB + mpMemoryHeap2 4MB + mpTextHeap 12MB = 24MB required) ---- */
+static void *ux_arena_ptr;
 unsigned long Backup_read_8Byte(unsigned int id) {
     typedef unsigned long (*fn_t)(unsigned int);
     static fn_t real_fn;
-    if (id == 0x00fa0191U) return (unsigned long)ux_arena_buf;
-    if (id == 0x00fa0192U) return 0x1000000UL;
+    if (id == 0x00fa0191U) {
+        if (!ux_arena_ptr) ux_arena_ptr = calloc(1, 0x2000000UL);
+        return (unsigned long)ux_arena_ptr;
+    }
+    if (id == 0x00fa0192U) return 0x2000000UL;
     if (!real_fn) {
         void *h = dlopen("/usr/lib/libuxstub.so", 1);
         real_fn = h ? (fn_t)dlsym(h, "Backup_read_8Byte") : 0;
@@ -526,47 +529,119 @@ typedef struct {
 } big6_box_spec_t;
 
 static const big6_box_spec_t g_big6_layout[22] = {
-    /* #00: Full 1024x540 dark cinema backdrop */
-    {   0,   0, 1024, 540, 0x10, 0x14, 0x1A, 0xFF },
-    /* #01: Top Cinema Status Bar (TC / STBY / REC FORMAT / MEDIA A+B) */
-    {   8,   6, 1008,  38, 0x1C, 0x24, 0x30, 0xFF },
-    /* #02: Bottom Audio Ch1-4 & Histogram / Battery Bar */
-    {   8, 496, 1008,  38, 0x1C, 0x24, 0x30, 0xFF },
-    /* #03: Left Big6 Box 1 — FPS (23.98p / S&Q 60fps) */
-    {   8,  52,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
-    /* #04: Left Big6 Box 2 — SHUTTER (Angle 180.0 deg) */
-    {   8, 200,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
-    /* #05: Left Big6 Box 3 — ISO / GAIN (Cine EI 800 EI / Base High) */
-    {   8, 348,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
-    /* #06: Right Big6 Box 4 — ND FILTER (Variable e-ND 1/4..1/128 / Clear) */
-    { 792,  52,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
-    /* #07: Right Big6 Box 5 — BASE LOOK / LUT (S-Cinetone / S-Log3 Cine) */
-    { 792, 200,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
-    /* #08: Right Big6 Box 6 — WHITE BALANCE (5600K / ATW) */
-    { 792, 348,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
-    /* #09: Center 16:9 Live View Viewport Frame */
-    { 242,  52,  540, 356, 0x14, 0x1E, 0x28, 0xFF },
-    /* #10: Center Bottom Audio Level Meter / Peaking / Zebra Status Card */
-    { 242, 416,  540,  72, 0x1C, 0x28, 0x36, 0xFF },
-    /* #11: Left Big6 Accent Strip (Sony Cinema Line Amber) */
-    {   8,  52,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
-    /* #12: Left Big6 Box 2 Accent Strip */
-    {   8, 200,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
-    /* #13: Left Big6 Box 3 Accent Strip */
-    {   8, 348,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
-    /* #14: Right Big6 Box 4 Accent Strip (Cyan ND Indicator) */
-    { 792,  52,    6, 140, 0x28, 0xB8, 0xE8, 0xFF },
-    /* #15: Right Big6 Box 5 Accent Strip (Look/LUT Amber) */
-    { 792, 200,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
-    /* #16: Right Big6 Box 6 Accent Strip (WB Amber) */
-    { 792, 348,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
-    /* #17: Center 16:9 Crosshair Outer Box (502, 220, 20x20) */
-    { 502, 220,   20,  20, 0xFF, 0xFF, 0xFF, 0xFF },
-    /* #18..#21: Center 16:9 Crosshair 4 Inner Quadrants */
-    { 502, 220,    8,   8, 0xF0, 0x38, 0x38, 0xFF },
-    { 513, 220,    9,   8, 0xF0, 0x38, 0x38, 0xFF },
-    { 502, 231,    8,   9, 0xF0, 0x38, 0x38, 0xFF },
-    { 513, 231,    9,   9, 0xF0, 0x38, 0x38, 0xFF },
+    /* #00: Full 1024x540 authentic Sony FX6 black cinema backdrop (No910_Background) */
+    {   0,   0, 1024, 540, 0x05, 0x05, 0x05, 0xFF },
+    /* #01: Center Status Band Upper Divider Line (y=148) */
+    {   0, 148, 1024,   2, 0x3A, 0x3A, 0x3A, 0xFF },
+    /* #02: Center Status Band Lower Divider Line (y=390) */
+    {   0, 390, 1024,   2, 0x3A, 0x3A, 0x3A, 0xFF },
+    /* #03: Top-Left Big6 Button (No113_SelectButton) — FPS (0,0,216,128 in 640x480 -> 0,0,340,144 in 1024x540) */
+    {   2,   2,  338, 142, 0x16, 0x16, 0x16, 0xFF },
+    /* #04: Top-Mid Big6 Button (No114_SelectButton) — ISO / GAIN (212,0,216,128 -> 342,2,338,142) */
+    { 342,   2,  338, 142, 0x16, 0x16, 0x16, 0xFF },
+    /* #05: Top-Right Big6 Button (No115_SelectButton) — SHUTTER (424,0,216,128 -> 682,2,340,142) */
+    { 682,   2,  340, 142, 0x16, 0x16, 0x16, 0xFF },
+    /* #06: Bottom-Left Big6 Button (No116_SelectButton) — ND FILTER (0,352,216,128 -> 2,396,338,142) */
+    {   2, 396,  338, 142, 0x16, 0x16, 0x16, 0xFF },
+    /* #07: Bottom-Mid Big6 Button (No117_SelectButton) — BASE LOOK / LUT (212,352,216,128 -> 342,396,338,142) */
+    { 342, 396,  338, 142, 0x16, 0x16, 0x16, 0xFF },
+    /* #08: Bottom-Right Big6 Button (No118_SelectButton) — WHITE BALANCE (424,352,216,128 -> 682,396,340,142) */
+    { 682, 396,  340, 142, 0x16, 0x16, 0x16, 0xFF },
+    /* #09: Center Status Band Background (No20..No48: TC, STBY/REC, Media Slot A/B, Codec, Audio Meters) */
+    {   4, 152,  904, 234, 0x0A, 0x0A, 0x0A, 0xFF },
+    /* #10: Right Audio Level Meter Background (No45_Audiolevelmeterbackground: 574,213,56,126 -> 914,152,106,234) */
+    { 914, 152,  106, 234, 0x12, 0x12, 0x12, 0xFF },
+    /* #11: Top-Left FPS Header Strip (Sony Amber Accent when selected) */
+    {   2,   2,  338,   6, 0xE8, 0x84, 0x18, 0xFF },
+    /* #12: Top-Mid ISO/EI Header Strip */
+    { 342,   2,  338,   6, 0x58, 0x58, 0x58, 0xFF },
+    /* #13: Top-Right Shutter Header Strip */
+    { 682,   2,  340,   6, 0x58, 0x58, 0x58, 0xFF },
+    /* #14: Bottom-Left ND Filter Header Strip */
+    {   2, 396,  338,   6, 0x58, 0x58, 0x58, 0xFF },
+    /* #15: Bottom-Mid Base Look Header Strip */
+    { 342, 396,  338,   6, 0x58, 0x58, 0x58, 0xFF },
+    /* #16: Bottom-Right White Balance Header Strip */
+    { 682, 396,  340,   6, 0x58, 0x58, 0x58, 0xFF },
+    /* #17: Center STBY/REC Pill Indicator (No23_Rec/Stbyicon) */
+    { 416, 160,  112,  34, 0x22, 0x7A, 0x38, 0xFF },
+    /* #18: Media Slot A Badge (No31_Media1icon) */
+    { 572, 160,  156,  34, 0x1E, 0x22, 0x28, 0xFF },
+    /* #19: Media Slot B Badge (No47_Media2icon) */
+    { 736, 160,  156,  34, 0x1E, 0x22, 0x28, 0xFF },
+    /* #20: Audio Ch1/Ch2 Meter Bar */
+    { 926, 184,   36, 186, 0x24, 0x8E, 0x42, 0xFF },
+    /* #21: Audio Ch3/Ch4 Meter Bar */
+    { 970, 198,   36, 172, 0x24, 0x8E, 0x42, 0xFF },
+};
+
+/* Screen 1: Authentic FX6 Shooting Live View OSD (rep_shooting) */
+static const big6_box_spec_t g_shooting_layout[22] = {
+    /* #00: 16:9 Live View Cinema Letterbox Backdrop */
+    {   0,   0, 1024, 540, 0x0E, 0x12, 0x16, 0xFF },
+    /* #01: Top OSD Bar (TC, STBY/REC, Media A/B, Battery) */
+    {   0,   0, 1024,  46, 0x08, 0x0A, 0x0E, 0xFF },
+    /* #02: Bottom OSD Parameter Bar (ND, Iris, ISO/EI, Shutter, WB, Audio) */
+    {   0, 486, 1024,  54, 0x08, 0x0A, 0x0E, 0xFF },
+    /* #03..#08: Bottom 6 Live OSD Parameter Pills */
+    {   8, 490,  160,  46, 0x14, 0x18, 0x1E, 0xFF },
+    { 174, 490,  160,  46, 0x14, 0x18, 0x1E, 0xFF },
+    { 340, 490,  160,  46, 0x14, 0x18, 0x1E, 0xFF },
+    { 506, 490,  160,  46, 0x14, 0x18, 0x1E, 0xFF },
+    { 672, 490,  168,  46, 0x14, 0x18, 0x1E, 0xFF },
+    { 846, 490,  170,  46, 0x14, 0x18, 0x1E, 0xFF },
+    /* #09: Center 16:9 Active Sensor Frame Area */
+    {  32,  52,  960, 426, 0x16, 0x1C, 0x22, 0xFF },
+    /* #10: Histogram & Audio OSD Box (Bottom-Right Overlay: No413_Histogram + No770_AudioLevelMeter) */
+    { 796, 354,  188, 118, 0x0C, 0x10, 0x14, 0xFF },
+    /* #11..#16: Rule-of-Thirds Grid & Focus Tracking Frame Bars (No415_Gridline + No79_FocusFrameDisplay) */
+    { 352,  52,    2, 426, 0x38, 0x42, 0x4C, 0xFF },
+    { 672,  52,    2, 426, 0x38, 0x42, 0x4C, 0xFF },
+    {  32, 194,  960,   2, 0x38, 0x42, 0x4C, 0xFF },
+    {  32, 336,  960,   2, 0x38, 0x42, 0x4C, 0xFF },
+    { 442, 198,  140, 120, 0x20, 0x28, 0x30, 0xFF },
+    { 442, 198,  140,   4, 0xE8, 0x84, 0x18, 0xFF },
+    /* #17: Top STBY/REC Pill */
+    { 420,   6,  104,  34, 0x22, 0x7A, 0x38, 0xFF },
+    /* #18..#21: Media & Audio OSD Badges */
+    { 540,   6,  150,  34, 0x1A, 0x20, 0x26, 0xFF },
+    { 700,   6,  150,  34, 0x1A, 0x20, 0x26, 0xFF },
+    { 940, 362,   16, 102, 0x24, 0x8E, 0x42, 0xFF },
+    { 960, 370,   16,  94, 0x24, 0x8E, 0x42, 0xFF },
+};
+
+/* Screen 2: Authentic FX6 Full Camera Settings Menu (rep_menu — 3-column 9-Category layout) */
+static const big6_box_spec_t g_menu_layout[22] = {
+    /* #00: Full Menu Charcoal Backdrop */
+    {   0,   0, 1024, 540, 0x10, 0x10, 0x12, 0xFF },
+    /* #01: No3_HeaderBackground (Category Title & Page Number) */
+    {   0,   0, 1024,  54, 0x1C, 0x1C, 0x20, 0xFF },
+    /* #02: No5_FooterBackground (Key Guide Footer) */
+    {   0, 492, 1024,  48, 0x18, 0x18, 0x1C, 0xFF },
+    /* #03..#08: Left Column Category Icon Rail (No97_Tablist — User / Shooting / Project / Paint/Look / TC/Media / Monitoring) */
+    {   8,  62,   96,  66, 0x24, 0x24, 0x28, 0xFF },
+    {   8, 132,   96,  66, 0x24, 0x24, 0x28, 0xFF },
+    {   8, 202,   96,  66, 0x24, 0x24, 0x28, 0xFF },
+    {   8, 272,   96,  66, 0x24, 0x24, 0x28, 0xFF },
+    {   8, 342,   96,  66, 0x24, 0x24, 0x28, 0xFF },
+    {   8, 412,   96,  66, 0x24, 0x24, 0x28, 0xFF },
+    /* #09: Middle Column Sub-Group List (No63_Grouplist) */
+    { 112,  62,  312, 422, 0x18, 0x18, 0x1C, 0xFF },
+    /* #10: Right Column Item Value List (No64_Itemlist) */
+    { 432,  62,  584, 422, 0x14, 0x14, 0x18, 0xFF },
+    /* #11..#16: Active Category & Item Selection Bars (Sony Amber) */
+    {   8,  62,    6,  66, 0xE8, 0x84, 0x18, 0xFF },
+    { 112,  68,  312,  52, 0x2E, 0x2E, 0x34, 0xFF },
+    { 432,  68,  584,  52, 0xE8, 0x84, 0x18, 0xFF },
+    { 432, 126,  584,  52, 0x1E, 0x1E, 0x24, 0xFF },
+    { 432, 184,  584,  52, 0x1E, 0x1E, 0x24, 0xFF },
+    { 432, 242,  584,  52, 0x1E, 0x1E, 0x24, 0xFF },
+    /* #17..#21: Additional Item Rows & Divider Accent */
+    { 432, 300,  584,  52, 0x1E, 0x1E, 0x24, 0xFF },
+    { 432, 358,  584,  52, 0x1E, 0x1E, 0x24, 0xFF },
+    { 432, 416,  584,  52, 0x1E, 0x1E, 0x24, 0xFF },
+    {   0,  54, 1024,   2, 0xE8, 0x84, 0x18, 0xFF },
+    { 426,  62,    2, 422, 0x34, 0x34, 0x3C, 0xFF },
 };
 
 void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
@@ -575,6 +650,8 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
     volatile unsigned int *mb = get_fx6_mailbox();
     unsigned int seq = mb ? mb[1] : 0U;
     unsigned int sel = mb ? (mb[2] % 6U) : 0U;
+    unsigned int page = mb ? (mb[12] % 3U) : 0U;
+    const big6_box_spec_t *layout = (page == 1U) ? g_shooting_layout : ((page == 2U) ? g_menu_layout : g_big6_layout);
     void **arr = (void **)((char *)self + 0x20008);
     for (int i = 0; i < 22; i++) {
         void *obj = arr[i];
@@ -584,41 +661,49 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
         void (*fn)(void *) = *(void (**)(void *))((char *)vtbl + 0x150);
         if (!valid_ptr((const void *)fn)) continue;
         unsigned char *param = (unsigned char *)obj + 0x1b8;
-        *(int *)(param + 0x10) = g_big6_layout[i].x;
-        *(int *)(param + 0x14) = g_big6_layout[i].y;
-        *(int *)(param + 0x18) = g_big6_layout[i].w;
-        *(int *)(param + 0x1c) = g_big6_layout[i].h;
+        *(int *)(param + 0x10) = layout[i].x;
+        *(int *)(param + 0x14) = layout[i].y;
+        *(int *)(param + 0x18) = layout[i].w;
+        *(int *)(param + 0x1c) = layout[i].h;
         param[0x20] = 1;
         *(short *)(param + 0x28) = 0;
         *(short *)(param + 0x2a) = 0;
         *(short *)(param + 0x2c) = 0;
         *(short *)(param + 0x2e) = 0;
         *(int *)(param + 0x30) = -1; /* solid rect color mode */
-        unsigned char r = g_big6_layout[i].r;
-        unsigned char g = g_big6_layout[i].g;
-        unsigned char b = g_big6_layout[i].b;
+        unsigned char r = layout[i].r;
+        unsigned char g = layout[i].g;
+        unsigned char b = layout[i].b;
+        if (page == 0U && i >= 11 && i <= 16) {
+            if ((unsigned int)(i - 11) == sel) { r = 0xE8; g = 0x84; b = 0x18; }
+            else { r = 0x48; g = 0x48; b = 0x48; }
+        }
         if (seq > 0U && i >= 3 && i <= 8 && (unsigned int)(i - 3) == sel) {
-            r = (unsigned char)(0x2C + (seq & 3U));
-            g = 0x3E;
-            b = 0x54;
+            r = (unsigned char)(0x28 + (seq & 3U));
+            g = 0x28;
+            b = 0x2C;
+        }
+        if (i == 17 && page < 2U && mb && (mb[9] & 1U)) {
+            r = 0xD8; g = 0x24; b = 0x24; /* REC red pill */
         }
         param[0x34] = r;
         param[0x35] = g;
         param[0x36] = b;
-        param[0x37] = g_big6_layout[i].a;
+        param[0x37] = layout[i].a;
         fn(obj);
     }
     if (seq > 0U) {
-        static const char *const k_fps_v[6]  = { "23.98p", "24.00p", "25.00p", "29.97p", "59.94p", "120p" };
-        static const char *const k_shut_v[6] = { "180.0 deg", "90.0 deg", "1/48", "1/50", "1/60", "1/100" };
+        static const char *const k_fps_v[6]  = { "23.98", "24.00", "25.00", "29.97", "59.94", "120" };
         static const char *const k_iso_v[6]  = { "800 EI", "1600 EI", "3200 EI", "12800", "640 EI", "2000 EI" };
-        static const char *const k_nd_v[5]   = { "1/16 ND", "1/64 ND", "AUTO ND", "CLEAR", "1/4 ND" };
-        static const char *const k_look_v[5] = { "S-CINETONE", "S-LOG3", "709TONE", "REC709", "HLG3" };
+        static const char *const k_shut_v[6] = { "180.0", "90.0", "1/48", "1/50", "1/60", "1/100" };
+        static const char *const k_nd_v[5]   = { "1/16", "1/64", "AUTO", "CLEAR", "1/4" };
+        static const char *const k_look_v[5] = { "S-Cinetone", "S-Log3", "709tone", "ITU709", "HLG" };
         static const char *const k_wb_v[5]   = { "5600K", "3200K", "4300K", "6500K", "ATW" };
         const char *vals[6];
+        /* Authentic 3x2 Big6 order: Top 3 = FPS (#0), ISO/Gain (#1), Shutter (#2); Bottom 3 = ND (#3), Look (#4), WB (#5) */
         vals[0] = k_fps_v[mb ? (mb[3] % 6U) : 0U];
-        vals[1] = k_shut_v[mb ? (mb[4] % 6U) : 0U];
-        vals[2] = k_iso_v[mb ? (mb[5] % 6U) : 0U];
+        vals[1] = k_iso_v[mb ? (mb[5] % 6U) : 0U];
+        vals[2] = k_shut_v[mb ? (mb[4] % 6U) : 0U];
         vals[3] = k_nd_v[mb ? (mb[6] % 5U) : 0U];
         vals[4] = k_look_v[mb ? (mb[7] % 5U) : 0U];
         vals[5] = k_wb_v[mb ? (mb[8] % 5U) : 0U];
@@ -642,7 +727,7 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
             void (*sfn)(void *) = *(void (**)(void *))((char *)(*(void **)rec_obj) + 0x150);
             if (valid_ptr((const void *)sfn)) {
                 unsigned char *pp = (unsigned char *)rec_obj + 0x1b8;
-                const char *rtxt = (mb && (mb[9] & 1U)) ? "REC   SLOT A/B 118m   19.5V" : "STBY   SLOT A/B 118m   19.5V";
+                const char *rtxt = (mb && (mb[9] & 1U)) ? "REC   SLOT A: 118m   SLOT B: 118m" : "STBY   SLOT A: 118m   SLOT B: 118m";
                 unsigned int tl = 0;
                 while (rtxt[tl] && tl < 127) { pp[0x2c + tl] = (unsigned char)rtxt[tl]; tl++; }
                 pp[0x2c + tl] = 0;
@@ -653,11 +738,10 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
 }
 
 /*
- * Standalone create_screen using 0x300 stride per widget instead of FX3's 0x2d0.
+ * Standalone create_screen using 0x500 stride per widget instead of FX3's 0x2d0.
  * In FX6's libuxengine.so, sizeof(ux::gfxeng::Sprite) grew from 0x0e0 to 0x0f8 (+0x18 bytes:
  * mSubImageData at +0x0e0..0x0f0 and mDarkerLevel at +0x0f0), so sizeof(view_icon) is
- * 0x1f0 + 0x0f8 = 0x2e8 (> 0x2d0). Using stride 0x300 prevents widget[i]->mSprite.mSubImageData
- * from overlapping and zeroing widget[i+1]->vptr (+0x2d0) and widget[i+1]->mTreeNode.vptr (+0x2d8)!
+ * 0x1f0 + 0x0f8 = 0x2e8 (> 0x2d0).
  */
 void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEPPvj(void *self, const void *params, void **out_ptrs, unsigned int count) {
     typedef void (*icon_ctor_t)(void *, const void *);
@@ -676,10 +760,10 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
         unsigned char rec[0x28];
         memcpy(rec, (const unsigned char *)params + i * 0x28UL, 0x28UL);
         *(int *)(rec + 0x00) = 0;
-        *(int *)(rec + 0x10) = g_big6_layout[i < 17 ? i : 16].x;
-        *(int *)(rec + 0x14) = g_big6_layout[i < 17 ? i : 16].y;
-        *(int *)(rec + 0x18) = g_big6_layout[i < 17 ? i : 16].w;
-        *(int *)(rec + 0x1c) = g_big6_layout[i < 17 ? i : 16].h;
+        *(int *)(rec + 0x10) = g_big6_layout[i].x;
+        *(int *)(rec + 0x14) = g_big6_layout[i].y;
+        *(int *)(rec + 0x18) = g_big6_layout[i].w;
+        *(int *)(rec + 0x1c) = g_big6_layout[i].h;
         rec[0x20] = 1;
         void *obj = place_base + (unsigned long)i * 0x500UL;
         memset(obj, 0, 0x500UL);
@@ -698,17 +782,18 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
         }
     }
     _ZN13app_adjchk_ui4view13update_screenEv(self);
-    static const char *k_titles[6] = { "FPS", "SHUTTER", "ISO / GAIN", "ND FILTER", "BASE LOOK", "WHITE BAL" };
-    static const char *k_values[6] = { "23.98p", "180.0 deg", "800 EI", "1/16 ND", "S-CINETONE", "5600K" };
-    static const char *k_subs[6] = { "S&Q: 60FPS", "MODE: ANGLE", "CINE EI / HIGH", "AUTO / CLEAR", "3D LUT: ON", "MODE: PRESET" };
+    /* Authentic 3x2 Big6 order matching scr7286_0001 (No113..No118_SelectButton) */
+    static const char *k_titles[6] = { "FPS", "ISO / GAIN", "SHUTTER", "ND FILTER", "BASE LOOK", "WHITE BAL" };
+    static const char *k_values[6] = { "23.98", "800 EI", "180.0", "1/16", "S-Cinetone", "5600K" };
+    static const char *k_subs[6] = { "S&Q 60 FPS", "Base ISO 800 (6.0E)", "Angle  deg", "Preset 2  Clear:Off", "Input: S-Gamut3.Cine", "Preset A  0GM" };
     static const char *k_fixed[7] = {
-        "ILME-FX6   TC 01:02:24:18   XAVC-I 4K 10BIT",
-        "STBY   SLOT A/B 118m   19.5V",
-        "16:9   4096x2160   S-Cinetone   AF: FACE/EYE",
-        "HISTOGRAM: ON    HORIZON: 0.0 deg    ZEBRA: 70%",
-        "CH1 -12dB [||||||||....]    CH2 -14dB [|||||||.....]",
-        "PEAKING: ON (RED)    GAMMA ASSIST: AUTO    GENLOCK: INT",
-        "HOME: BIG6    MENU: FULL    UP/DN/L/R: SELECT    SET: CHANGE"
+        "TC 01:02:24:18   23.98p",
+        "STBY   SLOT A: 118m   SLOT B: 118m",
+        "4K DCI 4096x2160   XAVC-I 4:2:2 10bit   240Mbps",
+        "Cine EI   S-Log3 / S-Gamut3.Cine   LUT: MLUT ON",
+        "AF-C  Wide   Face/Eye Only   FE PZ 28-135mm F4.0",
+        "Reel# A001C004   Simul Rec A+B   DC 19.5V (98%)",
+        "CH1/2 -12dB   CH3/4 -18dB   HOME:Big6  DISP:OSD  MENU:Set"
     };
     for (unsigned int si = 0; si < 25; si++) {
         if (!string_ctor) break;
@@ -717,23 +802,23 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
         int x=0,y=0,w=0,h=0,fs=16; const char *txt="";
         if (si < 6) {
             int card = 3 + (int)si;
-            x = g_big6_layout[card].x + 14; y = g_big6_layout[card].y + 8;
-            w = g_big6_layout[card].w - 20; h = 24; fs = 18; txt = k_titles[si];
+            x = g_big6_layout[card].x + 16; y = g_big6_layout[card].y + 12;
+            w = g_big6_layout[card].w - 24; h = 24; fs = 18; txt = k_titles[si];
         } else if (si < 12) {
             int card = 3 + (int)(si - 6);
-            x = g_big6_layout[card].x + 14; y = g_big6_layout[card].y + 44;
-            w = g_big6_layout[card].w - 20; h = 44; fs = 32; txt = k_values[si - 6];
+            x = g_big6_layout[card].x + 16; y = g_big6_layout[card].y + 46;
+            w = g_big6_layout[card].w - 24; h = 48; fs = 36; txt = k_values[si - 6];
         } else if (si < 18) {
             int card = 3 + (int)(si - 12);
-            x = g_big6_layout[card].x + 14; y = g_big6_layout[card].y + 102;
-            w = g_big6_layout[card].w - 20; h = 24; fs = 16; txt = k_subs[si - 12];
-        } else if (si == 18) { x=20; y=10; w=620; h=28; fs=20; txt=k_fixed[0]; }
-        else if (si == 19) { x=670; y=10; w=330; h=28; fs=20; txt=k_fixed[1]; }
-        else if (si == 20) { x=258; y=64; w=508; h=24; fs=16; txt=k_fixed[2]; }
-        else if (si == 21) { x=258; y=372; w=508; h=24; fs=16; txt=k_fixed[3]; }
-        else if (si == 22) { x=258; y=424; w=508; h=24; fs=16; txt=k_fixed[4]; }
-        else if (si == 23) { x=258; y=454; w=508; h=24; fs=16; txt=k_fixed[5]; }
-        else { x=20; y=502; w=980; h=28; fs=18; txt=k_fixed[6]; }
+            x = g_big6_layout[card].x + 16; y = g_big6_layout[card].y + 104;
+            w = g_big6_layout[card].w - 24; h = 24; fs = 16; txt = k_subs[si - 12];
+        } else if (si == 18) { x=18;  y=160; w=380; h=32; fs=24; txt=k_fixed[0]; }
+        else if (si == 19)   { x=424; y=160; w=470; h=32; fs=20; txt=k_fixed[1]; }
+        else if (si == 20)   { x=18;  y=204; w=870; h=26; fs=18; txt=k_fixed[2]; }
+        else if (si == 21)   { x=18;  y=240; w=870; h=26; fs=18; txt=k_fixed[3]; }
+        else if (si == 22)   { x=18;  y=276; w=870; h=26; fs=18; txt=k_fixed[4]; }
+        else if (si == 23)   { x=18;  y=312; w=870; h=26; fs=18; txt=k_fixed[5]; }
+        else                 { x=18;  y=348; w=870; h=26; fs=16; txt=k_fixed[6]; }
         *(int *)(rec + 0x10) = x; *(int *)(rec + 0x14) = y;
         *(int *)(rec + 0x18) = w; *(int *)(rec + 0x1c) = h;
         rec[0x20] = 1;

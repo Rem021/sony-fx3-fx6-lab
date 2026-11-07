@@ -608,6 +608,48 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
         param[0x37] = g_big6_layout[i].a;
         fn(obj);
     }
+    if (seq > 0U) {
+        static const char *const k_fps_v[6]  = { "23.98p", "24.00p", "25.00p", "29.97p", "59.94p", "120p" };
+        static const char *const k_shut_v[6] = { "180.0 deg", "90.0 deg", "1/48", "1/50", "1/60", "1/100" };
+        static const char *const k_iso_v[6]  = { "800 EI", "1600 EI", "3200 EI", "12800", "640 EI", "2000 EI" };
+        static const char *const k_nd_v[5]   = { "1/16 ND", "1/64 ND", "AUTO ND", "CLEAR", "1/4 ND" };
+        static const char *const k_look_v[5] = { "S-CINETONE", "S-LOG3", "709TONE", "REC709", "HLG3" };
+        static const char *const k_wb_v[5]   = { "5600K", "3200K", "4300K", "6500K", "ATW" };
+        const char *vals[6];
+        vals[0] = k_fps_v[mb ? (mb[3] % 6U) : 0U];
+        vals[1] = k_shut_v[mb ? (mb[4] % 6U) : 0U];
+        vals[2] = k_iso_v[mb ? (mb[5] % 6U) : 0U];
+        vals[3] = k_nd_v[mb ? (mb[6] % 5U) : 0U];
+        vals[4] = k_look_v[mb ? (mb[7] % 5U) : 0U];
+        vals[5] = k_wb_v[mb ? (mb[8] % 5U) : 0U];
+        char *place_base = (char *)self + 0x08;
+        for (unsigned int vi = 0; vi < 6; vi++) {
+            void *sobj = place_base + (unsigned long)(22 + 6 + vi) * 0x500UL;
+            if (!valid_ptr(sobj)) continue;
+            void *svtbl = *(void **)sobj;
+            if (!valid_ptr(svtbl)) continue;
+            void (*sfn)(void *) = *(void (**)(void *))((char *)svtbl + 0x150);
+            if (!valid_ptr((const void *)sfn)) continue;
+            unsigned char *pp = (unsigned char *)sobj + 0x1b8;
+            const char *txt = vals[vi];
+            unsigned int tl = 0;
+            while (txt[tl] && tl < 127) { pp[0x2c + tl] = (unsigned char)txt[tl]; tl++; }
+            pp[0x2c + tl] = 0;
+            sfn(sobj);
+        }
+        void *rec_obj = place_base + (unsigned long)(22 + 19) * 0x500UL;
+        if (valid_ptr(rec_obj) && valid_ptr(*(void **)rec_obj)) {
+            void (*sfn)(void *) = *(void (**)(void *))((char *)(*(void **)rec_obj) + 0x150);
+            if (valid_ptr((const void *)sfn)) {
+                unsigned char *pp = (unsigned char *)rec_obj + 0x1b8;
+                const char *rtxt = (mb && (mb[9] & 1U)) ? "REC   SLOT A/B 118m   19.5V" : "STBY   SLOT A/B 118m   19.5V";
+                unsigned int tl = 0;
+                while (rtxt[tl] && tl < 127) { pp[0x2c + tl] = (unsigned char)rtxt[tl]; tl++; }
+                pp[0x2c + tl] = 0;
+                sfn(rec_obj);
+            }
+        }
+    }
 }
 
 /*

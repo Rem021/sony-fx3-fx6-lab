@@ -117,54 +117,30 @@ def argb_to_rgba(argb: int) -> tuple[int, int, int, int]:
     return (argb & 0xFF, (argb >> 8) & 0xFF, (argb >> 16) & 0xFF, (argb >> 24) & 0xFF)
 
 
+_FONT_CACHE = {}
+_LTT_BYTES = None
+
+def _get_sony_font(size: int):
+    global _LTT_BYTES
+    if size not in _FONT_CACHE:
+        from PIL import ImageFont
+        if _LTT_BYTES is None:
+            ltt_path = Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/UniversOTS-SJ_wIcon.ltt")
+            _LTT_BYTES = ltt_path.read_bytes()[0xd230:0x69310]
+        _FONT_CACHE[size] = ImageFont.truetype(io.BytesIO(_LTT_BYTES), size)
+    return _FONT_CACHE[size]
+
+
 def render_big6_frame_png(state: dict) -> bytes:
-    """Renders the exact 1024x540 framebuffer produced by libgrm-fbinit25.c."""
-    img = Image.new("RGBA", (FB_W, FB_H), argb_to_rgba(0xFF10141A))
-    px = img.load()
+    """Renders the 1024x540 FX6 Big6 framebuffer using Sony's genuine Univers OTS-SJ font (matching Candidate 271)."""
+    from PIL import ImageDraw
+    #Note: in Candidate 271 gpe0.bin, pixel bytes are BGRA in memory, and PNG is saved via Image.frombytes('RGBA', ..., 'raw', 'BGRA').
+    # Here we construct standard RGBA for browser PNG display so colors match fx6-271-full-big6-1024x540.png.
+    def c_rgba(r, g, b, a=255):
+        return (r, g, b, a)
 
-    def fill_rect(rx, ry, rw, rh, argb):
-        c = argb_to_rgba(argb)
-        x0, y0 = max(0, rx), max(0, ry)
-        x1, y1 = min(FB_W, rx + rw), min(FB_H, ry + rh)
-        for y in range(y0, y1):
-            for x in range(x0, x1):
-                px[x, y] = c
-
-    def draw_border(x0, y0, x1, y1, argb, thickness=1):
-        c = argb_to_rgba(argb)
-        for t in range(thickness):
-            bx0, by0, bx1, by1 = x0 + t, y0 + t, x1 - t, y1 - t
-            for x in range(bx0, bx1):
-                if 0 <= by0 < FB_H:
-                    px[x, by0] = c
-                if 0 <= by1 - 1 < FB_H:
-                    px[x, by1 - 1] = c
-            for y in range(by0, by1):
-                if 0 <= bx0 < FB_W:
-                    px[bx0, y] = c
-                if 0 <= bx1 - 1 < FB_W:
-                    px[bx1 - 1, y] = c
-
-    def draw_text(x, y, text, scale, argb):
-        c = argb_to_rgba(argb)
-        cx = x
-        for ch in text.upper():
-            rows = GLYPHS_5X7.get(ch)
-            if rows:
-                for r in range(7):
-                    row_bits = rows[r]
-                    if not row_bits:
-                        continue
-                    for col in range(5):
-                        if row_bits & (1 << (4 - col)):
-                            for sy in range(scale):
-                                py = y + r * scale + sy
-                                if 0 <= py < FB_H:
-                                    for sx in range(scale):
-                                        px_x = cx + col * scale + sx
-                                        if 0 <= px_x < FB_W:
-                                            px[px_x, py] = c
-            cx += 6 * scale
+    img = Image.new("RGBA", (FB_W, FB_H), c_rgba(0x10, 0x14, 0x1A))
+    draw = ImageDraw.Draw(img)
 
     has_input = state["seq"] > 0
     sel_box   = state["sel"] % 6
@@ -176,60 +152,54 @@ def render_big6_frame_png(state: dict) -> bytes:
     wb_idx    = state["wb"] % 5
     rec_state = state["rec"] & 1
 
-    # Top & bottom bars
-    fill_rect(8, 6, 1008, 38, 0xFF1C2430)
-    draw_border(8, 6, 1016, 44, 0xFF485A70, 1)
-    draw_text(24, 15, "ILME-FX6  BIG6 HOME   TC 01:02:24:18   XAVC-I 4K 10BIT", 2, 0xFFE8F0F8)
-    if rec_state:
-        draw_text(852, 15, "REC   CFEX-A", 2, 0xFFFF3838)
-    else:
-        draw_text(852, 15, "STBY  CFEX-A", 2, 0xFF38E878)
+    # #01 Top Bar & #02 Bottom Bar
+    draw.rectangle([8, 6, 8 + 1008 - 1, 6 + 38 - 1], fill=c_rgba(0x1C, 0x24, 0x30))
+    draw.rectangle([8, 496, 8 + 1008 - 1, 496 + 38 - 1], fill=c_rgba(0x1C, 0x24, 0x30))
 
-    fill_rect(8, 496, 1008, 38, 0xFF1C2430)
-    draw_border(8, 496, 1016, 534, 0xFF485A70, 1)
-    draw_text(24, 505, "CH1 -12DB   CH2 -12DB   CH3 -20DB   CH4 -20DB   DC 19.5V  100%", 2, 0xFFB8C8D8)
+    # #09 Center 16:9 Viewport & #10 Center Audio/Status Card
+    draw.rectangle([242, 52, 242 + 540 - 1, 52 + 356 - 1], fill=c_rgba(0x14, 0x1E, 0x28))
+    draw.rectangle([242, 416, 242 + 540 - 1, 416 + 72 - 1], fill=c_rgba(0x1C, 0x28, 0x36))
 
-    # 6 Big6 Boxes
-    boxes = [
-        (0, 8,   52,  "1  FPS",       "> 1 FPS <",       FPS_OPTS[fps_idx],   4, "S/Q  OFF   FIXED", 0xFFF08018),
-        (1, 8,   200, "2  SHUTTER",   "> 2 SHUTTER <",   SHUT_OPTS[shut_idx], 4, "ANGLE   ECS OFF",  0xFFF08018),
-        (2, 8,   348, "3  ISO / GAIN","> 3 ISO/GAIN <",  ISO_OPTS[iso_idx],   4, "HIGH BASE 12800" if iso_idx == 3 else "BASE ISO 800  0.0E", 0xFFF08018),
-        (3, 792, 52,  "4  ND FILTER", "> 4 ND FILTER <", ND_OPTS[nd_idx],     3, "PRESET  1/4  1/16",0xFF28B8E8),
-        (4, 792, 200, "5  BASE LOOK", "> 5 BASE LOOK <", LOOK_OPTS[look_idx], 3, "MLUT OFF  CINE EI",0xFFF08018),
-        (5, 792, 348, "6  WHITE BAL", "> 6 WHITE BAL <", WB_OPTS[wb_idx],     4, "PRESET  TINT +0",  0xFFF08018),
+    # 6 Big6 Cards (#03..#08) + Accent Strips (#11..#16)
+    cards = [
+        (0, 8,   52,  "FPS",        FPS_OPTS[fps_idx].lower() if FPS_OPTS[fps_idx].endswith("P") else FPS_OPTS[fps_idx], "S&Q: 60FPS",     c_rgba(0xF0, 0x80, 0x18)),
+        (1, 8,   200, "SHUTTER",    f"{SHUT_OPTS[shut_idx]} deg" if "." in SHUT_OPTS[shut_idx] else SHUT_OPTS[shut_idx], "MODE: ANGLE",    c_rgba(0xF0, 0x80, 0x18)),
+        (2, 8,   348, "ISO / GAIN", ISO_OPTS[iso_idx],                                                                   "CINE EI / HIGH", c_rgba(0xF0, 0x80, 0x18)),
+        (3, 792, 52,  "ND FILTER",  ND_OPTS[nd_idx],                                                                     "AUTO / CLEAR",   c_rgba(0x28, 0xB8, 0xE8)),
+        (4, 792, 200, "BASE LOOK",  LOOK_OPTS[look_idx],                                                                 "3D LUT: ON",     c_rgba(0xF0, 0x80, 0x18)),
+        (5, 792, 348, "WHITE BAL",  WB_OPTS[wb_idx],                                                                     "MODE: PRESET",   c_rgba(0xF0, 0x80, 0x18)),
     ]
-    for bid, bx, by, title, ftitle, val_str, vscale, sub, accent in boxes:
+    for bid, bx, by, title, val_str, sub_str, accent in cards:
         focused = has_input and (bid == sel_box)
-        bg = 0xFF2C3E54 if focused else 0xFF222E3E
-        fill_rect(bx, by, 224, 140, bg)
-        draw_border(bx, by, bx + 224, by + 140, 0xFFFF9818 if focused else 0xFF5A7088, 4 if focused else 1)
-        tx = 24 if bx < 400 else 808
-        vx = (36 if bx < 400 else (816 if vscale == 3 else 820))
-        vy = by + 46 if vscale == 4 else by + 50
-        draw_text(tx, by + 12, ftitle if focused else title, 2, 0xFFFFB838 if focused else accent)
-        draw_text(vx, vy, val_str, vscale, 0xFFFFFFFF)
-        draw_text(tx, by + 104, sub, 2, 0xFF98B0C8)
-        # Left/Right 6px accent strip
-        fill_rect(bx, by, 6, 140, accent)
+        bg = c_rgba(0x2E, 0x3E, 0x54) if focused else c_rgba(0x22, 0x2E, 0x3E)
+        draw.rectangle([bx, by, bx + 224 - 1, by + 140 - 1], fill=bg)
+        if focused:
+            draw.rectangle([bx, by, bx + 224 - 1, by + 140 - 1], outline=c_rgba(245, 155, 45), width=2)
+        draw.rectangle([bx, by, bx + 6 - 1, by + 140 - 1], fill=accent)
+        # Native Univers OTS-SJ text lines (matching Candidate 271 positions & colors)
+        draw.text((bx + 14, by + 8),   title,   font=_get_sony_font(18), fill=c_rgba(245, 155, 45))
+        draw.text((bx + 14, by + 44),  val_str, font=_get_sony_font(32), fill=c_rgba(255, 255, 255))
+        draw.text((bx + 14, by + 102), sub_str, font=_get_sony_font(16), fill=c_rgba(150, 195, 230))
 
-    # Center 16:9 Viewport & Bottom Status Card
-    fill_rect(242, 52, 540, 356, 0xFF141E28)
-    draw_border(242, 52, 782, 408, 0xFFFF3838 if rec_state else 0xFF7088A0, 1)
-    draw_text(258, 68, "16:9 VIEWPORT  3840X2160  S-LOG3 / S-GAMUT3.CINE", 2, 0xFF98B8D8)
-    draw_text(258, 382, "FE 24-70MM F2.8 GM II   AF-C  WIDE   F2.8", 2, 0xFFE0E8F0)
+    # Fixed 7 strings (#18..#24 in Candidate 271)
+    draw.text((20, 10),  "ILME-FX6   TC 01:02:24:18   XAVC-I 4K 10BIT", font=_get_sony_font(20), fill=c_rgba(255, 255, 255))
+    rec_label = "REC   SLOT A/B 118m   19.5V" if rec_state else "STBY   SLOT A/B 118m   19.5V"
+    rec_col   = c_rgba(255, 80, 80) if rec_state else c_rgba(80, 235, 130)
+    draw.text((670, 10), rec_label, font=_get_sony_font(20), fill=rec_col)
+    draw.text((258, 64),  "16:9   4096x2160   S-Cinetone   AF: FACE/EYE",           font=_get_sony_font(16), fill=c_rgba(110, 215, 250))
+    draw.text((258, 372), "HISTOGRAM: ON    HORIZON: 0.0 deg    ZEBRA: 70%",        font=_get_sony_font(16), fill=c_rgba(110, 215, 250))
+    draw.text((258, 424), "CH1 -12dB [||||||||....]    CH2 -14dB [|||||||.....]",   font=_get_sony_font(16), fill=c_rgba(80, 235, 130))
+    draw.text((258, 454), "PEAKING: ON (RED)    GAMMA ASSIST: AUTO    GENLOCK: INT",font=_get_sony_font(16), fill=c_rgba(255, 255, 255))
+    draw.text((20, 502),  "HOME: BIG6    MENU: FULL    UP/DN/L/R: SELECT    SET: CHANGE", font=_get_sony_font(18), fill=c_rgba(255, 255, 255))
 
-    fill_rect(242, 416, 540, 72, 0xFF1C2836)
-    draw_border(242, 416, 782, 488, 0xFF485A70, 1)
-    draw_text(258, 430, "PEAKING: ON (RED)   ZEBRA: 70%   GAMMA ASSIST: AUTO", 2, 0xFFD8E4F0)
-    draw_text(258, 458, "SLOT A: 118 MIN     SLOT B: 118 MIN     GENLOCK: INT", 2, 0xFF38E878)
-
-    # Center 20x20 crosshair icon (matches GRM_gpermRectblit #19..#23 at (502, 220))
+    # Center 20x20 crosshair icon at (502, 220)
+    px = img.load()
     for y in range(20):
         for x in range(20):
             border = (x < 2 or x >= 18 or y < 2 or y >= 18)
             cross  = (x in (9, 10) or y in (9, 10))
-            argb = 0xFFFFFFFF if border else (0xFFF03838 if cross else 0xFF28B8E8)
-            px[502 + x, 220 + y] = argb_to_rgba(argb)
+            col = c_rgba(255, 255, 255) if border else (c_rgba(0xF0, 0x38, 0x38) if cross else c_rgba(0x28, 0xB8, 0xE8))
+            px[502 + x, 220 + y] = col
 
     buf = io.BytesIO()
     img.save(buf, format="PNG")
@@ -471,7 +441,9 @@ class Fx6MenuSession:
         with self.lock:
             if self.vm_running:
                 return {"ok": True, "message": "QEMU VM 已在运行中"}
-            manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-271.json"
+            manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-272.json"
+            if not manifest_path.exists():
+                manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-271.json"
             if not manifest_path.exists():
                 manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-270.json"
             if not manifest_path.exists():

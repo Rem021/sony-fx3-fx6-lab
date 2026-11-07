@@ -327,3 +327,68 @@ osal_wai_sem_tmo
 - 未启动 VM；未改 QEMU/DTB/平台参数；
 - 未写 shim/解析器；未跑 pmemsave；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 12. libosal overlay 运行结果
+
+时间：2026-11-07。为验证“CPIO 里 libosal 是 FX3 版”是否为 `osal_alloc_sem_id -1023` 的原因，做了两次受控运行。
+
+### 12.1 CPIO 库哈希对照
+
+CPIO `grmreal162`：
+
+```text
+libuxengine.so    11dbc9a7...  = nflasha15-files FX6 正确版
+libgrm.so         0f9f9226...  = 正确版
+libgemini-grm.so  f47c8f3e...  = 正确版
+libux_core.so     c72d52b4...  = 正确版
+libosal_utm.so    d9510b4c...  = FX3 版（非 nflasha15 a7ced89e）
+libosal_uipc.so   09ebf598...  = FX3 版（非 nflasha15 fe248d22）
+```
+
+即：**核心 FX6 库正确，只有 libosal 是 FX3 版**。
+
+### 12.2 overlay 实验
+
+- 用 `nflasha15-files/lib` 的 4 个 FX6 libosal 做 overlay；
+- 追加到原 CPIO 后生成：
+  - `grmreal163-libosal.cpio`（`./usr/lib` 路径，未覆盖成功）
+  - `grmreal164-libosal.cpio`（`usr/lib` 路径）
+- 各自 150s、单 VM、`ap-window`。
+
+两次结果：
+
+```text
+CP_RC0
+appfw-launch: Application_System_Init returned
+appfw-launch: uxengine_init2 returned
+appfw-launch: GraphicsEngine ctor=...
+osal_alloc_sem_id() osalErr = -1023  (x5)
+APPFW_SEGV sig=11 addr=0x10
+```
+
+**行为没有变化**：
+
+- 仍 5 次 `osal_alloc_sem_id -1023`；
+- 仍在 GraphicsEngine ctor 后崩溃；
+- overlay 未修复，且 overlay 是否真正覆盖 `/usr/lib/libosal*` 未能从串口确认。
+
+### 12.3 解释
+
+- FX6 libuxengine/libgrm/libgemini/libux_core 本身不导入 `osal_alloc_sem_id`；
+- FX6 libosal 也不导出该符号；
+- 错误字符串在 `libEsCodecLibrary.so`、`libInfraRemote.so`、`libosal_udate.so` 等库中出现，更像**别的库的日志**，不一定是 libosal 的返回值；
+- 因此“换 libosal”不是充分修复；需要把 `APPFW_SEGV` 的 PC 映射到具体库/函数。
+
+### 12.4 下一步
+
+1. 在 appfw-launch 崩溃处理里打印 `/proc/self/maps` 或 `dladdr(pc)`，把 `pc=...` 落到具体 `.so+offset`；
+2. 若 PC 在 libuxengine，查其符号/反汇编；若在 libgrm/libgemini，继续按前一份静态报告处理空成员；
+3. 在明确函数前不再重复 overlay 运行；
+4. 仍保持 FX3 平台/QEMU/DTB 参数不变。
+
+## 13. 边界
+
+- 本轮做了两次本地 VM 候选运行；未改原固件；
+- 未改 QEMU 命令、DTB、平台参数；
+- 未写 shim/解析器；未跑 pmemsave；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

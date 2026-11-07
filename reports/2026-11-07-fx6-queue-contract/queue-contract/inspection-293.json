@@ -1,0 +1,571 @@
+{
+  "inputs": {
+    "appfw": {
+      "bytes": 50520424,
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+    },
+    "osal": {
+      "bytes": 43752,
+      "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+    }
+  },
+  "identity_string": "void infra_wrapper_bb::detail::finalize()",
+  "bb_queue_storage": "appFw+0x5c38594",
+  "receive_abi": {
+    "return": "int (w0)",
+    "qid": "uint32_t (w0)",
+    "output": "void ** (x1)",
+    "timeout": "int (w2)"
+  },
+  "calls": {
+    "bb_initialize": [
+      {
+        "site": "0x20ef9d8",
+        "target": "0xb18d60",
+        "symbol": "osal_subsystem_id"
+      },
+      {
+        "site": "0x20ef9ec",
+        "target": "0x215c954",
+        "symbol": null
+      },
+      {
+        "site": "0x20efa08",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efa1c",
+        "target": "0x222dd58",
+        "symbol": null
+      },
+      {
+        "site": "0x20efa28",
+        "target": "0xb18d60",
+        "symbol": "osal_subsystem_id"
+      },
+      {
+        "site": "0x20efa3c",
+        "target": "0x215c954",
+        "symbol": null
+      },
+      {
+        "site": "0x20efa58",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efa6c",
+        "target": "0x222dd58",
+        "symbol": null
+      },
+      {
+        "site": "0x20efa78",
+        "target": "0xb18d60",
+        "symbol": "osal_subsystem_id"
+      },
+      {
+        "site": "0x20efa8c",
+        "target": "0x215c954",
+        "symbol": null
+      },
+      {
+        "site": "0x20efaa8",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efabc",
+        "target": "0x222dd58",
+        "symbol": null
+      },
+      {
+        "site": "0x20efad8",
+        "target": "0x222dd58",
+        "symbol": null
+      },
+      {
+        "site": "0x20efaf4",
+        "target": "0x222dd58",
+        "symbol": null
+      }
+    ],
+    "bb_finalize": [
+      {
+        "site": "0x20efb34",
+        "target": "0xb197e0",
+        "symbol": "osal_valloc_msg_wait"
+      },
+      {
+        "site": "0x20efb50",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efb70",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efb80",
+        "target": "0xb17c70",
+        "symbol": "osal_set_msg_src"
+      },
+      {
+        "site": "0x20efb8c",
+        "target": "0xb1a120",
+        "symbol": "osal_snd_msg"
+      },
+      {
+        "site": "0x20efba8",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efbb8",
+        "target": "0xb19ec0",
+        "symbol": "osal_rcv_msg_tmo"
+      },
+      {
+        "site": "0x20efbc4",
+        "target": "0xb19d40",
+        "symbol": "osal_free_msg"
+      },
+      {
+        "site": "0x20efbd0",
+        "target": "0x215c9ac",
+        "symbol": null
+      },
+      {
+        "site": "0x20efbec",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20efbfc",
+        "target": "0x222ddc8",
+        "symbol": null
+      },
+      {
+        "site": "0x20efc08",
+        "target": "0x222ddc8",
+        "symbol": null
+      },
+      {
+        "site": "0x20efc14",
+        "target": "0x222ddc8",
+        "symbol": null
+      },
+      {
+        "site": "0x20efc20",
+        "target": "0x222ddc8",
+        "symbol": null
+      },
+      {
+        "site": "0x20efc2c",
+        "target": "0x222ddc8",
+        "symbol": null
+      }
+    ],
+    "bb_receiver_shutdown_branch": [
+      {
+        "site": "0x20f80f4",
+        "target": "0xb19ec0",
+        "symbol": "osal_rcv_msg_tmo"
+      },
+      {
+        "site": "0x20f80fc",
+        "target": "0xb18560",
+        "symbol": "osal_get_msg_src"
+      },
+      {
+        "site": "0x20f8120",
+        "target": "0xb197e0",
+        "symbol": "osal_valloc_msg_wait"
+      },
+      {
+        "site": "0x20f813c",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20f815c",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20f816c",
+        "target": "0xb17c70",
+        "symbol": "osal_set_msg_src"
+      },
+      {
+        "site": "0x20f8178",
+        "target": "0xb1a120",
+        "symbol": "osal_snd_msg"
+      },
+      {
+        "site": "0x20f8184",
+        "target": "0xb19d40",
+        "symbol": "osal_free_msg"
+      }
+    ],
+    "temporary_queue_guard_ctor": [
+      {
+        "site": "0x20ef4b4",
+        "target": "0xb18d60",
+        "symbol": "osal_subsystem_id"
+      },
+      {
+        "site": "0x20ef4c8",
+        "target": "0xb19900",
+        "symbol": "osal_dynamic_id"
+      },
+      {
+        "site": "0x20ef4d4",
+        "target": "0xb183c0",
+        "symbol": "osal_stat_msgq"
+      },
+      {
+        "site": "0x20ef508",
+        "target": "0x21bb120",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef51c",
+        "target": "0x21bb120",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef550",
+        "target": "0xb19ec0",
+        "symbol": "osal_rcv_msg_tmo"
+      },
+      {
+        "site": "0x20ef558",
+        "target": "0xb18560",
+        "symbol": "osal_get_msg_src"
+      },
+      {
+        "site": "0x20ef564",
+        "target": "0xb19ab0",
+        "symbol": "osal_msg_size"
+      },
+      {
+        "site": "0x20ef57c",
+        "target": "0x21bb120",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef598",
+        "target": "0xb17880",
+        "symbol": "memcpy"
+      },
+      {
+        "site": "0x20ef5b4",
+        "target": "0x21bb120",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef5cc",
+        "target": "0xb19d40",
+        "symbol": "osal_free_msg"
+      },
+      {
+        "site": "0x20ef5d0",
+        "target": "0x20ef520",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef5e8",
+        "target": "0x2167784",
+        "symbol": null
+      }
+    ],
+    "synchronous_request_helper": [
+      {
+        "site": "0x20ef63c",
+        "target": "0x20ef48c",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef68c",
+        "target": "0x210461c",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef6a4",
+        "target": "0x2105154",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef6ec",
+        "target": "0x21bb120",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef6f8",
+        "target": "0x20ee3a8",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef71c",
+        "target": "0x20ef6f4",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef738",
+        "target": "0xb197e0",
+        "symbol": "osal_valloc_msg_wait"
+      },
+      {
+        "site": "0x20ef754",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef774",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef784",
+        "target": "0xb17880",
+        "symbol": "memcpy"
+      },
+      {
+        "site": "0x20ef790",
+        "target": "0xb17c70",
+        "symbol": "osal_set_msg_src"
+      },
+      {
+        "site": "0x20ef79c",
+        "target": "0xb1a120",
+        "symbol": "osal_snd_msg"
+      },
+      {
+        "site": "0x20ef7b8",
+        "target": "0x2167784",
+        "symbol": null
+      },
+      {
+        "site": "0x20ef7c8",
+        "target": "0xb19ec0",
+        "symbol": "osal_rcv_msg_tmo"
+      },
+      {
+        "site": "0x20ef7dc",
+        "target": "0xb17880",
+        "symbol": "memcpy"
+      },
+      {
+        "site": "0x20ef7e8",
+        "target": "0xb19d40",
+        "symbol": "osal_free_msg"
+      },
+      {
+        "site": "0x20ef7ec",
+        "target": "0x20ef6f4",
+        "symbol": null
+      }
+    ]
+  },
+  "receive_sites": {
+    "bb_finalize": {
+      "call": "0x20efbb8",
+      "lr": "0x20efbbc",
+      "following": [
+        {
+          "address": "0x20efbbc",
+          "instruction": "ldr x1, [x29, #0x38]"
+        },
+        {
+          "address": "0x20efbc0",
+          "instruction": "ldr w0, [x19, #0x594]"
+        },
+        {
+          "address": "0x20efbc4",
+          "instruction": "bl #0xb19d40"
+        },
+        {
+          "address": "0x20efbc8",
+          "instruction": "ldr w1, [x19, #0x594]"
+        },
+        {
+          "address": "0x20efbcc",
+          "instruction": "mov w0, #2"
+        },
+        {
+          "address": "0x20efbd0",
+          "instruction": "bl #0x215c9ac"
+        },
+        {
+          "address": "0x20efbd4",
+          "instruction": "cbz w0, #0x20efbf0"
+        }
+      ]
+    },
+    "bb_receiver": {
+      "call": "0x20f80f4",
+      "lr": "0x20f80f8",
+      "following": [
+        {
+          "address": "0x20f80f8",
+          "instruction": "ldr x0, [x29, #0x58]"
+        },
+        {
+          "address": "0x20f80fc",
+          "instruction": "bl #0xb18560"
+        },
+        {
+          "address": "0x20f8100",
+          "instruction": "mov w1, w0"
+        },
+        {
+          "address": "0x20f8104",
+          "instruction": "ldr w2, [x20, #0x594]"
+        },
+        {
+          "address": "0x20f8108",
+          "instruction": "cmp w0, w2"
+        },
+        {
+          "address": "0x20f810c",
+          "instruction": "b.ne #0x20f81a0"
+        },
+        {
+          "address": "0x20f8110",
+          "instruction": "add x1, x29, #0xa0"
+        }
+      ]
+    },
+    "synchronous_request": {
+      "call": "0x20ef7c8",
+      "lr": "0x20ef7cc",
+      "following": [
+        {
+          "address": "0x20ef7cc",
+          "instruction": "ldr x19, [x29, #0x58]"
+        },
+        {
+          "address": "0x20ef7d0",
+          "instruction": "sxtw x2, w25"
+        },
+        {
+          "address": "0x20ef7d4",
+          "instruction": "mov x0, x21"
+        },
+        {
+          "address": "0x20ef7d8",
+          "instruction": "mov x1, x19"
+        },
+        {
+          "address": "0x20ef7dc",
+          "instruction": "bl #0xb17880"
+        },
+        {
+          "address": "0x20ef7e0",
+          "instruction": "ldr w0, [x29, #0x50]"
+        },
+        {
+          "address": "0x20ef7e4",
+          "instruction": "mov x1, x19"
+        }
+      ]
+    },
+    "temporary_queue_drain": {
+      "call": "0x20ef550",
+      "lr": "0x20ef554",
+      "following": [
+        {
+          "address": "0x20ef554",
+          "instruction": "ldr x0, [x29, #0x58]"
+        },
+        {
+          "address": "0x20ef558",
+          "instruction": "bl #0xb18560"
+        },
+        {
+          "address": "0x20ef55c",
+          "instruction": "mov w22, w0"
+        },
+        {
+          "address": "0x20ef560",
+          "instruction": "ldr x0, [x29, #0x58]"
+        },
+        {
+          "address": "0x20ef564",
+          "instruction": "bl #0xb19ab0"
+        },
+        {
+          "address": "0x20ef568",
+          "instruction": "sxtw x21, w0"
+        },
+        {
+          "address": "0x20ef56c",
+          "instruction": "mov x2, x21"
+        }
+      ]
+    }
+  },
+  "osal_symbols": {
+    "u_osal_rcv_msg_tmo": {
+      "offset": "0x3c60",
+      "bytes": 120
+    },
+    "osal_free_msg": {
+      "offset": "0x6970",
+      "bytes": 360
+    },
+    "osal_get_msg_src": {
+      "offset": "0x7e28",
+      "bytes": 8
+    },
+    "osal_dynamic_id": {
+      "offset": "0x75b8",
+      "bytes": 1840
+    },
+    "osal_rcv_msg_tmo": {
+      "offset": "0x6468",
+      "bytes": 836
+    }
+  },
+  "kernel_receive_proxy_calls": [
+    {
+      "site": "0x3c98",
+      "target": "0x2530",
+      "symbol": "ioctl"
+    },
+    {
+      "site": "0x3cc8",
+      "target": "0x26b0",
+      "symbol": "__errno_location"
+    },
+    {
+      "site": "0x3cd4",
+      "target": "0x3cb4",
+      "symbol": null
+    }
+  ],
+  "kernel_receive_ioctl": "0x80000007",
+  "qid_0x910040": {
+    "bit15": false,
+    "branch": "u_osal_rcv_msg_tmo kernel proxy",
+    "runtime_owner_and_caller": "unbound by the supplied 293 wchan log"
+  },
+  "packed_inputs": {
+    "usr/lib/appFw.so": {
+      "bytes": 50520424,
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+    },
+    "usr/lib/libosal_uipc.so": {
+      "bytes": 43752,
+      "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+    }
+  },
+  "serial_snapshot": {
+    "bytes": 119048,
+    "sha256": "457bc2255f361c20ed2b54bc6e5bfd360e85a5c3cdb851d924944307b5e0736b"
+  },
+  "runtime_exact_site_or_qid_lines": [],
+  "receive_wchan_count": 26
+}

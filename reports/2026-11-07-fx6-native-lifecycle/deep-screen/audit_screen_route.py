@@ -107,7 +107,13 @@ def audit(path):
         raise ValueError('Boot completion handler function-pointer binding mismatch')
     if rel.get(0x2ee7e38) != 0xc091d0:
         raise ValueError('GRM trigger callback binding mismatch')
+    if u32(0xdf9204) != 0x52804aa0 or u32(0xdf9214) != 0xb81f8e60 or u32(0xdf921c) != 0x29067fa0:
+        raise ValueError('Initial screen request/sentinel instruction mismatch')
     return {'input': {'path': str(path), 'bytes': len(data), 'sha256': digest},
+        'invalid_screen_sentinel': {'hex': '0x255', 'decimal': 597,
+            'home_cmp_vma': '0xf2dedc', 'home_cmp_instruction_word': '0x7109541f'},
+        'manager_initial_screen_request': {'hex': ['0x255','0x0','0x255'],
+            'decimal': [597,0,597], 'mov_vma': '0xdf9204', 'mov_instruction_word': '0x52804aa0'},
         'registry': {'vma': hex(registry), 'got': '0x2ee2100', 'stride': '0x38'},
         'screens': screens, 'direct_call_edges_verified': calls,
         'diagnostic_bindings': diagnostics,

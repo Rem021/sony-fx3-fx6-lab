@@ -40,6 +40,8 @@
 
 行 `+0x20` 独立保存相同 screen ID；controller 工厂也把该 ID 写入 `controller+0x28`。因此 HOME ID 为 **10**，不能把相邻行里的 9 当作 HOME。表里还有 layer/restore/显示性质字段，本轮只保留原值，不扩充未证明的语义。
 
+**数值勘误（2026-11-07）：无效 screen-id sentinel 为 `0x255`，即十进制 `597`。** 先前协调消息里的 `{255,0,255}` 漏写十六进制前缀；正确初始请求为 **`{0x255,0x0,0x255}`＝十进制 `{597,0,597}`**。十进制 255 的十六进制是 `0xff`，与这里不同。精确证据：`0xdf9204` 的指令 word 为 `0x52804aa0`（little-endian `a04a8052`），即 `mov w0,#0x255`；`0xdf9214` 将它写入第三个参数，`0xdf921c` 的 `stp w0,wzr,[x29,#0x30]` 将前两个参数设为 597 和 0；HOME controller 的 `0xf2dedc` 指令 word `0x7109541f`（`1f540971`）为 `cmp w0,#0x255`。脚本和 JSON 已同时校验并分别输出 hex/decimal。
+
 ## 3. 从 screen manager 经工厂创建
 
 - **`presenter_controller_manager::open_screen_internal`：`0xdf790c`**。由原厂断言函数名绑定；参数是 `self`、三个 `const ds_screen_id&` 和三个 bool。它检查 screen ID、重入状态 `self+0x741` 及当前屏幕状态，随后进入内部切换。

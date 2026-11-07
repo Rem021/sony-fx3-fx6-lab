@@ -5,8 +5,8 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-07T14:25:30.791Z`
-- **Updated At**: `2026-11-07T14:56:54.317Z`
-- **Captured Messages (User / Assistant)**: `28`
+- **Updated At**: `2026-11-07T15:12:25.380Z`
+- **Captured Messages (User / Assistant)**: `43`
 
 ---
 
@@ -46,7 +46,7 @@
 
 资源组进一步确认：那份被称作“FX6 未 strip 版”的 79 MB `appFw.so`，实际上是 FX3 文件；当前 FX6 文件使用的是另一组 `procam_*` 屏幕类。因此，现有三屏坐标和构造函数还需要重新核定归属。
 
-运行审计还发现，部分回执的故障列表为空，串口却记录了启动符号解析失败���我们正把实际日志、CPIO 成员和候选指纹逐一绑定，避免把回执中的空列表当成启动成功。
+运行审计还发现，部分回执的故障列表为空，串口却记录了启动符号解析失败。我们正把实际日志、CPIO 成员和候选指纹逐一绑定，避免把回执中的空列表当成启动成功。
 
 ---
 
@@ -266,5 +266,142 @@ Kikilog 也有独立的初始化要求：它使用 `/dev/usb/kikilog`，候选�
 最后一项也有进展：已找到原厂 `im.elf` 消费模块表的代码，确认它会按阶段、目标掩码和 flags 筛选后派发加载请求。可以证明 Kiki 请求先于 MWF 请求派发；两者初始化完成的先后仍未确认。
 
 本轮材料已收齐。我将保存报告、解析工具和观察候选，并同步到 GitHub。
+
+---
+
+## 🤖 Assistant
+
+第二轮已明确当前直接故障：**MWF 日志对象为空，导致初始化过程中崩溃。**
+
+- 288–290 已越过 UI 线程和 UXEngine，旧的线程未启动假说已排除。
+- 当前启动器缺少原厂 `MWF_Init` 调用，是首要修复候选。
+- 已核实 Kikilog 设备契约、模块派发规则及原生屏幕切换路径，并准备好观察 shim。
+
+本轮未操作 VM；修复效果和原厂菜单仍待运行验证。材料已推送 GitHub：`629e58c5`，关键结论已通过 [Orca orchestration](</Users/kafu/Library/Application Support/orca/codex-accounts/9cc9249d-70b7-4d72-a0f0-ec30dd2c6e39/home/skills/orchestration/SKILL.md>) 回传主线。
+
+[查看第二轮报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-native-lifecycle/README.md)
+
+---
+
+## 👤 User / Coordinator
+
+现在什么进度了
+
+---
+
+## 🤖 Assistant
+
+我先核对主线最新运行和其他 agent 的进展，确认是否已越过上一轮的 MWF 初始化阻塞。
+
+---
+
+## 🤖 Assistant
+
+**还没跑出可操作的 FX6 原厂菜单。刚核实，Candidate 293 正在测试。**
+
+- **已突破**：真实 FX6 `appFw.so` 已进入 UI 图形初始化，完成三块共 24 MiB 的 Arena 配置。
+- **当前阻塞**：最新完成的 291 仍在 MWF 日志对象空指针处崩溃；292 尝试恢复原厂启动链，采样画面仍全黑。
+- **正在推进**：恢复原厂模块初始化生命周期，再沿真实屏幕状态机进入菜单。
+
+此前网页绘制的三屏不计入原厂菜单成功；目前没有新的可见菜单验收结果。
+
+---
+
+## 👤 User / Coordinator
+
+那就继续
+
+---
+
+## 🤖 Assistant
+
+我继续往前推进：先核对 293 的结果和主线正在改的内容，再补齐能直接用于下一轮的原厂初始化证据与候选，避免重复占用 VM。
+
+---
+
+## 🤖 Assistant
+
+我先核对 `+0x20efbb8` 的实际收发和错误分支，重点看超时返回后是否仍读取消息。无限等待先视为协议现象，不能直接当作根因。
+
+---
+
+## 🤖 Assistant
+
+发现了一个关键区别：主线准备缩短等待的 `appFw+0x20efbb8`，实际位于 `infra_wrapper_bb::finalize()`，是退出清理中的回执等待，不是普通的开机收消息。
+
+直接改短超时可能让它在 worker 尚未退出时释放消息、删除队列并等待线程。我会先回传这个发现，再追查它为什么进入 finalize，以及实际等待的线程是否走到这里。
+
+---
+
+## 🤖 Assistant
+
+已经核清：`+0x20efbb8` 属于 BB 模块的终止握手，后面会释放消息、删除队列并等待线程退出；它不检查接收返回码。单改短超时会越过完成确认。当前 293 日志只有等待点名称，还不足以把 UI 线程绑定到这个偏移，观察候选应先记录真实 LR、qid 和返回码。
+
+---
+
+## 🤖 Assistant
+
+293 的复核结果是：有限观察窗口内没有记录到 assert 或崩溃，但两块采样帧仍全零；它同时做了五处 NOP、空对象保护和 Backup 覆盖，不能把结果归因于某一个改动。
+
+另一条确定线索是，其中一处 NOP 跳过了 App 定时器启动，而定时器本来会向 App 事件队列发消息。我已编译出一个只记录调用点、线程和队列 ID 的观察目标文件，下一步用这些信息区分真正的 App 事件等待与退出握手。
+
+---
+
+## 🤖 Assistant
+
+已完成队列契约复核，产物在 `work/parallel-research-20261107/queue-contract/`。
+
+`+0x20efbb8` 是终止握手，不能直接缩短超时后继续释放消息、删除队列和等待线程。293 日志尚未将实际等待绑定到该偏移或 `0x910040`；下一步应先记录精确 LR、qid、返回码，观察候选保持原始行为。
+
+---
+
+## 🤖 Assistant
+
+第三轮已完成：[REPORT.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-screen-dependency/REPORT.md)，同目录含脚本和 JSON。
+
+核心结论：
+
+- `0x910040` 是 timer 服务队列目的地。
+- App 实际等待的队列为 `0x5503e0`。
+- 被 NOP 的 `App::start_utimer` 原本会向该队列生产 `0x02010094` 消息，转换为内部 type 5。
+- `0x12d8254` 删除了 **70 项 infrastructure 初始化**；其中 BB 初始化会创建 5 个 worker。
+- `0xc14dfc` 属于 `adjust::senser`；`0x1397450` 封装 `model_start()`；`0xdf91e8` 请求初始 boot 屏幕过渡。
+
+19 条调用边和错误 donor 拒绝验证通过。缺 timer 生产者已经证实；是否是当前等待的唯一原因仍未证明。未运行 VM、未修改共享候选。
+
+---
+
+## 🤖 Assistant
+
+已��成 [Candidate 293 复核](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/candidate293-review/README.md)，附脚本、JSON及自建源码快照。
+
+- 293有限串口记录确实未见 assert、SEGV、Oops；两份显示采样仍全零。
+- PID217/TID225有26次 `osal_rcv_msg_tmo` 采样，缺少线程名、用户栈和队列信息，尚不能确认它是UI线程。
+- 293在原件入口前执行5处NOP改写，并新增MonCtrl guard及Backup替代值；原件容器SHA不代表运行代码未修改。
+- 291→293仅shim组合变更，不能把结果单归因于 `+0x12d8254`。
+- 292属于bootin支线，其异常是 `MonQueue::GetQueueRemain()`，应与291的MonCtrl故障分开。
+
+全程只读，未连接或操作虚拟机。
+
+---
+
+## 🤖 Assistant
+
+已纠正：sentinel 是 **`0x255`＝十进制 `597`**，初始参数为 **`{597,0,597}`**。
+
+证据：
+
+- `0xdf9204`：`a04a8052` → `mov w0,#0x255`
+- `0xf2dedc`：`1f540971` → `cmp w0,#0x255`
+
+已更新两轮报告、脚本和 JSON，并重跑通过。引用勘误见 [deep-screen/REPORT.md:43](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/deep-screen/REPORT.md:43) 和 [queue-screen-dependency/REPORT.md:25](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-screen-dependency/REPORT.md:25)。
+
+---
+
+## 🤖 Assistant
+
+本轮已把等待分成了可观察的几类：BB 退出握手、worker 收消息、临时请求响应，以及 App 事件循环。观察器已通过 AArch64 编译和三组宿主行为测试，确认原参数、输出所有权、返回码与 errno 得到保留；尚未在 guest 中运行。
+
+关键结论和候选已回传主线。我正在固化报告，下一次实测需要先拿到实际 LR/qid，才能判断该恢复生产者，还是调查退出路径。
 
 ---

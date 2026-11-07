@@ -1,0 +1,95 @@
+{
+  "schema": "fx6-osal-queue-observer-offline-build-v1",
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin27.2.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/observe_osal_queue.c",
+      "bytes": 4544,
+      "sha256": "eb202750d7b863c2608318ff2c577c73855933c9ea72414e94b609b44e65bd31"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/test_observe_osal_queue.c",
+      "bytes": 3523,
+      "sha256": "8d9cc7d7344ec9151d5c5ef2a2788adb68ff6fdc3a8a7cb7c3b70772a5e74004"
+    }
+  ],
+  "object": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-observer-build/observe_osal_queue.o",
+    "bytes": 3960,
+    "sha256": "89e4aef502bd6e0b6747adb0dc67151ff94c74c22e254cfddcaea688a07466ff"
+  },
+  "commands": [
+    [
+      "/usr/bin/clang",
+      "-target",
+      "aarch64-linux-gnu",
+      "-std=c11",
+      "-O2",
+      "-fPIC",
+      "-ffreestanding",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/observe_osal_queue.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-observer-build/observe_osal_queue.o"
+    ],
+    [
+      "/usr/bin/clang",
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-DFX6_QUEUE_OBSERVER_TEST",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/observe_osal_queue.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/test_observe_osal_queue.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-observer-build/host-fixture"
+    ]
+  ],
+  "host_fixture_cases": [
+    {
+      "args": [],
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "stdout": "observer host fixture passed: arguments, output ownership, return values, errno, caller classification"
+    },
+    {
+      "args": [
+        "missing"
+      ],
+      "expected_exit": 126,
+      "actual_exit": 126,
+      "stdout": ""
+    },
+    {
+      "args": [
+        "self"
+      ],
+      "expected_exit": 126,
+      "actual_exit": 126,
+      "stdout": ""
+    }
+  ],
+  "object_elf_machine": "EM_AARCH64",
+  "object_elf_type": "ET_REL",
+  "undefined_symbols": [
+    "__errno_location",
+    "_exit",
+    "clock_gettime",
+    "dladdr",
+    "dlerror",
+    "dlsym",
+    "dprintf",
+    "syscall"
+  ],
+  "exported_symbols": [
+    "osal_rcv_msg_tmo"
+  ],
+  "guest_shared_library_linked": false,
+  "cpio_changed": false,
+  "guest_executed": false,
+  "limits": "Host fakes check forwarding/errno and failure gates; they do not prove guest linker resolution, timing impact or original Sony ABI execution."
+}

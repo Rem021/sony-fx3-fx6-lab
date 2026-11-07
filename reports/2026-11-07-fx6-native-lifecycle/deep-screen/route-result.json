@@ -4,6 +4,26 @@
     "bytes": 50520424,
     "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
   },
+  "invalid_screen_sentinel": {
+    "hex": "0x255",
+    "decimal": 597,
+    "home_cmp_vma": "0xf2dedc",
+    "home_cmp_instruction_word": "0x7109541f"
+  },
+  "manager_initial_screen_request": {
+    "hex": [
+      "0x255",
+      "0x0",
+      "0x255"
+    ],
+    "decimal": [
+      597,
+      0,
+      597
+    ],
+    "mov_vma": "0xdf9204",
+    "mov_instruction_word": "0x52804aa0"
+  },
   "registry": {
     "vma": "0x293bed8",
     "got": "0x2ee2100",

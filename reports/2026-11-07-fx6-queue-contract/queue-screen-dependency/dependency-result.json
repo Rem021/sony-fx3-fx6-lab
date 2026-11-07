@@ -1,0 +1,458 @@
+{
+  "input": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "invalid_screen_sentinel": {
+    "hex": "0x255",
+    "decimal": 597,
+    "home_cmp_vma": "0xf2dedc",
+    "home_cmp_instruction_word": "0x7109541f"
+  },
+  "manager_initial_screen_request": {
+    "hex": [
+      "0x255",
+      "0x0",
+      "0x255"
+    ],
+    "decimal": [
+      597,
+      0,
+      597
+    ],
+    "mov_vma": "0xdf9204",
+    "mov_instruction_word": "0x52804aa0"
+  },
+  "queue_roles": {
+    "0x910040": "timer-service destination passed to osal_snd_sync_direct",
+    "0x5503e0": "App message queue, send and receive",
+    "0x02010094": "exec_utimer message word; App converter maps to type 5"
+  },
+  "call_edges": [
+    {
+      "pc": "0xc09de4",
+      "target": "0x12d9fc8",
+      "import": null
+    },
+    {
+      "pc": "0x12da020",
+      "target": "0x12d8174",
+      "import": null
+    },
+    {
+      "pc": "0x12d8254",
+      "target": "0x20ed13c",
+      "import": null
+    },
+    {
+      "pc": "0xc09df0",
+      "target": "0xc14dfc",
+      "import": null
+    },
+    {
+      "pc": "0xc14dfc",
+      "target": "0xc15060",
+      "import": null
+    },
+    {
+      "pc": "0xc15084",
+      "target": "0xb17970",
+      "import": "osal_reg_sync_msg_queue_cb"
+    },
+    {
+      "pc": "0xc150b8",
+      "target": "0xb17970",
+      "import": "osal_reg_sync_msg_queue_cb"
+    },
+    {
+      "pc": "0xc09e50",
+      "target": "0xc09c14",
+      "import": null
+    },
+    {
+      "pc": "0xc09c68",
+      "target": "0xb18c00",
+      "import": "osal_snd_sync_direct"
+    },
+    {
+      "pc": "0xc09c98",
+      "target": "0xb17b30",
+      "import": "osal_reg_msg_queue_cb"
+    },
+    {
+      "pc": "0xc09ce4",
+      "target": "0xb18c00",
+      "import": "osal_snd_sync_direct"
+    },
+    {
+      "pc": "0xc09d04",
+      "target": "0xc0924c",
+      "import": null
+    },
+    {
+      "pc": "0xc09c10",
+      "target": "0xc09ac8",
+      "import": null
+    },
+    {
+      "pc": "0xc09bbc",
+      "target": "0xb1a120",
+      "import": "osal_snd_msg"
+    },
+    {
+      "pc": "0xc0a208",
+      "target": "0xb19ec0",
+      "import": "osal_rcv_msg_tmo"
+    },
+    {
+      "pc": "0xc0a860",
+      "target": "0x1397450",
+      "import": null
+    },
+    {
+      "pc": "0x1397494",
+      "target": "0x1395c3c",
+      "import": null
+    },
+    {
+      "pc": "0xc0a870",
+      "target": "0xdf91e8",
+      "import": null
+    },
+    {
+      "pc": "0xdf9230",
+      "target": "0xdf8d6c",
+      "import": null
+    }
+  ],
+  "infrastructure_initialization_wrappers": [
+    {
+      "pc": "0x20ed144",
+      "target": "0x20cf5dc"
+    },
+    {
+      "pc": "0x20ed148",
+      "target": "0x20d3a6c"
+    },
+    {
+      "pc": "0x20ed14c",
+      "target": "0x20d4c8c"
+    },
+    {
+      "pc": "0x20ed150",
+      "target": "0x20d4dac"
+    },
+    {
+      "pc": "0x20ed154",
+      "target": "0x20d4e4c"
+    },
+    {
+      "pc": "0x20ed158",
+      "target": "0x20d4f6c"
+    },
+    {
+      "pc": "0x20ed15c",
+      "target": "0x20d54cc"
+    },
+    {
+      "pc": "0x20ed160",
+      "target": "0x20d566c"
+    },
+    {
+      "pc": "0x20ed164",
+      "target": "0x20d578c"
+    },
+    {
+      "pc": "0x20ed168",
+      "target": "0x20d586c"
+    },
+    {
+      "pc": "0x20ed16c",
+      "target": "0x20d594c"
+    },
+    {
+      "pc": "0x20ed170",
+      "target": "0x20dcd6c"
+    },
+    {
+      "pc": "0x20ed174",
+      "target": "0x20dcf0c"
+    },
+    {
+      "pc": "0x20ed178",
+      "target": "0x20dd1ec"
+    },
+    {
+      "pc": "0x20ed17c",
+      "target": "0x20dd28c"
+    },
+    {
+      "pc": "0x20ed180",
+      "target": "0x20dd96c"
+    },
+    {
+      "pc": "0x20ed184",
+      "target": "0x20ddd4c"
+    },
+    {
+      "pc": "0x20ed188",
+      "target": "0x20e0a7c"
+    },
+    {
+      "pc": "0x20ed18c",
+      "target": "0x20e11ac"
+    },
+    {
+      "pc": "0x20ed190",
+      "target": "0x20e2acc"
+    },
+    {
+      "pc": "0x20ed194",
+      "target": "0x20e2c2c"
+    },
+    {
+      "pc": "0x20ed198",
+      "target": "0x20e2d8c"
+    },
+    {
+      "pc": "0x20ed19c",
+      "target": "0x20e30ac"
+    },
+    {
+      "pc": "0x20ed1a0",
+      "target": "0x20e402c"
+    },
+    {
+      "pc": "0x20ed1a4",
+      "target": "0x20e424c"
+    },
+    {
+      "pc": "0x20ed1a8",
+      "target": "0x20e432c"
+    },
+    {
+      "pc": "0x20ed1ac",
+      "target": "0x20e450c"
+    },
+    {
+      "pc": "0x20ed1b0",
+      "target": "0x20e462c"
+    },
+    {
+      "pc": "0x20ed1b4",
+      "target": "0x20e498c"
+    },
+    {
+      "pc": "0x20ed1b8",
+      "target": "0x20e571c"
+    },
+    {
+      "pc": "0x20ed1bc",
+      "target": "0x20e583c"
+    },
+    {
+      "pc": "0x20ed1c0",
+      "target": "0x20e606c"
+    },
+    {
+      "pc": "0x20ed1c4",
+      "target": "0x20e614c"
+    },
+    {
+      "pc": "0x20ed1c8",
+      "target": "0x20e61ec"
+    },
+    {
+      "pc": "0x20ed1cc",
+      "target": "0x20e668c"
+    },
+    {
+      "pc": "0x20ed1d0",
+      "target": "0x20e67ac"
+    },
+    {
+      "pc": "0x20ed1d4",
+      "target": "0x20e6b4c"
+    },
+    {
+      "pc": "0x20ed1d8",
+      "target": "0x20e6bec"
+    },
+    {
+      "pc": "0x20ed1dc",
+      "target": "0x20e6d0c"
+    },
+    {
+      "pc": "0x20ed1e0",
+      "target": "0x20e71ac"
+    },
+    {
+      "pc": "0x20ed1e4",
+      "target": "0x20e748c"
+    },
+    {
+      "pc": "0x20ed1e8",
+      "target": "0x20e77ac"
+    },
+    {
+      "pc": "0x20ed1ec",
+      "target": "0x20e7c4c"
+    },
+    {
+      "pc": "0x20ed1f0",
+      "target": "0x20e7d6c"
+    },
+    {
+      "pc": "0x20ed1f4",
+      "target": "0x20e7f0c"
+    },
+    {
+      "pc": "0x20ed1f8",
+      "target": "0x20e7fec"
+    },
+    {
+      "pc": "0x20ed1fc",
+      "target": "0x20e820c"
+    },
+    {
+      "pc": "0x20ed200",
+      "target": "0x20e856c"
+    },
+    {
+      "pc": "0x20ed204",
+      "target": "0x20e87cc"
+    },
+    {
+      "pc": "0x20ed208",
+      "target": "0x20e895c"
+    },
+    {
+      "pc": "0x20ed20c",
+      "target": "0x20e8efc"
+    },
+    {
+      "pc": "0x20ed210",
+      "target": "0x20e93dc"
+    },
+    {
+      "pc": "0x20ed214",
+      "target": "0x20e973c"
+    },
+    {
+      "pc": "0x20ed218",
+      "target": "0x20eb51c"
+    },
+    {
+      "pc": "0x20ed21c",
+      "target": "0x20eb67c"
+    },
+    {
+      "pc": "0x20ed220",
+      "target": "0x20eb79c"
+    },
+    {
+      "pc": "0x20ed224",
+      "target": "0x20eb87c"
+    },
+    {
+      "pc": "0x20ed228",
+      "target": "0x20eb91c"
+    },
+    {
+      "pc": "0x20ed22c",
+      "target": "0x20ebabc"
+    },
+    {
+      "pc": "0x20ed230",
+      "target": "0x20ebb9c"
+    },
+    {
+      "pc": "0x20ed234",
+      "target": "0x20ebdbc"
+    },
+    {
+      "pc": "0x20ed238",
+      "target": "0x20ec29c"
+    },
+    {
+      "pc": "0x20ed23c",
+      "target": "0x20ec37c"
+    },
+    {
+      "pc": "0x20ed240",
+      "target": "0x20ec4dc"
+    },
+    {
+      "pc": "0x20ed244",
+      "target": "0x20ec9bc"
+    },
+    {
+      "pc": "0x20ed248",
+      "target": "0x20eca9c"
+    },
+    {
+      "pc": "0x20ed24c",
+      "target": "0x20ecbbc"
+    },
+    {
+      "pc": "0x20ed250",
+      "target": "0x20ecd9c"
+    },
+    {
+      "pc": "0x20ed254",
+      "target": "0x20ecf7c"
+    },
+    {
+      "pc": "0x20ed25c",
+      "target": "0x20ed01c"
+    }
+  ],
+  "diagnostic_strings": {
+    "0x22456f8": "void App::start_utimer()",
+    "0x2245680": "void App::exec_utimer()",
+    "0x24bf408": "void model::model_api::detail::model_start()",
+    "0x2269f00": "void adjust::senser::biz_senser_cb(OSAL_HANDLE, void*)",
+    "0x25ffb28": "void infra_wrapper_bb::detail::initialize()"
+  },
+  "bb_initialize_thread_creation_calls": [
+    {
+      "pc": "0x20efa1c",
+      "target": "0x222dd58",
+      "import": null
+    },
+    {
+      "pc": "0x20efa6c",
+      "target": "0x222dd58",
+      "import": null
+    },
+    {
+      "pc": "0x20efabc",
+      "target": "0x222dd58",
+      "import": null
+    },
+    {
+      "pc": "0x20efad8",
+      "target": "0x222dd58",
+      "import": null
+    },
+    {
+      "pc": "0x20efaf4",
+      "target": "0x222dd58",
+      "import": null
+    }
+  ],
+  "boundary": "Static producer/consumer dependency; no live queue contents or runtime root cause proved.",
+  "shim": {
+    "path": "/tmp/libgrm-fbinit25-293.c",
+    "bytes": 59755,
+    "sha256": "a21c4b45a76a8b79bb75b90ab214c7c6c7a521dfb1ab4fee3e03e8f1059654d5",
+    "nop_offsets": [
+      "0x12d824c",
+      "0x12d8250",
+      "0x12d8254",
+      "0x12d825c",
+      "0xc09e50"
+    ]
+  }
+}

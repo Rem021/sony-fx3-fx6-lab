@@ -1,0 +1,195 @@
+{
+  "status": "PASS",
+  "scope": "Offline four-ID type/size binding; no native Backup execution or VM",
+  "sources": {
+    "appFw.so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "size": 50520424
+    },
+    "libbackup.so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libbackup.so",
+      "sha256": "e003e2d8a1f42fdf629dda012a01f225940c016b2ab4dbf482a761378e8d286f",
+      "size": 14232
+    }
+  },
+  "template": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin",
+    "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e",
+    "records": [
+      {
+        "record_index": 0,
+        "id": "0xfa0191",
+        "record_file_offset": 0,
+        "data_file_offset": 478460,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "0040521004000000",
+        "u64_le": "0x410524000",
+        "all_ones_sentinel": false
+      },
+      {
+        "record_index": 1,
+        "id": "0xfa0191",
+        "record_file_offset": 872448,
+        "data_file_offset": 1307600,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "00d0180908000000",
+        "u64_le": "0x80918d000",
+        "all_ones_sentinel": false
+      },
+      {
+        "record_index": 0,
+        "id": "0xfa0192",
+        "record_file_offset": 0,
+        "data_file_offset": 478468,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "0000900100000000",
+        "u64_le": "0x1900000",
+        "all_ones_sentinel": false
+      },
+      {
+        "record_index": 1,
+        "id": "0xfa0192",
+        "record_file_offset": 872448,
+        "data_file_offset": 1307608,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "0000300000000000",
+        "u64_le": "0x300000",
+        "all_ones_sentinel": false
+      },
+      {
+        "record_index": 0,
+        "id": "0xfa01a3",
+        "record_file_offset": 0,
+        "data_file_offset": 478580,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "ffffffffffffffff",
+        "u64_le": "0xffffffffffffffff",
+        "all_ones_sentinel": true
+      },
+      {
+        "record_index": 1,
+        "id": "0xfa01a3",
+        "record_file_offset": 872448,
+        "data_file_offset": 1307720,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "ffffffffffffffff",
+        "u64_le": "0xffffffffffffffff",
+        "all_ones_sentinel": true
+      },
+      {
+        "record_index": 0,
+        "id": "0xfa01a4",
+        "record_file_offset": 0,
+        "data_file_offset": 478588,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "ffffffffffffffff",
+        "u64_le": "0xffffffffffffffff",
+        "all_ones_sentinel": true
+      },
+      {
+        "record_index": 1,
+        "id": "0xfa01a4",
+        "record_file_offset": 872448,
+        "data_file_offset": 1307728,
+        "length": 8,
+        "max_length": 8,
+        "attribute": 0,
+        "checksum_matches": true,
+        "all_entry_bounds_checked": true,
+        "raw_hex": "ffffffffffffffff",
+        "u64_le": "0xffffffffffffffff",
+        "all_ones_sentinel": true
+      }
+    ],
+    "regional_agreement": "all five pinned FX6 CHAPLIN templates, same four IDs per record"
+  },
+  "libbackup_symbols": {
+    "Backup_read": {
+      "va": "0x1e14",
+      "bytes": 64
+    },
+    "Backup_nread": {
+      "va": "0x252c",
+      "bytes": 68
+    },
+    "Backup_get_datasize": {
+      "va": "0x1d5c",
+      "bytes": 60
+    },
+    "Backup_read_8Byte": {
+      "va": "0x1e8c",
+      "bytes": 60
+    },
+    "backup_sync_msg": {
+      "va": "0x1a50",
+      "bytes": 348
+    }
+  },
+  "instruction_contract_checks": {
+    "0x1e18": "mov w2, #-1",
+    "0x1e1c": "mov x5, x1",
+    "0x1e20": "mov w4, w0",
+    "0x1e30": "mov w3, #2",
+    "0x1e3c": "mov w2, #3",
+    "0x1e48": "ldr w0, [x29, #0x1c]",
+    "0x2534": "sxtw x6, w2",
+    "0x1b24": "cbnz w0, #0x1b30",
+    "0x1b28": "ldr w0, [x19, #4]",
+    "0x1b2c": "str w0, [x21]",
+    "0x1b44": "mov w0, #0"
+  },
+  "appFw_calls": {
+    "0xc0b294": {
+      "id": "0xfa0191",
+      "target": "Backup_read_8Byte"
+    },
+    "0xc0b2f4": {
+      "id": "0xfa0192",
+      "target": "Backup_read_8Byte"
+    },
+    "0x1395d00": {
+      "id": "0xfa01a3",
+      "target": "Backup_read_8Byte"
+    },
+    "0x1395d18": {
+      "id": "0xfa01a4",
+      "target": "Backup_read_8Byte"
+    }
+  },
+  "constraints": [
+    "Raw template absolute addresses are not current-process allocation capabilities.",
+    "record0 is default AP per prior backup.ko analysis, not a live/current camera value.",
+    "Private Backup_read result status is not equated to helper status or sync function return.",
+    "Physical a3/a4 pair has all-ones template values; mapping remains unproved."
+  ],
+  "external_abi_source": "https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst"
+}

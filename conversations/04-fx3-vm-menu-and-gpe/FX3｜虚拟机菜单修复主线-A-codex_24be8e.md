@@ -5,34 +5,8 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-03T08:41:10.118Z`
-- **Updated At**: `2026-11-06T15:53:00.467Z`
-- **Captured Messages (User / Assistant)**: `79`
-
----
-
-## 🤖 Assistant
-
-337 项交付文件已独立核验，哈希全部一致；r6 的三处失败路径修正也已复核。现在可以提交一次受限观察测试，但这仍不代表 FX6 已能开机：下一步要取得两处 Backup 读取的真实返回值，确认初始化问题。
-
----
-
-## 🤖 Assistant
-
-是否批准 r6 候选进行一次 FX6 读取观察？固定 FX3 平台，启动一次、零按键，观察最多150秒、含退出回收最多180秒；观察器不写guest代码或数据，结束后回收自有QEMU，guest恢复状态记为未验证，不部署。需要确认是因为你提供的 AGENTS.md 要求“不改变项目运行政策”，本次采用单独的停止观察模式。
-- 批准一次 r6 观察测试
-- 继续离线研究，暂不运行
-
----
-
-## 🤖 Assistant
-
-**r6 观察器已通过离线复核，FX6 仍未证明能进入可用菜单。**
-
-53 项离线测试通过，我独立核验了 337 项交付文件，哈希全部一致。[验收记录](／Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-backup-observer-coordinator-final-review.json)
-
-下一步是一次零按键观察，读取两处初始化参数的真实返回值：固定 FX3 平台，最多运行 180 秒，结束后回收虚拟机。已提交确认问题，尚未启动。
-
-需要确认的原因：你提供的 AGENTS.md 要求“不改变项目运行政策”；此次停止观察模式不验证 guest 恢复，需要单独批准。
+- **Updated At**: `2026-11-07T16:42:03.571Z`
+- **Captured Messages (User / Assistant)**: `78`
 
 ---
 
@@ -82,7 +56,7 @@ DeepSeek 的离线修复任务仍在运行，尚未交付。本轮未重复派�
 
 ## 🤖 Assistant
 
-有新进展：检测器初版已从旧日志识别出全部 4 条 assert，DeepSeek 正在补齐回归测试和误报反例，尚未正式交付。这是日志检测修复，FX6 开机状态尚无变化。
+有新进展：检测器初��已从旧日志识别出全部 4 条 assert，DeepSeek 正在补齐回归测试和误报反例，尚未正式交付。这是日志检测修复，FX6 开机状态尚无变化。
 
 ---
 
@@ -358,7 +332,7 @@ Subject: 两候选完成：66ed END8950/嵌套修正+current source-blocked；�
 
 ──── From: TERM_D228528D-BBA0-45A7-8C03-FD909F14E195 (term_d228528d-bba0-45a7-8c03-fd909f14e195) (worker_done) ────
 Subject: 集中修正完成：decoder严格payload/stream、C单read+EOF探测+身份、标准FNV、66ed结构仅；parser 54daf616/snapshot 3134606c
-已保留两份最小初版快照并完成集中修正：snapshot decoder现在拒绝空payload、无实际终换行、bytes/lines与内容不一致、data==cap/超cap、重复/未知/数值解析错误、缺EOF证据；DATA每包携带pid/starttime/seq并校验；支持同PID/starttime严格递增seq多帧选最新完整，后帧不完整/损坏不回退，跨PID不选择；console噪音忽略不拼接。C生产仅PID SEQ，删除fixture/starttime覆盖；同一/proc/<pid>目录fd读stat前后核PID/starttime，maps单次有界read+单次EOF探测，短读后仍有字节明确���绝，记录data_reads=1/eof_probe=1/eof_observed=1/snapshot_atomic=0；编译时FX3_MAP_SNAPSHOT_TEST才用fake maps/stat，测试短读+额外字节/前后身份变化/EINTR/cap溢出。FNV offset改为标准14695981039346656037，Python空串/a/foobar与C fixture digest一致。parser修正66ed真实END8950、嵌套IM栈/父块恢复与顶层选择/区间空洞，但明确仅结构分析、非source-safe runtime准入；当前r6仍source blocked，overlap flags修正。测试parser13/13、snapshot22/22；输入parser6项、snapshot5项前后hash不变；UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B；parser SHA256SUMS self=54daf6166cffc81296ad4c60315e39c7f19f70674f1b6569574358afcabf0263，snapshot self=3134606ccb45bff75b4d0753bcaa97636bd1f7f189c96f193d0da261be1aedc9。补丁仍不应用，未建/装CPIO、无VM/QMP/RSP/guest/live/平台/helper改动；目标Linux live仍未证，future执行需另审，FNV仅为传输损坏检测非安全认证，不宣称boot/menu或读值。
+已保留两份最小初版快照并完成集中修正：snapshot decoder现在拒绝空payload、无实际终换行、bytes/lines与内容不一致、data==cap/超cap、重复/未知/数值解析错误、缺EOF证据；DATA每包携带pid/starttime/seq并校验；支持同PID/starttime严格递增seq多帧选最新完整，后帧不完整/损坏不回退，跨PID不选择；console噪音忽略不拼接。C生产仅PID SEQ，删除fixture/starttime覆盖；同一/proc/<pid>目录fd读stat前后核PID/starttime，maps单次有界read+单次EOF探测，短读后仍有字节明确拒绝，记录data_reads=1/eof_probe=1/eof_observed=1/snapshot_atomic=0；编译时FX3_MAP_SNAPSHOT_TEST才用fake maps/stat，测试短读+额外字节/前后身份变化/EINTR/cap溢出。FNV offset改为标准14695981039346656037，Python空串/a/foobar与C fixture digest一致。parser修正66ed真实END8950、嵌套IM栈/父块恢复与顶层选择/区间空洞，但明确仅结构分析、非source-safe runtime准入；当前r6仍source blocked，overlap flags修正。测试parser13/13、snapshot22/22；输入parser6项、snapshot5项前后hash不变；UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B；parser SHA256SUMS self=54daf6166cffc81296ad4c60315e39c7f19f70674f1b6569574358afcabf0263，snapshot self=3134606ccb45bff75b4d0753bcaa97636bd1f7f189c96f193d0da261be1aedc9。补丁仍不应用，未建/装CPIO、无VM/QMP/RSP/guest/live/平台/helper改动；目标Linux live仍未证，future执行需另审，FNV仅为传输损坏检测非安全认证，不宣称boot/menu或读值。
 [Payload: {"taskId":"task_9927bd544971","dispatchId":"ctx_a98a0c474b02","outcome":"succeeded","filesModified":["/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-map-parser-candidate/REPORT.md","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-map-parser-candidate/RESULT.json","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-map-parser-candidate/SHA256SUMS","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-map-parser-candidate/mapping_parser.py","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-map-parser-candidate/tests/test_parser.py","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-map-parser-candidate/tests/test-parser.json","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/REPORT.md","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/RESULT.json","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/SHA256SUMS","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/fx3_map_snapshot.c","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/decode_snapshot.py","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/tests/test_protocol.py","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/tests/test-protocol.json","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/patch-init-map-snapshot.diff","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/INVENTORY.md"],"reportPath":"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/REPORT.md"}]
 [Reply: orca orchestration reply --id msg_ed06fc9c8cb3 --body "..."]
 ────────────────────────────────────────────────────────────
@@ -391,7 +365,7 @@ Subject: 集中修正完成：decoder严格payload/stream、C单read+EOF探测+�
 
 ──── From: TERM_D228528D-BBA0-45A7-8C03-FD909F14E195 (term_d228528d-bba0-45a7-8c03-fd909f14e195) (worker_done) ────
 Subject: A/B修正完成（parser13/snapshot27）；C阶段被AArch64 Linux工具链缺失阻塞，未构建ELF/CPIO/集成入口
-已完成A/B并集中修正：decoder在BEGIN即验cap/pid/starttime/seq，DATA先限长/base64大小/身份，按包累计到cap立即拒绝（cap1过量包不再等missing END），5000位index/数值统一ProtocolError，stream只保留最新帧计数noise/frame/输入行/行长有限预算；C统一run_capture状态机，生产无fake参数，测试用编译时IO注入，单次bounded data read+EOF probe、有限EINTR重试并记录attempts，前后同一/proc/pid目录身份核验、短读后额外字节拒绝、身份变化/消失/失败可见，标准FNV offset已修；snapshot 27/27、parser 13/13，FFNV为传输损坏检测非安全认证。阶段C在新integration目录核到具体工具阻碍：本机无aarch64-linux-gnu-gcc/readelf，Apple clang --target=aarch64-linux-gnu -c因无Linux sysroot报errno.h not found；因此未生成目标ELF/两成员CPIO/全成员diff/host集成入口/fake E2E，未部署/未启动VM/QMP/RSP/guest，也未改原CPIO/helper/r6，patch仍不应用；证据在receipts/cross-compile-blocker.txt。输出三目录：parser self=54daf6166cffc81296ad4c60315e39c7f19f70674f1b6569574358afcabf0263，snapshot self=37fd52ce867607b3340aa76c4d4931e0bdce4fa00f07ddb79f6003c03cccb61a，integration self=1bfaec776cc88b39a5d9534478916d136e7e3f218ebb7367497dab3e198aff03；需提供/批准AArch64 Linux交叉编译器或sysroot后重派，目标Linux live仍未证。
+已完成A/B并集中修正：decoder在BEGIN即验cap/pid/starttime/seq，DATA先限长/base64大小/身份，按包累计到cap立即拒绝（cap1过量包不再等missing END），5000位index/数值统一ProtocolError，stream只保留最新帧计数noise/frame/输入行/行长有限预算；C统一run_capture状态机，生产无fake参数，测试用编译时IO注入，单次bounded data read+EOF probe、有限EINTR重试并记录attempts，前后同一/proc/pid目录身份核验、短读后额外字节拒绝、身份变化/消失/失败可见，标准FNV offset已修；snapshot 27/27、parser 13/13，FFNV为传输损坏检测非安全认证。阶段C在新integration目录核到具体工具阻碍：本机无aarch64-linux-gnu-gcc/readelf，Apple clang --target=aarch64-linux-gnu -c因无Linux sysroot报errno.h not found；因此未生成目标ELF/两成员CPIO/全成员diff/host集成入口/fake E2E，未部署/未启动VM/QMP/RSP/guest，也未改原CPIO/helper/r6，patch仍不应��；证据在receipts/cross-compile-blocker.txt。输出三目录：parser self=54daf6166cffc81296ad4c60315e39c7f19f70674f1b6569574358afcabf0263，snapshot self=37fd52ce867607b3340aa76c4d4931e0bdce4fa00f07ddb79f6003c03cccb61a，integration self=1bfaec776cc88b39a5d9534478916d136e7e3f218ebb7367497dab3e198aff03；需提供/批准AArch64 Linux交叉编译器或sysroot后重派，目标Linux live仍未证。
 [Payload: {"taskId":"task_6a159008f12c","dispatchId":"ctx_b7c58b94a586","outcome":"failed","filesModified":["/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/decode_snapshot.py","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/fx3_map_snapshot.c","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-snapshot-producer-candidate/tests/test_protocol.py","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/REPORT.md","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/RESULT.json","/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/SHA256SUMS"],"reportPath":"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/REPORT.md"}]
 [Reply: orca orchestration reply --id msg_bde6af460c67 --body "..."]
 ────────────────────────────────────────────────────────────
@@ -400,7 +374,7 @@ Subject: A/B修正完成（parser13/snapshot27）；C阶段被AArch64 Linux工�
 
 ## 🤖 Assistant
 
-A/B 修正已交付，但 ARM64 启动包还没构建出来。DeepSeek 检查到的是缺少常��� Linux 交叉编译器和 sysroot；我会继续查项目已有的编译脚本和本机工具，确认能否复用现成环境，再判断是否真的需要安装依赖。
+A/B 修正已交付，但 ARM64 启动包还没构建出来。DeepSeek 检查到的是缺少常规 Linux 交叉编译器和 sysroot；我会继续查项目已有的编译脚本和本机工具，确认能否复用现成环境，再判断是否真的需要安装依赖。
 
 ---
 
@@ -529,7 +503,7 @@ Subject: 集成收口完成：target_io/stream frontier/真实HostRunner四stop 
 
 ──── From: TERM_D228528D-BBA0-45A7-8C03-FD909F14E195 (term_d228528d-bba0-45a7-8c03-fd909f14e195) [HIGH] (escalation) ────
 Subject: Worker stopped without reporting
-Worker term_d228528d-bba0-45a7-8c03-fd909f14e195 ended its turn without sending worker_done for task "集成收口：串口半行实测立即失败；���须补实际HostRunner四stop E2E及回执一致性" (task_5ad5448aec1f).
+Worker term_d228528d-bba0-45a7-8c03-fd909f14e195 ended its turn without sending worker_done for task "集成收口：串口半行实测立即失败；必须补实际HostRunner四stop E2E及回执一致性" (task_5ad5448aec1f).
 The Dispatch is still open. Answer it with your Orca CLI's `orchestration send --to dispatch:ctx_47bf56c93f00 --subject "<topic>" --body "<guidance>"`, retry it, or stop the worker.
 Last output:
 ├─ ● 读r44 runtime-wrapper cleanup.py与cleanup_evidence.py，梳理矛盾
@@ -607,7 +581,7 @@ FX6 可用菜单仍未通过。
 
 ## 🤖 Assistant
 
-收到批准。我会安排这一次新诊断包观察：固定 FX3 平台、零按键、最��180秒完成观察和回收，并核对实际读取结果及退出证据。
+收到批准。我会安排这一次新诊断包观察：固定 FX3 平台、零按键、最多180秒完成观察和回收，并核对实际读取结果及退出证据。
 
 ---
 
@@ -674,5 +648,24 @@ Subject: 离线候选已交付：FX3MS2 short-read 修复；准入阻塞；无�
 短读修复已完成离线候选，47项文件校验通过；旧运行报告的封存问题也已修正。**尚未再次运行，FX6 菜单仍未跑通。**
 
 复核发现时钟异常处理、读取总预算和运行入口门禁还需修正，已交给 DeepSeek 继续。同时核清暂停后如何确认应用映射，完成后再准备下一次实测。
+
+---
+
+## 👤 User / Coordinator
+
+──── From: TERM_6F01577D-1309-4620-A1E7-476DF12B5C96 (term_6f01577d-1309-4620-a1e7-476df12b5c96) (worker_done) ────
+Subject: r40修订已封存并独立复核，无需改动
+本次 follow-up 没有新增或覆盖任何交付：r40 修订已在 review-revision-1 独立目录完成，我逐项复核了 14 项修订哈希、SHA256SUMS、38/38 输入前后清单，并重跑脚本，5 份 CSV 逐字节一致、results.json 仅 generated_UTC 不同、REPORT.diff 精确复现。三项复核意见均已落实：观察+pin 合并建议被删除且只保留 2 条建议，不建立 guest↔host 换算（H 差值仅条件记录），空档改为完成侧语义；原封存目录未改动，SHA256SUMS 仍为 c16edd8920f742b4bc5980f9f99a4f132474614f1dcbc5516b43d3749799660a，与协调端 r40 终审接受记录一致。因此无需再修改文件或重跑实验；本 dispatch 可结算，剩余工作仅为协调端已排入 r41 的命令入口计时，本任务不涉及。
+[Payload: {"taskId":"task_8506bed0f484","dispatchId":"ctx_9c077e5b2088","outcome":"succeeded","reportPath":"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing/review-revision-1/REPORT.md"}]
+[Reply: orca orchestration reply --id msg_9b0d752d5a65 --body "..."]
+────────────────────────────────────────────────────────────
+
+---
+
+## 🤖 Assistant
+
+收到，r40 修订复核完成，本任务结算，不再重复修改或实验。
+
+这是历史计时审查的补报，不代表新的运行进展；r41 及后续已有记录，也不重新派发。主线仍是固定 FX3 平台上的 FX6 适配，当前尚无可用菜单通过证据。
 
 ---

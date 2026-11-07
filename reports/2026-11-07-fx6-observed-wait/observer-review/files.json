@@ -1,0 +1,35 @@
+{
+  "schema": "fx6-reviewed-artifact-whitelist-v1",
+  "scope": "Explicit source/test/report/evidence whitelist only; no firmware, binaries, CPIO, cache, Git or sync operations",
+  "files": [
+    {
+      "file": "observer-run-review.md",
+      "bytes": 5760,
+      "sha256": "099162a27f867c8f20b10c3e4ab51bdd7d1add99c9992c2d6afcd0b333a904a6",
+      "source": "work/fx6-post-restart-audit-20261107/observer-run-review.md",
+      "source_sha256": "f217cf179e3f7d3408fc045fd1dd9b286e23472e1ef731798dfbc4afce865f23",
+      "byte_identical_to_source": false,
+      "link_adjustments": [
+        "Adjusted only local BYOF receipt link for formal destination."
+      ]
+    },
+    {
+      "file": "observer-run-review.json",
+      "bytes": 72260,
+      "sha256": "3de815e22a893ca12e7287b9eb408113898b552112169c78d62b517ce49b2a97",
+      "source": "work/fx6-post-restart-audit-20261107/observer-run-review.json",
+      "source_sha256": "3de815e22a893ca12e7287b9eb408113898b552112169c78d62b517ce49b2a97",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "review_observer.py",
+      "bytes": 7292,
+      "sha256": "d04b9a1f134f697ec8b2ce2a9e048dc1637d4d33f4929ab0c4625f154ca0c109",
+      "source": "work/fx6-post-restart-audit-20261107/review_observer.py",
+      "source_sha256": "d04b9a1f134f697ec8b2ce2a9e048dc1637d4d33f4929ab0c4625f154ca0c109",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    }
+  ]
+}

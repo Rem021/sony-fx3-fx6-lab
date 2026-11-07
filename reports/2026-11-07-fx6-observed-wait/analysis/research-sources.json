@@ -1,0 +1,13 @@
+{
+  "checked_utc_date": "2026-11-07",
+  "scope": "Primary documentation used for diagnosis design; none establishes Sony guest success",
+  "runtime_qemu": {"version": "11.1.2", "binary_sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"},
+  "sources": [
+    {"url": "https://www.qemu.org/docs/master/system/gdb.html", "supports": "-s selects TCP1234; explicit -gdb can use a Unix chardev; system-stub threads model virtual CPUs, not Linux tasks", "applicability": "Current master manual is 11.1.50. Unix endpoint behavior independently smoke-tested on the actual 11.1.2 lab binary."},
+    {"url": "https://www.qemu.org/docs/master/system/invocation.html", "supports": "-s is shorthand for -gdb tcp::1234", "applicability": "Also verified in the actual binary help; the duplicate configuration itself was not repeated."},
+    {"url": "https://man7.org/linux/man-pages/man2/ptrace.2.html", "supports": "Per-thread tracing, SEIZE/INTERRUPT, GETREGSET iovec size, PEEKDATA errno interpretation and DETACH", "applicability": "Helper uses read requests and bounded stop/detach only; Sony kernel support/permissions require runtime evidence."},
+    {"url": "https://man7.org/linux/man-pages/man5/proc_pid_syscall.5.html", "supports": "Recorded syscall exposes arguments plus user SP/PC; may be absent or access-restricted", "applicability": "Added as supplementary evidence, with failures logged."},
+    {"url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/arch/arm64/include/uapi/asm/ptrace.h", "supports": "AArch64 user register structure: 31 registers, SP, PC, PSTATE = 272 bytes", "applicability": "Version-pinned upstream 4.9 ABI, checked against helper static assertions and returned runtime iovec length."},
+    {"url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/arch/arm64/kernel/ptrace.c", "supports": "Version-pinned AArch64 regset implementation", "applicability": "Design reference, not proof that all Sony kernel behavior is unchanged."}
+  ]
+}

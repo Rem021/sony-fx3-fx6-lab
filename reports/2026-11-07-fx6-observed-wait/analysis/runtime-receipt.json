@@ -1,0 +1,181 @@
+{
+  "schema": "fx6-observer-owned-run-v2",
+  "manifest_sha256": "df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42",
+  "baseline_manifest_sha256": "fd945eaa7ba97f297f0a8073f0072416add4fb0af480efe8e28e6b5d76c9dcef",
+  "manifest": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/candidate-manifest.json",
+  "maximum_seconds": 120,
+  "runner_sha256": "8147eaa9eed628c7bf30d7d2b92f478b3d434cf047a3d8959d317451108c007b",
+  "fixed_runner_sha256": "312f134f6774fcf8b818b4038ec5e2af2491be90dd5ac4f513e349de17a9dc29",
+  "utc": "2026-11-07T16:33:38.161966+00:00",
+  "key_operations": [
+    {
+      "step": 1,
+      "recorded": true,
+      "delivery": "software_gate_write_readback",
+      "guest_consumption": "unproven",
+      "native_ui_response": "unverified"
+    }
+  ],
+  "key_attempts": [
+    {
+      "step": 1,
+      "key": "0x1ab",
+      "delivery": "software_gate_write_readback",
+      "guest_consumption": "unproven",
+      "retry_suppressed": true
+    },
+    {
+      "step": 2,
+      "key": "0x30",
+      "delivery": "unknown",
+      "error": "RuntimeError('host-step software identity/order/result mismatch')",
+      "retry_suppressed": true,
+      "subsequent_steps_suppressed": true
+    }
+  ],
+  "captures": [
+    {
+      "label": "gpe0",
+      "phys": "0x41e001000",
+      "bytes": 2211840,
+      "reply": ""
+    },
+    {
+      "label": "gpe1",
+      "phys": "0x41e001000",
+      "bytes": 2211840,
+      "reply": ""
+    },
+    {
+      "label": "dmm0400",
+      "phys": "0x4805a1000",
+      "bytes": 8388608,
+      "reply": ""
+    },
+    {
+      "label": "dmm0403",
+      "phys": "0x429550000",
+      "bytes": 1232896,
+      "reply": ""
+    }
+  ],
+  "gdb_endpoint": "unix:g via chardev:keygate93; terminal duplicate -s removed",
+  "key_evidence_scope": "software gate write/readback only; guest consumption and native UI response unproven",
+  "startup_probe": {
+    "registers": "\r\nCPU#0\r\n PC=0000000400000000 X00=0000000000000000 X01=0000000000000000\r\nX02=0000000000000000 X03=0000000000000000 X04=0000000000000000\r\nX05=0000000000000000 X06=0000000000000000 X07=0000000000000000\r\nX08=0000000000000000 X09=0000000000000000 X10=0000000000000000\r\nX11=0000000000000000 X12=0000000000000000 X13=0000000000000000\r\nX14=0000000000000000 X15=0000000000000000 X16=0000000000000000\r\nX17=0000000000000000 X18=0000000000000000 X19=0000000000000000\r\nX20=0000000000000000 X21=0000000000000000 X22=0000000000000000\r\nX23=0000000000000000 X24=0000000000000000 X25=0000000000000000\r\nX26=0000000000000000 X27=0000000000000000 X28=0000000000000000\r\nX29=0000000000000000 X30=0000000000000000  SP=0000000000000000\r\nPSTATE=00000000400003c5 -Z-- EL1h    FPU disabled\r\n",
+    "cpus": [
+      {
+        "thread-id": 34729,
+        "qom-type": "cortex-a35-arm-cpu",
+        "props": {
+          "core-id": 0,
+          "thread-id": 0,
+          "socket-id": 0,
+          "cluster-id": 0
+        },
+        "qom-path": "/machine/unattached/device[0]",
+        "cpu-index": 0,
+        "target": "aarch64"
+      },
+      {
+        "thread-id": 34729,
+        "qom-type": "cortex-a35-arm-cpu",
+        "props": {
+          "core-id": 1,
+          "thread-id": 0,
+          "socket-id": 0,
+          "cluster-id": 0
+        },
+        "qom-path": "/machine/unattached/device[1]",
+        "cpu-index": 1,
+        "target": "aarch64"
+      },
+      {
+        "thread-id": 34729,
+        "qom-type": "cortex-a35-arm-cpu",
+        "props": {
+          "core-id": 2,
+          "thread-id": 0,
+          "socket-id": 0,
+          "cluster-id": 0
+        },
+        "qom-path": "/machine/unattached/device[2]",
+        "cpu-index": 2,
+        "target": "aarch64"
+      },
+      {
+        "thread-id": 34729,
+        "qom-type": "cortex-a35-arm-cpu",
+        "props": {
+          "core-id": 3,
+          "thread-id": 0,
+          "socket-id": 0,
+          "cluster-id": 0
+        },
+        "qom-path": "/machine/unattached/device[3]",
+        "cpu-index": 3,
+        "target": "aarch64"
+      }
+    ]
+  },
+  "reason": "wall_timeout",
+  "error": null,
+  "elapsed_seconds": 120.16439304198138,
+  "process_reaped": true,
+  "locks_released": true,
+  "qemu_pid": 34729,
+  "qemu_exit": 0,
+  "files": {
+    "host-stderr.log": {
+      "bytes": 121,
+      "sha256": "44c22547c12d012e38365b358c2ae15869593879f62ddbdb3b969f1c7b2be07a"
+    },
+    "keyinject-error.txt": {
+      "bytes": 66,
+      "sha256": "cf02e0a6582df807a56a26d0590a65f867ff859229379b383ce71299fc2e2d77"
+    },
+    "gpe0.bin": {
+      "bytes": 2211840,
+      "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1"
+    },
+    "gpe1.bin": {
+      "bytes": 2211840,
+      "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1"
+    },
+    "keyinject-step1.json": {
+      "bytes": 574,
+      "sha256": "9f4d107460ade5797196e9fa6e6f5dbb21b0a2f90109a012b16633a7a42acbe7"
+    },
+    "ap96-host-input-gate.json": {
+      "bytes": 608,
+      "sha256": "28e896a18a05d908f55490f9a01a007a6b6f6e270f89816171a16cbf6679a7ca"
+    },
+    "host-stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "serial.log": {
+      "bytes": 184170,
+      "sha256": "5f4e7e5fd909dd6888df5ae2b0506a485274f9aa6a9c2193106bcff7616feafa"
+    },
+    "command.json": {
+      "bytes": 1647,
+      "sha256": "765e83fbb8a56e881580fd549d17c420f597823ab5dcfd95f7a68f8ffdbbfba3"
+    },
+    "dmm0403.bin": {
+      "bytes": 1232896,
+      "sha256": "00f4546c396dfa73c8322b22a16f2ec1e340bd7cd04191ef863b3f97e0482e37"
+    },
+    "dmm0400.bin": {
+      "bytes": 8388608,
+      "sha256": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74"
+    }
+  },
+  "observations": {
+    "receive_entries": 0,
+    "receive_exits": 0,
+    "native_asserts": 0,
+    "appfw_segv": 0,
+    "menu_proven": false
+  }
+}

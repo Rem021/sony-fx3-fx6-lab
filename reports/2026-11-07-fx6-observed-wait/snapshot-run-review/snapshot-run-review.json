@@ -1,0 +1,3688 @@
+{
+  "schema": "fx6-completed-snapshot-run-review-v1",
+  "receipt": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/run-receipt.json",
+    "bytes": 5888,
+    "sha256": "6caf183f6436cad236c2aabbda0fd9c6183ebdcc0a0060cb609afc43fc09db0d"
+  },
+  "manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/candidate-manifest.json",
+    "bytes": 6860,
+    "sha256": "df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42"
+  },
+  "runner": {
+    "path": "work/fx6-observer-runtime-v3-20261107/run_observer_once.py",
+    "bytes": 18799,
+    "sha256": "8147eaa9eed628c7bf30d7d2b92f478b3d434cf047a3d8959d317451108c007b"
+  },
+  "fixed_runner": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/fixed_runner.py",
+    "bytes": 14721,
+    "sha256": "312f134f6774fcf8b818b4038ec5e2af2491be90dd5ac4f513e349de17a9dc29"
+  },
+  "reason": "wall_timeout",
+  "elapsed_seconds": 120.16439304198138,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "locks_released": true,
+  "binding_checks": {
+    "runner_matches_receipt": true,
+    "manifest_matches_receipt": true,
+    "full_295_observer_snapshot_chain_passed": true,
+    "fixed_runner_matches_receipt": true,
+    "helper_and_abi_artifact_hashes_match": true,
+    "all_recorded_files_match": true,
+    "command_argv_exact": true,
+    "command_manifest_hash_matches": true,
+    "command_model_matches": true,
+    "command_has_no_duplicate_s": true,
+    "bounded_authorization_label": true,
+    "four_register_snapshots": true,
+    "four_seize_rc0": true,
+    "four_interrupt_rc0": true,
+    "four_matching_detaches_rc0": true,
+    "one_successful_snapshot_end": true,
+    "helper_rc0": true,
+    "key1_gate_only_readback": true,
+    "key1_unverified_native_screen": true,
+    "key_scope_and_no_retries": true,
+    "read_inputs_unchanged": true
+  },
+  "files": {
+    "host-stderr.log": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/host-stderr.log",
+      "bytes": 121,
+      "sha256": "44c22547c12d012e38365b358c2ae15869593879f62ddbdb3b969f1c7b2be07a",
+      "matches_receipt": true
+    },
+    "keyinject-error.txt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/keyinject-error.txt",
+      "bytes": 66,
+      "sha256": "cf02e0a6582df807a56a26d0590a65f867ff859229379b383ce71299fc2e2d77",
+      "matches_receipt": true
+    },
+    "gpe0.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/gpe0.bin",
+      "bytes": 2211840,
+      "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+      "matches_receipt": true,
+      "nonzero_bytes": 0
+    },
+    "gpe1.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/gpe1.bin",
+      "bytes": 2211840,
+      "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+      "matches_receipt": true,
+      "nonzero_bytes": 0
+    },
+    "keyinject-step1.json": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/keyinject-step1.json",
+      "bytes": 574,
+      "sha256": "9f4d107460ade5797196e9fa6e6f5dbb21b0a2f90109a012b16633a7a42acbe7",
+      "matches_receipt": true
+    },
+    "ap96-host-input-gate.json": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/ap96-host-input-gate.json",
+      "bytes": 608,
+      "sha256": "28e896a18a05d908f55490f9a01a007a6b6f6e270f89816171a16cbf6679a7ca",
+      "matches_receipt": true
+    },
+    "host-stdout.log": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/host-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches_receipt": true
+    },
+    "serial.log": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/serial.log",
+      "bytes": 184170,
+      "sha256": "5f4e7e5fd909dd6888df5ae2b0506a485274f9aa6a9c2193106bcff7616feafa",
+      "matches_receipt": true
+    },
+    "command.json": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/command.json",
+      "bytes": 1647,
+      "sha256": "765e83fbb8a56e881580fd549d17c420f597823ab5dcfd95f7a68f8ffdbbfba3",
+      "matches_receipt": true
+    },
+    "dmm0403.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/dmm0403.bin",
+      "bytes": 1232896,
+      "sha256": "00f4546c396dfa73c8322b22a16f2ec1e340bd7cd04191ef863b3f97e0482e37",
+      "matches_receipt": true,
+      "nonzero_bytes": 0
+    },
+    "dmm0400.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/dmm0400.bin",
+      "bytes": 8388608,
+      "sha256": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+      "matches_receipt": true,
+      "nonzero_bytes": 0
+    }
+  },
+  "threads": {
+    "217": {
+      "sample_count": 38,
+      "first": {
+        "line": 1217,
+        "end_line": 1231,
+        "tid": 217,
+        "uptime": 4.17,
+        "comm": "appfw-launch",
+        "status": {
+          "Name": "appfw-launch",
+          "State": "R (running)",
+          "Tgid": "217",
+          "Pid": "217",
+          "PPid": "1",
+          "Threads": "1"
+        },
+        "wchan": "0"
+      },
+      "last": {
+        "line": 3913,
+        "end_line": 3927,
+        "tid": 217,
+        "uptime": 118.72,
+        "comm": "appfw-launch",
+        "status": {
+          "Name": "appfw-launch",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "217",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "sys_restart_syscall"
+      },
+      "states": {
+        "R (running)": 1,
+        "S (sleeping)": 37
+      },
+      "wchan": {
+        "0": 1,
+        "hrtimer_nanosleep": 5,
+        "sys_restart_syscall": 32
+      },
+      "thread_counts": {
+        "1": 1,
+        "4": 37
+      }
+    },
+    "224": {
+      "sample_count": 37,
+      "first": {
+        "line": 1330,
+        "end_line": 1344,
+        "tid": 224,
+        "uptime": 7.25,
+        "comm": "AppFw",
+        "status": {
+          "Name": "AppFw",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "224",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "futex_wait_queue_me"
+      },
+      "last": {
+        "line": 3928,
+        "end_line": 3942,
+        "tid": 224,
+        "uptime": 118.74,
+        "comm": "AppFw",
+        "status": {
+          "Name": "AppFw",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "224",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "futex_wait_queue_me"
+      },
+      "states": {
+        "S (sleeping)": 37
+      },
+      "wchan": {
+        "futex_wait_queue_me": 37
+      },
+      "thread_counts": {
+        "4": 37
+      }
+    },
+    "225": {
+      "sample_count": 37,
+      "first": {
+        "line": 1345,
+        "end_line": 1359,
+        "tid": 225,
+        "uptime": 7.27,
+        "comm": "uxengine_res1",
+        "status": {
+          "Name": "uxengine_res1",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "225",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "futex_wait_queue_me"
+      },
+      "last": {
+        "line": 3943,
+        "end_line": 3957,
+        "tid": 225,
+        "uptime": 118.76,
+        "comm": "uxengine_res1",
+        "status": {
+          "Name": "uxengine_res1",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "225",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "futex_wait_queue_me"
+      },
+      "states": {
+        "S (sleeping)": 37
+      },
+      "wchan": {
+        "futex_wait_queue_me": 37
+      },
+      "thread_counts": {
+        "4": 37
+      }
+    },
+    "226": {
+      "sample_count": 37,
+      "first": {
+        "line": 1360,
+        "end_line": 1374,
+        "tid": 226,
+        "uptime": 7.28,
+        "comm": "uxengine_res2",
+        "status": {
+          "Name": "uxengine_res2",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "226",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "futex_wait_queue_me"
+      },
+      "last": {
+        "line": 3958,
+        "end_line": 3972,
+        "tid": 226,
+        "uptime": 118.77,
+        "comm": "uxengine_res2",
+        "status": {
+          "Name": "uxengine_res2",
+          "State": "S (sleeping)",
+          "Tgid": "217",
+          "Pid": "226",
+          "PPid": "1",
+          "Threads": "4"
+        },
+        "wchan": "futex_wait_queue_me"
+      },
+      "states": {
+        "S (sleeping)": 37
+      },
+      "wchan": {
+        "futex_wait_queue_me": 37
+      },
+      "thread_counts": {
+        "4": 37
+      }
+    }
+  },
+  "samples": [
+    {
+      "line": 1217,
+      "end_line": 1231,
+      "tid": 217,
+      "uptime": 4.17,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "R (running)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "1"
+      },
+      "wchan": "0"
+    },
+    {
+      "line": 1315,
+      "end_line": 1329,
+      "tid": 217,
+      "uptime": 7.22,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "hrtimer_nanosleep"
+    },
+    {
+      "line": 1330,
+      "end_line": 1344,
+      "tid": 224,
+      "uptime": 7.25,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1345,
+      "end_line": 1359,
+      "tid": 225,
+      "uptime": 7.27,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1360,
+      "end_line": 1374,
+      "tid": 226,
+      "uptime": 7.28,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1375,
+      "end_line": 1389,
+      "tid": 217,
+      "uptime": 10.32,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "hrtimer_nanosleep"
+    },
+    {
+      "line": 1390,
+      "end_line": 1404,
+      "tid": 224,
+      "uptime": 10.34,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1405,
+      "end_line": 1419,
+      "tid": 225,
+      "uptime": 10.35,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1420,
+      "end_line": 1434,
+      "tid": 226,
+      "uptime": 10.37,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1435,
+      "end_line": 1449,
+      "tid": 217,
+      "uptime": 13.39,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "hrtimer_nanosleep"
+    },
+    {
+      "line": 1450,
+      "end_line": 1464,
+      "tid": 224,
+      "uptime": 13.42,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1465,
+      "end_line": 1479,
+      "tid": 225,
+      "uptime": 13.44,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1480,
+      "end_line": 1494,
+      "tid": 226,
+      "uptime": 13.46,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1495,
+      "end_line": 1509,
+      "tid": 217,
+      "uptime": 16.49,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "hrtimer_nanosleep"
+    },
+    {
+      "line": 1510,
+      "end_line": 1524,
+      "tid": 224,
+      "uptime": 16.5,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1525,
+      "end_line": 1539,
+      "tid": 225,
+      "uptime": 16.52,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1540,
+      "end_line": 1554,
+      "tid": 226,
+      "uptime": 16.54,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1555,
+      "end_line": 1569,
+      "tid": 217,
+      "uptime": 19.57,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "hrtimer_nanosleep"
+    },
+    {
+      "line": 1570,
+      "end_line": 1584,
+      "tid": 224,
+      "uptime": 19.6,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1585,
+      "end_line": 1599,
+      "tid": 225,
+      "uptime": 19.61,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 1600,
+      "end_line": 1614,
+      "tid": 226,
+      "uptime": 19.63,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2053,
+      "end_line": 2067,
+      "tid": 217,
+      "uptime": 22.8,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2068,
+      "end_line": 2082,
+      "tid": 224,
+      "uptime": 22.81,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2083,
+      "end_line": 2097,
+      "tid": 225,
+      "uptime": 22.83,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2098,
+      "end_line": 2112,
+      "tid": 226,
+      "uptime": 22.84,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2113,
+      "end_line": 2127,
+      "tid": 217,
+      "uptime": 25.86,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2128,
+      "end_line": 2142,
+      "tid": 224,
+      "uptime": 25.88,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2143,
+      "end_line": 2157,
+      "tid": 225,
+      "uptime": 25.9,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2158,
+      "end_line": 2172,
+      "tid": 226,
+      "uptime": 25.91,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2173,
+      "end_line": 2187,
+      "tid": 217,
+      "uptime": 28.94,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2188,
+      "end_line": 2202,
+      "tid": 224,
+      "uptime": 28.97,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2203,
+      "end_line": 2217,
+      "tid": 225,
+      "uptime": 28.99,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2218,
+      "end_line": 2232,
+      "tid": 226,
+      "uptime": 29.0,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2233,
+      "end_line": 2247,
+      "tid": 217,
+      "uptime": 32.04,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2248,
+      "end_line": 2262,
+      "tid": 224,
+      "uptime": 32.06,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2263,
+      "end_line": 2277,
+      "tid": 225,
+      "uptime": 32.08,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2278,
+      "end_line": 2292,
+      "tid": 226,
+      "uptime": 32.1,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2293,
+      "end_line": 2307,
+      "tid": 217,
+      "uptime": 35.12,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2308,
+      "end_line": 2322,
+      "tid": 224,
+      "uptime": 35.15,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2323,
+      "end_line": 2337,
+      "tid": 225,
+      "uptime": 35.16,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2338,
+      "end_line": 2352,
+      "tid": 226,
+      "uptime": 35.18,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2353,
+      "end_line": 2367,
+      "tid": 217,
+      "uptime": 38.2,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2368,
+      "end_line": 2382,
+      "tid": 224,
+      "uptime": 38.22,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2383,
+      "end_line": 2397,
+      "tid": 225,
+      "uptime": 38.23,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2398,
+      "end_line": 2412,
+      "tid": 226,
+      "uptime": 38.25,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2413,
+      "end_line": 2427,
+      "tid": 217,
+      "uptime": 41.27,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2428,
+      "end_line": 2442,
+      "tid": 224,
+      "uptime": 41.29,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2443,
+      "end_line": 2457,
+      "tid": 225,
+      "uptime": 41.31,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2458,
+      "end_line": 2472,
+      "tid": 226,
+      "uptime": 41.32,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2473,
+      "end_line": 2487,
+      "tid": 217,
+      "uptime": 44.37,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2488,
+      "end_line": 2502,
+      "tid": 224,
+      "uptime": 44.4,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2503,
+      "end_line": 2517,
+      "tid": 225,
+      "uptime": 44.42,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2518,
+      "end_line": 2532,
+      "tid": 226,
+      "uptime": 44.44,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2533,
+      "end_line": 2547,
+      "tid": 217,
+      "uptime": 47.47,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2548,
+      "end_line": 2562,
+      "tid": 224,
+      "uptime": 47.49,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2563,
+      "end_line": 2577,
+      "tid": 225,
+      "uptime": 47.52,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2578,
+      "end_line": 2592,
+      "tid": 226,
+      "uptime": 47.53,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2593,
+      "end_line": 2607,
+      "tid": 217,
+      "uptime": 50.57,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2608,
+      "end_line": 2622,
+      "tid": 224,
+      "uptime": 50.6,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2623,
+      "end_line": 2637,
+      "tid": 225,
+      "uptime": 50.61,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2638,
+      "end_line": 2652,
+      "tid": 226,
+      "uptime": 50.63,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2653,
+      "end_line": 2667,
+      "tid": 217,
+      "uptime": 53.65,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2668,
+      "end_line": 2682,
+      "tid": 224,
+      "uptime": 53.68,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2683,
+      "end_line": 2697,
+      "tid": 225,
+      "uptime": 53.7,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2698,
+      "end_line": 2712,
+      "tid": 226,
+      "uptime": 53.72,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2713,
+      "end_line": 2727,
+      "tid": 217,
+      "uptime": 56.75,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2728,
+      "end_line": 2742,
+      "tid": 224,
+      "uptime": 56.77,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2743,
+      "end_line": 2757,
+      "tid": 225,
+      "uptime": 56.79,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2758,
+      "end_line": 2772,
+      "tid": 226,
+      "uptime": 56.81,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2773,
+      "end_line": 2787,
+      "tid": 217,
+      "uptime": 59.85,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2788,
+      "end_line": 2802,
+      "tid": 224,
+      "uptime": 59.87,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2803,
+      "end_line": 2817,
+      "tid": 225,
+      "uptime": 59.88,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2818,
+      "end_line": 2832,
+      "tid": 226,
+      "uptime": 59.9,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2833,
+      "end_line": 2847,
+      "tid": 217,
+      "uptime": 62.93,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2848,
+      "end_line": 2862,
+      "tid": 224,
+      "uptime": 62.94,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2863,
+      "end_line": 2877,
+      "tid": 225,
+      "uptime": 62.96,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2878,
+      "end_line": 2892,
+      "tid": 226,
+      "uptime": 62.97,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2893,
+      "end_line": 2907,
+      "tid": 217,
+      "uptime": 66.01,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2908,
+      "end_line": 2922,
+      "tid": 224,
+      "uptime": 66.03,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2923,
+      "end_line": 2937,
+      "tid": 225,
+      "uptime": 66.05,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2938,
+      "end_line": 2952,
+      "tid": 226,
+      "uptime": 66.07,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2953,
+      "end_line": 2967,
+      "tid": 217,
+      "uptime": 69.09,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 2968,
+      "end_line": 2982,
+      "tid": 224,
+      "uptime": 69.12,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2983,
+      "end_line": 2997,
+      "tid": 225,
+      "uptime": 69.13,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 2998,
+      "end_line": 3012,
+      "tid": 226,
+      "uptime": 69.15,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3013,
+      "end_line": 3027,
+      "tid": 217,
+      "uptime": 72.19,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3028,
+      "end_line": 3042,
+      "tid": 224,
+      "uptime": 72.21,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3043,
+      "end_line": 3057,
+      "tid": 225,
+      "uptime": 72.23,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3058,
+      "end_line": 3072,
+      "tid": 226,
+      "uptime": 72.25,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3073,
+      "end_line": 3087,
+      "tid": 217,
+      "uptime": 75.27,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3088,
+      "end_line": 3102,
+      "tid": 224,
+      "uptime": 75.29,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3103,
+      "end_line": 3117,
+      "tid": 225,
+      "uptime": 75.31,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3118,
+      "end_line": 3132,
+      "tid": 226,
+      "uptime": 75.32,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3133,
+      "end_line": 3147,
+      "tid": 217,
+      "uptime": 78.35,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3148,
+      "end_line": 3162,
+      "tid": 224,
+      "uptime": 78.36,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3163,
+      "end_line": 3177,
+      "tid": 225,
+      "uptime": 78.38,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3178,
+      "end_line": 3192,
+      "tid": 226,
+      "uptime": 78.39,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3193,
+      "end_line": 3207,
+      "tid": 217,
+      "uptime": 81.42,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3208,
+      "end_line": 3222,
+      "tid": 224,
+      "uptime": 81.43,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3223,
+      "end_line": 3237,
+      "tid": 225,
+      "uptime": 81.45,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3238,
+      "end_line": 3252,
+      "tid": 226,
+      "uptime": 81.47,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3253,
+      "end_line": 3267,
+      "tid": 217,
+      "uptime": 84.5,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3268,
+      "end_line": 3282,
+      "tid": 224,
+      "uptime": 84.52,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3283,
+      "end_line": 3297,
+      "tid": 225,
+      "uptime": 84.54,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3298,
+      "end_line": 3312,
+      "tid": 226,
+      "uptime": 84.56,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3313,
+      "end_line": 3327,
+      "tid": 217,
+      "uptime": 87.59,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3328,
+      "end_line": 3342,
+      "tid": 224,
+      "uptime": 87.61,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3343,
+      "end_line": 3357,
+      "tid": 225,
+      "uptime": 87.63,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3358,
+      "end_line": 3372,
+      "tid": 226,
+      "uptime": 87.64,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3373,
+      "end_line": 3387,
+      "tid": 217,
+      "uptime": 90.66,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3388,
+      "end_line": 3402,
+      "tid": 224,
+      "uptime": 90.68,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3403,
+      "end_line": 3417,
+      "tid": 225,
+      "uptime": 90.69,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3418,
+      "end_line": 3432,
+      "tid": 226,
+      "uptime": 90.7,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3433,
+      "end_line": 3447,
+      "tid": 217,
+      "uptime": 93.74,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3448,
+      "end_line": 3462,
+      "tid": 224,
+      "uptime": 93.76,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3463,
+      "end_line": 3477,
+      "tid": 225,
+      "uptime": 93.78,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3478,
+      "end_line": 3492,
+      "tid": 226,
+      "uptime": 93.79,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3493,
+      "end_line": 3507,
+      "tid": 217,
+      "uptime": 96.83,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3508,
+      "end_line": 3522,
+      "tid": 224,
+      "uptime": 96.86,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3523,
+      "end_line": 3537,
+      "tid": 225,
+      "uptime": 96.88,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3538,
+      "end_line": 3552,
+      "tid": 226,
+      "uptime": 96.89,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3553,
+      "end_line": 3567,
+      "tid": 217,
+      "uptime": 99.93,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3568,
+      "end_line": 3582,
+      "tid": 224,
+      "uptime": 99.94,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3583,
+      "end_line": 3597,
+      "tid": 225,
+      "uptime": 99.96,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3598,
+      "end_line": 3612,
+      "tid": 226,
+      "uptime": 99.98,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3613,
+      "end_line": 3627,
+      "tid": 217,
+      "uptime": 103.02,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3628,
+      "end_line": 3642,
+      "tid": 224,
+      "uptime": 103.05,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3643,
+      "end_line": 3657,
+      "tid": 225,
+      "uptime": 103.07,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3658,
+      "end_line": 3672,
+      "tid": 226,
+      "uptime": 103.09,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3673,
+      "end_line": 3687,
+      "tid": 217,
+      "uptime": 106.12,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3688,
+      "end_line": 3702,
+      "tid": 224,
+      "uptime": 106.17,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3703,
+      "end_line": 3717,
+      "tid": 225,
+      "uptime": 106.24,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3718,
+      "end_line": 3732,
+      "tid": 226,
+      "uptime": 106.29,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3733,
+      "end_line": 3747,
+      "tid": 217,
+      "uptime": 109.35,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3748,
+      "end_line": 3762,
+      "tid": 224,
+      "uptime": 109.39,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3763,
+      "end_line": 3777,
+      "tid": 225,
+      "uptime": 109.43,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3778,
+      "end_line": 3792,
+      "tid": 226,
+      "uptime": 109.49,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3793,
+      "end_line": 3807,
+      "tid": 217,
+      "uptime": 112.55,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3808,
+      "end_line": 3822,
+      "tid": 224,
+      "uptime": 112.58,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3823,
+      "end_line": 3837,
+      "tid": 225,
+      "uptime": 112.59,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3838,
+      "end_line": 3852,
+      "tid": 226,
+      "uptime": 112.61,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3853,
+      "end_line": 3867,
+      "tid": 217,
+      "uptime": 115.64,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3868,
+      "end_line": 3882,
+      "tid": 224,
+      "uptime": 115.66,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3883,
+      "end_line": 3897,
+      "tid": 225,
+      "uptime": 115.68,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3898,
+      "end_line": 3912,
+      "tid": 226,
+      "uptime": 115.69,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3913,
+      "end_line": 3927,
+      "tid": 217,
+      "uptime": 118.72,
+      "comm": "appfw-launch",
+      "status": {
+        "Name": "appfw-launch",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "217",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "sys_restart_syscall"
+    },
+    {
+      "line": 3928,
+      "end_line": 3942,
+      "tid": 224,
+      "uptime": 118.74,
+      "comm": "AppFw",
+      "status": {
+        "Name": "AppFw",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "224",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3943,
+      "end_line": 3957,
+      "tid": 225,
+      "uptime": 118.76,
+      "comm": "uxengine_res1",
+      "status": {
+        "Name": "uxengine_res1",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "225",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    },
+    {
+      "line": 3958,
+      "end_line": 3972,
+      "tid": 226,
+      "uptime": 118.77,
+      "comm": "uxengine_res2",
+      "status": {
+        "Name": "uxengine_res2",
+        "State": "S (sleeping)",
+        "Tgid": "217",
+        "Pid": "226",
+        "PPid": "1",
+        "Threads": "4"
+      },
+      "wchan": "futex_wait_queue_me"
+    }
+  ],
+  "diagnostic_records": [
+    {
+      "line": 1615,
+      "text": "FX6_WAIT_SNAPSHOT_INIT_BEGIN pid=217 uptime=22.65",
+      "fields": {
+        "pid": "217",
+        "uptime": "22.65"
+      }
+    },
+    {
+      "line": 1616,
+      "text": "FX6_WAIT_SNAPSHOT_BEGIN pid=217 monotonic_ms=22660 page=4096 thread_pause=1 sequential=1 no_exitkill=1",
+      "fields": {
+        "pid": "217",
+        "monotonic_ms": "22660",
+        "page": "4096",
+        "thread_pause": "1",
+        "sequential": "1",
+        "no_exitkill": "1"
+      }
+    },
+    {
+      "line": 1617,
+      "text": "FX6_WAIT_SNAPSHOT_MAPS_BEGIN tid=217",
+      "fields": {
+        "tid": "217"
+      }
+    },
+    {
+      "line": 1966,
+      "text": "FX6_WAIT_SNAPSHOT_MAPS_END tid=217 bytes=32064 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "217",
+        "bytes": "32064",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 1967,
+      "text": "FX6_WAIT_SNAPSHOT_ENUM pid=217 tids=4 overflow=0 scope=existing_at_enumeration",
+      "fields": {
+        "pid": "217",
+        "tids": "4",
+        "overflow": "0",
+        "scope": "existing_at_enumeration"
+      }
+    },
+    {
+      "line": 1968,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_BEGIN tid=217",
+      "fields": {
+        "tid": "217"
+      }
+    },
+    {
+      "line": 1970,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_END tid=217 bytes=13 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "217",
+        "bytes": "13",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 1971,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_BEGIN tid=217",
+      "fields": {
+        "tid": "217"
+      }
+    },
+    {
+      "line": 1973,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_END tid=217 bytes=106 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "217",
+        "bytes": "106",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 1974,
+      "text": "FX6_WAIT_SNAPSHOT_SEIZE tid=217 rc=0 errno=0",
+      "fields": {
+        "tid": "217",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 1975,
+      "text": "FX6_WAIT_SNAPSHOT_INTERRUPT tid=217 rc=0 errno=0",
+      "fields": {
+        "tid": "217",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 1976,
+      "text": "FX6_WAIT_SNAPSHOT_STOP tid=217 status=0x80057f detach_signal=0",
+      "fields": {
+        "tid": "217",
+        "status": "0x80057f",
+        "detach_signal": "0"
+      }
+    },
+    {
+      "line": 1977,
+      "text": "FX6_WAIT_SNAPSHOT_REG tid=217 pc=0x7f7c2d0654 lr=0x7f7c2d0648 fp=0x7fc6758fd0 sp=0x7fc6758f90 pstate=0x80000000 x0=0x7fc6759000 x1=0x7fc6759000 x2=0xffffffbb x3=0x7fc6758f8c x4=0x7f7b2e2838 x5=0x7f7b2e2730 x6=0x7f7b2e2e20 x7=0x0 x8=0x65",
+      "fields": {
+        "tid": "217",
+        "pc": "0x7f7c2d0654",
+        "lr": "0x7f7c2d0648",
+        "fp": "0x7fc6758fd0",
+        "sp": "0x7fc6758f90",
+        "pstate": "0x80000000",
+        "x0": "0x7fc6759000",
+        "x1": "0x7fc6759000",
+        "x2": "0xffffffbb",
+        "x3": "0x7fc6758f8c",
+        "x4": "0x7f7b2e2838",
+        "x5": "0x7f7b2e2730",
+        "x6": "0x7f7b2e2e20",
+        "x7": "0x0",
+        "x8": "0x65"
+      }
+    },
+    {
+      "line": 1978,
+      "text": "FX6_WAIT_SNAPSHOT_STACK tid=217 sp=0x7fc6758f90 low=0x7fc6728000 high=0x7fc675a000",
+      "fields": {
+        "tid": "217",
+        "sp": "0x7fc6758f90",
+        "low": "0x7fc6728000",
+        "high": "0x7fc675a000"
+      }
+    },
+    {
+      "line": 1979,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=217 index=0 fp=0x7fc6758fd0 next_fp=0x7fc6759040 saved_lr=0x7f86b9e5a0",
+      "fields": {
+        "tid": "217",
+        "index": "0",
+        "fp": "0x7fc6758fd0",
+        "next_fp": "0x7fc6759040",
+        "saved_lr": "0x7f86b9e5a0"
+      }
+    },
+    {
+      "line": 1980,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=217 index=1 fp=0x7fc6759040 next_fp=0x7fc67591d0 saved_lr=0x1019a80",
+      "fields": {
+        "tid": "217",
+        "index": "1",
+        "fp": "0x7fc6759040",
+        "next_fp": "0x7fc67591d0",
+        "saved_lr": "0x1019a80"
+      }
+    },
+    {
+      "line": 1981,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=217 index=2 fp=0x7fc67591d0 next_fp=0x7fc6759230 saved_lr=0x7f7c2529e4",
+      "fields": {
+        "tid": "217",
+        "index": "2",
+        "fp": "0x7fc67591d0",
+        "next_fp": "0x7fc6759230",
+        "saved_lr": "0x7f7c2529e4"
+      }
+    },
+    {
+      "line": 1982,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=217 index=3 fp=0x7fc6759230 next_fp=0x0 saved_lr=0x101952c",
+      "fields": {
+        "tid": "217",
+        "index": "3",
+        "fp": "0x7fc6759230",
+        "next_fp": "0x0",
+        "saved_lr": "0x101952c"
+      }
+    },
+    {
+      "line": 1983,
+      "text": "FX6_WAIT_SNAPSHOT_FP_END tid=217 reason=chain_end_or_nonincreasing",
+      "fields": {
+        "tid": "217",
+        "reason": "chain_end_or_nonincreasing"
+      }
+    },
+    {
+      "line": 1984,
+      "text": "FX6_WAIT_SNAPSHOT_DETACH tid=217 rc=0 errno=0 stopped=1 signal=0",
+      "fields": {
+        "tid": "217",
+        "rc": "0",
+        "errno": "0",
+        "stopped": "1",
+        "signal": "0"
+      }
+    },
+    {
+      "line": 1985,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_BEGIN tid=224",
+      "fields": {
+        "tid": "224"
+      }
+    },
+    {
+      "line": 1987,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_END tid=224 bytes=6 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "224",
+        "bytes": "6",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 1988,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_BEGIN tid=224",
+      "fields": {
+        "tid": "224"
+      }
+    },
+    {
+      "line": 1990,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_END tid=224 bytes=72 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "224",
+        "bytes": "72",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 1991,
+      "text": "FX6_WAIT_SNAPSHOT_SEIZE tid=224 rc=0 errno=0",
+      "fields": {
+        "tid": "224",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 1992,
+      "text": "FX6_WAIT_SNAPSHOT_INTERRUPT tid=224 rc=0 errno=0",
+      "fields": {
+        "tid": "224",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 1993,
+      "text": "FX6_WAIT_SNAPSHOT_STOP tid=224 status=0x80057f detach_signal=0",
+      "fields": {
+        "tid": "224",
+        "status": "0x80057f",
+        "detach_signal": "0"
+      }
+    },
+    {
+      "line": 1994,
+      "text": "FX6_WAIT_SNAPSHOT_REG tid=224 pc=0x7f7c2005ec lr=0x7f7c2005d0 fp=0x7f74535c40 sp=0x7f74535c40 pstate=0x80000000 x0=0x7f6c016cf8 x1=0x80 x2=0x0 x3=0x0 x4=0x0 x5=0x7f745381e0 x6=0x7f745388d0 x7=0x0 x8=0x62",
+      "fields": {
+        "tid": "224",
+        "pc": "0x7f7c2005ec",
+        "lr": "0x7f7c2005d0",
+        "fp": "0x7f74535c40",
+        "sp": "0x7f74535c40",
+        "pstate": "0x80000000",
+        "x0": "0x7f6c016cf8",
+        "x1": "0x80",
+        "x2": "0x0",
+        "x3": "0x0",
+        "x4": "0x0",
+        "x5": "0x7f745381e0",
+        "x6": "0x7f745388d0",
+        "x7": "0x0",
+        "x8": "0x62"
+      }
+    },
+    {
+      "line": 1995,
+      "text": "FX6_WAIT_SNAPSHOT_STACK tid=224 sp=0x7f74535c40 low=0x7f73d3a000 high=0x7f74539000",
+      "fields": {
+        "tid": "224",
+        "sp": "0x7f74535c40",
+        "low": "0x7f73d3a000",
+        "high": "0x7f74539000"
+      }
+    },
+    {
+      "line": 1996,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=0 fp=0x7f74535c40 next_fp=0x7f74535d10 saved_lr=0x7f7c118610",
+      "fields": {
+        "tid": "224",
+        "index": "0",
+        "fp": "0x7f74535c40",
+        "next_fp": "0x7f74535d10",
+        "saved_lr": "0x7f7c118610"
+      }
+    },
+    {
+      "line": 1997,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=1 fp=0x7f74535d10 next_fp=0x7f74535d20 saved_lr=0x7f760e0988",
+      "fields": {
+        "tid": "224",
+        "index": "1",
+        "fp": "0x7f74535d10",
+        "next_fp": "0x7f74535d20",
+        "saved_lr": "0x7f760e0988"
+      }
+    },
+    {
+      "line": 1998,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=2 fp=0x7f74535d20 next_fp=0x7f74535da0 saved_lr=0x7f758ecdec",
+      "fields": {
+        "tid": "224",
+        "index": "2",
+        "fp": "0x7f74535d20",
+        "next_fp": "0x7f74535da0",
+        "saved_lr": "0x7f758ecdec"
+      }
+    },
+    {
+      "line": 1999,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=3 fp=0x7f74535da0 next_fp=0x7f745361b0 saved_lr=0x7f758ed024",
+      "fields": {
+        "tid": "224",
+        "index": "3",
+        "fp": "0x7f74535da0",
+        "next_fp": "0x7f745361b0",
+        "saved_lr": "0x7f758ed024"
+      }
+    },
+    {
+      "line": 2000,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=4 fp=0x7f745361b0 next_fp=0x7f74536210 saved_lr=0x7f7521cde8",
+      "fields": {
+        "tid": "224",
+        "index": "4",
+        "fp": "0x7f745361b0",
+        "next_fp": "0x7f74536210",
+        "saved_lr": "0x7f7521cde8"
+      }
+    },
+    {
+      "line": 2001,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=5 fp=0x7f74536210 next_fp=0x7f74536250 saved_lr=0x7f7521d6d0",
+      "fields": {
+        "tid": "224",
+        "index": "5",
+        "fp": "0x7f74536210",
+        "next_fp": "0x7f74536250",
+        "saved_lr": "0x7f7521d6d0"
+      }
+    },
+    {
+      "line": 2002,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=6 fp=0x7f74536250 next_fp=0x7f74536630 saved_lr=0x7f7521e52c",
+      "fields": {
+        "tid": "224",
+        "index": "6",
+        "fp": "0x7f74536250",
+        "next_fp": "0x7f74536630",
+        "saved_lr": "0x7f7521e52c"
+      }
+    },
+    {
+      "line": 2003,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=7 fp=0x7f74536630 next_fp=0x7f74537950 saved_lr=0x7f76840c0c",
+      "fields": {
+        "tid": "224",
+        "index": "7",
+        "fp": "0x7f74536630",
+        "next_fp": "0x7f74537950",
+        "saved_lr": "0x7f76840c0c"
+      }
+    },
+    {
+      "line": 2004,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=8 fp=0x7f74537950 next_fp=0x7f74537980 saved_lr=0x7f7bc3e184",
+      "fields": {
+        "tid": "224",
+        "index": "8",
+        "fp": "0x7f74537950",
+        "next_fp": "0x7f74537980",
+        "saved_lr": "0x7f7bc3e184"
+      }
+    },
+    {
+      "line": 2005,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=9 fp=0x7f74537980 next_fp=0x7f745379d0 saved_lr=0x7f7c1fa020",
+      "fields": {
+        "tid": "224",
+        "index": "9",
+        "fp": "0x7f74537980",
+        "next_fp": "0x7f745379d0",
+        "saved_lr": "0x7f7c1fa020"
+      }
+    },
+    {
+      "line": 2006,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=224 index=10 fp=0x7f745379d0 next_fp=0x0 saved_lr=0x7f7c2fbdbc",
+      "fields": {
+        "tid": "224",
+        "index": "10",
+        "fp": "0x7f745379d0",
+        "next_fp": "0x0",
+        "saved_lr": "0x7f7c2fbdbc"
+      }
+    },
+    {
+      "line": 2007,
+      "text": "FX6_WAIT_SNAPSHOT_FP_END tid=224 reason=chain_end_or_nonincreasing",
+      "fields": {
+        "tid": "224",
+        "reason": "chain_end_or_nonincreasing"
+      }
+    },
+    {
+      "line": 2008,
+      "text": "FX6_WAIT_SNAPSHOT_DETACH tid=224 rc=0 errno=0 stopped=1 signal=0",
+      "fields": {
+        "tid": "224",
+        "rc": "0",
+        "errno": "0",
+        "stopped": "1",
+        "signal": "0"
+      }
+    },
+    {
+      "line": 2009,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_BEGIN tid=225",
+      "fields": {
+        "tid": "225"
+      }
+    },
+    {
+      "line": 2011,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_END tid=225 bytes=14 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "225",
+        "bytes": "14",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 2012,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_BEGIN tid=225",
+      "fields": {
+        "tid": "225"
+      }
+    },
+    {
+      "line": 2014,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_END tid=225 bytes=72 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "225",
+        "bytes": "72",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 2015,
+      "text": "FX6_WAIT_SNAPSHOT_SEIZE tid=225 rc=0 errno=0",
+      "fields": {
+        "tid": "225",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 2016,
+      "text": "FX6_WAIT_SNAPSHOT_INTERRUPT tid=225 rc=0 errno=0",
+      "fields": {
+        "tid": "225",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 2017,
+      "text": "FX6_WAIT_SNAPSHOT_STOP tid=225 status=0x80057f detach_signal=0",
+      "fields": {
+        "tid": "225",
+        "status": "0x80057f",
+        "detach_signal": "0"
+      }
+    },
+    {
+      "line": 2018,
+      "text": "FX6_WAIT_SNAPSHOT_REG tid=225 pc=0x7f7c2005ec lr=0x7f7c2005d0 fp=0x7f73d377b0 sp=0x7f73d377b0 pstate=0x80000000 x0=0x7f6c007b08 x1=0x80 x2=0x0 x3=0x0 x4=0x0 x5=0x7f73d381e0 x6=0x7f73d388d0 x7=0x0 x8=0x62",
+      "fields": {
+        "tid": "225",
+        "pc": "0x7f7c2005ec",
+        "lr": "0x7f7c2005d0",
+        "fp": "0x7f73d377b0",
+        "sp": "0x7f73d377b0",
+        "pstate": "0x80000000",
+        "x0": "0x7f6c007b08",
+        "x1": "0x80",
+        "x2": "0x0",
+        "x3": "0x0",
+        "x4": "0x0",
+        "x5": "0x7f73d381e0",
+        "x6": "0x7f73d388d0",
+        "x7": "0x0",
+        "x8": "0x62"
+      }
+    },
+    {
+      "line": 2019,
+      "text": "FX6_WAIT_SNAPSHOT_STACK tid=225 sp=0x7f73d377b0 low=0x7f7353a000 high=0x7f73d39000",
+      "fields": {
+        "tid": "225",
+        "sp": "0x7f73d377b0",
+        "low": "0x7f7353a000",
+        "high": "0x7f73d39000"
+      }
+    },
+    {
+      "line": 2020,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=0 fp=0x7f73d377b0 next_fp=0x7f73d37880 saved_lr=0x7f7bdb8de4",
+      "fields": {
+        "tid": "225",
+        "index": "0",
+        "fp": "0x7f73d377b0",
+        "next_fp": "0x7f73d37880",
+        "saved_lr": "0x7f7bdb8de4"
+      }
+    },
+    {
+      "line": 2021,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=1 fp=0x7f73d37880 next_fp=0x7f73d37890 saved_lr=0x7f7bdc0990",
+      "fields": {
+        "tid": "225",
+        "index": "1",
+        "fp": "0x7f73d37880",
+        "next_fp": "0x7f73d37890",
+        "saved_lr": "0x7f7bdc0990"
+      }
+    },
+    {
+      "line": 2022,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=2 fp=0x7f73d37890 next_fp=0x7f73d378d0 saved_lr=0x7f7be4ef9c",
+      "fields": {
+        "tid": "225",
+        "index": "2",
+        "fp": "0x7f73d37890",
+        "next_fp": "0x7f73d378d0",
+        "saved_lr": "0x7f7be4ef9c"
+      }
+    },
+    {
+      "line": 2023,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=3 fp=0x7f73d378d0 next_fp=0x7f73d37900 saved_lr=0x7f7bdc3c4c",
+      "fields": {
+        "tid": "225",
+        "index": "3",
+        "fp": "0x7f73d378d0",
+        "next_fp": "0x7f73d37900",
+        "saved_lr": "0x7f7bdc3c4c"
+      }
+    },
+    {
+      "line": 2024,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=4 fp=0x7f73d37900 next_fp=0x7f73d37970 saved_lr=0x7f86ae5a80",
+      "fields": {
+        "tid": "225",
+        "index": "4",
+        "fp": "0x7f73d37900",
+        "next_fp": "0x7f73d37970",
+        "saved_lr": "0x7f86ae5a80"
+      }
+    },
+    {
+      "line": 2025,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=5 fp=0x7f73d37970 next_fp=0x7f73d37980 saved_lr=0x7f7bc3e184",
+      "fields": {
+        "tid": "225",
+        "index": "5",
+        "fp": "0x7f73d37970",
+        "next_fp": "0x7f73d37980",
+        "saved_lr": "0x7f7bc3e184"
+      }
+    },
+    {
+      "line": 2026,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=6 fp=0x7f73d37980 next_fp=0x7f73d379d0 saved_lr=0x7f7c1fa020",
+      "fields": {
+        "tid": "225",
+        "index": "6",
+        "fp": "0x7f73d37980",
+        "next_fp": "0x7f73d379d0",
+        "saved_lr": "0x7f7c1fa020"
+      }
+    },
+    {
+      "line": 2027,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=225 index=7 fp=0x7f73d379d0 next_fp=0x0 saved_lr=0x7f7c2fbdbc",
+      "fields": {
+        "tid": "225",
+        "index": "7",
+        "fp": "0x7f73d379d0",
+        "next_fp": "0x0",
+        "saved_lr": "0x7f7c2fbdbc"
+      }
+    },
+    {
+      "line": 2028,
+      "text": "FX6_WAIT_SNAPSHOT_FP_END tid=225 reason=chain_end_or_nonincreasing",
+      "fields": {
+        "tid": "225",
+        "reason": "chain_end_or_nonincreasing"
+      }
+    },
+    {
+      "line": 2029,
+      "text": "FX6_WAIT_SNAPSHOT_DETACH tid=225 rc=0 errno=0 stopped=1 signal=0",
+      "fields": {
+        "tid": "225",
+        "rc": "0",
+        "errno": "0",
+        "stopped": "1",
+        "signal": "0"
+      }
+    },
+    {
+      "line": 2030,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_BEGIN tid=226",
+      "fields": {
+        "tid": "226"
+      }
+    },
+    {
+      "line": 2032,
+      "text": "FX6_WAIT_SNAPSHOT_COMM_END tid=226 bytes=14 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "226",
+        "bytes": "14",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 2033,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_BEGIN tid=226",
+      "fields": {
+        "tid": "226"
+      }
+    },
+    {
+      "line": 2035,
+      "text": "FX6_WAIT_SNAPSHOT_SYSCALL_END tid=226 bytes=72 truncated=0 cancelled=0",
+      "fields": {
+        "tid": "226",
+        "bytes": "72",
+        "truncated": "0",
+        "cancelled": "0"
+      }
+    },
+    {
+      "line": 2036,
+      "text": "FX6_WAIT_SNAPSHOT_SEIZE tid=226 rc=0 errno=0",
+      "fields": {
+        "tid": "226",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 2037,
+      "text": "FX6_WAIT_SNAPSHOT_INTERRUPT tid=226 rc=0 errno=0",
+      "fields": {
+        "tid": "226",
+        "rc": "0",
+        "errno": "0"
+      }
+    },
+    {
+      "line": 2038,
+      "text": "FX6_WAIT_SNAPSHOT_STOP tid=226 status=0x80057f detach_signal=0",
+      "fields": {
+        "tid": "226",
+        "status": "0x80057f",
+        "detach_signal": "0"
+      }
+    },
+    {
+      "line": 2039,
+      "text": "FX6_WAIT_SNAPSHOT_REG tid=226 pc=0x7f7c2005ec lr=0x7f7c2005d0 fp=0x7f735377b0 sp=0x7f735377b0 pstate=0x80000000 x0=0x7f6c007c58 x1=0x80 x2=0x0 x3=0x0 x4=0x0 x5=0x7f735381e0 x6=0x7f735388d0 x7=0x0 x8=0x62",
+      "fields": {
+        "tid": "226",
+        "pc": "0x7f7c2005ec",
+        "lr": "0x7f7c2005d0",
+        "fp": "0x7f735377b0",
+        "sp": "0x7f735377b0",
+        "pstate": "0x80000000",
+        "x0": "0x7f6c007c58",
+        "x1": "0x80",
+        "x2": "0x0",
+        "x3": "0x0",
+        "x4": "0x0",
+        "x5": "0x7f735381e0",
+        "x6": "0x7f735388d0",
+        "x7": "0x0",
+        "x8": "0x62"
+      }
+    },
+    {
+      "line": 2040,
+      "text": "FX6_WAIT_SNAPSHOT_STACK tid=226 sp=0x7f735377b0 low=0x7f72d3a000 high=0x7f73539000",
+      "fields": {
+        "tid": "226",
+        "sp": "0x7f735377b0",
+        "low": "0x7f72d3a000",
+        "high": "0x7f73539000"
+      }
+    },
+    {
+      "line": 2041,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=0 fp=0x7f735377b0 next_fp=0x7f73537880 saved_lr=0x7f7bdb8de4",
+      "fields": {
+        "tid": "226",
+        "index": "0",
+        "fp": "0x7f735377b0",
+        "next_fp": "0x7f73537880",
+        "saved_lr": "0x7f7bdb8de4"
+      }
+    },
+    {
+      "line": 2042,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=1 fp=0x7f73537880 next_fp=0x7f73537890 saved_lr=0x7f7bdc0990",
+      "fields": {
+        "tid": "226",
+        "index": "1",
+        "fp": "0x7f73537880",
+        "next_fp": "0x7f73537890",
+        "saved_lr": "0x7f7bdc0990"
+      }
+    },
+    {
+      "line": 2043,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=2 fp=0x7f73537890 next_fp=0x7f735378d0 saved_lr=0x7f7be4ef9c",
+      "fields": {
+        "tid": "226",
+        "index": "2",
+        "fp": "0x7f73537890",
+        "next_fp": "0x7f735378d0",
+        "saved_lr": "0x7f7be4ef9c"
+      }
+    },
+    {
+      "line": 2044,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=3 fp=0x7f735378d0 next_fp=0x7f73537900 saved_lr=0x7f7bdc3c4c",
+      "fields": {
+        "tid": "226",
+        "index": "3",
+        "fp": "0x7f735378d0",
+        "next_fp": "0x7f73537900",
+        "saved_lr": "0x7f7bdc3c4c"
+      }
+    },
+    {
+      "line": 2045,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=4 fp=0x7f73537900 next_fp=0x7f73537970 saved_lr=0x7f86ae5a80",
+      "fields": {
+        "tid": "226",
+        "index": "4",
+        "fp": "0x7f73537900",
+        "next_fp": "0x7f73537970",
+        "saved_lr": "0x7f86ae5a80"
+      }
+    },
+    {
+      "line": 2046,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=5 fp=0x7f73537970 next_fp=0x7f73537980 saved_lr=0x7f7bc3e184",
+      "fields": {
+        "tid": "226",
+        "index": "5",
+        "fp": "0x7f73537970",
+        "next_fp": "0x7f73537980",
+        "saved_lr": "0x7f7bc3e184"
+      }
+    },
+    {
+      "line": 2047,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=6 fp=0x7f73537980 next_fp=0x7f735379d0 saved_lr=0x7f7c1fa020",
+      "fields": {
+        "tid": "226",
+        "index": "6",
+        "fp": "0x7f73537980",
+        "next_fp": "0x7f735379d0",
+        "saved_lr": "0x7f7c1fa020"
+      }
+    },
+    {
+      "line": 2048,
+      "text": "FX6_WAIT_SNAPSHOT_FRAME tid=226 index=7 fp=0x7f735379d0 next_fp=0x0 saved_lr=0x7f7c2fbdbc",
+      "fields": {
+        "tid": "226",
+        "index": "7",
+        "fp": "0x7f735379d0",
+        "next_fp": "0x0",
+        "saved_lr": "0x7f7c2fbdbc"
+      }
+    },
+    {
+      "line": 2049,
+      "text": "FX6_WAIT_SNAPSHOT_FP_END tid=226 reason=chain_end_or_nonincreasing",
+      "fields": {
+        "tid": "226",
+        "reason": "chain_end_or_nonincreasing"
+      }
+    },
+    {
+      "line": 2050,
+      "text": "FX6_WAIT_SNAPSHOT_DETACH tid=226 rc=0 errno=0 stopped=1 signal=0",
+      "fields": {
+        "tid": "226",
+        "rc": "0",
+        "errno": "0",
+        "stopped": "1",
+        "signal": "0"
+      }
+    },
+    {
+      "line": 2051,
+      "text": "FX6_WAIT_SNAPSHOT_END pid=217 processed=4 enumerated=4 failures=0 cancelled=0 overflow=0 detach_failed=0 elapsed_ms=137",
+      "fields": {
+        "pid": "217",
+        "processed": "4",
+        "enumerated": "4",
+        "failures": "0",
+        "cancelled": "0",
+        "overflow": "0",
+        "detach_failed": "0",
+        "elapsed_ms": "137"
+      }
+    },
+    {
+      "line": 2052,
+      "text": "FX6_WAIT_SNAPSHOT_INIT_END rc=0",
+      "fields": {
+        "rc": "0"
+      }
+    }
+  ],
+  "register_snapshot_count": 4,
+  "fp_frame_count": 31,
+  "raw_pc_lr_saved_lr_address_count": 39,
+  "snapshot_elapsed_ms": 137,
+  "key_operations": [
+    {
+      "step": 1,
+      "recorded": true,
+      "delivery": "software_gate_write_readback",
+      "guest_consumption": "unproven",
+      "native_ui_response": "unverified"
+    }
+  ],
+  "key_attempts": [
+    {
+      "step": 1,
+      "key": "0x1ab",
+      "delivery": "software_gate_write_readback",
+      "guest_consumption": "unproven",
+      "retry_suppressed": true
+    },
+    {
+      "step": 2,
+      "key": "0x30",
+      "delivery": "unknown",
+      "error": "RuntimeError('host-step software identity/order/result mismatch')",
+      "retry_suppressed": true,
+      "subsequent_steps_suppressed": true
+    }
+  ],
+  "key1": {
+    "step": 1,
+    "key": "0x1ab",
+    "hold_ms": 100,
+    "observed_page": "native-screen-unverified",
+    "reason": "bounded diagnostic key sequence; no verified native menu",
+    "physical": "0x41df00008",
+    "bytes": 12,
+    "before_header_hex": "53524d334b5945350000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "written_hex": "01000000ab01000064000000",
+    "readback_hex": "01000000ab01000064000000",
+    "software_gate_only": true,
+    "no_original_UI_or_parameter_write": true,
+    "host_monotonic": 652937.631421458
+  },
+  "key_error": "RuntimeError('host-step software identity/order/result mismatch')\n",
+  "fault_counts": {
+    "APPFW_SEGV": 0,
+    "assert at": 0,
+    "Assertion ": 0,
+    "Kernel panic": 0,
+    "Oops:": 0,
+    "Internal error:": 0,
+    "FX6_QUEUE_OBS_ENTER": 0,
+    "FX6_QUEUE_OBS_EXIT": 0
+  },
+  "evidence_lines": [
+    {
+      "line": 1263,
+      "text": "FX6_QUEUE_OBS_LIBRARY base=0x7f86ffa000 function=0x7f8700a6d4 owner=/usr/lib/libfx6-queue-observer.so"
+    },
+    {
+      "line": 1279,
+      "text": "FX6_QUEUE_OBS_GOT off=0x2ef2868 slot=0x7f77505868 before=0x7f75129dd0 previous_owner=/usr/lib/appFw.so requested=0x7f8700a6d4 readback=0x7f8700a6d4 owner=/usr/lib/libfx6-queue-observer.so mprotect=0"
+    },
+    {
+      "line": 1283,
+      "text": "FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819c0 real=0x7f7521e044"
+    },
+    {
+      "line": 1284,
+      "text": "FX6_PATCH_NOP off=0x12d824c addr=0x7f758eb24c mprotect=0"
+    },
+    {
+      "line": 1285,
+      "text": "FX6_PATCH_NOP off=0x12d8250 addr=0x7f758eb250 mprotect=0"
+    },
+    {
+      "line": 1286,
+      "text": "FX6_PATCH_NOP off=0x12d8254 addr=0x7f758eb254 mprotect=0"
+    },
+    {
+      "line": 1287,
+      "text": "FX6_PATCH_NOP off=0x12d825c addr=0x7f758eb25c mprotect=0"
+    },
+    {
+      "line": 1288,
+      "text": "FX6_PATCH_NOP off=0xc09e50 addr=0x7f7521ce50 mprotect=0"
+    },
+    {
+      "line": 1289,
+      "text": "FX6_APP_CONFIG_HOLD real_returned"
+    },
+    {
+      "line": 1299,
+      "text": "FX6_OSD_FLUSH update #1 prims=0 nz_pixels=0"
+    },
+    {
+      "line": 1301,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c00ceb0 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1302,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c00d050 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1306,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c00ff20 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1307,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c010300 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1308,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c0106e0 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1309,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c010ac0 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1310,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c010ea0 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1311,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c011280 x=0 y=0 w=1024 h=540"
+    },
+    {
+      "line": 1312,
+      "text": "FX6_UX_SCREEN_AREA_1024 self=0x7f6c011660 x=0 y=0 w=1024 h=540"
+    }
+  ],
+  "limits": [
+    "No disassembly/address ownership inference repeated in this review.",
+    "Ptrace sequentially interrupts guest threads; successful detach does not remove scheduling interference.",
+    "Wchan and END markers are samples, not user LR or thread exit events.",
+    "Software key write/readback does not prove guest consumption or native UI response.",
+    "No hook ENTER does not exclude direct calls, other entry points or subsequent GOT changes."
+  ],
+  "scope": "Completed files only; no VM/socket/process/camera operations"
+}

@@ -1,0 +1,886 @@
+{
+  "schema": "fx6-coldboot-future-wait-chain-v1",
+  "appfw": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "actual_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/guest-wait-snapshot295.cpio",
+    "bytes": 430241092,
+    "sha256": "453890e36e7e6b4cd66641707cf80bd7754a0a37d6fba8dfce2af55fc169c926"
+  },
+  "actual_cpio_appfw_member_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+  "actual_cpio_shim": {
+    "member": "usr/lib/libgrm-fbinit9.so",
+    "bytes": 79504,
+    "sha256": "c58b6509e451a32474a6e2ace7c680a58427a5b685eaf27ece9a51153c2a3f45",
+    "nop_table_va": "0x2ed0",
+    "nop_table_file_offset": "0x2ed0",
+    "nop_offsets": [
+      "0x12d824c",
+      "0x12d8250",
+      "0x12d8254",
+      "0x12d825c",
+      "0xc09e50"
+    ]
+  },
+  "final_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-analysis-20261107/snapshot.json",
+    "bytes": 44070,
+    "sha256": "bcf1a017bad01db273a07510de53c0e5ee5a9b9600ea409b99fd9c38c14edcc2"
+  },
+  "final_resolved": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-analysis-20261107/resolved.json",
+    "bytes": 66471,
+    "sha256": "fdd11ff58a2bc48dd916df4f7cd313e304a6628c42a7f9cc83348ce44435b2cd"
+  },
+  "final_serial": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/runs/observer-00d964f97c/serial.log",
+    "bytes": 184170,
+    "sha256": "5f4e7e5fd909dd6888df5ae2b0506a485274f9aa6a9c2193106bcff7616feafa"
+  },
+  "actual_threads": {
+    "217": "appfw-launch",
+    "224": "AppFw",
+    "225": "uxengine_res1",
+    "226": "uxengine_res2"
+  },
+  "actual_appfw_wait": [
+    {
+      "tid": 224,
+      "role": "pc",
+      "address": "0x7f7c2005ec",
+      "resolution": {
+        "address": "0x7f7c2005ec",
+        "mapping": {
+          "start": "0x7f7c1f3000",
+          "end": "0x7f7c20a000",
+          "perms": "r-xp",
+          "offset": "0x0",
+          "path": "/lib/libpthread-2.25.so"
+        },
+        "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+        "elf_bytes": 101888,
+        "status": "resolved",
+        "load_bias": "0x7f7c1f3000",
+        "elf_va": "0xd5ec",
+        "file_offset": "0xd5ec",
+        "executable": true,
+        "covering_function_symbols": [
+          {
+            "name": "pthread_cond_wait",
+            "start": "0xd4d8",
+            "bytes": 748,
+            "offset": "0x114"
+          }
+        ],
+        "instructions": [
+          {
+            "va": "0xd5dc",
+            "assembly": "mov x2, #0"
+          },
+          {
+            "va": "0xd5e0",
+            "assembly": "mov x3, #0"
+          },
+          {
+            "va": "0xd5e4",
+            "assembly": "sxtw x1, w1"
+          },
+          {
+            "va": "0xd5e8",
+            "assembly": "mov x8, #0x62"
+          },
+          {
+            "va": "0xd5ec",
+            "assembly": "svc #0"
+          },
+          {
+            "va": "0xd5f0",
+            "assembly": "cmn x0, #1, lsl #12"
+          },
+          {
+            "va": "0xd5f4",
+            "assembly": "mov x1, x0"
+          },
+          {
+            "va": "0xd5f8",
+            "assembly": "b.hi #0xd738"
+          }
+        ],
+        "preceding_instruction": {
+          "va": "0xd5e8",
+          "assembly": "mov x8, #0x62"
+        }
+      }
+    },
+    {
+      "tid": 224,
+      "role": "frame_saved_lr",
+      "frame_index": 0,
+      "address": "0x7f7c118610",
+      "resolution": {
+        "address": "0x7f7c118610",
+        "mapping": {
+          "start": "0x7f7c065000",
+          "end": "0x7f7c1d3000",
+          "perms": "r-xp",
+          "offset": "0x0",
+          "path": "/usr/lib/libstdc++.so.6.0.22"
+        },
+        "elf_sha256": "60857b39f0c34a09a889d937683bd8dae68200b6f10335fe94dee130a770247c",
+        "elf_bytes": 1549496,
+        "status": "resolved",
+        "load_bias": "0x7f7c065000",
+        "elf_va": "0xb3610",
+        "file_offset": "0xb3610",
+        "executable": true,
+        "covering_function_symbols": [
+          {
+            "name": "_ZNSt18condition_variable4waitERSt11unique_lockISt5mutexE",
+            "start": "0xb3600",
+            "bytes": 32,
+            "offset": "0x10"
+          }
+        ],
+        "instructions": [
+          {
+            "va": "0xb3600",
+            "assembly": "stp x29, x30, [sp, #-0x10]!"
+          },
+          {
+            "va": "0xb3604",
+            "assembly": "mov x29, sp"
+          },
+          {
+            "va": "0xb3608",
+            "assembly": "ldr x1, [x1]"
+          },
+          {
+            "va": "0xb360c",
+            "assembly": "bl #0x8a780"
+          },
+          {
+            "va": "0xb3610",
+            "assembly": "cbnz w0, #0xb361c"
+          },
+          {
+            "va": "0xb3614",
+            "assembly": "ldp x29, x30, [sp], #0x10"
+          },
+          {
+            "va": "0xb3618",
+            "assembly": "ret "
+          },
+          {
+            "va": "0xb361c",
+            "assembly": "bl #0x8bf60"
+          }
+        ],
+        "preceding_instruction": {
+          "va": "0xb360c",
+          "assembly": "bl #0x8a780"
+        }
+      }
+    },
+    {
+      "tid": 224,
+      "role": "frame_saved_lr",
+      "frame_index": 1,
+      "address": "0x7f760e0988",
+      "resolution": {
+        "address": "0x7f760e0988",
+        "mapping": {
+          "start": "0x7f758ec000",
+          "end": "0x7f76f14000",
+          "perms": "r-xp",
+          "offset": "0x12d9000",
+          "path": "/usr/lib/appFw.so"
+        },
+        "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+        "elf_bytes": 50520424,
+        "status": "resolved",
+        "load_bias": "0x7f74613000",
+        "elf_va": "0x1acd988",
+        "file_offset": "0x1acd988",
+        "executable": true,
+        "covering_function_symbols": [],
+        "instructions": [
+          {
+            "va": "0x1acd978",
+            "assembly": "bl #0xb193d0"
+          },
+          {
+            "va": "0x1acd97c",
+            "assembly": "ldr x0, [x20, #0x10]"
+          },
+          {
+            "va": "0x1acd980",
+            "assembly": "mov x1, x23"
+          },
+          {
+            "va": "0x1acd984",
+            "assembly": "bl #0xb19e30"
+          },
+          {
+            "va": "0x1acd988",
+            "assembly": "ldr x0, [x19, #0x7a0]"
+          },
+          {
+            "va": "0x1acd98c",
+            "assembly": "cbz x0, #0x1acda08"
+          },
+          {
+            "va": "0x1acd990",
+            "assembly": "ldr x1, [x29, #0x58]"
+          },
+          {
+            "va": "0x1acd994",
+            "assembly": "cmp x0, x1"
+          }
+        ],
+        "preceding_instruction": {
+          "va": "0x1acd984",
+          "assembly": "bl #0xb19e30"
+        }
+      }
+    },
+    {
+      "tid": 224,
+      "role": "frame_saved_lr",
+      "frame_index": 2,
+      "address": "0x7f758ecdec",
+      "resolution": {
+        "address": "0x7f758ecdec",
+        "mapping": {
+          "start": "0x7f758ec000",
+          "end": "0x7f76f14000",
+          "perms": "r-xp",
+          "offset": "0x12d9000",
+          "path": "/usr/lib/appFw.so"
+        },
+        "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+        "elf_bytes": 50520424,
+        "status": "resolved",
+        "load_bias": "0x7f74613000",
+        "elf_va": "0x12d9dec",
+        "file_offset": "0x12d9dec",
+        "executable": true,
+        "covering_function_symbols": [],
+        "instructions": [
+          {
+            "va": "0x12d9ddc",
+            "assembly": "bl #0x10fa3cc"
+          },
+          {
+            "va": "0x12d9de0",
+            "assembly": "bl #0x10f727c"
+          },
+          {
+            "va": "0x12d9de4",
+            "assembly": "mov x0, x19"
+          },
+          {
+            "va": "0x12d9de8",
+            "assembly": "bl #0x1acd874"
+          },
+          {
+            "va": "0x12d9dec",
+            "assembly": "bl #0x10f618c"
+          },
+          {
+            "va": "0x12d9df0",
+            "assembly": "mov x0, x21"
+          },
+          {
+            "va": "0x12d9df4",
+            "assembly": "bl #0x1acce48"
+          },
+          {
+            "va": "0x12d9df8",
+            "assembly": "ldp x19, x20, [sp, #0x10]"
+          }
+        ],
+        "preceding_instruction": {
+          "va": "0x12d9de8",
+          "assembly": "bl #0x1acd874"
+        }
+      }
+    },
+    {
+      "tid": 224,
+      "role": "frame_saved_lr",
+      "frame_index": 3,
+      "address": "0x7f758ed024",
+      "resolution": {
+        "address": "0x7f758ed024",
+        "mapping": {
+          "start": "0x7f758ec000",
+          "end": "0x7f76f14000",
+          "perms": "r-xp",
+          "offset": "0x12d9000",
+          "path": "/usr/lib/appFw.so"
+        },
+        "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+        "elf_bytes": 50520424,
+        "status": "resolved",
+        "load_bias": "0x7f74613000",
+        "elf_va": "0x12da024",
+        "file_offset": "0x12da024",
+        "executable": true,
+        "covering_function_symbols": [],
+        "instructions": [
+          {
+            "va": "0x12da014",
+            "assembly": "str x0, [x29, #0x50]"
+          },
+          {
+            "va": "0x12da018",
+            "assembly": "ldrb w1, [x29, #0x3f]"
+          },
+          {
+            "va": "0x12da01c",
+            "assembly": "ldr x0, [x21]"
+          },
+          {
+            "va": "0x12da020",
+            "assembly": "bl #0x12d8174"
+          },
+          {
+            "va": "0x12da024",
+            "assembly": "mov x1, x19"
+          },
+          {
+            "va": "0x12da028",
+            "assembly": "mov w0, #0x3b16"
+          },
+          {
+            "va": "0x12da02c",
+            "assembly": "bl #0x222cf40"
+          },
+          {
+            "va": "0x12da030",
+            "assembly": "mov w0, #0x3b16"
+          }
+        ],
+        "preceding_instruction": {
+          "va": "0x12da020",
+          "assembly": "bl #0x12d8174"
+        }
+      }
+    },
+    {
+      "tid": 224,
+      "role": "frame_saved_lr",
+      "frame_index": 4,
+      "address": "0x7f7521cde8",
+      "resolution": {
+        "address": "0x7f7521cde8",
+        "mapping": {
+          "start": "0x7f7521c000",
+          "end": "0x7f7521d000",
+          "perms": "rwxp",
+          "offset": "0xc09000",
+          "path": "/usr/lib/appFw.so"
+        },
+        "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+        "elf_bytes": 50520424,
+        "status": "resolved",
+        "load_bias": "0x7f74613000",
+        "elf_va": "0xc09de8",
+        "file_offset": "0xc09de8",
+        "executable": true,
+        "covering_function_symbols": [],
+        "instructions": [
+          {
+            "va": "0xc09dd8",
+            "assembly": "bl #0x114a068"
+          },
+          {
+            "va": "0xc09ddc",
+            "assembly": "ldrb w1, [x21, #0x2b8]"
+          },
+          {
+            "va": "0xc09de0",
+            "assembly": "mov x0, x20"
+          },
+          {
+            "va": "0xc09de4",
+            "assembly": "bl #0x12d9fc8"
+          },
+          {
+            "va": "0xc09de8",
+            "assembly": "mov x0, x20"
+          },
+          {
+            "va": "0xc09dec",
+            "assembly": "bl #0x114a078"
+          },
+          {
+            "va": "0xc09df0",
+            "assembly": "bl #0xc14dfc"
+          },
+          {
+            "va": "0xc09df4",
+            "assembly": "ldr x0, [x19, #0x20]"
+          }
+        ],
+        "preceding_instruction": {
+          "va": "0xc09de4",
+          "assembly": "bl #0x12d9fc8"
+        }
+      }
+    }
+  ],
+  "call_edges": [
+    {
+      "va": "0xc09de4",
+      "file_offset": "0xc09de4",
+      "word": "0x941b4079",
+      "assembly": "bl #0x12d9fc8",
+      "target": "0x12d9fc8"
+    },
+    {
+      "va": "0x12da020",
+      "file_offset": "0x12da020",
+      "word": "0x97fff855",
+      "assembly": "bl #0x12d8174",
+      "target": "0x12d8174"
+    },
+    {
+      "va": "0x12d9dbc",
+      "file_offset": "0x12d9dbc",
+      "word": "0x941fcc15",
+      "assembly": "bl #0x1acce10",
+      "target": "0x1acce10"
+    },
+    {
+      "va": "0x12d9dc8",
+      "file_offset": "0x12d9dc8",
+      "word": "0x941fcc2f",
+      "assembly": "bl #0x1acce84",
+      "target": "0x1acce84"
+    },
+    {
+      "va": "0x12d9ddc",
+      "file_offset": "0x12d9ddc",
+      "word": "0x97f8817c",
+      "assembly": "bl #0x10fa3cc",
+      "target": "0x10fa3cc"
+    },
+    {
+      "va": "0x12d9de0",
+      "file_offset": "0x12d9de0",
+      "word": "0x97f87527",
+      "assembly": "bl #0x10f727c",
+      "target": "0x10f727c"
+    },
+    {
+      "va": "0x12d9de8",
+      "file_offset": "0x12d9de8",
+      "word": "0x941fcea3",
+      "assembly": "bl #0x1acd874",
+      "target": "0x1acd874"
+    },
+    {
+      "va": "0x1acd984",
+      "file_offset": "0x1acd984",
+      "word": "0x97c1312b",
+      "assembly": "bl #0xb19e30",
+      "target": "0xb19e30"
+    },
+    {
+      "va": "0x10fa424",
+      "file_offset": "0x10fa424",
+      "word": "0x97fefe25",
+      "assembly": "bl #0x10b9cb8",
+      "target": "0x10b9cb8"
+    },
+    {
+      "va": "0x10fa45c",
+      "file_offset": "0x10fa45c",
+      "word": "0x97ffef94",
+      "assembly": "bl #0x10f62ac",
+      "target": "0x10f62ac"
+    },
+    {
+      "va": "0x10b6ff4",
+      "file_offset": "0x10b6ff4",
+      "word": "0x94337cdc",
+      "assembly": "bl #0x1d96364",
+      "target": "0x1d96364"
+    },
+    {
+      "va": "0x10b700c",
+      "file_offset": "0x10b700c",
+      "word": "0x1435d8af",
+      "assembly": "b #0x1e2d2c8",
+      "target": "0x1e2d2c8"
+    },
+    {
+      "va": "0x1e2d2fc",
+      "file_offset": "0x1e2d2fc",
+      "word": "0x97fd16d5",
+      "assembly": "bl #0x1d72e50",
+      "target": "0x1d72e50"
+    },
+    {
+      "va": "0x1e2d324",
+      "file_offset": "0x1e2d324",
+      "word": "0x17ffe931",
+      "assembly": "b #0x1e277e8",
+      "target": "0x1e277e8"
+    },
+    {
+      "va": "0x1cd86ac",
+      "file_offset": "0x1cd86ac",
+      "word": "0x97f7d1ff",
+      "assembly": "bl #0x1accea8",
+      "target": "0x1accea8"
+    },
+    {
+      "va": "0x1accef0",
+      "file_offset": "0x1accef0",
+      "word": "0x17c13138",
+      "assembly": "b #0xb193d0",
+      "target": "0xb193d0"
+    },
+    {
+      "va": "0x12d824c",
+      "file_offset": "0x12d824c",
+      "word": "0x941e5af1",
+      "assembly": "bl #0x1a6ee10",
+      "target": "0x1a6ee10"
+    },
+    {
+      "va": "0x12d8250",
+      "file_offset": "0x12d8250",
+      "word": "0x941e07f8",
+      "assembly": "bl #0x1a5a230",
+      "target": "0x1a5a230"
+    },
+    {
+      "va": "0x12d8254",
+      "file_offset": "0x12d8254",
+      "word": "0x943853ba",
+      "assembly": "bl #0x20ed13c",
+      "target": "0x20ed13c"
+    },
+    {
+      "va": "0x12d825c",
+      "file_offset": "0x12d825c",
+      "word": "0x942af845",
+      "assembly": "bl #0x1d96370",
+      "target": "0x1d96370"
+    },
+    {
+      "va": "0xc09e50",
+      "file_offset": "0xc09e50",
+      "word": "0x97ffff71",
+      "assembly": "bl #0xc09c14",
+      "target": "0xc09c14"
+    },
+    {
+      "va": "0x1d963c4",
+      "file_offset": "0x1d963c4",
+      "word": "0x94125e65",
+      "assembly": "bl #0x222dd58",
+      "target": "0x222dd58"
+    },
+    {
+      "va": "0x1e2535c",
+      "file_offset": "0x1e2535c",
+      "word": "0x17ffff8c",
+      "assembly": "b #0x1e2518c",
+      "target": "0x1e2518c"
+    }
+  ],
+  "selected_instruction_contracts": [
+    {
+      "va": "0x1acce20",
+      "file_offset": "0x1acce20",
+      "word": "0x3900001f",
+      "assembly": "strb wzr, [x0]"
+    },
+    {
+      "va": "0x1acce38",
+      "file_offset": "0x1acce38",
+      "word": "0xf9000674",
+      "assembly": "str x20, [x19, #8]"
+    },
+    {
+      "va": "0x1acce90",
+      "file_offset": "0x1acce90",
+      "word": "0xf9000100",
+      "assembly": "str x0, [x8]"
+    },
+    {
+      "va": "0x1acce98",
+      "file_offset": "0x1acce98",
+      "word": "0xf9000500",
+      "assembly": "str x0, [x8, #8]"
+    },
+    {
+      "va": "0x1accea0",
+      "file_offset": "0x1accea0",
+      "word": "0xf9000901",
+      "assembly": "str x1, [x8, #0x10]"
+    },
+    {
+      "va": "0x1accecc",
+      "file_offset": "0x1accecc",
+      "word": "0x39000280",
+      "assembly": "strb w0, [x20]"
+    },
+    {
+      "va": "0x1accee4",
+      "file_offset": "0x1accee4",
+      "word": "0xf9400680",
+      "assembly": "ldr x0, [x20, #8]"
+    },
+    {
+      "va": "0x1accef0",
+      "file_offset": "0x1accef0",
+      "word": "0x17c13138",
+      "assembly": "b #0xb193d0"
+    },
+    {
+      "va": "0x1acd8b4",
+      "file_offset": "0x1acd8b4",
+      "word": "0xf9400280",
+      "assembly": "ldr x0, [x20]"
+    },
+    {
+      "va": "0x1acd8b8",
+      "file_offset": "0x1acd8b8",
+      "word": "0x39400000",
+      "assembly": "ldrb w0, [x0]"
+    },
+    {
+      "va": "0x1acd8bc",
+      "file_offset": "0x1acd8bc",
+      "word": "0x35000180",
+      "assembly": "cbnz w0, #0x1acd8ec"
+    },
+    {
+      "va": "0x1acd97c",
+      "file_offset": "0x1acd97c",
+      "word": "0xf9400a80",
+      "assembly": "ldr x0, [x20, #0x10]"
+    },
+    {
+      "va": "0x1acd980",
+      "file_offset": "0x1acd980",
+      "word": "0xaa1703e1",
+      "assembly": "mov x1, x23"
+    },
+    {
+      "va": "0x12d9c7c",
+      "file_offset": "0x12d9c7c",
+      "word": "0x9102c3b5",
+      "assembly": "add x21, x29, #0xb0"
+    },
+    {
+      "va": "0x12d9dcc",
+      "file_offset": "0x12d9dcc",
+      "word": "0xf9004bb5",
+      "assembly": "str x21, [x29, #0x90]"
+    },
+    {
+      "va": "0x10b9ce0",
+      "file_offset": "0x10b9ce0",
+      "word": "0x528005a1",
+      "assembly": "mov w1, #0x2d"
+    },
+    {
+      "va": "0x10b9ce4",
+      "file_offset": "0x10b9ce4",
+      "word": "0xf9000414",
+      "assembly": "str x20, [x0, #8]"
+    },
+    {
+      "va": "0x10b9cec",
+      "file_offset": "0x10b9cec",
+      "word": "0xb40000f3",
+      "assembly": "cbz x19, #0x10b9d08"
+    },
+    {
+      "va": "0x10b9cf0",
+      "file_offset": "0x10b9cf0",
+      "word": "0xf9400261",
+      "assembly": "ldr x1, [x19]"
+    },
+    {
+      "va": "0x10b9cf4",
+      "file_offset": "0x10b9cf4",
+      "word": "0xf9000801",
+      "assembly": "str x1, [x0, #0x10]"
+    },
+    {
+      "va": "0x10f73e8",
+      "file_offset": "0x10f73e8",
+      "word": "0x395dc260",
+      "assembly": "ldrb w0, [x19, #0x770]"
+    },
+    {
+      "va": "0x10f7408",
+      "file_offset": "0x10f7408",
+      "word": "0xb9800261",
+      "assembly": "ldrsw x1, [x19]"
+    },
+    {
+      "va": "0x10f7410",
+      "file_offset": "0x10f7410",
+      "word": "0xf8617801",
+      "assembly": "ldr x1, [x0, x1, lsl #3]"
+    },
+    {
+      "va": "0x10f7418",
+      "file_offset": "0x10f7418",
+      "word": "0xd63f0020",
+      "assembly": "blr x1"
+    },
+    {
+      "va": "0x1d72e74",
+      "file_offset": "0x1d72e74",
+      "word": "0xf9000260",
+      "assembly": "str x0, [x19]"
+    },
+    {
+      "va": "0x1d72e78",
+      "file_offset": "0x1d72e78",
+      "word": "0xf9400280",
+      "assembly": "ldr x0, [x20]"
+    },
+    {
+      "va": "0x1d72e80",
+      "file_offset": "0x1d72e80",
+      "word": "0xf9000a60",
+      "assembly": "str x0, [x19, #0x10]"
+    },
+    {
+      "va": "0x1cd86a8",
+      "file_offset": "0x1cd86a8",
+      "word": "0xf9400ae0",
+      "assembly": "ldr x0, [x23, #0x10]"
+    },
+    {
+      "va": "0x1d963a4",
+      "file_offset": "0x1d963a4",
+      "word": "0x11001a82",
+      "assembly": "add w2, w20, #6"
+    },
+    {
+      "va": "0x1d963cc",
+      "file_offset": "0x1d963cc",
+      "word": "0x7100b69f",
+      "assembly": "cmp w20, #0x2d"
+    },
+    {
+      "va": "0x1d963d0",
+      "file_offset": "0x1d963d0",
+      "word": "0x54fffea1",
+      "assembly": "b.ne #0x1d963a4"
+    },
+    {
+      "va": "0x1e2527c",
+      "file_offset": "0x1e2527c",
+      "word": "0xf9400280",
+      "assembly": "ldr x0, [x20]"
+    },
+    {
+      "va": "0x1e25280",
+      "file_offset": "0x1e25280",
+      "word": "0xf9400801",
+      "assembly": "ldr x1, [x0, #0x10]"
+    },
+    {
+      "va": "0x1e25288",
+      "file_offset": "0x1e25288",
+      "word": "0xd63f0020",
+      "assembly": "blr x1"
+    },
+    {
+      "va": "0x1e27918",
+      "file_offset": "0x1e27918",
+      "word": "0x91000400",
+      "assembly": "add x0, x0, #1"
+    },
+    {
+      "va": "0x1e27938",
+      "file_offset": "0x1e27938",
+      "word": "0x97b3c6a6",
+      "assembly": "bl #0xb193d0"
+    }
+  ],
+  "imports": {
+    "0xb19e30": "_ZNSt18condition_variable4waitERSt11unique_lockISt5mutexE",
+    "0xb193d0": "_ZNSt18condition_variable10notify_oneEv"
+  },
+  "future": {
+    "function": "model::model_future::wait()",
+    "entry": "0x1acd874",
+    "identity_source": "assert literal model_mutex.cpp / void model::model_future::wait()",
+    "promise_constructor": "0x1acce10",
+    "promise_ready_byte_offset": 0,
+    "promise_result_offset": 4,
+    "promise_condvar_pointer_offset": 8,
+    "future_layout": [
+      "ready_byte_pointer",
+      "result_pointer",
+      "condition_variable_pointer"
+    ],
+    "promise_local_offset_from_initialize_fp": "0xb0",
+    "future_local_offset_from_initialize_fp": "0x210",
+    "fulfilled_by": "sequence_cold_boot::execute completion at0x1cd86ac ->0x1accea8",
+    "fulfill_effect": "under model mutex: ready byte=1, then notify_one on the promise condvar; waiter clears ready on return"
+  },
+  "dispatch": {
+    "command_type": "0x2d",
+    "request_constructor": "0x10b9cb8",
+    "enqueue_wrapper": "0x10fa3cc",
+    "pending_list": "0x4da6500",
+    "flush": "0x10f727c",
+    "single_request_table_slot": "0x29b9318",
+    "single_request_dispatch": "0x10b6fe4",
+    "job_factory": "0x1e2d2c8",
+    "job_constructor": "0x1d72e50",
+    "vtable": "0x2ec5ee0",
+    "rtti": "N5model18sequence_cold_bootE",
+    "execute": "0x1cd826c",
+    "job_promise_field": "0x10",
+    "pool_map_table": "0x25a1560",
+    "pool_index": 0,
+    "worker_thread_metadata_id": 6,
+    "enqueue_worker_cond_notify": "0x1e27938"
+  },
+  "producer_executor": {
+    "removed_callsite": "0x12d825c",
+    "original_target": "0x1d96370",
+    "worker_count": 45,
+    "worker_indices": "0..44",
+    "thread_metadata_ids": "6..50",
+    "entry": "0x1e25354 ->0x1e2518c",
+    "native_execute_virtual_callsite": "0x1e25288",
+    "virtual_slot": "0x10"
+  },
+  "runtime_nop_logs": [
+    "FX6_PATCH_NOP off=0x12d824c addr=0x7f758eb24c mprotect=0",
+    "FX6_PATCH_NOP off=0x12d8250 addr=0x7f758eb250 mprotect=0",
+    "FX6_PATCH_NOP off=0x12d8254 addr=0x7f758eb254 mprotect=0",
+    "FX6_PATCH_NOP off=0x12d825c addr=0x7f758eb25c mprotect=0",
+    "FX6_PATCH_NOP off=0xc09e50 addr=0x7f7521ce50 mprotect=0"
+  ],
+  "conclusions": {
+    "confirmed": "AppFw sampled in the model cold-boot future wait; actual shim NOP table removes the native pool creation call used by that future producer",
+    "causal_inference": "High-confidence self-induced executor removal explains absence of fulfillment without first invoking MWF/hardware-service absence as root cause",
+    "not_proved": [
+      "guest code NOP bytes readback",
+      "counterfactual run with worker pool restored",
+      "sequence_cold_boot reaches its success/notify path with remaining infra NOPs",
+      "native UI/menu readiness or physical camera safety"
+    ]
+  },
+  "guest_execution_by_this_script": false
+}

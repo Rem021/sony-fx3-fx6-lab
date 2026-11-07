@@ -1,0 +1,83 @@
+{
+  "schema": "fx6-runner-v2-unix-smoke-v1",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "bytes": 36163584,
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "scope": "No Sony kernel/DTB/CPIO/backup loaded; CPU stays stopped; no shared locks; Unix sockets only",
+  "frozen_inputs_before": [
+    {
+      "path": "work/fx6-observer-integration-20261107/candidate-manifest.json",
+      "bytes": 5201,
+      "sha256": "d5732c03c54f76f676a5fbf42fd2256715ae2afce42f9f6ddbf4e537d6c954fe"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/guest-observer-only295.cpio",
+      "bytes": 430186280,
+      "sha256": "d02c7909458dcf8dff73fdf426953d07034cb386f8c8bd0bbd40a9440d32569e"
+    },
+    {
+      "path": "work/fx6-observer-integration-20261107/appfw-launch-observer",
+      "bytes": 98056,
+      "sha256": "23d23afe91f154bf9a4aacc4b351ddc436c6b0ac9acb54cebdd88dc9db0f9363"
+    },
+    {
+      "path": "work/fx6-observer-integration-20261107/candidate-init.sh",
+      "bytes": 10974,
+      "sha256": "bc0024b3fa52d0c122714a9d7ff5f8a4d066d15fdabba6af95a042db6eca3a03"
+    }
+  ],
+  "requests": [
+    {
+      "request": "qSupported",
+      "reply": "PacketSize=20020;qXfer:features:read+;vContSupported+;multiprocess+"
+    },
+    {
+      "request": "?",
+      "reply": "T05core:01;"
+    }
+  ],
+  "argv": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg,thread=single",
+    "-cpu",
+    "cortex-a35",
+    "-smp",
+    "1",
+    "-m",
+    "64",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "none",
+    "-S",
+    "-chardev",
+    "socket,path=g,server=on,wait=off,id=keygate93",
+    "-gdb",
+    "chardev:keygate93"
+  ],
+  "unix_socket_created": true,
+  "qemu_exit": 0,
+  "host_stderr": "qemu-gpio5-bf4d46481998b8fb: terminating on signal 15 from pid 29322 (<unknown process>)\n",
+  "host_stdout": "",
+  "new_manifest_check": {
+    "passed": true,
+    "sha256": "5e819ea77e0f230aef809f69e53912965aca1aa0b2185249f0931a4b4e52f617",
+    "differs_from_old": true,
+    "no_guest_execution": true,
+    "already_normalized_argv_accepted": true
+  },
+  "temporary_smoke_directory_removed": true,
+  "frozen_inputs_unchanged": true,
+  "passed": true,
+  "owned_process_reaped": true
+}

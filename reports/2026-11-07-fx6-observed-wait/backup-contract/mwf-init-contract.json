@@ -1,0 +1,295 @@
+{
+  "status": "PASS",
+  "scope": "pinned static ABI/descriptor facts, no ELF execution or guest test",
+  "sources": {
+    "lib/libMWF.so": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782",
+    "bin/im.elf": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+    "lib/libIMDB.so": "a088ef303793497a443e89d6de4c8f12e07ec791c945f54e2dc1b52cd42db896",
+    "lib/libInfraKikiLogGenerator.so": "be7abc37ceb019b203a3853eba633d5d703d86d9a24ec2a6081b74873dd71917"
+  },
+  "source_receipts": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libMWF.so",
+      "bytes": 353120,
+      "sha256": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
+      "bytes": 40920,
+      "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libIMDB.so",
+      "bytes": 79728,
+      "sha256": "a088ef303793497a443e89d6de4c8f12e07ec791c945f54e2dc1b52cd42db896"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraKikiLogGenerator.so",
+      "bytes": 27256,
+      "sha256": "be7abc37ceb019b203a3853eba633d5d703d86d9a24ec2a6081b74873dd71917"
+    }
+  ],
+  "mwf_init": {
+    "export_va": "0x27e74",
+    "export_bytes": 4,
+    "target": "MWF::Initialize() at 0x27d68 through PLT",
+    "incoming_x0_read_before_overwrite": false,
+    "first_instruction": "adrp x0, #0x65000",
+    "meaningful_integer_success_return_proved": false,
+    "fast_return_x0": "0x65000 + runtime load bias",
+    "guard_va": "0x65c89",
+    "guard_set_before_initialization_calls": true,
+    "instruction_checks": {
+      "0x27e74": "b #0x22e80",
+      "0x27d68": "adrp x0, #0x65000",
+      "0x27d6c": "ldrb w1, [x0, #0xc89]",
+      "0x27d70": "cbnz w1, #0x27e08",
+      "0x27d80": "strb w1, [x0, #0xc89]",
+      "0x27dec": "b #0x21cf0",
+      "0x27e08": "ret"
+    },
+    "initializer_calls": [
+      {
+        "va": "0x27d88",
+        "kind": "bl",
+        "target": "#0x22b60",
+        "plt_symbol": "_ZN3MWF9MwfCommon4InitEv"
+      },
+      {
+        "va": "0x27d8c",
+        "kind": "bl",
+        "target": "#0x236c0",
+        "plt_symbol": "_ZN7Monitor4InitEv"
+      },
+      {
+        "va": "0x27d94",
+        "kind": "bl",
+        "target": "#0x22d10",
+        "plt_symbol": "_Znwm"
+      },
+      {
+        "va": "0x27db4",
+        "kind": "bl",
+        "target": "#0x22260",
+        "plt_symbol": "_ZN3MWF9ObjThreadC1EPFPvS1_ES1_N12DefObjThread19OBJ_THREAD_PRIORITYEPKc"
+      },
+      {
+        "va": "0x27dbc",
+        "kind": "bl",
+        "target": "#0x22cb0",
+        "plt_symbol": "_ZN3MWF9ObjThread11StartThreadEv"
+      },
+      {
+        "va": "0x27dc0",
+        "kind": "bl",
+        "target": "#0x23800",
+        "plt_symbol": "_ZN11ObjLog_Mcmd4InitEv"
+      },
+      {
+        "va": "0x27dc4",
+        "kind": "bl",
+        "target": "#0x21850",
+        "plt_symbol": "_ZN3MWF8RsrcMcmd4InitEv"
+      },
+      {
+        "va": "0x27dc8",
+        "kind": "bl",
+        "target": "#0x21ce0",
+        "plt_symbol": "_ZN3MWF7InhMcmd4InitEv"
+      },
+      {
+        "va": "0x27dcc",
+        "kind": "bl",
+        "target": "#0x23280",
+        "plt_symbol": "_ZN3MWF10ObjIf_Mcmd4InitEv"
+      },
+      {
+        "va": "0x27dd0",
+        "kind": "bl",
+        "target": "#0x218d0",
+        "plt_symbol": "_ZN3MWF5ObjIf4InitEv"
+      },
+      {
+        "va": "0x27ddc",
+        "kind": "bl",
+        "target": "#0x23960",
+        "plt_symbol": "_ZN3MWF14EventIdFactory10InitializeEji"
+      },
+      {
+        "va": "0x27de0",
+        "kind": "bl",
+        "target": "#0x237d0",
+        "plt_symbol": "_ZN3MWF12RsrcRelation10InitializeEv"
+      },
+      {
+        "va": "0x27dec",
+        "kind": "b",
+        "target": "#0x21cf0",
+        "plt_symbol": "_ZN3MWF7InhInfo10InitializeEv"
+      },
+      {
+        "va": "0x27dfc",
+        "kind": "bl",
+        "target": "#0x22d60",
+        "plt_symbol": "_ZdlPvm"
+      },
+      {
+        "va": "0x27e04",
+        "kind": "bl",
+        "target": "#0x23e50",
+        "plt_symbol": "_Unwind_Resume"
+      }
+    ]
+  },
+  "im_dispatch": {
+    "instruction_checks": {
+      "0x405f0c": "bl #0x402080",
+      "0x405f34": "ldp x0, x1, [x22, #0x38]",
+      "0x405f3c": "csel x0, x0, x1, ne",
+      "0x405f44": "blr x20",
+      "0x405f50": "mov w20, #0",
+      "0x405f54": "str w0, [x19, #0x3c]",
+      "0x406004": "bl #0x402080",
+      "0x40602c": "blr x20",
+      "0x406030": "b #0x405fd8",
+      "0x405fd8": "mov w19, #0",
+      "0x405fdc": "str x21, [x22]",
+      "0x40626c": "bl #0x405f5c",
+      "0x406284": "bl #0x405e24",
+      "0x4064a0": "bl #0x4061ec",
+      "0x4064a4": "mov w22, w0",
+      "0x4064b8": "cbnz w22, #0x4064d4",
+      "0x4064c0": "str x0, [x19, #0x20]",
+      "0x4064c4": "mov w0, #2",
+      "0x4064c8": "str w0, [x19, #0x28]",
+      "0x4065f0": "bl #0x406374",
+      "0x40660c": "add x19, x19, #0x48"
+    },
+    "descriptors": [
+      {
+        "index": 29,
+        "va": "0x1f198",
+        "entry_bytes": 72,
+        "kind": "0x20000001",
+        "flags": "0x1",
+        "target_mask": "0x7fffffff",
+        "module_id_u16": 272,
+        "loader_selector_u16_at_0x0e": 0,
+        "pointers": {
+          "0x10": {
+            "va": "0xaa23",
+            "string": "libInfraKikiLogGenerator.so"
+          },
+          "0x18": {
+            "va": "0xaa3f",
+            "string": "KikiLogGenerator_init"
+          },
+          "0x20": {
+            "va": "0xdb38",
+            "string": ""
+          },
+          "0x28": {
+            "va": "0xaa55",
+            "string": "KikiLogGenerator_sus"
+          },
+          "0x30": {
+            "va": "0xaa6a",
+            "string": "KikiLogGenerator_res"
+          },
+          "0x38": {
+            "va": "0xdb38",
+            "string": ""
+          },
+          "0x40": {
+            "va": "0xdb38",
+            "string": ""
+          }
+        }
+      },
+      {
+        "index": 32,
+        "va": "0x1f270",
+        "entry_bytes": 72,
+        "kind": "0x20000002",
+        "flags": "0x1",
+        "target_mask": "0x7fffffff",
+        "module_id_u16": 151,
+        "loader_selector_u16_at_0x0e": 0,
+        "pointers": {
+          "0x10": {
+            "va": "0xaadb",
+            "string": "libMWF.so"
+          },
+          "0x18": {
+            "va": "0xaae5",
+            "string": "MWF_Init"
+          },
+          "0x20": {
+            "va": "0xdb38",
+            "string": ""
+          },
+          "0x28": {
+            "va": "0xdb38",
+            "string": ""
+          },
+          "0x30": {
+            "va": "0xdb38",
+            "string": ""
+          },
+          "0x38": {
+            "va": "0xdb38",
+            "string": ""
+          },
+          "0x40": {
+            "va": "0xdb38",
+            "string": ""
+          }
+        }
+      }
+    ],
+    "mwf_route": "0x20000002 -> 0x405f5c -> dlsym at 0x406004 -> blr at 0x40602c",
+    "parameter_route": "0x20000004 -> 0x405e24 -> dlsym at 0x405f0c -> selected descriptor argument -> blr at 0x405f44",
+    "integer_return": "loader-local 0/-1/-2; init result registers ignored",
+    "completion_record": "new-state normal path stores handle at state+0x20 and numeric state 2 at state+0x28 after loader returns; signals per-module/global semaphores",
+    "completion_limit": "does not prove asynchronous services or hardware functional readiness"
+  },
+  "kiki_evidence": {
+    "instruction_checks": {
+      "0x3a10": "mov w0, #1",
+      "0x3a18": "bl #0x1db0",
+      "0x3a20": "b #0x1f80",
+      "0x3924": "str w0, [x19, #0x2b0]",
+      "0x3928": "tbnz w0, #0x1f, #0x3948",
+      "0x3944": "bl #0x1ff0",
+      "0x397c": "bl #0x2210",
+      "0x39a4": "bl #0x2210",
+      "0x39e8": "bl #0x1f30"
+    },
+    "mwf_needed": [
+      "libpthread.so.0",
+      "libdl.so.2",
+      "libSysDef.so",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "librt.so.1"
+    ],
+    "mwf_kiki_named_imports": [],
+    "order": "same enabled/filtered startup table scan dispatches Kiki index29 before MWF index32; new-state path calls init synchronously before continuing scan",
+    "completion_dependency": "Kiki functional readiness prerequisite for MWF not proved; no direct named import or readiness test identified",
+    "error_limit": "Kiki init_proc continues after negative open and ignores ioctl/register return values in inspected branches; entry return is insufficient readiness evidence"
+  },
+  "source_drift": {
+    "older_report": "reports/2026-11-07-fx6-native-lifecycle/deep-init/lifecycle-order.md",
+    "older_im_sha256": "2838e5da0fcaf7e8db543f0bd33a9e73411143be293d4509b7fa3edcc26ab772",
+    "current_im_sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+    "resolution": "unresolved; new assertions deliberately bind current actual file, not older hash"
+  },
+  "limitations": [
+    "No original C/C++ header recovered; void-like return is binary/caller inference, not a recovered typedef.",
+    "Do not generalize this fixed MWF entry to all IM init hooks or erase generic descriptor arguments.",
+    "Guard byte is set on entry and is not an independently verified completed/ready flag.",
+    "No VM, shim/source mutation, force-success, fake lock, or manual init performed."
+  ]
+}

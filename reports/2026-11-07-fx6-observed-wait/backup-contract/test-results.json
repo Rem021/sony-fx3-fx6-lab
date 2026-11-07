@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "host_sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "native_checks": {
+    "status": "PASS",
+    "checks": 97,
+    "scope": "host typed helper only"
+  },
+  "byof_checks": {
+    "status": "PASS",
+    "checks": 140,
+    "real_records": 2,
+    "real_keys_per_record": 4,
+    "scope": "host C helper fed from pinned BYOF metadata; no native Backup execution"
+  },
+  "binding_status": "PASS",
+  "excluded": [
+    "VM",
+    "QMP",
+    "GDB",
+    "physical camera",
+    "native Sony API execution",
+    "shared source mutations",
+    "donor mutations",
+    "Git mutations"
+  ],
+  "limitation": "Helper statuses deliberately do not claim Sony remote return semantics."
+}

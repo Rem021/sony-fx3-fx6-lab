@@ -1,0 +1,89 @@
+{
+  "schema": "fx6-reviewed-artifact-whitelist-v1",
+  "scope": "Explicit source/test/report/evidence whitelist only; no firmware, binaries, CPIO, cache, Git or sync operations",
+  "files": [
+    {
+      "file": "run_observer_once.py",
+      "bytes": 14879,
+      "sha256": "67238af67cc8c48e1912a72b4a9b45991bf4445514c2b0ea600c31ecee680446",
+      "source": "work/fx6-observer-runtime-v2-20261107/run_observer_once.py",
+      "source_sha256": "67238af67cc8c48e1912a72b4a9b45991bf4445514c2b0ea600c31ecee680446",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "test_runner_qmp.py",
+      "bytes": 2008,
+      "sha256": "2ca87dce6e06cd9b9d19202fd2f6db27317f19a63f030f8c4f25628fb582a9ed",
+      "source": "work/fx6-observer-runtime-v2-20261107/test_runner_qmp.py",
+      "source_sha256": "2ca87dce6e06cd9b9d19202fd2f6db27317f19a63f030f8c4f25628fb582a9ed",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "test_runner_argv.py",
+      "bytes": 1643,
+      "sha256": "f84f853adaef2f3796047aafd94f342d41b32d0607b84771817b9f5a4802f597",
+      "source": "work/fx6-observer-runtime-v2-20261107/test_runner_argv.py",
+      "source_sha256": "f84f853adaef2f3796047aafd94f342d41b32d0607b84771817b9f5a4802f597",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "smoke_unix_gdb.py",
+      "bytes": 6682,
+      "sha256": "c0e0349e9bc3b4f7497491ef9a798838c9c44a31cca03ff7a5771d8337cdef05",
+      "source": "work/fx6-observer-runtime-v2-20261107/smoke_unix_gdb.py",
+      "source_sha256": "c0e0349e9bc3b4f7497491ef9a798838c9c44a31cca03ff7a5771d8337cdef05",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "unix-gdb-smoke.json",
+      "bytes": 2615,
+      "sha256": "058a2a6a21c76565e6fb7297e6951d26cc3a321f4842d9dec88923516aa388e4",
+      "source": "work/fx6-observer-runtime-v2-20261107/unix-gdb-smoke.json",
+      "source_sha256": "058a2a6a21c76565e6fb7297e6951d26cc3a321f4842d9dec88923516aa388e4",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "validation-record.json",
+      "bytes": 2265,
+      "sha256": "1c5f2911d3b734a0a0ef2f32bd06d951f6b65deb77889c3735e84f695532a502",
+      "source": "work/fx6-observer-runtime-v2-20261107/validation-record.json",
+      "source_sha256": "1c5f2911d3b734a0a0ef2f32bd06d951f6b65deb77889c3735e84f695532a502",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "copied-source-record.json",
+      "bytes": 487,
+      "sha256": "336d3584e9aa8a34bfc14fa48dc69e012cef6c032278acb40d1b8ef72dbfb02a",
+      "source": "work/fx6-observer-runtime-v2-20261107/copied-source-record.json",
+      "source_sha256": "336d3584e9aa8a34bfc14fa48dc69e012cef6c032278acb40d1b8ef72dbfb02a",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "runner-v2.diff",
+      "bytes": 6584,
+      "sha256": "46cc0907ada6fe125cf76c0b449e2046a7c4ac022e9be8ee96972c1ad82cd30a",
+      "source": "work/fx6-observer-runtime-v2-20261107/runner-v2.diff",
+      "source_sha256": "46cc0907ada6fe125cf76c0b449e2046a7c4ac022e9be8ee96972c1ad82cd30a",
+      "byte_identical_to_source": true,
+      "link_adjustments": []
+    },
+    {
+      "file": "README.md",
+      "bytes": 3467,
+      "sha256": "1f2b322a24cc7ebeb8856bd8bfb0cd79d04db75742c1625ccbe9f42186857367",
+      "source": "work/fx6-observer-runtime-v2-20261107/README.md",
+      "source_sha256": "a5a37eb33774a31ef895dee90494de45e245ed0724bb29a559bdab60a707788d",
+      "byte_identical_to_source": false,
+      "link_adjustments": [
+        "Adjusted only observer review relative link for formal destination."
+      ]
+    }
+  ]
+}

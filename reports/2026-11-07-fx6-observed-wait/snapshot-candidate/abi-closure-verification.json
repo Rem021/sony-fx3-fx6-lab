@@ -1,0 +1,772 @@
+{
+  "schema": "fx6-wait-snapshot-abi-v1",
+  "root_object": {
+    "machine": "EM_AARCH64",
+    "type": "ET_EXEC",
+    "needed": [
+      "libc.so.6"
+    ],
+    "interpreter": "/lib/ld-linux-aarch64.so.1",
+    "imports": [
+      {
+        "name": "fprintf",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "fputc",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "stdout",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "setvbuf",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "stderr",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "__errno_location",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strtol",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "getpid",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "sysconf",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "sigemptyset",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "sigaction",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "on_exit",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "alarm",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "snprintf",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "opendir",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "closedir",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "qsort",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "readdir",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "_exit",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "ptrace",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "waitpid",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "clock_gettime",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "nanosleep",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "fopen",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "fgets",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "__isoc99_sscanf",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "fclose",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strcspn",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strncmp",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "write",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "ferror",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "strlen",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "fputs",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      },
+      {
+        "name": "__libc_start_main",
+        "version": "GLIBC_2.17",
+        "provider": "libc.so.6",
+        "weak": false
+      }
+    ]
+  },
+  "actual_guest_providers": {
+    "lib/ld-2.25.so": {
+      "member": "lib/ld-2.25.so",
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+      "symlink_chain": [
+        "lib/ld-linux-aarch64.so.1"
+      ],
+      "machine": "EM_AARCH64",
+      "type": "ET_DYN",
+      "needed": [],
+      "interpreter": null,
+      "imports": []
+    },
+    "lib/libc-2.25.so": {
+      "member": "lib/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "symlink_chain": [
+        "lib/libc.so.6"
+      ],
+      "machine": "EM_AARCH64",
+      "type": "ET_DYN",
+      "needed": [
+        "ld-linux-aarch64.so.1"
+      ],
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "imports": [
+        {
+          "name": "_rtld_global",
+          "version": "GLIBC_PRIVATE",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        },
+        {
+          "name": "__libc_enable_secure",
+          "version": "GLIBC_PRIVATE",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        },
+        {
+          "name": "_rtld_global_ro",
+          "version": "GLIBC_PRIVATE",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        },
+        {
+          "name": "__pointer_chk_guard",
+          "version": "GLIBC_PRIVATE",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        },
+        {
+          "name": "_dl_find_dso_for_object",
+          "version": "GLIBC_PRIVATE",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        },
+        {
+          "name": "_dl_starting_up",
+          "version": null,
+          "provider": null,
+          "weak": true
+        },
+        {
+          "name": "__tls_get_addr",
+          "version": "GLIBC_2.17",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        },
+        {
+          "name": "_dl_argv",
+          "version": "GLIBC_PRIVATE",
+          "provider": "ld-linux-aarch64.so.1",
+          "weak": false
+        }
+      ]
+    }
+  },
+  "dependency_edges": [
+    {
+      "consumer": "helper",
+      "needed": "libc.so.6",
+      "actual_member": "lib/libc-2.25.so"
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "needed": "ld-linux-aarch64.so.1",
+      "actual_member": "lib/ld-2.25.so"
+    }
+  ],
+  "symbol_checks": [
+    {
+      "consumer": "helper",
+      "name": "fprintf",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "fputc",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "stdout",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "setvbuf",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "stderr",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "__errno_location",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "strtol",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "getpid",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "sysconf",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "sigemptyset",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "sigaction",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "on_exit",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "alarm",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "snprintf",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "opendir",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "closedir",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "qsort",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "readdir",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "_exit",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "ptrace",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "waitpid",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "clock_gettime",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "nanosleep",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "fopen",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "fgets",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "__isoc99_sscanf",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "fclose",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "strcspn",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "strncmp",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "write",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "ferror",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "strlen",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "fputs",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "helper",
+      "name": "__libc_start_main",
+      "version": "GLIBC_2.17",
+      "provider": "libc.so.6",
+      "weak": false,
+      "actual_providers": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "_rtld_global",
+      "version": "GLIBC_PRIVATE",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "__libc_enable_secure",
+      "version": "GLIBC_PRIVATE",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "_rtld_global_ro",
+      "version": "GLIBC_PRIVATE",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "__pointer_chk_guard",
+      "version": "GLIBC_PRIVATE",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "_dl_find_dso_for_object",
+      "version": "GLIBC_PRIVATE",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "_dl_starting_up",
+      "version": null,
+      "provider": null,
+      "weak": true,
+      "actual_providers": [],
+      "satisfied": false
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "__tls_get_addr",
+      "version": "GLIBC_2.17",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "consumer": "lib/libc-2.25.so",
+      "name": "_dl_argv",
+      "version": "GLIBC_PRIVATE",
+      "provider": "ld-linux-aarch64.so.1",
+      "weak": false,
+      "actual_providers": [
+        "lib/ld-2.25.so"
+      ],
+      "satisfied": true
+    }
+  ],
+  "required_imports_satisfied": true,
+  "guest_executed": false
+}

@@ -1,0 +1,1361 @@
+{
+  "status": "COMPLETED_READONLY_QUICK_AUDIT",
+  "created_utc": "2026-11-07T16:35:55.032494+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "runs": [
+    {
+      "candidate": 302,
+      "run": "cp-bind-6dccded6",
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-6dccded6/serial.log",
+        "bytes": 100820,
+        "sha256": "e5efcf09ab0dec8ca227a0d96ec380c38c399146528f44cde44045510c5cf63a"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-6dccded6/run-receipt.json",
+        "bytes": 2720,
+        "sha256": "309305afd8fc7f3a32772be2dbc6f2f4cfb4759e10b570d5318588c7e92b0fc0"
+      },
+      "command": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-6dccded6/command.json",
+        "bytes": 2049,
+        "sha256": "7a5bf8f391dda4a250432719b1e939d806f8935d01f92902a75f6b52f1fffcde"
+      },
+      "completion": {
+        "utc": "2026-11-07T16:26:12.705920+00:00",
+        "reason": "wall_timeout",
+        "elapsed_seconds": 120.09017600002699,
+        "qemu_exit": 0,
+        "process_reaped": true,
+        "locks_released": true,
+        "firmware_AP_CP_AV_result": "CP_RC0_OBSERVED_NOT_AP"
+      },
+      "runner_fault_markers": [],
+      "actual_user_segv_count": 1,
+      "marker_counts": {
+        "MWF_Init": 0,
+        "MWF_INIT": 0,
+        "FX6_MWF_NULL ObjShLock::Lock": 0,
+        "FX6_MWF_NULL push_tail self=0": 0,
+        "FX6_MWF_NULL ObjShLock::Unlock": 0,
+        "FX6_OBJSHLOCK_PATCH": 1,
+        "FX6_OBJSHLOCK_UNLOCK": 0,
+        "FX6_UX_SCREEN_AREA_1024": 9,
+        "FX6_OSD_FLUSH": 1,
+        "FX6_APP_CONFIG_HOLD real_returned": 1
+      },
+      "selected_runtime_lines": [
+        {
+          "line": 1228,
+          "text": "FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7fa2038044"
+        },
+        {
+          "line": 1229,
+          "text": "FX6_PATCH_NOP off=0xc09e50 addr=0x7fa2036e50 mprotect=0"
+        },
+        {
+          "line": 1230,
+          "text": "FX6_PATCH_OSAL_RCV_SUCCESS off=0x20efbb8 addr=0x7fa351cbb8 mprotect=0"
+        },
+        {
+          "line": 1231,
+          "text": "FX6_OBJSHLOCK_PATCH fn=0x7fa898c45c mprotect=0"
+        },
+        {
+          "line": 1233,
+          "text": "FX6_APP_CONFIG_HOLD real_returned"
+        },
+        {
+          "line": 1243,
+          "text": "FX6_OSD_FLUSH update #1 prims=0 nz_pixels=0"
+        },
+        {
+          "line": 1258,
+          "text": "assert at infra_wrapper_ftp_client_one_soft.cpp:519"
+        },
+        {
+          "line": 1265,
+          "text": "assert at infra_wrapper_remote.cpp:5060"
+        },
+        {
+          "line": 1268,
+          "text": "FX6_PTHREAD_MUTEX_STUB lock m=0x28 -> 0"
+        },
+        {
+          "line": 1269,
+          "text": "APPFW_SEGV sig=11 addr=0x8 pc=7fa898c37c sp=7fa134fd10"
+        },
+        {
+          "line": 1301,
+          "text": "APPFW_PC_MODULE /usr/lib/libMWF.so base=0x7fa8951000"
+        },
+        {
+          "line": 1302,
+          "text": "APPFW_LR_MODULE /usr/lib/libMWF.so base=0x7fa8951000"
+        },
+        {
+          "line": 1303,
+          "text": "APPFW_PC_MAP 7fa898c000-7fa898d000 rwxp 0003b000 00:02 3562                           /usr/lib/libMWF.so"
+        }
+      ],
+      "thread_wchan_samples_without_comm": {
+        "217": {
+          "0": 1
+        }
+      },
+      "frame_samples": [
+        {
+          "file": "gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "file": "gpe1.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "file": "dmm0403.bin",
+          "bytes": 1232896,
+          "sha256": "00f4546c396dfa73c8322b22a16f2ec1e340bd7cd04191ef863b3f97e0482e37",
+          "nonzero_bytes": 0
+        }
+      ]
+    },
+    {
+      "candidate": 303,
+      "run": "cp-bind-61f3e945",
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-61f3e945/serial.log",
+        "bytes": 345191,
+        "sha256": "f9d71e93aabc338b328cdd3d557ec9c303c83ec8c69e85e51175a90e35eb535e"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-61f3e945/run-receipt.json",
+        "bytes": 2720,
+        "sha256": "bd12645b5f3b2ac6ce92a8ce5c1823dcc624bb5d7e19a5a41facaecd7119eefd"
+      },
+      "command": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-61f3e945/command.json",
+        "bytes": 2048,
+        "sha256": "8fafe2b92e124135bbf325aefb325a82d5746e3cf4000067c3c64599edfdc16b"
+      },
+      "completion": {
+        "utc": "2026-11-07T16:28:28.028905+00:00",
+        "reason": "wall_timeout",
+        "elapsed_seconds": 120.15813374996651,
+        "qemu_exit": 0,
+        "process_reaped": true,
+        "locks_released": true,
+        "firmware_AP_CP_AV_result": "CP_RC0_OBSERVED_NOT_AP"
+      },
+      "runner_fault_markers": [],
+      "actual_user_segv_count": 0,
+      "marker_counts": {
+        "MWF_Init": 0,
+        "MWF_INIT": 0,
+        "FX6_MWF_NULL ObjShLock::Lock": 0,
+        "FX6_MWF_NULL push_tail self=0": 0,
+        "FX6_MWF_NULL ObjShLock::Unlock": 0,
+        "FX6_OBJSHLOCK_PATCH": 1,
+        "FX6_OBJSHLOCK_UNLOCK": 1,
+        "FX6_UX_SCREEN_AREA_1024": 9,
+        "FX6_OSD_FLUSH": 1,
+        "FX6_APP_CONFIG_HOLD real_returned": 1
+      },
+      "selected_runtime_lines": [
+        {
+          "line": 1228,
+          "text": "FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f86af2044"
+        },
+        {
+          "line": 1229,
+          "text": "FX6_PATCH_NOP off=0xc09e50 addr=0x7f86af0e50 mprotect=0"
+        },
+        {
+          "line": 1230,
+          "text": "FX6_PATCH_OSAL_RCV_SUCCESS off=0x20efbb8 addr=0x7f87fd6bb8 mprotect=0"
+        },
+        {
+          "line": 1231,
+          "text": "FX6_OBJSHLOCK_PATCH fn=0x7f8d44645c mprotect=0"
+        },
+        {
+          "line": 1233,
+          "text": "FX6_OBJSHLOCK_UNLOCK fn=0x7f8d44635c mprotect=0"
+        },
+        {
+          "line": 1234,
+          "text": "FX6_APP_CONFIG_HOLD real_returned"
+        },
+        {
+          "line": 1244,
+          "text": "FX6_OSD_FLUSH update #1 prims=0 nz_pixels=0"
+        },
+        {
+          "line": 1259,
+          "text": "assert at infra_wrapper_ftp_client_one_soft.cpp:519"
+        },
+        {
+          "line": 1266,
+          "text": "assert at infra_wrapper_remote.cpp:5060"
+        },
+        {
+          "line": 1291,
+          "text": "MediaBlock UserSpace Module Started..."
+        },
+        {
+          "line": 1307,
+          "text": "muxInit:done: 0"
+        }
+      ],
+      "thread_wchan_samples_without_comm": {
+        "217": {
+          "0": 1,
+          "hrtimer_nanosleep": 22
+        },
+        "220": {
+          "futex_wait_queue_me": 22
+        },
+        "221": {
+          "futex_wait_queue_me": 22
+        },
+        "222": {
+          "futex_wait_queue_me": 22
+        },
+        "223": {
+          "futex_wait_queue_me": 22
+        },
+        "224": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "225": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "226": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "227": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "228": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "229": {
+          "osal_unlock": 22
+        },
+        "230": {
+          "osal_unlock": 22
+        },
+        "231": {
+          "osal_unlock": 22
+        },
+        "232": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "233": {
+          "osal_unlock": 22
+        },
+        "234": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "235": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "236": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "237": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "238": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "239": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "240": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "241": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "242": {
+          "futex_wait_queue_me": 22
+        },
+        "243": {
+          "futex_wait_queue_me": 22
+        },
+        "244": {
+          "futex_wait_queue_me": 22
+        },
+        "245": {
+          "futex_wait_queue_me": 22
+        },
+        "246": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "247": {
+          "futex_wait_queue_me": 22
+        },
+        "248": {
+          "futex_wait_queue_me": 22
+        },
+        "249": {
+          "futex_wait_queue_me": 22
+        },
+        "250": {
+          "futex_wait_queue_me": 22
+        },
+        "251": {
+          "futex_wait_queue_me": 22
+        },
+        "252": {
+          "futex_wait_queue_me": 22
+        },
+        "253": {
+          "futex_wait_queue_me": 22
+        },
+        "254": {
+          "futex_wait_queue_me": 22
+        },
+        "255": {
+          "futex_wait_queue_me": 22
+        },
+        "256": {
+          "futex_wait_queue_me": 22
+        },
+        "257": {
+          "futex_wait_queue_me": 22
+        },
+        "258": {
+          "futex_wait_queue_me": 22
+        },
+        "259": {
+          "futex_wait_queue_me": 22
+        },
+        "260": {
+          "futex_wait_queue_me": 22
+        },
+        "261": {
+          "futex_wait_queue_me": 22
+        },
+        "262": {
+          "futex_wait_queue_me": 22
+        },
+        "263": {
+          "futex_wait_queue_me": 22
+        },
+        "264": {
+          "futex_wait_queue_me": 22
+        },
+        "265": {
+          "futex_wait_queue_me": 22
+        },
+        "266": {
+          "futex_wait_queue_me": 22
+        },
+        "267": {
+          "futex_wait_queue_me": 22
+        },
+        "268": {
+          "futex_wait_queue_me": 22
+        },
+        "269": {
+          "futex_wait_queue_me": 22
+        },
+        "270": {
+          "futex_wait_queue_me": 22
+        },
+        "271": {
+          "futex_wait_queue_me": 22
+        },
+        "272": {
+          "futex_wait_queue_me": 22
+        },
+        "273": {
+          "futex_wait_queue_me": 22
+        },
+        "274": {
+          "futex_wait_queue_me": 22
+        },
+        "275": {
+          "futex_wait_queue_me": 22
+        },
+        "276": {
+          "futex_wait_queue_me": 22
+        },
+        "277": {
+          "futex_wait_queue_me": 22
+        },
+        "278": {
+          "futex_wait_queue_me": 22
+        },
+        "279": {
+          "futex_wait_queue_me": 22
+        },
+        "280": {
+          "futex_wait_queue_me": 22
+        },
+        "281": {
+          "futex_wait_queue_me": 22
+        },
+        "282": {
+          "futex_wait_queue_me": 22
+        },
+        "283": {
+          "futex_wait_queue_me": 22
+        },
+        "284": {
+          "futex_wait_queue_me": 22
+        },
+        "285": {
+          "futex_wait_queue_me": 22
+        },
+        "286": {
+          "futex_wait_queue_me": 22
+        },
+        "287": {
+          "futex_wait_queue_me": 22
+        },
+        "288": {
+          "futex_wait_queue_me": 22
+        },
+        "289": {
+          "futex_wait_queue_me": 22
+        },
+        "290": {
+          "futex_wait_queue_me": 22
+        },
+        "291": {
+          "futex_wait_queue_me": 22
+        },
+        "292": {
+          "futex_wait_queue_me": 22
+        },
+        "293": {
+          "futex_wait_queue_me": 22
+        },
+        "294": {
+          "futex_wait_queue_me": 22
+        },
+        "295": {
+          "futex_wait_queue_me": 22
+        },
+        "296": {
+          "futex_wait_queue_me": 22
+        },
+        "297": {
+          "futex_wait_queue_me": 22
+        },
+        "298": {
+          "futex_wait_queue_me": 22
+        },
+        "299": {
+          "futex_wait_queue_me": 22
+        },
+        "300": {
+          "futex_wait_queue_me": 22
+        },
+        "301": {
+          "do_msgrcv": 22
+        },
+        "302": {
+          "hrtimer_nanosleep": 22
+        },
+        "303": {
+          "hrtimer_nanosleep": 22
+        },
+        "304": {
+          "hrtimer_nanosleep": 22
+        },
+        "305": {
+          "futex_wait_queue_me": 22
+        },
+        "307": {
+          "futex_wait_queue_me": 22
+        },
+        "308": {
+          "futex_wait_queue_me": 22
+        },
+        "309": {
+          "futex_wait_queue_me": 22
+        },
+        "310": {
+          "hrtimer_nanosleep": 22
+        },
+        "311": {
+          "futex_wait_queue_me": 22
+        },
+        "312": {
+          "hrtimer_nanosleep": 2,
+          "futex_wait_queue_me": 20
+        },
+        "313": {
+          "futex_wait_queue_me": 22
+        },
+        "314": {
+          "futex_wait_queue_me": 22
+        },
+        "315": {
+          "futex_wait_queue_me": 22
+        },
+        "316": {
+          "futex_wait_queue_me": 22
+        },
+        "317": {
+          "futex_wait_queue_me": 22
+        },
+        "318": {
+          "futex_wait_queue_me": 22
+        },
+        "319": {
+          "futex_wait_queue_me": 22
+        },
+        "320": {
+          "futex_wait_queue_me": 22
+        },
+        "321": {
+          "futex_wait_queue_me": 22
+        },
+        "322": {
+          "futex_wait_queue_me": 22
+        },
+        "323": {
+          "futex_wait_queue_me": 22
+        },
+        "324": {
+          "futex_wait_queue_me": 22
+        },
+        "325": {
+          "futex_wait_queue_me": 22
+        },
+        "326": {
+          "futex_wait_queue_me": 22
+        },
+        "327": {
+          "futex_wait_queue_me": 22
+        },
+        "328": {
+          "futex_wait_queue_me": 22
+        },
+        "329": {
+          "futex_wait_queue_me": 22
+        },
+        "330": {
+          "futex_wait_queue_me": 22
+        },
+        "331": {
+          "futex_wait_queue_me": 22
+        },
+        "332": {
+          "futex_wait_queue_me": 22
+        },
+        "333": {
+          "futex_wait_queue_me": 22
+        },
+        "334": {
+          "futex_wait_queue_me": 22
+        },
+        "335": {
+          "futex_wait_queue_me": 22
+        },
+        "336": {
+          "futex_wait_queue_me": 22
+        },
+        "337": {
+          "futex_wait_queue_me": 22
+        },
+        "338": {
+          "futex_wait_queue_me": 22
+        },
+        "341": {
+          "futex_wait_queue_me": 21
+        },
+        "343": {
+          "futex_wait_queue_me": 21
+        },
+        "344": {
+          "futex_wait_queue_me": 21
+        },
+        "346": {
+          "futex_wait_queue_me": 21
+        },
+        "347": {
+          "futex_wait_queue_me": 21
+        },
+        "348": {
+          "futex_wait_queue_me": 21
+        },
+        "349": {
+          "futex_wait_queue_me": 21
+        },
+        "350": {
+          "futex_wait_queue_me": 21
+        },
+        "351": {
+          "futex_wait_queue_me": 21
+        },
+        "352": {
+          "futex_wait_queue_me": 21
+        },
+        "353": {
+          "futex_wait_queue_me": 21
+        },
+        "354": {
+          "futex_wait_queue_me": 21
+        },
+        "355": {
+          "futex_wait_queue_me": 21
+        },
+        "356": {
+          "futex_wait_queue_me": 21
+        },
+        "357": {
+          "futex_wait_queue_me": 21
+        },
+        "359": {
+          "futex_wait_queue_me": 21
+        },
+        "360": {
+          "futex_wait_queue_me": 21
+        },
+        "361": {
+          "futex_wait_queue_me": 21
+        },
+        "362": {
+          "futex_wait_queue_me": 21
+        },
+        "363": {
+          "futex_wait_queue_me": 21
+        },
+        "364": {
+          "futex_wait_queue_me": 21
+        },
+        "365": {
+          "futex_wait_queue_me": 21
+        },
+        "366": {
+          "futex_wait_queue_me": 21
+        },
+        "367": {
+          "futex_wait_queue_me": 21
+        },
+        "368": {
+          "futex_wait_queue_me": 21
+        },
+        "369": {
+          "futex_wait_queue_me": 21
+        },
+        "485": {
+          "futex_wait_queue_me": 21
+        }
+      },
+      "frame_samples": [
+        {
+          "file": "gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "file": "gpe1.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "file": "dmm0403.bin",
+          "bytes": 1232896,
+          "sha256": "00f4546c396dfa73c8322b22a16f2ec1e340bd7cd04191ef863b3f97e0482e37",
+          "nonzero_bytes": 0
+        }
+      ]
+    },
+    {
+      "candidate": 305,
+      "run": "cp-bind-de72af8e",
+      "serial": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-de72af8e/serial.log",
+        "bytes": 347781,
+        "sha256": "04e34566e70beb3d9938830b1c667921e43b5736de80420491c756af4b38a7e9"
+      },
+      "receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-de72af8e/run-receipt.json",
+        "bytes": 2720,
+        "sha256": "f4cbfdf01e344c8d0fa761dc3f0fdf132b98ab43652abdd8ca35c4374ae49fdc"
+      },
+      "command": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-de72af8e/command.json",
+        "bytes": 2049,
+        "sha256": "e511b29f6d1cae6b6c69541c02b1e432615da55bd496d13699dba99d34719a75"
+      },
+      "completion": {
+        "utc": "2026-11-07T16:30:58.471101+00:00",
+        "reason": "wall_timeout",
+        "elapsed_seconds": 120.11706304200925,
+        "qemu_exit": 0,
+        "process_reaped": true,
+        "locks_released": true,
+        "firmware_AP_CP_AV_result": "CP_RC0_OBSERVED_NOT_AP"
+      },
+      "runner_fault_markers": [],
+      "actual_user_segv_count": 0,
+      "marker_counts": {
+        "MWF_Init": 0,
+        "MWF_INIT": 0,
+        "FX6_MWF_NULL ObjShLock::Lock": 8,
+        "FX6_MWF_NULL push_tail self=0": 8,
+        "FX6_MWF_NULL ObjShLock::Unlock": 8,
+        "FX6_OBJSHLOCK_PATCH": 0,
+        "FX6_OBJSHLOCK_UNLOCK": 0,
+        "FX6_UX_SCREEN_AREA_1024": 9,
+        "FX6_OSD_FLUSH": 1,
+        "FX6_APP_CONFIG_HOLD real_returned": 1
+      },
+      "selected_runtime_lines": [
+        {
+          "line": 1228,
+          "text": "FX6_APP_CONFIG_ENTRY arg=AppConfig.so appFw=0x10819b0 real=0x7f850dc044"
+        },
+        {
+          "line": 1229,
+          "text": "FX6_PATCH_NOP off=0xc09e50 addr=0x7f850dae50 mprotect=0"
+        },
+        {
+          "line": 1230,
+          "text": "FX6_PATCH_OSAL_RCV_SUCCESS off=0x20efbb8 addr=0x7f865c0bb8 mprotect=0"
+        },
+        {
+          "line": 1231,
+          "text": "FX6_APP_CONFIG_HOLD real_returned"
+        },
+        {
+          "line": 1241,
+          "text": "FX6_OSD_FLUSH update #1 prims=0 nz_pixels=0"
+        },
+        {
+          "line": 1256,
+          "text": "assert at infra_wrapper_ftp_client_one_soft.cpp:519"
+        },
+        {
+          "line": 1263,
+          "text": "assert at infra_wrapper_remote.cpp:5060"
+        },
+        {
+          "line": 1266,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1267,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1268,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1269,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1270,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1271,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1272,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1273,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1274,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1275,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1276,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1277,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1278,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1279,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1280,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1281,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1282,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1283,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1284,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1285,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1286,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1287,
+          "text": "FX6_MWF_NULL ObjShLock::Lock"
+        },
+        {
+          "line": 1288,
+          "text": "FX6_MWF_NULL push_tail self=0"
+        },
+        {
+          "line": 1289,
+          "text": "FX6_MWF_NULL ObjShLock::Unlock"
+        },
+        {
+          "line": 1310,
+          "text": "MediaBlock UserSpace Module Started..."
+        },
+        {
+          "line": 1328,
+          "text": "muxInit:done: 0"
+        }
+      ],
+      "thread_wchan_samples_without_comm": {
+        "217": {
+          "0": 1,
+          "hrtimer_nanosleep": 22
+        },
+        "220": {
+          "futex_wait_queue_me": 22
+        },
+        "221": {
+          "futex_wait_queue_me": 22
+        },
+        "222": {
+          "futex_wait_queue_me": 22
+        },
+        "223": {
+          "futex_wait_queue_me": 22
+        },
+        "224": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "225": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "226": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "227": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "228": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "229": {
+          "osal_unlock": 22
+        },
+        "230": {
+          "osal_unlock": 22
+        },
+        "231": {
+          "osal_unlock": 22
+        },
+        "232": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "233": {
+          "osal_unlock": 22
+        },
+        "234": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "235": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "236": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "237": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "238": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "239": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "240": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "241": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "242": {
+          "futex_wait_queue_me": 22
+        },
+        "243": {
+          "futex_wait_queue_me": 22
+        },
+        "244": {
+          "futex_wait_queue_me": 22
+        },
+        "245": {
+          "futex_wait_queue_me": 22
+        },
+        "246": {
+          "osal_rcv_msg_tmo": 22
+        },
+        "247": {
+          "futex_wait_queue_me": 22
+        },
+        "248": {
+          "futex_wait_queue_me": 22
+        },
+        "249": {
+          "futex_wait_queue_me": 22
+        },
+        "250": {
+          "futex_wait_queue_me": 22
+        },
+        "251": {
+          "futex_wait_queue_me": 22
+        },
+        "252": {
+          "futex_wait_queue_me": 22
+        },
+        "253": {
+          "futex_wait_queue_me": 22
+        },
+        "254": {
+          "futex_wait_queue_me": 22
+        },
+        "255": {
+          "futex_wait_queue_me": 22
+        },
+        "256": {
+          "futex_wait_queue_me": 22
+        },
+        "257": {
+          "futex_wait_queue_me": 22
+        },
+        "258": {
+          "futex_wait_queue_me": 22
+        },
+        "259": {
+          "futex_wait_queue_me": 22
+        },
+        "260": {
+          "futex_wait_queue_me": 22
+        },
+        "261": {
+          "futex_wait_queue_me": 22
+        },
+        "262": {
+          "futex_wait_queue_me": 22
+        },
+        "263": {
+          "futex_wait_queue_me": 22
+        },
+        "264": {
+          "futex_wait_queue_me": 22
+        },
+        "265": {
+          "futex_wait_queue_me": 22
+        },
+        "266": {
+          "futex_wait_queue_me": 22
+        },
+        "267": {
+          "futex_wait_queue_me": 22
+        },
+        "268": {
+          "futex_wait_queue_me": 22
+        },
+        "269": {
+          "futex_wait_queue_me": 22
+        },
+        "270": {
+          "futex_wait_queue_me": 22
+        },
+        "271": {
+          "futex_wait_queue_me": 22
+        },
+        "272": {
+          "futex_wait_queue_me": 22
+        },
+        "273": {
+          "futex_wait_queue_me": 22
+        },
+        "274": {
+          "futex_wait_queue_me": 22
+        },
+        "275": {
+          "futex_wait_queue_me": 22
+        },
+        "276": {
+          "futex_wait_queue_me": 22
+        },
+        "277": {
+          "futex_wait_queue_me": 22
+        },
+        "278": {
+          "futex_wait_queue_me": 22
+        },
+        "279": {
+          "futex_wait_queue_me": 22
+        },
+        "280": {
+          "futex_wait_queue_me": 22
+        },
+        "281": {
+          "futex_wait_queue_me": 22
+        },
+        "282": {
+          "futex_wait_queue_me": 22
+        },
+        "283": {
+          "futex_wait_queue_me": 22
+        },
+        "284": {
+          "futex_wait_queue_me": 22
+        },
+        "285": {
+          "futex_wait_queue_me": 22
+        },
+        "286": {
+          "futex_wait_queue_me": 22
+        },
+        "287": {
+          "futex_wait_queue_me": 22
+        },
+        "288": {
+          "futex_wait_queue_me": 22
+        },
+        "289": {
+          "futex_wait_queue_me": 22
+        },
+        "290": {
+          "futex_wait_queue_me": 22
+        },
+        "291": {
+          "futex_wait_queue_me": 22
+        },
+        "292": {
+          "futex_wait_queue_me": 22
+        },
+        "293": {
+          "futex_wait_queue_me": 22
+        },
+        "294": {
+          "futex_wait_queue_me": 22
+        },
+        "295": {
+          "futex_wait_queue_me": 22
+        },
+        "296": {
+          "futex_wait_queue_me": 22
+        },
+        "297": {
+          "futex_wait_queue_me": 22
+        },
+        "298": {
+          "futex_wait_queue_me": 22
+        },
+        "299": {
+          "futex_wait_queue_me": 22
+        },
+        "300": {
+          "futex_wait_queue_me": 22
+        },
+        "301": {
+          "do_msgrcv": 22
+        },
+        "302": {
+          "hrtimer_nanosleep": 22
+        },
+        "303": {
+          "hrtimer_nanosleep": 22
+        },
+        "304": {
+          "hrtimer_nanosleep": 22
+        },
+        "305": {
+          "futex_wait_queue_me": 22
+        },
+        "307": {
+          "futex_wait_queue_me": 22
+        },
+        "308": {
+          "futex_wait_queue_me": 22
+        },
+        "309": {
+          "futex_wait_queue_me": 22
+        },
+        "310": {
+          "hrtimer_nanosleep": 22
+        },
+        "311": {
+          "futex_wait_queue_me": 22
+        },
+        "312": {
+          "hrtimer_nanosleep": 1,
+          "futex_wait_queue_me": 21
+        },
+        "313": {
+          "futex_wait_queue_me": 22
+        },
+        "314": {
+          "futex_wait_queue_me": 22
+        },
+        "315": {
+          "futex_wait_queue_me": 22
+        },
+        "316": {
+          "futex_wait_queue_me": 22
+        },
+        "317": {
+          "futex_wait_queue_me": 22
+        },
+        "318": {
+          "futex_wait_queue_me": 22
+        },
+        "319": {
+          "futex_wait_queue_me": 22
+        },
+        "320": {
+          "futex_wait_queue_me": 22
+        },
+        "321": {
+          "futex_wait_queue_me": 22
+        },
+        "322": {
+          "futex_wait_queue_me": 22
+        },
+        "323": {
+          "futex_wait_queue_me": 22
+        },
+        "324": {
+          "futex_wait_queue_me": 22
+        },
+        "325": {
+          "futex_wait_queue_me": 22
+        },
+        "326": {
+          "futex_wait_queue_me": 22
+        },
+        "327": {
+          "futex_wait_queue_me": 22
+        },
+        "328": {
+          "futex_wait_queue_me": 22
+        },
+        "329": {
+          "futex_wait_queue_me": 22
+        },
+        "330": {
+          "futex_wait_queue_me": 22
+        },
+        "331": {
+          "futex_wait_queue_me": 22
+        },
+        "332": {
+          "futex_wait_queue_me": 22
+        },
+        "333": {
+          "futex_wait_queue_me": 22
+        },
+        "334": {
+          "futex_wait_queue_me": 22
+        },
+        "335": {
+          "futex_wait_queue_me": 22
+        },
+        "336": {
+          "futex_wait_queue_me": 22
+        },
+        "337": {
+          "futex_wait_queue_me": 22
+        },
+        "338": {
+          "futex_wait_queue_me": 22
+        },
+        "339": {
+          "futex_wait_queue_me": 22
+        },
+        "340": {
+          "futex_wait_queue_me": 22
+        },
+        "341": {
+          "futex_wait_queue_me": 22
+        },
+        "342": {
+          "futex_wait_queue_me": 22
+        },
+        "343": {
+          "futex_wait_queue_me": 22
+        },
+        "344": {
+          "futex_wait_queue_me": 22
+        },
+        "345": {
+          "futex_wait_queue_me": 22
+        },
+        "346": {
+          "futex_wait_queue_me": 22
+        },
+        "347": {
+          "futex_wait_queue_me": 22
+        },
+        "348": {
+          "futex_wait_queue_me": 22
+        },
+        "349": {
+          "futex_wait_queue_me": 22
+        },
+        "350": {
+          "futex_wait_queue_me": 22
+        },
+        "351": {
+          "futex_wait_queue_me": 22
+        },
+        "352": {
+          "futex_wait_queue_me": 22
+        },
+        "353": {
+          "futex_wait_queue_me": 22
+        },
+        "354": {
+          "futex_wait_queue_me": 22
+        },
+        "355": {
+          "futex_wait_queue_me": 22
+        },
+        "356": {
+          "futex_wait_queue_me": 22
+        },
+        "357": {
+          "futex_wait_queue_me": 22
+        },
+        "358": {
+          "futex_wait_queue_me": 22
+        },
+        "359": {
+          "futex_wait_queue_me": 22
+        },
+        "360": {
+          "futex_wait_queue_me": 22
+        },
+        "361": {
+          "futex_wait_queue_me": 22
+        },
+        "362": {
+          "futex_wait_queue_me": 22
+        },
+        "363": {
+          "futex_wait_queue_me": 22
+        },
+        "364": {
+          "futex_wait_queue_me": 22
+        },
+        "511": {
+          "futex_wait_queue_me": 21
+        }
+      },
+      "frame_samples": [
+        {
+          "file": "gpe0.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "file": "gpe1.bin",
+          "bytes": 2211840,
+          "sha256": "ee49e540faa0421573230f39a8dbf7b4139bc3950621537417e0ddc38a5352b1",
+          "nonzero_bytes": 0
+        },
+        {
+          "file": "dmm0403.bin",
+          "bytes": 1232896,
+          "sha256": "00f4546c396dfa73c8322b22a16f2ec1e340bd7cd04191ef863b3f97e0482e37",
+          "nonzero_bytes": 0
+        }
+      ]
+    }
+  ],
+  "candidate304": {
+    "matching_runtime_commands_found": [],
+    "source_exists": true,
+    "interpretation": "source presence is not runtime execution; no matching completed run found in this CP/runs command set"
+  },
+  "actual_305_members": [
+    {
+      "member": "usr/lib/libMWF.so",
+      "bytes": 353120,
+      "sha256": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782",
+      "relevant_exports": [
+        "_ZN3MWF9ObjShLock6UnlockEv",
+        "_ZN3MWF10ObjMsgList9push_tailEPKNS_6ObjMsgE",
+        "_ZN3MWF9ObjShLock4LockEN10DefObjLock10T_LOCKTYPEEj",
+        "MWF_Init"
+      ],
+      "MWF_log_strings": []
+    },
+    {
+      "member": "usr/lib/libgrm-fbinit9.so",
+      "bytes": 82488,
+      "sha256": "f84cf2608f916434d321775158354d29e4ffee7d3e447c7e21afc1de73a58eca",
+      "relevant_exports": [
+        "_ZN3MWF9ObjShLock6UnlockEv",
+        "_ZN3MWF10ObjMsgList9push_tailEPKNS_6ObjMsgE",
+        "_ZN3MWF9ObjShLock4LockEN10DefObjLock10T_LOCKTYPEEj"
+      ],
+      "MWF_log_strings": [
+        "FX6_MWF_NULL push_tail self=0\n",
+        "FX6_MWF_NULL ObjShLock::Lock\n",
+        "FX6_MWF_NULL ObjShLock::Unlock\n"
+      ]
+    }
+  ],
+  "conclusions": [
+    "302 receipt fault_markers is empty despite an actual APPFW_SEGV in libMWF at relative PC 0x3b37c; runner fault parser is insufficient.",
+    "303 logs Lock/Unlock patch application; 305 logs eight NULL operation triples, not native lock/list success.",
+    "305 shim exports only three MWF compatibility methods, not MWF_Init; there is no dedicated MWF_Init runtime observer.",
+    "MWF_Init actual call and return cannot be established or excluded from these logs.",
+    "real_returned marker covers Application_System_Init, not nested MWF initialization or provider registration.",
+    "All three runs retain observed osal receive force-success patch marker; native provider/lifecycle semantics are not validated.",
+    "303 and 305 have no APPFW_SEGV marker but both timeout; sampled rendering buffers remain entirely zero.",
+    "Thread snapshots contain TID/wchan only; do not carry AppFw/uxengine thread identity across runs.",
+    "No run, shim, donor, Git, or other-agent artifact modified."
+  ]
+}

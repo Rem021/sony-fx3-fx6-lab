@@ -1,0 +1,57 @@
+{
+  "schema": "fx6-wait-snapshot-host-test-v1",
+  "kind": "mocked-core-only",
+  "commands": [
+    [
+      "/usr/bin/clang",
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core"
+    ]
+  ],
+  "stdout": "snapshot core: 18 state scenarios and frame boundary checks passed\n",
+  "stderr": "",
+  "test_source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core.c",
+    "bytes": 3545,
+    "sha256": "0653a91d7ffa4d2ee61b1f848c064aa49ee8fc0f91fb591b5a7e8b839218f837"
+  },
+  "core_source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c",
+    "bytes": 5308,
+    "sha256": "82a18ba71e47c538c57c21a0c1589d3cde7bf659d104515f078c39f2767562b4"
+  },
+  "executions": 18,
+  "normal_path_repeats": 2,
+  "covered_behaviors": [
+    "successful register snapshot and legitimate PEEKDATA=-1 with errno0",
+    "SEIZE permission failure",
+    "200ms wait timeout plus250ms cleanup and DETACH attempt",
+    "GETREGSET error",
+    "short iov_len rejected",
+    "PEEKDATA errno failure",
+    "signal-delivery-stop signal preserved at DETACH",
+    "DETACH failure remains attached for explicit caller exit",
+    "nonincreasing FP chain rejected",
+    "40 PEEKDATA reads for20frame hard cap",
+    "misaligned or outside stack address rejected before peek",
+    "no valid current stack map skips memory reads",
+    "waitpid failure still reaches DETACH attempt",
+    "wrong target identity beforeSEIZE",
+    "identity race afterSEIZE still reaches DETACH attempt",
+    "cancellation still reaches DETACH"
+  ],
+  "actual_host_ptrace_used": false,
+  "guest_run": false,
+  "limits": "Alarm delivery, Sony kernel permission/ptrace support and guest unwind availability remain runtime checks; host tests invoke fake operations only."
+}

@@ -1,0 +1,44 @@
+{
+  "address": "0x7fadc6f6d4",
+  "mapping": {
+    "start": "0x7fadc6f000",
+    "end": "0x7fadc70000",
+    "perms": "r-xp",
+    "offset": "0x0",
+    "path": "/usr/lib/libfx6-queue-observer.so"
+  },
+  "elf_sha256": "8e7f71167bb1619f933df622d5f41b6cb1b8439a6ea6b5b9d7bed2ac9ff016fc",
+  "elf_bytes": 5400,
+  "status": "resolved",
+  "load_bias": "0x7fadc5f000",
+  "elf_va": "0x106d4",
+  "file_offset": "0x6d4",
+  "executable": true,
+  "covering_function_symbols": [
+    {
+      "name": "osal_rcv_msg_tmo",
+      "start": "0x106d4",
+      "bytes": 844,
+      "offset": "0x0"
+    }
+  ],
+  "instructions": [
+    {
+      "va": "0x106d4",
+      "assembly": "sub sp, sp, #0xf0"
+    },
+    {
+      "va": "0x106d8",
+      "assembly": "stp x29, x30, [sp, #0x90]"
+    },
+    {
+      "va": "0x106dc",
+      "assembly": "add x29, sp, #0x90"
+    },
+    {
+      "va": "0x106e0",
+      "assembly": "stp x28, x27, [sp, #0xa0]"
+    }
+  ],
+  "preceding_instruction": null
+}

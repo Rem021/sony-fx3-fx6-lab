@@ -1,0 +1,20 @@
+--- observer295-init
++++ wait-snapshot-init
+@@ -240,7 +240,17 @@
+ echo FX6_QUEUE_OBS_INITIAL_MAPS_BEGIN
+ /bin/busybox cat /proc/$appfw_pid/maps 2>/dev/null
+ echo FX6_QUEUE_OBS_INITIAL_MAPS_END
++fx6_wait_snapshot_done=0
+ while true; do
++ if [ "$fx6_wait_snapshot_done" = 0 ]; then
++  read fx6_wait_uptime fx6_wait_idle < /proc/uptime
++  if [ "${fx6_wait_uptime%%.*}" -ge 20 ]; then
++   fx6_wait_snapshot_done=1
++   echo FX6_WAIT_SNAPSHOT_INIT_BEGIN pid=$appfw_pid uptime=$fx6_wait_uptime
++   /usr/bin/fx6-wait-snapshot "$appfw_pid"
++   echo FX6_WAIT_SNAPSHOT_INIT_END rc=$?
++  fi
++ fi
+  for t in /proc/$appfw_pid/task/*; do
+   [ -d "$t" ] || continue
+   echo FX6_NATIVE_THREAD_BEGIN_${t##*/}

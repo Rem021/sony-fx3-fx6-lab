@@ -1,0 +1,103 @@
+--- work/fx6-observer-runtime-20261107/run_observer_once.py
++++ work/fx6-observer-runtime-v2-20261107/run_observer_once.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""One locked, bounded observer run; all QMP traffic has one reader/owner."""
++"""One locked observer run; one QMP owner, Unix GDB gate, explicit delivery limits."""
+ import argparse
+ import datetime as dt
+ import fcntl
+@@ -27,6 +27,26 @@
+     with Path(path).open('rb') as f:
+         for block in iter(lambda: f.read(4*1024*1024), b''): h.update(block)
+     return h.hexdigest()
++
++
++def normalize_gdb_argv(argv):
++    """Remove only a terminal duplicate -s; retain the existing Unix key gate."""
++    result = list(argv)
++    if '-s' in result:
++        if result.count('-s') != 1 or result[-1] != '-s':
++            raise RuntimeError('unexpected nonterminal/repeated -s')
++        result.pop()
++    if result.count('-gdb') != 1 or result[result.index('-gdb')+1] != 'chardev:keygate93':
++        raise RuntimeError('expected the original Unix GDB gate')
++    if result.count('socket,path=g,server=on,wait=off,id=keygate93') != 1:
++        raise RuntimeError('expected the original Unix g chardev')
++    return result
++
++
++def runtime_argv(saved, run):
++    argv = normalize_gdb_argv(saved['candidate_argv_before_observer_serial_retarget'])
++    argv[argv.index('-serial')+1] = 'file:'+str(run/'serial.log')
++    return argv
+ 
+ 
+ def check(path, expected):
+@@ -55,7 +75,7 @@
+     for i, value in enumerate(expected_argv):
+         if value.startswith('loader,file=') and base['initrd']['path'] in value:
+             expected_argv[i] = value.replace(base['initrd']['path'], saved['initrd']['path'])
+-    if expected_argv != saved['candidate_argv_before_observer_serial_retarget']:
++    if normalize_gdb_argv(expected_argv) != normalize_gdb_argv(saved['candidate_argv_before_observer_serial_retarget']):
+         raise RuntimeError('argv differs beyond the new initrd')
+     if expected_argv[0] != qemu['path']: raise RuntimeError('wrong QEMU argv')
+     return saved, base
+@@ -99,10 +119,12 @@
+     held = fr.acquire()  # Existing two owner locks; never steal or recreate them.
+     proc, qmp, gate = None, None, None
+     run = manifest.parent/'runs'/('observer-'+uuid.uuid4().hex[:10])
+-    receipt = {'schema': 'fx6-observer-owned-run-v1', 'manifest_sha256': manifest_sha,
++    receipt = {'schema': 'fx6-observer-owned-run-v2', 'manifest_sha256': manifest_sha,
+         'baseline_manifest_sha256': BASE_SHA, 'manifest': str(manifest),
+         'maximum_seconds': 120, 'runner_sha256': sha(__file__), 'fixed_runner_sha256': sha(fr.__file__),
+-        'utc': dt.datetime.now(dt.timezone.utc).isoformat(), 'key_operations': [], 'captures': []}
++        'utc': dt.datetime.now(dt.timezone.utc).isoformat(), 'key_operations': [], 'key_attempts': [], 'captures': [],
++        'gdb_endpoint': 'unix:g via chardev:keygate93; terminal duplicate -s removed',
++        'key_evidence_scope': 'software gate write/readback only; guest consumption and native UI response unproven'}
+     start = time.monotonic()
+     reason, error = 'not_started', None
+     try:
+@@ -110,8 +132,7 @@
+         fd = os.open(once, os.O_CREAT|os.O_EXCL|os.O_WRONLY, 0o600)
+         with os.fdopen(fd, 'w') as f: json.dump({'run': str(run), 'manifest_sha256': manifest_sha}, f)
+         run.mkdir(parents=True, mode=0o700)
+-        argv = saved['candidate_argv_before_observer_serial_retarget'].copy()
+-        argv[argv.index('-serial')+1] = 'file:'+str(run/'serial.log')
++        argv = runtime_argv(saved, run)
+         env = os.environ.copy(); env.update(saved['model_env'])
+         (run/'command.json').write_text(json.dumps({'argv': argv, 'model_env': saved['model_env'],
+             'manifest_sha256': manifest_sha, 'authorization': 'user requested continuing repair; observer-only derived 295'}, indent=2)+'\n')
+@@ -163,12 +184,20 @@
+                         from gate_input96 import InputGate
+                         gate = InputGate(run)
+                     qmp.call('stop')
+-                    try: item=gate.command(step,key,100,'fx6-menu','sequence menu key')
++                    try: item=gate.command(step,key,100,'native-screen-unverified',
++                                          'bounded diagnostic key sequence; no verified native menu')
+                     finally: qmp.call('cont')
+                     (run/f'keyinject-step{step}.json').write_text(json.dumps(item,indent=2)+'\n')
+-                    receipt['key_operations'].append({'step':step,'recorded':True})
++                    receipt['key_operations'].append({'step':step,'recorded':True,
++                        'delivery':'software_gate_write_readback','guest_consumption':'unproven','native_ui_response':'unverified'})
++                    receipt['key_attempts'].append({'step':step,'key':hex(key),
++                        'delivery':'software_gate_write_readback','guest_consumption':'unproven','retry_suppressed':True})
+                 except Exception as exc:
+                     key_failed=True; (run/'keyinject-error.txt').write_text(repr(exc)+'\n')
++                    # A failure may follow an accepted write. Preserve unknown delivery and
++                    # stop the sequence; never retry this or a later step in this run.
++                    receipt['key_attempts'].append({'step':step,'key':hex(key),'delivery':'unknown',
++                        'error':repr(exc),'retry_suppressed':True,'subsequent_steps_suppressed':True})
+                 key_index += 1
+             if not capture_done and time.monotonic()-start >= 70:
+                 capture_done=True
+@@ -222,7 +251,8 @@
+     ap.add_argument('--manifest',type=Path,required=True);ap.add_argument('--manifest-sha',required=True)
+     group=ap.add_mutually_exclusive_group(required=True);group.add_argument('--check',action='store_true');group.add_argument('--run',action='store_true')
+     args=ap.parse_args();path=args.manifest.resolve();saved,base=check(path,args.manifest_sha)
+-    if args.check: print(json.dumps({'check':'passed','manifest_sha256':args.manifest_sha,'guest_started':False}));return
++    if args.check: print(json.dumps({'check':'passed','manifest_sha256':args.manifest_sha,'guest_started':False,
++        'gdb_endpoint':'unix:g via chardev:keygate93','effective_argv':runtime_argv(saved,path.parent/'runs'/'CHECK_ONLY')}));return
+     signal.signal(signal.SIGTERM,lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
+     result=execute(path,args.manifest_sha,saved,base);print(json.dumps(result,indent=2))
+     if result['error']: raise SystemExit(1)

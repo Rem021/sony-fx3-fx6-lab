@@ -5,7 +5,7 @@
 - **Orca Category Workspace**: `FX3｜固件逆向与 H.265 编码研究`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:b243cace-076f-4609-864a-920dbda55931`
 - **Created At**: `2026-10-25T05:35:19.997Z`
-- **Updated At**: `2026-11-06T15:53:00.467Z`
+- **Updated At**: `2026-11-07T16:02:04.228Z`
 - **Captured Messages (User / Assistant)**: `12`
 
 ---

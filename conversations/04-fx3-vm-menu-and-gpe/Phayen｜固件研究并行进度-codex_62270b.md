@@ -5,553 +5,284 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-07T14:25:30.791Z`
-- **Updated At**: `2026-11-07T15:45:16.403Z`
-- **Captured Messages (User / Assistant)**: `60`
+- **Updated At**: `2026-11-07T16:43:49.717Z`
+- **Captured Messages (User / Assistant)**: `33`
 
 ---
 
 ## 🤖 Assistant
 
-三条线已有可用结果：资源组找到了真实 FX6 的 Big6、拍摄界面和菜单首层入口；运行组确认网页尚未读取 VM 帧；CPIO 核验则发现 Candidate 287 的包哈希正确，但其中两个成员指纹字段已过时。
+已确认重启前的报告、构建记录和观察库都已保存，仓库也已推送；这些不需要重做。当前还有另一条主线的 299 实验在运行，我不会抢占或重复启动它。
 
-我正在整理可复跑脚本和修正建议，先固化这一轮证据，供启动主线继续接入。
-
----
-
-## 🤖 Assistant
-
-已完成只读复核，交付在 [runtime-evidence/README.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/runtime-evidence/README.md)，含摘要器与结构化 JSON。
-
-关键结果：
-
-- 273、280、283、286 均未证明原厂菜单成功；采样 gpe0 全零。
-- 286 明确因 `Application_System_Init` 符号查找失败而阻塞。
-- 280 有可归属 appFw 的未对齐线程入口异常；其他通用 SEGV 属 busybox，不能混同。
-- 四份回执漏报串口 SEGV；首 archive 的 shim 指纹与 manifest 成员元数据不符。
-- 网页三屏由宿主 Pillow 绘制，没有 VM 帧读回；输入还存在固定 TCP1234 与 Unix `g` socket 不一致。
-
-所有操作均为离线读取。解析器首 archive 限制已显式标注，完整追加区核验交由主 agent 工具。
+接下来把已完成的观察库接入独立候选，保留冻结基线的行为，先取得真实线程和队列调用证据，再据此修复。
 
 ---
 
 ## 🤖 Assistant
 
-已完成，交付位于 [REPORT.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/native-resources/REPORT.md)，同目录有标准库解析脚本和 JSON。
-
-关键发现：
-
-- 旧报告 `scr7286 / rep_menu / rep_shooting` 地址来自 **79 MB FX3 文件**。owning manifest 为 `fx3-audit/asset-audit.json → files[17]`，SHA `545c5053...`；直接重哈原件一致。
-- 真 FX6 `a1c58b69...` 的对应入口与控件表：
-
-| Presenter | 构造入口 | 控件表 | 数量 |
-|---|---|---|---:|
-| Big6 HOME | `0xde10f4` | `0x2e9e210` | 98 |
-| Shooting | `0xdd3df8` | `0x2e94910` | 356 |
-| Menu 第一层 | `0xdd7470` | `0x2ea02f8` | 35 |
-
-脚本验证构造名、prologue、count 指令、RELATIVE relocation 和全部 489 条控件名。资源声明闭包核验 70 文件，无缺失；尚未核验候选 CPIO 的资源装入。
-
-实物重跑和错误 donor 拒绝均通过。未运行 VM；controller `open_screen` 与实际菜单打开仍未证明。
+我将只读核对 296–299 的完成回执、实际输入和串口证据；运行中的实验不纳入最终结论，也不连接或控制 VM。
 
 ---
 
 ## 🤖 Assistant
 
-已完成原生初始化复核，产物位于 `work/parallel-research-20261107/native-init/`。
-
-关键发现：
-
-- 已保存 Candidate 287 精确自编源码及 SHA，实际 CPIO 的 FX6 `appFw.so` 与 donor 一致。
-- `real_returned` 不能证明 UI 线程启动；OSAL 线程失败码目前被上层忽略。
-- 原厂线程 trampoline 会先初始化线程上下文，直接新建 pthread 调 UI 入口会跳过该步骤。
-- 32 MiB bridge 满足静态 24 MiB Arena 需求。
-
-建议下一轮只补 OSAL 返回值、即时 errno、原厂 callback 和 `uxengine_init2` 进出观测。尚无证据把调度失败定为根因。可重跑脚本、JSON、报告均已完成验证，未操作虚拟机。
+我会先绑定真实 Backup 库、调用者和记录模板，选择能证明类型与长度的少量启动键做离线候选；未知键保留原厂路径，避免再次把未定义寄存器或空成功当作数据契约。
 
 ---
 
 ## 🤖 Assistant
 
-首轮研究已完成，报告中已明确纠正版本归属，也给出了下一轮最小观测方案：先记录 OSAL 线程返回值、即时错误码和原厂回调是否到达，再判断阻塞位置。现有证据还不足以认定具体根因。
+299 的结果也核清了：替换接收函数为“直接成功”没有解决崩溃。296–299 都落在同一个空锁对象路径：`libMWF` 把空对象中的 mutex 地址交给了 `pthread_mutex_lock`。
 
-我正在做交付检查，并按项目的大节点同步规则保存到 GitHub；现有 VM 候选保持原样。
-
----
-
-## 🤖 Assistant
-
-已根据其他 agent 最新进度，并行完成首轮三项研究：
-
-- **纠正版本混用**：旧报告部分“FX6”界面地址实际来自 FX3。
-- **找到真实入口**：确认 FX6 三类界面的构造入口及 489 条控件描述符。
-- **定位证据缺口**：网页仍由宿主绘图；下一轮应观察 OSAL 线程返回值和原厂回调，判断初始化阻塞位置。
-
-未干扰现有 VM；原厂菜单可用性仍待验证。报告与复核脚本已同步 GitHub，提交 `d8e37935`。
-
-[查看研究报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-parallel-native-ui/README.md)
-
----
-
-## 👤 User / Coordinator
-
-继续深度研究
+所以这轮不会沿用“伪造成功”的分支。独立候选只修正观察接入，确保能记录真实调用点，并保持原厂接收行为。
 
 ---
 
 ## 🤖 Assistant
 
-我会先核对主线的新进度，再继续追踪两个关键问题：原厂 UI 线程停在哪里，以及真正的 FX6 菜单如何由原生状态机打开。沿用并行研究方式，先避开其他 agent 正在使用的 VM。
+候选已构建完成，正在核对实际 295 的动态库闭包、完整 CPIO 成员保留情况，以及观察器槽位绑定证据。确认后交由主 agent 执行唯一一次受控运行。
 
 ---
 
 ## 🤖 Assistant
 
-我继续核对 288–290 的实际日志，把上轮 OSAL 假说与当前运行进度对上，再定位更深一层的原厂等待点。全程保持离线只读。
+冷核验已通过：新 launcher 和观察器的 55 个强导入符号及版本均由 295 原有的 glibc 2.25 闭包满足。原 CPIO 首个结束标记后的 58 条记录也已保留；候选已冻结，主 agent 正准备受控运行。
 
 ---
 
 ## 🤖 Assistant
 
-主线已推进到 Candidate 290。新日志确认，288–290 已进入真实 UI 初始化，创建了 9 个 ScreenArea，并打印了三块 Arena 的配置；上一轮“UI 线程可能没启动”的假说已不适用于这些候选。
+独立候选已通过完整镜像差异检查和逐符号 ABI 校验：原件、旧 shim、Backup 行为和超时都保持 295，新增的只是观察接入与线程元数据记录。
 
-现在更明确的故障是 `libMWF.so` 的空对象访问。我们正在并行追查这个调用、菜单状态机入口，以及日志服务的设备与回调契约。
-
----
-
-## 🤖 Assistant
-
-288–290 的日志已排除“UI 线程没启动”：它们都执行到了原厂 GRM 回调，并注册了完整三大 Arena。当前更深的失败是 `libMWF` 日志对象为空；已追到独立启动器只加载 `libMWF.so`，没有执行原厂模块表要求的 `MWF_Init`。这会让真正的资源错误在输出日志时先崩溃，现正把完整调用链和不改控制逻辑的观察候选整理下来。
+现在执行一次 120 秒的受控 VM 验证，使用现有双锁；若锁被其他实验占用，就不启动。
 
 ---
 
 ## 🤖 Assistant
 
-找到了一处明确的初始化缺口：当前独立启动器只加载了 `libMWF.so`，没有调用原厂生命周期表声明的 `MWF_Init`；这与日志对象为空的崩溃相吻合。
+已交付 [契约报告与最小候选](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/README.md)。
 
-Kikilog 也有独立的初始化要求：它使用 `/dev/usb/kikilog`，候选中的设备表将其定义为字符设备 `248:10`，用户态库还需要执行初始化来打开设备。单凭 `insmod` 成功不足以证明回调已就绪。我会通过 Orca 的 `orchestration` 将这些已核实的契约回传给主线。
+关键结论：
 
----
+- 原厂 `Backup_read` 不使用调用者 `w2` 作为长度；295 的空成功仍违约。
+- `backup_sync_msg` 返回 0 不等于业务成功；需要恢复整条原调用链。
+- 四键均有 8B 证明；`fa0191/92` 可使用同一自有 arena 的地址/容量候选。
+- `fa01a3/a4` 默认均为全一哨兵，现有假物理窗口缺少映射依据。
+- 未知 ID 明确 `NOT_HANDLED`，交还原实现或失败。
 
-## 🤖 Assistant
-
-目前的证据指向“原厂模块生命周期未完整执行”：设备节点、用户态初始化和 AppFw UI 启动是不同步骤，`dlopen` 不会替代它们。
-
-菜单组也找到了正常路径：App 初始化 presenter/controller 管理器后，由开机模型事件驱动画面切换。下一轮可以沿这条状态机观察，而不是直接调用 HOME 构造函数。
-
----
-
-## 🤖 Assistant
-
-第二轮已完成，结果在 `work/parallel-research-20261107/deep-init/`。
-
-- 288–290 已越过 OSAL、`uxengine_init2`，完整注册三大 Arena。
-- 289/290 同样崩于 `libMWF+0x3e908`：错误日志对象 `smp_monErr` 为空。
-- 原厂模块表要求 `MWF_Init`；当前独立启动器只加载库，未执行该生命周期，是具体缺口候选。
-- 已保存实际源码、可重跑核验脚本和只观察的 shim 候选；语法检查通过，未运行 VM 或修改共享代码。
+[测试结果](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/test-results.json)：97 项 C 检查通过（ASan/UBSan），140 项真实模板输入检查通过。未集成、未运行 VM、未改供体或共享源、未写 Git。
 
 ---
 
 ## 🤖 Assistant
 
-第二轮已完成，产物位于 [deep-runtime/README.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/deep-runtime/README.md)，附复跑脚本及 JSON。
+296–299 审计完成：[报告](work/fx6-post-restart-audit-20261107/README.md)、[完整证据](work/fx6-post-restart-audit-20261107/evidence.json)。
 
-- 287→288：init、477个库成员及 launcher 执行 sections 不变；不能称为实际启动优化。
-- 288：明确到达三块24 MiB Arena与UX屏幕对象初始化。
-- 289/290：同样崩于 `libMWF+0x3e908`，空 `smp_monErr` 经 `MyPrintf→MonCtrl::GetFlag` 触发访问 `0x10`。
-- 289→290：仅init增加准备序列，所有库与launcher不变；UPM assert未再出现，MWF故障保留。
-- 尚无 WidgetSystemFactory 的直接运行证据，所有采样帧仍全零。
-
-完整容器和日志指纹绑定验证通过；未操作虚拟机或共享输入。
+- 四次均完整结束，但同样崩溃、GPE 帧全零，不能晋升修复基线。
+- 新阻塞已精确绑定：`ObjShLock::Lock(this=NULL)` → `pthread_mutex_lock` 读取 `0x38`。上层 owner 尚未确定。
+- 299 仅伪造 receive 返回值，没有原厂回执证据。
+- `THREAD_END_217` 是 wchan 采样结束标记，不能解释为线程退出。
+- 未连接或控制 VM；待 observer 完成回执后继续审计。
 
 ---
 
 ## 🤖 Assistant
 
-第二轮已保存到 [REPORT.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/deep-screen/REPORT.md)，同目录有脚本和 JSON。
+运行中的首个关键验证已通过：实际 AppFw 接收槽位已回读到观察库地址，解决了此前普通 preload 可能被手工 GOT 修复绕过的问题。
 
-确定路线：
-
-`App::run → App::initialize → manager::initialize → 原生事件 → open_screen_internal → controller/presenter 工厂`
-
-关键入口：
-
-- manager 位于 `App+0xa40`；初始化 `0xde31ac`。
-- 原厂切换入口 `0xdf790c`，内部创建入口 `0xdf6680`。
-- Shooting / HOME / Menu 的 screen ID 分别为 **2 / 10 / 15**。
-- HOME controller 请求入口 `0xf2dec0`。
-- 原厂 `MODEL_POWER_ON_COMP` handler 为 `0x1009be0`。
-
-脚本通过精确 SHA、重定位、调用边和原厂方法名验证；错误 donor 拒绝通过。事件数值、模型条件枚举和实际 guest 到达均保留未验证。
+目前这段日志还没有接收入口记���。我会等本轮完整结束，再结合线程名称和状态判断，避免把“没有日志”误当成“没有调用”或“已经修好”。
 
 ---
 
 ## 🤖 Assistant
 
-这一轮还排除了一个误导：287→288 的 `fast-init` 候选没有改变启动脚本、477 个库成员或 launcher 的可执行 sections，因此不能把观察到更深初始化归因于启动优化。
+独立候选已完成，可交主 agent 受控运行。
 
-现已备好可复核的生命周期清单、原生屏幕切换路线，以及���记录调用、不改返回值的观察 shim。补齐初始化是否能消除故障，仍需由主线运行验证。
+- 入口：[candidate-manifest.json](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/candidate-manifest.json)，SHA `d5732c03…`
+- 仅改变 init、诊断 launcher，新增观察器；295 原 appFw、shim、Backup、NOP 保持原样。
+- 全部 832 条 GOT 核对一致；显式绑定 recv 槽并记录 provider/readback。
+- 55 个强导入及版本全部满足原 glibc 2.25 闭包。
+- 首 TRAILER 后 58 条原记录完整保留。
+- 基线源码重编的 `.text/.rodata/.got/.got.plt` 与实际 295 完全相同。
 
----
-
-## 🤖 Assistant
-
-我再补核原厂模块管理器如何执行生命周期表，重点确认初始化阶段和排序条件，不把表中的物理先后当成运行顺序。
-
----
-
-## 🤖 Assistant
-
-设备契约核验工具已通过实际候选检查，也确认了用户态传入的回调 ID 与当前驱动的处理方式一致；错误整包哈希会被拒绝。
-
-当前不确定性是原厂模块管理器的初始化顺序，不能按表格排列猜测。我正在把这项边界和已验证材料一起固化到报告。
+构建、源码 diff、成员证明、ABI 证明及指纹已收于同目录 [README.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/README.md)。未启动或连接 VM，未修改 donor 或 Git。
 
 ---
 
 ## 🤖 Assistant
 
-已追加 `deep-init/lifecycle-order.md`。
-
-原厂扫描器按阶段边界、目标掩码和 flags 筛选，再派发模块加载及 init。可确认 Kiki 的加载请求先于 MWF 派发；尚不能证明两者 init 的完成先后，报告已明确保留这一缺口。
+恢复后的这轮观察测试已结束：接收函数的 GOT 槽位确实绑定到了观察库，AppFw 线程也持续存在，但一直停在 futex 等待，没有观察到接收入口。另查到按键测试在主机侧连接 GDB 时失败；我会先修正连接配置，再定位线程等待的位置。
 
 ---
 
 ## 🤖 Assistant
 
-最后一项也有进展：已找到原厂 `im.elf` 消费模块表的代码，确认它会按阶段、目标掩码和 flags 筛选后派发加载请求。可以证明 Kiki 请求先于 MWF 请求派发；两者初始化完成的先后仍未确认。
-
-本轮材料已收齐。我将保存报告、解析工具和观察候选，并同步到 GitHub。
+我会另建候选，先核对 guest 内核的 ptrace 支持与 AArch64 寄存器 ABI，再实现有超时、逐线程清理的一次性快照工具。它会短暂停住线程，相关干扰会明确记录；本轮不启动 VM。
 
 ---
 
 ## 🤖 Assistant
 
-第二轮已明确当���直接故障：**MWF 日志对象为空，导致初始化过程中崩溃。**
-
-- 288–290 已越过 UI 线程和 UXEngine，旧的线程未启动假说已排除。
-- 当前启动器缺少原厂 `MWF_Init` 调用，是首要修复候选。
-- 已核实 Kikilog 设备契约、模块派发规则及原生屏幕切换路径，并准备好观察 shim。
-
-本轮未操作 VM；修复效果和原厂菜单仍待运行验证。材料已推送 GitHub：`629e58c5`，关键结论已通过 [Orca orchestration](</Users/kafu/Library/Application Support/orca/codex-accounts/9cc9249d-70b7-4d72-a0f0-ec30dd2c6e39/home/skills/orchestration/SKILL.md>) 回传主线。
-
-[查看第二轮报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-native-lifecycle/README.md)
-
----
-
-## 👤 User / Coordinator
-
-现在什么进度了
+下一轮将加一项定点诊断：短暂停住各个 guest 线程，读取寄存器和调用栈后立即恢复。这样能把“停在 futex”缩小到具体调用路径；QEMU 官方文档也确认，主机 GDB 显示的是虚拟 CPU，不能直接当作 Linux 线程栈。此次会保留原接收超时和消息返回值。
 
 ---
 
 ## 🤖 Assistant
 
-我先核对主线最新运行和其他 agent 的进展，确认是否已越过上一轮的 MWF 初始化阻塞。
+已确认四份画面捕获全为零，当前仍不能算菜单修复通过。日志里最后一条 CP 消息也找到了原厂发送函数：它是异步发送，申请 40 字节，而内核日志报告 96 字节。还需核对这两个长度的含义，目前不能据此认定消息损坏或给它伪造回复。
 
 ---
 
 ## 🤖 Assistant
 
-**还没跑出可操作的 FX6 原厂菜单。刚核实，Candidate 293 正在测试。**
-
-- **已突破**：真实 FX6 `appFw.so` 已进入 UI 图形初始化，完成三块共 24 MiB 的 Arena 配置。
-- **当前阻塞**：最新完成的 291 仍在 MWF 日志对象空指针处崩溃；292 尝试恢复原厂启动链，采样画面仍全黑。
-- **正在推进**：恢复原厂模块初始化生命周期，再沿真实屏幕状态机进入菜单。
-
-此前网页绘制的三屏不计入原厂菜单成功；目前没有新的可见菜单验收结果。
-
----
-
-## 👤 User / Coordinator
-
-那就继续
+一次性快照工具的核心逻辑已实现，主机上的模拟测试覆盖了正常采样、等待超时、寄存器读取失败、分离失败、取消和信号保留。正在补齐严格链接与归档核验；还会在暂停前读取各线程的 `/proc/.../syscall`，供后续定位内核返回 PC。
 
 ---
 
 ## 🤖 Assistant
 
-我继续往前推进：先核对 293 的结果和主线正在改的内容，再补齐能直接用于下一轮的原厂初始化证据与候选，避免重复占用 VM。
+按键连接配置已修正：去掉重复的 `-s`，保留 Unix socket。用同一 QEMU 做的无固件 smoke 测试已完成 GDB 协议交互并正常回收。接下来会在新的栈快照候选上验证 guest 运行，已完成的旧候选保持封存。
 
 ---
 
 ## 🤖 Assistant
 
-我先核对 `+0x20efbb8` 的实际收发和错误分支，重点看超时返回后是否仍读取消息。无限等待先视为协议现象，不能直接当作根因。
+已完成两项交付：
+
+- [Observer 运行复核](work/fx6-post-restart-audit-20261107/observer-run-review.md)：AppFw 224 持续存在，37 次均为 futex 等待；没有用户 LR/qid。四份捕获全零。
+- [Runner v2](work/fx6-observer-runtime-v2-20261107/README.md)：移除重复 `-s`，保留 Unix `g`；纠正未验证菜单标识，未知投递停止且不重发。
+
+4 项测试及同一 QEMU 的停止态 Unix RSP smoke 通过。未启动 Sony guest，冻结候选未改，新 manifest 离线检查通过。
 
 ---
 
 ## 🤖 Assistant
 
-发现了一个关键区别：主线准备缩短等待的 `appFw+0x20efbb8`，实际位于 `infra_wrapper_bb::finalize()`，是退出清理中的回执等待，不是普通的开机收消息。
+已按白名单复制到正式报告：
 
-直接改短超时可能让它在 worker 尚未退出时释放消息、删除队列并等待线程。我会先回传这个发现，再追查它为什么进入 finalize，以及实际等待的线程是否走到这里。
+- `reports/2026-11-07-fx6-observed-wait/runner/`
+- `reports/2026-11-07-fx6-observed-wait/observer-review/`
 
----
-
-## 🤖 Assistant
-
-已经核清：`+0x20efbb8` 属于 BB 模块的终止握手，后面会释放消息、删除队列并等待线程退出；它不检查接收返回码。单改短超时会越过完成确认。当前 293 日志只有等待点名称，还不足以把 UI 线程绑定到这个偏移，观察候选应先记录真实 LR、qid 和返回码。
+共 12 个文件，两目录均附 `files.json`。源码哈希完全一致，仅调整必要文档链接。未复制固件/二进制/缓存，未执行 Git 或同步。
 
 ---
 
 ## 🤖 Assistant
 
-293 的复核结果是：有限观察窗口内没有记录到 assert 或崩溃，但两块采样帧仍全零；它同时做了五处 NOP、空对象保护和 Backup 覆盖，不能把结果归因于某一个改动。
-
-另一条确定线索是，其中一处 NOP 跳过了 App 定时器启动，而定时器本来会向 App 事件队列发消息。我已编译出一个只记录调用点、线程和队列 ID 的观察目标文件，下一步用这些信息区分真正的 App 事件等待与退出握手。
+新候选已冻结并交给主 agent：相较上一轮，只改 init 的一次性调用并新增 helper，两个原归档结束标记及其余成员逐字节保留。严格链接、41 个强导入的版本闭包核验和 18 个��机模拟场景均通过；实际 guest 快照仍待主 agent 运行。
 
 ---
 
 ## 🤖 Assistant
 
-已完成队列契约复核，产物在 `work/parallel-research-20261107/queue-contract/`。
-
-`+0x20efbb8` 是终止握手，不能直接缩短超时后继续释放消息、删除队列和等待线程。293 日志尚未将实际等待绑定到该偏移或 `0x910040`；下一步应先记录精确 LR、qid、返回码，观察候选保持原始行为。
+栈快照候选已构建完成，源码测试和链接检查通过。启动前校验拦住了一个兼容问题：新候选的成员证明格式更严格，旧 runner 尚不识别；我会补齐格式支持和完整来源链校验。另外检测到另一条研究线正在运行 305 候选，本轮会排队，等其释放锁后再启动。
 
 ---
 
 ## 🤖 Assistant
 
-第三轮已完成：[REPORT.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-screen-dependency/REPORT.md)，同目录含脚本和 JSON。
-
-核心结论：
-
-- `0x910040` 是 timer 服务队列目的地。
-- App 实际等待的队列为 `0x5503e0`。
-- 被 NOP 的 `App::start_utimer` 原本会向该队列生产 `0x02010094` 消息，转换为内部 type 5。
-- `0x12d8254` 删除了 **70 项 infrastructure 初始化**；其中 BB 初始化会创建 5 个 worker。
-- `0xc14dfc` 属于 `adjust::senser`；`0x1397450` 封装 `model_start()`；`0xdf91e8` 请求初始 boot 屏幕过渡。
-
-19 条调用边和错误 donor 拒绝验证通过。缺 timer 生产者已经证实；是否是当前等待的唯一原因仍未证明。未运行 VM、未修改共享候选。
+CP 消息的长度差已有更具体的解释：当前候选里的 UPM 内核模块本身会申请 96 字节，真正 FX6 的同类模块申请 40 字节；两者都只初始化前 20 字节。`a5a5a5a5` 来源字段也是分配器预置值。因此，这段日志不足以证明指针污染，也不足以认定它是 AppFw 等待的原因。
 
 ---
 
 ## 🤖 Assistant
 
-已完成 [Candidate 293 复核](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/candidate293-review/README.md)，附脚本、JSON及自建源码快照。
+已复制 12 个白名单文件至 [backup-contract](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/backup-contract/files.json)，逐文件哈希核验通过。
 
-- 293有限串口记录确实未见 assert、SEGV、Oops；两份显示采样仍全零。
-- PID217/TID225有26次 `osal_rcv_msg_tmo` 采样，缺少线程名、用户栈和队列信息，尚不能确认它是UI线程。
-- 293在原件入口前执行5处NOP改写，并新增MonCtrl guard及Backup替代值；原件容器SHA不代表运行代码未修改。
-- 291→293仅shim组合变更，不能把结果单归因于 `+0x12d8254`。
-- 292属于bootin支线，其异常是 `MonQueue::GetQueueRemain()`，应与291的MonCtrl故障分开。
+[96B 报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/backup-contract/MESSAGE-96B.md)确认：
 
-全程只读，未连接或操作虚拟机。
+- 当前内核 UPM 显式分配 96B；原 FX6 对应路径分配 40B。
+- 仅前 20B 有明确写入，尾部不能当指针数组。
+- `a5a5a5a5` 是分配器 source 初始化值。
+- 这是异步 DFS 通知；无证据把它绑��到当前 futex 等待或 Backup 空成功链。
+- 缺少 sender PC/TID，未伪造唯一生产点归属。
 
----
-
-## 🤖 Assistant
-
-已纠正：sentinel 是 **`0x255`＝十进制 `597`**，初始参数为 **`{597,0,597}`**。
-
-证据：
-
-- `0xdf9204`：`a04a8052` → `mov w0,#0x255`
-- `0xf2dedc`：`1f540971` → `cmp w0,#0x255`
-
-已更新两轮报告、脚本和 JSON，并重跑通过。引用勘误见 [deep-screen/REPORT.md:43](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/deep-screen/REPORT.md:43) 和 [queue-screen-dependency/REPORT.md:25](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/queue-screen-dependency/REPORT.md:25)。
+未复制二进制，未运行 VM、修改 shim 或执行 Git/sync。
 
 ---
 
 ## 🤖 Assistant
 
-本轮已把等待分成了可观察的几类：BB 退出握手、worker 收消息、临时请求响应，以及 App 事件循环。观察器已通过 AArch64 编译和三组宿主行为测试，确认原参数、输出所有权、返回码与 errno 得到保留；尚未在 guest 中运行。
+独立快照候选已完成并冻结，未运行 VM。
 
-关键结论和候选已回传主线。我正在固化报告，下一次实测需要先拿到实际 LR/qid，才能判断该恢复生产者，还是调查退出路径。
+- manifest SHA：`df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42`
+- 仅改 init，新增 helper；两条原 TRAILER 和其余成员逐字节保留。
+- 严格 SDK 2.25 链接、41 个强导入闭包及 18 次主机模拟用例通过。
+- 源码与凭据已按白名单复制到正式报告目录，未复制二进制、CPIO 或缓存，未写 Git。
 
----
-
-## 🤖 Assistant
-
-已继续推进，确认了两个关键问题：
-
-- 准备修改的等待属于**退出握手**，直接缩短超时会破坏消息释放和队列回收。
-- 293 跳过了 **70 项初始化**，还移除了 App 定时消息来源；无崩溃仍不足以说明启动完整。
-
-队列观察器已完成 AArch64 目标文件编译和三组离线验证，用于确认“谁在等、等哪个队列”。尚未链接进 guest 或运行，原厂菜单仍未出现。
-
-[报告与代码](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/README.md)已推送 GitHub，并通过 [Orca orchestration](</Users/kafu/Library/Application Support/orca/codex-accounts/9cc9249d-70b7-4d72-a0f0-ec30dd2c6e39/home/skills/orchestration/SKILL.md>) 回传主线。
-
----
-
-## 👤 User / Coordinator
-
-持续深度研究结合网上资料
+说明与入口：[snapshot-candidate/README.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/snapshot-candidate/README.md)。
 
 ---
 
 ## 🤖 Assistant
 
-我会继续并行深挖，并结合官方公开资料核对两件事：Sony 原厂模块与消息队列的契约，以及 QEMU 下如何可靠观察真实等待链。先检查主线是否有新结果，再把网上资料用于验证具体假说，避免只积累泛泛参考。
+新候选的完整来源链校验已通过，可以开始一次受控运行。另一线最新的 305 结果也已核对：空锁和空消息表的跳过逻辑确实执行了，但没有 MWF 初始化成功的凭据。新一轮会读取实际线程栈，确认稳定等待落在哪条调用路径。
 
 ---
 
 ## 🤖 Assistant
 
-这轮采用 `deep-research` 技能，将公开资料和本机证据分三路交叉核验：Sony 开源实现、QEMU/ELF 观察方法、以及 294–295 的真实变化。每路都要区分“公开文档能支持什么”和“仍需 guest 运行证明什么”，最后汇成可执行的下一轮方案。
+v3 已完成：[交付说明](work/fx6-observer-runtime-v3-20261107/README.md)。
+
+- 明确验证两种 proof schema及完整 295 → observer → snapshot 父链，缺字段或未知 schema 拒绝。
+- 15 项测试通过，实际 snapshot manifest `--check` 返回 0。
+- Runner SHA：`8147eaa9eed628c7bf30d7d2b92f478b3d434cf047a3d8959d317451108c007b`。
+- v2、候选及父链文件未改；未启动 VM、获取锁或重复 smoke。
 
 ---
 
 ## 🤖 Assistant
 
-我先按研究规范核对 Sony 官方公开包与本机源码的对应关系，再逐项标明哪些队列语义有公开实现支撑、哪些仍只属于本机私有 ABI 证据。
+已复制至 `reports/2026-11-07-fx6-observed-wait/runner-v3/`，附 `files.json`。9 个文件哈希全部一致，runner 保持 `8147eaa9…c007b`。
+
+未重复测试、操作 VM 或读取运行中片段；等待完成回执。
 
 ---
 
 ## 🤖 Assistant
 
-新一轮已有两项实质发现：
-
-- Sony 官方的 `linux-kernel-u` 包仍是内核源码，不能当成私有 OSAL 用户态实现；公开 UDIF 的超时单位也不能直接套给 OSAL。
-- 294 的 `Backup_read` 桩把第三个寄存器当作缓冲区长度使用，而原厂入口并不读取这个输入。295 改成直接返回成功，仍不能证明 Backup 数据语义正确。
-
-另外，已找到本机现成的 LLD，无需下载；观察器正推进到真正的 AArch64 共享库链接检查。
+已读到完整线程快照，4 个线程均成功解除跟踪。AppFw 当前等在 `pthread_cond_wait → std::condition_variable::wait → appFw 内部同步路径`；两个 UX 资源线程则等在消息队列。这已把应用线程的等待与先前怀疑的 OSAL 接收点区分开，下一步会解析具体调用点。主机按键也首次完成了软件门写入和回读，尚无 guest 消费证明。
 
 ---
 
 ## 🤖 Assistant
 
-网上资料还帮助核出了一个来源问题：两份 FX6 公开包的本地文件，与今日官方端点的长度和 Content-MD5 一致；但现有 `sony-oss-fx3` 归档与今日官方 FX3 包及旧回执都不一致，不能继续视为已绑定的原始源码。
-
-目前能确认公开包提供 UDIF 框架，不能据此推出私有 OSAL/BB 的全部语义。后续判断会分别标注官方资料、本机二进制证据和仍待实测的假说。
+我会沿这条已确认的等待链反查条件变量、状态写入和通知路径，再核对 295 的五处 NOP 是否影响了生产者。先把“缺少服务”和“补丁造成等待”分开验证；本轮只读实际 ELF，不运行 VM。
 
 ---
 
 ## 🤖 Assistant
 
-最新运行证据也改变了定位方向：295 的采样里没有再看到 293 那个 TID225 接收队列的状态，当前样本只显示 sleep/futex 等待。因此，不能继续把“225 卡在收消息”沿用为 295 的结论。
+核对完成：[运行报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/latest-mwf-runtime.md)、[JSON 证据](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/latest-mwf-runtime.json)。
 
-294 的崩溃则已绑定到 `memset`，现场长度寄存器异常巨大，与 Backup 桩的参数误用相符。下一轮需要同时确认线程生命周期和真实调用点，不能只盯着一个猜测的等待地址。
+- 302 实际发生 libMWF SIGSEGV，receipt 的空 fault 列表漏报。
+- 303 跳过 Lock/Unlock；305 执行8组 NULL 操作跳过，未证明对象初始化。
+- 现有日志无法判定 MWF_Init 是否调用或成功返回；没有专门观测。
+- 303/305 均超时，所采 GPE/DMM 文件全零。
+- 305 的 TID224 显示 OSAL 接收等待，但缺少 comm，不能沿用295的线程身份。
 
----
-
-## 🤖 Assistant
-
-已确认公开资料的边界：FX6 两个官方内核包能支持 UDIF 转发和等待封装的结论，但没有检出本次目标 OSAL 符号；公开文档也不支持直接缩短 BB 退出握手的等待。另发现本地 FX3 tar 与当前官方元数据、旧回执不一致，报告已写为“来源无法绑定”，没有据此判断内容被篡改。
-
----
-
-## 🤖 Assistant
-
-已完成并保存到 [sony_osal.md](</Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/research_notes/FX6 原厂启动 在线交叉验证/sony_osal.md>)。
-
-- FX6 两个官方包已通过当前 HEAD 长度、MD5 与本地归档交叉验证。
-- 公开 UDIF 源码不能替代私有 OSAL/BB 契约，也不支持直接改短超时。
-- FX3 本地 tar 来源无法与当前官方元数据、旧回执绑定，已明确保留不确定性。
-- 支持脚本、结构化证据和引用检查通过；未操作 VM 或 Git。
+未修改他人文件或运行 VM。
 
 ---
 
 ## 🤖 Assistant
 
-公开资料与本机证据的核验已基本收敛。现在还在完成观察库的最后一层检查：把它链接到实际 guest 使用的 libc/libdl，并验证动态依赖与符号版本，避免把“同为 glibc 2.25”误当成二进制兼容。
-
-汇总报告会把 295 的状态变化、Backup 桩的适用边界和下一轮单变量观测方案写在一起。
+这一轮已正常结束，进程已回收、两把锁已释放。调用栈定位到 `App::initialize` 在 `+0xc09de4` 发起的同步调用；在这次调用中，它仍停在屏幕 manager 初始化之前。现在可以继续追这个同步调用的完成通知来源，暂不应跳过等待，否则会掩盖未完成的初始化。
 
 ---
 
 ## 🤖 Assistant
 
-已完成：[observability.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/research_notes/FX6%20原厂启动%20在线交叉验证/observability.md)。
+复核完成并复制到 [正式报告](reports/2026-11-07-fx6-observed-wait/snapshot-run-review/snapshot-run-review.md)。
 
-离线候选：
+21 项检查通过；4 次 snapshot/detach 完整成功，helper 用时 137 ms。四份捕获全零，AppFw/UX 线程持续等待。key 1 仅证明软件写入/回读，key 2 失败后停止且未重发。
 
-- AArch64 `ET_DYN`，5,400 B，SHA `8e7f7116…ff016fc`。
-- 严格未定义符号检查通过；依赖固定 guest libc/libdl，要求 `GLIBC_2.17`。
-- 唯一导出 recv；无额外 compiler-runtime、初始化数组或可执行栈。
-- 二进制仅在 ignored work，未加载 guest、未改 CPIO。
-
-另已确认 29 个原厂 PLT 调用点；无 ENTER 不能排除线程退出、未进入或查找绕行。官方观察方法及同轮线程/socket 绑定要求均已写入笔记。
+未操作 VM，未重复反汇编；源码和运行证据未改。
 
 ---
 
 ## 🤖 Assistant
 
-已保存 [294/295交叉验证笔记](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/research_notes/FX6%20原厂启动%20在线交叉验证/latest_candidates.md)，附脚本、证据JSON、官方来源日期及下一轮验收配置。
-
-关键结论：295仅避免294错误清零路径，尚未证明Backup语义正确；当前没有225或真实receive LR/qid证据，采样帧仍全零。建议下一轮冻结295行为，只加入有界观察器。
-
----
-
-## 🤖 Assistant
-
-观察器已离线链接为 AArch64 共享库，并通过严格未定义符号检查：只导出接收函数，依赖实际 guest 的 libc/libdl，没有额外初始化代码。
-
-最后正在补核 295 与 293 的运行库闭包是否逐字节一致。完成后就汇总报告和可复建材料；本轮不会把“链接成功”当作 guest 运行成功。
-
----
-
-## 🤖 Assistant
-
-已核清：**295 的 libc、libdl、loader、libosal_uipc 四件 bytes/SHA 与 293 完全一致**。
-
-结果已追加至 notes、现有构建 JSON 和 [比较收据](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/research_notes/FX6%20原厂启动%20在线交叉验证/observability/baseline-closure-comparison.json)。仅确认冷输入闭包，未推广为运行中加载或拦截已验证。
-
----
-
-## 🤖 Assistant
-
-我会先读报告写作规范，再核对三份定稿笔记与已有报告，整理成可复核的中文结论、观察方案和下一轮单变量计划。
-
----
-
-## 🤖 Assistant
-
-294 的直接崩溃已能归到错误长度的清零路径；295 只证明避开这次写入，尚未证明 Backup 语义正确。更关键的是，295 没有沿用 293 的接收线程证据，报告会把“线程仍存活、实际调用者是谁”列为下一轮首先要关闭的缺口。
-
----
-
-## 🤖 Assistant
-
-补核已完成：295 的 libc、libdl、loader 和 libosal_uipc 四件输入，与观察器所绑定的 293 闭包在字节数和 SHA-256 上完全一致。
-
-这只确认了冷输入兼容；真实加载顺序、拦截是否命中以及线程为何变化，仍须同一轮 guest 证据。报告正在汇总这些边界和下一步验收项。
-
----
-
-## 🤖 Assistant
-
-报告已形成，核心建议保持为“295 + 只观察”：现有共享库只覆盖接收记录，线程生死、Backup 参数及 GOT/patch 读回仍须明确列为待集成项。现在做交付检查，核对 Markdown 链接、源码与收据摘要，并生成不含二进制的交付索引。
-
----
-
-## 🤖 Assistant
-
-还核实了一个日志盲点：最新 GOT 表使用了新的槽位地址，但部分细节日志条件仍比较旧地址。因此，`799/832` 这样的汇总数不能证明各个 Backup 函数已实际进入桩。
-
-下一轮验收会分别记录槽位目标、函数进入、返回码和输出语义，避免再用一个“修好了”的总数概括。
-
----
-
-## 🤖 Assistant
-
-已完成[研究报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/FX6%20原厂启动%20在线交叉验证.md)，并在根 README 添加入口。
-
-报告明确：294 崩于错误长度清零；295 的真实等待者仍未知；下一轮冻结 295，只加有界观察和线程生命周期记录。
-
-交付索引含 22 项文本指纹。8 份 JSON、4 份 Python、114 个本地链接及关键来源摘要核验通过。未启动 VM、暂存、提交或同步；原厂菜单仍未证明成功。
-
----
-
-## 🤖 Assistant
-
-我会只统一报告标题并更新交付索引中的报告摘要；AAPCS 链接仅检查现有笔记，不新增调研。
-
----
-
-## 🤖 Assistant
-
-H1 已统一，交付索引已更新，22 项摘要复核通过。
-
-最终报告 SHA-256：`15de0afc50e89477c8dc3f4c5edb3d2067ee685088d35e51e5a463358d86155e`
-
-笔记没有固定的 2026Q3 引用，保留注明访问日的 main 链接。
-
----
-
-## 🤖 Assistant
-
-本轮报告已整理好，包含官方来源的适用边界、294/295 的证据差异，以及已链接的观察候选和复建步骤。
-
-下一轮方案明确为：冻结 295 的现有行为，只加入有界观察和线程生命周期记录。仍需 guest 验证，原厂菜单尚未出现。现在做交付检查并按项目规则同步。
+找到了一个可修复的具体原因：295 的跳过表禁用了原厂工作线程池创建，而 AppFw 正在等待的 cold-boot future，需要由这个池执行并完成通知。实际快照中也没有这些工作线程。我会先只恢复这一个调用，保留其余行为，验证它能否越过当前屏障。
 
 ---

@@ -1,0 +1,50 @@
+{
+  "schema": "fx6-wait-snapshot-kernel-abi-v1",
+  "reviewed_utc": "2026-11-07T16:31:46.040914+00:00",
+  "actual_kernel": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "bytes": 6610952
+  },
+  "actual_kernel_version_string": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "other_actual_kernel_strings": [
+    "ptrace BRK handler",
+    "kernel/ptrace.c",
+    "denying ptrace access check without PTRACE_MODE_*CREDS"
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/arch/arm64/include/uapi/asm/ptrace.h",
+      "supports": "user_pt_regs=31x64bit GPR,SP,PC,PSTATE;272bytes"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/arch/arm64/kernel/ptrace.c",
+      "supports": "REGSET_GPR maps NT_PRSTATUS to user_pt_regs"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/kernel/ptrace.c",
+      "supports": "SEIZE/INTERRUPT/DETACH implementation; tracer exit unlinks without EXITKILL"
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/ptrace.2.html",
+      "supports": "SEIZE+INTERRUPT wait-stop protocol, PEEKDATA errno handling, signal stop and detach contracts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/bminor/glibc/glibc-2.25/sysdeps/aarch64/start.S",
+      "supports": "AArch64 dynamic loader startup argc/argv/rtld_fini and libc_start_main contract"
+    },
+    {
+      "url": "https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst",
+      "supports": "frame record contains previous FP and savedLR; SP/FP stack discipline"
+    }
+  ],
+  "inference": "Observed kernel version+ptrace strings are consistent with upstream4.9 ptrace ABI; Sony-specific permission/config behavior is not proven cold. Helper logs explicit errno/status for guest validation.",
+  "abi_constants": {
+    "PTRACE_SEIZE": 16902,
+    "PTRACE_INTERRUPT": 16903,
+    "PTRACE_GETREGSET": 16900,
+    "NT_PRSTATUS": 1,
+    "register_bytes": 272
+  },
+  "guest_executed_by_builder": false
+}

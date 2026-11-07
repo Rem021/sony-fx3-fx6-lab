@@ -1,0 +1,178 @@
+{
+  "status": "PASS",
+  "scope": "read-only source and original ELF plus frozen observer artifacts",
+  "archive": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/guest-observer-only295.cpio",
+    "sha256": "d02c7909458dcf8dff73fdf426953d07034cb386f8c8bd0bbd40a9440d32569e"
+  },
+  "runtime_upm": {
+    "member": "usr/kmod/upm.ko",
+    "bytes": 453896,
+    "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+    "text_instruction_checks": {
+      "0x63e0": "mov w2, #0x60",
+      "0x63e4": "movk w0, #0x92a2, lsl #16",
+      "0x6400": "stp wzr, w23, [x1]",
+      "0x640c": "str x2, [x1, #8]",
+      "0x6414": "str w2, [x1, #0x10]",
+      "0x65a8": "mov w2, #0x60",
+      "0x65ac": "movk w0, #0x92a2, lsl #16",
+      "0x207b8": "mov w2, #0x60",
+      "0x207d0": "mov w2, #4",
+      "0x207dc": "stp wzr, w2, [x1]",
+      "0x207e8": "str x2, [x1, #8]",
+      "0x207f0": "str w2, [x1, #0x10]",
+      "0x23288": "mov w2, #0x60",
+      "0x231f4": "mov w24, #4"
+    },
+    "relocation_call_checks": {
+      "0x63ec": "osal_valloc_msg_wait",
+      "0x641c": "osal_snd_msg",
+      "0x65b4": "osal_valloc_msg_wait",
+      "0x65e4": "osal_snd_msg",
+      "0x20778": "osal_snd_sync_msg",
+      "0x207c4": "osal_valloc_msg_wait",
+      "0x207f8": "osal_snd_msg",
+      "0x2321c": "osal_snd_sync_msg",
+      "0x23294": "osal_valloc_msg_wait",
+      "0x232c4": "osal_snd_msg"
+    }
+  },
+  "actual_fx6_upm": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/kmod/upm.ko",
+    "bytes": 414720,
+    "sha256": "34d5bca76b6750f2af36f34404c305aaef71aeabab1d3ae52a9e00b65c6b7970",
+    "text_instruction_checks": {
+      "0x63b8": "mov w2, #0x28",
+      "0x63bc": "movk w0, #0x92a2, lsl #16",
+      "0x63d8": "stp wzr, w23, [x1]",
+      "0x63e4": "str x2, [x1, #8]",
+      "0x63ec": "str w2, [x1, #0x10]",
+      "0x6580": "mov w2, #0x28",
+      "0x6584": "movk w0, #0x92a2, lsl #16",
+      "0x1e194": "mov w2, #0x28",
+      "0x1e1a8": "mov w2, #4"
+    }
+  },
+  "runtime_osal": {
+    "member": "usr/kmod/osal_uipc.ko",
+    "bytes": 76168,
+    "sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+    "text_instruction_checks": {
+      "0x3370": "mov w4, #0xa5a5",
+      "0x3374": "add x3, x0, #0x18",
+      "0x3378": "movk w4, #0xa5a5, lsl #16",
+      "0x338c": "str w4, [x0, #0xc]",
+      "0x3394": "str x3, [x19]",
+      "0x5e54": "ldur w0, [x0, #-8]",
+      "0x5e70": "ldur w0, [x0, #-0xc]"
+    },
+    "source_initialization": "0xa5a5a5a5 at allocation header+12 = payload-12"
+  },
+  "actual_fx6_userspace": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libUsbControl.so",
+    "sha256": "951d1da8a4366dc8cf7bf475181344ea487e661869701218a2343e9c9ecf1483",
+    "named_callers": {
+      "UFW::DfsWrapper::ok()": "0x12fac -> 0x13044 -> 0x12e40",
+      "UFW::DfsWrapper::ng()": "0x130a4 -> 0x13160 -> 0x12e40"
+    },
+    "allocation_bytes": 40,
+    "asynchronous_destination": "0x92a208fc"
+  },
+  "observer_serial": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/runs/observer-004ab971f4/serial.log",
+    "bytes": 144508,
+    "sha256": "52f101996af94c48398cdd270e38edfdd201c7decf7dc52d8c7ba87077444207",
+    "logs": [
+      {
+        "line": 1132,
+        "text": "[   74.198937] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000030000000d00000000000000000000000000000000000000000000000000000000000000 epoch=1"
+      },
+      {
+        "line": 1135,
+        "text": "[   74.283656] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+      },
+      {
+        "line": 1145,
+        "text": "[   74.437281] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000001a00000080ffffff94f68e000000000000000000000000000000000000000000 epoch=1"
+      },
+      {
+        "line": 1146,
+        "text": "[   74.437437] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+      },
+      {
+        "line": 1313,
+        "text": "[  230.714343] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000000d00000080ffffff00a78e0080ffffffd0034a0880ffffffa0bbfc0880ffffff epoch=1"
+      },
+      {
+        "line": 1314,
+        "text": "[  230.740062] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+      }
+    ],
+    "decoded": [
+      {
+        "line": 1132,
+        "captured_bytes": 40,
+        "u32_words": [
+          "0x0",
+          "0x3",
+          "0xd",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "body_0_19_contract": "u32 discriminator=0; u32 notification kind; 12-byte copied parameter block",
+        "bytes_20_and_later": "not initialized by identified producer stores; no pointer-array type proof"
+      },
+      {
+        "line": 1145,
+        "captured_bytes": 40,
+        "u32_words": [
+          "0x0",
+          "0x4",
+          "0x1a",
+          "0xffffff80",
+          "0x8ef694",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "body_0_19_contract": "u32 discriminator=0; u32 notification kind; 12-byte copied parameter block",
+        "bytes_20_and_later": "not initialized by identified producer stores; no pointer-array type proof"
+      },
+      {
+        "line": 1313,
+        "captured_bytes": 40,
+        "u32_words": [
+          "0x0",
+          "0x4",
+          "0xd",
+          "0xffffff80",
+          "0x8ea700",
+          "0xffffff80",
+          "0x84a03d0",
+          "0xffffff80",
+          "0x8fcbba0",
+          "0xffffff80"
+        ],
+        "body_0_19_contract": "u32 discriminator=0; u32 notification kind; 12-byte copied parameter block",
+        "bytes_20_and_later": "not initialized by identified producer stores; no pointer-array type proof"
+      }
+    ]
+  },
+  "findings": [
+    "Runtime upm allocates 96B for this destination; actual FX6 donor upm allocates 40B.",
+    "Both producers write exactly 20B before asynchronous osal_snd_msg.",
+    "96B length is compatible with runtime kernel UPM, not evidence of 40B widening corruption.",
+    "0xa5a5a5a5 is explicit allocator source initialization, not a valid reply queue.",
+    "Exact notification caller/TID is not in frozen log; multiple UPM producers match.",
+    "No synchronous reply edge for this destination is proved; earlier local sync is 0x80920901.",
+    "No VM, shim, donor, Git mutation performed."
+  ]
+}

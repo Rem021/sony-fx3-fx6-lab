@@ -1,0 +1,42 @@
+{
+  "schema": "fx6-wait-snapshot-member-diff-v1",
+  "parent_observer_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/guest-observer-only295.cpio",
+    "bytes": 430186280,
+    "sha256": "d02c7909458dcf8dff73fdf426953d07034cb386f8c8bd0bbd40a9440d32569e"
+  },
+  "derived_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/guest-wait-snapshot295.cpio",
+    "bytes": 430241092,
+    "sha256": "453890e36e7e6b4cd66641707cf80bd7754a0a37d6fba8dfce2af55fc169c926"
+  },
+  "changed_existing_members": [
+    {
+      "member": "init",
+      "before": {
+        "bytes": 10974,
+        "sha256": "bc0024b3fa52d0c122714a9d7ff5f8a4d066d15fdabba6af95a042db6eca3a03"
+      },
+      "after": {
+        "bytes": 11339,
+        "sha256": "7276ced05bb7e888615d3dc6b9843af4628d15e3fdb8f6d71fd36c2856341a45"
+      },
+      "reason": "once-only uptime20 gate and helper invocation in existing diagnostic loop"
+    }
+  ],
+  "added_member": {
+    "name": "usr/bin/fx6-wait-snapshot",
+    "bytes": 54312,
+    "sha256": "8a2739ad9d826a2074af8e0c6b09a6233a1465a491f415b68f53346082c53f57"
+  },
+  "before_records": 1226,
+  "after_records": 1227,
+  "before_trailers": 2,
+  "after_trailers": 2,
+  "both_original_trailer_records_byte_identical": true,
+  "original_order_preserved": true,
+  "all_other_raw_records_byte_identical": true,
+  "parent_records_after_first_trailer": 60,
+  "appfw_launcher_observer_shim_backup_unchanged": true,
+  "guest_executed": false
+}

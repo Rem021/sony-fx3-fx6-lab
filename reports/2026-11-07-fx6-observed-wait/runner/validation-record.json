@@ -1,0 +1,57 @@
+{
+  "schema": "fx6-runner-v2-delivery-v1",
+  "original_runner_unchanged": true,
+  "original_runner_sha256": "b0b686bba4f3bf465d92e9aba138eefe1d76ff07a73933f97134b088796ecbc1",
+  "files": {
+    "copied-source-record.json": {
+      "bytes": 487,
+      "sha256": "336d3584e9aa8a34bfc14fa48dc69e012cef6c032278acb40d1b8ef72dbfb02a"
+    },
+    "run_observer_once.py": {
+      "bytes": 14879,
+      "sha256": "67238af67cc8c48e1912a72b4a9b45991bf4445514c2b0ea600c31ecee680446"
+    },
+    "runner-v2.diff": {
+      "bytes": 6584,
+      "sha256": "46cc0907ada6fe125cf76c0b449e2046a7c4ac022e9be8ee96972c1ad82cd30a"
+    },
+    "smoke_unix_gdb.py": {
+      "bytes": 6682,
+      "sha256": "c0e0349e9bc3b4f7497491ef9a798838c9c44a31cca03ff7a5771d8337cdef05"
+    },
+    "test_runner_argv.py": {
+      "bytes": 1643,
+      "sha256": "f84f853adaef2f3796047aafd94f342d41b32d0607b84771817b9f5a4802f597"
+    },
+    "test_runner_qmp.py": {
+      "bytes": 2008,
+      "sha256": "2ca87dce6e06cd9b9d19202fd2f6db27317f19a63f030f8c4f25628fb582a9ed"
+    },
+    "unix-gdb-smoke.json": {
+      "bytes": 2615,
+      "sha256": "058a2a6a21c76565e6fb7297e6951d26cc3a321f4842d9dec88923516aa388e4"
+    }
+  },
+  "same_qemu_help": {
+    "exit_code": 0,
+    "excerpts": [
+      "-gdb dev        accept gdb connection on 'dev'. (QEMU defaults to starting",
+      "                the guest without waiting for gdb to connect; use -S too",
+      "                if you want it to not start execution.)",
+      "-s              shorthand for -gdb tcp::1234",
+      "-d item1,...    enable logging of specified items (use '-d help' for a list of log items)",
+      "-D logfile      output log to logfile (default stderr)"
+    ],
+    "stdout_sha256": "ea09ded233c392887c7a8beb6f8e0dc5c114a90d322f842faac54a5d57e889a6"
+  },
+  "tests": {
+    "command": "python3 -B -m unittest discover -s work/fx6-observer-runtime-v2-20261107 -p test_runner*.py -v",
+    "observed_exit_code": 0,
+    "passed_count": 4
+  },
+  "sony_guest_started": false,
+  "shared_locks_acquired": false,
+  "tcp_endpoint_used": false,
+  "once_mechanism": "unchanged O_CREAT|O_EXCL .started-<manifest_sha> in manifest parent",
+  "unknown_delivery": "record key_attempts delivery=unknown; key_failed suppresses later steps and same-step retry"
+}

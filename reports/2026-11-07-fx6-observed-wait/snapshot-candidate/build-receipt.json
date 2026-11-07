@@ -1,0 +1,182 @@
+{
+  "schema": "fx6-wait-snapshot-build-v1",
+  "compiler": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "bytes": 199375152,
+    "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523"
+  },
+  "compiler_version": "0.17.0",
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.h",
+      "bytes": 925,
+      "sha256": "e03d1f664d4d5b9892474e87da9ae71733767c252ef6223f717b6d329c3f51bd"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c",
+      "bytes": 5308,
+      "sha256": "82a18ba71e47c538c57c21a0c1589d3cde7bf659d104515f078c39f2767562b4"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/wait_snapshot.c",
+      "bytes": 6720,
+      "sha256": "2da7cdc66dbc3b8320ebb8c9b2349ce32fa143dc2ecb02d55df6cdd5c07c6f7d"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/entry.S",
+      "bytes": 508,
+      "sha256": "7918e9caaecc5f4ec85486bae7b985952b41b3d4b991712814253c75e0e2386c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core.c",
+      "bytes": 3545,
+      "sha256": "0653a91d7ffa4d2ee61b1f848c064aa49ee8fc0f91fb591b5a7e8b839218f837"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/build_candidate.py",
+      "bytes": 13661,
+      "sha256": "494a62f7812e3efea173ba6cbada3b7752ff77eefd98aab69d23485b7a8d1bec"
+    }
+  ],
+  "sdk_libraries": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+    }
+  ],
+  "commands": [
+    [
+      "/usr/bin/clang",
+      "-std=c11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/test_snapshot_core"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "cc",
+      "-target",
+      "aarch64-linux-gnu.2.17",
+      "-O2",
+      "-fno-pie",
+      "-fno-sanitize=all",
+      "-fno-stack-protector",
+      "-fno-builtin",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c.o"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "cc",
+      "-target",
+      "aarch64-linux-gnu.2.17",
+      "-O2",
+      "-fno-pie",
+      "-fno-sanitize=all",
+      "-fno-stack-protector",
+      "-fno-builtin",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/wait_snapshot.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/wait_snapshot.c.o"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "cc",
+      "-target",
+      "aarch64-linux-gnu.2.17",
+      "-O2",
+      "-fno-pie",
+      "-fno-sanitize=all",
+      "-fno-stack-protector",
+      "-fno-builtin",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/entry.S",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/entry.S.o"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "ld.lld",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/fx6-wait-snapshot",
+      "-e",
+      "_start",
+      "--dynamic-linker=/lib/ld-linux-aarch64.so.1",
+      "--no-undefined",
+      "--no-allow-shlib-undefined",
+      "--hash-style=both",
+      "-z",
+      "noexecstack",
+      "-z",
+      "relro",
+      "-z",
+      "now",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/snapshot_core.c.o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/wait_snapshot.c.o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/entry.S.o",
+      "--as-needed",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so"
+    ],
+    [
+      "/bin/sh",
+      "-n",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/candidate-init.sh"
+    ]
+  ],
+  "host_test": "snapshot core: 18 state scenarios and frame boundary checks passed",
+  "helper": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/fx6-wait-snapshot",
+    "bytes": 54312,
+    "sha256": "8a2739ad9d826a2074af8e0c6b09a6233a1465a491f415b68f53346082c53f57"
+  },
+  "manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/candidate-manifest.json",
+    "bytes": 6860,
+    "sha256": "df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42"
+  },
+  "member_proof": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/member-diff-verification.json",
+    "bytes": 1559,
+    "sha256": "1a69ea13cece1c400b35f8acb5880e24114e6e63e77e16d77749f6fb424d74c5"
+  },
+  "abi_proof": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/abi-closure-verification.json",
+    "bytes": 17394,
+    "sha256": "ff4e8b43050973b18c3e989250257d9e1b3a5a5411e848296368b3f46fb4cdd6"
+  },
+  "source_scope": {
+    "no_fork_exec": true,
+    "no_ptrace_poke_set": true,
+    "peekdata_only_current_sp_stack": true,
+    "sequential_stop_detach": true
+  },
+  "guest_executed": false
+}

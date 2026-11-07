@@ -1,0 +1,118 @@
+--- work/fx6-observer-runtime-v2-20261107/run_observer_once.py
++++ work/fx6-observer-runtime-v3-20261107/run_observer_once.py
+@@ -19,6 +19,9 @@
+ 
+ UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ BASE_SHA = 'fd945eaa7ba97f297f0a8073f0072416add4fb0af480efe8e28e6b5d76c9dcef'
++PARENT_OBSERVER_SHA = 'd5732c03c54f76f676a5fbf42fd2256715ae2afce42f9f6ddbf4e537d6c954fe'
++PARENT_CPIO_SHA = 'd02c7909458dcf8dff73fdf426953d07034cb386f8c8bd0bbd40a9440d32569e'
++PARENT_PROOF_SHA = '849a5e4d1cce49002481678dd880ea64c7c24e2ab409b399efe34740528529d3'
+ CP = Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic')
+ 
+ 
+@@ -49,21 +52,89 @@
+     return argv
+ 
+ 
++def verify_artifact(ref, label, pinned_sha=None):
++    if not isinstance(ref, dict) or not all(k in ref for k in ('path','bytes','sha256')):
++        raise RuntimeError(label+' reference missing fields')
++    if not isinstance(ref['path'], str) or not isinstance(ref['sha256'], str) or not re.fullmatch(r'[0-9a-f]{64}',ref['sha256']):
++        raise RuntimeError(label+' reference invalid')
++    if type(ref['bytes']) is not int or ref['bytes'] < 0:
++        raise RuntimeError(label+' byte size invalid')
++    if pinned_sha is not None and ref['sha256'] != pinned_sha:
++        raise RuntimeError(label+' pinned SHA mismatch')
++    path = Path(ref['path'])
++    if path.stat().st_size != ref['bytes'] or sha(path) != ref['sha256']:
++        raise RuntimeError(label+' actual file changed')
++    return path
++
++
++def same_artifact(a, b, label):
++    for ref in (a,b):
++        if not isinstance(ref,dict) or not all(k in ref for k in ('path','bytes','sha256')):
++            raise RuntimeError(label+' reference missing fields')
++    if (Path(a['path']).resolve(),a['bytes'],a['sha256']) != (Path(b['path']).resolve(),b['bytes'],b['sha256']):
++        raise RuntimeError(label+' references disagree')
++
++
++def require_flags(diff, fields, label):
++    if not all(diff.get(k) is True for k in fields):
++        raise RuntimeError(label+' required proof flags missing/false')
++
++
++def frozen_fields(saved, base, label):
++    for key in ('kernel','dtb','backup','fx3_platform','model_env','owner_baseline'):
++        if saved.get(key) != base[key]:
++            raise RuntimeError(label+' unexpected baseline change: '+key)
++
++
++def verify_observer_proof(saved, base, diff):
++    if diff.get('schema') != 'fx6-observer-only-member-diff-v1':
++        raise RuntimeError('unknown observer member proof schema')
++    require_flags(diff,('all_other_payloads_and_headers_identical','original_order_preserved',
++                       'original_post_trailer_records_preserved'),'observer')
++    same_artifact(diff.get('baseline'),base['initrd'],'observer baseline CPIO')
++    same_artifact(diff.get('candidate'),saved['initrd'],'observer derived CPIO')
++    verify_artifact(diff['baseline'],'observer baseline CPIO')
++    verify_artifact(diff['candidate'],'observer derived CPIO')
++
++
++def verify_member_proof(saved, base):
++    proof_path = verify_artifact(saved.get('input_member_diff_verification'),'member diff proof')
++    diff = json.loads(proof_path.read_text())
++    schema = diff.get('schema')
++    if schema == 'fx6-observer-only-member-diff-v1':
++        verify_observer_proof(saved,base,diff)
++        return
++    if schema != 'fx6-wait-snapshot-member-diff-v1':
++        raise RuntimeError('unknown member proof schema')
++    require_flags(diff,('all_other_raw_records_byte_identical','original_order_preserved',
++        'both_original_trailer_records_byte_identical','appfw_launcher_observer_shim_backup_unchanged'),'snapshot')
++    same_artifact(diff.get('derived_cpio'),saved['initrd'],'snapshot derived CPIO')
++    verify_artifact(diff['derived_cpio'],'snapshot derived CPIO')
++    parent_path = verify_artifact(saved.get('parent_observer_manifest'),'parent observer manifest',PARENT_OBSERVER_SHA)
++    parent = json.loads(parent_path.read_text())
++    frozen_fields(parent,base,'parent observer')
++    same_artifact(parent.get('baseline_manifest'),saved.get('baseline_manifest'),'parent 295 manifest')
++    same_artifact(parent.get('baseline_initrd'),base['initrd'],'parent 295 CPIO')
++    same_artifact(diff.get('parent_observer_cpio'),saved.get('parent_observer_initrd'),'snapshot parent CPIO')
++    same_artifact(diff['parent_observer_cpio'],parent.get('initrd'),'parent manifest CPIO')
++    verify_artifact(diff['parent_observer_cpio'],'parent observer CPIO',PARENT_CPIO_SHA)
++    parent_proof_path = verify_artifact(parent.get('input_member_diff_verification'),'parent observer proof',PARENT_PROOF_SHA)
++    verify_observer_proof(parent,base,json.loads(parent_proof_path.read_text()))
++
++
+ def check(path, expected):
+     v = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if v.get('VolumeUUID') != UUID: raise RuntimeError('wrong external volume')
+     if sha(path) != expected: raise RuntimeError('candidate manifest changed')
+     saved = json.loads(path.read_text())
+-    proof = saved['input_member_diff_verification']
+-    if sha(proof['path']) != proof['sha256']: raise RuntimeError('member diff proof changed')
+-    diff = json.loads(Path(proof['path']).read_text())
+-    if not all(diff.get(k) is True for k in ('all_other_payloads_and_headers_identical','original_order_preserved','original_post_trailer_records_preserved')):
+-        raise RuntimeError('candidate has unexplained member changes')
+     base_path = CP/'vm-candidate-gpecap25-295.json'
+     if sha(base_path) != BASE_SHA: raise RuntimeError('295 baseline changed')
+     base = json.loads(base_path.read_text())
+-    for key in ('kernel', 'dtb', 'backup', 'fx3_platform', 'model_env', 'owner_baseline'):
+-        if saved[key] != base[key]: raise RuntimeError('unexpected baseline change: '+key)
++    frozen_fields(saved,base,'candidate')
++    base_ref = {'path':str(base_path),'bytes':base_path.stat().st_size,'sha256':BASE_SHA}
++    same_artifact(saved.get('baseline_manifest'),base_ref,'candidate 295 manifest')
++    same_artifact(saved.get('baseline_initrd'),base['initrd'],'candidate 295 CPIO')
++    verify_member_proof(saved,base)
+     for key in ('kernel', 'dtb', 'backup', 'initrd'):
+         if sha(saved[key]['path']) != saved[key]['sha256']: raise RuntimeError(key+' input changed')
+     owner = saved['owner_baseline']
+@@ -135,7 +206,7 @@
+         argv = runtime_argv(saved, run)
+         env = os.environ.copy(); env.update(saved['model_env'])
+         (run/'command.json').write_text(json.dumps({'argv': argv, 'model_env': saved['model_env'],
+-            'manifest_sha256': manifest_sha, 'authorization': 'user requested continuing repair; observer-only derived 295'}, indent=2)+'\n')
++            'manifest_sha256': manifest_sha, 'authorization': 'user requested continuing repair; bounded diagnostic derived295'}, indent=2)+'\n')
+         with (run/'host-stdout.log').open('wb') as out, (run/'host-stderr.log').open('wb') as err:
+             proc = subprocess.Popen(argv, cwd=run, env=env, stdout=out, stderr=err,
+                                     start_new_session=True, preexec_fn=fr.limits)

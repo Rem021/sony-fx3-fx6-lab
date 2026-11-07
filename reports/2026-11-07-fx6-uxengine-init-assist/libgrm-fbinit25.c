@@ -518,24 +518,37 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
 
 /* Attach a real RawImageDataGRM to the 5 center crosshair icon sprites (w<=24, h<=24) so Sprite::renderRect executes native GRM_gpermRectblit! */
 static unsigned char g_icon_raw_img[64];
+static unsigned char g_icon_bmp_storage[0x100] __attribute__((aligned(256)));
+static unsigned int g_icon_pixels[20 * 20] __attribute__((aligned(64)));
 static void *g_icon_bmp;
 
 static void ensure_icon_raw_img(void) {
     if (g_icon_bmp && *(void **)(g_icon_raw_img + 0x20)) return;
+    ensure_bitmaps();
     if (!g_icon_bmp) {
-        BMP_CreateEx(20, 20, 2, 0, 0, 0, 0, &g_icon_bmp);
-        if (g_icon_bmp) {
-            unsigned int *px = *(unsigned int **)((char *)g_icon_bmp + 0x10);
-            if (px) {
-                for (int y = 0; y < 20; y++) {
-                    for (int x = 0; x < 20; x++) {
-                        int border = (x < 2 || x >= 18 || y < 2 || y >= 18);
-                        int cross  = (x == 9 || x == 10 || y == 9 || y == 10);
-                        px[y * 20 + x] = border ? 0xFFFFFFFFU : (cross ? 0xFFF03838U : 0xFF28B8E8U);
-                    }
-                }
+        typedef void (*ctor_fn)(void *, short, short, int, int, int, int);
+        ctor_fn ctor = grmbmp ? (ctor_fn)dlsym(grmbmp, "_ZN3grm3bmp10BitmapImplC1Ess15BMP_PixelFormat11BMP_YUVMode21BMP_PixelSortingOrder22BMP_PixelStartPosition") : 0;
+        if (ctor) ctor(g_icon_bmp_storage, 20, 20, 2, 0, 0, 0);
+        for (int y = 0; y < 20; y++) {
+            for (int x = 0; x < 20; x++) {
+                int border = (x < 2 || x >= 18 || y < 2 || y >= 18);
+                int cross  = (x == 9 || x == 10 || y == 9 || y == 10);
+                g_icon_pixels[y * 20 + x] = border ? 0xFFFFFFFFU : (cross ? 0xFFF03838U : 0xFF28B8E8U);
             }
         }
+        unsigned char *info = *(unsigned char **)(g_icon_bmp_storage + 0x08);
+        if (info) {
+            *(short *)(info + 0x08) = 20;
+            *(short *)(info + 0x0a) = 20;
+            *(int *)(info + 0x0c) = 2;
+            *(short *)(info + 0x18) = 20;
+            *(short *)(info + 0x1a) = 20;
+            *(short *)(info + 0x20) = 20;
+            *(short *)(info + 0x22) = 20;
+            *(unsigned long *)(info + 0x28) = (unsigned long)g_icon_pixels;
+        }
+        *(void **)(g_icon_bmp_storage + 0x10) = g_icon_pixels;
+        g_icon_bmp = g_icon_bmp_storage;
     }
     *(unsigned short *)(g_icon_raw_img + 0x00) = 20;
     *(unsigned short *)(g_icon_raw_img + 0x02) = 20;

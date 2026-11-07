@@ -973,7 +973,35 @@ with open('/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so', 'r+b') as f:
    - 因为 `0x2d0 -> 0x300` 步长修复后，`widget[1]` 位于 `+0x300` (`0x...320`)，其 `vptr` 和 `TreeNode.vptr` 不再与 `widget[0]->mSprite.mSubImageData` (`0x...2f0`) 重叠，`getNextActiveSibling()` 将顺畅遍历全部 22 个活动控件节点！
 3. **导出 `_ZN2ux6gfxeng16ImageElementBase13registerImageEv` 与 `_ZN2ux6gfxeng16ImageElementBase15unregisterImageEv` 原生触发 `GRM_gpermRectblit`**：
    - 对 `w > 24 || h > 24` 的 17 个 Big6 面板/状态栏/色条控件（`Widget #00~#16`），保持 `mGraphicsImage = NULL`，由 `Sprite::renderRect` 原生调用 `GraphicsDraw::fillRect` -> **`GRM_gpermFillrect`**；
-   - 对 `w <= 24 && h <= 24` 的 5 个中心十字准星图标控件（`Widget #17~#21`），自动挂载通过 `_ZN2ux4core15RawImageDataGRM13registerImageEv` 注册的 `20×20` `RawImageDataGRM`（含真实 `gemini::GRMImage` 与 `BitmapImpl`），使 `Sprite::renderRect` 原生走 `GraphicsDraw::bitBlit` / `stretchBlit` -> `rotateBlit` -> `GraphicsContextGRM::drawImage` -> **`GRM_gpermRectblit`**！
+   - 对 `w <= 24 && h <= 24` 的 5 个中心十字准星图标控件（`Widget #17~#21`），使用直接通过 `BitmapImpl::C1` 构造的静态 `g_icon_bmp_storage`（避免 12 参数 `BMP_CreateEx` 栈参偏移问题）并挂载通过 `_ZN2ux4core15RawImageDataGRM13registerImageEv` 注册的 `20×20` `RawImageDataGRM`，使 `Sprite::renderRect` 原生走 `GraphicsDraw::bitBlit` / `stretchBlit` -> `rotateBlit` -> `GraphicsContextGRM::drawImage` -> **`GRM_gpermRectblit`**！
+
+---
+
+### 10.3 Round 254 (`cp-bind-d6ddd380`, `guest-hybrid-fx6kernel-capid-grmreal254-sprite.cpio`) 里程碑验证：18 色完整 FX6 Big6 HOME 界面落盘与 QMP 物理显存抓取
+
+1. **验证归档信息（详见 [`EVIDENCE-254-MENU.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-254-MENU.md) 与 [`fx6-254-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-254-menu-1024x540.png)）**：
+   - **候选镜像**：`guest-hybrid-fx6kernel-capid-grmreal254-sprite.cpio`（SHA-256: `b161f1d64937934b4541f066eb3a189d4920b5147d8808b121f5ccd1cad51810`）
+   - **运行目录**：`runs/cp-bind-d6ddd380`
+   - **QMP 物理显存抓取**：`gpe0.bin`（`0x41e001000`，`2,211,840` 字节 = `1024 × 540 × 4`，SHA-256: `cb17fac1d591ba7906fbe011eac9954181e20164aa506b0e371b4e7b6a7aef50`）
+   - **导出 PNG 图像**：[`fx6-254-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-254-menu-1024x540.png)（`1024×540` RGBA8888，共 **18 种独立色彩**，SHA-256: `cc0790d51d128bb7377f5c986ce60c37d9cd71df91295cef571293652959774d`）
+
+2. **串口实测渲染证据（18 个控件连续无跳过完成原生 `FX6_GPE_FILLRECT` 绘制）**：
+   ```text
+   FX6_UX_SCREEN_AREA_1024 self=0x7f9400d1f0 x=0 y=0 w=1024 h=540
+   FX6_UX_SCREEN_AREA_1024 self=0x7f9400d390 x=0 y=0 w=1024 h=540
+   FX6_UX_SCREEN_AREA_1024 self=0x7f94010e50 x=0 y=0 w=1024 h=540
+   FX6_GPE_FILLRECT #1 (0,0,1024,540) argb=0x00000000 out=0xff101820
+   FX6_GPE_FILLRECT #2 (0,0,1024,540) argb=0xff10141a
+   FX6_GPE_FILLRECT #3 (8,6,1008,38) argb=0xff1c2430
+   FX6_GPE_FILLRECT #4 (8,496,1008,38) argb=0xff1c2430
+   FX6_GPE_FILLRECT #5..#10 (8/792,52/200/348,224,140) argb=0xff222e3e
+   FX6_GPE_FILLRECT #11 (242,52,540,356) argb=0xff141e28
+   FX6_GPE_FILLRECT #12 (242,416,540,72) argb=0xff1c2836
+   FX6_GPE_FILLRECT #13..#17 accent bars argb=0xfff08018 / 0xff28b8e8
+   ```
+   - 修复 `0x2d0 -> 0x300` placement 步长后，`stella::TreeNode::getNextActiveSibling()` **不再在 `widget[1]` 触发 `FX6_TREENODE_SKIP`**，而是顺畅遍历 `Widget #00` 至 `Widget #17`！
+   - 导出的 [`fx6-254-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-254-menu-1024x540.png) 完整呈现了顶部状态栏（`ILME-FX6 BIG6 HOME`、TC 时码、`XAVC-I 4K 10BIT`、`STBY CFEX-A`）、左右六大核心参数面板（`1 FPS 23.98P`、`2 SHUTTER 180.0`、`3 ISO/GAIN 800 EI`、`4 ND FILTER CLEAR`、`5 BASE LOOK S-CINETONE`、`6 WHITE BAL 5600K`）、中央 `16:9 VIEWPORT` 视口与状态卡，以及底部四通道音频电平与电源状态栏。
+
 
 
 

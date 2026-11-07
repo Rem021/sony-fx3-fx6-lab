@@ -758,3 +758,66 @@ APPFW_SEGV addr=0x231 pc=...
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 24. -1023 的真实来源
+
+### 24.1 `osal_dynamic_id` 反汇编
+
+`libosal_uipc+0x75b8` 里 -1023 出现在两个位置：
+
+```text
+0x7700: mov w20, #-0x3ff   ; -1023
+0x7cc4: mov w20, #-0x3ff   ; -1023
+```
+
+0x7700 前：
+
+```text
+0x76e4: mov w0, w25
+0x76e8: bl reset_bsem
+0x76ec: mov x4, x0
+0x76f0: cbnz x0, ...
+0x76f4: mov x0, x24
+0x76f8: bl osal_unlock
+0x76fc: mvn w0, w28
+0x7700: mov w20, #-0x3ff
+0x7704: and w0, ...
+0x7708: orr w0, ...
+0x770c: bl uipc_oom
+```
+
+即 `reset_bsem` 返回空后走 **OOM/分配失败** 路径，返回 -1023。
+
+### 24.2 修正
+
+之前认为 -1023 是 “ID 类型不支持”，不准确。实际是：
+
+```text
+osal_dynamic_id(0x31, ...)
+  -> reset_bsem(...) 返回 NULL
+  -> uipc_oom()
+  -> -1023
+```
+
+这不是参数类型校验失败，而是 **bsem/semaphore 分配失败**。
+
+### 24.3 影响
+
+- 换 FX6 `libosal_uipc`/`osal_uipc.ko` 都不改变，说明失败在更底层；
+- 直接 patch 返回值会跳过分配，导致后续 sem 对象/链表损坏（177 的早期崩）；
+- 需要让 `reset_bsem` 真正分配到 bsem，或修正它的内存/池初始化；
+- 当前没有可见菜单/画面证据。
+
+### 24.4 下一步
+
+1. 反汇编 `reset_bsem`（libosal_uipc 0x50b8 附近）看它为何返回 NULL；
+2. 检查 `osal_uipc.ko` 的 bsem 池大小/初始化；
+3. 若是 VM 内存/设备不足，补资源而不是 patch 返回值；
+4. 保持 FX3 平台/QEMU/DTB 不变。
+
+## 25. 边界
+
+- 候选 CPIO 只改本地库/kmod/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

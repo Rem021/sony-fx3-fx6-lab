@@ -1049,4 +1049,59 @@ with open('/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so', 'r+b') as f:
 3. **双击即用体验入口（[`outputs/fx3-vm-trial/FX6菜单.command`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/FX6%E8%8F%9C%E5%8D%95.command) + [`run_fx6_menu_trial.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/run_fx6_menu_trial.py)）**：
    - 双击 `outputs/fx3-vm-trial/FX6菜单.command`（或终端运行 `./outputs/fx3-vm-trial/FX6菜单.command`），即可在本机浏览器打开 `http://127.0.0.1:8768/`；
    - 支持 **即时 Big6 7 键交互预览**（无需等待虚拟机冷启动即可使用网页 7 键、鼠标点击 6 个 Big6 参数框或键盘方向键切换 `FPS / Shutter / ISO / ND / Base Look / WB / STBY·REC`）以及 **一键启动后台 FX6-on-FX3 QEMU 实机会话**（通过 GDB 物理内存门 `g` 实时写入 `0x41df00000` / `0x41e000f00` 并经 QMP `pmemsave 0x41e001000` 抓取实机显存帧）。
-   - 交互导航渲染验证图：[`fx6-259-interactive-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-259-interactive-menu-1024x540.png)（SHA-256: `7f27cdc4114f05286dd22e3716ccacb4eb67d4e2844ab99f0e691939716267a8`）。
+   - 交互导航渲染验证图：[`fx6-259-interactive-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-259-interactive-menu-1024x540.png)（SHA-256: `7f27cdc4114f05286dd22e3716ccacb4eb67d4e2844ab99f0e691939716267a8`）、实机 GDB 7 键物理内存门捕获归档：[`EVIDENCE-259-INTERACTIVE.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-259-INTERACTIVE.md) 与 [`fx6-259-vm-live-key-gpe0.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-259-vm-live-key-gpe0.png)。
+
+---
+
+### 10.6 原生文字渲染管线攻坚（Candidates 260–271）：`view_string` $\rightarrow$ `MultiLineTextSprite` $\rightarrow$ `TextRM` / `iType` $\rightarrow$ `GRM_gpermRectblit`
+
+1. **Candidate 260（`cp-bind-a735b656`，详见 [`EVIDENCE-260-NATIVE-SKELETON.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-260-NATIVE-SKELETON.md) 与 [`fx6-260-native-skeleton-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-260-native-skeleton-1024x540.png)）—— 剥离软件字符叠加，确立 100% 原生 UI 骨架基线**：
+   - 禁用 `GRM_gpermFillrect` 中的 `fb_draw_text` / `fb_draw_border` 软件叠加层，证实 `ux::gfxeng::Sprite::renderRect` 原生提交 `18 FILLRECT + 5 RECTBLIT = 23 prims`、输出 `552,960` 非零像素（7 种原生硬件填充/位块传送颜色）、全程 `0 SEGV / 0 ABORT`。
+
+2. **Candidates 261–264（`cp-bind-57cee016`）—— 恢复 `view_string` (`MultiLineTextSprite`) 与修通 `ResourceManager::createFont` 静态双参数 ABI**：
+   - **发现 1（`createFont` 真实函数签名）**：反汇编 `libuxengine.so + 0x7565c`（`_ZN2ux6resmgr15ResourceManager10createFontERKN5alcor13FontAttributeERN5libra9RecordPtrE`）与调用方 `libuxengine.so + 0x7fdcc`（`TextSprite::createTextProcessor`）确认，`ResourceManager::createFont` 是 **`static` 双参数函数 `(const alcor::FontAttribute &attr, libra::RecordPtr &rec)`**（`x0 = attr, x1 = rec`），而非 3 参数成员函数 `(self, attr, rec)`！此前在 `261` 中以 3 参数调用导致 `x0` 错位触发空指针异常。
+   - **发现 2（`AdjChkConfig.so` 控件表 `0x221a0` 真实类型）**：在 `AdjChkConfig.so + 0x221a0` 中，第 `1..16` 号控件原本即为 `type = 1`（`app_adjchk_ui::view_string`，对象大小 `0x460` B，在 `+0x270` 处内嵌 `ux::gfxeng::MultiLineTextSprite`）。将 placement 步长扩充至 `0x500` B 并调用 `_ZN13app_adjchk_ui11view_stringC1ERKNS_27ds_view_widget_common_paramE` 后，实机日志确认 `FX6_FONT_CREATE2` $\rightarrow$ `FX6_FONT_CREATE2_DONE` 成功返回有效 `libra::RecordPtr` 字体句柄！
+
+3. **Candidate 265（`cp-bind-2937c978`）—— 解锁 `appFw.so + 0x16efc98` 三大 Arena（含 2 MB `mpTextHeap` 字形缓存池）**：
+   - 在 `264` 中，`createFont` 成功后，异步渲染线程执行 `libra::RenderTextLineCommand::run()`（`liblibra.so + 0x2d004`）时因缺少 `mpTextHeap`（第 2 号 Arena，`t1=0, t2=1`）导致 `CacheManager::allocImageBuffer` 返回空指针。
+   - 反汇编 `appFw.so + 0x16efc98` 及其静态表 `appFw.so + 0x47ce048` 确认 UXEngine 共注册 3 个 Arena：
+     - `arena[0]` `mpMemoryHeap`：`4,194,304` B（4 MB，`t1=1, t2=0`）
+     - `arena[1]` `mpMemoryHeap2`：`3,407,872` B（3.25 MB，`t1=1, t2=0`）
+     - `arena[2]` `mpTextHeap`：`2,097,152` B（2 MB，`t1=0, t2=1`，专供 `TextRM` / `iType` 字形位图缓存）
+   - 在 `libgrm-fbinit25.c` 中拦截 `Backup_read_8Byte(0x00fa0191)` 返回 16 MB 静态对齐缓冲区、`Backup_read_8Byte(0x00fa0192)` 返回 `0x1000000UL`（16 MB > 9.25 MB），并配合 `MA_CreateSpaceDirect` 与 `BMP_AssocMemorySpaceForCompaction` 后，`265` 彻底消除 `not enough remaining space; need 4194304 bytes more`，三大 Arena（含 `mpTextHeap`）全部注册成功！
+
+4. **Candidate 266（`cp-bind-fc2ad401`）—— 修复 `BMP_BitmapInfo + 0x1c` (`pixel_format`) 错位，打通 `ITextHandler::draw` 字形光栅化**：
+   - 在 `265` 中，`RenderTextLineCommand::run()` 成功从 `mpTextHeap` 分配字形 `BitmapImpl` 并进入 `TextRM` 的 `ITextHandler::draw()`，但触发 `Bitmap.cpp:372: BMP_PixelFormatToBytesPerPixel: Assertion 'format > BMP_PixelFormatNone' failed`。
+   - 反汇编 `libgrm_bmp.so + 0x6ab8`（`BitmapImpl::C1`）与 `+0x6698`（`BitmapImpl::getRowBytes`）确认 `BMP_BitmapInfo`（`*(void **)(bmp + 0x08)`）精确内存布局：
+     - `info + 0x04..0x0a`：`rect (x, y, w, h)`（`short[4]`）
+     - `info + 0x0c..0x12`：`sub_rect (x, y, w, h)`（`short[4]`）
+     - `info + 0x14..0x1a`：`alloc_rect (0, 0, alloc_w, alloc_h)`（`short[4]`，`getRowBytes` 读取 `*(short *)(info + 0x18)` 计算 pitch）
+     - **`info + 0x1c`（`int`）：`pixel_format`（`BMP_PixelFormat`，`2` = `ARGB8888`）**
+     - **`info + 0x20`（`int`）：`yuv_mode`（`BMP_YUVMode`）**
+     - **`info + 0x28`（`unsigned long`）：`phys_addr`**
+   - 此前 `BitmapImpl::create` 钩子误将 `*(short *)(info + 0x1c) = 0` 当作 `sub_x` 写入，把 `pixel_format` 清零成了 `0`（`BMP_PixelFormatNone`）。在 `266` 中将 `info + 0x1c` 修正为 `2`、`info + 0x18` 设为 `alloc_w` 后，`Bitmap.cpp:372` 断言彻底消失，`RenderTextLineCommand::run()` $\rightarrow$ `ITextHandler::draw()` $\rightarrow$ `RenderTextLineCommand::settle()` $\rightarrow$ `GenerateImageCommand::notify()` $\rightarrow$ `TextSprite::onImageLoad()` 全链路首次跑通！
+
+5. **Candidate 267（`cp-bind-7be10a90`，详见 [`EVIDENCE-267-NATIVE-TEXT.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-267-NATIVE-TEXT.md) 与 [`fx6-267-native-text-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-267-native-text-1024x540.png)）—— 修复 `update_screen` 覆写 `view_string` 导致的 `ImageDataContainer` 悬垂回调（`X0 = 0x30`, `addr = 0xd8`），首次实现 FX6 原生 `TextSprite` 字形上屏**：
+   - **根因**：在 `266` 中，`create_screen` 将 `arr[1..16]` 设为 `view_string` 并写入字符串（`param + 0x2c`），但随后调用的 `_ZN13app_adjchk_ui4view13update_screenEv` 将 `arr[0..21]` 全部当作 `view_icon` 处理，执行 `*(short *)(param + 0x2c) = 0` 清空了字符串首字节并再次调用 `view_string::update("")`，触发 `MultiLineTextSprite::releaseCacheList()` $\rightarrow$ `destroyImageDataContainer()` 释放了 `ImageDataContainer`（首字段被 glibc chunk header 写为 `0x30`）；同时 `_ZN5libra9ImageData6detachEv` 桩函数未清空 `self[1]`（`Listener *`）的回调指针，导致渲染线程完成字形光栅化后回调了已释放的 `ImageDataContainer`（`X0 = 0x30`）。
+   - **四点根治与实机验证（`runs/cp-bind-7be10a90`）**：
+     1. `arr[0..21]`（`place_base + i * 0x500`）保持全部 22 个 `view_icon` 背景框/色条/十字准星，追加 6 个原生 `view_string` 控件至 `place_base + (22 + s) * 0x500`（利用 `self + 0x08` 处 128 KB 缓冲区），使 `update_screen` 绝不覆写 `view_string` 的字符串；
+     2. 在 `_ZN5libra9ImageData6detachEv` 中清零 `Listener` 的 `mUser / mCallback / mImageData` 字段，并在 `_ZN2ux6gfxeng10TextSprite18ImageDataContainer11onImageLoadEv` 中校验 `valid_ptr(self)` 与 `valid_ptr(*(void **)self)`；
+     3. 在 `_ZN2ux6gfxeng16ImageElementBase13registerImageEv` 开头优先判断 `if (valid_ptr(*(void **)((char *)self + 0x68)))`（`self + 0x68` 是 `libra::ImageData`，首字段为 `HashRecord *`），走原生 `real_reg(self)` 将字形 `RawImageDataGRM` 注册到 `self + 0x78`；
+     4. 实机串口确认 `FX6_GPE_RECTBLIT #24..#29` 首次将 6 条原生 `TextSprite` 字形位图送入 `0x41e001000`（`prims = 29` = `18 FILLRECT + 11 RECTBLIT`，全帧色彩数从 `7` 跃升至 **`162` 种抗锯齿色彩**，全程 `SEGV = 0`、`Assertion = 0`）。
+
+6. **Candidate 268（`cp-bind-fb3294b5`，详见 [`EVIDENCE-268-NATIVE-TEXT.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-268-NATIVE-TEXT.md) 与 [`fx6-268-native-text-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-268-native-text-1024x540.png)）—— 14 路原生 `view_string` 布局 + 消除文字黑底框**：
+   - 将 `*(unsigned int *)(pp + 0xb4) = 0x00000000U`（透明文字背景），并扩展至 14 条原生 `view_string`（6 个 Big6 标题 + 6 个大号参数值 + 顶/底状态栏，`18 FILLRECT + 19 RECTBLIT = 37 prims`，`375` 色，`0 SEGV`）。
+   - 同时发现：当 `BitmapImpl::create` 改为条件设置 `if (*(int *)(info + 0x1c) <= 0) *(int *)(info + 0x1c) = 2;` 时，`BitmapImpl::C1` 预设的 `info + 0x1c = 4`（`BMP_PixelFormatToBytesPerPixel(4) == 1`）未被改为 `2`，导致 `getRowBytes()` 按 `1 byte/pixel` 返回了 `stride` 字节，使得相邻两条扫描线在同一行左右并排重复。
+
+7. **Candidate 269（`cp-bind-aac486ce`，详见 [`EVIDENCE-269-NATIVE-TEXT-CLEAN.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-269-NATIVE-TEXT-CLEAN.md) 与 [`fx6-269-native-text-clean-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-269-native-text-clean-1024x540.png)）—— 恢复 `info + 0x1c = 2`，彻底消除文字水平双份重复**：
+   - 在 `BitmapImpl::create` 恢复无条件赋值 `*(int *)(info + 0x1c) = 2;`（使行 pitch 固定为 `stride * 4` 字节），14 条原生 `view_string` 全部恢复单份全高显示（`18 FILLRECT + 19 RECTBLIT = 37 prims`，`0 SEGV`）。
+
+8. **Candidate 270（`cp-bind-1909f83b`，详见 [`EVIDENCE-270-NATIVE-TEXT-PERFECT.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-270-NATIVE-TEXT-PERFECT.md) 与 [`fx6-270-native-text-perfect-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-270-native-text-perfect-1024x540.png)）—— 8-Bit Alpha (`uint8_t`, 1 byte/pixel) 精确解码，恢复 100% 原始宽度与零彩边纯白抗锯齿**：
+   - 逐字节反解 `269` 的 `gpe0.bin` 证实：当 `pp + 0xb4 = 0`（透明背景）时，`TextRM` / `iType` 输出的字形缓冲 `bits` 是 **1 byte/pixel（`uint8_t` 8-bit 覆盖度 `0x00..0xFF`，对应 `BMP_PixelFormat = 4`）**，每行有效宽度恰好为 `sw` 字节（如 `"FPS"` `30` 字节、`"23.98p"` `102` 字节、顶栏 `490` 字节），行跨距为 `stride * 4` 字节。
+   - 在 `GRM_gpermRectblit` 中改为 `const unsigned char *row8 = (const unsigned char *)bits + sy * (stride * 4); unsigned int a = row8[sx];` 后，所有 14 条原生文字 100% 恢复 Sony 原厂字体的真实宽高比、零黄/蓝边缘色偏、零水平重复、37 种纯正灰阶抗锯齿色彩、`0 SEGV / 0 Assertion`！
+
+9. **Candidate 271（`cp-bind-0e41049a`，详见 [`EVIDENCE-271-FULL-BIG6.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-271-FULL-BIG6.md) 与 [`fx6-271-full-big6-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-271-full-big6-1024x540.png)）—— 25 路原生 `view_string` 完整 Big6 场景 + 分区 Cinema Line 配色闭环**：
+   - 利用 `self + 0x08` 处 128 KB placement 缓冲空间（`47 * 0x500 = 0xeb00 < 0x20000`），将原生 `view_string` 控件扩展至 **25 路**（6 个 Big6 标题 + 6 个大号主参数值 + 6 个副标签 + 顶栏左右双区 + 中央 16:9 取景窗上下 HUD + 中下音频电平/状态卡双行 + 底栏导航提示）。
+   - 实机 `cp-bind-0e41049a` 完整提交 **`48` 个原生 GPE 绘图原语（`18 FILLRECT + 5 准星 RECTBLIT + 25 原生文字 RECTBLIT`）**，输出 **`124` 种抗锯齿色彩**（`gpe0.bin` SHA-256: `13c8d7eb97d461774a7230e5b2f0149241567a562ae4ad2485ec8bc6016f58ce`，PNG SHA-256: `6f73d6de949b0ee458edbb52b6241d81b68fd6c8911497470b378aecc2c69ee6`），全程 `0 SEGV / 0 Assertion`。
+
+

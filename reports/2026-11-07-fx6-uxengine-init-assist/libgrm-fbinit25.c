@@ -194,13 +194,16 @@ static void ensure_bitmaps(void) {
         if (info) {
             *(short *)(info + 0x08) = FB_W;
             *(short *)(info + 0x0a) = FB_H;
-            *(int *)(info + 0x0c) = 2; /* BMP_PixelFormatARGB8888 */
-            *(short *)(info + 0x18) = FB_W; /* alloc_w: getRowBytes uses alloc_w * 4 */
-            *(short *)(info + 0x1a) = FB_H; /* alloc_h */
-            *(short *)(info + 0x1c) = 0;
-            *(short *)(info + 0x1e) = 0;
-            *(short *)(info + 0x20) = FB_W;
-            *(short *)(info + 0x22) = FB_H;
+            *(short *)(info + 0x0c) = 0;
+            *(short *)(info + 0x0e) = 0;
+            *(short *)(info + 0x10) = FB_W;
+            *(short *)(info + 0x12) = FB_H;
+            *(short *)(info + 0x14) = 0;
+            *(short *)(info + 0x16) = 0;
+            *(short *)(info + 0x18) = FB_W;
+            *(short *)(info + 0x1a) = FB_H;
+            *(int *)(info + 0x1c) = 2;
+            *(int *)(info + 0x20) = 0;
             *(unsigned long *)(info + 0x28) = 0x41e001000UL + (unsigned long)i * 0x220000UL;
         }
         *(void **)(b + 0x10) = p; /* logicalBits */
@@ -232,28 +235,54 @@ int GRM_fbrmRegisterChangeFramebufferCb(void (*cb)(void *, GRM_FBRMScreenInfoRec
     return 0;
 }
 
+/* ---- FX6 Arena + Backup + MA bridge ---- */
+static unsigned char ux_arena_buf[0x1000000] __attribute__((aligned(4096)));
+unsigned long Backup_read_8Byte(unsigned int id) {
+    typedef unsigned long (*fn_t)(unsigned int);
+    static fn_t real_fn;
+    if (id == 0x00fa0191U) return (unsigned long)ux_arena_buf;
+    if (id == 0x00fa0192U) return 0x1000000UL;
+    if (!real_fn) {
+        void *h = dlopen("/usr/lib/libuxstub.so", 1);
+        real_fn = h ? (fn_t)dlsym(h, "Backup_read_8Byte") : 0;
+    }
+    return real_fn ? real_fn(id) : 0UL;
+}
+int MA_CreateSpaceDirect(void *base, unsigned long sz, const char *name, int flg, void **out) {
+    (void)sz; (void)name; (void)flg;
+    if (out) *out = base ? base : (void *)1;
+    return 0;
+}
+int BMP_AssocMemorySpaceForCompaction(void *sp, int f) { (void)sp; (void)f; return 0; }
+
 /* Intercept BitmapImpl::create overloads using calloc so .bss remains tiny */
-int _ZN3grm3bmp10BitmapImpl6createEPvssssii(void *self, void *logical_addr, short alloc_w, short alloc_h, short sub_x, short sub_y, int lock_opt, int clear_flag) {
-    (void)lock_opt;
-    (void)clear_flag;
+int _ZN3grm3bmp10BitmapImpl6createEPvssssii(void *self, void *space_handle, short addr_align, short size_align, short w_align, short h_align, int lock_opt, int clear_flag) {
+    (void)addr_align; (void)size_align; (void)w_align; (void)h_align; (void)lock_opt; (void)clear_flag;
     unsigned char *b = (unsigned char *)self;
     unsigned char *info = *(unsigned char **)(b + 0x08);
-    if (alloc_w <= 0) alloc_w = info ? *(short *)(info + 0x08) : 64;
-    if (alloc_h <= 0) alloc_h = info ? *(short *)(info + 0x0a) : 64;
-    if (alloc_w <= 0) alloc_w = 64;
-    if (alloc_h <= 0) alloc_h = 64;
-    unsigned long sz = (unsigned long)alloc_w * (unsigned long)alloc_h * 4UL;
-    void *buf = logical_addr ? logical_addr : calloc(1, sz + 256UL);
+    short w = info ? *(short *)(info + 0x08) : 64;
+    short h = info ? *(short *)(info + 0x0a) : 64;
+    if (w <= 0) w = 64; if (h <= 0) h = 64;
+    short aw = (short)((w + 15) & ~15);
+    short ah = (short)((h + 1) & ~1);
+    if (aw <= 0) aw = 16; if (ah <= 0) ah = 2;
+    unsigned long sz = (unsigned long)aw * (unsigned long)ah * 4UL;
+    unsigned char *buf = (unsigned char *)calloc(1, sz + 256UL);
     if (info) {
-        *(short *)(info + 0x18) = alloc_w;
-        *(short *)(info + 0x1a) = alloc_h;
-        *(short *)(info + 0x1c) = sub_x;
-        *(short *)(info + 0x1e) = sub_y;
-        *(short *)(info + 0x20) = *(short *)(info + 0x08) > 0 ? *(short *)(info + 0x08) : alloc_w;
-        *(short *)(info + 0x22) = *(short *)(info + 0x0a) > 0 ? *(short *)(info + 0x0a) : alloc_h;
+        *(short *)(info + 0x0c) = 0;
+        *(short *)(info + 0x0e) = 0;
+        *(short *)(info + 0x10) = w;
+        *(short *)(info + 0x12) = h;
+        *(short *)(info + 0x14) = 0;
+        *(short *)(info + 0x16) = 0;
+        *(short *)(info + 0x18) = aw;
+        *(short *)(info + 0x1a) = ah;
+        *(int *)(info + 0x1c) = 2;
+        *(int *)(info + 0x20) = 0;
         *(unsigned long *)(info + 0x28) = (unsigned long)buf;
     }
     *(void **)(b + 0x10) = buf;
+    *(void **)(b + 0x18) = space_handle;
     return 0;
 }
 
@@ -270,20 +299,23 @@ int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(void *self, long phy
     unsigned long sz = (unsigned long)aw * (unsigned long)h * 4UL;
     void *buf = calloc(1, sz + 256UL);
     if (info) {
+        *(short *)(info + 0x0c) = 0;
+        *(short *)(info + 0x0e) = 0;
+        *(short *)(info + 0x10) = w;
+        *(short *)(info + 0x12) = h;
+        *(short *)(info + 0x14) = 0;
+        *(short *)(info + 0x16) = 0;
         *(short *)(info + 0x18) = aw;
         *(short *)(info + 0x1a) = h;
         if (sub_rect) {
             short *sr = (short *)sub_rect;
-            *(short *)(info + 0x1c) = sr[0];
-            *(short *)(info + 0x1e) = sr[1];
-            *(short *)(info + 0x20) = sr[2];
-            *(short *)(info + 0x22) = sr[3];
-        } else {
-            *(short *)(info + 0x1c) = 0;
-            *(short *)(info + 0x1e) = 0;
-            *(short *)(info + 0x20) = w;
-            *(short *)(info + 0x22) = h;
+            *(short *)(info + 0x0c) = sr[0];
+            *(short *)(info + 0x0e) = sr[1];
+            *(short *)(info + 0x10) = sr[2];
+            *(short *)(info + 0x12) = sr[3];
         }
+        *(int *)(info + 0x1c) = 2;
+        *(int *)(info + 0x20) = 0;
         *(unsigned long *)(info + 0x28) = (unsigned long)buf;
     }
     *(void **)(b + 0x10) = buf;
@@ -441,8 +473,11 @@ void *_ZN6stella10LinearList6removeEPNS0_7ElementE(void **list, void *elem) {
 
 void _ZN5libra9ImageData6detachEv(void **self) {
     if (!valid_ptr(self)) return;
-    self[0] = 0;
-    self[1] = 0;
+    if (valid_ptr(self[1])) {
+        void **l = (void **)self[1];
+        l[1] = 0; l[2] = 0; l[3] = 0;
+    }
+    self[0] = 0; self[1] = 0;
 }
 
 unsigned short _ZN5libra10HashRecord6decRefEv(void *self) {
@@ -584,8 +619,11 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
  */
 void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEPPvj(void *self, const void *params, void **out_ptrs, unsigned int count) {
     typedef void (*icon_ctor_t)(void *, const void *);
+    typedef void (*string_ctor_t)(void *, const void *);
     static icon_ctor_t icon_ctor;
+    static string_ctor_t string_ctor;
     if (!icon_ctor) icon_ctor = (icon_ctor_t)dlsym((void *)-1, "_ZN13app_adjchk_ui9view_iconC1ERKNS_27ds_view_widget_common_paramE");
+    if (!string_ctor) string_ctor = (string_ctor_t)dlsym((void *)-1, "_ZN13app_adjchk_ui11view_stringC1ERKNS_27ds_view_widget_common_paramE");
     if (!icon_ctor || !valid_ptr(self) || !valid_ptr(params)) return;
     g_adjchk_view_self = self;
     unsigned int n = count > 22 ? 22 : count;
@@ -596,13 +634,13 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
         unsigned char rec[0x28];
         memcpy(rec, (const unsigned char *)params + i * 0x28UL, 0x28UL);
         *(int *)(rec + 0x00) = 0;
-        *(int *)(rec + 0x10) = g_big6_layout[i].x;
-        *(int *)(rec + 0x14) = g_big6_layout[i].y;
-        *(int *)(rec + 0x18) = g_big6_layout[i].w;
-        *(int *)(rec + 0x1c) = g_big6_layout[i].h;
+        *(int *)(rec + 0x10) = g_big6_layout[i < 17 ? i : 16].x;
+        *(int *)(rec + 0x14) = g_big6_layout[i < 17 ? i : 16].y;
+        *(int *)(rec + 0x18) = g_big6_layout[i < 17 ? i : 16].w;
+        *(int *)(rec + 0x1c) = g_big6_layout[i < 17 ? i : 16].h;
         rec[0x20] = 1;
-        void *obj = place_base + i * 0x300UL;
-        memset(obj, 0, 0x300UL);
+        void *obj = place_base + (unsigned long)i * 0x500UL;
+        memset(obj, 0, 0x500UL);
         icon_ctor(obj, rec);
         arr[i] = obj;
         void *vtbl = *(void **)obj;
@@ -618,7 +656,71 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
         }
     }
     _ZN13app_adjchk_ui4view13update_screenEv(self);
-    dprintf(2, "FX6_ADJCHK_CREATE_SCREEN_STRIDE300 self=%p count=%u\n", self, n);
+    static const char *k_titles[6] = { "FPS", "SHUTTER", "ISO / GAIN", "ND FILTER", "BASE LOOK", "WHITE BAL" };
+    static const char *k_values[6] = { "23.98p", "180.0 deg", "800 EI", "1/16 ND", "S-CINETONE", "5600K" };
+    static const char *k_subs[6] = { "S&Q: 60FPS", "MODE: ANGLE", "CINE EI / HIGH", "AUTO / CLEAR", "3D LUT: ON", "MODE: PRESET" };
+    static const char *k_fixed[7] = {
+        "ILME-FX6   TC 01:02:24:18   XAVC-I 4K 10BIT",
+        "STBY   SLOT A/B 118m   19.5V",
+        "16:9   4096x2160   S-Cinetone   AF: FACE/EYE",
+        "HISTOGRAM: ON    HORIZON: 0.0 deg    ZEBRA: 70%",
+        "CH1 -12dB [||||||||....]    CH2 -14dB [|||||||.....]",
+        "PEAKING: ON (RED)    GAMMA ASSIST: AUTO    GENLOCK: INT",
+        "HOME: BIG6    MENU: FULL    UP/DN/L/R: SELECT    SET: CHANGE"
+    };
+    for (unsigned int si = 0; si < 25; si++) {
+        if (!string_ctor) break;
+        unsigned char rec[0x28]; memset(rec, 0, sizeof(rec));
+        *(int *)(rec + 0x00) = 1;
+        int x=0,y=0,w=0,h=0,fs=16; const char *txt="";
+        if (si < 6) {
+            int card = 3 + (int)si;
+            x = g_big6_layout[card].x + 14; y = g_big6_layout[card].y + 8;
+            w = g_big6_layout[card].w - 20; h = 24; fs = 18; txt = k_titles[si];
+        } else if (si < 12) {
+            int card = 3 + (int)(si - 6);
+            x = g_big6_layout[card].x + 14; y = g_big6_layout[card].y + 44;
+            w = g_big6_layout[card].w - 20; h = 44; fs = 32; txt = k_values[si - 6];
+        } else if (si < 18) {
+            int card = 3 + (int)(si - 12);
+            x = g_big6_layout[card].x + 14; y = g_big6_layout[card].y + 102;
+            w = g_big6_layout[card].w - 20; h = 24; fs = 16; txt = k_subs[si - 12];
+        } else if (si == 18) { x=20; y=10; w=620; h=28; fs=20; txt=k_fixed[0]; }
+        else if (si == 19) { x=670; y=10; w=330; h=28; fs=20; txt=k_fixed[1]; }
+        else if (si == 20) { x=258; y=64; w=508; h=24; fs=16; txt=k_fixed[2]; }
+        else if (si == 21) { x=258; y=372; w=508; h=24; fs=16; txt=k_fixed[3]; }
+        else if (si == 22) { x=258; y=424; w=508; h=24; fs=16; txt=k_fixed[4]; }
+        else if (si == 23) { x=258; y=454; w=508; h=24; fs=16; txt=k_fixed[5]; }
+        else { x=20; y=502; w=980; h=28; fs=18; txt=k_fixed[6]; }
+        *(int *)(rec + 0x10) = x; *(int *)(rec + 0x14) = y;
+        *(int *)(rec + 0x18) = w; *(int *)(rec + 0x1c) = h;
+        rec[0x20] = 1;
+        void *sobj = place_base + (unsigned long)(22 + si) * 0x500UL;
+        memset(sobj, 0, 0x500UL);
+        string_ctor(sobj, rec);
+        unsigned char *pp = (unsigned char *)sobj + 0x1b8;
+        *(int *)(pp + 0x10) = x; *(int *)(pp + 0x14) = y;
+        *(int *)(pp + 0x18) = w; *(int *)(pp + 0x1c) = h;
+        pp[0x20] = 1; *(unsigned int *)(pp + 0x28) = 0;
+        unsigned int tl = 0; while (txt[tl] && tl < 127) { pp[0x2c + tl] = (unsigned char)txt[tl]; tl++; }
+        pp[0x2c + tl] = 0;
+        pp[0xac] = (unsigned char)fs;
+        *(unsigned int *)(pp + 0xb0) = 0xFFFFFFFFU;
+        *(unsigned int *)(pp + 0xb4) = 0x00000000U;
+        void *vtbl = *(void **)sobj;
+        if (valid_ptr(vtbl)) {
+            void (*fn_layer)(void *, void *) = *(void (**)(void *, void *))((char *)vtbl + 0x18);
+            void (*fn_init)(void *) = *(void (**)(void *))((char *)vtbl + 0x148);
+            void (*fn_update)(void *) = *(void (**)(void *))((char *)vtbl + 0x150);
+            void (*fn_state)(void *, int) = *(void (**)(void *, int))((char *)vtbl + 0x30);
+            if (valid_ptr((const void *)fn_layer)) fn_layer(sobj, layer_id_ptr);
+            if (valid_ptr((const void *)fn_init)) fn_init(sobj);
+            if (valid_ptr((const void *)fn_update)) fn_update(sobj);
+            if (valid_ptr((const void *)fn_state)) fn_state(sobj, 0);
+            dprintf(2, "FX6_VIEW_STRING_APPEND s=%u obj=%p fs=%d text=%s\n", si, sobj, fs, txt);
+        }
+    }
+    dprintf(2, "FX6_ADJCHK_CREATE_SCREEN_ICON22_STR25 self=%p count=%u\n", self, n);
 }
 
 /* Attach a real RawImageDataGRM to the 5 center crosshair icon sprites (w<=24, h<=24) so Sprite::renderRect executes native GRM_gpermRectblit! */
@@ -645,11 +747,16 @@ static void ensure_icon_raw_img(void) {
         if (info) {
             *(short *)(info + 0x08) = 20;
             *(short *)(info + 0x0a) = 20;
-            *(int *)(info + 0x0c) = 2;
+            *(short *)(info + 0x0c) = 0;
+            *(short *)(info + 0x0e) = 0;
+            *(short *)(info + 0x10) = 20;
+            *(short *)(info + 0x12) = 20;
+            *(short *)(info + 0x14) = 0;
+            *(short *)(info + 0x16) = 0;
             *(short *)(info + 0x18) = 20;
             *(short *)(info + 0x1a) = 20;
-            *(short *)(info + 0x20) = 20;
-            *(short *)(info + 0x22) = 20;
+            *(int *)(info + 0x1c) = 2;
+            *(int *)(info + 0x20) = 0;
             *(unsigned long *)(info + 0x28) = (unsigned long)g_icon_pixels;
         }
         *(void **)(g_icon_bmp_storage + 0x10) = g_icon_pixels;
@@ -670,6 +777,12 @@ static void ensure_icon_raw_img(void) {
 
 void _ZN2ux6gfxeng16ImageElementBase13registerImageEv(void *self) {
     if (!valid_ptr(self)) return;
+    /* Text glyph ImageData is present at +0x68; always delegate to the native implementation. */
+    if (valid_ptr(*(void **)((char *)self + 0x68))) {
+        typedef void (*fn_t)(void *); static fn_t real_reg;
+        if (!real_reg) { void *h=dlopen("/usr/lib/libuxengine.so",1); real_reg=(fn_t)dlsym(h,"_ZN2ux6gfxeng16ImageElementBase13registerImageEv"); }
+        if (real_reg) { real_reg(self); return; }
+    }
     char *rect = *(char **)((char *)self + 0xd0);
     if (valid_ptr(rect)) {
         float w = *(float *)(rect + 0x08);
@@ -1033,57 +1146,7 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
             base[y * FB_W + x] = out_px;
         }
     }
-    /* Decorate each native Big6 widget box with borders and crisp Cinema Line OSD labels */
-    if (rw == 1008 && rh == 38 && ry == 6) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
-        fb_draw_text(base, 24, 15, "ILME-FX6  BIG6 HOME   TC 01:02:24:18   XAVC-I 4K 10BIT", 2, 0xFFE8F0F8U);
-        if (rec_state) {
-            fb_draw_text(base, 852, 15, "REC   CFEX-A", 2, 0xFFFF3838U);
-        } else {
-            fb_draw_text(base, 852, 15, "STBY  CFEX-A", 2, 0xFF38E878U);
-        }
-    } else if (rw == 1008 && rh == 38 && ry == 496) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
-        fb_draw_text(base, 24, 505, "CH1 -12DB   CH2 -12DB   CH3 -20DB   CH4 -20DB   DC 19.5V  100%", 2, 0xFFB8C8D8U);
-    } else if (box_id == 0) {
-        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
-        fb_draw_text(base, 24, 64, is_focused ? "> 1 FPS <" : "1  FPS", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
-        fb_draw_text(base, 36, 98, k_fps_opts[fps_idx], 4, 0xFFFFFFFFU);
-        fb_draw_text(base, 24, 156, "S/Q  OFF   FIXED", 2, 0xFF98B0C8U);
-    } else if (box_id == 1) {
-        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
-        fb_draw_text(base, 24, 212, is_focused ? "> 2 SHUTTER <" : "2  SHUTTER", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
-        fb_draw_text(base, 36, 246, k_shut_opts[shut_idx], 4, 0xFFFFFFFFU);
-        fb_draw_text(base, 24, 304, "ANGLE   ECS OFF", 2, 0xFF98B0C8U);
-    } else if (box_id == 2) {
-        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
-        fb_draw_text(base, 24, 360, is_focused ? "> 3 ISO/GAIN <" : "3  ISO / GAIN", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
-        fb_draw_text(base, 36, 394, k_iso_opts[iso_idx], 4, 0xFFFFFFFFU);
-        fb_draw_text(base, 24, 452, (iso_idx == 3) ? "HIGH BASE 12800" : "BASE ISO 800  0.0E", 2, 0xFF98B0C8U);
-    } else if (box_id == 3) {
-        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
-        fb_draw_text(base, 808, 64, is_focused ? "> 4 ND FILTER <" : "4  ND FILTER", 2, is_focused ? 0xFFFFB838U : 0xFF28B8E8U);
-        fb_draw_text(base, 816, 98, k_nd_opts[nd_idx], 3, 0xFFFFFFFFU);
-        fb_draw_text(base, 808, 156, "PRESET  1/4  1/16", 2, 0xFF98B0C8U);
-    } else if (box_id == 4) {
-        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
-        fb_draw_text(base, 808, 212, is_focused ? "> 5 BASE LOOK <" : "5  BASE LOOK", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
-        fb_draw_text(base, 812, 250, k_look_opts[look_idx], 3, 0xFFFFFFFFU);
-        fb_draw_text(base, 808, 304, "MLUT OFF  CINE EI", 2, 0xFF98B0C8U);
-    } else if (box_id == 5) {
-        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
-        fb_draw_text(base, 808, 360, is_focused ? "> 6 WHITE BAL <" : "6  WHITE BAL", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
-        fb_draw_text(base, 820, 394, k_wb_opts[wb_idx], 4, 0xFFFFFFFFU);
-        fb_draw_text(base, 808, 452, "PRESET  TINT +0", 2, 0xFF98B0C8U);
-    } else if (rw == 540 && rh == 356 && rx == 242 && ry == 52) {
-        fb_draw_border(base, x0, y0, x1, y1, rec_state ? 0xFFFF3838U : 0xFF7088A0U);
-        fb_draw_text(base, 258, 68, "16:9 VIEWPORT  3840X2160  S-LOG3 / S-GAMUT3.CINE", 2, 0xFF98B8D8U);
-        fb_draw_text(base, 258, 382, "FE 24-70MM F2.8 GM II   AF-C  WIDE   F2.8", 2, 0xFFE0E8F0U);
-    } else if (rw == 540 && rh == 72 && rx == 242 && ry == 416) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
-        fb_draw_text(base, 258, 430, "PEAKING: ON (RED)   ZEBRA: 70%   GAMMA ASSIST: AUTO", 2, 0xFFD8E4F0U);
-        fb_draw_text(base, 258, 458, "SLOT A: 118 MIN     SLOT B: 118 MIN     GENLOCK: INT", 2, 0xFF38E878U);
-    }
+    /* Native-only mode: do not overlay software text/borders. */
     draw_prim_count++;
     if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) {
         dprintf(2, "FX6_GPE_FILLRECT #%u (%d,%d,%d,%d) argb=0x%08x out=0x%08x\n", draw_prim_count, rx, ry, rw, rh, color, out_px);
@@ -1094,35 +1157,10 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
     return 0;
 }
 
-static void fx6_redraw_big6_boxes(void) {
-    unsigned int cid = 0;
-    for (int i = 0; i < 17; i++) {
-        unsigned char fp[0x18];
-        memset(fp, 0, sizeof(fp));
-        fp[0x08] = g_big6_layout[i].r;
-        fp[0x09] = g_big6_layout[i].g;
-        fp[0x0a] = g_big6_layout[i].b;
-        fp[0x0b] = g_big6_layout[i].a;
-        *(short *)(fp + 0x0c) = (short)g_big6_layout[i].x;
-        *(short *)(fp + 0x0e) = (short)g_big6_layout[i].y;
-        *(short *)(fp + 0x10) = (short)g_big6_layout[i].w;
-        *(short *)(fp + 0x12) = (short)g_big6_layout[i].h;
-        GRM_gpermFillrect(&cid, 0, fp, 0, 0);
-    }
-    unsigned int *base = (unsigned int *)pix_off;
-    for (int y = 0; y < 20; y++) {
-        for (int x = 0; x < 20; x++) {
-            int border = (x < 2 || x >= 18 || y < 2 || y >= 18);
-            int cross  = (x == 9 || x == 10 || y == 9 || y == 10);
-            base[(220 + y) * FB_W + (502 + x)] = border ? 0xFFFFFFFFU : (cross ? 0xFFF03838U : 0xFF28B8E8U);
-        }
-    }
-}
+static void fx6_redraw_big6_boxes(void) { }
 
 int GRM_gpermRectblit(unsigned int *cmd_id, const void *cmd_param, const void *blit_param, void *cb, void *ud) {
-    (void)cmd_param;
-    (void)cb;
-    (void)ud;
+    (void)cmd_param; (void)cb; (void)ud;
     ensure_bitmaps();
     if (cmd_id) *cmd_id = 1;
     if (!valid_ptr(blit_param)) return 0;
@@ -1130,14 +1168,10 @@ int GRM_gpermRectblit(unsigned int *cmd_id, const void *cmd_param, const void *b
     void *src = *(void *const *)(bp + 0x00);
     short sx0 = *(const short *)(bp + 0x08);
     short sy0 = *(const short *)(bp + 0x0a);
-    short sw0 = *(const short *)(bp + 0x0c);
-    short sh0 = *(const short *)(bp + 0x0e);
     short dx0 = *(const short *)(bp + 0x18);
     short dy0 = *(const short *)(bp + 0x1a);
     short dw0 = *(const short *)(bp + 0x1c);
     short dh0 = *(const short *)(bp + 0x1e);
-    (void)sw0;
-    (void)sh0;
     int x0 = dx0 < 0 ? 0 : dx0;
     int y0 = dy0 < 0 ? 0 : dy0;
     int x1 = (dx0 + dw0 > FB_W) ? FB_W : (dx0 + dw0);
@@ -1147,40 +1181,51 @@ int GRM_gpermRectblit(unsigned int *cmd_id, const void *cmd_param, const void *b
         unsigned char *info = *(unsigned char **)((char *)src + 0x08);
         unsigned char *bits = *(unsigned char **)((char *)src + 0x10);
         if (valid_ptr(info) && valid_ptr(bits)) {
-            int sw = *(short *)(info + 0x18);
-            int sh = *(short *)(info + 0x1a);
+            int sw = *(short *)(info + 0x10);
+            int sh = *(short *)(info + 0x12);
             if (sw <= 0) sw = *(short *)(info + 0x08);
             if (sh <= 0) sh = *(short *)(info + 0x0a);
-            unsigned int *sb = (unsigned int *)bits;
-            int copied_nz = 0;
+            int stride = *(short *)(info + 0x18);
+            if (stride < sw) stride = sw;
+            int fmt = *(int *)(info + 0x1c);
+            int is_glyph16 = (src != g_icon_bmp);
+            int u16_pitch = stride * 2;
             for (int y = 0; y < (y1 - y0); y++) {
                 int dy = y0 + y, sy = sy0 + y;
                 if (dy < 0 || dy >= FB_H || sy < 0 || sy >= sh) continue;
                 for (int x = 0; x < (x1 - x0); x++) {
                     int dx = x0 + x, sx = sx0 + x;
                     if (dx < 0 || dx >= FB_W || sx < 0 || sx >= sw) continue;
-                    unsigned int p = sb[sy * sw + sx];
-                    if (p != 0) {
-                        db[dy * FB_W + dx] = p | 0xFF000000U;
-                        copied_nz++;
-                    }
-                }
-            }
-            if (copied_nz == 0) {
-                for (int y = y0; y < y1; y++) {
-                    for (int x = x0; x < x1; x++) {
-                        if (y == y0 || y == y1 - 1 || x == x0 || x == x1 - 1 || ((x + y) & 3) == 0) {
-                            db[y * FB_W + x] = 0xFFE8E8E8U;
+                    if (is_glyph16) {
+                        const unsigned char *row8 = (const unsigned char *)bits + sy * (stride * 4);
+                        unsigned int a = row8[sx];
+                        if (a > 0U) {
+                            unsigned int sr = 255U, sg = 255U, sb_c = 255U;
+                            if ((dx0 < 240 || dx0 >= 780) && dy0 >= 50 && dy0 < 490) {
+                                int ry = (dy0 - 52) % 148; if (ry < 0) ry += 148;
+                                if (ry < 36) { sr = 245U; sg = 155U; sb_c = 45U; }
+                                else if (ry >= 90) { sr = 150U; sg = 195U; sb_c = 230U; }
+                            }
+                            if (dy0 < 48 && dx0 >= 650) { sr = 80U; sg = 235U; sb_c = 130U; }
+                            if (dx0 >= 240 && dx0 < 780 && dy0 >= 50 && dy0 < 405) { sr = 110U; sg = 215U; sb_c = 250U; }
+                            if (dx0 >= 240 && dx0 < 780 && dy0 >= 415 && dy0 < 448) { sr = 80U; sg = 235U; sb_c = 130U; }
+                            unsigned int dst = db[dy * FB_W + dx];
+                            unsigned int dr = (dst >> 16) & 0xFFU, dg = (dst >> 8) & 0xFFU, db_c = dst & 0xFFU;
+                            unsigned int or_c = (sr * a + dr * (255U - a)) / 255U;
+                            unsigned int og_c = (sg * a + dg * (255U - a)) / 255U;
+                            unsigned int ob_c = (sb_c * a + db_c * (255U - a)) / 255U;
+                            db[dy * FB_W + dx] = 0xFF000000U | (or_c << 16) | (og_c << 8) | ob_c;
                         }
+                    } else {
+                        unsigned int p = ((const unsigned int *)bits)[sy * stride + sx];
+                        if (p != 0) db[dy * FB_W + dx] = p | 0xFF000000U;
                     }
                 }
             }
         }
     }
     draw_prim_count++;
-    if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) {
-        dprintf(2, "FX6_GPE_RECTBLIT #%u dst=(%d,%d,%d,%d) src=%p\n", draw_prim_count, dx0, dy0, dw0, dh0, src);
-    }
+    if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) dprintf(2, "FX6_GPE_RECTBLIT #%u dst=(%d,%d,%d,%d) src=%p\n", draw_prim_count, dx0, dy0, dw0, dh0, src);
     flush_pixels_to_osd("rectblit");
     return 0;
 }
@@ -1198,3 +1243,20 @@ __attribute__((constructor)) static void stub_ctor(void) {
     dprintf(2, "FX3_GPE_RESOURCE_REGISTER type=0x403 logical=0x41e001000 phys=0x41e001000 bytes=0x21c000\n");
 }
 
+
+void _ZN2ux6resmgr15ResourceManager10createFontERKN5alcor13FontAttributeERN5libra9RecordPtrE(const void *attr, void *rec) {
+    typedef void (*fn_t)(const void*,void*); static fn_t real;
+    if (!real) { void *h=dlopen("/usr/lib/libuxengine.so",1); real=(fn_t)dlsym(h,"_ZN2ux6resmgr15ResourceManager10createFontERKN5alcor13FontAttributeERN5libra9RecordPtrE"); }
+    dprintf(2,"FX6_FONT_CREATE2 attr=%p rec=%p before=%p real=%p\n",attr,rec,rec?*(void**)rec:0,(void*)real);
+    if (real) real(attr,rec);
+    dprintf(2,"FX6_FONT_CREATE2_DONE rec=%p after=%p\n",rec,rec?*(void**)rec:0);
+}
+
+void _ZN2ux6gfxeng10TextSprite18ImageDataContainer11onImageLoadEv(void *self) {
+    if (!valid_ptr(self)) return;
+    void *ts = *(void **)self;
+    if (!valid_ptr(ts) || !valid_ptr(*(void **)ts)) return;
+    typedef void (*fn_t)(void *, unsigned int); static fn_t real;
+    if (!real) { void *h=dlopen("/usr/lib/libuxengine.so",1); real=(fn_t)dlsym(h,"_ZN2ux6gfxeng10TextSprite11onImageLoadEj"); }
+    if (real) real(ts, *(unsigned int *)((char *)self + 0x18));
+}

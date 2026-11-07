@@ -348,7 +348,7 @@ class Fx6MenuSession:
         self.history = []
         self.vm_running = False
         self.vm_ready = False
-        self.vm_status_text = "就绪（当前为即时 Big6 菜单交互 + 已验证 255 实机帧；可随时点击「启动 QEMU 实机会话」连接虚拟机）"
+        self.vm_status_text = "就绪（当前为已验证 Candidate 271 原生 25 路 FX6 字体实机帧 + 即时 Big6 菜单交互；可随时点击「启动 QEMU 实机会话」连接虚拟机）"
         self.vm_run_dir = None
         self.vm_proc = None
         self.qmp_sock = None
@@ -356,8 +356,10 @@ class Fx6MenuSession:
         self.gdb_client = None
         self.serial_tail = []
         self.live_vm_png = None
-        self.last_frame_source = "Candidate 255 Verified VM Frame (fx6-255-menu-1024x540.png)"
-        self._baseline_png = (REPORT_DIR / "fx6-255-menu-1024x540.png").read_bytes()
+        self.last_frame_source = "Candidate 271 Verified 25-String Native FX6 Big6 Frame (fx6-271-native-big6-1024x540.png)"
+        p271 = REPORT_DIR / "fx6-271-native-big6-1024x540.png"
+        p270 = REPORT_DIR / "fx6-270-native-text-perfect-1024x540.png"
+        self._baseline_png = (p271 if p271.exists() else (p270 if p270.exists() else (REPORT_DIR / "fx6-255-menu-1024x540.png"))).read_bytes()
         self._current_png = self._baseline_png
 
     def apply_key(self, key_name: str) -> dict:
@@ -469,7 +471,13 @@ class Fx6MenuSession:
         with self.lock:
             if self.vm_running:
                 return {"ok": True, "message": "QEMU VM 已在运行中"}
-            manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-259.json"
+            manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-271.json"
+            if not manifest_path.exists():
+                manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-270.json"
+            if not manifest_path.exists():
+                manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-269.json"
+            if not manifest_path.exists():
+                manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-259.json"
             if not manifest_path.exists():
                 manifest_path = AGNOSTIC_DIR / "vm-candidate-gpecap25-255.json"
             if not manifest_path.exists():

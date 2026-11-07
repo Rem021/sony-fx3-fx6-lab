@@ -1,0 +1,163 @@
+{
+  "schema": "fx6-online-cross-verification-delivery-v1",
+  "date": "2026-11-07",
+  "path_base": "repository root",
+  "scope": "Self-authored report, entry link, notes, source snapshots, verification scripts and metadata only. Hashes bind delivery bytes, not firmware execution or native menu success.",
+  "files": [
+    {
+      "path": "README.md",
+      "role": "existing_entry_index_updated",
+      "bytes": 56258,
+      "sha256": "65904e9163dfa36bcfb6d1bdbd19ce02bb52145b96df0404441b2965f7a6d22b"
+    },
+    {
+      "path": "reports/2026-11-07-fx6-queue-contract/observer/observe_osal_queue.c",
+      "role": "referenced_existing_self_authored_observer_source",
+      "bytes": 4544,
+      "sha256": "eb202750d7b863c2608318ff2c577c73855933c9ea72414e94b609b44e65bd31"
+    },
+    {
+      "path": "reports/FX6 原厂启动 在线交叉验证.md",
+      "role": "new_research_report",
+      "bytes": 9487,
+      "sha256": "15de0afc50e89477c8dc3f4c5edb3d2067ee685088d35e51e5a463358d86155e"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/evidence.json",
+      "role": "evidence_metadata",
+      "bytes": 467044,
+      "sha256": "353fa77d868c64898811d3d4a49b53c6112c96e8a53fa605e3235c2c7c5278a5"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/observer-plan.json",
+      "role": "evidence_metadata",
+      "bytes": 3227,
+      "sha256": "925af1d58b4174ac5deb6f485532f0101bc29ea73cd67b159043010f43640748"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/online-sources.json",
+      "role": "evidence_metadata",
+      "bytes": 1532,
+      "sha256": "cafe3a0ca0c71375745ed2ff201112222fbb5d47222230678c722bf0b602deef"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/review_294_295.py",
+      "role": "self_authored_verification_source",
+      "bytes": 7640,
+      "sha256": "f4b485e4aca54001ed117d28f3752ff39617cc8dbaec9fc2763e0ac3f8020596"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/source-snapshots/appfw-launch288.c",
+      "role": "self_authored_source_snapshot",
+      "bytes": 12398,
+      "sha256": "862547d6460cbdd7e1f7fbb26b254aa16e0e9c272000a0207323f54fc9c012a9"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/source-snapshots/appfw-launch294.c",
+      "role": "self_authored_source_snapshot",
+      "bytes": 12640,
+      "sha256": "09b78bef8c6d85af88cd78a47b627f69d80556b9eb9170ce3b35aa931a54959d"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/source-snapshots/libgrm-fbinit25-293.c",
+      "role": "self_authored_source_snapshot",
+      "bytes": 59755,
+      "sha256": "a21c4b45a76a8b79bb75b90ab214c7c6c7a521dfb1ab4fee3e03e8f1059654d5"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/source-snapshots/libgrm-fbinit25-294.c",
+      "role": "self_authored_source_snapshot",
+      "bytes": 61109,
+      "sha256": "cc2564c1ef6f60dbea38f01193475c2978ebb569d97d2213fb313c8a1b5e49b0"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates/source-snapshots/libgrm-fbinit25-295.c",
+      "role": "self_authored_source_snapshot",
+      "bytes": 61067,
+      "sha256": "e9f7f234e40b0119c25d27b0c595497693377c30ec7001e22d6d8855a9721829"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/latest_candidates.md",
+      "role": "research_note",
+      "bytes": 14470,
+      "sha256": "348ab0dd5ca6987e728db8435eb481ebedb068d01484781e7b9bf4489754b0a7"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/observability/audit_interposition.py",
+      "role": "self_authored_verification_source",
+      "bytes": 4696,
+      "sha256": "1d6d96ab340e89feb3133be49cdeb05923ebe874bd8a2341781a44d976d9579a"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/observability/baseline-closure-comparison.json",
+      "role": "evidence_metadata",
+      "bytes": 3474,
+      "sha256": "06fa6c08d5060365cc1e2c61eb13cc329867d9bf0f0a03babd100879e7caf949"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/observability/build-result.json",
+      "role": "evidence_metadata",
+      "bytes": 7246,
+      "sha256": "90c8ebb7b26b0893fee15f58e7f757b51b8f7a17ccb27f5fadab6eac8fb368b1"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/observability/build_shared_observer.py",
+      "role": "self_authored_verification_source",
+      "bytes": 8370,
+      "sha256": "c92efe0aefc304026f0d27dd639f98a1a92a3812388031621bfc1621af42379d"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/observability/interposition-result.json",
+      "role": "evidence_metadata",
+      "bytes": 3920,
+      "sha256": "1e4cf68fd052e610a2e79afe1c7f0c4d0a18d5f48669993cb412078ab0030af8"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/observability.md",
+      "role": "research_note",
+      "bytes": 13711,
+      "sha256": "428f15d032ba94308a838639b79d2097c7864f0ba11ef89e0eb10dadb54793d9"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/sony_osal/public-source-verification.json",
+      "role": "evidence_metadata",
+      "bytes": 11503,
+      "sha256": "15b578c25c8c1c040cd3056a9efcd19650a058dbb0efc47fed8edac3bfea1f24"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/sony_osal/verify_public_sources.py",
+      "role": "self_authored_verification_source",
+      "bytes": 3818,
+      "sha256": "6d12cc3311faa24f1c06603edf5994dbffb70199ab69c9b2dc93d2703fea87ad"
+    },
+    {
+      "path": "research_notes/FX6 原厂启动 在线交叉验证/sony_osal.md",
+      "role": "research_note",
+      "bytes": 12343,
+      "sha256": "61db738601319458551983d19cb8eb0eec9f8c9ded86634aa97047018a5591c9"
+    }
+  ],
+  "excluded": [
+    "research_notes/FX6 原厂启动 在线交叉验证/index/DELIVERY-FILES.json",
+    "work/** and all binary artifacts",
+    "Sony firmware images and original resource payloads"
+  ],
+  "checks": {
+    "json_parse_files": 8,
+    "python_ast_parse_files": 4,
+    "new_report_and_note_local_markdown_links": 114,
+    "missing_local_links": 0,
+    "five_source_snapshot_hashes_match_evidence": true,
+    "existing_observer_source_and_ignored_local_et_dyn_hash_match_build_receipt": true,
+    "baseline_closure_record_hash_matches_build_receipt": true,
+    "candidate_295_manifest_and_cpio_hashes_match_plan_and_closure_receipt": true,
+    "four_cold_provider_files_identical_per_receipt": true,
+    "known_credential_pattern_scan": "no findings in delivery text",
+    "staged_binary_files": 0,
+    "staged_files_when_checked": 0,
+    "guest_loaded": false,
+    "guest_executed": false,
+    "vm_or_camera_control_performed": false
+  },
+  "limits": "Validation parsed metadata/source syntax and checked small provenance inputs; did not repeat archive scans, guest linking, guest loading, runtime interception or menu acceptance."
+}

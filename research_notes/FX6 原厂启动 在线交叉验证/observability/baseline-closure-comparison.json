@@ -1,0 +1,78 @@
+{
+  "schema": "fx6-observer-baseline-provider-closure-comparison-v1",
+  "method": "read-only cold manifest/newc member hashing; no extraction, CPIO mutation or VM access",
+  "candidates": [
+    {
+      "candidate": 293,
+      "manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-293.json",
+        "bytes": 8914,
+        "sha256": "b823079391cdc92eb2530f83c080df108b9b64dc1aaa0f567f807cfa84f57b44"
+      },
+      "initrd": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal293-native.cpio",
+        "bytes": 430169752,
+        "sha256": "2a527baedbf9b2873300cb19bc43230e17655cb2ef785ea2319ed16985d66e2c"
+      },
+      "manifest_initrd_binding_verified": true,
+      "members": {
+        "lib/ld-2.25.so": {
+          "bytes": 120616,
+          "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+        },
+        "lib/libc-2.25.so": {
+          "bytes": 1283936,
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        },
+        "lib/libdl-2.25.so": {
+          "bytes": 10368,
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        },
+        "usr/lib/libosal_uipc.so": {
+          "bytes": 43752,
+          "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+        }
+      }
+    },
+    {
+      "candidate": 295,
+      "manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-295.json",
+        "bytes": 8922,
+        "sha256": "fd945eaa7ba97f297f0a8073f0072416add4fb0af480efe8e28e6b5d76c9dcef"
+      },
+      "initrd": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal295-backupread.cpio",
+        "bytes": 430175024,
+        "sha256": "f46acb182a87b4aaf541166d416ca347a5820e6c9eef80c51a58a03139618489"
+      },
+      "manifest_initrd_binding_verified": true,
+      "members": {
+        "lib/ld-2.25.so": {
+          "bytes": 120616,
+          "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+        },
+        "lib/libc-2.25.so": {
+          "bytes": 1283936,
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        },
+        "lib/libdl-2.25.so": {
+          "bytes": 10368,
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        },
+        "usr/lib/libosal_uipc.so": {
+          "bytes": 43752,
+          "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+        }
+      }
+    }
+  ],
+  "member_bytes_and_sha256_equal": {
+    "lib/ld-2.25.so": true,
+    "lib/libc-2.25.so": true,
+    "lib/libdl-2.25.so": true,
+    "usr/lib/libosal_uipc.so": true
+  },
+  "four_provider_files_identical": true,
+  "scope": "Only these cold input provider files. Does not prove guest link-map scope, LD_PRELOAD order, runtime GOT, loaded DSO identity, observer interception or UI worker lifecycle."
+}

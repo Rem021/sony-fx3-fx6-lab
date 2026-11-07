@@ -1,0 +1,357 @@
+{
+  "checked_utc": "2026-11-07T15:33:42.314485+00:00",
+  "network_action": "HEAD only; no archive or firmware downloaded",
+  "archives": [
+    {
+      "label": "FX3 Ver7.00",
+      "local_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/sony-oss-fx3/linux-kernel.tar.gz",
+      "url": "https://prodgpl.blob.core.windows.net/download/B2B/ILME-FX3_Ver.7.00/linux-kernel.tar.gz",
+      "bytes": 109896431,
+      "sha256": "d2f3dc059b69149c2eb5504ba85f25b515fc9263fdf1c3033d9513521db1fb15",
+      "md5_base64": "7GjQhSAxHTLiSe3ywj9QRQ==",
+      "file_count": 40703,
+      "source_files_scanned": 36051,
+      "source_bytes_scanned": 444898390,
+      "osal_uipc_path_matches": [],
+      "exact_symbol_matches": [],
+      "selected_source_metadata": [
+        {
+          "member": "linux/COPYING",
+          "bytes": 18693,
+          "sha256": "af8067302947c01fd9eee72befa54c7e3ef8a48fecde7fd71277f2290b2bf0f7",
+          "line_count": 361,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": []
+        },
+        {
+          "member": "linux/kernel/time/timer.c",
+          "bytes": 58270,
+          "sha256": "b9dffe07adea60a5b72d53c3e1266ab2589f48b54b8beac12ae3ecbc08f1a0c3",
+          "line_count": 2007,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": [
+            1764,
+            1766,
+            1777,
+            1781,
+            1795,
+            1817
+          ]
+        },
+        {
+          "member": "linux/drivers/udif/cdev.c",
+          "bytes": 7896,
+          "sha256": "088c8b5f17bc7cbe59f6d011ec366a94ca45e26dcf15ccea6d944600fcc5e41a",
+          "line_count": 268,
+          "sony_copyright_lines": [
+            6
+          ],
+          "focus_line_numbers": [
+            94
+          ]
+        },
+        {
+          "member": "linux/tools/usb/usbip/COPYING",
+          "bytes": 17997,
+          "sha256": "cd5c66af63b509ccd75ec85fee41b6e5cbb77cd6bf9392a54900acc0f02be4a6",
+          "line_count": 340,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": []
+        },
+        {
+          "member": "linux/include/linux/udif/types.h",
+          "bytes": 2895,
+          "sha256": "0d2bb819294765a6c7051d2b957f50d463b96470f4f44be69389c2571d9dac0e",
+          "line_count": 101,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            49
+          ]
+        },
+        {
+          "member": "linux/include/linux/udif/wait.h",
+          "bytes": 4045,
+          "sha256": "9aa02eb9351bb0523cbd7247c7df4446d9c35adca891d88c533f6ee61809c30d",
+          "line_count": 122,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            61,
+            101,
+            118,
+            119
+          ]
+        },
+        {
+          "member": "linux/include/linux/udif/macros.h",
+          "bytes": 3012,
+          "sha256": "e2d1b6251a36947e642459ec7550e4522ee23dbb94bb14a7ff997096f54dfbee",
+          "line_count": 112,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            53
+          ]
+        }
+      ],
+      "remote": {
+        "Content-Length": "109987145",
+        "Content-MD5": "YDFQucyXKvK/A5CHlRB/LA==",
+        "ETag": "0x8DDE3A03584AAA2",
+        "Last-Modified": "Mon, 25 Aug 2025 06:25:38 GMT",
+        "status": 200,
+        "final_url": "https://prodgpl.blob.core.windows.net/download/B2B/ILME-FX3_Ver.7.00/linux-kernel.tar.gz"
+      },
+      "local_matches_remote_length": false,
+      "local_matches_remote_md5": false,
+      "top_makefile": {
+        "member": "linux/Makefile",
+        "first_lines": [
+          "VERSION = 4",
+          "PATCHLEVEL = 9",
+          "SUBLEVEL = 337",
+          "EXTRAVERSION =",
+          "NAME = Roaring Lionus"
+        ]
+      }
+    },
+    {
+      "label": "FX6 V6.00 main",
+      "local_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/research/port-candidates/gpl-archives/FX6/linux-kernel.tar.gz",
+      "url": "https://prodgpl.blob.core.windows.net/download/B2B/2026031201_ILME_FX6_V600/linux-kernel.tar.gz",
+      "bytes": 109952792,
+      "sha256": "2e5bdfa72018cef6bdfa209635794973d7266c7ee657db094c7ee2c414dbcc42",
+      "md5_base64": "9pSMt0REGKC3ahFfSRcA7A==",
+      "file_count": 40712,
+      "source_files_scanned": 36058,
+      "source_bytes_scanned": 444974123,
+      "osal_uipc_path_matches": [],
+      "exact_symbol_matches": [],
+      "selected_source_metadata": [
+        {
+          "member": "linux/COPYING",
+          "bytes": 18693,
+          "sha256": "af8067302947c01fd9eee72befa54c7e3ef8a48fecde7fd71277f2290b2bf0f7",
+          "line_count": 361,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": []
+        },
+        {
+          "member": "linux/kernel/time/timer.c",
+          "bytes": 58270,
+          "sha256": "b9dffe07adea60a5b72d53c3e1266ab2589f48b54b8beac12ae3ecbc08f1a0c3",
+          "line_count": 2007,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": [
+            1764,
+            1766,
+            1777,
+            1781,
+            1795,
+            1817
+          ]
+        },
+        {
+          "member": "linux/drivers/udif/cdev.c",
+          "bytes": 7896,
+          "sha256": "088c8b5f17bc7cbe59f6d011ec366a94ca45e26dcf15ccea6d944600fcc5e41a",
+          "line_count": 268,
+          "sony_copyright_lines": [
+            6
+          ],
+          "focus_line_numbers": [
+            94
+          ]
+        },
+        {
+          "member": "linux/tools/usb/usbip/COPYING",
+          "bytes": 17997,
+          "sha256": "cd5c66af63b509ccd75ec85fee41b6e5cbb77cd6bf9392a54900acc0f02be4a6",
+          "line_count": 340,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": []
+        },
+        {
+          "member": "linux/include/linux/udif/types.h",
+          "bytes": 2895,
+          "sha256": "0d2bb819294765a6c7051d2b957f50d463b96470f4f44be69389c2571d9dac0e",
+          "line_count": 101,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            49
+          ]
+        },
+        {
+          "member": "linux/include/linux/udif/wait.h",
+          "bytes": 4045,
+          "sha256": "9aa02eb9351bb0523cbd7247c7df4446d9c35adca891d88c533f6ee61809c30d",
+          "line_count": 122,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            61,
+            101,
+            118,
+            119
+          ]
+        },
+        {
+          "member": "linux/include/linux/udif/macros.h",
+          "bytes": 3012,
+          "sha256": "e2d1b6251a36947e642459ec7550e4522ee23dbb94bb14a7ff997096f54dfbee",
+          "line_count": 112,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            53
+          ]
+        }
+      ],
+      "remote": {
+        "Content-Length": "109952792",
+        "Content-MD5": "9pSMt0REGKC3ahFfSRcA7A==",
+        "ETag": "0x8DE831E7624FDC2",
+        "Last-Modified": "Mon, 16 Mar 2026 05:39:58 GMT",
+        "status": 200,
+        "final_url": "https://prodgpl.blob.core.windows.net/download/B2B/2026031201_ILME_FX6_V600/linux-kernel.tar.gz"
+      },
+      "local_matches_remote_length": true,
+      "local_matches_remote_md5": true,
+      "top_makefile": {
+        "member": "linux/Makefile",
+        "first_lines": [
+          "VERSION = 4",
+          "PATCHLEVEL = 9",
+          "SUBLEVEL = 337",
+          "EXTRAVERSION =",
+          "NAME = Roaring Lionus"
+        ]
+      }
+    },
+    {
+      "label": "FX6 V6.00 -u",
+      "local_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/research/port-candidates/gpl-archives/FX6/linux-kernel-u.tar.gz",
+      "url": "https://prodgpl.blob.core.windows.net/download/B2B/2026031201_ILME_FX6_V600/linux-kernel-u.tar.gz",
+      "bytes": 108790863,
+      "sha256": "73cb30ba66cb3128a8d39de360f15ff746f75e60a7250e60d94697e21a61160b",
+      "md5_base64": "irGBAFGm4ybGlzIIXtW2mA==",
+      "file_count": 40603,
+      "source_files_scanned": 35861,
+      "source_bytes_scanned": 440406746,
+      "osal_uipc_path_matches": [],
+      "exact_symbol_matches": [],
+      "selected_source_metadata": [
+        {
+          "member": "linux-kernel-u/kernel/time/timer.c",
+          "bytes": 58210,
+          "sha256": "692f3393a4149fedf1573d1388862c64bd3989bab8a3e81009134da9177c0ddd",
+          "line_count": 2004,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": [
+            1761,
+            1763,
+            1774,
+            1778,
+            1792,
+            1814
+          ]
+        },
+        {
+          "member": "linux-kernel-u/drivers/udif/cdev.c",
+          "bytes": 7896,
+          "sha256": "088c8b5f17bc7cbe59f6d011ec366a94ca45e26dcf15ccea6d944600fcc5e41a",
+          "line_count": 268,
+          "sony_copyright_lines": [
+            6
+          ],
+          "focus_line_numbers": [
+            94
+          ]
+        },
+        {
+          "member": "linux-kernel-u/tools/usb/usbip/COPYING",
+          "bytes": 17997,
+          "sha256": "cd5c66af63b509ccd75ec85fee41b6e5cbb77cd6bf9392a54900acc0f02be4a6",
+          "line_count": 340,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": []
+        },
+        {
+          "member": "linux-kernel-u/COPYING",
+          "bytes": 18693,
+          "sha256": "af8067302947c01fd9eee72befa54c7e3ef8a48fecde7fd71277f2290b2bf0f7",
+          "line_count": 361,
+          "sony_copyright_lines": [],
+          "focus_line_numbers": []
+        },
+        {
+          "member": "linux-kernel-u/include/linux/udif/types.h",
+          "bytes": 2895,
+          "sha256": "0d2bb819294765a6c7051d2b957f50d463b96470f4f44be69389c2571d9dac0e",
+          "line_count": 101,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            49
+          ]
+        },
+        {
+          "member": "linux-kernel-u/include/linux/udif/macros.h",
+          "bytes": 3012,
+          "sha256": "e2d1b6251a36947e642459ec7550e4522ee23dbb94bb14a7ff997096f54dfbee",
+          "line_count": 112,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            53
+          ]
+        },
+        {
+          "member": "linux-kernel-u/include/linux/udif/wait.h",
+          "bytes": 3995,
+          "sha256": "915c83012a6280ced8ff8052ea488ab9fbe78150770cf2a1dccba6557a4bf2c9",
+          "line_count": 120,
+          "sony_copyright_lines": [
+            5
+          ],
+          "focus_line_numbers": [
+            61,
+            99,
+            116,
+            117
+          ]
+        }
+      ],
+      "remote": {
+        "Content-Length": "108790863",
+        "Content-MD5": "irGBAFGm4ybGlzIIXtW2mA==",
+        "ETag": "0x8DE831E76280A90",
+        "Last-Modified": "Mon, 16 Mar 2026 05:39:58 GMT",
+        "status": 200,
+        "final_url": "https://prodgpl.blob.core.windows.net/download/B2B/2026031201_ILME_FX6_V600/linux-kernel-u.tar.gz"
+      },
+      "local_matches_remote_length": true,
+      "local_matches_remote_md5": true,
+      "top_makefile": {
+        "member": "linux-kernel-u/Makefile",
+        "first_lines": [
+          "VERSION = 4",
+          "PATCHLEVEL = 9",
+          "SUBLEVEL = 186",
+          "EXTRAVERSION =",
+          "NAME = Roaring Lionus"
+        ]
+      }
+    }
+  ]
+}

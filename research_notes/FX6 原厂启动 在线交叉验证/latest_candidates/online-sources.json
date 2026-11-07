@@ -1,0 +1,37 @@
+[
+  {
+    "title": "ELF gABI 4.3 DRAFT — Relocation",
+    "url": "https://gabi.xinuos.com/elf/06-reloc.html",
+    "publication_date": "not stated on accessed page",
+    "accessed": "2026-11-07",
+    "supports": "ELF executable/shared-object relocation r_offset is a VMA; relocation links symbolic references to definitions."
+  },
+  {
+    "title": "AAPCS64 2026Q3",
+    "url": "https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst",
+    "publication_date": "2026-11-03",
+    "accessed": "2026-11-07",
+    "supports": "x0-x7 parameter/result and caller-saved; BL/BLR sets LR to sequential return PC."
+  },
+  {
+    "title": "AAELF64 2026Q3",
+    "url": "https://github.com/ARM-software/abi-aa/blob/main/aaelf64/aaelf64.rst",
+    "publication_date": "2026-11-03",
+    "accessed": "2026-11-07",
+    "supports": "AArch64 dynamic relocation kind 1026 is R_AARCH64_JUMP_SLOT."
+  },
+  {
+    "title": "QEMU master — GDB usage",
+    "url": "https://www.qemu.org/docs/master/system/gdb.html",
+    "publication_date": "rolling master, no page publication date",
+    "accessed": "2026-11-07",
+    "supports": "Default virtual memory vs explicit physical mode; system gdbstub threads describe vCPUs, not guest userspace TIDs."
+  },
+  {
+    "title": "QEMU master — Monitor",
+    "url": "https://www.qemu.org/docs/master/system/monitor.html",
+    "publication_date": "rolling master, no page publication date",
+    "accessed": "2026-11-07",
+    "supports": "memsave dumps virtual memory; pmemsave dumps physical memory."
+  }
+]

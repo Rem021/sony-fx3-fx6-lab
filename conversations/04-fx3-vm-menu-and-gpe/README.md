@@ -8,8 +8,8 @@
 
 | # | Title (对话主题) | Agent | Messages | Updated (UTC) | Archive File |
 |---|---|---|---|---|---|
-| 1 | **现在这个项目整体什么进度啊？** | `antigravity` | 5 | `2026-11-07T15:13Z` | [`现在这个项目整体什么进度啊？-antigravity_.md`](./现在这个项目整体什么进度啊？-antigravity_.md) |
-| 2 | **Phayen｜固件研究并行进度** | `codex` | 43 | `2026-11-07T15:13Z` | [`Phayen｜固件研究并行进度-codex_62270b.md`](./Phayen｜固件研究并行进度-codex_62270b.md) |
+| 1 | **现在这个项目整体什么进度啊？** | `antigravity` | 0 | `2026-11-07T15:45Z` | [`现在这个项目整体什么进度啊？-antigravity_.md`](./现在这个项目整体什么进度啊？-antigravity_.md) |
+| 2 | **Phayen｜固件研究并行进度** | `codex` | 60 | `2026-11-07T15:45Z` | [`Phayen｜固件研究并行进度-codex_62270b.md`](./Phayen｜固件研究并行进度-codex_62270b.md) |
 | 3 | **现在整体什么进度了呢** | `antigravity` | 12 | `2026-11-07T12:53Z` | [`现在整体什么进度了呢-antigravity_.md`](./现在整体什么进度了呢-antigravity_.md) |
 | 4 | **Phayen｜FX3 适配 FX6 固件与刷机评估** | `antigravity` | 13 | `2026-11-07T10:08Z` | [`Phayen｜FX3-适配-FX6-固件与刷机评估-antigravity_.md`](./Phayen｜FX3-适配-FX6-固件与刷机评估-antigravity_.md) |
 | 5 | **FX3｜虚拟机菜单修复续接** | `claude` | 78 | `2026-11-06T15:53Z` | [`FX3｜虚拟机菜单修复续接-claude_9e4c5.md`](./FX3｜虚拟机菜单修复续接-claude_9e4c5.md) |

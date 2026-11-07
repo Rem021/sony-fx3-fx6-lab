@@ -1,0 +1,174 @@
+{
+  "app": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "libosal": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libosal_uipc.so",
+    "bytes": 43752,
+    "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+  },
+  "import_visibility": "STV_DEFAULT",
+  "receive_plt_vma": "0xb19ec0",
+  "receive_got_relocation_vma": "0x2ef2868",
+  "relocation": "R_AARCH64_JUMP_SLOT",
+  "cold_app_direct_bl_callers": [
+    {
+      "bl_vma": "0xc0a208",
+      "expected_lr_vma": "0xc0a20c"
+    },
+    {
+      "bl_vma": "0xc142e8",
+      "expected_lr_vma": "0xc142ec"
+    },
+    {
+      "bl_vma": "0xc14464",
+      "expected_lr_vma": "0xc14468"
+    },
+    {
+      "bl_vma": "0x20ed604",
+      "expected_lr_vma": "0x20ed608"
+    },
+    {
+      "bl_vma": "0x20edc30",
+      "expected_lr_vma": "0x20edc34"
+    },
+    {
+      "bl_vma": "0x20edc8c",
+      "expected_lr_vma": "0x20edc90"
+    },
+    {
+      "bl_vma": "0x20ef198",
+      "expected_lr_vma": "0x20ef19c"
+    },
+    {
+      "bl_vma": "0x20ef550",
+      "expected_lr_vma": "0x20ef554"
+    },
+    {
+      "bl_vma": "0x20ef7c8",
+      "expected_lr_vma": "0x20ef7cc"
+    },
+    {
+      "bl_vma": "0x20efbb8",
+      "expected_lr_vma": "0x20efbbc"
+    },
+    {
+      "bl_vma": "0x20f80f4",
+      "expected_lr_vma": "0x20f80f8"
+    },
+    {
+      "bl_vma": "0x2105478",
+      "expected_lr_vma": "0x210547c"
+    },
+    {
+      "bl_vma": "0x2107f4c",
+      "expected_lr_vma": "0x2107f50"
+    },
+    {
+      "bl_vma": "0x2113174",
+      "expected_lr_vma": "0x2113178"
+    },
+    {
+      "bl_vma": "0x2114e40",
+      "expected_lr_vma": "0x2114e44"
+    },
+    {
+      "bl_vma": "0x2122a0c",
+      "expected_lr_vma": "0x2122a10"
+    },
+    {
+      "bl_vma": "0x21278a4",
+      "expected_lr_vma": "0x21278a8"
+    },
+    {
+      "bl_vma": "0x2127aa8",
+      "expected_lr_vma": "0x2127aac"
+    },
+    {
+      "bl_vma": "0x2127c94",
+      "expected_lr_vma": "0x2127c98"
+    },
+    {
+      "bl_vma": "0x2127eac",
+      "expected_lr_vma": "0x2127eb0"
+    },
+    {
+      "bl_vma": "0x2128260",
+      "expected_lr_vma": "0x2128264"
+    },
+    {
+      "bl_vma": "0x2128450",
+      "expected_lr_vma": "0x2128454"
+    },
+    {
+      "bl_vma": "0x2129314",
+      "expected_lr_vma": "0x2129318"
+    },
+    {
+      "bl_vma": "0x215c674",
+      "expected_lr_vma": "0x215c678"
+    },
+    {
+      "bl_vma": "0x215c6f8",
+      "expected_lr_vma": "0x215c6fc"
+    },
+    {
+      "bl_vma": "0x215c79c",
+      "expected_lr_vma": "0x215c7a0"
+    },
+    {
+      "bl_vma": "0x215e00c",
+      "expected_lr_vma": "0x215e010"
+    },
+    {
+      "bl_vma": "0x2160f48",
+      "expected_lr_vma": "0x2160f4c"
+    },
+    {
+      "bl_vma": "0x216cdc4",
+      "expected_lr_vma": "0x216cdc8"
+    }
+  ],
+  "named_classifier_sites": [
+    "0xc0a20c",
+    "0x20ef554",
+    "0x20ef7cc",
+    "0x20efbbc",
+    "0x20f80f8"
+  ],
+  "additional_other_appfw_sites": [
+    "0xc142ec",
+    "0xc14468",
+    "0x20ed608",
+    "0x20edc34",
+    "0x20edc90",
+    "0x20ef19c",
+    "0x210547c",
+    "0x2107f50",
+    "0x2113178",
+    "0x2114e44",
+    "0x2122a10",
+    "0x21278a8",
+    "0x2127aac",
+    "0x2127c98",
+    "0x2127eb0",
+    "0x2128264",
+    "0x2128454",
+    "0x2129318",
+    "0x215c678",
+    "0x215c6fc",
+    "0x215c7a0",
+    "0x215e010",
+    "0x2160f4c",
+    "0x216cdc8"
+  ],
+  "real_receive_vma": "0x6468",
+  "observer_entry_lr_save": {
+    "vma": "0x106e8",
+    "instruction": "mov x25, x30",
+    "before_first_bl": true
+  },
+  "limits": "Static eligibility for interposition only. Actual loader scope, RTLD_NEXT target, guest TID and runtime GOT value require a separately authorized same-run observation."
+}

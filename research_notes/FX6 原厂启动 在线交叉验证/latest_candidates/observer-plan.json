@@ -1,0 +1,64 @@
+{
+  "schema": "fx6-observer-only-next-run-plan-v1",
+  "status": "offline proposal; not executed",
+  "baseline": {
+    "candidate": 295,
+    "completed_run": "cp-bind-f56cfd5f",
+    "manifest_sha256": "fd945eaa7ba97f297f0a8073f0072416add4fb0af480efe8e28e6b5d76c9dcef",
+    "initrd_sha256": "f46acb182a87b4aaf541166d416ca347a5820e6c9eef80c51a58a03139618489",
+    "init_sha256": "797b9e900d48781ac8d3d6bcbc25295cb7c001f821b4899655f922d8e0a8b7ec",
+    "appfw_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "shim_sha256": "c58b6509e451a32474a6e2ace7c680a58427a5b685eaf27ece9a51153c2a3f45",
+    "launcher_sha256": "8bfd033670f1ae332893dab3aa8add18dde0b58817a89ca7db420158a6d59d8d"
+  },
+  "single_independent_change": "bounded observation records only; original behavior, provider targets and initialization order preserved",
+  "frozen": [
+    "init, model environment, kernel and all non-observer payloads",
+    "existing five NOP sites and all existing Backup return/output behavior",
+    "receive timeouts, original rc/errno, message ownership and queue lifetime",
+    "fixed run wall budget and capture checkpoints"
+  ],
+  "observations": {
+    "provider_binding": [
+      "actual relocation slot VMA, mapped module base, before/after pointer, dladdr provider owner",
+      "code patch old bytes, requested bytes, readback bytes and target mapping permissions"
+    ],
+    "threads": [
+      "creator TID, pthread entry pointer and owner DSO, child TID, begin/end reason, monotonic sequence"
+    ],
+    "receive": [
+      "entry/exit TID, LR captured before nested calls, caller base+offset, uint32 qid, signed32 timeout, out-slot address, original provider pointer, exact rc and saved errno",
+      "no speculative output-message dereference on failure or before completion"
+    ],
+    "backup": [
+      "entry/exit TID, LR, id, function, verified argument shape, return value; output bytes only when valid bounded contract established",
+      "read back selected actual GOT slots +2ef22f8/+2ef2220/+2ef2868"
+    ],
+    "display": [
+      "run-bound raw captured addresses, width/height/pitch/format/full SHA, primitive counters and no host-rendered substitution"
+    ]
+  },
+  "acceptance": [
+    {
+      "gate": "offline binding",
+      "pass": "full CPIO scan, hashes, no unplanned behavioral changes, bounded log collector verified; actual linked-provider ABI matches baseline"
+    },
+    {
+      "gate": "runtime binding",
+      "pass": "actual slot and patch readback or explicit unsupported record; no reliance on fixed=799 aggregate"
+    },
+    {
+      "gate": "thread identity",
+      "pass": "entry function and TID linkage, or marked unknown; vCPU id not used as guest TID"
+    },
+    {
+      "gate": "waiting identity",
+      "pass": "real LR/qid/timeout records classify receiver; no timeout or fake message changes"
+    },
+    {
+      "gate": "render result",
+      "pass": "separate visible-menu result from diagnostic-run result; all-zero frames keep menu unproven"
+    }
+  ],
+  "failure_policy": "record unsupported/missing binding or incomplete observation and end under the baseline existing owner policy; never fabricate success or force the original error path to continue"
+}

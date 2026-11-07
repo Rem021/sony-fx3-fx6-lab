@@ -1,0 +1,209 @@
+{
+  "schema": "fx6-queue-observer-et-dyn-offline-v1",
+  "source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/observe_osal_queue.c",
+    "bytes": 4544,
+    "sha256": "eb202750d7b863c2608318ff2c577c73855933c9ea72414e94b609b44e65bd31"
+  },
+  "object": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/observe_osal_queue.o",
+    "bytes": 3960,
+    "sha256": "89e4aef502bd6e0b6747adb0dc67151ff94c74c22e254cfddcaea688a07466ff"
+  },
+  "shared_library": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/libfx6-queue-observer.so",
+    "bytes": 5400,
+    "sha256": "8e7f71167bb1619f933df622d5f41b6cb1b8439a6ea6b5b9d7bed2ac9ff016fc"
+  },
+  "compiler": {
+    "path": "/usr/bin/clang",
+    "bytes": 200560,
+    "sha256": "ed6f5284033aa2aae6a58427c25ba3ab119947b40365627b24e5d51a4b70a1cd"
+  },
+  "zig": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "bytes": 199375152,
+    "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523"
+  },
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin27.2.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "zig_version": "0.17.0",
+  "linker_version": "LLD 22.1.8 (compatible with GNU linkers)",
+  "commands": [
+    [
+      "/usr/bin/clang",
+      "-target",
+      "aarch64-linux-gnu",
+      "-std=c11",
+      "-O2",
+      "-fPIC",
+      "-ffreestanding",
+      "-fno-omit-frame-pointer",
+      "-fno-optimize-sibling-calls",
+      "-mno-outline-atomics",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-queue-contract/observer/observe_osal_queue.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/observe_osal_queue.o"
+    ],
+    [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "ld.lld",
+      "-shared",
+      "--hash-style=both",
+      "--soname=libfx6-queue-observer.so",
+      "-z",
+      "noexecstack",
+      "-z",
+      "relro",
+      "-z",
+      "now",
+      "--fatal-warnings",
+      "--no-undefined",
+      "--no-allow-shlib-undefined",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/observe_osal_queue.o",
+      "--as-needed",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/libfx6-queue-observer.so"
+    ]
+  ],
+  "build_env": {
+    "ZIG_LOCAL_CACHE_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/zig-local-cache",
+    "ZIG_GLOBAL_CACHE_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/parallel-research-20261107/online-observability/zig-global-cache"
+  },
+  "elf_type": "ET_DYN",
+  "elf_machine": "EM_AARCH64",
+  "undefined_symbols": [
+    "__errno_location",
+    "_exit",
+    "clock_gettime",
+    "dladdr",
+    "dlerror",
+    "dlsym",
+    "dprintf",
+    "syscall"
+  ],
+  "exported_symbols": [
+    "osal_rcv_msg_tmo"
+  ],
+  "dt_needed": [
+    "libc.so.6",
+    "libdl.so.2"
+  ],
+  "program_headers": [
+    {
+      "type": "PT_PHDR",
+      "flags": 4
+    },
+    {
+      "type": "PT_LOAD",
+      "flags": 4
+    },
+    {
+      "type": "PT_LOAD",
+      "flags": 5
+    },
+    {
+      "type": "PT_LOAD",
+      "flags": 6
+    },
+    {
+      "type": "PT_LOAD",
+      "flags": 6
+    },
+    {
+      "type": "PT_DYNAMIC",
+      "flags": 6
+    },
+    {
+      "type": "PT_GNU_RELRO",
+      "flags": 4
+    },
+    {
+      "type": "PT_GNU_STACK",
+      "flags": 6
+    }
+  ],
+  "comment": "Linker: LLD 22.1.8\nApple clang version 21.0.0 (clang-2100.4.1.1)",
+  "guest_libraries_linked_dynamically": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+      "bytes": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+    }
+  ],
+  "glibc_version_requirements": [
+    {
+      "file": "libc.so.6",
+      "versions": [
+        "GLIBC_2.17"
+      ]
+    },
+    {
+      "file": "libdl.so.2",
+      "versions": [
+        "GLIBC_2.17"
+      ]
+    }
+  ],
+  "baseline_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal293-native.cpio",
+    "bytes": 430169752,
+    "sha256": "2a527baedbf9b2873300cb19bc43230e17655cb2ef785ea2319ed16985d66e2c"
+  },
+  "baseline_cpio_runtime_members": {
+    "lib/ld-2.25.so": {
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+    },
+    "lib/libc-2.25.so": {
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    },
+    "lib/libdl-2.25.so": {
+      "bytes": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+    }
+  },
+  "guest_runtime_closure": {
+    "libfx6-queue-observer.so": [
+      "libc.so.6",
+      "libdl.so.2"
+    ],
+    "libc.so.6": [
+      "ld-linux-aarch64.so.1"
+    ],
+    "libdl.so.2": [
+      "libc.so.6",
+      "ld-linux-aarch64.so.1"
+    ],
+    "ld-linux-aarch64.so.1": []
+  },
+  "guest_linked": true,
+  "guest_loaded": false,
+  "guest_executed": false,
+  "cpio_changed": false,
+  "closed_source_payload_linked": false,
+  "limits": "Eight imports resolve against pinned guest glibc 2.25 with GLIBC_2.17 requirements under --no-undefined. ET_DYN success does not prove guest loader binding, ABI, call interception or timing.",
+  "post_build_baseline_scope_check": {
+    "record_path": "research_notes/FX6 原厂启动 在线交叉验证/observability/baseline-closure-comparison.json",
+    "record_sha256": "06fa6c08d5060365cc1e2c61eb13cc329867d9bf0f0a03babd100879e7caf949",
+    "baseline_295_provider_files_match_293": true,
+    "live_mapping_or_loader_scope_verified": false
+  }
+}

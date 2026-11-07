@@ -1,5 +1,7 @@
 # Sony FX3 & FX6 Porting and QEMU Virtual Machine Lab (`sony-fx3-fx6-lab`)
 
+> **2026-11-07 在线交叉验证**：[FX6 原厂启动：294/295 阻塞与观察方案](<reports/FX6 原厂启动 在线交叉验证.md>) 归因 294 的 Backup 清零崩溃，明确 295 尚无真实接收 caller/qid；已交付离线 ET_DYN 观察候选，未证明原厂菜单启动。
+
 > **2026-11-07 queue follow-up / 第三轮推进**：[293 证据、队列生命周期与观察候选](reports/2026-11-07-fx6-queue-contract/README.md) 已区分退出握手与 App 事件等待，确认293移除了infra初始化及定时生产者，并编译/离线检查只观察的 AArch64 目标文件；尚未集成 guest 或取得原厂菜单像素。
 
 > **2026-11-07 deeper follow-up / 深入研究第二轮**：[原厂生命周期与屏幕状态机](reports/2026-11-07-fx6-native-lifecycle/README.md) 已确认 288–290 越过 UI 线程与 UXEngine，定位 MWF 空日志对象、原厂模块初始化缺口及 Kikilog 设备契约；原厂菜单尚未通过可见/交互验收。

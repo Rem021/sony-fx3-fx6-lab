@@ -1032,3 +1032,21 @@ with open('/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so', 'r+b') as f:
 
 
 
+---
+
+### 10.5 交互式菜单操控突破（Candidates 256–259）：`0x41df00000` (`SRM3KYE5`) + `0x41e000f00` (`FX6M`) 双物理内存门与 `FX6菜单.command` 本机浏览器体验入口
+
+1. **Candidates 256–258 排查结论（为何不能直接塞入 FX3 的 `fx3-rm-empty-provider-v3-setup.so`）**：
+   - **Candidate 256**：将 `fx3-rm-empty-provider-v3-setup.so` 置于 `im.elf` (`appFw.so`) 的 `LD_PRELOAD` 最前端时，其 constructor 抢先阻塞在 `/proc/native` 输入握手，导致 `appFw.so` native 初始化无法启动；
+   - **Candidate 257 & 258**：将其作为独立 helper 进程或置于 `LD_PRELOAD` 末尾时，虽然 FX6 Big6 菜单正常完成 `18 FILLRECT + 5 RECTBLIT`、`0 SEGV`，但 FX3 专用的 `bootin` / `/proc/native` 条件在 FX6 `appFw.so` 下不满足，`FX3_KEY96_READY` 线程未启动。
+
+2. **根治方案：在 `libgrm-fbinit25.c` (`im.elf` 渲染主循环内) 原生集成 `0x41df00000` (`SRM3KYE5`) 与 `0x41e000f00` (`FX6M`) 双物理内存输入门**：
+   - 由于 `libgrm-fbinit25.c` 的 `init_osd()` 已经在 `im.elf` 进程内打开 `/dev/mem` 并映射 `0x41e000000` (`osd41e`)，且 `_ZN3grm11FrameBuffer6updateEv` -> `flush_pixels_to_osd("update")` 在 `125s` 内以约 `25 Hz` 连续执行 `2,560+` 次，我们直接在 `libgrm-fbinit25.c` 中：
+     1. **映射 `0x41df00000` (`osd41df`)**：初始化与 FX3 `gate_input_usability.py` (`InputGate`) 完全兼容的 64 字节 `SRM3KYE5` (`0x3545594b334d5253ULL`) 物理内存头，并输出 `FX3_KEY96_READY phys=0x41df00000`；
+     2. **映射 `0x41e000f00` (`osd41e + 0x0f00`)**：初始化 `FX6M` (`0x4658364dU`) Big6 状态邮箱（保存 `seq`, `sel_box`, `fps_idx`, `shut_idx`, `iso_idx`, `nd_idx`, `look_idx`, `wb_idx`, `rec_state`, `ack_seq`, `flush_count`）；
+     3. **帧级轮询与即时重绘 (`poll_key_gate` + `fx6_redraw_big6_boxes`)**：每次 `flush_pixels_to_osd()` 执行时自动检测 `0x41df00000` 的 `step > done`（支持全部 7 个标准按键：`0x1ab` `MENU`、`0x3` `UP`、`0x30` `DOWN`、`0x15` `LEFT`、`0x1af` `RIGHT`、`0x1ac` `SET`、`0x1f8` `BACK/C4`），同步更新 `FX6M` 状态并回写 `done = step`、`donekey = key`；同时调用 `_ZN13app_adjchk_ui4view13update_screenEv(g_adjchk_view_self)`（动态微调焦点框 `Sprite` 颜色以触发原生 `ux::gfxeng::Sprite` dirty 标记）与 `fx6_redraw_big6_boxes()`，在同一帧将 4px 琥珀橙焦点高亮框（`0xFFFF9818`）与切换后的参数值刷入 `0x41e001000` (`gpe0.bin`)！
+
+3. **双击即用体验入口（[`outputs/fx3-vm-trial/FX6菜单.command`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/FX6%E8%8F%9C%E5%8D%95.command) + [`run_fx6_menu_trial.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/run_fx6_menu_trial.py)）**：
+   - 双击 `outputs/fx3-vm-trial/FX6菜单.command`（或终端运行 `./outputs/fx3-vm-trial/FX6菜单.command`），即可在本机浏览器打开 `http://127.0.0.1:8768/`；
+   - 支持 **即时 Big6 7 键交互预览**（无需等待虚拟机冷启动即可使用网页 7 键、鼠标点击 6 个 Big6 参数框或键盘方向键切换 `FPS / Shutter / ISO / ND / Base Look / WB / STBY·REC`）以及 **一键启动后台 FX6-on-FX3 QEMU 实机会话**（通过 GDB 物理内存门 `g` 实时写入 `0x41df00000` / `0x41e000f00` 并经 QMP `pmemsave 0x41e001000` 抓取实机显存帧）。
+   - 交互导航渲染验证图：[`fx6-259-interactive-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-259-interactive-menu-1024x540.png)（SHA-256: `7f27cdc4114f05286dd22e3716ccacb4eb67d4e2844ab99f0e691939716267a8`）。

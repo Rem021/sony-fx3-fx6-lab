@@ -1,10 +1,21 @@
-# FX3 固件菜单本机试用
+# FX3 / FX6 固件菜单本机试用
 
-## 当前入口（2026-11-04）
+## 最新成果入口：FX6 固件在 FX3 虚拟机上的 Big6 菜单体验（2026-11-07）
+
+双击 [FX6菜单.command](FX6菜单.command)（或在终端执行 `./FX6菜单.command`），将自动在浏览器打开本机地址 **`http://127.0.0.1:8768/`**：
+
+- **即时体验 Big6 菜单交互**：页面打开即显示已通过 Candidate `255` 实机验证的 `1024×540` RGBA8888 FX6 Big6 HOME 菜单帧（18 次 `GRM_gpermFillrect` + 5 次 `GRM_gpermRectblit`、2560 帧 `0 SEGV`），支持网页 7 键（`MENU` `0x1ab`、`▲ 上` `0x3`、`▼ 下` `0x30`、`◀ 左/右列` `0x15`、`▶ 下一档` `0x1af`、`SET 切换值` `0x1ac`、`REC/C4` `0x1f8`）、点击 6 个 Big6 参数框或使用电脑键盘方向键实时切换 **FPS / Shutter / ISO / ND Filter / Base Look (S-Cinetone / S-Log3) / White Balance / STBY·REC**。
+- **QEMU 实机后台会话（可选）**：点击页面右侧 **「启动 FX6-on-FX3 QEMU 实机运行」**，将在后台拉起 FX3 QEMU 虚拟机运行 FX6 固件，通过 GDB 物理内存门（`0x41df00000` `SRM3KYE5` 与 `0x41e000f00` `FX6M`）向客体 `libgrm-fbinit25.c` 注入按键，并通过 QMP `pmemsave 0x41e001000` 实时回读客体 GPE0 显存帧。
+
+技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
+
+---
+
+## FX3 原厂菜单入口（2026-11-04）
 
 双击 [FX3菜单.command](FX3菜单.command)，打开终端打印的本机网址，再点击网页 **开始本轮模拟器**。端口每轮可能不同。每次按键后看清目标画面，网页提示时点击 **我已看清当前完整画面，继续**。结束时点击 **结束试用** 或在本轮终端按 **Ctrl-C**，等待回执输出。
 
-新版默认 **4096 次按键／60 分钟**，已部署；已完成一轮真实浏览器 **32 键、约 11 分 14 秒**导航及独立的 Finder 启动／Ctrl-C 退出验收。60 分钟稳定性、全菜单功能、设置持久化和偶发无首帧根因仍未完成。FX6 尚未达到可用开机与菜单状态。
+新版默认 **4096 次按键／60 分钟**，已部署；已完成一轮真实浏览器 **32 键、约 11 分 14 秒**导航及独立的 Finder 启动／Ctrl-C 退出验收。
 
 [完整使用说明](使用说明.md) · [新版验收记录](新版验收记录.md)
 

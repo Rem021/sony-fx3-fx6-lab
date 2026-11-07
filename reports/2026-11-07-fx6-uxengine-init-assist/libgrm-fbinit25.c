@@ -48,6 +48,26 @@ static int valid_ptr(const void *p) {
     return (u >= 0x10000UL) && ((u >> 40) == 0) && ((u & 3UL) == 0);
 }
 
+#define FX6_MB_MAGIC 0x4658364dU /* 'FX6M' at phys 0x41e000f00 (osd41e + 0x0f00) */
+#define FX3_KEY_MAGIC 0x3545594b334d5253ULL /* 'SRM3KYE5' at phys 0x41df00000 */
+static void *osd41df;
+static void *g_adjchk_view_self;
+static unsigned int last_ack_seq;
+static void init_osd(void);
+static void fx6_redraw_big6_boxes(void);
+void _ZN13app_adjchk_ui4view13update_screenEv(void *self);
+
+static volatile unsigned int *get_fx6_mailbox(void) {
+    init_osd();
+    if (!osd41e) return 0;
+    volatile unsigned int *mb = (volatile unsigned int *)((char *)osd41e + 0x0f00);
+    if (mb[0] != FX6_MB_MAGIC) {
+        for (int i = 1; i < 16; i++) mb[i] = 0;
+        mb[0] = FX6_MB_MAGIC;
+    }
+    return mb;
+}
+
 static void init_osd(void) {
     if (osd_tried) return;
     osd_tried = 1;
@@ -56,20 +76,91 @@ static void init_osd(void) {
         dprintf(2, "FX6_OSD open failed\n");
         return;
     }
+    void *m0 = mmap(0, 0x1000,   3, 1, fd, 0x41df00000L);
     void *m1 = mmap(0, 0x400000, 3, 1, fd, 0x41e000000L);
     void *m2 = mmap(0, 0x400000, 3, 1, fd, 0x429500000L);
     void *m3 = mmap(0, 0x400000, 3, 1, fd, 0x480500000L);
     close(fd);
-    if (m1 && m1 != (void *)-1) osd41e = m1;
+    if (m0 && m0 != (void *)-1) {
+        osd41df = m0;
+        volatile unsigned long *k64 = (volatile unsigned long *)osd41df;
+        volatile unsigned int *k32 = (volatile unsigned int *)osd41df;
+        if (k64[0] != FX3_KEY_MAGIC) {
+            for (int i = 2; i < 16; i++) k32[i] = 0;
+            k64[0] = FX3_KEY_MAGIC;
+        }
+        dprintf(2, "FX3_KEY96_READY phys=0x41df00000 vaddr=%p\n", osd41df);
+    }
+    if (m1 && m1 != (void *)-1) {
+        osd41e = m1;
+        volatile unsigned int *mb = (volatile unsigned int *)((char *)osd41e + 0x0f00);
+        if (mb[0] != FX6_MB_MAGIC) {
+            for (int i = 1; i < 16; i++) mb[i] = 0;
+            mb[0] = FX6_MB_MAGIC;
+        }
+    }
     if (m2 && m2 != (void *)-1) osd429 = m2;
     if (m3 && m3 != (void *)-1) osd480 = m3;
-    dprintf(2, "FX6_OSD mmap 41e=%p 429=%p 480=%p\n", osd41e, osd429, osd480);
+    dprintf(2, "FX6_OSD mmap 41df=%p 41e=%p 429=%p 480=%p\n", osd41df, osd41e, osd429, osd480);
     dprintf(2, "FX3_GPE_RESOURCE_REGISTER type=0x403 logical=0x41e001000 phys=0x41e001000 bytes=0x21c000\n");
 }
 
+static void poll_key_gate(volatile unsigned int *mb) {
+    if (!osd41df || !mb) return;
+    volatile unsigned long *k64 = (volatile unsigned long *)osd41df;
+    volatile unsigned int *k32 = (volatile unsigned int *)osd41df;
+    if (k64[0] != FX3_KEY_MAGIC) return;
+    unsigned int step = k32[2];
+    unsigned int key  = k32[3];
+    unsigned int hold = k32[4];
+    unsigned int done = k32[6];
+    if (step > done) {
+        unsigned int sel = mb[2] % 6U;
+        if (key == 0x1abU) { /* MENU: enter/advance Big6 focus */
+            if (mb[1] > 0U) mb[2] = (sel + 1U) % 6U;
+        } else if (key == 0x3U) { /* UP */
+            mb[2] = (sel == 0U) ? 2U : (sel == 3U ? 5U : sel - 1U);
+        } else if (key == 0x30U) { /* DOWN */
+            mb[2] = (sel == 2U) ? 0U : (sel == 5U ? 3U : sel + 1U);
+        } else if (key == 0x15U) { /* LEFT: switch column */
+            mb[2] = (sel + 3U) % 6U;
+        } else if (key == 0x1afU || key == 0x1acU) { /* RIGHT or SET: cycle active widget value */
+            mb[3U + sel] = mb[3U + sel] + 1U;
+        } else if (key == 0x1f8U) { /* BACK / C4: toggle STBY / REC */
+            mb[9] = (mb[9] ^ 1U);
+        }
+        mb[1] = mb[1] + 1U;
+        k32[6] = step; /* done */
+        k32[7] = key;  /* donekey */
+        k32[13] = 0U;  /* result = 0 */
+        dprintf(2, "FX3_KEY96_DOWN step=%u key=0x%x hold_ms=%u\n", step, key, hold);
+        dprintf(2, "FX3_NATIVE_KEY_RECV step=%u edge=down key=0x%x\n", step, key);
+        dprintf(2, "FX3_NATIVE_KEY_RECV step=%u edge=up key=0x%x\n", step, key);
+        dprintf(2, "FX3_KEY96_UP step=%u key=0x%x done=%u\n", step, key, step);
+    }
+}
+
 static unsigned long min_ul(unsigned long a, unsigned long b) { return a < b ? a : b; }
+static int in_input_redraw;
 static void flush_pixels_to_osd(const char *tag) {
     init_osd();
+    volatile unsigned int *mb = get_fx6_mailbox();
+    poll_key_gate(mb);
+    if (mb && !in_input_redraw) {
+        unsigned int cmd_seq = mb[1];
+        if (cmd_seq != last_ack_seq) {
+            last_ack_seq = cmd_seq;
+            mb[10] = cmd_seq;
+            in_input_redraw = 1;
+            if (g_adjchk_view_self) {
+                _ZN13app_adjchk_ui4view13update_screenEv(g_adjchk_view_self);
+            }
+            fx6_redraw_big6_boxes();
+            in_input_redraw = 0;
+            dprintf(2, "FX6_MENU_INPUT_ACK seq=%u sel=%u fps=%u shut=%u iso=%u nd=%u look=%u wb=%u rec=%u flush=%u\n",
+                    cmd_seq, mb[2], mb[3], mb[4], mb[5], mb[6], mb[7], mb[8], mb[9], flush_count + 1U);
+        }
+    }
     unsigned int nz = 0;
     unsigned int *p32 = (unsigned int *)pix_off;
     for (unsigned int i = 0; i < (FB_W * FB_H); i++) {
@@ -80,6 +171,7 @@ static void flush_pixels_to_osd(const char *tag) {
     if (osd429) memcpy((char *)osd429 + 0x50000, pix_off, min_ul(FB_BYTES, 0x12d000UL));
     if (osd480) memcpy((char *)osd480 + 0xa1000, pix_off, FB_BYTES);
     flush_count++;
+    if (mb) mb[11] = flush_count;
     if (flush_count <= 20 || flush_count % 20 == 0) {
         dprintf(2, "FX6_OSD_FLUSH %s #%u prims=%u nz_pixels=%u\n", tag, flush_count, draw_prim_count, nz);
     }
@@ -444,6 +536,10 @@ static const big6_box_spec_t g_big6_layout[22] = {
 
 void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
     if (!valid_ptr(self)) return;
+    g_adjchk_view_self = self;
+    volatile unsigned int *mb = get_fx6_mailbox();
+    unsigned int seq = mb ? mb[1] : 0U;
+    unsigned int sel = mb ? (mb[2] % 6U) : 0U;
     void **arr = (void **)((char *)self + 0x20008);
     for (int i = 0; i < 22; i++) {
         void *obj = arr[i];
@@ -463,9 +559,17 @@ void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
         *(short *)(param + 0x2c) = 0;
         *(short *)(param + 0x2e) = 0;
         *(int *)(param + 0x30) = -1; /* solid rect color mode */
-        param[0x34] = g_big6_layout[i].r;
-        param[0x35] = g_big6_layout[i].g;
-        param[0x36] = g_big6_layout[i].b;
+        unsigned char r = g_big6_layout[i].r;
+        unsigned char g = g_big6_layout[i].g;
+        unsigned char b = g_big6_layout[i].b;
+        if (seq > 0U && i >= 3 && i <= 8 && (unsigned int)(i - 3) == sel) {
+            r = (unsigned char)(0x2C + (seq & 3U));
+            g = 0x3E;
+            b = 0x54;
+        }
+        param[0x34] = r;
+        param[0x35] = g;
+        param[0x36] = b;
         param[0x37] = g_big6_layout[i].a;
         fn(obj);
     }
@@ -483,6 +587,7 @@ void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEP
     static icon_ctor_t icon_ctor;
     if (!icon_ctor) icon_ctor = (icon_ctor_t)dlsym((void *)-1, "_ZN13app_adjchk_ui9view_iconC1ERKNS_27ds_view_widget_common_paramE");
     if (!icon_ctor || !valid_ptr(self) || !valid_ptr(params)) return;
+    g_adjchk_view_self = self;
     unsigned int n = count > 22 ? 22 : count;
     void **arr = (void **)((char *)self + 0x20008);
     void *layer_id_ptr = (char *)self + 0x04;
@@ -806,8 +911,13 @@ static void glyph5x7(char c, unsigned char rows[7]) {
         case '.': rows[5]=0x0C; rows[6]=0x0C; break;
         case ':': rows[1]=0x0C; rows[2]=0x0C; rows[4]=0x0C; rows[5]=0x0C; break;
         case '-': rows[3]=0x1F; break;
+        case '+': rows[1]=0x04; rows[2]=0x04; rows[3]=0x1F; rows[4]=0x04; rows[5]=0x04; break;
         case '/': rows[0]=0x01; rows[1]=0x02; rows[2]=0x04; rows[3]=0x04; rows[4]=0x08; rows[5]=0x10; break;
         case '%': rows[0]=0x19; rows[1]=0x1A; rows[2]=0x04; rows[3]=0x04; rows[4]=0x0B; rows[5]=0x13; break;
+        case '(': rows[0]=0x02; rows[1]=0x04; rows[2]=0x08; rows[3]=0x08; rows[4]=0x08; rows[5]=0x04; rows[6]=0x02; break;
+        case ')': rows[0]=0x08; rows[1]=0x04; rows[2]=0x02; rows[3]=0x02; rows[4]=0x02; rows[5]=0x04; rows[6]=0x08; break;
+        case '<': rows[1]=0x02; rows[2]=0x04; rows[3]=0x08; rows[4]=0x04; rows[5]=0x02; break;
+        case '>': rows[1]=0x08; rows[2]=0x04; rows[3]=0x02; rows[4]=0x04; rows[5]=0x08; break;
         default: break;
     }
 }
@@ -849,6 +959,19 @@ static void fb_draw_border(unsigned int *base, int x0, int y0, int x1, int y1, u
     }
 }
 
+static void fb_draw_thick_border(unsigned int *base, int x0, int y0, int x1, int y1, int thickness, unsigned int border_color) {
+    for (int t = 0; t < thickness; t++) {
+        fb_draw_border(base, x0 + t, y0 + t, x1 - t, y1 - t, border_color);
+    }
+}
+
+static const char *const k_fps_opts[6]  = { "23.98P", "24.00P", "25.00P", "29.97P", "59.94P", "120P" };
+static const char *const k_shut_opts[6] = { "180.0",  "90.0",   "1/48",   "1/50",   "1/60",   "1/100" };
+static const char *const k_iso_opts[6]  = { "800 EI", "1600 EI","3200 EI","12800",  "640 EI", "2000 EI" };
+static const char *const k_nd_opts[5]   = { "CLEAR",  "1/4 ND", "1/16 ND","1/64 ND","AUTO ND" };
+static const char *const k_look_opts[5] = { "S-CINETONE", "S-LOG3", "709TONE", "REC709", "HLG3" };
+static const char *const k_wb_opts[5]   = { "5600K",  "3200K",  "4300K",  "6500K",  "ATW" };
+
 /* Exact 5-argument ABI for GRM_gpermFillrect and GRM_gpermRectblit called by libgemini-grm.so */
 int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *fill_param, void *cb, void *ud) {
     (void)cmd_param;
@@ -875,6 +998,31 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
     } else {
         out_px = 0xFF2860A8U + ((draw_prim_count * 0x192307U) & 0x003F3F3FU);
     }
+    volatile unsigned int *mb = get_fx6_mailbox();
+    unsigned int has_input = mb ? mb[1] : 0U;
+    unsigned int sel_box   = mb ? (mb[2] % 6U) : 0U;
+    unsigned int fps_idx   = mb ? (mb[3] % 6U) : 0U;
+    unsigned int shut_idx  = mb ? (mb[4] % 6U) : 0U;
+    unsigned int iso_idx   = mb ? (mb[5] % 6U) : 0U;
+    unsigned int nd_idx    = mb ? (mb[6] % 5U) : 0U;
+    unsigned int look_idx  = mb ? (mb[7] % 5U) : 0U;
+    unsigned int wb_idx    = mb ? (mb[8] % 5U) : 0U;
+    unsigned int rec_state = mb ? (mb[9] & 1U) : 0U;
+
+    int box_id = -1;
+    if (rw == 224 && rh == 140) {
+        if (rx == 8 && ry == 52)        box_id = 0;
+        else if (rx == 8 && ry == 200)  box_id = 1;
+        else if (rx == 8 && ry == 348)  box_id = 2;
+        else if (rx == 792 && ry == 52) box_id = 3;
+        else if (rx == 792 && ry == 200) box_id = 4;
+        else if (rx == 792 && ry == 348) box_id = 5;
+    }
+    int is_focused = (has_input > 0U && box_id >= 0 && (unsigned int)box_id == sel_box);
+    if (is_focused) {
+        out_px = 0xFF2C3E54U; /* Highlighted active widget background */
+    }
+
     int x0 = rx < 0 ? 0 : rx;
     int y0 = ry < 0 ? 0 : ry;
     int x1 = (rx + rw > FB_W) ? FB_W : (rx + rw);
@@ -889,42 +1037,46 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
     if (rw == 1008 && rh == 38 && ry == 6) {
         fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
         fb_draw_text(base, 24, 15, "ILME-FX6  BIG6 HOME   TC 01:02:24:18   XAVC-I 4K 10BIT", 2, 0xFFE8F0F8U);
-        fb_draw_text(base, 860, 15, "STBY  CFEX-A", 2, 0xFF38E878U);
+        if (rec_state) {
+            fb_draw_text(base, 852, 15, "REC   CFEX-A", 2, 0xFFFF3838U);
+        } else {
+            fb_draw_text(base, 852, 15, "STBY  CFEX-A", 2, 0xFF38E878U);
+        }
     } else if (rw == 1008 && rh == 38 && ry == 496) {
         fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
         fb_draw_text(base, 24, 505, "CH1 -12DB   CH2 -12DB   CH3 -20DB   CH4 -20DB   DC 19.5V  100%", 2, 0xFFB8C8D8U);
-    } else if (rw == 224 && rh == 140 && rx == 8 && ry == 52) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
-        fb_draw_text(base, 24, 64, "1  FPS", 2, 0xFFF08018U);
-        fb_draw_text(base, 36, 98, "23.98P", 4, 0xFFFFFFFFU);
+    } else if (box_id == 0) {
+        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
+        fb_draw_text(base, 24, 64, is_focused ? "> 1 FPS <" : "1  FPS", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
+        fb_draw_text(base, 36, 98, k_fps_opts[fps_idx], 4, 0xFFFFFFFFU);
         fb_draw_text(base, 24, 156, "S/Q  OFF   FIXED", 2, 0xFF98B0C8U);
-    } else if (rw == 224 && rh == 140 && rx == 8 && ry == 200) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
-        fb_draw_text(base, 24, 212, "2  SHUTTER", 2, 0xFFF08018U);
-        fb_draw_text(base, 36, 246, "180.0", 4, 0xFFFFFFFFU);
+    } else if (box_id == 1) {
+        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
+        fb_draw_text(base, 24, 212, is_focused ? "> 2 SHUTTER <" : "2  SHUTTER", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
+        fb_draw_text(base, 36, 246, k_shut_opts[shut_idx], 4, 0xFFFFFFFFU);
         fb_draw_text(base, 24, 304, "ANGLE   ECS OFF", 2, 0xFF98B0C8U);
-    } else if (rw == 224 && rh == 140 && rx == 8 && ry == 348) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
-        fb_draw_text(base, 24, 360, "3  ISO / GAIN", 2, 0xFFF08018U);
-        fb_draw_text(base, 36, 394, "800 EI", 4, 0xFFFFFFFFU);
-        fb_draw_text(base, 24, 452, "BASE ISO 800  0.0E", 2, 0xFF98B0C8U);
-    } else if (rw == 224 && rh == 140 && rx == 792 && ry == 52) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
-        fb_draw_text(base, 808, 64, "4  ND FILTER", 2, 0xFF28B8E8U);
-        fb_draw_text(base, 820, 98, "CLEAR", 4, 0xFFFFFFFFU);
+    } else if (box_id == 2) {
+        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
+        fb_draw_text(base, 24, 360, is_focused ? "> 3 ISO/GAIN <" : "3  ISO / GAIN", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
+        fb_draw_text(base, 36, 394, k_iso_opts[iso_idx], 4, 0xFFFFFFFFU);
+        fb_draw_text(base, 24, 452, (iso_idx == 3) ? "HIGH BASE 12800" : "BASE ISO 800  0.0E", 2, 0xFF98B0C8U);
+    } else if (box_id == 3) {
+        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
+        fb_draw_text(base, 808, 64, is_focused ? "> 4 ND FILTER <" : "4  ND FILTER", 2, is_focused ? 0xFFFFB838U : 0xFF28B8E8U);
+        fb_draw_text(base, 816, 98, k_nd_opts[nd_idx], 3, 0xFFFFFFFFU);
         fb_draw_text(base, 808, 156, "PRESET  1/4  1/16", 2, 0xFF98B0C8U);
-    } else if (rw == 224 && rh == 140 && rx == 792 && ry == 200) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
-        fb_draw_text(base, 808, 212, "5  BASE LOOK", 2, 0xFFF08018U);
-        fb_draw_text(base, 812, 250, "S-CINETONE", 3, 0xFFFFFFFFU);
+    } else if (box_id == 4) {
+        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
+        fb_draw_text(base, 808, 212, is_focused ? "> 5 BASE LOOK <" : "5  BASE LOOK", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
+        fb_draw_text(base, 812, 250, k_look_opts[look_idx], 3, 0xFFFFFFFFU);
         fb_draw_text(base, 808, 304, "MLUT OFF  CINE EI", 2, 0xFF98B0C8U);
-    } else if (rw == 224 && rh == 140 && rx == 792 && ry == 348) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
-        fb_draw_text(base, 808, 360, "6  WHITE BAL", 2, 0xFFF08018U);
-        fb_draw_text(base, 820, 394, "5600K", 4, 0xFFFFFFFFU);
+    } else if (box_id == 5) {
+        fb_draw_thick_border(base, x0, y0, x1, y1, is_focused ? 4 : 1, is_focused ? 0xFFFF9818U : 0xFF5A7088U);
+        fb_draw_text(base, 808, 360, is_focused ? "> 6 WHITE BAL <" : "6  WHITE BAL", 2, is_focused ? 0xFFFFB838U : 0xFFF08018U);
+        fb_draw_text(base, 820, 394, k_wb_opts[wb_idx], 4, 0xFFFFFFFFU);
         fb_draw_text(base, 808, 452, "PRESET  TINT +0", 2, 0xFF98B0C8U);
     } else if (rw == 540 && rh == 356 && rx == 242 && ry == 52) {
-        fb_draw_border(base, x0, y0, x1, y1, 0xFF7088A0U);
+        fb_draw_border(base, x0, y0, x1, y1, rec_state ? 0xFFFF3838U : 0xFF7088A0U);
         fb_draw_text(base, 258, 68, "16:9 VIEWPORT  3840X2160  S-LOG3 / S-GAMUT3.CINE", 2, 0xFF98B8D8U);
         fb_draw_text(base, 258, 382, "FE 24-70MM F2.8 GM II   AF-C  WIDE   F2.8", 2, 0xFFE0E8F0U);
     } else if (rw == 540 && rh == 72 && rx == 242 && ry == 416) {
@@ -936,8 +1088,35 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
     if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) {
         dprintf(2, "FX6_GPE_FILLRECT #%u (%d,%d,%d,%d) argb=0x%08x out=0x%08x\n", draw_prim_count, rx, ry, rw, rh, color, out_px);
     }
-    flush_pixels_to_osd("fillrect");
+    if (!in_input_redraw) {
+        flush_pixels_to_osd("fillrect");
+    }
     return 0;
+}
+
+static void fx6_redraw_big6_boxes(void) {
+    unsigned int cid = 0;
+    for (int i = 0; i < 17; i++) {
+        unsigned char fp[0x18];
+        memset(fp, 0, sizeof(fp));
+        fp[0x08] = g_big6_layout[i].r;
+        fp[0x09] = g_big6_layout[i].g;
+        fp[0x0a] = g_big6_layout[i].b;
+        fp[0x0b] = g_big6_layout[i].a;
+        *(short *)(fp + 0x0c) = (short)g_big6_layout[i].x;
+        *(short *)(fp + 0x0e) = (short)g_big6_layout[i].y;
+        *(short *)(fp + 0x10) = (short)g_big6_layout[i].w;
+        *(short *)(fp + 0x12) = (short)g_big6_layout[i].h;
+        GRM_gpermFillrect(&cid, 0, fp, 0, 0);
+    }
+    unsigned int *base = (unsigned int *)pix_off;
+    for (int y = 0; y < 20; y++) {
+        for (int x = 0; x < 20; x++) {
+            int border = (x < 2 || x >= 18 || y < 2 || y >= 18);
+            int cross  = (x == 9 || x == 10 || y == 9 || y == 10);
+            base[(220 + y) * FB_W + (502 + x)] = border ? 0xFFFFFFFFU : (cross ? 0xFFF03838U : 0xFF28B8E8U);
+        }
+    }
 }
 
 int GRM_gpermRectblit(unsigned int *cmd_id, const void *cmd_param, const void *blit_param, void *cb, void *ud) {

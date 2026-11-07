@@ -1002,6 +1002,32 @@ with open('/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so', 'r+b') as f:
    - 修复 `0x2d0 -> 0x300` placement 步长后，`stella::TreeNode::getNextActiveSibling()` **不再在 `widget[1]` 触发 `FX6_TREENODE_SKIP`**，而是顺畅遍历 `Widget #00` 至 `Widget #17`！
    - 导出的 [`fx6-254-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-254-menu-1024x540.png) 完整呈现了顶部状态栏（`ILME-FX6 BIG6 HOME`、TC 时码、`XAVC-I 4K 10BIT`、`STBY CFEX-A`）、左右六大核心参数面板（`1 FPS 23.98P`、`2 SHUTTER 180.0`、`3 ISO/GAIN 800 EI`、`4 ND FILTER CLEAR`、`5 BASE LOOK S-CINETONE`、`6 WHITE BAL 5600K`）、中央 `16:9 VIEWPORT` 视口与状态卡，以及底部四通道音频电平与电源状态栏。
 
+---
+
+### 10.4 Round 255 (`cp-bind-b7bc9240`, `guest-hybrid-fx6kernel-capid-grmreal255-sprite.cpio`) 终极收官：22 控件全量渲染（`18 FILLRECT + 5 RECTBLIT = 23 prims`）+ `2,560` 帧 `0 SEGV / 0 ABORT` 完美闭环
+
+1. **验证归档信息（详见 [`EVIDENCE-255-MENU.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md) 与 [`fx6-255-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-255-menu-1024x540.png)）**：
+   - **候选镜像**：`guest-hybrid-fx6kernel-capid-grmreal255-sprite.cpio`（SHA-256: `daaa5d33c77ca18dfb3d140f811c3a5fd69f10f17cbc5437190cde55dc49e79f`）
+   - **运行目录**：`runs/cp-bind-b7bc9240`
+   - **QMP 物理显存抓取**：`gpe0.bin`（`0x41e001000`，`2,211,840` 字节 = `1024 × 540 × 4`，SHA-256: `e8b1de35275d35397f389eb48c40df097b9390023f9b81f82ab3459c1a6d7773`）
+   - **导出 PNG 图像**：[`fx6-255-menu-1024x540.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/fx6-255-menu-1024x540.png)（`10,349` 字节，`1024×540` RGBA8888，共 **19 种独立色彩**，SHA-256: `920df2e1436a59bf0828cd13662e7d2aec733447f5f4d83b692560f43152c50b`）
+
+2. **串口实测全链路闭环证据（18 次 `GRM_gpermFillrect` + 5 次 `GRM_gpermRectblit` + 2,560 帧连续刷新 0 崩溃）**：
+   ```text
+   FX6_GPE_FILLRECT #1..#18
+   FX6_GPE_RECTBLIT #19 dst=(502,220,20,20) src=0x7f95a42100
+   FX6_GPE_RECTBLIT #20 dst=(502,220,8,8)
+   FX6_GPE_RECTBLIT #21 dst=(513,220,9,8)
+   FX6_GPE_RECTBLIT #22 dst=(502,231,8,9)
+   FX6_GPE_RECTBLIT #23 dst=(513,231,9,9)
+   FX6_OSD_FLUSH update #2560 prims=23 nz_pixels=552960
+   APPFW_SEGV count: 0
+   FX6_ABORT_BT count: 0
+   ```
+   - 在 `ensure_icon_raw_img()` 改用 `BitmapImpl::C1` 直接构造静态 `g_icon_bmp_storage` 后，第 17~21 号十字准星图标控件全部顺畅走完 `ux::gfxeng::Sprite::renderRect` -> `ux::core::GraphicsDraw::bitBlit` / `stretchBlit` -> `rotateBlit` -> `gemini::grm::GraphicsContextGRM::drawImage` -> **`GRM_gpermRectblit` (`#19..#23`)**；
+   - 全程 `125s` 观测窗口内完成 **`2,560` 帧渲染循环（`prims=23`、`nz_pixels=552,960`）**，**`SEGV = 0`、`ABORT = 0`**！
+
+
 
 
 

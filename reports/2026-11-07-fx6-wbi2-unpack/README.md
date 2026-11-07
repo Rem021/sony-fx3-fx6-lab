@@ -483,3 +483,73 @@ APPFW_SEGV addr=0x1b7f94027f8 pc=...
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 16. 171/172：getScreenRotate 与 dladdr 后的新崩溃
+
+### 16.1 getScreenRotate 早返回
+
+170 把 `libgrm+0x22c28` 改成 NOP 后，handler 没输出 maps。171 改为在函数入口：
+
+```text
+0x22c18: mov w0, #0
+0x22c1c: ret
+```
+
+即 `FBResourceManager::getScreenRotate()` 直接返回 0，绕过整个函数。
+
+结果仍无 maps，但 crash PC 转成：
+
+```text
+pc=0x7f78d3ce44
+GraphicsEngine ctor=0x7f78d4450c
+```
+
+用 ctor 偏移 `0x8350c` 反推 libuxengine base：
+
+```text
+base = 0x7f78cc1000
+pc offset = 0x7be44
+```
+
+`libuxengine+0x7be44` 符号：
+
+```text
+pgList<pgMap<ux::core::ID, ux::gfxeng::ScreenBase*>::MapItem>::Item::Leave()
+```
+
+说明已经进入 **screen map 列表**，但列表/节点为空或已损坏。
+
+### 16.2 dladdr 跳过
+
+172 在 169 的 maps-first handler 基础上，把两个 `bl dladdr` 改成 `mov w0,#0`，试图跳过 dladdr、直接读 `/proc/self/maps`。
+
+结果：
+
+```text
+APPFW_SEGV addr=0x1b7f94027f8 pc=0x7f78d3ce44
+APPFW_X0=...
+```
+
+handler 仍只输出 X0 后截断，maps 未出。说明崩溃上下文已不适合在 handler 里继续调用 libc。
+
+### 16.3 修正后的判断
+
+- 早期 `libgemini+0x8cc0` 已绕过；
+- `FBResourceManager::getScreenRotate` 已早返回；
+- 现在 crash 在 **`libuxengine+0x7be44` 的 `pgList::Leave()`**，属于 screen map 容器；
+- 不是单纯空成员 write，而是 **列表节点/容器状态** 问题；
+- 继续 NOP 单条指令的收益下降，需要看 `pgList::Leave()` 的调用点和 `ScreenBase*` map 的构建。
+
+### 16.4 下一步
+
+1. 反汇编 `libuxengine+0x7be44`，看 `Leave()` 对 `this` 的解引用；
+2. 找 `pgList::Leave()` 的调用点（`createScreen3D`/`Screen3D` 构造）；
+3. 若 `this` 来自未初始化的全局/空 map，补初始化或跳过该 screen map 操作；
+4. 仍保持 FX3 平台/QEMU/DTB 不变。
+
+## 17. 边界
+
+- 候选 CPIO 只改本地库/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

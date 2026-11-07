@@ -5,7 +5,7 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-06T16:42:58.148Z`
-- **Updated At**: `2026-11-07T15:12:25.380Z`
+- **Updated At**: `2026-11-07T15:13:35.406Z`
 - **Captured Messages (User / Assistant)**: `5`
 
 ---
@@ -31,7 +31,7 @@
 ### 2. 为什么之前是“左三右三 + 十字准星”，而真正的 FX6 三大屏幕是什么结构？
 
 1. **此前的成因**：
-   - ��期 Candidates `254`–`271` 挂载的是 39 MB 工厂校准模块 `AdjChkConfig.so`（内置 22 个槽位，其中 `#17..#21` 是工厂触控屏校准十字准星），而手写的 `g_big6_layout` 把 6 个参数放在了左右两列。
+   - 早期 Candidates `254`–`271` 挂载的是 39 MB 工厂校准模块 `AdjChkConfig.so`（内置 22 个槽位，其中 `#17..#21` 是工厂触控屏校准十字准星），而手写的 `g_big6_layout` 把 6 个参数放在了左右两列。
 2. **从 `appFw.so` 反解出的原厂三大屏幕真实控件表**：
    - **Screen 0 — 原厂 Big6 (HOME) 3×2 状态屏 (`scr7286_0001`, `.data.rel.ro` `0x451ab28`, 57 个控件)**：
      - **上排 3 个大框 (`No113..No115_SelectButton`)**：左 **FPS** (`23.98 / S&Q 60 FPS`)、中 **ISO/Gain** (`800 EI / Base ISO 800`)、右 **Shutter** (`180.0° / Angle`)；

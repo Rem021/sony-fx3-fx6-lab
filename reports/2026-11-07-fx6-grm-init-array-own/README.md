@@ -367,10 +367,10 @@ libux_core:
 | 1 | libuxengine | `0x74ab8` | `br x2`，GOT `0xc1fc0` | symbol `_ITM_registerTMCloneTable` | **不调用三目标**（间接到 ITM 表） |
 | 2 | libuxengine | `0x70a20` | `br x17`，PLT `0xc2e38` | `ux::core::Vector2::Vector2()` | **不调用三目标** |
 | 3 | libux_core | `0x23e28` | `br x2`，`.got 0x46fa0` | 数组 `0x486b0..0x486b0` 长度 0；`br` 不可达 | **不调用三目标**（空析构表，GOT 未读取） |
-| 4 | libux_core | `0x22ac0` | `br x17`，PLT `0x470bf8` | `__cxa_atexit` | **不调用三目标** |
-| 5 | libux_core | `0x22480` | `br x17`，PLT `0x4708d8` | `ux::core::Color::Color(unsigned char, ...)` | **不调用三目标** |
-| 6 | libux_core | `0x228f0` | `br x17`，PLT `0x470b10` | `ux::core::ID::ID()` | **不调用三目标** |
-| 7 | libux_core | `0x22eb0` | `br x17`，PLT `0x470df0` | `ux::core::Vector2::Vector2(float, float)` | **不调用三目标** |
+| 4 | libux_core | `0x22ac0` | `br x17`，PLT `0x47bf8` | `__cxa_atexit` | **不调用三目标** |
+| 5 | libux_core | `0x22480` | `br x17`，PLT `0x478d8` | `ux::core::Color::Color(unsigned char, ...)` | **不调用三目标** |
+| 6 | libux_core | `0x228f0` | `br x17`，PLT `0x47b10` | `ux::core::ID::ID()` | **不调用三目标** |
+| 7 | libux_core | `0x22eb0` | `br x17`，PLT `0x47df0` | `ux::core::Vector2::Vector2(float, float)` | **不调用三目标** |
 
 计数：
 
@@ -584,12 +584,12 @@ libux_core:
 | 方法 | 结果 |
 |---|---|
 | `DT_RELR` / `DT_RELRSZ` | 都是 **0**；无 `.relr.dyn` |
-| `.rela.dyn`/`.rela.plt` @ `0x46fa0` | **无条目** |
-| `.got` 槽值 `0x46fa0` | **0x0000000000000000** |
+| `.rela.dyn` @ `0x46fa0` | **1 个 `R_AARCH64_GLOB_DAT`：`_ITM_registerTMCloneTable`** |
+| `.got` 槽值 `0x46fa0`（文件预重定位） | **0x0000000000000000**；loader 由 GLOB_DAT 填 `_ITM_registerTMCloneTable` |
 | `.got` 相邻槽 `0x46f80..0x46fc0` | 全 0 |
 | `.dynsym`/`.symtab` 附近符号 | 无；最近只有 `__end__` 等 BSS 边界 |
 | `__cxa_finalize` | 弱导入 `__cxa_finalize@GLIBC_2.17`，但无 GOT reloc 指向 `0x46fa0` |
-| `_ITM_registerTMCloneTable` | 弱导入；与 `0x46fa0` 无 reloc 关联 |
+| `_ITM_registerTMCloneTable` | 弱导入；**`0x46fa0` 的 GLOB_DAT 符号** |
 | `DT_FINI_ARRAY` | `0x45740`，size 8；与 `0x46fa0` 无联动 |
 | 跨库 `r_addend == 0x46fa0` | **0 个** |
 | `0x23e28` 数组 | start=end=`0x486b0`，长度 0 |
@@ -597,13 +597,13 @@ libux_core:
 
 ### 13.4 定性
 
-`0x46fa0` 是一个 **零值、无 relocation、无符号的 `.got` 槽位**。
+`0x46fa0` 是 **`_ITM_registerTMCloneTable` 的 `.got` 槽位**（`R_AARCH64_GLOB_DAT`；文件预重定位值为 0，loader 填 ITM 表）。
 
 - 它不是 `InitializeIF`/`sys_createApplication`/`GraphicsEngine` 初始化指针；
-- 它没有 `__cxa_finalize`/`_ITM`/`DT_FINI_ARRAY` 的 reloc 关联；
+- 它关联 `_ITM_registerTMCloneTable`，不是 `__cxa_finalize`/`DT_FINI_ARRAY`，也不是三目标；
 - 由于 `0x23e28` 的数组长度为 0，`ldr x2,[0x46fa0]`/`br x2` 不会执行；
-- 即使假设数组非空，槽值为 0，`cbz x2` 也会跳到 `ret`，不会调用任何函数；
-- 因此它最多是 **未使用的 GOT padding/保留槽**；无法从静态信息给出更具体的名字，但**不影响“不调用三目标”的结论**。
+- 即使假设数组非空且 ITM 指针非空，也只会调用 ITM 表，不是三目标；
+- 因此它是 **未使用/不可达的 ITM GOT 槽**，**不影响“不调用三目标”的结论**。
 
 ### 13.5 独立复核抽查
 
@@ -615,10 +615,30 @@ libux_core:
 | `.got.plt` 范围 | `0x46fe8..0x484f8` |
 | `.data.rel.ro` 范围 | `0x45750..0x46940` |
 | `.bss` 范围 | `0x486b0..0x48868` |
-| `0x46fa0` | 在 `.got`；值为 0；无 reloc |
+| `0x46fa0` | 在 `.got`；GLOB_DAT `_ITM_registerTMCloneTable`；文件预重定位 0 |
 | `0x486b0` | 在 `.bss`；数组无表项 |
 | `0x46fa0` 跨库引用 | 0 |
 | `0x23e28` 目标调用 | 0 |
+
+### 13.5.1 7 helper PLT/GOT 目标独立复核
+
+| helper | reloc | symbol | 三目标 |
+|---|---|---|---:|
+| `0x74ab8` | `.rela.dyn @ 0xc1fc0` | `_ITM_registerTMCloneTable` | 否 |
+| `0x70a20` | `.rela.plt @ 0xc2e38` | `ux::core::Vector2::Vector2()` | 否 |
+| `0x23e28` | `.rela.dyn @ 0x46fa0` | `_ITM_registerTMCloneTable` | 否 |
+| `0x22ac0` | `.rela.plt @ 0x47bf8` | `__cxa_atexit` | 否 |
+| `0x22480` | `.rela.plt @ 0x478d8` | `ux::core::Color::Color(unsigned char, ...)` | 否 |
+| `0x228f0` | `.rela.plt @ 0x47b10` | `ux::core::ID::ID()` | 否 |
+| `0x22eb0` | `.rela.plt @ 0x47df0` | `ux::core::Vector2::Vector2(float, float)` | 否 |
+
+计数：**不调用 7 / 无法判定 0 / 调用 0**。
+
+纠正记录：
+
+- `0x23e28` 的槽位是 `0x46fa0`，不是 `0x460fa0`；
+- `libux_core` 的 4 个 PLT GOT 地址应是 `0x47bf8/0x478d8/0x47b10/0x47df0`，早期写成 `0x470bf8/0x4708d8/0x470b10/0x470df0` 是把 `#0xbf8` 等当成 `0x0bf8` 的拼接错误；
+- 纠正后目标符号不变，仍全部不是三目标。
 
 ### 13.6 实测 vs 推断 vs 缺失
 
@@ -626,7 +646,7 @@ libux_core:
 
 - 实际地址 `0x46fa0`（不是 `0x460fa0`）；
 - `.got`/`.got.plt`/`.data.rel.ro`/`.bss` 范围；
-- `0x46fa0` 槽值 0、无 reloc、无符号；
+- `0x46fa0` 有 GLOB_DAT `_ITM_registerTMCloneTable`；文件预重定位 0；
 - `DT_RELR` 为 0；无 `.relr.dyn`；
 - `DT_FINI_ARRAY=0x45740`；
 - 跨库 addend 0 个；
@@ -634,13 +654,13 @@ libux_core:
 
 **推断**：
 
-- `0x46fa0` 是未使用的 GOT padding/保留槽；
-- 它不承载可命名的析构/初始化函数指针；
+- `0x46fa0` 是 ITM clone-table GOT 槽；数组空，实际不可达；
+- 它不承载三目标函数指针；
 - `0x23e28` 是空析构表。
 
 **缺失**：
 
-- `0x46fa0` 的更具体用途（没有符号/reloc，静态不可命名；不影响结论）；
+- `0x46fa0` 的 ITM 槽是否运行（数组空，静态不可达；不影响结论）；
 - 运行时 `[0x486f0]` 值；
 - 运行时 `GRM_fbrmInitialize` 是否命中；
 - 运行时断点仍待用户批准。
@@ -649,6 +669,6 @@ libux_core:
 
 - `0x23e28` 仍为 **不调用三目标**；
 - 7 个 helper 计数仍为 **不调用 7 / 无法判定 0 / 调用 0**；
-- `0x46fa0` 的最终定性是 **零值、无 reloc、未使用的 `.got` 槽**，不改变任何结论。
+- `0x46fa0` 的最终定性是 **`_ITM_registerTMCloneTable` 的 `.got` 槽；数组空、不可达**，不改变任何结论。
 
 本轮**未执行**任何运行时步骤，也未开 §14。

@@ -1067,3 +1067,76 @@ APPFW_SEGV addr=pc=0x7faf714c28
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 32. 184–189：零写入、UIResponse 与 ctor 取舍
+
+### 32.1 184：跳过 0x48800/0x48810 store
+
+```text
+0x101898c  str x20,[x21]
+0x10189c8  str x20,[x22,#0x10]
+```
+
+NOP 后，串口仍打印 `patched 0x48800`（无条件日志），但 slot 不再被零写入覆盖。
+
+新 crash：
+
+```text
+libux_core+0x310ec
+GraphicsSystem::setUIResponseRect
+```
+
+### 32.2 185–187：跳过 UIResponse / 手动 ctor
+
+- 185：`setUIResponseRect 0x310e0 -> ret`
+- 186：跳过手动 ctor `0x8df0 blr` 与 `m_instance 0x8e34 str`
+- 187：整组 `setUIResponse*` setters 入口 ret
+
+187 结果：
+
+```text
+GraphicsEngine ctor=...
+GraphicsEngine ctor returned   （无条件日志）
+gfxeng=... createScreen3D=... drawFramebuffer=...
+ge=(nil)
+```
+
+即手动 ctor 被 NOP，native `m_instance` 仍为空。
+
+### 32.3 188：恢复手动 ctor
+
+恢复 `0x8df0 blr` 与 `0x8e34 str` 后：
+
+```text
+GraphicsEngine ctor=...
+APPFW_SEGV addr=pc=0x7f98cc0c28
+```
+
+回到 `base+0x130c28` 崩溃。
+
+### 32.4 189：跳过 runtime patch
+
+再 NOP appfw-launch 对 `0x30e50`/`0x30e68`/`gemini 0x8cc0` 的 runtime store。
+
+结果：
+
+```text
+GraphicsEngine ctor=...
+APPFW_SEGV addr=0x7fab06a560 pc=0x7fab0dce50
+```
+
+仍未拿到 `PC_MODULE`，无画面。
+
+### 32.5 结论
+
+- 跳过零写入能避免 `[0x48800]` 被覆盖，但 `GraphicsSystem` 回调链仍崩；
+- 跳过手动 ctor 后 `gfx()` 返回 NULL，native `m_instance` 没建立；
+- 恢复手动 ctor 又回到 `0x130c28`；
+- 当前主路径应是确认 `UXEngine::initialize()`/`GraphicsEngine::sys_initialize()` 是否执行，而不是继续补 ctor。
+
+## 33. 边界
+
+- 候选 CPIO 只改本地库/launcher/init 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

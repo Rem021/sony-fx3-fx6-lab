@@ -685,3 +685,76 @@ APPFW_SEGV addr=0x231 pc=...
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 22. 176/177：FX6 kmod 与 FX3 provider patch
+
+### 22.1 176：换 FX6 osal_uipc.ko
+
+FX3/FX6 模块：
+
+```text
+FX3 usr/kmod/osal_uipc.ko  76168
+FX6 nflasha15 osal_uipc.ko 76360
+vermagic 都是 4.9.337-scel+ SMP preempt mod_unload aarch64
+```
+
+用 member-level newc 重写 CPIO（不是解包文件系统），换入：
+
+```text
+usr/kmod/osal_uipc.ko  -> FX6
+usr/kmod/osal_utm.ko   -> FX6
+usr/lib/libosal_uipc.so -> FX6
+usr/lib/libosal_utm.so  -> FX6
+```
+
+结果：
+
+```text
+FX3_INSMOD_RC_/usr/kmod/osal_utm.ko=0
+FX3_INSMOD_RC_/usr/kmod/osal_uipc.ko=0
+osal_uipc 77824 ... Live
+osal_utm 16384 ... Live
+GraphicsEngine ctor=...
+osal_alloc_sem_id() osalErr = -1023  (x5)
+APPFW_SEGV pc=libuxengine+0x7be44
+```
+
+**FX6 kernel module 能加载，但 `osal_dynamic_id` 仍返回 -1023。**
+
+### 22.2 177：patch FX3 libosal_uipc
+
+保留原 FX3 libosal，只把：
+
+```text
+usr/lib/libosal_uipc.so + 0x75b8 osal_dynamic_id
+```
+
+改成：
+
+```text
+mov w0, #0
+ret
+```
+
+结果更早失败：
+
+```text
+APPFW_SEGV addr=0x231 pc=...
+```
+
+没有 `appfw-launch:` 日志，说明在 launcher/OSAL 早期初始化的动态链接/调用路径就崩了。该 patch 不可用。
+
+### 22.3 结论
+
+- sem 失败不是 libosal 用户态版本问题；
+- FX6 `osal_uipc.ko` 能加载，但动态 ID 接口仍不被接受；
+- 直接伪造 `osal_dynamic_id` 返回值会破坏更早的 OSAL 调用约定；
+- 需要从 **FX3 kernel 的 osal_uipc.ko ioctl/动态 ID 表**或 **设备节点** 层面解决；
+- 目前没有可见菜单/画面证据。
+
+## 23. 边界
+
+- 候选 CPIO 只改本地库/kmod/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

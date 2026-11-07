@@ -916,5 +916,65 @@ int GRM_gpermRectblit(int plane, void *src, const GRM_Rect16 *sr, const GRM_Rect
 - 随后调用 `_ZN13app_adjchk_ui17presenter_jiritsu16need_to_autobootEv`，因默认返回 `0`，未自动调用 `open_scenario_ui()` / `open_tp_check()` / `open_jiritsu()`。
 - **下一步直接激活前景准星与文本控件的钩子方案**：在 `libgrm-fbinit` 中导出 `_ZN13app_adjchk_ui17presenter_jiritsu16need_to_autobootEv` 返回 `1`（或在 `_ZN13app_adjchk_ui17presenter_jiritsu14close_tp_checkEv` 中直接转调 `_ZN13app_adjchk_ui17presenter_jiritsu13open_tp_checkEv`），即可直接点亮 `(310, 230)` 处的十字准星控件组（Widget #17~#21）与 Scenario 文本层！
 
+---
+
+## 10. Round 244~248 (`cp-bind-d9379872` .. `cp-bind-dcfe2e46`) 终极根因突破：为什么 `widget[1]` (`0x...2f0` / `0x...2f8`) 的 `vptr` 被清零，以及如何一键点亮全部 22 个控件与原生 `GRM_gpermRectblit`
+
+### 10.1 针对 DeepSeek 当前 3 个疑问的精确反汇编解答
+
+1. **`stella::TreeNode::getNextActiveSibling` 与 `getFirstActiveChild` 返回的是 `TreeNode*` 还是 `Element*`？**
+   - 反汇编 `libstella.so` 中的 `_ZNK6stella8TreeNode19getFirstActiveChildEv` (`0x3002c`) 与 `_ZNK6stella8TreeNode20getNextActiveSiblingEv` (`0x2ffd4`)：
+     - `getFirstActiveChild` 在调用 `FlaggedList::getActiveFirst()` 后，**在 `0x30054` 已经执行了 `sub x0, x0, #0x8`**；
+     - `getNextActiveSibling` 在调用 `FlaggedList::Element::getActiveNext()` 后，**在 `0x30008` 也已经执行了 `sub x0, x0, #0x8`**！
+   - 因此，它们返回的 **`0x...028` (`widget[0] + 0x08`) 和 `0x...2f8` (`widget[1] + 0x08`) 本身就是真正的 `stella::TreeNode *`**（绝不能再做 `+8` 或 `-8` 偏移！在 `247`/`248` 中加减 8 会把指针偏到 `FlaggedList::Element` 内部而触发 `addr=0x150` 崩溃）。
+
+2. **为什么 `cp-bind-b7a7303c` 的 `FX6_TREENODE_SCAN` 显示 `widget[1]` 处的 `q[-1]=0x0` (`0x...2f0`) 和 `q[0]=0x0` (`0x...2f8`) 被清零，而 `q[1..6]` 链表指针却完全正常？**
+   - 这是 **FX3 (`AdjChkConfig.so`) 与 FX6 (`libuxengine.so`) 之间隐藏最深的 C++ 对象尺寸 ABI 膨胀（Buffer Overflow）**：
+     1. 在 FX3 的 `AdjChkConfig.so` 中，`app_adjchk_ui::view_icon` (`type=0`) 的内存布局为：
+        - `+0x000 .. +0x1b8`：`ux::wgtsys::Widget`
+        - `+0x1b8 .. +0x1f0`：`param` (`0x38` 字节)
+        - `+0x1f0 .. +0x2d0`：`ux::gfxeng::Sprite`（**FX3 中 `sizeof(Sprite) == 0x0e0`**）
+        因此 `AdjChkConfig.so + 0x0c334` (`view::create_screen`) 使用 **`add w20, w20, #0x2d0`** 为下一个控件分配 placement 偏移，`widget[0]` 位于 `0x...020`，`widget[1]` 紧挨着位于 `0x...020 + 0x2d0 = 0x...2f0`（其 `TreeNode` 位于 `0x...2f8`）。
+     2. **然而在 FX6 的 `libuxengine.so` (`_ZN2ux6gfxeng6SpriteC2Ev` @ `0x7ccd0`) 中，`sizeof(ux::gfxeng::Sprite)` 从 `0x0e0` 膨胀到了 `0x0f8`（增加了 `+0x18` 字节）**：
+        - `Sprite + 0x0e0 .. 0x0f0`：新增了第二个 `libra::ImageData mSubImageData`（`16` 字节，`0x7cd8c: add x0, x19, #0xe0; bl ImageData::C1`）！
+        - `Sprite + 0x0f0`：新增了 `uint8_t mDarkerLevel`（`0x7cd94: strb wzr, [x19, #0xf0]`）！
+        因此在 FX6 中，**`sizeof(view_icon) = 0x1f0 + 0x0f8 = 0x2e8`（大于 `0x2d0`）**！
+     3. 结果：`widget[0]`（位于 `0x...020`）内部的 `mSprite` 位于 `0x...020 + 0x1f0 = 0x...210`，而 **`widget[0]->mSprite.mSubImageData` (`Sprite + 0x0e0..0x0f0`) 恰好落在了 `0x...210 + 0x0e0 = 0x...2f0` 和 `0x...2f8` —— 即 `widget[1]->vptr` (`0x...2f0`) 和 `widget[1]->mTreeNode.vptr` (`0x...2f8`) 的正上方**！
+     4. 每当第 1 帧渲染 `widget[0]->mSprite` 时，`ux::gfxeng::Sprite::render()` (`libuxengine.so + 0x7e754`) 调用 `Sprite::unregisterNinePatch()` -> `ImageData::detach(&mSubImageData)`，**当场向 `0x...2f0` 和 `0x...2f8` 写入两个 `0` (`self[0]=0; self[1]=0`)，把 `widget[1]->vptr` 和 `widget[1]->mTreeNode.vptr` 彻底抹零**！
+
+3. **为什么 `244` (`libgrm-fbinit32.so`) 中导出的 `create_screen` 没有打印 `FX6_ADJCHK_CREATE_SCREEN`？**
+   - 检查 `/tmp/fx6-cpio-repack/init` 第 3 行：`/usr/bin/appfw-launch` 启动时的环境变量是 `LD_PRELOAD=/usr/lib/libgpe.so:/usr/lib/libgrm.so:...`，**第 3 行的 `LD_PRELOAD` 里漏掉了 `/usr/lib/libgrm-fbinit9.so`**（只有第 39 行 `bootin.elf` 的 `LD_PRELOAD` 包含了 `libgrm-fbinit9.so`）！
+   - 而且在 `libgrm-fbinit25.c` 旧版 `create_screen` 中调用了 `real_fn`，`real_fn` (`AdjChkConfig.so + 0x0c334`) 内部依然使用 `0x2d0` 步长！
+
+---
+
+### 10.2 三步根治方案（Candidate `249`：零越界、22 控件全激活、原生触发 `GRM_gpermFillrect` + `GRM_gpermRectblit`）
+
+#### 第 1 步：修复 `/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so` 的 `0x2d0` 步长指令（1 条指令补丁）
+将 `/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so` 文件偏移 **`0x0c334`** 处的 `add w20, w20, #0x2d0` (`94 42 0b 11`) 改为 **`add w20, w20, #0x300` (`94 02 0c 11`)**：
+```python
+with open('/tmp/fx6-cpio-repack/usr/lib/AdjChkConfig.so', 'r+b') as f:
+    f.seek(0x0c334)
+    assert f.read(4) == bytes.fromhex('94420b11')
+    f.seek(0x0c334)
+    f.write(bytes.fromhex('94020c11'))  # add w20, w20, #0x300
+```
+（注：`view` 的 placement 缓冲区大小为 `0x20000 = 131,072` 字节，22 个控件用 `0x300` 步长仅占 `16,896` 字节，完全杜绝 `Sprite` 越界覆盖下一个控件！）
+
+#### 第 2 步：确保 `/tmp/fx6-cpio-repack/init` 第 3 行 `appfw-launch` 的 `LD_PRELOAD` 首位包含 `/usr/lib/libgrm-fbinit9.so:`
+确认 `/tmp/fx6-cpio-repack/init` 第 3 行的 `LD_PRELOAD=` 以 `LD_PRELOAD=/usr/lib/libgrm-fbinit9.so:` 开头，使 `create_screen`、`close_tp_check`、`ImageElementBase::registerImage` 等符号从进程启动第一刻起 100% 生效。
+
+#### 第 3 步：直接编译最新 [`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c) 为 `/tmp/fx6-cpio-repack/usr/lib/libgrm-fbinit9.so`
+最新更新的 [`libgrm-fbinit25.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-uxengine-init-assist/libgrm-fbinit25.c) 已经内置了以下三大核心机制：
+1. **独立实现的 `_ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEPPvj`（步长 `0x300`）+ `_ZN13app_adjchk_ui17presenter_jiritsu14close_tp_checkEv` 空操作**：
+   - 不再调用 `real_fn`，直接以 `0x300` 字节步长构造全部 22 个 `view_icon` 控件并立即调用 `update_screen`；
+   - 拦截 `close_jiritsu`、`close_tp_check`、`close_scenario`，防止 `presenter_jiritsu::C2` 在 `create_screen` 后把 `widget[1..21]` 的 `visible` 清零或把 `widget[0]` 颜色重置为全黑。
+2. **恢复正确的 `valid_treenode`（绝不对 `getNextActiveSibling` 返回值做 `+8/-8` 偏移）**：
+   - 因为 `0x2d0 -> 0x300` 步长修复后，`widget[1]` 位于 `+0x300` (`0x...320`)，其 `vptr` 和 `TreeNode.vptr` 不再与 `widget[0]->mSprite.mSubImageData` (`0x...2f0`) 重叠，`getNextActiveSibling()` 将顺畅遍历全部 22 个活动控件节点！
+3. **导出 `_ZN2ux6gfxeng16ImageElementBase13registerImageEv` 与 `_ZN2ux6gfxeng16ImageElementBase15unregisterImageEv` 原生触发 `GRM_gpermRectblit`**：
+   - 对 `w > 24 || h > 24` 的 17 个 Big6 面板/状态栏/色条控件（`Widget #00~#16`），保持 `mGraphicsImage = NULL`，由 `Sprite::renderRect` 原生调用 `GraphicsDraw::fillRect` -> **`GRM_gpermFillrect`**；
+   - 对 `w <= 24 && h <= 24` 的 5 个中心十字准星图标控件（`Widget #17~#21`），自动挂载通过 `_ZN2ux4core15RawImageDataGRM13registerImageEv` 注册的 `20×20` `RawImageDataGRM`（含真实 `gemini::GRMImage` 与 `BitmapImpl`），使 `Sprite::renderRect` 原生走 `GraphicsDraw::bitBlit` / `stretchBlit` -> `rotateBlit` -> `GraphicsContextGRM::drawImage` -> **`GRM_gpermRectblit`**！
+
+
 
 

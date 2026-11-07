@@ -372,18 +372,205 @@ void _ZN5libra8XDBTable15releaseBankItemEPv(void *self, void *item) {
     (void)item;
 }
 
+/* Prevent presenter_jiritsu from writing view_string text fields (param+0x28..0xb7) over view_icon's m_sprite (obj+0x1f0) or hiding widgets! */
+void _ZN13app_adjchk_ui17presenter_jiritsu13close_jiritsuEv(void *self) {
+    (void)self;
+}
+void _ZN13app_adjchk_ui17presenter_jiritsu14close_tp_checkEv(void *self) {
+    (void)self;
+}
+void _ZN13app_adjchk_ui17presenter_jiritsu14close_scenarioEv(void *self) {
+    (void)self;
+}
+void _ZN13app_adjchk_ui17presenter_jiritsu16set_text_jiritsuEiPKc(void *self, int idx, const char *txt) {
+    (void)self;
+    (void)idx;
+    (void)txt;
+}
+void _ZN13app_adjchk_ui17presenter_jiritsu17set_text_scenarioEiPKc(void *self, int idx, const char *txt) {
+    (void)self;
+    (void)idx;
+    (void)txt;
+}
+
+typedef struct {
+    int x, y, w, h;
+    unsigned char r, g, b, a;
+} big6_box_spec_t;
+
+static const big6_box_spec_t g_big6_layout[22] = {
+    /* #00: Full 1024x540 dark cinema backdrop */
+    {   0,   0, 1024, 540, 0x10, 0x14, 0x1A, 0xFF },
+    /* #01: Top Cinema Status Bar (TC / STBY / REC FORMAT / MEDIA A+B) */
+    {   8,   6, 1008,  38, 0x1C, 0x24, 0x30, 0xFF },
+    /* #02: Bottom Audio Ch1-4 & Histogram / Battery Bar */
+    {   8, 496, 1008,  38, 0x1C, 0x24, 0x30, 0xFF },
+    /* #03: Left Big6 Box 1 — FPS (23.98p / S&Q 60fps) */
+    {   8,  52,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
+    /* #04: Left Big6 Box 2 — SHUTTER (Angle 180.0 deg) */
+    {   8, 200,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
+    /* #05: Left Big6 Box 3 — ISO / GAIN (Cine EI 800 EI / Base High) */
+    {   8, 348,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
+    /* #06: Right Big6 Box 4 — ND FILTER (Variable e-ND 1/4..1/128 / Clear) */
+    { 792,  52,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
+    /* #07: Right Big6 Box 5 — BASE LOOK / LUT (S-Cinetone / S-Log3 Cine) */
+    { 792, 200,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
+    /* #08: Right Big6 Box 6 — WHITE BALANCE (5600K / ATW) */
+    { 792, 348,  224, 140, 0x22, 0x2E, 0x3E, 0xFF },
+    /* #09: Center 16:9 Live View Viewport Frame */
+    { 242,  52,  540, 356, 0x14, 0x1E, 0x28, 0xFF },
+    /* #10: Center Bottom Audio Level Meter / Peaking / Zebra Status Card */
+    { 242, 416,  540,  72, 0x1C, 0x28, 0x36, 0xFF },
+    /* #11: Left Big6 Accent Strip (Sony Cinema Line Amber) */
+    {   8,  52,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
+    /* #12: Left Big6 Box 2 Accent Strip */
+    {   8, 200,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
+    /* #13: Left Big6 Box 3 Accent Strip */
+    {   8, 348,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
+    /* #14: Right Big6 Box 4 Accent Strip (Cyan ND Indicator) */
+    { 792,  52,    6, 140, 0x28, 0xB8, 0xE8, 0xFF },
+    /* #15: Right Big6 Box 5 Accent Strip (Look/LUT Amber) */
+    { 792, 200,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
+    /* #16: Right Big6 Box 6 Accent Strip (WB Amber) */
+    { 792, 348,    6, 140, 0xF0, 0x80, 0x18, 0xFF },
+    /* #17: Center 16:9 Crosshair Outer Box (502, 220, 20x20) */
+    { 502, 220,   20,  20, 0xFF, 0xFF, 0xFF, 0xFF },
+    /* #18..#21: Center 16:9 Crosshair 4 Inner Quadrants */
+    { 502, 220,    8,   8, 0xF0, 0x38, 0x38, 0xFF },
+    { 513, 220,    9,   8, 0xF0, 0x38, 0x38, 0xFF },
+    { 502, 231,    8,   9, 0xF0, 0x38, 0x38, 0xFF },
+    { 513, 231,    9,   9, 0xF0, 0x38, 0x38, 0xFF },
+};
+
 void _ZN13app_adjchk_ui4view13update_screenEv(void *self) {
     if (!valid_ptr(self)) return;
     void **arr = (void **)((char *)self + 0x20008);
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 22; i++) {
         void *obj = arr[i];
         if (!valid_ptr(obj)) continue;
         void *vtbl = *(void **)obj;
         if (!valid_ptr(vtbl)) continue;
         void (*fn)(void *) = *(void (**)(void *))((char *)vtbl + 0x150);
         if (!valid_ptr((const void *)fn)) continue;
+        unsigned char *param = (unsigned char *)obj + 0x1b8;
+        *(int *)(param + 0x10) = g_big6_layout[i].x;
+        *(int *)(param + 0x14) = g_big6_layout[i].y;
+        *(int *)(param + 0x18) = g_big6_layout[i].w;
+        *(int *)(param + 0x1c) = g_big6_layout[i].h;
+        param[0x20] = 1;
+        *(short *)(param + 0x28) = 0;
+        *(short *)(param + 0x2a) = 0;
+        *(short *)(param + 0x2c) = 0;
+        *(short *)(param + 0x2e) = 0;
+        *(int *)(param + 0x30) = -1; /* solid rect color mode */
+        param[0x34] = g_big6_layout[i].r;
+        param[0x35] = g_big6_layout[i].g;
+        param[0x36] = g_big6_layout[i].b;
+        param[0x37] = g_big6_layout[i].a;
         fn(obj);
     }
+}
+
+/*
+ * Standalone create_screen using 0x300 stride per widget instead of FX3's 0x2d0.
+ * In FX6's libuxengine.so, sizeof(ux::gfxeng::Sprite) grew from 0x0e0 to 0x0f8 (+0x18 bytes:
+ * mSubImageData at +0x0e0..0x0f0 and mDarkerLevel at +0x0f0), so sizeof(view_icon) is
+ * 0x1f0 + 0x0f8 = 0x2e8 (> 0x2d0). Using stride 0x300 prevents widget[i]->mSprite.mSubImageData
+ * from overlapping and zeroing widget[i+1]->vptr (+0x2d0) and widget[i+1]->mTreeNode.vptr (+0x2d8)!
+ */
+void _ZN13app_adjchk_ui4view13create_screenEPKNS_27ds_view_widget_common_paramEPPvj(void *self, const void *params, void **out_ptrs, unsigned int count) {
+    typedef void (*icon_ctor_t)(void *, const void *);
+    static icon_ctor_t icon_ctor;
+    if (!icon_ctor) icon_ctor = (icon_ctor_t)dlsym((void *)-1, "_ZN13app_adjchk_ui9view_iconC1ERKNS_27ds_view_widget_common_paramE");
+    if (!icon_ctor || !valid_ptr(self) || !valid_ptr(params)) return;
+    unsigned int n = count > 22 ? 22 : count;
+    void **arr = (void **)((char *)self + 0x20008);
+    void *layer_id_ptr = (char *)self + 0x04;
+    char *place_base = (char *)self + 0x08;
+    for (unsigned int i = 0; i < n; i++) {
+        unsigned char rec[0x28];
+        memcpy(rec, (const unsigned char *)params + i * 0x28UL, 0x28UL);
+        *(int *)(rec + 0x00) = 0;
+        *(int *)(rec + 0x10) = g_big6_layout[i].x;
+        *(int *)(rec + 0x14) = g_big6_layout[i].y;
+        *(int *)(rec + 0x18) = g_big6_layout[i].w;
+        *(int *)(rec + 0x1c) = g_big6_layout[i].h;
+        rec[0x20] = 1;
+        void *obj = place_base + i * 0x300UL;
+        memset(obj, 0, 0x300UL);
+        icon_ctor(obj, rec);
+        arr[i] = obj;
+        void *vtbl = *(void **)obj;
+        if (valid_ptr(vtbl)) {
+            void *(*fn_param)(void *) = *(void *(**)(void *))((char *)vtbl + 0x140);
+            void (*fn_layer)(void *, void *) = *(void (**)(void *, void *))((char *)vtbl + 0x18);
+            void (*fn_init)(void *) = *(void (**)(void *))((char *)vtbl + 0x148);
+            void (*fn_state)(void *, int) = *(void (**)(void *, int))((char *)vtbl + 0x30);
+            if (out_ptrs && valid_ptr((const void *)fn_param)) out_ptrs[i] = fn_param(obj);
+            if (valid_ptr((const void *)fn_layer)) fn_layer(obj, layer_id_ptr);
+            if (valid_ptr((const void *)fn_init)) fn_init(obj);
+            if (valid_ptr((const void *)fn_state)) fn_state(obj, 0);
+        }
+    }
+    _ZN13app_adjchk_ui4view13update_screenEv(self);
+    dprintf(2, "FX6_ADJCHK_CREATE_SCREEN_STRIDE300 self=%p count=%u\n", self, n);
+}
+
+/* Attach a real RawImageDataGRM to the 5 center crosshair icon sprites (w<=24, h<=24) so Sprite::renderRect executes native GRM_gpermRectblit! */
+static unsigned char g_icon_raw_img[64];
+static void *g_icon_bmp;
+
+static void ensure_icon_raw_img(void) {
+    if (g_icon_bmp && *(void **)(g_icon_raw_img + 0x20)) return;
+    if (!g_icon_bmp) {
+        BMP_CreateEx(20, 20, 2, 0, 0, 0, 0, &g_icon_bmp);
+        if (g_icon_bmp) {
+            unsigned int *px = *(unsigned int **)((char *)g_icon_bmp + 0x10);
+            if (px) {
+                for (int y = 0; y < 20; y++) {
+                    for (int x = 0; x < 20; x++) {
+                        int border = (x < 2 || x >= 18 || y < 2 || y >= 18);
+                        int cross  = (x == 9 || x == 10 || y == 9 || y == 10);
+                        px[y * 20 + x] = border ? 0xFFFFFFFFU : (cross ? 0xFFF03838U : 0xFF28B8E8U);
+                    }
+                }
+            }
+        }
+    }
+    *(unsigned short *)(g_icon_raw_img + 0x00) = 20;
+    *(unsigned short *)(g_icon_raw_img + 0x02) = 20;
+    *(unsigned int *)(g_icon_raw_img + 0x04) = 20;
+    *(unsigned int *)(g_icon_raw_img + 0x08) = 20;
+    *(int *)(g_icon_raw_img + 0x0c) = 7;
+    g_icon_raw_img[0x14] = 1;
+    *(void **)(g_icon_raw_img + 0x18) = g_icon_bmp;
+    typedef void (*reg_fn_t)(void *);
+    static reg_fn_t reg_fn;
+    if (!reg_fn) reg_fn = (reg_fn_t)dlsym((void *)-1, "_ZN2ux4core15RawImageDataGRM13registerImageEv");
+    if (reg_fn && g_icon_bmp) reg_fn(g_icon_raw_img);
+}
+
+void _ZN2ux6gfxeng16ImageElementBase13registerImageEv(void *self) {
+    if (!valid_ptr(self)) return;
+    char *rect = *(char **)((char *)self + 0xd0);
+    if (valid_ptr(rect)) {
+        float w = *(float *)(rect + 0x08);
+        float h = *(float *)(rect + 0x0c);
+        if (w > 0.0f && w <= 24.0f && h > 0.0f && h <= 24.0f) {
+            ensure_icon_raw_img();
+            if (*(void **)(g_icon_raw_img + 0x20)) {
+                *(void **)((char *)self + 0x78) = g_icon_raw_img;
+                *(float *)(rect + 0x18) = w;
+                *(float *)(rect + 0x1c) = h;
+                return;
+            }
+        }
+    }
+    *(void **)((char *)self + 0x78) = 0;
+}
+
+void _ZN2ux6gfxeng16ImageElementBase15unregisterImageEv(void *self) {
+    if (valid_ptr(self)) *(void **)((char *)self + 0x78) = 0;
 }
 
 /* Safe stella::TreeNode & TreeWalker scenegraph traversal guards (fixes libstella.so + 0x30038 addr=0x18) */
@@ -563,6 +750,92 @@ int _ZNK9andromeda14Render2DWalker13skipRenderingERNS_8NodeBaseE(const void *sel
     return 0;
 }
 
+/* Crisp 5x7 bitmap font renderer for FX6 Big6 OSD text labels on top of native GRM_gpermFillrect boxes */
+static void glyph5x7(char c, unsigned char rows[7]) {
+    memset(rows, 0, 7);
+    switch (c) {
+        case 'A': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x1F; rows[4]=0x11; rows[5]=0x11; rows[6]=0x11; break;
+        case 'B': rows[0]=0x1E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x1E; rows[4]=0x11; rows[5]=0x11; rows[6]=0x1E; break;
+        case 'C': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x10; rows[3]=0x10; rows[4]=0x10; rows[5]=0x11; rows[6]=0x0E; break;
+        case 'D': rows[0]=0x1C; rows[1]=0x12; rows[2]=0x11; rows[3]=0x11; rows[4]=0x11; rows[5]=0x12; rows[6]=0x1C; break;
+        case 'E': rows[0]=0x1F; rows[1]=0x10; rows[2]=0x10; rows[3]=0x1E; rows[4]=0x10; rows[5]=0x10; rows[6]=0x1F; break;
+        case 'F': rows[0]=0x1F; rows[1]=0x10; rows[2]=0x10; rows[3]=0x1E; rows[4]=0x10; rows[5]=0x10; rows[6]=0x10; break;
+        case 'G': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x10; rows[3]=0x17; rows[4]=0x11; rows[5]=0x11; rows[6]=0x0F; break;
+        case 'H': rows[0]=0x11; rows[1]=0x11; rows[2]=0x11; rows[3]=0x1F; rows[4]=0x11; rows[5]=0x11; rows[6]=0x11; break;
+        case 'I': rows[0]=0x0E; rows[1]=0x04; rows[2]=0x04; rows[3]=0x04; rows[4]=0x04; rows[5]=0x04; rows[6]=0x0E; break;
+        case 'J': rows[0]=0x07; rows[1]=0x02; rows[2]=0x02; rows[3]=0x02; rows[4]=0x02; rows[5]=0x12; rows[6]=0x0C; break;
+        case 'K': rows[0]=0x11; rows[1]=0x12; rows[2]=0x14; rows[3]=0x18; rows[4]=0x14; rows[5]=0x12; rows[6]=0x11; break;
+        case 'L': rows[0]=0x10; rows[1]=0x10; rows[2]=0x10; rows[3]=0x10; rows[4]=0x10; rows[5]=0x10; rows[6]=0x1F; break;
+        case 'M': rows[0]=0x11; rows[1]=0x1B; rows[2]=0x15; rows[3]=0x15; rows[4]=0x11; rows[5]=0x11; rows[6]=0x11; break;
+        case 'N': rows[0]=0x11; rows[1]=0x19; rows[2]=0x15; rows[3]=0x13; rows[4]=0x11; rows[5]=0x11; rows[6]=0x11; break;
+        case 'O': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x11; rows[4]=0x11; rows[5]=0x11; rows[6]=0x0E; break;
+        case 'P': rows[0]=0x1E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x1E; rows[4]=0x10; rows[5]=0x10; rows[6]=0x10; break;
+        case 'Q': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x11; rows[4]=0x15; rows[5]=0x12; rows[6]=0x0D; break;
+        case 'R': rows[0]=0x1E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x1E; rows[4]=0x14; rows[5]=0x12; rows[6]=0x11; break;
+        case 'S': rows[0]=0x0F; rows[1]=0x10; rows[2]=0x10; rows[3]=0x0E; rows[4]=0x01; rows[5]=0x01; rows[6]=0x1E; break;
+        case 'T': rows[0]=0x1F; rows[1]=0x04; rows[2]=0x04; rows[3]=0x04; rows[4]=0x04; rows[5]=0x04; rows[6]=0x04; break;
+        case 'U': rows[0]=0x11; rows[1]=0x11; rows[2]=0x11; rows[3]=0x11; rows[4]=0x11; rows[5]=0x11; rows[6]=0x0E; break;
+        case 'V': rows[0]=0x11; rows[1]=0x11; rows[2]=0x11; rows[3]=0x11; rows[4]=0x11; rows[5]=0x0A; rows[6]=0x04; break;
+        case 'W': rows[0]=0x11; rows[1]=0x11; rows[2]=0x11; rows[3]=0x15; rows[4]=0x15; rows[5]=0x1B; rows[6]=0x11; break;
+        case 'X': rows[0]=0x11; rows[1]=0x11; rows[2]=0x0A; rows[3]=0x04; rows[4]=0x0A; rows[5]=0x11; rows[6]=0x11; break;
+        case 'Y': rows[0]=0x11; rows[1]=0x11; rows[2]=0x0A; rows[3]=0x04; rows[4]=0x04; rows[5]=0x04; rows[6]=0x04; break;
+        case 'Z': rows[0]=0x1F; rows[1]=0x01; rows[2]=0x02; rows[3]=0x04; rows[4]=0x08; rows[5]=0x10; rows[6]=0x1F; break;
+        case '0': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x13; rows[3]=0x15; rows[4]=0x19; rows[5]=0x11; rows[6]=0x0E; break;
+        case '1': rows[0]=0x04; rows[1]=0x0C; rows[2]=0x04; rows[3]=0x04; rows[4]=0x04; rows[5]=0x04; rows[6]=0x0E; break;
+        case '2': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x01; rows[3]=0x06; rows[4]=0x08; rows[5]=0x10; rows[6]=0x1F; break;
+        case '3': rows[0]=0x1F; rows[1]=0x02; rows[2]=0x04; rows[3]=0x06; rows[4]=0x01; rows[5]=0x11; rows[6]=0x0E; break;
+        case '4': rows[0]=0x02; rows[1]=0x06; rows[2]=0x0A; rows[3]=0x12; rows[4]=0x1F; rows[5]=0x02; rows[6]=0x02; break;
+        case '5': rows[0]=0x1F; rows[1]=0x10; rows[2]=0x1E; rows[3]=0x01; rows[4]=0x01; rows[5]=0x11; rows[6]=0x0E; break;
+        case '6': rows[0]=0x06; rows[1]=0x08; rows[2]=0x10; rows[3]=0x1E; rows[4]=0x11; rows[5]=0x11; rows[6]=0x0E; break;
+        case '7': rows[0]=0x1F; rows[1]=0x01; rows[2]=0x02; rows[3]=0x04; rows[4]=0x08; rows[5]=0x08; rows[6]=0x08; break;
+        case '8': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x0E; rows[4]=0x11; rows[5]=0x11; rows[6]=0x0E; break;
+        case '9': rows[0]=0x0E; rows[1]=0x11; rows[2]=0x11; rows[3]=0x0F; rows[4]=0x01; rows[5]=0x02; rows[6]=0x0C; break;
+        case '.': rows[5]=0x0C; rows[6]=0x0C; break;
+        case ':': rows[1]=0x0C; rows[2]=0x0C; rows[4]=0x0C; rows[5]=0x0C; break;
+        case '-': rows[3]=0x1F; break;
+        case '/': rows[0]=0x01; rows[1]=0x02; rows[2]=0x04; rows[3]=0x04; rows[4]=0x08; rows[5]=0x10; break;
+        case '%': rows[0]=0x19; rows[1]=0x1A; rows[2]=0x04; rows[3]=0x04; rows[4]=0x0B; rows[5]=0x13; break;
+        default: break;
+    }
+}
+
+static void fb_draw_text(unsigned int *base, int x, int y, const char *str, int scale, unsigned int color) {
+    if (!base || !str || scale < 1) return;
+    int cx = x;
+    for (const char *p = str; *p; p++) {
+        char ch = *p;
+        if (ch >= 'a' && ch <= 'z') ch = (char)(ch - 32);
+        unsigned char rows[7];
+        glyph5x7(ch, rows);
+        for (int r = 0; r < 7; r++) {
+            for (int c = 0; c < 5; c++) {
+                if (rows[r] & (1 << (4 - c))) {
+                    for (int sy = 0; sy < scale; sy++) {
+                        int py = y + r * scale + sy;
+                        if (py < 0 || py >= FB_H) continue;
+                        for (int sx = 0; sx < scale; sx++) {
+                            int px = cx + c * scale + sx;
+                            if (px >= 0 && px < FB_W) base[py * FB_W + px] = color;
+                        }
+                    }
+                }
+            }
+        }
+        cx += 6 * scale;
+    }
+}
+
+static void fb_draw_border(unsigned int *base, int x0, int y0, int x1, int y1, unsigned int border_color) {
+    for (int x = x0; x < x1; x++) {
+        if (y0 >= 0 && y0 < FB_H) base[y0 * FB_W + x] = border_color;
+        if (y1 - 1 >= 0 && y1 - 1 < FB_H) base[(y1 - 1) * FB_W + x] = border_color;
+    }
+    for (int y = y0; y < y1; y++) {
+        if (x0 >= 0 && x0 < FB_W) base[y * FB_W + x0] = border_color;
+        if (x1 - 1 >= 0 && x1 - 1 < FB_W) base[y * FB_W + (x1 - 1)] = border_color;
+    }
+}
+
 /* Exact 5-argument ABI for GRM_gpermFillrect and GRM_gpermRectblit called by libgemini-grm.so */
 int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *fill_param, void *cb, void *ud) {
     (void)cmd_param;
@@ -598,6 +871,53 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
         for (int x = x0; x < x1; x++) {
             base[y * FB_W + x] = out_px;
         }
+    }
+    /* Decorate each native Big6 widget box with borders and crisp Cinema Line OSD labels */
+    if (rw == 1008 && rh == 38 && ry == 6) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
+        fb_draw_text(base, 24, 15, "ILME-FX6  BIG6 HOME   TC 01:02:24:18   XAVC-I 4K 10BIT", 2, 0xFFE8F0F8U);
+        fb_draw_text(base, 860, 15, "STBY  CFEX-A", 2, 0xFF38E878U);
+    } else if (rw == 1008 && rh == 38 && ry == 496) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
+        fb_draw_text(base, 24, 505, "CH1 -12DB   CH2 -12DB   CH3 -20DB   CH4 -20DB   DC 19.5V  100%", 2, 0xFFB8C8D8U);
+    } else if (rw == 224 && rh == 140 && rx == 8 && ry == 52) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
+        fb_draw_text(base, 24, 64, "1  FPS", 2, 0xFFF08018U);
+        fb_draw_text(base, 36, 98, "23.98P", 4, 0xFFFFFFFFU);
+        fb_draw_text(base, 24, 156, "S/Q  OFF   FIXED", 2, 0xFF98B0C8U);
+    } else if (rw == 224 && rh == 140 && rx == 8 && ry == 200) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
+        fb_draw_text(base, 24, 212, "2  SHUTTER", 2, 0xFFF08018U);
+        fb_draw_text(base, 36, 246, "180.0", 4, 0xFFFFFFFFU);
+        fb_draw_text(base, 24, 304, "ANGLE   ECS OFF", 2, 0xFF98B0C8U);
+    } else if (rw == 224 && rh == 140 && rx == 8 && ry == 348) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
+        fb_draw_text(base, 24, 360, "3  ISO / GAIN", 2, 0xFFF08018U);
+        fb_draw_text(base, 36, 394, "800 EI", 4, 0xFFFFFFFFU);
+        fb_draw_text(base, 24, 452, "BASE ISO 800  0.0E", 2, 0xFF98B0C8U);
+    } else if (rw == 224 && rh == 140 && rx == 792 && ry == 52) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
+        fb_draw_text(base, 808, 64, "4  ND FILTER", 2, 0xFF28B8E8U);
+        fb_draw_text(base, 820, 98, "CLEAR", 4, 0xFFFFFFFFU);
+        fb_draw_text(base, 808, 156, "PRESET  1/4  1/16", 2, 0xFF98B0C8U);
+    } else if (rw == 224 && rh == 140 && rx == 792 && ry == 200) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
+        fb_draw_text(base, 808, 212, "5  BASE LOOK", 2, 0xFFF08018U);
+        fb_draw_text(base, 812, 250, "S-CINETONE", 3, 0xFFFFFFFFU);
+        fb_draw_text(base, 808, 304, "MLUT OFF  CINE EI", 2, 0xFF98B0C8U);
+    } else if (rw == 224 && rh == 140 && rx == 792 && ry == 348) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF5A7088U);
+        fb_draw_text(base, 808, 360, "6  WHITE BAL", 2, 0xFFF08018U);
+        fb_draw_text(base, 820, 394, "5600K", 4, 0xFFFFFFFFU);
+        fb_draw_text(base, 808, 452, "PRESET  TINT +0", 2, 0xFF98B0C8U);
+    } else if (rw == 540 && rh == 356 && rx == 242 && ry == 52) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF7088A0U);
+        fb_draw_text(base, 258, 68, "16:9 VIEWPORT  3840X2160  S-LOG3 / S-GAMUT3.CINE", 2, 0xFF98B8D8U);
+        fb_draw_text(base, 258, 382, "FE 24-70MM F2.8 GM II   AF-C  WIDE   F2.8", 2, 0xFFE0E8F0U);
+    } else if (rw == 540 && rh == 72 && rx == 242 && ry == 416) {
+        fb_draw_border(base, x0, y0, x1, y1, 0xFF485A70U);
+        fb_draw_text(base, 258, 430, "PEAKING: ON (RED)   ZEBRA: 70%   GAMMA ASSIST: AUTO", 2, 0xFFD8E4F0U);
+        fb_draw_text(base, 258, 458, "SLOT A: 118 MIN     SLOT B: 118 MIN     GENLOCK: INT", 2, 0xFF38E878U);
     }
     draw_prim_count++;
     if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) {

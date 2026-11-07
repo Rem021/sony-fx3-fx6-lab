@@ -885,3 +885,88 @@ reset_bsem(index)
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 28. alloc_fblock 空池与 178/179
+
+### 28.1 alloc_fblock 根因
+
+`libosal_uipc+0x80a0 alloc_fblock` 的 free list 在：
+
+```text
+x19 = 0x1b000 + 0x500
+x20 = [x19 + 0x10]   ; free list head
+cbz x20, 0x8118
+```
+
+free list 空且 `w23=0`（非阻塞）时：
+
+```text
+0x8118: ...
+0x8124: cbz w23, 0x80f4  ; return NULL
+```
+
+`bsem` 分配器调用 `alloc_fblock(NULL, 0)`，因此每次返回 NULL，进而 `osal_dynamic_id` 返回 -1023。
+
+### 28.2 178：alloc_fblock -> malloc
+
+把入口 0x80a0 改成：
+
+```text
+mov w0, #0x1000
+b malloc@plt
+```
+
+即直接返回一块 4KB libc 内存，绕过空 free list。
+
+178 结果：
+
+```text
+GraphicsEngine ctor=...
+（没有 osal_alloc_sem_id 错误）
+```
+
+**5 次 -1023 消失**，说明 sem 分配链已修好。
+
+但 178 没有 `GraphicsEngine ctor returned`，120s hang。
+
+### 28.3 179：去掉 Leave ret
+
+178 保留了 `libuxengine+0x7be44 pgList::Leave -> ret`。为判断 hang 是否来自该 ret，179 保留 sem 修复、gemini/libgrm/appfw patch，但**不 patch Leave**。
+
+结果：
+
+```text
+GraphicsEngine ctor=...
+APPFW_SEGV addr=0x1b7f94027f8 pc=libuxengine+0x7be44
+```
+
+即：
+
+- sem 错误确实消失；
+- 无 Leave patch 时，仍崩在 `pgList::Leave()`；
+- 178 的 hang 与 Leave ret 相关。
+
+### 28.4 当前真实剩余点
+
+```text
+sem 分配：已修（178/179 无 -1023）
+screen map：pgList::Leave() 仍使用无效 this
+```
+
+- `Leave` 直接 ret -> 不崩但 ctor hang；
+- 不 ret -> 崩在 `Leave`；
+- 需要修 `Leave` 的调用者/对象，而不是简单 ret 或 NOP。
+
+### 28.5 下一步
+
+1. 找 `pgList::Leave()` 的调用者/`this` 来源；
+2. 若 `this` 来自未初始化 screen map，补 screen 构造而不是 patch Leave；
+3. 或让 `Leave` 对无效 `this` 做安全 no-op **同时**修正计数，避免 ctor 等待；
+4. 仍不改原固件/QEMU/DTB。
+
+## 29. 边界
+
+- 候选 CPIO 只改本地库/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

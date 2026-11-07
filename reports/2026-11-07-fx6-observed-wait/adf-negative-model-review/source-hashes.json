@@ -1,0 +1,144 @@
+{
+  "schema": "adf-negative-model-selected-source-hashes-v1",
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/bb-request-contract/bb-request-contract.md",
+      "bytes": 8260,
+      "sha256": "603843a558cbcf862dee60527835f1bf1c48721d8913bea48d74b70a2b2eb9eb"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/bb-request-contract/bb-request-contract.json",
+      "bytes": 13314,
+      "sha256": "16af2c686e5433593f50a6a68e156414bfc5682458a22b9a5b6aa615959b58a2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/candidate-manifest.json",
+      "bytes": 8560,
+      "sha256": "8f3dc13a934a5d35110b7527bbae9a913c1ffdbb462a3646d4066949b462dcc1"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+      "bytes": 430241292,
+      "sha256": "6c698c7d1d4eac7ff54fc2bd6a54a54c3d4c9156f308aefae96b043ef22c5993"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/runs/worker-pool-restore-a3af746e3d/run-receipt.json",
+      "bytes": 5939,
+      "sha256": "7a81c6a2a8ac529b24c2090e71a8b2baee66d47a6bd83847e46d71f1355b3c24"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/runs/worker-pool-restore-a3af746e3d/serial.log",
+      "bytes": 1173910,
+      "sha256": "2f86db9e4692c333aa17aa8e3e070ffa0705740c8aa8e687dac443b9a6a33b99"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/BUILD.json",
+      "bytes": 5849,
+      "sha256": "c9b6e83b8680b93ebc0711741d806ebe1bac6f7b00aea22a436ccb9095038afc"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic-g0.ko",
+      "bytes": 66552,
+      "sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "bytes": 8701,
+      "sha256": "b0de532abb5c688f360f46d862abe1c8c1b2114f8448b5e3a91573cd9987b4c0"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic-module-unit.c",
+      "bytes": 599,
+      "sha256": "68e56592df0b68b08edc4230d2720865b19f11db65cc9d5aa3b16693c85956c5"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx3-backup-sync101-v1.h",
+      "bytes": 11688,
+      "sha256": "7492720dc22ca10e9b3a5463ac43a434f346f6fc8dfc70ca83baba0d3faa3173"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx3-date99-consumer-v1.h",
+      "bytes": 10911,
+      "sha256": "2f2671c93360c77f6533125bc505cb244722b3fca6221bf95689a8c9b3868310"
+    }
+  ],
+  "build_binding_checks": {
+    "module_matches_recorded_build": true,
+    "main_source_matches_recorded_build": true,
+    "sync_header_matches_recorded_build": true,
+    "module_unit_matches_recorded_build": true
+  },
+  "selected_source_lines": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 21,
+      "text": "static int cp_reset_send_backup100_prior(W dst,void*message){W n=message?osal_msg_size(message):0;if(dst==0x909005c5U&&message&&n==44)date98_kernel_capture(dst,message,n);if(dst!=0x903e0811U||!message||n<4||rd32(message)!=0x33){if(message&&__atomic_add_fetch(stage>=2?&postunknowns:&unknowns,1,__ATOMIC_RELAXED)<=(stage>=2?128U:16U)){cp_raw(\"UNHANDLED\",dst,message,n);if(stage>=2&&n<=4096){const B*b=message;const char*hx=\"0123456789abcdef\";for(W at=0;at<n;at+=64){W k=n-at<64?n-at:64;char raw[129];for(W j=0;j<k;j++){raw[j*2]=hx[b[at+j]>>4];raw[j*2+1]=hx[b[at+j]&15];}raw[k*2]=0;printk(\"FX3_BACKUP_CP_POST_RESET_RAW index=%u destination=%#x source=%#x bytes=%u offset=%u captured=%u raw=%s stage=%u no_reply=1\\n\",postunknowns,dst,osal_get_msg_src(message),n,at,k,raw,stage);}}printk(\"FX3_BACKUP_CP_UNHANDLED_SOURCE destination=%#x source=%#x no_reply=1 no_free=1 prior_absent_route_return=0 stage=%u terminal_unproven=1\\n\",dst,osal_get_msg_src(message),stage);}return 0;}"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 33,
+      "text": " rc=osal_valloc_msg_wait(Q,&reply,4096,0);if(rc||!reply){printk(\"FX3_BACKUP_CP_RETRY flag=%u reason=reply_alloc result=%d stage=%u rollback=unchanged\\n\",F,rc,stage);rc=-7;goto out;}"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 35,
+      "text": " for(W i=0;i<4096;i++)((B*)reply)[i]=0;cp_copy(reply,message,40);wr32((B*)reply+4,0);osal_set_msg_src(reply,0x003e0811);"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 37,
+      "text": " __atomic_thread_fence(__ATOMIC_SEQ_CST);rc=osal_snd_msg(Q,reply);"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 39,
+      "text": " /* Reply is native queue owned after successful send; never read/free it here. */"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 40,
+      "text": " reply=0;expected_digest=st.after;stage++;pending_valid=0;int freed=osal_free_msg(dst,message);if(freed)poisoned=1;"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 43,
+      "text": " fail_reply:if(reply){int fr=osal_free_msg(Q,reply);if(fr)poisoned=1;reply=0;}if(!rc)rc=-7;"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 48,
+      "text": "static int cp_reset_send99(W dst,void*p){return dst==DATE99_DEST?date99_accept(dst,p):sync100_route(dst,p);}"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic.c",
+      "line": 50,
+      "text": "static const struct{int(*send)(W,void*);void*sync;}owner={cp_reset_send99,0};"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx3-backup-sync101-v1.h",
+      "line": 79,
+      "text": "static int sync100_route(W dst,void*p){"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx3-backup-sync101-v1.h",
+      "line": 81,
+      "text": " if(dst!=0x903e0811||!p||osal_msg_size(p)<4||rd32(p)!=0x33)return cp_reset_send_backup100_prior(dst,p);"
+    }
+  ],
+  "actual_cpio_member_observed_in_this_review": {
+    "member": "simulation/fx3-cp-backup-reset-v1.ko",
+    "bytes": 66552,
+    "sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa",
+    "init_insmod_lines": [
+      128,
+      129,
+      130,
+      131
+    ]
+  },
+  "limits": [
+    "The recorded source/unit/header hashes match BUILD.json; no independent rebuild or full transitive dependency reproduction was performed.",
+    "No runtime 0x9058003f queue/provider absence or child-send failure is proven by these files.",
+    "This collector only reads already-selected files and prints metadata; no reply/model/VM behavior is implemented."
+  ]
+}

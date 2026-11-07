@@ -1,0 +1,53 @@
+{
+  "schema": "fx6-runner-v4-validation-v1",
+  "runner_sha256": "cc2e0ab98d66a62eb767f5afe5a8f8eff2b288e50e36a0cbdc4f3fa75c2b9d39",
+  "source_v3_unchanged": true,
+  "files": {
+    "README.md": {
+      "bytes": 3761,
+      "sha256": "ca2fe35c182204d23e920bdef79c7cf335b9139c38f7580e59887a7021402449"
+    },
+    "check-result.json": {
+      "bytes": 2431,
+      "sha256": "cef2130cbd0b9fdb77a666b857f1617d2618256b0a875a35ca51176ae8144f6e"
+    },
+    "copied-source-record.json": {
+      "bytes": 971,
+      "sha256": "dd8121f8994b5f18632f10a01e7ca23608162a117cefc03ef3c346dac0460d10"
+    },
+    "run_observer_once.py": {
+      "bytes": 30611,
+      "sha256": "cc2e0ab98d66a62eb767f5afe5a8f8eff2b288e50e36a0cbdc4f3fa75c2b9d39"
+    },
+    "runner-v4.diff": {
+      "bytes": 15150,
+      "sha256": "ea6bd769328efe19e4c2b23c56de11469499e106a23ceb589a233927ee3fdff9"
+    },
+    "test_runner_argv.py": {
+      "bytes": 1643,
+      "sha256": "f84f853adaef2f3796047aafd94f342d41b32d0607b84771817b9f5a4802f597"
+    },
+    "test_runner_proof_schema.py": {
+      "bytes": 7240,
+      "sha256": "45371ce6f9aeeaeb69687a926d31799d12947bd789be251725e4ecdae634e4ef"
+    },
+    "test_runner_qmp.py": {
+      "bytes": 2008,
+      "sha256": "2ca87dce6e06cd9b9d19202fd2f6db27317f19a63f030f8c4f25628fb582a9ed"
+    },
+    "test_worker_pool_proof.py": {
+      "bytes": 9454,
+      "sha256": "d3b593f8e7648e94da81775691e054051c828f9433d4fdb4f904953d55f10261"
+    }
+  },
+  "tests": {
+    "command": "python3 -B -m unittest discover -s work/fx6-observer-runtime-v4-20261107 -p test*.py -v",
+    "observed_passed_count": 24,
+    "observed_exit_code": 0
+  },
+  "actual_candidate_check_passed": true,
+  "candidate_manifest_sha256": "8f3dc13a934a5d35110b7527bbae9a913c1ffdbb462a3646d4066949b462dcc1",
+  "no_vm_operations_by_this_agent": true,
+  "shared_locks_acquired": false,
+  "qemu_smoke_repeated": false
+}

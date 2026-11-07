@@ -203,3 +203,176 @@ Latest run:
 310  cp-bind-179a4af2
 CPIO guest-hybrid-fx6kernel-capid-grmreal310-comm.cpio
 ```
+
+---
+
+## Round 4 update — 311–313: AppFw thread is in an event-loop cond wait
+
+After `RsrcRelation::Initialize`, no null MWF objects remain. Interposing
+`pthread_cond_wait` and logging module/offset of both caller levels gives:
+
+```text
+FX6_COND_WAIT tid=222 cond=0x7f8801e460 mutex=0x7f946ec7a8
+  ra=libstdc++.so.6+0xb3610
+  ra1=appFw.so+0x1acd988
+```
+
+Other waiters:
+
+```text
+tid=223 stella.so+0x24de4 (ra1 stella+0x2c990)
+tid=224 stella.so+0x24de4
+tid=225 libstdc++ wait, ra1=appFw+0x1a76e68
+tid=244+ appFw+0x20c4560 / service waits
+```
+
+Disassembly at `appFw+0x1acd988`:
+
+```text
+1acd97c  ldr  x0, [x20,#0x10]
+1acd980  mov  x1, x23
+1acd984  bl   std::condition_variable::wait(unique_lock<mutex>&)
+1acd988  ldr  x0, [x19,#0x7a0]   ; event/job state
+1acd98c  cbz  x0, 0x1acda08
+1acd990  ...
+```
+
+This is a normal **event/job-loop condition wait**, not a null-object crash. The AppFw thread is
+idle waiting for a notify at `0x1acd978` / `0x1acd9d0`.
+
+### Current boundary
+
+```text
+RsrcRelation: real initialized
+MWF null objects: gone
+9 ScreenAreas: created
+AppFw tid222: condition_variable wait in event loop
+no Widget/Presenter registration
+no native frame
+```
+
+### Next
+
+1. Identify the job/notify producer for the loop at `appFw+0x1acd988`.
+2. Determine whether the nine ScreenAreas need a menu/input job or the `0x910040` trigger.
+3. Preserve real object/service initialization; enqueue the missing job rather than faking the UI.
+4. Only claim a native frame after Presenter registration and non-empty gpe0.
+
+Runs:
+
+```text
+311 cp-bind-5ae93920
+312 cp-bind-c4eb5b00
+313 cp-bind-aff26593
+```
+
+---
+
+## Round 5 update — 314: presenter hook out of BL range
+
+To verify whether `0xc0a860 -> 0x1397450` is reached, 314 tried to patch that
+`bl` to a shim logger:
+
+```text
+FX6_PRESENTER_HOOK slot=7f9357f860 target=7fa4f01748 delta=295182056
+FX6_PRESENTER_HOOK_RANGE
+```
+
+The shim is 295 MB away; AArch64 `bl` only reaches ±128 MB, so the hook was not installed.
+This is a tooling limitation, not evidence about presenter execution.
+
+Current native state remains:
+
+```text
+RsrcRelation initialized
+no null MWF objects
+9 × FX6_UX_SCREEN_AREA_1024
+AppFw event-loop cond wait
+no Widget/Presenter/frame
+```
+
+Next: install a near trampoline in an executable appFw-adjacent mapping (or use a QEMU GDB
+breakpoint) to determine whether 0xc0a860/0x1397450 runs; then enqueue/render the correct UI job.
+
+---
+
+## Round 6 update — 315–317: near trampoline attempt hit appFw TLS
+
+315 tried a hinted mmap trampoline; 316 used MAP_FIXED at appFw+0x4000000. 317 switched
+to RW→RX and logged errno.
+
+317 result:
+
+```text
+FX6_PRESENTER_TRAMP ... tr=0  (315/316)
+```
+
+317 crashed inside the shim itself:
+
+```text
+APPFW_SEGV addr=0x7fa9428010
+PC=libgrm-fbinit9.so+0x18cc0
+```
+
+Disassembly at the fault:
+
+```text
+18cc0  str w8, [x9]     ; x9 = 0x7fa9428010
+```
+
+`0x7fa9428010` is exactly the fixed `appFw+0x4000000` mapping used for the trampoline.
+The appFw TLS/errno pointer lives in that region, so MAP_FIXED overwrote it; the shim then
+crashed while writing `errno`.
+
+This is a **mapping bug**, not evidence about Presenter execution. No native frame.
+
+### Next
+
+- Do not MAP_FIXED over appFw TLS.
+- Allocate a near page only after validating it is outside appFw segments and TLS
+  (e.g. +0x8000000, still inside BL range), or use a QEMU GDB breakpoint.
+- Then determine whether 0xc0a860/0x1397450 runs and enqueue the real UI job.
+
+Candidates: 315 tramp, 316 trampfixed, 317 tramprx.
+
+---
+
+## Round 7 update — 318–320: presenter hook installed, never hit
+
+Fixes:
+
+- 318: near mmap was tested with the wrong BL range (`1<<25` instead of `1<<27`).
+- 319: installed the trampoline but wrote code after mprotect RX, causing a write fault.
+- 320: writes trampoline while RW, then mprotect RX, then patches appFw.
+
+320 result:
+
+```text
+FX6_PRESENTER_MMAP hint=... p=...
+FX6_PRESENTER_TRAMP slot=... target=...
+FX6_PRESENTER_TRAMP_RX mprotect=0
+FX6_PRESENTER_TRAMP_PATCH insn=95cfd5e8 mprotect=0 delta=121591712
+9 × FX6_UX_SCREEN_AREA_1024
+```
+
+No `FX6_PRESENTER_CALL` in the entire run.
+
+This is now positive evidence: the hook was correctly installed at `0xc0a860`, but
+`0xc0a860 -> 0x1397450` **never executes**. Presenter registration is not being attempted;
+the UI loop stops before that call.
+
+Current boundary:
+
+```text
+RsrcRelation: real initialized
+MWF null: gone
+9 ScreenAreas: created
+0xc0a860 presenter call: not reached
+AppFw event-loop cond wait: still the stop point
+native frame: none
+```
+
+Next: hook earlier call sites (`0xc0a6cc` / `0xc0a854` / `0xc09da0`) to determine which
+branch of the UI loop is skipped, then feed the correct job/notify.
+
+Candidates: 318 trampsafe, 319 tramp127, 320 trampwx.

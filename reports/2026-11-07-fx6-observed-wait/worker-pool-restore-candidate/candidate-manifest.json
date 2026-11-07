@@ -1,0 +1,184 @@
+{
+  "schema": "fx6-worker-pool-restore-candidate-v1",
+  "status": "PREPARED_WORKER_POOL_RESTORE",
+  "created_utc": "2026-11-07T16:50:08.612725+00:00",
+  "scope": "restore original45worker creation by removing only295 shim NOP at0x12d825c",
+  "baseline_manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/vm-candidate-gpecap25-295.json",
+    "bytes": 8922,
+    "sha256": "fd945eaa7ba97f297f0a8073f0072416add4fb0af480efe8e28e6b5d76c9dcef"
+  },
+  "baseline_initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal295-backupread.cpio",
+    "sha256": "f46acb182a87b4aaf541166d416ca347a5820e6c9eef80c51a58a03139618489",
+    "bytes": 430175024
+  },
+  "maximum_seconds": 120,
+  "mode": "worker-pool-restore",
+  "input_member_diff_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/member-diff-verification.json",
+    "bytes": 2544,
+    "sha256": "2b0ddd07d4b0d19ea19544080debbae67eda9b1a14c539de4c581739cf3f439d"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+    "bytes": 430241292,
+    "sha256": "6c698c7d1d4eac7ff54fc2bd6a54a54c3d4c9156f308aefae96b043ef22c5993"
+  },
+  "frozen_behavior": [
+    "original appFw payload",
+    "remaining four NOP sites0x12d824c/0x12d8250/0x12d8254/0xc09e50",
+    "all other shim source and behavior including Backup and MWF guard",
+    "observer library and explicit recv GOT diagnostic launcher",
+    "snapshot helper and init",
+    "timeouts and model environment",
+    "120s wall budget and original key/capture sequence"
+  ],
+  "diagnostic_changes": [
+    "new observer DSO first in existing preload string",
+    "recv GOT explicitly bound to observer in self-built launcher; all832 table rows unchanged",
+    "existing 3s task loop adds comm/status/uptime; initial maps snapshot",
+    "once-only bounded ptrace snapshot helper and existing init diagnostic-loop invocation"
+  ],
+  "kernel": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "bytes": 6610952
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+    "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "bytes": 10355
+  },
+  "backup": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+    "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "bytes": 2229740
+  },
+  "fx3_platform": {
+    "machine": "virt,gic-version=2,secure=off",
+    "accel": "tcg,thread=multi",
+    "cpu": "cortex-a35",
+    "smp": 4,
+    "memory_mib": 5120,
+    "display": "none",
+    "nodefaults": true,
+    "nic": "none",
+    "no_reboot": true,
+    "kernel_load": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "initrd_load_address": "0x440000000",
+    "dtb_load_address": "0x400002000"
+  },
+  "model_env": {
+    "FX3_VM_ESRAM_RAM": "1",
+    "FX3_VM_HIGH_DDR": "1",
+    "FX3_VM_SONY_TIMER": "1",
+    "FX3_VM_SCU_REQUEST": "1",
+    "FX3_VM_GPIO_BANK5": "1"
+  },
+  "owner_baseline": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+    "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669"
+  },
+  "candidate_argv_before_observer_serial_retarget": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "cortex-a35",
+    "-smp",
+    "4",
+    "-m",
+    "5120",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-monitor",
+    "none",
+    "-serial",
+    "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+    "-qmp",
+    "unix:q,server=on,wait=off",
+    "-chardev",
+    "socket,path=g,server=on,wait=off,id=keygate93",
+    "-gdb",
+    "chardev:keygate93",
+    "-S",
+    "-kernel",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio,addr=0x440000000,force-raw=on",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on",
+    "-s"
+  ],
+  "parent_observer_manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/candidate-manifest.json",
+    "bytes": 5201,
+    "sha256": "d5732c03c54f76f676a5fbf42fd2256715ae2afce42f9f6ddbf4e537d6c954fe"
+  },
+  "parent_observer_initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/guest-observer-only295.cpio",
+    "bytes": 430186280,
+    "sha256": "d02c7909458dcf8dff73fdf426953d07034cb386f8c8bd0bbd40a9440d32569e"
+  },
+  "abi_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/abi-closure-verification.json",
+    "bytes": 17394,
+    "sha256": "ff4e8b43050973b18c3e989250257d9e1b3a5a5411e848296368b3f46fb4cdd6"
+  },
+  "snapshot_helper": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/fx6-wait-snapshot",
+    "bytes": 54312,
+    "sha256": "8a2739ad9d826a2074af8e0c6b09a6233a1465a491f415b68f53346082c53f57"
+  },
+  "snapshot_trigger": {
+    "guest_uptime_min_s": 20,
+    "poll": "existing3sdiagnosticloop",
+    "once": true,
+    "target": "appfw_pid_only",
+    "max_enumerated_tids": 512,
+    "per_tid_wait_ms": 200,
+    "cleanup_wait_ms": 250,
+    "global_alarm_s": 6,
+    "hard_cleanup_grace_s": 1,
+    "max_fp_frames": 20
+  },
+  "diagnostic_interference": "SEIZE+INTERRUPT temporarily pauses one thread at a time; scheduling and syscall timing may change; all stops logged; no PTRACE_SET/POKE or message edits",
+  "parent_snapshot_manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/candidate-manifest.json",
+    "bytes": 6860,
+    "sha256": "df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42"
+  },
+  "parent_snapshot_initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/guest-wait-snapshot295.cpio",
+    "bytes": 430241092,
+    "sha256": "453890e36e7e6b4cd66641707cf80bd7754a0a37d6fba8dfce2af55fc169c926"
+  },
+  "source_change_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/source-change-verification.json",
+    "bytes": 2689,
+    "sha256": "cfa31ddc2092c178e80ff9d3d2f820abaee963bd5267bcc340f6cb9f933d310d"
+  },
+  "shim_abi_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/abi-verification.json",
+    "bytes": 4311,
+    "sha256": "d4338827218ec75b0c85e486fdcfa7a7b00d67fd249aeea35ff40123948c9fef"
+  },
+  "restored_shim": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit9.worker-pool-restore.so",
+    "bytes": 79704,
+    "sha256": "0f2d372411e09a1aeb387a38ba7c48a3f943e5b0c2612548d965f8aa98927c9d"
+  },
+  "intentional_restore": {
+    "native_callsite": "0x12d825c",
+    "native_target": "0x1d96370",
+    "native_worker_count": 45,
+    "removed_shim_nop_only": true
+  }
+}

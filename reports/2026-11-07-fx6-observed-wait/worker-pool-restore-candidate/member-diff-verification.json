@@ -1,0 +1,62 @@
+{
+  "schema": "fx6-worker-pool-restore-member-diff-v1",
+  "parent_snapshot_manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/candidate-manifest.json",
+    "bytes": 6860,
+    "sha256": "df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42"
+  },
+  "parent_snapshot_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-wait-snapshot-20261107/guest-wait-snapshot295.cpio",
+    "bytes": 430241092,
+    "sha256": "453890e36e7e6b4cd66641707cf80bd7754a0a37d6fba8dfce2af55fc169c926"
+  },
+  "derived_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+    "bytes": 430241292,
+    "sha256": "6c698c7d1d4eac7ff54fc2bd6a54a54c3d4c9156f308aefae96b043ef22c5993"
+  },
+  "changed_existing_members": [
+    "usr/lib/libgrm-fbinit9.so"
+  ],
+  "changed_member_payload": {
+    "member": "usr/lib/libgrm-fbinit9.so",
+    "before": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/baseline-shim.so",
+      "bytes": 79504,
+      "sha256": "c58b6509e451a32474a6e2ace7c680a58427a5b685eaf27ece9a51153c2a3f45"
+    },
+    "after": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit9.worker-pool-restore.so",
+      "bytes": 79704,
+      "sha256": "0f2d372411e09a1aeb387a38ba7c48a3f943e5b0c2612548d965f8aa98927c9d"
+    }
+  },
+  "source_change_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/source-change-verification.json",
+    "bytes": 2689,
+    "sha256": "cfa31ddc2092c178e80ff9d3d2f820abaee963bd5267bcc340f6cb9f933d310d"
+  },
+  "all_other_raw_records_byte_identical": true,
+  "original_order_preserved": true,
+  "both_original_trailer_records_byte_identical": true,
+  "before_records": 1227,
+  "after_records": 1227,
+  "before_trailers": 2,
+  "after_trailers": 2,
+  "native_restored_callsite": {
+    "appfw_member_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "elf_va": "0x12d825c",
+    "file_offset": "0x12d825c",
+    "original_four_bytes_hex": "45f82a94",
+    "instruction_word": "0x942af845",
+    "decoded_bl_target": "0x1d96370",
+    "guest_memory_readback_performed": false
+  },
+  "new_shim_nop_table": [
+    "0x12d824c",
+    "0x12d8250",
+    "0x12d8254",
+    "0xc09e50"
+  ],
+  "guest_executed": false
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "fx6-worker-pool-restore-publication-files-v1",
+  "source_directory": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107",
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 4936,
+      "sha256": "69dd1c9cd8e171d5ed2ee3159aeca9de44d63786eae662033080853935461316"
+    },
+    {
+      "file": "libgrm-fbinit25-295.baseline.c",
+      "bytes": 61067,
+      "sha256": "e9f7f234e40b0119c25d27b0c595497693377c30ec7001e22d6d8855a9721829"
+    },
+    {
+      "file": "libgrm-fbinit25-295.worker-pool-restore.c",
+      "bytes": 61054,
+      "sha256": "9385e437a5b75775ce1080fc83b78c4fc93be7311e6b8fbef6c82ac200cc0904"
+    },
+    {
+      "file": "source-change.diff",
+      "bytes": 740,
+      "sha256": "bf543814cb6527c52105c9c37d2d1b1fbf0b35f1be384d0bcc6dfaae91ea7efe"
+    },
+    {
+      "file": "build_candidate.py",
+      "bytes": 13756,
+      "sha256": "d3bb880df472160ec4abcff8360f40f1e1320ea0f7e173c49d4fc1d23f3f37a4"
+    },
+    {
+      "file": "candidate_tools.py",
+      "bytes": 2211,
+      "sha256": "59a88c5f62c744b19965b0601797bad5afb36ade7492d67d9ea20a535f2da5b9"
+    },
+    {
+      "file": "baseline-reproduction.json",
+      "bytes": 11369,
+      "sha256": "21eb1a3395cd9f68d463b80ffde9246833c62276caef77bc42179c508501d55b"
+    },
+    {
+      "file": "abi-verification.json",
+      "bytes": 4311,
+      "sha256": "d4338827218ec75b0c85e486fdcfa7a7b00d67fd249aeea35ff40123948c9fef"
+    },
+    {
+      "file": "shim-build-receipt.json",
+      "bytes": 2260,
+      "sha256": "5a70039d56fe95275f82197d85c4c829e188f721df5c2da74b4b9d5fdc154846"
+    },
+    {
+      "file": "source-change-verification.json",
+      "bytes": 2689,
+      "sha256": "cfa31ddc2092c178e80ff9d3d2f820abaee963bd5267bcc340f6cb9f933d310d"
+    },
+    {
+      "file": "member-diff-verification.json",
+      "bytes": 2544,
+      "sha256": "2b0ddd07d4b0d19ea19544080debbae67eda9b1a14c539de4c581739cf3f439d"
+    },
+    {
+      "file": "candidate-manifest.json",
+      "bytes": 8560,
+      "sha256": "8f3dc13a934a5d35110b7527bbae9a913c1ffdbb462a3646d4066949b462dcc1"
+    },
+    {
+      "file": "candidate-manifest.sha256",
+      "bytes": 65,
+      "sha256": "0ec7865d64ee4350363efa759e78e3ea7df9715bd421d8984a301a34065e1ac8"
+    },
+    {
+      "file": "candidate-build-receipt.json",
+      "bytes": 2167,
+      "sha256": "b77489d5fe2bf940fda44eb07172860f666930b675c62433915229f83de00761"
+    }
+  ],
+  "strict_whitelist": true,
+  "excluded": [
+    "shared/executable binaries",
+    "CPIO archives",
+    "object files",
+    "compiler caches",
+    "third-party source",
+    "firmware payloads"
+  ],
+  "candidate_manifest_sha256": "8f3dc13a934a5d35110b7527bbae9a913c1ffdbb462a3646d4066949b462dcc1",
+  "guest_executed_by_builder": false
+}

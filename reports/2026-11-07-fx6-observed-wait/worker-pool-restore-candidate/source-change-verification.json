@@ -1,0 +1,63 @@
+{
+  "schema": "fx6-worker-pool-source-change-v1",
+  "baseline_source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit25-295.baseline.c",
+    "bytes": 61067,
+    "sha256": "e9f7f234e40b0119c25d27b0c595497693377c30ec7001e22d6d8855a9721829"
+  },
+  "restored_source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit25-295.worker-pool-restore.c",
+    "bytes": 61054,
+    "sha256": "9385e437a5b75775ce1080fc83b78c4fc93be7311e6b8fbef6c82ac200cc0904"
+  },
+  "source_diff": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/source-change.diff",
+    "bytes": 740,
+    "sha256": "bf543814cb6527c52105c9c37d2d1b1fbf0b35f1be384d0bcc6dfaae91ea7efe"
+  },
+  "baseline_shim": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/baseline-shim.so",
+    "bytes": 79504,
+    "sha256": "c58b6509e451a32474a6e2ace7c680a58427a5b685eaf27ece9a51153c2a3f45"
+  },
+  "restored_shim": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit9.worker-pool-restore.so",
+    "bytes": 79704,
+    "sha256": "0f2d372411e09a1aeb387a38ba7c48a3f943e5b0c2612548d965f8aa98927c9d"
+  },
+  "before_nop_offsets": [
+    "0x12d824c",
+    "0x12d8250",
+    "0x12d8254",
+    "0x12d825c",
+    "0xc09e50"
+  ],
+  "after_nop_offsets": [
+    "0x12d824c",
+    "0x12d8250",
+    "0x12d8254",
+    "0xc09e50"
+  ],
+  "removed_nop_offsets": [
+    "0x12d825c"
+  ],
+  "all_other_source_bytes_identical": true,
+  "changed_source_lines": 2,
+  "reason_for_second_line": "Array size and loop bound both hard-coded5; both become4, no implicit zero element or duplicate NOP offset.",
+  "baseline_reproduction": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/baseline-reproduction.json",
+    "bytes": 11369,
+    "sha256": "21eb1a3395cd9f68d463b80ffde9246833c62276caef77bc42179c508501d55b"
+  },
+  "build_receipt": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/shim-build-receipt.json",
+    "bytes": 2260,
+    "sha256": "5a70039d56fe95275f82197d85c4c829e188f721df5c2da74b4b9d5fdc154846"
+  },
+  "abi_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/abi-verification.json",
+    "bytes": 4311,
+    "sha256": "d4338827218ec75b0c85e486fdcfa7a7b00d67fd249aeea35ff40123948c9fef"
+  },
+  "guest_memory_callsite_readback": false
+}

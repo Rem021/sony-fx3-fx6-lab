@@ -1,0 +1,2717 @@
+{
+  "schema": "fx6-worker-pool-restore-outcome-v1",
+  "manifest": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/candidate-manifest.json",
+    "bytes": 8560,
+    "sha256": "8f3dc13a934a5d35110b7527bbae9a913c1ffdbb462a3646d4066949b462dcc1"
+  },
+  "archive": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+    "bytes": 430241292,
+    "sha256": "6c698c7d1d4eac7ff54fc2bd6a54a54c3d4c9156f308aefae96b043ef22c5993"
+  },
+  "run_receipt": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/runs/worker-pool-restore-a3af746e3d/run-receipt.json",
+    "bytes": 5939,
+    "sha256": "7a81c6a2a8ac529b24c2090e71a8b2baee66d47a6bd83847e46d71f1355b3c24"
+  },
+  "serial": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/runs/worker-pool-restore-a3af746e3d/serial.log",
+    "bytes": 1173910,
+    "sha256": "2f86db9e4692c333aa17aa8e3e070ffa0705740c8aa8e687dac443b9a6a33b99"
+  },
+  "run_end": {
+    "reason": "wall_timeout",
+    "error": null,
+    "elapsed_seconds": 120.20924500003457,
+    "process_reaped": true,
+    "locks_released": true
+  },
+  "snapshot": {
+    "observed_register_tids": 129,
+    "successful_unique_detach_tids": 129,
+    "seq_queue_threads": 45,
+    "seq_thread_pool_threads": 4,
+    "end_log": "FX6_WAIT_SNAPSHOT_END pid=217 processed=129 enumerated=129 failures=0 cancelled=0 overflow=0 detach_failed=0 elapsed_ms=975",
+    "init_end_log": "FX6_WAIT_SNAPSHOT_INIT_END rc=0"
+  },
+  "selected_addresses_resolved": 35,
+  "threads": {
+    "224": {
+      "comm": "AppFw",
+      "syscall": "98 0x7f8801b038 0x80 0x0 0x0 0x0 0x7f902b61e0 0x7f902b3c40 0x7f97f7e5f0",
+      "registers": {
+        "pc": "0x7f97f7e5ec",
+        "lr": "0x7f97f7e5d0",
+        "fp": "0x7f902b3c40",
+        "sp": "0x7f902b3c40",
+        "pstate": "0x80000000",
+        "x0": "0x7f8801b038",
+        "x1": "0x80",
+        "x2": "0x0",
+        "x3": "0x0",
+        "x4": "0x0",
+        "x5": "0x7f902b61e0",
+        "x6": "0x7f902b68d0",
+        "x7": "0x0",
+        "x8": "0x62"
+      },
+      "addresses": [
+        {
+          "tid": 224,
+          "role": "pc",
+          "address": "0x7f97f7e5ec",
+          "resolution": {
+            "address": "0x7f97f7e5ec",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0xd5ec",
+            "file_offset": "0xd5ec",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "pthread_cond_wait",
+                "start": "0xd4d8",
+                "bytes": 748,
+                "offset": "0x114"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xd5dc",
+                "assembly": "mov x2, #0"
+              },
+              {
+                "va": "0xd5e0",
+                "assembly": "mov x3, #0"
+              },
+              {
+                "va": "0xd5e4",
+                "assembly": "sxtw x1, w1"
+              },
+              {
+                "va": "0xd5e8",
+                "assembly": "mov x8, #0x62"
+              },
+              {
+                "va": "0xd5ec",
+                "assembly": "svc #0"
+              },
+              {
+                "va": "0xd5f0",
+                "assembly": "cmn x0, #1, lsl #12"
+              },
+              {
+                "va": "0xd5f4",
+                "assembly": "mov x1, x0"
+              },
+              {
+                "va": "0xd5f8",
+                "assembly": "b.hi #0xd738"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xd5e8",
+              "assembly": "mov x8, #0x62"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "lr",
+          "address": "0x7f97f7e5d0",
+          "resolution": {
+            "address": "0x7f97f7e5d0",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0xd5d0",
+            "file_offset": "0xd5d0",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "pthread_cond_wait",
+                "start": "0xd4d8",
+                "bytes": 748,
+                "offset": "0xf8"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xd5c0",
+                "assembly": "str x25, [x29, #0xc0]"
+              },
+              {
+                "va": "0xd5c4",
+                "assembly": "str w21, [x29, #0xc8]"
+              },
+              {
+                "va": "0xd5c8",
+                "assembly": "bl #0x106f0"
+              },
+              {
+                "va": "0xd5cc",
+                "assembly": "bl #0x10ad8"
+              },
+              {
+                "va": "0xd5d0",
+                "assembly": "mov w4, w0"
+              },
+              {
+                "va": "0xd5d4",
+                "assembly": "eor w1, w21, #0x80"
+              },
+              {
+                "va": "0xd5d8",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0xd5dc",
+                "assembly": "mov x2, #0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xd5cc",
+              "assembly": "bl #0x10ad8"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 0,
+          "address": "0x7f97e96610",
+          "resolution": {
+            "address": "0x7f97e96610",
+            "mapping": {
+              "start": "0x7f97de3000",
+              "end": "0x7f97f51000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libstdc++.so.6.0.22"
+            },
+            "elf_sha256": "60857b39f0c34a09a889d937683bd8dae68200b6f10335fe94dee130a770247c",
+            "elf_bytes": 1549496,
+            "status": "resolved",
+            "load_bias": "0x7f97de3000",
+            "elf_va": "0xb3610",
+            "file_offset": "0xb3610",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "_ZNSt18condition_variable4waitERSt11unique_lockISt5mutexE",
+                "start": "0xb3600",
+                "bytes": 32,
+                "offset": "0x10"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xb3600",
+                "assembly": "stp x29, x30, [sp, #-0x10]!"
+              },
+              {
+                "va": "0xb3604",
+                "assembly": "mov x29, sp"
+              },
+              {
+                "va": "0xb3608",
+                "assembly": "ldr x1, [x1]"
+              },
+              {
+                "va": "0xb360c",
+                "assembly": "bl #0x8a780"
+              },
+              {
+                "va": "0xb3610",
+                "assembly": "cbnz w0, #0xb361c"
+              },
+              {
+                "va": "0xb3614",
+                "assembly": "ldp x29, x30, [sp], #0x10"
+              },
+              {
+                "va": "0xb3618",
+                "assembly": "ret "
+              },
+              {
+                "va": "0xb361c",
+                "assembly": "bl #0x8bf60"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xb360c",
+              "assembly": "bl #0x8a780"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 1,
+          "address": "0x7f91e5e988",
+          "resolution": {
+            "address": "0x7f91e5e988",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x1acd988",
+            "file_offset": "0x1acd988",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1acd978",
+                "assembly": "bl #0xb193d0"
+              },
+              {
+                "va": "0x1acd97c",
+                "assembly": "ldr x0, [x20, #0x10]"
+              },
+              {
+                "va": "0x1acd980",
+                "assembly": "mov x1, x23"
+              },
+              {
+                "va": "0x1acd984",
+                "assembly": "bl #0xb19e30"
+              },
+              {
+                "va": "0x1acd988",
+                "assembly": "ldr x0, [x19, #0x7a0]"
+              },
+              {
+                "va": "0x1acd98c",
+                "assembly": "cbz x0, #0x1acda08"
+              },
+              {
+                "va": "0x1acd990",
+                "assembly": "ldr x1, [x29, #0x58]"
+              },
+              {
+                "va": "0x1acd994",
+                "assembly": "cmp x0, x1"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1acd984",
+              "assembly": "bl #0xb19e30"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 2,
+          "address": "0x7f9166adec",
+          "resolution": {
+            "address": "0x7f9166adec",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x12d9dec",
+            "file_offset": "0x12d9dec",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x12d9ddc",
+                "assembly": "bl #0x10fa3cc"
+              },
+              {
+                "va": "0x12d9de0",
+                "assembly": "bl #0x10f727c"
+              },
+              {
+                "va": "0x12d9de4",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0x12d9de8",
+                "assembly": "bl #0x1acd874"
+              },
+              {
+                "va": "0x12d9dec",
+                "assembly": "bl #0x10f618c"
+              },
+              {
+                "va": "0x12d9df0",
+                "assembly": "mov x0, x21"
+              },
+              {
+                "va": "0x12d9df4",
+                "assembly": "bl #0x1acce48"
+              },
+              {
+                "va": "0x12d9df8",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x12d9de8",
+              "assembly": "bl #0x1acd874"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 3,
+          "address": "0x7f9166b024",
+          "resolution": {
+            "address": "0x7f9166b024",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x12da024",
+            "file_offset": "0x12da024",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x12da014",
+                "assembly": "str x0, [x29, #0x50]"
+              },
+              {
+                "va": "0x12da018",
+                "assembly": "ldrb w1, [x29, #0x3f]"
+              },
+              {
+                "va": "0x12da01c",
+                "assembly": "ldr x0, [x21]"
+              },
+              {
+                "va": "0x12da020",
+                "assembly": "bl #0x12d8174"
+              },
+              {
+                "va": "0x12da024",
+                "assembly": "mov x1, x19"
+              },
+              {
+                "va": "0x12da028",
+                "assembly": "mov w0, #0x3b16"
+              },
+              {
+                "va": "0x12da02c",
+                "assembly": "bl #0x222cf40"
+              },
+              {
+                "va": "0x12da030",
+                "assembly": "mov w0, #0x3b16"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x12da020",
+              "assembly": "bl #0x12d8174"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 4,
+          "address": "0x7f90f9ade8",
+          "resolution": {
+            "address": "0x7f90f9ade8",
+            "mapping": {
+              "start": "0x7f90f9a000",
+              "end": "0x7f90f9b000",
+              "perms": "rwxp",
+              "offset": "0xc09000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0xc09de8",
+            "file_offset": "0xc09de8",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0xc09dd8",
+                "assembly": "bl #0x114a068"
+              },
+              {
+                "va": "0xc09ddc",
+                "assembly": "ldrb w1, [x21, #0x2b8]"
+              },
+              {
+                "va": "0xc09de0",
+                "assembly": "mov x0, x20"
+              },
+              {
+                "va": "0xc09de4",
+                "assembly": "bl #0x12d9fc8"
+              },
+              {
+                "va": "0xc09de8",
+                "assembly": "mov x0, x20"
+              },
+              {
+                "va": "0xc09dec",
+                "assembly": "bl #0x114a078"
+              },
+              {
+                "va": "0xc09df0",
+                "assembly": "bl #0xc14dfc"
+              },
+              {
+                "va": "0xc09df4",
+                "assembly": "ldr x0, [x19, #0x20]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc09de4",
+              "assembly": "bl #0x12d9fc8"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 5,
+          "address": "0x7f90f9b6d0",
+          "resolution": {
+            "address": "0x7f90f9b6d0",
+            "mapping": {
+              "start": "0x7f90f9b000",
+              "end": "0x7f91669000",
+              "perms": "r-xp",
+              "offset": "0xc0a000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0xc0a6d0",
+            "file_offset": "0xc0a6d0",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0xc0a6c0",
+                "assembly": "stp x27, x28, [sp, #0x50]"
+              },
+              {
+                "va": "0xc0a6c4",
+                "assembly": "add x27, x29, #0xf8"
+              },
+              {
+                "va": "0xc0a6c8",
+                "assembly": "stp x23, x24, [sp, #0x30]"
+              },
+              {
+                "va": "0xc0a6cc",
+                "assembly": "bl #0xc09da0"
+              },
+              {
+                "va": "0xc0a6d0",
+                "assembly": "adrp x1, #0x2ee1000"
+              },
+              {
+                "va": "0xc0a6d4",
+                "assembly": "add x0, x29, #0xd8"
+              },
+              {
+                "va": "0xc0a6d8",
+                "assembly": "str x0, [x29, #0x78]"
+              },
+              {
+                "va": "0xc0a6dc",
+                "assembly": "add x28, x27, #8"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc0a6cc",
+              "assembly": "bl #0xc09da0"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 6,
+          "address": "0x7f90f9c52c",
+          "resolution": {
+            "address": "0x7f90f9c52c",
+            "mapping": {
+              "start": "0x7f90f9b000",
+              "end": "0x7f91669000",
+              "perms": "r-xp",
+              "offset": "0xc0a000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0xc0b52c",
+            "file_offset": "0xc0b52c",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0xc0b51c",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0xc0b520",
+                "assembly": "bl #0xc0b12c"
+              },
+              {
+                "va": "0xc0b524",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0xc0b528",
+                "assembly": "bl #0xc0a69c"
+              },
+              {
+                "va": "0xc0b52c",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0xc0b530",
+                "assembly": "bl #0xc0af00"
+              },
+              {
+                "va": "0xc0b534",
+                "assembly": "ldr x19, [sp, #0x10]"
+              },
+              {
+                "va": "0xc0b538",
+                "assembly": "ldp x29, x30, [sp], #0x20"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc0b528",
+              "assembly": "bl #0xc0a69c"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 7,
+          "address": "0x7f925bec0c",
+          "resolution": {
+            "address": "0x7f925bec0c",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x222dc0c",
+            "file_offset": "0x222dc0c",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x222dbfc",
+                "assembly": "ldp x20, x21, [x19, #8]"
+              },
+              {
+                "va": "0x222dc00",
+                "assembly": "bl #0x21be660"
+              },
+              {
+                "va": "0x222dc04",
+                "assembly": "mov x0, x21"
+              },
+              {
+                "va": "0x222dc08",
+                "assembly": "blr x20"
+              },
+              {
+                "va": "0x222dc0c",
+                "assembly": "ldr x21, [sp, #0x20]"
+              },
+              {
+                "va": "0x222dc10",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              },
+              {
+                "va": "0x222dc14",
+                "assembly": "ldp x29, x30, [sp], #0x30"
+              },
+              {
+                "va": "0x222dc18",
+                "assembly": "b #0x21bd7a4"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x222dc08",
+              "assembly": "blr x20"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 8,
+          "address": "0x7f979bc184",
+          "resolution": {
+            "address": "0x7f979bc184",
+            "mapping": {
+              "start": "0x7f979bb000",
+              "end": "0x7f979bd000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libosal_utm.so"
+            },
+            "elf_sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2",
+            "elf_bytes": 10216,
+            "status": "resolved",
+            "load_bias": "0x7f979bb000",
+            "elf_va": "0x1184",
+            "file_offset": "0x1184",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1174",
+                "assembly": "add x0, x19, #8"
+              },
+              {
+                "va": "0x1178",
+                "assembly": "bl #0xe60"
+              },
+              {
+                "va": "0x117c",
+                "assembly": "mov x0, x22"
+              },
+              {
+                "va": "0x1180",
+                "assembly": "blr x21"
+              },
+              {
+                "va": "0x1184",
+                "assembly": "b #0x111c"
+              },
+              {
+                "va": "0x1188",
+                "assembly": "mov w0, #4"
+              },
+              {
+                "va": "0x118c",
+                "assembly": "mov w1, #2"
+              },
+              {
+                "va": "0x1190",
+                "assembly": "str w0, [x29, #0x38]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1180",
+              "assembly": "blr x21"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 9,
+          "address": "0x7f97f78020",
+          "resolution": {
+            "address": "0x7f97f78020",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0x7020",
+            "file_offset": "0x7020",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x7010",
+                "assembly": "ldr x19, [x29, #0x38]"
+              },
+              {
+                "va": "0x7014",
+                "assembly": "ldr x1, [x19, #0x438]"
+              },
+              {
+                "va": "0x7018",
+                "assembly": "ldr x0, [x19, #0x440]"
+              },
+              {
+                "va": "0x701c",
+                "assembly": "blr x1"
+              },
+              {
+                "va": "0x7020",
+                "assembly": "str x0, [x19, #0x428]"
+              },
+              {
+                "va": "0x7024",
+                "assembly": "bl #0x5230"
+              },
+              {
+                "va": "0x7028",
+                "assembly": "bl #0x6de8"
+              },
+              {
+                "va": "0x702c",
+                "assembly": "bl #0x5250"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x701c",
+              "assembly": "blr x1"
+            }
+          }
+        },
+        {
+          "tid": 224,
+          "role": "frame_saved_lr",
+          "frame_index": 10,
+          "address": "0x7f98079dbc",
+          "resolution": {
+            "address": "0x7f98079dbc",
+            "mapping": {
+              "start": "0x7f97fb1000",
+              "end": "0x7f980e3000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libc-2.25.so"
+            },
+            "elf_sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+            "elf_bytes": 1283936,
+            "status": "resolved",
+            "load_bias": "0x7f97fb1000",
+            "elf_va": "0xc8dbc",
+            "file_offset": "0xc8dbc",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0xc8dac",
+                "assembly": "nop "
+              },
+              {
+                "va": "0xc8db0",
+                "assembly": "mov x29, #0"
+              },
+              {
+                "va": "0xc8db4",
+                "assembly": "mov x0, x12"
+              },
+              {
+                "va": "0xc8db8",
+                "assembly": "blr x10"
+              },
+              {
+                "va": "0xc8dbc",
+                "assembly": "b #0x9d9b0"
+              },
+              {
+                "va": "0xc8dc0",
+                "assembly": "mov w1, #0"
+              },
+              {
+                "va": "0xc8dc4",
+                "assembly": "b #0xc8dd0"
+              },
+              {
+                "va": "0xc8dc8",
+                "assembly": "udf #0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc8db8",
+              "assembly": "blr x10"
+            }
+          }
+        }
+      ]
+    },
+    "227": {
+      "comm": "SeqThreadPool0",
+      "syscall": "98 0x7f95fc2d60 0x80 0x0 0x0 0x0 0x7f8deb41e0 0x7f8deb3820 0x7f97f7e5f0",
+      "registers": {
+        "pc": "0x7f97f7e5ec",
+        "lr": "0x7f97f7e5d0",
+        "fp": "0x7f8deb3820",
+        "sp": "0x7f8deb3820",
+        "pstate": "0x80000000",
+        "x0": "0x7f95fc2d60",
+        "x1": "0x80",
+        "x2": "0x0",
+        "x3": "0x0",
+        "x4": "0x0",
+        "x5": "0x7f8deb41e0",
+        "x6": "0x7f8deb48d0",
+        "x7": "0x0",
+        "x8": "0x62"
+      },
+      "addresses": [
+        {
+          "tid": 227,
+          "role": "pc",
+          "address": "0x7f97f7e5ec",
+          "resolution": {
+            "address": "0x7f97f7e5ec",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0xd5ec",
+            "file_offset": "0xd5ec",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "pthread_cond_wait",
+                "start": "0xd4d8",
+                "bytes": 748,
+                "offset": "0x114"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xd5dc",
+                "assembly": "mov x2, #0"
+              },
+              {
+                "va": "0xd5e0",
+                "assembly": "mov x3, #0"
+              },
+              {
+                "va": "0xd5e4",
+                "assembly": "sxtw x1, w1"
+              },
+              {
+                "va": "0xd5e8",
+                "assembly": "mov x8, #0x62"
+              },
+              {
+                "va": "0xd5ec",
+                "assembly": "svc #0"
+              },
+              {
+                "va": "0xd5f0",
+                "assembly": "cmn x0, #1, lsl #12"
+              },
+              {
+                "va": "0xd5f4",
+                "assembly": "mov x1, x0"
+              },
+              {
+                "va": "0xd5f8",
+                "assembly": "b.hi #0xd738"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xd5e8",
+              "assembly": "mov x8, #0x62"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "lr",
+          "address": "0x7f97f7e5d0",
+          "resolution": {
+            "address": "0x7f97f7e5d0",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0xd5d0",
+            "file_offset": "0xd5d0",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "pthread_cond_wait",
+                "start": "0xd4d8",
+                "bytes": 748,
+                "offset": "0xf8"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xd5c0",
+                "assembly": "str x25, [x29, #0xc0]"
+              },
+              {
+                "va": "0xd5c4",
+                "assembly": "str w21, [x29, #0xc8]"
+              },
+              {
+                "va": "0xd5c8",
+                "assembly": "bl #0x106f0"
+              },
+              {
+                "va": "0xd5cc",
+                "assembly": "bl #0x10ad8"
+              },
+              {
+                "va": "0xd5d0",
+                "assembly": "mov w4, w0"
+              },
+              {
+                "va": "0xd5d4",
+                "assembly": "eor w1, w21, #0x80"
+              },
+              {
+                "va": "0xd5d8",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0xd5dc",
+                "assembly": "mov x2, #0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xd5cc",
+              "assembly": "bl #0x10ad8"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "frame_saved_lr",
+          "frame_index": 0,
+          "address": "0x7f97e96610",
+          "resolution": {
+            "address": "0x7f97e96610",
+            "mapping": {
+              "start": "0x7f97de3000",
+              "end": "0x7f97f51000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libstdc++.so.6.0.22"
+            },
+            "elf_sha256": "60857b39f0c34a09a889d937683bd8dae68200b6f10335fe94dee130a770247c",
+            "elf_bytes": 1549496,
+            "status": "resolved",
+            "load_bias": "0x7f97de3000",
+            "elf_va": "0xb3610",
+            "file_offset": "0xb3610",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "_ZNSt18condition_variable4waitERSt11unique_lockISt5mutexE",
+                "start": "0xb3600",
+                "bytes": 32,
+                "offset": "0x10"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xb3600",
+                "assembly": "stp x29, x30, [sp, #-0x10]!"
+              },
+              {
+                "va": "0xb3604",
+                "assembly": "mov x29, sp"
+              },
+              {
+                "va": "0xb3608",
+                "assembly": "ldr x1, [x1]"
+              },
+              {
+                "va": "0xb360c",
+                "assembly": "bl #0x8a780"
+              },
+              {
+                "va": "0xb3610",
+                "assembly": "cbnz w0, #0xb361c"
+              },
+              {
+                "va": "0xb3614",
+                "assembly": "ldp x29, x30, [sp], #0x10"
+              },
+              {
+                "va": "0xb3618",
+                "assembly": "ret "
+              },
+              {
+                "va": "0xb361c",
+                "assembly": "bl #0x8bf60"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xb360c",
+              "assembly": "bl #0x8a780"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "frame_saved_lr",
+          "frame_index": 1,
+          "address": "0x7f92455560",
+          "resolution": {
+            "address": "0x7f92455560",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x20c4560",
+            "file_offset": "0x20c4560",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x20c4550",
+                "assembly": "cbnz w0, #0x20c4564"
+              },
+              {
+                "va": "0x20c4554",
+                "assembly": "mov x1, x21"
+              },
+              {
+                "va": "0x20c4558",
+                "assembly": "mov x0, x23"
+              },
+              {
+                "va": "0x20c455c",
+                "assembly": "bl #0xb19e30"
+              },
+              {
+                "va": "0x20c4560",
+                "assembly": "b #0x20c454c"
+              },
+              {
+                "va": "0x20c4564",
+                "assembly": "ldrb w0, [x29, #0x48]"
+              },
+              {
+                "va": "0x20c4568",
+                "assembly": "cbz w0, #0x20c4574"
+              },
+              {
+                "va": "0x20c456c",
+                "assembly": "mov x0, x21"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x20c455c",
+              "assembly": "bl #0xb19e30"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "frame_saved_lr",
+          "frame_index": 2,
+          "address": "0x7f925bec0c",
+          "resolution": {
+            "address": "0x7f925bec0c",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x222dc0c",
+            "file_offset": "0x222dc0c",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x222dbfc",
+                "assembly": "ldp x20, x21, [x19, #8]"
+              },
+              {
+                "va": "0x222dc00",
+                "assembly": "bl #0x21be660"
+              },
+              {
+                "va": "0x222dc04",
+                "assembly": "mov x0, x21"
+              },
+              {
+                "va": "0x222dc08",
+                "assembly": "blr x20"
+              },
+              {
+                "va": "0x222dc0c",
+                "assembly": "ldr x21, [sp, #0x20]"
+              },
+              {
+                "va": "0x222dc10",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              },
+              {
+                "va": "0x222dc14",
+                "assembly": "ldp x29, x30, [sp], #0x30"
+              },
+              {
+                "va": "0x222dc18",
+                "assembly": "b #0x21bd7a4"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x222dc08",
+              "assembly": "blr x20"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "frame_saved_lr",
+          "frame_index": 3,
+          "address": "0x7f979bc184",
+          "resolution": {
+            "address": "0x7f979bc184",
+            "mapping": {
+              "start": "0x7f979bb000",
+              "end": "0x7f979bd000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libosal_utm.so"
+            },
+            "elf_sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2",
+            "elf_bytes": 10216,
+            "status": "resolved",
+            "load_bias": "0x7f979bb000",
+            "elf_va": "0x1184",
+            "file_offset": "0x1184",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1174",
+                "assembly": "add x0, x19, #8"
+              },
+              {
+                "va": "0x1178",
+                "assembly": "bl #0xe60"
+              },
+              {
+                "va": "0x117c",
+                "assembly": "mov x0, x22"
+              },
+              {
+                "va": "0x1180",
+                "assembly": "blr x21"
+              },
+              {
+                "va": "0x1184",
+                "assembly": "b #0x111c"
+              },
+              {
+                "va": "0x1188",
+                "assembly": "mov w0, #4"
+              },
+              {
+                "va": "0x118c",
+                "assembly": "mov w1, #2"
+              },
+              {
+                "va": "0x1190",
+                "assembly": "str w0, [x29, #0x38]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1180",
+              "assembly": "blr x21"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "frame_saved_lr",
+          "frame_index": 4,
+          "address": "0x7f97f78020",
+          "resolution": {
+            "address": "0x7f97f78020",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0x7020",
+            "file_offset": "0x7020",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x7010",
+                "assembly": "ldr x19, [x29, #0x38]"
+              },
+              {
+                "va": "0x7014",
+                "assembly": "ldr x1, [x19, #0x438]"
+              },
+              {
+                "va": "0x7018",
+                "assembly": "ldr x0, [x19, #0x440]"
+              },
+              {
+                "va": "0x701c",
+                "assembly": "blr x1"
+              },
+              {
+                "va": "0x7020",
+                "assembly": "str x0, [x19, #0x428]"
+              },
+              {
+                "va": "0x7024",
+                "assembly": "bl #0x5230"
+              },
+              {
+                "va": "0x7028",
+                "assembly": "bl #0x6de8"
+              },
+              {
+                "va": "0x702c",
+                "assembly": "bl #0x5250"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x701c",
+              "assembly": "blr x1"
+            }
+          }
+        },
+        {
+          "tid": 227,
+          "role": "frame_saved_lr",
+          "frame_index": 5,
+          "address": "0x7f98079dbc",
+          "resolution": {
+            "address": "0x7f98079dbc",
+            "mapping": {
+              "start": "0x7f97fb1000",
+              "end": "0x7f980e3000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libc-2.25.so"
+            },
+            "elf_sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+            "elf_bytes": 1283936,
+            "status": "resolved",
+            "load_bias": "0x7f97fb1000",
+            "elf_va": "0xc8dbc",
+            "file_offset": "0xc8dbc",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0xc8dac",
+                "assembly": "nop "
+              },
+              {
+                "va": "0xc8db0",
+                "assembly": "mov x29, #0"
+              },
+              {
+                "va": "0xc8db4",
+                "assembly": "mov x0, x12"
+              },
+              {
+                "va": "0xc8db8",
+                "assembly": "blr x10"
+              },
+              {
+                "va": "0xc8dbc",
+                "assembly": "b #0x9d9b0"
+              },
+              {
+                "va": "0xc8dc0",
+                "assembly": "mov w1, #0"
+              },
+              {
+                "va": "0xc8dc4",
+                "assembly": "b #0xc8dd0"
+              },
+              {
+                "va": "0xc8dc8",
+                "assembly": "udf #0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc8db8",
+              "assembly": "blr x10"
+            }
+          }
+        }
+      ]
+    },
+    "231": {
+      "comm": "SeqQueueCommon",
+      "syscall": "29 0x3 0xffffffff80000007 0x7f857fd450 0x7f857fd440 0x0 0x610f 0x7f857fd420 0x7f98072cbc",
+      "registers": {
+        "pc": "0x7f98072cbc",
+        "lr": "0x7f97a2dc9c",
+        "fp": "0x7f857fd420",
+        "sp": "0x7f857fd420",
+        "pstate": "0x0",
+        "x0": "0xfffffffffffffc03",
+        "x1": "0xffffffff80000007",
+        "x2": "0x7f857fd450",
+        "x3": "0x7f857fd440",
+        "x4": "0x0",
+        "x5": "0x610f",
+        "x6": "0x7f857fcbac",
+        "x7": "0x0",
+        "x8": "0x1d"
+      },
+      "addresses": [
+        {
+          "tid": 231,
+          "role": "pc",
+          "address": "0x7f98072cbc",
+          "resolution": {
+            "address": "0x7f98072cbc",
+            "mapping": {
+              "start": "0x7f97fb1000",
+              "end": "0x7f980e3000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libc-2.25.so"
+            },
+            "elf_sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+            "elf_bytes": 1283936,
+            "status": "resolved",
+            "load_bias": "0x7f97fb1000",
+            "elf_va": "0xc1cbc",
+            "file_offset": "0xc1cbc",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "ioctl",
+                "start": "0xc1cb0",
+                "bytes": 28,
+                "offset": "0xc"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0xc1cac",
+                "assembly": "udf #0"
+              },
+              {
+                "va": "0xc1cb0",
+                "assembly": "mov x8, #0x1d"
+              },
+              {
+                "va": "0xc1cb4",
+                "assembly": "sxtw x0, w0"
+              },
+              {
+                "va": "0xc1cb8",
+                "assembly": "svc #0"
+              },
+              {
+                "va": "0xc1cbc",
+                "assembly": "cmn x0, #0xfff"
+              },
+              {
+                "va": "0xc1cc0",
+                "assembly": "b.hs #0xc1cc8"
+              },
+              {
+                "va": "0xc1cc4",
+                "assembly": "ret "
+              },
+              {
+                "va": "0xc1cc8",
+                "assembly": "b #0x1fae0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc1cb8",
+              "assembly": "svc #0"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "lr",
+          "address": "0x7f97a2dc9c",
+          "resolution": {
+            "address": "0x7f97a2dc9c",
+            "mapping": {
+              "start": "0x7f97a2a000",
+              "end": "0x7f97a34000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libosal_uipc.so"
+            },
+            "elf_sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a",
+            "elf_bytes": 43752,
+            "status": "resolved",
+            "load_bias": "0x7f97a2a000",
+            "elf_va": "0x3c9c",
+            "file_offset": "0x3c9c",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "u_osal_rcv_msg_tmo",
+                "start": "0x3c60",
+                "bytes": 120,
+                "offset": "0x3c"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0x3c8c",
+                "assembly": "ldr w0, [x19]"
+              },
+              {
+                "va": "0x3c90",
+                "assembly": "mov x2, x20"
+              },
+              {
+                "va": "0x3c94",
+                "assembly": "mov x1, #-0x7ffffff9"
+              },
+              {
+                "va": "0x3c98",
+                "assembly": "bl #0x2530"
+              },
+              {
+                "va": "0x3c9c",
+                "assembly": "cmn w0, #1"
+              },
+              {
+                "va": "0x3ca0",
+                "assembly": "cbnz w0, #0x3cb0"
+              },
+              {
+                "va": "0x3ca4",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              },
+              {
+                "va": "0x3ca8",
+                "assembly": "ldp x29, x30, [sp], #0x40"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x3c98",
+              "assembly": "bl #0x2530"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 0,
+          "address": "0x7f97a305a4",
+          "resolution": {
+            "address": "0x7f97a305a4",
+            "mapping": {
+              "start": "0x7f97a2a000",
+              "end": "0x7f97a34000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libosal_uipc.so"
+            },
+            "elf_sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a",
+            "elf_bytes": 43752,
+            "status": "resolved",
+            "load_bias": "0x7f97a2a000",
+            "elf_va": "0x65a4",
+            "file_offset": "0x65a4",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "osal_rcv_msg_tmo",
+                "start": "0x6468",
+                "bytes": 836,
+                "offset": "0x13c"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0x6594",
+                "assembly": "cbnz x0, #0x6504"
+              },
+              {
+                "va": "0x6598",
+                "assembly": "mov w21, #-0x3ff"
+              },
+              {
+                "va": "0x659c",
+                "assembly": "b #0x64a0"
+              },
+              {
+                "va": "0x65a0",
+                "assembly": "bl #0x27a0"
+              },
+              {
+                "va": "0x65a4",
+                "assembly": "mov w21, w0"
+              },
+              {
+                "va": "0x65a8",
+                "assembly": "mov w0, w21"
+              },
+              {
+                "va": "0x65ac",
+                "assembly": "ldr x25, [sp, #0x40]"
+              },
+              {
+                "va": "0x65b0",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x65a0",
+              "assembly": "bl #0x27a0"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 1,
+          "address": "0x7fa2d8893c",
+          "resolution": {
+            "address": "0x7fa2d8893c",
+            "mapping": {
+              "start": "0x7fa2d88000",
+              "end": "0x7fa2d89000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libfx6-queue-observer.so"
+            },
+            "elf_sha256": "8e7f71167bb1619f933df622d5f41b6cb1b8439a6ea6b5b9d7bed2ac9ff016fc",
+            "elf_bytes": 5400,
+            "status": "resolved",
+            "load_bias": "0x7fa2d78000",
+            "elf_va": "0x1093c",
+            "file_offset": "0x93c",
+            "executable": true,
+            "covering_function_symbols": [
+              {
+                "name": "osal_rcv_msg_tmo",
+                "start": "0x106d4",
+                "bytes": 844,
+                "offset": "0x268"
+              }
+            ],
+            "instructions": [
+              {
+                "va": "0x1092c",
+                "assembly": "mov x1, x21"
+              },
+              {
+                "va": "0x10930",
+                "assembly": "mov w2, w20"
+              },
+              {
+                "va": "0x10934",
+                "assembly": "str w27, [x19]"
+              },
+              {
+                "va": "0x10938",
+                "assembly": "blr x23"
+              },
+              {
+                "va": "0x1093c",
+                "assembly": "ldr w20, [x19]"
+              },
+              {
+                "va": "0x10940",
+                "assembly": "mov w21, w0"
+              },
+              {
+                "va": "0x10944",
+                "assembly": "add x1, sp, #0x40"
+              },
+              {
+                "va": "0x10948",
+                "assembly": "mov w0, #1"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x10938",
+              "assembly": "blr x23"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 2,
+          "address": "0x7f924807cc",
+          "resolution": {
+            "address": "0x7f924807cc",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x20ef7cc",
+            "file_offset": "0x20ef7cc",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x20ef7bc",
+                "assembly": "ldr w0, [x29, #0x50]"
+              },
+              {
+                "va": "0x20ef7c0",
+                "assembly": "mov x1, x22"
+              },
+              {
+                "va": "0x20ef7c4",
+                "assembly": "mov w2, #-1"
+              },
+              {
+                "va": "0x20ef7c8",
+                "assembly": "bl #0xb19ec0"
+              },
+              {
+                "va": "0x20ef7cc",
+                "assembly": "ldr x19, [x29, #0x58]"
+              },
+              {
+                "va": "0x20ef7d0",
+                "assembly": "sxtw x2, w25"
+              },
+              {
+                "va": "0x20ef7d4",
+                "assembly": "mov x0, x21"
+              },
+              {
+                "va": "0x20ef7d8",
+                "assembly": "mov x1, x19"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x20ef7c8",
+              "assembly": "bl #0xb19ec0"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 3,
+          "address": "0x7f9248260c",
+          "resolution": {
+            "address": "0x7f9248260c",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x20f160c",
+            "file_offset": "0x20f160c",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x20f15fc",
+                "assembly": "mov w2, #0xa"
+              },
+              {
+                "va": "0x20f1600",
+                "assembly": "movk w0, #0x9284, lsl #16"
+              },
+              {
+                "va": "0x20f1604",
+                "assembly": "str wzr, [x29, #0x38]"
+              },
+              {
+                "va": "0x20f1608",
+                "assembly": "bl #0x20ef604"
+              },
+              {
+                "va": "0x20f160c",
+                "assembly": "ldr w0, [x29, #0x38]"
+              },
+              {
+                "va": "0x20f1610",
+                "assembly": "bl #0x20edd1c"
+              },
+              {
+                "va": "0x20f1614",
+                "assembly": "str w0, [x19]"
+              },
+              {
+                "va": "0x20f1618",
+                "assembly": "ldr x19, [sp, #0x10]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x20f1608",
+              "assembly": "bl #0x20ef604"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 4,
+          "address": "0x7f924610e8",
+          "resolution": {
+            "address": "0x7f924610e8",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x20d00e8",
+            "file_offset": "0x20d00e8",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x20d00d8",
+                "assembly": "bl #0x21bdf44"
+              },
+              {
+                "va": "0x20d00dc",
+                "assembly": "mov x1, x20"
+              },
+              {
+                "va": "0x20d00e0",
+                "assembly": "mov x0, x19"
+              },
+              {
+                "va": "0x20d00e4",
+                "assembly": "bl #0x20f158c"
+              },
+              {
+                "va": "0x20d00e8",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              },
+              {
+                "va": "0x20d00ec",
+                "assembly": "mov w1, #0x2d"
+              },
+              {
+                "va": "0x20d00f0",
+                "assembly": "ldp x29, x30, [sp], #0x20"
+              },
+              {
+                "va": "0x20d00f4",
+                "assembly": "mov w0, #0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x20d00e4",
+              "assembly": "bl #0x20f158c"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 5,
+          "address": "0x7f92069100",
+          "resolution": {
+            "address": "0x7f92069100",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x1cd8100",
+            "file_offset": "0x1cd8100",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1cd80f0",
+                "assembly": "add x0, x29, #0x30"
+              },
+              {
+                "va": "0x1cd80f4",
+                "assembly": "str wzr, [x29, #0x30]"
+              },
+              {
+                "va": "0x1cd80f8",
+                "assembly": "str wzr, [x1, #-0x18]!"
+              },
+              {
+                "va": "0x1cd80fc",
+                "assembly": "bl #0x20d00bc"
+              },
+              {
+                "va": "0x1cd8100",
+                "assembly": "ldr w6, [x29, #0x38]"
+              },
+              {
+                "va": "0x1cd8104",
+                "assembly": "cbz w6, #0x1cd81a4"
+              },
+              {
+                "va": "0x1cd8108",
+                "assembly": "adrp x20, #0x25ac000"
+              },
+              {
+                "va": "0x1cd810c",
+                "assembly": "adrp x19, #0x25ac000"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1cd80fc",
+              "assembly": "bl #0x20d00bc"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 6,
+          "address": "0x7f920696a8",
+          "resolution": {
+            "address": "0x7f920696a8",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x1cd86a8",
+            "file_offset": "0x1cd86a8",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1cd8698",
+                "assembly": "ldr w3, [x29, #0x78]"
+              },
+              {
+                "va": "0x1cd869c",
+                "assembly": "b #0x1cd83fc"
+              },
+              {
+                "va": "0x1cd86a0",
+                "assembly": "mov x0, x23"
+              },
+              {
+                "va": "0x1cd86a4",
+                "assembly": "bl #0x1cd80dc"
+              },
+              {
+                "va": "0x1cd86a8",
+                "assembly": "ldr x0, [x23, #0x10]"
+              },
+              {
+                "va": "0x1cd86ac",
+                "assembly": "bl #0x1accea8"
+              },
+              {
+                "va": "0x1cd86b0",
+                "assembly": "b #0x1cd8428"
+              },
+              {
+                "va": "0x1cd86b4",
+                "assembly": "stp x29, x30, [sp, #-0x30]!"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1cd86a4",
+              "assembly": "bl #0x1cd80dc"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 7,
+          "address": "0x7f921b628c",
+          "resolution": {
+            "address": "0x7f921b628c",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x1e2528c",
+            "file_offset": "0x1e2528c",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1e2527c",
+                "assembly": "ldr x0, [x20]"
+              },
+              {
+                "va": "0x1e25280",
+                "assembly": "ldr x1, [x0, #0x10]"
+              },
+              {
+                "va": "0x1e25284",
+                "assembly": "mov x0, x20"
+              },
+              {
+                "va": "0x1e25288",
+                "assembly": "blr x1"
+              },
+              {
+                "va": "0x1e2528c",
+                "assembly": "mov w0, w22"
+              },
+              {
+                "va": "0x1e25290",
+                "assembly": "bl #0x21bcf68"
+              },
+              {
+                "va": "0x1e25294",
+                "assembly": "mov x1, x27"
+              },
+              {
+                "va": "0x1e25298",
+                "assembly": "mov w0, w22"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1e25288",
+              "assembly": "blr x1"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 8,
+          "address": "0x7f925bec0c",
+          "resolution": {
+            "address": "0x7f925bec0c",
+            "mapping": {
+              "start": "0x7f9166a000",
+              "end": "0x7f92c92000",
+              "perms": "r-xp",
+              "offset": "0x12d9000",
+              "path": "/usr/lib/appFw.so"
+            },
+            "elf_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "elf_bytes": 50520424,
+            "status": "resolved",
+            "load_bias": "0x7f90391000",
+            "elf_va": "0x222dc0c",
+            "file_offset": "0x222dc0c",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x222dbfc",
+                "assembly": "ldp x20, x21, [x19, #8]"
+              },
+              {
+                "va": "0x222dc00",
+                "assembly": "bl #0x21be660"
+              },
+              {
+                "va": "0x222dc04",
+                "assembly": "mov x0, x21"
+              },
+              {
+                "va": "0x222dc08",
+                "assembly": "blr x20"
+              },
+              {
+                "va": "0x222dc0c",
+                "assembly": "ldr x21, [sp, #0x20]"
+              },
+              {
+                "va": "0x222dc10",
+                "assembly": "ldp x19, x20, [sp, #0x10]"
+              },
+              {
+                "va": "0x222dc14",
+                "assembly": "ldp x29, x30, [sp], #0x30"
+              },
+              {
+                "va": "0x222dc18",
+                "assembly": "b #0x21bd7a4"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x222dc08",
+              "assembly": "blr x20"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 9,
+          "address": "0x7f979bc184",
+          "resolution": {
+            "address": "0x7f979bc184",
+            "mapping": {
+              "start": "0x7f979bb000",
+              "end": "0x7f979bd000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/usr/lib/libosal_utm.so"
+            },
+            "elf_sha256": "a7ced89e69b0efef4d993f89793992eae69afc346018fe712eb93307c7a1dfa2",
+            "elf_bytes": 10216,
+            "status": "resolved",
+            "load_bias": "0x7f979bb000",
+            "elf_va": "0x1184",
+            "file_offset": "0x1184",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x1174",
+                "assembly": "add x0, x19, #8"
+              },
+              {
+                "va": "0x1178",
+                "assembly": "bl #0xe60"
+              },
+              {
+                "va": "0x117c",
+                "assembly": "mov x0, x22"
+              },
+              {
+                "va": "0x1180",
+                "assembly": "blr x21"
+              },
+              {
+                "va": "0x1184",
+                "assembly": "b #0x111c"
+              },
+              {
+                "va": "0x1188",
+                "assembly": "mov w0, #4"
+              },
+              {
+                "va": "0x118c",
+                "assembly": "mov w1, #2"
+              },
+              {
+                "va": "0x1190",
+                "assembly": "str w0, [x29, #0x38]"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x1180",
+              "assembly": "blr x21"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 10,
+          "address": "0x7f97f78020",
+          "resolution": {
+            "address": "0x7f97f78020",
+            "mapping": {
+              "start": "0x7f97f71000",
+              "end": "0x7f97f88000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libpthread-2.25.so"
+            },
+            "elf_sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+            "elf_bytes": 101888,
+            "status": "resolved",
+            "load_bias": "0x7f97f71000",
+            "elf_va": "0x7020",
+            "file_offset": "0x7020",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0x7010",
+                "assembly": "ldr x19, [x29, #0x38]"
+              },
+              {
+                "va": "0x7014",
+                "assembly": "ldr x1, [x19, #0x438]"
+              },
+              {
+                "va": "0x7018",
+                "assembly": "ldr x0, [x19, #0x440]"
+              },
+              {
+                "va": "0x701c",
+                "assembly": "blr x1"
+              },
+              {
+                "va": "0x7020",
+                "assembly": "str x0, [x19, #0x428]"
+              },
+              {
+                "va": "0x7024",
+                "assembly": "bl #0x5230"
+              },
+              {
+                "va": "0x7028",
+                "assembly": "bl #0x6de8"
+              },
+              {
+                "va": "0x702c",
+                "assembly": "bl #0x5250"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0x701c",
+              "assembly": "blr x1"
+            }
+          }
+        },
+        {
+          "tid": 231,
+          "role": "frame_saved_lr",
+          "frame_index": 11,
+          "address": "0x7f98079dbc",
+          "resolution": {
+            "address": "0x7f98079dbc",
+            "mapping": {
+              "start": "0x7f97fb1000",
+              "end": "0x7f980e3000",
+              "perms": "r-xp",
+              "offset": "0x0",
+              "path": "/lib/libc-2.25.so"
+            },
+            "elf_sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+            "elf_bytes": 1283936,
+            "status": "resolved",
+            "load_bias": "0x7f97fb1000",
+            "elf_va": "0xc8dbc",
+            "file_offset": "0xc8dbc",
+            "executable": true,
+            "covering_function_symbols": [],
+            "instructions": [
+              {
+                "va": "0xc8dac",
+                "assembly": "nop "
+              },
+              {
+                "va": "0xc8db0",
+                "assembly": "mov x29, #0"
+              },
+              {
+                "va": "0xc8db4",
+                "assembly": "mov x0, x12"
+              },
+              {
+                "va": "0xc8db8",
+                "assembly": "blr x10"
+              },
+              {
+                "va": "0xc8dbc",
+                "assembly": "b #0x9d9b0"
+              },
+              {
+                "va": "0xc8dc0",
+                "assembly": "mov w1, #0"
+              },
+              {
+                "va": "0xc8dc4",
+                "assembly": "b #0xc8dd0"
+              },
+              {
+                "va": "0xc8dc8",
+                "assembly": "udf #0"
+              }
+            ],
+            "preceding_instruction": {
+              "va": "0xc8db8",
+              "assembly": "blr x10"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "original_identities": {
+    "0x25ac4f0": "void model::sequence_cold_boot::init_hdmi()",
+    "0x25ac49d": "sequence/sequence_cold_boot.cpp",
+    "0x2600678": "adf_set_hdmi_format",
+    "0x2602418": "void infra_wrapper_bb::detail::send_and_wait_cmp_i(OSAL_ID, const void*, int32_t, void*, int32_t)",
+    "0x25ffa11": "infra_wrapper_bb_procam_chaplin_base.cpp"
+  },
+  "coldboot_job": {
+    "vtable": "0x2ec5ee0",
+    "rtti": "N5model18sequence_cold_bootE",
+    "execute": "0x1cd826c",
+    "actual_saved_lr_within_execute": "0x1cd86a8",
+    "native_worker_virtual_execute_call": "0x1e25288",
+    "current_blocking_call": "0x1cd86a4 ->0x1cd80dc init_hdmi",
+    "future_fulfill_after_that_call": "0x1cd86ac ->0x1accea8",
+    "native_execute_observed": true,
+    "future_current_invocation_completed": false
+  },
+  "call_edges": [
+    {
+      "va": "0x1cd86a4",
+      "file_offset": "0x1cd86a4",
+      "word": "0x97fffe8e",
+      "assembly": "bl #0x1cd80dc",
+      "target": "0x1cd80dc"
+    },
+    {
+      "va": "0x1cd80fc",
+      "file_offset": "0x1cd80fc",
+      "word": "0x940fdff0",
+      "assembly": "bl #0x20d00bc",
+      "target": "0x20d00bc"
+    },
+    {
+      "va": "0x20d00e4",
+      "file_offset": "0x20d00e4",
+      "word": "0x9400852a",
+      "assembly": "bl #0x20f158c",
+      "target": "0x20f158c"
+    },
+    {
+      "va": "0x20f1608",
+      "file_offset": "0x20f1608",
+      "word": "0x97fff7ff",
+      "assembly": "bl #0x20ef604",
+      "target": "0x20ef604"
+    },
+    {
+      "va": "0x20ef790",
+      "file_offset": "0x20ef790",
+      "word": "0x97a8a138",
+      "assembly": "bl #0xb17c70",
+      "target": "0xb17c70"
+    },
+    {
+      "va": "0x20ef79c",
+      "file_offset": "0x20ef79c",
+      "word": "0x97a8aa61",
+      "assembly": "bl #0xb1a120",
+      "target": "0xb1a120"
+    },
+    {
+      "va": "0x20ef7c8",
+      "file_offset": "0x20ef7c8",
+      "word": "0x97a8a9be",
+      "assembly": "bl #0xb19ec0",
+      "target": "0xb19ec0"
+    },
+    {
+      "va": "0x1cd86ac",
+      "file_offset": "0x1cd86ac",
+      "word": "0x97f7d1ff",
+      "assembly": "bl #0x1accea8",
+      "target": "0x1accea8"
+    },
+    {
+      "va": "0x20ef7dc",
+      "file_offset": "0x20ef7dc",
+      "word": "0x97a8a029",
+      "assembly": "bl #0xb17880",
+      "target": "0xb17880"
+    },
+    {
+      "va": "0x20ef7e8",
+      "file_offset": "0x20ef7e8",
+      "word": "0x97a8a956",
+      "assembly": "bl #0xb19d40",
+      "target": "0xb19d40"
+    },
+    {
+      "va": "0x20c455c",
+      "file_offset": "0x20c455c",
+      "word": "0x97a95635",
+      "assembly": "bl #0xb19e30",
+      "target": "0xb19e30"
+    }
+  ],
+  "selected_instruction_contracts": [
+    {
+      "va": "0x1cd86a0",
+      "file_offset": "0x1cd86a0",
+      "word": "0xaa1703e0",
+      "assembly": "mov x0, x23"
+    },
+    {
+      "va": "0x1cd86a8",
+      "file_offset": "0x1cd86a8",
+      "word": "0xf9400ae0",
+      "assembly": "ldr x0, [x23, #0x10]"
+    },
+    {
+      "va": "0x1e25280",
+      "file_offset": "0x1e25280",
+      "word": "0xf9400801",
+      "assembly": "ldr x1, [x0, #0x10]"
+    },
+    {
+      "va": "0x1e25288",
+      "file_offset": "0x1e25288",
+      "word": "0xd63f0020",
+      "assembly": "blr x1"
+    },
+    {
+      "va": "0x1cd80f4",
+      "file_offset": "0x1cd80f4",
+      "word": "0xb90033bf",
+      "assembly": "str wzr, [x29, #0x30]"
+    },
+    {
+      "va": "0x20f15a0",
+      "file_offset": "0x20f15a0",
+      "word": "0x528401a1",
+      "assembly": "mov w1, #0x200d"
+    },
+    {
+      "va": "0x20f15ac",
+      "file_offset": "0x20f15ac",
+      "word": "0x790043a1",
+      "assembly": "strh w1, [x29, #0x20]"
+    },
+    {
+      "va": "0x20f15b0",
+      "file_offset": "0x20f15b0",
+      "word": "0x528065a1",
+      "assembly": "mov w1, #0x32d"
+    },
+    {
+      "va": "0x20f15b4",
+      "file_offset": "0x20f15b4",
+      "word": "0x790047a1",
+      "assembly": "strh w1, [x29, #0x22]"
+    },
+    {
+      "va": "0x20f15b8",
+      "file_offset": "0x20f15b8",
+      "word": "0x52800141",
+      "assembly": "mov w1, #0xa"
+    },
+    {
+      "va": "0x20f15bc",
+      "file_offset": "0x20f15bc",
+      "word": "0x79004ba1",
+      "assembly": "strh w1, [x29, #0x24]"
+    },
+    {
+      "va": "0x20f15c0",
+      "file_offset": "0x20f15c0",
+      "word": "0x128fffc1",
+      "assembly": "mov w1, #-0x7fff"
+    },
+    {
+      "va": "0x20f15c4",
+      "file_offset": "0x20f15c4",
+      "word": "0x79004fa1",
+      "assembly": "strh w1, [x29, #0x26]"
+    },
+    {
+      "va": "0x20f15f4",
+      "file_offset": "0x20f15f4",
+      "word": "0x5280e8e0",
+      "assembly": "mov w0, #0x747"
+    },
+    {
+      "va": "0x20f15f8",
+      "file_offset": "0x20f15f8",
+      "word": "0x52800184",
+      "assembly": "mov w4, #0xc"
+    },
+    {
+      "va": "0x20f15fc",
+      "file_offset": "0x20f15fc",
+      "word": "0x52800142",
+      "assembly": "mov w2, #0xa"
+    },
+    {
+      "va": "0x20f1600",
+      "file_offset": "0x20f1600",
+      "word": "0x72b25080",
+      "assembly": "movk w0, #0x9284, lsl #16"
+    },
+    {
+      "va": "0x20ef788",
+      "file_offset": "0x20ef788",
+      "word": "0xb94053a1",
+      "assembly": "ldr w1, [x29, #0x50]"
+    },
+    {
+      "va": "0x20ef7bc",
+      "file_offset": "0x20ef7bc",
+      "word": "0xb94053a0",
+      "assembly": "ldr w0, [x29, #0x50]"
+    },
+    {
+      "va": "0x20ef7c0",
+      "file_offset": "0x20ef7c0",
+      "word": "0xaa1603e1",
+      "assembly": "mov x1, x22"
+    },
+    {
+      "va": "0x20ef7c4",
+      "file_offset": "0x20ef7c4",
+      "word": "0x12800002",
+      "assembly": "mov w2, #-1"
+    },
+    {
+      "va": "0x20ef7d0",
+      "file_offset": "0x20ef7d0",
+      "word": "0x93407f22",
+      "assembly": "sxtw x2, w25"
+    },
+    {
+      "va": "0x20ef7d4",
+      "file_offset": "0x20ef7d4",
+      "word": "0xaa1503e0",
+      "assembly": "mov x0, x21"
+    },
+    {
+      "va": "0x20ef7d8",
+      "file_offset": "0x20ef7d8",
+      "word": "0xaa1303e1",
+      "assembly": "mov x1, x19"
+    },
+    {
+      "va": "0x20c4544",
+      "file_offset": "0x20c4544",
+      "word": "0x39408260",
+      "assembly": "ldrb w0, [x19, #0x20]"
+    },
+    {
+      "va": "0x20c454c",
+      "file_offset": "0x20c454c",
+      "word": "0x39408260",
+      "assembly": "ldrb w0, [x19, #0x20]"
+    },
+    {
+      "va": "0x20c4560",
+      "file_offset": "0x20c4560",
+      "word": "0x17fffffb",
+      "assembly": "b #0x20c454c"
+    }
+  ],
+  "receive_events": [
+    {
+      "line": 1320,
+      "text": "FX6_QUEUE_OBS_ENTER seq=1 tid=231 t=7.283244000 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1321,
+      "text": "FX6_QUEUE_OBS_EXIT seq=1 tid=231 t=7.285288000 rc=0 errno=22"
+    },
+    {
+      "line": 1323,
+      "text": "FX6_QUEUE_OBS_ENTER seq=2 tid=231 t=7.286645008 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1324,
+      "text": "FX6_QUEUE_OBS_EXIT seq=2 tid=231 t=7.287373008 rc=0 errno=22"
+    },
+    {
+      "line": 1326,
+      "text": "FX6_QUEUE_OBS_ENTER seq=3 tid=231 t=7.288684000 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1327,
+      "text": "FX6_QUEUE_OBS_EXIT seq=3 tid=231 t=7.289322000 rc=0 errno=22"
+    },
+    {
+      "line": 1329,
+      "text": "FX6_QUEUE_OBS_ENTER seq=4 tid=231 t=7.290343008 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1330,
+      "text": "FX6_QUEUE_OBS_EXIT seq=4 tid=231 t=7.290916000 rc=0 errno=22"
+    },
+    {
+      "line": 1332,
+      "text": "FX6_QUEUE_OBS_ENTER seq=5 tid=231 t=7.292332000 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1333,
+      "text": "FX6_QUEUE_OBS_EXIT seq=5 tid=231 t=7.294185008 rc=0 errno=22"
+    },
+    {
+      "line": 1335,
+      "text": "FX6_QUEUE_OBS_ENTER seq=6 tid=231 t=7.295259008 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1336,
+      "text": "FX6_QUEUE_OBS_EXIT seq=6 tid=231 t=7.295858000 rc=0 errno=22"
+    },
+    {
+      "line": 1338,
+      "text": "FX6_QUEUE_OBS_ENTER seq=7 tid=231 t=7.297018000 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1339,
+      "text": "FX6_QUEUE_OBS_EXIT seq=7 tid=231 t=7.297631008 rc=0 errno=22"
+    },
+    {
+      "line": 1341,
+      "text": "FX6_QUEUE_OBS_ENTER seq=8 tid=231 t=7.298716000 lr=0x7f98fd33a0 caller=/usr/lib/libmpr.so+0xcbb3a0 site=other_dso qid=0x80c7610f timeout=-1 outslot=0x7f857fd0c8 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    {
+      "line": 1342,
+      "text": "FX6_QUEUE_OBS_EXIT seq=8 tid=231 t=7.299357008 rc=0 errno=22"
+    },
+    {
+      "line": 1355,
+      "text": "FX6_QUEUE_OBS_ENTER seq=9 tid=231 t=7.309308000 lr=0x7f924807cc caller=/usr/lib/appFw.so+0x20ef7cc site=bb_request_reply qid=0x81cf610f timeout=-1 outslot=0x7f857fd738 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    }
+  ],
+  "bb_request": {
+    "logical_destination": "0x92840747",
+    "reply_queue_from_message_source": "0x81cf610f",
+    "request_bytes": 10,
+    "reply_copy_bytes": 12,
+    "request_halfwords_hex": [
+      "0x200d",
+      "0x032d",
+      "0x000a",
+      "0x8001",
+      "0x0000"
+    ],
+    "expected_raw_hex": "0d202d030a0001800000",
+    "actual_unhandled_logs": [
+      {
+        "line": 1353,
+        "text": "[  240.593093] FX3_BACKUP_CP_UNHANDLED destination=0x92840747 logical_bytes=10 captured=10 raw=0d202d030a0001800000 epoch=1"
+      },
+      {
+        "line": 1354,
+        "text": "[  240.623500] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92840747 source=0x81cf610f no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+      }
+    ],
+    "current_receive": {
+      "line": 1355,
+      "text": "FX6_QUEUE_OBS_ENTER seq=9 tid=231 t=7.309308000 lr=0x7f924807cc caller=/usr/lib/appFw.so+0x20ef7cc site=bb_request_reply qid=0x81cf610f timeout=-1 outslot=0x7f857fd738 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+    },
+    "current_receive_has_exit": false,
+    "caller_name": "adf_set_hdmi_format",
+    "default_send_receive_contract": "allocate request to destination, copy10B, set message source to temporary reply queue, send, receive timeout-1 on same queue, then copy12B reply and free",
+    "interpretation": "Actual CP bridge reports unhandled/no_reply; no protocol-correct12B reply is proven. Reply format and hardware implementation are not inferred from this10B request."
+  },
+  "conclusions": {
+    "confirmed": "Restoring only the native pool call caused real sequence_cold_boot execute to run; current block is its init_hdmi request/reply path before promise fulfillment",
+    "appfw_thread": "TID224 still waits on the same cold-boot future because TID231 has not returned from init_hdmi to its fulfill call",
+    "pool0_thread": "TID227 SeqThreadPool0 is waiting on its own work-available condition at20c455c; it is not this cold-boot executing thread",
+    "limits": [
+      "no claim that CP route destination absence is a physical-camera fault",
+      "no fabricated reply or ready/notify writes",
+      "no UI/menu success claim",
+      "FP records are observed frames, not a complete unwind",
+      "runtime instruction-byte readback at12d825c still absent; behavioral counterfactual is actual native execution"
+    ]
+  },
+  "analysis_guest_connection": false
+}

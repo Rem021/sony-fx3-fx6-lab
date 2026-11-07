@@ -1,0 +1,414 @@
+{
+  "status": "PASS",
+  "scope": "static bounded contract plus frozen actual worker-pool run; no original-code execution",
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+      "bytes": 50520424,
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha8/cpapp-b.bin",
+      "bytes": 17952816,
+      "sha256": "60de0ab5544749dd50d8245f573c0994573fef349186efe20b502c42e3289668"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+      "bytes": 430241292,
+      "sha256": "6c698c7d1d4eac7ff54fc2bd6a54a54c3d4c9156f308aefae96b043ef22c5993"
+    }
+  ],
+  "cp_mapping": {
+    "base": "0x108000",
+    "architecture": "ARM32 flat image; selected consumers Thumb",
+    "conversion": "file_offset = (VA & ~1) - 0x108000",
+    "sha256": "60de0ab5544749dd50d8245f573c0994573fef349186efe20b502c42e3289668"
+  },
+  "actual_cpio_app": {
+    "member": "usr/lib/appFw.so",
+    "bytes": 50520424,
+    "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "run_serial": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/runs/worker-pool-restore-a3af746e3d/serial.log",
+    "bytes": 1173910,
+    "sha256": "2f86db9e4692c333aa17aa8e3e070ffa0705740c8aa8e687dac443b9a6a33b99",
+    "selected_lines": [
+      {
+        "line": 1353,
+        "text": "[  240.593093] FX3_BACKUP_CP_UNHANDLED destination=0x92840747 logical_bytes=10 captured=10 raw=0d202d030a0001800000 epoch=1"
+      },
+      {
+        "line": 1354,
+        "text": "[  240.623500] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92840747 source=0x81cf610f no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+      },
+      {
+        "line": 1355,
+        "text": "FX6_QUEUE_OBS_ENTER seq=9 tid=231 t=7.309308000 lr=0x7f924807cc caller=/usr/lib/appFw.so+0x20ef7cc site=bb_request_reply qid=0x81cf610f timeout=-1 outslot=0x7f857fd738 target=/usr/lib/libosal_uipc.so@0x7f97a30468"
+      },
+      {
+        "line": 7994,
+        "text": "FX6_WAIT_SNAPSHOT_REG tid=231 pc=0x7f98072cbc lr=0x7f97a2dc9c fp=0x7f857fd420 sp=0x7f857fd420 pstate=0x0 x0=0xfffffffffffffc03 x1=0xffffffff80000007 x2=0x7f857fd450 x3=0x7f857fd440 x4=0x0 x5=0x610f x6=0x7f857fcbac x7=0x0 x8=0x1d"
+      },
+      {
+        "line": 7996,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=0 fp=0x7f857fd420 next_fp=0x7f857fd460 saved_lr=0x7f97a305a4"
+      },
+      {
+        "line": 7997,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=1 fp=0x7f857fd460 next_fp=0x7f857fd680 saved_lr=0x7fa2d8893c"
+      },
+      {
+        "line": 7998,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=2 fp=0x7f857fd680 next_fp=0x7f857fd6e0 saved_lr=0x7f924807cc"
+      },
+      {
+        "line": 7999,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=3 fp=0x7f857fd6e0 next_fp=0x7f857fd740 saved_lr=0x7f9248260c"
+      },
+      {
+        "line": 8000,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=4 fp=0x7f857fd740 next_fp=0x7f857fd780 saved_lr=0x7f924610e8"
+      },
+      {
+        "line": 8001,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=5 fp=0x7f857fd780 next_fp=0x7f857fd7a0 saved_lr=0x7f92069100"
+      },
+      {
+        "line": 8002,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=6 fp=0x7f857fd7a0 next_fp=0x7f857fd7f0 saved_lr=0x7f920696a8"
+      },
+      {
+        "line": 8003,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=7 fp=0x7f857fd7f0 next_fp=0x7f857fd8d0 saved_lr=0x7f921b628c"
+      },
+      {
+        "line": 8004,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=8 fp=0x7f857fd8d0 next_fp=0x7f857fd950 saved_lr=0x7f925bec0c"
+      },
+      {
+        "line": 8005,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=9 fp=0x7f857fd950 next_fp=0x7f857fd980 saved_lr=0x7f979bc184"
+      },
+      {
+        "line": 8006,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=10 fp=0x7f857fd980 next_fp=0x7f857fd9d0 saved_lr=0x7f97f78020"
+      },
+      {
+        "line": 8007,
+        "text": "FX6_WAIT_SNAPSHOT_FRAME tid=231 index=11 fp=0x7f857fd9d0 next_fp=0x0 saved_lr=0x7f98079dbc"
+      },
+      {
+        "line": 8009,
+        "text": "FX6_WAIT_SNAPSHOT_DETACH tid=231 rc=0 errno=0 stopped=1 signal=0"
+      }
+    ]
+  },
+  "request": {
+    "raw_hex": "0d202d030a0001800000",
+    "u16_header": [
+      "0x200d",
+      "0x032d",
+      10,
+      "0x8001"
+    ],
+    "payload": "2B storage, producer writes first byte 0/1; current request 0",
+    "destination": "0x92840747",
+    "source_and_waiting_queue": "0x81cf610f",
+    "request_bytes": 10,
+    "expected_reply_bytes": 12
+  },
+  "ap_instruction_checks": {
+    "0x20f15a0": "mov w1, #0x200d",
+    "0x20f15b0": "mov w1, #0x32d",
+    "0x20f15b8": "mov w1, #0xa",
+    "0x20f15c0": "mov w1, #-0x7fff",
+    "0x20f15cc": "strb w0, [x29, #0x28]",
+    "0x20f15f8": "mov w4, #0xc",
+    "0x20f15fc": "mov w2, #0xa",
+    "0x20f1608": "bl #0x20ef604",
+    "0x20f160c": "ldr w0, [x29, #0x38]",
+    "0x20f1610": "bl #0x20edd1c",
+    "0x20f1614": "str w0, [x19]",
+    "0x20ef784": "bl #0xb17880",
+    "0x20ef790": "bl #0xb17c70",
+    "0x20ef79c": "bl #0xb1a120",
+    "0x20ef7c4": "mov w2, #-1",
+    "0x20ef7c8": "bl #0xb19ec0",
+    "0x20ef7dc": "bl #0xb17880",
+    "0x20ef7e8": "bl #0xb19d40",
+    "0x20d00e4": "bl #0x20f158c",
+    "0x1cd80fc": "bl #0x20d00bc",
+    "0x1cd8100": "ldr w6, [x29, #0x38]",
+    "0x1cd8104": "cbz w6, #0x1cd81a4",
+    "0x1cd8184": "mov w0, #0x86a0",
+    "0x1cd8188": "movk w0, #1, lsl #16",
+    "0x1cd8190": "bl #0x2167780",
+    "0x2167780": "ret",
+    "0x1cd86a4": "bl #0x1cd80dc",
+    "0x1cd86a8": "ldr x0, [x23, #0x10]",
+    "0x20edd64": "cbz w0, #0x20edd94",
+    "0x20edd8c": "cmp w0, #0x580, lsl #12",
+    "0x20edd94": "mov w19, #0",
+    "0x20edf40": "mov w19, #0x6f",
+    "0x20edf44": "cmn w0, #1",
+    "0x20eddc8": "mov w19, #2"
+  },
+  "cp_instruction_checks": {
+    "0x1a8a30": {
+      "file_offset": "0xa0a30",
+      "instruction": "ldr r6, [r4, #0xc]"
+    },
+    "0x1a8a38": {
+      "file_offset": "0xa0a38",
+      "instruction": "ldr r3, [r4]"
+    },
+    "0x1a8a3c": {
+      "file_offset": "0xa0a3c",
+      "instruction": "sub.w r0, r3, #0x1e"
+    },
+    "0x1a8a46": {
+      "file_offset": "0xa0a46",
+      "instruction": "tbh [pc, r0, lsl #1]"
+    },
+    "0x1a9326": {
+      "file_offset": "0xa1326",
+      "instruction": "bl #0x1af1b0"
+    },
+    "0x1a932a": {
+      "file_offset": "0xa132a",
+      "instruction": "mov r5, r0"
+    },
+    "0x1a932e": {
+      "file_offset": "0xa132e",
+      "instruction": "beq.w #0x1a90a4"
+    },
+    "0x1a9344": {
+      "file_offset": "0xa1344",
+      "instruction": "bl #0x5dc82a"
+    },
+    "0x1af1be": {
+      "file_offset": "0xa71be",
+      "instruction": "mov.w r0, #0x304"
+    },
+    "0x1af1c6": {
+      "file_offset": "0xa71c6",
+      "instruction": "movw r0, #0x2004"
+    },
+    "0x1af1ce": {
+      "file_offset": "0xa71ce",
+      "instruction": "movs r0, #0xc"
+    },
+    "0x1af1d8": {
+      "file_offset": "0xa71d8",
+      "instruction": "ldrb r3, [r4, #8]"
+    },
+    "0x1af1da": {
+      "file_offset": "0xa71da",
+      "instruction": "cmp r3, #1"
+    },
+    "0x1af1de": {
+      "file_offset": "0xa71de",
+      "instruction": "cbnz r3, #0x1af1e4"
+    },
+    "0x1af200": {
+      "file_offset": "0xa7200",
+      "instruction": "ldrb r5, [r4, #8]"
+    },
+    "0x1af204": {
+      "file_offset": "0xa7204",
+      "instruction": "strb.w r5, [sp, #0x14]"
+    },
+    "0x1af234": {
+      "file_offset": "0xa7234",
+      "instruction": "movt r0, #0x9058"
+    },
+    "0x1af238": {
+      "file_offset": "0xa7238",
+      "instruction": "movt r3, #0x9284"
+    },
+    "0x1af23c": {
+      "file_offset": "0xa723c",
+      "instruction": "bl #0x5ec356"
+    },
+    "0x1af240": {
+      "file_offset": "0xa7240",
+      "instruction": "cbz r0, #0x1af24c"
+    },
+    "0x1af248": {
+      "file_offset": "0xa7248",
+      "instruction": "mov.w r4, #-1"
+    },
+    "0x1af24c": {
+      "file_offset": "0xa724c",
+      "instruction": "mov r0, r4"
+    },
+    "0x1a994e": {
+      "file_offset": "0xa194e",
+      "instruction": "ldr r1, [r4, #8]"
+    },
+    "0x1a9952": {
+      "file_offset": "0xa1952",
+      "instruction": "movs r2, #0xbb"
+    },
+    "0x1a9954": {
+      "file_offset": "0xa1954",
+      "instruction": "bl #0x5dc82a"
+    },
+    "0x5dc834": {
+      "file_offset": "0x4d4834",
+      "instruction": "mov r5, r1"
+    },
+    "0x5dc848": {
+      "file_offset": "0x4d4848",
+      "instruction": "movw r0, #0x132d"
+    },
+    "0x5dc854": {
+      "file_offset": "0x4d4854",
+      "instruction": "movs r0, #0xc"
+    },
+    "0x5dc85a": {
+      "file_offset": "0x4d485a",
+      "instruction": "movw r0, #0x200d"
+    },
+    "0x5dc862": {
+      "file_offset": "0x4d4862",
+      "instruction": "movw r0, #0x8001"
+    },
+    "0x5dc86a": {
+      "file_offset": "0x4d486a",
+      "instruction": "str r5, [sp, #0xc]"
+    },
+    "0x5dc870": {
+      "file_offset": "0x4d4870",
+      "instruction": "bl #0x1abecc"
+    },
+    "0x1abf06": {
+      "file_offset": "0xa3f06",
+      "instruction": "bl #0x4b6fa4"
+    },
+    "0x1abf1a": {
+      "file_offset": "0xa3f1a",
+      "instruction": "movw r1, #0x747"
+    },
+    "0x1abf1e": {
+      "file_offset": "0xa3f1e",
+      "instruction": "movt r1, #0x9284"
+    },
+    "0x1abf2c": {
+      "file_offset": "0xa3f2c",
+      "instruction": "blx #0x5725b8"
+    },
+    "0x1abf48": {
+      "file_offset": "0xa3f48",
+      "instruction": "bl #0x4b68d8"
+    },
+    "0x1abf4e": {
+      "file_offset": "0xa3f4e",
+      "instruction": "cbz r5, #0x1abf76"
+    },
+    "0x1abf54": {
+      "file_offset": "0xa3f54",
+      "instruction": "bl #0x4b70a0"
+    },
+    "0x1a90b6": {
+      "file_offset": "0xa10b6",
+      "instruction": "b.w #0x4b70a0"
+    }
+  },
+  "cp_tbh": {
+    "index": "0xbb",
+    "subtract": "0x1e",
+    "table_base_va": "0x1a8a4a",
+    "entry_va": "0x1a8b84",
+    "entry_file_offset": "0xa0b84",
+    "entry_u16": "0x46d",
+    "resolved_target_va": "0x1a9324",
+    "handler_va": "0x1af1b0"
+  },
+  "original_cp_completion": {
+    "constructor_va": "0x5dc82a",
+    "u16_header": [
+      "0x200d",
+      "0x132d",
+      12,
+      "0x8001"
+    ],
+    "payload_u32_at_8": "incoming R1 saved in R5, never an unconditional status constant",
+    "direct_callers": [
+      "0x1a9344 immediate nonzero handler error",
+      "0x1a9954 downstream event+8 status"
+    ],
+    "request_forward": {
+      "header": [
+        "0x2004",
+        "0x0304",
+        12,
+        1
+      ],
+      "payload": "request+8 first byte copied",
+      "destination": "0x9058003f",
+      "return_route_identifier": "0x928407b9",
+      "send_failure_result": "0xffffffff"
+    },
+    "reply_sender_va": "0x1abecc",
+    "ownership": "new reply allocation and copy; sender skips free on send result0, frees on nonzero; request dispatcher reaches free-like routine after handler",
+    "primitive_name_limit": "flat-image primitive labels alloc/send/free are interface-pattern inferences; numeric call edges are asserted"
+  },
+  "ap_reply_consumer": {
+    "behavior": "copies exactly12B without recv rc/size/header checks, frees reply using own dynamic qid; reads reply+8 u32 and maps it",
+    "status_converter_va": "0x20edd1c",
+    "explicit_numeric_examples": {
+      "0x0": "0x0",
+      "0x1": "0x6d",
+      "0x2": "0x6e",
+      "0x4": "0x8b",
+      "0xffffffff": "0x6f",
+      "0x580000": "0x0",
+      "0x58e001": "0x80",
+      "0x58e002": "0x81",
+      "0x58e003": "0x82",
+      "0x58e004": "0x83",
+      "0x58e005": "0x84",
+      "0x58e006": "0x85",
+      "0x58e007": "0x86",
+      "0x58e008": "0x87",
+      "0x58e009": "0x0",
+      "0x58e00a": "0x89",
+      "0x58efff": "0x8a",
+      "0x590000": "0x0",
+      "0x590001": "0x70",
+      "0x590002": "0x71",
+      "0x590003": "0x72",
+      "0x590004": "0x73",
+      "0x590005": "0x74",
+      "0x590007": "0x75",
+      "0x590010": "0x0",
+      "0x591005": "0x77",
+      "0x5a0000": "0x0",
+      "0x5a0001": "0x78",
+      "0x5a0002": "0x79",
+      "0x5a0003": "0x7a",
+      "0x5a0004": "0x7b",
+      "0x5a0005": "0x7c",
+      "0x5a0006": "0x7d",
+      "0x5a0007": "0x7e",
+      "0x5affff": "0x7f"
+    },
+    "mapping_limit": "numeric branch reconstruction, no private enum names recovered; no unsupported/invalid policy inferred",
+    "init_hdmi": "checks mapped status nonzero, logs, sleeps100000us, calls original RET-only0x2167780, returns early; caller run() continues without inspecting an init_hdmi return status"
+  },
+  "unclosed": [
+    "external0x032d ingress lookup to internal event index0xbb",
+    "child service0x9058003f real operation and completion preconditions",
+    "complete route FIFO ownership/cancellation semantics and invalid/unsupported enum meanings"
+  ],
+  "decision": "Do not implement or inject reply this round; original completion provenance proves variable status, not unconditional success.",
+  "excluded": [
+    "VM run",
+    "message reply",
+    "shim/shared-source mutation",
+    "firmware or binary output",
+    "Git/sync"
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "schema": "fx6-worker-pool-shim-abi-v1",
+  "dynsym_contract_identical": true,
+  "defined_symbol_set_identical": true,
+  "undefined_symbol_contract_identical": true,
+  "dt_needed_before": [],
+  "dt_needed_after": [],
+  "version_requirements_identical": true,
+  "all_imports_unversioned_as_baseline": true,
+  "actual_parent_cpio_providers": {
+    "lib/libc-2.25.so": {
+      "member": "lib/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "needed": [
+        "ld-linux-aarch64.so.1"
+      ],
+      "symlink_chain": [
+        "lib/libc.so.6"
+      ]
+    },
+    "lib/libdl-2.25.so": {
+      "member": "lib/libdl-2.25.so",
+      "bytes": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+      "needed": [
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "symlink_chain": [
+        "lib/libdl.so.2"
+      ]
+    },
+    "usr/lib/libgcc_s.so.1": {
+      "member": "usr/lib/libgcc_s.so.1",
+      "bytes": 71920,
+      "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+      "needed": [
+        "libc.so.6"
+      ],
+      "symlink_chain": []
+    }
+  },
+  "symbol_checks": [
+    {
+      "name": "dprintf",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "calloc",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "dlopen",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libdl-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "dlsym",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libdl-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "memcpy",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "_exit",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "memset",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "sleep",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "dladdr",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libdl-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "mprotect",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "__clear_cache",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "usr/lib/libgcc_s.so.1"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "open",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "mmap",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    },
+    {
+      "name": "close",
+      "version": null,
+      "provider": null,
+      "weak": false,
+      "actual_provider_members": [
+        "lib/libc-2.25.so"
+      ],
+      "satisfied": true
+    }
+  ],
+  "required_imports_satisfied": true,
+  "closure_note": "Preserves original shim no-DT_NEEDED lazy global resolution. Actual launcher loads libc/libdl; appFw needs libgcc_s for __clear_cache. No provider code is copied or changed.",
+  "guest_executed": false
+}

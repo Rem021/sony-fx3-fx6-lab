@@ -5,119 +5,8 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-07T14:25:30.791Z`
-- **Updated At**: `2026-11-07T16:43:49.717Z`
-- **Captured Messages (User / Assistant)**: `33`
-
----
-
-## 🤖 Assistant
-
-已确认重启前的报告、构建记录和观察库都已保存，仓库也已推送；这些不需要重做。当前还有另一条主线的 299 实验在运行，我不会抢占或重复启动它。
-
-接下来把已完成的观察库接入独立候选，保留冻结基线的行为，先取得真实线程和队列调用证据，再据此修复。
-
----
-
-## 🤖 Assistant
-
-我将只读核对 296–299 的完成回执、实际输入和串口证据；运行中的实验不纳入最终结论，也不连接或控制 VM。
-
----
-
-## 🤖 Assistant
-
-我会先绑定真实 Backup 库、调用者和记录模板，选择能证明类型与长度的少量启动键做离线候选；未知键保留原厂路径，避免再次把未定义寄存器或空成功当作数据契约。
-
----
-
-## 🤖 Assistant
-
-299 的结果也核清了：替换接收函数为“直接成功”没有解决崩溃。296–299 都落在同一个空锁对象路径：`libMWF` 把空对象中的 mutex 地址交给了 `pthread_mutex_lock`。
-
-所以这轮不会沿用“伪造成功”的分支。独立候选只修正观察接入，确保能记录真实调用点，并保持原厂接收行为。
-
----
-
-## 🤖 Assistant
-
-候选已构建完成，正在核对实际 295 的动态库闭包、完整 CPIO 成员保留情况，以及观察器槽位绑定证据。确认后交由主 agent 执行唯一一次受控运行。
-
----
-
-## 🤖 Assistant
-
-冷核验已通过：新 launcher 和观察器的 55 个强导入符号及版本均由 295 原有的 glibc 2.25 闭包满足。原 CPIO 首个结束标记后的 58 条记录也已保留；候选已冻结，主 agent 正准备受控运行。
-
----
-
-## 🤖 Assistant
-
-独立候选已通过完整镜像差异检查和逐符号 ABI 校验：原件、旧 shim、Backup 行为和超时都保持 295，新增的只是观察接入与线程元数据记录。
-
-现在执行一次 120 秒的受控 VM 验证，使用现有双锁；若锁被其他实验占用，就不启动。
-
----
-
-## 🤖 Assistant
-
-已交付 [契约报告与最小候选](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/README.md)。
-
-关键结论：
-
-- 原厂 `Backup_read` 不使用调用者 `w2` 作为长度；295 的空成功仍违约。
-- `backup_sync_msg` 返回 0 不等于业务成功；需要恢复整条原调用链。
-- 四键均有 8B 证明；`fa0191/92` 可使用同一自有 arena 的地址/容量候选。
-- `fa01a3/a4` 默认均为全一哨兵，现有假物理窗口缺少映射依据。
-- 未知 ID 明确 `NOT_HANDLED`，交还原实现或失败。
-
-[测试结果](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/test-results.json)：97 项 C 检查通过（ASan/UBSan），140 项真实模板输入检查通过。未集成、未运行 VM、未改供体或共享源、未写 Git。
-
----
-
-## 🤖 Assistant
-
-296–299 审计完成：[报告](work/fx6-post-restart-audit-20261107/README.md)、[完整证据](work/fx6-post-restart-audit-20261107/evidence.json)。
-
-- 四次均完整结束，但同样崩溃、GPE 帧全零，不能晋升修复基线。
-- 新阻塞已精确绑定：`ObjShLock::Lock(this=NULL)` → `pthread_mutex_lock` 读取 `0x38`。上层 owner 尚未确定。
-- 299 仅伪造 receive 返回值，没有原厂回执证据。
-- `THREAD_END_217` 是 wchan 采样结束标记，不能解释为线程退出。
-- 未连接或控制 VM；待 observer 完成回执后继续审计。
-
----
-
-## 🤖 Assistant
-
-运行中的首个关键验证已通过：实际 AppFw 接收槽位已回读到观察库地址，解决了此前普通 preload 可能被手工 GOT 修复绕过的问题。
-
-目前这段日志还没有接收入口记���。我会等本轮完整结束，再结合线程名称和状态判断，避免把“没有日志”误当成“没有调用”或“已经修好”。
-
----
-
-## 🤖 Assistant
-
-独立候选已完成，可交主 agent 受控运行。
-
-- 入口：[candidate-manifest.json](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/candidate-manifest.json)，SHA `d5732c03…`
-- 仅改变 init、诊断 launcher，新增观察器；295 原 appFw、shim、Backup、NOP 保持原样。
-- 全部 832 条 GOT 核对一致；显式绑定 recv 槽并记录 provider/readback。
-- 55 个强导入及版本全部满足原 glibc 2.25 闭包。
-- 首 TRAILER 后 58 条原记录完整保留。
-- 基线源码重编的 `.text/.rodata/.got/.got.plt` 与实际 295 完全相同。
-
-构建、源码 diff、成员证明、ABI 证明及指纹已收于同目录 [README.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-observer-integration-20261107/README.md)。未启动或连接 VM，未修改 donor 或 Git。
-
----
-
-## 🤖 Assistant
-
-恢复后的这轮观察测试已结束：接收函数的 GOT 槽位确实绑定到了观察库，AppFw 线程也持续存在，但一直停在 futex 等待，没有观察到接收入口。另查到按键测试在主机侧连接 GDB 时失败；我会先修正连接配置，再定位线程等待的位置。
-
----
-
-## 🤖 Assistant
-
-我会另建候选，先核对 guest 内核的 ptrace 支持与 AArch64 寄存器 ABI，再实现有超时、逐线程清理的一次性快照工具。它会短暂停住线程，相关干扰会明确记录；本轮不启动 VM。
+- **Updated At**: `2026-11-07T17:10:52.372Z`
+- **Captured Messages (User / Assistant)**: `40`
 
 ---
 
@@ -169,7 +58,7 @@
 
 ## 🤖 Assistant
 
-新候选已冻结并交给主 agent：相较上一轮，只改 init 的一次性调用并新增 helper，两个原归档结束标记及其余成员逐字节保留。严格链接、41 个强导入的版本闭包核验和 18 个��机模拟场景均通过；实际 guest 快照仍待主 agent 运行。
+新候选已冻结并交给主 agent：相较上一轮，只改 init 的一次性调用并新增 helper，两个原归档结束标记及其余成员逐字节保留。严格链接、41 个强导入的版本闭包核验和 18 个主机模拟场景均通过；实际 guest 快照仍待主 agent 运行。
 
 ---
 
@@ -194,7 +83,7 @@ CP 消息的长度差已有更具体的解释：当前候选里的 UPM 内核模
 - 当前内核 UPM 显式分配 96B；原 FX6 对应路径分配 40B。
 - 仅前 20B 有明确写入，尾部不能当指针数组。
 - `a5a5a5a5` 是分配器 source 初始化值。
-- 这是异步 DFS 通知；无证据把它绑��到当前 futex 等待或 Backup 空成功链。
+- 这是异步 DFS 通知；无证据把它绑定到当前 futex 等待或 Backup 空成功链。
 - 缺少 sender PC/TID，未伪造唯一生产点归属。
 
 未复制二进制，未运行 VM、修改 shim 或执行 Git/sync。
@@ -284,5 +173,151 @@ v3 已完成：[交付说明](work/fx6-observer-runtime-v3-20261107/README.md)�
 ## 🤖 Assistant
 
 找到了一个可修复的具体原因：295 的跳过表禁用了原厂工作线程池创建，而 AppFw 正在等待的 cold-boot future，需要由这个池执行并完成通知。实际快照中也没有这些工作线程。我会先只恢复这一个调用，保留其余行为，验证它能否越过当前屏障。
+
+---
+
+## 🤖 Assistant
+
+恢复线程池需要改动自有 shim 的两行：删除一个 NOP 表项，并把循环上限同步从 5 改为 4。现在正在核对原 295 shim 的编译参数和二进制来源，确保不会把重编差异混进这项修复。已完成的运行证据和源码会先按项目规则同步。
+
+---
+
+## 🤖 Assistant
+
+已完成 [MWF_Init 契约补充](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/mwf-init-contract.md)，脚本断言 PASS。
+
+- 固定版本不读取 incoming X0/W0；没有可靠整数成功返回。
+- guard 在初始化前置位，不能当 ready。
+- MWF 与通用参数入口使用不同 dispatch 路径，不能统一声明无参。
+- 原 manager 完成状态和 Kiki 功能就绪是两回事；直接完成依赖未证明。
+- 当前 im.elf 哈希与旧报告不同，已明确标记，未混用。
+
+quick audit 已正式复制，`files.json` 更新为14项。未运行 VM 或修改 shim。
+
+---
+
+## 🤖 Assistant
+
+3个补充已正式复制， [files.json](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/backup-contract/files.json) 共17项，全部哈希核验通过。已停止，无进一步研究或改动。
+
+---
+
+## 🤖 Assistant
+
+已找到直接的生产者链：这个 future 属于原厂 cold boot 任务，而 295 的一处 NOP 删除了运行该任务的 45 线程池创建入口。等待链证据已封存；正在构建仅恢复该入口的候选，先重现旧 shim 的代码节，确保重编没有带入其它变化。
+
+---
+
+## 🤖 Assistant
+
+等待栈、输入修复和审计资料已同步到 GitHub（`0f8331d4`）。原 shim 的重编也已复现出相同的 `.text`、`.rodata` 和 GOT/PLT 内容，可以继续构建只恢复线程池调用的候选；运行时其余差异仍会由成员证明和 ABI 检查把关。
+
+---
+
+## 🤖 Assistant
+
+基线复现检查已扩展到全部 17 个运行时 ELF 节，内容和地址都与实际 295 shim 一致，差异限于调试路径信息。修复版将沿用这套构建参数；新 runner 也会核对 CPIO，确认只有这个 shim 成员发生变化。
+
+---
+
+## 🤖 Assistant
+
+最小修复候选已通过独立 v4 冷检查。旧 shim 的全部 17 个分配节已精确复现，新候选只移除 `12d825c` 这一处 NOP；其它行为保持冻结。源码与凭据正在按白名单归档，实际线程池及 future 是否推进，仍由主 agent 的下一次运行判断。
+
+---
+
+## 🤖 Assistant
+
+线程池恢复候选已通过 24 项检查，并取得原有两把锁开始运行。候选仅修改自有 shim，AppFw、观察器、快照 helper 和其余 CPIO 成员保持不变。接下来重点看真实工作线程是否出现，以及 AppFw 是否越过同一个 cold-boot future。
+
+---
+
+## 🤖 Assistant
+
+等待链已闭合：295 的 `12d825c` NOP 删除了 cold-boot future 生产者所需的原生 45 线程池入口。
+
+最小恢复候选已构建、冻结并通过独立 v4 冷检查，仅移除这一处 NOP。旧 shim 的全部 17 个分配节复现一致，ABI 与其它归档成员保持。
+
+源码和凭据已归档至 [worker-pool-restore-candidate/README.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/worker-pool-restore-candidate/README.md)。未运行 VM；实际线程创建及 future 推进由主 agent 验证。
+
+---
+
+## 🤖 Assistant
+
+v4 已冻结并复制至 [正式交付](reports/2026-11-07-fx6-observed-wait/runner-v4/README.md)，含 24 项测试记录、实际 check、完整 diff 和 `files.json`。
+
+Runner SHA 保持 `cc2e0ab9…c2b9d39`。未重复测试或操作 VM，等待本轮完成回执。
+
+---
+
+## 🤖 Assistant
+
+恢复调用后，真实工作线程已出现，任务数从 4 增至 128 以上，接收观察器也首次有了入口记录。cold-boot 已在 `SeqQueueCommon` 中执行，目前走到 BB 的请求/应答等待。这验证了原线程池确实被跳过；future 尚未完成，下一步会核对它等待的真实回复路径。
+
+---
+
+## 🤖 Assistant
+
+这轮恢复已出现真实接收进展，阻塞转移到了 BB 同步请求。我会把本次 TID 231、224、227 的实际栈绑定到本次 CPIO 和 ELF，确认 cold boot 已真正执行，并定位请求调用边；不修改候选或补造回复。
+
+---
+
+## 🤖 Assistant
+
+实际栈已确认：`SeqQueueCommon` 正在执行 `cold_boot::init_hdmi()`，并卡在发送 `adf_set_hdmi_format` 后等待回复；cold boot 的 future 通知位于这次调用返回之后。因此，恢复线程池已带来真实执行进展，当前下一阻塞是这条 CP 请求无回复。
+
+---
+
+## 🤖 Assistant
+
+审计完成：[正式报告](reports/2026-11-07-fx6-observed-wait/worker-pool-restore-run-review/worker-pool-restore-run-review.md)。
+
+25 项检查通过。129 次 snapshot/detach 均成功；真实接收 9 次进入、8 次返回，唯一未返回是 TID 231 的 BB request/reply（LR `20ef7cc`、qid `81cf610f`）。
+
+四份捕获仍全零；按键仅软件写读，未证明 guest 消费。未操作 VM 或重复反汇编，正式文件哈希一致。
+
+---
+
+## 🤖 Assistant
+
+已确认线程池恢复带来真实进展：TID231 执行了原厂 cold boot，现卡在 `init_hdmi → adf_set_hdmi_format` 的 CP 回复等待，尚未走到 future 通知。
+
+35 个选定地址均完成 PT_LOAD 解析；请求字节、目的地和回复队列与实际日志一致。未修改候选、未运行 VM、未伪造回复。
+
+证据已归档：[restore-outcome.md](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/worker-pool-outcome/restore-outcome.md)。当前仍未证明启动或菜单成功。
+
+---
+
+## 🤖 Assistant
+
+新的 CP 等待也有原厂二进制证据了：已找到对应的 12 字节完成包构造函数，其状态值来自真实处理函数的入参，并非固定成功常量。请求、回复队列和等待线程已对上；还需核清消费端和错误码语义，才能实现可信的虚拟响应。
+
+---
+
+## 🤖 Assistant
+
+原 CP 路径表明，这个请求还会转发到下游 ADF 服务，完成包携带其结果；下游发送失败走的是 `-1` 错误路径。因此，现有固定成功常量不能用于修补这处等待。线程池修复已完成实际验证，当前会把这条尚未闭合的服务依赖明确写入报告。
+
+---
+
+## 🤖 Assistant
+
+已交付 [BB 请求契约](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/bb-request-contract/bb-request-contract.md)，脚本与3项文件哈希核验通过。
+
+原 CP 的12B完成包使用可变状态；子发送失败 `-1` 映射为 AP `0x6f`，不是成功。`init_hdmi` 检查错误并提前返回，外层冷启动继续。
+
+两处缺口已明确保留：外部 `032d` ingress 映射、下游 `9058003f` 完成条件。未实现回复、未运行新VM，已停止。
+
+---
+
+## 🤖 Assistant
+
+又确认了 AP 对真实失败结果的处理：原 CP 的 `-1` 会映射为错误，`init_hdmi` 记录后返回，外层 cold-boot 继续。我正在独立审查，当前 VM 是否有足够依据返回“下游服务不可用”，以及回复的分配、路由和释放是否闭合；AP 能继续本身不构成发送该回复的依据。
+
+---
+
+## 🤖 Assistant
+
+三轮运行的结束凭据、源码差异和帧统计都已收齐：本聊天启动的 VM 均已回收并释放锁，画面仍全零。剩下最后一项审查：现有桥接层能否可靠确认下游发送失败，并按正确所有权发送错误回复。审查结果会决定是否有依据继续实现。
 
 ---

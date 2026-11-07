@@ -1,0 +1,251 @@
+--- work/fx6-observer-runtime-v3-20261107/run_observer_once.py
++++ work/fx6-observer-runtime-v4-20261107/run_observer_once.py
+@@ -2,16 +2,19 @@
+ """One locked observer run; one QMP owner, Unix GDB gate, explicit delivery limits."""
+ import argparse
+ import datetime as dt
++import difflib
+ import fcntl
+ import hashlib
+ import importlib.util
+ import json
++import mmap
+ import os
+ from pathlib import Path
+ import plistlib
+ import re
+ import signal
+ import socket
++import struct
+ import subprocess
+ import sys
+ import time
+@@ -22,6 +25,8 @@
+ PARENT_OBSERVER_SHA = 'd5732c03c54f76f676a5fbf42fd2256715ae2afce42f9f6ddbf4e537d6c954fe'
+ PARENT_CPIO_SHA = 'd02c7909458dcf8dff73fdf426953d07034cb386f8c8bd0bbd40a9440d32569e'
+ PARENT_PROOF_SHA = '849a5e4d1cce49002481678dd880ea64c7c24e2ab409b399efe34740528529d3'
++PARENT_SNAPSHOT_SHA = 'df39ee856ea9c667d786920c0ec9c12b43992fbc17525870cbd53b38f5c8da42'
++PARENT_SNAPSHOT_CPIO_SHA = '453890e36e7e6b4cd66641707cf80bd7754a0a37d6fba8dfce2af55fc169c926'
+ CP = Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic')
+ 
+ 
+@@ -103,6 +108,9 @@
+     schema = diff.get('schema')
+     if schema == 'fx6-observer-only-member-diff-v1':
+         verify_observer_proof(saved,base,diff)
++        return
++    if schema == 'fx6-worker-pool-restore-member-diff-v1':
++        verify_worker_pool_proof(saved,base,diff)
+         return
+     if schema != 'fx6-wait-snapshot-member-diff-v1':
+         raise RuntimeError('unknown member proof schema')
+@@ -120,6 +128,185 @@
+     verify_artifact(diff['parent_observer_cpio'],'parent observer CPIO',PARENT_CPIO_SHA)
+     parent_proof_path = verify_artifact(parent.get('input_member_diff_verification'),'parent observer proof',PARENT_PROOF_SHA)
+     verify_observer_proof(parent,base,json.loads(parent_proof_path.read_text()))
++
++
++def cpio_raw_records(path):
++    rows, pos = [], 0
++    with path.open('rb') as f, mmap.mmap(f.fileno(),0,access=mmap.ACCESS_READ) as data:
++        while pos+110 <= len(data):
++            previous = pos
++            if data[pos] == 0:
++                match = re.search(b'[^\x00]',data[pos:])
++                if match is None:
++                    break
++                pos += match.start()
++            h = data[pos:pos+110]
++            if h[:6] != b'070701':
++                raise RuntimeError('unsupported/malformed full newc stream')
++            values = [int(h[i:i+8],16) for i in range(6,110,8)]
++            size,namesize = values[6],values[11]
++            if not 1 <= namesize <= 4096 or pos+110+namesize > len(data):
++                raise RuntimeError('newc name bounds')
++            rawname = data[pos+110:pos+110+namesize]
++            if rawname[-1:] != b'\0' or b'\0' in rawname[:-1]:
++                raise RuntimeError('newc name terminator')
++            name = rawname[:-1].decode('utf-8')
++            start = (pos+110+namesize+3)&~3
++            end = start+size
++            nextpos = (end+3)&~3
++            if nextpos > len(data):
++                raise RuntimeError('newc payload bounds')
++            if name == 'TRAILER!!!' and size:
++                raise RuntimeError('nonempty newc trailer')
++            row = {'name':name,'bytes':size,'gap':pos-previous,
++                'raw_sha':hashlib.sha256(data[pos:nextpos]).hexdigest(),
++                'header_except_size_sha':hashlib.sha256(data[pos:pos+54]+data[pos+62:start]).hexdigest()}
++            if name == 'usr/lib/libgrm-fbinit9.so':
++                row['sha256'] = hashlib.sha256(data[start:end]).hexdigest()
++            rows.append(row)
++            pos = nextpos
++        if any(data[pos:]):
++            raise RuntimeError('unparsed nonzero newc tail')
++        tail = len(data)-pos
++    return rows,tail
++
++
++def verify_only_shim_record_changed(parent,derived,payload):
++    before,btail = cpio_raw_records(Path(parent['path']))
++    after,atail = cpio_raw_records(Path(derived['path']))
++    if btail != atail or len(before) != len(after) or [r['name'] for r in before] != [r['name'] for r in after]:
++        raise RuntimeError('worker CPIO record order/count/tail changed')
++    if sum(r['name']=='TRAILER!!!' for r in before) != 2:
++        raise RuntimeError('expected both snapshot trailers')
++    changed = []
++    for index,(b,a) in enumerate(zip(before,after)):
++        if b['gap'] != a['gap']:
++            raise RuntimeError('worker CPIO inter-record padding changed')
++        if b['raw_sha'] != a['raw_sha']:
++            changed.append(index)
++            if b['name'] != 'usr/lib/libgrm-fbinit9.so' or b['header_except_size_sha'] != a['header_except_size_sha']:
++                raise RuntimeError('unexplained worker CPIO raw record change')
++    if len(changed) != 1:
++        raise RuntimeError('expected exactly one changed shim raw record')
++    index = changed[0]
++    for label,row in [('before',before[index]),('after',after[index])]:
++        if not isinstance(payload.get(label),dict) or any(payload[label].get(k)!=row[k] for k in ('bytes','sha256')):
++            raise RuntimeError('worker shim payload fingerprint mismatch')
++
++
++def elf_section_fingerprints(path,names):
++    raw = path.read_bytes()
++    if len(raw)<64 or raw[:6] != b'\x7fELF\x02\x01' or struct.unpack_from('<H',raw,18)[0]!=183:
++        raise RuntimeError('expected AArch64 ELF64 little-endian shim')
++    shoff = struct.unpack_from('<Q',raw,40)[0]
++    entsize,count,strings = struct.unpack_from('<HHH',raw,58)
++    if entsize != 64 or count == 0 or strings >= count or shoff+count*64 > len(raw):
++        raise RuntimeError('shim section table invalid')
++    table = [struct.unpack_from('<IIQQQQIIQQ',raw,shoff+i*64) for i in range(count)]
++    st = table[strings]
++    names_raw = raw[st[4]:st[4]+st[5]]
++    found = {}
++    for section in table:
++        off = section[0]
++        if off >= len(names_raw):
++            raise RuntimeError('shim section name invalid')
++        stop = names_raw.find(b'\0',off)
++        if stop < 0:
++            raise RuntimeError('shim section name unterminated')
++        name = names_raw[off:stop].decode('ascii')
++        if name in names:
++            if (section[1] != 8 and section[4]+section[5] > len(raw)) or name in found:
++                raise RuntimeError('shim section payload invalid')
++            found[name] = {'present':True,'type':section[1],'flags':section[2],'vma':section[3],'bytes':section[5]}
++            if section[1] != 8:
++                found[name]['sha256'] = hashlib.sha256(raw[section[4]:section[4]+section[5]]).hexdigest()
++    for name in set(names)-set(found):
++        if name != '.got':
++            raise RuntimeError('required reproduced shim section absent')
++        found[name] = {'present':False}
++    return found
++
++
++def verify_worker_source(saved,diff):
++    ref = saved.get('source_change_verification')
++    same_artifact(ref,diff.get('source_change_verification'),'worker source proof')
++    proof = json.loads(verify_artifact(ref,'worker source proof').read_text())
++    if proof.get('schema') != 'fx6-worker-pool-source-change-v1':
++        raise RuntimeError('unknown worker source proof schema')
++    require_flags(proof,('all_other_source_bytes_identical',),'worker source')
++    old_offsets = ['0x12d824c','0x12d8250','0x12d8254','0x12d825c','0xc09e50']
++    if proof.get('before_nop_offsets') != old_offsets or proof.get('after_nop_offsets') != [x for x in old_offsets if x!='0x12d825c'] or proof.get('removed_nop_offsets') != ['0x12d825c']:
++        raise RuntimeError('unexpected removed NOP offset')
++    paths = {k:verify_artifact(proof.get(k),'worker '+k) for k in ('baseline_source','restored_source','source_diff','baseline_shim','restored_shim','baseline_reproduction','build_receipt')}
++    before = paths['baseline_source'].read_bytes().decode('utf-8')
++    after = paths['restored_source'].read_bytes().decode('utf-8')
++    matches = list(re.finditer(r'static void fx6_patch_blocking_calls\(void \*real_init\) \{.*?\n\}',before,re.S))
++    if len(matches) != 1:
++        raise RuntimeError('expected one baseline NOP patch function')
++    body = matches[0].group()
++    old_array = 'static const unsigned long offs[5] = {0x12d824cUL, 0x12d8250UL, 0x12d8254UL, 0x12d825cUL, 0xc09e50UL};'
++    new_array = 'static const unsigned long offs[4] = {0x12d824cUL, 0x12d8250UL, 0x12d8254UL, 0xc09e50UL};'
++    old_loop,new_loop = 'for (int i = 0; i < 5; i++) {','for (int i = 0; i < 4; i++) {'
++    if body.count(old_array)!=1 or body.count(old_loop)!=1:
++        raise RuntimeError('baseline NOP source form changed')
++    expected = before[:matches[0].start()]+body.replace(old_array,new_array).replace(old_loop,new_loop)+before[matches[0].end():]
++    if after != expected:
++        raise RuntimeError('source changed beyond removing one NOP and its loop bound')
++    actual_diff = paths['source_diff'].read_bytes().decode('utf-8')
++    headers = actual_diff.splitlines()
++    if len(headers)<2 or not headers[0].startswith('--- ') or not headers[1].startswith('+++ '):
++        raise RuntimeError('expected full unified source diff')
++    expected_diff = ''.join(difflib.unified_diff(before.splitlines(True),after.splitlines(True),fromfile=headers[0][4:],tofile=headers[1][4:]))
++    if actual_diff != expected_diff:
++        raise RuntimeError('source diff does not match bound sources')
++    for side,key in [('before','baseline_shim'),('after','restored_shim')]:
++        if any(diff['changed_member_payload'].get(side,{}).get(k)!=proof[key][k] for k in ('bytes','sha256')):
++            raise RuntimeError('source proof shim not bound to CPIO payload')
++    reproduction = json.loads(paths['baseline_reproduction'].read_text())
++    if reproduction.get('schema') != 'fx6-worker-pool-baseline-reproduction-v1' or reproduction.get('sections_identical') is not True:
++        raise RuntimeError('unknown/failed baseline reproduction')
++    same_artifact(reproduction.get('source'),proof['baseline_source'],'reproduction source')
++    same_artifact(reproduction.get('actual_shim'),proof['baseline_shim'],'reproduction actual shim')
++    reproduced = verify_artifact(reproduction.get('reproduced_shim'),'reproduced baseline shim')
++    sections = reproduction.get('section_names')
++    required = {'.text','.rodata','.got','.got.plt'}
++    if not isinstance(sections,list) or len(sections)!=len(set(sections)) or not required.issubset(sections):
++        raise RuntimeError('baseline reproduction sections incomplete')
++    if elf_section_fingerprints(paths['baseline_shim'],sections) != elf_section_fingerprints(reproduced,sections):
++        raise RuntimeError('baseline reproduced ELF sections differ')
++    build = json.loads(paths['build_receipt'].read_text())
++    if build.get('schema') != 'fx6-worker-pool-shim-build-v1' or not isinstance(build.get('command'),list) or not build['command']:
++        raise RuntimeError('unknown/incomplete worker shim build receipt')
++    same_artifact(build.get('source'),proof['restored_source'],'restored build source')
++    same_artifact(build.get('output'),proof['restored_shim'],'restored build output')
++
++
++def verify_worker_pool_proof(saved,base,diff):
++    if saved.get('mode') != 'worker-pool-restore':
++        raise RuntimeError('worker proof requires worker-pool-restore mode')
++    if diff.get('changed_existing_members') != ['usr/lib/libgrm-fbinit9.so']:
++        raise RuntimeError('worker proof must change only the declared shim')
++    require_flags(diff,('all_other_raw_records_byte_identical','original_order_preserved','both_original_trailer_records_byte_identical'),'worker')
++    same_artifact(diff.get('derived_cpio'),saved['initrd'],'worker derived CPIO')
++    verify_artifact(diff['derived_cpio'],'worker derived CPIO')
++    same_artifact(diff.get('parent_snapshot_manifest'),saved.get('parent_snapshot_manifest'),'snapshot manifest')
++    parent_path = verify_artifact(saved['parent_snapshot_manifest'],'parent snapshot manifest',PARENT_SNAPSHOT_SHA)
++    parent = json.loads(parent_path.read_text())
++    frozen_fields(parent,base,'parent snapshot')
++    same_artifact(parent.get('baseline_manifest'),saved.get('baseline_manifest'),'worker 295 manifest')
++    same_artifact(parent.get('baseline_initrd'),base['initrd'],'worker 295 CPIO')
++    same_artifact(diff.get('parent_snapshot_cpio'),saved.get('parent_snapshot_initrd'),'worker parent CPIO')
++    same_artifact(diff['parent_snapshot_cpio'],parent['initrd'],'snapshot manifest CPIO')
++    verify_artifact(diff['parent_snapshot_cpio'],'parent snapshot CPIO',PARENT_SNAPSHOT_CPIO_SHA)
++    parent_proof = json.loads(verify_artifact(parent['input_member_diff_verification'],'snapshot parent proof').read_text())
++    if parent_proof.get('schema') != 'fx6-wait-snapshot-member-diff-v1':
++        raise RuntimeError('expected original snapshot parent proof')
++    verify_member_proof(parent,base)
++    payload = diff.get('changed_member_payload')
++    if not isinstance(payload,dict):
++        raise RuntimeError('missing worker payload fingerprints')
++    verify_only_shim_record_changed(diff['parent_snapshot_cpio'],saved['initrd'],payload)
++    verify_worker_source(saved,diff)
+ 
+ 
+ def check(path, expected):
+@@ -189,8 +376,11 @@
+     import fixed_runner as fr
+     held = fr.acquire()  # Existing two owner locks; never steal or recreate them.
+     proc, qmp, gate = None, None, None
+-    run = manifest.parent/'runs'/('observer-'+uuid.uuid4().hex[:10])
+-    receipt = {'schema': 'fx6-observer-owned-run-v2', 'manifest_sha256': manifest_sha,
++    mode = saved.get('mode')
++    worker_restore = mode == 'worker-pool-restore'
++    run = manifest.parent/'runs'/(('worker-pool-restore-' if worker_restore else 'observer-')+uuid.uuid4().hex[:10])
++    receipt = {'schema': 'fx6-worker-pool-restore-owned-run-v1' if worker_restore else 'fx6-observer-owned-run-v2',
++        'mode':mode,'manifest_sha256': manifest_sha,
+         'baseline_manifest_sha256': BASE_SHA, 'manifest': str(manifest),
+         'maximum_seconds': 120, 'runner_sha256': sha(__file__), 'fixed_runner_sha256': sha(fr.__file__),
+         'utc': dt.datetime.now(dt.timezone.utc).isoformat(), 'key_operations': [], 'key_attempts': [], 'captures': [],
+@@ -206,7 +396,8 @@
+         argv = runtime_argv(saved, run)
+         env = os.environ.copy(); env.update(saved['model_env'])
+         (run/'command.json').write_text(json.dumps({'argv': argv, 'model_env': saved['model_env'],
+-            'manifest_sha256': manifest_sha, 'authorization': 'user requested continuing repair; bounded diagnostic derived295'}, indent=2)+'\n')
++            'manifest_sha256': manifest_sha,'mode':mode,
++            'authorization': 'user requested continuing repair; worker-pool-restore diagnostic derived295' if worker_restore else 'user requested continuing repair; bounded diagnostic derived295'}, indent=2)+'\n')
+         with (run/'host-stdout.log').open('wb') as out, (run/'host-stderr.log').open('wb') as err:
+             proc = subprocess.Popen(argv, cwd=run, env=env, stdout=out, stderr=err,
+                                     start_new_session=True, preexec_fn=fr.limits)

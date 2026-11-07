@@ -1,0 +1,13 @@
+--- libgrm-fbinit25-295.baseline.c
++++ libgrm-fbinit25-295.worker-pool-restore.c
+@@ -1305,8 +1305,8 @@
+ static void fx6_patch_blocking_calls(void *real_init) {
+     FX6_Dl_info293 di; memset(&di, 0, sizeof(di));
+     if (!dladdr(real_init, &di) || !di.dli_fbase) return;
+-    static const unsigned long offs[5] = {0x12d824cUL, 0x12d8250UL, 0x12d8254UL, 0x12d825cUL, 0xc09e50UL};
+-    for (int i = 0; i < 5; i++) {
++    static const unsigned long offs[4] = {0x12d824cUL, 0x12d8250UL, 0x12d8254UL, 0xc09e50UL};
++    for (int i = 0; i < 4; i++) {
+         unsigned long a = (unsigned long)di.dli_fbase + offs[i];
+         unsigned long page = a & ~0xfffUL;
+         int mr = mprotect((void *)page, 0x1000, PROT_READ | PROT_WRITE | PROT_EXEC);

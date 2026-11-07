@@ -1,0 +1,68 @@
+{
+  "schema": "adf-negative-model-independent-decision-v1",
+  "status": "REVIEW_COMPLETE",
+  "decision": "NO_GO_IMPLEMENTATION_THIS_ROUND",
+  "conceptual_assessment": "An explicitly declared downstream-send-unavailable negative model can be legitimate if its failure condition and transaction/ownership contract are independently established; it is not inherently equivalent to fabricated success.",
+  "sufficient_current_blocker": "Full runtime queue/route/provider state has not established that 0x9058003f is undeliverable, and no original-CP child-send-nonzero event was observed in this VM run. Absence of a dedicated shim branch is not that evidence.",
+  "known_original_contract": {
+    "exact_observed_request_hex": "0d202d030a0001800000",
+    "destination": "0x92840747",
+    "actual_source_and_waiting_qid": "0x81cf610f",
+    "completion_u16_header": [
+      "0x200d",
+      "0x132d",
+      12,
+      "0x8001"
+    ],
+    "status_source": "variable incoming handler/event value",
+    "specific_child_send_nonzero_handler_result": "0xffffffff",
+    "ap_mapping_of_ffffffff": "0x6f",
+    "does_not_prove": "all unimplemented services must receive this status"
+  },
+  "actual_shim_policy": {
+    "member": "simulation/fx3-cp-backup-reset-v1.ko",
+    "sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa",
+    "unknown_route_return": 0,
+    "unknown_route_reply": false,
+    "terminal_semantics_proven": false,
+    "is_transport_failure_proof": false,
+    "can_be_called_global_transport_fail_closed": false,
+    "unknown_request_freed_by_this_handler": false
+  },
+  "remaining_conditions": [
+    "Independent runtime evidence of the child transport/provider unavailability and correspondence to original send-failure semantics",
+    "Exact transaction selection: full destination, ten bytes and native source/metadata; no broader command family admission",
+    "Close original ingress or demonstrate a bounded model ingress that cannot misselect another transaction",
+    "Close dynamic reply qid validity, source identity, allocation/send/free ownership, duplicate/concurrent/cancelled and unknown-delivery handling",
+    "Propagate only the established failure using the original 12-byte constructor shape, never success or a guessed private enum",
+    "Keep all unmatched requests on their existing no-new-reply/no-new-ownership path"
+  ],
+  "not_required_as_a_false_prerequisite": "A proven pre-child-send failure model need not first implement the child service's normal successful operation; the presently missing failure premise and ownership still cannot be skipped.",
+  "explicitly_excluded_justifications": [
+    "AP init_hdmi returns early and outer cold_boot continues",
+    "Menu progress or absence of a visible crash",
+    "Receiver copies twelve bytes without checking the header",
+    "No dedicated 0x9058003f source branch",
+    "Choosing -1 because it might unblock the menu"
+  ],
+  "source_hashes": "source-hashes.json",
+  "web_sources_checked_utc_date": "2026-11-07",
+  "web_sources": [
+    {
+      "title": "QEMU Memory API",
+      "url": "https://www.qemu.org/docs/master/devel/memory.html",
+      "use_limit": "General failure-model semantics only; not Sony protocol evidence"
+    },
+    {
+      "title": "QEMU Load and Store APIs",
+      "url": "https://www.qemu.org/docs/master/devel/loads-stores.html",
+      "use_limit": "General transaction-result semantics only; not a Sony status/qid/ownership contract"
+    }
+  ],
+  "resulting_scope": "Stop this round at the verified worker-pool restore and its real pending BB request. Add no reply.",
+  "implementation_created": false,
+  "vm_run": false,
+  "message_injected": false,
+  "shared_source_changed": false,
+  "git_or_sync": false
+}

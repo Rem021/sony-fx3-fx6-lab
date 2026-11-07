@@ -1,0 +1,58 @@
+{
+  "schema": "fx6-worker-pool-shim-build-v1",
+  "source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit25-295.worker-pool-restore.c",
+    "bytes": 61054,
+    "sha256": "9385e437a5b75775ce1080fc83b78c4fc93be7311e6b8fbef6c82ac200cc0904"
+  },
+  "output": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit9.worker-pool-restore.so",
+    "bytes": 79704,
+    "sha256": "0f2d372411e09a1aeb387a38ba7c48a3f943e5b0c2612548d965f8aa98927c9d"
+  },
+  "command": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu",
+    "-shared",
+    "-fPIC",
+    "-nostdlib",
+    "-fno-sanitize=all",
+    "-fno-stack-protector",
+    "-O0",
+    "-g",
+    "-Wl,-soname,libgrm-fbinit9.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit25-295.worker-pool-restore.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/libgrm-fbinit9.worker-pool-restore.so"
+  ],
+  "compiler": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "bytes": 199375152,
+    "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523"
+  },
+  "flags": [
+    "-target",
+    "aarch64-linux-gnu",
+    "-shared",
+    "-fPIC",
+    "-nostdlib",
+    "-fno-sanitize=all",
+    "-fno-stack-protector",
+    "-O0",
+    "-g",
+    "-Wl,-soname,libgrm-fbinit9.so"
+  ],
+  "baseline_reproduction": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/baseline-reproduction.json",
+    "bytes": 11369,
+    "sha256": "21eb1a3395cd9f68d463b80ffde9246833c62276caef77bc42179c508501d55b"
+  },
+  "abi_verification": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/abi-verification.json",
+    "bytes": 4311,
+    "sha256": "d4338827218ec75b0c85e486fdcfa7a7b00d67fd249aeea35ff40123948c9fef"
+  },
+  "guest_executed": false
+}

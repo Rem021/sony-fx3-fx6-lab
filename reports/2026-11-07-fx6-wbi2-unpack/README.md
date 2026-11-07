@@ -246,3 +246,84 @@ libosal_uipc.so -> 只有 check_dynamic_sem_id (0x74d0)
 ## 9. 边界补充
 
 本轮只读解包；原固件未改；没有运行 VM；没有写 shim/解析器；FDAT 解包已获准并执行，FX6 运行时库与平台策略两问仍未定。
+
+## 10. OSAL sem 依赖复核
+
+时间：2026-11-07。此节修正“OSAL provider 缺失”的优先级。
+
+### 10.1 没有库导入/导出 osal_alloc_sem_id
+
+搜 `nflasha15-files`、`nested-files`、`engine-rootfs` 的 `.so`/`.ko`：
+
+```text
+osal_alloc_sem_id 的 U/T/W 定义/引用：0
+```
+
+也就是说：
+
+- 没有 FX6 用户态库 `U osal_alloc_sem_id`；
+- 也没有库 `T/W osal_alloc_sem_id`；
+- 之前看到的 `osal_alloc_sem_id` 字符串是 **libgrm 的错误日志文本**，不是动态符号。
+
+### 10.2 实际使用的 sem API
+
+`nflasha15-files/lib/libgrm.so`：
+
+```text
+U osal_sig_sem
+U osal_stat_sem
+U osal_wai_sem_tmo
+```
+
+`nflasha15-files/lib/libosal_uipc.so` 导出：
+
+```text
+T osal_sig_sem      0x4a70
+T osal_stat_sem     0x4800
+T osal_wai_sem_tmo  0x4858
+T get_bsem          0x45b0
+T check_dynamic_sem_id 0x74d0
+```
+
+`nflasha15-files/kmod/osal_uipc.ko` 也有：
+
+```text
+check_dynamic_sem_id
+get_bsem
+osal_sig_sem
+osal_stat_sem
+osal_wai_sem_tmo
+```
+
+所以 FX6 的 sem 供应链是 **osal_sig/stat/wai + get_bsem/check_dynamic_sem_id**，不是 `osal_alloc_sem_id`。
+
+### 10.3 对此前 crash 的解释
+
+此前 `GraphicsEngine` ctor 的 `osal_alloc_sem_id() osalErr=-1023` 不能由“FX6 缺少 libosal”解释：
+
+- 当前 FX6 文件集里没有库导入该符号；
+- 也没有库导出该符号；
+- 因此这个调用很可能来自 **版本错配的 libuxengine**（FX3/stale/patched 副本），而不是当前 `nflasha15` 的 FX6 库。
+
+### 10.4 优先级修正
+
+- **OSAL provider 不是当前阻塞**；
+- 真正阻塞仍是：
+  - `GraphicsEngine::m_instance` 无静态写入；
+  - `sys_createApplication`/`FrameBuffer::update` 未执行；
+  - on-screen bitmap 未创建；
+- 下一步应先核对 CPIO 里的 `libuxengine` SHA 是否等于 `nflasha15-files/lib/libuxengine.so`；若不等，说明跑的是错配库。
+
+### 10.5 下一步
+
+1. 对比 CPIO/运行时 `libuxengine`、`libgrm`、`libgemini-grm` 的 SHA 与 `nflasha15-files/lib`；
+2. 若 SHA 不同，改用正确的 FX6 库；
+3. 若 SHA 相同，再查 `GraphicsEngine` ctor 的 `osal_alloc_sem_id` 是否来自反汇编误读/旧日志；
+4. 仍不启动 VM、不跑 pmemsave。
+
+## 11. 边界
+
+- 本轮只读解包；未改原固件；
+- 未启动 VM；未改 QEMU/DTB/平台参数；
+- 未写 shim/解析器；未跑 pmemsave；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

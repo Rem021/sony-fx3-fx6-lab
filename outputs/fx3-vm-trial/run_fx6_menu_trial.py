@@ -290,9 +290,14 @@ class GdbPhyMemClient:
     def ensure_connected(self):
         if self.sock is not None:
             return
-        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        s.settimeout(2.5)
-        s.connect(str(self.socket_path))
+        spec = str(self.socket_path)
+        if spec.startswith("tcp:"):
+            host, port = spec[4:].rsplit(":", 1)
+            s = socket.create_connection((host, int(port)), timeout=2.5)
+        else:
+            s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            s.settimeout(2.5)
+            s.connect(spec)
         self.sock = s
         if self.packet("Qqemu.PhyMemMode:1") != "OK":
             raise RuntimeError("Failed to enable Qqemu.PhyMemMode:1")
@@ -317,6 +322,11 @@ class GdbPhyMemClient:
         # 2. Also write 0x41df00008 (SRM3KYE5 step, key, hold_ms)
         k_bytes = struct.pack("<3I", step, key_code, 100)
         r2 = self.packet(f"M41df00008,c:{k_bytes.hex()}")
+        # GDB attach can leave the VM stopped; resume without waiting for a stop reply.
+        try:
+            self.sock.sendall(b"$c#63")
+        except Exception:
+            pass
         return {"fx6m_write": r1, "key96_write": r2}
 
 
@@ -377,17 +387,16 @@ class Fx6MenuSession:
 
             vm_write_info = None
             if self.vm_running and self.vm_run_dir:
-                g_sock = self.vm_run_dir / "g"
-                if g_sock.exists():
-                    try:
-                        if not self.gdb_client:
-                            self.gdb_client = GdbPhyMemClient(g_sock)
-                        vm_write_info = self.gdb_client.write_mailbox_and_key(step, key_code, self.state)
-                    except Exception as exc:
-                        if self.gdb_client:
-                            self.gdb_client.close()
-                            self.gdb_client = None
-                        vm_write_info = {"error": str(exc)}
+                g_sock = "tcp:127.0.0.1:1234"
+                try:
+                    if not self.gdb_client:
+                        self.gdb_client = GdbPhyMemClient(g_sock)
+                    vm_write_info = self.gdb_client.write_mailbox_and_key(step, key_code, self.state)
+                except Exception as exc:
+                    if self.gdb_client:
+                        self.gdb_client.close()
+                        self.gdb_client = None
+                    vm_write_info = {"error": str(exc)}
 
             # Immediately update the rendered PNG so the browser has <20ms response
             self._current_png = render_big6_frame_png(self.state)
@@ -517,8 +526,15 @@ class Fx6MenuSession:
 
             # Connect QMP socket 'q' and start guest CPU ('cont')
             q_path = run_dir / "q"
+            short_q = Path("/tmp") / (run_dir.name + ".qmp")
             for _ in range(100):
                 if q_path.exists():
+                    try:
+                        short_q.unlink(missing_ok=True)
+                        short_q.symlink_to(q_path)
+                        q_path = short_q
+                    except Exception:
+                        pass
                     break
                 time.sleep(0.05)
             qsock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)

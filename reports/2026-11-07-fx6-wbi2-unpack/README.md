@@ -553,3 +553,59 @@ handler 仍只输出 X0 后截断，maps 未出。说明崩溃上下文已不适
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 18. 173：从 SEGV 变成 hang
+
+### 18.1 173 的 patch
+
+在 172 基础上新增：
+
+```text
+libuxengine+0x7be44  pgList::Leave() -> ret
+```
+
+其余保留：
+
+```text
+libgemini-grm+0x8cc0  NOP
+libgrm+0x22c18        mov w0,#0; ret
+appfw-launch          maps-first + 跳过 dladdr
+```
+
+### 18.2 结果
+
+```text
+uxengine_init2 returned
+patched gemini 0x8cc0
+GraphicsEngine ctor=...
+osal_alloc_sem_id() osalErr = -1023  (x5)
+```
+
+之后 **没有 `APPFW_SEGV`**，但也没有：
+
+```text
+appfw-launch: GraphicsEngine ctor returned
+```
+
+120s 到 wall timeout，说明 ctor 卡住/死循环，而不是崩溃。
+
+### 18.3 解释
+
+- `pgList::Leave()` 直接 ret 避免了 SEGV，但 screen map 的链表状态没有更新；
+- ctor 可能在等待/轮询 sem 或 screen map，形成 hang；
+- `osal_alloc_sem_id -1023` 仍是唯一的可疑资源错误；
+- 该符号不在 FX6 动态符号里，错误来自某个库的 **内联/日志路径**，需要定位调用点。
+
+### 18.4 下一步
+
+1. 在 `libEsCodecLibrary.so`/`libInfra*` 里找 `osal_alloc_sem_id()` 日志的调用点，确认是哪个库、哪个函数在返回 -1023；
+2. 若只是错误日志但返回值被忽略，可通过 patch 让该路径返回成功/跳过；
+3. 若 ctor 卡在 sem 轮询，优先让 sem 分配成功，而不是继续 patch 链表；
+4. 仍不启动独立 VM 之外的系统；不改原固件/QEMU/DTB。
+
+## 19. 边界
+
+- 候选 CPIO 只改本地库/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

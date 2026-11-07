@@ -392,7 +392,7 @@ libux_core:
   - 不是三目标。
 - `0x23e28`：
   - 计算 `0x486b0 - 0x486b0 = 0`，`cbz x1, 0x23e60` 直接到 `ret`；
-  - `0x46fa0` 实际在 `.got`，不在 `.data.rel.ro`；无 reloc/符号；
+  - `0x46fa0` 实际在 `.got`；有 GLOB_DAT `_ITM_registerTMCloneTable`（文件预重定位 0）；
   - 由于长度 0，`ldr x2,[0x46fa0]`/`br x2` **不可达**；
   - 分类改为“不调用三目标”。
 - `0x22ac0`：PLT `__cxa_atexit`，不是三目标。
@@ -415,7 +415,7 @@ libux_core:
 - 7 个 helper 的入口反汇编；
 - PLT 名称（`Vector2`/`Color`/`ID`/`__cxa_atexit`）；
 - GOT `0xc1fc0` 符号 `_ITM_registerTMCloneTable`；
-- `0x23e28` 的数组长度 0；`0x46fa0` 在 `.got`、无符号/无 reloc；
+- `0x23e28` 的数组长度 0；`0x46fa0` 在 `.got`、GLOB_DAT `_ITM_registerTMCloneTable`；
 - 0 个 helper 直接/间接落到三目标地址。
 
 **推断**：
@@ -425,7 +425,7 @@ libux_core:
 
 **缺失**：
 
-- `0x46fa0` 的具体用途（不影响结论）；
+- `0x46fa0` 的 ITM 槽是否运行（数组空，静态不可达；不影响结论）；
 - 运行时 `[0x486f0]` 值；
 - 运行时 `GRM_fbrmInitialize` 是否命中；
 - 仍未执行任何运行时断点。
@@ -474,8 +474,8 @@ libux_core:
    - `.got`：`0x46c40..0x46fe8`；`0x46fa0` 在其中；
    - `.data.rel.ro`：`0x45750 + 0x11f0`，覆盖 `0x45750..0x46940`；`0x46fa0` 不在其中；
    - `.got.plt`：`0x46fe8..0x484f8`；
-   - `.rela.dyn`/`.rela.plt` 没有指向 `0x46fa0` 的条目；
-   - 没有附近符号；`.dynsym`/`.symtab` 未给出它的语义。
+   - `.rela.dyn` 有 1 个 `R_AARCH64_GLOB_DAT`：`_ITM_registerTMCloneTable`；`.rela.plt` 无；
+   - `.rela.dyn` 的符号就是它的语义；无其他 nearby symbol。
 
 3. **`0x486b0` 在 `.bss`，且代码范围是空区间。**
    - `.bss`：`0x486b0..0x48868`（size 0x1b8）；
@@ -497,8 +497,8 @@ libux_core:
 | `0x23e60` | `ret` |
 | `0x46fa0` section | `.got`（0x46c40..0x46fe8） |
 | `.got` range | `0x46c40..0x46fe8` |
-| `.rela.dyn/.rela.plt` @ 0x46fa0 | 无 |
-| `.dynsym/.symtab` 附近符号 | 无 |
+| `.rela.dyn/.rela.plt` @ 0x46fa0 | `.rela.dyn` 1 个 GLOB_DAT `_ITM_registerTMCloneTable`；`.rela.plt` 无 |
+| `.dynsym/.symtab` 附近符号 | 无其他 nearby symbol |
 | `0x486b0` section | `.bss`（0x486b0..0x48868） |
 | 数组表项 | 0（start=end） |
 | 三目标引用 | 无 |
@@ -516,19 +516,19 @@ libux_core:
 
 - `0x23e28` 的起止地址都是 `0x486b0`，长度 0；
 - `cbz` 到 `ret`，`br x2` 不可达；
-- `0x46fa0` 在 `.got`，无 reloc/符号；
+- `0x46fa0` 在 `.got`，GLOB_DAT `_ITM_registerTMCloneTable`（文件预重定位 0）；
 - `.bss`/`.got`/`.got.plt` 范围；
 - §11 分类与计数已更新。
 
 **推断**：
 
 - `0x23e28` 是空析构表/`__cxa_finalize` 风格 registry；
-- `0x46fa0` 是未使用的静态槽位；
+- `0x46fa0` 是 ITM clone-table GOT 槽；数组空，不可达；
 - 不是 framebuffer 初始化入口。
 
 **缺失**：
 
-- `0x46fa0` 的具体用途（不影响结论）；
+- `0x46fa0` 的 ITM 槽是否运行（数组空，静态不可达；不影响结论）；
 - 运行时 `[0x486f0]` 值；
 - 运行时 `GRM_fbrmInitialize` 是否命中；
 - 运行时断点仍待批准。

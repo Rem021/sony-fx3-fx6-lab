@@ -386,7 +386,7 @@ class Fx6MenuSession:
             self.state["seq"] += 1
 
             vm_write_info = None
-            if self.vm_running and self.vm_run_dir:
+            if self.vm_running and self.vm_ready and self.vm_run_dir:
                 g_sock = "tcp:127.0.0.1:1234"
                 try:
                     if not self.gdb_client:
@@ -520,11 +520,12 @@ class Fx6MenuSession:
                     stdout=out_f,
                     stderr=err_f,
                     start_new_session=True,
+                    preexec_fn=fr.limits,
                 )
             with self.lock:
                 self.vm_proc = proc
 
-            # Connect QMP socket 'q' and start guest CPU ('cont')
+            # Connect QMP socket 'q' and start guest CPU ('cont') using exact run_gpecap25_259 handshake
             q_path = run_dir / "q"
             short_q = Path("/tmp") / (run_dir.name + ".qmp")
             for _ in range(100):
@@ -540,10 +541,12 @@ class Fx6MenuSession:
             qsock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             qsock.settimeout(5.0)
             qsock.connect(str(q_path))
-            qreader = qsock.makefile("r", encoding="utf-8")
-            qreader.readline()
+            qreader = qsock.makefile("rb")
+            json.loads(qreader.readline())
             fr.qmp_send(qsock, qreader, "qmp_capabilities", 1)
-            fr.qmp_send(qsock, qreader, "cont", 2)
+            fr.qmp_send(qsock, qreader, "human-monitor-command", 2, {"command-line": "info registers"})
+            fr.qmp_send(qsock, qreader, "query-cpus-fast", 3)
+            fr.qmp_send(qsock, qreader, "cont", 4)
 
             start_t = time.monotonic()
             last_pmemsave = 0.0

@@ -609,3 +609,79 @@ appfw-launch: GraphicsEngine ctor returned
 - QEMU 命令/DTB/平台参数未改；
 - 未跑 pmemsave；未写 shim；
 - FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。
+
+## 20. sem provider：osal_dynamic_id 实验
+
+### 20.1 错误来源
+
+`libEsCodecLibrary.so` 的 `util::Mutex` 构造函数：
+
+```text
+mov w0, #0x31
+bl osal_dynamic_id
+cbz w0, success
+printf("osal_alloc_sem_id() osalErr = %d", w0)
+```
+
+即串口里的 `osal_alloc_sem_id -1023` 实际是 **`osal_dynamic_id` 返回 -1023**。
+
+### 20.2 provider
+
+```text
+libosal_uipc.so  T osal_dynamic_id 0x75b8
+libosal_uipc.so  T u_osal_dynamic_id 0x3fb0
+```
+
+CPIO 里是 FX3 版（09ebf598...）；FX6 版是 fe248d22...，但两者都导出该符号。
+
+### 20.3 174：换 FX6 libosal
+
+`libosal_uipc.so`/`libosal_utm.so` 与 CPIO 同大小（43752/10216），直接原位覆盖 CPIO 成员。
+
+结果：
+
+```text
+GraphicsEngine ctor=...
+osal_alloc_sem_id() osalErr = -1023  (x5)
+APPFW_SEGV pc=libuxengine+0x7be44
+```
+
+即 **换 FX6 libosal 不解决**，仍返回 -1023。
+
+### 20.4 175：patch osal_dynamic_id
+
+把 `libosal_uipc+0x75b8 osal_dynamic_id` 改成：
+
+```text
+mov w0, #0
+ret
+```
+
+结果更早失败：
+
+```text
+APPFW_SEGV addr=0x231 pc=...
+```
+
+没有 `appfw-launch:` 日志，说明 patch 破坏了更早的 OSAL 初始化/动态链接路径，不可用。
+
+### 20.5 结论
+
+- `osal_dynamic_id` 的 -1023 是底层 provider/内核接口问题，不是 libosal 版本；
+- 直接伪造返回 0 会破坏后续 sem 使用/初始化；
+- 需要让 **FX3 kernel 的 osal_uipc.ko / dynamic id 接口**真正支持该 ID，或提供正确的用户态 provider；
+- 不能再在 libosal 返回值上做无状态 patch。
+
+### 20.6 下一步
+
+1. 检查 FX3 `osal_uipc.ko` 的 ioctl/动态 ID 支持，确认 -1023 的来源；
+2. 若只是 VM 缺少某设备节点，补设备/模块而不是 patch libosal；
+3. 或用 FX6 的 osal_uipc.ko 替换（需保持 FX3 kernel ABI/平台一致）；
+4. 仍不改原固件/QEMU/DTB。
+
+## 21. 边界
+
+- 候选 CPIO 只改本地库/launcher 字节；原固件未改；
+- QEMU 命令/DTB/平台参数未改；
+- 未跑 pmemsave；未写 shim；
+- FDAT 解包已获准并执行；FX6 运行时库与平台策略两问仍未定。

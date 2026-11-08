@@ -6651,9 +6651,27 @@ libuxengine+0xa2000  ldr x1,[x0,#0x10]    ; parent->vptr[0x10]
 libuxengine+0xa2008  blr x1
 ```
 
-So passing `parent = NULL` faults inside `setParent` before the object is ever drawn. Probes must pass
-the real screen root / page container. `fx6_menu_items_assist.h` records this as
-`FX6_PARENT_REQUIRED`.
+So a null lands in `setParent` and faults before the object is ever drawn.
+
+**But the previous claim that "every menu ctor needs a caller parent" is wrong.** Reading the 23
+`setParent` call sites one by one shows most of them are *internal* wiring:
+
+```text
+view_fill 0xc27698       no setParent at all. Tail is `b 0xb17920` = Sprite::Sprite() on +0x210,
+                         and the ctor only reads param at [x20]/[x20+8]/[x20+0x20], so a zeroed
+                         0x40-byte block is a valid `param`. view_fill needs no parent.
+view_string 0xc3af98     tail-calls setParent at 0xc3b0c0 with x1 = the ctor's own x1,
+                         so its `param` really must be a real widget.
+view_icon 0xc2c188       setParent at 0xc2c1f8 with x1 = x19 (itself) and x0 = x21 = this+0x240:
+                         it parents a nested child to itself. Internal.
+view_menu_item 0xc341d4  0xc3441c (loop) and 0xc34430 attach the ten internal children to `this`.
+                         Internal.
+```
+
+Corrected rule: `view_fill` and `view_icon` can be built with a zeroed `param` buffer;
+`view_string` forwards that buffer to `setParent` and therefore needs a real widget there.
+`fx6_menu_items_assist.h` now records `FX6_PARENT_REQUIRED_FOR_VIEW_STRING` instead of claiming it for
+every class.
 
 ### 660 — What a probe must satisfy to reach gpe0
 
@@ -6714,3 +6732,66 @@ So this page fits comfortably in an arena slot, needs **no** 2.3 MiB list contai
 to contain six fill rows with a real colour ResID plus two backgrounds. It is the correct target for
 the next render attempt: if gpe0 then still has zero pixels, the bug is in the enable flags, not in the
 page choice.
+
+### 662 — `view_menu_item` does not paint itself: it drives a child from a pointer array
+
+Run `cp-bind-6a08d8f0` (image 662) fixed the heap problem — the 0x2000000 mmap arena removed the
+`sysmalloc` assertion and four buttons reached `item=4`:
+
+```text
+FX6_VSR662 arena=0x7f7e000000 size=2000000
+FX6_VSR662 setting main[06] M No106_BUTTON_BOTTOM_RIGHT  (654,425,164,72) text=020023da
+FX6_VSR662 setting main[07] M No105_BUTTON_BOTTOM_CENTER (398,425,164,72) text=020023da
+FX6_VSR662 setting main[08] M No103_BUTTON_TOP_RIGHT     (654,80,164,72) text=020023da
+FX6_VSR662 setting main[09] M No102_BUTTON_TOP_CENTER    (398,80,164,72) text=020023da
+FX6_VSR662 done text=0 fill=0 icon=0 item=4 skipN2=0 text_ok=0
+```
+
+but gpe0 stayed empty. The reason is structural, not a missing colour:
+
+`view_menu_item::onDrawNotice` (`0xc35358`) does **not** draw. It first puts its nine row children to
+sleep and then dispatches to a style handler:
+
+```text
+0xc3536c  mov  x21,#0x9730 ; movk x21,#1,lsl #16      ; x21 = 0x19730
+0xc35378  add  x0,x21,x20,lsl #3                       ; self + 0x19730 + i*8
+0xc35380  ldr  x0,[x19,x0]                             ; child pointer
+0xc3538c  mov  w1,#3                                   ; WidgetMode 3 = asleep
+0xc35390  blr  x2                                      ; vt[0x30](3)
+0xc35394  cmp  x20,#0xa ; b.ne 0xc35378                ; i = 1..9
+```
+
+The style handler then calls the shared row renderer `appFw+0xc347b0`, which stages a row struct and
+ends by driving **that child** through its own virtuals:
+
+```text
+0xc347b0  add x1,x0,w1,sxtw #3                         ; w1 = slot
+0xc347c0  add x22,x1,#0x19,lsl #12                     ; x22 = self + slot*8 + 0x19000
+0xc347d4  ldr x0,[x22,#0x730]                          ; *(self + slot*8 + 0x19730) = child
+0xc3493c  ldr x0,[x22,#0x730] ; ldr x1,[x0] ; ldr x1,[x1,#0x148] ; blr x1   ; child onCreate
+0xc3494c  ldr x0,[x22,#0x730] ; ldr x1,[x0] ; ldr x1,[x1,#0x158] ; br  x1   ; child onDraw
+```
+
+So the paint target is the child widget at `self + 0x19730 + slot*8`, and the styling that matters is
+written into that child, not into the menu item. Facts worth carrying forward:
+
+* the nine child pointers are populated by the `view_menu_item` constructor (`0xc341d4`), which builds
+  one `0xc208d0`, four `view_icon` (`0xc2c188`), two `view_string` (`0xc3af98`) and several
+  page-specific classes, then wires them with the two `setParent` calls at `0xc3441c` / `0xc34430`;
+* `0xc347b0` writes into the child's sub-object returned by `vt[0x140]`, including
+  `+0x38 = 0x02006004`, `+0x40 = 0x0200a029`, `+0x44 = 1`, `+0x844 = <font>`, and a `0x3f8`-byte copy
+  when a text source is present;
+* the style passed in `+0x200` selects which handler runs, and each handler picks its own slot
+  (`style 2/3 -> 0xc34974` with `w1 = 1`), so a mismatched style and slot simply drives a sleeping
+  child and produces nothing.
+
+Practical consequence: a bare `ctor + setRect + setPaint + onDraw` on `view_menu_item` cannot produce
+pixels. Either drive the specific child directly (`view_string` / `view_fill` / `view_icon` are all
+cheap and already proven), or accept that the composite only pays off once the whole presenter state
+around it (style, slot, caption dictionary, child enable flags) is coherent.
+
+Also corrected in this round: not every ctor needs a caller parent. Measured over the 23 `setParent`
+call sites, `view_fill` (`0xc27698`) never calls it — its tail is `b 0xb17920` (`Sprite::Sprite()` on
+`+0x210`) — while `view_icon` (`0xc2c1f8`) and `view_menu_item` (`0xc3441c` / `0xc34430`) call it to
+attach their own nested children to `this`. Only `view_string` (`0xc3b0c0`) forwards the caller's
+argument into `setParent`, so only it truly needs a real widget there.

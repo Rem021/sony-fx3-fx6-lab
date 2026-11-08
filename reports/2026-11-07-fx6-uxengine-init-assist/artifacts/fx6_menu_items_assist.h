@@ -254,13 +254,25 @@ static inline void *fx6_frame_child(void *frame, uint32_t child_off)
     return frame ? (void *)((char *)frame + child_off) : 0;
 }
 
-/* Every menu ctor calls Widget::setParent(this, parent) unconditionally:
- *   view_icon 0xc2c1f8   view_string 0xc3b09c   view_fill 0xc276e4 (tail)   view_menu_item 0xc34xxx
- * and libuxengine's implementation dereferences the parent on entry:
- *   setParent (libuxengine+0xa1fe8)  ->  ldr x0,[x1] ; ldr x1,[x0,#0x10] ; blr x1
- * So `parent == NULL` faults immediately. Always hand the ctor a real widget: the screen root,
- * the page container, or the widget that owns the row. A null parent is NOT "unparented". */
-#define FX6_PARENT_REQUIRED 1
+/* Who calls Widget::setParent, measured (23 call sites in appFw):
+ *
+ *   view_fill 0xc27698      -> NO setParent at all. The ctor ends in `b 0xb17920`
+ *                              (Sprite::Sprite()) on its +0x210 sub-object. Passing a NULL
+ *                              `param` is fine; the `param` argument is only read at
+ *                              [x20]/[x20+8]/[x20+0x20], so give it a zeroed 0x40 buffer.
+ *   view_string 0xc3af98    -> tail-calls setParent at 0xc3b0c0 with x1 = the ctor's x1,
+ *                              so its `param` argument must be a real widget.
+ *   view_icon 0xc2c188      -> setParent at 0xc2c1f8 with x1 = x19 (itself) as the child and
+ *                              x0 = x21, a *nested* widget at this+0x240. This is internal
+ *                              wiring, not the caller's parent.
+ *   view_menu_item 0xc341d4 -> two setParent calls (0xc3441c loop, 0xc34430) that attach the
+ *                              ten internal children to `this`. Also internal.
+ *
+ * setParent dereferences its first argument immediately:
+ *   libuxengine+0xa1fe8  ldr x0,[x1] ; ldr x1,[x0,#0x10] ; blr x1
+ * so wherever a ctor forwards the caller's argument there, that argument must be a real widget.
+ * For view_fill it is not required. */
+#define FX6_PARENT_REQUIRED_FOR_VIEW_STRING 1
 
 /* ---- view_icon: the two fields that make it paint ---- */
 /* Virtual-slot reality, measured (relocations applied):
@@ -332,6 +344,30 @@ static inline void fx6_menu_item_set_text_ids(void *item, uint32_t caption_resid
     *(uint32_t *)((char *)item + 0x1e0) = value_resid;
     /* +0x228 is the "has value" flag read at 0xc349a8 / 0xc352dc */
     *(uint32_t *)((char *)item + 0x228) = value_resid ? 1u : 0u;
+}
+
+/* A view_menu_item never paints itself. onDrawNotice (0xc35358) puts its nine row children to
+ * sleep, then dispatches on +0x200 to a style handler, and the handler forwards to the shared row
+ * renderer appFw+0xc347b0, which drives the *child* widget:
+ *
+ *     0xc347d4  ldr x0,[x22,#0x730]     ; x22 = self + slot*8 + 0x19000
+ *     0xc3493c  ldr x1,[x0] ; ldr x1,[x1,#0x148] ; blr x1   ; child onCreate
+ *     0xc3494c  ldr x1,[x1,#0x158]                            ; child onDraw
+ *
+ * i.e. the paint target is   *(void**)((char*)item + 0x19730 + slot*8)
+ * Those nine pointers are installed by the ctor (0xc341d4), which builds one 0xc208d0, four
+ * view_icon, two view_string and several page classes.
+ *
+ * Consequence: ctor + setRect + setPaint + onDraw on a bare view_menu_item paints NOTHING. To get
+ * pixels either drive the child returned by fx6_menu_item_child() directly, or make the whole
+ * presenter state (style, slot, caption dictionary, child enable flags) coherent first.
+ */
+#define FX6_MENU_ITEM_CHILD_BASE 0x19730u
+
+static inline void *fx6_menu_item_child(void *item, int slot)
+{
+    if (!item || slot < 0 || slot > 9) return 0;
+    return *(void **)((char *)item + FX6_MENU_ITEM_CHILD_BASE + (unsigned)slot * 8u);
 }
 
 /* Tab into the icon slot of the "row with icon" styles (4..8). */

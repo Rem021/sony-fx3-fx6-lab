@@ -6675,3 +6675,42 @@ Anything that violates 1 corrupts the heap and shows up as a `libstella` fault p
 `sysmalloc` assertion; anything that violates 2 faults in `setParent`; anything that violates 3 takes
 the mode-3 early exit and leaves the framebuffer empty — which is exactly the three failure shapes
 seen in 658, 659 and 660.
+
+### 660 — The cheapest native page that must produce borders, and its exact cost
+
+The setting main page (`0x2ea3e50`) has **no fill descriptors at all** — every `+0x18` is either 0 or a
+string id. That is why it cannot show a panel no matter how the fills are enabled:
+
+```text
+[00] 0x42d5860 touch   +0x18=0
+[01] 0x42d5a20 list    +0x18=0
+[02..05] 0x42d57f0 string  +0x18=0
+[06..09] 0x42d58d0 item    +0x18=0x020023da  ("Set" caption)
+```
+
+The 17-entry page at `0x2eaf208` does have them — this is the page a border/list-item probe should use:
+
+```text
+[01] No1_BG           tag 0x42d5a40 fill  +0x18=0x0200c001
+[02] No28_BG          tag 0x42d5a40 fill  +0x18=0x0200c008
+[04] No7_CENTER_TITLE tag 0x42d57f0 string +0x18=0x02002fea
+[05..10] six separators tag 0x42d5a40 fill +0x18=0x0200c00e
+[11..16] six buttons  tag 0x42d58d0 item
+```
+
+Cost of that page, computed from the tags:
+
+```text
+2  view_fill   0x308    each  ->    0x610
+6  view_fill   0x308    each  ->   0x1230
+1  view_string 0x1388          ->   0x1388
+6  view_menu_item 0x19788 each ->  0x98d30
+1  touch       0                ->        0
+                                  ----------
+total                            0xa9cf8  (679 KiB)
+```
+
+So this page fits comfortably in an arena slot, needs **no** 2.3 MiB list container, and is guaranteed
+to contain six fill rows with a real colour ResID plus two backgrounds. It is the correct target for
+the next render attempt: if gpe0 then still has zero pixels, the bug is in the enable flags, not in the
+page choice.

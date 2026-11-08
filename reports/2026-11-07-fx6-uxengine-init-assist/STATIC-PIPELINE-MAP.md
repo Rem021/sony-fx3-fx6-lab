@@ -7231,3 +7231,53 @@ the pointer that reaches `0x23be904`/`0x23be86c`; a plain address scan cannot, s
 (`0x2121` "Audio", `0x2227` "Shooting", `0x2228` "Project", `0x2229` "Monitoring", `0x222a` "Technical",
 `0x222b` "TC/Media", `0x2531` "Setup"). A search for one contiguous 10-element array of exactly those ids
 found nothing, so that particular table is either split across pages or assembled at runtime.
+
+#### 665 — precise shape of the `0x23be8e0` region (settles both previous paragraphs)
+
+Dumping the words verbatim rather than guessing the array start makes this unambiguous. At `0x23be8e0`
+there is a **ResID array of pairs**, each pair being `(icon-or-glyph ResID, text ResID)`:
+
+```text
+0x23be8e0 [ 0] 0x02000571  (no string; a glyph/icon id, entries 0x571..0x5de are all glyphs)
+          [ 1] 0x02003307  '1.3x'      <- value strings
+          [ 2] 0x02000584  (glyph)
+          [ 3] 0x020032e4  '1.5x'
+          [ 4] 0x020005d4  (glyph)
+          [ 5] 0x02003270  '1.65x'
+          [ 6] 0x020005de  (glyph)
+          [ 7] 0x02003318  '1.8x'
+          [ 8] 0x020004fd  (glyph)
+          [ 9] 0x0200335a  '2.0x'
+          [10] 0x02002934  'WB: A'
+          [11] 0x02002896  'WB: B'
+          [12] 0x02002f08  'WB: Preset'
+          [13] 0x02002919  'WB: C'
+          [14] 0x02002cab  'WB: D'
+          [15] 0x02002c82  'WB: E'
+          [16] 0x02002c88  'WB: F'
+          [17] 0x02002caf  'WB: G'
+          [18] 0x02002ca3  'WB: H'
+```
+
+and immediately after it at `0x23be92c` the bytes are plain ASCII literals
+(`[0-9]{4}`, `stoi`, `vector::_M_default_append`, `vector::_M_emplace_back_…`), i.e. the ResID data is
+immediately followed by unrelated string literals. So:
+
+* `0x23be904` (the `WB: …` block) is a **sub-range inside a larger ResID array**, not a table with its
+  own symbol. `0x23be8e0` is the array start, and `0x23be904` is simply `0x23be8e0 + 0x24`.
+* the array mixes glyph ids and caption ids in pairs, which is exactly the "icon + label" shape a
+  menu row needs — this is the closest thing to the "六格标题" data that exists in `.rodata`.
+* no relocation and no `adrp+add` reaches `0x23be8e0` or `0x23be904`; the only code that lands in this
+  page at all is the `unordered_set` initialiser (`0xb1c864`) and the class-name assertion strings
+  (`0xf301c8`, `0xf30220`, …). So the array is addressed through a computed pointer, most plausibly from
+  a `view_*::param_t` table or from the presenter's own `this`-relative data.
+
+Practical consequence for a probe: the `WB: A..H`, `s709 / S-Log3 / 709(800%)`, and `1.3x..2.0x` caption
+ids are now known by value and can be written straight into a row widget's caption slot without any
+runtime trace. Example, all verified against `string_english.uxc`:
+
+```text
+0x02002934 'WB: A'      0x02002f08 'WB: Preset'   0x02002ca3 'WB: H'
+0x0200219f 'S-Log3'     0x020021a0 's709'         0x0200219e '709(800%)'
+0x0200335a '2.0x'       0x02003270 '1.65x'        0x02003307 '1.3x'
+```

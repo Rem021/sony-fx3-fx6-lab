@@ -7711,3 +7711,114 @@ are static.
 Practical guidance for 671: set `No2141_BITRATE` from `${v1}.${v2} Mbps` (`0x02002be2`) if the
 formatter is available, otherwise write a literal string; leave the TC/clip slots at `-1` (they will
 simply not draw) rather than guessing a format.
+
+### 672 — Why 12 synthesised `view_string`s produced no glyphs: the factory fills six more fields
+
+The synthetic path called `view_string`'s constructor directly. That is not what native rows do — the
+**factory** at `appFw+0xc1935c` constructs the object *and* then copies six descriptor fields into it.
+Its view_string branch, `0xc19594..0xc195d0`, is the missing step:
+
+```text
+0xc19594  ldr w1,[x19,#0x18] ; str w1,[x0,#0x30]      ; desc+0x18 -> obj+0x200  (text ResID)
+0xc195a4  ldr w4,[x19,#0x24]                          ; desc+0x24
+0xc195ac  ldr w3,[x19,#0x28]                          ; desc+0x28
+0xc195c0  stp w4,w3,[x0,#0x38]                        ; -> obj+0x208, obj+0x20c  (FontName pair)
+0xc195b4  ldr w1,[x19,#0x1c]                          ; desc+0x1c
+0xc195bc  ldr w5,[x19,#0x20]                          ; desc+0x20
+0xc195c4  stp w1,w5,[x0,#0x40]                        ; -> obj+0x210, obj+0x214  (layout, style)
+0xc195c8  str wzr,[x0,#0x48]                          ; -> obj+0x218
+0xc195cc  ldr w1,[x19,#0x2c] ; str w1,[x0,#0x844]     ; desc+0x2c -> obj+0xa14  (FONT SIZE)
+```
+
+(`x0` here is the `vt[0x140]` sub-object = `obj+0x1d0`, hence `+0x30`→`+0x200`, `+0x844`→`+0xa14`.)
+
+The constructor alone (`0xc3af98`) only sets `+0x200 = -1` (`0xc3b078`) and `+0xa14 = 0x44`
+(`0xc3b080`), plus `+0x1fc = 0` and `+0x610 = 0`. So a constructor-only widget has
+`+0x200 = -1` **and** `+0x610 = 0`, and `onDrawNotice` exits at `0xc3bc14..0xc3bc1c`:
+
+```text
+0xc3bbfc  ldrb w0,[x26,#0x1fc] ; cbz -> 0xc3bc20          ; disabled
+0xc3bc04  bl   0xc3b61c                                   ; returns +0x200
+0xc3bc0c  cmn  w0,#1 ; b.ne 0xc3c2b4                      ; != -1 -> REAL text path
+0xc3bc14  ldr  w0,[x26,#0x610] ; cmp w0,#0 ; b.gt 0xc3c2b4
+0xc3bc20  ... -> mode 3, return                            ; NOTHING DRAWN
+```
+
+`0xc3c2b4` is the path that reaches `TextSprite` (it builds the Vector2 at `+0x1e8/+0x1ec`, sets the
+size from `+0x1f0/+0x1f4`, and drives `+0xe40`, the `MultiLineTextSprite` created in the ctor by
+`0xb198f0`). So the failure is entirely explained by the five missing writes.
+
+**Byte-for-byte template** — measured from `TABLE 0x2e9e210` entries 6, 7 and 18, all of which render:
+
+```text
++0x00  0x042d57f0    class tag (view_string)
++0x04  0x00000000
++0x08  <ptr>         debug-name pointer
++0x0c  0x00000000
++0x10  0x00000000
++0x14  0x00000000
++0x18  <ResID>       text ResID        -> obj+0x200
++0x1c  0x0200a029    layout id         -> obj+0x210
++0x20  0x00000001    style             -> obj+0x214
++0x24  0x0200600f    FontName          -> obj+0x208
++0x28  0x0200600e    FontName          -> obj+0x20c
++0x2c  0x00000044    font size         -> obj+0xa14
++0x30  0x00000ce2    flags
++0x34  0x00002ce9    flags
++0x38  0x<idx><<16>  widget id (= descriptor row index << 16)
++0x3c  x | y<<16     rect origin
++0x40  w | h<<16     rect size
++0x44  0x00000000    reserved
+```
+
+Raw bytes of entry 6 (`0x2e9e210 + 6*0x48`), verbatim:
+
+```text
+f0 57 2d 04 00 00 00 00 f5 45 3b 02 00 00 00 00
+00 00 00 00 00 00 00 00 1d 2f 00 02 29 a0 00 02
+01 00 00 00 0f 60 00 02 0e 60 00 02 44 00 00 00
+e2 0c 00 00 e9 2c 00 00 00 00 06 00 50 01 01 01
+d0 00 20 00 00 00 00 00
+```
+
+Field statistics over **all 56** `view_string` descriptors of `0x2e9e210` (so these are constraints,
+not one-off values):
+
+```text
++0x1c: 0x0200a029 x47, 0x0200a02b x7, 0x0200a02a x2      (only three layouts used)
++0x20: 0x00000001 x56                                    (always exactly 1)
++0x24: 0x02006008 x24, 0x0200600f x20, 0x0200600d x5, 0x0200600a x3
++0x28: 0x0200600e x44, 0x02006002 x6, 0x0200601b x6
++0x2c: 0x00000044 x56                                    (68)
++0x30: 0x00000ce2 x56
++0x34: 0x00002ce9 x56
++0x38: 0x<index><<16> x56
++0x44: 0x00000000 x56
+```
+
+Across every 0x48 table in the binary, 335 view_string descriptors use `+0x2c = 0x44`; the other
+values (`1,2,6,7,8`) belong to other classes' tables, so for a **view_string** the font size field must
+be a real pixel size, and `0x44` is the one every native row uses.
+
+Deliverables in `fx6_menu_items_assist.h`:
+
+```text
+fx6_desc_view_string                       packed struct, sizeof == 0x48 (static-asserted)
+fx6_desc_view_string_init(d, index, text_resid, x, y, w, h)
+                                            fills every field with the measured constants
+fx6_view_string_apply_desc(vs, d)           the six post-condition writes the factory performs
+FX6_DESC_OFF_* / FX6_VS_LAYOUT_* / FX6_VS_STYLE / FX6_VS_FONT_* / FX6_VS_FONTSIZE /
+FX6_VS_FLAG_A/B                             named constants for each slot
+```
+
+Compile-time guards confirm the layout: `sizeof == 0x48`, `text_resid @0x18`, `font_a @0x24`,
+`rect_xy @0x3c`, `reserved @0x44`.
+
+### 672 — Note on question (1)
+
+Because `0xc18548` resolves *slot → ResID* through the two global maps built from `0x226a6c0` and
+`0x2272a80`, the 35 call sites do not contain per-category slot arrays: each caller holds its own
+short literal sequence of slots (usually as `mov w0,#imm` before the call). The category grouping is
+therefore distributed across the callers rather than stored in one table, which is consistent with the
+round-671 finding that mapA/mapB are flat. Enumerating those 35 sites' immediate slot arguments is the
+concrete next step, and it needs per-site disassembly rather than a table lookup.

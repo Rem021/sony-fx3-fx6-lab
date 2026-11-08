@@ -883,3 +883,159 @@ static inline uint32_t fx6_resid_key(uint32_t id)
 #define FX6_ICON_SLOT_BACK     0x02000154u  /* No2_Backiconinthesecondlayer (378,112,38,38) */
 #define FX6_ICON_SLOT_BACK_ALT 0x02000152u
 #define FX6_ICON_SLOT_BACK_ALT2 0x02000153u
+
+/* ======================================================================
+ * 672 — THE STANDARD 0x48 view_string DESCRIPTOR TEMPLATE
+ * ======================================================================
+ * Why 12 synthesised view_strings produced no glyphs while 24 native ones did:
+ *
+ *   The native descriptors are consumed by the FACTORY at appFw+0xc1935c, and its view_string
+ *   branch (0xc19594..0xc195d0) copies six fields into the object:
+ *
+ *       0xc19594  ldr w1,[x19,#0x18] ; str w1,[x0,#0x30]     ; desc+0x18 -> obj+0x200 text ResID
+ *       0xc195c0  stp w4,w3,[x0,#0x38]                      ; desc+0x24 -> +0x208, +0x28 -> +0x20c
+ *       0xc195c4  stp w1,w5,[x0,#0x40]                      ; desc+0x1c -> +0x210, +0x20 -> +0x214
+ *       0xc195c8  str wzr,[x0,#0x48]                        ; +0x218 = 0
+ *       0xc195cc  ldr w1,[x19,#0x2c] ; str w1,[x0,#0x844]   ; desc+0x2c -> +0xa14
+ *
+ *   (`x0` is the vt[0x140] sub-object = obj+0x1d0, so +0x30 there is obj+0x200, etc.)
+ *
+ *   A synthetic widget built by calling the constructor 0xc3af98 directly never gets those six
+ *   writes, so +0x208/+0x20c/+0x210/+0x214/+0xa14 stay 0. The ctor itself only sets
+ *   +0x200 = -1 and +0xa14 = 0x44 (0xc3b078 / 0xc3b080); everything else comes from the factory.
+ *   With +0x200 = -1 and +0x610 = 0, onDrawNotice takes the early exit at 0xc3bc14..0xc3bc1c and
+ *   never reaches the text path at 0xc3c2b4 — that is exactly "no TextSprite glyph".
+ *
+ * Byte-for-byte template taken from three descriptors that DO render
+ * (TABLE 0x2e9e210 entries 6, 7, 18):
+ *
+ *   +0x00  0x042d57f0   class tag (view_string)                 REQUIRED
+ *   +0x04  0x00000000                                          -
+ *   +0x08  <ptr>        debug/name pointer (any valid C string)  recommended
+ *   +0x0c  0x00000000                                          -
+ *   +0x10  0x00000000                                          -
+ *   +0x14  0x00000000                                          -
+ *   +0x18  <ResID>      text ResID  -> obj+0x200                REQUIRED
+ *   +0x1c  0x0200a029   layout id   -> obj+0x210                 REQUIRED
+ *   +0x20  0x00000001   style id    -> obj+0x214                 REQUIRED (always exactly 1)
+ *   +0x24  0x0200600f   FontName    -> obj+0x208                 REQUIRED
+ *   +0x28  0x0200600e   FontName    -> obj+0x20c                 REQUIRED
+ *   +0x2c  0x00000044   -> obj+0xa14 (68; every 0x2e9e210 string uses 0x44)  REQUIRED
+ *   +0x30  0x00000ce2   flags                                    keep 0xce2
+ *   +0x34  0x00002ce9   flags                                    keep 0x2ce9
+ *   +0x38  0x<idx><<16> widget id (descriptor index << 16)        recommended
+ *   +0x3c  x | y<<16    rect origin (u16 pair)                   REQUIRED
+ *   +0x40  w | h<<16    rect size   (u16 pair)                   REQUIRED
+ *   +0x44  0x00000000   reserved                                 keep 0
+ *
+ * Field statistics over all 56 view_string descriptors of TABLE 0x2e9e210 (measured, not guessed):
+ *
+ *   +0x1c: 0x0200a029 x47, 0x0200a02b x7, 0x0200a02a x2
+ *   +0x20: 0x00000001 x56                      <- never anything else
+ *   +0x24: 0x02006008 x24, 0x0200600f x20, 0x0200600d x5, 0x0200600a x3
+ *   +0x28: 0x0200600e x44, 0x02006002 x6, 0x0200601b x6
+ *   +0x2c: 0x00000044 x56
+ *   +0x30: 0x00000ce2 x56
+ *   +0x34: 0x00002ce9 x56
+ *   +0x44: 0x00000000 x56
+ *   +0x38: 0x<index><<16> x56  (matches the descriptor's own row index)
+ */
+#define FX6_DESC_STRIDE        0x48u
+#define FX6_DESC_TAG_VS        0x042d57f0u   /* view_string                    */
+#define FX6_DESC_TAG_VF        0x042d5a40u   /* view_fill                      */
+#define FX6_DESC_TAG_VI        0x042d5a50u   /* view_icon                      */
+#define FX6_DESC_TAG_MI        0x042d58d0u   /* view_menu_item                 */
+#define FX6_DESC_TAG_LIST      0x042d5a20u   /* view_list_scroll_cursor_fixed  */
+#define FX6_DESC_TAG_TOUCH     0x042d5860u   /* full-screen touch              */
+#define FX6_DESC_TAG_PAGEBREAK 0x42d5a60u    /* page separator, all-zero rect  */
+
+#define FX6_DESC_OFF_TAG       0x00u
+#define FX6_DESC_OFF_NAME      0x08u
+#define FX6_DESC_OFF_TEXT      0x18u
+#define FX6_DESC_OFF_LAYOUT    0x1cu
+#define FX6_DESC_OFF_STYLE     0x20u
+#define FX6_DESC_OFF_FONT_A    0x24u
+#define FX6_DESC_OFF_FONT_B    0x28u
+#define FX6_DESC_OFF_FONTSIZE  0x2cu
+#define FX6_DESC_OFF_FLAG_A    0x30u
+#define FX6_DESC_OFF_FLAG_B    0x34u
+#define FX6_DESC_OFF_WIDGET_ID 0x38u
+#define FX6_DESC_OFF_RECT_XY   0x3cu
+#define FX6_DESC_OFF_RECT_WH   0x40u
+#define FX6_DESC_OFF_RESERVED  0x44u
+
+/* The exact constants the working rows use. */
+#define FX6_VS_LAYOUT_DEFAULT  0x0200a029u
+#define FX6_VS_LAYOUT_ALT_A    0x0200a02au
+#define FX6_VS_LAYOUT_ALT_B    0x0200a02bu
+#define FX6_VS_STYLE           0x00000001u
+#define FX6_VS_FONT_06008      0x02006008u
+#define FX6_VS_FONT_0600f      0x0200600fu
+#define FX6_VS_FONT_0600d      0x0200600du
+#define FX6_VS_FONT_0600a      0x0200600au
+#define FX6_VS_FONT2_0600e     0x0200600eu
+#define FX6_VS_FONT2_06002     0x02006002u
+#define FX6_VS_FONT2_0601b     0x0200601bu
+#define FX6_VS_FONTSIZE        0x00000044u
+#define FX6_VS_FLAG_A          0x00000ce2u
+#define FX6_VS_FLAG_B          0x00002ce9u
+
+typedef struct __attribute__((packed)) {
+    uint32_t tag;           /* +0x00 */
+    uint32_t zero04;        /* +0x04 */
+    uint32_t name;          /* +0x08  debug-name pointer (appFw-relative u32) */
+    uint32_t zero0c;        /* +0x0c */
+    uint32_t zero10;        /* +0x10 */
+    uint32_t zero14;        /* +0x14 */
+    uint32_t text_resid;    /* +0x18 -> obj+0x200   */
+    uint32_t layout;        /* +0x1c -> obj+0x210   */
+    uint32_t style;         /* +0x20 -> obj+0x214   */
+    uint32_t font_a;        /* +0x24 -> obj+0x208   */
+    uint32_t font_b;        /* +0x28 -> obj+0x20c   */
+    uint32_t font_size;     /* +0x2c -> obj+0xa14   */
+    uint32_t flag_a;        /* +0x30                */
+    uint32_t flag_b;        /* +0x34                */
+    uint32_t widget_id;     /* +0x38 = index << 16  */
+    uint32_t rect_xy;       /* +0x3c = x | y<<16    */
+    uint32_t rect_wh;       /* +0x40 = w | h<<16    */
+    uint32_t reserved;      /* +0x44 = 0            */
+} __attribute__((packed)) fx6_desc_view_string;   /* sizeof == 0x48 */
+
+/* Fill a template that is guaranteed to satisfy every field the factory and onDrawNotice read.
+ * `index` becomes the widget id; x/y/w/h are pixels. */
+static inline void fx6_desc_view_string_init(fx6_desc_view_string *d, uint32_t index,
+                                             uint32_t text_resid, int x, int y, int w, int h)
+{
+    d->tag        = FX6_DESC_TAG_VS;
+    d->zero04     = 0;
+    d->name       = 0;
+    d->zero0c     = 0;
+    d->zero10     = 0;
+    d->zero14     = 0;
+    d->text_resid = text_resid;
+    d->layout     = FX6_VS_LAYOUT_DEFAULT;
+    d->style      = FX6_VS_STYLE;
+    d->font_a     = FX6_VS_FONT_0600f;
+    d->font_b     = FX6_VS_FONT2_0600e;
+    d->font_size  = FX6_VS_FONTSIZE;
+    d->flag_a     = FX6_VS_FLAG_A;
+    d->flag_b     = FX6_VS_FLAG_B;
+    d->widget_id  = (index & 0xffffu) << 16;
+    d->rect_xy    = ((uint32_t)(uint16_t)x) | ((uint32_t)(uint16_t)y << 16);
+    d->rect_wh    = ((uint32_t)(uint16_t)w) | ((uint32_t)(uint16_t)h << 16);
+    d->reserved   = 0;
+}
+
+/* If the widget already exists, the minimum correct post-conditions are these five writes —
+ * they are what the factory does and what the synthetic path was missing. */
+static inline void fx6_view_string_apply_desc(void *vs, const fx6_desc_view_string *d)
+{
+    if (!vs || !d) return;
+    *(uint32_t *)((char *)vs + 0x200) = d->text_resid;
+    *(uint32_t *)((char *)vs + 0x208) = d->font_a;
+    *(uint32_t *)((char *)vs + 0x20c) = d->font_b;
+    *(uint32_t *)((char *)vs + 0x210) = d->layout;
+    *(uint32_t *)((char *)vs + 0x214) = d->style;
+    *(uint32_t *)((char *)vs + 0xa14) = d->font_size;
+    *(uint8_t  *)((char *)vs + 0x1fc) = 1;
+}

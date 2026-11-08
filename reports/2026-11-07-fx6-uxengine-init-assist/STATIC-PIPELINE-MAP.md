@@ -7822,3 +7822,158 @@ short literal sequence of slots (usually as `mov w0,#imm` before the call). The 
 therefore distributed across the callers rather than stored in one table, which is consistent with the
 round-671 finding that mapA/mapB are flat. Enumerating those 35 sites' immediate slot arguments is the
 concrete next step, and it needs per-site disassembly rather than a table lookup.
+
+### 676 — CORRECTION: mapA is `ResID -> slot`, not `slot -> ResID`
+
+Round 671 read the two maps as `slot -> ResID`. Measured over all pairs, that is backwards:
+
+```text
+mapA  0x226a6c0..0x2272a80   4216 pairs
+      every FIRST element has bits 31..24 == 0x02  (a packed ResID)     4216/4216
+      every SECOND element is a small slot id                           4216/4216
+
+      pair = { uint32_t resid; uint32_t slot; }
+
+mapB  0x2272a80..0x2272f18    147 pairs, same layout, ResID is namespace 0 (icon)
+```
+
+So the resolver `appFw+0xc18548(resid)` returns the **slot**, not a text id:
+
+```text
+0x02002227 'Shooting'  -> slot 0x234
+0x02002228 'Project'   -> slot 0x235
+0x02002229 'Monitoring'-> slot 0x236
+0x0200222a 'Technical' -> slot 0x237
+0x0200222b 'TC/Media'  -> slot 0x4ec
+0x020041fb 'Audio' ns2 -> slot 0x2a4
+0x02004203 'Maintenance' ns2 -> slot 0x2a7
+0x02004208 'User' ns2  -> slot 0x2a9
+0x02004209 'Thumbnail' ns2 -> slot 0x2aa
+```
+
+`3214` distinct slots in mapA; **1071 slots carry several ResID aliases** (locale / state variants).
+The heaviest aliasing groups are slot `0x016` and slot `0x378` with 7 aliases each, then
+`0x21c`, `0x220`, `0x228`, `0x268`, `0x2d0`, `0x374` with 5.
+
+### 676 — Automated sweep of all 35 `0xc18548` call sites
+
+A scripted pass (`/private/tmp/fx6_lookup_sites.py`, output `/private/tmp/fx6_lookup_sites.json`)
+disassembles each enclosing function from its prologue and reports what is in `w0` at the call:
+
+```text
+site       func        slot     source
+0xc187d8  0xc185cc    -        mem  w0,[x0,#0x5c]
+0xc18854  0xc185cc    -        mem  w0,[x22,x0]
+0xc264d8  0xc263a8    -        computed cinc w0,w0,ge
+0xc55990  0xc5594c    -        mem  w0,[x0]
+0xc5599c  0xc5594c    -        computed mov w0,w23
+0xf64648  0xf64584    -        computed mov w0,w3
+0xf646ac  0xf64584    -        computed mov w0,w19
+0xf669a0  0xf668dc    -        computed mov w0,w3
+0xf66a04  0xf668dc    -        computed mov w0,w19
+0xf6c13c  0xf6c078    -        computed mov w0,w3
+0xf6c1a0  0xf6c078    -        computed mov w0,w19
+0xf7731c  0xf772dc    -        mem  w0,[x0,#0x4c]
+0xf77730  0xf776f0    -        mem  w0,[x0,#0x4c]
+0xfb9a98  0xfb9a64    -        computed mov w0,w1
+0xfb9e6c  0xfb9dcc    512      imm
+0xfb9fa4  0xfb9dcc    512      imm
+0xfba018  0xfb9dcc    -        computed mov w0,w21
+0xfbe448  0xfbe408    512      imm
+0xfd0870  0xfd0864    -        computed mov w0,w1
+0xfdac48  0xfdac34    -        computed mov w0,w2
+0xfdc374  0xfdc048    -        computed mov w0,w25
+0xfe0510  0xfe03e4    -        mem  w0,[x0,#0x30]
+0xfe4884  0xfe4758    -        mem  w0,[x0,#0x30]
+0xfe7e74  0xfe7d48    -        mem  w0,[x0,#0x30]
+0xfec610  0xfec5fc    -        computed mov w0,w2
+0xfec920  0xfec638    -        computed mov w0,w24
+0xfeca18  0xfec638    -        computed mov w0,w22
+0xfecbcc  0xfec638    -        computed mov w0,w24
+0xfeccbc  0xfecbbc    -        computed mov w0,w23
+0xfef8f4  0xfef8e0    -        computed mov w0,w2
+0xff1a28  0xff1734    -        computed mov w0,w24
+0xff3858  0xff3844    -        computed mov w0,w2
+0xff57c8  0xff5498    -        computed mov w0,w21
+0xff7904  0xff77d8    -        mem  w0,[x0,#0x30]
+0xffb830  0xffb704    -        mem  w0,[x0,#0x30]
+```
+
+**Conclusion: there are no per-category slot arrays to recover.** 32 of 35 sites pass a value that
+comes from memory or another register (a widget field such as `+0x30`/`+0x4c`/`+0x5c`, or a loop
+counter), and the only three literal arguments are `512` (`0x200`) at `0xfb9e6c`, `0xfb9fa4`,
+`0xfbe448`. Because the map is ResID-first, each caller is *translating a resource id it already has*
+into the slot the list widget needs — the item ordering lives in the list widgets' own state, not in
+`.rodata`.
+
+### 676 — The slot ↔ text vocabulary is now fully enumerable
+
+`/private/tmp/fx6_slot_text_map.json` holds all 2943 slots with their ResID aliases and resolved text
+(joined from `string_english.uxc` and `string_english_2.uxc` with the corrected key rule
+`key = (ns<<13) | (resid & 0x1fff)`). 1280 slots in the `0x001..0x500` range carry text.
+
+Representative rows, which are the concrete "二级菜单项" names a probe can render:
+
+```text
+slot 0x001  0x02002006  'Focus Hold Button'      slot 0x002  0x02002071  'Fixed'
+slot 0x003  0x020020cd  'High'                   slot 0x004  0x020020ce  'Low'
+slot 0x005  0x020020d0  'White Balance'          slot 0x006  0x020020fb  'Wireless'
+slot 0x007  0x0200210a  'Multi Function Dial'    slot 0x008  0x0200210b  'Grip Dial'
+slot 0x009  0x0200210c  'Handle Dial'            slot 0x00a  0x0200211a  'Camera'
+slot 0x00b  0x0200211b  'Audio'                  slot 0x00c  0x0200211c  'Project'
+slot 0x00d  0x0200211d  'Monitoring'             slot 0x00e  0x0200211e  'Assignable Button'
+slot 0x00f  0x0200211f  'Battery'                slot 0x010  0x02002120  'Media'
+slot 0x011  0x02002122  'Network'                slot 0x012  0x02002123  'File Transfer'
+slot 0x013  0x0200218a  'Shooting Mode'          slot 0x015  0x02002191  'Headphone Out'
+slot 0x016  0x02002192  'Volume'                 slot 0x017  0x0200219c  'Gamma Disp. Assist'
+slot 0x018  0x020021b5  'Video Format'           slot 0x019  0x020021b6  'Signal'
+slot 0x01a  0x020021d1  'Manual'                 slot 0x01b  0x020021d2  'Auto'
+slot 0x01c  0x02002202  'Linked with gain'        slot 0x01d  0x0200220f  'Format'
+slot 0x01e  0x02002213  'Auto Upload'            slot 0x01f  0x020029d0  'No Device'
+slot 0x020  0x02002937  'Tethering'              slot 0x022  0x02002230  'Zone'
+slot 0x023  0x0200223e  'Focus Setting'          slot 0x024  0x02002244  'Clip Name Format'
+slot 0x025  0x0200224e  'Focal Length'           slot 0x026  0x0200225e  'Internal Rec'
+slot 0x232  0x020029f8  'Look'                   slot 0x233  0x02002223  'VF Adjust'
+slot 0x234  0x02002227  'Shooting'               slot 0x235  0x02002228  'Project'
+slot 0x236  0x02002229  'Monitoring'             slot 0x237  0x0200222a  'Technical'
+slot 0x23c  0x0200225c  'Cine EI Setting'        slot 0x23d  0x02002266  'Base ISO'
+slot 0x23e  0x02002296  'MLUT'                   slot 0x246  0x020023da  'Set'
+slot 0x247  0x020023f8  'Base Look'              slot 0x248  0x020023fa  'Reset Paint Settings'
+slot 0x2a4  0x020041fb  'Audio' (ns2)            slot 0x2a7  0x02004203  'Maintenance' (ns2)
+slot 0x2a9  0x02004208  'User' (ns2)             slot 0x2aa  0x02004209  'Thumbnail' (ns2)
+slot 0x4ec  0x0200222b  'TC/Media'
+```
+
+Also resolved this round, from the plain consecutive-ResID runs in `.rodata` — these ARE real ordered
+value lists, unlike the category slots:
+
+```text
+0x2384ba8 (9)   'HLG Live' 'HLG Mild' 'HLG Natural' 'S-Log3' 'S-Cinetone'
+                'Standard' 'Still' 'ITU709' '709tone'         <- Base Look / gamma list
+0x23ccb58 (12)  'Jan'..'Dec'                                  <- month names
+0x23c7c30 (11)  glyph-only icon ids 0x020026c0..0x020026cb    <- icon run
+0x23d4d00 (9)   '${v1}\ue5d3, T±0', 'T+${v2}', 'T-${v2}' ...  <- interval/TC formats
+```
+
+### 676 — Answer on the ten Setting categories
+
+The categories the user listed map onto **two different slot families**, which is the practical
+finding for 676+:
+
+```text
+top-level (first-layer) navigation slots        secondary (second-layer) anchors
+  0x00a 'Camera'                                 0x234 'Shooting'
+  0x00b 'Audio'                                  0x235 'Project'
+  0x00c 'Project'                                0x236 'Monitoring'
+  0x00d 'Monitoring'                             0x237 'Technical'
+  0x010 'Media'                                  0x4ec 'TC/Media'
+  0x011 'Network'                                0x2a4 'Audio'    (ns2)
+  0x012 'File Transfer'                          0x2a7 'Maintenance' (ns2)
+  0x005 'White Balance'                          0x2a9 'User'     (ns2)
+                                                 0x2aa 'Thumbnail' (ns2)
+```
+
+`Edit User Menu` is not in either family as a distinct anchor — the nearest slot is `0x2a9 'User'`
+with the nearby `0x248 'Reset Paint Settings'` / `0x246 'Set'` action slots. That, plus the fact that
+no caller passes a slot array, is why there is no single "ten categories, each with a slot list"
+structure in the image.

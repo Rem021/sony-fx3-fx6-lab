@@ -1039,3 +1039,108 @@ static inline void fx6_view_string_apply_desc(void *vs, const fx6_desc_view_stri
     *(uint32_t *)((char *)vs + 0xa14) = d->font_size;
     *(uint8_t  *)((char *)vs + 0x1fc) = 1;
 }
+
+/* ======================================================================
+ * PHASE 8 — CORRECTED SEMANTICS OF mapA / mapB AND THE SLOT VOCABULARY
+ * ======================================================================
+ * The round-671 description of these maps as "slot -> ResID" was BACKWARDS. Measured:
+ *
+ *   mapA 0x226a6c0..0x2272a80, 4216 pairs, every FIRST element is a packed ResID
+ *   (bits 31..24 == 0x02) and every SECOND element is a small slot id.
+ *
+ *         pair = { uint32_t resid; uint32_t slot; }
+ *
+ *   so mapA is  resid -> slot,  and the resolver appFw+0xc18548(resid) returns the SLOT,
+ *   not a text id. Verified on the categories:
+ *
+ *         0x02002227 'Shooting'   -> slot 0x234
+ *         0x02002228 'Project'    -> slot 0x235
+ *         0x0200222b 'TC/Media'   -> slot 0x4ec
+ *         0x020041fb 'Audio'(ns2) -> slot 0x2a4
+ *         0x02004208 'User' (ns2) -> slot 0x2a9
+ *
+ *   2942 distinct slots; 1071 slots have several ResID aliases (locale / state variants),
+ *   e.g. slot 0x016 has 7 aliases, slot 0x378 has 7.
+ *
+ *   mapB 0x2272a80..0x2272f18, 147 pairs, same layout but the ResID is a namespace-0 icon.
+ *
+ * Why the 35 call sites show no static slot arrays: they pass *ResIDs* (usually loaded from a
+ * widget field such as [+0x30] or a computed register) and use the returned slot for indexing.
+ * Only three sites pass a literal (all 512 = 0x200). So the per-category item lists are not
+ * stored as slot arrays in .text; the mapping direction is ResID-first throughout.
+ */
+
+/* Resolved slot ids for the widgets a probe is most likely to need. */
+/* ---- Phase 8: menu slot ids and their canonical text (from mapA at 0x226a6c0) ---- */
+#define FX6_SLOTID_FOCUS_HOLD_BUTTON 0x001u   /* 0x02002006 'Focus Hold Button' */
+#define FX6_SLOTID_FIXED 0x002u   /* 0x02002071 'Fixed' */
+#define FX6_SLOTID_HIGH 0x003u   /* 0x020020cd 'High' */
+#define FX6_SLOTID_LOW 0x004u   /* 0x020020ce 'Low' */
+#define FX6_SLOTID_WHITE_BALANCE 0x005u   /* 0x020020d0 'White Balance' */
+#define FX6_SLOTID_WIRELESS 0x006u   /* 0x020020fb 'Wireless' */
+#define FX6_SLOTID_MULTI_FUNCTION_DIAL 0x007u   /* 0x0200210a 'Multi Function Dial' */
+#define FX6_SLOTID_GRIP_DIAL 0x008u   /* 0x0200210b 'Grip Dial' */
+#define FX6_SLOTID_HANDLE_DIAL 0x009u   /* 0x0200210c 'Handle Dial' */
+#define FX6_SLOTID_CAMERA 0x00au   /* 0x0200211a 'Camera' */
+#define FX6_SLOTID_AUDIO 0x00bu   /* 0x0200211b 'Audio' */
+#define FX6_SLOTID_PROJECT 0x00cu   /* 0x0200211c 'Project' */
+#define FX6_SLOTID_MONITORING 0x00du   /* 0x0200211d 'Monitoring' */
+#define FX6_SLOTID_ASSIGNABLE_BUTTON 0x00eu   /* 0x0200211e 'Assignable Button' */
+#define FX6_SLOTID_BATTERY 0x00fu   /* 0x0200211f 'Battery' */
+#define FX6_SLOTID_MEDIA 0x010u   /* 0x02002120 'Media' */
+#define FX6_SLOTID_NETWORK 0x011u   /* 0x02002122 'Network' */
+#define FX6_SLOTID_FILE_TRANSFER 0x012u   /* 0x02002123 'File Transfer' */
+#define FX6_SLOTID_SHOOTING_MODE 0x013u   /* 0x0200218a 'Shooting Mode' */
+#define FX6_SLOTID_HEADPHONE_OUT 0x015u   /* 0x02002191 'Headphone Out' */
+#define FX6_SLOTID_VOLUME 0x016u   /* 0x02002192 'Volume' */
+#define FX6_SLOTID_GAMMA_DISP_ASSIST 0x017u   /* 0x0200219c 'Gamma Disp. Assist' */
+#define FX6_SLOTID_VIDEO_FORMAT 0x018u   /* 0x020021b5 'Video Format' */
+#define FX6_SLOTID_SIGNAL 0x019u   /* 0x020021b6 'Signal' */
+#define FX6_SLOTID_MANUAL 0x01au   /* 0x020021d1 'Manual' */
+#define FX6_SLOTID_AUTO 0x01bu   /* 0x020021d2 'Auto' */
+#define FX6_SLOTID_LINKED_WITH_GAIN 0x01cu   /* 0x02002202 'Linked with gain' */
+#define FX6_SLOTID_FORMAT 0x01du   /* 0x0200220f 'Format' */
+#define FX6_SLOTID_AUTO_UPLOAD 0x01eu   /* 0x02002213 'Auto Upload' */
+#define FX6_SLOTID_NO_DEVICE 0x01fu   /* 0x020029d0 'No Device' */
+#define FX6_SLOTID_TETHERING 0x020u   /* 0x02002937 'Tethering' */
+#define FX6_SLOTID_FOCUS_HOLD_BUTTON_ALT 0x021u   /* 0x02002225 'Focus Hold Button' */
+#define FX6_SLOTID_ZONE 0x022u   /* 0x02002230 'Zone' */
+#define FX6_SLOTID_FOCUS_SETTING 0x023u   /* 0x0200223e 'Focus Setting' */
+#define FX6_SLOTID_CLIP_NAME_FORMAT 0x024u   /* 0x02002244 'Clip Name Format' */
+#define FX6_SLOTID_FOCAL_LENGTH 0x025u   /* 0x0200224e 'Focal Length' */
+#define FX6_SLOTID_INTERNAL_REC 0x026u   /* 0x0200225e 'Internal Rec' */
+#define FX6_SLOTID_LOOK 0x232u   /* 0x020029f8 'Look' */
+#define FX6_SLOTID_VF_ADJUST 0x233u   /* 0x02002223 'VF Adjust' */
+#define FX6_SLOTID_SHOOTING 0x234u   /* 0x02002227 'Shooting' */
+#define FX6_SLOTID_PROJECT_CAT 0x235u   /* 0x02002228 'Project' */
+#define FX6_SLOTID_MONITORING_CAT 0x236u   /* 0x02002229 'Monitoring' */
+#define FX6_SLOTID_TECHNICAL 0x237u   /* 0x0200222a 'Technical' */
+#define FX6_SLOTID_CINE_EI_SETTING 0x23cu   /* 0x0200225c 'Cine EI Setting' */
+#define FX6_SLOTID_BASE_ISO 0x23du   /* 0x02002266 'Base ISO' */
+#define FX6_SLOTID_MLUT 0x23eu   /* 0x02002296 'MLUT' */
+#define FX6_SLOTID_SET 0x246u   /* 0x020023da 'Set' */
+#define FX6_SLOTID_BASE_LOOK 0x247u   /* 0x020023f8 'Base Look' */
+#define FX6_SLOTID_RESET_PAINT_SETTINGS 0x248u   /* 0x020023fa 'Reset Paint Settings' */
+#define FX6_SLOTID_AUDIO_N2 0x2a4u   /* 0x020041fb 'Audio' */
+#define FX6_SLOTID_MAINTENANCE 0x2a7u   /* 0x02004203 'Maintenance' */
+#define FX6_SLOTID_MONITORING_ALT 0x2a8u   /* 0x02004205 'Service' */
+#define FX6_SLOTID_USER 0x2a9u   /* 0x02004208 'User' */
+#define FX6_SLOTID_THUMBNAIL 0x2aau   /* 0x02004209 'Thumbnail' */
+#define FX6_SLOTID_TC_MEDIA 0x4ecu   /* 0x0200222b 'TC/Media' */
+
+/* Inverse helper: slot -> canonical ResID (first alias), using the same pair layout. */
+#define FX6_RESID_TO_SLOT_ADDR 0x226a6c0u
+#define FX6_RESID_TO_SLOT_END  0x2272a80u
+#define FX6_SLOTID_TO_ICON_ADDR  0x2272a80u
+#define FX6_SLOTID_TO_ICON_END   0x2272f18u
+
+/* Category anchor slots, re-stated here because Phase 8 confirmed them against mapA. */
+#define FX6_CAT_SHOOTING   0x234u
+#define FX6_CAT_PROJECT    0x235u
+#define FX6_CAT_MONITORING 0x236u
+#define FX6_CAT_TECHNICAL  0x237u
+#define FX6_CAT_TC_MEDIA   0x4ecu
+#define FX6_CAT_AUDIO      0x2a4u
+#define FX6_CAT_MAINTENANCE 0x2a7u
+#define FX6_CAT_USER       0x2a9u
+#define FX6_CAT_THUMBNAIL  0x2aau

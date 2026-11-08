@@ -173,3 +173,67 @@ static inline void fx6_view_string_param(uint64_t appfw, void *vs,
 }
 
 #endif
+
+/* ======================================================================
+ * Resource-driven view_string render (verified against appFw+0xc3bbd8).
+ *
+ * The 638 disassembly shows the minimal field set an app is expected to fill:
+ *   +0x1e8 x   +0x1ec y   +0x1f0 w   +0x1f4 h     (int32)
+ *   +0x1fc = 1                                    (enable the text path)
+ *   +0x200 = String ResID                         (-1 means "no resource string")
+ *   +0xa30 / +0x208 / +0x20c / +0x210             FontName ResIDs #0..#3
+ *   +0x610 = 0                                    (no placeholder rows)
+ * +0x1020 LayoutAttribute and +0x1030 Dictionary are filled by the widget itself.
+ * onDraw then does createFont -> setFont(arr,6) -> setLineGap/setLineBreakType ->
+ * setRect -> setVerticalAlign -> setTextLayout -> setDictionary -> setString(ResID)
+ * -> drawText() -> freezeDrawText() -> prefetchTextImage().
+ * ====================================================================== */
+
+typedef struct {
+    int32_t  x, y, w, h;
+    uint32_t string_resid;  /* ns<<13 | idx packed, see fx6_native_menu_tables.h */
+    uint32_t font0;         /* +0xa30 */
+    uint32_t font1;         /* +0x208 */
+    uint32_t font2;         /* +0x20c */
+    uint32_t font3;         /* +0x210, e.g. 0x0200a029 */
+} fx6_vs_desc;
+
+#define FX6_VS_SIZE 0x1200u
+
+static inline void fx6_view_string_apply(void *vs, const fx6_vs_desc *d)
+{
+    if (!vs || !d) return;
+    *(int32_t  *)((char *)vs + 0x1e8) = d->x;
+    *(int32_t  *)((char *)vs + 0x1ec) = d->y;
+    *(int32_t  *)((char *)vs + 0x1f0) = d->w;
+    *(int32_t  *)((char *)vs + 0x1f4) = d->h;
+    *(uint8_t  *)((char *)vs + 0x1fc) = 1;
+    *(uint32_t *)((char *)vs + 0x200) = d->string_resid;
+    if (d->font0) *(uint32_t *)((char *)vs + 0xa30) = d->font0;
+    if (d->font1) *(uint32_t *)((char *)vs + 0x208) = d->font1;
+    if (d->font2) *(uint32_t *)((char *)vs + 0x20c) = d->font2;
+    if (d->font3) *(uint32_t *)((char *)vs + 0x210) = d->font3;
+    *(uint32_t *)((char *)vs + 0x610) = 0;
+}
+
+/* Call the real onDraw (vtable +0x158). */
+static inline void fx6_view_string_ondraw(void *vs)
+{
+    if (!vs) return;
+    void **vt = *(void ***)vs;
+    if (!vt) return;
+    void (*ondraw)(void *) = (void (*)(void *))vt[0x158 / 8];
+    if (ondraw) ondraw(vs);
+}
+
+/* Full path: default ctor (appFw+0xc3b0c4) -> apply -> onDraw.
+ * `mem` must be at least FX6_VS_SIZE bytes and zeroed. Returns `mem`. */
+static inline void *fx6_view_string_draw_resid(uint64_t appfw, void *mem, const fx6_vs_desc *d)
+{
+    if (!appfw || !mem || !d) return 0;
+    for (unsigned i = 0; i < FX6_VS_SIZE; i++) ((unsigned char *)mem)[i] = 0;
+    ((void (*)(void *))(uintptr_t)(appfw + 0xc3b0c4ULL))(mem);
+    fx6_view_string_apply(mem, d);
+    fx6_view_string_ondraw(mem);
+    return mem;
+}

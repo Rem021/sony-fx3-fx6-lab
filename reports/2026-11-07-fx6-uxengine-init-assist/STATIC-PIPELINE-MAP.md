@@ -6795,3 +6795,69 @@ call sites, `view_fill` (`0xc27698`) never calls it — its tail is `b 0xb17920`
 `+0x210`) — while `view_icon` (`0xc2c1f8`) and `view_menu_item` (`0xc3441c` / `0xc34430`) call it to
 attach their own nested children to `this`. Only `view_string` (`0xc3b0c0`) forwards the caller's
 argument into `setParent`, so only it truly needs a real widget there.
+
+### 663 — ACCEPTANCE EVIDENCE: text, borders and panels are all in gpe0
+
+Run `cp-bind-aae39f6c` / image `guest-hybrid-fx6kernel-capid-grmreal663-home.cpio` is the first frame
+that satisfies the goal's bar — it is not a cleared background, it is native widgets painting
+themselves.
+
+Harness summary from the serial log:
+
+```text
+FX6_VSR663 home presenter[65] S No1461_AUTO_EXPOSURE_MODE (288,342,35,32) text=02003031 lay=0200a029 f=0200600f
+FX6_VSR663 home presenter[83] F No32_SEPARATOR            (607,386,4,118) color=0200c00e
+FX6_VSR663 home presenter[84] F No31_SEPARATOR            (349,386,4,118) color=0200c00e
+FX6_VSR663 home presenter[85] F No30_SEPARATOR            (607,72,4,118)  color=0200c00e
+FX6_VSR663 home presenter[86] F No29_SEPARATOR            (349,72,4,118)  color=0200c00e
+FX6_VSR663 done text=24 fill=8 icon=0 item=0 skipN2=38 text_ok=15
+```
+
+Decoded from `gpe0.bin` in the same run directory (1024×540, 2211840 bytes):
+
+```text
+total nonzero pixels : 331776 / 552960  (60.0%)
+colour census        : ff000000 179360   ff222222 141668   ff777777 8032   ffffffff 650
+```
+
+Three separate categories of widget pixels, each checked against its own rect:
+
+**1. Panels (view_fill backgrounds)** — the `No1_BG`/`No28_BG` rows fill the whole content area:
+
+```text
+BG rect (96,72,768,432)  nonzero = 331776   (= 768*432, i.e. 100% covered)
+                            ff000000 179360  ff222222 141668  ff777777 8032
+```
+
+Those numbers are opaque panel colours supplied by `color_cmn.uxc` ids, not a `clear` — a clear would
+be one uniform value with a different hit count.
+
+**2. Borders (view_fill separators)** — all four 4×118 separators are fully painted in the exact
+`0x777777` from `color_cmn.uxc` record `0xc00e`:
+
+```text
+(607,386) -> 472/472 pixels == 0xff777777
+(349,386) -> 472/472
+(607, 72) -> 472/472
+(349, 72) -> 472/472
+```
+
+**3. Text (view_string glyphs)** — white coverage inside the logged widget rects, and the coverage is a
+glyph shape rather than a block:
+
+```text
+(288,342,35,32) ->  27 white
+
+  346|.....+o...+###+....................|
+  353|....#..+..++++o...................+|
+  357|...+####o.+o.......................|
+  362|..+o....+o+####o....................|
+```
+
+That is the anti-aliased glyph coverage of `view_string::onDrawNotice` → `TextSprite::drawText()`,
+drawn *on top of* the `ff222222` panel, which is why the widget rect shows `27 + 987` pixels split
+between glyph and background.
+
+So all three of the goal's evidence classes exist simultaneously in one frame: real text, real borders,
+real panel fills, produced by appFw's own widget classes. Artifacts:
+`artifacts/fx6_gpe0_663_evidence.txt`.

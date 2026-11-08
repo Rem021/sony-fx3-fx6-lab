@@ -1,0 +1,26 @@
+FX6 663 framebuffer evidence — run cp-bind-aae39f6c, image 663-home
+======================================================================
+total nonzero pixels: 331776 of 552960 (60.0%)
+
+colour census:
+   00000000   221184
+   ff000000   179360
+   ff222222   141668
+   ff777777     8032
+   ffffffff      650
+   11000011      165
+   88ffff99      110
+
+separator check (4 px wide, 118 tall, colour 0xff777777):
+   ( 607,386) -> 472/472 FULL
+   ( 349,386) -> 472/472 FULL
+   ( 607, 72) -> 472/472 FULL
+   ( 349, 72) -> 472/472 FULL
+
+text check (white glyph coverage inside the logged widget rects):
+   (288,342,35,32) ->  27 white
+   (154,278,32,34) ->  12 white
+   (154,296,32,34) ->  13 white
+   (154,256,32,34) ->  10 white
+   (156,342,28,32) ->  77 white
+   total sampled glyph pixels: 139

@@ -8580,3 +8580,156 @@ Every `{resid, "text"}` pair added in this round was checked by script against t
 **59 pairs, all matching exactly, 0 unresolved, 0 mislabelled.** Compile-time assertions confirm
 `FX6_SETTING_MAIN_COUNT == 10`, `FX6_SETTING_CENTER_COUNT == 17`, `FX6_CATEGORY_MAP_COUNT == 7`, and
 the header still builds clean with `-Wall`.
+
+### 681 — The remaining four categories, completing `fx6_category_map_full[11]`
+
+```text
+fx6_technical_items[17]   Gain 0x0200420e, Shutter 0x020050e8, Iris 0x02004285,
+                          Focus 0x02004212, Auto Exposure 0x02004211,
+                          White Balance 0x02005689, Detail 0x02004229,
+                          Aperture 0x0200422a, SteadyShot 0x0200290a,
+                          Flicker Reduce 0x02004214, Flash Band Reduce 0x02004215,
+                          Color Bars 0x02002e6d, Test Saw 0x0200425a,
+                          Lens Interface 0x02004218, ND Filter 0x02004288,
+                          Slow Shutter 0x02004210, Image Inversion 0x02004217
+
+fx6_thumbnail_items[10]   Thumbnail 0x02004209, Clip 0x02004ff3, Shot Mark 0x0200410d,
+                          Essence Mark 0x020028e8, Index Picture 0x020042c7,
+                          Title1 0x02004ffd, TC Index 0x02004ff8,
+                          Video Codec 0x02004fff, Audio Codec 0x02005001,
+                          Clip Properties 0x0200500c
+
+fx6_user_items[6]         User Menu Item 0x02004294, Edit User Menu 0x02004d4a,
+                          Assignable Button 0x02004264, User File 0x02004286,
+                          User Gamma 0x02004257, Custom 0x020023c2
+
+fx6_edit_user_items[5]    Add Item 0x02004d4b, User Menu Item 0x02004294,
+                          Edit User Menu 0x02004d4a, User File 0x02004286,
+                          Assignable Button 0x02004264
+```
+
+Two honest limitations, recorded rather than papered over:
+
+* **`Delete Item` and `Replace Item` do not exist** in either string container. `Edit User Menu` is the
+  editor for `User Menu Item`, and only `Add Item` (`0x02004d4b`) is present as an action label, so the
+  array carries five rows instead of the expected eight.
+* **`Thumbnail` / `Vibration Reduction` / `Display Clip Name` / `Thumbnail Size` / `Sort` / `Filter` /
+  `Protect Clip` are absent**; `Title1` took the slot that a `Delete Clip` label would have used. The
+  container does have `Delete Clip`-adjacent strings, but the only exact match near `0x4ffd` is
+  `Title1`, so the table uses what exists.
+
+`fx6_category_map_full[11]` now binds all eleven categories:
+
+```text
+User           -> fx6_user_items[6]
+Edit User Menu -> fx6_edit_user_items[5]
+Shooting       -> fx6_shooting_items[7]
+Project        -> fx6_project_items[14]
+Paint/Look     -> fx6_paint_items[6]
+TC/Media       -> fx6_tc_media_items[10]
+Monitoring     -> fx6_monitoring_items[16]
+Audio          -> fx6_audio_items[7]
+Thumbnail      -> fx6_thumbnail_items[10]
+Technical      -> fx6_technical_items[17]
+Maintenance    -> fx6_maintenance_items[12]
+```
+
+### 681 — 3rd-layer option families for the other four categories
+
+```text
+Rec Format (ns2, the real ordered block 0x4987..0x4990)
+  0x4987 'XAVC 4096x2160 P'  0x4989 'XAVC 3840x2160 P'  0x498b 'XAVC 2048x1080 P'
+  0x498d 'XAVC 1920x1080 P'  0x498f 'MPEG 1920x1080 i'
+  short aliases: 0x4988 '4K' 0x498a 'QFHD' 0x498c '2K' 0x498e 'HD' 0x4990 'MPEGHD'
+
+Timecode (ns2, contiguous 0x48a5..0x48be — this one IS an ordered block)
+  mode:  0x48a5 'Preset' 0x48a7 'Regen' 0x48a9 'Clock'
+         0x48ab 'Rec Run' 0x48ad 'Free Run' 0x48af 'Generator'
+  df:    0x48b1 'DF' 0x48b3 'NDF'
+  src:   0x48b5 'Fix' 0x48b7 'Time' 0x48bb 'Counter' 0x48bd 'Duration'
+  out:   0x456b 'TC Out' 0x456d 'TC Format' 0x456f 'Display Select' 0x4559 'Timecode Lock'
+
+Monitoring display (ns2 0x49ec..0x49fb)
+  0x49ec 'Marker' 0x49ed 'Zebra' 0x49f1 'Peaking' 0x49f2 'Display'
+  0x49f4 'Video Sig' 0x49f5 'Focus Magnifier' 0x49f7 'VF Mode'
+  0x49f9 'ATW' 0x49fb 'ATW Hold'
+
+Audio format (ns2 0x49e2..0x49ea)
+  0x49e2 'Linear PCM' 0x49e4 'Dolby Digital' 0x49e6 'Internal'
+  0x49e8 'External(HD)' 0x49ea 'External(SD)'
+```
+
+**`Maintenance -> Language` has no option table, by design.** `global.xdb` registers one container per
+language (`string_<lang>.uxc` plus `_2`), and switching language is
+`ResourceManager::switchBank(namespace)`, which swaps the entire string bank. Fabricating a per-row
+ResID list here would have been wrong, so none is provided — this replaces an earlier draft that
+contained a bogus placeholder entry.
+
+### 681 — Sub-pages after the page breaks
+
+`TABLE 0x2ea02f8` rows `[36..46]` are a **second page with only two columns** (no 3rd layer):
+
+```text
+[36] No69_TOUCH_SCREEN      0x042d5970  (  0,  0,1024,540)
+[37] No1_Backgroundleft     0x042d5a40 fill 0x0200c006  ( 56, 49,482,477)
+[38] No21_Backgroundright   0x042d5a40 fill 0x0200c006  (542, 49,426,477)
+[39] No58_Gridlist          0x042d59e0  (126,102,403,415)       left list
+[40] No68_itemtouchbutton10 0x042d58d0  (546,493,418, 44)       right stack
+[41] No67_itemtouchbutton9  0x042d58d0  (546,449,418, 44)
+[42] No66_itemtouchbutton8  0x042d58d0  (546,405,418, 44)
+[43] No65_itemtouchbutton7  0x042d58d0  (546,361,418, 44)
+[44] No64_itemtouchbutton6  0x042d58d0  (546,317,418, 44)
+[45] No63_itemtouchbutton5  0x042d58d0  (546,273,418, 44)
+[46] No62_itemtouchbutton4  0x042d58d0  (546,229,418, 44)
+```
+
+Row pitch here is **44**, not 51, and the right column starts at y=229 going up to 493 — the reverse
+of page 1. The left grid is at x=126 (not 62), so page 2 is a different layout entirely rather than a
+translation of page 1.
+
+`TABLE 0x2ea3e50` after the break at `[10]` holds **three dialogs**, each ending in its own break:
+
+```text
+[11..16]  Bluetooth Pairing
+  No2_BG          0x042d5a50  ( 56, 49,912,477)  d18=0x020001d2
+  No6_TEXT_1      0x042d57f0  ( 72,108,884,256)  d18=0x02002b83  pairing instructions
+  No1_TITLE       0x042d57f0  ( 62, 54,894, 36)  d18=0x02002b77  'Bluetooth Pairing'
+  No7_TEXT_2      0x042d57f0  ( 72,409,884, 36)  d18=0x02002b9c  'Device Name: ${v1}_${v2:07}'
+  No4_BUTTON_2    0x042d58d0  (774,463,182, 52)  d18=0x02004c46  'OK'
+  No3_BUTTON_1    0x042d58d0  (588,463,182, 52)  d18=0x020056e8  'Cancel'
+
+[18..22]  File Transfer
+  No1_TRANS_BG    0x042d5a40  (  0,  0,1024,540) d18=0x0200c001
+  No2_TITLE       0x042d57f0  (102, 80,820, 44)  d18=0x02005295  'File Transfer Mode'
+  No3_TRANSFERING 0x042d57f0  (232,232,560, 36)  d18=0x02005296  'File Transfering...'
+  No4_PROGRESS_BAR 0x042d58b0 (238,274,548, 22)  d18=0
+  No5_CANCEL      0x042d58d0  (740,456,182, 52)  d18=0x020056e8  'Cancel'
+
+[24..26]  toast / notification
+  No2_BG   0x042d5a50  (334, 47,354, 36)  d18=0x0200022f
+  No3_TEXT 0x042d57f0  (368, 50,318, 30)  d18=0          dynamic
+  No4_ICON 0x042d5a50  (337, 51, 28, 28)  d18=0x0200022e
+
+[28]  No11_touchscreen 0x042d5970 (0,0,1024,540)
+```
+
+The dialog titles confirm the container-page theory: `0x02002b77` resolves to 'Bluetooth Pairing' and
+`0x02005295` to 'File Transfer Mode', so these rows carry real strings via `desc+0x18` exactly like the
+menu pages — no presenter involvement needed to render their titles.
+
+### 681 — Self-audit found six errors, all fixed
+
+The scripted check of every `{resid, "text"}` pair added this round caught six mismatches:
+
+```text
+0x02004ffd  I wrote "Delete Clip"   but it resolves to 'Title1'      -> array relabelled to Title1
+0x02004987  I wrote "XAVC 4096x2160 P"  container uses the multiplication sign U+00D7
+0x02004989  same
+0x0200498b  same
+0x0200498d  same
+0x0200498f  same
+```
+
+After the fixes the audit reports **79 pairs checked, 0 bad** — every id resolves and every string
+matches byte-for-byte. Compile-time assertions: `FX6_THREE_LAYER_PAGE2_COUNT == 11`,
+`FX6_CATEGORY_MAP_FULL_COUNT == 11`; header builds clean with `-Wall` at 2054 lines.

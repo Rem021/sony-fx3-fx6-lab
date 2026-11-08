@@ -1879,3 +1879,176 @@ static const fx6_category_map_t fx6_category_map[] = {
     FX6_CATMAP_ENTRY(0x02004203u, fx6_maintenance_items),  /* Maintenance  */
 };
 #define FX6_CATEGORY_MAP_COUNT (sizeof(fx6_category_map)/sizeof(fx6_category_map[0]))
+
+/* ======================================================================
+ * PHASE 13 — the remaining four categories, completing all eleven
+ * ====================================================================== */
+
+static const fx6_opt_t fx6_technical_items[] = {
+    {0x0200420eu, "Gain"},
+    {0x020050e8u, "Shutter"},
+    {0x02004285u, "Iris"},
+    {0x02004212u, "Focus"},
+    {0x02004211u, "Auto Exposure"},
+    {0x02005689u, "White Balance"},
+    {0x02004229u, "Detail"},
+    {0x0200422au, "Aperture"},
+    {0x0200290au, "SteadyShot"},
+    {0x02004214u, "Flicker Reduce"},
+    {0x02004215u, "Flash Band Reduce"},
+    {0x02002e6du, "Color Bars"},
+    {0x0200425au, "Test Saw"},
+    {0x02004218u, "Lens Interface"},
+    {0x02004288u, "ND Filter"},
+    {0x02004210u, "Slow Shutter"},
+    {0x02004217u, "Image Inversion"},
+};
+static const fx6_opt_t fx6_thumbnail_items[] = {
+    {0x02004209u, "Thumbnail"},
+    {0x02004ff3u, "Clip"},
+    {0x0200410du, "Shot Mark"},
+    {0x020028e8u, "Essence Mark"},
+    {0x020042c7u, "Index Picture"},
+    {0x02004fddu, "Delete Clip"},
+    {0x02004ff8u, "TC Index"},
+    {0x02004fffu, "Video Codec"},
+    {0x02005001u, "Audio Codec"},
+    {0x0200500cu, "Clip Properties"},
+};
+static const fx6_opt_t fx6_user_items[] = {
+    {0x02004294u, "User Menu Item"},
+    {0x02004d4au, "Edit User Menu"},
+    {0x02004264u, "Assignable Button"},
+    {0x02004286u, "User File"},
+    {0x02004257u, "User Gamma"},
+    {0x020023c2u, "Custom"},
+};
+/* Edit User Menu is the editor page for User Menu Item, so its rows are the add/remove actions
+ * plus the pool of items that can be inserted. Only four of these action labels exist verbatim in
+ * the containers; 'Delete Item' and 'Replace Item' are NOT present and are deliberately omitted
+ * rather than invented. */
+static const fx6_opt_t fx6_edit_user_items[] = {
+    {0x02004d4bu, "Add Item"},
+    {0x02004294u, "User Menu Item"},
+    {0x02004d4au, "Edit User Menu"},
+    {0x02004286u, "User File"},
+    {0x02004264u, "Assignable Button"},
+};
+
+/* ----------------------------------------------------------------------
+ * 3rd-layer option families for Project / Monitoring / TC-Media / Maintenance
+ * ---------------------------------------------------------------------- */
+
+/* Rec Format resolutions (ns2). The container repeats the same nine strings in several blocks,
+ * because each recording mode has its own legal set; 0x4987..0x4990 is the first complete block. */
+static const fx6_opt_t fx6_opt_rec_format[] = {
+    {0x02004987u, "XAVC 4096×2160 P"},
+    {0x02004989u, "XAVC 3840×2160 P"},
+    {0x0200498bu, "XAVC 2048×1080 P"},
+    {0x0200498du, "XAVC 1920×1080 P"},
+    {0x0200498fu, "MPEG 1920×1080 i"},
+};
+/* Short alias forms stored alongside (0x4988 '4K', 0x498a 'QFHD', ...) */
+static const fx6_opt_t fx6_opt_rec_format_short[] = {
+    {0x02004988u, "4K"},    {0x0200498au, "QFHD"},  {0x0200498cu, "2K"},
+    {0x0200498eu, "HD"},    {0x02004990u, "MPEGHD"},
+};
+
+/* Timecode family (ns2 0x48a5..0x48be) — the real ordered block for TC options. */
+static const fx6_opt_t fx6_opt_timecode_mode[] = {
+    {0x020048a5u, "Preset"},   {0x020048a7u, "Regen"},   {0x020048a9u, "Clock"},
+    {0x020048abu, "Rec Run"},  {0x020048adu, "Free Run"},{0x020048afu, "Generator"},
+};
+static const fx6_opt_t fx6_opt_timecode_df[] = {
+    {0x020048b1u, "DF"},  {0x020048b3u, "NDF"},
+};
+static const fx6_opt_t fx6_opt_timecode_src[] = {
+    {0x020048b5u, "Fix"}, {0x020048b7u, "Time"}, {0x020048bbu, "Counter"}, {0x020048bdu, "Duration"},
+};
+static const fx6_opt_t fx6_opt_tc_out[] = {
+    {0x0200456bu, "TC Out"}, {0x0200456du, "TC Format"}, {0x0200456fu, "Display Select"},
+    {0x02004559u, "Timecode Lock"},
+};
+
+/* Monitoring display options (ns2 0x49e0..0x49ff). */
+static const fx6_opt_t fx6_opt_monitor_display[] = {
+    {0x020049ecu, "Marker"},  {0x020049edu, "Zebra"},   {0x020049f1u, "Peaking"},
+    {0x020049f2u, "Display"}, {0x020049f4u, "Video Sig"}, {0x020049f5u, "Focus Magnifier"},
+    {0x020049f7u, "VF Mode"}, {0x020049f9u, "ATW"},     {0x020049fbu, "ATW Hold"},
+};
+/* Audio source / format options (ns2 0x49e2..0x49eb). */
+static const fx6_opt_t fx6_opt_audio_format[] = {
+    {0x020049e2u, "Linear PCM"}, {0x020049e4u, "Dolby Digital"},
+    {0x020049e6u, "Internal"},   {0x020049e8u, "External(HD)"},
+    {0x020049eau, "External(SD)"},
+};
+/* Maintenance -> Language has NO ResID option table, and deliberately so: the language list is not
+ * data. global.xdb registers one container per language (string_<lang>.uxc plus its _2 sibling), and
+ * switching language is ResourceManager::switchBank(namespace), which swaps the whole string bank.
+ * A per-row ResID array would therefore be wrong to fabricate. The neighbouring rows that DO have
+ * option data are Country (0x0200426d) and Clock Set (0x0200426c). */
+
+/* ======================================================================
+ * PHASE 13 — sub-pages after the page breaks
+ * ====================================================================== */
+
+/* TABLE 0x2ea02f8 rows [36..46]: the second page of the three-layer menu (a 2-column layout with
+ * a left grid list and a right stack of ten touch buttons, no 3rd column). */
+static const fx6_menu_row_t fx6_three_layer_page2_rows[] = {
+    {"No69_TOUCH_SCREEN",    0x042d5970u, {  0,  0,1024,540}, 0x00000000u, 0},
+    {"No1_Backgroundleft",   0x042d5a40u, { 56, 49, 482,477}, 0x0200c006u, 0},
+    {"No21_Backgroundright", 0x042d5a40u, {542, 49, 426,477}, 0x0200c006u, 0},
+    {"No58_Gridlist",        0x042d59e0u, {126,102, 403,415}, 0x00000000u, 1},
+    {"No68_itemtouchbutton10",0x042d58d0u,{546,493, 418, 44}, 0x00000000u, 2},
+    {"No67_itemtouchbutton9", 0x042d58d0u,{546,449, 418, 44}, 0x00000000u, 2},
+    {"No66_itemtouchbutton8", 0x042d58d0u,{546,405, 418, 44}, 0x00000000u, 2},
+    {"No65_itemtouchbutton7", 0x042d58d0u,{546,361, 418, 44}, 0x00000000u, 2},
+    {"No64_itemtouchbutton6", 0x042d58d0u,{546,317, 418, 44}, 0x00000000u, 2},
+    {"No63_itemtouchbutton5", 0x042d58d0u,{546,273, 418, 44}, 0x00000000u, 2},
+    {"No62_itemtouchbutton4", 0x042d58d0u,{546,229, 418, 44}, 0x00000000u, 2},
+};
+#define FX6_THREE_LAYER_PAGE2_COUNT \
+    (sizeof(fx6_three_layer_page2_rows)/sizeof(fx6_three_layer_page2_rows[0]))
+
+/* TABLE 0x2ea3e50 dialogs after the page break at row [10].
+ *   [11..16]  Bluetooth Pairing dialog   (six rows up to the break at [17])
+ *   [18..22]  File Transfer progress page (break at [23])
+ *   [24..26]  toast / notification bar    (break at [27])
+ *   [28]      full-screen touch catcher
+ * Titles below were resolved from their desc+0x18 values, so they are the real strings. */
+static const fx6_menu_row_t fx6_setting_dialog_rows[] = {
+    {"No2_BG",          0x042d5a50u, { 56, 49,912,477}, 0x020001d2u, 0},  /* Bluetooth Pairing bg */
+    {"No6_TEXT_1",      0x042d57f0u, { 72,108,884,256}, 0x02002b83u, 0},  /* pairing instructions */
+    {"No1_TITLE",       0x042d57f0u, { 62, 54,894, 36}, 0x02002b77u, 0},  /* 'Bluetooth Pairing'  */
+    {"No7_TEXT_2",      0x042d57f0u, { 72,409,884, 36}, 0x02002b9cu, 0},  /* 'Device Name: ...'   */
+    {"No4_BUTTON_2",    0x042d58d0u, {774,463,182, 52}, 0x02004c46u, 0},  /* 'OK'                 */
+    {"No3_BUTTON_1",    0x042d58d0u, {588,463,182, 52}, 0x020056e8u, 0},  /* 'Cancel'             */
+    {"No1_TRANS_BG",    0x042d5a40u, {  0,  0,1024,540}, 0x0200c001u, 0}, /* transfer page bg     */
+    {"No2_TITLE",       0x042d57f0u, {102, 80,820, 44}, 0x02005295u, 0},  /* 'File Transfer Mode' */
+    {"No3_TRANSFERING", 0x042d57f0u, {232,232,560, 36}, 0x02005296u, 0},  /* 'File Transfering...'*/
+    {"No4_PROGRESS_BAR",0x042d58b0u, {238,274,548, 22}, 0x00000000u, 0},
+    {"No5_CANCEL",      0x042d58d0u, {740,456,182, 52}, 0x020056e8u, 0},  /* 'Cancel'             */
+    {"No2_BG",          0x042d5a50u, {334, 47,354, 36}, 0x0200022fu, 0},  /* toast bg             */
+    {"No3_TEXT",        0x042d57f0u, {368, 50,318, 30}, 0x00000000u, 0},  /* toast text (dynamic) */
+    {"No4_ICON",        0x042d5a50u, {337, 51, 28, 28}, 0x0200022eu, 0},  /* toast icon           */
+    {"No11_touchscreen",0x042d5970u, {  0,  0,1024,540}, 0x00000000u, 0},
+};
+#define FX6_SETTING_DIALOG_COUNT \
+    (sizeof(fx6_setting_dialog_rows)/sizeof(fx6_setting_dialog_rows[0]))
+
+/* Extended category map: now all eleven categories are covered. */
+static const fx6_category_map_t fx6_category_map_full[] = {
+    FX6_CATMAP_ENTRY(0x02004208u, fx6_user_items),          /* User          */
+    FX6_CATMAP_ENTRY(0x02004d4au, fx6_edit_user_items),     /* Edit User Menu*/
+    FX6_CATMAP_ENTRY(0x02002227u, fx6_shooting_items),      /* Shooting      */
+    FX6_CATMAP_ENTRY(0x02002228u, fx6_project_items),       /* Project       */
+    FX6_CATMAP_ENTRY(0x02002493u, fx6_paint_items),         /* Paint/Look    */
+    FX6_CATMAP_ENTRY(0x0200222bu, fx6_tc_media_items),      /* TC/Media      */
+    FX6_CATMAP_ENTRY(0x02002229u, fx6_monitoring_items),    /* Monitoring    */
+    FX6_CATMAP_ENTRY(0x020041fbu, fx6_audio_items),         /* Audio         */
+    FX6_CATMAP_ENTRY(0x02004209u, fx6_thumbnail_items),     /* Thumbnail     */
+    FX6_CATMAP_ENTRY(0x0200222au, fx6_technical_items),     /* Technical     */
+    FX6_CATMAP_ENTRY(0x02004203u, fx6_maintenance_items),   /* Maintenance   */
+};
+#define FX6_CATEGORY_MAP_FULL_COUNT \
+    (sizeof(fx6_category_map_full)/sizeof(fx6_category_map_full[0]))

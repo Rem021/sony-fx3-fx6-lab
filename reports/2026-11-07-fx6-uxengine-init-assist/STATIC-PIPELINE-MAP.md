@@ -8161,3 +8161,167 @@ and the greys that the menu tables actually bind:
 `0xc014`/`0xc016` is actually applied on selection requires one runtime read of the row child's
 `+0x30` colour field, because no descriptor field carries it — all 437 menu_item rows have
 `+0x20 ∈ {0,1,2}` (a mode), and their `+0x18` values are text ids, never `0x0200c0xx`.
+
+### 678 — TABLE 0x2ea02f8 fully parsed: 47 rows, two pages, three columns
+
+The table is not 35 rows — it runs to 47 and contains a page break. Full geometry with roles:
+
+```text
+[00] No1_WID_NINEPATCHIMAGE_STAGE1_BG  fill  0x0200c006  ( 56, 49,912,477)  page background
+[01] No25_Gridlist                     grid  0           ( 62, 56,494,462)  1st-LAYER LIST
+[02] No35_itemtouchbutton8             item  0           (570,463,386, 52)  2nd-LAYER ROW 1
+[03] No34_itemtouchbutton7             item  0           (570,412,386, 52)  ...
+[04] No33_itemtouchbutton6             item  0           (570,361,386, 52)
+[05] No32_itemtouchbutton5             item  0           (570,310,386, 52)
+[06] No31_itemtouchbutton4             item  0           (570,259,386, 52)
+[07] No30_itemtouchbutton3             item  0           (570,208,386, 52)
+[08] No29_itemtouchbutton2             item  0           (570,157,386, 52)
+[09] No28_itemtouchbutton1             item  0           (570,106,386, 52)  2nd-LAYER ROW 8
+[10] No9_item6inthesecondlayer         str   0           (578,418,370, 40)  3rd-LAYER ROW
+[11] No8_item5inthesecondlayer         str   0           (578,367,370, 40)
+[12] No7_item4inthesecondlayer         str   0           (578,316,370, 40)
+[13] No6_item3inthesecondlayer         str   0           (578,265,370, 40)
+[14] No5_item2inthesecondlayer         str   0           (578,214,370, 40)
+[15] No4_item1inthesecondlayer         str   0           (578,163,370, 40)
+[16] No10_item7inthesecondlayer        str   0           (578,469,370, 40)
+[17] No21_ItemBG                       fill  0x0200c00d  (564, 62,401, 36)  header bar
+[18] No3_Backstringinthesecondlayer    str   0x02004c3e  (622,112,326, 40)  "Back"
+[19] No23_Itemselectionofthefirstlayer str   0           (568, 62,280, 36)  1st-layer selection
+[20] No16_Loweroutsideline2            fill  0x0200c009  ( 58,524,910,  2)
+[21] No15_Loweroutsideline             fill  0x0200c005  ( 57,523,908,  2)
+[22] No12_Upperoutsideline2            fill  0x0200c00a  ( 59, 50,908,  2)
+[23] No26_ScrollbarBase                fill  0x0200c005  (958,102,  4,415)
+[24] No27_Scrollbar                    fill  0x0200c013  (958,102,  4,415)
+[25] No2_Backiconinthesecondlayer      icon  0x02000154  (578,112, 38, 38)  BACK ARROW
+[26] No22_ItemnumberBG                 fill  0x0200c00f  (921, 66, 40, 28)
+[27] No24_Itemnumber                   str   0           (922, 67, 38, 28)
+[28] No18_Rightoutsideline2            fill  0x0200c00a  (965, 52,  2,473)
+[29] No14_Leftoutsideline2             fill  0x0200c00a  ( 57, 50,  2,473)
+[30] No20_Separator2                   fill  0x0200c00e  (562, 52,  2,471)  COLUMN DIVIDER
+[31] No19_Separator                    fill  0x0200c001  (560, 52,  2,471)  COLUMN DIVIDER
+[32] No11_Upperoutsideline             fill  0x0200c009  ( 57, 49,910,  1)
+[33] No17_Rightoutsideline             fill  0x0200c009  (967, 49,  1,477)
+[34] No13_Leftoutsideline              fill  0x0200c009  ( 56, 49,  1,477)
+[35] page break 0x42d5a60                             (  0,  0,  0,  0)
+[36] No69_TOUCH_SCREEN                                            (  0,  0,1024,540)
+[37] No1_Backgroundleft                fill  0x0200c006  ( 56, 49,482,477)  next page
+[38] No21_Backgroundright              fill  0x0200c006  (542, 49,426,477)
+[39] No58_Gridlist                     grid  0           (126,102,403,415)
+[40] No68_itemtouchbutton10            item  0           (546,493,418, 44)
+[41] No67_itemtouchbutton9             item  0           (546,449,418, 44)
+[42] No66_itemtouchbutton8             item  0           (546,405,418, 44)
+[43] No65_itemtouchbutton7             item  0           (546,361,418, 44)
+[44] No64_itemtouchbutton6             item  0           (546,317,418, 44)
+[45] No63_itemtouchbutton5             item  0           (546,273,418, 44)
+[46] No62_itemtouchbutton4             item  0           (546,229,418, 44)
+```
+
+Derived column geometry:
+
+```text
+1st layer  x 56..560   list (62,56,494,462)     selection bar (568,62,280,36)
+2nd layer  x 564..985  rows (570, y,386,52),    y = 106,157,208,259,310,361,412,463  (step 51)
+                       header bar (564,62,401,36), back arrow (578,112,38,38)
+3rd layer  x 578..948  rows (578, y,370,40),    y = 163,214,265,316,367,418,469       (step 51)
+dividers   x 560 and 562, full height 52..523
+scrollbar  (958,102,4,415), thumb colour 0x0200c013
+page frame (56,49) .. (968,526), outer lines 0xc009 / inner 0xc00a / 0xc005
+```
+
+Note the 2nd-layer rows and 3rd-layer rows share **step 51** and are vertically offset by 57 px
+(106 vs 163) — that offset is the header bar height plus padding, and it is what makes the two columns
+appear aligned in the screenshots.
+
+### 678 — TABLE 0x2eaf208 is the Setting centre page, not the layered menu
+
+```text
+[00] No107_BLOCK_TOUCH               0x042d5860   (  0,  0,1024,540)
+[01] No1_BG            fill 0x0200c001              ( 96, 72,768,432)
+[02] No28_BG           fill 0x0200c008              ( 96,194,768,188)
+[03] No8_CENTER_VALUE  str  0                       (310,269,530, 32)
+[04] No7_CENTER_TITLE  str  0x02002fea 'Look'       (154,269,148, 32)
+[05..10] six separators  0x0200c00e                 (96,382,768,4) and 4-px vertical ones
+[11..16] No101..No106 six cells  view_menu_item      (96/349/607, 72/382, 257|262,122)
+```
+
+Worth recording: `No7_CENTER_TITLE` carries `0x02002fea` which resolves to **'Look'** — a live example
+of a centre-page title whose text comes straight from `desc+0x18`, no presenter involved.
+
+### 678 — Group 1: Shooting option-value ResID tables (all verified against the containers)
+
+Every id below was looked up in `string_english.uxc` / `string_english_2.uxc`; a scripted audit of all
+120 namespace-1/2 ResIDs in the new header block reports **0 unresolved**.
+
+```text
+FPS        (ns2) 0x4970 '59.94'  0x4972 '50'   0x4974 '29.97' 0x4976 '25'
+                 0x4978 '24'     0x497a '23.98' 0x497c 'Custom' 0x497e 'Cine EI'
+FPS HFR    (ns1) 0x2b3e '119.88' 0x2b99 '119.88P' 0x2b2e '100' 0x2b37 '100P'
+Shutter    (ns2) 0x4729 '1/100'  0x472b '1/150' 0x472d '1/200' 0x472f '1/250'
+                 0x4726 'T2.8'   0x4727 'T4'    0x4728 'T5.6'  0x4731 'T8'
+                 0x4732 'T11'    0x4733 'T16'
+ISO        (ns2) 0x46c8 'ISO 640'  0x46ca 'ISO 800'  0x46cc 'ISO 1000'
+                 0x46ce 'ISO 1250' 0x46d0 'ISO 1600' 0x46d2 'ISO 2000'
+                 0x46d4 'ISO 2500' 0x46d6 'ISO 3200' 0x46d8 'ISO 4000'
+                 0x46da 'ISO 5000' 0x46dc 'ISO 6400' 0x46de 'ISO 8000'
+                 0x46e0 'ISO 10000'
+ND Filter  (ns2) 0x4027 'ND: Clear' 0x4028 'ND: 0.9' 0x4029 'ND: 1.8'
+                 0x406a 'ND: Off'   0x406b 'ND: 1'    0x406c 'ND: 2'   0x406d 'ND: 3'
+White Bal  (ns2) 0x402a 'White: Preset' 0x402b 'White: Memory' 0x402c 'White: A'
+                 0x402d 'White: B'      0x402e 'White: ATW'    0x402f 'White Balance Preset'
+S&Q        (ns2) 0x4742..0x474f  S&Q Motion / Interval Rec / Picture Cache / Clip Contin. /
+                                 Simul Rec / 4K&HD(Sub) / Proxy Rec — each On+Off pair
+```
+
+Important structural detail: most option families store their text **twice** (a long form and a short
+form), e.g. `0x4970` and `0x4971` are both `'59.94'`, `0x46c8 'ISO 640'` / `0x46c9 'ISO640'`. That is
+why the tables above use the first of each pair — a 3rd-layer value row should use the long form.
+
+### 678 — Group 2: Paint/Look -> Base Look option values
+
+The 9-entry ordered gamma/look list at `.rodata 0x2384ba8` is the authoritative set, and each id
+resolves individually:
+
+```text
+0x020023f1 'HLG Live'   0x020024ac 'HLG Mild'   0x020023f5 'HLG Natural'
+0x02002460 'S-Log3'     0x02002464 'S-Cinetone' 0x02002466 'Standard'
+0x020023e9 'Still'      0x020023ed 'ITU709'     0x02002a19 '709tone'
+```
+
+Plus the s709 family that the "Look" column uses instead of Base Look:
+
+```text
+0x020021a0 's709'   0x0200219f 'S-Log3'   0x0200219e '709(800%)'
+```
+
+MLUT / LUT list (ns1), and the gamma-display-assist conversions (ns2):
+
+```text
+0x0200201c 'LUT s709'  0x0200201d 'LUT 709'    0x0200201e 'LUT HG7'
+0x0200201f 'LUT HG8'   0x02002020 'LUT S-Log3' 0x02002029 'MLUT'
+0x0200202b 'SDR(Off)'  0x0200202c 'SDR(S-Log2)' 0x0200202d 'SDR(S-Log3)'
+0x020042e5 'HLG1'      0x020042e7 'HLG2'       0x020042e9 '709(800%'
+0x020042ea 'HLG-709(800%)'  0x020042eb 'HLG-709'
+0x020042ec 'S-Log3-709(800%)' 0x020042ed 'S-Log3-'
+```
+
+Cine EI exposure-index steps (ns1), which are the 3rd-layer values for `Cine EI Setting`:
+
+```text
+0x0200203b '250EI / 4.0E'  0x0200203c '320EI / 4.3E'  0x0200203d '400EI / 4.7E'
+0x0200203e '500EI / 5.0E'  0x0200203f '640EI / 5.3E'  0x02002040 '800EI / 5.7E'
+```
+
+### 678 — Three corrections made during this round
+
+Self-audit of the generated tables caught three ids I had guessed from context rather than resolved:
+
+```text
+WRONG  0x02002b2b labelled "100"          -> actually 'Receiving Bit Rate'
+                                              correct: 0x02002b2e '100'
+WRONG  0x02004301 labelled "S&Q Motion"   -> actually '36-40s'
+                                              correct: 0x02004246 'S&Q Motion'
+WRONG  0x020023d0 labelled "White Balance"-> actually 'Custom Aspect Ratio'
+                                              correct: 0x02005689 'White Balance'
+```
+
+All three are fixed in the header, and the audit script now reports 0 unresolved ResIDs in the block.

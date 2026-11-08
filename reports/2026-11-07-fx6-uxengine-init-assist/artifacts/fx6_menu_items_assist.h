@@ -1385,3 +1385,225 @@ static inline void fx6_view_fill_apply_desc(void *vf, const fx6_desc_view_fill *
     *(int32_t *)((char *)vf + 0x1f4) = (int32_t)((d->rect_wh >> 16) & 0xffffu);
     *(uint8_t *)((char *)vf + FX6_VF_OBJ_ENABLE) = 1;
 }
+
+/* ======================================================================
+ * PHASE 10 — three-layer menu geometry and option-value ResID tables
+ * ======================================================================
+ * TABLE 0x2ea02f8 is 47 rows = one page of the three-layer menu plus the start of the next page.
+ * Measured geometry (x, y, w, h) and roles:
+ *
+ *   [00] No1_WID_NINEPATCHIMAGE_STAGE1_BG  fill   d18=0x0200c006  (56,49,912,477)   page background
+ *   [01] No25_Gridlist                     grid   d18=0             (62,56,494,462)   1st-layer list
+ *   [02..09] No35..No28_itemtouchbutton8..1 item  d18=0            (570,463..106,386,52)  2nd-layer rows
+ *   [10..16] No9..No4/No10_item*inthesecondlayer str d18=0        (578,418..163/469,370,40) 3rd-layer rows
+ *   [17] No21_ItemBG                       fill   d18=0x0200c00d  (564,62,401,36)   header bar
+ *   [18] No3_Backstringinthesecondlayer    str    d18=0x02004c3e  (622,112,326,40)  "Back"
+ *   [19] No23_Itemselectionofthefirstlayer str    d18=0            (568,62,280,36)  1st-layer selection
+ *   [20] No16_Loweroutsideline2            fill   d18=0x0200c009  (58,524,910,2)
+ *   [21] No15_Loweroutsideline             fill   d18=0x0200c005  (57,523,908,2)
+ *   [22] No12_Upperoutsideline2            fill   d18=0x0200c00a  (59,50,908,2)
+ *   [23] No26_ScrollbarBase                fill   d18=0x0200c005  (958,102,4,415)
+ *   [24] No27_Scrollbar                    fill   d18=0x0200c013  (958,102,4,415)
+ *   [25] No2_Backiconinthesecondlayer      icon   d18=0x02000154  (578,112,38,38)   back arrow
+ *   [26] No22_ItemnumberBG                 fill   d18=0x0200c00f  (921,66,40,28)
+ *   [27] No24_Itemnumber                   str    d18=0            (922,67,38,28)
+ *   [28] No18_Rightoutsideline2            fill   d18=0x0200c00a  (965,52,2,473)
+ *   [29] No14_Leftoutsideline2             fill   d18=0x0200c00a  (57,50,2,473)
+ *   [30] No20_Separator2                   fill   d18=0x0200c00e  (562,52,2,471)   column divider
+ *   [31] No19_Separator                    fill   d18=0x0200c001  (560,52,2,471)   column divider
+ *   [32] No11_Upperoutsideline             fill   d18=0x0200c009  (57,49,910,1)
+ *   [33] No17_Rightoutsideline             fill   d18=0x0200c009  (967,49,1,477)
+ *   [34] No13_Leftoutsideline              fill   d18=0x0200c009  (56,49,1,477)
+ *   [35] page break 0x42d5a60              (0,0,0,0)
+ *   [36] No69_TOUCH_SCREEN                 (0,0,1024,540)
+ *   [37] No1_Backgroundleft                fill d18=0x0200c006 (56,49,482,477)   next page
+ *   [38] No21_Backgroundright              fill d18=0x0200c006 (542,49,426,477)
+ *   [39] No58_Gridlist                     grid d18=0           (126,102,403,415)
+ *   [40..46] No68..No62_itemtouchbutton10..4 item d18=0         (546,493..229,418,44)
+ *
+ * So the three columns are geometrically:
+ *   1st layer   x 56..560     (list at 62,56 494x462; divider 560/562; selection bar 568,62 280x36)
+ *   2nd layer   x 564..985    (buttons 570..956, w 386 h 52; back icon 578,112 38x38)
+ *   3rd layer   x 578..948    (rows 578, w 370 h 40, y 163..509 - step 51)
+ *   header      y 49..98      (top lines 49/50, header bar 564,62 401x36, page border 477 tall)
+ *
+ * Table 0x2eaf208 (17 rows) is the Setting centre page, not the layered menu:
+ *   [00] touch, [01] No1_BG fill c001 (96,72,768,432), [02] No28_BG fill c008 (96,194,768,188),
+ *   [03] No8_CENTER_VALUE str (310,269,530,32), [04] No7_CENTER_TITLE str d18=0x02002fea 'Look'
+ *   (154,269,148,32), [05..10] six separators c00e, [11..16] the six big cells (view_menu_item).
+ */
+typedef struct {
+    int16_t  x, y;
+    uint16_t w, h;
+} fx6_rect_t;
+
+typedef struct {
+    const char *name;
+    uint32_t tag;
+    fx6_rect_t rect;
+    uint32_t resid;        /* desc+0x18, 0 when unused */
+    uint8_t  layer;        /* 0 = chrome, 1..3 = column */
+} fx6_menu_row_t;
+
+static const fx6_menu_row_t fx6_three_layer_rows[] = {
+    /* name                                 tag          x     y     w    h    resid        layer */
+    {"No1_WID_NINEPATCHIMAGE_STAGE1_BG",   0x042d5a40u, { 56,  49, 912, 477}, 0x0200c006u, 0},
+    {"No25_Gridlist",                      0x042d59e0u, { 62,  56, 494, 462}, 0x00000000u, 1},
+    {"No35_itemtouchbutton8",              0x042d58d0u, {570, 463, 386,  52}, 0x00000000u, 2},
+    {"No34_itemtouchbutton7",              0x042d58d0u, {570, 412, 386,  52}, 0x00000000u, 2},
+    {"No33_itemtouchbutton6",              0x042d58d0u, {570, 361, 386,  52}, 0x00000000u, 2},
+    {"No32_itemtouchbutton5",              0x042d58d0u, {570, 310, 386,  52}, 0x00000000u, 2},
+    {"No31_itemtouchbutton4",              0x042d58d0u, {570, 259, 386,  52}, 0x00000000u, 2},
+    {"No30_itemtouchbutton3",              0x042d58d0u, {570, 208, 386,  52}, 0x00000000u, 2},
+    {"No29_itemtouchbutton2",              0x042d58d0u, {570, 157, 386,  52}, 0x00000000u, 2},
+    {"No28_itemtouchbutton1",              0x042d58d0u, {570, 106, 386,  52}, 0x00000000u, 2},
+    {"No9_item6inthesecondlayer",          0x042d57f0u, {578, 418, 370,  40}, 0x00000000u, 3},
+    {"No8_item5inthesecondlayer",          0x042d57f0u, {578, 367, 370,  40}, 0x00000000u, 3},
+    {"No7_item4inthesecondlayer",          0x042d57f0u, {578, 316, 370,  40}, 0x00000000u, 3},
+    {"No6_item3inthesecondlayer",          0x042d57f0u, {578, 265, 370,  40}, 0x00000000u, 3},
+    {"No5_item2inthesecondlayer",          0x042d57f0u, {578, 214, 370,  40}, 0x00000000u, 3},
+    {"No4_item1inthesecondlayer",          0x042d57f0u, {578, 163, 370,  40}, 0x00000000u, 3},
+    {"No10_item7inthesecondlayer",         0x042d57f0u, {578, 469, 370,  40}, 0x00000000u, 3},
+    {"No21_ItemBG",                        0x042d5a40u, {564,  62, 401,  36}, 0x0200c00du, 0},
+    {"No3_Backstringinthesecondlayer",     0x042d57f0u, {622, 112, 326,  40}, 0x02004c3eu, 0},
+    {"No23_Itemselectionofthefirstlayer",  0x042d57f0u, {568,  62, 280,  36}, 0x00000000u, 0},
+    {"No16_Loweroutsideline2",             0x042d5a40u, { 58, 524, 910,   2}, 0x0200c009u, 0},
+    {"No15_Loweroutsideline",              0x042d5a40u, { 57, 523, 908,   2}, 0x0200c005u, 0},
+    {"No12_Upperoutsideline2",             0x042d5a40u, { 59,  50, 908,   2}, 0x0200c00au, 0},
+    {"No26_ScrollbarBase",                 0x042d5a40u, {958, 102,   4, 415}, 0x0200c005u, 0},
+    {"No27_Scrollbar",                     0x042d5a40u, {958, 102,   4, 415}, 0x0200c013u, 0},
+    {"No2_Backiconinthesecondlayer",       0x042d5a50u, {578, 112,  38,  38}, 0x02000154u, 0},
+    {"No22_ItemnumberBG",                  0x042d5a40u, {921,  66,  40,  28}, 0x0200c00fu, 0},
+    {"No24_Itemnumber",                    0x042d57f0u, {922,  67,  38,  28}, 0x00000000u, 0},
+    {"No18_Rightoutsideline2",             0x042d5a40u, {965,  52,   2, 473}, 0x0200c00au, 0},
+    {"No14_Leftoutsideline2",              0x042d5a40u, { 57,  50,   2, 473}, 0x0200c00au, 0},
+    {"No20_Separator2",                    0x042d5a40u, {562,  52,   2, 471}, 0x0200c00eu, 0},
+    {"No19_Separator",                     0x042d5a40u, {560,  52,   2, 471}, 0x0200c001u, 0},
+    {"No11_Upperoutsideline",              0x042d5a40u, { 57,  49, 910,   1}, 0x0200c009u, 0},
+    {"No17_Rightoutsideline",              0x042d5a40u, {967,  49,   1, 477}, 0x0200c009u, 0},
+    {"No13_Leftoutsideline",               0x042d5a40u, { 56,  49,   1, 477}, 0x0200c009u, 0},
+};
+#define FX6_THREE_LAYER_COUNT (sizeof(fx6_three_layer_rows)/sizeof(fx6_three_layer_rows[0]))
+
+/* Column geometry, derived from the table above (constants, so a probe can lay out its own rows). */
+#define FX6_L1_X        62
+#define FX6_L1_Y        56
+#define FX6_L1_W        494
+#define FX6_L1_H        462
+#define FX6_L2_X        570
+#define FX6_L2_Y0       106
+#define FX6_L2_W        386
+#define FX6_L2_H        52
+#define FX6_L2_STEP     51          /* 463-412 = 412-361 = ... */
+#define FX6_L3_X        578
+#define FX6_L3_Y0       163
+#define FX6_L3_W        370
+#define FX6_L3_H        40
+#define FX6_L3_STEP     51
+#define FX6_DIVIDER_X1  560
+#define FX6_DIVIDER_X2  562
+#define FX6_BACKICON_X  578
+#define FX6_BACKICON_Y  112
+#define FX6_BACKICON_WH 38
+#define FX6_SCROLL_X    958
+#define FX6_SCROLL_Y    102
+#define FX6_SCROLL_W    4
+#define FX6_SCROLL_H    415
+
+/* ----------------------------------------------------------------------
+ * Group 1: Shooting -> {FPS, Shutter, ISO/Gain, ND Filter, LUT/Color, S&Q}
+ * All ResIDs below were resolved from the two string containers; note that many option
+ * families store the same text twice (long and short form), e.g. 0x4970 and 0x4971 are both
+ * '59.94'. Use the FIRST of each pair for a 2nd-layer value row.
+ * ---------------------------------------------------------------------- */
+typedef struct { uint32_t resid; const char *text; } fx6_opt_t;
+
+static const fx6_opt_t fx6_opt_fps[] = {          /* ns2 */
+    {0x02004970u, "59.94"}, {0x02004972u, "50"},    {0x02004974u, "29.97"},
+    {0x02004976u, "25"},    {0x02004978u, "24"},    {0x0200497au, "23.98"},
+    {0x0200497cu, "Custom"},{0x0200497eu, "Cine EI"},
+};
+static const fx6_opt_t fx6_opt_fps_hfr[] = {      /* ns1 high frame rate */
+    {0x02002b3eu, "119.88"},{0x02002b99u, "119.88P"},{0x02002b2eu, "100"},
+    {0x02002b37u, "100P"},
+};
+static const fx6_opt_t fx6_opt_shutter[] = {      /* ns2 */
+    {0x02004729u, "1/100"}, {0x0200472bu, "1/150"}, {0x0200472du, "1/200"},
+    {0x0200472fu, "1/250"}, {0x02004726u, "T2.8"},  {0x02004727u, "T4"},
+    {0x02004728u, "T5.6"},  {0x02004731u, "T8"},    {0x02004732u, "T11"},
+    {0x02004733u, "T16"},
+};
+static const fx6_opt_t fx6_opt_iso[] = {          /* ns2, long form */
+    {0x020046c8u, "ISO 640"},  {0x020046cau, "ISO 800"},  {0x020046ccu, "ISO 1000"},
+    {0x020046ceu, "ISO 1250"}, {0x020046d0u, "ISO 1600"}, {0x020046d2u, "ISO 2000"},
+    {0x020046d4u, "ISO 2500"}, {0x020046d6u, "ISO 3200"}, {0x020046d8u, "ISO 4000"},
+    {0x020046dau, "ISO 5000"}, {0x020046dcu, "ISO 6400"}, {0x020046deu, "ISO 8000"},
+    {0x020046e0u, "ISO 10000"},
+};
+static const fx6_opt_t fx6_opt_nd[] = {           /* ns2 */
+    {0x02004027u, "ND: Clear"}, {0x02004028u, "ND: 0.9"}, {0x02004029u, "ND: 1.8"},
+    {0x0200406au, "ND: Off"},   {0x0200406bu, "ND: 1"},   {0x0200406cu, "ND: 2"},
+    {0x0200406du, "ND: 3"},
+};
+static const fx6_opt_t fx6_opt_white_balance[] = { /* ns2 */
+    {0x0200402au, "White: Preset"}, {0x0200402bu, "White: Memory"},
+    {0x0200402cu, "White: A"},      {0x0200402du, "White: B"},
+    {0x0200402eu, "White: ATW"},    {0x0200402fu, "White Balance Preset"},
+};
+static const fx6_opt_t fx6_opt_sq[] = {           /* ns2, S&Q motion toggles */
+    {0x02004742u, "S&Q Motion: On"},  {0x02004743u, "S&Q Motion: Off"},
+    {0x02004744u, "Interval Rec: On"},{0x02004745u, "Interval Rec: Off"},
+    {0x02004746u, "Picture Cache Rec: On"}, {0x02004747u, "Picture Cache Rec: Off"},
+    {0x02004748u, "Clip Continuous Rec: On"}, {0x02004749u, "Clip Continuous Rec: Off"},
+    {0x0200474au, "Simul Rec: On"},   {0x0200474bu, "Simul Rec: Off"},
+    {0x0200474cu, "4K & HD (Sub) Rec: On"}, {0x0200474du, "4K & HD (Sub) Rec: Off"},
+    {0x0200474eu, "Proxy Rec: On"},   {0x0200474fu, "Proxy Rec: Off"},
+};
+
+/* ----------------------------------------------------------------------
+ * Group 2: Paint/Look -> Base Look -> real option values.
+ * The 9-entry gamma/look list at .rodata 0x2384ba8 is the authoritative ordered set.
+ * ---------------------------------------------------------------------- */
+static const fx6_opt_t fx6_opt_base_look[] = {
+    {0x020023f1u, "HLG Live"},   {0x020024acu, "HLG Mild"},  {0x020023f5u, "HLG Natural"},
+    {0x02002460u, "S-Log3"},     {0x02002464u, "S-Cinetone"},{0x02002466u, "Standard"},
+    {0x020023e9u, "Still"},      {0x020023edu, "ITU709"},    {0x02002a19u, "709tone"},
+};
+/* s709 / 709(800%) family (ns1), used by the "Look" column rather than Base Look. */
+static const fx6_opt_t fx6_opt_look_s709[] = {
+    {0x0200219fu, "S-Log3"}, {0x020021a0u, "s709"}, {0x0200219eu, "709(800%)"},
+};
+/* MLUT / LUT list (ns1) */
+static const fx6_opt_t fx6_opt_lut[] = {
+    {0x0200201cu, "LUT s709"}, {0x0200201du, "LUT 709"}, {0x0200201eu, "LUT HG7"},
+    {0x0200201fu, "LUT HG8"},  {0x02002020u, "LUT S-Log3"}, {0x02002029u, "MLUT"},
+    {0x0200202bu, "SDR(Off)"}, {0x0200202cu, "SDR(S-Log2)"}, {0x0200202du, "SDR(S-Log3)"},
+};
+/* Gamma display assist conversions (ns2) */
+static const fx6_opt_t fx6_opt_gamma_assist[] = {
+    {0x020042e5u, "HLG1"}, {0x020042e7u, "HLG2"}, {0x020042e9u, "709(800%"},
+    {0x020042eau, "HLG-709(800%)"}, {0x020042ebu, "HLG-709"},
+    {0x020042ecu, "S-Log3-709(800%)"}, {0x020042edu, "S-Log3-"},
+};
+/* Cine EI exposure index steps (ns1) */
+static const fx6_opt_t fx6_opt_cine_ei[] = {
+    {0x0200203bu, "250EI / 4.0E"}, {0x0200203cu, "320EI / 4.3E"},
+    {0x0200203du, "400EI / 4.7E"}, {0x0200203eu, "500EI / 5.0E"},
+    {0x0200203fu, "640EI / 5.3E"}, {0x02002040u, "800EI / 5.7E"},
+};
+
+/* Layer-2 item labels for the Shooting column (these are the 2nd-layer rows, not values). */
+static const fx6_opt_t fx6_shooting_items[] = {
+    {0x02005082u, "FPS"},          {0x020050e8u, "Shutter"},
+    {0x02004c32u, "ISO"},          {0x0200420eu, "Gain"},
+    {0x02004288u, "ND Filter"},    {0x020029f8u, "Look"},
+    {0x02004246u, "S&Q Motion"},
+};
+/* Layer-2 item labels for the Paint/Look column. */
+static const fx6_opt_t fx6_paint_items[] = {
+    {0x020023f8u, "Base Look"},    {0x02002296u, "MLUT"},
+    {0x02002266u, "Base ISO"},     {0x0200225cu, "Cine EI Setting"},
+    {0x02005689u, "White Balance"},{0x020023fau, "Reset Paint Settings"},
+};
+
+#define FX6_OPT_COUNT(a) (sizeof(a)/sizeof((a)[0]))

@@ -7017,3 +7017,57 @@ fx6_menu_item_child(item, slot)             *(item + 0x19730 + slot*8)
 All of them take an object produced by the native constructor and only write fields that the
 corresponding `onDrawNotice` actually reads, so they cannot silently produce a blank frame by writing
 to a field nobody consumes. The header compiles clean on `aarch64-linux-gnu`.
+
+### 664 — The six outer cells `No101..No106` carry no caption in the table
+
+Reading entries 91..96 of the home table `0x2e9e210` settles question (a):
+
+```text
+[91] tag=0x42d58d0 No105_BUTTON_05  d18=00000000 d1c=0200a02a d20=1 d24=0200602c d28=0200600e d2c=44 rect=(349,382,262,122)
+[92] tag=0x42d58d0 No102_BUTTON_02  d18=00000000 d1c=0200a02a d20=1 d24=02006032 d28=0200600e d2c=44 rect=(349, 72,262,122)
+[93] tag=0x42d58d0 No106_BUTTON_06  d18=00000000 d1c=0200a02a d20=1 d24=02006032 d28=0200600e d2c=44 rect=(607,382,257,122)
+[94] tag=0x42d58d0 No104_BUTTON_04  d18=00000000 d1c=0200a02a d20=1 d24=02006032 d28=0200600e d2c=44 rect=(96,382,257,122)
+[95] tag=0x42d58d0 No103_BUTTON_03  d18=00000000 d1c=0200a02a d20=1 d24=02006032 d28=0200600e d2c=44 rect=(607, 72,257,122)
+[96] tag=0x42d58d0 No101_BUTTON_01  d18=00000000 d1c=0200a02a d20=1 d24=02006032 d28=0200600e d2c=44 rect=(96, 72,257,122)
+```
+
+Every one of the six has `+0x18 = 0`. Since the factory writes `desc+0x18` into the object, these six
+widgets are created with **no caption and no colour** — their content is supplied later by the presenter
+through the accessor path, not by the table.
+
+What they *do* carry is the presentation parameters:
+
+```text
++0x1c = 0x0200a02a   layout/align id (ns 5)
++0x20 = 1            flag
++0x24 = 0x0200602c / 0x02006032   FontName ResID (ns 3)
++0x28 = 0x0200600e   secondary font
++0x2c = 0x44         size constant (68)
+```
+
+and geometry that exactly tiles the content area:
+
+```text
+(96,72)  257x122      (349,72)  262x122      (607,72)  257x122
+(96,382) 257x122      (349,382) 262x122      (607,382) 257x122
+```
+
+So `No101..No106` are six equal cells in a 2x3 grid over the 768x432 panel — which is why the dynamic
+line sees them as "the outer six cells" and why our own earlier probe drew them as bare
+`view_menu_item`s with no pixels: the descriptor alone does not describe their look.
+
+The presenter-side writer is the `param_t` initialiser at `0xc35900..0xc35970`. It fills a struct with
+`+0x3c`, `+0x40`, `+0x48`, `+0x4c..+0x50`, `+0x54`, `+0x5c`, `+0x60`, `+0x68`, `+0x6c`, and the entry
+point `0xc86f4c` returns exactly that `param_t*` after asserting the row's class tag. That struct — not
+the widget — is where a presenter writes the per-cell content.
+
+Practical recipe for 665+:
+
+1. take the descriptor from `0x2e9e210` entries 91..96 for geometry and font ids;
+2. take the caption/value from the presenter path (or, for a synthetic page, from the `string_english`
+   ResIDs directly, e.g. `0x02002227` = "Shooting");
+3. write the caption into the widget's `+0x1d0`/`+0x1d8`/`+0x1e0` slots and the style into `+0x200`
+   (that is what `fx6_menu_item_set_text_ids` / `fx6_menu_item_set_style` do), then call
+   `fx6_menu_item_render`;
+4. remember `onDrawNotice` drives `*(item + 0x19730 + slot*8)`, so the row only paints once that child
+   is enabled — `fx6_menu_item_child()` returns it.

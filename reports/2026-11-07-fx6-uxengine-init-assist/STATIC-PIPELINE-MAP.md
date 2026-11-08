@@ -7071,3 +7071,115 @@ Practical recipe for 665+:
    `fx6_menu_item_render`;
 4. remember `onDrawNotice` drives `*(item + 0x19730 + slot*8)`, so the row only paints once that child
    is enabled — `fx6_menu_item_child()` returns it.
+
+### 665 — Per-icon `param_t` table at `appFw+0x42d5618` (stride 0x48), and who applies it
+
+The presenter-side setters `0xc35858` / `0xc35990` / `0xc35a8c` / `0xc35b80` all start the same way:
+
+```text
+0xc35860  ldrsw x1,[x0,#0x280]        ; per-icon index (0..3 for the four status icons)
+0xc35870  mov   x21,#0x48
+0xc35874  add   x20,x20,#0x618        ; x20 = 0x42d5618
+0xc3587c  madd  x1,x1,x21,x20         ; entry = table + index*0x48
+0xc35884  ldp   x2,x3,[x1]            ; first 16 bytes of the entry
+```
+
+and they are driven from one dispatcher, `0xc35cf8..0xc35d28`:
+
+```text
+0xc35cd4  ldr  w3,[x0,#0x200] ; cmn w3,#1 ; b.ne 0xc35cf8   ; skip when +0x200 == -1
+0xc35cf8  mov  w1,#2 ; blr x2                                ; mode 2
+0xc35d08  bl   0xc35858     ; slot-table #1   (offset +0x04)
+0xc35d10  bl   0xc35990     ; slot-table #2   (offset +0x14)
+0xc35d18  bl   0xc35a8c
+0xc35d28  b    0xc35b80     ; tail call, slot-table #4
+```
+
+Decoding the table by emulating the initialiser at `0xb1b080` (register-tracked `mov/movk/add/str/stp`)
+recovers four live entries. Field `+0x00` is a packed pair, and `+0x44` is a FontName ResID:
+
+```text
+[00] 00=000000c1 04=00000003 08=000000a9 0c=00000062 10=000000a9 14=000000c1
+     18=0000010e 1c=00000003 20=0000010e 24=00000062 28=0000010e 2c=000000c1
+     30=00000044 34=00000003 38=00000044 3c=00000062 40=00000044 44=000000c1
+[01] 00=02000220 04=000000c6 08=00000141 0c=00000274 10=0000009f 14=000000e8
+     18=00000167 1c=00000230 20=00000052 24..40=ffffffff  44=02006017
+[02] 00=02000222 04=000000c6 08=00000113 0c=00000274 10=000000cd 14=000000e8
+     18=00000139 1c=00000230 20=00000080 24..40=ffffffff  44=02006017
+[03] 00=02000222 04=000000c6 08=00000113 0c=00000274 10=000000cd 14=000000e8
+     18=00000139 1c=00000230 20=00000052 24=000000e8 28=00000195 2c=000000b4
+     30=00000024 34=0000019e 38=00000195 3c=0000017a 40=00000024 44=02006017
+```
+
+Read as (x, y, w, h) quads, entry `[01]` is `x=0xc6, y=0x141, w=0x274, h=0x9f`, and the trailing
+`0x02006017` is a namespace-3 FontName id. So this is the **per-icon layout + font** table used by the
+status-bar icons, not the six big cells' captions.
+
+**Answer to (a) as far as the statics go:** no table in this region holds `FPS / Shutter / ISO / ND /
+WB / Base Look` captions. The six big cells (`No101..No106`, entries 91..96 of `0x2e9e210`) all carry
+`desc+0x18 = 0` (documented in the 664 section), and the only writer that reaches them is the
+`param_t` path via `0xc86f4c`. Their captions are therefore produced at runtime by whatever fills those
+`param_t` structs — there is no static caption table to copy. A probe must supply the labels itself
+(e.g. the `string_english` ids `0x02002227` "Shooting", `0x02002121` "Audio"… ) until the presenter's
+value-feeding path is located by a runtime trace.
+
+### 665 — Answer to (b): no static row-title table for the 35/17-entry pages either
+
+Walking both tables completely shows the same shape as the six cells — the row widgets carry geometry
+and font ids, and `desc+0x18` holds the *dynamic value* id where one exists, never the section title:
+
+```text
+TABLE 0x2ea02f8 (35 entries)  entries 01..07 are the row widgets, names like No4_item1..No10_item7
+TABLE 0x2eaf208 (17 entries)  entries 01..02 are No1_BG / No28_BG fills, 05..10 separators,
+                              11..16 the six buttons
+```
+
+There is **no** `User / Shooting / Project / Paint/Look / TC/Media / Monitoring / Audio / Thumbnail /
+Technical / Maintenance` title block anywhere in `.rodata` as a ResID array: a full scan of every
+`adrp` into `0x23bd000..0x23bffff` finds only the four `unordered_set` initialisers already documented
+plus the assert strings, and searching all `0x02......` words for a 10-element run of *distinct* ns-1/ns-2
+ids produced no candidate. The section names live in the string containers (`string_english.uxc`
+records `0x2121` "Audio", `0x2227` "Shooting", `0x2228` "Project", `0x2229` "Monitoring", `0x222a`
+"Technical", `0x222b` "TC/Media", `0x2531` "Setup"), and they are chosen by the presenter at runtime,
+not by a static array.
+
+### 665 — `view_icon` image pipeline: the bitmap lands in the Sprite at `icon + 0x550`
+
+`onCreate` (`0xc2c044`) builds the icon's Sprite and its colour table:
+
+```text
+0xc2c054  add  x22,x0,#0x550        ; sprite
+0xc2c068  bl   0xb19500             ; Widget::initSprite(sprite, 9)
+0xc2c0d0  mov  w0,#1 ; strb w0,[x19,#0x660]
+0xc2c0d8  ldrb w4,[x19,#0x21f]      ; clip colour bytes +0x21c..+0x21f
+0xc2c0ec  bl   0xb18ce0             ; stella::CColor(r,g,b,a)
+0xc2c100  bl   0xb187b0             ; sprite->setRectColor(slot, colour)  for slots 0..8
+```
+
+`onDrawNotice` (`0xc2d100`) then resolves the image and hands it to that sprite:
+
+```text
+0xc2d240  mov  w0,w21               ; w21 = +0x20c
+0xc2d24c  bl   0xb16eb0             ; getImageOption(resid, NULL, 0) -> count
+0xc2d258  bl   0xb18810             ; sys_getInstance()
+0xc2d270  bl   0xb16eb0             ; getImageOption(resid, &portion, 2)
+0xc2d278  ldrh w0,[x29,#0x50]       ; portion.count
+0xc2d2a0  bl   0xb18c60             ; sprite->setPatchImageCache(flag)
+0xc2d388  bl   0xb16ed0             ; sprite size/clip
+0xc2d3cc  bl   0xb19f50             ; sprite image
+0xc2d3d4  bl   0xc2d00c             ; the blit of the decoded bitmap
+```
+
+So there is **no fixed integer offset holding a `RawImageDataGRM`** on the icon object: the decoded
+ImageData is owned by the Sprite at `+0x550`. The only gates remain `+0x1fc` (enable) and `+0x20c`
+(image ResID).
+
+New helper, the icon analogue of `fx6_render_fill`:
+
+```text
+fx6_icon_sprite(icon)                       -> icon + 0x550
+fx6_icon_blit(icon, x,y,w,h, image_resid, r,g,b,a)
+        sets +0x1e8/+0x1ec/+0x1f0/+0x1f4, +0x1fc = 1, +0x20c = resid,
+        +0x21c..+0x21f = RGBA, +0x204/+0x206 = clip w/h,
+        then calls onCreate (+0x148) and onDrawNotice (+0x158) — the same two slots the class uses.
+```

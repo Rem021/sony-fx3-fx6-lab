@@ -563,3 +563,68 @@ static inline void fx6_menu_item_render(void *item, int x, int y, int w, int h,
     fx6_menu_item_set_text_ids(item, caption_resid, value_resid);
     fx6_widget_ondraw_generic(item);
 }
+
+/* ======================================================================
+ * view_icon image pipeline — where the decoded bitmap actually lands
+ * ======================================================================
+ * The icon widget owns a Sprite at `icon + 0x550` (ctor 0xc2c188 creates it there), and
+ * onCreate 0xc2c044 fills that sprite's colour table:
+ *
+ *   0xc2c054  add  x22,x0,#0x550        ; sprite
+ *   0xc2c068  bl   0xb19500             ; Widget::initSprite(sprite, 9)
+ *   0xc2c0d0  mov  w0,#1 ; strb w0,[x19,#0x660]
+ *   0xc2c0d8  ldrb w4,[x19,#0x21f]      ; RGBA bytes at +0x21c..+0x21f
+ *   0xc2c0ec  bl   0xb18ce0             ; stella::CColor(r,g,b,a)
+ *   0xc2c100  bl   0xb187b0             ; sprite->setRectColor(slot, colour), slots 0..8
+ *
+ * onDrawNotice 0xc2d100 then, when `+0x1fc != 0 && +0x20c != -1`:
+ *
+ *   0xc2d240  mov  w0,w21               ; w21 = image ResID (+0x20c)
+ *   0xc2d24c  bl   0xb16eb0             ; ResourceManager::getImageOption(resid, NULL, 0)  -> count
+ *   0xc2d258  bl   0xb18810             ; ResourceManager::sys_getInstance()
+ *   0xc2d270  bl   0xb16eb0             ; getImageOption(resid, &portion, 2)               -> portion
+ *   0xc2d278  ldrh w0,[x29,#0x50]       ; portion.count
+ *   0xc2d288  ldrh w0,[x29,#0x52]       ; portion.patch flag
+ *   0xc2d2a0  bl   0xb18c60             ; sprite->setPatchImageCache(flag)
+ *   0xc2d334  bl   0xb17ac0             ; Sprite something on the 9-slot table
+ *   0xc2d344  bl   0xc2c508 / 0xc2c368  ; geometry helpers
+ *   0xc2d388  bl   0xb16ed0             ; Sprite::setRectSize / setClipSize family
+ *   0xc2d3cc  bl   0xb19f50             ; Sprite::setImage / drawImage family
+ *   0xc2d3d4  bl   0xc2d00c             ; the actual blit of the decoded bitmap
+ *
+ * So the bitmap is NOT stored at a fixed integer offset in the icon object: the icOn keeps a
+ * Sprite at +0x550, and the decoded ImageData is handed to that sprite, which owns the pixel
+ * buffer. The two fields that gate the whole path remain `+0x1fc` (enable) and `+0x20c`
+ * (image ResID).
+ */
+#define FX6_ICON_SPRITE_OFF 0x550u
+
+static inline void *fx6_icon_sprite(void *icon)
+{
+    return icon ? (void *)((char *)icon + FX6_ICON_SPRITE_OFF) : 0;
+}
+
+/* Full native icon blit: geometry + image ResID + colour/clip defaults, then onCreate and
+ * onDrawNotice exactly as the native class does it. This is the icon analogue of
+ * fx6_render_fill: it reaches the same two virtual slots the class itself uses. */
+static inline void fx6_icon_blit(void *icon, int x, int y, int w, int h,
+                                 uint32_t image_resid, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    if (!icon) return;
+    *(int32_t  *)((char *)icon + 0x1e8) = x;
+    *(int32_t  *)((char *)icon + 0x1ec) = y;
+    *(int32_t  *)((char *)icon + 0x1f0) = w;
+    *(int32_t  *)((char *)icon + 0x1f4) = h;
+    *(uint8_t  *)((char *)icon + 0x1fc) = 1;          /* enable            */
+    *(uint32_t *)((char *)icon + 0x20c) = image_resid; /* image ResID       */
+    *(uint8_t  *)((char *)icon + 0x21c) = r;           /* clip colour RGBA  */
+    *(uint8_t  *)((char *)icon + 0x21d) = g;
+    *(uint8_t  *)((char *)icon + 0x21e) = b;
+    *(uint8_t  *)((char *)icon + 0x21f) = a;
+    *(uint16_t *)((char *)icon + 0x204) = (uint16_t)w; /* clip w            */
+    *(uint16_t *)((char *)icon + 0x206) = (uint16_t)h; /* clip h            */
+    void **vt = *(void ***)icon;
+    if (!vt) return;
+    if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(icon);   /* onCreate     */
+    if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(icon);   /* onDrawNotice */
+}

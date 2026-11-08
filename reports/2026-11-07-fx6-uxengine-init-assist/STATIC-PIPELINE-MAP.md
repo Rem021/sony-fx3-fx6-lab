@@ -7443,8 +7443,11 @@ So the table is a **caption / value-format pair table** (label + `${v1}` templat
 are the short labels (`FPS`, `Speed`, `Angle`, `ECS`, `Off`, `Auto`, `Manual`) that pair with the ns=1
 format strings. That is why the dynamic line's ns=2 lookups matter: they are the run-time labels.
 
-**Since the block exists in `global.xdb` and the id passes the namespace decoder, the remaining cause is
-call order.** The harness currently does:
+**STATUS: this was resolved. The cause was the container, not the call order.** `string_english_2.uxc`
+was simply absent from the CPIO; after the dynamic line added it, A84 resolves 84/84. The paragraph
+below is kept only as the reasoning that was current at the time.
+
+**At the time this was written, the suspected remaining cause was call order.** The harness currently does:
 
 ```text
 setDatabase("global.xdb")
@@ -7454,5 +7457,105 @@ switchBank(0,0) switchBank(1,4) switchBank(2,4)     <- before the font load and 
 `switchBank` selects a language bank inside the already-open database; it does not open namespace 2's
 XDB block. The block is opened by `XDBTable::load(SystemLookupTable*, char const*)`
 (`liblibra+0x364d0` -> `0x22020`), which `SystemLookupTable::setDatabase` (`liblibra+0x330c8` ->
-`0x21ac0`) triggers per namespace. The practical fix is therefore to call `switchBank(2, 0)` **after**
-the first successful text lookup of a ns=2 id, so the block is already mapped, rather than before it.
+`0x21ac0`) triggers per namespace. That hypothesis was not needed in the end — the missing file was the whole problem.
+
+### 670 — Level-1 category titles live in a `(ResID, slot)` pair list at `appFw+0x226a6c0`
+
+Searching for a contiguous run of category ids fails — because the ids are **not** contiguous. What is
+contiguous is the *slot index*. The real structure is a stride-8 pair list:
+
+```text
+struct { uint32_t resid; uint32_t slot; }
+```
+
+Starting at `0x226a6c0`, running for thousands of entries (the region `0x226a6c0..0x226eb68` alone is
+2198 entries, slots 0x001..0x896). Measured entries for the FX6 section titles:
+
+```text
+0x226b858  slot 0x234  0x02002227  'Shooting'
+0x226b860  slot 0x235  0x02002228  'Project'
+0x226b868  slot 0x236  0x02002229  'Monitoring'
+0x226b870  slot 0x237  0x0200222a  'Technical'
+0x226ce18  slot 0x4ec  0x0200222b  'TC/Media'      <- note: slot jumps to 0x4ec
+0x226bbd8  slot 0x2a4  0x020041fb  'Audio'         (ns2)
+0x226bbf0  slot 0x2a7  0x02004203  'Maintenance'   (ns2)
+0x226bc00  slot 0x2a9  0x02004208  'User'          (ns2)
+0x226bc08  slot 0x2aa  0x02004209  'Thumbnail'     (ns2)
+```
+
+and the neighbouring slots are the paint / look / AF families, which is why a category-only search
+looked empty:
+
+```text
+slot 0x232  0x020029f8  'Look'              slot 0x233  0x02002223  'VF Adjust'
+slot 0x23c  0x0200225c  'Cine EI Setting'   slot 0x23d  0x02002266  'Base ISO'
+slot 0x23e  0x02002296  'MLUT'              slot 0x246  0x020023da  'Set'
+slot 0x247  0x020023f8  'Base Look'         slot 0x248  0x020023fa  'Reset Paint Settings'
+slot 0x238  0x0200222e  'Push AF Mode'      slot 0x239  0x02002232  'AF'
+```
+
+The nine category names themselves are contiguous **inside the string containers**, which is what the
+dynamic line should index by value:
+
+```text
+string_english.uxc  (ns 1)
+  0x211a 'Camera'  0x211b 'Audio'  0x211c 'Project'  0x211d 'Monitoring'
+  0x211e 'Assignable Button'  0x211f 'Battery'  0x2120 'Media'
+  0x2121 'NCM/Streaming'  0x2122 'Network'  0x2123 'File Transfer'
+  0x2227 'Shooting' 0x2228 'Project' 0x2229 'Monitoring' 0x222a 'Technical' 0x222b 'TC/Media'
+string_english_2.uxc  (ns 2) — one contiguous block 0x41f9..0x420d:
+  0x41f9 'Camera'   0x41fa 'Paint'    0x41fb 'Audio'    0x41fc 'Video'
+  0x41fd 'VF'       0x41fe 'LCD/VF'   0x41ff 'TC/UB'    0x4200 'Recording'
+  0x4201 'Media'    0x4202 'File'     0x4203 'Maintenance' 0x4204 'System'
+  0x4205 'Service'  0x4206 'TC'       0x4207 'Operation' 0x4208 'User'
+  0x4209 'Thumbnail' 0x420a 'Network' 0x420b 'Project'  0x420c 'TC/Media'
+  0x420d 'Technical'
+```
+
+Warning worth recording: `0x2121` is **'NCM/Streaming'**, not 'Audio' — `0x211b` is 'Audio'.
+
+### 670 — Central status area `No1..No36`: the descriptors already carry default ResIDs
+
+TABLE `0x2e9e210` entries 0..36 turn out to be fully populated — these are not empty placeholders that
+a presenter has to fill, so a probe can render them immediately:
+
+```text
+[01] No1_BG                    fill   d18=0x0200c001            rect (96,72,768,432)
+[02] No28_BG                   fill   d18=0x0200c008            rect (96,194,768,188)
+[06] No1430_IMAGER_SCAN_MODE_RAW_VIDEO_FORMAT  d18=0x02002f1d 'FF'      (336,257,208,32)
+[07] No1440_CODEC_NAME                        d18=0x02005261 'XAVC-I'  (336,297,180,32)
+[09] No2130_IMAGER_SCAN_MODE                  d18=0x02002f1d 'FF'      (228,246,165,30)
+[15] No1424_MEDIA_STATUS_PROXY_STOP_SLOTB     d18=0x020051e7 'Stop'    (672,342,88,32)
+[16] No1423_MEDIA_REMAIN_TIME_SLOT_B          d18=0x02002959 '---\ue5d8' (672,342,88,32)
+[18] No1450_RESOLUTION                        d18=0x02002999 '3840P'   (520,297,84,32)
+[22] No1125_RECSTATE_STRING_SINGLE_SLOT       d18=0x02005078 'Rec'     (212,278,82,32)
+[27] No1462_AUTO_EXPOSURE_LEVEL               d18=0x0200284d '\ue6890' (320,342,77,32)
+[31] No1421_MEDIA_SLOT_B_ICON                 d18=0x02002956 '\ue68b'  (602,341,70,34)
+[32] No1411_MEDIA_SLOT_A_ICON                 d18=0x02002822 '\ue68a'  (420,341,70,34)
+[34] No1171_SHOT_OR_CLIP_NUMBER_ITEM_NAME     d18=0x02002a48 'Shot'    (611,297,70,32)
+[35] No1161_CAMREEL_OR_TITLE_ITEM_NAME        d18=0x020029f0 'Reel'    (611,257,70,32)
+```
+
+So the Big-6 home status area needs no param_t injection at all for the static text: `d18` already
+holds a live ResID, and the value slots (`No1071_TIME_CODE_VALUE`, `No1172_SHOT_OR_CLIP_NUMBER_VALUE`,
+`No2141_BITRATE`, `No1162_CAMREEL_OR_TITLE_VALUE`) are the only ones set to `0xffffffff`, i.e. "filled
+at runtime". Those four are what a probe must supply itself:
+
+```text
+No1071_TIME_CODE_VALUE       (154,200,282,48)   d18 = -1
+No2071_TIME_CODE_VALUE       (154,197,214,44)   d18 = -1
+No1172_SHOT_OR_CLIP_NUMBER_VALUE (659,297,106,32) d18 = -1
+No2172_SHOT_OR_CLIP_NUMBER_VALUE (656,350,106,30) d18 = -1
+No2141_BITRATE               (410,282,76,30)    d18 = -1
+No1162_CAMREEL_OR_TITLE_VALUE (685,257,80,32)   d18 = -1
+```
+
+That is the concrete answer to question (2): the defaults exist, and only six value widgets are left
+blank for the controller to fill.
+
+### 670 — Confirmation from the dynamic line
+
+The dynamic line found the earlier CPIO was missing `usr/share/app/string_english_2.uxc`; after adding
+it, A84 resolves 84/84 via `ResourceManager::getText`, and the three-layer menu (7 rows + title + Back
+icon `0x02000154`) renders. That confirms the static conclusion of round 669: the ns=2 XDB block was
+registered but the *file* was absent, so the fix was the container, not the call order.

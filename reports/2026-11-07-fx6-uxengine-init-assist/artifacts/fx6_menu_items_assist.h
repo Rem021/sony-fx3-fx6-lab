@@ -693,3 +693,81 @@ static inline uint32_t fx6_resid_key(uint32_t id)
 #define FX6_PARAM_ND_FILTER   0x2dd2c00u   /* +0x18: 0x020054fd 'ND Filter' x2            */
 #define FX6_PARAM_COLOR_MODE  0x2dd8180u   /* +0x00: 0x020044f5/44f6 'Color Mode',
                                             *        0x020044f7 'VF Color Mode'        */
+
+/* ======================================================================
+ * 670 — Level-1 category titles: the (ResID, slot) pair list at appFw+0x226a6c0
+ * ======================================================================
+ * This is the table the presenters index instead of holding a plain ResID array. Each entry is
+ *
+ *      struct { uint32_t resid; uint32_t slot; }        stride 8
+ *
+ * and `slot` is what the presenter writes into a row widget's caption slot, with the widget then
+ * looking the string up by `resid`. Slot numbers are denses and jump around, so *slot is NOT the
+ * entry index* — e.g. the five FX6 section titles live at slots 0x234..0x237, not at 0..4.
+ *
+ * Measured, with the string rendered from string_english.uxc / string_english_2.uxc:
+ *
+ *   slot 0x234  0x02002227  'Shooting'
+ *   slot 0x235  0x02002228  'Project'
+ *   slot 0x236  0x02002229  'Monitoring'
+ *   slot 0x237  0x0200222a  'Technical'
+ *   slot 0x4ec  0x0200222b  'TC/Media'
+ *   slot 0x2a4  0x020041fb  'Audio'        (ns2)
+ *   slot 0x2a7  0x02004203  'Maintenance'  (ns2)
+ *   slot 0x2a9  0x02004208  'User'         (ns2)
+ *   slot 0x2aa  0x02004209  'Thumbnail'    (ns2)
+ *   slot 0x233  0x02002223  'VF Adjust'
+ *   slot 0x232  0x020029f8  'Look'
+ *   slot 0x23c  0x0200225c  'Cine EI Setting'
+ *   slot 0x23d  0x02002266  'Base ISO'
+ *   slot 0x23e  0x02002296  'MLUT'
+ *   slot 0x246  0x020023da  'Set'
+ *   slot 0x247  0x020023f8  'Base Look'
+ *   slot 0x248  0x020023fa  'Reset Paint Settings'
+ *
+ * The same table also carries the *paint/look* family and the AF family, which is why a naive
+ * "search for a run of category ids" fails: the ids are not contiguous, the slots are.
+ */
+#define FX6_PAIRLIST_ADDR   0x226a6c0u
+#define FX6_PAIRLIST_STRIDE 8u
+
+#define FX6_SLOT_SHOOTING      0x234u
+#define FX6_SLOT_PROJECT       0x235u
+#define FX6_SLOT_MONITORING    0x236u
+#define FX6_SLOT_TECHNICAL     0x237u
+#define FX6_SLOT_TC_MEDIA      0x4ecu
+#define FX6_SLOT_AUDIO_N2      0x2a4u
+#define FX6_SLOT_MAINTENANCE   0x2a7u
+#define FX6_SLOT_USER          0x2a9u
+#define FX6_SLOT_THUMBNAIL     0x2aau
+#define FX6_SLOT_VF_ADJUST     0x233u
+#define FX6_SLOT_LOOK          0x232u
+#define FX6_SLOT_CINE_EI       0x23cu
+#define FX6_SLOT_BASE_ISO      0x23du
+#define FX6_SLOT_MLUT          0x23eu
+#define FX6_SLOT_SET           0x246u
+#define FX6_SLOT_BASE_LOOK     0x247u
+#define FX6_SLOT_RESET_PAINT   0x248u
+
+/* Level-1 section titles as plain ResIDs, for probes that address widgets directly. */
+#define FX6_TXT_SHOOTING   0x02002227u
+#define FX6_TXT_PROJECT    0x02002228u
+#define FX6_TXT_MONITORING 0x02002229u
+#define FX6_TXT_TECHNICAL  0x0200222au
+#define FX6_TXT_TC_MEDIA   0x0200222bu
+#define FX6_TXT_AUDIO      0x0200211bu   /* ns1 'Audio' (0x2121 is 'NCM/Streaming' -- do not swap) */
+#define FX6_TXT_AUDIO_N1   0x0200211bu   /* ns1 'Audio'          */
+#define FX6_TXT_CAMERA     0x0200211au   /* ns1 'Camera'         */
+#define FX6_TXT_PAINT_N2   0x020041fau   /* ns2 'Paint'          */
+#define FX6_TXT_MAINTENANCE 0x02004203u  /* ns2 'Maintenance'    */
+#define FX6_TXT_USER       0x02004208u   /* ns2 'User'           */
+#define FX6_TXT_THUMBNAIL  0x02004209u   /* ns2 'Thumbnail'      */
+#define FX6_TXT_NETWORK    0x0200420au   /* ns2 'Network'        */
+#define FX6_TXT_PROJECT_N2 0x0200420bu   /* ns2 'Project'        */
+#define FX6_TXT_TC_MEDIA_N2 0x0200420cu  /* ns2 'TC/Media'       */
+#define FX6_TXT_TECHNICAL_N2 0x0200420du /* ns2 'Technical'      */
+#define FX6_TXT_RECORDING  0x02004200u   /* ns2 'Recording'      */
+#define FX6_TXT_MEDIA_N2   0x02004201u   /* ns2 'Media'          */
+#define FX6_TXT_FILE       0x02004202u   /* ns2 'File'           */
+#define FX6_TXT_SYSTEM     0x02004204u   /* ns2 'System'         */
+#define FX6_TXT_OPERATION  0x02004207u   /* ns2 'Operation'      */

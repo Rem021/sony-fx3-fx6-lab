@@ -8459,3 +8459,124 @@ three-layer 3rd column  (578, y, 370, 40),  y = 163..469 step 51
 A probe that wants to lay out its own rows inside a container should use the container frame from the
 descriptor table and divide by the pitch above; the container itself only stores the view pointers and
 the row ids.
+
+### 680 — `TABLE 0x2ea3e50` rows 0..9 and `TABLE 0x2eaf208` rows 0..16 as static arrays
+
+Both tables are now `fx6_menu_row_t` arrays with the same shape as `fx6_three_layer_rows[]`.
+Setting main page (`0x2ea3e50`, 10 rows before the `0x42d5a60` page break):
+
+```text
+[00] No107_BLOCK_TOUCH        0x042d5860  (  0,  0,1024,540)  -
+[01] No4_SETTING_LIST_MAIN    0x042d5a20  ( 96, 72, 402,432)  -            1st column (list)
+[02] No20_SETTING_MAIN_STRING 0x042d57f0  (139,270, 348, 36)  -
+[03] No3_SETTING_VALUE        0x042d57f0  (505,266, 315, 36)  -
+[04] No32_SETTING_VALUE2      0x042d57f0  (505,266, 308, 32)  -
+[05] No2_SETTING_ITEM         0x042d57f0  (505,236, 315, 28)  -
+[06] No106_BUTTON_BOTTOM_RIGHT  0x042d58d0  (654,425,164, 72)  0x020023da 'Set'
+[07] No105_BUTTON_BOTTOM_CENTER 0x042d58d0  (398,425,164, 72)  0x020023da 'Set'
+[08] No103_BUTTON_TOP_RIGHT     0x042d58d0  (654, 80,164, 72)  0x020023da 'Set'
+[09] No102_BUTTON_TOP_CENTER    0x042d58d0  (398, 80,164, 72)  0x020023da 'Set'
+```
+
+Setting centre page (`0x2eaf208`, 17 rows, the 2x3 grid of big cells):
+
+```text
+[00] No107_BLOCK_TOUCH 0x042d5860  (  0,  0,1024,540)
+[01] No1_BG            0x042d5a40 fill 0x0200c001  ( 96, 72,768,432)
+[02] No28_BG           0x042d5a40 fill 0x0200c008  ( 96,194,768,188)
+[03] No8_CENTER_VALUE  0x042d57f0 str               (310,269,530, 32)
+[04] No7_CENTER_TITLE  0x042d57f0 str 0x02002fea 'Look'  (154,269,148, 32)
+[05] No34_SEPARATOR    0x042d5a40 fill 0x0200c00e  ( 96,382,768,  4)
+[06] No33_SEPARATOR    0x042d5a40 fill 0x0200c00e  ( 96,190,768,  4)
+[07] No32_SEPARATOR    0x042d5a40 fill 0x0200c00e  (607,386,  4,118)
+[08] No31_SEPARATOR    0x042d5a40 fill 0x0200c00e  (349,386,  4,118)
+[09] No30_SEPARATOR    0x042d5a40 fill 0x0200c00e  (607, 72,  4,118)
+[10] No29_SEPARATOR    0x042d5a40 fill 0x0200c00e  (349, 72,  4,118)
+[11] No101_BUTTON_01   0x042d58d0  ( 96, 72,257,122)
+[12] No102_BUTTON_02   0x042d58d0  (349, 72,262,122)
+[13] No103_BUTTON_03   0x042d58d0  (607, 72,257,122)
+[14] No104_BUTTON_04   0x042d58d0  ( 96,382,257,122)
+[15] No105_BUTTON_05   0x042d58d0  (349,382,262,122)
+[16] No106_BUTTON_06   0x042d58d0  (607,382,257,122)
+```
+
+Note the grid is not uniform: the vertical separators sit at x=349 and x=607, so the three columns are
+`96..349` (253 wide), `349..607` (258), `607..864` (257) — the middle cell's descriptor width (262)
+is 4 px wider than the gap because it overlaps both separators. Reproducing the layout from the
+descriptors is therefore exact; recomputing it from equal thirds is not.
+
+### 680 — The real 2nd-layer label pool is one contiguous block at ns2 `0x4230..0x42a0`
+
+Looking for the requested item names one by one showed they all live in a single run in
+`string_english_2.uxc`. That run is the actual secondary-menu label pool and is far richer than the
+five arrays need:
+
+```text
+0x4232 'Audio Input'      0x4233 'Audio Level'        0x4234 'Audio Output'
+0x4235 'Output On/Off'    0x4236 'Output Format'      0x4238 'Output Setting'
+0x4239 'Monitor LUT'      0x423a 'Output Display'     0x423b 'LCD Setting'
+0x423c 'VF Setting'       0x423d 'Peaking'            0x423e 'Marker'
+0x423f 'Zebra'            0x4241 'Display On/Off'     0x4242 'Timecode'
+0x4243 'Users Bit'        0x4244 'TC Display'         0x4245 'HDMI TC Out'
+0x4246 'S&Q Motion'       0x4247 'Interval Rec'       0x4249 'Clip Continuous Rec'
+0x424b 'Clip Cont. Rec'   0x424c 'Picture Cache Rec'  0x424d 'Cache Rec'
+0x424f 'Simul Rec'        0x4250 'MPEG2 Proxy'        0x4251 'Rec Control'
+0x4252 'SDI Rec Control'  0x4253 'Update Media'       0x4254 'Format Media'
+0x4255 'All File'         0x4256 'Scene File'         0x4257 'User Gamma'
+0x4258 'Planning Metadata'0x4259 'Lens File'          0x425a 'Test Saw'
+0x425b 'Camera Config'    0x425c 'ND Adjustment'      0x425d 'System Setting'
+0x425e 'Base Setting'     0x425f 'Rec Format'         0x4261 'Codec'
+0x4262 'Genlock'          0x4264 'Assignable Button'  0x4265 'Switch/Lamp'
+0x4266 'Display Mode'     0x4268 'Battery Alarm'      0x4269 'DC Voltage Alarm'
+0x426a 'GPS'              0x426b 'Language'           0x426c 'Clock Set'
+0x426d 'Country'          0x426e 'Hours Meter'        0x426f 'Network'
+0x4270 'Wi-Fi'            0x4271 'All Reset'          0x4272 'Option'
+0x4273 'Version'          0x4274 'White Shading'      0x4275 'Black Shading'
+0x4276 'RPN'              0x4277 'VCO Adjustment'     0x4278 'Fan Control'
+0x4279 'Password Reset'   0x427a 'Factory Reset'      0x427b 'Information'
+0x427c 'AXS Recorder'     0x4281 'Clip Naming'         0x4283 'APR'
+0x4284 'Basic Authentication' 0x4285 'Iris'           0x4286 'User File'
+0x4287 'Monitor 3D LUT'   0x4288 'ND Filter'          0x4289 'Video Light Set'
+0x428a 'Down Converter'   0x428c 'Proxy Recording Mode'
+0x428d 'SDI/HDMI Rec Control' 0x428e 'File Transfer'   0x4290 'IR Remote'
+0x4291 'Network Reset'    0x4292 'File System'        0x4294 'User Menu Item'
+0x4295 'CCD Adjustment'   0x4296 'Service Reset'      0x4297 'V Modulation'
+0x4298 'White Filter'     0x4299 'DCC Adjust'         0x429a 'Switch Status'
+0x429b 'Reference File'   0x429c 'Gain Switch'        0x429d 'Auto Iris'
+0x429e 'White Setting'    0x429f 'WRR Setting'        0x42a0 'Auto Shading'
+```
+
+Because this is a *pool* rather than per-category lists, the five arrays below are ordered by the
+conventional FX6 menu order, with every id individually verified. **The ordering is not recovered from
+`.rodata`** — only `fx6_opt_base_look` (round 678) has an authoritative static order, from the
+9-entry run at `0x2384ba8`.
+
+```text
+fx6_project_items[14]      Base Setting, Rec Format, Codec, Cine EI Setting, Simul Rec,
+                           Proxy Rec, Picture Cache Rec, Interval Rec, S&Q Motion,
+                           Clip Continuous Rec, Assignable Button, Genlock,
+                           System Setting, ND Adjustment
+fx6_monitoring_items[16]   Output Setting, Output Format, Output On/Off, Audio Output,
+                           Monitor LUT, Output Display, Display On/Off, LCD Setting,
+                           VF Setting, Peaking, Marker, Zebra, Gamma Display Assist,
+                           VF Adjust, LCD/VF Adjust, HDMI Output
+fx6_audio_items[7]         Audio Input, Audio Level, Audio Output, Volume,
+                           Headphone Out, Wind Filter, WRR Setting
+fx6_tc_media_items[10]     Timecode, Users Bit, TC Display, HDMI TC Out, Clip Name Format,
+                           Update Media, Format Media, All File, Scene File, Planning Metadata
+fx6_maintenance_items[12]  Language, Clock Set, Country, Hours Meter, Network, Wi-Fi,
+                           Network Reset, All Reset, Option, Version, GPS, Display Mode
+```
+
+Two requested names do not exist verbatim in either container and were substituted with the real
+neighbouring labels: `SDI/HDMI Output` (the container has `Output Setting` / `Output Format` /
+`Output On/Off`) and `Output On Screen Display` (the container has `Output Display`). Similarly
+`Picture Cache` is `Picture Cache Rec`, and `Input Level` / `Audio CH1..CH4` do not appear as menu
+labels — the audio channel labels live in the ns1 range instead.
+
+### 680 — Zero-error audit
+
+Every `{resid, "text"}` pair added in this round was checked by script against the containers:
+**59 pairs, all matching exactly, 0 unresolved, 0 mislabelled.** Compile-time assertions confirm
+`FX6_SETTING_MAIN_COUNT == 10`, `FX6_SETTING_CENTER_COUNT == 17`, `FX6_CATEGORY_MAP_COUNT == 7`, and
+the header still builds clean with `-Wall`.

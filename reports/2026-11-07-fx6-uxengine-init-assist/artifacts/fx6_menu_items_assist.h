@@ -1733,3 +1733,149 @@ static const fx6_top_category_t fx6_top_categories[11] = {
 #define FX6_GRIDLIST_RECT       {62, 56, 494, 462}
 #define FX6_SETTING_LIST_TAG    0x042d5a20u
 #define FX6_SETTING_LIST_RECT   {96, 72, 402, 432}
+
+/* ======================================================================
+ * PHASE 12 — TABLE 0x2ea3e50 and TABLE 0x2eaf208 as static row arrays
+ * ====================================================================== */
+
+/* Setting main page, TABLE 0x2ea3e50 rows 0..9 (row 10 is the page break 0x42d5a60). */
+static const fx6_menu_row_t fx6_setting_main_rows[] = {
+    {"No107_BLOCK_TOUCH",       0x042d5860u, {  0,  0,1024,540}, 0x00000000u, 0},
+    {"No4_SETTING_LIST_MAIN",   0x042d5a20u, { 96, 72, 402,432}, 0x00000000u, 1},
+    {"No20_SETTING_MAIN_STRING",0x042d57f0u, {139,270, 348, 36}, 0x00000000u, 2},
+    {"No3_SETTING_VALUE",       0x042d57f0u, {505,266, 315, 36}, 0x00000000u, 3},
+    {"No32_SETTING_VALUE2",     0x042d57f0u, {505,266, 308, 32}, 0x00000000u, 3},
+    {"No2_SETTING_ITEM",        0x042d57f0u, {505,236, 315, 28}, 0x00000000u, 2},
+    {"No106_BUTTON_BOTTOM_RIGHT", 0x042d58d0u, {654,425, 164, 72}, 0x020023dau, 0},
+    {"No105_BUTTON_BOTTOM_CENTER",0x042d58d0u, {398,425, 164, 72}, 0x020023dau, 0},
+    {"No103_BUTTON_TOP_RIGHT",    0x042d58d0u, {654, 80, 164, 72}, 0x020023dau, 0},
+    {"No102_BUTTON_TOP_CENTER",   0x042d58d0u, {398, 80, 164, 72}, 0x020023dau, 0},
+};
+#define FX6_SETTING_MAIN_COUNT (sizeof(fx6_setting_main_rows)/sizeof(fx6_setting_main_rows[0]))
+
+/* Setting centre page, TABLE 0x2eaf208 rows 0..16 — the 2x3 grid of six big cells. */
+static const fx6_menu_row_t fx6_setting_center_rows[] = {
+    {"No107_BLOCK_TOUCH",  0x042d5860u, {  0,  0,1024,540}, 0x00000000u, 0},
+    {"No1_BG",             0x042d5a40u, { 96, 72, 768,432}, 0x0200c001u, 0},
+    {"No28_BG",            0x042d5a40u, { 96,194, 768,188}, 0x0200c008u, 0},
+    {"No8_CENTER_VALUE",   0x042d57f0u, {310,269, 530, 32}, 0x00000000u, 0},
+    {"No7_CENTER_TITLE",   0x042d57f0u, {154,269, 148, 32}, 0x02002feau, 0},
+    {"No34_SEPARATOR",     0x042d5a40u, { 96,382, 768,  4}, 0x0200c00eu, 0},
+    {"No33_SEPARATOR",     0x042d5a40u, { 96,190, 768,  4}, 0x0200c00eu, 0},
+    {"No32_SEPARATOR",     0x042d5a40u, {607,386,   4,118}, 0x0200c00eu, 0},
+    {"No31_SEPARATOR",     0x042d5a40u, {349,386,   4,118}, 0x0200c00eu, 0},
+    {"No30_SEPARATOR",     0x042d5a40u, {607, 72,   4,118}, 0x0200c00eu, 0},
+    {"No29_SEPARATOR",     0x042d5a40u, {349, 72,   4,118}, 0x0200c00eu, 0},
+    {"No101_BUTTON_01",    0x042d58d0u, { 96, 72, 257,122}, 0x00000000u, 0},
+    {"No102_BUTTON_02",    0x042d58d0u, {349, 72, 262,122}, 0x00000000u, 0},
+    {"No103_BUTTON_03",    0x042d58d0u, {607, 72, 257,122}, 0x00000000u, 0},
+    {"No104_BUTTON_04",    0x042d58d0u, { 96,382, 257,122}, 0x00000000u, 0},
+    {"No105_BUTTON_05",    0x042d58d0u, {349,382, 262,122}, 0x00000000u, 0},
+    {"No106_BUTTON_06",    0x042d58d0u, {607,382, 257,122}, 0x00000000u, 0},
+};
+#define FX6_SETTING_CENTER_COUNT (sizeof(fx6_setting_center_rows)/sizeof(fx6_setting_center_rows[0]))
+
+/* ======================================================================
+ * PHASE 12 — 2nd-layer item labels for the remaining categories
+ * ======================================================================
+ * IMPORTANT: unlike fx6_opt_base_look (taken from a real .rodata ResID run), these five arrays are
+ * NOT backed by a single contiguous table in the image. Each id below was looked up individually and
+ * its text confirmed, but the ORDER is the natural FX6 menu order, not an order recovered from
+ * .rodata. Treat the ordering as conventional, the ids as verified.
+ *
+ * The bulk of the labels come from one contiguous block in string_english_2.uxc, 0x4230..0x42a0 —
+ * that block is the real "secondary menu label" pool and is worth reading in full when wiring more
+ * categories (it includes Audio Input/Level/Output, Output Format/Setting, Monitor LUT, LCD/VF
+ * Setting, Peaking/Marker/Zebra, Timecode/Users Bit/TC Display, S&Q/Interval/Cache/Simul Rec,
+ * Update/Format Media, All/Scene File, Base Setting, Rec Format, Codec, Genlock, Language, Clock Set,
+ * All Reset, Version, Network Reset, ...).
+ */
+static const fx6_opt_t fx6_project_items[] = {
+    {0x0200425eu, "Base Setting"},
+    {0x0200425fu, "Rec Format"},
+    {0x02004261u, "Codec"},
+    {0x0200225cu, "Cine EI Setting"},
+    {0x0200424fu, "Simul Rec"},
+    {0x020042d0u, "Proxy Rec"},
+    {0x0200424cu, "Picture Cache Rec"},
+    {0x02004247u, "Interval Rec"},
+    {0x02004246u, "S&Q Motion"},
+    {0x02004249u, "Clip Continuous Rec"},
+    {0x02004264u, "Assignable Button"},
+    {0x02004262u, "Genlock"},
+    {0x0200425du, "System Setting"},
+    {0x0200425cu, "ND Adjustment"},
+};
+static const fx6_opt_t fx6_monitoring_items[] = {
+    {0x02004238u, "Output Setting"},
+    {0x02004236u, "Output Format"},
+    {0x02004235u, "Output On/Off"},
+    {0x02004234u, "Audio Output"},
+    {0x02004239u, "Monitor LUT"},
+    {0x0200423au, "Output Display"},
+    {0x02004241u, "Display On/Off"},
+    {0x0200423bu, "LCD Setting"},
+    {0x0200423cu, "VF Setting"},
+    {0x0200423du, "Peaking"},
+    {0x0200423eu, "Marker"},
+    {0x0200423fu, "Zebra"},
+    {0x020042dcu, "Gamma Display Assist"},
+    {0x02002223u, "VF Adjust"},
+    {0x02005564u, "LCD/VF Adjust"},
+    {0x02004f18u, "HDMI Output"},
+};
+static const fx6_opt_t fx6_audio_items[] = {
+    {0x02004232u, "Audio Input"},
+    {0x02004233u, "Audio Level"},
+    {0x02004234u, "Audio Output"},
+    {0x02002192u, "Volume"},
+    {0x02002191u, "Headphone Out"},
+    {0x02003132u, "Wind Filter"},
+    {0x0200429fu, "WRR Setting"},
+};
+static const fx6_opt_t fx6_tc_media_items[] = {
+    {0x02004242u, "Timecode"},
+    {0x02004243u, "Users Bit"},
+    {0x02004244u, "TC Display"},
+    {0x02004245u, "HDMI TC Out"},
+    {0x02002244u, "Clip Name Format"},
+    {0x02004253u, "Update Media"},
+    {0x02004254u, "Format Media"},
+    {0x02004255u, "All File"},
+    {0x02004256u, "Scene File"},
+    {0x02004258u, "Planning Metadata"},
+};
+static const fx6_opt_t fx6_maintenance_items[] = {
+    {0x0200426bu, "Language"},
+    {0x0200426cu, "Clock Set"},
+    {0x0200426du, "Country"},
+    {0x0200426eu, "Hours Meter"},
+    {0x0200426fu, "Network"},
+    {0x02004270u, "Wi-Fi"},
+    {0x02004291u, "Network Reset"},
+    {0x02004271u, "All Reset"},
+    {0x02004272u, "Option"},
+    {0x02004273u, "Version"},
+    {0x0200426au, "GPS"},
+    {0x02004267u, "Display Mode"},
+};
+
+/* Index of the eleven categories -> the 2nd-layer array to show for it, for a table-driven column. */
+typedef struct {
+    uint32_t category_resid;
+    const fx6_opt_t *items;
+    uint32_t count;
+} fx6_category_map_t;
+
+#define FX6_CATMAP_ENTRY(cat, arr) { (cat), (arr), (uint32_t)FX6_OPT_COUNT(arr) }
+
+static const fx6_category_map_t fx6_category_map[] = {
+    FX6_CATMAP_ENTRY(0x02002227u, fx6_shooting_items),     /* Shooting     */
+    FX6_CATMAP_ENTRY(0x02002228u, fx6_project_items),      /* Project      */
+    FX6_CATMAP_ENTRY(0x02002493u, fx6_paint_items),        /* Paint/Look   */
+    FX6_CATMAP_ENTRY(0x0200222bu, fx6_tc_media_items),     /* TC/Media     */
+    FX6_CATMAP_ENTRY(0x02002229u, fx6_monitoring_items),   /* Monitoring   */
+    FX6_CATMAP_ENTRY(0x020041fbu, fx6_audio_items),        /* Audio        */
+    FX6_CATMAP_ENTRY(0x02004203u, fx6_maintenance_items),  /* Maintenance  */
+};
+#define FX6_CATEGORY_MAP_COUNT (sizeof(fx6_category_map)/sizeof(fx6_category_map[0]))

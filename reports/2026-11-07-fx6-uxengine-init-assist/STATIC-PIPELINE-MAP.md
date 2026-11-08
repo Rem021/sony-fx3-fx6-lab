@@ -6270,3 +6270,137 @@ row(self, slot_w1, rect_x2, a3, a4, a5, text_x6, a7, a8_stack)
 Deliverable for 651+: `/private/tmp/fx6_menu_items_assist.h` (compiles on
 `aarch64-linux-gnu`, verified) plus `/private/tmp/fx6_icon_menu647.c` as a ready probe that draws three
 icons from the real image ResIDs and one resource-driven caption into gpe0.
+
+### 651 — Correction: the factory's field stores are relative to the `vt[0x140]` sub-object
+
+The 650 section above read the factory's `str wN,[x0,#disp]` instructions as object-relative. They are
+not. Every menu class returns `this + 0x1d0` from `vt[0x140]`:
+
+```text
+view_string      vt[0x140] = 0xc3ab34 -> add x0,x0,#0x1d0 ; ret
+view_menu_item   vt[0x140] = 0xc34034 -> add x0,x0,#0x1d0 ; ret
+view_fill        vt[0x140] = 0xc27408 -> add x0,x0,#0x1d0 ; ret
+view_icon        vt[0x140] = 0xc2bfd4 -> add x0,x0,#0x1d0 ; ret
+```
+
+and the factory stores into that returned pointer. Adding `0x1d0` to every branch offset gives the
+real object layout:
+
+```text
+branch 0 (icon tag)      +0x3c/+0x60/+0x64/+0x6c   ->  obj +0x20c/+0x230/+0x234/+0x23c
+branch 1 (string tag)    +0x30/+0x38..48/+0x844    ->  obj +0x200/+0x208..0x218/+0xa14
+branch 2 (list item)     +0x60..78/+0x874          ->  obj +0x230..0x248/+0xa44
+branch 3                                 +0x30    ->  obj +0x200
+branch 4                                 +0x4c    ->  obj +0x21c
+branch 5                                 +0x50..68 ->  obj +0x220..0x238
+branch 6                                 +0x3c..4c ->  obj +0x20c..0x21c
+branch 8                                 +0x1a0   ->  obj +0x370
+```
+
+**So `desc+0x18` → `obj+0x20c` is the icon image ResID, end to end.** That also settles the question
+left open in 650: descriptor `+0x18` for icon rows really does hold image ids, and they really do exist
+in the container. Verified against `image_00_169.uxc` (1829 distinct record ids parsed):
+
+```text
+0x064a 0x0504 0x0557 0x0544 0x051c 0x057d 0x04df 0x052a 0x02a0 0x0418 0x0247 0x0488 0x0484 0x03c7
+```
+
+The comment in 650 claiming `+0x3c` is "a sizing number, not a ResID" is withdrawn.
+
+### 651 — Icon record dimensions (u16 pair in the second header word)
+
+```text
+id      w1          w2            width x height   payload
+0x0488  0xc0000000  0x00a40050    0x0050 x 0x00a4   0x92b
+0x0484  0xc0000000  0x00a40050    0x0050 x 0x00a4   0x8bc
+0x03c7  0xc0000000  0x0042012c    0x012c x 0x0042   0xdf0
+0x02a0  0xc0000000  0x0020002e    0x002e x 0x0020   0x185
+0x0247  0xc0000000  0x0020002c    0x002c x 0x0020   0x28c
+0x0418  0xc0000000  0x0020002c    0x002c x 0x0020   0x17a
+```
+
+The earlier note said 0x488/0x484 were "0x0050 x 0x00a4" and 0x3c7 "0x012c x 0x0042" but with the
+components swapped for two of them; the table above is the measured one, and
+`fx6_icon_menu647.c` now passes rects equal to these sizes so the widget is never asked to scale.
+
+### 651 — vtable slot map for the three menu classes
+
+The GOT holds `X`, and every constructor stores `X + 0x10` as the object's vptr, so the opcode
+`ldr x2,[x0,#0x158]` reads `X + 0x10 + 0x158`. That frame shift matters: reading `X + 0x158`
+silently returns the *next* slot's entry. Both frames, measured with relocations applied:
+
+```text
+class              X (GOT)      obj vptr     slot S reads X+0x10+S
+                                S=0x18       S=0x140      S=0x148      S=0x158
+view_icon          0x2d1bd50    0x2d1bd60    0xc2d008     0xc2bfd4     0xc2c044     0xc2d100
+view_string        0x2d1f200    0x2d1f210    0xc3baf0     0xc3ab34     0xc3ae08     0xc3bbd8
+view_menu_item     0x2d1c640    0x2d1c650    0xc35168     0xc34034     0xc34080     0xc35358
+view_fill          0x2d1b480    0x2d1b490    0xc2776c     0xc27408     0xc27448     0xc2750c
+view_frame         0x2d1b650    0x2d1b660    0xc27f24     0xc27770     0xc277bc     0xc27ea0
+view_list_cursor   0x2d1c2b0    0x2d1c2c0    0xc31924     0xc30a94     0xc30ae0     0xc3339c
+```
+
+The `X+0x158` frame (a naive read) gives, for the same six classes: `0xc2c044`, `0xc3ae08`,
+`0xc34080`, `0xc27448`, `0xc277bc`, `0xc30ae0` — i.e. the 0x148 entries. That is exactly how a
+mis-framed table produces "onDraw is a ret / is the onCreate wrapper" confusion.
+
+Measured nonzero slots in each object vtable (everything else in `0x000..0x15f` is zero in the
+static image; the `+0x30/+0x40/+0x48/+0x50/+0x58` slots that `onDrawNotice` branches on are patched
+at runtime, which is why it can `blr` through them):
+
+```text
+view_string    vptr 0x2d1f210: +0x000 0xc3ba18  +0x008 0xc3baf0  +0x0f8 0xc3b264
+                               +0x140 0xc3ab34  +0x148 0xc3ae08  +0x150 0xc3af68  +0x158 0xc3bbd8
+view_icon      vptr 0x2d1bd60: +0x000 0xc2cfb4  +0x008 0xc2d008  +0x0f8 0xc2cec4
+                               +0x140 0xc2bfd4  +0x148 0xc2c044  +0x150 0xc2c02c  +0x158 0xc2d100
+view_menu_item vptr 0x2d1c650: +0x000 0xc350a4  +0x008 0xc35168
+                               +0x140 0xc34034  +0x148 0xc34080  +0x150 0xc34180  +0x158 0xc35358
+view_fill      vptr 0x2d1b490: +0x000 0xc27724  +0x008 0xc2776c
+                               +0x140 0xc27408  +0x148 0xc27448  +0x150 0xc273f8  +0x158 0xc2750c
+```
+
+`+0x000` is the complete-object destructor and `+0x008` the deleting destructor, so the dtor frame is
+`0x2d1bd60` for `view_icon` — which is exactly the value `0xc2d004` stores back into `[x0]`, confirming
+that the object vptr is `X + 0x10` and not `X`.
+
+### 651 — GRM_gperm / glyph call-site inventory (closes the scan item in the goal)
+
+Resolved with the PLT-stub→symbol mapping (`.rela.plt` order against the
+`adrp x16 / ldr x17,[x16,#imm]` stub pattern), so these are real call sites, not name matches:
+
+```text
+libgemini-grm.so   GRM_gpermRectblit    30   0x7260 0x72cc 0x7328 0x73c0 0x741c 0x74c4 0x7744 0x79f4 ...
+                   GRM_gpermFillrect     2   0x790c 0x7954
+                   GRM_gpermDrawFlush    1   0x9078
+                   GRM_gpermDrawFinish   1   0x8f94
+libgrm.so          GRM_gpermRectblit     1   0x22b9c
+                   GRM_gpermDrawFinish   1   0x230d4
+libux_core.so      GRM_gpermSuspend      3   0x2b440 0x2b450 0x2b45c
+                   GRM_gpermResume       1   0x2e838
+                   GRM_gpermRectblit     1   0x2ea78
+libitype.so        ADFRenderGlyph       12   0x272fc 0x2c2f4 0x2c334 0x2c34c 0x2c3dc 0x2c41c 0x2c434 0x2c4d4
+                   ADFRenderGlyphImplicit 1  0x1881c
+                   FSS_get_glyphmap      1   0x2f904
+                   MTX_TTC_GetTTFGlyphMemory 2  0xe2f0 0x12174
+                   get_glyph_advance     1   0x268bc
+                   get_glyph_metrics     2   0x1021c 0x10a8c
+                   get_glyph_metrics_ttf 1   0x26920
+                   get_glyph_parms       3   0xa8c0 0x25edc 0x26128
+libwtle.so         FS_get_glyphmap      6   0x37240 0x37268 0x37bfc 0x391b0 0x391d8 0x397b8
+                   TsDrawGlyphParams_init 1  0x3d200
+libtextrm.so       TsDrawGlyphParams_init 1 0xa45c
+```
+
+Two facts worth recording:
+
+* **Nothing in `appFw.so` calls `GRM_gperm*` directly.** The whole UI stack goes through the
+  `GraphicsContextGRM` vtable (`libgemini-grm+0x1ba68`) and only `libgemini-grm` touches the
+  gperm entry points. That is why a probe must render via the widget classes, not by calling GRM.
+* **No library exports a `GraphicsDraw*` symbol.** The earlier goal wording assumed such a family;
+  the real draw entry points are the context vtable slots (`+0xf8` fillRect, `+0x100..0x118`
+  drawImage, `+0x120/+0x128` drawLine) plus `GraphicsContextGRM::clearBuffer/beginScene/endScene/
+  swap` at `+0x18/+0x20/+0x28/+0x30`.
+* Glyph rasterisation is entirely inside `libitype` (`ADFRenderGlyph`) driven by `libtextrm` /
+  `libwtle`; `appFw` never calls a glyph function, it calls `TextSprite::drawText()`.
+
+Full listing: `artifacts/fx6_grm_glyph_callsites.txt`.

@@ -72,10 +72,23 @@
  * So a menu icon needs exactly two things set: `+0x1fc = 1` and `+0x20c = <image ResID>`.
  * appFw itself installs those ids at 0xc1f858 while drawing the status bar:
  * `0x02000488`, `0x02000484` and `0x020003c7`, all namespace 0 -> image_00_169.uxc.
- * Measured from that container: 0x488 and 0x484 are 0x0050 x 0x00a4, 0x3c7 is 0x012c x 0x0042.
+ * Measured from that container (u16 width, u16 height packed in the record's second word):
+ *   0x488 / 0x484 -> 0x0050 x 0x00a4   (80 x 164)   payload 0x92b / 0x8bc
+ *   0x3c7         -> 0x012c x 0x0042   (300 x 66)   payload 0xdf0
+ *   0x2a0 / 0x418 -> 0x002e x 0x0020 and 0x002c x 0x0020, i.e. the small status icons.
  *
- * `+0x3c` is NOT the image id: the factory branch for this tag (0xc19558) writes
- * descriptor +0x18 into obj+0x3c, and that value is a *sizing/priority* number, not a ResID.
+ * CORRECTION (round 771): the field stores in the factory are offsets from the *sub-object*
+ * returned by vt[0x140], which for every menu class is `obj + 0x1d0`. So the branch that stores
+ * at "+0x3c" is really writing `obj + 0x20c` -- i.e. exactly the image ResID slot. Converted:
+ *
+ *   branch 0 (icon tag)     +0x3c/+0x60/+0x64/+0x6c  ->  obj +0x20c/+0x230/+0x234/+0x23c
+ *   branch 1 (string tag)   +0x30/+0x38..48/+0x844  ->  obj +0x200/+0x208..0x218/+0xa14
+ *   branch 2 (list item)    +0x60..78/+0x874       ->  obj +0x230..0x248/+0xa44
+ *
+ * And descriptor +0x18 really does hold image ids for icon rows: measured from
+ * image_00_169.uxc, records 0x64a, 0x504, 0x557, 0x544, 0x51c, 0x57d, 0x4df, 0x52a, 0x2a0,
+ * 0x418 and 0x247 all exist in the container. So `desc+0x18 -> obj+0x20c` is the image ResID
+ * pipeline, confirmed end to end; the earlier "sizing number, not a ResID" note was wrong.
  *
  * ---------------------------------------------------------------------------
  * 4. view_menu_item (ctor 0xc341d4, onDrawNotice 0xc35358)
@@ -195,6 +208,26 @@ static inline void *fx6_frame_child(void *frame, uint32_t child_off)
 }
 
 /* ---- view_icon: the two fields that make it paint ---- */
+/* Virtual-slot reality, measured (relocations applied):
+ *
+ *   GOT holds X; the ctor stores X+0x10 as the object's vptr, so `ldr x2,[x0,#0x158]` reads
+ *   X+0x10+0x158. Reading X+0x158 by mistake yields the *next* slot -- that is how a table can
+ *   end up looking like "0x148 is onDraw" or "onDraw is a ret".
+ *
+ *   Nonzero slots only (everything else in 0..0x15f is zero until the widget system patches it):
+ *     view_icon      vptr 0x2d1bd60:  +0x000 0xc2cfb4  +0x008 0xc2d008  +0x0f8 0xc2cec4
+ *                                     +0x140 0xc2bfd4  +0x148 0xc2c044  +0x150 0xc2c02c  +0x158 0xc2d100
+ *     view_string    vptr 0x2d1f210:  +0x000 0xc3ba18  +0x008 0xc3baf0  +0x0f8 0xc3b264
+ *                                     +0x140 0xc3ab34  +0x148 0xc3ae08  +0x150 0xc3af68  +0x158 0xc3bbd8
+ *     view_menu_item vptr 0x2d1c650:  +0x000 0xc350a4  +0x008 0xc35168
+ *                                     +0x140 0xc34034  +0x148 0xc34080  +0x150 0xc34180  +0x158 0xc35358
+ *     view_fill      vptr 0x2d1b490:  +0x000 0xc27724  +0x008 0xc2776c
+ *                                     +0x140 0xc27408  +0x148 0xc27448  +0x150 0xc273f8  +0x158 0xc2750c
+ *
+ *   +0x000 = complete-object dtor, +0x008 = deleting dtor (0xc2d004 stores 0x2d1bd60 back into
+ *   [x0], which confirms the X+0x10 vptr frame).
+ *   Every menu class returns `this + 0x1d0` from +0x140, which is why the factory's field stores
+ *   are sub-object relative. */
 static inline void fx6_icon_set_image(void *icon, uint32_t image_resid)
 {
     if (!icon) return;

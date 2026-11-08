@@ -1,0 +1,34 @@
+FX6 GRM / glyph call-site inventory (PLT-resolved, whole donor lib dir)
+========================================================================
+
+libgemini-grm.so
+  GRM_gpermDrawFinish              1  0x8f94
+  GRM_gpermDrawFlush               1  0x9078
+  GRM_gpermFillrect                2  0x790c 0x7954
+  GRM_gpermRectblit               30  0x7260 0x72cc 0x7328 0x73c0 0x741c 0x74c4 0x7744 0x79f4
+
+libgrm.so
+  GRM_gpermDrawFinish              1  0x230d4
+  GRM_gpermRectblit                1  0x22b9c
+
+libitype.so
+  ADFRenderGlyph                  12  0x272fc 0x2c2f4 0x2c334 0x2c34c 0x2c3dc 0x2c41c 0x2c434 0x2c4d4
+  ADFRenderGlyphImplicit           1  0x1881c
+  FSS_get_glyphmap                 1  0x2f904
+  MTX_TTC_GetTTFGlyphMemory        2  0xe2f0 0x12174
+  get_glyph_advance                1  0x268bc
+  get_glyph_metrics                2  0x1021c 0x10a8c
+  get_glyph_metrics_ttf            1  0x26920
+  get_glyph_parms                  3  0xa8c0 0x25edc 0x26128
+
+libtextrm.so
+  TsDrawGlyphParams_init           1  0xa45c
+
+libux_core.so
+  GRM_gpermRectblit                1  0x2ea78
+  GRM_gpermResume                  1  0x2e838
+  GRM_gpermSuspend                 3  0x2b440 0x2b450 0x2b45c
+
+libwtle.so
+  FS_get_glyphmap                  6  0x37240 0x37268 0x37bfc 0x391b0 0x391d8 0x397b8
+  TsDrawGlyphParams_init           1  0x3d200

@@ -23,9 +23,10 @@ static uint32_t *g_osd;
 static int g_icon_cb, g_text_cb;
 
 /* ---- the three icon ids appFw itself uses (namespace 0) ---- */
-#define ICON_REC_BIG   0x02000488u   /* 0x0050 x 0x00a4 */
-#define ICON_REC_MED   0x02000484u   /* 0x0050 x 0x00a4 */
-#define ICON_REC_SMALL 0x020003c7u   /* 0x012c x 0x0042 */
+#define ICON_REC_BIG   0x02000488u   /* 0x0050 x 0x00a4 = 80 x 164 */
+#define ICON_REC_MED   0x02000484u   /* 0x0050 x 0x00a4 = 80 x 164 */
+#define ICON_REC_SMALL 0x020003c7u   /* 0x012c x 0x0042 = 300 x 66 */
+#define ICON_REC_WIFI  0x02000247u   /* 0x002c x 0x0020 = 44 x 32  */
 
 static uint64_t fx6_mod_base(const char *sym)
 {
@@ -206,10 +207,12 @@ void fx6_force_update(void)
     fx6_load_fonts();
 
     /* three icons at the real status-bar position family, then one caption */
+    /* rects match the record dimensions so the widget cannot be asked to scale */
     fx6_draw_icon(g_appfw, 40, 200, 80, 164, ICON_REC_BIG,   "A_icon488");
-    fx6_draw_icon(g_appfw, 140, 200, 80, 164, ICON_REC_MED,   "B_icon484");
-    fx6_draw_icon(g_appfw, 240, 200, 80, 164, ICON_REC_SMALL, "C_icon3c7");
-    fx6_draw_text(g_appfw, 40, 400, 320, 36, 0x02002227u,     "D_text_shooting");
+    fx6_draw_icon(g_appfw, 140, 200, 80, 164, ICON_REC_MED,  "B_icon484");
+    fx6_draw_icon(g_appfw, 40, 390, 300, 66, ICON_REC_SMALL, "C_icon3c7");
+    fx6_draw_icon(g_appfw, 360, 390, 44, 32, ICON_REC_WIFI,  "E_icon247");
+    fx6_draw_text(g_appfw, 40, 470, 320, 36, 0x02002227u,     "D_text_shooting");
 
     int (*proccmd)(unsigned int) = (int (*)(unsigned int))
         dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");

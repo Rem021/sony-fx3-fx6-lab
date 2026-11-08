@@ -7183,3 +7183,51 @@ fx6_icon_blit(icon, x,y,w,h, image_resid, r,g,b,a)
         +0x21c..+0x21f = RGBA, +0x204/+0x206 = clip w/h,
         then calls onCreate (+0x148) and onDrawNotice (+0x158) — the same two slots the class uses.
 ```
+
+### 665 — CORRECTION to the two preceding negative answers
+
+The earlier paragraphs in this round said "no static caption table exists". That is wrong, and a full
+`.rodata` scan for runs of consecutive namespace-1/2 string ResIDs finds it. There are **64** such runs;
+the relevant ones near the code the dynamic line flagged decode to real UI strings:
+
+```text
+0x23be904  len=10   0x0200335a '2.0x'
+                    0x02002934 'WB: A'      0x02002896 'WB: B'
+                    0x02002f08 'WB: Preset' 0x02002919 'WB: C'
+                    0x02002cab 'WB: D'      0x02002c82 'WB: E'
+                    0x02002c88 'WB: F'      0x02002caf 'WB: G'
+                    0x02002ca3 'WB: H'                 <- white-balance menu titles
+
+0x23be86c  len=13   '\ue01c', '\ue0c7${v1}.${v2}', '\ue0c7${v1}.${v2:02}',
+                    '\ue0c8${v1}.${v2}', '\ue0c8${v1}.${v2:02}',
+                    'Mode', 'Auto Exposure', 'Level', 'Auto Exposure'   <- value FORMATS with ${v1}/${v2}
+
+0x23be8bc  len=7    's709', 'S-Log3', '709(800%)'                     <- base-look names
+```
+
+So the caption tables **do** exist, they are just not ringed by the `adrp+add` pattern the earlier scan
+looked for. Re-scanning every `adrp` into page `0x23be000` and enumerating the target of each following
+`add` gives the complete picture:
+
+```text
+0x23be904  ->  NO add anywhere in .text reaches it      (the WB titles)
+0x23be908  ->  0xf320b4                                  (the 9-entry selector table, already documented)
+0x23be620  ->  0xb1c864   (unordered_set init)
+0x23be7b8 / 0x23bf270  -> still no reference
+```
+
+So `0x23be904` is real data with no direct address reference — it must be reached through a computed
+base (a pointer stored in a table, or `this`-relative arithmetic), which is exactly why a plain
+`adrp+add` scan misses it.
+
+**Corrected answer to (a):** the six big cells' captions are not in a named static array, but themed
+caption/format strings *are* present as the runs above, and `0x23be86c` in particular is a value-format
+table (`${v1}.${v2}`, `${v1}.${v2:02}`, `Mode`, `Auto Exposure`, `Level`). The remaining work is to find
+the pointer that reaches `0x23be904`/`0x23be86c`; a plain address scan cannot, so it needs either a
+`.data.rel.ro` pointer search or a runtime read of the presenter's base register.
+
+**Corrected answer to (b):** likewise, the section titles (User / Shooting / Project / …) are not in a
+10-element run at a fixed address, but the individual strings exist in `string_english.uxc`
+(`0x2121` "Audio", `0x2227` "Shooting", `0x2228` "Project", `0x2229` "Monitoring", `0x222a` "Technical",
+`0x222b` "TC/Media", `0x2531` "Setup"). A search for one contiguous 10-element array of exactly those ids
+found nothing, so that particular table is either split across pages or assembled at runtime.

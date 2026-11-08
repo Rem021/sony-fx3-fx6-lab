@@ -805,3 +805,81 @@ static inline uint32_t fx6_resid_key(uint32_t id)
 #define FX6_COLOR_BG_PANEL   0x0200c001u   /* opaque black  */
 #define FX6_COLOR_BG_INNER   0x0200c008u   /* inner panel   */
 #define FX6_COLOR_SEP_STATUS 0x0200c00eu   /* 0x777777 separator */
+
+/* ======================================================================
+ * 671 — The slot -> ResID lookup is a runtime unordered_map, not a table scan
+ * ======================================================================
+ * Two pair lists are consumed once at init by appFw+0xb1a868:
+ *
+ *   mapA (text): 0x226a6c0 .. 0x2272a80   (0x83c0 bytes = 4216 entries)
+ *   mapB (icon): 0x2272a80 .. 0x2272f18   (0x498  bytes =  147 entries)
+ *
+ * both handed to appFw+0xc15c44 (unordered_map range ctor: __floatunditf, _M_next_bkt,
+ * _M_need_rehash, operator new), stored in .bss at 0x303e738 (mapA) and 0x303e6c8 (mapB),
+ * and registered with __cxa_atexit.
+ *
+ * The resolver is appFw+0xc18548(menu_item_id_t) -> ResID:
+ *
+ *     if (id == 0x02004c47 || id == -1) return 0;
+ *     node = mapA.find(id); if (node) return node->value;
+ *     node = mapB.find(id); if (node) return node->value;
+ *     return 0xd00;                        <- unknown id
+ *
+ * So a probe cannot read the mapping from .rodata without reimplementing the hash; either call the
+ * resolver through the appFw base pointer, or read the two source arrays directly (they are plain
+ * (resid, slot) pairs, which is what FX6_PAIRLIST_ADDR describes).
+ */
+#define FX6_LOOKUP_FN_OFFSET   0xc18548u   /* appFw + this -> ResID, 35 call sites */
+#define FX6_LOOKUP_SENTINEL    0x02004c47u
+#define FX6_LOOKUP_UNKNOWN     0xd00u
+
+#define FX6_MAPA_BEGIN  0x226a6c0u         /* slot -> text ResID (ns 1/2), 4216 pairs */
+#define FX6_MAPA_END    0x2272a80u
+#define FX6_MAPB_BEGIN  0x2272a80u         /* slot -> icon ResID (ns 0),  147 pairs */
+#define FX6_MAPB_END    0x2272f18u
+
+#define FX6_MAPA_BSS    0x303e738u
+#define FX6_MAPB_BSS    0x303e6c8u
+
+/* The 35 call sites of the resolver, in address order — the entry points of the text system. */
+#define FX6_LOOKUP_CALLERS \
+    0xc187d8u, 0xc18854u, 0xc264d8u, 0xc55990u, 0xc5599cu, 0xf64648u, 0xf646acu, 0xf669a0u, \
+    0xf66a04u, 0xf6c13cu, 0xf6c1a0u, 0xf7731cu, 0xf77730u, 0xfb9a98u, 0xfb9e6cu, 0xfb9fa4u, \
+    0xfba018u, 0xfbe448u, 0xfd0870u, 0xfdac48u, 0xfdc374u, 0xfe0510u, 0xfe4884u, 0xfe7e74u, \
+    0xfec610u, 0xfec920u, 0xfeca18u, 0xfecbccu, 0xfeccbcu, 0xfef8f4u, 0xff1a28u, 0xff3858u, \
+    0xff57c8u, 0xff7904u, 0xffb830u
+
+/* ----------------------------------------------------------------------
+ * Page-break marker: class tag 0x42d5a60 with an all-zero rect separates pages inside one table.
+ * `0x2ea3e50` is NOT "28 setting entries": rows 0..9 are the Setting main page, `[10]` is a break,
+ * then the text-dialog / transferring / toast pages follow.
+ * ---------------------------------------------------------------------- */
+#define FX6_TAG_PAGE_BREAK 0x42d5a60u
+#define FX6_IS_PAGE_BREAK(tag, rect) \
+    (((tag) == FX6_TAG_PAGE_BREAK) && ((rect)[0] == 0 && (rect)[1] == 0 && \
+     (rect)[2] == 0 && (rect)[3] == 0))
+
+#define FX6_SETTING_MAIN_FIRST 0u           /* 0x2ea3e50 rows 0..9  */
+#define FX6_SETTING_MAIN_LAST  9u
+#define FX6_THREELAYER_MAIN_FIRST 0u        /* 0x2ea02f8 rows 0..34 */
+#define FX6_THREELAYER_ROWS_FIRST 10u       /* seven second-layer rows: 10..16 */
+#define FX6_THREELAYER_ROWS_LAST  16u
+#define FX6_THREELAYER_BUTTONS_FIRST 2u     /* eight navigation buttons: 2..9 */
+#define FX6_THREELAYER_BUTTONS_LAST  9u
+
+/* ----------------------------------------------------------------------
+ * Format templates that actually exist for the runtime-filled value slots.
+ * ---------------------------------------------------------------------- */
+#define FX6_FMT_BITRATE_MBPS 0x02002be2u    /* '${v1}.${v2} Mbps (${v3} %)'  -> No2141_BITRATE */
+#define FX6_FMT_MBPS_UNIT    0x02002b74u    /* 'Mbps' */
+#define FX6_FMT_TC_GLYPHS_A  0x0200220cu    /* '${v1:02}\ue5d5${v2:02}\ue5d8' */
+#define FX6_FMT_TC_GLYPHS_B  0x0200220du    /* '${v1:02}\ue5d8${v2:02}\ue5d7' */
+/* There is NO 'HH:MM:SS:FF' template in either string container. The TC widgets
+ * (No1071_/No2071_TIME_CODE_VALUE) and the clip-number / camreel value slots have no format
+ * resource; a probe must write an already-composed string or leave them at -1 (undrawn). */
+#define FX6_HAS_TIMECODE_TEMPLATE 0
+
+/* Icon families for the category slots, from mapB (all verified in image_00_169.uxc): */
+#define FX6_ICON_SLOT_BACK     0x02000154u  /* No2_Backiconinthesecondlayer (378,112,38,38) */
+#define FX6_ICON_SLOT_BACK_ALT 0x02000152u
+#define FX6_ICON_SLOT_BACK_ALT2 0x02000153u

@@ -7559,3 +7559,155 @@ The dynamic line found the earlier CPIO was missing `usr/share/app/string_englis
 it, A84 resolves 84/84 via `ResourceManager::getText`, and the three-layer menu (7 rows + title + Back
 icon `0x02000154`) renders. That confirms the static conclusion of round 669: the ns=2 XDB block was
 registered but the *file* was absent, so the fix was the container, not the call order.
+
+### 671 — What `0x226a6c0` really is: the source range of a global `unordered_map`
+
+The table is **not** scanned linearly at runtime. It is consumed exactly once, by an init function at
+`appFw+0xb1a868`, which hands it to `appFw+0xc15c44`:
+
+```text
+0xb1a86c  adrp x1,#0x226a000 ; add x1,x1,#0x6c0      ; begin = 0x226a6c0
+0xb1a874  mov  x0,#0x83c0 ; add x2,x1,x0             ; end   = 0x2272a80
+0xb1a880  ...  bl 0xc15c44                           ; unordered_map(first,last,bucket_hint)
+0xb1a8e4  __cxa_atexit(dtor, &mapA, ...)             ; mapA lives at .bss 0x303e738
+```
+
+and `0xc15c44` is unambiguously a hash-container range constructor — its callees are
+`__floatunditf` (`0xb18d90`), `__trunctfdf2` (`0xb19b20`), `_Prime_rehash_policy::_M_next_bkt`
+(`0xb17fe0`), `_Prime_rehash_policy::_M_need_rehash` (`0xb19ea0`) and `operator new` (`0xb18ae0`).
+Entry size is 8 bytes (`asr x0,x0,#3`), so the range is **0x83c0 / 8 = 4216 entries**.
+
+A **second, distinct** pair list is built the same way, immediately after it:
+
+```text
+0xb1a904  adrp x1,#0x2272000 ; add x1,x1,#0xa80      ; begin = 0x2272a80
+0xb1a91c  add  x2,x1,#0x498                          ; end   = 0x2272f18
+0xb1a92c  bl   0xc15c44                              ; mapB at .bss 0x303e6c8, 147 entries
+```
+
+### 671 — The lookup function is `appFw+0xc18548`, and it is a slot → ResID resolver
+
+```text
+0xc18548  stp x29,x30,[sp,#-0x20]!
+0xc1854c  mov  w1,#0x4c47 ; movk w1,#0x200,lsl #16    ; sentinel 0x02004c47
+0xc18558  cmp  w0,w1 ; b.eq 0xc185c4                  ; -> return 0
+0xc18564  cmn  w0,#1    ; b.eq 0xc185c4                ; -1 -> return 0
+0xc1856c  adrp x8,#0x2eea000 ; ldr x8,[x8,#0xb08]     ; mapA = 0x303e738
+0xc18580  bl   0xc166a0                               ; mapA.find(id)
+0xc18584  cbz  x0, 0xc1859c                           ; miss -> try mapB
+0xc18588  bl   0xc184d0                               ; deref node -> value
+0xc18594  ldr  w1,[x0]                                ; return the stored ResID
+0xc1859c  adrp x8,#0x2eef000 ; ldr x8,[x8,#0xf98]     ; mapB = 0x303e6c8
+0xc185ac  bl   0xc166a0                               ; mapB.find(id)
+0xc185b0  mov  w1,#0xd00                              ; default 0xd00
+0xc185b4  cbnz x0, 0xc18588
+0xc185b8  mov  w0,w1 ; ret
+```
+
+So `fx6_lookup(menu_item_id_t)` returns the text ResID, with:
+`0x02004c47` and `0xffffffff` → `0`, and an unknown id → `0xd00`.
+
+**35 call sites**, listed here because they are the entry points to the whole menu text system:
+
+```text
+0xc187d8 0xc18854 0xc264d8 0xc55990 0xc5599c 0xf64648 0xf646ac 0xf669a0 0xf66a04
+0xf6c13c 0xf6c1a0 0xf7731c ... (35 total, resolved by direct bl scan)
+```
+
+### 671 — mapA is slot → *text*, mapB is slot → *icon*
+
+Decoding both sources with the corrected key rule shows they are two halves of the same menu-item
+description:
+
+```text
+mapA  (0x226a6c0, 4216 entries)  slot -> text ResID  (namespace 1 or 2)
+      slot 0x234  0x02002227  'Shooting'
+      slot 0x235  0x02002228  'Project'
+      slot 0x4ec  0x0200222b  'TC/Media'
+      ... 4213 more
+
+mapB  (0x2272a80, 147 entries)   slot -> icon ResID  (namespace 0, image_00_169.uxc)
+      slot 0x234  0x02000172 / 0x02000173 / 0x02000174 / 0x020001a2 / 0x020001a3 / 0x020001c4
+      slot 0x237  0x0200018e / 0x0200018f / 0x02000190 / 0x020001b7 / 0x020001b8 / 0x020001cd
+      slot 0x2a7  0x02000178 / 0x02000179 / 0x0200017a / 0x020001a6 / 0x020001a7 / 0x020001c6
+      slot 0x2a8  0x0200018b / 0x0200018c / 0x0200018d / 0x020001b5 / 0x020001b6 / 0x020001cc
+      slot 0x202  0x02000152 / 0x02000154 / 0x02000153        <- the Back icon family
+      slot 0xf07  0x020003d5 / 0x020003d6 / 0x020003d7
+```
+
+All of those ns-0 ids were verified present in `image_00_169.uxc` (1829 records): `0x152`, `0x153`,
+`0x154`, `0x172`, `0x173`, `0x174`, `0x1a2`, `0x1a3`, `0x1c4`, `0x1f3`, `0x202`, `0x2a4`, `0x2a7`.
+Note that a slot legitimately repeats: those are the icon *states* (normal / selected / disabled) or the
+per-language variants, so mapB behaves like a multimap.
+
+**This is the answer to (1)**: there is no per-category "array of sub-item slots" table. The category
+identity and its sub-items are all just slot ids in these two maps; the *grouping* is implicit in which
+slot numbers the presenter asks for. `slot 0x234..0x237` + `0x4ec` are the FX6 section titles, and the
+per-section sub-item slots are the other slots the same presenter requests.
+
+### 671 — Page-break marker `0x42d5a60`, and the real shape of `0x2ea3e50`
+
+The "28-entry setting main menu" is several pages concatenated. Rows whose class tag is **`0x42d5a60`**
+and whose rect is all zeroes are page separators:
+
+```text
+0x2ea3e50 [00] No107_BLOCK_TOUCH      0x42d5860  (0,0,1024,540)
+         [01] No4_SETTING_LIST_MAIN   0x42d5a20  (96,72,402,432)
+         [02] No20_SETTING_MAIN_STRING 0x42d57f0 (139,270,348,36)
+         [03] No3_SETTING_VALUE       0x42d57f0  (505,266,315,36)
+         [04] No32_SETTING_VALUE2     0x42d57f0  (505,266,308,32)
+         [05] No2_SETTING_ITEM        0x42d57f0  (505,236,315,28)
+         [06..09] four buttons        0x42d58d0  d18=0x020023da 'Set'
+         [10] 0x42d5a60  <-- page break
+         [11] No2_BG   0x42d5a50 d18=0x020001d2 (56,49,912,477)
+         [12] No6_TEXT_1 d18=0x02002b83 ...
+         [17] 0x42d5a60  <-- page break
+         [18] No1_TRANS_BG 0x42d5a40 d18=0x0200c001
+         ...
+```
+
+So the Setting main page is entries **0..9** (10 widgets: 1 list + 4 strings + 4 buttons + touch), and
+the following pages are the text-dialog / transferring / toast pages.
+
+### 671 — Three-layer menu `0x2ea02f8`: 35 entries, then a page break
+
+```text
+[00] No1_WID_NINEPATCHIMAGE_STAGE1_BG  0x42d5a40  d18=0x0200c006  (56,49,912,477)
+[01] No25_Gridlist                     0x42d59e0                  (62,56,494,462)
+[02..09] No35..No28_itemtouchbutton8..1  0x42d58d0                (570,463/412/.../106, 386,52)
+[10..16] No9..No4,No10_item*inthesecondlayer  0x42d57f0            (578,418/367/316/265/214/163/469, 370,40)
+[17] No21_ItemBG                       0x42d5a40  d18=0x0200c00d  (564,62,401,36)
+[18] No3_Backstringinthesecondlayer    0x42d57f0  d18=0x02004c3e  (622,112,326,40)
+[19] No23_Itemselectionofthefirstlayer 0x42d57f0                  (568,62,280,36)
+[20..22] lower/upper outside lines     0x42d5a40  colours c009/c005/c00a
+[23] No26_ScrollbarBase                0x42d5a40  d18=0x0200c005  (958,102,4,415)
+[24] No27_Scrollbar                    0x42d5a40  d18=0x0200c013
+[25] No2_Backiconinthesecondlayer      0x42d5a50  d18=0x02000154  (578,112,38,38)
+[26] No22_ItemnumberBG                 0x42d5a40  d18=0x0200c00f  (921,66,40,28)
+[27] No24_Itemnumber                   0x42d57f0                  (922,67,38,28)
+[28..34] right/left outside lines + separators      0x42d5a40  c00a/c00e/c001/c009
+[35] 0x42d5a60  <-- page break
+```
+
+The 7 second-layer rows are entries **10..16**, and the 8 buttons entries **02..09** — that is the
+"7 rows + navigation" layout the dynamic line already renders.
+
+### 671 — Format templates for the six runtime value slots
+
+Searching both string containers for `${vN}` templates gives the bitrate one directly:
+
+```text
+0x02002be2  '${v1}.${v2} Mbps (${v3} %)'     <- No2141_BITRATE
+0x02002b74  'Mbps'                            <- unit only
+0x0200335a  '2.0x' 0x02003270 '1.65x'         (already documented as zoom values)
+```
+
+There is **no** `HH:MM:SS:FF` style timecode template in either container. The timecode widgets
+(`No1071_TIME_CODE_VALUE`, `No2071_TIME_CODE_VALUE`) must be filled with an already-composed string, or
+with the glyph-composed format `0x0200220c '${v1:02}\ue5d5${v2:02}\ue5d8'` / `0x0200220d`. Likewise the
+clip-number and camreel slots have no template; only item names (`'Shot' 0x02002a48`, `'Reel' 0x020029f0`)
+are static.
+
+Practical guidance for 671: set `No2141_BITRATE` from `${v1}.${v2} Mbps` (`0x02002be2`) if the
+formatter is available, otherwise write a literal string; leave the TC/clip slots at `-1` (they will
+simply not draw) rather than guessing a format.

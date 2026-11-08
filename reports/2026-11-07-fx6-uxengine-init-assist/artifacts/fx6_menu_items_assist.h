@@ -1607,3 +1607,129 @@ static const fx6_opt_t fx6_paint_items[] = {
 };
 
 #define FX6_OPT_COUNT(a) (sizeof(a)/sizeof((a)[0]))
+
+/* ======================================================================
+ * PHASE 11 — the eleven top-level categories, plain and PUA-prefixed
+ * ======================================================================
+ * All 22 ids below were resolved individually against string_english.uxc (ns1) and
+ * string_english_2.uxc (ns2); none is inferred. Note the mixture: five categories exist only as
+ * plain text (Shooting, Paint/Look, TC/Media, Technical, Edit User Menu), the rest have a second
+ * copy in a PUA-prefixed "icon + label" form.
+ *
+ * The PUA glyphs are the category icons rendered from the font, e.g. \ue60a, \ue60f, \ue60b,
+ * \ue60e, \ue612, \ue618, \ue6b9 -- so a row that shows the prefixed string needs no separate
+ * view_icon child.
+ */
+typedef struct {
+    const char *name;
+    uint32_t resid_plain;   /* bare label                */
+    uint32_t resid_pua;     /* \ueXXX-prefixed label, 0 if the container has no such variant */
+    uint8_t  ns_plain;
+} fx6_top_category_t;
+
+static const fx6_top_category_t fx6_top_categories[11] = {
+    {"User",          0x02004208u, 0x00000000u, 2},   /* ns2 'User'                     */
+    {"Edit User Menu",0x02004d4au, 0x00000000u, 2},   /* ns2 'Edit User Menu'           */
+    {"Shooting",      0x02002227u, 0x00000000u, 1},   /* ns1 'Shooting'                 */
+    {"Project",       0x02002228u, 0x020024d4u, 1},   /* ns1 'Project',  \ue60bProject  */
+    {"Paint/Look",    0x02002493u, 0x00000000u, 1},   /* ns1 'Paint/Look'               */
+    {"TC/Media",      0x0200222bu, 0x00000000u, 1},   /* ns1 'TC/Media'                 */
+    {"Monitoring",    0x02002229u, 0x020024d6u, 1},   /* ns1, \ue60eMonitoring          */
+    {"Audio",         0x020041fbu, 0x020024d2u, 2},   /* ns2, \ue60fAudio               */
+    {"Thumbnail",     0x02004209u, 0x00000000u, 2},   /* ns2 'Thumbnail'                */
+    {"Technical",     0x0200222au, 0x00000000u, 1},   /* ns1 'Technical'                */
+    {"Maintenance",   0x02004203u, 0x02002cdbu, 2},   /* ns2, \ue6b9Maintenance         */
+};
+#define FX6_TOP_CATEGORY_COUNT 11u
+
+/* Additional PUA-prefixed variants found in the containers that are NOT top-level categories but
+ * appear in the same icon family. Useful when a navigation column mixes categories and panels. */
+#define FX6_PUA_CAMERA      0x020024d0u   /* \ue60aCamera      */
+#define FX6_PUA_CAMERA_ALT  0x020024d1u
+#define FX6_PUA_AUDIO       0x020024d2u   /* \ue60fAudio       */
+#define FX6_PUA_AUDIO_ALT   0x020024d3u
+#define FX6_PUA_PROJECT     0x020024d4u   /* \ue60bProject     */
+#define FX6_PUA_PROJECT_ALT 0x020024d5u
+#define FX6_PUA_MONITORING  0x020024d6u   /* \ue60eMonitoring  */
+#define FX6_PUA_MONITORING_ALT 0x020024d7u
+#define FX6_PUA_MEDIA       0x020024dcu   /* \ue618Media       */
+#define FX6_PUA_NETWORK     0x020024e0u   /* \ue612Network     */
+#define FX6_PUA_MAINTENANCE 0x02002cdbu   /* \ue6b9Maintenance */
+#define FX6_PUA_MONITORING_2 0x02002b11u
+
+/* ======================================================================
+ * PHASE 11 — the two list containers are NOT built by the factory
+ * ======================================================================
+ * Tag 0x042d59e0 (No25_Gridlist) and 0x042d5a20 (No4_SETTING_LIST_MAIN) never appear in the
+ * factory's tag dispatch. The factory only compares these nine tags:
+ *
+ *   0xc19534 GOT 0x2ee56f8 -> 0x42d5a50   view_icon
+ *   0xc19584 GOT 0x2ee6468 -> 0x42d57f0   view_string
+ *   0xc195dc GOT 0x2ee6ab0 -> 0x42d59a0
+ *   0xc19634 GOT 0x2eedd50 -> 0x42d5a40   view_fill
+ *   0xc1965c GOT 0x2eeb738 -> 0x42d58d0   view_menu_item
+ *   0xc196bc GOT 0x2ee77d8 -> 0x42d5840
+ *   0xc19708 GOT 0x2ee6318 -> 0x42d5960
+ *   0xc19754 GOT 0x2ee2f00 -> 0x42d57d0
+ *   0xc19768 GOT 0x2ee25b0 -> 0x42d57e0
+ *
+ * Instead the containers are built by the list constructor appFw+0xc870cc(this, desc*, u32 count):
+ *
+ *   0xc870ec  str  wzr,[x19,#0x648]        ; count = 0
+ *   0xc870f0  mov  x2,#0x640
+ *   0xc87104  str  x0,[x19]                ; vptr from GOT 0x2eece18
+ *   0xc87114  bl   0xb174d0                ; memset(this+8, 0, 0x640)
+ *   0xc87118  cmp  x23,x22                 ; loop over count descriptions
+ *   0xc87120  ldr  x0,[x20]                ; desc[i]
+ *   0xc8712c  bl   0xc87054                ; filter: accept only these row classes
+ *   0xc87138  ubfiz x0,x21,#4,#32          ; row slot = i*0x10
+ *   0xc87148  str  x1,[x0,#8]              ; rows[i].view   = desc[i] tag target
+ *   0xc8714c  ldrh w1,[x20,#0x3a]
+ *   0xc87150  str  w1,[x0,#0x10]           ; rows[i].id     = desc[i]+0x3a (u16 row id)
+ *   0xc87164  str  w21,[x19,#0x648]        ; stored count
+ *   0xc87168  str  xzr,[x19,#0x650]        ; cursor = NULL
+ *
+ * so the row array is **stride 0x10** at this+8: { void *view; u32 id; u32 pad }, and the visible
+ * row count is decided at run time by how many descriptions pass the filter at 0xc87054 — it is not
+ * a compile-time constant. That is why no fixed "how many row children" number exists in the image.
+ *
+ * Cursor / selection support (same class, immediately after the ctor):
+ *
+ *   0xc8717c  str  x1,[x0,#0x650]     set cursor object
+ *   0xc87184  ldr  x0,[x0,#0x650] ; cbz ; ldr w0,[x0]      cursor index, 0 when unset
+ *   0xc8719c  ubfiz x1,x1,#4,#32 ; add x1,x0,x1 ; ldr w19,[x1,#0x10] ; ldr x1,[x1,#8]
+ *   0xc87200  bl   0xc86f4c           row -> param_t
+ *   0xc87204  strb w21,[x0,#0x3c]     selected flag
+ *   0xc87210  bl   0xc86f4c
+ *   0xc87218  strb w23,[x0,#0x6c]     per-row state byte (at param+0x106c)
+ *
+ * The cursor colour is therefore NOT stored in the container: the selection is expressed as a byte
+ * at `param_t + 0x3c` (and `+0x106c` for the secondary state), with the actual colour coming from
+ * the row widget's own sprite. Consistent with round 677: no descriptor carries `0x0200c0xx`.
+ */
+/* The filter 0xc87054 accepts exactly five row-class tags (GOT slot -> tag):
+ *   0x2eeb738 -> 0x042d58d0  view_menu_item          (the normal list row)
+ *   0x2ee3cc8 -> 0x042d5850  another row class
+ *   0x2eee168 -> 0x042d58f0  another row class
+ *   0x2ee6ab0 -> 0x042d59a0  another row class
+ *   0x2ee9180 -> 0x042d5a20  view_list_scroll_cursor_fixed (nested list as a row)
+ * Anything else in the description array is skipped, so the stored count at +0x648 can be smaller
+ * than the number of descriptions passed in.
+ */
+#define FX6_CONTAINER_CTOR      0xc870ccu
+#define FX6_CONTAINER_VPTR_GOT  0x2eece18u   /* -> static vtable 0x2d58950 */
+#define FX6_CONTAINER_ROW_OFF   0x8u
+#define FX6_CONTAINER_ROW_STRIDE 0x10u
+#define FX6_CONTAINER_ROW_ID_OFF 0x3au   /* source field inside the descriptor */
+#define FX6_CONTAINER_COUNT     0x648u
+#define FX6_CONTAINER_CURSOR    0x650u
+#define FX6_CONTAINER_ROWS_MAX  (0x640u / FX6_CONTAINER_ROW_STRIDE)   /* 100 slots */
+
+#define FX6_ROW_SELECTED_BYTE   0x3cu    /* param_t + 0x3c  = selected flag      */
+#define FX6_ROW_STATE_BYTE      0x106cu  /* param_t + 0x106c = secondary state   */
+
+/* The two container tags, with their on-screen rects from the tables. */
+#define FX6_GRIDLIST_TAG        0x042d59e0u
+#define FX6_GRIDLIST_RECT       {62, 56, 494, 462}
+#define FX6_SETTING_LIST_TAG    0x042d5a20u
+#define FX6_SETTING_LIST_RECT   {96, 72, 402, 432}

@@ -8325,3 +8325,137 @@ WRONG  0x020023d0 labelled "White Balance"-> actually 'Custom Aspect Ratio'
 ```
 
 All three are fixed in the header, and the audit script now reports 0 unresolved ResIDs in the block.
+
+### 679 — The eleven top-level categories, plain and PUA-prefixed
+
+All 22 ids were resolved individually against the containers — none inferred:
+
+```text
+                     plain        PUA-prefixed variant
+User                 0x02004208    (none)
+Edit User Menu       0x02004d4a    (none)
+Shooting             0x02002227    (none)
+Project              0x02002228    0x020024d4  '\ue60bProject'
+Paint/Look           0x02002493    (none)
+TC/Media             0x0200222b    (none)
+Monitoring           0x02002229    0x020024d6  '\ue60eMonitoring'
+Audio                0x020041fb    0x020024d2  '\ue60fAudio'
+Thumbnail            0x02004209    (none)
+Technical            0x0200222a    (none)
+Maintenance          0x02004203    0x02002cdb  '\ue6b9Maintenance'
+```
+
+**Five of the eleven have no PUA twin**: Shooting, Paint/Look, TC/Media, Technical, Edit User Menu,
+and User / Thumbnail have none either — so eight, not five. A search across *both* string containers
+for every string whose bytes begin with a PUA glyph and whose tail equals a category name returns only
+these families:
+
+```text
+\ue60a Camera      0x020024d0 / 0x020024d1
+\ue60f Audio       0x020024d2 / 0x020024d3
+\ue60b Project     0x020024d4 / 0x020024d5   (also 0x02002b38, 0x02002b59)
+\ue60e Monitoring  0x020024d6 / 0x020024d7   (also 0x02002b11)
+\ue618 Media       0x020024dc / 0x020024dd   (also 0x02002b65, 0x02002b6f)
+\ue612 Network     0x020024e0 / 0x020024e1   (also 0x02002b96)
+\ue6b9 Maintenance 0x02002cdb
+```
+
+Each family stores the same string twice (0x24d0/0x24d1 etc.), which is the same long/short
+duplication seen in the option tables, so either id renders identically.
+
+Note that **Camera and Media appear only in PUA form among the navigation strings**, while the
+category list uses Project/Monitoring/Audio/User — this is worth keeping straight when wiring the
+1st-layer column, because a column built from the PUA family will show *Camera / Audio / Project /
+Monitoring / Media / Network / Maintenance* rather than the eleven categories.
+
+### 679 — The two list containers are not built by the factory
+
+Tag `0x042d59e0` (No25_Gridlist, rect 62,56,494,462) and tag `0x042d5a20`
+(No4_SETTING_LIST_MAIN, rect 96,72,402,432) **never appear in the factory's dispatch**. The factory at
+`0xc1935c` compares exactly nine tags:
+
+```text
+0xc19534  GOT 0x2ee56f8 -> 0x042d5a50   view_icon
+0xc19584  GOT 0x2ee6468 -> 0x042d57f0   view_string
+0xc195dc  GOT 0x2ee6ab0 -> 0x042d59a0
+0xc19634  GOT 0x2eedd50 -> 0x042d5a40   view_fill
+0xc1965c  GOT 0x2eeb738 -> 0x042d58d0   view_menu_item
+0xc196bc  GOT 0x2ee77d8 -> 0x042d5840
+0xc19708  GOT 0x2ee6318 -> 0x042d5960
+0xc19754  GOT 0x2ee2f00 -> 0x042d57d0
+0xc19768  GOT 0x2ee25b0 -> 0x042d57e0
+```
+
+The containers come from the list constructor `appFw+0xc870cc(this, desc*, u32 count)` (122 callers):
+
+```text
+0xc870ec  str  wzr,[x19,#0x648]      ; count = 0
+0xc870f0  mov  x2,#0x640
+0xc87104  str  x0,[x19]              ; vptr from GOT 0x2eece18 -> 0x2d58950
+0xc87114  bl   0xb174d0              ; memset(this+8, 0, 0x640)
+0xc87118  cmp  x23,x22               ; loop over the description array
+0xc87120  ldr  x0,[x20]              ; desc[i]
+0xc8712c  bl   0xc87054              ; class filter
+0xc87138  ubfiz x0,x21,#4,#32        ; row slot = i * 0x10
+0xc87148  str  x1,[x0,#8]            ; rows[i].view = desc[i]
+0xc8714c  ldrh w1,[x20,#0x3a]        ; desc[i]+0x3a
+0xc87150  str  w1,[x0,#0x10]         ; rows[i].id
+0xc87164  str  w21,[x19,#0x648]      ; stored count
+0xc87168  str  xzr,[x19,#0x650]      ; cursor = NULL
+```
+
+So the row array is **stride 0x10 at this+8**, layout `{ void *view; u32 id; u32 pad }`, capacity
+`0x640 / 0x10 = 100` slots. The **visible row count is computed at run time** by the filter at
+`0xc87054`, which accepts exactly five row classes:
+
+```text
+0x2eeb738 -> 0x042d58d0   view_menu_item                    (the normal row)
+0x2ee3cc8 -> 0x042d5850
+0x2eee168 -> 0x042d58f0
+0x2ee6ab0 -> 0x042d59a0
+0x2ee9180 -> 0x042d5a20   view_list_scroll_cursor_fixed    (a nested list used as a row)
+```
+
+Anything else in the description array is **skipped silently**, which is why the stored count at
+`+0x648` can be smaller than the number of descriptions passed in. That also means there is no
+compile-time "how many row children" constant anywhere in the image — the number depends on which
+descriptions a presenter hands in.
+
+### 679 — Cursor / selection: a byte, not a colour
+
+The selection state is carried by the container's cursor pointer at `+0x650` and materialised as a
+**byte inside the row's `param_t`**:
+
+```text
+0xc8717c  str  x1,[x0,#0x650]        ; set cursor object
+0xc87184  ldr  x0,[x0,#0x650] ; cbz ; ldr w0,[x0]    ; cursor index, 0 when unset
+0xc8719c  ubfiz x1,x1,#4,#32 ; add x1,x0,x1
+0xc871b4  ldr  w19,[x1,#0x10]        ; row id
+0xc871b8  ldr  x1,[x1,#8]            ; row view
+0xc871cc  bl   0xc87184              ; cursor index
+0xc871d0  cmp  w19,w0 ; cset w21,eq  ; selected = (row.id == cursor.id)
+0xc87200  bl   0xc86f4c              ; row -> param_t
+0xc87204  strb w21,[x0,#0x3c]        ; param_t+0x3c = selected flag
+0xc87218  strb w23,[x0,#0x6c]        ; param_t (+0x1000) + 0x6c = secondary state byte
+```
+
+So the highlight is expressed as `param_t + 0x3c` (and `+0x106c`), **not** as a colour ResID. This is
+fully consistent with round 677, where no descriptor in any of the 437 menu_item rows carried a
+`0x0200c0xx` value: the selected/orange versus normal/grey distinction is applied by the row widget's
+own sprite from `color_cmn.uxc` (`0xc014` orange, `0xc00e` grey), driven by that boolean.
+
+### 679 — Row geometry
+
+Neither container stores per-row rects. The row pitch comes from the presenter, and the table geometry
+already measured gives it directly:
+
+```text
+Gridlist  (1st layer)   frame (62,56,494,462)   row pitch 40..52 depending on page
+Setting list            frame (96,72,402,432)   row pitch 36 (No2_SETTING_ITEM h=28, No3_SETTING_VALUE h=36)
+three-layer 2nd column  (570, y, 386, 52),  y = 106..463 step 51
+three-layer 3rd column  (578, y, 370, 40),  y = 163..469 step 51
+```
+
+A probe that wants to lay out its own rows inside a container should use the container frame from the
+descriptor table and divide by the pitch above; the container itself only stores the view pointers and
+the row ids.

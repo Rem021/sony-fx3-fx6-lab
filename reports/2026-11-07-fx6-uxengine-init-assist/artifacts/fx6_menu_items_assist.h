@@ -628,3 +628,68 @@ static inline void fx6_icon_blit(void *icon, int x, int y, int w, int h,
     if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(icon);   /* onCreate     */
     if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(icon);   /* onDrawNotice */
 }
+
+/* ======================================================================
+ * 669 — Resolved Big-6 / menu caption ResIDs (all verified against the uxc index)
+ * ======================================================================
+ * Index key rule (this is the part that was wrong before): a packed ResID is resolved with
+ *     ns  = (id >> 13) & 0x7ff
+ *     key = (ns << 13) | (id & 0x1fff)          <-- NOT 0x4000 + idx
+ * and then looked up in string_english.uxc (ns 1) or string_english_2.uxc (ns 2).
+ *
+ * Verified: 0x02002227 -> key 0x2227 -> "Shooting"; 0x02005082 -> key 0x5082 -> "FPS".
+ */
+static inline int fx6_resid_ns(uint32_t id)   { return (int)((id >> 13) & 0x7ffu); }
+static inline int fx6_resid_index(uint32_t id) { return (int)(id & 0x1fffu); }
+static inline uint32_t fx6_resid_key(uint32_t id)
+{
+    return (uint32_t)((fx6_resid_ns(id) << 13) | fx6_resid_index(id));
+}
+
+/* The A84 caption/format table at appFw+0x23be620 (84 packed ResIDs, 21 of them ns=2).
+ * Entry [i] pairs a *label* (ns 1 or 2) with the neighbouring entry, which is usually a
+ * `${v1}`/`${v2}` format template. Measured contents of the first entries:
+ *
+ *   [00] 0x020043ed 'Frequency'      [01] 0x02005082 'FPS'
+ *   [02] 0x02004575 'Frame Rate'     [04] 0x02004d96 'Shutter Angle'
+ *   [06] 0x02004d94 'Shutter Speed'  [08] 0x02004d98 'ECS Frequency'
+ *   [12] 0x020030cc 'Angle (Step)'   [14] 0x020030ce 'Angle (Continuous)'
+ *   [16] 0x020030d1 'Speed (Step)'   [18] 0x020030dc 'Speed (Continuous)'
+ *   [20] 0x020020a2 'Speed: \ue5db${v1}'       [28] 0x020020ae 'Angle: ${v1}.${v2:02}'
+ *   [43] 0x02003003 'Look'           [58] 0x02002464 'S-Cinetone'
+ *   [60] 0x02002466 'Standard'       [64] 0x020023ed 'ITU709'
+ *   [68] 0x020023f1 'HLG Live'       [72] 0x020023f5 'HLG Natural'
+ *   [74] 0x02002830 'LUT On'         [76] 0x020028ee 'LUT Off'
+ */
+#define FX6_A84_TABLE_ADDR 0x23be620u
+#define FX6_A84_TABLE_COUNT 84u
+
+/* The Big-6 style labels, resolved by value so a probe never has to guess: */
+#define FX6_TXT_FPS          0x02005082u   /* ns2 'FPS'            */
+#define FX6_TXT_SHUTTER      0x020050e8u   /* ns2 'Shutter'        */
+#define FX6_TXT_SHUTTER_N1   0x02002fe1u   /* ns1 'Shutter'        */
+#define FX6_TXT_ISO          0x02004c32u   /* ns2 'ISO'            */
+#define FX6_TXT_GAIN         0x0200420eu   /* ns2 'Gain'           */
+#define FX6_TXT_ND_FILTER    0x02004288u   /* ns2 'ND Filter'      */
+#define FX6_TXT_WHITE_BAL    0x02005689u   /* ns2 'White Balance'  */
+#define FX6_TXT_WHITE_BAL_N1 0x02002a67u   /* ns1 'White Balance'  */
+#define FX6_TXT_BASE_LOOK    0x020023f8u   /* ns1 'Base Look'      */
+#define FX6_TXT_CODEC        0x02004261u   /* ns2 'Codec'          */
+#define FX6_TXT_COLOR_MODE   0x020044f5u   /* ns2 'Color Mode'     */
+#define FX6_TXT_VF_COLOR_MODE 0x020044f7u  /* ns2 'VF Color Mode'  */
+#define FX6_TXT_ISO_GAIN     0x02005459u   /* ns2 'ISO/Gain'       */
+#define FX6_TXT_FREQUENCY    0x020043edu   /* ns2 'Frequency'      */
+#define FX6_TXT_FRAME_RATE   0x02004575u   /* ns2 'Frame Rate'     */
+#define FX6_TXT_SHUTTER_ANGLE 0x02004d96u  /* ns2 'Shutter Angle'  */
+#define FX6_TXT_SHUTTER_SPEED 0x02004d94u  /* ns2 'Shutter Speed'  */
+#define FX6_TXT_OFF          0x02005292u   /* ns2 'Off'            */
+#define FX6_TXT_AUTO_N2      0x020056e7u   /* ns2 'Auto'           */
+#define FX6_TXT_MANUAL_N2    0x020056ecu   /* ns2 'Manual'         */
+
+/* Per-widget param_t initialisers that carry a (caption, caption, -1, -1) tuple.
+ * These are what the presenter feeds the six big cells from: no descriptor +0x18 in the
+ * 0x48-stride tables carries a Big-6 title except No27_THUMBNAIL_PROPERTIES_FPS_TITLE. */
+#define FX6_PARAM_GAIN        0x2da5a20u   /* +0x18: 0x0200420e 'Gain', 0x020043b3 'Gain' */
+#define FX6_PARAM_ND_FILTER   0x2dd2c00u   /* +0x18: 0x020054fd 'ND Filter' x2            */
+#define FX6_PARAM_COLOR_MODE  0x2dd8180u   /* +0x00: 0x020044f5/44f6 'Color Mode',
+                                            *        0x020044f7 'VF Color Mode'        */

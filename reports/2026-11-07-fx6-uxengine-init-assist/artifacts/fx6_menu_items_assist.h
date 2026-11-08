@@ -1144,3 +1144,244 @@ static inline void fx6_view_string_apply_desc(void *vs, const fx6_desc_view_stri
 #define FX6_CAT_MAINTENANCE 0x2a7u
 #define FX6_CAT_USER       0x2a9u
 #define FX6_CAT_THUMBNAIL  0x2aau
+
+/* ======================================================================
+ * PHASE 9 — descriptor layouts for view_menu_item / view_icon / view_fill
+ * ======================================================================
+ * IMPORTANT: two tags from the Phase-9 brief do not exist in this image.
+ *
+ *   tag 0x042d5798 : 0 descriptors     (searching all 0x48 tables)
+ *   tag 0x042d59a8 : 0 descriptors
+ *
+ * and the two "constructors" named with them are not constructors:
+ *
+ *   0xc2ad3c   = bl 0xb17620 ; strb w21,[x19,#0x4c0] ...   (inside a body, 0 bl callers)
+ *   0xc2993c   = ldp x19,x20,[sp,#0x10] ... ret            (an epilogue,  0 bl callers)
+ *
+ * The real classes are view_icon tag 0x042d5a50 / ctor 0xc2c188, and view_fill tag 0x042d5a40 /
+ * ctor 0xc27698. Both are modelled below; the fictional tags are NOT defined.
+ *
+ * Descriptor field statistics were measured over every 0x48 row in the image:
+ *   view_string    597 rows      view_menu_item 437 rows
+ *   view_fill      386 rows      view_icon      256 rows
+ */
+
+/* ----------------------------------------------------------------------
+ * view_menu_item — tag 0x042d58d0, class ctor 0xc341d4, size 0x19788
+ * ----------------------------------------------------------------------
+ * Measured field use over all 437 rows:
+ *   +0x18  0x00000000 x336, 0x020056e8 x25, 0x02004c46 x18, 0x020023da x13, ...
+ *   +0x1c  0x0200a02a x311, 0x00000000 x94, 0x0200a029 x28, 0x0200a02b x4     (layout)
+ *   +0x20  0x00000001 x223, 0x00000002 x120, 0x00000000 x94        (MODE 1|2, NOT a colour)
+ *   +0x24  0x02006004 x241, 0x00000000 x92, 0x0200600d x40, 0x02006017 x28   (FontName A)
+ *   +0x28  0x0200600e x305, 0x00000000 x94, 0x02006016 x30, 0x02006002 x6    (FontName B)
+ *   +0x2c  0x00000044 x437                                    (font size, same as view_string)
+ *   +0x30  0x00000ce2 x423                                    (flags)
+ *   +0x34  0x00002ce9 x437                                    (flags)
+ *   +0x38  0x00040008 x21, 0x00050008 x13, 0x00030008 x10, 0x00090019 x9 ...
+ *
+ * Factory writes (0xc1966c..0xc196b4, x0 = obj+0x1d0):
+ *   desc+0x18 -> obj+0x21c   (guarded: skipped when 0)
+ *   desc+0x24 -> obj+0x22c   desc+0x28 -> obj+0x234
+ *   desc+0x1c -> obj+0x238   desc+0x20 -> obj+0x23c
+ *   obj+0x240 = 0
+ *   desc+0x38 (u16) -> obj+0x200, only when value <= 0x5b
+ *
+ * The +0x24/+0x28/+0x1c group is written ONLY if all three are non-zero — the 94 rows with
+ * +0x1c == 0 never receive fonts and therefore never render, the same failure shape as Phase 7.
+ */
+#define FX6_MI_TAG          0x042d58d0u
+#define FX6_MI_SIZE         0x19788u
+#define FX6_MI_CTOR         0xc341d4u
+
+#define FX6_MI_OBJ_TEXT     0x21cu   /* desc+0x18 */
+#define FX6_MI_OBJ_FONT_A   0x22cu   /* desc+0x24 */
+#define FX6_MI_OBJ_FONT_B   0x234u   /* desc+0x28 */
+#define FX6_MI_OBJ_LAYOUT   0x238u   /* desc+0x1c */
+#define FX6_MI_OBJ_MODE     0x23cu   /* desc+0x20, values 0/1/2 */
+#define FX6_MI_OBJ_ZERO     0x240u
+#define FX6_MI_OBJ_WIDGETID 0x200u   /* desc+0x38, clamped to <= 0x5b */
+
+#define FX6_MI_MODE_NONE    0u
+#define FX6_MI_MODE_TEXT    1u
+#define FX6_MI_MODE_ICON    2u
+
+typedef struct __attribute__((packed)) {
+    uint32_t tag;           /* +0x00  0x042d58d0                            */
+    uint32_t zero04;
+    uint32_t name;          /* +0x08 */
+    uint32_t zero0c;
+    uint32_t zero10;
+    uint32_t zero14;
+    uint32_t text_resid;    /* +0x18 -> obj+0x21c                            */
+    uint32_t layout;        /* +0x1c -> obj+0x238                            */
+    uint32_t mode;          /* +0x20 -> obj+0x23c   0/1/2                    */
+    uint32_t font_a;        /* +0x24 -> obj+0x22c                            */
+    uint32_t font_b;        /* +0x28 -> obj+0x234                            */
+    uint32_t font_size;     /* +0x2c -> obj+0xa14 (shared with view_string)   */
+    uint32_t flag_a;        /* +0x30 */
+    uint32_t flag_b;        /* +0x34 */
+    uint16_t widget_id;     /* +0x38 -> obj+0x200, <= 0x5b                   */
+    uint16_t pad3a;
+    uint32_t rect_xy;       /* +0x3c */
+    uint32_t rect_wh;       /* +0x40 */
+    uint32_t reserved;      /* +0x44 */
+} fx6_desc_view_menu_item;  /* sizeof == 0x48 */
+
+/* ----------------------------------------------------------------------
+ * view_icon — tag 0x042d5a50, class ctor 0xc2c188, size 0x668
+ * ----------------------------------------------------------------------
+ * Factory branch (0xc19644..0xc19654): desc+0x18 -> obj+0x21c, and only when non-zero:
+ *     0xc19644  ldr w0,[x19,#0x18] ; cbz -> skip ; str w0,[x1,#0x30]
+ * The ctor sets +0x1fc = 0 (disabled) and +0x20c (image ResID) is written by the caller, so a
+ * view_icon row paints only after +0x1fc = 1 and +0x20c = a namespace-0 image id.
+ * The Sprite lives at +0x550; clip colour bytes are +0x21c..+0x21f and the clip size is a u16 pair
+ * at +0x204/+0x206 (all measured in round 665).
+ */
+#define FX6_VI_TAG          0x042d5a50u
+#define FX6_VI_SIZE         0x668u
+#define FX6_VI_CTOR         0xc2c188u
+
+#define FX6_VI_OBJ_ENABLE   0x1fcu
+#define FX6_VI_OBJ_CLIP_RGBA 0x21cu
+#define FX6_VI_OBJ_IMAGE    0x20cu
+#define FX6_VI_OBJ_CLIP_W   0x204u
+#define FX6_VI_OBJ_CLIP_H   0x206u
+#define FX6_VI_OBJ_SPRITE   0x550u
+
+typedef struct __attribute__((packed)) {
+    uint32_t tag;           /* +0x00  0x042d5a50                            */
+    uint32_t zero04;
+    uint32_t name;          /* +0x08 */
+    uint32_t zero0c;
+    uint32_t zero10;
+    uint32_t zero14;
+    uint32_t image_resid;   /* +0x18 -> obj+0x21c (clip colour) then +0x20c  */
+    uint32_t layout;        /* +0x1c */
+    uint32_t mode;          /* +0x20 */
+    uint32_t font_a;        /* +0x24 */
+    uint32_t font_b;        /* +0x28 */
+    uint32_t reserved2c;    /* +0x2c */
+    uint32_t flag_a;        /* +0x30 */
+    uint32_t flag_b;        /* +0x34 */
+    uint32_t widget_id;     /* +0x38 */
+    uint32_t rect_xy;       /* +0x3c */
+    uint32_t rect_wh;       /* +0x40 */
+    uint32_t reserved;      /* +0x44 */
+} fx6_desc_view_icon;       /* sizeof == 0x48 */
+
+/* ----------------------------------------------------------------------
+ * view_fill — tag 0x042d5a40, class ctor 0xc27698, size 0x308
+ * ----------------------------------------------------------------------
+ * Factory branch (0xc19630..0xc19654, GOT 0x2eedd50 = tag 0x042d5a40):
+ *
+ *   0xc19644  ldr w0,[x19,#0x18] ; cbz -> skip ; ldr x1,[x21,#0x10] ; str w0,[x1,#0x30]
+ *
+ * with x1 = obj+0x1d0, so **desc+0x18 lands at obj+0x200**, i.e. straight into the colour-ResID
+ * slot that onDrawNotice reads. view_fill is the one class where the descriptor colour needs no
+ * translation step. Painting then requires +0x1fc = 1 and either +0x200 != -1 (namespace-6 colour)
+ * or the inline bytes +0x205..+0x208.
+ */
+#define FX6_VF_TAG          0x042d5a40u
+#define FX6_VF_SIZE         0x308u
+#define FX6_VF_CTOR         0xc27698u
+
+#define FX6_VF_OBJ_ENABLE   0x1fcu
+#define FX6_VF_OBJ_COLOR    0x200u
+#define FX6_VF_OBJ_RGBA     0x205u
+#define FX6_VF_OBJ_SPRITE   0x210u
+#define FX6_VF_OBJ_TEXT     0x21cu
+#define FX6_VF_OBJ_FONT_A   0x22cu
+#define FX6_VF_OBJ_FONT_B   0x234u
+#define FX6_VF_OBJ_LAYOUT   0x238u
+#define FX6_VF_OBJ_MODE     0x23cu
+
+typedef struct __attribute__((packed)) {
+    uint32_t tag;           /* +0x00  0x042d5a40                            */
+    uint32_t zero04;
+    uint32_t name;          /* +0x08 */
+    uint32_t zero0c;
+    uint32_t zero10;
+    uint32_t zero14;
+    uint32_t color_resid;   /* +0x18 -> obj+0x200 (colour ResID, ns 6)        */
+    uint32_t layout;        /* +0x1c -> obj+0x238                            */
+    uint32_t mode;          /* +0x20 -> obj+0x23c                            */
+    uint32_t font_a;        /* +0x24 -> obj+0x22c                            */
+    uint32_t font_b;        /* +0x28 -> obj+0x234                            */
+    uint32_t font_size;     /* +0x2c -> obj+0xa14                            */
+    uint32_t flag_a;        /* +0x30 */
+    uint32_t flag_b;        /* +0x34 */
+    uint32_t widget_id;     /* +0x38 */
+    uint32_t rect_xy;       /* +0x3c */
+    uint32_t rect_wh;       /* +0x40 */
+    uint32_t reserved;      /* +0x44 */
+} fx6_desc_view_fill;       /* sizeof == 0x48 */
+
+/* ----------------------------------------------------------------------
+ * Selection highlight colours (color_cmn.uxc, namespace 6). No descriptor field carries these,
+ * so they are applied by the presenter at run time.
+ * ---------------------------------------------------------------------- */
+#define FX6_COLOR_SELECT_ORANGE   0x0200c014u   /* ffaa00ff  selected row       */
+#define FX6_COLOR_SELECT_ORANGE2  0x0200c016u   /* ffc000ff  selected variant   */
+#define FX6_COLOR_SELECT_RED      0x0200c011u   /* ee0000ff  alert/record       */
+#define FX6_COLOR_YELLOW          0x0200c012u   /* ffdd00ff                     */
+#define FX6_COLOR_BORDER_GREY     0x0200c00eu   /* 777777ff  separator / border */
+#define FX6_COLOR_BORDER_DARK     0x0200c009u   /* 333333ff  outline            */
+#define FX6_COLOR_ITEM_BG         0x0200c00du   /* 666666ff  item background    */
+#define FX6_COLOR_ITEM_NUMBER_BG  0x0200c00fu   /* aaaaaaff  number plate       */
+
+/* Apply helpers: reproduce the factory's writes plus the paint-enable flags. */
+static inline void fx6_menu_item_apply_desc(void *mi, const fx6_desc_view_menu_item *d)
+{
+    if (!mi || !d) return;
+    if (d->text_resid) *(uint32_t *)((char *)mi + FX6_MI_OBJ_TEXT) = d->text_resid;
+    if (d->layout && d->font_a && d->font_b) {
+        *(uint32_t *)((char *)mi + FX6_MI_OBJ_FONT_A) = d->font_a;
+        *(uint32_t *)((char *)mi + FX6_MI_OBJ_FONT_B) = d->font_b;
+        *(uint32_t *)((char *)mi + FX6_MI_OBJ_LAYOUT) = d->layout;
+        *(uint32_t *)((char *)mi + FX6_MI_OBJ_MODE)   = d->mode;
+        *(uint32_t *)((char *)mi + FX6_MI_OBJ_ZERO)   = 0;
+    }
+    if (d->widget_id <= 0x5bu) *(uint32_t *)((char *)mi + FX6_MI_OBJ_WIDGETID) = d->widget_id;
+    *(uint32_t *)((char *)mi + 0xa14) = d->font_size;
+    *(int32_t  *)((char *)mi + 0x1e8) = (int32_t)(d->rect_xy & 0xffffu);
+    *(int32_t  *)((char *)mi + 0x1ec) = (int32_t)((d->rect_xy >> 16) & 0xffffu);
+    *(int32_t  *)((char *)mi + 0x1f0) = (int32_t)(d->rect_wh & 0xffffu);
+    *(int32_t  *)((char *)mi + 0x1f4) = (int32_t)((d->rect_wh >> 16) & 0xffffu);
+}
+
+static inline void fx6_view_icon_apply_desc(void *ic, const fx6_desc_view_icon *d)
+{
+    if (!ic || !d) return;
+    if (d->image_resid) {
+        *(uint32_t *)((char *)ic + FX6_VI_OBJ_CLIP_RGBA) = d->image_resid;
+        *(uint32_t *)((char *)ic + FX6_VI_OBJ_IMAGE)     = d->image_resid;
+    }
+    *(uint16_t *)((char *)ic + FX6_VI_OBJ_CLIP_W) = (uint16_t)(d->rect_wh & 0xffffu);
+    *(uint16_t *)((char *)ic + FX6_VI_OBJ_CLIP_H) = (uint16_t)((d->rect_wh >> 16) & 0xffffu);
+    *(int32_t  *)((char *)ic + 0x1e8) = (int32_t)(d->rect_xy & 0xffffu);
+    *(int32_t  *)((char *)ic + 0x1ec) = (int32_t)((d->rect_xy >> 16) & 0xffffu);
+    *(int32_t  *)((char *)ic + 0x1f0) = (int32_t)(d->rect_wh & 0xffffu);
+    *(int32_t  *)((char *)ic + 0x1f4) = (int32_t)((d->rect_wh >> 16) & 0xffffu);
+    *(uint8_t  *)((char *)ic + FX6_VI_OBJ_ENABLE) = 1;
+}
+
+static inline void fx6_view_fill_apply_desc(void *vf, const fx6_desc_view_fill *d)
+{
+    if (!vf || !d) return;
+    if (d->color_resid) {
+        *(uint32_t *)((char *)vf + FX6_VF_OBJ_COLOR) = d->color_resid;
+    }
+    if (d->layout && d->font_a && d->font_b) {
+        *(uint32_t *)((char *)vf + FX6_VF_OBJ_FONT_A) = d->font_a;
+        *(uint32_t *)((char *)vf + FX6_VF_OBJ_FONT_B) = d->font_b;
+        *(uint32_t *)((char *)vf + FX6_VF_OBJ_LAYOUT) = d->layout;
+        *(uint32_t *)((char *)vf + FX6_VF_OBJ_MODE)   = d->mode;
+    }
+    if (d->font_size) *(uint32_t *)((char *)vf + 0xa14) = d->font_size;
+    *(int32_t *)((char *)vf + 0x1e8) = (int32_t)(d->rect_xy & 0xffffu);
+    *(int32_t *)((char *)vf + 0x1ec) = (int32_t)((d->rect_xy >> 16) & 0xffffu);
+    *(int32_t *)((char *)vf + 0x1f0) = (int32_t)(d->rect_wh & 0xffffu);
+    *(int32_t *)((char *)vf + 0x1f4) = (int32_t)((d->rect_wh >> 16) & 0xffffu);
+    *(uint8_t *)((char *)vf + FX6_VF_OBJ_ENABLE) = 1;
+}

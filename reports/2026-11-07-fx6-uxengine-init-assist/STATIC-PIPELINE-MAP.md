@@ -7977,3 +7977,187 @@ top-level (first-layer) navigation slots        secondary (second-layer) anchors
 with the nearby `0x248 'Reset Paint Settings'` / `0x246 'Set'` action slots. That, plus the fact that
 no caller passes a slot array, is why there is no single "ten categories, each with a slot list"
 structure in the image.
+
+### 677 — Correction first: two of the three tags in this request do not exist
+
+Before mapping fields I checked every `0x48` descriptor in the image for the three tags:
+
+```text
+tag 0x042d57f0 (view_string)            597 descriptors
+tag 0x042d58d0 (view_menu_item)         437 descriptors
+tag 0x042d5a40 (view_fill)              386 descriptors
+tag 0x042d5a50 (view_icon)              256 descriptors
+tag 0x042d57d0                           33 descriptors
+tag 0x042d59a0                            4 descriptors
+tag 0x042d5798                            0   <-- NOT PRESENT
+tag 0x042d59a8                            0   <-- NOT PRESENT
+```
+
+And the two constructor addresses given are not constructors either:
+
+```text
+0xc2ad3c   disassembles to  bl 0xb17620 ; strb w21,[x19,#0x4c0] ; ldr x2,[x0,#0x270] ...
+           0 call sites as a `bl` target  -> it is inside a body, not a prologue
+0xc2993c   disassembles to  ldp x19,x20,[sp,#0x10] ; ldp d8,d9,[sp,#0x28] ; ... ; ret
+           0 call sites as a `bl` target  -> it is an epilogue
+```
+
+So the real tags/constructors from the creator table are:
+
+```text
+creator[0] 0xc1b128 -> ctor 0xc2c188   view_icon    size 0x668   tag 0x42d5a50
+creator[1] 0xc1b048 -> ctor 0xc27698   view_fill    size 0x308   tag 0x42d5a40
+creator[2] 0xc1b694 -> ctor 0xc3af98   view_string  size 0x1388  tag 0x42d57f0
+creator[4] 0xc1af88 -> ctor 0xc27800   view_frame   size 0x1178  tag 0x42d59a0? (see below)
+creator[5] 0xc1b3fc -> ctor 0xc2d874   list_cursor  size 0x239870 tag 0x42d5a20
+```
+
+Note `0x42d59a0` (4 descriptors) and `0x42d57d0` (33 descriptors) are the only other tags with real
+rows; `0x42d58d0` (menu_item) is *not* in the creator table at all — it is produced through the
+`view_menu_item` path keyed by a different tag, and its 437 rows carry `desc+0x18` mostly zero.
+
+### 677 — `0x042d58d0` (`view_menu_item`): measured field distribution over all 437 rows
+
+```text
++0x18  0x00000000 x336, 0x020056e8 x25, 0x02004c46 x18, 0x020023da x13,
+       0x0200461f x8, 0x020056e9 x8, 0x020050f6 x7, 0x0200220f x3
++0x1c  0x0200a02a x311, 0x00000000 x94, 0x0200a029 x28, 0x0200a02b x4
++0x20  0x00000001 x223, 0x00000002 x120, 0x00000000 x94        <- 1 or 2, i.e. a MODE not a colour
++0x24  0x02006004 x241, 0x00000000 x92, 0x0200600d x40, 0x02006017 x28, 0x02006032 x17
++0x28  0x0200600e x305, 0x00000000 x94, 0x02006016 x30, 0x02006002 x6
++0x2c  0x00000044 x437                                           <- font size, same as view_string
++0x30  0x00000ce2 x423                                           <- flags
++0x34  0x00002ce9 x437                                           <- flags
++0x38  0x00040008 x21, 0x00050008 x13, 0x00030008 x10, 0x00090019 x9, 0x00030019 x8
+```
+
+**`+0x20` is not a colour** — it only ever takes the values `0, 1, 2`. `+0x1c` is a layout id
+(`0x0200a02a` dominant here, versus `0x0200a029` for view_string). `+0x24/+0x28` are FontName ids,
+`+0x2c` the font size, `+0x30/+0x34` flags. So **the style/selection colour is not stored in the
+descriptor at all** — it comes from `color_cmn.uxc` at run time.
+
+### 677 — The orange / grey highlight pair, resolved by value
+
+`color_cmn.uxc` has exactly 27 records. The orange family is:
+
+```text
+0xc011  ee0000ff   pure red-orange
+0xc012  ffdd00ff   yellow
+0xc014  ffaa00ff   ORANGE          <- the selected-row highlight
+0xc015  ffee00ff   bright yellow
+0xc016  ffc000ff   ORANGE (darker) <- the alternative highlight
+0xc018  885500ff   dark amber
+```
+
+and the greys used for normal borders/panels:
+
+```text
+0xc005 111111ff   0xc008 222222ff   0xc009 333333ff   0xc00a 444444cc
+0xc00b 444444ff   0xc00d 666666ff   0xc00e 777777ff   0xc00f aaaaaaff
+0xc010 eeeeeeff   0xc013 888888ff   0xc019 ffffffff
+```
+
+What the tables actually use for menu borders and separators (measured in the 0x2ea02f8 / 0x2eaf208
+rows): `0xc00e` (777777) for separators, `0xc009`/`0xc00a`/`0xc005` for outlines, `0xc00d` for the
+item background, `0xc00f` for the item-number plate. **The selected-state orange is `0xc014`
+(`0xffaa00`) with `0xc016` (`0xffc000`) as the variant**, and the normal-state border is `0xc00e`
+(`0x777777`) or `0xc009` (`0x333333`) depending on the widget.
+
+Neither value appears in a `desc+0x18` of a menu_item row, which confirms the selection colour is
+applied by the presenter at run time, not carried by the descriptor.
+
+### 677 — Factory field mapping for `view_menu_item` (`0xc19658..0xc196b4`)
+
+```text
+0xc1966c  ldr w1,[x19,#0x18] ; cbz -> skip ; str w1,[x0,#0x4c]   desc+0x18 -> obj+0x21c
+0xc1967c  ldr w4,[x19,#0x24] ; cbz -> skip
+0xc19684  ldr w3,[x19,#0x28] ; cbz -> skip
+0xc1968c  ldr w1,[x19,#0x1c] ; cbz -> skip
+0xc19694  ldr w5,[x19,#0x20] ; stp w4,w3,[x0,#0x5c] ; stp w1,w5,[x0,#0x64]
+0xc196a0  str wzr,[x0,#0x6c]
+0xc196a4  ldrh w1,[x19,#0x38] ; cmp w1,#0x5b ; b.gt skip ; str w1,[x0,#0x30]
+```
+
+with `x0 = obj+0x1d0`, so the absolute targets are `obj+0x21c`, `obj+0x22c`, `obj+0x234`,
+`obj+0x238`, `obj+0x23c`, and the widget id goes to `obj+0x200`. Note the three guarded writes:
+**if `desc+0x24`, `desc+0x28` or `desc+0x1c` is zero, the whole group is skipped** — that is the same
+class of failure as the Phase-7 view_string bug, and it is why 94 menu_item rows (the ones with
+`+0x1c = 0`) can never render text.
+
+### 677 — What still cannot be answered from statics
+
+The request asked how a menu_item maps to "background, four-edge view_frame `0xc27800`, arrow icon and
+text sub-widgets", and which two colour ResIDs select orange vs grey. Statics give:
+
+* the ten child pointers live at `obj+0x19730 + slot*8` (round 672),
+* the four `view_icon` and two `view_string` children are constructed inside `0xc341d4`,
+* `view_frame` is a separate class (ctor `0xc27800`, `0x1178` bytes) with a five-entry child array at
+  `+0x1150`, not a sub-object of menu_item.
+
+What statics do **not** give is the orange/grey pair *wired to selection*, because no descriptor field
+carries it. Confirming which of `0xc014`/`0xc016` is applied on selection needs one runtime sample of
+the child's `+0x30` colour field — a single value from a live run would settle it.
+
+### 677 — `view_fill` is the one class whose descriptor colour needs no translation
+
+Factory branch at `0xc19630..0xc19654` (GOT `0x2eedd50` = tag `0x042d5a40`):
+
+```text
+0xc19644  ldr  w0,[x19,#0x18]
+0xc19648  cbz  w0, skip
+0xc1964c  ldr  x1,[x21,#0x10]      ; x1 = obj+0x1d0
+0xc19650  str  w0,[x1,#0x30]       ; -> obj+0x200
+```
+
+Because `x1 = obj+0x1d0`, `desc+0x18` lands at **`obj+0x200`** — the exact slot
+`view_fill::onDrawNotice` reads as a namespace-6 colour ResID. So for fill rows the descriptor value
+goes straight in, with no offset translation, and the only remaining gate is `+0x1fc = 1`.
+(For `view_menu_item` and `view_icon`, the same factory pattern targets `obj+0x21c` instead, which is
+a clip/text slot, not the paint colour.)
+
+### 677 — Three descriptor structs added, all compile-time verified
+
+```text
+fx6_desc_view_menu_item   sizeof 0x48   widget_id @0x38   (+ widgets: 0x21c text, 0x22c/0x234 fonts,
+                                                          0x238 layout, 0x23c mode)
+fx6_desc_view_icon        sizeof 0x48   image_resid @0x18  (+ obj+0x21c clip colour, +0x20c image,
+                                                          +0x204/+0x206 clip size, +0x1fc enable)
+fx6_desc_view_fill        sizeof 0x48   color_resid @0x18  -> obj+0x200 directly
+```
+
+with apply helpers `fx6_menu_item_apply_desc`, `fx6_view_icon_apply_desc`,
+`fx6_view_fill_apply_desc` that reproduce the factory writes **including the guard conditions**
+(`if (desc+0x24 && desc+0x28 && desc+0x1c)` for the font group, `widget_id <= 0x5b` for the id).
+Those guards matter: 94 of the 437 menu_item rows have `+0x1c == 0` and would silently lose their
+fonts if a helper wrote unconditionally.
+
+### 677 — The selection colour pair, by value
+
+`color_cmn.uxc` holds exactly 27 records. The highlight candidates are:
+
+```text
+0xc011  ee0000ff   red-orange
+0xc012  ffdd00ff   yellow
+0xc014  ffaa00ff   ORANGE          <- selected row
+0xc015  ffee00ff   bright yellow
+0xc016  ffc000ff   ORANGE darker   <- selected variant
+0xc018  885500ff   dark amber
+```
+
+and the greys that the menu tables actually bind:
+
+```text
+0xc00e  777777ff   separator / normal border      (used by No19..No20, No29..No34 separators)
+0xc009  333333ff   outer outline                  (No11..No18 lines)
+0xc005  111111ff   scrollbar base
+0xc00a  444444cc   secondary outline
+0xc00d  666666ff   item background (No21_ItemBG)
+0xc00f  aaaaaaff   item-number plate (No22_ItemNumberBG)
+0xc013  888888ff   scrollbar thumb (No27)
+```
+
+**Selected / normal pair, as far as statics can prove:** selected = `0xc014` (`ffaa00`), with `0xc016`
+(`ffc000`) as the lighter variant; normal border = `0xc00e` (`777777`). Confirming *which* of
+`0xc014`/`0xc016` is actually applied on selection requires one runtime read of the row child's
+`+0x30` colour field, because no descriptor field carries it — all 437 menu_item rows have
+`+0x20 ∈ {0,1,2}` (a mode), and their `+0x18` values are text ids, never `0x0200c0xx`.

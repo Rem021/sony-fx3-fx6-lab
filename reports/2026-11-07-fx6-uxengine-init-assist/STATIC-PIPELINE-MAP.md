@@ -6404,3 +6404,43 @@ Two facts worth recording:
   `libwtle`; `appFw` never calls a glyph function, it calls `TextSprite::drawText()`.
 
 Full listing: `artifacts/fx6_grm_glyph_callsites.txt`.
+
+### 658 — Why `fill=0`: `view_fill::onDrawNotice` has two different paint paths
+
+Run `cp-bind-8a785b4c` (image 658, setting page) drew four captions but `fill=0 icon=0`. The serial log:
+
+```text
+FX6_VSR658 loadFonts ok=128/128
+FX6_VSR658 setting main[01] ? No4_SETTING_LIST_MAIN          tag=42d5a20
+FX6_VSR658 setting main[06] S No106_BUTTON_BOTTOM_RIGHT      (654,425,164,72) text=020023da lay=0200a02a f=0200600d
+FX6_VSR658 text blit n=216 at 654,425
+FX6_VSR658 done text=4 fill=0 icon=0 skipN2=0 text_ok=4
+```
+
+`view_fill::onDrawNotice` (`0xc2750c`) gates on three fields and then chooses one of two paths:
+
+```text
+ldrb w1,[x0,#0x1fc]        ; enabled?
+ldr  w1,[x0,#0x200]        ; string/text ResID
+cmn  w1,#1                 ; == -1  -> no resource string
+ldrb w1,[x0,#0x208]        ; solid-colour flag
+
+if (enabled == 0)                        -> mode 3, returns (nothing drawn)
+else if (+0x200 == -1 && +0x208 == 0)    -> mode 3, returns (nothing drawn)
+
+path A  (+0x200 != -1):                  ; resource-string fill
+    build Vector2(x,y); setClipSize(w,h); Sprite::setString(+0x200)
+    Sprite::setStyle via vt[0x1a0]  -> 4 bytes at [ret]
+    colour = { [ret+0], [ret+1], [ret+2], [ret+3] or [+0x209] if [+0x204] }
+path B  (+0x200 == -1, +0x208 != 0):     ; plain solid fill
+    colour = { +0x205, +0x206, +0x207, +0x208 }
+```
+
+So a `view_fill` that only gets geometry never paints: it needs `+0x1fc = 1` **and** either a string
+ResID at `+0x200` or `+0x208 != 0`. The four-byte colour lives at `+0x205..+0x208` for the solid path,
+which is where a real panel background comes from.
+
+That is the concrete fix for the next run: when instantiating a `view_fill` from a descriptor, also set
+`+0x1fc = 1` and write the RGBA into `+0x205..+0x208` (colour ids come from `color_cmn.uxc`:
+`0xc00e` = `0x777777ff` separator, `0xc001` = opaque black, etc.). `icon=0` has the same shape of cause:
+`view_icon` needs `+0x1fc = 1` and `+0x20c != -1`.

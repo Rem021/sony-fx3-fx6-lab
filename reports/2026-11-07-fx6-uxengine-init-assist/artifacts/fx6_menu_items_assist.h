@@ -302,3 +302,34 @@ static const uint8_t fx6_menu_style_delta[16] = {
 };
 
 #endif /* FX6_MENU_ITEMS_ASSIST_H */
+
+/* ======================================================================
+ * view_fill paint contract (appFw+0xc2750c), measured from image 658's fill=0
+ * ======================================================================
+ * A view_fill with only geometry draws nothing. onDrawNotice gates on three fields:
+ *
+ *   +0x1fc u8   enabled
+ *   +0x200 s32  string ResID, -1 = none
+ *   +0x208 u8   solid-colour flag
+ *
+ *   enabled == 0                          -> mode 3, no paint
+ *   +0x200 == -1 && +0x208 == 0           -> mode 3, no paint
+ *   +0x200 != -1                          -> Sprite::setString(+0x200), colour from vt[0x1a0]
+ *   +0x200 == -1 && +0x208 != 0           -> solid fill, colour bytes +0x205..+0x208
+ */
+static inline void fx6_fill_set_solid(void *fill, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    if (!fill) return;
+    *(uint8_t  *)((char *)fill + 0x1fc) = 1;   /* enabled          */
+    *(uint32_t *)((char *)fill + 0x200) = 0xffffffffu; /* no string */
+    *(uint8_t  *)((char *)fill + 0x205) = r;
+    *(uint8_t  *)((char *)fill + 0x206) = g;
+    *(uint8_t  *)((char *)fill + 0x207) = b;
+    *(uint8_t  *)((char *)fill + 0x208) = a;   /* also the "have colour" flag */
+}
+
+/* Colour ids measured in color_cmn.uxc (namespace 6, marker 0x3a00, payload u32 RGBA). */
+#define FX6_COLOR_BLACK     0x0200c001u   /* 000000ff */
+#define FX6_COLOR_WHITE     0x0200c019u   /* ffffffff */
+#define FX6_COLOR_SEPARATOR 0x0200c00eu   /* 777777ff */
+#define FX6_COLOR_ACCENT    0x0200c011u   /* ee0000ff */

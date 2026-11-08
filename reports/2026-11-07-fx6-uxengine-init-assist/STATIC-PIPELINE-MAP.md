@@ -7281,3 +7281,178 @@ runtime trace. Example, all verified against `string_english.uxc`:
 0x0200219f 'S-Log3'     0x020021a0 's709'         0x0200219e '709(800%)'
 0x0200335a '2.0x'       0x02003270 '1.65x'        0x02003307 '1.3x'
 ```
+
+### 669 — namespace 2 IS registered in `global.xdb`; the failure is not a missing mount
+
+The dynamic line reported that namespace 2 never loads, so 21 ns=2 ResIDs (e.g. `0x020043ed`,
+`0x02005082`, `0x02005292`) return `rc=0`. Parsing `share/app/global.xdb` directly shows the block for
+namespace 2 exists and is structurally identical to the namespace 1 block:
+
+```text
+global.xdb header: 'uxa' | u32 7 | u32 9 blocks | 9 u32 offsets
+
+blocks found by scanning for the marker `09 00 <ns> 00`:
+  ns=0  0x02c   image_00_169.uxc        (+ 0x008 top-level duplicate)
+  ns=1  0x064   string_english.uxc ...
+  ns=2  0x360   string_english_2.uxc ...     <-- PRESENT
+  ns=3  0x6a0   style_cmn.uxc
+  ns=5  0x6c8   lang_cmn.uxc
+  ns=6  0x6e4   color_cmn.uxc
+  ns=4,7        no block
+```
+
+and the two language blocks are byte-for-byte the same shape:
+
+```text
+ns1 @0x064: 09 00 01 00 | 1d a0 03 00 | 00 00 00 00 | 1d a0 03 00 count ...
+ns2 @0x360: 09 00 02 00 | 1d a0 03 00 | 00 00 00 00 | 1d a0 03 00 count ...
+            ^marker ns  ^same 0x0003a01d table descriptor, same 29-entry offset array
+```
+
+The 63 named entries in the file include every `string_<language>_2.uxc` sibling, so nothing is missing
+from the database. **Therefore "namespace 2 is not loaded" is a runtime selection problem, not a
+missing-mount problem.** Two candidate causes are left, and both are resolvable without a VM:
+
+1. **language selection.** `ns1` and `ns2` are the *same language* in two banks
+   (`string_english.uxc` / `string_english_2.uxc`). `XDBTable::switchBank(u16, bool*)`
+   (`liblibra+0x36f8c`) and `SystemLookupTable::switchBank(u16, bool)`
+   (`liblibra+0x33164`) exist exactly for this, and `ResourceManager::switchBank(u16)`
+   (`libuxengine+0x75294` -> `liblibra+0x2d62c` -> `liblibra+0x21180`) is the public entry. A probe
+   that only ever calls `switchBank(0,0)`, `switchBank(4,0)`, `switchBank(1,4)`, `switchBank(2,4)` — as
+   the harness does — never selects bank 2.
+2. **`sys_getNamespaceID` rejects it.** Per the previously documented rule, bits `[25:24]` of a packed
+   id must be 2 or 3. `0x02005082` has bits `[25:24] = 0`, so it must be resolved through the namespace
+   *table* (`ns = (v>>13)&0x7ff = 2`), which only works once the ns-2 XDB block is actually open.
+
+Concrete instruction for the next run, in order:
+
+```text
+1. ResourceManager::setDatabase("global.xdb")            (already done, returns 1)
+2. ResourceManager::switchBank(2)                        <-- the missing call
+3. ResourceManager::getText(0x02005082) should stop returning 0
+```
+
+If `switchBank(2)` is rejected, the block is present but its language is not the active one, and the
+correct call is `switchBank(ns, force)` with the namespace argument taken from the packed id of a
+string that *does* resolve.
+
+### 669 — Big-6 titles located by value (they are plain ResIDs, no hidden table)
+
+Searching the whole binary for every plausible FPS / Shutter / ISO / Gain / ND / WB / Base Look / Codec /
+Color Mode id gives a very clean split: the **ns=2 variants have real hits**, the ns=1 guesses mostly do
+not. Full enumeration:
+
+```text
+'FPS'           0x02005082 (ns2)  10 hits   .rodata:0x226c980 0x23be624 0x23be62c 0x23bf0dc 0x23bf0e4
+'Shutter'       0x020050e8 (ns2)   1 hit    .rodata:0x2270f48
+'Shutter'       0x02002fe1 (ns1)  32 hits   .rodata:0x23be634.. (the A84 set)
+'ISO'           0x02004c32 (ns2)   3 hits   .rodata:0x226c848  .data.rel.ro:0x2d95e2c 0x2d95e34
+'Gain'          0x0200420e (ns2)   2 hits   .rodata:0x226aec8  .data.rel.ro:0x2da5a38
+'Gain'          0x020043b3 (ns2)   2 hits   .rodata:0x2270e48  .data.rel.ro:0x2da5a3c
+'ND Filter'     0x02004288 (ns2)  11 hits   .rodata:0x2270f18 0x227fa18 ... .data.rel.ro:0x293638c
+'ND Filter'     0x020054fd (ns2)   3 hits   .rodata:0x226cb18  .data.rel.ro:0x2da4354 0x2dd2c1c
+'ND Filter'     0x02002604 (ns1)  20 hits   .rodata:0x226b9b0  .data.rel.ro:0x2d69f0c ...
+'White Balance' 0x02005689 (ns2)   5 hits   .rodata:0x226c1f8  .data.rel.ro:0x2dddea0 0x2e33960
+'White Balance' 0x02002a67 (ns1)  20 hits   .rodata:0x226e420  .data.rel.ro:0x2d6a78c ...
+'Base Look'     0x020023f8 (ns1)   2 hits   .rodata:0x226b8f0  .data.rel.ro:0x2938354
+'Codec'         0x02004261 (ns2)   2 hits   .rodata:0x2270e28  .data.rel.ro:0x2da7108
+'Codec'         0x020022fb (ns1)  19 hits   .rodata:0x226a830  .data.rel.ro:0x2da70f8 ...
+'Color Mode'    0x020044f5/44f6 (ns2) 3 hits each  .rodata:0x226b310 / 0x2271860, .data.rel.ro:0x2dd8180
+'ISO/Gain'      0x02005459 (ns2)   4 hits   .rodata:0x226fa88  .data.rel.ro:0x2da42d4 0x2dd264c
+```
+
+Two structural findings from those addresses:
+
+**1. `0x2dd8180` is a real 4-element title tuple, back to back:**
+
+```text
+0x2dd8180  0x020044f5  'Color Mode'
+0x2dd8184  0x020044f6  'Color Mode'
+0x2dd8188  0x020044f7  'VF Color Mode'
+0x2dd818c  0x020044f7  'VF Color Mode'
+0x2dd8190  0xffffffff
+```
+
+That `(id, id, -1, -1)` shape is the per-widget `param_t` initialiser pattern: two captions for two
+states, then `-1` terminators. `0x2da5a20` (Gain) and `0x2dd2c00` (ND Filter) have the same shape.
+
+**2. Exactly one *descriptor* in all the 0x48-stride tables carries a Big-6 title:**
+
+```text
+table 0x2e9cef0 [28]  No27_THUMBNAIL_PROPERTIES_FPS_TITLE   desc+0x18 = 0x02005082  'FPS'
+```
+
+So the six big cells' captions are **not** wired through descriptor `+0x18`; they come from the
+`param_t` initialisers above. That closes question (a) of the previous round: the labels exist as
+`param_t` data at `0x2da5a20` (Gain), `0x2dd2c00` (ND Filter), `0x2dd8180` (Color Mode), etc., reached by
+the presenter, and a probe can use the same ResIDs directly.
+
+### 669 — CORRECTION: ns=2 ids do pass `sys_getNamespaceID`, and the A84 table is fully decodable
+
+Two claims in the paragraphs above are wrong and are withdrawn:
+
+```text
+WRONG: "0x02005082 has bits[25:24] = 0, so sys_getNamespaceID rejects it"
+RIGHT: (0x02005082 >> 24) & 3 == 2   -> sys_getNamespaceID returns 2, the id is accepted
+```
+
+```text
+WRONG: the uxc index must be looked up with key = 0x4000 + idx
+RIGHT: the index key is key = (ns << 13) | idx, i.e. the id with the 0x02000000 tag removed.
+       Verified: 0x02002227 -> key 0x2227 -> 'Shooting'
+                 0x020023da -> key 0x23da -> 'Set'
+                 0x02005082 -> key 0x5082 -> 'FPS'
+                 0x020043ed -> key 0x43ed -> 'Frequency'
+```
+
+With the corrected key the **A84 table at `0x23be620` resolves 84/84**, and exactly **21** of them are
+namespace 2 — matching the count the dynamic line reported as failing:
+
+```text
+[00] 0x020043ed ns2 'Frequency'          [01] 0x02005082 ns2 'FPS'
+[02] 0x02004575 ns2 'Frame Rate'         [03] 0x02005082 ns2 'FPS'
+[04] 0x02004d96 ns2 'Shutter Angle'      [05] 0x02002fe1 ns1 'Shutter'
+[06] 0x02004d94 ns2 'Shutter Speed'      [07] 0x02002fe1 ns1 'Shutter'
+[08] 0x02004d98 ns2 'ECS Frequency'      [09] 0x02002fe1 ns1 'Shutter'
+[10] 0x020043b0 ns2 'Mode'               [12] 0x020030cc ns1 'Angle (Step)'
+[14] 0x020030ce ns1 'Angle (Continuous)' [16] 0x020030d1 ns1 'Speed (Step)'
+[18] 0x020030dc ns1 'Speed (Continuous)' [20] 0x020020a2 ns1 'Speed: \ue5db${v1}'
+[21] 0x020046f8 ns2 'Speed'              [22] 0x020020b1 ns1 'Speed: ${v1}F'
+[24] 0x02002aa8 ns1 'Speed: 1.2F\ue6b3'  [26] 0x020020b2 ns1 'Angle: ${v1}F'
+[27] 0x020046fa ns2 'Angle'              [28] 0x020020ae ns1 'Angle: ${v1}.${v2:02}'
+[30] 0x020020a3 ns1 'Angle: ${v1}.${v2:01}'  [32] 0x020020a4 ns1 'ECS: ${v1}.${v2:02}'
+[33] 0x02004b56 ns2 'ECS'                [36] 0x020020b0 ns1 'ECS: ${v1}'
+[38] 0x02002efc ns1 'Recall Internal Memory'  [39] 0x02002fe6 ns1 'Scene File'
+[40] 0x02005292 ns2 'Off'                [41] 0x020023dd ns1 '\ue803Back'
+[42] 0x0200246b ns1 'Select'             [43] 0x02003003 ns1 'Look'
+[44] 0x020028bd ns1 '\ue699SDI/HDMI'     [46] 0x020021d2 ns1 'Auto'
+[47] 0x020056e7 ns2 'Auto'               [48] 0x020021d1 ns1 'Manual'
+[49] 0x020056ec ns2 'Manual'             [50] 0x02002457 ns1 '(No File)'
+[51] 0x02005292 ns2 'Off'                [52] 0x020023d8 ns1 '(No LUT)'
+[54] 0x0200225e ns1 'Internal Rec'       [55] 0x02002918 ns1 'XAVC'
+[58] 0x02002464 ns1 'S-Cinetone'         [60] 0x02002466 ns1 'Standard'
+[62] 0x020023e9 ns1 'Still'              [64] 0x020023ed ns1 'ITU709'
+[66] 0x02002a19 ns1 '709tone'            [68] 0x020023f1 ns1 'HLG Live'
+[70] 0x020024ac ns1 'HLG Mild'           [72] 0x020023f5 ns1 'HLG Natural'
+[74] 0x02002830 ns1 'LUT On'             [76] 0x020028ee ns1 'LUT Off'
+[77] 0x020028f8 ns1 'Log'                [78] 0x0200281c ns1 '\ue0c7${v1:02}'
+[80] 0x02002a21 ns1 '\ue0c8${v1:02}'     [82] 0x020029a1 ns1 '\ue68900'
+```
+
+So the table is a **caption / value-format pair table** (label + `${v1}` template), and the ns=2 entries
+are the short labels (`FPS`, `Speed`, `Angle`, `ECS`, `Off`, `Auto`, `Manual`) that pair with the ns=1
+format strings. That is why the dynamic line's ns=2 lookups matter: they are the run-time labels.
+
+**Since the block exists in `global.xdb` and the id passes the namespace decoder, the remaining cause is
+call order.** The harness currently does:
+
+```text
+setDatabase("global.xdb")
+switchBank(0,0) switchBank(1,4) switchBank(2,4)     <- before the font load and before the draw
+```
+
+`switchBank` selects a language bank inside the already-open database; it does not open namespace 2's
+XDB block. The block is opened by `XDBTable::load(SystemLookupTable*, char const*)`
+(`liblibra+0x364d0` -> `0x22020`), which `SystemLookupTable::setDatabase` (`liblibra+0x330c8` ->
+`0x21ac0`) triggers per namespace. The practical fix is therefore to call `switchBank(2, 0)` **after**
+the first successful text lookup of a ns=2 id, so the block is already mapped, rather than before it.

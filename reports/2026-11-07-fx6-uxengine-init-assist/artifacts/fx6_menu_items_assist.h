@@ -145,6 +145,29 @@ static inline uint32_t fx6_class_size(int idx)
     return (idx >= 0 && idx < 8) ? fx6_creator_size[idx] : 0;
 }
 
+/* Class tag (descriptor +0x00, appFw-relative) -> bytes to allocate before calling the ctor.
+ * Use this instead of guessing a size: under-allocating a view_menu_item (0x19788) or a
+ * view_list_scroll_cursor_fixed (0x239870) corrupts the heap and the failure surfaces later as
+ * an unrelated crash inside libstella / libandromeda, or as
+ *   "appfw-launch: malloc.c: sysmalloc: Assertion ... failed"
+ * which is exactly what run cp-bind-1eb02dd3 (image 660) hit.
+ *
+ * Measured from the descriptors of the setting page:
+ *   [00] 0x42d5860 touch      [01] 0x42d5a20 list 0x239870  [02..05] 0x42d57f0 string 0x1388
+ *   [06..09] 0x42d58d0 item 0x19788
+ * Instantiating the whole page costs 0x2a44b0 (2.6 MiB); skipping only [01] drops it to 0x6ac40. */
+static inline uint32_t fx6_tag_instance_size(uint32_t tag_off)
+{
+    switch (tag_off) {
+    case 0x42d57f0u: return 0x1388u;    /* view_string                     */
+    case 0x42d5a50u: return 0x668u;     /* view_icon                       */
+    case 0x42d5a40u: return 0x308u;     /* view_fill                       */
+    case 0x42d58d0u: return 0x19788u;   /* view_menu_item                  */
+    case 0x42d5a20u: return 0x239870u;  /* view_list_scroll_cursor_fixed   */
+    default:         return 0u;         /* unknown: do NOT instantiate     */
+    }
+}
+
 #define FX6_CREATOR_TABLE_OFF 0x2911720u
 #define FX6_CREATOR_MAX       40
 

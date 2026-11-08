@@ -6570,3 +6570,63 @@ Practical consequence for 651+: either give `view_list_scroll_cursor_fixed` a de
 (`view_string` 4.9 KiB, `view_fill` 0.8 KiB, `view_icon` 1.6 KiB) directly — the latter is cheap and
 already proven to paint. The size table is now in `fx6_menu_items_assist.h` as
 `fx6_creator_size[]` / `fx6_class_size()` so this cannot be under-allocated again.
+
+### 660 — The empty frame was heap corruption, not a missing field
+
+Run `cp-bind-1eb02dd3` (image `guest-hybrid-fx6kernel-capid-grmreal660-itemfix.cpio`) again stopped
+right after descriptor `[01]`, and this time the log names the cause:
+
+```text
+FX6_VSR660 setting main[00] ? No107_BLOCK_TOUCH   tag=42d5860
+FX6_VSR660 setting main[01] ? No4_SETTING_LIST_MAIN tag=42d5a20
+APPFW_SEGV sig=11 addr=0x7f7c0dc018 pc=7f88af4064 sp=7f81265900
+APPFW_X0=7f7c0dc000  X19=7f7c0dc000  X20=ffffff80
+APPFW_PC_MODULE /usr/lib/libstella.so base=0x7f88ac4000      -> PC offset 0x30064
+APPFW_LR_MODULE /usr/lib/libandromeda.so base=0x7f88bda000   -> LR offset 0x20c40
+appfw-launch: malloc.c:2376: sysmalloc: Assertion `(old_top == initial_top (av) && old_size == 0) ||
+  ((unsigned long) (old_size) >= MINSIZE && prev_inuse (old_top) && ((unsigned long) old_end &
+  (pagesize - 1)) == 0)' failed.
+```
+
+Decoded:
+
+```text
+libstella 0x30064     str xzr,[x0,#0x18]        ; x0 = 0x7f7c0dc000, fault at +0x18 -> 0x7f7c0dc018
+libandromeda 0x20c40  between bl 0x19c90 and adrp #0x3a000 ; a constructor called from stella
+```
+
+`libstella` is faulting on an object it was handed, and the subsequent glibc `sysmalloc` assertion is
+the definitive signature of a corrupted heap: some earlier allocation was too small and a constructor
+wrote past its end. The culprit is the class size again —
+
+```text
+descriptor [01] No4_SETTING_LIST_MAIN  tag 0x42d5a20
+  -> view_list_scroll_cursor_fixed, creator 6, size 0x239870  (2278 KiB)
+```
+
+The harness allocated a small instance buffer and then called a constructor that writes 0x239870 bytes,
+so the corruption only became visible later, inside `libstella`.
+
+Per-descriptor cost of that page, measured from the tags:
+
+```text
+[00] No107_BLOCK_TOUCH         0x42d5860  touch       -
+[01] No4_SETTING_LIST_MAIN     0x42d5a20  list        0x239870
+[02] No20_SETTING_MAIN_STRING  0x42d57f0  string      0x1388
+[03] No3_SETTING_VALUE         0x42d57f0  string      0x1388
+[04] No32_SETTING_VALUE2       0x42d57f0  string      0x1388
+[05] No2_SETTING_ITEM          0x42d57f0  string      0x1388
+[06..09] four buttons          0x42d58d0  menu_item   0x19788 each
+whole page                                            0x2a44b0  (2.6 MiB)
+page without [01]                                     0x6ac40   (427 KiB)
+```
+
+`fx6_menu_items_assist.h` now exposes `fx6_tag_instance_size(tag_off)` so an instantiation loop can
+size every object from its own class instead of a single guess. Two safe strategies for 661+:
+
+1. give `view_list_scroll_cursor_fixed` a dedicated `>= 0x240000` arena slot and keep the full page;
+2. skip `[01]` (the list container is only a scroll viewport; the rows it hosts are the cheap
+   `view_string` / `view_fill` / `view_icon` objects) and render the page from 427 KiB.
+
+Either way the draw loop must run before any other allocation, because a single undersized instance
+poisons the whole heap and the symptom appears far from the bug.

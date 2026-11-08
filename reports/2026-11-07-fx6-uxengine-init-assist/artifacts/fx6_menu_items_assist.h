@@ -2052,3 +2052,210 @@ static const fx6_category_map_t fx6_category_map_full[] = {
 };
 #define FX6_CATEGORY_MAP_FULL_COUNT \
     (sizeof(fx6_category_map_full)/sizeof(fx6_category_map_full[0]))
+
+/* ======================================================================
+ * PHASE 14 — every 0x48 descriptor region in appFw.so
+ * ======================================================================
+ * A full sweep of .rodata and .data.rel.ro for maximal runs of rows whose +0x00 is one of the
+ * known view tags yields 23 regions / 2316 rows. The four already-documented tables are inside
+ * these regions (0x2e9e210 sits in the 0x2e9d9e8 region, 0x2ea3e50 and 0x2ea02f8 in 0x2e9e528,
+ * 0x2eaf208 in 0x2ea5878), because adjacent pages butt against each other with no padding.
+ *
+ * So the list below is a *region* index, not a page index: a region can hold several pages, and
+ * page boundaries inside a region are marked by tag 0x42d5a60 (all-zero rect). Use
+ * FX6_IS_PAGE_BREAK() to split them.
+ */
+typedef struct {
+    uint32_t base;
+    uint16_t rows;
+    uint16_t tag_mix;      /* number of distinct class tags inside the region */
+    const char *first_name;
+} fx6_desc_region_t;
+
+static const fx6_desc_region_t fx6_desc_regions[] = {
+    {0x02e91040u,   5, 2, "No18_clip_name"},
+    {0x02e911f0u,   8, 2, "No2011_audio_level_meter"},
+    {0x02e91508u,   3, 1, "No8_codec"},
+    {0x02e91628u,   5, 1, "No6_picture_size"},
+    {0x02e917d8u, 175, 3, "No2010_gamma_display_assist"},
+    {0x02e94c28u,  40, 2, "No133_homemenu_clip_area"},
+    {0x02e957b0u,   5, 2, "No2045_video_signal_monitor"},
+    {0x02e959a8u,   7, 2, "No1066_base_look"},
+    {0x02e95cc0u,   8, 3, "No2094_tracking_cancel_button"},
+    {0x02e95f90u,  10, 3, "No76_base_look"},
+    {0x02e962a8u,   8, 3, "No16_resolution"},
+    {0x02e96608u,  11, 3, "No4_recstate_string_slot_1st"},
+    {0x02e96a40u,   3, 2, "No27_rec_function"},
+    {0x02e96bf0u, 237, 3, "No6_stbystate_slot_2nd"},
+    {0x02e9afb8u,  29, 3, "No40_CONTENT_NUMBER"},
+    {0x02e9b828u,  21, 3, "No30_clip_footer"},
+    {0x02e9be58u,  97, 3, "No37_duration"},
+    {0x02e9d9e8u,  33, 3, "No48_digital_signature_cr_icon"},
+    {0x02e9e378u,   5, 1, "No2071_TIME_CODE_VALUE"},
+    {0x02e9e528u, 409, 3, "No1172_SHOT_OR_CLIP_NUMBER_VALUE"},
+    {0x02ea5878u, 964, 3, "No4_BLOCK_TOUCH"},
+    {0x02eb67e0u,   4, 3, "No2_TITLE_BG"},
+    {0x02eb6948u, 229, 3, "No12_SET_BUTTON"},
+};
+#define FX6_DESC_REGION_COUNT (sizeof(fx6_desc_regions)/sizeof(fx6_desc_regions[0]))
+
+/* The largest regions are the interesting ones for new UI:
+ *   0x2ea5878 (964)  every full-screen setting page, separated by 0x42d5a60 breaks
+ *   0x2e9e528 (409)  home presenter pages
+ *   0x2e96bf0 (237)  standby / viewfinder OSD state pages
+ *   0x2eb6948 (229)  SET-button pages (26 page breaks inside)
+ *   0x2e917d8 (175)  on-screen overlay / gamma-display-assist layer
+ */
+
+/* ----------------------------------------------------------------------
+ * New page: audio level meter + status strip  (region 0x2e911f0, 8 rows)
+ * The two meter widgets are 58x112 at x=931, i.e. the right edge of the frame.
+ * ---------------------------------------------------------------------- */
+static const fx6_menu_row_t fx6_audio_meter_rows[] = {
+    /* base 0x02e911f0, 8 rows */
+    {"No2011_audio_level_meter", 0x042d57d0u, {931,391,58,112}, 0x00000000u, 0},
+    {"No1005_audio_level_meter", 0x042d57d0u, {931,394,58,112}, 0x00000000u, 0},
+    {"No1001_content_number", 0x042d57f0u, {96,5,206,30}, 0x00000000u, 0},
+    {"No2022_tcub", 0x042d57d0u, {34,505,180,32}, 0x00000000u, 0},
+    {"No2017_clip_name", 0x042d57f0u, {464,507,196,28}, 0x020050c4u, 0},
+    {"No9_baselook", 0x042d57f0u, {823,199,165,32}, 0x02004b37u, 0},
+    {"No17_play_string", 0x042d57f0u, {508,6,144,36}, 0x020050d1u, 0},
+    {"No1010_play_string", 0x042d57f0u, {522,2,144,36}, 0x020050d1u, 0},
+};
+#define FX6_AUDIO_METER_ROWS_COUNT (sizeof(fx6_audio_meter_rows)/sizeof(fx6_audio_meter_rows[0]))
+
+static const fx6_menu_row_t fx6_clip_footer_rows[] = {
+    /* base 0x02e9b828, 21 rows */
+    {"No30_clip_footer", 0x042d5a50u, {0,460,1024,80}, 0x02000311u, 0},
+    {"No1_clip_header", 0x042d5a50u, {0,0,1024,52}, 0x02000312u, 0},
+    {"No4_option_bg", 0x042d5a50u, {38,0,534,54}, 0x0200032bu, 0},
+    {"No21_clip_thumbnail", 0x042d58f0u, {746,325,203,132}, 0x00000000u, 0},
+    {"No20_clip_thumbnail", 0x042d58f0u, {522,325,203,132}, 0x00000000u, 0},
+    {"No19_clip_thumbnail", 0x042d58f0u, {298,325,203,132}, 0x00000000u, 0},
+    {"No18_clip_thumbnail", 0x042d58f0u, {74,325,203,132}, 0x00000000u, 0},
+    {"No17_clip_thumbnail", 0x042d58f0u, {746,190,203,132}, 0x00000000u, 0},
+    {"No16_clip_thumbnail", 0x042d58f0u, {522,190,203,132}, 0x00000000u, 0},
+    {"No15_clip_thumbnail", 0x042d58f0u, {298,190,203,132}, 0x00000000u, 0},
+    {"No14_clip_thumbnail", 0x042d58f0u, {74,190,203,132}, 0x00000000u, 0},
+    {"No13_clip_thumbnail", 0x042d58f0u, {746,55,203,132}, 0x00000000u, 0},
+    {"No12_clip_thumbnail", 0x042d58f0u, {522,55,203,132}, 0x00000000u, 0},
+    {"No11_clip_thumbnail", 0x042d58f0u, {298,55,203,132}, 0x00000000u, 0},
+    {"No10_clip_thumbnail", 0x042d58f0u, {74,55,203,132}, 0x00000000u, 0},
+    {"No31_clip_name", 0x042d57f0u, {57,464,536,30}, 0x00000000u, 0},
+    {"No3_clip_title", 0x042d57f0u, {99,12,302,36}, 0x02005209u, 0},
+    {"No36_criate_time", 0x042d5840u, {675,464,292,30}, 0x00000000u, 0},
+    {"No6_option_exec_guide", 0x042d57f0u, {308,13,246,30}, 0x02004fe2u, 0},
+    {"No5_option_title", 0x042d57f0u, {56,13,246,30}, 0x00000000u, 0},
+    {"No35_rec_mode", 0x042d57f0u, {520,496,242,30}, 0x00000000u, 0},
+};
+#define FX6_CLIP_FOOTER_ROWS_COUNT (sizeof(fx6_clip_footer_rows)/sizeof(fx6_clip_footer_rows[0]))
+
+static const fx6_menu_row_t fx6_confirm_dialog_rows[] = {
+    /* base 0x02eb67e0, 4 rows */
+    {"No2_TITLE_BG", 0x042d5a50u, {0,47,592,38}, 0x02000210u, 0},
+    {"No3_TITLE", 0x042d57f0u, {57,48,502,36}, 0x00000000u, 0},
+    {"No13_GUIDE", 0x042d57f0u, {521,416,450,36}, 0x02002ad1u, 0},
+    {"No6_VALUE_BUTTON", 0x042d58d0u, {57,100,196,58}, 0x00000000u, 0},
+};
+#define FX6_CONFIRM_DIALOG_ROWS_COUNT (sizeof(fx6_confirm_dialog_rows)/sizeof(fx6_confirm_dialog_rows[0]))
+
+static const fx6_menu_row_t fx6_content_number_rows[] = {
+    /* base 0x02e9afb8, 29 rows */
+    {"No40_CONTENT_NUMBER", 0x042d57f0u, {248,298,150,32}, 0x00000000u, 0},
+    {"No122_PLAYBACK_STATUS_STRING", 0x042d57f0u, {227,256,126,32}, 0x020050d1u, 0},
+    {"No422_SQ_FRAME_RATE", 0x042d57f0u, {663,298,98,32}, 0x00000000u, 0},
+    {"No421_INT_REC_STATUS", 0x042d57f0u, {663,298,98,32}, 0x00000000u, 0},
+    {"No34_SEPARATOR", 0x042d5a40u, {96,382,768,4}, 0x0200c00eu, 0},
+    {"No33_SEPARATOR", 0x042d5a40u, {96,190,768,4}, 0x0200c00eu, 0},
+    {"No15_RESOLUTION", 0x042d57f0u, {677,342,84,32}, 0x02002999u, 0},
+    {"No10_ERROR_CODE", 0x042d57f0u, {99,279,52,38}, 0xffffffffu, 0},
+    {"No7_TIME_DATA_TYPE", 0x042d5a50u, {104,204,44,40}, 0x00000000u, 0},
+    {"No121_PLAYBACK_STATUS_ICON", 0x042d57f0u, {180,256,47,32}, 0x0200283cu, 0},
+    {"No8_FRAME_RATE_UNIT", 0x042d57f0u, {514,213,42,32}, 0x0200532du, 0},
+    {"No8_FRAME_RATE_VALUE_DECIMAL", 0x042d57f0u, {472,213,40,32}, 0xffffffffu, 0},
+    {"No8_FRAME_RATE_VALUE_INTEGER", 0x042d57f0u, {440,213,34,32}, 0xffffffffu, 0},
+    {"No202_MEDIA_PROTECT_SLOT", 0x042d5a50u, {214,297,32,34}, 0x00000000u, 0},
+    {"No201_MEDIA_SLOT", 0x042d57f0u, {180,297,32,34}, 0x02002822u, 0},
+    {"No10_ERROR_WARNING_ICON", 0x042d5a50u, {112,281,28,28}, 0x00000000u, 0},
+    {"No32_SEPARATOR", 0x042d5a40u, {607,386,4,118}, 0x0200c00eu, 0},
+    {"No31_SEPARATOR", 0x042d5a40u, {349,386,4,118}, 0x0200c00eu, 0},
+    {"No30_SEPARATOR", 0x042d5a40u, {607,72,4,118}, 0x0200c00eu, 0},
+    {"No29_SEPARATOR", 0x042d5a40u, {349,72,4,118}, 0x0200c00eu, 0},
+    {"No105_BUTTON_05", 0x042d58d0u, {349,382,262,122}, 0x00000000u, 0},
+    {"No102_BUTTON_02", 0x042d58d0u, {349,72,262,122}, 0x00000000u, 0},
+    {"No106_BUTTON_06", 0x042d58d0u, {607,382,257,122}, 0x00000000u, 0},
+    {"No104_BUTTON_04", 0x042d58d0u, {96,382,257,122}, 0x00000000u, 0},
+    {"No103_BUTTON_03", 0x042d58d0u, {607,72,257,122}, 0x00000000u, 0},
+    {"No101_BUTTON_01", 0x042d58d0u, {96,72,257,122}, 0x00000000u, 0},
+    {"No2_MESSAGE_REQUEST", 0x042d5920u, {0,0,1024,540}, 0x00000000u, 0},
+    {"", 0x042d5a60u, {0,0,0,0}, 0x00000000u, 0},
+    {"No44_yuv_cover", 0x042d5a40u, {0,0,1024,540}, 0x0200c001u, 0},
+};
+#define FX6_CONTENT_NUMBER_ROWS_COUNT (sizeof(fx6_content_number_rows)/sizeof(fx6_content_number_rows[0]))
+
+static const fx6_menu_row_t fx6_homemenu_clip_rows[] = {
+    /* base 0x02e94c28, 40 rows */
+    {"No133_homemenu_clip_area", 0x042d57d0u, {96,72,768,432}, 0x00000000u, 0},
+    {"No1116_upper_homemenu_clip_area", 0x042d57d0u, {32,0,960,70}, 0x00000000u, 0},
+    {"No96_direct_menu_list_shutter_mode", 0x042d5a40u, {464,390,320,150}, 0x0200c001u, 0},
+    {"No2102_direct_menu_list_shutter_mode", 0x042d5a40u, {260,3,320,150}, 0x0200c001u, 0},
+    {"No1078_direct_menu_list_shutter_mode", 0x042d5a40u, {618,390,320,150}, 0x0200c001u, 0},
+    {"No2097_direct_menu_list_focus_mode", 0x042d5a40u, {32,3,310,150}, 0x0200c001u, 0},
+    {"No1115_upper_fullmenu_clip_area", 0x042d57d0u, {32,0,960,46}, 0x00000000u, 0},
+    {"No97_direct_menu_list_exposure_mode", 0x042d5a40u, {659,390,300,150}, 0x0200c001u, 0},
+    {"No95_direct_menu_list_gain_mode", 0x042d5a40u, {480,390,300,150}, 0x0200c001u, 0},
+    {"No94_direct_menu_list_iris_mode", 0x042d5a40u, {388,390,300,150}, 0x0200c001u, 0},
+    {"No93_direct_menu_list_nd_filter_mode", 0x042d5a40u, {252,390,300,150}, 0x0200c001u, 0},
+    {"No92_direct_menu_list_scene_file", 0x042d5a40u, {274,390,300,150}, 0x0200c001u, 0},
+    {"No89_direct_menu_list_focus_mode", 0x042d5a40u, {32,47,300,150}, 0x0200c001u, 0},
+    {"No86_direct_menu_list_white_mode", 0x042d5a40u, {32,343,300,150}, 0x0200c001u, 0},
+    {"No85_direct_menu_list_steady_shot", 0x042d5a40u, {32,161,300,150}, 0x0200c001u, 0},
+    {"No2199_direct_menu_list_nd_filter_mode", 0x042d5a40u, {146,390,300,150}, 0x0200c001u, 0},
+    {"No2104_direct_menu_list_base_iso", 0x042d5a40u, {34,112,300,150}, 0x0200c001u, 0},
+    {"No2103_direct_menu_list_exposure_mode", 0x042d5a40u, {564,44,300,150}, 0x0200c001u, 0},
+    {"No2101_direct_menu_list_gain_mode", 0x042d5a40u, {532,3,300,150}, 0x0200c001u, 0},
+    {"No2100_direct_menu_list_iris_mode", 0x042d5a40u, {371,3,300,150}, 0x0200c001u, 0},
+    {"No2098_direct_menu_list_scene_file", 0x042d5a40u, {34,268,300,150}, 0x0200c001u, 0},
+    {"No2096_direct_menu_list_white_mode", 0x042d5a40u, {698,3,300,150}, 0x0200c001u, 0},
+    {"No2095_direct_menu_list_steady_shot", 0x042d5a40u, {833,277,300,150}, 0x0200c001u, 0},
+    {"No1114_direct_menu_list_base_iso", 0x042d5a40u, {424,390,300,150}, 0x0200c001u, 0},
+    {"No1079_direct_menu_list_exposure_mode", 0x042d5a40u, {32,390,300,150}, 0x0200c001u, 0},
+    {"No1077_direct_menu_list_gain_mode", 0x042d5a40u, {96,390,300,150}, 0x0200c001u, 0},
+    {"No1076_direct_menu_list_iris_mode", 0x042d5a40u, {274,390,300,150}, 0x0200c001u, 0},
+    {"No1075_direct_menu_list_nd_filter_mode", 0x042d5a40u, {140,390,300,150}, 0x0200c001u, 0},
+    {"No1074_direct_menu_list_scene_file", 0x042d5a40u, {750,171,300,150}, 0x0200c001u, 0},
+    {"No1072_direct_menu_list_focus_mode", 0x042d5a40u, {32,3,300,150}, 0x0200c001u, 0},
+    {"No1071_direct_menu_list_white_mode", 0x042d5a40u, {710,390,300,150}, 0x0200c001u, 0},
+    {"No1070_direct_menu_list_steady_shot", 0x042d5a40u, {32,165,300,150}, 0x0200c001u, 0},
+    {"No2201_bottom_homemenu_clip_area", 0x042d57d0u, {32,504,960,36}, 0x00000000u, 0},
+    {"No2200_upper_homemenu_clip_area", 0x042d57d0u, {32,0,960,36}, 0x00000000u, 0},
+    {"No1119_right_homemenu_clip_area", 0x042d57d0u, {876,34,114,290}, 0x00000000u, 0},
+    {"No1117_bottom_homemenu_clip_area", 0x042d57d0u, {32,507,960,33}, 0x00000000u, 0},
+    {"No90_direct_menu_list_sq_frame_rate", 0x042d5a40u, {686,82,200,150}, 0x0200c001u, 0},
+    {"No1073_direct_menu_list_sq_frame_rate", 0x042d5a40u, {792,66,200,150}, 0x0200c001u, 0},
+    {"No2202_left_homemenu_clip_area", 0x042d57d0u, {32,36,64,468}, 0x00000000u, 0},
+    {"No1118_left_homemenu_clip_area", 0x042d57d0u, {32,49,64,458}, 0x00000000u, 0},
+};
+#define FX6_HOMEMENU_CLIP_ROWS_COUNT (sizeof(fx6_homemenu_clip_rows)/sizeof(fx6_homemenu_clip_rows[0]))
+
+
+/* ----------------------------------------------------------------------
+ * Clip / thumbnail grid pages
+ * ----------------------------------------------------------------------
+ * fx6_clip_footer_rows shows the real thumbnail grid: 12 cells of 203x132 in a 4x3 layout,
+ *   x = 74, 298, 522, 746      (pitch 224)
+ *   y = 55, 190, 325           (pitch 135)
+ * plus a full-width footer (0,460,1024,80) and header (0,0,1024,52).
+ * Those pitches are the concrete numbers a thumbnail page needs; they are not derivable from any
+ * single descriptor, only from the set.
+ */
+#define FX6_THUMB_COLS      4
+#define FX6_THUMB_ROWS      3
+#define FX6_THUMB_W         203
+#define FX6_THUMB_H         132
+#define FX6_THUMB_X0        74
+#define FX6_THUMB_Y0        55
+#define FX6_THUMB_DX        224
+#define FX6_THUMB_DY        135
+#define FX6_CLIP_FOOTER_RECT  {0,460,1024,80}
+#define FX6_CLIP_HEADER_RECT  {0,0,1024,52}

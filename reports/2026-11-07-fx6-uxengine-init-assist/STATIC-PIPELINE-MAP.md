@@ -8733,3 +8733,106 @@ The scripted check of every `{resid, "text"}` pair added this round caught six m
 After the fixes the audit reports **79 pairs checked, 0 bad** — every id resolves and every string
 matches byte-for-byte. Compile-time assertions: `FX6_THREE_LAYER_PAGE2_COUNT == 11`,
 `FX6_CATEGORY_MAP_FULL_COUNT == 11`; header builds clean with `-Wall` at 2054 lines.
+
+### 682 — Full sweep: 23 descriptor regions, 2316 rows, and why "tables" are really regions
+
+Instead of hunting for `0xc1935c` call sites I swept `.rodata` and `.data.rel.ro` for maximal runs of
+rows whose `+0x00` is one of the eighteen known view tags. Result: **23 regions, 2316 rows**.
+
+```text
+base         rows  tags  first row name
+0x02e91040     5    2   No18_clip_name
+0x02e911f0     8    2   No2011_audio_level_meter
+0x02e91508     3    1   No8_codec
+0x02e91628     5    1   No6_picture_size
+0x02e917d8   175    3   No2010_gamma_display_assist
+0x02e94c28    40    2   No133_homemenu_clip_area
+0x02e957b0     5    2   No2045_video_signal_monitor
+0x02e959a8     7    2   No1066_base_look
+0x02e95cc0     8    3   No2094_tracking_cancel_button
+0x02e95f90    10    3   No76_base_look
+0x02e962a8     8    3   No16_resolution
+0x02e96608    11    3   No4_recstate_string_slot_1st
+0x02e96a40     3    2   No27_rec_function
+0x02e96bf0   237    3   No6_stbystate_slot_2nd
+0x02e9afb8    29    3   No40_CONTENT_NUMBER
+0x02e9b828    21    3   No30_clip_footer
+0x02e9be58    97    3   No37_duration
+0x02e9d9e8    33    3   No48_digital_signature_cr_icon
+0x02e9e378     5    1   No2071_TIME_CODE_VALUE
+0x02e9e528   409    3   No1172_SHOT_OR_CLIP_NUMBER_VALUE
+0x2ea5878    964    3   No4_BLOCK_TOUCH
+0x2eb67e0      4    3   No2_TITLE_BG
+0x2eb6948    229    3   No12_SET_BUTTON
+```
+
+**Crucial structural finding:** the four previously documented tables are *not* separate tables in this
+sweep — they fall inside larger regions, because adjacent pages butt together with no padding:
+
+```text
+0x2e9e210 (98 rows, home)         inside region 0x2e9d9e8 (33) .. no: inside the 0x2e9e528 chain
+0x2ea3e50 (10 rows, setting)      inside region 0x2e9e528 (409)
+0x2ea02f8 (47 rows, three-layer)  inside region 0x2e9e528 (409)
+0x2eaf208 (17 rows, centre)       inside region 0x2ea5878 (964)
+```
+
+So "a table" is really a *page* delimited by tag `0x42d5a60` (all-zero rect), and the region is the
+maximal run of contiguous rows. `FX6_IS_PAGE_BREAK()` from round 671 is what splits them. The 964-row
+region at `0x2ea5878` alone contains every full-screen setting page; the 229-row region at `0x2eb6948`
+contains 26 page breaks.
+
+### 682 — Five new page arrays added
+
+```text
+fx6_audio_meter_rows[8]      base 0x02e911f0
+  No2011_audio_level_meter  0x042d57d0  (931,391,58,112)
+  No1005_audio_level_meter  0x042d57d0  (931,394,58,112)
+  No1001_content_number     0x042d57f0  ( 96,  5,206, 30)
+  No2022_tcub               0x042d57d0  ( 34,505,180, 32)
+  No2017_clip_name          0x042d57f0  (464,507,196, 28)  d18=0x020050c4
+  No9_baselook              0x042d57f0  (823,199,165, 32)  d18=0x02004b37
+  No17_play_string          0x042d57f0  (508,  6,144, 36)  d18=0x020050d1
+  No1010_play_string        0x042d57f0  (522,  2,144, 36)  d18=0x020050d1
+
+fx6_clip_footer_rows[21]     base 0x02e9b828
+  No30_clip_footer          0x042d5a50  (  0,460,1024, 80)  d18=0x02000311
+  No1_clip_header           0x042d5a50  (  0,  0,1024, 52)  d18=0x02000312
+  No4_option_bg             0x042d5a50  ( 38,  0, 534, 54)  d18=0x0200032b
+  No10..No21_clip_thumbnail 0x042d58f0  12 cells, see grid below
+
+fx6_homemenu_clip_rows[40]   base 0x02e94c28   (home menu clip area, 31 fills + 9 rows)
+fx6_content_number_rows[29]  base 0x02e9afb8   (content number / yuv cover page)
+fx6_confirm_dialog_rows[4]   base 0x02eb67e0   No2_TITLE_BG .. No6_VALUE_BUTTON
+```
+
+### 682 — The real thumbnail grid geometry
+
+The 12 `No10..No21_clip_thumbnail` rows of `fx6_clip_footer_rows` are a clean 4x3 lattice, which is the
+concrete layout a thumbnail page needs:
+
+```text
+x =  74, 298, 522, 746      pitch 224
+y =  55, 190, 325           pitch 135
+w = 203, h = 132
+footer (0,460,1024,80)      header (0,0,1024,52)
+```
+
+Those pitches cannot be derived from any single descriptor — only from reading the set — so they are
+also exported as constants:
+
+```text
+FX6_THUMB_COLS 4 / ROWS 3 / W 203 / H 132 / X0 74 / Y0 55 / DX 224 / DY 135
+FX6_CLIP_FOOTER_RECT / FX6_CLIP_HEADER_RECT
+```
+
+### 682 — Audit
+
+Every row of every new array was machine-checked: **102 rows, 12 of them carrying a namespace-1/2
+string ResID, 38 carrying a namespace-6 colour ResID, 0 unresolved**. Compile-time assertions confirm
+`FX6_DESC_REGION_COUNT == 23` and the five array counts (8 / 21 / 4 / 29 / 40); the header builds clean
+with `-Wall`.
+
+One caveat worth stating: `0x2eb6948` (229 rows, `No12_SET_BUTTON` first) is the SET-button page family
+and contains 26 page breaks, so it is deliberately left as a region entry rather than exploded into a
+per-page array here — doing that properly needs the same treatment as rounds 678/680 and is the natural
+next step.

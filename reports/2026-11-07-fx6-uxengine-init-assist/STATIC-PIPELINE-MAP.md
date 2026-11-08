@@ -6630,3 +6630,48 @@ size every object from its own class instead of a single guess. Two safe strateg
 
 Either way the draw loop must run before any other allocation, because a single undersized instance
 poisons the whole heap and the symptom appears far from the bug.
+
+### 660 — Second hard constraint: the constructors need a real parent
+
+Every menu constructor calls `ux::wgtsys::Widget::setParent(this, parent)` unconditionally:
+
+```text
+view_icon      0xc2c1f8   mov x1,x19 ; mov x0,x21 ; bl 0xb196e0
+view_string    0xc3b09c   (same shape, base+0x1080 sub-object)
+view_fill      0xc276e4   tail call, x0=this+0x210
+view_menu_item 0xc34xxx
+```
+
+and the implementation dereferences that pointer on entry:
+
+```text
+libuxengine+0xa1fe8  stp x29,x30,[sp,#-0x20]!
+libuxengine+0xa1ff8  ldr x0,[x1]          ; x1 = parent
+libuxengine+0xa2000  ldr x1,[x0,#0x10]    ; parent->vptr[0x10]
+libuxengine+0xa2008  blr x1
+```
+
+So passing `parent = NULL` faults inside `setParent` before the object is ever drawn. Probes must pass
+the real screen root / page container. `fx6_menu_items_assist.h` records this as
+`FX6_PARENT_REQUIRED`.
+
+### 660 — What a probe must satisfy to reach gpe0
+
+Putting the three constraints from 659/660 together, any instantiation loop must:
+
+1. allocate from `fx6_tag_instance_size(tag)` — 0x1388 string, 0x668 icon, 0x308 fill, 0x19788
+   menu_item, 0x239870 list cursor — never a single fixed size;
+2. hand the ctor a non-NULL parent widget;
+3. set the paint-enabling fields before calling onDraw:
+
+```text
+view_string  +0x1fc = 1, +0x200 = String ResID, +0x610 = 0, +0xa30/+0x208/+0x20c/+0x210 fonts
+view_fill    +0x1fc = 1, +0x200 = colour ResID (ns 6)   or +0x205..0x208 inline RGBA
+view_icon    +0x1fc = 1, +0x20c = image ResID (ns 0)
+view_frame   +0x1fc = 1 and at least one of +0x204/+0x208/+0x20c/+0x210
+```
+
+Anything that violates 1 corrupts the heap and shows up as a `libstella` fault plus a glibc
+`sysmalloc` assertion; anything that violates 2 faults in `setParent`; anything that violates 3 takes
+the mode-3 early exit and leaves the framebuffer empty — which is exactly the three failure shapes
+seen in 658, 659 and 660.

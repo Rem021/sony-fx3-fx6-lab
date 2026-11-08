@@ -254,6 +254,14 @@ static inline void *fx6_frame_child(void *frame, uint32_t child_off)
     return frame ? (void *)((char *)frame + child_off) : 0;
 }
 
+/* Every menu ctor calls Widget::setParent(this, parent) unconditionally:
+ *   view_icon 0xc2c1f8   view_string 0xc3b09c   view_fill 0xc276e4 (tail)   view_menu_item 0xc34xxx
+ * and libuxengine's implementation dereferences the parent on entry:
+ *   setParent (libuxengine+0xa1fe8)  ->  ldr x0,[x1] ; ldr x1,[x0,#0x10] ; blr x1
+ * So `parent == NULL` faults immediately. Always hand the ctor a real widget: the screen root,
+ * the page container, or the widget that owns the row. A null parent is NOT "unparented". */
+#define FX6_PARENT_REQUIRED 1
+
 /* ---- view_icon: the two fields that make it paint ---- */
 /* Virtual-slot reality, measured (relocations applied):
  *

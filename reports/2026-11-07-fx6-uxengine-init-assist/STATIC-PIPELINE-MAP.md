@@ -6159,3 +6159,114 @@ Two consequences, both encoded in `fx6_native_menu_tables.h`:
 2. Because the same object is reused, the native presenters must either clone it or drive it one row
    at a time during layout. Which one happens is still unresolved, and it is the main open question
    left on the render path.
+
+### 650 — The descriptor→widget factory at `appFw+0xc1935c` (this replaces the "prototype" theory)
+
+`view_list_scroll_cursor_fixed` & friends do not instantiate widgets themselves. They call one shared
+factory, `appFw+0xc1935c..0xc19784`, which walks a descriptor array and builds each child through a
+40-entry creator table.
+
+**Descriptor `+0x00` is a 16-byte class tag, not a widget.** The tag lives in `.bss`, its first qword is
+a vtable pointer installed by an `.init_array` constructor, and its `+0x08` dword is a **creator index**:
+
+```text
+tag = *(uint64_t *)(desc + 0x00)
+idx = *(int32_t  *)(tag  + 0x08)        <-- the index lives at tag+0x08, NOT at desc+0x08
+fn  = creators[idx]                     <-- table at appFw+0x2911720
+obj = fn(capacity_w0, dst_x1, &size_x2, parent_x3, param_x4)
+```
+
+This is why the tags looked like "shared singletons": 56 of the 98 home-page rows point at the same
+`0x42d57f0` because they are the same *class*, not the same object. Each row gets its own instance.
+
+Creator table `appFw+0x2911720` (40 entries), with the ctor each one calls and the size it charges:
+
+```text
+idx  0  0xc2c188  view_icon                    0x668
+idx  1  0xc27698  view_fill                    0x308
+idx  2  0xc3af98  view_string
+idx  3  0xc208d0
+idx  4  0xc341d4  view_menu_item
+idx  5  0xc27800  view_frame                   0x1178   (5 nested view_fill)
+idx  6  0xc2d874  view_list_scroll_cursor_fixed
+idx  7  0xc2f298
+idx  8..39        page-specific wrappers (full list in fx6_menu_items_assist.h)
+```
+
+**Corrections to earlier claims in this document:**
+
+* `0xc27698` is `view_fill` (vtable `0x2d1b490`, `vt[0x148/8] = 0xc27448` onCreate,
+  `vt[0x158/8] = 0xc2750c` onDrawNotice). The earlier text said `0xc27800`.
+* `0xc27800` is `view_frame` (vtable `0x2d1b660`), and it constructs **five nested `view_fill`**
+  children at `+0x228`, `+0x530`, `+0x838`, `+0xb40`, `+0xe48` — that is how a native panel gets its
+  background plus four edges from one object.
+
+After constructing, the factory calls `vt[0x140]` (onCreate), stores the result, calls `vt[0x18]`
+with the parent, `vt[0x148]`, and finally `vt[0x30](0)`. It then matches the tag's vtable and copies
+descriptor fields into class-specific offsets:
+
+```text
+tag vtable    class                    from descriptor        to object
+0x2d1bd60     view_icon                +0x18                  +0x3c
+                                       +0x1c / +0x20          +0x60 / +0x64
+                                       +0x24 / +0x28 / +0x2c  +0x38 / ... / +0x6c
+0x2d1f210     view_string              +0x18                  +0x30
+                                       +0x24 / +0x28          +0x38 / +0x3c
+                                       +0x1c / +0x20          +0x40 / +0x44
+                                       +0x2c                  +0x844
+0x2d1c2c0     view_list_scroll_item    +0x18                  +0x60
+                                       +0x24 / +0x28          +0x68 / +0x6c
+                                       +0x1c / +0x20          +0x70 / +0x74
+                                       +0x2c                  +0x874
+0x2d1b490     view_fill                +0x18                  +0x30
+0x2d1b660     view_frame               +0x18                  +0x4c
+```
+
+### 650 — What actually paints an icon (`view_icon` `0xc2c188` / onDrawNotice `0xc2d100`)
+
+```text
+if (+0x1fc == 0 || +0x20c == -1) -> mode 3, draw nothing
+ResourceManager::getImageOption(+0x20c, NULL, 0)        // how many images the record holds
+ResourceManager::getImageOption(+0x20c, &portion, 2)    // portion descriptor
+portion -> u16 at obj+0x64c / +0x64e    (patch flags)
+Sprite at obj+0x550 . setPatchImageCache()
+clip  = bytes at obj+0x21c..+0x21f      size = u16 at obj+0x204 / +0x206
+then setRectSize(w,h) from vtable +0x48/+0x50 and drawImage
+```
+
+So an icon needs exactly `+0x1fc = 1` and `+0x20c = <image ResID>`. appFw itself does this at
+`0xc1f858` with `0x02000488`, `0x02000484`, `0x020003c7` — all namespace 0, i.e. `image_00_169.uxc`
+(a `uxd` payload container). Measured record headers from that container: `0x488` and `0x484` are
+`0x0050 x 0x00a4`, `0x3c7` is `0x012c x 0x0042`.
+
+`+0x3c` is **not** the image id — the factory's branch for this tag (`0xc19558`) writes descriptor
+`+0x18` there, and that value is a sizing/priority number.
+
+### 650 — `view_menu_item` (`0xc341d4`, onDrawNotice `0xc35358`)
+
+`onDrawNotice` first puts its 10 child widgets to sleep (loop `obj+0x9738 + i*8`, `i = 1..9`,
+`vt[0x30](3)`), sets its own mode, then dispatches on `obj+0x200` through the byte table at
+`0x22765ac`, 16 styles:
+
+```text
+style  0      -> 0xc34ad4
+style  1      -> 0xc34ad4 with w1=1
+style  2,3    -> 0xc34974    plain text row
+style  4..8   -> 0xc352a8    row with an icon slot at obj+0x23c
+style  9..11  -> 0xc34a54    text row plus a 0x32-wide glyph run
+style 12,13   -> 0xc34c60
+style 14,15   -> 0xc34ffc
+```
+
+All branches funnel into the shared row renderer `appFw+0xc347b0`:
+
+```text
+row(self, slot_w1, rect_x2, a3, a4, a5, text_x6, a7, a8_stack)
+   rect is built from self: { 8, 0x1c4, self->+0x1f4, ... }   (derived, never literal)
+   caption from self+0x1d0/+0x1d8, value id from self+0x1e0, has-value from self+0x228
+   writes into the child sprite at self + 0x19730 + slot*8
+```
+
+Deliverable for 651+: `/private/tmp/fx6_menu_items_assist.h` (compiles on
+`aarch64-linux-gnu`, verified) plus `/private/tmp/fx6_icon_menu647.c` as a ready probe that draws three
+icons from the real image ResIDs and one resource-driven caption into gpe0.

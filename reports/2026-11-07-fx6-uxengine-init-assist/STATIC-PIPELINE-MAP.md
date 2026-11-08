@@ -6520,3 +6520,53 @@ E  view_string caption       (control)
 
 Each rect is scored with pixel count, populated-row count and populated-column count, so a single
 stray row cannot be mistaken for a painted panel. Compiles clean on `aarch64-linux-gnu`.
+
+### 659 — Class sizes, and why image 659 produced an empty gpe0
+
+Run `cp-bind-9e8b981f` (image `guest-hybrid-fx6kernel-capid-grmreal659-menuitem.cpio`) logged the two
+skips and then never reached the draw loop:
+
+```text
+FX6_VSR659 setting main[00] ? No107_BLOCK_TOUCH              tag=42d5860
+FX6_VSR659 setting main[01] ? No4_SETTING_LIST_MAIN          tag=42d5a20
+(then nothing; gpe0.bin and gpe1.bin are both all zeros)
+```
+
+The cause is allocation size, and each creator states it explicitly by adding a constant to the arena
+cursor:
+
+```text
+0xc1b128 idx 0  view_icon                       add w0,w0,#0x668
+0xc1b048 idx 1  view_fill                       add w0,w0,#0x308
+0xc1b694 idx 2  view_string                     mov w1,#0x1388 ; add w0,w0,w1
+0xc1b328 idx 4  view_menu_item                  add w0,w0,#0x19, lsl #12 ; add w0,w0,#0x788   = 0x19788
+0xc1af88 idx 5  view_frame                      mov w1,#0x1178 ; add w0,w0,w1
+0xc1b3fc idx 6  view_list_scroll_cursor_fixed   add w0,w0,#0x239, lsl #12 ; add w0,w0,#0x870   = 0x239870
+```
+
+```text
+view_icon                       0x000668     1.6 KiB
+view_fill                       0x000308     0.8 KiB
+view_string                     0x001388     4.9 KiB
+view_menu_item                  0x019788   101.9 KiB
+view_frame                      0x001178     4.4 KiB
+view_list_scroll_cursor_fixed   0x239870  2278.1 KiB
+```
+
+Descriptor `[01] No4_SETTING_LIST_MAIN` (tag `0x42d5a20`) *is* `view_list_scroll_cursor_fixed`, so it
+needs roughly 2.3 MiB. The class also self-constructs a large child graph inside its ctor:
+
+```text
+0xc2d8f4 loop  : memset-ish init over 0x3f8-byte records until 0x118*0x1000+0x470
+0xc2d984 loop  : 0x40c-byte records until   0x235*0x1000+0x1bc
+0xc2da0c       : c28f10 (sub-object)
+0xc2da14/24/50 : three view_frame  (0xc27800) at +0x235738 / +0x2368b0 / +0x2386f8
+0xc2da2c/3c    : two view_icon     (0xc2c188) at +0x237a28 / +0x238090
+0xc2da54 loop  : setParent for the children in +0x2351d0..
+```
+
+Practical consequence for 651+: either give `view_list_scroll_cursor_fixed` a dedicated
+`>= 0x240000` arena slot, or skip descriptor `[01]` and instantiate the individual rows
+(`view_string` 4.9 KiB, `view_fill` 0.8 KiB, `view_icon` 1.6 KiB) directly — the latter is cheap and
+already proven to paint. The size table is now in `fx6_menu_items_assist.h` as
+`fx6_creator_size[]` / `fx6_class_size()` so this cannot be under-allocated again.

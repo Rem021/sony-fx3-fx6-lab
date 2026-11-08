@@ -120,7 +120,31 @@
 
 extern int dprintf(int, const char *, ...);
 
-/* ---- the 40-entry creator table (appFw+0x2911720) ---- */
+/* ---- class sizes charged by each creator, read from the creators themselves ----
+ * Every creator adds its class size to the arena cursor (`ldr w0,[x19]; add w0,w0,#size;
+ * str w0,[x19]`), so this table is authoritative and must drive any arena sizing:
+ *
+ *   idx 0 view_icon                      0x000668   (1.6 KiB)
+ *   idx 1 view_fill                      0x000308   (0.8 KiB)
+ *   idx 2 view_string                    0x001388   (4.9 KiB)
+ *   idx 4 view_menu_item                 0x019788   (101.9 KiB)
+ *   idx 5 view_frame                     0x001178   (4.4 KiB)
+ *   idx 6 view_list_scroll_cursor_fixed  0x239870   (2278 KiB !)
+ *
+ * That last one is why run cp-bind-9e8b981f (image 659) ended with an empty gpe0: the descriptor
+ * at index 1 of the setting table is `No4_SETTING_LIST_MAIN`, tag 0x42d5a20, class
+ * view_list_scroll_cursor_fixed, and it cannot be placed in a small pool. Give it its own
+ * >= 2.3 MiB allocation.
+ */
+static const uint32_t fx6_creator_size[8] = {
+    0x000668u, 0x000308u, 0x001388u, 0x000000u,
+    0x019788u, 0x001178u, 0x239870u, 0x000000u,
+};
+static inline uint32_t fx6_class_size(int idx)
+{
+    return (idx >= 0 && idx < 8) ? fx6_creator_size[idx] : 0;
+}
+
 #define FX6_CREATOR_TABLE_OFF 0x2911720u
 #define FX6_CREATOR_MAX       40
 

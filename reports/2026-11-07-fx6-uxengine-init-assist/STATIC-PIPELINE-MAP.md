@@ -6444,3 +6444,79 @@ That is the concrete fix for the next run: when instantiating a `view_fill` from
 `+0x1fc = 1` and write the RGBA into `+0x205..+0x208` (colour ids come from `color_cmn.uxc`:
 `0xc00e` = `0x777777ff` separator, `0xc001` = opaque black, etc.). `icon=0` has the same shape of cause:
 `view_icon` needs `+0x1fc = 1` and `+0x20c != -1`.
+
+### 659 — `view_fill` paints through a COLOUR ResID, and `+0x200` is that id
+
+The 658 note said `+0x200` was a "string ResID" on the fill path. It is not. Reading
+`view_fill::onDrawNotice` (`0xc2750c`) together with its callees:
+
+```text
+0xc275e8  ldr  w2,[x19,#0x200]
+0xc275ec  cmn  w2,#1                 ; == -1 ?
+0xc275f0  b.eq 0xc27684              ; no id -> inline colour branch
+0xc275f4  mov  x0,x21                ; x21 = this+0x210 (the sprite)
+0xc275fc  bl   0xb170f0              ; PLT -> ux::gfxeng::Sprite::setRectColorResID(u16, u32)
+...
+0xc27684  ldrb w4,[x19,#0x208]       ; inline path: 4 bytes
+0xc27688  ldrb w3,[x19,#0x207]
+0xc2768c  ldrb w2,[x19,#0x206]
+0xc27690  ldrb w1,[x19,#0x205]
+0xc27694  b    0xc27668              ; -> stella::CColor(r,g,b,a) + setRectColor
+```
+
+So the contract is:
+
+```text
++0x1fc u8   enabled                        required, else mode-3 early exit
++0x200 s32  COLOUR ResID (namespace 6)     -1 means "use the inline bytes"
++0x205..+0x208  r,g,b,a                     inline fallback colour
+```
+
+Namespace 6 is `color_cmn.uxc`, and the descriptor field that feeds `+0x200` for fill rows is
+`desc+0x18`. That is consistent with what the tables actually hold for separators and panels:
+
+```text
+No10_SEPARATOR        tag 0x42d5a40 (fill)  desc+0x18 = 0x0200c00b   rect (60,94,820,2)
+No10_BG_3LINE         tag 0x42d5a40 (fill)  desc+0x18 = 0x0200c001   rect (212,192,598,242)
+No2_BG_2LINE          tag 0x42d5a40 (fill)  desc+0x18 = 0x0200c017   rect (212,242,598,192)
+No107_BLOCK_TOUCH     tag 0x42d5860         desc+0x18 = 0                  (no fill)
+```
+
+Verified colour payloads in `color_cmn.uxc`:
+
+```text
+0xc000 000000cc   0xc001 000000ff   0xc00b 444444ff   0xc00e 777777ff
+0xc011 ee0000ff   0xc017 000000df   0xc019 ffffffff   0xc01a 0000ffff
+```
+
+That is the concrete reason run 658 reported `fill=0`: it set geometry and `+0x1fc`, but never wrote a
+colour ResID or the inline bytes, so `onDrawNotice` took the mode-3 exit on every fill row.
+
+### 659 — `view_frame` (`0xc27800` / onDraw `0xc27ea0`) is a border-in-a-box
+
+`onDrawNotice` is three instructions and a tail call:
+
+```text
+ldrb w2,[x0,#0x1fc]        ; enabled
+cbnz w2, 0xc279e4          ; -> real body
+ldr  x1,[x0] ; ldr x2,[x1,#0x30] ; mov w1,#3 ; br x2      ; disabled -> mode 3, nothing
+```
+
+The real body (`0xc279e4`) reads `+0x204/+0x208/+0x20c/+0x210` to decide which of the four edges it
+has a colour for, then `+0x21c` picks the style: `0` = uniform border (builds a Vector2 from
+`+0x1e8/+0x1ec/+0x218`), `1`, `2` = the other two shapes, anything else -> `__throw_logic_error`.
+Its five nested `view_fill` children at `+0x228/+0x530/+0x838/+0xb40/+0xe48` are constructed by the
+ctor, so a frame gives background + four edges from a single object.
+
+Deliverable: `/private/tmp/fx6_fill_frame659.c` — a probe that draws, with native constructors only:
+
+```text
+A  view_fill inline colour   (400x120 block, proves the 0xc27684 branch)
+B  view_fill colour ResID    (400x120 block, proves setRectColorResID resolves namespace 6)
+C  view_fill separator       (820x2 at y=300, the No10_SEPARATOR shape)
+D  view_frame border         (300x120, five nested fills)
+E  view_string caption       (control)
+```
+
+Each rect is scored with pixel count, populated-row count and populated-column count, so a single
+stray row cannot be mistaken for a painted panel. Compiles clean on `aarch64-linux-gnu`.

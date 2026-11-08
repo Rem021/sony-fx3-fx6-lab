@@ -141,13 +141,23 @@ static inline void fx6_apply_geometry(void *w, const fx6_desc *d)
     *(int32_t *)((char *)w + 0x1f4) = d->h;
 }
 
-/* Text ResID goes to +0x200, which onDraw reads through appFw+0xc3b61c and then
- * feeds to TextSprite::setString(unsigned). Zero means "no static caption". */
+/* On view_string, +0x200 is the String ResID read through appFw+0xc3b61c and fed to
+ * TextSprite::setString(unsigned). On view_fill the same slot is a *colour* ResID
+ * (setRectColorResID at 0xc275ec), so what we write depends on the class. */
 static inline void fx6_apply_text(void *w, const fx6_desc *d)
 {
     if (!w || !d || !d->text_resid) return;
     *(uint32_t *)((char *)w + 0x200) = d->text_resid;
-    *(uint8_t  *)((char *)w + 0x1fc) = 1;   /* enable the text path */
+    *(uint8_t  *)((char *)w + 0x1fc) = 1;   /* enable the text/colour path */
+}
+
+/* Fill classes need +0x1fc plus a colour; without both they take the mode-3 early exit and
+ * nothing is drawn (this is exactly the `fill=0` seen in run cp-bind-8a785b4c). */
+static inline void fx6_apply_fill_color(void *w, uint32_t color_resid)
+{
+    if (!w || !color_resid) return;
+    *(uint8_t  *)((char *)w + 0x1fc) = 1;
+    *(uint32_t *)((char *)w + 0x200) = color_resid;
 }
 
 /* 0x0200a029 / a02a / a02b select left / right / centre in appFw+0xc3b744. */

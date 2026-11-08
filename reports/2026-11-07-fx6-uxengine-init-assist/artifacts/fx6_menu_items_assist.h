@@ -309,23 +309,40 @@ static const uint8_t fx6_menu_style_delta[16] = {
  * A view_fill with only geometry draws nothing. onDrawNotice gates on three fields:
  *
  *   +0x1fc u8   enabled
- *   +0x200 s32  string ResID, -1 = none
- *   +0x208 u8   solid-colour flag
+ *   +0x200 s32  COLOUR ResID (namespace 6), -1 = none
+ *   +0x208 u8   "have inline colour" flag, second chance when +0x200 == -1
  *
  *   enabled == 0                          -> mode 3, no paint
  *   +0x200 == -1 && +0x208 == 0           -> mode 3, no paint
- *   +0x200 != -1                          -> Sprite::setString(+0x200), colour from vt[0x1a0]
- *   +0x200 == -1 && +0x208 != 0           -> solid fill, colour bytes +0x205..+0x208
+ *   +0x200 != -1                          -> Sprite::setRectColorResID(slot, +0x200)   0xc275ec
+ *   +0x200 == -1 && +0x208 != 0           -> inline colour bytes +0x205..+0x208         0xc27684
+ *
+ * Evidence: 0xc275ec tests +0x200 against -1 and calls PLT 0xb170f0 =
+ * ux::gfxeng::Sprite::setRectColorResID(unsigned short, unsigned int). The alternative branch at
+ * 0xc27684 reads +0x205/+0x206/+0x207/+0x208 and builds a stella::CColor. So +0x200 is a colour
+ * resource id, not a string -- the descriptor field that feeds it is `desc+0x18`, and for
+ * separator rows it really is a colour (e.g. `0x0200c00b`, `0x0200c00e`).
+ *
+ * Sprite slot used by both paths is `+0x210` inside the object (bound as `add x21,x19,#0x210`).
  */
+/* Solid colour through the *inline* path (no resource lookup). */
 static inline void fx6_fill_set_solid(void *fill, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     if (!fill) return;
-    *(uint8_t  *)((char *)fill + 0x1fc) = 1;   /* enabled          */
-    *(uint32_t *)((char *)fill + 0x200) = 0xffffffffu; /* no string */
+    *(uint8_t  *)((char *)fill + 0x1fc) = 1;            /* enabled */
+    *(uint32_t *)((char *)fill + 0x200) = 0xffffffffu;  /* no colour ResID */
     *(uint8_t  *)((char *)fill + 0x205) = r;
     *(uint8_t  *)((char *)fill + 0x206) = g;
     *(uint8_t  *)((char *)fill + 0x207) = b;
-    *(uint8_t  *)((char *)fill + 0x208) = a;   /* also the "have colour" flag */
+    *(uint8_t  *)((char *)fill + 0x208) = a;            /* doubles as "have colour" */
+}
+
+/* Colour through the resource path: this is what native panels and separators actually do. */
+static inline void fx6_fill_set_color_resid(void *fill, uint32_t color_resid)
+{
+    if (!fill) return;
+    *(uint8_t  *)((char *)fill + 0x1fc) = 1;
+    *(uint32_t *)((char *)fill + 0x200) = color_resid;
 }
 
 /* Colour ids measured in color_cmn.uxc (namespace 6, marker 0x3a00, payload u32 RGBA). */

@@ -771,3 +771,37 @@ static inline uint32_t fx6_resid_key(uint32_t id)
 #define FX6_TXT_FILE       0x02004202u   /* ns2 'File'           */
 #define FX6_TXT_SYSTEM     0x02004204u   /* ns2 'System'         */
 #define FX6_TXT_OPERATION  0x02004207u   /* ns2 'Operation'      */
+
+/* ======================================================================
+ * 670 — Big-6 home central status area: TABLE 0x2e9e210 entries 0..36
+ * ======================================================================
+ * These descriptors already carry a live ResID in `desc+0x18`, so the static text renders with no
+ * presenter involvement at all. All values below were re-resolved against the string containers:
+ *
+ *   0x02002f1d -> 'FF'        0x02005261 -> 'XAVC-I'    0x020051e7 -> 'Stop'
+ *   0x02002959 -> '---<glyph>' 0x02002999 -> '3840P'    0x02005078 -> 'Rec'
+ *   0x02002a48 -> 'Shot'      0x020029f0 -> 'Reel'
+ *   0x0200284d -> glyph       0x02002956 -> glyph       0x02002822 -> glyph
+ */
+#define FX6_HOME_TABLE_ADDR 0x2e9e210u
+
+#define FX6_STATUS_IMAGER_SCAN_MODE   0x02002f1du   /* 'FF'        [06] (336,257,208,32) */
+#define FX6_STATUS_CODEC_NAME         0x02005261u   /* 'XAVC-I'    [07] (336,297,180,32) */
+#define FX6_STATUS_MEDIA_PROXY_STOP   0x020051e7u   /* 'Stop'      [15] (672,342,88,32)  */
+#define FX6_STATUS_MEDIA_REMAIN_TIME  0x02002959u   /* '---<glyph>'[16] (672,342,88,32)  */
+#define FX6_STATUS_RESOLUTION         0x02002999u   /* '3840P'     [18] (520,297,84,32)  */
+#define FX6_STATUS_RECSTATE           0x02005078u   /* 'Rec'       [22] (212,278,82,32)  */
+#define FX6_STATUS_MEDIA_SLOT_B_ICON  0x02002956u   /* glyph       [31] (602,341,70,34)  */
+#define FX6_STATUS_MEDIA_SLOT_A_ICON  0x02002822u   /* glyph       [32] (420,341,70,34)  */
+#define FX6_STATUS_SHOT_ITEM_NAME     0x02002a48u   /* 'Shot'      [34] (611,297,70,32)  */
+#define FX6_STATUS_REEL_ITEM_NAME     0x020029f0u   /* 'Reel'      [35] (611,257,70,32)  */
+
+/* The only descriptors whose caption slot is still -1: a probe must supply these itself. */
+#define FX6_STATUS_IS_RUNTIME_FILLED(id) ((id) == 0xffffffffu)
+#define FX6_STATUS_RUNTIME_SLOTS 6   /* No1071/No2071 TC value, No1172/No2172 clip number,
+                                      * No2141 bitrate, No1162 camreel/title value          */
+
+/* Panel colours used by the status area (namespace 6, from color_cmn.uxc). */
+#define FX6_COLOR_BG_PANEL   0x0200c001u   /* opaque black  */
+#define FX6_COLOR_BG_INNER   0x0200c008u   /* inner panel   */
+#define FX6_COLOR_SEP_STATUS 0x0200c00eu   /* 0x777777 separator */

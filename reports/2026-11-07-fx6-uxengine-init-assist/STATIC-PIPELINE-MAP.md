@@ -6861,3 +6861,159 @@ between glyph and background.
 So all three of the goal's evidence classes exist simultaneously in one frame: real text, real borders,
 real panel fills, produced by appFw's own widget classes. Artifacts:
 `artifacts/fx6_gpe0_663_evidence.txt`.
+
+### 664 — What the `0x23be*/0x23bf*` rodata really is (and what it is not)
+
+The three tables the dynamic line found are **not** menu binding tables. They are `unordered_set`
+initialiser lists, and the constructor that consumes them is `appFw+0xf33840`, whose callees give the
+type away:
+
+```text
+0xf33840  __floatunditf                     0xb18d90
+0xf3389c  __trunctfdf2                      0xb19b20
+0xf338b0  std::__detail::_Prime_rehash_policy::_M_next_bkt   0xb17fe0
+0xf33914  operator new                     0xb18ae0
+0xf33934  std::__detail::_Prime_rehash_policy::_M_need_rehash 0xb19ea0
+0xf338e4  ldr w23,[x21] ; udiv ... msub ...   ; bucket = element % bucket_count
+```
+
+That is textbook `unordered_set` construction: element size 4 bytes, bucket count from the rehash
+policy, `__cxa_atexit` registration (`0xb19910`) afterwards. The three consumers are one-shot
+`.init_array`-style registrars:
+
+```text
+0xb1c864  base 0x23be620, end = base+0x2e8, set object at 0x48dcf48 (.bss)
+0xb1c8e8  base 0x23bf0d8, end = base+0x2e8, set object at 0x48dcf80 (.bss)
+0xb1c9b8  base 0x23bf9e0, end = base+0x2e8, set object at 0x48dcfb8 (.bss)
+```
+
+Each range is `0x2e8 / 4 = 186` ResIDs, all in the `0x02000000 | ns<<13 | idx` form. So they are
+*resource-id collections* — most plausibly "widgets whose ResIDs must be pre-loaded / whose text must
+be refreshed" — not a mapping from menu entry to label.
+
+**`0x23be908` is a different thing.** It is 9 ResIDs read with a *different* access pattern, in
+`appFw+0xf32084`:
+
+```text
+0xf32094  add  x23,x0,#5,lsl #12          ; x23 = this + 0x5000
+0xf320a8  ldr  w2,[x23,#0x128]            ; selector, 0..8
+0xf320ac  cmp  w2,#8
+0xf320b0  b.hi 0xf320c0
+0xf320b4  adrp x0,#0x23be000 ; add x0,x0,#0x908
+0xf320bc  ldr  w22,[x0,w2,uxtw #2]        ; colour ResID = TABLE[selector]
+0xf320c0  mov  w0,#0x18
+0xf320c8  smull x19,w1,w0                 ; x19 = arg1 * 0x18
+0xf320d0  add  x0,x0,x19 ...
+0xf320dc  bl   0xc86f4c                   ; obtain the 0x18-stride row object
+0xf320e0  str  w22,[x0,#0x50]             ; row+0x50 = the colour ResID
+```
+
+So `0x23be908` is a **9-entry selector → colour ResID table**, written to `row+0x50`, and `0xf32084`
+has **zero callers** in `.text` — it is reached through a vtable/thunk, which is consistent with it
+being a per-state refresh method instead of a page builder.
+
+Recorded table contents (first entries, all `0x02......` packed ids):
+
+```text
+0x23be620 (186 ids)  0x020043ed 0x02005082 0x02004575 0x02005082 0x02004d96 0x02002fe1 ...
+0x23be7b8 (untaken)  0x02005261 0x02002f1e 0x0200533b 0x02002f21 0x02002b40 0x02002baa ...
+0x23be908 (9 ids)    0x02002934 0x02002896 0x02002f08 0x02002919 0x02002cab 0x02002c82
+                     0x02002c88 0x02002caf 0x02002ca3
+```
+
+`0x23be7b8` and `0x23bf270` have **no** `adrp+add` reference anywhere in `.text`, so nothing in the
+image consumes them by address — they are either dead data or reached via a computed pointer.
+
+### 664 — The one genuinely useful setter in that region
+
+`appFw+0xf3024c(int index, uint8_t value)` is the accessor the presenters use to reach a descriptor
+row and write one byte into its bound object:
+
+```text
+0xf3024c  cmp  w1,#0x63 ; b.eq 0xf30480              ; index 99 is special-cased
+0xf30268  ldr  x3,[x3]  (GOT 0x2ee57b8)              ; -> 0x2e9e210, the 98-entry home table
+0xf30270  mov  x2,#0x48 ; mul  x2,x20,x2              ; descriptor = table + index*0x48
+0xf30278  ldr  x2,[x3,x2]                             ; *(descriptor+0x00) = the class tag
+0xf30284  ldr  x2,[x2]                                ; tag->vtable
+0xf3028c  ldr  x3,[x3] (GOT 0x2ee56f8)                ; -> 0x42d5a50 (view_icon tag)
+0xf30290  cmp  x3,x2 ; b.ne next-tag-check
+0xf30298  ldr  x2,[x0,#0x10]                          ; this->+0x10 = the 0x18-stride row array
+0xf302a0  smaddl x1,w1,w0,x2                          ; row = base + index*0x18
+0xf302ac  bl   0xf3019c                               ; checked accessor -> param_t*
+0xf302b0  strb w19,[x0,#0x2c]                         ; write the byte
+```
+
+The tag comparisons chain through `view_icon`, `view_battery`, `view_audio_level_meter`, … using the
+GOT slots that alias the class tags, and the assertion strings next to them name the classes directly
+(`"view_icon::param_t* view_icon::accessor::operator->()"` at `0x23bec50`, and friends at `0x23be9f0`
+and `0x23beb10`). **This** is the mechanism a presenter uses to bind a value into a widget: it walks a
+0x48 descriptor table, matches the row's class tag, then writes into the per-index 0x18 row object.
+
+Consequence for 665+: to give `No101..No106` their caption/value/style, the correct static recipe is
+(a) take the descriptor from whichever table the presenter passes, (b) confirm the class tag matches
+the intended class, (c) write the ResID into the row object at the offset that class's `param_t`
+declares — for `view_string` that is the `+0x200` slot already documented, and for the colour tables
+above it is `row+0x50`.
+
+### 664 — `view_frame` internals, fully resolved
+
+`view_frame` (`0xc27800`) does **not** hold five inline `view_fill` objects. It holds a five-entry
+**pointer array** at `+0x1150..+0x1170`, terminated by `this`:
+
+```text
+0xc278d8  str x25,[x19,#0x1150]
+0xc278dc  str x24,[x19,#0x1158]
+0xc278e0  str x23,[x19,#0x1160]
+0xc278e4  str x22,[x19,#0x1168]
+0xc278c4  str x21,[x19,#0x1170]        ; x21 = this, loop sentinel
+0xc278e8  ldr x0,[x20],#8 ; bl setParent(x0, this)   ; until x20 == this+0x1178
+```
+
+The per-edge setter `appFw+0xc27914(frame, slot, color, const int32_t rect4[4])` is what carries the
+geometry and colour into a child:
+
+```text
+0xc27920  add  x21,x0,w1,sxtw #3        ; x21 = frame + slot*8
+0xc27934  ldr  x0,[x21,#0x1150]         ; child = children[slot]     (base is +0x1150!)
+0xc2793c  ldr  x1,[x1,#0x140] ; blr x1  ; child->onCreate()
+0xc27984  stp  x2,x3,[x0]               ; rect[0],rect[1] -> child+0x00/+0x08
+0xc279a0  stp  x2,x3,[x0,#0x10]         ; rect[2],rect[3] -> child+0x10/+0x18
+0xc279a8  str  w22,[x0,#0x30]           ; child+0x30 = the colour argument
+0xc279b0  stp  x2,x3,[x0,#0x20]         ; caption ids + style
+0xc279ac  ldrb w1,[x19,#0x220] ; strb w1,[x0,#0x34]
+0xc279c4  blr  child->onDraw()          ; the child paints itself
+```
+
+and `0xc27b20..0xc27be4` derives the four edge rects purely from the frame's own geometry:
+
+```text
+0xc27b20  ldrh w1,[x19,#0x218]   ; e = border thickness
+0xc27b28  ldr  w0,[x19,#0x1f0]   ; w
+0xc27b60  ldr  w3,[x19,#0x1f4]   ; h
+0xc27b2c  mov  x3,x21            ; x21 = &rect4 on the stack
+0xc27b48  mov  w1,#1 ; bl 0xc27914
+```
+
+Colour per edge: if that edge's field (`+0x204/+0x208/+0x20c/+0x210`) is `!= -1` it wins, otherwise the
+edge falls back to `+0x200` (`0xc27bd0 ldr w2,[x19,#0x200]`). So a frame needs `+0x200 != -1` at
+minimum — the same rule as a plain `view_fill`.
+
+`+0x21c` selects the border shape (0 / 1 / 2, anything else throws), and `+0x218` is the thickness used
+by every rect. **Do not recompute the edge rects externally**: the native body already does it, and the
+arithmetic is style-dependent.
+
+### 664 — New callable helpers in `fx6_menu_items_assist.h`
+
+```text
+fx6_frame_setup(frame, x,y,w,h, edge, top,bottom,right,left, fill_color)
+fx6_frame_draw(frame)                       onCreate(+0x148) then onDrawNotice(+0x158)
+fx6_frame_render(...)                       setup + draw in one call
+fx6_frame_child_ptr(frame, slot)            children[slot] from +0x1150
+fx6_icon_render(icon, x,y,w,h, image_resid) rect + +0x20c, then onDrawNotice
+fx6_menu_item_render(item, x,y,w,h, style, caption, value)
+fx6_menu_item_child(item, slot)             *(item + 0x19730 + slot*8)
+```
+
+All of them take an object produced by the native constructor and only write fields that the
+corresponding `onDrawNotice` actually reads, so they cannot silently produce a blank frame by writing
+to a field nobody consumes. The header compiles clean on `aarch64-linux-gnu`.

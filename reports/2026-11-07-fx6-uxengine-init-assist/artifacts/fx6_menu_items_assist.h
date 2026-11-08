@@ -240,6 +240,87 @@ static inline void *fx6_menu_instantiate(uint64_t appfw, const uint8_t *desc,
     return obj;
 }
 
+/* ---- view_frame internals, measured from 0xc27800 / 0xc27914 / 0xc27b20..0xc27be4 ----
+ *
+ * The five children are *inline sub-objects* at +0x228/+0x530/+0x838/+0xb40/+0xe48, and the ctor
+ * also builds a five-entry pointer array at +0x1150..+0x1170 (terminated by self at +0x1170):
+ *
+ *   0xc278d8  str x25,[x19,#0x1150]   0xc278dc str x24,[x19,#0x1158]
+ *   0xc278e0  str x23,[x19,#0x1160]   0xc278e4 str x22,[x19,#0x1168]
+ *   0xc278c4  str x21,[x19,#0x1170]   <- x21 = this, used as the loop terminator
+ *   0xc278e8  ldr x0,[x20],#8 ; bl setParent(x0, this)   ; until x20 == this+0x1178
+ *
+ * The per-edge setter 0xc27914(frame, slot, color, const int32_t rect4[4]) then does:
+ *
+ *   0xc27920  add  x21,x0,w1,sxtw #3       ; x21 = frame + slot*8
+ *   0xc27934  ldr  x0,[x21,#0x1150]        ; child = children[slot]   (NOTE the +0x1150 base!)
+ *   0xc2793c  ldr  x1,[x1,#0x140] ; blr x1 ; child->onCreate()
+ *   0xc279a8  str  w22,[x0,#0x30]          ; child+0x30 = colour argument
+ *   0xc279ac  ldrb w1,[x19,#0x220] ; strb w1,[x0,#0x34]   ; child+0x34 = frame+0x220
+ *   0xc27984  stp  x2,x3,[x0]              ; rect[0],rect[1] -> child+0x00/+0x08
+ *   0xc279a0  stp  x2,x3,[x0,#0x10]        ; rect[2],rect[3] -> child+0x10/+0x18
+ *   0xc279b0  stp  x2,x3,[x0,#0x20]        ; caption ids + style
+ *   0xc279c4  blr  child->onDraw()
+ *
+ * and 0xc27b20..0xc27be4 derives the four edge rects from the frame's own geometry — it reads
+ * exactly these fields and nothing else:
+ *
+ *   0xc27b20  ldrh w1,[x19,#0x218]   ; e = border thickness (u16)
+ *   0xc27b28  ldr  w0,[x19,#0x1f0]   ; w
+ *   0xc27b60  ldr  w3,[x19,#0x1f4]   ; h
+ *   0xc27b2c  mov  x3,x21            ; x21 = &rect4 on the stack, filled from the above
+ *   0xc27b48  mov  w1,#1 ; bl 0xc27914
+ *
+ * Colour selection per edge (0xc27b30..0xc27be4): if the edge's own field at
+ * +0x204/+0x208/+0x20c/+0x210 is != -1 that value is used, otherwise the edge falls back to
+ * +0x200 (`0xc27bd0 ldr w2,[x19,#0x200]`). So a frame needs at least `+0x200 != -1`, exactly like
+ * a plain view_fill needs its colour.
+ *
+ * Do NOT recompute the edge rects in your own code: the native body already does it from
+ * +0x1e8/+0x1ec/+0x1f0/+0x1f4/+0x218, and the exact arithmetic there is style-dependent (+0x21c
+ * selects among three shapes, anything else throws). Set the fields and call onDrawNotice. */
+#define FX6_FRAME_CHILD_PTR_BASE 0x1150u
+
+static inline void *fx6_frame_child_ptr(void *frame, int slot)
+{
+    if (!frame || slot < 0 || slot > 3) return 0;
+    return *(void **)((char *)frame + FX6_FRAME_CHILD_PTR_BASE + (unsigned)slot * 8u);
+}
+
+/* Configure a frame the way the native pages do: geometry, border thickness, and the four edge
+ * colours (colour ResIDs from color_cmn.uxc, or 0xffffffff for "fall back to +0x200").
+ * `edge` is in pixels; native panels use small values such as 2 for a hairline. */
+static inline void fx6_frame_setup(void *frame, int x, int y, int w, int h,
+                                   uint16_t edge, uint32_t top_color, uint32_t bottom_color,
+                                   uint32_t right_color, uint32_t left_color, uint32_t fill_color)
+{
+    if (!frame) return;
+    *(int32_t  *)((char *)frame + 0x1e8) = x;
+    *(int32_t  *)((char *)frame + 0x1ec) = y;
+    *(int32_t  *)((char *)frame + 0x1f0) = w;
+    *(int32_t  *)((char *)frame + 0x1f4) = h;
+    *(uint16_t *)((char *)frame + 0x218) = edge;
+    *(uint8_t  *)((char *)frame + 0x1fc) = 1;
+    *(uint32_t *)((char *)frame + 0x200) = fill_color;
+    *(uint32_t *)((char *)frame + 0x204) = top_color;
+    *(uint32_t *)((char *)frame + 0x208) = bottom_color;
+    *(uint32_t *)((char *)frame + 0x20c) = right_color;
+    *(uint32_t *)((char *)frame + 0x210) = left_color;
+    *(uint32_t *)((char *)frame + 0x21c) = 0;   /* style 0 = uniform border */
+}
+
+/* Drive a configured frame: onCreate (+0x148) then onDrawNotice (+0x158).
+ * onDrawNotice itself fills the five child view_fill objects and calls their onCreate/onDraw,
+ * so this single call is what puts four border edges plus the background into the framebuffer. */
+static inline void fx6_frame_draw(void *frame)
+{
+    if (!frame) return;
+    void **vt = *(void ***)frame;
+    if (!vt) return;
+    if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(frame);
+    if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(frame);
+}
+
 /* ---- view_frame: ctor 0xc27800 carves five nested view_fill children ----
  * A frame is therefore the cheapest way to get a bordered panel: one object gives you the
  * background plus four edge fills, all constructed by appFw itself. */
@@ -441,3 +522,44 @@ static inline void fx6_fill_set_color_resid(void *fill, uint32_t color_resid)
 #define FX6_COLOR_WHITE     0x0200c019u   /* ffffffff */
 #define FX6_COLOR_SEPARATOR 0x0200c00eu   /* 777777ff */
 #define FX6_COLOR_ACCENT    0x0200c011u   /* ee0000ff */
+
+/* ======================================================================
+ * One-call helpers for the dynamic line (665+), all built from measured facts
+ * ======================================================================
+ * Each helper takes the object already constructed by the native ctor and only writes the fields
+ * that the corresponding onDrawNotice actually reads. No coordinate, label or colour is invented:
+ * geometry and colours come from the descriptor table / color_cmn.uxc, and the caller passes them.
+ */
+
+/* view_frame: geometry + border thickness + per-edge colours, then draw.
+ * `edge` in pixels (native separators are 2). Pass 0xffffffff for an edge to fall back to
+ * `fill_color`. Style +0x21c stays 0 (uniform border). */
+static inline void fx6_frame_render(void *frame, int x, int y, int w, int h, uint16_t edge,
+                                    uint32_t fill_color,
+                                    uint32_t top, uint32_t bottom, uint32_t right, uint32_t left)
+{
+    fx6_frame_setup(frame, x, y, w, h, edge, top, bottom, right, left, fill_color);
+    fx6_frame_draw(frame);
+}
+
+/* view_icon: image ResID + geometry, then onCreate/onDrawNotice. */
+static inline void fx6_icon_render(void *icon, int x, int y, int w, int h, uint32_t image_resid)
+{
+    if (!icon) return;
+    fx6_icon_set_rect(icon, x, y, w, h);
+    fx6_icon_set_image(icon, image_resid);
+    fx6_widget_ondraw_generic(icon);
+}
+
+/* view_menu_item: style + slot geometry + caption/value ids, then onCreate/onDrawNotice.
+ * Remember onDrawNotice drives the child at +0x19730+slot*8, so this only produces pixels once
+ * that child itself is enabled (see fx6_menu_item_child). */
+static inline void fx6_menu_item_render(void *item, int x, int y, int w, int h,
+                                        uint32_t style, uint32_t caption_resid, uint32_t value_resid)
+{
+    if (!item) return;
+    fx6_menu_item_set_rect(item, x, y, w, h);
+    fx6_menu_item_set_style(item, style);
+    fx6_menu_item_set_text_ids(item, caption_resid, value_resid);
+    fx6_widget_ondraw_generic(item);
+}

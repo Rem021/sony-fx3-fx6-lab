@@ -9084,3 +9084,91 @@ compile-time  FX6_CLASS_TAG_COUNT == 24
 machine       the 30 pool pairs all resolve exactly (0 bad)
 build         header clean under -Wall
 ```
+
+### 685 — Viewfinder HUD and playback-status pages, located by scoring
+
+The 128-page directory was scored by counting widget names carrying HUD vocabulary
+(`stbystate|recstate|battery|tcub|time_code|remain|media_slot|audio_level|gain|shutter|
+white_balance|baselook|nd_|iris|duration|codec|resolution|zoom_bar|level_gauge`). Fifteen pages
+scored >= 3; **six** of those are the real HUD surfaces, the rest merely mention a status keyword.
+
+```text
+page  1  0x02e911f0   14 rows  s8  f0  i0  m0   status strip (exported as fx6_audio_meter_rows)
+page  3  0x02e917d8   71 rows  s15 f0  i41 m0   gamma-display-assist overlay
+page  8  0x02e95cc0   20 rows  s8  f0  i1  m0   tracking cancel + audio meter + gain
+page  9  0x02e962a8   11 rows  s3  f0  i0  m0   SHOOTING STATUS STRIP
+page 10  0x02e96608  253 rows  s78 f0  i125 m0  MAIN VIEWFINDER HUD
+page 11  0x02e9ad78   35 rows  s14 f8  i3  m6   TC value + audio meter + clip name
+page 58  0x02eaad68   48 rows  s22 f6  i7  m6   MEDIA STATUS (SSA / SSB / SSP)
+```
+
+Page 9 is the cleanest HUD target — eleven rows that together carry the entire upper and lower status
+strip:
+
+```text
+No16_resolution              0x042d57f0  (846, 47,142,30)  d18=0x020050a1 '4096x2160'
+No2092_level_gauge           0x042d57d0  ( 33,304, 64,64)
+No1068_level_gauge           0x042d57d0  (928,327, 64,64)
+No30_gain_value              0x042d59a0  (514,502,130,30)  d18=0x020020fc
+No13_base_iso                0x042d57f0  (858,275,130,30)  d18=0x02002063
+No17_shutter_mode            0x042d59a0  (648,502,128,30)  d18=0x02002009
+No1014_shutter_mode          0x042d59a0  (618,507,128,30)  d18=0x02002009
+No2089_clip_name_with_rec_function 0x042d57f0 (526,507,134,28)  d18=0
+No2066_battery_icon          0x042d5800  (856,  3,134,28)  d18=0
+No58_nd_filter_mode_nd_filter_clear  0x042d59a0 (256,502,122,30) d18=0x02002090
+No1050_nd_filter_mode_nd_filter_clear 0x042d59a0 (144,507,122,30) d18=0x02002090
+```
+
+Notice the paired rows at `y=502` and `y=507` with x differing by ~10 px — that is the dual-slot
+pattern: slot A and slot B of the same readout are two separate widgets offset slightly, so whichever
+slot is active draws on top. The same duplication appears throughout page 10 (`No4`/`No1004`,
+`No1015`/`No18`, `No1047`/`No55`, `No1052`/`No60`).
+
+Page 10 (253 rows, 78 strings + 125 icons) is the full viewfinder HUD. Sample of its content:
+
+```text
+No4_recstate_string_slot_1st   0x042d57f0  (508,  6, 92,36)  d18=0x02005078 'Rec'
+No47_interval_rec_countdown    0x042d57f0  (578,  8,110,30)  d18=0x0200220c '${v1:02}\ue5d5${v2:02}\ue5d8'
+No18_shutter_value             0x042d59a0  (674,502,110,30)  d18=0x0200207c
+No60_nd_filter_value           0x042d59a0  (278,502,106,30)  d18=0x02002082
+No2053_nd_filter_mode_auto_manual 0x042d59a0 (457,3,112,28)  d18=0x02002f07
+No11_imager_scan_mode          0x042d57f0  (744, 47,102,30)  d18=0x02002106
+No73_zoom_bar                  0x042d5820  ( 36, 90,164,18)  d18=0
+No27_rec_function              0x042d5a50  (364,  6, 78,36)  d18=0x0200037b  (icon)
+No55_white_balance_value       0x042d59a0  ( 90,460, 92,30)  d18=0x0200208e
+No15_sdi_hdmi_rec_control      0x042d57f0  (109,200, 87,30)  d18=0x020051e7 'Stop'
+```
+
+### 685 — HUD band layout, derived from the pages
+
+```text
+top strip     y =   2..47    recstate / shutter mode / ND mode / imager scan / battery / resolution
+upper-left    y =  47..90    zoom bar
+mid overlay   y = 200..338   gamma assist / video level warning / SDI-HDMI rec control
+lower strip   y = 460..512   white balance / ND value / shutter value / gain / clip name
+edge gauges   y = 304..391   level gauges at x = 33 (left) and x = 928 (right)
+```
+
+Exported as `FX6_HUD_TOP_STRIP_Y / UPPER_Y / MID_Y / LOWER_Y / STRIP_H / GAUGE_*`, plus the label
+ResIDs (`FX6_HUD_TXT_REC`, `TXT_STOP`, `TXT_BATTERY`, `FMT_INTERVAL`, `GAIN_LABEL`, `SHUTTER_LABEL`,
+`ND_VALUE_LABEL`, `ND_MODE_LABEL`, `WB_LABEL`, `BASE_ISO`, `SHUTTER_MODE`, `IRIS_LABEL`).
+
+### 685 — Verification
+
+```text
+compile-time  FX6_HUD_SHOOTING_STRIP_ROWS_COUNT == 11
+              FX6_HUD_TRACKING_ROWS_COUNT       == 20
+              FX6_HUD_TC_STATUS_ROWS_COUNT      == 35
+              FX6_MEDIA_STATUS_ROWS_COUNT       == 48
+              FX6_GAMMA_ASSIST_OVERLAY_ROWS_COUNT == 71
+              FX6_HUD_MAIN_ROWS_COUNT           == 253
+machine       438 rows checked, 0 unresolved:
+                152 namespace-1/2 string ids -> all resolve to text
+                167 namespace-0 image ids    -> all present in image_00_169.uxc (1829 records)
+                 14 namespace-6 colour ids   -> all present in color_cmn.uxc (27 records)
+build         header 3341 lines, clean under -Wall
+```
+
+The three-way check is worth noting: the HUD pages are icon-heavy (167 image ids, 38% of all rows),
+which is exactly why they are a good stress test — every icon id was confirmed to exist as a record in
+the image container rather than merely being a plausible-looking number.

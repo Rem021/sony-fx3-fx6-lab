@@ -948,6 +948,8 @@ static inline uint32_t fx6_resid_key(uint32_t id)
 #define FX6_DESC_TAG_LIST      0x042d5a20u   /* view_list_scroll_cursor_fixed  */
 #define FX6_DESC_TAG_TOUCH     0x042d5860u   /* full-screen touch              */
 #define FX6_DESC_TAG_PAGEBREAK 0x42d5a60u    /* page separator, all-zero rect  */
+#define FX6_DESC_TAG_ASA       0x042d59a0u   /* value readout, ${vN} template  */
+#define FX6_DESC_TAG_FRAME     0x042d57d0u   /* view_frame, shares fill body   */
 
 #define FX6_DESC_OFF_TAG       0x00u
 #define FX6_DESC_OFF_NAME      0x08u
@@ -8664,12 +8666,35 @@ static inline int fx6_setup_from_page_row(void *obj, uint16_t page_idx, uint16_t
         break;
 
     case FX6_DESC_TAG_VF:   /* view_fill */
-    case 0x042d57d0u:       /* view_frame, same field body */
+    case FX6_DESC_TAG_FRAME:/* view_frame, same field body */
         fx6_row_apply_rect(obj, &rv);
         if (rv.text_resid && rv.text_resid != 0xffffffffu)
             *(uint32_t *)((char *)obj + 0x200) = rv.text_resid;
         *(uint8_t *)((char *)obj + 0x1fc) = 1;
         break;
+
+    case FX6_DESC_TAG_ASA:  /* 0x042d59a0: value readout with a ${vN} template */
+        fx6_row_apply_rect(obj, &rv);
+        /* the primary id is the template, stored at +0x230 like the factory does */
+        if (rv.text_resid && rv.text_resid != 0xffffffffu)
+            *(uint32_t *)((char *)obj + 0x230) = rv.text_resid;
+        if (rv.layout && rv.font_a && rv.font_b) {
+            *(uint32_t *)((char *)obj + 0x238) = rv.font_a;
+            *(uint32_t *)((char *)obj + 0x23c) = rv.font_b;
+            *(uint32_t *)((char *)obj + 0x240) = rv.layout;
+            *(uint32_t *)((char *)obj + 0x244) = rv.style;
+        }
+        *(uint32_t *)((char *)obj + 0x248) = 0;   /* factory clears this */
+        *(uint32_t *)((char *)obj + 0xa44) = rv.font_size ? rv.font_size : FX6_VS_FONTSIZE;
+        /* the ${vN} rows live at +0x220 + i*0x5c with the value at +0x54 (round 687).
+         * A readout that is not fed renders its glyph prefix and nothing else, which is the
+         * correct "no value yet" appearance — so do NOT invent a value here. */
+        *(uint8_t *)((char *)obj + 0x1fc) = 1;
+        break;
+
+    /* 0x042d57d0 (view_frame) is handled by the view_fill branch above: 0xf4d6ac shows a frame
+     * presenter only setting two bytes at +0x30/+0x31 and then reading [+0x10], i.e. it toggles
+     * state flags on an existing fill body rather than carrying row payload of its own. */
 
     default:
         fx6_row_apply_rect(obj, &rv);

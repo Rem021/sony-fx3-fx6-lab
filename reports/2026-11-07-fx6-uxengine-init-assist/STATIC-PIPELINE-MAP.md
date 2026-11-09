@@ -10040,3 +10040,87 @@ compile-time  header builds with -Wall; fx6_setup_from_page_row inlines
               _Static_assert(0x640/0x10 == 100)
 machine       fx6_verify_all.py: 0 unresolved, 0 extra-field problems
 ```
+
+### 696 — view_asa and view_frame: the indexing layer, and why a frame carries no payload
+
+Tracing the tag references found 10 functions for `0x042d59a0` and 8 for `0x042d57d0`. Reading them
+shows two different roles, and neither is a draw routine.
+
+**`0xf30254` — a page-table slot indexer.** This is the function that turns `(page, row)` into a slot:
+
+```text
+0xf30268  ldr  x3,[GOT 0x2ee57b8]     ; page-table base
+0xf3026c  uxtb w19,w2                 ; w2 = a byte flag to store
+0xf30270  mov  x2,#0x48
+0xf30274  mul  x2,x20,x2              ; x20 = row index; byte offset = row * 0x48
+0xf30278  ldr  x2,[x3,x2]             ; load the descriptor POINTER from the page table
+0xf30284  ldr  x2,[x2]                ; descriptor[0] = class tag
+0xf30290  cmp  x3,x2 ; b.ne ...       ; compare against GOT-held vtable tags, branch per class
+0xf302a0  smaddl x1,w1,#0x18,x2       ; ... and the per-slot array uses stride 0x18
+0xf302b0  strb w19,[x0,#0x2c]         ; store the flag byte at +0x2c
+```
+
+So there are **two different strides in play**, which is worth stating clearly because it explains much
+of the confusion in earlier rounds:
+
+```text
+descriptor rows       stride 0x48   (this is the page table)
+runtime slot objects  stride 0x18   (what the page table points at)
+```
+
+The container at `0xc870cc` (round 695) stores descriptor pointers at stride `0x10`; the slot objects
+those pointers reach use stride `0x18`; and the descriptors themselves are `0x48` apart. Three different
+strides for three different layers.
+
+**`0xf4d6ac` — a frame state toggle.** The frame reference does almost nothing:
+
+```text
+0xf4d6d8  bl   0xf4d650
+0xf4d6dc  strb w21,[x0,#0x30]        ; set byte +0x30 = 1
+0xf4d6f0  bl   0xf4d650
+0xf4d6f4  strb w21,[x0,#0x31]        ; set byte +0x31 = 1
+0xf4d6fc  ldr  x20,[x19,#0x10]
+0xf4d704  ldr  x1,[x20]              ; then a vtable tag compare
+```
+
+It sets two state bytes on an existing object and then dispatches. It carries **no row payload**: no
+`+0x18` id, no rect write, no font. That confirms what `view_frame` is in this image — a fill body with
+two extra boolean flags, not a class with its own descriptor fields. `0xfb94b0` is the same
+`row * 0x48` page-table indexer as `0xf30254`, and `0xfd0298` is a vtable-identity check.
+
+### 696 — Changes to `fx6_setup_from_page_row()`
+
+Added a real `view_asa` branch (the class previously fell through to rect-only):
+
+```text
+0x042d59a0  rect
+            +0x230  primary id (the ${vN} template)
+            +0x238  font A      +0x23c  font B
+            +0x240  layout      +0x244  style
+            +0x248  = 0         (factory clears it)
+            +0xa44  font size
+            +0x1fc  = 1         ready
+```
+
+Crucially the `${vN}` slots are **left untouched**. A readout with no value renders its PUA glyph prefix
+and nothing else, which is the correct "no reading yet" appearance; inventing a number there would
+produce the exact `33572552` artefact that round 688 was written to prevent. The caller is expected to
+feed values through `fx6_view_string_set_v1()` when it has real camera state.
+
+`view_frame` deliberately has no branch of its own: `0xf4d6ac` proves it shares the fill body, so
+`FX6_DESC_TAG_FRAME` is routed to the `view_fill` handler. Two named macros were added for clarity:
+
+```c
+#define FX6_DESC_TAG_ASA   0x042d59a0u   /* value readout, ${vN} template */
+#define FX6_DESC_TAG_FRAME 0x042d57d0u   /* view_frame, shares fill body  */
+```
+
+### 696 — Verification
+
+```text
+compile-time  _Static_assert(FX6_DESC_TAG_ASA == 0x042d59a0u)
+              _Static_assert(FX6_DESC_TAG_FRAME == 0x042d57d0u)
+              fx6_setup_from_page_row compiles and inlines; header builds with -Wall
+machine       fx6_verify_all.py: 0 unresolved, 0 extra-field problems
+build         header 8704 lines
+```

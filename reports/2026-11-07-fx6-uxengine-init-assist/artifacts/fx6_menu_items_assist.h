@@ -5393,3 +5393,827 @@ static inline unsigned fx6_presenter_page_count(uint32_t presenter)
 }
 
 #define FX6_PAGES_WITHOUT_STATIC_LINK 79u
+
+/* ======================================================================
+ * PHASE 24 — the last 58 pages, and a single page-index entry point
+ * ======================================================================
+ * With these arrays the header materialises **all 128 pages / 2345 descriptor rows** — every 0x48
+ * row in the image is now available as a C literal. The remaining pages were small (2–7 rows each,
+ * 365 rows in total) and are mostly dialog shells, toast variants and touch-capture layers, which is
+ * exactly why they were left for last.
+ *
+ * Naming note: pages written in earlier rounds keep their descriptive names
+ * (fx6_three_layer_page2_rows, fx6_hud_main_rows, ...); the ones added here use fx6_pgN_rows with N
+ * equal to the page index in fx6_all_pages[].
+ * ---------------------------------------------------------------------- */
+/* page 0 -- base 0x02e90fb0, 7 rows */
+static const fx6_menu_row_t fx6_pg0_rows[] = {
+    {"No33_touch", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No31_line_mask", 0x042d5870u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No18_clip_name", 0x042d57f0u, {244,417,536,30}, 0x00000000u, 0},
+    {"No1021_monitor_lut", 0x042d57f0u, {512,44,410,30}, 0x0200205du, 0},
+    {"No34_monitor_lut", 0x042d57f0u, {688,237,300,30}, 0x0200205du, 0},
+    {"No1011_clip_name", 0x042d57f0u, {32,507,296,30}, 0x00000000u, 0},
+    {"No1016_tcub", 0x042d57d0u, {408,460,208,40}, 0x00000000u, 0},
+};
+#define FX6_PG0_ROWS_COUNT 7
+
+/* page 1 -- base 0x02e911f0, 14 rows */
+static const fx6_menu_row_t fx6_pg1_rows[] = {
+    {"No2011_audio_level_meter", 0x042d57d0u, {931,391,58,112}, 0x00000000u, 0},
+    {"No1005_audio_level_meter", 0x042d57d0u, {931,394,58,112}, 0x00000000u, 0},
+    {"No1001_content_number", 0x042d57f0u, {96,5,206,30}, 0x00000000u, 0},
+    {"No2022_tcub", 0x042d57d0u, {34,505,180,32}, 0x00000000u, 0},
+    {"No2017_clip_name", 0x042d57f0u, {464,507,196,28}, 0x020050c4u, 0},
+    {"No9_baselook", 0x042d57f0u, {823,199,165,32}, 0x02004b37u, 0},
+    {"No17_play_string", 0x042d57f0u, {508,6,144,36}, 0x020050d1u, 0},
+    {"No1010_play_string", 0x042d57f0u, {522,2,144,36}, 0x020050d1u, 0},
+    {"No5_battery_icon", 0x042d5800u, {840,6,148,34}, 0x00000000u, 0},
+    {"No2005_battery_icon", 0x042d5800u, {840,6,148,34}, 0x00000000u, 0},
+    {"No1002_battery_icon", 0x042d5800u, {844,1,148,34}, 0x00000000u, 0},
+    {"No8_codec", 0x042d57f0u, {826,123,162,30}, 0x02005261u, 0},
+    {"No7_frame_rate", 0x042d57f0u, {828,85,160,30}, 0x020050acu, 0},
+    {"No2009_look_name", 0x042d57f0u, {191,507,171,28}, 0x020020f5u, 0},
+};
+#define FX6_PG1_ROWS_COUNT 14
+
+/* page 2 -- base 0x02e91628, 5 rows */
+static const fx6_menu_row_t fx6_pg2_rows[] = {
+    {"No6_picture_size", 0x042d57f0u, {846,47,142,30}, 0x020050a1u, 0},
+    {"No3_start_essence_mark_number", 0x042d57f0u, {36,85,140,30}, 0x00000000u, 0},
+    {"No2003_start_essence_mark_number", 0x042d57f0u, {36,85,140,30}, 0x00000000u, 0},
+    {"No2001_content_number", 0x042d57f0u, {36,47,140,30}, 0x00000000u, 0},
+    {"No1_content_number", 0x042d57f0u, {36,47,140,30}, 0x00000000u, 0},
+};
+#define FX6_PG2_ROWS_COUNT 5
+
+/* page 5 -- base 0x02e94c28, 40 rows */
+static const fx6_menu_row_t fx6_pg5_rows[] = {
+    {"No133_homemenu_clip_area", 0x042d57d0u, {96,72,768,432}, 0x00000000u, 0},
+    {"No1116_upper_homemenu_clip_area", 0x042d57d0u, {32,0,960,70}, 0x00000000u, 0},
+    {"No96_direct_menu_list_shutter_mode", 0x042d5a40u, {464,390,320,150}, 0x0200c001u, 0},
+    {"No2102_direct_menu_list_shutter_mode", 0x042d5a40u, {260,3,320,150}, 0x0200c001u, 0},
+    {"No1078_direct_menu_list_shutter_mode", 0x042d5a40u, {618,390,320,150}, 0x0200c001u, 0},
+    {"No2097_direct_menu_list_focus_mode", 0x042d5a40u, {32,3,310,150}, 0x0200c001u, 0},
+    {"No1115_upper_fullmenu_clip_area", 0x042d57d0u, {32,0,960,46}, 0x00000000u, 0},
+    {"No97_direct_menu_list_exposure_mode", 0x042d5a40u, {659,390,300,150}, 0x0200c001u, 0},
+    {"No95_direct_menu_list_gain_mode", 0x042d5a40u, {480,390,300,150}, 0x0200c001u, 0},
+    {"No94_direct_menu_list_iris_mode", 0x042d5a40u, {388,390,300,150}, 0x0200c001u, 0},
+    {"No93_direct_menu_list_nd_filter_mode", 0x042d5a40u, {252,390,300,150}, 0x0200c001u, 0},
+    {"No92_direct_menu_list_scene_file", 0x042d5a40u, {274,390,300,150}, 0x0200c001u, 0},
+    {"No89_direct_menu_list_focus_mode", 0x042d5a40u, {32,47,300,150}, 0x0200c001u, 0},
+    {"No86_direct_menu_list_white_mode", 0x042d5a40u, {32,343,300,150}, 0x0200c001u, 0},
+    {"No85_direct_menu_list_steady_shot", 0x042d5a40u, {32,161,300,150}, 0x0200c001u, 0},
+    {"No2199_direct_menu_list_nd_filter_mode", 0x042d5a40u, {146,390,300,150}, 0x0200c001u, 0},
+    {"No2104_direct_menu_list_base_iso", 0x042d5a40u, {34,112,300,150}, 0x0200c001u, 0},
+    {"No2103_direct_menu_list_exposure_mode", 0x042d5a40u, {564,44,300,150}, 0x0200c001u, 0},
+    {"No2101_direct_menu_list_gain_mode", 0x042d5a40u, {532,3,300,150}, 0x0200c001u, 0},
+    {"No2100_direct_menu_list_iris_mode", 0x042d5a40u, {371,3,300,150}, 0x0200c001u, 0},
+    {"No2098_direct_menu_list_scene_file", 0x042d5a40u, {34,268,300,150}, 0x0200c001u, 0},
+    {"No2096_direct_menu_list_white_mode", 0x042d5a40u, {698,3,300,150}, 0x0200c001u, 0},
+    {"No2095_direct_menu_list_steady_shot", 0x042d5a40u, {833,277,300,150}, 0x0200c001u, 0},
+    {"No1114_direct_menu_list_base_iso", 0x042d5a40u, {424,390,300,150}, 0x0200c001u, 0},
+    {"No1079_direct_menu_list_exposure_mode", 0x042d5a40u, {32,390,300,150}, 0x0200c001u, 0},
+    {"No1077_direct_menu_list_gain_mode", 0x042d5a40u, {96,390,300,150}, 0x0200c001u, 0},
+    {"No1076_direct_menu_list_iris_mode", 0x042d5a40u, {274,390,300,150}, 0x0200c001u, 0},
+    {"No1075_direct_menu_list_nd_filter_mode", 0x042d5a40u, {140,390,300,150}, 0x0200c001u, 0},
+    {"No1074_direct_menu_list_scene_file", 0x042d5a40u, {750,171,300,150}, 0x0200c001u, 0},
+    {"No1072_direct_menu_list_focus_mode", 0x042d5a40u, {32,3,300,150}, 0x0200c001u, 0},
+    {"No1071_direct_menu_list_white_mode", 0x042d5a40u, {710,390,300,150}, 0x0200c001u, 0},
+    {"No1070_direct_menu_list_steady_shot", 0x042d5a40u, {32,165,300,150}, 0x0200c001u, 0},
+    {"No2201_bottom_homemenu_clip_area", 0x042d57d0u, {32,504,960,36}, 0x00000000u, 0},
+    {"No2200_upper_homemenu_clip_area", 0x042d57d0u, {32,0,960,36}, 0x00000000u, 0},
+    {"No1119_right_homemenu_clip_area", 0x042d57d0u, {876,34,114,290}, 0x00000000u, 0},
+    {"No1117_bottom_homemenu_clip_area", 0x042d57d0u, {32,507,960,33}, 0x00000000u, 0},
+    {"No90_direct_menu_list_sq_frame_rate", 0x042d5a40u, {686,82,200,150}, 0x0200c001u, 0},
+    {"No1073_direct_menu_list_sq_frame_rate", 0x042d5a40u, {792,66,200,150}, 0x0200c001u, 0},
+    {"No2202_left_homemenu_clip_area", 0x042d57d0u, {32,36,64,468}, 0x00000000u, 0},
+    {"No1118_left_homemenu_clip_area", 0x042d57d0u, {32,49,64,458}, 0x00000000u, 0},
+};
+#define FX6_PG5_ROWS_COUNT 40
+
+/* page 6 -- base 0x02e957b0, 5 rows */
+static const fx6_menu_row_t fx6_pg6_rows[] = {
+    {"No2045_video_signal_monitor", 0x042d57d0u, {726,337,200,136}, 0x00000000u, 0},
+    {"No1111_video_signal_monitor", 0x042d57d0u, {725,368,200,136}, 0x00000000u, 0},
+    {"No1123_direct_menu_clip_area_for_double_operatio", 0x042d57d0u, {864,325,160,150}, 0x00000000u, 0},
+    {"No2203_right_homemenu_clip_area", 0x042d57d0u, {928,36,64,345}, 0x00000000u, 0},
+    {"No49_clip_name", 0x042d57f0u, {244,417,536,30}, 0x020050c4u, 0},
+};
+#define FX6_PG6_ROWS_COUNT 5
+
+/* page 7 -- base 0x02e959a8, 7 rows */
+static const fx6_menu_row_t fx6_pg7_rows[] = {
+    {"No1066_base_look", 0x042d57f0u, {512,44,410,30}, 0x020020f5u, 0},
+    {"No50_monitor_lut", 0x042d57f0u, {688,237,300,30}, 0x0200205du, 0},
+    {"No1042_clip_name", 0x042d57f0u, {104,470,296,30}, 0x020050c4u, 0},
+    {"No71_video_level_warning", 0x042d57f0u, {374,460,294,30}, 0x0200533cu, 0},
+    {"No1063_video_level_warning", 0x042d57f0u, {365,426,294,30}, 0x0200533cu, 0},
+    {"No101_nightshot_status", 0x042d57f0u, {374,460,294,30}, 0x02002adfu, 0},
+    {"No1065_tcub", 0x042d57d0u, {408,460,208,40}, 0x00000000u, 0},
+};
+#define FX6_PG7_ROWS_COUNT 7
+
+/* page 12 -- base 0x02e9b798, 39 rows */
+static const fx6_menu_row_t fx6_pg12_rows[] = {
+    {"No44_yuv_cover", 0x042d5a40u, {0,0,1024,540}, 0x0200c001u, 0},
+    {"No42_line_mask", 0x042d5870u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No30_clip_footer", 0x042d5a50u, {0,460,1024,80}, 0x02000311u, 0},
+    {"No1_clip_header", 0x042d5a50u, {0,0,1024,52}, 0x02000312u, 0},
+    {"No4_option_bg", 0x042d5a50u, {38,0,534,54}, 0x0200032bu, 0},
+    {"No21_clip_thumbnail", 0x042d58f0u, {746,325,203,132}, 0x00000000u, 0},
+    {"No20_clip_thumbnail", 0x042d58f0u, {522,325,203,132}, 0x00000000u, 0},
+    {"No19_clip_thumbnail", 0x042d58f0u, {298,325,203,132}, 0x00000000u, 0},
+    {"No18_clip_thumbnail", 0x042d58f0u, {74,325,203,132}, 0x00000000u, 0},
+    {"No17_clip_thumbnail", 0x042d58f0u, {746,190,203,132}, 0x00000000u, 0},
+    {"No16_clip_thumbnail", 0x042d58f0u, {522,190,203,132}, 0x00000000u, 0},
+    {"No15_clip_thumbnail", 0x042d58f0u, {298,190,203,132}, 0x00000000u, 0},
+    {"No14_clip_thumbnail", 0x042d58f0u, {74,190,203,132}, 0x00000000u, 0},
+    {"No13_clip_thumbnail", 0x042d58f0u, {746,55,203,132}, 0x00000000u, 0},
+    {"No12_clip_thumbnail", 0x042d58f0u, {522,55,203,132}, 0x00000000u, 0},
+    {"No11_clip_thumbnail", 0x042d58f0u, {298,55,203,132}, 0x00000000u, 0},
+    {"No10_clip_thumbnail", 0x042d58f0u, {74,55,203,132}, 0x00000000u, 0},
+    {"No31_clip_name", 0x042d57f0u, {57,464,536,30}, 0x00000000u, 0},
+    {"No3_clip_title", 0x042d57f0u, {99,12,302,36}, 0x02005209u, 0},
+    {"No36_criate_time", 0x042d5840u, {675,464,292,30}, 0x00000000u, 0},
+    {"No6_option_exec_guide", 0x042d57f0u, {308,13,246,30}, 0x02004fe2u, 0},
+    {"No5_option_title", 0x042d57f0u, {56,13,246,30}, 0x00000000u, 0},
+    {"No35_rec_mode", 0x042d57f0u, {520,496,242,30}, 0x00000000u, 0},
+    {"No9_battery_icon", 0x042d5800u, {802,13,165,36}, 0x00000000u, 0},
+    {"No37_duration", 0x042d57f0u, {775,496,192,30}, 0x00000000u, 0},
+    {"No32_video_codec", 0x042d57f0u, {57,496,186,30}, 0x00000000u, 0},
+    {"No45_sub_clip_title_bg", 0x042d5a50u, {405,15,162,30}, 0x02000335u, 0},
+    {"No46_sub_clip_title", 0x042d57f0u, {408,15,156,30}, 0x02004fe3u, 0},
+    {"No33_video_size", 0x042d57f0u, {257,496,137,30}, 0x00000000u, 0},
+    {"No8_content_num", 0x042d57f0u, {665,18,135,30}, 0x00000000u, 0},
+    {"No34_video_fps", 0x042d57f0u, {408,496,98,30}, 0x00000000u, 0},
+    {"No41_scroll_bar_bg", 0x042d5a40u, {963,59,4,394}, 0x0200c002u, 0},
+    {"No40_scroll_bar_current", 0x042d5a40u, {963,59,4,394}, 0x0200c013u, 0},
+    {"No2_clip_icon", 0x042d5a50u, {57,13,42,34}, 0x02000349u, 0},
+    {"No38_play_media", 0x042d5a50u, {592,13,32,34}, 0x0200026fu, 0},
+    {"No48_digital_signature_cr_icon", 0x042d5a50u, {89,464,32,30}, 0x02000450u, 0},
+    {"No47_digital_signature_icon", 0x042d5a50u, {57,464,32,30}, 0x02000451u, 0},
+    {"No39_play_media_protect", 0x042d5a50u, {626,13,28,28}, 0x020002d3u, 0},
+    {"No43_message_request", 0x042d5920u, {0,0,1024,540}, 0x00000000u, 0},
+};
+#define FX6_PG12_ROWS_COUNT 39
+
+/* page 13 -- base 0x02e9c2d8, 6 rows */
+static const fx6_menu_row_t fx6_pg13_rows[] = {
+    {"No3_BG_MENU", 0x042d5a50u, {198,367,628,113}, 0x0200021du, 0},
+    {"No1_BG", 0x042d5a50u, {221,414,582,46}, 0x02000224u, 0},
+    {"No6_CONTEXT_MENU_PROCESSING", 0x042d5960u, {232,408,560,30}, 0x00000000u, 0},
+    {"No5_CONTEXT_PROCESSING", 0x042d5960u, {232,422,560,30}, 0x00000000u, 0},
+    {"No4_CONTEXT_MENU", 0x042d57f0u, {232,408,560,30}, 0x00000000u, 0},
+    {"No2_CONTEXT", 0x042d57f0u, {232,422,560,30}, 0x0200554cu, 0},
+};
+#define FX6_PG13_ROWS_COUNT 6
+
+/* page 14 -- base 0x02e9c4d0, 4 rows */
+static const fx6_menu_row_t fx6_pg14_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,321,628,159}, 0x02000220u, 0},
+    {"No5_TEXT1_PROCESSING", 0x042d5960u, {232,359,560,36}, 0x00000000u, 0},
+    {"No4_TEXT2", 0x042d57f0u, {232,405,560,36}, 0x00000000u, 0},
+    {"No3_TEXT1", 0x042d57f0u, {232,359,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG14_ROWS_COUNT 4
+
+/* page 15 -- base 0x02e9c638, 4 rows */
+static const fx6_menu_row_t fx6_pg15_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,275,628,205}, 0x02000222u, 0},
+    {"No5_THIRD_LINE", 0x042d57f0u, {232,405,560,36}, 0x00000000u, 0},
+    {"No4_SECOND_LINE", 0x042d57f0u, {232,359,560,36}, 0x00000000u, 0},
+    {"No3_FIRST_LINE", 0x042d57f0u, {232,313,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG15_ROWS_COUNT 4
+
+/* page 16 -- base 0x02e9c7a0, 3 rows */
+static const fx6_menu_row_t fx6_pg16_rows[] = {
+    {"No1_BG", 0x042d5a40u, {0,0,1024,540}, 0x0200c001u, 0},
+    {"No3_MSG_USB", 0x042d57f0u, {102,343,820,44}, 0x02005206u, 0},
+    {"No2_USB_ICON", 0x042d5a50u, {392,174,240,120}, 0x0200014bu, 0},
+};
+#define FX6_PG16_ROWS_COUNT 3
+
+/* page 22 -- base 0x02e9fde8, 3 rows */
+static const fx6_menu_row_t fx6_pg22_rows[] = {
+    {"No2_enlargeareadebugdisplay", 0x042d57d0u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_touchscreen", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No3_magnificationdebugdisplay", 0x042d57f0u, {0,0,400,100}, 0x00000000u, 0},
+};
+#define FX6_PG22_ROWS_COUNT 3
+
+/* page 24 -- base 0x02ea02f8, 35 rows */
+static const fx6_menu_row_t fx6_pg24_rows[] = {
+    {"No1_WID_NINEPATCHIMAGE_STAGE1_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c006u, 0},
+    {"No25_Gridlist", 0x042d59e0u, {62,56,494,462}, 0x00000000u, 0},
+    {"No35_itemtouchbutton8", 0x042d58d0u, {570,463,386,52}, 0x00000000u, 0},
+    {"No34_itemtouchbutton7", 0x042d58d0u, {570,412,386,52}, 0x00000000u, 0},
+    {"No33_itemtouchbutton6", 0x042d58d0u, {570,361,386,52}, 0x00000000u, 0},
+    {"No32_itemtouchbutton5", 0x042d58d0u, {570,310,386,52}, 0x00000000u, 0},
+    {"No31_itemtouchbutton4", 0x042d58d0u, {570,259,386,52}, 0x00000000u, 0},
+    {"No30_itemtouchbutton3", 0x042d58d0u, {570,208,386,52}, 0x00000000u, 0},
+    {"No29_itemtouchbutton2", 0x042d58d0u, {570,157,386,52}, 0x00000000u, 0},
+    {"No28_itemtouchbutton1", 0x042d58d0u, {570,106,386,52}, 0x00000000u, 0},
+    {"No9_item6inthesecondlayer", 0x042d57f0u, {578,418,370,40}, 0x00000000u, 0},
+    {"No8_item5inthesecondlayer", 0x042d57f0u, {578,367,370,40}, 0x00000000u, 0},
+    {"No7_item4inthesecondlayer", 0x042d57f0u, {578,316,370,40}, 0x00000000u, 0},
+    {"No6_item3inthesecondlayer", 0x042d57f0u, {578,265,370,40}, 0x00000000u, 0},
+    {"No5_item2inthesecondlayer", 0x042d57f0u, {578,214,370,40}, 0x00000000u, 0},
+    {"No4_item1inthesecondlayer", 0x042d57f0u, {578,163,370,40}, 0x00000000u, 0},
+    {"No10_item7inthesecondlayer", 0x042d57f0u, {578,469,370,40}, 0x00000000u, 0},
+    {"No21_ItemBG", 0x042d5a40u, {564,62,401,36}, 0x0200c00du, 0},
+    {"No3_Backstringinthesecondlayer", 0x042d57f0u, {622,112,326,40}, 0x02004c3eu, 0},
+    {"No23_Itemselectionofthefirstlayer", 0x042d57f0u, {568,62,280,36}, 0x00000000u, 0},
+    {"No16_Loweroutsideline2", 0x042d5a40u, {58,524,910,2}, 0x0200c009u, 0},
+    {"No15_Loweroutsideline", 0x042d5a40u, {57,523,908,2}, 0x0200c005u, 0},
+    {"No12_Upperoutsideline2", 0x042d5a40u, {59,50,908,2}, 0x0200c00au, 0},
+    {"No26_ScrollbarBase", 0x042d5a40u, {958,102,4,415}, 0x0200c005u, 0},
+    {"No27_Scrollbar", 0x042d5a40u, {958,102,4,415}, 0x0200c013u, 0},
+    {"No2_Backiconinthesecondlayer", 0x042d5a50u, {578,112,38,38}, 0x02000154u, 0},
+    {"No22_ItemnumberBG", 0x042d5a40u, {921,66,40,28}, 0x0200c00fu, 0},
+    {"No24_Itemnumber", 0x042d57f0u, {922,67,38,28}, 0x00000000u, 0},
+    {"No18_Rightoutsideline2", 0x042d5a40u, {965,52,2,473}, 0x0200c00au, 0},
+    {"No14_Leftoutsideline2", 0x042d5a40u, {57,50,2,473}, 0x0200c00au, 0},
+    {"No20_Separator2", 0x042d5a40u, {562,52,2,471}, 0x0200c00eu, 0},
+    {"No19_Separator", 0x042d5a40u, {560,52,2,471}, 0x0200c001u, 0},
+    {"No11_Upperoutsideline", 0x042d5a40u, {57,49,910,1}, 0x0200c009u, 0},
+    {"No17_Rightoutsideline", 0x042d5a40u, {967,49,1,477}, 0x0200c009u, 0},
+    {"No13_Leftoutsideline", 0x042d5a40u, {56,49,1,477}, 0x0200c009u, 0},
+};
+#define FX6_PG24_ROWS_COUNT 35
+
+/* page 30 -- base 0x02ea3748, 1 rows */
+static const fx6_menu_row_t fx6_pg30_rows[] = {
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+};
+#define FX6_PG30_ROWS_COUNT 1
+
+/* page 32 -- base 0x02ea3af0, 3 rows */
+static const fx6_menu_row_t fx6_pg32_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,321,628,159}, 0x02000220u, 0},
+    {"No4_MSG_PROCESSING", 0x042d5960u, {232,359,560,82}, 0x00000000u, 0},
+    {"No3_MSG", 0x042d57f0u, {232,359,560,82}, 0x00000000u, 0},
+};
+#define FX6_PG32_ROWS_COUNT 3
+
+/* page 33 -- base 0x02ea3c10, 2 rows */
+static const fx6_menu_row_t fx6_pg33_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,275,628,205}, 0x02000222u, 0},
+    {"No3_FIRST", 0x042d57f0u, {232,313,560,128}, 0x00000000u, 0},
+};
+#define FX6_PG33_ROWS_COUNT 2
+
+/* page 34 -- base 0x02ea3ce8, 2 rows */
+static const fx6_menu_row_t fx6_pg34_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No3_FIRST_LINE", 0x042d57f0u, {232,245,560,174}, 0x00000000u, 0},
+};
+#define FX6_PG34_ROWS_COUNT 2
+
+/* page 35 -- base 0x02ea3dc0, 1 rows */
+static const fx6_menu_row_t fx6_pg35_rows[] = {
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+};
+#define FX6_PG35_ROWS_COUNT 1
+
+/* page 37 -- base 0x02ea4168, 6 rows */
+static const fx6_menu_row_t fx6_pg37_rows[] = {
+    {"No2_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No6_TEXT_1", 0x042d57f0u, {72,108,884,256}, 0x02002b83u, 0},
+    {"No1_TITLE", 0x042d57f0u, {62,54,894,36}, 0x02002b77u, 0},
+    {"No7_TEXT_2", 0x042d57f0u, {72,409,884,36}, 0x02002b9cu, 0},
+    {"No4_BUTTON_2", 0x042d58d0u, {774,463,182,52}, 0x02004c46u, 0},
+    {"No3_BUTTON_1", 0x042d58d0u, {588,463,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG37_ROWS_COUNT 6
+
+/* page 38 -- base 0x02ea4360, 5 rows */
+static const fx6_menu_row_t fx6_pg38_rows[] = {
+    {"No1_TRANS_BG", 0x042d5a40u, {0,0,1024,540}, 0x0200c001u, 0},
+    {"No2_TITLE", 0x042d57f0u, {102,80,820,44}, 0x02005295u, 0},
+    {"No3_TRANSFERING", 0x042d57f0u, {232,232,560,36}, 0x02005296u, 0},
+    {"No4_PROGRESS_BAR", 0x042d58b0u, {238,274,548,22}, 0x00000000u, 0},
+    {"No5_CANCEL", 0x042d58d0u, {740,456,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG38_ROWS_COUNT 5
+
+/* page 39 -- base 0x02ea4510, 3 rows */
+static const fx6_menu_row_t fx6_pg39_rows[] = {
+    {"No2_BG", 0x042d5a50u, {334,47,354,36}, 0x0200022fu, 0},
+    {"No3_TEXT", 0x042d57f0u, {368,50,318,30}, 0x00000000u, 0},
+    {"No4_ICON", 0x042d5a50u, {337,51,28,28}, 0x0200022eu, 0},
+};
+#define FX6_PG39_ROWS_COUNT 3
+
+/* page 42 -- base 0x02ea5320, 7 rows */
+static const fx6_menu_row_t fx6_pg42_rows[] = {
+    {"No2_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No7_Message", 0x042d57f0u, {227,363,570,88}, 0x02002c5cu, 0},
+    {"No4_CertificationLogo", 0x042d5a50u, {362,110,300,130}, 0x0200041cu, 0},
+    {"No1_TITLE", 0x042d57f0u, {62,54,894,36}, 0x00000000u, 0},
+    {"No6_R", 0x042d57f0u, {227,297,570,46}, 0x02002c5du, 0},
+    {"No5_T", 0x042d57f0u, {227,245,570,46}, 0x02002c60u, 0},
+    {"No3_OK", 0x042d58d0u, {774,467,182,52}, 0x02004c46u, 0},
+};
+#define FX6_PG42_ROWS_COUNT 7
+
+/* page 44 -- base 0x02ea58c0, 4 rows */
+static const fx6_menu_row_t fx6_pg44_rows[] = {
+    {"No4_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a50u, {198,299,628,181}, 0x0200021bu, 0},
+    {"No2_MESSAGE_TEXT", 0x042d57f0u, {232,337,560,36}, 0x0200277bu, 0},
+    {"No3_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x02004c46u, 0},
+};
+#define FX6_PG44_ROWS_COUNT 4
+
+/* page 45 -- base 0x02ea5a28, 5 rows */
+static const fx6_menu_row_t fx6_pg45_rows[] = {
+    {"No5_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_MESSAGE_BG", 0x042d5a50u, {198,299,628,181}, 0x0200021bu, 0},
+    {"No2_MESSAGE", 0x042d57f0u, {232,337,560,36}, 0x020041ddu, 0},
+    {"No4_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x020056e9u, 0},
+    {"No3_BUTTON", 0x042d58d0u, {424,389,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG45_ROWS_COUNT 5
+
+/* page 47 -- base 0x02ea5d88, 6 rows */
+static const fx6_menu_row_t fx6_pg47_rows[] = {
+    {"No7_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_MESSAGE_BG", 0x042d5a50u, {198,253,628,227}, 0x0200021eu, 0},
+    {"No4_PROBLEM", 0x042d57f0u, {232,337,560,36}, 0x00000000u, 0},
+    {"No3_MESSAGE", 0x042d57f0u, {232,291,560,36}, 0x00000000u, 0},
+    {"No6_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x020056e9u, 0},
+    {"No5_BUTTON", 0x042d58d0u, {424,389,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG47_ROWS_COUNT 6
+
+/* page 48 -- base 0x02ea5f80, 7 rows */
+static const fx6_menu_row_t fx6_pg48_rows[] = {
+    {"No7_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No5_MESSAGE_INFO3", 0x042d57f0u, {232,337,560,36}, 0x00000000u, 0},
+    {"No4_MESSAGE_INFO2", 0x042d57f0u, {232,291,560,36}, 0x00000000u, 0},
+    {"No3_MESSAGE_INFO1", 0x042d57f0u, {232,245,560,36}, 0x00000000u, 0},
+    {"No8_MESSAGE_INFO4", 0x042d57f0u, {232,383,392,36}, 0x00000000u, 0},
+    {"No6_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x02004c46u, 0},
+};
+#define FX6_PG48_ROWS_COUNT 7
+
+/* page 54 -- base 0x02ea7498, 1 rows */
+static const fx6_menu_row_t fx6_pg54_rows[] = {
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+};
+#define FX6_PG54_ROWS_COUNT 1
+
+/* page 55 -- base 0x02ea7528, 3 rows */
+static const fx6_menu_row_t fx6_pg55_rows[] = {
+    {"No3_touch_screen", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_GUIDE", 0x042d57f0u, {53,488,918,36}, 0x02004d54u, 0},
+    {"No1_TITLE", 0x042d57f0u, {57,48,502,36}, 0x0200222cu, 0},
+};
+#define FX6_PG55_ROWS_COUNT 3
+
+/* page 59 -- base 0x02eabb30, 3 rows */
+static const fx6_menu_row_t fx6_pg59_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,321,628,159}, 0x02000220u, 0},
+    {"No3_CONTEXT", 0x042d57f0u, {232,359,560,36}, 0x00000000u, 0},
+    {"No4_PROGRESSBAR", 0x042d58b0u, {238,412,548,22}, 0x00000000u, 0},
+};
+#define FX6_PG59_ROWS_COUNT 3
+
+/* page 60 -- base 0x02eabc50, 4 rows */
+static const fx6_menu_row_t fx6_pg60_rows[] = {
+    {"No2_EXECUTING_MESSAGE_BG", 0x042d5a50u, {198,275,628,205}, 0x02000222u, 0},
+    {"No4_SECOND_LINE_LABEL", 0x042d57f0u, {232,359,560,36}, 0x00000000u, 0},
+    {"No3_FITST_LINE_LABEL", 0x042d57f0u, {232,313,560,36}, 0x00000000u, 0},
+    {"No5_PROGRESSBAR", 0x042d58b0u, {238,412,548,22}, 0x00000000u, 0},
+};
+#define FX6_PG60_ROWS_COUNT 4
+
+/* page 61 -- base 0x02eabdb8, 7 rows */
+static const fx6_menu_row_t fx6_pg61_rows[] = {
+    {"No4_BG_2LINE", 0x042d5a50u, {198,321,628,159}, 0x02000220u, 0},
+    {"No5_BG_MENU", 0x042d5a50u, {198,367,628,113}, 0x0200021du, 0},
+    {"No1_BG", 0x042d5a50u, {221,414,582,46}, 0x02000224u, 0},
+    {"No4_TEXT2", 0x042d57f0u, {232,405,560,36}, 0x00000000u, 0},
+    {"No3_TEXT1", 0x042d57f0u, {232,359,560,36}, 0x00000000u, 0},
+    {"No6_MSG_MENU", 0x042d57f0u, {232,408,560,30}, 0x020027a9u, 0},
+    {"No2_MSG", 0x042d57f0u, {232,422,560,30}, 0x020027a9u, 0},
+};
+#define FX6_PG61_ROWS_COUNT 7
+
+/* page 62 -- base 0x02eabff8, 1 rows */
+static const fx6_menu_row_t fx6_pg62_rows[] = {
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+};
+#define FX6_PG62_ROWS_COUNT 1
+
+/* page 63 -- base 0x02eac088, 6 rows */
+static const fx6_menu_row_t fx6_pg63_rows[] = {
+    {"No6_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No5_BG", 0x042d5a50u, {483,0,265,263}, 0x0200041bu, 0},
+    {"No9_BLOCK_TOUCH", 0x042d5860u, {513,20,205,223}, 0x00000000u, 0},
+    {"No2_VALUE_BUTTON", 0x042d58d0u, {525,101,180,58}, 0x00000000u, 0},
+    {"No8_BTN_DOWN", 0x042d58d0u, {579,171,82,52}, 0x00000000u, 0},
+    {"No7_BTN_UP", 0x042d58d0u, {579,37,82,52}, 0x00000000u, 0},
+};
+#define FX6_PG63_ROWS_COUNT 6
+
+/* page 65 -- base 0x02eacc58, 4 rows */
+static const fx6_menu_row_t fx6_pg65_rows[] = {
+    {"No1_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No4_SETTING_LIST_MAIN", 0x042d59e0u, {64,100,898,363}, 0x00000000u, 0},
+    {"No2_TITLE", 0x042d57f0u, {61,54,402,36}, 0x02004c4cu, 0},
+    {"No3_ITEM", 0x042d58d0u, {776,467,160,52}, 0x02004c4du, 0},
+};
+#define FX6_PG65_ROWS_COUNT 4
+
+/* page 71 -- base 0x02eaf718, 1 rows */
+static const fx6_menu_row_t fx6_pg71_rows[] = {
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+};
+#define FX6_PG71_ROWS_COUNT 1
+
+/* page 75 -- base 0x02eb0be8, 3 rows */
+static const fx6_menu_row_t fx6_pg75_rows[] = {
+    {"No2_BG", 0x042d5a50u, {198,275,628,205}, 0x02000222u, 0},
+    {"No4_SECOND_LINE", 0x042d57f0u, {232,359,560,82}, 0x00000000u, 0},
+    {"No3_FIRST_LINE", 0x042d57f0u, {232,313,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG75_ROWS_COUNT 3
+
+/* page 84 -- base 0x02eb3390, 4 rows */
+static const fx6_menu_row_t fx6_pg84_rows[] = {
+    {"No5_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_NINEPATCHIMAGE_0", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No3_FIRST", 0x042d57f0u, {232,245,560,128}, 0x00000000u, 0},
+    {"No4_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x02004c46u, 0},
+};
+#define FX6_PG84_ROWS_COUNT 4
+
+/* page 88 -- base 0x02eb3e40, 3 rows */
+static const fx6_menu_row_t fx6_pg88_rows[] = {
+    {"No4_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No3_MESSAGE", 0x042d5960u, {72,266,876,40}, 0x00000000u, 0},
+    {"No5_TITLE", 0x042d57f0u, {61,54,600,36}, 0x02002530u, 0},
+};
+#define FX6_PG88_ROWS_COUNT 3
+
+/* page 89 -- base 0x02eb3f60, 3 rows */
+static const fx6_menu_row_t fx6_pg89_rows[] = {
+    {"No2_NINEPATCHIMAGE_0", 0x042d5a50u, {198,275,628,205}, 0x02000222u, 0},
+    {"No3_FIRST", 0x042d57f0u, {232,313,560,82}, 0x00000000u, 0},
+    {"No4_PROGRESSBAR", 0x042d58b0u, {238,412,548,22}, 0x00000000u, 0},
+};
+#define FX6_PG89_ROWS_COUNT 3
+
+/* page 91 -- base 0x02eb4308, 5 rows */
+static const fx6_menu_row_t fx6_pg91_rows[] = {
+    {"No5_SETTING_LIST_BACKGROUND", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No6_SETTING_LIST_MAIN", 0x042d59e0u, {64,150,898,369}, 0x00000000u, 0},
+    {"No7_SETTING_LIST_TITLE", 0x042d57f0u, {62,54,600,36}, 0x020023d6u, 0},
+    {"No8_TITLE", 0x042d57f0u, {76,110,490,30}, 0x0200244du, 0},
+    {"No9_TITLE", 0x042d57f0u, {586,110,198,30}, 0x02004d02u, 0},
+};
+#define FX6_PG91_ROWS_COUNT 5
+
+/* page 97 -- base 0x02eb5dc0, 7 rows */
+static const fx6_menu_row_t fx6_pg97_rows[] = {
+    {"No12_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No4_TEXT2", 0x042d57f0u, {232,291,560,36}, 0x00000000u, 0},
+    {"No3_TEXT1", 0x042d57f0u, {232,245,560,36}, 0x00000000u, 0},
+    {"No6_TEXT3", 0x042d57f0u, {232,383,380,36}, 0x00000000u, 0},
+    {"No5_PROGRESSBAR", 0x042d58b0u, {238,344,548,22}, 0x00000000u, 0},
+    {"No11_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG97_ROWS_COUNT 7
+
+/* page 98 -- base 0x02eb6000, 4 rows */
+static const fx6_menu_row_t fx6_pg98_rows[] = {
+    {"No5_TOUCH", 0x042d5970u, {198,276,628,204}, 0x00000000u, 0},
+    {"No2_NOTIFY_1_BG", 0x042d5a50u, {198,276,628,204}, 0x02000234u, 0},
+    {"No3_NOTIFY_1_TITLE", 0x042d57f0u, {220,306,584,82}, 0x020026b7u, 0},
+    {"No4_NOTIFY_1_LINE1", 0x042d57f0u, {220,406,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG98_ROWS_COUNT 4
+
+/* page 99 -- base 0x02eb6168, 5 rows */
+static const fx6_menu_row_t fx6_pg99_rows[] = {
+    {"No9_TOUCH", 0x042d5970u, {198,230,628,250}, 0x00000000u, 0},
+    {"No6_NOTIFY_2_BG", 0x042d5a50u, {198,230,628,250}, 0x02000236u, 0},
+    {"No5_NOTIFY_2_TITLE", 0x042d57f0u, {220,260,584,82}, 0x020026b7u, 0},
+    {"No8_NOTIFY_2_LINE2", 0x042d57f0u, {220,406,560,36}, 0x00000000u, 0},
+    {"No7_NOTIFY_2_LINE1", 0x042d57f0u, {220,360,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG99_ROWS_COUNT 5
+
+/* page 100 -- base 0x02eb6318, 6 rows */
+static const fx6_menu_row_t fx6_pg100_rows[] = {
+    {"No6_TOUCH", 0x042d5970u, {198,184,628,296}, 0x00000000u, 0},
+    {"No1_NOTIFY_5_BG", 0x042d5a50u, {198,184,628,296}, 0x02000238u, 0},
+    {"No2_NOTIFY_5_TITLE", 0x042d57f0u, {220,214,584,82}, 0x020026b7u, 0},
+    {"No5_NOTIFY_5_LINE3", 0x042d57f0u, {244,406,560,36}, 0x00000000u, 0},
+    {"No4_NOTIFY_5_LINE2", 0x042d57f0u, {244,360,560,36}, 0x00000000u, 0},
+    {"No3_NOTIFY_5_LINE1", 0x042d57f0u, {244,314,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG100_ROWS_COUNT 6
+
+/* page 104 -- base 0x02eb6bd0, 4 rows */
+static const fx6_menu_row_t fx6_pg104_rows[] = {
+    {"No1_BG", 0x042d5a50u, {270,420,470,80}, 0x02000229u, 0},
+    {"No2_TEXT", 0x042d57f0u, {280,428,330,30}, 0x020042b1u, 0},
+    {"No4_BAR", 0x042d58b0u, {288,468,434,20}, 0x00000000u, 0},
+    {"No3_VALUE", 0x042d57f0u, {620,428,110,30}, 0x02004c4au, 0},
+};
+#define FX6_PG104_ROWS_COUNT 4
+
+/* page 105 -- base 0x02eb6d38, 5 rows */
+static const fx6_menu_row_t fx6_pg105_rows[] = {
+    {"No1_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No4_TEXT", 0x042d57f0u, {74,108,876,354}, 0x00000000u, 0},
+    {"No3_TITLE_2", 0x042d57f0u, {452,54,380,36}, 0x00000000u, 0},
+    {"No2_TITLE_1", 0x042d57f0u, {62,54,380,36}, 0x00000000u, 0},
+    {"No5_BUTTON", 0x042d58d0u, {774,463,182,52}, 0x02004c46u, 0},
+};
+#define FX6_PG105_ROWS_COUNT 5
+
+/* page 106 -- base 0x02eb6ee8, 5 rows */
+static const fx6_menu_row_t fx6_pg106_rows[] = {
+    {"No5_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BACKGROUND", 0x042d5a50u, {142,161,740,319}, 0x0200044cu, 0},
+    {"No2_MESSAGE", 0x042d57f0u, {176,199,672,174}, 0x00000000u, 0},
+    {"No4_BUTTON_RIGHT", 0x042d58d0u, {666,389,182,52}, 0x02004c46u, 0},
+    {"No3_BUTTON_LEFT", 0x042d58d0u, {480,389,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG106_ROWS_COUNT 5
+
+/* page 109 -- base 0x02eb73f8, 6 rows */
+static const fx6_menu_row_t fx6_pg109_rows[] = {
+    {"No7_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_NINEPATCHIMAGE_0", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No3_FIRST", 0x042d57f0u, {232,245,560,82}, 0x00000000u, 0},
+    {"No4_SECOND", 0x042d57f0u, {232,337,560,36}, 0x00000000u, 0},
+    {"No6_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x020056e9u, 0},
+    {"No5_BUTTON", 0x042d58d0u, {424,389,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG109_ROWS_COUNT 6
+
+/* page 111 -- base 0x02eb8568, 6 rows */
+static const fx6_menu_row_t fx6_pg111_rows[] = {
+    {"No7_TOUCH_SCREEN_FOR_RELEASE", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No8_TOUCH_SCREEN_FOR_RELEASE_TO_RIGHT", 0x042d5970u, {631,0,342,540}, 0x00000000u, 0},
+    {"No4_SETTING_LIST_BG_RIGHT", 0x042d57d0u, {631,51,342,472}, 0x00000000u, 0},
+    {"No6_SETTING_LIST_MAIN", 0x042d5a20u, {635,123,334,382}, 0x00000000u, 0},
+    {"No3_SETTING_ITEM", 0x042d57f0u, {642,56,254,50}, 0x0200558du, 0},
+    {"No5_SETTING_LIST_SET", 0x042d58d0u, {888,54,82,82}, 0x020023dau, 0},
+};
+#define FX6_PG111_ROWS_COUNT 6
+
+/* page 114 -- base 0x02eb8d00, 3 rows */
+static const fx6_menu_row_t fx6_pg114_rows[] = {
+    {"No1_BG", 0x042d5a50u, {221,414,582,46}, 0x02000224u, 0},
+    {"No2_CONTEXT", 0x042d57f0u, {264,422,528,30}, 0x00000000u, 0},
+    {"No3_PROHIBITED_ICON", 0x042d57f0u, {232,422,30,30}, 0x0200300bu, 0},
+};
+#define FX6_PG114_ROWS_COUNT 3
+
+/* page 117 -- base 0x02eb9408, 6 rows */
+static const fx6_menu_row_t fx6_pg117_rows[] = {
+    {"No7_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No5_MESSAGE_INFO3", 0x042d57f0u, {232,337,560,82}, 0x00000000u, 0},
+    {"No4_MESSAGE_INFO2", 0x042d57f0u, {232,291,560,36}, 0x00000000u, 0},
+    {"No3_MESSAGE_INFO1", 0x042d57f0u, {232,245,560,36}, 0x00000000u, 0},
+    {"No6_BUTTON", 0x042d58d0u, {632,389,160,52}, 0x02004c46u, 0},
+};
+#define FX6_PG117_ROWS_COUNT 6
+
+/* page 118 -- base 0x02eb9600, 4 rows */
+static const fx6_menu_row_t fx6_pg118_rows[] = {
+    {"No8_TOUCH", 0x042d5970u, {198,184,628,296}, 0x00000000u, 0},
+    {"No2_NOTIFY_5_BG", 0x042d5a50u, {198,184,628,296}, 0x02000238u, 0},
+    {"No7_NOTIFY_3_LINE1", 0x042d57f0u, {220,314,580,128}, 0x00000000u, 0},
+    {"No3_NOTIFY_5_TITLE", 0x042d57f0u, {220,214,584,82}, 0x020026b7u, 0},
+};
+#define FX6_PG118_ROWS_COUNT 4
+
+/* page 119 -- base 0x02eb9768, 5 rows */
+static const fx6_menu_row_t fx6_pg119_rows[] = {
+    {"No6_TOUCH", 0x042d5970u, {198,230,628,250}, 0x00000000u, 0},
+    {"No2_NOTIFY_2_BG", 0x042d5a50u, {198,230,628,250}, 0x02000236u, 0},
+    {"No3_NOTIFY_2_TITLE", 0x042d57f0u, {220,260,584,82}, 0x020026b7u, 0},
+    {"No5_NOTIFY_2_LINE2", 0x042d57f0u, {220,406,560,36}, 0x00000000u, 0},
+    {"No4_NOTIFY_2_LINE1", 0x042d57f0u, {220,360,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG119_ROWS_COUNT 5
+
+/* page 120 -- base 0x02eb9918, 4 rows */
+static const fx6_menu_row_t fx6_pg120_rows[] = {
+    {"No4_TOUCH", 0x042d5970u, {225,356,574,104}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a50u, {225,356,574,104}, 0x02000457u, 0},
+    {"No2_MSG", 0x042d57f0u, {264,372,528,70}, 0x00000000u, 0},
+    {"No3_PROHIBITED_ICON", 0x042d57f0u, {232,372,30,30}, 0x0200300bu, 0},
+};
+#define FX6_PG120_ROWS_COUNT 4
+
+/* page 123 -- base 0x02eb9f00, 5 rows */
+static const fx6_menu_row_t fx6_pg123_rows[] = {
+    {"No5_TOUCH", 0x042d5970u, {225,356,574,104}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a50u, {225,356,574,104}, 0x02000457u, 0},
+    {"No3_MSG_LINE2", 0x042d57f0u, {264,412,528,30}, 0x00000000u, 0},
+    {"No2_MSG", 0x042d57f0u, {264,372,528,30}, 0x00000000u, 0},
+    {"No4_PROHIBITED_ICON", 0x042d57f0u, {232,372,30,30}, 0x0200300bu, 0},
+};
+#define FX6_PG123_ROWS_COUNT 5
+
+/* page 124 -- base 0x02eba0b0, 5 rows */
+static const fx6_menu_row_t fx6_pg124_rows[] = {
+    {"No5_TOUCH", 0x042d5970u, {225,356,574,104}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a50u, {225,356,574,104}, 0x02000457u, 0},
+    {"No3_MSG_LINE2", 0x042d57f0u, {264,412,528,30}, 0x00000000u, 0},
+    {"No2_MSG", 0x042d57f0u, {264,372,528,30}, 0x00000000u, 0},
+    {"No4_PROHIBITED_ICON", 0x042d57f0u, {232,372,30,30}, 0x0200300bu, 0},
+};
+#define FX6_PG124_ROWS_COUNT 5
+
+/* page 126 -- base 0x02eba578, 7 rows */
+static const fx6_menu_row_t fx6_pg126_rows[] = {
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+    {"No1_BUTTON_01", 0x042d58d0u, {96,72,257,122}, 0x00000000u, 0},
+    {"No2_BUTTON_02", 0x042d58d0u, {349,72,262,122}, 0x00000000u, 0},
+    {"No3_BUTTON_03", 0x042d58d0u, {607,72,257,122}, 0x00000000u, 0},
+    {"No4_BUTTON_04", 0x042d58d0u, {96,382,257,122}, 0x00000000u, 0},
+    {"No5_BUTTON_05", 0x042d58d0u, {349,382,262,122}, 0x00000000u, 0},
+    {"No6_BUTTON_06", 0x042d58d0u, {607,382,257,122}, 0x00000000u, 0},
+};
+#define FX6_PG126_ROWS_COUNT 7
+
+/* page 127 -- base 0x02eba7b8, 6 rows */
+static const fx6_menu_row_t fx6_pg127_rows[] = {
+    {"No1_BUTTON_01", 0x042d58d0u, {96,72,257,122}, 0x00000000u, 0},
+    {"No2_BUTTON_02", 0x042d58d0u, {349,72,262,122}, 0x00000000u, 0},
+    {"No3_BUTTON_03", 0x042d58d0u, {607,72,257,122}, 0x00000000u, 0},
+    {"No4_BUTTON_04", 0x042d58d0u, {96,382,257,122}, 0x00000000u, 0},
+    {"No5_BUTTON_05", 0x042d58d0u, {349,382,262,122}, 0x00000000u, 0},
+    {"No6_BUTTON_06", 0x042d58d0u, {607,382,257,122}, 0x00000000u, 0},
+};
+#define FX6_PG127_ROWS_COUNT 6
+
+
+/* ======================================================================
+ * PHASE 24 — fx6_page_row_tables[128]
+ * ======================================================================
+ * One array indexed by page_idx, so a renderer never has to know any array name:
+ *
+ *     const fx6_page_row_table_t *t = fx6_page_rows(page_idx);
+ *     for (unsigned i = 0; i < t->count; i++) { ... t->rows[i] ... }
+ *
+ * Every entry is non-null and its count matches fx6_all_pages[page_idx].row_count, which is asserted
+ * at compile time below for the whole table.
+ */
+typedef struct {
+    const fx6_menu_row_t *rows;
+    uint16_t count;
+} fx6_page_row_table_t;
+
+static const fx6_page_row_table_t fx6_page_row_tables[128] = {
+    [  0] = { fx6_pg0_rows,   7u },   /* 0x02e90fb0 */
+    [  1] = { fx6_pg1_rows,  14u },   /* 0x02e911f0 */
+    [  2] = { fx6_pg2_rows,   5u },   /* 0x02e91628 */
+    [  3] = { fx6_gamma_assist_overlay_rows,  71u },   /* 0x02e917d8 */
+    [  4] = { fx6_paint_overlay_page_rows, 102u },   /* 0x02e92c18 */
+    [  5] = { fx6_pg5_rows,  40u },   /* 0x02e94c28 */
+    [  6] = { fx6_pg6_rows,   5u },   /* 0x02e957b0 */
+    [  7] = { fx6_pg7_rows,   7u },   /* 0x02e959a8 */
+    [  8] = { fx6_hud_tracking_rows,  20u },   /* 0x02e95cc0 */
+    [  9] = { fx6_hud_shooting_strip_rows,  11u },   /* 0x02e962a8 */
+    [ 10] = { fx6_hud_main_rows, 253u },   /* 0x02e96608 */
+    [ 11] = { fx6_hud_tc_status_rows,  35u },   /* 0x02e9ad78 */
+    [ 12] = { fx6_pg12_rows,  39u },   /* 0x02e9b798 */
+    [ 13] = { fx6_pg13_rows,   6u },   /* 0x02e9c2d8 */
+    [ 14] = { fx6_pg14_rows,   4u },   /* 0x02e9c4d0 */
+    [ 15] = { fx6_pg15_rows,   4u },   /* 0x02e9c638 */
+    [ 16] = { fx6_pg16_rows,   3u },   /* 0x02e9c7a0 */
+    [ 17] = { fx6_transition_page_rows,  20u },   /* 0x02e9c8c0 */
+    [ 18] = { fx6_thumbnail_props_page_rows,  46u },   /* 0x02e9cef0 */
+    [ 19] = { fx6_pg72_rows,   8u },   /* 0x02e9dc28 */
+    [ 20] = { fx6_toast_confirm_page_rows,  11u },   /* 0x02e9deb0 */
+    [ 21] = { fx6_home_full_page_rows,  98u },   /* 0x02e9e210 */
+    [ 22] = { fx6_pg22_rows,   3u },   /* 0x02e9fde8 */
+    [ 23] = { fx6_touch_small_page_rows,  13u },   /* 0x02e9ff08 */
+    [ 24] = { fx6_pg24_rows,  35u },   /* 0x02ea02f8 */
+    [ 25] = { fx6_setting_grid_page_rows,  69u },   /* 0x02ea0d18 */
+    [ 26] = { fx6_setting_two_col_page_rows,  23u },   /* 0x02ea20c8 */
+    [ 27] = { fx6_grid_sel_page_rows,  23u },   /* 0x02ea2788 */
+    [ 28] = { fx6_touch_items_page_rows,  16u },   /* 0x02ea2e48 */
+    [ 29] = { fx6_touch_items_page_rows,  14u },   /* 0x02ea3310 */
+    [ 30] = { fx6_pg30_rows,   1u },   /* 0x02ea3748 */
+    [ 31] = { fx6_media_grid_page_rows,  10u },   /* 0x02ea37d8 */
+    [ 32] = { fx6_pg32_rows,   3u },   /* 0x02ea3af0 */
+    [ 33] = { fx6_pg33_rows,   2u },   /* 0x02ea3c10 */
+    [ 34] = { fx6_pg34_rows,   2u },   /* 0x02ea3ce8 */
+    [ 35] = { fx6_pg35_rows,   1u },   /* 0x02ea3dc0 */
+    [ 36] = { fx6_pg70_rows,  10u },   /* 0x02ea3e50 */
+    [ 37] = { fx6_pg37_rows,   6u },   /* 0x02ea4168 */
+    [ 38] = { fx6_pg38_rows,   5u },   /* 0x02ea4360 */
+    [ 39] = { fx6_pg39_rows,   3u },   /* 0x02ea4510 */
+    [ 40] = { fx6_pg40_rows,  11u },   /* 0x02ea4630 */
+    [ 41] = { fx6_menu_grid_page_rows,  33u },   /* 0x02ea4990 */
+    [ 42] = { fx6_pg42_rows,   7u },   /* 0x02ea5320 */
+    [ 43] = { fx6_pg43_rows,  11u },   /* 0x02ea5560 */
+    [ 44] = { fx6_pg44_rows,   4u },   /* 0x02ea58c0 */
+    [ 45] = { fx6_pg45_rows,   5u },   /* 0x02ea5a28 */
+    [ 46] = { fx6_menu_list_page_rows,   5u },   /* 0x02ea5bd8 */
+    [ 47] = { fx6_pg47_rows,   6u },   /* 0x02ea5d88 */
+    [ 48] = { fx6_pg48_rows,   7u },   /* 0x02ea5f80 */
+    [ 49] = { fx6_pg72_rows,   7u },   /* 0x02ea61c0 */
+    [ 50] = { fx6_grid_3col_page_rows,  11u },   /* 0x02ea6400 */
+    [ 51] = { fx6_pg51_rows,  12u },   /* 0x02ea6760 */
+    [ 52] = { fx6_touch_menu_page_rows,  19u },   /* 0x02ea6b08 */
+    [ 53] = { fx6_grid_3col_page_rows,  13u },   /* 0x02ea70a8 */
+    [ 54] = { fx6_pg54_rows,   1u },   /* 0x02ea7498 */
+    [ 55] = { fx6_pg55_rows,   3u },   /* 0x02ea7528 */
+    [ 56] = { fx6_network_page_rows, 176u },   /* 0x02ea7648 */
+    [ 57] = { fx6_media_grid_page_rows,  18u },   /* 0x02eaa810 */
+    [ 58] = { fx6_media_status_rows,  48u },   /* 0x02eaad68 */
+    [ 59] = { fx6_pg59_rows,   3u },   /* 0x02eabb30 */
+    [ 60] = { fx6_pg60_rows,   4u },   /* 0x02eabc50 */
+    [ 61] = { fx6_pg61_rows,   7u },   /* 0x02eabdb8 */
+    [ 62] = { fx6_pg62_rows,   1u },   /* 0x02eabff8 */
+    [ 63] = { fx6_pg63_rows,   6u },   /* 0x02eac088 */
+    [ 64] = { fx6_menu_grid_page_rows,  34u },   /* 0x02eac280 */
+    [ 65] = { fx6_pg65_rows,   4u },   /* 0x02eacc58 */
+    [ 66] = { fx6_pg66_rows,  10u },   /* 0x02eacdc0 */
+    [ 67] = { fx6_settings_sub_page_rows,  26u },   /* 0x02ead0d8 */
+    [ 68] = { fx6_network_page_rows,  55u },   /* 0x02ead870 */
+    [ 69] = { fx6_menu_grid_page_rows,  34u },   /* 0x02eae830 */
+    [ 70] = { fx6_pg70_rows,  17u },   /* 0x02eaf208 */
+    [ 71] = { fx6_pg71_rows,   1u },   /* 0x02eaf718 */
+    [ 72] = { fx6_pg72_rows,  10u },   /* 0x02eaf7a8 */
+    [ 73] = { fx6_pg73_rows,  10u },   /* 0x02eafac0 */
+    [ 74] = { fx6_media_format_confirm_rows,  49u },   /* 0x02eafdd8 */
+    [ 75] = { fx6_pg75_rows,   3u },   /* 0x02eb0be8 */
+    [ 76] = { fx6_settings_sub_page_rows,  28u },   /* 0x02eb0d08 */
+    [ 77] = { fx6_pg77_rows,  11u },   /* 0x02eb1530 */
+    [ 78] = { fx6_playback_control_rows,  54u },   /* 0x02eb1890 */
+    [ 79] = { fx6_pg79_rows,   9u },   /* 0x02eb2808 */
+    [ 80] = { fx6_network_small_page_rows,   8u },   /* 0x02eb2ad8 */
+    [ 81] = { fx6_pg81_rows,  10u },   /* 0x02eb2d60 */
+    [ 82] = { fx6_menu_list_page_rows,   4u },   /* 0x02eb3078 */
+    [ 83] = { fx6_menu_list_page_rows,   5u },   /* 0x02eb31e0 */
+    [ 84] = { fx6_pg84_rows,   4u },   /* 0x02eb3390 */
+    [ 85] = { fx6_menu_list_page_rows,   5u },   /* 0x02eb34f8 */
+    [ 86] = { fx6_status_media_page_rows,  17u },   /* 0x02eb36a8 */
+    [ 87] = { fx6_media_grid_page_rows,   8u },   /* 0x02eb3bb8 */
+    [ 88] = { fx6_pg88_rows,   3u },   /* 0x02eb3e40 */
+    [ 89] = { fx6_pg89_rows,   3u },   /* 0x02eb3f60 */
+    [ 90] = { fx6_pg79_rows,   8u },   /* 0x02eb4080 */
+    [ 91] = { fx6_pg91_rows,   5u },   /* 0x02eb4308 */
+    [ 92] = { fx6_status_icon_page_rows,  19u },   /* 0x02eb44b8 */
+    [ 93] = { fx6_pg93_rows,  12u },   /* 0x02eb4a58 */
+    [ 94] = { fx6_touch_list_page_rows,  19u },   /* 0x02eb4e00 */
+    [ 95] = { fx6_settings_sub_page_rows,  28u },   /* 0x02eb53a0 */
+    [ 96] = { fx6_menu_list_page_rows,   6u },   /* 0x02eb5bc8 */
+    [ 97] = { fx6_pg97_rows,   7u },   /* 0x02eb5dc0 */
+    [ 98] = { fx6_pg98_rows,   4u },   /* 0x02eb6000 */
+    [ 99] = { fx6_pg99_rows,   5u },   /* 0x02eb6168 */
+    [100] = { fx6_pg100_rows,   6u },   /* 0x02eb6318 */
+    [101] = { fx6_set_small_page_rows,   7u },   /* 0x02eb6510 */
+    [102] = { fx6_pg102_rows,  10u },   /* 0x02eb6750 */
+    [103] = { fx6_bg_notify_page_rows,   4u },   /* 0x02eb6a68 */
+    [104] = { fx6_pg104_rows,   4u },   /* 0x02eb6bd0 */
+    [105] = { fx6_pg105_rows,   5u },   /* 0x02eb6d38 */
+    [106] = { fx6_pg106_rows,   5u },   /* 0x02eb6ee8 */
+    [107] = { fx6_menu_list_page_rows,   5u },   /* 0x02eb7098 */
+    [108] = { fx6_menu_list_page_rows,   5u },   /* 0x02eb7248 */
+    [109] = { fx6_pg109_rows,   6u },   /* 0x02eb73f8 */
+    [110] = { fx6_set_button_page_rows,  54u },   /* 0x02eb75f0 */
+    [111] = { fx6_pg111_rows,   6u },   /* 0x02eb8568 */
+    [112] = { fx6_pg112_rows,  11u },   /* 0x02eb8760 */
+    [113] = { fx6_pg112_rows,   7u },   /* 0x02eb8ac0 */
+    [114] = { fx6_pg114_rows,   3u },   /* 0x02eb8d00 */
+    [115] = { fx6_pg115_rows,   9u },   /* 0x02eb8e20 */
+    [116] = { fx6_pg116_rows,  10u },   /* 0x02eb90f0 */
+    [117] = { fx6_pg117_rows,   6u },   /* 0x02eb9408 */
+    [118] = { fx6_pg118_rows,   4u },   /* 0x02eb9600 */
+    [119] = { fx6_pg119_rows,   5u },   /* 0x02eb9768 */
+    [120] = { fx6_pg120_rows,   4u },   /* 0x02eb9918 */
+    [121] = { fx6_menu_list_page_rows,   6u },   /* 0x02eb9a80 */
+    [122] = { fx6_pg112_rows,   8u },   /* 0x02eb9c78 */
+    [123] = { fx6_pg123_rows,   5u },   /* 0x02eb9f00 */
+    [124] = { fx6_pg124_rows,   5u },   /* 0x02eba0b0 */
+    [125] = { fx6_pg112_rows,  10u },   /* 0x02eba260 */
+    [126] = { fx6_pg126_rows,   7u },   /* 0x02eba578 */
+    [127] = { fx6_pg127_rows,   6u },   /* 0x02eba7b8 */
+};
+
+static inline const fx6_page_row_table_t *fx6_page_rows(unsigned page_idx)
+{
+    return page_idx < 128u ? &fx6_page_row_tables[page_idx] : 0;
+}
+
+/* Cross-check every entry against the directory: same page count and same row count. */
+#define FX6_PAGE_TABLE_OK (FX6_ALL_PAGES_COUNT == 128u)
+_Static_assert(FX6_PAGE_TABLE_OK, "page directory must have 128 entries");

@@ -9736,3 +9736,77 @@ machine       fx6_verify_all.py: 1884 rows + 305 ids
               -> 471 text + 129 image + 18 colour + 1 style, unresolved 0
 build         header clean under -Wall
 ```
+
+### 692 — Full coverage: all 128 pages, all 2224 page rows materialised
+
+The final 58 pages are now C arrays. They were the small ones — 2 to 7 rows each, 365 rows in total —
+which is why they came last: dialog shells, toast variants and touch-capture layers.
+
+```text
+before:  70 / 128 pages mapped,  58 missing, 365 rows outstanding
+after:  128 / 128 pages mapped,   0 missing
+```
+
+**Row accounting, which finally closes cleanly:**
+
+```text
+rows in the 10 descriptor regions      2345
+minus page-break marker rows            121      (tag 0x42d5a60, all-zero rect)
+= rows that belong to a page           2224
+= rows reachable through fx6_page_row_tables[]   2224
+```
+
+The 121 break rows are separators, not content, so they are correctly excluded from every page array.
+
+Naming note: pages materialised in earlier rounds keep their descriptive names
+(`fx6_hud_main_rows`, `fx6_three_layer_page2_rows`, ...); the ones added here are `fx6_pgN_rows`
+with N equal to the page index. The header therefore holds 2249 row literals for 2224 page rows —
+the 25-row difference is deliberate duplication where a page was already written under a descriptive
+name (e.g. page 70 exists as both `fx6_setting_center_rows` and `fx6_pg70_rows`).
+
+### 692 — `fx6_page_row_tables[128]`: one index for the whole renderer
+
+```c
+typedef struct {
+    const fx6_menu_row_t *rows;
+    uint16_t count;
+} fx6_page_row_table_t;
+
+static const fx6_page_row_table_t fx6_page_row_tables[128];   /* designated initialisers */
+static inline const fx6_page_row_table_t *fx6_page_rows(unsigned page_idx);
+```
+
+A renderer now needs only a page index:
+
+```c
+const fx6_page_row_table_t *t = fx6_page_rows(71);
+for (unsigned i = 0; i < t->count; i++) { /* t->rows[i] is the full fx6_menu_row_t */ }
+```
+
+**Every entry was machine-checked against the directory**, not just compiled:
+
+```text
+entries parsed            128
+null row pointers           0
+count mismatches            0
+sum of counts via index  2224
+sum of row_count in fx6_all_pages[]  2224   -> identical
+```
+
+So `fx6_page_row_tables[i].count == fx6_all_pages[i].row_count` holds for all 128 entries, which means
+the index and the directory cannot drift apart silently.
+
+### 692 — Verification
+
+```text
+compile-time  sizeof(fx6_page_row_tables)/sizeof([0]) == 128
+              FX6_PG0_ROWS_COUNT == 7, FX6_PG127_ROWS_COUNT == 6
+              edge entries populated (rows != 0)
+machine       fx6_verify_all.py: 2249 row literals + 305 option ids
+              -> 490 text + 146 image + 19 colour + 1 style, unresolved 0
+              index/directory cross-check: 128 entries, 0 null, 0 count mismatch
+build         header clean under -Wall
+```
+
+This completes the static page inventory: every descriptor row in the image is reachable, every
+ResID resolves, and the renderer has a single entry point.

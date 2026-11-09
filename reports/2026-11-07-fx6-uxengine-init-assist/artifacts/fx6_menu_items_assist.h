@@ -4275,3 +4275,272 @@ static const fx6_menu_row_t fx6_toast_confirm_page_rows[] = {
 };
 #define FX6_TOAST_CONFIRM_PAGE_ROWS_COUNT (sizeof(fx6_toast_confirm_page_rows)/sizeof(fx6_toast_confirm_page_rows[0]))
 
+
+/* ======================================================================
+ * PHASE 21 — generic "apply a 0x48 row to a widget" helpers
+ * ======================================================================
+ * First, a correction worth stating plainly. The Phase-21 brief named these tags:
+ *
+ *   0x042d5b70  claimed view_frame        -> ZERO byte occurrences anywhere in appFw.so
+ *   0x042d5a30  claimed view_image variant -> exists only in GOT/reloc bookkeeping, no 0x48 row
+ *   0x042d5b20  claimed view_icon variant  -> exists only in GOT/reloc bookkeeping, no 0x48 row
+ *   0x042d5af0  claimed view_line          -> ZERO byte occurrences anywhere in appFw.so
+ *   0x042d5860  claimed view_image         -> real, but it is the full-screen touch blocker
+ *
+ * Of the five, only 0x042d5860 appears in any descriptor row (102 rows, all named `*_BLOCK_TOUCH`
+ * or `No11_touchscreen`). 0x042d5a30 and 0x042d5b20 are class tags referenced from code
+ * (0xc1ccdc.. and 0xc81ad4) but they never appear as a row's +0x00, so there is no row-driven field
+ * mapping to recover for them. `view_frame` in this image is tag 0x042d57d0 (58 rows), and
+ * `view_line` does not exist as a separate class at all — every line in every page is a
+ * `view_fill` with a 1–4 px rect (0x042d5a40).
+ *
+ * The 0x48 row layout is also simpler than d14/d15/d16/d18 implies: measured across all 2345 rows,
+ * **+0x04, +0x0c, +0x10 and +0x14 are zero in every single row**. The only payload fields are
+ * +0x18 (text/colour/id), +0x1c, +0x20, +0x24, +0x28, +0x2c, +0x30, +0x34, +0x38 and the rect at
+ * +0x3c/+0x40.
+ */
+typedef struct {
+    uint32_t tag;
+    uint32_t text_resid;    /* +0x18 */
+    uint32_t layout;        /* +0x1c */
+    uint32_t style;         /* +0x20 */
+    uint32_t font_a;        /* +0x24 */
+    uint32_t font_b;        /* +0x28 */
+    uint32_t font_size;     /* +0x2c */
+    uint32_t flag_a;        /* +0x30 */
+    uint32_t flag_b;        /* +0x34 */
+    uint32_t widget_id;     /* +0x38 */
+    uint16_t x, y, w, h;    /* +0x3c .. +0x42 */
+} fx6_row_view_t;
+
+/* Decode an in-place 0x48 descriptor row into a plain struct (no alignment assumptions). */
+static inline void fx6_row_load(const void *row, fx6_row_view_t *out)
+{
+    const uint32_t *p = (const uint32_t *)row;
+    if (!row || !out) return;
+    out->tag        = p[0x00 / 4];
+    out->text_resid = p[0x18 / 4];
+    out->layout     = p[0x1c / 4];
+    out->style      = p[0x20 / 4];
+    out->font_a     = p[0x24 / 4];
+    out->font_b     = p[0x28 / 4];
+    out->font_size  = p[0x2c / 4];
+    out->flag_a     = p[0x30 / 4];
+    out->flag_b     = p[0x34 / 4];
+    out->widget_id  = p[0x38 / 4];
+    out->x = (uint16_t)(p[0x3c / 4] & 0xffffu);
+    out->y = (uint16_t)(p[0x3c / 4] >> 16);
+    out->w = (uint16_t)(p[0x40 / 4] & 0xffffu);
+    out->h = (uint16_t)(p[0x40 / 4] >> 16);
+}
+
+/* Apply the rect that every class shares. */
+static inline void fx6_row_apply_rect(void *obj, const fx6_row_view_t *r)
+{
+    if (!obj || !r) return;
+    *(int32_t *)((char *)obj + 0x1e8) = r->x;
+    *(int32_t *)((char *)obj + 0x1ec) = r->y;
+    *(int32_t *)((char *)obj + 0x1f0) = r->w;
+    *(int32_t *)((char *)obj + 0x1f4) = r->h;
+}
+
+/* view_string (0x042d57f0) — the six writes the factory performs, all guarded like it does. */
+static inline int fx6_setup_view_string_from_row(void *vs, const void *row)
+{
+    fx6_row_view_t r;
+    if (!vs || !row) return 0;
+    fx6_row_load(row, &r);
+    fx6_row_apply_rect(vs, &r);
+    if (r.text_resid && r.text_resid != 0xffffffffu)
+        *(uint32_t *)((char *)vs + 0x200) = r.text_resid;
+    if (r.layout && r.font_a && r.font_b) {
+        *(uint32_t *)((char *)vs + 0x208) = r.font_a;
+        *(uint32_t *)((char *)vs + 0x20c) = r.font_b;
+        *(uint32_t *)((char *)vs + 0x210) = r.layout;
+        *(uint32_t *)((char *)vs + 0x214) = r.style;
+    }
+    *(uint32_t *)((char *)vs + 0xa14) = r.font_size ? r.font_size : FX6_VS_FONTSIZE;
+    *(uint8_t  *)((char *)vs + 0x1fc) = 1;
+    return 1;
+}
+
+/* view_menu_item (0x042d58d0). */
+static inline int fx6_setup_view_menu_item_from_row(void *mi, const void *row)
+{
+    fx6_row_view_t r;
+    if (!mi || !row) return 0;
+    fx6_row_load(row, &r);
+    fx6_row_apply_rect(mi, &r);
+    if (r.text_resid) *(uint32_t *)((char *)mi + 0x21c) = r.text_resid;
+    if (r.layout && r.font_a && r.font_b) {
+        *(uint32_t *)((char *)mi + 0x22c) = r.font_a;
+        *(uint32_t *)((char *)mi + 0x234) = r.font_b;
+        *(uint32_t *)((char *)mi + 0x238) = r.layout;
+        *(uint32_t *)((char *)mi + 0x23c) = r.style;
+    }
+    if ((r.widget_id & 0xffffu) <= 0x5bu)
+        *(uint32_t *)((char *)mi + 0x200) = r.widget_id & 0xffffu;
+    *(uint32_t *)((char *)mi + 0xa14) = r.font_size ? r.font_size : FX6_VS_FONTSIZE;
+    return 1;
+}
+
+/* view_icon (0x042d5a50). The row's +0x18 lands on obj+0x20c, which is the image ResID slot. */
+static inline int fx6_setup_view_icon_from_row(void *ic, const void *row)
+{
+    fx6_row_view_t r;
+    if (!ic || !row) return 0;
+    fx6_row_load(row, &r);
+    fx6_row_apply_rect(ic, &r);
+    if (r.text_resid && r.text_resid != 0xffffffffu) {
+        *(uint32_t *)((char *)ic + 0x20c) = r.text_resid;
+        *(uint32_t *)((char *)ic + 0x21c) = r.text_resid;
+    }
+    *(uint16_t *)((char *)ic + 0x204) = r.w;
+    *(uint16_t *)((char *)ic + 0x206) = r.h;
+    *(uint8_t  *)((char *)ic + 0x1fc) = 1;
+    return 1;
+}
+
+/* view_fill (0x042d5a40) and view_frame (0x042d57d0) — both take +0x18 straight into +0x200. */
+static inline int fx6_setup_view_fill_from_row(void *vf, const void *row)
+{
+    fx6_row_view_t r;
+    if (!vf || !row) return 0;
+    fx6_row_load(row, &r);
+    fx6_row_apply_rect(vf, &r);
+    if (r.text_resid && r.text_resid != 0xffffffffu)
+        *(uint32_t *)((char *)vf + 0x200) = r.text_resid;
+    *(uint8_t *)((char *)vf + 0x1fc) = 1;
+    return 1;
+}
+
+/* Dispatch on the row's own tag. This is the single entry point a probe should use. */
+static inline int fx6_setup_from_row(void *obj, const void *row)
+{
+    fx6_row_view_t r;
+    if (!obj || !row) return 0;
+    fx6_row_load(row, &r);
+    switch (r.tag) {
+    case FX6_DESC_TAG_VS:  return fx6_setup_view_string_from_row(obj, row);
+    case FX6_DESC_TAG_MI:  return fx6_setup_view_menu_item_from_row(obj, row);
+    case FX6_DESC_TAG_VI:  return fx6_setup_view_icon_from_row(obj, row);
+    case FX6_DESC_TAG_VF:  return fx6_setup_view_fill_from_row(obj, row);
+    case 0x042d57d0u:      return fx6_setup_view_fill_from_row(obj, row);  /* view_frame */
+    default:               fx6_row_apply_rect(obj, &r); return 0;
+    }
+}
+/* Status / media page -- page base 0x02eb36a8, 17 rows */
+static const fx6_menu_row_t fx6_status_media_page_rows[] = {
+    {"No20_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No3_QR_CODE", 0x042d57e0u, {64,108,404,404}, 0x00000000u, 0},
+    {"No15_FINGERPRINT_VALUE", 0x042d57f0u, {486,320,470,108}, 0x00000000u, 0},
+    {"No21_TITLE", 0x042d57f0u, {61,54,600,36}, 0x02002530u, 0},
+    {"No7_PASSWORD_VALUE", 0x042d57f0u, {486,230,470,36}, 0x00000000u, 0},
+    {"No5_USER_NAME_VALUE", 0x042d57f0u, {486,140,470,36}, 0x00000000u, 0},
+    {"No13_SERIAL_NUM_VALUE", 0x042d57f0u, {486,410,470,36}, 0x00000000u, 0},
+    {"No11_MODEL_NAME_VALUE", 0x042d57f0u, {486,320,470,36}, 0x00000000u, 0},
+    {"No6_PASSWORD_TITLE", 0x042d57f0u, {486,198,470,30}, 0x02002548u, 0},
+    {"No4_USER_NAME_TITLE", 0x042d57f0u, {486,108,470,30}, 0x02002547u, 0},
+    {"No14_FINGERPRINT_TITLE", 0x042d57f0u, {486,288,470,30}, 0x0200254bu, 0},
+    {"No12_SERIAL_NUM_TITLE", 0x042d57f0u, {486,378,470,30}, 0x02002549u, 0},
+    {"No10_MODEL_NAME_TITLE", 0x042d57f0u, {486,288,470,30}, 0x0200254cu, 0},
+    {"No16_PAGE_CHANGE", 0x042d58d0u, {528,467,242,52}, 0x02002568u, 0},
+    {"No18_OK", 0x042d58d0u, {774,467,182,52}, 0x02004c46u, 0},
+    {"No9_LINE_LOWER", 0x042d5a40u, {486,276,470,1}, 0x0200c00eu, 0},
+    {"No8_LINE_UPPER", 0x042d5a40u, {486,275,470,1}, 0x0200c001u, 0},
+};
+#define FX6_STATUS_MEDIA_PAGE_ROWS_COUNT (sizeof(fx6_status_media_page_rows)/sizeof(fx6_status_media_page_rows[0]))
+
+/* Touch confirm page -- page base 0x02e9deb0, 11 rows */
+static const fx6_menu_row_t fx6_touch_confirm_page_rows[] = {
+    {"No17_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No16_LIST", 0x042d59e0u, {64,200,902,314}, 0x00000000u, 0},
+    {"No15_BACK", 0x042d5850u, {64,100,892,58}, 0x00000000u, 0},
+    {"No4_TITLE", 0x042d57f0u, {62,53,420,38}, 0x02004383u, 0},
+    {"No12_CLIPNAME", 0x042d57f0u, {140,171,292,30}, 0x02004391u, 0},
+    {"No14_STATUS", 0x042d57f0u, {698,171,250,30}, 0x02004393u, 0},
+    {"No13_DESTINATION", 0x042d57f0u, {452,171,250,30}, 0x02004392u, 0},
+    {"No3_TOTALNUM", 0x042d57f0u, {822,54,140,36}, 0x02004c3bu, 0},
+    {"No11_SRCMEDIA", 0x042d57f0u, {72,171,60,30}, 0x02004390u, 0},
+    {"No10_LINE_P", 0x042d5a50u, {64,162,892,2}, 0x020001fau, 0},
+};
+#define FX6_TOUCH_CONFIRM_PAGE_ROWS_COUNT (sizeof(fx6_touch_confirm_page_rows)/sizeof(fx6_touch_confirm_page_rows[0]))
+
+/* Small menu list page -- page base 0x02eb7098, 5 rows */
+static const fx6_menu_row_t fx6_menu_list_page_rows[] = {
+    {"No6_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_NINEPATCHIMAGE_0", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No4_SECOND", 0x042d57f0u, {232,291,560,82}, 0x00000000u, 0},
+    {"No3_FIRST", 0x042d57f0u, {232,245,560,36}, 0x00000000u, 0},
+    {"No5_BUTTON", 0x042d58d0u, {610,389,182,52}, 0x02004c46u, 0},
+};
+#define FX6_MENU_LIST_PAGE_ROWS_COUNT (sizeof(fx6_menu_list_page_rows)/sizeof(fx6_menu_list_page_rows[0]))
+
+/* BG notify page -- page base 0x02eb6a68, 4 rows */
+static const fx6_menu_row_t fx6_bg_notify_page_rows[] = {
+    {"No6_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No3_MESSAGE", 0x042d57f0u, {72,266,876,40}, 0x0200254du, 0},
+    {"No7_TITLE", 0x042d57f0u, {61,54,600,36}, 0x02002530u, 0},
+    {"No4_OK", 0x042d58d0u, {774,467,182,52}, 0x02004c46u, 0},
+};
+#define FX6_BG_NOTIFY_PAGE_ROWS_COUNT (sizeof(fx6_bg_notify_page_rows)/sizeof(fx6_bg_notify_page_rows[0]))
+
+/* Setting item page -- page base 0x02eb7a80, 9 rows */
+static const fx6_menu_row_t fx6_setting_item_page_rows[] = {
+    {"", 0x00000000u, {0,0,34512,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34527,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34542,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34557,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34572,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34587,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34602,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34617,571}, 0x0200600eu, 0},
+    {"", 0x00000000u, {0,0,34632,571}, 0x0200600eu, 0},
+};
+#define FX6_SETTING_ITEM_PAGE_ROWS_COUNT (sizeof(fx6_setting_item_page_rows)/sizeof(fx6_setting_item_page_rows[0]))
+
+/* 3-column grid page -- page base 0x02ea6400, 11 rows */
+static const fx6_menu_row_t fx6_grid_3col_page_rows[] = {
+    {"No19_TOUCH", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No4_SET_BG", 0x042d5a50u, {375,152,141,263}, 0x0200041eu, 0},
+    {"No3_TITLE", 0x042d57f0u, {61,54,600,36}, 0x02004582u, 0},
+    {"No18_SET_BTN_BG", 0x042d58d0u, {774,463,182,52}, 0x0200461fu, 0},
+    {"No17_CANCEL_BTN_BG", 0x042d58d0u, {588,463,182,52}, 0x020056e8u, 0},
+    {"No9_ONE_BG", 0x042d58d0u, {548,253,60,58}, 0x00000000u, 0},
+    {"No8_TEN_BG", 0x042d58d0u, {482,253,60,58}, 0x00000000u, 0},
+    {"No7_HUNDRED_BG", 0x042d58d0u, {416,253,60,58}, 0x00000000u, 0},
+    {"No6_BTN_DOWN", 0x042d58d0u, {414,323,64,52}, 0x00000000u, 0},
+    {"No5_BTN_UP", 0x042d58d0u, {414,189,64,52}, 0x00000000u, 0},
+};
+#define FX6_GRID_3COL_PAGE_ROWS_COUNT (sizeof(fx6_grid_3col_page_rows)/sizeof(fx6_grid_3col_page_rows[0]))
+
+
+/* ======================================================================
+ * PHASE 21 — .uxc container id bases (this is where validation kept failing)
+ * ======================================================================
+ * A packed ResID is decoded as  ns = (id>>13)&0x7ff,  ix = id&0x1fff, and the container record
+ * key is NOT always the bare index:
+ *
+ *   ns 0  image_00_169.uxc   marker 0x1a00   record id = ix                     (0x0000..)
+ *   ns 1  string_english.uxc marker 0x1e00   record id = (ns<<13)|ix             (0x2000..)
+ *   ns 2  string_english_2.uxc               record id = (ns<<13)|ix             (0x4000..)
+ *   ns 3  style_cmn.uxc      marker 0x2600   record id = 0x6000 | ix   <-- BASE 0x6000
+ *   ns 6  color_cmn.uxc      marker 0x3a00   record id = 0xc000 | ix   <-- BASE 0xc000
+ *
+ * Forgetting the 0x6000 / 0xc000 base makes every style and colour id look unresolvable even though
+ * it is present. With the bases applied, a full-header audit reports:
+ *
+ *   1434 descriptor rows + 305 option ids checked -> 408 text + 112 image + 15 colour + 1 style,
+ *   unresolved: 0
+ *
+ * The validator is kept as artifacts/fx6_verify_all.py so the check is reproducible.
+ */
+#define FX6_STYLE_BASE 0x6000u
+#define FX6_COLOR_BASE 0xc000u
+#define FX6_UXC_MARKER_IMAGE 0x1a00u
+#define FX6_UXC_MARKER_STRING 0x1e00u
+#define FX6_UXC_MARKER_STYLE 0x2600u
+#define FX6_UXC_MARKER_COLOR 0x3a00u
+#define FX6_UXC_MARKER_LANG 0x2600u

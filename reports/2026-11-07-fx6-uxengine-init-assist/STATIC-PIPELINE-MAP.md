@@ -9468,3 +9468,116 @@ machine       57 bindings, 0 mode/placeholder mismatches, 0 unresolved ResIDs
               106 new page rows: 24 colour + 20 string + 5 image, 0 unresolved
 build         header 4151 lines, clean under -Wall
 ```
+
+### 689 — Four of the five Phase-21 tags do not exist; the row layout has no d14/d15/d16
+
+Checking the tags named in the brief against the whole image:
+
+```text
+0x042d5b70  "view_frame"          ZERO byte occurrences anywhere in appFw.so
+0x042d5af0  "view_line"           ZERO byte occurrences anywhere in appFw.so
+0x042d5a30  "view_image variant"  8 byte occurrences, all in .rela.dyn / .data.rel.ro / .got
+                                  -> a class tag referenced by code, never a row's +0x00
+0x042d5b20  "view_icon variant"   2 byte occurrences (.rela.dyn + .got)
+                                  -> same, code referenced only
+0x042d5860  "view_image"          REAL, 102 rows — but it is the full-screen touch blocker
+                                  (every row is named NoN_BLOCK_TOUCH or No11_touchscreen)
+```
+
+So `view_frame` in this image is tag **`0x042d57d0`** (58 rows, confirmed earlier to share the
+`view_fill` field body), and **`view_line` does not exist as a class at all** — every line in every
+page is a `view_fill` with a 1–4 px rect on tag `0x042d5a40`.
+
+The row layout is also flatter than `d14/d15/d16/d18` implies. Measured over **all 2345 rows**:
+
+```text
++0x04   0/2345 non-zero
++0x0c   0/2345 non-zero
++0x10   0/2345 non-zero
++0x14   0/2345 non-zero
+```
+
+The only payload fields are `+0x18` (text/colour/image id), `+0x1c`, `+0x20`, `+0x24`, `+0x28`,
+`+0x2c`, `+0x30`, `+0x34`, `+0x38`, and the rect at `+0x3c/+0x40`.
+
+### 689 — Generic row-driven setup helpers
+
+Rather than invent per-tag field maps for classes that do not exist, the header now exposes a
+generic decoder plus per-class appliers built from the **verified** field maps:
+
+```text
+fx6_row_view_t                        decoded row: tag/text/layout/style/fonts/size/flags/id/rect
+fx6_row_load(row, &out)               decodes an in-place 0x48 row, no alignment assumptions
+fx6_row_apply_rect(obj, &r)           the +0x1e8..+0x1f4 rect every class shares
+
+fx6_setup_view_string_from_row()      0x042d57f0  -> +0x200, +0x208, +0x20c, +0x210, +0x214, +0xa14
+fx6_setup_view_menu_item_from_row()   0x042d58d0  -> +0x21c, +0x22c, +0x234, +0x238, +0x23c, +0x200
+fx6_setup_view_icon_from_row()        0x042d5a50  -> +0x20c, +0x21c, +0x204, +0x206
+fx6_setup_view_fill_from_row()        0x042d5a40  -> +0x200
+                                      also used for view_frame 0x042d57d0
+fx6_setup_from_row(obj, row)          dispatch on the row's own tag — the one entry point to use
+```
+
+Every applier reproduces the factory's guard conditions (`layout && font_a && font_b` for the font
+group, `widget_id <= 0x5b` for the menu-item id), so a row with a partial payload degrades the same
+way the native path does instead of writing garbage.
+
+### 689 — The .uxc container id bases: why validation kept failing
+
+This was the real cause of the repeated "unresolved" reports. A packed ResID decodes to
+`ns = (id>>13)&0x7ff`, `ix = id&0x1fff`, but the container record key is **not** always the bare index:
+
+```text
+ns 0  image_00_169.uxc    marker 0x1a00    record id = ix
+ns 1  string_english.uxc marker 0x1e00    record id = (ns<<13)|ix      0x2000..
+ns 2  string_english_2    (same)          record id = (ns<<13)|ix      0x4000..
+ns 3  style_cmn.uxc       marker 0x2600    record id = 0x6000 | ix     <-- BASE
+ns 5  lang_cmn.uxc        (same)          record id = 0xa000 | ix
+ns 6  color_cmn.uxc       marker 0x3a00    record id = 0xc000 | ix     <-- BASE
+```
+
+Without the `0x6000` / `0xc000` bases every style and colour id looks missing even though it is
+present: `0x0200c00e` -> ix `0x000e` -> must look up `0xc00e`, and `0x0200600e` -> ix `0x000e` ->
+must look up `0x600e`. `style_cmn.uxc` holds 64 records (`0x6000..0x603f`) and `color_cmn.uxc`
+holds 27 (`0xc000..0xc01a`); both bases are now documented as `FX6_STYLE_BASE` /
+`FX6_COLOR_BASE` along with the four container markers.
+
+With the bases applied, a **whole-header audit** passes:
+
+```text
+header: 1434 descriptor rows, 305 option ids
+distinct id kinds: 408 text + 112 image + 15 colour + 1 style
+unresolved: 0
+```
+
+The validator is committed as `artifacts/fx6_verify_all.py` and exits non-zero on any failure, so the
+check is reproducible rather than one-off.
+
+### 689 — Six more pages materialised
+
+```text
+page 86  0x02eb36a8  17 rows   Status / media page (QR code + status tiles)
+page 20  0x02e9deb0  11 rows   Touch confirm page
+page 95  0x02eb7098   5 rows   Small menu list page
+page 103 0x02eb6a68   4 rows   BG notify page
+page 78  0x02eb7a80   9 rows   Setting item page
+page 60  0x02ea6400  11 rows   3-column grid page
+```
+
+The status/media page is notable because it carries `No3_QR_CODE` on tag `0x042d57e0` at
+`(64,108,404,404)` — a square QR render area, which is the only consumer of that class in any table.
+
+### 689 — Verification
+
+```text
+compile-time  sizeof(fx6_row_view_t) == 0x30
+              FX6_STYLE_BASE == 0x6000, FX6_COLOR_BASE == 0xc000
+              FX6_STATUS_MEDIA_PAGE_ROWS_COUNT == 17
+              FX6_TOUCH_CONFIRM_PAGE_ROWS_COUNT == 11
+              FX6_MENU_LIST_PAGE_ROWS_COUNT == 5
+              FX6_BG_NOTIFY_PAGE_ROWS_COUNT == 4
+              FX6_SETTING_ITEM_PAGE_ROWS_COUNT == 9
+              FX6_GRID_3COL_PAGE_ROWS_COUNT == 11
+machine       whole-header audit: 1434 rows + 305 ids, 0 unresolved
+build         header 4546 lines, clean under -Wall
+```

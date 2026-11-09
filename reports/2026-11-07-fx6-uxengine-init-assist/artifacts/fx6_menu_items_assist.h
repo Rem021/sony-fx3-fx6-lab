@@ -4911,3 +4911,485 @@ static inline const fx6_page_owner_t *fx6_page_owner(uint32_t page_base)
  * container path resolves at run time from a pointer passed down by the parent page — there is no
  * static table to read. */
 #define FX6_CONTAINER_HANDLES_INDIRECT 110u
+/* page 70: No107_BLOCK_TOUCH -- page base 0x02eaf208, 17 rows */
+static const fx6_menu_row_t fx6_pg70_rows[] = {
+    {"No107_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a40u, {96,72,768,432}, 0x0200c001u, 0},
+    {"No28_BG", 0x042d5a40u, {96,194,768,188}, 0x0200c008u, 0},
+    {"No8_CENTER_VALUE", 0x042d57f0u, {310,269,530,32}, 0x00000000u, 0},
+    {"No7_CENTER_TITLE", 0x042d57f0u, {154,269,148,32}, 0x02002feau, 0},
+    {"No34_SEPARATOR", 0x042d5a40u, {96,382,768,4}, 0x0200c00eu, 0},
+    {"No33_SEPARATOR", 0x042d5a40u, {96,190,768,4}, 0x0200c00eu, 0},
+    {"No32_SEPARATOR", 0x042d5a40u, {607,386,4,118}, 0x0200c00eu, 0},
+    {"No31_SEPARATOR", 0x042d5a40u, {349,386,4,118}, 0x0200c00eu, 0},
+    {"No30_SEPARATOR", 0x042d5a40u, {607,72,4,118}, 0x0200c00eu, 0},
+    {"No29_SEPARATOR", 0x042d5a40u, {349,72,4,118}, 0x0200c00eu, 0},
+    {"No101_BUTTON_01", 0x042d58d0u, {96,72,257,122}, 0x00000000u, 0},
+    {"No102_BUTTON_02", 0x042d58d0u, {349,72,262,122}, 0x00000000u, 0},
+    {"No103_BUTTON_03", 0x042d58d0u, {607,72,257,122}, 0x00000000u, 0},
+    {"No104_BUTTON_04", 0x042d58d0u, {96,382,257,122}, 0x00000000u, 0},
+    {"No105_BUTTON_05", 0x042d58d0u, {349,382,262,122}, 0x00000000u, 0},
+    {"No106_BUTTON_06", 0x042d58d0u, {607,382,257,122}, 0x00000000u, 0},
+};
+#define FX6_PG70_ROWS_COUNT (sizeof(fx6_pg70_rows)/sizeof(fx6_pg70_rows[0]))
+
+/* page 51: No17_TOUCH -- page base 0x02ea6760, 12 rows */
+static const fx6_menu_row_t fx6_pg51_rows[] = {
+    {"No17_TOUCH", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No4_SET_BG", 0x042d5a50u, {342,152,141,263}, 0x0200041eu, 0},
+    {"No3_TITLE", 0x042d57f0u, {61,54,600,36}, 0x02004582u, 0},
+    {"No16_SET_BTN_BG", 0x042d58d0u, {774,463,182,52}, 0x0200461fu, 0},
+    {"No15_CANCEL_BTN_BG", 0x042d58d0u, {588,463,182,52}, 0x020056e8u, 0},
+    {"No9_TEN_BG", 0x042d58d0u, {515,253,60,58}, 0x00000000u, 0},
+    {"No8_HUNDRED_BG", 0x042d58d0u, {449,253,60,58}, 0x00000000u, 0},
+    {"No7_THOUSAND_BG", 0x042d58d0u, {383,253,60,58}, 0x00000000u, 0},
+    {"No10_ONE_BG", 0x042d58d0u, {581,253,60,58}, 0x00000000u, 0},
+    {"No19_BTN_DOWN", 0x042d58d0u, {381,323,64,52}, 0x00000000u, 0},
+    {"No18_BTN_UP", 0x042d58d0u, {381,189,64,52}, 0x00000000u, 0},
+};
+#define FX6_PG51_ROWS_COUNT (sizeof(fx6_pg51_rows)/sizeof(fx6_pg51_rows[0]))
+
+/* page 93: No11_BLOCK_TOUCH -- page base 0x02eb4a58, 12 rows */
+static const fx6_menu_row_t fx6_pg93_rows[] = {
+    {"No11_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No8_BG_3LINE", 0x042d5a50u, {198,207,628,273}, 0x02000221u, 0},
+    {"No2_BG_2LINE", 0x042d5a50u, {198,253,628,227}, 0x0200021eu, 0},
+    {"No1_BG_1LINE", 0x042d5a50u, {198,299,628,181}, 0x0200021bu, 0},
+    {"No9_TEXT_3LINE", 0x042d57f0u, {232,245,560,128}, 0x00000000u, 0},
+    {"No5_TEXT_2LINE", 0x042d57f0u, {232,291,560,82}, 0x00000000u, 0},
+    {"No10_TEXT_2LINE_1LINE", 0x042d57f0u, {232,245,560,82}, 0x00000000u, 0},
+    {"No4_TEXT_LABEL2", 0x042d57f0u, {232,337,560,36}, 0x00000000u, 0},
+    {"No3_TEXT_LABEL1", 0x042d57f0u, {232,291,560,36}, 0x00000000u, 0},
+    {"No12_TEXT_LABEL0", 0x042d57f0u, {232,245,560,36}, 0x00000000u, 0},
+    {"No7_EXECUTE", 0x042d58d0u, {610,389,182,52}, 0x020056e9u, 0},
+    {"No6_CANCEL", 0x042d58d0u, {424,389,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG93_ROWS_COUNT (sizeof(fx6_pg93_rows)/sizeof(fx6_pg93_rows[0]))
+
+/* page 40: No11_touchscreen -- page base 0x02ea4630, 11 rows */
+static const fx6_menu_row_t fx6_pg40_rows[] = {
+    {"No11_touchscreen", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_Backgroundunder", 0x042d5a40u, {525,92,442,457}, 0x0200c001u, 0},
+    {"No2_Backgroundmiddle", 0x042d5a40u, {526,93,440,455}, 0x0200c009u, 0},
+    {"No3_Backgroundtop", 0x042d5a40u, {527,94,438,453}, 0x0200c008u, 0},
+    {"No10_Itemlist", 0x042d59e0u, {530,99,433,415}, 0x00000000u, 0},
+    {"No7_Shadowbottom", 0x042d5a50u, {511,549,467,20}, 0x02000007u, 0},
+    {"No5_Shadowright", 0x042d5a50u, {967,91,14,457}, 0x0200001cu, 0},
+    {"No4_Shadowleft", 0x042d5a50u, {511,91,14,457}, 0x02000012u, 0},
+    {"No6_Shadowtop", 0x042d5a50u, {511,84,467,7}, 0x0200001du, 0},
+    {"No9_Lowerarrow", 0x042d5a50u, {728,515,30,15}, 0x0200014eu, 0},
+    {"No8_Upperarrow", 0x042d5a50u, {728,85,30,15}, 0x02000151u, 0},
+};
+#define FX6_PG40_ROWS_COUNT (sizeof(fx6_pg40_rows)/sizeof(fx6_pg40_rows[0]))
+
+/* page 43: No19_TOUCH_SCREEN -- page base 0x02ea5560, 11 rows */
+static const fx6_menu_row_t fx6_pg43_rows[] = {
+    {"No19_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No22_BG_TOUCH", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No1_BG_NORMAL", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No18_SCAN_LIST", 0x042d59e0u, {64,150,892,369}, 0x00000000u, 0},
+    {"No3_TITLE", 0x042d57f0u, {62,53,420,38}, 0x0200561eu, 0},
+    {"No11_SSID", 0x042d57f0u, {300,110,310,30}, 0x02004623u, 0},
+    {"No20_SETTING_LIST_SET", 0x042d58d0u, {884,52,82,82}, 0x020023dau, 0},
+    {"No17_SEC", 0x042d57f0u, {740,110,124,30}, 0x02005060u, 0},
+    {"No12_STATUS", 0x042d57f0u, {162,110,124,30}, 0x02004d5bu, 0},
+    {"No23_SEPARATOR", 0x042d5a40u, {60,94,820,2}, 0x0200c00bu, 0},
+    {"No21_SCAN_PROCESSING", 0x042d5940u, {927,56,32,32}, 0x00000000u, 0},
+};
+#define FX6_PG43_ROWS_COUNT (sizeof(fx6_pg43_rows)/sizeof(fx6_pg43_rows[0]))
+
+/* page 77: No13_TOUCH_SCREEN -- page base 0x02eb1530, 11 rows */
+static const fx6_menu_row_t fx6_pg77_rows[] = {
+    {"No13_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No3_SETTING_LIST_BG_LEFT", 0x042d5a40u, {50,50,470,477}, 0x0200c017u, 0},
+    {"No4_SETTING_LIST_BG_RIGHT", 0x042d5a40u, {520,50,454,477}, 0x0200c003u, 0},
+    {"No5_SETTING_LIST_MAIN", 0x042d5a20u, {60,70,450,440}, 0x00000000u, 0},
+    {"No8_SETTING_VALUE", 0x042d57f0u, {525,285,438,36}, 0x02004970u, 0},
+    {"No7_SETTING_ITEM", 0x042d57f0u, {525,245,438,36}, 0x020043eeu, 0},
+    {"No12_SETTING_VALUE", 0x042d57f0u, {525,305,438,36}, 0x00000000u, 0},
+    {"No11_SETTING_ITEM", 0x042d57f0u, {525,265,438,36}, 0x00000000u, 0},
+    {"No10_PARENT_ITEM", 0x042d57f0u, {525,225,438,36}, 0x00000000u, 0},
+    {"No9_SETTING_LIST_AUX_INFO", 0x042d57f0u, {550,465,408,30}, 0x0200255eu, 0},
+    {"No6_SETTING_LIST_SET", 0x042d58d0u, {888,54,82,82}, 0x020023dau, 0},
+};
+#define FX6_PG77_ROWS_COUNT (sizeof(fx6_pg77_rows)/sizeof(fx6_pg77_rows[0]))
+
+/* page 112: No11_TOUCH_SCREEN -- page base 0x02eb8760, 11 rows */
+static const fx6_menu_row_t fx6_pg112_rows[] = {
+    {"No11_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No4_SETTING_LIST_MAIN", 0x042d5a20u, {56,91,438,440}, 0x00000000u, 0},
+    {"No13_TITLE_BG_2ND_LAYER", 0x042d5a50u, {32,44,856,44}, 0x020003d9u, 0},
+    {"No6_TITLE_BG", 0x042d5a50u, {0,47,592,38}, 0x020003d8u, 0},
+    {"No5_SETTING_ITEM", 0x042d57f0u, {34,48,506,36}, 0x020046acu, 0},
+    {"No8_SETTING_ITEM_2ND_LAYER", 0x042d57f0u, {479,48,409,36}, 0x00000000u, 0},
+    {"No7_SETTING_VALUE_2ND_LAYER", 0x042d57f0u, {479,88,348,36}, 0x020046e6u, 0},
+    {"No12_PARENT_ITEM_2ND_LAYER", 0x042d57f0u, {34,48,348,36}, 0x020046acu, 0},
+    {"No10_SETTING_VALUE", 0x042d57f0u, {540,48,348,36}, 0x00000000u, 0},
+    {"No9_SETTING_LIST_AUX_INFO", 0x042d57f0u, {550,465,408,30}, 0x00000000u, 0},
+    {"No3_SETTING_LIST_SET", 0x042d58d0u, {888,54,82,82}, 0x020023dau, 0},
+};
+#define FX6_PG112_ROWS_COUNT (sizeof(fx6_pg112_rows)/sizeof(fx6_pg112_rows[0]))
+
+/* page 36: No107_BLOCK_TOUCH -- page base 0x02ea3e50, 10 rows */
+static const fx6_menu_row_t fx6_pg36_rows[] = {
+    {"No107_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No4_SETTING_LIST_MAIN", 0x042d5a20u, {96,72,402,432}, 0x00000000u, 0},
+    {"No20_SETTING_MAIN_STRING", 0x042d57f0u, {139,270,348,36}, 0x00000000u, 0},
+    {"No3_SETTING_VALUE", 0x042d57f0u, {505,266,315,36}, 0x00000000u, 0},
+    {"No32_SETTING_VALUE2", 0x042d57f0u, {505,266,308,32}, 0x00000000u, 0},
+    {"No2_SETTING_ITEM", 0x042d57f0u, {505,236,315,28}, 0x00000000u, 0},
+    {"No106_BUTTON_BOTTOM_RIGHT", 0x042d58d0u, {654,425,164,72}, 0x020023dau, 0},
+    {"No105_BUTTON_BOTTOM_CENTER", 0x042d58d0u, {398,425,164,72}, 0x020023dau, 0},
+    {"No103_BUTTON_TOP_RIGHT", 0x042d58d0u, {654,80,164,72}, 0x020023dau, 0},
+    {"No102_BUTTON_TOP_CENTER", 0x042d58d0u, {398,80,164,72}, 0x020023dau, 0},
+};
+#define FX6_PG36_ROWS_COUNT (sizeof(fx6_pg36_rows)/sizeof(fx6_pg36_rows[0]))
+
+/* page 66: No12_TOUCH_SCREEN -- page base 0x02eacdc0, 10 rows */
+static const fx6_menu_row_t fx6_pg66_rows[] = {
+    {"No12_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No3_SETTING_LIST_BACKGROUND", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No10_BG_TOUCH", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No4_SETTING_LIST_MAIN", 0x042d59e0u, {64,150,898,369}, 0x00000000u, 0},
+    {"No6_SETTING_LIST_TITLE", 0x042d57f0u, {62,54,600,36}, 0x02002453u, 0},
+    {"No7_TITLE", 0x042d57f0u, {163,110,326,30}, 0x0200244du, 0},
+    {"No9_TITLE", 0x042d57f0u, {688,110,250,30}, 0x02002417u, 0},
+    {"No5_SETTING_LIST_SET", 0x042d58d0u, {884,52,82,82}, 0x020023dau, 0},
+    {"No8_TITLE", 0x042d57f0u, {508,110,180,30}, 0x02002414u, 0},
+    {"No11_SEPARATOR", 0x042d5a40u, {60,94,820,2}, 0x0200c00bu, 0},
+};
+#define FX6_PG66_ROWS_COUNT (sizeof(fx6_pg66_rows)/sizeof(fx6_pg66_rows[0]))
+
+/* page 72: No8_BLOCK_TOUCH -- page base 0x02eaf7a8, 10 rows */
+static const fx6_menu_row_t fx6_pg72_rows[] = {
+    {"No8_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No10_BG_3LINE", 0x042d5a40u, {212,192,598,242}, 0x0200c001u, 0},
+    {"No2_BG_2LINE", 0x042d5a40u, {212,242,598,192}, 0x0200c017u, 0},
+    {"No9_TEXT_2LINE_3LINELAYOUT", 0x042d57f0u, {232,208,560,82}, 0x00000000u, 0},
+    {"No7_TEXT_2LINE_2LINELAYOUT", 0x042d57f0u, {232,258,560,82}, 0x00000000u, 0},
+    {"No6_OK", 0x042d58d0u, {512,360,296,72}, 0x02004c46u, 0},
+    {"No5_CANCEL", 0x042d58d0u, {214,360,296,72}, 0x020056e8u, 0},
+    {"No4_LINE_2ND", 0x042d57f0u, {232,308,560,36}, 0x0200409cu, 0},
+    {"No3_LINE_1ST", 0x042d57f0u, {232,258,560,36}, 0x0200409bu, 0},
+    {"No11_LINE_0TH", 0x042d57f0u, {232,208,560,36}, 0x00000000u, 0},
+};
+#define FX6_PG72_ROWS_COUNT (sizeof(fx6_pg72_rows)/sizeof(fx6_pg72_rows[0]))
+
+/* page 73: No10_TOUCH_SCREEN -- page base 0x02eafac0, 10 rows */
+static const fx6_menu_row_t fx6_pg73_rows[] = {
+    {"No10_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No9_BG_NORMAL", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No1_BG_TOUCH", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No8_SETTING_LIST_MAIN", 0x042d59e0u, {64,150,898,369}, 0x00000000u, 0},
+    {"No7_SETTING_LIST_TITLE", 0x042d57f0u, {62,54,600,36}, 0x02002450u, 0},
+    {"No5_TITLE_2", 0x042d57f0u, {180,110,458,30}, 0x0200244du, 0},
+    {"No2_SETTING_LIST_SET", 0x042d58d0u, {884,52,82,82}, 0x020023dau, 0},
+    {"No6_TITLE_3", 0x042d57f0u, {653,110,198,30}, 0x02004d02u, 0},
+    {"No3_SEPARATOR", 0x042d5a40u, {60,94,820,2}, 0x0200c00bu, 0},
+    {"No4_TITLE_1", 0x042d57f0u, {106,110,44,30}, 0x02004d01u, 0},
+};
+#define FX6_PG73_ROWS_COUNT (sizeof(fx6_pg73_rows)/sizeof(fx6_pg73_rows[0]))
+
+/* page 81: No8_BG -- page base 0x02eb2d60, 10 rows */
+static const fx6_menu_row_t fx6_pg81_rows[] = {
+    {"No8_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No15_CHANGE_MESSAGE_LINE_6", 0x042d57f0u, {72,394,876,58}, 0x0200268cu, 0},
+    {"No14_CHANGE_MESSAGE_LINE_5", 0x042d57f0u, {72,338,876,58}, 0x02002543u, 0},
+    {"No13_CHANGE_MESSAGE_LINE_4", 0x042d57f0u, {72,282,876,58}, 0x020029ecu, 0},
+    {"No12_CHANGE_MESSAGE_LINE_3", 0x042d57f0u, {72,226,876,58}, 0x020028a1u, 0},
+    {"No11_CHANGE_MESSAGE_LINE_2", 0x042d57f0u, {72,168,876,58}, 0x0200253fu, 0},
+    {"No10_CHANGE_MESSAGE_LINE_1", 0x042d57f0u, {72,110,876,58}, 0x0200253eu, 0},
+    {"No9_TITLE", 0x042d57f0u, {61,54,600,36}, 0x02002530u, 0},
+    {"No6_NEXT_OK", 0x042d58d0u, {774,467,182,52}, 0x02004c46u, 0},
+    {"No4_CANCEL", 0x042d58d0u, {588,467,182,52}, 0x020056e8u, 0},
+};
+#define FX6_PG81_ROWS_COUNT (sizeof(fx6_pg81_rows)/sizeof(fx6_pg81_rows[0]))
+
+/* page 102: No9_TOUCH -- page base 0x02eb6750, 10 rows */
+static const fx6_menu_row_t fx6_pg102_rows[] = {
+    {"No9_TOUCH", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No11_SETTING_BAR_TOUCH", 0x042d5880u, {0,458,1024,82}, 0x00000000u, 0},
+    {"No2_TITLE_BG", 0x042d5a50u, {0,47,592,38}, 0x02000210u, 0},
+    {"No3_TITLE", 0x042d57f0u, {57,48,502,36}, 0x00000000u, 0},
+    {"No13_GUIDE", 0x042d57f0u, {521,416,450,36}, 0x02002ad1u, 0},
+    {"No6_VALUE_BUTTON", 0x042d58d0u, {57,100,196,58}, 0x00000000u, 0},
+    {"No8_SETTING_BAR", 0x042d5880u, {256,106,220,50}, 0x00000000u, 0},
+    {"No12_SET_BUTTON", 0x042d58d0u, {888,54,82,82}, 0x020023dau, 0},
+    {"No5_ARROW_DOWN", 0x042d5a50u, {140,158,30,15}, 0x0200014fu, 0},
+    {"No4_ARROW_UP", 0x042d5a50u, {140,85,30,15}, 0x02000150u, 0},
+};
+#define FX6_PG102_ROWS_COUNT (sizeof(fx6_pg102_rows)/sizeof(fx6_pg102_rows[0]))
+
+/* page 116: No15_TOUCH_SCREEN -- page base 0x02eb90f0, 10 rows */
+static const fx6_menu_row_t fx6_pg116_rows[] = {
+    {"No15_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No3_SETTING_LIST_BG_LEFT", 0x042d5a40u, {50,50,470,472}, 0x0200c017u, 0},
+    {"No4_SETTING_LIST_BG_RIGHT", 0x042d5a40u, {520,50,454,472}, 0x0200c003u, 0},
+    {"No10_SETTING_LIST_IMAGE_EXTRA", 0x042d5a50u, {552,147,368,368}, 0x0200041du, 0},
+    {"No12_SETTING_LIST_MAIN_2", 0x042d58d0u, {56,287,462,82}, 0x020056f0u, 0},
+    {"No11_SETTING_LIST_MAIN_1", 0x042d58d0u, {56,197,462,82}, 0x020056f1u, 0},
+    {"No8_SETTING_LIST_TITLE", 0x042d57f0u, {550,97,400,40}, 0x020056f0u, 0},
+    {"No7_SETTING_LIST_TITLE_PARENT", 0x042d57f0u, {550,55,400,40}, 0x0200424fu, 0},
+    {"No14_SETTING_VALUE", 0x042d57f0u, {525,285,438,36}, 0x00000000u, 0},
+    {"No13_SETTING_ITEM", 0x042d57f0u, {525,245,438,36}, 0x00000000u, 0},
+};
+#define FX6_PG116_ROWS_COUNT (sizeof(fx6_pg116_rows)/sizeof(fx6_pg116_rows[0]))
+
+/* page 125: No11_TOUCH_SCREEN -- page base 0x02eba260, 10 rows */
+static const fx6_menu_row_t fx6_pg125_rows[] = {
+    {"No11_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No3_BG_STATUS", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No12_BG_NORMAL", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No4_SETTING_LIST_MAIN", 0x042d59e0u, {64,150,898,369}, 0x00000000u, 0},
+    {"No6_SETTING_LIST_TITLE", 0x042d57f0u, {62,54,600,36}, 0x0200244eu, 0},
+    {"No8_TITLE_2", 0x042d57f0u, {412,110,306,30}, 0x0200516au, 0},
+    {"No5_SETTING_LIST_SET", 0x042d58d0u, {884,52,82,82}, 0x020023dau, 0},
+    {"No7_TITLE_1", 0x042d57f0u, {106,110,170,30}, 0x020051a4u, 0},
+    {"No9_TITLE_3", 0x042d57f0u, {718,110,166,30}, 0x02002248u, 0},
+    {"No10_SEPARATOR", 0x042d5a40u, {60,94,820,2}, 0x0200c00bu, 0},
+};
+#define FX6_PG125_ROWS_COUNT (sizeof(fx6_pg125_rows)/sizeof(fx6_pg125_rows[0]))
+
+/* page 79: No7_TOUCH_SCREEN -- page base 0x02eb2808, 9 rows */
+static const fx6_menu_row_t fx6_pg79_rows[] = {
+    {"No7_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a50u, {56,49,912,477}, 0x020001c2u, 0},
+    {"No5_LIST", 0x042d59e0u, {64,100,898,415}, 0x00000000u, 0},
+    {"No3_SUB_TITLE", 0x042d57f0u, {398,54,450,36}, 0x020042bau, 0},
+    {"No6_headertouchbutton", 0x042d58d0u, {61,53,316,36}, 0x00000000u, 0},
+    {"No2_MAIN_TITLE", 0x042d57f0u, {97,53,280,36}, 0x02004d4bu, 0},
+    {"No9_CoverItemnumberBG", 0x042d5a40u, {880,57,80,32}, 0x0200c009u, 0},
+    {"No4_MENU_INDEX", 0x042d57f0u, {884,57,74,30}, 0x00000000u, 0},
+    {"No8_Menuicon", 0x042d5a50u, {61,54,34,34}, 0x02000043u, 0},
+};
+#define FX6_PG79_ROWS_COUNT (sizeof(fx6_pg79_rows)/sizeof(fx6_pg79_rows[0]))
+
+/* page 115: No8_TOUCH_SCREEN_FOR_RELEASE -- page base 0x02eb8e20, 9 rows */
+static const fx6_menu_row_t fx6_pg115_rows[] = {
+    {"No8_TOUCH_SCREEN_FOR_RELEASE", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No9_TOUCH_SCREEN_FOR_RELEASE_TO_RIGHT", 0x042d5970u, {631,0,342,540}, 0x00000000u, 0},
+    {"No4_SETTING_LIST_BG_RIGHT", 0x042d57d0u, {631,51,342,472}, 0x00000000u, 0},
+    {"No7_BUTTON", 0x042d58d0u, {636,194,332,78}, 0x020023e5u, 0},
+    {"No6_BUTTON", 0x042d58d0u, {636,112,332,78}, 0x020023e4u, 0},
+    {"No12_BUTTON", 0x042d58d0u, {636,440,332,78}, 0x00000000u, 0},
+    {"No11_BUTTON", 0x042d58d0u, {636,358,332,78}, 0x00000000u, 0},
+    {"No10_BUTTON", 0x042d58d0u, {636,276,332,78}, 0x00000000u, 0},
+    {"No5_SETTING_ITEM", 0x042d57f0u, {642,56,320,50}, 0x020055b4u, 0},
+};
+#define FX6_PG115_ROWS_COUNT (sizeof(fx6_pg115_rows)/sizeof(fx6_pg115_rows[0]))
+
+/* page 19: No8_BLOCK_TOUCH -- page base 0x02e9dc28, 8 rows */
+static const fx6_menu_row_t fx6_pg19_rows[] = {
+    {"No8_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {198,181,628,273}, 0x02000221u, 0},
+    {"No9_BG", 0x042d5a40u, {218,205,588,225}, 0x0200c008u, 0},
+    {"No5_PASSWORD", 0x042d57f0u, {232,311,560,36}, 0xffffffffu, 0},
+    {"No3_SSID", 0x042d57f0u, {232,219,560,36}, 0xffffffffu, 0},
+    {"No4_SSID_Value", 0x042d57f0u, {247,266,545,34}, 0x00000000u, 0},
+    {"No6_PASS_Value", 0x042d57f0u, {247,358,383,34}, 0x00000000u, 0},
+    {"No7_OK", 0x042d58d0u, {632,363,160,52}, 0x02004fe3u, 0},
+};
+#define FX6_PG19_ROWS_COUNT (sizeof(fx6_pg19_rows)/sizeof(fx6_pg19_rows[0]))
+
+
+/* ======================================================================
+ * PHASE 23 — indirect page links: which presenter loads which page
+ * ======================================================================
+ * Round 690 recorded 18 pages found by a naive "adrp then ldr within 2 instructions" scan. That
+ * scan was too shallow. Re-running with a proper register tracker — following adrp -> add imm ->
+ * ldr/ldrsw/ldrb, invalidating the destination register on every write, clearing x0..x18 across
+ * `bl`, and resetting on branches — finds **49 pages** loaded through their GOT slot, across
+ * **87 distinct presenter functions**.
+ *
+ * Two shapes emerge:
+ *   - one presenter owns exactly one page (78 of 87), and
+ *   - several presenters share a page (e.g. the home page 0x2e9e210 has three: 0xf30254,
+ *     0xf304e8, 0xf335b0), which is the A/B/C slot dispatch pattern.
+ *
+ * Each relation is a real GOT load, so this is static evidence, not inference. What it does NOT give
+ * is call order: which presenter is entered first is decided at run time by the page stack.
+ *
+ * The remaining 79 pages have no GOT load at all. They are handed to a container as a raw pointer by
+ * whoever already holds the parent page, so no static link exists for them — that is the honest
+ * meaning of FX6_CONTAINER_HANDLES_INDIRECT.
+ */
+typedef struct {
+    uint32_t page_base;
+    uint16_t row_count;
+    uint32_t presenter;      /* enclosing function of the first GOT load  */
+    uint32_t presenter2;     /* second loader, 0 when there is only one    */
+    const char *first_name;
+} fx6_indirect_page_link_t;
+
+typedef struct {
+    uint32_t presenter;
+    uint16_t page_count;
+} fx6_presenter_span_t;
+
+static const fx6_indirect_page_link_t fx6_indirect_page_links[] = {
+    {0x02e92c18u, 102, 0x0f553e8u, 0x0000000u, "No142_BLOCK_TOUCH"},
+    {0x02e9ad78u,  35, 0x0f45528u, 0x0f4572cu, "No423_BLOCK_TOUCH"},
+    {0x02e9b798u,  39, 0x0fc5b10u, 0x0fc6890u, "No44_yuv_cover"},
+    {0x02e9cef0u,  46, 0x0f4a560u, 0x0000000u, "No43_yuv_cover"},
+    {0x02e9e210u,  98, 0x0f30254u, 0x0f304e8u, "No463_BLOCK_TOUCH"},
+    {0x02ea02f8u,  35, 0x0f5ed74u, 0x0000000u, "No1_WID_NINEPATCHIMAGE_STAGE1_"},
+    {0x02ea0d18u,  69, 0x0f618ccu, 0x0000000u, "No69_TOUCH_SCREEN"},
+    {0x02ea20c8u,  23, 0x0f64c48u, 0x0000000u, "No23_TOUCH_SCREEN"},
+    {0x02ea2788u,  23, 0x0f66dc4u, 0x0000000u, "No33_TOUCH_SCREEN"},
+    {0x02ea2e48u,  16, 0x0fa1f60u, 0x0000000u, "No20_TOUCH"},
+    {0x02ea3310u,  14, 0x0fa3ac4u, 0x0000000u, "No20_TOUCH"},
+    {0x02ea37d8u,  10, 0x0f5b934u, 0x0000000u, "No18_TOUCH_SCREEN"},
+    {0x02ea4510u,   3, 0x0f7b804u, 0x0f7b944u, "No2_BG"},
+    {0x02ea4630u,  11, 0x0fabb7cu, 0x0fabf0cu, "No11_touchscreen"},
+    {0x02ea4990u,  33, 0x0feab28u, 0x0feae00u, "No26_TOUCH_SCREEN"},
+    {0x02ea5560u,  11, 0x0f5a368u, 0x0f5a678u, "No19_TOUCH_SCREEN"},
+    {0x02ea5f80u,   7, 0x0f73264u, 0x0000000u, "No7_BLOCK_TOUCH"},
+    {0x02ea6400u,  11, 0x0f9a350u, 0x0000000u, "No19_TOUCH"},
+    {0x02ea6760u,  12, 0x0f9bc3cu, 0x0000000u, "No17_TOUCH"},
+    {0x02ea6b08u,  19, 0x0f9e6bcu, 0x0000000u, "No26_TOUCH"},
+    {0x02ea70a8u,  13, 0x0f9f9acu, 0x0000000u, "No19_TOUCH"},
+    {0x02ea7648u, 176, 0x0fdbb1cu, 0x0fdbd68u, "No48_TOUCH_SCREEN"},
+    {0x02eaa810u,  18, 0x0fe61a0u, 0x0000000u, "No18_TOUCH_SCREEN"},
+    {0x02eaad68u,  48, 0x0feceecu, 0x0fed850u, "No59_TOUCH_SCREEN"},
+    {0x02eabdb8u,   7, 0x0f95458u, 0x0000000u, "No4_BG_2LINE"},
+    {0x02eac088u,   6, 0x0fb0390u, 0x0000000u, "No6_TOUCH_SCREEN"},
+    {0x02eac280u,  34, 0x0fe2c68u, 0x0fe2f40u, "No26_TOUCH_SCREEN"},
+    {0x02eacc58u,   4, 0x0f5d808u, 0x0000000u, "No1_BG"},
+    {0x02eacdc0u,  10, 0x0fcabf4u, 0x0fcb544u, "No12_TOUCH_SCREEN"},
+    {0x02ead0d8u,  26, 0x0fde564u, 0x0000000u, "No25_TOUCH_SCREEN"},
+    {0x02ead870u,  55, 0x0ff3a70u, 0x0ff3c20u, "No48_TOUCH_SCREEN"},
+    {0x02eae830u,  34, 0x0ff9058u, 0x0ff9918u, "No26_TOUCH_SCREEN"},
+    {0x02eaf208u,  17, 0x0f3dc80u, 0x0f3e5c0u, "No107_BLOCK_TOUCH"},
+    {0x02eafac0u,  10, 0x0fccd20u, 0x0fcceecu, "No10_TOUCH_SCREEN"},
+    {0x02eafdd8u,  49, 0x1003cd4u, 0x0000000u, "No49_TOUCH_SCREEN"},
+    {0x02eb0d08u,  28, 0x0ffcf7cu, 0x0ffd1c4u, "No25_TOUCH_SCREEN"},
+    {0x02eb1890u,  54, 0x0ff0104u, 0x0ff0644u, "No45_TOUCH_SCREEN"},
+    {0x02eb2808u,   9, 0x10017b8u, 0x0000000u, "No7_TOUCH_SCREEN"},
+    {0x02eb2ad8u,   8, 0x0f6c3acu, 0x0000000u, "No32_BG"},
+    {0x02eb3bb8u,   8, 0x0f56bf4u, 0x0000000u, "No18_TOUCH_SCREEN"},
+    {0x02eb4080u,   8, 0x0fae0e4u, 0x0fae3acu, "No7_TOUCH_SCREEN"},
+    {0x02eb4308u,   5, 0x0fca538u, 0x0000000u, "No5_SETTING_LIST_BACKGROUND"},
+    {0x02eb4e00u,  19, 0x0f98d1cu, 0x0000000u, "No30_TOUCH"},
+    {0x02eb53a0u,  28, 0x0fe55d8u, 0x0fe5820u, "No25_TOUCH_SCREEN"},
+    {0x02eb75f0u,  54, 0x0fd85a8u, 0x0000000u, "No32_TOUCH_SCREEN"},
+    {0x02eb8ac0u,   7, 0x0f777b4u, 0x0000000u, "No11_TOUCH_SCREEN"},
+    {0x02eb8e20u,   9, 0x0fd0318u, 0x0000000u, "No8_TOUCH_SCREEN_FOR_RELEASE"},
+    {0x02eb9c78u,   8, 0x0f773a0u, 0x0000000u, "No11_TOUCH_SCREEN"},
+    {0x02eba260u,  10, 0x0fd5038u, 0x0fd53b8u, "No11_TOUCH_SCREEN"},
+};
+#define FX6_INDIRECT_LINK_COUNT \
+    (sizeof(fx6_indirect_page_links)/sizeof(fx6_indirect_page_links[0]))
+
+/* parent function -> number of pages */
+static const fx6_presenter_span_t fx6_presenter_spans[] = {
+    {0x0f30254u, 1},
+    {0x0f304e8u, 1},
+    {0x0f335b0u, 1},
+    {0x0f3dc80u, 1},
+    {0x0f3e5c0u, 1},
+    {0x0f45528u, 1},
+    {0x0f4572cu, 1},
+    {0x0f45da4u, 1},
+    {0x0f4a560u, 1},
+    {0x0f553e8u, 1},
+    {0x0f56bf4u, 1},
+    {0x0f5a368u, 1},
+    {0x0f5a678u, 1},
+    {0x0f5b934u, 1},
+    {0x0f5d808u, 1},
+    {0x0f5ed74u, 1},
+    {0x0f618ccu, 1},
+    {0x0f64c48u, 1},
+    {0x0f66dc4u, 1},
+    {0x0f6c3acu, 1},
+    {0x0f73264u, 1},
+    {0x0f773a0u, 1},
+    {0x0f777b4u, 1},
+    {0x0f7b804u, 1},
+    {0x0f7b944u, 1},
+    {0x0f95458u, 1},
+    {0x0f98d1cu, 1},
+    {0x0f9a350u, 1},
+    {0x0f9bc3cu, 1},
+    {0x0f9e6bcu, 1},
+    {0x0f9f9acu, 1},
+    {0x0fa1f60u, 1},
+    {0x0fa3ac4u, 1},
+    {0x0fabb7cu, 1},
+    {0x0fabf0cu, 1},
+    {0x0fac28cu, 1},
+    {0x0fae0e4u, 1},
+    {0x0fae3acu, 1},
+    {0x0fb0390u, 1},
+    {0x0fc5b10u, 1},
+    {0x0fc6890u, 1},
+    {0x0fca538u, 1},
+    {0x0fcabf4u, 1},
+    {0x0fcb544u, 1},
+    {0x0fccd20u, 1},
+    {0x0fcceecu, 1},
+    {0x0fd0318u, 1},
+    {0x0fd5038u, 1},
+    {0x0fd53b8u, 1},
+    {0x0fd85a8u, 1},
+    {0x0fdbb1cu, 1},
+    {0x0fdbd68u, 1},
+    {0x0fdc608u, 1},
+    {0x0fde564u, 1},
+    {0x0fe2c68u, 1},
+    {0x0fe2f40u, 1},
+    {0x0fe55d8u, 1},
+    {0x0fe5820u, 1},
+    {0x0fe58d4u, 1},
+    {0x0fe61a0u, 1},
+    {0x0feab28u, 1},
+    {0x0feae00u, 1},
+    {0x0feceecu, 1},
+    {0x0fed850u, 1},
+    {0x0fedaf4u, 1},
+    {0x0fedba8u, 1},
+    {0x0ff0104u, 1},
+    {0x0ff0644u, 1},
+    {0x0ff088cu, 1},
+    {0x0ff0980u, 1},
+    {0x0ff1734u, 1},
+    {0x0ff1a58u, 1},
+    {0x0ff3a70u, 1},
+    {0x0ff3c20u, 1},
+    {0x0ff3e68u, 1},
+    {0x0ff4190u, 1},
+    {0x0ff4250u, 1},
+    {0x0ff4edcu, 1},
+    {0x0ff5498u, 1},
+    {0x0ff57f8u, 1},
+    {0x0ff9058u, 1},
+    {0x0ff9918u, 1},
+    {0x0ffcf7cu, 1},
+    {0x0ffd1c4u, 1},
+    {0x0ffd278u, 1},
+    {0x10017b8u, 1},
+    {0x1003cd4u, 1},
+};
+#define FX6_PRESENTER_SPAN_COUNT \
+    (sizeof(fx6_presenter_spans)/sizeof(fx6_presenter_spans[0]))
+
+/* Look up the link record for a page, or 0 if the page is not GOT-loaded. */
+static inline const fx6_indirect_page_link_t *fx6_indirect_link(uint32_t page_base)
+{
+    for (unsigned i = 0; i < FX6_INDIRECT_LINK_COUNT; i++)
+        if (fx6_indirect_page_links[i].page_base == page_base)
+            return &fx6_indirect_page_links[i];
+    return 0;
+}
+
+/* How many pages a given presenter function loads (0 when it is not a page owner). */
+static inline unsigned fx6_presenter_page_count(uint32_t presenter)
+{
+    for (unsigned i = 0; i < FX6_PRESENTER_SPAN_COUNT; i++)
+        if (fx6_presenter_spans[i].presenter == presenter)
+            return fx6_presenter_spans[i].page_count;
+    return 0;
+}
+
+#define FX6_PAGES_WITHOUT_STATIC_LINK 79u

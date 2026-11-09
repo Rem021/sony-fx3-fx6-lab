@@ -9663,3 +9663,76 @@ machine       fx6_verify_all.py: 1693 descriptor rows + 305 option ids
               -> 435 text + 116 image + 17 colour + 1 style, unresolved: 0
 build         header clean under -Wall
 ```
+
+### 691 — Eighteen more pages: 1693 -> 1884 rows
+
+```text
+page 70  0x02eaf208  17 rows  s2 f8  i0 m6   Setting centre (independent array)
+page 51  0x02ea6760  12 rows  s1 f0  i2 m8
+page 93  0x02eb4a58  12 rows  s6 f0  i3 m2
+page 40  0x02ea4630  11 rows  s0 f3  i6 m0
+page 43  0x02ea5560  11 rows  s4 f2  i1 m1
+page 77  0x02eb1530  11 rows  s6 f2  i0 m1
+page 112 0x02eb8760  11 rows  s6 f0  i2 m1
+page 36  0x02ea3e50  10 rows  s4 f0  i0 m4   Setting main (independent array)
+page 66  0x02eacdc0  10 rows  s4 f2  i1 m1
+page 72  0x02eaf7a8  10 rows  s5 f2  i0 m2
+page 73  0x02eafac0  10 rows  s4 f2  i1 m1
+page 81  0x02eb2d60  10 rows  s7 f0  i1 m2
+page 102 0x02eb6750  10 rows  s2 f0  i3 m2
+page 116 0x02eb90f0  10 rows  s4 f2  i1 m2
+page 125 0x02eba260  10 rows  s4 f2  i1 m1
+page 79  0x02eb2808   9 rows  s3 f1  i2 m1
+page 115 0x02eb8e20   9 rows  s1 f0  i0 m5
+page 19  0x02e9dc28   8 rows  s4 f1  i1 m1
+```
+
+**Coverage: 68 pages / 1884 descriptor rows of 128 pages / 2345 rows.**
+
+### 691 — The 18-page owner count from round 690 was wrong: it is 49
+
+Round 690 used a shallow scan ("`adrp` then `ldr` within two instructions"). Re-running with a proper
+register tracker — following `adrp` -> `add imm` -> `ldr/ldrsw/ldrb`, invalidating the destination on
+every write, clearing `x0..x18` across `bl`, and resetting on branches — finds **49 pages** loaded via
+their GOT slot, across **87 distinct presenter functions**.
+
+```text
+pages with a GOT load          49 / 128     (was reported as 18)
+distinct presenter functions   87
+presenters owning exactly one page   78 of 87
+pages with no GOT load         79 / 128
+```
+
+The extra 31 pages are reached through an intermediate `add imm` before the load, which the two-
+instruction window could not see. A representative sample:
+
+```text
+page 0x02e9e210 (home, 98 rows)  <- 0xf30254, 0xf304e8, 0xf335b0   THREE presenters
+page 0x02eaf208 (centre, 17)     <- 0xf3dc80, 0xf3e5c0
+page 0x02eb1890 (playback, 54)   <- 0xff0104, 0xff0644, 0xff088c, 0xff0980, 0xff1734, 0xff1a58
+page 0x02ead870 (network, 55)    <- 0xff3a70, 0xff3c20, 0xff3e68, 0xff4190, 0xff4250, 0xff4edc,
+                                    0xff5498, 0xff57f8
+page 0x02e9b798 (yuv cover, 39)  <- 0xfc5b10, 0xfc6890
+```
+
+The home page having three presenters and the network page eight is the A/B/C slot dispatch pattern
+seen earlier in the HUD tables: multiple presenter paths converge on one descriptor page.
+
+`fx6_indirect_page_links[49]` records `{page_base, row_count, presenter, presenter2, first_name}` and
+`fx6_presenter_spans[87]` records `{presenter, page_count}`. Lookups:
+`fx6_indirect_link(page_base)` and `fx6_presenter_page_count(presenter)`.
+
+**What this table does not give is call order.** Which presenter is entered first is decided at run time
+by the page stack; the table only proves which function *can* load which page.
+
+### 691 — Verification
+
+```text
+compile-time  FX6_INDIRECT_LINK_COUNT == 49
+              FX6_PRESENTER_SPAN_COUNT == 87
+              sizeof(fx6_indirect_page_link_t) == 0x18
+              plus the eighteen new page counts (17/12/12/11x4/10x7/9x2/8)
+machine       fx6_verify_all.py: 1884 rows + 305 ids
+              -> 471 text + 129 image + 18 colour + 1 style, unresolved 0
+build         header clean under -Wall
+```

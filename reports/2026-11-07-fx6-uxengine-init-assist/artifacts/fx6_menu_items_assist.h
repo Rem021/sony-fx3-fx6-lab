@@ -3364,45 +3364,160 @@ static const fx6_menu_row_t fx6_hud_main_rows[] = {
  * in its descriptor and a real, container-verified value ResID to substitute. Every value id was
  * checked to exist; a scripted audit covers all of them.
  */
+#define FX6_VS_ROW_BASE      0x220u   /* row i at base + i*stride        */
+#define FX6_VS_ROW_STRIDE    0x5cu
+#define FX6_VS_ROW_TYPE_OFF  (-4)     /* i.e. row_base - 4 + i*stride    */
+#define FX6_VS_ROW_VALUE_OFF 0x54u
+#define FX6_VS_ROW_COUNT     0x610u
+#define FX6_VS_DICT          0x1030u
+#define FX6_VS_PARAM_NAME_TABLE 0x2911868u
+
+/* Row types observed at row-4 in the draw loop. */
+#define FX6_VS_TYPE_VALUE    1u   /* numeric value -> variant u32 (the common case) */
+#define FX6_VS_TYPE_ALT2     2u
+#define FX6_VS_TYPE_ALT3     3u
+
+/* Set the u32 that `${vN}` will render. index 0 => v1, 1 => v2, ... 9 => v10.
+ * Returns 0 when index is out of range or the object is null. */
+static inline int fx6_view_string_set_vn(void *vs, unsigned index, uint32_t value, uint32_t type)
+{
+    if (!vs || index > 9u) return 0;
+    char *row = (char *)vs + FX6_VS_ROW_BASE + (unsigned long)index * FX6_VS_ROW_STRIDE;
+    *(int32_t *)(row + FX6_VS_ROW_TYPE_OFF) = (int32_t)type;
+    *(uint32_t *)(row + FX6_VS_ROW_VALUE_OFF) = value;
+    unsigned cnt = *(uint32_t *)((char *)vs + FX6_VS_ROW_COUNT);
+    if (cnt <= index) *(uint32_t *)((char *)vs + FX6_VS_ROW_COUNT) = index + 1u;
+    return 1;
+}
+
+/* Convenience wrappers for the HUD case, which only ever uses v1 and v2. */
+static inline int fx6_view_string_set_v1(void *vs, uint32_t value)
+{
+    return fx6_view_string_set_vn(vs, 0, value, FX6_VS_TYPE_VALUE);
+}
+static inline int fx6_view_string_set_v2(void *vs, uint32_t value)
+{
+    return fx6_view_string_set_vn(vs, 1, value, FX6_VS_TYPE_VALUE);
+}
+
+typedef enum {
+    FX6_HUD_BIND_DIRECT_RESID  = 0,  /* write primary_resid straight into +0x200 (whole string) */
+    FX6_HUD_BIND_NUMERIC_V1    = 1,  /* keep the template, feed v1_int as a u32             */
+    FX6_HUD_BIND_NUMERIC_V1_V2 = 2,  /* keep the template, feed v1_int and v2_int            */
+} fx6_hud_bind_mode_t;
+
 typedef struct {
-    const char *widget;      /* the row's own widget name from the descriptor */
-    uint32_t format_resid;   /* desc+0x18, the template already present */
-    uint32_t value_resid;    /* a real value this slot can display */
-    const char *value_text;  /* that value's string, for readability */
+    const char *widget;          /* the row's widget name, for matching at layout time */
+    uint8_t  mode;               /* fx6_hud_bind_mode_t                                */
+    uint32_t primary_resid;      /* DIRECT: the whole string; NUMERIC: the ${vN} template */
+    uint32_t v1_int;             /* numeric value for ${v1} (NUMERIC modes only)        */
+    uint32_t v2_int;             /* numeric value for ${v2} (V1_V2 mode only)           */
+    const char *note;            /* what the sample reading represents                  */
 } fx6_hud_slot_binding_t;
 
+/* Every row below was re-read from its descriptor and its template verified in .uxc:
+ *   '${v1}'          gain          -> 0 placeholders? no: exactly 1 (v1)
+ *   '${v1}'          shutter       -> 1
+ *   ' ${v1}'   ND value      -> 1
+ *   '${v1}'          white balance -> 1
+ *   '${v1}'          iris          -> 1
+ *   '${v1}'          S&Q frame rate-> 1
+ *   '${v1:02}'       WB tint       -> 1
+ *   '' (no v1)       gain mode     -> 0  (glyph only, no value)
+ *   '${v1:02}${v2:02}'  interval countdown -> 2 (v1 and v2)
+ *   '${v1}.${v2:01}'       zoom CIZ      -> 2
+ *   'Z${v1}'               zoom focal    -> 1
+ *   '4096×2160'       resolution    -> 0  (fixed text, DIRECT)
+ *   'Rec' / 'Stby' / 'Stop' / 'min' / '---' / 'Mbps' / 'FF' -> 0  (DIRECT)
+ */
 static const fx6_hud_slot_binding_t fx6_hud_default_bindings[] = {
-    /* ---- page 9: shooting status strip ---- */
-    {"No30_gain_value",            0x020020fcu, 0x020046c8u, "ISO 640"},
-    {"No18_shutter_value",         0x0200207cu, 0x02004729u, "1/100"},
-    {"No60_nd_filter_value_nd_transmittance", 0x02002082u, 0x02004028u, "ND: 0.9"},
-    {"No55_white_balance_value",   0x0200208eu, 0x02004ba4u, "5600K"},
-    {"No58_nd_filter_mode_nd_filter_clear", 0x02002090u, 0x02004027u, "ND: Clear"},
-    {"No1050_nd_filter_mode_nd_filter_clear", 0x02002090u, 0x02004027u, "ND: Clear"},
-    {"No16_resolution",            0x020050a1u, 0x020050a7u, "23.98P"},
-    {"No2089_clip_name_with_rec_function", 0, 0x020050c4u, "clip name"},
-    {"No2066_battery_icon",        0,          0x0200211fu, "Battery"},
-    /* ---- page 10: main viewfinder HUD ---- */
-    {"No18_shutter_value@10",      0x0200207cu, 0x0200472du, "1/200"},
-    {"No60_nd_filter_value@10",    0x02002082u, 0x02004029u, "ND: 1.8"},
-    {"No47_interval_rec_countdown",0x0200220cu, 0x020050a7u, "23.98P"},
-    {"No1040_interval_rec_countdown",0x0200220cu, 0x020050a7u, "23.98P"},
-    {"No55_white_balance_value@10",0x0200208eu, 0x02004795u, "3200K"},
-    {"No1047_white_balance_value", 0x0200208eu, 0x02004799u, "5500K"},
-    {"No11_imager_scan_mode",      0x02002106u, 0x02002106u, "FF"},
-    {"No2053_nd_filter_mode_nd_filter_auto_manual", 0x02002f07u, 0x020020cfu, "Auto"},
-    {"No2058_shutter_mode",        0x02002f07u, 0x020020cfu, "Auto"},
-    {"No4_recstate_string_slot_1st",0x02005078u, 0x02005078u, "Rec"},
-    {"No1004_recstate_string_slot_1st",0x02005078u,0x02005078u,"Rec"},
-    {"No15_sdi_hdmi_rec_control_recording_status",0x020051e7u,0x020051e7u,"Stop"},
-    /* ---- page 11: TC / clip status ---- */
-    {"No41_CLIP_NAME",             0,          0x020050c4u, "clip name"},
-    {"No40_CONTENT_NUMBER",        0,          0x02002385u, "800"},
-    {"No422_SQ_FRAME_RATE",        0,          0x020050a7u, "23.98P"},
-    {"No421_INT_REC_STATUS",       0,          0x020050a7u, "23.98P"},
+    /* ---- page 9 ---- */
+    {"No30_gain_value",      FX6_HUD_BIND_NUMERIC_V1,    0x020020fcu,  800, 0, "ISO 800"},
+    {"No17_shutter_mode",    FX6_HUD_BIND_DIRECT_RESID,  0x02002009u,    0, 0, "shutter mode glyph"},
+    {"No1014_shutter_mode",  FX6_HUD_BIND_DIRECT_RESID,  0x02002009u,    0, 0, "shutter mode glyph"},
+    {"No58_nd_filter_mode_nd_filter_clear",  FX6_HUD_BIND_DIRECT_RESID, 0x02002090u, 0, 0, "ND CLEAR"},
+    {"No1050_nd_filter_mode_nd_filter_clear",FX6_HUD_BIND_DIRECT_RESID, 0x02002090u, 0, 0, "ND CLEAR"},
+    {"No16_resolution",      FX6_HUD_BIND_DIRECT_RESID,  0x020050a1u,    0, 0, "4096x2160"},
+    {"No13_base_iso",        FX6_HUD_BIND_DIRECT_RESID,  0x02002063u,    0, 0, "base ISO glyph"},
+    {"No2089_clip_name_with_rec_function", FX6_HUD_BIND_DIRECT_RESID, 0x020050c4u, 0, 0, "clip name"},
+    {"No2066_battery_icon",  FX6_HUD_BIND_DIRECT_RESID,  0x0200211fu,    0, 0, "Battery"},
+    /* ---- page 10 ---- */
+    {"No18_shutter_value",   FX6_HUD_BIND_NUMERIC_V1,    0x0200207cu,  180, 0, "180 deg shutter"},
+    {"No1015_shutter_value", FX6_HUD_BIND_NUMERIC_V1,    0x0200207cu,  180, 0, "180 deg shutter"},
+    {"No60_nd_filter_value_nd_transmittance",  FX6_HUD_BIND_NUMERIC_V1, 0x02002082u, 3, 0, "ND 1/3"},
+    {"No1052_nd_filter_value_nd_transmittance",FX6_HUD_BIND_NUMERIC_V1, 0x02002082u, 3, 0, "ND 1/3"},
+    {"No55_white_balance_value", FX6_HUD_BIND_NUMERIC_V1, 0x0200208eu, 5600, 0, "5600K"},
+    {"No1047_white_balance_value",FX6_HUD_BIND_NUMERIC_V1,0x0200208eu, 3200, 0, "3200K"},
+    {"No2063_white_balance_value",FX6_HUD_BIND_NUMERIC_V1,0x0200208eu, 5600, 0, "5600K"},
+    {"No53_iris_value",      FX6_HUD_BIND_NUMERIC_V1,    0x02002093u,    28, 0, "T2.8"},
+    {"No1045_iris_value",    FX6_HUD_BIND_NUMERIC_V1,    0x02002093u,    28, 0, "T2.8"},
+    {"No2052_iris_value",    FX6_HUD_BIND_NUMERIC_V1,    0x02002093u,    28, 0, "T2.8"},
+    {"No2048_sandq_frame_rate", FX6_HUD_BIND_NUMERIC_V1, 0x020020a6u,    24, 0, "24P"},
+    {"No21_sandq_frame_rate",   FX6_HUD_BIND_NUMERIC_V1, 0x020020a6u,    24, 0, "24P"},
+    {"No2061_gain_value",    FX6_HUD_BIND_NUMERIC_V1,    0x020020fcu,   800, 0, "ISO 800"},
+    {"No2059_shutter_value", FX6_HUD_BIND_NUMERIC_V1,    0x0200207cu,   180, 0, "180 deg"},
+    {"No2055_nd_filter_value_nd_transmittance", FX6_HUD_BIND_NUMERIC_V1, 0x02002082u, 3, 0, "ND 1/3"},
+    {"No2065_white_balance_tint",FX6_HUD_BIND_NUMERIC_V1,0x0200281cu,     0, 0, "tint 0"},
+    {"No1048_white_balance_tint",FX6_HUD_BIND_NUMERIC_V1,0x0200281cu,     0, 0, "tint 0"},
+    {"No47_interval_rec_countdown", FX6_HUD_BIND_NUMERIC_V1_V2, 0x0200220cu, 59, 0, "59s interval"},
+    {"No1040_interval_rec_countdown",FX6_HUD_BIND_NUMERIC_V1_V2,0x0200220cu, 5, 0, "5s interval"},
+    {"No1109_zoom_ciz_value",FX6_HUD_BIND_NUMERIC_V1_V2, 0x02002a41u,     2, 0, "x2.0"},
+    {"No1106_zoom_focal_length",FX6_HUD_BIND_NUMERIC_V1, 0x020021beu,    35, 0, "Z35"},
+    {"No2047_camera_id",     FX6_HUD_BIND_DIRECT_RESID,  0x02004c70u,    0, 0, "'A'"},
+    {"No11_imager_scan_mode",FX6_HUD_BIND_DIRECT_RESID,  0x02002106u,    0, 0, "FF"},
+    {"No4_recstate_string_slot_1st", FX6_HUD_BIND_DIRECT_RESID, 0x02005078u, 0, 0, "Rec"},
+    {"No1004_recstate_string_slot_1st",FX6_HUD_BIND_DIRECT_RESID,0x02005078u,0, 0, "Rec"},
+    {"No2_stbystate_slot_1st",FX6_HUD_BIND_DIRECT_RESID, 0x02005079u,    0, 0, "Stby"},
+    {"No6_stbystate_slot_2nd",FX6_HUD_BIND_DIRECT_RESID, 0x02005079u,    0, 0, "Stby"},
+    {"No15_sdi_hdmi_rec_control_recording_status", FX6_HUD_BIND_DIRECT_RESID, 0x020051e7u, 0, 0, "Stop"},
+    {"No2074_media_remain_time_slotb", FX6_HUD_BIND_DIRECT_RESID, 0x020050f6u, 0, 0, "---"},
+    {"No2072_media_remain_time_slota", FX6_HUD_BIND_DIRECT_RESID, 0x020050f6u, 0, 0, "---"},
+    {"No2075_media_remain_time_unit_slotb",FX6_HUD_BIND_DIRECT_RESID,0x0200528du,0,0,"min"},
+    {"No2073_media_remain_time_unit_slota",FX6_HUD_BIND_DIRECT_RESID,0x0200528du,0,0,"min"},
+    {"No120_network_speed_wireless_lan_unit",FX6_HUD_BIND_DIRECT_RESID,0x02002b74u,0,0,"Mbps"},
+    {"No117_network_speed_wired_lan_unit",  FX6_HUD_BIND_DIRECT_RESID,0x02002b74u,0,0,"Mbps"},
+    {"No114_network_speed_usb_tethering_unit",FX6_HUD_BIND_DIRECT_RESID,0x02002b74u,0,0,"Mbps"},
+    {"No1095_sandq_frame_rate_fixed",FX6_HUD_BIND_DIRECT_RESID,0x02002847u,0,0,"Fixed"},
+    {"No1049_white_balance_hold",FX6_HUD_BIND_DIRECT_RESID, 0x02005281u, 0, 0, "Hold"},
+    {"No54_white_balance_mode",FX6_HUD_BIND_DIRECT_RESID, 0x02002008u,  0, 0, "WB mode glyph"},
+    {"No29_gain_mode",       FX6_HUD_BIND_DIRECT_RESID,  0x02002009u,    0, 0, "gain mode glyph"},
+    {"No52_iris_mode",       FX6_HUD_BIND_DIRECT_RESID,  0x02002009u,    0, 0, "iris mode glyph"},
+    /* ---- page 11 ---- */
+    {"No41_CLIP_NAME",       FX6_HUD_BIND_DIRECT_RESID,  0x020050c4u,    0, 0, "clip name"},
+    {"No40_CONTENT_NUMBER",  FX6_HUD_BIND_DIRECT_RESID,  0x02002385u,    0, 0, "'800'"},
+    {"No14_CODEC_NAME",      FX6_HUD_BIND_DIRECT_RESID,  0x02002f1eu,    0, 0, "XAVC Intra"},
+    {"No122_PLAYBACK_STATUS_STRING", FX6_HUD_BIND_DIRECT_RESID, 0x020050d1u, 0, 0, "Play"},
+    {"No15_RESOLUTION",      FX6_HUD_BIND_DIRECT_RESID,  0x02002999u,    0, 0, "3840P"},
+    {"No8_FRAME_RATE_UNIT",  FX6_HUD_BIND_DIRECT_RESID,  0x0200532du,    0, 0, "fps"},
+    {"No422_SQ_FRAME_RATE",  FX6_HUD_BIND_DIRECT_RESID,  0x020050a7u,    0, 0, "23.98P"},
+    {"No421_INT_REC_STATUS", FX6_HUD_BIND_DIRECT_RESID,  0x020050a7u,    0, 0, "23.98P"},
 };
 #define FX6_HUD_BINDING_COUNT \
     (sizeof(fx6_hud_default_bindings)/sizeof(fx6_hud_default_bindings[0]))
+
+/* ONE call binds everything correctly. Never mix the modes by hand. */
+static inline int fx6_apply_hud_binding(void *vs, const fx6_hud_slot_binding_t *b)
+{
+    if (!vs || !b) return 0;
+    switch (b->mode) {
+    case FX6_HUD_BIND_DIRECT_RESID:
+        *(uint32_t *)((char *)vs + 0x200) = b->primary_resid;
+        break;
+    case FX6_HUD_BIND_NUMERIC_V1:
+        if (b->primary_resid) *(uint32_t *)((char *)vs + 0x200) = b->primary_resid;
+        fx6_view_string_set_v1(vs, b->v1_int);
+        break;
+    case FX6_HUD_BIND_NUMERIC_V1_V2:
+        if (b->primary_resid) *(uint32_t *)((char *)vs + 0x200) = b->primary_resid;
+        fx6_view_string_set_v1(vs, b->v1_int);
+        fx6_view_string_set_v2(vs, b->v2_int);
+        break;
+    default:
+        return 0;
+    }
+    *(uint8_t *)((char *)vs + 0x1fc) = 1;
+    return 1;
+}
 
 /* Value families a probe can cycle through instead of the single sample above. All verified. */
 static const fx6_opt_t fx6_hud_values_fps[] = {
@@ -3632,41 +3747,7 @@ static const fx6_menu_row_t fx6_thumbnail_props_page_rows[] = {
  *   4. Formatting hints such as `${v2:02}` are handled by the same path; only the integer value and
  *      the row type matter.
  */
-#define FX6_VS_ROW_BASE      0x220u   /* row i at base + i*stride        */
-#define FX6_VS_ROW_STRIDE    0x5cu
-#define FX6_VS_ROW_TYPE_OFF  (-4)     /* i.e. row_base - 4 + i*stride    */
-#define FX6_VS_ROW_VALUE_OFF 0x54u
-#define FX6_VS_ROW_COUNT     0x610u
-#define FX6_VS_DICT          0x1030u
-#define FX6_VS_PARAM_NAME_TABLE 0x2911868u
 
-/* Row types observed at row-4 in the draw loop. */
-#define FX6_VS_TYPE_VALUE    1u   /* numeric value -> variant u32 (the common case) */
-#define FX6_VS_TYPE_ALT2     2u
-#define FX6_VS_TYPE_ALT3     3u
-
-/* Set the u32 that `${vN}` will render. index 0 => v1, 1 => v2, ... 9 => v10.
- * Returns 0 when index is out of range or the object is null. */
-static inline int fx6_view_string_set_vn(void *vs, unsigned index, uint32_t value, uint32_t type)
-{
-    if (!vs || index > 9u) return 0;
-    char *row = (char *)vs + FX6_VS_ROW_BASE + (unsigned long)index * FX6_VS_ROW_STRIDE;
-    *(int32_t *)(row + FX6_VS_ROW_TYPE_OFF) = (int32_t)type;
-    *(uint32_t *)(row + FX6_VS_ROW_VALUE_OFF) = value;
-    unsigned cnt = *(uint32_t *)((char *)vs + FX6_VS_ROW_COUNT);
-    if (cnt <= index) *(uint32_t *)((char *)vs + FX6_VS_ROW_COUNT) = index + 1u;
-    return 1;
-}
-
-/* Convenience wrappers for the HUD case, which only ever uses v1 and v2. */
-static inline int fx6_view_string_set_v1(void *vs, uint32_t value)
-{
-    return fx6_view_string_set_vn(vs, 0, value, FX6_VS_TYPE_VALUE);
-}
-static inline int fx6_view_string_set_v2(void *vs, uint32_t value)
-{
-    return fx6_view_string_set_vn(vs, 1, value, FX6_VS_TYPE_VALUE);
-}
 /* Paint/direct-menu page (largest fill page) -- page base 0x02ea7648, 176 rows */
 static const fx6_menu_row_t fx6_paint_direct_page_rows[] = {
     {"No48_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
@@ -4067,4 +4148,130 @@ static const fx6_menu_row_t fx6_playback_control_rows[] = {
     {"No54_HIGHLIGHT_SDI", 0x042d57d0u, {56,132,906,76}, 0x00000000u, 0},
 };
 #define FX6_PLAYBACK_CONTROL_ROWS_COUNT (sizeof(fx6_playback_control_rows)/sizeof(fx6_playback_control_rows[0]))
+
+/* Two-column item grid page (18 menu items) -- page base 0x02eac280, 34 rows */
+static const fx6_menu_row_t fx6_menu_grid_page_rows[] = {
+    {"No26_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No34_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No9_BUTTON_06", 0x042d58d0u, {364,97,298,82}, 0x00000000u, 0},
+    {"No8_BUTTON_05", 0x042d58d0u, {60,441,298,82}, 0x00000000u, 0},
+    {"No7_BUTTON_04", 0x042d58d0u, {60,355,298,82}, 0x00000000u, 0},
+    {"No6_BUTTON_03", 0x042d58d0u, {60,269,298,82}, 0x00000000u, 0},
+    {"No5_BUTTON_02", 0x042d58d0u, {60,183,298,82}, 0x00000000u, 0},
+    {"No4_BUTTON_01", 0x042d58d0u, {60,97,298,82}, 0x00000000u, 0},
+    {"No18_BUTTON_15", 0x042d58d0u, {668,441,298,82}, 0x00000000u, 0},
+    {"No17_BUTTON_14", 0x042d58d0u, {668,355,298,82}, 0x00000000u, 0},
+    {"No16_BUTTON_13", 0x042d58d0u, {668,269,298,82}, 0x00000000u, 0},
+    {"No15_BUTTON_12", 0x042d58d0u, {668,183,298,82}, 0x00000000u, 0},
+    {"No14_BUTTON_11", 0x042d58d0u, {668,97,298,82}, 0x00000000u, 0},
+    {"No13_BUTTON_10", 0x042d58d0u, {364,441,298,82}, 0x00000000u, 0},
+    {"No12_BUTTON_09", 0x042d58d0u, {364,355,298,82}, 0x00000000u, 0},
+    {"No11_BUTTON_08", 0x042d58d0u, {364,269,298,82}, 0x00000000u, 0},
+    {"No10_BUTTON_07", 0x042d58d0u, {364,183,298,82}, 0x00000000u, 0},
+    {"No3_TITLE", 0x042d57f0u, {106,54,405,36}, 0x0200211au, 0},
+    {"No27_PAGE_BUTTON", 0x042d58d0u, {802,52,164,40}, 0x00000000u, 0},
+    {"No31_INDEX_BUTTON", 0x042d58d0u, {668,52,132,40}, 0x00000000u, 0},
+    {"No2_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No33_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No30_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+    {"No29_TITLE_ICON", 0x042d57f0u, {60,51,45,42}, 0x020026c1u, 0},
+    {"No23_SEPARATOR", 0x042d5a40u, {59,438,906,2}, 0x0200c00bu, 0},
+    {"No22_SEPARATOR", 0x042d5a40u, {59,352,906,2}, 0x0200c00bu, 0},
+    {"No21_SEPARATOR", 0x042d5a40u, {59,266,906,2}, 0x0200c00bu, 0},
+    {"No20_SEPARATOR", 0x042d5a40u, {59,180,906,2}, 0x0200c00bu, 0},
+    {"No19_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No32_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No28_PAGE_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No25_SEPARATOR", 0x042d5a40u, {664,94,2,430}, 0x0200c00bu, 0},
+    {"No24_SEPARATOR", 0x042d5a40u, {360,94,2,430}, 0x0200c00bu, 0},
+};
+#define FX6_MENU_GRID_PAGE_ROWS_COUNT (sizeof(fx6_menu_grid_page_rows)/sizeof(fx6_menu_grid_page_rows[0]))
+
+/* Two-column item grid page variant -- page base 0x02ea4990, 33 rows */
+static const fx6_menu_row_t fx6_menu_grid_page2_rows[] = {
+    {"No26_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No33_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No9_BUTTON_06", 0x042d58d0u, {364,97,298,82}, 0x00000000u, 0},
+    {"No8_BUTTON_05", 0x042d58d0u, {60,441,298,82}, 0x00000000u, 0},
+    {"No7_BUTTON_04", 0x042d58d0u, {60,355,298,82}, 0x00000000u, 0},
+    {"No6_BUTTON_03", 0x042d58d0u, {60,269,298,82}, 0x00000000u, 0},
+    {"No5_BUTTON_02", 0x042d58d0u, {60,183,298,82}, 0x00000000u, 0},
+    {"No4_BUTTON_01", 0x042d58d0u, {60,97,298,82}, 0x00000000u, 0},
+    {"No18_BUTTON_15", 0x042d58d0u, {668,441,298,82}, 0x00000000u, 0},
+    {"No17_BUTTON_14", 0x042d58d0u, {668,355,298,82}, 0x00000000u, 0},
+    {"No16_BUTTON_13", 0x042d58d0u, {668,269,298,82}, 0x00000000u, 0},
+    {"No15_BUTTON_12", 0x042d58d0u, {668,183,298,82}, 0x00000000u, 0},
+    {"No14_BUTTON_11", 0x042d58d0u, {668,97,298,82}, 0x00000000u, 0},
+    {"No13_BUTTON_10", 0x042d58d0u, {364,441,298,82}, 0x00000000u, 0},
+    {"No12_BUTTON_09", 0x042d58d0u, {364,355,298,82}, 0x00000000u, 0},
+    {"No11_BUTTON_08", 0x042d58d0u, {364,269,298,82}, 0x00000000u, 0},
+    {"No10_BUTTON_07", 0x042d58d0u, {364,183,298,82}, 0x00000000u, 0},
+    {"No3_TITLE", 0x042d57f0u, {62,54,405,36}, 0x020024ceu, 0},
+    {"No27_PAGE_BUTTON", 0x042d58d0u, {802,52,164,40}, 0x00000000u, 0},
+    {"No30_INDEX_BUTTON", 0x042d58d0u, {668,52,132,40}, 0x00000000u, 0},
+    {"No2_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No32_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No29_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+    {"No23_SEPARATOR", 0x042d5a40u, {59,438,906,2}, 0x0200c00bu, 0},
+    {"No22_SEPARATOR", 0x042d5a40u, {59,352,906,2}, 0x0200c00bu, 0},
+    {"No21_SEPARATOR", 0x042d5a40u, {59,266,906,2}, 0x0200c00bu, 0},
+    {"No20_SEPARATOR", 0x042d5a40u, {59,180,906,2}, 0x0200c00bu, 0},
+    {"No19_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No31_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No28_PAGE_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No25_SEPARATOR", 0x042d5a40u, {664,94,2,430}, 0x0200c00bu, 0},
+    {"No24_SEPARATOR", 0x042d5a40u, {360,94,2,430}, 0x0200c00bu, 0},
+};
+#define FX6_MENU_GRID_PAGE2_ROWS_COUNT (sizeof(fx6_menu_grid_page2_rows)/sizeof(fx6_menu_grid_page2_rows[0]))
+
+/* Settings sub page (12 menu items) -- page base 0x02eb0d08, 28 rows */
+static const fx6_menu_row_t fx6_settings_sub_page_rows[] = {
+    {"No25_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No6_BUTTON_03", 0x042d58d0u, {60,269,904,82}, 0x00000000u, 0},
+    {"No9_BUTTON_06", 0x042d58d0u, {515,97,449,82}, 0x00000000u, 0},
+    {"No8_BUTTON_05", 0x042d58d0u, {60,441,449,82}, 0x00000000u, 0},
+    {"No7_BUTTON_04", 0x042d58d0u, {60,355,449,82}, 0x00000000u, 0},
+    {"No5_BUTTON_02", 0x042d58d0u, {60,183,449,82}, 0x00000000u, 0},
+    {"No4_BUTTON_01", 0x042d58d0u, {60,97,449,82}, 0x00000000u, 0},
+    {"No13_BUTTON_09", 0x042d58d0u, {515,441,449,82}, 0x00000000u, 0},
+    {"No12_BUTTON_08", 0x042d58d0u, {515,355,449,82}, 0x00000000u, 0},
+    {"No10_BUTTON_07", 0x042d58d0u, {515,183,449,82}, 0x00000000u, 0},
+    {"No33_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No3_TITLE", 0x042d57f0u, {106,54,405,36}, 0x02002bd4u, 0},
+    {"No27_PAGE_BUTTON", 0x042d58d0u, {802,52,164,40}, 0x00000000u, 0},
+    {"No30_INDEX_BUTTON", 0x042d58d0u, {668,52,132,40}, 0x00000000u, 0},
+    {"No2_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No32_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No29_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+    {"No28_TITLE_ICON", 0x042d57f0u, {60,51,45,42}, 0x02002c4du, 0},
+    {"No22_SEPARATOR", 0x042d5a40u, {59,438,906,2}, 0x0200c00bu, 0},
+    {"No21_SEPARATOR", 0x042d5a40u, {59,352,906,2}, 0x0200c00bu, 0},
+    {"No20_SEPARATOR", 0x042d5a40u, {59,266,906,2}, 0x0200c00bu, 0},
+    {"No18_SEPARATOR", 0x042d5a40u, {59,180,906,2}, 0x0200c00bu, 0},
+    {"No17_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No31_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No24_PAGE_SCROLL_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No26_SEPARATOR", 0x042d5a40u, {511,352,2,172}, 0x0200c00bu, 0},
+    {"No23_SEPARATOR", 0x042d5a40u, {511,94,2,172}, 0x0200c00bu, 0},
+};
+#define FX6_SETTINGS_SUB_PAGE_ROWS_COUNT (sizeof(fx6_settings_sub_page_rows)/sizeof(fx6_settings_sub_page_rows[0]))
+
+/* Toast / confirm page -- page base 0x02e9deb0, 11 rows */
+static const fx6_menu_row_t fx6_toast_confirm_page_rows[] = {
+    {"No17_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No2_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No16_LIST", 0x042d59e0u, {64,200,902,314}, 0x00000000u, 0},
+    {"No15_BACK", 0x042d5850u, {64,100,892,58}, 0x00000000u, 0},
+    {"No4_TITLE", 0x042d57f0u, {62,53,420,38}, 0x02004383u, 0},
+    {"No12_CLIPNAME", 0x042d57f0u, {140,171,292,30}, 0x02004391u, 0},
+    {"No14_STATUS", 0x042d57f0u, {698,171,250,30}, 0x02004393u, 0},
+    {"No13_DESTINATION", 0x042d57f0u, {452,171,250,30}, 0x02004392u, 0},
+    {"No3_TOTALNUM", 0x042d57f0u, {822,54,140,36}, 0x02004c3bu, 0},
+    {"No11_SRCMEDIA", 0x042d57f0u, {72,171,60,30}, 0x02004390u, 0},
+    {"No10_LINE_P", 0x042d5a50u, {64,162,892,2}, 0x020001fau, 0},
+};
+#define FX6_TOAST_CONFIRM_PAGE_ROWS_COUNT (sizeof(fx6_toast_confirm_page_rows)/sizeof(fx6_toast_confirm_page_rows[0]))
 

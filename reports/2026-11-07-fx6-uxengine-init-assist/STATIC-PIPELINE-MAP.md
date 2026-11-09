@@ -9357,3 +9357,114 @@ build         header 4070 lines, clean under -Wall
 The colour-heavy split (172 of 381, 45%) is characteristic of the paint pages: they are largely made
 of `view_fill` panels whose only data is a namespace-6 colour, which is why they are cheap to render
 but need the colour lookup to be exact.
+
+### 688 — Placeholder census: most HUD rows have NO placeholder at all
+
+Every template-bearing row on pages 9/10/11 was re-read and its `.uxc` text checked for `${vN}`
+occurrences. The result overturns the assumption behind the old binding table:
+
+```text
+page 9   view_string rows:  2 with d18 != 0, BOTH have 0 placeholders
+           No16_resolution  d18=0x020050a1  '4096x2160'   ph=0
+           No13_base_iso    d18=0x02002063  '\ue604'       ph=0
+page 10  view_string rows with d18 != 0: 62 rows, only THREE have placeholders
+           No47/No1040_interval_rec_countdown 0x0200220c '${v1:02}\ue5d5${v2:02}\ue5d8'  ph=2
+           No1109_zoom_ciz_value              0x02002a41 'x${v1}.${v2:01}'             ph=2
+           No1106_zoom_focal_length           0x020021be 'Z${v1}'                      ph=1
+         the other 59 are DIRECT literals: 'Rec','Stby','Stop','FF','min','---','Mbps',
+           '4096x2160','XAVC Intra','3840P','HOLD','∞','<New>','A','Fixed','.','/','c', glyphs...
+page 11  view_string rows with d18 != 0: 6 rows, ALL 0 placeholders
+           No14_CODEC_NAME 'XAVC Intra', No122_PLAYBACK_STATUS_STRING 'Play',
+           No15_RESOLUTION '3840P', No121_PLAYBACK_STATUS_ICON glyph,
+           No8_FRAME_RATE_UNIT 'fps', No201_MEDIA_SLOT glyph
+```
+
+The placeholder-bearing rows are actually the **`view_asa` (tag 0x042d59a0) value readouts**, and there
+are 19 of them:
+
+```text
+No30/No2061_gain_value                     0x020020fc  '\ue5df${v1}'         ph=[1]
+No18/No1015/No2059_shutter_value           0x0200207c  '\ue5db${v1}'         ph=[1]
+No60/No1052/No2055_nd_filter_value         0x02002082  '\ue5dc \ue5db${v1}'  ph=[1]
+No55/No1047/No2063_white_balance_value     0x0200208e  '${v1}\ue5d3'         ph=[1]
+No53/No1045/No2052_iris_value              0x02002093  '\ue5d4${v1}'         ph=[1]
+No2048/No21_sandq_frame_rate               0x020020a6  '${v1}\ue5da'         ph=[1]
+No2065/No1048_white_balance_tint           0x0200281c  '\ue0c7${v1:02}'      ph=[1]
+No47/No1040_interval_rec_countdown         0x0200220c  '...${v2:02}...'      ph=[1,2]
+```
+
+and 20 more `view_asa` rows carry a **glyph only, with no placeholder** (`'\ue5e4'` shutter mode,
+`'\ue5dc CLEAR'` ND mode, `'\ue6bd'` auto/manual, `'+2.0'` AE level, `'\ue5e2'` scene file icon...).
+
+### 688 — `fx6_hud_slot_binding_t` restructured with an explicit bind mode
+
+The old struct conflated "a ResID to show" with "a u32 to substitute", which is exactly what produced
+the `33572552` failure mode. It is now:
+
+```c
+typedef enum {
+    FX6_HUD_BIND_DIRECT_RESID  = 0,  /* write primary_resid to +0x200 as the whole string */
+    FX6_HUD_BIND_NUMERIC_V1    = 1,  /* keep the template, feed v1_int                       */
+    FX6_HUD_BIND_NUMERIC_V1_V2 = 2,  /* keep the template, feed v1_int and v2_int           */
+} fx6_hud_bind_mode_t;
+
+typedef struct {
+    const char *widget;
+    uint8_t  mode;
+    uint32_t primary_resid;
+    uint32_t v1_int;
+    uint32_t v2_int;
+    const char *note;
+} fx6_hud_slot_binding_t;
+```
+
+`fx6_hud_default_bindings[]` now has **57 entries** split `35 DIRECT_RESID / 19 NUMERIC_V1 /
+3 NUMERIC_V1_V2`, with real camera integers instead of ResIDs in the numeric slots
+(ISO 800, 180 deg shutter, 5600 K, T2.8, ND 1/3, WB tint 0, S&Q 24P, interval 59 s / 5 s, CIZ x2.0,
+focal Z35).
+
+The one-call helper removes the failure mode entirely:
+
+```c
+static inline int fx6_apply_hud_binding(void *vs, const fx6_hud_slot_binding_t *b);
+```
+
+It dispatches on `mode`, writes `+0x200` only when a template/direct id is present, feeds the integers
+through `fx6_view_string_set_v1/v2` (which also maintain `obj+0x610`), and finally sets `+0x1fc = 1`.
+The dynamic line needs no other knowledge of the mechanism.
+
+**A machine cross-check ties the mode to the actual template**, so the table cannot drift:
+
+```text
+for each entry: read the template text from .uxc, count distinct ${vN}, and require
+  DIRECT_RESID   -> 0 placeholders
+  NUMERIC_V1     -> exactly {1} (or 0 when the row is glyph-only and primary_resid is 0)
+  NUMERIC_V1_V2  -> exactly {1,2}
+result: 57 entries parsed, 0 problems
+```
+
+### 688 — Four more pages materialised
+
+```text
+page 64  0x02eac280   34 rows  s6 f8  i1 m18   two-column item grid (18 menu items)
+page 41  0x02ea4990   33 rows  s5 f8  i1 m18   two-column item grid variant
+page 76  0x02eb0d08   28 rows  s6 f8  i1 m12   settings sub page (12 menu items)
+page 20  0x02e9deb0   11 rows  s6 f0  i2 m0    toast / confirm page
+```
+
+Pages 64 and 41 are the same 34-row template with different payloads (18 `view_menu_item` rows each,
+8 fills) — that is the generic two-column item picker, which is the most reusable layout left
+unexported. Page 76 is its 28-row variant and page 20 is the small toast with two icons.
+
+### 688 — Verification
+
+```text
+compile-time  FX6_HUD_BINDING_COUNT == 57
+              FX6_MENU_GRID_PAGE_ROWS_COUNT  == 34
+              FX6_MENU_GRID_PAGE2_ROWS_COUNT == 33
+              FX6_SETTINGS_SUB_PAGE_ROWS_COUNT == 28
+              FX6_TOAST_CONFIRM_PAGE_ROWS_COUNT == 11
+machine       57 bindings, 0 mode/placeholder mismatches, 0 unresolved ResIDs
+              106 new page rows: 24 colour + 20 string + 5 image, 0 unresolved
+build         header 4151 lines, clean under -Wall
+```

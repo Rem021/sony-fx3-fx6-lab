@@ -9978,3 +9978,65 @@ machine       fx6_verify_all.py: 2249 row literals + 305 ids -> 0 unresolved
               extra rows: 2224 ; extra-field problems: 0
 build         header 8645 lines
 ```
+
+### 695 — The container does not instantiate widgets: it stores row pointers
+
+`0xc870cc` was chained in the expectation that it walks rows, looks up the class tag, creates a widget
+per row and copies `+0x18..+0x42` into it. Its full body says otherwise:
+
+```text
+0xc870ec  str  wzr,[x19,#0x648]        ; count = 0
+0xc870f4  ldr  x0,[GOT 0x2eeece18]     ; static vtable
+0xc87100  add  x0,x0,#0x10 ; str [x19] ; vptr = vtable + 0x10
+0xc87114  bl   memset(x19+8, 0, 0x640) ; clear the pointer array
+0xc87118  cmp  x23,x22 ; beq done      ; x22 = count argument
+0xc87120  ldr  x0,[x20]                ; row[0] = class tag
+0xc87124  ldp  x1,x2,[x0]              ; the tag object's two dwords
+0xc8712c  bl   0xc87054                ; filter: does this tag pass?
+0xc87138  ubfiz x0,x21,#4,#0x20        ; i << 4
+0xc87140  add  x0,x19,x0
+0xc87148  str  x1,[x0,#8]              ; STORE THE DESCRIPTOR POINTER
+0xc8714c  ldrh w1,[x20,#0x3a]          ; one u16 from the row
+0xc87150  str  w1,[x0,#0x10]           ; store it beside the pointer
+0xc87154  add  x23,x23,#1 ; 0xc87158 add x20,x20,#0x48   ; next row
+0xc87164  str  w21,[x19,#0x648]        ; count = accepted rows
+0xc87168  str  xzr,[x19,#0x650]        ; cursor = 0
+```
+
+So the container is a **pointer list**, not a widget factory:
+
+```text
+capacity  0x640 / 0x10 = 100 slots
+slot      { const void *desc  @ +8
+            uint32  u16 from desc+0x3a  @ +0x10 }
+reads per row   ONLY +0x00 (tag) and +0x3a (one u16)
+```
+
+It never touches `+0x18`, the rect, the fonts, the layout or the flags. Those are read later, straight
+out of the descriptor, by whoever consumes the list — using exactly the widget-side mapping recovered in
+rounds 687/693.
+
+**This closes the dataflow, and it invalidates the premise of the previous two rounds:**
+
+```text
+presenter   computes camera values and WRITES them INTO the descriptor table (round 694)
+container   stores POINTERS to those rows, filtered by tag            (this round)
+widget side onDraw reads the fields out of the descriptor              (rounds 687/693)
+```
+
+There is no third party anywhere in the image that copies row fields into widget objects. That is why
+`fx6_setup_from_page_row()` has to perform that copy itself, and why the offsets it uses are the
+**widget-side** ones rather than anything a loader would have told us.
+
+The container filter at `0xc87054` is five GOT-held vtable comparisons, confirming the earlier count: only
+five row classes (`0x042d58d0`, `0x042d5850`, `0x042d58f0`, `0x042d59a0`, `0x042d5a20`) are accepted;
+every other row in the page is silently dropped, so the stored count can legitimately be smaller than the
+number of rows passed in.
+
+### 695 — Verification
+
+```text
+compile-time  header builds with -Wall; fx6_setup_from_page_row inlines
+              _Static_assert(0x640/0x10 == 100)
+machine       fx6_verify_all.py: 0 unresolved, 0 extra-field problems
+```

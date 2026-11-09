@@ -8546,6 +8546,40 @@ static inline int fx6_apply_row_extra_to_view_string(void *vs, const fx6_row_ext
  * Practical consequence: replaying a row means emulating what a presenter would have written, not
  * looking up a setter per field. The function below therefore applies the row's own payload plus the
  * extras recorded in fx6_row_extras[], using the field->offset mapping verified in rounds 687/693.
+ *
+ * ----------------------------------------------------------------------
+ * PHASE 27 correction — the container does NOT instantiate widgets either
+ * ----------------------------------------------------------------------
+ * 0xc870cc was chained in the hope that it walks the rows and builds one widget per row. It does not.
+ * Its full body is:
+ *
+ *   0xc870ec  str  wzr,[x19,#0x648]        ; count = 0
+ *   0xc870f4  ldr  x0,[GOT 0x2eeece18]     ; static vtable
+ *   0xc87100  add  x0,x0,#0x10 ; str [x19] ; vptr = vtable+0x10
+ *   0xc87114  bl   memset(x19+8, 0, 0x640) ; clear the row array
+ *   0xc87118  cmp  x23,x22 ; beq done      ; x22 = count argument
+ *   0xc87120  ldr  x0,[x20]                ; row[0] = class tag
+ *   0xc87124  ldp  x1,x2,[x0]              ; tag object's two dwords
+ *   0xc8712c  bl   0xc87054                ; filter: does this tag pass?
+ *   0xc87138  ubfiz x0,x21,#4,#0x20        ; x0 = i << 4
+ *   0xc87140  add  x0,x19,x0
+ *   0xc87148  str  x1,[x0,#8]              ; STORE THE DESC POINTER
+ *   0xc8714c  ldrh w1,[x20,#0x3a]          ; one u16 read from the row
+ *   0xc87150  str  w1,[x0,#0x10]           ; store it beside the pointer
+ *   0xc87154  add  x23,x23,#1 ; 0xc87158 add x20,x20,#0x48   ; next row
+ *   0xc87164  str  w21,[x19,#0x648]        ; count = accepted rows
+ *   0xc87168  str  xzr,[x19,#0x650]        ; cursor = 0
+ *
+ * So the container is a **pointer list**: 0x640/0x10 = 100 slots, each `{ const void *desc @+8,
+ * uint32 u16_from_desc_0x3a @+0x10 }`. It stores no widget and reads only `+0x00` (the tag) and
+ * `+0x3a` (one u16) from each row. Everything else — rect, id, fonts, layout, flags — is read later by
+ * whoever consumes the list, straight out of the descriptor, using exactly the mapping recovered in
+ * rounds 687/693.
+ *
+ * This closes the chain: the presenter writes values INTO the table, the container stores row
+ * POINTERS, and the widget-side onDraw reads the fields. There is no third party that copies fields
+ * into widgets, which is why fx6_setup_from_page_row must do that copy itself — and why the offsets it
+ * uses are the widget-side ones, not presenter-side ones.
  * ---------------------------------------------------------------------- */
 
 /* Resolve row + extras for (page_idx, row_idx). Returns 0 when either is missing. */

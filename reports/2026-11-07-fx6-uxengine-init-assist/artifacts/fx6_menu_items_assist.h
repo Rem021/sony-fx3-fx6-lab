@@ -8521,3 +8521,125 @@ static inline int fx6_apply_row_extra_to_view_string(void *vs, const fx6_row_ext
 }
 
 #define FX6_ROW_EXTRA_FIELD_COUNT 8u
+
+/* ======================================================================
+ * PHASE 26 — how the binary consumes +0x1c..+0x38, and the page-row entry point
+ * ======================================================================
+ * I looked for a generic "walk the 0x48 rows and copy each field into a widget" function and did
+ * not find one — and the disassembly shows why it does not exist. The presenters do the opposite:
+ * they COMPUTE values and WRITE THEM INTO the descriptor table, then hand the table to a container.
+ *
+ * The clearest instance is the loader at 0xf5ef30 (owner of page 0x02ea02f8):
+ *
+ *   0xf5eeb4  bl   0xf56aec              ; r = accessor(this) -> ld [x0]; ld [x0,#0x10]
+ *   0xf5eeb8  add  x0, x0, x20           ;   + a per-row byte offset
+ *   0xf5eec0  str  w1, [x0, #0x281c]     ; writes a value into a DESCRIPTOR field
+ *   0xf5eefc  str  w26, [x0, #0x38]      ; writes the widget id  (+0x38)
+ *   0xf5ef18  str  s0, [x0, #0x3c]       ; writes the rect x/y (+0x3c)
+ *   0xf5ef30  adrp x1,#0x2eec000; mov w2,#8; ldr x1,[x1,#0x5a0]   ; page base from GOT
+ *
+ * So the dataflow is the reverse of the naive reading: the 0x48 table is not a static source that
+ * gets copied into widgets — it is a mutable staging buffer that presenters fill from camera state
+ * before a container consumes it. That is consistent with rounds 676/677 (no descriptor anywhere
+ * carries a runtime value) and with the container walker at 0xc87054 accepting only five row classes.
+ *
+ * Practical consequence: replaying a row means emulating what a presenter would have written, not
+ * looking up a setter per field. The function below therefore applies the row's own payload plus the
+ * extras recorded in fx6_row_extras[], using the field->offset mapping verified in rounds 687/693.
+ * ---------------------------------------------------------------------- */
+
+/* Resolve row + extras for (page_idx, row_idx). Returns 0 when either is missing. */
+static inline const fx6_menu_row_t *fx6_page_row(uint16_t page_idx, uint16_t row_idx,
+                                                const fx6_row_extra_t **extra_out)
+{
+    const fx6_page_row_table_t *t = fx6_page_rows(page_idx);
+    if (!t || row_idx >= t->count) { if (extra_out) *extra_out = 0; return 0; }
+    if (extra_out) *extra_out = fx6_get_row_extra(page_idx, row_idx);
+    return &t->rows[row_idx];
+}
+
+/* Apply one page row (and its extras) to a freshly created widget.
+ *
+ * obj      must already be an instance of the class named by row->tag
+ * page_idx / row_idx index into fx6_page_row_tables[] and fx6_row_extras[]
+ *
+ * Returns 1 on success, 0 when the row cannot be resolved.
+ */
+static inline int fx6_setup_from_page_row(void *obj, uint16_t page_idx, uint16_t row_idx)
+{
+    const fx6_row_extra_t *e = 0;
+    const fx6_menu_row_t *r = fx6_page_row(page_idx, row_idx, &e);
+    if (!obj || !r) return 0;
+
+    /* 1) the row's own payload: rect plus the primary id at the class-specific offset */
+    fx6_row_view_t rv;
+    rv.tag        = r->tag;
+    rv.text_resid = r->resid;
+    rv.widget_id  = e ? e->d38 : 0;
+    rv.font_size  = e ? e->d2c : FX6_VS_FONTSIZE;
+    rv.layout     = e ? e->d1c : 0;
+    rv.style      = e ? e->d20 : 0;
+    rv.font_a     = e ? e->d24 : 0;
+    rv.font_b     = e ? e->d28 : 0;
+    rv.flag_a     = e ? e->d30 : 0;
+    rv.flag_b     = e ? e->d34 : 0;
+    rv.x = r->rect.x; rv.y = r->rect.y; rv.w = r->rect.w; rv.h = r->rect.h;
+
+    switch (r->tag) {
+    case FX6_DESC_TAG_VS:
+        fx6_row_apply_rect(obj, &rv);
+        if (rv.text_resid && rv.text_resid != 0xffffffffu)
+            *(uint32_t *)((char *)obj + 0x200) = rv.text_resid;
+        if (rv.layout && rv.font_a && rv.font_b) {
+            *(uint32_t *)((char *)obj + 0x208) = rv.font_a;
+            *(uint32_t *)((char *)obj + 0x20c) = rv.font_b;
+            *(uint32_t *)((char *)obj + 0x210) = rv.layout;
+            *(uint32_t *)((char *)obj + 0x214) = rv.style;
+        }
+        if (e) {
+            *(uint32_t *)((char *)obj + 0x218) = e->d30;
+            *(uint32_t *)((char *)obj + 0x21c) = e->d34;
+        }
+        *(uint32_t *)((char *)obj + 0xa14) = rv.font_size ? rv.font_size : FX6_VS_FONTSIZE;
+        *(uint8_t  *)((char *)obj + 0x1fc) = 1;
+        break;
+
+    case FX6_DESC_TAG_MI:
+        fx6_row_apply_rect(obj, &rv);
+        if (rv.text_resid) *(uint32_t *)((char *)obj + 0x21c) = rv.text_resid;
+        if (rv.layout && rv.font_a && rv.font_b) {
+            *(uint32_t *)((char *)obj + 0x22c) = rv.font_a;
+            *(uint32_t *)((char *)obj + 0x234) = rv.font_b;
+            *(uint32_t *)((char *)obj + 0x238) = rv.layout;
+            *(uint32_t *)((char *)obj + 0x23c) = rv.style;
+        }
+        if ((rv.widget_id & 0xffffu) <= 0x5bu)
+            *(uint32_t *)((char *)obj + 0x200) = rv.widget_id & 0xffffu;
+        *(uint32_t *)((char *)obj + 0xa14) = rv.font_size ? rv.font_size : FX6_VS_FONTSIZE;
+        break;
+
+    case FX6_DESC_TAG_VI:   /* view_icon / nine-patch, +0x18 -> +0x20c */
+        fx6_row_apply_rect(obj, &rv);
+        if (rv.text_resid && rv.text_resid != 0xffffffffu) {
+            *(uint32_t *)((char *)obj + 0x20c) = rv.text_resid;
+            *(uint32_t *)((char *)obj + 0x21c) = rv.text_resid;
+        }
+        *(uint16_t *)((char *)obj + 0x204) = rv.w;
+        *(uint16_t *)((char *)obj + 0x206) = rv.h;
+        *(uint8_t  *)((char *)obj + 0x1fc) = 1;
+        break;
+
+    case FX6_DESC_TAG_VF:   /* view_fill */
+    case 0x042d57d0u:       /* view_frame, same field body */
+        fx6_row_apply_rect(obj, &rv);
+        if (rv.text_resid && rv.text_resid != 0xffffffffu)
+            *(uint32_t *)((char *)obj + 0x200) = rv.text_resid;
+        *(uint8_t *)((char *)obj + 0x1fc) = 1;
+        break;
+
+    default:
+        fx6_row_apply_rect(obj, &rv);
+        break;
+    }
+    return 1;
+}

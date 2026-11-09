@@ -9903,3 +9903,78 @@ compile-time  FX6_ROW_EXTRA_COUNT == 2224
 machine       fx6_verify_all.py: 0 unresolved, 0 extra-field problems
 build         header clean under -Wall
 ```
+
+### 694 — There is no generic row loader, because the dataflow runs the other way
+
+I searched for the "walk the 0x48 rows and copy each field into a widget" function the brief assumed.
+It does not exist, and the disassembly explains why. Narrowing to functions that both stride by `0x48`
+and load `+0x2c`/`+0x30` yields 28 candidates, but reading them shows the presenters do the **opposite**
+of the assumed flow: they *compute* values and *write them into the descriptor table*, then hand the
+table to a container.
+
+The cleanest instance is the loader at `0xf5ef30`, owner of page `0x02ea02f8`:
+
+```text
+0xf5eeb4  bl   0xf56aec              ; accessor(this): ld [x0]; ld [x0,#0x10]
+0xf5eeb8  add  x0, x0, x20           ;   + per-row byte offset
+0xf5eec0  str  w1, [x0, #0x281c]     ; WRITE into a descriptor field
+0xf5eefc  str  w26, [x0, #0x38]      ; write the widget id   (+0x38)
+0xf5ef18  str  s0, [x0, #0x3c]       ; write the rect x/y    (+0x3c)
+0xf5ef30  adrp x1,#0x2eec000 ; mov w2,#8 ; ldr x1,[x1,#0x5a0]   ; page base from GOT
+```
+
+So the 0x48 table is **not** a static source copied into widgets — it is a **mutable staging buffer**
+that presenters fill from camera state before a container consumes it. This is consistent with two
+earlier findings: rounds 676/677 established that no descriptor anywhere carries a runtime value, and
+the container filter at `0xc87054` accepts only five row classes, silently skipping the rest.
+
+**Practical consequence for the dynamic line:** replaying a row means *emulating what a presenter would
+have written*, not calling a per-field setter. There is nothing to "read" from the binary that says
+"+0x24 goes to widget offset X"; the mapping is fixed by the *consumer* (the widget's own onDraw), which
+is exactly what rounds 687/693 recovered by reading the widget-side code rather than the presenter side.
+
+### 694 — `fx6_setup_from_page_row(obj, page_idx, row_idx)`
+
+Given that, the function combines the row payload with its recorded extras and applies the
+field-to-offset mapping verified in rounds 687/693, branching on the row's own tag:
+
+```c
+static inline const fx6_menu_row_t *fx6_page_row(uint16_t page_idx, uint16_t row_idx,
+                                                const fx6_row_extra_t **extra_out);
+static inline int fx6_setup_from_page_row(void *obj, uint16_t page_idx, uint16_t row_idx);
+```
+
+Usage is a single call per row:
+
+```c
+for (uint16_t i = 0; i < fx6_page_rows(idx)->count; i++) {
+    void *obj = create_widget(fx6_page_rows(idx)->rows[i].tag);
+    fx6_setup_from_page_row(obj, idx, i);
+}
+```
+
+Per tag it applies:
+
+```text
+view_string  0x042d57f0  rect, +0x200 id, +0x208 fontA, +0x20c fontB, +0x210 layout,
+                         +0x214 style, +0x218 flagA, +0x21c flagB, +0xa14 size, +0x1fc ready
+view_menu_item 0x042d58d0  rect, +0x21c id, +0x22c/+0x234 fonts, +0x238/+0x23c layout/style,
+                           +0x200 widget id when <= 0x5b, +0xa14 size
+view_icon    0x042d5a50  rect, +0x20c/+0x21c image id, +0x204/+0x206 w/h, +0x1fc ready
+view_fill    0x042d5a40  rect, +0x200 colour
+view_frame   0x042d57d0  same body as view_fill
+default                  rect only (the remaining 19 classes draw from their own state)
+```
+
+Guards mirror the factory: the font group is written only when `layout && font_a && font_b` are all
+non-zero, and the menu-item id only when `widget_id <= 0x5b`, so a partially-populated row degrades the
+same way the native path does.
+
+### 694 — Verification
+
+```text
+compile-time  header builds with -Wall; fx6_setup_from_page_row compiles and inlines
+machine       fx6_verify_all.py: 2249 row literals + 305 ids -> 0 unresolved
+              extra rows: 2224 ; extra-field problems: 0
+build         header 8645 lines
+```

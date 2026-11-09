@@ -9581,3 +9581,85 @@ compile-time  sizeof(fx6_row_view_t) == 0x30
 machine       whole-header audit: 1434 rows + 305 ids, 0 unresolved
 build         header 4546 lines, clean under -Wall
 ```
+
+### 690 — Ten more pages materialised: 1434 -> 1693 rows
+
+Selection used the *actual* materialisation test (does the page's first decoded row literal appear in
+the header), not a substring match on the base address — the earlier attempt gave a false "128 done"
+because `fx6_all_pages[]` itself contains every base.
+
+```text
+page 21  0x02e9e210  98 rows  s56 f8  i20 m6   HOME PRESENTER FULL PAGE   <- largest remaining
+page 27  0x02ea2788  23 rows  s3  f13 i4  m1   grid selection page
+page 17  0x02e9c8c0  20 rows  s14 f6  i0  m0   transition / toast
+page 52  0x02ea6b08  19 rows  s8  f0  i2  m8   touch menu
+page 92  0x02eb44b8  19 rows  s2  f2  i5  m9   status icon
+page 94  0x02eb4e00  19 rows  s4  f0  i2  m12  touch list
+page 57  0x02eaa810  18 rows  s1  f6  i0  m10  media grid
+page 28  0x02ea2e48  16 rows  s6  f0  i2  m7   touch items
+page 29  0x02ea3310  14 rows  s4  f0  i2  m7   touch items variant
+page 23  0x02e9ff08  13 rows  s4  f1  i2  m1   small touch page
+```
+
+Page 21 (`0x02e9e210`, 98 rows) is the one that matters most: it is the home presenter's full page,
+and until now the header only carried the *derived* `fx6_menu_row_t` entries for its status area
+(rounds 664/670). With the whole page materialised the status strip and the outer six cells are now
+both available from one array.
+
+**Coverage after this round: 48 pages / 1693 descriptor rows materialised out of 128 pages / 2345 rows.**
+
+### 690 — Presenter ownership: only 18 pages are loaded directly
+
+Each page base was searched in `.rela.dyn` for a GOT slot, then every `adrp+ldr` pair resolving to that
+slot was located in `.text`:
+
+```text
+pages with a GOT slot          118 / 128
+pages actually loaded by code   18 / 128
+```
+
+So **110 pages have no direct loader at all** — they are handed to a container by pointer from a parent
+page and driven through `0xc870cc(this, desc*, count)`, which is why no static ownership can be read for
+them. This is the honest shape of the binding and is recorded as
+`FX6_CONTAINER_HANDLES_INDIRECT == 110` rather than being papered over.
+
+For the 18 directly-loaded pages the enclosing function was recovered from the `stp x29,x30,[sp,#-N]!`
+prologue. All of them sit in the `0xf45xxxx..0x100xxxx` band — the presenter region, consistent with the
+round-678 finding that `0xf29000..0xf34000` holds the rodata-table consumers:
+
+```text
+page        presenter    presenter2   role
+0x02e9ad78  0xf45da4     -            playback / TC status
+0x02ea02f8  0xf5ed74     -            three-layer menu
+0x02ea0d18  0xf618cc     -            69-row grid page
+0x02ea20c8  0xf64c48     -            two-column page
+0x02ea2788  0xf66dc4     -            grid selection
+0x02ea37d8  0xf5b934     -            touch page
+0x02ea4630  0xfabb7c     0xfabf0c     two loaders
+0x02ea5560  0xf5a368     0xf5a678     two loaders
+0x02eacc58  0xf5d808     -
+0x02eacdc0  0xfcabf4     0xfcb544     two loaders
+0x02eafac0  0xfccd20     0xfcceec     two loaders
+0x02eb1890  0xff0104     -            playback control
+0x02eb2808  0x10017b8    -
+0x02eb2ad8  0xf6c3ac     -            network small confirm
+0x02eb3bb8  0xf56bf4     -
+0x02eb4080  0xfae0e4     0xfae3ac     two loaders
+0x02eb4308  0xfca538     -
+0x02eba260  0xfd5038     0xfd53b8     two loaders
+```
+
+Six pages have two independent loaders, which is consistent with the dual-slot pattern seen in the HUD
+tables (an "A" and a "B" presenter branch reaching the same page).
+
+### 690 — Verification
+
+```text
+compile-time  FX6_PAGE_OWNER_COUNT == 18
+              FX6_CONTAINER_HANDLES_INDIRECT == 110
+              FX6_HOME_FULL_PAGE_ROWS_COUNT == 98
+              plus the nine new page counts (23/20/19/19/19/18/16/14/13)
+machine       fx6_verify_all.py: 1693 descriptor rows + 305 option ids
+              -> 435 text + 116 image + 17 colour + 1 style, unresolved: 0
+build         header clean under -Wall
+```

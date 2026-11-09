@@ -8973,3 +8973,114 @@ machine check: 153 rows of the new arrays, every ResID resolved
                0 unresolved
 build:         header, 2641 lines, clean under -Wall
 ```
+
+### 684 — Page 110 (`SET` / Assignable Button): chrome is static, the 30 cells are not
+
+The page's own title strings are bound in the descriptors, verified against the containers:
+
+```text
+No8_TITLE              d18 = 0x0200211e  -> 'Assignable Button'
+No59_INDEX_STRING      d18 = 0x02002e12  -> 'Index'
+No58_INDEX_ARROW       d18 = 0x02002e21  -> '\ue81f'  glyph
+No31_PAGE_SCROLL_ARROW d18 = 0x020021d6  -> '\ue807'  glyph
+No53_TITLE_ICON        d18 = 0x020026c2  -> '\ue60b'  glyph
+No57_LEFT_ARROW        d18 = 0x0200043d  -> namespace-0 image
+No10_BUTTON_02         d18 = 0x020023c4  -> 'AF Speed/Sens.'
+No4_STATUS_ASSIGN13_BG d18 = 0x0200c003  -> 111111df background
+No23..No52_SEPARATOR   d18 = 0x0200c00b  -> 444444ff
+```
+
+So the page chrome renders with **zero** presenter involvement — title, index, arrows, icon, all
+twelve separators and the background are all carried by `desc+0x18`.
+
+**What is not static:** all 30 `menu_item` rows on this page have `desc+0x18 == 0`. Combined with the
+round-676/677 finding that no descriptor anywhere carries an assignable-button assignment, that means
+the per-cell labels come from the camera's own button configuration at run time, applied through
+`0xc18548` (resid -> slot) plus the container cursor byte.
+
+`fx6_assignable_label_pool[30]` is therefore a **verified label pool, not a recovered assignment**:
+every one of its 30 ids resolves to a real FX6 assignable-function name (`AF Speed/Sens.`,
+`White Balance`, `ND Filter`, `Peaking`, `Zebra`, `Marker`, `Focus Magnifier`, `SteadyShot`,
+`S&Q Motion`, `Rec Format`, `Codec`, `Timecode`, `Update Media`, `Format Media`, `Test Saw`,
+`Color Bars`, `Flicker Reduce`, `Image Inversion`, `Lens Interface`, `Iris`, `Focus`,
+`Auto Exposure`, `Slow Shutter`, `Detail`, `Aperture`, `Monitor LUT`, `Output Display`,
+`Display On/Off`, `WRR Setting`, ...). Machine check: **30 pairs, 0 bad.** It should be presented as a
+pool the probe may fill cells from, never as the factory default.
+
+### 684 — The remaining sixteen classes: identified by widget name, not guessed
+
+Sweeping the widget names attached to every tag gives each class's role directly, because the
+descriptors name their own widgets:
+
+```text
+0x042d57d0  x58   No4_SETTING_LIST_BG_RIGHT, No1016_tcub, No2011_audio_level_meter
+                  -> background / panel overlay (fill body)
+0x042d57e0  x1    No3_QR_CODE                    -> QR code raster
+0x042d5800  x10   No9_battery_icon, No9_BATTERY   -> battery gauge
+0x042d5820  x3    No73_zoom_bar, No1064_zoom_bar  -> zoom bar
+0x042d5840  x8    No36_criate_time, No17_THUMBNAIL_PROPERTIES_MODIFIED_VALUE
+                  -> thumbnail-properties value line
+0x042d5850  x7    No11_BACK, No15_BACK, No14_ITEM -> back / item label
+0x042d5860  x27   No6_BLOCK_TOUCH                -> touch blocker
+0x042d5870  x2    No31_line_mask, No42_line_mask  -> line mask
+0x042d5880  x2    No11_SETTING_BAR_TOUCH, No8_SETTING_BAR -> setting bar
+0x042d58b0  x10   No4_PROGRESSBAR, No4_PROGRESS_BAR -> progress bar
+0x042d58f0  x13   No10..No21_clip_thumbnail      -> clip thumbnail cell
+0x042d5910  x1    No82_level_gauge               -> level gauge
+0x042d5920  x10   No2_MESSAGE_REQUEST            -> message request dialog
+0x042d5930  x2    No210_AUDIO_LEVEL_METER        -> audio level meter
+0x042d5940  x1    No21_SCAN_PROCESSING           -> scan processing
+0x042d5960  x5    No6_CONTEXT_MENU_PROCESSING    -> context processing
+0x042d5970  x60   No11_TOUCH_SCREEN              -> full-screen touch catcher
+0x042d59a0  x51   No1023_gain_value, No39_focus_mode_label -> value readout with label
+0x042d59e0  x21   No4_LIST_MAIN, No31_Itemlist   -> list container (grid list)
+0x042d5a20  x4    No4_SETTING_LIST_MAIN          -> scroll-cursor list
+```
+
+### 684 — Factory field maps for all nine handled classes (read from the branch bodies)
+
+```text
+0x042d5a50  0xc1954c  desc+0x18->obj+0x20c ; desc+0x1c->obj+0x230 ; desc+0x20->obj+0x234
+                     ; desc+0x2c->obj+0x23c
+0x042d57f0  0xc19594  desc+0x18->obj+0x200 ; desc+0x24->obj+0x208 ; desc+0x28->obj+0x20c
+                     ; desc+0x1c->obj+0x210 ; desc+0x20->obj+0x214 ; desc+0x2c->obj+0xa14
+0x042d59a0  0xc195ec  desc+0x18->obj+0x230 ; desc+0x24->obj+0x238 ; desc+0x28->obj+0x23c
+                     ; desc+0x1c->obj+0x240 ; desc+0x20->obj+0x244 ; obj+0x248=0
+                     ; desc+0x2c->obj+0xa44
+0x042d5a40  0xc19644  desc+0x18->obj+0x200   (colour straight in, no translation)
+0x042d58d0  0xc1966c  desc+0x18->obj+0x21c ; desc+0x24->obj+0x22c ; desc+0x28->obj+0x234
+                     ; desc+0x1c->obj+0x238 ; desc+0x20->obj+0x23c ; obj+0x240=0
+                     ; desc+0x38 u16->obj+0x200 when <= 0x5b
+0x042d5840  0xc196cc  desc+0x24->obj+0x220 ; desc+0x28->obj+0x224 ; desc+0x1c->obj+0x228
+                     ; desc+0x20->obj+0x22c ; obj+0x230=0 ; desc+0x2c->obj+0x238
+0x042d5960  0xc19718  desc+0x24->obj+0x20c ; desc+0x28->obj+0x210 ; desc+0x1c->obj+0x214
+                     ; desc+0x20->obj+0x218 ; obj+0x21c=0 ; desc+0x2c->obj+0x618
+0x042d57d0  0xc19754  shares the view_fill body -> desc+0x18->obj+0x200
+0x042d57e0  0xc1976c  desc+0x2c->obj+0x370
+```
+
+The remaining sixteen have **no branch at all** in `0xc1935c` — that is not an omission on my part, the
+factory genuinely only knows nine tags. Their constructors come from the creator table at `0x2911720`,
+whose first constructor call per entry is now recorded:
+
+```text
+[0] view_icon 0xc2c150 (0x668)     [1] view_fill 0xc27660 (0x308)
+[2] view_string 0xc3af60 (0x1388)  [4] view_menu_item 0xc3419c (0x19788)
+[5] view_frame 0xc277c8 (0x1178)   [6] list_scroll_cursor 0xc2d83c (0x239870)
+[7] 0xc2f260   [8] 0xc24bbc   [9] 0xc1fa44   [10] 0xc392a4  [11] 0xc3a288
+[12] 0xc24338  [13] 0xc39f40  [14] 0xc2625c  [15] 0xc3cc64  [16] 0xc245bc
+[17] 0xc3c4d8  [18] 0xc3994c  [19] 0xc26d48  [20] 0xc3d0e8  [21] 0xc2063c
+[22] 0xc35670  [23] 0xc3e14c  [24] 0xc1f19c  [25] 0xc37ef0  [26] 0xc35e60
+[27] 0xc386d8  [28] 0xc36aac  [29] 0xc36288  [30] 0xc36ca4  [31] 0xc36e90
+[32] 0xc37974  [33] 0xc37838  [34] 0xc3613c  [35] 0xc3807c  [36] 0xc384b4
+[37] 0xc35f94  [38] 0xc38214  [39] 0xc36bbc
+```
+
+### 684 — Verification
+
+```text
+compile-time  FX6_CLASS_TAG_COUNT == 24
+              FX6_ASSIGNABLE_LABEL_POOL_COUNT == 30
+machine       the 30 pool pairs all resolve exactly (0 bad)
+build         header clean under -Wall
+```

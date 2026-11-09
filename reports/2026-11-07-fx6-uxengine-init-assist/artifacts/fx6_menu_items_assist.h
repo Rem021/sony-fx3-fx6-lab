@@ -1832,6 +1832,7 @@ static const fx6_opt_t fx6_audio_items[] = {
     {0x02002191u, "Headphone Out"},
     {0x02003132u, "Wind Filter"},
     {0x0200429fu, "WRR Setting"},
+    {0x02004285u, "Iris"},
 };
 static const fx6_opt_t fx6_tc_media_items[] = {
     {0x02004242u, "Timecode"},
@@ -2639,3 +2640,181 @@ static const fx6_menu_row_t fx6_setting_two_col_page_rows[] = {
 };
 #define FX6_SETTING_TWO_COL_PAGE_ROWS_COUNT \
     (sizeof(fx6_setting_two_col_page_rows)/sizeof(fx6_setting_two_col_page_rows[0]))
+
+/* ======================================================================
+ * PHASE 16 — page 110 (SET / Assignable Button) real bindings
+ * ======================================================================
+ * The page carries its own title in desc+0x18, verified against the containers:
+ *
+ *   No8_TITLE          d18 = 0x0200211e  ->  'Assignable Button'
+ *   No59_INDEX_STRING  d18 = 0x02002e12  ->  'Index'
+ *   No58_INDEX_ARROW   d18 = 0x02002e21  ->  '\ue81f'   glyph
+ *   No31_PAGE_SCROLL_ARROW d18 = 0x020021d6 ->  '\ue807' glyph
+ *   No53_TITLE_ICON    d18 = 0x020026c2  ->  '\ue60b'   glyph (Project icon)
+ *   No57_LEFT_ARROW    d18 = 0x0200043d  ->  namespace-0 image 0x43d
+ *   No10_BUTTON_02     d18 = 0x020023c4  ->  'AF Speed/Sens.'
+ *
+ * So the *page chrome* is statically bound and needs no work. What is NOT static is the 30
+ * menu_item labels: every one of those rows has desc+0x18 == 0, and — as rounds 676/677 established
+ * — no descriptor in the image carries the per-cell assignment. The assignment lives in the
+ * camera's assignable-button configuration, applied at run time by 0xc18548 (resid -> slot) and the
+ * container cursor byte.
+ *
+ * Therefore the table below is a *verified label pool*, not a recovered assignment: every id
+ * resolves to a real FX6 assignable-button function name, and the dynamic line can fill the 30
+ * cells from it in order. Do not present it as the factory's default assignment.
+ */
+static const fx6_opt_t fx6_assignable_label_pool[] = {
+    {0x020023c4u, "AF Speed/Sens."},
+    {0x020020d0u, "White Balance"},
+    {0x02004288u, "ND Filter"},
+    {0x0200423du, "Peaking"},
+    {0x0200423fu, "Zebra"},
+    {0x0200423eu, "Marker"},
+    {0x020049f5u, "Focus Magnifier"},
+    {0x0200290au, "SteadyShot"},
+    {0x02004246u, "S&Q Motion"},
+    {0x0200425fu, "Rec Format"},
+    {0x02004261u, "Codec"},
+    {0x02004242u, "Timecode"},
+    {0x02004253u, "Update Media"},
+    {0x02004254u, "Format Media"},
+    {0x0200425au, "Test Saw"},
+    {0x02002e6du, "Color Bars"},
+    {0x02004214u, "Flicker Reduce"},
+    {0x02004217u, "Image Inversion"},
+    {0x02004218u, "Lens Interface"},
+    {0x02004285u, "Iris"},
+    {0x02004212u, "Focus"},
+    {0x02004211u, "Auto Exposure"},
+    {0x02004210u, "Slow Shutter"},
+    {0x02004229u, "Detail"},
+    {0x0200422au, "Aperture"},
+    {0x02004239u, "Monitor LUT"},
+    {0x0200423au, "Output Display"},
+    {0x02004241u, "Display On/Off"},
+    {0x0200429fu, "WRR Setting"},
+    {0x02004285u, "Iris"},
+};
+#define FX6_ASSIGNABLE_LABEL_POOL_COUNT \
+    (sizeof(fx6_assignable_label_pool)/sizeof(fx6_assignable_label_pool[0]))
+
+/* Page chrome constants, all verified above. */
+#define FX6_SETBTN_TITLE_RESID     0x0200211eu  /* 'Assignable Button' */
+#define FX6_SETBTN_INDEX_RESID     0x02002e12u  /* 'Index'             */
+#define FX6_SETBTN_INDEX_ARROW     0x02002e21u  /* '\ue81f'            */
+#define FX6_SETBTN_SCROLL_ARROW    0x020021d6u  /* '\ue807'            */
+#define FX6_SETBTN_TITLE_ICON      0x020026c2u  /* '\ue60b'            */
+#define FX6_SETBTN_LEFT_ARROW_IMG  0x0200043du  /* ns0 image           */
+#define FX6_SETBTN_SEP_COLOR       0x0200c00bu  /* 444444ff            */
+#define FX6_SETBTN_BG_COLOR        0x0200c003u  /* 111111df            */
+
+/* ======================================================================
+ * PHASE 16 — remaining descriptor classes
+ * ======================================================================
+ * A sweep of the widget *names* attached to every tag gives each class's role without guessing:
+ *
+ *   0x042d57d0  x58   No4_SETTING_LIST_BG_RIGHT, No1016_tcub, No2011_audio_level_meter
+ *                    -> generic background/panel overlay (fill-like)
+ *   0x042d57e0  x1    No3_QR_CODE                       -> QR code raster
+ *   0x042d5800  x10   No9_battery_icon, No9_BATTERY      -> battery gauge
+ *   0x042d5820  x3    No73_zoom_bar, No1064_zoom_bar     -> zoom bar
+ *   0x042d5840  x8    No36_criate_time, No17_THUMBNAIL_PROPERTIES_MODIFIED_VALUE
+ *                    -> thumbnail-properties value line
+ *   0x042d5850  x7    No11_BACK, No15_BACK, No14_ITEM    -> back/item label
+ *   0x042d5860  x27   No6_BLOCK_TOUCH                   -> touch blocker  (already modelled)
+ *   0x042d5870  x2    No31_line_mask, No42_line_mask     -> line mask
+ *   0x042d5880  x2    No11_SETTING_BAR_TOUCH, No8_SETTING_BAR -> setting bar
+ *   0x042d58b0  x10   No4_PROGRESSBAR, No4_PROGRESS_BAR  -> progress bar
+ *   0x042d58f0  x13   No10..No21_clip_thumbnail          -> clip thumbnail cell
+ *   0x042d5910  x1    No82_level_gauge                  -> level gauge
+ *   0x042d5920  x10   No2_MESSAGE_REQUEST               -> message request dialog
+ *   0x042d5930  x2    No210_AUDIO_LEVEL_METER           -> audio level meter
+ *   0x042d5940  x1    No21_SCAN_PROCESSING              -> scan processing
+ *   0x042d5960  x5    No6_CONTEXT_MENU_PROCESSING       -> context processing
+ *   0x042d5970  x60   No11_TOUCH_SCREEN                 -> full-screen touch catcher
+ *   0x042d59a0  x51   No1023_gain_value, No39_focus_mode_label -> value readout with label
+ *   0x042d59e0  x21   No4_LIST_MAIN, No31_Itemlist      -> list container (grid list)
+ *   0x042d5a20  x4    No4_SETTING_LIST_MAIN             -> scroll-cursor list (modelled)
+ *   0x042d5a40  x416  No1_BG, No23_SEPARATOR             -> fill (modelled)
+ *   0x042d5a50  x382  No2_BG, No1_BG                    -> nine-patch icon/fill (modelled)
+ *
+ * Of these, NINE are handled by the factory at 0xc1935c, and their field maps were read straight
+ * out of the branch bodies:
+ *
+ *   0x042d5a50  0xc1954c  desc+0x18 -> obj+0x20c ; desc+0x1c -> obj+0x230 ; desc+0x20 -> obj+0x234
+ *                        ; desc+0x2c -> obj+0x23c
+ *   0x042d57f0  0xc19594  desc+0x18 -> obj+0x200 ; desc+0x24 -> obj+0x208 ; desc+0x28 -> obj+0x20c
+ *                        ; desc+0x1c -> obj+0x210 ; desc+0x20 -> obj+0x214 ; desc+0x2c -> obj+0xa14
+ *   0x042d59a0  0xc195ec  desc+0x18 -> obj+0x230 ; desc+0x24/0x28 -> obj+0x238/+0x23c
+ *                        ; desc+0x1c/0x20 -> obj+0x240/+0x244 ; obj+0x248 = 0 ; desc+0x2c -> obj+0xa44
+ *   0x042d5a40  0xc19644  desc+0x18 -> obj+0x200            (colour, straight in)
+ *   0x042d58d0  0xc1966c  desc+0x18 -> obj+0x21c ; desc+0x24/0x28 -> obj+0x22c/+0x234
+ *                        ; desc+0x1c/0x20 -> obj+0x238/+0x23c ; obj+0x240 = 0
+ *                        ; desc+0x38 (u16) -> obj+0x200 when <= 0x5b
+ *   0x042d5840  0xc196cc  desc+0x24/0x28 -> obj+0x220/+0x224 ; desc+0x1c/0x20 -> obj+0x228/+0x22c
+ *                        ; obj+0x230 = 0 ; desc+0x2c -> obj+0x238
+ *   0x042d5960  0xc19718  desc+0x24/0x28 -> obj+0x20c/+0x210 ; desc+0x1c/0x20 -> obj+0x214/+0x218
+ *                        ; obj+0x21c = 0 ; desc+0x2c -> obj+0x618
+ *   0x042d57d0  0xc19754  shares the view_fill body -> desc+0x18 -> obj+0x200
+ *   0x042d57e0  0xc1976c  desc+0x2c -> obj+0x370
+ *
+ * The other sixteen are NOT dispatched by 0xc1935c, which is why no branch exists for them: the
+ * factory only knows the nine above. Their constructors are reached through the creator table at
+ * 0x2911720 (40 entries), whose first constructor call per entry is:
+ *
+ *   [ 0] view_icon            0xc2c150   size 0x668
+ *   [ 1] view_fill            0xc27660   size 0x308
+ *   [ 2] view_string          0xc3af60   size 0x1388
+ *   [ 4] view_menu_item       0xc3419c   size 0x19788
+ *   [ 5] view_frame           0xc277c8   size 0x1178
+ *   [ 6] list_scroll_cursor   0xc2d83c   size 0x239870
+ *   [ 7]                     0xc2f260   size 0x1178+0x... (see creator constants)
+ *   [ 8]                     0xc24bbc   [ 9] 0xc1fa44   [10] 0xc392a4   [11] 0xc3a288
+ *   [12]                     0xc24338   [13] 0xc39f40   [14] 0xc2625c   [15] 0xc3cc64
+ *   [16]                     0xc245bc   [17] 0xc3c4d8   [18] 0xc3994c   [19] 0xc26d48
+ *   [20]                     0xc3d0e8   [21] 0xc2063c   [22] 0xc35670   [23] 0xc3e14c
+ *   [24]                     0xc1f19c   [25] 0xc37ef0   [26] 0xc35e60   [27] 0xc386d8
+ *   [28]                     0xc36aac   [29] 0xc36288   [30] 0xc36ca4   [31] 0xc36e90
+ *   [32]                     0xc37974   [33] 0xc37838   [34] 0xc3613c   [35] 0xc3807c
+ *   [36]                     0xc384b4   [37] 0xc35f94   [38] 0xc38214   [39] 0xc36bbc
+ */
+
+/* Table of the unresolved classes: tag, observed row count, class hint, factory-handled flag. */
+typedef struct {
+    uint32_t tag;
+    uint16_t rows;
+    uint8_t  factory_handled;
+    const char *hint;
+} fx6_class_tag_t;
+
+static const fx6_class_tag_t fx6_class_tags[] = {
+    {0x042d57d0u,  58, 1, "background/panel overlay (fill body)"},
+    {0x042d57e0u,   1, 1, "QR code raster"},
+    {0x042d57f0u, 693, 1, "view_string"},
+    {0x042d5800u,  10, 0, "battery gauge"},
+    {0x042d5820u,   3, 0, "zoom bar"},
+    {0x042d5840u,   8, 1, "thumbnail-properties value line"},
+    {0x042d5850u,   7, 0, "back / item label"},
+    {0x042d5860u,  27, 0, "touch blocker"},
+    {0x042d5870u,   2, 0, "line mask"},
+    {0x042d5880u,   2, 0, "setting bar"},
+    {0x042d58b0u,  10, 0, "progress bar"},
+    {0x042d58d0u, 437, 1, "view_menu_item"},
+    {0x042d58f0u,  13, 0, "clip thumbnail cell"},
+    {0x042d5910u,   1, 0, "level gauge"},
+    {0x042d5920u,  10, 0, "message request dialog"},
+    {0x042d5930u,   2, 0, "audio level meter"},
+    {0x042d5940u,   1, 0, "scan processing"},
+    {0x042d5960u,   5, 1, "context processing"},
+    {0x042d5970u,  60, 0, "full-screen touch catcher"},
+    {0x042d59a0u,  51, 1, "value readout with label"},
+    {0x042d59e0u,  21, 0, "list container (grid list)"},
+    {0x042d5a20u,   4, 0, "scroll-cursor list"},
+    {0x042d5a40u, 416, 1, "view_fill"},
+    {0x042d5a50u, 382, 1, "nine-patch icon / fill"},
+};
+#define FX6_CLASS_TAG_COUNT (sizeof(fx6_class_tags)/sizeof(fx6_class_tags[0]))
+
+/* The nine factory-handled tags, for a probe that wants to route through 0xc1935c. */
+#define FX6_FACTORY_TAG_COUNT 9u

@@ -3592,3 +3592,479 @@ static const fx6_menu_row_t fx6_thumbnail_props_page_rows[] = {
 #define FX6_TP_NAME_W     558
 #define FX6_TP_NAME_Y0     62
 #define FX6_TP_NAME_DY     36
+
+/* ======================================================================
+ * PHASE 19 — how `${v1}` is actually resolved inside view_string
+ * ======================================================================
+ * The placeholder expansion happens in the text-setup helper `appFw+0xc3b4b8`, which
+ * onDrawNotice calls before drawing. The relevant part is the dictionary build loop:
+ *
+ *   0xc3bd38  ldr  w0,[x26,#0x610]        ; row count
+ *   0xc3bd3c  cmp  w0,w28 ; b.le -> done
+ *   0xc3bd44  ldur w0,[x23,#-4]           ; x23 = obj+0x220 + i*0x5c ; type at -4
+ *   0xc3bddc  adrp x0,#0x2911000 ; add x0,x0,#0x868   ; parameter-name table
+ *   0xc3bde0  ldr  w2,[x23,#0x54]         ; VALUE at obj+0x220 + i*0x5c + 0x54
+ *   0xc3bde8  ldr  x3,[x26,#0x1030]       ; the libra::Dictionary
+ *   0xc3bdf0  ldr  x1,[x0,x28,lsl #3]     ; name = table[i]  ->  'v1','v2','v3',...
+ *   0xc3bdfc  bl   0xb18bd0               ; libra::Variant::Variant()
+ *   0xc3be10  str  w2,[x29,#0xd0]         ; variant carries the u32 value
+ *   0xc3be18  bl   0xb19f40               ; Dictionary::addRow(name, variant)
+ *   0xc3be20  bl   0xc3ad5c               ; append to the row array
+ *   0xc3bdd0  add  x28,x28,#1             ; i++
+ *   0xc3bdd4  add  x23,x23,#0x5c          ; next row
+ *
+ * and the name table at `appFw+0x2911868` is literally:
+ *
+ *   [0] 'v1'   [1] 'v2'   [2] 'v3'   [3] 'v4'   [4] 'v5'
+ *   [5] 'v6'   [6] 'v7'   [7] 'v8'   [8] 'v9'   [9] 'v10'
+ *
+ * Conclusions:
+ *
+ *   1. `${vN}` is NOT substituted textually. Each row is a (type, u32 value) pair that is put into
+ *      a libra::Dictionary under the key 'vN', and the TextSprite renders the template with that
+ *      dictionary. So the value is a **32-bit integer**, not a string pointer and not a ResID.
+ *   2. The values live in an inline array inside the view_string object:
+ *          row i at  obj + 0x220 + i*0x5c
+ *          type     at  row - 4        (1 = value, 2 and 3 = other renderings)
+ *          value    at  row + 0x54
+ *   3. The row count is at  obj + 0x610. When it is 0 (a ctor-only widget) no dictionary is built and
+ *      any `${vN}` in the template renders as nothing — which is the same failure mode as Phase 7.
+ *   4. Formatting hints such as `${v2:02}` are handled by the same path; only the integer value and
+ *      the row type matter.
+ */
+#define FX6_VS_ROW_BASE      0x220u   /* row i at base + i*stride        */
+#define FX6_VS_ROW_STRIDE    0x5cu
+#define FX6_VS_ROW_TYPE_OFF  (-4)     /* i.e. row_base - 4 + i*stride    */
+#define FX6_VS_ROW_VALUE_OFF 0x54u
+#define FX6_VS_ROW_COUNT     0x610u
+#define FX6_VS_DICT          0x1030u
+#define FX6_VS_PARAM_NAME_TABLE 0x2911868u
+
+/* Row types observed at row-4 in the draw loop. */
+#define FX6_VS_TYPE_VALUE    1u   /* numeric value -> variant u32 (the common case) */
+#define FX6_VS_TYPE_ALT2     2u
+#define FX6_VS_TYPE_ALT3     3u
+
+/* Set the u32 that `${vN}` will render. index 0 => v1, 1 => v2, ... 9 => v10.
+ * Returns 0 when index is out of range or the object is null. */
+static inline int fx6_view_string_set_vn(void *vs, unsigned index, uint32_t value, uint32_t type)
+{
+    if (!vs || index > 9u) return 0;
+    char *row = (char *)vs + FX6_VS_ROW_BASE + (unsigned long)index * FX6_VS_ROW_STRIDE;
+    *(int32_t *)(row + FX6_VS_ROW_TYPE_OFF) = (int32_t)type;
+    *(uint32_t *)(row + FX6_VS_ROW_VALUE_OFF) = value;
+    unsigned cnt = *(uint32_t *)((char *)vs + FX6_VS_ROW_COUNT);
+    if (cnt <= index) *(uint32_t *)((char *)vs + FX6_VS_ROW_COUNT) = index + 1u;
+    return 1;
+}
+
+/* Convenience wrappers for the HUD case, which only ever uses v1 and v2. */
+static inline int fx6_view_string_set_v1(void *vs, uint32_t value)
+{
+    return fx6_view_string_set_vn(vs, 0, value, FX6_VS_TYPE_VALUE);
+}
+static inline int fx6_view_string_set_v2(void *vs, uint32_t value)
+{
+    return fx6_view_string_set_vn(vs, 1, value, FX6_VS_TYPE_VALUE);
+}
+/* Paint/direct-menu page (largest fill page) -- page base 0x02ea7648, 176 rows */
+static const fx6_menu_row_t fx6_paint_direct_page_rows[] = {
+    {"No48_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No4_PANEL_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No57_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No20_TOUCHBUTTON_CH4_LEVELMETER", 0x042d58d0u, {144,372,310,76}, 0x00000000u, 0},
+    {"No19_TOUCHBUTTON_CH3_LEVELMETER", 0x042d58d0u, {144,292,310,76}, 0x00000000u, 0},
+    {"No14_CH4_LEVEL_BASE", 0x042d5a50u, {148,376,300,68}, 0x020003c7u, 0},
+    {"No13_CH3_LEVEL_BASE", 0x042d5a50u, {148,296,300,68}, 0x020003c7u, 0},
+    {"No12_CH2_LEVEL_BASE", 0x042d5a50u, {148,216,300,68}, 0x020003c7u, 0},
+    {"No11_CH1_LEVEL_BASE", 0x042d5a50u, {148,136,300,68}, 0x020003c7u, 0},
+    {"No36_TOUCHBUTTON_SETTING_4", 0x042d58d0u, {740,452,222,70}, 0x00000000u, 0},
+    {"No34_TOUCHBUTTON_SETTING_2", 0x042d58d0u, {286,452,222,70}, 0x00000000u, 0},
+    {"No35_TOUCHBUTTON_SETTING_3", 0x042d58d0u, {514,452,220,70}, 0x00000000u, 0},
+    {"No33_TOUCHBUTTON_SETTING_1", 0x042d58d0u, {60,452,220,70}, 0x00000000u, 0},
+    {"No37_TITLE", 0x042d57f0u, {106,54,405,36}, 0x0200211bu, 0},
+    {"No24_TOUCHBUTTON_CH4_SOURCE", 0x042d58d0u, {460,372,184,76}, 0x00000000u, 0},
+    {"No23_TOUCHBUTTON_CH3_SOURCE", 0x042d58d0u, {460,292,184,76}, 0x00000000u, 0},
+    {"No22_TOUCHBUTTON_CH2_SOURCE", 0x042d58d0u, {460,212,184,76}, 0x00000000u, 0},
+    {"No21_TOUCHBUTTON_CH1_SOURCE", 0x042d58d0u, {460,132,184,76}, 0x00000000u, 0},
+    {"No32_TOUCHBUTTON_CH4_WINDFILTER", 0x042d58d0u, {800,372,162,76}, 0x00000000u, 0},
+    {"No31_TOUCHBUTTON_CH3_WINDFILTER", 0x042d58d0u, {800,292,162,76}, 0x00000000u, 0},
+    {"No30_TOUCHBUTTON_CH2_WINDFILTER", 0x042d58d0u, {800,212,162,76}, 0x00000000u, 0},
+    {"No29_TOUCHBUTTON_CH1_WINDFILTER", 0x042d58d0u, {800,132,162,76}, 0x00000000u, 0},
+    {"No28_TOUCHBUTTON_CH4_REF", 0x042d58d0u, {650,372,144,76}, 0x00000000u, 0},
+    {"No27_TOUCHBUTTON_CH3_REF", 0x042d58d0u, {650,292,144,76}, 0x00000000u, 0},
+    {"No26_TOUCHBUTTON_CH2_REF", 0x042d58d0u, {650,212,144,76}, 0x00000000u, 0},
+    {"No25_TOUCHBUTTON_CH1_REF", 0x042d58d0u, {650,132,144,76}, 0x00000000u, 0},
+    {"No7_LABEL_LEVEL", 0x042d57f0u, {144,97,284,30}, 0x020043c9u, 0},
+    {"No47_PAGE_BUTTON", 0x042d58d0u, {802,52,164,40}, 0x00000000u, 0},
+    {"No18_TOUCHBUTTON_CH4_LEVELCONTROL", 0x042d58d0u, {60,372,78,76}, 0x00000000u, 0},
+    {"No17_TOUCHBUTTON_CH3_LEVELCONTROL", 0x042d58d0u, {60,292,78,76}, 0x00000000u, 0},
+    {"No16_TOUCHBUTTON_CH2_LEVELCONTROL", 0x042d58d0u, {60,212,78,76}, 0x00000000u, 0},
+    {"No15_TOUCHBUTTON_CH1_LEVELCONTROL", 0x042d58d0u, {60,132,78,76}, 0x00000000u, 0},
+    {"No54_INDEX_BUTTON", 0x042d58d0u, {668,52,132,40}, 0x00000000u, 0},
+    {"No8_LABEL_SOURCE", 0x042d57f0u, {460,97,170,30}, 0x02005117u, 0},
+    {"No6_LABEL_TITLE_RIGHT", 0x042d57f0u, {822,54,140,36}, 0x00000000u, 0},
+    {"No10_LABEL_WINDFILTER", 0x042d57f0u, {804,97,150,30}, 0x02005119u, 0},
+    {"No47_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No9_LABEL_REF", 0x042d57f0u, {650,97,130,30}, 0x02005125u, 0},
+    {"No56_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No52_TITLE_ICON", 0x042d57f0u, {60,51,45,42}, 0x020026c6u, 0},
+    {"No43_SEPARATOR", 0x042d5a40u, {59,449,906,2}, 0x0200c00bu, 0},
+    {"No42_SEPARATOR", 0x042d5a40u, {59,369,906,2}, 0x0200c00bu, 0},
+    {"No41_SEPARATOR", 0x042d5a40u, {59,289,906,2}, 0x0200c00bu, 0},
+    {"No40_SEPARATOR", 0x042d5a40u, {59,209,906,2}, 0x0200c00bu, 0},
+    {"No39_SEPARATOR", 0x042d5a40u, {59,127,906,2}, 0x0200c00bu, 0},
+    {"No38_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No55_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No47_PAGE_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No52_SEPARATOR", 0x042d5a40u, {796,127,2,322}, 0x0200c00bu, 0},
+    {"No51_SEPARATOR", 0x042d5a40u, {646,127,2,322}, 0x0200c00bu, 0},
+    {"No50_SEPARATOR", 0x042d5a40u, {456,127,2,322}, 0x0200c00bu, 0},
+    {"No49_SEPARATOR", 0x042d5a40u, {140,289,2,160}, 0x0200c00bu, 0},
+    {"No14_CH4_LEVEL_9", 0x042d5a40u, {254,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_8", 0x042d5a40u, {242,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_7", 0x042d5a40u, {230,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_6", 0x042d5a40u, {218,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_5", 0x042d5a40u, {206,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_4", 0x042d5a40u, {194,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_3", 0x042d5a40u, {182,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_24", 0x042d5a40u, {434,384,8,34}, 0x0200c011u, 0},
+    {"No14_CH4_LEVEL_23", 0x042d5a40u, {422,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_22", 0x042d5a40u, {410,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_21", 0x042d5a40u, {398,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_20", 0x042d5a40u, {386,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_2", 0x042d5a40u, {170,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_19", 0x042d5a40u, {374,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_18", 0x042d5a40u, {362,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_17", 0x042d5a40u, {350,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_16", 0x042d5a40u, {338,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_15", 0x042d5a40u, {326,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_14", 0x042d5a40u, {314,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_13", 0x042d5a40u, {302,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_12", 0x042d5a40u, {290,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_11", 0x042d5a40u, {278,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_10", 0x042d5a40u, {266,384,8,34}, 0x0200c010u, 0},
+    {"No14_CH4_LEVEL_1", 0x042d5a40u, {158,384,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_9", 0x042d5a40u, {254,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_8", 0x042d5a40u, {242,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_7", 0x042d5a40u, {230,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_6", 0x042d5a40u, {218,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_5", 0x042d5a40u, {206,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_4", 0x042d5a40u, {194,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_3", 0x042d5a40u, {182,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_24", 0x042d5a40u, {434,304,8,34}, 0x0200c011u, 0},
+    {"No13_CH3_LEVEL_23", 0x042d5a40u, {422,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_22", 0x042d5a40u, {410,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_21", 0x042d5a40u, {398,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_20", 0x042d5a40u, {386,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_2", 0x042d5a40u, {170,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_19", 0x042d5a40u, {374,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_18", 0x042d5a40u, {362,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_17", 0x042d5a40u, {350,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_16", 0x042d5a40u, {338,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_15", 0x042d5a40u, {326,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_14", 0x042d5a40u, {314,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_13", 0x042d5a40u, {302,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_12", 0x042d5a40u, {290,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_11", 0x042d5a40u, {278,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_10", 0x042d5a40u, {266,304,8,34}, 0x0200c010u, 0},
+    {"No13_CH3_LEVEL_1", 0x042d5a40u, {158,304,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_9", 0x042d5a40u, {254,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_8", 0x042d5a40u, {242,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_7", 0x042d5a40u, {230,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_6", 0x042d5a40u, {218,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_5", 0x042d5a40u, {206,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_4", 0x042d5a40u, {194,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_3", 0x042d5a40u, {182,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_24", 0x042d5a40u, {434,224,8,34}, 0x0200c011u, 0},
+    {"No12_CH2_LEVEL_23", 0x042d5a40u, {422,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_22", 0x042d5a40u, {410,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_21", 0x042d5a40u, {398,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_20", 0x042d5a40u, {386,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_2", 0x042d5a40u, {170,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_19", 0x042d5a40u, {374,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_18", 0x042d5a40u, {362,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_17", 0x042d5a40u, {350,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_16", 0x042d5a40u, {338,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_15", 0x042d5a40u, {326,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_14", 0x042d5a40u, {314,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_13", 0x042d5a40u, {302,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_12", 0x042d5a40u, {290,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_11", 0x042d5a40u, {278,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_10", 0x042d5a40u, {266,224,8,34}, 0x0200c010u, 0},
+    {"No12_CH2_LEVEL_1", 0x042d5a40u, {158,224,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_9", 0x042d5a40u, {254,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_8", 0x042d5a40u, {242,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_7", 0x042d5a40u, {230,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_6", 0x042d5a40u, {218,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_5", 0x042d5a40u, {206,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_4", 0x042d5a40u, {194,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_3", 0x042d5a40u, {182,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_24", 0x042d5a40u, {434,144,8,34}, 0x0200c011u, 0},
+    {"No11_CH1_LEVEL_23", 0x042d5a40u, {422,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_22", 0x042d5a40u, {410,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_21", 0x042d5a40u, {398,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_20", 0x042d5a40u, {386,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_2", 0x042d5a40u, {170,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_19", 0x042d5a40u, {374,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_18", 0x042d5a40u, {362,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_17", 0x042d5a40u, {350,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_16", 0x042d5a40u, {338,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_15", 0x042d5a40u, {326,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_14", 0x042d5a40u, {314,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_13", 0x042d5a40u, {302,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_12", 0x042d5a40u, {290,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_11", 0x042d5a40u, {278,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_10", 0x042d5a40u, {266,144,8,34}, 0x0200c010u, 0},
+    {"No11_CH1_LEVEL_1", 0x042d5a40u, {158,144,8,34}, 0x0200c010u, 0},
+    {"No46_SEPARATOR", 0x042d5a40u, {736,449,2,74}, 0x0200c00bu, 0},
+    {"No45_SEPARATOR", 0x042d5a40u, {510,449,2,74}, 0x0200c00bu, 0},
+    {"No44_SEPARATOR", 0x042d5a40u, {282,449,2,74}, 0x0200c00bu, 0},
+    {"No14_CH4_REF_LEVEL_EBUL", 0x042d5a50u, {364,377,6,6}, 0x0200030cu, 0},
+    {"No14_CH4_REF_LEVEL_20DB", 0x042d5a50u, {304,377,6,6}, 0x0200030bu, 0},
+    {"No14_CH4_REF_LEVEL_18DB", 0x042d5a50u, {316,377,6,6}, 0x0200030bu, 0},
+    {"No14_CH4_REF_LEVEL_16DB", 0x042d5a50u, {328,377,6,6}, 0x0200030bu, 0},
+    {"No14_CH4_REF_LEVEL_12DB", 0x042d5a50u, {352,377,6,6}, 0x0200030bu, 0},
+    {"No13_CH3_REF_LEVEL_EBUL", 0x042d5a50u, {364,297,6,6}, 0x0200030cu, 0},
+    {"No13_CH3_REF_LEVEL_20DB", 0x042d5a50u, {304,297,6,6}, 0x0200030bu, 0},
+    {"No13_CH3_REF_LEVEL_18DB", 0x042d5a50u, {316,297,6,6}, 0x0200030bu, 0},
+    {"No13_CH3_REF_LEVEL_16DB", 0x042d5a50u, {328,297,6,6}, 0x0200030bu, 0},
+    {"No13_CH3_REF_LEVEL_12DB", 0x042d5a50u, {352,297,6,6}, 0x0200030bu, 0},
+    {"No12_CH2_REF_LEVEL_EBUL", 0x042d5a50u, {364,217,6,6}, 0x0200030cu, 0},
+    {"No12_CH2_REF_LEVEL_20DB", 0x042d5a50u, {304,217,6,6}, 0x0200030bu, 0},
+    {"No12_CH2_REF_LEVEL_18DB", 0x042d5a50u, {316,217,6,6}, 0x0200030bu, 0},
+    {"No12_CH2_REF_LEVEL_16DB", 0x042d5a50u, {328,217,6,6}, 0x0200030bu, 0},
+    {"No12_CH2_REF_LEVEL_12DB", 0x042d5a50u, {352,217,6,6}, 0x0200030bu, 0},
+    {"No11_CH1_REF_LEVEL_EBUL", 0x042d5a50u, {364,137,6,6}, 0x0200030cu, 0},
+    {"No11_CH1_REF_LEVEL_20DB", 0x042d5a50u, {304,137,6,6}, 0x0200030bu, 0},
+    {"No11_CH1_REF_LEVEL_18DB", 0x042d5a50u, {316,137,6,6}, 0x0200030bu, 0},
+    {"No11_CH1_REF_LEVEL_16DB", 0x042d5a50u, {328,137,6,6}, 0x0200030bu, 0},
+    {"No11_CH1_REF_LEVEL_12DB", 0x042d5a50u, {352,137,6,6}, 0x0200030bu, 0},
+    {"No14_HIGHLIGHT_CH4", 0x042d57d0u, {60,372,902,76}, 0x00000000u, 0},
+    {"No13_HIGHLIGHT_CH3", 0x042d57d0u, {60,292,902,76}, 0x00000000u, 0},
+    {"No12_HIGHLIGHT_CH2", 0x042d57d0u, {60,212,902,76}, 0x00000000u, 0},
+    {"No11_HIGHLIGHT_CH1", 0x042d57d0u, {60,132,902,76}, 0x00000000u, 0},
+    {"No53_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+};
+#define FX6_PAINT_DIRECT_PAGE_ROWS_COUNT (sizeof(fx6_paint_direct_page_rows)/sizeof(fx6_paint_direct_page_rows[0]))
+
+/* Paint overlay page (37 menu items) -- page base 0x02e92c18, 102 rows */
+static const fx6_menu_row_t fx6_paint_overlay_page_rows[] = {
+    {"No142_BLOCK_TOUCH", 0x042d5860u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No144_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No141_TEXT_INPUT_TOUCH", 0x042d5970u, {60,118,902,62}, 0x00000000u, 0},
+    {"No16_TEXT_BOX", 0x042d5a40u, {75,119,874,60}, 0x0200c005u, 0},
+    {"No17_TEXT_BOX", 0x042d5a40u, {76,120,872,58}, 0x0200c009u, 0},
+    {"No18_TEXT_INPUT", 0x042d57f0u, {60,128,904,42}, 0x00000000u, 0},
+    {"No15_TITLE", 0x042d57f0u, {516,54,405,36}, 0x02004c67u, 0},
+    {"No146_TITLE_PARENT", 0x042d57f0u, {97,53,405,36}, 0x00000000u, 0},
+    {"No143_CANCEL_BG", 0x042d58d0u, {574,454,182,52}, 0x020056e8u, 0},
+    {"No103_DONE_BG", 0x042d58d0u, {766,454,182,52}, 0x02004c6fu, 0},
+    {"No36_SYMBOL", 0x042d58d0u, {484,200,126,52}, 0x02004c6cu, 0},
+    {"No31_NUMERIC", 0x042d58d0u, {348,200,126,52}, 0x02004cbeu, 0},
+    {"No26_LOWER_ALPHABET", 0x042d58d0u, {212,200,126,52}, 0x02004c6bu, 0},
+    {"No21_UPPER_ALPHABET", 0x042d58d0u, {76,200,126,52}, 0x02004c6au, 0},
+    {"No98_RIGHTARROW_BG", 0x042d58d0u, {244,454,64,52}, 0x00000000u, 0},
+    {"No95_LEFTARROW_BG", 0x042d58d0u, {170,454,64,52}, 0x00000000u, 0},
+    {"No93_SPACE_BG", 0x042d58d0u, {76,454,64,52}, 0x00000000u, 0},
+    {"No148_MASK_DISP_SWITCH_BUTTON", 0x042d58d0u, {884,200,64,52}, 0x00000000u, 0},
+    {"No101_BACKSPACE_BG", 0x042d58d0u, {338,454,64,52}, 0x00000000u, 0},
+    {"No41_KEY_Z", 0x042d58d0u, {885,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_Y", 0x042d58d0u, {819,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_X", 0x042d58d0u, {753,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_W", 0x042d58d0u, {687,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_V", 0x042d58d0u, {621,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_U", 0x042d58d0u, {555,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_T", 0x042d58d0u, {489,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_S", 0x042d58d0u, {423,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_R", 0x042d58d0u, {357,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_Q", 0x042d58d0u, {291,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_P", 0x042d58d0u, {225,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_O", 0x042d58d0u, {159,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_N", 0x042d58d0u, {93,362,46,46}, 0x00000000u, 0},
+    {"No41_KEY_M", 0x042d58d0u, {885,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_L", 0x042d58d0u, {819,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_K", 0x042d58d0u, {753,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_J", 0x042d58d0u, {687,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_I", 0x042d58d0u, {621,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_H", 0x042d58d0u, {555,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_G", 0x042d58d0u, {489,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_F", 0x042d58d0u, {423,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_E", 0x042d58d0u, {357,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_D", 0x042d58d0u, {291,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_C", 0x042d58d0u, {225,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_B", 0x042d58d0u, {159,284,46,46}, 0x00000000u, 0},
+    {"No41_KEY_A", 0x042d58d0u, {93,284,46,46}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_9", 0x042d57f0u, {339,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_8", 0x042d57f0u, {308,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_7", 0x042d57f0u, {277,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_6", 0x042d57f0u, {246,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_5", 0x042d57f0u, {215,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_4", 0x042d57f0u, {184,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_3", 0x042d57f0u, {153,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_27", 0x042d57f0u, {897,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_26", 0x042d57f0u, {866,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_25", 0x042d57f0u, {835,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_24", 0x042d57f0u, {804,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_23", 0x042d57f0u, {773,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_22", 0x042d57f0u, {742,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_21", 0x042d57f0u, {711,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_20", 0x042d57f0u, {680,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_2", 0x042d57f0u, {122,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_19", 0x042d57f0u, {649,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_18", 0x042d57f0u, {618,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_17", 0x042d57f0u, {587,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_16", 0x042d57f0u, {556,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_15", 0x042d57f0u, {525,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_14", 0x042d57f0u, {494,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_13", 0x042d57f0u, {463,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_12", 0x042d57f0u, {432,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_11", 0x042d57f0u, {401,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_10", 0x042d57f0u, {370,128,31,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_CHAR_1", 0x042d57f0u, {91,128,31,40}, 0x00000000u, 0},
+    {"No147_MENUICON", 0x042d5a50u, {61,54,34,34}, 0x02000043u, 0},
+    {"No19_TEXT_INPUT_MASK_LEFT", 0x042d5a50u, {76,134,31,32}, 0x0200020du, 0},
+    {"No140_TEXT_BOX_CHAR_0", 0x042d57f0u, {76,128,8,40}, 0x00000000u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_9", 0x042d5a40u, {337,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_8", 0x042d5a40u, {306,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_7", 0x042d5a40u, {275,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_6", 0x042d5a40u, {244,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_5", 0x042d5a40u, {213,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_4", 0x042d5a40u, {182,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_3", 0x042d5a40u, {151,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_27", 0x042d5a40u, {895,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_26", 0x042d5a40u, {864,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_25", 0x042d5a40u, {833,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_24", 0x042d5a40u, {802,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_23", 0x042d5a40u, {771,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_22", 0x042d5a40u, {740,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_21", 0x042d5a40u, {709,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_20", 0x042d5a40u, {678,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_2", 0x042d5a40u, {120,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_19", 0x042d5a40u, {647,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_18", 0x042d5a40u, {616,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_17", 0x042d5a40u, {585,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_16", 0x042d5a40u, {554,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_15", 0x042d5a40u, {523,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_14", 0x042d5a40u, {492,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_13", 0x042d5a40u, {461,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_12", 0x042d5a40u, {430,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_11", 0x042d5a40u, {399,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_10", 0x042d5a40u, {368,128,2,40}, 0x0200c014u, 0},
+    {"No140_TEXT_BOX_INPUT_POS_1", 0x042d5a40u, {89,128,2,40}, 0x0200c014u, 0},
+};
+#define FX6_PAINT_OVERLAY_PAGE_ROWS_COUNT (sizeof(fx6_paint_overlay_page_rows)/sizeof(fx6_paint_overlay_page_rows[0]))
+
+/* Media format / confirm page -- page base 0x02eafdd8, 49 rows */
+static const fx6_menu_row_t fx6_media_format_confirm_rows[] = {
+    {"No49_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_Backgroundleft", 0x042d5a40u, {56,49,482,477}, 0x0200c006u, 0},
+    {"No13_Backgroundright", 0x042d5a40u, {542,49,426,477}, 0x0200c006u, 0},
+    {"No38_Gridlist", 0x042d59e0u, {126,102,403,415}, 0x00000000u, 0},
+    {"No48_itemtouchbutton10", 0x042d58d0u, {546,493,418,44}, 0x00000000u, 0},
+    {"No47_itemtouchbutton9", 0x042d58d0u, {546,449,418,44}, 0x00000000u, 0},
+    {"No46_itemtouchbutton8", 0x042d58d0u, {546,405,418,44}, 0x00000000u, 0},
+    {"No45_itemtouchbutton7", 0x042d58d0u, {546,361,418,44}, 0x00000000u, 0},
+    {"No44_itemtouchbutton6", 0x042d58d0u, {546,317,418,44}, 0x00000000u, 0},
+    {"No43_itemtouchbutton5", 0x042d58d0u, {546,273,418,44}, 0x00000000u, 0},
+    {"No42_itemtouchbutton4", 0x042d58d0u, {546,229,418,44}, 0x00000000u, 0},
+    {"No41_itemtouchbutton3", 0x042d58d0u, {546,185,418,44}, 0x00000000u, 0},
+    {"No40_itemtouchbutton2", 0x042d58d0u, {546,141,418,44}, 0x00000000u, 0},
+    {"No39_itemtouchbutton1", 0x042d58d0u, {546,97,418,44}, 0x00000000u, 0},
+    {"No14_Backgroundthesecondlayeritem", 0x042d5a40u, {545,52,420,41}, 0x0200c009u, 0},
+    {"No4_ItemBG", 0x042d5a40u, {126,62,401,36}, 0x0200c00du, 0},
+    {"No36_Itemselectionofthesecondlayer", 0x042d57f0u, {548,54,330,36}, 0x00000000u, 0},
+    {"No6_Itemselectionofthefirstlayer", 0x042d57f0u, {128,62,280,36}, 0x02004d4au, 0},
+    {"No34_item10inthethirdlayer", 0x042d57f0u, {551,497,254,36}, 0x00000000u, 0},
+    {"No33_item9inthethirdlayer", 0x042d57f0u, {551,453,254,36}, 0x00000000u, 0},
+    {"No32_item8inthethirdlayer", 0x042d57f0u, {551,409,254,36}, 0x00000000u, 0},
+    {"No31_item7inthethirdlayer", 0x042d57f0u, {551,365,254,36}, 0x00000000u, 0},
+    {"No30_item6inthethirdlayer", 0x042d57f0u, {551,321,254,36}, 0x00000000u, 0},
+    {"No29_item5inthethirdlayer", 0x042d57f0u, {551,277,254,36}, 0x00000000u, 0},
+    {"No28_item4inthethirdlayer", 0x042d57f0u, {551,233,254,36}, 0x00000000u, 0},
+    {"No27_item3inthethirdlayer", 0x042d57f0u, {551,189,254,36}, 0x00000000u, 0},
+    {"No26_item2inthethirdlayer", 0x042d57f0u, {551,145,254,36}, 0x00000000u, 0},
+    {"No25_item1inthethirdlayer", 0x042d57f0u, {551,101,254,36}, 0x00000000u, 0},
+    {"No35_Thirdlayershadow", 0x042d5a50u, {545,503,420,20}, 0x020001a8u, 0},
+    {"No5_TabnumberBG", 0x042d5a40u, {443,66,80,28}, 0x0200c00fu, 0},
+    {"No37_Tabnumber", 0x042d57f0u, {444,66,78,30}, 0x00000000u, 0},
+    {"No16_Secondlayeritemshadow2", 0x042d5a50u, {545,93,420,4}, 0x02000003u, 0},
+    {"No12_Lowerleftoutsideline2", 0x042d5a40u, {57,525,481,2}, 0x0200c009u, 0},
+    {"No10_Upperleftoutsideline2", 0x042d5a40u, {57,50,481,2}, 0x0200c00au, 0},
+    {"No11_Lowerleftoutsideline", 0x042d5a40u, {57,523,479,2}, 0x0200c005u, 0},
+    {"No8_Leftoutsideline2", 0x042d5a40u, {57,50,2,473}, 0x0200c00au, 0},
+    {"No24_Rightoutsideline2", 0x042d5a40u, {967,50,2,473}, 0x0200c00au, 0},
+    {"No18_Leftoutsideline2", 0x042d5a40u, {543,50,2,473}, 0x0200c00au, 0},
+    {"No3_Separator2", 0x042d5a40u, {124,52,2,471}, 0x0200c00eu, 0},
+    {"No2_Separator", 0x042d5a40u, {122,52,2,471}, 0x0200c001u, 0},
+    {"No22_Lowerrigntoutsideline2", 0x042d5a40u, {543,525,425,2}, 0x0200c009u, 0},
+    {"No21_Lowerrigntoutsideline", 0x042d5a40u, {543,523,424,2}, 0x0200c005u, 0},
+    {"No20_Upperrigntoutsideline2", 0x042d5a40u, {544,50,424,2}, 0x0200c00au, 0},
+    {"No9_Upperleftoutsideline", 0x042d5a40u, {57,49,479,1}, 0x0200c009u, 0},
+    {"No7_Leftoutsideline", 0x042d5a40u, {56,49,1,477}, 0x0200c009u, 0},
+    {"No23_Rightoutsideline", 0x042d5a40u, {965,49,1,477}, 0x0200c009u, 0},
+    {"No17_Leftoutsideline", 0x042d5a40u, {542,49,1,477}, 0x0200c009u, 0},
+    {"No19_Upperrigntoutsideline", 0x042d5a40u, {542,49,424,1}, 0x0200c009u, 0},
+    {"No15_Secondlayeritemshadow1", 0x042d5a40u, {545,92,420,1}, 0x0200c00bu, 0},
+};
+#define FX6_MEDIA_FORMAT_CONFIRM_ROWS_COUNT (sizeof(fx6_media_format_confirm_rows)/sizeof(fx6_media_format_confirm_rows[0]))
+
+/* Playback control page -- page base 0x02eb1890, 54 rows */
+static const fx6_menu_row_t fx6_playback_control_rows[] = {
+    {"No45_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No4_PANEL_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No38_SEPARATOR", 0x042d5a40u, {59,449,906,2}, 0x0200c00bu, 0},
+    {"No37_SEPARATOR", 0x042d5a40u, {59,369,906,2}, 0x0200c00bu, 0},
+    {"No36_SEPARATOR", 0x042d5a40u, {59,289,906,2}, 0x0200c00bu, 0},
+    {"No35_SEPARATOR", 0x042d5a40u, {59,209,906,2}, 0x0200c00bu, 0},
+    {"No34_SEPARATOR", 0x042d5a40u, {59,129,906,2}, 0x0200c00bu, 0},
+    {"No33_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No41_SEPARATOR", 0x042d5a40u, {690,129,2,396}, 0x0200c00bu, 0},
+    {"No59_SEPARATOR", 0x042d5a40u, {690,290,2,236}, 0x0200c00bu, 0},
+    {"No40_SEPARATOR", 0x042d5a40u, {500,129,2,160}, 0x0200c00bu, 0},
+    {"No39_SEPARATOR", 0x042d5a40u, {170,129,2,160}, 0x0200c00bu, 0},
+    {"No16_TOUCHBUTTON_SDIHDMI_SIGNAL", 0x042d58d0u, {174,132,324,156}, 0x00000000u, 0},
+    {"No43_TOUCHBUTTON_BASE_LOOK_LUT", 0x042d58d0u, {60,452,628,70}, 0x00000000u, 0},
+    {"No28_TOUCHBUTTON_STREAMVF_GAMUT", 0x042d58d0u, {694,292,268,156}, 0x00000000u, 0},
+    {"No25_TOUCHBUTTON_SDIHDMI_GAMUT", 0x042d58d0u, {694,132,268,156}, 0x00000000u, 0},
+    {"No66_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No61_STREAM_SIGNAL_BUTTON", 0x042d58d0u, {174,292,324,76}, 0x00000000u, 0},
+    {"No67_TOUCHBUTTON_LCD_VF_GAMUT", 0x042d58d0u, {694,372,268,76}, 0x00000000u, 0},
+    {"No30_TOUCHBUTTON_GAMMA_DISP", 0x042d58d0u, {694,452,268,70}, 0x00000000u, 0},
+    {"No31_TOUCHBUTTON_TITLE", 0x042d57f0u, {106,54,405,36}, 0x0200211du, 0},
+    {"No20_TOUCHBUTTON_HDMI_INFODISP", 0x042d58d0u, {504,212,184,76}, 0x00000000u, 0},
+    {"No19_TOUCHBUTTON_SDI_INFODISP", 0x042d58d0u, {504,132,184,76}, 0x00000000u, 0},
+    {"No49_LABEL_HDMI_SIGNAL", 0x042d57f0u, {182,232,310,36}, 0x00000000u, 0},
+    {"No48_LABEL_SDI_SIGNAL", 0x042d57f0u, {182,152,310,36}, 0x00000000u, 0},
+    {"No7_LABEL_SIGNAL_TITLE", 0x042d57f0u, {174,97,310,30}, 0x020021b6u, 0},
+    {"No53_LABEL_LCD_VF_GAMUT", 0x042d57f0u, {746,392,210,36}, 0x00000000u, 0},
+    {"No52_LABEL_STREAM_GAMUT", 0x042d57f0u, {746,312,210,36}, 0x00000000u, 0},
+    {"No51_LABEL_HDMI_GAMUT", 0x042d57f0u, {746,232,210,36}, 0x00000000u, 0},
+    {"No50_LABEL_SDI_GAMUT", 0x042d57f0u, {746,152,210,36}, 0x00000000u, 0},
+    {"No44_PAGE_BUTTON", 0x042d58d0u, {802,52,164,40}, 0x00000000u, 0},
+    {"No9_LABEL_GAMUT_TITLE", 0x042d57f0u, {694,97,210,30}, 0x02002036u, 0},
+    {"No47_LABEL_VF_NOINFO", 0x042d57f0u, {512,392,170,36}, 0x020050f6u, 0},
+    {"No46_LABEL_STREAM_OFF", 0x042d57f0u, {512,312,170,36}, 0x020056f0u, 0},
+    {"No63_INDEX_BUTTON", 0x042d58d0u, {668,52,132,40}, 0x00000000u, 0},
+    {"No8_LABEL_INFODISP_TITLE", 0x042d57f0u, {504,97,170,30}, 0x020051a8u, 0},
+    {"No6_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No58_INTERLOCK_STREAM_VF", 0x042d5a50u, {702,312,38,102}, 0x02000437u, 0},
+    {"No65_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No57_INTERLOCK_SDI_HDMI", 0x042d5a50u, {702,166,38,88}, 0x02000438u, 0},
+    {"No13_LABEL_VF_TITLE", 0x042d57f0u, {68,395,96,30}, 0x02002b0du, 0},
+    {"No12_LABEL_STREAM_TITLE", 0x042d57f0u, {68,315,96,30}, 0x0200219au, 0},
+    {"No11_LABEL_HDMI_TITLE", 0x042d57f0u, {68,235,96,30}, 0x0200516au, 0},
+    {"No10_LABEL_SDI_TITLE", 0x042d57f0u, {68,155,96,30}, 0x020044cdu, 0},
+    {"No62_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+    {"No60_TITLE_ICON", 0x042d57f0u, {60,51,45,42}, 0x020026c5u, 0},
+    {"No64_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No70_ASSIGNABLE_NUMBER_1_LOWER", 0x042d5a50u, {702,232,36,36}, 0x02000440u, 0},
+    {"No69_ASSIGNABLE_NUMBER_2", 0x042d5a50u, {702,392,36,36}, 0x0200043fu, 0},
+    {"No68_ASSIGNABLE_NUMBER_1_UPPER", 0x042d5a50u, {702,152,36,36}, 0x02000440u, 0},
+    {"No42_PAGE_SCROLL_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No56_HIGHLIGHT_SDI_HDMI", 0x042d57d0u, {56,132,906,156}, 0x00000000u, 0},
+    {"No55_HIGHLIGHT_HDMI", 0x042d57d0u, {56,212,906,76}, 0x00000000u, 0},
+    {"No54_HIGHLIGHT_SDI", 0x042d57d0u, {56,132,906,76}, 0x00000000u, 0},
+};
+#define FX6_PLAYBACK_CONTROL_ROWS_COUNT (sizeof(fx6_playback_control_rows)/sizeof(fx6_playback_control_rows[0]))
+

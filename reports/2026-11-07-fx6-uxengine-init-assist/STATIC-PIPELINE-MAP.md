@@ -9269,3 +9269,91 @@ WRONG  0x02004999 labelled "5500K"   -> resolves to 'HD'   (transposed digits)
 After the fixes: bindings **19 pairs / 0 problems**, value families **28 pairs / 0 bad**, and the three
 new pages **109 rows** split `50 string + 11 image + 7 colour`, **0 unresolved**. Compile-time
 assertions: 55 / 8 / 46 / 25, header 3594 lines, clean under `-Wall`.
+
+### 687 — How `${v1}` is actually resolved: a Dictionary of u32, not text substitution
+
+This is the mechanism the dynamic line needs in order to feed HUD readouts. The expansion happens in
+`appFw+0xc3b4b8`, the text-setup helper that `onDrawNotice` calls before drawing, and the relevant
+part is the dictionary build loop:
+
+```text
+0xc3bd38  ldr  w0,[x26,#0x610]        ; row count
+0xc3bd3c  cmp  w0,w28 ; b.le -> done
+0xc3bd44  ldur w0,[x23,#-4]           ; x23 = obj+0x220+i*0x5c ; TYPE at row-4
+0xc3bddc  adrp x0,#0x2911000 ; add x0,x0,#0x868   ; parameter-name table
+0xc3bde0  ldr  w2,[x23,#0x54]         ; VALUE at obj+0x220+i*0x5c+0x54
+0xc3bde8  ldr  x3,[x26,#0x1030]       ; the libra::Dictionary
+0xc3bdf0  ldr  x1,[x0,x28,lsl #3]     ; name = table[i]
+0xc3bdfc  bl   0xb18bd0               ; libra::Variant::Variant()
+0xc3be10  str  w2,[x29,#0xd0]         ; the variant carries that u32
+0xc3be18  bl   0xb19f40               ; Dictionary::addRow(name, variant)
+0xc3be20  bl   0xc3ad5c               ; append row
+0xc3bdd0  add  x28,x28,#1             ; i++
+0xc3bdd4  add  x23,x23,#0x5c          ; next row
+```
+
+and the parameter-name table at `appFw+0x2911868` is literally the placeholder names:
+
+```text
+[0] 'v1'   [1] 'v2'   [2] 'v3'   [3] 'v4'   [4] 'v5'
+[5] 'v6'   [6] 'v7'   [7] 'v8'   [8] 'v9'   [9] 'v10'
+```
+
+**So `${vN}` is not textual substitution, and the value is neither a ResID nor a C string pointer — it
+is a 32-bit integer** that gets inserted into a `libra::Dictionary` under the key `'vN'`, which the
+`TextSprite` then renders into the template. Three consequences:
+
+1. the per-slot storage is the inline row array inside the object:
+   `row i at obj+0x220+i*0x5c`, **type at `row-4`**, **value at `row+0x54`**;
+2. the row count is `obj+0x610` — a ctor-only widget has 0, so no dictionary is built and every
+   `${vN}` renders as nothing (the same failure shape as Phase 7);
+3. formatting suffixes like `${v2:02}` are handled by the same path; only the integer and the row
+   type matter.
+
+The API added is:
+
+```text
+FX6_VS_ROW_BASE 0x220 / STRIDE 0x5c / ROW_TYPE_OFF -4 / ROW_VALUE_OFF 0x54
+FX6_VS_ROW_COUNT 0x610 / FX6_VS_DICT 0x1030 / FX6_VS_PARAM_NAME_TABLE 0x2911868
+FX6_VS_TYPE_VALUE 1 (also 2 and 3 for the other renderings)
+
+fx6_view_string_set_vn(vs, index, value, type)   generic, index 0..9
+fx6_view_string_set_v1(vs, value)                convenience
+fx6_view_string_set_v2(vs, value)                convenience
+```
+
+`fx6_view_string_set_vn` also bumps `obj+0x610` when the index exceeds the current count, so a probe
+can set v1 without separately managing the row count.
+
+### 687 — Four more functional pages materialised
+
+```text
+page 56  0x02ea7648  176 rows  s11 f110 i25 m25   Paint / direct-menu page (largest fill page)
+page  4  0x02e92c18  102 rows  s31  f29  i3 m37   Paint overlay page
+page 74  0x02eafdd8   49 rows  s13  f22  i2 m10   Media format / confirm page
+page 78  0x02eb1890   54 rows  s21  f11  i6 m12   Playback control page
+```
+
+Page 56 is the biggest fill-dominant page in the entire image (110 fills out of 176 rows), and page 4
+holds the most menu items of any non-HUD page (37). Together with page 74 (the format/confirm dialog,
+22 fills) and page 78 (playback control, 12 menu items) these cover the four interaction shapes a
+probe still lacked: paint adjustment, confirm dialog, playback transport, and a dense direct-menu grid.
+
+### 687 — Verification
+
+```text
+compile-time  FX6_PAINT_DIRECT_PAGE_ROWS_COUNT  == 176
+              FX6_PAINT_OVERLAY_PAGE_ROWS_COUNT == 102
+              FX6_MEDIA_FORMAT_CONFIRM_ROWS_COUNT == 49
+              FX6_PLAYBACK_CONTROL_ROWS_COUNT   == 54
+              FX6_VS_ROW_STRIDE == 0x5c, FX6_VS_ROW_VALUE_OFF == 0x54
+machine       381 rows checked, 0 unresolved:
+                172 namespace-6 colour ids -> all present in color_cmn.uxc
+                 36 namespace-0 image ids  -> all present in image_00_169.uxc
+                 31 namespace-1/2 string ids -> all resolve
+build         header 4070 lines, clean under -Wall
+```
+
+The colour-heavy split (172 of 381, 45%) is characteristic of the paint pages: they are largely made
+of `view_fill` panels whose only data is a namespace-6 colour, which is why they are cheap to render
+but need the colour lookup to be exact.

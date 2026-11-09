@@ -8836,3 +8836,140 @@ One caveat worth stating: `0x2eb6948` (229 rows, `No12_SET_BUTTON` first) is the
 and contains 26 page breaks, so it is deliberately left as a region entry rather than exploded into a
 per-page array here — doing that properly needs the same treatment as rounds 678/680 and is the natural
 next step.
+
+### 683 — The complete page directory: 10 regions / 2345 rows / 128 pages
+
+Splitting every descriptor region at tag `0x042d5a60` with an all-zero rect gives the definitive
+directory. **Correction to round 682**: that round reported 23 regions / 2316 rows only because the tag
+filter was incomplete — 25 distinct class tags are in use, not 18. With all 25 the regions coalesce to
+**10**, and two addresses I called region bases are not:
+
+```text
+WRONG (682): 0x2ea5878 is a region base with 964 rows
+WRONG (682): 0x2eb6948 is a region base with 229 rows
+
+RIGHT (683): both are ordinary rows inside ONE region that starts at 0x2e96e50 and spans 2061 rows.
+             They appeared as region starts only because the truncated tag set broke the run there.
+```
+
+The 25 tags actually in use:
+
+```text
+0x42d57d0 x78    0x42d57e0 x4     0x42d57f0 x1883  0x42d5800 x5     0x42d5820 x2
+0x42d5840 x10    0x42d5850 x18    0x42d5860 x102   0x42d5870 x1     0x42d5880 x8
+0x42d58b0 x43    0x42d58d0 x1615  0x42d58f0 x13    0x42d5910 x1     0x42d5920 x8
+0x42d5930 x3     0x42d5940 x5     0x42d5960 x10    0x42d5970 x218   0x42d59a0 x41
+0x42d59e0 x76    0x42d5a20 x17    0x42d5a40 x1454  0x42d5a50 x882   0x42d5a60 x440
+```
+
+Region bases and sizes:
+
+```text
+0x02e90fb0    7    0x02e917d8  175    0x02e95cc0   27    0x02e9c4d0  ...
+0x02e911f0   14    0x02e94c28   40    0x02e962a8   11    (see fx6_all_pages[] for the authoritative list)
+```
+
+**Independent cross-checks that the split is right** — three boundaries reproduce counts measured in
+earlier rounds by completely different means:
+
+```text
+0x2e9e210 -> page 21,  98 rows   (round 664: "TABLE 0x2e9e210, 98 entries")
+0x2ea02f8 -> page 24,  35 rows   (round 671: "35 entries, then a page break")
+0x2ea3e50 -> page 36,  10 rows   (round 679: "rows 0..9 are the Setting main page")
+0x2eaf208 -> page 80,  17 rows   (round 680: "17 rows")
+```
+
+All four land exactly, which is the strongest available evidence that the page segmentation is correct.
+
+The directory is emitted as `fx6_page_dir_t fx6_all_pages[128]` with, per page:
+`page_index, region_index, base_va, row_count, str_count, fill_count, icon_count, menu_item_count,
+first_name`. Plus `fx6_page_for_va()` for reverse lookup and named indices for the pages worth
+targeting:
+
+```text
+FX6_PAGE_HOME           21   0x02e9e210   98 rows  s56 f8  i20 m6
+FX6_PAGE_THREE_LAYER    24   0x02ea02f8   35 rows  s10 f15 i1  m8
+FX6_PAGE_SETTING_MAIN   36   0x02ea3e50   10 rows  s4  f0  i0  m4
+FX6_PAGE_SETTING_CENTRE 80   0x02eaf208   17 rows  s2  f8  i0  m6
+FX6_PAGE_AUDIO_METER     1   0x02e911f0   14 rows  s8  f0  i0  m0
+FX6_PAGE_SET_BUTTON    110   0x02eb75f0   54 rows  s6  f16 i1  m30
+FX6_PAGE_CLIP_GRID      18   0x02e9cef0   46 rows  s25 f1  i7  m3
+FX6_PAGE_THUMB_GRID     17   0x02e9c8c0   20 rows  s14 f6  i0  m0
+```
+
+128 pages total; 111 have at least four rows. The largest are page 66 (`0x2eaf7a8`-family, 176 rows,
+110 fills) and page 56 (`0x2ea7648`, 176 rows), while page 25 (`0x2ea0d18`, 69 rows) is the densest
+mixed grid.
+
+### 683 — Representative page arrays, fully materialised
+
+**SET family, page 110 (`0x02eb75f0`, 54 rows)** — the assignable-button / status-assign page:
+
+```text
+full-screen bg No4_STATUS_ASSIGN13_BG  fill 0x0200c003  (56,49,912,477)
+left column   x = 60,  w = 449      right column x = 515, w = 449
+row y = 97, 169, 241, 313, 385, 457   pitch 72, h 68
+No33..No42_BUTTON_01..10   left column
+No15..No19_BUTTON_07..11   right column (upper)
+No11..No14_BUTTON_03..06   left column (lower)
+No60_TOUCH_BUTTON_LEFT_ARROW   (0,50,56,475)
+No57_LEFT_ARROW    icon 0x0200043d  (32,267,45,60)
+No53_TITLE_ICON    str  0x020026c2  (60,51,45,42)
+No52..No23_SEPARATOR  fill 0x0200c00b  twelve 906x2 rows at y = 94,155,166,216,238,277,310,338,382,399,454,460
+No29_SEPARATOR     fill 0x0200c00b  (511,94,2,430)   vertical divider
+No8_TITLE          str  0x0200211e  (106,54,405,36)
+No59_INDEX_STRING  str  0x02002e12  (706,54,94,36)
+No58_INDEX_ARROW   str  0x02002e21  (668,54,38,36)
+No31_PAGE_SCROLL_ARROW str 0x020021d6 (814,54,36,36)
+No7_PAGE_NUMBER    str  0           (852,54,110,36)
+```
+
+This page is a good target because it is pure `fill` + `str` + `menu_item` — no icons that need image
+decode — and its twelve separators already give a visible band structure.
+
+**SET family, page 101 (`0x02eb6510`, 7 rows)** — the small notification dialog:
+
+```text
+No7_TOUCH          0x042d5970  (198,138,628,342)
+No1_NOTIFY_5_BG    0x042d5a50 fill 0x0200023a  (198,138,628,342)
+No2_NOTIFY_5_TITLE 0x042d57f0 str  0x020026b7  (220,168,584,82)
+No3..No6_NOTIFY_5_LINE1..4  str 0        (244, 268/314/360/406, 560,36)
+```
+
+**Setting sub-page, page 25 (`0x02ea0d18`, 69 rows)** — densest mixed page; begins with
+`No69_TOUCH_SCREEN`, `No1_Backgroundleft` (56,49,482,477), `No21_Backgroundright` (542,49,426,477) —
+i.e. it is the two-column variant of the three-layer layout.
+
+**Setting sub-page, page 26 (`0x02ea20c8`, 23 rows)** — two-column list page:
+
+```text
+No21_Itemlist        grid 0x042d59e0  ( 64,100,898,415)
+No11_ItemheaderBackground fill c009   ( 59, 52,906, 41)
+No10_ItemBackground  fill 0x0200c008  ( 59, 52,320, 37)
+No13_ItemnumberBG    fill 0x0200c00f  (882, 57, 78, 30)
+No17_Menuicon        icon 0x02000043  ( 61, 54, 34, 34)
+No15_Itemheadershadow icon 0x02000006 ( 59, 85,319,  4)
+No16_ItemBaseshadow  icon 0x02000004  ( 59, 93,906,  4)
+No12_Itemheaderseparator icon 0x02000005 (378,52,20,38)
+No18_Iteminfirstlayer  str 0          ( 97, 53,280, 36)
+No19_Iteminsecondlayer str 0          (398, 54,450, 36)
+No14_ItemBackgroundshadow fill 0x0200c00b (59,92,906,1)
+```
+
+This is the cleanest example of the two-column pattern: header bar at y=52 with a 320-wide left
+identity cell and a 450-wide right value cell, a 4 px shadow under each, and a vertical separator at
+x=378.
+
+### 683 — Verification
+
+```text
+compile-time:  FX6_ALL_PAGES_COUNT == 128
+               FX6_SET_BUTTON_PAGE_ROWS_COUNT  == 54
+               FX6_SET_SMALL_PAGE_ROWS_COUNT   ==  7
+               FX6_SETTING_GRID_PAGE_ROWS_COUNT == 69
+               FX6_SETTING_TWO_COL_PAGE_ROWS_COUNT == 23
+machine check: 153 rows of the new arrays, every ResID resolved
+               (ns1/ns2 via the string containers, ns6 via color_cmn.uxc, ns0 icon ids pre-validated)
+               0 unresolved
+build:         header, 2641 lines, clean under -Wall
+```

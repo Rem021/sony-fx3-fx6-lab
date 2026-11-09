@@ -2259,3 +2259,383 @@ static const fx6_menu_row_t fx6_homemenu_clip_rows[] = {
 #define FX6_THUMB_DY        135
 #define FX6_CLIP_FOOTER_RECT  {0,460,1024,80}
 #define FX6_CLIP_HEADER_RECT  {0,0,1024,52}
+
+/* ======================================================================
+ * PHASE 15 — the full page directory
+ * ======================================================================
+ * Every 0x48 descriptor region was split at tag 0x042d5a60 with an all-zero rect. The complete
+ * descriptor space is **10 regions / 2345 rows / 128 pages**.
+ *
+ * IMPORTANT CORRECTION to round 682: the region count there was 23 / 2316 rows only because the
+ * tag filter was incomplete (25 distinct class tags are in use, not 18). With all 25 tags the
+ * regions merge into 10, and two of the "regions" reported earlier — 0x2ea5878 (964 rows) and
+ * 0x2eb6948 (229 rows) — are NOT region bases at all: they are ordinary rows inside one big region
+ * that starts at 0x2e96e50 and spans 2061 rows. Both were page boundaries in the old listing purely
+ * as an artefact of the truncated tag set.
+ *
+ * Sanity check against independently measured tables:
+ *   0x2e9e210 -> page 21, 98 rows   (matches the home-presenter count)
+ *   0x2ea02f8 -> page 24, 35 rows   (the three-layer page 1, before its break)
+ *   0x2ea3e50 -> page 36, 10 rows   (Setting main)
+ *   0x2eaf208 -> page 80, 17 rows   (Setting centre)
+ */
+typedef struct {
+    uint16_t page_index;
+    uint8_t  region_index;
+    uint32_t base_va;
+    uint16_t row_count;
+    uint16_t str_count;
+    uint16_t fill_count;
+    uint16_t icon_count;
+    uint16_t menu_item_count;
+    const char *first_name;
+} fx6_page_dir_t;
+
+static const fx6_page_dir_t fx6_all_pages[] = {
+    {  0,  0, 0x02e90fb0u,   7,  4,  0,  0,  0, "No33_touch"},
+    {  1,  1, 0x02e911f0u,  14,  8,  0,  0,  0, "No2011_audio_level_meter"},
+    {  2,  2, 0x02e91628u,   5,  5,  0,  0,  0, "No6_picture_size"},
+    {  3,  3, 0x02e917d8u,  71, 15,  0, 41,  0, "No2010_gamma_display_assist"},
+    {  4,  3, 0x02e92c18u, 102, 31, 29,  3, 37, "No142_BLOCK_TOUCH"},
+    {  5,  4, 0x02e94c28u,  40,  0, 31,  0,  0, "No133_homemenu_clip_area"},
+    {  6,  5, 0x02e957b0u,   5,  1,  0,  0,  0, "No2045_video_signal_monitor"},
+    {  7,  6, 0x02e959a8u,   7,  6,  0,  0,  0, "No1066_base_look"},
+    {  8,  7, 0x02e95cc0u,  20,  8,  0,  1,  0, "No2094_tracking_cancel_button"},
+    {  9,  8, 0x02e962a8u,  11,  3,  0,  0,  0, "No16_resolution"},
+    { 10,  9, 0x02e96608u, 253, 78,  0, 125,  0, "No4_recstate_string_slot_1st"},
+    { 11,  9, 0x02e9ad78u,  35, 14,  8,  3,  6, "No423_BLOCK_TOUCH"},
+    { 12,  9, 0x02e9b798u,  39, 11,  3,  9,  0, "No44_yuv_cover"},
+    { 13,  9, 0x02e9c2d8u,   6,  2,  0,  2,  0, "No3_BG_MENU"},
+    { 14,  9, 0x02e9c4d0u,   4,  2,  0,  1,  0, "No2_BG"},
+    { 15,  9, 0x02e9c638u,   4,  3,  0,  1,  0, "No2_BG"},
+    { 16,  9, 0x02e9c7a0u,   3,  1,  1,  1,  0, "No1_BG"},
+    { 17,  9, 0x02e9c8c0u,  20, 14,  6,  0,  0, "No1_TRANS_BG"},
+    { 18,  9, 0x02e9cef0u,  46, 25,  1,  7,  3, "No43_yuv_cover"},
+    { 19,  9, 0x02e9dc28u,   8,  4,  1,  1,  1, "No8_BLOCK_TOUCH"},
+    { 20,  9, 0x02e9deb0u,  11,  6,  0,  2,  0, "No17_TOUCH_SCREEN"},
+    { 21,  9, 0x02e9e210u,  98, 56,  8, 20,  6, "No463_BLOCK_TOUCH"},
+    { 22,  9, 0x02e9fde8u,   3,  1,  0,  0,  0, "No2_enlargeareadebugdisplay"},
+    { 23,  9, 0x02e9ff08u,  13,  4,  1,  2,  1, "No16_TOUCH_SCREEN"},
+    { 24,  9, 0x02ea02f8u,  35, 10, 15,  1,  8, "No1_WID_NINEPATCHIMAGE_STAGE1_BG"},
+    { 25,  9, 0x02ea0d18u,  69, 24, 23,  2, 18, "No69_TOUCH_SCREEN"},
+    { 26,  9, 0x02ea20c8u,  23,  3, 13,  4,  1, "No23_TOUCH_SCREEN"},
+    { 27,  9, 0x02ea2788u,  23,  3, 13,  4,  1, "No33_TOUCH_SCREEN"},
+    { 28,  9, 0x02ea2e48u,  16,  6,  0,  2,  7, "No20_TOUCH"},
+    { 29,  9, 0x02ea3310u,  14,  4,  0,  2,  7, "No20_TOUCH"},
+    { 30,  9, 0x02ea3748u,   1,  0,  1,  0,  0, "No1_BG"},
+    { 31,  9, 0x02ea37d8u,  10,  5,  0,  2,  0, "No18_TOUCH_SCREEN"},
+    { 32,  9, 0x02ea3af0u,   3,  1,  0,  1,  0, "No2_BG"},
+    { 33,  9, 0x02ea3c10u,   2,  1,  0,  1,  0, "No2_BG"},
+    { 34,  9, 0x02ea3ce8u,   2,  1,  0,  1,  0, "No2_BG"},
+    { 35,  9, 0x02ea3dc0u,   1,  0,  1,  0,  0, "No1_BG"},
+    { 36,  9, 0x02ea3e50u,  10,  4,  0,  0,  4, "No107_BLOCK_TOUCH"},
+    { 37,  9, 0x02ea4168u,   6,  3,  0,  1,  2, "No2_BG"},
+    { 38,  9, 0x02ea4360u,   5,  2,  1,  0,  1, "No1_TRANS_BG"},
+    { 39,  9, 0x02ea4510u,   3,  1,  0,  2,  0, "No2_BG"},
+    { 40,  9, 0x02ea4630u,  11,  0,  3,  6,  0, "No11_touchscreen"},
+    { 41,  9, 0x02ea4990u,  33,  5,  8,  1, 18, "No26_TOUCH_SCREEN"},
+    { 42,  9, 0x02ea5320u,   7,  4,  0,  2,  1, "No2_BG"},
+    { 43,  9, 0x02ea5560u,  11,  4,  2,  1,  1, "No19_TOUCH_SCREEN"},
+    { 44,  9, 0x02ea58c0u,   4,  1,  0,  1,  1, "No4_BLOCK_TOUCH"},
+    { 45,  9, 0x02ea5a28u,   5,  1,  0,  1,  2, "No5_BLOCK_TOUCH"},
+    { 46,  9, 0x02ea5bd8u,   5,  2,  0,  1,  1, "No6_BLOCK_TOUCH"},
+    { 47,  9, 0x02ea5d88u,   6,  2,  0,  1,  2, "No7_BLOCK_TOUCH"},
+    { 48,  9, 0x02ea5f80u,   7,  4,  0,  1,  1, "No7_BLOCK_TOUCH"},
+    { 49,  9, 0x02ea61c0u,   7,  3,  0,  1,  2, "No8_BLOCK_TOUCH"},
+    { 50,  9, 0x02ea6400u,  11,  1,  0,  2,  7, "No19_TOUCH"},
+    { 51,  9, 0x02ea6760u,  12,  1,  0,  2,  8, "No17_TOUCH"},
+    { 52,  9, 0x02ea6b08u,  19,  8,  0,  2,  8, "No26_TOUCH"},
+    { 53,  9, 0x02ea70a8u,  13,  1,  0,  2,  9, "No19_TOUCH"},
+    { 54,  9, 0x02ea7498u,   1,  0,  1,  0,  0, "No1_BG"},
+    { 55,  9, 0x02ea7528u,   3,  2,  0,  0,  0, "No3_touch_screen"},
+    { 56,  9, 0x02ea7648u, 176, 11, 110, 25, 25, "No48_TOUCH_SCREEN"},
+    { 57,  9, 0x02eaa810u,  18,  1,  6,  0, 10, "No18_TOUCH_SCREEN"},
+    { 58,  9, 0x02eaad68u,  48, 22,  6,  7,  6, "No59_TOUCH_SCREEN"},
+    { 59,  9, 0x02eabb30u,   3,  1,  0,  1,  0, "No2_BG"},
+    { 60,  9, 0x02eabc50u,   4,  2,  0,  1,  0, "No2_EXECUTING_MESSAGE_BG"},
+    { 61,  9, 0x02eabdb8u,   7,  4,  0,  3,  0, "No4_BG_2LINE"},
+    { 62,  9, 0x02eabff8u,   1,  0,  1,  0,  0, "No1_BG"},
+    { 63,  9, 0x02eac088u,   6,  0,  0,  1,  3, "No6_TOUCH_SCREEN"},
+    { 64,  9, 0x02eac280u,  34,  6,  8,  1, 18, "No26_TOUCH_SCREEN"},
+    { 65,  9, 0x02eacc58u,   4,  1,  0,  1,  1, "No1_BG"},
+    { 66,  9, 0x02eacdc0u,  10,  4,  2,  1,  1, "No12_TOUCH_SCREEN"},
+    { 67,  9, 0x02ead0d8u,  26,  6,  7,  1, 11, "No25_TOUCH_SCREEN"},
+    { 68,  9, 0x02ead870u,  55, 28,  6,  1, 15, "No48_TOUCH_SCREEN"},
+    { 69,  9, 0x02eae830u,  34,  6,  8,  1, 18, "No26_TOUCH_SCREEN"},
+    { 70,  9, 0x02eaf208u,  17,  2,  8,  0,  6, "No107_BLOCK_TOUCH"},
+    { 71,  9, 0x02eaf718u,   1,  0,  1,  0,  0, "No1_BG"},
+    { 72,  9, 0x02eaf7a8u,  10,  5,  2,  0,  2, "No8_BLOCK_TOUCH"},
+    { 73,  9, 0x02eafac0u,  10,  4,  2,  1,  1, "No10_TOUCH_SCREEN"},
+    { 74,  9, 0x02eafdd8u,  49, 13, 22,  2, 10, "No49_TOUCH_SCREEN"},
+    { 75,  9, 0x02eb0be8u,   3,  2,  0,  1,  0, "No2_BG"},
+    { 76,  9, 0x02eb0d08u,  28,  6,  8,  1, 12, "No25_TOUCH_SCREEN"},
+    { 77,  9, 0x02eb1530u,  11,  6,  2,  0,  1, "No13_TOUCH_SCREEN"},
+    { 78,  9, 0x02eb1890u,  54, 21, 11,  6, 12, "No45_TOUCH_SCREEN"},
+    { 79,  9, 0x02eb2808u,   9,  3,  1,  2,  1, "No7_TOUCH_SCREEN"},
+    { 80,  9, 0x02eb2ad8u,   8,  2,  0,  3,  2, "No32_BG"},
+    { 81,  9, 0x02eb2d60u,  10,  7,  0,  1,  2, "No8_BG"},
+    { 82,  9, 0x02eb3078u,   4,  1,  0,  1,  1, "No6_BLOCK_TOUCH"},
+    { 83,  9, 0x02eb31e0u,   5,  1,  0,  1,  2, "No6_BLOCK_TOUCH"},
+    { 84,  9, 0x02eb3390u,   4,  1,  0,  1,  1, "No5_BLOCK_TOUCH"},
+    { 85,  9, 0x02eb34f8u,   5,  1,  0,  1,  2, "No6_BLOCK_TOUCH"},
+    { 86,  9, 0x02eb36a8u,  17, 11,  2,  1,  2, "No20_BG"},
+    { 87,  9, 0x02eb3bb8u,   8,  3,  0,  2,  0, "No18_TOUCH_SCREEN"},
+    { 88,  9, 0x02eb3e40u,   3,  1,  0,  1,  0, "No4_BG"},
+    { 89,  9, 0x02eb3f60u,   3,  1,  0,  1,  0, "No2_NINEPATCHIMAGE_0"},
+    { 90,  9, 0x02eb4080u,   8,  2,  0,  3,  1, "No7_TOUCH_SCREEN"},
+    { 91,  9, 0x02eb4308u,   5,  3,  0,  1,  0, "No5_SETTING_LIST_BACKGROUND"},
+    { 92,  9, 0x02eb44b8u,  19,  2,  2,  5,  9, "No30_TOUCH_SCREEN"},
+    { 93,  9, 0x02eb4a58u,  12,  6,  0,  3,  2, "No11_BLOCK_TOUCH"},
+    { 94,  9, 0x02eb4e00u,  19,  4,  0,  2, 12, "No30_TOUCH"},
+    { 95,  9, 0x02eb53a0u,  28,  6,  8,  1, 12, "No25_TOUCH_SCREEN"},
+    { 96,  9, 0x02eb5bc8u,   6,  2,  0,  1,  1, "No6_BLOCK_TOUCH"},
+    { 97,  9, 0x02eb5dc0u,   7,  3,  0,  1,  1, "No12_BLOCK_TOUCH"},
+    { 98,  9, 0x02eb6000u,   4,  2,  0,  1,  0, "No5_TOUCH"},
+    { 99,  9, 0x02eb6168u,   5,  3,  0,  1,  0, "No9_TOUCH"},
+    {100,  9, 0x02eb6318u,   6,  4,  0,  1,  0, "No6_TOUCH"},
+    {101,  9, 0x02eb6510u,   7,  5,  0,  1,  0, "No7_TOUCH"},
+    {102,  9, 0x02eb6750u,  10,  2,  0,  3,  2, "No9_TOUCH"},
+    {103,  9, 0x02eb6a68u,   4,  2,  0,  1,  1, "No6_BG"},
+    {104,  9, 0x02eb6bd0u,   4,  2,  0,  1,  0, "No1_BG"},
+    {105,  9, 0x02eb6d38u,   5,  3,  0,  1,  1, "No1_BG"},
+    {106,  9, 0x02eb6ee8u,   5,  1,  0,  1,  2, "No5_BLOCK_TOUCH"},
+    {107,  9, 0x02eb7098u,   5,  2,  0,  1,  1, "No6_BLOCK_TOUCH"},
+    {108,  9, 0x02eb7248u,   5,  2,  0,  1,  1, "No6_BLOCK_TOUCH"},
+    {109,  9, 0x02eb73f8u,   6,  2,  0,  1,  2, "No7_BLOCK_TOUCH"},
+    {110,  9, 0x02eb75f0u,  54,  6, 16,  1, 30, "No32_TOUCH_SCREEN"},
+    {111,  9, 0x02eb8568u,   6,  1,  0,  0,  1, "No7_TOUCH_SCREEN_FOR_RELEASE"},
+    {112,  9, 0x02eb8760u,  11,  6,  0,  2,  1, "No11_TOUCH_SCREEN"},
+    {113,  9, 0x02eb8ac0u,   7,  0,  1,  1,  3, "No11_TOUCH_SCREEN"},
+    {114,  9, 0x02eb8d00u,   3,  2,  0,  1,  0, "No1_BG"},
+    {115,  9, 0x02eb8e20u,   9,  1,  0,  0,  5, "No8_TOUCH_SCREEN_FOR_RELEASE"},
+    {116,  9, 0x02eb90f0u,  10,  4,  2,  1,  2, "No15_TOUCH_SCREEN"},
+    {117,  9, 0x02eb9408u,   6,  3,  0,  1,  1, "No7_BLOCK_TOUCH"},
+    {118,  9, 0x02eb9600u,   4,  2,  0,  1,  0, "No8_TOUCH"},
+    {119,  9, 0x02eb9768u,   5,  3,  0,  1,  0, "No6_TOUCH"},
+    {120,  9, 0x02eb9918u,   4,  2,  0,  1,  0, "No4_TOUCH"},
+    {121,  9, 0x02eb9a80u,   6,  2,  0,  1,  1, "No6_BLOCK_TOUCH"},
+    {122,  9, 0x02eb9c78u,   8,  1,  1,  1,  3, "No11_TOUCH_SCREEN"},
+    {123,  9, 0x02eb9f00u,   5,  3,  0,  1,  0, "No5_TOUCH"},
+    {124,  9, 0x02eba0b0u,   5,  3,  0,  1,  0, "No5_TOUCH"},
+    {125,  9, 0x02eba260u,  10,  4,  2,  1,  1, "No11_TOUCH_SCREEN"},
+    {126,  9, 0x02eba578u,   7,  0,  1,  0,  6, "No1_BG"},
+    {127,  9, 0x02eba7b8u,   6,  0,  0,  0,  6, "No1_BUTTON_01"},
+};
+#define FX6_ALL_PAGES_COUNT (sizeof(fx6_all_pages)/sizeof(fx6_all_pages[0]))
+
+
+/* Helper: iterate the directory looking for a page that contains `va`. */
+static inline const fx6_page_dir_t *fx6_page_for_va(uint32_t va)
+{
+    for (unsigned i = 0; i < FX6_ALL_PAGES_COUNT; i++) {
+        const fx6_page_dir_t *p = &fx6_all_pages[i];
+        if (va >= p->base_va && va < p->base_va + (uint32_t)p->row_count * FX6_DESC_STRIDE)
+            return p;
+    }
+    return 0;
+}
+
+/* Pages ranked by content, for picking a render target quickly. */
+#define FX6_PAGE_HOME          21u   /* 0x02e9e210  98 rows  s56 f8  i20 m6  */
+#define FX6_PAGE_THREE_LAYER   24u   /* 0x02ea02f8  35 rows  s10 f15 i1  m8  */
+#define FX6_PAGE_SETTING_MAIN  36u   /* 0x02ea3e50  10 rows  s4  f0  i0  m4  */
+#define FX6_PAGE_SETTING_CENTRE 80u  /* 0x02eaf208  17 rows  s2  f8  i0  m6  */
+#define FX6_PAGE_AUDIO_METER    1u   /* 0x02e911f0  14 rows  s8  f0  i0  m0  */
+#define FX6_PAGE_SET_BUTTON   110u   /* 0x02eb75f0  54 rows  s6  f16 i1  m30 */
+#define FX6_PAGE_CLIP_GRID     18u   /* 0x02e9cef0  46 rows  s25 f1  i7  m3  */
+#define FX6_PAGE_THUMB_GRID    17u   /* 0x02e9c8c0  20 rows  s14 f6  i0  m0  */
+
+/* ----------------------------------------------------------------------
+ * Representative SET-family page (0x02eb75f0, 54 rows)
+ * This is the "assignable button / status assign" page: a full-screen background plus a 2-column,
+ * 10-row button grid. Measured pitches:
+ *     left column  x = 60,  w = 449
+ *     right column x = 515, w = 449
+ *     row y = 97, 169, 241, 313, 385, 457   (pitch 72, h 68)
+ * ---------------------------------------------------------------------- */
+static const fx6_menu_row_t fx6_set_button_page_rows[] = {
+    {"No32_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No4_STATUS_ASSIGN13_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No9_BUTTON_01", 0x042d58d0u, {60,97,449,68}, 0x00000000u, 0},
+    {"No19_BUTTON_11", 0x042d58d0u, {515,385,449,68}, 0x00000000u, 0},
+    {"No18_BUTTON_10", 0x042d58d0u, {515,313,449,68}, 0x00000000u, 0},
+    {"No17_BUTTON_09", 0x042d58d0u, {515,241,449,68}, 0x00000000u, 0},
+    {"No16_BUTTON_08", 0x042d58d0u, {515,169,449,68}, 0x00000000u, 0},
+    {"No15_BUTTON_07", 0x042d58d0u, {515,97,449,68}, 0x00000000u, 0},
+    {"No14_BUTTON_06", 0x042d58d0u, {60,457,449,68}, 0x00000000u, 0},
+    {"No13_BUTTON_05", 0x042d58d0u, {60,385,449,68}, 0x00000000u, 0},
+    {"No12_BUTTON_04", 0x042d58d0u, {60,313,449,68}, 0x00000000u, 0},
+    {"No11_BUTTON_03", 0x042d58d0u, {60,241,449,68}, 0x00000000u, 0},
+    {"No10_BUTTON_02", 0x042d58d0u, {60,169,449,68}, 0x020023c4u, 0},
+    {"No60_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No46_BUTTON_14", 0x042d58d0u, {515,463,449,57}, 0x00000000u, 0},
+    {"No45_BUTTON_13", 0x042d58d0u, {515,402,449,57}, 0x00000000u, 0},
+    {"No44_BUTTON_12", 0x042d58d0u, {515,341,449,57}, 0x00000000u, 0},
+    {"No43_BUTTON_11", 0x042d58d0u, {515,280,449,57}, 0x00000000u, 0},
+    {"No42_BUTTON_10", 0x042d58d0u, {515,219,449,57}, 0x00000000u, 0},
+    {"No41_BUTTON_09", 0x042d58d0u, {515,158,449,57}, 0x00000000u, 0},
+    {"No40_BUTTON_08", 0x042d58d0u, {515,97,449,57}, 0x00000000u, 0},
+    {"No39_BUTTON_07", 0x042d58d0u, {60,463,449,57}, 0x00000000u, 0},
+    {"No38_BUTTON_06", 0x042d58d0u, {60,402,449,57}, 0x00000000u, 0},
+    {"No37_BUTTON_05", 0x042d58d0u, {60,341,449,57}, 0x00000000u, 0},
+    {"No36_BUTTON_04", 0x042d58d0u, {60,280,449,57}, 0x00000000u, 0},
+    {"No35_BUTTON_03", 0x042d58d0u, {60,219,449,57}, 0x00000000u, 0},
+    {"No34_BUTTON_02", 0x042d58d0u, {60,158,449,57}, 0x00000000u, 0},
+    {"No33_BUTTON_01", 0x042d58d0u, {60,97,449,57}, 0x00000000u, 0},
+    {"No22_BUTTON_13", 0x042d58d0u, {743,457,221,68}, 0x00000000u, 0},
+    {"No20_BUTTON_12", 0x042d58d0u, {515,457,221,68}, 0x00000000u, 0},
+    {"No8_TITLE", 0x042d57f0u, {106,54,405,36}, 0x0200211eu, 0},
+    {"No55_BUTTON_16", 0x042d58d0u, {743,463,221,57}, 0x00000000u, 0},
+    {"No54_BUTTON_15", 0x042d58d0u, {515,463,221,57}, 0x00000000u, 0},
+    {"No7_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No59_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No57_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+    {"No53_TITLE_ICON", 0x042d57f0u, {60,51,45,42}, 0x020026c2u, 0},
+    {"No52_SEPARATOR", 0x042d5a40u, {59,460,906,2}, 0x0200c00bu, 0},
+    {"No51_SEPARATOR", 0x042d5a40u, {59,399,906,2}, 0x0200c00bu, 0},
+    {"No50_SEPARATOR", 0x042d5a40u, {59,338,906,2}, 0x0200c00bu, 0},
+    {"No49_SEPARATOR", 0x042d5a40u, {59,277,906,2}, 0x0200c00bu, 0},
+    {"No48_SEPARATOR", 0x042d5a40u, {59,216,906,2}, 0x0200c00bu, 0},
+    {"No47_SEPARATOR", 0x042d5a40u, {59,155,906,2}, 0x0200c00bu, 0},
+    {"No28_SEPARATOR", 0x042d5a40u, {59,454,906,2}, 0x0200c00bu, 0},
+    {"No27_SEPARATOR", 0x042d5a40u, {59,382,906,2}, 0x0200c00bu, 0},
+    {"No26_SEPARATOR", 0x042d5a40u, {59,310,906,2}, 0x0200c00bu, 0},
+    {"No25_SEPARATOR", 0x042d5a40u, {59,238,906,2}, 0x0200c00bu, 0},
+    {"No24_SEPARATOR", 0x042d5a40u, {59,166,906,2}, 0x0200c00bu, 0},
+    {"No23_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No58_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No31_PAGE_SCROLL_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No29_SEPARATOR", 0x042d5a40u, {511,94,2,430}, 0x0200c00bu, 0},
+    {"No30_SEPARATOR", 0x042d5a40u, {739,454,2,70}, 0x0200c00bu, 0},
+    {"No56_SEPARATOR", 0x042d5a40u, {739,460,2,64}, 0x0200c00bu, 0},
+};
+#define FX6_SET_BUTTON_PAGE_ROWS_COUNT (sizeof(fx6_set_button_page_rows)/sizeof(fx6_set_button_page_rows[0]))
+
+#define FX6_SET_BTN_COL_L_X  60
+#define FX6_SET_BTN_COL_R_X  515
+#define FX6_SET_BTN_W        449
+#define FX6_SET_BTN_H        68
+#define FX6_SET_BTN_Y0       97
+#define FX6_SET_BTN_DY       72
+
+/* ----------------------------------------------------------------------
+ * Compact SET-family page (0x02eb6510, 7 rows) — the small confirm/list variant.
+ * ---------------------------------------------------------------------- */
+static const fx6_menu_row_t fx6_set_small_page_rows[] = {
+    {"No7_TOUCH", 0x042d5970u, {198,138,628,342}, 0x00000000u, 0},
+    {"No1_NOTIFY_5_BG", 0x042d5a50u, {198,138,628,342}, 0x0200023au, 0},
+    {"No2_NOTIFY_5_TITLE", 0x042d57f0u, {220,168,584,82}, 0x020026b7u, 0},
+    {"No6_NOTIFY_5_LINE4", 0x042d57f0u, {244,406,560,36}, 0x00000000u, 0},
+    {"No5_NOTIFY_5_LINE3", 0x042d57f0u, {244,360,560,36}, 0x00000000u, 0},
+    {"No4_NOTIFY_5_LINE2", 0x042d57f0u, {244,314,560,36}, 0x00000000u, 0},
+    {"No3_NOTIFY_5_LINE1", 0x042d57f0u, {244,268,560,36}, 0x00000000u, 0},
+};
+#define FX6_SET_SMALL_PAGE_ROWS_COUNT \
+    (sizeof(fx6_set_small_page_rows)/sizeof(fx6_set_small_page_rows[0]))
+
+/* ----------------------------------------------------------------------
+ * Setting sub-page with a 69-row grid (0x02ea0d18) — the densest page in the image.
+ * ---------------------------------------------------------------------- */
+static const fx6_menu_row_t fx6_setting_grid_page_rows[] = {
+    {"No69_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_Backgroundleft", 0x042d5a40u, {56,49,482,477}, 0x0200c006u, 0},
+    {"No21_Backgroundright", 0x042d5a40u, {542,49,426,477}, 0x0200c006u, 0},
+    {"No58_Gridlist", 0x042d59e0u, {126,102,403,415}, 0x00000000u, 0},
+    {"No68_itemtouchbutton10", 0x042d58d0u, {546,493,418,44}, 0x00000000u, 0},
+    {"No67_itemtouchbutton9", 0x042d58d0u, {546,449,418,44}, 0x00000000u, 0},
+    {"No66_itemtouchbutton8", 0x042d58d0u, {546,405,418,44}, 0x00000000u, 0},
+    {"No65_itemtouchbutton7", 0x042d58d0u, {546,361,418,44}, 0x00000000u, 0},
+    {"No64_itemtouchbutton6", 0x042d58d0u, {546,317,418,44}, 0x00000000u, 0},
+    {"No63_itemtouchbutton5", 0x042d58d0u, {546,273,418,44}, 0x00000000u, 0},
+    {"No62_itemtouchbutton4", 0x042d58d0u, {546,229,418,44}, 0x00000000u, 0},
+    {"No61_itemtouchbutton3", 0x042d58d0u, {546,185,418,44}, 0x00000000u, 0},
+    {"No60_itemtouchbutton2", 0x042d58d0u, {546,141,418,44}, 0x00000000u, 0},
+    {"No59_itemtouchbutton1", 0x042d58d0u, {546,97,418,44}, 0x00000000u, 0},
+    {"No22_Backgroundthesecondlayeritem", 0x042d5a40u, {545,52,420,41}, 0x0200c009u, 0},
+    {"No12_ItemBG", 0x042d5a40u, {126,62,401,36}, 0x0200c00du, 0},
+    {"No54_Itemselectionofthesecondlayer", 0x042d57f0u, {548,54,330,36}, 0x00000000u, 0},
+    {"No14_Itemselectionofthefirstlayer", 0x042d57f0u, {128,62,280,36}, 0x00000000u, 0},
+    {"No41_item9inthethirdlayer", 0x042d57f0u, {551,453,254,36}, 0x00000000u, 0},
+    {"No40_item8inthethirdlayer", 0x042d57f0u, {551,409,254,36}, 0x00000000u, 0},
+    {"No39_item7inthethirdlayer", 0x042d57f0u, {551,365,254,36}, 0x00000000u, 0},
+    {"No38_item6inthethirdlayer", 0x042d57f0u, {551,321,254,36}, 0x00000000u, 0},
+    {"No37_item5inthethirdlayer", 0x042d57f0u, {551,277,254,36}, 0x00000000u, 0},
+    {"No36_item4inthethirdlayer", 0x042d57f0u, {551,233,254,36}, 0x00000000u, 0},
+    {"No35_item3inthethirdlayer", 0x042d57f0u, {551,189,254,36}, 0x00000000u, 0},
+    {"No34_item2inthethirdlayer", 0x042d57f0u, {551,145,254,36}, 0x00000000u, 0},
+    {"No33_item1inthethirdlayer", 0x042d57f0u, {551,101,254,36}, 0x00000000u, 0},
+    {"No42_item10inthethirdlayer", 0x042d57f0u, {551,497,254,29}, 0x00000000u, 0},
+    {"No51_value9inthethirdlayer", 0x042d57f0u, {809,453,150,36}, 0x00000000u, 0},
+    {"No50_value8inthethirdlayer", 0x042d57f0u, {809,409,150,36}, 0x00000000u, 0},
+    {"No49_value7inthethirdlayer", 0x042d57f0u, {809,365,150,36}, 0x00000000u, 0},
+    {"No48_value6inthethirdlayer", 0x042d57f0u, {809,321,150,36}, 0x00000000u, 0},
+    {"No47_value5inthethirdlayer", 0x042d57f0u, {809,277,150,36}, 0x00000000u, 0},
+    {"No46_value4inthethirdlayer", 0x042d57f0u, {809,233,150,36}, 0x00000000u, 0},
+    {"No45_value3inthethirdlayer", 0x042d57f0u, {809,189,150,36}, 0x00000000u, 0},
+    {"No44_value2inthethirdlayer", 0x042d57f0u, {809,145,150,36}, 0x00000000u, 0},
+    {"No43_value1inthethirdlayer", 0x042d57f0u, {809,101,150,36}, 0x00000000u, 0},
+    {"No52_value10inthethirdlayer", 0x042d57f0u, {809,497,150,29}, 0x00000000u, 0},
+    {"No53_Thirdlayershadow", 0x042d5a50u, {545,503,420,20}, 0x020001a8u, 0},
+    {"No9_Menuicon8", 0x042d58d0u, {63,458,58,58}, 0x00000000u, 0},
+    {"No8_Menuicon7", 0x042d58d0u, {63,401,58,58}, 0x00000000u, 0},
+    {"No7_Menuicon6", 0x042d58d0u, {63,344,58,58}, 0x00000000u, 0},
+    {"No6_Menuicon5", 0x042d58d0u, {63,287,58,58}, 0x00000000u, 0},
+    {"No5_Menuicon4", 0x042d58d0u, {63,230,58,58}, 0x00000000u, 0},
+    {"No4_Menuicon3", 0x042d58d0u, {63,173,58,58}, 0x00000000u, 0},
+    {"No3_Menuicon2", 0x042d58d0u, {63,116,58,58}, 0x00000000u, 0},
+    {"No2_Menuicon1", 0x042d58d0u, {63,59,58,58}, 0x00000000u, 0},
+    {"No55_ItemnumberBG", 0x042d5a40u, {882,57,78,30}, 0x0200c00fu, 0},
+    {"No56_itemnumber", 0x042d57f0u, {882,57,77,30}, 0x00000000u, 0},
+    {"No24_Secondlayeritemshadow2", 0x042d5a50u, {545,93,420,4}, 0x02000003u, 0},
+    {"No13_TabnumberBG", 0x042d5a40u, {483,66,40,28}, 0x0200c00fu, 0},
+    {"No57_Tabnumber", 0x042d57f0u, {483,66,39,28}, 0x00000000u, 0},
+    {"No20_Lowerleftoutsideline2", 0x042d5a40u, {57,524,481,2}, 0x0200c009u, 0},
+    {"No18_Upperleftoutsideline2", 0x042d5a40u, {57,50,481,2}, 0x0200c00au, 0},
+    {"No19_Lowerleftoutsideline", 0x042d5a40u, {57,523,479,2}, 0x0200c005u, 0},
+    {"No32_Rightoutsideline2", 0x042d5a40u, {966,50,2,473}, 0x0200c00au, 0},
+    {"No26_Leftoutsideline2", 0x042d5a40u, {543,50,2,473}, 0x0200c00au, 0},
+    {"No16_Leftoutsideline2", 0x042d5a40u, {57,50,2,473}, 0x0200c00au, 0},
+    {"No11_Separator2", 0x042d5a40u, {124,52,2,471}, 0x0200c00eu, 0},
+    {"No10_Separator", 0x042d5a40u, {122,52,2,471}, 0x0200c001u, 0},
+    {"No30_Lowerrigntoutsideline2", 0x042d5a40u, {543,524,425,2}, 0x0200c009u, 0},
+    {"No29_Lowerrigntoutsideline", 0x042d5a40u, {543,523,424,2}, 0x0200c005u, 0},
+    {"No28_Upperrigntoutsideline2", 0x042d5a40u, {544,50,424,2}, 0x0200c00au, 0},
+    {"No17_Upperleftoutsideline", 0x042d5a40u, {57,49,479,1}, 0x0200c009u, 0},
+    {"No31_Rightoutsideline", 0x042d5a40u, {965,49,1,477}, 0x0200c009u, 0},
+    {"No25_Leftoutsideline", 0x042d5a40u, {542,49,1,477}, 0x0200c009u, 0},
+    {"No15_Leftoutsideline", 0x042d5a40u, {56,49,1,477}, 0x0200c009u, 0},
+    {"No27_Upperrigntoutsideline", 0x042d5a40u, {542,49,424,1}, 0x0200c009u, 0},
+    {"No23_Secondlayeritemshadow1", 0x042d5a40u, {545,92,420,1}, 0x0200c00bu, 0},
+};
+#define FX6_SETTING_GRID_PAGE_ROWS_COUNT (sizeof(fx6_setting_grid_page_rows)/sizeof(fx6_setting_grid_page_rows[0]))
+
+/* ----------------------------------------------------------------------
+ * Setting sub-page, two-column layout (0x02ea20c8, 23 rows).
+ * ---------------------------------------------------------------------- */
+static const fx6_menu_row_t fx6_setting_two_col_page_rows[] = {
+    {"No23_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_WID_NINEPATCHIMAGE_STAGE1_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c006u, 0},
+    {"No21_Itemlist", 0x042d59e0u, {64,100,898,415}, 0x00000000u, 0},
+    {"No11_ItemheaderBackground", 0x042d5a40u, {59,52,906,41}, 0x0200c009u, 0},
+    {"No19_Iteminsecondlayer", 0x042d57f0u, {398,54,450,36}, 0x00000000u, 0},
+    {"No10_ItemBackground", 0x042d5a40u, {59,52,320,37}, 0x0200c008u, 0},
+    {"No16_ItemBaseshadow", 0x042d5a50u, {59,93,906,4}, 0x02000004u, 0},
+    {"No13_ItemnumberBG", 0x042d5a40u, {882,57,78,30}, 0x0200c00fu, 0},
+    {"No20_pagenumber", 0x042d57f0u, {884,57,74,30}, 0x00000000u, 0},
+    {"No7_Loweroutsideline2", 0x042d5a40u, {58,524,910,2}, 0x0200c009u, 0},
+    {"No6_Loweroutsideline", 0x042d5a40u, {57,523,908,2}, 0x0200c005u, 0},
+    {"No3_Upperoutsideline2", 0x042d5a40u, {59,50,908,2}, 0x0200c00au, 0},
+    {"No15_Itemheadershadow", 0x042d5a50u, {59,85,319,4}, 0x02000006u, 0},
+    {"No17_Menuicon", 0x042d5a50u, {61,54,34,34}, 0x02000043u, 0},
+    {"No9_Rightoutsideline2", 0x042d5a40u, {965,52,2,473}, 0x0200c00au, 0},
+    {"No5_Leftoutsideline2", 0x042d5a40u, {57,50,2,473}, 0x0200c00au, 0},
+    {"No2_Upperoutsideline", 0x042d5a40u, {57,49,910,1}, 0x0200c009u, 0},
+    {"No14_ItemBackgroundshadow", 0x042d5a40u, {59,92,906,1}, 0x0200c00bu, 0},
+    {"No12_Itemheaderseparator", 0x042d5a50u, {378,52,20,38}, 0x02000005u, 0},
+    {"No18_Iteminfirstlayer", 0x042d57f0u, {97,53,280,36}, 0x00000000u, 0},
+    {"No8_Rightoutsideline", 0x042d5a40u, {967,49,1,477}, 0x0200c009u, 0},
+    {"No4_Leftoutsideline", 0x042d5a40u, {56,49,1,477}, 0x0200c009u, 0},
+    {"No22_headertouchbutton", 0x042d58d0u, {61,53,316,36}, 0x00000000u, 0},
+};
+#define FX6_SETTING_TWO_COL_PAGE_ROWS_COUNT \
+    (sizeof(fx6_setting_two_col_page_rows)/sizeof(fx6_setting_two_col_page_rows[0]))

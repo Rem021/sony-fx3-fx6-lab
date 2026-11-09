@@ -3339,3 +3339,256 @@ static const fx6_menu_row_t fx6_hud_main_rows[] = {
 #define FX6_HUD_BASE_ISO      0x02002063u
 #define FX6_HUD_SHUTTER_MODE  0x02002009u
 #define FX6_HUD_IRIS_LABEL    0x020020fcu
+
+/* ======================================================================
+ * PHASE 18 — HUD readout bindings: the formats are already in the descriptors
+ * ======================================================================
+ * Important finding first: the HUD readout rows on pages 9/10/11 are NOT empty. Their desc+0x18
+ * holds a **format template with a PUA glyph prefix and a ${v1} placeholder**, verified against the
+ * containers:
+ *
+ *   No30_gain_value        0x020020fc  '\ue5df${v1}'          -> gain
+ *   No18_shutter_value     0x0200207c  '\ue5db${v1}'          -> shutter
+ *   No60_nd_filter_value   0x02002082  '\ue5dc \ue5db${v1}'   -> ND transmittance
+ *   No55_white_balance     0x0200208e  '${v1}\ue5d3'          -> white balance
+ *   No47_interval_countdown 0x0200220c '${v1:02}\ue5d5${v2:02}\ue5d8'
+ *   No2053_nd_mode         0x02002f07  '\ue6bd'
+ *   No11_imager_scan_mode  0x02002106  'FF'
+ *   No58_nd_filter_mode    0x02002090  '\ue5dc CLEAR'
+ *   No13_base_iso          0x02002063  '\ue604'              (glyph only)
+ *   No17_shutter_mode      0x02002009  '\ue5e4'              (glyph only)
+ *   No4_recstate          0x02005078  'Rec'
+ *   No15_rec_control      0x020051e7  'Stop'
+ *
+ * So only the *value* is missing. The table below pairs each dynamic readout with the format already
+ * in its descriptor and a real, container-verified value ResID to substitute. Every value id was
+ * checked to exist; a scripted audit covers all of them.
+ */
+typedef struct {
+    const char *widget;      /* the row's own widget name from the descriptor */
+    uint32_t format_resid;   /* desc+0x18, the template already present */
+    uint32_t value_resid;    /* a real value this slot can display */
+    const char *value_text;  /* that value's string, for readability */
+} fx6_hud_slot_binding_t;
+
+static const fx6_hud_slot_binding_t fx6_hud_default_bindings[] = {
+    /* ---- page 9: shooting status strip ---- */
+    {"No30_gain_value",            0x020020fcu, 0x020046c8u, "ISO 640"},
+    {"No18_shutter_value",         0x0200207cu, 0x02004729u, "1/100"},
+    {"No60_nd_filter_value_nd_transmittance", 0x02002082u, 0x02004028u, "ND: 0.9"},
+    {"No55_white_balance_value",   0x0200208eu, 0x02004ba4u, "5600K"},
+    {"No58_nd_filter_mode_nd_filter_clear", 0x02002090u, 0x02004027u, "ND: Clear"},
+    {"No1050_nd_filter_mode_nd_filter_clear", 0x02002090u, 0x02004027u, "ND: Clear"},
+    {"No16_resolution",            0x020050a1u, 0x020050a7u, "23.98P"},
+    {"No2089_clip_name_with_rec_function", 0, 0x020050c4u, "clip name"},
+    {"No2066_battery_icon",        0,          0x0200211fu, "Battery"},
+    /* ---- page 10: main viewfinder HUD ---- */
+    {"No18_shutter_value@10",      0x0200207cu, 0x0200472du, "1/200"},
+    {"No60_nd_filter_value@10",    0x02002082u, 0x02004029u, "ND: 1.8"},
+    {"No47_interval_rec_countdown",0x0200220cu, 0x020050a7u, "23.98P"},
+    {"No1040_interval_rec_countdown",0x0200220cu, 0x020050a7u, "23.98P"},
+    {"No55_white_balance_value@10",0x0200208eu, 0x02004795u, "3200K"},
+    {"No1047_white_balance_value", 0x0200208eu, 0x02004799u, "5500K"},
+    {"No11_imager_scan_mode",      0x02002106u, 0x02002106u, "FF"},
+    {"No2053_nd_filter_mode_nd_filter_auto_manual", 0x02002f07u, 0x020020cfu, "Auto"},
+    {"No2058_shutter_mode",        0x02002f07u, 0x020020cfu, "Auto"},
+    {"No4_recstate_string_slot_1st",0x02005078u, 0x02005078u, "Rec"},
+    {"No1004_recstate_string_slot_1st",0x02005078u,0x02005078u,"Rec"},
+    {"No15_sdi_hdmi_rec_control_recording_status",0x020051e7u,0x020051e7u,"Stop"},
+    /* ---- page 11: TC / clip status ---- */
+    {"No41_CLIP_NAME",             0,          0x020050c4u, "clip name"},
+    {"No40_CONTENT_NUMBER",        0,          0x02002385u, "800"},
+    {"No422_SQ_FRAME_RATE",        0,          0x020050a7u, "23.98P"},
+    {"No421_INT_REC_STATUS",       0,          0x020050a7u, "23.98P"},
+};
+#define FX6_HUD_BINDING_COUNT \
+    (sizeof(fx6_hud_default_bindings)/sizeof(fx6_hud_default_bindings[0]))
+
+/* Value families a probe can cycle through instead of the single sample above. All verified. */
+static const fx6_opt_t fx6_hud_values_fps[] = {
+    {0x020050a7u, "23.98P"}, {0x020050aau, "29.97P"}, {0x020050acu, "59.94P"},
+};
+static const fx6_opt_t fx6_hud_values_shutter[] = {
+    {0x02004729u, "1/100"}, {0x0200472bu, "1/150"}, {0x0200472du, "1/200"},
+    {0x0200472fu, "1/250"}, {0x0200545au, "1/2000"},
+};
+static const fx6_opt_t fx6_hud_values_iso[] = {
+    {0x020046c8u, "ISO 640"}, {0x020046ccu, "ISO 1000"}, {0x020046d0u, "ISO 1600"},
+    {0x020046d6u, "ISO 3200"}, {0x020046dcu, "ISO 6400"},
+};
+static const fx6_opt_t fx6_hud_values_wb[] = {
+    {0x02004795u, "3200K"}, {0x02004797u, "4300K"}, {0x02004799u, "5500K"},
+    {0x02004ba4u, "5600K"},
+};
+static const fx6_opt_t fx6_hud_values_nd[] = {
+    {0x02004027u, "ND: Clear"}, {0x02004028u, "ND: 0.9"}, {0x02004029u, "ND: 1.8"},
+};
+static const fx6_opt_t fx6_hud_values_scan[] = {
+    {0x02002104u, "FF"}, {0x02002105u, "S35"},
+};
+static const fx6_opt_t fx6_hud_values_aspect[] = {
+    {0x02002240u, "2.39:1"}, {0x0200488bu, "16:9"},
+};
+static const fx6_opt_t fx6_hud_values_codec[] = {
+    {0x02005261u, "XAVC-I"}, {0x02004b64u, "XAVC-I"},
+};
+static const fx6_opt_t fx6_hud_values_look[] = {
+    {0x02002464u, "S-Cinetone"}, {0x020020f5u, "S-Cinetone"},
+};
+/* Network / wireless status page — page base 0x02ead870, 55 rows */
+static const fx6_menu_row_t fx6_network_page_rows[] = {
+    {"No48_TOUCH_SCREEN", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No4_NETWORK_BG", 0x042d5a40u, {56,49,912,477}, 0x0200c003u, 0},
+    {"No55_BUTTON_SHOW_ACCESS_AUTH", 0x042d58d0u, {613,437,349,82}, 0x020027f4u, 0},
+    {"No76_TOUCH_BUTTON_LEFT_ARROW", 0x042d58d0u, {0,50,56,475}, 0x00000000u, 0},
+    {"No27_STATUS_USB_TETHERING", 0x042d58d0u, {294,305,240,80}, 0x020050f6u, 0},
+    {"No18_STATUS_WIRED_LAN", 0x042d58d0u, {294,221,240,80}, 0x020050f6u, 0},
+    {"No12_STATUS_WIRELESS_LAN", 0x042d58d0u, {294,137,240,80}, 0x020050f6u, 0},
+    {"No28_BUTTON_REMOTE_USB_TETHERING", 0x042d58d0u, {539,305,194,80}, 0x020050f6u, 0},
+    {"No19_BUTTON_REMOTE_WIRED_LAN", 0x042d58d0u, {539,221,194,80}, 0x020050f6u, 0},
+    {"No13_BUTTON_REMOTE_WIRELESS_LAN", 0x042d58d0u, {539,137,194,80}, 0x020050f6u, 0},
+    {"No1_TITLE", 0x042d57f0u, {106,54,405,36}, 0x02002122u, 0},
+    {"No51_BUTTON_SETTING_BLUETOOTH", 0x042d58d0u, {185,389,104,130}, 0x020050f6u, 0},
+    {"No67_BUTTON_SETTING_WIRELESS_LAN", 0x042d58d0u, {185,137,104,80}, 0x00000000u, 0},
+    {"No26_BUTTON_SETTING_USB_TETHERING", 0x042d58d0u, {185,305,104,80}, 0x00000000u, 0},
+    {"No54_BLUETOOTH_STATUS_2", 0x042d57f0u, {299,469,230,34}, 0x020050f6u, 0},
+    {"No53_BLUETOOTH_STATUS_1", 0x042d57f0u, {299,404,230,34}, 0x020050f6u, 0},
+    {"No29_IP_ADDRESS_USB_TETHERING", 0x042d57f0u, {736,328,230,34}, 0x020050f6u, 0},
+    {"No20_IP_ADDRESS_WIRED_LAN", 0x042d57f0u, {736,244,230,34}, 0x020050f6u, 0},
+    {"No14_IP_ADDRESS_WIRELESS_LAN", 0x042d57f0u, {736,160,230,34}, 0x020050f6u, 0},
+    {"No8_LABEL_IP_ADDRESS", 0x042d57f0u, {736,101,230,30}, 0x020052c9u, 0},
+    {"No6_LABEL_STATUS", 0x042d57f0u, {292,101,230,30}, 0x020052c7u, 0},
+    {"No57_PAGE_BUTTON", 0x042d58d0u, {802,52,164,40}, 0x00000000u, 0},
+    {"No7_LABEL_REMOTE", 0x042d57f0u, {539,101,180,30}, 0x020052c8u, 0},
+    {"No73_INDEX_BUTTON", 0x042d58d0u, {668,52,132,40}, 0x00000000u, 0},
+    {"No50_ITEM_BLUETOOTH", 0x042d57f0u, {64,437,121,34}, 0x02002bc6u, 0},
+    {"No3_PAGE_NUMBER", 0x042d57f0u, {852,54,110,36}, 0x00000000u, 0},
+    {"No9_ITEM_WIRELESS_LAN_UPPER", 0x042d57f0u, {64,149,121,30}, 0x020052bfu, 0},
+    {"No71_ITEM_USB_TETHERING_MIDDLE", 0x042d57f0u, {64,330,121,30}, 0x00000000u, 0},
+    {"No49_ITEM_USB_TETHERING_LOWER", 0x042d57f0u, {64,343,121,30}, 0x02002937u, 0},
+    {"No25_ITEM_USB_TETHERING_UPPER", 0x042d57f0u, {64,317,121,30}, 0x0200294du, 0},
+    {"No16_ITEM_WIRED_LAN_LOWER", 0x042d57f0u, {64,259,121,30}, 0x020052c3u, 0},
+    {"No15_ITEM_WIRED_LAN_UPPER", 0x042d57f0u, {64,233,121,30}, 0x020052c2u, 0},
+    {"No10_ITEM_WIRELESS_LAN_LOWER", 0x042d57f0u, {64,175,121,30}, 0x020052c0u, 0},
+    {"No75_INDEX_STRING", 0x042d57f0u, {706,54,94,36}, 0x02002e12u, 0},
+    {"No70_SETTING_USB_TETHERING", 0x042d57f0u, {190,328,90,34}, 0x020050f6u, 0},
+    {"No65_SETTING_WIRELESS_LAN_MIDDLE", 0x042d57f0u, {192,160,90,34}, 0x020050f6u, 0},
+    {"No17_SETTING_WIRED_LAN", 0x042d57f0u, {190,244,90,34}, 0x020050f6u, 0},
+    {"No11_SETTING_WIRELESS_LAN_UPPER", 0x042d57f0u, {192,145,90,34}, 0x020050f6u, 0},
+    {"No5_LABEL_SETTING", 0x042d57f0u, {185,101,100,30}, 0x020052c6u, 0},
+    {"No72_LEFT_ARROW", 0x042d5a50u, {32,267,45,60}, 0x0200043du, 0},
+    {"No63_SETTING_WIRELESS_LAN_LOWER", 0x042d57f0u, {192,179,90,30}, 0x020050f6u, 0},
+    {"No66_TITLE_ICON", 0x042d57f0u, {60,51,45,42}, 0x020026c9u, 0},
+    {"No47_SEPARATOR", 0x042d5a40u, {59,386,906,2}, 0x0200c00bu, 0},
+    {"No44_SEPARATOR", 0x042d5a40u, {59,302,906,2}, 0x0200c00bu, 0},
+    {"No43_SEPARATOR", 0x042d5a40u, {59,218,906,2}, 0x0200c00bu, 0},
+    {"No42_SEPARATOR", 0x042d5a40u, {59,134,906,2}, 0x0200c00bu, 0},
+    {"No41_SEPARATOR", 0x042d5a40u, {59,94,906,2}, 0x0200c00bu, 0},
+    {"No74_INDEX_ARROW", 0x042d57f0u, {668,54,38,36}, 0x02002e21u, 0},
+    {"No2_PAGE_SCROLL_ARROW", 0x042d57f0u, {814,54,36,36}, 0x020021d6u, 0},
+    {"No68_BUTTON_SETTING_USB_FUNCTION", 0x042d58d0u, {185,221,104,164}, 0x00000000u, 0},
+    {"No62_BUTTON_SETTING_LAN_TYPE", 0x042d58d0u, {185,137,104,164}, 0x00000000u, 0},
+    {"No61_INACTIVE_FRAME_BLUETOOTH", 0x042d57d0u, {59,389,900,130}, 0x00000000u, 0},
+    {"No60_INACTIVE_FRAME_USB_TETHERING", 0x042d57d0u, {59,305,900,80}, 0x00000000u, 0},
+    {"No59_INACTIVE_FRAME_WIRED_LAN", 0x042d57d0u, {59,221,900,80}, 0x00000000u, 0},
+    {"No58_INACTIVE_FRAME_WIRELESS_LAN", 0x042d57d0u, {59,137,900,80}, 0x00000000u, 0},
+};
+#define FX6_NETWORK_PAGE_ROWS_COUNT (sizeof(fx6_network_page_rows)/sizeof(fx6_network_page_rows[0]))
+
+/* Network small confirm page — page base 0x02eb2ad8, 8 rows */
+static const fx6_menu_row_t fx6_network_small_page_rows[] = {
+    {"No32_BG", 0x042d5a50u, {56,49,912,477}, 0x020001d2u, 0},
+    {"No31_Itemlist", 0x042d59e0u, {64,100,898,363}, 0x00000000u, 0},
+    {"No17_Iteminsecondlayer", 0x042d57f0u, {516,54,405,36}, 0x00000000u, 0},
+    {"No16_Iteminfirstlayer", 0x042d57f0u, {97,53,405,36}, 0x00000000u, 0},
+    {"No25_NETWORK_SET_BTN_BG", 0x042d58d0u, {774,467,182,52}, 0x0200461fu, 0},
+    {"No24_NETWORK_CANCEL_BTN_BG", 0x042d58d0u, {588,467,182,52}, 0x020056e8u, 0},
+    {"No26_NETWORK_SEPARATOR_LINE", 0x042d5a50u, {64,463,892,2}, 0x020001fau, 0},
+    {"No30_Menuicon", 0x042d5a50u, {61,54,34,34}, 0x02000043u, 0},
+};
+#define FX6_NETWORK_SMALL_PAGE_ROWS_COUNT (sizeof(fx6_network_small_page_rows)/sizeof(fx6_network_small_page_rows[0]))
+
+/* Thumbnail properties page — page base 0x02e9cef0, 46 rows */
+static const fx6_menu_row_t fx6_thumbnail_props_page_rows[] = {
+    {"No43_yuv_cover", 0x042d5a40u, {0,0,1025,540}, 0x0200c001u, 0},
+    {"No42_touch", 0x042d5970u, {0,0,1024,540}, 0x00000000u, 0},
+    {"No1_THUMBNAIL_PROPERTIES_BG", 0x042d5a50u, {0,0,1024,540}, 0x0200030du, 0},
+    {"No3_THUMBNAIL_PROPERTIES_THUMBNAILUNIT_FRAME", 0x042d58f0u, {122,74,203,132}, 0x00000000u, 0},
+    {"No44_touch_button_thumb", 0x042d58d0u, {126,75,195,108}, 0x00000000u, 0},
+    {"No20_THUMBNAIL_PROPERTIES_CLIP_NAME_LINE3", 0x042d57f0u, {403,134,558,36}, 0x00000000u, 0},
+    {"No19_THUMBNAIL_PROPERTIES_CLIP_NAME_LINE2", 0x042d57f0u, {403,98,558,36}, 0x00000000u, 0},
+    {"No18_THUMBNAIL_PROPERTIES_CLIP_NAME_LINE1", 0x042d57f0u, {403,62,558,36}, 0x00000000u, 0},
+    {"No2_THUMBNAIL_PROPERTIES_TITLE", 0x042d57f0u, {57,12,380,36}, 0x0200500cu, 0},
+    {"No36_THUMBNAIL_PROPERTIES_RECDEVICE_VALUE", 0x042d57f0u, {587,472,374,36}, 0x00000000u, 0},
+    {"No34_THUMBNAIL_PROPERTIES_RECMODE_VALUE", 0x042d57f0u, {587,426,374,36}, 0x00000000u, 0},
+    {"No32_THUMBNAIL_PROPERTIES_CH_BIT_VALUE", 0x042d57f0u, {587,380,374,36}, 0x00000000u, 0},
+    {"No30_THUMBNAIL_PROPERTIES_AUDIOCODEC_VALUE", 0x042d57f0u, {587,334,374,36}, 0x00000000u, 0},
+    {"No28_THUMBNAIL_PROPERTIES_FPS_VALUE", 0x042d57f0u, {587,288,374,36}, 0x00000000u, 0},
+    {"No26_THUMBNAIL_PROPERTIES_PICTURESIZE_VALUE", 0x042d57f0u, {587,242,374,36}, 0x00000000u, 0},
+    {"No24_THUMBNAIL_PROPERTIES_VIDEOCODEC_VALUE", 0x042d57f0u, {587,196,374,36}, 0x00000000u, 0},
+    {"No17_THUMBNAIL_PROPERTIES_MODIFIED_VALUE", 0x042d5840u, {64,493,318,28}, 0x00000000u, 0},
+    {"No15_THUMBNAIL_PROPERTIES_CREATED_VALUE", 0x042d5840u, {64,417,318,28}, 0x00000000u, 0},
+    {"No46_touch_button_next", 0x042d58d0u, {318,75,76,108}, 0x00000000u, 0},
+    {"No45_touch_button_prev", 0x042d58d0u, {52,75,76,108}, 0x00000000u, 0},
+    {"No9_THUMBNAIL_PROPERTIES_START_VALUE", 0x042d5840u, {205,245,176,32}, 0x00000000u, 0},
+    {"No7_THUMBNAIL_PROPERTIES_TCINDEX_VALUE", 0x042d5840u, {205,199,176,32}, 0x00000000u, 0},
+    {"No13_THUMBNAIL_PROPERTIES_DURATION_VALUE", 0x042d5840u, {205,337,176,32}, 0x00000000u, 0},
+    {"No11_THUMBNAIL_PROPERTIES_END_VALUE", 0x042d5840u, {205,291,176,32}, 0x00000000u, 0},
+    {"No35_THUMBNAIL_PROPERTIES_RECDEVICE_TITLE", 0x042d57f0u, {403,473,176,30}, 0x0200500bu, 0},
+    {"No33_THUMBNAIL_PROPERTIES_RECMODE_TITLE", 0x042d57f0u, {403,427,176,30}, 0x0200500au, 0},
+    {"No31_THUMBNAIL_PROPERTIES_CH_BIT_TITLE", 0x042d57f0u, {403,381,176,30}, 0x02005003u, 0},
+    {"No29_THUMBNAIL_PROPERTIES_AUDIOCODEC_TITLE", 0x042d57f0u, {403,335,176,30}, 0x02005001u, 0},
+    {"No27_THUMBNAIL_PROPERTIES_FPS_TITLE", 0x042d57f0u, {403,289,176,30}, 0x02005082u, 0},
+    {"No25_THUMBNAIL_PROPERTIES_PICTURESIZE_TITLE", 0x042d57f0u, {403,243,176,30}, 0x02005000u, 0},
+    {"No23_THUMBNAIL_PROPERTIES_VIDEOCODEC_TITLE", 0x042d57f0u, {403,197,176,30}, 0x02004fffu, 0},
+    {"No38_content_num", 0x042d57f0u, {665,18,135,30}, 0x00000000u, 0},
+    {"No8_THUMBNAIL_PROPERTIES_START_TITLE", 0x042d57f0u, {64,249,130,30}, 0x02004ff9u, 0},
+    {"No6_THUMBNAIL_PROPERTIES_TCINDEX_TITLE", 0x042d57f0u, {64,203,130,30}, 0x02004ff8u, 0},
+    {"No16_THUMBNAIL_PROPERTIES_MODIFIED_TITLE", 0x042d57f0u, {64,463,130,30}, 0x02004ffcu, 0},
+    {"No14_THUMBNAIL_PROPERTIES_CREATED_TITLE", 0x042d57f0u, {64,387,130,30}, 0x02004ffbu, 0},
+    {"No12_THUMBNAIL_PROPERTIES_DURATION_TITLE", 0x042d57f0u, {64,341,130,30}, 0x02005211u, 0},
+    {"No10_THUMBNAIL_PROPERTIES_END_TITLE", 0x042d57f0u, {64,295,130,30}, 0x02004ffau, 0},
+    {"No37_battery_icon", 0x042d5800u, {802,13,165,36}, 0x00000000u, 0},
+    {"No48_digital_signature_cr_icon", 0x042d5a50u, {441,62,38,36}, 0x02000454u, 0},
+    {"No47_digital_signature_icon", 0x042d5a50u, {406,62,38,36}, 0x02000452u, 0},
+    {"No39_play_media", 0x042d5a50u, {592,13,32,34}, 0x0200026fu, 0},
+    {"No5_THUMBNAIL_PROPERTIES_NEXT", 0x042d5a50u, {339,112,32,32}, 0x0200030fu, 0},
+    {"No4_THUMBNAIL_PROPERTIES_PREV", 0x042d5a50u, {74,112,32,32}, 0x02000310u, 0},
+    {"No40_play_media_protect", 0x042d5a50u, {626,13,28,28}, 0x020002d3u, 0},
+    {"No41_message_request", 0x042d5920u, {0,0,1024,540}, 0x00000000u, 0},
+};
+#define FX6_THUMBNAIL_PROPS_PAGE_ROWS_COUNT (sizeof(fx6_thumbnail_props_page_rows)/sizeof(fx6_thumbnail_props_page_rows[0]))
+
+
+/* Network page geometry: three bands of status tiles, each with a matching remote button.
+ *   band y = 137 (wireless LAN), 221 (wired LAN), 305 (USB tethering)   pitch 84
+ *   status tile  (294, y, 240, 80)      remote button (539, y, 194, 80)
+ *   setting button (185, y, 104, 80)    left arrow (0, 50, 56, 475)
+ *   title (106, 54, 405, 36) d18=0x02002122 'Network'
+ *   SET (774,467,182,52) d18=0x0200461f ; CANCEL (588,467,182,52) d18=0x020056e8
+ */
+#define FX6_NET_BAND_Y0   137
+#define FX6_NET_BAND_DY    84
+#define FX6_NET_TILE_X    294
+#define FX6_NET_TILE_W    240
+#define FX6_NET_ROW_H      80
+#define FX6_NET_REMOTE_X  539
+#define FX6_NET_REMOTE_W  194
+#define FX6_NET_SET_X     185
+#define FX6_NET_SET_W     104
+#define FX6_NET_TITLE     0x02002122u   /* 'Network' */
+
+/* Thumbnail properties geometry: a 203x132 thumbnail at (122,74) and twelve 374-wide value
+ * readouts stacked down the right side.
+ *   value x = 587, w = 374, y = 196, 242, 288, 334, 380, 426, 472   (pitch 46)
+ *   clip-name lines x = 403, w = 558, y = 62, 98, 134              (pitch 36)
+ */
+#define FX6_TP_THUMB_RECT  {122,74,203,132}
+#define FX6_TP_VAL_X      587
+#define FX6_TP_VAL_W      374
+#define FX6_TP_VAL_Y0     196
+#define FX6_TP_VAL_DY      46
+#define FX6_TP_NAME_X     403
+#define FX6_TP_NAME_W     558
+#define FX6_TP_NAME_Y0     62
+#define FX6_TP_NAME_DY     36

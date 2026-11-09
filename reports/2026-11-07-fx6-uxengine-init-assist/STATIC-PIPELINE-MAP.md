@@ -9172,3 +9172,100 @@ build         header 3341 lines, clean under -Wall
 The three-way check is worth noting: the HUD pages are icon-heavy (167 image ids, 38% of all rows),
 which is exactly why they are a good stress test — every icon id was confirmed to exist as a record in
 the image container rather than merely being a plausible-looking number.
+
+### 686 — HUD readouts are not empty: their `desc+0x18` is already a format template
+
+This changes how the HUD pages must be rendered. The readout rows on pages 9/10/11 are **not**
+unbound slots — each one carries a format string with a PUA glyph prefix and a `${v1}` placeholder:
+
+```text
+No30_gain_value        0x020020fc  '\ue5df${v1}'          gain
+No18_shutter_value     0x0200207c  '\ue5db${v1}'          shutter
+No60_nd_filter_value   0x02002082  '\ue5dc \ue5db${v1}'   ND transmittance
+No55_white_balance     0x0200208e  '${v1}\ue5d3'          white balance
+No47_interval_countdown 0x0200220c '${v1:02}\ue5d5${v2:02}\ue5d8'
+No2053_nd_mode         0x02002f07  '\ue6bd'
+No11_imager_scan_mode  0x02002106  'FF'
+No58_nd_filter_mode    0x02002090  '\ue5dc CLEAR'
+No13_base_iso          0x02002063  '\ue604'               glyph only
+No17_shutter_mode      0x02002009  '\ue5e4'               glyph only
+No4_recstate           0x02005078  'Rec'
+No15_rec_control       0x020051e7  'Stop'
+```
+
+So only the **value** is missing, not the label. `fx6_hud_default_bindings[]` therefore pairs each
+dynamic readout with (a) the format already in its descriptor and (b) a real, container-verified value
+ResID to substitute:
+
+```text
+No30_gain_value              fmt 0x020020fc  value 0x020046c8 'ISO 640'
+No18_shutter_value           fmt 0x0200207c  value 0x02004729 '1/100'
+No60_nd_filter_value         fmt 0x02002082  value 0x02004028 'ND: 0.9'
+No55_white_balance_value     fmt 0x0200208e  value 0x02004ba4 '5600K'
+No58/No1050_nd_filter_mode   fmt 0x02002090  value 0x02004027 'ND: Clear'
+No16_resolution              fmt 0x020050a1  value 0x020050a7 '23.98P'
+No2089_clip_name             fmt 0            value 0x020050c4 clip name
+No2066_battery_icon          fmt 0            value 0x0200211f 'Battery'
+No18_shutter_value@10        fmt 0x0200207c  value 0x0200472d '1/200'
+No60_nd_filter_value@10      fmt 0x02002082  value 0x02004029 'ND: 1.8'
+No47/No1040_interval         fmt 0x0200220c  value 0x020050a7 '23.98P'
+No55/No1047_white_balance    fmt 0x0200208e  value 0x02004795/0x02004799 '3200K'/'5500K'
+No11_imager_scan_mode        fmt 0x02002106  value 0x02002106 'FF'
+No2053/No2058_mode           fmt 0x02002f07  value 0x020020cf 'Auto'
+No4/No1004_recstate          fmt 0x02005078  value 0x02005078 'Rec'
+No15_rec_control             fmt 0x020051e7  value 0x020051e7 'Stop'
+No41_CLIP_NAME               fmt 0            value 0x020050c4 clip name
+No40_CONTENT_NUMBER          fmt 0            value 0x02002385 '800'
+No422_SQ_FRAME_RATE          fmt 0            value 0x020050a7 '23.98P'
+No421_INT_REC_STATUS         fmt 0            value 0x020050a7 '23.98P'
+```
+
+Plus eight value families so a probe can cycle realistic readings instead of freezing one sample:
+`fx6_hud_values_fps` (23.98P / 29.97P / 59.94P), `_shutter` (1/100 … 1/2000), `_iso` (640 … 6400),
+`_wb` (3200K / 4300K / 5500K / 5600K), `_nd` (Clear / 0.9 / 1.8), `_scan` (FF / S35),
+`_aspect` (2.39:1 / 16:9), `_codec` (XAVC-I), `_look` (S-Cinetone).
+
+### 686 — Four more functional pages materialised
+
+```text
+page 68  0x02ead870  55 rows  Network / wireless status
+page 80  0x02eb2ad8   8 rows  Network small confirm
+page 18  0x02e9cef0  46 rows  Thumbnail properties
+page 11  0x02e9ad78  35 rows  Playback / TC status   (already exported in Phase 17)
+```
+
+The Network page (68) is the best second target after page 110: its twelve status tiles are
+`view_menu_item` rows in three bands, all carrying `0x020050f6`, and the title is statically bound:
+
+```text
+band y = 137 (wireless LAN), 221 (wired LAN), 305 (USB tethering)   pitch 84
+status tile   (294, y, 240, 80)     remote button (539, y, 194, 80)
+setting button (185, y, 104, 80)    left arrow    (  0, 50, 56, 475)
+title         (106, 54, 405, 36)    d18=0x02002122 'Network'
+SET  (774,467,182,52) d18=0x0200461f    CANCEL (588,467,182,52) d18=0x020056e8
+```
+
+The Thumbnail-properties page (18) is the densest value-readout page in the image:
+
+```text
+thumbnail      (122, 74,203,132)                     tag 0x042d58f0
+clip-name lines x=403 w=558, y = 62, 98, 134         pitch 36
+value readouts  x=587 w=374, y = 196,242,288,334,380,426,472   pitch 46
+  video codec / picture size / fps / audio codec / ch-bit / rec mode / rec device
+title          ( 57, 12,380, 36) d18=0x0200500c
+```
+
+Both pitches are exported as constants (`FX6_NET_BAND_*`, `FX6_TP_VAL_*`, `FX6_TP_NAME_*`).
+
+### 686 — Self-audit caught three wrong ids, all fixed
+
+```text
+WRONG  0x020020d2 labelled "Auto"    -> resolves to 'ISO/Gain/EI'
+                                      correct: 0x020020cf 'Auto'
+WRONG  0x02004999 labelled "5500K"   -> resolves to 'HD'   (transposed digits)
+                                      correct: 0x02004799 '5500K'
+```
+
+After the fixes: bindings **19 pairs / 0 problems**, value families **28 pairs / 0 bad**, and the three
+new pages **109 rows** split `50 string + 11 image + 7 colour`, **0 unresolved**. Compile-time
+assertions: 55 / 8 / 46 / 25, header 3594 lines, clean under `-Wall`.

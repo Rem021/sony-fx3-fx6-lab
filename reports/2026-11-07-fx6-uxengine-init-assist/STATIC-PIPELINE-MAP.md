@@ -9810,3 +9810,96 @@ build         header clean under -Wall
 
 This completes the static page inventory: every descriptor row in the image is reachable, every
 ResID resolves, and the renderer has a single entry point.
+
+### 693 — The +0x1c..+0x38 fields: eight fields, four of them near-constant
+
+Every one of the 2224 page rows has at least one non-zero extra field, so the extras are not an
+optional tail — they are part of the descriptor payload and had to be captured to reach byte-level
+coverage. Measuring the value distributions first made the semantics obvious:
+
+```text
++0x1c  nonzero 1143, only FOUR distinct values
+        0x00000000 (1081), 0x0200a029 (586), 0x0200a02a (442), 0x0200a02b (115)
+        -> text layout / alignment id, namespace 5. 0x0200a029 is exactly the
+           FX6_VS_LAYOUT_DEFAULT recorded in round 671; a02a / a02b are the two alternates.
+
++0x20  nonzero 1103, only TWO distinct values: 1 (971), 2 (132)
+        -> small enum, 1 = normal, 2 = alternate (seen on the ASA and frame rows).
+
++0x24  nonzero 1106, 24 distinct, ALL 0x02006xxx
+        -> FONT A, a namespace-3 style_cmn id (0x02006017 x305, 0x02006004 x271, 0x02006008 x149).
+
++0x28  nonzero 1104, 14 distinct, ALL 0x02006xxx
+        -> FONT B, also namespace 3; 0x0200600e dominates with 843, matching the
+           FX6_VS_FONT2_0600e default from round 671.
+
++0x2c  nonzero 2224 (EVERY row), 48 distinct, 0x44 dominant (1944)
+        -> font size. FX6_VS_FONTSIZE == 0x44, confirmed.
+
++0x30  nonzero 2224 (EVERY row), 33 distinct, 0xce2 dominant (2109)
+        -> style flags A. FX6_VS_FLAG_A == 0xce2, confirmed.
+
++0x34  nonzero 2224, EXACTLY ONE value: 0x2ce9
+        -> style flags B, constant. Zero information content, but it must be written or the
+           widget renders with default flags. FX6_VS_FLAG_B == 0x2ce9, confirmed.
+
++0x38  nonzero 2107, 549 distinct
+        -> widget id, packed as (ordinal<<16)|sub_index. This is the value 0x042d58d0 copies
+           into mi+0x200 when the low half is <= 0x5b (round 687).
+```
+
+The important outcome is that **four of the eight fields were already correct** in the round-671
+model (`0x2c`/`0x30`/`0x34` and the `+0x210`-bound layout), and the two "fonts" are genuinely
+style_cmn ids rather than text ids — which is why they were unresolvable until round 689 established
+the `0x6000` base.
+
+### 693 — `fx6_row_extras[2224]` completes byte-level coverage
+
+```c
+typedef struct {
+    uint16_t page_idx;
+    uint16_t row_idx;
+    uint32_t d1c, d20, d24, d28, d2c, d30, d34, d38;
+} fx6_row_extra_t;                    /* sizeof == 0x24 */
+
+static const fx6_row_extra_t fx6_row_extras[2224];   /* ordered by (page_idx, row_idx) */
+static inline const fx6_row_extra_t *fx6_get_row_extra(uint16_t page_idx, uint16_t row_idx);
+static inline int fx6_apply_row_extra_to_view_string(void *vs, const fx6_row_extra_t *e);
+```
+
+With the round-692 row arrays plus this table, the 0x48 descriptor is fully modelled:
+
+```text
++0x00 tag          -> fx6_menu_row_t.tag
++0x08 name ptr     -> fx6_menu_row_t.name
++0x18 primary id   -> fx6_menu_row_t.resid
++0x1c..+0x38       -> fx6_row_extras[]  (this round)
++0x3c..+0x42 rect  -> fx6_menu_row_t.rect
+```
+
+### 693 — A validation bug that this round exposed
+
+Extending `fx6_verify_all.py` to the extras produced 1143 "layout" failures, all on namespace-5 ids.
+The cause: **`lang_cmn.uxc` stores no explicit record ids at all** — the id is the implicit ordinal, so
+looking for `0xa000|ix` inside the file finds nothing. `style_cmn.uxc` does carry ids (`0x6000..`), which
+is why the style check had been working. The count is in the container header at `+0x0c` (47 records),
+so namespace-5 ids are now validated as `ix < 47` rather than by membership.
+
+Final state of the audit:
+
+```text
+header: 2249 row literals, 305 option ids
+        -> 490 text + 146 image + 19 colour + 1 style, unresolved 0
+lang_cmn record count: 47
+extra rows: 2224 ; extra-field problems: 0
+```
+
+### 693 — Verification
+
+```text
+compile-time  FX6_ROW_EXTRA_COUNT == 2224
+              sizeof(fx6_row_extra_t) == 0x24
+              FX6_ROW_EXTRA_FIELD_COUNT == 8
+machine       fx6_verify_all.py: 0 unresolved, 0 extra-field problems
+build         header clean under -Wall
+```

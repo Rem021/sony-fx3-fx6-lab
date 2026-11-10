@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure`."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 3 P1..P9 9/9 Closure)."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import List, Optional
 
+from .backup_bridge_verifier import verify_p7_backup_bridge
 from .candidate_builder import DEFAULT_REPO_ROOT, run_offline_candidate_dry_run
 from .nd_unicorn_verifier import (
     run_fan_libfan_unicorn_check,
@@ -30,6 +31,7 @@ from .patcher import (
     rollback_patch_spec,
 )
 from .tier0_unicorn_verifier import run_tier0_worker_in_unicorn
+from .uipc_completion_verifier import run_p5_p6_uipc_unicorn_audit
 
 
 def _cmd_verify_donors(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
@@ -54,13 +56,15 @@ def _cmd_verify_donors(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
                 "sites": [asdict(r) for r in p_rec.resolutions],
             }
         )
+    p7_res = verify_p7_backup_bridge()
     payload = {
-        "status": "OK",
+        "status": "OK" if p7_res.all_checks_passed else "FAILED",
         "verified_targets": len(records),
         "targets": records,
+        "p7_dual_kernel_signature_verified": p7_res.all_checks_passed,
     }
     sys.stdout.write(json.dumps(payload, indent=2) + "\n")
-    return 0
+    return 0 if p7_res.all_checks_passed else 1
 
 
 def _cmd_run_unicorn_audit(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
@@ -72,6 +76,8 @@ def _cmd_run_unicorn_audit(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
     u_mode, u_val = run_p4_nd_unicorn_sweep(appfw_raw, patched_label=False)
     appfw_patched, _ = apply_patch_spec(appfw_raw, P1_P4_P8_APPFW_COMBINED_SPEC)
     p_mode, p_val = run_p4_nd_unicorn_sweep(appfw_patched, patched_label=True)
+    p5_p6_res = run_p5_p6_uipc_unicorn_audit(appfw_patched)
+    p7_res = verify_p7_backup_bridge()
     p8_res = run_p8_appfw_unicorn_check(appfw_patched)
 
     upm_raw = (fx3_modules_dir / "upm.ko").read_bytes()
@@ -89,6 +95,9 @@ def _cmd_run_unicorn_audit(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
         and p3_res.main_thread_ret == 0
         and p_mode.assert_hit_count == 0
         and p_val.assert_hit_count == 0
+        and p5_p6_res.all_positive_passed
+        and p5_p6_res.all_negative_captured
+        and p7_res.all_checks_passed
         and p8_res.return_value == 0
         and p9_res.patched_completed_cleanly
         and p9_res.patched_return_value == 0
@@ -105,6 +114,8 @@ def _cmd_run_unicorn_audit(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
         "p4_unpatched_value": asdict(u_val),
         "p4_adapted_mode": asdict(p_mode),
         "p4_adapted_value": asdict(p_val),
+        "p5_p6_uipc_completion": asdict(p5_p6_res),
+        "p7_backup_sync100_bridge": asdict(p7_res),
         "p8_async_log_wait": asdict(p8_res),
         "p9_upm_null_guard": asdict(p9_res),
         "fan_bkup_valid": asdict(fan_res),
@@ -131,8 +142,11 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "all_12_gates_verified": rep.all_12_gates_verified,
         "verified_gate_count": rep.verified_gate_count,
         "blocked_gate_ids": list(rep.blocked_gate_ids),
+        "verified_matrix_items": list(rep.verified_matrix_items),
         "temp_dir_cleaned": rep.temp_dir_cleaned,
         "adapted_targets": [r.spec_id for r in rep.patch_receipts],
+        "p5_p6_uipc_ok": rep.p5_p6_uipc_unicorn.all_positive_passed and rep.p5_p6_uipc_unicorn.all_negative_captured,
+        "p7_backup_bridge_ok": rep.p7_backup_bridge.all_checks_passed,
         "vfat": asdict(rep.vfat_receipt),
         "tier0_manifest_valid": rep.tier0_manifest_audit.valid,
         "tier0_syscall_valid": rep.tier0_syscall_audit.valid,
@@ -145,14 +159,14 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Offline Compatibility Adaptation, VFAT, Unicorn & 12-Gate Dry-Run CLI",
+        description="FX6-on-FX3 P1..P9 (9/9) Offline Compatibility Closure, VFAT, Unicorn & 12-Gate Dry-Run CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     for cmd_name, help_msg in (
-        ("verify-donors", "Verify ELF64 offsets, context, adaptation, and 100% SHA-256 rollback across all 7 targets"),
-        ("run-unicorn-audit", "Run Unicorn AArch64 instruction-level audits for P3, P4, P8, P9, Fan, and Tier-0"),
-        ("dry-run-candidate", "Assemble offline candidate in TemporaryDirectory and evaluate all 12 safety gates"),
+        ("verify-donors", "Verify ELF64 offsets, context, adaptation, 100% SHA-256 rollback, and P7 kernel signatures"),
+        ("run-unicorn-audit", "Run Unicorn AArch64 audits across P3, P4, P5, P6, P7, P8, P9, Fan, and Tier-0"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan candidate in TemporaryDirectory and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)

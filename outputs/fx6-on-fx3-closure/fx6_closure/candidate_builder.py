@@ -1,14 +1,19 @@
 """End-to-End Offline Candidate Dry-Run Assembler & 12-Gate Safety Evaluator Integration.
 
 Executes inside an ephemeral `tempfile.TemporaryDirectory()` and automatically cleans up all
-staged binary files on exit:
+staged binary files on exit, covering the complete **P1..P9 (9/9)** matrix + Fan + Tier-0 + 12 Gates:
 1. Adapts all 7 canonical binary targets (P1, P3, P4, P8, P9 `upm.ko`, and Fan `libfan.so`) and
    verifies 100% deterministic SHA-256 rollback on every staged binary.
 2. Synthesizes and audits the 8 MiB `opelog.vfat` (`FAT16`) image (P2).
-3. Executes Unicorn AArch64 behavioral checks across P3, P4, P8, P9, and Fan.
-4. Compiles & runs `native/tier0_backup_worker.c` in Unicorn AArch64 to produce a real 11-item
+3. Executes Unicorn AArch64 behavioral checks across P3, P4, P5, P6, P8, P9, and Fan
+   (including `send_and_wait_cmp_i` UIPC completion synthesis on `0x92840747` for
+   `0x032d` / `0x0400` / `0x0402` / `0x0404` / `0x0152`).
+4. Audits the P7 Kernel-Space Backup Sync100 address-agnostic bridge across FX3 & FX6 kernels
+   (`pcidma_transfer_async` 16B prologue, `api+0x160` / `api+0x10` Unicorn trampoline,
+   40B `op=0x30` schema, and synchronous `backupfile_cb_getcp` DMA callback contract).
+5. Compiles & runs `native/tier0_backup_worker.c` in Unicorn AArch64 to produce a real 11-item
    two-pass `manifest.json` and audited Linux AArch64 syscall trace.
-5. Evaluates all 12 pre-flash safety gates via `fx3_safety.preflight.evaluate_12_safety_gates`
+6. Evaluates all 12 pre-flash safety gates via `fx3_safety.preflight.evaluate_12_safety_gates`
    (proving 12/12 green under valid inputs and immediate fail-closed blocking on any missing or
    tampered artifact).
 """
@@ -31,6 +36,10 @@ from fx3_safety.preflight import (
     verify_tier0_backup_manifest,
 )
 
+from .backup_bridge_verifier import (
+    P7BackupBridgeAuditReport,
+    verify_p7_backup_bridge,
+)
 from .nd_unicorn_verifier import (
     FanExecSummary,
     NdSweepSummary,
@@ -60,6 +69,10 @@ from .tier0_unicorn_verifier import (
     Tier0UnicornRunResult,
     run_tier0_worker_in_unicorn,
 )
+from .uipc_completion_verifier import (
+    UipcP5P6AuditSummary,
+    run_p5_p6_uipc_unicorn_audit,
+)
 from .vfat_builder import (
     VfatAuditResult,
     VfatBuildReceipt,
@@ -70,6 +83,7 @@ from .vfat_builder import (
 
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
+COMPLETE_MATRIX_ITEMS: Tuple[str, ...] = ("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "Fan")
 
 
 @dataclass(frozen=True)
@@ -78,6 +92,7 @@ class CandidateDryRunReport:
     all_12_gates_verified: bool
     verified_gate_count: int
     blocked_gate_ids: Tuple[str, ...]
+    verified_matrix_items: Tuple[str, ...]
     patch_receipts: Tuple[PatchReceipt, ...]
     rollback_receipts: Tuple[RollbackReceipt, ...]
     vfat_receipt: VfatBuildReceipt
@@ -85,6 +100,8 @@ class CandidateDryRunReport:
     p3_unicorn: P3PruneExecSummary
     p4_mode_unicorn: NdSweepSummary
     p4_value_unicorn: NdSweepSummary
+    p5_p6_uipc_unicorn: UipcP5P6AuditSummary
+    p7_backup_bridge: P7BackupBridgeAuditReport
     p8_unicorn: P8ExecSummary
     p9_unicorn: P9GuardExecSummary
     fan_unicorn: FanExecSummary
@@ -104,12 +121,14 @@ def run_offline_candidate_dry_run(
     precomputed_tier0_result: Optional[Tier0UnicornRunResult] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
+    corrupt_p5_p6_uipc: bool = False,
+    corrupt_p7_backup_bridge: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
     tamper_failsafe_hook: bool = False,
 ) -> CandidateDryRunReport:
-    """Assemble and verify a complete FX6-on-FX3 offline candidate inside `TemporaryDirectory`."""
+    """Assemble and verify a complete P1..P9 + Fan FX6-on-FX3 candidate inside `TemporaryDirectory`."""
     repo_root = repo_root.resolve()
 
     patch_receipts: List[PatchReceipt] = []
@@ -150,7 +169,7 @@ def run_offline_candidate_dry_run(
 
             adapted_blobs[spec.library_name] = staged_bytes
 
-        # 2. Build & audit 8 MiB `opelog.vfat` inside temp directory
+        # 2. Build & audit 8 MiB `opelog.vfat` inside temp directory (P2)
         vfat_bytes, vfat_rec = build_opelog_vfat_image(mode=vfat_mode)
         if corrupt_opelog_vfat:
             mut_vfat = bytearray(vfat_bytes)
@@ -171,7 +190,7 @@ def run_offline_candidate_dry_run(
         (scripts_dir / "20-p2-opelog-mount.sh").write_text(p2_script, encoding="utf-8")
         (scripts_dir / "00-init2-failsafe.sh").write_text(failsafe_hook, encoding="utf-8")
 
-        # 4. Run Unicorn instruction-level verification across adapted binaries
+        # 4. Run Unicorn instruction-level verification across P3, P4, P5, P6, P8, P9, and Fan
         rb_so = adapted_blobs.get(
             "libInfraAppRemoteBoard.so",
             apply_patch_spec(
@@ -201,9 +220,14 @@ def run_offline_candidate_dry_run(
 
         p3_uni = run_p3_remoteboard_unicorn_check(rb_so)
         p4_mode_uni, p4_val_uni = run_p4_nd_unicorn_sweep(appfw_so, patched_label=True)
+        p5_p6_uni = run_p5_p6_uipc_unicorn_audit(appfw_so)
+        p7_audit = verify_p7_backup_bridge(contract_evidence_path=repo_root / "work" / "fx6-backup-contract-fix-20261107" / "contract-evidence.json")
         p8_uni = run_p8_appfw_unicorn_check(appfw_so)
         p9_uni = run_p9_upm_ko_unicorn_check(upm_raw, upm_patched)
         fan_uni = run_fan_libfan_unicorn_check(fan_so)
+
+        p5_p6_ok = p5_p6_uni.all_positive_passed and p5_p6_uni.all_negative_captured and not corrupt_p5_p6_uipc
+        p7_ok = p7_audit.all_checks_passed and not corrupt_p7_backup_bridge
 
         unicorn_behavioral_ok = (
             p3_uni.exec_rcv_msg_ret == 0
@@ -212,6 +236,8 @@ def run_offline_candidate_dry_run(
             and p4_mode_uni.clear_output_count == p4_mode_uni.total_combinations
             and p4_val_uni.assert_hit_count == 0
             and p4_val_uni.clear_output_count == p4_val_uni.total_combinations
+            and p5_p6_ok
+            and p7_ok
             and p8_uni.return_value == 0
             and p8_uni.sp_preserved
             and p9_uni.unpatched_null_callback_faulted
@@ -220,6 +246,28 @@ def run_offline_candidate_dry_run(
             and fan_uni.return_value == 1
             and fan_uni.sp_preserved
         )
+
+        verified_matrix: List[str] = []
+        p1_specs_present = {"P1_libInfraSetupFile", "P1_libInfraMediaCommon", "P1_libInfraMediaConfig", "P1_P4_P8_appFw_combined"}
+        present_ids = {r.spec_id for r in patch_receipts}
+        if p1_specs_present.issubset(present_ids) and all_rollbacks_ok:
+            verified_matrix.append("P1")
+        if vfat_audit.valid:
+            verified_matrix.append("P2")
+        if "P3_libInfraAppRemoteBoard" in present_ids and p3_uni.exec_rcv_msg_ret == 0 and p3_uni.main_thread_ret == 0:
+            verified_matrix.append("P3")
+        if "P1_P4_P8_appFw_combined" in present_ids and p4_mode_uni.assert_hit_count == 0 and p4_val_uni.assert_hit_count == 0:
+            verified_matrix.append("P4")
+        if p5_p6_ok:
+            verified_matrix.extend(["P5", "P6"])
+        if p7_ok:
+            verified_matrix.append("P7")
+        if "P1_P4_P8_appFw_combined" in present_ids and p8_uni.return_value == 0 and p8_uni.sp_preserved:
+            verified_matrix.append("P8")
+        if "P9_upm_ko" in present_ids and p9_uni.patched_completed_cleanly and p9_uni.patched_return_value == 0:
+            verified_matrix.append("P9")
+        if "Fan_libfan" in present_ids and fan_uni.return_value == 1 and fan_uni.sp_preserved:
+            verified_matrix.append("Fan")
 
         # 5. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
@@ -252,6 +300,7 @@ def run_offline_candidate_dry_run(
             and all_rollbacks_ok
             and vfat_audit.valid
             and unicorn_behavioral_ok
+            and tuple(verified_matrix) == COMPLETE_MATRIX_ITEMS
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -281,6 +330,7 @@ def run_offline_candidate_dry_run(
         all_12_gates_verified=all_12_ok,
         verified_gate_count=verified_cnt,
         blocked_gate_ids=blocked_ids,
+        verified_matrix_items=tuple(verified_matrix),
         patch_receipts=tuple(patch_receipts),
         rollback_receipts=tuple(rollback_receipts),
         vfat_receipt=vfat_rec,
@@ -288,6 +338,8 @@ def run_offline_candidate_dry_run(
         p3_unicorn=p3_uni,
         p4_mode_unicorn=p4_mode_uni,
         p4_value_unicorn=p4_val_uni,
+        p5_p6_uipc_unicorn=p5_p6_uni,
+        p7_backup_bridge=p7_audit,
         p8_unicorn=p8_uni,
         p9_unicorn=p9_uni,
         fan_unicorn=fan_uni,

@@ -1,10 +1,12 @@
-"""Comprehensive Unit Test Suite for `outputs/fx6-on-fx3-closure` (Phase 2 Full Closure).
+"""Comprehensive Unit Test Suite for `outputs/fx6-on-fx3-closure` (Phase 3 P1..P9 9/9 Closure).
 
 Covers:
 - ELF64 `ET_DYN` (`PT_LOAD`) & `ET_REL` (`.ko` section) mappers and negative boundary checks
 - P1 (4-library equal-length `/dev/nflasha20` -> `/dev/nflasha30` adaptation & 100% SHA-256 rollback)
 - P2 (`vfat_builder.py` 8 MiB / 16 MiB / 44.5 MiB VFAT image synthesis & BPB/FAT/directory audits)
 - P3, P4, P8, P9 (`upm.ko` `.text+0x136b8`), and Fan (`libfan.so` `0x1dec`) adaptation, rollback & Unicorn checks
+- P5 & P6 (`uipc_completion_verifier.py` UIPC 12B completion synthesis & Unicorn `send_and_wait_cmp_i` verification)
+- P7 (`backup_bridge_verifier.py` dual-kernel `pcidma_transfer_async` 16B signature, Unicorn trampoline & `op=0x30` DMA contract)
 - Tier-0 Read-Only Backup Worker (`tier0_unicorn_verifier.py`) positive & fault-injection runs
 - End-to-End Offline Candidate Dry-Run & 12-Gate Safety Evaluator (`candidate_builder.py`) + CLI (`__main__.py`)
 """
@@ -22,7 +24,30 @@ from pathlib import Path
 from fx3_safety.preflight import TIER0_CANONICAL_SOURCES, TIER0_REQUIRED_BACKUPS
 
 from fx6_closure.__main__ import main as cli_main
-from fx6_closure.candidate_builder import run_offline_candidate_dry_run
+from fx6_closure.backup_bridge_verifier import (
+    BackupBridgeError,
+    FALLBACK_NONZERO_REL_OFFSET,
+    FALLBACK_ZERO_REL_OFFSET,
+    FX3_PCIDMA_API_VA,
+    FX6_PCIDMA_API_VA,
+    PINNED_ENTRY16_WORDS,
+    SYNC100_DST_QUEUE,
+    build_canonical_sync100_op30_envelope,
+    build_synthetic_kernel_image_for_base,
+    validate_sync100_op30_request,
+    verify_kernel_pcidma_entry_signature,
+    verify_p7_backup_bridge,
+)
+from fx6_closure.candidate_builder import COMPLETE_MATRIX_ITEMS, run_offline_candidate_dry_run
+from fx6_closure.uipc_completion_verifier import (
+    P5_CANONICAL_CMP_HEX,
+    P5_CANONICAL_REQ_HEX,
+    UIPC_BB_TARGET_QUEUE,
+    UIPC_P5_P6_RULES,
+    UipcProtocolError,
+    run_p5_p6_uipc_unicorn_audit,
+    synthesize_uipc_completion,
+)
 from fx6_closure.elf_verify import (
     PF_R,
     PF_W,
@@ -396,16 +421,20 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertFalse(res_excl.manifest_created)
 
     def test_end_to_end_candidate_dry_run_12_gates_pass_and_tamper_blocks(self) -> None:
-        # 1. Valid candidate dry-run: all 7 targets + 8 MiB VFAT + Tier-0 manifest -> 12/12 gates green
+        # 1. Valid candidate dry-run: full P1..P9 (9/9) + Fan + 8 MiB VFAT + Tier-0 -> 12/12 gates green
         rep_ok = run_offline_candidate_dry_run(compiled_worker=self.compiled_worker)
         self.assertTrue(rep_ok.candidate_ready)
         self.assertTrue(rep_ok.all_12_gates_verified)
         self.assertEqual(rep_ok.verified_gate_count, 12)
         self.assertEqual(rep_ok.blocked_gate_ids, ())
+        self.assertEqual(rep_ok.verified_matrix_items, COMPLETE_MATRIX_ITEMS)
         self.assertTrue(rep_ok.temp_dir_cleaned)
         self.assertEqual(len(rep_ok.patch_receipts), 7)
         self.assertEqual(rep_ok.vfat_receipt.total_bytes, 8 * 1024 * 1024)
         self.assertTrue(rep_ok.vfat_audit.valid)
+        self.assertTrue(rep_ok.p5_p6_uipc_unicorn.all_positive_passed)
+        self.assertTrue(rep_ok.p5_p6_uipc_unicorn.all_negative_captured)
+        self.assertTrue(rep_ok.p7_backup_bridge.all_checks_passed)
         self.assertEqual(rep_ok.fan_unicorn.return_value, 1)
         self.assertEqual(rep_ok.p8_unicorn.return_value, 0)
         self.assertTrue(rep_ok.p9_unicorn.patched_completed_cleanly)
@@ -452,6 +481,25 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
+        # 6. Corrupted P5/P6 UIPC or P7 Backup Sync100 bridge -> blocks G12 candidate release
+        rep_bad_uipc = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            corrupt_p5_p6_uipc=True,
+        )
+        self.assertFalse(rep_bad_uipc.candidate_ready)
+        self.assertNotIn("P5", rep_bad_uipc.verified_matrix_items)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_uipc.blocked_gate_ids)
+
+        rep_bad_p7 = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            corrupt_p7_backup_bridge=True,
+        )
+        self.assertFalse(rep_bad_p7.candidate_ready)
+        self.assertNotIn("P7", rep_bad_p7.verified_matrix_items)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p7.blocked_gate_ids)
+
     def test_cli_verify_donors_subcommand(self) -> None:
         buf = io.StringIO()
         with redirect_stdout(buf):
@@ -460,6 +508,119 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         parsed = json.loads(buf.getvalue())
         self.assertEqual(parsed["status"], "OK")
         self.assertEqual(parsed["verified_targets"], 7)
+        self.assertTrue(parsed["p7_dual_kernel_signature_verified"])
+
+
+class TestP5P6UipcCompletionAndUnicorn(unittest.TestCase):
+    """Verify P5 & P6 UIPC completion synthesis and Unicorn `send_and_wait_cmp_i` execution."""
+
+    def test_p5_and_p6_exact_byte_codec_and_schema_rejections(self) -> None:
+        p5_cmp = synthesize_uipc_completion(UIPC_BB_TARGET_QUEUE, bytes.fromhex(P5_CANONICAL_REQ_HEX))
+        self.assertEqual(p5_cmp.hex(), P5_CANONICAL_CMP_HEX)
+
+        for opcode, rule in UIPC_P5_P6_RULES.items():
+            pkt = synthesize_uipc_completion(UIPC_BB_TARGET_QUEUE, bytes.fromhex(rule.canonical_request_hex))
+            self.assertEqual(len(pkt), 12)
+            self.assertEqual(pkt.hex(), rule.canonical_completion_hex)
+
+        # Wrong queue, wrong magic, wrong length, or unknown opcode must raise UipcProtocolError
+        with self.assertRaises(UipcProtocolError):
+            synthesize_uipc_completion(0x9058003F, bytes.fromhex(P5_CANONICAL_REQ_HEX))
+        with self.assertRaises(UipcProtocolError):
+            synthesize_uipc_completion(UIPC_BB_TARGET_QUEUE, bytes.fromhex("0e202d030a0001800000"))
+        with self.assertRaises(UipcProtocolError):
+            synthesize_uipc_completion(UIPC_BB_TARGET_QUEUE, bytes.fromhex("0d202d030c0001800000"))
+        with self.assertRaises(UipcProtocolError):
+            synthesize_uipc_completion(UIPC_BB_TARGET_QUEUE, bytes.fromhex("0d2099090a0001800000"))
+
+    def test_send_and_wait_cmp_i_unicorn_zero_asserts_and_fault_capture(self) -> None:
+        appfw_raw = (DEFAULT_FX6_DONOR_LIB_DIR / "appFw.so").read_bytes()
+        summary = run_p5_p6_uipc_unicorn_audit(appfw_raw)
+        self.assertTrue(summary.all_positive_passed)
+        self.assertTrue(summary.all_negative_captured)
+        self.assertEqual(len(summary.positive_direct_cases), 5)
+        self.assertEqual(len(summary.positive_wrapper_cases), 5)
+
+        for case in summary.positive_direct_cases:
+            self.assertTrue(case.completed_normally)
+            self.assertFalse(case.hit_assert_1075_vma)
+            self.assertFalse(case.assert_hit)
+            self.assertEqual(case.osal_alloc_count, 2)
+            self.assertEqual(case.osal_free_count, 2)
+
+        for wcase in summary.positive_wrapper_cases:
+            self.assertEqual(wcase.mapped_ap_status, 0)
+            self.assertFalse(wcase.status_error_branch_hit)
+
+        # Negative assertions: osal_snd_msg != 0 & strict bad status jump to 0x20ef7b4 (line 1075)
+        self.assertTrue(summary.snd_error_case.hit_assert_1075_vma)
+        self.assertTrue(summary.snd_error_case.assert_hit)
+        self.assertEqual(summary.snd_error_case.assert_line, 1075)
+
+        self.assertTrue(summary.strict_bad_status_case.hit_assert_1075_vma)
+        self.assertEqual(summary.strict_bad_status_case.assert_line, 1075)
+
+        # Raw -1 completion status jumps to 0x20ede04 error branch and maps to 0x6f
+        self.assertTrue(summary.raw_bad_status_wrapper_case.status_error_branch_hit)
+        self.assertEqual(summary.raw_bad_status_wrapper_case.mapped_ap_status, 0x6F)
+
+
+class TestP7BackupSync100BridgeVerifier(unittest.TestCase):
+    """Verify P7 dual-kernel `pcidma_transfer_async` signature, Unicorn trampoline & Sync100 contract."""
+
+    def test_p7_dual_kernel_signature_trampoline_and_dma_contract(self) -> None:
+        rep = verify_p7_backup_bridge()
+        self.assertTrue(rep.all_checks_passed)
+        self.assertTrue(rep.dual_kernel_first32_identical)
+        self.assertEqual(rep.fx6_live_kernel_audit.entry16_words, PINNED_ENTRY16_WORDS)
+        self.assertEqual(rep.fx3_pinned_kernel_audit.entry16_words, PINNED_ENTRY16_WORDS)
+        self.assertEqual(
+            rep.fx6_live_kernel_audit.fallback_zero_va,
+            FX6_PCIDMA_API_VA + FALLBACK_ZERO_REL_OFFSET,
+        )
+        self.assertEqual(
+            rep.fx6_live_kernel_audit.fallback_nonzero_va,
+            FX6_PCIDMA_API_VA + FALLBACK_NONZERO_REL_OFFSET,
+        )
+        self.assertEqual(
+            rep.fx3_pinned_kernel_audit.fallback_zero_va,
+            FX3_PCIDMA_API_VA + FALLBACK_ZERO_REL_OFFSET,
+        )
+        self.assertEqual(
+            rep.fx3_pinned_kernel_audit.fallback_nonzero_va,
+            FX3_PCIDMA_API_VA + FALLBACK_NONZERO_REL_OFFSET,
+        )
+        self.assertEqual(rep.transaction_audit.callback_invocations, 1)
+        self.assertEqual(rep.transaction_audit.callback_args, ((0, 0),))
+        self.assertTrue(rep.libbackup_sha256_matched)
+        self.assertTrue(rep.chaplin_four_ids_verified)
+
+    def test_p7_rejects_tampered_kernel_prologue_or_invalid_op30_envelope(self) -> None:
+        import struct as _st
+
+        valid_first32 = _st.pack("<IIII", *PINNED_ENTRY16_WORDS) + (b"\x00" * 16)
+        good_img = build_synthetic_kernel_image_for_base(FX3_PCIDMA_API_VA, valid_first32)
+        audit = verify_kernel_pcidma_entry_signature(good_img, FX3_PCIDMA_API_VA)
+        self.assertTrue(audit.hook_restore_verified)
+
+        # Tamper word 0 of prologue -> must reject
+        bad_first32 = _st.pack("<IIII", 0xD503201F, *PINNED_ENTRY16_WORDS[1:]) + (b"\x00" * 16)
+        bad_img = build_synthetic_kernel_image_for_base(FX3_PCIDMA_API_VA, bad_first32)
+        with self.assertRaises(BackupBridgeError):
+            verify_kernel_pcidma_entry_signature(bad_img, FX3_PCIDMA_API_VA)
+
+        # Unknown base VA -> must reject
+        with self.assertRaises(BackupBridgeError):
+            verify_kernel_pcidma_entry_signature(good_img, 0xFFFFFF8008322100)
+
+        # Valid vs tampered 40B op=0x30 envelope
+        env = build_canonical_sync100_op30_envelope(origin_q=0x803E090B, mode=3)
+        q, mode = validate_sync100_op30_request(SYNC100_DST_QUEUE, env)
+        self.assertEqual((q, mode), (0x803E090B, 3))
+
+        bad_tail = env[:-4] + b"\x00\x00\x00\x00"
+        with self.assertRaises(BackupBridgeError):
+            validate_sync100_op30_request(SYNC100_DST_QUEUE, bad_tail)
 
 
 if __name__ == "__main__":

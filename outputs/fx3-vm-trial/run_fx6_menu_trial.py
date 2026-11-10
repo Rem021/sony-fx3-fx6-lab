@@ -87,7 +87,32 @@ PAGE_NAMES = {
     21: "OK/Cancel Confirm Dialog p72 / p93 (0x2eaf7a8 + 0x2eb4a58)",
     22: "Split-Pane Setting + 2nd-Layer Banner p77 / p112 (0x2eb1530 + 0x2eb8760)",
     23: "15-Btn 3x5 Menu Grid p64 / 10-Btn Media Grid p57 (0x2eac280 + 0x2eaa810)",
+    24: "Universal 128-Page Descriptor Table Mode (fx6_all_pages[0..127])",
 }
+
+
+def _load_all_128_pages() -> list[dict[str, Any]]:
+    hdr_path = REPO_ROOT / "reports" / "2026-11-07-fx6-uxengine-init-assist" / "artifacts" / "fx6_menu_items_assist.h"
+    if not hdr_path.exists():
+        return []
+    txt = hdr_path.read_text(errors="replace")
+    pages: list[dict[str, Any]] = []
+    for m in re.finditer(
+        r"\{\s*(\d+),\s*(\d+),\s*(0x[0-9a-fA-F]+)u,\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+),\s*\"([^\"]*)\"\s*\}",
+        txt,
+    ):
+        pidx, _, off_hex, rows, _, _, _, _, first_name = m.groups()
+        pages.append({
+            "idx": int(pidx),
+            "off": int(off_hex, 16),
+            "off_hex": off_hex,
+            "rows": int(rows),
+            "first_name": first_name,
+        })
+    return pages
+
+
+ALL_128_PAGES = _load_all_128_pages()
 
 LEGACY_PAGE_MAP = {
     "home": 0,
@@ -480,7 +505,13 @@ class FX6LiveGpe0Session:
                 if isinstance(p_val, str) and p_val.lower() in LEGACY_PAGE_MAP:
                     self.page = LEGACY_PAGE_MAP[p_val.lower()]
                 else:
-                    self.page = int(p_val) % 24
+                    self.page = int(p_val) % 25
+            if "table_off" in body and "table_rows" in body:
+                self.page = 24
+                self.cell_vals[0] = int(body["table_off"])
+                self.cell_vals[1] = int(body["table_rows"])
+                self.cell_vals[2] = int(body.get("table_off2", 0))
+                self.cell_vals[3] = int(body.get("table_rows2", 0))
             if "sel_box" in body:
                 self.sel_box = int(body["sel_box"])
             if "menu_cat" in body:
@@ -493,7 +524,7 @@ class FX6LiveGpe0Session:
 
             if key in KEY_CODES:
                 self._step_local_state(KEY_CODES[key])
-            elif any(k in body for k in ("page", "sel_box", "menu_cat", "menu_item", "menu_depth")):
+            elif any(k in body for k in ("page", "sel_box", "menu_cat", "menu_item", "menu_depth", "table_off")):
                 self.cmd_seq += 1
 
             wrote = self._write_ctrl_mailbox()
@@ -915,6 +946,15 @@ HTML_UI = """<!DOCTYPE html>
         <button onclick="setPage(23)" id="pbtn-23">23. 15键/10键宫格 p64/57</button>
       </div>
 
+      <h3>全量 128 个 FX6 原生页面描述符直达 (fx6_all_pages[0..127] · Universal Descriptor Table Mode)</h3>
+      <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+        <button onclick="step128(-1)">◀ 上一页</button>
+        <select id="all128-select" onchange="onSelect128()" style="flex:1;background:#1f2633;color:var(--text);border:1px solid #374151;border-radius:7px;padding:8px 10px;font-size:12px;font-family:'SF Mono',Menlo,monospace;">
+          <option value="">-- 选择 fx6_all_pages[0..127] 任意原生页面描述符表 --</option>
+        </select>
+        <button onclick="step128(1)">下一页 ▶</button>
+      </div>
+
       <h3>三层菜单 11 大分类直达 (TABLE 0x2ea02f8 + string_english_2.uxc)</h3>
       <div class="cat-grid" id="cat-buttons">
         <button onclick="setCat(0)" id="cbtn-0">1. User</button>
@@ -964,6 +1004,42 @@ HTML_UI = """<!DOCTYPE html>
 <script>
 let busy = false;
 let currentStatus = null;
+let pages128 = [];
+
+async function loadPages128() {
+  try {
+    const r = await fetch('/api/pages128');
+    pages128 = await r.json();
+    const sel = document.getElementById('all128-select');
+    if (sel && pages128.length) {
+      pages128.forEach((p, idx) => {
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        opt.textContent = `Page ${String(p.idx).padStart(3,'0')} | ${p.off_hex} (${String(p.rows).padStart(3,' ')} rows) | ${p.first_name}`;
+        sel.appendChild(opt);
+      });
+    }
+  } catch (e) {}
+}
+
+function onSelect128() {
+  const sel = document.getElementById('all128-select');
+  if (!sel || sel.value === '') return;
+  const p = pages128[parseInt(sel.value, 10)];
+  if (p) {
+    sendPayload({table_off: p.off, table_rows: p.rows, table_off2: 0, table_rows2: 0});
+  }
+}
+
+function step128(delta) {
+  const sel = document.getElementById('all128-select');
+  if (!sel || !pages128.length) return;
+  let cur = sel.value === '' ? 0 : parseInt(sel.value, 10) + delta;
+  if (cur < 0) cur = pages128.length - 1;
+  if (cur >= pages128.length) cur = 0;
+  sel.value = String(cur);
+  onSelect128();
+}
 
 async function updateUI(st, forceImg) {
   if (!st) return;
@@ -1093,7 +1169,7 @@ async function pollStatus() {
 }
 
 window.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
   const map = {
     ArrowUp: 'UP',
     ArrowDown: 'DOWN',
@@ -1115,6 +1191,7 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+loadPages128();
 setInterval(pollStatus, 1500);
 pollStatus();
 </script>
@@ -1151,6 +1228,9 @@ def make_handler(session: FX6LiveGpe0Session):
                 return
             if path == "/api/status":
                 self._send_json(session.get_status())
+                return
+            if path == "/api/pages128":
+                self._send_json(ALL_128_PAGES)
                 return
             if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
                 png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)

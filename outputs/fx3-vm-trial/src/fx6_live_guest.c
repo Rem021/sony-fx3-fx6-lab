@@ -823,6 +823,12 @@ static const hud_bind_t g_hud[] = {
     {"No8_content_num",0,0x02002385u,0,0},
     {"No1023_gain_value",1,0x020020fcu,800,0},
     {"No1022_sandq_frame_rate_value",1,0x020020a6u,24,0},
+    {"No2_MSG",0,0x0200554cu,0,0},
+    {"No2_CONTEXT",0,0x0200554cu,0,0},
+    {"No3_MSG",0,0x0200554cu,0,0},
+    {"No3_TEXT",0,0x0200554cu,0,0},
+    {"No3_TEXT1",0,0x0200554cu,0,0},
+    {"No3_magnificationdebugdisplay",0,0x0200554cu,0,0},
 };
 #define HUD_N ((int)(sizeof(g_hud) / sizeof(g_hud[0])))
 
@@ -933,9 +939,10 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
         if (tag == 0x42d5a40u || tag == 0x42d57d0u) {
             if (c && c != 0xffffffffU)
                 fx6_fill_rect(appfw, x, y, w, h, c);
-        } else if (tag == 0x42d5a50u && w >= 140 && h >= 48) {
-            if (w >= 600 && h >= 180)
+            else if (w >= 400 && h >= 100)
                 fx6_fill_rect(appfw, x, y, w, h, 0x0200c003u);
+        } else if (tag == 0x42d5a50u && w >= 140 && h >= 32) {
+            fx6_fill_rect(appfw, x, y, w, h, 0x0200c003u);
             if (c && c != 0xffffffffU)
                 fx6_icon_blit(appfw, x, y, w, h, c);
         } else if (tag == 0x42d58d0u && w >= 36 && h >= 36 && w < 900) {
@@ -956,6 +963,15 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
                 int bh = (h * (3 + (ch % 2))) / 5;
                 fx6_fill_rect(appfw, bx, y + h - bh - 4, 10, bh, 0x0200c013u);
             }
+        } else if (tag == 0x42d5850u && w >= 40 && h >= 24) {
+            fx6_fill_rect(appfw, x, y, w, h - 2, 0x0200c008u);
+        } else if (tag == 0x42d5880u && w >= 40 && w < 600 && h >= 16) {
+            fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
+            fx6_fill_rect(appfw, x + 2, y + 2, (w * 3) / 5, h - 4, FX6_COLOR_SEL);
+        } else if ((tag == 0x42d59e0u || tag == 0x42d5a20u) && w >= 120 && h >= 120) {
+            for (int ry = y + 52; ry + 4 < y + h; ry += 52) {
+                fx6_fill_rect(appfw, x + 4, ry, w - 8, 2, 0x0200c00bu);
+            }
         }
     }
     for (int i = 0; i < count; i++) {
@@ -963,9 +979,10 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
         uint32_t tag = (uint32_t)((uint64_t)(uintptr_t)*(void **)p - appfw);
         uint16_t x = *(uint16_t *)(p + 0x3c), y = *(uint16_t *)(p + 0x3e);
         uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
-        if (tag == 0x42d57f0u || tag == 0x42d59a0u || tag == 0x42d58d0u) {
+        if (tag == 0x42d57f0u || tag == 0x42d59a0u || tag == 0x42d58d0u ||
+            tag == 0x42d5850u || tag == 0x42d5840u || tag == 0x42d5960u) {
             fx6_render_row(appfw, p, label);
-        } else if (tag == 0x42d5a50u && !(w >= 140 && h >= 48)) {
+        } else if (tag == 0x42d5a50u && !(w >= 140 && h >= 32)) {
             uint32_t c = *(uint32_t *)(p + 0x18);
             if (c && c != 0xffffffffU)
                 fx6_icon_blit(appfw, x, y, w, h, c);
@@ -1003,7 +1020,7 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     return h;
 }
 
-#define FX6_NUM_PAGES 24u
+#define FX6_NUM_PAGES 25u
 
 static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
                                 uint32_t menu_cat, uint32_t menu_item, uint32_t menu_depth,
@@ -1161,6 +1178,15 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
             page_table(appfw, 0x2eaa810u, 18, "mediagrid57");
         else
             page_table(appfw, 0x2eac280u, 34, "menugrid64");
+        break;
+    case 24:
+        /* Universal Descriptor Table Mode: cell_vals[0]=off1, cell_vals[1]=cnt1, cell_vals[2]=off2, cell_vals[3]=cnt2 */
+        if (cell_vals[0] >= 0x02e90000u && cell_vals[0] <= 0x02ebb000u && cell_vals[1] >= 1u && cell_vals[1] <= 260u) {
+            page_table(appfw, cell_vals[0], (int)cell_vals[1], "generic1");
+        }
+        if (cell_vals[2] >= 0x02e90000u && cell_vals[2] <= 0x02ebb000u && cell_vals[3] >= 1u && cell_vals[3] <= 260u) {
+            page_table(appfw, cell_vals[2], (int)cell_vals[3], "generic2");
+        }
         break;
     }
     if (proccmd) proccmd(0);

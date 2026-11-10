@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure` (Phase 7 U5 Boot-Selector, U3 Bank DDR Maps, U4/BK4 & 5-Feature Closure)."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 8 cxd90057.dtb FDT Auditor, .ko Integrity, U5/U3 & U4/BK4 Closure)."""
 
 from __future__ import annotations
 
@@ -18,6 +18,7 @@ from .feature_routing_verifier import (
     DEFAULT_FX6_INITRD_LIB_DIR,
     run_feature_routing_verification,
 )
+from .kernel_dtb_compatibility_verifier import run_kernel_dtb_verification
 from .nd_unicorn_verifier import (
     run_fan_libfan_unicorn_check,
     run_p3_remoteboard_unicorn_check,
@@ -220,6 +221,20 @@ def _cmd_verify_boot_selector_banks() -> int:
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_kernel_dtb(fx3_modules_dir: Path) -> int:
+    rep = run_kernel_dtb_verification(fx3_modules_dir=fx3_modules_dir)
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "dtb_byte_identical": rep.dimension_a_dtb.dtb_byte_identical,
+        "p9_upm_integrity_valid": rep.dimension_b_ko.p9_upm_integrity.valid,
+        "dimension_a_dtb": asdict(rep.dimension_a_dtb),
+        "dimension_b_ko": asdict(rep.dimension_b_ko),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -244,6 +259,9 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "boot_selector_and_banks_ok": rep.boot_selector_and_banks_ok,
         "u5_closed": rep.boot_selector_and_bank_audit.dimension_a_boot_selector.u5_closed,
         "u3_advanced": rep.boot_selector_and_bank_audit.dimension_b_bank_maps.u3_advanced,
+        "kernel_dtb_ok": rep.kernel_dtb_ok,
+        "dtb_byte_identical": rep.kernel_dtb_audit.dimension_a_dtb.dtb_byte_identical,
+        "p9_ko_integrity_ok": rep.kernel_dtb_audit.dimension_b_ko.p9_upm_integrity.valid,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -261,7 +279,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 7 Compatibility Closure, U5 Boot-Selector, U3 Bank DDR Maps & U4/BK4 CLI",
+        description="FX6-on-FX3 Phase 8 Compatibility Closure, cxd90057.dtb FDT Auditor, .ko Integrity & U5/U3/U4/BK4 CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -272,7 +290,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-feature-routing", "Verify 5 core camera feature routing, ELF64 symbol closure, 16x .cube LUT budget, and dual-slot Unicorn contracts"),
         ("verify-backup-mount-contracts", "Verify U4 storage mount-failure tolerance in Unicorn and synthesize/audit RAM-shadow BK4\\0 contracts"),
         ("verify-boot-selector-banks", "Verify U5 boot-selector (up.sh, ud_send_lsi.elf Unicorn, loader_nor.bin) and U3 Bank 0/1 DDR maps"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-kernel-dtb", "Verify cxd90057.dtb FDT (0xd00dfeed) SoC MMIO/carveout compatibility and .ko vermagic/__versions CRC integrity"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + DTB/.ko + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -298,6 +317,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_backup_mount_contracts(args.fx6_lib_dir)
     if args.cmd == "verify-boot-selector-banks":
         return _cmd_verify_boot_selector_banks()
+    if args.cmd == "verify-kernel-dtb":
+        return _cmd_verify_kernel_dtb(args.fx3_modules_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

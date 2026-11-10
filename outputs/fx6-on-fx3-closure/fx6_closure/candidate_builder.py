@@ -52,6 +52,10 @@ from .feature_routing_verifier import (
     FeatureRoutingAuditReport,
     run_feature_routing_verification,
 )
+from .kernel_dtb_compatibility_verifier import (
+    Phase8KernelDtbReport,
+    run_kernel_dtb_verification,
+)
 from .nd_unicorn_verifier import (
     FanExecSummary,
     NdSweepSummary,
@@ -136,6 +140,8 @@ class CandidateDryRunReport:
     backup_mount_tolerance_ok: bool
     boot_selector_and_bank_audit: Phase7BootSelectorAndBankReport
     boot_selector_and_banks_ok: bool
+    kernel_dtb_audit: Phase8KernelDtbReport
+    kernel_dtb_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -154,6 +160,7 @@ def run_offline_candidate_dry_run(
     precomputed_feature_routing: Optional[FeatureRoutingAuditReport] = None,
     precomputed_backup_mount_tolerance: Optional[Phase6BackupMountToleranceReport] = None,
     precomputed_boot_selector_and_banks: Optional[Phase7BootSelectorAndBankReport] = None,
+    precomputed_kernel_dtb: Optional[Phase8KernelDtbReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -162,6 +169,7 @@ def run_offline_candidate_dry_run(
     corrupt_feature_routing: bool = False,
     corrupt_backup_mount_tolerance: bool = False,
     corrupt_boot_selector_and_banks: bool = False,
+    corrupt_kernel_dtb: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -357,6 +365,11 @@ def run_offline_candidate_dry_run(
             boot_selector_banks_res.all_checks_passed and not corrupt_boot_selector_and_banks
         )
 
+        kernel_dtb_res = precomputed_kernel_dtb or run_kernel_dtb_verification(
+            fx3_modules_dir=fx3_modules_dir
+        )
+        kernel_dtb_ok = kernel_dtb_res.all_checks_passed and not corrupt_kernel_dtb
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -395,6 +408,7 @@ def run_offline_candidate_dry_run(
             and feature_routing_ok
             and backup_mount_tolerance_ok
             and boot_selector_and_banks_ok
+            and kernel_dtb_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -408,6 +422,7 @@ def run_offline_candidate_dry_run(
             allow_dry_run_gate12=True,
             backup_mount_tolerance_ok=backup_mount_tolerance_ok,
             boot_selector_and_banks_ok=boot_selector_and_banks_ok,
+            kernel_dtb_ok=kernel_dtb_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -448,6 +463,8 @@ def run_offline_candidate_dry_run(
         backup_mount_tolerance_ok=backup_mount_tolerance_ok,
         boot_selector_and_bank_audit=boot_selector_banks_res,
         boot_selector_and_banks_ok=boot_selector_and_banks_ok,
+        kernel_dtb_audit=kernel_dtb_res,
+        kernel_dtb_ok=kernel_dtb_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

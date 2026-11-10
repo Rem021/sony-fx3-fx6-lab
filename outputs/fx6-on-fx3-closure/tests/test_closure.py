@@ -93,6 +93,24 @@ from fx6_closure.feature_routing_verifier import (
     verify_p30_lut_capacity_budget,
     verify_setupfile_lut_mount_chain,
 )
+from fx6_closure.kernel_dtb_compatibility_verifier import (
+    DEFAULT_FX3_DTB_PATH,
+    DEFAULT_FX6_P1_INITRD_DIR,
+    EXPECTED_HOST_VERMAGIC,
+    EXPECTED_KEMCO_MEMRSV_CARVEOUTS,
+    EXPECTED_P1_UPDATER_VERMAGIC,
+    FdtFormatError,
+    KoModuleFormatError,
+    PINNED_CXD90057_DTB_SHA256,
+    PINNED_FX3_HOST_KO_SHA256,
+    SYNTHETIC_MODULE_LAYOUT_CRC,
+    audit_dtb_soc_compatibility,
+    audit_kernel_module_compatibility,
+    inject_synthetic_modversions_section,
+    parse_and_audit_ko_module,
+    parse_fdt_blob,
+    run_kernel_dtb_verification,
+)
 from fx6_closure.ram_overlay_packager import (
     CPIO_NEWC_MAGIC,
     CpioEntrySpec,
@@ -517,12 +535,17 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.boot_selector_and_banks_ok)
         self.assertTrue(rep_ok.boot_selector_and_bank_audit.dimension_a_boot_selector.u5_closed)
         self.assertTrue(rep_ok.boot_selector_and_bank_audit.dimension_b_bank_maps.u3_advanced)
+        self.assertTrue(rep_ok.kernel_dtb_ok)
+        self.assertTrue(rep_ok.kernel_dtb_audit.all_checks_passed)
+        self.assertTrue(rep_ok.kernel_dtb_audit.dimension_a_dtb.dtb_byte_identical)
+        self.assertTrue(rep_ok.kernel_dtb_audit.dimension_b_ko.p9_upm_integrity.valid)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
         feat_base = rep_ok.feature_routing_audit
         bmt_base = rep_ok.backup_mount_tolerance_audit
         bsb_base = rep_ok.boot_selector_and_bank_audit
+        kdtb_base = rep_ok.kernel_dtb_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -533,6 +556,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -549,6 +573,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -562,6 +587,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -576,12 +602,13 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, or U5/U3 -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, or DTB/.ko -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
@@ -589,6 +616,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -602,6 +630,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -615,6 +644,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -628,6 +658,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
@@ -640,6 +671,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -653,11 +685,32 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
         self.assertFalse(rep_bad_bsb.boot_selector_and_banks_ok)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bsb.blocked_gate_ids)
+
+        rep_bad_kdtb = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
+            corrupt_kernel_dtb=True,
+        )
+        self.assertFalse(rep_bad_kdtb.candidate_ready)
+        self.assertFalse(rep_bad_kdtb.kernel_dtb_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_kdtb.blocked_gate_ids)
+        g12_kdtb = [
+            g
+            for g in rep_bad_kdtb.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_kdtb["status"], "BLOCKED_BY_KERNEL_OR_DTB_REDLINE")
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -1455,6 +1508,223 @@ class TestPhase7BootSelectorAndBankVerifier(unittest.TestCase):
         self.assertEqual(len(payload["dimension_a_boot_selector"]["unicorn_cases"]), 10)
         self.assertTrue(payload["dimension_b_bank_maps"]["fx3_bank0_audit"]["zero_overlap_verified"])
         self.assertTrue(payload["dimension_b_bank_maps"]["fx6_bank1_audit"]["zero_overlap_verified"])
+
+
+class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
+    """Verify Phase 8 cxd90057.dtb FDT SoC Compatibility Auditor & .ko vermagic/__versions CRC Verifier."""
+
+    def test_dimension_a_fdt_parser_and_fx3_vs_fx6_cxd90057_dtb_soc_audit(self) -> None:
+        rep_a = audit_dtb_soc_compatibility()
+        self.assertTrue(rep_a.all_checks_passed)
+        self.assertTrue(rep_a.fx3_dtb_sha256_verified)
+        self.assertTrue(rep_a.fx6_dtb_sha256_verified)
+        self.assertTrue(rep_a.dtb_byte_identical)
+        self.assertEqual(rep_a.fdt_node_count, 68)
+        self.assertEqual(rep_a.fdt_property_count, 493)
+        self.assertEqual(rep_a.node_or_property_diff_count, 0)
+        self.assertTrue(rep_a.loadaddr_txt_identical)
+        self.assertEqual(
+            rep_a.loadaddr_quad,
+            (0x400080000, 0x408000000, 0x400001000, 0x400002000),
+        )
+
+        soc = rep_a.soc_summary
+        self.assertEqual(soc.root_compatible, ("cxd,cxd90057",))
+        self.assertEqual(soc.root_model, "CXD90057")
+        self.assertEqual(soc.chosen_stdout_path, "serial0:460800n8")
+        self.assertFalse(soc.chosen_has_inline_bootargs)
+        self.assertEqual(soc.memory_base_addr, 0x400000000)
+        self.assertEqual(soc.memory_size_bytes, 0x200000000)
+        self.assertFalse(soc.has_reserved_memory_node)
+        self.assertEqual(len(soc.static_iomap_regions), 3)
+        self.assertEqual(soc.pcie_ep_dummy_carveout, (0x7, 0x400000000, 0x1000))
+        self.assertEqual(soc.cpu_count, 4)
+        self.assertIn("arm,cortex-a35", soc.cpu_compatible)
+        self.assertIn("arm,gic-400", soc.gic_compatible)
+        self.assertEqual(len(soc.gic_mmio_windows), 4)
+        self.assertEqual(len(soc.uart_nodes), 5)
+        self.assertEqual(soc.emmc_compatible, ("arasan,sdhci",))
+        self.assertEqual(len(soc.pcie_rc_nodes), 5)
+        self.assertEqual(len(soc.pcie_ep_ipc_nodes), 5)
+
+        self.assertTrue(rep_a.fx3_kemco_audit.valid)
+        self.assertTrue(rep_a.fx6_p1_kemco_audit.valid)
+        self.assertTrue(rep_a.kemco_memrsv_identical)
+        self.assertEqual(len(rep_a.fx3_kemco_audit.memrsv_entries), len(EXPECTED_KEMCO_MEMRSV_CARVEOUTS))
+        self.assertEqual(rep_a.fx3_kemco_audit.ramdisk_size_kib, 16384)
+        self.assertEqual(rep_a.fx6_p1_kemco_audit.ramdisk_size_kib, 8192)
+        self.assertEqual(rep_a.kemco_diff_keys, ("ramdisk_size", "initrd"))
+
+    def test_dimension_a_fdt_parser_rejects_bad_magic_truncation_unaligned_unterminated_and_oob_strings(self) -> None:
+        import struct as _st
+
+        dtb_raw = DEFAULT_FX3_DTB_PATH.read_bytes()
+        self.assertEqual(hashlib.sha256(dtb_raw).hexdigest(), PINNED_CXD90057_DTB_SHA256)
+        parsed = parse_fdt_blob(dtb_raw)
+        self.assertEqual(parsed.header.version, 17)
+        self.assertEqual(parsed.header.last_comp_version, 16)
+        self.assertEqual(len(parsed.nodes), 68)
+
+        # 1. Corrupted magic (`!= 0xd00dfeed`) -> rejected
+        bad_magic = bytearray(dtb_raw)
+        _st.pack_into(">I", bad_magic, 0, 0xDEADBEEF)
+        with self.assertRaises(FdtFormatError):
+            parse_fdt_blob(bytes(bad_magic))
+
+        # 2. Truncated `totalsize` (file shorter than header `totalsize`) -> rejected
+        with self.assertRaises(FdtFormatError):
+            parse_fdt_blob(dtb_raw[:-16])
+
+        # 3. Unaligned `off_dt_struct` (not 4-byte aligned) -> rejected
+        bad_align = bytearray(dtb_raw)
+        _st.pack_into(">I", bad_align, 8, 57)
+        with self.assertRaises(FdtFormatError):
+            parse_fdt_blob(bytes(bad_align))
+
+        # 4. Unterminated `FDT_END` (`0x00000009` replaced with `FDT_NOP` `0x00000004`) -> rejected
+        no_end = bytearray(dtb_raw)
+        end_pos = parsed.header.off_dt_struct + parsed.header.size_dt_struct - 4
+        self.assertEqual(_st.unpack_from(">I", no_end, end_pos)[0], 0x00000009)
+        _st.pack_into(">I", no_end, end_pos, 0x00000004)
+        with self.assertRaises(FdtFormatError):
+            parse_fdt_blob(bytes(no_end))
+
+        # 5. Out-of-bounds `nameoff` in first `FDT_PROP` -> rejected
+        oob_str = bytearray(dtb_raw)
+        # Root FDT_BEGIN_NODE is at off_dt_struct (56): token(4B) + ""\0 padded(4B) = 64; first FDT_PROP at 64
+        self.assertEqual(_st.unpack_from(">I", oob_str, 64)[0], 0x00000003)
+        _st.pack_into(">I", oob_str, 72, parsed.header.size_dt_strings + 64)
+        with self.assertRaises(FdtFormatError):
+            parse_fdt_blob(bytes(oob_str))
+
+        # 6. Unterminated `/memreserve/` block -> rejected
+        bad_rsv = bytearray(dtb_raw)
+        _st.pack_into(">QQ", bad_rsv, parsed.header.off_mem_rsvmap, 0x400000000, 0x1000)
+        with self.assertRaises(FdtFormatError):
+            parse_fdt_blob(bytes(bad_rsv))
+
+    def test_dimension_b_ko_vermagic_modversions_p9_integrity_and_cross_kernel_abi(self) -> None:
+        rep_b = audit_kernel_module_compatibility()
+        self.assertTrue(rep_b.all_checks_passed)
+        self.assertEqual(rep_b.fx3_host_module_count, 9)
+        self.assertEqual(rep_b.fx3_host_module_count, len(PINNED_FX3_HOST_KO_SHA256))
+        self.assertTrue(rep_b.fx3_all_sha256_verified)
+        self.assertTrue(rep_b.fx3_uniform_vermagic_verified)
+        self.assertTrue(rep_b.fx3_depends_dag_closed)
+        self.assertFalse(rep_b.sony_config_modversions_enabled)
+
+        p9 = rep_b.p9_upm_integrity
+        self.assertTrue(p9.valid)
+        self.assertTrue(p9.rollback_sha256_matched)
+        self.assertTrue(p9.vermagic_preserved)
+        self.assertTrue(p9.modinfo_sha256_preserved)
+        self.assertTrue(p9.this_module_sha256_preserved)
+        self.assertTrue(p9.undef_symbols_preserved)
+        self.assertTrue(p9.exported_symbols_preserved)
+        self.assertTrue(p9.native_modversions_preserved)
+        self.assertEqual(p9.synthetic_modversions_count, 61)
+        self.assertTrue(p9.synthetic_modversions_100pct_preserved)
+
+        # Quantify cross-kernel comparison: 7/9 ABI-identical, 2/9 (`backup.ko`, `upm.ko`) divergent, 8/9 p1 vermagic mismatch
+        self.assertEqual(rep_b.identical_abi_module_count, 7)
+        self.assertEqual(rep_b.divergent_abi_modules, ("backup.ko", "upm.ko"))
+        self.assertEqual(rep_b.p1_vermagic_mismatch_count, 8)
+        by_name = {c.module_filename: c for c in rep_b.cross_kernel_comparisons}
+        self.assertEqual(
+            by_name["backup.ko"].only_fx6_exports,
+            ("Backup_sync_subsystem_for_senser_local",),
+        )
+        self.assertIn(
+            "Backup_sync_subsystem_for_senser_local",
+            by_name["upm.ko"].only_fx6_undef,
+        )
+        self.assertIn(
+            "pcie_link_width_check_dev_state_ch0",
+            by_name["upm.ko"].only_fx6_undef,
+        )
+        self.assertIn(
+            "pcie_get_link_speed",
+            by_name["upm.ko"].only_fx3_undef,
+        )
+
+    def test_dimension_b_ko_auditor_rejects_vermagic_mismatch_tampered_crc_malformed_modinfo_and_cli(self) -> None:
+        upm_raw = (DEFAULT_FX3_MODULES_DIR / "upm.ko").read_bytes()
+        p1_uipc_raw = (DEFAULT_FX6_P1_INITRD_DIR / "usr" / "kmod" / "osal_uipc.ko").read_bytes()
+
+        # 1. Mismatched `vermagic` (`4.9.186-scel` vs `4.9.337-scel+`) -> rejected with KoModuleFormatError
+        p1_audit = parse_and_audit_ko_module(p1_uipc_raw, "FX6_p1:osal_uipc.ko")
+        self.assertEqual(p1_audit.vermagic, EXPECTED_P1_UPDATER_VERMAGIC)
+        with self.assertRaises(KoModuleFormatError):
+            parse_and_audit_ko_module(
+                p1_uipc_raw,
+                "FX6_p1:osal_uipc.ko",
+                expected_vermagic=EXPECTED_HOST_VERMAGIC,
+            )
+
+        # 2. Tampered `module_layout` CRC in 64B `struct modversion_info` -> rejected
+        modver_ko = inject_synthetic_modversions_section(
+            upm_raw,
+            [("module_layout", SYNTHETIC_MODULE_LAYOUT_CRC), ("printk", 0x1B7D4074)],
+        )
+        ok_mv = parse_and_audit_ko_module(
+            modver_ko,
+            "synth_modver.ko",
+            expected_module_layout_crc=SYNTHETIC_MODULE_LAYOUT_CRC,
+        )
+        self.assertEqual(ok_mv.module_layout_crc, SYNTHETIC_MODULE_LAYOUT_CRC)
+        self.assertEqual(len(ok_mv.modversions), 2)
+
+        tampered_crc_ko = inject_synthetic_modversions_section(
+            upm_raw,
+            [("module_layout", SYNTHETIC_MODULE_LAYOUT_CRC ^ 0xFFFFFFFF), ("printk", 0x1B7D4074)],
+        )
+        with self.assertRaises(KoModuleFormatError):
+            parse_and_audit_ko_module(
+                tampered_crc_ko,
+                "tampered_crc.ko",
+                expected_module_layout_crc=SYNTHETIC_MODULE_LAYOUT_CRC,
+            )
+
+        # 3. Missing mandatory `module_layout` entry in `__versions` -> rejected
+        no_layout_ko = inject_synthetic_modversions_section(
+            upm_raw,
+            [("printk", 0x1B7D4074)],
+        )
+        with self.assertRaises(KoModuleFormatError):
+            parse_and_audit_ko_module(no_layout_ko, "no_layout.ko")
+
+        # 4. Unaligned `__versions` section size (`65 B`, not a multiple of 64 B) -> rejected
+        unaligned_ver_ko = inject_synthetic_modversions_section(
+            upm_raw,
+            [],
+            raw_versions_override=b"\x00" * 65,
+        )
+        with self.assertRaises(KoModuleFormatError):
+            parse_and_audit_ko_module(unaligned_ver_ko, "unaligned_versions.ko")
+
+        # 5. Malformed `.modinfo` (corrupt `=` in `vermagic=` entry) -> rejected
+        bad_modinfo = bytearray(upm_raw)
+        vm_pos = bad_modinfo.find(b"vermagic=")
+        self.assertGreater(vm_pos, 0)
+        bad_modinfo[vm_pos + 8] = ord(":")  # replaces '=' with ':'
+        with self.assertRaises(KoModuleFormatError):
+            parse_and_audit_ko_module(bytes(bad_modinfo), "bad_modinfo.ko")
+
+        # 6. End-to-end `run_kernel_dtb_verification()` & CLI `verify-kernel-dtb` subcommand
+        full_rep = run_kernel_dtb_verification()
+        self.assertTrue(full_rep.all_checks_passed)
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-kernel-dtb"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["dtb_byte_identical"])
+        self.assertTrue(payload["p9_upm_integrity_valid"])
+        self.assertEqual(payload["dimension_a_dtb"]["fdt_node_count"], 68)
+        self.assertEqual(payload["dimension_b_ko"]["fx3_host_module_count"], 9)
 
 
 if __name__ == "__main__":

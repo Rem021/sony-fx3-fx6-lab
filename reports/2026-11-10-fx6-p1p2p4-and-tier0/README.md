@@ -1,4 +1,4 @@
-# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由、`U4`/`U5` 閉環、`U3` Bank 0/1 DDR 校驗、RAM-Shadow `BK4\0` 與 12 道安全門驗證報告（Phase 7）
+# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由、`U4`/`U5` 閉環、`U3` Bank 0/1 DDR、`cxd90057.dtb` FDT 與 `.ko` 完整性及 12 道安全門驗證報告（Phase 8）
 
 - **日期**：2026-11-10
 - **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`
@@ -9,7 +9,7 @@
 
 ## 1. 正式受控工程包結構與全矩陣覆蓋表
 
-全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U4` 存儲掛載容錯審計 + 跨機型 RAM-Shadow `BK4\0` 備份合成校驗 + 藍圖 `U5` 引導選擇器單次防黏連契約閉環 + 藍圖 `U3` `0xfa0080` Bank 0/1 DDR 非重疊校驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
+全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U4` 存儲掛載容錯審計 + 跨機型 RAM-Shadow `BK4\0` 備份合成校驗 + 藍圖 `U5` 引導選擇器單次防黏連契約閉環 + 藍圖 `U3` `0xfa0080` Bank 0/1 DDR 非重疊校驗 + Phase 8 `cxd90057.dtb` FDT SoC 兼容與 `.ko` `vermagic` / `__versions` CRC 完整性核驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
 
 | 模組路徑 | 覆蓋項 | 職責說明 |
 | --- | :---: | --- |
@@ -22,11 +22,12 @@
 | `outputs/fx6-on-fx3-closure/fx6_closure/feature_routing_verifier.py` | **藍圖 §3 五大功能路由** | **維度 A**：10 核心庫 ELF64 `DT_NEEDED`（43 節點全傳遞閉包，0 缺失）與 `.dynsym` 導入/導出審計；**維度 B**：Sony `17^3`/`33^3` `.cube` 生成/校驗器、FX3 `p30`（`48 MiB`）16 組 LUT 簇容量預算證明與 `libInfraSetupFile.so` `RcvThread`（`0x196c8..0x196e0`）掛載鏈核驗；**維度 C**：Cine EI / E 卡口 AF 契約與 `set_eye_af_mode_i` + `libmpr.so` `libXavcMxfGetSlotTypeFromMediaId`（`+0x53c850`）Unicorn 實跑驗證。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/backup_mount_tolerance_verifier.py` | **藍圖 `U4` + RAM-Shadow `BK4\0`** | **維度 A（關閉 `U4`）**：`libInfraSetupFile.so`（`RcvThread` `@ 0x19650`）與 `libInfraKikiLogGenerator.so`（`KikiLogGenerator_res_ope` `@ 0x3cb0`）掛載返回碼與降級控制流靜態指令釘選 + Unicorn AArch64 實跑核驗；**維度 B**：FX6 6.01 vs FX3 7.02 `libbackup.so` / `BK4\0` 跨機型鍵模式審計與零寫閃存 RAM-Shadow `BK4\0` 容器合成/校驗器（兼容 `fx3_safety.boot_contracts.parse_bk4_record`）。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/boot_selector_and_bank_verifier.py` | **藍圖 `U5` + 藍圖 `U3`** | **維度 A（關閉 `U5`）**：`up.sh`、`ud_send_lsi.elf`（`0x400990..0x400ad8` 靜態釘選 + Unicorn AArch64 全 7 模式實跑捕獲 `0x804b0376` 4B 載荷）與 `loader_nor.bin`（`0xFE049000` 雙重引導仲裁）單次防黏連契約核驗；**維度 B（推進 `U3`）**：FX3 / FX6 `0xfa0080` Bank 0 / Bank 1 全 64 槽位（`64 x 144 = 9,216 B`）DDR 區間兩兩 **0 重疊**證明與 `+0xE0000` / `+0x14000` 校準偏移審計。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/kernel_dtb_compatibility_verifier.py` | **Phase 8 FDT + `.ko` 完整性** | **維度 A**：純 Python Devicetree v0.4（`0xd00dfeed`）解析器與 FX3 vs FX6 `cxd90057.dtb`（68 節點 / 493 屬性 100% 逐字節一致）、`loadaddr.txt`（100% 一致）及 `kemco.txt`（7 段 `memrsv=` 100% 一致）SoC MMIO 兼容審計；**維度 B**：ELF64 `ET_REL` `.ko` `.modinfo`（`vermagic`）與 64B `struct modversion_info`（`__versions`）CRC 解析器，證明 `P9` `upm.ko` 100% 保留 `vermagic` 與 61 項符號 CRC，並量化跨內核混載 `.ko` 的 `vermagic` 與 `SHN_UNDEF` 風險。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,overlay_manifest.json}`。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/rollback_drill.py` | **四層防磚演練** | Stage-A 啟動守衛確定性狀態機與 `PREFIX` 隔離沙盒 POSIX `/bin/sh` 子進程實跑演練器（覆蓋無授權標記、單次啟動+重啟恢復、SHA-256 失配/缺失回退、超時/非零退出回退與 eMMC 零寫入核驗）。 |
 | `outputs/fx6-on-fx3-closure/native/tier0_backup_worker.c` & `tier0_unicorn_verifier.py` | **Tier-0** | 零外部 `UND` 符號、零動態重定位 AArch64 Linux 雙遍只讀備份組件與 Unicorn 系統調用審計器。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks` 與 `run-rollback-drill` 子命令）。 |
-| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**36 項測試**，外加 `outputs/fx3-safety/tests` **12 項測試**）。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks`、`verify-kernel-dtb` 與 `run-rollback-drill` 子命令）。 |
+| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**40 項測試**，外加 `outputs/fx3-safety/tests` **13 項測試**）。 |
 
 ---
 
@@ -216,19 +217,88 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 
 ---
 
-## 9. 端到端候選包乾跑、12 道安全門聯調與驗收測試結果
+## 9. Phase 8 維度 A：扁平設備樹（`cxd90057.dtb`，`0xd00dfeed`）SoC MMIO / Carveout 兼容審計
+
+### 9.1 純 Python Devicetree v0.4 解析結果與跨機型 100% 逐字節一致證明
+
+無第三方依賴純 Python FDT（`0xd00dfeed`）解析器嚴格校驗大端文件頭（`version = 17`、`last_comp_version = 16`、`totalsize = 17,131 B`、`off_mem_rsvmap = 40`、`off_dt_struct = 56`、`size_dt_struct = 16,284`、`off_dt_strings = 16,340`、`size_dt_strings = 791`）、4B/8B 對齊、`/memreserve/` 雙零終止符、平衡節點棧與字符串表邊界。對比 FX3 與 FX6 只讀源 `cxd90057.dtb`、`loadaddr.txt` 及 `kemco.txt`：
+
+- **`cxd90057.dtb`（`17,131 B`，SHA-256 `87abb2b72c3d373cf8f0779f8981a6e3f6780b54d08862d61a252248ebcf36ca`）**：FX3 與 FX6 **100% 逐字節完全一致**（全部 **68 個 FDT 節點**、**493 項屬性**、**0 項差異**，`mem_rsvmap = ()`）。
+- **`loadaddr.txt`（`48 B`，SHA-256 `8c7cc8eb65c40311172f4bf1dc591fe3bcbc1efe689ededdd225142139881452`）**：FX3 與 FX6 **100% 逐字節一致**（`0x400080000,0x408000000,0x400001000,0x400002000`：Kernel `@ 0x400080000`、Initrd `@ 0x408000000`、`kemco.txt` `@ 0x400001000`、DTB `@ 0x400002000`）。
+
+| FDT 節點路徑 | `compatible` / 關鍵屬性 | 物理基址與窗口跨度 (`reg`) | FX3 vs FX6 對比結論 |
+| --- | --- | --- | :---: |
+| `/` | `compatible = "cxd,cxd90057"`, `model = "CXD90057"`, `#address-cells = 2`, `#size-cells = 2` | SoC 根節點 (`interrupt-parent = <0x1>`) | **100% 一致（0 差異）** |
+| `/chosen` | `stdout-path = "serial0:460800n8"`（無內聯 `bootargs`，由引導器自 `0x400001000` `kemco.txt` 注入） | 綁定 `serial0` (`0xf1000000`) `460800 8N1` | **100% 一致（0 差異）** |
+| `/memory@400000000` | `device_type = "memory"` | `[0x400000000, 0x600000000)`（`8 GiB` SoC 孔徑，經 `kemco.txt` `mem=2G` 限幅為 `2 GiB`） | **100% 一致（0 差異）** |
+| `/esram@0xfe000000`、`/iomem@0xf0000000`、`/iomem2@0xf0000000` | `compatible = "cxd,cxd90057-iomap"`（DTB 無 `/reserved-memory`，靜態映射 + `kemco.txt` `memrsv=`） | `0xfe000000+16MiB` (`memtype=3`)、`0xf0000000+224MiB` (`memtype=1`)、`0xff000000+16MiB` (`memtype=1`) | **100% 一致（0 差異）** |
+| `/pcie_ep_dummy` | `phandle = <0x7>`（供全部 5 個 `cxd900xx-pcie-ep` 節點 `memory-region = <0x7>` 引用） | `[0x400000000, 0x400001000)`（`4 KiB` 首頁保留） | **100% 一致（0 差異）** |
+| `/cpus/cpu@0`..`cpu@3` + `l2-cache` | `compatible = "arm,cortex-a35"`, `enable-method = "spin-table"` | 4 核 Cortex-A35 SMP (`reg = 0..3`, `next-level-cache = <0xd>`) | **100% 一致（0 差異）** |
+| `/interrupt-controller@f13A0000` | `compatible = "arm,gic-400"`, `#interrupt-cells = 3` | GICD `0xf13a1000+4K`、GICC `0xf13a2000+8K`、GICH `0xf13a4000+8K`、GICV `0xf13a6000+8K` | **100% 一致（0 差異）** |
+| `/soc/serial@f1000000`..`f1004000` | `compatible = "arm,pl011", "arm,primecell"` (`serial0`..`serial4`) | `0xf1000000..0xf1004000`（各 `4 KiB`，SPI IRQ `0xda..0xde`） | **100% 一致（0 差異）** |
+| `/soc/emmc0` | `compatible = "arasan,sdhci"` | eMMC 主控制器節點 | **100% 一致（0 差異）** |
+| `/soc/pcie_{c,i,m0,m1,n}` & `*_ep` | 5× `snps,dw-pcie` + 5× `cxd900xx-pcie-ep` (`memory-region = <0x7>`) | 跨核 PCIe / UIPC IPC 硬件通道 | **100% 一致（0 差異）** |
+
+### 9.2 `kemco.txt` 啟動參數與全部 7 段 `memrsv=` DDR Carveout 對比表
+
+對比 FX3 `kemco.txt`（`934 B`，SHA-256 `eb184157...`）與 FX6 `p1` `kemco.txt`（`933 B`，SHA-256 `e7763ad9...`）：33 行參數中 **31 行（含 `mem=2G`、`boottime=0x00020000@0x400020000`、`klog.addr=0x400040000`、`klog.size=0x00040000` 以及全部 7 段兩兩無重疊 `memrsv=` DDR 保留區）100% 逐字一致**，僅 `p1` 更新器鏡像的 `ramdisk_size`（`16384` vs `8192`）與 `initrd` 長度上限（`0x408000000,0x2000000` vs `0x408000000,0x1000000`）存在預期差異：
+
+| `kemco.txt` `memrsv=` 序號 | 物理基址 (`base_addr`) | 保留大小 (`size_bytes`) | 屬性標誌 | 用途與對齊區域 | FX3 vs FX6 |
+| :---: | :---: | :---: | :---: | --- | :---: |
+| `#0` | `0x400000000` | `0x00001000` (`4 KiB`) | Cached | 對齊 `/pcie_ep_dummy` 首頁保留 | **100% 一致** |
+| `#1` | `0x400020000` | `0x00060000` (`384 KiB`) | Cached | 覆蓋 `boottime` (`128K`) + `klog` (`256K`) | **100% 一致** |
+| `#2` | `0x403e00000` | `0x00200000` (`2 MiB`) | `:uc` (Uncached) | 跨核共享非緩存 IPC 窗口 | **100% 一致** |
+| `#3` | `0x404000000` | `0x02000000` (`32 MiB`) | Cached | 系統共享保留區 | **100% 一致** |
+| `#4` | `0x410000000` | `0x00200000` (`2 MiB`) | Cached | IPC 描述符保留區 | **100% 一致** |
+| `#5` | `0x410200000` | `0x01e00000` (`30 MiB`) | `:uc` (Uncached) | UIPC / PCIe DMA 非緩存共享池 | **100% 一致** |
+| `#6` | `0x47c000000` | `0x04000000` (`64 MiB`) | `:uc` (Uncached) | 頂部 `2 GiB` 邊界非緩存 DMA 保留池 | **100% 一致** |
+
+同時負向故障注入測試確認：篡改魔數（`!= 0xd00dfeed`）、截斷 `totalsize`、`off_dt_struct` 非 4 字節對齊、抹除結尾 `FDT_END`（`0x00000009`）、字符串偏移 `nameoff` 越界及未終止 `/memreserve/` 表均 100% 拋出 `FdtFormatError` 阻斷。
+
+---
+
+## 10. Phase 8 維度 B：內核模組（`.ko`）`vermagic` / `__versions` CRC 完整性與跨內核 ABI 核驗
+
+### 10.1 Sony `!CONFIG_MODVERSIONS` 實證與 `P9`（`upm.ko` `.text+0x136b8`）100% 元數據及 CRC 守恆證明
+
+遍歷 FX3 與 FX6 全部只讀 `.ko` 內核模組確認：Sony 編譯 `4.9.337-scel+` 與 `4.9.186-scel` 內核時均未啟用 `CONFIG_MODVERSIONS`（`.modinfo` 的 `vermagic` 不含 `modversions` 標記，且 ELF64 `ET_REL` 不含 `__versions` 節）。為同時覆蓋原生 `!CONFIG_MODVERSIONS` 與標準 Linux `CONFIG_MODVERSIONS`（64 字節 `struct modversion_info`：`8B LE crc + 56B NUL-padded name`）雙重契約，核驗器對兩類鏡像均完成嚴格驗證：
+
+1. **原生 FX3 `upm.ko`（`453,896 B`，`ba0cca76...` -> `P9` `5be2aa0b...`）**：應用 `P9`（`.text+0x136b8` 4 字節空指針防護適配）後，`.modinfo`（`111 B`，`vermagic = "4.9.337-scel+ SMP preempt mod_unload aarch64"`）SHA-256 **100% 不變**、`.gnu.linkonce.this_module`（`768 B`，`name = "upm"`）SHA-256 **100% 不變**、全部 **60 個 `SHN_UNDEF` 內核導入符號**與 **1 個 `__ksymtab` 導出符號** 100% 不變，且逆向回滾 100% 還原 `ba0cca76...`。
+2. **`CONFIG_MODVERSIONS` 儀表化 `upm.ko`（注入 `module_layout` `0x67a19e4b` + 60 個導入符號共 **61 條** 64B `modversion_info` 記錄）**：應用 `P9` 前後 **61 / 61 條 `modversion_info` CRC 100% 逐字節守恆**，證明 `init_module` / `insmod` 絕不可能觸發 `ENOEXEC`（`disagrees about version of symbol`）。
+
+### 10.2 FX3 宿主 9 大 `.ko` 模組與 FX6 運行時（`p15`/`p3`）/ 更新器（`p1`）跨內核對比表
+
+| 模組文件名 | FX3 文件大小 / SHA-256 前綴 | `depends` 依賴閉包 | FX3 `vermagic` | FX6 `p15`/`p3` `vermagic` | FX6 `p1` initrd `vermagic` | `SHN_UNDEF` / 導出數 (FX3 vs FX6) | 跨內核符號 ABI 差異說明 |
+| --- | --- | :---: | :---: | :---: | :---: | :---: | --- |
+| `backup.ko` | `144,976 B` (`8a8d8c94...`) | `()` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `65/48` vs `65/49` | **ABI 分歧**：FX6 多導出 `Backup_sync_subsystem_for_senser_local` |
+| `devno.ko` | `6,344 B` (`cca1d9ac...`) | `()` | `4.9.337-scel+ ...` | 一致 (`p3`) | **`4.9.186-scel ...`（失配）** | `0/1` vs `0/1` | 100% 符號集一致 |
+| `osal_uipc.ko` | `76,168 B` (`6aa0f5c8...`) | `('devno',)` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `47/30` vs `47/30` | 100% 符號集一致 |
+| `osal_ulogio.ko` | `68,528 B` (`dd65dfdc...`) | `('backup', 'osal_uipc')` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `56/1` vs `56/1` | 100% 符號集一致 |
+| `osal_utm.ko` | `10,688 B` (`f6679c64...`) | `()` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `18/9` vs `18/9` | 100% 符號集一致 |
+| `stream.ko` | `7,032 B` (`38cadfaf...`) | `()` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `12/1` vs `12/1` | 100% 符號集一致 |
+| `udate.ko` | `37,544 B` (`a3cbb997...`) | `('backup',)` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `39/3` vs `39/3` | 100% 符號集一致 |
+| `upm.ko` | `453,896 B` (`ba0cca76...`) | `()` | `4.9.337-scel+ ...` | 一致 | 未打包於 `p1` | `60/1` vs `62/1` | **ABI 分歧**：FX6 導入 `Backup_sync_subsystem_for_senser_local`、`pcie_link_width_check_dev_state_ch0` 等 5 符號，缺失 FX3 `pcie_get_link_speed` 等 3 符號 |
+| `utimer.ko` | `33,904 B` (`42740030...`) | `('osal_uipc',)` | `4.9.337-scel+ ...` | 一致 | **`4.9.186-scel ...`（失配）** | `38/1` vs `38/1` | 100% 符號集一致 |
+
+- **為何 Stage-A 必須保持「FX3 原生宿主 `.ko` 棧 + P9 適配版 FX3 `upm.ko`」的定量證明**：
+  1. **風險一（`p1` 跨版本 `vermagic` 硬阻斷）**：FX6 `p1` initrd 內全部 8 個對應 `.ko` 的 `vermagic` 均為 `4.9.186-scel SMP preempt mod_unload aarch64`，在 FX3 `4.9.337-scel+` 宿主內核上加載會立即因 `vermagic` 失配返回 `ENOEXEC`。
+  2. **風險二（`p15` 同 `vermagic` 下的 `SHN_UNDEF` 跨內核符號漂移）**：儘管 FX6 `p15` `.ko` 同樣標註 `4.9.337-scel+`，若將 FX6 `upm.ko` 混載入 FX3 宿主內核與 FX3 `backup.ko` 環境，內核模組加載器將因找不到 `Backup_sync_subsystem_for_senser_local` 與 `pcie_link_width_check_dev_state_ch0` 直接返回 `ENOENT`（`Unknown symbol in module`）！因此保持 FX3 宿主原生 `.ko` 模組集並僅對 FX3 `upm.ko` 施加 4B `P9` 空指針防護，是唯一零符號失配且零 `ENOEXEC`/`ENOENT` 的正確工程方案。
+
+---
+
+## 11. 端到端候選包乾跑、12 道安全門聯調與驗收測試結果
 
 | 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
 | --- | --- | :---: | --- | :---: | :---: |
-| **合法完整候選包乾跑（含五大功能路由 + `U4` 掛載容錯 + RAM-Shadow `BK4\0` + `U5` 引導選擇器 + `U3` Bank DDR 校驗 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
+| **合法完整候選包乾跑（含五大功能路由 + `U4` 掛載容錯 + RAM-Shadow `BK4\0` + `U5` 引導選擇器 + `U3` Bank DDR + Phase 8 `cxd90057.dtb` / `.ko` 完整性 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
 | 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
 | 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
 | 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
-| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由、`U4`/RAM-Shadow `BK4\0` 或 **`U5`/`U3` 引導選擇器與 Bank 0/1 DDR 契約** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由、`U4`/RAM-Shadow `BK4\0`、`U5`/`U3` 引導選擇器與 Bank DDR 或 **Phase 8 `cxd90057.dtb` / `.ko` 完整性契約（`BLOCKED_BY_KERNEL_OR_DTB_REDLINE`）** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
 
 ### 驗收測試匯總
 
-1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**36 / 36 OK**
-2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**12 / 12 OK**
-3. CLI `verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`boot_selector_and_banks_ok = true`、`u5_closed = true`、`u3_advanced = true`、`backup_mount_tolerance_ok = true`、`u4_closed = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
+1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**40 / 40 OK**
+2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**13 / 13 OK**
+3. CLI `verify-kernel-dtb`、`verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`kernel_dtb_ok = true`、`dtb_byte_identical = true`、`p9_ko_integrity_ok = true`、`boot_selector_and_banks_ok = true`、`u5_closed = true`、`u3_advanced = true`、`backup_mount_tolerance_ok = true`、`u4_closed = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
 4. 工作區二進制殘留核驗：零 `.so`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 文件留存。

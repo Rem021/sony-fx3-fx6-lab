@@ -445,6 +445,51 @@ class TestFX3SafetySuite(unittest.TestCase):
         g12_entry = [g for g in blocked_bsb["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"][0]
         self.assertEqual(g12_entry["status"], "BLOCKED_BY_BOOT_SELECTOR_OR_BANK_REDLINE")
 
+    def test_phase8_gate12_kernel_dtb_redline(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        good_items = {
+            k: {
+                "bytes": spec.get("exact_bytes") or spec.get("min_bytes") or 4096,
+                "pass1_sha256": "d" * 64,
+                "pass2_sha256": "d" * 64,
+            }
+            for k, spec in TIER0_REQUIRED_BACKUPS.items()
+        }
+        manifest = {"camera_body_tag": "e" * 64, "model_id": "0x91030080", "items": good_items}
+        trace = [{"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0}]
+        hook = generate_failsafe_init2_overlay_hook()
+
+        ok_kdtb = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+            kernel_dtb_ok=True,
+        )
+        self.assertEqual(ok_kdtb["summary"]["verified_gates"], 12)
+        self.assertTrue(ok_kdtb["kernel_dtb_ok"])
+
+        blocked_kdtb = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+            kernel_dtb_ok=False,
+        )
+        self.assertEqual(blocked_kdtb["summary"]["verified_gates"], 11)
+        self.assertFalse(blocked_kdtb["summary"]["all_12_gates_verified"])
+        self.assertFalse(blocked_kdtb["kernel_dtb_ok"])
+        g12_entry = [g for g in blocked_kdtb["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"][0]
+        self.assertEqual(g12_entry["status"], "BLOCKED_BY_KERNEL_OR_DTB_REDLINE")
+
 
 if __name__ == "__main__":
     unittest.main()

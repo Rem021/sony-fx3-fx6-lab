@@ -390,14 +390,96 @@ def audit_tier0_worker_syscall_trace(
 audit_tier0_worker_syscalls = audit_tier0_worker_syscall_trace
 
 
-def _verify_failsafe_hook_contract(hook_text: str) -> bool:
-    required_clauses = (
-        'rm -f "/tmp/mod_arm_once"',
-        "busybox mount --bind",
-        "busybox reboot -f",
-        "/setting/updater/mode5",
+@dataclass(frozen=True)
+class FailsafeHookAudit:
+    valid: bool
+    clear_before_exec_ok: bool
+    ram_bind_mount_ok: bool
+    watchdog_guard_ok: bool
+    updater_mode5_fallback_ok: bool
+    errors: List[str]
+
+    def __bool__(self) -> bool:
+        return self.valid
+
+
+def verify_failsafe_hook_script(hook_text: str) -> FailsafeHookAudit:
+    """Audit a 4-Layer Fail-Safe init2 / Stage-A RAM-Overlay boot wrapper script.
+
+    Verifies on non-comment lines:
+    1. Layer 2 Clear-Before-Exec: `rm -f "/tmp/mod_arm_once"` appears strictly BEFORE `busybox mount --bind`.
+    2. Layer 1 Non-Persistent RAM VFS Overlay: `busybox mount --bind` present and zero raw `/dev/*nflasha*` writes.
+    3. Layer 3 Userspace Liveness Watchdog: `sleep ` timer guard + `busybox reboot -f` recovery path.
+    4. Layer 4 Consecutive-Failure Auto-Recovery: `/setting/updater/mode5` fallback arming clause.
+    """
+    if not isinstance(hook_text, str) or not hook_text.strip():
+        return FailsafeHookAudit(
+            valid=False,
+            clear_before_exec_ok=False,
+            ram_bind_mount_ok=False,
+            watchdog_guard_ok=False,
+            updater_mode5_fallback_ok=False,
+            errors=["Hook script must be a non-empty string"],
+        )
+
+    active_lines = [
+        ln for ln in hook_text.splitlines() if ln.strip() and not ln.lstrip().startswith("#")
+    ]
+    active_body = "\n".join(active_lines)
+    errors: List[str] = []
+
+    unlink_idx = active_body.find('rm -f "/tmp/mod_arm_once"')
+    bind_idx = active_body.find("busybox mount --bind")
+
+    forbidden_flash_tokens = (
+        "flashcp",
+        "of=/dev/nflasha",
+        "of=/dev/cnflasha",
+        "of=/dev/pnflasha",
+        "mkfs.vfat /dev/nflasha",
+        "mkfs.ext4 /dev/nflasha",
     )
-    return isinstance(hook_text, str) and all(clause in hook_text for clause in required_clauses)
+    has_forbidden_write = any(tok in active_body for tok in forbidden_flash_tokens)
+    if has_forbidden_write:
+        errors.append("Forbidden direct flash write command detected on /dev/*nflasha*")
+
+    ram_bind_ok = bind_idx >= 0 and not has_forbidden_write
+    if bind_idx < 0:
+        errors.append("Missing Layer-1 RAM VFS `busybox mount --bind` clause")
+
+    clear_before_exec_ok = unlink_idx >= 0 and (bind_idx < 0 or unlink_idx < bind_idx)
+    if unlink_idx < 0:
+        errors.append('Missing Layer-2 Clear-Before-Exec `rm -f "/tmp/mod_arm_once"` clause')
+    elif bind_idx >= 0 and unlink_idx >= bind_idx:
+        errors.append('Layer-2 `rm -f "/tmp/mod_arm_once"` must execute strictly BEFORE `busybox mount --bind`')
+
+    watchdog_ok = ("sleep " in active_body) and ("busybox reboot -f" in active_body)
+    if not watchdog_ok:
+        errors.append("Missing Layer-3 watchdog timer (`sleep ` + `busybox reboot -f`) clause")
+
+    mode5_ok = "/setting/updater/mode5" in active_body
+    if not mode5_ok:
+        errors.append("Missing Layer-4 `/setting/updater/mode5` recovery fallback clause")
+
+    valid = (
+        clear_before_exec_ok
+        and ram_bind_ok
+        and watchdog_ok
+        and mode5_ok
+        and len(errors) == 0
+    )
+    return FailsafeHookAudit(
+        valid=valid,
+        clear_before_exec_ok=clear_before_exec_ok,
+        ram_bind_mount_ok=ram_bind_ok,
+        watchdog_guard_ok=watchdog_ok,
+        updater_mode5_fallback_ok=mode5_ok,
+        errors=errors,
+    )
+
+
+def _verify_failsafe_hook_contract(hook_text: str) -> bool:
+    return verify_failsafe_hook_script(hook_text).valid
 
 
 def evaluate_12_safety_gates(

@@ -40,6 +40,10 @@ from .backup_bridge_verifier import (
     P7BackupBridgeAuditReport,
     verify_p7_backup_bridge,
 )
+from .feature_routing_verifier import (
+    FeatureRoutingAuditReport,
+    run_feature_routing_verification,
+)
 from .nd_unicorn_verifier import (
     FanExecSummary,
     NdSweepSummary,
@@ -119,6 +123,7 @@ class CandidateDryRunReport:
     stage_a_overlay_cpio_size: int
     stage_a_cpio_audit: CpioArchiveAudit
     rollback_drill: RollbackDrillReport
+    feature_routing_audit: FeatureRoutingAuditReport
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -134,11 +139,13 @@ def run_offline_candidate_dry_run(
     compiled_worker: Optional[CompiledWorkerArtifact] = None,
     precomputed_tier0_result: Optional[Tier0UnicornRunResult] = None,
     precomputed_rollback_drill: Optional[RollbackDrillReport] = None,
+    precomputed_feature_routing: Optional[FeatureRoutingAuditReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
     corrupt_p7_backup_bridge: bool = False,
     corrupt_stage_a_cpio: bool = False,
+    corrupt_feature_routing: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -315,6 +322,11 @@ def run_offline_candidate_dry_run(
             fx3_modules_dir=fx3_modules_dir,
         )
 
+        feature_routing_res = precomputed_feature_routing or run_feature_routing_verification(
+            fx6_lib_dir=fx6_lib_dir,
+        )
+        feature_routing_ok = feature_routing_res.all_checks_passed and not corrupt_feature_routing
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -350,6 +362,7 @@ def run_offline_candidate_dry_run(
             and stage_a_cpio_audit.valid
             and rollback_drill_res.all_scenarios_passed
             and rollback_drill_res.total_emmc_writes == 0
+            and feature_routing_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -396,6 +409,7 @@ def run_offline_candidate_dry_run(
         stage_a_overlay_cpio_size=stage_a_cpio_audit.archive_size,
         stage_a_cpio_audit=stage_a_cpio_audit,
         rollback_drill=rollback_drill_res,
+        feature_routing_audit=feature_routing_res,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

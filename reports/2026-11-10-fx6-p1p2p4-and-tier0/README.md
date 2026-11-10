@@ -1,4 +1,4 @@
-# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、Stage-A RAM-Overlay CPIO 封裝、四層防磚回退演練與 12 道安全門驗證報告（Phase 4）
+# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由 ELF 閉包核驗、Stage-A CPIO 封裝與 12 道安全門驗證報告（Phase 5）
 
 - **日期**：2026-11-10
 - **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`（同步鏡像：`work/fx6-on-fx3-p1p2p4-closure-20261110/`）
@@ -9,7 +9,7 @@
 
 ## 1. 正式受控工程包結構與全矩陣覆蓋表
 
-全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
+全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
 
 | 模組路徑 | 覆蓋項 | 職責說明 |
 | --- | :---: | --- |
@@ -19,11 +19,12 @@
 | `outputs/fx6-on-fx3-closure/fx6_closure/nd_unicorn_verifier.py` | **P3, P4, P8, P9, Fan** | P3、P4（576 組參數笛卡爾掃描）、P8、P9（空指針回調防護）、Fan（溫控備份有效標誌）Unicorn AArch64 指令級驗證器。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/uipc_completion_verifier.py` | **P5, P6** | 隊列 `0x92840747` 上 `0x032d -> 0x132d`（P5）與 `0x0400/0x0402/0x0404/0x0152 -> 0x1400/0x1402/0x1404/0x1152`（P6）精確字節級 12B 完結回執合成器與 `send_and_wait_cmp_i` Unicorn 驗證器。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/backup_bridge_verifier.py` | **P7** | 內核態 Backup Sync100 地址無關橋接核驗器：雙內核 `pcidma_transfer_async` 16B 序言、`api+0x160` / `api+0x10` Unicorn 跳板、`dst=0x903e0811`/`op=0x30` 40B 請求與同步 `backupfile_cb_getcp(0, NULL)` DMA 回調契約。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/feature_routing_verifier.py` | **藍圖 §3 五大功能路由** | **維度 A**：10 核心庫 ELF64 `DT_NEEDED`（43 節點全傳遞閉包，0 缺失）與 `.dynsym` 導入/導出審計；**維度 B**：Sony `17^3`/`33^3` `.cube` 生成/校驗器、FX3 `p30`（`48 MiB`）16 組 LUT 簇容量預算證明與 `libInfraSetupFile.so` `RcvThread`（`0x196c8..0x196e0`）掛載鏈核驗；**維度 C**：Cine EI / E 卡口 AF 契約與 `set_eye_af_mode_i` + `libmpr.so` `libXavcMxfGetSlotTypeFromMediaId`（`+0x53c850`）Unicorn 實跑驗證。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,overlay_manifest.json}`。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/rollback_drill.py` | **四層防磚演練** | Stage-A 啟動守衛確定性狀態機與 `PREFIX` 隔離沙盒 POSIX `/bin/sh` 子進程實跑演練器（覆蓋無授權標記、單次啟動+重啟恢復、SHA-256 失配/缺失回退、超時/非零退出回退與 eMMC 零寫入核驗）。 |
 | `outputs/fx6-on-fx3-closure/native/tier0_backup_worker.c` & `tier0_unicorn_verifier.py` | **Tier-0** | 零外部 `UND` 符號、零動態重定位 AArch64 Linux 雙遍只讀備份組件與 Unicorn 系統調用審計器。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `run-rollback-drill` 子命令）。 |
-| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**24 項測試**）。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing` 與 `run-rollback-drill` 子命令）。 |
+| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**28 項測試**）。 |
 
 ---
 
@@ -51,48 +52,75 @@
 
 ## 4. Phase 4：Stage-A 零寫閃存 RAM-Overlay CPIO `newc` 封裝與四層防磚回退演練
 
-### 4.1 確定性 `cpio newc`（`070701`）封裝包審計結果
-
-- **歸檔格式**：SVR4 `newc`（110 字節 ASCII 十六進制頭、魔數 `070701`、頭+路徑與數據段嚴格 4 字節零填充對齊、尾部 `TRAILER!!!` 哨兵、固定時間戳 `1700000000` 與確定性 inode `300000+`）。
 - **確定性歸檔大小與 SHA-256**：`19,696 B`（`19696 % 4 == 0`），跨次構建 100% 重現 SHA-256：`1871c6a0832f2c750a2ad675dea65bad5cd8567f953875f7b565a47d326895f6`。
-- **封裝條目清單**：
-  1. `etc`（`040755`）
-  2. `etc/fx6_overlay`（`040755`）
-  3. `etc/fx6_overlay/setup_fx6_compat.sh`（`100755`，整合 P1 `/dev/nflasha20 -> p30` 符號鏈接與 P2 `/dev/loop7` `opelog.vfat` 掛載）
-  4. `etc/fx6_overlay/init2_guard.sh`（`100755`，100% 通過 `fx3_safety.preflight.verify_failsafe_hook_script` 四項安全契約核驗）
-  5. `etc/fx6_overlay/overlay_manifest.json`（`100644`，完整記錄 `P1..P9 + Fan` 全 10 項適配矩陣、7 項 ELF 組件原始/適配/回滾 SHA-256 及 10 項運行時啟動前 SHA-256 校驗清單）
-
-### 4.2 四層防磚故障自動回退狀態機與 POSIX `/bin/sh` 沙盒實跑演練矩陣
-
-演練全程在 `tempfile.TemporaryDirectory()` 沙盒內通過 `PREFIX` 環境變量運行真實 `/bin/sh`，並對模擬只讀 eMMC 分區（`sector0`、`p2`、`p6`、`p15`、`p18`）進行前後 SHA-256 + `mtime_ns` + 沙盒攔截日誌三重零寫入審計：
-
-| 演練場景 ID | 注入條件 | 實際執行分支 `BOOT_BRANCH` | 診斷碼 `DIAG_CODE` | 令牌狀態（執行前即刪） | 殘留覆蓋掛載 / Loop 數 | eMMC 分區寫入次數 (`sector0/p2/p6/p15/p18`) | 狀態機一致性 |
-| --- | --- | :---: | --- | :---: | :---: | :---: | :---: |
-| **場景 1** (`S1_unarmed_stock_boot`) | 未放置 `/tmp/mod_arm_once` 授權標記 | `STOCK_FX3` | `STOCK_UNARMED` | 無標記 | `0` / `0` | **0** | PASS |
-| **場景 2 — 首次啟動** (`S2_boot1_armed`) | 放置 `mod_arm_once` + 10 項 SHA-256 全匹配 | `ADAPTED_FX6_OVERLAY` | `OK_ADAPTED_SINGLE_BOOT` | **子進程啟動前已刪除** (`CHILD_OBSERVED_TOKEN_ABSENT=1`) | `3` / `1`（RAM 掛載生效） | **0** | PASS |
-| **場景 2 — 斷電二次重啟** (`S2_boot2_reboot_revert`) | 模擬斷電重啟（不重新放置令牌） | `STOCK_FX3` | `STOCK_UNARMED` | 已無標記（杜絕死循環） | `0` / `0` | **0** | PASS |
-| **場景 3a** (`S3a_sha256_mismatch`) | 篡改 `appFw.so` 1 字節導致 SHA-256 不匹配 | `STOCK_FX3_FALLBACK` | `ERR_MANIFEST_SHA256_MISMATCH:lib/appFw.so` | 已刪除 | `0` / `0`（臨時目錄已清理） | **0** | PASS |
-| **場景 3b** (`S3b_component_missing`) | 移除 `libfan.so` 模擬組件缺失 | `STOCK_FX3_FALLBACK` | `ERR_MANIFEST_COMPONENT_MISSING:lib/libfan.so` | 已刪除 | `0` / `0`（臨時目錄已清理） | **0** | PASS |
-| **場景 4a** (`S4a_child_nonzero_139`) | 適配子進程異常退出（`exit 139`） | `STOCK_FX3_FALLBACK` | `ERR_CHILD_NONZERO_FALLBACK:139` | 已刪除 | `0` / `0`（自動卸載清理） | **0** | PASS |
-| **場景 4b** (`S4b_watchdog_timeout`) | 子進程卡死超時未寫入心跳（`1s` 看門狗觸發） | `STOCK_FX3_FALLBACK` | `ERR_WATCHDOG_TIMEOUT_FALLBACK` | 已刪除 | `0` / `0`（自動卸載清理） | **0** | PASS |
+- **四場景沙盒 `/bin/sh` 實跑演練**：覆蓋 `S1`（未放置令牌啟動原機 FX3）、`S2`（單次令牌啟動前即刪 + 二次重啟自動回退原機）、`S3a/S3b`（SHA-256 失配 / 組件缺失回退）、`S4a/S4b`（子進程 `exit 139` / `1s` 看門狗超時回退），模擬只讀 eMMC 分區（`sector0/p2/p6/p15/p18`）全程寫入次數 **0 次**。
 
 ---
 
-## 5. 端到端候選包乾跑與 12 道安全門聯調
+## 5. Phase 5：五大核心相機功能路由與跨機型 ELF 動態符號閉包核驗（藍圖 §3）
+
+### 5.1 核驗維度 A：10 大核心相機功能庫 `DT_NEEDED` 與 `.dynsym` 動態符號閉包審計
+
+結合 FX6 用戶態庫目錄（`nflasha15-files/lib`）、FX6 initrd 基礎庫（`nested-files/nflasha1-initrd/lib`）與宿主 `im.elf` 進行全圖傳遞依賴與符號解析：
+- **傳遞依賴閉包**：共解析 **43 個** ELF64 共享對象，`missing_transitive_needed = ()`（**0 缺失**）。
+- **核心符號規模**：10 大核心庫合計導出 **10,223** 個動態符號，強導入 **2,419** 個動態符號（解析 **2,315** 個；其中 **8 個核心庫強導入解析率 100.0%**，僅 `appFw.so` 與 `libmpr.so` 存在少量未調用廣播/消費級 SDK 惰性 PLT 槽位且均確認 `bind_now = False`）。
+- **19 個五大核心功能關鍵接口符號 VMA 與文件偏移 100% 精確核驗通過**：
+
+| 核心庫名稱 | 文件大小 | `DT_NEEDED` 數 | 缺失依賴 | `.dynsym` 導出數 | 強導入數（已解析） | 代表性已核驗核心符號與 VMA |
+| --- | ---: | :---: | :---: | ---: | ---: | --- |
+| `appFw.so` | 50,520,424 B | 13 | 0 | 1 | 900 (882) | 導入 `mpr::SetLutData`、`GRM_fbrmUnlockSwap`、`ux::wgtsys::Widget` |
+| `libuxengine.so` | 742,128 B | 21 | 0 | 3,476 | 427 (427) | `ux::gfxeng::Screen::setAreaInFramebuffer` (`0x7b66c`), `Widget::setSize` (`0xa2368`) |
+| `libgrm.so` | 265,376 B | 10 | 0 | 1,119 | 192 (192) | `grm::FrameBuffer::setSize` (`0x2303c`) |
+| `libInfraSetupFile.so` | 202,664 B | 10 | 0 | 602 | 115 (115) | `SetupFile::RcvThread` (`0x19650`), `MOUNT_PATH` (`0x25e90`), `LutFileIntMemory::HOME_PATH` (`0x286c8`) |
+| `libInfraLensCommunicator.so` | 14,544 B | 7 | 0 | 27 | 20 (20) | `LensCommunicator::LensCommunicator` (`0x16e0`), `FinalizeCmd` (`0x18a4`), `LensCommunicator_Exit` (`0x229c`) |
+| `libInfraMediaMount.so` | 65,392 B | 7 | 0 | 133 | 100 (100) | `IMM_Mount` (`0x819c`), `InfraMediaMountThread::StartThread` (`0xaa38`) |
+| `libInfraMediaCommon.so` | 402,624 B | 7 | 0 | 473 | 101 (101) | `mcmn_drv_nvme_ioctl_io_cmd` (`0x31d50`), `mcmn_drv_scsi_open` (`0x3e530`) |
+| `libInfraMediaConfig.so` | 52,312 B | 7 | 0 | 101 | 53 (53) | `IMCFG_Offset2MediaId` (`0x7210`), `InfraMediaConfig::GetMediaNum` (`0x4610`) |
+| `libmpr.so` | 28,921,824 B | 8 | 0 | 4,271 | 490 (404) | `mpr::SetLutData` (`0x1505a8`), `mpr::ExecuteSetLutData` (`0x150358`) |
+| `libfan.so` | 31,176 B | 7 | 0 | 20 | 21 (21) | `fan_infra_init` (`0x1c80`), `fan_i_bkup_is_valid` (`0x1dec`) |
+
+### 5.2 核驗維度 B：16 組用戶 3D `.cube` LUT 規格校驗、FX3 `p30`（48 MiB）容量預算與 `RcvThread` 掛載鏈
+
+1. **確定性 Sony `.cube` 生成與嚴格語法校驗器**：支持 `17^3`（`4,913` 組浮點 RGB 三元組，`137,730 B`）與 `33^3`（`35,937` 組浮點 RGB 三元組，`1,006,406 B`）標準網格，強制校驗雙引號 `TITLE`、`LUT_3D_SIZE`、`DOMAIN_MIN < DOMAIN_MAX` 及三通道定義域邊界，並攔截 `LUT_1D_SIZE`、非標尺寸、行數截斷與越界浮點值。
+2. **FX3 `p30`（`0x00018000` 扇區 = `48.00 MiB` = `50,331,648 B`）VFAT 簇分配數學證明**（以 `8 KiB` 簇計）：
+   - VFAT 系統開銷（32 保留扇區 + 雙份 FAT 表 + 根目錄與 `/usr/data/lut` 目錄簇 + 64 簇系統索引預留）：`615,424 B`（`0.59 MiB`），可用數據區 `49,716,224 B`（`47.41 MiB`）。
+   - **16 組滿規格 `33^3` `.cube` 標準文件簇佔用**：`16,121,856 B`（`15.38 MiB`），剩餘可用空間 **`33,594,368 B`（`32.04 MiB`，餘量 `66.75%`）**。
+   - **16 組極端冗長註釋版 `33^3` `.cube`（`1.44 MiB`/個）簇佔用**：`23,068,672 B`（`22.00 MiB`），剩餘可用空間 **`26,647,552 B`（`25.41 MiB`，餘量 `52.94%`）**。
+3. **`libInfraSetupFile.so` `SetupFile::RcvThread`（`0x19650`）掛載調用鏈二進制核驗**：
+   - `0x196c8..0x196e0` 精確裝載 `x0 = [GOT 0x3ffb8]`（`_ZN14InfraSetupFile9SetupFile10MOUNT_PATHE` @ `0x25e90`：源值 `"/dev/nflasha20"`，經 P1 適配為 `"/dev/nflasha30"`）、`x1 = [GOT 0x3fd70]`（`_ZN14InfraSetupFile16LutFileIntMemory9HOME_PATHE` @ `0x286c8`：`"/usr/data/lut/"`）、`x2 = "vfat"`（`0x2665d`）、`x3 = 0xc0ed0480`、`x4 = "posix_attr"`（`0x26652`），並於 `0x196e0` 調用 `bl 0x144f0`（`mount@plt`）。
+
+### 5.3 核驗維度 C：Cine EI / E 卡口自動對焦契約與雙卡槽 `libmpr.so` Unicorn AArch64 實跑驗證
+
+1. **`appFw.so` 與 `libInfraLensCommunicator.so` 契約核驗**：
+   - `set_base_picture_setting_procam_i`（`0x21126d8`，序言 `0xa9ba7bfd`，`cmp w0, #3` 校驗 Cine EI / Cine EI Quick / Custom 拍攝基準模式枚舉，簽名串 `0x261bf40`）。
+   - `set_user_lut_binary_data_procam_i`（`0x2112b10`，序言 `0xa9be7bfd`，簽名串 `0x261c0c0`）串聯 `libmpr.so` `_ZN3mpr10SetLutDataERKNS_17setLutDataInParamE`（`0x1505a8`）。
+   - `set_af_area_i`（`0x211066c`，`cmp w0, #6`，簽名串 `0x261cc98`）與 `set_eye_af_mode_i`（`0x2110e44`，簽名串 `0x26191e8`）：Unicorn AArch64 實跑 `set_eye_af_mode_i` 證明 `mode=0 -> [x1+8]=1`、`mode=1 -> [x1+8]=0` 零斷言且 `SP` 守恆，`mode=2` 精確觸發 `0x2167784` 斷言輔助函數。
+2. **`libmpr.so` 雙卡槽映射函數 `libXavcMxfGetSlotTypeFromMediaId`（`+0x53c850`）Unicorn AArch64 實跑結果**：
+
+| 輸入 `media_id` | 物理語義 | Unicorn 原始返回枚舉 (`MEDIASLOTTYPE`) | 歸一化槽位索引 (`slot_index`) | 斷言觸發 (`assert_hit`) | 斷言位置與函數簽名 | `SP` 守恆 |
+| :---: | --- | :---: | :---: | :---: | --- | :---: |
+| `0x1000` | CFexpress Type A / SDXC **Slot A** | `1` | **`0`** | `False` | — | `True` |
+| `0x1010` | CFexpress Type A / SDXC **Slot B** | `2` | **`1`** | `False` | — | `True` |
+| `0x0000` | 未初始化 `media_id` | — | — | **`True`** | `libXavcMxf.cpp:274` (`MEDIASLOTTYPE libXavcMxfGetSlotTypeFromMediaId(uint32_t)`) | — |
+| `0x2000` | 非法越界 `media_id` | — | — | **`True`** | `libXavcMxf.cpp:274` (`MEDIASLOTTYPE libXavcMxfGetSlotTypeFromMediaId(uint32_t)`) | — |
+
+---
+
+## 6. 端到端候選包乾跑與 12 道安全門聯調
 
 | 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
 | --- | --- | :---: | --- | :---: | :---: |
-| **合法完整候選包乾跑（含 Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
+| **合法完整候選包乾跑（含五大功能路由核驗 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
 | 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
 | 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
 | 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
-| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接或 Stage-A CPIO 魔數 | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO 或 **五大核心功能路由閉包** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
 
 ---
 
-## 6. 驗收測試結果
+## 7. 驗收測試結果
 
-1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**24 / 24 OK**
+1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**28 / 28 OK**
 2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**10 / 10 OK**
-3. CLI `run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`all_12_gates_verified = true`，`rollback_drill_emmc_writes = 0`。
+3. CLI `verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`feature_routing_ok = true`，`all_12_gates_verified = true`，`rollback_drill_emmc_writes = 0`。
 4. 工作區二進制殘留核驗：零 `.so`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 文件留存。

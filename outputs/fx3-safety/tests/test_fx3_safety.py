@@ -31,6 +31,7 @@ from fx3_safety.preflight import (
     TIER0_REQUIRED_BACKUPS,
     audit_tier0_worker_syscall_trace,
     evaluate_12_safety_gates,
+    verify_failsafe_hook_script,
     verify_tier0_backup_manifest,
 )
 
@@ -253,9 +254,27 @@ class TestFX3SafetySuite(unittest.TestCase):
 
     def test_failsafe_hook_and_12_gate_preflight(self) -> None:
         hook = generate_failsafe_init2_overlay_hook()
-        self.assertIn("rm -f \"/tmp/mod_arm_once\"", hook)
+        self.assertIn('rm -f "/tmp/mod_arm_once"', hook)
         self.assertIn("busybox mount --bind", hook)
         self.assertIn("/setting/updater/mode5", hook)
+
+        hook_audit = verify_failsafe_hook_script(hook)
+        self.assertTrue(hook_audit.valid, hook_audit.errors)
+        self.assertTrue(bool(hook_audit))
+        self.assertTrue(hook_audit.clear_before_exec_ok)
+        self.assertTrue(hook_audit.ram_bind_mount_ok)
+        self.assertTrue(hook_audit.watchdog_guard_ok)
+        self.assertTrue(hook_audit.updater_mode5_fallback_ok)
+
+        # Commenting out Clear-Before-Exec unlink or moving it after mount --bind must fail closed
+        commented = hook.replace('rm -f "/tmp/mod_arm_once"', '# rm -f "/tmp/mod_arm_once"')
+        self.assertFalse(verify_failsafe_hook_script(commented).valid)
+        reversed_order = (
+            'busybox mount --bind /a /b\nrm -f "/tmp/mod_arm_once"\nsleep 45\nbusybox reboot -f\n: > /setting/updater/mode5\n'
+        )
+        self.assertFalse(verify_failsafe_hook_script(reversed_order).valid)
+        forbidden_flash = hook + "\ndd if=/tmp/x of=/dev/nflasha15 bs=4096\n"
+        self.assertFalse(verify_failsafe_hook_script(forbidden_flash).valid)
 
         repo_root = Path(__file__).resolve().parents[3]
         preflight = evaluate_12_safety_gates(repo_root)

@@ -44,6 +44,20 @@ from fx6_closure.backup_bridge_verifier import (
     verify_p7_backup_bridge,
 )
 from fx6_closure.candidate_builder import COMPLETE_MATRIX_ITEMS, run_offline_candidate_dry_run
+from fx6_closure.feature_routing_verifier import (
+    CORE_CAMERA_FEATURE_LIBRARIES,
+    FX3_P30_TOTAL_BYTES,
+    MEDIA_ID_SLOT_A,
+    MEDIA_ID_SLOT_B,
+    MEDIA_ID_UNINITIALIZED,
+    audit_core_elf_symbol_closure,
+    generate_sony_cube_3d_lut,
+    run_feature_routing_verification,
+    validate_sony_cube_3d_lut,
+    verify_cine_ei_af_and_dual_slot_contracts,
+    verify_p30_lut_capacity_budget,
+    verify_setupfile_lut_mount_chain,
+)
 from fx6_closure.ram_overlay_packager import (
     CPIO_NEWC_MAGIC,
     CpioEntrySpec,
@@ -462,9 +476,11 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.stage_a_cpio_audit.valid)
         self.assertTrue(rep_ok.rollback_drill.all_scenarios_passed)
         self.assertEqual(rep_ok.rollback_drill.total_emmc_writes, 0)
+        self.assertTrue(rep_ok.feature_routing_audit.all_checks_passed)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
+        feat_base = rep_ok.feature_routing_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -472,6 +488,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -485,6 +502,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -495,6 +513,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -506,16 +525,18 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, or Stage-A CPIO -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, or 5-Feature Routing -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -526,6 +547,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -536,11 +558,22 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
         self.assertFalse(rep_bad_cpio.stage_a_cpio_audit.valid)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_cpio.blocked_gate_ids)
+
+        rep_bad_feat = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            corrupt_feature_routing=True,
+        )
+        self.assertFalse(rep_bad_feat.candidate_ready)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_feat.blocked_gate_ids)
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -817,6 +850,139 @@ class TestFourLayerRollbackDrill(unittest.TestCase):
             )
             self.assertEqual(proc.returncode, 97)
             self.assertIn("ERR_SANDBOX_PREFIX_REQUIRED_ON_HOST", proc.stderr)
+
+
+class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
+    """Verify Phase 5 Blueprint §3 5-Feature Routing & Cross-Model ELF Dynamic Symbol Closure."""
+
+    def test_dimension_a_elf64_dt_needed_and_dynsym_symbol_closure(self) -> None:
+        rep = audit_core_elf_symbol_closure()
+        self.assertTrue(rep.all_checks_passed)
+        self.assertEqual(rep.core_library_count, 10)
+        self.assertEqual(tuple(a.library_name for a in rep.libraries), CORE_CAMERA_FEATURE_LIBRARIES)
+        self.assertEqual(rep.transitive_closure_count, 43)
+        self.assertEqual(rep.missing_transitive_needed, ())
+        self.assertEqual(rep.strict_zero_unresolved_lib_count, 8)
+        self.assertGreater(rep.total_core_exports, 10000)
+        self.assertTrue(rep.required_imports_verified)
+        self.assertEqual(len(rep.key_symbols), 19)
+        for kv in rep.key_symbols:
+            self.assertTrue(kv.verified, f"Unverified key symbol: {kv}")
+            self.assertEqual(kv.actual_vma, kv.expected_vma)
+            self.assertIsNotNone(kv.file_offset)
+
+        # Negative check: omitting initrd base `/lib` leaves libc/libpthread DT_NEEDED unresolved
+        with tempfile.TemporaryDirectory(prefix="fx6_empty_initrd_") as empty_dir:
+            bad_rep = audit_core_elf_symbol_closure(fx6_initrd_lib_dir=Path(empty_dir))
+            self.assertFalse(bad_rep.all_checks_passed)
+            self.assertGreater(len(bad_rep.missing_transitive_needed), 0)
+
+    def test_dimension_b_sony_cube_3d_lut_generator_validator_and_p30_budget(self) -> None:
+        lut_17 = generate_sony_cube_3d_lut(grid_size=17, title="FX6_SLog3_17", gamma=0.9)
+        val_17 = validate_sony_cube_3d_lut(lut_17)
+        self.assertTrue(val_17.valid, val_17.errors)
+        self.assertEqual(val_17.grid_size, 17)
+        self.assertEqual(val_17.actual_triple_count, 17 ** 3)
+        self.assertEqual(val_17.title, "FX6_SLog3_17")
+
+        lut_33 = generate_sony_cube_3d_lut(grid_size=33, title="FX6_SLog3_33", gamma=1.1)
+        val_33 = validate_sony_cube_3d_lut(lut_33)
+        self.assertTrue(val_33.valid, val_33.errors)
+        self.assertEqual(val_33.grid_size, 33)
+        self.assertEqual(val_33.actual_triple_count, 33 ** 3)
+
+        # Strict negative .cube syntax & domain rejections
+        with self.assertRaises(ValueError):
+            generate_sony_cube_3d_lut(grid_size=25)
+        self.assertFalse(validate_sony_cube_3d_lut("LUT_3D_SIZE 25\n0.0 0.0 0.0\n").valid)
+        self.assertFalse(validate_sony_cube_3d_lut("LUT_1D_SIZE 1024\n0.0 0.0 0.0\n").valid)
+        self.assertFalse(validate_sony_cube_3d_lut(lut_17.rsplit("\n", 3)[0] + "\n").valid)
+        self.assertFalse(
+            validate_sony_cube_3d_lut(lut_17.replace("0.000000 0.000000 0.000000", "1.500000 0.0 0.0", 1)).valid
+        )
+        self.assertFalse(
+            validate_sony_cube_3d_lut(
+                lut_17.replace("DOMAIN_MIN 0.000000 0.000000 0.000000", "DOMAIN_MIN 1.0 0.0 0.0")
+            ).valid
+        )
+        self.assertFalse(validate_sony_cube_3d_lut(lut_17.replace('TITLE "FX6_SLog3_17"', "TITLE UNQUOTED")).valid)
+
+        # FX3 p30 (48 MiB) VFAT cluster allocation math for 16x 33^3 .cube files
+        cap = verify_p30_lut_capacity_budget(max_user_luts=16, cluster_size_bytes=8192)
+        self.assertTrue(cap.fits_in_fx3_p30)
+        self.assertEqual(cap.partition_bytes, FX3_P30_TOTAL_BYTES)
+        self.assertGreater(cap.canonical_free_ratio, 0.65)
+        self.assertGreater(cap.worst_case_free_ratio, 0.50)
+
+        # libInfraSetupFile.so SetupFile::RcvThread (0x196c8..0x196e0) /usr/data/lut/ mount chain
+        setup_raw = (DEFAULT_FX6_DONOR_LIB_DIR / "libInfraSetupFile.so").read_bytes()
+        mnt = verify_setupfile_lut_mount_chain(setup_raw)
+        self.assertTrue(mnt.verified)
+        self.assertEqual(mnt.rcv_thread_vma, 0x19650)
+        self.assertEqual(mnt.mount_plt_vma, 0x144F0)
+        self.assertEqual(mnt.fstype_literal, "vfat")
+        self.assertEqual(mnt.mount_opts_literal, "posix_attr")
+        self.assertEqual(mnt.target_dir_literal, "/usr/data/lut/")
+        self.assertEqual(mnt.donor_device_literal, "/dev/nflasha20")
+        self.assertEqual(mnt.adapted_device_literal, "/dev/nflasha30")
+
+        # Tampering `bl mount@plt` at 0x196e0 must fail verification
+        tampered_setup = bytearray(setup_raw)
+        tampered_setup[0x196E0:0x196E4] = b"\x1f\x20\x03\xd5"  # nop
+        self.assertFalse(verify_setupfile_lut_mount_chain(bytes(tampered_setup)).verified)
+
+    def test_dimension_c_cine_ei_af_contracts_and_libmpr_dual_slot_unicorn(self) -> None:
+        rep_c = verify_cine_ei_af_and_dual_slot_contracts()
+        self.assertTrue(rep_c.all_checks_passed)
+        self.assertTrue(rep_c.appfw_imports_mpr_set_lut_data)
+        self.assertTrue(rep_c.lens_communicator_verified)
+        self.assertEqual(len(rep_c.appfw_contracts), 4)
+        for c in rep_c.appfw_contracts:
+            self.assertTrue(c.verified, f"Failed appFw contract: {c}")
+
+        # Eye-AF Unicorn cases (0 -> 1, 1 -> 0, 2 -> assert)
+        e0, e1, e2 = rep_c.eye_af_unicorn_cases
+        self.assertFalse(e0.assert_hit)
+        self.assertEqual(e0.out_byte_at_offset_8, 1)
+        self.assertFalse(e1.assert_hit)
+        self.assertEqual(e1.out_byte_at_offset_8, 0)
+        self.assertTrue(e2.assert_hit)
+        self.assertIn("set_eye_af_mode_i", e2.assert_func or "")
+
+        # Dual-Slot libmpr.so `libXavcMxfGetSlotTypeFromMediaId` (+0x53c850) Unicorn cases
+        by_id = {c.media_id: c for c in rep_c.dual_slot_unicorn_cases}
+        slot_a = by_id[MEDIA_ID_SLOT_A]
+        slot_b = by_id[MEDIA_ID_SLOT_B]
+        slot_0 = by_id[MEDIA_ID_UNINITIALIZED]
+
+        self.assertFalse(slot_a.assert_hit)
+        self.assertEqual(slot_a.raw_slot_type_enum, 1)
+        self.assertEqual(slot_a.slot_index, 0)
+        self.assertTrue(slot_a.sp_preserved)
+
+        self.assertFalse(slot_b.assert_hit)
+        self.assertEqual(slot_b.raw_slot_type_enum, 2)
+        self.assertEqual(slot_b.slot_index, 1)
+        self.assertTrue(slot_b.sp_preserved)
+
+        self.assertTrue(slot_0.assert_hit)
+        self.assertEqual(slot_0.assert_file, "libXavcMxf.cpp")
+        self.assertEqual(slot_0.assert_line, 274)
+        self.assertIn("libXavcMxfGetSlotTypeFromMediaId", slot_0.assert_func or "")
+
+    def test_cli_verify_feature_routing_subcommand(self) -> None:
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-feature-routing"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertEqual(payload["dimension_a_symbol_closure"]["core_library_count"], 10)
+        self.assertEqual(payload["dimension_a_symbol_closure"]["transitive_closure_count"], 43)
+        self.assertTrue(payload["dimension_b_lut_capacity"]["fits_in_fx3_p30"])
+        self.assertTrue(payload["dimension_b_setupfile_mount"]["verified"])
+        self.assertTrue(payload["dimension_c_contracts_unicorn"]["all_checks_passed"])
 
 
 if __name__ == "__main__":

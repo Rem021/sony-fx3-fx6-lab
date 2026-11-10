@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure` (Phase 3 P1..P9 9/9 Closure)."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 5 Compatibility & 5-Feature Routing Closure)."""
 
 from __future__ import annotations
 
@@ -11,6 +11,11 @@ from typing import List, Optional
 
 from .backup_bridge_verifier import verify_p7_backup_bridge
 from .candidate_builder import DEFAULT_REPO_ROOT, run_offline_candidate_dry_run
+from .feature_routing_verifier import (
+    DEFAULT_FX6_DONOR_BIN_DIR,
+    DEFAULT_FX6_INITRD_LIB_DIR,
+    run_feature_routing_verification,
+)
 from .nd_unicorn_verifier import (
     run_fan_libfan_unicorn_check,
     run_p3_remoteboard_unicorn_check,
@@ -164,6 +169,28 @@ def _cmd_run_rollback_drill(fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode:
     return 0 if ok else 1
 
 
+def _cmd_verify_feature_routing(
+    fx6_lib_dir: Path,
+    fx6_initrd_lib_dir: Path,
+    fx6_bin_dir: Path,
+) -> int:
+    rep = run_feature_routing_verification(
+        fx6_lib_dir=fx6_lib_dir,
+        fx6_initrd_lib_dir=fx6_initrd_lib_dir,
+        fx6_bin_dir=fx6_bin_dir,
+    )
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "dimension_a_symbol_closure": asdict(rep.dimension_a_symbol_closure),
+        "dimension_b_lut_capacity": asdict(rep.dimension_b_lut_capacity),
+        "dimension_b_setupfile_mount": asdict(rep.dimension_b_setupfile_mount),
+        "dimension_c_contracts_unicorn": asdict(rep.dimension_c_contracts_unicorn),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -181,6 +208,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "adapted_targets": [r.spec_id for r in rep.patch_receipts],
         "p5_p6_uipc_ok": rep.p5_p6_uipc_unicorn.all_positive_passed and rep.p5_p6_uipc_unicorn.all_negative_captured,
         "p7_backup_bridge_ok": rep.p7_backup_bridge.all_checks_passed,
+        "feature_routing_ok": rep.feature_routing_audit.all_checks_passed,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -198,7 +226,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 4 Compatibility Closure, Stage-A RAM-Overlay CPIO & 4-Layer Rollback Drill CLI",
+        description="FX6-on-FX3 Phase 5 Compatibility Closure, 5-Feature Routing Verifier & Stage-A CPIO CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -206,11 +234,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-donors", "Verify ELF64 offsets, context, adaptation, 100% SHA-256 rollback, and P7 kernel signatures"),
         ("run-unicorn-audit", "Run Unicorn AArch64 audits across P3, P4, P5, P6, P7, P8, P9, Fan, and Tier-0"),
         ("run-rollback-drill", "Build Stage-A CPIO newc RAM-Overlay and execute 4-Layer Fail-Safe rollback drill"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-feature-routing", "Verify 5 core camera feature routing, ELF64 symbol closure, 16x .cube LUT budget, and dual-slot Unicorn contracts"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
         p.add_argument("--fx3-modules-dir", type=Path, default=DEFAULT_FX3_MODULES_DIR)
+        if cmd_name == "verify-feature-routing":
+            p.add_argument("--fx6-initrd-lib-dir", type=Path, default=DEFAULT_FX6_INITRD_LIB_DIR)
+            p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name == "dry-run-candidate":
@@ -223,6 +255,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_run_unicorn_audit(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "run-rollback-drill":
         return _cmd_run_rollback_drill(args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
+    if args.cmd == "verify-feature-routing":
+        return _cmd_verify_feature_routing(args.fx6_lib_dir, args.fx6_initrd_lib_dir, args.fx6_bin_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

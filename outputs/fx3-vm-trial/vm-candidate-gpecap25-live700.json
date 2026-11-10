@@ -34,9 +34,9 @@
   },
   "initrd": {
     "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/guest-hybrid-fx6kernel-capid-grmreal-live700.cpio",
-    "sha256": "fa7bde921f56a3ae12286df2c11345f8125d1ae9f12c1d38351a3254979820c1",
-    "bytes": 416872360,
-    "size_bytes": 416856696
+    "sha256": "6fbfd055ae09e39b0a42c5391b9d62b6936c201f89296354fcb0c556dc04f60a",
+    "bytes": 416905440,
+    "size_bytes": 416905440
   },
   "dtb": {
     "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
@@ -61,7 +61,7 @@
       "from_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
       "from_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
       "to_path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/guest-hybrid-fx6kernel-capid-grmreal-live700.cpio",
-      "to_sha256": "d7e49b4b890d23b875ddb44cbf5cbb7b7025a68380f090459a63329eaec4ab71"
+      "to_sha256": "6fbfd055ae09e39b0a42c5391b9d62b6936c201f89296354fcb0c556dc04f60a"
     }
   ],
   "candidate_argv_before_observer_serial_retarget": [
@@ -232,8 +232,8 @@
     "sha256": "81e0bf8754a898d4b70d3c1d46f7a6da4728a449bf575eaa6a6c9b2493f33a33"
   },
   "grm_fbinit": {
-    "member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
-    "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+    "member": "usr/lib/libgrm-fbinit9.so (content=libgrm-fbinit25-live700.so)",
+    "sha256": "691df27baa80731b825f8fdff40c89b119888891995ba7b47ef81cdd779b100c",
     "ux_screen_default": "1024x540"
   },
   "backup_bug_skip": {

@@ -11,14 +11,12 @@ import unittest
 from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent.parent
-ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 from fx3_recovery import capture as C
 from fx3_recovery import engine as E
-from fx3_recovery.files import check_volume, new_directory, read_file, encode
+from fx3_recovery.files import ROOT, allocate_test_run_dir, check_volume, new_directory, read_file, encode
 
-RUN = Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'work/sony-firmware-20261024/stage186-fx3-bounded-capture-engine/runs/capture-tests'
-sys.argv = sys.argv[:1]
+RUN = allocate_test_run_dir('work/sony-firmware-20261024/stage186-fx3-bounded-capture-engine/runs', 'capture-tests', __name__, sys.argv)
 
 
 class FaultSource(C.RegularFileSource):

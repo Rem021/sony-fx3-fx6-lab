@@ -6,18 +6,16 @@
  *
  * Mailboxes:
  *   0x41df00000: SRM3KYE5 hardware key mailbox (k32[2]=seq, k32[3]=key, k32[6]=ack)
- *   0x41e000f00: FX6M state/page control mailbox:
- *     mb[0] = 0x4658364d ('FX6M')
+ *   0x41e000e00: FX6L state/page control mailbox (osd41e + 0x0e00):
+ *     mb[0] = 0x4658364c ('FX6L')
  *     mb[1] = cmd_seq (incremented by host or guest key handler)
  *     mb[2] = ack_seq (written by guest AFTER gpe0 frame is completely rendered)
- *     mb[3] = page (0=Big6 Home, 1=Three-Layer Menu, 2=Setting Main, 3=Setting Center,
- *                   4=Assignable Button p110, 5=Network Status, 6=HUD Strip,
- *                   7=Clip/Playback, 8=Status/Grid)
- *     mb[4] = sel_box (0..5 on Big6/Center, 0..7 on Setting Main, 0..29 on Assignable)
+ *     mb[3] = page (0..23 curated FX6 UI pages, 24=Universal 128-Page Descriptor Table Mode)
+ *     mb[4] = sel_box (active widget/button/row/cell cursor index)
  *     mb[5] = menu_cat (0..10 for the 11 Three-Layer Menu categories)
  *     mb[6] = menu_item (0..N-1 item index in right column)
- *     mb[7] = menu_depth (0=left category column, 1=right item list, 2=3rd-layer options)
- *     mb[8..13] = cell_val[0..5] (value index for FPS, Shutter, ISO/Gain, ND, WB, Base Look)
+ *     mb[7] = menu_depth (0=left category column, 1=right item list, 2=3rd-layer / subpage variant)
+ *     mb[8..13] = cell_val[0..5] (Big6 value indices, or off1/cnt1/off2/cnt2 on Page 24)
  *     mb[14] = rec_fmt_idx (0..4 Rec Format option index)
  *     mb[15] = stats ((text_ok << 24) | (nonzero_pixels & 0x00ffffff))
  */
@@ -28,6 +26,7 @@ extern void *fx6_map_osd(void);
 extern void fx6_gds_install(void *fb);
 extern void fx6_scan_osd(void);
 extern void *calloc(unsigned long, unsigned long);
+extern void *memset(void *, int, unsigned long);
 extern void *dlsym(void *, const char *);
 extern int open(const char *, int, ...);
 extern void *mmap(void *, unsigned long, int, int, int, long);
@@ -44,6 +43,73 @@ extern int usleep(unsigned int);
 static uint64_t g_appfw;
 static uint32_t *g_osd;
 static int g_text_ok, g_text_n, g_fill_n, g_icon_n, g_skip_n2;
+
+/* Cached dynamic symbols resolved once at startup (eliminates ~1,500 dlsym walks/frame) */
+typedef struct {
+    int ready;
+    void *(*sys_getImageData)(void *);
+    int (*addArena)(unsigned char, const void *);
+    int (*loadFontData)(unsigned int);
+    void (*string_ctor)(void *);
+    void (*string_dtor)(void *);
+    const char *(*ptrBuffer)(const void *);
+    int (*getText)(unsigned int, void *);
+    void (*setImageLoadCallback)(void *, void *, void *);
+    void (*drawTextImpl)(void *);
+    int (*processCommands)(unsigned int);
+    void (*setRectPos)(void *, unsigned short, const void *);
+    void (*renderRect)(void *, const void *, const void *, float, float);
+    void (*dict_ctor)(void *);
+} fx6_syms_t;
+
+static fx6_syms_t g_syms;
+
+/* Static aligned scratch buffers reused across single-threaded UI renders (tid 222) */
+static unsigned char s_vs_buf[0x1400] __attribute__((aligned(16)));
+static unsigned char s_vf_buf[0x1180] __attribute__((aligned(16)));
+static unsigned char s_ic_buf[0x700]  __attribute__((aligned(16)));
+static unsigned char s_dict_buf[0x80] __attribute__((aligned(16)));
+static int s_dict_ready;
+
+static void fx6_init_syms(void) {
+    if (g_syms.ready) return;
+    g_syms.sys_getImageData = (void *(*)(void *))
+        dlsym((void *)-1, "_ZN5libra9ImageData16sys_getImageDataEv");
+    g_syms.addArena = (int (*)(unsigned char, const void *))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager8addArenaEhRKN5libra10ArenaParamE");
+    g_syms.loadFontData = (int (*)(unsigned int))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager16sys_loadFontDataEj");
+    g_syms.string_ctor = (void (*)(void *))
+        dlsym((void *)-1, "_ZN5libra6StringC1Ev");
+    g_syms.string_dtor = (void (*)(void *))
+        dlsym((void *)-1, "_ZN5libra6StringD1Ev");
+    g_syms.ptrBuffer = (const char *(*)(const void *))
+        dlsym((void *)-1, "_ZNK6stella6String9ptrBufferEv");
+    g_syms.getText = (int (*)(unsigned int, void *))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager7getTextEjRN5libra6StringE");
+    g_syms.setImageLoadCallback = (void (*)(void *, void *, void *))
+        dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite20setImageLoadCallbackEPFvPS1_PN5libra9ImageDataEPvES6_");
+    g_syms.drawTextImpl = (void (*)(void *))
+        dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite12drawTextImplEv");
+    g_syms.processCommands = (int (*)(unsigned int))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
+    g_syms.setRectPos = (void (*)(void *, unsigned short, const void *))
+        dlsym((void *)-1, "_ZN2ux6gfxeng6Sprite10setRectPosEtRKNS_4core7Vector2E");
+    g_syms.renderRect = (void (*)(void *, const void *, const void *, float, float))
+        dlsym((void *)-1, "_ZN2ux6gfxeng6Sprite10renderRectERKNS_4core7Vector2ERKNS1_8RectDataEff");
+    g_syms.dict_ctor = (void (*)(void *))
+        dlsym((void *)-1, "_ZN5libra10DictionaryC1Ev");
+    g_syms.ready = 1;
+}
+
+/* Complete-object destructor (Itanium C++ ABI vtable slot 0 = D1Ev, does NOT free memory) */
+static inline void fx6_destroy_widget_inplace(void *obj) {
+    if (!obj) return;
+    void **vt = *(void ***)obj;
+    if (vt && vt[0]) {
+        ((void (*)(void *))vt[0])(obj);
+    }
+}
 
 void fx6_model_done(void) {
     dprintf(2, "FX6_MODEL_NONE\n");
@@ -68,9 +134,9 @@ static int strstr_(const char *h, const char *n) {
 /* ---------------- native text image -> OSD ------------------------------- */
 static int fx6_blit_imagedata_to_osd(void *image, uint32_t *osd, int dst_x, int dst_y) {
     if (!image || !osd) return 0;
-    void *(*gd)(void *) = (void *(*)(void *))dlsym((void *)-1, "_ZN5libra9ImageData16sys_getImageDataEv");
-    if (!gd) return 0;
-    uint8_t *raw = (uint8_t *)gd(image);
+    fx6_init_syms();
+    if (!g_syms.sys_getImageData) return 0;
+    uint8_t *raw = (uint8_t *)g_syms.sys_getImageData(image);
     if (!raw) return 0;
     int w = *(uint16_t *)(raw + 0x00);
     int h = *(uint16_t *)(raw + 0x02);
@@ -116,6 +182,7 @@ static void fx6_text_image_cb(void *ts, void *image, void *ud) {
 
 /* ---------------- resources ---------------------------------------------- */
 static int fx6_add_arena(int idx, unsigned min, unsigned max) {
+    fx6_init_syms();
     unsigned char param[0x20];
     for (unsigned i = 0; i < sizeof(param); i++) param[i] = 0;
     void *buf = calloc(1, max);
@@ -127,41 +194,36 @@ static int fx6_add_arena(int idx, unsigned min, unsigned max) {
     *(unsigned char *)(param + 0x19) = 1;
     *(unsigned char *)(param + 0x1a) = 0xff;
     *(unsigned char *)(param + 0x1b) = 3;
-    int (*add)(unsigned char, const void *) = (int (*)(unsigned char, const void *))
-        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager8addArenaEhRKN5libra10ArenaParamE");
-    if (!add) return 0;
-    return add((unsigned char)idx, (const void *)param);
+    if (!g_syms.addArena) return 0;
+    return g_syms.addArena((unsigned char)idx, (const void *)param);
 }
 
 static void fx6_load_fonts(void) {
-    int (*ld)(unsigned int) = (int (*)(unsigned int))
-        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager16sys_loadFontDataEj");
-    if (!ld) return;
+    fx6_init_syms();
+    if (!g_syms.loadFontData) return;
     int ok = 0, total = 0;
-    for (unsigned r = 0x02006000U; r <= 0x0200603fU; r++) { total++; if (ld(r)) ok++; }
-    for (unsigned r = 0x0200a000U; r <= 0x0200a02fU; r++) { total++; if (ld(r)) ok++; }
-    for (unsigned r = 0x02008000U; r <= 0x0200800fU; r++) { total++; if (ld(r)) ok++; }
+    for (unsigned r = 0x02006000U; r <= 0x0200603fU; r++) { total++; if (g_syms.loadFontData(r)) ok++; }
+    for (unsigned r = 0x0200a000U; r <= 0x0200a02fU; r++) { total++; if (g_syms.loadFontData(r)) ok++; }
+    for (unsigned r = 0x02008000U; r <= 0x0200800fU; r++) { total++; if (g_syms.loadFontData(r)) ok++; }
     dprintf(2, "FX6_LIVE loadFonts ok=%d/%d\n", ok, total);
 }
 
 static int fx6_text_of(uint32_t rid, char *out, unsigned outsz) {
-    void (*sc)(void *) = (void (*)(void *))dlsym((void *)-1, "_ZN5libra6StringC1Ev");
-    const char *(*pb)(const void *) = (const char *(*)(const void *))dlsym((void *)-1, "_ZNK6stella6String9ptrBufferEv");
-    int (*gt)(unsigned, void *) = (int (*)(unsigned, void *))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager7getTextEjRN5libra6StringE");
+    fx6_init_syms();
     out[0] = 0;
-    if (!sc || !pb || !gt) return 0;
-    unsigned char buf[0x40];
-    for (unsigned k = 0; k < sizeof(buf); k++) buf[k] = 0;
-    sc(buf);
-    int rc = gt(rid, buf);
-    const char *s = pb(buf);
+    if (!g_syms.string_ctor || !g_syms.ptrBuffer || !g_syms.getText) return 0;
+    unsigned char buf[0x40] __attribute__((aligned(16)));
+    memset(buf, 0, sizeof(buf));
+    g_syms.string_ctor(buf);
+    int rc = g_syms.getText(rid, buf);
+    const char *s = g_syms.ptrBuffer(buf);
+    unsigned n = 0;
     if (rc && s) {
-        unsigned n = 0;
         while (s[n] && n + 1 < outsz) { out[n] = s[n]; n++; }
         out[n] = 0;
-        return n > 0;
     }
-    return 0;
+    if (g_syms.string_dtor) g_syms.string_dtor(buf);
+    return n > 0;
 }
 
 static uint32_t fx6_pick(uint32_t a, uint32_t b, const char *want, const char *what) {
@@ -177,10 +239,11 @@ static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
                                   uint32_t text_resid, const char *tag_name) {
     if (!text_resid || text_resid == 0xffffffffU) return;
     if (w < 8 || h < 4) return;
-    void *vs = calloc(1, 0x1400);
-    if (!vs) return;
+    fx6_init_syms();
+    void *vs = (void *)s_vs_buf;
+    memset(vs, 0, sizeof(s_vs_buf));
     char param[0x40];
-    for (unsigned i = 0; i < sizeof(param); i++) param[i] = 0;
+    memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
 
     *(int32_t *)((char *)vs + 0x1e8) = x;
@@ -199,24 +262,19 @@ static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
     *(uint32_t *)((char *)vs + 0xa30) = 0x0200a005U;
 
     void *ts = (char *)vs + 0xe40;
-    void (*setcb)(void *, void *, void *) = (void (*)(void *, void *, void *))
-        dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite20setImageLoadCallbackEPFvPS1_PN5libra9ImageDataEPvES6_");
-    if (setcb) setcb(ts, (void *)fx6_text_image_cb, vs);
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
     *(unsigned short *)((char *)ts + 0xa8) |= 0x0008;
 
     void **vt = *(void ***)vs;
-    if (!vt || !vt[0x158 / 8]) return;
-    ((void (*)(void *))vt[0x158 / 8])(vs);
-
-    *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
-    void (*dti)(void *) = (void (*)(void *))dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite12drawTextImplEv");
-    if (dti) dti(ts);
-    {
-        int (*pc)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
-        if (pc) pc(0);
+    if (vt && vt[0x158 / 8]) {
+        ((void (*)(void *))vt[0x158 / 8])(vs);
+        *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
+        if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
+        if (g_syms.processCommands) g_syms.processCommands(0);
+        g_text_n++;
     }
+    fx6_destroy_widget_inplace(vs);
     (void)tag_name;
-    g_text_n++;
 }
 
 static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
@@ -231,10 +289,11 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
     if (!text_resid || text_resid == 0xffffffffU) return 0;
     if (w < 8 || h < 8) return 0;
 
-    void *vs = calloc(1, 0x1400);
-    if (!vs) return 0;
+    fx6_init_syms();
+    void *vs = (void *)s_vs_buf;
+    memset(vs, 0, sizeof(s_vs_buf));
     char param[0x40];
-    for (unsigned i = 0; i < sizeof(param); i++) param[i] = 0;
+    memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
 
     *(int32_t *)((char *)vs + 0x1e8) = x;
@@ -254,32 +313,30 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
     *(uint32_t *)((char *)vs + 0xa30) = 0x0200a005U;
 
     void *ts = (char *)vs + 0xe40;
-    void (*setcb)(void *, void *, void *) = (void (*)(void *, void *, void *))
-        dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite20setImageLoadCallbackEPFvPS1_PN5libra9ImageDataEPvES6_");
-    if (setcb) setcb(ts, (void *)fx6_text_image_cb, vs);
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
     *(unsigned short *)((char *)ts + 0xa8) |= 0x0008;
 
+    int rendered = 0;
     void **vt = *(void ***)vs;
-    if (!vt || !vt[0x158 / 8]) return 0;
-    ((void (*)(void *))vt[0x158 / 8])(vs);
-
-    *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
-    void (*dti2)(void *) = (void (*)(void *))dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite12drawTextImplEv");
-    if (dti2) dti2(ts);
-    {
-        int (*pc)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
-        if (pc) pc(0);
+    if (vt && vt[0x158 / 8]) {
+        ((void (*)(void *))vt[0x158 / 8])(vs);
+        *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
+        if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
+        if (g_syms.processCommands) g_syms.processCommands(0);
+        g_text_n++;
+        rendered = 1;
     }
-    g_text_n++;
-    return 1;
+    fx6_destroy_widget_inplace(vs);
+    return rendered;
 }
 
 static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t color_resid) {
     if (w < 1 || h < 1) return;
-    void *vf = calloc(1, 0x1180);
-    if (!vf) return;
+    fx6_init_syms();
+    void *vf = (void *)s_vf_buf;
+    memset(vf, 0, sizeof(s_vf_buf));
     char param[0x40];
-    for (unsigned i = 0; i < sizeof(param); i++) param[i] = 0;
+    memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc27698ULL))(vf, param);
 
     *(int32_t *)((char *)vf + 0x1e8) = x;
@@ -290,37 +347,33 @@ static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t c
     *(uint8_t *)((char *)vf + 0x1fc) = 1;
 
     void **vt = *(void ***)vf;
-    if (!vt) return;
-    if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(vf);
-    if (!vt[0x158 / 8]) return;
-    ((void (*)(void *))vt[0x158 / 8])(vf);
-
-    {
-        int (*pc)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
-        if (pc) pc(0);
+    if (vt) {
+        if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(vf);
+        if (vt[0x158 / 8]) {
+            ((void (*)(void *))vt[0x158 / 8])(vf);
+            if (g_syms.processCommands) g_syms.processCommands(0);
+            char *spr = (char *)vf + 0x210;
+            char *rects = *(char **)(spr + 0xd0);
+            if (rects) {
+                float pos[2] = {(float)x, (float)y};
+                if (g_syms.setRectPos) g_syms.setRectPos(spr, 0, pos);
+                else { *(float *)(rects + 0x00) = pos[0]; *(float *)(rects + 0x04) = pos[1]; }
+                if (g_syms.renderRect) g_syms.renderRect(spr, pos, rects, 0.0f, 0.0f);
+            }
+            g_fill_n++;
+        }
     }
-    char *spr = (char *)vf + 0x210;
-    char *rects = *(char **)(spr + 0xd0);
-    if (rects) {
-        float pos[2] = {(float)x, (float)y};
-        void (*srp)(void *, unsigned short, const void *) = (void (*)(void *, unsigned short, const void *))
-            dlsym((void *)-1, "_ZN2ux6gfxeng6Sprite10setRectPosEtRKNS_4core7Vector2E");
-        if (srp) srp(spr, 0, pos);
-        else { *(float *)(rects + 0x00) = pos[0]; *(float *)(rects + 0x04) = pos[1]; }
-        void (*rr)(void *, const void *, const void *, float, float) = (void (*)(void *, const void *, const void *, float, float))
-            dlsym((void *)-1, "_ZN2ux6gfxeng6Sprite10renderRectERKNS_4core7Vector2ERKNS1_8RectDataEff");
-        if (rr) rr(spr, pos, rects, 0.0f, 0.0f);
-    }
-    g_fill_n++;
+    fx6_destroy_widget_inplace(vf);
 }
 
 static void fx6_icon_blit(uint64_t appfw, int x, int y, int w, int h, uint32_t img) {
     if (w < 1 || h < 1) return;
     if (!img || img == 0xffffffffU) return;
-    void *ic = calloc(1, 0x700);
-    if (!ic) return;
+    fx6_init_syms();
+    void *ic = (void *)s_ic_buf;
+    memset(ic, 0, sizeof(s_ic_buf));
     char param[0x40];
-    for (unsigned i = 0; i < sizeof(param); i++) param[i] = 0;
+    memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc2c188ULL))(ic, param);
 
     *(int32_t *)((char *)ic + 0x1e8) = x;
@@ -337,14 +390,13 @@ static void fx6_icon_blit(uint64_t appfw, int x, int y, int w, int h, uint32_t i
     *(uint16_t *)((char *)ic + 0x206) = h;
 
     void **vt = *(void ***)ic;
-    if (!vt) return;
-    if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(ic);
-    if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(ic);
-    {
-        int (*pc)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
-        if (pc) pc(0);
+    if (vt) {
+        if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(ic);
+        if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(ic);
+        if (g_syms.processCommands) g_syms.processCommands(0);
+        g_icon_n++;
     }
-    g_icon_n++;
+    fx6_destroy_widget_inplace(ic);
 }
 
 static void fx6_border(uint64_t appfw, int x, int y, int w, int h, uint32_t color_resid) {
@@ -398,8 +450,9 @@ static uint32_t fx6_cell_val_rid(int cell_idx, const uint32_t *cell_vals) {
 
 /* Page 0: Big-6 Home (TABLE 0x2e9e210, 98 rows) */
 static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32_t *cell_vals) {
+    fx6_init_syms();
     uint8_t *base = (uint8_t *)(uintptr_t)(appfw + 0x2e9e210ULL);
-    int (*proccmd)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
+    int (*proccmd)(unsigned int) = g_syms.processCommands;
 
     uint8_t *cell_rows[6];
     int n_cells = 0;
@@ -840,12 +893,15 @@ static const hud_bind_t *fx6_hud_for(const char *name) {
 }
 
 static void fx6_vs_set_vn(void *vs, unsigned idx, unsigned val) {
+    fx6_init_syms();
     if (!*(void **)((char *)vs + 0x1030)) {
-        void *dict = calloc(1, 0x80);
-        void (*dc)(void *) = (void (*)(void *))dlsym((void *)-1, "_ZN5libra10DictionaryC1Ev");
-        if (dict && dc) {
-            dc(dict);
-            *(void **)((char *)vs + 0x1030) = dict;
+        if (!s_dict_ready && g_syms.dict_ctor) {
+            memset(s_dict_buf, 0, sizeof(s_dict_buf));
+            g_syms.dict_ctor(s_dict_buf);
+            s_dict_ready = 1;
+        }
+        if (s_dict_ready) {
+            *(void **)((char *)vs + 0x1030) = (void *)s_dict_buf;
         }
     }
     char *row = (char *)vs + VS_ROW_BASE + (unsigned long)idx * VS_ROW_STRIDE;
@@ -874,10 +930,11 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
         if (!fx6_text_of(d18, probe, sizeof(probe))) return;
     }
 
-    void *vs = calloc(1, 0x1400);
-    if (!vs) return;
+    fx6_init_syms();
+    void *vs = (void *)s_vs_buf;
+    memset(vs, 0, sizeof(s_vs_buf));
     char param[0x40];
-    for (unsigned i = 0; i < sizeof(param); i++) param[i] = 0;
+    memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
 
     *(int32_t *)((char *)vs + 0x1e8) = x;
@@ -908,23 +965,21 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     *(int *)((char *)vs + 0x610) = (b && b->mode) ? (b->mode == 2 ? 2 : 1) : *(int *)((char *)vs + 0x610);
 
     void *ts = (char *)vs + 0xe40;
-    void (*setcb)(void *, void *, void *) = (void (*)(void *, void *, void *))
-        dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite20setImageLoadCallbackEPFvPS1_PN5libra9ImageDataEPvES6_");
-    if (setcb) setcb(ts, (void *)fx6_text_image_cb, vs);
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
     *(unsigned short *)((char *)ts + 0xa8) |= 0x0008;
 
     void **vt = *(void ***)vs;
-    if (!vt || !vt[0x158 / 8]) return;
-    ((void (*)(void *))vt[0x158 / 8])(vs);
-    *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
-    void (*dti)(void *) = (void (*)(void *))dlsym((void *)-1, "_ZN2ux6gfxeng10TextSprite12drawTextImplEv");
-    if (dti) dti(ts);
-    {
-        int (*pc)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
-        if (pc) pc(0);
+    if (vt && vt[0x158 / 8]) {
+        ((void (*)(void *))vt[0x158 / 8])(vs);
+        *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
+        if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
+        if (g_syms.processCommands) g_syms.processCommands(0);
+        g_text_n++;
     }
+    /* Detach shared static Dictionary before running ~view_string() so it is never operator-deleted */
+    *(void **)((char *)vs + 0x1030) = 0;
+    fx6_destroy_widget_inplace(vs);
     (void)tag;
-    g_text_n++;
 }
 
 static void page_table(uint64_t appfw, uint32_t off, int count, const char *label, uint32_t sel_box) {
@@ -1057,7 +1112,7 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
 static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
                                 uint32_t menu_cat, uint32_t menu_item, uint32_t menu_depth,
                                 const uint32_t *cell_vals, uint32_t rec_fmt_idx) {
-    int (*proccmd)(unsigned int) = (int (*)(unsigned int))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager15processCommandsEj");
+    fx6_init_syms();
     uint64_t h = fx6_state_hash(page, sel_box, menu_cat, menu_item, menu_depth, cell_vals, rec_fmt_idx);
 
     for (int i = 0; i < CACHE_SLOTS; i++) {
@@ -1222,7 +1277,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
         }
         break;
     }
-    if (proccmd) proccmd(0);
+    if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
     int slot = g_cache_next % CACHE_SLOTS;
@@ -1371,11 +1426,9 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
     case 8: /* HOME */
         page = 0u;
         break;
-    case 9: /* DISP */
-        {
-            static const uint32_t disp_cycle[12] = { 6, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 0 };
-            page = disp_cycle[page % FX6_NUM_PAGES];
-        }
+    case 9: /* DISP: cycle through curated FX6 UI pages 0..23 cleanly (skipping 24=Universal unless explicitly set) */
+        page = (page + 1u) % 24u;
+        sel_box = (page == 0u) ? 5u : 0u;
         break;
     default:
         break;
@@ -1399,6 +1452,7 @@ void fx6_force_update(void) {
     dprintf(2, "FX6_LIVE appfw=%llx fb=%p\n", (unsigned long long)g_appfw, fb);
     if (!g_appfw || !fb) return;
 
+    fx6_init_syms();
     fx6_gds_install(fb);
     int (*setcwd)(const char *) = (int (*)(const char *))dlsym((void *)-1, "_ZN2ux4core6Kernel23sys_setCurrentDirectoryEPKc");
     int (*setdb)(const char *) = (int (*)(const char *))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager11setDatabaseEPKc");

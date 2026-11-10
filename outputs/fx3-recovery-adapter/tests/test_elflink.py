@@ -14,23 +14,38 @@ import struct
 import sys
 import time
 import unittest
-import unicorn as U
-from unicorn import arm64_const as A
-from capstone import Cs,CS_ARCH_ARM64,CS_MODE_ARM
+
+_LOCAL_UNICORN_SITE = Path('/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/tools/venv/lib/python3.14/site-packages')
+try:
+    import unicorn as U
+    from unicorn import arm64_const as A
+    from capstone import Cs,CS_ARCH_ARM64,CS_MODE_ARM
+except ImportError:
+    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
+        sys.path.append(str(_LOCAL_UNICORN_SITE))
+    try:
+        import unicorn as U
+        from unicorn import arm64_const as A
+        from capstone import Cs,CS_ARCH_ARM64,CS_MODE_ARM
+    except ImportError as exc:
+        U = A = Cs = None
+        CS_ARCH_ARM64 = CS_MODE_ARM = 0
+        _UNICORN_IMPORT_ERROR = str(exc)
+    else:
+        _UNICORN_IMPORT_ERROR = None
+else:
+    _UNICORN_IMPORT_ERROR = None
 
 HERE=Path(__file__).resolve().parent.parent
-ROOT=HERE.parents[1]
 sys.path.insert(0,str(HERE))
 from fx3_recovery import elflink as L
 from fx3_recovery import worker as W
 from fx3_recovery import engine as E
-from fx3_recovery.files import check_volume,new_directory,read_file,encode
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,new_directory,read_file,encode
 
-RUN=Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'work/sony-firmware-20261024/stage188-static-ELF-link-and-explicit-entry/runs/link-tests'
-sys.argv=sys.argv[:1]
+RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage188-static-ELF-link-and-explicit-entry/runs','link-tests',__name__,sys.argv)
 spec=importlib.util.spec_from_file_location('own_worker_syscall_fixture',HERE/'tests/test_worker.py')
 M=importlib.util.module_from_spec(spec);sys.modules[spec.name]=M;spec.loader.exec_module(M)
-M.RUN=RUN
 
 
 class Arm64Guest:
@@ -107,6 +122,8 @@ class Arm64Guest:
 class LinkTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        if _UNICORN_IMPORT_ERROR is not None:
+            raise unittest.SkipTest(f'unicorn/capstone unavailable: {_UNICORN_IMPORT_ERROR}')
         check_volume();RUN.mkdir(mode=0o700)
         cls.report=L.build_worker(RUN/'built')
         cls.raw=read_file(RUN/'built/worker.elf',L.MAX_OBJECT)
@@ -118,7 +135,7 @@ class LinkTests(unittest.TestCase):
         cls.guests=[]
 
     def guest(self,name,fault=None,window=2):
-        kernel=M.Kernel(name,self.source,W.request('3'*32,window),fault)
+        kernel=M.Kernel(name,self.source,W.request('3'*32,window),fault,run_root=RUN)
         guest=Arm64Guest(self.raw,kernel);report=guest.run();report['name']=name
         self.guests.append(report)
         return kernel,report

@@ -6,7 +6,8 @@ import { join } from "node:path";
 
 const REPO_ID = "e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd";
 const REPO_PATH = "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab";
-const ACTIVE_SESSION_ID = "antigravity_0399b63f_b78a_42fa_a296_7c7bdd04179f";
+const ACTIVE_SESSION_ID = "antigravity_7a23fc7b_dfcf_4785_bc33_b678bbc0e0f0";
+const LEGACY_WORKSPACE_ID = "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577";
 
 const WORKSPACES = {
   cat1: {
@@ -195,6 +196,18 @@ try {
       updateRecordStmt.run(JSON.stringify(updatedRecord), s.sid);
       boundCount++;
     }
+  }
+  const leftoverRows = db.prepare("SELECT session_id FROM journal_sessions WHERE workspace_id = ?").all(LEGACY_WORKSPACE_ID);
+  for (const row of leftoverRows) {
+    if (row.session_id === ACTIVE_SESSION_ID) continue;
+    updateJournalStmt.run(WORKSPACES.cat1.id, row.session_id);
+    const recRow = db.prepare("SELECT record_json FROM agent_session_records WHERE session_id = ?").get(row.session_id);
+    if (recRow?.record_json) {
+      const parsed = JSON.parse(recRow.record_json);
+      parsed.location = { ...(parsed.location ?? {}), workspaceId: WORKSPACES.cat1.id };
+      updateRecordStmt.run(JSON.stringify(parsed), row.session_id);
+    }
+    boundCount++;
   }
   db.exec("COMMIT");
 } catch (err) {

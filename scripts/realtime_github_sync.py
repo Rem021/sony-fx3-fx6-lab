@@ -20,7 +20,22 @@ MAC_REPORTS = Path("/Volumes/KAFU2T/AI/Projects/Mac/reports")
 EXPORT_SCRIPT = REPO_ROOT / "scripts" / "export_orca_conversations.mjs"
 
 REPORT_PAT = re.compile(r"(fx3|fx5|fx6|venice|sony-fx|索尼\s*FX)", re.IGNORECASE)
-FORBIDDEN_EXTS = {".dat", ".bin", ".img", ".cpio", ".squashfs", ".iso", ".dmg", ".pkg"}
+FORBIDDEN_EXTS = {
+    ".dat",
+    ".bin",
+    ".img",
+    ".cpio",
+    ".squashfs",
+    ".iso",
+    ".dmg",
+    ".pkg",
+    ".so",
+    ".elf",
+    ".ko",
+    ".dylib",
+    ".a",
+    ".o",
+}
 MAX_FILE_BYTES = 25 * 1024 * 1024  # 25 MB safety limit
 
 
@@ -48,6 +63,10 @@ def sync_reports():
                     "--exclude=*.img",
                     "--exclude=*.cpio",
                     "--exclude=*.squashfs",
+                    "--exclude=*.so",
+                    "--exclude=*.so.*",
+                    "--exclude=*.elf",
+                    "--exclude=*.ko",
                     "--max-size=25m",
                     f"{item}/",
                     f"{target}/",

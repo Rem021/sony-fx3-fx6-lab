@@ -1,13 +1,30 @@
 """Regular local files only. New private output directories, never in-place writes."""
 from pathlib import Path
+import atexit
 import json
 import os
 import plistlib
+import shutil
 import stat
 import subprocess
+import time
 
-ROOT = Path(__file__).resolve().parents[3]
+WORKSPACE_ROOT = Path('/Volumes/KAFU2T/AI/Projects/Mac')
+_RESOLVED = Path(__file__).resolve()
+ROOT = WORKSPACE_ROOT if _RESOLVED.is_relative_to(WORKSPACE_ROOT) else _RESOLVED.parents[3]
 VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+
+
+def allocate_test_run_dir(stage_runs_relpath, prefix, module_name, argv):
+    """Return explicit CLI run path for __main__, or an isolated auto-cleaned run path under ROOT."""
+    if module_name == '__main__' and len(argv) > 1:
+        run_dir = Path(argv[1])
+        argv[:] = argv[:1]
+        return run_dir
+    parent = ROOT / stage_runs_relpath
+    run_dir = parent / f'{prefix}-{os.getpid()}-{time.time_ns()}'
+    atexit.register(lambda p=run_dir: shutil.rmtree(p, ignore_errors=True))
+    return run_dir
 
 
 def require(ok, message):

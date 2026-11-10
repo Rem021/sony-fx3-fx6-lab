@@ -1,5 +1,10 @@
 # Sony FX3 & FX6 Porting and QEMU Virtual Machine Lab (`sony-fx3-fx6-lab`)
 
+> **2026-11-10 全線里程碑與架構修復閉環**：
+> 1. **Track 1A（FX6 128 頁 Guest `gpe0` 實時互動 UI）**：[100% 128 頁描述符實機渲染證據](reports/2026-11-08-fx6-native-text-gpe0/EVIDENCE-751-812-FULL-128-PAGES.md) 已通過 ARM64 Guest `appFw.so`（Ver. 6.01）+ `libuxengine.so` + `TextRM` 寫入 `0x41e001000`（`segv=0`），並完成 `fx6_live_guest.c` 靜態工作緩衝復用（消除每幀 `calloc` 洩漏與 ~1,500 次 `dlsym` 開銷、修復 `DISP` 越界讀取）、宿主端亞毫秒 PNG 打包加速與 [build_live700.py](outputs/fx3-vm-trial/build_live700.py) 確定性構建鏈。
+> 2. **Track 1B（FX6 原版冷啟動與 Presenter 狀態機）**：維持與 Track 1A 嚴格證據分離——129 線程冷啟動基線正推進 `MWF_Init` 恢復與 `SeqQueueCommon` `0x032d`（`init_hdmi`）完成契約閉環（[Native-Faithful 規範](reports/2026-11-08-gemini-big6-closure/NATIVE-FAITHFUL-PROFILE.md)）。
+> 3. **Track 3 & Track 4（FX6-on-FX3 裁剪藍圖與真機防變磚套件）**：完成 [FX6 硬件偽裝與模塊裁剪藍圖](reports/2026-11-10-fx6-hardware-spoofing-and-pruning/README.md) 與 [FX3 真機安全刷寫/看門狗/12 道門禁套件](reports/2026-11-10-fx3-safe-flash-and-antibrick/README.md)，`fx3-recovery-adapter`（58 項含 ARM64 Unicorn 執行測試）與 `fx3-safety`（8 項）共 **66/66 離線測試全綠通過**，修正 `ROADMAP.md` 中 `/tmp/jbusy` 極性描述以對齊 `libJiritsu.so` `0x977c` 靜態反彙編證據。
+
 > **2026-11-07 实际等待栈与原生修复**：[AppFw 初始化屏障与原厂线程池恢复](reports/2026-11-07-fx6-observed-wait/README.md) 已修正 Unix GDB 入口，并单变量恢复被跳过的线程池；实际129个任务及 cold-boot 调用链推进到 HDMI 格式的 BB/CP 请求。原厂菜单仍未通过。
 
 > **2026-11-07 在线交叉验证**：[FX6 原厂启动：294/295 阻塞与观察方案](<reports/FX6 原厂启动 在线交叉验证.md>) 归因 294 的 Backup 清零崩溃，明确 295 尚无真实接收 caller/qid；已交付离线 ET_DYN 观察候选，未证明原厂菜单启动。

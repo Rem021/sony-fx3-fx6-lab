@@ -18,22 +18,20 @@ import unittest
 import zlib
 
 HERE=Path(__file__).resolve().parent.parent
-ROOT=HERE.parents[1]
 sys.path.insert(0,str(HERE))
 from fx3_recovery import boot_worker as B
 from fx3_recovery import elflink as L
-from fx3_recovery.files import check_volume,new_directory,read_file,encode
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,new_directory,read_file,encode
 
-RUN=Path(sys.argv[1])
-sys.argv=sys.argv[:1]
+RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage188-static-ELF-link-and-explicit-entry/runs','boot-worker-tests',__name__,sys.argv)
 spec=importlib.util.spec_from_file_location('own_boot_arm64_fixture',HERE/'tests/test_elflink.py')
 G=importlib.util.module_from_spec(spec);sys.modules[spec.name]=G;spec.loader.exec_module(G)
-M=G.M;M.RUN=RUN;G.RUN=RUN
+M=G.M
 
 
 class BootKernel(M.Kernel):
     def __init__(self,name,source,request,profiles,total=B.UNIT,fault=None):
-        super().__init__(name,source,request,fault)
+        super().__init__(name,source,request,fault,run_root=RUN)
         self.total=total;self.profiles=profiles;self.source_opens=[]
         self.proc=f'major minor  #blocks  name\n\n252 126 {total//1024} nflashaB0\n252 127 {total//1024} nflashaB1\n'.encode()
         if fault=='duplicate-row':self.proc+=f'252 126 {total//1024} nflashaB0\n'.encode()
@@ -261,6 +259,8 @@ class BootTests(unittest.TestCase):
         self.assertEqual(k.errors,[]);self.assertEqual(set(k.fds),set(k.closed))
 
     def test_10_current_ARM64_ELF_minimum_tail_and_profile_failure(self):
+        if getattr(G,'_UNICORN_IMPORT_ERROR',None) is not None:
+            self.skipTest(f'unicorn/capstone unavailable: {G._UNICORN_IMPORT_ERROR}')
         for name,target,total,window,expected,fault in [('arm64-min','boot0',B.UNIT,0,0,None),
                 ('arm64-tail','boot1',B.MAX_BOOT,3,B.MAX_BOOT,None),
                 ('arm64-profile-denied','boot0',B.UNIT,0,0,'profile-hash')]:

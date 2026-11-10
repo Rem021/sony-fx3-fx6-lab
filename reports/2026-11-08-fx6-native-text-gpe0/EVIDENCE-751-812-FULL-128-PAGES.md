@@ -2,7 +2,7 @@
 
 ## 1. Milestone Summary
 
-With Rounds **`751`–`812`** (62 pages), **100% of all 128 native Sony FX6 v5.00 (`ILME-FX6V`) page descriptor tables (`fx6_all_pages[0..127]`, 2,249 total widget rows in `appFw.so` at offsets `0x02e90fb0 .. 0x02eba7b8`)** have been rendered in-guest by ARM64 `appFw.so` + `libuxengine.so` + `libgemini-grm.so` into physical framebuffer `0x41e001000` (`gpe0`, `1024×540` RGBA32) with **`nz > 0` and `segv = 0` across all 128 pages**.
+With Rounds **`751`–`812`** (62 pages), **100% of all 128 native Sony FX6 Ver. 6.01 (`ILME-FX6V`, Model ID `0x91040086`; legacy harness label `v5.00`) page descriptor tables (`fx6_all_pages[0..127]`, 2,249 total widget rows in `appFw.so` at offsets `0x02e90fb0 .. 0x02eba7b8`)** have been rendered in-guest by ARM64 `appFw.so` + `libuxengine.so` + `libgemini-grm.so` into physical framebuffer `0x41e001000` (`gpe0`, `1024×540` RGBA32) with **`nz > 0` and `segv = 0` across all 128 pages**. (Note: rendered via the in-guest `fx6_live_guest.c` widget/TextRM driver; native cold-boot presenter state-machine closure is tracked separately in Track 1B.)
 
 - **Interactive Web Console (`http://127.0.0.1:8768/`)**:
   - Added `case 24:` **Universal Descriptor Table Mode** in [fx6_live_guest.c](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/src/fx6_live_guest.c) (`cell_vals[0..3] = {table_off, table_rows, table_off2, table_rows2}` via `0x41e000e00` mailbox).

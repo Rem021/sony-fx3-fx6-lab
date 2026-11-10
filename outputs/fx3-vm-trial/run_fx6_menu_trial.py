@@ -158,35 +158,93 @@ def _png_chunk(tag: bytes, data: bytes) -> bytes:
     return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
 
+_BG_ROW = b"\x00" + b"\x0e\x10\x14\xff" * GPE0_W
+_FAST_GPE_FN = None
+_FAST_GPE_TRIED = False
+
+
+def _get_fast_gpe0_fn():
+    """Compile once into /private/tmp for sub-millisecond BGRA->PNG scanline packing, with stdlib fallback."""
+    global _FAST_GPE_FN, _FAST_GPE_TRIED
+    if _FAST_GPE_TRIED:
+        return _FAST_GPE_FN
+    _FAST_GPE_TRIED = True
+    c_src = (
+        "#include <stddef.h>\n"
+        "#include <stdint.h>\n"
+        "uint32_t fx6_pack_scanlines(const uint32_t *src, uint8_t *dst, uint32_t w, uint32_t h) {\n"
+        "    uint32_t nz = 0, stride = 1u + w * 4u;\n"
+        "    for (uint32_t y = 0; y < h; y++) {\n"
+        "        uint8_t *row = dst + (size_t)y * stride;\n"
+        "        row[0] = 0;\n"
+        "        const uint32_t *s = src + (size_t)y * w;\n"
+        "        uint8_t *p = row + 1;\n"
+        "        for (uint32_t x = 0; x < w; x++, p += 4) {\n"
+        "            uint32_t v = s[x];\n"
+        "            if (v) { nz++; p[0] = (v >> 16) & 0xff; p[1] = (v >> 8) & 0xff; p[2] = v & 0xff; p[3] = 255; }\n"
+        "            else   { p[0] = 14; p[1] = 16; p[2] = 20; p[3] = 255; }\n"
+        "        }\n"
+        "    }\n"
+        "    return nz;\n"
+        "}\n"
+    )
+    try:
+        import ctypes
+        import hashlib
+        tag = hashlib.sha256(c_src.encode()).hexdigest()[:12]
+        dylib = Path("/private/tmp") / f"fx6_gpe0_scanline_{tag}.dylib"
+        if not dylib.is_file():
+            src_file = Path("/private/tmp") / f"fx6_gpe0_scanline_{tag}.c"
+            tmp_dylib = Path("/private/tmp") / f"fx6_gpe0_scanline_{tag}.{os.getpid()}.dylib"
+            src_file.write_text(c_src)
+            done = subprocess.run(
+                ["/usr/bin/xcrun", "clang", "-O3", "-dynamiclib", str(src_file), "-o", str(tmp_dylib)],
+                capture_output=True,
+                timeout=10,
+            )
+            if done.returncode == 0:
+                os.replace(tmp_dylib, dylib)
+        if dylib.is_file():
+            lib = ctypes.CDLL(str(dylib))
+            fn = lib.fx6_pack_scanlines
+            fn.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32]
+            fn.restype = ctypes.c_uint32
+            _FAST_GPE_FN = (ctypes, fn)
+    except Exception:
+        _FAST_GPE_FN = None
+    return _FAST_GPE_FN
+
+
 def gpe0_raw_to_png(raw: bytes) -> tuple[bytes, int]:
-    """Convert raw 1024x540x4 gpe0 physical memory dump to PNG using pure stdlib."""
+    """Convert raw 1024x540x4 gpe0 physical memory dump to PNG (sub-ms C fastpath + pure-stdlib fallback)."""
     if len(raw) < GPE0_BYTES:
         return b"", 0
-    u32 = struct.unpack(f"<{GPE0_W * GPE0_H}I", raw[:GPE0_BYTES])
-    nz = sum(1 for v in u32 if v != 0)
-    if nz == 0:
-        return b"", 0
     row_stride = 1 + GPE0_W * 4
-    scanlines = bytearray(row_stride * GPE0_H)
-    for y in range(GPE0_H):
-        row_base = y * row_stride
-        scanlines[row_base] = 0  # filter type 0 (None)
-        u32_base = y * GPE0_W
-        for x in range(GPE0_W):
-            v = u32[u32_base + x]
-            o = row_base + 1 + x * 4
+    fast = _get_fast_gpe0_fn()
+    if fast is not None:
+        ctypes_mod, fn = fast
+        scanlines = (ctypes_mod.c_uint8 * (row_stride * GPE0_H))()
+        src_buf = (ctypes_mod.c_char * GPE0_BYTES).from_buffer_copy(raw, 0)
+        nz = int(fn(ctypes_mod.addressof(src_buf), ctypes_mod.addressof(scanlines), GPE0_W, GPE0_H))
+        if nz == 0:
+            return b"", 0
+        raw_scanlines = bytes(scanlines)
+    else:
+        u32_list = memoryview(raw)[:GPE0_BYTES].cast("I").tolist()
+        nz = GPE0_W * GPE0_H - u32_list.count(0)
+        if nz == 0:
+            return b"", 0
+        scanlines_ba = bytearray(_BG_ROW * GPE0_H)
+        for idx, v in enumerate(u32_list):
             if v:
-                scanlines[o] = (v >> 16) & 0xFF
-                scanlines[o + 1] = (v >> 8) & 0xFF
-                scanlines[o + 2] = v & 0xFF
-                scanlines[o + 3] = 255
-            else:
-                scanlines[o] = 14
-                scanlines[o + 1] = 16
-                scanlines[o + 2] = 20
-                scanlines[o + 3] = 255
+                y, x = divmod(idx, GPE0_W)
+                o = y * row_stride + 1 + x * 4
+                scanlines_ba[o] = (v >> 16) & 0xFF
+                scanlines_ba[o + 1] = (v >> 8) & 0xFF
+                scanlines_ba[o + 2] = v & 0xFF
+        raw_scanlines = bytes(scanlines_ba)
     ihdr = struct.pack(">IIBBBBB", GPE0_W, GPE0_H, 8, 6, 0, 0, 0)
-    compressed = zlib.compress(bytes(scanlines), level=3)
+    compressed = zlib.compress(raw_scanlines, level=2)
     png = b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", ihdr) + _png_chunk(b"IDAT", compressed) + _png_chunk(b"IEND", b"")
     return png, nz
 

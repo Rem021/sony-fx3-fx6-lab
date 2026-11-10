@@ -9,10 +9,10 @@
 ## 2. Directory & Categorization Architecture
 All FX3, FX5, and FX6 system research, QEMU emulator harnesses, CP/CapID/GRM/GPE shims, and categorized Orca conversation archives are organized here and synced to GitHub in real time:
 - `outputs/fx3-vm/`: Interactive FX3 Web UI Emulator (`http://127.0.0.1:8765/`) & 8-step menu runner
-- `outputs/fx3-vm-trial/`: Standalone FX3 trial bundle (`start-fx3-vm-trial.sh`)
+- `outputs/fx3-vm-trial/`: Standalone FX3 trial bundle (`start-fx3-vm-trial.sh`) + FX6 Ver. 6.01 (`ILME-FX6V`, `0x91040086`) live `gpe0` (`0x41e001000`) 128-page Web UI console (`run_fx6_menu_trial.py`, `build_live700.py`, `Makefile`)
 - `outputs/fx3-firmware-lab/`: Firmware unpacker, `ldec` LZ77 decoder, resource & partition analysis tools
-- `outputs/fx3-recovery-adapter/` & `outputs/fx3-safety/`: Hardware safety guards and recovery research
-- `work/fx3-vm-20261101/fx6-port-01/`: FX6 v5.00 (`ILME-FX6V`) on FX3 QEMU VM harness (`run_fx6_on_fx3_vm.py`, `fx3-capid-v31.c`)
+- `outputs/fx3-recovery-adapter/` & `outputs/fx3-safety/`: Hardware safety guards and recovery research (66 offline unit + ARM64 Unicorn tests)
+- `work/fx3-vm-20261101/fx6-port-01/`: FX6 Ver. 6.01 (`ILME-FX6V`, `0x91040086`, legacy folder note `v5.00`) on FX3 QEMU VM harness (`run_fx6_on_fx3_vm.py`, `fx3-capid-v31.c`)
 - `work/fx3-vm-20261101/menu-repair-01/`: FX3 v7.00 AP + CP shim (`fx3-capid-v28.c`), GPE software renderer (`fx3-gpe-observe-v19.c`), OSD/VDF/SKD audits
 - `work/fx3-color-port-20261027/`: FX5 / VENICE / FX6 cinema menu & color science porting research
 - `work/sony-firmware-20261024/`: Stage 1–4 firmware extraction & verification scripts

@@ -13,14 +13,12 @@ import unittest
 import zlib
 
 HERE=Path(__file__).resolve().parent.parent
-ROOT=HERE.parents[1]
 sys.path.insert(0,str(HERE))
 from fx3_recovery import worker as W
 from fx3_recovery import engine as E
-from fx3_recovery.files import check_volume,new_directory,read_file,encode
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,new_directory,read_file,encode
 
-RUN=Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'work/sony-firmware-20261024/stage187-FX3-native-read-worker/runs/worker-tests'
-sys.argv=sys.argv[:1]
+RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage187-FX3-native-read-worker/runs','worker-tests',__name__,sys.argv)
 
 
 class Kstat(T.Structure):
@@ -43,8 +41,9 @@ class Kernel:
     """
     CALLBACK=T.CFUNCTYPE(T.c_long,*([T.c_long]*5))
 
-    def __init__(self,name,source,request,fault=None):
-        self.root=RUN/name;self.root.mkdir(mode=0o700)
+    def __init__(self,name,source,request,fault=None,run_root=None):
+        base=RUN if run_root is None else run_root
+        self.root=base/name;self.root.mkdir(mode=0o700)
         self.source=source;self.request=request;self.fault=fault
         self.fds={};self.next_fd=100;self.calls=[];self.errors=[];self.source_reads=[];self.closed=[]
         self.now=1_000_000_000;self.output=None;self.entered=threading.Event();self.release=threading.Event()

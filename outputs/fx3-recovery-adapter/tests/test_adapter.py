@@ -10,15 +10,13 @@ import sys
 import unittest
 
 HERE=Path(__file__).resolve().parent.parent
-ROOT=HERE.parents[1]
 sys.path.insert(0,str(HERE))
 from fx3_recovery import engine as E
-from fx3_recovery.files import read_file,new_directory,encode,check_volume
+from fx3_recovery.files import ROOT,allocate_test_run_dir,read_file,new_directory,encode,check_volume
 from fx3_recovery.fat import FatP1,MAX_P1
 from fx3_recovery.squash import inflate_bounded
 
-RUN=Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'work/sony-firmware-20261024/stage185-fx3-offline-recovery-adapter/runs/tests'
-sys.argv=sys.argv[:1]
+RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage185-fx3-offline-recovery-adapter/runs','tests',__name__,sys.argv)
 REFERENCES=ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine'
 
 

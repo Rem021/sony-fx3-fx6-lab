@@ -30,6 +30,8 @@ from .patcher import (
     resolve_donor_binary_path,
     rollback_patch_spec,
 )
+from .ram_overlay_packager import build_stage_a_ram_overlay_package
+from .rollback_drill import run_four_layer_rollback_drill
 from .tier0_unicorn_verifier import run_tier0_worker_in_unicorn
 from .uipc_completion_verifier import run_p5_p6_uipc_unicorn_audit
 
@@ -130,6 +132,38 @@ def _cmd_run_unicorn_audit(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
     return 0 if ok else 1
 
 
+def _cmd_run_rollback_drill(fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
+    bundle = build_stage_a_ram_overlay_package(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        vfat_mode=vfat_mode,
+    )
+    drill = run_four_layer_rollback_drill(
+        overlay_bundle=bundle,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+    )
+    ok = (
+        bundle.cpio_audit.valid
+        and bundle.failsafe_hook_audit.valid
+        and drill.all_scenarios_passed
+        and drill.total_emmc_writes == 0
+        and drill.temp_dir_cleaned
+    )
+    payload = {
+        "status": "OK" if ok else "FAILED",
+        "stage_a_cpio_sha256": bundle.cpio_sha256,
+        "stage_a_cpio_size": bundle.cpio_size,
+        "stage_a_cpio_entries": [e.name for e in bundle.cpio_audit.entries],
+        "failsafe_hook_audit": asdict(bundle.failsafe_hook_audit),
+        "matrix_item_count": bundle.overlay_manifest["matrix_item_count"],
+        "verified_matrix_ids": bundle.overlay_manifest["verified_matrix_ids"],
+        "rollback_drill": asdict(drill),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if ok else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -147,6 +181,11 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "adapted_targets": [r.spec_id for r in rep.patch_receipts],
         "p5_p6_uipc_ok": rep.p5_p6_uipc_unicorn.all_positive_passed and rep.p5_p6_uipc_unicorn.all_negative_captured,
         "p7_backup_bridge_ok": rep.p7_backup_bridge.all_checks_passed,
+        "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
+        "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
+        "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
+        "rollback_drill_passed": rep.rollback_drill.all_scenarios_passed,
+        "rollback_drill_emmc_writes": rep.rollback_drill.total_emmc_writes,
         "vfat": asdict(rep.vfat_receipt),
         "tier0_manifest_valid": rep.tier0_manifest_audit.valid,
         "tier0_syscall_valid": rep.tier0_syscall_audit.valid,
@@ -159,27 +198,31 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 P1..P9 (9/9) Offline Compatibility Closure, VFAT, Unicorn & 12-Gate Dry-Run CLI",
+        description="FX6-on-FX3 Phase 4 Compatibility Closure, Stage-A RAM-Overlay CPIO & 4-Layer Rollback Drill CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     for cmd_name, help_msg in (
         ("verify-donors", "Verify ELF64 offsets, context, adaptation, 100% SHA-256 rollback, and P7 kernel signatures"),
         ("run-unicorn-audit", "Run Unicorn AArch64 audits across P3, P4, P5, P6, P7, P8, P9, Fan, and Tier-0"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan candidate in TemporaryDirectory and evaluate 12 safety gates"),
+        ("run-rollback-drill", "Build Stage-A CPIO newc RAM-Overlay and execute 4-Layer Fail-Safe rollback drill"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
         p.add_argument("--fx3-modules-dir", type=Path, default=DEFAULT_FX3_MODULES_DIR)
+        if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
+            p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name == "dry-run-candidate":
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-            p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
 
     args = parser.parse_args(argv)
     if args.cmd == "verify-donors":
         return _cmd_verify_donors(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "run-unicorn-audit":
         return _cmd_run_unicorn_audit(args.fx6_lib_dir, args.fx3_modules_dir)
+    if args.cmd == "run-rollback-drill":
+        return _cmd_run_rollback_drill(args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

@@ -17,11 +17,16 @@ import hashlib
 import io
 import json
 import tempfile
+import subprocess
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
-from fx3_safety.preflight import TIER0_CANONICAL_SOURCES, TIER0_REQUIRED_BACKUPS
+from fx3_safety.preflight import (
+    TIER0_CANONICAL_SOURCES,
+    TIER0_REQUIRED_BACKUPS,
+    verify_failsafe_hook_script,
+)
 
 from fx6_closure.__main__ import main as cli_main
 from fx6_closure.backup_bridge_verifier import (
@@ -39,6 +44,22 @@ from fx6_closure.backup_bridge_verifier import (
     verify_p7_backup_bridge,
 )
 from fx6_closure.candidate_builder import COMPLETE_MATRIX_ITEMS, run_offline_candidate_dry_run
+from fx6_closure.ram_overlay_packager import (
+    CPIO_NEWC_MAGIC,
+    CpioEntrySpec,
+    CpioFormatError,
+    REQUIRED_STAGE_A_OVERLAY_PATHS,
+    S_IFDIR,
+    S_IFREG,
+    build_cpio_newc_archive,
+    build_stage_a_ram_overlay_package,
+    parse_and_audit_cpio_newc,
+)
+from fx6_closure.rollback_drill import (
+    SIMULATED_EMMC_PARTITIONS,
+    run_four_layer_rollback_drill,
+    simulate_failsafe_state_machine,
+)
 from fx6_closure.uipc_completion_verifier import (
     P5_CANONICAL_CMP_HEX,
     P5_CANONICAL_REQ_HEX,
@@ -438,13 +459,19 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(rep_ok.fan_unicorn.return_value, 1)
         self.assertEqual(rep_ok.p8_unicorn.return_value, 0)
         self.assertTrue(rep_ok.p9_unicorn.patched_completed_cleanly)
+        self.assertTrue(rep_ok.stage_a_cpio_audit.valid)
+        self.assertTrue(rep_ok.rollback_drill.all_scenarios_passed)
+        self.assertEqual(rep_ok.rollback_drill.total_emmc_writes, 0)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
+
+        drill_base = rep_ok.rollback_drill
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
         rep_missing = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -457,6 +484,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         rep_bad_sc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -466,6 +494,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         rep_bad_hook = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -476,15 +505,17 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         rep_bad_vfat = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC or P7 Backup Sync100 bridge -> blocks G12 candidate release
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, or Stage-A CPIO -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -494,13 +525,24 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         rep_bad_p7 = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
         self.assertNotIn("P7", rep_bad_p7.verified_matrix_items)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p7.blocked_gate_ids)
 
-    def test_cli_verify_donors_subcommand(self) -> None:
+        rep_bad_cpio = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            corrupt_stage_a_cpio=True,
+        )
+        self.assertFalse(rep_bad_cpio.candidate_ready)
+        self.assertFalse(rep_bad_cpio.stage_a_cpio_audit.valid)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_cpio.blocked_gate_ids)
+
+    def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
         with redirect_stdout(buf):
             rc = cli_main(["verify-donors"])
@@ -509,6 +551,17 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(parsed["status"], "OK")
         self.assertEqual(parsed["verified_targets"], 7)
         self.assertTrue(parsed["p7_dual_kernel_signature_verified"])
+
+        buf_drill = io.StringIO()
+        with redirect_stdout(buf_drill):
+            rc_drill = cli_main(["run-rollback-drill"])
+        self.assertEqual(rc_drill, 0)
+        parsed_drill = json.loads(buf_drill.getvalue())
+        self.assertEqual(parsed_drill["status"], "OK")
+        self.assertEqual(parsed_drill["matrix_item_count"], 10)
+        self.assertTrue(parsed_drill["failsafe_hook_audit"]["valid"])
+        self.assertTrue(parsed_drill["rollback_drill"]["all_scenarios_passed"])
+        self.assertEqual(parsed_drill["rollback_drill"]["total_emmc_writes"], 0)
 
 
 class TestP5P6UipcCompletionAndUnicorn(unittest.TestCase):
@@ -621,6 +674,149 @@ class TestP7BackupSync100BridgeVerifier(unittest.TestCase):
         bad_tail = env[:-4] + b"\x00\x00\x00\x00"
         with self.assertRaises(BackupBridgeError):
             validate_sync100_op30_request(SYNC100_DST_QUEUE, bad_tail)
+
+
+class TestStageARamOverlayPackager(unittest.TestCase):
+    """Verify deterministic CPIO `newc` (`070701`) builder, parser/auditor, and Stage-A bundle."""
+
+    def test_stage_a_cpio_reproducibility_alignment_and_manifest_contract(self) -> None:
+        b1 = build_stage_a_ram_overlay_package()
+        b2 = build_stage_a_ram_overlay_package()
+        self.assertEqual(b1.cpio_sha256, b2.cpio_sha256)
+        self.assertEqual(b1.cpio_bytes, b2.cpio_bytes)
+        self.assertEqual(b1.cpio_size % 4, 0)
+        self.assertEqual(b1.cpio_bytes[:6], CPIO_NEWC_MAGIC)
+        self.assertTrue(b1.temp_dir_cleaned)
+        self.assertTrue(b1.cpio_audit.valid, b1.cpio_audit.errors)
+        self.assertTrue(b1.cpio_audit.trailer_found)
+        self.assertTrue(b1.failsafe_hook_audit.valid, b1.failsafe_hook_audit.errors)
+
+        # Independently verify init2_guard.sh via fx3_safety.preflight.verify_failsafe_hook_script
+        ext_hook_audit = verify_failsafe_hook_script(b1.init2_guard_script)
+        self.assertTrue(ext_hook_audit.valid, ext_hook_audit.errors)
+
+        # Verify all 10 matrix items and 10 runtime SHA-256 checklist entries in overlay_manifest.json
+        manifest = b1.overlay_manifest
+        self.assertEqual(manifest["persistent_flash_writes"], 0)
+        self.assertEqual(manifest["matrix_item_count"], 10)
+        self.assertEqual(tuple(manifest["verified_matrix_ids"]), COMPLETE_MATRIX_ITEMS)
+        self.assertEqual(len(manifest["sha256_check_list"]), 10)
+        self.assertEqual(len(b1.staged_runtime_blobs), 10)
+
+        # Verify required paths in CPIO
+        entry_names = tuple(e.name for e in b1.cpio_audit.entries)
+        for req in REQUIRED_STAGE_A_OVERLAY_PATHS:
+            self.assertIn(req, entry_names)
+
+    def test_cpio_newc_rejects_bad_magic_padding_traversal_and_missing_trailer(self) -> None:
+        with self.assertRaises(CpioFormatError):
+            build_cpio_newc_archive([CpioEntrySpec(name="/etc/passwd", mode=S_IFREG | 0o644, data=b"x")])
+        with self.assertRaises(CpioFormatError):
+            build_cpio_newc_archive([CpioEntrySpec(name="etc/../evil", mode=S_IFREG | 0o644, data=b"x")])
+        with self.assertRaises(CpioFormatError):
+            build_cpio_newc_archive([CpioEntrySpec(name="etc", mode=S_IFDIR | 0o755, data=b"not_empty")])
+        with self.assertRaises(CpioFormatError):
+            build_cpio_newc_archive(
+                [
+                    CpioEntrySpec(name="etc/a", mode=S_IFREG | 0o644, data=b"1"),
+                    CpioEntrySpec(name="etc/a", mode=S_IFREG | 0o644, data=b"2"),
+                ]
+            )
+
+        valid_arc = build_cpio_newc_archive(
+            [
+                CpioEntrySpec(name="etc", mode=S_IFDIR | 0o755),
+                CpioEntrySpec(name="etc/hello.txt", mode=S_IFREG | 0o644, data=b"abc"),  # 3B -> 1B pad
+            ]
+        )
+        ok_audit = parse_and_audit_cpio_newc(valid_arc, required_paths=("etc", "etc/hello.txt"))
+        self.assertTrue(ok_audit.valid, ok_audit.errors)
+
+        # Corrupt magic (`070707` odc instead of `070701` newc)
+        bad_magic = b"070707" + valid_arc[6:]
+        self.assertFalse(parse_and_audit_cpio_newc(bad_magic).valid)
+
+        # Corrupt 1-byte payload alignment pad on 3-byte file `etc/hello.txt`
+        # Entry 0 (`etc`): 110 + 4 = 114 -> +2 pad = 116 bytes.
+        # Entry 1 (`etc/hello.txt`): 110 + 14 = 124 -> +0 head_pad, 3B data -> 1B data_pad at 116+124+3 = 243.
+        bad_pad = bytearray(valid_arc)
+        bad_pad[243] = 0xFF
+        pad_audit = parse_and_audit_cpio_newc(bytes(bad_pad))
+        self.assertFalse(pad_audit.valid)
+        self.assertTrue(any("alignment padding" in err for err in pad_audit.errors))
+
+        # Strip TRAILER!!! sentinel (last 124 bytes)
+        no_trailer = valid_arc[:-124]
+        tr_audit = parse_and_audit_cpio_newc(no_trailer)
+        self.assertFalse(tr_audit.valid)
+        self.assertFalse(tr_audit.trailer_found)
+
+
+class TestFourLayerRollbackDrill(unittest.TestCase):
+    """Verify deterministic 4-Layer Fail-Safe state machine and sandboxed POSIX `sh` drills."""
+
+    def test_formal_state_machine_and_all_four_sandboxed_sh_scenarios(self) -> None:
+        # 1. Direct state-machine branch assertions
+        sm1 = simulate_failsafe_state_machine(arm_once_present=False)
+        self.assertEqual(sm1.boot_branch, "STOCK_FX3")
+        self.assertEqual(sm1.active_overlay_mounts, 0)
+
+        sm2 = simulate_failsafe_state_machine(arm_once_present=True)
+        self.assertEqual(sm2.boot_branch, "ADAPTED_FX6_OVERLAY")
+        self.assertFalse(sm2.token_present_after)
+        self.assertEqual(sm2.active_overlay_mounts, 3)
+
+        sm3 = simulate_failsafe_state_machine(arm_once_present=True, manifest_sha256_valid=False)
+        self.assertEqual(sm3.boot_branch, "STOCK_FX3_FALLBACK")
+        self.assertEqual(sm3.active_overlay_mounts, 0)
+
+        sm4 = simulate_failsafe_state_machine(arm_once_present=True, child_timed_out=True)
+        self.assertEqual(sm4.boot_branch, "STOCK_FX3_FALLBACK")
+        self.assertEqual(sm4.diag_code_prefix, "ERR_WATCHDOG_TIMEOUT_FALLBACK")
+
+        # 2. Full 4-scenario POSIX `/bin/sh` sandbox execution
+        bundle = build_stage_a_ram_overlay_package()
+        rep = run_four_layer_rollback_drill(overlay_bundle=bundle)
+        self.assertTrue(rep.all_scenarios_passed)
+        self.assertEqual(rep.scenario_count, 4)
+        self.assertEqual(rep.total_emmc_writes, 0)
+        self.assertEqual(rep.total_sandbox_violations, 0)
+        self.assertEqual(rep.emmc_partitions_verified, SIMULATED_EMMC_PARTITIONS)
+        self.assertTrue(rep.temp_dir_cleaned)
+
+        s1, s2, s3, s4 = rep.scenarios
+        self.assertEqual(s1.runs[0].boot_branch, "STOCK_FX3")
+        self.assertEqual(s1.runs[0].active_overlay_mount_count, 0)
+
+        self.assertEqual(s2.runs[0].boot_branch, "ADAPTED_FX6_OVERLAY")
+        self.assertTrue(s2.runs[0].token_cleared_before_exec)
+        self.assertTrue(s2.runs[0].child_observed_token_absent)
+        self.assertEqual(s2.runs[1].boot_branch, "STOCK_FX3")
+        self.assertEqual(s2.runs[1].active_overlay_mount_count, 0)
+
+        self.assertTrue(s3.runs[0].diag_code.startswith("ERR_MANIFEST_SHA256_MISMATCH:"))
+        self.assertTrue(s3.runs[1].diag_code.startswith("ERR_MANIFEST_COMPONENT_MISSING:"))
+        self.assertEqual(s3.runs[0].active_overlay_mount_count, 0)
+        self.assertEqual(s3.runs[1].active_overlay_mount_count, 0)
+
+        self.assertEqual(s4.runs[0].diag_code, "ERR_CHILD_NONZERO_FALLBACK:139")
+        self.assertEqual(s4.runs[1].diag_code, "ERR_WATCHDOG_TIMEOUT_FALLBACK")
+        self.assertEqual(s4.runs[0].active_overlay_mount_count, 0)
+        self.assertEqual(s4.runs[1].active_overlay_mount_count, 0)
+
+        # 3. Verify host-OS safety lock refuses execution if PREFIX is empty on macOS/host
+        with tempfile.TemporaryDirectory(prefix="fx6_host_guard_test_") as tmp_dir:
+            guard_p = Path(tmp_dir) / "init2_guard.sh"
+            guard_p.write_text(bundle.init2_guard_script, encoding="utf-8")
+            proc = subprocess.run(
+                ["/bin/sh", str(guard_p)],
+                env={"PATH": "/usr/bin:/bin"},
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(proc.returncode, 97)
+            self.assertIn("ERR_SANDBOX_PREFIX_REQUIRED_ON_HOST", proc.stderr)
 
 
 if __name__ == "__main__":

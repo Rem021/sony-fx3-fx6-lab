@@ -48,6 +48,10 @@ from .boot_selector_and_bank_verifier import (
     Phase7BootSelectorAndBankReport,
     run_boot_selector_and_bank_verification,
 )
+from .cp_rtos_compatibility_verifier import (
+    Phase10CpRtosCompatibilityReport,
+    run_cp_rtos_compatibility_verification,
+)
 from .feature_routing_verifier import (
     FeatureRoutingAuditReport,
     run_feature_routing_verification,
@@ -148,6 +152,8 @@ class CandidateDryRunReport:
     kernel_dtb_ok: bool
     storage_and_ram_budget_audit: Phase9StorageAndRamBudgetReport
     storage_and_ram_budget_ok: bool
+    cp_rtos_audit: Phase10CpRtosCompatibilityReport
+    cp_rtos_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -168,6 +174,7 @@ def run_offline_candidate_dry_run(
     precomputed_boot_selector_and_banks: Optional[Phase7BootSelectorAndBankReport] = None,
     precomputed_kernel_dtb: Optional[Phase8KernelDtbReport] = None,
     precomputed_storage_and_ram_budget: Optional[Phase9StorageAndRamBudgetReport] = None,
+    precomputed_cp_rtos: Optional[Phase10CpRtosCompatibilityReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -178,6 +185,7 @@ def run_offline_candidate_dry_run(
     corrupt_boot_selector_and_banks: bool = False,
     corrupt_kernel_dtb: bool = False,
     corrupt_storage_and_ram_budget: bool = False,
+    corrupt_cp_rtos: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -393,6 +401,18 @@ def run_offline_candidate_dry_run(
             storage_ram_res.all_checks_passed and not corrupt_storage_and_ram_budget
         )
 
+        cp_rtos_res = precomputed_cp_rtos or run_cp_rtos_compatibility_verification(
+            overlay_manifest=stage_a_bundle.overlay_manifest,
+            overlay_entry_paths=tuple(e.name for e in stage_a_cpio_audit.entries),
+            scripts_to_audit=(
+                ("10-p1-lut-mount.sh", p1_script),
+                ("20-p2-opelog-mount.sh", p2_script),
+                ("setup_fx6_compat.sh", stage_a_bundle.setup_compat_script),
+                ("init2_guard.sh", failsafe_hook),
+            ),
+        )
+        cp_rtos_ok = cp_rtos_res.all_checks_passed and not corrupt_cp_rtos
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -433,6 +453,7 @@ def run_offline_candidate_dry_run(
             and boot_selector_and_banks_ok
             and kernel_dtb_ok
             and storage_and_ram_budget_ok
+            and cp_rtos_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -448,6 +469,7 @@ def run_offline_candidate_dry_run(
             boot_selector_and_banks_ok=boot_selector_and_banks_ok,
             kernel_dtb_ok=kernel_dtb_ok,
             storage_and_ram_budget_ok=storage_and_ram_budget_ok,
+            cp_rtos_ok=cp_rtos_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -492,6 +514,8 @@ def run_offline_candidate_dry_run(
         kernel_dtb_ok=kernel_dtb_ok,
         storage_and_ram_budget_audit=storage_ram_res,
         storage_and_ram_budget_ok=storage_and_ram_budget_ok,
+        cp_rtos_audit=cp_rtos_res,
+        cp_rtos_ok=cp_rtos_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

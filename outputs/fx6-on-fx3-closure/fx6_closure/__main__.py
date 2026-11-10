@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure` (Phase 9 30-Partition Storage/p15 & Linux DDR/tmpfs Budget Verifier + DTB/.ko/U5/U3/U4 Closure)."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 10 Blueprint U1-U5 Closure: CP RTOS U2, Storage/p15 & DDR/tmpfs Budget, DTB/.ko & U5/U3/U4 CLI)."""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ from .backup_bridge_verifier import verify_p7_backup_bridge
 from .backup_mount_tolerance_verifier import run_backup_mount_tolerance_verification
 from .boot_selector_and_bank_verifier import run_boot_selector_and_bank_verification
 from .candidate_builder import DEFAULT_REPO_ROOT, run_offline_candidate_dry_run
+from .cp_rtos_compatibility_verifier import run_cp_rtos_compatibility_verification
 from .feature_routing_verifier import (
     DEFAULT_FX6_DONOR_BIN_DIR,
     DEFAULT_FX6_INITRD_LIB_DIR,
@@ -255,6 +256,25 @@ def _cmd_verify_storage_ram_budget(fx6_lib_dir: Path, fx3_modules_dir: Path) -> 
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_cp_rtos() -> int:
+    rep = run_cp_rtos_compatibility_verification()
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "u2_closed": rep.u2_closed,
+        "p8_cp_mutation_forbidden": rep.p8_cp_mutation_forbidden,
+        "cp_mutation_bytes": rep.cp_mutation_bytes,
+        "fx3_udtrcp_verified": rep.fx3_udtrcp_verified,
+        "nflasha8_artifacts": [asdict(a) for a in rep.nflasha8_artifacts],
+        "tomco_audit": asdict(rep.tomco_audit),
+        "arm32_startup_audit": asdict(rep.arm32_startup_audit),
+        "peripheral_marker_audit": asdict(rep.peripheral_marker_audit),
+        "candidate_redline_audit": asdict(rep.candidate_redline_audit),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -287,6 +307,10 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "sector0_mutation_bytes": rep.storage_and_ram_budget_audit.sector0_mutation_bytes,
         "p15_fits_stock_fx3": rep.storage_and_ram_budget_audit.p15_fits_stock_fx3,
         "ram_budget_within_safe_bounds": rep.storage_and_ram_budget_audit.ram_budget_within_safe_bounds,
+        "cp_rtos_ok": rep.cp_rtos_ok,
+        "u2_closed": rep.cp_rtos_audit.u2_closed,
+        "p8_cp_mutation_forbidden": rep.cp_rtos_audit.p8_cp_mutation_forbidden,
+        "cp_mutation_bytes": rep.cp_rtos_audit.cp_mutation_bytes,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -304,7 +328,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 9 Compatibility Closure, Storage/p15 & DDR/tmpfs Budget Verifier, DTB/.ko & U5/U3/U4 CLI",
+        description="FX6-on-FX3 Phase 10 Compatibility Closure, U1-U5 Blueprint Closure (CP RTOS U2, Storage/RAM Budget, DTB/.ko & U5/U3/U4) CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -317,7 +341,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-boot-selector-banks", "Verify U5 boot-selector (up.sh, ud_send_lsi.elf Unicorn, loader_nor.bin) and U3 Bank 0/1 DDR maps"),
         ("verify-kernel-dtb", "Verify cxd90057.dtb FDT (0xd00dfeed) SoC MMIO/carveout compatibility and .ko vermagic/__versions CRC integrity"),
         ("verify-storage-ram-budget", "Verify 30-partition zero-repartition mapping, edisx redline, p15 /usr budget, and Linux DDR/tmpfs RAM-overlay budget"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + DTB/.ko + Storage/RAM Budget + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-cp-rtos", "Verify U2 CP RTOS (cpapp-b.bin / nflasha8 & tomco.txt) compatibility and Stage-A stock-CP redline"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + DTB/.ko + Storage/RAM + CP RTOS U2 + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -347,6 +372,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_kernel_dtb(args.fx3_modules_dir)
     if args.cmd == "verify-storage-ram-budget":
         return _cmd_verify_storage_ram_budget(args.fx6_lib_dir, args.fx3_modules_dir)
+    if args.cmd == "verify-cp-rtos":
+        return _cmd_verify_cp_rtos()
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

@@ -147,6 +147,30 @@ from fx6_closure.storage_and_ram_budget_verifier import (
     parse_and_audit_pformat_config,
     run_storage_and_ram_budget_verification,
 )
+from fx6_closure.cp_rtos_compatibility_verifier import (
+    CP_BANK1_BUS_LOAD_ADDR,
+    CP_FIRST_BRANCH_TARGET,
+    CP_LOCAL_LOAD_BASE,
+    DEFAULT_FX3_RUNTIME_TOMCO_PATH,
+    DEFAULT_FX3_UPDATER_CP_DIR,
+    DEFAULT_FX6_NFLASHA8_DIR,
+    EXPECTED_CP_ARM32_ENTRY_WORDS,
+    EXPECTED_CP_IDENTICAL_PREFIX_BYTES,
+    EXPECTED_FX3_CP_REF_BYTES,
+    EXPECTED_FX3_CP_REF_SHA256,
+    EXPECTED_FX6_NFLASHA8_ARTIFACTS,
+    EXPECTED_RUNTIME_MEMCFG_SPEC,
+    PINNED_FX6_CP_PERIPHERAL_MARKERS,
+    REQUIRED_IDENTICAL_IPC_AND_TELEMETRY_KEYS,
+    TOMCO_BANK1_BUS_LOAD_ADDR,
+    TOMCO_BANK1_SPAN_BYTES,
+    TomcoFormatError,
+    compare_tomco_configs,
+    parse_tomco_txt,
+    run_cp_rtos_compatibility_verification,
+    scan_fx6_cp_peripheral_markers,
+    validate_candidate_cp_redline,
+)
 from fx6_closure.uipc_completion_verifier import (
     P5_CANONICAL_CMP_HEX,
     P5_CANONICAL_REQ_HEX,
@@ -565,6 +589,11 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(rep_ok.storage_and_ram_budget_audit.sector0_mutation_bytes, 0)
         self.assertTrue(rep_ok.storage_and_ram_budget_audit.p15_fits_stock_fx3)
         self.assertTrue(rep_ok.storage_and_ram_budget_audit.ram_budget_within_safe_bounds)
+        self.assertTrue(rep_ok.cp_rtos_ok)
+        self.assertTrue(rep_ok.cp_rtos_audit.all_checks_passed)
+        self.assertTrue(rep_ok.cp_rtos_audit.u2_closed)
+        self.assertTrue(rep_ok.cp_rtos_audit.p8_cp_mutation_forbidden)
+        self.assertEqual(rep_ok.cp_rtos_audit.cp_mutation_bytes, 0)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
@@ -573,6 +602,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         bsb_base = rep_ok.boot_selector_and_bank_audit
         kdtb_base = rep_ok.kernel_dtb_audit
         sram_base = rep_ok.storage_and_ram_budget_audit
+        cp_base = rep_ok.cp_rtos_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -585,6 +615,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -603,6 +634,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -618,6 +650,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -634,12 +667,13 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, or Storage/RAM Budget -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, or CP RTOS -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
@@ -649,6 +683,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -664,6 +699,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -679,6 +715,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -694,6 +731,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
@@ -708,6 +746,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -723,6 +762,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
@@ -738,6 +778,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_kernel_dtb=True,
         )
         self.assertFalse(rep_bad_kdtb.candidate_ready)
@@ -759,6 +800,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
             corrupt_storage_and_ram_budget=True,
         )
         self.assertFalse(rep_bad_sram.candidate_ready)
@@ -770,6 +812,28 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_sram["status"], "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE")
+
+        rep_bad_cp = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
+            corrupt_cp_rtos=True,
+        )
+        self.assertFalse(rep_bad_cp.candidate_ready)
+        self.assertFalse(rep_bad_cp.cp_rtos_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_cp.blocked_gate_ids)
+        g12_cp = [
+            g
+            for g in rep_bad_cp.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_cp["status"], "BLOCKED_BY_CP_RTOS_REDLINE")
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -1991,6 +2055,167 @@ class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
         )
         live_hygiene = runner_mod.audit_clean_room_hygiene(repo_root=repo_root)
         self.assertTrue(live_hygiene.clean, live_hygiene.errors)
+
+
+class TestPhase10CpRtosCompatibilityVerifier(unittest.TestCase):
+    """Verify Phase 10 Blueprint `U2` CP RTOS (`cpapp-b.bin`) & `nflasha8` (`tomco.txt`) Compatibility Verifier."""
+
+    def test_dimension_a_tomco_cross_model_shared_memcfg_and_ipc_contract(self) -> None:
+        fx3_rt_raw = DEFAULT_FX3_RUNTIME_TOMCO_PATH.read_bytes()
+        fx6_rt_raw = (DEFAULT_FX6_NFLASHA8_DIR / "tomco.txt").read_bytes()
+        fx3_up_raw = (DEFAULT_FX3_UPDATER_CP_DIR / "tomco.txt").read_bytes()
+
+        tomco_audit = compare_tomco_configs(
+            fx3_runtime_bytes=fx3_rt_raw,
+            fx6_runtime_bytes=fx6_rt_raw,
+            fx3_updater_bytes=fx3_up_raw,
+        )
+        self.assertTrue(tomco_audit.valid, tomco_audit.errors)
+        self.assertTrue(tomco_audit.runtime_memcfg_identical)
+        self.assertTrue(tomco_audit.shared_ipc_telemetry_keys_identical)
+        self.assertEqual(tomco_audit.identical_key_count, 20)
+        self.assertEqual(len(REQUIRED_IDENTICAL_IPC_AND_TELEMETRY_KEYS), 20)
+        self.assertEqual(len(tomco_audit.fx3_runtime.memcfg_regions), 4)
+        self.assertEqual(len(tomco_audit.fx6_runtime.memcfg_regions), 4)
+        self.assertEqual(tomco_audit.fx3_runtime.total_memcfg_bytes, 1_807_745_024)
+        self.assertEqual(tomco_audit.fx6_runtime.total_memcfg_bytes, 1_807_745_024)
+        self.assertTrue(tomco_audit.fx3_runtime.memcfg_pairwise_non_overlapping)
+        self.assertTrue(tomco_audit.fx6_runtime.memcfg_pairwise_non_overlapping)
+        self.assertEqual(
+            tuple((r.base_addr, r.size_bytes, r.cache_attr) for r in tomco_audit.fx6_runtime.memcfg_regions),
+            EXPECTED_RUNTIME_MEMCFG_SPEC,
+        )
+        self.assertEqual(
+            tomco_audit.fx6_only_keys,
+            ("exception_reboot", "mpcp_exception_stop", "xreset_req_port_bit", "xreset_req_port_ch"),
+        )
+        self.assertIn("reset_req_int_cfg", tomco_audit.fx3_only_keys)
+        self.assertIn("snapshotdbg_addr", tomco_audit.fx3_only_keys)
+        self.assertTrue(tomco_audit.updater_memcfg_delta_documented)
+
+        # Malformed or overlapping [TOMCO] input must fail closed with TomcoFormatError
+        with self.assertRaises(TomcoFormatError):
+            parse_tomco_txt(b"memcfg=0x400000@0x04C00000:uc\n", source_label="missing_header")
+        with self.assertRaises(TomcoFormatError):
+            parse_tomco_txt(
+                b"[TOMCO]\nmemcfg=0x400000@0x04C00000:uc\nmemcfg=0x100000@0x04F00000:uc\n",
+                source_label="overlapping_memcfg",
+            )
+        with self.assertRaises(TomcoFormatError):
+            parse_tomco_txt(
+                b"[TOMCO]\nwdt_on=1\nwdt_on=0\nmemcfg=0x400000@0x04C00000:uc\n",
+                source_label="conflicting_duplicate_key",
+            )
+
+    def test_dimension_b_nflasha8_artifacts_arm32_startup_and_bank1_spi_nor_contracts(self) -> None:
+        rep = run_cp_rtos_compatibility_verification()
+        self.assertTrue(rep.all_checks_passed)
+        self.assertTrue(rep.u2_closed)
+        self.assertTrue(rep.fx3_udtrcp_verified)
+        self.assertEqual(len(rep.nflasha8_artifacts), 9)
+        self.assertEqual(len(EXPECTED_FX6_NFLASHA8_ARTIFACTS), 9)
+        for rec in rep.nflasha8_artifacts:
+            self.assertTrue(rec.matched, f"Mismatch on nflasha8/{rec.name}")
+
+        arm = rep.arm32_startup_audit
+        self.assertTrue(arm.valid, arm.errors)
+        self.assertEqual(
+            arm.entry_words_hex,
+            tuple(f"0x{w:08x}" for w in EXPECTED_CP_ARM32_ENTRY_WORDS),
+        )
+        self.assertEqual(arm.derived_load_base, f"0x{CP_LOCAL_LOAD_BASE:08x}")
+        self.assertEqual(arm.first_branch_target, f"0x{CP_FIRST_BRANCH_TARGET:08x}")
+        self.assertTrue(arm.embedded_vector_pointers_in_range)
+        self.assertEqual(arm.fx3_cp_ref_bytes, EXPECTED_FX3_CP_REF_BYTES)
+        self.assertEqual(arm.fx3_cp_ref_sha256, EXPECTED_FX3_CP_REF_SHA256)
+        self.assertEqual(arm.cp_size_delta_bytes, 1_972_248)
+        self.assertEqual(arm.identical_prefix_bytes, EXPECTED_CP_IDENTICAL_PREFIX_BYTES)
+        self.assertTrue(arm.bank1_tomco_addr_matched)
+        self.assertTrue(arm.bank1_cpapp_addr_matched)
+        self.assertTrue(arm.spi_nor_cpapp_offset_matched)
+        self.assertEqual(CP_BANK1_BUS_LOAD_ADDR, TOMCO_BANK1_BUS_LOAD_ADDR + TOMCO_BANK1_SPAN_BYTES)
+        self.assertEqual(arm.fx3_dmmcfg_bytes, 43_320)
+        self.assertEqual(arm.fx6_dmmcfg_bytes, 41_552)
+        self.assertEqual(arm.dmmcfg_size_delta_bytes, -1_768)
+
+    def test_dimension_c_fx6_cpapp_peripheral_hazard_markers_and_stock_cp_rationale(self) -> None:
+        fx6_cp_raw = (DEFAULT_FX6_NFLASHA8_DIR / "cpapp-b.bin").read_bytes()
+        markers_audit = scan_fx6_cp_peripheral_markers(fx6_cp_raw)
+        self.assertTrue(markers_audit.valid, markers_audit.errors)
+        self.assertEqual(markers_audit.total_pinned_markers, len(PINNED_FX6_CP_PERIPHERAL_MARKERS))
+        self.assertEqual(markers_audit.verified_marker_count, 13)
+        self.assertEqual(markers_audit.fx6_exclusive_hazard_count, 8)
+        self.assertEqual(markers_audit.category_counts["darwin_electronic_nd"], 4)
+        self.assertEqual(markers_audit.category_counts["mew_sdi_genlock_fpga"], 4)
+        self.assertEqual(markers_audit.category_counts["fan_thermal_control"], 2)
+        self.assertEqual(markers_audit.category_counts["toppers_fmp_rtos"], 1)
+        self.assertEqual(markers_audit.category_counts["uipc_dmm_backup_ipc"], 2)
+
+        # Mutating one byte at a pinned Darwin ND marker offset must fail closed
+        corrupted_cp = bytearray(fx6_cp_raw)
+        corrupted_cp[0xE7F83A] ^= 0xFF
+        bad_scan = scan_fx6_cp_peripheral_markers(bytes(corrupted_cp))
+        self.assertFalse(bad_scan.valid)
+        self.assertEqual(bad_scan.verified_marker_count, 12)
+
+    def test_dimension_d_stage_a_stock_cp_redline_rejections_and_cli_subcommand(self) -> None:
+        # 1. Valid Stage-A bundle passes Stock-CP Redline (`p8_cp_mutation_forbidden = True`, `cp_mutation_bytes = 0`)
+        bundle = build_stage_a_ram_overlay_package()
+        ok_redline = validate_candidate_cp_redline(
+            overlay_manifest=bundle.overlay_manifest,
+            overlay_entry_paths=tuple(e.name for e in bundle.cpio_audit.entries),
+            scripts_to_audit=(
+                ("setup_fx6_compat.sh", bundle.setup_compat_script),
+                ("init2_guard.sh", bundle.init2_guard_script),
+            ),
+        )
+        self.assertTrue(ok_redline.valid, ok_redline.violations)
+        self.assertTrue(ok_redline.p8_cp_mutation_forbidden)
+        self.assertEqual(ok_redline.cp_mutation_bytes, 0)
+
+        # 2. Candidate manifest targeting `p8` / `nflasha8` or disabling `p8_cp_mutation_forbidden` -> rejected!
+        bad_manifest_1 = validate_candidate_cp_redline(
+            overlay_manifest={"target_flash_partitions": ["p8"], "cp_mutation_bytes": 17952816}
+        )
+        self.assertFalse(bad_manifest_1.valid)
+        self.assertFalse(bad_manifest_1.p8_cp_mutation_forbidden)
+        self.assertGreaterEqual(len(bad_manifest_1.violations), 2)
+
+        bad_manifest_2 = validate_candidate_cp_redline(
+            overlay_manifest={"p8_cp_mutation_forbidden": False}
+        )
+        self.assertFalse(bad_manifest_2.valid)
+
+        # 3. Overlay archive staging `/cp/cpapp-b.bin` or `/cp/tomco.txt` -> rejected!
+        bad_paths = validate_candidate_cp_redline(
+            overlay_entry_paths=("lib/appFw.so", "cp/cpapp-b.bin", "cp/tomco.txt")
+        )
+        self.assertFalse(bad_paths.valid)
+        self.assertEqual(len(bad_paths.violations), 2)
+
+        # 4. Active script attempting `dd` or `mount --bind` on `/dev/nflasha8` or `cpapp-b.bin` -> rejected!
+        bad_script = validate_candidate_cp_redline(
+            scripts_to_audit=(
+                ("bad_cp_flash.sh", "#!/bin/sh\n# safe comment\ndd if=/tmp/cpapp-b.bin of=/dev/nflasha8 bs=4096\n"),
+            )
+        )
+        self.assertFalse(bad_script.valid)
+        self.assertGreaterEqual(len(bad_script.violations), 2)
+
+        # 5. CLI `verify-cp-rtos` subcommand check
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-cp-rtos"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["u2_closed"])
+        self.assertTrue(payload["p8_cp_mutation_forbidden"])
+        self.assertEqual(payload["cp_mutation_bytes"], 0)
+        self.assertEqual(len(payload["nflasha8_artifacts"]), 9)
+        self.assertTrue(payload["tomco_audit"]["runtime_memcfg_identical"])
+        self.assertEqual(payload["peripheral_marker_audit"]["verified_marker_count"], 13)
 
 
 if __name__ == "__main__":

@@ -19,8 +19,10 @@ from fx3_safety.boot_contracts import (
     SONY_PTBL_ENTRY_COUNT,
     SONY_PTBL_MAGIC,
     SONY_PTBL_VERSION,
+    build_sector0_from_partitions,
     parse_bk4_record,
     parse_fa0080_table,
+    parse_partinf_conf,
     verify_bksb_ldr_bkup,
     verify_boot_screen_enum_contract,
     verify_sector0_partition_table,
@@ -489,6 +491,73 @@ class TestFX3SafetySuite(unittest.TestCase):
         self.assertFalse(blocked_kdtb["kernel_dtb_ok"])
         g12_entry = [g for g in blocked_kdtb["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"][0]
         self.assertEqual(g12_entry["status"], "BLOCKED_BY_KERNEL_OR_DTB_REDLINE")
+
+    def test_phase9_gate12_storage_and_ram_budget_redline_and_partinf_roundtrip(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        good_items = {
+            k: {
+                "bytes": spec.get("exact_bytes") or spec.get("min_bytes") or 4096,
+                "pass1_sha256": "d" * 64,
+                "pass2_sha256": "d" * 64,
+            }
+            for k, spec in TIER0_REQUIRED_BACKUPS.items()
+        }
+        manifest = {"camera_body_tag": "e" * 64, "model_id": "0x91030080", "items": good_items}
+        trace = [{"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0}]
+        hook = generate_failsafe_init2_overlay_hook()
+
+        ok_sram = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+            kernel_dtb_ok=True,
+            storage_and_ram_budget_ok=True,
+        )
+        self.assertEqual(ok_sram["summary"]["verified_gates"], 12)
+        self.assertTrue(ok_sram["storage_and_ram_budget_ok"])
+
+        blocked_sram = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+            kernel_dtb_ok=True,
+            storage_and_ram_budget_ok=False,
+        )
+        self.assertEqual(blocked_sram["summary"]["verified_gates"], 11)
+        self.assertFalse(blocked_sram["summary"]["all_12_gates_verified"])
+        self.assertFalse(blocked_sram["storage_and_ram_budget_ok"])
+        g12_entry = [
+            g for g in blocked_sram["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_entry["status"], "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE")
+
+        # Verify parse_partinf_conf + build_sector0_from_partitions roundtrip on canonical FX3 & FX6 partinf.conf
+        fx3_pconf = Path(
+            "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"
+        )
+        fx6_pconf = Path(
+            "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"
+        )
+        fx3_s0 = build_sector0_from_partitions(parse_partinf_conf(fx3_pconf.read_text(errors="replace")))
+        fx6_s0 = build_sector0_from_partitions(parse_partinf_conf(fx6_pconf.read_text(errors="replace")))
+        r3 = verify_sector0_partition_table(fx3_s0)
+        r6 = verify_sector0_partition_table(fx6_s0)
+        self.assertTrue(r3.valid, r3.errors)
+        self.assertEqual(r3.layout_profile, "FX3_PARTINF_205")
+        self.assertEqual(r3.warnings, [])
+        self.assertTrue(r6.valid, r6.errors)
+        self.assertEqual(r6.layout_profile, "FX6_PARTINF_601")
+        self.assertTrue(any("0x384400" in w for w in r6.warnings))
 
 
 if __name__ == "__main__":

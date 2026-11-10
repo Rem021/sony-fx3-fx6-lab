@@ -492,6 +492,7 @@ def evaluate_12_safety_gates(
     backup_mount_tolerance_ok: Optional[bool] = None,
     boot_selector_and_banks_ok: Optional[bool] = None,
     kernel_dtb_ok: Optional[bool] = None,
+    storage_and_ram_budget_ok: Optional[bool] = None,
 ) -> Dict[str, object]:
     """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository and candidate evidence."""
     repo_root = repo_root.resolve()
@@ -638,6 +639,7 @@ def evaluate_12_safety_gates(
         and (backup_mount_tolerance_ok is not False)
         and (boot_selector_and_banks_ok is not False)
         and (kernel_dtb_ok is not False)
+        and (storage_and_ram_budget_ok is not False)
     ):
         g12_status = "VERIFIED_OFFLINE_CANDIDATE_DRY_RUN"
     elif backup_mount_tolerance_ok is False:
@@ -646,6 +648,8 @@ def evaluate_12_safety_gates(
         g12_status = "BLOCKED_BY_BOOT_SELECTOR_OR_BANK_REDLINE"
     elif kernel_dtb_ok is False:
         g12_status = "BLOCKED_BY_KERNEL_OR_DTB_REDLINE"
+    elif storage_and_ram_budget_ok is False:
+        g12_status = "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE"
     else:
         g12_status = "BLOCKED_BY_SAFETY_REDLINE"
 
@@ -708,7 +712,7 @@ def evaluate_12_safety_gates(
         {
             "gate_id": "G12_persistent_flash_write_authorization",
             "status": g12_status,
-            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup), U4/RAM-shadow BK4, U5/U3 boot-selector & 0xfa0080 bank maps, and cxd90057.dtb / .ko vermagic+CRC contracts are verified.",
+            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup), U4/RAM-shadow BK4, U5/U3 boot-selector & 0xfa0080 bank maps, cxd90057.dtb / .ko vermagic+CRC, and 30-partition zero-repartition / p15 / DDR+tmpfs RAM-overlay budget contracts are verified.",
         },
     ]
 
@@ -722,6 +726,7 @@ def evaluate_12_safety_gates(
         "backup_mount_tolerance_ok": backup_mount_tolerance_ok,
         "boot_selector_and_banks_ok": boot_selector_and_banks_ok,
         "kernel_dtb_ok": kernel_dtb_ok,
+        "storage_and_ram_budget_ok": storage_and_ram_budget_ok,
         "summary": {
             "total_gates": len(gates),
             "verified_gates": verified_count,

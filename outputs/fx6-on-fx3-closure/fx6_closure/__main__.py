@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure` (Phase 8 cxd90057.dtb FDT Auditor, .ko Integrity, U5/U3 & U4/BK4 Closure)."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 9 30-Partition Storage/p15 & Linux DDR/tmpfs Budget Verifier + DTB/.ko/U5/U3/U4 Closure)."""
 
 from __future__ import annotations
 
@@ -40,6 +40,7 @@ from .patcher import (
 )
 from .ram_overlay_packager import build_stage_a_ram_overlay_package
 from .rollback_drill import run_four_layer_rollback_drill
+from .storage_and_ram_budget_verifier import run_storage_and_ram_budget_verification
 from .tier0_unicorn_verifier import run_tier0_worker_in_unicorn
 from .uipc_completion_verifier import run_p5_p6_uipc_unicorn_audit
 
@@ -235,6 +236,25 @@ def _cmd_verify_kernel_dtb(fx3_modules_dir: Path) -> int:
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_storage_ram_budget(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
+    rep = run_storage_and_ram_budget_verification(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+    )
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "edisx_repartition_forbidden": rep.edisx_repartition_forbidden,
+        "sector0_mutation_bytes": rep.sector0_mutation_bytes,
+        "p15_fits_stock_fx3": rep.p15_fits_stock_fx3,
+        "ram_budget_within_safe_bounds": rep.ram_budget_within_safe_bounds,
+        "dimension_a_storage": asdict(rep.dimension_a_storage),
+        "dimension_b_ddr_tmpfs": asdict(rep.dimension_b_ddr_tmpfs),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -262,6 +282,11 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "kernel_dtb_ok": rep.kernel_dtb_ok,
         "dtb_byte_identical": rep.kernel_dtb_audit.dimension_a_dtb.dtb_byte_identical,
         "p9_ko_integrity_ok": rep.kernel_dtb_audit.dimension_b_ko.p9_upm_integrity.valid,
+        "storage_and_ram_budget_ok": rep.storage_and_ram_budget_ok,
+        "edisx_repartition_forbidden": rep.storage_and_ram_budget_audit.edisx_repartition_forbidden,
+        "sector0_mutation_bytes": rep.storage_and_ram_budget_audit.sector0_mutation_bytes,
+        "p15_fits_stock_fx3": rep.storage_and_ram_budget_audit.p15_fits_stock_fx3,
+        "ram_budget_within_safe_bounds": rep.storage_and_ram_budget_audit.ram_budget_within_safe_bounds,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -279,7 +304,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 8 Compatibility Closure, cxd90057.dtb FDT Auditor, .ko Integrity & U5/U3/U4/BK4 CLI",
+        description="FX6-on-FX3 Phase 9 Compatibility Closure, Storage/p15 & DDR/tmpfs Budget Verifier, DTB/.ko & U5/U3/U4 CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -291,7 +316,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-backup-mount-contracts", "Verify U4 storage mount-failure tolerance in Unicorn and synthesize/audit RAM-shadow BK4\\0 contracts"),
         ("verify-boot-selector-banks", "Verify U5 boot-selector (up.sh, ud_send_lsi.elf Unicorn, loader_nor.bin) and U3 Bank 0/1 DDR maps"),
         ("verify-kernel-dtb", "Verify cxd90057.dtb FDT (0xd00dfeed) SoC MMIO/carveout compatibility and .ko vermagic/__versions CRC integrity"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + DTB/.ko + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-storage-ram-budget", "Verify 30-partition zero-repartition mapping, edisx redline, p15 /usr budget, and Linux DDR/tmpfs RAM-overlay budget"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + DTB/.ko + Storage/RAM Budget + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -319,6 +345,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_boot_selector_banks()
     if args.cmd == "verify-kernel-dtb":
         return _cmd_verify_kernel_dtb(args.fx3_modules_dir)
+    if args.cmd == "verify-storage-ram-budget":
+        return _cmd_verify_storage_ram_budget(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

@@ -151,23 +151,34 @@ def verify_sector0_partition_table(data: bytes) -> Sector0AuditResult:
     p6 = by_idx[6]
     p7 = by_idx[7]
     p12 = by_idx[12]
+    p15 = by_idx[15]
     p18 = by_idx[18]
     p20 = by_idx[20]
     p21 = by_idx[21]
+    p23 = by_idx[23]
+    p30 = by_idx[30]
+
+    is_partinf_cal = (
+        (p1.start_sector, p1.size_sectors, p1.part_type) == (0x00000080, 0x0000BF80, 5)
+        and (p2.start_sector, p2.size_sectors, p2.part_type) == (0x0000C000, 0x0000A000, 5)
+        and (p6.start_sector, p6.size_sectors, p6.part_type) == (0x000D7800, 0x0000C800, 5)
+    )
 
     cal_ok = True
-    for pid in (1, 2, 6):
-        exp_start, exp_size, exp_type, _, label = FX3_KEY_PARTITIONS[pid]
-        actual = by_idx[pid]
-        if (actual.start_sector, actual.size_sectors, actual.part_type) != (exp_start, exp_size, exp_type):
-            errors.append(
-                f"Critical partition p{pid} ({label}) mismatch: got start={hex(actual.start_sector)} size={hex(actual.size_sectors)} type={actual.part_type}"
-            )
-            cal_ok = False
+    if not is_partinf_cal:
+        for pid in (1, 2, 6):
+            exp_start, exp_size, exp_type, _, label = FX3_KEY_PARTITIONS[pid]
+            actual = by_idx[pid]
+            if (actual.start_sector, actual.size_sectors, actual.part_type) != (exp_start, exp_size, exp_type):
+                errors.append(
+                    f"Critical partition p{pid} ({label}) mismatch: got start={hex(actual.start_sector)} size={hex(actual.size_sectors)} type={actual.part_type}"
+                )
+                cal_ok = False
 
     layout_profile = "CUSTOM_OR_UNKNOWN"
     if (
-        p7.size_sectors == 0x00019000
+        not is_partinf_cal
+        and p7.size_sectors == 0x00019000
         and p12.size_sectors == 0x00014000
         and p18.start_sector == 0x0031C000
         and p18.size_sectors == 0x0000A000
@@ -176,7 +187,8 @@ def verify_sector0_partition_table(data: bytes) -> Sector0AuditResult:
     ):
         layout_profile = "FX3_702"
     elif (
-        p7.size_sectors == 0
+        not is_partinf_cal
+        and p7.size_sectors == 0
         and p12.size_sectors == 0x0000A000
         and p18.start_sector == 0x00312000
         and p18.size_sectors == 0x0000A000
@@ -187,6 +199,36 @@ def verify_sector0_partition_table(data: bytes) -> Sector0AuditResult:
         warnings.append(
             "FX6_601 Sector 0 layout detected: p18 (/lens/lensfile.bin) is shifted -20 MiB to LBA 0x312000. "
             "Applying this table to an FX3 without migrating p18 data will orphan factory lens mount calibration!"
+        )
+    elif (
+        is_partinf_cal
+        and p12.size_sectors == 0x00014000
+        and p15.start_sector == 0x00222000
+        and p15.size_sectors == 0x000FA000
+        and p18.start_sector == 0x0031C000
+        and p18.size_sectors == 0x0000A000
+        and p20.size_sectors == 0
+        and p21.size_sectors == 0
+        and p30.start_sector == 0x00346000
+        and p30.size_sectors == 0x00018000
+    ):
+        layout_profile = "FX3_PARTINF_205"
+    elif (
+        is_partinf_cal
+        and p12.size_sectors == 0x0000A000
+        and p15.start_sector == 0x00218000
+        and p15.size_sectors == 0x000FA000
+        and p18.start_sector == 0x00312000
+        and p18.size_sectors == 0x0000A000
+        and p20.size_sectors == 0x00032000
+        and p21.size_sectors == 0x00016400
+        and p23.start_sector == 0x00364400
+        and p23.size_sectors == 0x00020000
+    ):
+        layout_profile = "FX6_PARTINF_601"
+        warnings.append(
+            "FX6_PARTINF_601 Sector 0 layout detected: p18 (/lens/lensfile.bin) is shifted -20 MiB to LBA 0x312000 "
+            "and total UDA span reaches 0x384400 (+76.50 MiB beyond FX3 0x35E000). Never apply via edisx.elf!"
         )
     else:
         if p18.size_sectors != 0x0000A000 or p18.start_sector not in (0x0031C000, 0x00312000):
@@ -219,6 +261,60 @@ def verify_sector0_partition_table(data: bytes) -> Sector0AuditResult:
             for e in entries
         ],
     )
+
+
+def parse_partinf_conf(text: str) -> List[PartitionEntry]:
+    """Parse a Sony 30-entry `partinf.conf` specification into `PartitionEntry` records."""
+    entries: List[PartitionEntry] = []
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = [p.strip() for p in line.split(",")]
+        if len(parts) != 4:
+            raise ValueError(f"Malformed partinf.conf entry (expected 4 CSV fields): {raw_line!r}")
+        start_s = int(parts[0], 0)
+        size_s = int(parts[1], 0)
+        ptype = int(parts[2], 0)
+        flag = int(parts[3], 0)
+        entries.append(
+            PartitionEntry(
+                index=len(entries) + 1,
+                start_sector=start_s,
+                size_sectors=size_s,
+                part_type=ptype,
+                flag=flag,
+            )
+        )
+    if len(entries) != SONY_PTBL_ENTRY_COUNT:
+        raise ValueError(
+            f"Expected {SONY_PTBL_ENTRY_COUNT} partition entries in partinf.conf, got {len(entries)}"
+        )
+    return entries
+
+
+def build_sector0_from_partitions(entries: List[PartitionEntry]) -> bytes:
+    """Serialize 30 `PartitionEntry` items into a 512-byte Sony `'8246' '2.00'` Sector-0 image."""
+    if len(entries) != SONY_PTBL_ENTRY_COUNT:
+        raise ValueError(f"Expected {SONY_PTBL_ENTRY_COUNT} PartitionEntry records, got {len(entries)}")
+    buf = bytearray(SONY_PTBL_SIZE)
+    buf[0:4] = SONY_PTBL_MAGIC
+    buf[4:8] = SONY_PTBL_VERSION
+    struct.pack_into("<I", buf, 8, SONY_PTBL_ENTRY_COUNT)
+    for e in entries:
+        if not (1 <= e.index <= SONY_PTBL_ENTRY_COUNT):
+            raise ValueError(f"PartitionEntry index out of range 1..30: {e.index}")
+        off = 32 + (e.index - 1) * 16
+        struct.pack_into(
+            "<IIII",
+            buf,
+            off,
+            e.start_sector & 0xFFFFFFFF,
+            e.size_sectors & 0xFFFFFFFF,
+            e.part_type & 0xFFFFFFFF,
+            e.flag & 0xFFFFFFFF,
+        )
+    return bytes(buf)
 
 
 @dataclass(frozen=True)

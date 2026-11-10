@@ -127,6 +127,26 @@ from fx6_closure.rollback_drill import (
     run_four_layer_rollback_drill,
     simulate_failsafe_state_machine,
 )
+from fx6_closure.storage_and_ram_budget_verifier import (
+    DEFAULT_SAFE_STAGE_A_TMPFS_CEILING_BYTES,
+    EXPECTED_FX3_END_SECTOR,
+    EXPECTED_FX3_P15_BYTES,
+    EXPECTED_FX6_END_SECTOR,
+    EXPECTED_NFLASH15_ALIGNED_4K_BYTES,
+    EXPECTED_NFLASH15_ENTRY_COUNT,
+    EXPECTED_NFLASH15_EXT2_IMAGE_BYTES,
+    EXPECTED_NFLASH15_RAW_BYTES,
+    EXPECTED_NFLASH15_REGULAR_FILES,
+    EXPECTED_NFLASH15_SYMLINKS,
+    EXPECTED_NFLASH15_TOTAL_DIRS,
+    EXPECTED_UDA_DELTA_SECTORS,
+    audit_ddr_and_tmpfs_ram_budget,
+    audit_p15_usr_footprint,
+    audit_storage_topology_and_p15_budget,
+    audit_zero_repartition_redline,
+    parse_and_audit_pformat_config,
+    run_storage_and_ram_budget_verification,
+)
 from fx6_closure.uipc_completion_verifier import (
     P5_CANONICAL_CMP_HEX,
     P5_CANONICAL_REQ_HEX,
@@ -539,6 +559,12 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.kernel_dtb_audit.all_checks_passed)
         self.assertTrue(rep_ok.kernel_dtb_audit.dimension_a_dtb.dtb_byte_identical)
         self.assertTrue(rep_ok.kernel_dtb_audit.dimension_b_ko.p9_upm_integrity.valid)
+        self.assertTrue(rep_ok.storage_and_ram_budget_ok)
+        self.assertTrue(rep_ok.storage_and_ram_budget_audit.all_checks_passed)
+        self.assertTrue(rep_ok.storage_and_ram_budget_audit.edisx_repartition_forbidden)
+        self.assertEqual(rep_ok.storage_and_ram_budget_audit.sector0_mutation_bytes, 0)
+        self.assertTrue(rep_ok.storage_and_ram_budget_audit.p15_fits_stock_fx3)
+        self.assertTrue(rep_ok.storage_and_ram_budget_audit.ram_budget_within_safe_bounds)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
@@ -546,6 +572,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         bmt_base = rep_ok.backup_mount_tolerance_audit
         bsb_base = rep_ok.boot_selector_and_bank_audit
         kdtb_base = rep_ok.kernel_dtb_audit
+        sram_base = rep_ok.storage_and_ram_budget_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -557,6 +584,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -574,6 +602,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -588,6 +617,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -603,12 +633,13 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, or DTB/.ko -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, or Storage/RAM Budget -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
@@ -617,6 +648,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -631,6 +663,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -645,6 +678,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -659,6 +693,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
@@ -672,6 +707,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -686,6 +722,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
@@ -700,6 +737,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_backup_mount_tolerance=bmt_base,
             precomputed_boot_selector_and_banks=bsb_base,
             precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
             corrupt_kernel_dtb=True,
         )
         self.assertFalse(rep_bad_kdtb.candidate_ready)
@@ -711,6 +749,27 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_kdtb["status"], "BLOCKED_BY_KERNEL_OR_DTB_REDLINE")
+
+        rep_bad_sram = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
+            corrupt_storage_and_ram_budget=True,
+        )
+        self.assertFalse(rep_bad_sram.candidate_ready)
+        self.assertFalse(rep_bad_sram.storage_and_ram_budget_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_sram.blocked_gate_ids)
+        g12_sram = [
+            g
+            for g in rep_bad_sram.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_sram["status"], "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE")
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -1725,6 +1784,213 @@ class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
         self.assertTrue(payload["p9_upm_integrity_valid"])
         self.assertEqual(payload["dimension_a_dtb"]["fdt_node_count"], 68)
         self.assertEqual(payload["dimension_b_ko"]["fx3_host_module_count"], 9)
+
+
+class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
+    """Verify Phase 9 30-Partition Zero-Repartition Storage/p15 Footprint & Linux DDR/tmpfs Budget Verifier."""
+
+    def test_dimension_a_30_partition_zero_repartition_mapping_spi_nor_and_p15_footprint(self) -> None:
+        rep_a = audit_storage_topology_and_p15_budget()
+        self.assertTrue(rep_a.all_checks_passed, rep_a.errors)
+        self.assertTrue(rep_a.fx3_partinf_sha256_verified)
+        self.assertTrue(rep_a.fx6_partinf_sha256_verified)
+        self.assertTrue(rep_a.fx3_sector0_audit.valid)
+        self.assertEqual(rep_a.fx3_sector0_audit.layout_profile, "FX3_PARTINF_205")
+        self.assertTrue(rep_a.fx6_sector0_audit.valid)
+        self.assertEqual(rep_a.fx6_sector0_audit.layout_profile, "FX6_PARTINF_601")
+
+        # Exact UDA sector & MiB topology delta: 0x35E000 (1,724.00 MiB) vs 0x384400 (1,800.50 MiB, +76.50 MiB)
+        self.assertEqual(rep_a.fx3_end_sector, EXPECTED_FX3_END_SECTOR)
+        self.assertEqual(rep_a.fx3_total_uda_mib, 1724.0)
+        self.assertEqual(rep_a.fx6_end_sector, EXPECTED_FX6_END_SECTOR)
+        self.assertEqual(rep_a.fx6_total_uda_mib, 1800.5)
+        self.assertEqual(rep_a.uda_delta_sectors, EXPECTED_UDA_DELTA_SECTORS)
+        self.assertEqual(rep_a.uda_delta_mib, 76.5)
+        self.assertEqual(rep_a.identical_prefix_partition_count, 11)
+        self.assertEqual(len(rep_a.partition_mappings), 30)
+        self.assertTrue(rep_a.all_30_partitions_mapped_zero_repartition)
+
+        by_idx = {m.index: m for m in rep_a.partition_mappings}
+        self.assertEqual(by_idx[15].mapping_strategy, "INDEX_MOUNTED_SAME_SIZE_500MIB")
+        self.assertEqual(by_idx[18].mapping_strategy, "PRESERVE_FX3_STOCK_TIER0_LENS")
+        self.assertEqual(by_idx[20].mapping_strategy, "REMAPPED_TO_FX3_P30_VIA_P1")
+        self.assertEqual(by_idx[21].mapping_strategy, "REMAPPED_TO_TMPFS_VFAT_LOOPBACK_VIA_P2")
+        self.assertEqual(by_idx[30].mapping_strategy, "ACTIVE_LUT_TARGET_FOR_FX6_P20")
+        self.assertGreater(rep_a.p20_to_p30_lut_headroom_mib, 32.0)
+        self.assertEqual(rep_a.p21_tmpfs_vfat_8m_bytes, 8 * 1024 * 1024)
+        self.assertEqual(rep_a.p21_tmpfs_vfat_16m_bytes, 16 * 1024 * 1024)
+
+        # Octal-SPI NOR pformat_config.txt & edisx.elf redline verification
+        self.assertTrue(rep_a.spi_nor_audit.valid)
+        self.assertEqual(len(rep_a.spi_nor_audit.entries), 6)
+        self.assertFalse(rep_a.spi_nor_audit.has_overlaps)
+        self.assertEqual(rep_a.spi_nor_audit.spi_nor_mutation_bytes, 0)
+        self.assertTrue(rep_a.redline_audit.valid)
+        self.assertTrue(rep_a.redline_audit.edisx_repartition_forbidden)
+        self.assertTrue(rep_a.redline_audit.edisx_donor_sha256_verified)
+        self.assertTrue(rep_a.redline_audit.edisx_identical_across_models)
+        self.assertTrue(rep_a.redline_audit.edisx_has_blkrrpart_signature)
+        self.assertEqual(rep_a.redline_audit.sector0_mutation_bytes, 0)
+
+        # p15 (/usr) exact manifest, walk, and 4 KiB-block headroom checks against 500.00 MiB (524,288,000 B)
+        p15 = rep_a.p15_footprint
+        self.assertTrue(p15.valid)
+        self.assertTrue(p15.manifest_sha256_verified)
+        self.assertEqual(p15.manifest_entry_count, EXPECTED_NFLASH15_ENTRY_COUNT)
+        self.assertEqual(p15.regular_file_count, EXPECTED_NFLASH15_REGULAR_FILES)
+        self.assertEqual(p15.symlink_count, EXPECTED_NFLASH15_SYMLINKS)
+        self.assertEqual(p15.total_directory_count, EXPECTED_NFLASH15_TOTAL_DIRS)
+        self.assertTrue(p15.walk_cross_check_matched)
+        self.assertEqual(p15.raw_payload_bytes, EXPECTED_NFLASH15_RAW_BYTES)
+        self.assertEqual(p15.aligned_4k_payload_bytes, EXPECTED_NFLASH15_ALIGNED_4K_BYTES)
+        self.assertEqual(p15.fx3_stock_p15_bytes, EXPECTED_FX3_P15_BYTES)
+        self.assertTrue(p15.donor_ext2_image_present)
+        self.assertTrue(p15.donor_ext2_magic_ok)
+        self.assertEqual(p15.donor_ext2_image_bytes, EXPECTED_NFLASH15_EXT2_IMAGE_BYTES)
+        self.assertGreater(p15.raw_headroom_bytes, 145_000_000)
+        self.assertGreater(p15.squashfs_upper_headroom_bytes, 143_000_000)
+        self.assertGreater(p15.ext4_ro_headroom_bytes, 130_000_000)
+        self.assertGreater(p15.donor_ext2_image_headroom_bytes, 78_000_000)
+        self.assertTrue(p15.p15_fits_stock_fx3)
+
+    def test_dimension_a_rejects_edisx_repartition_sector0_writes_and_over_budget_p15(self) -> None:
+        # 1. Script invoking `edisx.elf /dev/nflasha partinf.conf` -> rejected immediately
+        bad_edisx = audit_zero_repartition_redline(
+            scripts=(("bad_mkfs.sh", "#!/bin/sh\nedisx.elf /dev/nflasha /tmp/partinf.conf\n"),)
+        )
+        self.assertFalse(bad_edisx.valid)
+        self.assertIn("bad_mkfs.sh:edisx.elf", bad_edisx.forbidden_script_hits)
+
+        # 2. Raw whole-eMMC `/dev/nflasha` `dd` write or staged `edisx.elf` binary -> rejected
+        bad_dd = audit_zero_repartition_redline(
+            scripts=(("bad_dd.sh", "dd if=/tmp/s0.bin of=/dev/nflasha bs=512 count=1\n"),),
+            staged_binary_names=("bin/edisx.elf", "lib/appFw.so"),
+        )
+        self.assertFalse(bad_dd.valid)
+        self.assertGreater(len(bad_dd.forbidden_script_hits), 0)
+        self.assertEqual(bad_dd.forbidden_binary_hits, ("bin/edisx.elf",))
+
+        # 3. Non-zero Sector-0 or SPI NOR mutation byte count -> rejected
+        self.assertFalse(audit_zero_repartition_redline(sector0_mutation_bytes=512).valid)
+        self.assertFalse(parse_and_audit_pformat_config(spi_nor_mutation_bytes=4096).valid)
+
+        # 4. Over-budget `p15` payload (+150 MiB pushing total > 500.00 MiB) -> rejected
+        over_p15 = audit_p15_usr_footprint(additional_payload_bytes=150 * 1024 * 1024)
+        self.assertFalse(over_p15.valid)
+        self.assertFalse(over_p15.p15_fits_stock_fx3)
+        self.assertLess(over_p15.raw_headroom_bytes, 0)
+
+    def test_dimension_b_cxd90057_linux_ddr_pool_and_stage_a_tmpfs_ram_overlay_budgets(self) -> None:
+        rep_b = audit_ddr_and_tmpfs_ram_budget()
+        self.assertTrue(rep_b.all_checks_passed, rep_b.errors)
+        self.assertEqual(rep_b.soc_dtb_memory_base, 0x400000000)
+        self.assertEqual(rep_b.soc_dtb_total_ddr_bytes, 8 * 1024 * 1024 * 1024)
+        self.assertEqual(rep_b.kemco_mem_limit_bytes, 2 * 1024 * 1024 * 1024)
+        self.assertEqual(rep_b.kemco_carveout_count, 7)
+        self.assertEqual(rep_b.total_memrsv_carveout_bytes, 136_712_192)
+        self.assertEqual(rep_b.net_linux_managed_ddr_bytes, 2_010_771_456)
+        self.assertEqual(rep_b.ram_shadow_bk4_bytes, 20_588)
+        self.assertEqual(rep_b.safe_stage_a_tmpfs_ceiling_bytes, DEFAULT_SAFE_STAGE_A_TMPFS_CEILING_BYTES)
+        self.assertTrue(rep_b.ram_budget_within_safe_bounds)
+
+        # Verify all 11 required Stage-A overlay components are accounted for
+        self.assertEqual(len(rep_b.components_8m), 11)
+        comp_names = {c.name for c in rep_b.components_8m}
+        for req_name in (
+            "lib/appFw.so",
+            "lib/libInfraSetupFile.so",
+            "lib/libInfraMediaCommon.so",
+            "lib/libInfraMediaConfig.so",
+            "lib/libInfraKikiLogGenerator.so",
+            "lib/libInfraAppRemoteBoard.so",
+            "lib/libfan.so",
+            "modules/upm.ko",
+            "images/opelog.vfat",
+            "nvram/Backup_ram_shadow.bin",
+            "etc/fx6_overlay/stage_a_control.cpio",
+        ):
+            self.assertIn(req_name, comp_names)
+
+        # Verify both streaming unpack and peak-buffer unpack across 8 MiB & 16 MiB VFAT modes
+        by_sc = {sc.scenario_id: sc for sc in rep_b.scenarios}
+        self.assertEqual(len(by_sc), 4)
+        s8_stream = by_sc["STAGE_A_8M_STREAMING"]
+        s8_peak = by_sc["STAGE_A_8M_PEAK_BUFFER"]
+        s16_stream = by_sc["STAGE_A_16M_STREAMING"]
+        s16_peak = by_sc["STAGE_A_16M_PEAK_BUFFER"]
+
+        for sc in rep_b.scenarios:
+            self.assertTrue(sc.within_safe_bounds)
+            self.assertGreater(sc.headroom_vs_safe_ceiling_bytes, 120 * 1024 * 1024)
+            self.assertLess(sc.share_of_linux_memtotal_pct, 8.0)
+
+        self.assertLess(s8_stream.peak_tmpfs_bytes, s8_peak.peak_tmpfs_bytes)
+        self.assertLess(s16_stream.peak_tmpfs_bytes, s16_peak.peak_tmpfs_bytes)
+        self.assertEqual(
+            s16_stream.steady_state_tmpfs_bytes - s8_stream.steady_state_tmpfs_bytes,
+            8 * 1024 * 1024,
+        )
+
+    def test_dimension_b_rejects_over_budget_tmpfs_overlay_cli_and_clean_room_hygiene_runner(self) -> None:
+        import importlib.util
+
+        # 1. Injecting +200 MiB overlay payload causes peak-buffer (and streaming) to exceed 256 MiB safe tmpfs ceiling
+        over_ram = audit_ddr_and_tmpfs_ram_budget(extra_overlay_bytes=200 * 1024 * 1024)
+        self.assertFalse(over_ram.all_checks_passed)
+        self.assertFalse(over_ram.ram_budget_within_safe_bounds)
+
+        # 2. Full Phase 9 end-to-end report & `verify-storage-ram-budget` CLI subcommand
+        full_rep = run_storage_and_ram_budget_verification()
+        self.assertTrue(full_rep.all_checks_passed)
+        self.assertTrue(full_rep.edisx_repartition_forbidden)
+        self.assertEqual(full_rep.sector0_mutation_bytes, 0)
+        self.assertTrue(full_rep.p15_fits_stock_fx3)
+        self.assertTrue(full_rep.ram_budget_within_safe_bounds)
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-storage-ram-budget"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["edisx_repartition_forbidden"])
+        self.assertEqual(payload["sector0_mutation_bytes"], 0)
+        self.assertTrue(payload["p15_fits_stock_fx3"])
+        self.assertTrue(payload["ram_budget_within_safe_bounds"])
+        self.assertEqual(len(payload["dimension_a_storage"]["partition_mappings"]), 30)
+        self.assertEqual(len(payload["dimension_b_ddr_tmpfs"]["scenarios"]), 4)
+
+        # 3. Verify `scripts/run_all_lab_tests.py` clean-room porcelain parser & live repo hygiene
+        repo_root = Path(__file__).resolve().parents[3]
+        runner_path = repo_root / "scripts" / "run_all_lab_tests.py"
+        spec = importlib.util.spec_from_file_location("run_all_lab_tests", runner_path)
+        assert spec is not None and spec.loader is not None
+        runner_mod = importlib.util.module_from_spec(spec)
+        import sys as _sys
+        _sys.modules["run_all_lab_tests"] = runner_mod
+        spec.loader.exec_module(runner_mod)
+
+        synth_porcelain = (
+            " M scripts/export_orca_conversations.mjs\n"
+            "?? outputs/fx6-on-fx3-closure/fx6_closure/new_mod.py\n"
+            "?? outputs/fx6-on-fx3-closure/leaked.so\n"
+            "?? tmp_overlay.cpio\n"
+            "A  staged_module.ko\n"
+            "?? __pycache__/foo.cpython-39.pyc\n"
+        )
+        hits = runner_mod.parse_git_porcelain_for_forbidden_artifacts(synth_porcelain)
+        self.assertEqual(
+            hits,
+            (
+                "__pycache__/foo.cpython-39.pyc",
+                "outputs/fx6-on-fx3-closure/leaked.so",
+                "staged_module.ko",
+                "tmp_overlay.cpio",
+            ),
+        )
+        live_hygiene = runner_mod.audit_clean_room_hygiene(repo_root=repo_root)
+        self.assertTrue(live_hygiene.clean, live_hygiene.errors)
 
 
 if __name__ == "__main__":

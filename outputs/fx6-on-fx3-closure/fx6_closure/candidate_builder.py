@@ -89,6 +89,10 @@ from .rollback_drill import (
     RollbackDrillReport,
     run_four_layer_rollback_drill,
 )
+from .storage_and_ram_budget_verifier import (
+    Phase9StorageAndRamBudgetReport,
+    run_storage_and_ram_budget_verification,
+)
 from .tier0_unicorn_verifier import (
     WORKER_OK,
     CompiledWorkerArtifact,
@@ -142,6 +146,8 @@ class CandidateDryRunReport:
     boot_selector_and_banks_ok: bool
     kernel_dtb_audit: Phase8KernelDtbReport
     kernel_dtb_ok: bool
+    storage_and_ram_budget_audit: Phase9StorageAndRamBudgetReport
+    storage_and_ram_budget_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -161,6 +167,7 @@ def run_offline_candidate_dry_run(
     precomputed_backup_mount_tolerance: Optional[Phase6BackupMountToleranceReport] = None,
     precomputed_boot_selector_and_banks: Optional[Phase7BootSelectorAndBankReport] = None,
     precomputed_kernel_dtb: Optional[Phase8KernelDtbReport] = None,
+    precomputed_storage_and_ram_budget: Optional[Phase9StorageAndRamBudgetReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -170,6 +177,7 @@ def run_offline_candidate_dry_run(
     corrupt_backup_mount_tolerance: bool = False,
     corrupt_boot_selector_and_banks: bool = False,
     corrupt_kernel_dtb: bool = False,
+    corrupt_storage_and_ram_budget: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -370,6 +378,21 @@ def run_offline_candidate_dry_run(
         )
         kernel_dtb_ok = kernel_dtb_res.all_checks_passed and not corrupt_kernel_dtb
 
+        storage_ram_res = precomputed_storage_and_ram_budget or run_storage_and_ram_budget_verification(
+            fx6_lib_dir=fx6_lib_dir,
+            fx3_modules_dir=fx3_modules_dir,
+            scripts_to_audit=(
+                ("10-p1-lut-mount.sh", p1_script),
+                ("20-p2-opelog-mount.sh", p2_script),
+                ("setup_fx6_compat.sh", stage_a_bundle.setup_compat_script),
+                ("init2_guard.sh", failsafe_hook),
+            ),
+            staged_binary_names=tuple(stage_a_bundle.staged_runtime_blobs.keys()),
+        )
+        storage_and_ram_budget_ok = (
+            storage_ram_res.all_checks_passed and not corrupt_storage_and_ram_budget
+        )
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -409,6 +432,7 @@ def run_offline_candidate_dry_run(
             and backup_mount_tolerance_ok
             and boot_selector_and_banks_ok
             and kernel_dtb_ok
+            and storage_and_ram_budget_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -423,6 +447,7 @@ def run_offline_candidate_dry_run(
             backup_mount_tolerance_ok=backup_mount_tolerance_ok,
             boot_selector_and_banks_ok=boot_selector_and_banks_ok,
             kernel_dtb_ok=kernel_dtb_ok,
+            storage_and_ram_budget_ok=storage_and_ram_budget_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -465,6 +490,8 @@ def run_offline_candidate_dry_run(
         boot_selector_and_banks_ok=boot_selector_and_banks_ok,
         kernel_dtb_audit=kernel_dtb_res,
         kernel_dtb_ok=kernel_dtb_ok,
+        storage_and_ram_budget_audit=storage_ram_res,
+        storage_and_ram_budget_ok=storage_and_ram_budget_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

@@ -5,8 +5,8 @@
 - **Orca Category Workspace**: `FX3｜虚拟机主屏菜单与 GPE 渲染修复`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:2a92721a-f206-4472-82a5-edf30db5be8c`
 - **Created At**: `2026-11-07T14:25:30.791Z`
-- **Updated At**: `2026-11-07T17:10:52.372Z`
-- **Captured Messages (User / Assistant)**: `40`
+- **Updated At**: `2026-11-08T09:54:55.797Z`
+- **Captured Messages (User / Assistant)**: `45`
 
 ---
 
@@ -105,7 +105,7 @@ CP 消息的长度差已有更具体的解释：当前候选里的 UPM 内核模
 
 ## 🤖 Assistant
 
-新候选的完整来源链校验已通过，可以开始一次受控运行。另一线最新的 305 结果也已核对：空锁和空消息表的跳过逻辑确实执行了，但没有 MWF 初始化成功的凭据。新一轮会读取实际线程栈，确认稳定等待落在哪条调用路径。
+新候选的完整来源链校验已通过，可以开始一次受控运行。另一线最新的 305 结果也已核对：空锁和空消息表的跳过逻辑确实执行了，但没有 MWF 初始化成功的��据。新一轮会读取实际线程栈，确认稳定等待落在哪条调用路径。
 
 ---
 
@@ -319,5 +319,45 @@ Runner SHA 保持 `cc2e0ab9…c2b9d39`。未重复测试或操作 VM，等待本
 ## 🤖 Assistant
 
 三轮运行的结束凭据、源码差异和帧统计都已收齐：本聊天启动的 VM 均已回收并释放锁，画面仍全零。剩下最后一项审查：现有桥接层能否可靠确认下游发送失败，并按正确所有权发送错误回复。审查结果会决定是否有依据继续实现。
+
+---
+
+## 🤖 Assistant
+
+审查结论是：当前还不能发送这个错误回复。现有桥接层对未知路由返回 0，缺少原 CP 所依据的“下游发送非零失败”证据，事务路由和释放条件也未完全闭合。本轮会交付已实测的输入入口与线程池修复；HDMI 回复等待保留为下一处明确待修项。
+
+---
+
+## 🤖 Assistant
+
+本轮已验证了两个不同层次的进展：恢复线程池后，原厂 cold-boot 开始执行；它随后发出 HDMI 配置请求，并持续等待完成包。当前证据支持前一处修复，后一处仍需要补齐服务路由和完成条件。我正在把独立审查结论归档后同步。
+
+---
+
+## 🤖 Assistant
+
+当前 **不可实施，本轮不加 reply**。
+
+关键缺口：尚未证明 `0x9058003f` 在运行时不可投递；现有 shim 的未知路由实际返回 0，不能据此构造“原 CP 下游发送失败”的 `-1` completion。
+
+[独立评审及来源哈希](reports/2026-11-07-fx6-observed-wait/adf-negative-model-review/adf-negative-model-review.md) 已正式保存。本轮止于已验证的线程池恢复，未实现或运行负面模型。
+
+---
+
+## 🤖 Assistant
+
+已恢复进度并完成两处修复：Unix 输入入口、被跳过的原厂线程池。
+
+实测出现 **129 个任务**，cold-boot 已执行到 HDMI 配置请求。当前仍等待 CP 回复，四份画面捕获全零，**原厂菜单尚未成功**。
+
+三轮 VM 均已回收并释放锁。代码与证据已推送 `5fa209e6`：[阶段报告](/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-07-fx6-observed-wait/README.md)。剩余关键项是 CP 路由和完成协议。
+
+并行协作使用了 [Orca orchestration](</Users/kafu/Library/Application Support/orca/codex-accounts/9cc9249d-70b7-4d72-a0f0-ec30dd2c6e39/home/skills/orchestration/SKILL.md>)。
+
+---
+
+## 👤 User / Coordinator
+
+继续直到设置拍摄界面正常显示
 
 ---

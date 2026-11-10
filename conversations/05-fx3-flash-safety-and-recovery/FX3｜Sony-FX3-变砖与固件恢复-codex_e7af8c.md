@@ -5,7 +5,7 @@
 - **Orca Category Workspace**: `FX3｜真机刷机安全与变砖恢复研究`
 - **Orca Workspace ID**: `e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd::/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab::workspace:312a194a-d58d-4e37-afbb-4cdafd74fbea`
 - **Created At**: `2026-10-31T07:26:48.812Z`
-- **Updated At**: `2026-11-07T16:02:04.228Z`
+- **Updated At**: `2026-11-08T09:54:55.797Z`
 - **Captured Messages (User / Assistant)**: `4`
 
 ---

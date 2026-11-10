@@ -26,7 +26,13 @@ from fx3_safety.boot_contracts import (
     verify_sector0_partition_table,
 )
 from fx3_safety.brick_classifier import classify_brick_state, generate_failsafe_init2_overlay_hook
-from fx3_safety.preflight import TIER0_REQUIRED_BACKUPS, evaluate_12_safety_gates, verify_tier0_backup_manifest
+from fx3_safety.preflight import (
+    TIER0_CANONICAL_SOURCES,
+    TIER0_REQUIRED_BACKUPS,
+    audit_tier0_worker_syscall_trace,
+    evaluate_12_safety_gates,
+    verify_tier0_backup_manifest,
+)
 
 
 def _build_synthetic_sector0(profile: str = "FX3_702") -> bytes:
@@ -257,6 +263,84 @@ class TestFX3SafetySuite(unittest.TestCase):
         self.assertFalse(preflight["persistent_write_release"])
         self.assertEqual(preflight["summary"]["total_gates"], 12)
         self.assertGreaterEqual(preflight["summary"]["verified_gates"], 9)
+
+    def test_tier0_canonical_sources_and_syscall_trace_auditor(self) -> None:
+        self.assertEqual(set(TIER0_CANONICAL_SOURCES.keys()), set(TIER0_REQUIRED_BACKUPS.keys()))
+
+        valid_trace = [
+            {"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0},
+            {"nr": 34, "dirfd": -100, "path": "/mnt/fx3_tier0_backup", "flags": 0o700, "ret": 0},
+            {"nr": 56, "dirfd": -100, "path": "/dev/nflasha", "flags": 0x28000, "ret": 10},
+            {"nr": 67, "fd": 10, "ret": 512},
+            {"nr": 56, "dirfd": -100, "path": "/mnt/fx3_tier0_backup/sector0.bin", "flags": 0x280C1, "ret": 11},
+            {"nr": 64, "fd": 11, "ret": 512},
+            {"nr": 82, "fd": 11, "ret": 0},
+            {"nr": 57, "fd": 11, "ret": 0},
+            {"nr": 57, "fd": 10, "ret": 0},
+        ]
+        audit_ok = audit_tier0_worker_syscall_trace(valid_trace)
+        self.assertTrue(audit_ok.valid, audit_ok.errors)
+        self.assertTrue(audit_ok.first_path_op_unlink_libjit)
+        self.assertEqual(audit_ok.dev_write_open_count, 0)
+        self.assertEqual(audit_ok.source_fd_write_count, 0)
+
+        # Redline violation 1: missing initial unlinkat
+        bad_entry = valid_trace[1:]
+        audit_bad_entry = audit_tier0_worker_syscall_trace(bad_entry)
+        self.assertFalse(audit_bad_entry.valid)
+        self.assertFalse(audit_bad_entry.first_path_op_unlink_libjit)
+
+        # Redline violation 2: O_RDWR on /dev/nflasha + write to source fd + O_TRUNC on output
+        bad_rw = [
+            {"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0},
+            {"nr": 56, "dirfd": -100, "path": "/dev/nflasha", "flags": 0x2, "ret": 10},
+            {"nr": 64, "fd": 10, "ret": 512},
+            {"nr": 56, "dirfd": -100, "path": "/mnt/fx3_tier0_backup/sector0.bin", "flags": 0x241, "ret": 11},
+        ]
+        audit_bad_rw = audit_tier0_worker_syscall_trace(bad_rw)
+        self.assertFalse(audit_bad_rw.valid)
+        self.assertEqual(audit_bad_rw.dev_write_open_count, 1)
+        self.assertEqual(audit_bad_rw.source_fd_write_count, 1)
+        self.assertEqual(audit_bad_rw.missing_nofollow_source_opens, 1)
+        self.assertEqual(audit_bad_rw.non_excl_output_opens, 1)
+
+    def test_12_gate_dry_run_candidate_integration(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        good_items = {
+            k: {
+                "bytes": spec.get("exact_bytes") or spec.get("min_bytes") or 4096,
+                "pass1_sha256": "d" * 64,
+                "pass2_sha256": "d" * 64,
+            }
+            for k, spec in TIER0_REQUIRED_BACKUPS.items()
+        }
+        manifest = {"camera_body_tag": "e" * 64, "model_id": "0x91030080", "items": good_items}
+        trace = [{"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0}]
+        hook = generate_failsafe_init2_overlay_hook()
+
+        ok_rep = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+        )
+        self.assertEqual(ok_rep["summary"]["verified_gates"], 12)
+        self.assertEqual(ok_rep["summary"]["blocked_or_pending_gates"], 0)
+        self.assertTrue(ok_rep["summary"]["all_12_gates_verified"])
+        self.assertFalse(ok_rep["persistent_write_release"])
+
+        bad_rep = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=False,
+            allow_dry_run_gate12=True,
+        )
+        self.assertEqual(bad_rep["summary"]["verified_gates"], 11)
+        self.assertFalse(bad_rep["summary"]["all_12_gates_verified"])
 
 
 if __name__ == "__main__":

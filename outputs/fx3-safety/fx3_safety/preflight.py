@@ -192,8 +192,223 @@ def verify_tier0_backup_manifest(manifest: Dict[str, object]) -> BackupManifestA
     )
 
 
-def evaluate_12_safety_gates(repo_root: Path) -> Dict[str, object]:
-    """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository evidence."""
+TIER0_CANONICAL_SOURCES: Dict[str, Dict[str, object]] = {
+    "sector0": {
+        "source_path": "/dev/nflasha",
+        "output_name": "sector0.bin",
+        "magic_kind": "sector0_ptbl",
+    },
+    "boot0": {
+        "source_path": "/dev/nflashaB0",
+        "output_name": "boot0.bin",
+        "magic_kind": "none",
+    },
+    "boot1": {
+        "source_path": "/dev/nflashaB1",
+        "output_name": "boot1.bin",
+        "magic_kind": "none",
+    },
+    "p1_updater": {
+        "source_path": "/dev/nflasha1",
+        "output_name": "p1_updater.bin",
+        "magic_kind": "none",
+    },
+    "p2_backup_bin": {
+        "source_path": "/setting/Backup.bin",
+        "output_name": "p2_backup_bin.bin",
+        "magic_kind": "bk4",
+    },
+    "p2_psd_bin": {
+        "source_path": "/setting/psd.bin",
+        "output_name": "p2_psd_bin.bin",
+        "magic_kind": "none",
+    },
+    "p2_defdet_bin": {
+        "source_path": "/setting/defdet.bin",
+        "output_name": "p2_defdet_bin.bin",
+        "magic_kind": "none",
+    },
+    "p6_jiritsu": {
+        "source_path": "/dev/nflasha6",
+        "output_name": "p6_jiritsu.bin",
+        "magic_kind": "none",
+    },
+    "p12_cert": {
+        "source_path": "/dev/nflasha12",
+        "output_name": "p12_cert.bin",
+        "magic_kind": "none",
+    },
+    "p18_lensfile": {
+        "source_path": "/dev/nflasha18",
+        "output_name": "p18_lensfile.bin",
+        "magic_kind": "none",
+    },
+    "spi_nor_ddrtraining": {
+        "source_path": "/dev/mtd0",
+        "output_name": "spi_nor_ddrtraining.bin",
+        "magic_kind": "none",
+    },
+}
+
+
+@dataclass(frozen=True)
+class WorkerSyscallAudit:
+    valid: bool
+    first_path_op_unlink_libjit: bool
+    dev_write_open_count: int
+    source_fd_write_count: int
+    missing_nofollow_source_opens: int
+    non_excl_output_opens: int
+    total_syscalls: int
+    errors: List[str]
+
+
+def audit_tier0_worker_syscall_trace(
+    syscalls: List[Dict[str, object]],
+    allowed_output_prefix: str = "/mnt/fx3_tier0_backup/",
+    expected_unlink_path: str = "/tmp/jiritsu/libJit.so",
+) -> WorkerSyscallAudit:
+    """Audit an AArch64 Linux syscall trace from the hardened Tier-0 backup worker.
+
+    Enforces four hard safety redlines:
+    1. Entry first path operation MUST be unlinkat(AT_FDCWD, "/tmp/jiritsu/libJit.so", 0).
+    2. Zero openat calls on /dev/* or source paths with O_WRONLY (1) or O_RDWR (2) or O_CREAT/O_TRUNC.
+    3. All source openat calls MUST carry O_RDONLY and O_NOFOLLOW (0x8000 arm64 or 0x20000 generic).
+    4. All output openat calls MUST be under allowed_output_prefix with O_WRONLY | O_CREAT | O_EXCL (and NOT O_TRUNC),
+       and zero write/pwrite64 calls may target a source file descriptor.
+    """
+    errors: List[str] = []
+    first_path_seen = False
+    first_path_ok = False
+    dev_write_opens = 0
+    source_fd_writes = 0
+    missing_nofollow = 0
+    non_excl_outputs = 0
+
+    # Linux AArch64 syscall numbers
+    SYS_MKDIRAT = 34
+    SYS_UNLINKAT = 35
+    SYS_OPENAT = 56
+    SYS_CLOSE = 57
+    SYS_WRITE = 64
+    SYS_PWRITE64 = 68
+
+    O_ACCMODE = 0x3
+    O_WRONLY = 0x1
+    O_CREAT = 0x40
+    O_EXCL = 0x80
+    O_TRUNC = 0x200
+    O_NOFOLLOW_MASK = 0x8000 | 0x20000  # arm64 O_NOFOLLOW (0100000) or generic O_NOFOLLOW (0400000)
+
+    active_source_fds: Dict[int, str] = {}
+
+    for idx, rec in enumerate(syscalls):
+        nr = int(rec.get("nr", -1))
+        path = rec.get("path")
+        flags = int(rec.get("flags", 0))
+        ret = int(rec.get("ret", 0))
+        fd_arg = int(rec.get("fd", -1))
+
+        if path is not None and not first_path_seen:
+            first_path_seen = True
+            dirfd = int(rec.get("dirfd", 0))
+            if nr == SYS_UNLINKAT and dirfd == -100 and str(path) == expected_unlink_path and flags == 0:
+                first_path_ok = True
+            else:
+                errors.append(
+                    f"First path syscall at index {idx} must be unlinkat(AT_FDCWD, {expected_unlink_path!r}, 0), "
+                    f"got nr={nr} dirfd={dirfd} path={path!r} flags=0x{flags:x}"
+                )
+
+        if nr == SYS_OPENAT and path is not None:
+            p_str = str(path)
+            accmode = flags & O_ACCMODE
+            if p_str.startswith("/dev/") or p_str.startswith("/setting/") or p_str.startswith("/lens/"):
+                if accmode != 0 or (flags & (O_CREAT | O_TRUNC)) != 0:
+                    dev_write_opens += 1
+                    errors.append(f"Forbidden write/create flags 0x{flags:x} on source path {p_str!r} at syscall {idx}")
+                if (flags & O_NOFOLLOW_MASK) == 0:
+                    missing_nofollow += 1
+                    errors.append(f"Source openat missing O_NOFOLLOW (flags=0x{flags:x}) on {p_str!r} at syscall {idx}")
+                if ret >= 0:
+                    active_source_fds[ret] = p_str
+            elif p_str.startswith(allowed_output_prefix):
+                req_bits = O_WRONLY | O_CREAT | O_EXCL
+                if (flags & req_bits) != req_bits or (flags & O_TRUNC) != 0 or accmode != O_WRONLY:
+                    non_excl_outputs += 1
+                    errors.append(
+                        f"Output openat on {p_str!r} must use O_WRONLY|O_CREAT|O_EXCL without O_TRUNC, got 0x{flags:x}"
+                    )
+            else:
+                if accmode != 0 or (flags & (O_CREAT | O_TRUNC)) != 0:
+                    dev_write_opens += 1
+                    errors.append(f"Unexpected write openat outside backup directory: {p_str!r} (flags=0x{flags:x})")
+                elif (flags & O_NOFOLLOW_MASK) == 0:
+                    missing_nofollow += 1
+                    errors.append(f"Read openat missing O_NOFOLLOW on {p_str!r}")
+                if ret >= 0 and accmode == 0:
+                    active_source_fds[ret] = p_str
+
+        elif nr in (SYS_WRITE, SYS_PWRITE64):
+            if fd_arg in active_source_fds:
+                source_fd_writes += 1
+                errors.append(
+                    f"CRITICAL: write/pwrite64 (nr={nr}) targeted source fd {fd_arg} ({active_source_fds[fd_arg]!r})!"
+                )
+
+        elif nr == SYS_MKDIRAT and path is not None:
+            p_str = str(path)
+            if not p_str.rstrip("/").startswith(allowed_output_prefix.rstrip("/")):
+                errors.append(f"Unexpected mkdirat outside allowed backup prefix: {p_str!r}")
+
+        elif nr == SYS_CLOSE:
+            active_source_fds.pop(fd_arg, None)
+
+    if not first_path_seen:
+        errors.append("No path-bearing syscalls recorded; missing unlinkat entry lock")
+
+    valid = (
+        first_path_ok
+        and dev_write_opens == 0
+        and source_fd_writes == 0
+        and missing_nofollow == 0
+        and non_excl_outputs == 0
+        and len(errors) == 0
+    )
+    return WorkerSyscallAudit(
+        valid=valid,
+        first_path_op_unlink_libjit=first_path_ok,
+        dev_write_open_count=dev_write_opens,
+        source_fd_write_count=source_fd_writes,
+        missing_nofollow_source_opens=missing_nofollow,
+        non_excl_output_opens=non_excl_outputs,
+        total_syscalls=len(syscalls),
+        errors=errors,
+    )
+
+
+audit_tier0_worker_syscalls = audit_tier0_worker_syscall_trace
+
+
+def _verify_failsafe_hook_contract(hook_text: str) -> bool:
+    required_clauses = (
+        'rm -f "/tmp/mod_arm_once"',
+        "busybox mount --bind",
+        "busybox reboot -f",
+        "/setting/updater/mode5",
+    )
+    return isinstance(hook_text, str) and all(clause in hook_text for clause in required_clauses)
+
+
+def evaluate_12_safety_gates(
+    repo_root: Path,
+    tier0_manifest: Optional[Dict[str, object]] = None,
+    worker_syscall_trace: Optional[List[Dict[str, object]]] = None,
+    init2_failsafe_hook: Optional[str] = None,
+    candidate_bundle_verified: Optional[bool] = None,
+    allow_dry_run_gate12: bool = False,
+) -> Dict[str, object]:
+    """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository and candidate evidence."""
     repo_root = repo_root.resolve()
 
     def _exists(rel: str) -> bool:
@@ -292,15 +507,49 @@ def evaluate_12_safety_gates(repo_root: Path) -> Dict[str, object]:
     g09_ok = _exists("outputs/fx3-safety/fx3_safety/brick_classifier.py")
 
     # Gate 10: Complete Same-Body Tier-0 Full Backup Checkpoint (Sector 0 + p1/p2/p6/p12/p18 + SPI NOR)
-    # Intentionally False until actual physical readback dumps are captured and verified
-    g10_ok = False
+    if tier0_manifest is None:
+        g10_ok = False
+        g10_status = "BLOCKED_PENDING_READBACK"
+    else:
+        manifest_audit = verify_tier0_backup_manifest(tier0_manifest)
+        if worker_syscall_trace is not None:
+            trace_audit = audit_tier0_worker_syscall_trace(worker_syscall_trace)
+            g10_ok = manifest_audit.valid and trace_audit.valid
+        else:
+            g10_ok = manifest_audit.valid and (not allow_dry_run_gate12)
+        g10_status = "VERIFIED_TWOPASS_MANIFEST" if g10_ok else "BLOCKED_INVALID_TIER0_MANIFEST_OR_TRACE"
 
     # Gate 11: Independent Hardware Recovery Entry (Pre-Armed p1 or One-Shot Overlay)
-    # Verified for offline/VM & one-shot overlay design, Not Yet Proven on physical flash
-    g11_status = "DESIGN_VERIFIED_AWAITING_TIER0_BACKUP"
+    if init2_failsafe_hook is None:
+        g11_status = "DESIGN_VERIFIED_AWAITING_TIER0_BACKUP"
+    else:
+        hook_ok = _verify_failsafe_hook_contract(init2_failsafe_hook)
+        g11_status = (
+            "VERIFIED_FAILSAFE_OVERLAY_READY"
+            if (g10_ok and hook_ok)
+            else "BLOCKED_INVALID_FAILSAFE_OR_MISSING_G10"
+        )
 
-    # Gate 12: Persistent Hardware Flash Authorization
-    g12_ok = False
+    # Gate 12: Persistent Hardware Flash Authorization (or Offline Candidate Dry-Run Verification)
+    prior_11_verified = all(
+        (
+            g01_ok,
+            g02_ok,
+            g03_ok,
+            g04_ok,
+            g05_ok,
+            g06_ok,
+            g07_ok,
+            g08_ok,
+            g09_ok,
+            g10_ok,
+            g11_status.startswith("VERIFIED"),
+        )
+    )
+    if allow_dry_run_gate12 and prior_11_verified and (candidate_bundle_verified is True):
+        g12_status = "VERIFIED_OFFLINE_CANDIDATE_DRY_RUN"
+    else:
+        g12_status = "BLOCKED_BY_SAFETY_REDLINE"
 
     gates = [
         {
@@ -350,7 +599,7 @@ def evaluate_12_safety_gates(repo_root: Path) -> Dict[str, object]:
         },
         {
             "gate_id": "G10_same_body_tier0_full_backup_checkpoint",
-            "status": "VERIFIED" if g10_ok else "BLOCKED_PENDING_READBACK",
+            "status": g10_status,
             "evidence": "Requires two-pass idempotent readback dumps of physical camera Sector 0, boot0/1, p1, p2 (Backup.bin/psd.bin/defdet.bin), p6 (Jiritsu), p12 (/cert), p18 (lensfile.bin), and SPI NOR (ddrtraining.dat).",
         },
         {
@@ -360,11 +609,12 @@ def evaluate_12_safety_gates(repo_root: Path) -> Dict[str, object]:
         },
         {
             "gate_id": "G12_persistent_flash_write_authorization",
-            "status": "AUTHORIZED" if g12_ok else "BLOCKED_BY_SAFETY_REDLINE",
+            "status": g12_status,
             "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup) is completed and verified.",
         },
     ]
 
+    verified_count = sum(1 for g in gates if g["status"].startswith("VERIFIED"))
     return {
         "schema": "fx3-research-safety-inventory-v2",
         "evaluated_utc": datetime.now(timezone.utc).isoformat(),
@@ -373,8 +623,9 @@ def evaluate_12_safety_gates(repo_root: Path) -> Dict[str, object]:
         "is_flash_authorization_or_recovery_certificate": False,
         "summary": {
             "total_gates": len(gates),
-            "verified_gates": sum(1 for g in gates if g["status"].startswith("VERIFIED")),
-            "blocked_or_pending_gates": sum(1 for g in gates if not g["status"].startswith("VERIFIED")),
+            "verified_gates": verified_count,
+            "blocked_or_pending_gates": len(gates) - verified_count,
+            "all_12_gates_verified": verified_count == len(gates),
         },
         "gates": gates,
     }

@@ -6,6 +6,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import List, Optional
 
 from .boot_contracts import (
     parse_bk4_record,
@@ -15,10 +16,10 @@ from .boot_contracts import (
     verify_sector0_partition_table,
 )
 from .brick_classifier import classify_brick_state, generate_failsafe_init2_overlay_hook
-from .preflight import evaluate_12_safety_gates, verify_tier0_backup_manifest
+from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_safety",
         description="Sony FX3 Flash Safety, Boot Contract & Brick Recovery Diagnostic CLI (v2.0)",
@@ -97,6 +98,13 @@ def main(argv: list[str] | None = None) -> int:
     p_hook.add_argument("--target", default="/usr/lib/appFw.so")
     p_hook.add_argument("--timeout", type=int, default=45)
 
+    # 6. audit-worker-trace
+    p_trace = sub.add_parser(
+        "audit-worker-trace",
+        help="Audit a Tier-0 backup worker Linux AArch64 syscall trace JSON",
+    )
+    p_trace.add_argument("--trace", type=Path, required=True, help="Path to syscall trace JSON list")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "evaluate-preflight":
@@ -146,6 +154,15 @@ def main(argv: list[str] | None = None) -> int:
         )
         sys.stdout.write(hook)
         return 0
+
+    if args.cmd == "audit-worker-trace":
+        raw_trace = json.loads(args.trace.read_text(encoding="utf-8"))
+        syscalls = raw_trace["syscalls"] if isinstance(raw_trace, dict) else raw_trace
+        res = audit_tier0_worker_syscall_trace(syscalls)
+        from dataclasses import asdict
+
+        sys.stdout.write(json.dumps(asdict(res), indent=2, ensure_ascii=False) + "\n")
+        return 0 if res.valid else 1
 
     return 2
 

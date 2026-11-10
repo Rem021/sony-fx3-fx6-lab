@@ -217,6 +217,11 @@ class FX6LiveGpe0Session:
         self.menu_item = 0
         self.menu_depth = 0
         self.cell_vals = [0, 0, 0, 0, 0, 0]
+        self.table_off = ALL_128_PAGES[0]["off"] if ALL_128_PAGES else 0x02E90FB0
+        self.table_rows = ALL_128_PAGES[0]["rows"] if ALL_128_PAGES else 7
+        self.table_off2 = 0
+        self.table_rows2 = 0
+        self.table_idx128 = 0
         self.rec_fmt_idx = 0
         self.last_nz = 0
         self.last_text_ok = 0
@@ -364,6 +369,11 @@ class FX6LiveGpe0Session:
         """Write mb[0..14] to guest physical 0x41e000e00 via persistent QEMU GDB stub."""
         if not self.is_running() or not self.gdb_sock.exists():
             return False
+        mb_vals = (
+            [self.table_off, self.table_rows, self.table_off2, self.table_rows2, 0, 0]
+            if self.page == 24
+            else list(self.cell_vals[:6])
+        )
         words = [
             CTRL_MAGIC,
             self.cmd_seq,
@@ -373,12 +383,12 @@ class FX6LiveGpe0Session:
             self.menu_cat,
             self.menu_item,
             self.menu_depth,
-            self.cell_vals[0],
-            self.cell_vals[1],
-            self.cell_vals[2],
-            self.cell_vals[3],
-            self.cell_vals[4],
-            self.cell_vals[5],
+            mb_vals[0],
+            mb_vals[1],
+            mb_vals[2],
+            mb_vals[3],
+            mb_vals[4],
+            mb_vals[5],
             self.rec_fmt_idx,
         ]
         raw = struct.pack("<15I", *words)
@@ -506,12 +516,22 @@ class FX6LiveGpe0Session:
                     self.page = LEGACY_PAGE_MAP[p_val.lower()]
                 else:
                     self.page = int(p_val) % 25
+                if "sel_box" not in body:
+                    self.sel_box = 5 if self.page == 0 else 0
+                if "menu_depth" not in body and self.page != 1:
+                    self.menu_depth = 0
             if "table_off" in body and "table_rows" in body:
                 self.page = 24
-                self.cell_vals[0] = int(body["table_off"])
-                self.cell_vals[1] = int(body["table_rows"])
-                self.cell_vals[2] = int(body.get("table_off2", 0))
-                self.cell_vals[3] = int(body.get("table_rows2", 0))
+                self.table_off = int(body["table_off"])
+                self.table_rows = int(body["table_rows"])
+                self.table_off2 = int(body.get("table_off2", 0))
+                self.table_rows2 = int(body.get("table_rows2", 0))
+                if "sel_box" not in body:
+                    self.sel_box = 0
+                for idx, p in enumerate(ALL_128_PAGES):
+                    if p["off"] == self.table_off:
+                        self.table_idx128 = idx
+                        break
             if "sel_box" in body:
                 self.sel_box = int(body["sel_box"])
             if "menu_cat" in body:
@@ -593,6 +613,8 @@ class FX6LiveGpe0Session:
             if self.page in (0, 3):
                 c = self.sel_box % 6
                 self.cell_vals[c] = (self.cell_vals[c] + 1) % CELL_N_VALS[c]
+            elif self.page == 2:
+                self.cell_vals[5] = (self.cell_vals[5] + 1) % CELL_N_VALS[5]
             elif self.page == 1:
                 if self.menu_depth == 0:
                     self.menu_depth = 1
@@ -612,23 +634,39 @@ class FX6LiveGpe0Session:
                     else:
                         self.cell_vals[5] = self.menu_item % 7
                     self.menu_depth = 1
+            elif self.page == 24 and ALL_128_PAGES:
+                self.table_idx128 = (self.table_idx128 + 1) % len(ALL_128_PAGES)
+                p = ALL_128_PAGES[self.table_idx128]
+                self.table_off = p["off"]
+                self.table_rows = p["rows"]
+                self.sel_box = 0
+            else:
+                self.menu_depth = (self.menu_depth + 1) % 3
+                self.sel_box = 0
         elif kcode == 6:  # BACK
             if self.page == 1 and self.menu_depth > 0:
                 self.menu_depth -= 1
                 self.menu_item = 0
+            elif self.page >= 5 and self.menu_depth > 0:
+                self.menu_depth = 0
+                self.sel_box = 0
             else:
                 self.page = 0
+                self.sel_box = 5
         elif kcode == 7:  # MENU
             if self.page == 1:
                 self.page = 0
+                self.sel_box = 5
             else:
                 self.page = 1
                 self.menu_depth = 0
         elif kcode == 8:  # HOME
             self.page = 0
+            self.sel_box = 5
         elif kcode == 9:  # DISP
-            disp_cycle = [6, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 0]
-            self.page = disp_cycle[self.page % 12]
+            self.page = (self.page + 1) % 24
+            self.sel_box = 5 if self.page == 0 else 0
+            self.menu_depth = 0
 
         self.cmd_seq += 1
 
@@ -668,6 +706,12 @@ class FX6LiveGpe0Session:
             ]
             serial_tail = "\n".join(clean_lines[-18:])
 
+        if self.page == 24 and ALL_128_PAGES:
+            p = ALL_128_PAGES[self.table_idx128 % len(ALL_128_PAGES)]
+            page_name = f"128-Page #{p['idx']:03d} ({p['off_hex']}, {p['rows']} rows | {p['first_name']})"
+        else:
+            page_name = PAGE_NAMES.get(self.page, f"Page {self.page}")
+
         return {
             "running": running,
             "pid": self.proc.pid if running and self.proc else None,
@@ -677,7 +721,7 @@ class FX6LiveGpe0Session:
             "cmd_seq": self.cmd_seq,
             "ack_seq": self.ack_seq,
             "page": self.page,
-            "page_name": PAGE_NAMES.get(self.page, f"Page {self.page}"),
+            "page_name": page_name,
             "sel_box": self.sel_box,
             "sel_cell_name": CELL_NAMES[self.sel_box % 6],
             "menu_cat": self.menu_cat,
@@ -685,6 +729,9 @@ class FX6LiveGpe0Session:
             "menu_item": self.menu_item,
             "menu_depth": self.menu_depth,
             "cell_vals": self.cell_vals,
+            "table_off": f"0x{self.table_off:08x}",
+            "table_rows": self.table_rows,
+            "table_idx128": self.table_idx128,
             "gpe0_nonzero_px": self.last_nz,
             "text_ok": self.last_text_ok,
             "fill_n": self.last_fill_n,
@@ -1067,6 +1114,10 @@ async function updateUI(st, forceImg) {
   for (let i = 0; i < 24; i++) {
     const b = document.getElementById('pbtn-' + i);
     if (b) b.className = (st.page === i) ? 'active' : '';
+  }
+  const sel128 = document.getElementById('all128-select');
+  if (sel128) {
+    sel128.value = (st.page === 24 && st.table_idx128 !== undefined) ? String(st.table_idx128) : '';
   }
   for (let i = 0; i < 11; i++) {
     const b = document.getElementById('cbtn-' + i);

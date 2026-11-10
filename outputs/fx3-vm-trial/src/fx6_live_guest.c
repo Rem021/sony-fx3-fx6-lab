@@ -927,9 +927,30 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     g_text_n++;
 }
 
-static void page_table(uint64_t appfw, uint32_t off, int count, const char *label) {
+static void page_table(uint64_t appfw, uint32_t off, int count, const char *label, uint32_t sel_box) {
     uint8_t *base = (uint8_t *)(uintptr_t)(appfw + off);
-    int thumb_idx = 0;
+    int n_thumbs = 0, n_btns = 0, n_rows = 0;
+    for (int i = 0; i < count; i++) {
+        uint8_t *p = base + (uint64_t)i * FX6_DESC_STRIDE;
+        uint32_t tag = (uint32_t)((uint64_t)(uintptr_t)*(void **)p - appfw);
+        uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
+        if (tag == 0x42d58f0u && w >= 60 && h >= 40) {
+            n_thumbs++;
+        } else if ((tag == 0x42d58d0u && w >= 36 && h >= 36 && w < 900) ||
+                   (tag == 0x42d5850u && w >= 40 && h >= 24)) {
+            n_btns++;
+        } else if ((tag == 0x42d57f0u || tag == 0x42d59a0u) && w >= 40 && h >= 18 && w < 960) {
+            n_rows++;
+        }
+    }
+
+    int thumb_idx = 0, btn_idx = 0, row_idx = 0;
+    int active_thumb = (n_thumbs > 0) ? (int)((sel_box == 0 ? 11u : sel_box) % (uint32_t)n_thumbs) : -1;
+    int active_btn   = (n_btns > 0)   ? (int)(sel_box % (uint32_t)n_btns) : -1;
+    int active_row   = (n_btns == 0 && n_thumbs == 0 && n_rows > 0 && sel_box > 0)
+                       ? (int)((sel_box - 1u) % (uint32_t)n_rows) : -1;
+    int slider_num   = (int)(((sel_box + 5u) % 9u) + 1u);
+
     for (int i = 0; i < count; i++) {
         uint8_t *p = base + (uint64_t)i * FX6_DESC_STRIDE;
         uint32_t tag = (uint32_t)((uint64_t)(uintptr_t)*(void **)p - appfw);
@@ -946,28 +967,34 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
             if (c && c != 0xffffffffU)
                 fx6_icon_blit(appfw, x, y, w, h, c);
         } else if (tag == 0x42d58d0u && w >= 36 && h >= 36 && w < 900) {
-            fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
+            fx6_fill_rect(appfw, x, y, w, h, (btn_idx == active_btn && sel_box > 0) ? 0x0200c00eu : 0x0200c008u);
+            if (btn_idx == active_btn)
+                fx6_border(appfw, x, y, w, h, FX6_COLOR_SEL);
+            btn_idx++;
         } else if (tag == 0x42d58f0u && w >= 60 && h >= 40) {
-            if (thumb_idx == 11) {
+            if (thumb_idx == active_thumb) {
                 fx6_fill_rect(appfw, x - 2, y - 2, w + 4, h + 4, FX6_COLOR_SEL);
             }
             fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
             thumb_idx++;
         } else if (tag == 0x42d58b0u && w >= 40 && h >= 6) {
             fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
-            fx6_fill_rect(appfw, x, y, (w * 2) / 3, h, 0x0200c013u);
+            fx6_fill_rect(appfw, x, y, (w * slider_num) / 10, h, 0x0200c013u);
         } else if (tag == 0x42d5930u && w >= 30 && h >= 60) {
             fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
             for (int ch = 0; ch < 4; ch++) {
                 int bx = x + 8 + ch * 16;
-                int bh = (h * (3 + (ch % 2))) / 5;
+                int bh = (h * (3 + ((ch + (int)sel_box) % 2))) / 5;
                 fx6_fill_rect(appfw, bx, y + h - bh - 4, 10, bh, 0x0200c013u);
             }
         } else if (tag == 0x42d5850u && w >= 40 && h >= 24) {
-            fx6_fill_rect(appfw, x, y, w, h - 2, 0x0200c008u);
+            fx6_fill_rect(appfw, x, y, w, h - 2, (btn_idx == active_btn && sel_box > 0) ? 0x0200c00eu : 0x0200c008u);
+            if (btn_idx == active_btn)
+                fx6_border(appfw, x, y, w, h - 2, FX6_COLOR_SEL);
+            btn_idx++;
         } else if (tag == 0x42d5880u && w >= 40 && w < 600 && h >= 16) {
             fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
-            fx6_fill_rect(appfw, x + 2, y + 2, (w * 3) / 5, h - 4, FX6_COLOR_SEL);
+            fx6_fill_rect(appfw, x + 2, y + 2, ((w - 4) * slider_num) / 10, h - 4, FX6_COLOR_SEL);
         } else if ((tag == 0x42d59e0u || tag == 0x42d5a20u) && w >= 120 && h >= 120) {
             for (int ry = y + 52; ry + 4 < y + h; ry += 52) {
                 fx6_fill_rect(appfw, x + 4, ry, w - 8, 2, 0x0200c00bu);
@@ -979,6 +1006,11 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
         uint32_t tag = (uint32_t)((uint64_t)(uintptr_t)*(void **)p - appfw);
         uint16_t x = *(uint16_t *)(p + 0x3c), y = *(uint16_t *)(p + 0x3e);
         uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
+        if ((tag == 0x42d57f0u || tag == 0x42d59a0u) && w >= 40 && h >= 18 && w < 960) {
+            if (row_idx == active_row)
+                fx6_border(appfw, x, y, w, h, FX6_COLOR_SEL);
+            row_idx++;
+        }
         if (tag == 0x42d57f0u || tag == 0x42d59a0u || tag == 0x42d58d0u ||
             tag == 0x42d5850u || tag == 0x42d5840u || tag == 0x42d5960u) {
             fx6_render_row(appfw, p, label);
@@ -1050,6 +1082,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     g_icon_n  = 0;
     g_skip_n2 = 0;
 
+    uint32_t sub = menu_depth;
     switch (page % FX6_NUM_PAGES) {
     case 0:
         render_page_big6_home(appfw, sel_box, cell_vals);
@@ -1067,125 +1100,125 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
         render_page_assignable(appfw, sel_box);
         break;
     case 5:
-        if (sel_box & 1u)
-            page_table(appfw, 0x2ea7648u, 176, "net176");
+        if (sub & 1u)
+            page_table(appfw, 0x2ea7648u, 176, "net176", sel_box);
         else
-            page_table(appfw, 0x2ead870u, 55, "net55");
+            page_table(appfw, 0x2ead870u, 55, "net55", sel_box);
         break;
     case 6:
-        page_table(appfw, 0x2e957b0u, 11, "hud9");
-        page_table(appfw, 0x2e96608u, 35, "hud11");
-        page_table(appfw, 0x2e911f0u, 14, "meter");
+        page_table(appfw, 0x2e957b0u, 11, "hud9", 0);
+        page_table(appfw, 0x2e96608u, 35, "hud11", sel_box);
+        page_table(appfw, 0x2e911f0u, 14, "meter", sel_box);
         break;
     case 7:
-        page_table(appfw, 0x2eb2ad8u,  8, "clip83");
-        page_table(appfw, 0x2eb1890u, 54, "playback");
+        page_table(appfw, 0x2eb2ad8u,  8, "clip83", 0);
+        page_table(appfw, 0x2eb1890u, 54, "playback", sel_box);
         break;
     case 8:
-        if (sel_box & 1u) {
-            page_table(appfw, 0x2ea0d18u, 69, "setgrid69");
+        if (sub & 1u) {
+            page_table(appfw, 0x2ea0d18u, 69, "setgrid69", sel_box);
         } else {
-            page_table(appfw, 0x2eb36a8u, 17, "page86");
-            page_table(appfw, 0x2eb6510u,  7, "grid109");
+            page_table(appfw, 0x2eb36a8u, 17, "page86", sel_box);
+            page_table(appfw, 0x2eb6510u,  7, "grid109", 0);
         }
         break;
     case 9:
         /* Thumbnail Properties (page 18, 0x2e9cef0, 46 rows — 100% Full-Screen) */
-        page_table(appfw, 0x2e9cef0u, 46, "thumbprops");
+        page_table(appfw, 0x2e9cef0u, 46, "thumbprops", sel_box);
         break;
     case 10:
         /* Touch Menu (0x2ea6b08, 19 rows) + Touch List (0x2eb4e00, 19 rows) */
-        page_table(appfw, 0x2ea6b08u, 19, "touchmenu");
-        page_table(appfw, 0x2eb4e00u, 19, "touchlist");
+        page_table(appfw, 0x2ea6b08u, 19, "touchmenu", sel_box);
+        page_table(appfw, 0x2eb4e00u, 19, "touchlist", 0);
         break;
     case 11:
         /* Settings Subpage (0x2ead0d8, 26 rows) + Toast Confirm (0x2e9deb0, 11 rows) + Gamma Assist (0x2e917d8, 71 rows) */
-        page_table(appfw, 0x2ead0d8u, 26, "subpage26");
-        page_table(appfw, 0x2e9deb0u, 11, "toast11");
-        page_table(appfw, 0x2e917d8u, 71, "gamma71");
+        page_table(appfw, 0x2ead0d8u, 26, "subpage26", 0);
+        page_table(appfw, 0x2e9deb0u, 11, "toast11", sel_box);
+        page_table(appfw, 0x2e917d8u, 71, "gamma71", 0);
         break;
     case 12:
         /* 715: Paint / On-Screen Keyboard Text Input Overlay (page 4, 0x2e92c18, 102 rows) */
-        page_table(appfw, 0x2e92c18u, 102, "paintoverlay102");
+        page_table(appfw, 0x2e92c18u, 102, "paintoverlay102", sel_box);
         break;
     case 13:
         /* 716: Media Status SSA/SSB/SSP (page 58, 0x2eaad68, 48 rows) or Media Format Confirm (0x2eafdd8, 49 rows) */
-        if (sel_box & 1u)
-            page_table(appfw, 0x2eafdd8u, 49, "mediafmt49");
+        if (sub & 1u)
+            page_table(appfw, 0x2eafdd8u, 49, "mediafmt49", sel_box);
         else
-            page_table(appfw, 0x2eaad68u, 48, "mediastatus48");
+            page_table(appfw, 0x2eaad68u, 48, "mediastatus48", sel_box);
         break;
     case 14:
         /* 717: Clip Thumbnail Browser 4x3 Grid (page 12, 0x2e9b798, 39 rows) or Direct Menu List (page 5, 0x2e94c28, 40 rows) */
-        if (sel_box & 1u)
-            page_table(appfw, 0x2e94c28u, 40, "pg5direct40");
+        if (sub & 1u)
+            page_table(appfw, 0x2e94c28u, 40, "pg5direct40", sel_box);
         else
-            page_table(appfw, 0x2e9b798u, 39, "clipgrid39");
+            page_table(appfw, 0x2e9b798u, 39, "clipgrid39", sel_box);
         break;
     case 15:
         /* 718: Status Icon / Radio Button Page (0x2eb44b8, 19 rows) + Date/Time Touch Picker (0x2ea2e48, 16 rows) + HUD Tracking (0x2e95cc0, 20 rows) */
-        if ((sel_box % 3u) == 1u) {
-            page_table(appfw, 0x2ea2e48u, 16, "touchdate16");
-        } else if ((sel_box % 3u) == 2u) {
-            page_table(appfw, 0x2e95cc0u, 20, "hudtrack20");
-            page_table(appfw, 0x2e959a8u,  7, "pg7hud7");
+        if ((sub % 3u) == 1u) {
+            page_table(appfw, 0x2ea2e48u, 16, "touchdate16", sel_box);
+        } else if ((sub % 3u) == 2u) {
+            page_table(appfw, 0x2e95cc0u, 20, "hudtrack20", sel_box);
+            page_table(appfw, 0x2e959a8u,  7, "pg7hud7", 0);
         } else {
-            page_table(appfw, 0x2eb44b8u, 19, "statusicon19");
+            page_table(appfw, 0x2eb44b8u, 19, "statusicon19", sel_box);
         }
         break;
     case 16:
         /* 723: Full 253-Row Main Viewfinder HUD (page 10, 0x2e96608, 253 rows) + Tracking (0x2e95cc0, 20 rows) + Audio Meter (0x2e911f0, 14 rows) */
-        page_table(appfw, 0x2e96608u, 253, "hudmain253");
-        page_table(appfw, 0x2e95cc0u,  20, "hudtrack20");
-        page_table(appfw, 0x2e911f0u,  14, "meter14");
+        page_table(appfw, 0x2e96608u, 253, "hudmain253", sel_box);
+        page_table(appfw, 0x2e95cc0u,  20, "hudtrack20", 0);
+        page_table(appfw, 0x2e911f0u,  14, "meter14", sel_box);
         break;
     case 17:
         /* 724: TC / Audio Level Meter / 6-Button Status Dialog (page 11, 0x2e9ad78, 35 rows) */
-        page_table(appfw, 0x2e9ad78u, 35, "tcstatus35");
+        page_table(appfw, 0x2e9ad78u, 35, "tcstatus35", sel_box);
         break;
     case 18:
         /* 725: 6-Line Change Message / Firmware Notice Dialog (page 81, 0x2eb2d60, 10 rows) */
-        page_table(appfw, 0x2eb2d60u, 10, "changemsg81");
+        page_table(appfw, 0x2eb2d60u, 10, "changemsg81", sel_box);
         break;
     case 19:
         /* 726: Wireless LAN / SSID Scan List Page (page 43, 0x2ea5560, 11 rows) */
-        page_table(appfw, 0x2ea5560u, 11, "wlanscan43");
+        page_table(appfw, 0x2ea5560u, 11, "wlanscan43", sel_box);
         break;
     case 20:
         /* 727/728: 3-Column Setting List (page 66, 0x2eacdc0, 10 rows) or Numbered Setting List (page 73, 0x2eafac0, 10 rows) */
-        if (sel_box & 1u)
-            page_table(appfw, 0x2eafac0u, 10, "setlist73");
+        if (sub & 1u)
+            page_table(appfw, 0x2eafac0u, 10, "setlist73", sel_box);
         else
-            page_table(appfw, 0x2eacdc0u, 10, "setlist66");
+            page_table(appfw, 0x2eacdc0u, 10, "setlist66", sel_box);
         break;
     case 21:
         /* 729: 2/3-Line OK/Cancel Confirmation Dialog (page 72, 0x2eaf7a8, 10 rows) or Execute/Cancel Dialog (page 93, 0x2eb4a58, 12 rows) */
-        if (sel_box & 1u)
-            page_table(appfw, 0x2eb4a58u, 12, "execdlg93");
+        if (sub & 1u)
+            page_table(appfw, 0x2eb4a58u, 12, "execdlg93", sel_box);
         else
-            page_table(appfw, 0x2eaf7a8u, 10, "confirm72");
+            page_table(appfw, 0x2eaf7a8u, 10, "confirm72", sel_box);
         break;
     case 22:
         /* 730: Split-Pane Setting Value + Aux Info (page 77, 0x2eb1530, 11 rows) or 2nd-Layer Setting Banner (page 112, 0x2eb8760, 11 rows) */
-        if (sel_box & 1u)
-            page_table(appfw, 0x2eb8760u, 11, "banner112");
+        if (sub & 1u)
+            page_table(appfw, 0x2eb8760u, 11, "banner112", sel_box);
         else
-            page_table(appfw, 0x2eb1530u, 11, "splitset77");
+            page_table(appfw, 0x2eb1530u, 11, "splitset77", sel_box);
         break;
     case 23:
         /* 731/732: 15-Button 3x5 Menu Grid (page 64, 0x2eac280, 34 rows) or 10-Button 2x5 Media Grid (page 57, 0x2eaa810, 18 rows) */
-        if (sel_box & 1u)
-            page_table(appfw, 0x2eaa810u, 18, "mediagrid57");
+        if (sub & 1u)
+            page_table(appfw, 0x2eaa810u, 18, "mediagrid57", sel_box);
         else
-            page_table(appfw, 0x2eac280u, 34, "menugrid64");
+            page_table(appfw, 0x2eac280u, 34, "menugrid64", sel_box);
         break;
     case 24:
         /* Universal Descriptor Table Mode: cell_vals[0]=off1, cell_vals[1]=cnt1, cell_vals[2]=off2, cell_vals[3]=cnt2 */
         if (cell_vals[0] >= 0x02e90000u && cell_vals[0] <= 0x02ebb000u && cell_vals[1] >= 1u && cell_vals[1] <= 260u) {
-            page_table(appfw, cell_vals[0], (int)cell_vals[1], "generic1");
+            page_table(appfw, cell_vals[0], (int)cell_vals[1], "generic1", sel_box);
         }
         if (cell_vals[2] >= 0x02e90000u && cell_vals[2] <= 0x02ebb000u && cell_vals[3] >= 1u && cell_vals[3] <= 260u) {
-            page_table(appfw, cell_vals[2], (int)cell_vals[3], "generic2");
+            page_table(appfw, cell_vals[2], (int)cell_vals[3], "generic2", 0);
         }
         break;
     }

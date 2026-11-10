@@ -40,6 +40,10 @@ from .backup_bridge_verifier import (
     P7BackupBridgeAuditReport,
     verify_p7_backup_bridge,
 )
+from .backup_mount_tolerance_verifier import (
+    Phase6BackupMountToleranceReport,
+    run_backup_mount_tolerance_verification,
+)
 from .feature_routing_verifier import (
     FeatureRoutingAuditReport,
     run_feature_routing_verification,
@@ -124,6 +128,8 @@ class CandidateDryRunReport:
     stage_a_cpio_audit: CpioArchiveAudit
     rollback_drill: RollbackDrillReport
     feature_routing_audit: FeatureRoutingAuditReport
+    backup_mount_tolerance_audit: Phase6BackupMountToleranceReport
+    backup_mount_tolerance_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -140,12 +146,14 @@ def run_offline_candidate_dry_run(
     precomputed_tier0_result: Optional[Tier0UnicornRunResult] = None,
     precomputed_rollback_drill: Optional[RollbackDrillReport] = None,
     precomputed_feature_routing: Optional[FeatureRoutingAuditReport] = None,
+    precomputed_backup_mount_tolerance: Optional[Phase6BackupMountToleranceReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
     corrupt_p7_backup_bridge: bool = False,
     corrupt_stage_a_cpio: bool = False,
     corrupt_feature_routing: bool = False,
+    corrupt_backup_mount_tolerance: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -327,6 +335,13 @@ def run_offline_candidate_dry_run(
         )
         feature_routing_ok = feature_routing_res.all_checks_passed and not corrupt_feature_routing
 
+        backup_mount_res = precomputed_backup_mount_tolerance or run_backup_mount_tolerance_verification(
+            fx6_lib_dir=fx6_lib_dir,
+        )
+        backup_mount_tolerance_ok = (
+            backup_mount_res.all_checks_passed and not corrupt_backup_mount_tolerance
+        )
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -363,6 +378,7 @@ def run_offline_candidate_dry_run(
             and rollback_drill_res.all_scenarios_passed
             and rollback_drill_res.total_emmc_writes == 0
             and feature_routing_ok
+            and backup_mount_tolerance_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -374,6 +390,7 @@ def run_offline_candidate_dry_run(
             init2_failsafe_hook=failsafe_hook,
             candidate_bundle_verified=candidate_bundle_ok,
             allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=backup_mount_tolerance_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -410,6 +427,8 @@ def run_offline_candidate_dry_run(
         stage_a_cpio_audit=stage_a_cpio_audit,
         rollback_drill=rollback_drill_res,
         feature_routing_audit=feature_routing_res,
+        backup_mount_tolerance_audit=backup_mount_res,
+        backup_mount_tolerance_ok=backup_mount_tolerance_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

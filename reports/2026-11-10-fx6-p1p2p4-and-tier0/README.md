@@ -1,15 +1,15 @@
-# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由 ELF 閉包核驗、Stage-A CPIO 封裝與 12 道安全門驗證報告（Phase 5）
+# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由、U4 存儲掛載容錯閉環、RAM-Shadow `BK4\0` 備份契約與 12 道安全門驗證報告（Phase 6）
 
 - **日期**：2026-11-10
-- **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`（同步鏡像：`work/fx6-on-fx3-p1p2p4-closure-20261110/`）
-- **對接安全評估套件**：`outputs/fx3-safety/`（`verify_failsafe_hook_script` 與 `evaluate_12_safety_gates`）
+- **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`
+- **對接安全評估套件**：`outputs/fx3-safety/`（`verify_failsafe_hook_script`、`parse_bk4_record` 與 `evaluate_12_safety_gates`）
 - **運行時與潔淨室約束**：全離線內存與 `tempfile.TemporaryDirectory()` 驗證；POSIX `/bin/sh` 演練全程以 `PREFIX` 隔離沙盒根目錄（絕不觸碰宿主機真實 `/dev` 或 `/tmp`）；零 QEMU 進程操作、零 USB/硬件交互、倉庫零 `.so` / `.bin` / `.img` / `.vfat` / `.ko` / `.cpio` 二進制產物留存；兼容 macOS 系統 `/usr/bin/python3`（Python 3.9.6）與 Unicorn AArch64 2.1.4。
 
 ---
 
 ## 1. 正式受控工程包結構與全矩陣覆蓋表
 
-全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
+全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U4` 存儲掛載容錯審計 + 跨機型 RAM-Shadow `BK4\0` 備份合成校驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
 
 | 模組路徑 | 覆蓋項 | 職責說明 |
 | --- | :---: | --- |
@@ -20,11 +20,12 @@
 | `outputs/fx6-on-fx3-closure/fx6_closure/uipc_completion_verifier.py` | **P5, P6** | 隊列 `0x92840747` 上 `0x032d -> 0x132d`（P5）與 `0x0400/0x0402/0x0404/0x0152 -> 0x1400/0x1402/0x1404/0x1152`（P6）精確字節級 12B 完結回執合成器與 `send_and_wait_cmp_i` Unicorn 驗證器。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/backup_bridge_verifier.py` | **P7** | 內核態 Backup Sync100 地址無關橋接核驗器：雙內核 `pcidma_transfer_async` 16B 序言、`api+0x160` / `api+0x10` Unicorn 跳板、`dst=0x903e0811`/`op=0x30` 40B 請求與同步 `backupfile_cb_getcp(0, NULL)` DMA 回調契約。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/feature_routing_verifier.py` | **藍圖 §3 五大功能路由** | **維度 A**：10 核心庫 ELF64 `DT_NEEDED`（43 節點全傳遞閉包，0 缺失）與 `.dynsym` 導入/導出審計；**維度 B**：Sony `17^3`/`33^3` `.cube` 生成/校驗器、FX3 `p30`（`48 MiB`）16 組 LUT 簇容量預算證明與 `libInfraSetupFile.so` `RcvThread`（`0x196c8..0x196e0`）掛載鏈核驗；**維度 C**：Cine EI / E 卡口 AF 契約與 `set_eye_af_mode_i` + `libmpr.so` `libXavcMxfGetSlotTypeFromMediaId`（`+0x53c850`）Unicorn 實跑驗證。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/backup_mount_tolerance_verifier.py` | **藍圖 `U4` + RAM-Shadow `BK4\0`** | **維度 A（關閉 `U4`）**：`libInfraSetupFile.so`（`RcvThread` `@ 0x19650`）與 `libInfraKikiLogGenerator.so`（`KikiLogGenerator_res_ope` `@ 0x3cb0`）掛載返回碼與降級控制流靜態指令釘選 + Unicorn AArch64 實跑核驗；**維度 B**：FX6 6.01 vs FX3 7.02 `libbackup.so` / `BK4\0` 跨機型鍵模式審計與零寫閃存 RAM-Shadow `BK4\0` 容器合成/校驗器（兼容 `fx3_safety.boot_contracts.parse_bk4_record`）。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,overlay_manifest.json}`。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/rollback_drill.py` | **四層防磚演練** | Stage-A 啟動守衛確定性狀態機與 `PREFIX` 隔離沙盒 POSIX `/bin/sh` 子進程實跑演練器（覆蓋無授權標記、單次啟動+重啟恢復、SHA-256 失配/缺失回退、超時/非零退出回退與 eMMC 零寫入核驗）。 |
 | `outputs/fx6-on-fx3-closure/native/tier0_backup_worker.c` & `tier0_unicorn_verifier.py` | **Tier-0** | 零外部 `UND` 符號、零動態重定位 AArch64 Linux 雙遍只讀備份組件與 Unicorn 系統調用審計器。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing` 與 `run-rollback-drill` 子命令）。 |
-| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**28 項測試**）。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts` 與 `run-rollback-drill` 子命令）。 |
+| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**32 項測試**，外加 `outputs/fx3-safety/tests` **11 項測試**）。 |
 
 ---
 
@@ -106,21 +107,57 @@
 
 ---
 
-## 6. 端到端候選包乾跑與 12 道安全門聯調
+## 6. Phase 6：存儲掛載容錯審計（關閉藍圖 `U4`）與跨機型 RAM-Shadow `BK4\0` 備份合成核驗
 
-| 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
-| --- | --- | :---: | --- | :---: | :---: |
-| **合法完整候選包乾跑（含五大功能路由核驗 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
-| 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
-| 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
-| 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
-| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO 或 **五大核心功能路由閉包** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+### 6.1 核驗維度 A：存儲掛載返回碼與降級契約靜態釘選 + Unicorn AArch64 實跑（關閉 `U4`）
+
+針對 FX6 只讀源庫 `libInfraSetupFile.so`（`202,664 B`，SHA-256 `b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357`）與 `libInfraKikiLogGenerator.so`（`27,256 B`，SHA-256 `be7abc37ceb019b203a3853eba633d5d703d86d9a24ec2a6081b74873dd71917`），完成完整指令字級釘選與 Unicorn AArch64 控制流微執行：
+
+| 目標庫與函數 | 關鍵 VMA | 機器碼字（LE u32） | 匯編指令與參數語義 | `mount_rc = 0`（啟用 P1 / P2）行為 | `mount_rc = -1`（`ENOENT=2` / `EINVAL=22`）行為 |
+| --- | :---: | :---: | --- | --- | --- |
+| `libInfraSetupFile.so`<br>`SetupFile::RcvThread`<br>(`0x19650..0x197f4`) | `0x196c8`<br>`0x196d0`<br>`0x196d8`<br>`0x196dc`<br>`0x196e0`<br>`0x196e4`<br>`0x196e8`<br>`0x196f0`<br>`0x19710`<br>`0x19744` | `0xd2809003`<br>`0xf946bb01`<br>`0xf947dc00`<br>`0xf2b81da3`<br>`0x97ffeb84`<br>`0x34000180`<br>`0x97ffedc2`<br>`0x97ffeb18`<br>`0x97ffec08`<br>`0x97ffeac9` | `mov x3, #0x480`<br>`ldr x1, [x24, #0xd70]` (`"/usr/data/lut/"`)<br>`ldr x0, [x0, #0xfb8]` (`"/dev/nflasha20"` -> P1 `"/dev/nflasha30"`)<br>`movk x3, #0xc0ed, lsl #16` (`0xc0ed0480`)<br>`bl 0x144f0 <mount@plt>`<br>`cbz w0, 0x19714`<br>`bl 0x14df0 <__errno_location@plt>`<br>`bl 0x14350 <strerror@plt>`<br>`bl 0x14730 <SetupFileLogTextRec@plt>` (line `304`)<br>`bl 0x14270 <osal_rcv_msg_tmo@plt>` (`0x01de05a5`) | `cbz w0, 0x19714` 直接跳過錯誤分支，**0 次錯誤日誌**，進入 `osal_rcv_msg_tmo(0x01de05a5)` 正常消息循環，`/usr/data/lut/` VFAT 持久化完全可用。 | 讀取 `*errno` -> `strerror` -> 記錄 1 條 `[InfraSetupFile][ERR]:SetupFile::RcvThread:304: mount error.`，隨後**自然順序落入 `0x19714 -> 0x19744` 消息循環**（零異常/零崩潰，僅缺失 LUT VFAT 持久化）。 |
+| `libInfraKikiLogGenerator.so`<br>`KikiLogGenerator_init_ope` (`0x3dfc`) -> `KikiLogGenerator_res_ope` (`0x3cb0..0x3df8`) | `0x3d04`<br>`0x3d34`<br>`0x3d3c`<br>`0x3d48`<br>`0x3d4c`<br>`0x3d6c`<br>`0x3d70`<br>`0x3d7c`<br>`0x3d80`<br>`0x3df0` | `0x97fff907`<br>`0xd2809203`<br>`0xf2b81da3`<br>`0x97fff8ba`<br>`0x910da280`<br>`0x97fff8ed`<br>`0x340000a0`<br>`0x7100441f`<br>`0x54000301`<br>`0xd65f03c0` | `bl 0x2120 <mkdir@plt>` (`"/etc/opelog/"`, `0770`)<br>`mov x3, #0x490`<br>`movk x3, #0xc0ed, lsl #16` (`0xc0ed0490`)<br>`bl 0x2030 <mount@plt>` (`"/dev/nflasha21"`, `"/etc/opelog/"`, `"vfat"`)<br>**`add x0, x20, #0x368`**（直接覆蓋 `x0`，未檢查 `mount` 返回值）<br>`bl 0x2120 <mkdir@plt>` (`"/etc/opelog/logs/"`)<br>`cbz w0, 0x3d84`<br>`cmp w0, #0x11` (`EEXIST`)<br>`b.ne 0x3de0`（乾淨尾聲）<br>`ret` | `mount` 成功後 `mkdir("/etc/opelog/logs/")` 返回 `0`，按 Backup 鍵 `0x0110000c` 創建 `/etc/opelog/logs/000/`..`002/` 並於 `0x3df0` 乾淨返回（`SP` 守恆）。 | `0x3d4c` 忽略 `mount = -1`，隨後 `mkdir("/etc/opelog/logs/")` 在只讀根文件系統返回 `-1`（`EROFS=30 != 0x11`），由 `0x3d80 b.ne 0x3de0` **乾淨跳轉函數尾聲並於 `0x3df0` 返回**（零異常/零崩潰，僅停用運行日誌落盤）。 |
+
+Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）：
+
+| 庫名 | Unicorn 場景 ID | `mount_rc` / `errno` | 錯誤分支 / 日誌計數 | 後續控制流落點 / 創建目錄 | `abort_or_fault` | 結論 |
+| --- | --- | :---: | :---: | --- | :---: | :---: |
+| `libInfraSetupFile.so` | `P1_ADAPTED_MOUNT_OK` | `0` / `0` | `False` / `0` | `osal_rcv_msg_tmo(0x01de05a5)` | `False` | PASS |
+| `libInfraSetupFile.so` | `UNADAPTED_P20_MOUNT_ENOENT` | `-1` / `2 (ENOENT)` | `True` / `1` (`line 304`) | 落入 `0x19714 -> osal_rcv_msg_tmo(0x01de05a5)` | `False` | PASS |
+| `libInfraSetupFile.so` | `UNADAPTED_P20_MOUNT_EINVAL` | `-1` / `22 (EINVAL)` | `True` / `1` (`line 304`) | 落入 `0x19714 -> osal_rcv_msg_tmo(0x01de05a5)` | `False` | PASS |
+| `libInfraKikiLogGenerator.so` | `P2_LOOPBACK_MOUNT_OK` | `0` / `0` | `False` / `0` | 創建 `/etc/opelog/logs/{000,001,002}/` -> `0x3df0 ret` (`SP` 守恆) | `False` | PASS |
+| `libInfraKikiLogGenerator.so` | `UNADAPTED_P21_MOUNT_ENOENT_EROFS` | `-1` / `2 -> 30 (EROFS)` | `mkdir != EEXIST` | `0x3d80 -> 0x3de0 -> 0x3df0 ret`（`subdirs=()`，`SP` 守恆） | `False` | PASS |
+| `libInfraKikiLogGenerator.so` | `UNADAPTED_P21_MOUNT_EINVAL_EROFS` | `-1` / `22 -> 30 (EROFS)` | `mkdir != EEXIST` | `0x3d80 -> 0x3de0 -> 0x3df0 ret`（`subdirs=()`，`SP` 守恆） | `False` | PASS |
+
+### 6.2 核驗維度 B：跨機型 `BK4\0` 備份模式審計與零寫閃存 RAM-Shadow `BK4\0` 合成校驗器
+
+1. **跨機型 Backup 庫與數據種子契約核驗**：
+   - **ABI 兼容性**：FX6 6.01 `libbackup.so`（`14,232 B`，SHA-256 `e003e2d8a1f42fdf629dda012a01f225940c016b2ab4dbf482a761378e8d286f`，導出 **56 個** `Backup_*`/`backup_*` 符號）為 FX3 `libbackup.so`（`18,344 B`，SHA-256 `5c1ede86e363bbc718063299833b905985f4a254f5b4d25ad81fce62e253daeb`，導出 **58 個**符號）的 **100% 嚴格子集**（`missing_in_fx3 = ()`，FX3 僅新增 `Backup_protect_data_ash` 與 `Backup_sync_protect_data`）；同時核驗 `libBackupManager.so`（`10,272 B`，SHA-256 `ef95ca41dadcad9a732b1b1f75e0f9de994093222bd3613c15dbf55ee4bdba9e`）導出 `_Z11BkDmn_writejPKvi` 與 `backup-section-audit.json`（`.text+0x75c` = 文件偏移 `0x7c4`）。
+   - **關鍵跨機型差異定位**：對比 FX6 `CX95898_NTSC.bin`（`2,253,333 B`，`840` 子系統 / `40,647` 鍵）與 FX3 `FX3-CX95900_ALLLANG-Backup.bin`（`2,229,740 B`，`819` 子系統 / `35,668` 鍵）及 `backup-key-values.txt`：
+     - **存儲槽位映射（`0x00cf0000..0x00cf00bf` + `0x807b002b`）**：FX3 在第 3 組槽位（`0x00cf0080`）攜帶 `mediaId = 0x1002`（`devId = 0xd51b`），而 FX6 `libmpr.so`（`libXavcMxfGetSlotTypeFromMediaId`）僅允許雙卡槽 `{0x1000, 0x1010}`（遇 `0x1002` 觸發斷言）；RAM-Shadow 覆蓋層保留 `0x1000`（Slot A）與 `0x1010`（Slot B）並將第 3 槽清零裁剪為 `0x0000`，同時提供 16B `0x807b002b` Dual-Slot 描述符。
+     - **顯示面板路由（`0x02cf0214` / `0x02cf0218`）**：FX6 為 1 字節枚舉（`00` / `01`），FX3 為 4 字節重複值（`16161616` / `19191919`），RAM-Shadow 覆蓋層精確提供 FX6 契約的 1B `0x00` / `0x01`。
+2. **零寫閃存 RAM-Shadow `BK4\0` 容器合成與雙重校驗結果**：
+   - **確定性產物**：容器總長 **`20,588 B`**，跨 840 個子系統描述符合成 **199 個**冷啟動與雙槽兼容屬性鍵，確定性 SHA-256 為 **`e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41`**。
+   - **雙層校驗和與安全不變量**：外層 16 字節 `BK4\0` 頭通過 `loader_nor.bin`（`0xfe04d514`）32 位字節累加校驗和與 `fx3_safety.boot_contracts.parse_bk4_record` 核驗；內層全部變長屬性通過 `CRC-16/CCITT-FALSE`（`attr = 0x00c0`）逐鍵校驗；強制鎖定 `flash_write_allowed = False`（物理 `p2:/setting/Backup.bin` 零修改）且 `0x00fa0080` 偏移 `8` 選擇字節恆為 **`0x00`**（Normal Boot `p3`：`\av-cam.bin` / `\initrd.img` / `\vmlinux.bin`，`strict_loader_selectable = False`），並包含 `0x00fa0028 = 0x429200000` 與 `0x00fa005d = 0x100000` FixedArea 契約。
+   - **6 項負向突變攔截全通過**：篡改魔數（`BK3\0`）、截斷載荷、篡改外層 32 位校驗和、將 `0x00fa0080` byte 8 改為 `0x01`（Update Mode 紅線）、注入非法媒體槽位 ID（`0x1002` / `0x2000`）以及置位 `flash_write_allowed = True` 均被 `audit_ram_shadow_bk4` 100% 攔截。
 
 ---
 
-## 7. 驗收測試結果
+## 7. 端到端候選包乾跑與 12 道安全門聯調
 
-1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**28 / 28 OK**
-2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**10 / 10 OK**
-3. CLI `verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`feature_routing_ok = true`，`all_12_gates_verified = true`，`rollback_drill_emmc_writes = 0`。
+| 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
+| --- | --- | :---: | --- | :---: | :---: |
+| **合法完整候選包乾跑（含五大功能路由 + `U4` 掛載容錯 + RAM-Shadow `BK4\0` + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
+| 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
+| 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
+| 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
+| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由或 **`U4` / RAM-Shadow `BK4\0` 備份契約** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+
+---
+
+## 8. 驗收測試結果
+
+1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**32 / 32 OK**
+2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**11 / 11 OK**
+3. CLI `verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`backup_mount_tolerance_ok = true`、`u4_closed = true`、`feature_routing_ok = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
 4. 工作區二進制殘留核驗：零 `.so`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 文件留存。

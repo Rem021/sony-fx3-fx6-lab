@@ -489,6 +489,7 @@ def evaluate_12_safety_gates(
     init2_failsafe_hook: Optional[str] = None,
     candidate_bundle_verified: Optional[bool] = None,
     allow_dry_run_gate12: bool = False,
+    backup_mount_tolerance_ok: Optional[bool] = None,
 ) -> Dict[str, object]:
     """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository and candidate evidence."""
     repo_root = repo_root.resolve()
@@ -628,8 +629,15 @@ def evaluate_12_safety_gates(
             g11_status.startswith("VERIFIED"),
         )
     )
-    if allow_dry_run_gate12 and prior_11_verified and (candidate_bundle_verified is True):
+    if (
+        allow_dry_run_gate12
+        and prior_11_verified
+        and (candidate_bundle_verified is True)
+        and (backup_mount_tolerance_ok is not False)
+    ):
         g12_status = "VERIFIED_OFFLINE_CANDIDATE_DRY_RUN"
+    elif backup_mount_tolerance_ok is False:
+        g12_status = "BLOCKED_BY_BACKUP_OR_MOUNT_TOLERANCE_REDLINE"
     else:
         g12_status = "BLOCKED_BY_SAFETY_REDLINE"
 
@@ -692,7 +700,7 @@ def evaluate_12_safety_gates(
         {
             "gate_id": "G12_persistent_flash_write_authorization",
             "status": g12_status,
-            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup) is completed and verified.",
+            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup) and U4/RAM-shadow BK4 contracts are verified.",
         },
     ]
 
@@ -703,6 +711,7 @@ def evaluate_12_safety_gates(
         "state": "DEFENSIVE_SANDBOX_AND_READONLY_SERVICE_VERIFIED",
         "persistent_write_release": False,
         "is_flash_authorization_or_recovery_certificate": False,
+        "backup_mount_tolerance_ok": backup_mount_tolerance_ok,
         "summary": {
             "total_gates": len(gates),
             "verified_gates": verified_count,

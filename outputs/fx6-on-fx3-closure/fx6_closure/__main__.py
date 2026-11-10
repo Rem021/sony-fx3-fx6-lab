@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure` (Phase 5 Compatibility & 5-Feature Routing Closure)."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 6 U4 Mount-Tolerance, RAM-Shadow BK4 & 5-Feature Closure)."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from .backup_bridge_verifier import verify_p7_backup_bridge
+from .backup_mount_tolerance_verifier import run_backup_mount_tolerance_verification
 from .candidate_builder import DEFAULT_REPO_ROOT, run_offline_candidate_dry_run
 from .feature_routing_verifier import (
     DEFAULT_FX6_DONOR_BIN_DIR,
@@ -191,6 +192,19 @@ def _cmd_verify_feature_routing(
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_backup_mount_contracts(fx6_lib_dir: Path) -> int:
+    rep = run_backup_mount_tolerance_verification(fx6_lib_dir=fx6_lib_dir)
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "u4_closed": rep.dimension_a_mount_tolerance.u4_closed,
+        "dimension_a_mount_tolerance": asdict(rep.dimension_a_mount_tolerance),
+        "dimension_b_backup_contracts": asdict(rep.dimension_b_backup_contracts),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -209,6 +223,9 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "p5_p6_uipc_ok": rep.p5_p6_uipc_unicorn.all_positive_passed and rep.p5_p6_uipc_unicorn.all_negative_captured,
         "p7_backup_bridge_ok": rep.p7_backup_bridge.all_checks_passed,
         "feature_routing_ok": rep.feature_routing_audit.all_checks_passed,
+        "backup_mount_tolerance_ok": rep.backup_mount_tolerance_ok,
+        "u4_closed": rep.backup_mount_tolerance_audit.dimension_a_mount_tolerance.u4_closed,
+        "ram_shadow_bk4_sha256": rep.backup_mount_tolerance_audit.dimension_b_backup_contracts.ram_shadow_bundle_sha256,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -226,7 +243,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 5 Compatibility Closure, 5-Feature Routing Verifier & Stage-A CPIO CLI",
+        description="FX6-on-FX3 Phase 6 Compatibility Closure, U4 Mount-Tolerance, RAM-Shadow BK4 & 5-Feature CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -235,7 +252,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("run-unicorn-audit", "Run Unicorn AArch64 audits across P3, P4, P5, P6, P7, P8, P9, Fan, and Tier-0"),
         ("run-rollback-drill", "Build Stage-A CPIO newc RAM-Overlay and execute 4-Layer Fail-Safe rollback drill"),
         ("verify-feature-routing", "Verify 5 core camera feature routing, ELF64 symbol closure, 16x .cube LUT budget, and dual-slot Unicorn contracts"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-backup-mount-contracts", "Verify U4 storage mount-failure tolerance in Unicorn and synthesize/audit RAM-shadow BK4\\0 contracts"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -257,6 +275,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_run_rollback_drill(args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     if args.cmd == "verify-feature-routing":
         return _cmd_verify_feature_routing(args.fx6_lib_dir, args.fx6_initrd_lib_dir, args.fx6_bin_dir)
+    if args.cmd == "verify-backup-mount-contracts":
+        return _cmd_verify_backup_mount_contracts(args.fx6_lib_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

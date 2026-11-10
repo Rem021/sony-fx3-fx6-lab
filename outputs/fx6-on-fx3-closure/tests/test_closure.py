@@ -43,6 +43,22 @@ from fx6_closure.backup_bridge_verifier import (
     verify_kernel_pcidma_entry_signature,
     verify_p7_backup_bridge,
 )
+from fx6_closure.backup_mount_tolerance_verifier import (
+    FX6_DUAL_SLOT_MEDIA_IDS,
+    KEY_DUAL_SLOT_MEDIA_SHADOW,
+    KEY_FA0080_BOOT_DESC,
+    KEY_FIXED_AREA_SIZE,
+    KEY_FIXED_AREA_TOP,
+    KIKILOG_PINNED_INSNS,
+    SETUPFILE_PINNED_INSNS,
+    audit_cross_model_backup_contracts,
+    audit_ram_shadow_bk4,
+    audit_storage_mount_tolerance,
+    build_canonical_fa0080_normal_boot_table,
+    read_bk4_property_bytes,
+    run_backup_mount_tolerance_verification,
+    synthesize_ram_shadow_bk4,
+)
 from fx6_closure.candidate_builder import COMPLETE_MATRIX_ITEMS, run_offline_candidate_dry_run
 from fx6_closure.feature_routing_verifier import (
     CORE_CAMERA_FEATURE_LIBRARIES,
@@ -477,10 +493,13 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.rollback_drill.all_scenarios_passed)
         self.assertEqual(rep_ok.rollback_drill.total_emmc_writes, 0)
         self.assertTrue(rep_ok.feature_routing_audit.all_checks_passed)
+        self.assertTrue(rep_ok.backup_mount_tolerance_ok)
+        self.assertTrue(rep_ok.backup_mount_tolerance_audit.dimension_a_mount_tolerance.u4_closed)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
         feat_base = rep_ok.feature_routing_audit
+        bmt_base = rep_ok.backup_mount_tolerance_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -489,6 +508,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -503,6 +523,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -514,6 +535,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -526,17 +548,19 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, or 5-Feature Routing -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, or U4/BK4 -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -548,6 +572,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -559,6 +584,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -570,10 +596,23 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_feat.blocked_gate_ids)
+
+        rep_bad_bmt = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            corrupt_backup_mount_tolerance=True,
+        )
+        self.assertFalse(rep_bad_bmt.candidate_ready)
+        self.assertFalse(rep_bad_bmt.backup_mount_tolerance_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bmt.blocked_gate_ids)
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -983,6 +1022,177 @@ class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
         self.assertTrue(payload["dimension_b_lut_capacity"]["fits_in_fx3_p30"])
         self.assertTrue(payload["dimension_b_setupfile_mount"]["verified"])
         self.assertTrue(payload["dimension_c_contracts_unicorn"]["all_checks_passed"])
+
+
+class TestPhase6BackupMountToleranceVerifier(unittest.TestCase):
+    """Verify Phase 6 U4 Storage Mount-Tolerance Audit & RAM-Shadow BK4\\0 Schema Synthesizer."""
+
+    def test_dimension_a_u4_storage_mount_tolerance_static_and_unicorn(self) -> None:
+        rep_a = audit_storage_mount_tolerance()
+        self.assertTrue(rep_a.all_checks_passed)
+        self.assertTrue(rep_a.u4_closed)
+        self.assertTrue(rep_a.setupfile_sha256_verified)
+        self.assertTrue(rep_a.kikilog_sha256_verified)
+        self.assertEqual(len(rep_a.setupfile_pinned_insns), len(SETUPFILE_PINNED_INSNS))
+        self.assertEqual(len(rep_a.kikilog_pinned_insns), len(KIKILOG_PINNED_INSNS))
+        for chk in rep_a.setupfile_pinned_insns + rep_a.kikilog_pinned_insns:
+            self.assertTrue(chk.matched, f"Instruction mismatch at {hex(chk.vma)}: {chk}")
+
+        # Verify SetupFile::RcvThread Unicorn cases (mount_rc == 0 vs -1 ENOENT / EINVAL)
+        sf_ok, sf_enoent, sf_einval = rep_a.setupfile_unicorn_cases
+        self.assertEqual(sf_ok.observed_mount_source, "/dev/nflasha30")
+        self.assertEqual(sf_ok.observed_mount_target, "/usr/data/lut/")
+        self.assertEqual(sf_ok.observed_mount_flags, 0xC0ED0480)
+        self.assertFalse(sf_ok.error_branch_entered)
+        self.assertEqual(sf_ok.error_log_calls, 0)
+        self.assertTrue(sf_ok.reached_msg_loop)
+        self.assertEqual(sf_ok.observed_queue_id, 0x01DE05A5)
+        self.assertFalse(sf_ok.abort_or_fault)
+
+        for err_case in (sf_enoent, sf_einval):
+            self.assertEqual(err_case.observed_mount_source, "/dev/nflasha20")
+            self.assertTrue(err_case.error_branch_entered)
+            self.assertEqual(err_case.error_log_calls, 1)
+            self.assertEqual(err_case.logged_func_name, "RcvThread")
+            self.assertEqual(err_case.logged_line, 304)
+            self.assertTrue(err_case.reached_msg_loop)
+            self.assertFalse(err_case.abort_or_fault)
+
+        # Verify KikiLogGenerator_init_ope -> KikiLogGenerator_res_ope Unicorn cases
+        kl_ok, kl_enoent, kl_einval = rep_a.kikilog_unicorn_cases
+        self.assertEqual(kl_ok.observed_mount_source, "/dev/nflasha21")
+        self.assertEqual(kl_ok.observed_mount_target, "/etc/opelog/")
+        self.assertEqual(kl_ok.observed_mount_flags, 0xC0ED0490)
+        self.assertFalse(kl_ok.mount_rc_checked_by_caller)
+        self.assertFalse(kl_ok.early_exit_on_logs_mkdir)
+        self.assertEqual(
+            kl_ok.subdirs_created,
+            ("/etc/opelog/logs/000/", "/etc/opelog/logs/001/", "/etc/opelog/logs/002/"),
+        )
+        self.assertTrue(kl_ok.sp_preserved)
+        self.assertFalse(kl_ok.abort_or_fault)
+
+        for err_kl in (kl_enoent, kl_einval):
+            self.assertTrue(err_kl.early_exit_on_logs_mkdir)
+            self.assertEqual(err_kl.subdirs_created, ())
+            self.assertTrue(err_kl.sp_preserved)
+            self.assertFalse(err_kl.abort_or_fault)
+
+    def test_dimension_b_cross_model_backup_audit_and_ram_shadow_bk4_synthesizer(self) -> None:
+        rep_b = audit_cross_model_backup_contracts()
+        self.assertTrue(rep_b.all_checks_passed)
+        self.assertTrue(rep_b.fx6_libbackup_sha256_verified)
+        self.assertTrue(rep_b.fx6_libbackup_manager_sha256_verified)
+        self.assertTrue(rep_b.fx3_libbackup_sha256_verified)
+        self.assertEqual(rep_b.fx6_backup_export_count, 56)
+        self.assertEqual(rep_b.fx3_backup_export_count, 58)
+        self.assertTrue(rep_b.fx3_exports_superset_of_fx6)
+        self.assertTrue(rep_b.backup_section_receipt_verified)
+        self.assertTrue(rep_b.backup_key_values_receipt_verified)
+        self.assertEqual(rep_b.fx6_template_subsystems, 840)
+        self.assertEqual(rep_b.fx3_seed_subsystems, 819)
+        self.assertEqual(rep_b.fx3_extra_slot2_media_id, 0x1002)
+
+        # Deterministic in-RAM synthesis check
+        b1 = synthesize_ram_shadow_bk4(flash_write_allowed=False)
+        b2 = synthesize_ram_shadow_bk4(flash_write_allowed=False)
+        self.assertEqual(b1.sha256, b2.sha256)
+        self.assertEqual(b1.bk4_bytes, b2.bk4_bytes)
+        self.assertFalse(b1.flash_write_allowed)
+        self.assertEqual(b1.target_backing, "RAM_TMPFS_SHADOW_ONLY")
+        self.assertEqual(b1.active_byte8_selector, 0x00)
+
+        audit = audit_ram_shadow_bk4(b1.bk4_bytes, flash_write_allowed=False)
+        self.assertTrue(audit.valid, audit.errors)
+        self.assertTrue(audit.flash_write_prohibited)
+        self.assertTrue(audit.bk4_header_valid)
+        self.assertTrue(audit.selector_byte8_zero_ok)
+        self.assertTrue(audit.strict_loader_unselectable_ok)
+        self.assertTrue(audit.checksum32_ok)
+        self.assertTrue(audit.all_property_crc16_ok)
+        self.assertTrue(audit.fixed_area_keys_ok)
+        self.assertTrue(audit.fa0080_normal_boot_p3_ok)
+        self.assertTrue(audit.dual_slot_media_ids_ok)
+        self.assertTrue(audit.boot_screen_enum_ok)
+        self.assertEqual(audit.observed_slot_media_ids, FX6_DUAL_SLOT_MEDIA_IDS)
+
+        # Verify direct key extraction from synthesized BK4\0 container
+        self.assertEqual(len(read_bk4_property_bytes(b1.bk4_bytes, KEY_FIXED_AREA_TOP) or b""), 8)
+        self.assertEqual(len(read_bk4_property_bytes(b1.bk4_bytes, KEY_FIXED_AREA_SIZE) or b""), 8)
+        self.assertEqual(len(read_bk4_property_bytes(b1.bk4_bytes, KEY_FA0080_BOOT_DESC) or b""), 9216)
+        self.assertEqual(len(read_bk4_property_bytes(b1.bk4_bytes, KEY_DUAL_SLOT_MEDIA_SHADOW) or b""), 16)
+
+    def test_ram_shadow_bk4_rejects_flash_write_corrupted_magic_truncation_byte8_and_bad_slots(self) -> None:
+        import struct as _st
+
+        with self.assertRaises(ValueError):
+            synthesize_ram_shadow_bk4(flash_write_allowed=True)
+
+        good = synthesize_ram_shadow_bk4(flash_write_allowed=False)
+        self.assertFalse(audit_ram_shadow_bk4(good.bk4_bytes, flash_write_allowed=True).valid)
+
+        # 1. Corrupted BK4\0 magic
+        bad_magic = bytearray(good.bk4_bytes)
+        bad_magic[0x0C:0x10] = b"BK9\x00"
+        res_magic = audit_ram_shadow_bk4(bytes(bad_magic))
+        self.assertFalse(res_magic.valid)
+        self.assertFalse(res_magic.bk4_header_valid)
+
+        # 2. Truncated payload
+        res_trunc = audit_ram_shadow_bk4(good.bk4_bytes[:-64])
+        self.assertFalse(res_trunc.valid)
+
+        # 3. Non-zero byte-8 boot/record selector (even with valid 32-bit BK4 checksum!)
+        bad_b8 = synthesize_ram_shadow_bk4(active_byte8=0x01)
+        res_b8 = audit_ram_shadow_bk4(bad_b8.bk4_bytes)
+        self.assertFalse(res_b8.valid)
+        self.assertTrue(res_b8.checksum32_ok)
+        self.assertFalse(res_b8.selector_byte8_zero_ok)
+        self.assertFalse(res_b8.strict_loader_unselectable_ok)
+
+        # 4. Corrupted 16-bit per-property CRC16 (while recomputing outer 32-bit BK4 checksum!)
+        bad_crc16 = bytearray(good.bk4_bytes)
+        bad_crc16[-4] ^= 0xFF
+        new_sum32 = (sum(bad_crc16[0:0x20]) + sum(bad_crc16[0x24:])) & 0xFFFFFFFF
+        _st.pack_into("<I", bad_crc16, 0x20, new_sum32)
+        res_crc16 = audit_ram_shadow_bk4(bytes(bad_crc16))
+        self.assertFalse(res_crc16.valid)
+        self.assertTrue(res_crc16.checksum32_ok)
+        self.assertFalse(res_crc16.all_property_crc16_ok)
+
+        # 5. Violated 0x00fa0080 Normal Boot p3 invariant (partition mutated 3 -> 1)
+        bad_fa = bytearray(build_canonical_fa0080_normal_boot_table())
+        _st.pack_into("<I", bad_fa, 0x10, 1)  # Slot 0 (\av-cam.bin) pointed at p1 instead of p3
+        bad_p3_bundle = synthesize_ram_shadow_bk4(fa0080_table=bytes(bad_fa))
+        res_p3 = audit_ram_shadow_bk4(bad_p3_bundle.bk4_bytes)
+        self.assertFalse(res_p3.valid)
+        self.assertFalse(res_p3.fa0080_normal_boot_p3_ok)
+
+        # 6. Invalid MediaConfig slot ID (`0x1002` instead of `0x1010`)
+        bad_slots_bundle = synthesize_ram_shadow_bk4(slot_a_media_id=0x1000, slot_b_media_id=0x1002)
+        res_slots = audit_ram_shadow_bk4(bad_slots_bundle.bk4_bytes)
+        self.assertFalse(res_slots.valid)
+        self.assertFalse(res_slots.dual_slot_media_ids_ok)
+
+        # 7. Invalid FX3 boot-screen enum (`0x16` instead of `{0, 1}`)
+        bad_enum_bundle = synthesize_ram_shadow_bk4(boot_screen_214=0x16)
+        res_enum = audit_ram_shadow_bk4(bad_enum_bundle.bk4_bytes)
+        self.assertFalse(res_enum.valid)
+        self.assertFalse(res_enum.boot_screen_enum_ok)
+
+    def test_cli_verify_backup_mount_contracts_subcommand(self) -> None:
+        full_rep = run_backup_mount_tolerance_verification()
+        self.assertTrue(full_rep.all_checks_passed)
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-backup-mount-contracts"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["u4_closed"])
+        self.assertTrue(payload["dimension_b_backup_contracts"]["ram_shadow_audit"]["valid"])
 
 
 if __name__ == "__main__":

@@ -17,9 +17,9 @@
 ## 1. 715 — Paint / On-Screen Keyboard 文本输入浮层（Page 4，`0x02e92c18`，102 行）
 
 - **导出文件**：`menu-715-paintoverlay102.png`
-- **Guest 渲染统计**：`synced=True seq=2 text_ok=7 fill=66 icon=3`
-- **像素统计**：`nz=170,108`、纯白像素 `1,347`、主色分布 `0xff222222: 114,476`、`0xff333333: 48,416`、`0xff00aaff: 2,160`、`segv=0`。
-- **结构验证**：66 个原生 `view_fill` 完整画出 26 个字母键帽（`No41_KEY_A..Z`）、模式切换键（`Upper/Lower/Numeric/Symbol`）、底部操作键（`Cancel/Done/Space/Backspace/Left/Right`）、双层输入框（`No16_TEXT_BOX` / `No17_TEXT_BOX`）及 27 个输入游标刻度（`No140_TEXT_BOX_INPUT_POS_1..27`），7 条真实文本标签与 3 个图标全部贴出。
+- **Guest 渲染统计**：`synced=True seq=2 text_ok=7 fill=67 icon=3`
+- **像素统计**：`nz=435,024`（完整 `912×477` 面板）、纯白像素 `1,347`、主色分布 `0xdf111111: 264,916`、`0xff222222: 114,476`、`0xff333333: 48,416`、`segv=0`。
+- **结构验证**：67 个原生 `view_fill` 完整画出 `912×477` 面板底色、26 个字母键帽（`No41_KEY_A..Z`）、模式切换键（`Upper/Lower/Numeric/Symbol`）、底部操作键（`Cancel/Done/Space/Backspace/Left/Right`）、双层输入框（`No16_TEXT_BOX` / `No17_TEXT_BOX`）及 27 个输入游标刻度（`No140_TEXT_BOX_INPUT_POS_1..27`），7 条真实文本标签与 3 个图标全部贴出。
 
 ## 2. 716 — Media Status 存储卡状态页（Page 58，`0x02eaad68`，48 行）
 
@@ -45,9 +45,9 @@
 ## 5. 719–722 — Media Format Confirm / Date Picker / Direct Menu / HUD Tracking
 
 - **719 (`menu-719-mediafmt49.png`)**：Page 74（`0x02eafdd8`，49 行，Media Format Confirm 双栏页）— `text_ok=1 fill=32 icon=2 nz=438,675 white=386 segv=0`。
-- **720 (`menu-720-touchdate16.png`)**：Page 28（`0x02ea2e48`，16 行，Date/Time 触控滚轮选择页）— `text_ok=6 fill=7 icon=2 nz=45,793 white=613 segv=0`。
+- **720 (`menu-720-touchdate16.png`)**：Page 28（`0x02ea2e48`，16 行，Date/Time 触控滚轮选择页）— `text_ok=6 fill=8 icon=2 nz=435,024 white=613 segv=0`。
 - **721 (`menu-721-pg5direct40.png`)**：Page 5（`0x02e94c28`，40 行，Direct Menu List 浮层框）— `text_ok=0 fill=31 icon=0 nz=432,317 segv=0`。
-- **722 (`menu-722-hudtrack20.png`)**：Page 8（`0x02e95cc0`，20 行，HUD Tracking）+ Page 17（`0x02e9c8c0`，20 行，Transition）— `text_ok=11 fill=6 icon=1 nz=552,960 white=111 segv=0`。
+- **722 (`menu-722-hudtrack20.png`)**：Page 8（`0x02e95cc0`，20 行，HUD Tracking）+ Page 7（`0x02e959a8`，7 行）— `text_ok=17 fill=0 icon=1 nz=28,970 segv=0`。
 
 ---
 
@@ -55,13 +55,13 @@
 
 | 编号 | 页面描述 | 表偏移 / 行数 | PNG 文件 | `text_ok / fill / icon` | `nz` | 纯白像素 | `segv` |
 |---|---|---|---|---|---:|---:|---:|
-| 715 | Paint / Keyboard 文本输入浮层 | `0x02e92c18` (102) | `menu-715-paintoverlay102.png` | `7 / 66 / 3` | 170,108 | 1,347 | 0 |
+| 715 | Paint / Keyboard 文本输入浮层 | `0x02e92c18` (102) | `menu-715-paintoverlay102.png` | `7 / 67 / 3` | 435,024 | 1,347 | 0 |
 | 716 | Media Status 存储卡状态页 | `0x02eaad68` (48) | `menu-716-mediastatus48.png` | `11 / 18 / 7` | 461,624 | 1,731 | 0 |
 | 717 | Clip 12 宫格缩略图浏览页 | `0x02e9b798` (39) | `menu-717-clipgrid39.png` | `9 / 16 / 9` | 552,960 | 766 | 0 |
 | 718 | Status Icon / Radio Button 页 | `0x02eb44b8` (19) | `menu-718-statusicon19.png` | `7 / 11 / 5` | 435,024 | 1,915 | 0 |
 | 719 | Media Format Confirm 双栏页 | `0x02eafdd8` (49) | `menu-719-mediafmt49.png` | `1 / 32 / 2` | 438,675 | 386 | 0 |
-| 720 | Date/Time 触控选择页 | `0x02ea2e48` (16) | `menu-720-touchdate16.png` | `6 / 7 / 2` | 45,793 | 613 | 0 |
+| 720 | Date/Time 触控选择页 | `0x02ea2e48` (16) | `menu-720-touchdate16.png` | `6 / 8 / 2` | 435,024 | 613 | 0 |
 | 721 | Direct Menu List 浮层框 | `0x02e94c28` (40) | `menu-721-pg5direct40.png` | `0 / 31 / 0` | 432,317 | 0 | 0 |
-| 722 | HUD Tracking + Transition | `0x02e95cc0` (40) | `menu-722-hudtrack20.png` | `11 / 6 / 1` | 552,960 | 111 | 0 |
+| 722 | HUD Tracking + Page 7 HUD | `0x02e95cc0` (27) | `menu-722-hudtrack20.png` | `17 / 0 / 1` | 28,970 | 0 | 0 |
 
 前序报告：`EVIDENCE-711-714.md`

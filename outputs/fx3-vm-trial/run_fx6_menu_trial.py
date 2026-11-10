@@ -79,6 +79,14 @@ PAGE_NAMES = {
     13: "Media Status SSA/SSB/SSP p58 (0x2eaad68, 48 rows)",
     14: "Clip Thumbnail Browser 4x3 Grid p12 (0x2e9b798, 39 rows)",
     15: "Status Icon / Date Picker / HUD Tracking (0x2eb44b8 + 0x2ea2e48 + 0x2e95cc0)",
+    16: "Full 253-Row Main Viewfinder HUD p10 (0x2e96608, 253 rows)",
+    17: "TC / Audio Level Meter / 6-Btn Status p11 (0x2e9ad78, 35 rows)",
+    18: "6-Line Change Message Dialog p81 (0x2eb2d60, 10 rows)",
+    19: "Wireless LAN / SSID Scan List p43 (0x2ea5560, 11 rows)",
+    20: "3-Col Setting List p66 / p73 (0x2eacdc0 + 0x2eafac0)",
+    21: "OK/Cancel Confirm Dialog p72 / p93 (0x2eaf7a8 + 0x2eb4a58)",
+    22: "Split-Pane Setting + 2nd-Layer Banner p77 / p112 (0x2eb1530 + 0x2eb8760)",
+    23: "15-Btn 3x5 Menu Grid p64 / 10-Btn Media Grid p57 (0x2eac280 + 0x2eaa810)",
 }
 
 LEGACY_PAGE_MAP = {
@@ -472,7 +480,7 @@ class FX6LiveGpe0Session:
                 if isinstance(p_val, str) and p_val.lower() in LEGACY_PAGE_MAP:
                     self.page = LEGACY_PAGE_MAP[p_val.lower()]
                 else:
-                    self.page = int(p_val) % 16
+                    self.page = int(p_val) % 24
             if "sel_box" in body:
                 self.sel_box = int(body["sel_box"])
             if "menu_cat" in body:
@@ -897,6 +905,14 @@ HTML_UI = """<!DOCTYPE html>
         <button onclick="setPage(13)" id="pbtn-13">13. Media 状态页48</button>
         <button onclick="setPage(14)" id="pbtn-14">14. Clip 12宫格缩略图</button>
         <button onclick="setPage(15)" id="pbtn-15">15. StatusIcon/Date/Track</button>
+        <button onclick="setPage(16)" id="pbtn-16">16. HUD 253行完整主界面</button>
+        <button onclick="setPage(17)" id="pbtn-17">17. TC/电平表/6键状态页</button>
+        <button onclick="setPage(18)" id="pbtn-18">18. 6行通知对话框 p81</button>
+        <button onclick="setPage(19)" id="pbtn-19">19. Wi-Fi SSID 扫描页</button>
+        <button onclick="setPage(20)" id="pbtn-20">20. 三列设置列表 p66/73</button>
+        <button onclick="setPage(21)" id="pbtn-21">21. 确认/执行弹窗 p72/93</button>
+        <button onclick="setPage(22)" id="pbtn-22">22. 双栏设置/横幅 p77/112</button>
+        <button onclick="setPage(23)" id="pbtn-23">23. 15键/10键宫格 p64/57</button>
       </div>
 
       <h3>三层菜单 11 大分类直达 (TABLE 0x2ea02f8 + string_english_2.uxc)</h3>
@@ -972,7 +988,7 @@ async function updateUI(st, forceImg) {
   document.getElementById('st-src').textContent = st.png_source;
   document.getElementById('serial-box').textContent = st.serial_tail || '(等待串口输出...)';
 
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 24; i++) {
     const b = document.getElementById('pbtn-' + i);
     if (b) b.className = (st.page === i) ? 'active' : '';
   }

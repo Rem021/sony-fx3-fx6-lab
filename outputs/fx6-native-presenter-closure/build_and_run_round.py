@@ -41,6 +41,11 @@ GUEST_DTB = pathlib.Path(
     "vm-optimization-20261103/runtime/try2-usability/"
     "vmopt-20261103-try2-long-media-gap-v2/guest.dtb"
 )
+DONOR_BK4_NTSC = pathlib.Path(
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
+    "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/"
+    "SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
+)
 
 FB_W = 1024
 FB_H = 540
@@ -96,6 +101,7 @@ def build_binaries(
     restore_infra70: int,
     restore_all_early: int,
     reply_all_200d: int,
+    initial_setting_done: int = 0,
 ) -> Tuple[bytes, bytes, Dict[str, Any]]:
     cache_dir = build_dir / "zig-cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -115,6 +121,7 @@ def build_binaries(
         "-fno-stack-protector",
         "-O2",
         "-g",
+        f"-DFX6_ROUND={fx6_round}",
         str(HERE / "appfw-launch.c"),
         "-o",
         str(launcher_out),
@@ -140,6 +147,7 @@ def build_binaries(
         f"-DFX6_RESTORE_INFRA70={restore_infra70}",
         f"-DFX6_RESTORE_ALL_EARLY={restore_all_early}",
         f"-DFX6_REPLY_ALL_200D={reply_all_200d}",
+        f"-DFX6_INITIAL_SETTING_DONE={initial_setting_done}",
         "-Wl,-soname,libgrm-fbinit9.so",
         str(HERE / "libgrm-fbinit9.c"),
         "-o",
@@ -162,12 +170,35 @@ def build_binaries(
     return launcher_bytes, shim_bytes, meta
 
 
+def make_cpio_member(name: str, payload: bytes, ino: int = 0x999900) -> bytes:
+    name_b = name.encode("utf-8") + b"\x00"
+    hdr = (
+        "070701"
+        f"{ino:08x}"
+        f"{0o100644:08x}"
+        f"{0:08x}{0:08x}{1:08x}{0:08x}"
+        f"{len(payload):08x}"
+        f"{0:08x}{0:08x}{0:08x}{0:08x}"
+        f"{len(name_b):08x}"
+        f"{0:08x}"
+    ).encode("ascii")
+    out = bytearray(hdr) + name_b
+    if len(out) % 4:
+        out += b"\x00" * (4 - (len(out) % 4))
+    out += payload
+    if len(out) % 4:
+        out += b"\x00" * (4 - (len(out) % 4))
+    return bytes(out)
+
+
 def patch_cpio(
     parent_cpio: pathlib.Path,
     out_cpio: pathlib.Path,
     replacements: Dict[str, bytes],
+    additions: Optional[Dict[str, bytes]] = None,
 ) -> Dict[str, Any]:
     replaced_seen: List[str] = []
+    added_seen: List[str] = []
     with parent_cpio.open("rb") as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as raw:
         rows = scan_cpio(raw)
         with out_cpio.open("wb") as fo:
@@ -175,6 +206,10 @@ def patch_cpio(
             for r in rows:
                 fo.write(raw[cursor : r["header"]])
                 name = r["name"]
+                if name == "TRAILER!!!" and additions and not added_seen:
+                    for idx, (add_name, add_payload) in enumerate(additions.items()):
+                        fo.write(make_cpio_member(add_name, add_payload, 0x999900 + idx))
+                        added_seen.append(add_name)
                 if name in replacements:
                     payload = replacements[name]
                     header = bytearray(raw[r["header"] : r["header"] + 110])
@@ -194,6 +229,7 @@ def patch_cpio(
         "parent_cpio": str(parent_cpio),
         "out_cpio_bytes": out_cpio.stat().st_size,
         "replaced_members": replaced_seen,
+        "added_members": added_seen,
     }
 
 
@@ -266,7 +302,13 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     important_prefixes = (
         "FX6_NATIVE_FAITHFUL_SHIM_LOADED",
         "FX6_MWF_",
+        "FX6_IMCFG_",
+        "FX6_INFRA_INPUT_",
+        "FX6_BK4_",
         "FX6_BACKUP_READ8",
+        "FX6_BACKUP_MEDIA",
+        "FX6_BACKUP_NREAD_MULTI",
+        "FX6_BACKUP_QUERY",
         "FX6_PATCH_",
         "FX6_APP_CONFIG_",
         "FX6_QUEUE_OBS_LIBRARY",
@@ -274,12 +316,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_QUEUE_OBS_ENTER",
         "FX6_QUEUE_OBS_EXIT",
         "FX6_UIPC_SND",
+        "FX6_UIPC_SYNC_",
         "FX6_UIPC_COMPLETION_",
         "FX6_MILESTONE_",
         "FX6_SCREEN_MGR_STATE",
+        "FX6_APPFW_MEDIA_SLOTS",
         "FX6_PRESENTER_SLOT",
         "FX6_TRIGGER_PUMP_",
         "FX6_UX_SCREEN_AREA",
+        "FX6_UX_SCREEN_TREE",
         "FX6_GRM_",
         "FX6_BMP_",
         "FX6_FONT_",
@@ -359,8 +404,12 @@ def run_once(args: argparse.Namespace) -> int:
             restore_infra70=args.restore_infra70,
             restore_all_early=args.restore_all_early,
             reply_all_200d=args.reply_all_200d,
+            initial_setting_done=args.initial_setting_done,
         )
         print(f"[{run_id}] Patching temporary CPIO -> {tmp_cpio}...", flush=True)
+        additions: Optional[Dict[str, bytes]] = None
+        if args.round >= 4 and DONOR_BK4_NTSC.exists():
+            additions = {"etc/fx6_chaplin_ntsc.bk4": DONOR_BK4_NTSC.read_bytes()}
         cpio_meta = patch_cpio(
             PARENT_CPIO,
             tmp_cpio,
@@ -368,6 +417,7 @@ def run_once(args: argparse.Namespace) -> int:
                 "usr/bin/appfw-launch": launcher_bytes,
                 "usr/lib/libgrm-fbinit9.so": shim_bytes,
             },
+            additions=additions,
         )
 
         qemu_env = os.environ.copy()
@@ -497,6 +547,7 @@ def run_once(args: argparse.Namespace) -> int:
             "restore_infra70": args.restore_infra70,
             "restore_all_early": args.restore_all_early,
             "reply_all_200d": args.reply_all_200d,
+            "initial_setting_done": args.initial_setting_done,
             "duration_budget_sec": duration,
             "wall_elapsed_sec": elapsed,
             "qemu_pid": proc.pid,
@@ -513,7 +564,8 @@ def run_once(args: argparse.Namespace) -> int:
         )
         print(
             f"[{run_id}] Done in {elapsed}s | threads={milestones['total_threads_seen']} "
-            f"| gpe0_nz={gpe_stats.get('nonzero_pixels')} | counts={milestones['prefix_counts']}",
+            f"| gpe0_nz={gpe_stats.get('nonzero_pixels')} unique_colors={gpe_stats.get('unique_colors')} "
+            f"| counts={milestones['prefix_counts']}",
             flush=True,
         )
         return 0
@@ -547,11 +599,12 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4], required=True)
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=0)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=0)
     ap.add_argument("--reply-all-200d", type=int, choices=[0, 1], default=0)
+    ap.add_argument("--initial-setting-done", type=int, choices=[0, 1], default=0)
     args = ap.parse_args()
     return run_once(args)
 

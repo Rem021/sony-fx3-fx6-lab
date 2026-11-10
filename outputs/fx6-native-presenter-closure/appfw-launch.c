@@ -116,6 +116,93 @@ static void fx6_mwf_lifecycle(void) {
     }
 }
 
+#if defined(FX6_ROUND) && (FX6_ROUND >= 4)
+static void fx6_media_config_lifecycle(void) {
+    void *imcfg = dlopen("/usr/lib/libInfraMediaConfig.so", RTLD_NOW | RTLD_GLOBAL);
+    if (!imcfg) {
+        fprintf(stderr, "FX6_IMCFG_OPEN_FAILED error=%s\n", dlerror());
+        _exit(123);
+    }
+    mwf_init_fn imcfg_init = (mwf_init_fn)dlsym(imcfg, "InfraMediaConfig_Init");
+    Dl_info di;
+    memset(&di, 0, sizeof(di));
+    if (!imcfg_init || !dladdr((void *)imcfg_init, &di) || !di.dli_fbase) {
+        fprintf(stderr, "FX6_IMCFG_SYM_FAILED fn=%p err=%s\n", (void *)imcfg_init, dlerror());
+        _exit(123);
+    }
+    uintptr_t base = (uintptr_t)di.dli_fbase;
+    /* libInfraMediaConfig.so +0x6770 stores InfraMediaConfig* singleton at +0x1c470 */
+    void **singleton_slot = (void **)(base + 0x1c470UL);
+    fprintf(stderr, "FX6_IMCFG_PRE fn=%p base=%p singleton=%p\n",
+            (void *)imcfg_init, di.dli_fbase, *singleton_slot);
+    fflush(stderr);
+
+    imcfg_init();
+
+    void *inst = *singleton_slot;
+    unsigned int slot_cnt = 0, s0_id = 0, s0_dev = 0, s1_id = 0, s1_dev = 0;
+    if (ptr_readable((uintptr_t)inst)) {
+        slot_cnt = *((const uint8_t *)inst + 0x20);
+        const uint8_t *tbl = *(const uint8_t * const *)((const char *)inst + 0x18);
+        if (ptr_readable((uintptr_t)tbl) && slot_cnt >= 1U) {
+            s0_id = *(const uint32_t *)(tbl + 0x00);
+            s0_dev = *(const uint16_t *)(tbl + 0x06);
+        }
+        if (ptr_readable((uintptr_t)tbl) && slot_cnt >= 2U) {
+            s1_id = *(const uint32_t *)(tbl + 0x110);
+            s1_dev = *(const uint16_t *)(tbl + 0x110 + 0x06);
+        }
+    }
+    fprintf(stderr,
+            "FX6_IMCFG_POST singleton=%p slot_count=%u slot0_id=0x%x slot0_dev=0x%x slot1_id=0x%x slot1_dev=0x%x\n",
+            inst, slot_cnt, s0_id, s0_dev, s1_id, s1_dev);
+    fflush(stderr);
+}
+
+static void fx6_infra_input_lifecycle(void) {
+    void *in_lib = dlopen("/usr/lib/libInfraInput.so", RTLD_NOW | RTLD_GLOBAL);
+    if (!in_lib) {
+        fprintf(stderr, "FX6_INFRA_INPUT_OPEN_FAILED error=%s\n", dlerror());
+        return;
+    }
+    typedef void (*in_init_fn)(void);
+    typedef void *(*in_get_fn)(void);
+    in_init_fn fn_init = (in_init_fn)dlsym(in_lib, "infra_input_init");
+    in_get_fn fn_get = (in_get_fn)dlsym(in_lib, "_ZN10InfraInput11GetInstanceEv");
+    if (fn_init) fn_init();
+    void *inst = fn_get ? fn_get() : NULL;
+    int key_cnt = 0;
+    int pw_sw_found = 0;
+    unsigned int pw_sw_status = 0U;
+    if (ptr_readable((uintptr_t)inst)) {
+        key_cnt = *(const int *)((const char *)inst + 0x2c);
+        const uint8_t *cfg = *(const uint8_t * const *)((const char *)inst + 0x20);
+        uint8_t *cache = *(uint8_t * const *)((const char *)inst + 0x38);
+        if (key_cnt > 0 && key_cnt <= 4096 && ptr_readable((uintptr_t)cfg) && ptr_readable((uintptr_t)cache)) {
+            for (int i = 0; i < key_cnt; i++) {
+                uint32_t dev = *(const uint32_t *)(cfg + (size_t)i * 0x30UL + 0x00UL);
+                uint32_t phy_id = *(const uint32_t *)(cfg + (size_t)i * 0x30UL + 0x08UL);
+                uint8_t *ce = cache + (size_t)i * 0x2cUL;
+                uint32_t st = (phy_id == 1U) ? 1U : 0U; /* phy_key_id 1 == PW_SW (Power Switch ON) */
+                *(uint32_t *)(ce + 0x00UL) = dev;
+                *(uint32_t *)(ce + 0x04UL) = phy_id;
+                *(uint32_t *)(ce + 0x08UL) = st;
+                *(uint32_t *)(ce + 0x0cUL) = 0U;
+                *(uint32_t *)(ce + 0x10UL) = 0U;
+                if (phy_id == 1U) {
+                    pw_sw_found = 1;
+                    pw_sw_status = st;
+                }
+            }
+        }
+    }
+    fprintf(stderr,
+            "FX6_INFRA_INPUT_POST inst=%p key_cnt=%d pw_sw_found=%d pw_sw_status=%u\n",
+            inst, key_cnt, pw_sw_found, pw_sw_status);
+    fflush(stderr);
+}
+#endif
+
 static void fix_got_table(void *init_sym, void *sh) {
     Dl_info info;
     if (!dladdr(init_sym, &info) || !info.dli_fbase) {
@@ -232,9 +319,38 @@ int main(void) {
     pre("/usr/lib/libInfraRemote.so");
     pre("/usr/lib/libInfraAccessLog.so");
     pre("/usr/lib/libInfraInterchipDatatrans.so");
+#if defined(FX6_ROUND) && (FX6_ROUND >= 4)
+    {
+        static const char * const k_r4_libs[] = {
+            "/lib/libSTMcmdexecute.so",
+            "/usr/lib/libSysDef.so",
+            "/usr/lib/libcurl.so.4",
+            "/usr/lib/libCertificateManager.so",
+            "/usr/lib/dataflowInfraFramework.so",
+            "/usr/lib/libInfraIndctr.so",
+            "/usr/lib/libEMG.so",
+            "/usr/lib/libGetLog.so",
+            "/usr/lib/libpng.so.16",
+            "/usr/lib/libexpat.so.1",
+            "/usr/lib/libopus.so.0",
+            "/usr/lib/libSoundTouch.so.1",
+            "/usr/lib/libtestcmd.so",
+        };
+        for (size_t i = 0; i < sizeof(k_r4_libs) / sizeof(k_r4_libs[0]); i++) {
+            void *lh = dlopen(k_r4_libs[i], RTLD_LAZY | RTLD_GLOBAL);
+            fprintf(stderr, "appfw-launch: r4_preload %s=%p err=%s\n",
+                    k_r4_libs[i], lh, lh ? "ok" : dlerror());
+        }
+    }
+#endif
 
     /* Q1/Q2 closure: initialize genuine libMWF.so before loading/entering appFw.so */
     fx6_mwf_lifecycle();
+#if defined(FX6_ROUND) && (FX6_ROUND >= 4)
+    /* Round 4 media-slot & physical switch contracts: initialize libInfraMediaConfig.so + libInfraInput.so */
+    fx6_media_config_lifecycle();
+    fx6_infra_input_lifecycle();
+#endif
 
     void *h = dlopen("/usr/lib/appFw.so", RTLD_LAZY | RTLD_GLOBAL);
     if (!h) {

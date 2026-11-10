@@ -17,13 +17,45 @@
       "size_bytes": 265376,
       "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
     },
+    "lib/libgemini-grm.so": {
+      "size_bytes": 51800,
+      "sha256": "f47c8f3ecff0710d2c246d7d0c0ccdb5381a9f39b1b8d68464d184c0be8070b9"
+    },
     "lib/libosal_uipc.so": {
       "size_bytes": 43752,
       "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
     },
+    "lib/libbackup.so": {
+      "size_bytes": 14232,
+      "sha256": "e003e2d8a1f42fdf629dda012a01f225940c016b2ab4dbf482a761378e8d286f"
+    },
+    "lib/libInfraMediaConfig.so": {
+      "size_bytes": 52312,
+      "sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3"
+    },
+    "lib/libInfraAvbbc.so": {
+      "size_bytes": 1743200,
+      "sha256": "4ea694694cd791b1e5bc09c7a550ef2bea101c33c31c3875017829a969a5bcab"
+    },
+    "lib/libInfraInput.so": {
+      "size_bytes": 93448,
+      "sha256": "1851e2dc8515d2240b9ecaffd58591207336c5f061b1af0d3585d7b082a41f02"
+    },
+    "lib/libCertificateManager.so": {
+      "size_bytes": 198880,
+      "sha256": "a96d54c83b2aa001a51cc643adf53ae4b4a236e6a006335ca5606487d84fe45e"
+    },
+    "lib/libmpr.so": {
+      "size_bytes": 28921824,
+      "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e"
+    },
     "lib/appFw.so": {
       "size_bytes": 50520424,
       "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+    },
+    "tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin": {
+      "size_bytes": 2253333,
+      "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
     }
   },
   "imdb_highlights": [
@@ -146,6 +178,7 @@
     }
   ],
   "snippet_line_counts": {
+    "im_elf_plt_401cd0": 2,
     "im_elf_main_phases": 182,
     "im_elf_kind_dispatch": 293,
     "mwf_init_thunk": 78,
@@ -154,11 +187,19 @@
     "mwf_objshlock_ctor_and_lock": 114,
     "grm_register_trigger_cb": 58,
     "grm_c_api_trigger_cb": 18,
+    "gemini_grm_renderer_fill_blit": 496,
+    "infra_mediaconfig_init": 162,
+    "infra_mediaconfig_create_tbl": 350,
+    "mpr_slot_type_from_media_id": 38,
+    "mpr_set_movie_rec_param": 102,
     "appfw_app_initialize": 64,
     "appfw_trigger_cb_body": 13,
     "appfw_frame_gate_helpers": 33,
     "appfw_start_utimer": 104,
+    "appfw_rep_boot_power_on_comp": 1014,
     "appfw_cold_boot_tail": 50,
-    "appfw_init_hdmi": 64
+    "appfw_init_hdmi": 64,
+    "appfw_media_slot_sync": 166,
+    "appfw_network_rpc_helper": 146
   }
 }

@@ -14,12 +14,25 @@ DONOR_ROOT = pathlib.Path(
     "FX6-donor-assessment-20261103/team/donor/nflasha15-files"
 )
 
+DONOR_BK4_NTSC = pathlib.Path(
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
+    "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/"
+    "SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
+)
+
 TARGET_BINARIES = [
     "bin/im.elf",
     "lib/libIMDB.so",
     "lib/libMWF.so",
     "lib/libgrm.so",
+    "lib/libgemini-grm.so",
     "lib/libosal_uipc.so",
+    "lib/libbackup.so",
+    "lib/libInfraMediaConfig.so",
+    "lib/libInfraAvbbc.so",
+    "lib/libInfraInput.so",
+    "lib/libCertificateManager.so",
+    "lib/libmpr.so",
     "lib/appFw.so",
 ]
 
@@ -102,17 +115,39 @@ def collect_contracts() -> Dict[str, Any]:
             "size_bytes": p.stat().st_size,
             "sha256": sha256_file(p),
         }
+    if DONOR_BK4_NTSC.exists():
+        digests["tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"] = {
+            "size_bytes": DONOR_BK4_NTSC.stat().st_size,
+            "sha256": sha256_file(DONOR_BK4_NTSC),
+        }
 
     imdb_entries = parse_imdb_entries(DONOR_ROOT / "lib/libIMDB.so")
     interesting_imdb = [
         e
         for e in imdb_entries
         if e["kind"].startswith("0x800000")
-        or e["lib"] in ("libMWF.so", "libkiki.so", "appFw.so", "libgrm.so")
-        or e["init"] in ("MWF_Init", "Application_System_Init", "BIZ_Init")
+        or e["lib"]
+        in (
+            "libMWF.so",
+            "libkiki.so",
+            "appFw.so",
+            "libgrm.so",
+            "libInfraMediaConfig.so",
+            "libInfraAvbbc.so",
+            "libInfraInput.so",
+            "libCertificateManager.so",
+        )
+        or e["init"]
+        in (
+            "MWF_Init",
+            "InfraMediaConfig_Init",
+            "Application_System_Init",
+            "BIZ_Init",
+        )
     ]
 
     snippets = {
+        "im_elf_plt_401cd0": disasm_range(DONOR_ROOT / "bin/im.elf", 0x401CD0, 0x401DC0),
         "im_elf_main_phases": disasm_range(DONOR_ROOT / "bin/im.elf", 0x402490, 0x402750),
         "im_elf_kind_dispatch": disasm_range(DONOR_ROOT / "bin/im.elf", 0x405E24, 0x4062A0),
         "mwf_init_thunk": disasm_range(DONOR_ROOT / "lib/libMWF.so", 0x27D68, 0x27E78),
@@ -121,12 +156,36 @@ def collect_contracts() -> Dict[str, Any]:
         "mwf_objshlock_ctor_and_lock": disasm_range(DONOR_ROOT / "lib/libMWF.so", 0x3B300, 0x3B498),
         "grm_register_trigger_cb": disasm_range(DONOR_ROOT / "lib/libgrm.so", 0x22C78, 0x22D20),
         "grm_c_api_trigger_cb": disasm_range(DONOR_ROOT / "lib/libgrm.so", 0x236A8, 0x236D0),
+        "gemini_grm_renderer_fill_blit": disasm_range(
+            DONOR_ROOT / "lib/libgemini-grm.so", 0x7700, 0x7E80
+        ),
+        "infra_mediaconfig_init": disasm_range(
+            DONOR_ROOT / "lib/libInfraMediaConfig.so", 0x6538, 0x6790
+        ),
+        "infra_mediaconfig_create_tbl": disasm_range(
+            DONOR_ROOT / "lib/libInfraMediaConfig.so", 0x5B50, 0x60A0
+        ),
+        "mpr_slot_type_from_media_id": disasm_range(
+            DONOR_ROOT / "lib/libmpr.so", 0x53C850, 0x53C8D0
+        ),
+        "mpr_set_movie_rec_param": disasm_range(
+            DONOR_ROOT / "lib/libmpr.so", 0x16C5E0, 0x16C760
+        ),
         "appfw_app_initialize": disasm_range(DONOR_ROOT / "lib/appFw.so", 0xC09DA0, 0xC09E88),
         "appfw_trigger_cb_body": disasm_range(DONOR_ROOT / "lib/appFw.so", 0xC091D0, 0xC091EC),
         "appfw_frame_gate_helpers": disasm_range(DONOR_ROOT / "lib/appFw.so", 0xDE4240, 0xDE42AC),
         "appfw_start_utimer": disasm_range(DONOR_ROOT / "lib/appFw.so", 0xC09C14, 0xC09D9C),
+        "appfw_rep_boot_power_on_comp": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0x1009B90, 0x100AB50
+        ),
         "appfw_cold_boot_tail": disasm_range(DONOR_ROOT / "lib/appFw.so", 0x1CD8604, 0x1CD86B4),
         "appfw_init_hdmi": disasm_range(DONOR_ROOT / "lib/appFw.so", 0x1CD80DC, 0x1CD81C4),
+        "appfw_media_slot_sync": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0x2125930, 0x2125BB0
+        ),
+        "appfw_network_rpc_helper": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0x215C6D0, 0x215C900
+        ),
     }
 
     return {

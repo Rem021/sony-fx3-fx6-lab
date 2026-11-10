@@ -402,6 +402,49 @@ class TestFX3SafetySuite(unittest.TestCase):
         g12_entry = [g for g in blocked_bmt["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"][0]
         self.assertEqual(g12_entry["status"], "BLOCKED_BY_BACKUP_OR_MOUNT_TOLERANCE_REDLINE")
 
+    def test_phase7_gate12_boot_selector_and_banks_redline(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        good_items = {
+            k: {
+                "bytes": spec.get("exact_bytes") or spec.get("min_bytes") or 4096,
+                "pass1_sha256": "d" * 64,
+                "pass2_sha256": "d" * 64,
+            }
+            for k, spec in TIER0_REQUIRED_BACKUPS.items()
+        }
+        manifest = {"camera_body_tag": "e" * 64, "model_id": "0x91030080", "items": good_items}
+        trace = [{"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0}]
+        hook = generate_failsafe_init2_overlay_hook()
+
+        ok_bsb = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+        )
+        self.assertEqual(ok_bsb["summary"]["verified_gates"], 12)
+        self.assertTrue(ok_bsb["boot_selector_and_banks_ok"])
+
+        blocked_bsb = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=False,
+        )
+        self.assertEqual(blocked_bsb["summary"]["verified_gates"], 11)
+        self.assertFalse(blocked_bsb["summary"]["all_12_gates_verified"])
+        self.assertFalse(blocked_bsb["boot_selector_and_banks_ok"])
+        g12_entry = [g for g in blocked_bsb["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"][0]
+        self.assertEqual(g12_entry["status"], "BLOCKED_BY_BOOT_SELECTOR_OR_BANK_REDLINE")
+
 
 if __name__ == "__main__":
     unittest.main()

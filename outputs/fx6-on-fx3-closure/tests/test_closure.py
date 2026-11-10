@@ -59,6 +59,25 @@ from fx6_closure.backup_mount_tolerance_verifier import (
     run_backup_mount_tolerance_verification,
     synthesize_ram_shadow_bk4,
 )
+from fx6_closure.boot_selector_and_bank_verifier import (
+    DEFAULT_FX3_BANK0_FA0080_PATH,
+    DEFAULT_FX3_BANK1_FA0080_PATH,
+    EXPECTED_BANK1_CALIBRATION_SHIFTS,
+    LOADER_NOR_EXPECTED_BOOTMODES,
+    LOADER_NOR_PINNED_INSNS,
+    UD_SEND_LSI_DST_QUEUE_ID,
+    UD_SEND_LSI_DST_QUEUE_LOW16,
+    UD_SEND_LSI_OSAL_E_TMO,
+    UD_SEND_LSI_PINNED_INSNS,
+    UD_SEND_LSI_RCV_TIMEOUT_MS,
+    UD_SEND_LSI_SRC_REPLY_QUEUE_ID,
+    UP_SH_MODE_SPECS,
+    audit_boot_selector_contract,
+    audit_fa0080_bank_maps,
+    parse_and_audit_fa0080_bank,
+    run_boot_selector_and_bank_verification,
+    verify_boot_selector_safety_contract,
+)
 from fx6_closure.candidate_builder import COMPLETE_MATRIX_ITEMS, run_offline_candidate_dry_run
 from fx6_closure.feature_routing_verifier import (
     CORE_CAMERA_FEATURE_LIBRARIES,
@@ -495,11 +514,15 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.feature_routing_audit.all_checks_passed)
         self.assertTrue(rep_ok.backup_mount_tolerance_ok)
         self.assertTrue(rep_ok.backup_mount_tolerance_audit.dimension_a_mount_tolerance.u4_closed)
+        self.assertTrue(rep_ok.boot_selector_and_banks_ok)
+        self.assertTrue(rep_ok.boot_selector_and_bank_audit.dimension_a_boot_selector.u5_closed)
+        self.assertTrue(rep_ok.boot_selector_and_bank_audit.dimension_b_bank_maps.u3_advanced)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
         feat_base = rep_ok.feature_routing_audit
         bmt_base = rep_ok.backup_mount_tolerance_audit
+        bsb_base = rep_ok.boot_selector_and_bank_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -509,6 +532,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -524,6 +548,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -536,6 +561,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -549,18 +575,20 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, or U4/BK4 -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, or U5/U3 -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -573,6 +601,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -585,6 +614,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -597,6 +627,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
@@ -608,11 +639,25 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_rollback_drill=drill_base,
             precomputed_feature_routing=feat_base,
             precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
         self.assertFalse(rep_bad_bmt.backup_mount_tolerance_ok)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bmt.blocked_gate_ids)
+
+        rep_bad_bsb = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
+            corrupt_boot_selector_and_banks=True,
+        )
+        self.assertFalse(rep_bad_bsb.candidate_ready)
+        self.assertFalse(rep_bad_bsb.boot_selector_and_banks_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bsb.blocked_gate_ids)
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -1193,6 +1238,223 @@ class TestPhase6BackupMountToleranceVerifier(unittest.TestCase):
         self.assertTrue(payload["all_checks_passed"])
         self.assertTrue(payload["u4_closed"])
         self.assertTrue(payload["dimension_b_backup_contracts"]["ram_shadow_audit"]["valid"])
+
+
+class TestPhase7BootSelectorAndBankVerifier(unittest.TestCase):
+    """Verify Phase 7 U5 Boot-Selector Single-Shot Contract & U3 0xfa0080 Bank 0/1 DDR Non-Overlap Verifier."""
+
+    def test_dimension_a_u5_up_sh_ud_send_lsi_unicorn_and_loader_nor_contract(self) -> None:
+        rep_a = audit_boot_selector_contract()
+        self.assertTrue(rep_a.all_checks_passed)
+        self.assertTrue(rep_a.u5_closed)
+        self.assertTrue(rep_a.up_sh_sha256_verified)
+        self.assertTrue(rep_a.common_src_sha256_verified)
+        self.assertTrue(rep_a.ud_send_lsi_sha256_verified)
+        self.assertTrue(rep_a.ud_send_lsi_pt_load_identical_across_models)
+        self.assertEqual(rep_a.ud_send_lsi_comment_diff_bytes, 7)
+        self.assertTrue(rep_a.loader_nor_sha256_verified)
+        self.assertTrue(rep_a.ldr_bkup_list_65_keys_verified)
+        self.assertTrue(rep_a.pformat_config_sha256_verified)
+        self.assertTrue(rep_a.up_sh_modes_verified)
+        self.assertTrue(rep_a.up_sh_iamupdater_early_exit_verified)
+        self.assertEqual(rep_a.loader_nor_bootmodes, LOADER_NOR_EXPECTED_BOOTMODES)
+
+        self.assertEqual(len(rep_a.ud_send_lsi_insns), len(UD_SEND_LSI_PINNED_INSNS))
+        self.assertEqual(len(rep_a.loader_nor_insns), len(LOADER_NOR_PINNED_INSNS))
+        for chk in rep_a.ud_send_lsi_insns + rep_a.loader_nor_insns:
+            self.assertTrue(chk.matched, f"Instruction mismatch at {hex(chk.vma)}: {chk}")
+
+        # Verify all 10 Unicorn AArch64 cases on `ud_send_lsi.elf`
+        self.assertEqual(len(rep_a.unicorn_cases), 10)
+        expected_hex = {
+            0: "00000000",
+            2: "02000000",
+            3: "03000000",
+            4: "04000000",
+            5: "05000000",
+            6: "06000000",
+            7: "07000000",
+        }
+        for case, spec in zip(rep_a.unicorn_cases[:7], UP_SH_MODE_SPECS):
+            mode_num = spec[1]
+            self.assertFalse(case.abort_or_fault)
+            self.assertFalse(case.exited_early)
+            self.assertEqual(case.return_value, 0)
+            self.assertTrue(case.uipc_allocated)
+            self.assertTrue(case.uipc_sent)
+            self.assertTrue(case.uipc_freed)
+            self.assertEqual(case.observed_dst_queue, UD_SEND_LSI_DST_QUEUE_ID)
+            self.assertEqual(case.observed_dst_queue & 0xFFFF, UD_SEND_LSI_DST_QUEUE_LOW16)
+            self.assertEqual(case.observed_src_queue, UD_SEND_LSI_SRC_REPLY_QUEUE_ID)
+            self.assertEqual(case.observed_timeout_ms, UD_SEND_LSI_RCV_TIMEOUT_MS)
+            self.assertEqual(case.emitted_mode_u32, mode_num)
+            self.assertEqual(case.emitted_payload_hex, expected_hex[mode_num])
+            self.assertTrue(case.sp_preserved)
+
+        # Case 7: p1 initrd binary + LSI_SUB=2 + OSAL_E_TMO (-0x3fe) tolerated cleanly
+        sub_tmo = rep_a.unicorn_cases[7]
+        self.assertEqual(sub_tmo.injected_lsi_type, 2)
+        self.assertEqual(sub_tmo.injected_rcv_rc, UD_SEND_LSI_OSAL_E_TMO)
+        self.assertEqual(sub_tmo.return_value, 0)
+        self.assertEqual(sub_tmo.emitted_payload_hex, "00000000")
+        self.assertTrue(sub_tmo.sp_preserved)
+
+        # Case 8: cold factory seed 0x004b0000 = 3 -> skips UIPC cleanly with rc = 0
+        cold_noop = rep_a.unicorn_cases[8]
+        self.assertEqual(cold_noop.return_value, 0)
+        self.assertFalse(cold_noop.uipc_allocated)
+        self.assertFalse(cold_noop.uipc_sent)
+        self.assertTrue(cold_noop.sp_preserved)
+
+        # Case 9: argc != 2 -> exit(1) before touching UIPC
+        bad_argc = rep_a.unicorn_cases[9]
+        self.assertTrue(bad_argc.exited_early)
+        self.assertEqual(bad_argc.exit_status, 1)
+        self.assertFalse(bad_argc.uipc_sent)
+
+        self.assertTrue(rep_a.stage_a_overlay_safety.valid)
+        self.assertTrue(rep_a.p1_recovery_two_step_reset_ok.valid)
+
+    def test_boot_selector_safety_rejects_incomplete_p1_exit_sticky_flags_and_byte8(self) -> None:
+        # 1. Calling `up.sh` inside `/root/IAMUPDATER` without explicit `ud_send_lsi.elf 0` -> sticky ANK latch!
+        bad_iam = verify_boot_selector_safety_contract(
+            "BAD_P1_EXIT_UP_SH_ONLY",
+            in_p1_updater_env=True,
+            p1_partition_written=False,
+            p2_updater_mode_files=(),
+            up_sh_invoked_without_direct_lsi=True,
+            direct_ud_send_lsi_payload=None,
+            bk4_selector_byte8=0x00,
+        )
+        self.assertFalse(bad_iam.valid)
+        self.assertTrue(bad_iam.sticky_updater_risk)
+        self.assertFalse(bad_iam.iamupdater_bypass_handled)
+        self.assertFalse(bad_iam.lsi_normal_packet_emitted)
+
+        # 2. Sending `ud_send_lsi.elf 0` while leaving `/setting/updater/mode` on p2 -> sticky MMIO 0xFE170028!
+        bad_p2 = verify_boot_selector_safety_contract(
+            "BAD_P1_EXIT_LEFTOVER_P2_MODE_FILE",
+            in_p1_updater_env=True,
+            p1_partition_written=False,
+            p2_updater_mode_files=("/setting/updater/mode",),
+            up_sh_invoked_without_direct_lsi=False,
+            direct_ud_send_lsi_payload=b"\x00\x00\x00\x00",
+            bk4_selector_byte8=0x00,
+        )
+        self.assertFalse(bad_p2.valid)
+        self.assertFalse(bad_p2.p2_updater_flags_cleared)
+
+        # 3. Stage-A path writing p1 or sending non-zero mode packet or non-zero BK4 byte 8 -> rejected!
+        bad_stage_a = verify_boot_selector_safety_contract(
+            "BAD_STAGE_A_TOUCHES_P1_AND_MODE4",
+            in_p1_updater_env=False,
+            p1_partition_written=True,
+            p2_updater_mode_files=(),
+            up_sh_invoked_without_direct_lsi=False,
+            direct_ud_send_lsi_payload=b"\x04\x00\x00\x00",
+            bk4_selector_byte8=0x01,
+        )
+        self.assertFalse(bad_stage_a.valid)
+        self.assertTrue(bad_stage_a.p1_touched)
+        self.assertFalse(bad_stage_a.lsi_normal_packet_emitted)
+        self.assertFalse(bad_stage_a.bk4_byte8_normal_ok)
+
+    def test_dimension_b_u3_bank0_bank1_non_overlap_and_calibration_shifts(self) -> None:
+        rep_b = audit_fa0080_bank_maps()
+        self.assertTrue(rep_b.all_checks_passed)
+        self.assertTrue(rep_b.u3_advanced)
+        self.assertTrue(rep_b.fx3_bank0_matches_seed_record0)
+        self.assertTrue(rep_b.fx3_bank1_matches_seed_record1)
+
+        self.assertTrue(rep_b.fx3_bank0_audit.valid)
+        self.assertEqual(rep_b.fx3_bank0_audit.active_slot_count, 9)
+        self.assertTrue(rep_b.fx3_bank0_audit.zero_overlap_verified)
+
+        self.assertTrue(rep_b.fx3_bank1_audit.valid)
+        self.assertEqual(rep_b.fx3_bank1_audit.active_slot_count, 11)
+        self.assertTrue(rep_b.fx3_bank1_audit.zero_overlap_verified)
+        self.assertEqual(sum(1 for iv in rep_b.fx3_bank1_audit.intervals if iv.is_dynamic_size_sentinel), 1)
+
+        self.assertTrue(rep_b.fx6_bank0_audit.valid)
+        self.assertEqual(rep_b.fx6_bank0_audit.active_slot_count, 5)
+        self.assertTrue(rep_b.fx6_bank0_audit.zero_overlap_verified)
+
+        self.assertTrue(rep_b.fx6_bank1_audit.valid)
+        self.assertEqual(rep_b.fx6_bank1_audit.active_slot_count, 10)
+        self.assertTrue(rep_b.fx6_bank1_audit.zero_overlap_verified)
+
+        # Bank 0 shared AP descriptors: 0-byte shift across all 5 shared entries
+        self.assertTrue(rep_b.bank0_shared_zero_shift_verified)
+        self.assertEqual(len(rep_b.bank0_shifts), 5)
+        for sh in rep_b.bank0_shifts:
+            self.assertEqual(sh.delta_bytes, 0)
+
+        # Bank 1 calibration shifts: exact +0xE0000 and +0x14000
+        self.assertTrue(rep_b.bank1_calibration_shifts_verified)
+        b1_map = {sh.path: sh.delta_bytes for sh in rep_b.bank1_shifts}
+        self.assertEqual(b1_map, EXPECTED_BANK1_CALIBRATION_SHIFTS)
+        self.assertEqual(b1_map["\\psd.bin"], 0xE0000)
+        self.assertEqual(b1_map["\\lensfile.bin"], 0xE0000)
+        self.assertEqual(b1_map["\\OldAmtCL.bin"], 0xE0000)
+        self.assertEqual(b1_map["\\defdet.bin"], 0x14000)
+        self.assertEqual(b1_map["\\DmmCfg.bin"], 0x14000)
+        self.assertEqual(rep_b.fx3_only_bank1_paths, ("\\SysSound.bin", "\\cpImg.dat"))
+        self.assertEqual(rep_b.fx6_only_bank1_paths, ("\\cmrbnb.bin",))
+
+    def test_fa0080_bank_auditor_rejects_overlap_bad_partition_and_cli_subcommand(self) -> None:
+        import struct as _st
+
+        fx3_b0 = DEFAULT_FX3_BANK0_FA0080_PATH.read_bytes()
+        fx3_b1 = DEFAULT_FX3_BANK1_FA0080_PATH.read_bytes()
+
+        # 1. Inject 4 KiB DDR overlap in Bank 1 (`\lensfile.bin` moved down into `\psd.bin` [0x0808730000..0x0808c2ffff])
+        base_b1_audit = parse_and_audit_fa0080_bank(fx3_b1, label="BASE_B1", bank_index=1)
+        lens_slot = next(iv.slot_index for iv in base_b1_audit.intervals if iv.path == "\\lensfile.bin")
+        overlap_b1 = bytearray(fx3_b1)
+        _st.pack_into("<QQ", overlap_b1, lens_slot * 144, 0x0808C2F000, 0x0808CAFFFF)
+        res_ov = parse_and_audit_fa0080_bank(bytes(overlap_b1), label="SYNTH_OVERLAP", bank_index=1)
+        self.assertFalse(res_ov.valid)
+        self.assertFalse(res_ov.zero_overlap_verified)
+        self.assertEqual(len(res_ov.overlap_pairs), 1)
+        self.assertIn("overlap by 0x1000 bytes", res_ov.overlap_pairs[0])
+
+        # 2. Inject out-of-bounds partition index (`p31`) in Bank 0
+        bad_part_b0 = bytearray(fx3_b0)
+        _st.pack_into("<I", bad_part_b0, 0x10, 31)
+        res_part = parse_and_audit_fa0080_bank(bytes(bad_part_b0), label="SYNTH_BAD_PART", bank_index=0)
+        self.assertFalse(res_part.valid)
+        self.assertFalse(res_part.partitions_in_bounds)
+
+        # 3. Non-zero byte-8 selector (`0x01`) in Bank 0 -> rejected!
+        res_b8 = parse_and_audit_fa0080_bank(fx3_b0, label="SYNTH_B0_BYTE8", bank_index=0, active_byte8=0x01)
+        self.assertFalse(res_b8.valid)
+        self.assertFalse(res_b8.selector_byte8_ok)
+
+        # 4. Inverted DDR range (`end_addr < start_addr` on non-sentinel slot) -> rejected!
+        inv_b0 = bytearray(fx3_b0)
+        _st.pack_into("<QQ", inv_b0, 0, 0x0802200000, 0x0802100000)
+        res_inv = parse_and_audit_fa0080_bank(bytes(inv_b0), label="SYNTH_INV_RANGE", bank_index=0)
+        self.assertFalse(res_inv.valid)
+
+        # 5. Truncated 0xfa0080 table -> rejected!
+        self.assertFalse(parse_and_audit_fa0080_bank(fx3_b0[:-144], label="TRUNC", bank_index=0).valid)
+
+        # 6. CLI `verify-boot-selector-banks` subcommand check
+        full_rep = run_boot_selector_and_bank_verification()
+        self.assertTrue(full_rep.all_checks_passed)
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-boot-selector-banks"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["u5_closed"])
+        self.assertTrue(payload["u3_advanced"])
+        self.assertEqual(len(payload["dimension_a_boot_selector"]["unicorn_cases"]), 10)
+        self.assertTrue(payload["dimension_b_bank_maps"]["fx3_bank0_audit"]["zero_overlap_verified"])
+        self.assertTrue(payload["dimension_b_bank_maps"]["fx6_bank1_audit"]["zero_overlap_verified"])
 
 
 if __name__ == "__main__":

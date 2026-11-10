@@ -1,4 +1,4 @@
-# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由、U4 存儲掛載容錯閉環、RAM-Shadow `BK4\0` 備份契約與 12 道安全門驗證報告（Phase 6）
+# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、五大核心功能路由、`U4`/`U5` 閉環、`U3` Bank 0/1 DDR 校驗、RAM-Shadow `BK4\0` 與 12 道安全門驗證報告（Phase 7）
 
 - **日期**：2026-11-10
 - **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`
@@ -9,7 +9,7 @@
 
 ## 1. 正式受控工程包結構與全矩陣覆蓋表
 
-全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U4` 存儲掛載容錯審計 + 跨機型 RAM-Shadow `BK4\0` 備份合成校驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
+全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U4` 存儲掛載容錯審計 + 跨機型 RAM-Shadow `BK4\0` 備份合成校驗 + 藍圖 `U5` 引導選擇器單次防黏連契約閉環 + 藍圖 `U3` `0xfa0080` Bank 0/1 DDR 非重疊校驗 + Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
 
 | 模組路徑 | 覆蓋項 | 職責說明 |
 | --- | :---: | --- |
@@ -21,11 +21,12 @@
 | `outputs/fx6-on-fx3-closure/fx6_closure/backup_bridge_verifier.py` | **P7** | 內核態 Backup Sync100 地址無關橋接核驗器：雙內核 `pcidma_transfer_async` 16B 序言、`api+0x160` / `api+0x10` Unicorn 跳板、`dst=0x903e0811`/`op=0x30` 40B 請求與同步 `backupfile_cb_getcp(0, NULL)` DMA 回調契約。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/feature_routing_verifier.py` | **藍圖 §3 五大功能路由** | **維度 A**：10 核心庫 ELF64 `DT_NEEDED`（43 節點全傳遞閉包，0 缺失）與 `.dynsym` 導入/導出審計；**維度 B**：Sony `17^3`/`33^3` `.cube` 生成/校驗器、FX3 `p30`（`48 MiB`）16 組 LUT 簇容量預算證明與 `libInfraSetupFile.so` `RcvThread`（`0x196c8..0x196e0`）掛載鏈核驗；**維度 C**：Cine EI / E 卡口 AF 契約與 `set_eye_af_mode_i` + `libmpr.so` `libXavcMxfGetSlotTypeFromMediaId`（`+0x53c850`）Unicorn 實跑驗證。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/backup_mount_tolerance_verifier.py` | **藍圖 `U4` + RAM-Shadow `BK4\0`** | **維度 A（關閉 `U4`）**：`libInfraSetupFile.so`（`RcvThread` `@ 0x19650`）與 `libInfraKikiLogGenerator.so`（`KikiLogGenerator_res_ope` `@ 0x3cb0`）掛載返回碼與降級控制流靜態指令釘選 + Unicorn AArch64 實跑核驗；**維度 B**：FX6 6.01 vs FX3 7.02 `libbackup.so` / `BK4\0` 跨機型鍵模式審計與零寫閃存 RAM-Shadow `BK4\0` 容器合成/校驗器（兼容 `fx3_safety.boot_contracts.parse_bk4_record`）。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/boot_selector_and_bank_verifier.py` | **藍圖 `U5` + 藍圖 `U3`** | **維度 A（關閉 `U5`）**：`up.sh`、`ud_send_lsi.elf`（`0x400990..0x400ad8` 靜態釘選 + Unicorn AArch64 全 7 模式實跑捕獲 `0x804b0376` 4B 載荷）與 `loader_nor.bin`（`0xFE049000` 雙重引導仲裁）單次防黏連契約核驗；**維度 B（推進 `U3`）**：FX3 / FX6 `0xfa0080` Bank 0 / Bank 1 全 64 槽位（`64 x 144 = 9,216 B`）DDR 區間兩兩 **0 重疊**證明與 `+0xE0000` / `+0x14000` 校準偏移審計。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,overlay_manifest.json}`。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/rollback_drill.py` | **四層防磚演練** | Stage-A 啟動守衛確定性狀態機與 `PREFIX` 隔離沙盒 POSIX `/bin/sh` 子進程實跑演練器（覆蓋無授權標記、單次啟動+重啟恢復、SHA-256 失配/缺失回退、超時/非零退出回退與 eMMC 零寫入核驗）。 |
 | `outputs/fx6-on-fx3-closure/native/tier0_backup_worker.c` & `tier0_unicorn_verifier.py` | **Tier-0** | 零外部 `UND` 符號、零動態重定位 AArch64 Linux 雙遍只讀備份組件與 Unicorn 系統調用審計器。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts` 與 `run-rollback-drill` 子命令）。 |
-| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**32 項測試**，外加 `outputs/fx3-safety/tests` **11 項測試**）。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks` 與 `run-rollback-drill` 子命令）。 |
+| `outputs/fx6-on-fx3-closure/tests/test_closure.py` | 全矩陣單測 | 完整自動化單元測試套件（**36 項測試**，外加 `outputs/fx3-safety/tests` **12 項測試**）。 |
 
 ---
 
@@ -143,21 +144,91 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 
 ---
 
-## 7. 端到端候選包乾跑與 12 道安全門聯調
+## 7. Phase 7 維度 A：引導選擇器單次防黏連契約核驗（關閉藍圖 `U5`：`up.sh` + `ud_send_lsi.elf` + `loader_nor.bin`）
 
-| 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
-| --- | --- | :---: | --- | :---: | :---: |
-| **合法完整候選包乾跑（含五大功能路由 + `U4` 掛載容錯 + RAM-Shadow `BK4\0` + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
-| 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
-| 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
-| 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
-| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由或 **`U4` / RAM-Shadow `BK4\0` 備份契約** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+### 7.1 只讀源工件跨機型 SHA-256 與 `PT_LOAD` 完全一致證明
+
+- `up.sh`（`6,572 B`，SHA-256 `c774320a0ab92c13b467b9219e1f60262a1effa0b551ba3b713514a36dadc402`）與 `common.src`（`3,287 B`，SHA-256 `3d5334ab1698d67176f8fd35ffd4d7a9a9b85a1625b20cf128ba091f752b90a0`）。
+- 三份 `ud_send_lsi.elf`（均為 `10,248 B`、`ET_EXEC`、`e_entry = 0x400ae0`）：FX6 `p15:/bin/ud_send_lsi.elf`（`d0ece6ca...`）與 FX6 `p1-initrd:/usr/bin/ud_send_lsi.elf` / FX3 `2.05:/usr/bin/ud_send_lsi.elf`（`9fb4bd02...`）在**全部可裝載段 `PT_LOAD`（文件偏移 `0x0000..0x2070`）100% 逐字節一致**，全文件僅在非裝載 `.comment` 節相差 **7 字節**（編譯器日期字符串 `20240928` vs `20180315`）。
+- `loader_nor.bin`（`101,888 B`，鏈接基址 Octal-SPI NOR SRAM `0xFE049000`，SHA-256 `4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942`）與 `LdrBkupList.txt`（`650 B`，**65 個冷啟動備份鍵**，與 `loader_nor.bin` `0xFE0615D8` 處 `LBK_LIST(...)` 完全一致）。
+
+### 7.2 `ud_send_lsi.elf`（`main` `@ 0x400990..0x400ad8`）與 `loader_nor.bin`（`0xFE049000`）關鍵指令 VMA 表
+
+| 目標二進制 | 虛擬地址 (VMA) | 文件偏移 | 機器碼字 (LE u32) | 匯編指令與引導選擇器語義 |
+| --- | :---: | :---: | :---: | --- |
+| `ud_send_lsi.elf` | `0x400994` | `0x0994` | `0x7100081f` | `cmp w0, #2`（校驗 `argc == 2`，否則 `bl 0x400950 <exit@plt>` 返回 `1`） |
+| `ud_send_lsi.elf` | `0x4009b4`..`0x4009b8` | `0x09b4` | `0x52a00960` / `0x97ffffde` | `mov w0, #0x4b0000; bl 0x400930 <Backup_read@plt>`（讀取 1B `lsi_type` 鍵 `0x004b0000`） |
+| `ud_send_lsi.elf` | `0x4009e0`..`0x4009ec` | `0x09e0` | `0x51000400`..`0x540001e8` | `sub w0, w0, #1; uxtb w0, w0; cmp w0, #1; b.hi 0x400a28`（僅 `lsi_type in {1 (LSI_MAIN), 2 (LSI_SUB)}` 發送 UIPC；出廠冷種子 `0x03` 乾淨跳過並返回 `0`） |
+| `ud_send_lsi.elf` | `0x4009f4`..`0x400a04` | `0x09f4` | `0x52806ec0`..`0x97ffffbf` | `osal_valloc_msg_wait(dst=0x804b0376, &msg, size=4, wait=1)`（低 16 位隊列號 `0x0376`） |
+| `ud_send_lsi.elf` | `0x400a3c`..`0x400a44` | `0x0a3c` | `0x52806f21`..`0x97ffffa3` | `osal_set_msg_src(msg, src=0x004b0379)`（應答隊列 `0x004b0379`） |
+| `ud_send_lsi.elf` | `0x400a4c`..`0x400a64` | `0x0a4c` | `0x97ffffb1`..`0x97ffff9f` | `atoi(argv[1])` -> `str w0, [x19]`（寫入 **4 字節小端 `uint32` 模式載荷**）-> `osal_snd_msg(0x804b0376, msg)` |
+| `ud_send_lsi.elf` | `0x400aa4`..`0x400ab8` | `0x0aa4` | `0x52817702`..`0x12807fa0` | `osal_rcv_msg_tmo(0x004b0379, &msg, 3000)`，容忍 `0` 與 `-0x3fe`（`-1022` `OSAL_E_TMO`），隨後 `osal_free_msg` |
+| `loader_nor.bin` | `0xFE054AF8`..`0xFE054B00` | `0x0BAF8` | `0x34000088` / `0x320007f6` | 優先檢查 Sub-LSI ANK 鎖存標誌：若非零則直接鎖定 `BootMode[3] = "updater"` |
+| `loader_nor.bin` | `0xFE053CA0`..`0xFE053D08` | `0x0ACA0` | `0x52800514`..`0xb9000280` | 檢查黏連寄存器 `0xFE170028`，掛載 FAT `p2:/setting` 並探測 `\updater\mode`（`0xFE05EDAB`），存在則寫入 `[0xFE170028] = 1` 進入 `p1` 更新模式（`0xFE057FFC` / `0xFE058014` 同步過濾 `\updater\mode` 與 `\mode\cmode`） |
+| `loader_nor.bin` | `0xFE04C7A8` -> `0xFE04D584` | `0x037A8` | `0x320003e2`..`0x7100051f` | 嚴格 `BK4\0` 記錄選擇器（`w2 = 1`：要求 `word4 == 0xaaaaaaaa` 且 `byte8 == 1`） |
+
+### 7.3 `up.sh` 全 7 種模式與 `ud_send_lsi.elf` Unicorn AArch64 實跑封包佈局表
+
+| `up.sh` 參數 / 分支 | `p2:/setting/updater/` 標誌文件操作 | `mode_num` | Unicorn 捕獲 `dst_queue` -> `src_queue` | Unicorn 捕獲 4B 載荷 (Hex LE) | `timeout_ms` / 返回碼 | `SP` 守恆 |
+| --- | --- | :---: | :---: | :---: | :---: | :---: |
+| 無參切換（清理分支） | `rm -f /setting/updater/mode*` | **`0`** | `0x804b0376` -> `0x004b0379` | **`00000000`** | `3000 ms` / `0` | `True` |
+| `up.sh user`（UFP） | `touch mode` | **`2`** | `0x804b0376` -> `0x004b0379` | **`02000000`** | `3000 ms` / `0` | `True` |
+| `up.sh serv`（Service） | `touch mode mode3` | **`3`** | `0x804b0376` -> `0x004b0379` | **`03000000`** | `3000 ms` / `0` | `True` |
+| 無參切換（置位分支） | `touch mode mode1` | **`4`** | `0x804b0376` -> `0x004b0379` | **`04000000`** | `3000 ms` / `0` | `True` |
+| `up.sh ms`（MS Crypt） | `touch mode mode5` | **`5`** | `0x804b0376` -> `0x004b0379` | **`05000000`** | `3000 ms` / `0` | `True` |
+| `up.sh ver`（Ver Skip） | `touch mode mode6` | **`6`** | `0x804b0376` -> `0x004b0379` | **`06000000`** | `3000 ms` / `0` | `True` |
+| `up.sh file`（File Crypt） | `touch mode mode7` | **`7`** | `0x804b0376` -> `0x004b0379` | **`07000000`** | `3000 ms` / `0` | `True` |
+| `p1` 鏡像 + `LSI_SUB=2` + `-0x3fe` | — | **`0`** | `0x804b0376` -> `0x004b0379` | **`00000000`** | `OSAL_E_TMO` 容忍 / `0` | `True` |
+| 出廠冷種子 `0x004b0000 = 3` | — | `4` | 不分配/不發送 UIPC | `""`（安全空操作） | — / `0` | `True` |
+| 非法參數 `argc != 2` | — | — | `exit(1)` 立即攔截 | `""` | — / `1` | — |
+
+- **關閉藍圖 `U5` 核心證明**：
+  1. **RAM-Only `p7` 覆蓋層天然零黏連風險**：全程對 `p1:/updater` 寫入 **0 字節**、對 `p2:/setting/updater/mode*` 寫入 **0 字節**、發送非零 `ud_send_lsi.elf` 封包 **0 次**、且 RAM-Shadow `BK4\0` 偏移 `8` 恆為 `0x00`，`loader_nor.bin` 三條更新觸發路徑（Sub-LSI ANK、`p2:\updater\mode` -> `0xFE170028`、`BK4\0` `byte8==1`）全部保持未武裝狀態。
+  2. **`p1` 恢復環境強制雙步復位序列**：`up.sh` 第 295–301 行含 `test -e /root/IAMUPDATER && exit 0` 早退陷阱，在 `p1` 內直接調用 `up.sh` 會在執行 `ud_send_lsi.elf 0` 前退出，遺留 Sub-LSI ANK 鎖存！因此任何未來 `p1` 恢復退出必須原子執行雙步復位：**(Step 1)** `rm -f /setting/updater/mode* && sync` + **(Step 2)** 顯式執行 `/usr/bin/ud_send_lsi.elf 0`（向 `0x804b0376` 發送 `00000000`）。
 
 ---
 
-## 8. 驗收測試結果
+## 8. Phase 7 維度 B：`0xfa0080` Bank 0 / Bank 1 DDR 裝載區間非重疊證明與校準偏移審計（推進藍圖 `U3`）
 
-1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**32 / 32 OK**
-2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**11 / 11 OK**
-3. CLI `verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`backup_mount_tolerance_ok = true`、`u4_closed = true`、`feature_routing_ok = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
+### 8.1 Bank 0 與 Bank 1 全槽位（`64 x 144 = 9,216 B`）DDR 區間兩兩零重疊表
+
+`loader_nor.bin`（`0xFE054614..0xFE054688`）讀取備份鍵 `0x00fa0080`（上限 `0x2400 = 9,216 B` = **64 槽位 × 144 字節步長**），FX3 `bank0-fa0080.bin`（`7211bc04...`）與 `bank1-fa0080.bin`（`33e39fc7...`）分別與 `FX3-CX95900_ALLLANG-Backup.bin` Record 0 / Record 1 100% 逐字節一致。四張描述符表全部通過 **0 字節兩兩 DDR 重疊**、分區號 `1..30` 邊界與 Bank 0 `byte8 == 0x00` 核驗：
+
+| Bank 編號與機型 | 槽位 `[idx]` / 分區 | `mode` 標誌 | 有效 DDR 半開區間 `[start, end_excl)` | 跨度 (`span`) | 鏡像路徑與跨機型偏移說明 |
+| --- | :---: | :---: | :---: | ---: | --- |
+| **Bank 0**（FX3 獨有 Sub/BT 4 項） | `[8]` `p3` / `[6]` `p3` / `[7]` `p3` / `[5]` `p2` | `0x08000001` / `0x08000000` | `[0x00fe300000, 0x00fe310000)`、`[0x00fe310000, 0x00fe320000)`、`[0x00fe320000, 0x00fe330000)`、`[0x00fe380000, 0x00fe3c0000)` | `64 KiB` ×3 + `256 KiB` | `\wole_app.bin`、`\btfw32a.tlv`、`\btnv32.bin`、`\bt_conf.cnf`（SRAM 區無重疊） |
+| **Bank 0**（FX3 & FX6 共享 AP 5 項） | `[1]` `p2` | `0x01000000` | `[0x0400001000, 0x0400002000)` | `0x1000` (`4 KiB`) | `\kemco.txt`（跨機型偏移 **`0x0`**） |
+| **Bank 0**（FX3 & FX6 共享 AP 5 項） | `[4]` `p2` | `0x01000000` | `[0x0400002000, 0x0400006000)` | `0x4000` (`16 KiB`) | `\cxd90057.dtb`（跨機型偏移 **`0x0`**） |
+| **Bank 0**（FX3 & FX6 共享 AP 5 項） | `[3]` `p3` | `0x81000000` | `[0x0400080000, 0x0400600000)` | `0x580000` (`5.5 MiB`) | `\vmlinux.bin`（跨機型偏移 **`0x0`**） |
+| **Bank 0**（FX3 & FX6 共享 AP 5 項） | `[0]` `p3` | `0x05000000` | `[0x0401000000, 0x0402000000)` | `0x1000000` (`16 MiB`) | `\av-cam.bin`（跨機型偏移 **`0x0`**） |
+| **Bank 0**（FX3 & FX6 共享 AP 5 項） | `[2]` `p3` | `0x01000000` | `[0x0408000000, 0x0409000000)` | `0x1000000` (`16 MiB`) | `\initrd.img`（跨機型偏移 **`0x0`**） |
+| **Bank 1**（FX3 `[2]` / FX6 `[2]`） | `p8` | `0x07000000` | `[0x0800100000, 0x0800108000)` | `0x8000` (`32 KiB`) | `\tomco.txt`（偏移 **`0x0`**） |
+| **Bank 1**（FX3 `[6]` / FX6 `[6]`） | `p8` | `0x81000000` | `[0x0800108000, 0x0802108000)`（原始 `size=0` 動態哨兵 `end=0x0800107fff`，按 32 MiB 保守包絡校驗） | `0x2000000` (`32 MiB`) | `\cpapp-b.bin`（偏移 **`0x0`**，距下一段仍留 `>102 MiB` 安全間隙） |
+| **Bank 1**（FX3 `[9]` -> FX6 `[8]`） | `p2` | `0x05000000` | FX3 `[0x0808730000, 0x0808c30000)` -> FX6 `[0x0808810000, 0x0808d10000)` | `0x500000` (`5 MiB`) | `\psd.bin`（校準裝載地址上移 **`+0xE0000` = `+917,504 B`**） |
+| **Bank 1**（FX3 `[10]` -> FX6 `[9]`） | `p18` | `0x05000000` | FX3 `[0x0808c30000, 0x0808cb0000)` -> FX6 `[0x0808d10000, 0x0808d90000)` | `0x80000` (`512 KiB`) | `\lensfile.bin`（校準裝載地址上移 **`+0xE0000` = `+917,504 B`**） |
+| **Bank 1**（FX3 `[4]` -> FX6 `[5]`） | `p8` | `0x05000000` | FX3 `[0x0808eb0000, 0x0808f1ddd0)` -> FX6 `[0x0808f90000, 0x0808ffddd0)` | `0x6ddd0` (`439.5 KiB`) | `\OldAmtCL.bin`（校準裝載地址上移 **`+0xE0000` = `+917,504 B`**） |
+| **Bank 1**（FX3 `[1]`/`[0]` == FX6 `[1]`/`[0]`） | `p3` | `0x05000000` | `[0x0809108000, 0x0809139000)`、`[0x0809139000, 0x0809179000)` | `0x31000` + `0x40000` | `\bonobo.bin`、`\sabin\idt_cam.bin`（偏移 **`0x0`**） |
+| **Bank 1**（機型專有槽位） | FX3 `[8]` `p8` vs FX6 `[4]` `p3` | `0x05000000` | FX3 `\cpImg.dat` `[0x0809179000, 0x0809479000)` vs FX6 `\cmrbnb.bin` `[0x0809179000, 0x080918d000)` | `3 MiB` vs `80 KiB` | FX6 以 `80 KiB` (`0x14000`) `\cmrbnb.bin` 取代 FX3 `3 MiB` `\cpImg.dat`（及 `[5]` `\SysSound.bin`） |
+| **Bank 1**（FX3 `[7]` -> FX6 `[7]`） | `p2` | `0x05000000` | FX3 `[0x0809479000, 0x0809979000)` -> FX6 `[0x080948d000, 0x080998d000)` | `0x500000` (`5 MiB`) | `\defdet.bin`（校準裝載地址上移 **`+0x14000` = `+81,920 B`**） |
+| **Bank 1**（FX3 `[3]` -> FX6 `[3]`） | `p8` | `0x05000000` | FX3 `[0x0809a08e00, 0x0809a21e00)` -> FX6 `[0x0809a1ce00, 0x0809a35e00)` | `0x19000` (`100 KiB`) | `\DmmCfg.bin`（校準裝載地址上移 **`+0x14000` = `+81,920 B`**） |
+
+- **推進藍圖 `U3` 關鍵結論**：FX3 原生 RTOS（`\cpapp-b.bin`）與物理 `p2:/setting/{psd.bin,defdet.bin}`、`p18:/lensfile.bin` 的硬編碼指針嚴格綁定 FX3 Bank 1 DDR 基址（`0x0808730000`、`0x0808c30000`、`0x0809479000`），而 FX6 Bank 1 存在精確 **`+0xE0000`** 與 **`+0x14000`** 雙段平移；因此保留 FX3 物理 `Backup.bin`（Bank 0 / Bank 1 零修改）並在 Linux 用戶態使用 RAM-Shadow `BK4\0` 是保障傳感器/鏡頭校準區零錯位的唯一正確設計。同時審計器對注入 `4 KiB` 重疊、越界分區 `p31`、區間反轉與 Bank 0 `byte8 != 0` 實現 100% 攔截。
+
+---
+
+## 9. 端到端候選包乾跑、12 道安全門聯調與驗收測試結果
+
+| 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
+| --- | --- | :---: | --- | :---: | :---: |
+| **合法完整候選包乾跑（含五大功能路由 + `U4` 掛載容錯 + RAM-Shadow `BK4\0` + `U5` 引導選擇器 + `U3` Bank DDR 校驗 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
+| 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
+| 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
+| 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
+| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由、`U4`/RAM-Shadow `BK4\0` 或 **`U5`/`U3` 引導選擇器與 Bank 0/1 DDR 契約** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+
+### 驗收測試匯總
+
+1. `PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m unittest discover -s outputs/fx6-on-fx3-closure/tests -v`：**36 / 36 OK**
+2. `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -v`：**12 / 12 OK**
+3. CLI `verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`boot_selector_and_banks_ok = true`、`u5_closed = true`、`u3_advanced = true`、`backup_mount_tolerance_ok = true`、`u4_closed = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
 4. 工作區二進制殘留核驗：零 `.so`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 文件留存。

@@ -1,4 +1,4 @@
-"""CLI entrypoint for `python3 -m fx6_closure` (Phase 6 U4 Mount-Tolerance, RAM-Shadow BK4 & 5-Feature Closure)."""
+"""CLI entrypoint for `python3 -m fx6_closure` (Phase 7 U5 Boot-Selector, U3 Bank DDR Maps, U4/BK4 & 5-Feature Closure)."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from typing import List, Optional
 
 from .backup_bridge_verifier import verify_p7_backup_bridge
 from .backup_mount_tolerance_verifier import run_backup_mount_tolerance_verification
+from .boot_selector_and_bank_verifier import run_boot_selector_and_bank_verification
 from .candidate_builder import DEFAULT_REPO_ROOT, run_offline_candidate_dry_run
 from .feature_routing_verifier import (
     DEFAULT_FX6_DONOR_BIN_DIR,
@@ -205,6 +206,20 @@ def _cmd_verify_backup_mount_contracts(fx6_lib_dir: Path) -> int:
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_boot_selector_banks() -> int:
+    rep = run_boot_selector_and_bank_verification()
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "u5_closed": rep.dimension_a_boot_selector.u5_closed,
+        "u3_advanced": rep.dimension_b_bank_maps.u3_advanced,
+        "dimension_a_boot_selector": asdict(rep.dimension_a_boot_selector),
+        "dimension_b_bank_maps": asdict(rep.dimension_b_bank_maps),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -226,6 +241,9 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "backup_mount_tolerance_ok": rep.backup_mount_tolerance_ok,
         "u4_closed": rep.backup_mount_tolerance_audit.dimension_a_mount_tolerance.u4_closed,
         "ram_shadow_bk4_sha256": rep.backup_mount_tolerance_audit.dimension_b_backup_contracts.ram_shadow_bundle_sha256,
+        "boot_selector_and_banks_ok": rep.boot_selector_and_banks_ok,
+        "u5_closed": rep.boot_selector_and_bank_audit.dimension_a_boot_selector.u5_closed,
+        "u3_advanced": rep.boot_selector_and_bank_audit.dimension_b_bank_maps.u3_advanced,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -243,7 +261,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 6 Compatibility Closure, U4 Mount-Tolerance, RAM-Shadow BK4 & 5-Feature CLI",
+        description="FX6-on-FX3 Phase 7 Compatibility Closure, U5 Boot-Selector, U3 Bank DDR Maps & U4/BK4 CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -253,7 +271,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("run-rollback-drill", "Build Stage-A CPIO newc RAM-Overlay and execute 4-Layer Fail-Safe rollback drill"),
         ("verify-feature-routing", "Verify 5 core camera feature routing, ELF64 symbol closure, 16x .cube LUT budget, and dual-slot Unicorn contracts"),
         ("verify-backup-mount-contracts", "Verify U4 storage mount-failure tolerance in Unicorn and synthesize/audit RAM-shadow BK4\\0 contracts"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-boot-selector-banks", "Verify U5 boot-selector (up.sh, ud_send_lsi.elf Unicorn, loader_nor.bin) and U3 Bank 0/1 DDR maps"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -277,6 +296,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_feature_routing(args.fx6_lib_dir, args.fx6_initrd_lib_dir, args.fx6_bin_dir)
     if args.cmd == "verify-backup-mount-contracts":
         return _cmd_verify_backup_mount_contracts(args.fx6_lib_dir)
+    if args.cmd == "verify-boot-selector-banks":
+        return _cmd_verify_boot_selector_banks()
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

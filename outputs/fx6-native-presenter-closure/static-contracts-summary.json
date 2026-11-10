@@ -1,0 +1,164 @@
+{
+  "donor_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files",
+  "digests": {
+    "bin/im.elf": {
+      "size_bytes": 40920,
+      "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec"
+    },
+    "lib/libIMDB.so": {
+      "size_bytes": 79728,
+      "sha256": "a088ef303793497a443e89d6de4c8f12e07ec791c945f54e2dc1b52cd42db896"
+    },
+    "lib/libMWF.so": {
+      "size_bytes": 353120,
+      "sha256": "3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782"
+    },
+    "lib/libgrm.so": {
+      "size_bytes": 265376,
+      "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
+    },
+    "lib/libosal_uipc.so": {
+      "size_bytes": 43752,
+      "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a"
+    },
+    "lib/appFw.so": {
+      "size_bytes": 50520424,
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+    }
+  },
+  "imdb_highlights": [
+    {
+      "index": 6,
+      "vma": "0x1eb20",
+      "kind": "0x8000001",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 9,
+      "vma": "0x1ebf8",
+      "kind": "0x8000002",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 19,
+      "vma": "0x1eec8",
+      "kind": "0x8000003",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 48,
+      "vma": "0x1f6f0",
+      "kind": "0x8000004",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 50,
+      "vma": "0x1f780",
+      "kind": "0x8000005",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 144,
+      "vma": "0x211f0",
+      "kind": "0x8000006",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 147,
+      "vma": "0x212c8",
+      "kind": "0x8000007",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 149,
+      "vma": "0x21358",
+      "kind": "0x8000008",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    },
+    {
+      "index": 155,
+      "vma": "0x21508",
+      "kind": "0x8000009",
+      "flags": "0x1",
+      "target_mask": "0x0",
+      "module_id": 56120,
+      "sel": 0,
+      "lib": "<va:0xdb38>",
+      "init": "<va:0xdb38>",
+      "arg0": "<va:0xdb38>",
+      "arg1": "<va:0xdb38>"
+    }
+  ],
+  "snippet_line_counts": {
+    "im_elf_main_phases": 182,
+    "im_elf_kind_dispatch": 293,
+    "mwf_init_thunk": 78,
+    "mwf_rsrc_dp_init": 87,
+    "mwf_rsrc_relation_init": 63,
+    "mwf_objshlock_ctor_and_lock": 114,
+    "grm_register_trigger_cb": 58,
+    "grm_c_api_trigger_cb": 18,
+    "appfw_app_initialize": 64,
+    "appfw_trigger_cb_body": 13,
+    "appfw_frame_gate_helpers": 33,
+    "appfw_start_utimer": 104,
+    "appfw_cold_boot_tail": 50,
+    "appfw_init_hdmi": 64
+  }
+}

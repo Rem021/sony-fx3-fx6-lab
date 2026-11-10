@@ -1,0 +1,286 @@
+{
+  "schema": "fx6-hybrid-fx3kernel-gpecap25-vm-candidate-v1",
+  "status": "APPROVED_HUNDREDFIRST_ONE_VM_PENDING_RUN",
+  "created_utc": "2026-11-08T18:05:32.017148+00:00",
+  "owner_baseline": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+    "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669"
+  },
+  "fx3_platform": {
+    "machine": "virt,gic-version=2,secure=off",
+    "accel": "tcg,thread=multi",
+    "cpu": "cortex-a35",
+    "smp": 4,
+    "memory_mib": 5120,
+    "display": "none",
+    "nodefaults": true,
+    "nic": "none",
+    "no_reboot": true,
+    "kernel_load": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "initrd_load_address": "0x440000000",
+    "dtb_load_address": "0x400002000"
+  },
+  "model_env": {
+    "FX3_VM_ESRAM_RAM": "1",
+    "FX3_VM_HIGH_DDR": "1",
+    "FX3_VM_SONY_TIMER": "1",
+    "FX3_VM_SCU_REQUEST": "1",
+    "FX3_VM_GPIO_BANK5": "1"
+  },
+  "kernel": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "bytes": 6610952
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/guest-hybrid-fx6kernel-capid-grmreal-live700.cpio",
+    "sha256": "d3f4cb69ddfd711584af7c3721083addca66d2bdaa7249da6656e99a7d9bf678",
+    "bytes": 416891808
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+    "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "bytes": 10355
+  },
+  "backup": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+    "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "bytes": 2229740
+  },
+  "firmware_payload_changes": [
+    {
+      "role": "kernel Image",
+      "from_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+      "from_sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9",
+      "to_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "to_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "role": "guest CPIO CP helper member",
+      "from_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+      "from_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "to_path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/guest-hybrid-fx6kernel-capid-grmreal-live700.cpio",
+      "to_sha256": "d7e49b4b890d23b875ddb44cbf5cbb7b7025a68380f090459a63329eaec4ab71"
+    }
+  ],
+  "candidate_argv_before_observer_serial_retarget": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "cortex-a35",
+    "-smp",
+    "4",
+    "-m",
+    "5120",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-monitor",
+    "none",
+    "-serial",
+    "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+    "-qmp",
+    "unix:q,server=on,wait=off",
+    "-chardev",
+    "socket,path=g,server=on,wait=off,id=keygate93",
+    "-gdb",
+    "chardev:keygate93",
+    "-S",
+    "-kernel",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/guest-hybrid-fx6kernel-capid-grmreal-live700.cpio,addr=0x440000000,force-raw=on",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on"
+  ],
+  "maximum_seconds": 600,
+  "mode": "ap-window",
+  "scope": "hundred-sixty-sixth single VM; createScreen root check + moveFirst/moveLast + sys_render; 120s",
+  "provider_route": "not the provider-blocked AArch64 guest veneer; new CP helper route",
+  "approval": "user delegated runtime line; synthetic screen/event wakeup experiment",
+  "new_helper_sha256": "83cd8aba1f8c78f5ef5da49ead2ca98c32e2b4e29743f0d56e866e43f3d440bf",
+  "previous_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-a25897b0",
+  "previous_run_serial_sha256": "pending",
+  "hybrid_source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/guest-three-entry.cpio",
+    "sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+    "bytes": 453184500
+  },
+  "previous_runs": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-fc2ad401",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-9d22099a",
+    "runs/cp-bind-83784058",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-4767b7af",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-54bcebde",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-54bcebde",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-76d6072a",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-bb34818f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-6c605426",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-47c51739",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-14949ca1",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-29fa50d2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e85759d2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-efdf20c6",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e48296f2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-726ff3c2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-76500655",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-d8162f96",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-6b8e3c11",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-9e566cc8",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-3a82a10f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-cf310a50",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-172c4f09",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-96e93ff6",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-9450cc54",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e87b3a49",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-96d263c9",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-7d7f2460",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-56a0287f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-c8059b0a",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-869f9a80",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-0302cd33",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e5cb052f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e9f906a4",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-5e0b49b0",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-142202a1",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-4d03be46",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-2466a835",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-046f5b5f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-eee4ef78",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-2870a7b4",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-7de2e0c8",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-a1e06f3a",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-c480255c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-c2c0056f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-ab5e6196",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-15b5e898",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-1b99cbcb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-d721e494",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-188b1280",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-d74a4e49",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e3dca14a",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-ef5b4e9e",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-e6d9d922",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-343c0eda",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-021235f4",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-64f4afdf",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-d3dc419f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-081ee7cc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-85f865bc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-84aeace6",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-15d5d1a1",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-f95011fe",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-386c5c94",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-b0e40afc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-b5e5d1fa",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-0f70e67d",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-3404ed70",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-371f6335",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-fc63183e",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-241f6ecc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-5d7780ad",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-63a0b0d3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-abcfeefd",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-65dc6dc5",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-7e60fafe",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-3318dc3f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-0d27f761",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-fb3d9b61",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-499f7e69",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-24ab709b",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-a25897b0"
+  ],
+  "capid_preinit": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/capid-preinit/fx3-capid-v50-preinit.so",
+    "sha256": "c70fc778c9ccd709f34de2e2573cad25cccbf3133f8a56f78d555a92ca6e4644",
+    "scope": "exact 0x032d200d 10B audio request only; no table initialization forced; existing audio_format_apply used"
+  },
+  "real_libgrm": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libgrm.so",
+    "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b",
+    "member": "usr/lib/libgrm.so",
+    "preloaded_in_init": true,
+    "capid_grm_stub_removed": true,
+    "members": [
+      "usr/lib/libgrm.so",
+      "usr/lib/libma.so",
+      "usr/lib/libgrm_bmp.so"
+    ]
+  },
+  "fx6_remote_board": {
+    "member": "usr/lib/libInfraAppRemoteBoard.so",
+    "sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+    "thread": "I-AppRemoteBoar"
+  },
+  "fx6_libra": {
+    "member": "usr/lib/liblibra.so",
+    "sha256": "3dffc66daede059cbbdde30d3106185cb3f634cc0309dff69d5a63758ceb5d90"
+  },
+  "fx6_libstella": {
+    "member": "usr/lib/libstella.so",
+    "sha256": "d8d1966ecb0e5b90c66046b9b771c60da3557f1a60d5b3b7b5ff2441264840db"
+  },
+  "fx6_grm_ma": {
+    "member": "usr/kmod/grm_ma.ko",
+    "sha256": "81e0bf8754a898d4b70d3c1d46f7a6da4728a449bf575eaa6a6c9b2493f33a33"
+  },
+  "grm_fbinit": {
+    "member": "usr/lib/libgrm-fbinit9.so (content=fbinit8)",
+    "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+    "ux_screen_default": "1024x540"
+  },
+  "backup_bug_skip": {
+    "member": "usr/kmod/backup.ko",
+    "sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+    "patched_instruction": "0x75c brk #0x3e8 -> b 0x700"
+  },
+  "appfw_future_skip": {
+    "member": "usr/lib/appFw.so",
+    "sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+    "patch": "0x2159c50 future::get helper -> mov w0,#0; ret"
+  },
+  "upm_callsite_skip": {
+    "member": "usr/kmod/upm.ko",
+    "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+    "patch": "upm_senser_dfs_measurement+0x4a0 blr x2 -> mov w0,#0"
+  },
+  "ui_gate": {
+    "removed": "/simulation/fx3-ui-gate-v1.so from LD_PRELOAD"
+  },
+  "late_dmm": {
+    "at_seconds": 45,
+    "foreground": true,
+    "position": "after launcher echo",
+    "proc": [
+      "dmm_info",
+      "dmm_units",
+      "dmm_extents",
+      "dmm_reserve"
+    ]
+  },
+  "gpe_capture": {
+    "type": "0x403",
+    "surfaces": 2,
+    "mechanism": "QMP pmemsave"
+  },
+  "dmm_capture": {
+    "units": [
+      {
+        "label": "dmm0400",
+        "phys": "0x4805a1000",
+        "bytes": "0x800000"
+      },
+      {
+        "label": "dmm0403",
+        "phys": "0x429550000",
+        "bytes": "0x12d000"
+      }
+    ]
+  }
+}

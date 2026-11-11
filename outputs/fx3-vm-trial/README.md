@@ -52,3 +52,13 @@ python3 -B /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/r
 技术参考：[QEMU 监视器](https://www.qemu.org/docs/master/system/monitor.html)、[Python 本地 HTTP 服务接口](https://docs.python.org/3/library/http.server.html)。这些接口仅用于宿主控制与观察，设备模型沿用冻结基线。
 
 验证记录：[实际网页菜单截图与退出回执](../../reports/2026-11-01-fx3-vm-resumed-repair/try1-local-ui-trial.md)。已完成待机→MENU→菜单→网页结束，以及独立一轮Ctrl-C收尾；自测实例均已退出。
+
+---
+
+## 离线自动化单元测试（`tests/test_vm_trial.py`）
+
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP` 边界回归检查，以及 `outputs/fx3-vm` 补丁与重定位溯源（共 **16 项** 测试，已接入顶层 `make test`）：
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v
+```

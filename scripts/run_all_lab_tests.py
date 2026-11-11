@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Unified Cross-Suite Lab Verification Runner & Clean-Room Binary/Bytecode Hygiene Auditor.
 
-Orchestrates and times all three repository verification suites plus a tracked-tree
-clean-room hygiene check with `PYTHONDONTWRITEBYTECODE=1` (`-B`):
+Orchestrates and times all four repository verification suites plus BYOF manifest and
+tracked-tree clean-room hygiene checks with `PYTHONDONTWRITEBYTECODE=1` (`-B`):
 1. `outputs/fx3-recovery-adapter/tests` (58 tests)
-2. `outputs/fx3-safety/tests`
-3. `outputs/fx6-on-fx3-closure/tests`
-4. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
+2. `outputs/fx3-safety/tests` (17 tests)
+3. `outputs/fx6-on-fx3-closure/tests` (56 tests)
+4. `outputs/fx3-vm-trial/tests` (16 tests — Track 1A `fx3-vm-trial` & Track 2 `fx3-vm` offline verification)
+5. Bilingual `docs/BYOF-REPRODUCTION.md` SHA-256 manifest audit (`scripts/verify_byof_manifest.py`)
+6. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
    verifying zero untracked `.so` / `.elf` / `.ko` / `.cpio` / `.bin` / `.vfat` / `.pyc`
    artifacts, plus direct filesystem sweep of `outputs/fx3-safety` and `outputs/fx6-on-fx3-closure`).
 
@@ -16,12 +18,15 @@ Usage:
 
 from __future__ import annotations
 
+import sys
+
+sys.dont_write_bytecode = True
+
 import argparse
 import json
 import os
 import re
 import subprocess
-import sys
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -73,6 +78,12 @@ LAB_SUITES: Tuple[LabSuiteSpec, ...] = (
         display_name="outputs/fx6-on-fx3-closure/tests",
         test_dir_rel="outputs/fx6-on-fx3-closure/tests",
         pythonpath_Entries=("outputs/fx3-safety", "outputs/fx6-on-fx3-closure"),
+    ),
+    LabSuiteSpec(
+        suite_id="fx3_vm_trial",
+        display_name="outputs/fx3-vm-trial/tests",
+        test_dir_rel="outputs/fx3-vm-trial/tests",
+        pythonpath_Entries=("outputs/fx3-vm-trial",),
     ),
 )
 
@@ -294,7 +305,7 @@ def run_all_lab_verifications(
     clean_only: bool = False,
     stream_progress: bool = False,
 ) -> UnifiedLabRunReport:
-    """Run all three lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
+    """Run all four lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
     overall_t0 = time.monotonic()
     suite_results: List[SuiteExecutionResult] = []
 

@@ -17,9 +17,17 @@
       "size_bytes": 265376,
       "sha256": "0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b"
     },
+    "lib/libgrm_bmp.so": {
+      "size_bytes": 60264,
+      "sha256": "4c833faff26902fc2269dd8e27b15cfad2daaecd8bce9563a9e2d75e6b4b3060"
+    },
     "lib/libgemini-grm.so": {
       "size_bytes": 51800,
       "sha256": "f47c8f3ecff0710d2c246d7d0c0ccdb5381a9f39b1b8d68464d184c0be8070b9"
+    },
+    "lib/libuxengine.so": {
+      "size_bytes": 742128,
+      "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876"
     },
     "lib/libosal_uipc.so": {
       "size_bytes": 43752,
@@ -187,9 +195,13 @@
     "mwf_objshlock_ctor_and_lock": 114,
     "grm_register_trigger_cb": 58,
     "grm_c_api_trigger_cb": 18,
+    "grm_bmp_bytes_per_pixel": 2,
+    "gemini_grm_image_pixel_format": 120,
     "gemini_grm_renderer_fill_blit": 496,
+    "uxengine_rgba4444_sw_compositor": 812,
     "infra_mediaconfig_init": 162,
     "infra_mediaconfig_create_tbl": 350,
+    "infra_input_send_key_event": 221,
     "mpr_slot_type_from_media_id": 38,
     "mpr_set_movie_rec_param": 102,
     "appfw_app_initialize": 64,
@@ -197,9 +209,68 @@
     "appfw_frame_gate_helpers": 33,
     "appfw_start_utimer": 104,
     "appfw_rep_boot_power_on_comp": 1014,
+    "appfw_shooting_ctrl_compact_dispatch": 65,
+    "appfw_func_home_on_forwarder": 16,
+    "appfw_menu_layer_1st_resolver": 39,
+    "appfw_shooting_ctrl_open_big6_home": 67,
+    "appfw_shooting_ctrl_menu_long_press": 36,
+    "appfw_infra_input_msg_receiver": 113,
     "appfw_cold_boot_tail": 50,
     "appfw_init_hdmi": 64,
     "appfw_media_slot_sync": 166,
     "appfw_network_rpc_helper": 146
+  },
+  "round5_contracts": {
+    "bmp_pixel_formats": {
+      "1": {
+        "grm_image_fmt": 4,
+        "stella_gpe_fmt": 7,
+        "bpp": 2,
+        "layout": "RGBA4444 (u16 LE: [15:12]=R, [11:8]=G, [7:4]=B, [3:0]=A; 4-bit -> 8-bit * 17)"
+      },
+      "2": {
+        "grm_image_fmt": 1,
+        "stella_gpe_fmt": 1,
+        "bpp": 4,
+        "layout": "RGBA8888 byte-order [R, G, B, A] (u32 LE = 0xAABBGGRR) for resource bitmaps; GPE surfaces tracked as 0xAARRGGBB"
+      },
+      "4": {
+        "grm_image_fmt": 8,
+        "stella_gpe_fmt": 14,
+        "bpp": 1,
+        "layout": "A8 8-bit FreeType coverage mask tinted by rectblit +0x3c..+0x3f"
+      }
+    },
+    "infra_input_key_msg_32b": {
+      "src_qid": "0x007a804c",
+      "dest_qid": "0x005503e0",
+      "size_bytes": 32,
+      "fields": {
+        "+0x00": "u32 msg_type = 0x020102ff",
+        "+0x04": "u32 dev_type = 0 (physical tact key)",
+        "+0x08": "u16 infra_key_id",
+        "+0x0a": "u16 pad = 0",
+        "+0x0c": "u32 action (1 = press, 2 = release)",
+        "+0x10..0x1f": "zero-filled payload"
+      },
+      "verified_keycodes": {
+        "0x002f": "UP (app_key=0x0001)",
+        "0x0030": "DOWN (app_key=0x0002)",
+        "0x0031": "LEFT (app_key=0x0003)",
+        "0x0032": "RIGHT (app_key=0x0004)",
+        "0x01ab": "MENU (app_key=0x0013; <1000ms -> 0x02010018 SHORT_PRESS, >=1000ms -> 0x02010017 LONG_PRESS -> sid=0x0f)",
+        "0x01ac": "ENTER / SET (app_key=0x0014 -> 0x02010010)",
+        "0x7052": "STATUS_CHECK (app_key=0x0049 -> 0x02010019)",
+        "0x718c": "HOME / UIBIZ_KEY_TACT_HOME (app_key=0x0184 -> 0x020102d1 -> 0x02010208 EVENT_FUNC_HOME_ON -> sid=0x0a Big6)",
+        "0x719a": "MENU_CANCEL (app_key=0x0192 -> 0x02010107)",
+        "0x71a1": "DISP_SEL (app_key=0x0199 -> 0x020100e6)"
+      }
+    },
+    "screen_transitions_verified": {
+      "sid_0x14": "37procam_menu_initial_setting_presenter (r5a)",
+      "sid_0x02": "25procam_shooting_presenter (r5b)",
+      "sid_0x0a": "31procam_big6_menu_home_presenter via 0x718c HOME (r5c)",
+      "sid_0x0f": "31procam_menu_layer_1st_presenter via 0x01ab:1300ms MENU_LONG_PRESS (r5d)"
+    }
   }
 }

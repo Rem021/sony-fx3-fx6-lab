@@ -16,7 +16,9 @@ All offsets and disassembly excerpts below are verified against the unmodified F
 | `lib/libIMDB.so` | `79,728` | `a088ef303793497a443e89d6de4c8f12e07ec791c945f54e2dc1b52cd42db896` |
 | `lib/libMWF.so` | `353,120` | `3c9666c49bde90076cf69af13295dc07e585d87c51a27ecaf7f1926df87d1782` |
 | `lib/libgrm.so` | `265,376` | `0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b` |
+| `lib/libgrm_bmp.so` | `60,264` | `4c833faff26902fc2269dd8e27b15cfad2daaecd8bce9563a9e2d75e6b4b3060` |
 | `lib/libgemini-grm.so` | `51,800` | `f47c8f3ecff0710d2c246d7d0c0ccdb5381a9f39b1b8d68464d184c0be8070b9` |
+| `lib/libuxengine.so` | `742,128` | `11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876` |
 | `lib/libosal_uipc.so` | `43,752` | `fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a` |
 | `lib/libbackup.so` | `14,232` | `e003e2d8a1f42fdf629dda012a01f225940c016b2ab4dbf482a761378e8d286f` |
 | `lib/libInfraMediaConfig.so` | `52,312` | `9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3` |
@@ -401,3 +403,83 @@ Disassembly of `gemini::GRMRenderer::fillRect` (`libgemini-grm.so +0x7700..0x795
    - `+0x28` (`uint32_t`): `blend_mode` (`1` = copy, `2` = src-over, `3` = modulated alpha)
    - `+0x2c` (`uint8_t`): `const_alpha`
    - `+0x3c..0x3f` (`uint8_t[4]`): `tint_r, tint_g, tint_b, tint_a` when `+0x50 == 0x0e` (`GRMImage::getPixelFormat() == 8` / `BMP_PixelFormat == 4`, `1 Bpp` `A8` FreeType glyph bitmaps rendered by `libfont.so`).
+
+---
+
+## 7. Round 5 (Phase 3): 16-Bit `BMP_PixelFormat == 1` (`RGBA4444`) Channel Order, `InfraInput` 32B Key-Event ABI, UIPC Pool Reclamation, & Interactive `HOME` / `MENU` Transitions
+
+### 7.1 `BMP_PixelFormat` -> `GRMImage` -> Stella GPE Format Table & Exact `RGBA4444` / `RGBA8888` Bitfields
+Cross-disassembly of `lib/libgrm_bmp.so` (`+0x2350..0x240c`), `lib/libgemini-grm.so` (`gemini::GRMImage::getPixelFormat` `+0x71b0..0x7328`, `gemini::GRMRenderer::bitBlt` `+0x79b8..0x7df8`), and `lib/libuxengine.so` software fallback compositors (`+0x8f400..0x8ff80`) establishes the complete 3-layer pixel-format mapping and exact bitfield layouts:
+
+| `BMP_PixelFormat` (`libgrm_bmp.so`) | `Bpp` | `GRMImage::getPixelFormat()` | Stella GPE Format (`+0x7be0`) | Exact Little-Endian Channel Packing |
+| --- | ---: | ---: | ---: | --- |
+| `0` | `2` | `2` | `6` (`RGB565`) | `uint16_t` LE: `[15:11]=R5`, `[10:5]=G6`, `[4:0]=B5` (opaque `A=0xff`) |
+| **`1`** | **`2`** | **`4`** | **`7` (`RGBA4444`)** | **`uint16_t` LE: `[15:12]=R4`, `[11:8]=G4`, `[7:4]=B4`, `[3:0]=A4`** (`4-bit -> 8-bit` via `c4 * 17U`) |
+| **`2`** | **`4`** | **`1`** | **`1` (`RGBA8888`)** | **Byte-order `[R, G, B, A]` (`uint32_t` LE = `0xAABBGGRR`)** for decoded UI resource bitmaps; GPE `Fillrect`/`Rectblit` work surfaces tracked via `mark_gpe_argb_surface` use `0xAARRGGBB` |
+| `3` | `4` | `3` | `2` (`ARGB8888`) | `uint32_t` LE = `0xAARRGGBB` (`[31:24]=A`, `[23:16]=R`, `[15:8]=G`, `[7:0]=B`) |
+| **`4`** | **`1`** | **`8`** | **`14` (`0x0e` `A8`)** | `uint8_t` 8-bit FreeType coverage mask modulated by `GRM_GPERMRectblitParamRecord` `+0x3c..0x3f` (`tint_r, tint_g, tint_b, tint_a`) |
+
+**Static Proof of `BMP_PixelFormat == 1` == `RGBA4444` (`libuxengine.so +0x8f400..0x8ff80`)**:
+- `libuxengine.so` software alpha-blend loops load `ldrh w_px, [src]` (`uint16_t` LE) and extract:
+  - `a4 = w_px & 0x0f` (`[3:0]`, expanded via `(a4 << 4) | a4` == `a4 * 17U`); when `a4 == 0`, pixel is 100% transparent (`0x0000`)!
+  - `r4 = (w_px >> 12) & 0x0f` (`[15:12]`)
+  - `g4 = (w_px >> 8) & 0x0f` (`[11:8]`)
+  - `b4 = (w_px >> 4) & 0x0f` (`[7:4]`)
+- **Why Round 4's `r4i` lost `3,622 / 5,451` HUD pixels (`1,829` shown, `7` garbled colors)**:
+  - Round 4 tentatively decoded `fmt == 1` as `ARGB1555` (`bit 15 = alpha`). In `RGBA4444`, `bit 15` is **Red MSB (`R >= 8`)**, NOT alpha! Thus every black/dark-gray outline and drop-shadow pixel (`0x000f` = opaque black `R=0,G=0,B=0,A=15`, `0x0008` = 53% shadow `A=8`, `0x222f` = dark gray `R=2,G=2,B=2,A=15`) had `bit 15 == 0` and was discarded as transparent, while `0xeee f` (`R=0xe, G=0xe, B=0xe, A=0xf` crisp Sony Cinema Line white) had its bits mis-sliced into `0xffdebd7b` beige!
+  - Updating `libgrm-fbinit9.c` (`sample_src_argb`) to `RGBA4444` (`fmt == 1`) + `RGBA8888` vs tracked GPE `ARGB8888` (`fmt == 2`) + `dst_bpp == 2` work-surface writeback immediately restored **100% of all 6 Shooting HUD bitmaps (`5,451 / 5,451` nonzero pixels) and `29` crisp neutral/translucent Sony Cinema Line colors** in `r5b-shooting-rgba4444`!
+
+### 7.2 `libInfraInput.so` (`+0xb05c..0xb38c`) -> `appFw.so` (`+0x2159df4`) 32-Byte Key-Event Wire Contract
+Disassembly of `lib/libInfraInput.so` (`InfraInput::EventSender` `+0xb05c..0xb38c`) and `lib/appFw.so` (`infra_wrapper_input` callback `+0x2159df4..0x2159fa0`, `infra_key -> app_key` table `+0x2245a18`, and `app_key -> ds_event` table `+0x2ef2b08`) establishes the exact 32-byte UIPC key-delivery ABI:
+
+1. **Queue Endpoint & Header**:
+   - Destination queue: **`0x005503e0`** (`App` main event queue, registered during `App::initialize` via `InfraInput` client subscription).
+   - Source queue (`osal_set_msg_src`): **`0x007a804c`** (`I-InputEvent` sender ID).
+   - Pool buffer size (`osal_get_msg`): **`32` bytes (`0x20`)**, zero-initialized.
+2. **Exact 32-Byte Payload Layout**:
+
+| Offset | Type | Value | Meaning |
+| --- | --- | --- | --- |
+| `+0x00` | `uint32_t` | `0x020102ff` | `App` raw `InfraInput` dispatch message ID (`App::recv_event_i` routes to `+0x2159df4`) |
+| `+0x04` | `uint32_t` | `0x00000000` | Input device class (`0` = physical tact key, `1` = rotary/dial, `2` = touch) |
+| `+0x08` | `uint16_t` | `infra_key_id` | Hardware/logical `InfraInput` key code (see codebook below) |
+| `+0x0a` | `uint16_t` | `0x0000` | Reserved alignment padding |
+| `+0x0c` | `uint32_t` | `action` | **`1` = key press (`ON`)**, **`2` = key release (`OFF`)** |
+| `+0x10..0x1f` | `uint8_t[16]` | `0x00` | Key metadata / repeat / timestamp fields (`0` for standard press/release pair) |
+
+3. **Verified Sony FX6 (`ILME-FX6`) `InfraInput` Key Codebook (`appFw.so +0x2245a18` -> `+0x2ef2b08`)**:
+
+| `infra_key_id` | `app_key` | `UIBIZ_KEY_*` Symbol | Emitted `ds_event` (`ON` / `OFF` / Derived) | Verified Runtime Role |
+| --- | --- | --- | --- | --- |
+| `0x002f` | `0x0001` | `UIBIZ_KEY_TACT_UP` | `0x02010000` / `0x02010001` | Cursor Up |
+| `0x0030` | `0x0002` | `UIBIZ_KEY_TACT_DOWN` | `0x02010003` / `0x02010004` | Cursor Down (selects `[Cancel]` on vertical APR confirm dialog `sid=0x231`) |
+| `0x0031` | `0x0003` | `UIBIZ_KEY_TACT_LEFT` | `0x02010006` / `0x02010007` | Cursor Left |
+| `0x0032` | `0x0004` | `UIBIZ_KEY_TACT_RIGHT` | `0x0201000b` / `0x0201000c` | Cursor Right |
+| `0x01ac` | `0x0014` | `UIBIZ_KEY_TACT_ENTER` | `0x02010010` (`TACT_SET_ON`) | Multi-selector center `ENTER` / `SET` |
+| **`0x01ab`** | **`0x0013`** | **`UIBIZ_KEY_TACT_MENU`** | `0x02010015` (`ON`) -> `<1000ms` release: `0x02010018` (`MENU_SHORT_PRESS`); `>=1000ms` hold: **`0x02010017` (`MENU_LONG_PRESS`)** | Short press: Quick Status; **Long press (`>=1000ms`, e.g. `1300ms`): opens Full Menu `sid=0x0f` (`31procam_menu_layer_1st_presenter`)!** |
+| **`0x718c`** | **`0x0184`** | **`UIBIZ_KEY_TACT_HOME`** | `0x020102d1` (`KEY_TACT_HOME_ON`, `flags=0x20000001`) -> `0xce2` (`ASSIGNABLE_SWITCH_HOME`) -> **`0x02010208` (`EVENT_FUNC_HOME_ON`)** | **Dedicated FX6 `HOME` button: toggles `BKID_APP_HOME_SCREEN_STATE` -> opens Big6 Home `sid=0x0a` (`31procam_big6_menu_home_presenter`)!** |
+| `0x7052` | `0x0049` | `UIBIZ_KEY_TACT_STATUS` | `0x02010019` (`KEY_TACT_STATUS_CHECK_ON`) | Status screen toggle |
+| `0x719a` | `0x0192` | `UIBIZ_KEY_TACT_CANCEL` | `0x02010107` (`KEY_TACT_MENU_CANCEL_ON`) | Cancel / Back button |
+| `0x71a1` | `0x0199` | `UIBIZ_KEY_TACT_DISP` | `0x020100e6` (`KEY_TACT_DISP_SEL_ON`) | `DISP` HUD overlay toggle |
+| `0x7177` | `0x016f` | `UIBIZ_KEY_TACT_SHUTTER` | `0x0201010f` (`KEY_TACT_SHUTTER_MODE_ON`) | Shutter mode key (NOT `HOME`!) |
+
+### 7.3 Fire-and-Forget External Daemon Queue Pool Reclamation (`0x9088076b`)
+- During interactive `App::run` key/menu transitions, `appFw.so` emits asynchronous key-click/beep/telemetry notifications (`src_qid == 0xa5a5a5a5`, i.e., **no reply queue**) to external sub-CPU/audio daemon queues (`0x9088076b`, `0x8280074d`, `0x809208bf`, `0x81100a36`) that have no consumer process in our minimal Linux initramfs.
+- Because `osal_uipc` allocates fixed-count shared-memory pool slots per destination queue, ~16 unconsumed messages to `0x9088076b` exhaust its pool and cause `AppFw` (`tid=225`) to block inside `osal_get_msg(0x9088076b)`.
+- Reclaiming (`osal_free_msg(dest_qid, msg); return 0;`) strictly those fire-and-forget (`src_qid == 0xa5a5a5a5`) messages to `{0x9088076b, 0x8280074d, 0x809208bf, 0x81100a36}` inside `libgrm-fbinit9.c`'s `osal_snd_msg` hook prevents pool exhaustion completely with zero side effects on real intra-process queues.
+
+### 7.4 `procam_shooting_controller` (`sid = 0x02`) Compact Dispatch & Interactive Screen Transitions (`sid = 0x0a` Big6 & `sid = 0x0f` Menu Layer 1st)
+Disassembly of `procam_shooting_controller` (`appFw.so +0xfb2e00..0xfb9060`, base dispatcher `+0xc69390..0xc69478`, GOT `+0x2ee3f30 -> 0x2d2d230` 65-entry PMF table) reveals the exact controller transition graph:
+
+1. **Cold-Boot APR Modal Dismissal (`slots[2]` `sid = 0x23a` -> `sid = 0x231` -> `sid = 0xc9` -> `12i_controller` closed)**:
+   - On cold boot with `--initial-setting-done 1`, `slots[0]` opens `26procam_shooting_controller` (`sid = 0x02`, `25procam_shooting_presenter`) while `slots[2]` opens modal `41procam_msg_request_execute_apr_controller` (`sid = 0x23a`, `"APR"` request dialog, `35procam_msg_1label_1button_presenter`). While `slots[2]` holds an active modal controller, `presenter_controller_manager` routes tact keys exclusively to `slots[2]`.
+   - Injecting `0x01ac` (`ENTER`) transitions `slots[2]` to `41procam_msg_confirm_execute_apr_controller` (`sid = 0x231`, `35procam_msg_2label_2button_presenter`, vertical `[Execute]` / `[Cancel]` buttons).
+   - Injecting `0x0030` (`DOWN`) moves focus to `[Cancel]`, and `0x01ac` (`ENTER`) cancels APR, briefly displaying 3-second toast `28procam_msg_2label_controller` (`sid = 0xc9`) before destroying `slots[2]` (`ctrl_rtti = 12i_controller`), leaving `26procam_shooting_controller` (`sid = 0x02`) active and unblocked!
+2. **Shooting -> Big6 Home Transition (`0x718c` `HOME` -> `sid = 0x0a` `32procam_big6_menu_home_controller` / `31procam_big6_menu_home_presenter`)**:
+   - Pressing `0x718c` (`UIBIZ_KEY_TACT_HOME`) emits `0x020102d1` (`EVENT_INPUT_KEY_TACT_HOME_ON`), which maps via default assignable switch `0xce2` (`ASSIGNABLE_SWITCH_HOME`) to `0x02010208` (`EVENT_FUNC_HOME_ON`), forwarded by `appFw.so +0xc89af8` to `AppBiz` (`+0xc8759c`).
+   - `AppBiz` updates `BKID_APP_HOME_SCREEN_STATE` (`HOME_SCREEN_STATE_ON_CURSOR_OFF`) and dispatches model-change event `0x01000386` (`sub = 0x008c`).
+   - `procam_shooting_controller`'s compact dispatcher (`+0xc693b0..0xc69468`, index table `GOT 0x2eed608 -> 0x22a1bd8`) maps `sub = 0x008c` to **`pmf[60] = 0xfb3d24`**, which reads `HOME_SCREEN_STATE != 0` (`+0xfb3da0`) and executes **`mov w0, #0xa` (`+0xfb3e00`) -> `procam_shooting_controller::open_screen(sid = 0x0a)` (`+0xfb2f88`)**, opening **`slots[1] = 31procam_big6_menu_home_presenter` (`vptr_off = 0x2e8f7b0`, `32procam_big6_menu_home_controller`)** and rendering all 98 Big6 Home widgets (`337,227` nonzero pixels, `74` ARGB colors) onto `GPE0`!
+3. **Shooting -> Full Menu Layer 1st Transition (`0x01ab` `1300 ms` `MENU_LONG_PRESS` -> `sid = 0x0f` `32procam_menu_layer_1st_controller` / `31procam_menu_layer_1st_presenter`)**:
+   - Holding `0x01ab` (`UIBIZ_KEY_TACT_MENU`) for `>= 1000 ms` (`1300 ms`) emits `0x02010017` (`EVENT_INPUT_TACT_MENU_LONG_PRESS`).
+   - `procam_shooting_controller`'s input index table (`GOT 0x2ee2970 -> 0x22a1e80`) maps `sub = 0x0017` to **`pmf[9] = 0xfb78a8 -> 0xfb31a4`**, which invokes `0xcbe030 -> 0xcb317c` (`mov w0, #0xf` at `+0xcb31cc`) and calls **`open_screen(sid = 0x0f)`**, opening **`slots[2] = 31procam_menu_layer_1st_presenter` (`vptr_off = 0x2e8db00`, `32procam_menu_layer_1st_controller`)** and rendering the translucent Cinema Line category menu (`435,918` nonzero pixels, `67` ARGB colors) onto `GPE0`!
+

@@ -1,8 +1,8 @@
-# FX6 Ver. 6.01 Cold-Boot Lifecycle Completion & `FX6_NATIVE_FAITHFUL=1` Foreground Presenter Closure (2026-11-10)
+# FX6 Ver. 6.01 Cold-Boot Lifecycle Completion, `RGBA4444` Pixel-Format Closure, & Interactive `FX6_NATIVE_FAITHFUL=1` Big6 / Menu Presenter Closure (2026-11-10)
 
 ## 1. Executive Summary
 
-This report documents the Track 1B single-variable progression (Phase 1: Rounds 1–3; Phase 2: Round 4 `r4a`–`r4i`) from the `work/fx6-worker-pool-restore-20261107` 129-TID `Application_System_Init` baseline (where `AppFw` stalled at `model_future::wait` `appFw.so +0x1acd874` / `+0xc09de4` while `SeqQueueCommon` waited on `0x032d` `init_hdmi`) all the way to **100% un-NOPed `appFw.so` `.text` (`nop_count = 0`)**, **complete `Presenter::open` closure across `160` live threads**, **foreground child widget attachment on `UX_ScreenArea`**, and **multi-color `FX6_GPE_RECTBLIT` foreground glyph & Shooting HUD rendering in physical `GPE0` (`0x41e001000`, `unique_colors = 16` in `r4h` and `unique_colors = 7` in `r4i`)** under strict **`FX6_NATIVE_FAITHFUL=1`** rules (`subst_color=0`, `subst_image=0`, `forced_render=0`, `skipped_node=0`, `lock_bypass=0`).
+This report documents the Track 1B single-variable progression (Phase 1: Rounds 1–3; Phase 2: Round 4 `r4a`–`r4i`; Phase 3: Round 5 `r5a`–`r5d`) from the `work/fx6-worker-pool-restore-20261107` 129-TID `Application_System_Init` baseline (where `AppFw` stalled at `model_future::wait` `appFw.so +0x1acd874` / `+0xc09de4` while `SeqQueueCommon` waited on `0x032d` `init_hdmi`) all the way to **100% un-NOPed `appFw.so` `.text` (`nop_count = 0`)**, **exact `BMP_PixelFormat == 1` (`RGBA4444`) + `RGBA8888` Sony Cinema Line color fidelity**, **interactive `InfraInput` (`0x007a804c -> 0x005503e0`) key transitions from `25procam_shooting_presenter` into `31procam_big6_menu_home_presenter` (`74` ARGB colors, `337,227` pixels) and `31procam_menu_layer_1st_presenter` (`67` ARGB colors, `435,918` pixels) across `161` live threads**, and **crisp PNG visual receipts** under strict **`FX6_NATIVE_FAITHFUL=1`** rules (`subst_color=0`, `subst_image=0`, `forced_render=0`, `skipped_node=0`, `lock_bypass=0`).
 
 ### Headline Milestones Achieved
 
@@ -20,9 +20,12 @@ This report documents the Track 1B single-variable progression (Phase 1: Rounds 
    - Completed remote DMM (`0x9061003c`, `r4b`), all eight `0x215c6d0` `SeqQueueNetwork` RPCs (`r4c`–`r4d`), and preloaded donor `libCertificateManager.so` (`r4e`), **releasing `AppFw` from every `Presenter::open` `model_future::wait` barrier into steady-state `App::run`**.
    - Mapped the genuine donor FX6 NTSC Backup image (`CHAPLIN/CX95898_NTSC.bin`, `2,253,333` bytes) into `/etc/fx6_chaplin_ntsc.bk4` across `Backup_nread_multi` (`5,394` + `98` multi-item factory reads) and restored **all remaining `appFw.so` `.text` NOPs (`nop_count = 0`)** across **160 live threads** (`r4f`).
 5. **Foreground Presenter Open, `UX_ScreenArea` Widget Tree Attachment, & Multi-Color `GPE0` Output (`Round 4G–4I`: `r4g` -> `r4h` -> `r4i`)**:
-   - Resolved the `rep_boot_controller::process_MODEL_POWER_ON_COMP` (`appFw.so +0x1009b90..0x100ab4c`) handover chain (`0x02cf15c8 = 0x03`, `0x02cf0069 = 0x00060001` + `0x004b024e` `(6,1)` `"6.01"`, `InfraInput` `1,127` keys with `PW_SW` `phy_key_id=1 -> status=1`), and fixed offscreen backbuffer clobbering + verified `libgemini-grm.so` `blend_mode`/`const_alpha`/`tint` (`+0x3c..0x3f` when `+0x50 == 0x0e`) in `libgrm-fbinit9.c`:
-     - **`r4h-foreground-gpe0-colors` (`0x02cf0068 = 0x01` factory default, 72.70s, 160 TIDs, `nop_count = 0`, 0 crashes)**: Opened **`slots[2] = 37procam_menu_initial_setting_presenter`** (`vptr_off=0x2e8eac0`), populated `UX_ScreenArea` `idx=2` (`0x7f74f27758`) & `idx=4` (`0x7f75727778`), executed `966` `drawFramebuffer()` passes, and committed **`16` unique ARGB colors (`552,960` nonzero pixels, including `3,047` anti-aliased Sony Cinema Line amber `0xffffaa00` foreground FreeType glyph pixels, `sha256 = 7c8f770c189d3e98e08a4b85beb6ba354ff51c9682c71e2b444094abbac3bce3`)** into physical `GPE0` (`0x41e001000`)!
-     - **`r4i-shooting-big6-presenter` (`0x02cf0068 = 0x00` `--initial-setting-done 1`, 72.67s, 160 TIDs, `nop_count = 0`, 0 crashes)**: Transitioned **`slots[0]` from `18rep_boot_presenter` into `25procam_shooting_presenter` (`vptr_off=0x2e8d9e0`, `screen=0x7f66127730`)** alongside `slots[2] = 35procam_msg_1label_1button_presenter` (`vptr_off=0x2e8e208`), populated `UX_ScreenArea` `idx=2` (`0x7f64f27758`) & `idx=4` (`0x7f65727778`), executed **`774` real `FX6_GPE_RECTBLIT` calls** across **6 Shooting HUD icon/badge widgets** (including 1 Hz blinking `(787,46,135,26)`), and committed **`1,829` multi-color foreground HUD pixels across `7` unique ARGB colors (`sha256 = ec4db79643d457088b346828162591f5b8fd42299ab3f468f333862e50460d2a`)** over the transparent (`0x00000000`) live-view OSD plane in physical `GPE0`!
+   - Resolved the `rep_boot_controller::process_MODEL_POWER_ON_COMP` (`appFw.so +0x1009b90..0x100ab4c`) handover chain (`0x02cf15c8 = 0x03`, `0x02cf0069 = 0x00060001` + `0x004b024e` `(6,1)` `"6.01"`, `InfraInput` `1,127` keys with `PW_SW` `phy_key_id=1 -> status=1`), opening `37procam_menu_initial_setting_presenter` (`r4h`, `16` ARGB colors, `3,047` amber `0xffffaa00` glyph pixels) and `25procam_shooting_presenter` (`r4i`).
+6. **16-Bit `RGBA4444` Pixel-Format Closure, Interactive `InfraInput` Transitions (`31procam_big6_menu_home_presenter` & `31procam_menu_layer_1st_presenter`), & PNG Visual Receipts (`Round 5`: `r5a` -> `r5d`)**:
+   - Disassembled `libgrm_bmp.so`, `libgemini-grm.so`, and `libuxengine.so` (`+0x8f400..0x8ff80`) to prove `BMP_PixelFormat == 1` (`Stella GPE == 7`, `2 Bpp`) is little-endian **`RGBA4444` (`[15:12]=R, [11:8]=G, [7:4]=B, [3:0]=A`)** and `BMP_PixelFormat == 2` (`Stella GPE == 1`, `4 Bpp`) is byte-order **`RGBA8888` (`[R,G,B,A]`)** for UI resource bitmaps. Updating `libgrm-fbinit9.c` restored **100% of all 6 Shooting HUD bitmaps (`5,451 / 5,451` nonzero pixels, `29` crisp Sony Cinema Line colors)** in **`r5b-shooting-rgba4444`** (up from `1,829` pixels / `7` hues in `r4i`).
+   - Disassembled `libInfraInput.so` (`+0xb05c`) and `appFw.so` (`+0x2159df4`, `+0x2245a18`, `+0x2ef2b08`, `+0xc69390`, `+0xfb3d24`, `+0xcb317c`) to establish the 32-byte `InfraInput` key message (`src = 0x007a804c -> dest = 0x005503e0`, `msg_type = 0x020102ff`), Sony FX6 keycodes (`0x01ac` `ENTER`, `0x0030` `DOWN`, **`0x718c` `UIBIZ_KEY_TACT_HOME`**, **`0x01ab` `UIBIZ_KEY_TACT_MENU`**), and `0x9088076b` fire-and-forget UIPC pool reclamation:
+     - **`r5c-big6-menu-home` (64.67s, 161 TIDs, `nop_count = 0`, `subst_* = 0`)**: Dismissed the cold-boot APR modal dialog (`sid=0x23a -> 0x231 -> [Cancel]`) and injected **`0x718c` (`HOME`)**, driving `procam_shooting_controller` natively into **`slots[1] = 31procam_big6_menu_home_presenter` (`sid = 0x0a`, `vptr_off = 0x2e8f7b0`, `32procam_big6_menu_home_controller`)** — rendering **`337,227` nonzero pixels (`74` unique ARGB colors across `24,673` GPE primitives: 6 dark-gray `0xff222222` Big6 parameter panels framing the transparent `0x00000000` live-view center window with crisp `0xffeeeeee` readouts)**!
+     - **`r5d-menu-layer-1st` (Bonus Sub-Round, 66.74s, 161 TIDs, `nop_count = 0`, `subst_* = 0`)**: Dismissed APR and injected **`0x01ab` (`1300 ms` `MENU_LONG_PRESS`)**, driving `procam_shooting_controller` natively into **`slots[2] = 31procam_menu_layer_1st_presenter` (`sid = 0x0f`, `vptr_off = 0x2e8db00`, `32procam_menu_layer_1st_controller`)** — rendering **`435,918` nonzero pixels (`67` unique ARGB colors across `21,528` GPE primitives: translucent `0xcc1b1b1b` Cinema Line category menu sheet with `0xffeeeeee` / `0xff666666` hierarchy)**!
 
 ---
 
@@ -32,38 +35,49 @@ All created/updated files reside strictly within the three authorized directorie
 
 - Static ABI & disassembly contracts:
   - [`STATIC-CONTRACTS.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/STATIC-CONTRACTS.md)
-  - [`inspect_static_contracts.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/inspect_static_contracts.py)
-  - [`static-contracts-summary.json`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/static-contracts-summary.json)
-- `FX6_NATIVE_FAITHFUL=1` launcher, `LD_PRELOAD` shim, and single-variable QEMU runner (`work/` and synced pure sources in `outputs/fx6-native-presenter-closure/`):
+  - [`inspect_static_contracts.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/inspect_static_contracts.py)
+  - [`static-contracts-summary.json`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/static-contracts-summary.json)
+- `FX6_NATIVE_FAITHFUL=1` launcher, `LD_PRELOAD` shim, and single-variable QEMU + PNG runner (`work/` and synced pure sources in `outputs/fx6-native-presenter-closure/`):
   - [`appfw-launch.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/appfw-launch.c)
   - [`libgrm-fbinit9.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/libgrm-fbinit9.c)
   - [`got_table_fx6.inc`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/got_table_fx6.inc)
   - [`build_and_run_round.py`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/build_and_run_round.py)
   - [`outputs/fx6-native-presenter-closure/README.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/README.md)
+- Visual PNG receipts (`1024 x 540` raw RGBA alpha + `#161a20` dark-backdrop composited previews):
+  - [`r5a-initial-setting-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5a-initial-setting-composited.png) & [`r5a-initial-setting-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5a-initial-setting-alpha.png)
+  - [`r5b-shooting-hud-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5b-shooting-hud-composited.png) & [`r5b-shooting-hud-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5b-shooting-hud-alpha.png)
+  - [`r5c-big6-menu-home-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5c-big6-menu-home-composited.png) & [`r5c-big6-menu-home-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5c-big6-menu-home-alpha.png)
+  - [`r5d-menu-layer-1st-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5d-menu-layer-1st-composited.png) & [`r5d-menu-layer-1st-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5d-menu-layer-1st-alpha.png)
 - Experimental run logs & structured summaries (`serial.log`, `milestones.log`, `summary.json`):
-  - [`work/fx6-native-presenter-closure-20261110/runs/`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs) (`r1a`..`r3c`, `r4a-mediaconfig-init`..`r4i-shooting-big6-presenter`)
+  - [`work/fx6-native-presenter-closure-20261110/runs/`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs) (`r1a`..`r3c`, `r4a`..`r4i`, `r5a`..`r5d`)
 
 ### Reproducible Commands
 
 ```sh
-# Regenerate static disassembly summary JSON
-/usr/bin/python3 work/fx6-native-presenter-closure-20261110/inspect_static_contracts.py
+# Regenerate static disassembly & Round 5 contract summary JSON
+python3 work/fx6-native-presenter-closure-20261110/inspect_static_contracts.py
 
-# Round 3 (Steady-State Boot Baseline): 552,960 GPE0 pixels (153 TIDs, 0 crashes)
-/usr/bin/python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
-  --round 3 --restore-infra70 1 --reply-all-200d 0 --run-id repro-r3b --duration 50
+# Round 5A (Initial Setting Menu PNG): 37procam_menu_initial_setting_presenter, 16 ARGB colors
+python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
+  --round 5 --initial-setting-done 0 --run-id r5a-initial-setting-png --duration 55 \
+  --export-png-stem r5a-initial-setting
 
-# Round 4H (Factory Out-of-Box Menu): nop_count=0, 160 TIDs, 37procam_menu_initial_setting_presenter,
-# 16 unique ARGB colors in physical GPE0 (3,047 Sony amber 0xffffaa00 glyph pixels)
-/usr/bin/python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
-  --round 4 --restore-infra70 1 --restore-all-early 1 --reply-all-200d 1 \
-  --initial-setting-done 0 --run-id repro-r4h --duration 70
+# Round 5B (Shooting HUD with RGBA4444 Closure): 25procam_shooting_presenter, 5,451 HUD pixels, 29 ARGB colors
+python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
+  --round 5 --initial-setting-done 1 --run-id r5b-shooting-rgba4444 --duration 55 \
+  --export-png-stem r5b-shooting-hud
 
-# Round 4I (Shooting HUD Screen): nop_count=0, 160 TIDs, slots[0]=25procam_shooting_presenter,
-# 774 FX6_GPE_RECTBLIT calls, 7 unique ARGB colors (1,829 HUD pixels over transparent live-view plane)
-/usr/bin/python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
-  --round 4 --restore-infra70 1 --restore-all-early 1 --reply-all-200d 1 \
-  --initial-setting-done 1 --run-id repro-r4i --duration 70
+# Round 5C (Interactive HOME -> Big6 Home Screen): 31procam_big6_menu_home_presenter, 337,227 nz pixels, 74 ARGB colors
+python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
+  --round 5 --initial-setting-done 1 --run-id r5c-big6-menu-home --duration 62 \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x718c:120:5500" \
+  --key-settle-ms 5500 --export-png-stem r5c-big6-menu-home
+
+# Round 5D (Interactive MENU Long-Press -> Full Menu Layer 1st): 31procam_menu_layer_1st_presenter, 435,918 nz pixels, 67 ARGB colors
+python3 work/fx6-native-presenter-closure-20261110/build_and_run_round.py \
+  --round 5 --initial-setting-done 1 --run-id r5d-menu-layer-1st --duration 64 \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x01ab:1300:5500" \
+  --key-settle-ms 5500 --export-png-stem r5d-menu-layer-1st
 ```
 
 > [!NOTE]
@@ -71,7 +85,7 @@ All created/updated files reside strictly within the three authorized directorie
 
 ---
 
-## 3. Summary of Closed Static & Runtime ABI Contracts (Rounds 1–4)
+## 3. Summary of Closed Static & Runtime ABI Contracts (Rounds 1–5)
 
 Full disassembly listings and struct offsets are recorded in [`STATIC-CONTRACTS.md`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/STATIC-CONTRACTS.md).
 
@@ -84,10 +98,12 @@ Full disassembly listings and struct offsets are recorded in [`STATIC-CONTRACTS.
 | **4B: DMM + Network + CertMgr** | `appFw.so +0x20fea28`, `+0x215c6d0`, `libCertificateManager.so` | `0x9061003c` (40B) + 8x `SeqQueueNetwork` RPCs | Completes `SeqQueueCommon` and `SeqQueueNetwork` cleanly; unblocks all `Presenter::open` `model_future::wait` barriers. |
 | **4C: Handover & Screen Open** | `appFw.so +0x1009b90..0x100ab4c`, `CX95898_NTSC.bin` | `0x02cf15c8=3`, `0x02cf0069="6.01"`, `PW_SW=1`, `0x02cf0068` | Un-NOPs 100% of `appFw.so` (`nop_count=0`). `0x02cf0068=1` opens `37procam_menu_initial_setting_presenter`; `0x02cf0068=0` transitions `slots[0]` to `25procam_shooting_presenter`. |
 | **4C: `GRMRenderer` GPE Blit** | `libgemini-grm.so +0x7700..0x7e78` | `GRM_GPERMRectblitParamRecord` (`tint` at `+0x3c..0x3f` when `+0x50==0x0e`) | Restricting `flush_pixels_to_osd` to `DrawFlush`/`Update`/`Flip` + honoring `blend_mode`, `const_alpha`, and A8 glyph `tint` preserves real multi-color foreground widgets in `GPE0`. |
+| **5A: `RGBA4444` & `RGBA8888` Bitfields** | `libuxengine.so +0x8f400`, `libgemini-grm.so +0x71b0` | `fmt==1` (`2 Bpp`) = `RGBA4444` `[15:12]=R,[11:8]=G,[7:4]=B,[3:0]=A`; `fmt==2` (`4 Bpp`) = `[R,G,B,A]` | Restores 100% of Shooting HUD & Big6 icon/border bitmaps (`5,451/5,451` HUD pixels, `29` crisp Cinema Line colors in `r5b`). |
+| **5B: `InfraInput` 32B Key ABI & Transitions** | `libInfraInput.so +0xb05c`, `appFw.so +0x2159df4`, `+0xfb3d24`, `+0xcb317c` | `0x007a804c -> 0x005503e0` (32B `{0x020102ff, 0, key_u16, action}`); `0x9088076b` pool free | Dismissing APR (`0x01ac, 0x0030, 0x01ac`) + `0x718c` (`HOME`) opens `31procam_big6_menu_home_presenter` (`sid=0x0a`); `0x01ab:1300ms` (`MENU`) opens `31procam_menu_layer_1st_presenter` (`sid=0x0f`). |
 
 ---
 
-## 4. Single-Variable Experimental Progression Matrix (Rounds 1–4)
+## 4. Single-Variable Experimental Progression Matrix (Rounds 1–5)
 
 | Run ID | Config & Single-Variable Delta | Wall (s) | Live TIDs | `UIPC_SND` / `COMP` | `GPE` / `FLUSH` / `GPE0_NZ` / `UCOL` | Outcome & Milestone / Coordinate |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
@@ -101,10 +117,14 @@ Full disassembly listings and struct offsets are recorded in [`STATIC-CONTRACTS.
 | [`r4e-presenter-open-certmgr`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4e-presenter-open-certmgr/summary.json) | `R4`: + preload donor `libCertificateManager.so` + sibling `.so`s | 72.60 | 156 | 800+ / 158 | 2 / 13 / 552,960 / 1 | **PASS (0 crashes)! `AppFw` exited ALL `Presenter::open` `model_future::wait` barriers into steady-state `App::run`!** |
 | [`r4f-normal-boot-screen-open`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4f-normal-boot-screen-open/summary.json) | `R4`: + donor `CX95898_NTSC.bin` BK4 + `0x02cf15c8=3` + `nop_count=0` | 77.66 | 160 | 800+ / 155 | 2 / 13 / 552,960 / 1 | **PASS (0 crashes, 160 TIDs, `nop_count=0`!)**. Identified `Backup_nread_multi` + `"6.01"` version + `PW_SW=1` handover checks. |
 | [`r4g-foreground-big6`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4g-foreground-big6/summary.json) | `R4`: + `Backup_nread_multi` (`5,492` hits) + `0x004b024e=(6,1)` + `InfraInput` `PW_SW=1` | 77.77 | 160 | 800+ / 152 | 146 / 614 / 552,960 / 1 | **Opened `slots[2]=37procam_menu_initial_setting_presenter` & emitted `1,650` real `FX6_GPE_RECTBLIT` calls!** Pinpointed post-flip `Fillrect` clobber + A8 glyph `tint`. |
-| **[`r4h-foreground-gpe0-colors`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4h-foreground-gpe0-colors/summary.json)** | **`R4`: + verified `libgemini-grm.so` flip/blend/tint (`--initial-setting-done 0`)** | **72.70** | **160** | **800+ / 152** | **106+ / 94+ / 552,960 / 16** | **PHASE 2 MILESTONE A (0 crashes, `nop_count=0`)**: `37procam_menu_initial_setting_presenter`, **`16` unique ARGB colors (`3,047` amber `0xffffaa00` glyph pixels)** in physical `GPE0`! |
-| **[`r4i-shooting-big6-presenter`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4i-shooting-big6-presenter/summary.json)** | **`R4`: `--initial-setting-done 1` (`0x02cf0068 = 0x00`)** | **72.67** | **160** | **800+ / 184** | **88+ / 42+ / 1,829 / 7** | **PHASE 2 MILESTONE B (0 crashes, `nop_count=0`)**: **`slots[0] = 25procam_shooting_presenter`**, `774` `FX6_GPE_RECTBLIT` calls, **`7` unique ARGB colors (`1,829` HUD pixels over transparent live-view plane)** in physical `GPE0`! |
+| [`r4h-foreground-gpe0-colors`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4h-foreground-gpe0-colors/summary.json) | `R4`: + verified `libgemini-grm.so` flip/blend/tint (`--initial-setting-done 0`) | 72.70 | 160 | 800+ / 152 | 106+ / 94+ / 552,960 / 16 | **PHASE 2 MILESTONE A (`nop_count=0`)**: `37procam_menu_initial_setting_presenter`, **`16` ARGB colors (`3,047` amber `0xffffaa00` glyph pixels)**. |
+| [`r4i-shooting-big6-presenter`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r4i-shooting-big6-presenter/summary.json) | `R4`: `--initial-setting-done 1` (`0x02cf0068 = 0x00`) | 72.67 | 160 | 800+ / 184 | 88+ / 42+ / 1,829 / 7 | **PHASE 2 MILESTONE B (`nop_count=0`)**: `slots[0]=25procam_shooting_presenter`, `774` `Rectblit`, `7` ARGB colors (pre-`RGBA4444` fix). |
+| **[`r5a-initial-setting-png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r5a-initial-setting-png/summary.json)** | **`R5A`: `--round 5 --initial-setting-done 0` + PNG receipt export** | **57.68** | **160** | **800+ / 152** | **1,942 / 945 / 552,960 / 16** | **PHASE 3 RECEIPT A (`nop_count=0`)**: `37procam_menu_initial_setting_presenter` (`sid=0x14`), **`16` ARGB colors (`3,047` amber `0xffffaa00` glyphs)** + PNGs. |
+| **[`r5b-shooting-rgba4444`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r5b-shooting-rgba4444/summary.json)** | **`R5B`: + verified `RGBA4444` (`fmt==1`) & `RGBA8888` (`fmt==2`) (`--initial-setting-done 1`)** | **57.68** | **160** | **800+ / 184** | **525 / 192 / 5,451 / 29** | **PHASE 3 MILESTONE A (`nop_count=0`)**: `25procam_shooting_presenter` (`sid=0x02`), **100% `5,451/5,451` HUD pixels & `29` crisp Cinema Line colors**! |
+| **[`r5c-big6-menu-home`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r5c-big6-menu-home/summary.json)** | **`R5C`: + `InfraInput` APR dismiss + `0x718c` (`HOME`) + `0x9088076b` pool free** | **64.67** | **161** | **800+ / 471** | **24,673 / 2,183 / 337,227 / 74** | **PHASE 3 MILESTONE B (`nop_count=0`)**: **`slots[1] = 31procam_big6_menu_home_presenter` (`sid=0x0a`)**, **`337,227` pixels & `74` ARGB colors (6-panel Big6 Home)**! |
+| **[`r5d-menu-layer-1st`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-native-presenter-closure-20261110/runs/r5d-menu-layer-1st/summary.json)** | **`R5D`: + `InfraInput` APR dismiss + `0x01ab:1300ms` (`MENU_LONG_PRESS`)** | **66.74** | **161** | **800+ / 451** | **21,528 / 2,223 / 435,918 / 67** | **PHASE 3 BONUS MILESTONE (`nop_count=0`)**: **`slots[2] = 31procam_menu_layer_1st_presenter` (`sid=0x0f`)**, **`435,918` pixels & `67` ARGB colors (Full Menu Sheet)**! |
 
-*(Note: `UIPC_SND`, `GPE`, and `FLUSH` log lines are rate-limited in serial output to keep UART bandwidth clean; `FX6_TRIGGER_PUMP_TICK` records the full cumulative totals: `draw_fb=966, flush=1307, prims=2610` in `r4h`, and `draw_fb=135, flush=269, prims=933` (`774` `Rectblit` + `159` `Fillrect`) in `r4i`.)*
+*(Note: For Round 5 rows (`r5a`–`r5d`), the `GPE / FLUSH` column lists exact un-throttled cumulative `prims` (`Fillrect` + `Rectblit`) and `flush` counts reported by `FX6_TRIGGER_PUMP_TICK` at capture time.)*
 
 ---
 
@@ -153,7 +173,7 @@ FX6_MILESTONE_DRAW_FB #4 self=0x7f7c00c070 rc=1 lr=0x7f72af1a94(appFw+0xc09a94) 
 FX6_TRIGGER_PUMP_TICK #1525 cb=0x7f72af11d0 ud=0x7f8654e658 gate_7d4=0 gate_7d0=0 draw_fb=966 flush=1307 prims=2610
 ```
 
-#### Physical `GPE0` (`0x41e001000`) Readback Color Distribution (`r4h-foreground-gpe0-colors`)
+#### Physical `GPE0` (`0x41e001000`) Readback Color Distribution (`r4h-foreground-gpe0-colors` & `r5a-initial-setting-png`)
 
 - **Frame Dimensions**: `1024 x 540` ARGB8888 (`2,211,840` bytes, `552,960` total pixels)
 - **Nonzero Pixels**: `552,960` (`549,913` opaque `0xff000000` background + **`3,047` non-black anti-aliased Sony Cinema Line amber foreground glyph pixels** = `1,583` at `(566,315,160,36)` + `1,464` at `(566,366,120,36)`)
@@ -171,70 +191,107 @@ FX6_TRIGGER_PUMP_TICK #1525 cb=0x7f72af11d0 ud=0x7f8654e658 gate_7d4=0 gate_7d0=
 
 ---
 
-### 5.4 Round 4 Step 4C Milestone B (`r4i-shooting-big6-presenter`): `25procam_shooting_presenter` & Multi-Color Shooting HUD in Physical `GPE0`
+### 5.4 Round 4 Step 4C Milestone B (`r4i-shooting-big6-presenter`): Initial `25procam_shooting_presenter` Baseline
 
-Setting `--initial-setting-done 1` (`0x02cf0068 = 0x00`, corresponding to a camera whose initial Area/Date/Time wizard has been completed) caused `rep_boot_controller::process_MODEL_POWER_ON_COMP` (`+0x100aae8`) to close `18rep_boot_presenter` and open **`slots[0] = 25procam_shooting_presenter` (`vptr_off = 0x2e8d9e0`, `screen = 0x7f66127730`)** alongside **`slots[2] = 35procam_msg_1label_1button_presenter` (`vptr_off = 0x2e8e208`, `screen = 0x7f6612da80`)**!
+Setting `--initial-setting-done 1` (`0x02cf0068 = 0x00`) caused `rep_boot_controller::process_MODEL_POWER_ON_COMP` (`+0x100aae8`) to close `18rep_boot_presenter` and open **`slots[0] = 25procam_shooting_presenter` (`vptr_off = 0x2e8d9e0`, `sid = 0x02`)** alongside **`slots[2] = 35procam_msg_1label_1button_presenter` (`vptr_off = 0x2e8e208`, `sid = 0x23a`)**, blitting 6 `BMP_PixelFormat == 1` (`bpp == 2`) HUD bitmaps (`1,829` pixels / `7` colors under `r4i`'s provisional `ARGB1555` assumption).
 
-In Shooting mode, `libuxengine.so` clears the OSD framebuffer with **transparent black `0x00000000` (`blend_mode = 1`)** (so live camera video underneath shows through on real hardware) and composites **6 distinct multi-color Shooting HUD icon/status widgets** via **`774` real `FX6_GPE_RECTBLIT` calls** (`135` `drawFramebuffer()` passes, including 1 Hz blinking media/battery warning indicator `(787,46,135,26)`):
+---
 
-#### Verbatim Serial Milestones (`runs/r4i-shooting-big6-presenter/milestones.log`)
+### 5.5 Phase 3 (`Round 5`: `r5a`–`r5d`): `RGBA4444` Color Closure, Interactive `31procam_big6_menu_home_presenter` & `31procam_menu_layer_1st_presenter`, and Visual PNG Receipts
+
+#### Visual PNG Receipts Gallery (`1024 x 540`, Zero Synthetic Pixels — `FX6_NATIVE_FAITHFUL=1`)
+
+| Screen / Presenter | Dark-Backdrop Preview (`#161a20` live-view composite) | Raw Alpha & Metrics |
+| --- | --- | --- |
+| **`r5a`: Initial Setting Wizard**<br>`37procam_menu_initial_setting_presenter`<br>(`sid = 0x14`, `vptr_off = 0x2e8eac0`) | ![r5a-initial-setting-composited](assets/r5a-initial-setting-composited.png) | - [`r5a-initial-setting-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5a-initial-setting-composited.png) (`5,002` B)<br>- [`r5a-initial-setting-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5a-initial-setting-alpha.png) (`5,002` B)<br>- `552,960` nz pixels (`3,047` `0xffffaa00` amber glyphs), **`16` ARGB colors** |
+| **`r5b`: Shooting HUD (`RGBA4444` Fixed)**<br>`25procam_shooting_presenter`<br>(`sid = 0x02`, `vptr_off = 0x2e8d9e0`) | ![r5b-shooting-hud-composited](assets/r5b-shooting-hud-composited.png) | - [`r5b-shooting-hud-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5b-shooting-hud-composited.png) (`7,653` B)<br>- [`r5b-shooting-hud-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5b-shooting-hud-alpha.png) (`6,076` B)<br>- **`5,451 / 5,451` HUD pixels (`100%` retention)**, **`29` ARGB colors** |
+| **`r5c`: Big6 Home Screen (`HOME` `0x718c`)**<br>`31procam_big6_menu_home_presenter`<br>(`sid = 0x0a`, `vptr_off = 0x2e8f7b0`) | ![r5c-big6-menu-home-composited](assets/r5c-big6-menu-home-composited.png) | - [`r5c-big6-menu-home-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5c-big6-menu-home-composited.png) (`22,814` B)<br>- [`r5c-big6-menu-home-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5c-big6-menu-home-alpha.png) (`21,121` B)<br>- **`337,227` nz pixels** (`163,424` non-black), **`74` ARGB colors** (`24,673` prims) |
+| **`r5d`: Full Menu Layer 1st (`MENU` `0x01ab`)**<br>`31procam_menu_layer_1st_presenter`<br>(`sid = 0x0f`, `vptr_off = 0x2e8db00`) | ![r5d-menu-layer-1st-composited](assets/r5d-menu-layer-1st-composited.png) | - [`r5d-menu-layer-1st-composited.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5d-menu-layer-1st-composited.png) (`15,260` B)<br>- [`r5d-menu-layer-1st-alpha.png`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/reports/2026-11-10-fx6-native-presenter-closure/assets/r5d-menu-layer-1st-alpha.png) (`16,194` B)<br>- **`435,918` nz pixels** (`434,658` non-black), **`67` ARGB colors** (`21,528` prims) |
+
+---
+
+#### 1. `r5b-shooting-rgba4444`: 16-Bit `BMP_PixelFormat == 1` (`RGBA4444`) Verification & Color Closure
+
+Disassembling `libuxengine.so +0x8f400..0x8ff80` (`ux::ImageConverter::convert*` / `PNGDecoder` 16-bit row packer) proved that `BMP_PixelFormat == 1` (`Stella GPE == 7`, `2 Bpp`) packs 4-bit nibbles into a little-endian `uint16_t` as **`RGBA4444` (`[15:12]=R, [11:8]=G, [7:4]=B, [3:0]=A`)**, where `0x000f` is opaque black `0xff000000` (`R=0,G=0,B=0,A=15`) and `0xeee8..0xeeef` are anti-aliased Sony white/neutral-gray HUD strokes (`R=G=B=0xee`). Under `r4i`'s provisional `ARGB1555` check (`v16 & 0x8000`), every `0x000f` shadow/outline pixel (`2,022` pixels) had bit 15 = `0` and was dropped, while `0xeeef` decoded with skewed green/blue bits (`0xffdebd7b`).
+
+Updating [`libgrm-fbinit9.c`](file:///Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx6-native-presenter-closure/libgrm-fbinit9.c) to expand `RGBA4444` via `(nibble << 4) | nibble` (`*0x11`) and `BMP_PixelFormat == 2` (`4 Bpp` resource bitmaps) from byte-order `[R,G,B,A]` recovered **every single nonzero pixel across all 6 Shooting HUD bitmaps (`2205 + 894 + 761 + 563 + 642 + 386 = 5,451` pixels = `100.0%` match)** and **`29` clean Sony Cinema Line neutral white/gray/translucent-shadow levels** (`GPE0 sha256 = 485dc42347112074c99ff9501b1b0f7a1fd7e4dff85bb1fb7616ca5e00564d59`):
+
+| ARGB8888 | Pixel Count (`r5b`) | Role |
+| --- | ---: | --- |
+| `0x00000000` | `547,509` | Transparent OSD camera live-view plane (`Fillrect` `0x00000000`) |
+| `0xff000000` | `2,022` | Opaque black HUD icon pill/outline (`RGBA4444 = 0x000f`, previously lost under `ARGB1555`) |
+| `0xffeeeeee` | `1,182` | Crisp Sony Cinema Line white HUD icon/status glyph core (`RGBA4444 = 0xeeef`) |
+| `0xffcccccc` | `170` | Anti-aliased light-gray HUD stroke (`RGBA4444 = 0xcccf`) |
+| `0x88000000` | `166` | Translucent HUD drop-shadow (`RGBA4444 = 0x0008`) |
+| `0xffbbbbbb` / `0xff444444` / `0xffaaaaaa` + 21 ramps | `1,911` | Remaining anti-aliased neutral gray & alpha HUD ramps (`29` total unique colors) |
+
+---
+
+#### 2. `r5c-big6-menu-home`: Interactive `InfraInput` `HOME` (`0x718c`) -> `31procam_big6_menu_home_presenter`
+
+After `slots[0] = 25procam_shooting_presenter` (`sid=0x02`) and `slots[2] = 35procam_msg_1label_1button_presenter` (`sid=0x23a`, cold-boot APR prompt) settled, `appfw-launch` injected the 4-step `InfraInput` (`0x007a804c -> 0x005503e0`, `0x020102ff`) sequence `0x01ac` (`ENTER`: `sid=0x23a -> 0x231`), `0x0030` (`DOWN` to `[Cancel]`), `0x01ac` (`ENTER`: closes `slots[2]`, returning focus to `25procam_shooting_presenter`), and **`0x718c` (`UIBIZ_KEY_TACT_HOME`)**:
 
 ```text
-FX6_PATCH_PLAN appFw_base=0x7f61ee8000 nop_count=0 round=4
-FX6_PRESENTER_SLOT idx=0 tag=pump obj=0x7f66224f08 vptr=0x7f64d759e0 vptr_off=0x2e8d9e0 screen=0x7f66127730 rtti=25procam_shooting_presenter
-FX6_PRESENTER_SLOT idx=2 tag=pump obj=0x7f666d4f08 vptr=0x7f64d76208 vptr_off=0x2e8e208 screen=0x7f6612da80 rtti=35procam_msg_1label_1button_presenter
-FX6_UX_SCREEN_TREE tag=pump idx=2 screen=0x7f6c00ef50 active=1 first_elem=0x7f64f27758
-FX6_UX_SCREEN_TREE tag=pump idx=4 screen=0x7f6c00f710 active=1 first_elem=0x7f65727778
-FX6_GPE_FILLRECT #3 (0,0,1024,540) argb=0x00000000 blend=1 calpha=255 dst=0x7f87aa8300 subst_color=0
-FX6_GPE_RECTBLIT #13 dst=(787,46,135,26) target=0x7f87aa8300 src=0x7f6c1b7020 fmt=1 bpp=2 src_nz=2205 blend=2 calpha=255 tint=0xffffff subst_image=0
-FX6_GPE_RECTBLIT #14 dst=(58,5,49,26) target=0x7f87aa8300 src=0x7f6c1c3f20 fmt=1 bpp=2 src_nz=894 blend=2 calpha=255 tint=0xffffff subst_image=0
-FX6_GPE_RECTBLIT #15 dst=(930,95,50,20) target=0x7f87aa8300 src=0x7f6c1c9570 fmt=1 bpp=2 src_nz=761 blend=2 calpha=255 tint=0xffffff subst_image=0
-FX6_GPE_RECTBLIT #16 dst=(398,508,25,27) target=0x7f87aa8300 src=0x7f6c1ca730 fmt=1 bpp=2 src_nz=563 blend=2 calpha=255 tint=0xffffff subst_image=0
-FX6_GPE_RECTBLIT #17 dst=(930,117,32,26) target=0x7f87aa8300 src=0x7f6c1cde80 fmt=1 bpp=2 src_nz=642 blend=2 calpha=255 tint=0xffffff subst_image=0
-FX6_GPE_RECTBLIT #18 dst=(962,122,25,20) target=0x7f87aa8300 src=0x7f6c1cec30 fmt=1 bpp=2 src_nz=386 blend=2 calpha=255 tint=0xffffff subst_image=0
-FX6_OSD_FLUSH fbrmUpdate #9 prims=23 fill=5 blit=18 nz_pixels=1829 nonblack=1829 subst_color=0 subst_image=0 forced_render=0 skipped_node=0 lock_bypass=0
-FX6_TRIGGER_PUMP_TICK #1525 cb=0x7f62af11d0 ud=0x7f61ee5658 gate_7d4=0 gate_7d0=0 draw_fb=135 flush=269 prims=933
+FX6_PATCH_PLAN appFw_base=0x7f71ee8000 nop_count=0 round=5
+FX6_PRESENTER_SLOT idx=0 tag=before_key obj=0x7f76224f08 vptr=0x7f74d759e0 vptr_off=0x2e8d9e0 screen=0x7f76127730 rtti=25procam_shooting_presenter sid=0x2 ctrl_rtti=26procam_shooting_controller
+FX6_PRESENTER_SLOT idx=2 tag=before_key obj=0x7f766d4f08 vptr=0x7f74d76208 vptr_off=0x2e8e208 screen=0x7f7612da80 rtti=35procam_msg_1label_1button_presenter sid=0x23a ctrl_rtti=36procam_msg_1label_1button_controller
+FX6_KEY_INJECT step=0 phase=press key=0x01ac hold_ms=120 rc=0 blit=528
+FX6_KEY_INJECT step=1 phase=press key=0x0030 hold_ms=120 rc=0 blit=1806
+FX6_KEY_INJECT step=2 phase=press key=0x01ac hold_ms=120 rc=0 blit=2152
+FX6_KEY_INJECT step=3 phase=press key=0x718c hold_ms=120 rc=0 blit=2190
+FX6_KEY_INJECT step=3 phase=release key=0x718c gap_ms=5500 rc=0 blit=2211
+FX6_PRESENTER_SLOT idx=1 tag=after_key obj=0x7f7647cf08 vptr=0x7f74d777b0 vptr_off=0x2e8f7b0 screen=0x7f7612a8d8 rtti=31procam_big6_menu_home_presenter sid=0xa ctrl_rtti=32procam_big6_menu_home_controller
+FX6_OSD_FLUSH gpermDrawFlush #2180 prims=24642 fill=6883 blit=17759 nz_pixels=337227 nonblack=163424 subst_color=0 subst_image=0 forced_render=0 skipped_node=0 lock_bypass=0
+FX6_TRIGGER_PUMP_TICK #1225 cb=0x7f72af11d0 ud=0x7f883ae658 gate_7d4=0 gate_7d0=0 draw_fb=1533 flush=2183 prims=24673
 ```
 
-#### Physical `GPE0` (`0x41e001000`) Readback Color Distribution (`r4i-shooting-big6-presenter`)
+- **Physical `GPE0` (`0x41e001000`) Readback (`r5c-big6-menu-home`, `sha256 = 6b7be232d263de99e36fcbd0d44f193e6b983be784fb1228edbef6b97f13e84b`)**:
+  - **`337,227` nonzero pixels** (`163,424` non-black pixels) + `215,733` transparent `0x00000000` center live-view monitor pixels (`552,960` total)
+  - **`74` unique ARGB colors**: `173,803` `0xff000000` (top/bottom Cinema Line status bars & dividers), `140,792` `0xff222222` (the 6 dark-charcoal Big6 parameter cards: FPS / Shutter / ISO-Gain / ND Filter / White Balance / Look), `8,110` `0xff777777` (card borders & unit labels), `6,217` `0xffeeeeee` (crisp Big6 primary numeric readouts & titles), `1,805` `0xffaaaaaa` (secondary labels), plus 68 anti-aliased glyph & icon ramps.
 
-- **Frame Dimensions**: `1024 x 540` ARGB8888 (`2,211,840` bytes, `552,960` total pixels)
-- **Nonzero Foreground HUD Pixels**: **`1,829`** over `551,131` transparent live-view pixels (`0x00000000`)
-- **Unique Colors**: **`7`** (`sha256 = ec4db79643d457088b346828162591f5b8fd42299ab3f468f333862e50460d2a`)
+---
 
-| ARGB8888 | Pixel Count | Role |
-| --- | ---: | --- |
-| `0x00000000` | `551,131` | Transparent OSD camera live-view plane (`Fillrect` `0x00000000`) |
-| `0xffdebd7b` | `1,182` | Shooting HUD primary icon/label body |
-| `0xff9c317b` | `170` | Shooting HUD warning/status accent |
-| `0xff73eeff` | `166` | Shooting HUD highlight glyph/border |
-| `0xff10207b` | `113` | Shooting HUD badge outline/shadow |
-| `0xff52ac7b` | `113` | Shooting HUD secondary icon tone |
-| `0xff3162ff` | `85` | Shooting HUD indicator accent |
+#### 3. `r5d-menu-layer-1st` (Bonus Sub-Round): Interactive `InfraInput` `MENU` Long-Press (`0x01ab:1300ms`) -> `31procam_menu_layer_1st_presenter`
+
+Per `procam_shooting_controller::process_KEY_MENU_RELEASE` (`appFw.so +0xcb317c`) and `App::timer_handler` (`+0xc69454`, 1250 ms long-press threshold), holding `0x01ab` (`UIBIZ_KEY_TACT_MENU`) for `1300 ms` after dismissing the APR dialog fired `KEY_MENU_LONG_PRESS` (`0x2d`), closing `25procam_shooting_presenter` and opening **`slots[2] = 31procam_menu_layer_1st_presenter` (`sid = 0x0f`, `vptr_off = 0x2e8db00`, `32procam_menu_layer_1st_controller`)**:
+
+```text
+FX6_KEY_INJECT step=3 phase=press key=0x01ab hold_ms=1300 rc=0 blit=2178
+FX6_KEY_INJECT step=3 phase=release key=0x01ab gap_ms=5500 rc=0 blit=2373
+FX6_PRESENTER_SLOT idx=2 tag=after_key obj=0x7f6e6d4f08 vptr=0x7f6cd75b00 vptr_off=0x2e8db00 screen=0x7f6e12da80 rtti=31procam_menu_layer_1st_presenter sid=0xf ctrl_rtti=32procam_menu_layer_1st_controller
+FX6_OSD_FLUSH gpermDrawFlush #2220 prims=21502 fill=13402 blit=8100 nz_pixels=435918 nonblack=434658 subst_color=0 subst_image=0 forced_render=0 skipped_node=0 lock_bypass=0
+FX6_TRIGGER_PUMP_TICK #1275 cb=0x7f6aaf11d0 ud=0x7f7ff00658 gate_7d4=0 gate_7d0=0 draw_fb=1378 flush=2223 prims=21528
+```
+
+- **Physical `GPE0` (`0x41e001000`) Readback (`r5d-menu-layer-1st`, `sha256 = 6ce8e0736820856494f07cca361aec3a6c89bb3678f766831878bc25b0c4c12d`)**:
+  - **`435,918` nonzero pixels** (`434,658` non-black pixels) + `117,042` transparent `0x00000000` margin pixels
+  - **`67` unique ARGB colors**: `395,673` `0xcc1b1b1b` (Sony FX6 translucent dark menu sheet), `13,343` `0xff666666` (category tabs & separators), `6,043` `0xffeeeeee` (menu category & item titles: `TC/Media`, `Shooting`, `Project`, `Paint/Look`, `Audio`, `Monitoring`, `Network`, `Maintenance`), `3,706` `0xf43b3b3b` (selected cursor bar), `3,376` `0xff111111`, `2,987` `0xff888888`, `2,773` `0xff333333`, plus 59 anti-aliased glyph & icon shades.
 
 ---
 
 ## 6. `FX6_NATIVE_FAITHFUL=1` & Clean-Room Audit
 
-| Metric / Guardrail | Required | `r3b-grm-complete` | `r4h-foreground-gpe0-colors` | `r4i-shooting-big6-presenter` |
-| --- | --- | --- | --- | --- |
-| `subst_color` (synthetic ARGB color injection) | `0` | **`0`** | **`0`** | **`0`** |
-| `subst_image` (synthetic bitmap/glyph injection) | `0` | **`0`** | **`0`** | **`0`** |
-| `forced_render` (direct presenter/widget draw calls) | `0` | **`0`** | **`0`** | **`0`** |
-| `skipped_node` (scene-graph node bypass) | `0` | **`0`** | **`0`** | **`0`** |
-| `lock_bypass` (`pthread_mutex_*` / `ObjShLock` low-addr ignore) | `0` | **`0`** | **`0`** | **`0`** |
-| `appFw.so` `.text` NOP patches (`nop_count`) | Minimal (`0` ideal) | `2` | **`0` (100% unmodified `.text`)** | **`0` (100% unmodified `.text`)** |
-| `GPE0` `unique_colors` (`0x41e001000` readback) | `> 1` | `1` | **`16`** | **`7`** |
-| `usb_or_camera_operations` | `0` | **`0`** | **`0`** | **`0`** |
-| Shared host `qemu-gpio5` preview process touched | Forbidden | **Untouched** | **Untouched** | **Untouched** |
-| Binary `.cpio`/`.so`/`.elf`/`.bin` in `outputs/`, `reports/`, `work/` | `0` | **`0`** | **`0`** | **`0`** |
+| Metric / Guardrail | Required | `r3b` | `r4h` / `r5a` | `r5b-shooting-rgba4444` | `r5c-big6-menu-home` | `r5d-menu-layer-1st` |
+| --- | --- | --- | --- | --- | --- | --- |
+| `subst_color` (synthetic ARGB color injection) | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
+| `subst_image` (synthetic bitmap/glyph injection) | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
+| `forced_render` (direct presenter/widget draw calls) | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
+| `skipped_node` (scene-graph node bypass) | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
+| `lock_bypass` (`pthread_mutex_*` / `ObjShLock` low-addr ignore) | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
+| `appFw.so` `.text` NOP patches (`nop_count`) | `0` | `2` | **`0` (100% unmodified)** | **`0` (100% unmodified)** | **`0` (100% unmodified)** | **`0` (100% unmodified)** |
+| Live threads (`TIDs`) | `>= 153` | `153` | **`160`** | **`160`** | **`161`** | **`161`** |
+| `GPE0` `nonzero_pixels` (`0x41e001000` readback) | `> 0` | `552,960` | **`552,960`** | **`5,451`** | **`337,227`** | **`435,918`** |
+| `GPE0` `unique_colors` (`0x41e001000` readback) | `> 1` | `1` | **`16`** | **`29`** | **`74`** | **`67`** |
+| `usb_or_camera_operations` | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
+| Shared host `qemu-gpio5` preview process (PID `53332`) | Untouched | **Untouched** | **Untouched** | **Untouched** | **Untouched** | **Untouched** |
+| Binary `.cpio`/`.so`/`.elf`/`.bin`/`.bk4`/`.fb` in Git paths | `0` | **`0`** | **`0`** | **`0`** | **`0`** | **`0`** |
 
 ---
 
-## 7. Exact Next-Step Coordinates (Phase 3: Interactive `HOME` -> `31procam_big6_menu_home_presenter`)
+## 7. Exact Next-Step Coordinates (Phase 4: Interactive Big6 Sub-Dialogs & Deep Menu Navigation)
 
-1. **Interactive Key Dispatch (`25procam_shooting_presenter` -> `31procam_big6_menu_home_presenter`)**:
-   - In `r4i-shooting-big6-presenter`, `slots[0]` is already running genuine `25procam_shooting_presenter` (`vptr_off = 0x2e8d9e0`) with `slots[2] = 35procam_msg_1label_1button_presenter` (`vptr_off = 0x2e8e208`, modal confirmation dialog).
-   - Posting an `InfraInput` key press (`ENTER` to dismiss `slots[2]`, followed by `MENU` / `HOME` key event on `I-InputRecv` / `App` queue `0x5503e0`) will trigger `ScreenManager` to open **`31procam_big6_menu_home_presenter`** (the 6-panel Big6 Home Screen in `appFw.so` RTTI) natively!
-2. **Exact 16-bit `BMP_PixelFormat == 1` (`bpp == 2`) Sub-Format Verification (`libgemini-grm.so +0x7204`)**:
-   - In `r4i`, `BMP_PixelFormat == 1` (`bpp == 2`, `gemini` format `7`) HUD icons decode cleanly with non-zero alpha; verifying the exact 16-bit channel packing (`ARGB1555` vs `RGBA4444` vs `RGB565` in `libuxengine.so` resource decoder) will ensure 1:1 hue fidelity for 2-byte HUD icon bitmaps alongside the already-exact `ARGB8888` (`fmt=2`) and `A8` FreeType glyph (`fmt=4`) paths.
+1. **Interactive Big6 Parameter Selection (`31procam_big6_menu_home_presenter` -> `39procam_big6_menu_look_middle_controller` / `35procam_big6_menu_setting_controller`)**:
+   - With `slots[1] = 31procam_big6_menu_home_presenter` (`sid = 0x0a`) live and focused in `r5c-big6-menu-home`, injecting directional keys (`0x002f` `UP`, `0x0030` `DOWN`, `0x0031` `LEFT`, `0x0032` `RIGHT`) + `0x01ac` (`ENTER`) via `--key-seq` will step across the 6 Big6 parameter cards (FPS, Shutter, ISO/Gain, ND, White Balance, Base Look/S-Cinetone) and open their native adjustment overlays (`35procam_big6_menu_setting_controller`, `39procam_big6_menu_look_middle_controller`).
+2. **Deep Full-Menu Navigation (`31procam_menu_layer_1st_presenter` -> `32procam_menu_layer_2nd_controller` / `3rd`)**:
+   - With `slots[2] = 31procam_menu_layer_1st_presenter` (`sid = 0x0f`) open in `r5d-menu-layer-1st`, injecting `0x0030` (`DOWN`) + `0x01ac` (`ENTER`) / `0x0032` (`RIGHT`) will traverse `TC/Media`, `Shooting`, `Project`, `Paint/Look`, `Audio`, `Monitoring`, and `Network` into 2nd- and 3rd-layer FX6 menu presenters (`31procam_menu_layer_2nd_presenter`, `31procam_menu_layer_3rd_presenter`).
+

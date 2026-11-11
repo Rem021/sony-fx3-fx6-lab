@@ -16,6 +16,7 @@ import struct
 import subprocess
 import sys
 import time
+import zlib
 from typing import Any, Dict, List, Optional, Tuple
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -46,6 +47,7 @@ DONOR_BK4_NTSC = pathlib.Path(
     "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/"
     "SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
 )
+DEFAULT_ASSETS_DIR = REPO / "reports/2026-11-10-fx6-native-presenter-closure/assets"
 
 FB_W = 1024
 FB_H = 540
@@ -55,6 +57,24 @@ GPE0_PHYS = 0x41E001000
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def parse_key_seq(spec: str) -> List[Tuple[int, int, int]]:
+    out: List[Tuple[int, int, int]] = []
+    if not spec or not spec.strip():
+        return out
+    for raw_item in spec.split(","):
+        item = raw_item.strip()
+        if not item:
+            continue
+        parts = item.split(":")
+        if len(parts) != 3:
+            raise ValueError(f"Invalid key-seq step '{item}'; expected key:hold_ms:gap_ms")
+        key_id = int(parts[0], 0)
+        hold_ms = max(int(parts[1], 0), 20)
+        gap_ms = max(int(parts[2], 0), 20)
+        out.append((key_id, hold_ms, gap_ms))
+    return out
 
 
 def scan_cpio(buf: mmap.mmap) -> List[Dict[str, Any]]:
@@ -102,6 +122,8 @@ def build_binaries(
     restore_all_early: int,
     reply_all_200d: int,
     initial_setting_done: int = 0,
+    key_seq: str = "",
+    key_settle_ms: int = 1500,
 ) -> Tuple[bytes, bytes, Dict[str, Any]]:
     cache_dir = build_dir / "zig-cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -130,6 +152,21 @@ def build_binaries(
     if r_launch.returncode != 0:
         raise RuntimeError(f"Launcher compile failed:\n{r_launch.stderr}")
 
+    steps = parse_key_seq(key_seq)
+    key_flags: List[str] = [f"-DFX6_KEY_SETTLE_MS={max(int(key_settle_ms), 100)}U"]
+    if steps:
+        ids_c = "{" + ",".join(f"0x{k:x}U" for k, _, _ in steps) + "}"
+        holds_c = "{" + ",".join(f"{h}U" for _, h, _ in steps) + "}"
+        gaps_c = "{" + ",".join(f"{g}U" for _, _, g in steps) + "}"
+        key_flags.extend(
+            [
+                f"-DFX6_KEY_COUNT={len(steps)}",
+                f"-DFX6_KEY_IDS={ids_c}",
+                f"-DFX6_KEY_HOLDS={holds_c}",
+                f"-DFX6_KEY_GAPS={gaps_c}",
+            ]
+        )
+
     shim_out = build_dir / "libgrm-fbinit9.so"
     shim_cmd = [
         str(ZIG),
@@ -148,6 +185,7 @@ def build_binaries(
         f"-DFX6_RESTORE_ALL_EARLY={restore_all_early}",
         f"-DFX6_REPLY_ALL_200D={reply_all_200d}",
         f"-DFX6_INITIAL_SETTING_DONE={initial_setting_done}",
+        *key_flags,
         "-Wl,-soname,libgrm-fbinit9.so",
         str(HERE / "libgrm-fbinit9.c"),
         "-o",
@@ -166,6 +204,9 @@ def build_binaries(
         "shim_bytes": len(shim_bytes),
         "shim_sha256": sha256_bytes(shim_bytes),
         "shim_cmd": shim_cmd,
+        "key_steps": [
+            {"key": f"0x{k:04x}", "hold_ms": h, "gap_ms": g} for k, h, g in steps
+        ],
     }
     return launcher_bytes, shim_bytes, meta
 
@@ -272,6 +313,90 @@ class QmpClient:
             pass
 
 
+def _png_chunk(chunk_type: bytes, payload: bytes) -> bytes:
+    crc = zlib.crc32(chunk_type + payload) & 0xFFFFFFFF
+    return struct.pack(">I", len(payload)) + chunk_type + payload + struct.pack(">I", crc)
+
+
+def write_rgba_png(out_path: pathlib.Path, width: int, height: int, rgba: bytes) -> Dict[str, Any]:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    stride = width * 4
+    scanlines = bytearray((stride + 1) * height)
+    pos = 0
+    for y in range(height):
+        scanlines[pos] = 0  # Filter type 0 (None)
+        row_start = y * stride
+        scanlines[pos + 1 : pos + 1 + stride] = rgba[row_start : row_start + stride]
+        pos += stride + 1
+    ihdr = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)
+    idat = zlib.compress(bytes(scanlines), level=6)
+    png_bytes = (
+        b"\x89PNG\r\n\x1a\n"
+        + _png_chunk(b"IHDR", ihdr)
+        + _png_chunk(b"IDAT", idat)
+        + _png_chunk(b"IEND", b"")
+    )
+    out_path.write_bytes(png_bytes)
+    return {
+        "path": str(out_path),
+        "bytes": len(png_bytes),
+        "sha256": sha256_bytes(png_bytes),
+    }
+
+
+def export_gpe0_pngs(
+    raw_path: pathlib.Path,
+    out_dir: pathlib.Path,
+    stem: str,
+    bg_rgb: Tuple[int, int, int] = (0x16, 0x1A, 0x20),
+) -> Dict[str, Any]:
+    data = raw_path.read_bytes()[:FB_BYTES]
+    if len(data) < FB_BYTES:
+        raise ValueError(f"Short GPE0 readback ({len(data)} < {FB_BYTES})")
+
+    # GPE0 stores 0xAARRGGBB in little-endian uint32 -> [B, G, R, A] bytes
+    rgba_alpha = bytearray(FB_BYTES)
+    rgba_alpha[0::4] = data[2::4]  # R
+    rgba_alpha[1::4] = data[1::4]  # G
+    rgba_alpha[2::4] = data[0::4]  # B
+    rgba_alpha[3::4] = data[3::4]  # A
+
+    bg_r, bg_g, bg_b = bg_rgb
+    rgba_comp = bytearray(FB_BYTES)
+    transparent_px = 0
+    for idx in range(0, FB_BYTES, 4):
+        r = rgba_alpha[idx]
+        g = rgba_alpha[idx + 1]
+        b = rgba_alpha[idx + 2]
+        a = rgba_alpha[idx + 3]
+        if a < 255:
+            transparent_px += 1
+        if a == 255:
+            rgba_comp[idx] = r
+            rgba_comp[idx + 1] = g
+            rgba_comp[idx + 2] = b
+        elif a == 0:
+            rgba_comp[idx] = bg_r
+            rgba_comp[idx + 1] = bg_g
+            rgba_comp[idx + 2] = bg_b
+        else:
+            inv = 255 - a
+            rgba_comp[idx] = (r * a + bg_r * inv) // 255
+            rgba_comp[idx + 1] = (g * a + bg_g * inv) // 255
+            rgba_comp[idx + 2] = (b * a + bg_b * inv) // 255
+        rgba_comp[idx + 3] = 255
+
+    alpha_meta = write_rgba_png(out_dir / f"{stem}-alpha.png", FB_W, FB_H, bytes(rgba_alpha))
+    comp_meta = write_rgba_png(out_dir / f"{stem}-composited.png", FB_W, FB_H, bytes(rgba_comp))
+    return {
+        "stem": stem,
+        "backdrop_rgb": f"#{bg_r:02x}{bg_g:02x}{bg_b:02x}",
+        "transparent_pixels": transparent_px,
+        "alpha_png": alpha_meta,
+        "composited_png": comp_meta,
+    }
+
+
 def analyze_gpe0_raw(raw_path: pathlib.Path) -> Dict[str, Any]:
     if not raw_path.exists():
         return {"present": False}
@@ -285,7 +410,7 @@ def analyze_gpe0_raw(raw_path: pathlib.Path) -> Dict[str, Any]:
         counter[px] += 1
     top_colors = [
         {"argb": f"0x{c:08x}", "pixels": cnt}
-        for c, cnt in counter.most_common(12)
+        for c, cnt in counter.most_common(16)
     ]
     return {
         "present": True,
@@ -304,6 +429,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_MWF_",
         "FX6_IMCFG_",
         "FX6_INFRA_INPUT_",
+        "FX6_KEY_INJECT",
         "FX6_BK4_",
         "FX6_BACKUP_READ8",
         "FX6_BACKUP_MEDIA",
@@ -405,6 +531,8 @@ def run_once(args: argparse.Namespace) -> int:
             restore_all_early=args.restore_all_early,
             reply_all_200d=args.reply_all_200d,
             initial_setting_done=args.initial_setting_done,
+            key_seq=args.key_seq,
+            key_settle_ms=args.key_settle_ms,
         )
         print(f"[{run_id}] Patching temporary CPIO -> {tmp_cpio}...", flush=True)
         additions: Optional[Dict[str, bytes]] = None
@@ -514,6 +642,7 @@ def run_once(args: argparse.Namespace) -> int:
             time.sleep(1.0)
 
         gpe_stats: Dict[str, Any] = {"present": False}
+        png_exports: Optional[Dict[str, Any]] = None
         if qmp is not None and proc.poll() is None:
             try:
                 qmp.cmd(
@@ -526,6 +655,18 @@ def run_once(args: argparse.Namespace) -> int:
                 )
                 time.sleep(0.3)
                 gpe_stats = analyze_gpe0_raw(gpe_raw)
+                if args.export_png_stem and gpe_raw.exists():
+                    out_dir = (
+                        pathlib.Path(args.export_png_dir)
+                        if args.export_png_dir
+                        else DEFAULT_ASSETS_DIR
+                    )
+                    png_exports = export_gpe0_pngs(gpe_raw, out_dir, args.export_png_stem)
+                    print(
+                        f"[{run_id}] Exported PNGs -> {png_exports['alpha_png']['path']} & "
+                        f"{png_exports['composited_png']['path']}",
+                        flush=True,
+                    )
             except Exception as exc:
                 gpe_stats = {"present": False, "error": str(exc)}
 
@@ -548,6 +689,8 @@ def run_once(args: argparse.Namespace) -> int:
             "restore_all_early": args.restore_all_early,
             "reply_all_200d": args.reply_all_200d,
             "initial_setting_done": args.initial_setting_done,
+            "key_seq": args.key_seq,
+            "key_settle_ms": args.key_settle_ms,
             "duration_budget_sec": duration,
             "wall_elapsed_sec": elapsed,
             "qemu_pid": proc.pid,
@@ -555,6 +698,7 @@ def run_once(args: argparse.Namespace) -> int:
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
+            "png_exports": png_exports,
             "prefix_counts": milestones["prefix_counts"],
             "total_threads_seen": milestones["total_threads_seen"],
             "sample_threads": milestones["sample_threads"],
@@ -599,13 +743,24 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5], required=True)
     ap.add_argument("--duration", type=int, default=55)
-    ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=0)
-    ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=0)
-    ap.add_argument("--reply-all-200d", type=int, choices=[0, 1], default=0)
+    ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
+    ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)
+    ap.add_argument("--reply-all-200d", type=int, choices=[0, 1], default=None)
     ap.add_argument("--initial-setting-done", type=int, choices=[0, 1], default=0)
+    ap.add_argument("--key-seq", type=str, default="")
+    ap.add_argument("--key-settle-ms", type=int, default=1500)
+    ap.add_argument("--export-png-stem", type=str, default="")
+    ap.add_argument("--export-png-dir", type=str, default="")
     args = ap.parse_args()
+    r5_default = 1 if args.round >= 5 else 0
+    if args.restore_infra70 is None:
+        args.restore_infra70 = r5_default
+    if args.restore_all_early is None:
+        args.restore_all_early = r5_default
+    if args.reply_all_200d is None:
+        args.reply_all_200d = r5_default
     return run_once(args)
 
 

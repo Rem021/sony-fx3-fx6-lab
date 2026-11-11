@@ -1,7 +1,7 @@
 /*
  * libgrm-fbinit9.c — FX6_NATIVE_FAITHFUL Cold-Boot & GPE/GRM Bridge
  *
- * Strictly enforces FX6_NATIVE_FAITHFUL=1 invariants across Rounds 1..3:
+ * Strictly enforces FX6_NATIVE_FAITHFUL=1 invariants across Rounds 1..5:
  *   subst_color=0  subst_image=0  forced_render=0  skipped_node=0  lock_bypass=0
  *
  * Compile-time single-variable switches:
@@ -10,6 +10,9 @@
  *                           + ScreenManager / Presenter / TriggerCb milestone observation
  *   -DFX6_ROUND=3  Round 3: + Native App::start_utimer (0xc09e50 un-NOPed)
  *                           + GRM_fbrmRegisterTriggerFrameworkCb 25Hz vsync pump & DrawCompletionCb
+ *   -DFX6_ROUND=4  Round 4: + InfraMediaConfig_Init + BK4 NVRAM + DMM/SeqQueueNetwork completions
+ *   -DFX6_ROUND=5  Round 5: + Verified RGBA4444 (BMP_PixelFormat==1) & stella RGBA8888 (fmt==2)
+ *                           + Native InfraInput (0x007a804c -> 0x005503e0) interactive key transitions
  */
 
 #ifndef FX6_ROUND
@@ -30,6 +33,14 @@
 
 #ifndef FX6_INITIAL_SETTING_DONE
 #define FX6_INITIAL_SETTING_DONE 0
+#endif
+
+#ifndef FX6_KEY_COUNT
+#define FX6_KEY_COUNT 0
+#endif
+
+#ifndef FX6_KEY_SETTLE_MS
+#define FX6_KEY_SETTLE_MS 1500U
 #endif
 
 typedef unsigned long size_t;
@@ -321,9 +332,20 @@ static void inspect_screen_manager_and_presenters(const char *tag, void *app_ptr
                     if (valid_ptr(nm)) rtti = nm;
                 }
             }
+            void *ctrl = (void *)(base + 0x432df08UL + (uptr)i * 0x2800UL);
+            void *cvptr = valid_ptr(ctrl) ? *(void **)ctrl : 0;
+            uint32_t sid = valid_ptr(ctrl) ? *(volatile uint32_t *)((char *)ctrl + 0x28) : 0U;
+            const char *crtti = "none";
+            if (valid_ptr(cvptr)) {
+                void *cti = *((void **)cvptr - 1);
+                if (valid_ptr(cti)) {
+                    const char *cnm = *((const char **)cti + 1);
+                    if (valid_ptr(cnm)) crtti = cnm;
+                }
+            }
             dprintf(2,
-                    "FX6_PRESENTER_SLOT idx=%d tag=%s obj=%p vptr=%p vptr_off=0x%lx screen=%p rtti=%s\n",
-                    i, tag, p, vptr, (unsigned long)vptr_off, scr, rtti);
+                    "FX6_PRESENTER_SLOT idx=%d tag=%s obj=%p vptr=%p vptr_off=0x%lx screen=%p rtti=%s sid=0x%x ctrl_rtti=%s\n",
+                    i, tag, p, vptr, (unsigned long)vptr_off, scr, rtti, sid, crtti);
         }
 #if FX6_ROUND >= 4
         uint32_t m_cnt = *(volatile uint32_t *)(base + 0x5c3e7e0UL);
@@ -338,21 +360,25 @@ static void inspect_screen_manager_and_presenters(const char *tag, void *app_ptr
             extern void *g_ux_screens[64];
             extern unsigned int g_ux_screen_cnt;
             typedef int (*is_active_fn)(const void *);
+            typedef int (*is_vis_fn)(const void *);
             typedef void *(*first_elem_fn)(void *);
             static is_active_fn fn_act;
+            static is_vis_fn fn_vis;
             static first_elem_fn fn_fe;
             if (!fn_act) fn_act = (is_active_fn)dlsym((void *)-1L, "_ZNK2ux6gfxeng6Screen8isActiveEv");
+            if (!fn_vis) fn_vis = (is_vis_fn)dlsym((void *)-1L, "_ZNK2ux6gfxeng6Screen9isVisibleEv");
             if (!fn_fe) fn_fe = (first_elem_fn)dlsym((void *)-1L, "_ZN2ux6gfxeng6Screen15getFirstElementEv");
             unsigned int n = g_ux_screen_cnt < 64U ? g_ux_screen_cnt : 64U;
             for (unsigned int k = 0; k < n; k++) {
                 void *s = g_ux_screens[k];
                 if (!valid_ptr(s)) continue;
                 int act = fn_act ? (fn_act(s) & 0xff) : -1;
+                int vis = fn_vis ? (fn_vis(s) & 0xff) : -1;
                 void *fe = fn_fe ? fn_fe(s) : 0;
                 if (act > 0 || fe != 0 || k < 3U) {
                     dprintf(2,
-                            "FX6_UX_SCREEN_TREE tag=%s idx=%u screen=%p active=%d first_elem=%p\n",
-                            tag, k, s, act, fe);
+                            "FX6_UX_SCREEN_TREE tag=%s idx=%u screen=%p active=%d vis=%d first_elem=%p\n",
+                            tag, k, s, act, vis, fe);
                 }
             }
         }
@@ -428,6 +454,10 @@ static void start_round2_observer_once(void) {
 #endif
 
 #if FX6_ROUND >= 2
+#if FX6_KEY_COUNT > 0
+static void start_key_injector_once(void);
+#endif
+
 int GRM_fbrmRegisterTriggerFrameworkCb(grm_void_cb_t cb, void *user_data) {
     void *lr = __builtin_return_address(0);
     uptr lr_off = (g_appfw_base && (uptr)lr > g_appfw_base) ? ((uptr)lr - g_appfw_base) : 0UL;
@@ -443,6 +473,9 @@ int GRM_fbrmRegisterTriggerFrameworkCb(grm_void_cb_t cb, void *user_data) {
     start_round2_observer_once();
 #elif FX6_ROUND >= 3
     start_trigger_pump_once();
+#endif
+#if FX6_KEY_COUNT > 0
+    start_key_injector_once();
 #endif
     return 0;
 }
@@ -513,6 +546,90 @@ static void ensure_uipc_syms(void) {
     g_real_set_src      = (osal_set_msg_src_fn)dlsym(h, "osal_set_msg_src");
     g_real_msg_size     = (osal_msg_size_fn)dlsym(h, "osal_msg_size");
 }
+
+#if FX6_KEY_COUNT > 0
+/*
+ * Round 5 Native InfraInput -> App Queue (0x007a804c -> 0x005503e0) Key Injector:
+ *   Verified against libInfraInput.so MainThread (+0xa624..0xab18) and
+ *   appFw.so App::recv_event_i (+0xc09fb4..0xc0a148) + key codebook (+0x2245a10):
+ *     offset +0x00 (u32): infra_key_id (0x01ac=ENTER, 0x7177=HOME/Big6, 0x01ab=MENU)
+ *     offset +0x04 (s16): sub_id1 = 0, +0x06 (s16): sub_id2 = 0
+ *     offset +0x08 (u32): status (1 = PRESS, 0 = RELEASE)
+ *     offset +0x0c..0x1c: flags / param1 / repeat_count / param2 / reserved = 0
+ */
+static volatile int g_key_inj_started;
+
+static void sleep_ms_chunked(unsigned int ms) {
+    while (ms > 0U) {
+        unsigned int step = ms > 50U ? 50U : ms;
+        usleep(step * 1000U);
+        ms -= step;
+    }
+}
+
+static int send_infra_input_key_event(uint32_t infra_key_id, uint32_t status) {
+    ensure_uipc_syms();
+    if (!g_real_valloc_msg || !g_real_set_src || !g_real_snd_msg) return -1;
+    void *msg = 0;
+    int vrc = g_real_valloc_msg(0x005503e0U, &msg, 0x20, 1);
+    if (vrc != 0 || !msg) return vrc ? vrc : -2;
+    memset(msg, 0, 0x20);
+    uint32_t *m32 = (uint32_t *)msg;
+    m32[0] = infra_key_id; /* +0x00: infra_key_id */
+    m32[1] = 0U;           /* +0x04: sub_id1=0, sub_id2=0 */
+    m32[2] = status;       /* +0x08: 1=PRESS, 0=RELEASE */
+    g_real_set_src(msg, 0x007a804cU); /* InfraInput MainThread queue ID */
+    return g_real_snd_msg(0x005503e0U, msg);
+}
+
+static void *fx6_key_injector_main(void *arg) {
+    (void)arg;
+    static const uint32_t k_ids[FX6_KEY_COUNT]   = FX6_KEY_IDS;
+    static const uint32_t k_holds[FX6_KEY_COUNT] = FX6_KEY_HOLDS;
+    static const uint32_t k_gaps[FX6_KEY_COUNT]  = FX6_KEY_GAPS;
+
+    dprintf(2, "FX6_KEY_INJECT_START tid=%ld count=%d settle_ms=%u\n",
+            syscall(178L), FX6_KEY_COUNT, (unsigned int)FX6_KEY_SETTLE_MS);
+
+    /* Wait until initial foreground Presenter::open finishes first Rectblit batch (or 22s max) */
+    unsigned int waited_ms = 0U;
+    while (rectblit_count < 6U && waited_ms < 22000U) {
+        sleep_ms_chunked(100U);
+        waited_ms += 100U;
+    }
+    sleep_ms_chunked((unsigned int)FX6_KEY_SETTLE_MS);
+    inspect_screen_manager_and_presenters("before_keys", g_app_self);
+
+    for (unsigned int i = 0U; i < (unsigned int)FX6_KEY_COUNT; i++) {
+        int rc_dn = send_infra_input_key_event(k_ids[i], 1U);
+        dprintf(2, "FX6_KEY_INJECT step=%u phase=press key=0x%04x hold_ms=%u rc=%d blit=%u\n",
+                i, k_ids[i], k_holds[i], rc_dn, rectblit_count);
+        sleep_ms_chunked(k_holds[i]);
+
+        int rc_up = send_infra_input_key_event(k_ids[i], 0U);
+        dprintf(2, "FX6_KEY_INJECT step=%u phase=release key=0x%04x gap_ms=%u rc=%d blit=%u\n",
+                i, k_ids[i], k_gaps[i], rc_up, rectblit_count);
+        sleep_ms_chunked(k_gaps[i]);
+
+        inspect_screen_manager_and_presenters("after_key", g_app_self);
+    }
+    dprintf(2, "FX6_KEY_INJECT_DONE count=%d flush=%u blit=%u\n",
+            FX6_KEY_COUNT, flush_count, rectblit_count);
+    return 0;
+}
+
+static void start_key_injector_once(void) {
+    if (__atomic_exchange_n(&g_key_inj_started, 1, __ATOMIC_ACQ_REL) != 0) return;
+    typedef int (*pthread_create_fn)(unsigned long *, const void *, void *(*)(void *), void *);
+    void *pt = dlopen("/lib/libpthread.so.0", RTLD_LAZY | RTLD_GLOBAL);
+    pthread_create_fn pc = pt ? (pthread_create_fn)dlsym(pt, "pthread_create") : 0;
+    if (!pc) pc = (pthread_create_fn)dlsym((void *)0, "pthread_create");
+    if (!pc) return;
+    unsigned long th = 0;
+    int rc = pc(&th, 0, fx6_key_injector_main, 0);
+    dprintf(2, "FX6_KEY_INJECT_SPAWN rc=%d th=0x%lx\n", rc, th);
+}
+#endif
 
 static int is_unanswered_bb_adf_dest(uint32_t dest_qid, uint32_t src_qid) {
     if ((src_qid & 0x7fff0000U) != 0x01cf0000U) return 0;
@@ -599,7 +716,8 @@ int osal_snd_msg(uint32_t dest_qid, void *msg) {
         w0 = h16[0];
     }
 
-    if (dest_qid != 0x8f013aU && dest_qid != 0x5503e0U) {
+    if (dest_qid != 0x8f013aU && dest_qid != 0x5503e0U &&
+        dest_qid != 0x9088076bU && dest_qid != 0x8280074dU) {
         unsigned int seq = __atomic_add_fetch(&g_uipc_snd_seq, 1U, __ATOMIC_RELAXED);
         if (seq <= 800U) {
             fx6_dl_info_t di;
@@ -754,6 +872,18 @@ int osal_snd_msg(uint32_t dest_qid, void *msg) {
                     dest_qid, src_qid, w1, rsz, frc, src_rc);
             return 0;
         }
+    }
+
+    /* 6. Unconsumed fire-and-forget external telemetry/status daemon queues
+     *    (0x9088076b @ appFw.so +0xc123ec, 0x8280074d, 0x809208bf @ +0x215dd88,
+     *     0x81100a36 @ +0x222aa9c, src_qid == 0xa5a5a5a5):
+     *    Reclaim pool buffer immediately via osal_free_msg so osal_valloc_msg_wait(..., wait=1)
+     *    on AppFw main UI thread never exhausts the kernel UIPC pool during multi-step navigation. */
+    if (msg && src_qid == 0xa5a5a5a5U &&
+        (dest_qid == 0x9088076bU || dest_qid == 0x8280074dU ||
+         dest_qid == 0x809208bfU || dest_qid == 0x81100a36U)) {
+        if (g_real_free_msg) g_real_free_msg(dest_qid, msg);
+        return 0;
     }
 #endif
 
@@ -1053,15 +1183,35 @@ void *_ZN3grm17FBResourceManager11getInstanceEv(void) {
 }
 
 /*
- * Native-Faithful GPE rasterizers (verified against libgemini-grm.so +0x7700..0x7e00):
- *   - GRM_gpermFillrect honors dst_bmp (+0x00), ARGB (+0x08..0x0b), rect (+0x0c..0x12),
- *     blend_mode (+0x14: 1=copy, 2=src-over), and const_alpha (+0x18).
- *   - GRM_gpermRectblit honors src (+0x00), src_rect (+0x08..0x0e), dst (+0x10),
- *     dst_rect (+0x18..0x1e), clip_rect (+0x20..0x26), blend_mode (+0x28),
- *     const_alpha (+0x2c), and A8 RGBA tint (+0x3c..0x3f when +0x50 == 0x0e).
+ * Native-Faithful GPE rasterizers (verified against libgemini-grm.so +0x7204, +0x7700..0x7e00,
+ * and libstella.so +0x52010..0x520c0):
+ *   - BMP_PixelFormat == 1 (2 Bpp) -> stella_fmt 7 = RGBA4444 (u16 LE: [15:12]=R, [11:8]=G, [7:4]=B, [3:0]=A).
+ *   - BMP_PixelFormat == 2 (4 Bpp) -> stella_fmt 1 = RGBA8888 ([R,G,B,A] bytes for CPU-decoded assets;
+ *     GPE-written 4-Bpp work/framebuffer surfaces store 0xAARRGGBB).
+ *   - BMP_PixelFormat == 4 (1 Bpp) -> stella_fmt 8 = A8 glyph alpha, tinted by bp[0x3c..0x3e] (R,G,B) when +0x50 == 0x0e.
  *   - Strictly offscreen until gpermDrawFlush / fbrmUpdate / swap.
  *     Zero color substitution, zero image substitution.
  */
+static const unsigned char *g_gpe_argb_surfaces[1024];
+static unsigned int g_gpe_argb_cnt;
+
+static int is_gpe_argb_surface(const unsigned char *bits) {
+    if (!bits) return 0;
+    if (bits == pix_off || bits == pix_on) return 1;
+    unsigned int n = g_gpe_argb_cnt < 1024U ? g_gpe_argb_cnt : 1024U;
+    for (unsigned int i = 0U; i < n; i++) {
+        if (g_gpe_argb_surfaces[i] == bits) return 1;
+    }
+    return 0;
+}
+
+static void mark_gpe_argb_surface(const unsigned char *bits) {
+    if (!bits || is_gpe_argb_surface(bits)) return;
+    if (g_gpe_argb_cnt < 1024U) {
+        g_gpe_argb_surfaces[g_gpe_argb_cnt++] = bits;
+    }
+}
+
 static int resolve_bitmap_surface(
     void *bmp, unsigned char **out_bits, int *out_w, int *out_h, int *out_stride, int *out_fmt, int *out_bpp
 ) {
@@ -1130,6 +1280,7 @@ int GRM_gpermFillrect(
     int y1 = (ry + rh > dh) ? dh : (ry + rh);
 
     if (dbpp == 4) {
+        mark_gpe_argb_surface(dbits);
         unsigned int *base = (unsigned int *)dbits;
         if (blend_mode != 2 || eff_a == 255U) {
             if (blend_mode != 2 || eff_a != 0U) {
@@ -1153,6 +1304,18 @@ int GRM_gpermFillrect(
                     unsigned int oa_c = eff_a + (da * (255U - eff_a)) / 255U;
                     row[x] = (oa_c << 24) | (or_c << 16) | (og_c << 8) | ob_c;
                 }
+            }
+        }
+    } else if (dbpp == 2) {
+        uint16_t c16 = (uint16_t)((((unsigned int)r >> 4) << 12) |
+                                  (((unsigned int)g >> 4) << 8)  |
+                                  (((unsigned int)b >> 4) << 4)  |
+                                  (eff_a >> 4));
+        uint16_t *base16 = (uint16_t *)dbits;
+        if (blend_mode != 2 || eff_a != 0U) {
+            for (int y = y0; y < y1; y++) {
+                uint16_t *row = base16 + (unsigned long)y * (unsigned long)dstride;
+                for (int x = x0; x < x1; x++) row[x] = c16;
             }
         }
     } else if (dbpp == 1) {
@@ -1202,6 +1365,7 @@ int GRM_gpermRectblit(
     short ch0 = *(const short *)(bp + 0x26);
     int blend_mode = *(const int *)(bp + 0x28);
     unsigned char const_alpha = bp[0x2c];
+    unsigned char const_alpha2 = bp[0x2d];
     int color_mod = *(const int *)(bp + 0x50);
     unsigned int tint_r = (color_mod == 0x0e) ? (unsigned int)bp[0x3c] : 255U;
     unsigned int tint_g = (color_mod == 0x0e) ? (unsigned int)bp[0x3d] : 255U;
@@ -1233,6 +1397,10 @@ int GRM_gpermRectblit(
     unsigned char *sbits = 0;
     int sw = 0, sh = 0, sstride = 0;
     if (resolve_bitmap_surface(src, &sbits, &sw, &sh, &sstride, &fmt, &bpp)) {
+        int src_is_gpe_argb = (bpp == 4) ? is_gpe_argb_surface(sbits) : 0;
+        if (dst_bpp == 4) {
+            mark_gpe_argb_surface(dbits);
+        }
         if (sw0 <= 0) sw0 = (short)sw;
         if (sh0 <= 0) sh0 = (short)sh;
         unsigned long row_pitch = (unsigned long)sstride * (unsigned long)bpp;
@@ -1250,12 +1418,22 @@ int GRM_gpermRectblit(
 
                 unsigned int sr = 0U, sg = 0U, sb = 0U, sa = 0U;
                 if (bpp == 4) {
-                    unsigned int p = ((const unsigned int *)srow)[sx];
-                    sa = (p >> 24) & 0xFFU;
-                    sr = (p >> 16) & 0xFFU;
-                    sg = (p >> 8)  & 0xFFU;
-                    sb = p & 0xFFU;
-                    if (p != 0U) src_nz++;
+                    if (src_is_gpe_argb) {
+                        unsigned int p = ((const unsigned int *)srow)[sx];
+                        sa = (p >> 24) & 0xFFU;
+                        sr = (p >> 16) & 0xFFU;
+                        sg = (p >> 8)  & 0xFFU;
+                        sb = p & 0xFFU;
+                        if (p != 0U) src_nz++;
+                    } else {
+                        /* BMP_PixelFormat == 2 -> stella_fmt == 1 (RGBA8888 bytes [R,G,B,A]) */
+                        const unsigned char *px4 = srow + (unsigned long)sx * 4UL;
+                        sr = px4[0];
+                        sg = px4[1];
+                        sb = px4[2];
+                        sa = px4[3];
+                        if ((sr | sg | sb | sa) != 0U) src_nz++;
+                    }
                 } else if (bpp == 1) {
                     sa = srow[sx];
                     sr = tint_r;
@@ -1265,12 +1443,18 @@ int GRM_gpermRectblit(
                 } else if (bpp == 2) {
                     uint16_t p16 = ((const uint16_t *)srow)[sx];
                     if (p16 != 0U) src_nz++;
-                    if (fmt == 3) { /* ARGB4444 */
+                    if (fmt == 1) {
+                        /* BMP_PixelFormat == 1 -> stella_fmt == 7 (RGBA4444: [15:12]=R,[11:8]=G,[7:4]=B,[3:0]=A) */
+                        sr = ((p16 >> 12) & 0xFU) * 17U;
+                        sg = ((p16 >> 8)  & 0xFU) * 17U;
+                        sb = ((p16 >> 4)  & 0xFU) * 17U;
+                        sa = (p16 & 0xFU) * 17U;
+                    } else if (fmt == 3) { /* ARGB4444 */
                         sa = ((p16 >> 12) & 0xFU) * 17U;
                         sr = ((p16 >> 8)  & 0xFU) * 17U;
                         sg = ((p16 >> 4)  & 0xFU) * 17U;
                         sb = (p16 & 0xFU) * 17U;
-                    } else { /* RGB565 / ARGB1555 */
+                    } else { /* ARGB1555 fallback */
                         sa = (p16 & 0x8000U) ? 255U : 0U;
                         sr = ((p16 >> 10) & 0x1FU) * 255U / 31U;
                         sg = ((p16 >> 5)  & 0x1FU) * 255U / 31U;
@@ -1278,8 +1462,11 @@ int GRM_gpermRectblit(
                     }
                 }
 
-                if (blend_mode == 3) {
+                if (blend_mode == 2 || blend_mode == 3) {
                     sa = (sa * (unsigned int)const_alpha) / 255U;
+                    if (blend_mode == 3) {
+                        sa = (sa * (unsigned int)const_alpha2) / 255U;
+                    }
                 }
 
                 if (dst_bpp == 4) {
@@ -1297,6 +1484,22 @@ int GRM_gpermRectblit(
                         unsigned int ob_c = (sb * sa + db_c * (255U - sa)) / 255U;
                         unsigned int oa_c = sa + (da * (255U - sa)) / 255U;
                         drow[dx] = (oa_c << 24) | (or_c << 16) | (og_c << 8) | ob_c;
+                    }
+                } else if (dst_bpp == 2) {
+                    uint16_t *drow = (uint16_t *)dbits + (unsigned long)dy * (unsigned long)dst_stride;
+                    if (blend_mode == 1) {
+                        drow[dx] = (uint16_t)(((sr >> 4) << 12) | ((sg >> 4) << 8) | ((sb >> 4) << 4) | (sa >> 4));
+                    } else if (sa != 0U) {
+                        uint16_t d16 = drow[dx];
+                        unsigned int dr = ((d16 >> 12) & 0xFU) * 17U;
+                        unsigned int dg = ((d16 >> 8)  & 0xFU) * 17U;
+                        unsigned int db_c = ((d16 >> 4) & 0xFU) * 17U;
+                        unsigned int da = (d16 & 0xFU) * 17U;
+                        unsigned int or_c = (sr * sa + dr * (255U - sa)) / 255U;
+                        unsigned int og_c = (sg * sa + dg * (255U - sa)) / 255U;
+                        unsigned int ob_c = (sb * sa + db_c * (255U - sa)) / 255U;
+                        unsigned int oa_c = sa + (da * (255U - sa)) / 255U;
+                        drow[dx] = (uint16_t)(((or_c >> 4) << 12) | ((og_c >> 4) << 8) | ((ob_c >> 4) << 4) | (oa_c >> 4));
                     }
                 } else if (dst_bpp == 1) {
                     unsigned char *drow = dbits + (unsigned long)dy * (unsigned long)dst_stride;

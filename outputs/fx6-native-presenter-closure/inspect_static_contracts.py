@@ -25,7 +25,9 @@ TARGET_BINARIES = [
     "lib/libIMDB.so",
     "lib/libMWF.so",
     "lib/libgrm.so",
+    "lib/libgrm_bmp.so",
     "lib/libgemini-grm.so",
+    "lib/libuxengine.so",
     "lib/libosal_uipc.so",
     "lib/libbackup.so",
     "lib/libInfraMediaConfig.so",
@@ -49,9 +51,12 @@ def sha256_file(path: pathlib.Path) -> str:
 
 
 def disasm_range(path: pathlib.Path, start: int, stop: int) -> str:
+    objdump_cmd = ["/usr/bin/objdump"]
+    if not pathlib.Path("/usr/bin/objdump").exists():
+        objdump_cmd = ["xcrun", "llvm-objdump"]
     return subprocess.check_output(
-        [
-            "/usr/bin/objdump",
+        objdump_cmd
+        + [
             "-d",
             f"--start-address={hex(start)}",
             f"--stop-address={hex(stop)}",
@@ -156,14 +161,26 @@ def collect_contracts() -> Dict[str, Any]:
         "mwf_objshlock_ctor_and_lock": disasm_range(DONOR_ROOT / "lib/libMWF.so", 0x3B300, 0x3B498),
         "grm_register_trigger_cb": disasm_range(DONOR_ROOT / "lib/libgrm.so", 0x22C78, 0x22D20),
         "grm_c_api_trigger_cb": disasm_range(DONOR_ROOT / "lib/libgrm.so", 0x236A8, 0x236D0),
+        "grm_bmp_bytes_per_pixel": disasm_range(
+            DONOR_ROOT / "lib/libgrm_bmp.so", 0x2350, 0x2410
+        ),
+        "gemini_grm_image_pixel_format": disasm_range(
+            DONOR_ROOT / "lib/libgemini-grm.so", 0x71B0, 0x7330
+        ),
         "gemini_grm_renderer_fill_blit": disasm_range(
             DONOR_ROOT / "lib/libgemini-grm.so", 0x7700, 0x7E80
+        ),
+        "uxengine_rgba4444_sw_compositor": disasm_range(
+            DONOR_ROOT / "lib/libuxengine.so", 0x8F400, 0x8FF80
         ),
         "infra_mediaconfig_init": disasm_range(
             DONOR_ROOT / "lib/libInfraMediaConfig.so", 0x6538, 0x6790
         ),
         "infra_mediaconfig_create_tbl": disasm_range(
             DONOR_ROOT / "lib/libInfraMediaConfig.so", 0x5B50, 0x60A0
+        ),
+        "infra_input_send_key_event": disasm_range(
+            DONOR_ROOT / "lib/libInfraInput.so", 0xB05C, 0xB390
         ),
         "mpr_slot_type_from_media_id": disasm_range(
             DONOR_ROOT / "lib/libmpr.so", 0x53C850, 0x53C8D0
@@ -178,6 +195,24 @@ def collect_contracts() -> Dict[str, Any]:
         "appfw_rep_boot_power_on_comp": disasm_range(
             DONOR_ROOT / "lib/appFw.so", 0x1009B90, 0x100AB50
         ),
+        "appfw_shooting_ctrl_compact_dispatch": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xC69390, 0xC6947C
+        ),
+        "appfw_func_home_on_forwarder": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xC89AF8, 0xC89B20
+        ),
+        "appfw_menu_layer_1st_resolver": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xCB317C, 0xCB3200
+        ),
+        "appfw_shooting_ctrl_open_big6_home": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xFB3D24, 0xFB3E18
+        ),
+        "appfw_shooting_ctrl_menu_long_press": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xFB31A4, 0xFB321C
+        ),
+        "appfw_infra_input_msg_receiver": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0x2159DF4, 0x2159FA0
+        ),
         "appfw_cold_boot_tail": disasm_range(DONOR_ROOT / "lib/appFw.so", 0x1CD8604, 0x1CD86B4),
         "appfw_init_hdmi": disasm_range(DONOR_ROOT / "lib/appFw.so", 0x1CD80DC, 0x1CD81C4),
         "appfw_media_slot_sync": disasm_range(
@@ -188,11 +223,66 @@ def collect_contracts() -> Dict[str, Any]:
         ),
     }
 
+    round5_contracts = {
+        "bmp_pixel_formats": {
+            "1": {
+                "grm_image_fmt": 4,
+                "stella_gpe_fmt": 7,
+                "bpp": 2,
+                "layout": "RGBA4444 (u16 LE: [15:12]=R, [11:8]=G, [7:4]=B, [3:0]=A; 4-bit -> 8-bit * 17)",
+            },
+            "2": {
+                "grm_image_fmt": 1,
+                "stella_gpe_fmt": 1,
+                "bpp": 4,
+                "layout": "RGBA8888 byte-order [R, G, B, A] (u32 LE = 0xAABBGGRR) for resource bitmaps; GPE surfaces tracked as 0xAARRGGBB",
+            },
+            "4": {
+                "grm_image_fmt": 8,
+                "stella_gpe_fmt": 14,
+                "bpp": 1,
+                "layout": "A8 8-bit FreeType coverage mask tinted by rectblit +0x3c..+0x3f",
+            },
+        },
+        "infra_input_key_msg_32b": {
+            "src_qid": "0x007a804c",
+            "dest_qid": "0x005503e0",
+            "size_bytes": 32,
+            "fields": {
+                "+0x00": "u32 msg_type = 0x020102ff",
+                "+0x04": "u32 dev_type = 0 (physical tact key)",
+                "+0x08": "u16 infra_key_id",
+                "+0x0a": "u16 pad = 0",
+                "+0x0c": "u32 action (1 = press, 2 = release)",
+                "+0x10..0x1f": "zero-filled payload",
+            },
+            "verified_keycodes": {
+                "0x002f": "UP (app_key=0x0001)",
+                "0x0030": "DOWN (app_key=0x0002)",
+                "0x0031": "LEFT (app_key=0x0003)",
+                "0x0032": "RIGHT (app_key=0x0004)",
+                "0x01ab": "MENU (app_key=0x0013; <1000ms -> 0x02010018 SHORT_PRESS, >=1000ms -> 0x02010017 LONG_PRESS -> sid=0x0f)",
+                "0x01ac": "ENTER / SET (app_key=0x0014 -> 0x02010010)",
+                "0x7052": "STATUS_CHECK (app_key=0x0049 -> 0x02010019)",
+                "0x718c": "HOME / UIBIZ_KEY_TACT_HOME (app_key=0x0184 -> 0x020102d1 -> 0x02010208 EVENT_FUNC_HOME_ON -> sid=0x0a Big6)",
+                "0x719a": "MENU_CANCEL (app_key=0x0192 -> 0x02010107)",
+                "0x71a1": "DISP_SEL (app_key=0x0199 -> 0x020100e6)",
+            },
+        },
+        "screen_transitions_verified": {
+            "sid_0x14": "37procam_menu_initial_setting_presenter (r5a)",
+            "sid_0x02": "25procam_shooting_presenter (r5b)",
+            "sid_0x0a": "31procam_big6_menu_home_presenter via 0x718c HOME (r5c)",
+            "sid_0x0f": "31procam_menu_layer_1st_presenter via 0x01ab:1300ms MENU_LONG_PRESS (r5d)",
+        },
+    }
+
     return {
         "donor_root": str(DONOR_ROOT),
         "digests": digests,
         "imdb_highlights": interesting_imdb,
         "snippet_line_counts": {k: len(v.splitlines()) for k, v in snippets.items()},
+        "round5_contracts": round5_contracts,
     }
 
 

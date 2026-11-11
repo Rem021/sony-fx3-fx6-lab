@@ -275,6 +275,22 @@ def _cmd_verify_cp_rtos() -> int:
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_p1_recovery_bridge(repo_root: Path) -> int:
+    from .p1_recovery_bridge_verifier import run_p1_recovery_bridge_verification
+
+    rep = run_p1_recovery_bridge_verification(repo_root=repo_root)
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "p1_recovery_bridge_ok": rep.p1_recovery_bridge_ok,
+        "tier0_alignment": asdict(rep.tier0_alignment),
+        "p1_container_and_u5_handoff": asdict(rep.p1_container_and_u5_handoff),
+        "errors": list(rep.errors),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -311,6 +327,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "u2_closed": rep.cp_rtos_audit.u2_closed,
         "p8_cp_mutation_forbidden": rep.cp_rtos_audit.p8_cp_mutation_forbidden,
         "cp_mutation_bytes": rep.cp_rtos_audit.cp_mutation_bytes,
+        "p1_recovery_bridge_ok": rep.p1_recovery_bridge_ok,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -328,7 +345,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 10 Compatibility Closure, U1-U5 Blueprint Closure (CP RTOS U2, Storage/RAM Budget, DTB/.ko & U5/U3/U4) CLI",
+        description="FX6-on-FX3 Phase 11 Compatibility Closure, U1-U5 Blueprint Closure & Cross-Package p1 Recovery Bridge CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -342,7 +359,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-kernel-dtb", "Verify cxd90057.dtb FDT (0xd00dfeed) SoC MMIO/carveout compatibility and .ko vermagic/__versions CRC integrity"),
         ("verify-storage-ram-budget", "Verify 30-partition zero-repartition mapping, edisx redline, p15 /usr budget, and Linux DDR/tmpfs RAM-overlay budget"),
         ("verify-cp-rtos", "Verify U2 CP RTOS (cpapp-b.bin / nflasha8 & tomco.txt) compatibility and Stage-A stock-CP redline"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + 5-Feature Routing + U4/BK4 + U5/U3 + DTB/.ko + Storage/RAM + CP RTOS U2 + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-p1-recovery-bridge", "Verify Phase 11 cross-package p1 recovery <-> Tier-0 capture alignment and U5 Bank 0 exit handoff"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -352,7 +370,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name == "dry-run-candidate":
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
 
     args = parser.parse_args(argv)
@@ -374,6 +392,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_storage_ram_budget(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "verify-cp-rtos":
         return _cmd_verify_cp_rtos()
+    if args.cmd == "verify-p1-recovery-bridge":
+        return _cmd_verify_p1_recovery_bridge(args.repo_root)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

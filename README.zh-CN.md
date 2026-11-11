@@ -4,7 +4,7 @@
 [![双语总览](https://img.shields.io/badge/主文档-README.md_(中英双语)-1a7f37?style=flat)](./README.md)
 [![宿主平台](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
 [![目标芯片](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)-orange?style=flat)](#)
-[![自动化测试](https://img.shields.io/badge/Automated_Tests-121%2F121_Passing_(make_test)-brightgreen?style=flat)](#四快速开始与验收命令)
+[![自动化测试](https://img.shields.io/badge/Automated_Tests-126%2F126_Passing_(make_test)-brightgreen?style=flat)](#四快速开始与验收命令)
 [![开源协议](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
 
 > **语言切换**：[**👉 Switch to Standalone English Documentation (`README.en.md`)**](./README.en.md) · [**中英双语总览文档 (`README.md`)**](./README.md)
@@ -13,7 +13,7 @@
 
 > [!IMPORTANT]
 > **净室开源合规边界（BYOF：自备官方固件复现）**
-> 本仓库 **包含 0 字节索尼专有闭源二进制文件**（不含 `BODYDATA.DAT`、`vmlinux.bin`、`appFw.so`、`cpapp-b.bin`、`nflasha*` 分区镜像或 `.cpio` 根文件系统镜像）。仓库内全部 Python 离线校验器、无依赖 AArch64 C/汇编工作器、Unicorn 指令级仿真套件、QEMU 设备补丁、Web 交互前端与 SHA-256 验收回执均为独立净室编写。如需在本地复现虚拟机交互体验，请参照 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)** 自备对应 SHA-256 指纹的官方固件。
+> 本仓库 **包含 0 字节索尼专有闭源二进制文件**（不含 `BODYDATA.DAT`、`vmlinux.bin`、`appFw.so`、`cpapp-b.bin`、`nflasha*` 分区镜像或 `.cpio` 根文件系统镜像）。仓库内全部 Python 离线校验器、无依赖 AArch64 C/汇编工作器、Unicorn 指令级仿真套件、QEMU 设备补丁、Web 交互前端与 SHA-256 验收回执均为独立净室编写。如需在本地复现虚拟机交互体验，请参照 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)**（由 `make verify-byof` 自动守护指纹一致性）自备对应 SHA-256 指纹的官方固件。
 
 ---
 
@@ -30,7 +30,7 @@
 - **零修改启动 FX3 7.02 内核与原厂菜单（`outputs/fx3-vm/`、`outputs/fx3-vm-trial/`）**：完整建模 CXD90057 高位 DDR（`0x400000000`）、ESRAM 邮箱（`0xfe005000`）、GICD、Sony 硬件定时器、SCU、GPIO Bank5、UIPC、DMM、GPE v13/v14 与软件 LDEC LZ77 图标解压，提供一键启动的浏览器交互入口 `FX3菜单.command`（支持 4096 键 / 60 分钟交互预算，约 40.1 秒出首帧待机 OSD，已完成 32 键逐屏导航与 API16 干净恢复验收）。
 
 ### 主线 3 —— FX6-on-FX3 `P1..P9 + Fan` 兼容闭环、`U1..U5` 全未知项清零与 12 道防变砖门禁
-- **受控工程包**：[`outputs/fx6-on-fx3-closure/`](outputs/fx6-on-fx3-closure/README.md) 与 [`outputs/fx3-safety/`](outputs/fx3-safety/)（详见 [Phase 10 完整验证报告](reports/2026-11-10-fx6-p1p2p4-and-tier0/README.md)）：
+- **受控工程包**：[`outputs/fx6-on-fx3-closure/`](outputs/fx6-on-fx3-closure/README.md) 与 [`outputs/fx3-safety/`](outputs/fx3-safety/)（详见 [Phase 11 完整验证报告](reports/2026-11-10-fx6-p1p2p4-and-tier0/README.md)）：
   - **10/10 兼容适配矩阵（`P1..P9 + Fan`）**：覆盖 7 个 ELF64 二进制目标（`libInfraSetupFile.so`、`libInfraMediaCommon.so`、`libInfraMediaConfig.so`、`libInfraAppRemoteBoard.so`、`appFw.so`、`libfan.so`、`upm.ko`）的确定性适配与 **100% SHA-256 逐字节无损逆向回滚**、纯 Python `8/16/44.5 MiB` `opelog.vfat` 构建器（`P2`）、`0x92840747` 端点 UIPC 应答合成（`P5`/`P6`，Unicorn 实测验证）及双内核 `pcidma_transfer_async` Sync100 跳板校验（`P7`）。
   - **5 大核心特性路由、设备树（`cxd90057.dtb`）与 `.ko` ABI 校验**：验证 43 个 ELF 的 `DT_NEEDED` 符号闭包（`0` 缺失）、FX3 `48.00 MiB` `p30` 上的 16 组 `33^3` `.cube` 3D LUT 存储余量（`+32.04 MiB`）、FX3/FX6 100% 逐字节一致的 `cxd90057.dtb`（`16,875 B`，68 节点 / 493 属性）与 7 项 `kemco.txt` `memrsv=` 保留段，以及 `P9` `upm.ko` 的 `vermagic` 与全部 61 项 `modversion_info` CRC 零漂移。
   - **零重分区 `p15` / DDR `tmpfs` 容量预算、Stage-A CPIO 与 4 层掉电安全回滚**：证明 `edisx_repartition_forbidden = True`（`sector0_mutation_bytes = 0`），FX3 `500.00 MiB` `p15` 具备 `+138.76 MiB` 裸载荷 / `+74.81 MiB` ext2 镜像余量，Stage-A `tmpfs` 峰值仅 `57.45–130.73 MiB`（严守 `256.00 MiB` 上限，占 `1,917.62 MiB` 可用 DDR 的 `3.00%–6.82%`）；构建确定性 SVR4 `cpio newc`（`19,696 B`）并在 `/bin/sh` 沙箱中验证 4 类异常回滚场景全程 **`0` 字节 eMMC 写入**。
@@ -39,11 +39,11 @@
     - **`U2`**：通过 Phase 10 `cp_rtos_compatibility_verifier.py` 清零——证明 FX3 与 FX6 `tomco.txt` 的 4 段 `memcfg=`（`1,724.00 MiB`）及 20 项 IPC 键值 **100% 相同**，定位 FX6 `cpapp-b.bin`（`17.12 MiB` `@ 0x00108000`）内 8 项 FX6 独占硬件驱动风险（`Darwin` 电子可变 ND 与 `Mew` SDI/Genlock FPGA），并强制锁定 **Stage-A 原厂 CP 红线（`p8_cp_mutation_forbidden = True`，`cp_mutation_bytes = 0`）**。
     - **`U3`**：通过 `0xfa0080` 64 槽位 Bank 0/1 零地址重叠证明与原厂 CP 红线清零（FX3 原厂 CP 直接读取本机 `psd.bin` / `defdet.bin` / `lensfile.bin` / `p6:Jiritsu` 原厂校准数据）。
     - **`U4`**：通过 Unicorn AArch64 指令级仿真证明 `SetupFile::RcvThread`（`0x19650`）与 `KikiLogGenerator_res_ope`（`0x3cb0`）在 `ENOENT`/`EINVAL`/`EROFS` 下安全降级返回，并提供 `20,588 B` RAM-Shadow `BK4\0` 合成器。
-    - **`U5`**：通过 `ud_send_lsi.elf`（`0x804b0376`）+ `loader_nor.bin`（`0xFE049000`）10 组 Unicorn 边界案例验证与两步原子 `p1` 退出复位清零。
-  - **Tier-0 无依赖只读备份工作器与 12 道刷前安全门禁**：零外部符号 AArch64 Linux `svc #0` 双遍只读备份工作器（`native/tier0_backup_worker.c`，覆盖 11 项关键分区）通过 Unicorn 全路径验证，并与 `fx3_safety` **12/12** 道门禁联动（`persistent_write_release = False`）。
+    - **`U5`**：通过 `ud_send_lsi.elf`（`0x804b0376`）+ `loader_nor.bin`（`0xFE049000`）10 组 Unicorn 边界案例验证 + Phase 11 `p1_recovery_bridge_verifier.py` 跨包 `p1` 恢复容器与两步原子退出复位清零。
+  - **Tier-0 无依赖只读备份、跨包 `p1` 恢复桥接与 12 道刷前安全门禁**：零外部符号 AArch64 Linux `svc #0` 双遍只读备份工作器（`native/tier0_backup_worker.c`，覆盖 11 项关键分区）通过 Unicorn 全路径验证，联合 Phase 11 `p1_recovery_bridge_verifier.py` 对齐 `fx3_recovery`，并与 `fx3_safety` **12/12** 道门禁联动（`persistent_write_release = False`）。
 
 ### 主线 4 —— FX3 离线恢复适配工具（`v0.5`）与服务接口安全工具集
-- **零外部依赖 `p1` 与引导分区工具链（`outputs/fx3-recovery-adapter/`）**：针对 `/dev/cnflasha1`（`p1` 恢复更新分区）与 `/dev/nflashaB0`/`B1`（`boot0`/`boot1`）提供 `inspect`、`build`、`verify`、`diagnose`、`rollback` 及无 libc 静态链接 AArch64 ELF 只读采集工作器，配套 **58 项** 单元与故障注入测试。
+- **零外部依赖 `p1` 与引导分区工具链（`outputs/fx3-recovery-adapter/`）**：针对 `/dev/cnflasha1`（`p1` 恢复更新分区）与 `/dev/nflashaB0`/`B1`（`boot0`/`boot1`）提供 `inspect`、`build`、`verify`、`diagnose`、`rollback` 及无 libc 静态链接 AArch64 ELF 只读采集工作器，与主线 3 跨包桥接校验（`verify-p1-recovery-bridge`）并配套 **58 项** 单元与故障注入测试。
 
 ---
 
@@ -71,23 +71,24 @@
 
 ```text
 sony-fx3-fx6-lab/
-├── Makefile                                    # 统一测试 (`make test`)、JSON 汇总与候选包干跑 (`make dry-run`)
+├── Makefile                                    # 统一测试 (`make test`)、BYOF 审计 (`make verify-byof`) 与候选包干跑 (`make dry-run`)
 ├── README.md                                   # 中英双语完整主文档
 ├── README.en.md                                # 独立纯英文说明文档 (2026-11-10)
 ├── README.zh-CN.md                             # 独立纯中文说明文档 (2026-11-10)
 ├── docs/
-│   └── BYOF-REPRODUCTION.md                    # 净室自备固件 SHA-256 指纹清单与复现指南
+│   └── BYOF-REPRODUCTION.md                    # 净室自备固件中英双语 43+43 项 SHA-256 指纹清单与复现指南
 ├── scripts/
-│   └── run_all_lab_tests.py                    # 统一 121 项测试运行器 + `git status --porcelain` 净室卫生审计
+│   ├── run_all_lab_tests.py                    # 统一 126 项测试运行器 + BYOF 清单审计 + `git status --porcelain` 净室卫生审计
+│   └── verify_byof_manifest.py                 # 中英双语 BYOF SHA-256 语法、源码常量与本地供体固件一致性审计器
 ├── outputs/
-│   ├── fx6-on-fx3-closure/                     # Phase 10 P1..P9+Fan、U1..U5、FDT/.ko、p15/tmpfs、CP RTOS 与 Tier-0 套件 (48 项测试)
+│   ├── fx6-on-fx3-closure/                     # Phase 11 P1..P9+Fan、U1..U5、FDT/.ko、p15/tmpfs、CP RTOS、p1 桥接与 Tier-0 套件 (52 项测试)
 │   ├── fx6-native-presenter-closure/           # 原版冷启动 `nop_count=0` `FX6_NATIVE_FAITHFUL=1` GPE0 前景字形与拍摄 HUD 闭环
-│   ├── fx3-safety/                             # 12 道刷前安全门禁、Sector-0/BK4 契约与变砖分类器 (15 项测试)
+│   ├── fx3-safety/                             # 12 道刷前安全门禁、Sector-0/BK4 契约与变砖分类器 (16 项测试)
 │   ├── fx3-recovery-adapter/                   # FX3 离线恢复适配工具 v0.5 与 AArch64 静态采集工作器 (58 项测试)
 │   ├── fx3-vm-trial/                           # 交互式 FX3 与 FX6 (128 页 `live700`、22.1x C 扫描线加速) 网页模拟器入口
 │   └── fx3-vm/                                 # FX3 最小研究 QEMU AArch64 虚拟机与高位 DDR / ESRAM 补丁
 ├── reports/
-│   ├── 2026-11-10-fx6-p1p2p4-and-tier0/        # Phase 1–10 兼容适配、U1..U5 未知项清零与 12 道门禁主验证报告
+│   ├── 2026-11-10-fx6-p1p2p4-and-tier0/        # Phase 1–11 兼容适配、U1..U5 未知项清零、p1 恢复桥接与 12 道门禁主验证报告
 │   ├── 2026-11-10-fx6-native-presenter-closure/# 原版冷启动 `nop_count=0` GPE0 前景字形与拍摄 HUD 证据报告
 │   ├── 2026-11-08-fx6-native-text-gpe0/        # 100% 128 页 FX6 描述符物理 GPE0 渲染证据报告
 │   └── 2026-11-03-fx6-full-system-to-fx3/      # FX6 6.01 vs FX3 7.02 30 分区与 SPI NOR 全系统静态审计
@@ -98,17 +99,20 @@ sony-fx3-fx6-lab/
 
 ## 四、快速开始与验收命令
 
-### 4.1 一键运行全部 121 项自动化测试与净室审计（`make test`）
+### 4.1 一键运行全部 126 项自动化测试、BYOF 指纹审计与净室检查（`make test` / `make verify-byof`）
 
 ```bash
-# 运行全部 3 套测试集 (58 项 fx3-recovery-adapter + 15 项 fx3-safety + 48 项 fx6-on-fx3-closure = 121 项) + 零二进制/.pyc 残留检查
+# 运行全部 3 套测试集 (58 项 fx3-recovery-adapter + 16 项 fx3-safety + 52 项 fx6-on-fx3-closure = 126 项) + BYOF 与零二进制/.pyc 残留检查
 make test
 
-# 运行完整 FX6-on-FX3 离线候选包干跑验收 (P1..P9 + Fan + U1..U5 + CP RTOS + 12/12 安全门禁)
+# 单独校验中英双语 docs/BYOF-REPRODUCTION.md 清单 (43+43 项镜像、31 项源码常量与可选本地固件)
+make verify-byof
+
+# 运行完整 FX6-on-FX3 离线候选包干跑验收 (P1..P9 + Fan + U1..U5 + CP RTOS + p1 桥接 + 12/12 安全门禁)
 make dry-run
 
-# 单独运行 Phase 10 U2 协处理器 RTOS (`cpapp-b.bin` 与 `tomco.txt`) 跨机型兼容性校验器
-PYTHONPATH=outputs/fx3-safety:outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m fx6_closure verify-cp-rtos
+# 单独运行 Phase 11 跨包 p1 恢复与 Tier-0 桥接校验器
+make verify-p1-recovery-bridge
 ```
 
 ### 4.2 启动交互式 FX3 或 FX6 网页菜单模拟器（需自备 BYOF 固件）

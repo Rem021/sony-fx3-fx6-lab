@@ -99,12 +99,26 @@ class CleanRoomHygieneResult:
 
 
 @dataclass(frozen=True)
+class ByofManifestAuditSummary:
+    checked: bool
+    passed: bool
+    verification_mode: str
+    en_entry_count: int
+    zh_entry_count: int
+    code_constants_checked: int
+    live_donor_files_verified: int
+    elapsed_seconds: float
+    errors: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class UnifiedLabRunReport:
     all_passed: bool
     total_tests_ran: int
     suite_count: int
     total_elapsed_seconds: float
     suites: Tuple[SuiteExecutionResult, ...]
+    byof_manifest: ByofManifestAuditSummary
     clean_room_hygiene: CleanRoomHygieneResult
 
 
@@ -236,13 +250,51 @@ def run_single_suite(spec: LabSuiteSpec, repo_root: Path = REPO_ROOT) -> SuiteEx
     )
 
 
+def run_byof_manifest_audit(repo_root: Path = REPO_ROOT) -> ByofManifestAuditSummary:
+    """Execute `scripts/verify_byof_manifest.py --json` with `-B` and `PYTHONDONTWRITEBYTECODE=1`."""
+    env = dict(os.environ)
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    python_exe = PYTHON_BIN if Path(PYTHON_BIN).is_file() else sys.executable
+    script_path = repo_root / "scripts" / "verify_byof_manifest.py"
+    t0 = time.monotonic()
+    proc = subprocess.run(
+        [python_exe, "-B", str(script_path), "--json"],
+        cwd=str(repo_root),
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    elapsed = round(time.monotonic() - t0, 4)
+    try:
+        payload = json.loads(proc.stdout or "{}")
+    except json.JSONDecodeError:
+        payload = {}
+
+    passed = proc.returncode == 0 and bool(payload.get("all_checks_passed", False))
+    errs = list(payload.get("errors", []))
+    if proc.returncode != 0 and not errs:
+        errs.append((proc.stderr or proc.stdout or f"rc={proc.returncode}").strip())
+    return ByofManifestAuditSummary(
+        checked=True,
+        passed=passed,
+        verification_mode=str(payload.get("verification_mode", "UNKNOWN")),
+        en_entry_count=int(payload.get("en_entry_count", 0)),
+        zh_entry_count=int(payload.get("zh_entry_count", 0)),
+        code_constants_checked=int(payload.get("code_constants_checked", 0)),
+        live_donor_files_verified=int(payload.get("live_donor_files_verified", 0)),
+        elapsed_seconds=elapsed,
+        errors=tuple(str(e) for e in errs),
+    )
+
+
 def run_all_lab_verifications(
     repo_root: Path = REPO_ROOT,
     *,
     clean_only: bool = False,
     stream_progress: bool = False,
 ) -> UnifiedLabRunReport:
-    """Run all three lab unittest suites plus the clean-room binary/pyc hygiene audit."""
+    """Run all three lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
     overall_t0 = time.monotonic()
     suite_results: List[SuiteExecutionResult] = []
 
@@ -260,6 +312,31 @@ def run_all_lab_verifications(
                 )
                 sys.stdout.flush()
 
+        byof_summary = run_byof_manifest_audit(repo_root=repo_root)
+        if stream_progress:
+            b_str = "PASS" if byof_summary.passed else "FAIL"
+            sys.stdout.write(
+                f"[byof] docs/BYOF-REPRODUCTION.md manifest audit: {b_str} "
+                f"({byof_summary.verification_mode}, en={byof_summary.en_entry_count}, "
+                f"zh={byof_summary.zh_entry_count}, constants={byof_summary.code_constants_checked}, "
+                f"live={byof_summary.live_donor_files_verified}) in {byof_summary.elapsed_seconds:.2f}s\n"
+            )
+            for err in byof_summary.errors:
+                sys.stdout.write(f"    ! {err}\n")
+            sys.stdout.flush()
+    else:
+        byof_summary = ByofManifestAuditSummary(
+            checked=False,
+            passed=True,
+            verification_mode="SKIPPED_CLEAN_ONLY",
+            en_entry_count=0,
+            zh_entry_count=0,
+            code_constants_checked=0,
+            live_donor_files_verified=0,
+            elapsed_seconds=0.0,
+            errors=(),
+        )
+
     hygiene = audit_clean_room_hygiene(repo_root=repo_root)
     if stream_progress:
         h_str = "CLEAN" if hygiene.clean else "DIRTY"
@@ -273,7 +350,7 @@ def run_all_lab_verifications(
     total_elapsed = round(time.monotonic() - overall_t0, 4)
     total_tests = sum(r.tests_ran for r in suite_results)
     suites_ok = all(r.passed for r in suite_results)
-    all_passed = suites_ok and hygiene.clean
+    all_passed = suites_ok and byof_summary.passed and hygiene.clean
 
     return UnifiedLabRunReport(
         all_passed=all_passed,
@@ -281,6 +358,7 @@ def run_all_lab_verifications(
         suite_count=len(suite_results),
         total_elapsed_seconds=total_elapsed,
         suites=tuple(suite_results),
+        byof_manifest=byof_summary,
         clean_room_hygiene=hygiene,
     )
 
@@ -288,7 +366,7 @@ def run_all_lab_verifications(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="run_all_lab_tests.py",
-        description="Run all Sony FX3/FX6 Lab unittest suites and verify clean-room binary/pyc hygiene.",
+        description="Run all Sony FX3/FX6 Lab unittest suites, BYOF manifest audit, and clean-room binary/pyc hygiene.",
     )
     parser.add_argument(
         "--json",
@@ -320,7 +398,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         else:
             sys.stdout.write(
                 f"\n=== Unified Lab Verification: {overall} — "
-                f"{rep.total_tests_ran} tests across {rep.suite_count} suites + clean-room audit "
+                f"{rep.total_tests_ran} tests across {rep.suite_count} suites + BYOF manifest + clean-room audit "
                 f"in {rep.total_elapsed_seconds:.2f}s ===\n"
             )
 

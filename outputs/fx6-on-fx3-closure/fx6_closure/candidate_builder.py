@@ -72,6 +72,10 @@ from .nd_unicorn_verifier import (
     run_p8_appfw_unicorn_check,
     run_p9_upm_ko_unicorn_check,
 )
+from .p1_recovery_bridge_verifier import (
+    Phase11P1RecoveryBridgeReport,
+    run_p1_recovery_bridge_verification,
+)
 from .patcher import (
     ALL_PHASE2_TARGET_SPECS,
     DEFAULT_FX3_MODULES_DIR,
@@ -154,6 +158,8 @@ class CandidateDryRunReport:
     storage_and_ram_budget_ok: bool
     cp_rtos_audit: Phase10CpRtosCompatibilityReport
     cp_rtos_ok: bool
+    p1_recovery_bridge_audit: Phase11P1RecoveryBridgeReport
+    p1_recovery_bridge_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -175,6 +181,7 @@ def run_offline_candidate_dry_run(
     precomputed_kernel_dtb: Optional[Phase8KernelDtbReport] = None,
     precomputed_storage_and_ram_budget: Optional[Phase9StorageAndRamBudgetReport] = None,
     precomputed_cp_rtos: Optional[Phase10CpRtosCompatibilityReport] = None,
+    precomputed_p1_recovery_bridge: Optional[Phase11P1RecoveryBridgeReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -186,6 +193,7 @@ def run_offline_candidate_dry_run(
     corrupt_kernel_dtb: bool = False,
     corrupt_storage_and_ram_budget: bool = False,
     corrupt_cp_rtos: bool = False,
+    corrupt_p1_recovery_bridge: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -413,6 +421,14 @@ def run_offline_candidate_dry_run(
         )
         cp_rtos_ok = cp_rtos_res.all_checks_passed and not corrupt_cp_rtos
 
+        p1_recovery_bridge_res = (
+            precomputed_p1_recovery_bridge
+            or run_p1_recovery_bridge_verification(repo_root=repo_root)
+        )
+        p1_recovery_bridge_ok = (
+            p1_recovery_bridge_res.all_checks_passed and not corrupt_p1_recovery_bridge
+        )
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -454,6 +470,7 @@ def run_offline_candidate_dry_run(
             and kernel_dtb_ok
             and storage_and_ram_budget_ok
             and cp_rtos_ok
+            and p1_recovery_bridge_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -470,6 +487,7 @@ def run_offline_candidate_dry_run(
             kernel_dtb_ok=kernel_dtb_ok,
             storage_and_ram_budget_ok=storage_and_ram_budget_ok,
             cp_rtos_ok=cp_rtos_ok,
+            p1_recovery_bridge_ok=p1_recovery_bridge_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -516,6 +534,8 @@ def run_offline_candidate_dry_run(
         storage_and_ram_budget_ok=storage_and_ram_budget_ok,
         cp_rtos_audit=cp_rtos_res,
         cp_rtos_ok=cp_rtos_ok,
+        p1_recovery_bridge_audit=p1_recovery_bridge_res,
+        p1_recovery_bridge_ok=p1_recovery_bridge_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

@@ -171,6 +171,16 @@ from fx6_closure.cp_rtos_compatibility_verifier import (
     scan_fx6_cp_peripheral_markers,
     validate_candidate_cp_redline,
 )
+from fx6_closure.p1_recovery_bridge_verifier import (
+    PINNED_FX6_P1_IMAGE_BYTES,
+    PINNED_FX6_P1_IMAGE_SHA256,
+    PINNED_FX6_P1_INITRD_BYTES,
+    PINNED_FX6_P1_INITRD_SHA256,
+    audit_worker_c_source_posture,
+    run_p1_recovery_bridge_verification,
+    verify_p1_container_and_u5_handoff,
+    verify_tier0_fx3_recovery_alignment,
+)
 from fx6_closure.uipc_completion_verifier import (
     P5_CANONICAL_CMP_HEX,
     P5_CANONICAL_REQ_HEX,
@@ -594,6 +604,9 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.cp_rtos_audit.u2_closed)
         self.assertTrue(rep_ok.cp_rtos_audit.p8_cp_mutation_forbidden)
         self.assertEqual(rep_ok.cp_rtos_audit.cp_mutation_bytes, 0)
+        self.assertTrue(rep_ok.p1_recovery_bridge_ok)
+        self.assertTrue(rep_ok.p1_recovery_bridge_audit.all_checks_passed)
+        self.assertTrue(rep_ok.p1_recovery_bridge_audit.p1_recovery_bridge_ok)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
@@ -603,6 +616,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         kdtb_base = rep_ok.kernel_dtb_audit
         sram_base = rep_ok.storage_and_ram_budget_audit
         cp_base = rep_ok.cp_rtos_audit
+        p1_bridge_base = rep_ok.p1_recovery_bridge_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -616,6 +630,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -635,6 +650,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -651,6 +667,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -668,6 +685,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
@@ -684,6 +702,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -700,6 +719,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -716,6 +736,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -732,6 +753,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
@@ -747,6 +769,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -763,6 +786,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
@@ -779,6 +803,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_kernel_dtb=True,
         )
         self.assertFalse(rep_bad_kdtb.candidate_ready)
@@ -801,6 +826,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_storage_and_ram_budget=True,
         )
         self.assertFalse(rep_bad_sram.candidate_ready)
@@ -823,6 +849,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kernel_dtb=kdtb_base,
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
             corrupt_cp_rtos=True,
         )
         self.assertFalse(rep_bad_cp.candidate_ready)
@@ -834,6 +861,29 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_cp["status"], "BLOCKED_BY_CP_RTOS_REDLINE")
+
+        rep_bad_p1_bridge = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
+            corrupt_p1_recovery_bridge=True,
+        )
+        self.assertFalse(rep_bad_p1_bridge.candidate_ready)
+        self.assertFalse(rep_bad_p1_bridge.p1_recovery_bridge_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p1_bridge.blocked_gate_ids)
+        g12_p1b = [
+            g
+            for g in rep_bad_p1_bridge.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p1b["status"], "BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE")
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -2216,6 +2266,198 @@ class TestPhase10CpRtosCompatibilityVerifier(unittest.TestCase):
         self.assertEqual(len(payload["nflasha8_artifacts"]), 9)
         self.assertTrue(payload["tomco_audit"]["runtime_memcfg_identical"])
         self.assertEqual(payload["peripheral_marker_audit"]["verified_marker_count"], 13)
+
+
+class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
+    """Phase 11: Cross-package `p1` recovery & Tier-0 bridge + BYOF SHA-256 manifest auditor."""
+
+    def test_dimension_a_tier0_and_fx3_recovery_readonly_alignment(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        dim_a = verify_tier0_fx3_recovery_alignment(repo_root=repo_root)
+        self.assertTrue(dim_a.valid, dim_a.errors)
+        self.assertEqual(dim_a.boot_unit_bytes, 131_072)
+        self.assertEqual(dim_a.boot_max_bytes, 33_423_360)
+        self.assertEqual(dim_a.boot_major_minor_b0, (252, 126))
+        self.assertEqual(dim_a.boot_major_minor_b1, (252, 127))
+        self.assertEqual(dim_a.p1_exact_bytes, 25_100_288)
+        self.assertEqual(dim_a.p1_chunk_count, 383)
+        self.assertEqual(dim_a.p1_window_counts, (128, 128, 127))
+        self.assertTrue(dim_a.devno_ko_profile_hash_matched)
+        self.assertTrue(dim_a.cnflasha1_nflasha1_symlink_contract_verified)
+        self.assertEqual(dim_a.twopass_capture_local_sha256, dim_a.assembled_p1_worker_sha256)
+        self.assertTrue(dim_a.tier0_manifest_11_items_valid)
+        self.assertTrue(dim_a.tier0_syscall_trace_valid)
+        self.assertTrue(dim_a.non_deployment_flags_aligned)
+        self.assertEqual(len(dim_a.workers_audited), 3)
+        for cw in dim_a.workers_audited:
+            self.assertTrue(cw.valid)
+            self.assertEqual(cw.chunk_bytes, 65_536)
+            self.assertTrue(cw.rd_is_strictly_readonly)
+            self.assertTrue(cw.rd_carries_nofollow_and_cloexec)
+            self.assertTrue(cw.wr_carries_creat_excl_no_trunc)
+            self.assertTrue(cw.kstat_128b_assert_present)
+
+        # Fail-closed anomaly 1: Tier-0 / fx3_recovery p1 size mismatch
+        bad_size = verify_tier0_fx3_recovery_alignment(
+            repo_root=repo_root,
+            inject_tier0_size_mismatch=True,
+        )
+        self.assertFalse(bad_size.valid)
+        self.assertFalse(bad_size.tier0_manifest_11_items_valid)
+
+        # Fail-closed anomaly 2: Source write flag on /dev/cnflasha1 rejected by Tier-0 syscall auditor
+        bad_flag = verify_tier0_fx3_recovery_alignment(
+            repo_root=repo_root,
+            inject_worker_write_flag=True,
+        )
+        self.assertFalse(bad_flag.valid)
+        self.assertFalse(bad_flag.tier0_syscall_trace_valid)
+
+        # Fail-closed anomaly 3: C worker source carrying O_RDWR (0x2) or O_TRUNC (0x200) rejected
+        with tempfile.TemporaryDirectory(prefix="bad_c_worker_") as tmp_s:
+            bad_c = Path(tmp_s) / "bad_worker.c"
+            bad_c.write_text(
+                "enum { AT_FDCWD = -100, RD = 0xA0002, NEW = 0xA02C1, BLOCK = 65536 };\n"
+                "int check_kstat[sizeof(struct kstat) == 128 ? 1 : -1];\n",
+                encoding="utf-8",
+            )
+            bad_c_audit = audit_worker_c_source_posture(
+                "bad_worker",
+                bad_c,
+                rd_const_name="RD",
+                wr_const_name="NEW",
+                chunk_const_name="BLOCK",
+                repo_root=Path(tmp_s),
+            )
+            self.assertFalse(bad_c_audit.valid)
+            self.assertFalse(bad_c_audit.rd_is_strictly_readonly)
+            self.assertFalse(bad_c_audit.wr_carries_creat_excl_no_trunc)
+
+    def test_dimension_b_fx6_p1_vfat_squashfs_checksum_and_u5_sticky_free_exit(self) -> None:
+        dim_b = verify_p1_container_and_u5_handoff()
+        self.assertTrue(dim_b.valid, dim_b.errors)
+        self.assertEqual(dim_b.fat_sector_bytes, 512)
+        self.assertEqual(dim_b.fat_cluster_sectors, 32)
+        self.assertEqual(dim_b.fat_clusters, 1015)
+        self.assertTrue(dim_b.p1chksum_md5_verified)
+        self.assertTrue(dim_b.dtb_matches_fx3_canonical)
+        self.assertTrue(dim_b.loadaddr_matches_fx3_canonical)
+        self.assertEqual(dim_b.squashfs_inodes, 342)
+        self.assertEqual(dim_b.squashfs_fragments, 45)
+        self.assertEqual(dim_b.squashfs_block_size, 131_072)
+        self.assertTrue(dim_b.iamupdater_marker_present)
+        self.assertTrue(dim_b.fx3_profile_rejected_on_fx6_p1)
+        self.assertTrue(dim_b.shared_updatercorecommon_matched)
+        self.assertTrue(dim_b.common_src_matched_u5)
+        self.assertTrue(dim_b.up_sh_matched_u5)
+        self.assertTrue(dim_b.ud_send_lsi_matched_u5)
+        self.assertTrue(dim_b.setup_nflash_symlink_script_verified)
+        self.assertTrue(dim_b.teardown_scripts_verified)
+        self.assertEqual(dim_b.ud_send_lsi_mode0_main_case.return_value, 0)
+        self.assertEqual(dim_b.ud_send_lsi_mode0_main_case.emitted_payload_hex, "00000000")
+        self.assertTrue(dim_b.partial_mode_only_sticky_detected)
+        self.assertTrue(dim_b.partial_lsi_only_sticky_detected)
+        self.assertTrue(dim_b.full_two_step_bank0_handoff.valid)
+        self.assertFalse(dim_b.full_two_step_bank0_handoff.sticky_updater_risk)
+
+        # Fail-closed anomaly 1: Corrupted /p1chksum rejected by fx3_recovery.engine.checksum_pair
+        bad_chk = verify_p1_container_and_u5_handoff(tamper_p1_checksum=True)
+        self.assertFalse(bad_chk.valid)
+        self.assertFalse(bad_chk.p1chksum_md5_verified)
+
+        # Fail-closed anomaly 2: Incomplete U5 teardown (sticky mode file left behind) rejected
+        bad_u5 = verify_p1_container_and_u5_handoff(incomplete_u5_teardown=True)
+        self.assertFalse(bad_u5.valid)
+        self.assertTrue(bad_u5.full_two_step_bank0_handoff.sticky_updater_risk)
+
+    def test_cli_verify_p1_recovery_bridge_subcommand(self) -> None:
+        rep = run_p1_recovery_bridge_verification()
+        self.assertTrue(rep.all_checks_passed, rep.errors)
+        self.assertTrue(rep.p1_recovery_bridge_ok)
+        self.assertTrue(rep.tier0_alignment.valid)
+        self.assertTrue(rep.p1_container_and_u5_handoff.valid)
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-p1-recovery-bridge"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["p1_recovery_bridge_ok"])
+        self.assertTrue(payload["tier0_alignment"]["valid"])
+        self.assertTrue(payload["p1_container_and_u5_handoff"]["valid"])
+
+    def test_phase11_byof_manifest_verifier_live_clean_room_and_tamper_detection(self) -> None:
+        import importlib.util
+        import sys as _sys
+
+        repo_root = Path(__file__).resolve().parents[3]
+        script_path = repo_root / "scripts" / "verify_byof_manifest.py"
+        spec = importlib.util.spec_from_file_location("verify_byof_manifest", script_path)
+        self.assertIsNotNone(spec)
+        assert spec is not None and spec.loader is not None
+        byof_mod = importlib.util.module_from_spec(spec)
+        _sys.modules["verify_byof_manifest"] = byof_mod
+        spec.loader.exec_module(byof_mod)
+
+        # 1. Clean-room clone simulation (zero Sony firmware required) -> CLEAN_ROOM_SCHEMA_VERIFIED (rc=0)
+        clean_rep = byof_mod.verify_byof_manifest(
+            repo_root=repo_root,
+            simulate_clean_clone=True,
+        )
+        self.assertTrue(clean_rep.all_checks_passed, clean_rep.errors)
+        self.assertEqual(clean_rep.verification_mode, "CLEAN_ROOM_SCHEMA_VERIFIED")
+        self.assertEqual(clean_rep.en_entry_count, 43)
+        self.assertEqual(clean_rep.zh_entry_count, 43)
+        self.assertTrue(clean_rep.en_zh_parity_ok)
+        self.assertTrue(clean_rep.code_constants_ok)
+        self.assertGreaterEqual(clean_rep.code_constants_checked, 30)
+        self.assertTrue(clean_rep.zero_stage_reference_ok)
+
+        # 2. Live donor verification when local donor tree exists on workstation
+        live_rep = byof_mod.verify_byof_manifest(repo_root=repo_root)
+        self.assertTrue(live_rep.all_checks_passed, live_rep.errors)
+        if live_rep.donor_root_present:
+            self.assertEqual(live_rep.verification_mode, "LOCAL_DONOR_VERIFIED")
+            self.assertEqual(live_rep.live_donor_files_verified, 40)
+
+        # 3. Fail-closed detection on tampered BYOF markdown (EN/ZH drift, bad hex, stage* leak)
+        good_md = (repo_root / "docs" / "BYOF-REPRODUCTION.md").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory(prefix="byof_manifest_test_") as tmp_s:
+            tmp_dir = Path(tmp_s)
+
+            # 3a. Corrupt only the first occurrence of libfan.so SHA-256 -> EN/ZH mismatch + constant drift
+            drift_md = good_md.replace(
+                "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+                "0" * 64,
+                1,
+            )
+            drift_doc = tmp_dir / "drift.md"
+            drift_doc.write_text(drift_md, encoding="utf-8")
+            drift_rep = byof_mod.verify_byof_manifest(
+                doc_path=drift_doc,
+                repo_root=repo_root,
+                simulate_clean_clone=True,
+            )
+            self.assertFalse(drift_rep.all_checks_passed)
+            self.assertFalse(drift_rep.en_zh_parity_ok)
+            self.assertFalse(drift_rep.code_constants_ok)
+
+            # 3b. Inject invalid SHA-256 syntax & forbidden `stage47` reference -> rejected!
+            bad_syntax_md = good_md.replace(
+                "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+                "NOT_A_VALID_SHA256",
+            ) + "\nForbidden reference: stage47-leak\n"
+            bad_doc = tmp_dir / "bad.md"
+            bad_doc.write_text(bad_syntax_md, encoding="utf-8")
+            bad_rep = byof_mod.verify_byof_manifest(
+                doc_path=bad_doc,
+                repo_root=repo_root,
+                simulate_clean_clone=True,
+            )
+            self.assertFalse(bad_rep.all_checks_passed)
+            self.assertFalse(bad_rep.zero_stage_reference_ok)
 
 
 if __name__ == "__main__":

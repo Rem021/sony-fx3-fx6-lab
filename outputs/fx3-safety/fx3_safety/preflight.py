@@ -495,6 +495,7 @@ def evaluate_12_safety_gates(
     storage_and_ram_budget_ok: Optional[bool] = None,
     cp_rtos_ok: Optional[bool] = None,
     p1_recovery_bridge_ok: Optional[bool] = None,
+    stage_a_orchestrator_ok: Optional[bool] = None,
 ) -> Dict[str, object]:
     """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository and candidate evidence."""
     repo_root = repo_root.resolve()
@@ -644,6 +645,7 @@ def evaluate_12_safety_gates(
         and (storage_and_ram_budget_ok is not False)
         and (cp_rtos_ok is not False)
         and (p1_recovery_bridge_ok is not False)
+        and (stage_a_orchestrator_ok is not False)
     ):
         g12_status = "VERIFIED_OFFLINE_CANDIDATE_DRY_RUN"
     elif backup_mount_tolerance_ok is False:
@@ -658,6 +660,8 @@ def evaluate_12_safety_gates(
         g12_status = "BLOCKED_BY_CP_RTOS_REDLINE"
     elif p1_recovery_bridge_ok is False:
         g12_status = "BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE"
+    elif stage_a_orchestrator_ok is False:
+        g12_status = "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE"
     else:
         g12_status = "BLOCKED_BY_SAFETY_REDLINE"
 
@@ -720,7 +724,7 @@ def evaluate_12_safety_gates(
         {
             "gate_id": "G12_persistent_flash_write_authorization",
             "status": g12_status,
-            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup), U4/RAM-shadow BK4, U5/U3 boot-selector & 0xfa0080 bank maps, cxd90057.dtb / .ko vermagic+CRC, 30-partition zero-repartition / p15 / DDR+tmpfs RAM-overlay budget, U2 CP RTOS (cpapp-b.bin / tomco.txt stock-CP redline), and Phase 11 p1 recovery <-> Tier-0 bridge contracts are verified.",
+            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup), U4/RAM-shadow BK4, U5/U3 boot-selector & 0xfa0080 bank maps, cxd90057.dtb / .ko vermagic+CRC, 30-partition zero-repartition / p15 / DDR+tmpfs RAM-overlay budget, U2 CP RTOS (cpapp-b.bin / tomco.txt stock-CP redline), Phase 11 p1 recovery <-> Tier-0 bridge, and Phase 12 nflasha3-initrd / WBI (p5) hibernation redline & atomic Stage-A boot orchestrator contracts are verified.",
         },
     ]
 
@@ -737,6 +741,7 @@ def evaluate_12_safety_gates(
         "storage_and_ram_budget_ok": storage_and_ram_budget_ok,
         "cp_rtos_ok": cp_rtos_ok,
         "p1_recovery_bridge_ok": p1_recovery_bridge_ok,
+        "stage_a_orchestrator_ok": stage_a_orchestrator_ok,
         "summary": {
             "total_gates": len(gates),
             "verified_gates": verified_count,

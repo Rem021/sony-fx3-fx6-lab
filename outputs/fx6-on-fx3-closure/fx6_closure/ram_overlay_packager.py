@@ -63,6 +63,7 @@ DETERMINISTIC_BASE_INO = 300000
 REQUIRED_STAGE_A_OVERLAY_PATHS: Tuple[str, ...] = (
     "etc",
     "etc/fx6_overlay",
+    "etc/fx6_overlay/30-stage-a-orchestrator.sh",
     "etc/fx6_overlay/setup_fx6_compat.sh",
     "etc/fx6_overlay/init2_guard.sh",
     "etc/fx6_overlay/overlay_manifest.json",
@@ -132,6 +133,7 @@ class StageARamOverlayBundle:
     failsafe_hook_audit: FailsafeHookAudit
     setup_compat_script: str
     init2_guard_script: str
+    stage_a_orchestrator_script: str
     overlay_manifest: Dict[str, object]
     staged_runtime_blobs: Dict[str, bytes]
     temp_dir_cleaned: bool
@@ -945,10 +947,14 @@ def build_stage_a_ram_overlay_package(
         )
         rollback_summary_sha256 = hashlib.sha256(rollback_digest_src.encode("utf-8")).hexdigest()
 
+        from .stage_a_boot_orchestrator import generate_stage_a_boot_orchestrator_script
+
         overlay_manifest: Dict[str, object] = {
             "schema": "fx6-on-fx3-stage-a-ram-overlay-manifest-v1",
             "stage": "Stage-A Zero-Flash-Write Non-Persistent RAM Overlay",
             "persistent_flash_writes": 0,
+            "wbi_p5_write_and_hibernation_forbidden": True,
+            "wbi_mutation_bytes": 0,
             "matrix_item_count": len(matrix_10_items),
             "verified_matrix_ids": [m["matrix_id"] for m in matrix_10_items],
             "rollback_summary": {
@@ -963,6 +969,7 @@ def build_stage_a_ram_overlay_package(
 
         setup_compat_text = generate_stage_a_setup_compat_script()
         init2_guard_text = generate_stage_a_init2_guard_script()
+        orchestrator_text = generate_stage_a_boot_orchestrator_script()
         manifest_text = json.dumps(overlay_manifest, indent=2) + "\n"
 
         # Verify init2_guard.sh strictly against fx3_safety.preflight.verify_failsafe_hook_script
@@ -970,6 +977,7 @@ def build_stage_a_ram_overlay_package(
         if not hook_audit.valid:
             raise RuntimeError(f"Stage-A init2_guard.sh failed safety contract audit: {hook_audit.errors}")
 
+        (overlay_root / "30-stage-a-orchestrator.sh").write_text(orchestrator_text, encoding="utf-8")
         (overlay_root / "setup_fx6_compat.sh").write_text(setup_compat_text, encoding="utf-8")
         (overlay_root / "init2_guard.sh").write_text(init2_guard_text, encoding="utf-8")
         (overlay_root / "overlay_manifest.json").write_text(manifest_text, encoding="utf-8")
@@ -977,6 +985,11 @@ def build_stage_a_ram_overlay_package(
         cpio_entries = [
             CpioEntrySpec(name="etc", mode=S_IFDIR | 0o755),
             CpioEntrySpec(name="etc/fx6_overlay", mode=S_IFDIR | 0o755),
+            CpioEntrySpec(
+                name="etc/fx6_overlay/30-stage-a-orchestrator.sh",
+                mode=S_IFREG | 0o755,
+                data=(overlay_root / "30-stage-a-orchestrator.sh").read_bytes(),
+            ),
             CpioEntrySpec(
                 name="etc/fx6_overlay/setup_fx6_compat.sh",
                 mode=S_IFREG | 0o755,
@@ -1010,6 +1023,7 @@ def build_stage_a_ram_overlay_package(
         failsafe_hook_audit=hook_audit,
         setup_compat_script=setup_compat_text,
         init2_guard_script=init2_guard_text,
+        stage_a_orchestrator_script=orchestrator_text,
         overlay_manifest=overlay_manifest,
         staged_runtime_blobs=staged_blobs,
         temp_dir_cleaned=temp_cleaned,

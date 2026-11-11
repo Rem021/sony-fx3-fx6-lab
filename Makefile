@@ -3,7 +3,7 @@ PYTHON ?= /usr/bin/python3
 PYFLAGS := -B
 CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx6-on-fx3-closure
 
-.PHONY: all test test-json dry-run clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-byof
+.PHONY: all test test-json dry-run clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-byof
 
 all: test
 
@@ -21,6 +21,9 @@ verify-storage-ram-budget:
 
 verify-p1-recovery-bridge:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-p1-recovery-bridge
+
+verify-stage-a-orchestrator:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-stage-a-orchestrator
 
 verify-byof:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) $(PYFLAGS) scripts/verify_byof_manifest.py

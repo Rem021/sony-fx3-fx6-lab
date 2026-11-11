@@ -86,6 +86,14 @@ CANONICAL_DONOR_RELPATHS: Dict[Tuple[str, str], str] = {
     ("1.2", "usr/bin/ud_send_lsi.elf (p1-initrd)"): "FX6-donor-assessment-20261103/team/donor/nested-files/nflasha1-initrd/usr/bin/ud_send_lsi.elf",
     ("1.2", "0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"): "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin",
     ("1.2", "usr/lib/libgrm.so"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libgrm.so",
+    ("1.2", "nflasha3-initrd/sbin/init"): "FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/sbin/init",
+    ("1.2", "nflasha3-initrd/sbin/init2"): "FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/sbin/init2",
+    ("1.2", "nflasha3-initrd/sbin/initrc/insmod_drv1"): "FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/sbin/initrc/insmod_drv1",
+    ("1.2", "nflasha3-initrd/sbin/initrc/insmod_drv2"): "FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/sbin/initrc/insmod_drv2",
+    ("1.2", "usr/bin/bootin.elf (p15)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/bootin.elf",
+    ("1.2", "usr/bin/im.elf (p15)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
+    ("1.2", "bin/ud_wbi_drop.elf (updater)"): "FX6-donor-assessment-20261103/team/donor/nested-files/updater.img/bin/ud_wbi_drop.elf",
+    ("1.2", "0800_appli/setting/kemco.txt"): "FX6-donor-assessment-20261103/team/donor/tree/0800_appli/setting/kemco.txt",
     # Section 1.3: All 7 Phase 2 Binary Adaptation Donors
     ("1.3", "usr/lib/libInfraSetupFile.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraSetupFile.so",
     ("1.3", "usr/lib/libInfraMediaCommon.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraMediaCommon.so",
@@ -105,11 +113,20 @@ REQUIRED_ENTRY_KEYS: Tuple[Tuple[str, str], ...] = (
     ("1.1", "FX3-CX95900_ALLLANG-Backup.bin"),
     ("1.1", "usr/kmod/upm.ko"),
     ("1.2", "0400_updater/dev/nflasha1"),
+    ("1.2", "0700_part_image/dev/nflasha5"),
     ("1.2", "nflasha8/tomco.txt"),
     ("1.2", "nflasha8/cpapp-b.bin"),
     ("1.2", "usr/bin/ud_send_lsi.elf (p15)"),
     ("1.2", "usr/bin/ud_send_lsi.elf (p1-initrd)"),
     ("1.2", "0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"),
+    ("1.2", "nflasha3-initrd/sbin/init"),
+    ("1.2", "nflasha3-initrd/sbin/init2"),
+    ("1.2", "nflasha3-initrd/sbin/initrc/insmod_drv1"),
+    ("1.2", "nflasha3-initrd/sbin/initrc/insmod_drv2"),
+    ("1.2", "usr/bin/bootin.elf (p15)"),
+    ("1.2", "usr/bin/im.elf (p15)"),
+    ("1.2", "bin/ud_wbi_drop.elf (updater)"),
+    ("1.2", "0800_appli/setting/kemco.txt"),
     ("1.3", "usr/lib/libInfraSetupFile.so (FX6 6.01)"),
     ("1.3", "usr/lib/libInfraMediaCommon.so (FX6 6.01)"),
     ("1.3", "usr/lib/libInfraMediaConfig.so (FX6 6.01)"),
@@ -274,6 +291,7 @@ def _load_expected_code_constants(repo_root: Path) -> Tuple[Dict[Tuple[str, str]
         kernel_dtb_compatibility_verifier,
         p1_recovery_bridge_verifier,
         patcher,
+        stage_a_boot_orchestrator,
         storage_and_ram_budget_verifier,
     )
 
@@ -418,6 +436,31 @@ def _load_expected_code_constants(repo_root: Path) -> Tuple[Dict[Tuple[str, str]
         fx6_tomco_sha,
         "fx6_closure.cp_rtos_compatibility_verifier.EXPECTED_FX6_NFLASHA8_ARTIFACTS[tomco.txt]",
     )
+
+    # 3b. Phase 12 `stage_a_boot_orchestrator` pinned `nflasha3-initrd`, `p15`, and WBI (`p5`) digests
+    expected[("1.2", "0700_part_image/dev/nflasha5")] = (
+        stage_a_boot_orchestrator.PINNED_FX6_WBI_NFLASH5_BYTES,
+        stage_a_boot_orchestrator.PINNED_FX6_WBI_NFLASH5_SHA256,
+        "fx6_closure.stage_a_boot_orchestrator.PINNED_FX6_WBI_NFLASH5",
+    )
+    initrd_map = {aid: (sz, sha) for aid, _rel, sz, sha in stage_a_boot_orchestrator.PINNED_INITRD_AND_BOOT_ARTIFACTS}
+    phase12_byof_map = {
+        "nflasha3-initrd/sbin/init": "fx6_initrd_sbin_init",
+        "nflasha3-initrd/sbin/init2": "fx6_initrd_sbin_init2",
+        "nflasha3-initrd/sbin/initrc/insmod_drv1": "fx6_initrd_insmod_drv1",
+        "nflasha3-initrd/sbin/initrc/insmod_drv2": "fx6_initrd_insmod_drv2",
+        "usr/bin/bootin.elf (p15)": "fx6_p15_bootin_elf",
+        "usr/bin/im.elf (p15)": "fx6_p15_im_elf",
+        "bin/ud_wbi_drop.elf (updater)": "fx6_updater_ud_wbi_drop_elf",
+        "0800_appli/setting/kemco.txt": "fx6_appli_setting_kemco_txt",
+    }
+    for doc_lbl, aid in phase12_byof_map.items():
+        sz, sha = initrd_map[aid]
+        expected[("1.2", doc_lbl)] = (
+            sz,
+            sha,
+            f"fx6_closure.stage_a_boot_orchestrator.PINNED_INITRD_AND_BOOT_ARTIFACTS[{aid}]",
+        )
 
     # 4. Tracked JSON manifest cross-check for FX3 `nflasha3/vmlinux.bin`
     vm_manifest_path = repo_root / "outputs" / "fx3-vm-trial" / "vm-candidate-gpecap25-live700.json"

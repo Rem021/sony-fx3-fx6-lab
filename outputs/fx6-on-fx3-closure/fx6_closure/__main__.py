@@ -291,6 +291,35 @@ def _cmd_verify_p1_recovery_bridge(repo_root: Path) -> int:
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_stage_a_orchestrator(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
+    from .stage_a_boot_orchestrator import run_stage_a_boot_orchestrator_verification
+
+    rep = run_stage_a_boot_orchestrator_verification(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+    )
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "stage_a_orchestrator_ok": rep.stage_a_orchestrator_ok,
+        "wbi_p5_write_and_hibernation_forbidden": rep.wbi_p5_write_and_hibernation_forbidden,
+        "wbi_mutation_bytes": rep.wbi_mutation_bytes,
+        "orchestrator_script_sha256": rep.orchestrator_script_sha256,
+        "orchestrator_script_bytes": rep.orchestrator_script_bytes,
+        "dimension_a_boot_chain_and_wbi": asdict(rep.dimension_a_boot_chain_and_wbi),
+        "candidate_wbi_redline": asdict(rep.candidate_wbi_redline),
+        "scenario_count": rep.scenario_count,
+        "total_sandbox_runs": rep.total_sandbox_runs,
+        "total_emmc_writes": rep.total_emmc_writes,
+        "total_wbi_writes": rep.total_wbi_writes,
+        "total_lingering_mounts": rep.total_lingering_mounts,
+        "scenarios": [asdict(s) for s in rep.scenarios],
+        "errors": list(rep.errors),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -328,6 +357,10 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "p8_cp_mutation_forbidden": rep.cp_rtos_audit.p8_cp_mutation_forbidden,
         "cp_mutation_bytes": rep.cp_rtos_audit.cp_mutation_bytes,
         "p1_recovery_bridge_ok": rep.p1_recovery_bridge_ok,
+        "stage_a_orchestrator_ok": rep.stage_a_orchestrator_ok,
+        "wbi_p5_write_and_hibernation_forbidden": rep.stage_a_orchestrator_audit.wbi_p5_write_and_hibernation_forbidden,
+        "wbi_mutation_bytes": rep.stage_a_orchestrator_audit.wbi_mutation_bytes,
+        "stage_a_orchestrator_scenarios_passed": rep.stage_a_orchestrator_audit.scenario_count,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -345,7 +378,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 11 Compatibility Closure, U1-U5 Blueprint Closure & Cross-Package p1 Recovery Bridge CLI",
+        description="FX6-on-FX3 Phase 12 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge & Atomic Stage-A Boot Orchestrator CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -360,7 +393,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-storage-ram-budget", "Verify 30-partition zero-repartition mapping, edisx redline, p15 /usr budget, and Linux DDR/tmpfs RAM-overlay budget"),
         ("verify-cp-rtos", "Verify U2 CP RTOS (cpapp-b.bin / nflasha8 & tomco.txt) compatibility and Stage-A stock-CP redline"),
         ("verify-p1-recovery-bridge", "Verify Phase 11 cross-package p1 recovery <-> Tier-0 capture alignment and U5 Bank 0 exit handoff"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A CPIO candidate and evaluate 12 safety gates"),
+        ("verify-stage-a-orchestrator", "Verify Phase 12 nflasha3-initrd startup chain, WBI (p5) hibernation safety redline, and 6-scenario atomic Stage-A boot orchestrator"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A Orchestrator CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -394,6 +428,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_cp_rtos()
     if args.cmd == "verify-p1-recovery-bridge":
         return _cmd_verify_p1_recovery_bridge(args.repo_root)
+    if args.cmd == "verify-stage-a-orchestrator":
+        return _cmd_verify_stage_a_orchestrator(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

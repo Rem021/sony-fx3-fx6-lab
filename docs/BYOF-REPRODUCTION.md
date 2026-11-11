@@ -57,6 +57,14 @@ To comply with copyright laws and GitHub file size limits, **no proprietary Sony
 | `usr/bin/ud_send_lsi.elf` (`p1-initrd`) | `10,248` | `9fb4bd02b3434bd9fe8fb49fcf4359f7720b292506960ae0d9894332d3453c80` | FX6 `p1` initrd `/usr/bin/ud_send_lsi.elf` (`U5` mode `0` sticky-free exit helper) |
 | `0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin` | `2,253,333` | `e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e` | FX6 factory Bk4 (`CX95898`) NTSC Backup template (`7,077` keys; `P7` / Track 1B seed) |
 | `usr/lib/libgrm.so` | `265,376` | `0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b` | FX6 GRM graphics resource manager library |
+| `nflasha3-initrd/sbin/init` | `735` | `c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e` | FX6 `nflasha3-initrd` Stage-1 bootstrap (`insmod_drv1` -> `setup_nflash` -> `/sbin/init2`) |
+| `nflasha3-initrd/sbin/init2` | `1,658` | `45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb` | FX6 `nflasha3-initrd` Stage-2 userland init (`fstab` -> `insmod_drv2` -> `bootin.elf` -> `im.elf`) |
+| `nflasha3-initrd/sbin/initrc/insmod_drv1` | `152` | `22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591` | FX6 early 4-module eMMC storage loader (`devno.ko` -> `dma330.ko` -> `crypt-emmc.ko` -> `emmc.ko`) |
+| `nflasha3-initrd/sbin/initrc/insmod_drv2` | `1,298` | `19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e` | FX6 39-module `/usr/kmod/*.ko` loader (`/usr/kmod/upm.ko` at 1-based slot `#24`) |
+| `usr/bin/bootin.elf` (`p15`) | `23,960` | `72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6` | FX6 `/usr/bin/bootin.elf` early boot handoff daemon (`p15`) |
+| `usr/bin/im.elf` (`p15`) | `40,920` | `87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec` | FX6 `/usr/bin/im.elf` primary process manager & `appFw.so` supervisor (`p15`) |
+| `bin/ud_wbi_drop.elf` (`updater`) | `10,304` | `4cfc8f979a4289915e2a3db6cd7e96bb97b35645149977619c04b0d9c5fbc7b3` | FX6 updater WBI header invalidator (`"invl"` sector-0 overwrite on `/dev/nflasha5`; forbidden in Stage-A) |
+| `0800_appli/setting/kemco.txt` | `1,788` | `6a609ee6b96c2ed0db47e9056ca67dfd8d419f9445302dacf09c262eace3b4fc` | FX6 kernel cmdline template (`warm.mode=2`, `wbimem=0x01919000@0x410524000` `+13.47 MiB` vs FX3) |
 
 ### 1.3 Phase 2 Binary Adaptation Donor Inputs (`P1` / `P3` / `P4` / `P8` / `P9` / `Fan`)
 
@@ -108,6 +116,7 @@ All 7 donor binaries modified purely in RAM / temporary directories by `outputs/
   make test
   make dry-run
   make verify-storage-ram-budget
+  make verify-stage-a-orchestrator
   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx6-on-fx3-closure" \
     /usr/bin/python3 -B -m fx6_closure verify-p1-recovery-bridge
   ```
@@ -189,6 +198,14 @@ make verify-byof
 | `usr/bin/ud_send_lsi.elf` (`p1-initrd`) | `10,248` | `9fb4bd02b3434bd9fe8fb49fcf4359f7720b292506960ae0d9894332d3453c80` | FX6 `p1` initrd `/usr/bin/ud_send_lsi.elf`（`U5` `mode 0` 无粘滞退出助手） |
 | `0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin` | `2,253,333` | `e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e` | FX6 原厂 Bk4 (`CX95898`) NTSC Backup 模板（`7,077` 个键；`P7` / Track 1B 种子） |
 | `usr/lib/libgrm.so` | `265,376` | `0f9f922664ad23813fec3f2466d8f453a8741af11be9627583712b752cea9d2b` | FX6 GRM 图形资源管理库 |
+| `nflasha3-initrd/sbin/init` | `735` | `c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e` | FX6 `nflasha3-initrd` 一阶段引导脚本（`insmod_drv1` -> `setup_nflash` -> `/sbin/init2`） |
+| `nflasha3-initrd/sbin/init2` | `1,658` | `45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb` | FX6 `nflasha3-initrd` 二阶段用户态引导脚本（`fstab` -> `insmod_drv2` -> `bootin.elf` -> `im.elf`） |
+| `nflasha3-initrd/sbin/initrc/insmod_drv1` | `152` | `22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591` | FX6 早期 4 模块 eMMC 存储驱动加载清单（`devno.ko` -> `dma330.ko` -> `crypt-emmc.ko` -> `emmc.ko`） |
+| `nflasha3-initrd/sbin/initrc/insmod_drv2` | `1,298` | `19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e` | FX6 39 模块 `/usr/kmod/*.ko` 加载清单（`/usr/kmod/upm.ko` 位于第 `#24` 顺位） |
+| `usr/bin/bootin.elf` (`p15`) | `23,960` | `72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6` | FX6 `/usr/bin/bootin.elf` 早期引导交接守护进程（`p15`） |
+| `usr/bin/im.elf` (`p15`) | `40,920` | `87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec` | FX6 `/usr/bin/im.elf` 主进程管理器与 `appFw.so` 监管入口（`p15`） |
+| `bin/ud_wbi_drop.elf` (`updater`) | `10,304` | `4cfc8f979a4289915e2a3db6cd7e96bb97b35645149977619c04b0d9c5fbc7b3` | FX6 升级态 WBI 头部作废工具（向 `/dev/nflasha5` 0 扇区写入 `"invl"`；Stage-A 严禁调用） |
+| `0800_appli/setting/kemco.txt` | `1,788` | `6a609ee6b96c2ed0db47e9056ca67dfd8d419f9445302dacf09c262eace3b4fc` | FX6 内核启动参数模板（`warm.mode=2`，`wbimem=0x01919000@0x410524000`，较 FX3 大 `+13.47 MiB`） |
 
 ### 1.3 Phase 2 二进制适配 Donor 输入清单（7 项 — `P1` / `P3` / `P4` / `P8` / `P9` / `Fan`）
 
@@ -240,6 +257,7 @@ make verify-byof
   make test
   make dry-run
   make verify-storage-ram-budget
+  make verify-stage-a-orchestrator
   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx6-on-fx3-closure" \
     /usr/bin/python3 -B -m fx6_closure verify-p1-recovery-bridge
   ```

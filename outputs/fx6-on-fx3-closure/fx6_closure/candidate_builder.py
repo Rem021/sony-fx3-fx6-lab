@@ -97,6 +97,10 @@ from .rollback_drill import (
     RollbackDrillReport,
     run_four_layer_rollback_drill,
 )
+from .stage_a_boot_orchestrator import (
+    Phase12StageABootOrchestratorReport,
+    run_stage_a_boot_orchestrator_verification,
+)
 from .storage_and_ram_budget_verifier import (
     Phase9StorageAndRamBudgetReport,
     run_storage_and_ram_budget_verification,
@@ -160,6 +164,8 @@ class CandidateDryRunReport:
     cp_rtos_ok: bool
     p1_recovery_bridge_audit: Phase11P1RecoveryBridgeReport
     p1_recovery_bridge_ok: bool
+    stage_a_orchestrator_audit: Phase12StageABootOrchestratorReport
+    stage_a_orchestrator_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -182,6 +188,7 @@ def run_offline_candidate_dry_run(
     precomputed_storage_and_ram_budget: Optional[Phase9StorageAndRamBudgetReport] = None,
     precomputed_cp_rtos: Optional[Phase10CpRtosCompatibilityReport] = None,
     precomputed_p1_recovery_bridge: Optional[Phase11P1RecoveryBridgeReport] = None,
+    precomputed_stage_a_orchestrator: Optional[Phase12StageABootOrchestratorReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -194,6 +201,7 @@ def run_offline_candidate_dry_run(
     corrupt_storage_and_ram_budget: bool = False,
     corrupt_cp_rtos: bool = False,
     corrupt_p1_recovery_bridge: bool = False,
+    corrupt_stage_a_orchestrator: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -402,6 +410,7 @@ def run_offline_candidate_dry_run(
                 ("20-p2-opelog-mount.sh", p2_script),
                 ("setup_fx6_compat.sh", stage_a_bundle.setup_compat_script),
                 ("init2_guard.sh", failsafe_hook),
+                ("30-stage-a-orchestrator.sh", stage_a_bundle.stage_a_orchestrator_script),
             ),
             staged_binary_names=tuple(stage_a_bundle.staged_runtime_blobs.keys()),
         )
@@ -417,6 +426,7 @@ def run_offline_candidate_dry_run(
                 ("20-p2-opelog-mount.sh", p2_script),
                 ("setup_fx6_compat.sh", stage_a_bundle.setup_compat_script),
                 ("init2_guard.sh", failsafe_hook),
+                ("30-stage-a-orchestrator.sh", stage_a_bundle.stage_a_orchestrator_script),
             ),
         )
         cp_rtos_ok = cp_rtos_res.all_checks_passed and not corrupt_cp_rtos
@@ -427,6 +437,18 @@ def run_offline_candidate_dry_run(
         )
         p1_recovery_bridge_ok = (
             p1_recovery_bridge_res.all_checks_passed and not corrupt_p1_recovery_bridge
+        )
+
+        stage_a_orchestrator_res = (
+            precomputed_stage_a_orchestrator
+            or run_stage_a_boot_orchestrator_verification(
+                overlay_bundle=stage_a_bundle,
+                fx6_lib_dir=fx6_lib_dir,
+                fx3_modules_dir=fx3_modules_dir,
+            )
+        )
+        stage_a_orchestrator_ok = (
+            stage_a_orchestrator_res.all_checks_passed and not corrupt_stage_a_orchestrator
         )
 
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
@@ -471,6 +493,7 @@ def run_offline_candidate_dry_run(
             and storage_and_ram_budget_ok
             and cp_rtos_ok
             and p1_recovery_bridge_ok
+            and stage_a_orchestrator_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -488,6 +511,7 @@ def run_offline_candidate_dry_run(
             storage_and_ram_budget_ok=storage_and_ram_budget_ok,
             cp_rtos_ok=cp_rtos_ok,
             p1_recovery_bridge_ok=p1_recovery_bridge_ok,
+            stage_a_orchestrator_ok=stage_a_orchestrator_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -536,6 +560,8 @@ def run_offline_candidate_dry_run(
         cp_rtos_ok=cp_rtos_ok,
         p1_recovery_bridge_audit=p1_recovery_bridge_res,
         p1_recovery_bridge_ok=p1_recovery_bridge_ok,
+        stage_a_orchestrator_audit=stage_a_orchestrator_res,
+        stage_a_orchestrator_ok=stage_a_orchestrator_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

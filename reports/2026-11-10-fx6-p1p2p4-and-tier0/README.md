@@ -1,16 +1,16 @@
-# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、`U1..U5` 藍圖未知項全閉環、跨包 `p1` 恢復與 Tier-0 橋接核驗、BYOF SHA-256 清單同步審計（`verify-byof`）與 12 道安全門驗證報告（Phase 11）
+# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、`U1..U5` 藍圖未知項全閉環、`nflasha3-initrd` 啟動鏈與 `p5`（`/wbi`）休眠紅線、Stage-A 原子級 Verify-Before-Mount 編排器、跨包 `p1` 恢復橋接、BYOF 審計與 12 道安全門驗證報告（Phase 12）
 
 - **日期**：2026-11-10
 - **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`
 - **對接安全評估與恢復套件**：`outputs/fx3-safety/`（`verify_sector0_partition_table`、`parse_partinf_conf`、`verify_failsafe_hook_script`、`parse_bk4_record` 與 `evaluate_12_safety_gates`）及 `outputs/fx3-recovery-adapter/`（`fx3_recovery` `p1`/`boot0`/`boot1` 靜態工作器與 FAT16/SquashFS 容器核驗）
-- **統一全倉庫驗證入口**：`Makefile`、`scripts/run_all_lab_tests.py` 與 `scripts/verify_byof_manifest.py`（串聯 `fx3-recovery-adapter` 58 + `fx3-safety` 16 + `fx6-on-fx3-closure` 52 = **126 / 126** 項單測、`docs/BYOF-REPRODUCTION.md` 雙語 43+43 條目 SHA-256 同步審計與 `git status --porcelain` 二進制/`.pyc` 潔淨室審計）
-- **運行時與潔淨室約束**：全離線內存與 `tempfile.TemporaryDirectory()` 驗證；POSIX `/bin/sh` 演練全程以 `PREFIX` 隔離沙盒根目錄（絕不觸碰宿主機真實 `/dev` 或 `/tmp`）；零 QEMU 進程操作、零 USB/硬件交互、倉庫零 `.so` / `.bin` / `.img` / `.vfat` / `.ko` / `.cpio` / `.pyc` 二進制產物留存；兼容 macOS 系統 `/usr/bin/python3`（Python 3.9.6）與 Unicorn AArch64 2.1.4。
+- **統一全倉庫驗證入口**：`Makefile`、`scripts/run_all_lab_tests.py` 與 `scripts/verify_byof_manifest.py`（串聯 `fx3-recovery-adapter` 58 + `fx3-safety` 17 + `fx6-on-fx3-closure` 56 = **131 / 131** 項單測、`docs/BYOF-REPRODUCTION.md` 雙語 51+51 條目 SHA-256 同步審計與 `git status --porcelain` 二進制/`.pyc` 潔淨室審計）
+- **運行時與潔淨室約束**：全離線內存與 `tempfile.TemporaryDirectory()` 驗證；POSIX `/bin/sh` 演練全程以 `PREFIX` / `STAGE_A_PREFIX` 隔離沙盒根目錄（絕不觸碰宿主機真實 `/dev` 或 `/tmp`）；零 QEMU 進程操作、零 USB/硬件交互、倉庫零 `.so` / `.bin` / `.img` / `.vfat` / `.ko` / `.cpio` / `.pyc` 二進制產物留存；兼容 macOS 系統 `/usr/bin/python3`（Python 3.9.6）與 Unicorn AArch64 2.1.4。
 
 ---
 
 ## 1. 正式受控工程包結構與全矩陣覆蓋表
 
-全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U1..U5` 全部 5 項未知項閉環（含 Phase 6 `U4` 存儲掛載容錯 + RAM-Shadow `BK4\0`、Phase 7 `U5` 引導選擇器單次防黏連契約 + `U3` `0xfa0080` Bank 0/1 DDR 非重疊、Phase 9 `U1` 30 分區零重分區拓撲 / `edisx.elf` 紅線 / `p15` & DDR `tmpfs` 預算、Phase 10 `U2` `cpapp-b.bin` / `tomco.txt` CP RTOS 跨機型兼容與 Stage-A 原廠 CP 紅線）+ Phase 8 `cxd90057.dtb` FDT SoC 兼容與 `.ko` `vermagic` / `__versions` CRC 完整性核驗 + Phase 11 跨包 `p1` 恢復與 Tier-0 橋接核驗（Track 4 `fx3_recovery` ↔ Track 3 `fx3_safety` / `fx6_closure`）+ Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
+全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`，完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U1..U5` 全部 5 項未知項閉環（含 Phase 6 `U4` 存儲掛載容錯 + RAM-Shadow `BK4\0`、Phase 7 `U5` 引導選擇器單次防黏連契約 + `U3` `0xfa0080` Bank 0/1 DDR 非重疊、Phase 9 `U1` 30 分區零重分區拓撲 / `edisx.elf` 紅線 / `p15` & DDR `tmpfs` 預算、Phase 10 `U2` `cpapp-b.bin` / `tomco.txt` CP RTOS 跨機型兼容與 Stage-A 原廠 CP 紅線）+ Phase 8 `cxd90057.dtb` FDT SoC 兼容與 `.ko` `vermagic` / `__versions` CRC 完整性核驗 + Phase 11 跨包 `p1` 恢復與 Tier-0 橋接核驗（Track 4 `fx3_recovery` ↔ Track 3 `fx3_safety` / `fx6_closure`）+ Phase 12 `nflasha3-initrd` 啟動鏈審計、`p5`（`/wbi`）休眠安全紅線與原子級 Verify-Before-Mount Stage-A 編排器（`30-stage-a-orchestrator.sh`）+ Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
 
 | 模組路徑 | 覆蓋項 | 職責說明 |
 | --- | :---: | --- |
@@ -27,11 +27,12 @@
 | `outputs/fx6-on-fx3-closure/fx6_closure/storage_and_ram_budget_verifier.py` | **藍圖 `U1` + Phase 9 存儲/DDR 預算** | **維度 A（關閉 `U1` 零重分區路徑）**：FX3（`1,724.00 MiB`）vs FX6（`1,800.50 MiB`，`+76.50 MiB`）30 分區 `partinf.conf` / Sector-0 對比、`pformat_config.txt` 6 段 SPI NOR 審計、`edisx.elf` 重分區紅線封鎖（`sector0_mutation_bytes = 0`）與 FX6 `p15`（`/usr`，`361.24 MiB` 原始字節 vs FX3 原廠 `500.00 MiB`）精確餘量證明；**維度 B**：CXD90057 DTB `8 GiB` / `mem=2G` 扣除 7 段 `memrsv=` 後可用 Linux DDR（`1,917.62 MiB`）與 Stage-A 11 組件 `tmpfs`（`8/16 MiB` × 流式/峰值緩衝）4 KiB 頁對齊內存預算核驗。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/cp_rtos_compatibility_verifier.py` | **藍圖 `U2` + 原廠 CP 紅線** | **Phase 10 關閉 `U2`**：跨機型 `tomco.txt`（FX3 運行時 `710 B`、FX6 `nflasha8` `810 B`、FX3 更新器 `618 B`）4 段 `memcfg=` 共享內存（`1,724.00 MiB` 100% 一致）與 20 項 IPC/異常/遙測鍵審計、`nflasha8` 9 工件 SHA-256 與 `cpapp-b.bin` `@ 0x00108000` ARM32 平面啟動契約核驗、FX6 `cpapp-b.bin` 13 處外設標記（含 `Darwin` 電子 ND 與 `Mew` SDI/Genlock FPGA 8 處獨佔硬件隱患）只讀掃描，以及 **Stage-A 原廠 CP 紅線（`p8_cp_mutation_forbidden = True`, `cp_mutation_bytes = 0`）**強制執行器。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/p1_recovery_bridge_verifier.py` | **Phase 11 跨包 `p1` 恢復與 Tier-0 橋接** | **橋接 Track 4（`fx3_recovery`）與 Track 3（`fx3_safety` + `fx6_closure`）**：**維度 A** 對齊 `CANONICAL_TIER0_SOURCES` 與 `fx3_p1_reader`/`fx3_boot_reader`（Unicorn AArch64 零寫系統調用、`O_RDONLY == 0`、`boot0`/`boot1`/`p1` `/dev/nflasha1` vs `/dev/cnflasha1` FTL 語義與雙遍 SHA-256 一致性）；**維度 B** 通過 `fx3_recovery.fat` / `fx3_recovery.squash` 解析 FX6 只讀 `nflasha1`（`16,684,032 B`、`FAT16`、`boot/initrd.img` `11,223,040 B` `hsqs`、`p1chksum` 契約與 FX3 `25,100,288 B` 對齊）並閉合 `p1` -> `U5`（`ud_send_lsi.elf 0` + `/setting/updater/mode*` 清理）回退 Bank 0 冷啟動保證。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,overlay_manifest.json}`。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/stage_a_boot_orchestrator.py` | **Phase 12 `nflasha3-initrd` + `p5` 休眠紅線 + 原子編排** | **維度 A**：釘選 27 項 `nflasha3-initrd` / `p15` 啟動鏈工件 SHA-256 與早啟交接契約（`sbin/init` -> `insmod_drv1` -> `setup_nflash` -> `sbin/init2` -> `fstab` `/usr` 只讀 -> `insmod_drv2` `#24` `upm.ko` -> `setup_bis`/`setup_senser` -> `bootin.elf` -> `im.elf`），解析 FX6 `p5:/wbi` `88 B` `WBI2` 頭（`202,677,056 B`、`1,197` 節、`wbimem` `+13.47 MiB` 碰撞），強制 **Stage-A WBI 紅線（`wbi_p5_write_and_hibernation_forbidden = True`, `wbi_mutation_bytes = 0`）**；**維度 B**：合成確定性 POSIX `/bin/sh` `30-stage-a-orchestrator.sh`（`10,931 B`）並在隔離沙盒實跑 **6 大場景（10 次執行）** 驗證 Verify-Before-Mount 原子性與嚴格 LIFO 逆序回滾。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,30-stage-a-orchestrator.sh,overlay_manifest.json}`（`30,860 B`）。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/rollback_drill.py` | **四層防磚演練** | Stage-A 啟動守衛確定性狀態機與 `PREFIX` 隔離沙盒 POSIX `/bin/sh` 子進程實跑演練器（覆蓋無授權標記、單次啟動+重啟恢復、SHA-256 失配/缺失回退、超時/非零退出回退與 eMMC 零寫入核驗）。 |
 | `outputs/fx6-on-fx3-closure/native/tier0_backup_worker.c` & `tier0_unicorn_verifier.py` | **Tier-0** | 零外部 `UND` 符號、零動態重定位 AArch64 Linux 雙遍只讀備份組件與 Unicorn 系統調用審計器。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks`、`verify-kernel-dtb`、`verify-storage-ram-budget`、`verify-cp-rtos`、`verify-p1-recovery-bridge` 與 `run-rollback-drill` 子命令）。 |
-| `scripts/verify_byof_manifest.py`、`scripts/run_all_lab_tests.py` & `Makefile` | **BYOF 審計與全倉庫驗收** | 自動解析並雙向核驗 `docs/BYOF-REPRODUCTION.md`（EN 43 項 / ZH 43 項 100% 鏡像、31 項源碼常量交叉校驗、本地 BYOF `LOCAL_DONOR_VERIFIED` / 潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED` 雙模態），並統一執行 `fx3-recovery-adapter`（**58 項**）、`fx3-safety`（**16 項**）、`fx6-on-fx3-closure`（**52 項**，全倉庫合計 **126 項**）與 `git status --porcelain` 潔淨室審計。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks`、`verify-kernel-dtb`、`verify-storage-ram-budget`、`verify-cp-rtos`、`verify-p1-recovery-bridge`、`verify-stage-a-orchestrator` 與 `run-rollback-drill` 子命令）。 |
+| `scripts/verify_byof_manifest.py`、`scripts/run_all_lab_tests.py` & `Makefile` | **BYOF 審計與全倉庫驗收** | 自動解析並雙向核驗 `docs/BYOF-REPRODUCTION.md`（EN 51 項 / ZH 51 項 100% 鏡像、40 項源碼常量交叉校驗、本地 BYOF `LOCAL_DONOR_VERIFIED` / 潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED` 雙模態），並統一執行 `fx3-recovery-adapter`（**58 項**）、`fx3-safety`（**17 項**）、`fx6-on-fx3-closure`（**56 項**，全倉庫合計 **131 項**）與 `git status --porcelain` 潔淨室審計。 |
 
 ---
 
@@ -59,7 +60,7 @@
 
 ## 4. Phase 4：Stage-A 零寫閃存 RAM-Overlay CPIO `newc` 封裝與四層防磚回退演練
 
-- **確定性歸檔大小與 SHA-256**：`19,696 B`（`19696 % 4 == 0`），跨次構建 100% 重現 SHA-256：`1871c6a0832f2c750a2ad675dea65bad5cd8567f953875f7b565a47d326895f6`。
+- **確定性歸檔大小與 SHA-256（含 Phase 12 `30-stage-a-orchestrator.sh` 共 6 條目）**：`30,860 B`（`30860 % 4 == 0`），跨次構建 100% 重現 SHA-256：`6844de450aba4d5417b28fd40a88a81bba41535f91d021bb769ef8ec5dfeb0e0`。
 - **四場景沙盒 `/bin/sh` 實跑演練**：覆蓋 `S1`（未放置令牌啟動原機 FX3）、`S2`（單次令牌啟動前即刪 + 二次重啟自動回退原機）、`S3a/S3b`（SHA-256 失配 / 組件缺失回退）、`S4a/S4b`（子進程 `exit 139` / `1s` 看門狗超時回退），模擬只讀 eMMC 分區（`sector0/p2/p6/p15/p18`）全程寫入次數 **0 次**。
 
 ---
@@ -341,14 +342,14 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 
 ### 12.2 Stage-A `/tmp` (`tmpfs`) 全 11 項組件 4 KiB 頁對齊佔用與流式/峰值雙模式預算表
 
-逐一定量 Stage-A 投遞至 `/tmp` 的全部 11 項組件（`appFw.so` `50,520,424 B`、`libInfraSetupFile.so` `202,664 B`、`libInfraMediaCommon.so` `402,624 B`、`libInfraMediaConfig.so` `52,312 B`、`libInfraKikiLogGenerator.so` `27,256 B`、`libInfraAppRemoteBoard.so` `55,008 B`、`libfan.so` `31,176 B`、P9 適配版 `upm.ko` `453,896 B`、`opelog.vfat` `8 MiB` / `16 MiB`、RAM-Shadow `BK4\0` `20,588 B` 與 `19,696 B` 控制腳本 CPIO，每項均計入 `4,096 B` 頁緩存向上取整與 `512 B` `shmem_inode_info` / `dentry` 元數據）：
+逐一定量 Stage-A 投遞至 `/tmp` 的全部 11 項組件（`appFw.so` `50,520,424 B`、`libInfraSetupFile.so` `202,664 B`、`libInfraMediaCommon.so` `402,624 B`、`libInfraMediaConfig.so` `52,312 B`、`libInfraKikiLogGenerator.so` `27,256 B`、`libInfraAppRemoteBoard.so` `10,448 B`、`libfan.so` `31,176 B`、P9 適配版 `upm.ko` `453,896 B`、`opelog.vfat` `8 MiB` / `16 MiB`、RAM-Shadow `BK4\0` `20,588 B` 與 `30,860 B` 控制腳本 CPIO，每項均計入 `4,096 B` 頁緩存向上取整與 `512 B` `shmem_inode_info` / `dentry` 元數據）：
 
 | 運行場景 ID | `opelog.vfat` 規格 | 解包模式 | 常駐穩態 `tmpfs` (`Steady`) | 瞬態解包峰值 `tmpfs` (`Peak`) | 相對 `256.00 MiB` 保守紅線正餘量 | 佔 Linux 淨可用 DDR 比例 | 結論 |
 | --- | :---: | --- | ---: | ---: | --- | :---: | :---: |
-| `STAGE_A_8M_STREAMING` | `8 MiB` | 流式管道解包（`64 KiB` 窗口 + 哨兵） | `60,170,752 B` (`57.38 MiB`) | **`60,240,896 B` (`57.45 MiB`)** | **`+208,194,560 B` (`+198.55 MiB`)** | **`3.00%`** | PASS |
-| `STAGE_A_8M_PEAK_BUFFER` | `8 MiB` | CPIO 整包落 `/tmp` 後解包再刪除 | `60,170,752 B` (`57.38 MiB`) | **`120,308,736 B` (`114.73 MiB`)** | **`+148,126,720 B` (`+141.27 MiB`)** | **`5.98%`** | PASS |
-| `STAGE_A_16M_STREAMING` | `16 MiB` | 流式管道解包（`64 KiB` 窗口 + 哨兵） | `68,559,360 B` (`65.38 MiB`) | **`68,629,504 B` (`65.45 MiB`)** | **`+199,805,952 B` (`+190.55 MiB`)** | **`3.41%`** | PASS |
-| `STAGE_A_16M_PEAK_BUFFER` | `16 MiB` | CPIO 整包落 `/tmp` 後解包再刪除 | `68,559,360 B` (`65.38 MiB`) | **`137,085,952 B` (`130.73 MiB`)** | **`+131,349,504 B` (`+125.27 MiB`)** | **`6.82%`** | PASS |
+| `STAGE_A_8M_STREAMING` | `8 MiB` | 流式管道解包（`64 KiB` 窗口 + 哨兵） | `60,182,528 B` (`57.39 MiB`) | **`60,248,064 B` (`57.46 MiB`)** | **`+208,187,392 B` (`+198.54 MiB`)** | **`3.00%`** | PASS |
+| `STAGE_A_8M_PEAK_BUFFER` | `8 MiB` | CPIO 整包落 `/tmp` 後解包再刪除 | `60,182,528 B` (`57.39 MiB`) | **`120,332,288 B` (`114.76 MiB`)** | **`+148,103,168 B` (`+141.24 MiB`)** | **`5.98%`** | PASS |
+| `STAGE_A_16M_STREAMING` | `16 MiB` | 流式管道解包（`64 KiB` 窗口 + 哨兵） | `68,571,136 B` (`65.39 MiB`) | **`68,636,672 B` (`65.46 MiB`)** | **`+199,798,784 B` (`+190.54 MiB`)** | **`3.41%`** | PASS |
+| `STAGE_A_16M_PEAK_BUFFER` | `16 MiB` | CPIO 整包落 `/tmp` 後解包再刪除 | `68,571,136 B` (`65.39 MiB`) | **`137,109,504 B` (`130.76 MiB`)** | **`+131,325,952 B` (`+125.24 MiB`)** | **`6.82%`** | PASS |
 
 同時負向故障注入驗證確認：向 Stage-A 注入超額載荷（突破 `256.00 MiB` `tmpfs` 上限）、向 `p15` 注入超出 `500.00 MiB` 的膨脹清單、或嘗試解除 `edisx.elf` 禁令 / 寫入非零 `sector0_mutation_bytes` 或 `spi_nor_mutation_bytes`，均被核驗器與 `Gate G12`（`BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE`）100% 攔截。
 
@@ -406,14 +407,46 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 
 ### 14.3 BYOF 自備固件指南雙語同步與自動化清單審計器（`docs/BYOF-REPRODUCTION.md` + `scripts/verify_byof_manifest.py`）
 
-1. **雙語 `docs/BYOF-REPRODUCTION.md` 全量升級（43 + 43 條鏡像條目）**：
-   - 同步補齊全部 **7 項 Phase 2 二進制兼容適配輸入庫**（`libInfraSetupFile.so`、`libInfraMediaCommon.so`、`libInfraMediaConfig.so`、`libInfraAppRemoteBoard.so`、`appFw.so`、`libfan.so`、FX3 `upm.ko`）、FX3/FX6 雙機型 `tomco.txt`、`cpapp-b.bin`、`ud_send_lsi.elf`、`CX95898_NTSC.bin`、`FX3-CX95900_ALLLANG-Backup.bin` 與 `2.04`/`2.05` `nflasha1` 的精確字節數與 SHA-256，修正歷史 `nflasha3/vmlinux.bin`（`6,610,952 B`）與 `libgrm.so`（`265,376 B`）文檔字節數偏差，並補全 **Track 1A、Track 1B、Track 3、Track 4** 四條潔淨室復現工作流（零 `stage*` 引用）。
+1. **雙語 `docs/BYOF-REPRODUCTION.md` 全量升級（51 + 51 條鏡像條目）**：
+   - 同步補齊全部 **7 項 Phase 2 二進制兼容適配輸入庫**（`libInfraSetupFile.so`、`libInfraMediaCommon.so`、`libInfraMediaConfig.so`、`libInfraAppRemoteBoard.so`、`appFw.so`、`libfan.so`、FX3 `upm.ko`）、FX3/FX6 雙機型 `tomco.txt`、`cpapp-b.bin`、`ud_send_lsi.elf`、`CX95898_NTSC.bin`、`FX3-CX95900_ALLLANG-Backup.bin`、`2.04`/`2.05` `nflasha1`，以及 **8 項 Phase 12 `nflasha3-initrd` 早啟鏈與 `p5`（`nflasha5` WBI）工件**（`sbin/init`、`sbin/init2`、`root/etc/fstab`、`sbin/insmod_drv2`、`bin/bootin.elf`、`bin/im.elf`、`bin/ud_wbi_drop.elf`、`0700_part_image/dev/nflasha5`）的精確字節數與 SHA-256，並補全 **Track 1A、Track 1B、Track 3、Track 4** 四條潔淨室復現工作流（零 `stage*` 引用）。
 2. **`scripts/verify_byof_manifest.py` 雙模態零字節碼審計（已接入 `Makefile` `verify-byof` 與 `make test`）**：
-   - 強制核驗全部 64 位十六進制 SHA-256 語法、中英文雙表 **43 對 43** 條目 100% 鏡像一致、與 `fx6_closure`/`fx3_recovery` 內 **31 項源碼常量** 100% 對齊；本地存在 BYOF 供體目錄時實測校驗 **40 項綁定（38 個獨立大文件）** 並輸出 `LOCAL_DONOR_VERIFIED`，在無固件的純淨 Git 克隆環境下自動以退出碼 `0` 輸出 `CLEAN_ROOM_SCHEMA_VERIFIED`。
+   - 強制核驗全部 64 位十六進制 SHA-256 語法、中英文雙表 **51 對 51** 條目 100% 鏡像一致、與 `fx6_closure`/`fx3_recovery` 內 **40 項源碼常量** 100% 對齊；本地存在 BYOF 供體目錄時實測校驗 **48 項綁定（46 個獨立大文件）** 並輸出 `LOCAL_DONOR_VERIFIED`，在無固件的純淨 Git 克隆環境下自動以退出碼 `0` 輸出 `CLEAN_ROOM_SCHEMA_VERIFIED`。
 
 ---
 
-## 15. 藍圖 `U1..U5` 五大未知項全閉環總表（Blueprint Unknowns Closure Summary Table）
+## 15. Phase 12：`nflasha3-initrd` 啟動鏈審計、`p5`（`/wbi`）休眠安全紅線與 Stage-A 原子級 Verify-Before-Mount 引導編排器（`stage_a_boot_orchestrator.py`）
+
+### 15.1 維度 A：`nflasha3-initrd` → `/usr`（`p15`）→ `im.elf` 早啟契約與 27 項工件 SHA-256 釘選
+
+通過 `outputs/fx6-on-fx3-closure/fx6_closure/stage_a_boot_orchestrator.py` 只讀審計 FX6 `nested-files/nflasha3-initrd/`、`nflasha15-files/`、`0700_part_image/dev/nflasha5`、FX3 運行時 `kemco.txt`、FX3 更新器 `updater.img` 及 Sony 開源內核 `include/linux/warmboot.h` / `kernel/power/{wbi.h,wbi_raw.c}`，釘選全部 **27 項啟動鏈工件 SHA-256** 並建立精確時序契約：
+
+1. **早啟分區掛載與模塊裝載鏈（`sbin/init` → `sbin/init2` → `im.elf`）**：
+   - `sbin/init`（`735 B`，SHA-256 `c83de1ab79bd90b08a184df8cc295370db3d6ab450d99d3de400c3d9b8853da7`）掛載 `/proc`、`/sys` 與 `/tmp`（`tmpfs`），調用 `sbin/insmod_drv1`（`152 B`，SHA-256 `22f29d06...`）嚴格依序加載 4 個 initrd 基礎塊驅動：`devno.ko`（`29,576 B`）→ `dma330.ko`（`42,272 B`）→ `crypt-emmc.ko`（`15,632 B`）→ `emmc.ko`（`388,552 B`），隨後執行 `sbin/setup_nflash`（`375 B`，SHA-256 `055cb3db...`）建立 `/dev/nflasha1..30` 節點。
+   - 根文件系統分支：FX3 `kemco.txt` 含 `root=/dev/nflasha7 rootfstype=squashfs ro`（經 `setup_rootfs` `pivot_root` 切換至只讀 `p7:/rootfs`）；FX6 `kemco.txt` 含 `root=/dev/ram0 rw`（直接停留於 RAM initrd 並 `exec /sbin/init2`）。
+   - `sbin/init2`（`1,658 B`，SHA-256 `45d3b907fd7c0976f89f72bd5b057bc667a8a3e10903ba8d01be02967128816c`）依據 `root/etc/fstab`（`1,085 B`，SHA-256 `3936e650...`）將 `/usr`（`/dev/nflasha15`）以 **`ext2 ro` 只讀模式**掛載（同時確認 `/dev/nflasha5` / `/wbi` **完全不在 `fstab` 與 `fstab.ext` 中**），掛載 `/tmp_wbshd`（`tmpfs`），調用 `sbin/insmod_drv2`（`1,298 B`，SHA-256 `19757bdd...`）按固定順序加載 **39 個 `/usr/kmod/*.ko` 模塊**（其中 `/usr/kmod/upm.ko` 精確位於 1-based 第 **`#24` 槽位**，緊隨 `#23` `kikilog.ko` 之後），繼而執行 `setup_bis || setup_senser`，後台拉起 `/usr/bin/bootin.elf &`（`23,960 B`，SHA-256 `72480247...`），最終移交 `/usr/bin/im.elf`（`40,920 B`，SHA-256 `87d672bd...`）。
+
+2. **`p5`（`/wbi`，`/dev/nflasha5`，`300.00 MiB`）休眠安全雙向危害證明與 Stage-A WBI 紅線**：
+   - **實測解析 FX6 `0700_part_image/dev/nflasha5` `88 B` `struct wb_header`**：鏡像大小 **`202,677,056 B`（`193.29 MiB`）**，SHA-256 `d33f0bd9c305cd9217815cd1e1a4fd86ea48b28ddbbbe6c581c8665dc5fde2d1`；頭部魔數 **`WBI2`**（`0x32494257`），包含 **`1,197` 個內存段（`sections`）**，喚醒入口 `resume_vector = 0x4004a87f0`，壓縮載荷 `r_data_bytes = 202,338,304 B`，解壓還原 `o_data_bytes = 264,376,320 B`（`252.13 MiB`）；對比 FX3 原廠 `p5`（`WBI-zero-proof.json` 證書證明前 `193.29 MiB` **非空且存有原廠有效快照**，SHA-256 `ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1`）。
+   - **危害一（Stage-A 期間觸發 WBI 快照寫入 / BIS 模式）**：若 `upm_bootmode == "BIS"`，`setup_bis`（`954 B`）將直接對 `/dev/nflasha11`（`/log`）執行 `/sbin/mkdosfs -f 1 -s 32` 格式化，且 `im.elf` 寫入 `/sys/power/state`（`disk`）將觸發內核 `wbi_raw.c`（`wb_default_device->write_sector`）向 `/dev/nflasha5` 覆寫約 `202 MiB` 數據（或由 `ud_wbi_drop.elf` 覆寫扇區 0 `"invl"`），直接違反 **`emmc_write_bytes == 0`** 並永久破壞 FX3 原廠 WBI 快照與下次冷啟動單次清除保證。
+   - **危害二（跨會話 WBI 熱啟動恢復與 `wbimem` `+13.47 MiB` 物理地址碰撞）**：FX6 `kemco.txt` 保留 `wbimem=0x01919000@0x410524000`（`25.10 MiB`）且設 `warm.mode=2`，而 FX3 僅保留 `wbimem=0x00BA0000@0x410524000`（`11.63 MiB`，**碰撞溢出 `+14,127,104 B` = `+13.47 MiB`**）；且熱恢復直接跳轉 `resume_vector` 繞過 `nflasha3-initrd` 冷啟動鏈，或將單次令牌已刪除後的過期 Stage-A RAM 頁殘留帶入下一次會話。
+   - **強制鎖定 Stage-A WBI 安全紅線**：在 `stage_a_boot_orchestrator.py`、`ram_overlay_packager.py` 與 `fx3_safety/preflight.py`（`Gate G12` → `BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE`）中雙重強制 **`wbi_p5_write_and_hibernation_forbidden = True`** 與 **`wbi_mutation_bytes == 0`**。
+
+### 15.2 維度 B：確定性 POSIX `/bin/sh` 原子級 Verify-Before-Mount 編排器（`30-stage-a-orchestrator.sh`）與 6 大沙盒場景實跑
+
+合成純 POSIX `/bin/sh` 編排腳本 `etc/fx6_overlay/30-stage-a-orchestrator.sh`（`10,931 B`，確定性 SHA-256 `bd390d0e58d4f0c574c1d69006744da0ff139d21772279d4c2191f809f3172dd`，封裝進 `30,860 B` Stage-A CPIO），並在 `tempfile.TemporaryDirectory()` 隔離沙盒中完成 **6 大場景（共 10 次真實 `/bin/sh` 子進程執行）** 驗證：
+
+| 場景 ID | 測試契約與故障注入條件 | 編排行為與實測斷言結果 | `emmc_writes` / `wbi_writes` / `lingering_mounts` | 結論 |
+| :---: | --- | --- | :---: | :---: |
+| **`S1`** | 標準單次授權啟動與正常退出（Nominal Activation & LIFO Teardown） | 首步刪除單次令牌 `/tmp/mod_arm_once` → 屏蔽 WBI 快照觸發器 → **首個 `insmod`/`mount` 前完成全部 11 項載荷 SHA-256 校驗** → P9 `upm.ko` 替換鉤子 → `p30 -> /usr/data/lut`（`ro`）+ `opelog.vfat -> /etc/opelog`（`loop,ro`）+ 7 個 `.so` 只讀綁定掛載 + RAM-Shadow `BK4\0`（共 **10 步**）→ 運行 `im.elf` → 退出時嚴格按 **`10..1` 逆序 LIFO 卸載** | `0 / 0 / 0` | PASS |
+| **`S2`** | **Verify-Before-Mount 原子性**（篡改 `appFw.so` 或 `opelog.vfat` 單字節 SHA-256） | 兩組子測試均在執行任何 `insmod` 或 `mount` **之前**精準攔截失配並乾淨回退至原廠 FX3 `im.elf`（`mount_calls == 0`，`insmod_calls == 0`） | `0 / 0 / 0` | PASS |
+| **`S3`** | **中途掛載失敗逆序回滾**（注入第 `3` 步 `opelog.vfat` 回環失敗 & 第 `9` 步 `libfan.so` 綁定失敗） | 第 `3` 步失敗時自動按 **`2 → 1`** 逆序卸載；第 `9` 步失敗時自動按 **`8 → 7 → ... → 1`** 逆序完整回滾並回退原廠 FX3 | `0 / 0 / 0` | PASS |
+| **`S4`** | **WBI（`p5` / `/dev/nflasha5`）紅線守護**（正常啟動掩碼、`BIS` 模式攔截、預掛載 RW 攔截） | 正常會話寫入 `/tmp/stage_a_wbi_inhibit` 掩碼；遇 `upm_bootmode=BIS` 或 `/dev/nflasha5` 可寫掛載時在 `0` 次掛載前立即中止 Stage-A | `0 / 0 / 0` | PASS |
+| **`S5`** | **冪等重入防護鎖**（同一會話重複調用編排器） | 檢測活動鎖 `/tmp/stage_a_orchestrator.lock` 後立即以 `REENTRY_BLOCKED_ALREADY_ACTIVE` 拒絕二次掛載（零重複 `mount`） | `0 / 0 / 0` | PASS |
+| **`S6`** | **無令牌原廠冷啟動直通**（Stock Cold-Boot Passthrough） | 無 `/tmp/mod_arm_once` 時執行 `0` 次 Stage-A 掛載與 `0` 次模塊替換，直接透傳啟動原廠 FX3 | `0 / 0 / 0` | PASS |
+
+---
+
+## 16. 藍圖 `U1..U5` 五大未知項全閉環總表（Blueprint Unknowns Closure Summary Table）
 
 | 藍圖編號 | 原始未知項定義 | 閉環核驗模組與階段 | 定量證明與強制安全紅線契約 | 閉環狀態 |
 | :---: | --- | --- | --- | :---: |
@@ -425,21 +458,21 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 
 ---
 
-## 16. 端到端候選包乾跑、12 道安全門聯調與全倉庫統一驗收結果
+## 17. 端到端候選包乾跑、12 道安全門聯調與全倉庫統一驗收結果
 
 | 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
 | --- | --- | :---: | :---: | :---: | :---: |
-| **合法完整候選包乾跑（含五大功能路由 + `U1..U5` 全閉環 + RAM-Shadow `BK4\0` + Phase 8 `cxd90057.dtb` / `.ko` 完整性 + Phase 9 30 分區零重分區 / `p15` / DDR `tmpfs` 預算 + Phase 10 CP RTOS 原廠紅線 + Phase 11 `p1` 恢復與 Tier-0 跨包橋接 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
+| **合法完整候選包乾跑（含五大功能路由 + `U1..U5` 全閉環 + RAM-Shadow `BK4\0` + Phase 8 `cxd90057.dtb` / `.ko` 完整性 + Phase 9 30 分區零重分區 / `p15` / DDR `tmpfs` 預算 + Phase 10 CP RTOS 原廠紅線 + Phase 11 `p1` 恢復與 Tier-0 跨包橋接 + Phase 12 `nflasha3-initrd` 啟動鏈 / `p5` WBI 休眠紅線 / 原子級 Stage-A 編排器 + Stage-A CPIO + 四場景回退演練）** | `P1..P9 + Fan`（10/10 全齊） | **12 / 12** | `()`（12 門全綠通過） | `True` | `False`（硬件持久寫入紅線鎖定） |
 | 缺失任一 Tier-0 備份項（`p12_cert`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
 | 系統調用軌跡注入源設備寫標誌（`O_RDWR`） | `P1..P9 + Fan` | 9 / 12 | `G10`, `G11`, `G12` | `False` | `False` |
 | 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
-| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由、`U4`/RAM-Shadow `BK4\0`、`U5`/`U3` 引導選擇器與 Bank DDR、Phase 8 `cxd90057.dtb` / `.ko` 完整性、Phase 9 存儲重分區 / `p15` / DDR `tmpfs` 預算紅線、Phase 10 CP RTOS 原廠 `p8` 保護紅線（`BLOCKED_BY_CP_RTOS_REDLINE`）或 **Phase 11 跨包 `p1` 恢復橋接紅線（`BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE`）** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
+| 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由、`U4`/RAM-Shadow `BK4\0`、`U5`/`U3` 引導選擇器與 Bank DDR、Phase 8 `cxd90057.dtb` / `.ko` 完整性、Phase 9 存儲重分區 / `p15` / DDR `tmpfs` 預算紅線、Phase 10 CP RTOS 原廠 `p8` 保護紅線（`BLOCKED_BY_CP_RTOS_REDLINE`）、Phase 11 跨包 `p1` 恢復橋接紅線（`BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE`）或 **Phase 12 Stage-A 原子編排與 `p5` WBI 休眠紅線（`BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE`）** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
 
 ### 全倉庫統一驗收測試匯總（`Makefile`、`scripts/run_all_lab_tests.py` & `scripts/verify_byof_manifest.py`）
 
 1. `outputs/fx3-recovery-adapter/tests`：**58 / 58 OK**
-2. `outputs/fx3-safety/tests`：**16 / 16 OK**
-3. `outputs/fx6-on-fx3-closure/tests`：**52 / 52 OK**（全倉庫合計 **126 / 126 OK**）
-4. BYOF 自備固件清單自動化審計（`make verify-byof` / `scripts/verify_byof_manifest.py`）：返回碼 `0`，雙語 `43 + 43` 項 SHA-256 鏡像一致、`31` 項代碼常量交叉核對通過、本地供體 `LOCAL_DONOR_VERIFIED`（潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED`）雙模態驗證通過。
-5. CLI `verify-p1-recovery-bridge`、`verify-cp-rtos`、`verify-storage-ram-budget`、`verify-kernel-dtb`、`verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`p1_recovery_bridge_ok = true`、`cp_rtos_ok = true`、`u2_closed = true`、`p8_cp_mutation_forbidden = true`、`cp_mutation_bytes = 0`、`storage_and_ram_budget_ok = true`、`edisx_repartition_forbidden = true`、`sector0_mutation_bytes = 0`、`kernel_dtb_ok = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
+2. `outputs/fx3-safety/tests`：**17 / 17 OK**
+3. `outputs/fx6-on-fx3-closure/tests`：**56 / 56 OK**（全倉庫合計 **131 / 131 OK**）
+4. BYOF 自備固件清單自動化審計（`make verify-byof` / `scripts/verify_byof_manifest.py`）：返回碼 `0`，雙語 `51 + 51` 項 SHA-256 鏡像一致、`40` 項代碼常量交叉核對通過、本地供體 `LOCAL_DONOR_VERIFIED`（`48` 項綁定 / `46` 個獨立文件；潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED`）雙模態驗證通過。
+5. CLI `verify-stage-a-orchestrator`、`verify-p1-recovery-bridge`、`verify-cp-rtos`、`verify-storage-ram-budget`、`verify-kernel-dtb`、`verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`stage_a_orchestrator_ok = true`、`wbi_p5_write_and_hibernation_forbidden = true`、`wbi_mutation_bytes = 0`、`p1_recovery_bridge_ok = true`、`cp_rtos_ok = true`、`u2_closed = true`、`p8_cp_mutation_forbidden = true`、`cp_mutation_bytes = 0`、`storage_and_ram_budget_ok = true`、`edisx_repartition_forbidden = true`、`sector0_mutation_bytes = 0`、`kernel_dtb_ok = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
 6. 工作區二進制與字節碼潔淨室核驗（`make clean-audit` / `git status --porcelain`）：零未追蹤 `.so`、`.elf`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 文件留存。

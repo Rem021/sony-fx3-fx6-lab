@@ -4,7 +4,7 @@
 [![Bilingual](https://img.shields.io/badge/Master_Doc-README.md_(EN_%2B_ZH)-1a7f37?style=flat)](./README.md)
 [![Platform](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
 [![Target](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)-orange?style=flat)](#)
-[![Tests](https://img.shields.io/badge/Automated_Tests-126%2F126_Passing_(make_test)-brightgreen?style=flat)](#4-quick-start--verification)
+[![Tests](https://img.shields.io/badge/Automated_Tests-131%2F131_Passing_(make_test)-brightgreen?style=flat)](#4-quick-start--verification)
 [![License](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
 
 > **Switch Language**: [**👉 点击切换至简体中文完整版 (`README.zh-CN.md`)**](./README.zh-CN.md) · [**Bilingual Master Overview (`README.md`)**](./README.md)
@@ -30,10 +30,10 @@
 - **Unmodified FX3 7.02 Kernel & Camera Menu (`outputs/fx3-vm/`, `outputs/fx3-vm-trial/`)**: Models CXD90057 High DDR (`0x400000000`), ESRAM mailbox (`0xfe005000`), GICD, Sony timers, SCU, GPIO Bank5, UIPC, DMM, GPE v13/v14, and software LDEC LZ77 decompression, exposing a live browser-controlled FX3 camera menu (`FX3菜单.command`, 4096-key / 60-minute budget, ~40.1s start-to-first-OSD-frame, verified across 32-key live navigation and API16 clean restoration).
 
 ### Track 3 — FX6-on-FX3 `P1..P9 + Fan` Compatibility Closure, `U1..U5` Closure & 12-Gate Anti-Brick Suite
-- **Controlled Source Packages**: [`outputs/fx6-on-fx3-closure/`](outputs/fx6-on-fx3-closure/README.md) & [`outputs/fx3-safety/`](outputs/fx3-safety/) ([Phase 11 Verification Report](reports/2026-11-10-fx6-p1p2p4-and-tier0/README.md)):
+- **Controlled Source Packages**: [`outputs/fx6-on-fx3-closure/`](outputs/fx6-on-fx3-closure/README.md) & [`outputs/fx3-safety/`](outputs/fx3-safety/) ([Phase 12 Verification Report](reports/2026-11-10-fx6-p1p2p4-and-tier0/README.md)):
   - **10/10 Binary & Protocol Matrix (`P1..P9 + Fan`)**: Deterministic ELF64 `PT_LOAD` / `ET_REL` adaptation with **100% bit-exact SHA-256 rollback** across all 7 binary targets (`libInfraSetupFile.so`, `libInfraMediaCommon.so`, `libInfraMediaConfig.so`, `libInfraAppRemoteBoard.so`, `appFw.so`, `libfan.so`, `upm.ko`), pure-Python `8/16/44.5 MiB` `opelog.vfat` synthesis (`P2`), Unicorn-verified UIPC completion synthesis on `0x92840747` (`P5`/`P6`), and dual-kernel `pcidma_transfer_async` Sync100 trampoline verification (`P7`).
   - **5-Feature Routing, FDT (`cxd90057.dtb`) & `.ko` Integrity**: 43-ELF `DT_NEEDED` dynamic symbol closure (`0` missing), 16x `33^3` `.cube` LUT budget on FX3 `48.00 MiB` `p30` (`+32.04 MiB` headroom), 100% byte-identical 68-node / 493-property `cxd90057.dtb` (`0xd00dfeed`) & 7 `kemco.txt` `memrsv=` carveouts, and `P9` `upm.ko` `vermagic` + 61-symbol `modversion_info` CRC preservation.
-  - **Zero-Repartition `p15` / DDR `tmpfs` Budgets, Stage-A CPIO & 4-Layer Rollback**: Proves `edisx_repartition_forbidden = True` (`sector0_mutation_bytes = 0`), `+138.76 MiB` raw / `+74.81 MiB` ext2-image headroom inside FX3's `500.00 MiB` `p15`, and `57.45–130.73 MiB` peak Stage-A `tmpfs` usage within a `256.00 MiB` ceiling (`3.00%–6.82%` of `1,917.62 MiB` net Linux DDR); packages deterministic SVR4 `cpio newc` (`19,696 B`) and verifies 4 sandboxed `/bin/sh` fail-safe rollback scenarios with **`0` eMMC writes**.
+  - **Zero-Repartition `p15` / DDR `tmpfs` Budgets, `nflasha3-initrd` / WBI (`p5`) Redline & Atomic Stage-A Orchestrator**: Proves `edisx_repartition_forbidden = True` (`sector0_mutation_bytes = 0`), **Stage-A WBI Hibernation Safety Redline (`wbi_p5_write_and_hibernation_forbidden = True`, `wbi_mutation_bytes = 0`)** across 27 `nflasha3-initrd` → `/usr` (`p15` `ext2 ro`) → `insmod_drv2` (`#24` `upm.ko`) → `im.elf` artifacts and FX6's `202,677,056 B` `p5` `WBI2` snapshot (`1,197` sections, `+13.47 MiB` `wbimem` collision vs FX3), `+138.76 MiB` raw / `+74.81 MiB` ext2-image headroom inside FX3's `500.00 MiB` `p15`, and `57.46–130.76 MiB` peak Stage-A `tmpfs` usage within a `256.00 MiB` ceiling (`3.00%–6.82%` of `1,917.62 MiB` net Linux DDR); packages deterministic SVR4 `cpio newc` (`30,860 B`, 6 entries including `30-stage-a-orchestrator.sh`) and verifies both 4 fail-safe rollback scenarios and **6 atomic Verify-Before-Mount + reverse LIFO teardown `/bin/sh` sandbox scenarios (10 runs)** with **`0` eMMC writes and `0` WBI writes**.
   - **All 5 Blueprint Unknowns (`U1..U5`) Closed**:
     - **`U1`**: Closed via 30-partition zero-repartition mapping (`p20 -> p30`, `p21 -> tmpfs` VFAT loopback, `p15` `500 MiB` fit) + Tier-0 read-only `/sys/block/nflasha/size` capture.
     - **`U2`**: Closed via `cp_rtos_compatibility_verifier.py` — proves 100% identical `tomco.txt` 4x `memcfg=` (`1,724.00 MiB`) & 20 IPC keys, pinpoints 8 FX6-exclusive CP hardware hazards (`Darwin` variable ND + `Mew` SDI/Genlock FPGA) in FX6 `cpapp-b.bin` (`17.12 MiB` `@ 0x00108000`), and enforces the **Stage-A Stock-CP Redline (`p8_cp_mutation_forbidden = True`, `cp_mutation_bytes = 0`)**.
@@ -62,8 +62,8 @@
 | **01 — Update Container** | `BODYDATA.DAT` (`sauu` / `sdfileinput.elf`) | Model ID (`0x91030080` vs `0x91040086`), region, and cryptographic checks execute strictly inside userland `p1` updater flows. |
 | **02 — Octal-SPI NOR Boot** | `infomisc.dat` / `DGU.bin` / `loader_nor.bin` | `pformat_config.txt` (`1,274 B`) and `LdrBkupList.txt` (`65` keys) are 100% byte-identical across FX3 7.02 and FX6 6.01 (`@ 0xFE049000`). |
 | **03 — Bank 0/1 Descriptors** | `p2:/setting/Backup.bin` (`0x00fa0080`) | 64-slot (`9,216 B`) Bank 0 (AP) & Bank 1 (CP/calibration) tables verified with 0-byte pairwise DDR overlap; Bank 0 AP load addresses are 100% identical. |
-| **04 — Kernel, FDT & CP RTOS** | `vmlinux.bin` + `cxd90057.dtb` + `cpapp-b.bin` | `cxd90057.dtb` (`16,875 B`) & `tomco.txt` 4x `memcfg=` (`1,724.00 MiB`) are 100% identical; Stage-A keeps stock FX3 kernel & stock `p8:/cpapp-b.bin` (`@ 0x00108000`). |
-| **05 — Camera Userland** | `im.elf` + `/usr/lib/appFw.so` + `UXEngine` | Stage-A mounts adapted FX6 userland from `tmpfs` RAM-Overlay (`0` eMMC writes, single-shot clear-before-exec rollback on reboot). |
+| **04 — Kernel, FDT & CP RTOS** | `vmlinux.bin` + `cxd90057.dtb` + `cpapp-b.bin` | `cxd90057.dtb` (`16,875 B`) & `tomco.txt` 4x `memcfg=` (`1,724.00 MiB`) are 100% identical; Stage-A keeps stock FX3 kernel, stock `p8:/cpapp-b.bin` (`@ 0x00108000`), and `p5:/wbi` hibernation blocked. |
+| **05 — Camera Userland** | `im.elf` + `/usr/lib/appFw.so` + `UXEngine` | `30-stage-a-orchestrator.sh` verifies all 11 digests before first mount, activates `tmpfs` RAM-Overlay (`0` eMMC/WBI writes), and tears down in strict reverse LIFO order. |
 
 ---
 
@@ -76,19 +76,19 @@ sony-fx3-fx6-lab/
 ├── README.en.md                                # Standalone English documentation (Nov 10, 2026)
 ├── README.zh-CN.md                             # Standalone Simplified Chinese documentation (Nov 10, 2026)
 ├── docs/
-│   └── BYOF-REPRODUCTION.md                    # Clean-room bilingual 43+43 entry SHA-256 firmware manifest & reproduction guide
+│   └── BYOF-REPRODUCTION.md                    # Clean-room bilingual 51+51 entry SHA-256 firmware manifest & reproduction guide
 ├── scripts/
-│   ├── run_all_lab_tests.py                    # Unified 126-test runner + BYOF manifest audit + `git status --porcelain` hygiene auditor
+│   ├── run_all_lab_tests.py                    # Unified 131-test runner + BYOF manifest audit + `git status --porcelain` hygiene auditor
 │   └── verify_byof_manifest.py                 # Bilingual BYOF SHA-256 schema, code-constant & live-donor manifest auditor
 ├── outputs/
-│   ├── fx6-on-fx3-closure/                     # Phase 11 P1..P9+Fan, U1..U5, FDT/.ko, p15/tmpfs, CP RTOS, p1 bridge & Tier-0 suite (52 tests)
+│   ├── fx6-on-fx3-closure/                     # Phase 12 P1..P9+Fan, U1..U5, initrd/WBI, Stage-A orchestrator, p1 bridge & Tier-0 (56 tests)
 │   ├── fx6-native-presenter-closure/           # Cold-boot `nop_count=0` `FX6_NATIVE_FAITHFUL=1` GPE0 glyphs & Shooting HUD closure
-│   ├── fx3-safety/                             # 12-Gate pre-flash safety evaluator, Sector-0/BK4 contracts & brick classifier (16 tests)
+│   ├── fx3-safety/                             # 12-Gate pre-flash safety evaluator, Sector-0/BK4 contracts & brick classifier (17 tests)
 │   ├── fx3-recovery-adapter/                   # FX3 Offline Recovery Adapter v0.5 & AArch64 static capture workers (58 tests)
 │   ├── fx3-vm-trial/                           # Interactive FX3 & FX6 (128-page `live700`, 22.1x C scanline packer) Web UI launchers
 │   └── fx3-vm/                                 # Minimal FX3 QEMU AArch64 research VM & High-DDR / ESRAM patches
 ├── reports/
-│   ├── 2026-11-10-fx6-p1p2p4-and-tier0/        # Master Phase 1–11 compatibility, U1..U5 closure, p1 bridge & 12-Gate verification report
+│   ├── 2026-11-10-fx6-p1p2p4-and-tier0/        # Master Phase 1–12 compatibility, U1..U5, initrd/WBI, p1 bridge & 12-Gate report
 │   ├── 2026-11-10-fx6-native-presenter-closure/# Cold-boot `nop_count=0` GPE0 foreground glyph & Shooting HUD evidence report
 │   ├── 2026-11-08-fx6-native-text-gpe0/        # 100% 128-page FX6 descriptor rendering evidence on physical GPE0
 │   └── 2026-11-03-fx6-full-system-to-fx3/      # FX6 6.01 vs FX3 7.02 full 30-partition & SPI NOR static audit
@@ -99,20 +99,21 @@ sony-fx3-fx6-lab/
 
 ## 4. Quick Start & Verification
 
-### 4.1 Run All 126 Automated Tests, BYOF Audit & Clean-Room Check (`make test` / `make verify-byof`)
+### 4.1 Run All 131 Automated Tests, BYOF Audit & Clean-Room Check (`make test` / `make verify-byof`)
 
 ```bash
-# Run all 3 suites (58 fx3-recovery-adapter + 16 fx3-safety + 52 fx6-on-fx3-closure = 126 tests) + BYOF & binary/.pyc hygiene check
+# Run all 3 suites (58 fx3-recovery-adapter + 17 fx3-safety + 56 fx6-on-fx3-closure = 131 tests) + BYOF & binary/.pyc hygiene check
 make test
 
-# Verify bilingual docs/BYOF-REPRODUCTION.md SHA-256 manifest (43 EN + 43 ZH entries + code constants + optional live donors)
+# Verify bilingual docs/BYOF-REPRODUCTION.md SHA-256 manifest (51 EN + 51 ZH entries + 40 code constants + optional live donors)
 make verify-byof
 
-# Run full offline FX6-on-FX3 candidate dry-run (P1..P9 + Fan + U1..U5 + CP RTOS + p1 Bridge + 12/12 Safety Gates)
+# Run full offline FX6-on-FX3 candidate dry-run (P1..P9 + Fan + U1..U5 + CP RTOS + p1 Bridge + Stage-A/WBI + 12/12 Safety Gates)
 make dry-run
 
-# Run standalone Phase 11 Cross-Package p1 Recovery & Tier-0 Bridge verifier
+# Run standalone Phase 11 p1 Bridge & Phase 12 nflasha3-initrd / WBI (p5) / Stage-A Atomic Orchestrator verifiers
 make verify-p1-recovery-bridge
+make verify-stage-a-orchestrator
 ```
 
 ### 4.2 Launch Interactive FX3 or FX6 Web Menu Emulators (Requires BYOF Setup)

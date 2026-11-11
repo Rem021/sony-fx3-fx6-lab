@@ -181,6 +181,29 @@ from fx6_closure.p1_recovery_bridge_verifier import (
     verify_p1_container_and_u5_handoff,
     verify_tier0_fx3_recovery_alignment,
 )
+from fx6_closure.stage_a_boot_orchestrator import (
+    EXPECTED_FX6_WBI_O_DATA_BYTES,
+    EXPECTED_FX6_WBI_R_DATA_BYTES,
+    EXPECTED_FX6_WBI_RESUME_VECTOR,
+    EXPECTED_FX6_WBI_SECTION_COUNT,
+    EXPECTED_INSMOD_DRV1_ORDER,
+    EXPECTED_INSMOD_DRV2_TOTAL_COUNT,
+    EXPECTED_INSMOD_DRV2_UPM_ONE_BASED_SLOT,
+    EXPECTED_STAGE_A_FORWARD_STEP_IDS,
+    EXPECTED_STAGE_A_LIFO_UNWIND_STEP_IDS,
+    EXPECTED_WBIMEM_COLLISION_DELTA_BYTES,
+    ORCHESTRATOR_CPIO_REL_PATH,
+    PINNED_FX3_STOCK_WBI_SHA256,
+    PINNED_FX6_WBI_NFLASH5_BYTES,
+    PINNED_FX6_WBI_NFLASH5_SHA256,
+    PINNED_INITRD_AND_BOOT_ARTIFACTS,
+    audit_initrd_boot_chain_and_wbi_contracts,
+    generate_stage_a_boot_orchestrator_script,
+    parse_wbi2_header_bytes,
+    run_stage_a_boot_orchestrator_verification,
+    simulate_orchestrator_state_machine,
+    validate_candidate_wbi_redline,
+)
 from fx6_closure.uipc_completion_verifier import (
     P5_CANONICAL_CMP_HEX,
     P5_CANONICAL_REQ_HEX,
@@ -607,6 +630,10 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.p1_recovery_bridge_ok)
         self.assertTrue(rep_ok.p1_recovery_bridge_audit.all_checks_passed)
         self.assertTrue(rep_ok.p1_recovery_bridge_audit.p1_recovery_bridge_ok)
+        self.assertTrue(rep_ok.stage_a_orchestrator_ok)
+        self.assertTrue(rep_ok.stage_a_orchestrator_audit.all_checks_passed)
+        self.assertTrue(rep_ok.stage_a_orchestrator_audit.wbi_p5_write_and_hibernation_forbidden)
+        self.assertEqual(rep_ok.stage_a_orchestrator_audit.wbi_mutation_bytes, 0)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         drill_base = rep_ok.rollback_drill
@@ -617,6 +644,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         sram_base = rep_ok.storage_and_ram_budget_audit
         cp_base = rep_ok.cp_rtos_audit
         p1_bridge_base = rep_ok.p1_recovery_bridge_audit
+        stage_a_orch_base = rep_ok.stage_a_orchestrator_audit
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -631,6 +659,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -651,6 +680,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -668,6 +698,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -686,12 +717,13 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, or CP RTOS -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, CP RTOS, P1 Bridge, or Stage-A Orchestrator -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
@@ -703,6 +735,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -720,6 +753,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -737,6 +771,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -754,6 +789,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
@@ -770,6 +806,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -787,6 +824,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
@@ -804,6 +842,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_kernel_dtb=True,
         )
         self.assertFalse(rep_bad_kdtb.candidate_ready)
@@ -827,6 +866,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_storage_and_ram_budget=True,
         )
         self.assertFalse(rep_bad_sram.candidate_ready)
@@ -850,6 +890,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_cp_rtos=True,
         )
         self.assertFalse(rep_bad_cp.candidate_ready)
@@ -873,6 +914,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_storage_and_ram_budget=sram_base,
             precomputed_cp_rtos=cp_base,
             precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
             corrupt_p1_recovery_bridge=True,
         )
         self.assertFalse(rep_bad_p1_bridge.candidate_ready)
@@ -884,6 +926,30 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_p1b["status"], "BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE")
+
+        rep_bad_stage_a_orch = run_offline_candidate_dry_run(
+            compiled_worker=self.compiled_worker,
+            precomputed_tier0_result=tier0_base,
+            precomputed_rollback_drill=drill_base,
+            precomputed_feature_routing=feat_base,
+            precomputed_backup_mount_tolerance=bmt_base,
+            precomputed_boot_selector_and_banks=bsb_base,
+            precomputed_kernel_dtb=kdtb_base,
+            precomputed_storage_and_ram_budget=sram_base,
+            precomputed_cp_rtos=cp_base,
+            precomputed_p1_recovery_bridge=p1_bridge_base,
+            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            corrupt_stage_a_orchestrator=True,
+        )
+        self.assertFalse(rep_bad_stage_a_orch.candidate_ready)
+        self.assertFalse(rep_bad_stage_a_orch.stage_a_orchestrator_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_stage_a_orch.blocked_gate_ids)
+        g12_orch = [
+            g
+            for g in rep_bad_stage_a_orch.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_orch["status"], "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE")
 
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
@@ -1041,13 +1107,16 @@ class TestStageARamOverlayPackager(unittest.TestCase):
         # Verify all 10 matrix items and 10 runtime SHA-256 checklist entries in overlay_manifest.json
         manifest = b1.overlay_manifest
         self.assertEqual(manifest["persistent_flash_writes"], 0)
+        self.assertTrue(manifest["wbi_p5_write_and_hibernation_forbidden"])
+        self.assertEqual(manifest["wbi_mutation_bytes"], 0)
         self.assertEqual(manifest["matrix_item_count"], 10)
         self.assertEqual(tuple(manifest["verified_matrix_ids"]), COMPLETE_MATRIX_ITEMS)
         self.assertEqual(len(manifest["sha256_check_list"]), 10)
         self.assertEqual(len(b1.staged_runtime_blobs), 10)
 
-        # Verify required paths in CPIO
+        # Verify required paths in CPIO (including 30-stage-a-orchestrator.sh)
         entry_names = tuple(e.name for e in b1.cpio_audit.entries)
+        self.assertIn(ORCHESTRATOR_CPIO_REL_PATH, entry_names)
         for req in REQUIRED_STAGE_A_OVERLAY_PATHS:
             self.assertIn(req, entry_names)
 
@@ -2408,11 +2477,11 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
         )
         self.assertTrue(clean_rep.all_checks_passed, clean_rep.errors)
         self.assertEqual(clean_rep.verification_mode, "CLEAN_ROOM_SCHEMA_VERIFIED")
-        self.assertEqual(clean_rep.en_entry_count, 43)
-        self.assertEqual(clean_rep.zh_entry_count, 43)
+        self.assertEqual(clean_rep.en_entry_count, 51)
+        self.assertEqual(clean_rep.zh_entry_count, 51)
         self.assertTrue(clean_rep.en_zh_parity_ok)
         self.assertTrue(clean_rep.code_constants_ok)
-        self.assertGreaterEqual(clean_rep.code_constants_checked, 30)
+        self.assertGreaterEqual(clean_rep.code_constants_checked, 40)
         self.assertTrue(clean_rep.zero_stage_reference_ok)
 
         # 2. Live donor verification when local donor tree exists on workstation
@@ -2420,7 +2489,7 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
         self.assertTrue(live_rep.all_checks_passed, live_rep.errors)
         if live_rep.donor_root_present:
             self.assertEqual(live_rep.verification_mode, "LOCAL_DONOR_VERIFIED")
-            self.assertEqual(live_rep.live_donor_files_verified, 40)
+            self.assertEqual(live_rep.live_donor_files_verified, 48)
 
         # 3. Fail-closed detection on tampered BYOF markdown (EN/ZH drift, bad hex, stage* leak)
         good_md = (repo_root / "docs" / "BYOF-REPRODUCTION.md").read_text(encoding="utf-8")
@@ -2458,6 +2527,234 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
             )
             self.assertFalse(bad_rep.all_checks_passed)
             self.assertFalse(bad_rep.zero_stage_reference_ok)
+
+
+class TestPhase12StageABootOrchestratorAndWbiRedline(unittest.TestCase):
+    """Verify Phase 12 `nflasha3-initrd` boot-chain audit, WBI (`p5`) redline, and 6-scenario `/bin/sh` orchestrator."""
+
+    def test_dimension_a_initrd_boot_chain_and_wbi2_header_audit_live_and_clean_room(self) -> None:
+        # 1. Live donor mode (or automatic pinned fallback)
+        live_audit = audit_initrd_boot_chain_and_wbi_contracts()
+        self.assertTrue(live_audit.valid, live_audit.errors)
+        self.assertEqual(len(live_audit.artifacts), len(PINNED_INITRD_AND_BOOT_ARTIFACTS))
+        self.assertEqual(live_audit.insmod_drv1_modules, EXPECTED_INSMOD_DRV1_ORDER)
+        self.assertEqual(live_audit.insmod_drv2_module_count, EXPECTED_INSMOD_DRV2_TOTAL_COUNT)
+        self.assertEqual(live_audit.upm_ko_insmod_drv2_slot, EXPECTED_INSMOD_DRV2_UPM_ONE_BASED_SLOT)
+        self.assertTrue(live_audit.upm_ko_absent_from_initrd)
+        self.assertTrue(live_audit.p15_usr_mounted_readonly)
+        self.assertTrue(live_audit.p5_wbi_absent_from_fstab)
+        self.assertTrue(live_audit.tmp_wbshd_tmpfs_mounted)
+        self.assertTrue(live_audit.bis_mode_formats_p11_log)
+        self.assertTrue(live_audit.bootin_hands_off_to_im_elf)
+        self.assertTrue(live_audit.im_elf_references_sys_power_state)
+        self.assertTrue(live_audit.fx3_uses_p7_setup_rootfs_pivot)
+        self.assertTrue(live_audit.fx6_runs_init2_from_ram0)
+
+        wbi = live_audit.wbi2_header
+        self.assertTrue(wbi.valid, wbi.errors)
+        self.assertEqual(wbi.magic_ascii, "WBI2")
+        self.assertEqual(wbi.image_bytes, PINNED_FX6_WBI_NFLASH5_BYTES)
+        self.assertEqual(wbi.image_sha256, PINNED_FX6_WBI_NFLASH5_SHA256)
+        self.assertEqual(wbi.section_count, EXPECTED_FX6_WBI_SECTION_COUNT)
+        self.assertEqual(wbi.resume_vector_hex, hex(EXPECTED_FX6_WBI_RESUME_VECTOR))
+        self.assertEqual(wbi.r_data_bytes, EXPECTED_FX6_WBI_R_DATA_BYTES)
+        self.assertEqual(wbi.o_data_bytes, EXPECTED_FX6_WBI_O_DATA_BYTES)
+        self.assertEqual(wbi.wbimem_collision_delta_bytes, EXPECTED_WBIMEM_COLLISION_DELTA_BYTES)
+        self.assertEqual(wbi.fx3_stock_wbi_sha256, PINNED_FX3_STOCK_WBI_SHA256)
+
+        # 2. Clean-room simulation mode (zero proprietary Sony firmware required)
+        clean_audit = audit_initrd_boot_chain_and_wbi_contracts(simulate_clean_room=True)
+        self.assertTrue(clean_audit.valid, clean_audit.errors)
+        self.assertEqual(clean_audit.verification_mode, "CLEAN_ROOM_PINNED_CONTRACT")
+        self.assertEqual(clean_audit.artifact_count_verified, len(PINNED_INITRD_AND_BOOT_ARTIFACTS))
+        self.assertTrue(all(not a.live_present for a in clean_audit.artifacts))
+
+        # 3. WBI2 header binary parser negative rejections (invalid `"invl"` magic, truncated header, oversize image)
+        import struct as _st
+
+        canonical_hdr88 = _st.pack(
+            "<4sI10Q",
+            b"WBI2",
+            0,
+            EXPECTED_FX6_WBI_SECTION_COUNT,
+            0,
+            EXPECTED_FX6_WBI_RESUME_VECTOR,
+            0x20060224,
+            512,
+            EXPECTED_FX6_WBI_R_DATA_BYTES,
+            0,
+            0,
+            0x15400,
+            EXPECTED_FX6_WBI_O_DATA_BYTES,
+        )
+        ok_hdr = parse_wbi2_header_bytes(
+            canonical_hdr88,
+            image_bytes=PINNED_FX6_WBI_NFLASH5_BYTES,
+            image_sha256=PINNED_FX6_WBI_NFLASH5_SHA256,
+        )
+        self.assertTrue(ok_hdr.valid, ok_hdr.errors)
+
+        invl_hdr = b"invl" + canonical_hdr88[4:]
+        self.assertFalse(
+            parse_wbi2_header_bytes(
+                invl_hdr,
+                image_bytes=PINNED_FX6_WBI_NFLASH5_BYTES,
+                image_sha256=PINNED_FX6_WBI_NFLASH5_SHA256,
+            ).valid
+        )
+        self.assertFalse(
+            parse_wbi2_header_bytes(
+                canonical_hdr88[:40],
+                image_bytes=PINNED_FX6_WBI_NFLASH5_BYTES,
+                image_sha256=PINNED_FX6_WBI_NFLASH5_SHA256,
+            ).valid
+        )
+
+    def test_wbi_p5_hibernation_safety_redline_positive_and_hazard_rejections(self) -> None:
+        orch_script = generate_stage_a_boot_orchestrator_script()
+        bundle = build_stage_a_ram_overlay_package()
+        cpio_entry_names = tuple(e.name for e in bundle.cpio_audit.entries)
+
+        ok_redline = validate_candidate_wbi_redline(
+            overlay_manifest=bundle.overlay_manifest,
+            overlay_entry_paths=cpio_entry_names,
+            scripts_to_audit=(
+                ("setup_fx6_compat.sh", bundle.setup_compat_script),
+                ("init2_guard.sh", bundle.init2_guard_script),
+                ("30-stage-a-orchestrator.sh", orch_script),
+            ),
+        )
+        self.assertTrue(ok_redline.valid, ok_redline.violations)
+        self.assertTrue(ok_redline.wbi_p5_write_and_hibernation_forbidden)
+        self.assertEqual(ok_redline.wbi_mutation_bytes, 0)
+
+        # Reject 1: Forbidden `ud_wbi_drop` or `nflasha5` in CPIO paths
+        bad_cpio = validate_candidate_wbi_redline(
+            overlay_manifest=bundle.overlay_manifest,
+            overlay_entry_paths=cpio_entry_names + ("usr/bin/ud_wbi_drop.elf",),
+            scripts_to_audit=(("30-stage-a-orchestrator.sh", orch_script),),
+        )
+        self.assertFalse(bad_cpio.valid)
+
+        # Reject 2: Direct `/dev/nflasha5` dd write or `/sys/power/state` hibernation trigger
+        bad_script = validate_candidate_wbi_redline(
+            overlay_manifest=bundle.overlay_manifest,
+            overlay_entry_paths=cpio_entry_names,
+            scripts_to_audit=(
+                (
+                    "30-stage-a-orchestrator.sh",
+                    orch_script + "\necho disk > /sys/power/state\ndd if=/dev/zero of=/dev/nflasha5 bs=512 count=1\n",
+                ),
+            ),
+        )
+        self.assertFalse(bad_script.valid)
+
+        # Reject 3: `setup_bis` `mkdosfs /dev/nflasha11` or `warm.mode=2` cross-session resume
+        bad_bis = validate_candidate_wbi_redline(
+            overlay_manifest=bundle.overlay_manifest,
+            overlay_entry_paths=cpio_entry_names,
+            scripts_to_audit=(("evil.sh", "mkdosfs /dev/nflasha11\nwarm.mode=2\n"),),
+        )
+        self.assertFalse(bad_bis.valid)
+
+    def test_formal_state_machine_and_all_six_sandbox_scenarios(self) -> None:
+        # 1. Deterministic state-machine transitions across all 6 branches
+        sm_cold = simulate_orchestrator_state_machine(arm_token_present=False)
+        self.assertEqual(sm_cold.boot_branch, "STOCK_FX3")
+        self.assertEqual(sm_cold.lingering_mounts, 0)
+
+        sm_reentry = simulate_orchestrator_state_machine(arm_token_present=True, reentry_lock_present=True)
+        self.assertEqual(sm_reentry.boot_branch, "REENTRY_BLOCKED")
+        self.assertEqual(sm_reentry.diag_code_prefix, "ERR_IDEMPOTENT_REENTRY_BLOCKED")
+        self.assertTrue(sm_reentry.double_mount_prevented)
+
+        sm_bis = simulate_orchestrator_state_machine(arm_token_present=True, upm_bootmode="BIS")
+        self.assertEqual(sm_bis.boot_branch, "STOCK_FX3_FALLBACK")
+        self.assertEqual(sm_bis.diag_code_prefix, "ERR_WBI_BIS_MODE_FORBIDDEN")
+        self.assertEqual(sm_bis.forward_steps_executed, ())
+
+        sm_sha = simulate_orchestrator_state_machine(arm_token_present=True, payload_sha256_valid=False)
+        self.assertEqual(sm_sha.boot_branch, "STOCK_FX3_FALLBACK")
+        self.assertEqual(sm_sha.forward_steps_executed, ())
+
+        sm_mid = simulate_orchestrator_state_machine(
+            arm_token_present=True, fail_at_step_id="06_bind_ro_libInfraMediaConfig_so"
+        )
+        self.assertEqual(sm_mid.boot_branch, "STOCK_FX3_FALLBACK")
+        self.assertEqual(sm_mid.forward_steps_executed, EXPECTED_STAGE_A_FORWARD_STEP_IDS[:5])
+        self.assertEqual(sm_mid.unwind_steps_executed, tuple(reversed(EXPECTED_STAGE_A_FORWARD_STEP_IDS[:5])))
+        self.assertEqual(sm_mid.lingering_mounts, 0)
+
+        sm_ok = simulate_orchestrator_state_machine(arm_token_present=True)
+        self.assertEqual(sm_ok.boot_branch, "STAGE_A_ADAPTED_CLEAN_EXIT")
+        self.assertEqual(sm_ok.forward_steps_executed, EXPECTED_STAGE_A_FORWARD_STEP_IDS)
+        self.assertEqual(sm_ok.unwind_steps_executed, EXPECTED_STAGE_A_LIFO_UNWIND_STEP_IDS)
+        self.assertEqual(sm_ok.lingering_mounts, 0)
+        self.assertEqual(sm_ok.emmc_writes, 0)
+        self.assertEqual(sm_ok.wbi_writes, 0)
+
+        # 2. Full 6-scenario `/bin/sh` sandbox verification inside TemporaryDirectory
+        rep = run_stage_a_boot_orchestrator_verification()
+        self.assertTrue(rep.all_checks_passed, rep.errors)
+        self.assertTrue(rep.stage_a_orchestrator_ok)
+        self.assertEqual(rep.scenario_count, 6)
+        self.assertEqual(rep.total_sandbox_runs, 10)
+        self.assertEqual(rep.total_emmc_writes, 0)
+        self.assertEqual(rep.total_wbi_writes, 0)
+        self.assertEqual(rep.total_lingering_mounts, 0)
+        self.assertEqual(rep.total_sandbox_violations, 0)
+        self.assertTrue(rep.temp_dir_cleaned)
+
+        s1, s2, s3, s4, s5, s6 = rep.scenarios
+        self.assertEqual(s1.runs[0].forward_steps, EXPECTED_STAGE_A_FORWARD_STEP_IDS)
+        self.assertEqual(s1.runs[0].unwind_steps, EXPECTED_STAGE_A_LIFO_UNWIND_STEP_IDS)
+
+        for r in s2.runs:
+            self.assertEqual(r.forward_steps, ())
+            self.assertEqual(r.lingering_mount_count, 0)
+
+        self.assertEqual(s3.runs[0].forward_steps, EXPECTED_STAGE_A_FORWARD_STEP_IDS[:2])
+        self.assertEqual(s3.runs[0].unwind_steps, tuple(reversed(EXPECTED_STAGE_A_FORWARD_STEP_IDS[:2])))
+        self.assertEqual(s3.runs[1].forward_steps, EXPECTED_STAGE_A_FORWARD_STEP_IDS[:8])
+        self.assertEqual(s3.runs[1].unwind_steps, tuple(reversed(EXPECTED_STAGE_A_FORWARD_STEP_IDS[:8])))
+
+        self.assertEqual(s4.runs[0].diag_code, "ERR_WBI_BIS_MODE_FORBIDDEN")
+        self.assertEqual(s4.runs[1].diag_code, "ERR_WBI_P5_ALREADY_MOUNTED")
+        self.assertEqual(s4.runs[2].wbi_trigger_blocked_count, 1)
+        self.assertTrue(s5.runs[0].double_mount_prevented)
+        self.assertEqual(s5.runs[0].diag_code, "ERR_IDEMPOTENT_REENTRY_BLOCKED")
+        self.assertEqual(s6.runs[0].boot_branch, "STOCK_FX3")
+        self.assertEqual(s6.runs[0].forward_steps, ())
+
+        # 3. Host safety lock refuses execution if PREFIX is unset on host OS
+        with tempfile.TemporaryDirectory(prefix="stage_a_host_lock_") as tmp_s:
+            orch_p = Path(tmp_s) / "30-stage-a-orchestrator.sh"
+            orch_p.write_text(generate_stage_a_boot_orchestrator_script(), encoding="utf-8")
+            proc = subprocess.run(
+                ["/bin/sh", str(orch_p)],
+                env={"PATH": "/usr/bin:/bin"},
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(proc.returncode, 97)
+            self.assertIn("ERR_SANDBOX_PREFIX_REQUIRED_ON_HOST", proc.stderr)
+
+    def test_cli_verify_stage_a_orchestrator_subcommand(self) -> None:
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-stage-a-orchestrator"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["all_checks_passed"])
+        self.assertTrue(payload["stage_a_orchestrator_ok"])
+        self.assertTrue(payload["wbi_p5_write_and_hibernation_forbidden"])
+        self.assertEqual(payload["wbi_mutation_bytes"], 0)
+        self.assertEqual(payload["scenario_count"], 6)
+        self.assertEqual(payload["total_emmc_writes"], 0)
+        self.assertEqual(payload["total_wbi_writes"], 0)
+        self.assertEqual(payload["total_lingering_mounts"], 0)
 
 
 if __name__ == "__main__":

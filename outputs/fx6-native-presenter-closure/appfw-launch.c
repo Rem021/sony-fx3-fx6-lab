@@ -14,6 +14,14 @@
 
 #include "got_table_fx6.inc"
 
+#ifndef FX6_NATIVE_FAITHFUL
+#define FX6_NATIVE_FAITHFUL 1
+#endif
+
+#ifndef FX6_ROUND
+#define FX6_ROUND (FX6_NATIVE_FAITHFUL ? 6 : 3)
+#endif
+
 typedef void (*init_fn)(const char *);
 typedef void (*mwf_init_fn)(void);
 

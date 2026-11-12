@@ -429,39 +429,42 @@ Cross-disassembly of `lib/libgrm_bmp.so` (`+0x2350..0x240c`), `lib/libgemini-grm
   - Round 4 tentatively decoded `fmt == 1` as `ARGB1555` (`bit 15 = alpha`). In `RGBA4444`, `bit 15` is **Red MSB (`R >= 8`)**, NOT alpha! Thus every black/dark-gray outline and drop-shadow pixel (`0x000f` = opaque black `R=0,G=0,B=0,A=15`, `0x0008` = 53% shadow `A=8`, `0x222f` = dark gray `R=2,G=2,B=2,A=15`) had `bit 15 == 0` and was discarded as transparent, while `0xeee f` (`R=0xe, G=0xe, B=0xe, A=0xf` crisp Sony Cinema Line white) had its bits mis-sliced into `0xffdebd7b` beige!
   - Updating `libgrm-fbinit9.c` (`sample_src_argb`) to `RGBA4444` (`fmt == 1`) + `RGBA8888` vs tracked GPE `ARGB8888` (`fmt == 2`) + `dst_bpp == 2` work-surface writeback immediately restored **100% of all 6 Shooting HUD bitmaps (`5,451 / 5,451` nonzero pixels) and `29` crisp neutral/translucent Sony Cinema Line colors** in `r5b-shooting-rgba4444`!
 
-### 7.2 `libInfraInput.so` (`+0xb05c..0xb38c`) -> `appFw.so` (`+0x2159df4`) 32-Byte Key-Event Wire Contract
-Disassembly of `lib/libInfraInput.so` (`InfraInput::EventSender` `+0xb05c..0xb38c`) and `lib/appFw.so` (`infra_wrapper_input` callback `+0x2159df4..0x2159fa0`, `infra_key -> app_key` table `+0x2245a18`, and `app_key -> ds_event` table `+0x2ef2b08`) establishes the exact 32-byte UIPC key-delivery ABI:
+### 7.2 `libInfraInput.so` (`+0xa624..0xab18`, `+0xb05c..0xb38c`) -> `appFw.so` (`+0xc09fb4`, `+0x2245a10`) 32-Byte Key-Event Wire Contract
+Disassembly of `lib/libInfraInput.so` (`InfraInput::MainThread` `+0xa624..0xab18` and `EventSender` `+0xb05c..0xb38c`) and `lib/appFw.so` (`App::recv_event_i` `+0xc09fb4..0xc0a148`, 449-entry `<II` `infra_key -> app_key` table `+0x2245a10`, `app_key -> ds_event` table `+0x2ee2c08`, 24-byte short/long-press hold table `+0x224e468`, and official Sony `EVENT_INPUT_*` string table `+0x2c7d808`) establishes the exact 32-byte UIPC key-delivery ABI:
 
 1. **Queue Endpoint & Header**:
-   - Destination queue: **`0x005503e0`** (`App` main event queue, registered during `App::initialize` via `InfraInput` client subscription).
-   - Source queue (`osal_set_msg_src`): **`0x007a804c`** (`I-InputEvent` sender ID).
-   - Pool buffer size (`osal_get_msg`): **`32` bytes (`0x20`)**, zero-initialized.
-2. **Exact 32-Byte Payload Layout**:
+   - Destination queue: **`0x005503e0`** (`App` main event queue, registered during `App::initialize` via `InfraInput::SetCallback` `+0xc10e4c`).
+   - Source queue (`osal_set_msg_src`): **`0x007a804c`** (`I-InputEvent` sender ID checked by `App::recv_event_i`).
+   - Pool buffer size (`osal_valloc_msg_wait`): **`32` bytes (`0x20`)**, zero-initialized.
+2. **Exact 32-Byte Payload Layout (`libgrm-fbinit9.c:send_infra_input_key_event`)**:
 
 | Offset | Type | Value | Meaning |
 | --- | --- | --- | --- |
-| `+0x00` | `uint32_t` | `0x020102ff` | `App` raw `InfraInput` dispatch message ID (`App::recv_event_i` routes to `+0x2159df4`) |
-| `+0x04` | `uint32_t` | `0x00000000` | Input device class (`0` = physical tact key, `1` = rotary/dial, `2` = touch) |
-| `+0x08` | `uint16_t` | `infra_key_id` | Hardware/logical `InfraInput` key code (see codebook below) |
-| `+0x0a` | `uint16_t` | `0x0000` | Reserved alignment padding |
-| `+0x0c` | `uint32_t` | `action` | **`1` = key press (`ON`)**, **`2` = key release (`OFF`)** |
-| `+0x10..0x1f` | `uint8_t[16]` | `0x00` | Key metadata / repeat / timestamp fields (`0` for standard press/release pair) |
+| `+0x00` | `uint32_t` | `infra_key_id` | Hardware/logical `InfraInput` key code (matched in `appFw.so +0x2245a10`) |
+| `+0x04` | `int16_t[2]` | `{0, 0}` | `sub_id1 = 0`, `sub_id2 = 0` (`0` for physical tact buttons) |
+| `+0x08` | `uint32_t` | `status` | **`1` = key press (`ON`)**, **`0` = key release (`OFF`)** |
+| `+0x0c..0x1f` | `uint8_t[20]` | `0x00` | Zero-filled flags / repeat / timestamp fields |
 
-3. **Verified Sony FX6 (`ILME-FX6`) `InfraInput` Key Codebook (`appFw.so +0x2245a18` -> `+0x2ef2b08`)**:
+3. **Verified Sony FX6 (`ILME-FX6`) `InfraInput` Key Codebook (`appFw.so +0x2245a10` -> `+0x2ee2c08` -> `+0x224e468`)**:
 
-| `infra_key_id` | `app_key` | `UIBIZ_KEY_*` Symbol | Emitted `ds_event` (`ON` / `OFF` / Derived) | Verified Runtime Role |
+| `infra_key_id` | `app_key` | Official Sony `EVENT_INPUT_*` / `EVENT_FUNC_*` | Emitted `ds_event` (`ON` / `OFF` / Hold Derived) | Verified Runtime Role |
 | --- | --- | --- | --- | --- |
-| `0x002f` | `0x0001` | `UIBIZ_KEY_TACT_UP` | `0x02010000` / `0x02010001` | Cursor Up |
-| `0x0030` | `0x0002` | `UIBIZ_KEY_TACT_DOWN` | `0x02010003` / `0x02010004` | Cursor Down (selects `[Cancel]` on vertical APR confirm dialog `sid=0x231`) |
-| `0x0031` | `0x0003` | `UIBIZ_KEY_TACT_LEFT` | `0x02010006` / `0x02010007` | Cursor Left |
-| `0x0032` | `0x0004` | `UIBIZ_KEY_TACT_RIGHT` | `0x0201000b` / `0x0201000c` | Cursor Right |
-| `0x01ac` | `0x0014` | `UIBIZ_KEY_TACT_ENTER` | `0x02010010` (`TACT_SET_ON`) | Multi-selector center `ENTER` / `SET` |
-| **`0x01ab`** | **`0x0013`** | **`UIBIZ_KEY_TACT_MENU`** | `0x02010015` (`ON`) -> `<1000ms` release: `0x02010018` (`MENU_SHORT_PRESS`); `>=1000ms` hold: **`0x02010017` (`MENU_LONG_PRESS`)** | Short press: Quick Status; **Long press (`>=1000ms`, e.g. `1300ms`): opens Full Menu `sid=0x0f` (`31procam_menu_layer_1st_presenter`)!** |
-| **`0x718c`** | **`0x0184`** | **`UIBIZ_KEY_TACT_HOME`** | `0x020102d1` (`KEY_TACT_HOME_ON`, `flags=0x20000001`) -> `0xce2` (`ASSIGNABLE_SWITCH_HOME`) -> **`0x02010208` (`EVENT_FUNC_HOME_ON`)** | **Dedicated FX6 `HOME` button: toggles `BKID_APP_HOME_SCREEN_STATE` -> opens Big6 Home `sid=0x0a` (`31procam_big6_menu_home_presenter`)!** |
-| `0x7052` | `0x0049` | `UIBIZ_KEY_TACT_STATUS` | `0x02010019` (`KEY_TACT_STATUS_CHECK_ON`) | Status screen toggle |
-| `0x719a` | `0x0192` | `UIBIZ_KEY_TACT_CANCEL` | `0x02010107` (`KEY_TACT_MENU_CANCEL_ON`) | Cancel / Back button |
-| `0x71a1` | `0x0199` | `UIBIZ_KEY_TACT_DISP` | `0x020100e6` (`KEY_TACT_DISP_SEL_ON`) | `DISP` HUD overlay toggle |
-| `0x7177` | `0x016f` | `UIBIZ_KEY_TACT_SHUTTER` | `0x0201010f` (`KEY_TACT_SHUTTER_MODE_ON`) | Shutter mode key (NOT `HOME`!) |
+| **`0x0003`** | `0x0002` | `EVENT_INPUT_KEY_TACT_UP_ON` | `0x02010000` / `0x02010001` | Cursor Up (non-consecutive with `DOWN`!) |
+| **`0x0030`** | `0x0006` | `EVENT_INPUT_KEY_TACT_DOWN_ON` | `0x02010003` / `0x02010004` | Cursor Down (selects `[Cancel]` on `sid=0x231` and steps menu rows) |
+| **`0x0015`** | `0x0004` | `EVENT_INPUT_KEY_TACT_LEFT_ON` | `0x02010006` / `0x02010007` | Cursor Left / Menu back one layer |
+| **`0x01af`** | `0x0016` | `EVENT_INPUT_KEY_TACT_RIGHT_ON` | `0x0201000b` / `0x0201000c` | Cursor Right / Enter 2nd-layer Full Menu (`sid=0x10`) |
+| **`0x01ac`** | `0x0014` | `EVENT_INPUT_KEY_TACT_ENTER_ON` | `0x02010010` / `0x02010011` | Multi-selector center `ENTER` / `SET` |
+| **`0x01ab`** | `0x0013` | `EVENT_INPUT_KEY_TACT_MENU_*` | `0x02010015` (`ON`) -> `<1000ms`: `0x02010018` (`SHORT`); `>=1000ms`: **`0x02010017` (`LONG`)** | Short press: Status; **Long press (`1300ms`): opens Full Menu `sid=0x0f` (`31procam_menu_layer_1st_presenter`)** |
+| **`0x7023`** | `0x0029` | `EVENT_INPUT_KEY_OTHER_KURU_PON_ON` | `0x02010157` / `0x02010158` | **Multi-Function Dial Push ("Kuru-Pon"): activates yellow cursor (`HOME_SCREEN_STATE=2`) on Big6 Home & Direct Menu on Shooting HUD!** |
+| `0x704d` | `0x0044` | `EVENT_INPUT_KEY_TACT_IRIS_*` | `0x020100ad` (`ON`) -> `<1000ms`: `0x020100b0`; `>=1000ms`: `0x020100af` | Body `IRIS` tact button (opens `sid=0x77` notice when no E-mount lens is attached) |
+| **`0x704f`** | `0x0046` | `EVENT_INPUT_KEY_TACT_ISO_*` | `0x020100b1` (`ON`) -> `<1000ms`: `0x020100b4`; `>=1000ms`: `0x020100b3` | Dedicated Big6 `ISO / GAIN` tact button |
+| **`0x7098`** | `0x0090` | `EVENT_INPUT_KEY_TACT_WB_*` | `0x020100cf` (`ON`) -> `<1000ms`: `0x020100d2`; `>=1000ms`: `0x020100d1` | Dedicated Big6 `WHT BAL` tact button |
+| **`0x7177`** | `0x016f` | `EVENT_INPUT_KEY_TACT_SHUTTER_MODE_*` | `0x0201010f` (`ON`) -> `<1000ms`: `0x02010112`; `>=1000ms`: `0x02010111` | Dedicated Big6 `SHUTTER` tact button |
+| **`0x7180`** | `0x0178` | `EVENT_INPUT_KEY_TACT_ND_FILTER_*` | `0x0201011d` / `0x0201011e` | Dedicated Big6 `ND FILTER` / `S&Q` tact button |
+| **`0x718c`** | `0x0184` | `EVENT_INPUT_KEY_TACT_HOME_ON` | `0x020102d1` -> `0xce2` (`ASSIGNABLE_SWITCH_HOME`) -> **`0x02010208` (`EVENT_FUNC_HOME_ON`)** | **Dedicated FX6 `HOME` button: opens/closes Big6 Home `sid=0x0a` (`31procam_big6_menu_home_presenter`)** |
+| **`0x719a`** | `0x0192` | `EVENT_INPUT_KEY_TACT_MENU_CANCEL_ON` | `0x02010107` / `0x02010108` | `CANCEL` / `BACK` button |
+| `0x71a1` | `0x0199` | `EVENT_INPUT_KEY_TACT_DISP_SEL_ON` | `0x020100e6` / `0x020100e7` | `DISP` Shooting OSD clean-feed toggle |
+| `0x7052` | `0x0049` | `EVENT_INPUT_KEY_TACT_STATUS_CHECK_ON` | `0x02010019` | `STATUS` check screen toggle |
 
 ### 7.3 Fire-and-Forget External Daemon Queue Pool Reclamation (`0x9088076b`)
 - During interactive `App::run` key/menu transitions, `appFw.so` emits asynchronous key-click/beep/telemetry notifications (`src_qid == 0xa5a5a5a5`, i.e., **no reply queue**) to external sub-CPU/audio daemon queues (`0x9088076b`, `0x8280074d`, `0x809208bf`, `0x81100a36`) that have no consumer process in our minimal Linux initramfs.
@@ -482,4 +485,37 @@ Disassembly of `procam_shooting_controller` (`appFw.so +0xfb2e00..0xfb9060`, bas
 3. **Shooting -> Full Menu Layer 1st Transition (`0x01ab` `1300 ms` `MENU_LONG_PRESS` -> `sid = 0x0f` `32procam_menu_layer_1st_controller` / `31procam_menu_layer_1st_presenter`)**:
    - Holding `0x01ab` (`UIBIZ_KEY_TACT_MENU`) for `>= 1000 ms` (`1300 ms`) emits `0x02010017` (`EVENT_INPUT_TACT_MENU_LONG_PRESS`).
    - `procam_shooting_controller`'s input index table (`GOT 0x2ee2970 -> 0x22a1e80`) maps `sub = 0x0017` to **`pmf[9] = 0xfb78a8 -> 0xfb31a4`**, which invokes `0xcbe030 -> 0xcb317c` (`mov w0, #0xf` at `+0xcb31cc`) and calls **`open_screen(sid = 0x0f)`**, opening **`slots[2] = 31procam_menu_layer_1st_presenter` (`vptr_off = 0x2e8db00`, `32procam_menu_layer_1st_controller`)** and rendering the translucent Cinema Line category menu (`435,918` nonzero pixels, `67` ARGB colors) onto `GPE0`!
+
+---
+
+## 8. Round 6 (Phase 4): Big6 Parameter Sub-Dialog (`sid = 0x0c`), 2nd-Layer Full Menu (`sid = 0x10`), `sid = 0xc9` Notice Contract, & `Presenter::close` Round-Trip (`sid = 0x02`)
+
+### 8.1 `sid = 0xc9` (`27procam_msg_2label_presenter` / `28procam_msg_2label_controller`) Origin & Self-Dismissal
+- **Trigger (`appFw.so +0xf77c10..0xf77c88`)**: Inside `41procam_msg_confirm_execute_apr_controller::process_EVENT_INPUT_TACT_ENTER_ON` (`sid = 0x231`, `35procam_msg_2label_2button_presenter`), button index `4` executes APR (`+0xf77c28: cmp w0, #0x4; b.eq 0xf77c8c`), whereas button index `5` (`[Cancel]`, `+0xf77c30: cmp w0, #0x5`) writes **`w0 = 0xc9`** (`+0xf77c38: mov w0, #0xc9`), calls `+0xf77a98` (`transition(0xc9, 0x255, 0x255)`), and notifies APR abort (`+0x11d93c4`).
+- **Controller Factory & Native Auto-Dismiss (`appFw.so +0xdd0af4 -> +0xdd0700`, dispatcher `+0xc7f3ec`)**:
+  - `+0xdd0af4` constructs `28procam_msg_2label_controller` (`vptr = +0x2ebbea0`, `presenter vptr_off = +0x2e8e760`) on `slots[2]` ("APR Canceled" 2-label status toast) and arms an OSAL timer (`0x03010000`, handled at `+0xc7f454 -> +0xc7f4c4`).
+  - After ~3 seconds, the timer fires natively and closes `sid = 0xc9` with **zero instruction patches**: destructor `~procam_msg_2label_controller` (`+0xf72910`) resets the base subobject vtable to `12i_controller` and detaches `slots[2]`'s screen widget until `slots[2]` is next opened (e.g., by `sid = 0x0c` or `sid = 0x0f`).
+
+### 8.2 `32procam_big6_menu_home_controller` (`+0xc69f8c`) -> Big6 Parameter Sub-Dialog (`sid = 0x0c` / `sid = 0x0b`)
+Disassembly of `32procam_big6_menu_home_controller` (`vptr = +0x2ebaa88`, compact dispatcher `+0xc69f8c`, `input_tbl = +0x22a83c8`, `pmf = +0x2d32c60`):
+1. **Cursor State Gate (`+0xf2e0a8..0xf2e124`)**:
+   - When `0x718c` (`HOME`) opens `31procam_big6_menu_home_presenter` (`sid = 0x0a`), `BKID_APP_HOME_SCREEN_STATE` equals **`1`** (`HOME_SCREEN_STATE_ON_CURSOR_OFF`).
+   - Directional handlers (`UP` `+0xf2ed9c`, `DOWN` `+0xf2ede4`, `LEFT` `+0xf2ee2c`, `RIGHT` `+0xf2ee74`) and `ENTER` (`+0xf2e698`) call `+0xf2e0a8(this, is_direct_tact=0, ...)`, which returns `0` (`false`) whenever `HOME_SCREEN_STATE != 2`!
+2. **Activating Cursor via `KURU_PON` (`0x7023` -> `0x02010157`, `pmf[31] = +0xf2f130`) or `DIRECT_MENU` (`0x02010204`, `pmf[32] = +0xf2f294`)**:
+   - Pushing the FX6 Multi-Function Dial (`0x7023`, `EVENT_INPUT_KEY_OTHER_KURU_PON_ON`) passes `w1 = 1` to `+0xf2e0a8`, checks `HOME_SCREEN_STATE == 1` (`+0xf2f180: cmp w22, #0x1`), and writes **`HOME_SCREEN_STATE = 2` (`+0xf2f1b0: mov w0, #0x2`)**, highlighting cell 0 (`FPS`, `23.98`) with the Sony Cinema Line yellow selection cursor!
+3. **Opening the Parameter Sub-Dialog (`+0xf2e3f0..0xf2e694`)**:
+   - Once `HOME_SCREEN_STATE == 2`, pressing `0x01ac` (`ENTER`, `+0xf2e698`) — or pushing `0x7023` a second time (`+0xf2f1e4`), or pressing an unlocked dedicated Big6 body tact button (`0x704f` `ISO`, `0x7098` `WB`, `0x7177` `SHUTTER`) — calls `+0xf2e3f0(this, item_id, ...)`:
+     - If `item_id == 0x7d9` (`Base Look` / `S-Cinetone`, `+0xf2e3f4: cmp w1, #0x7d9`), `+0xf2e538` sets `w0 = 0x0b` (`38procam_big6_menu_look_middle_presenter`).
+     - For all other unlocked Big6 items (`FPS`, `EI`, `Shutter`, `ND`, `WB`), `+0xf2e5a4` (`0xcba680` enabled check) and `+0xf2e5b4` (`0xcbb144` lock check; e.g. `0x704d` `IRIS` without an E-mount lens branches to `+0xf2e68c -> 0xcbb2f8` `sid = 0x77` warning) fall through to **`+0xf2e668: mov w0, #0xc`** -> **`open_screen(sid = 0x0c)`**, constructing **`slots[2] = 34procam_big6_menu_setting_presenter` (`vptr_off = +0x2e8f840`, `35procam_big6_menu_setting_controller`)** (`r6a-big6-subdialog`: `37,924` nonzero pixels, `59` unique ARGB colors across `slots[0..2]`)!
+
+### 8.3 `32procam_menu_layer_1st_controller` (`+0xc6a720`) -> `31procam_menu_layer_2nd_presenter` (`sid = 0x10`)
+Disassembly of `32procam_menu_layer_1st_controller` (`vptr = +0x2ebb348`, dispatcher `+0xc6a720`, `input_tbl = +0x22a9240`, `pmf = +0x2d33e28`):
+- `0x0030` (`DOWN`, `0x02010003` -> `pmf[5] = +0xf5e9b8`) advances focus from row 0 (`User` menu, which checks empty-User-menu guard `0xcbf0cc` at `+0xf5e2d4`) to row 1 (`Shooting` / `TC/Media`).
+- `0x01af` (`RIGHT`, `0x0201000b` -> `pmf[7] = +0xf5e498`) delegates to `+0xf5e47c` (`ENTER` `0x01ac`) -> `+0xf5e288`, which executes **`+0xf5e42c: mov w0, #0x10`** -> **`open_screen(sid = 0x10)`**, replacing `slots[2]` with **`31procam_menu_layer_2nd_presenter` (`vptr_off = +0x2e8dbd8`, `32procam_menu_layer_2nd_controller`, dispatcher `+0xc6a8a4`)** (`r6b-menu-layer-2nd`: `434,010` nonzero pixels, **`87` unique ARGB colors**)!
+
+### 8.4 Clean `Presenter::close` Round-Trip Back to `25procam_shooting_presenter` (`sid = 0x02`)
+- In `32procam_big6_menu_home_controller::process_EVENT_FUNC_HOME_ON` (`+0xf2f34c..0xf2f430`):
+  - When `HOME_SCREEN_STATE == 2` (`CURSOR_ON`), `0x718c` (`HOME`) resets `HOME_SCREEN_STATE = 1` (`+0xf2f3c8`).
+  - When `HOME_SCREEN_STATE == 1` (`CURSOR_OFF`), `0x718c` (`HOME`) branches to `+0xf2f400`, writes `HOME_SCREEN_STATE = 0` (`+0xf2f414: str wzr`), and transitions `slots[1]` to `0x255` (closed), invoking genuine **`Presenter::close`** + `~procam_big6_menu_home_controller` (`ctrl_rtti -> 12i_controller`) and returning live input focus to **`slots[0] = 25procam_shooting_presenter` (`sid = 0x02`, `26procam_shooting_controller`)** with all `161` threads alive and zero crashes (`r6c-back-to-shooting`).
+
 

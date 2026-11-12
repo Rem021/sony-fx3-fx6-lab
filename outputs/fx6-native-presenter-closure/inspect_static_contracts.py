@@ -221,6 +221,55 @@ def collect_contracts() -> Dict[str, Any]:
         "appfw_network_rpc_helper": disasm_range(
             DONOR_ROOT / "lib/appFw.so", 0x215C6D0, 0x215C900
         ),
+        "appfw_big6_home_ctrl_dispatch": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xC69F8C, 0xC6A078
+        ),
+        "appfw_big6_home_open_subdialog": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xF2E3F0, 0xF2E698
+        ),
+        "appfw_big6_home_kuru_pon_cursor": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xF2F130, 0xF2F3F0
+        ),
+        "appfw_menu_layer_1st_ctrl_dispatch": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xC6A720, 0xC6A810
+        ),
+        "appfw_menu_layer_2nd_ctrl_dispatch": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xC6A8A4, 0xC6A990
+        ),
+        "appfw_apr_cancel_to_sid_0xc9": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xF77BC0, 0xF77CF0
+        ),
+        "appfw_msg_2label_ctrl_factory": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xDD0700, 0xDD0810
+        ),
+    }
+
+    round4_contracts = {
+        "uipc_queues": {
+            "0x92840747": {
+                "service": "SeqQueueCommon",
+                "cmd_0x032d_reply": "8-byte status=0 completion to reply_qid",
+            },
+            "0x80cf016d": {
+                "service": "SeqQueueNetwork",
+                "caller": "appFw.so+0x215c740",
+                "contract": "Non-blocking async completion (+0x04=req_type|1, +0x08=0, +0x10=+0x0c) back to reply_qid (+0x18)",
+            },
+            "0x80900516": {
+                "service": "DMM / MediaSlotState",
+                "contract": "Empty media slot completion (slot A/B absent) allowing libXavcMxf.so initialization",
+            },
+        },
+        "nvram_backup": {
+            "donor_bk4": "CX95898_NTSC.bin",
+            "size_bytes": 2253333,
+            "initial_setting_bkid": "0x00010079",
+        },
+        "pre_appfw_singletons": [
+            "MWF_Init (libMWF.so)",
+            "InfraMediaConfig_Init (libInfraMediaConfig.so +0x1c470)",
+            "InfraInput::GetInstance (libInfraInput.so)",
+        ],
     }
 
     round5_contracts = {
@@ -249,24 +298,26 @@ def collect_contracts() -> Dict[str, Any]:
             "dest_qid": "0x005503e0",
             "size_bytes": 32,
             "fields": {
-                "+0x00": "u32 msg_type = 0x020102ff",
-                "+0x04": "u32 dev_type = 0 (physical tact key)",
-                "+0x08": "u16 infra_key_id",
-                "+0x0a": "u16 pad = 0",
-                "+0x0c": "u32 action (1 = press, 2 = release)",
-                "+0x10..0x1f": "zero-filled payload",
+                "+0x00": "u32 infra_key_id",
+                "+0x04": "s16 sub_id1 = 0, s16 sub_id2 = 0",
+                "+0x08": "u32 status (1 = PRESS, 0 = RELEASE)",
+                "+0x0c..0x1f": "zero-filled flags / repeat / reserved",
             },
             "verified_keycodes": {
-                "0x002f": "UP (app_key=0x0001)",
-                "0x0030": "DOWN (app_key=0x0002)",
-                "0x0031": "LEFT (app_key=0x0003)",
-                "0x0032": "RIGHT (app_key=0x0004)",
+                "0x0003": "UP (app_key=0x0002 -> 0x02010000 EVENT_INPUT_KEY_TACT_UP_ON)",
+                "0x0030": "DOWN (app_key=0x0006 -> 0x02010003 EVENT_INPUT_KEY_TACT_DOWN_ON)",
+                "0x0015": "LEFT (app_key=0x0004 -> 0x02010006 EVENT_INPUT_KEY_TACT_LEFT_ON)",
+                "0x01af": "RIGHT (app_key=0x0016 -> 0x0201000b EVENT_INPUT_KEY_TACT_RIGHT_ON)",
                 "0x01ab": "MENU (app_key=0x0013; <1000ms -> 0x02010018 SHORT_PRESS, >=1000ms -> 0x02010017 LONG_PRESS -> sid=0x0f)",
-                "0x01ac": "ENTER / SET (app_key=0x0014 -> 0x02010010)",
-                "0x7052": "STATUS_CHECK (app_key=0x0049 -> 0x02010019)",
-                "0x718c": "HOME / UIBIZ_KEY_TACT_HOME (app_key=0x0184 -> 0x020102d1 -> 0x02010208 EVENT_FUNC_HOME_ON -> sid=0x0a Big6)",
-                "0x719a": "MENU_CANCEL (app_key=0x0192 -> 0x02010107)",
-                "0x71a1": "DISP_SEL (app_key=0x0199 -> 0x020100e6)",
+                "0x01ac": "ENTER / SET (app_key=0x0014 -> 0x02010010 EVENT_INPUT_KEY_TACT_ENTER_ON)",
+                "0x7023": "KURU_PON / Multi-Function Dial Push (app_key=0x0029 -> 0x02010157 EVENT_INPUT_KEY_OTHER_KURU_PON_ON -> Big6 cursor ON)",
+                "0x704d": "IRIS (app_key=0x0044 -> 0x020100ad..0x020100b0 EVENT_INPUT_KEY_TACT_IRIS_*)",
+                "0x704f": "ISO / GAIN (app_key=0x0046 -> 0x020100b1..0x020100b4 EVENT_INPUT_KEY_TACT_ISO_*)",
+                "0x7098": "WHT_BAL (app_key=0x0090 -> 0x020100cf..0x020100d2 EVENT_INPUT_KEY_TACT_WB_*)",
+                "0x7177": "SHUTTER_MODE (app_key=0x016f -> 0x0201010f..0x02010112 EVENT_INPUT_KEY_TACT_SHUTTER_MODE_*)",
+                "0x7180": "ND_FILTER (app_key=0x0178 -> 0x0201011d/0x0201011e EVENT_INPUT_KEY_TACT_ND_FILTER_*)",
+                "0x718c": "HOME / UIBIZ_KEY_TACT_HOME (app_key=0x0184 -> 0x020102d1 -> 0x02010208 EVENT_FUNC_HOME_ON -> sid=0x0a Big6 toggle)",
+                "0x719a": "MENU_CANCEL / BACK (app_key=0x0192 -> 0x02010107 EVENT_INPUT_KEY_TACT_MENU_CANCEL_ON)",
             },
         },
         "screen_transitions_verified": {
@@ -277,12 +328,84 @@ def collect_contracts() -> Dict[str, Any]:
         },
     }
 
+    round6_contracts = {
+        "key_tables": {
+            "infra_to_app_table_off": "0x2245a10",
+            "infra_to_app_entry_count": 449,
+            "infra_to_app_entry_format": "<II (u32 infra_key_id, u32 app_key)",
+            "app_to_ds_table_off": "0x2ee2c08",
+            "hold_short_long_table_off": "0x224e468",
+            "hold_entry_format": "<6I (on_ev, off_ev, short_ev, long_ev, hold_ms, immediate_flag)",
+        },
+        "sid_0xc9_notice_origin": {
+            "sid": "0xc9",
+            "presenter_rtti": "27procam_msg_2label_presenter",
+            "presenter_vptr_off": "0x2e8e760",
+            "controller_rtti": "28procam_msg_2label_controller",
+            "controller_factory_off": "0xdd0af4 -> 0xdd0700",
+            "trigger_site_off": "0xf77c38 (41procam_msg_confirm_execute_apr_controller::process_ENTER on button 5 [Cancel])",
+            "meaning": "APR Canceled 2-label confirmation toast after declining cold-boot APR execution (sid=0x23a -> sid=0x231 -> sid=0xc9)",
+            "clean_dismissal": "Self-dismisses natively via 0x03010000 controller timer (~3s) with zero instruction patches (destructor ~procam_msg_2label_controller at +0xf72910 resets base subobject RTTI to 12i_controller until slots[2] is reused)",
+        },
+        "presenters_verified": {
+            "0x14": {
+                "presenter_rtti": "37procam_menu_initial_setting_presenter",
+                "controller_rtti": "38procam_menu_initial_setting_controller",
+                "vptr_off": "0x2e8df80",
+                "slot": 0,
+            },
+            "0x02": {
+                "presenter_rtti": "25procam_shooting_presenter",
+                "controller_rtti": "26procam_shooting_controller",
+                "vptr_off": "0x2e8d9e0",
+                "slot": 0,
+            },
+            "0x0a": {
+                "presenter_rtti": "31procam_big6_menu_home_presenter",
+                "controller_rtti": "32procam_big6_menu_home_controller",
+                "vptr_off": "0x2e8f7b0",
+                "slot": 1,
+            },
+            "0x0c": {
+                "presenter_rtti": "34procam_big6_menu_setting_presenter",
+                "controller_rtti": "35procam_big6_menu_setting_controller",
+                "vptr_off": "0x2e8f840",
+                "slot": 2,
+            },
+            "0x0f": {
+                "presenter_rtti": "31procam_menu_layer_1st_presenter",
+                "controller_rtti": "32procam_menu_layer_1st_controller",
+                "vptr_off": "0x2e8db00",
+                "slot": 2,
+            },
+            "0x10": {
+                "presenter_rtti": "31procam_menu_layer_2nd_presenter",
+                "controller_rtti": "32procam_menu_layer_2nd_controller",
+                "vptr_off": "0x2e8dbd8",
+                "slot": 2,
+            },
+            "0xc9": {
+                "presenter_rtti": "27procam_msg_2label_presenter",
+                "controller_rtti": "28procam_msg_2label_controller",
+                "vptr_off": "0x2e8e760",
+                "slot": 2,
+            },
+        },
+        "interactive_flows_verified": {
+            "r6a_big6_subdialog": "0x718c (HOME -> sid=0x0a) -> 0x7023 (KURU_PON -> HOME_SCREEN_STATE=2 cursor ON) -> 0x01ac (ENTER -> sid=0x0c 34procam_big6_menu_setting_presenter)",
+            "r6b_menu_layer_2nd": "0x01ab:1300 (MENU_LONG_PRESS -> sid=0x0f) -> 0x0030 (DOWN -> Shooting row 1) -> 0x01af (RIGHT -> sid=0x10 31procam_menu_layer_2nd_presenter)",
+            "r6c_back_to_shooting": "0x718c (HOME -> sid=0x0a Big6 Home) -> 0x718c (HOME -> Presenter::close on slots[1] -> returns cleanly to slots[0]=25procam_shooting_presenter sid=0x02)",
+        },
+    }
+
     return {
         "donor_root": str(DONOR_ROOT),
         "digests": digests,
         "imdb_highlights": interesting_imdb,
         "snippet_line_counts": {k: len(v.splitlines()) for k, v in snippets.items()},
+        "round4_contracts": round4_contracts,
         "round5_contracts": round5_contracts,
+        "round6_contracts": round6_contracts,
     }
 
 

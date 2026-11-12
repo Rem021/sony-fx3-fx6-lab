@@ -143,6 +143,7 @@ def build_binaries(
         "-fno-stack-protector",
         "-O2",
         "-g",
+        "-DFX6_NATIVE_FAITHFUL=1",
         f"-DFX6_ROUND={fx6_round}",
         str(HERE / "appfw-launch.c"),
         "-o",
@@ -180,6 +181,7 @@ def build_binaries(
         "-fno-stack-protector",
         "-O0",
         "-g",
+        "-DFX6_NATIVE_FAITHFUL=1",
         f"-DFX6_ROUND={fx6_round}",
         f"-DFX6_RESTORE_INFRA70={restore_infra70}",
         f"-DFX6_RESTORE_ALL_EARLY={restore_all_early}",
@@ -342,6 +344,50 @@ def write_rgba_png(out_path: pathlib.Path, width: int, height: int, rgba: bytes)
         "bytes": len(png_bytes),
         "sha256": sha256_bytes(png_bytes),
     }
+
+
+def unpack_rgba4444_pixel(p16: int) -> Tuple[int, int, int, int]:
+    """Unpack BMP_PixelFormat==1 (stella_fmt==7, 16-bit LE RGBA4444) -> (R, G, B, A) 8-bit."""
+    p16 &= 0xFFFF
+    r = ((p16 >> 12) & 0xF) * 17
+    g = ((p16 >> 8) & 0xF) * 17
+    b = ((p16 >> 4) & 0xF) * 17
+    a = (p16 & 0xF) * 17
+    return (r, g, b, a)
+
+
+def unpack_rgba4444_buffer(raw_le16: bytes) -> bytes:
+    """Unpack packed little-endian RGBA4444 pixels into [R, G, B, A] 8-bit bytes."""
+    if len(raw_le16) % 2 != 0:
+        raise ValueError(f"RGBA4444 byte length must be even, got {len(raw_le16)}")
+    out = bytearray((len(raw_le16) // 2) * 4)
+    pos = 0
+    for (p16,) in struct.iter_unpack("<H", raw_le16):
+        out[pos] = ((p16 >> 12) & 0xF) * 17
+        out[pos + 1] = ((p16 >> 8) & 0xF) * 17
+        out[pos + 2] = ((p16 >> 4) & 0xF) * 17
+        out[pos + 3] = (p16 & 0xF) * 17
+        pos += 4
+    return bytes(out)
+
+
+def unpack_rgba8888_pixel(px4: bytes) -> Tuple[int, int, int, int]:
+    """Unpack BMP_PixelFormat==2 (stella_fmt==1, 4-byte [R, G, B, A]) -> (R, G, B, A) 8-bit."""
+    if len(px4) != 4:
+        raise ValueError(f"RGBA8888 pixel must be 4 bytes, got {len(px4)}")
+    return (px4[0], px4[1], px4[2], px4[3])
+
+
+def unpack_rgba8888_buffer(raw_rgba: bytes) -> bytes:
+    """Convert stella RGBA8888 [R, G, B, A] bytes into GPE0 little-endian 0xAARRGGBB ([B, G, R, A])."""
+    if len(raw_rgba) % 4 != 0:
+        raise ValueError(f"RGBA8888 buffer length must be divisible by 4, got {len(raw_rgba)}")
+    out = bytearray(len(raw_rgba))
+    out[0::4] = raw_rgba[2::4]  # B
+    out[1::4] = raw_rgba[1::4]  # G
+    out[2::4] = raw_rgba[0::4]  # R
+    out[3::4] = raw_rgba[3::4]  # A
+    return bytes(out)
 
 
 def export_gpe0_pngs(
@@ -743,7 +789,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6], required=True)
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

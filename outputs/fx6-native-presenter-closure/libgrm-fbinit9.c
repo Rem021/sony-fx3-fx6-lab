@@ -13,22 +13,28 @@
  *   -DFX6_ROUND=4  Round 4: + InfraMediaConfig_Init + BK4 NVRAM + DMM/SeqQueueNetwork completions
  *   -DFX6_ROUND=5  Round 5: + Verified RGBA4444 (BMP_PixelFormat==1) & stella RGBA8888 (fmt==2)
  *                           + Native InfraInput (0x007a804c -> 0x005503e0) interactive key transitions
+ *   -DFX6_ROUND=6  Round 6: + Interactive Big6 sub-dialog (sid=0x0b), 2nd-layer Full Menu (sid=0x10),
+ *                           and Presenter::close round-trip back to Shooting (sid=0x02) with nop_count=0
  */
 
+#ifndef FX6_NATIVE_FAITHFUL
+#define FX6_NATIVE_FAITHFUL 1
+#endif
+
 #ifndef FX6_ROUND
-#define FX6_ROUND 3
+#define FX6_ROUND (FX6_NATIVE_FAITHFUL ? 6 : 3)
 #endif
 
 #ifndef FX6_RESTORE_INFRA70
-#define FX6_RESTORE_INFRA70 0
+#define FX6_RESTORE_INFRA70 ((FX6_NATIVE_FAITHFUL && (FX6_ROUND >= 5)) ? 1 : 0)
 #endif
 
 #ifndef FX6_RESTORE_ALL_EARLY
-#define FX6_RESTORE_ALL_EARLY 0
+#define FX6_RESTORE_ALL_EARLY ((FX6_NATIVE_FAITHFUL && (FX6_ROUND >= 5)) ? 1 : 0)
 #endif
 
 #ifndef FX6_REPLY_ALL_200D
-#define FX6_REPLY_ALL_200D 0
+#define FX6_REPLY_ALL_200D ((FX6_NATIVE_FAITHFUL && (FX6_ROUND >= 5)) ? 1 : 0)
 #endif
 
 #ifndef FX6_INITIAL_SETTING_DONE
@@ -549,10 +555,12 @@ static void ensure_uipc_syms(void) {
 
 #if FX6_KEY_COUNT > 0
 /*
- * Round 5 Native InfraInput -> App Queue (0x007a804c -> 0x005503e0) Key Injector:
+ * Round 5/6 Native InfraInput -> App Queue (0x007a804c -> 0x005503e0) Key Injector:
  *   Verified against libInfraInput.so MainThread (+0xa624..0xab18) and
  *   appFw.so App::recv_event_i (+0xc09fb4..0xc0a148) + key codebook (+0x2245a10):
- *     offset +0x00 (u32): infra_key_id (0x01ac=ENTER, 0x7177=HOME/Big6, 0x01ab=MENU)
+ *     offset +0x00 (u32): infra_key_id (0x718c=HOME/Big6, 0x01ab=MENU, 0x01ac=ENTER,
+ *                         0x0003=UP, 0x0030=DOWN, 0x0015=LEFT, 0x01af=RIGHT, 0x719a=CANCEL,
+ *                         0x704d=ISO/GAIN, 0x704f=ND, 0x7098=WB, 0x7177=SHUTTER)
  *     offset +0x04 (s16): sub_id1 = 0, +0x06 (s16): sub_id2 = 0
  *     offset +0x08 (u32): status (1 = PRESS, 0 = RELEASE)
  *     offset +0x0c..0x1c: flags / param1 / repeat_count / param2 / reserved = 0

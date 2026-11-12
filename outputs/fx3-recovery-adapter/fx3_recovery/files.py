@@ -61,6 +61,17 @@ def read_file(path, limit):
         os.close(fd)
 
 
+def is_clean_room_or_donor_unavailable(required_paths=()):
+    if os.environ.get('FX3_FX6_FORCE_CLEAN_ROOM', '').strip().lower() in ('1', 'true', 'yes'):
+        return True
+    if ROOT != WORKSPACE_ROOT or not WORKSPACE_ROOT.is_dir():
+        return True
+    for p in required_paths:
+        if not Path(p).exists():
+            return True
+    return False
+
+
 def check_volume():
     require(ROOT == Path('/Volumes/KAFU2T/AI/Projects/Mac'), 'unexpected installed workspace root')
     data = plistlib.loads(subprocess.check_output(['/usr/sbin/diskutil', 'info', '-plist', '/Volumes/KAFU2T']))

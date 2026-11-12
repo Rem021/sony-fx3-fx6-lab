@@ -320,6 +320,67 @@ def _cmd_verify_stage_a_orchestrator(fx6_lib_dir: Path, fx3_modules_dir: Path) -
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_kmod_userland_abi(fx6_lib_dir: Path, fx3_modules_dir: Path) -> int:
+    from .kmod_and_userland_abi_verifier import run_kmod_and_userland_abi_verification
+
+    rep = run_kmod_and_userland_abi_verification(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+    )
+    payload = {
+        "status": "OK" if rep.all_checks_passed else "FAILED",
+        "all_checks_passed": rep.all_checks_passed,
+        "kmod_userland_abi_ok": rep.kmod_userland_abi_ok,
+        "kmod_mutation_count": rep.kmod_mutation_count,
+        "fx6_kmod_loaded_count": rep.fx6_kmod_loaded_count,
+        "unaccounted_dev_node_count": rep.unaccounted_dev_node_count,
+        "unresolved_required_symbols": rep.unresolved_required_symbols,
+        "unsatisfied_verneed_count": rep.unsatisfied_verneed_count,
+        "missing_dt_needed_count": rep.missing_dt_needed_count,
+        "surface_a_kmod_matrix": {
+            "all_checks_passed": rep.surface_a_kmod_matrix.all_checks_passed,
+            "insmod_drv1_sha256": rep.surface_a_kmod_matrix.insmod_drv1_sha256,
+            "insmod_drv2_sha256": rep.surface_a_kmod_matrix.insmod_drv2_sha256,
+            "fx3_fx6_insmod_drv1_identical": rep.surface_a_kmod_matrix.fx3_fx6_insmod_drv1_identical,
+            "fx3_fx6_insmod_drv2_identical": rep.surface_a_kmod_matrix.fx3_fx6_insmod_drv2_identical,
+            "drv1_load_count": rep.surface_a_kmod_matrix.drv1_load_count,
+            "drv2_load_count": rep.surface_a_kmod_matrix.drv2_load_count,
+            "common_shared_kmod_count": rep.surface_a_kmod_matrix.common_shared_kmod_count,
+            "fx3_exclusive_kmod_count": rep.surface_a_kmod_matrix.fx3_exclusive_kmod_count,
+            "fx6_exclusive_kmod_names": list(rep.surface_a_kmod_matrix.fx6_exclusive_kmod_names),
+            "kmod_mutation_count": rep.surface_a_kmod_matrix.kmod_mutation_count,
+            "fx6_kmod_loaded_count": rep.surface_a_kmod_matrix.fx6_kmod_loaded_count,
+        },
+        "surface_b_dev_nodes": {
+            "all_checks_passed": rep.surface_b_dev_nodes.all_checks_passed,
+            "scanned_binary_count": rep.surface_b_dev_nodes.scanned_binary_count,
+            "unique_dev_path_count": rep.surface_b_dev_nodes.unique_dev_path_count,
+            "kernel_devtmpfs_count": rep.surface_b_dev_nodes.kernel_devtmpfs_count,
+            "initrd_nflash_count": rep.surface_b_dev_nodes.initrd_nflash_count,
+            "drv2_shared_kmod_count": rep.surface_b_dev_nodes.drv2_shared_kmod_count,
+            "p1_p2_adapted_partition_count": rep.surface_b_dev_nodes.p1_p2_adapted_partition_count,
+            "unaccounted_dev_nodes": list(rep.surface_b_dev_nodes.unaccounted_dev_nodes),
+            "p1_patched_zero_nflasha20_verified": rep.surface_b_dev_nodes.p1_patched_zero_nflasha20_verified,
+        },
+        "surface_c_elf_linkage": {
+            "all_checks_passed": rep.surface_c_elf_linkage.all_checks_passed,
+            "audited_root_binary_count": rep.surface_c_elf_linkage.audited_root_binary_count,
+            "transitive_closure_count": rep.surface_c_elf_linkage.transitive_closure_count,
+            "missing_dt_needed_count": rep.surface_c_elf_linkage.missing_dt_needed_count,
+            "unresolved_required_symbols": rep.surface_c_elf_linkage.unresolved_required_symbols,
+            "patched_aux_unresolved_plt_symbols": rep.surface_c_elf_linkage.patched_aux_unresolved_plt_symbols,
+            "appfw_stock_omitted_lazy_plt_count": rep.surface_c_elf_linkage.appfw_stock_omitted_lazy_plt_count,
+            "total_verneed_checks": rep.surface_c_elf_linkage.total_verneed_checks,
+            "unsatisfied_verneed_count": rep.surface_c_elf_linkage.unsatisfied_verneed_count,
+            "glibc_cxxabi_glibcxx_gcc_verified": rep.surface_c_elf_linkage.glibc_cxxabi_glibcxx_gcc_verified,
+            "fx3_base_runtime_abi_parity_verified": rep.surface_c_elf_linkage.fx3_base_runtime_abi_parity_verified,
+        },
+        "errors": list(rep.errors),
+    }
+    sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+    return 0 if rep.all_checks_passed else 1
+
+
 def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: Path, vfat_mode: str) -> int:
     rep = run_offline_candidate_dry_run(
         repo_root=repo_root,
@@ -361,6 +422,12 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "wbi_p5_write_and_hibernation_forbidden": rep.stage_a_orchestrator_audit.wbi_p5_write_and_hibernation_forbidden,
         "wbi_mutation_bytes": rep.stage_a_orchestrator_audit.wbi_mutation_bytes,
         "stage_a_orchestrator_scenarios_passed": rep.stage_a_orchestrator_audit.scenario_count,
+        "kmod_userland_abi_ok": rep.kmod_userland_abi_ok,
+        "kmod_mutation_count": rep.kmod_userland_abi_audit.kmod_mutation_count,
+        "fx6_kmod_loaded_count": rep.kmod_userland_abi_audit.fx6_kmod_loaded_count,
+        "unaccounted_dev_node_count": rep.kmod_userland_abi_audit.unaccounted_dev_node_count,
+        "unresolved_required_symbols": rep.kmod_userland_abi_audit.unresolved_required_symbols,
+        "unsatisfied_verneed_count": rep.kmod_userland_abi_audit.unsatisfied_verneed_count,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -378,7 +445,7 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 12 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge & Atomic Stage-A Boot Orchestrator CLI",
+        description="FX6-on-FX3 Phase 14 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator & Stage-A Kmod/Dev/ELF64 ABI Closure CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -394,7 +461,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-cp-rtos", "Verify U2 CP RTOS (cpapp-b.bin / nflasha8 & tomco.txt) compatibility and Stage-A stock-CP redline"),
         ("verify-p1-recovery-bridge", "Verify Phase 11 cross-package p1 recovery <-> Tier-0 capture alignment and U5 Bank 0 exit handoff"),
         ("verify-stage-a-orchestrator", "Verify Phase 12 nflasha3-initrd startup chain, WBI (p5) hibernation safety redline, and 6-scenario atomic Stage-A boot orchestrator"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A Orchestrator CPIO candidate and evaluate 12 safety gates"),
+        ("verify-kmod-userland-abi", "Verify Phase 14 Stage-A insmod_drv1/drv2 .ko matrix, userland /dev/* nodes, and ELF64 DT_NEEDED/DYNSYM/VERNEED linkage closure"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A Orchestrator + Kmod/Userland ABI CPIO candidate and evaluate 12 safety gates"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -430,6 +498,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_p1_recovery_bridge(args.repo_root)
     if args.cmd == "verify-stage-a-orchestrator":
         return _cmd_verify_stage_a_orchestrator(args.fx6_lib_dir, args.fx3_modules_dir)
+    if args.cmd == "verify-kmod-userland-abi":
+        return _cmd_verify_kmod_userland_abi(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     return 2

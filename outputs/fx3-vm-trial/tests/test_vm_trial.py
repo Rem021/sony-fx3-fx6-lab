@@ -47,6 +47,10 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 PNG_MAGIC = b"\x89PNG\r\n\x1a\n"
 
 
+def _force_clean_room() -> bool:
+    return os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes")
+
+
 def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -251,22 +255,29 @@ class TestScanlinePackerAndPngEncoder(unittest.TestCase):
         self.assertIn("uint32_t fx6_pack_scanlines(", c_code)
 
         xcrun = Path("/usr/bin/xcrun")
-        if not xcrun.is_file():
-            self.skipTest("/usr/bin/xcrun not present on host")
+        cc_bin = shutil.which("clang") or shutil.which("cc")
+        if sys.platform == "darwin" and xcrun.is_file():
+            shared_ext = ".dylib"
+            cc_prefix = [str(xcrun), "clang", "-O3", "-Wall", "-Wextra", "-Werror", "-dynamiclib"]
+        elif cc_bin:
+            shared_ext = ".so"
+            cc_prefix = [cc_bin, "-O3", "-Wall", "-Wextra", "-Werror", "-shared", "-fPIC"]
+        else:
+            self.skipTest("No host C compiler (/usr/bin/xcrun or clang/cc) available")
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp_dir = Path(tmp)
             c_file = tmp_dir / "fx6_scanline_test.c"
-            dylib_file = tmp_dir / "fx6_scanline_test.dylib"
+            dylib_file = tmp_dir / f"fx6_scanline_test{shared_ext}"
             c_file.write_text(c_code, encoding="utf-8")
             proc = subprocess.run(
-                [str(xcrun), "clang", "-O3", "-Wall", "-Wextra", "-Werror", "-dynamiclib", str(c_file), "-o", str(dylib_file)],
+                [*cc_prefix, str(c_file), "-o", str(dylib_file)],
                 capture_output=True,
                 text=True,
                 timeout=15,
                 check=False,
             )
-            self.assertEqual(proc.returncode, 0, msg=f"clang failed: {proc.stderr}")
+            self.assertEqual(proc.returncode, 0, msg=f"C compiler failed: {proc.stderr}")
             lib = ctypes.CDLL(str(dylib_file))
             pack_fn = lib.fx6_pack_scanlines
             pack_fn.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32]
@@ -300,6 +311,8 @@ class TestScanlinePackerAndPngEncoder(unittest.TestCase):
             self.assertEqual(bytes(dst_edge), exp_edge)
 
     def test_c_fastpath_and_python_reference_bit_identical_on_1024x540(self) -> None:
+        if sys.platform != "darwin" or not Path("/usr/bin/xcrun").is_file():
+            self.skipTest("macOS /usr/bin/xcrun dylib fastpath check skipped on non-macOS host")
         fast = run_fx6_menu_trial._get_fast_gpe0_fn()
         self.assertIsNotNone(fast, "_get_fast_gpe0_fn() should compile or load C dylib on macOS")
         ctypes_mod, fn = fast
@@ -554,7 +567,7 @@ class TestSvr4CpioBuilderAndTrialManifests(unittest.TestCase):
 
         # Optional read-only check on local BYOF `libgrm-fbinit25-live700.so` when present on disk
         local_shim = TRIAL_DIR / "libgrm-fbinit25-live700.so"
-        if local_shim.is_file():
+        if not _force_clean_room() and local_shim.is_file():
             with local_shim.open("rb") as fh:
                 elf_hdr = fh.read(20)
             self.assertEqual(elf_hdr[:6], b"\x7fELF\x02\x01")
@@ -722,7 +735,7 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
         for rel_path, digest in rt_sha.items():
             self.assertRegex(digest, SHA256_RE, msg=f"Invalid digest for {rel_path}")
             cand = FX3_VM_DIR / rel_path
-            if cand.is_file():
+            if not _force_clean_room() and cand.is_file():
                 self.assertEqual(_sha256_file_ro(cand), digest, msg=f"Local runtime binary/share mismatch: {rel_path}")
 
         meta_dir = FX3_VM_DIR / "metadata"
@@ -844,9 +857,10 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
             self.assertIn(flag, src)
 
     def test_command_launchers_zsh_syntax_check(self) -> None:
-        zsh_bin = Path("/bin/zsh")
-        if not zsh_bin.is_file():
-            self.skipTest("/bin/zsh not available")
+        zsh_str = "/bin/zsh" if Path("/bin/zsh").is_file() else shutil.which("zsh")
+        if not zsh_str:
+            self.skipTest("zsh not available")
+        zsh_bin = Path(zsh_str)
         launchers = (
             TRIAL_DIR / "FX6菜单.command",
             TRIAL_DIR / "FX3菜单.command",

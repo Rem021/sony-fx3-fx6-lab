@@ -12,7 +12,7 @@ import unittest
 HERE=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(HERE))
 from fx3_recovery import engine as E
-from fx3_recovery.files import ROOT,allocate_test_run_dir,read_file,new_directory,encode,check_volume
+from fx3_recovery.files import ROOT,allocate_test_run_dir,read_file,new_directory,encode,check_volume,is_clean_room_or_donor_unavailable
 from fx3_recovery.fat import FatP1,MAX_P1
 from fx3_recovery.squash import inflate_bounded
 
@@ -23,6 +23,8 @@ REFERENCES=ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-eng
 class AdapterTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        if is_clean_room_or_donor_unavailable([REFERENCES/v/'nflasha1' for v in ('2.04','2.05')]):
+            raise unittest.SkipTest('Clean-room mode or external FX3 2.04/2.05 donor images absent')
         check_volume();RUN.mkdir(mode=0o700,exist_ok=False)
         cls.images={v:read_file(REFERENCES/v/'nflasha1',MAX_P1) for v in ('2.04','2.05')}
         cls.before={v:E.sha(b) for v,b in cls.images.items()}

@@ -41,7 +41,7 @@ sys.path.insert(0,str(HERE))
 from fx3_recovery import elflink as L
 from fx3_recovery import worker as W
 from fx3_recovery import engine as E
-from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,new_directory,read_file,encode
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,is_clean_room_or_donor_unavailable,new_directory,read_file,encode
 
 RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage188-static-ELF-link-and-explicit-entry/runs','link-tests',__name__,sys.argv)
 spec=importlib.util.spec_from_file_location('own_worker_syscall_fixture',HERE/'tests/test_worker.py')
@@ -124,6 +124,9 @@ class LinkTests(unittest.TestCase):
     def setUpClass(cls):
         if _UNICORN_IMPORT_ERROR is not None:
             raise unittest.SkipTest(f'unicorn/capstone unavailable: {_UNICORN_IMPORT_ERROR}')
+        donor_ref = ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1'
+        if is_clean_room_or_donor_unavailable([donor_ref]):
+            raise unittest.SkipTest('Clean-room mode or external FX3 2.05 donor image absent')
         check_volume();RUN.mkdir(mode=0o700)
         cls.report=L.build_worker(RUN/'built')
         cls.raw=read_file(RUN/'built/worker.elf',L.MAX_OBJECT)

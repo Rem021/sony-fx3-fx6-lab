@@ -16,7 +16,7 @@ HERE=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(HERE))
 from fx3_recovery import worker as W
 from fx3_recovery import engine as E
-from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,new_directory,read_file,encode
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,is_clean_room_or_donor_unavailable,new_directory,read_file,encode
 
 RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage187-FX3-native-read-worker/runs','worker-tests',__name__,sys.argv)
 
@@ -164,9 +164,11 @@ class Kernel:
 class WorkerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.original=ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1'
+        if is_clean_room_or_donor_unavailable([cls.original]):
+            raise unittest.SkipTest('External donor files unavailable or FX3_FX6_FORCE_CLEAN_ROOM=1')
         check_volume();RUN.mkdir(mode=0o700)
         assert T.sizeof(Kstat)==128 and Kstat.size.offset==48
-        cls.original=ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1'
         raw=read_file(cls.original,W.MAX_P1);cls.original_sha=sha256(raw).hexdigest()
         cls.full=raw+b'\xff'*(W.MAX_P1-len(raw));cls.expected=sha256(cls.full).hexdigest()
         new_directory(RUN/'fixture',{'synthetic.p1':cls.full});cls.source=RUN/'fixture/synthetic.p1'

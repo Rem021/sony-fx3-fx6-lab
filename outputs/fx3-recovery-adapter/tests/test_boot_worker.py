@@ -21,7 +21,7 @@ HERE=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(HERE))
 from fx3_recovery import boot_worker as B
 from fx3_recovery import elflink as L
-from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,new_directory,read_file,encode
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,is_clean_room_or_donor_unavailable,new_directory,read_file,encode
 
 RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage188-static-ELF-link-and-explicit-entry/runs','boot-worker-tests',__name__,sys.argv)
 spec=importlib.util.spec_from_file_location('own_boot_arm64_fixture',HERE/'tests/test_elflink.py')
@@ -118,9 +118,11 @@ class BootKernel(M.Kernel):
 class BootTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        ref=ROOT/'work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd'
+        if is_clean_room_or_donor_unavailable([ref]):
+            raise unittest.SkipTest('External donor files unavailable or FX3_FX6_FORCE_CLEAN_ROOM=1')
         check_volume();RUN.mkdir(mode=0o700)
         cls.profiles={};cls.profile_paths=[]
-        ref=ROOT/'work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd'
         for path,size,digest in B.FILE_PROFILE:
             p=ref/path.lstrip('/');raw=read_file(p,size)
             assert len(raw)==size and sha256(raw).hexdigest()==digest

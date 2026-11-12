@@ -65,6 +65,12 @@ To comply with copyright laws and GitHub file size limits, **no proprietary Sony
 | `usr/bin/im.elf` (`p15`) | `40,920` | `87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec` | FX6 `/usr/bin/im.elf` primary process manager & `appFw.so` supervisor (`p15`) |
 | `bin/ud_wbi_drop.elf` (`updater`) | `10,304` | `4cfc8f979a4289915e2a3db6cd7e96bb97b35645149977619c04b0d9c5fbc7b3` | FX6 updater WBI header invalidator (`"invl"` sector-0 overwrite on `/dev/nflasha5`; forbidden in Stage-A) |
 | `0800_appli/setting/kemco.txt` | `1,788` | `6a609ee6b96c2ed0db47e9056ca67dfd8d419f9445302dacf09c262eace3b4fc` | FX6 kernel cmdline template (`warm.mode=2`, `wbimem=0x01919000@0x410524000` `+13.47 MiB` vs FX3) |
+| `usr/kmod/emg.ko` | `18,424` | `7680413f1ae0e575478b7a3989710ad2eee0b7584647ccb501e6d6d6a24b2682` | FX6-exclusive emergency GPIO kernel module (`insmod_drv2` slot `#31`; benignly skipped via `ENOENT` on stock FX3, zero `/dev/*` node) |
+| `usr/lib/libgemini-grm.so` | `51,800` | `f47c8f3ecff0710d2c246d7d0c0ccdb5381a9f39b1b8d68464d184c0be8070b9` | FX6 Gemini GRM userland interface library (`Surface B` `/dev/*` & `Surface C` ELF64 linkage closure) |
+| `usr/lib/libuxengine.so` | `742,128` | `11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876` | FX6 UXEngine menu presentation engine (`Surface B` `/dev/*` & `Surface C` ELF64 linkage closure) |
+| `nflasha3-initrd/lib/libc-2.25.so` | `1,283,936` | `4ecddf81915c4e03d9815eade4e626363616618be7f70aabfa467d52cb0348fd` | Base GNU C Library (`libc.so.6`, `GLIBC_2.17..GLIBC_PRIVATE` `VERDEF` parity across FX3 & FX6) |
+| `usr/lib/libstdc++.so.6.0.22` | `1,549,496` | `60857b39f0c34a09a889d937683bd8dae68200b6f10335fe94dee130a770247c` | Base C++ Standard Library (`libstdc++.so.6`, `GLIBCXX_3.4*` & `CXXABI_1.3*` `VERDEF` parity across FX3 & FX6) |
+| `usr/lib/libgcc_s.so.1` | `71,920` | `9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805` | Base GCC runtime support library (`GCC_3.0..GCC_4.5.0` `VERDEF` parity across FX3 & FX6) |
 
 ### 1.3 Phase 2 Binary Adaptation Donor Inputs (`P1` / `P3` / `P4` / `P8` / `P9` / `Fan`)
 
@@ -111,14 +117,16 @@ All 7 donor binaries modified purely in RAM / temporary directories by `outputs/
 
 ### 2.3 Track 3 — Offline FX6-on-FX3 Hardware Readiness & 12-Gate Safety Closure (`outputs/fx6-on-fx3-closure/` + `outputs/fx3-safety/`)
 
-- Executes the entire unified lab test suite (`fx3-recovery-adapter` + `fx3-safety` + `fx6-on-fx3-closure` + BYOF manifest consistency + tracked-tree clean-room hygiene), assembles the ephemeral `P1..P9 + Fan` Stage-A RAM-Overlay candidate inside `TemporaryDirectory`, and evaluates all 12 pre-flash safety gates (`G1..G12`) with zero persistent binary residue:
+- Executes the entire unified lab test suite (`fx3-recovery-adapter` + `fx3-safety` + `fx6-on-fx3-closure` + `fx3-vm-trial` + BYOF manifest consistency + tracked-tree clean-room hygiene), assembles the ephemeral `P1..P9 + Fan` Stage-A RAM-Overlay candidate inside `TemporaryDirectory`, and evaluates all 12 pre-flash safety gates (`G1..G12`) with zero persistent binary residue:
   ```sh
   make test
   make dry-run
   make verify-storage-ram-budget
   make verify-stage-a-orchestrator
-  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx6-on-fx3-closure" \
-    /usr/bin/python3 -B -m fx6_closure verify-p1-recovery-bridge
+  make verify-kmod-userland-abi
+  # Donorless clean-room CI simulation (matches .github/workflows/clean-room-ci.yml):
+  FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-byof
+  FX3_FX6_FORCE_CLEAN_ROOM=1 make test
   ```
 
 ### 2.4 Track 4 — Offline `p1` / `boot0` / `boot1` Recovery Adapter (`outputs/fx3-recovery-adapter/`)
@@ -206,6 +214,12 @@ make verify-byof
 | `usr/bin/im.elf` (`p15`) | `40,920` | `87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec` | FX6 `/usr/bin/im.elf` 主进程管理器与 `appFw.so` 监管入口（`p15`） |
 | `bin/ud_wbi_drop.elf` (`updater`) | `10,304` | `4cfc8f979a4289915e2a3db6cd7e96bb97b35645149977619c04b0d9c5fbc7b3` | FX6 升级态 WBI 头部作废工具（向 `/dev/nflasha5` 0 扇区写入 `"invl"`；Stage-A 严禁调用） |
 | `0800_appli/setting/kemco.txt` | `1,788` | `6a609ee6b96c2ed0db47e9056ca67dfd8d419f9445302dacf09c262eace3b4fc` | FX6 内核启动参数模板（`warm.mode=2`，`wbimem=0x01919000@0x410524000`，较 FX3 大 `+13.47 MiB`） |
+| `usr/kmod/emg.ko` | `18,424` | `7680413f1ae0e575478b7a3989710ad2eee0b7584647ccb501e6d6d6a24b2682` | FX6 独占应急 GPIO 内核模块（`insmod_drv2` 第 `#31` 顺位；在 FX3 原厂内核下按 `ENOENT` 无害跳过，零 `/dev/*` 节点） |
+| `usr/lib/libgemini-grm.so` | `51,800` | `f47c8f3ecff0710d2c246d7d0c0ccdb5381a9f39b1b8d68464d184c0be8070b9` | FX6 Gemini GRM 用户态接口库（`Surface B` `/dev/*` 与 `Surface C` ELF64 符号链接闭环审计） |
+| `usr/lib/libuxengine.so` | `742,128` | `11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876` | FX6 UXEngine 菜单呈现引擎库（`Surface B` `/dev/*` 与 `Surface C` ELF64 符号链接闭环审计） |
+| `nflasha3-initrd/lib/libc-2.25.so` | `1,283,936` | `4ecddf81915c4e03d9815eade4e626363616618be7f70aabfa467d52cb0348fd` | 基础 GNU C 运行时库（`libc.so.6`，FX3 与 FX6 `GLIBC_2.17..GLIBC_PRIVATE` `VERDEF` 100% 一致） |
+| `usr/lib/libstdc++.so.6.0.22` | `1,549,496` | `60857b39f0c34a09a889d937683bd8dae68200b6f10335fe94dee130a770247c` | 基础 C++ 标准库（`libstdc++.so.6`，FX3 与 FX6 `GLIBCXX_3.4*` 及 `CXXABI_1.3*` `VERDEF` 100% 一致） |
+| `usr/lib/libgcc_s.so.1` | `71,920` | `9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805` | 基础 GCC 运行时支持库（`GCC_3.0..GCC_4.5.0` `VERDEF` 在 FX3 与 FX6 间 100% 一致） |
 
 ### 1.3 Phase 2 二进制适配 Donor 输入清单（7 项 — `P1` / `P3` / `P4` / `P8` / `P9` / `Fan`）
 
@@ -252,14 +266,16 @@ make verify-byof
 
 ### 2.3 Track 3 — FX6-on-FX3 离线硬件就绪与 12 道安全门禁闭环 (`outputs/fx6-on-fx3-closure/` + `outputs/fx3-safety/`)
 
-- 一键运行全仓统一测试套件（涵盖 `fx3-recovery-adapter` + `fx3-safety` + `fx6-on-fx3-closure` + BYOF 清单一致性校验 + 净室零残留审计），在 `TemporaryDirectory` 中组装 `P1..P9 + Fan` Stage-A RAM-Overlay 候选包并通过全部 12 道首刷安全门禁（`G1..G12`），磁盘零残留：
+- 一键运行全仓统一测试套件（涵盖 `fx3-recovery-adapter` + `fx3-safety` + `fx6-on-fx3-closure` + `fx3-vm-trial` + BYOF 清单一致性校验 + 净室零残留审计），在 `TemporaryDirectory` 中组装 `P1..P9 + Fan` Stage-A RAM-Overlay 候选包并通过全部 12 道首刷安全门禁（`G1..G12`），磁盘零残留：
   ```sh
   make test
   make dry-run
   make verify-storage-ram-budget
   make verify-stage-a-orchestrator
-  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx6-on-fx3-closure" \
-    /usr/bin/python3 -B -m fx6_closure verify-p1-recovery-bridge
+  make verify-kmod-userland-abi
+  # 无 Donor 净室 CI 模拟（对应 .github/workflows/clean-room-ci.yml）：
+  FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-byof
+  FX3_FX6_FORCE_CLEAN_ROOM=1 make test
   ```
 
 ### 2.4 Track 4 — 离线 `p1` / `boot0` / `boot1` 恢复适配工具 (`outputs/fx3-recovery-adapter/`)

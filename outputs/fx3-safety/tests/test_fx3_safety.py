@@ -3,10 +3,19 @@
 from __future__ import annotations
 
 import json
+import os
 import struct
 import tempfile
 import unittest
 from pathlib import Path
+
+
+def _clean_room_or_missing_donor(*paths: Path) -> bool:
+    if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes"):
+        return True
+    if not Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027").is_dir():
+        return True
+    return any(not p.is_file() for p in paths)
 
 from fx3_safety.boot_contracts import (
     BK4_HEADER_SIZE,
@@ -541,7 +550,32 @@ class TestFX3SafetySuite(unittest.TestCase):
         ][0]
         self.assertEqual(g12_entry["status"], "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE")
 
-        # Verify parse_partinf_conf + build_sector0_from_partitions roundtrip on canonical FX3 & FX6 partinf.conf
+        # Synthetic pure-stdlib 30-entry partinf.conf roundtrip (always runs in clean-room CI)
+        synth_lines = [
+            "0x00000080, 0x0000BF80, 5, 0",  # p1
+            "0x0000C000, 0x0000A000, 5, 0",  # p2
+        ]
+        for idx in range(3, 31):
+            if idx == 6:
+                synth_lines.append("0x000D7800, 0x0000C800, 5, 0")
+            elif idx == 18:
+                synth_lines.append("0x0031C000, 0x0000A000, 5, 0")
+            else:
+                synth_lines.append("0x00000000, 0x00000000, 0, 0")
+        synth_entries = parse_partinf_conf("\n".join(synth_lines) + "\n")
+        synth_s0 = build_sector0_from_partitions(synth_entries)
+        r_synth = verify_sector0_partition_table(synth_s0)
+        self.assertTrue(r_synth.valid, r_synth.errors)
+        self.assertTrue(r_synth.calibration_partitions_intact)
+
+    @unittest.skipIf(
+        _clean_room_or_missing_donor(
+            Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"),
+            Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"),
+        ),
+        "Clean-room mode or external donor partinf.conf files absent",
+    )
+    def test_phase9_donor_partinf_conf_fx3_and_fx6_roundtrip(self) -> None:
         fx3_pconf = Path(
             "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"
         )
@@ -718,6 +752,64 @@ class TestFX3SafetySuite(unittest.TestCase):
             g for g in blocked_orch["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_entry["status"], "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE")
+
+    def test_phase14_gate12_kmod_userland_abi_redline(self) -> None:
+        repo_root = Path(__file__).resolve().parents[3]
+        good_items = {
+            k: {
+                "bytes": spec.get("exact_bytes") or spec.get("min_bytes") or 4096,
+                "pass1_sha256": "d" * 64,
+                "pass2_sha256": "d" * 64,
+            }
+            for k, spec in TIER0_REQUIRED_BACKUPS.items()
+        }
+        manifest = {"camera_body_tag": "e" * 64, "model_id": "0x91030080", "items": good_items}
+        trace = [{"nr": 35, "dirfd": -100, "path": "/tmp/jiritsu/libJit.so", "flags": 0, "ret": 0}]
+        hook = generate_failsafe_init2_overlay_hook()
+
+        ok_abi = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+            kernel_dtb_ok=True,
+            storage_and_ram_budget_ok=True,
+            cp_rtos_ok=True,
+            p1_recovery_bridge_ok=True,
+            stage_a_orchestrator_ok=True,
+            kmod_userland_abi_ok=True,
+        )
+        self.assertEqual(ok_abi["summary"]["verified_gates"], 12)
+        self.assertTrue(ok_abi["kmod_userland_abi_ok"])
+        self.assertTrue(ok_abi["summary"]["all_12_gates_verified"])
+
+        blocked_abi = evaluate_12_safety_gates(
+            repo_root,
+            tier0_manifest=manifest,
+            worker_syscall_trace=trace,
+            init2_failsafe_hook=hook,
+            candidate_bundle_verified=True,
+            allow_dry_run_gate12=True,
+            backup_mount_tolerance_ok=True,
+            boot_selector_and_banks_ok=True,
+            kernel_dtb_ok=True,
+            storage_and_ram_budget_ok=True,
+            cp_rtos_ok=True,
+            p1_recovery_bridge_ok=True,
+            stage_a_orchestrator_ok=True,
+            kmod_userland_abi_ok=False,
+        )
+        self.assertEqual(blocked_abi["summary"]["verified_gates"], 11)
+        self.assertFalse(blocked_abi["summary"]["all_12_gates_verified"])
+        self.assertFalse(blocked_abi["kmod_userland_abi_ok"])
+        g12_entry = [
+            g for g in blocked_abi["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_entry["status"], "BLOCKED_BY_KMOD_USERLAND_ABI_REDLINE")
 
 
 if __name__ == "__main__":

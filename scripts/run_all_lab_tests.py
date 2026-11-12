@@ -3,9 +3,9 @@
 
 Orchestrates and times all four repository verification suites plus BYOF manifest and
 tracked-tree clean-room hygiene checks with `PYTHONDONTWRITEBYTECODE=1` (`-B`):
-1. `outputs/fx3-recovery-adapter/tests` (58 tests)
-2. `outputs/fx3-safety/tests` (17 tests)
-3. `outputs/fx6-on-fx3-closure/tests` (56 tests)
+1. `outputs/fx3-recovery-adapter/tests` (63 tests)
+2. `outputs/fx3-safety/tests` (19 tests)
+3. `outputs/fx6-on-fx3-closure/tests` (60 tests)
 4. `outputs/fx3-vm-trial/tests` (16 tests — Track 1A `fx3-vm-trial` & Track 2 `fx3-vm` offline verification)
 5. Bilingual `docs/BYOF-REPRODUCTION.md` SHA-256 manifest audit (`scripts/verify_byof_manifest.py`)
 6. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
@@ -95,8 +95,10 @@ class SuiteExecutionResult:
     passed: bool
     return_code: int
     tests_ran: int
+    tests_skipped: int
     elapsed_seconds: float
     summary_line: str
+    failure_output: str = ""
 
 
 @dataclass(frozen=True)
@@ -126,6 +128,7 @@ class ByofManifestAuditSummary:
 class UnifiedLabRunReport:
     all_passed: bool
     total_tests_ran: int
+    total_tests_skipped: int
     suite_count: int
     total_elapsed_seconds: float
     suites: Tuple[SuiteExecutionResult, ...]
@@ -210,12 +213,23 @@ def audit_clean_room_hygiene(
     )
 
 
-def _parse_unittest_count_and_summary(stderr_text: str) -> Tuple[int, str]:
+def _parse_unittest_count_and_summary(stderr_text: str) -> Tuple[int, int, str]:
     ran_m = re.search(r"Ran\s+(\d+)\s+tests?\s+in\s+[0-9.]+s", stderr_text)
     count = int(ran_m.group(1)) if ran_m else 0
     non_empty = [ln.strip() for ln in stderr_text.splitlines() if ln.strip()]
     summary = non_empty[-1] if non_empty else ""
-    return count, summary
+    skip_m = re.search(r"skipped=(\d+)", summary)
+    skipped = int(skip_m.group(1)) if skip_m else 0
+    return count, skipped, summary
+
+
+def _resolve_python_exe() -> str:
+    env_py = os.environ.get("PYTHON", "").strip()
+    if env_py:
+        return env_py
+    if sys.executable:
+        return sys.executable
+    return PYTHON_BIN
 
 
 def run_single_suite(spec: LabSuiteSpec, repo_root: Path = REPO_ROOT) -> SuiteExecutionResult:
@@ -225,7 +239,7 @@ def run_single_suite(spec: LabSuiteSpec, repo_root: Path = REPO_ROOT) -> SuiteEx
     py_paths = [str((repo_root / rel).resolve()) for rel in spec.pythonpath_Entries]
     env["PYTHONPATH"] = os.pathsep.join(py_paths)
 
-    python_exe = PYTHON_BIN if Path(PYTHON_BIN).is_file() else sys.executable
+    python_exe = _resolve_python_exe()
     cmd = [
         python_exe,
         "-B",
@@ -248,7 +262,7 @@ def run_single_suite(spec: LabSuiteSpec, repo_root: Path = REPO_ROOT) -> SuiteEx
     )
     elapsed = round(time.monotonic() - t0, 4)
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
-    tests_ran, summary_line = _parse_unittest_count_and_summary(combined)
+    tests_ran, tests_skipped, summary_line = _parse_unittest_count_and_summary(combined)
     passed = proc.returncode == 0 and tests_ran > 0
     return SuiteExecutionResult(
         suite_id=spec.suite_id,
@@ -256,8 +270,10 @@ def run_single_suite(spec: LabSuiteSpec, repo_root: Path = REPO_ROOT) -> SuiteEx
         passed=passed,
         return_code=proc.returncode,
         tests_ran=tests_ran,
+        tests_skipped=tests_skipped,
         elapsed_seconds=elapsed,
         summary_line=summary_line,
+        failure_output="" if passed else combined.strip()[-4000:],
     )
 
 
@@ -265,7 +281,7 @@ def run_byof_manifest_audit(repo_root: Path = REPO_ROOT) -> ByofManifestAuditSum
     """Execute `scripts/verify_byof_manifest.py --json` with `-B` and `PYTHONDONTWRITEBYTECODE=1`."""
     env = dict(os.environ)
     env["PYTHONDONTWRITEBYTECODE"] = "1"
-    python_exe = PYTHON_BIN if Path(PYTHON_BIN).is_file() else sys.executable
+    python_exe = _resolve_python_exe()
     script_path = repo_root / "scripts" / "verify_byof_manifest.py"
     t0 = time.monotonic()
     proc = subprocess.run(
@@ -319,8 +335,11 @@ def run_all_lab_verifications(
             if stream_progress:
                 status_str = "PASS" if res.passed else "FAIL"
                 sys.stdout.write(
-                    f"    -> {status_str}: {res.tests_ran} tests in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
+                    f"    -> {status_str}: {res.tests_ran} tests (skipped={res.tests_skipped}) "
+                    f"in {res.elapsed_seconds:.2f}s ({res.summary_line})\n"
                 )
+                if not res.passed and res.failure_output:
+                    sys.stdout.write(f"    --- Failure output ({res.display_name}) ---\n{res.failure_output}\n")
                 sys.stdout.flush()
 
         byof_summary = run_byof_manifest_audit(repo_root=repo_root)
@@ -360,12 +379,14 @@ def run_all_lab_verifications(
 
     total_elapsed = round(time.monotonic() - overall_t0, 4)
     total_tests = sum(r.tests_ran for r in suite_results)
+    total_skipped = sum(r.tests_skipped for r in suite_results)
     suites_ok = all(r.passed for r in suite_results)
     all_passed = suites_ok and byof_summary.passed and hygiene.clean
 
     return UnifiedLabRunReport(
         all_passed=all_passed,
         total_tests_ran=total_tests,
+        total_tests_skipped=total_skipped,
         suite_count=len(suite_results),
         total_elapsed_seconds=total_elapsed,
         suites=tuple(suite_results),
@@ -409,7 +430,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         else:
             sys.stdout.write(
                 f"\n=== Unified Lab Verification: {overall} — "
-                f"{rep.total_tests_ran} tests across {rep.suite_count} suites + BYOF manifest + clean-room audit "
+                f"{rep.total_tests_ran} tests (skipped={rep.total_tests_skipped}) across {rep.suite_count} suites "
+                f"+ BYOF manifest ({rep.byof_manifest.verification_mode}) + clean-room audit "
                 f"in {rep.total_elapsed_seconds:.2f}s ===\n"
             )
 

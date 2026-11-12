@@ -60,6 +60,10 @@ from .kernel_dtb_compatibility_verifier import (
     Phase8KernelDtbReport,
     run_kernel_dtb_verification,
 )
+from .kmod_and_userland_abi_verifier import (
+    KmodAndUserlandAbiReport,
+    run_kmod_and_userland_abi_verification,
+)
 from .nd_unicorn_verifier import (
     FanExecSummary,
     NdSweepSummary,
@@ -166,6 +170,8 @@ class CandidateDryRunReport:
     p1_recovery_bridge_ok: bool
     stage_a_orchestrator_audit: Phase12StageABootOrchestratorReport
     stage_a_orchestrator_ok: bool
+    kmod_userland_abi_audit: KmodAndUserlandAbiReport
+    kmod_userland_abi_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -189,6 +195,7 @@ def run_offline_candidate_dry_run(
     precomputed_cp_rtos: Optional[Phase10CpRtosCompatibilityReport] = None,
     precomputed_p1_recovery_bridge: Optional[Phase11P1RecoveryBridgeReport] = None,
     precomputed_stage_a_orchestrator: Optional[Phase12StageABootOrchestratorReport] = None,
+    precomputed_kmod_userland_abi: Optional[KmodAndUserlandAbiReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -202,6 +209,7 @@ def run_offline_candidate_dry_run(
     corrupt_cp_rtos: bool = False,
     corrupt_p1_recovery_bridge: bool = False,
     corrupt_stage_a_orchestrator: bool = False,
+    corrupt_kmod_userland_abi: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -451,6 +459,17 @@ def run_offline_candidate_dry_run(
             stage_a_orchestrator_res.all_checks_passed and not corrupt_stage_a_orchestrator
         )
 
+        kmod_userland_abi_res = (
+            precomputed_kmod_userland_abi
+            or run_kmod_and_userland_abi_verification(
+                fx6_lib_dir=fx6_lib_dir,
+                fx3_modules_dir=fx3_modules_dir,
+            )
+        )
+        kmod_userland_abi_ok = (
+            kmod_userland_abi_res.all_checks_passed and not corrupt_kmod_userland_abi
+        )
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -494,6 +513,7 @@ def run_offline_candidate_dry_run(
             and cp_rtos_ok
             and p1_recovery_bridge_ok
             and stage_a_orchestrator_ok
+            and kmod_userland_abi_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -512,6 +532,7 @@ def run_offline_candidate_dry_run(
             cp_rtos_ok=cp_rtos_ok,
             p1_recovery_bridge_ok=p1_recovery_bridge_ok,
             stage_a_orchestrator_ok=stage_a_orchestrator_ok,
+            kmod_userland_abi_ok=kmod_userland_abi_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -562,6 +583,8 @@ def run_offline_candidate_dry_run(
         p1_recovery_bridge_ok=p1_recovery_bridge_ok,
         stage_a_orchestrator_audit=stage_a_orchestrator_res,
         stage_a_orchestrator_ok=stage_a_orchestrator_ok,
+        kmod_userland_abi_audit=kmod_userland_abi_res,
+        kmod_userland_abi_ok=kmod_userland_abi_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

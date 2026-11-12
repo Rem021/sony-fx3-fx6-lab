@@ -35,6 +35,7 @@ sys.dont_write_bytecode = True
 import argparse
 import hashlib
 import json
+import os
 import re
 import time
 from dataclasses import asdict, dataclass
@@ -94,6 +95,12 @@ CANONICAL_DONOR_RELPATHS: Dict[Tuple[str, str], str] = {
     ("1.2", "usr/bin/im.elf (p15)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
     ("1.2", "bin/ud_wbi_drop.elf (updater)"): "FX6-donor-assessment-20261103/team/donor/nested-files/updater.img/bin/ud_wbi_drop.elf",
     ("1.2", "0800_appli/setting/kemco.txt"): "FX6-donor-assessment-20261103/team/donor/tree/0800_appli/setting/kemco.txt",
+    ("1.2", "usr/kmod/emg.ko"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/kmod/emg.ko",
+    ("1.2", "usr/lib/libgemini-grm.so"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libgemini-grm.so",
+    ("1.2", "usr/lib/libuxengine.so"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libuxengine.so",
+    ("1.2", "nflasha3-initrd/lib/libc-2.25.so"): "FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/lib/libc-2.25.so",
+    ("1.2", "usr/lib/libstdc++.so.6.0.22"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libstdc++.so.6.0.22",
+    ("1.2", "usr/lib/libgcc_s.so.1"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libgcc_s.so.1",
     # Section 1.3: All 7 Phase 2 Binary Adaptation Donors
     ("1.3", "usr/lib/libInfraSetupFile.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraSetupFile.so",
     ("1.3", "usr/lib/libInfraMediaCommon.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraMediaCommon.so",
@@ -127,6 +134,12 @@ REQUIRED_ENTRY_KEYS: Tuple[Tuple[str, str], ...] = (
     ("1.2", "usr/bin/im.elf (p15)"),
     ("1.2", "bin/ud_wbi_drop.elf (updater)"),
     ("1.2", "0800_appli/setting/kemco.txt"),
+    ("1.2", "usr/kmod/emg.ko"),
+    ("1.2", "usr/lib/libgemini-grm.so"),
+    ("1.2", "usr/lib/libuxengine.so"),
+    ("1.2", "nflasha3-initrd/lib/libc-2.25.so"),
+    ("1.2", "usr/lib/libstdc++.so.6.0.22"),
+    ("1.2", "usr/lib/libgcc_s.so.1"),
     ("1.3", "usr/lib/libInfraSetupFile.so (FX6 6.01)"),
     ("1.3", "usr/lib/libInfraMediaCommon.so (FX6 6.01)"),
     ("1.3", "usr/lib/libInfraMediaConfig.so (FX6 6.01)"),
@@ -289,6 +302,7 @@ def _load_expected_code_constants(repo_root: Path) -> Tuple[Dict[Tuple[str, str]
         boot_selector_and_bank_verifier,
         cp_rtos_compatibility_verifier,
         kernel_dtb_compatibility_verifier,
+        kmod_and_userland_abi_verifier,
         p1_recovery_bridge_verifier,
         patcher,
         stage_a_boot_orchestrator,
@@ -462,6 +476,48 @@ def _load_expected_code_constants(repo_root: Path) -> Tuple[Dict[Tuple[str, str]
             f"fx6_closure.stage_a_boot_orchestrator.PINNED_INITRD_AND_BOOT_ARTIFACTS[{aid}]",
         )
 
+    # 3c. Phase 14 `kmod_and_userland_abi_verifier` pinned `.ko` & runtime/UI `.so` digests
+    phase14_constants = (
+        (
+            "usr/kmod/emg.ko",
+            kmod_and_userland_abi_verifier.PINNED_FX6_EMG_KO_BYTES,
+            kmod_and_userland_abi_verifier.PINNED_FX6_EMG_KO_SHA256,
+            "fx6_closure.kmod_and_userland_abi_verifier.PINNED_FX6_EMG_KO",
+        ),
+        (
+            "usr/lib/libgemini-grm.so",
+            kmod_and_userland_abi_verifier.PINNED_FX6_LIBGEMINI_GRM_BYTES,
+            kmod_and_userland_abi_verifier.PINNED_FX6_LIBGEMINI_GRM_SHA256,
+            "fx6_closure.kmod_and_userland_abi_verifier.PINNED_FX6_LIBGEMINI_GRM",
+        ),
+        (
+            "usr/lib/libuxengine.so",
+            kmod_and_userland_abi_verifier.PINNED_FX6_LIBUXENGINE_BYTES,
+            kmod_and_userland_abi_verifier.PINNED_FX6_LIBUXENGINE_SHA256,
+            "fx6_closure.kmod_and_userland_abi_verifier.PINNED_FX6_LIBUXENGINE",
+        ),
+        (
+            "nflasha3-initrd/lib/libc-2.25.so",
+            kmod_and_userland_abi_verifier.PINNED_FX6_INITRD_LIBC_BYTES,
+            kmod_and_userland_abi_verifier.PINNED_FX6_INITRD_LIBC_SHA256,
+            "fx6_closure.kmod_and_userland_abi_verifier.PINNED_FX6_INITRD_LIBC",
+        ),
+        (
+            "usr/lib/libstdc++.so.6.0.22",
+            kmod_and_userland_abi_verifier.PINNED_FX6_LIBSTDCXX_BYTES,
+            kmod_and_userland_abi_verifier.PINNED_FX6_LIBSTDCXX_SHA256,
+            "fx6_closure.kmod_and_userland_abi_verifier.PINNED_FX6_LIBSTDCXX",
+        ),
+        (
+            "usr/lib/libgcc_s.so.1",
+            kmod_and_userland_abi_verifier.PINNED_SHARED_LIBGCC_S_BYTES,
+            kmod_and_userland_abi_verifier.PINNED_SHARED_LIBGCC_S_SHA256,
+            "fx6_closure.kmod_and_userland_abi_verifier.PINNED_SHARED_LIBGCC_S",
+        ),
+    )
+    for doc_lbl, sz, sha, prov in phase14_constants:
+        expected[("1.2", doc_lbl)] = (sz, sha, prov)
+
     # 4. Tracked JSON manifest cross-check for FX3 `nflasha3/vmlinux.bin`
     vm_manifest_path = repo_root / "outputs" / "fx3-vm-trial" / "vm-candidate-gpecap25-live700.json"
     if vm_manifest_path.is_file():
@@ -572,7 +628,7 @@ def verify_byof_manifest(
     en_zh_parity_ok = len(parity_errors) == 0 and len(en_map) > 0
     errors.extend(parity_errors)
 
-    # Check required Phase 11 deliverables coverage
+    # Check required Phase 11/12/14 deliverables coverage
     for req_key in REQUIRED_ENTRY_KEYS:
         if req_key not in en_map:
             errors.append(f"Missing required BYOF manifest entry §{req_key[0]} `{req_key[1]}`")
@@ -604,8 +660,14 @@ def verify_byof_manifest(
 
     code_constants_ok = len(const_load_errs) == 0 and const_mismatch_count == 0
 
-    # Live donor file verification when canonical donor directory exists
-    effective_donor_root = None if (simulate_clean_clone or schema_only) else donor_root
+    # Live donor file verification when canonical donor directory exists (unless clean-room mode is forced)
+    env_force_clean_room = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+    force_clean = simulate_clean_clone or schema_only or env_force_clean_room
+    effective_donor_root = None if force_clean else donor_root
     donor_present = bool(effective_donor_root is not None and effective_donor_root.is_dir())
     live_verified = 0
     digest_cache: Dict[Path, Tuple[int, str]] = {}

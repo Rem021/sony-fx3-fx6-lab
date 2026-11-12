@@ -1,9 +1,32 @@
-"""FX6-on-FX3 Phase 12 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, WBI (p5) Safety Redline & Atomic Stage-A Boot Orchestrator Suite."""
+"""FX6-on-FX3 Phase 14 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator & Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure Suite."""
 
 from __future__ import annotations
 
-__version__ = "12.0.0"
+__version__ = "14.0.0"
 
+from .kmod_and_userland_abi_verifier import (
+    BinaryLinkageAudit,
+    DevNodeResolution,
+    ElfLinkageInfo,
+    ElfSymbolAndVerneedClosureReport,
+    InsmodEntry,
+    KmodAndUserlandAbiReport,
+    KmodDriverClassification,
+    KmodLoadOrderAndMatrixReport,
+    UserlandDevNodeAuditReport,
+    VerneedEntry,
+    audit_elf64_symbol_and_verneed_closure,
+    audit_kmod_load_order_and_driver_matrix,
+    audit_userland_dev_nodes,
+    build_synthetic_elf64_linkage_blob,
+    classify_kmod_driver_matrix,
+    classify_userland_dev_node,
+    evaluate_elf64_linkage_closure,
+    extract_dev_node_references_from_blob,
+    parse_elf64_linkage_info,
+    parse_insmod_script,
+    run_kmod_and_userland_abi_verification,
+)
 from .stage_a_boot_orchestrator import (
     BootArtifactDigestRecord,
     CandidateWbiRedlineAudit,
@@ -28,10 +51,18 @@ from .stage_a_boot_orchestrator import (
 
 __all__ = [
     "__version__",
+    "BinaryLinkageAudit",
     "BootArtifactDigestRecord",
     "CandidateWbiRedlineAudit",
+    "DevNodeResolution",
     "EXPECTED_STAGE_A_FORWARD_STEP_IDS",
+    "ElfLinkageInfo",
+    "ElfSymbolAndVerneedClosureReport",
     "InitrdBootChainContractAudit",
+    "InsmodEntry",
+    "KmodAndUserlandAbiReport",
+    "KmodDriverClassification",
+    "KmodLoadOrderAndMatrixReport",
     "ORCHESTRATOR_CPIO_REL_PATH",
     "OrchestratorSandboxRunResult",
     "OrchestratorScenarioResult",
@@ -40,10 +71,23 @@ __all__ = [
     "PINNED_FX6_WBI_NFLASH5_SHA256",
     "PINNED_INITRD_AND_BOOT_ARTIFACTS",
     "Phase12StageABootOrchestratorReport",
+    "UserlandDevNodeAuditReport",
+    "VerneedEntry",
     "Wbi2HeaderAudit",
+    "audit_elf64_symbol_and_verneed_closure",
     "audit_initrd_boot_chain_and_wbi_contracts",
+    "audit_kmod_load_order_and_driver_matrix",
+    "audit_userland_dev_nodes",
+    "build_synthetic_elf64_linkage_blob",
+    "classify_kmod_driver_matrix",
+    "classify_userland_dev_node",
+    "evaluate_elf64_linkage_closure",
+    "extract_dev_node_references_from_blob",
     "generate_stage_a_boot_orchestrator_script",
+    "parse_elf64_linkage_info",
+    "parse_insmod_script",
     "parse_wbi2_header_bytes",
+    "run_kmod_and_userland_abi_verification",
     "run_stage_a_boot_orchestrator_verification",
     "simulate_orchestrator_state_machine",
     "validate_candidate_wbi_redline",

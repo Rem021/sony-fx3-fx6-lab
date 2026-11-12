@@ -639,7 +639,8 @@ def audit_initrd_boot_chain_and_wbi_contracts(
     errors: List[str] = []
     artifact_records: List[BootArtifactDigestRecord] = []
 
-    donor_available = (not simulate_clean_room) and fx6_donor_root.is_dir()
+    env_clean = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes")
+    donor_available = (not simulate_clean_room) and (not env_clean) and fx6_donor_root.is_dir()
     mode = "LIVE_DONOR_VERIFIED" if donor_available else "CLEAN_ROOM_PINNED_CONTRACT"
 
     for art_id, rel_path, exp_bytes, exp_sha in PINNED_INITRD_AND_BOOT_ARTIFACTS:
@@ -936,7 +937,7 @@ def generate_stage_a_boot_orchestrator_script() -> str:
 set -u
 
 PREFIX="${PREFIX:-}"
-if [ -z "$PREFIX" ] && [ "$(uname -s 2>/dev/null || echo unknown)" != "Linux" ]; then
+if [ -z "$PREFIX" ] && { [ "$(uname -s 2>/dev/null || echo unknown)" != "Linux" ] || [ ! -e "/dev/nflasha" ]; }; then
     echo "ERR_SANDBOX_PREFIX_REQUIRED_ON_HOST" >&2
     exit 97
 fi

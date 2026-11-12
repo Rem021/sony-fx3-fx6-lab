@@ -22,6 +22,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import shutil
 import struct
 import subprocess
 import sys
@@ -225,13 +227,30 @@ def _to_signed64(val: int) -> int:
     return val - (1 << 64) if (val & (1 << 63)) else val
 
 
+def _resolve_zig_binary(zig_bin: Path = DEFAULT_ZIG_BIN) -> Path:
+    if zig_bin != DEFAULT_ZIG_BIN:
+        return zig_bin.resolve()
+    for env_key in ("ZIG_BIN", "FX6_ZIG"):
+        env_val = os.environ.get(env_key, "").strip()
+        if env_val:
+            cand = Path(env_val).resolve()
+            if cand.is_file():
+                return cand
+    if zig_bin.is_file():
+        return zig_bin.resolve()
+    which_zig = shutil.which("zig")
+    if which_zig:
+        return Path(which_zig).resolve()
+    return zig_bin.resolve()
+
+
 def compile_tier0_worker_shared_object(
     worker_c_path: Path = DEFAULT_WORKER_C_PATH,
     zig_bin: Path = DEFAULT_ZIG_BIN,
 ) -> CompiledWorkerArtifact:
     """Compile `tier0_backup_worker.c` into an ephemeral `.so` inside `TemporaryDirectory` and parse ELF64."""
     worker_c_path = worker_c_path.resolve()
-    zig_bin = zig_bin.resolve()
+    zig_bin = _resolve_zig_binary(zig_bin)
     if not worker_c_path.is_file():
         raise FileNotFoundError(f"Missing Tier-0 worker C source: {worker_c_path}")
     if not zig_bin.is_file():

@@ -16,6 +16,8 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import os
+import struct
 import tempfile
 import subprocess
 import unittest
@@ -261,6 +263,18 @@ from fx6_closure.tier0_unicorn_verifier import (
     compile_tier0_worker_shared_object,
     run_tier0_worker_in_unicorn,
 )
+from fx6_closure.kmod_and_userland_abi_verifier import (
+    build_synthetic_elf64_linkage_blob,
+    classify_kmod_driver_matrix,
+    classify_userland_dev_node,
+    evaluate_elf64_linkage_closure,
+    extract_dev_node_references_from_blob,
+    parse_elf64_linkage_info,
+    parse_insmod_script,
+    run_kmod_and_userland_abi_verification,
+)
+from fx6_closure.patcher import LibraryPatchSpec, PatchSiteSpec
+from fx6_closure.tier0_unicorn_verifier import _resolve_zig_binary
 from fx6_closure.vfat_builder import (
     SECTOR_SIZE,
     build_opelog_vfat_image,
@@ -268,10 +282,19 @@ from fx6_closure.vfat_builder import (
     verify_vfat_image,
 )
 
+_CLEAN_ROOM_SKIP_REASON = "External BYOF Sony donor blobs unavailable or FX3_FX6_FORCE_CLEAN_ROOM=1"
+
+
+def _is_clean_room_or_donor_missing() -> bool:
+    if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes"):
+        return True
+    return not DEFAULT_FX6_DONOR_LIB_DIR.is_dir() or not DEFAULT_FX3_MODULES_DIR.is_dir()
+
 
 class TestElf64Mapper(unittest.TestCase):
     """Validate strict ELF64 `PT_LOAD` and `ET_REL` section file-offset translation."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_elf64_pt_load_and_nobits_or_permission_rejection(self) -> None:
         raw = (DEFAULT_FX6_DONOR_LIB_DIR / "libInfraSetupFile.so").read_bytes()
         elf = parse_elf64_aarch64(raw)
@@ -297,6 +320,7 @@ class TestElf64Mapper(unittest.TestCase):
         with self.assertRaises(ElfMappingError):
             parse_elf64_aarch64(b"NOT_ELF!" + raw[8:])
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_elf64_relocatable_ko_section_mapper(self) -> None:
         upm_raw = (DEFAULT_FX3_MODULES_DIR / "upm.ko").read_bytes()
         elf_rel = parse_elf64_relocatable_aarch64(upm_raw)
@@ -320,6 +344,7 @@ class TestElf64Mapper(unittest.TestCase):
 class TestP1LutPathAdaptationAndRollback(unittest.TestCase):
     """Verify P1 4-library equal-length `/dev/nflasha20` -> `/dev/nflasha30` adaptation & rollback."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_p1_all_four_donor_libraries_patch_and_byte_exact_rollback(self) -> None:
         self.assertEqual(len(ALL_P1_SPECS), 4)
 
@@ -346,6 +371,7 @@ class TestP1LutPathAdaptationAndRollback(unittest.TestCase):
                 self.assertEqual(rb_rec.restored_sha256, spec.donor_sha256)
                 self.assertEqual(restored, raw)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_patcher_rejects_tampered_context_or_double_patch(self) -> None:
         spec = ALL_P1_SPECS[0]
         raw = (DEFAULT_FX6_DONOR_LIB_DIR / spec.library_name).read_bytes()
@@ -426,6 +452,7 @@ class TestP2OpelogVfatBuilder(unittest.TestCase):
 class TestP3P4P8P9AndFanUnicornVerification(unittest.TestCase):
     """Verify P3, P4, P8, P9 (`upm.ko`), and Fan (`libfan.so`) patching, rollback & Unicorn execution."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_p3_remoteboard_patch_rollback_and_unicorn_execution(self) -> None:
         raw = (DEFAULT_FX6_DONOR_LIB_DIR / "libInfraAppRemoteBoard.so").read_bytes()
         patched, p_rec = apply_patch_spec(raw, P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC)
@@ -440,6 +467,7 @@ class TestP3P4P8P9AndFanUnicornVerification(unittest.TestCase):
         self.assertTrue(rb_rec.donor_sha256_matched)
         self.assertEqual(restored, raw)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_p4_p8_and_combined_appfw_unicorn_verification(self) -> None:
         appfw_raw = (DEFAULT_FX6_DONOR_LIB_DIR / "appFw.so").read_bytes()
 
@@ -472,6 +500,7 @@ class TestP3P4P8P9AndFanUnicornVerification(unittest.TestCase):
         self.assertEqual(p8_res.instructions_executed, 2)
         self.assertTrue(p8_res.sp_preserved)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_p9_upm_ko_relocatable_patch_rollback_and_unicorn_guard(self) -> None:
         upm_raw = (DEFAULT_FX3_MODULES_DIR / "upm.ko").read_bytes()
         upm_patched, rec = apply_patch_spec(upm_raw, P9_UPM_KO_SPEC)
@@ -488,6 +517,7 @@ class TestP3P4P8P9AndFanUnicornVerification(unittest.TestCase):
         self.assertTrue(rb.donor_sha256_matched)
         self.assertEqual(restored, upm_raw)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_fan_libfan_patch_rollback_and_unicorn_return_one(self) -> None:
         fan_raw = (DEFAULT_FX6_DONOR_LIB_DIR / "libfan.so").read_bytes()
         fan_patched, rec = apply_patch_spec(fan_raw, FAN_LIBFAN_SPEC)
@@ -512,6 +542,12 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        try:
+            import unicorn as _uc  # noqa: F401
+        except ImportError as exc:
+            raise unittest.SkipTest(f"Unicorn not installed: {exc}")
+        if not _resolve_zig_binary().is_file():
+            raise unittest.SkipTest("Zig AArch64 cross-compiler not installed on host")
         cls.compiled_worker = compile_tier0_worker_shared_object()
 
     def test_freestanding_shared_object_has_zero_external_imports(self) -> None:
@@ -585,6 +621,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(res_excl.return_code, ERR_DST_OPEN_EXCL_FAILED)
         self.assertFalse(res_excl.manifest_created)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_end_to_end_candidate_dry_run_12_gates_pass_and_tamper_blocks(self) -> None:
         # 1. Valid candidate dry-run: full P1..P9 (9/9) + Fan + 8 MiB VFAT + Tier-0 -> 12/12 gates green
         rep_ok = run_offline_candidate_dry_run(compiled_worker=self.compiled_worker)
@@ -951,6 +988,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         ][0]
         self.assertEqual(g12_orch["status"], "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE")
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
         buf = io.StringIO()
         with redirect_stdout(buf):
@@ -995,6 +1033,7 @@ class TestP5P6UipcCompletionAndUnicorn(unittest.TestCase):
         with self.assertRaises(UipcProtocolError):
             synthesize_uipc_completion(UIPC_BB_TARGET_QUEUE, bytes.fromhex("0d2099090a0001800000"))
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_send_and_wait_cmp_i_unicorn_zero_asserts_and_fault_capture(self) -> None:
         appfw_raw = (DEFAULT_FX6_DONOR_LIB_DIR / "appFw.so").read_bytes()
         summary = run_p5_p6_uipc_unicorn_audit(appfw_raw)
@@ -1030,6 +1069,7 @@ class TestP5P6UipcCompletionAndUnicorn(unittest.TestCase):
 class TestP7BackupSync100BridgeVerifier(unittest.TestCase):
     """Verify P7 dual-kernel `pcidma_transfer_async` signature, Unicorn trampoline & Sync100 contract."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_p7_dual_kernel_signature_trampoline_and_dma_contract(self) -> None:
         rep = verify_p7_backup_bridge()
         self.assertTrue(rep.all_checks_passed)
@@ -1088,6 +1128,7 @@ class TestP7BackupSync100BridgeVerifier(unittest.TestCase):
 class TestStageARamOverlayPackager(unittest.TestCase):
     """Verify deterministic CPIO `newc` (`070701`) builder, parser/auditor, and Stage-A bundle."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_stage_a_cpio_reproducibility_alignment_and_manifest_contract(self) -> None:
         b1 = build_stage_a_ram_overlay_package()
         b2 = build_stage_a_ram_overlay_package()
@@ -1187,7 +1228,7 @@ class TestFourLayerRollbackDrill(unittest.TestCase):
         self.assertEqual(sm4.diag_code_prefix, "ERR_WATCHDOG_TIMEOUT_FALLBACK")
 
         # 2. Full 4-scenario POSIX `/bin/sh` sandbox execution
-        bundle = build_stage_a_ram_overlay_package()
+        bundle = build_stage_a_ram_overlay_package(synthetic_clean_room=_is_clean_room_or_donor_missing())
         rep = run_four_layer_rollback_drill(overlay_bundle=bundle)
         self.assertTrue(rep.all_scenarios_passed)
         self.assertEqual(rep.scenario_count, 4)
@@ -1234,6 +1275,7 @@ class TestFourLayerRollbackDrill(unittest.TestCase):
 class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
     """Verify Phase 5 Blueprint §3 5-Feature Routing & Cross-Model ELF Dynamic Symbol Closure."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_elf64_dt_needed_and_dynsym_symbol_closure(self) -> None:
         rep = audit_core_elf_symbol_closure()
         self.assertTrue(rep.all_checks_passed)
@@ -1293,6 +1335,8 @@ class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
         self.assertGreater(cap.canonical_free_ratio, 0.65)
         self.assertGreater(cap.worst_case_free_ratio, 0.50)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
+    def test_dimension_b_donor_setupfile_lut_mount_chain(self) -> None:
         # libInfraSetupFile.so SetupFile::RcvThread (0x196c8..0x196e0) /usr/data/lut/ mount chain
         setup_raw = (DEFAULT_FX6_DONOR_LIB_DIR / "libInfraSetupFile.so").read_bytes()
         mnt = verify_setupfile_lut_mount_chain(setup_raw)
@@ -1310,6 +1354,7 @@ class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
         tampered_setup[0x196E0:0x196E4] = b"\x1f\x20\x03\xd5"  # nop
         self.assertFalse(verify_setupfile_lut_mount_chain(bytes(tampered_setup)).verified)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_c_cine_ei_af_contracts_and_libmpr_dual_slot_unicorn(self) -> None:
         rep_c = verify_cine_ei_af_and_dual_slot_contracts()
         self.assertTrue(rep_c.all_checks_passed)
@@ -1349,6 +1394,7 @@ class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
         self.assertEqual(slot_0.assert_line, 274)
         self.assertIn("libXavcMxfGetSlotTypeFromMediaId", slot_0.assert_func or "")
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_feature_routing_subcommand(self) -> None:
         buf = io.StringIO()
         with redirect_stdout(buf):
@@ -1367,6 +1413,7 @@ class TestPhase5CoreFeatureRoutingVerifier(unittest.TestCase):
 class TestPhase6BackupMountToleranceVerifier(unittest.TestCase):
     """Verify Phase 6 U4 Storage Mount-Tolerance Audit & RAM-Shadow BK4\\0 Schema Synthesizer."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_u4_storage_mount_tolerance_static_and_unicorn(self) -> None:
         rep_a = audit_storage_mount_tolerance()
         self.assertTrue(rep_a.all_checks_passed)
@@ -1418,6 +1465,7 @@ class TestPhase6BackupMountToleranceVerifier(unittest.TestCase):
             self.assertTrue(err_kl.sp_preserved)
             self.assertFalse(err_kl.abort_or_fault)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_cross_model_backup_audit_and_ram_shadow_bk4_synthesizer(self) -> None:
         rep_b = audit_cross_model_backup_contracts()
         self.assertTrue(rep_b.all_checks_passed)
@@ -1520,6 +1568,7 @@ class TestPhase6BackupMountToleranceVerifier(unittest.TestCase):
         self.assertFalse(res_enum.valid)
         self.assertFalse(res_enum.boot_screen_enum_ok)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_backup_mount_contracts_subcommand(self) -> None:
         full_rep = run_backup_mount_tolerance_verification()
         self.assertTrue(full_rep.all_checks_passed)
@@ -1538,6 +1587,7 @@ class TestPhase6BackupMountToleranceVerifier(unittest.TestCase):
 class TestPhase7BootSelectorAndBankVerifier(unittest.TestCase):
     """Verify Phase 7 U5 Boot-Selector Single-Shot Contract & U3 0xfa0080 Bank 0/1 DDR Non-Overlap Verifier."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_u5_up_sh_ud_send_lsi_unicorn_and_loader_nor_contract(self) -> None:
         rep_a = audit_boot_selector_contract()
         self.assertTrue(rep_a.all_checks_passed)
@@ -1654,6 +1704,7 @@ class TestPhase7BootSelectorAndBankVerifier(unittest.TestCase):
         self.assertFalse(bad_stage_a.lsi_normal_packet_emitted)
         self.assertFalse(bad_stage_a.bk4_byte8_normal_ok)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_u3_bank0_bank1_non_overlap_and_calibration_shifts(self) -> None:
         rep_b = audit_fa0080_bank_maps()
         self.assertTrue(rep_b.all_checks_passed)
@@ -1696,6 +1747,7 @@ class TestPhase7BootSelectorAndBankVerifier(unittest.TestCase):
         self.assertEqual(rep_b.fx3_only_bank1_paths, ("\\SysSound.bin", "\\cpImg.dat"))
         self.assertEqual(rep_b.fx6_only_bank1_paths, ("\\cmrbnb.bin",))
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_fa0080_bank_auditor_rejects_overlap_bad_partition_and_cli_subcommand(self) -> None:
         import struct as _st
 
@@ -1755,6 +1807,7 @@ class TestPhase7BootSelectorAndBankVerifier(unittest.TestCase):
 class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
     """Verify Phase 8 cxd90057.dtb FDT SoC Compatibility Auditor & .ko vermagic/__versions CRC Verifier."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_fdt_parser_and_fx3_vs_fx6_cxd90057_dtb_soc_audit(self) -> None:
         rep_a = audit_dtb_soc_compatibility()
         self.assertTrue(rep_a.all_checks_passed)
@@ -1797,6 +1850,7 @@ class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
         self.assertEqual(rep_a.fx6_p1_kemco_audit.ramdisk_size_kib, 8192)
         self.assertEqual(rep_a.kemco_diff_keys, ("ramdisk_size", "initrd"))
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_fdt_parser_rejects_bad_magic_truncation_unaligned_unterminated_and_oob_strings(self) -> None:
         import struct as _st
 
@@ -1845,6 +1899,7 @@ class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
         with self.assertRaises(FdtFormatError):
             parse_fdt_blob(bytes(bad_rsv))
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_ko_vermagic_modversions_p9_integrity_and_cross_kernel_abi(self) -> None:
         rep_b = audit_kernel_module_compatibility()
         self.assertTrue(rep_b.all_checks_passed)
@@ -1889,6 +1944,7 @@ class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
             by_name["upm.ko"].only_fx3_undef,
         )
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_ko_auditor_rejects_vermagic_mismatch_tampered_crc_malformed_modinfo_and_cli(self) -> None:
         upm_raw = (DEFAULT_FX3_MODULES_DIR / "upm.ko").read_bytes()
         p1_uipc_raw = (DEFAULT_FX6_P1_INITRD_DIR / "usr" / "kmod" / "osal_uipc.ko").read_bytes()
@@ -1972,6 +2028,7 @@ class TestPhase8KernelDtbCompatibilityVerifier(unittest.TestCase):
 class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
     """Verify Phase 9 30-Partition Zero-Repartition Storage/p15 Footprint & Linux DDR/tmpfs Budget Verifier."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_30_partition_zero_repartition_mapping_spi_nor_and_p15_footprint(self) -> None:
         rep_a = audit_storage_topology_and_p15_budget()
         self.assertTrue(rep_a.all_checks_passed, rep_a.errors)
@@ -2036,6 +2093,7 @@ class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
         self.assertGreater(p15.donor_ext2_image_headroom_bytes, 78_000_000)
         self.assertTrue(p15.p15_fits_stock_fx3)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_rejects_edisx_repartition_sector0_writes_and_over_budget_p15(self) -> None:
         # 1. Script invoking `edisx.elf /dev/nflasha partinf.conf` -> rejected immediately
         bad_edisx = audit_zero_repartition_redline(
@@ -2063,6 +2121,7 @@ class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
         self.assertFalse(over_p15.p15_fits_stock_fx3)
         self.assertLess(over_p15.raw_headroom_bytes, 0)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_cxd90057_linux_ddr_pool_and_stage_a_tmpfs_ram_overlay_budgets(self) -> None:
         rep_b = audit_ddr_and_tmpfs_ram_budget()
         self.assertTrue(rep_b.all_checks_passed, rep_b.errors)
@@ -2114,6 +2173,7 @@ class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
             8 * 1024 * 1024,
         )
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_rejects_over_budget_tmpfs_overlay_cli_and_clean_room_hygiene_runner(self) -> None:
         import importlib.util
 
@@ -2179,6 +2239,7 @@ class TestPhase9StorageAndRamBudgetVerifier(unittest.TestCase):
 class TestPhase10CpRtosCompatibilityVerifier(unittest.TestCase):
     """Verify Phase 10 Blueprint `U2` CP RTOS (`cpapp-b.bin`) & `nflasha8` (`tomco.txt`) Compatibility Verifier."""
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_a_tomco_cross_model_shared_memcfg_and_ipc_contract(self) -> None:
         fx3_rt_raw = DEFAULT_FX3_RUNTIME_TOMCO_PATH.read_bytes()
         fx6_rt_raw = (DEFAULT_FX6_NFLASHA8_DIR / "tomco.txt").read_bytes()
@@ -2226,6 +2287,7 @@ class TestPhase10CpRtosCompatibilityVerifier(unittest.TestCase):
                 source_label="conflicting_duplicate_key",
             )
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_nflasha8_artifacts_arm32_startup_and_bank1_spi_nor_contracts(self) -> None:
         rep = run_cp_rtos_compatibility_verification()
         self.assertTrue(rep.all_checks_passed)
@@ -2257,6 +2319,7 @@ class TestPhase10CpRtosCompatibilityVerifier(unittest.TestCase):
         self.assertEqual(arm.fx6_dmmcfg_bytes, 41_552)
         self.assertEqual(arm.dmmcfg_size_delta_bytes, -1_768)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_c_fx6_cpapp_peripheral_hazard_markers_and_stock_cp_rationale(self) -> None:
         fx6_cp_raw = (DEFAULT_FX6_NFLASHA8_DIR / "cpapp-b.bin").read_bytes()
         markers_audit = scan_fx6_cp_peripheral_markers(fx6_cp_raw)
@@ -2277,6 +2340,7 @@ class TestPhase10CpRtosCompatibilityVerifier(unittest.TestCase):
         self.assertFalse(bad_scan.valid)
         self.assertEqual(bad_scan.verified_marker_count, 12)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_d_stage_a_stock_cp_redline_rejections_and_cli_subcommand(self) -> None:
         # 1. Valid Stage-A bundle passes Stock-CP Redline (`p8_cp_mutation_forbidden = True`, `cp_mutation_bytes = 0`)
         bundle = build_stage_a_ram_overlay_package()
@@ -2402,6 +2466,7 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
             self.assertFalse(bad_c_audit.rd_is_strictly_readonly)
             self.assertFalse(bad_c_audit.wr_carries_creat_excl_no_trunc)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_dimension_b_fx6_p1_vfat_squashfs_checksum_and_u5_sticky_free_exit(self) -> None:
         dim_b = verify_p1_container_and_u5_handoff()
         self.assertTrue(dim_b.valid, dim_b.errors)
@@ -2439,6 +2504,7 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
         self.assertFalse(bad_u5.valid)
         self.assertTrue(bad_u5.full_two_step_bank0_handoff.sticky_updater_risk)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_p1_recovery_bridge_subcommand(self) -> None:
         rep = run_p1_recovery_bridge_verification()
         self.assertTrue(rep.all_checks_passed, rep.errors)
@@ -2477,11 +2543,11 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
         )
         self.assertTrue(clean_rep.all_checks_passed, clean_rep.errors)
         self.assertEqual(clean_rep.verification_mode, "CLEAN_ROOM_SCHEMA_VERIFIED")
-        self.assertEqual(clean_rep.en_entry_count, 51)
-        self.assertEqual(clean_rep.zh_entry_count, 51)
+        self.assertEqual(clean_rep.en_entry_count, 57)
+        self.assertEqual(clean_rep.zh_entry_count, 57)
         self.assertTrue(clean_rep.en_zh_parity_ok)
         self.assertTrue(clean_rep.code_constants_ok)
-        self.assertGreaterEqual(clean_rep.code_constants_checked, 40)
+        self.assertGreaterEqual(clean_rep.code_constants_checked, 46)
         self.assertTrue(clean_rep.zero_stage_reference_ok)
 
         # 2. Live donor verification when local donor tree exists on workstation
@@ -2489,7 +2555,9 @@ class TestPhase11P1RecoveryBridgeAndByofManifest(unittest.TestCase):
         self.assertTrue(live_rep.all_checks_passed, live_rep.errors)
         if live_rep.donor_root_present:
             self.assertEqual(live_rep.verification_mode, "LOCAL_DONOR_VERIFIED")
-            self.assertEqual(live_rep.live_donor_files_verified, 48)
+            self.assertEqual(live_rep.live_donor_files_verified, 54)
+        else:
+            self.assertEqual(live_rep.verification_mode, "CLEAN_ROOM_SCHEMA_VERIFIED")
 
         # 3. Fail-closed detection on tampered BYOF markdown (EN/ZH drift, bad hex, stage* leak)
         good_md = (repo_root / "docs" / "BYOF-REPRODUCTION.md").read_text(encoding="utf-8")
@@ -2612,7 +2680,7 @@ class TestPhase12StageABootOrchestratorAndWbiRedline(unittest.TestCase):
 
     def test_wbi_p5_hibernation_safety_redline_positive_and_hazard_rejections(self) -> None:
         orch_script = generate_stage_a_boot_orchestrator_script()
-        bundle = build_stage_a_ram_overlay_package()
+        bundle = build_stage_a_ram_overlay_package(synthetic_clean_room=_is_clean_room_or_donor_missing())
         cpio_entry_names = tuple(e.name for e in bundle.cpio_audit.entries)
 
         ok_redline = validate_candidate_wbi_redline(
@@ -2694,7 +2762,12 @@ class TestPhase12StageABootOrchestratorAndWbiRedline(unittest.TestCase):
         self.assertEqual(sm_ok.wbi_writes, 0)
 
         # 2. Full 6-scenario `/bin/sh` sandbox verification inside TemporaryDirectory
-        rep = run_stage_a_boot_orchestrator_verification()
+        is_cr = _is_clean_room_or_donor_missing()
+        cr_bundle = build_stage_a_ram_overlay_package(synthetic_clean_room=True) if is_cr else None
+        rep = run_stage_a_boot_orchestrator_verification(
+            overlay_bundle=cr_bundle,
+            simulate_clean_room_initrd=is_cr,
+        )
         self.assertTrue(rep.all_checks_passed, rep.errors)
         self.assertTrue(rep.stage_a_orchestrator_ok)
         self.assertEqual(rep.scenario_count, 6)
@@ -2740,6 +2813,7 @@ class TestPhase12StageABootOrchestratorAndWbiRedline(unittest.TestCase):
             self.assertEqual(proc.returncode, 97)
             self.assertIn("ERR_SANDBOX_PREFIX_REQUIRED_ON_HOST", proc.stderr)
 
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_stage_a_orchestrator_subcommand(self) -> None:
         buf = io.StringIO()
         with redirect_stdout(buf):
@@ -2755,6 +2829,292 @@ class TestPhase12StageABootOrchestratorAndWbiRedline(unittest.TestCase):
         self.assertEqual(payload["total_emmc_writes"], 0)
         self.assertEqual(payload["total_wbi_writes"], 0)
         self.assertEqual(payload["total_lingering_mounts"], 0)
+
+
+class TestPhase14KmodAndUserlandAbiVerifier(unittest.TestCase):
+    """Verify Phase 14 `insmod_drv1`/`insmod_drv2` `.ko` matrix, `/dev/*` nodes, ELF64 `DT_NEEDED`/`DYNSYM`/`VERNEED` closure, and synthetic patcher."""
+
+    def test_clean_room_synthetic_elf64_patcher_and_mapper_roundtrip(self) -> None:
+        # Build a synthetic ELF64 AArch64 ET_DYN image with a "/dev/nflasha20\0" literal inside PT_LOAD
+        base_blob = bytearray(
+            build_synthetic_elf64_linkage_blob(
+                soname="libsynth_lut.so",
+                exports=("synth_open_lut",),
+            )
+        )
+        marker_pre = b"OPEN:"
+        marker_orig = b"/dev/nflasha20\x00"
+        marker_pat = b"/dev/nflasha30\x00"
+        marker_post = b":END"
+        inject_off = 64 + 2 * 56  # Inside mapped PT_LOAD
+        payload = marker_pre + marker_orig + marker_post
+        # Construct clean minimal ELF64 AArch64 ET_DYN buffer with 1 PT_LOAD (PF_R) covering [0, 512)
+        raw_elf = bytearray(512)
+        struct.pack_into(
+            "<4sBBBB8xHHIQQQIHHHHHH",
+            raw_elf,
+            0,
+            b"\x7fELF",
+            2,
+            1,
+            1,
+            0,
+            3,  # ET_DYN
+            183,  # EM_AARCH64
+            1,
+            0,
+            64,
+            0,
+            0,
+            64,
+            56,
+            1,
+            64,
+            0,
+            0,
+        )
+        struct.pack_into("<IIQQQQQQ", raw_elf, 64, 1, PF_R, 0, 0x10000, 0x10000, 512, 512, 0x1000)
+        raw_elf[inject_off : inject_off + len(payload)] = payload
+        donor_bytes = bytes(raw_elf)
+        donor_sha = hashlib.sha256(donor_bytes).hexdigest()
+        target_off = inject_off + len(marker_pre) + 12  # '2' in nflasha20
+
+        spec = LibraryPatchSpec(
+            spec_id="SYNTH_P1_LUT",
+            library_name="libsynth_lut.so",
+            expected_size=len(donor_bytes),
+            donor_sha256=donor_sha,
+            sites=(
+                PatchSiteSpec(
+                    site_id="synth_lut_2_to_3",
+                    patch_group="P1",
+                    symbol_or_desc="Synthetic /dev/nflasha20 -> /dev/nflasha30",
+                    vma=0x10000 + target_off,
+                    expected_file_offset=target_off,
+                    required_segment_flags=PF_R,
+                    original_bytes=b"2",
+                    patched_bytes=b"3",
+                    pre_context=b"/dev/nflasha",
+                    post_context=b"0\x00",
+                ),
+            ),
+        )
+        self.assertGreater(len(base_blob), 128)
+        patched, p_rec = apply_patch_spec(donor_bytes, spec)
+        self.assertEqual(p_rec.changed_byte_count, 1)
+        self.assertIn(marker_pat, patched)
+        with self.assertRaises(PatchVerificationError):
+            apply_patch_spec(patched, spec, verify_donor_sha256=False)
+        restored, rb_rec = rollback_patch_spec(patched, spec)
+        self.assertTrue(rb_rec.donor_sha256_matched)
+        self.assertEqual(restored, donor_bytes)
+
+    def test_clean_room_insmod_dev_node_and_synthetic_elf64_linkage_closure(self) -> None:
+        # 1. Surface A: `parse_insmod_script` & `classify_kmod_driver_matrix`
+        drv1_txt = "# early storage\ninsmod /kmod/devno.ko\ninsmod /kmod/emmc.ko mode=1\n"
+        drv2_txt = "insmod /usr/kmod/osal_uipc.ko\ninsmod /usr/kmod/upm.ko\ninsmod /usr/kmod/emg.ko\n"
+        d1 = parse_insmod_script(drv1_txt)
+        d2 = parse_insmod_script(drv2_txt)
+        self.assertEqual([e.ko_name for e in d1], ["devno.ko", "emmc.ko"])
+        self.assertEqual(d1[1].params, "mode=1")
+        self.assertEqual([e.ko_name for e in d2], ["osal_uipc.ko", "upm.ko", "emg.ko"])
+
+        matrix = classify_kmod_driver_matrix(
+            drv1_entries=d1,
+            drv2_entries=d2,
+            fx3_initrd_kmods=("devno.ko", "emmc.ko"),
+            fx6_initrd_kmods=("devno.ko", "emmc.ko"),
+            fx3_usr_kmods=("osal_uipc.ko", "upm.ko"),
+            fx6_usr_kmods=("osal_uipc.ko", "upm.ko", "emg.ko"),
+        )
+        by_ko = {m.ko_name: m for m in matrix}
+        self.assertEqual(by_ko["osal_uipc.ko"].category, "common_shared_cxd90057")
+        self.assertEqual(by_ko["upm.ko"].stage_a_disposition, "retained_stock_fx3_ko_with_ram_p9_null_guard")
+        self.assertEqual(by_ko["emg.ko"].category, "fx6_specific_omitted")
+
+        # 2. Surface B: `/dev/*` extraction & Stage-A classification
+        sample_blob = b"\x00/dev/nflasha20\x00/dev/nflasha21\x00/dev/stream2\x00foo/dev/fake\x00/dev/unknown_xyz99\x00"
+        extracted = extract_dev_node_references_from_blob(sample_blob)
+        self.assertEqual(extracted, ("/dev/nflasha20", "/dev/nflasha21", "/dev/stream2", "/dev/unknown_xyz99"))
+        self.assertEqual(classify_userland_dev_node("/dev/nflasha20")[0], "p1_p2_adapted_partition_node")
+        self.assertTrue(classify_userland_dev_node("/dev/nflasha20")[1])
+        self.assertEqual(classify_userland_dev_node("/dev/stream2")[0], "drv2_shared_cxd90057_kmod")
+        self.assertFalse(classify_userland_dev_node("/dev/unknown_xyz99")[1])
+
+        # 3. Surface C: Synthetic ELF64 `PT_DYNAMIC` + `DYNSYM` + `VERNEED`/`VERDEF` positive & negative closure
+        libc_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libc.so.6",
+                exports=("puts", "malloc"),
+                verdefs=("GLIBC_2.17",),
+            ),
+            file_name="libc.so.6",
+        )
+        libstd_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libstdc++.so.6",
+                dt_needed=("libc.so.6", "libgcc_s.so.1"),
+                exports=("_Znwm", "__cxa_throw"),
+                eager_undefs=("malloc",),
+                verneeds=(("libc.so.6", ("GLIBC_2.17",)), ("libgcc_s.so.1", ("GCC_3.0",))),
+                verdefs=("GLIBCXX_3.4", "CXXABI_1.3"),
+            ),
+            file_name="libstdc++.so.6",
+        )
+        libgcc_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libgcc_s.so.1",
+                exports=("_Unwind_Resume",),
+                verdefs=("GCC_3.0",),
+            ),
+            file_name="libgcc_s.so.1",
+        )
+        app_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libInfraSynth.so",
+                dt_needed=("libstdc++.so.6", "libc.so.6"),
+                exports=("infra_entry",),
+                eager_undefs=("_Znwm", "__cxa_throw"),
+                lazy_plt_undefs=("puts",),
+                weak_undefs=("__gmon_start__",),
+                verneeds=(
+                    ("libc.so.6", ("GLIBC_2.17",)),
+                    ("libstdc++.so.6", ("GLIBCXX_3.4", "CXXABI_1.3")),
+                ),
+            ),
+            file_name="libInfraSynth.so",
+        )
+        self.assertTrue(app_info.parsed_via_pt_dynamic)
+        providers = {
+            "libc.so.6": libc_info,
+            "libstdc++.so.6": libstd_info,
+            "libgcc_s.so.1": libgcc_info,
+            "libInfraSynth.so": app_info,
+        }
+        universe = set()
+        for p_inf in providers.values():
+            universe.update(p_inf.exported_symbols)
+
+        ok_closure = evaluate_elf64_linkage_closure(
+            root_infos=((app_info, True),),
+            provider_index=providers,
+            universe_exports=universe,
+            allowed_appfw_lazy_omitted=(),
+            patch_symbol_table_delta_count=0,
+            fx3_base_runtime_abi_parity_verified=True,
+        )
+        self.assertTrue(ok_closure.all_checks_passed, ok_closure.errors)
+        self.assertEqual(ok_closure.transitive_closure_count, 4)
+        self.assertEqual(ok_closure.missing_dt_needed_count, 0)
+        self.assertEqual(ok_closure.unresolved_required_symbols, 0)
+        self.assertEqual(ok_closure.unsatisfied_verneed_count, 0)
+        self.assertTrue(ok_closure.glibc_cxxabi_glibcxx_gcc_verified)
+
+        # Negative Fault 1: Missing DT_NEEDED shared library -> fail closed
+        bad_needed_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libBadNeeded.so",
+                dt_needed=("libnonexistent_fx6_only.so",),
+            ),
+            file_name="libBadNeeded.so",
+        )
+        bad_needed_rep = evaluate_elf64_linkage_closure(
+            root_infos=((app_info, True), (bad_needed_info, True)),
+            provider_index={**providers, "libBadNeeded.so": bad_needed_info},
+            universe_exports=universe,
+            allowed_appfw_lazy_omitted=(),
+        )
+        self.assertFalse(bad_needed_rep.all_checks_passed)
+        self.assertIn("libBadNeeded.so->libnonexistent_fx6_only.so", bad_needed_rep.missing_dt_needed)
+
+        # Negative Fault 2: Unresolved non-weak STB_GLOBAL SHN_UNDEF symbol -> fail closed
+        bad_sym_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libBadSym.so",
+                dt_needed=("libc.so.6",),
+                eager_undefs=("missing_strong_symbol_xyz",),
+            ),
+            file_name="libBadSym.so",
+        )
+        bad_sym_rep = evaluate_elf64_linkage_closure(
+            root_infos=((app_info, True), (bad_sym_info, True)),
+            provider_index={**providers, "libBadSym.so": bad_sym_info},
+            universe_exports=universe,
+            allowed_appfw_lazy_omitted=(),
+        )
+        self.assertFalse(bad_sym_rep.all_checks_passed)
+        self.assertGreater(bad_sym_rep.unresolved_required_symbols, 0)
+
+        # Negative Fault 3: Unsatisfied GLIBCXX_3.4.99 VERNEED -> fail closed
+        bad_vn_info = parse_elf64_linkage_info(
+            build_synthetic_elf64_linkage_blob(
+                soname="libBadVerneed.so",
+                dt_needed=("libstdc++.so.6",),
+                verneeds=(("libstdc++.so.6", ("GLIBCXX_3.4.99",)),),
+            ),
+            file_name="libBadVerneed.so",
+        )
+        bad_vn_rep = evaluate_elf64_linkage_closure(
+            root_infos=((app_info, True), (bad_vn_info, True)),
+            provider_index={**providers, "libBadVerneed.so": bad_vn_info},
+            universe_exports=universe,
+            allowed_appfw_lazy_omitted=(),
+        )
+        self.assertFalse(bad_vn_rep.all_checks_passed)
+        self.assertGreater(bad_vn_rep.unsatisfied_verneed_count, 0)
+
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
+    def test_live_donor_kmod_dev_nodes_elf64_abi_and_gate12_redline(self) -> None:
+        rep = run_kmod_and_userland_abi_verification()
+        self.assertTrue(rep.all_checks_passed, rep.errors)
+        self.assertTrue(rep.kmod_userland_abi_ok)
+        self.assertEqual(rep.kmod_mutation_count, 0)
+        self.assertEqual(rep.fx6_kmod_loaded_count, 0)
+        self.assertEqual(rep.unaccounted_dev_node_count, 0)
+        self.assertEqual(rep.missing_dt_needed_count, 0)
+        self.assertEqual(rep.unresolved_required_symbols, 0)
+        self.assertEqual(rep.unsatisfied_verneed_count, 0)
+
+        sa = rep.surface_a_kmod_matrix
+        self.assertEqual(sa.drv1_load_count, 4)
+        self.assertEqual(sa.drv2_load_count, 39)
+        self.assertEqual(sa.common_shared_kmod_count, 126)
+        self.assertEqual(sa.fx3_exclusive_kmod_count, 0)
+        self.assertEqual(sa.fx6_exclusive_kmod_names, ("emg.ko",))
+
+        sb = rep.surface_b_dev_nodes
+        self.assertTrue(sb.p1_patched_zero_nflasha20_verified)
+        self.assertEqual(sb.unaccounted_dev_nodes, ())
+        self.assertGreaterEqual(sb.unique_dev_path_count, 130)
+
+        sc = rep.surface_c_elf_linkage
+        self.assertEqual(sc.transitive_closure_count, 60)
+        self.assertEqual(sc.patch_symbol_table_delta_count, 0)
+        self.assertTrue(sc.fx3_base_runtime_abi_parity_verified)
+
+        # CLI `verify-kmod-userland-abi` check
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["verify-kmod-userland-abi"])
+        self.assertEqual(rc, 0)
+        payload = json.loads(buf.getvalue())
+        self.assertEqual(payload["status"], "OK")
+        self.assertTrue(payload["kmod_userland_abi_ok"])
+        self.assertEqual(payload["kmod_mutation_count"], 0)
+        self.assertEqual(payload["unresolved_required_symbols"], 0)
+
+        # End-to-end Gate G12 `BLOCKED_BY_KMOD_USERLAND_ABI_REDLINE` fault injection
+        bad_dry = run_offline_candidate_dry_run(
+            precomputed_kmod_userland_abi=rep,
+            corrupt_kmod_userland_abi=True,
+        )
+        self.assertFalse(bad_dry.candidate_ready)
+        self.assertFalse(bad_dry.kmod_userland_abi_ok)
+        self.assertEqual(bad_dry.blocked_gate_ids, ("G12_persistent_flash_write_authorization",))
+        g12 = [
+            g for g in bad_dry.safety_gates_report["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12["status"], "BLOCKED_BY_KMOD_USERLAND_ABI_REDLINE")
 
 
 if __name__ == "__main__":

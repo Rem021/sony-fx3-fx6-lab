@@ -1,0 +1,63 @@
+name: Clean-Room Verification CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  FX3_FX6_FORCE_CLEAN_ROOM: "1"
+
+jobs:
+  clean-room-verify:
+    name: Clean-Room Suite (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Zig 0.13.0 (freestanding AArch64 Tier-0 worker compiler)
+        uses: mlugg/setup-zig@v2
+        with:
+          version: "0.13.0"
+
+      - name: Install host C compiler & zsh on Ubuntu
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends clang zsh
+
+      - name: Install optional Unicorn & Capstone AArch64 emulator packages
+        run: |
+          python3 -B -m pip install --upgrade pip
+          python3 -B -m pip install unicorn capstone
+
+      - name: Verify BYOF clean-room manifest schema & EN/ZH parity
+        run: |
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-byof
+
+      - name: Run 4-suite donorless clean-room verification (synthetic + Unicorn + POSIX sh)
+        run: |
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
+
+      - name: Audit zero .pyc / __pycache__ / clean-room hygiene
+        run: |
+          PYTHON="$(command -v python3)" make clean-audit

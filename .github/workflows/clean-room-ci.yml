@@ -58,6 +58,10 @@ jobs:
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
 
+      - name: Run Stage-A H0->H1->H2 zero-mutation lifecycle drill + 10 fault injections
+        run: |
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make lifecycle-drill > /dev/null
+
       - name: Audit zero .pyc / __pycache__ / clean-room hygiene
         run: |
           PYTHON="$(command -v python3)" make clean-audit

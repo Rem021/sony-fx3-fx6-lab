@@ -282,6 +282,15 @@ from fx6_closure.hardware_readiness_packet import (
     populate_tier0_capture_bundle_fixture,
     verify_real_tier0_capture_bundle,
 )
+from fx6_closure.stage_a_post_trial_auditor import (
+    H1_TELEMETRY_SCHEMA,
+    LIFECYCLE_DRILL_SCHEMA,
+    POST_TRIAL_RECEIPT_SCHEMA,
+    recompute_bk4_record0_checksum,
+    run_h0_h1_h2_lifecycle_drill,
+    verify_h1_orchestrator_telemetry,
+    verify_post_trial_zero_mutation,
+)
 from fx6_closure.patcher import LibraryPatchSpec, PatchSiteSpec
 from fx6_closure.tier0_unicorn_verifier import _resolve_zig_binary
 from fx6_closure.vfat_builder import (
@@ -3391,6 +3400,237 @@ class TestPhase15HardwareReadinessPacketAndTier0BundleVerifier(unittest.TestCase
             disk_payload = json.loads(out_json.read_text(encoding="utf-8"))
             self.assertEqual(disk_payload["packet_sha256"], pkt1.packet_sha256)
             self.assertTrue(disk_payload["offline_engineering_complete"])
+            self.assertFalse(disk_payload["persistent_emmc_writes_authorized"])
+
+
+class TestPhase16StageAPostTrialAuditorAndLifecycleDrill(unittest.TestCase):
+    """Phase 16: Stage-A Post-Trial Zero-Mutation Receipt Auditor & H0->H1->H2 Lifecycle Drill."""
+
+    def test_post_trial_zero_mutation_receipt_and_cli_contracts(self) -> None:
+        """Runs in both normal and `FX3_FX6_FORCE_CLEAN_ROOM=1` donorless modes."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            h0_dir = root / "h0_pre_trial_capture"
+            h2_dir = root / "h2_post_power_cycle_capture"
+            populate_tier0_capture_bundle_fixture(
+                h0_dir,
+                body_serial="3492817",
+                emmc_cid="150100424a4e423452067890abcdef13",
+            )
+            populate_tier0_capture_bundle_fixture(
+                h2_dir,
+                body_serial="3492817",
+                emmc_cid="150100424a4e423452067890abcdef13",
+            )
+
+            h1_json_path = root / "h1-telemetry.json"
+            h1_payload = {
+                "schema": H1_TELEMETRY_SCHEMA,
+                "boot_branch": "STAGE_A_ADAPTED_CLEAN_EXIT",
+                "diag_code": "OK_STAGE_A_LIFO_TEARDOWN_CLEAN",
+                "im_elf_invoked": True,
+                "token_cleared_before_exec": True,
+                "token_present_after": False,
+                "wbi_guard_verified": True,
+                "lingering_wbi_inhibit_lock": False,
+                "verified_digest_count": 11,
+                "forward_steps": list(EXPECTED_STAGE_A_FORWARD_STEP_IDS),
+                "unwind_steps": list(EXPECTED_STAGE_A_LIFO_UNWIND_STEP_IDS),
+                "events": [
+                    "SYNC|arm_token_absent=1",
+                    "INSMOD|upm|arm_token_absent=1",
+                    "LOSETUP_ATTACH|/dev/loop7|arm_token_absent=1",
+                    "MOUNT|bind|arm_token_absent=1",
+                ],
+                "lingering_mount_count": 0,
+                "lingering_loop_count": 0,
+                "lingering_kmod_count": 0,
+                "emmc_write_count": 0,
+                "wbi_write_count": 0,
+                "sandbox_violation_count": 0,
+            }
+            h1_json_path.write_text(json.dumps(h1_payload, indent=2) + "\n", encoding="utf-8")
+
+            r1 = verify_post_trial_zero_mutation(h0_dir, h2_dir, h1_json_path)
+            r2 = verify_post_trial_zero_mutation(h0_dir, h2_dir, h1_json_path)
+            self.assertEqual(r1.schema, POST_TRIAL_RECEIPT_SCHEMA)
+            self.assertTrue(r1.all_checks_passed, r1.errors)
+            self.assertTrue(r1.zero_mutation_verified)
+            self.assertFalse(r1.persistent_emmc_writes_authorized)
+            self.assertFalse(r1.persistent_write_release)
+            self.assertEqual(r1.usb_or_camera_operations, 0)
+            self.assertTrue(r1.distinct_capture_dirs_ok)
+            self.assertTrue(r1.both_bundles_real_hardware_valid)
+            self.assertTrue(r1.same_body_identity_verified)
+            self.assertEqual(r1.audited_item_count, 13)
+            self.assertEqual(r1.matched_item_count, 13)
+            self.assertEqual(r1.persistent_bytes_mutated, 0)
+            self.assertEqual(r1.drifted_items, ())
+            self.assertTrue(r1.u5_sticky_boot_clean)
+            self.assertEqual(r1.h2_bk4_byte8, 0)
+            self.assertTrue(r1.h1_telemetry_supplied)
+            self.assertTrue(r1.h1_telemetry_verified)
+            self.assertEqual(len(r1.receipt_sha256), 64)
+            self.assertEqual(r1.receipt_sha256, r2.receipt_sha256)
+
+            # Reject passing the identical directory as both H0 and H2
+            same_dir_res = verify_post_trial_zero_mutation(h0_dir, h0_dir)
+            self.assertFalse(same_dir_res.all_checks_passed)
+            self.assertFalse(same_dir_res.distinct_capture_dirs_ok)
+
+            # CLI `verify-post-trial` deterministic output & exit code 0
+            out_receipt = root / "post-trial-receipt.json"
+            buf_ok = io.StringIO()
+            with redirect_stdout(buf_ok):
+                rc_ok = cli_main(
+                    [
+                        "verify-post-trial",
+                        "--h0-bundle-dir",
+                        str(h0_dir),
+                        "--h2-bundle-dir",
+                        str(h2_dir),
+                        "--h1-log",
+                        str(h1_json_path),
+                        "--output",
+                        str(out_receipt),
+                    ]
+                )
+            self.assertEqual(rc_ok, 0)
+            cli_payload = json.loads(out_receipt.read_text(encoding="utf-8"))
+            self.assertEqual(cli_payload["receipt_sha256"], r1.receipt_sha256)
+            self.assertTrue(cli_payload["zero_mutation_verified"])
+            self.assertFalse(cli_payload["persistent_emmc_writes_authorized"])
+
+            # Mutate 1 byte in H2 `p2_backup_bin.bin` (with valid BK4 checksum + updated H2 manifest) -> CLI exit code 1
+            p2_h2 = h2_dir / "p2_backup_bin.bin"
+            p2_mut = bytearray(p2_h2.read_bytes())
+            p2_mut[-1] ^= 0x01
+            p2_fixed = recompute_bk4_record0_checksum(bytes(p2_mut))
+            p2_h2.write_bytes(p2_fixed)
+            m2_path = h2_dir / "backup-manifest.json"
+            m2_obj = json.loads(m2_path.read_text(encoding="utf-8"))
+            p2_sha = hashlib.sha256(p2_fixed).hexdigest()
+            m2_obj["items"]["p2_backup_bin"]["pass1_sha256"] = p2_sha
+            m2_obj["items"]["p2_backup_bin"]["pass2_sha256"] = p2_sha
+            m2_path.write_text(json.dumps(m2_obj, indent=2) + "\n", encoding="utf-8")
+
+            with redirect_stdout(io.StringIO()):
+                rc_bad = cli_main(
+                    [
+                        "verify-post-trial",
+                        "--h0-bundle-dir",
+                        str(h0_dir),
+                        "--h2-bundle-dir",
+                        str(h2_dir),
+                    ]
+                )
+            self.assertEqual(rc_bad, 1)
+
+    def test_h1_orchestrator_telemetry_structured_log_and_fault_rejections(self) -> None:
+        """Validate structured line-oriented H1 telemetry parsing and fail-closed anomalies."""
+        lines = [
+            "BOOT_BRANCH=STAGE_A_ADAPTED_CLEAN_EXIT",
+            "DIAG_CODE=OK_STAGE_A_LIFO_TEARDOWN_CLEAN",
+            "IM_ELF_INVOKED=1",
+            "TOKEN_CLEARED_BEFORE_EXEC=1",
+            "TOKEN_PRESENT_AFTER=0",
+            "WBI_GUARD_VERIFIED=1",
+            "LINGERING_WBI_INHIBIT_LOCK=0",
+            "VERIFIED_DIGEST_COUNT=11",
+            "EVENT=SYNC|arm_token_absent=1",
+            "EVENT=INSMOD|upm|arm_token_absent=1",
+            "EVENT=MOUNT|bind|arm_token_absent=1",
+        ]
+        for st in EXPECTED_STAGE_A_FORWARD_STEP_IDS:
+            lines.append(f"FORWARD_STEP={st}")
+        for st in EXPECTED_STAGE_A_LIFO_UNWIND_STEP_IDS:
+            lines.append(f"UNWIND_STEP={st}")
+        ok_log = "\n".join(lines) + "\n"
+
+        audit_ok = verify_h1_orchestrator_telemetry(ok_log)
+        self.assertTrue(audit_ok.valid, audit_ok.errors)
+        self.assertEqual(audit_ok.source_kind, "structured_log")
+        self.assertTrue(audit_ok.clear_before_exec_ok)
+        self.assertTrue(audit_ok.wbi_hibernation_guard_ok)
+        self.assertTrue(audit_ok.verify_before_mount_ok)
+        self.assertTrue(audit_ok.forward_steps_ok)
+        self.assertTrue(audit_ok.lifo_unwind_ok)
+        self.assertTrue(audit_ok.zero_persistent_writes_ok)
+
+        # Anomaly 1: Mount executed while `/tmp/mod_arm_once` still existed (`arm_token_absent=0`)
+        bad_cbe = verify_h1_orchestrator_telemetry(
+            ok_log.replace("EVENT=INSMOD|upm|arm_token_absent=1", "EVENT=INSMOD|upm|arm_token_absent=0")
+        )
+        self.assertFalse(bad_cbe.valid)
+        self.assertFalse(bad_cbe.clear_before_exec_ok)
+
+        # Anomaly 2: Incomplete Verify-Before-Mount digest count (`10 != 11`)
+        bad_vbm = verify_h1_orchestrator_telemetry(
+            ok_log.replace("VERIFIED_DIGEST_COUNT=11", "VERIFIED_DIGEST_COUNT=10")
+        )
+        self.assertFalse(bad_vbm.valid)
+        self.assertFalse(bad_vbm.verify_before_mount_ok)
+
+        # Anomaly 3: Lingering mount / non-zero eMMC write count
+        bad_write = verify_h1_orchestrator_telemetry(ok_log + "EMMC_WRITE_COUNT=1\nLINGERING_MOUNT_COUNT=1\n")
+        self.assertFalse(bad_write.valid)
+        self.assertFalse(bad_write.lifo_unwind_ok)
+        self.assertFalse(bad_write.zero_persistent_writes_ok)
+
+    def test_clean_room_h0_h1_h2_lifecycle_drill_determinism_and_10_faults(self) -> None:
+        """Execute full H0->H1->H2 lifecycle drill + 10 fault injections in clean-room synthetic mode."""
+        d1 = run_h0_h1_h2_lifecycle_drill(synthetic_clean_room=True)
+        d2 = run_h0_h1_h2_lifecycle_drill(synthetic_clean_room=True)
+        self.assertEqual(d1.schema, LIFECYCLE_DRILL_SCHEMA)
+        self.assertEqual(d1.verification_mode, "CLEAN_ROOM_SYNTHETIC_VERIFIED")
+        self.assertTrue(d1.all_checks_passed, d1.errors)
+        self.assertFalse(d1.persistent_emmc_writes_authorized)
+        self.assertFalse(d1.persistent_write_release)
+        self.assertEqual(d1.usb_or_camera_operations, 0)
+        self.assertTrue(d1.temp_dir_cleaned)
+        self.assertTrue(d1.h0_baseline_valid)
+        self.assertEqual(d1.h1_orchestrator_returncode, 0)
+        self.assertTrue(d1.h1_telemetry_audit.valid)
+        self.assertTrue(d1.h1_cold_reboot_passthrough_ok)
+        self.assertTrue(d1.h2_nominal_zero_mutation_ok)
+        self.assertEqual(d1.h2_nominal_persistent_bytes_mutated, 0)
+        self.assertEqual(d1.h2_nominal_drifted_items, ())
+        self.assertTrue(d1.h2_nominal_u5_sticky_boot_clean)
+        self.assertEqual(d1.fault_injection_count, 10)
+        self.assertTrue(d1.fault_injections_all_rejected)
+        for fc in d1.fault_cases:
+            self.assertTrue(fc.rejected_as_expected, fc.fault_id)
+        self.assertEqual(d1.drill_sha256, d2.drill_sha256)
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["run-h0-h1-h2-drill", "--clean-room"])
+        self.assertEqual(rc, 0)
+        cli_json = json.loads(buf.getvalue())
+        self.assertEqual(cli_json["drill_sha256"], d1.drill_sha256)
+        self.assertTrue(cli_json["all_checks_passed"])
+        self.assertFalse(cli_json["persistent_emmc_writes_authorized"])
+
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
+    def test_live_donor_h0_h1_h2_lifecycle_drill_and_cli(self) -> None:
+        d1 = run_h0_h1_h2_lifecycle_drill()
+        d2 = run_h0_h1_h2_lifecycle_drill()
+        self.assertEqual(d1.schema, LIFECYCLE_DRILL_SCHEMA)
+        self.assertEqual(d1.verification_mode, "LOCAL_DONOR_AND_POSIX_SANDBOX_VERIFIED")
+        self.assertTrue(d1.all_checks_passed, d1.errors)
+        self.assertFalse(d1.persistent_emmc_writes_authorized)
+        self.assertTrue(d1.fault_injections_all_rejected)
+        self.assertEqual(d1.fault_injection_count, 10)
+        self.assertEqual(d1.drill_sha256, d2.drill_sha256)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out_json = Path(tmp) / "lifecycle-drill.json"
+            with redirect_stdout(io.StringIO()):
+                rc = cli_main(["run-h0-h1-h2-drill", "--output", str(out_json)])
+            self.assertEqual(rc, 0)
+            disk_payload = json.loads(out_json.read_text(encoding="utf-8"))
+            self.assertEqual(disk_payload["drill_sha256"], d1.drill_sha256)
+            self.assertTrue(disk_payload["all_checks_passed"])
             self.assertFalse(disk_payload["persistent_emmc_writes_authorized"])
 
 

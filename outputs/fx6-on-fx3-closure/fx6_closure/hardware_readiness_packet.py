@@ -1151,12 +1151,12 @@ def build_gate_ordered_hardware_checklist() -> Tuple[HardwareExecutionPhaseStep,
             ),
             ordered_steps=(
                 "1. Cold-boot camera normally without `/tmp/mod_arm_once` and confirm stock Sony ILME-FX3 Ver. 7.00/7.02 Shooting HUD & menu operation.",
-                "2. Run post-trial read-only SHA-256 verification across `sector0`, `boot0`, `boot1`, `p1_updater`, `p2_backup_bin`, `p2_psd_bin`, `p2_defdet_bin`, `p6_jiritsu`, `p12_cert`, `p18_lensfile`, `spi_nor_ddrtraining`, `p8_tomco.txt`, and `p5_wbi_header.bin`.",
-                "3. Diff post-trial `backup-manifest.json` digests bit-for-bit against the archived Phase H0 baseline `backup-manifest.json`.",
+                "2. Capture an independent post-trial read-only Tier-0 readback bundle (`H2`) across all 11 Tier-0 items (`sector0`, `boot0`, `boot1`, `p1_updater`, `p2_backup_bin`, `p2_psd_bin`, `p2_defdet_bin`, `p6_jiritsu`, `p12_cert`, `p18_lensfile`, `spi_nor_ddrtraining`) plus `p8_tomco.txt` and `p5_wbi_header.bin`.",
+                "3. Run `python3 -B -m fx6_closure verify-post-trial --h0-bundle-dir <H0_DIR> --h2-bundle-dir <H2_DIR> --h1-log <H1_TELEMETRY_JSON> --output /tmp/stage-a-post-trial-receipt.json` to emit a cryptographic `stage_a_post_trial_receipt_v1` zero-mutation receipt.",
             ),
             pass_criteria=(
-                "100% bit-exact SHA-256 match across all 11 Tier-0 items + `p8_tomco.txt` + `p5_wbi_header.bin` before vs after Phase H1 (`total_flash_mutation_bytes == 0`).",
-                "Zero `/setting/updater/mode*` sticky files and `BK4\\0` `byte8 == 0x00` normal Bank 0 cold-boot selector intact.",
+                "`verify-post-trial` exits `0` with `all_checks_passed == True`, `same_body_identity_verified == True`, `persistent_bytes_mutated == 0`, and `drifted_items == []` across all 13 audited items.",
+                "`u5_sticky_boot_clean == True` (`BK4\\0` `boot_img` byte `+8 == 0x00` and zero `/setting/updater/mode*` sticky residue) and `persistent_emmc_writes_authorized == False`.",
             ),
             abort_and_recovery_actions=(
                 "Keep `persistent_emmc_writes_authorized = False` locked; archive Phase H0 + Phase H2 bit-exact parity receipt before any future Stage-B architectural review.",

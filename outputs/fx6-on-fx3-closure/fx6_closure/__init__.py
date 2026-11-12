@@ -1,8 +1,8 @@
-"""FX6-on-FX3 Phase 15 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure & Stage-A Hardware Readiness Packet Suite."""
+"""FX6-on-FX3 Phase 16 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure, Stage-A Hardware Readiness Packet & Post-Trial Zero-Mutation Receipt Auditor Suite."""
 
 from __future__ import annotations
 
-__version__ = "15.0.0"
+__version__ = "16.0.0"
 
 from .hardware_readiness_packet import (
     FX3_MODEL_ID_HEX,
@@ -64,6 +64,22 @@ from .stage_a_boot_orchestrator import (
     simulate_orchestrator_state_machine,
     validate_candidate_wbi_redline,
 )
+from .stage_a_post_trial_auditor import (
+    H1_TELEMETRY_SCHEMA,
+    LIFECYCLE_DRILL_SCHEMA,
+    PHASE_16_VERSION,
+    POST_TRIAL_RECEIPT_SCHEMA,
+    H1OrchestratorTelemetryAudit,
+    LifecycleFaultInjectionCase,
+    PostTrialItemParityRecord,
+    StageAH0H1H2LifecycleDrillReport,
+    StageAPostTrialReceipt,
+    recompute_bk4_record0_checksum,
+    run_h0_h1_h2_lifecycle_drill,
+    serialize_h1_orchestrator_telemetry_from_sandbox,
+    verify_h1_orchestrator_telemetry,
+    verify_post_trial_zero_mutation,
+)
 
 __all__ = [
     "__version__",
@@ -75,12 +91,16 @@ __all__ = [
     "ElfLinkageInfo",
     "ElfSymbolAndVerneedClosureReport",
     "FX3_MODEL_ID_HEX",
+    "H1OrchestratorTelemetryAudit",
+    "H1_TELEMETRY_SCHEMA",
     "HardwareExecutionPhaseStep",
     "InitrdBootChainContractAudit",
     "InsmodEntry",
     "KmodAndUserlandAbiReport",
     "KmodDriverClassification",
     "KmodLoadOrderAndMatrixReport",
+    "LIFECYCLE_DRILL_SCHEMA",
+    "LifecycleFaultInjectionCase",
     "ORCHESTRATOR_CPIO_REL_PATH",
     "OrchestratorSandboxRunResult",
     "OrchestratorScenarioResult",
@@ -88,13 +108,18 @@ __all__ = [
     "P1VfatHeaderAudit",
     "P8TomcoHeaderAudit",
     "PHASE_15_VERSION",
+    "PHASE_16_VERSION",
     "PINNED_FX6_WBI_NFLASH5_BYTES",
     "PINNED_FX6_WBI_NFLASH5_SHA256",
     "PINNED_INITRD_AND_BOOT_ARTIFACTS",
+    "POST_TRIAL_RECEIPT_SCHEMA",
     "Phase12StageABootOrchestratorReport",
+    "PostTrialItemParityRecord",
     "READINESS_PACKET_SCHEMA",
     "RealTier0CaptureBundleAudit",
+    "StageAH0H1H2LifecycleDrillReport",
     "StageAHardwareReadinessPacketReport",
+    "StageAPostTrialReceipt",
     "UserlandDevNodeAuditReport",
     "VerneedEntry",
     "Wbi2HeaderAudit",
@@ -116,9 +141,14 @@ __all__ = [
     "parse_insmod_script",
     "parse_wbi2_header_bytes",
     "populate_tier0_capture_bundle_fixture",
+    "recompute_bk4_record0_checksum",
+    "run_h0_h1_h2_lifecycle_drill",
     "run_kmod_and_userland_abi_verification",
     "run_stage_a_boot_orchestrator_verification",
+    "serialize_h1_orchestrator_telemetry_from_sandbox",
     "simulate_orchestrator_state_machine",
     "validate_candidate_wbi_redline",
+    "verify_h1_orchestrator_telemetry",
+    "verify_post_trial_zero_mutation",
     "verify_real_tier0_capture_bundle",
 ]

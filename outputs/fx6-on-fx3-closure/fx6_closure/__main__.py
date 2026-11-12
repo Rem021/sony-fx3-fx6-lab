@@ -470,10 +470,52 @@ def _cmd_build_readiness_packet(
     return 0 if ok else 1
 
 
+def _cmd_verify_post_trial(
+    h0_bundle_dir: Path,
+    h2_bundle_dir: Path,
+    h1_log_path: Optional[Path],
+    output_path: Optional[Path],
+) -> int:
+    from .stage_a_post_trial_auditor import verify_post_trial_zero_mutation
+
+    receipt = verify_post_trial_zero_mutation(
+        h0_bundle_dir=h0_bundle_dir,
+        h2_bundle_dir=h2_bundle_dir,
+        h1_telemetry_log_path=h1_log_path,
+    )
+    rendered = receipt.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    return 0 if receipt.all_checks_passed else 1
+
+
+def _cmd_run_h0_h1_h2_drill(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    output_path: Optional[Path],
+    clean_room: bool,
+) -> int:
+    from .stage_a_post_trial_auditor import run_h0_h1_h2_lifecycle_drill
+
+    rep = run_h0_h1_h2_lifecycle_drill(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    return 0 if rep.all_checks_passed else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 15 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure & Stage-A Hardware Readiness Packet CLI",
+        description="FX6-on-FX3 Phase 16 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Stage-A Hardware Readiness Packet & Post-Trial Zero-Mutation Auditor CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -492,10 +534,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-kmod-userland-abi", "Verify Phase 14 Stage-A insmod_drv1/drv2 .ko matrix, userland /dev/* nodes, and ELF64 DT_NEEDED/DYNSYM/VERNEED linkage closure"),
         ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A Orchestrator + Kmod/Userland ABI CPIO candidate and evaluate 12 safety gates"),
         ("build-readiness-packet", "Build deterministic Stage-A non-persistent hardware readiness packet (stage_a_readiness_packet_v1) and optionally validate a physical FX3 Tier-0 capture bundle"),
+        ("verify-post-trial", "Verify Phase H2 post-power-cycle zero-mutation parity (stage_a_post_trial_receipt_v1) between H0 and H2 Tier-0 bundles plus optional H1 orchestrator telemetry"),
+        ("run-h0-h1-h2-drill", "Execute full offline Phase H0 -> Phase H1 (/bin/sh orchestrator) -> Phase H2 zero-mutation lifecycle drill + 10-case negative fault-injection suite"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
-        p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
-        p.add_argument("--fx3-modules-dir", type=Path, default=DEFAULT_FX3_MODULES_DIR)
+        if cmd_name != "verify-post-trial":
+            p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
+            p.add_argument("--fx3-modules-dir", type=Path, default=DEFAULT_FX3_MODULES_DIR)
         if cmd_name == "verify-feature-routing":
             p.add_argument("--fx6-initrd-lib-dir", type=Path, default=DEFAULT_FX6_INITRD_LIB_DIR)
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
@@ -506,6 +551,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         if cmd_name == "build-readiness-packet":
             p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 capture directory")
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write deterministic readiness packet")
+            p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
+        if cmd_name == "verify-post-trial":
+            p.add_argument("--h0-bundle-dir", type=Path, required=True, help="Path to archived Phase H0 pre-trial Tier-0 capture directory")
+            p.add_argument("--h2-bundle-dir", type=Path, required=True, help="Path to Phase H2 post-power-cycle Tier-0 readback directory")
+            p.add_argument("--h1-log", type=Path, default=None, help="Optional path to Phase H1 orchestrator telemetry JSON/log or sandbox directory")
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write stage_a_post_trial_receipt_v1")
+        if cmd_name == "run-h0-h1-h2-drill":
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write lifecycle drill report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
 
     args = parser.parse_args(argv)
@@ -541,6 +594,20 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.fx6_lib_dir,
             args.fx3_modules_dir,
             args.tier0_bundle_dir,
+            args.output,
+            args.clean_room,
+        )
+    if args.cmd == "verify-post-trial":
+        return _cmd_verify_post_trial(
+            args.h0_bundle_dir,
+            args.h2_bundle_dir,
+            args.h1_log,
+            args.output,
+        )
+    if args.cmd == "run-h0-h1-h2-drill":
+        return _cmd_run_h0_h1_h2_drill(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
             args.output,
             args.clean_room,
         )

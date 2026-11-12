@@ -1,7 +1,9 @@
 # Stage-A Non-Persistent Hardware Execution Runbook (EN / 简体中文)
 
-- **Schema & Generator**: `stage_a_readiness_packet_v1` · [`outputs/fx6-on-fx3-closure/fx6_closure/hardware_readiness_packet.py`](../outputs/fx6-on-fx3-closure/fx6_closure/hardware_readiness_packet.py)
-- **CLI Entrypoint**: `make readiness-packet` (`python3 -B -m fx6_closure build-readiness-packet`)
+- **Schemas & Generators**:
+  - Pre-Flight Readiness Packet: `stage_a_readiness_packet_v1` · [`outputs/fx6-on-fx3-closure/fx6_closure/hardware_readiness_packet.py`](../outputs/fx6-on-fx3-closure/fx6_closure/hardware_readiness_packet.py)
+  - Post-Trial Zero-Mutation Receipt & H0→H1→H2 Sandbox Drill: `stage_a_post_trial_receipt_v1` / `stage_a_h0_h1_h2_lifecycle_drill_v1` · [`outputs/fx6-on-fx3-closure/fx6_closure/stage_a_post_trial_auditor.py`](../outputs/fx6-on-fx3-closure/fx6_closure/stage_a_post_trial_auditor.py)
+- **CLI Entrypoints**: `make readiness-packet` · `make lifecycle-drill` · `python3 -B -m fx6_closure verify-post-trial`
 - **Hard-Locked Safety Posture**: `offline_engineering_complete = True` · `persistent_emmc_writes_authorized = False` · `persistent_write_release = False`
 
 > [!CAUTION]
@@ -12,14 +14,15 @@
 
 # Part I — English Operator Runbook
 
-## 1. Pre-Flight Workstation Verification (`make readiness-packet`)
+## 1. Pre-Flight Workstation Verification (`make readiness-packet` & `make lifecycle-drill`)
 
-Before connecting any physical Sony ILME-FX3 (`0x91030080`) body or inserting media, run the complete offline verification & readiness-packet generator on the host workstation:
+Before connecting any physical Sony ILME-FX3 (`0x91030080`) body or inserting media, run the complete offline verification, H0→H1→H2 lifecycle sandbox drill, and readiness-packet generator on the host workstation:
 
 ```bash
-# 1. Verify 57+57 bilingual BYOF manifest, all 5 automated test suites, and candidate dry-run
+# 1. Verify 57+57 bilingual BYOF manifest, all 5 automated test suites, H0->H1->H2 lifecycle drill, and candidate dry-run
 make verify-byof
 make test
+make lifecycle-drill > /tmp/stage-a-lifecycle-drill.json
 make dry-run
 
 # 2. Emit deterministic Stage-A Pre-Flight Readiness Packet (before hardware capture)
@@ -62,7 +65,7 @@ Expected pre-capture fields in `/tmp/stage-a-preflight-packet.json`:
      ```bash
      PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure \
        /usr/bin/python3 -B -m fx6_closure build-readiness-packet \
-       --tier0-bundle-dir /path/to/fx3_tier0_capture \
+       --tier0-bundle-dir /path/to/fx3_tier0_capture_h0 \
        --output /tmp/stage-a-go-packet.json
      ```
    - **Mandatory GO Gate**: Proceed to Phase H1 **if and only if** the command exits `0` with:
@@ -77,14 +80,14 @@ Expected pre-capture fields in `/tmp/stage-a-preflight-packet.json`:
    - Unpack the verified `30,956 B` SVR4 `cpio newc` archive (`SHA-256: eaa7902770968b44521d991f37285574c65ad2a92cef59d7434e9861467efbd9`) and stage the 11 adapted runtime blobs (`P1..P9 + Fan`, `opelog.vfat`, RAM-shadow `Backup.bin`) strictly inside `/tmp/fx6_stage_a` (`57.46–130.76 MiB` peak, well inside the `256.00 MiB` `tmpfs` ceiling).
 2. **Arm One-Shot Volatile Token & Launch Atomic Orchestrator**:
    - Create `/tmp/mod_arm_once` in `tmpfs` (never on `p1`, `p2:/setting`, or `p5:/wbi`).
-   - Run `/etc/fx6_overlay/30-stage-a-orchestrator.sh`:
+   - Run `/etc/fx6_overlay/30-stage-a-orchestrator.sh` (archiving its volatile telemetry log to external media if desired for Phase H2 auditing):
      1. Immediately unlinks `/tmp/mod_arm_once` (**Clear-Before-Exec** — guarantees next reboot is stock FX3 even on sudden kernel panic or battery pull).
      2. Asserts WBI hibernation guard (`p5:/wbi` unmounted/read-only, `BIS` hibernation disabled).
      3. Verifies all **11 SHA-256 digests** strictly **before** the first `insmod` or `mount --bind`.
      4. Activates the 10-step RAM overlay (`P9` `upm.ko` RAM replacement at slot `#24`, `/dev/loop7 -> /etc/opelog` `8 MiB` `FAT16` loopback, RAM-shadow `BK4\0` bind, `P1/P3/P4/P8/Fan` `.so` read-only bind mounts, and bounded watchdog supervision of `im.elf`).
      5. On exit or any step failure, unwinds mounted steps in strict reverse **`10..1` LIFO** order.
 
-### Phase H2 — Emergency Recovery & Post-Power-Cycle Stock FX3 Verification
+### Phase H2 — Emergency Recovery & Automated Post-Trial Zero-Mutation Receipt (`stage_a_post_trial_receipt_v1`)
 
 1. **Emergency Instant Recovery (At Any Moment)**:
    - Turn power switch **OFF** and remove the **NP-FZ100** battery for **10 seconds**, then re-insert and power **ON**.
@@ -94,23 +97,33 @@ Expected pre-capture fields in `/tmp/stage-a-preflight-packet.json`:
      rm -f /setting/updater/mode* && sync
      /usr/bin/ud_send_lsi.elf 0
      ```
-2. **Post-Trial Bit-Exact Audit**:
+2. **Automated Post-Trial Zero-Mutation Receipt (`verify-post-trial`)**:
    - Confirm stock FX3 Ver. 7.02 Shooting HUD, menu version screen, E-mount lens communication, IBIS/Gyro, fan control, and dual-slot recording operate identically to pre-trial baseline.
-   - Re-read `sector0`, `p2:/setting/Backup.bin`, `p8:/cp/tomco.txt`, and `p5:/wbi` header (`O_RDONLY`) and verify **100% SHA-256 parity** against Phase H0 `backup-manifest.json`.
+   - Capture a fresh read-only Phase H2 Tier-0 bundle (`/path/to/fx3_tier0_capture_h2`, strictly distinct from Phase H0) and emit the deterministic `stage_a_post_trial_receipt_v1` cryptographic receipt on the host workstation:
+     ```bash
+     PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure \
+       /usr/bin/python3 -B -m fx6_closure verify-post-trial \
+       --h0-bundle-dir /path/to/fx3_tier0_capture_h0 \
+       --h2-bundle-dir /path/to/fx3_tier0_capture_h2 \
+       --h1-log /path/to/h1_orchestrator_telemetry.json \
+       --output /tmp/stage-a-post-trial-receipt.json
+     ```
+   - **Mandatory Post-Trial Acceptance Criteria**: Command must exit `0` with `"all_checks_passed": true`, `"zero_mutation_verified": true`, `"same_body_identity_verified": true`, `"persistent_bytes_mutated": 0`, `"drifted_items": []` across all **13** persistent surfaces (`11` Tier-0 partitions/calibrations + `p8_tomco.txt` + `p5_wbi_header.bin`), `"u5_sticky_boot_clean": true` (`h2_bk4_byte8 == 0` and `0` `/setting/updater/mode*` residue), and `"persistent_emmc_writes_authorized": false`.
 
 ---
 ---
 
 # 第二部分 — 简体中文真机执行操作手册 (Stage-A)
 
-## 1. 宿主机离线预检与就绪包生成（`make readiness-packet`）
+## 1. 宿主机离线预检、生命周期演练与就绪包生成（`make readiness-packet` & `make lifecycle-drill`）
 
-在连接任何索尼 **ILME-FX3（机型 ID `0x91030080`）** 真机或插入存储卡之前，必须先在宿主机完成全量离线验证并生成确定性预检就绪包：
+在连接任何索尼 **ILME-FX3（机型 ID `0x91030080`）** 真机或插入存储卡之前，必须先在宿主机完成全量离线验证、H0→H1→H2 全生命周期沙盒演练并生成确定性预检就绪包：
 
 ```bash
-# 1. 运行双语 57+57 项 BYOF 清单审计、全仓 5 大测试套件与候选包干跑
+# 1. 运行双语 57+57 项 BYOF 清单审计、全仓 5 大测试套件、H0->H1->H2 生命周期沙盒演练与候选包干跑
 make verify-byof
 make test
+make lifecycle-drill > /tmp/stage-a-lifecycle-drill.json
 make dry-run
 
 # 2. 生成 Stage-A 真机前确定性就绪包（尚未连接真机采集前）
@@ -153,7 +166,7 @@ make readiness-packet > /tmp/stage-a-preflight-packet.json
      ```bash
      PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure \
        /usr/bin/python3 -B -m fx6_closure build-readiness-packet \
-       --tier0-bundle-dir /path/to/fx3_tier0_capture \
+       --tier0-bundle-dir /path/to/fx3_tier0_capture_h0 \
        --output /tmp/stage-a-go-packet.json
      ```
    - **唯一放行条件**：仅当返回码为 `0`，且输出满足 `"real_tier0_hardware_backup_verified": true`、`"stage_a_ram_trial_hardware_go": true`（同时 `"persistent_emmc_writes_authorized"` 依然硬锁定为 `false`）时，方可进入 Phase H1。任何合成清单、占位序列号/`cid`、缺文件、双遍哈希不等、比特翻转或魔数头（`'8246'` / `'BK4\0'` / `'FAT16'` / `tomco.txt` / `'WBI2'`）异常均会被确定性拒绝。
@@ -164,13 +177,13 @@ make readiness-packet > /tmp/stage-a-preflight-packet.json
    - 将已校验的 `30,956 B` SVR4 `cpio newc` 归档（`SHA-256: eaa7902770968b44521d991f37285574c65ad2a92cef59d7434e9861467efbd9`）与 11 项适配运行时组件解压至 `/tmp/fx6_stage_a`（峰值占用 `57.46–130.76 MiB`，远低于 `256.00 MiB` 安全上限）。
 2. **创建单次内存令牌并启动原子编排器**：
    - 仅在内存 `tmpfs` 创建单次授权令牌 `/tmp/mod_arm_once`（严禁写入任何持久分区）。
-   - 执行 `/etc/fx6_overlay/30-stage-a-orchestrator.sh`：
+   - 执行 `/etc/fx6_overlay/30-stage-a-orchestrator.sh`（可选将内存编排遥测日志归档至外置卡供 Phase H2 自动审计）：
      1. **执行前即删（Clear-Before-Exec）**：启动首步立即删除 `/tmp/mod_arm_once`，确保即便发生内核崩溃或直接拔电池，下次上电必回原厂 FX3。
      2. **休眠阻断**：强制锁定 `p5:/wbi` 只读/未挂载并阻断 `BIS` 休眠触发。
      3. **挂载前全量校验（Verify-Before-Mount）**：在执行第一次 `insmod` 或 `mount --bind` 前，完整核对全部 **11 项 SHA-256**。
      4. **10 步正向激活与逆序 `10..1` LIFO 卸载**：按序完成槽位 `#24` `P9` `upm.ko` 内存替换、`/dev/loop7 -> /etc/opelog` `8 MiB` `FAT16` 回环挂载、RAM-Shadow `BK4\0` 绑定、`P1/P3/P4/P8/Fan` 只读绑定挂载及带看门狗的 `im.elf` 监管；退出或任一步失败时严格按 **`10..1` 逆序 LIFO** 完整卸载。
 
-### Phase H2 — 紧急断电恢复与断电重启后原厂逐位一致性复核
+### Phase H2 — 紧急断电恢复与断电后自动化零篡改收据核验（`stage_a_post_trial_receipt_v1`）
 
 1. **任意时刻一键紧急恢复**：
    - 将机身电源拨至 **OFF**，取出 **NP-FZ100** 电池静置 **10 秒** 后重新装回开机。
@@ -180,6 +193,15 @@ make readiness-packet > /tmp/stage-a-preflight-packet.json
      rm -f /setting/updater/mode* && sync
      /usr/bin/ud_send_lsi.elf 0
      ```
-2. **试运行后逐位一致性复核**：
+2. **试运行后自动化零篡改收据审计（`verify-post-trial`）**：
    - 开机核对原厂 FX3 Ver. 7.02 拍摄主界面、系统版本菜单、E 卡口镜头通信、防抖陀螺仪、风扇温控与双卡槽录制均 100% 正常。
-   - 以只读模式复读 `sector0`、`p2:/setting/Backup.bin`、`p8:/cp/tomco.txt` 与 `p5:/wbi` 头部，确认其 SHA-256 与 Phase H0 `backup-manifest.json` **100% 逐字节一致**。
+   - 以只读模式重新采集独立的 Phase H2 Tier-0 读回包（`/path/to/fx3_tier0_capture_h2`，严禁复用 Phase H0 目录），并在宿主机运行确定性收据生成器：
+     ```bash
+     PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure \
+       /usr/bin/python3 -B -m fx6_closure verify-post-trial \
+       --h0-bundle-dir /path/to/fx3_tier0_capture_h0 \
+       --h2-bundle-dir /path/to/fx3_tier0_capture_h2 \
+       --h1-log /path/to/h1_orchestrator_telemetry.json \
+       --output /tmp/stage-a-post-trial-receipt.json
+     ```
+   - **强制验收放行判据**：返回码必须为 `0`，且收据输出 `"all_checks_passed": true`、`"zero_mutation_verified": true`、`"same_body_identity_verified": true`（同机 `body_serial` 与 128 位 `cid` 100% 匹配）、全部 **13 项**持久表面（11 项 Tier-0 分区/校准镜像 + `p8_tomco.txt` + `p5_wbi_header.bin`）满足 `"persistent_bytes_mutated": 0` 与 `"drifted_items": []`、`"u5_sticky_boot_clean": true`（`h2_bk4_byte8 == 0` 且零 `/setting/updater/mode*` 残留），同时 `"persistent_emmc_writes_authorized"` 保持硬锁定为 `false`。

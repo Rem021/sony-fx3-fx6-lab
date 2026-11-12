@@ -518,4 +518,43 @@ Disassembly of `32procam_menu_layer_1st_controller` (`vptr = +0x2ebb348`, dispat
   - When `HOME_SCREEN_STATE == 2` (`CURSOR_ON`), `0x718c` (`HOME`) resets `HOME_SCREEN_STATE = 1` (`+0xf2f3c8`).
   - When `HOME_SCREEN_STATE == 1` (`CURSOR_OFF`), `0x718c` (`HOME`) branches to `+0xf2f400`, writes `HOME_SCREEN_STATE = 0` (`+0xf2f414: str wzr`), and transitions `slots[1]` to `0x255` (closed), invoking genuine **`Presenter::close`** + `~procam_big6_menu_home_controller` (`ctrl_rtti -> 12i_controller`) and returning live input focus to **`slots[0] = 25procam_shooting_presenter` (`sid = 0x02`, `26procam_shooting_controller`)** with all `161` threads alive and zero crashes (`r6c-back-to-shooting`).
 
+---
 
+## 9. Round 7 (Phase 5): `libbackup.so` Write Family ABI, Big6 3x2 Grid & Cine EI Gating (`sid = 0x0b`), 3rd-Layer Menu (`sid = 0x11`), & Live Parameter Mutation Round-Trip (`r7a`–`r7c`)
+
+### 9.1 `libbackup.so` (`+0x2030..0x21ec`) NVRAM Persistence Write Family ABI
+Disassembly of `lib/libbackup.so` (`+0x2030..0x21ec`) establishes the exact 3-function NVRAM write family called by `appFw.so`'s `model::backup_manager` whenever a user setting or `BKID_APP_*` state is committed:
+
+| Exported Symbol | `libbackup.so` Offset | IPC `cmd` | Exact C Signature | Size / Persistence Semantics |
+| --- | --- | ---: | --- | --- |
+| **`Backup_write`** | `+0x2030..0x2074` | `9` | `int Backup_write(uint16_t subsystem, uint32_t id, const void *buf)` (**3 arguments**: `w0=subsys`, `w1=id`, `x2=buf`) | Entry byte length is implicit in the `BK4` table for `(subsystem, id)`; looks up `orig_len` via `fx6_bk4_lookup_span(id)` and updates the in-memory `g_bk_writes[]` overlay (`FX6_BK_WRITE_CAP = 256`, `FX6_BK_WRITE_MAX_BYTES = 1024`). |
+| **`Backup_write_vsize`** | `+0x2074..0x20bc` | `10` | `int Backup_write_vsize(uint16_t subsystem, uint32_t id, const void *buf, int32_t size)` (**4 arguments**: `w3=size`) | Explicit variable byte size `size` written into `g_bk_writes[]` and returned on success. |
+| **`Backup_write_multi`** | `+0x2104..0x2148` | `11` | `int Backup_write_multi(uint16_t subsystem, const uint32_t *ids, const void *const *ptrs)` (**3 arguments**) | Iterates `0`-terminated `ids[count]` array, resolving each entry's `BK4` byte size and persisting `ptrs[count]` into `g_bk_writes[]`. |
+
+- **Critical Bug Prevented by Static Disassembly**: Early stubbing treated `Backup_write` as `(uint32_t id, const void *buf, int size)` (reading `x0` as `id` instead of `uint16_t subsystem = 0x02cf` and `x1` as `buf` instead of `uint32_t id`!). Aligning `libgrm-fbinit9.c` with `(unsigned int subsystem, unsigned int id, const void *buf)` immediately captured all real `appFw.so` NVRAM writes (`57` calls in `r7a`, `80` in `r7b`, `60` in `r7c`), with `fx6_bk4_lookup_span` serving updated `g_bk_writes[]` spans on all subsequent `Backup_read*` queries.
+
+### 9.2 Big6 Home (`sid = 0x0a`) 3x2 Card Geometry & Cine EI NVRAM Gating (`sid = 0x0b` `38procam_big6_menu_look_middle_presenter`)
+Disassembly of `32procam_big6_menu_home_controller` (`+0xf2e3f0..0xf2e698`, `+0xf2ed9c..0xf2eeac`) and `38procam_big6_menu_look_middle_presenter` (`+0xdcad70..0xdcae10`) establishes the 6-card `1024x540` layout and `cell[4]` mode switch:
+
+1. **3x2 Card Grid Layout (`cell[0..5]`)**:
+   - **Top Row (`y = 80..185`)**: `cell[0]` Top-Left (`FPS`: `60` / `59.94p`), `cell[1]` Top-Middle (`ISO / Gain / Base ISO`), `cell[2]` Top-Right (`Shutter`).
+   - **Central Viewfinder (`y = 190..390`)**: Transparent `0x00000000` live-view pass-through.
+   - **Bottom Row (`y = 395..500`)**: `cell[3]` Bottom-Left (`ND Filter`), **`cell[4]` Bottom-Middle (`Scene File` in Custom mode vs `Base Look / LUT` in Cine EI mode)**, `cell[5]` Bottom-Right (`White Balance`, `3200K`).
+   - Cursor navigation from initial `cell[0]` (`KURU_PON` `0x7023`): `0x01af` (`RIGHT`) -> `cell[1]`, then `0x0030` (`DOWN`) -> **`cell[4]`** (`0x02cf141a = 0x04`).
+2. **Cine EI NVRAM Gating (`0x02cf0482` & `0x02cf1373` -> `sid = 0x0b`)**:
+   - In factory NTSC defaults (`CX95898_NTSC.bin`), `0x02cf0482 == 0x01` (`Custom` shooting mode), so `cell[4]` binds to `Scene File` (`item_id = 0x7cb`) and opens `sid = 0x0c` (`34procam_big6_menu_setting_presenter`).
+   - Serving genuine Sony FX6 **Cine EI** NVRAM mode bytes (`0x02cf0482 = 0x02` `Shooting Mode = Cine EI` and `0x02cf1373 = {1, 0, 0, 0}`, `--shooting-mode-cine-ei 1`) switches `cell[4]` to **`Base Look / LUT` (`item_id = 0x7d9`)**.
+   - Pressing `0x01ac` (`ENTER`) on `cell[4]` hits `+0xf2e3f4: cmp w1, #0x7d9` -> `+0xf2e538: mov w0, #0xb` -> `open_screen(sid = 0x0b)`, constructing **`slots[2] = 38procam_big6_menu_look_middle_presenter`** (`vptr_off = +0x2e8f7f8`, `open = +0xdcad70`, `close = +0xdc381c`) paired with **`39procam_big6_menu_look_middle_controller`** (`vptr = +0x2ebacf8`, `onKey = +0xc6a110`, `open = +0xf3d8a0`, `onEnter = +0xf3d618`) (`r7a-big6-base-look`: `336,731` nonzero pixels, `66` unique ARGB colors).
+
+### 9.3 3rd-Layer Menu (`sid = 0x11`), Select Value List (`sid = 0x17`), & Confirm Dialog (`sid = 0x5a`)
+Disassembly of `appFw.so` presenter/controller tables closes the deeper menu hierarchy:
+- **`sid = 0x11` (`31procam_menu_layer_3rd_presenter`, `slots[2]`)**: `vptr_off = +0x2e8dcf8`, `open = +0xdc4430`, `close = +0xdc37ec`; paired with **`32procam_menu_layer_3rd_controller`** (`vptr = +0x2ebb3f8`, `onKey = +0xc6aa28`, `open = +0xf63d38`, `close = +0xf62948`). Entered from `31procam_menu_layer_2nd_presenter` (`sid = 0x10`, e.g. `Shooting -> ISO/Gain/EI`) via `0x01af` (`RIGHT`) or `0x01ac` (`ENTER`) (`r7b-menu-layer-3rd`: `435,918` nonzero pixels, `64` unique ARGB colors).
+- **`sid = 0x17` (`34procam_select_value_list_presenter`, `slots[3]`)**: `vptr_off = +0x2e8de18`, `open = +0xdc48ac`; paired with `35procam_select_value_list_controller` (`vptr = +0x2ebef18`, `onKey = +0xc6b340`, `open = +0xfaabec`), used as the 4th-layer value-picker popup over `sid = 0x11`.
+- **`sid = 0x5a` (`43procam_msg_execute_confirm_common_presenter`, `slots[2]`)**: `vptr_off = +0x2e8e838`, `open = +0xdc6fc8`; paired with `44procam_msg_execute_confirm_common_controller` (`vptr = +0x2ebcbb0`, `open = +0xf80598` setting initial focus on widget `0x0b` `[Cancel]`, `onLeft = +0xf80768` focusing `0x0a` `[OK]`, `onEnter = +0xf807a0`).
+
+### 9.4 Two-Stage `ENTER` Commit in `35procam_big6_menu_setting_controller` (`+0xf414f0..0xf42330`) & `r7c` Round-Trip Proof
+Disassembly of `35procam_big6_menu_setting_controller` (`sid = 0x0c`, `onUp = +0xf41764`, `onDown = +0xf41b2c`, `onEnter = +0xf4221c..0xf42330`) explains how Big6 setting mutations commit to NVRAM and update `GPE0`:
+1. Opening `sid = 0x0c` on `cell[4]` (`Scene File`, `prop = 0x7cb`) starts in value-spinner focus; `0x0030` (`DOWN`) advances the spinner from unapplied index `0` to index `1` (`S-Cinetone`).
+2. **`ENTER` #1 (`0x01ac`, `+0xf42298`)** exits spinner mode and moves focus onto widget `0x8` (`[Set]`).
+3. **`ENTER` #2 (`0x01ac`, `+0xf422cc -> +0xf42324 -> +0xf42080 -> +0xf414f0`)** invokes `0xcc6fe0(0x7cb)` (`+0xf41634`), calling **`Backup_write(subsys=0x02cf, id=0x02cf0546, buf={0x01})`** (`call=53` in `r7c`), displaying status toast `sid = 0xc7`, and returning to `Big6 Home` (`sid = 0x0a`).
+4. Pressing `0x718c` (`HOME` -> closes `Big6` to `Shooting HUD` `sid = 0x02`) followed by `0x718c` (`HOME` -> re-opens `Big6 Home` `sid = 0x0a` fresh from persisted model state) renders crisp **`"S-Cinetone"`** FreeType glyphs inside `cell[4]`, producing an exact **`1,928`-pixel diff strictly bounded to `bbox = (378, 413)..(572, 440)`** versus pre-mutation `r5c-big6-menu-home` (`0` extraneous pixel diffs anywhere else on `1024x540`).

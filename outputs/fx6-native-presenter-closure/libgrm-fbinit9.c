@@ -1,7 +1,7 @@
 /*
  * libgrm-fbinit9.c — FX6_NATIVE_FAITHFUL Cold-Boot & GPE/GRM Bridge
  *
- * Strictly enforces FX6_NATIVE_FAITHFUL=1 invariants across Rounds 1..5:
+ * Strictly enforces FX6_NATIVE_FAITHFUL=1 invariants across Rounds 1..7:
  *   subst_color=0  subst_image=0  forced_render=0  skipped_node=0  lock_bypass=0
  *
  * Compile-time single-variable switches:
@@ -13,8 +13,10 @@
  *   -DFX6_ROUND=4  Round 4: + InfraMediaConfig_Init + BK4 NVRAM + DMM/SeqQueueNetwork completions
  *   -DFX6_ROUND=5  Round 5: + Verified RGBA4444 (BMP_PixelFormat==1) & stella RGBA8888 (fmt==2)
  *                           + Native InfraInput (0x007a804c -> 0x005503e0) interactive key transitions
- *   -DFX6_ROUND=6  Round 6: + Interactive Big6 sub-dialog (sid=0x0b), 2nd-layer Full Menu (sid=0x10),
+ *   -DFX6_ROUND=6  Round 6: + Interactive Big6 sub-dialog (sid=0x0c), 2nd-layer Full Menu (sid=0x10),
  *                           and Presenter::close round-trip back to Shooting (sid=0x02) with nop_count=0
+ *   -DFX6_ROUND=7  Round 7: + Base Look sub-dialog (sid=0x0b), 3rd-layer Full Menu (sid=0x11),
+ *                           and live parameter mutation + NVRAM Backup_write persistence round-trip
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -22,7 +24,7 @@
 #endif
 
 #ifndef FX6_ROUND
-#define FX6_ROUND (FX6_NATIVE_FAITHFUL ? 6 : 3)
+#define FX6_ROUND (FX6_NATIVE_FAITHFUL ? 7 : 3)
 #endif
 
 #ifndef FX6_RESTORE_INFRA70
@@ -39,6 +41,10 @@
 
 #ifndef FX6_INITIAL_SETTING_DONE
 #define FX6_INITIAL_SETTING_DONE 0
+#endif
+
+#ifndef FX6_SHOOTING_MODE_CINE_EI
+#define FX6_SHOOTING_MODE_CINE_EI 0
 #endif
 
 #ifndef FX6_KEY_COUNT
@@ -1655,6 +1661,7 @@ static const uint8_t k_fx6_bk4_slot8[28] = {
 static unsigned int g_backup_query_log_cnt;
 static unsigned int g_backup_media_hit_cnt;
 static unsigned int g_backup_nread_multi_cnt;
+static unsigned int g_backup_write_log_cnt;
 
 #define FX6_BK4_BYTES 2253333UL
 static const uint8_t *g_bk4_map;
@@ -1663,12 +1670,14 @@ static const uint8_t k_fx6_handover_comp = 3U; /* HAND_OVER_STATUS_AFTER_UUD_FRO
 static const uint8_t k_fx6_saved_fw_ver_601[4] = { 0x01U, 0x00U, 0x06U, 0x00U }; /* 0x00060001 ("6.01") */
 static uint8_t g_bk_fallback_byte;
 
+#define FX6_BK_WRITE_CAP 256U
+#define FX6_BK_WRITE_MAX_BYTES 1024U
 typedef struct {
     uint32_t id;
     uint32_t len;
-    uint8_t  data[16];
+    uint8_t  data[FX6_BK_WRITE_MAX_BYTES];
 } fx6_bk_write_entry_t;
-static fx6_bk_write_entry_t g_bk_writes[128];
+static fx6_bk_write_entry_t g_bk_writes[FX6_BK_WRITE_CAP];
 static unsigned int g_bk_write_cnt;
 
 static uint16_t bk4_u16(const uint8_t *p) {
@@ -1726,7 +1735,7 @@ static int fx6_bk4_lookup_byte(uint32_t id, uint8_t *out_val) {
 }
 
 static int fx6_bk4_lookup_span(uint32_t id, const uint8_t **out_ptr, uint32_t *out_len) {
-    unsigned int wc = g_bk_write_cnt < 128U ? g_bk_write_cnt : 128U;
+    unsigned int wc = g_bk_write_cnt < FX6_BK_WRITE_CAP ? g_bk_write_cnt : FX6_BK_WRITE_CAP;
     for (unsigned int i = 0; i < wc; i++) {
         if (g_bk_writes[i].id == id) {
             if (out_ptr) *out_ptr = g_bk_writes[i].data;
@@ -1740,6 +1749,20 @@ static int fx6_bk4_lookup_span(uint32_t id, const uint8_t **out_ptr, uint32_t *o
         static const uint8_t k_fx6_init_setting_done = 0U;
         if (out_ptr) *out_ptr = &k_fx6_init_setting_done;
         if (out_len) *out_len = 1U;
+        return 1;
+    }
+#endif
+#if FX6_SHOOTING_MODE_CINE_EI
+    if (id == 0x02cf0482U) {
+        static const uint8_t k_fx6_shooting_mode_cine_ei = 2U;
+        if (out_ptr) *out_ptr = &k_fx6_shooting_mode_cine_ei;
+        if (out_len) *out_len = 1U;
+        return 1;
+    }
+    if (id == 0x02cf1373U) {
+        static const uint8_t k_fx6_extern_shooting_mode_cine_ei[4] = { 1U, 0U, 0U, 0U };
+        if (out_ptr) *out_ptr = k_fx6_extern_shooting_mode_cine_ei;
+        if (out_len) *out_len = 4U;
         return 1;
     }
 #endif
@@ -1952,35 +1975,84 @@ int Backup_reset_subsystem(void *a, ...) { (void)a; return 0; }
 int Backup_sync_all(void) { return 0; }
 int Backup_sync_subsystem(void *a, ...) { (void)a; return 0; }
 int Backup_write_setting_attr(void *a, ...) { (void)a; return 0; }
-int Backup_write_vsize(unsigned int id, const void *buf, int size) {
-    (void)id; (void)buf;
-    return size > 0 ? size : 4;
-}
-int Backup_write(unsigned int id, const void *buf, int size) {
 #if FX6_ROUND >= 4
-    if (buf && size > 0 && size <= 16) {
-        unsigned int wc = g_bk_write_cnt < 128U ? g_bk_write_cnt : 128U;
-        int updated = 0;
-        for (unsigned int i = 0; i < wc; i++) {
-            if (g_bk_writes[i].id == id) {
-                memset(g_bk_writes[i].data, 0, sizeof(g_bk_writes[i].data));
-                memcpy(g_bk_writes[i].data, buf, (size_t)size);
-                g_bk_writes[i].len = (uint32_t)size;
-                updated = 1;
-                break;
-            }
-        }
-        if (!updated && g_bk_write_cnt < 128U) {
-            unsigned int idx = g_bk_write_cnt++;
-            g_bk_writes[idx].id = id;
-            g_bk_writes[idx].len = (uint32_t)size;
-            memcpy(g_bk_writes[idx].data, buf, (size_t)size);
+static void fx6_record_bk_write(const char *op, unsigned int id, const void *buf, int size) {
+    if (!buf || size <= 0) return;
+    uint32_t store_sz = (uint32_t)size <= FX6_BK_WRITE_MAX_BYTES ? (uint32_t)size : FX6_BK_WRITE_MAX_BYTES;
+    unsigned int wc = g_bk_write_cnt < FX6_BK_WRITE_CAP ? g_bk_write_cnt : FX6_BK_WRITE_CAP;
+    int updated = 0;
+    for (unsigned int i = 0; i < wc; i++) {
+        if (g_bk_writes[i].id == id) {
+            memset(g_bk_writes[i].data, 0, sizeof(g_bk_writes[i].data));
+            memcpy(g_bk_writes[i].data, buf, (size_t)store_sz);
+            g_bk_writes[i].len = store_sz;
+            updated = 1;
+            break;
         }
     }
+    if (!updated && g_bk_write_cnt < FX6_BK_WRITE_CAP) {
+        unsigned int idx = g_bk_write_cnt++;
+        g_bk_writes[idx].id = id;
+        g_bk_writes[idx].len = store_sz;
+        memset(g_bk_writes[idx].data, 0, sizeof(g_bk_writes[idx].data));
+        memcpy(g_bk_writes[idx].data, buf, (size_t)store_sz);
+    }
+    if (id != 0x01070000U && id != 0x01070001U &&
+        !((id == 0x02cf1dbfU || id == 0x02cf1dc0U) && updated)) {
+        unsigned int lc = __atomic_add_fetch(&g_backup_write_log_cnt, 1U, __ATOMIC_RELAXED);
+        if (lc <= 80U) {
+            const uint8_t *b = (const uint8_t *)buf;
+            unsigned int b0 = size >= 1 ? (unsigned int)b[0] : 0U;
+            unsigned int b1 = size >= 2 ? (unsigned int)b[1] : 0U;
+            dprintf(2, "FX6_BACKUP_WRITE op=%s call=%u id=0x%08x size=%d b0=0x%02x b1=0x%02x updated=%d\n",
+                    op, lc, id, size, b0, b1, updated);
+        }
+    }
+}
+#endif
+
+int Backup_write_vsize(unsigned int subsystem, unsigned int id, const void *buf, int size) {
+    (void)subsystem;
+#if FX6_ROUND >= 4
+    fx6_record_bk_write("write_vsize", id, buf, size);
 #else
     (void)id; (void)buf;
 #endif
     return size > 0 ? size : 4;
+}
+int Backup_write(unsigned int subsystem, unsigned int id, const void *buf) {
+    (void)subsystem;
+#if FX6_ROUND >= 4
+    const uint8_t *orig_ptr = 0;
+    uint32_t orig_len = 0U;
+    int sz = 4;
+    if (fx6_bk4_lookup_span(id, &orig_ptr, &orig_len) && orig_len > 0U) {
+        sz = (int)orig_len;
+    }
+    fx6_record_bk_write("write", id, buf, sz);
+    return sz;
+#else
+    (void)id; (void)buf;
+    return 4;
+#endif
+}
+int Backup_write_multi(unsigned int subsystem, const unsigned int *ids, const void *const *ptrs) {
+    (void)subsystem;
+    if (!ids || !ptrs) return 0;
+    int count = 0;
+    while (ids[count] != 0U) {
+#if FX6_ROUND >= 4
+        const uint8_t *orig_ptr = 0;
+        uint32_t orig_len = 0U;
+        int sz = 4;
+        if (fx6_bk4_lookup_span(ids[count], &orig_ptr, &orig_len) && orig_len > 0U) {
+            sz = (int)orig_len;
+        }
+        fx6_record_bk_write("write_multi", ids[count], ptrs[count], sz);
+#endif
+        count++;
+    }
+    return count;
 }
 int Backup_reg_cb(void *a, ...) { (void)a; return 0; }
 int backup_sync_msg(int *ret, ...) { if (ret) *ret = 0; return 0; }

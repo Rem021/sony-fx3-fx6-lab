@@ -242,6 +242,21 @@ def collect_contracts() -> Dict[str, Any]:
         "appfw_msg_2label_ctrl_factory": disasm_range(
             DONOR_ROOT / "lib/appFw.so", 0xDD0700, 0xDD0810
         ),
+        "libbackup_write_family": disasm_range(
+            DONOR_ROOT / "lib/libbackup.so", 0x2030, 0x21EC
+        ),
+        "appfw_big6_look_middle_open": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xDCAD70, 0xDCAE10
+        ),
+        "appfw_big6_setting_commit_and_enter": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xF414F0, 0xF42330
+        ),
+        "appfw_menu_layer_3rd_open": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xDC4430, 0xDC44D0
+        ),
+        "appfw_msg_execute_confirm_ctrl": disasm_range(
+            DONOR_ROOT / "lib/appFw.so", 0xF80598, 0xF80860
+        ),
     }
 
     round4_contracts = {
@@ -398,6 +413,86 @@ def collect_contracts() -> Dict[str, Any]:
         },
     }
 
+    round7_contracts = {
+        "libbackup_write_abi": {
+            "Backup_write": {
+                "lib_off": "0x2030..0x2074",
+                "signature": "int Backup_write(uint16_t subsystem, uint32_t id, const void *buf)",
+                "ipc_cmd": 9,
+                "argc": 3,
+                "size_resolution": "Resolved from donor BK4 entry byte length for (subsystem, id)",
+            },
+            "Backup_write_vsize": {
+                "lib_off": "0x2074..0x20bc",
+                "signature": "int Backup_write_vsize(uint16_t subsystem, uint32_t id, const void *buf, int32_t size)",
+                "ipc_cmd": 10,
+                "argc": 4,
+            },
+            "Backup_write_multi": {
+                "lib_off": "0x2104..0x2148",
+                "signature": "int Backup_write_multi(uint16_t subsystem, const uint32_t *ids, const void *const *ptrs)",
+                "ipc_cmd": 11,
+                "argc": 3,
+            },
+        },
+        "big6_grid_cells": {
+            "layout": "3x2 card grid framing central viewfinder (top row y=80..185: cell[0..2]; bottom row y=395..500: cell[3..5])",
+            "cells": {
+                "0": "Top-Left: FPS (S&Q Frame Rate, e.g. 60 / 59.94p -> sid=0x0c)",
+                "1": "Top-Middle: ISO / Gain / Base ISO (-> sid=0x0c)",
+                "2": "Top-Right: Shutter Speed / Angle (-> sid=0x0c)",
+                "3": "Bottom-Left: ND Filter (-> sid=0x0c)",
+                "4": "Bottom-Middle: Scene File (Custom mode -> sid=0x0c prop 0x7cb / bkid 0x02cf0546) OR Base Look / LUT (Cine EI mode -> sid=0x0b 38procam_big6_menu_look_middle_presenter)",
+                "5": "Bottom-Right: White Balance (-> sid=0x0c)",
+            },
+        },
+        "cine_ei_nvram_gating": {
+            "shooting_mode_bkid": "0x02cf0482 (u8: 0x01=Custom, 0x02=Cine EI, 0x03=Cine EI Quick)",
+            "cine_ei_submode_bkid": "0x02cf1373 (u32 LE: {1,0,0,0} enables Cine EI Base Look cell[4] routing at +0xf2e464 -> sid=0x0b)",
+        },
+        "presenters_verified": {
+            "0x0b": {
+                "presenter_rtti": "38procam_big6_menu_look_middle_presenter",
+                "controller_rtti": "39procam_big6_menu_look_middle_controller",
+                "vptr_off": "0x2e8f7f8",
+                "open_off": "0xdcad70",
+                "close_off": "0xdc381c",
+                "ctrl_vptr_off": "0x2ebacf8",
+                "slot": 2,
+            },
+            "0x11": {
+                "presenter_rtti": "31procam_menu_layer_3rd_presenter",
+                "controller_rtti": "32procam_menu_layer_3rd_controller",
+                "vptr_off": "0x2e8dcf8",
+                "open_off": "0xdc4430",
+                "close_off": "0xdc37ec",
+                "ctrl_vptr_off": "0x2ebb3f8",
+                "slot": 2,
+            },
+            "0x17": {
+                "presenter_rtti": "34procam_select_value_list_presenter",
+                "controller_rtti": "35procam_select_value_list_controller",
+                "vptr_off": "0x2e8de18",
+                "open_off": "0xdc48ac",
+                "ctrl_vptr_off": "0x2ebef18",
+                "slot": 3,
+            },
+            "0x5a": {
+                "presenter_rtti": "43procam_msg_execute_confirm_common_presenter",
+                "controller_rtti": "44procam_msg_execute_confirm_common_controller",
+                "vptr_off": "0x2e8e838",
+                "open_off": "0xdc6fc8",
+                "ctrl_vptr_off": "0x2ebcbb0",
+                "slot": 2,
+            },
+        },
+        "interactive_flows_verified": {
+            "r7a_big6_base_look": "Cine EI mode (0x02cf0482=0x02, 0x02cf1373=1): 0x718c (HOME -> sid=0x0a) -> 0x7023 (KURU_PON) -> 0x01af (RIGHT -> cell[1]) -> 0x0030 (DOWN -> cell[4] Base Look/LUT) -> 0x01ac (ENTER -> sid=0x0b 38procam_big6_menu_look_middle_presenter)",
+            "r7b_menu_layer_3rd": "0x01ab:1300 (MENU_LONG_PRESS -> sid=0x0f) -> 0x0030 (DOWN -> Shooting) -> 0x01af (RIGHT -> sid=0x10 2nd-layer) -> 0x01af (RIGHT -> sid=0x11 31procam_menu_layer_3rd_presenter ISO/Gain/EI)",
+            "r7c_param_mutation_roundtrip": "Custom mode: 0x718c (HOME -> sid=0x0a) -> 0x7023 -> 0x01af -> 0x0030 (cell[4] Scene File) -> 0x01ac (sid=0x0c) -> 0x0030 (DOWN -> S-Cinetone) -> 0x01ac (focus [Set]) -> 0x01ac (commit Backup_write id=0x02cf0546=0x01 -> toast sid=0xc7 -> sid=0x0a) -> 0x718c (Shooting sid=0x02) -> 0x718c (re-open Big6 sid=0x0a rendering crisp 'S-Cinetone' glyphs in cell[4], 1,928-px diff bbox=(378,413)..(572,440) vs r5c)",
+        },
+    }
+
     return {
         "donor_root": str(DONOR_ROOT),
         "digests": digests,
@@ -406,6 +501,7 @@ def collect_contracts() -> Dict[str, Any]:
         "round4_contracts": round4_contracts,
         "round5_contracts": round5_contracts,
         "round6_contracts": round6_contracts,
+        "round7_contracts": round7_contracts,
     }
 
 

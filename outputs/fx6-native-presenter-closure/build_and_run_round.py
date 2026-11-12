@@ -122,6 +122,7 @@ def build_binaries(
     restore_all_early: int,
     reply_all_200d: int,
     initial_setting_done: int = 0,
+    shooting_mode_cine_ei: int = 0,
     key_seq: str = "",
     key_settle_ms: int = 1500,
 ) -> Tuple[bytes, bytes, Dict[str, Any]]:
@@ -187,6 +188,7 @@ def build_binaries(
         f"-DFX6_RESTORE_ALL_EARLY={restore_all_early}",
         f"-DFX6_REPLY_ALL_200D={reply_all_200d}",
         f"-DFX6_INITIAL_SETTING_DONE={initial_setting_done}",
+        f"-DFX6_SHOOTING_MODE_CINE_EI={shooting_mode_cine_ei}",
         *key_flags,
         "-Wl,-soname,libgrm-fbinit9.so",
         str(HERE / "libgrm-fbinit9.c"),
@@ -481,6 +483,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_BACKUP_MEDIA",
         "FX6_BACKUP_NREAD_MULTI",
         "FX6_BACKUP_QUERY",
+        "FX6_BACKUP_WRITE",
         "FX6_PATCH_",
         "FX6_APP_CONFIG_",
         "FX6_QUEUE_OBS_LIBRARY",
@@ -577,6 +580,7 @@ def run_once(args: argparse.Namespace) -> int:
             restore_all_early=args.restore_all_early,
             reply_all_200d=args.reply_all_200d,
             initial_setting_done=args.initial_setting_done,
+            shooting_mode_cine_ei=args.shooting_mode_cine_ei,
             key_seq=args.key_seq,
             key_settle_ms=args.key_settle_ms,
         )
@@ -735,6 +739,7 @@ def run_once(args: argparse.Namespace) -> int:
             "restore_all_early": args.restore_all_early,
             "reply_all_200d": args.reply_all_200d,
             "initial_setting_done": args.initial_setting_done,
+            "shooting_mode_cine_ei": args.shooting_mode_cine_ei,
             "key_seq": args.key_seq,
             "key_settle_ms": args.key_settle_ms,
             "duration_budget_sec": duration,
@@ -754,7 +759,7 @@ def run_once(args: argparse.Namespace) -> int:
         )
         print(
             f"[{run_id}] Done in {elapsed}s | threads={milestones['total_threads_seen']} "
-            f"| gpe0_nz={gpe_stats.get('nonzero_pixels')} unique_colors={gpe_stats.get('unique_colors')} "
+            f"| gpe0_nz={gpe0_nz if (gpe0_nz := gpe_stats.get('nonzero_pixels')) is not None else None} unique_colors={gpe_stats.get('unique_colors')} "
             f"| counts={milestones['prefix_counts']}",
             flush=True,
         )
@@ -789,12 +794,13 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7], required=True)
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)
     ap.add_argument("--reply-all-200d", type=int, choices=[0, 1], default=None)
     ap.add_argument("--initial-setting-done", type=int, choices=[0, 1], default=0)
+    ap.add_argument("--shooting-mode-cine-ei", type=int, choices=[0, 1], default=0)
     ap.add_argument("--key-seq", type=str, default="")
     ap.add_argument("--key-settle-ms", type=int, default=1500)
     ap.add_argument("--export-png-stem", type=str, default="")

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-6)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-7)."""
 from __future__ import annotations
 
 import hashlib
 import importlib.util
 import json
+import os
 import pathlib
 import re
 import struct
@@ -13,6 +14,7 @@ import tempfile
 import unittest
 import zlib
 from typing import Dict, List, Tuple
+from unittest import mock
 
 TESTS_DIR = pathlib.Path(__file__).resolve().parent
 CLOSURE_DIR = TESTS_DIR.parent
@@ -86,6 +88,44 @@ def _parse_and_validate_png(png_bytes: bytes) -> Tuple[int, int, bytes]:
             f"Decompressed IDAT size {len(raw_scanlines)} != {expected_scanline_bytes}"
         )
     return width, height, raw_scanlines
+
+
+def _decode_png_rgba_rows(png_bytes: bytes) -> Tuple[int, int, List[bytes]]:
+    width, height, raw_scanlines = _parse_and_validate_png(png_bytes)
+    stride = width * 4
+    rows: List[bytes] = []
+    pos = 0
+    prev = bytearray(stride)
+    for _ in range(height):
+        filt = raw_scanlines[pos]
+        pos += 1
+        row = bytearray(raw_scanlines[pos : pos + stride])
+        pos += stride
+        if filt == 1:
+            for x in range(4, stride):
+                row[x] = (row[x] + row[x - 4]) & 0xFF
+        elif filt == 2:
+            for x in range(stride):
+                row[x] = (row[x] + prev[x]) & 0xFF
+        elif filt == 3:
+            for x in range(stride):
+                a = row[x - 4] if x >= 4 else 0
+                row[x] = (row[x] + ((a + prev[x]) >> 1)) & 0xFF
+        elif filt == 4:
+            for x in range(stride):
+                a = row[x - 4] if x >= 4 else 0
+                b = prev[x]
+                c = prev[x - 4] if x >= 4 else 0
+                pa = abs(b - c)
+                pb = abs(a - c)
+                pc = abs(a + b - 2 * c)
+                pr = a if (pa <= pb and pa <= pc) else (b if pb <= pc else c)
+                row[x] = (row[x] + pr) & 0xFF
+        elif filt != 0:
+            raise AssertionError(f"Unsupported PNG filter {filt}")
+        prev = row
+        rows.append(bytes(row))
+    return width, height, rows
 
 
 class TestPixelUnpackingAndPngExport(unittest.TestCase):
@@ -207,6 +247,7 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
             "round4_contracts",
             "round5_contracts",
             "round6_contracts",
+            "round7_contracts",
         ):
             self.assertIn(top_key, self.contracts)
 
@@ -269,8 +310,32 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
             self.assertIn(sid_hex, presenters)
             self.assertEqual(presenters[sid_hex]["presenter_rtti"], rtti_name)
 
+        # Round 7 libbackup write ABI, Cine EI gating, Big6 grid, and deep presenters
+        r7 = self.contracts["round7_contracts"]
+        bk_abi = r7["libbackup_write_abi"]
+        self.assertEqual(bk_abi["Backup_write"]["argc"], 3)
+        self.assertEqual(bk_abi["Backup_write"]["ipc_cmd"], 9)
+        self.assertEqual(bk_abi["Backup_write_vsize"]["argc"], 4)
+        self.assertEqual(bk_abi["Backup_write_vsize"]["ipc_cmd"], 10)
+        self.assertEqual(bk_abi["Backup_write_multi"]["argc"], 3)
+        self.assertEqual(bk_abi["Backup_write_multi"]["ipc_cmd"], 11)
+        self.assertEqual(set(r7["big6_grid_cells"]["cells"].keys()), {"0", "1", "2", "3", "4", "5"})
+        self.assertIn("0x02cf0482", r7["cine_ei_nvram_gating"]["shooting_mode_bkid"])
+        self.assertIn("0x02cf1373", r7["cine_ei_nvram_gating"]["cine_ei_submode_bkid"])
+
+        r7_presenters = r7["presenters_verified"]
+        expected_r7_presenters = {
+            "0x0b": "38procam_big6_menu_look_middle_presenter",
+            "0x11": "31procam_menu_layer_3rd_presenter",
+            "0x17": "34procam_select_value_list_presenter",
+            "0x5a": "43procam_msg_execute_confirm_common_presenter",
+        }
+        for sid_hex, rtti_name in expected_r7_presenters.items():
+            self.assertIn(sid_hex, r7_presenters)
+            self.assertEqual(r7_presenters[sid_hex]["presenter_rtti"], rtti_name)
+
     def test_native_faithful_c_source_guards(self) -> None:
-        # Both C sources must default FX6_NATIVE_FAITHFUL to 1 and FX6_ROUND >= 5 when faithful
+        # Both C sources must default FX6_NATIVE_FAITHFUL to 1 and FX6_ROUND == 7 when faithful
         for name, src in (
             ("libgrm-fbinit9.c", self.shim_src),
             ("appfw-launch.c", self.launch_src),
@@ -282,9 +347,24 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
             )
             self.assertRegex(
                 src,
-                r"#ifndef\s+FX6_ROUND\s+#define\s+FX6_ROUND\s+\(FX6_NATIVE_FAITHFUL\s*\?\s*6\s*:\s*3\)",
-                f"{name} must default FX6_ROUND to 6 under FX6_NATIVE_FAITHFUL=1",
+                r"#ifndef\s+FX6_ROUND\s+#define\s+FX6_ROUND\s+\(FX6_NATIVE_FAITHFUL\s*\?\s*7\s*:\s*3\)",
+                f"{name} must default FX6_ROUND to 7 under FX6_NATIVE_FAITHFUL=1",
             )
+
+        # Verify 3-arg Backup_write + Backup_write_vsize + Backup_write_multi ABI in libgrm-fbinit9.c
+        self.assertIn(
+            "int Backup_write(unsigned int subsystem, unsigned int id, const void *buf)",
+            self.shim_src,
+        )
+        self.assertIn(
+            "int Backup_write_vsize(unsigned int subsystem, unsigned int id, const void *buf, int size)",
+            self.shim_src,
+        )
+        self.assertIn(
+            "int Backup_write_multi(unsigned int subsystem, const unsigned int *ids, const void *const *ptrs)",
+            self.shim_src,
+        )
+        self.assertIn("fx6_record_bk_write(", self.shim_src)
 
         # Verify FX6_RESTORE_ALL_EARLY & FX6_RESTORE_INFRA70 default to 1 when FX6_NATIVE_FAITHFUL=1
         self.assertIn(
@@ -345,6 +425,9 @@ class TestReportPngAssets(unittest.TestCase):
         "r5d-menu-layer-1st",
         "r6a-big6-subdialog",
         "r6b-menu-layer-2nd",
+        "r7a-big6-base-look",
+        "r7b-menu-layer-3rd",
+        "r7c-param-mutation-roundtrip",
     )
     EXPECTED_STEMS = DISTINCT_PRESENTER_STEMS + ("r6c-back-to-shooting",)
 
@@ -353,7 +436,7 @@ class TestReportPngAssets(unittest.TestCase):
         alpha_digests: Dict[str, str] = {}
         comp_digests: Dict[str, str] = {}
 
-        # Validate every *.png in assets/ plus ensure all expected r5a..r6c stems exist
+        # Validate every *.png in assets/ plus ensure all expected r5a..r7c stems exist (20 PNGs)
         all_pngs = sorted(ASSETS_DIR.glob("*.png"))
         self.assertGreaterEqual(len(all_pngs), len(self.EXPECTED_STEMS) * 2)
         for png_path in all_pngs:
@@ -367,7 +450,7 @@ class TestReportPngAssets(unittest.TestCase):
                 self.assertTrue(png_path.is_file(), f"Missing PNG receipt: {png_path}")
                 bucket[stem] = hashlib.sha256(png_path.read_bytes()).hexdigest()
 
-        # All 6 distinct presenters (sid=0x14, 0x02, 0x0a, 0x0f, 0x0c, 0x10) must be pairwise distinct
+        # All 9 distinct stems (r5a..r5d, r6a, r6b, r7a..r7c) must be pairwise distinct
         distinct_alpha = {alpha_digests[s] for s in self.DISTINCT_PRESENTER_STEMS}
         distinct_comp = {comp_digests[s] for s in self.DISTINCT_PRESENTER_STEMS}
         self.assertEqual(
@@ -397,16 +480,47 @@ class TestReportPngAssets(unittest.TestCase):
             "r5d-menu-layer-1st",
             "r6a-big6-subdialog",
             "r6b-menu-layer-2nd",
+            "r7a-big6-base-look",
+            "r7b-menu-layer-3rd",
+            "r7c-param-mutation-roundtrip",
         ):
             self.assertNotEqual(
                 alpha_digests["r6c-back-to-shooting"],
                 alpha_digests[overlay_stem],
             )
 
+    def test_r7c_mutation_roundtrip_glyph_delta_vs_r5c(self) -> None:
+        w1, h1, r5c_rows = _decode_png_rgba_rows(
+            (ASSETS_DIR / "r5c-big6-menu-home-alpha.png").read_bytes()
+        )
+        w2, h2, r7c_rows = _decode_png_rgba_rows(
+            (ASSETS_DIR / "r7c-param-mutation-roundtrip-alpha.png").read_bytes()
+        )
+        self.assertEqual((w1, h1), (1024, 540))
+        self.assertEqual((w2, h2), (1024, 540))
+        diff_px = 0
+        min_x, min_y, max_x, max_y = 1024, 540, -1, -1
+        for y in range(540):
+            a, b = r5c_rows[y], r7c_rows[y]
+            if a != b:
+                for x in range(1024):
+                    if a[x * 4 : x * 4 + 4] != b[x * 4 : x * 4 + 4]:
+                        diff_px += 1
+                        min_x = min(min_x, x)
+                        min_y = min(min_y, y)
+                        max_x = max(max_x, x)
+                        max_y = max(max_y, y)
+        # Mutating Scene File in cell[4] (Bottom-Middle) paints crisp "S-Cinetone" glyphs
+        # strictly inside cell[4]'s value readout box with zero extraneous artifact pixels.
+        self.assertEqual(diff_px, 1928)
+        self.assertEqual((min_x, min_y, max_x, max_y), (378, 413, 572, 440))
+
 
 class TestOptionalDonorBinariesReadOnly(unittest.TestCase):
     @staticmethod
     def _verify_donor_root(tc: unittest.TestCase, donor_root: pathlib.Path, contracts: dict) -> None:
+        if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM") == "1":
+            tc.skipTest("FX3_FX6_FORCE_CLEAN_ROOM=1")
         if not donor_root.exists():
             tc.skipTest(f"Optional external donor tree absent: {donor_root}")
         appfw_path = donor_root / "lib" / "appFw.so"
@@ -441,8 +555,19 @@ class TestOptionalDonorBinariesReadOnly(unittest.TestCase):
             (CLOSURE_DIR / "static-contracts-summary.json").read_text(encoding="utf-8")
         )
         missing = pathlib.Path("/nonexistent/fx3-color-port-20261027/absent-donor")
-        with self.assertRaises(unittest.SkipTest):
-            self._verify_donor_root(self, missing, contracts)
+        with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "0"}):
+            with self.assertRaises(unittest.SkipTest):
+                self._verify_donor_root(self, missing, contracts)
+
+    def test_force_clean_room_env_skips_donor_checks(self) -> None:
+        contracts = json.loads(
+            (CLOSURE_DIR / "static-contracts-summary.json").read_text(encoding="utf-8")
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            fake_donor = pathlib.Path(tmp)
+            with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "1"}):
+                with self.assertRaisesRegex(unittest.SkipTest, "^FX3_FX6_FORCE_CLEAN_ROOM=1$"):
+                    self._verify_donor_root(self, fake_donor, contracts)
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@
 #endif
 
 #ifndef FX6_ROUND
-#define FX6_ROUND (FX6_NATIVE_FAITHFUL ? 6 : 3)
+#define FX6_ROUND (FX6_NATIVE_FAITHFUL ? 7 : 3)
 #endif
 
 typedef void (*init_fn)(const char *);

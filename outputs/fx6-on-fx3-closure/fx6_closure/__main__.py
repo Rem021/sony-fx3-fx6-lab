@@ -442,10 +442,38 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
     return 0 if rep.candidate_ready else 1
 
 
+def _cmd_build_readiness_packet(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    tier0_bundle_dir: Optional[Path],
+    output_path: Optional[Path],
+    clean_room: bool,
+) -> int:
+    from .hardware_readiness_packet import build_stage_a_hardware_readiness_packet
+
+    pkt = build_stage_a_hardware_readiness_packet(
+        repo_root=repo_root,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        tier0_bundle_dir=tier0_bundle_dir,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = pkt.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    ok = pkt.offline_engineering_complete and len(pkt.errors) == 0
+    if tier0_bundle_dir is not None:
+        ok = ok and pkt.real_tier0_hardware_backup_verified
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 14 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator & Stage-A Kmod/Dev/ELF64 ABI Closure CLI",
+        description="FX6-on-FX3 Phase 15 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure & Stage-A Hardware Readiness Packet CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -463,6 +491,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-stage-a-orchestrator", "Verify Phase 12 nflasha3-initrd startup chain, WBI (p5) hibernation safety redline, and 6-scenario atomic Stage-A boot orchestrator"),
         ("verify-kmod-userland-abi", "Verify Phase 14 Stage-A insmod_drv1/drv2 .ko matrix, userland /dev/* nodes, and ELF64 DT_NEEDED/DYNSYM/VERNEED linkage closure"),
         ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A Orchestrator + Kmod/Userland ABI CPIO candidate and evaluate 12 safety gates"),
+        ("build-readiness-packet", "Build deterministic Stage-A non-persistent hardware readiness packet (stage_a_readiness_packet_v1) and optionally validate a physical FX3 Tier-0 capture bundle"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
@@ -472,8 +501,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge"):
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
+        if cmd_name == "build-readiness-packet":
+            p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 capture directory")
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write deterministic readiness packet")
+            p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
 
     args = parser.parse_args(argv)
     if args.cmd == "verify-donors":
@@ -502,6 +535,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_kmod_userland_abi(args.fx6_lib_dir, args.fx3_modules_dir)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
+    if args.cmd == "build-readiness-packet":
+        return _cmd_build_readiness_packet(
+            args.repo_root,
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.tier0_bundle_dir,
+            args.output,
+            args.clean_room,
+        )
     return 2
 
 

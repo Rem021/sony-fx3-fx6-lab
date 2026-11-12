@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """Unified Cross-Suite Lab Verification Runner & Clean-Room Binary/Bytecode Hygiene Auditor.
 
-Orchestrates and times all four repository verification suites plus BYOF manifest and
+Orchestrates and times all five repository verification suites plus BYOF manifest and
 tracked-tree clean-room hygiene checks with `PYTHONDONTWRITEBYTECODE=1` (`-B`):
-1. `outputs/fx3-recovery-adapter/tests` (63 tests)
-2. `outputs/fx3-safety/tests` (19 tests)
-3. `outputs/fx6-on-fx3-closure/tests` (60 tests)
-4. `outputs/fx3-vm-trial/tests` (16 tests — Track 1A `fx3-vm-trial` & Track 2 `fx3-vm` offline verification)
-5. Bilingual `docs/BYOF-REPRODUCTION.md` SHA-256 manifest audit (`scripts/verify_byof_manifest.py`)
-6. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
+1. `[1/5] outputs/fx3-recovery-adapter/tests` (Track 4)
+2. `[2/5] outputs/fx3-safety/tests` (Safety Gates & Tier-0 Syscall Auditor)
+3. `[3/5] outputs/fx6-on-fx3-closure/tests` (Track 3 `P1..P9+Fan` & `U1..U5` Stage-A Closure)
+4. `[4/5] outputs/fx3-vm-trial/tests` (Track 1A `fx3-vm-trial` & Track 2 `fx3-vm` offline verification)
+5. `[5/5] outputs/fx6-native-presenter-closure/tests` (Track 1B Native-Faithful Cold-Boot & Big6 Closure)
+6. Bilingual `docs/BYOF-REPRODUCTION.md` SHA-256 manifest audit (`scripts/verify_byof_manifest.py`)
+7. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
    verifying zero untracked `.so` / `.elf` / `.ko` / `.cpio` / `.bin` / `.vfat` / `.pyc`
-   artifacts, plus direct filesystem sweep of `outputs/fx3-safety` and `outputs/fx6-on-fx3-closure`).
+   artifacts, plus direct filesystem sweep of strict source-only directories).
 
 Usage:
     /usr/bin/python3 -B scripts/run_all_lab_tests.py [--json] [--clean-only]
@@ -49,6 +50,7 @@ FORBIDDEN_UNTRACKED_EXTENSIONS: Tuple[str, ...] = (
 STRICT_ZERO_ARTIFACT_DIRS: Tuple[str, ...] = (
     "outputs/fx3-safety",
     "outputs/fx6-on-fx3-closure",
+    "outputs/fx6-native-presenter-closure",
 )
 
 
@@ -84,6 +86,12 @@ LAB_SUITES: Tuple[LabSuiteSpec, ...] = (
         display_name="outputs/fx3-vm-trial/tests",
         test_dir_rel="outputs/fx3-vm-trial/tests",
         pythonpath_Entries=("outputs/fx3-vm-trial",),
+    ),
+    LabSuiteSpec(
+        suite_id="fx6_native_presenter_closure",
+        display_name="outputs/fx6-native-presenter-closure/tests",
+        test_dir_rel="outputs/fx6-native-presenter-closure/tests",
+        pythonpath_Entries=("outputs/fx6-native-presenter-closure",),
     ),
 )
 
@@ -194,7 +202,11 @@ def audit_clean_room_hygiene(
         if not base.is_dir():
             continue
         for root, dirs, files in os.walk(base):
-            dirs[:] = [d for d in dirs if not d.lower().startswith("stage")]
+            if "__pycache__" in dirs:
+                pycache_rel = str((Path(root) / "__pycache__").relative_to(repo_root))
+                direct_hits.append(pycache_rel)
+                errors.append(f"Forbidden __pycache__ directory in {rel_dir}: {pycache_rel}")
+            dirs[:] = [d for d in dirs if not d.lower().startswith("stage") and d != "__pycache__"]
             for fn in files:
                 if fn.lower().endswith(lower_exts):
                     rel_path = str((Path(root) / fn).relative_to(repo_root))
@@ -321,7 +333,7 @@ def run_all_lab_verifications(
     clean_only: bool = False,
     stream_progress: bool = False,
 ) -> UnifiedLabRunReport:
-    """Run all four lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
+    """Run all five lab unittest suites, BYOF manifest check, and clean-room binary/pyc hygiene audit."""
     overall_t0 = time.monotonic()
     suite_results: List[SuiteExecutionResult] = []
 

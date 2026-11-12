@@ -1,9 +1,9 @@
 # Unified Sony FX3 / FX6 Lab Verification & Candidate Dry-Run Makefile
 PYTHON ?= /usr/bin/python3
 PYFLAGS := -B
-CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx6-on-fx3-closure
+CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure
 
-.PHONY: all test test-json dry-run clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-byof
+.PHONY: all test test-json dry-run readiness-packet clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-byof
 
 all: test
 
@@ -15,6 +15,9 @@ test-json:
 
 dry-run:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure dry-run-candidate
+
+readiness-packet:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure build-readiness-packet
 
 verify-storage-ram-budget:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-storage-ram-budget

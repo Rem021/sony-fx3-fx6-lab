@@ -273,6 +273,15 @@ from fx6_closure.kmod_and_userland_abi_verifier import (
     parse_insmod_script,
     run_kmod_and_userland_abi_verification,
 )
+from fx6_closure.hardware_readiness_packet import (
+    READINESS_PACKET_SCHEMA,
+    audit_p1_vfat_header,
+    audit_p8_tomco_header,
+    build_gate_ordered_hardware_checklist,
+    build_stage_a_hardware_readiness_packet,
+    populate_tier0_capture_bundle_fixture,
+    verify_real_tier0_capture_bundle,
+)
 from fx6_closure.patcher import LibraryPatchSpec, PatchSiteSpec
 from fx6_closure.tier0_unicorn_verifier import _resolve_zig_binary
 from fx6_closure.vfat_builder import (
@@ -3115,6 +3124,274 @@ class TestPhase14KmodAndUserlandAbiVerifier(unittest.TestCase):
             g for g in bad_dry.safety_gates_report["gates"] if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12["status"], "BLOCKED_BY_KMOD_USERLAND_ABI_REDLINE")
+
+
+class TestPhase15HardwareReadinessPacketAndTier0BundleVerifier(unittest.TestCase):
+    """Phase 15: Stage-A Non-Persistent Hardware Readiness Packet & Real Tier-0 Bundle Verifier."""
+
+    def test_clean_room_readiness_packet_determinism_and_checklist(self) -> None:
+        """Runs in both normal and `FX3_FX6_FORCE_CLEAN_ROOM=1` donorless modes."""
+        pkt1 = build_stage_a_hardware_readiness_packet(synthetic_clean_room=True)
+        pkt2 = build_stage_a_hardware_readiness_packet(synthetic_clean_room=True)
+        self.assertEqual(pkt1.schema, READINESS_PACKET_SCHEMA)
+        self.assertEqual(pkt1.verification_mode, "CLEAN_ROOM_SYNTHETIC_VERIFIED")
+        self.assertTrue(pkt1.offline_engineering_complete, pkt1.errors)
+        self.assertFalse(pkt1.persistent_emmc_writes_authorized)
+        self.assertFalse(pkt1.persistent_write_release)
+        self.assertEqual(pkt1.usb_or_camera_operations, 0)
+        self.assertFalse(pkt1.real_tier0_hardware_backup_verified)
+        self.assertFalse(pkt1.stage_a_ram_trial_hardware_go)
+        self.assertEqual(pkt1.errors, ())
+        self.assertEqual(len(pkt1.packet_sha256), 64)
+        self.assertEqual(pkt1.packet_sha256, pkt2.packet_sha256)
+
+        # Verify 3-phase Gate-Ordered Hardware Execution Checklist (H0 -> H1 -> H2)
+        checklist = build_gate_ordered_hardware_checklist()
+        self.assertEqual(len(checklist), 3)
+        self.assertEqual(
+            [s.phase_id for s in checklist],
+            [
+                "H0_tier0_readonly_capture_and_twopass_verification",
+                "H1_non_persistent_stage_a_ram_overlay_trial",
+                "H2_post_power_cycle_stock_fx3_bit_exact_verification",
+            ],
+        )
+        for step in checklist:
+            self.assertEqual(step.emmc_write_bytes_allowed, 0)
+            self.assertEqual(step.nor_write_bytes_allowed, 0)
+            self.assertEqual(step.wbi_p5_write_bytes_allowed, 0)
+            self.assertEqual(step.cp_p8_write_bytes_allowed, 0)
+
+        # CLI `build-readiness-packet --clean-room` deterministic JSON emission
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = cli_main(["build-readiness-packet", "--clean-room"])
+        self.assertEqual(rc, 0)
+        cli_json = json.loads(buf.getvalue())
+        self.assertEqual(cli_json["packet_sha256"], pkt1.packet_sha256)
+        self.assertTrue(cli_json["offline_engineering_complete"])
+        self.assertFalse(cli_json["persistent_emmc_writes_authorized"])
+
+    def test_clean_room_tier0_bundle_verifier_valid_and_deterministic_rejections(self) -> None:
+        """Runs in both normal and `FX3_FX6_FORCE_CLEAN_ROOM=1` modes using TemporaryDirectory."""
+        with tempfile.TemporaryDirectory() as tmp:
+            bdir = Path(tmp) / "fx3_tier0_capture"
+            populate_tier0_capture_bundle_fixture(bdir)
+
+            ok_audit = verify_real_tier0_capture_bundle(bdir)
+            self.assertTrue(ok_audit.valid, ok_audit.errors)
+            self.assertTrue(ok_audit.is_non_synthetic_hardware)
+            self.assertEqual(ok_audit.model_id, "0x91030080")
+            self.assertTrue(ok_audit.manifest_audit_valid)
+            self.assertEqual(len(ok_audit.verified_partition_files), 11)
+            self.assertEqual(ok_audit.missing_or_invalid_files, ())
+            self.assertTrue(ok_audit.twopass_sha256_all_matched)
+            self.assertTrue(ok_audit.ondisk_sha256_all_matched)
+            self.assertTrue(ok_audit.sector0_magic_ok)
+            self.assertEqual(ok_audit.sector0_layout_profile, "FX3_702")
+            self.assertTrue(ok_audit.p2_bk4_magic_ok)
+            self.assertTrue(ok_audit.p1_vfat_header_ok)
+            self.assertEqual(ok_audit.p1_vfat_type, "FAT16")
+            self.assertTrue(ok_audit.p8_tomco_header_ok)
+            self.assertTrue(ok_audit.p5_wbi2_header_ok)
+            self.assertEqual(ok_audit.errors, ())
+
+            # With verified real Tier-0 bundle, Stage-A RAM trial turns GO, while persistent eMMC writes stay False!
+            pkt_go = build_stage_a_hardware_readiness_packet(
+                tier0_bundle_dir=bdir,
+                synthetic_clean_room=True,
+            )
+            self.assertTrue(pkt_go.offline_engineering_complete)
+            self.assertTrue(pkt_go.real_tier0_hardware_backup_verified)
+            self.assertTrue(pkt_go.stage_a_ram_trial_hardware_go)
+            self.assertFalse(pkt_go.persistent_emmc_writes_authorized)
+            self.assertFalse(pkt_go.persistent_write_release)
+            self.assertEqual(pkt_go.errors, ())
+
+            buf_ok = io.StringIO()
+            with redirect_stdout(buf_ok):
+                rc_ok = cli_main(
+                    ["build-readiness-packet", "--clean-room", "--tier0-bundle-dir", str(bdir)]
+                )
+            self.assertEqual(rc_ok, 0)
+            self.assertTrue(json.loads(buf_ok.getvalue())["stage_a_ram_trial_hardware_go"])
+
+            manifest_path = bdir / "backup-manifest.json"
+            base_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+            def _write_manifest(mutated: dict) -> None:
+                manifest_path.write_text(json.dumps(mutated, indent=2) + "\n", encoding="utf-8")
+
+            def _update_item_hash(mutated: dict, key: str, path: Path) -> None:
+                raw = path.read_bytes()
+                sha = hashlib.sha256(raw).hexdigest()
+                mutated["items"][key]["bytes"] = len(raw)
+                mutated["items"][key]["pass1_sha256"] = sha
+                mutated["items"][key]["pass2_sha256"] = sha
+
+            # Rejection 1: Synthetic manifest flag (`synthetic: True` or `capture_origin: unicorn_emulation`)
+            m_synth = json.loads(json.dumps(base_manifest))
+            m_synth["synthetic"] = True
+            _write_manifest(m_synth)
+            r_synth = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_synth.valid)
+            self.assertFalse(r_synth.is_non_synthetic_hardware)
+
+            # Rejection 2: Synthetic/placeholder `body_serial` or trivial `cid`
+            m_bad_id = json.loads(json.dumps(base_manifest))
+            m_bad_id["body_serial"] = "SYNTHETIC_BODY_01"
+            m_bad_id["cid"] = "00" * 16
+            _write_manifest(m_bad_id)
+            r_bad_id = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_bad_id.valid)
+            self.assertFalse(r_bad_id.is_non_synthetic_hardware)
+            _write_manifest(base_manifest)
+
+            # Rejection 3: Two-pass SHA-256 mismatch (`pass1_sha256 != pass2_sha256`)
+            m_twopass = json.loads(json.dumps(base_manifest))
+            m_twopass["items"]["boot0"]["pass2_sha256"] = "f" * 64
+            _write_manifest(m_twopass)
+            r_twopass = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_twopass.valid)
+            self.assertFalse(r_twopass.twopass_sha256_all_matched)
+            _write_manifest(base_manifest)
+
+            # Rejection 4: On-disk bit flip without updating manifest + CLI exit code 2
+            boot0_path = bdir / "boot0.bin"
+            orig_boot0 = boot0_path.read_bytes()
+            boot0_path.write_bytes(bytes([orig_boot0[0] ^ 0xFF]) + orig_boot0[1:])
+            r_flip = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_flip.valid)
+            self.assertFalse(r_flip.ondisk_sha256_all_matched)
+            self.assertIn("boot0", r_flip.missing_or_invalid_files)
+            buf_bad = io.StringIO()
+            with redirect_stdout(buf_bad):
+                rc_bad = cli_main(
+                    ["build-readiness-packet", "--clean-room", "--tier0-bundle-dir", str(bdir)]
+                )
+            self.assertEqual(rc_bad, 1)
+            boot0_path.write_bytes(orig_boot0)
+
+            # Rejection 5: Missing partition image (`p12_cert.bin`)
+            p12_path = bdir / "p12_cert.bin"
+            p12_tmp = bdir / "_saved_p12_cert.tmp"
+            p12_path.rename(p12_tmp)
+            r_missing = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_missing.valid)
+            self.assertIn("p12_cert", r_missing.missing_or_invalid_files)
+            p12_tmp.rename(p12_path)
+
+            # Rejection 6: Corrupted `sector0.bin` magic (`'8246'` overwritten)
+            sec0_path = bdir / "sector0.bin"
+            orig_sec0 = sec0_path.read_bytes()
+            sec0_path.write_bytes(b"BAD!" + orig_sec0[4:])
+            m_sec0 = json.loads(json.dumps(base_manifest))
+            _update_item_hash(m_sec0, "sector0", sec0_path)
+            _write_manifest(m_sec0)
+            r_sec0 = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_sec0.valid)
+            self.assertFalse(r_sec0.sector0_magic_ok)
+            sec0_path.write_bytes(orig_sec0)
+            _write_manifest(base_manifest)
+
+            # Rejection 7: Corrupted `p2_backup_bin.bin` (`'BK4\0'` overwritten)
+            p2_path = bdir / "p2_backup_bin.bin"
+            orig_p2 = p2_path.read_bytes()
+            p2_path.write_bytes(b"NOPE" + orig_p2[4:])
+            m_p2 = json.loads(json.dumps(base_manifest))
+            _update_item_hash(m_p2, "p2_backup_bin", p2_path)
+            _write_manifest(m_p2)
+            r_p2 = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_p2.valid)
+            self.assertFalse(r_p2.p2_bk4_magic_ok)
+            p2_path.write_bytes(orig_p2)
+            _write_manifest(base_manifest)
+
+            # Rejection 8: Corrupted `p1_updater.bin` VFAT boot signature `0x55AA`
+            p1_path = bdir / "p1_updater.bin"
+            with p1_path.open("r+b") as fh:
+                fh.seek(510)
+                fh.write(b"\x00\x00")
+            self.assertFalse(audit_p1_vfat_header(p1_path).valid)
+            m_p1 = json.loads(json.dumps(base_manifest))
+            p1_sha = hashlib.sha256(p1_path.read_bytes()).hexdigest()
+            m_p1["items"]["p1_updater"]["pass1_sha256"] = p1_sha
+            m_p1["items"]["p1_updater"]["pass2_sha256"] = p1_sha
+            _write_manifest(m_p1)
+            r_p1 = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_p1.valid)
+            self.assertFalse(r_p1.p1_vfat_header_ok)
+            with p1_path.open("r+b") as fh:
+                fh.seek(510)
+                fh.write(b"\x55\xaa")
+            _write_manifest(base_manifest)
+
+            # Rejection 9: Corrupted `p8_tomco.txt` (missing required `memcfg=` pool)
+            tomco_path = bdir / "p8_tomco.txt"
+            orig_tomco = tomco_path.read_bytes()
+            bad_tomco = b"wdt_on=Y\nexception_reboot=N\nxreset_req_port_ch=0:22\n"
+            self.assertFalse(audit_p8_tomco_header(bad_tomco).valid)
+            tomco_path.write_bytes(bad_tomco)
+            m_tomco = json.loads(json.dumps(base_manifest))
+            bad_t_sha = hashlib.sha256(bad_tomco).hexdigest()
+            m_tomco["redline_headers"]["p8_tomco_txt"]["bytes"] = len(bad_tomco)
+            m_tomco["redline_headers"]["p8_tomco_txt"]["pass1_sha256"] = bad_t_sha
+            m_tomco["redline_headers"]["p8_tomco_txt"]["pass2_sha256"] = bad_t_sha
+            _write_manifest(m_tomco)
+            r_tomco = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_tomco.valid)
+            self.assertFalse(r_tomco.p8_tomco_header_ok)
+            tomco_path.write_bytes(orig_tomco)
+            _write_manifest(base_manifest)
+
+            # Rejection 10: Invalidated `p5_wbi_header.bin` (`b"invl"` magic instead of `b"WBI2"`)
+            wbi_path = bdir / "p5_wbi_header.bin"
+            orig_wbi = wbi_path.read_bytes()
+            bad_wbi = b"invl" + orig_wbi[4:]
+            wbi_path.write_bytes(bad_wbi)
+            m_wbi = json.loads(json.dumps(base_manifest))
+            bad_w_sha = hashlib.sha256(bad_wbi).hexdigest()
+            m_wbi["redline_headers"]["p5_wbi_header"]["pass1_sha256"] = bad_w_sha
+            m_wbi["redline_headers"]["p5_wbi_header"]["pass2_sha256"] = bad_w_sha
+            _write_manifest(m_wbi)
+            r_wbi = verify_real_tier0_capture_bundle(bdir)
+            self.assertFalse(r_wbi.valid)
+            self.assertFalse(r_wbi.p5_wbi2_header_ok)
+            wbi_path.write_bytes(orig_wbi)
+            _write_manifest(base_manifest)
+
+            # Final sanity: restored bundle passes 100% again
+            self.assertTrue(verify_real_tier0_capture_bundle(bdir).valid)
+
+    @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
+    def test_live_donor_readiness_packet_aggregation_and_cli(self) -> None:
+        dry = run_offline_candidate_dry_run()
+        pkt1 = build_stage_a_hardware_readiness_packet(precomputed_dry_run=dry)
+        pkt2 = build_stage_a_hardware_readiness_packet(precomputed_dry_run=dry)
+        self.assertEqual(pkt1.schema, READINESS_PACKET_SCHEMA)
+        self.assertEqual(pkt1.verification_mode, "LOCAL_DONOR_AND_OFFLINE_DRY_RUN")
+        self.assertTrue(pkt1.offline_engineering_complete, pkt1.errors)
+        self.assertFalse(pkt1.persistent_emmc_writes_authorized)
+        self.assertFalse(pkt1.persistent_write_release)
+        self.assertEqual(pkt1.usb_or_camera_operations, 0)
+        self.assertEqual(pkt1.packet_sha256, pkt2.packet_sha256)
+        self.assertEqual(pkt1.byof_manifest_parity["en_entry_count"], 57)
+        self.assertEqual(pkt1.byof_manifest_parity["zh_entry_count"], 57)
+        self.assertEqual(pkt1.stage_a_cpio_overlay["cpio_size_bytes"], 30_956)
+        self.assertEqual(
+            pkt1.u1_to_u5_and_abi_redlines["Stage_A_kmod_dev_elf64_abi_closure"]["closure_elf_count"],
+            60,
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out_json = Path(tmp) / "readiness-packet.json"
+            with redirect_stdout(io.StringIO()):
+                rc = cli_main(["build-readiness-packet", "--output", str(out_json)])
+            self.assertEqual(rc, 0)
+            disk_payload = json.loads(out_json.read_text(encoding="utf-8"))
+            self.assertEqual(disk_payload["packet_sha256"], pkt1.packet_sha256)
+            self.assertTrue(disk_payload["offline_engineering_complete"])
+            self.assertFalse(disk_payload["persistent_emmc_writes_authorized"])
 
 
 if __name__ == "__main__":

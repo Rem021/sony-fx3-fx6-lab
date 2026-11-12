@@ -54,7 +54,7 @@ jobs:
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-byof
 
-      - name: Run 4-suite donorless clean-room verification (synthetic + Unicorn + POSIX sh)
+      - name: Run 5-suite donorless clean-room verification (synthetic + Unicorn + POSIX sh)
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
 

@@ -1,16 +1,16 @@
-# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、`U1..U5` 藍圖未知項全閉環、`nflasha3-initrd` 啟動鏈與 `p5`（`/wbi`）休眠紅線、Stage-A 原子級 Verify-Before-Mount 編排器、Stage-A `.ko` / `/dev/*` / 60-ELF 動態連結閉包核驗、無供體潔淨室 CI、跨包 `p1` 恢復橋接、Track 1A/2 離線單測、BYOF 審計與 12 道安全門驗證報告（Phase 14）
+# FX6-on-FX3 P1–P9（9/9）全矩陣兼容適配、`U1..U5` 藍圖未知項全閉環、`nflasha3-initrd` 啟動鏈與 `p5`（`/wbi`）休眠紅線、Stage-A 原子級 Verify-Before-Mount 編排器、Stage-A `.ko` / `/dev/*` / 60-ELF 動態連結閉包核驗、Stage-A 真機前確定性就緒包與雙語操作手冊、全倉五套件統一驗收、無供體潔淨室 CI、跨包 `p1` 恢復橋接、BYOF 審計與 12 道安全門驗證報告（Phase 15）
 
-- **日期**：2026-11-10（Phase 14 更新：2026-11-11）
-- **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`
-- **對接安全評估、恢復與虛擬化套件**：`outputs/fx3-safety/`（`verify_sector0_partition_table`、`parse_partinf_conf`、`verify_failsafe_hook_script`、`parse_bk4_record` 與 `evaluate_12_safety_gates`）、`outputs/fx3-recovery-adapter/`（`fx3_recovery` `p1`/`boot0`/`boot1` 靜態工作器與 FAT16/SquashFS 容器核驗）、`outputs/fx3-vm-trial/` 與 `outputs/fx3-vm/`（Track 1A/2 離線單測套件 `outputs/fx3-vm-trial/tests/test_vm_trial.py`）
-- **統一全倉庫驗證入口與潔淨室 CI**：`Makefile`、`scripts/run_all_lab_tests.py`、`scripts/verify_byof_manifest.py` 與 `.github/workflows/clean-room-ci.yml`（串聯 `fx3-recovery-adapter` 63 + `fx3-safety` 19 + `fx6-on-fx3-closure` 60 + `fx3-vm-trial` 16 = **158 / 158** 項單測、`docs/BYOF-REPRODUCTION.md` 雙語 57+57 條目 SHA-256 同步審計、無供體 `FX3_FX6_FORCE_CLEAN_ROOM=1` GitHub Actions 雙作業系統 CI 與 `git status --porcelain` 二進制/`.pyc` 潔淨室審計）
-- **運行時與潔淨室約束**：全離線內存與 `tempfile.TemporaryDirectory()` 驗證；POSIX `/bin/sh` 演練全程以 `PREFIX` / `STAGE_A_PREFIX` 隔離沙盒根目錄（絕不觸碰宿主機真實 `/dev` 或 `/tmp`）；零 QEMU 進程操作、零 USB/硬件交互、倉庫零 `.so` / `.bin` / `.img` / `.vfat` / `.ko` / `.cpio` / `.pyc` 二進制產物留存；兼容 macOS 系統 `/usr/bin/python3`（Python 3.9.6）、Linux/macOS Python 3.12 CI 與 Unicorn AArch64 2.1.4。
+- **日期**：2026-11-10（Phase 15 更新：2026-11-11）
+- **正式受控工程包路徑**：`outputs/fx6-on-fx3-closure/`（配套真機執行雙語操作手冊 `docs/STAGE-A-HARDWARE-RUNBOOK.md`）
+- **對接安全評估、恢復、虛擬化與原生冷啟動套件**：`outputs/fx3-safety/`（`verify_sector0_partition_table`、`parse_partinf_conf`、`verify_failsafe_hook_script`、`parse_bk4_record` 與 `evaluate_12_safety_gates`）、`outputs/fx3-recovery-adapter/`（`fx3_recovery` `p1`/`boot0`/`boot1` 靜態工作器與 FAT16/SquashFS 容器核驗）、`outputs/fx3-vm-trial/` 與 `outputs/fx3-vm/`（Track 1A/2 離線單測套件 `outputs/fx3-vm-trial/tests/test_vm_trial.py`）、以及 `outputs/fx6-native-presenter-closure/`（Track 1B 原版冷啟動與 Big6 閉包離線單測套件）
+- **統一全倉庫五套件驗證入口、真機就緒包與潔淨室 CI**：`Makefile`（含 `make readiness-packet`）、`scripts/run_all_lab_tests.py`、`scripts/verify_byof_manifest.py` 與 `.github/workflows/clean-room-ci.yml`（串聯 `[1/5] fx3-recovery-adapter` 63 + `[2/5] fx3-safety` 19 + `[3/5] fx6-on-fx3-closure` 63 + `[4/5] fx3-vm-trial` 16 + `[5/5] fx6-native-presenter-closure` 10 = **171 / 171** 項單測、`docs/BYOF-REPRODUCTION.md` 雙語 57+57 條目 SHA-256 同步審計、無供體 `FX3_FX6_FORCE_CLEAN_ROOM=1` GitHub Actions 雙作業系統 CI 與 `git status --porcelain` 二進制/`.pyc` 潔淨室審計）
+- **運行時與潔淨室約束**：全離線內存與 `tempfile.TemporaryDirectory()` 驗證；POSIX `/bin/sh` 演練全程以 `PREFIX` / `STAGE_A_PREFIX` 隔離沙盒根目錄（絕不觸碰宿主機真實 `/dev` 或 `/tmp`）；零 QEMU 進程操作、零 USB/硬件交互、`persistent_emmc_writes_authorized = False` 與 `persistent_write_release = False` 硬鎖定、倉庫零 `.so` / `.bin` / `.img` / `.vfat` / `.ko` / `.cpio` / `.pyc` 二進制產物留存；兼容 macOS 系統 `/usr/bin/python3`（Python 3.9.6）、Linux/macOS Python 3.12 CI 與 Unicorn AArch64 2.1.4。
 
 ---
 
 ## 1. 正式受控工程包結構與全矩陣覆蓋表
 
-全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`（並聯動 `outputs/fx3-vm-trial/tests/` 離線驗證套件與 `.github/workflows/clean-room-ci.yml`），完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U1..U5` 全部 5 項未知項閉環（含 Phase 6 `U4` 存儲掛載容錯 + RAM-Shadow `BK4\0`、Phase 7 `U5` 引導選擇器單次防黏連契約 + `U3` `0xfa0080` Bank 0/1 DDR 非重疊、Phase 9 `U1` 30 分區零重分區拓撲 / `edisx.elf` 紅線 / `p15` & DDR `tmpfs` 預算、Phase 10 `U2` `cpapp-b.bin` / `tomco.txt` CP RTOS 跨機型兼容與 Stage-A 原廠 CP 紅線）+ Phase 8 `cxd90057.dtb` FDT SoC 兼容與 `.ko` `vermagic` / `__versions` CRC 完整性核驗 + Phase 11 跨包 `p1` 恢復與 Tier-0 橋接核驗（Track 4 `fx3_recovery` ↔ Track 3 `fx3_safety` / `fx6_closure`）+ Phase 12 `nflasha3-initrd` 啟動鏈審計、`p5`（`/wbi`）休眠安全紅線與原子級 Verify-Before-Mount Stage-A 編排器（`30-stage-a-orchestrator.sh`）+ Phase 13 Track 1A/2 離線自動化驗證套件 + Phase 14 Stage-A `insmod_drv1`/`insmod_drv2` `.ko` 矩陣、137 項 `/dev/*` 節點、60-ELF `DT_NEEDED`/`DYNSYM`/`VERNEED` 閉包核驗器與無供體潔淨室 CI（`make test` 158 項）+ Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
+全部純源碼模組集中受控於 `outputs/fx6-on-fx3-closure/`（並聯動 `outputs/fx3-vm-trial/tests/`、`outputs/fx6-native-presenter-closure/tests/`、`docs/STAGE-A-HARDWARE-RUNBOOK.md` 與 `.github/workflows/clean-room-ci.yml`），完整閉合 **P1 至 P9 全 9 項（9/9）+ Fan + 藍圖 §3 五大核心相機功能路由與 ELF 動態符號閉包核驗 + 藍圖 `U1..U5` 全部 5 項未知項閉環（含 Phase 6 `U4` 存儲掛載容錯 + RAM-Shadow `BK4\0`、Phase 7 `U5` 引導選擇器單次防黏連契約 + `U3` `0xfa0080` Bank 0/1 DDR 非重疊、Phase 9 `U1` 30 分區零重分區拓撲 / `edisx.elf` 紅線 / `p15` & DDR `tmpfs` 預算、Phase 10 `U2` `cpapp-b.bin` / `tomco.txt` CP RTOS 跨機型兼容與 Stage-A 原廠 CP 紅線）+ Phase 8 `cxd90057.dtb` FDT SoC 兼容與 `.ko` `vermagic` / `__versions` CRC 完整性核驗 + Phase 11 跨包 `p1` 恢復與 Tier-0 橋接核驗（Track 4 `fx3_recovery` ↔ Track 3 `fx3_safety` / `fx6_closure`）+ Phase 12 `nflasha3-initrd` 啟動鏈審計、`p5`（`/wbi`）休眠安全紅線與原子級 Verify-Before-Mount Stage-A 編排器（`30-stage-a-orchestrator.sh`）+ Phase 13 Track 1A/2 離線自動化驗證套件 + Phase 14 Stage-A `insmod_drv1`/`insmod_drv2` `.ko` 矩陣、137 項 `/dev/*` 節點、60-ELF `DT_NEEDED`/`DYNSYM`/`VERNEED` 閉包核驗器與無供體潔淨室 CI + Phase 15 全倉五套件統一驗收器（`make test` 171 項）、Stage-A 非持久真機就緒包生成器（`hardware_readiness_packet.py` / `make readiness-packet`）、真實 Tier-0 採集包硬門禁校驗器（`verify_real_tier0_capture_bundle`）與雙語操作手冊（`docs/STAGE-A-HARDWARE-RUNBOOK.md`）+ Stage-A RAM-Overlay CPIO + 四層防磚回退演練 + Tier-0 + 12 道安全門**：
 
 | 模組路徑 | 覆蓋項 | 職責說明 |
 | --- | :---: | --- |
@@ -30,11 +30,12 @@
 | `outputs/fx6-on-fx3-closure/fx6_closure/stage_a_boot_orchestrator.py` | **Phase 12 `nflasha3-initrd` + `p5` 休眠紅線 + 原子編排** | **維度 A**：釘選 27 項 `nflasha3-initrd` / `p15` 啟動鏈工件 SHA-256 與早啟交接契約（`sbin/init` -> `insmod_drv1` -> `setup_nflash` -> `sbin/init2` -> `fstab` `/usr` 只讀 -> `insmod_drv2` `#24` `upm.ko` -> `setup_bis`/`setup_senser` -> `bootin.elf` -> `im.elf`），解析 FX6 `p5:/wbi` `88 B` `WBI2` 頭（`202,677,056 B`、`1,197` 節、`wbimem` `+13.47 MiB` 碰撞），強制 **Stage-A WBI 紅線（`wbi_p5_write_and_hibernation_forbidden = True`, `wbi_mutation_bytes = 0`）**；**維度 B**：合成確定性 POSIX `/bin/sh` `30-stage-a-orchestrator.sh`（`10,931 B`）並在隔離沙盒實跑 **6 大場景（10 次執行）** 驗證 Verify-Before-Mount 原子性與嚴格 LIFO 逆序回滾。 |
 | `outputs/fx3-vm-trial/tests/test_vm_trial.py` | **Phase 13 Track 1A & Track 2 離線驗證** | 純離線單測套件（**16 項**，零 QEMU 進程、零專有 `.cpio` 強依賴）：驗證編譯態 C 掃描線打包器 `fx6_pack_scanlines` vs 純 Python 參考逐位一致、`gpe0_raw_to_png` RGBA PNG / IEEE CRC-32 / IDAT 規範、`build_live700.py` SVR4 `cpio newc` 確定性替換與串聯、`src/fx6_live_guest.c` 靜態緩衝/`dlsym` 緩存/`DISP` 邊界回歸，以及 `outputs/fx3-vm` 補丁與 6 份 Mach-O `@loader_path` / `LC_RPATH` 清除溯源。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/kmod_and_userland_abi_verifier.py` | **Phase 14 `.ko` 矩陣 + `/dev/*` + 60-ELF 閉包** | **表面 A**：證明 FX3 與 FX6 `insmod_drv1`（`4` 個 `.ko`）、`insmod_drv2`（`39` 個 `.ko`，`#24` `upm.ko`，`#31` `emg.ko`）、`sbin/init2` 及 3 個動態 `.ko` 輔助腳本 **100% 逐字節一致**（`script_mutation_count = 0`），分類全量 `127` 個 `.ko`（`126` 共享、`0` FX3 獨佔、`1` FX6 獨佔 `emg.ko` 安全跳過，`fx6_kmod_loaded_count = 0`、`kmod_mutation_count = 0`）；**表面 B**：掃描 `61` 個用戶態二進制並全量歸類 `137` 條 `/dev/*` 路徑（`unaccounted_dev_nodes = ()`）；**表面 C**：`60` 個 ELF64 傳遞 `DT_NEEDED` 閉包、`0` 未決強導入、`0` 補丁符號表偏移、`267/267` `VERNEED` 版本滿足與 FX3/FX6 基礎運行時庫 ABI 100% 對齊。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/hardware_readiness_packet.py` & `docs/STAGE-A-HARDWARE-RUNBOOK.md` | **Phase 15 真機就緒包 + Tier-0 校驗器 + 雙語手冊** | 匯聚離線全量結論生成確定性 JSON 就緒包 `stage_a_readiness_packet_v1`（`make readiness-packet`、`offline_engineering_complete = True`、`persistent_emmc_writes_authorized = False` 硬鎖定、三階段 `H0 -> H1 -> H2` 門禁有序清單）；提供 `verify_real_tier0_capture_bundle(bundle_dir)` 確定性校驗未來物理 FX3 Tier-0 採集目錄（`backup-manifest.json`、11 個分區鏡像、非合成 `body_serial`/`cid`、雙遍 SHA-256 及 `'8246'` / `'BK4\0'` / `'FAT16'` / `tomco.txt` / `'WBI2'` 魔數頭），配套中英雙語真機操作手冊。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/ram_overlay_packager.py` | **Stage-A CPIO** | 純 Python SVR4 `cpio newc`（`070701` 魔數、4 字節對齊、`TRAILER!!!` 哨兵）確定性歸檔封裝器與解析審計器，組裝 `etc/fx6_overlay/{setup_fx6_compat.sh,init2_guard.sh,30-stage-a-orchestrator.sh,overlay_manifest.json}`（`30,956 B`，含無供體 CI `synthetic_clean_room` 模式）。 |
 | `outputs/fx6-on-fx3-closure/fx6_closure/rollback_drill.py` | **四層防磚演練** | Stage-A 啟動守衛確定性狀態機與 `PREFIX` 隔離沙盒 POSIX `/bin/sh` 子進程實跑演練器（覆蓋無授權標記、單次啟動+重啟恢復、SHA-256 失配/缺失回退、超時/非零退出回退與 eMMC 零寫入核驗）。 |
 | `outputs/fx6-on-fx3-closure/native/tier0_backup_worker.c` & `tier0_unicorn_verifier.py` | **Tier-0** | 零外部 `UND` 符號、零動態重定位 AArch64 Linux 雙遍只讀備份組件與 Unicorn 系統調用審計器。 |
-| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks`、`verify-kernel-dtb`、`verify-storage-ram-budget`、`verify-cp-rtos`、`verify-p1-recovery-bridge`、`verify-stage-a-orchestrator`、`verify-kmod-userland-abi` 與 `run-rollback-drill` 子命令）。 |
-| `scripts/verify_byof_manifest.py`、`scripts/run_all_lab_tests.py`、`Makefile` & `.github/workflows/clean-room-ci.yml` | **BYOF 審計、潔淨室 CI 與四套件統一驗收** | 自動解析並雙向核驗 `docs/BYOF-REPRODUCTION.md`（EN 57 項 / ZH 57 項 100% 鏡像、46 項源碼常量交叉校驗、本地 BYOF `LOCAL_DONOR_VERIFIED` 54 綁定 / 潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED` 雙模態），統一執行 `fx3-recovery-adapter`（**63 項**）、`fx3-safety`（**19 項**）、`fx6-on-fx3-closure`（**60 項**）、`fx3-vm-trial`（**16 項**，全倉庫合計 **158 項**），並提供 `ubuntu-latest` + `macos-latest` 無供體 GitHub Actions CI。 |
+| `outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py` & `__main__.py` | **12-Gate 聯調** | `TemporaryDirectory` 端到端離線候選包乾跑組裝器與 `fx3-safety` 12 道安全門評估器 CLI（含 `verify-feature-routing`、`verify-backup-mount-contracts`、`verify-boot-selector-banks`、`verify-kernel-dtb`、`verify-storage-ram-budget`、`verify-cp-rtos`、`verify-p1-recovery-bridge`、`verify-stage-a-orchestrator`、`verify-kmod-userland-abi`、`build-readiness-packet` 與 `run-rollback-drill` 子命令）。 |
+| `scripts/verify_byof_manifest.py`、`scripts/run_all_lab_tests.py`、`Makefile` & `.github/workflows/clean-room-ci.yml` | **BYOF 審計、潔淨室 CI 與五套件統一驗收** | 自動解析並雙向核驗 `docs/BYOF-REPRODUCTION.md`（EN 57 項 / ZH 57 項 100% 鏡像、46 項源碼常量交叉校驗、本地 BYOF `LOCAL_DONOR_VERIFIED` 54 綁定 / 潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED` 雙模態），統一執行 `[1/5] fx3-recovery-adapter`（**63 項**）、`[2/5] fx3-safety`（**19 項**）、`[3/5] fx6-on-fx3-closure`（**63 項**）、`[4/5] fx3-vm-trial`（**16 項**）與 `[5/5] fx6-native-presenter-closure`（**10 項**，全倉庫五套件合計 **171 項**），並提供 `ubuntu-latest` + `macos-latest` 無供體 GitHub Actions CI。 |
 
 ---
 
@@ -518,7 +519,34 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 
 ---
 
-## 19. 端到端候選包乾跑、12 道安全門聯調與全倉庫統一驗收結果
+## 19. Phase 15：全倉五套件統一驗收器（`scripts/run_all_lab_tests.py`）、Stage-A 真機前確定性就緒包（`hardware_readiness_packet.py`）與雙語操作手冊（`docs/STAGE-A-HARDWARE-RUNBOOK.md`）
+
+### 19.1 全倉五套件統一驗收器（覆蓋 Track 1A / 1B / 2 / 3 / 4）
+
+將 `scripts/run_all_lab_tests.py` 與 `.github/workflows/clean-room-ci.yml` 從四套件擴展至 **五套件統一驗收**：
+1. `[1/5] outputs/fx3-recovery-adapter/tests`（Track 4 `p1` 離線恢復與靜態採集工作器）：**63 項**
+2. `[2/5] outputs/fx3-safety/tests`（12 道刷前安全門、Sector-0 / `BK4\0` 契約與系統調用審計器）：**19 項**
+3. `[3/5] outputs/fx6-on-fx3-closure/tests`（Track 3 `P1..P9+Fan`、`U1..U5`、Stage-A 編排、`.ko`/ABI 閉包與真機就緒包）：**63 項**
+4. `[4/5] outputs/fx3-vm-trial/tests`（Track 1A & Track 2 離線驗證）：**16 項**
+5. `[5/5] outputs/fx6-native-presenter-closure/tests`（Track 1B 原版冷啟動與 Big6 閉包離線契約驗證）：**10 項**
+
+同時在 `STRICT_ZERO_ARTIFACT_DIRS` 與潔淨室審計中納入 `outputs/fx6-native-presenter-closure` 及全目錄 `__pycache__` 零留存檢查。
+
+### 19.2 Stage-A 非持久真機就緒包生成器（`stage_a_readiness_packet_v1` / `make readiness-packet`）
+
+實現 `outputs/fx6-on-fx3-closure/fx6_closure/hardware_readiness_packet.py` 與 CLI `python3 -m fx6_closure build-readiness-packet`（Makefile 目標 `make readiness-packet`）：
+- **全離線結論匯聚與 100% 跨次構建確定性**：自動剝離運行時牆鐘時間戳，匯聚 `preflight` 12/12 道安全門、`verify-byof` 57+57 鏡像一致性、Tier-0 工作器 Unicorn 系統調用審計、`P1..P9+Fan` 補丁與回滾指紋、`30,956 B` Stage-A CPIO 摘要及 `U1..U5` / `p5:/wbi` / `p8:/cp` / 60-ELF 紅線，計算確定性自校驗 `packet_sha256`（同時支持本地供體模式 `LOCAL_DONOR_AND_OFFLINE_DRY_RUN` 與無供體潔淨室模式 `CLEAN_ROOM_SYNTHETIC_VERIFIED`）。
+- **硬鎖定安全不變量**：固定輸出 `offline_engineering_complete = True`、`persistent_emmc_writes_authorized = False`、`persistent_write_release = False`、`usb_or_camera_operations = 0`；在未傳入通過核驗的真實物理 FX3 Tier-0 採集包前，`real_tier0_hardware_backup_verified` 與 `stage_a_ram_trial_hardware_go` 保持 `False`。
+- **三階段門禁有序真機執行清單（Gate-Ordered Hardware Execution Checklist）**：內置 `Phase H0`（同機 Tier-0 只讀全量雙遍採集與宿主機硬門禁校驗）→ `Phase H1`（純內存 `tmpfs` Stage-A 非持久試運行，eMMC/NOR/WBI/CP 允許寫入字節數全為 `0`）→ `Phase H2`（斷電重啟回退原廠 FX3 Ver. 7.02 與只讀 SHA-256 逐位一致性復核）。
+
+### 19.3 真實物理 Tier-0 採集包硬門禁校驗器（`verify_real_tier0_capture_bundle`）與雙語操作手冊
+
+- **`verify_real_tier0_capture_bundle(bundle_dir)`**：對未來連接物理 FX3 機身採集的目錄執行全確定性失敗關閉（Fail-Closed）審計，校驗 `backup-manifest.json`、全部 11 個分區/校準鏡像文件、非合成真實 `body_serial` 與 128-bit eMMC `cid`、`on_disk_sha256 == pass1_sha256 == pass2_sha256` 雙遍讀回一致性、精確字節尺寸，以及五類關鍵魔數頭（`sector0.bin` `'8246' '2.00'` `FX3_702` 非重疊分區表、`p2_backup_bin.bin` `'BK4\0'` 雙記錄校驗和、`p1_updater.bin` `FAT16`/`FAT12` 雙 FAT 表與 `0x55AA` 簽名、`p8_tomco.txt` 4 段 `memcfg=` 共享池、`p5_wbi_header.bin` `'WBI2'` 88 字節頭）；在 `TestPhase15HardwareReadinessPacketAndTier0BundleVerifier` 中覆蓋全部 10 類合成/篡改/缺件/魔數損壞注入場景（在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下亦 100% 實跑）。
+- **中英雙語真機執行操作手冊（`docs/STAGE-A-HARDWARE-RUNBOOK.md`）**：提供可直接按步執行的雙語規程，涵蓋宿主機預檢、5 條零容忍硬件紅線（`p5:/wbi`、`p8:cpapp`、黏連 `boot_img` / `/setting/updater/mode*`、`edisx.elf`、`.ko` 零篡改）、`U5` 雙步原子 `p1` 退出復位（`rm -f /setting/updater/mode* && sync` + `ud_send_lsi.elf 0`）與 10 秒拔電池緊急恢復流程。
+
+---
+
+## 20. 端到端候選包乾跑、12 道安全門聯調與全倉庫五套件統一驗收結果
 
 | 聯調場景 | `verified_matrix_items` | `verified_gate_count` | 阻斷安全門 ID | `candidate_ready` | `persistent_write_release` |
 | --- | --- | :---: | :---: | :---: | :---: |
@@ -528,12 +556,13 @@ Unicorn AArch64 全部 6 組微執行場景結果匯總（`u4_closed = True`）�
 | 篡改 `init2_guard.sh` 四層防磚清除鎖（`/tmp/mod_arm_once`） | `P1..P9 + Fan` | 10 / 12 | `G11`, `G12` | `False` | `False` |
 | 損壞 `opelog.vfat`、P5/P6 UIPC、P7 橋接、Stage-A CPIO、五大功能路由、`U4`/RAM-Shadow `BK4\0`、`U5`/`U3` 引導選擇器與 Bank DDR、Phase 8 `cxd90057.dtb` / `.ko` 完整性、Phase 9 存儲重分區 / `p15` / DDR `tmpfs` 預算紅線、Phase 10 CP RTOS 原廠 `p8` 保護紅線（`BLOCKED_BY_CP_RTOS_REDLINE`）、Phase 11 跨包 `p1` 恢復橋接紅線（`BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE`）、Phase 12 Stage-A 原子編排與 `p5` WBI 休眠紅線（`BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE`）或 **Phase 14 Stage-A `.ko` / `/dev/*` / ELF64 動態連結閉包紅線（`BLOCKED_BY_KMOD_USERLAND_ABI_REDLINE`）** | 對應項阻斷 | 11 / 12 | `G12` | `False` | `False` |
 
-### 全倉庫四套件統一驗收測試匯總（`Makefile`、`scripts/run_all_lab_tests.py`、`scripts/verify_byof_manifest.py` & `.github/workflows/clean-room-ci.yml`）
+### 全倉庫五套件統一驗收測試匯總（`Makefile`、`scripts/run_all_lab_tests.py`、`scripts/verify_byof_manifest.py` & `.github/workflows/clean-room-ci.yml`）
 
-1. `[1/4] outputs/fx3-recovery-adapter/tests`：**63 / 63 OK**（`skipped = 0`）
-2. `[2/4] outputs/fx3-safety/tests`：**19 / 19 OK**（`skipped = 0`）
-3. `[3/4] outputs/fx6-on-fx3-closure/tests`：**60 / 60 OK**（`skipped = 0`）
-4. `[4/4] outputs/fx3-vm-trial/tests`：**16 / 16 OK**（全倉庫四套件本地供體模式合計 **158 / 158 OK，`skipped = 0`**；無供體潔淨室 `FX3_FX6_FORCE_CLEAN_ROOM=1` 模式 **0 失敗 / 0 錯誤**）
-5. BYOF 自備固件清單自動化審計（`make verify-byof` / `scripts/verify_byof_manifest.py`）：返回碼 `0`，雙語 `57 + 57` 項 SHA-256 鏡像一致、`46` 項代碼常量交叉核對通過、本地供體 `LOCAL_DONOR_VERIFIED`（`54` 項綁定 / `52` 個獨立文件；潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED`）雙模態驗證通過。
-6. CLI `verify-kmod-userland-abi`、`verify-stage-a-orchestrator`、`verify-p1-recovery-bridge`、`verify-cp-rtos`、`verify-storage-ram-budget`、`verify-kernel-dtb`、`verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`：返回碼 `0`，`kmod_userland_abi_ok = true`、`kmod_mutation_count = 0`、`fx6_kmod_loaded_count = 0`、`unaccounted_dev_node_count = 0`、`missing_dt_needed_count = 0`、`unresolved_required_symbols = 0`、`unsatisfied_verneed_count = 0`、`stage_a_orchestrator_ok = true`、`wbi_p5_write_and_hibernation_forbidden = true`、`wbi_mutation_bytes = 0`、`p1_recovery_bridge_ok = true`、`cp_rtos_ok = true`、`u2_closed = true`、`p8_cp_mutation_forbidden = true`、`cp_mutation_bytes = 0`、`storage_and_ram_budget_ok = true`、`edisx_repartition_forbidden = true`、`sector0_mutation_bytes = 0`、`kernel_dtb_ok = true`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
-7. 工作區二進制與字節碼潔淨室核驗（`make clean-audit` / `git status --porcelain` / `find outputs scripts .github -name "__pycache__"`）：零未追蹤 `.so`、`.elf`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 及零 `__pycache__` 目錄留存。
+1. `[1/5] outputs/fx3-recovery-adapter/tests`：**63 / 63 OK**（`skipped = 0`）
+2. `[2/5] outputs/fx3-safety/tests`：**19 / 19 OK**（`skipped = 0`）
+3. `[3/5] outputs/fx6-on-fx3-closure/tests`：**63 / 63 OK**（`skipped = 0`）
+4. `[4/5] outputs/fx3-vm-trial/tests`：**16 / 16 OK**（`skipped = 0`）
+5. `[5/5] outputs/fx6-native-presenter-closure/tests`：**10 / 10 OK**（全倉庫五套件本地供體模式合計 **171 / 171 OK，`skipped = 0`**；無供體潔淨室 `FX3_FX6_FORCE_CLEAN_ROOM=1` 模式 **0 失敗 / 0 錯誤**）
+6. BYOF 自備固件清單自動化審計（`make verify-byof` / `scripts/verify_byof_manifest.py`）：返回碼 `0`，雙語 `57 + 57` 項 SHA-256 鏡像一致、`46` 項代碼常量交叉核對通過、本地供體 `LOCAL_DONOR_VERIFIED`（`54` 項綁定 / `52` 個獨立文件；潔淨克隆 `CLEAN_ROOM_SCHEMA_VERIFIED`）雙模態驗證通過。
+7. Stage-A 真機就緒包與全量 CLI 子命令（`make readiness-packet` / `build-readiness-packet`、`verify-kmod-userland-abi`、`verify-stage-a-orchestrator`、`verify-p1-recovery-bridge`、`verify-cp-rtos`、`verify-storage-ram-budget`、`verify-kernel-dtb`、`verify-boot-selector-banks`、`verify-backup-mount-contracts`、`verify-feature-routing`、`run-rollback-drill` 與 `dry-run-candidate`）：返回碼 `0`，`offline_engineering_complete = true`、`persistent_emmc_writes_authorized = false`、`persistent_write_release = false`、`kmod_userland_abi_ok = true`、`kmod_mutation_count = 0`、`fx6_kmod_loaded_count = 0`、`unaccounted_dev_node_count = 0`、`unresolved_required_symbols = 0`、`unsatisfied_verneed_count = 0`、`stage_a_orchestrator_ok = true`、`wbi_p5_write_and_hibernation_forbidden = true`、`wbi_mutation_bytes = 0`、`p1_recovery_bridge_ok = true`、`cp_rtos_ok = true`、`p8_cp_mutation_forbidden = true`、`cp_mutation_bytes = 0`、`storage_and_ram_budget_ok = true`、`edisx_repartition_forbidden = true`、`sector0_mutation_bytes = 0`、`all_12_gates_verified = true`、`rollback_drill_emmc_writes = 0`。
+8. 工作區二進制與字節碼潔淨室核驗（`make clean-audit` / `git status --porcelain` / `find outputs scripts .github -name "__pycache__"`）：零未追蹤 `.so`、`.elf`、`.bin`、`.img`、`.vfat`、`.ko`、`.cpio`、`.pyc` 及零 `__pycache__` 目錄留存。

@@ -1,9 +1,25 @@
-"""FX6-on-FX3 Phase 14 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator & Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure Suite."""
+"""FX6-on-FX3 Phase 15 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure & Stage-A Hardware Readiness Packet Suite."""
 
 from __future__ import annotations
 
-__version__ = "14.0.0"
+__version__ = "15.0.0"
 
+from .hardware_readiness_packet import (
+    FX3_MODEL_ID_HEX,
+    PHASE_15_VERSION,
+    READINESS_PACKET_SCHEMA,
+    HardwareExecutionPhaseStep,
+    P1VfatHeaderAudit,
+    P8TomcoHeaderAudit,
+    RealTier0CaptureBundleAudit,
+    StageAHardwareReadinessPacketReport,
+    audit_p1_vfat_header,
+    audit_p8_tomco_header,
+    build_gate_ordered_hardware_checklist,
+    build_stage_a_hardware_readiness_packet,
+    populate_tier0_capture_bundle_fixture,
+    verify_real_tier0_capture_bundle,
+)
 from .kmod_and_userland_abi_verifier import (
     BinaryLinkageAudit,
     DevNodeResolution,
@@ -58,6 +74,8 @@ __all__ = [
     "EXPECTED_STAGE_A_FORWARD_STEP_IDS",
     "ElfLinkageInfo",
     "ElfSymbolAndVerneedClosureReport",
+    "FX3_MODEL_ID_HEX",
+    "HardwareExecutionPhaseStep",
     "InitrdBootChainContractAudit",
     "InsmodEntry",
     "KmodAndUserlandAbiReport",
@@ -67,17 +85,27 @@ __all__ = [
     "OrchestratorSandboxRunResult",
     "OrchestratorScenarioResult",
     "OrchestratorStateMachineTrace",
+    "P1VfatHeaderAudit",
+    "P8TomcoHeaderAudit",
+    "PHASE_15_VERSION",
     "PINNED_FX6_WBI_NFLASH5_BYTES",
     "PINNED_FX6_WBI_NFLASH5_SHA256",
     "PINNED_INITRD_AND_BOOT_ARTIFACTS",
     "Phase12StageABootOrchestratorReport",
+    "READINESS_PACKET_SCHEMA",
+    "RealTier0CaptureBundleAudit",
+    "StageAHardwareReadinessPacketReport",
     "UserlandDevNodeAuditReport",
     "VerneedEntry",
     "Wbi2HeaderAudit",
     "audit_elf64_symbol_and_verneed_closure",
     "audit_initrd_boot_chain_and_wbi_contracts",
     "audit_kmod_load_order_and_driver_matrix",
+    "audit_p1_vfat_header",
+    "audit_p8_tomco_header",
     "audit_userland_dev_nodes",
+    "build_gate_ordered_hardware_checklist",
+    "build_stage_a_hardware_readiness_packet",
     "build_synthetic_elf64_linkage_blob",
     "classify_kmod_driver_matrix",
     "classify_userland_dev_node",
@@ -87,8 +115,10 @@ __all__ = [
     "parse_elf64_linkage_info",
     "parse_insmod_script",
     "parse_wbi2_header_bytes",
+    "populate_tier0_capture_bundle_fixture",
     "run_kmod_and_userland_abi_verification",
     "run_stage_a_boot_orchestrator_verification",
     "simulate_orchestrator_state_machine",
     "validate_candidate_wbi_redline",
+    "verify_real_tier0_capture_bundle",
 ]

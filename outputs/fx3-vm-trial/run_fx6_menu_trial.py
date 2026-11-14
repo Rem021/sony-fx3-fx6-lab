@@ -17,6 +17,7 @@ Sony FX6 Authentic In-Guest Native GPE0 Menu Runner (Port 8768)
 from __future__ import annotations
 
 import argparse
+import errno
 import hashlib
 import io
 import json
@@ -27,6 +28,7 @@ import signal
 import socket
 import struct
 import subprocess
+import sys
 import threading
 import time
 import urllib.parse
@@ -333,6 +335,654 @@ CAT_NAMES = [
     "Technical",
     "Maintenance",
 ]
+
+CLIENT_DISCONNECT_ERRNOS = frozenset(
+    getattr(errno, name)
+    for name in ("EPIPE", "ECONNRESET", "ECONNABORTED", "ETIMEDOUT", "ENOTCONN", "ESHUTDOWN")
+    if hasattr(errno, name)
+)
+
+
+def _is_client_disconnect_exc(exc: BaseException) -> bool:
+    """Return True for benign client socket resets, broken pipes, or timeouts."""
+    if isinstance(exc, (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout)):
+        return True
+    if isinstance(exc, OSError) and exc.errno in CLIENT_DISCONNECT_ERRNOS:
+        return True
+    return False
+
+
+class HardenedThreadingHTTPServer(ThreadingHTTPServer):
+    """ThreadingHTTPServer that suppresses noisy tracebacks on client socket disconnects."""
+
+    daemon_threads = True
+    allow_reuse_address = True
+
+    def __init__(self, server_address: tuple[str, int], RequestHandlerClass: type[BaseHTTPRequestHandler]) -> None:
+        self.client_disconnects = 0
+        super().__init__(server_address, RequestHandlerClass)
+
+    def handle_error(self, request: Any, client_address: Any) -> None:
+        _, exc, _ = sys.exc_info()
+        if exc is not None and _is_client_disconnect_exc(exc):
+            self.client_disconnects += 1
+            return
+        super().handle_error(request, client_address)
+
+
+def compute_gpe0_frame_diff(raw_a: bytes, raw_b: bytes) -> dict[str, int]:
+    """Compute exact byte-level and 32-bit pixel-level diff between two GPE0 buffers."""
+    n_bytes = min(len(raw_a), len(raw_b))
+    if len(raw_a) != len(raw_b):
+        raise ValueError(f"Frame size mismatch: {len(raw_a)} vs {len(raw_b)}")
+    if n_bytes == 0:
+        return {"diff_bytes": 0, "diff_pixels": 0, "total_bytes": 0, "total_pixels": 0}
+    total_pixels = n_bytes // 4
+    if raw_a == raw_b:
+        return {
+            "diff_bytes": 0,
+            "diff_pixels": 0,
+            "total_bytes": n_bytes,
+            "total_pixels": total_pixels,
+        }
+    diff_bytes = 0
+    diff_pixels = 0
+    aligned_q = (n_bytes // 8) * 8
+    qa = memoryview(raw_a)[:aligned_q].cast("Q")
+    qb = memoryview(raw_b)[:aligned_q].cast("Q")
+    for qi in range(len(qa)):
+        if qa[qi] == qb[qi]:
+            continue
+        base = qi * 8
+        for p_off in (base, base + 4):
+            b_diff = (
+                (1 if raw_a[p_off] != raw_b[p_off] else 0)
+                + (1 if raw_a[p_off + 1] != raw_b[p_off + 1] else 0)
+                + (1 if raw_a[p_off + 2] != raw_b[p_off + 2] else 0)
+                + (1 if raw_a[p_off + 3] != raw_b[p_off + 3] else 0)
+            )
+            if b_diff:
+                diff_pixels += 1
+                diff_bytes += b_diff
+    for pos in range(aligned_q, n_bytes):
+        if raw_a[pos] != raw_b[pos]:
+            diff_bytes += 1
+    return {
+        "diff_bytes": diff_bytes,
+        "diff_pixels": diff_pixels,
+        "total_bytes": n_bytes,
+        "total_pixels": total_pixels,
+    }
+
+
+MENU_CATEGORIES_BILINGUAL: list[dict[str, Any]] = [
+    {
+        "cat_idx": 0,
+        "page_id": "cat_0_user",
+        "category": "User",
+        "category_zh": "用户菜单",
+        "zh_title": "1. 用户菜单 (User Menu 自定义常用项)",
+        "en_title": "User -> Custom Menu Shortcuts",
+        "macro": {"page": 1, "menu_cat": 0, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "Stage-B P10: Maps FX3 Fn/My Menu slots onto FX6 User Menu bank",
+        "keywords": ["user", "custom", "my menu", "用户菜单", "自定义"],
+    },
+    {
+        "cat_idx": 1,
+        "page_id": "cat_1_edit_user",
+        "category": "Edit User Menu",
+        "category_zh": "编辑用户菜单",
+        "zh_title": "2. 编辑用户菜单 (Edit User Menu)",
+        "en_title": "Edit User Menu -> Pin & Reorder",
+        "macro": {"page": 1, "menu_cat": 1, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "Stage-B P10: User Menu slot editor via FX3 Rear Wheel / SET",
+        "keywords": ["edit user", "pin", "reorder", "编辑用户菜单"],
+    },
+    {
+        "cat_idx": 2,
+        "page_id": "cat_2_shooting",
+        "category": "Shooting",
+        "category_zh": "拍摄",
+        "zh_title": "3. 拍摄菜单 -> Cine EI / S&Q 升格 / 快门角",
+        "en_title": "Shooting -> Cine EI / S&Q / Shutter",
+        "macro": {"page": 1, "menu_cat": 2, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "P11 Dual Base ISO 800/12800 + BK4 Shutter Angle (0x02cf1702/04)",
+        "keywords": ["shooting", "cine ei", "s&q", "iso", "base iso", "shutter", "拍摄", "升格", "快门", "双原生"],
+    },
+    {
+        "cat_idx": 3,
+        "page_id": "cat_3_project",
+        "category": "Project",
+        "category_zh": "工程",
+        "zh_title": "4. 工程菜单 -> Base Look / 录制格式 (Rec Format)",
+        "en_title": "Project -> Base Look / Rec Format",
+        "macro": {"page": 1, "menu_cat": 3, "menu_item": 1, "menu_depth": 1},
+        "fx3_bridge_note": "P1 /dev/nflasha30 + XAVC S-I / Long GOP Project Frame Rate",
+        "keywords": ["project", "base look", "rec format", "xavc", "fps", "工程", "录制格式", "帧率"],
+    },
+    {
+        "cat_idx": 4,
+        "page_id": "cat_4_paint_look",
+        "category": "Paint/Look",
+        "category_zh": "画质/风格",
+        "zh_title": "5. 画质/风格 -> User 3D LUT (33³ .cube 调色导入)",
+        "en_title": "Paint/Look -> User 3D LUT",
+        "macro": {"page": 1, "menu_cat": 4, "menu_item": 1, "menu_depth": 2},
+        "fx3_bridge_note": "P1 /lut->p30 + P11 33^3 3D LUT DMA (0x0165/0x0166) + libmpr SetLutData Guard",
+        "keywords": ["paint", "look", "lut", "3d lut", "user lut", "cube", "s-cinetone", "slog3", "画质", "风格", "调色"],
+    },
+    {
+        "cat_idx": 5,
+        "page_id": "cat_5_tc_media",
+        "category": "TC/Media",
+        "category_zh": "时间码/媒体",
+        "zh_title": "6. 时间码/媒体 -> 双 CFexpress 卡槽 (SSA/SSB)",
+        "en_title": "TC/Media -> Dual CFexpress Slot",
+        "macro": {"page": 1, "menu_cat": 5, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "FX3 Dual CFexpress Type A / SD UHS-II Slot A/B Telemetry & Format Guard",
+        "keywords": ["tc", "media", "cfexpress", "slot", "card", "timecode", "format", "时间码", "媒体", "卡槽", "双卡"],
+    },
+    {
+        "cat_idx": 6,
+        "page_id": "cat_6_monitoring",
+        "category": "Monitoring",
+        "category_zh": "监看",
+        "zh_title": "7. 监看菜单 -> 输出 / 屏幕显示叠加 (Output / Display)",
+        "en_title": "Monitoring -> Output / Display",
+        "macro": {"page": 1, "menu_cat": 6, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "HDMI/SDI Display Assist + Gamma Display Assist + Viewfinder OSD GPE0",
+        "keywords": ["monitoring", "output", "display", "hud", "osd", "vf", "hdmi", "监看", "输出", "显示"],
+    },
+    {
+        "cat_idx": 7,
+        "page_id": "cat_7_audio",
+        "category": "Audio",
+        "category_zh": "音频",
+        "zh_title": "8. 音频菜单 -> XLR-H1 4通道输入 (+48V / 0x5d90)",
+        "en_title": "Audio -> XLR-H1 4ch",
+        "macro": {"page": 1, "menu_cat": 7, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "P11 XLR-H1 MI-Shoe 0x5d90 4-Ch +48V / 0x91db059b Internal Stereo Fallback",
+        "keywords": ["audio", "xlr", "xlr-h1", "4ch", "48v", "mic", "vu", "音频", "声道", "麦克风"],
+    },
+    {
+        "cat_idx": 8,
+        "page_id": "cat_8_thumbnail",
+        "category": "Thumbnail",
+        "category_zh": "缩略图",
+        "zh_title": "9. 缩略图菜单 -> 素材剪辑与属性 (Thumbnail)",
+        "en_title": "Thumbnail -> Clip Index & Playback",
+        "macro": {"page": 1, "menu_cat": 8, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "Stage-B P10 C6/PLAY (0x000b -> PF_K_THUMBNAIL) -> 4x3 Clip Grid",
+        "keywords": ["thumbnail", "clip", "playback", "browse", "缩略图", "回放", "素材"],
+    },
+    {
+        "cat_idx": 9,
+        "page_id": "cat_9_technical",
+        "category": "Technical",
+        "category_zh": "技术",
+        "zh_title": "10. 技术菜单 -> P4 ND 锁定 / 5轴防抖 IBIS",
+        "en_title": "Technical -> P4 ND Lock / IBIS",
+        "macro": {"page": 1, "menu_cat": 9, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "P4 ND=Clear Hardware Lock + P11 RTMD 0xE304 5-Axis IBIS Center Lock",
+        "keywords": ["technical", "nd", "p4", "ibis", "steadyshot", "rtmd", "0xe304", "技术", "防抖", "锁定"],
+    },
+    {
+        "cat_idx": 10,
+        "page_id": "cat_10_maintenance",
+        "category": "Maintenance",
+        "category_zh": "维护",
+        "zh_title": "11. 维护菜单 -> 固件版本与硬件校准 (Version)",
+        "en_title": "Maintenance -> Version",
+        "macro": {"page": 1, "menu_cat": 10, "menu_item": 0, "menu_depth": 1},
+        "fx3_bridge_note": "P12 WF-12 Safe O_RDONLY / LRU Pool + BK4 Airplane-Mode Shadow Lock",
+        "keywords": ["maintenance", "version", "firmware", "reset", "clock", "维护", "版本", "固件", "校准"],
+    },
+]
+
+FLAGSHIP_MENU_CATALOG: list[dict[str, Any]] = [
+    {
+        "page_id": "big6_home",
+        "id": "big6_home",
+        "kind": "flagship",
+        "zh_title": "Big-6 电影机主界面 (FPS / EI / 快门 / ND / LUT / 白平衡)",
+        "en_title": "Big-6 Home",
+        "category": "Shooting",
+        "category_zh": "主控面板",
+        "macro": {"page": 0, "sel_box": 4, "menu_depth": 0},
+        "idx128": 21,
+        "fx3_bridge_note": "P11 Dual Base ISO + 33^3 LUT + P4 ND=Clear Lock (Fn -> Big-6)",
+        "keywords": ["big6", "big-6", "home", "fps", "ei", "shutter", "nd", "lut", "wb", "主界面", "首页"],
+    },
+    {
+        "page_id": "three_layer_menu",
+        "id": "three_layer_menu",
+        "kind": "flagship",
+        "zh_title": "FX6 三层完整主菜单 (11大分类)",
+        "en_title": "Three-Layer Menu (11 Categories)",
+        "category": "User",
+        "category_zh": "系统菜单",
+        "macro": {"page": 1, "menu_cat": 2, "menu_item": 0, "menu_depth": 0},
+        "idx128": 24,
+        "fx3_bridge_note": "Stage-B P10 MENU (0x0011 -> UIBIZ_KEY_TACT_MENU) 3-Layer Navigation",
+        "keywords": ["menu", "three layer", "categories", "三层菜单", "总菜单"],
+    },
+    {
+        "page_id": "setting_main",
+        "id": "setting_main",
+        "kind": "flagship",
+        "zh_title": "Setting Main 快速设置列表",
+        "en_title": "Setting Main (0x2ea3e50)",
+        "category": "Project",
+        "category_zh": "快速设置",
+        "macro": {"page": 2, "sel_box": 0, "menu_depth": 0},
+        "idx128": 36,
+        "fx3_bridge_note": "Live Base Look / Project Setting Main view",
+        "keywords": ["setting main", "settings", "设置主页"],
+    },
+    {
+        "page_id": "setting_center",
+        "id": "setting_center",
+        "kind": "flagship",
+        "zh_title": "Setting Center 居中参数六宫格",
+        "en_title": "Setting Center (0x2eaf208)",
+        "category": "Shooting",
+        "category_zh": "参数调节",
+        "macro": {"page": 3, "sel_box": 4, "menu_depth": 0},
+        "idx128": 70,
+        "fx3_bridge_note": "Stage-B P10 C2 -> White Balance / Center 6-Cell Quick Edit",
+        "keywords": ["setting center", "wb", "white balance", "居中设置", "白平衡"],
+    },
+    {
+        "page_id": "assignable_p110",
+        "id": "assignable_p110",
+        "kind": "flagship",
+        "zh_title": "自定义按键分配页 Page 110 (Assignable Buttons 30键)",
+        "en_title": "Assignable Buttons Page 110",
+        "category": "Technical",
+        "category_zh": "按键映射",
+        "macro": {"page": 4, "sel_box": 0, "menu_depth": 0},
+        "idx128": 110,
+        "fx3_bridge_note": "Stage-B P10 Physical FX3 C1..C6 / Fn / Rear Dial -> FX6 Assignable Map",
+        "keywords": ["assignable", "buttons", "p110", "page 110", "110", "c1", "c5", "自定义按键", "功能键"],
+    },
+    {
+        "page_id": "network_p12_guard",
+        "id": "network_p12_guard",
+        "kind": "flagship",
+        "zh_title": "网络状态页 -> P12 飞行模式安全锁 (Network / BK4 Guard)",
+        "en_title": "Network -> P12 Airplane Guard",
+        "category": "Technical",
+        "category_zh": "网络与安全",
+        "macro": {"page": 5, "sel_box": 0, "menu_depth": 0},
+        "idx128": 68,
+        "fx3_bridge_note": "P12 BK4 Airplane-Mode Shadow Lock (WF-12 Safe, RF disabled in FX3 bridge)",
+        "keywords": ["network", "airplane", "p12", "bk4", "wifi", "wf-12", "网络", "飞行模式", "安全锁"],
+    },
+    {
+        "page_id": "monitoring_hud_strip",
+        "id": "monitoring_hud_strip",
+        "kind": "flagship",
+        "zh_title": "监看取景器 HUD 状态条 (Viewfinder Strip)",
+        "en_title": "Monitoring -> Viewfinder HUD Strip",
+        "category": "Monitoring",
+        "category_zh": "监看",
+        "macro": {"page": 6, "sel_box": 0, "menu_depth": 0},
+        "idx128": 6,
+        "fx3_bridge_note": "DISP Cycle Viewfinder Strip + Audio Meter + P11 Live Badges",
+        "keywords": ["hud strip", "viewfinder", "disp", "取景器", "状态条"],
+    },
+    {
+        "page_id": "clip_playback",
+        "id": "clip_playback",
+        "kind": "flagship",
+        "zh_title": "素材回放控制页 (Clip / Playback)",
+        "en_title": "Thumbnail -> Clip / Playback",
+        "category": "Thumbnail",
+        "category_zh": "缩略图",
+        "macro": {"page": 7, "sel_box": 0, "menu_depth": 0},
+        "idx128": 78,
+        "fx3_bridge_note": "FX6 Playback Transport & Clip Review Overlay",
+        "keywords": ["clip", "playback", "transport", "回放", "播放"],
+    },
+    {
+        "page_id": "status_grid_69",
+        "id": "status_grid_69",
+        "kind": "flagship",
+        "zh_title": "相机全参数状态网格 Status Grid 69",
+        "en_title": "Monitoring -> Status / Setting Grid 69",
+        "category": "Monitoring",
+        "category_zh": "监看",
+        "macro": {"page": 8, "sel_box": 0, "menu_depth": 0},
+        "idx128": 25,
+        "fx3_bridge_note": "FX6 Camera Status / System Info Summary Matrix",
+        "keywords": ["status", "grid", "69", "状态页", "参数总览"],
+    },
+    {
+        "page_id": "thumbnail_props_p18",
+        "id": "thumbnail_props_p18",
+        "kind": "flagship",
+        "zh_title": "缩略图素材属性全屏页 p18 (Clip Properties)",
+        "en_title": "Thumbnail -> Clip Properties p18",
+        "category": "Thumbnail",
+        "category_zh": "缩略图",
+        "macro": {"page": 9, "sel_box": 0, "menu_depth": 0},
+        "idx128": 18,
+        "fx3_bridge_note": "RTMD 0xE304 + Clip Codec / Resolution / LUT Metadata Properties",
+        "keywords": ["thumbnail properties", "clip properties", "metadata", "p18", "素材属性"],
+    },
+    {
+        "page_id": "media_dual_cfexpress",
+        "id": "media_dual_cfexpress",
+        "kind": "flagship",
+        "zh_title": "媒体状态 -> 双 CFexpress 卡槽 (SSA/SSB p58)",
+        "en_title": "TC/Media -> Dual CFexpress Slot (SSA/SSB)",
+        "category": "TC/Media",
+        "category_zh": "时间码/媒体",
+        "macro": {"page": 13, "sel_box": 0, "menu_depth": 0},
+        "idx128": 58,
+        "fx3_bridge_note": "Stage-B P10 C4 (PF_K_SLOT_SEL 0x018a) -> Dual CFexpress Slot A/B Status",
+        "keywords": ["media status", "cfexpress", "ssa", "ssb", "slot", "c4", "双卡槽", "媒体状态"],
+    },
+    {
+        "page_id": "clip_thumbnail_browser",
+        "id": "clip_thumbnail_browser",
+        "kind": "flagship",
+        "zh_title": "缩略图 4x3 剪辑浏览器 (Clip Browser p12)",
+        "en_title": "Thumbnail -> 4x3 Clip Browser p12",
+        "category": "Thumbnail",
+        "category_zh": "缩略图",
+        "macro": {"page": 14, "sel_box": 0, "menu_depth": 0},
+        "idx128": 12,
+        "fx3_bridge_note": "Stage-B P10 C6/PLAY (0x000b) -> 4x3 Clip Thumbnail Grid",
+        "keywords": ["clip browser", "4x3", "thumbnail grid", "c6", "play", "剪辑浏览器", "缩略图网格"],
+    },
+    {
+        "page_id": "full_hud_253",
+        "id": "full_hud_253",
+        "kind": "flagship",
+        "zh_title": "监看 253 行完整取景器 HUD (Main Viewfinder p10)",
+        "en_title": "Monitoring -> Full 253-Row Viewfinder HUD",
+        "category": "Monitoring",
+        "category_zh": "监看",
+        "macro": {"page": 16, "sel_box": 0, "menu_depth": 0},
+        "idx128": 10,
+        "fx3_bridge_note": "Full Cinema Line HUD: FPS / EI / Shutter / P4 ND=Clear / 33^3 LUT / XLR-H1 / RTMD 0xE304",
+        "keywords": ["full hud", "253", "viewfinder", "osd", "disp", "取景器主界面", "全屏hud"],
+    },
+    {
+        "page_id": "tc_audio_meter_4ch",
+        "id": "tc_audio_meter_4ch",
+        "kind": "flagship",
+        "zh_title": "音频与时间码 -> XLR-H1 4通道电平表 (TC / Audio Meter p11)",
+        "en_title": "Audio -> XLR-H1 4ch Level Meter & TC Status",
+        "category": "Audio",
+        "category_zh": "音频",
+        "macro": {"page": 17, "sel_box": 0, "menu_depth": 0},
+        "idx128": 11,
+        "fx3_bridge_note": "P11 XLR-H1 0x5d90 4-Ch VU + 0x91db059b Internal Stereo Fallback (C3)",
+        "keywords": ["audio meter", "xlr-h1", "tc", "4ch", "c3", "level meter", "电平表", "4通道音频"],
+    },
+    {
+        "page_id": "wlan_ssid_p12_guard",
+        "id": "wlan_ssid_p12_guard",
+        "kind": "flagship",
+        "zh_title": "Wi-Fi SSID 扫描列表 (P12 飞行模式锁保护 p43)",
+        "en_title": "Network -> Wireless LAN SSID Scan (P12 Guarded)",
+        "category": "Technical",
+        "category_zh": "网络与安全",
+        "macro": {"page": 19, "sel_box": 0, "menu_depth": 0},
+        "idx128": 43,
+        "fx3_bridge_note": "P12 BK4 Airplane-Mode Shadow Lock prevents live RF activation on FX3 bridge",
+        "keywords": ["wlan", "ssid", "wifi", "airplane", "p12", "无线", "扫描"],
+    },
+]
+
+_PAGE128_CURATED_META: dict[int, tuple[str, str, str, str]] = {
+    0: ("基础触控遮罩 (No33_touch)", "Base Touch Overlay (No33_touch)", "Monitoring", "Touch hit-box & GPE0 safe area"),
+    1: ("4通道音频电平条 (Audio Level Meter)", "Audio Level Meter Bar", "Audio", "P11 XLR-H1 0x5d90 4-Ch meter overlay"),
+    2: ("图像尺寸选择器 (Picture Size)", "Picture Size Selector", "Project", "Recording frame geometry descriptor"),
+    3: ("Gamma 显示辅助 (Gamma Display Assist)", "Gamma Display Assist", "Monitoring", "S-Log3 -> Rec.709 monitoring assist"),
+    4: ("Paint / 键盘文本输入浮层 (102行)", "Paint / On-Screen Keyboard Overlay (102 rows)", "Paint/Look", "User LUT / Scene label text input"),
+    5: ("直达主菜单剪辑区 (Home Clip Area)", "Direct Home Menu Clip Area", "User", "Quick clip/menu strip"),
+    6: ("视频信号监看波形条 (Video Signal Monitor)", "Video Signal Monitor Strip", "Monitoring", "Waveform / vector / exposure HUD"),
+    7: ("Base Look 快速预览栏 (base_look)", "Base Look Quick Overlay", "Paint/Look", "P1 /dev/nflasha30 Base Look preview"),
+    8: ("追踪对焦取消按键 (Tracking Cancel)", "AF Tracking Cancel Button", "Shooting", "FX3 Hybrid AF tracking HUD overlay"),
+    9: ("分辨率标识浮层 (Resolution)", "Resolution Overlay", "Project", "4K DCI / QFHD / HD descriptor"),
+    10: ("完整 253 行电影机取景器 HUD", "Full 253-Row Main Viewfinder HUD", "Monitoring", "Full OSD + P4 ND=Clear + P11 IBIS/XLR"),
+    11: ("时间码与 4通道音频状态弹窗", "TC & 4-Ch Audio Level Status Dialog", "Audio", "XLR-H1 4ch + Timecode status"),
+    12: ("4x3 素材缩略图网格浏览器", "4x3 Clip Thumbnail Browser Grid", "Thumbnail", "C6/PLAY Clip browser"),
+    18: ("缩略图素材属性全屏页 (p18)", "Thumbnail Clip Properties Full-Screen (p18)", "Thumbnail", "Clip codec & RTMD metadata"),
+    21: ("Big-6 电影机主界面 (98行描述符)", "Big-6 Home Screen (98-row descriptor)", "Shooting", "Big-6 Home: FPS / EI / Shutter / ND / LUT / WB"),
+    24: ("三层主菜单框架 (11大分类)", "Three-Layer Menu Frame (11 Categories)", "User", "FX6 11-category master menu tree"),
+    25: ("全参数相机状态矩阵 (69行)", "Status / Setting Grid (69 rows)", "Monitoring", "Camera status matrix"),
+    36: ("Setting Main 主设置列表", "Setting Main List", "Project", "Quick main settings"),
+    43: ("Wi-Fi SSID 扫描列表 (P12 飞行锁)", "Wireless LAN SSID Scan (P12 Guarded)", "Technical", "P12 BK4 Airplane-Mode Shadow Lock"),
+    52: ("Touch 触控菜单浮层 (26_TOUCH)", "Touch Menu Overlay", "User", "Touch shortcut panel"),
+    56: ("网络状态 176 行详细配置页", "Network Status 176-Row Detail Page", "Technical", "P12 BK4 Airplane-Mode Lock enforced"),
+    57: ("媒体 10 键功能网格 (2x5)", "Media 10-Button Grid (2x5)", "TC/Media", "Dual CFexpress media actions"),
+    58: ("双 CFexpress 卡槽媒体状态 (SSA/SSB)", "Dual CFexpress Media Status (SSA/SSB)", "TC/Media", "Dual CFexpress slot A/B capacity"),
+    60: ("执行中提示弹窗 (EXECUTING)", "Executing Progress Dialog", "Maintenance", "Non-blocking progress modal"),
+    64: ("15 键 3x5 快捷菜单网格", "15-Button 3x5 Menu Grid", "User", "Quick 3x5 touch grid"),
+    66: ("3 列参数设置列表 (p66)", "3-Column Setting List (p66)", "Project", "Multi-column parameter table"),
+    67: ("设置子页与弹窗面板 (p67)", "Settings Subpage Panel (p67)", "Shooting", "Shooting / Technical subpage"),
+    68: ("网络状态主界面 (55行 P12保护)", "Network Status Summary (55 rows, P12 Guard)", "Technical", "P12 BK4 Airplane-Mode Guard"),
+    69: ("Setting Grid 69 参数矩阵", "Setting Grid 69 Matrix", "Monitoring", "Parameter overview grid"),
+    70: ("Setting Center 居中六宫格", "Setting Center 6-Cell Panel", "Shooting", "Center Big-6 quick edit"),
+    72: ("确认 / 取消对话框 (OK/Cancel)", "OK / Cancel Confirmation Dialog", "Maintenance", "Safe modal confirmation"),
+    73: ("编号参数设置列表 (p73)", "Numbered Setting List (p73)", "Project", "Indexed setting rows"),
+    77: ("分栏设置与辅助信息面板 (p77)", "Split-Pane Setting + Aux Info (p77)", "Technical", "Split parameter + help note"),
+    78: ("素材播放与时间轴控制 (Playback)", "Clip Playback Control (54 rows)", "Thumbnail", "Playback transport & marker UI"),
+    81: ("6 行固件变更通知对话框 (p81)", "6-Line Firmware Change Notice Dialog", "Maintenance", "Version / notice prompt"),
+    86: ("系统状态辅助页 (p86)", "System Status Aux Page (p86)", "Monitoring", "Status icons & indicators"),
+    91: ("设置列表背景模板 (p91)", "Setting List Background (p91)", "Maintenance", "Shared list frame"),
+    92: ("状态图标与指示器集合 (p92)", "Status Icon Set (p92)", "Monitoring", "Recording / battery / media icons"),
+    93: ("执行确认弹窗 (Execute/Cancel)", "Execute / Cancel Dialog (p93)", "Maintenance", "Destructive-action confirm guard"),
+    94: ("Touch 列表滚动面板 (30_TOUCH)", "Touch Scroll List Panel (p94)", "User", "Touch list container"),
+    110: ("自定义功能键分配页 Page 110 (54行)", "Assignable Buttons Page 110 (54 rows)", "Technical", "Stage-B P10 FX3 C1..C6 / Fn / Wheel Map"),
+    112: ("二级菜单横幅面板 (p112)", "2nd-Layer Setting Banner (p112)", "Maintenance", "Section header banner"),
+}
+
+_CAT_ZH_MAP: dict[str, str] = {c["category"]: c["category_zh"] for c in MENU_CATEGORIES_BILINGUAL}
+
+
+def _classify_page128(p: dict[str, Any]) -> dict[str, Any]:
+    idx = int(p["idx"])
+    off_hex = str(p["off_hex"])
+    rows = int(p["rows"])
+    first_name = str(p["first_name"])
+    if idx in _PAGE128_CURATED_META:
+        zh_t, en_t, cat, note = _PAGE128_CURATED_META[idx]
+    else:
+        low = first_name.lower()
+        if "audio" in low:
+            cat, zh_kind, en_kind = "Audio", "音频设置描述符页", "Audio Descriptor Page"
+        elif "gamma" in low or "look" in low:
+            cat, zh_kind, en_kind = "Paint/Look", "画质/Look 描述符页", "Paint/Look Descriptor Page"
+        elif "rec" in low or "picture" in low or "resolution" in low:
+            cat, zh_kind, en_kind = "Project", "工程/录制描述符页", "Project Descriptor Page"
+        elif "yuv" in low or "thumb" in low or "clip" in low:
+            cat, zh_kind, en_kind = "Thumbnail", "缩略图/素材描述符页", "Thumbnail Descriptor Page"
+        elif "executing" in low or "setting_list" in low or "button" in low:
+            cat, zh_kind, en_kind = "Maintenance", "系统弹窗/控件描述符页", "Maintenance/Dialog Descriptor Page"
+        elif "block_touch" in low:
+            cat, zh_kind, en_kind = "Shooting", "区块触控参数页", "Block Touch Parameter Page"
+        elif "touch_screen" in low:
+            cat, zh_kind, en_kind = "User", "触控菜单页", "Touch Menu Screen Page"
+        elif "bg" in low or "ninepatch" in low:
+            cat, zh_kind, en_kind = "Monitoring", "背景/叠层框架页", "Display Background/Frame Page"
+        else:
+            cat, zh_kind, en_kind = "Technical", "FX6 原生 UI 描述符页", "FX6 Native Descriptor Page"
+        zh_t = f"#{idx:03d} {zh_kind} ({first_name}, {rows}行)"
+        en_t = f"#{idx:03d} {en_kind} ({first_name}, {rows} rows)"
+        note = f"Universal Descriptor Table {off_hex} ({rows} rows) via appFw.so"
+
+    return {
+        "page_id": f"p128_{idx:03d}",
+        "id": f"p128_{idx:03d}",
+        "kind": "page128",
+        "idx128": idx,
+        "off": int(p["off"]),
+        "off_hex": off_hex,
+        "rows": rows,
+        "first_name": first_name,
+        "zh_title": f"#{idx:03d} {zh_t}" if not zh_t.startswith("#") else zh_t,
+        "en_title": f"#{idx:03d} {en_t}" if not en_t.startswith("#") else en_t,
+        "category": cat,
+        "category_zh": _CAT_ZH_MAP.get(cat, cat),
+        "macro": {
+            "page": 24,
+            "table_off": int(p["off"]),
+            "table_rows": rows,
+            "table_off2": 0,
+            "table_rows2": 0,
+            "idx128": idx,
+        },
+        "fx3_bridge_note": note,
+        "keywords": [
+            f"p{idx}",
+            f"page {idx}",
+            f"#{idx:03d}",
+            off_hex.lower(),
+            first_name.lower(),
+            cat.lower(),
+            zh_t.lower(),
+            en_t.lower(),
+        ],
+    }
+
+
+_CATALOG_CACHE: dict[str, Any] | None = None
+
+
+def build_menu_catalog() -> dict[str, Any]:
+    """Return the complete 11-category + flagship + 128-page bilingual FX6 menu catalog."""
+    global _CATALOG_CACHE
+    if _CATALOG_CACHE is None:
+        items: list[dict[str, Any]] = []
+        for entry in FLAGSHIP_MENU_CATALOG:
+            rec = dict(entry)
+            rec["macro"] = dict(entry["macro"])
+            rec["keywords"] = list(entry.get("keywords", []))
+            items.append(rec)
+        for cat in MENU_CATEGORIES_BILINGUAL:
+            items.append({
+                "page_id": cat["page_id"],
+                "id": cat["page_id"],
+                "kind": "category",
+                "cat_idx": cat["cat_idx"],
+                "zh_title": cat["zh_title"],
+                "en_title": cat["en_title"],
+                "category": cat["category"],
+                "category_zh": cat["category_zh"],
+                "macro": dict(cat["macro"]),
+                "fx3_bridge_note": cat["fx3_bridge_note"],
+                "keywords": list(cat["keywords"]),
+            })
+        pages128_entries = [_classify_page128(p) for p in ALL_128_PAGES]
+        items.extend(pages128_entries)
+
+        quick_pill_ids = [
+            "big6_home",
+            "cat_0_user",
+            "cat_1_edit_user",
+            "cat_2_shooting",
+            "cat_3_project",
+            "cat_4_paint_look",
+            "cat_5_tc_media",
+            "cat_6_monitoring",
+            "cat_7_audio",
+            "cat_8_thumbnail",
+            "cat_9_technical",
+            "network_p12_guard",
+            "cat_10_maintenance",
+            "assignable_p110",
+        ]
+        by_id = {it["page_id"]: it for it in items}
+        quick_pills = [
+            {
+                "page_id": by_id[pid]["page_id"],
+                "zh_title": by_id[pid]["zh_title"],
+                "en_title": by_id[pid]["en_title"],
+                "category": by_id[pid]["category"],
+                "fx3_bridge_note": by_id[pid]["fx3_bridge_note"],
+                "macro": dict(by_id[pid]["macro"]),
+            }
+            for pid in quick_pill_ids
+            if pid in by_id
+        ]
+        _CATALOG_CACHE = {
+            "ok": True,
+            "total_categories": len(MENU_CATEGORIES_BILINGUAL),
+            "total_pages_128": len(pages128_entries),
+            "total_entries": len(items),
+            "categories": [
+                {
+                    "cat_idx": c["cat_idx"],
+                    "page_id": c["page_id"],
+                    "category": c["category"],
+                    "category_zh": c["category_zh"],
+                    "zh_title": c["zh_title"],
+                    "en_title": c["en_title"],
+                    "fx3_bridge_note": c["fx3_bridge_note"],
+                    "macro": dict(c["macro"]),
+                }
+                for c in MENU_CATEGORIES_BILINGUAL
+            ],
+            "quick_jump_pills": quick_pills,
+            "items": items,
+        }
+    return {
+        "ok": True,
+        "total_categories": _CATALOG_CACHE["total_categories"],
+        "total_pages_128": _CATALOG_CACHE["total_pages_128"],
+        "total_entries": _CATALOG_CACHE["total_entries"],
+        "categories": list(_CATALOG_CACHE["categories"]),
+        "quick_jump_pills": list(_CATALOG_CACHE["quick_jump_pills"]),
+        "items": list(_CATALOG_CACHE["items"]),
+    }
+
+
+def search_menu_catalog(query: str = "", category: str = "") -> dict[str, Any]:
+    """Filter the bilingual 11-category / 128-page catalog by search query and/or category."""
+    cat_norm = str(category or "").strip().lower()
+    q_norm = str(query or "").strip().lower()
+    catalog = build_menu_catalog()
+    items = catalog["items"]
+    if cat_norm and cat_norm not in ("all", "*"):
+        items = [
+            it for it in items
+            if it["category"].lower() == cat_norm
+            or it.get("category_zh", "").lower() == cat_norm
+            or cat_norm in it["category"].lower()
+        ]
+    if q_norm:
+        tokens = [tok for tok in q_norm.split() if tok]
+        scored: list[tuple[int, int, dict[str, Any]]] = []
+        for idx, it in enumerate(items):
+            title_hay = " ".join([
+                str(it.get("page_id", "")),
+                str(it.get("zh_title", "")),
+                str(it.get("en_title", "")),
+                str(it.get("first_name", "")),
+                str(it.get("off_hex", "")),
+            ]).lower()
+            hay = " ".join([
+                title_hay,
+                str(it.get("category", "")),
+                str(it.get("category_zh", "")),
+                str(it.get("fx3_bridge_note", "")),
+                " ".join(str(k) for k in it.get("keywords", [])),
+            ]).lower()
+            if all(tok in hay for tok in tokens):
+                rank = 0 if all(tok in title_hay for tok in tokens) else 1
+                scored.append((rank, idx, it))
+        scored.sort(key=lambda t: (t[0], t[1]))
+        items = [t[2] for t in scored]
+    catalog["items"] = items
+    catalog["filtered_count"] = len(items)
+    catalog["query"] = query
+    catalog["category_filter"] = category
+    return catalog
 
 CELL_NAMES = ["FPS", "EI / Base ISO", "Shutter", "ND Filter", "Base Look / 3D LUT", "White Balance"]
 CELL_N_VALS = [7, 6, 7, 1, 8, 6]
@@ -1149,6 +1799,10 @@ class FX6LiveGpe0Session:
         self.last_icon_n = 0
         self.last_png: bytes = FALLBACK_GPE0_PNG.read_bytes() if FALLBACK_GPE0_PNG.exists() else b""
         self.last_png_source = "real-gpe0-cached-677 (waiting for live VM boot)"
+        self.last_raw_gpe0: bytes = b""
+        self.socket_disconnect_count = 0
+        self.last_multilang_diff: dict[str, Any] | None = None
+        self._gpe0_test_capture_hook: Any = None
         self.live_ready = False
         self.crashed = False
         self.crash_reason = ""
@@ -1620,10 +2274,10 @@ class FX6LiveGpe0Session:
             time.sleep(0.03)
         return False
 
-    def capture_live_gpe0(self) -> tuple[bytes, int]:
-        """Dump 0x41e001000 (0x21c000 bytes) via persistent QMP pmemsave and convert to PNG."""
+    def _capture_live_gpe0_with_raw(self) -> tuple[bytes, bytes, int]:
+        """Dump 0x41e001000 (0x21c000 bytes) via persistent QMP pmemsave and return (raw, png, nz)."""
         if not self.is_running() or not self.qmp_sock.exists():
-            return self.last_png, self.last_nz
+            return self.last_raw_gpe0, self.last_png, self.last_nz
         with self.gpe_lock:
             for _ in range(2):
                 try:
@@ -1652,10 +2306,11 @@ class FX6LiveGpe0Session:
                         raw = self.gpe0_bin.read_bytes()
                         png, nz = gpe0_raw_to_png(raw)
                         if nz > 0 and png:
+                            self.last_raw_gpe0 = raw[:GPE0_BYTES]
                             self.last_png = png
                             self.last_nz = nz
                             self.last_png_source = f"LIVE QEMU GPE0 @ 0x41e001000 (seq={self.ack_seq}, nz={nz})"
-                            return png, nz
+                            return self.last_raw_gpe0, png, nz
                     break
                 except Exception:
                     if self.qmp_conn is not None:
@@ -1664,7 +2319,12 @@ class FX6LiveGpe0Session:
                         except Exception:
                             pass
                         self.qmp_conn = None
-        return self.last_png, self.last_nz
+        return self.last_raw_gpe0, self.last_png, self.last_nz
+
+    def capture_live_gpe0(self) -> tuple[bytes, int]:
+        """Dump 0x41e001000 (0x21c000 bytes) via persistent QMP pmemsave and convert to PNG."""
+        _, png, nz = self._capture_live_gpe0_with_raw()
+        return png, nz
 
     @staticmethod
     def _normalize_lang(lang: Any) -> str | None:
@@ -2651,6 +3311,313 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def jump_to_page(self, body: Any) -> dict[str, Any]:
+        """Jump directly to any flagship, 11-category, or 128-page catalog target."""
+        if not isinstance(body, dict):
+            return {"ok": False, "error": "invalid_request_body", "message": "Request body must be a JSON object"}
+
+        catalog = build_menu_catalog()
+        items = catalog["items"]
+        by_id = {it["page_id"].lower(): it for it in items}
+        entry: dict[str, Any] | None = None
+
+        raw_pid = body.get("page_id") if body.get("page_id") is not None else body.get("id")
+        if raw_pid is not None and str(raw_pid).strip() != "":
+            pid_str = str(raw_pid).strip()
+            pid_low = pid_str.lower()
+            entry = by_id.get(pid_low)
+            if entry is None and pid_low.startswith("page_") and pid_low[5:].isdigit():
+                p_num = int(pid_low[5:])
+                entry = next((it for it in items if it.get("kind") == "flagship" and it["macro"].get("page") == p_num), None)
+            if entry is None and pid_str.isdigit():
+                idx_num = int(pid_str)
+                entry = by_id.get(f"p128_{idx_num:03d}")
+            if entry is None:
+                return {
+                    "ok": False,
+                    "error": "unknown_page_id",
+                    "message": f"Unknown menu catalog page_id: {raw_pid!r}",
+                }
+        elif body.get("idx128") is not None and str(body.get("idx128")).strip() != "":
+            if isinstance(body["idx128"], bool):
+                return {"ok": False, "error": "invalid_idx128", "message": "idx128 cannot be bool"}
+            try:
+                idx_num = int(body["idx128"])
+            except (TypeError, ValueError):
+                return {"ok": False, "error": "invalid_idx128", "message": f"Invalid idx128: {body['idx128']!r}"}
+            entry = by_id.get(f"p128_{idx_num:03d}")
+            if entry is None:
+                return {
+                    "ok": False,
+                    "error": "idx128_out_of_range",
+                    "message": f"idx128={idx_num} not found in 128-page table (len={len(ALL_128_PAGES)})",
+                }
+        elif (body.get("query") is not None and str(body.get("query")).strip() != "") or (
+            body.get("q") is not None and str(body.get("q")).strip() != ""
+        ):
+            q_val = str(body.get("query") if body.get("query") is not None else body.get("q")).strip()
+            cat_val = str(body.get("category") or "").strip()
+            res_search = search_menu_catalog(query=q_val, category=cat_val)
+            if not res_search["items"]:
+                return {
+                    "ok": False,
+                    "error": "menu_search_no_match",
+                    "message": f"No FX6 menu catalog entry matched query={q_val!r}",
+                    "query": q_val,
+                }
+            entry = res_search["items"][0]
+        elif body.get("menu_cat") is not None and str(body.get("menu_cat")).strip() != "":
+            try:
+                c_idx = int(body["menu_cat"]) % 11
+            except (TypeError, ValueError):
+                return {"ok": False, "error": "invalid_menu_cat", "message": f"Invalid menu_cat: {body['menu_cat']!r}"}
+            entry = next((it for it in items if it.get("kind") == "category" and it.get("cat_idx") == c_idx), None)
+        elif body.get("page") is not None and str(body.get("page")).strip() != "":
+            p_raw = body["page"]
+            if isinstance(p_raw, str) and p_raw.lower() in LEGACY_PAGE_MAP:
+                p_num = LEGACY_PAGE_MAP[p_raw.lower()]
+            else:
+                try:
+                    p_num = int(p_raw) % 25
+                except (TypeError, ValueError):
+                    return {"ok": False, "error": "invalid_page", "message": f"Invalid page: {p_raw!r}"}
+            entry = next((it for it in items if it.get("kind") == "flagship" and it["macro"].get("page") == p_num), None)
+            if entry is None:
+                entry = {
+                    "page_id": f"page_{p_num}",
+                    "id": f"page_{p_num}",
+                    "kind": "page",
+                    "zh_title": PAGE_NAMES.get(p_num, f"Page {p_num}"),
+                    "en_title": PAGE_NAMES.get(p_num, f"Page {p_num}"),
+                    "category": "Technical",
+                    "category_zh": "系统",
+                    "macro": {"page": p_num, "sel_box": 4 if p_num == 0 else 0, "menu_depth": 0},
+                    "fx3_bridge_note": f"Direct FX6 page {p_num}",
+                    "keywords": [],
+                }
+        else:
+            return {
+                "ok": False,
+                "error": "missing_jump_target",
+                "message": "Provide 'page_id', 'idx128', 'query', 'menu_cat', or 'page'",
+            }
+
+        assert entry is not None
+        macro = dict(entry["macro"])
+        with self.cmd_lock:
+            target_page = int(macro.get("page", 0)) % 25
+            self.page = target_page
+            if "sel_box" in macro:
+                self.sel_box = int(macro["sel_box"])
+            else:
+                self.sel_box = 4 if target_page == 0 else 0
+            if "menu_cat" in macro:
+                self.menu_cat = int(macro["menu_cat"]) % 11
+            if "menu_item" in macro:
+                self.menu_item = int(macro["menu_item"])
+            elif "menu_cat" in macro:
+                self.menu_item = 0
+            if "menu_depth" in macro:
+                self.menu_depth = int(macro["menu_depth"])
+            elif target_page != 1:
+                self.menu_depth = 0
+            if target_page == 24 and "table_off" in macro and "table_rows" in macro:
+                self.table_off = int(macro["table_off"])
+                self.table_rows = int(macro["table_rows"])
+                self.table_off2 = int(macro.get("table_off2", 0))
+                self.table_rows2 = int(macro.get("table_rows2", 0))
+                if "idx128" in macro:
+                    self.table_idx128 = int(macro["idx128"])
+                else:
+                    for idx, p in enumerate(ALL_128_PAGES):
+                        if p["off"] == self.table_off:
+                            self.table_idx128 = idx
+                            break
+
+            self.last_toast = f"Jump -> {entry['en_title']} ({entry['fx3_bridge_note']})"
+            self.cmd_seq += 1
+            wrote = self._write_ctrl_mailbox()
+            synced = False
+            if wrote:
+                synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
+                self.capture_live_gpe0()
+
+            return {
+                "ok": True,
+                "page_id": entry["page_id"],
+                "entry": dict(entry),
+                "macro": macro,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def verify_multilang_diff(self, page: int | None = None) -> dict[str, Any]:
+        """Switch en -> zh -> ja in-guest, compute GPE0 SHA-256 & pixel deltas, then restore language."""
+        packs = discover_available_lang_packs()
+        missing = [lc for lc in ("en", "zh", "ja") if not packs.get(lc, {}).get("available")]
+        if missing:
+            return {
+                "ok": False,
+                "error": "missing_lang_packs",
+                "message": f"Missing donor language packs for multilingual GPE0 diff: {missing}",
+                "missing_langs": missing,
+                "available_langs": [k for k, v in packs.items() if v["available"]],
+            }
+
+        test_hook = self._gpe0_test_capture_hook
+        is_live = self.is_running() and self.live_ready and not self.crashed
+        if not is_live and test_hook is None:
+            return {
+                "ok": False,
+                "error": "vm_not_ready",
+                "message": "QEMU guest is not LIVE_GPE0_READY; start VM before running in-guest EN/ZH/JA pixel-diff verification.",
+                "stage": self.get_status()["stage"],
+            }
+
+        with self.cmd_lock:
+            orig_lang = self.lang_code
+            orig_lang_id = self.lang_id
+            orig_page = self.page
+            orig_sel = self.sel_box
+            orig_cat = self.menu_cat
+            orig_item = self.menu_item
+            orig_depth = self.menu_depth
+            start_ack = self.ack_seq
+
+            if page is not None:
+                self.page = int(page) % 25
+                if self.page == 0:
+                    self.sel_box = 4
+                elif self.page == 1:
+                    self.sel_box = 0
+
+            captures: dict[str, dict[str, Any]] = {}
+            raw_frames: dict[str, bytes] = {}
+            ack_seqs: list[int] = []
+            step_error: str | None = None
+
+            try:
+                for lc in ("en", "zh", "ja"):
+                    pack = packs[lc]
+                    self.lang_code = lc
+                    self.lang_id = int(pack["id"])
+                    self.cmd_seq += 1
+
+                    if test_hook is not None:
+                        raw = test_hook(lc, self.page, self.cmd_seq)
+                        self.ack_seq = self.cmd_seq
+                        png, nz = gpe0_raw_to_png(raw)
+                        if nz > 0 and png:
+                            self.last_raw_gpe0 = raw[:GPE0_BYTES]
+                            self.last_png = png
+                            self.last_nz = nz
+                        wrote, synced = True, True
+                    else:
+                        wrote = self._write_ctrl_mailbox()
+                        synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2) if wrote else False
+                        raw, png, nz = self._capture_live_gpe0_with_raw()
+
+                    if not wrote or not synced or len(raw) < GPE0_BYTES or nz <= 0:
+                        step_error = f"Capture failed for lang={lc} (wrote={wrote}, synced={synced}, raw_len={len(raw)}, nz={nz})"
+                        break
+
+                    frame_raw = raw[:GPE0_BYTES]
+                    sha = hashlib.sha256(frame_raw).hexdigest()
+                    captures[lc] = {
+                        "lang": lc,
+                        "lang_id": int(pack["id"]),
+                        "cmd_seq": self.cmd_seq,
+                        "ack_seq": self.ack_seq,
+                        "sha256": sha,
+                        "gpe0_bytes": GPE0_BYTES,
+                        "nonzero_px": nz,
+                    }
+                    raw_frames[lc] = frame_raw
+                    ack_seqs.append(self.ack_seq)
+            finally:
+                if not self.crashed:
+                    self.lang_code = orig_lang
+                    self.lang_id = orig_lang_id
+                    if page is not None:
+                        self.page = orig_page
+                        self.sel_box = orig_sel
+                        self.menu_cat = orig_cat
+                        self.menu_item = orig_item
+                        self.menu_depth = orig_depth
+                    self.cmd_seq += 1
+                    if test_hook is not None:
+                        raw_rest = test_hook(self.lang_code, self.page, self.cmd_seq)
+                        self.ack_seq = self.cmd_seq
+                        png_r, nz_r = gpe0_raw_to_png(raw_rest)
+                        if nz_r > 0 and png_r:
+                            self.last_raw_gpe0 = raw_rest[:GPE0_BYTES]
+                            self.last_png = png_r
+                            self.last_nz = nz_r
+                    elif self.is_running() and self.live_ready and not self.crashed:
+                        if self._write_ctrl_mailbox():
+                            self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
+                            self._capture_live_gpe0_with_raw()
+
+            if step_error is not None:
+                return {
+                    "ok": False,
+                    "error": "multilang_capture_failed",
+                    "message": step_error,
+                    "restored_lang": self.lang_code,
+                    "captures": captures,
+                    "status": self.get_status(),
+                }
+
+            d_en_zh = compute_gpe0_frame_diff(raw_frames["en"], raw_frames["zh"])
+            d_zh_ja = compute_gpe0_frame_diff(raw_frames["zh"], raw_frames["ja"])
+            d_en_ja = compute_gpe0_frame_diff(raw_frames["en"], raw_frames["ja"])
+
+            ack_monotonic = (
+                len(ack_seqs) == 3
+                and ack_seqs[0] > start_ack
+                and ack_seqs[0] < ack_seqs[1] < ack_seqs[2]
+                and self.ack_seq > ack_seqs[2]
+            )
+            distinct = (
+                d_en_zh["diff_bytes"] > 0
+                and d_zh_ja["diff_bytes"] > 0
+                and d_en_ja["diff_bytes"] > 0
+            )
+            ok = bool(ack_monotonic and distinct)
+            self.last_toast = (
+                f"EN/ZH/JA GPE0 Diff: EN<>ZH={d_en_zh['diff_bytes']}B ({d_en_zh['diff_pixels']}px), "
+                f"ZH<>JA={d_zh_ja['diff_bytes']}B ({d_zh_ja['diff_pixels']}px), restored={self.lang_code}"
+            )
+            receipt = {
+                "ok": ok,
+                "page": int(page) % 25 if page is not None else self.page,
+                "restored_lang": self.lang_code,
+                "sequence": ["en", "zh", "ja"],
+                "ack_seq_start": start_ack,
+                "ack_seqs": ack_seqs,
+                "ack_seq_end": self.ack_seq,
+                "ack_seq_monotonic": ack_monotonic,
+                "captures": captures,
+                "en_vs_zh_diff_bytes": d_en_zh["diff_bytes"],
+                "en_vs_zh_diff_pixels": d_en_zh["diff_pixels"],
+                "zh_vs_ja_diff_bytes": d_zh_ja["diff_bytes"],
+                "zh_vs_ja_diff_pixels": d_zh_ja["diff_pixels"],
+                "en_vs_ja_diff_bytes": d_en_ja["diff_bytes"],
+                "en_vs_ja_diff_pixels": d_en_ja["diff_pixels"],
+                "all_distinct": distinct,
+                "toast": self.last_toast,
+                "status": self.get_status(),
+            }
+            if not ok:
+                receipt["error"] = "zero_pixel_diff_detected" if not distinct else "ack_seq_non_monotonic"
+                receipt["message"] = "Multilingual GPE0 diff or monotonic ack_seq invariant failed"
+            self.last_multilang_diff = {
+                k: v for k, v in receipt.items() if k != "status"
+            }
+            return receipt
+
     def _step_local_state(self, kcode: int) -> None:
         cat_n_items = [6, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7][self.menu_cat % 11]
         if self.menu_depth >= 2:
@@ -2875,6 +3842,8 @@ class FX6LiveGpe0Session:
             "fill_n": self.last_fill_n,
             "icon_n": self.last_icon_n,
             "png_source": self.last_png_source,
+            "socket_disconnect_count": self.socket_disconnect_count,
+            "last_multilang_diff": self.last_multilang_diff,
             "serial_tail": serial_tail,
         }
 
@@ -3156,6 +4125,46 @@ HTML_UI = """<!DOCTYPE html>
     font-size: 11px;
     background: #172030;
   }
+  .search-jump-bar {
+    background: #0f1520;
+    border: 1px solid #283548;
+    border-radius: 9px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+  .search-results-list {
+    max-height: 170px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .search-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 9px;
+    background: #131c2b;
+    border: 1px solid #263348;
+    border-radius: 6px;
+    font-size: 11.5px;
+  }
+  .search-item:hover {
+    border-color: var(--cyan);
+  }
+  .multilang-diff-box {
+    margin-bottom: 12px;
+    padding: 8px 11px;
+    border-radius: 7px;
+    border: 1px solid #312e81;
+    background: #111329;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: #c7d2fe;
+    display: none;
+  }
   .serial-box {
     background: #07090c;
     border: 1px solid #1f2937;
@@ -3186,6 +4195,7 @@ HTML_UI = """<!DOCTYPE html>
     <button id="lbtn-en" onclick="setLang('en')">EN</button>
     <button id="lbtn-zh" onclick="setLang('zh')">中文</button>
     <button id="lbtn-ja" onclick="setLang('ja')">日本語</button>
+    <button id="btn-verify-multilang" onclick="verifyMultilangDiff()" style="background:#1e1b4b;border-color:#818cf8;color:#e0e7ff;">驗 / Verify EN-ZH-JA GPE0</button>
     <button onclick="refreshGpe0()">刷新 GPE0 显存帧</button>
     <button onclick="restartVm()" style="background:#7f1d1d;border-color:#ef4444;">重启 QEMU 虚拟机</button>
   </div>
@@ -3197,6 +4207,21 @@ HTML_UI = """<!DOCTYPE html>
   <div class="tel-pill" id="tel-p10"><b>P10 (FX3 Keys)</b><span id="tel-p10-d">FX3 Deck Ready</span></div>
   <div class="tel-pill" id="tel-p11"><b>P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)</b><span id="tel-p11-d">Base 800 | 0x0165/0x0166 | 0x5d90 | IBIS Center Lock</span></div>
   <div class="tel-pill" id="tel-p12"><b>P12 (WF-12 Safe)</b><span id="tel-p12-d">Direct O_RDONLY / LRU Pool / Bounded Write Safe</span></div>
+</div>
+
+<div id="multilang-diff-readout" class="multilang-diff-box"></div>
+
+<div class="search-jump-bar" id="menu-search-jump-bar">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+    <span style="font-size:12px;font-weight:700;color:var(--cyan);">🔍 搜索菜单 / Quick Jump (128 Pages)</span>
+    <input id="menu-search-input" type="text" oninput="filterMenuCatalog()" placeholder="输入中文或英文关键词搜索 (如: Cine EI, LUT, XLR-H1, ND, CFexpress, Airplane, Page 110)..." style="flex:1;min-width:240px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:6px 10px;font-size:12px;" />
+    <select id="menu-cat-filter" onchange="filterMenuCatalog()" style="background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:6px 8px;font-size:11.5px;">
+      <option value="">All 11 Categories + 128 Pages</option>
+    </select>
+    <span id="menu-catalog-count" style="font-size:11px;color:var(--muted);font-family:'SF Mono',Menlo,monospace;">11 Categories · 128 Pages</span>
+  </div>
+  <div class="pill-row" id="quick-jump-pills"></div>
+  <div class="search-results-list" id="menu-search-results"></div>
 </div>
 
 <div class="main-grid">
@@ -4043,7 +5068,144 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
+let menuCatalogData = null;
+
+async function loadMenuCatalog() {
+  try {
+    const r = await fetch('/api/menu_catalog');
+    menuCatalogData = await r.json();
+    const sel = document.getElementById('menu-cat-filter');
+    if (sel && menuCatalogData.categories) {
+      menuCatalogData.categories.forEach((c) => {
+        const opt = document.createElement('option');
+        opt.value = c.category;
+        opt.textContent = `${c.cat_idx + 1}. ${c.category} (${c.category_zh})`;
+        sel.appendChild(opt);
+      });
+    }
+    const pillsEl = document.getElementById('quick-jump-pills');
+    if (pillsEl && menuCatalogData.quick_jump_pills) {
+      pillsEl.innerHTML = '';
+      menuCatalogData.quick_jump_pills.forEach((p) => {
+        const btn = document.createElement('button');
+        btn.textContent = p.en_title.split('->')[0].trim();
+        btn.title = `${p.zh_title} | ${p.fx3_bridge_note}`;
+        btn.onclick = () => jumpToPageId(p.page_id);
+        pillsEl.appendChild(btn);
+      });
+    }
+    filterMenuCatalog();
+  } catch (e) {}
+}
+
+function filterMenuCatalog() {
+  if (!menuCatalogData || !menuCatalogData.items) return;
+  const qEl = document.getElementById('menu-search-input');
+  const cEl = document.getElementById('menu-cat-filter');
+  const listEl = document.getElementById('menu-search-results');
+  const cntEl = document.getElementById('menu-catalog-count');
+  if (!listEl) return;
+  const q = (qEl ? qEl.value : '').trim().toLowerCase();
+  const cat = (cEl ? cEl.value : '').trim().toLowerCase();
+  const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
+  const filtered = menuCatalogData.items.filter((it) => {
+    if (cat && (it.category || '').toLowerCase() !== cat) return false;
+    if (!tokens.length) return true;
+    const hay = [
+      it.page_id, it.zh_title, it.en_title, it.category, it.category_zh,
+      it.fx3_bridge_note, it.first_name || '', it.off_hex || '',
+      ...(it.keywords || [])
+    ].join(' ').toLowerCase();
+    return tokens.every((t) => hay.includes(t));
+  });
+  if (cntEl) {
+    cntEl.textContent = `${filtered.length} / ${menuCatalogData.total_entries} matches (${menuCatalogData.total_categories} cats · ${menuCatalogData.total_pages_128} pages)`;
+  }
+  const shown = filtered.slice(0, q || cat ? 24 : 12);
+  listEl.innerHTML = '';
+  shown.forEach((it) => {
+    const row = document.createElement('div');
+    row.className = 'search-item';
+    const info = document.createElement('div');
+    info.style.cssText = 'flex:1;min-width:0;';
+    const title = document.createElement('div');
+    title.style.cssText = 'font-weight:600;color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+    title.textContent = `[${it.category}] ${it.zh_title} — ${it.en_title}`;
+    const note = document.createElement('div');
+    note.style.cssText = 'font-size:10.5px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+    note.textContent = `${it.page_id} · ${it.fx3_bridge_note}`;
+    info.appendChild(title);
+    info.appendChild(note);
+    const btn = document.createElement('button');
+    btn.textContent = 'Jump';
+    btn.style.cssText = 'padding:4px 10px;font-size:11px;background:#0f2b46;border-color:#22d3ee;';
+    btn.onclick = () => jumpToPageId(it.page_id);
+    row.appendChild(info);
+    row.appendChild(btn);
+    listEl.appendChild(row);
+  });
+}
+
+async function jumpToPageId(pageId) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/jump_page', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({page_id: pageId})
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+async function verifyMultilangDiff() {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const box = document.getElementById('multilang-diff-readout');
+  toast.style.display = 'block';
+  if (box) {
+    box.style.display = 'block';
+    box.textContent = 'Running in-guest EN -> ZH -> JA GPE0 diff verification...';
+  }
+  try {
+    const r = await fetch('/api/verify_multilang_diff', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({})
+    });
+    const data = await r.json();
+    if (box) {
+      if (data.ok && data.captures) {
+        box.style.borderColor = '#10b981';
+        box.style.color = '#a7f3d0';
+        box.textContent =
+          `VERIFIED EN->ZH->JA (restored=${data.restored_lang}, ack_seq=${data.ack_seqs.join('->')}->${data.ack_seq_end}) | ` +
+          `EN<>ZH=${data.en_vs_zh_diff_bytes}B (${data.en_vs_zh_diff_pixels}px) | ` +
+          `ZH<>JA=${data.zh_vs_ja_diff_bytes}B (${data.zh_vs_ja_diff_pixels}px) | ` +
+          `SHA[en=${data.captures.en.sha256.slice(0,10)}, zh=${data.captures.zh.sha256.slice(0,10)}, ja=${data.captures.ja.sha256.slice(0,10)}]`;
+      } else {
+        box.style.borderColor = '#f59e0b';
+        box.style.color = '#fde68a';
+        box.textContent = `Multilang Diff (${data.error || 'err'}): ${data.message || ''}`;
+      }
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
 loadPages128();
+loadMenuCatalog();
 setInterval(pollStatus, 1500);
 pollStatus();
 </script>
@@ -4054,164 +5216,279 @@ pollStatus();
 
 def make_handler(session: FX6LiveGpe0Session):
     class Handler(BaseHTTPRequestHandler):
+        timeout = 15.0
+
         def log_message(self, fmt: str, *args: Any) -> None:
             pass
 
-        def _send_json(self, obj: Any, status: int = 200) -> None:
-            raw = json.dumps(obj, ensure_ascii=False).encode("utf-8")
-            self.send_response(status)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(raw)))
-            self.send_header("Cache-Control", "no-store")
-            self.end_headers()
-            self.wfile.write(raw)
+        def _record_disconnect(self) -> None:
+            self.close_connection = True
+            session.socket_disconnect_count += 1
+            if hasattr(self.server, "client_disconnects"):
+                self.server.client_disconnects += 1
 
-        def do_GET(self) -> None:
-            parsed = urllib.parse.urlparse(self.path)
-            path = parsed.path
-            if path in ("/", "/index.html"):
-                raw = HTML_UI.encode("utf-8")
-                self.send_response(HTTPStatus.OK)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
+        def handle_one_request(self) -> None:
+            try:
+                super().handle_one_request()
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout, OSError) as exc:
+                if _is_client_disconnect_exc(exc):
+                    self._record_disconnect()
+                    return
+                raise
+
+        def finish(self) -> None:
+            try:
+                super().finish()
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout, OSError) as exc:
+                if _is_client_disconnect_exc(exc):
+                    self._record_disconnect()
+                    return
+                raise
+
+        def _safe_send_error(self, code: int, message: str | None = None) -> None:
+            try:
+                self.send_error(code, message)
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout, OSError) as exc:
+                if _is_client_disconnect_exc(exc):
+                    self._record_disconnect()
+                    return
+                raise
+
+        def _send_bytes(self, raw: bytes, content_type: str, status: int = 200) -> bool:
+            try:
+                self.send_response(int(status))
+                self.send_header("Content-Type", content_type)
                 self.send_header("Content-Length", str(len(raw)))
                 self.send_header("Cache-Control", "no-store")
                 self.end_headers()
-                self.wfile.write(raw)
-                return
-            if path == "/api/status":
-                self._send_json(session.get_status())
-                return
-            if path == "/api/pages128":
-                self._send_json(ALL_128_PAGES)
-                return
-            if path == "/api/lang":
-                self._send_json({
-                    "current": session.lang_code,
-                    "lang_id": session.lang_id,
-                    "packs": discover_available_lang_packs(),
-                })
-                return
-            if path == "/api/fx3_button":
-                self._send_json({
-                    "last_p10_telemetry": dict(session.last_p10_telemetry),
-                    "buttons": FX3_BUTTON_MAP,
-                })
-                return
-            if path == "/api/cinema_param":
-                self._send_json({
-                    "ok": True,
-                    "cinema_params": session.get_cinema_params(),
-                    "stage_b_telemetry": session.get_stage_b_telemetry(),
-                    "last_toast": session.last_toast,
-                })
-                return
-            if path == "/api/lut_upload":
-                self._send_json(session.get_lut_slots())
-                return
-            if path == "/api/preset_export":
-                self._send_json(session.export_camset_preset())
-                return
-            if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
-                png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)
-                self.send_response(HTTPStatus.OK)
-                self.send_header("Content-Type", "image/png")
-                self.send_header("Content-Length", str(len(png)))
-                self.send_header("Cache-Control", "no-store")
-                self.end_headers()
-                self.wfile.write(png)
-                return
-            self.send_error(HTTPStatus.NOT_FOUND)
+                if raw:
+                    self.wfile.write(raw)
+                self.wfile.flush()
+                return True
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout, OSError) as exc:
+                if _is_client_disconnect_exc(exc):
+                    self._record_disconnect()
+                    return False
+                raise
+
+        def _send_json(self, obj: Any, status: int = 200) -> bool:
+            raw = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+            return self._send_bytes(raw, "application/json; charset=utf-8", status=int(status))
+
+        def do_GET(self) -> None:
+            try:
+                parsed = urllib.parse.urlparse(self.path)
+                path = parsed.path
+                qs = urllib.parse.parse_qs(parsed.query)
+                if path in ("/", "/index.html"):
+                    self._send_bytes(HTML_UI.encode("utf-8"), "text/html; charset=utf-8", status=HTTPStatus.OK)
+                    return
+                if path == "/api/status":
+                    self._send_json(session.get_status())
+                    return
+                if path == "/api/pages128":
+                    self._send_json(ALL_128_PAGES)
+                    return
+                if path == "/api/menu_catalog":
+                    q_val = qs.get("q", qs.get("query", [""]))[0]
+                    cat_val = qs.get("category", [""])[0]
+                    res = search_menu_catalog(query=q_val, category=cat_val) if (q_val or cat_val) else build_menu_catalog()
+                    self._send_json(res)
+                    return
+                if path == "/api/verify_multilang_diff":
+                    self._send_json({
+                        "ok": session.last_multilang_diff is not None,
+                        "receipt": session.last_multilang_diff,
+                    })
+                    return
+                if path == "/api/lang":
+                    self._send_json({
+                        "current": session.lang_code,
+                        "lang_id": session.lang_id,
+                        "packs": discover_available_lang_packs(),
+                    })
+                    return
+                if path == "/api/fx3_button":
+                    self._send_json({
+                        "last_p10_telemetry": dict(session.last_p10_telemetry),
+                        "buttons": FX3_BUTTON_MAP,
+                    })
+                    return
+                if path == "/api/cinema_param":
+                    self._send_json({
+                        "ok": True,
+                        "cinema_params": session.get_cinema_params(),
+                        "stage_b_telemetry": session.get_stage_b_telemetry(),
+                        "last_toast": session.last_toast,
+                    })
+                    return
+                if path == "/api/lut_upload":
+                    self._send_json(session.get_lut_slots())
+                    return
+                if path == "/api/preset_export":
+                    self._send_json(session.export_camset_preset())
+                    return
+                if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
+                    png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)
+                    self._send_bytes(png, "image/png", status=HTTPStatus.OK)
+                    return
+                self._safe_send_error(HTTPStatus.NOT_FOUND)
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout, OSError) as exc:
+                if _is_client_disconnect_exc(exc):
+                    self._record_disconnect()
+                    return
+                raise
 
         def do_POST(self) -> None:
-            parsed = urllib.parse.urlparse(self.path)
-            path = parsed.path
-            qs = urllib.parse.parse_qs(parsed.query)
-
-            length = int(self.headers.get("Content-Length", "0"))
-            raw_body = self.rfile.read(length) if length > 0 else b"{}"
-            json_err = False
             try:
-                body = json.loads(raw_body.decode("utf-8")) if raw_body else {}
-            except Exception:
-                body = {}
-                json_err = True
+                parsed = urllib.parse.urlparse(self.path)
+                path = parsed.path
+                qs = urllib.parse.parse_qs(parsed.query)
 
-            if json_err and path in ("/api/lut_upload", "/api/preset_import", "/api/cinema_param"):
-                self._send_json(
-                    {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
-                    status=HTTPStatus.BAD_REQUEST,
-                )
-                return
+                try:
+                    length = max(0, int(self.headers.get("Content-Length", "0")))
+                except ValueError:
+                    self._send_json(
+                        {"ok": False, "error": "invalid_content_length", "message": "Invalid Content-Length header"},
+                        status=HTTPStatus.BAD_REQUEST,
+                    )
+                    return
+                raw_body = self.rfile.read(length) if length > 0 else b"{}"
+                json_err = False
+                try:
+                    body = json.loads(raw_body.decode("utf-8")) if raw_body else {}
+                except Exception:
+                    body = {}
+                    json_err = True
 
-            if not isinstance(body, dict):
-                self._send_json(
-                    {"ok": False, "error": "invalid_json_object", "message": "JSON body must be an object"},
-                    status=HTTPStatus.BAD_REQUEST,
-                )
-                return
+                if json_err and path in (
+                    "/api/lut_upload",
+                    "/api/preset_import",
+                    "/api/cinema_param",
+                    "/api/jump_page",
+                    "/api/verify_multilang_diff",
+                ):
+                    self._send_json(
+                        {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
+                        status=HTTPStatus.BAD_REQUEST,
+                    )
+                    return
 
-            # Support legacy query parameters from older browser tabs
-            if "name" in qs and "key" not in body:
-                body["key"] = qs["name"][0]
-            if "key" in qs and "key" not in body:
-                body["key"] = qs["key"][0]
-            if "page" in qs and "page" not in body:
-                body["page"] = qs["page"][0]
-            if "idx" in qs and "sel_box" not in body:
-                body["sel_box"] = int(qs["idx"][0])
-            if "lang" in qs and "lang" not in body:
-                body["lang"] = qs["lang"][0]
-            if "button" in qs and "button" not in body:
-                body["button"] = qs["button"][0]
-            if "param" in qs and "param" not in body:
-                body["param"] = qs["param"][0]
-            if "delta" in qs and "delta" not in body:
-                body["delta"] = qs["delta"][0]
-            if "preset" in qs and "preset" not in body:
-                body["preset"] = qs["preset"][0]
+                if not isinstance(body, dict):
+                    self._send_json(
+                        {"ok": False, "error": "invalid_json_object", "message": "JSON body must be an object"},
+                        status=HTTPStatus.BAD_REQUEST,
+                    )
+                    return
 
-            if path in ("/api/start", "/api/vm/start"):
-                res = session.start_vm()
-                self._send_json({"ok": True, "result": res, "status": session.get_status()})
-                return
-            if path in ("/api/stop", "/api/vm/stop"):
-                res = session.stop_vm()
-                self._send_json({"ok": True, "result": res, "status": session.get_status()})
-                return
-            if path == "/api/refresh":
-                session.capture_live_gpe0()
-                self._send_json({"ok": True, "status": session.get_status()})
-                return
-            if path == "/api/lang":
-                res = session.set_lang(body.get("lang", ""))
-                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
-                return
-            if path == "/api/fx3_button":
-                res = session.press_fx3_button(body.get("button", ""))
-                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
-                return
-            if path == "/api/cinema_param":
-                res = session.set_cinema_param(
-                    body.get("param", ""),
-                    delta=body.get("delta"),
-                    preset=body.get("preset"),
-                    payload=body,
-                )
-                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
-                return
-            if path == "/api/lut_upload":
-                res = session.upload_cube_lut(body)
-                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
-                return
-            if path == "/api/preset_import":
-                res = session.import_camset_preset(body)
-                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
-                return
-            if path in ("/api/key", "/api/page", "/api/box"):
-                res = session.apply_key_or_state(body)
-                self._send_json(res)
-                return
-            self.send_error(HTTPStatus.NOT_FOUND)
+                # Support legacy query parameters from older browser tabs
+                if "name" in qs and "key" not in body:
+                    body["key"] = qs["name"][0]
+                if "key" in qs and "key" not in body:
+                    body["key"] = qs["key"][0]
+                if "page" in qs and "page" not in body:
+                    body["page"] = qs["page"][0]
+                if "idx" in qs and "sel_box" not in body:
+                    body["sel_box"] = int(qs["idx"][0])
+                if "lang" in qs and "lang" not in body:
+                    body["lang"] = qs["lang"][0]
+                if "button" in qs and "button" not in body:
+                    body["button"] = qs["button"][0]
+                if "param" in qs and "param" not in body:
+                    body["param"] = qs["param"][0]
+                if "delta" in qs and "delta" not in body:
+                    body["delta"] = qs["delta"][0]
+                if "preset" in qs and "preset" not in body:
+                    body["preset"] = qs["preset"][0]
+                if "page_id" in qs and "page_id" not in body:
+                    body["page_id"] = qs["page_id"][0]
+                if "idx128" in qs and "idx128" not in body:
+                    body["idx128"] = qs["idx128"][0]
+                if "q" in qs and "q" not in body and "query" not in body:
+                    body["q"] = qs["q"][0]
+                if "query" in qs and "query" not in body:
+                    body["query"] = qs["query"][0]
+                if "category" in qs and "category" not in body:
+                    body["category"] = qs["category"][0]
+
+                if path in ("/api/start", "/api/vm/start"):
+                    res = session.start_vm()
+                    self._send_json({"ok": True, "result": res, "status": session.get_status()})
+                    return
+                if path in ("/api/stop", "/api/vm/stop"):
+                    res = session.stop_vm()
+                    self._send_json({"ok": True, "result": res, "status": session.get_status()})
+                    return
+                if path == "/api/refresh":
+                    session.capture_live_gpe0()
+                    self._send_json({"ok": True, "status": session.get_status()})
+                    return
+                if path == "/api/lang":
+                    res = session.set_lang(body.get("lang", ""))
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/fx3_button":
+                    res = session.press_fx3_button(body.get("button", ""))
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/cinema_param":
+                    res = session.set_cinema_param(
+                        body.get("param", ""),
+                        delta=body.get("delta"),
+                        preset=body.get("preset"),
+                        payload=body,
+                    )
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/lut_upload":
+                    res = session.upload_cube_lut(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/preset_import":
+                    res = session.import_camset_preset(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/jump_page":
+                    res = session.jump_to_page(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/verify_multilang_diff":
+                    raw_page = body.get("page")
+                    page_arg: int | None = None
+                    if isinstance(raw_page, bool):
+                        self._send_json(
+                            {"ok": False, "error": "invalid_page", "message": "page cannot be bool"},
+                            status=HTTPStatus.BAD_REQUEST,
+                        )
+                        return
+                    if raw_page is not None and str(raw_page).strip() != "":
+                        try:
+                            page_arg = int(raw_page)
+                        except (TypeError, ValueError):
+                            self._send_json(
+                                {"ok": False, "error": "invalid_page", "message": f"Invalid page: {raw_page!r}"},
+                                status=HTTPStatus.BAD_REQUEST,
+                            )
+                            return
+                    res = session.verify_multilang_diff(page=page_arg)
+                    if res.get("ok"):
+                        st_code = HTTPStatus.OK
+                    elif res.get("error") == "vm_not_ready":
+                        st_code = HTTPStatus.CONFLICT
+                    else:
+                        st_code = HTTPStatus.BAD_REQUEST
+                    self._send_json(res, status=st_code)
+                    return
+                if path in ("/api/key", "/api/page", "/api/box"):
+                    res = session.apply_key_or_state(body)
+                    self._send_json(res)
+                    return
+                self._safe_send_error(HTTPStatus.NOT_FOUND)
+            except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError, TimeoutError, socket.timeout, OSError) as exc:
+                if _is_client_disconnect_exc(exc):
+                    self._record_disconnect()
+                    return
+                raise
 
     return Handler
 
@@ -4249,7 +5526,7 @@ def main() -> int:
     start_info = session.start_vm()
     print(f"[FX6-LIVE-GPE0] QEMU started: {start_info}")
 
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(session))
+    server = HardenedThreadingHTTPServer(("127.0.0.1", args.port), make_handler(session))
     url = f"http://127.0.0.1:{args.port}/"
     print(f"[FX6-LIVE-GPE0] Listening on {url}")
 

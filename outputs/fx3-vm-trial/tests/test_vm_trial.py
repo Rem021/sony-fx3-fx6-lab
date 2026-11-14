@@ -1019,5 +1019,309 @@ class TestPhase19LiveIconAndFreezeFixes(unittest.TestCase):
             self.assertIn("APPFW_SEGV sig=11", st["crash_reason"])
 
 
+class TestPhase23MultilangFx3DeckAnd128Sweep(unittest.TestCase):
+    """Phase 23 offline verification: port isolation, multi-lang .uxc packs, FX3 P10 deck, and 128-page sweep receipt."""
+
+    def test_port_scoped_workdir_and_socket_isolation(self) -> None:
+        default_wd = run_fx6_menu_trial.DEFAULT_WORKDIR
+        self.assertEqual(run_fx6_menu_trial.resolve_port_scoped_workdir(8768, default_wd), default_wd)
+        self.assertEqual(
+            run_fx6_menu_trial.resolve_port_scoped_workdir(18770, default_wd),
+            Path(f"{default_wd}-18770"),
+        )
+        custom_wd = Path("/tmp/custom-fx6-workdir")
+        self.assertEqual(run_fx6_menu_trial.resolve_port_scoped_workdir(18770, custom_wd), custom_wd)
+
+        with tempfile.TemporaryDirectory(prefix="fx6_port_iso_") as td:
+            base_wd = Path(td) / "fx6-live-gpe0-run"
+            s_8768 = run_fx6_menu_trial.FX6LiveGpe0Session(base_wd, port=8768)
+            s_18770 = run_fx6_menu_trial.FX6LiveGpe0Session(base_wd, port=18770)
+            self.assertEqual(s_8768.workdir, base_wd)
+            self.assertEqual(s_18770.workdir, base_wd)
+            self.assertNotEqual(s_8768.qmp_sock, s_18770.qmp_sock)
+            self.assertNotEqual(s_8768.gdb_sock, s_18770.gdb_sock)
+            self.assertIn("18770-", s_18770.qmp_sock.name)
+            self.assertIn("18770-", s_18770.gdb_sock.name)
+
+    def test_lang_pack_metadata_normalization_and_clean_room_discovery(self) -> None:
+        self.assertEqual(set(run_fx6_menu_trial.LANG_PACKS.keys()), {"en", "zh", "ja"})
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["en"]["bank"], 4)
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["zh"]["bank"], 19)
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["ja"]["bank"], 12)
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["en"]["font_ns"], "0x0200a005")
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["zh"]["font_ns"], "0x0200a01c")
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["ja"]["font_ns"], "0x0200a006")
+
+        norm = run_fx6_menu_trial.FX6LiveGpe0Session._normalize_lang
+        for raw, exp in (
+            ("en", "en"),
+            ("English", "en"),
+            ("0", "en"),
+            ("zh", "zh"),
+            ("zh-CN", "zh"),
+            ("schinese", "zh"),
+            ("simplifiedchinese", "zh"),
+            ("1", "zh"),
+            ("ja", "ja"),
+            ("japanese", "ja"),
+            ("2", "ja"),
+        ):
+            self.assertEqual(norm(raw), exp)
+        self.assertIsNone(norm("klingon"))
+
+        packs = run_fx6_menu_trial.discover_available_lang_packs()
+        self.assertEqual(set(packs.keys()), {"en", "zh", "ja"})
+        self.assertTrue(packs["en"]["available"])
+        self.assertIsInstance(packs["zh"]["available"], bool)
+
+    def test_donor_overlay_readonly_resolution_and_newc_staging_mock(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_donor_mock_") as td:
+            donor_dir = Path(td) / "donor_app"
+            donor_dir.mkdir(parents=True)
+            sample_assets = {
+                "image_00_169.uxc": b"UXC_ICON_MOCK_DATA",
+                "string_simplifiedchinese_2.uxc": b"UXC_ZH_MOCK_DATA",
+                "MYingHeiC-GB18030-SJ_wIcon.ltt": b"LTT_CJK_FONT_MOCK",
+                "string_japanese_2.uxc": b"UXC_JA_MOCK_DATA",
+            }
+            for fname, payload in sample_assets.items():
+                fp = donor_dir / fname
+                fp.write_bytes(payload)
+                os.chmod(fp, 0o444)
+
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            try:
+                run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+                assets = run_fx6_menu_trial._resolve_donor_overlay_assets()
+                self.assertEqual(
+                    set(assets.keys()),
+                    {
+                        "usr/share/app/image_00_169.uxc",
+                        "usr/share/app/string_simplifiedchinese_2.uxc",
+                        "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+                        "usr/share/app/string_japanese_2.uxc",
+                    },
+                )
+                packs = run_fx6_menu_trial.discover_available_lang_packs()
+                self.assertTrue(packs["en"]["available"])
+                self.assertTrue(packs["zh"]["available"])
+                self.assertTrue(packs["ja"]["available"])
+                for cpio_name, src_path in assets.items():
+                    self.assertEqual(
+                        run_fx6_menu_trial._read_file_readonly(src_path),
+                        sample_assets[Path(cpio_name).name],
+                    )
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_guest_c_multilang_bank_switching_and_icon_cache_invariants(self) -> None:
+        guest_code = _strip_c_comments((TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8"))
+        self.assertIn("switchBank", guest_code)
+        self.assertIn("setFontNameWithNamespace", guest_code)
+        self.assertIn("mb[16]", guest_code)
+        self.assertIn("mb[17]", guest_code)
+        self.assertIn("FX6_ICON_CACHE_MAX", guest_code)
+        self.assertIn("FX6_ICON_SLAB_BYTES", guest_code)
+
+        font_ns_body = _extract_c_function_body(guest_code, "fx6_font_ns_rid")
+        self.assertIn("0x0200a01cU", font_ns_body)
+        self.assertIn("0x0200a006U", font_ns_body)
+        self.assertIn("0x0200a005U", font_ns_body)
+
+        apply_lang_body = _extract_c_function_body(guest_code, "fx6_apply_lang")
+        self.assertIn("bank = 19u;", apply_lang_body)
+        self.assertIn("bank = 12u;", apply_lang_body)
+        self.assertIn("g_syms.switchBank(1, bank);", apply_lang_body)
+        self.assertIn("g_syms.switchBank(2, bank);", apply_lang_body)
+
+        hash_body = _extract_c_function_body(guest_code, "fx6_state_hash")
+        self.assertIn("(h ^ lang)", hash_body)
+
+        # Ensure icon cache lookup runs inside fx6_icon_blit without per-draw calloc/malloc/dlsym
+        icon_blit_body = _extract_c_function_body(guest_code, "fx6_icon_blit")
+        self.assertIn("fx6_icon_cache_find(img)", icon_blit_body)
+        self.assertIn("fx6_blit_cached_icon_to_osd(", icon_blit_body)
+        for fn_name in ("fx6_icon_cache_find", "fx6_icon_cache_put", "fx6_blit_cached_icon_to_osd"):
+            b = _extract_c_function_body(guest_code, fn_name)
+            self.assertNotIn("calloc(", b)
+            self.assertNotIn("malloc(", b)
+            self.assertNotIn("dlsym(", b)
+
+    def test_gpe_pool_lru_eviction_and_exception_monitor_crash_detection(self) -> None:
+        grm_src = _strip_c_comments((TRIAL_DIR / "src" / "libgrm-fbinit25-542.c").read_text(encoding="utf-8"))
+        for sym in (
+            "gpe_coalesce_idx_locked(",
+            "gpe_pool_alloc_for(",
+            "gpe_pool_free_for(",
+            "FX6_GPE_POOL_EVICT",
+            "void *owner;",
+        ):
+            self.assertIn(sym, grm_src)
+
+        with tempfile.TemporaryDirectory(prefix="fx6_exc_mon_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18770)
+            sess.live_ready = True
+            sess.serial_log.write_text(
+                "FX6_LIVE_FRAME seq=10 page=0 sel=5 cat=2 item=0 depth=0 nz=331776 text_ok=24 fill=38 icon=6 lang=0\n"
+                "[Exception Syndrome]\n"
+                "Abort (PC=0x7f8b31507c)\n"
+                "Entering exception monitor.\n",
+                encoding="utf-8",
+            )
+            st = sess.get_status()
+            self.assertFalse(st["live_ready"])
+            self.assertTrue(st["crashed"])
+            self.assertEqual(st["stage"], "CRASHED_EXCEPTION_MONITOR")
+            self.assertIn("Entering exception monitor", st["crash_reason"])
+
+    def test_fx3_physical_button_deck_p10_mapping_and_transitions(self) -> None:
+        btn_map = run_fx6_menu_trial.FX3_BUTTON_MAP
+        expected_btns = {
+            "FN", "MENU", "DISP", "C1", "C2", "C3", "C4", "C5", "C6",
+            "WHEEL_UP", "WHEEL_DOWN", "WHEEL_SET", "BACK",
+        }
+        self.assertEqual(set(btn_map.keys()), expected_btns)
+        for name, spec in btn_map.items():
+            self.assertRegex(spec["phy_code"], r"^0x[0-9a-fA-F]{4}$", msg=name)
+            self.assertRegex(spec["infra_code"], r"^0x[0-9a-fA-F]{4}$", msg=name)
+            self.assertRegex(spec["p10_code"], r"^0x[0-9a-fA-F]{4}$", msg=name)
+            self.assertTrue(spec["p10_symbol"], msg=name)
+
+        with tempfile.TemporaryDirectory(prefix="fx6_btn_test_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18770)
+            # DISP cycles Viewfinder HUD p16 <-> HUD Strip p6
+            r_disp1 = sess.press_fx3_button("DISP")
+            self.assertTrue(r_disp1["ok"])
+            self.assertEqual(sess.page, 16)
+            self.assertEqual(r_disp1["p10_telemetry"]["phy_code"], "0x0025")
+            self.assertEqual(r_disp1["p10_telemetry"]["infra_code"], "0x70ec")
+            r_disp2 = sess.press_fx3_button("DISP")
+            self.assertEqual(sess.page, 6)
+            self.assertEqual(r_disp2["status"]["page"], 6)
+
+            # C1 -> Base Look/LUT (Page 1, cat=4, depth=2)
+            r_c1 = sess.press_fx3_button("C1")
+            self.assertEqual((sess.page, sess.menu_cat, sess.menu_depth), (1, 4, 2))
+            self.assertEqual(sess.last_p10_hwcode, (0x001D << 16) | 0x0066)
+            self.assertEqual(r_c1["p10_telemetry"]["p10_symbol"], "PF_K_KURU_PON")
+
+            # C2 -> WB/Setting Center, C3 -> p17, C4 -> p13, C5 -> p4, C6 -> p14, FN -> p0
+            sess.press_fx3_button("C2")
+            self.assertEqual((sess.page, sess.sel_box), (3, 4))
+            for btn, exp_page in (("C3", 17), ("C4", 13), ("C5", 4), ("C6", 14), ("PLAY", 14), ("FN", 0)):
+                res = sess.press_fx3_button(btn)
+                self.assertTrue(res["ok"])
+                self.assertEqual(sess.page, exp_page)
+
+            # Invalid button returns ok=False cleanly
+            bad = sess.press_fx3_button("NON_EXISTENT")
+            self.assertFalse(bad["ok"])
+
+    def test_http_api_routes_lang_and_fx3_button_and_ui_elements(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_http_test_") as td:
+            donor_dir = Path(td) / "donor_app"
+            donor_dir.mkdir(parents=True)
+            for fname in ("image_00_169.uxc", "string_simplifiedchinese_2.uxc", "MYingHeiC-GB18030-SJ_wIcon.ltt"):
+                (donor_dir / fname).write_bytes(b"MOCK")
+
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18770)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                html = urllib.request.urlopen(f"{base}/", timeout=5).read().decode("utf-8")
+                self.assertIn("🌐 中文 / EN", html)
+                self.assertIn("/api/lang", html)
+                self.assertIn("/api/fx3_button", html)
+                self.assertIn("ILME-FX3", html)
+
+                gl = json.loads(urllib.request.urlopen(f"{base}/api/lang", timeout=5).read().decode("utf-8"))
+                self.assertEqual(gl["current"], "en")
+                self.assertIn("zh", gl["packs"])
+
+                req_zh = urllib.request.Request(
+                    f"{base}/api/lang",
+                    data=json.dumps({"lang": "zh"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                pl = json.loads(urllib.request.urlopen(req_zh, timeout=5).read().decode("utf-8"))
+                self.assertTrue(pl["ok"])
+                self.assertEqual(pl["lang"], "zh")
+                self.assertEqual(pl["lang_id"], 1)
+
+                req_btn = urllib.request.Request(
+                    f"{base}/api/fx3_button",
+                    data=json.dumps({"button": "C4"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                pb = json.loads(urllib.request.urlopen(req_btn, timeout=5).read().decode("utf-8"))
+                self.assertTrue(pb["ok"])
+                self.assertEqual(pb["status"]["page"], 13)
+                self.assertEqual(pb["p10_telemetry"]["phy_code"], "0x0026")
+
+                req_bad = urllib.request.Request(
+                    f"{base}/api/fx3_button",
+                    data=json.dumps({"button": "BOGUS"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx:
+                    urllib.request.urlopen(req_bad, timeout=5)
+                self.assertEqual(ctx.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_mailbox_packing_contract_includes_lang_and_p10_telemetry(self) -> None:
+        runner_src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+        self.assertIn('struct.pack("<18I", *words)', runner_src)
+        self.assertIn("self.lang_id,", runner_src)
+        self.assertIn("self.last_p10_hwcode & 0xFFFFFFFF", runner_src)
+        self.assertIn("signal.SIGTERM", runner_src)
+
+    def test_phase23_128page_sweep_receipt_and_png_bounds(self) -> None:
+        rep_dir = REPO_ROOT / "reports" / "2026-11-14-phase23-128page-multilang-fx3deck"
+        receipt_path = rep_dir / "sweep_128_pages.json"
+        if not receipt_path.is_file():
+            self.skipTest("Phase 23 sweep receipt not yet generated")
+        data = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["phase"], 23)
+        self.assertEqual(data["port"], 18770)
+        self.assertEqual(len(data["curated_24_pages"]), 24)
+        self.assertGreaterEqual(len(data["lang_switches"]), 2)
+        self.assertGreaterEqual(len(data["fx3_buttons"]), 13)
+        self.assertEqual(len(data["pages_128"]), 128)
+        self.assertEqual([p["idx"] for p in data["pages_128"]], list(range(128)))
+        summary = data["summary"]
+        self.assertEqual(summary["failures"], 0)
+        self.assertFalse(summary["crashed"])
+        self.assertTrue(summary["ack_matches_cmd"])
+        self.assertEqual(summary["final_ack_seq"], summary["final_cmd_seq"])
+        self.assertEqual(summary["nonzero_pages_128"], 128)
+        self.assertGreaterEqual(summary["total_commands"], 155)
+        self.assertTrue(any(ls.get("png_differs_from_en") for ls in data["lang_switches"]))
+
+        pngs = sorted(rep_dir.glob("*.png"))
+        self.assertLessEqual(len(pngs), 4)
+        for png_p in pngs:
+            raw = png_p.read_bytes()
+            self.assertLess(len(raw), 300 * 1024, msg=f"PNG too large: {png_p.name}")
+            chunks = _parse_png_chunks(raw)
+            w, h = struct.unpack(">II", chunks[0][1][:8])
+            self.assertEqual((w, h), (1024, 540), msg=f"Unexpected dimensions in {png_p.name}")
+
+
 if __name__ == "__main__":
     unittest.main()

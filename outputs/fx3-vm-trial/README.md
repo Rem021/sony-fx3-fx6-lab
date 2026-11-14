@@ -11,6 +11,12 @@
   - `run_fx6_menu_trial.py` 自动从只读供体打包 `image_00_169.uxc` 512B 对齐 SVR4 `newc` 叠加层至隔离 `--workdir`，`libgrm-fbinit25-542.c` 使用 `/dev/mem` 物理池（`0x410524000..0x410e64000`）满足 `fx3_ldec_soft103_v1` 解码地址校验，`fx6_live_guest.c` 合流 `RGBA4444`/`RGBA8888`/`A8`/`ARGB4444` 贴图渲染与 `fx6_px` `R/B` 通道修复。
   - 修复多击冻结三大根因：直接拦截 `liblibra.so!_ZN5libra20GenerateImageCommand6notifyEb` 防止 `x2=0` 空指针跳转 `PC=0`；`s_vs_pool`/`s_vf_pool`/`s_ic_pool` 升级为 32 槽环形缓冲池并在销毁前排空 `processCommands(0)`；`run_fx6_menu_trial.py` 序列化 `gdb_lock`、清理异步停止回执、在 `finally:` 保证发送 `$c#63` 恢复 VCPU，并在 `get_status()` 检测 `APPFW_SEGV`（标记 `CRASHED_APPFW_SEGV`）。已在隔离端口 `--port 18769` 完成 **60/60** 快速多页连点压力测试（0 `APPFW_SEGV`，19 个页面渲染原生图标）。详情见 [Phase 19 报告](../../reports/2026-11-14-phase19-live-icon-rendering/README.md)。
 
+- **FX3 物理机身按键台（`Stage-B P10`）、实时中英文切换（`🌐 中文 / EN`）与全量 128 页零崩溃扫描（2026-11-14 Phase 23）**：
+  - **端口隔离运行目录**：`run_fx6_menu_trial.py` 对 `--port != 8768` 自动启用端口隔离目录（如 `/private/tmp/fx6-live-gpe0-run-18770`）及 `{port}-{pid}` 命名 QMP/GDB socket，保证绝不干扰 `8768` 实时会话。
+  - **真机多语言 `.uxc` + CJK 字体实时切换（`GET/POST /api/lang`）**：只读（`O_RDONLY`）打包供体 `string_simplifiedchinese_2.uxc`、`MYingHeiC-GB18030-SJ_wIcon.ltt` 与 `string_japanese_2.uxc` 至 CPIO 叠加层，页面顶部按钮 **`🌐 中文 / EN`** 通过 `mb[16]` 调用客体 `ResourceManager::switchBank`（`bank 4/19/12`）与 `FONT_S_CHINESE`（`0x0200a01c`）实现不停机实时中英文切换。
+  - **ILME-FX3 物理按键台（`GET/POST /api/fx3_button`）**：网页新增 `Fn`（Big-6）、`MENU`（3-Layer Menu）、`DISP`（`p16` / `p6` 循环）、`C1`（Base Look）、`C2`（WB）、`C3`（Audio/TC `p17`）、`C4`（Media `p13`）、`C5`（Assignable `p4`）、`C6/PLAY`（Clip Browser `p14`）、`WHEEL UP/DOWN/SET` 与 `BACK/CANCEL`，在状态栏实时展示 `Stage-B P10` 物理码/功能码遥测（`mb[17]`）。
+  - **全量 128 页（`fx6_all_pages[0..127]`）长稳零崩溃**：`libgrm-fbinit25-542.c` 为 `FX6_GPE_POOL` 增加 LRU 块回收与归属校验，`fx6_live_guest.c` 增加 16 MiB 预分配图标像素 RAM 缓存，彻底消除连续 ~155+ 帧后 LDEC `-22 destination_range` 溢出；已在 `--port 18770` 完成 **170/170** 连续渲染（24 精选页 + 中英切换 + 14 次 FX3 机身按键 + 128 全量页），`0` 崩溃、`ack_seq == cmd_seq`（`171/171`）。详情见 [Phase 23 报告](../../reports/2026-11-14-phase23-128page-multilang-fx3deck/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -61,7 +67,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ## 离线自动化单元测试（`tests/test_vm_trial.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP` 边界回归检查，以及 `outputs/fx3-vm` 补丁与重定位溯源（共 **20 项** 测试，已接入顶层 `make test`）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 端口隔离、多语言 `.uxc` 发现、`/api/lang` & `/api/fx3_button` HTTP 路由与 128 页回执校验（共 **29 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

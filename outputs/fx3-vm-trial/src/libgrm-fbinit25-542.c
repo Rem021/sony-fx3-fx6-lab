@@ -315,8 +315,10 @@ static int query_bpp(int fmt) {
 typedef struct {
     unsigned int off;
     unsigned int len;
+    unsigned int seq;
     unsigned char span;
     unsigned char used;
+    void *owner;
 } fx6_gpe_blk_t;
 
 static unsigned char *g_gpe_pool_va;
@@ -324,6 +326,8 @@ static int g_gpe_pool_tried;
 static volatile int g_gpe_pool_lock;
 static fx6_gpe_blk_t g_gpe_blks[FX6_GPE_MAX_BLKS];
 static int g_gpe_blk_n;
+static unsigned int g_gpe_seq;
+static unsigned int g_gpe_evict_logs;
 
 static void gpe_lock(void) {
     while (__sync_lock_test_and_set(&g_gpe_pool_lock, 1)) {}
@@ -349,9 +353,9 @@ static void ensure_gpe_pool_locked(void) {
         return;
     }
     g_gpe_pool_va = (unsigned char *)m;
-    g_gpe_blks[0].off = 0x000000U; g_gpe_blks[0].len = 0x400000U; g_gpe_blks[0].span = 0; g_gpe_blks[0].used = 0;
-    g_gpe_blks[1].off = 0x400000U; g_gpe_blks[1].len = 0x340000U; g_gpe_blks[1].span = 1; g_gpe_blks[1].used = 0;
-    g_gpe_blks[2].off = 0x740000U; g_gpe_blks[2].len = 0x200000U; g_gpe_blks[2].span = 2; g_gpe_blks[2].used = 0;
+    g_gpe_blks[0].off = 0x000000U; g_gpe_blks[0].len = 0x400000U; g_gpe_blks[0].seq = 0; g_gpe_blks[0].span = 0; g_gpe_blks[0].used = 0; g_gpe_blks[0].owner = 0;
+    g_gpe_blks[1].off = 0x400000U; g_gpe_blks[1].len = 0x340000U; g_gpe_blks[1].seq = 0; g_gpe_blks[1].span = 1; g_gpe_blks[1].used = 0; g_gpe_blks[1].owner = 0;
+    g_gpe_blks[2].off = 0x740000U; g_gpe_blks[2].len = 0x200000U; g_gpe_blks[2].seq = 0; g_gpe_blks[2].span = 2; g_gpe_blks[2].used = 0; g_gpe_blks[2].owner = 0;
     g_gpe_blk_n = 3;
     dprintf(2, "FX6_GPE_POOL_READY phys=0x%lx bytes=0x%lx va=%p\n",
             FX6_GPE_POOL_PHYS_BASE, FX6_GPE_POOL_BYTES, (void *)g_gpe_pool_va);
@@ -363,7 +367,25 @@ static void gpe_zero_uc(void *va, unsigned long nbytes) {
     for (unsigned long i = 0; i < nw; i++) p[i] = 0U;
 }
 
-static unsigned char *gpe_pool_alloc(unsigned long want_sz, unsigned long *out_pa) {
+static int gpe_coalesce_idx_locked(int idx) {
+    if (idx < 0 || idx >= g_gpe_blk_n || g_gpe_blks[idx].used) return idx;
+    if (idx + 1 < g_gpe_blk_n && !g_gpe_blks[idx + 1].used &&
+        g_gpe_blks[idx + 1].span == g_gpe_blks[idx].span) {
+        g_gpe_blks[idx].len += g_gpe_blks[idx + 1].len;
+        for (int j = idx + 1; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
+        g_gpe_blk_n--;
+    }
+    if (idx > 0 && !g_gpe_blks[idx - 1].used &&
+        g_gpe_blks[idx - 1].span == g_gpe_blks[idx].span) {
+        g_gpe_blks[idx - 1].len += g_gpe_blks[idx].len;
+        for (int j = idx; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
+        g_gpe_blk_n--;
+        idx--;
+    }
+    return idx;
+}
+
+static unsigned char *gpe_pool_alloc_for(unsigned long want_sz, unsigned long *out_pa, void *owner) {
     unsigned long sz = (want_sz + 255UL) & ~255UL;
     if (sz < 256UL) sz = 256UL;
     gpe_lock();
@@ -371,23 +393,62 @@ static unsigned char *gpe_pool_alloc(unsigned long want_sz, unsigned long *out_p
     unsigned char *ret_va = 0;
     unsigned long ret_pa = 0;
     if (g_gpe_pool_va && sz <= 0x400000UL) {
+        int found = -1;
         for (int i = 0; i < g_gpe_blk_n; i++) {
             if (!g_gpe_blks[i].used && (unsigned long)g_gpe_blks[i].len >= sz) {
-                unsigned int rem = (unsigned int)((unsigned long)g_gpe_blks[i].len - sz);
-                if (rem >= 256U && g_gpe_blk_n < FX6_GPE_MAX_BLKS) {
-                    for (int j = g_gpe_blk_n; j > i + 1; j--) g_gpe_blks[j] = g_gpe_blks[j - 1];
-                    g_gpe_blks[i + 1].off = g_gpe_blks[i].off + (unsigned int)sz;
-                    g_gpe_blks[i + 1].len = rem;
-                    g_gpe_blks[i + 1].span = g_gpe_blks[i].span;
-                    g_gpe_blks[i + 1].used = 0;
-                    g_gpe_blks[i].len = (unsigned int)sz;
-                    g_gpe_blk_n++;
-                }
-                g_gpe_blks[i].used = 1;
-                ret_va = g_gpe_pool_va + g_gpe_blks[i].off;
-                ret_pa = FX6_GPE_POOL_PHYS_BASE + (unsigned long)g_gpe_blks[i].off;
+                found = i;
                 break;
             }
+        }
+        if (found < 0) {
+            /* Evict oldest (lowest seq) used blocks and coalesce until a span block >= sz is free */
+            unsigned int evicted = 0;
+            while (found < 0) {
+                int best_i = -1;
+                unsigned int best_seq = 0xFFFFFFFFU;
+                for (int i = 0; i < g_gpe_blk_n; i++) {
+                    if (g_gpe_blks[i].used && (sz <= 0x200000UL || g_gpe_blks[i].span != 2)) {
+                        if (best_i < 0 || g_gpe_blks[i].seq < best_seq) {
+                            best_i = i;
+                            best_seq = g_gpe_blks[i].seq;
+                        }
+                    }
+                }
+                if (best_i < 0) break;
+                g_gpe_blks[best_i].used = 0;
+                g_gpe_blks[best_i].owner = 0;
+                g_gpe_blks[best_i].seq = 0;
+                evicted++;
+                int merged = gpe_coalesce_idx_locked(best_i);
+                if (!g_gpe_blks[merged].used && (unsigned long)g_gpe_blks[merged].len >= sz) {
+                    found = merged;
+                    break;
+                }
+            }
+            if (evicted > 0 && g_gpe_evict_logs < 24) {
+                g_gpe_evict_logs++;
+                dprintf(2, "FX6_GPE_POOL_EVICT evicted=%u sz=%lu found=%d blks=%d\n",
+                        evicted, sz, found, g_gpe_blk_n);
+            }
+        }
+        if (found >= 0) {
+            unsigned int rem = (unsigned int)((unsigned long)g_gpe_blks[found].len - sz);
+            if (rem >= 256U && g_gpe_blk_n < FX6_GPE_MAX_BLKS) {
+                for (int j = g_gpe_blk_n; j > found + 1; j--) g_gpe_blks[j] = g_gpe_blks[j - 1];
+                g_gpe_blks[found + 1].off = g_gpe_blks[found].off + (unsigned int)sz;
+                g_gpe_blks[found + 1].len = rem;
+                g_gpe_blks[found + 1].seq = 0;
+                g_gpe_blks[found + 1].span = g_gpe_blks[found].span;
+                g_gpe_blks[found + 1].used = 0;
+                g_gpe_blks[found + 1].owner = 0;
+                g_gpe_blks[found].len = (unsigned int)sz;
+                g_gpe_blk_n++;
+            }
+            g_gpe_blks[found].used = 1;
+            g_gpe_blks[found].owner = owner;
+            g_gpe_blks[found].seq = ++g_gpe_seq;
+            ret_va = g_gpe_pool_va + g_gpe_blks[found].off;
+            ret_pa = FX6_GPE_POOL_PHYS_BASE + (unsigned long)g_gpe_blks[found].off;
         }
     }
     gpe_unlock();
@@ -401,7 +462,11 @@ static unsigned char *gpe_pool_alloc(unsigned long want_sz, unsigned long *out_p
     return ret_va;
 }
 
-static void gpe_pool_free(void *va) {
+static unsigned char *gpe_pool_alloc(unsigned long want_sz, unsigned long *out_pa) {
+    return gpe_pool_alloc_for(want_sz, out_pa, 0);
+}
+
+static void gpe_pool_free_for(void *va, void *owner) {
     if (!va) return;
     gpe_lock();
     if (g_gpe_pool_va && (unsigned char *)va >= g_gpe_pool_va &&
@@ -409,24 +474,22 @@ static void gpe_pool_free(void *va) {
         unsigned int off = (unsigned int)((unsigned char *)va - g_gpe_pool_va);
         for (int i = 0; i < g_gpe_blk_n; i++) {
             if (g_gpe_blks[i].off == off && g_gpe_blks[i].used) {
+                if (owner && g_gpe_blks[i].owner && g_gpe_blks[i].owner != owner) {
+                    break;
+                }
                 g_gpe_blks[i].used = 0;
-                if (i + 1 < g_gpe_blk_n && !g_gpe_blks[i + 1].used &&
-                    g_gpe_blks[i + 1].span == g_gpe_blks[i].span) {
-                    g_gpe_blks[i].len += g_gpe_blks[i + 1].len;
-                    for (int j = i + 1; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
-                    g_gpe_blk_n--;
-                }
-                if (i > 0 && !g_gpe_blks[i - 1].used &&
-                    g_gpe_blks[i - 1].span == g_gpe_blks[i].span) {
-                    g_gpe_blks[i - 1].len += g_gpe_blks[i].len;
-                    for (int j = i; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
-                    g_gpe_blk_n--;
-                }
+                g_gpe_blks[i].owner = 0;
+                g_gpe_blks[i].seq = 0;
+                gpe_coalesce_idx_locked(i);
                 break;
             }
         }
     }
     gpe_unlock();
+}
+
+static void gpe_pool_free(void *va) {
+    gpe_pool_free_for(va, 0);
 }
 
 int _ZN3grm3bmp10BitmapImpl7destroyEi(void *self, int flag) {
@@ -438,7 +501,7 @@ int _ZN3grm3bmp10BitmapImpl7destroyEi(void *self, int flag) {
     }
     void *va = self ? *(void **)((char *)self + 0x10) : 0;
     int rc = real_fn ? real_fn(self, flag) : 0;
-    gpe_pool_free(va);
+    gpe_pool_free_for(va, self);
     return rc;
 }
 
@@ -457,7 +520,7 @@ int _ZN3grm3bmp10BitmapImpl6createEPvssssii(void *self, void *space_handle, shor
     if (aw <= 0) aw = 16; if (ah <= 0) ah = 2;
     unsigned long sz = (unsigned long)aw * (unsigned long)ah * (unsigned long)bpp;
     unsigned long pa = 0;
-    unsigned char *buf = gpe_pool_alloc(sz + 256UL, &pa);
+    unsigned char *buf = gpe_pool_alloc_for(sz + 256UL, &pa, self);
     if (info) {
         *(short *)(info + 0x0c) = 0;
         *(short *)(info + 0x0e) = 0;
@@ -501,7 +564,7 @@ int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(void *self, long phy
         pa = (unsigned long)phys_addr;
         buf = (void *)(pool_va + (pa - FX6_GPE_POOL_PHYS_BASE));
     } else {
-        buf = (void *)gpe_pool_alloc(sz + 256UL, &pa);
+        buf = (void *)gpe_pool_alloc_for(sz + 256UL, &pa, self);
     }
     if (info) {
         *(short *)(info + 0x0c) = 0;

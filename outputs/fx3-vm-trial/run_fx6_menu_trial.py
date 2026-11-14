@@ -21,6 +21,7 @@ import io
 import json
 import os
 import re
+import signal
 import socket
 import struct
 import subprocess
@@ -38,6 +39,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 TRIAL_DIR = REPO_ROOT / "outputs" / "fx3-vm-trial"
 MANIFEST_PATH = TRIAL_DIR / "vm-candidate-gpecap25-live700.json"
 FALLBACK_GPE0_PNG = REPO_ROOT / "reports" / "2026-11-08-fx6-native-text-gpe0" / "menu-677-big6-framed.png"
+DEFAULT_PORT = 8768
+DEFAULT_WORKDIR = Path("/private/tmp/fx6-live-gpe0-run")
 
 GPE0_PHYS = 0x41E001000
 GPE0_BYTES = 0x21C000  # 1024 * 540 * 4
@@ -60,6 +63,185 @@ KEY_CODES = {
     "MENU": 7,
     "HOME": 8,
     "DISP": 9,
+}
+
+LANG_PACKS: dict[str, dict[str, Any]] = {
+    "en": {
+        "id": 0,
+        "code": "en",
+        "label": "English",
+        "short": "EN",
+        "bank": 4,
+        "font_ns": "0x0200a005",
+        "font_name": "FONT_UNIVERS",
+        "uxc_files": ("string_english.uxc", "string_english_2.uxc"),
+        "required_donor_files": (),
+    },
+    "zh": {
+        "id": 1,
+        "code": "zh",
+        "label": "简体中文",
+        "short": "中文",
+        "bank": 19,
+        "font_ns": "0x0200a01c",
+        "font_name": "FONT_S_CHINESE",
+        "uxc_files": ("string_simplifiedchinese.uxc", "string_simplifiedchinese_2.uxc"),
+        "required_donor_files": (
+            "string_simplifiedchinese_2.uxc",
+            "MYingHeiC-GB18030-SJ_wIcon.ltt",
+        ),
+    },
+    "ja": {
+        "id": 2,
+        "code": "ja",
+        "label": "日本語",
+        "short": "JA",
+        "bank": 12,
+        "font_ns": "0x0200a006",
+        "font_name": "FONT_JAPANESE",
+        "uxc_files": ("string_japanese.uxc", "string_japanese_2.uxc"),
+        "required_donor_files": (
+            "string_japanese_2.uxc",
+        ),
+    },
+}
+
+FX3_BUTTON_MAP: dict[str, dict[str, Any]] = {
+    "FN": {
+        "button": "FN",
+        "label": "Fn -> Big-6 Home",
+        "phy_code": "0x0013",
+        "infra_code": "0x7095",
+        "p10_code": "0x0184",
+        "p10_symbol": "PF_K_HOME",
+        "kind": "home",
+    },
+    "MENU": {
+        "button": "MENU",
+        "label": "MENU -> 3-Layer Menu",
+        "phy_code": "0x0011",
+        "infra_code": "0x01ab",
+        "p10_code": "0x01ab",
+        "p10_symbol": "UIBIZ_KEY_TACT_MENU",
+        "kind": "key",
+        "key": "MENU",
+    },
+    "DISP": {
+        "button": "DISP",
+        "label": "DISP -> Viewfinder p16/p6 Cycle",
+        "phy_code": "0x0025",
+        "infra_code": "0x70ec",
+        "p10_code": "0x0199",
+        "p10_symbol": "PF_K_DISP_SEL",
+        "kind": "disp_cycle",
+    },
+    "C1": {
+        "button": "C1",
+        "label": "C1 -> Base Look / LUT",
+        "phy_code": "0x001d",
+        "infra_code": "0x0066",
+        "p10_code": "0x0029",
+        "p10_symbol": "PF_K_KURU_PON",
+        "kind": "c1_baselook",
+    },
+    "C2": {
+        "button": "C2",
+        "label": "C2 -> White Balance / Setting",
+        "phy_code": "0x0024",
+        "infra_code": "0x70e7",
+        "p10_code": "0x0192",
+        "p10_symbol": "PF_K_MENU_CANCEL",
+        "kind": "c2_wb",
+    },
+    "C3": {
+        "button": "C3",
+        "label": "C3 -> Audio / TC Status p17",
+        "phy_code": "0x0025",
+        "infra_code": "0x70ec",
+        "p10_code": "0x0199",
+        "p10_symbol": "PF_K_DISP_SEL",
+        "kind": "page",
+        "page": 17,
+    },
+    "C4": {
+        "button": "C4",
+        "label": "C4 -> Media Status SSA/SSB p13",
+        "phy_code": "0x0026",
+        "infra_code": "0x70ed",
+        "p10_code": "0x018a",
+        "p10_symbol": "PF_K_SLOT_SEL",
+        "kind": "page",
+        "page": 13,
+    },
+    "C5": {
+        "button": "C5",
+        "label": "C5 -> Assignable p4",
+        "phy_code": "0x000c",
+        "infra_code": "0x01f8",
+        "p10_code": "0x0185",
+        "p10_symbol": "PF_K_USER",
+        "kind": "page",
+        "page": 4,
+    },
+    "C6": {
+        "button": "C6",
+        "label": "C6 / PLAY -> Clip Browser p14",
+        "phy_code": "0x000b",
+        "infra_code": "0x01f7",
+        "p10_code": "0x0183",
+        "p10_symbol": "PF_K_THUMBNAIL",
+        "kind": "page",
+        "page": 14,
+    },
+    "WHEEL_UP": {
+        "button": "WHEEL_UP",
+        "label": "WHEEL UP",
+        "phy_code": "0x0003",
+        "infra_code": "0x7081",
+        "p10_code": "0x0171",
+        "p10_symbol": "PF_K_UP",
+        "kind": "key",
+        "key": "UP",
+    },
+    "WHEEL_DOWN": {
+        "button": "WHEEL_DOWN",
+        "label": "WHEEL DOWN",
+        "phy_code": "0x0030",
+        "infra_code": "0x7082",
+        "p10_code": "0x0172",
+        "p10_symbol": "PF_K_DOWN",
+        "kind": "key",
+        "key": "DOWN",
+    },
+    "WHEEL_SET": {
+        "button": "WHEEL_SET",
+        "label": "WHEEL SET",
+        "phy_code": "0x001c",
+        "infra_code": "0x01ac",
+        "p10_code": "0x01ac",
+        "p10_symbol": "PF_K_SET",
+        "kind": "key",
+        "key": "SET",
+    },
+    "BACK": {
+        "button": "BACK",
+        "label": "BACK / CANCEL",
+        "phy_code": "0x0024",
+        "infra_code": "0x70e7",
+        "p10_code": "0x0192",
+        "p10_symbol": "PF_K_MENU_CANCEL",
+        "kind": "key",
+        "key": "BACK",
+    },
+}
+
+FX3_BUTTON_ALIASES = {
+    "CANCEL": "BACK",
+    "PLAY": "C6",
+    "DEL": "C5",
+    "SET": "WHEEL_SET",
+    "UP": "WHEEL_UP",
+    "DOWN": "WHEEL_DOWN",
 }
 
 PAGE_NAMES = {
@@ -277,23 +459,119 @@ def _relocate_migrated_path(raw_path: str) -> str:
     return raw_path
 
 
-def _resolve_donor_image_uxc() -> Path | None:
-    """Locate Sony FX6 donor `image_00_169.uxc` strictly read-only if present locally."""
+def _read_file_readonly(path: Path) -> bytes:
+    """Open and read a donor/asset file strictly with os.O_RDONLY."""
+    fd = os.open(str(path), os.O_RDONLY)
+    with os.fdopen(fd, "rb") as fh:
+        return fh.read()
+
+
+def resolve_port_scoped_workdir(port: int, workdir: Path | None = None) -> Path:
+    """Isolate runtime workdir by port whenever port != DEFAULT_PORT (8768)."""
+    port = int(port)
+    if workdir is None:
+        return DEFAULT_WORKDIR if port == DEFAULT_PORT else Path(f"/private/tmp/fx6-live-gpe0-run-{port}")
+    wd = Path(workdir)
+    if port != DEFAULT_PORT and wd.resolve() == DEFAULT_WORKDIR.resolve():
+        return Path(f"/private/tmp/fx6-live-gpe0-run-{port}")
+    return wd
+
+
+def _resolve_donor_app_dir() -> Path | None:
+    """Locate Sony FX6 donor `share/app` directory strictly read-only if present locally."""
+    env_dir = os.environ.get("FX6_DONOR_APP_DIR", "").strip()
+    if env_dir:
+        cand = Path(env_dir)
+        if cand.is_dir():
+            return cand
     env_uxc = os.environ.get("FX6_IMAGE_00_169_UXC", "").strip()
-    rel = Path("work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/image_00_169.uxc")
-    candidates: list[Path] = []
-    if env_uxc:
-        candidates.append(Path(env_uxc))
-    candidates.extend([
+    if env_uxc and Path(env_uxc).is_file():
+        return Path(env_uxc).parent
+    if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes"):
+        return None
+    rel = Path("work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app")
+    candidates = [
         REPO_ROOT / rel,
         Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac" / rel,
         Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac" / "outputs" / "sony-fx3-fx6-lab" / rel,
         Path("/Volumes/KAFU2T/AI/Projects/Mac") / rel,
-    ])
+    ]
     for cand in candidates:
+        if cand.is_dir():
+            return cand
+    return None
+
+
+def _resolve_donor_image_uxc() -> Path | None:
+    """Locate Sony FX6 donor `image_00_169.uxc` strictly read-only if present locally."""
+    env_uxc = os.environ.get("FX6_IMAGE_00_169_UXC", "").strip()
+    if env_uxc and Path(env_uxc).is_file():
+        return Path(env_uxc)
+    app_dir = _resolve_donor_app_dir()
+    if app_dir is not None:
+        cand = app_dir / "image_00_169.uxc"
         if cand.is_file():
             return cand
     return None
+
+
+DONOR_OVERLAY_FILENAMES = (
+    "image_00_169.uxc",
+    "string_simplifiedchinese_2.uxc",
+    "MYingHeiC-GB18030-SJ_wIcon.ltt",
+    "string_japanese_2.uxc",
+)
+
+
+def _resolve_donor_overlay_assets(donor_app_dir: Path | None = None) -> dict[str, Path]:
+    """Return mapping `{cpio_rel_path: donor_path}` for available donor overlay files."""
+    app_dir = donor_app_dir if donor_app_dir is not None else _resolve_donor_app_dir()
+    assets: dict[str, Path] = {}
+    if app_dir is not None and app_dir.is_dir():
+        for fname in DONOR_OVERLAY_FILENAMES:
+            cand = app_dir / fname
+            if cand.is_file():
+                assets[f"usr/share/app/{fname}"] = cand
+    if "usr/share/app/image_00_169.uxc" not in assets and donor_app_dir is None:
+        uxc = _resolve_donor_image_uxc()
+        if uxc is not None:
+            assets["usr/share/app/image_00_169.uxc"] = uxc
+    return assets
+
+
+def discover_available_lang_packs(donor_app_dir: Path | None = None) -> dict[str, dict[str, Any]]:
+    """Inspect donor `.uxc` string packs & CJK font assets read-only and report availability."""
+    app_dir = donor_app_dir if donor_app_dir is not None else _resolve_donor_app_dir()
+    packs: dict[str, dict[str, Any]] = {}
+    for code, spec in LANG_PACKS.items():
+        req_files = tuple(spec["required_donor_files"])
+        missing: list[str] = []
+        staged_paths: dict[str, str] = {}
+        if req_files:
+            if app_dir is None or not app_dir.is_dir():
+                missing = list(req_files)
+            else:
+                for fname in req_files:
+                    cand = app_dir / fname
+                    if cand.is_file():
+                        staged_paths[fname] = str(cand)
+                    else:
+                        missing.append(fname)
+        packs[code] = {
+            "id": spec["id"],
+            "code": code,
+            "label": spec["label"],
+            "short": spec["short"],
+            "bank": spec["bank"],
+            "font_ns": spec["font_ns"],
+            "font_name": spec["font_name"],
+            "uxc_files": list(spec["uxc_files"]),
+            "required_donor_files": list(req_files),
+            "staged_paths": staged_paths,
+            "missing_files": missing,
+            "available": len(missing) == 0,
+        }
+    return packs
 
 
 def _pack_newc_entry(name: str, data: bytes, mode: int = 0o100644, ino: int = 0x9001) -> bytes:
@@ -316,8 +594,9 @@ _GDB_PKT_RE = re.compile(rb"\$([^#$]*)#[0-9a-fA-F]{2}")
 
 
 class FX6LiveGpe0Session:
-    def __init__(self, workdir: Path) -> None:
-        self.workdir = workdir
+    def __init__(self, workdir: Path, port: int = DEFAULT_PORT) -> None:
+        self.port = int(port)
+        self.workdir = resolve_port_scoped_workdir(self.port, workdir)
         self.workdir.mkdir(parents=True, exist_ok=True)
         self.lock = threading.Lock()
         self.gpe_lock = threading.Lock()
@@ -326,15 +605,15 @@ class FX6LiveGpe0Session:
         self.proc: subprocess.Popen[bytes] | None = None
         self.serial_log = self.workdir / "serial.log"
         self.qemu_stderr = self.workdir / "qemu.stderr.log"
-        self.qmp_sock = Path("/private/tmp") / f"fx6-live-qmp-{os.getpid()}.sock"
-        self.gdb_sock = Path("/private/tmp") / f"fx6-live-gdb-{os.getpid()}.sock"
+        self.qmp_sock = Path("/private/tmp") / f"fx6-live-qmp-{self.port}-{os.getpid()}.sock"
+        self.gdb_sock = Path("/private/tmp") / f"fx6-live-gdb-{self.port}-{os.getpid()}.sock"
         self.qmp_conn: socket.socket | None = None
         self.gdb_conn: socket.socket | None = None
         self._gdb_rx = bytearray()
         self.gpe0_bin = self.workdir / "gpe0-live.bin"
         self.started_at: float | None = None
 
-        # Shadow state matching guest 0x41e000e00 mailbox (mb[0..15])
+        # Shadow state matching guest 0x41e000e00 mailbox (mb[0..17])
         self.cmd_seq = 1
         self.ack_seq = 0
         self.page = 0
@@ -349,6 +628,19 @@ class FX6LiveGpe0Session:
         self.table_rows2 = 0
         self.table_idx128 = 0
         self.rec_fmt_idx = 0
+        self.lang_code = "en"
+        self.lang_id = 0
+        self.last_p10_hwcode = 0
+        self.last_p10_telemetry: dict[str, Any] = {
+            "button": None,
+            "label": "Idle",
+            "phy_code": "0x0000",
+            "infra_code": "0x0000",
+            "p10_code": "0x0000",
+            "p10_symbol": "IDLE",
+            "target_page": 0,
+            "cmd_seq": 1,
+        }
         self.last_nz = 0
         self.last_text_ok = 0
         self.last_fill_n = 0
@@ -425,6 +717,19 @@ class FX6LiveGpe0Session:
             self.menu_cat = 2
             self.menu_item = 0
             self.menu_depth = 0
+            self.lang_code = "en"
+            self.lang_id = 0
+            self.last_p10_hwcode = 0
+            self.last_p10_telemetry = {
+                "button": None,
+                "label": "Idle",
+                "phy_code": "0x0000",
+                "infra_code": "0x0000",
+                "p10_code": "0x0000",
+                "p10_symbol": "IDLE",
+                "target_page": 0,
+                "cmd_seq": 1,
+            }
             return {"ok": True, "pid": self.proc.pid}
 
     def stop_vm(self) -> dict[str, Any]:
@@ -586,7 +891,7 @@ class FX6LiveGpe0Session:
         return s
 
     def _prepare_fresh_live700_cpio(self, donor_cpio: Path) -> str:
-        """Build workdir/fx6-live700-rebuilt.cpio with latest memory-safe src/*.c shim and optional image_00_169.uxc overlay without mutating donor."""
+        """Build workdir/fx6-live700-rebuilt.cpio with latest memory-safe src/*.c shim and O_RDONLY donor overlay assets without mutating donor."""
         try:
             import mmap as _mmap
             import shutil
@@ -599,22 +904,26 @@ class FX6LiveGpe0Session:
             tmp_cpio = self.workdir / "fx6-live700-rebuilt.cpio"
             tmp_stamp = self.workdir / "fx6-live700-rebuilt.sha256"
             shim = b700.compile_shim(b700.DEFAULT_ZIG, tmp_so)
-            uxc_path = _resolve_donor_image_uxc()
-            uxc_tag = f"{uxc_path}:{uxc_path.stat().st_size}" if uxc_path is not None else "no-uxc"
-            want_stamp = f"{donor_cpio}:{donor_cpio.stat().st_size}:{shim['sha256']}:{uxc_tag}"
+            overlay_assets = _resolve_donor_overlay_assets()
+            asset_tag = "|".join(
+                f"{k}={v}:{v.stat().st_size}" for k, v in sorted(overlay_assets.items())
+            ) or "no-overlay"
+            want_stamp = f"{donor_cpio}:{donor_cpio.stat().st_size}:{shim['sha256']}:{asset_tag}"
             if tmp_cpio.is_file() and tmp_stamp.is_file() and tmp_stamp.read_text().strip() == want_stamp:
                 return str(tmp_cpio)
             shutil.copyfile(donor_cpio, tmp_cpio)
             b700.update_cpio_member(tmp_cpio, b700.MEMBER_NAME, tmp_so.read_bytes())
-            if uxc_path is not None:
+            if overlay_assets:
                 with tmp_cpio.open("rb") as f, _mmap.mmap(f.fileno(), 0, access=_mmap.ACCESS_READ) as mm:
-                    has_uxc = any(r["name"] == "usr/share/app/image_00_169.uxc" for r in b700.scan_newc_cpio(mm))
-                if not has_uxc:
-                    uxc_bytes = uxc_path.read_bytes()
-                    overlay = (
-                        _pack_newc_entry("usr/share/app/image_00_169.uxc", uxc_bytes, mode=0o100644, ino=0x9001)
-                        + _pack_newc_entry("TRAILER!!!", b"", mode=0, ino=0)
-                    )
+                    existing_names = {r["name"] for r in b700.scan_newc_cpio(mm)}
+                missing = [(name, path) for name, path in sorted(overlay_assets.items()) if name not in existing_names]
+                if missing:
+                    chunks = []
+                    for idx, (cpio_name, src_path) in enumerate(missing):
+                        data = _read_file_readonly(src_path)
+                        chunks.append(_pack_newc_entry(cpio_name, data, mode=0o100644, ino=0x9001 + idx))
+                    chunks.append(_pack_newc_entry("TRAILER!!!", b"", mode=0, ino=0))
+                    overlay = b"".join(chunks)
                     overlay += b"\x00" * ((-len(overlay)) % 512)
                     cur_sz = tmp_cpio.stat().st_size
                     pad_before = b"\x00" * ((-cur_sz) % 512)
@@ -629,7 +938,7 @@ class FX6LiveGpe0Session:
             return str(donor_cpio)
 
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..14] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..17] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         mb_vals = (
@@ -637,6 +946,7 @@ class FX6LiveGpe0Session:
             if self.page == 24
             else list(self.cell_vals[:6])
         )
+        stats_word = ((self.last_text_ok & 0xFF) << 24) | (self.last_nz & 0x00FFFFFF)
         words = [
             CTRL_MAGIC,
             self.cmd_seq,
@@ -653,8 +963,11 @@ class FX6LiveGpe0Session:
             mb_vals[4],
             mb_vals[5],
             self.rec_fmt_idx,
+            stats_word,
+            self.lang_id,
+            self.last_p10_hwcode & 0xFFFFFFFF,
         ]
-        raw = struct.pack("<15I", *words)
+        raw = struct.pack("<18I", *words)
         with self.gdb_lock:
             for _ in range(2):
                 s: socket.socket | None = None
@@ -671,7 +984,7 @@ class FX6LiveGpe0Session:
 
                     s.settimeout(1.5)
                     self._gdb_send_packet(s, b"Qqemu.PhyMemMode:1")
-                    # Write mb[3..14] first, then mb[0..2] so mb[1] (cmd_seq) commits last
+                    # Write mb[3..17] first, then mb[0..2] so mb[1] (cmd_seq) commits last
                     body_hex = raw[12:].hex().encode("ascii")
                     r1 = self._gdb_send_packet(
                         s, f"M{CTRL_MB_PHYS + 12:x},{len(raw) - 12:x}:".encode("ascii") + body_hex
@@ -712,16 +1025,16 @@ class FX6LiveGpe0Session:
     def _wait_for_frame_seq(self, target_seq: int, timeout: float = 3.2) -> bool:
         deadline = time.time() + timeout
         pat = re.compile(
-            rf"FX6_LIVE_(?:READY|FRAME) seq={target_seq} page=(\d+) sel=(\d+) cat=(\d+) item=(\d+) depth=(\d+) nz=(\d+) text_ok=(\d+) fill=(\d+) icon=(\d+)"
+            rf"FX6_LIVE_(?:READY|FRAME) seq={target_seq} page=(\d+) sel=(\d+) cat=(\d+) item=(\d+) depth=(\d+) nz=(\d+) text_ok=(\d+) fill=(\d+) icon=(\d+)(?: lang=(\d+))?"
         )
         while time.time() < deadline:
             if self.serial_log.exists():
                 tail = self.serial_log.read_bytes()[-131072:].decode("latin1", errors="replace")
-                if "APPFW_SEGV" in tail:
+                if "APPFW_SEGV" in tail or "Entering exception monitor" in tail or "[Exception Syndrome]" in tail:
                     self.live_ready = False
                     self.crashed = True
                     for ln in reversed(tail.splitlines()):
-                        if "APPFW_SEGV" in ln:
+                        if "APPFW_SEGV" in ln or "Abort (PC=" in ln or "Entering exception monitor" in ln:
                             self.crash_reason = ln.strip()
                             break
                     return False
@@ -783,9 +1096,152 @@ class FX6LiveGpe0Session:
                         self.qmp_conn = None
         return self.last_png, self.last_nz
 
+    @staticmethod
+    def _normalize_lang(lang: Any) -> str | None:
+        raw = str(lang or "").strip().lower()
+        aliases = {
+            "en": "en",
+            "english": "en",
+            "0": "en",
+            "zh": "zh",
+            "zh-cn": "zh",
+            "zh_cn": "zh",
+            "schinese": "zh",
+            "simplifiedchinese": "zh",
+            "cn": "zh",
+            "1": "zh",
+            "ja": "ja",
+            "jp": "ja",
+            "japanese": "ja",
+            "2": "ja",
+        }
+        return aliases.get(raw)
+
+    def set_lang(self, lang: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            code = self._normalize_lang(lang)
+            packs = discover_available_lang_packs()
+            if code is None or code not in packs:
+                return {
+                    "ok": False,
+                    "error": f"Unsupported language: {lang!r}",
+                    "available_langs": [k for k, v in packs.items() if v["available"]],
+                }
+            pack = packs[code]
+            if not pack["available"]:
+                return {
+                    "ok": False,
+                    "error": f"Language pack {code!r} missing donor assets",
+                    "missing_files": pack["missing_files"],
+                    "available_langs": [k for k, v in packs.items() if v["available"]],
+                }
+            self.lang_code = code
+            self.lang_id = int(pack["id"])
+            self.cmd_seq += 1
+            wrote = self._write_ctrl_mailbox()
+            synced = False
+            if wrote:
+                synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
+                self.capture_live_gpe0()
+            return {
+                "ok": True,
+                "lang": self.lang_code,
+                "lang_id": self.lang_id,
+                "pack": pack,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def press_fx3_button(self, button: Any) -> dict[str, Any]:
+        raw_btn = str(button or "").strip().upper()
+        btn = FX3_BUTTON_ALIASES.get(raw_btn, raw_btn)
+        if btn not in FX3_BUTTON_MAP:
+            return {
+                "ok": False,
+                "error": f"Unknown FX3 button: {button!r}",
+                "supported_buttons": list(FX3_BUTTON_MAP.keys()),
+            }
+        with self.cmd_lock:
+            spec = FX3_BUTTON_MAP[btn]
+            kind = spec["kind"]
+            if kind == "home":
+                self.page = 0
+                self.sel_box = 5
+                self.menu_depth = 0
+                self.cmd_seq += 1
+            elif kind == "disp_cycle":
+                self.page = 6 if self.page == 16 else 16
+                self.sel_box = 0
+                self.menu_depth = 0
+                self.cmd_seq += 1
+            elif kind == "c1_baselook":
+                if self.page == 1 and self.menu_cat == 4 and self.menu_depth >= 2:
+                    self.menu_item = (self.menu_item + 1) % 7
+                    self.cell_vals[5] = self.menu_item
+                else:
+                    self.page = 1
+                    self.menu_cat = 4
+                    self.menu_item = self.cell_vals[5] % 7
+                    self.menu_depth = 2
+                    self.sel_box = 0
+                self.cmd_seq += 1
+            elif kind == "c2_wb":
+                if self.page == 3 and (self.sel_box % 6) == 4:
+                    self.cell_vals[4] = (self.cell_vals[4] + 1) % CELL_N_VALS[4]
+                else:
+                    self.page = 3
+                    self.sel_box = 4
+                    self.menu_depth = 0
+                self.cmd_seq += 1
+            elif kind == "page":
+                self.page = int(spec["page"])
+                self.sel_box = 0
+                self.menu_depth = 0
+                self.cmd_seq += 1
+            elif kind == "key":
+                self._step_local_state(KEY_CODES[spec["key"]])
+
+            phy_val = int(spec["phy_code"], 16)
+            infra_val = int(spec["infra_code"], 16)
+            self.last_p10_hwcode = ((phy_val & 0xFFFF) << 16) | (infra_val & 0xFFFF)
+            self.last_p10_telemetry = {
+                "button": btn,
+                "label": spec["label"],
+                "phy_code": spec["phy_code"],
+                "infra_code": spec["infra_code"],
+                "p10_code": spec["p10_code"],
+                "p10_symbol": spec["p10_symbol"],
+                "target_page": self.page,
+                "cmd_seq": self.cmd_seq,
+            }
+
+            wrote = self._write_ctrl_mailbox()
+            synced = False
+            if wrote:
+                synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
+                self.capture_live_gpe0()
+
+            return {
+                "ok": True,
+                "button": btn,
+                "p10_telemetry": dict(self.last_p10_telemetry),
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
     def apply_key_or_state(self, body: dict[str, Any]) -> dict[str, Any]:
         with self.cmd_lock:
             key = str(body.get("key", "")).upper().strip()
+            lang_changed = False
+            if "lang" in body:
+                code = self._normalize_lang(body["lang"])
+                packs = discover_available_lang_packs()
+                if code is not None and code in packs and packs[code]["available"]:
+                    self.lang_code = code
+                    self.lang_id = int(packs[code]["id"])
+                    lang_changed = True
 
             if "page" in body:
                 p_val = body["page"]
@@ -821,7 +1277,7 @@ class FX6LiveGpe0Session:
 
             if key in KEY_CODES:
                 self._step_local_state(KEY_CODES[key])
-            elif any(k in body for k in ("page", "sel_box", "menu_cat", "menu_item", "menu_depth", "table_off")):
+            elif lang_changed or any(k in body for k in ("page", "sel_box", "menu_cat", "menu_item", "menu_depth", "table_off")):
                 self.cmd_seq += 1
 
             wrote = self._write_ctrl_mailbox()
@@ -955,19 +1411,20 @@ class FX6LiveGpe0Session:
         if self.serial_log.exists():
             raw = self.serial_log.read_bytes()
             serial_window = raw[-524288:].decode("latin1", errors="replace")
-            if "APPFW_SEGV" in serial_window:
+            if "APPFW_SEGV" in serial_window or "Entering exception monitor" in serial_window or "[Exception Syndrome]" in serial_window:
                 self.live_ready = False
                 self.crashed = True
+                is_segv = "APPFW_SEGV" in serial_window
                 for ln in reversed(serial_window.splitlines()):
-                    if "APPFW_SEGV" in ln:
+                    if "APPFW_SEGV" in ln or "Abort (PC=" in ln or "Entering exception monitor" in ln:
                         self.crash_reason = ln.strip()
                         break
-                stage = "CRASHED_APPFW_SEGV"
+                stage = "CRASHED_APPFW_SEGV" if is_segv else "CRASHED_EXCEPTION_MONITOR"
             elif self.live_ready or "FX6_LIVE_READY" in serial_window or "FX6_LIVE_FRAME" in serial_window:
                 if not self.live_ready:
                     self.live_ready = True
                     matches = re.findall(
-                        r"FX6_LIVE_(?:READY|FRAME) seq=(\d+) page=(\d+) sel=(\d+) cat=(\d+) item=(\d+) depth=(\d+) nz=(\d+) text_ok=(\d+) fill=(\d+) icon=(\d+)",
+                        r"FX6_LIVE_(?:READY|FRAME) seq=(\d+) page=(\d+) sel=(\d+) cat=(\d+) item=(\d+) depth=(\d+) nz=(\d+) text_ok=(\d+) fill=(\d+) icon=(\d+)(?: lang=(\d+))?",
                         serial_window,
                     )
                     if matches:
@@ -999,9 +1456,14 @@ class FX6LiveGpe0Session:
         else:
             page_name = PAGE_NAMES.get(self.page, f"Page {self.page}")
 
+        lang_packs = discover_available_lang_packs()
+        cur_pack = LANG_PACKS.get(self.lang_code, LANG_PACKS["en"])
+
         return {
             "running": running,
             "pid": self.proc.pid if running and self.proc else None,
+            "port": self.port,
+            "workdir": str(self.workdir),
             "elapsed_sec": elapsed,
             "stage": stage,
             "live_ready": self.live_ready,
@@ -1021,6 +1483,12 @@ class FX6LiveGpe0Session:
             "table_off": f"0x{self.table_off:08x}",
             "table_rows": self.table_rows,
             "table_idx128": self.table_idx128,
+            "lang": self.lang_code,
+            "lang_id": self.lang_id,
+            "lang_label": cur_pack["label"],
+            "available_langs": [k for k, v in lang_packs.items() if v["available"]],
+            "lang_packs": lang_packs,
+            "p10_telemetry": dict(self.last_p10_telemetry),
             "gpe0_nonzero_px": self.last_nz,
             "text_ok": self.last_text_ok,
             "fill_n": self.last_fill_n,
@@ -1227,7 +1695,8 @@ HTML_UI = """<!DOCTYPE html>
       100% 虚拟机内部 ARM64 <code>appFw.so + libuxengine.so + TextRM</code> 渲染至物理显存 <code>0x41e001000 (gpe0)</code> · 支持直接点击屏幕或右侧按键
     </div>
   </div>
-  <div style="display:flex;gap:8px;">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button id="lang-toggle-btn" onclick="toggleLang()" style="background:#0f2b46;border-color:#22d3ee;color:#cffafe;font-weight:600;">🌐 中文 / EN</button>
     <button onclick="refreshGpe0()">刷新 GPE0 显存帧</button>
     <button onclick="restartVm()" style="background:#7f1d1d;border-color:#ef4444;">重启 QEMU 虚拟机</button>
   </div>
@@ -1245,6 +1714,8 @@ HTML_UI = """<!DOCTYPE html>
       </div>
       <div class="meta-bar">
         <span>页面: <b id="st-page">-</b></span>
+        <span>语言包: <b id="st-lang">-</b></span>
+        <span>Stage-B P10: <b id="st-p10">-</b></span>
         <span>GPE0 非零像素: <b id="st-nz">-</b></span>
         <span>TextRM 文本贴图: <b id="st-text">-</b></span>
         <span>Fill/Icon: <b id="st-fill">-</b></span>
@@ -1331,20 +1802,24 @@ HTML_UI = """<!DOCTYPE html>
     </div>
 
     <div class="card">
-      <h3>FX3 物理机身按键映射预览 (Phase 17 P10 24B .rodata 补丁)</h3>
+      <h3>ILME-FX3 物理机身控制面板 (Top / Rear Deck · Stage-B P10 映射)</h3>
       <div class="page-grid" style="margin-bottom:8px;">
-        <button onclick="sendKey('HOME')" title="FX3 Fn (0x0013) -> PF_K_HOME [快捷键 F]">Fn → Big6 HOME</button>
-        <button onclick="sendKey('SET')" class="btn-set" title="FX3 C1 (0x001d) -> PF_K_KURU_PON [快捷键 1]">C1 → 转盘确认</button>
-        <button onclick="sendKey('BACK')" title="FX3 C2 (0x0024) -> PF_K_MENU_CANCEL [快捷键 2]">C2 → 取消/返回</button>
-        <button onclick="sendKey('DISP')" title="FX3 C3 (0x0025) -> PF_K_DISP_SEL [快捷键 3]">C3 → DISP 切换</button>
-        <button onclick="setPage(14)" title="FX3 PLAY (0x000b) -> PF_K_THUMBNAIL [快捷键 P]">PLAY → 缩略图</button>
-        <button onclick="setCat(0)" title="FX3 DELETE (0x000c) -> PF_K_USER [快捷键 U]">DEL → User菜单</button>
-        <button onclick="sendKey('MENU')" title="FX3 MENU 长按 ≥1000ms (0x0011) -> Full Menu">MENU ≥1s 全菜单</button>
-        <button onclick="setPage(16)" title="FX6 主取景器 253 行拍摄 HUD">MODE → 拍摄HUD</button>
-        <button onclick="setCat(4)" title="Cine EI / S-Log3 / 3D LUT 色彩菜单">LUT / Paint菜单</button>
+        <button onclick="sendFx3Button('FN')" title="FX3 Fn (0x0013 -> 0x7095 / PF_K_HOME)">Fn → Big-6 主页</button>
+        <button onclick="sendFx3Button('MENU')" title="FX3 MENU (0x0011 -> 0x01ab / UIBIZ_KEY_TACT_MENU)">MENU → 3层菜单</button>
+        <button onclick="sendFx3Button('DISP')" title="FX3 DISP (0x0025 -> 0x70ec / PF_K_DISP_SEL)">DISP → HUD p16/p6</button>
+        <button onclick="sendFx3Button('C1')" title="FX3 C1 (0x001d -> 0x0066 / PF_K_KURU_PON)">C1 → Base Look/LUT</button>
+        <button onclick="sendFx3Button('C2')" title="FX3 C2 (0x0024 -> 0x70e7 / PF_K_MENU_CANCEL)">C2 → 白平衡/Setting</button>
+        <button onclick="sendFx3Button('C3')" title="FX3 C3 (0x0025 -> 0x70ec / PF_K_DISP_SEL)">C3 → Audio/TC p17</button>
+        <button onclick="sendFx3Button('C4')" title="FX3 C4 (0x0026 -> 0x70ed / PF_K_SLOT_SEL)">C4 → Media SSA/SSB p13</button>
+        <button onclick="sendFx3Button('C5')" title="FX3 C5/DEL (0x000c -> 0x01f8 / PF_K_USER)">C5 → Assignable p4</button>
+        <button onclick="sendFx3Button('C6')" title="FX3 C6/PLAY (0x000b -> 0x01f7 / PF_K_THUMBNAIL)">C6 → Clip 浏览器 p14</button>
+        <button onclick="sendFx3Button('WHEEL_UP')" title="FX3 Rear Dial UP (0x0003 -> 0x7081 / PF_K_UP)">WHEEL ▲ UP</button>
+        <button onclick="sendFx3Button('WHEEL_SET')" class="btn-set" title="FX3 Rear Dial SET (0x001c -> 0x01ac / PF_K_SET)">● WHEEL SET</button>
+        <button onclick="sendFx3Button('WHEEL_DOWN')" title="FX3 Rear Dial DOWN (0x0030 -> 0x7082 / PF_K_DOWN)">WHEEL ▼ DOWN</button>
+        <button onclick="sendFx3Button('BACK')" title="FX3 BACK/CANCEL (0x0024 -> 0x70e7 / PF_K_MENU_CANCEL)" style="grid-column:span 3;">BACK / CANCEL (返回/取消)</button>
       </div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.45;">
-        实装 Phase 17 审计通过的 6 键 P10 翻译表（<code>Fn/C1/C2/C3/PLAY/DEL</code>）与快捷键 <code>F / 1 / 2 / 3 / P / U</code>。
+      <div id="p10-telemetry-readout" style="font-size:11px;color:#67e8f9;background:#0a0f18;border:1px solid #1e293b;border-radius:6px;padding:7px 9px;font-family:'SF Mono',Menlo,monospace;line-height:1.45;">
+        Stage-B P10 遥测: IDLE (点击任意 FX3 物理按键发送 /api/fx3_button)
       </div>
     </div>
 
@@ -1411,6 +1886,26 @@ async function updateUI(st, forceImg) {
   }
 
   document.getElementById('st-page').textContent = st.page_name;
+  const langEl = document.getElementById('st-lang');
+  if (langEl) langEl.textContent = `${st.lang_label || 'English'} (${(st.lang || 'en').toUpperCase()})`;
+  const langBtn = document.getElementById('lang-toggle-btn');
+  if (langBtn) {
+    const isZh = st.lang === 'zh';
+    langBtn.textContent = isZh ? '🌐 中文 / EN [当前: 简体中文]' : '🌐 中文 / EN [Current: EN]';
+  }
+  const p10 = st.p10_telemetry || {};
+  const p10Text = p10.button
+    ? `${p10.button}: ${p10.phy_code} -> ${p10.infra_code} (${p10.p10_symbol})`
+    : 'IDLE';
+  const p10El = document.getElementById('st-p10');
+  if (p10El) p10El.textContent = p10Text;
+  const p10Box = document.getElementById('p10-telemetry-readout');
+  if (p10Box) {
+    p10Box.textContent = p10.button
+      ? `Stage-B P10 遥测: [${p10.button}] ${p10.label} | phy=${p10.phy_code} -> infra=${p10.infra_code} (${p10.p10_symbol}) | target_page=${p10.target_page} | seq=${p10.cmd_seq}`
+      : 'Stage-B P10 遥测: IDLE (点击任意 FX3 物理按键发送 /api/fx3_button)';
+  }
+
   document.getElementById('st-nz').textContent = st.gpe0_nonzero_px;
   document.getElementById('st-text').textContent = st.text_ok;
   document.getElementById('st-fill').textContent = `${st.fill_n} / ${st.icon_n}`;
@@ -1449,6 +1944,49 @@ async function sendPayload(payload) {
     });
     const data = await r.json();
     await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+async function setLang(langCode) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/lang', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({lang: langCode})
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function toggleLang() {
+  const cur = (currentStatus && currentStatus.lang) ? currentStatus.lang : 'en';
+  setLang(cur === 'zh' ? 'en' : 'zh');
+}
+
+async function sendFx3Button(btn) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/fx3_button', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({button: btn})
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
   } finally {
     toast.style.display = 'none';
     busy = false;
@@ -1605,6 +2143,19 @@ def make_handler(session: FX6LiveGpe0Session):
             if path == "/api/pages128":
                 self._send_json(ALL_128_PAGES)
                 return
+            if path == "/api/lang":
+                self._send_json({
+                    "current": session.lang_code,
+                    "lang_id": session.lang_id,
+                    "packs": discover_available_lang_packs(),
+                })
+                return
+            if path == "/api/fx3_button":
+                self._send_json({
+                    "last_p10_telemetry": dict(session.last_p10_telemetry),
+                    "buttons": FX3_BUTTON_MAP,
+                })
+                return
             if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
                 png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)
                 self.send_response(HTTPStatus.OK)
@@ -1637,6 +2188,10 @@ def make_handler(session: FX6LiveGpe0Session):
                 body["page"] = qs["page"][0]
             if "idx" in qs and "sel_box" not in body:
                 body["sel_box"] = int(qs["idx"][0])
+            if "lang" in qs and "lang" not in body:
+                body["lang"] = qs["lang"][0]
+            if "button" in qs and "button" not in body:
+                body["button"] = qs["button"][0]
 
             if path in ("/api/start", "/api/vm/start"):
                 res = session.start_vm()
@@ -1650,6 +2205,14 @@ def make_handler(session: FX6LiveGpe0Session):
                 session.capture_live_gpe0()
                 self._send_json({"ok": True, "status": session.get_status()})
                 return
+            if path == "/api/lang":
+                res = session.set_lang(body.get("lang", ""))
+                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                return
+            if path == "/api/fx3_button":
+                res = session.press_fx3_button(body.get("button", ""))
+                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                return
             if path in ("/api/key", "/api/page", "/api/box"):
                 res = session.apply_key_or_state(body)
                 self._send_json(res)
@@ -1661,9 +2224,14 @@ def make_handler(session: FX6LiveGpe0Session):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Sony FX6 Authentic In-Guest GPE0 Menu Runner")
-    parser.add_argument("--port", type=int, default=8768)
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--no-browser", action="store_true")
-    parser.add_argument("--workdir", type=Path, default=Path("/private/tmp/fx6-live-gpe0-run"))
+    parser.add_argument(
+        "--workdir",
+        type=Path,
+        default=None,
+        help="Runtime workdir (defaults to port-scoped /private/tmp/fx6-live-gpe0-run[-<port>])",
+    )
     parser.add_argument("--check", action="store_true", help="Verify manifest and payload paths without starting VM")
     args = parser.parse_args()
 
@@ -1680,16 +2248,21 @@ def main() -> int:
         print(json.dumps({"ok": True, "manifest": str(MANIFEST_PATH), "resolved": resolved_paths}, ensure_ascii=False))
         return 0
 
-    workdir = args.workdir
-    session = FX6LiveGpe0Session(workdir)
+    workdir = resolve_port_scoped_workdir(args.port, args.workdir)
+    session = FX6LiveGpe0Session(workdir, port=args.port)
 
-    print("[FX6-LIVE-GPE0] Auto-starting FX3 QEMU VM with FX6 native UI controller (live700)...")
+    print(f"[FX6-LIVE-GPE0] Auto-starting FX3 QEMU VM with FX6 native UI controller (live700, port={args.port}, workdir={workdir})...")
     start_info = session.start_vm()
     print(f"[FX6-LIVE-GPE0] QEMU started: {start_info}")
 
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(session))
     url = f"http://127.0.0.1:{args.port}/"
     print(f"[FX6-LIVE-GPE0] Listening on {url}")
+
+    def _on_sigterm(_signum: int, _frame: Any) -> None:
+        raise KeyboardInterrupt
+
+    signal.signal(signal.SIGTERM, _on_sigterm)
 
     if not args.no_browser:
         threading.Timer(0.8, lambda: webbrowser.open(url)).start()
@@ -1699,6 +2272,7 @@ def main() -> int:
     except KeyboardInterrupt:
         pass
     finally:
+        server.server_close()
         session.stop_vm()
     return 0
 

@@ -17,6 +17,11 @@
   - **ILME-FX3 物理按键台（`GET/POST /api/fx3_button`）**：网页新增 `Fn`（Big-6）、`MENU`（3-Layer Menu）、`DISP`（`p16` / `p6` 循环）、`C1`（Base Look）、`C2`（WB）、`C3`（Audio/TC `p17`）、`C4`（Media `p13`）、`C5`（Assignable `p4`）、`C6/PLAY`（Clip Browser `p14`）、`WHEEL UP/DOWN/SET` 与 `BACK/CANCEL`，在状态栏实时展示 `Stage-B P10` 物理码/功能码遥测（`mb[17]`）。
   - **全量 128 页（`fx6_all_pages[0..127]`）长稳零崩溃**：`libgrm-fbinit25-542.c` 为 `FX6_GPE_POOL` 增加 LRU 块回收与归属校验，`fx6_live_guest.c` 增加 16 MiB 预分配图标像素 RAM 缓存，彻底消除连续 ~155+ 帧后 LDEC `-22 destination_range` 溢出；已在 `--port 18770` 完成 **170/170** 连续渲染（24 精选页 + 中英切换 + 14 次 FX3 机身按键 + 128 全量页），`0` 崩溃、`ack_seq == cmd_seq`（`171/171`）。详情见 [Phase 23 报告](../../reports/2026-11-14-phase23-128page-multilang-fx3deck/README.md)。
 
+- **Phase 30 交互式 Cinema Line 参数实时调节、`P4` ND-Clear 硬件锁定与 `P11` 桥接遥测条（2026-11-14）**：
+  - **Big-6 主页 & HUD 实时参数渲染（`fx6_live_guest.c`）**：新增无堆分配 `fx6_render_string_text(...)` / `fx6_hud_live_str(...)` 与 `cell_vals[0..5]` + `mb[18]`（`P11` `ibis_idx` / `xlr_idx`），在 Big-6 主页（Page 0）、Setting（Page 2/3）及 Viewfinder HUD（Page 6 / 16 / 17）直接通过 `libuxengine.so` + FreeType 实时重绘 **FPS**（`23.98p..119.88p (S&Q)`）、**Dual Base ISO / Cine EI**（`800/400/1600 EI (800 Base)` ↔ `12800/6400/25600 EI (12800 Base)`）、**Shutter Angle / Speed**（`180.0°..1/100`）、**Base Look / 3D LUT**（`S-Cinetone` / `S-Log3.Cine / S-Gamut3.Cine` / `User1..2 (33³ .cube)`）与 **White Balance**（`5600K..ATW..Mem B`）。
+  - **`P4` ND-Clear 硬件契约强制锁定**：在非内置电子可变 ND 的 ILME-FX3 机身上，`Cell 3 (ND Filter)` 始终锁定为 `Clear [FX3 P4 Locked]`；无论通过 `/api/cinema_param` 还是 Big-6 `SET` / `WHEEL_SET` 尝试切换 ND，`mb[8+3]` 均在客体与宿主双端被锁定为 `0`，并在 Web 控制台弹出 `P4` 硬件契约提示横幅。
+  - **Web 控制台 `/api/cinema_param` & FX6-on-FX3 硬件桥接遥测条**：新增 `GET/POST /api/cinema_param`（`fps|ei|shutter|nd|lut|wb|ibis|xlr`）、`/api/status` `stage_b_telemetry` 与顶部遥测条，实时展示 **`P1 (/lut->p30)` · `P4 (ND=Clear)` · `P10 (FX3 Keys)` · `P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)` · `P12 (WF-12 Safe)`**，并支持 `EN / 中文 / 日本語` 一键切换。已在隔离端口 `--port 18771` 完成 **105/105** 连续交互压力验证（0 崩溃、`ack_seq == cmd_seq == 116`，全参数与三语 GPE0 像素差异全通过）。详情见 [Phase 30 报告](../../reports/2026-11-14-phase30-cineei-lut-nd-interactive-trial/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -67,7 +72,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ## 离线自动化单元测试（`tests/test_vm_trial.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 端口隔离、多语言 `.uxc` 发现、`/api/lang` & `/api/fx3_button` HTTP 路由与 128 页回执校验（共 **29 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 端口隔离、多语言 `.uxc` 发现、`/api/lang` & `/api/fx3_button` & `/api/cinema_param` HTTP 路由、`P4` ND-Clear 锁、`P11` 遥测与回执校验（共 **37 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

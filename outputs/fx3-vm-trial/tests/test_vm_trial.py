@@ -1207,7 +1207,7 @@ class TestPhase23MultilangFx3DeckAnd128Sweep(unittest.TestCase):
 
             # C2 -> WB/Setting Center, C3 -> p17, C4 -> p13, C5 -> p4, C6 -> p14, FN -> p0
             sess.press_fx3_button("C2")
-            self.assertEqual((sess.page, sess.sel_box), (3, 4))
+            self.assertEqual((sess.page, sess.sel_box), (3, 5))
             for btn, exp_page in (("C3", 17), ("C4", 13), ("C5", 4), ("C6", 14), ("PLAY", 14), ("FN", 0)):
                 res = sess.press_fx3_button(btn)
                 self.assertTrue(res["ok"])
@@ -1314,6 +1314,271 @@ class TestPhase23MultilangFx3DeckAnd128Sweep(unittest.TestCase):
         self.assertTrue(any(ls.get("png_differs_from_en") for ls in data["lang_switches"]))
 
         pngs = sorted(rep_dir.glob("*.png"))
+        self.assertLessEqual(len(pngs), 4)
+        for png_p in pngs:
+            raw = png_p.read_bytes()
+            self.assertLess(len(raw), 300 * 1024, msg=f"PNG too large: {png_p.name}")
+            chunks = _parse_png_chunks(raw)
+            w, h = struct.unpack(">II", chunks[0][1][:8])
+            self.assertEqual((w, h), (1024, 540), msg=f"Unexpected dimensions in {png_p.name}")
+
+
+class TestPhase30CinemaLineParametersAndBridge(unittest.TestCase):
+    def test_phase30_guest_c_cinema_line_specs_and_p4_nd_lock_invariants(self) -> None:
+        guest_src = (TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8")
+        for token in (
+            '"23.98p"',
+            '"119.88p (S&Q)"',
+            '"800 EI (800 Base)"',
+            '"12800 EI (12800 Base)"',
+            r'"180.0\xc2\xb0"',
+            '"1/48"',
+            '"Clear [FX3 P4 Locked]"',
+            '"S-Cinetone"',
+            '"S-Log3.Cine / S-Gamut3.Cine"',
+            r'"User1 (33\xc2\xb3 .cube)"',
+            '"5600K"',
+            '"ATW"',
+            "g_live_ibis_xlr",
+            "fx6_render_string_text",
+            "fx6_hud_live_str",
+            "g_live_cells[3] = 0u;",
+            "mb[18]",
+        ):
+            self.assertIn(token, guest_src, msg=f"Missing Phase 30 token in fx6_live_guest.c: {token}")
+        # Ensure P4 ND lock on mb[11] does not corrupt Page 24 Universal dual-table slots
+        self.assertIn("if ((page % FX6_NUM_PAGES) != 24u)", guest_src)
+        self.assertIn("mb[8 + 3] = 0u;", guest_src)
+
+    def test_phase30_cinema_param_presets_and_dual_base_iso_stepping(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_params_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            cp0 = sess.get_cinema_params()
+            self.assertEqual(cp0["base_iso"], "800")
+            self.assertEqual(cp0["values"]["fps"], "23.98p")
+            self.assertEqual(cp0["values"]["ei"], "800 EI (800 Base)")
+            self.assertEqual(cp0["values"]["shutter"], "180.0°")
+            self.assertEqual(cp0["values"]["lut"], "S-Cinetone")
+            self.assertEqual(cp0["values"]["wb"], "5600K")
+
+            # Step FPS to 119.88p (S&Q) and EI to 12800 Dual Base ISO
+            r_fps = sess.set_cinema_param("fps", preset="119.88p (S&Q)")
+            self.assertTrue(r_fps["ok"])
+            self.assertEqual(r_fps["value"], "119.88p (S&Q)")
+            self.assertEqual(sess.cell_vals[0], 6)
+
+            r_ei = sess.set_cinema_param("ei", preset="12800 EI (12800 Base)")
+            self.assertTrue(r_ei["ok"])
+            self.assertEqual(r_ei["cinema_params"]["base_iso"], "12800")
+            self.assertEqual(sess.cell_vals[1], 3)
+
+            # Shutter angle -> 1/48
+            r_sh = sess.set_cinema_param("shutter", preset="1/48")
+            self.assertTrue(r_sh["ok"])
+            self.assertEqual(r_sh["value"], "1/48")
+            self.assertEqual(sess.cell_vals[2], 4)
+
+            # LUT -> User1 (33³ .cube) via delta/preset
+            r_lut = sess.set_cinema_param("lut", preset="User1 (33³ .cube)")
+            self.assertTrue(r_lut["ok"])
+            self.assertEqual(sess.cell_vals[4], 4)
+
+            # WB -> ATW, then step backward with delta=-1 -> 3200K
+            r_wb = sess.set_cinema_param("wb", preset="ATW")
+            self.assertTrue(r_wb["ok"])
+            r_wb_back = sess.set_cinema_param("wb", delta=-1)
+            self.assertTrue(r_wb_back["ok"])
+            self.assertEqual(r_wb_back["value"], "3200K")
+
+            # IBIS & XLR cycling
+            r_ibis = sess.set_cinema_param("ibis", delta=1)
+            self.assertTrue(r_ibis["ok"])
+            self.assertEqual(sess.ibis_idx, 1)
+            r_xlr = sess.set_cinema_param("xlr", delta=2)
+            self.assertTrue(r_xlr["ok"])
+            self.assertEqual(sess.xlr_idx, 2)
+
+            # Invalid param & preset fail cleanly
+            self.assertFalse(sess.set_cinema_param("bogus_param")["ok"])
+            self.assertFalse(sess.set_cinema_param("fps", preset="999p")["ok"])
+
+    def test_phase30_p4_nd_clear_hardware_lock_enforcement(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_p4_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            r1 = sess.set_cinema_param("nd", delta=1)
+            self.assertTrue(r1["ok"])
+            self.assertTrue(r1["locked"])
+            self.assertEqual(r1["value"], "Clear [FX3 P4 Locked]")
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(sess.p4_lock_attempts, 1)
+            self.assertIn("P4", r1["toast"])
+            self.assertIn("Clear", r1["toast"])
+
+            # Attempt forcing non-Clear preset -> clamped to Clear
+            r2 = sess.set_cinema_param("nd", preset="1/16 ND")
+            self.assertTrue(r2["ok"])
+            self.assertEqual(r2["value"], "Clear [FX3 P4 Locked]")
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(sess.p4_lock_attempts, 2)
+
+            # Pressing SET on Big-6 cell 3 (ND Filter) enforces P4 lock & triggers toast
+            sess.apply_key_or_state({"page": 0, "sel_box": 3})
+            r3 = sess.apply_key_or_state({"key": "SET"})
+            self.assertTrue(r3["ok"])
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(sess.p4_lock_attempts, 3)
+            self.assertIn("P4", r3["status"]["last_toast"])
+
+    def test_phase30_stage_b_telemetry_contract_p1_p4_p10_p11_p12(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_tel_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            sess.set_cinema_param("ei", preset="12800 EI (12800 Base)")
+            sess.set_cinema_param("lut", preset="S-Log3.Cine / S-Gamut3.Cine")
+            sess.set_cinema_param("nd", delta=1)
+            sess.press_fx3_button("C1")
+            st = sess.get_status()
+            sbt = st["stage_b_telemetry"]
+            self.assertEqual(set(sbt.keys()), {"P1", "P4", "P10", "P11", "P12"})
+            self.assertIn("P1 (/lut->p30)", sbt["P1"]["label"])
+            self.assertTrue(sbt["P4"]["locked"])
+            self.assertGreaterEqual(sbt["P4"]["attempts"], 1)
+            self.assertEqual(sbt["P11"]["base_iso"], "12800")
+            self.assertEqual(sbt["P11"]["xlr_handle"], "0x5d90")
+            self.assertEqual(sbt["P11"]["lut_dma"], "0x0165/0x0166")
+            self.assertTrue(sbt["P12"]["safe"])
+
+    def test_phase30_http_api_cinema_param_and_web_telemetry_strip(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_http_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                html = urllib.request.urlopen(f"{base}/", timeout=5).read().decode("utf-8")
+                for ui_tok in (
+                    "/api/cinema_param",
+                    "P1 (/lut-&gt;p30)" if False else "P1 (/lut->p30)",
+                    "P4 (ND=Clear)",
+                    "P10 (FX3 Keys)",
+                    "P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)",
+                    "P12 (WF-12 Safe)",
+                    "param-toast",
+                    "setLang('ja')",
+                ):
+                    self.assertIn(ui_tok, html)
+
+                g0 = json.loads(urllib.request.urlopen(f"{base}/api/cinema_param", timeout=5).read().decode("utf-8"))
+                self.assertTrue(g0["ok"])
+                self.assertEqual(g0["cinema_params"]["values"]["ei"], "800 EI (800 Base)")
+
+                req_post = urllib.request.Request(
+                    f"{base}/api/cinema_param",
+                    data=json.dumps({"param": "ei", "preset": "12800 EI (12800 Base)"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                p_res = json.loads(urllib.request.urlopen(req_post, timeout=5).read().decode("utf-8"))
+                self.assertTrue(p_res["ok"])
+                self.assertEqual(p_res["cinema_params"]["base_iso"], "12800")
+
+                # Query string support for quick curl/GET-style POST invocations
+                req_qs = urllib.request.Request(
+                    f"{base}/api/cinema_param?param=nd&delta=1",
+                    data=b"{}",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                nd_res = json.loads(urllib.request.urlopen(req_qs, timeout=5).read().decode("utf-8"))
+                self.assertTrue(nd_res["ok"])
+                self.assertTrue(nd_res["locked"])
+                self.assertEqual(nd_res["value"], "Clear [FX3 P4 Locked]")
+
+                req_bad = urllib.request.Request(
+                    f"{base}/api/cinema_param",
+                    data=json.dumps({"param": "invalid_param"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx:
+                    urllib.request.urlopen(req_bad, timeout=5)
+                self.assertEqual(ctx.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_phase30_mailbox_p11_word18_packing_and_p4_nd_guard(self) -> None:
+        runner_src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+        self.assertIn("p11_state_word = ((self.xlr_idx & 0x0F) << 4) | (self.ibis_idx & 0x0F)", runner_src)
+        self.assertIn('struct.pack("<18I", *words) + struct.pack("<I", p11_state_word)', runner_src)
+        self.assertIn("mb_vals[3] = 0", runner_src)
+
+    def test_phase30_multilang_and_fx3_deck_cinema_param_sync(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_fx3deck_") as td:
+            donor_dir = Path(td) / "donor_app"
+            donor_dir.mkdir(parents=True)
+            for fname in (
+                "image_00_169.uxc",
+                "string_simplifiedchinese_2.uxc",
+                "string_japanese_2.uxc",
+                "MYingHeiC-GB18030-SJ_wIcon.ltt",
+                "TBGothicR_212_67_wIcon.ltt",
+            ):
+                (donor_dir / fname).write_bytes(b"MOCK")
+
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            try:
+                sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+                self.assertTrue(sess.set_lang("zh")["ok"])
+                self.assertTrue(sess.set_lang("ja")["ok"])
+                self.assertTrue(sess.set_lang("en")["ok"])
+
+                # C1 enters Base Look / 3D LUT and steps cell_vals[4]
+                sess.press_fx3_button("C1")
+                self.assertEqual((sess.page, sess.menu_cat, sess.menu_depth), (1, 4, 2))
+                sess.press_fx3_button("C1")
+                self.assertEqual(sess.cell_vals[4], 1)
+
+                # C2 jumps to Setting Center cell 5 (WB) and steps cell_vals[5]
+                sess.press_fx3_button("C2")
+                self.assertEqual((sess.page, sess.sel_box), (3, 5))
+                sess.press_fx3_button("C2")
+                self.assertEqual(sess.cell_vals[5], 1)
+
+                # FN returns to Big-6 Home focused on Base Look / 3D LUT (cell 4)
+                sess.press_fx3_button("FN")
+                self.assertEqual((sess.page, sess.sel_box), (0, 4))
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_phase30_stress_receipt_and_png_bounds(self) -> None:
+        rep_dir = REPO_ROOT / "reports" / "2026-11-14-phase30-cineei-lut-nd-interactive-trial"
+        receipt_path = rep_dir / "cinema_param_stress_receipt.json"
+        if not receipt_path.is_file():
+            self.skipTest("Phase 30 stress receipt not yet generated")
+        data = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["phase"], 30)
+        self.assertEqual(data["port"], 18771)
+        summary = data["summary"]
+        self.assertGreaterEqual(summary["total_commands"], 100)
+        self.assertEqual(summary["failures"], 0)
+        self.assertFalse(summary["crashed"])
+        self.assertTrue(summary["ack_matches_cmd"])
+        self.assertEqual(summary["final_ack_seq"], summary["final_cmd_seq"])
+        self.assertTrue(summary["nd_locked"])
+        self.assertGreaterEqual(summary["p4_lock_attempts"], 1)
+        for diff_name, diff_ok in data["pixel_diffs"].items():
+            self.assertTrue(diff_ok, msg=f"Expected real pixel diff for {diff_name}")
+
+        pngs = sorted(rep_dir.glob("*.png"))
+        self.assertGreaterEqual(len(pngs), 1)
         self.assertLessEqual(len(pngs), 4)
         for png_p in pngs:
             raw = png_p.read_bytes()

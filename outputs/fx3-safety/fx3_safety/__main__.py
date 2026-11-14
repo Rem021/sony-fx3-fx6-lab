@@ -16,6 +16,14 @@ from .boot_contracts import (
     verify_sector0_partition_table,
 )
 from .brick_classifier import classify_brick_state, generate_failsafe_init2_overlay_hook
+from .exfat_media_integrity_guard import (
+    MEDIA_TYPE_SDXC,
+    SLOT_A,
+    SLOT_B,
+    MediaSlotConfig,
+    build_synthetic_exfat_boot_region,
+    evaluate_exfat_media_integrity_guard,
+)
 from .master_16gate_preflight import DEFAULT_REPO_ROOT, evaluate_16_master_safety_gates
 from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
 from .thermal_pwm_and_power_guard import evaluate_thermal_pwm_and_power_guard
@@ -134,6 +142,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_16.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
+    # 9. verify-media-guard
+    p_media = sub.add_parser(
+        "verify-media-guard",
+        help="Run Phase 57 Non-Journaled exFAT BootChecksum, Sony Media Tree & Dual CFexpress Firewall",
+    )
+    p_media.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_media.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_media.add_argument("--slot-a-root", type=Path, help="Optional Slot A mounted directory to scan read-only")
+    p_media.add_argument("--slot-b-root", type=Path, help="Optional Slot B mounted directory to scan read-only")
+    p_media.add_argument("--slot-a-image", type=Path, help="Optional Slot A exFAT image/VBR file (O_RDONLY)")
+    p_media.add_argument("--slot-b-image", type=Path, help="Optional Slot B exFAT image/VBR file (O_RDONLY)")
+    p_media.add_argument("--p1-image", type=Path, help="Optional p1 FAT12/FAT16 image/VBR file (O_RDONLY)")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "evaluate-preflight":
@@ -227,6 +248,49 @@ def main(argv: Optional[List[str]] = None) -> int:
             )
         ok = report.all_16_gates_verified if args.dry_run_tier0 else report.offline_13_gates_verified
         return 0 if ok else 1
+
+    if args.cmd == "verify-media-guard":
+        slot_a: Optional[MediaSlotConfig] = None
+        if args.slot_a_root is not None or args.slot_a_image is not None:
+            slot_a = MediaSlotConfig(
+                slot_id=SLOT_A,
+                inserted=True,
+                exfat_boot_bytes=None if args.slot_a_image is not None else build_synthetic_exfat_boot_region(),
+                exfat_image_path=args.slot_a_image,
+                card_root=args.slot_a_root,
+                card_entries=None if args.slot_a_root is not None else (),
+                dedicated_lab_card=True,
+            )
+        slot_b: Optional[MediaSlotConfig] = None
+        if args.slot_b_root is not None or args.slot_b_image is not None:
+            slot_b = MediaSlotConfig(
+                slot_id=SLOT_B,
+                inserted=True,
+                media_type=MEDIA_TYPE_SDXC,
+                device_node="/dev/mmcblk2p1",
+                mount_point="/mnt/slot_b",
+                exfat_boot_bytes=None if args.slot_b_image is not None else build_synthetic_exfat_boot_region(),
+                exfat_image_path=args.slot_b_image,
+                card_root=args.slot_b_root,
+                card_entries=None if args.slot_b_root is not None else (),
+                dedicated_lab_card=True,
+            )
+        report = evaluate_exfat_media_integrity_guard(
+            force_clean_room=True if args.clean_room else None,
+            slot_a=slot_a,
+            slot_b=slot_b,
+            p1_image_path=args.p1_image,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} all_passed={report.all_passed} "
+                f"h0_h1_trial_entry_allowed={report.h0_h1_trial_entry_allowed} "
+                f"p1_fs={report.filesystem_separation['p1_filesystem']} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if report.all_passed else 1
 
     return 2
 

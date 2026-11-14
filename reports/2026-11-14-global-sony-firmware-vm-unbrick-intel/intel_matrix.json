@@ -1,0 +1,587 @@
+{
+  "schema": "h9_global_sony_intel_matrix_v1",
+  "generated_utc": "2026-11-14T20:08:00Z",
+  "cutoff_date": "2026-11-14",
+  "task_id": "task_df8c276bf006",
+  "target_alignment_baseline": {
+    "target_body": "Sony ILME-FX3 (Ver. 7.02, Model ID 0x91030080, PRODUCT_MODEL_ALCIN_UUD, SoC CXD90057/CXD90058)",
+    "donor_stack": "Sony ILME-FX6 (Ver. 6.01)",
+    "report_path": "reports/2026-11-14-global-sony-firmware-vm-unbrick-intel/README.md"
+  },
+  "unbrick_tiers": [
+    {
+      "tier_id": "Tier-0 RAM-Shadow",
+      "description": "Volatile DDR / tmpfs overlay (`P1..P10+Fan`, RAM-Shadow `BK4\\0`, Clear-Before-Exec `/tmp/mod_arm_once`) with zero eMMC/SPI NOR mutation; instant power-off battery-pull rollback.",
+      "persistent_bytes_mutated": 0,
+      "fx3_physical_interface": "On-camera tmpfs + `30-stage-a-orchestrator.sh`"
+    },
+    {
+      "tier_id": "Tier-1 USB ServiceShell 054C:0336",
+      "description": "MSC (`054C:0DA1`) -> Vendor Control `0x43/1/0x37FF/0xD7AA` -> Senser auth -> `054C:0336` AdjustControl (`PFUNC=0x40`, block `0x1001`) Jiritsu (`0x4002..0x4012`) & BK4 property/dump access.",
+      "persistent_bytes_mutated": "Optional (`bk w` / `SET_FILE` / `libJit.so`), strictly read-only in FX3 Stage-A (`G02`/`G10`)",
+      "fx3_physical_interface": "USB-C (requires working Linux AP + `im.elf` Jiritsu consumer; blocked on A7V Senser v2 RSA)"
+    },
+    {
+      "tier_id": "Tier-2 SD Slot-1 BODYDATA.DAT nflasha1",
+      "description": "Bootloader / `/setting/updater/mode*` -> `nflasha1` (`/boot/initrd.img` SquashFS + `/etc/VerificationKey.pem`) polling SD Slot 1 `/BODYDATA.DAT`; blink codes `1->3->5` normal, `5L+6S` file/version/model reject, `7L+7S` interrupted loop.",
+      "persistent_bytes_mutated": "Full `p3`/`p15` firmware recovery via SD Slot 1 (or patched `nflasha1`)",
+      "fx3_physical_interface": "SD Card Slot 1 (UHS-I 32/64GB FAT32/exFAT; requires intact `loader_nor.bin` + `nflasha1`)"
+    },
+    {
+      "tier_id": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "description": "Disassembly-free CXD90057 48 KiB BootROM GPIO bit-banged UART via 15-pin Sony Multi terminal (`RP2040-Zero -DOPEN_DRAIN` on `GP27=RST, GP28=TX, GP29=RX` at `48000` baud; `0x100D` = 13 short blinks parity error) -> load signed `fastboot.bin`/`mira` at `0x92028000` (`115200` baud `[mira] fastboot ready`) or unsigned payload at `0xFE020000` (`SET_UNLOCK` `0xfe02f398->0xdeadbeef`) -> USB-C Android Fastboot v0.5 (`18D1:4EE0`) with transparent AES-XTS-256 eMMC & `cetus` CP NOR access.",
+      "persistent_bytes_mutated": "Hardware-level eMMC/NOR dump & restore",
+      "fx3_physical_interface": "Physical 15-pin Sony Multi/Micro-USB Terminal (Back Row Pin 7=RX, Pin 8=TX, Pin 9=XReset, Pin 2=GND) + USB-C"
+    }
+  ],
+  "repositories": [
+    {
+      "id": "ilce-7m4-re",
+      "name": "DavidBuchanan314/ILCE-7M4-RE",
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+      "pillar": "Pillar-3 BootROM & Hardware Root-of-Trust",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90057 (Mira) + CXD90058 (Cetus) / ILCE-7M4, portable across Multi-port BIONZ XR bodies (including ILME-FX3)",
+      "capabilities": [
+        "CXD90057 /proc/iomem hardware map (BootROM 0xffff0000..ffffbfff, eSRAM 0xfe000000, SPACC 0xf7fc0000)",
+        "48,000-baud Multi-port GPIO BootROM `uart_boot` (RP2040-Zero `-DOPEN_DRAIN`: GP27/28/29)",
+        "eSRAM `0xFE020000` payload injection (`push_payload.py`) & `SET_UNLOCK` bypass (`0xfe02f398 -> 0xdeadbeef` / `0x2CF25621`)",
+        "Bare-metal `18D1:4EE0` Fastboot (`oem partition dump`, `oem dumpbrom`, `oem cetus reset/peek/poke/exec/dumpnor`)",
+        "SDM2 eMMC AES-XTS-256 analysis & `parse_emmc_partitions.py`"
+      ],
+      "fx3_applicability": "HIGH — FX3 retains the physical 15-pin Multi terminal; directly provides disassembly-free Level-4 eMMC/NOR dump & unbrick capability.",
+      "unbrick_tier": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Build and verify an RP2040-Zero (`-DOPEN_DRAIN`) FX3 Multi-port `uart_boot_probe` harness for Milestone H3 before attempting any persistent eMMC writes (`Gate G10`/`G11`)."
+        },
+        {
+          "target_package": "outputs/fx3-recovery-adapter",
+          "action": "Leverage `oem partition dump` / `oem cetus dumpnor` read-only workflow in Tier-3 recovery mode to capture SPI NOR `ddrtraining.dat` (`0x03e210fc`) if AP-side `boot_worker` cannot read NOR."
+        }
+      ]
+    },
+    {
+      "id": "sony-ilce-7m4-linux",
+      "name": "DavidBuchanan314/Sony-ILCE-7M4-Linux",
+      "url": "https://github.com/DavidBuchanan314/Sony-ILCE-7M4-Linux",
+      "pillar": "Pillar-3 BootROM & Hardware Root-of-Trust",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90057 / ILCE-7M4",
+      "capabilities": [
+        "Mainline Linux platform & device initialization reference (`platform.c` / `platform.h`)"
+      ],
+      "fx3_applicability": "MEDIUM — Reference for CXD90057 peripheral initialization, clock/reset gating, and DTB layout cross-checking.",
+      "unbrick_tier": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Cross-validate `kernel_dtb_compatibility_verifier.py` MMIO and carveout checks against mainline CXD90057 peripheral definitions."
+        }
+      ]
+    },
+    {
+      "id": "erlla-a7m4-cfw",
+      "name": "Erlla/sony-a7m4-custom-firmware",
+      "url": "https://github.com/Erlla/sony-a7m4-custom-firmware",
+      "pillar": "Pillar-3 BootROM & Hardware Root-of-Trust",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90057 / ILCE-7M4 (v6.02, Model ID 0x01030081)",
+      "capabilities": [
+        "Signed Sony SRAM `fastboot.bin` (`0x92028000`) -> `115200` baud `[mira] fastboot ready` -> `18D1:4EE0` v0.5 (`getvar:version OKAY0.5`)",
+        "`nflasha1` (`25,100,288` B / 766 blocks, FAT `19,377,152` B) `/boot/initrd.img` dual-layer RSA-2048 + `verifyKey` bypass",
+        "No-fastboot `libJit.so` (`EUID=0`) + 4-site `p1` patching (`0x9FD4`/`0xABF0`/`0xD208`/`0xD27C`) + 600s RAM menu gate (`libupdaterufp.so +0x1F50`, `appFw.so +0x265B2C8`)",
+        "FL2/FL3 Creative Look & JSON LUT patching"
+      ],
+      "fx3_applicability": "HIGH — Exact 4-site `p1` patch semantics match FX3 2.04/2.05 (`0x9fd4`/`0xabf0`/`0xd208`/`0xd27c`) byte-for-byte in structure.",
+      "unbrick_tier": "Tier-2 SD Slot-1 BODYDATA.DAT nflasha1",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-recovery-adapter",
+          "action": "Confirm real FX3 v7.02 `p1` offsets during Phase H0 capture and add a `7.02` profile alongside `2.04/2.05` in `profiles.py`."
+        },
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Keep `nflasha1` persistent modifications locked behind `Gate G10` + `G12`; adopt 600s auto-revert pattern if SD recovery testing is ever authorized."
+        }
+      ]
+    },
+    {
+      "id": "hearts-ace-a7r5-cfw",
+      "name": "Hearts-Ace/sony-a7r5-custom-firmware",
+      "url": "https://github.com/Hearts-Ace/sony-a7r5-custom-firmware",
+      "pillar": "Pillar-3 BootROM & Hardware Root-of-Trust",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90057 / ILCE-7RM5 (v4.00 -> CFW 4.59)",
+      "capabilities": [
+        "A7R V `nflasha1` `/etc/VerificationKey.pem` RSA-2048 replacement & `verifyKey` patch (`mov w0, #0; ret`)",
+        "Fastboot (`0x92028000`) -> Android Sparse (`0xed26ff3a`) flashing & SD Slot 1 recovery (`5L+6S` / `7L+7S`)",
+        "Deterministic source-locked CFW builder (`build.py` + `sources.lock.json` + `evidence_manifest.json`)"
+      ],
+      "fx3_applicability": "HIGH — Confirms cross-body portability of `0x92028000` Fastboot + `nflasha1` trust-chain across CXD90057 bodies.",
+      "unbrick_tier": "Tier-2 SD Slot-1 BODYDATA.DAT nflasha1",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Cross-check `brick_classifier.py` blink-code remediation steps (`5L+6S`, `7L+7S`) with A7R V / A7M4 field reports."
+        }
+      ]
+    },
+    {
+      "id": "simplypatrick-a7rv",
+      "name": "Simply Patrick — Sony A7R V 第三方韌體逆向與本地編譯實戰",
+      "url": "https://simplypatrick.com",
+      "pillar": "Pillar-3 BootROM & Hardware Root-of-Trust",
+      "status": "published_writeup_2026_10",
+      "target_soc_and_models": "CXD90057 / ILCE-7RM5",
+      "capabilities": [
+        "Complete walkthrough of `48000` -> `0x92028000` `fastboot.bin` (`mira`) -> `115200` baud `[mira] fastboot ready` -> `18D1:4EE0` Fastboot v0.5",
+        "Android Sparse v1.0 (`0xed26ff3a`, `0xCAC1`/`0xCAC3`) & `oem partition` protocol breakdown",
+        "`Updater::SignatureVerification::verifyKey` 8-byte bypass + `nflasha1` FAT12/SquashFS rebuild"
+      ],
+      "fx3_applicability": "HIGH — Clarifies exact distinction between Sony signed `0x92028000` `mira` loader vs `ILCE-7M4-RE` `0xFE020000` bare-metal payload.",
+      "unbrick_tier": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Document both SRAM targets (`0x92028000` signed `mira` & `0xFE020000` `ILCE-7M4-RE` open payload) in FX3 recovery runbooks."
+        }
+      ]
+    },
+    {
+      "id": "sony-00342260-wifi-bt",
+      "name": "Sony Support Notice 00342260 & FX3 Wi-Fi/BT Boot-Loop Field Reports",
+      "url": "https://www.sony.com/electronics/support/articles/00342260",
+      "pillar": "Pillar-3 BootROM & FX3 Anti-Brick Prevention",
+      "status": "official_advisory_2026_01",
+      "target_soc_and_models": "ILME-FX3 (v3.00–v7.02), ILME-FX30, ILCE-7SM3, ILCE-1",
+      "capabilities": [
+        "Confirms strict boot/enable-time hardware health check on WF-12 Wi-Fi/BT combo module",
+        "Documents v3.00–v5.00 `'System Error'` 5–10s infinite reboot loop vs v7.02 degraded prompt (`'The Wi-Fi/Bluetooth unit has malfunctioned'`)",
+        "Documents stepping-stone prerequisite (`<=v2.02 -> v2.04/v2.05 -> v7.02`) & v6.00/v6.02 `6L+9S` / solid-red update brick symptoms"
+      ],
+      "fx3_applicability": "CRITICAL — Directly impacts Stage-A/B cold-boot reliability on FX3 hardware with degraded WF-12 wireless modules.",
+      "unbrick_tier": "Tier-0 RAM-Shadow",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Extend `P3`/`P8` non-blocking philosophy to Stage-B `InfraPericon` / `SeqQueueNetwork` / `WF-12` init so faulty wireless hardware degrades gracefully instead of hanging cold boot."
+        },
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Maintain `detect_serial_faults.py` & `brick_classifier.py` `red_6L` WF-12 / CP NOR fault isolation and stepping-stone `v2.04/v2.05` check."
+        }
+      ]
+    },
+    {
+      "id": "chocotan-a7c2-qemu",
+      "name": "chocotan/a7c2-qemu",
+      "url": "https://github.com/chocotan/a7c2-qemu",
+      "pillar": "Pillar-2 QEMU Virtualization & GPE/IPC Modeling",
+      "status": "active_primary_mit",
+      "target_soc_and_models": "CXD90057 / ILCE-7CM2 (A7C II v2.01 ALLLANG)",
+      "capabilities": [
+        "QEMU `11.1.2` `-M virt,secure=off -cpu cortex-a35 -m 24G` + DTB patching + `-device ramfb` + `sony-ui-input` (1120 key pairs, ~97.3ms median latency)",
+        "Runs stock `init -> pivot/chroot -> init2 -> appFw` cold boot to shooting HUD & Simplified Chinese menus",
+        "1GiB FAT16 virtual SD card, GTK single-touch input, `virtual-rom-v1` virtual Bluetooth controller (2026-11-08)",
+        "Documents macOS Quartz GTK portability vs Windows IPC/bubblewrap limitations (`PORTING-WIN-MAC.md`)"
+      ],
+      "fx3_applicability": "HIGH — Same CXD90057 generation; `virtual-rom-v1` HCI model & `SONY_LZ77` software decode directly reinforce FX3 VM simulation.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-vm-trial",
+          "action": "Evaluate adding a lightweight `virtual-rom-v1` HCI stub so FX6/FX3 Bluetooth init (`BSA`) succeeds cleanly without triggering System Error in VM."
+        },
+        {
+          "target_package": "outputs/fx6-native-presenter-closure",
+          "action": "Cross-benchmark native `libgrm-fbinit9.c` `GPE0` latency against `a7c2-qemu` `97.3ms` `ramfb` pipeline."
+        }
+      ]
+    },
+    {
+      "id": "chocotan-a7c2-re",
+      "name": "chocotan/a7c2-re (archived/private; preserved in zve10-qemu & a7c2-qemu)",
+      "url": "https://github.com/chocotan/a7c2-re",
+      "pillar": "Pillar-2 QEMU Virtualization & GPE/IPC Modeling",
+      "status": "private_or_404_archived_lineage_cited",
+      "target_soc_and_models": "CXD90057 / ILCE-7CM2",
+      "capabilities": [
+        "Software GPE (`gpe-raster.c`, `gpe-sprite.c`) & Sony LZ77 CPU decompression (`sony-lz77.c` / `QEMU_SOFTWARE_LZ77` bypassing `/dev/ldec`)",
+        "`dmm-service.c`, `hdmi-format-service.c`, `headless-osd.c` (`HOSDAP02` `RGBA4444->XRGB8888` on `[0x41e100000, 0x41e600000)`)",
+        "Proved dynamic `/bin/busybox` makes corrupted `/etc/ld.so.preload` unrecoverable without BootROM (`RECOVERY-AND-LESSONS.md`)",
+        "Documented `nflasha10` (12 MiB `/tmp`,`/etc`,`/var`) `0x10000009` write failure when full"
+      ],
+      "fx3_applicability": "HIGH — Independently confirms our `RGBA4444` discovery (`fx6-native-presenter-closure` R5b), `0x10000009` VFAT constraint (`P2`), and Clear-Before-Exec overlay safety.",
+      "unbrick_tier": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-vm-trial",
+          "action": "Adopt `sony-lz77.c` software decompression check for compressed UI resources if hardware `/dev/ldec` emulation is ever exercised."
+        },
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Keep dynamic `busybox` `/etc/ld.so.preload` mutation permanently forbidden in Stage-A."
+        }
+      ]
+    },
+    {
+      "id": "cokeenet-zve10-qemu",
+      "name": "cokeenet/zve10-qemu",
+      "url": "https://github.com/cokeenet/zve10-qemu",
+      "pillar": "Pillar-2 QEMU Virtualization & GPE/IPC Modeling",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90045 / ZV-E10 (ARMv7 Linux 3.0.27)",
+      "capabilities": [
+        "Custom `-M cxd90045` QEMU machine + `bionz-streamfb` (`0x20312000`) + 70 kernel modules + 43 UIPC handlers (`ab_v3b.img`/`ab_log.img`)",
+        "Kernel trace patches (`ZZTGKILL`, `ZZEXCSTACK`, `IMOPEN`, `ZZFUTEX`, `QMMAP`)",
+        "L0–L4 anti-brick (`/log` bind, 90s watchdog, `/setting/updater/dat4` BCD `'00 00'` `mode6`, `TIMER-IP` 3m40s WDT `WDT_SET_STOP`)",
+        "`JIRITSU_CHANNEL.md` reverse-engineering of `libsencore.so` & `libJiritsu.so` (`0x4001..0x4012`)"
+      ],
+      "fx3_applicability": "MEDIUM-HIGH — Different SoC (`CXD90045` vs `CXD90057`), but L0–L4 anti-brick, Jiritsu wire protocol, and kernel trace hooks transfer directly.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-vm-trial",
+          "action": "Reference `ZZTGKILL`/`ZZEXCSTACK` kernel diagnostic pattern when tracing deep page faults in FX3 `4.9.337-scel+` VM."
+        }
+      ]
+    },
+    {
+      "id": "ivica00-a6400-research",
+      "name": "ivica00/sony-a6400-research",
+      "url": "https://github.com/ivica00/sony-a6400-research",
+      "pillar": "Pillar-2 QEMU Virtualization & GPE/IPC Modeling",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90045 / ILCE-6400, ILCE-6400A, + 13 BIONZ X bodies",
+      "capabilities": [
+        "Unicorn clean-room emulator booting updater Linux to `BusyBox v1.13.4 /bin/ash` (`PL011` IRQ 150)",
+        "Sugilite GPU (`grm_gles.ko`) parity (`BAR 0xF1000000`, IRQ `76`, `0xF3400080`=`0x15`)",
+        "Static ISP `CC:` 3D LUT (`5x9x9` YCbCr) & `EC_Gamma` decode; `1895` automated offline unit tests",
+        "ILCE-6400A read-only MSC probe (`GetModelInfo` in `2.727 ms`)"
+      ],
+      "fx3_applicability": "MEDIUM — Clean-room Unicorn & CI discipline mirrors our `FX3_FX6_FORCE_CLEAN_ROOM=1` harness; Sugilite GPU notes guide legacy BIONZ X comparison.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Adopt bounded read-only MSC `GetModelInfo` preflight timing checks in host verification scripts."
+        }
+      ]
+    },
+    {
+      "id": "liwenru88-a7r5-rea",
+      "name": "Liwenru88/a7r5-rea",
+      "url": "https://github.com/Liwenru88/a7r5-rea",
+      "pillar": "Pillar-2 QEMU Virtualization & GPE/IPC Modeling",
+      "status": "active_primary_2026_11",
+      "target_soc_and_models": "CXD90057 / ILCE-7RM5 (v4.00 -> CFW 4.19, Apple Silicon macOS)",
+      "capabilities": [
+        "`A7R5 Studio` Apple Silicon native client + `compose.py` 10-module firmware composer (`look24`, `look-fl2-fl3`, dual shutter sound)",
+        "QEMU verification across 86 real Qt input operations & native frame captures",
+        "Explicit WBI (`p5`) boot audit (header invalidation CRC `dfa823fc`) & NOR erase boundary warning"
+      ],
+      "fx3_applicability": "HIGH — Same CXD90057 generation & Apple Silicon macOS host environment; WBI boundary independently validates our `R2` (`p5:/wbi` hibernation redline).",
+      "unbrick_tier": "Tier-2 SD Slot-1 BODYDATA.DAT nflasha1",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Retain strict `wbi_p5_write_and_hibernation_forbidden = True` guardrail in `stage_a_boot_orchestrator.py` and `hardware_readiness_packet.py`."
+        }
+      ]
+    },
+    {
+      "id": "openipc-qemu-bench",
+      "name": "OpenIPC/qemu-bench",
+      "url": "https://github.com/OpenIPC/qemu-bench",
+      "pillar": "Pillar-2 QEMU Virtualization & GPE/IPC Modeling",
+      "status": "active_primary",
+      "target_soc_and_models": "QEMU 10.2.0 — 11 camera SoC families (HiSilicon V1–V5, Goke, SigmaStar, Novatek, Ingenic MIPS)",
+      "capabilities": [
+        "Table-driven QEMU machine definitions booting unmodified vendor SDK kernels (`mem=` + `mmz_allocator=cma`)",
+        "Clean-room script orchestration without committing proprietary vendor binaries"
+      ],
+      "fx3_applicability": "MEDIUM — Architectural template for structuring table-driven QEMU device profiles if CXD90057 evolves from `-M virt` to a dedicated machine.",
+      "unbrick_tier": "Tier-0 RAM-Shadow",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-vm-trial",
+          "action": "Reference table-driven SoC MMIO/CMA descriptor layout for future dedicated `-M cxd90057` QEMU machine refactoring."
+        }
+      ]
+    },
+    {
+      "id": "openamp-dual-qemu-ivshmem",
+      "name": "OpenAMP/openamp-system-reference (`dual_qemu_ivshmem`) & QEMU `ivshmem-flat` / `virtio-msg`",
+      "url": "https://github.com/OpenAMP/openamp-system-reference",
+      "pillar": "Pillar-2 QEMU Virtualization & Heterogeneous Linux+RTOS IPC",
+      "status": "active_upstream_2025_2026",
+      "target_soc_and_models": "Heterogeneous Linux AP (`ivshmem-doorbell` PCI) <-> Non-PCI ARM RTOS/MCU (`ivshmem-flat` MMIO)",
+      "capabilities": [
+        "QEMU `hw/misc/ivshmem-flat.c` (`INTRMASK`, `INTRSTATUS`, `IVPOSITION`, `DOORBELL` MMIO) paired with `ivshmem-server` + `eventfd`",
+        "OpenAMP RPMsg/Virtio/libmetal `dual_qemu_ivshmem` & Linaro HVAC `wmamills/hvac-demo` (`demo-amp-zephyr`)",
+        "`virtio-msg` (May 2026 RFC) & MemSys '25 Secure IVSHMEM (<200 us handshake, ~5% RTT)"
+      ],
+      "fx3_applicability": "HIGH — Provides the exact upstream QEMU plumbing needed to run FX3 Linux AP (`vmlinux.bin`) alongside a second QEMU VM running Stock-CP (`cpapp-b.bin` ARM32 RTOS).",
+      "unbrick_tier": "Tier-0 RAM-Shadow",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-vm-trial",
+          "action": "Milestone H4: Prototype dual-QEMU (`ivshmem-doorbell` + `ivshmem-flat`) bridge to model real AP<->CP UIPC (`0x92840747`) instead of userland Stub."
+        }
+      ]
+    },
+    {
+      "id": "olliv-fx30-fw",
+      "name": "OlliV/fx30_fw",
+      "url": "https://github.com/OlliV/fx30_fw",
+      "pillar": "Pillar-1 Firmware RE, Decryption & HAITA Feature Gating",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90057 / ILME-FX30 (PRODUCT_MODEL_LAX)",
+      "capabilities": [
+        "`BODYDATA.DAT` (`\\x89UFU\\r\\n\\x1a\\n`) -> `FDAT` (`0x110` IV+RSA footer) -> `ECB(sha256('')[0:16])` + `CBC(CXD90057_k8)` 1024B block decryption (`decrypt_fdat.py`)",
+        "Catalogues `7,337` `STRID_FUNC_*` & `771` `PRM_HAITA_*` exclusions and `LAX` profile mapping",
+        "`adjstctl.elf` Jiritsu `054C:0336` protocol documentation"
+      ],
+      "fx3_applicability": "HIGH — Same Cinema Line BIONZ XR generation (`FX30`=`LAX`, `FX3`=`ALCIN_UUD`); direct reference for `BODYDATA.DAT` unpacking & `HAITA` feature predicates.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Cross-check `771` `PRM_HAITA_*` exclusions against FX6-on-FX3 Phase 5/18 feature routing (`feature_routing_verifier.py`)."
+        }
+      ]
+    },
+    {
+      "id": "leogenot-a7iv-feature-research",
+      "name": "leogenot/sony-a7iv-feature-research",
+      "url": "https://github.com/leogenot/sony-a7iv-feature-research",
+      "pillar": "Pillar-1 Firmware RE, Decryption & HAITA Feature Gating",
+      "status": "active_primary",
+      "target_soc_and_models": "CXD90057 / ILCE-7M4 (v6.02 `LS`) & ILME-FX3 (v7.02 `ALCIN_UUD` comparison)",
+      "capabilities": [
+        "Disassembly proof of `feature_manager::update_product_model()` (`0x183ecc0`, `.bss 0x5a59788`) & `PRM_FEATURE_MANAGER_menu_item` (id 119, 131 sites)",
+        "Proves `ALCIN_UUD` (enum 4, idx 24, `IMX510`) = FX3, `LAX` (enum 3, idx 25, `IMX684`) = FX30, `LS` (enum 0, idx 26, `IMX710`) = A7 IV",
+        "Verified `BK4` IDs: Shutter Angle (`0x02cf1702`, `0x02cf1704`), Log/LUT (`0x02cf1443`, `0x02cf1453`, `0x02cf14a4..b3`), Open Gate dormant `IMAGER_SCANMODE_FF_5K_3_2` (`5016x3344`)",
+        "Read-only PTP PC Remote `0x9203` / `0xE0E3` descriptor probing"
+      ],
+      "fx3_applicability": "CRITICAL — Directly benchmarks FX3 v7.02 `appFw.so` (9 product classes) and validates why whole-`appFw.so` Stage-A FX6 migration outperforms naive `Backup.bin` `PRODUCT_MODEL` mutation.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Record `PRODUCT_MODEL_ALCIN_UUD` & `BK4` property ID mappings (`0x02cf1702`, `0x02cf1443`) in `RAM-Shadow BK4\\0` contract tests."
+        }
+      ]
+    },
+    {
+      "id": "masterflai-pmca-re-reloaded",
+      "name": "masterflai/pmca-re-reloaded",
+      "url": "https://github.com/masterflai/pmca-re-reloaded",
+      "pillar": "Pillar-1 Firmware RE & USB Service Tooling",
+      "status": "active_primary_v1.12.1",
+      "target_soc_and_models": "Multi-gen Sony Alpha / Cinema Line (including BIONZ XR & ILCE-7M5)",
+      "capabilities": [
+        "Rust + Tauri 2 + WASM plugin SDK (`v1.12.1`, MIT) successor to `ma1co/Sony-PMCA-RE`",
+        "Fixes macOS 26+ `0xe00002be` mass-storage reclaim via `IOUSBHost` fallback on settled camera",
+        "Detects `'Senser v2'` RSA-signed service auth on `ILCE-7M5` (warns manufacturer private key required)",
+        "`pmca-console print-camset` (`CAMSET*.DAT` diffing), 5-step guarded flash/rollback (`rollback/-.json`), BusyBox `dd` no-`conv=notrunc` safety warning"
+      ],
+      "fx3_applicability": "HIGH — Host is macOS; `IOUSBHost` capture fix & `CAMSET*.DAT` / `Backup.bin` 5-step rollback patterns directly upgrade our host USB tooling.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-recovery-adapter",
+          "action": "Adopt `pmca-re-reloaded` macOS 26+ `IOUSBHost` USB claim sequence and explicit `dd` truncation prohibition in future host capture backend."
+        }
+      ]
+    },
+    {
+      "id": "yuuluo-a7c2-service-preload",
+      "name": "YuuLuo/a7c2-service-preload",
+      "url": "https://github.com/YuuLuo/a7c2-service-preload",
+      "pillar": "Pillar-1 USB Service Mode & Jiritsu Preload",
+      "status": "active_2026",
+      "target_soc_and_models": "CXD90057 / ILCE-7CM2 (v2.01)",
+      "capabilities": [
+        "Clean protocol trace of `054C:0E8A` -> Senser -> `054C:0336` -> `SET_FILE_PATH` `/tmp/jiritsu/../..` -> `/etc/ld.so.preload` -> `JIRITSU_DEBUG` root child execution",
+        "One-shot preload cleanup & return-to-MSC verification"
+      ],
+      "fx3_applicability": "HIGH — Same Jiritsu mechanism used by `fx3-safety` `G02`/`G03`; reinforces why `tier0_backup_worker` unlinks `/tmp/jiritsu/libJit.so` first and avoids persistent `/etc/ld.so.preload`.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx3-safety",
+          "action": "Keep persistent `/etc/ld.so.preload` writes strictly prohibited; restrict any Jiritsu entry to volatile one-shot `O_RDONLY` capture."
+        }
+      ]
+    },
+    {
+      "id": "qaqleonard-a7c2-fl23",
+      "name": "QAQLeonard/a7c2-fl23-research",
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research",
+      "pillar": "Pillar-1 Firmware RE & Jiritsu `libJit.so`",
+      "status": "active_2026_10",
+      "target_soc_and_models": "ILCE-7CM2 (v2.01) & ILCE-7C (v2.03 Issue #23)",
+      "capabilities": [
+        "FL2/FL3 porting & custom LUT/DCP tooling via Senser/Jiritsu",
+        "Issue #23 (2026-10-22) proved `054C:0336` -> `dlopen('/tmp/jiritsu/libJit.so')` `euid: 0` inside `im.elf` works down to ARM32 `ILCE-7C` v2.03"
+      ],
+      "fx3_applicability": "MEDIUM — Cross-confirms Jiritsu `libJit.so` surface across generations.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "t2r05-fx30-senser-map",
+      "name": "t2r05/fx30-senser-map",
+      "url": "https://github.com/t2r05/fx30-senser-map",
+      "pillar": "Pillar-1 Firmware RE & Cinema Line Service Protocol",
+      "status": "active_2026",
+      "target_soc_and_models": "CXD90057 / ILME-FX30 (v6.00 / v6.01)",
+      "capabilities": [
+        "Maps FX30 Senser/Jiritsu command exchanges & equal-length `appFw.so` product-flag patching",
+        "Proves FX30 v6.00 accepts paired settings writes for hidden continuous mode, whereas v6.01 rejects modified settings payloads"
+      ],
+      "fx3_applicability": "HIGH — Closest Cinema Line sibling (`FX30` vs `FX3`); warns that newer Cinema Line builds tighten persistent settings validation.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": [
+        {
+          "target_package": "outputs/fx6-on-fx3-closure",
+          "action": "Confirms that FX3 v7.02 likely enforces strict settings validation, making our volatile `RAM-Shadow BK4\\0` approach superior to patching persistent `p2:/Backup.bin`."
+        }
+      ]
+    },
+    {
+      "id": "a7s3-fx3-big6-libjit-poc",
+      "name": "Oct–Nov 2026 A7S III (`CoupleMother1623`) `libJit.so` -> `im.elf` BIG6 & Variable Shutter PoC",
+      "url": "https://github.com/ma1co/Sony-PMCA-RE",
+      "pillar": "Pillar-1 Firmware RE & Feature Gating",
+      "status": "public_report_2026_10",
+      "target_soc_and_models": "ILCE-7SM3 / ILME-FX3 shared firmware family (`IMX510`)",
+      "capabilities": [
+        "Drops `libJit.so` via Jiritsu to execute C++ constructors inside `im.elf` (`euid=0`)",
+        "Live-patches in-memory visibility/mode tables for BIG6 & writes persistent `Backup` for Variable Shutter"
+      ],
+      "fx3_applicability": "MEDIUM — Proves A7S III and FX3 share the `IMX510` codebase, while underscoring the unverified reliability risks of ad-hoc partial memory patches vs our full Phase 18 verified FX6 UXEngine closure.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "xyzhangxin-a6700-powerful",
+      "name": "xyzhangxin/sony-a6700-powerful",
+      "url": "https://github.com/xyzhangxin/sony-a6700-powerful",
+      "pillar": "Pillar-3 BootROM & Fastboot Tooling",
+      "status": "active_2026",
+      "target_soc_and_models": "CXD90057 / ILCE-6700 (v2.00)",
+      "capabilities": [
+        "Chinese-language Raspberry Pi Pico UART bootstrap, Fastboot memory backup, and one-click CFW flashing toolkit"
+      ],
+      "fx3_applicability": "MEDIUM — Demonstrates Type-C-only BIONZ XR Fastboot workflow (without Multi port), highlighting FX3's advantage of keeping the 15-pin Multi connector.",
+      "unbrick_tier": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "dino2048-zve10-toolkit",
+      "name": "dino2048/zv-e10-toolkit",
+      "url": "https://github.com/dino2048/zv-e10-toolkit",
+      "pillar": "Pillar-3 Hardware Channel Tooling",
+      "status": "active_mit",
+      "target_soc_and_models": "CXD90045 / ZV-E10",
+      "capabilities": [
+        "MIT-licensed UART/Fastboot hardware channel utilities referenced by `zve10-qemu`"
+      ],
+      "fx3_applicability": "LOW-MEDIUM — Structural reference for clean MIT Fastboot wrapper scripts.",
+      "unbrick_tier": "Tier-3 Multi-Port 48000-baud BootROM uart_boot -> SRAM 0x92028000 Fastboot",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "chambersxdu-a7c2-research",
+      "name": "ChambersXDU/sony-a7c2-research",
+      "url": "https://github.com/ChambersXDU/sony-a7c2-research",
+      "pillar": "Pillar-1 Firmware RE & Partition Forensics",
+      "status": "active_2026",
+      "target_soc_and_models": "CXD90057 / ILCE-7CM2 (v2.01)",
+      "capabilities": [
+        "Forensic partition layout & runtime boot verification records (`fwtool` unpacking)"
+      ],
+      "fx3_applicability": "MEDIUM — Independent CXD90057 partition reference.",
+      "unbrick_tier": "Tier-2 SD Slot-1 BODYDATA.DAT nflasha1",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "goudvuur-sonshell",
+      "name": "goudvuur/sonshell",
+      "url": "https://github.com/goudvuur/sonshell",
+      "pillar": "Pillar-1 Official Remote SDK Integration",
+      "status": "active_apache2",
+      "target_soc_and_models": "A6700 / Official Camera Remote SDK bodies (incl. FX3/FX6)",
+      "capabilities": [
+        "Linux C++ interactive shell over official Camera Remote SDK (Wi-Fi/Ethernet keepalive, liveview, shutter/exposure, post-download hooks)"
+      ],
+      "fx3_applicability": "LOW-MEDIUM — Useful non-invasive external test harness for Stage-A/H1 automated shooting telemetry over official Remote SDK.",
+      "unbrick_tier": "Tier-0 RAM-Shadow",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "happyfrog2026-a7m4-color",
+      "name": "happyfrog2026/a7m4-color-research",
+      "url": "https://github.com/happyfrog2026/a7m4-color-research",
+      "pillar": "Pillar-1 Firmware Feature Unlock",
+      "status": "community_2026",
+      "target_soc_and_models": "CXD90057 / ILCE-7M4",
+      "capabilities": [
+        "USB-C delivery of FL2/FL3 Creative Looks & color presets"
+      ],
+      "fx3_applicability": "LOW — Already superseded for FX3 by our Phase 18 native FX6 `Base Look` / `16x 33^3 .cube` LUT closure.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": []
+    },
+    {
+      "id": "ma1co-sony-pmca-re",
+      "name": "ma1co/Sony-PMCA-RE & ma1co/fwtool.py",
+      "url": "https://github.com/ma1co/Sony-PMCA-RE",
+      "pillar": "Pillar-1 Upstream Foundation",
+      "status": "upstream_reference",
+      "target_soc_and_models": "All Sony Alpha / NEX / Cinema Line",
+      "capabilities": [
+        "Canonical Senser framing, AdjustControl protocol, `fwtool` decryption keys, Issues #751/#756/#717 (`0x02cf0004` NTSC/PAL, BIONZ XR discussion)"
+      ],
+      "fx3_applicability": "HIGH — Upstream protocol foundation for `fx3-safety` `G02`/`G03`.",
+      "unbrick_tier": "Tier-1 USB ServiceShell 054C:0336",
+      "actionable_integration_items": []
+    }
+  ],
+  "lab_alignment_summary": [
+    {
+      "lab_package": "outputs/fx3-safety",
+      "current_status": "9/12 gates VERIFIED (3 gated on physical Tier-0 backup G10/G11/G12); 5-level brick classifier + 4-layer failsafe + Sector-0/BK4/0xfa0080/BKSB validators",
+      "external_validation": "Independently confirmed by `ILCE-7M4-RE` BootROM/eMMC contracts, `a7c2-re` busybox preload brick warning, and Sony Notice `00342260` WF-12 fault reports.",
+      "next_phase_upgrade": "Add RP2040-Zero `-DOPEN_DRAIN` Multi-port 48000-baud probe harness (H3) and Stage-B WF-12 wireless non-blocking fault checks."
+    },
+    {
+      "lab_package": "outputs/fx3-recovery-adapter",
+      "current_status": "v0.5 verified on FX3 2.04/2.05 `p1` (`0x9fd4`/`0xabf0`/`0xd208`/`0xd27c`) + static AArch64 `fx3_p1_reader`/`fx3_boot_reader` + `elflink.py` (58 tests)",
+      "external_validation": "`Erlla/sony-a7m4-custom-firmware` confirms exact same 4-site `p1` semantics & `Z_SYNC_FLUSH` equal-size SquashFS rebuild.",
+      "next_phase_upgrade": "Capture FX3 v7.02 `p1` on hardware in H0 to register `7.02` fingerprint; integrate `pmca-re-reloaded` macOS 26+ `IOUSBHost` claim fix."
+    },
+    {
+      "lab_package": "outputs/fx6-on-fx3-closure",
+      "current_status": "Phase 1–18 complete (`P1..P10+Fan`, `U1..U5 CLOSED`, `WBI p5` redline, `30-stage-a-orchestrator.sh`, `verify-post-trial` H0->H1->H2, 224 tests)",
+      "external_validation": "`leogenot` `PRODUCT_CLASS.md` confirms `ALCIN_UUD`=`FX3`; `a7r5-rea` confirms WBI boundary; `t2r05` confirms v6.01+ persistent settings lock.",
+      "next_phase_upgrade": "Add Stage-B `InfraPericon`/`SeqQueueNetwork`/`WF-12` non-blocking timeout guards before real-hardware wireless enablement."
+    },
+    {
+      "lab_package": "outputs/fx3-vm-trial",
+      "current_status": "Web UI (`127.0.0.1:8768`), Candidate `255` FX6 Big6, GDB gates (`0x41df00000`/`0x41e000f00`) + QMP `pmemsave 0x41e001000`, 16 unit tests",
+      "external_validation": "`chocotan/a7c2-qemu` validates `ramfb` / `sony-lz77.c` / `virtual-rom-v1` BT stub strategies; `OpenAMP` validates dual-QEMU `IVSHMEM`.",
+      "next_phase_upgrade": "Prototype Milestone H4 dual-QEMU (`ivshmem-doorbell` + `ivshmem-flat`) to co-simulate FX3 Stock-CP (`cpapp-b.bin`) + inject WF-12 fault tests."
+    },
+    {
+      "lab_package": "outputs/fx6-native-presenter-closure",
+      "current_status": "Rounds 4–8 complete (`FX6_NATIVE_FAITHFUL=1`, `nop_count=0`, `RGBA4444` fix, `'S-Cinetone'` 1,928-px delta, Round 8 FX3 Ver. 7.02 `4.9.337-scel+` hybrid boot `148 TIDs`)",
+      "external_validation": "Exceeds community `zve10-qemu`/`a7c2-qemu` in cross-body OS+app fidelity (`subst_color=0`, `subst_image=0`, bit-exact `r6c==r5b` round-trip).",
+      "next_phase_upgrade": "Extend Round 8 hybrid VM to test Wi-Fi/BT fault injection & dual-QEMU `IVSHMEM` Stock-CP telemetry."
+    }
+  ]
+}

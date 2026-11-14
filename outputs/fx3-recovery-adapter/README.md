@@ -156,3 +156,31 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-ada
   /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -v
 ```
 
+## Phase 47 — Unified Tier-0..Tier-4 Unbrick Escalation Ladder Simulator & `p1` VFAT Atomic Rollback Capsule Verifier
+
+- **[`unbrick_ladder_and_capsule_verifier.py`](fx3_recovery/unbrick_ladder_and_capsule_verifier.py)**：将 `outputs/fx3-recovery-adapter/` 内全部五大恢复支柱（[`capture.py`](fx3_recovery/capture.py)、[`boot_worker.py`](fx3_recovery/boot_worker.py)、[`macos_usb_transport_guard.py`](fx3_recovery/macos_usb_transport_guard.py)、[`p1_symbol_autolocator.py`](fx3_recovery/p1_symbol_autolocator.py)、[`emmc_dump_forensic_verifier.py`](fx3_recovery/emmc_dump_forensic_verifier.py)）统一至确定性 Tier-0..Tier-4 救砖升级状态机与 `p1` VFAT 原子回滚胶囊校验器：
+  - **12 场景 Tier-0..Tier-4 确定性升级梯（`run_12_scenario_escalation_matrix`）**：按“精确诊断 -> 最小权限恢复层选择 -> 恢复后验真（含零持久写入不变量）”覆盖以下 12 种故障模式：
+    1. `S01_CLEAN_STAGE_AB_REBOOT`（`TIER_0`）：Stage-A/B 零持久 RAM 卸载断电重启，即时恢复原厂 FX3 `v7.02` 启动（`emmc_write_bytes = 0`）。
+    2. `S02_P1_VFAT_BOOT_COUNTER_LATCH`（`TIER_0`）：`p1` VFAT Stage-A/B 启动计数器（`boot_attempts >= 1`）一次性故障保护锁存，无需拆卸 SD 卡即自动回退原厂启动。
+    3. `S03_WF12_00342260_WIRELESS_HANG`（`TIER_0`）：`00342260` `WF-12`（`6L+9S` LED）无线致命挂死防御与恢复——由 `P12` `0x70d4` + `BK4` Airplane 影子项阻断；未打补丁试验遇到时需 `>= 60s` 冷断电清除。
+    4. `S04_0X100D_EARLY_INIT_APPFW_ABORT`（`TIER_0`）：`0x100D`（`13S` LED）早期 `init`/`appFw` 中止 -> `TIER_0` 一次性 hook 跳过并恢复原厂 FX3 启动。
+    5. `S05_MACOS26_IOUSBHOST_PIPE_STALL_H0`（`TIER_1`）：macOS 26 `IOUSBHost` `0xe00002be` USB MSC 管道阻塞 -> 调度 `MacOSUSBTransportSession` 静默等待（`>= 350 ms`）与指数退避干净重试，零破坏性重传。
+    6. `S06_SHIFTED_VMA_V702_P1_AUTOLOCATE`（`TIER_2`）：VMA 偏移的 FX3 `v7.02` `p1` 更新库 -> 硬编码 v2.00 偏移 fail-closed 拒绝，通过 `autolocate_4_sites` 4 位点 AArch64 `ADRP/BL` 签名定位并验证逐字节回滚（`rollback_byte_exact = True`）。
+    7. `S07_CORRUPTED_H0_EMMC_STUCK_BUS`（`TIER_4`）：受损/截断的 `H0` eMMC 备份读出（全 `0x00`/全 `0xFF` 总线卡死与长度截断）-> 被 `analyze_bus_and_entropy` / `verify_emmc_dump_bytes` 预检拦截，强阻断 `H1` 进入（`h1_entry_blocked = True`）。
+    8. `S08_VMC_BNCM1_LTC_CABLE_TIER3_UART`（`TIER_3`）：Multi-Port `VMC-BNCM1` LTC 线缆未拔出时尝试 `Tier-3` `RP2040-Zero` `-DOPEN_DRAIN` `48000` 波特 `uart_boot` -> fail-closed 阻断，直至拔除 LTC 适配器并通过 `1.8V/3.3V` 开漏治具校验。
+    9. `S09_DESTRUCTIVE_FASTBOOT_FIREWALL`（`TIER_3`）：破坏性 Fastboot 指令（`fastboot erase` / `flash boot0` / `oem format`）-> 被 BootROM 指令防火墙与 `audit_boot_chain_immutability` 阻断（`persistent_emmc_writes_authorized = False`）。
+    10. `S10_LD_SO_PRELOAD_BUSYBOX_DEADLOCK`（`TIER_2`）：`/etc/ld.so.preload` 动态 BusyBox 死锁注入尝试 -> 打包前即被静态 ELF / `LD_PRELOAD` 作用域限定 `appFw` 启动器契约拒绝。
+    11. `S11_CROSS_BODY_FX6_WBI2_INJECTION`（`TIER_2`）：跨机身 `FX6 WBI2` 休眠快照注入尝试 -> fail-closed 拒绝，保证 `wbi_mutation_bytes == 0`。
+    12. `S12_THERMAL_OR_USBPD_BROWNOUT_ABORT`（`TIER_0`）：`H0` 采集中发生 `>= 90.0°C` 过温或 USB-PD `< 7.80V` VBUS 欠压 -> 优雅中止与零分区改写（`partition_mutation_count = 0`）。
+  - **`p1` VFAT 原子回滚胶囊与双遍 SHA-256 校验器（`build_p1_vfat_rollback_capsule` / `verify_p1_vfat_capsule` / `audit_capsule_fsync_order`）**：构建并校验支持 `FAT12` 与 `FAT16` 的 `p1` 故障保护 hook 胶囊，覆盖 `8.3` 与 LFN 长文件名条目、FAT1/FAT2 镜像一致性、簇链环路/交叉检测、`tempfile` `O_CREAT|O_EXCL|O_NOFOLLOW` 暂存 -> `fsync_tmp_file` -> 首遍 `O_RDONLY` SHA-256 -> 原子替换 -> `fsync_parent_dir` -> 二遍 `O_RDONLY` SHA-256 序列，`boot_attempts >= 1` 一次性锁存及确定性 `capsule_sha256`（FAT12 `663503a2...` / FAT16 `7da7b1dc...`），硬锁定 `persistent_emmc_writes_authorized = False`。
+  - **CLI 与双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-unbrick-ladder [--clean-room] [--json] [--out ...]`，并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部公开符号；[`tests/test_unbrick_ladder_and_capsule.py`](tests/test_unbrick_ladder_and_capsule.py) 包含 30 项快速测试（`< 0.6s`），同时在本地供体模式（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下通过，保留全部 137 项既有测试绿色通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-unbrick-ladder --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -v
+```
+
+

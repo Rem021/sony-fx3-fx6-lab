@@ -569,6 +569,7 @@ def build_stage_a_overlay(
     enable_r10: bool = False,
     enable_p12: bool = False,
     enable_r12: bool = False,
+    enable_r13: bool = False,
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
@@ -868,11 +869,17 @@ def build_stage_a_overlay(
             f"stage_r12=1\np10_keymap=1\np11_uipc=1\np12_wlan=1\np4_nd_clear=1\nuxc=1\nlang={lang}\n".encode("utf-8"),
             0o100644,
         )
+    if enable_r13:
+        additions["etc/fx6_stage_r13"] = (
+            f"stage_r13=1\np10_keymap=1\np11_uipc=1\np12_wlan=1\np4_nd_clear=1\nuxc=1\n4lang_matrix=1\nlang={lang}\n".encode("utf-8"),
+            0o100644,
+        )
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
         "p12_enabled": enable_p12,
         "r12_enabled": enable_r12,
+        "r13_enabled": enable_r13,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -1072,6 +1079,55 @@ def export_gpe0_pngs(
     }
 
 
+def decode_png_rgba_rows(png_bytes: bytes) -> Tuple[int, int, List[bytes]]:
+    """Decode an RGBA8 PNG (filter=0) using pure stdlib zlib/struct."""
+    if len(png_bytes) < 24 or png_bytes[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError("Invalid PNG signature")
+    pos = 8
+    width = 0
+    height = 0
+    idat_parts: List[bytes] = []
+    while pos + 8 <= len(png_bytes):
+        length = struct.unpack(">I", png_bytes[pos : pos + 4])[0]
+        ctype = png_bytes[pos + 4 : pos + 8]
+        payload = png_bytes[pos + 8 : pos + 8 + length]
+        pos += 12 + length
+        if ctype == b"IHDR":
+            width, height, bit_depth, color_type = struct.unpack(">IIBB", payload[:10])
+            if bit_depth != 8 or color_type != 6:
+                raise ValueError(f"Unsupported PNG format bit_depth={bit_depth} color_type={color_type}")
+        elif ctype == b"IDAT":
+            idat_parts.append(payload)
+        elif ctype == b"IEND":
+            break
+    raw = zlib.decompress(b"".join(idat_parts))
+    stride = width * 4
+    rows: List[bytes] = []
+    idx = 0
+    for _ in range(height):
+        if raw[idx] != 0:
+            raise ValueError(f"Unsupported PNG row filter {raw[idx]}")
+        rows.append(raw[idx + 1 : idx + 1 + stride])
+        idx += 1 + stride
+    return width, height, rows
+
+
+def compute_png_pixel_diff(path_a: pathlib.Path, path_b: pathlib.Path) -> int:
+    """Count differing RGBA pixels between two identically sized RGBA8 PNG files."""
+    wa, ha, rows_a = decode_png_rgba_rows(path_a.read_bytes())
+    wb, hb, rows_b = decode_png_rgba_rows(path_b.read_bytes())
+    if (wa, ha) != (wb, hb):
+        raise ValueError(f"PNG dimension mismatch: {(wa, ha)} vs {(wb, hb)}")
+    stride = wa * 4
+    return sum(
+        1
+        for y in range(ha)
+        if rows_a[y] != rows_b[y]
+        for x in range(0, stride, 4)
+        if rows_a[y][x : x + 4] != rows_b[y][x : x + 4]
+    )
+
+
 def analyze_gpe0_raw(raw_path: pathlib.Path) -> Dict[str, Any]:
     if not raw_path.exists():
         return {"present": False}
@@ -1154,6 +1210,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_P11_",
         "FX6_R11_",
         "FX6_R12_",
+        "FX6_R13_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -1173,6 +1230,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_p11_uipc: Optional[Dict[str, Any]] = None
     last_r11_lang: Optional[Dict[str, Any]] = None
     last_r12_lang: Optional[Dict[str, Any]] = None
+    last_r13_lang: Optional[Dict[str, Any]] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -1186,6 +1244,8 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             last_r11_lang = _parse_kv_ints(line.split("FX6_R11_LANG_TELEMETRY ", 1)[1])
         elif "FX6_R12_LANG_TELEMETRY " in line:
             last_r12_lang = _parse_kv_ints(line.split("FX6_R12_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_R13_LANG_TELEMETRY " in line:
+            last_r13_lang = _parse_kv_ints(line.split("FX6_R13_LANG_TELEMETRY ", 1)[1])
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -1226,6 +1286,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r10_telemetry": r10_telemetry,
         "r11_telemetry": last_r11_lang,
         "r12_telemetry": last_r12_lang,
+        "r13_telemetry": last_r13_lang,
     }
 
 
@@ -1249,7 +1310,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 12:
+    if args.round >= 13:
+        tmp_prefix = "fx6-r13"
+    elif args.round >= 12:
         tmp_prefix = "fx6-r12"
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
@@ -1288,15 +1351,19 @@ def run_once(args: argparse.Namespace) -> int:
         stage_a_meta: Optional[Dict[str, Any]] = None
         if args.round >= 8:
             stage_label = (
-                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(UXC+Wlan+lang={lang})"
-                if args.round >= 12
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(4Lang-Matrix+UXC+Wlan+lang={lang})"
+                if args.round >= 13
                 else (
-                    f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
-                    if args.round >= 11
+                    f"Stage-B P1..P9+Fan+P10+P11+P12+P4(UXC+Wlan+lang={lang})"
+                    if args.round >= 12
                     else (
-                        "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
-                        if args.round >= 10
-                        else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                        f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
+                        if args.round >= 11
+                        else (
+                            "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
+                            if args.round >= 10
+                            else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                        )
                     )
                 )
             )
@@ -1309,6 +1376,7 @@ def run_once(args: argparse.Namespace) -> int:
                 enable_r10=(args.round >= 10),
                 enable_p12=(args.round >= 11),
                 enable_r12=(args.round >= 12),
+                enable_r13=(args.round >= 13),
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -1484,6 +1552,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r10_telemetry": milestones.get("r10_telemetry") if args.round >= 10 else None,
             "r11_telemetry": milestones.get("r11_telemetry") if args.round >= 11 else None,
             "r12_telemetry": milestones.get("r12_telemetry") if args.round >= 12 else None,
+            "r13_telemetry": milestones.get("r13_telemetry") if args.round >= 13 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1533,7 +1602,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)

@@ -240,6 +240,7 @@ from fx6_closure.patcher import (
     DEFAULT_FX3_MODULES_DIR,
     DEFAULT_FX6_DONOR_LIB_DIR,
     FAN_LIBFAN_SPEC,
+    FX6_WLAN_RSRC_P12_SHA256,
     P1_AND_P4_APPFW_COMBINED_SPEC,
     P1_P4_P8_APPFW_COMBINED_SPEC,
     P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC,
@@ -698,6 +699,11 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.uipc_cp_shim_ok)
         assert rep_ok.uipc_cp_shim_audit is not None
         self.assertTrue(rep_ok.uipc_cp_shim_audit.passed)
+        self.assertTrue(rep_ok.stage_b_p12_wireless_guard_enabled)
+        self.assertEqual(rep_ok.stage_b_wlan_rsrc_sha256, FX6_WLAN_RSRC_P12_SHA256)
+        self.assertTrue(rep_ok.wireless_fault_isolation_ok)
+        assert rep_ok.wireless_fault_isolation_audit is not None
+        self.assertTrue(rep_ok.wireless_fault_isolation_audit.passed)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -718,6 +724,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_ap_cp_imaging=rep_ok.ap_cp_imaging_audit,
             precomputed_stage_b_appfw=rep_ok.stage_b_p10_summary,
             precomputed_uipc_cp_shim=rep_ok.uipc_cp_shim_audit,
+            precomputed_wireless_fault_isolation=rep_ok.wireless_fault_isolation_audit,
         )
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
@@ -930,6 +937,20 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         ][0]
         self.assertEqual(g12_p21["status"], "BLOCKED_BY_UIPC_CP_SHIM_REDLINE")
 
+        rep_bad_p12 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_wireless_guard=True,
+        )
+        self.assertFalse(rep_bad_p12.candidate_ready)
+        self.assertFalse(rep_bad_p12.wireless_fault_isolation_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p12.blocked_gate_ids)
+        g12_p12 = [
+            g
+            for g in rep_bad_p12.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p12["status"], "BLOCKED_BY_SAFETY_REDLINE")
+
     def test_cli_verify_peripheral_ux_and_ap_cp_imaging_clean_room_subcommands(self) -> None:
         buf17 = io.StringIO()
         with redirect_stdout(buf17):
@@ -960,6 +981,17 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         p21 = json.loads(buf21.getvalue())
         self.assertTrue(p21["passed"])
         self.assertEqual(p21["cp_mutation_bytes"], 0)
+
+        buf22 = io.StringIO()
+        with redirect_stdout(buf22):
+            rc22 = cli_main(["verify-wireless-guard", "--clean-room"])
+        self.assertEqual(rc22, 0)
+        p22 = json.loads(buf22.getvalue())
+        self.assertTrue(p22["passed"])
+        self.assertEqual(p22["cp_mutation_bytes"], 0)
+        self.assertEqual(p22["wbi_mutation_bytes"], 0)
+        self.assertEqual(p22["nvram_persistent_writes"], 0)
+        self.assertEqual(p22["sony_notice_id"], "00342260")
 
     @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:

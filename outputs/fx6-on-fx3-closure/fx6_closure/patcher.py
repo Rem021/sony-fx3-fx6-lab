@@ -7,6 +7,7 @@ Covers the complete FX6-on-FX3 Compatibility Adaptation Matrix:
 - P8: Non-blocking async log wait adaptation (`appFw.so` `0x2159c50` -> `mov w0, #0; ret`)
 - P9: Sensor measurement null-callback guard (`upm.ko` `ET_REL` `.text+0x136b8` `blr x2` -> `mov w0, #0`)
 - P10 (Stage-B): FX3 physical body button keymap adapter (`appFw.so` `PF_R` `.rodata` `0x2245a10` table, 24 B across 6 sites: `Fn->HOME`, `C1->KURU_PON`, `C2->MENU_CANCEL`, `C3->DISP_SEL`, `PLAY->THUMBNAIL`, `DELETE->USER`)
+- P12 (Stage-B): Non-blocking wireless fatal error guard (`libWlanResource.so::_Z16handleFatalErrorv` `0x70d4` -> `mov w0, #0; ret`)
 - Fan: Thermal curve backup flag compatibility (`libfan.so` `0x1dec` `_Z19fan_i_bkup_is_validv` -> `mov w0, #1; ret`)
 """
 
@@ -512,6 +513,39 @@ STAGE_B_PATCH_SPECS: Tuple[LibraryPatchSpec, ...] = (
     P9_UPM_KO_SPEC,
 )
 
+# ============================================================================
+# Stage-B P12 Non-Blocking Wireless Fatal Error Guard (libWlanResource.so)
+# ============================================================================
+
+FX6_WLAN_RSRC_DONOR_SHA256 = "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88"
+FX6_WLAN_RSRC_P12_SHA256 = "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+P12_WLAN_FATAL_GUARD_VMA = 0x70D4
+
+P12_WLAN_FATAL_GUARD_SPEC = LibraryPatchSpec(
+    spec_id="P12_libWlanResource_fatal_guard",
+    library_name="libWlanResource.so",
+    expected_size=56464,
+    donor_sha256=FX6_WLAN_RSRC_DONOR_SHA256,
+    sites=(
+        PatchSiteSpec(
+            site_id="P12_wlan_resource_handleFatalError_nonblocking",
+            patch_group="P12",
+            symbol_or_desc="libWlanResource::_Z16handleFatalErrorv @ 0x70d4 (infinite usleep -> mov w0, #0; ret)",
+            vma=P12_WLAN_FATAL_GUARD_VMA,
+            expected_file_offset=P12_WLAN_FATAL_GUARD_VMA,
+            required_segment_flags=PF_R | PF_X,
+            original_bytes=_pack_insns(0xA9BE7BFD, 0x910003FD),  # stp x29, x30, [sp, #-0x20]!; mov x29, sp
+            patched_bytes=_pack_insns(0x52800000, 0xD65F03C0),   # mov w0, #0; ret
+            post_context=_pack_insns(0xF9000BF3, 0xD2884813),    # str x19, [sp, #0x10]; mov x19, #0x4240
+        ),
+    ),
+)
+
+STAGE_B_WITH_P12_PATCH_SPECS: Tuple[LibraryPatchSpec, ...] = (
+    *STAGE_B_PATCH_SPECS,
+    P12_WLAN_FATAL_GUARD_SPEC,
+)
+
 
 def resolve_donor_binary_path(
     spec: LibraryPatchSpec,
@@ -737,9 +771,17 @@ def read_donor_bytes_readonly(path: Path) -> bytes:
         return fh.read()
 
 
-def get_target_patch_specs(*, include_p10_keymap: bool = True) -> Tuple[LibraryPatchSpec, ...]:
-    """Return Stage-B (`P1..P9+Fan+P10`) or Stage-A (`P1..P9+Fan`) target patch specs."""
-    return STAGE_B_PATCH_SPECS if include_p10_keymap else STAGE_A_PATCH_SPECS
+def get_target_patch_specs(
+    *,
+    include_p10_keymap: bool = True,
+    include_p12_wireless_guard: bool = False,
+) -> Tuple[LibraryPatchSpec, ...]:
+    """Return Stage-B (`P1..P9+Fan+P10[+P12]`) or Stage-A (`P1..P9+Fan`) target patch specs."""
+    if include_p10_keymap:
+        return STAGE_B_WITH_P12_PATCH_SPECS if include_p12_wireless_guard else STAGE_B_PATCH_SPECS
+    if include_p12_wireless_guard:
+        return (*STAGE_A_PATCH_SPECS, P12_WLAN_FATAL_GUARD_SPEC)
+    return STAGE_A_PATCH_SPECS
 
 
 def verify_patch_sites_non_overlapping(
@@ -794,6 +836,25 @@ def build_stage_b_appfw_image(
     else:
         spec = P1_P4_P8_APPFW_COMBINED_SPEC
 
+    verify_patch_sites_non_overlapping(spec)
+    return apply_patch_spec(raw, spec, verify_donor_sha256=verify_donor_sha256)
+
+
+def build_stage_b_wlan_rsrc_image(
+    wlan_rsrc_bytes: Optional[bytes] = None,
+    *,
+    fx6_lib_dir: Optional[Path] = None,
+    verify_donor_sha256: bool = True,
+    guard_spec: Optional[LibraryPatchSpec] = None,
+) -> Tuple[bytes, PatchReceipt]:
+    """Build an in-memory Stage-B (`P12`) `libWlanResource.so` image with non-blocking fatal guard."""
+    if wlan_rsrc_bytes is None:
+        lib_dir = fx6_lib_dir if fx6_lib_dir is not None else resolve_fx6_donor_lib_dir()
+        raw = read_donor_bytes_readonly(lib_dir / "libWlanResource.so")
+    else:
+        raw = wlan_rsrc_bytes
+
+    spec = guard_spec if guard_spec is not None else P12_WLAN_FATAL_GUARD_SPEC
     verify_patch_sites_non_overlapping(spec)
     return apply_patch_spec(raw, spec, verify_donor_sha256=verify_donor_sha256)
 

@@ -437,6 +437,9 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "stage_b_appfw_sha256": rep.stage_b_appfw_sha256,
         "stage_b_combined_appfw_verified": rep.stage_b_combined_appfw_verified,
         "uipc_cp_shim_ok": rep.uipc_cp_shim_ok,
+        "stage_b_p12_wireless_guard_enabled": rep.stage_b_p12_wireless_guard_enabled,
+        "stage_b_wlan_rsrc_sha256": rep.stage_b_wlan_rsrc_sha256,
+        "wireless_fault_isolation_ok": rep.wireless_fault_isolation_ok,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -498,6 +501,20 @@ def _cmd_verify_uipc_cp_shim(clean_room: bool, output_path: Optional[Path]) -> i
     from .uipc_cp_shim_verifier import run_phase21_uipc_cp_shim_verification
 
     rep = run_phase21_uipc_cp_shim_verification(
+        synthetic_mode=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    return 0 if rep.passed else 1
+
+
+def _cmd_verify_wireless_guard(clean_room: bool, output_path: Optional[Path]) -> int:
+    from .wireless_fault_isolation_verifier import run_phase22_wireless_fault_isolation_verification
+
+    rep = run_phase22_wireless_fault_isolation_verification(
         synthetic_mode=True if clean_room else None,
     )
     rendered = rep.to_deterministic_json(indent=2)
@@ -581,7 +598,7 @@ def _cmd_run_h0_h1_h2_drill(
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 21 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Stage-B P10 Keymap & P11 UIPC Shim Closure CLI",
+        description="FX6-on-FX3 Phase 26 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Stage-B P10/P11/P12 Closure CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -602,7 +619,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-ap-cp-imaging", "Verify Phase 18 FX6 AP <-> FX3 Stock-CP UIPC queues/opcodes, 3D LUT/Cine EI/Dual ISO, XAVC/AF, and 5-axis IBIS center-lock"),
         ("verify-stage-b-p10", "Verify Phase 20 Stage-B combined P1+P4+P8+P10 appFw.so patch non-overlap, Unicorn 21-key dispatch, and SHA-256 rollback"),
         ("verify-uipc-cp-shim", "Verify Phase 21 P11 AP-side dual-blocking UIPC synthesizer (0x92d2091c RTC & 0x91db059b Smart Handle) and Cine EI/LUT/IBIS bridge"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + Stage-B P10 + P11 UIPC Shim + U1..U5 CPIO candidate and evaluate 12 safety gates"),
+        ("verify-wireless-guard", "Verify Phase 22/26 P12 libWlanResource.so 0x70d4 guard, BK4\\0 cold-boot Airplane-Mode RAM shadow, and WF-12 fault isolation"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + Stage-B P10 + P11 UIPC Shim + P12 Wireless Guard + U1..U5 CPIO candidate and evaluate 12 safety gates"),
         ("build-readiness-packet", "Build deterministic Stage-A non-persistent hardware readiness packet (stage_a_readiness_packet_v1) and optionally validate a physical FX3 Tier-0 capture bundle"),
         ("verify-post-trial", "Verify Phase H2 post-power-cycle zero-mutation parity (stage_a_post_trial_receipt_v1) between H0 and H2 Tier-0 bundles plus optional H1 orchestrator telemetry"),
         ("run-h0-h1-h2-drill", "Execute full offline Phase H0 -> Phase H1 (/bin/sh orchestrator) -> Phase H2 zero-mutation lifecycle drill + 10-case negative fault-injection suite"),
@@ -618,7 +636,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name == "build-readiness-packet":
@@ -667,6 +685,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_stage_b_p10(args.fx6_lib_dir, args.clean_room, args.output)
     if args.cmd == "verify-uipc-cp-shim":
         return _cmd_verify_uipc_cp_shim(args.clean_room, args.output)
+    if args.cmd == "verify-wireless-guard":
+        return _cmd_verify_wireless_guard(args.clean_room, args.output)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     if args.cmd == "build-readiness-packet":

@@ -1439,6 +1439,48 @@ def build_stage_a_hardware_readiness_packet(
                 if dry.uipc_cp_shim_audit is not None
                 else ["0x92d2091c", "0x91db059b"],
             },
+            "Phase_22_p12_wf12_wireless_fault_isolation": {
+                "closed": dry.wireless_fault_isolation_ok,
+                "stage_b_p12_wireless_guard_enabled": dry.stage_b_p12_wireless_guard_enabled,
+                "stage_b_wlan_rsrc_sha256": dry.stage_b_wlan_rsrc_sha256,
+                "p12_rollback_verified": (
+                    dry.wireless_fault_isolation_audit.p12_wlan_fatal_guard.rollback_sha256_matched
+                    if dry.wireless_fault_isolation_audit is not None
+                    else True
+                ),
+                "airplane_ram_shadow_bk4_valid": (
+                    dry.wireless_fault_isolation_audit.airplane_ram_shadow_bk4.valid_bk4_header
+                    and dry.wireless_fault_isolation_audit.airplane_ram_shadow_bk4.checksum_ok
+                    and dry.wireless_fault_isolation_audit.airplane_ram_shadow_bk4.airplane_mode_shadow_default
+                    if dry.wireless_fault_isolation_audit is not None
+                    else True
+                ),
+                "sony_notice_id": (
+                    dry.wireless_fault_isolation_audit.sony_notice_id
+                    if dry.wireless_fault_isolation_audit is not None
+                    else "00342260"
+                ),
+                "wbi_mutation_bytes": (
+                    dry.wireless_fault_isolation_audit.wbi_mutation_bytes
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+                "cp_mutation_bytes": (
+                    dry.wireless_fault_isolation_audit.cp_mutation_bytes
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+                "kmod_mutation_count": (
+                    dry.wireless_fault_isolation_audit.kmod_mutation_count
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+                "nvram_persistent_writes": (
+                    dry.wireless_fault_isolation_audit.nvram_persistent_writes
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+            },
         }
 
         offline_complete = (
@@ -1451,12 +1493,14 @@ def build_stage_a_hardware_readiness_packet(
             and dry.ap_cp_imaging_ok
             and dry.stage_b_combined_appfw_verified
             and dry.uipc_cp_shim_ok
+            and dry.wireless_fault_isolation_ok
         )
     else:
         from .ap_cp_imaging_pipeline_verifier import verify_ap_cp_imaging_pipeline
         from .candidate_builder import verify_combined_stage_b_appfw_contract
         from .peripheral_ux_compatibility_verifier import verify_peripheral_ux_compatibility
         from .uipc_cp_shim_verifier import run_phase21_uipc_cp_shim_verification
+        from .wireless_fault_isolation_verifier import run_phase22_wireless_fault_isolation_verification
 
         verification_mode = "CLEAN_ROOM_SYNTHETIC_VERIFIED"
         cr_bundle = build_stage_a_ram_overlay_package(synthetic_clean_room=True)
@@ -1474,6 +1518,7 @@ def build_stage_a_hardware_readiness_packet(
         cr_p18 = verify_ap_cp_imaging_pipeline(clean_room_overrides={})
         cr_p20 = verify_combined_stage_b_appfw_contract(force_synthetic=True)
         cr_p21 = run_phase21_uipc_cp_shim_verification(synthetic_mode=True)
+        cr_p22 = run_phase22_wireless_fault_isolation_verification(synthetic_mode=True)
 
         live_hw_gates = _normalize_gates_dict(
             evaluate_12_safety_gates(
@@ -1601,6 +1646,22 @@ def build_stage_a_hardware_readiness_packet(
                 "cp_mutation_bytes": cr_p21.cp_mutation_bytes,
                 "fx6_exclusive_blocking_queues": list(cr_p21.fx6_exclusive_blocking_queues),
             },
+            "Phase_22_p12_wf12_wireless_fault_isolation": {
+                "closed": cr_p22.passed,
+                "stage_b_p12_wireless_guard_enabled": True,
+                "stage_b_wlan_rsrc_sha256": cr_p22.p12_wlan_fatal_guard.after_sha256,
+                "p12_rollback_verified": cr_p22.p12_wlan_fatal_guard.rollback_sha256_matched,
+                "airplane_ram_shadow_bk4_valid": (
+                    cr_p22.airplane_ram_shadow_bk4.valid_bk4_header
+                    and cr_p22.airplane_ram_shadow_bk4.checksum_ok
+                    and cr_p22.airplane_ram_shadow_bk4.airplane_mode_shadow_default
+                ),
+                "sony_notice_id": cr_p22.sony_notice_id,
+                "wbi_mutation_bytes": cr_p22.wbi_mutation_bytes,
+                "cp_mutation_bytes": cr_p22.cp_mutation_bytes,
+                "kmod_mutation_count": cr_p22.kmod_mutation_count,
+                "nvram_persistent_writes": cr_p22.nvram_persistent_writes,
+            },
         }
 
         offline_complete = (
@@ -1614,6 +1675,7 @@ def build_stage_a_hardware_readiness_packet(
             and cr_p18.passed
             and cr_p20.all_checks_passed
             and cr_p21.passed
+            and cr_p22.passed
         )
         if not offline_complete:
             errors.append("One or more clean-room synthetic offline checks failed")

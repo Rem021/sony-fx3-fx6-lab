@@ -222,7 +222,8 @@ static int fx6_text_of(uint32_t rid, char *out, unsigned outsz) {
         while (s[n] && n + 1 < outsz) { out[n] = s[n]; n++; }
         out[n] = 0;
     }
-    if (g_syms.string_dtor) g_syms.string_dtor(buf);
+    /* Note: ResourceManager::getText binds an arena-less view into mmapped string_english_2.uxc;
+     * calling _ZN5libra6StringD1Ev dereferences null arena+0x8 (SIGSEGV in liblibra.so). */
     return n > 0;
 }
 

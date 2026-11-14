@@ -80,8 +80,39 @@ PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs
 # 3. 导出外部双 QEMU（ivshmem-server + ivshmem-doorbell + cortex-r5 ivshmem-flat）CLI 拓扑
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/dual_ap_cp_ivshmem_bridge.py --topology
 
-# 4. 运行 Phase 24 全量 22 项单测（本地供体模式 & 洁净室模式）
+# 4. 运行 Phase 24 + Phase 29 全量 47 项单测（本地供体模式 & 洁净室模式）
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 ```
+
+## Phase 29：无硬件依赖软件 GPE 光栅/精灵合成引擎与 `virtual-rom-v1` 蓝牙 HCI UART 仿真器
+
+[`soft_gpe_and_bt_rom_emulator.py`](soft_gpe_and_bt_rom_emulator.py) 在严格遵循只读（`os.O_RDONLY`）与零持久化写入（`WBI_MUTATION_BYTES=0`、`CP_MUTATION_BYTES=0`、`NVRAM_PERSISTENT_WRITES=0`）前提下，落地了两项核心虚拟化参考模型：
+
+1. **Part A — 软件 GPE（`GRM_gpermFillrect` / `GRM_gpermRectblit` / `HOSDAP02` / `ramfb`）光栅合成参考引擎**：
+   - 建模 `1024×540` `GPE0`（`0x41E001000`）与 `ramfb`（`[0x41E100000, 0x41E600000)`）扫描输出管线，完整实现 `Fillrect`、`Rectblit`（含缩放与裁剪）、9-patch 边角拉伸（直接解析 `image_00_169.uxc` 实机 `left/top/right/bottom` 嵌入边距）与 Porter-Duff `SRC_OVER` / `SRC_COPY` 混合。
+   - 覆盖 `RGBA4444`、`ARGB4444`、`RGBA8888` 与 `A8` 字形遮罩（`0x0E` 着色）四大像素格式，并严格对齐 [`libgrm-fbinit25-542.c`](../fx3-vm-trial/src/libgrm-fbinit25-542.c) 与 [`fx6_next_stage_assist_log.c`](../fx3-vm-trial/src/fx6_next_stage_assist_log.c) 的 `fx6_px`（`0xAARRGGBB` / 小端 `[B,G,R,A]`）R/B 通道打包约定（琥珀色采样 `0xFFF08018` 比特精确一致）。
+   - 使用纯 CPU Sony LDEC/LZ77（`0x0F` raw + `0xF0` 回溯匹配）只读解码 FX6 `image_00_169.uxc`（`1,610` 精灵含 `22` 项 9-patch），在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或缺失供体时自动切换确定性合成 `uxd\x07` 夹具。
+2. **Part B — `virtual-rom-v1` 蓝牙 HCI H4 UART（`/dev/ttyAMA3`）状态机仿真器**：
+   - 只读（`os.O_RDONLY`）核验 FX6 `libbt-vendor.so`（`47,968 B`）与 `libInfraBluetoothCore.so`（`267,576 B`）中的 `/dev/ttyAMA3` 与 `BSA` 初始化标记（洁净室模式下自动使用合成 ELF64 夹具）。
+   - 实现完整 H4 UART 分帧与命令应答器（`HCI_Reset 0x0C03`、`HCI_Read_Local_Version_Info 0x1001`、`HCI_Read_BD_ADDR 0x1009`、Broadcom/Cypress `0xFC2E`/`0xFC4C`/`0xFC4E` PatchRAM 与 `0xFC18` 波特率切换 `115200 -> 3000000`），并覆盖 4 种确定性运行模式：
+     - `HEALTHY_VIRTUAL_ROM_V1`：完整 `BSA` 建链成功（`0` 错误，确定性 `BD_ADDR = 58:36:57:00:29:01`）。
+     - `UART_DISCONNECTED_TIMEOUT`：死串口返回 `0` 事件，验证 `P12` `BT_DEGRADED_DISABLED`（`0x0BB9` / `3001`）非致命降级。
+     - `PATCHRAM_CORRUPT_NACK`：模拟固件下发中段 `WF-12` NACK（`0x0C` + `HCI_EVT_HARDWARE_ERROR 0x10`），验证索尼 `00342260` 飞行模式锁存防死循环隔离（`0` WDT 复位）。
+     - `AIRPLANE_SHADOW_GATED`：Stage-A/B RAM-Shadow `BK4\0`（`0x019e0012=00`、`0x01a20002=00`）激活时门控 `0` 条 HCI 发送、`0` 字节 UART 写入。
+
+### Phase 29 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式自检（< 0.5s）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/soft_gpe_and_bt_rom_emulator.py --json
+
+# 2. 洁净室合成模式自检（< 0.3s）
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/soft_gpe_and_bt_rom_emulator.py --json
+
+# 3. 运行 Phase 24 + Phase 29 全量 47 项单测（本地供体 & 洁净室双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
+```
+
 

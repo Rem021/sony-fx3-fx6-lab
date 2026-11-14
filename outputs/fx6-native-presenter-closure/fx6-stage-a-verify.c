@@ -242,6 +242,12 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_VERIFY_PASS count=%u stage_b=1 p10_keymap=1\n",
                 count);
     }
+    struct stat r10_st;
+    if (count >= 12U || stat("/etc/fx6_stage_r10", &r10_st) == 0) {
+        fprintf(stderr,
+                "FX6_STAGE_B_R10_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 uxc=1\n",
+                count);
+    }
     return 0;
 }
 
@@ -367,6 +373,62 @@ static int verify_ram_shadow_bk4(const char *path) {
     return 0;
 }
 
+typedef struct {
+    int tm_sec, tm_min, tm_hour, tm_mday, tm_mon, tm_year, tm_wday, tm_yday, tm_isdst;
+} fx6_rtc_time_t;
+
+#ifndef FX6_RTC_RD_TIME
+#define FX6_RTC_RD_TIME 0x80247009UL
+#endif
+
+static int verify_uxc_archive(const char *path) {
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) {
+        fprintf(stderr, "FX6_STAGE_B_R10_UXC path=%s status=MISSING errno=%d\n", path, errno);
+        return -1;
+    }
+    struct stat st;
+    if (fstat(fd, &st) != 0 || st.st_size < 16) {
+        close(fd);
+        fprintf(stderr, "FX6_STAGE_B_R10_UXC path=%s status=SHORT\n", path);
+        return -1;
+    }
+    uint8_t magic[4];
+    ssize_t n = read(fd, magic, sizeof(magic));
+    close(fd);
+    if (n != (ssize_t)sizeof(magic) ||
+        magic[0] != 'u' || magic[1] != 'x' || magic[2] != 'd' || magic[3] != 0x07U) {
+        fprintf(stderr, "FX6_STAGE_B_R10_UXC path=%s status=BAD_MAGIC\n", path);
+        return -1;
+    }
+    fprintf(stderr,
+            "FX6_STAGE_B_R10_UXC path=%s bytes=%llu magic=uxd_07 status=OK\n",
+            path, (unsigned long long)st.st_size);
+    return 0;
+}
+
+static void probe_r10_rtc0(void) {
+    fx6_rtc_time_t tm;
+    memset(&tm, 0, sizeof(tm));
+    int fd = open("/dev/rtc0", O_RDONLY);
+    if (fd < 0) {
+        fprintf(stderr, "FX6_STAGE_B_R10_RTC0 path=/dev/rtc0 open_ok=0 errno=%d\n", errno);
+        return;
+    }
+    int rc = ioctl(fd, FX6_RTC_RD_TIME, &tm);
+    int err = (rc != 0) ? errno : 0;
+    close(fd);
+    if (rc == 0) {
+        fprintf(stderr,
+                "FX6_STAGE_B_R10_RTC0 path=/dev/rtc0 open_ok=1 rc=0 year=%d mon=%d mday=%d hour=%d min=%d sec=%d\n",
+                1900 + tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+    } else {
+        fprintf(stderr,
+                "FX6_STAGE_B_R10_RTC0 path=/dev/rtc0 open_ok=1 rc=%d errno=%d\n",
+                rc, err);
+    }
+}
+
 int main(void) {
     struct utsname uts;
     memset(&uts, 0, sizeof(uts));
@@ -402,6 +464,15 @@ int main(void) {
     struct stat upm_st;
     int upm_loaded = (stat("/sys/module/upm", &upm_st) == 0 && S_ISDIR(upm_st.st_mode)) ? 1 : 0;
     fprintf(stderr, "FX6_STAGE_A_P9_UPM module_loaded=%d\n", upm_loaded);
+
+    struct stat r10_st;
+    if (stat("/etc/fx6_stage_r10", &r10_st) == 0) {
+        if (verify_uxc_archive("/usr/share/app/image_00_169.uxc") != 0) {
+            return 45;
+        }
+        probe_r10_rtc0();
+    }
+
     fflush(stderr);
     return 0;
 }

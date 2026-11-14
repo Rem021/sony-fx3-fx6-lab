@@ -98,6 +98,10 @@ FX3_SEED_BK4 = _resolve_migrated_path(
     "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-seeds/FX3-CX95900_ALLLANG-Backup.bin",
     "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-seeds/FX3-CX95900_ALLLANG-Backup.bin",
 )
+DONOR_IMAGE_00_169_UXC = _resolve_migrated_path(
+    "FX6_DONOR_IMAGE_00_169_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/image_00_169.uxc",
+)
 DEFAULT_ASSETS_DIR = REPO / "reports/2026-11-10-fx6-native-presenter-closure/assets"
 
 FB_W = 1024
@@ -108,6 +112,24 @@ GPE0_PHYS = 0x41E001000
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def read_bytes_readonly(path: pathlib.Path) -> bytes:
+    """Read a donor/input file strictly with os.O_RDONLY."""
+    fd = os.open(str(path), os.O_RDONLY)
+    try:
+        st = os.fstat(fd)
+        chunks: List[bytes] = []
+        remaining = st.st_size
+        while remaining > 0:
+            chunk = os.read(fd, min(remaining, 4 * 1024 * 1024))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            remaining -= len(chunk)
+        return b"".join(chunks)
+    finally:
+        os.close(fd)
 
 
 def parse_key_seq(spec: str) -> List[Tuple[int, int, int]]:
@@ -429,9 +451,10 @@ def build_stage_a_overlay(
     bk4_ntsc_bytes: Optional[bytes],
     *,
     enable_p10: bool = False,
+    enable_r10: bool = False,
     shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
-    """Build Stage-A/B P1..P9+Fan(+P10) + 8MiB VFAT + RAM-Shadow BK4 + Verify-Before-Mount overlay in /private/tmp."""
+    """Build Stage-A/B P1..P9+Fan(+P10/P11) + 8MiB VFAT + RAM-Shadow BK4 + image_00_169.uxc + Verify-Before-Mount overlay."""
     patcher, vfat_builder, bmtv = _import_stage_a_modules()
 
     p10_spec = _load_p10_keymap_spec(patcher) if enable_p10 else None
@@ -455,7 +478,10 @@ def build_stage_a_overlay(
         ("usr/lib/libfan.so", patcher.FAN_LIBFAN_SPEC),
         ("usr/lib/appFw.so", appfw_spec),
     )
-    cpio_extract_names = tuple(m for m, _ in member_specs) + ("init", "usr/kmod/upm.ko")
+    extra_extract: Tuple[str, ...] = ("init", "usr/kmod/upm.ko")
+    if enable_r10:
+        extra_extract = extra_extract + ("usr/share/app/image_00_169.uxc",)
+    cpio_extract_names = tuple(m for m, _ in member_specs) + extra_extract
     raw_members = _extract_cpio_members(parent_cpio, cpio_extract_names)
 
     replacements: Dict[str, bytes] = {}
@@ -484,10 +510,10 @@ def build_stage_a_overlay(
             "combined_appfw_after_sha256": patch_receipts[appfw_spec.spec_id]["after_sha256"],
         }
 
-    # P9 upm.ko: patch FX3 donor upm.ko in-memory when present, else verify CPIO's already-patched upm.ko
+    # P9 upm.ko: patch FX3 donor upm.ko in-memory via O_RDONLY when present, else verify CPIO's already-patched upm.ko
     if FX3_UPM_KO.exists():
         upm_patched, upm_receipt = patcher.apply_patch_spec(
-            FX3_UPM_KO.read_bytes(), patcher.P9_UPM_KO_SPEC, verify_donor_sha256=True
+            read_bytes_readonly(FX3_UPM_KO), patcher.P9_UPM_KO_SPEC, verify_donor_sha256=True
         )
         replacements["usr/kmod/upm.ko"] = upm_patched
         upm_sha = upm_receipt.after_sha256
@@ -536,6 +562,28 @@ def build_stage_a_overlay(
 
     if enable_p10 and shim_bytes is not None:
         manifest_rows.append((sha256_bytes(shim_bytes), "/usr/lib/libgrm-fbinit9.so"))
+
+    uxc_meta: Optional[Dict[str, Any]] = None
+    if enable_r10:
+        clean_room = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip() == "1"
+        if not clean_room and DONOR_IMAGE_00_169_UXC.is_file():
+            uxc_bytes = read_bytes_readonly(DONOR_IMAGE_00_169_UXC)
+            uxc_source = "donor_o_rdonly"
+        else:
+            uxc_bytes = raw_members["usr/share/app/image_00_169.uxc"]
+            uxc_source = "cpio_preloaded"
+        if len(uxc_bytes) < 16 or uxc_bytes[:4] != b"uxd\x07":
+            raise RuntimeError(f"Invalid image_00_169.uxc magic: {uxc_bytes[:4]!r}")
+        replacements["usr/share/app/image_00_169.uxc"] = uxc_bytes
+        uxc_sha = sha256_bytes(uxc_bytes)
+        manifest_rows.append((uxc_sha, "/usr/share/app/image_00_169.uxc"))
+        uxc_meta = {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "source": uxc_source,
+            "bytes": len(uxc_bytes),
+            "sha256": uxc_sha,
+            "magic": "uxd_07",
+        }
 
     # Compile fx6-stage-a-verify C guest tool in /private/tmp
     cache_dir = tmp_build / "zig-cache"
@@ -591,8 +639,11 @@ def build_stage_a_overlay(
     }
     if enable_p10:
         additions["etc/fx6_stage_b"] = (b"stage_b=1\np10_keymap=1\n", 0o100644)
-    stage_a_meta = {
+    if enable_r10:
+        additions["etc/fx6_stage_r10"] = (b"stage_r10=1\np11_uipc=1\nuxc=1\n", 0o100644)
+    stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
+        "r10_enabled": enable_r10,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
         "manifest_count": len(manifest_rows),
@@ -615,6 +666,8 @@ def build_stage_a_overlay(
             "synthesized_key_count": bk4_bundle.synthesized_key_count,
         },
     }
+    if uxc_meta is not None:
+        stage_a_meta["image_00_169_uxc"] = uxc_meta
     return replacements, additions, stage_a_meta
 
 
@@ -811,6 +864,19 @@ def analyze_gpe0_raw(raw_path: pathlib.Path) -> Dict[str, Any]:
     }
 
 
+def _parse_kv_ints(line: str) -> Dict[str, Any]:
+    out: Dict[str, Any] = {}
+    for tok in line.split():
+        if "=" not in tok:
+            continue
+        k, v = tok.split("=", 1)
+        if re.fullmatch(r"-?\d+", v):
+            out[k] = int(v)
+        else:
+            out[k] = v
+    return out
+
+
 def extract_milestones(serial_text: str) -> Dict[str, Any]:
     important_prefixes = (
         "Linux version ",
@@ -850,6 +916,8 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_BMP_",
         "FX6_FONT_",
         "FX6_GPE_",
+        "FX6_R10_",
+        "FX6_P11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
         "APPFW_SEGV",
@@ -864,11 +932,17 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     matched: List[str] = []
     counts: Dict[str, int] = collections.Counter()
     kernel_version = ""
+    last_r10_icon: Optional[Dict[str, Any]] = None
+    last_p11_uipc: Optional[Dict[str, Any]] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
             kv_idx = line.find("Linux version ")
             kernel_version = line[kv_idx:].strip()
+        if "FX6_R10_ICON_TELEMETRY " in line:
+            last_r10_icon = _parse_kv_ints(line.split("FX6_R10_ICON_TELEMETRY ", 1)[1])
+        elif "FX6_P11_UIPC_TELEMETRY " in line:
+            last_p11_uipc = _parse_kv_ints(line.split("FX6_P11_UIPC_TELEMETRY ", 1)[1])
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -893,12 +967,20 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "wchan": wchan.strip(),
         }
 
+    r10_telemetry: Optional[Dict[str, Any]] = None
+    if last_r10_icon is not None or last_p11_uipc is not None:
+        r10_telemetry = {
+            "icon_blitter": last_r10_icon or {},
+            "p11_uipc": last_p11_uipc or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
         "total_threads_seen": len(latest_by_tid),
         "sample_threads": list(latest_by_tid.values())[:25],
         "matched_lines": matched,
+        "r10_telemetry": r10_telemetry,
     }
 
 
@@ -916,7 +998,11 @@ def run_once(args: argparse.Namespace) -> int:
         serial_log.unlink()
 
     owner_pid = os.getpid()
-    tmp_prefix = "fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")
+    tmp_prefix = (
+        "fx6-r10"
+        if args.round >= 10
+        else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native"))
+    )
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -947,18 +1033,23 @@ def run_once(args: argparse.Namespace) -> int:
         additions: Dict[str, Union[bytes, Tuple[bytes, int]]] = {}
         bk4_bytes: Optional[bytes] = None
         if args.round >= 4 and DONOR_BK4_NTSC.exists():
-            bk4_bytes = DONOR_BK4_NTSC.read_bytes()
+            bk4_bytes = read_bytes_readonly(DONOR_BK4_NTSC)
             additions["etc/fx6_chaplin_ntsc.bk4"] = (bk4_bytes, 0o100644)
 
         stage_a_meta: Optional[Dict[str, Any]] = None
         if args.round >= 8:
-            stage_label = "Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan"
+            stage_label = (
+                "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
+                if args.round >= 10
+                else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
                 PARENT_CPIO,
                 bk4_bytes,
                 enable_p10=(args.round >= 9),
+                enable_r10=(args.round >= 10),
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
             replacements.update(sa_rep)
@@ -1129,6 +1220,7 @@ def run_once(args: argparse.Namespace) -> int:
             "build": build_meta,
             "stage_a": stage_a_meta,
             "stage_b": stage_a_meta if args.round >= 9 else None,
+            "r10_telemetry": milestones.get("r10_telemetry") if args.round >= 10 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1178,7 +1270,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], required=True)
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

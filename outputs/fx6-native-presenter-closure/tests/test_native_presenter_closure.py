@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-9)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-10)."""
 from __future__ import annotations
 
+import ast
 import hashlib
 import importlib.util
 import json
@@ -25,6 +26,8 @@ HYBRID_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-fx6-on-fx3-qemu-hybrid"
 HYBRID_ASSETS_DIR = HYBRID_REPORT_DIR / "assets"
 ROUND9_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round9-fx6-on-fx3-p10-presenter"
 ROUND9_ASSETS_DIR = ROUND9_REPORT_DIR / "assets"
+ROUND10_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round10-fx6-on-fx3-full-icon-presenter"
+ROUND10_ASSETS_DIR = ROUND10_REPORT_DIR / "assets"
 
 
 def _load_closure_module(module_name: str, filename: str):
@@ -412,7 +415,13 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
     def test_clean_room_directory_hygiene(self) -> None:
         forbidden_suffixes = {".cpio", ".so", ".ko", ".fb", ".raw", ".o", ".dylib", ".pyc"}
         max_bytes = 50 * 1024 * 1024
-        for root in (CLOSURE_DIR, REPORT_DIR, HYBRID_REPORT_DIR, ROUND9_REPORT_DIR):
+        for root in (
+            CLOSURE_DIR,
+            REPORT_DIR,
+            HYBRID_REPORT_DIR,
+            ROUND9_REPORT_DIR,
+            ROUND10_REPORT_DIR,
+        ):
             self.assertFalse(
                 (root / "runs").exists(),
                 f"Transient QEMU runs directory must not remain in tracked tree: {root / 'runs'}",
@@ -519,9 +528,9 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
         self.assertTrue(hasattr(vfat_mod, "build_opelog_vfat_image"))
         self.assertTrue(hasattr(bmtv_mod, "synthesize_ram_shadow_bk4"))
 
-        # Verify CLI accepts --round 8/9 and --run-dir, and patch_cpio fixes c_mode==0
+        # Verify CLI accepts --round 8/9/10 and --run-dir, and patch_cpio fixes c_mode==0
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]", runner_src)
         self.assertIn("--run-dir", runner_src)
         self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
 
@@ -815,7 +824,10 @@ class TestRound9StageBP10AndReport(unittest.TestCase):
 
         self.assertIn("FX6_STAGE_B_VERIFY_PASS", verify_src)
         self.assertIn("/etc/fx6_stage_b", verify_src)
-        self.assertIn('tmp_prefix = "fx6-r9" if args.round >= 9', runner_src)
+        self.assertRegex(
+            runner_src,
+            r'tmp_prefix\s*=\s*\(\s*"fx6-r10"\s+if\s+args\.round\s*>=\s*10\s+else\s+\("fx6-r9"\s+if\s+args\.round\s*>=\s*9',
+        )
         self.assertIn("etc/fx6_stage_b", runner_src)
 
     def test_round9_p10_spec_loading_without_unicorn(self) -> None:
@@ -1034,6 +1046,469 @@ class TestOptionalDonorBinariesReadOnly(unittest.TestCase):
             with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "1"}):
                 with self.assertRaisesRegex(unittest.SkipTest, "^FX3_FX6_FORCE_CLEAN_ROOM=1$"):
                     self._verify_donor_root(self, fake_donor, contracts)
+
+
+class TestRound10IconBlitterUipcAndReport(unittest.TestCase):
+    EXPECTED_RUN_KEYS = (
+        "r10a_r10_shooting_hud",
+        "r10b_fn_big6_home",
+        "r10c_c1_big6_subdialog",
+        "r10d_c2_menu_3layer",
+    )
+    EXPECTED_STEMS = (
+        "r10a-r10-shooting-hud",
+        "r10b-fn-big6-home",
+        "r10c-c1-big6-subdialog",
+        "r10d-c2-menu-3layer",
+    )
+
+    def test_round10_c_source_guards_gpe_pool_and_uipc_telemetry(self) -> None:
+        shim_src = (CLOSURE_DIR / "libgrm-fbinit9.c").read_text(encoding="utf-8")
+        verify_src = (CLOSURE_DIR / "fx6-stage-a-verify.c").read_text(encoding="utf-8")
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+
+        self.assertIn("#if FX6_ROUND >= 10", shim_src)
+        for token in (
+            "FX6_GPE_POOL_PHYS_BASE 0x410524000UL",
+            "FX6_GPE_POOL_BYTES     0x000940000UL",
+            "gpe_pool_alloc",
+            "gpe_pool_free",
+            "unmark_gpe_argb_surface",
+            "_ZN3grm3bmp10BitmapImpl7destroyEi",
+            "emit_r10_telemetry",
+            "fx6_p11_probe_rtc0",
+            "FX6_R10_ICON_TELEMETRY",
+            "FX6_P11_UIPC_TELEMETRY",
+            "FX6_P11_HANDLE_ACK",
+            "FX6_P11_RTC_SYNC",
+            "FX6_P11_RTC0_PROBE",
+            "FX6_STAGE_B_R10_BRIDGE",
+            "/usr/share/app/image_00_169.uxc",
+            "0x91db059bU",
+            "0x88000002U",
+            "xlr_h1_preserved=1",
+            "g_fmt1_rgba4444_blits",
+            "g_fmt2_rgba8888_blits",
+            "g_fmt3_argb4444_blits",
+            "g_fmt4_a8_blits",
+            "g_icon_blit_count",
+            "g_glyph_blit_count",
+            "icon_blit=%d subst_image=0",
+        ):
+            self.assertIn(token, shim_src)
+
+        for token in (
+            "FX6_STAGE_B_R10_VERIFY_PASS",
+            "FX6_STAGE_B_R10_UXC",
+            "FX6_STAGE_B_R10_RTC0",
+            "verify_uxc_archive",
+            "probe_r10_rtc0",
+            "/usr/share/app/image_00_169.uxc",
+            "/etc/fx6_stage_r10",
+            "FX6_RTC_RD_TIME",
+        ):
+            self.assertIn(token, verify_src)
+
+        for token in (
+            "DONOR_IMAGE_00_169_UXC",
+            "def read_bytes_readonly",
+            "enable_r10",
+            "etc/fx6_stage_r10",
+            '"r10_telemetry"',
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+        ):
+            self.assertIn(token, runner_src)
+
+    def test_round10_pixel_formats_and_readonly_audit(self) -> None:
+        shim_src = (CLOSURE_DIR / "libgrm-fbinit9.c").read_text(encoding="utf-8")
+        # Ensure src_is_gpe_argb is declared in GRM_gpermRectblit scope and all 4 pixel formats handled
+        rect_m = re.search(
+            r"int GRM_gpermRectblit\(.*?\n\}\n",
+            shim_src,
+            flags=re.DOTALL,
+        )
+        self.assertIsNotNone(rect_m)
+        rect_body = rect_m.group(0)
+        self.assertIn("int src_is_gpe_argb = 0;", rect_body)
+        for fmt_tok in ("fmt == 1", "fmt == 3", "bpp == 4", "bpp == 1", "src_is_gpe_argb"):
+            self.assertIn(fmt_tok, rect_body)
+
+        # Verify read_bytes_readonly strictly passes os.O_RDONLY and never writes donor files
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r10_ro", "build_and_run_round.py"
+        )
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+        tree = ast.parse(runner_src)
+        ro_fn = next(
+            (n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "read_bytes_readonly"),
+            None,
+        )
+        self.assertIsNotNone(ro_fn)
+        ro_dump = ast.dump(ro_fn)
+        self.assertIn("O_RDONLY", ro_dump)
+        self.assertNotIn("O_WRONLY", ro_dump)
+        self.assertNotIn("O_RDWR", ro_dump)
+        with tempfile.TemporaryDirectory() as tmp:
+            sample = pathlib.Path(tmp) / "sample.uxc"
+            sample.write_bytes(b"uxd\x07TEST_PAYLOAD")
+            self.assertEqual(runner.read_bytes_readonly(sample), b"uxd\x07TEST_PAYLOAD")
+
+    def test_round10_stage_a_overlay_uxc_and_clean_room_fallback(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r10_ovl", "build_and_run_round.py"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = pathlib.Path(tmp)
+            parent_cpio = tmp_dir / "parent.cpio"
+            uxc_cpio_bytes = b"uxd\x07" + b"C" * 60
+            uxc_donor_bytes = b"uxd\x07" + b"D" * 60
+            uxc_bad_bytes = b"BAD!" + b"\x00" * 60
+            init_body = (
+                b"#!/bin/sh\n"
+                b'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch\n'
+            )
+            members = (
+                ("init", init_body),
+                ("usr/lib/libInfraSetupFile.so", b"SETUP"),
+                ("usr/lib/libInfraMediaCommon.so", b"MCOMM"),
+                ("usr/lib/libInfraMediaConfig.so", b"MCFG"),
+                ("usr/lib/libInfraAppRemoteBoard.so", b"RBRD"),
+                ("usr/lib/libfan.so", b"FAN"),
+                ("usr/lib/appFw.so", b"APPFW"),
+                ("usr/kmod/upm.ko", b"UPMKO"),
+                ("usr/share/app/image_00_169.uxc", uxc_cpio_bytes),
+            )
+            archive = b"".join(
+                runner.make_cpio_member(name, body, ino=idx + 1, mode=0o100755)
+                for idx, (name, body) in enumerate(members)
+            ) + runner.make_cpio_member("TRAILER!!!", b"", ino=0, mode=0)
+            parent_cpio.write_bytes(archive)
+
+            class _FakeRes:
+                def __init__(self, site_id: str) -> None:
+                    self.site_id = site_id
+
+            class _FakeReceipt:
+                def __init__(self, before: bytes, after: bytes, sites: list) -> None:
+                    self.before_sha256 = hashlib.sha256(before).hexdigest()
+                    self.after_sha256 = hashlib.sha256(after).hexdigest()
+                    self.changed_byte_count = 4
+                    self.resolutions = [_FakeRes(s.site_id) for s in sites]
+
+            class _FakePatcher:
+                P1_P4_P8_APPFW_COMBINED_SPEC = mock.Mock(
+                    library_name="appFw.so",
+                    expected_size=5,
+                    donor_sha256="0" * 64,
+                    sites=(mock.Mock(site_id="p1"),),
+                    elf_kind="so",
+                    source_domain="fx6",
+                )
+                P1_LIB_INFRA_SETUP_FILE_SPEC = mock.Mock(spec_id="P1_s", library_name="s", sites=[mock.Mock(site_id="s1")])
+                P1_LIB_INFRA_MEDIA_COMMON_SPEC = mock.Mock(spec_id="P1_c", library_name="c", sites=[mock.Mock(site_id="c1")])
+                P1_LIB_INFRA_MEDIA_CONFIG_SPEC = mock.Mock(spec_id="P1_g", library_name="g", sites=[mock.Mock(site_id="g1")])
+                P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC = mock.Mock(spec_id="P3_r", library_name="r", sites=[mock.Mock(site_id="r1")])
+                FAN_LIBFAN_SPEC = mock.Mock(spec_id="Fan_f", library_name="f", sites=[mock.Mock(site_id="f1")])
+                P9_UPM_KO_SPEC = mock.Mock(spec_id="P9_u", library_name="upm.ko", sites=[mock.Mock(site_id="u1")])
+                LibraryPatchSpec = lambda **kw: type("FakeSpec", (), kw)()
+                PatchSiteSpec = object
+                PF_R = 4
+
+                @staticmethod
+                def apply_patch_spec(data: bytes, spec: object, verify_donor_sha256: bool = True):
+                    after = data + b"_P"
+                    return after, _FakeReceipt(data, after, getattr(spec, "sites", []))
+
+                @staticmethod
+                def resolve_and_verify_sites(data: bytes, spec: object, expect_patched_state: bool = True):
+                    return [_FakeRes("u1")]
+
+            class _FakeVfat:
+                @staticmethod
+                def build_opelog_vfat_image(mode: str):
+                    img = b"VFAT" * 16
+                    receipt = mock.Mock(
+                        mode=mode,
+                        fat_type="FAT16",
+                        total_bytes=len(img),
+                        sha256=hashlib.sha256(img).hexdigest(),
+                        precreated_dirs=("OPE", "OPE/00", "OPE/01"),
+                    )
+                    return img, receipt
+
+                @staticmethod
+                def verify_vfat_image(_img: bytes):
+                    return mock.Mock(valid=True, errors=[])
+
+            class _FakeBmtv:
+                @staticmethod
+                def build_canonical_fa0080_normal_boot_table(donor_seed_bk4_path=None):
+                    return b"T"
+
+                @staticmethod
+                def synthesize_ram_shadow_bk4(**_kw):
+                    bk = b"BK4" + b"\x00" * 13
+                    return mock.Mock(
+                        bk4_bytes=bk,
+                        total_bytes=len(bk),
+                        sha256=hashlib.sha256(bk).hexdigest(),
+                        flash_write_allowed=False,
+                        active_byte8_selector=0,
+                        synthesized_key_count=1,
+                    )
+
+            fake_p10 = type(
+                "FakeP10",
+                (),
+                {
+                    "spec_id": "P10_FX3_TO_FX6_KEYMAP_ADAPTER",
+                    "library_name": "appFw.so",
+                    "sites": (mock.Mock(site_id="p10_fn", size=4),),
+                },
+            )()
+
+            def _fake_subproc_run(cmd, **_kw):
+                out_path = pathlib.Path(cmd[-1])
+                out_path.write_bytes(b"ELF_VERIFY")
+                return mock.Mock(returncode=0, stderr="")
+
+            donor_uxc_path = tmp_dir / "donor_image_00_169.uxc"
+            donor_uxc_path.write_bytes(uxc_donor_bytes)
+            missing_upm = tmp_dir / "absent_upm.ko"
+            missing_seed = tmp_dir / "absent_seed.bin"
+            build_dir = tmp_dir / "build"
+
+            with mock.patch.object(
+                runner, "_import_stage_a_modules", return_value=(_FakePatcher, _FakeVfat, _FakeBmtv)
+            ), mock.patch.object(
+                runner, "_load_p10_keymap_spec", return_value=fake_p10
+            ), mock.patch.object(
+                runner, "DONOR_IMAGE_00_169_UXC", donor_uxc_path
+            ), mock.patch.object(
+                runner, "FX3_UPM_KO", missing_upm
+            ), mock.patch.object(
+                runner, "FX3_SEED_BK4", missing_seed
+            ), mock.patch.object(
+                runner.subprocess, "run", side_effect=_fake_subproc_run
+            ):
+                # 1. Clean-room mode falls back to CPIO-staged UXC
+                with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "1"}):
+                    rep, add, meta = runner.build_stage_a_overlay(
+                        build_dir,
+                        parent_cpio,
+                        b"BK4_NTSC",
+                        enable_p10=True,
+                        enable_r10=True,
+                        shim_bytes=b"SHIM10",
+                    )
+                self.assertEqual(meta["manifest_count"], 12)
+                self.assertTrue(meta["r10_enabled"])
+                self.assertEqual(meta["image_00_169_uxc"]["source"], "cpio_preloaded")
+                self.assertEqual(meta["image_00_169_uxc"]["magic"], "uxd_07")
+                self.assertEqual(rep["usr/share/app/image_00_169.uxc"], uxc_cpio_bytes)
+                self.assertIn("etc/fx6_stage_r10", add)
+                self.assertIn("/usr/bin/fx6-stage-a-verify", rep["init"].decode("utf-8"))
+
+                # 2. Local donor mode reads DONOR_IMAGE_00_169_UXC via O_RDONLY
+                with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "0"}):
+                    rep2, _add2, meta2 = runner.build_stage_a_overlay(
+                        build_dir,
+                        parent_cpio,
+                        b"BK4_NTSC",
+                        enable_p10=True,
+                        enable_r10=True,
+                        shim_bytes=b"SHIM10",
+                    )
+                self.assertEqual(meta2["image_00_169_uxc"]["source"], "donor_o_rdonly")
+                self.assertEqual(rep2["usr/share/app/image_00_169.uxc"], uxc_donor_bytes)
+
+                # 3. Bad magic fails loudly
+                donor_uxc_path.write_bytes(uxc_bad_bytes)
+                with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "0"}):
+                    with self.assertRaises(RuntimeError):
+                        runner.build_stage_a_overlay(
+                            build_dir,
+                            parent_cpio,
+                            b"BK4_NTSC",
+                            enable_p10=True,
+                            enable_r10=True,
+                            shim_bytes=b"SHIM10",
+                        )
+
+    def test_round10_extract_milestones_telemetry_parser(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r10_ms", "build_and_run_round.py"
+        )
+        serial = "\n".join(
+            [
+                "Linux version 4.9.337-scel+ #1 SMP PREEMPT",
+                "FX6_STAGE_B_R10_VERIFY_PASS count=12 stage_b=1 p10_keymap=1 p11_uipc=1 uxc=1",
+                "FX6_STAGE_B_R10_UXC path=/usr/share/app/image_00_169.uxc bytes=3941000 magic=uxd_07 status=OK",
+                "FX6_GPE_POOL_READY phys=0x410524000 bytes=0x940000 va=0x7df537d000",
+                "FX6_P11_HANDLE_ACK count=1 dest=0x91db059b cb_qid=0x8000610e req_cmd=0x81000001 evt_cmd=0x88000002 free_rc=0 snd_rc=0 xlr_h1_preserved=1",
+                "FX6_R10_ICON_TELEMETRY reason=pump icon_blits=14879 glyph_blits=214 total_blits=15093 fmt1_rgba4444=14879 fmt2_rgba8888=0 fmt3_argb4444=0 fmt4_a8=214 gpe_pool_alloc=26 gpe_pool_free=2 gpe_pool_fallback=0 gpe_pool_cur=310000 gpe_pool_peak=347904 subst_color=0 subst_image=0",
+                "FX6_P11_UIPC_TELEMETRY reason=pump rtc_0x92d2091c=1 rtc0_ok=0 rtc0_year=0 handle_0x91db059b=1 bb_0x92840747=130 lut_0165=1 lut_0166=2 dev_0169_0416=4 p5_032d=1 cine_ei_mode=1 cine_ei_ready=1 lut_dma_ready=1 xlr_h1_preserved=1",
+            ]
+        )
+        ms = runner.extract_milestones(serial)
+        self.assertIn("4.9.337-scel+", ms["kernel_version"])
+        self.assertEqual(ms["prefix_counts"]["FX6_R10_"], 1)
+        self.assertEqual(ms["prefix_counts"]["FX6_P11_"], 2)
+        r10 = ms["r10_telemetry"]
+        self.assertIsNotNone(r10)
+        self.assertEqual(r10["icon_blitter"]["icon_blits"], 14879)
+        self.assertEqual(r10["icon_blitter"]["glyph_blits"], 214)
+        self.assertEqual(r10["icon_blitter"]["gpe_pool_alloc"], 26)
+        self.assertEqual(r10["icon_blitter"]["gpe_pool_fallback"], 0)
+        self.assertEqual(r10["icon_blitter"]["subst_image"], 0)
+        self.assertEqual(r10["p11_uipc"]["handle_0x91db059b"], 1)
+        self.assertEqual(r10["p11_uipc"]["bb_0x92840747"], 130)
+        self.assertEqual(r10["p11_uipc"]["xlr_h1_preserved"], 1)
+
+    def test_round10_donor_uxc_readonly_when_present(self) -> None:
+        if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM") == "1":
+            self.skipTest("FX3_FX6_FORCE_CLEAN_ROOM=1")
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r10_uxc", "build_and_run_round.py"
+        )
+        uxc_path = runner.DONOR_IMAGE_00_169_UXC
+        if not uxc_path.is_file():
+            self.skipTest(f"Optional donor UXC absent: {uxc_path}")
+        data = runner.read_bytes_readonly(uxc_path)
+        self.assertEqual(data[:4], b"uxd\x07")
+        self.assertEqual(len(data), 3941000)
+        self.assertEqual(
+            hashlib.sha256(data).hexdigest(),
+            "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+        )
+
+    def test_round10_summary_json_and_telemetry_invariants(self) -> None:
+        self.assertTrue((ROUND10_REPORT_DIR / "README.md").is_file())
+        closure_readme = (CLOSURE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertIn("2026-11-14-round10-fx6-on-fx3-full-icon-presenter", closure_readme)
+        r10_readme = (ROUND10_REPORT_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("/Volumes/KAFU2T", r10_readme)
+        self.assertNotIn("/Volumes/KAFU2T", closure_readme)
+
+        summary_path = ROUND10_REPORT_DIR / "summary.json"
+        self.assertTrue(summary_path.is_file())
+        raw_text = summary_path.read_text(encoding="utf-8")
+        self.assertNotIn("/Volumes/KAFU2T", raw_text)
+        self.assertNotIn("/private/tmp", raw_text)
+        data = json.loads(raw_text)
+        self.assertEqual(data["schema"], "fx6-on-fx3-round10-full-icon-presenter-v1")
+        self.assertIn("Linux version 4.9.337-scel+", data["kernel_version"])
+        self.assertEqual(data["uxc_asset"], "/usr/share/app/image_00_169.uxc")
+        self.assertEqual(data["gpe_phys_pool"], "0x410524000..0x410e64000")
+
+        runs = data["runs"]
+        self.assertEqual(set(runs.keys()), set(self.EXPECTED_RUN_KEYS))
+
+        expectations = {
+            "r10a_r10_shooting_hud": ("0x02", 14274, 30, 0, 8823, ()),
+            "r10b_fn_big6_home": ("0x0a", 346050, 87, 0, 14894, ("name=FX3_Fn",)),
+            "r10c_c1_big6_subdialog": ("0x0c", 46267, 60, 2035, 8343, ("name=FX3_Fn", "name=FX3_C1")),
+            "r10d_c2_menu_3layer": (
+                "0x10",
+                434579,
+                357,
+                0,
+                37473,
+                ("name=FX3_Fn", "name=FX3_C2", "name=FX3_MENU"),
+            ),
+        }
+        for key, (sid, exp_px, exp_col, exp_amber, exp_diff, phy_tokens) in expectations.items():
+            run = runs[key]
+            self.assertEqual(run["round"], 10)
+            self.assertEqual(run["target_sid"], sid)
+            self.assertEqual(run["nop_count"], 0)
+            self.assertEqual(run["crashes"], 0)
+            self.assertGreater(run["ldec103_ioctl_count"], 40)
+            self.assertGreaterEqual(run["total_threads_seen"], 160)
+            self.assertEqual(
+                run["faithful_invariants"],
+                {
+                    "FX6_NATIVE_FAITHFUL": 1,
+                    "subst_color": 0,
+                    "subst_image": 0,
+                    "forced_render": 0,
+                    "skipped_node": 0,
+                    "lock_bypass": 0,
+                },
+            )
+            sb = run["stage_b"]
+            self.assertEqual(sb["stage"], "B")
+            self.assertTrue(sb["r10_enabled"])
+            self.assertEqual(sb["manifest_count"], 12)
+            self.assertEqual(len(sb["manifest_items"]), 12)
+            self.assertIn(
+                "/usr/share/app/image_00_169.uxc",
+                [item["guest_path"] for item in sb["manifest_items"]],
+            )
+            self.assertEqual(sb["image_00_169_uxc"]["magic"], "uxd_07")
+            self.assertEqual(sb["image_00_169_uxc"]["bytes"], 3941000)
+
+            markers = "\n".join(sb["guest_boot_markers"])
+            self.assertIn("FX6_STAGE_A_VERIFY_PASS count=12", markers)
+            self.assertIn("FX6_STAGE_B_VERIFY_PASS count=12 stage_b=1 p10_keymap=1", markers)
+            self.assertIn("FX6_STAGE_B_R10_VERIFY_PASS count=12 stage_b=1 p10_keymap=1 p11_uipc=1 uxc=1", markers)
+            self.assertIn("FX6_STAGE_B_R10_UXC path=/usr/share/app/image_00_169.uxc bytes=3941000 magic=uxd_07 status=OK", markers)
+            self.assertIn("FX6_GPE_POOL_READY phys=0x410524000 bytes=0x940000", markers)
+            self.assertIn("FX6_STAGE_B_R10_BRIDGE round=10 faithful=1 nop_count=0", markers)
+
+            phy_log = "\n".join(sb["fx3_phy_key_events"])
+            for tok in phy_tokens:
+                self.assertIn(tok, phy_log)
+
+            telem = run["r10_telemetry"]
+            ib = telem["icon_blitter"]
+            self.assertGreater(ib["icon_blits"], 10000)
+            self.assertGreater(ib["gpe_pool_alloc"], 20)
+            self.assertEqual(ib["gpe_pool_fallback"], 0)
+            self.assertEqual(ib["subst_color"], 0)
+            self.assertEqual(ib["subst_image"], 0)
+
+            p11 = telem["p11_uipc"]
+            self.assertGreaterEqual(p11["handle_0x91db059b"], 1)
+            self.assertGreater(p11["bb_0x92840747"], 100)
+            self.assertEqual(p11["cine_ei_ready"], 1)
+            self.assertEqual(p11["lut_dma_ready"], 1)
+            self.assertEqual(p11["xlr_h1_preserved"], 1)
+
+            gpe = run["gpe0_readback"]
+            self.assertTrue(gpe["present"])
+            self.assertEqual(gpe["nonzero_pixels"], exp_px)
+            self.assertEqual(gpe["unique_colors"], exp_col)
+            self.assertEqual(run["amber_0xffffaa00_pixels"], exp_amber)
+            self.assertEqual(run["pixel_diff_vs_round9"]["diff_pixels"], exp_diff)
+
+    def test_round10_png_receipts_valid_size_and_pixel_verified(self) -> None:
+        self.assertTrue(ROUND10_ASSETS_DIR.is_dir())
+        alpha_digests: Dict[str, str] = {}
+        comp_digests: Dict[str, str] = {}
+        for stem in self.EXPECTED_STEMS:
+            for variant, bucket in (("alpha", alpha_digests), ("composited", comp_digests)):
+                png_path = ROUND10_ASSETS_DIR / f"{stem}-{variant}.png"
+                self.assertTrue(png_path.is_file(), f"Missing Round 10 PNG: {png_path}")
+                raw = png_path.read_bytes()
+                self.assertLess(len(raw), 300 * 1024, f"PNG exceeds 300 KiB: {png_path}")
+                w, h, _ = _parse_and_validate_png(raw)
+                self.assertEqual((w, h), (1024, 540))
+                bucket[stem] = hashlib.sha256(raw).hexdigest()
+
+        self.assertEqual(len(set(alpha_digests.values())), len(self.EXPECTED_STEMS))
+        self.assertEqual(len(set(comp_digests.values())), len(self.EXPECTED_STEMS))
+
+        # Verify Cinema Line amber 0xffffaa00 highlight preserved in r10c Big6 Sub-Dialog
+        _, _, r10c_rows = _decode_png_rgba_rows(
+            (ROUND10_ASSETS_DIR / "r10c-c1-big6-subdialog-alpha.png").read_bytes()
+        )
+        amber_px = 0
+        for row in r10c_rows:
+            for x in range(0, 1024 * 4, 4):
+                if row[x : x + 4] == b"\xff\xaa\x00\xff":
+                    amber_px += 1
+        self.assertEqual(amber_px, 2035)
 
 
 if __name__ == "__main__":

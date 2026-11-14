@@ -552,4 +552,19 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx6-native-presenter-closure/build_
 - **Stage-B `11/11` + Live P10 Proof**: Read-only `ast.parse` loader `_load_p10_keymap_spec()` pulls `P10_APPFW_KEYMAP_SPEC` directly from [`peripheral_ux_compatibility_verifier.py`](../fx6-on-fx3-closure/fx6_closure/peripheral_ux_compatibility_verifier.py) without importing `unicorn`; guest [`fx6-stage-a-verify.c`](fx6-stage-a-verify.c) verifies all `11/11` SHA-256 items (`FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1`) and [`libgrm-fbinit9.c`](libgrm-fbinit9.c) verifies all 6 live `appFw.so` `.rodata` P10 pairs (`FX6_STAGE_B_P10_LIVE_CHECK ok=1`).
 - **4 End-to-End QEMU Validations**: `r9a` Shooting HUD (`5,451` px / `29` colors), `r9b` FX3 `Fn` -> Big6 Home (`337,227` px / `74` colors), `r9c` FX3 `Fn` + `C1` + `ENTER` -> Big6 Setting Sub-Dialog (`37,924` px / `2,035` Cinema Line amber `0xffffaa00` pixels), and `r9d` FX3 `Fn` + `C2` + `MENU` (`1300ms`) + `DOWN` + `RIGHT` -> Full Menu 2nd Layer (`434,010` px / `87` colors). See [`reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/README.md`](../../reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/summary.json).
 
+---
 
+## 10. Round 10: FX3 7.02 Kernel + Stage-B (`P1..P10+Fan`) + `P11` UIPC-CP Shim + `image_00_169.uxc` LDEC-Legal GPE Pool
+
+`build_and_run_round.py --round 10` integrates Phase 19's authentic `/dev/mem` GPE physical pool (`0x410524000..0x410e64000`, `0x940000` bytes) in [`libgrm-fbinit9.c`](libgrm-fbinit9.c) (`gpe_pool_alloc`, `gpe_pool_free`, `BitmapImpl::create`/`destroy`, `unmark_gpe_argb_surface`), stages FX6 donor `/usr/share/app/image_00_169.uxc` (`uxd\x07`) via strict `O_RDONLY` (`read_bytes_readonly()` with `FX3_FX6_FORCE_CLEAN_ROOM=1` CPIO fallback) into `12/12` Verify-Before-Mount ([`fx6-stage-a-verify.c`](fx6-stage-a-verify.c)), and emits live `FX6_R10_ICON_TELEMETRY` + `P11` `FX6_P11_UIPC_TELEMETRY` (`0x92d2091c` `/dev/rtc0` probe + `0x91db059b` Smart Handle ACK preserving `XLR-H1` + `0x92840747` Cine EI / LUT DMA) telemetry with `nop_count = 0` and `subst_color = subst_image = 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 10 --initial-setting-done 1 --run-id r10a-r10-shooting-hud --duration 58 \
+  --run-dir /private/tmp/fx6-r10-runs/r10a \
+  --export-png-stem r10a-r10-shooting-hud \
+  --export-png-dir reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/assets
+```
+
+- **LDEC-Legal Hardware UXC Decompression (`gpe_pool_fallback = 0`)**: Backing `BitmapImpl::create` with physical `0x410524000..0x410e64000` unlocked `FX3_LDEC103_IOCTL` (`47`/`53`/`54`/`80` hardware decodes across `r10a..r10d`), elevating `r10a` Shooting HUD to **`14,274` px / `30` colors (`+8,823` new icon pixels vs `r9a`, `14,879` icon blits)**, `r10b` Big6 Home to **`346,050` px / `87` colors (`20,790` icon blits, `+14,894` diff vs `r9b`)**, `r10c` Big6 Sub-Dialog to **`46,267` px / `60` colors (`2,035` `0xffffaa00` amber, `15,814` icon blits)**, and `r10d` Menu 2nd Layer to **`434,579` px / `357` colors (`+270` category icon colors vs `r9d`, `37,473` diff, `11,507` icon blits)**.
+- **Full Report, Receipts, & 27 Dual-Mode Unit Tests**: See [`reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/README.md`](../../reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/summary.json).

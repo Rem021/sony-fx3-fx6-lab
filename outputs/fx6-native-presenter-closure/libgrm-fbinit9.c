@@ -17,6 +17,10 @@
  *                           and Presenter::close round-trip back to Shooting (sid=0x02) with nop_count=0
  *   -DFX6_ROUND=7  Round 7: + Base Look sub-dialog (sid=0x0b), 3rd-layer Full Menu (sid=0x11),
  *                           and live parameter mutation + NVRAM Backup_write persistence round-trip
+ *   -DFX6_ROUND=9  Round 9: + Stage-B (P1..P10+Fan) & FX3 physical key router (0x007a804c->0x005503e0)
+ *   -DFX6_ROUND=10 Round 10:+ LDEC-legal /dev/mem GPE physical pool (0x410524000..0x410e64000),
+ *                           image_00_169.uxc RGBA4444/RGBA8888/ARGB4444/A8 telemetry,
+ *                           & P11 UIPC telemetry (0x92d2091c RTC + 0x91db059b Handle + 0x92840747 LUT/EI)
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -75,6 +79,7 @@ extern int dprintf(int, const char *, ...);
 extern void _exit(int) __attribute__((noreturn));
 extern int open(const char *, int);
 extern int close(int);
+extern int ioctl(int, unsigned long, ...);
 extern void *mmap(void *, unsigned long, int, int, int, long);
 extern int mprotect(void *, unsigned long, int);
 extern void *memcpy(void *, const void *, unsigned long);
@@ -116,6 +121,235 @@ static unsigned int rectblit_count;
 static unsigned int draw_fb_count;
 static uptr g_appfw_base;
 static void *g_app_self;
+
+#if FX6_ROUND >= 10
+static unsigned int g_icon_blit_count;
+static unsigned int g_glyph_blit_count;
+static unsigned int g_fmt1_rgba4444_blits;
+static unsigned int g_fmt2_rgba8888_blits;
+static unsigned int g_fmt3_argb4444_blits;
+static unsigned int g_fmt4_a8_blits;
+static unsigned int g_p11_rtc_sync_cnt;
+static unsigned int g_p11_handle_ack_cnt;
+static unsigned int g_p11_bb_total_cnt;
+static unsigned int g_p11_lut_dma_0165_cnt;
+static unsigned int g_p11_lut_toggle_0166_cnt;
+static unsigned int g_p11_develop_cnt;
+static unsigned int g_p11_audio_hdmi_032d_cnt;
+static unsigned int g_p11_rtc0_fd_ok;
+static int g_p11_rtc0_year;
+
+static unsigned int g_gpe_pool_alloc_cnt;
+static unsigned int g_gpe_pool_free_cnt;
+static unsigned int g_gpe_pool_fallback_cnt;
+static unsigned long g_gpe_pool_cur_bytes;
+static unsigned long g_gpe_pool_peak_bytes;
+
+static void unmark_gpe_argb_surface(const unsigned char *bits);
+
+#define FX6_GPE_POOL_PHYS_BASE 0x410524000UL
+#define FX6_GPE_POOL_BYTES     0x000940000UL
+#define FX6_GPE_MAX_BLKS       2048
+
+typedef struct {
+    unsigned int off;
+    unsigned int len;
+    unsigned char span;
+    unsigned char used;
+} fx6_gpe_blk_t;
+
+static unsigned char *g_gpe_pool_va;
+static int g_gpe_pool_tried;
+static volatile int g_gpe_pool_lock;
+static fx6_gpe_blk_t g_gpe_blks[FX6_GPE_MAX_BLKS];
+static int g_gpe_blk_n;
+
+static void gpe_lock(void) {
+    while (__sync_lock_test_and_set(&g_gpe_pool_lock, 1)) {}
+}
+
+static void gpe_unlock(void) {
+    __sync_lock_release(&g_gpe_pool_lock);
+}
+
+static void ensure_gpe_pool_locked(void) {
+    if (g_gpe_pool_tried) return;
+    g_gpe_pool_tried = 1;
+    int fd = open("/dev/mem", 2);
+    if (fd < 0) fd = open("/dev/mem", 2 | 0x101000);
+    if (fd < 0) {
+        dprintf(2, "FX6_GPE_POOL open /dev/mem failed\n");
+        return;
+    }
+    void *m = mmap(0, FX6_GPE_POOL_BYTES, 3, 1, fd, (long)FX6_GPE_POOL_PHYS_BASE);
+    close(fd);
+    if (!m || m == (void *)-1L) {
+        dprintf(2, "FX6_GPE_POOL mmap failed\n");
+        return;
+    }
+    g_gpe_pool_va = (unsigned char *)m;
+    g_gpe_blks[0].off = 0x000000U; g_gpe_blks[0].len = 0x400000U; g_gpe_blks[0].span = 0; g_gpe_blks[0].used = 0;
+    g_gpe_blks[1].off = 0x400000U; g_gpe_blks[1].len = 0x340000U; g_gpe_blks[1].span = 1; g_gpe_blks[1].used = 0;
+    g_gpe_blks[2].off = 0x740000U; g_gpe_blks[2].len = 0x200000U; g_gpe_blks[2].span = 2; g_gpe_blks[2].used = 0;
+    g_gpe_blk_n = 3;
+    dprintf(2, "FX6_GPE_POOL_READY phys=0x%lx bytes=0x%lx va=%p\n",
+            FX6_GPE_POOL_PHYS_BASE, FX6_GPE_POOL_BYTES, (void *)g_gpe_pool_va);
+}
+
+static void gpe_zero_uc(void *va, unsigned long nbytes) {
+    volatile unsigned int *p = (volatile unsigned int *)va;
+    unsigned long nw = nbytes >> 2;
+    for (unsigned long i = 0; i < nw; i++) p[i] = 0U;
+}
+
+static unsigned char *gpe_pool_alloc(unsigned long want_sz, unsigned long *out_pa) {
+    unsigned long sz = (want_sz + 255UL) & ~255UL;
+    if (sz < 256UL) sz = 256UL;
+    gpe_lock();
+    ensure_gpe_pool_locked();
+    unsigned char *ret_va = 0;
+    unsigned long ret_pa = 0;
+    if (g_gpe_pool_va && sz <= 0x400000UL) {
+        for (int i = 0; i < g_gpe_blk_n; i++) {
+            if (!g_gpe_blks[i].used && (unsigned long)g_gpe_blks[i].len >= sz) {
+                unsigned int rem = (unsigned int)((unsigned long)g_gpe_blks[i].len - sz);
+                if (rem >= 256U && g_gpe_blk_n < FX6_GPE_MAX_BLKS) {
+                    for (int j = g_gpe_blk_n; j > i + 1; j--) g_gpe_blks[j] = g_gpe_blks[j - 1];
+                    g_gpe_blks[i + 1].off = g_gpe_blks[i].off + (unsigned int)sz;
+                    g_gpe_blks[i + 1].len = rem;
+                    g_gpe_blks[i + 1].span = g_gpe_blks[i].span;
+                    g_gpe_blks[i + 1].used = 0;
+                    g_gpe_blks[i].len = (unsigned int)sz;
+                    g_gpe_blk_n++;
+                }
+                g_gpe_blks[i].used = 1;
+                ret_va = g_gpe_pool_va + g_gpe_blks[i].off;
+                ret_pa = FX6_GPE_POOL_PHYS_BASE + (unsigned long)g_gpe_blks[i].off;
+                g_gpe_pool_alloc_cnt++;
+                g_gpe_pool_cur_bytes += sz;
+                if (g_gpe_pool_cur_bytes > g_gpe_pool_peak_bytes) {
+                    g_gpe_pool_peak_bytes = g_gpe_pool_cur_bytes;
+                }
+                break;
+            }
+        }
+    }
+    gpe_unlock();
+    if (ret_va) {
+        gpe_zero_uc(ret_va, sz);
+        unmark_gpe_argb_surface(ret_va);
+        if (out_pa) *out_pa = ret_pa;
+        return ret_va;
+    }
+    gpe_lock();
+    g_gpe_pool_fallback_cnt++;
+    gpe_unlock();
+    ret_va = (unsigned char *)calloc(1, sz);
+    unmark_gpe_argb_surface(ret_va);
+    if (out_pa) *out_pa = (unsigned long)ret_va;
+    return ret_va;
+}
+
+static void gpe_pool_free(void *va) {
+    if (!va) return;
+    unmark_gpe_argb_surface((const unsigned char *)va);
+    gpe_lock();
+    if (g_gpe_pool_va && (unsigned char *)va >= g_gpe_pool_va &&
+        (unsigned char *)va < g_gpe_pool_va + FX6_GPE_POOL_BYTES) {
+        unsigned int off = (unsigned int)((unsigned char *)va - g_gpe_pool_va);
+        for (int i = 0; i < g_gpe_blk_n; i++) {
+            if (g_gpe_blks[i].off == off && g_gpe_blks[i].used) {
+                g_gpe_blks[i].used = 0;
+                g_gpe_pool_free_cnt++;
+                if (g_gpe_pool_cur_bytes >= (unsigned long)g_gpe_blks[i].len) {
+                    g_gpe_pool_cur_bytes -= (unsigned long)g_gpe_blks[i].len;
+                } else {
+                    g_gpe_pool_cur_bytes = 0UL;
+                }
+                if (i + 1 < g_gpe_blk_n && !g_gpe_blks[i + 1].used &&
+                    g_gpe_blks[i + 1].span == g_gpe_blks[i].span) {
+                    g_gpe_blks[i].len += g_gpe_blks[i + 1].len;
+                    for (int j = i + 1; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
+                    g_gpe_blk_n--;
+                }
+                if (i > 0 && !g_gpe_blks[i - 1].used &&
+                    g_gpe_blks[i - 1].span == g_gpe_blks[i].span) {
+                    g_gpe_blks[i - 1].len += g_gpe_blks[i].len;
+                    for (int j = i; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
+                    g_gpe_blk_n--;
+                }
+                break;
+            }
+        }
+    }
+    gpe_unlock();
+}
+
+static void emit_r10_telemetry(const char *reason) {
+    dprintf(2,
+            "FX6_R10_ICON_TELEMETRY reason=%s icon_blits=%u glyph_blits=%u total_blits=%u "
+            "fmt1_rgba4444=%u fmt2_rgba8888=%u fmt3_argb4444=%u fmt4_a8=%u "
+            "gpe_pool_alloc=%u gpe_pool_free=%u gpe_pool_fallback=%u "
+            "gpe_pool_cur=%lu gpe_pool_peak=%lu subst_color=0 subst_image=0\n",
+            reason ? reason : "periodic",
+            g_icon_blit_count, g_glyph_blit_count, rectblit_count,
+            g_fmt1_rgba4444_blits, g_fmt2_rgba8888_blits,
+            g_fmt3_argb4444_blits, g_fmt4_a8_blits,
+            g_gpe_pool_alloc_cnt, g_gpe_pool_free_cnt, g_gpe_pool_fallback_cnt,
+            g_gpe_pool_cur_bytes, g_gpe_pool_peak_bytes);
+    dprintf(2,
+            "FX6_P11_UIPC_TELEMETRY reason=%s rtc_0x92d2091c=%u rtc0_ok=%u rtc0_year=%d "
+            "handle_0x91db059b=%u bb_0x92840747=%u lut_0165=%u lut_0166=%u "
+            "dev_0169_0416=%u p5_032d=%u cine_ei_mode=%u cine_ei_ready=1 "
+            "lut_dma_ready=1 xlr_h1_preserved=1\n",
+            reason ? reason : "periodic",
+            g_p11_rtc_sync_cnt, g_p11_rtc0_fd_ok, g_p11_rtc0_year,
+            g_p11_handle_ack_cnt, g_p11_bb_total_cnt,
+            g_p11_lut_dma_0165_cnt, g_p11_lut_toggle_0166_cnt,
+            g_p11_develop_cnt, g_p11_audio_hdmi_032d_cnt,
+            (unsigned int)FX6_SHOOTING_MODE_CINE_EI);
+}
+
+typedef struct {
+    int tm_sec, tm_min, tm_hour, tm_mday, tm_mon, tm_year, tm_wday, tm_yday, tm_isdst;
+} fx6_rtc_time_t;
+
+#define FX6_RTC_RD_TIME 0x80247009UL
+
+static int fx6_p11_probe_rtc0(int *out_year, int *out_mon, int *out_mday,
+                               int *out_hour, int *out_min, int *out_sec) {
+    fx6_rtc_time_t tm;
+    memset(&tm, 0, sizeof(tm));
+    int fd = open("/dev/rtc0", 0);
+    if (fd >= 0) {
+        int rc = ioctl(fd, FX6_RTC_RD_TIME, &tm);
+        close(fd);
+        if (rc == 0) {
+            int fy = 1900 + tm.tm_year;
+            g_p11_rtc0_fd_ok = 1U;
+            g_p11_rtc0_year = fy;
+            if (out_year) *out_year = fy;
+            if (out_mon)  *out_mon = tm.tm_mon + 1;
+            if (out_mday) *out_mday = tm.tm_mday;
+            if (out_hour) *out_hour = tm.tm_hour;
+            if (out_min)  *out_min = tm.tm_min;
+            if (out_sec)  *out_sec = tm.tm_sec;
+            return (fy >= 2000 && fy <= 2099) ? 1 : 0;
+        }
+    }
+    /* Fallback to Linux CLOCK_REALTIME (seeded by udate.ko / seed-date-clock-v3) */
+    struct {
+        long tv_sec;
+        long tv_nsec;
+    } ts = {0L, 0L};
+    if (syscall(113L /* __NR_clock_gettime */, 0L /* CLOCK_REALTIME */, &ts) == 0L && ts.tv_sec >= 946684800L) {
+        g_p11_rtc0_year = 1970 + (int)(ts.tv_sec / 31556952L);
+        if (out_year) *out_year = g_p11_rtc0_year;
+        return 1;
+    }
+    return 0;
+}
+#endif
 
 #define FX6_MB_MAGIC  0x4658364dU
 #define FX3_KEY_MAGIC 0x3545594b334d5253ULL
@@ -219,6 +453,9 @@ static void flush_pixels_to_osd(const char *tag) {
                 "FX6_OSD_FLUSH %s #%u prims=%u fill=%u blit=%u nz_pixels=%u nonblack=%u "
                 "subst_color=0 subst_image=0 forced_render=0 skipped_node=0 lock_bypass=0\n",
                 tag, flush_count, draw_prim_count, fillrect_count, rectblit_count, nz, nonblack);
+#if FX6_ROUND >= 10
+        emit_r10_telemetry(tag);
+#endif
     }
 }
 
@@ -426,6 +663,11 @@ static void *fx6_trigger_pump_main(void *arg) {
                 if (tick == 5U || tick == 50U || tick == 150U || tick == 300U || tick == 600U) {
                     inspect_screen_manager_and_presenters("pump", g_app_self);
                 }
+#if FX6_ROUND >= 10
+                if (tick == 5U || tick == 10U || (tick % 25U) == 0U) {
+                    emit_r10_telemetry("pump");
+                }
+#endif
             }
         }
         usleep(40000U); /* 25 Hz vsync cadence */
@@ -729,6 +971,9 @@ static void *fx6_key_injector_main(void *arg) {
     }
     dprintf(2, "FX6_KEY_INJECT_DONE count=%d flush=%u blit=%u\n",
             FX6_KEY_COUNT, flush_count, rectblit_count);
+#if FX6_ROUND >= 10
+    emit_r10_telemetry("key_inject_done");
+#endif
     return 0;
 }
 
@@ -847,6 +1092,22 @@ int osal_snd_msg(uint32_t dest_qid, void *msg) {
         }
     }
 
+#if FX6_ROUND >= 10
+    /* P11 UIPC telemetry on FX3 0x92840747 BB/CP channel (LUT DMA 0x0165/0x0166, develop 0x0169..0x0416, P5 0x032d) */
+    if (msg && dest_qid == 0x92840747U) {
+        __atomic_add_fetch(&g_p11_bb_total_cnt, 1U, __ATOMIC_RELAXED);
+        if (w1 == 0x0165U) {
+            __atomic_add_fetch(&g_p11_lut_dma_0165_cnt, 1U, __ATOMIC_RELAXED);
+        } else if (w1 == 0x0166U) {
+            __atomic_add_fetch(&g_p11_lut_toggle_0166_cnt, 1U, __ATOMIC_RELAXED);
+        } else if (w1 == 0x0169U || w1 == 0x016aU || w1 == 0x016bU || w1 == 0x0416U || w1 == 0x0152U) {
+            __atomic_add_fetch(&g_p11_develop_cnt, 1U, __ATOMIC_RELAXED);
+        } else if (w1 == 0x032dU) {
+            __atomic_add_fetch(&g_p11_audio_hdmi_032d_cnt, 1U, __ATOMIC_RELAXED);
+        }
+    }
+#endif
+
     /* 1. appFw.so +0x20ef604 BB/CP infinite-timeout RPCs (0x92840747, 0x909a015a, 0x909c015b, 0x912f0335) */
     if (msg && is_unanswered_bb_adf_dest(dest_qid, src_qid)) {
         void *rep = 0;
@@ -892,6 +1153,14 @@ int osal_snd_msg(uint32_t dest_qid, void *msg) {
         int vrc = g_real_valloc_msg(src_qid, &rep, 2, 1);
         if (vrc == 0 && rep) {
             uint8_t *r8 = (uint8_t *)rep;
+#if FX6_ROUND >= 10
+            int ry = 0, rmo = 0, rd = 0, rh = 0, rmi = 0, rse = 0;
+            int rtc_ok = fx6_p11_probe_rtc0(&ry, &rmo, &rd, &rh, &rmi, &rse);
+            unsigned int rtc_cnt = __atomic_add_fetch(&g_p11_rtc_sync_cnt, 1U, __ATOMIC_RELAXED);
+            dprintf(2,
+                    "FX6_P11_RTC_SYNC count=%u dest=0x%x reply_qid=0x%x rtc_ok=%d rtc0_fd=%u year=%d mon=%d day=%d\n",
+                    rtc_cnt, dest_qid, src_qid, rtc_ok, g_p11_rtc0_fd_ok, ry, rmo, rd);
+#endif
             r8[0] = b0 ? b0 : 0x03U;
             r8[1] = 0x00U; /* RTC status OK (clock set) */
             g_real_set_src(rep, dest_qid);
@@ -934,6 +1203,38 @@ int osal_snd_msg(uint32_t dest_qid, void *msg) {
             return 0;
         }
     }
+
+#if FX6_ROUND >= 10
+    /* 3b. P11 Smart Handle UIPC shim (0x91db059b -> cb_qid 12B <III(0x88000002, 0, cb_qid), preserving XLR-H1) */
+    if (msg && dest_qid == 0x91db059bU && sz >= 12) {
+        const uint32_t *m32 = (const uint32_t *)msg;
+        uint32_t hcmd = m32[0];
+        uint32_t cb_qid = m32[2] ? m32[2] : src_qid;
+        unsigned int hcnt = __atomic_add_fetch(&g_p11_handle_ack_cnt, 1U, __ATOMIC_RELAXED);
+        int frc = g_real_free_msg ? g_real_free_msg(dest_qid, msg) : 0;
+        int src_rc = 0;
+        if (hcmd == 0x81000001U && cb_qid != 0U) {
+            void *rep = 0;
+            int vrc = g_real_valloc_msg(cb_qid, &rep, 12, 1);
+            if (vrc == 0 && rep) {
+                uint32_t *r32 = (uint32_t *)rep;
+                r32[0] = 0x88000002U; /* HANDLE_EVT_DETACHED_CMD -> event 551 preserving XLR-H1 */
+                r32[1] = 0U;
+                r32[2] = cb_qid;
+                g_real_set_src(rep, 0x91db059bU);
+                src_rc = g_real_snd_msg(cb_qid, rep);
+            } else {
+                src_rc = vrc ? vrc : -1;
+            }
+        }
+        dprintf(2,
+                "FX6_P11_HANDLE_ACK count=%u dest=0x%x cb_qid=0x%x req_cmd=0x%08x "
+                "evt_cmd=0x%08x free_rc=%d snd_rc=%d xlr_h1_preserved=1\n",
+                hcnt, dest_qid, cb_qid, hcmd,
+                (hcmd == 0x81000001U) ? 0x88000002U : 0U, frc, src_rc);
+        return 0;
+    }
+#endif
 
 #if FX6_ROUND >= 4
     /* 4. Remote BB/CP Data Memory Manager (0x9061003c -> 0x81cf.... 40B, appFw.so +0x2127750..0x2127ef4) */
@@ -1071,7 +1372,13 @@ int _ZN3grm3bmp10BitmapImpl6createEPvssssii(
     if (aw <= 0) aw = 16;
     if (ah <= 0) ah = 2;
     unsigned long sz = (unsigned long)aw * (unsigned long)ah * (unsigned long)bpp;
+#if FX6_ROUND >= 10
+    unsigned long pa = 0UL;
+    unsigned char *buf = gpe_pool_alloc(sz + 256UL, &pa);
+#else
     unsigned char *buf = (unsigned char *)calloc(1, sz + 256UL);
+    unsigned long pa = (unsigned long)buf;
+#endif
     if (info) {
         *(short *)(info + 0x0c) = 0;
         *(short *)(info + 0x0e) = 0;
@@ -1084,17 +1391,19 @@ int _ZN3grm3bmp10BitmapImpl6createEPvssssii(
         *(int *)(info + 0x1c) = orig_fmt; /* Preserved faithfully! */
         *(int *)(info + 0x20) = 0;
         *(int *)(info + 0x24) = orig_fmt;
-        *(unsigned long *)(info + 0x28) = (unsigned long)buf;
+        *(unsigned long *)(info + 0x28) = pa;
     }
     *(void **)(b + 0x10) = buf;
     *(void **)(b + 0x18) = space_handle;
+#if FX6_ROUND >= 10
+    *(int *)(b + 0xb0) = 0;
+#endif
     return 0;
 }
 
 int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(
     void *self, long phys_addr, short row_bytes, void *sub_rect
 ) {
-    (void)phys_addr;
     unsigned char *b = (unsigned char *)self;
     unsigned char *info = *(unsigned char **)(b + 0x08);
     int orig_fmt = info ? *(int *)(info + 0x1c) : 2;
@@ -1106,7 +1415,26 @@ int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(
     if (aw <= 0) aw = 64;
     if (h <= 0) h = 64;
     unsigned long sz = (unsigned long)aw * (unsigned long)h * (unsigned long)bpp;
+#if FX6_ROUND >= 10
+    unsigned long pa = 0UL;
+    void *buf = 0;
+    gpe_lock();
+    ensure_gpe_pool_locked();
+    unsigned char *pool_va = g_gpe_pool_va;
+    gpe_unlock();
+    if (pool_va && (unsigned long)phys_addr >= FX6_GPE_POOL_PHYS_BASE &&
+        (unsigned long)phys_addr + sz <= FX6_GPE_POOL_PHYS_BASE + FX6_GPE_POOL_BYTES) {
+        pa = (unsigned long)phys_addr;
+        buf = (void *)(pool_va + (pa - FX6_GPE_POOL_PHYS_BASE));
+        unmark_gpe_argb_surface((const unsigned char *)buf);
+    } else {
+        buf = (void *)gpe_pool_alloc(sz + 256UL, &pa);
+    }
+#else
+    (void)phys_addr;
     void *buf = calloc(1, sz + 256UL);
+    unsigned long pa = (unsigned long)buf;
+#endif
     if (info) {
         *(short *)(info + 0x0c) = 0;
         *(short *)(info + 0x0e) = 0;
@@ -1126,11 +1454,29 @@ int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(
         *(int *)(info + 0x1c) = orig_fmt; /* Preserved faithfully! */
         *(int *)(info + 0x20) = 0;
         *(int *)(info + 0x24) = orig_fmt;
-        *(unsigned long *)(info + 0x28) = (unsigned long)buf;
+        *(unsigned long *)(info + 0x28) = pa;
     }
     *(void **)(b + 0x10) = buf;
+#if FX6_ROUND >= 10
+    *(int *)(b + 0xb0) = 0;
+#endif
     return 0;
 }
+
+#if FX6_ROUND >= 10
+int _ZN3grm3bmp10BitmapImpl7destroyEi(void *self, int flag) {
+    typedef int (*real_fn_t)(void *, int);
+    static real_fn_t real_fn;
+    if (!grmbmp) grmbmp = dlopen("/usr/lib/libgrm_bmp.so", RTLD_LAZY | RTLD_GLOBAL);
+    if (!real_fn && grmbmp) {
+        real_fn = (real_fn_t)dlsym(grmbmp, "_ZN3grm3bmp10BitmapImpl7destroyEi");
+    }
+    void *va = self ? *(void **)((char *)self + 0x10) : 0;
+    int rc = real_fn ? real_fn(self, flag) : 0;
+    gpe_pool_free(va);
+    return rc;
+}
+#endif
 
 void *g_ux_screens[64];
 unsigned int g_ux_screen_cnt;
@@ -1326,6 +1672,21 @@ static void mark_gpe_argb_surface(const unsigned char *bits) {
     }
 }
 
+#if FX6_ROUND >= 10
+static void unmark_gpe_argb_surface(const unsigned char *bits) {
+    if (!bits) return;
+    unsigned int n = g_gpe_argb_cnt < 1024U ? g_gpe_argb_cnt : 1024U;
+    for (unsigned int i = 0U; i < n; ) {
+        if (g_gpe_argb_surfaces[i] == bits) {
+            g_gpe_argb_surfaces[i] = g_gpe_argb_surfaces[--n];
+            g_gpe_argb_cnt = n;
+        } else {
+            i++;
+        }
+    }
+}
+#endif
+
 static int resolve_bitmap_surface(
     void *bmp, unsigned char **out_bits, int *out_w, int *out_h, int *out_stride, int *out_fmt, int *out_bpp
 ) {
@@ -1506,12 +1867,13 @@ int GRM_gpermRectblit(
 
     int fmt = -1;
     int bpp = 0;
+    int src_is_gpe_argb = 0;
     unsigned int src_nz = 0U;
 
     unsigned char *sbits = 0;
     int sw = 0, sh = 0, sstride = 0;
     if (resolve_bitmap_surface(src, &sbits, &sw, &sh, &sstride, &fmt, &bpp)) {
-        int src_is_gpe_argb = (bpp == 4) ? is_gpe_argb_surface(sbits) : 0;
+        src_is_gpe_argb = (bpp == 4) ? is_gpe_argb_surface(sbits) : 0;
         if (dst_bpp == 4) {
             mark_gpe_argb_surface(dbits);
         }
@@ -1630,6 +1992,31 @@ int GRM_gpermRectblit(
     }
     rectblit_count++;
     draw_prim_count++;
+#if FX6_ROUND >= 10
+    int is_uxc_sprite = 0;
+    if (sbits) {
+        if (fmt == 1) g_fmt1_rgba4444_blits++;
+        else if (fmt == 2) g_fmt2_rgba8888_blits++;
+        else if (fmt == 3) g_fmt3_argb4444_blits++;
+        else if (fmt == 4) g_fmt4_a8_blits++;
+        if (src_nz > 0U) {
+            if (fmt == 4) {
+                g_glyph_blit_count++;
+            } else if (fmt == 1 || fmt == 3 || (fmt == 2 && !src_is_gpe_argb)) {
+                g_icon_blit_count++;
+                is_uxc_sprite = 1;
+            }
+        }
+    }
+    if (rectblit_count <= 40U || (rectblit_count % 100U) == 0U ||
+        (is_uxc_sprite && g_icon_blit_count <= 80U)) {
+        dprintf(2,
+                "FX6_GPE_RECTBLIT #%u dst=(%d,%d,%d,%d) target=%p src=%p fmt=%d bpp=%d "
+                "src_nz=%u blend=%d calpha=%u tint=0x%02x%02x%02x icon_blit=%d subst_image=0\n",
+                rectblit_count, dx0, dy0, dw0, dh0, dst_bmp, src, fmt, bpp,
+                src_nz, blend_mode, (unsigned int)const_alpha, tint_r, tint_g, tint_b, is_uxc_sprite);
+    }
+#else
     if (rectblit_count <= 40U || (rectblit_count % 100U) == 0U) {
         dprintf(2,
                 "FX6_GPE_RECTBLIT #%u dst=(%d,%d,%d,%d) target=%p src=%p fmt=%d bpp=%d "
@@ -1637,6 +2024,7 @@ int GRM_gpermRectblit(
                 rectblit_count, dx0, dy0, dw0, dh0, dst_bmp, src, fmt, bpp,
                 src_nz, blend_mode, (unsigned int)const_alpha, tint_r, tint_g, tint_b);
     }
+#endif
     invoke_gpe_cmd_cb(cb, ud);
     return 0;
 }
@@ -1747,6 +2135,19 @@ void Application_System_Init(const char *arg) {
     }
     dprintf(2,
             "FX6_STAGE_B_BRIDGE round=%d faithful=%d nop_count=0 p10_keymap=1 srm3kye5=1 phy_router=0x007a804c->0x005503e0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL);
+#endif
+#if FX6_ROUND >= 10
+    {
+        int ry = 0, rmo = 0, rd = 0, rh = 0, rmi = 0, rse = 0;
+        int rtc_ok = fx6_p11_probe_rtc0(&ry, &rmo, &rd, &rh, &rmi, &rse);
+        dprintf(2,
+                "FX6_P11_RTC0_PROBE ok=%d rtc0_fd=%u year=%d mon=%d day=%d hour=%d min=%d sec=%d\n",
+                rtc_ok, g_p11_rtc0_fd_ok, ry, rmo, rd, rh, rmi, rse);
+    }
+    dprintf(2,
+            "FX6_STAGE_B_R10_BRIDGE round=%d faithful=%d nop_count=0 uxc=/usr/share/app/image_00_169.uxc "
+            "gpe_pool=0x410524000..0x410e64000 p11_uipc=1\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL);
 #endif
     if (real) real("AppConfig.so");

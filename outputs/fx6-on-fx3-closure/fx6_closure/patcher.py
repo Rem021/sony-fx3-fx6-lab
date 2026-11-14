@@ -6,12 +6,14 @@ Covers the complete FX6-on-FX3 Compatibility Adaptation Matrix:
 - P4: Electronic Variable ND Clear state lock (`appFw.so` `0x2111358` -> `nop` & `0x21113f0` -> `b 0x211145c`)
 - P8: Non-blocking async log wait adaptation (`appFw.so` `0x2159c50` -> `mov w0, #0; ret`)
 - P9: Sensor measurement null-callback guard (`upm.ko` `ET_REL` `.text+0x136b8` `blr x2` -> `mov w0, #0`)
+- P10 (Stage-B): FX3 physical body button keymap adapter (`appFw.so` `PF_R` `.rodata` `0x2245a10` table, 24 B across 6 sites: `Fn->HOME`, `C1->KURU_PON`, `C2->MENU_CANCEL`, `C3->DISP_SEL`, `PLAY->THUMBNAIL`, `DELETE->USER`)
 - Fan: Thermal curve backup flag compatibility (`libfan.so` `0x1dec` `_Z19fan_i_bkup_is_validv` -> `mov w0, #1; ret`)
 """
 
 from __future__ import annotations
 
 import hashlib
+import os
 import struct
 from dataclasses import dataclass
 from pathlib import Path
@@ -380,6 +382,136 @@ ALL_PHASE2_TARGET_SPECS: Tuple[LibraryPatchSpec, ...] = (
     P9_UPM_KO_SPEC,
 )
 
+# ============================================================================
+# Stage-B P10 FX3 Physical Body Button Keymap Adapter (24 B PF_R .rodata)
+# ============================================================================
+
+FX6_APPFW_DONOR_SHA256 = "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+FX6_APPFW_STAGE_A_SHA256 = "95f46b6c1e3738b3f89ef2c4a3cae4160455114cb35cf0542ab71f117436d9f0"
+FX6_APPFW_P10_ONLY_SHA256 = "07a5405830becb169df4adc7d51eb19f53febe94e36b72de83e2bcad7081b84b"
+FX6_APPFW_STAGE_B_SHA256 = "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+
+P10_FN_TO_HOME_SITE = PatchSiteSpec(
+    site_id="p10_fn_to_home",
+    patch_group="P10",
+    symbol_or_desc="FX3 Fn (0x7095) -> FX6 HOME (app_key 0x184, Big6 Home 0x020102d1)",
+    vma=0x2245E7C,
+    expected_file_offset=0x2245E7C,
+    required_segment_flags=PF_R,
+    original_bytes=struct.pack("<I", 0x0000008D),
+    patched_bytes=struct.pack("<I", 0x00000184),
+    pre_context=bytes.fromhex("8c00000095700000"),
+    post_context=bytes.fromhex("967000008e000000"),
+)
+
+P10_C1_TO_KURU_PON_SITE = PatchSiteSpec(
+    site_id="p10_c1_to_kuru_pon",
+    patch_group="P10",
+    symbol_or_desc="FX3 C1 (0x0066) -> FX6 KURU_PON (app_key 0x029, Multi-Sel 0x02010157)",
+    vma=0x2245A84,
+    expected_file_offset=0x2245A84,
+    required_segment_flags=PF_R,
+    original_bytes=struct.pack("<I", 0x0000000E),
+    patched_bytes=struct.pack("<I", 0x00000029),
+    pre_context=bytes.fromhex("0d00000066000000"),
+    post_context=bytes.fromhex("a70000000f000000"),
+)
+
+P10_C2_TO_MENU_CANCEL_SITE = PatchSiteSpec(
+    site_id="p10_c2_to_menu_cancel",
+    patch_group="P10",
+    symbol_or_desc="FX3 C2 (0x70e7) -> FX6 MENU_CANCEL (app_key 0x192, Back 0x02010107)",
+    vma=0x224610C,
+    expected_file_offset=0x224610C,
+    required_segment_flags=PF_R,
+    original_bytes=struct.pack("<I", 0x000000DF),
+    patched_bytes=struct.pack("<I", 0x00000192),
+    pre_context=bytes.fromhex("de000000e7700000"),
+    post_context=bytes.fromhex("e8700000e0000000"),
+)
+
+P10_C3_TO_DISP_SEL_SITE = PatchSiteSpec(
+    site_id="p10_c3_to_disp_sel",
+    patch_group="P10",
+    symbol_or_desc="FX3 C3 (0x70ec) -> FX6 DISP_SEL (app_key 0x199, OSD Toggle 0x020100e6)",
+    vma=0x2246134,
+    expected_file_offset=0x2246134,
+    required_segment_flags=PF_R,
+    original_bytes=struct.pack("<I", 0x000000E4),
+    patched_bytes=struct.pack("<I", 0x00000199),
+    pre_context=bytes.fromhex("e3000000ec700000"),
+    post_context=bytes.fromhex("ed700000e5000000"),
+)
+
+P10_PLAY_TO_THUMBNAIL_SITE = PatchSiteSpec(
+    site_id="p10_play_to_thumbnail",
+    patch_group="P10",
+    symbol_or_desc="FX3 PLAY (0x01f7) -> FX6 THUMBNAIL (app_key 0x183, Playback 0x020100e9)",
+    vma=0x2245B24,
+    expected_file_offset=0x2245B24,
+    required_segment_flags=PF_R,
+    original_bytes=struct.pack("<I", 0x00000022),
+    patched_bytes=struct.pack("<I", 0x00000183),
+    pre_context=bytes.fromhex("21000000f7010000"),
+    post_context=bytes.fromhex("f8010000"),
+)
+
+P10_DELETE_TO_USER_SITE = PatchSiteSpec(
+    site_id="p10_delete_to_user",
+    patch_group="P10",
+    symbol_or_desc="FX3 DELETE (0x01f8) -> FX6 USER (app_key 0x185, User Custom 0x020102cb)",
+    vma=0x2245B2C,
+    expected_file_offset=0x2245B2C,
+    required_segment_flags=PF_R,
+    original_bytes=struct.pack("<I", 0x00000023),
+    patched_bytes=struct.pack("<I", 0x00000185),
+    pre_context=bytes.fromhex("f8010000"),
+    post_context=bytes.fromhex("f901000024000000"),
+)
+
+P10_KEYMAP_SITES: Tuple[PatchSiteSpec, ...] = (
+    P10_FN_TO_HOME_SITE,
+    P10_C1_TO_KURU_PON_SITE,
+    P10_C2_TO_MENU_CANCEL_SITE,
+    P10_C3_TO_DISP_SEL_SITE,
+    P10_PLAY_TO_THUMBNAIL_SITE,
+    P10_DELETE_TO_USER_SITE,
+)
+
+P10_KEYMAP_PATCH_SPEC = LibraryPatchSpec(
+    spec_id="P10_FX3_TO_FX6_KEYMAP_ADAPTER",
+    library_name="appFw.so",
+    expected_size=50520424,
+    donor_sha256=FX6_APPFW_DONOR_SHA256,
+    sites=P10_KEYMAP_SITES,
+)
+
+P1_P4_P8_P10_APPFW_COMBINED_SPEC = LibraryPatchSpec(
+    spec_id="P1_P4_P8_P10_appFw_combined",
+    library_name="appFw.so",
+    expected_size=50520424,
+    donor_sha256=FX6_APPFW_DONOR_SHA256,
+    sites=(
+        P4_APPFW_MODE_SITE,
+        P4_APPFW_VALUE_SITE,
+        P8_APPFW_SITE,
+        P1_APPFW_SITE,
+        *P10_KEYMAP_SITES,
+    ),
+)
+
+ALL_PATCH_SPECS: Tuple[LibraryPatchSpec, ...] = ALL_PHASE2_TARGET_SPECS
+STAGE_A_PATCH_SPECS: Tuple[LibraryPatchSpec, ...] = ALL_PHASE2_TARGET_SPECS
+STAGE_B_PATCH_SPECS: Tuple[LibraryPatchSpec, ...] = (
+    P1_LIB_INFRA_SETUP_FILE_SPEC,
+    P1_LIB_INFRA_MEDIA_COMMON_SPEC,
+    P1_LIB_INFRA_MEDIA_CONFIG_SPEC,
+    P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC,
+    FAN_LIBFAN_SPEC,
+    P1_P4_P8_P10_APPFW_COMBINED_SPEC,
+    P9_UPM_KO_SPEC,
+)
+
 
 def resolve_donor_binary_path(
     spec: LibraryPatchSpec,
@@ -596,3 +728,72 @@ def generate_p1_lut_mount_snippet(
         "fi\n"
         f'mkdir -p "{lut_mount_dir}"\n'
     )
+
+
+def read_donor_bytes_readonly(path: Path) -> bytes:
+    """Read a donor binary file strictly via `os.O_RDONLY`."""
+    fd = os.open(os.fspath(path), os.O_RDONLY)
+    with os.fdopen(fd, "rb") as fh:
+        return fh.read()
+
+
+def get_target_patch_specs(*, include_p10_keymap: bool = True) -> Tuple[LibraryPatchSpec, ...]:
+    """Return Stage-B (`P1..P9+Fan+P10`) or Stage-A (`P1..P9+Fan`) target patch specs."""
+    return STAGE_B_PATCH_SPECS if include_p10_keymap else STAGE_A_PATCH_SPECS
+
+
+def verify_patch_sites_non_overlapping(
+    *specs: LibraryPatchSpec,
+) -> Tuple[Tuple[str, str, int, int], ...]:
+    """Verify zero byte-range overlap across all sites of the given specs for the same library."""
+    if not specs:
+        return ()
+    lib_names = {s.library_name for s in specs}
+    if len(lib_names) > 1:
+        raise PatchVerificationError(
+            f"Cannot check byte-range overlap across mismatched libraries: {sorted(lib_names)}"
+        )
+
+    intervals: List[Tuple[int, int, str, str]] = []
+    for spec in specs:
+        for site in spec.sites:
+            start = site.expected_file_offset
+            end = start + site.size
+            for prev_start, prev_end, prev_group, prev_id in intervals:
+                if not (end <= prev_start or start >= prev_end):
+                    raise PatchVerificationError(
+                        f"{spec.library_name}: overlapping patch sites "
+                        f"{prev_group}:{prev_id} [0x{prev_start:x}..0x{prev_end:x}) vs "
+                        f"{site.patch_group}:{site.site_id} [0x{start:x}..0x{end:x})"
+                    )
+            intervals.append((start, end, site.patch_group, site.site_id))
+
+    intervals.sort(key=lambda item: (item[0], item[1], item[3]))
+    return tuple((grp, sid, st, en) for st, en, grp, sid in intervals)
+
+
+def build_stage_b_appfw_image(
+    appfw_bytes: Optional[bytes] = None,
+    *,
+    fx6_lib_dir: Optional[Path] = None,
+    include_p10_keymap: bool = True,
+    verify_donor_sha256: bool = True,
+    combined_spec: Optional[LibraryPatchSpec] = None,
+) -> Tuple[bytes, PatchReceipt]:
+    """Build an in-memory Stage-B (`P1+P4+P8+P10`) or Stage-A (`P1+P4+P8`) `appFw.so` image."""
+    if appfw_bytes is None:
+        lib_dir = fx6_lib_dir if fx6_lib_dir is not None else resolve_fx6_donor_lib_dir()
+        raw = read_donor_bytes_readonly(lib_dir / "appFw.so")
+    else:
+        raw = appfw_bytes
+
+    if combined_spec is not None:
+        spec = combined_spec
+    elif include_p10_keymap:
+        spec = P1_P4_P8_P10_APPFW_COMBINED_SPEC
+    else:
+        spec = P1_P4_P8_APPFW_COMBINED_SPEC
+
+    verify_patch_sites_non_overlapping(spec)
+    return apply_patch_spec(raw, spec, verify_donor_sha256=verify_donor_sha256)
+

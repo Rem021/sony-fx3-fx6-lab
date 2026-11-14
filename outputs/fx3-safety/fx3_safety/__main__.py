@@ -17,6 +17,7 @@ from .boot_contracts import (
 )
 from .brick_classifier import classify_brick_state, generate_failsafe_init2_overlay_hook
 from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
+from .thermal_pwm_and_power_guard import evaluate_thermal_pwm_and_power_guard
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -105,6 +106,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_trace.add_argument("--trace", type=Path, required=True, help="Path to syscall trace JSON list")
 
+    # 7. verify-thermal-power-guard
+    p_therm = sub.add_parser(
+        "verify-thermal-power-guard",
+        help="Run Phase 44 FX3 Fan PWM Thermal Envelope, NP-FZ100 vs BP-U & USB-PD Guard",
+    )
+    p_therm.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_therm.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "evaluate-preflight":
@@ -163,6 +172,22 @@ def main(argv: Optional[List[str]] = None) -> int:
 
         sys.stdout.write(json.dumps(asdict(res), indent=2, ensure_ascii=False) + "\n")
         return 0 if res.valid else 1
+
+    if args.cmd == "verify-thermal-power-guard":
+        report = evaluate_thermal_pwm_and_power_guard(
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} all_passed={report.all_passed} "
+                f"pwm={report.thermal_envelope.target_pwm_duty_pct}% "
+                f"batt={report.power_firewall.raw_batt_mv}mV/{report.power_firewall.infolithium_soc_pct}% "
+                f"usbpd_droop={report.power_firewall.usbpd_vbus_droop_mv}mV "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if report.all_passed else 1
 
     return 2
 

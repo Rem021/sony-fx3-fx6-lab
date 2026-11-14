@@ -110,9 +110,38 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/soft_gpe_and_bt_rom
 # 2. 洁净室合成模式自检（< 0.3s）
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/soft_gpe_and_bt_rom_emulator.py --json
 
-# 3. 运行 Phase 24 + Phase 29 全量 47 项单测（本地供体 & 洁净室双模式）
+# 3. 运行 Phase 24 + Phase 29 + Phase 33 全量 71 项单测（本地供体 & 洁净室双模式，< 3s）
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 ```
+
+## Phase 33：全板级虚拟相机协同仿真统一编排器与 CLI（`fx3_vm_coemulation_suite.py`）
+
+[`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py) 将 `outputs/fx3-vm/` 内的冷启动基线、Bluetooth UART、Dual-ISA `IVSHMEM` 协处理器与软件 `GPE0`/`ramfb` 合成管线整合为单入口、确定性、洁净室兼容的全板级虚拟相机冷启动与拍摄周期编排器：
+
+1. **Stage 1 — AP 冷启动基线与 `virtual-rom-v1` `/dev/ttyAMA3` 蓝牙建链（含 P12/00342260 退化隔离）**：
+   - 只读（`os.O_RDONLY`）核验 [`manifest.json`](manifest.json) 与 [`run_probe.py`](run_probe.py) 基线（`2048 MiB`、`FX3_VM_ESRAM_RAM=1`、`FX3_VM_HIGH_DDR=1`、`7` 项禁用 initcall），并检查 FX6 `libbt-vendor.so` / `libInfraBluetoothCore.so` 标记（洁净室模式下切换合成 ELF64 夹具）。
+   - 执行目标模式（`HEALTHY_VIRTUAL_ROM_V1`、`UART_DISCONNECTED_TIMEOUT` → `P12` `0x0BB9`、`PATCHRAM_CORRUPT_NACK` → `00342260` 飞行模式锁存、`AIRPLANE_SHADOW_GATED` → `BK4\0` 门控）及 4 模式防砖矩阵验证。
+2. **Stage 2 — Dual-ISA `AArch64` AP ↔ `IVSHMEM` ↔ `ARM32 Thumb-2` Stock-CP 拍摄闭环**：
+   - 运行 `P11` AP 侧隔离过滤（`0x92d2091c` `/dev/rtc0` 与 `0x91db059b` Smart Handle 零泄漏至 CP），以及跨 `0x92840747` Doorbell/Flat 的 ProCam（`0x0416`）、Cine EI 双原生 ISO（`800 / 12800`：`0x0169` / `0x016A`）、`33^3` 3D LUT DMA（`0x0165 > 0xbb80` + `0x0166`）与 5 轴 IBIS 中心锁定（`0x0400`：`Off` / `Standard` / `Active`），全程强制 `cp_mutation_bytes == 0`。
+   - 证明 Stage 1 任意蓝牙退化/隔离模式均不阻断 Stage 2 拍摄与成像流水线（`shooting_unaffected = True`）。
+3. **Stage 3 — 软件 GPE0（`0x41E001000`）+ `ramfb`（`0x41E100000`）`1024×540` HUD + Big-6 合成**：
+   - 以 `os.O_RDONLY` 只读解码 FX6 `image_00_169.uxc`（`1,610` 精灵含 `22` 项 9-patch；洁净室模式自动切换合成 `uxd\x07` `5` 精灵），结合 Stage 1 BT 状态徽章与 Stage 2 Cine EI / LUT / IBIS 遥测合成完整 `1024×540` HUD + Big-6 帧，校验 `fx6_px`（`0xFFF08018`）R/B 通道对齐、`gpe0->gpe1` 刷新一致性与 `HOSDAP02` `ramfb` `XRGB8888` 扫描输出。
+
+### Phase 33 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式输出确定性 JSON 审计摘要
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py
+
+# 2. 洁净室合成模式输出确定性 JSON 审计摘要（支持 --bt-mode / --cine-ei-iso / --lut-mode / --ibis-mode / --summary）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room --summary
+
+# 3. 运行 outputs/fx3-vm 全量 71 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项，< 3s）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
+```
+
 
 

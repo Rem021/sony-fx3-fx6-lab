@@ -7,6 +7,10 @@
 - **即时体验 Big6 菜单交互**：页面打开即显示已通过 Candidate `255` 实机验证的 `1024×540` RGBA8888 FX6 Big6 HOME 菜单帧（18 次 `GRM_gpermFillrect` + 5 次 `GRM_gpermRectblit`、2560 帧 `0 SEGV`），支持网页 7 键（`MENU` `0x1ab`、`▲ 上` `0x3`、`▼ 下` `0x30`、`◀ 左/右列` `0x15`、`▶ 下一档` `0x1af`、`SET 切换值` `0x1ac`、`REC/C4` `0x1f8`）、点击 6 个 Big6 参数框或使用电脑键盘方向键实时切换 **FPS / Shutter / ISO / ND Filter / Base Look (S-Cinetone / S-Log3) / White Balance / STBY·REC**。
 - **QEMU 实机后台会话（可选）**：点击页面右侧 **「启动 FX6-on-FX3 QEMU 实机运行」**，将在后台拉起 FX3 QEMU 虚拟机运行 FX6 固件，通过 GDB 物理内存门（`0x41df00000` `SRM3KYE5` 与 `0x41e000f00` `FX6M`）向客体 `libgrm-fbinit25.c` 注入按键，并通过 QMP `pmemsave 0x41e001000` 实时回读客体 GPE0 显存帧。
 
+- **原生 UI 图标渲染与多击卡死根治（2026-11-14 Phase 19）**：
+  - `run_fx6_menu_trial.py` 自动从只读供体打包 `image_00_169.uxc` 512B 对齐 SVR4 `newc` 叠加层至隔离 `--workdir`，`libgrm-fbinit25-542.c` 使用 `/dev/mem` 物理池（`0x410524000..0x410e64000`）满足 `fx3_ldec_soft103_v1` 解码地址校验，`fx6_live_guest.c` 合流 `RGBA4444`/`RGBA8888`/`A8`/`ARGB4444` 贴图渲染与 `fx6_px` `R/B` 通道修复。
+  - 修复多击冻结三大根因：直接拦截 `liblibra.so!_ZN5libra20GenerateImageCommand6notifyEb` 防止 `x2=0` 空指针跳转 `PC=0`；`s_vs_pool`/`s_vf_pool`/`s_ic_pool` 升级为 32 槽环形缓冲池并在销毁前排空 `processCommands(0)`；`run_fx6_menu_trial.py` 序列化 `gdb_lock`、清理异步停止回执、在 `finally:` 保证发送 `$c#63` 恢复 VCPU，并在 `get_status()` 检测 `APPFW_SEGV`（标记 `CRASHED_APPFW_SEGV`）。已在隔离端口 `--port 18769` 完成 **60/60** 快速多页连点压力测试（0 `APPFW_SEGV`，19 个页面渲染原生图标）。详情见 [Phase 19 报告](../../reports/2026-11-14-phase19-live-icon-rendering/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -57,7 +61,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ## 离线自动化单元测试（`tests/test_vm_trial.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP` 边界回归检查，以及 `outputs/fx3-vm` 补丁与重定位溯源（共 **16 项** 测试，已接入顶层 `make test`）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP` 边界回归检查，以及 `outputs/fx3-vm` 补丁与重定位溯源（共 **20 项** 测试，已接入顶层 `make test`）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

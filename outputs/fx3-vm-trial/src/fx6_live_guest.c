@@ -60,16 +60,50 @@ typedef struct {
     void (*setRectPos)(void *, unsigned short, const void *);
     void (*renderRect)(void *, const void *, const void *, float, float);
     void (*dict_ctor)(void *);
+    void *(*removeFirst)(void *);
+    void (*imageOnLoad)(void *);
+    void *(*rmGetInstance)(void);
+    void *(*rmGetAllocator)(void *);
+    void *imageElemOnLoadedCb;
+    unsigned short (*imgGetWidth)(const void *);
+    unsigned short (*imgGetHeight)(const void *);
+    unsigned short (*imgGetLeft)(const void *);
+    unsigned short (*imgGetTop)(const void *);
+    int (*imgGetPixelFormat)(const void *);
+    void (*setToDecodeImmediately)(void *, int);
+    void (*setImageCallback)(void *, void *, void *, int);
+    int (*getImageSize)(unsigned int, unsigned short *, unsigned short *);
 } fx6_syms_t;
 
 static fx6_syms_t g_syms;
 
-/* Static aligned scratch buffers reused across single-threaded UI renders (tid 222) */
-static unsigned char s_vs_buf[0x1400] __attribute__((aligned(16)));
-static unsigned char s_vf_buf[0x1180] __attribute__((aligned(16)));
-static unsigned char s_ic_buf[0x700]  __attribute__((aligned(16)));
+/* 32-slot aligned widget ring pools prevent tid=220/async commands from racing zeroed buffers */
+#define FX6_WIDGET_POOL_N 32u
+static unsigned char s_vs_pool[FX6_WIDGET_POOL_N][0x1400] __attribute__((aligned(16)));
+static unsigned char s_vf_pool[FX6_WIDGET_POOL_N][0x1180] __attribute__((aligned(16)));
+static unsigned char s_ic_pool[FX6_WIDGET_POOL_N][0x700]  __attribute__((aligned(16)));
+static unsigned int s_vs_next, s_vf_next, s_ic_next;
 static unsigned char s_dict_buf[0x80] __attribute__((aligned(16)));
 static int s_dict_ready;
+
+typedef struct {
+    int done;
+    int blitted;
+    int dst_x;
+    int dst_y;
+    int dst_w;
+    int dst_h;
+    uint32_t tint_rgb;
+} fx6_icon_ctx_t;
+
+static fx6_icon_ctx_t s_icon_ctx[FX6_WIDGET_POOL_N];
+static uint32_t s_bad_icon_rids[64];
+static unsigned int s_bad_icon_next;
+
+static int fx6_valid_ptr(const void *p) {
+    uintptr_t u = (uintptr_t)p;
+    return (u >= 0x10000ULL) && ((u >> 48) == 0ULL) && ((u & 3ULL) == 0ULL);
+}
 
 static void fx6_init_syms(void) {
     if (g_syms.ready) return;
@@ -99,7 +133,41 @@ static void fx6_init_syms(void) {
         dlsym((void *)-1, "_ZN2ux6gfxeng6Sprite10renderRectERKNS_4core7Vector2ERKNS1_8RectDataEff");
     g_syms.dict_ctor = (void (*)(void *))
         dlsym((void *)-1, "_ZN5libra10DictionaryC1Ev");
+    g_syms.removeFirst = (void *(*)(void *))
+        dlsym((void *)-1, "_ZN6stella10LinearList11removeFirstEv");
+    g_syms.imageOnLoad = (void (*)(void *))
+        dlsym((void *)-1, "_ZN5libra9ImageData6onLoadEv");
+    g_syms.rmGetInstance = (void *(*)(void))
+        dlsym((void *)-1, "_ZN5libra15ResourceManager11getInstanceEv");
+    g_syms.rmGetAllocator = (void *(*)(void *))
+        dlsym((void *)-1, "_ZN5libra15ResourceManager12getAllocatorEv");
+    g_syms.imageElemOnLoadedCb =
+        dlsym((void *)-1, "_ZN2ux6gfxeng16ImageElementBase21onLoadedImageCallbackEPvPN5libra9ImageDataE");
+    g_syms.imgGetWidth = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData8getWidthEv");
+    g_syms.imgGetHeight = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData9getHeightEv");
+    g_syms.imgGetLeft = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData7getLeftEv");
+    g_syms.imgGetTop = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData6getTopEv");
+    g_syms.imgGetPixelFormat = (int (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData14getPixelFormatEv");
+    g_syms.setToDecodeImmediately = (void (*)(void *, int))
+        dlsym((void *)-1, "_ZN2ux6gfxeng16ImageElementBase22setToDecodeImmediatelyEb");
+    g_syms.setImageCallback = (void (*)(void *, void *, void *, int))
+        dlsym((void *)-1, "_ZN2ux6gfxeng16ImageElementBase16setImageCallbackEPFvPviRKN5libra9ImageDataEES2_i");
+    g_syms.getImageSize = (int (*)(unsigned int, unsigned short *, unsigned short *))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager12getImageSizeEjRtS2_");
+    __sync_synchronize();
     g_syms.ready = 1;
+}
+
+static void fx6_drain_commands(int max_iters) {
+    if (!g_syms.processCommands) return;
+    for (int k = 0; k < max_iters; k++) {
+        if (g_syms.processCommands(0) <= 0) break;
+    }
 }
 
 /* Complete-object destructor (Itanium C++ ABI vtable slot 0 = D1Ev, does NOT free memory) */
@@ -116,6 +184,46 @@ static inline void fx6_destroy_widget_inplace(void *obj) {
 void _ZN5libra9ImageData6onLoadEv(void *self) {
     if (!self) return;
     *(uint64_t *)((char *)self + 0x8) = 0;
+}
+
+/* Interpose libra::GenerateImageCommand::notify(bool) directly (tail-called via PLT
+ * from settle(bool) at liblibra.so + 0x2a2e8). Prevents blr x2 with x2==0 or x1==0
+ * when ImageData::detach() or widget teardown races async command settlement. */
+void _ZN5libra20GenerateImageCommand6notifyEb(void *self, int ok) {
+    (void)ok;
+    if (!fx6_valid_ptr(self)) return;
+    fx6_init_syms();
+    if (!g_syms.removeFirst) return;
+    void *list = (char *)self + 0x28;
+    for (int guard = 0; guard < 1024; guard++) {
+        void *node = g_syms.removeFirst(list);
+        if (!node) break;
+        if (!fx6_valid_ptr(node)) break;
+        void *arg = *(void **)((char *)node + 0x08);
+        void *cb  = *(void **)((char *)node + 0x10);
+        void *img = *(void **)((char *)node + 0x18);
+        if (img && fx6_valid_ptr(img) && g_syms.imageOnLoad) {
+            g_syms.imageOnLoad(img);
+        }
+        if (cb != 0 && img != 0 && (uintptr_t)cb > 0x10000ULL &&
+            fx6_valid_ptr(cb) && fx6_valid_ptr(img) &&
+            (!arg || fx6_valid_ptr(arg)) &&
+            !(g_syms.imageElemOnLoadedCb && cb == g_syms.imageElemOnLoadedCb && !arg)) {
+            ((void (*)(void *, void *))cb)(arg, img);
+        }
+        if (g_syms.rmGetInstance && g_syms.rmGetAllocator) {
+            void *rm = g_syms.rmGetInstance();
+            if (fx6_valid_ptr(rm)) {
+                void *alloc = g_syms.rmGetAllocator(rm);
+                if (fx6_valid_ptr(alloc)) {
+                    void **avt = *(void ***)alloc;
+                    if (fx6_valid_ptr(avt) && avt[2] && fx6_valid_ptr(avt[2])) {
+                        ((void (*)(void *, void *))avt[2])(alloc, node);
+                    }
+                }
+            }
+        }
+    }
 }
 
 void fx6_model_done(void) {
@@ -138,42 +246,132 @@ static int strstr_(const char *h, const char *n) {
     return 0;
 }
 
-/* ---------------- native text image -> OSD ------------------------------- */
-static int fx6_blit_imagedata_to_osd(void *image, uint32_t *osd, int dst_x, int dst_y) {
+/* ---------------- native text & icon ImageData -> OSD -------------------- */
+static int fx6_blit_imagedata_rect_to_osd(void *image, uint32_t *osd,
+                                          int dst_x, int dst_y, int dst_w, int dst_h,
+                                          uint32_t tint_rgb) {
     if (!image || !osd) return 0;
     fx6_init_syms();
     if (!g_syms.sys_getImageData) return 0;
     uint8_t *raw = (uint8_t *)g_syms.sys_getImageData(image);
-    if (!raw) return 0;
-    int w = *(uint16_t *)(raw + 0x00);
-    int h = *(uint16_t *)(raw + 0x02);
+    if (!raw || !fx6_valid_ptr(raw)) return 0;
+    int raw_w = (int)(*(uint16_t *)(raw + 0x00));
+    int raw_h = (int)(*(uint16_t *)(raw + 0x02));
     int pitch_px = (int)(*(uint32_t *)(raw + 0x04));
+    int stella_fmt = *(int *)(raw + 0x0c);
     void *bmp = *(void **)(raw + 0x18);
-    if (!bmp || w <= 0 || h <= 0 || pitch_px <= 0) return 0;
+    if (!bmp || !fx6_valid_ptr(bmp) || raw_w <= 0 || raw_h <= 0) return 0;
     const uint8_t *bits = *(const uint8_t **)((uint8_t *)bmp + 0x10);
-    if (!bits) return 0;
-    if (w > 1024) w = 1024;
-    int stride = pitch_px * 4;
+    if (!bits || !fx6_valid_ptr(bits)) return 0;
+
+    const uint8_t *info = *(const uint8_t **)((uint8_t *)bmp + 0x08);
+    int bw = raw_w, bh = raw_h, stride_px = pitch_px, bmp_fmt = 0;
+    if (fx6_valid_ptr(info)) {
+        int iw = (int)(*(const short *)(info + 0x08));
+        int ih = (int)(*(const short *)(info + 0x0a));
+        int aw = (int)(*(const short *)(info + 0x18));
+        if (iw > 0) bw = iw;
+        if (ih > 0) bh = ih;
+        if (aw > 0) stride_px = aw;
+        bmp_fmt = *(const int *)(info + 0x1c);
+    }
+    if (stride_px <= 0) stride_px = bw;
+
+    if (stella_fmt == 0 && g_syms.imgGetPixelFormat) {
+        stella_fmt = g_syms.imgGetPixelFormat(image);
+    }
+    /* Map stella_fmt / BMP_PixelFormat:
+     *   mode 1: RGBA4444 (stella=7 or bmp_fmt=1, 2 Bpp)
+     *   mode 2: RGBA8888 (stella=1 or bmp_fmt=2, 4 Bpp, bytes [R,G,B,A])
+     *   mode 3: A8 tint  (stella=8 or bmp_fmt=4, 1 Bpp)
+     *   mode 4: ARGB4444 (bmp_fmt=3, 2 Bpp)
+     */
+    int mode = 1, bpp = 2;
+    if (bmp_fmt == 2 || stella_fmt == 1) {
+        mode = 2; bpp = 4;
+    } else if (bmp_fmt == 4 || stella_fmt == 8) {
+        mode = 3; bpp = 1;
+    } else if (bmp_fmt == 3) {
+        mode = 4; bpp = 2;
+    } else {
+        mode = 1; bpp = 2;
+    }
+
+    int sx0 = g_syms.imgGetLeft ? (int)g_syms.imgGetLeft(image) : 0;
+    int sy0 = g_syms.imgGetTop ? (int)g_syms.imgGetTop(image) : 0;
+    int sw = g_syms.imgGetWidth ? (int)g_syms.imgGetWidth(image) : raw_w;
+    int sh = g_syms.imgGetHeight ? (int)g_syms.imgGetHeight(image) : raw_h;
+    if (sw <= 0 || sh <= 0) { sx0 = 0; sy0 = 0; sw = raw_w; sh = raw_h; }
+    if (sx0 < 0) sx0 = 0;
+    if (sy0 < 0) sy0 = 0;
+    if (sx0 >= bw || sy0 >= bh) return 0;
+    if (sx0 + sw > bw) sw = bw - sx0;
+    if (sy0 + sh > bh) sh = bh - sy0;
+    if (sw <= 0 || sh <= 0) return 0;
+
+    int out_w = (dst_w > 0) ? dst_w : sw;
+    int out_h = (dst_h > 0) ? dst_h : sh;
+    if (out_w > 1024) out_w = 1024;
+    if (out_h > 540) out_h = 540;
+
+    int stride_bytes = stride_px * bpp;
+    uint32_t tr = (tint_rgb >> 16) & 0xffu;
+    uint32_t tg = (tint_rgb >> 8)  & 0xffu;
+    uint32_t tb = tint_rgb & 0xffu;
     int copied = 0;
-    for (int y = 0; y < h; y++) {
+
+    for (int y = 0; y < out_h; y++) {
         int dy = dst_y + y;
         if (dy < 0 || dy >= 540) continue;
-        const uint16_t *srow = (const uint16_t *)(bits + (unsigned long)y * (unsigned long)stride);
+        int sy = sy0 + (y * sh) / out_h;
+        if (sy < 0 || sy >= bh) continue;
+        const uint8_t *srow = bits + (unsigned long)sy * (unsigned long)stride_bytes;
         uint32_t *drow = osd + (unsigned long)dy * 1024UL;
-        for (int x = 0; x < w; x++) {
+        for (int x = 0; x < out_w; x++) {
             int dx = dst_x + x;
             if (dx < 0 || dx >= 1024) continue;
-            uint16_t pv = srow[x];
-            uint32_t a = (pv & 0xf) * 17u;
-            if (a == 0) continue;
-            uint32_t r = ((pv >> 12) & 0xf) * 17u;
-            uint32_t g = ((pv >>  8) & 0xf) * 17u;
-            uint32_t b = ((pv >>  4) & 0xf) * 17u;
-            drow[dx] = (a << 24) | (r << 16) | (g << 8) | b;
+            int sx = sx0 + (x * sw) / out_w;
+            if (sx < 0 || sx >= bw) continue;
+            uint32_t sr = 0, sg = 0, sb = 0, sa = 0;
+            if (mode == 2) {
+                const uint8_t *px4 = srow + (unsigned long)sx * 4UL;
+                sr = px4[0]; sg = px4[1]; sb = px4[2]; sa = px4[3];
+            } else if (mode == 3) {
+                sa = srow[sx]; sr = tr; sg = tg; sb = tb;
+            } else if (mode == 4) {
+                uint16_t pv = ((const uint16_t *)srow)[sx];
+                sa = ((pv >> 12) & 0xfu) * 17u;
+                sr = ((pv >>  8) & 0xfu) * 17u;
+                sg = ((pv >>  4) & 0xfu) * 17u;
+                sb = (pv & 0xfu) * 17u;
+            } else {
+                uint16_t pv = ((const uint16_t *)srow)[sx];
+                sr = ((pv >> 12) & 0xfu) * 17u;
+                sg = ((pv >>  8) & 0xfu) * 17u;
+                sb = ((pv >>  4) & 0xfu) * 17u;
+                sa = (pv & 0xfu) * 17u;
+            }
+            if (sa == 0) continue;
+            if (sa >= 255u) {
+                drow[dx] = 0xFF000000u | (sr << 16) | (sg << 8) | sb;
+            } else {
+                uint32_t dst = drow[dx];
+                uint32_t dr = dst ? ((dst >> 16) & 0xffu) : 14u;
+                uint32_t dg = dst ? ((dst >> 8)  & 0xffu) : 16u;
+                uint32_t db = dst ? (dst & 0xffu)         : 20u;
+                uint32_t or_c = (sr * sa + dr * (255u - sa)) / 255u;
+                uint32_t og_c = (sg * sa + dg * (255u - sa)) / 255u;
+                uint32_t ob_c = (sb * sa + db * (255u - sa)) / 255u;
+                drow[dx] = 0xFF000000u | (or_c << 16) | (og_c << 8) | ob_c;
+            }
             copied++;
         }
     }
     return copied;
+}
+
+static int fx6_blit_imagedata_to_osd(void *image, uint32_t *osd, int dst_x, int dst_y) {
+    return fx6_blit_imagedata_rect_to_osd(image, osd, dst_x, dst_y, 0, 0, 0xFFFFFFu);
 }
 
 static void fx6_text_image_cb(void *ts, void *image, void *ud) {
@@ -185,6 +383,40 @@ static void fx6_text_image_cb(void *ts, void *image, void *ud) {
     }
     int n = fx6_blit_imagedata_to_osd(image, g_osd, dx, dy);
     if (n) g_text_ok++;
+}
+
+static void fx6_icon_image_cb(void *ud, int arg, void *image) {
+    (void)arg;
+    fx6_icon_ctx_t *ctx = (fx6_icon_ctx_t *)ud;
+    if (!ctx || !fx6_valid_ptr(ctx)) return;
+    if (!image || !fx6_valid_ptr(image)) {
+        ctx->done = 1;
+        return;
+    }
+    int sw = g_syms.imgGetWidth ? (int)g_syms.imgGetWidth(image) : 0;
+    int sh = g_syms.imgGetHeight ? (int)g_syms.imgGetHeight(image) : 0;
+    int draw_x = ctx->dst_x, draw_y = ctx->dst_y;
+    int draw_w = ctx->dst_w, draw_h = ctx->dst_h;
+    if (sw > 0 && sh > 0 && ctx->dst_w > 0 && ctx->dst_h > 0) {
+        if (sw <= ctx->dst_w && sh <= ctx->dst_h) {
+            draw_w = sw;
+            draw_h = sh;
+        } else {
+            if (sw * ctx->dst_h >= sh * ctx->dst_w) {
+                draw_w = ctx->dst_w;
+                draw_h = (sh * ctx->dst_w) / sw;
+            } else {
+                draw_h = ctx->dst_h;
+                draw_w = (sw * ctx->dst_h) / sh;
+            }
+            if (draw_w < 1) draw_w = 1;
+            if (draw_h < 1) draw_h = 1;
+        }
+        draw_x = ctx->dst_x + (ctx->dst_w - draw_w) / 2;
+        draw_y = ctx->dst_y + (ctx->dst_h - draw_h) / 2;
+    }
+    ctx->blitted = fx6_blit_imagedata_rect_to_osd(image, g_osd, draw_x, draw_y, draw_w, draw_h, ctx->tint_rgb);
+    ctx->done = 1;
 }
 
 /* ---------------- resources ---------------------------------------------- */
@@ -248,8 +480,9 @@ static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
     if (!text_resid || text_resid == 0xffffffffU) return;
     if (w < 8 || h < 4) return;
     fx6_init_syms();
-    void *vs = (void *)s_vs_buf;
-    memset(vs, 0, sizeof(s_vs_buf));
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
@@ -278,9 +511,11 @@ static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
         ((void (*)(void *))vt[0x158 / 8])(vs);
         *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
         if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
-        if (g_syms.processCommands) g_syms.processCommands(0);
+        fx6_drain_commands(16);
         g_text_n++;
     }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(vs);
     (void)tag_name;
 }
@@ -298,8 +533,9 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
     if (w < 8 || h < 8) return 0;
 
     fx6_init_syms();
-    void *vs = (void *)s_vs_buf;
-    memset(vs, 0, sizeof(s_vs_buf));
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
@@ -330,10 +566,12 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
         ((void (*)(void *))vt[0x158 / 8])(vs);
         *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
         if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
-        if (g_syms.processCommands) g_syms.processCommands(0);
+        fx6_drain_commands(16);
         g_text_n++;
         rendered = 1;
     }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(vs);
     return rendered;
 }
@@ -341,8 +579,9 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
 static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t color_resid) {
     if (w < 1 || h < 1) return;
     fx6_init_syms();
-    void *vf = (void *)s_vf_buf;
-    memset(vf, 0, sizeof(s_vf_buf));
+    unsigned int slot = s_vf_next++ % FX6_WIDGET_POOL_N;
+    void *vf = (void *)s_vf_pool[slot];
+    memset(vf, 0, sizeof(s_vf_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc27698ULL))(vf, param);
@@ -359,7 +598,7 @@ static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t c
         if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(vf);
         if (vt[0x158 / 8]) {
             ((void (*)(void *))vt[0x158 / 8])(vf);
-            if (g_syms.processCommands) g_syms.processCommands(0);
+            fx6_drain_commands(8);
             char *spr = (char *)vf + 0x210;
             char *rects = *(char **)(spr + 0xd0);
             if (rects) {
@@ -371,6 +610,7 @@ static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t c
             g_fill_n++;
         }
     }
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(vf);
 }
 
@@ -378,8 +618,29 @@ static void fx6_icon_blit(uint64_t appfw, int x, int y, int w, int h, uint32_t i
     if (w < 1 || h < 1) return;
     if (!img || img == 0xffffffffU) return;
     fx6_init_syms();
-    void *ic = (void *)s_ic_buf;
-    memset(ic, 0, sizeof(s_ic_buf));
+    for (int i = 0; i < 64; i++) {
+        if (s_bad_icon_rids[i] == img) return;
+    }
+    if (g_syms.getImageSize) {
+        unsigned short iw = 0, ih = 0;
+        if (!g_syms.getImageSize(img, &iw, &ih) || iw == 0 || ih == 0) {
+            s_bad_icon_rids[s_bad_icon_next++ % 64u] = img;
+            return;
+        }
+    }
+
+    unsigned int slot = s_ic_next++ % FX6_WIDGET_POOL_N;
+    void *ic = (void *)s_ic_pool[slot];
+    fx6_icon_ctx_t *ctx = &s_icon_ctx[slot];
+    memset(ic, 0, sizeof(s_ic_pool[0]));
+    ctx->done = 0;
+    ctx->blitted = 0;
+    ctx->dst_x = x;
+    ctx->dst_y = y;
+    ctx->dst_w = w;
+    ctx->dst_h = h;
+    ctx->tint_rgb = 0xFFFFFFu;
+
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc2c188ULL))(ic, param);
@@ -394,16 +655,25 @@ static void fx6_icon_blit(uint64_t appfw, int x, int y, int w, int h, uint32_t i
     *(uint8_t *)((char *)ic + 0x21d) = 0xff;
     *(uint8_t *)((char *)ic + 0x21e) = 0xff;
     *(uint8_t *)((char *)ic + 0x21f) = 0xff;
-    *(uint16_t *)((char *)ic + 0x204) = w;
-    *(uint16_t *)((char *)ic + 0x206) = h;
+    *(uint16_t *)((char *)ic + 0x204) = (uint16_t)w;
+    *(uint16_t *)((char *)ic + 0x206) = (uint16_t)h;
 
+    void *spr = (char *)ic + 0x550;
     void **vt = *(void ***)ic;
     if (vt) {
         if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(ic);
+        if (g_syms.setToDecodeImmediately) g_syms.setToDecodeImmediately(spr, 1);
+        if (g_syms.setImageCallback) g_syms.setImageCallback(spr, (void *)fx6_icon_image_cb, ctx, 0);
         if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(ic);
-        if (g_syms.processCommands) g_syms.processCommands(0);
-        g_icon_n++;
+        for (int t = 0; t < 80 && !ctx->done; t++) {
+            fx6_drain_commands(16);
+            if (ctx->done) break;
+            usleep(500);
+        }
+        if (ctx->blitted > 0) g_icon_n++;
     }
+    if (g_syms.setImageCallback) g_syms.setImageCallback(spr, 0, 0, 0);
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(ic);
 }
 
@@ -523,12 +793,12 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         }
     }
 
-    uint32_t glyph = *(uint32_t *)(uintptr_t)(appfw + 0x23be8e0ULL);
     uint32_t active_cell = sel_box % 6u;
     for (int c = 0; c < n_cells; c++) {
         uint8_t *p = cell_rows[c];
         uint16_t x = *(uint16_t *)(p + 0x3c), y = *(uint16_t *)(p + 0x3e);
         uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
+        uint32_t glyph = *(uint32_t *)(uintptr_t)(appfw + 0x23be8d8ULL + (uint64_t)c * 8ULL);
         fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
         if (proccmd) proccmd(0);
         fx6_border(appfw, x, y, w, h, ((uint32_t)c == active_cell) ? 0x0200c011u : 0x0200c00eu);
@@ -939,8 +1209,9 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     }
 
     fx6_init_syms();
-    void *vs = (void *)s_vs_buf;
-    memset(vs, 0, sizeof(s_vs_buf));
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
@@ -981,9 +1252,11 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
         ((void (*)(void *))vt[0x158 / 8])(vs);
         *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
         if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
-        if (g_syms.processCommands) g_syms.processCommands(0);
+        fx6_drain_commands(16);
         g_text_n++;
     }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
     /* Detach shared static Dictionary before running ~view_string() so it is never operator-deleted */
     *(void **)((char *)vs + 0x1030) = 0;
     fx6_destroy_widget_inplace(vs);
@@ -1077,7 +1350,7 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
         if (tag == 0x42d57f0u || tag == 0x42d59a0u || tag == 0x42d58d0u ||
             tag == 0x42d5850u || tag == 0x42d5840u || tag == 0x42d5960u) {
             fx6_render_row(appfw, p, label);
-        } else if (tag == 0x42d5a50u && !(w >= 140 && h >= 32)) {
+        } else if ((tag == 0x42d5a50u && !(w >= 140 && h >= 32)) || tag == 0x42d5800u) {
             uint32_t c = *(uint32_t *)(p + 0x18);
             if (c && c != 0xffffffffU)
                 fx6_icon_blit(appfw, x, y, w, h, c);

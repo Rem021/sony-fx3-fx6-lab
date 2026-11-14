@@ -34,8 +34,8 @@ static int g_fb_ready;
 
 static inline uint32_t fx6_px(const fx6_color *c)
 {
-    return ((uint32_t)c->r) | ((uint32_t)c->g << 8) |
-           ((uint32_t)c->b << 16) | ((uint32_t)c->a << 24);
+    return ((uint32_t)c->b) | ((uint32_t)c->g << 8) |
+           ((uint32_t)c->r << 16) | ((uint32_t)c->a << 24);
 }
 
 static void shim_fill(void *ctx, const fx6_color *col, const fx6_rect *r)

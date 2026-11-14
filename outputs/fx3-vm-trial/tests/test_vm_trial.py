@@ -636,11 +636,12 @@ class TestCGuestShimSourceInvariants(unittest.TestCase):
         self.assertIn("g_syms.ready = 1;", init_syms_body)
         self.assertGreaterEqual(init_syms_body.count("dlsym("), 12)
 
-        # Verify 16-byte aligned static scratch buffers + in-place vtable D1Ev destruction
+        # Verify 16-byte aligned 32-slot static ring pools + in-place vtable D1Ev destruction
+        self.assertIn("#define FX6_WIDGET_POOL_N 32u", self.guest_code)
         for buf_decl in (
-            "static unsigned char s_vs_buf[0x1400] __attribute__((aligned(16)));",
-            "static unsigned char s_vf_buf[0x1180] __attribute__((aligned(16)));",
-            "static unsigned char s_ic_buf[0x700]  __attribute__((aligned(16)));",
+            "static unsigned char s_vs_pool[FX6_WIDGET_POOL_N][0x1400] __attribute__((aligned(16)));",
+            "static unsigned char s_vf_pool[FX6_WIDGET_POOL_N][0x1180] __attribute__((aligned(16)));",
+            "static unsigned char s_ic_pool[FX6_WIDGET_POOL_N][0x700]  __attribute__((aligned(16)));",
             "static unsigned char s_dict_buf[0x80] __attribute__((aligned(16)));",
         ):
             self.assertIn(buf_decl, self.guest_code)
@@ -650,6 +651,7 @@ class TestCGuestShimSourceInvariants(unittest.TestCase):
 
         # Per-widget renderers must NOT call dlsym() or malloc()/calloc() per draw
         for fn_name in (
+            "fx6_blit_imagedata_rect_to_osd",
             "fx6_blit_imagedata_to_osd",
             "fx6_text_of",
             "fx6_render_string_rid",
@@ -661,6 +663,40 @@ class TestCGuestShimSourceInvariants(unittest.TestCase):
             self.assertNotIn("dlsym(", body, msg=f"Uncached dlsym() inside {fn_name}")
             self.assertNotIn("calloc(", body, msg=f"Per-widget calloc() leak inside {fn_name}")
             self.assertNotIn("malloc(", body, msg=f"Per-widget malloc() leak inside {fn_name}")
+
+    def test_phase19_notify_interposer_and_icon_blitter_invariants(self) -> None:
+        # 1) GenerateImageCommand::notify(bool) interposer + command drain before widget dtor
+        notify_body = _extract_c_function_body(self.guest_code, "_ZN5libra20GenerateImageCommand6notifyEb")
+        for sym in (
+            "(char *)self + 0x28",
+            "g_syms.removeFirst(list)",
+            "g_syms.imageOnLoad(img)",
+            "(uintptr_t)cb > 0x10000ULL",
+            "g_syms.rmGetInstance()",
+            "g_syms.rmGetAllocator(rm)",
+            "avt[2]",
+        ):
+            self.assertIn(sym, notify_body)
+
+        onload_body = _extract_c_function_body(self.guest_code, "_ZN5libra9ImageData6onLoadEv")
+        self.assertIn("if (!self) return;", onload_body)
+
+        for fn_name in ("fx6_render_string_rid", "fx6_render_string_desc", "fx6_fill_rect", "fx6_icon_blit"):
+            body = _extract_c_function_body(self.guest_code, fn_name)
+            self.assertIn("fx6_drain_commands(", body, msg=f"Missing fx6_drain_commands in {fn_name}")
+            self.assertLess(
+                body.index("fx6_drain_commands("),
+                body.rindex("fx6_destroy_widget_inplace("),
+                msg=f"{fn_name} must drain processCommands before destroying widget",
+            )
+
+        # 2) Multi-format RGBA4444 / RGBA8888 / A8 / ARGB4444 icon blitter & Big-6 per-cell RID table
+        blit_body = _extract_c_function_body(self.guest_code, "fx6_blit_imagedata_rect_to_osd")
+        for mode_tok in ("bmp_fmt == 2 || stella_fmt == 1", "bmp_fmt == 4 || stella_fmt == 8", "bmp_fmt == 3", "mode == 2", "mode == 3"):
+            self.assertIn(mode_tok, blit_body)
+        self.assertIn("0x23be8d8ULL", self.guest_code)
+        self.assertIn("0x42d5800u", self.guest_code)
+
 
 
 class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
@@ -917,6 +953,70 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
                     0,
                     msg=f"{launcher_name} --check failed: {proc.stdout}\n{proc.stderr}",
                 )
+
+
+class TestPhase19LiveIconAndFreezeFixes(unittest.TestCase):
+    """Offline tests for Phase 19 live icon blitting, LDEC GPE pool, GDB lock/resume, and APPFW_SEGV detection."""
+
+    def test_ldec_gpe_pool_and_rb_channel_fix(self) -> None:
+        grm_src = _strip_c_comments((TRIAL_DIR / "src" / "libgrm-fbinit25-542.c").read_text(encoding="utf-8"))
+        for sym in (
+            "#define FX6_GPE_POOL_PHYS_BASE 0x410524000UL",
+            "#define FX6_GPE_POOL_BYTES     0x000940000UL",
+            "gpe_zero_uc(",
+            "gpe_pool_alloc(",
+            "gpe_pool_free(",
+            "_ZN3grm3bmp10BitmapImpl7destroyEi",
+        ):
+            self.assertIn(sym, grm_src)
+
+        assist_src = _strip_c_comments((TRIAL_DIR / "src" / "fx6_next_stage_assist_log.c").read_text(encoding="utf-8"))
+        px_body = _extract_c_function_body(assist_src, "fx6_px")
+        self.assertIn("((uint32_t)c->b)", px_body)
+        self.assertIn("((uint32_t)c->r << 16)", px_body)
+
+    def test_gdb_lock_finally_continue_and_appfw_segv_status(self) -> None:
+        runner_src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+        for sym in (
+            "self.gdb_lock = threading.Lock()",
+            "def _gdb_pop_packets(",
+            "def _gdb_drain_async(",
+            "def _gdb_wait_stop_reply(",
+            's.sendall(b"$c#63")',
+            'stage = "CRASHED_APPFW_SEGV"',
+        ):
+            self.assertIn(sym, runner_src)
+
+        # Verify _pack_newc_entry overlay round-trip without touching real donor CPIO
+        payload = b"\x89UXC-ICON-TEST"
+        overlay = (
+            run_fx6_menu_trial._pack_newc_entry("usr/share/app/image_00_169.uxc", payload, mode=0o100644, ino=0x9001)
+            + run_fx6_menu_trial._pack_newc_entry("TRAILER!!!", b"", mode=0, ino=0)
+        )
+        overlay += b"\x00" * ((-len(overlay)) % 512)
+        with tempfile.TemporaryDirectory(prefix="fx6_phase19_test_") as td:
+            wd = Path(td)
+            cpio_path = wd / "overlay.cpio"
+            cpio_path.write_bytes(overlay)
+            with cpio_path.open("rb") as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
+                recs = build_live700.scan_newc_cpio(mm)
+            self.assertEqual([r["name"] for r in recs], ["usr/share/app/image_00_169.uxc", "TRAILER!!!"])
+            r0 = recs[0]
+            self.assertEqual(overlay[r0["offset"] : r0["offset"] + r0["bytes"]], payload)
+
+            # Verify get_status() detects APPFW_SEGV and refuses to report LIVE_GPE0_READY
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(wd / "sess")
+            sess.live_ready = True
+            sess.serial_log.write_text(
+                "FX6_LIVE_READY seq=1 page=0 sel=5 cat=2 item=0 depth=0 nz=331776 text_ok=27 fill=38 icon=6\n"
+                "APPFW_SEGV sig=11 addr=(nil) pc=0 sp=7f796d68b0\n",
+                encoding="utf-8",
+            )
+            st = sess.get_status()
+            self.assertFalse(st["live_ready"])
+            self.assertTrue(st["crashed"])
+            self.assertEqual(st["stage"], "CRASHED_APPFW_SEGV")
+            self.assertIn("APPFW_SEGV sig=11", st["crash_reason"])
 
 
 if __name__ == "__main__":

@@ -568,3 +568,22 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
 
 - **LDEC-Legal Hardware UXC Decompression (`gpe_pool_fallback = 0`)**: Backing `BitmapImpl::create` with physical `0x410524000..0x410e64000` unlocked `FX3_LDEC103_IOCTL` (`47`/`53`/`54`/`80` hardware decodes across `r10a..r10d`), elevating `r10a` Shooting HUD to **`14,274` px / `30` colors (`+8,823` new icon pixels vs `r9a`, `14,879` icon blits)**, `r10b` Big6 Home to **`346,050` px / `87` colors (`20,790` icon blits, `+14,894` diff vs `r9b`)**, `r10c` Big6 Sub-Dialog to **`46,267` px / `60` colors (`2,035` `0xffffaa00` amber, `15,814` icon blits)**, and `r10d` Menu 2nd Layer to **`434,579` px / `357` colors (`+270` category icon colors vs `r9d`, `37,473` diff, `11,507` icon blits)**.
 - **Full Report, Receipts, & 27 Dual-Mode Unit Tests**: See [`reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/README.md`](../../reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/summary.json).
+
+---
+
+## 11. Round 11: FX3 7.02 Kernel + Stage-B (`13/13` `P12` `libWlanResource.so`) + Authentic Simplified Chinese (`string_simplifiedchinese*.uxc` + `MYingHeiC-GB18030-SJ_wIcon.ltt`)
+
+`build_and_run_round.py --round 11 --lang schinese` expands the Stage-B `Verify-Before-Mount` SHA-256 gate in [`fx6-stage-a-verify.c`](fx6-stage-a-verify.c) from `12/12` to **`13/13`**, adding `P12` (`libWlanResource.so` fatal-guard patch at `0x70d4 -> mov w0, #0; ret`, SHA `47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995`, loaded via read-only AST extraction `_load_p12_wlan_spec()`), wires RAM-shadow `BK4\0` Airplane-Mode defaults (`0x019e0012=00`, `0x0051000f=00`, `0x01a20002=00`) + Simplified Chinese language enum `0x02cf019c=0x19` (`enum 0x2b45`, `LANGUAGE_CHINESE_SIMPLIFIED`) in [`libgrm-fbinit9.c`](libgrm-fbinit9.c), and stages `string_simplifiedchinese.uxc`, `string_simplifiedchinese_2.uxc`, `MYingHeiC-GB18030-SJ_wIcon.ltt`, and `fontlist.dat` (`FONT_S_CHINESE`) read-only (`os.O_RDONLY` with `FX3_FX6_FORCE_CLEAN_ROOM=1` CPIO fallback).
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 11 --lang schinese --initial-setting-done 1 --run-id r11d-c2-menu-3layer-schinese --duration 76 \
+  --run-dir /private/tmp/fx6-r11-runs/r11d \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:3200,0x0024:120:3200,0x0011:1300:4500,0x0030:120:900,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r11d-c2-menu-3layer-schinese \
+  --export-png-dir reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/assets
+```
+
+- **Live Language Bank Switching & `13/13` Stage-B Closure**: Native `appFw.so` resolves `BK4` `0x02cf019c = 0x19` -> `0x20da` -> `enum 0x2b45`, triggering live `UXEngine` resource bank switches `switchBank(ns=4, bank=23)` (`MYingHeiC-GB18030-SJ_wIcon.ltt`), `switchBank(ns=1, bank=19)` (`string_simplifiedchinese.uxc`), and `switchBank(ns=2, bank=19)` (`string_simplifiedchinese_2.uxc`), all returning `rc=1`.
+- **4 Live Multi-Scene Simplified Chinese QEMU Runs (`nop_count=0`, `crashes=0`)**: `r11a` Shooting HUD (`14,430` px / `30` colors / `3,038` px diff vs `r10a`), `r11b` FX3 `Fn` -> Big6 Home (`346,206` px / `87` colors / `11,928` px diff vs `r10b`), `r11c` FX3 `Fn` + `C1` + `ENTER` -> Big6 Setting Sub-Dialog (`44,968` px / `60` colors / `1,995` `0xffffaa00` amber px / `14,754` px diff vs `r10c`), and `r11d` FX3 `Fn` + `C2` + `MENU` -> Full Menu 2nd Layer (`435,667` px / `476` colors / `52,878` px diff vs `r10d` rendering crisp Simplified Chinese CJK labels `"拍摄"`, `"ND滤镜"`, `"质量/录制"` alongside `LDEC103` icons). See [`reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/README.md`](../../reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/summary.json).
+

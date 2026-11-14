@@ -21,6 +21,8 @@
  *   -DFX6_ROUND=10 Round 10:+ LDEC-legal /dev/mem GPE physical pool (0x410524000..0x410e64000),
  *                           image_00_169.uxc RGBA4444/RGBA8888/ARGB4444/A8 telemetry,
  *                           & P11 UIPC telemetry (0x92d2091c RTC + 0x91db059b Handle + 0x92840747 LUT/EI)
+ *   -DFX6_ROUND=11 Round 11:+ P12 libWlanResource.so guard + RAM-shadow BK4 Airplane-Mode defaults
+ *                           + Simplified Chinese UXC/CJK Font switching (0x02cf019c=0x19, enum 0x2b45, bank 19/23)
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -49,6 +51,10 @@
 
 #ifndef FX6_SHOOTING_MODE_CINE_EI
 #define FX6_SHOOTING_MODE_CINE_EI 0
+#endif
+
+#ifndef FX6_LANG_SCHINESE
+#define FX6_LANG_SCHINESE 0
 #endif
 
 #ifndef FX6_KEY_COUNT
@@ -119,6 +125,7 @@ static unsigned int draw_prim_count;
 static unsigned int fillrect_count;
 static unsigned int rectblit_count;
 static unsigned int draw_fb_count;
+static unsigned int g_font_create2_cnt;
 static uptr g_appfw_base;
 static void *g_app_self;
 
@@ -138,6 +145,10 @@ static unsigned int g_p11_develop_cnt;
 static unsigned int g_p11_audio_hdmi_032d_cnt;
 static unsigned int g_p11_rtc0_fd_ok;
 static int g_p11_rtc0_year;
+#if FX6_ROUND >= 11
+static unsigned int g_r11_lang_bk4_hits;
+static unsigned int g_r11_airplane_bk4_hits;
+#endif
 
 static unsigned int g_gpe_pool_alloc_cnt;
 static unsigned int g_gpe_pool_free_cnt;
@@ -308,6 +319,20 @@ static void emit_r10_telemetry(const char *reason) {
             g_p11_lut_dma_0165_cnt, g_p11_lut_toggle_0166_cnt,
             g_p11_develop_cnt, g_p11_audio_hdmi_032d_cnt,
             (unsigned int)FX6_SHOOTING_MODE_CINE_EI);
+#if FX6_ROUND >= 11
+    dprintf(2,
+            "FX6_R11_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+            "lang_bk4_hits=%u airplane_bk4_hits=%u font_create=%u glyph_blits=%u icon_blits=%u "
+            "p12_wlan=1 subst_color=0 subst_image=0\n",
+            reason ? reason : "periodic",
+            FX6_LANG_SCHINESE ? "schinese" : "en",
+            FX6_LANG_SCHINESE ? 0x19U : 0x00U,
+            g_r11_lang_bk4_hits,
+            g_r11_airplane_bk4_hits,
+            g_font_create2_cnt,
+            g_glyph_blit_count,
+            g_icon_blit_count);
+#endif
 }
 
 typedef struct {
@@ -2035,7 +2060,6 @@ int _ZN2ma4MMap3mapElm(void *self, long addr, unsigned long len) {
     return 0;
 }
 
-static unsigned int g_font_create2_cnt;
 void _ZN2ux6resmgr15ResourceManager10createFontERKN5alcor13FontAttributeERN5libra9RecordPtrE(
     const void *attr, void *rec
 ) {
@@ -2056,6 +2080,38 @@ void _ZN2ux6resmgr15ResourceManager10createFontERKN5alcor13FontAttributeERN5libr
                 c, rec, rec ? *(void **)rec : 0);
     }
 }
+
+#if FX6_ROUND >= 11
+int _ZN2ux6resmgr15ResourceManager10switchBankEth(unsigned short ns, unsigned char bank) {
+    typedef int (*fn_t)(unsigned short, unsigned char);
+    static fn_t real;
+    if (!real) {
+        void *h = dlopen("/usr/lib/libuxengine.so", RTLD_LAZY | RTLD_GLOBAL);
+        real = h ? (fn_t)dlsym(h, "_ZN2ux6resmgr15ResourceManager10switchBankEth") : 0;
+    }
+    int rc = real ? real(ns, bank) : -1;
+    void *lr = __builtin_return_address(0);
+    uptr lr_off = (g_appfw_base && (uptr)lr > g_appfw_base) ? ((uptr)lr - g_appfw_base) : 0UL;
+    dprintf(2, "FX6_R11_SWITCH_BANK ns=%u bank=%u rc=%d lr=%p(appFw+0x%lx)\n",
+            (unsigned int)ns, (unsigned int)bank, rc, lr, (unsigned long)lr_off);
+    return rc;
+}
+
+int _ZN2ux6resmgr15ResourceManager28sys_setFontNameWithNamespaceEt(unsigned short font_ns) {
+    typedef int (*fn_t)(unsigned short);
+    static fn_t real;
+    if (!real) {
+        void *h = dlopen("/usr/lib/libuxengine.so", RTLD_LAZY | RTLD_GLOBAL);
+        real = h ? (fn_t)dlsym(h, "_ZN2ux6resmgr15ResourceManager28sys_setFontNameWithNamespaceEt") : 0;
+    }
+    int rc = real ? real(font_ns) : -1;
+    void *lr = __builtin_return_address(0);
+    uptr lr_off = (g_appfw_base && (uptr)lr > g_appfw_base) ? ((uptr)lr - g_appfw_base) : 0UL;
+    dprintf(2, "FX6_R11_SET_FONT_NS font_ns=0x%04x rc=%d lr=%p(appFw+0x%lx)\n",
+            (unsigned int)font_ns, rc, lr, (unsigned long)lr_off);
+    return rc;
+}
+#endif
 
 __attribute__((constructor)) static void stub_ctor(void) {
     dprintf(2,
@@ -2149,6 +2205,15 @@ void Application_System_Init(const char *arg) {
             "FX6_STAGE_B_R10_BRIDGE round=%d faithful=%d nop_count=0 uxc=/usr/share/app/image_00_169.uxc "
             "gpe_pool=0x410524000..0x410e64000 p11_uipc=1\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL);
+#endif
+#if FX6_ROUND >= 11
+    dprintf(2,
+            "FX6_STAGE_B_R11_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 "
+            "airplane_mode=1 lang=%s bk4_lang=0x%02x schinese=%d\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL,
+            FX6_LANG_SCHINESE ? "schinese" : "en",
+            FX6_LANG_SCHINESE ? 0x19U : 0x00U,
+            FX6_LANG_SCHINESE ? 1 : 0);
 #endif
     if (real) real("AppConfig.so");
     dprintf(2, "FX6_APP_CONFIG_HOLD real_returned round=%d\n", FX6_ROUND);
@@ -2310,6 +2375,30 @@ static int fx6_bk4_lookup_span(uint32_t id, const uint8_t **out_ptr, uint32_t *o
         if (out_len) *out_len = 1U;
         return 1;
     }
+#if FX6_ROUND >= 11
+    if (id == 0x019e0012U || id == 0x0051000fU || id == 0x01a20002U) {
+        static const uint8_t k_fx6_r11_airplane_zero = 0x00U;
+        unsigned int ah = __atomic_add_fetch(&g_r11_airplane_bk4_hits, 1U, __ATOMIC_RELAXED);
+        if (ah <= 24U) {
+            dprintf(2, "FX6_BK4_R11_AIRPLANE_OVERRIDE hit=%u id=0x%08x val=0x00\n", ah, id);
+        }
+        if (out_ptr) *out_ptr = &k_fx6_r11_airplane_zero;
+        if (out_len) *out_len = 1U;
+        return 1;
+    }
+#if FX6_LANG_SCHINESE
+    if (id == 0x02cf019cU) {
+        static const uint8_t k_fx6_r11_lang_schinese = 0x19U; /* 25 -> 0x23f7ff0[15] (0x20da) -> enum 0x2b45 (CHINESE_SIMPLIFIED: bank 19 / font bank 23) */
+        unsigned int lh = __atomic_add_fetch(&g_r11_lang_bk4_hits, 1U, __ATOMIC_RELAXED);
+        if (lh <= 24U) {
+            dprintf(2, "FX6_R11_LANG_BK4 hit=%u id=0x02cf019c val=0x19 enum=0x2b45_CHINESE_SIMPLIFIED bank=19\n", lh);
+        }
+        if (out_ptr) *out_ptr = &k_fx6_r11_lang_schinese;
+        if (out_len) *out_len = 1U;
+        return 1;
+    }
+#endif
+#endif
     const uint8_t *blob = ensure_bk4_mapped();
     if (blob) {
         static const unsigned long k_rec_bases[2] = { 0UL, 872448UL };

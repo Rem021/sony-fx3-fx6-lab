@@ -349,6 +349,8 @@ class FX6LiveGpe0Session:
                     m_file = re.search(r"file=([^,]+)", dev_arg)
                     if m_file:
                         reloc = _relocate_migrated_path(m_file.group(1))
+                        if reloc.endswith("guest-hybrid-fx6kernel-capid-grmreal-live700.cpio") and Path(reloc).is_file():
+                            reloc = self._prepare_fresh_live700_cpio(Path(reloc))
                         dev_arg = dev_arg[:m_file.start(1)] + reloc + dev_arg[m_file.end(1):]
                     out_argv.extend(["-device", dev_arg])
                     i += 2
@@ -459,9 +461,32 @@ class FX6LiveGpe0Session:
         self.qmp_conn = s
         return s
 
+    def _prepare_fresh_live700_cpio(self, donor_cpio: Path) -> str:
+        """Build /private/tmp/fx6-live700-rebuilt.cpio with latest memory-safe src/*.c shim without mutating donor."""
+        try:
+            import shutil
+            import sys as _sys
+            if str(TRIAL_DIR) not in _sys.path:
+                _sys.path.insert(0, str(TRIAL_DIR))
+            import build_live700 as b700
+            tmp_so = Path("/private/tmp/fx6-live700-shim.so")
+            tmp_cpio = Path("/private/tmp/fx6-live700-rebuilt.cpio")
+            tmp_stamp = Path("/private/tmp/fx6-live700-rebuilt.sha256")
+            shim = b700.compile_shim(b700.DEFAULT_ZIG, tmp_so)
+            want_stamp = f"{donor_cpio}:{donor_cpio.stat().st_size}:{shim['sha256']}"
+            if tmp_cpio.is_file() and tmp_stamp.is_file() and tmp_stamp.read_text().strip() == want_stamp:
+                return str(tmp_cpio)
+            shutil.copyfile(donor_cpio, tmp_cpio)
+            b700.update_cpio_member(tmp_cpio, b700.MEMBER_NAME, tmp_so.read_bytes())
+            tmp_stamp.write_text(want_stamp)
+            return str(tmp_cpio)
+        except Exception as exc:
+            print(f"[FX6-LIVE-GPE0] Warning: fallback to donor CPIO ({exc})")
+            return str(donor_cpio)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..14] to guest physical 0x41e000e00 via persistent QEMU GDB stub."""
-        if not self.is_running() or not self.gdb_sock.exists():
+        """Write mb[0..14] to guest physical 0x41e000e00 via persistent QEMU GDB stub once guest is ready."""
+        if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready:
             return False
         mb_vals = (
             [self.table_off, self.table_rows, self.table_off2, self.table_rows2, 0, 0]
@@ -786,6 +811,8 @@ class FX6LiveGpe0Session:
                         self.last_text_ok = int(last[7])
                         self.last_fill_n = int(last[8])
                         self.last_icon_n = int(last[9])
+                    if self.cmd_seq > self.ack_seq and self._write_ctrl_mailbox():
+                        self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
                     self.capture_live_gpe0()
                 stage = "LIVE_GPE0_READY"
             elif "FX6_LIVE appfw=" in serial_window or "Application_System_Init" in serial_window:

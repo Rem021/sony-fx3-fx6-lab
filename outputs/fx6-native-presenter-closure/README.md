@@ -587,3 +587,25 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
 - **Live Language Bank Switching & `13/13` Stage-B Closure**: Native `appFw.so` resolves `BK4` `0x02cf019c = 0x19` -> `0x20da` -> `enum 0x2b45`, triggering live `UXEngine` resource bank switches `switchBank(ns=4, bank=23)` (`MYingHeiC-GB18030-SJ_wIcon.ltt`), `switchBank(ns=1, bank=19)` (`string_simplifiedchinese.uxc`), and `switchBank(ns=2, bank=19)` (`string_simplifiedchinese_2.uxc`), all returning `rc=1`.
 - **4 Live Multi-Scene Simplified Chinese QEMU Runs (`nop_count=0`, `crashes=0`)**: `r11a` Shooting HUD (`14,430` px / `30` colors / `3,038` px diff vs `r10a`), `r11b` FX3 `Fn` -> Big6 Home (`346,206` px / `87` colors / `11,928` px diff vs `r10b`), `r11c` FX3 `Fn` + `C1` + `ENTER` -> Big6 Setting Sub-Dialog (`44,968` px / `60` colors / `1,995` `0xffffaa00` amber px / `14,754` px diff vs `r10c`), and `r11d` FX3 `Fn` + `C2` + `MENU` -> Full Menu 2nd Layer (`435,667` px / `476` colors / `52,878` px diff vs `r10d` rendering crisp Simplified Chinese CJK labels `"拍摄"`, `"ND滤镜"`, `"质量/录制"` alongside `LDEC103` icons). See [`reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/README.md`](../../reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round11-fx6-on-fx3-schinese-p12-presenter/summary.json).
 
+---
+
+## 12. Round 12: Multi-CJK (`tchinese` / `japanese` / `schinese`) + `P4` ND-Clear + `INFRA_STATUS_CHECK` (`0x7052`) + 3rd-Layer Menu (`42` Dual-Mode Unit Tests)
+
+`build_and_run_round.py --round 12 --lang {en,english,tchinese,japanese,schinese}` generalizes the Stage-B (`13/13` SHA-256 `Verify-Before-Mount`) + `FX6_NATIVE_FAITHFUL=1` (`nop_count = 0`, `subst_color = subst_image = 0`) pipeline across **Traditional Chinese** (`0x02cf019c=0x18` -> `0x2b44`, `MYingHeiC-Big5HKSCS-SJ_wIcon.ltt`, `FONT_T_CHINESE`, `switchBank(ns=4/1/2 = 27/22/22)`), **Japanese** (`0x02cf019c=0x01` -> `0x2b30`, `HeiseiKakuGothW5-SJ_wIcon.ltt`, `FONT_JAPANESE`, `switchBank(ns=4/1/2 = 1/12/12)`), and **Simplified Chinese** (`0x02cf019c=0x19` -> `0x2b45`, `MYingHeiC-GB18030-SJ_wIcon.ltt`, `FONT_S_CHINESE`, `switchBank(ns=4/1/2 = 23/19/19)`), adds live `P4` ND-clear `.text` verification (`0x2111358 -> 0xd503201f`, `0x21113f0 -> 0x1400001b`, `FX6_STAGE_B_P4_ND_CLEAR_CHECK ok=1`) and `0x7052` (`INFRA_STATUS_CHECK`) dispatch in [`libgrm-fbinit9.c`](libgrm-fbinit9.c), and stages per-language UXC/LTT assets via strict `os.O_RDONLY` with `FX3_FX6_FORCE_CLEAN_ROOM=1` CPIO fallback in [`fx6-stage-a-verify.c`](fx6-stage-a-verify.c) and [`build_and_run_round.py`](build_and_run_round.py).
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 12 --lang japanese --initial-setting-done 1 --run-id r12d-c2-menu-3layer-japanese --duration 80 \
+  --run-dir /private/tmp/fx6-r12-runs/r12d \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:3200,0x0024:120:3200,0x0011:1300:4500,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r12d-c2-menu-3layer-japanese \
+  --export-png-dir reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/assets
+```
+
+- **4 End-to-End Multi-CJK QEMU Validations (`nop_count=0`, `crashes=0`, `160..161` TIDs)**:
+  - `r12a-fn-big6-tchinese`: FX3 `Fn` -> `31procam_big6_menu_home_presenter` (`sid=0x0a`, `tchinese`, `346,686` px / `87` colors / `11,252` px diff vs `r10b`, `19,972` icon blits, `16,033` glyph blits, `53` `LDEC103` ioctls).
+  - `r12b-fn-big6-japanese`: FX3 `Fn` -> `31procam_big6_menu_home_presenter` (`sid=0x0a`, `japanese`, `346,206` px / `87` colors / `11,961` px diff vs `r10b`, `21,831` icon blits, `17,589` glyph blits, `53` `LDEC103` ioctls).
+  - `r12c-p110-assignable-button-schinese`: FX3 `Fn` + `C2` + `INFRA_STATUS_CHECK` (`0x7052` -> `sid=0x2f`) + 5x `DOWN` -> `36procam_touch_status_camera_presenter` (`sid=0x30`, `schinese`, `437,403` px / `80` colors / `260` `0xffffaa00` amber px, `53` `LDEC103` ioctls).
+  - `r12d-c2-menu-3layer-japanese`: FX3 `Fn` + `C2` + `MENU` (`1300ms`) + `DOWN` + `RIGHT` + `RIGHT` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `japanese`, `437,575` px / `233` colors / `1,257` `0xffffaa00` amber px / `109,578` px diff vs `r10d`, `14,486` icon blits, `16,530` glyph blits, `86` `LDEC103` ioctls).
+- **Full Report, Receipts, & `42` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/README.md`](../../reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/summary.json).
+

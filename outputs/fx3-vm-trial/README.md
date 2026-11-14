@@ -32,6 +32,10 @@
   - **11 大分类 / 128 页中英双语菜单目录与即时搜索直跳（`GET /api/menu_catalog`、`POST /api/jump_page`）**：结构化暴露全部 11 个 FX6 分类、`15` 个旗舰入口（`Big-6 Home`、`Shooting -> Cine EI / S&Q / Shutter`、`Project -> Base Look / Rec Format`、`Paint/Look -> User 3D LUT`、`TC/Media -> Dual CFexpress Slot`、`Monitoring -> Output / Display`、`Audio -> XLR-H1 4ch`、`Thumbnail`、`Technical -> P4 ND Lock / IBIS`、`Network -> P12 Airplane Guard`、`Maintenance -> Version`、`Assignable Buttons Page 110`）以及全量 `fx6_all_pages[0..127]`（含 `zh_title`、`en_title`、`category`、`page_id`、`macro`、`fx3_bridge_note`）。Web 界面顶部新增 `🔍 搜索菜单 / Quick Jump (128 Pages)` 中英文实时搜索栏与一键直跳胶囊。
   - **按需机内三语（`EN -> ZH -> JA`）`GPE0` 像素差异校验器（`POST /api/verify_multilang_diff` & `GET` 缓存回执）**：Web 顶部新增 **`驗 / Verify EN-ZH-JA GPE0`** 按钮；触发后自动切换 `en -> zh -> ja`（并在 `finally` 中严格恢复用户原语言与页面），采集三帧 `1024x540` `GPE0` 物理显存的 `SHA-256` 及成对字节/像素差异（验证 `en_vs_zh_diff_bytes > 0`、`zh_vs_ja_diff_bytes > 0`、`ack_seq` 严格递增）。详情见 [Phase 49 报告](../../reports/2026-11-14-phase49-vm-trial-menu-search-hardening/README.md)。
 
+- **Phase 56 — 机内 Cinema Line 示波器（`📊 Waveform / IRE Scope`）、斑马纹（`70%` / `S-Log3 94%` / `100%`）、峰值对焦（`Peaking`）、画幅线框（`2.39:1` / `1.85:1` / `17:9` / `9:16` / `CenterCross`）与变形宽银幕反挤压（`1.33x` / `2.0x`）（2026-11-14）**：
+  - **机内 `GPE0`（`0x41e001000`）曝光与构图辅助叠加（`GET/POST /api/assist_tools`）**：无堆分配复用 `mb[27]` 位段（bits `12..24`，100% 保留 Phase 40 位 `0..11` 与 Phase 19/23/30/49 契约），在客体 `fx6_live_guest.c`（`fx6_render_phase56_assist_overlays`）直接将半透明电影遮幅/角标线（`2.39:1` / `1.85:1` / `17:9` / `9:16` / `CenterCross`）、45° 对角线斑马纹（`70%` / `94%_SLog3` / `100%`）、边缘峰值（`Red` / `Yellow` / `White`）与底部 Cinema Line 状态徽标写入 `0x41e001000` 物理显存，并支持变形镜头反挤压（`1.0x` / `1.33x` / `2.0x`）Web CSS 实时视口预览开关及 `fx6_on_fx3_camset_v1` `CAMSET` 导出/向后兼容导入。
+  - **实时 `GPE0` 物理显存亮度波形图与 RGB 直方图遥测（`GET /api/scope_stats`）**：编译态 C 快速核与纯 Python 逐位等价计算 `1024x540x4` 显存的 **32 列 IRE 亮度波形（`min`/`avg`/`max` `0..109%` IRE）**、**16 阶 R/G/B/Luma 直方图**、非零像素占比与高亮/琥珀像素计数（离线测试无 QEMU 时自动无缝回退至 PNG/合成参考帧），在 Web 控制台实时绘制 **`📊 Waveform / IRE Scope`** 双示波器面板。详情见 [Phase 56 报告](../../reports/2026-11-14-phase56-vm-trial-cinema-scopes-markers/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -82,7 +86,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ## 离线自动化单元测试（`tests/test_vm_trial.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 / Phase 49 端口隔离、多语言 `.uxc` 发现、11 分类 128 页双语菜单搜索直跳（`/api/menu_catalog` & `/api/jump_page`）、`EN/ZH/JA` `GPE0` 像素差自检（`/api/verify_multilang_diff`）、HTTP 客户端断连零堆栈加固（`HardenedThreadingHTTPServer`）、`.cube` 防崩清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁与回执校验（共 **81 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 / Phase 49 / Phase 56 端口隔离、多语言 `.uxc` 发现、11 分类 128 页双语菜单搜索直跳（`/api/menu_catalog` & `/api/jump_page`）、`EN/ZH/JA` `GPE0` 像素差自检（`/api/verify_multilang_diff`）、HTTP 客户端断连零堆栈加固（`HardenedThreadingHTTPServer`）、`.cube` 防崩清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁、Cinema Line 监看辅助叠加（`/api/assist_tools`）与实时 `GPE0` 亮度波形/直方图遥测（`/api/scope_stats`）（共 **103 项**测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

@@ -24,7 +24,10 @@
  *     mb[19] = lut_tint_meta ((user_slot_1to4 << 28) | (valid << 24) | (r << 16) | (g << 8) | b)
  *     mb[20..25] = active User LUT short name (24 bytes NUL-terminated)
  *     mb[26] = audio_db_packed (4x uint8_t (db + 60) for ch1..ch4 in [-60..+12])
- *     mb[27] = phase40_flags (bit0=xlr_attached, bit1=+48V, bits4..5=rtmd_ibis, bit8=bk4_locked, bit9=valid)
+ *     mb[27] = phase40+phase56_flags (bit0=xlr_attached, bit1=+48V, bits4..5=rtmd_ibis,
+ *              bit8=bk4_locked, bit9=phase40_valid, bits12..14=aspect_marker,
+ *              bits16..17=zebra_mode, bits18..19=peaking_mode, bits20..21=desqueeze,
+ *              bit24=phase56_valid)
  */
 #include "fx6_static_assist.h"
 
@@ -1964,6 +1967,212 @@ static void fx6_render_phase40_hud_strip(uint64_t appfw, uint32_t page, const ui
                                   0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
 }
 
+static void fx6_osd_blend_px(int x, int y, uint32_t rgb, uint32_t alpha_256) {
+    if (!g_osd || x < 0 || x >= FX6_W || y < 0 || y >= FX6_H) return;
+    unsigned long idx = (unsigned long)y * (unsigned long)FX6_W + (unsigned long)x;
+    uint32_t dst = g_osd[idx];
+    uint32_t dr = dst ? ((dst >> 16) & 0xffu) : 14u;
+    uint32_t dg = dst ? ((dst >> 8) & 0xffu) : 16u;
+    uint32_t db = dst ? (dst & 0xffu) : 20u;
+    uint32_t sr = (rgb >> 16) & 0xffu;
+    uint32_t sg = (rgb >> 8) & 0xffu;
+    uint32_t sb = rgb & 0xffu;
+    uint32_t inv = 256u - alpha_256;
+    uint32_t rr = (dr * inv + sr * alpha_256) >> 8;
+    uint32_t rg = (dg * inv + sg * alpha_256) >> 8;
+    uint32_t rb = (db * inv + sb * alpha_256) >> 8;
+    g_osd[idx] = 0xFF000000u | (rr << 16) | (rg << 8) | rb;
+}
+
+static void fx6_osd_blend_rect(int x, int y, int w, int h, uint32_t rgb, uint32_t alpha_256) {
+    if (!g_osd || w <= 0 || h <= 0) return;
+    int x0 = (x < 0) ? 0 : x;
+    int y0 = (y < 0) ? 0 : y;
+    int x1 = x + w;
+    int y1 = y + h;
+    if (x1 > FX6_W) x1 = FX6_W;
+    if (y1 > FX6_H) y1 = FX6_H;
+    for (int py = y0; py < y1; py++) {
+        for (int px = x0; px < x1; px++) {
+            fx6_osd_blend_px(px, py, rgb, alpha_256);
+        }
+    }
+}
+
+static void fx6_draw_corner_ticks(int x0, int y0, int x1, int y1, int tick_len, int thick, uint32_t rgb, uint32_t alpha_256) {
+    fx6_osd_blend_rect(x0, y0, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x0, y0, thick, tick_len, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - tick_len + 1, y0, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - thick + 1, y0, thick, tick_len, rgb, alpha_256);
+    fx6_osd_blend_rect(x0, y1 - thick + 1, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x0, y1 - tick_len + 1, thick, tick_len, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - tick_len + 1, y1 - thick + 1, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - thick + 1, y1 - tick_len + 1, thick, tick_len, rgb, alpha_256);
+}
+
+static void fx6_render_phase56_assist_overlays(uint64_t appfw, uint32_t page) {
+    (void)page;
+    if (!g_osd) return;
+    uint32_t aspect_idx    = (g_live_p40_flags >> 12) & 0x07u;
+    uint32_t zebra_idx     = (g_live_p40_flags >> 16) & 0x03u;
+    uint32_t peaking_idx   = (g_live_p40_flags >> 18) & 0x03u;
+    uint32_t desqueeze_idx = (g_live_p40_flags >> 20) & 0x03u;
+    if (aspect_idx == 0u && zebra_idx == 0u && peaking_idx == 0u && desqueeze_idx == 0u) {
+        return;
+    }
+
+    /* Flush all queued appFw/TextRM commands before pixel-level Peaking & Zebra passes */
+    if (g_syms.processCommands) g_syms.processCommands(0);
+
+    /* 1. Focus Peaking pass (real luma gradient edge detection on g_osd) */
+    if (peaking_idx > 0u) {
+        uint32_t peak_rgb = 0xEF4444u;
+        if (peaking_idx == 2u) peak_rgb = 0xFACC15u;
+        else if (peaking_idx == 3u) peak_rgb = 0xF8FAFCu;
+        uint8_t prev_luma[FX6_W];
+        for (int x = 0; x < FX6_W; x++) {
+            uint32_t v = g_osd[x];
+            if (!v) {
+                prev_luma[x] = 0u;
+            } else {
+                uint32_t r = (v >> 16) & 0xffu, g = (v >> 8) & 0xffu, b = v & 0xffu;
+                prev_luma[x] = (uint8_t)((54u * r + 183u * g + 19u * b) >> 8);
+            }
+        }
+        for (int y = 1; y < FX6_H; y++) {
+            uint32_t *row = g_osd + (unsigned long)y * (unsigned long)FX6_W;
+            int left_luma = (int)prev_luma[0];
+            for (int x = 1; x < FX6_W; x++) {
+                uint32_t v = row[x];
+                int cur_luma = 0;
+                if (v) {
+                    int r = (int)((v >> 16) & 0xffu);
+                    int g = (int)((v >> 8) & 0xffu);
+                    int b = (int)(v & 0xffu);
+                    cur_luma = (54 * r + 183 * g + 19 * b) >> 8;
+                }
+                int up_luma = (int)prev_luma[x];
+                int dv = (cur_luma >= up_luma) ? (cur_luma - up_luma) : (up_luma - cur_luma);
+                int dh = (cur_luma >= left_luma) ? (cur_luma - left_luma) : (left_luma - cur_luma);
+                prev_luma[x] = (uint8_t)cur_luma;
+                left_luma = cur_luma;
+                if (dv + dh >= 96) {
+                    fx6_osd_blend_px(x, y, peak_rgb, 192u);
+                }
+            }
+        }
+    }
+
+    /* 2. Cinema Line Zebra Overlay (45-deg diagonal stripes over highlight thresholds) */
+    if (zebra_idx > 0u) {
+        int luma_thresh = 178; /* 70% */
+        if (zebra_idx == 2u) luma_thresh = 220;      /* 94%_SLog3 */
+        else if (zebra_idx == 3u) luma_thresh = 242; /* 100% */
+        for (int y = 0; y < FX6_H; y++) {
+            uint32_t *row = g_osd + (unsigned long)y * (unsigned long)FX6_W;
+            for (int x = 0; x < FX6_W; x++) {
+                uint32_t v = row[x];
+                if (!v) continue;
+                int r = (int)((v >> 16) & 0xffu);
+                int g = (int)((v >> 8) & 0xffu);
+                int b = (int)(v & 0xffu);
+                int luma = (54 * r + 183 * g + 19 * b) >> 8;
+                if (luma >= luma_thresh) {
+                    if (((x + y) & 7) < 3) {
+                        fx6_osd_blend_px(x, y, 0xF59E0Bu, 176u);
+                    } else {
+                        fx6_osd_blend_px(x, y, 0x111827u, 112u);
+                    }
+                }
+            }
+        }
+    }
+
+    /* 3. Aspect Ratio Frame Guides (semi-transparent mattes + crisp lines + corner ticks) */
+    if (aspect_idx == 1u) {
+        /* 2.39:1 CinemaScope */
+        fx6_osd_blend_rect(0, 0, FX6_W, 56, 0x000000u, 96u);
+        fx6_osd_blend_rect(0, 484, FX6_W, FX6_H - 484, 0x000000u, 96u);
+        fx6_osd_blend_rect(12, 56, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(12, 482, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_draw_corner_ticks(12, 56, 1011, 483, 24, 3, 0x22D3EEu, 244u);
+    } else if (aspect_idx == 2u) {
+        /* 1.85:1 Flat Theatrical */
+        fx6_osd_blend_rect(0, 0, 12, FX6_H, 0x000000u, 96u);
+        fx6_osd_blend_rect(1012, 0, 12, FX6_H, 0x000000u, 96u);
+        fx6_osd_blend_rect(12, 4, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(12, 534, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(12, 4, 2, 532, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(1010, 4, 2, 532, 0xE0F2FEu, 224u);
+        fx6_draw_corner_ticks(12, 4, 1011, 535, 24, 3, 0x22D3EEu, 244u);
+    } else if (aspect_idx == 3u) {
+        /* 17:9 DCI 4K + 90% Safe Action Corner Ticks */
+        fx6_osd_blend_rect(8, 4, 1008, 2, 0x38BDF8u, 224u);
+        fx6_osd_blend_rect(8, 534, 1008, 2, 0x38BDF8u, 224u);
+        fx6_osd_blend_rect(8, 4, 2, 532, 0x38BDF8u, 224u);
+        fx6_osd_blend_rect(1014, 4, 2, 532, 0x38BDF8u, 224u);
+        fx6_draw_corner_ticks(52, 27, 971, 512, 22, 2, 0xA7F3D0u, 216u);
+    } else if (aspect_idx == 4u) {
+        /* 9:16 Vertical Crop */
+        fx6_osd_blend_rect(0, 0, 364, FX6_H, 0x000000u, 88u);
+        fx6_osd_blend_rect(660, 0, FX6_W - 660, FX6_H, 0x000000u, 88u);
+        fx6_osd_blend_rect(364, 8, 296, 2, 0xFDE047u, 232u);
+        fx6_osd_blend_rect(364, 530, 296, 2, 0xFDE047u, 232u);
+        fx6_osd_blend_rect(364, 8, 2, 524, 0xFDE047u, 232u);
+        fx6_osd_blend_rect(658, 8, 2, 524, 0xFDE047u, 232u);
+        fx6_draw_corner_ticks(364, 8, 659, 531, 22, 3, 0x22D3EEu, 244u);
+    } else if (aspect_idx == 5u) {
+        /* CenterCross + Rule-of-Thirds Ticks */
+        fx6_osd_blend_rect(484, 269, 22, 2, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(518, 269, 22, 2, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(511, 242, 2, 22, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(511, 276, 2, 22, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(510, 268, 4, 4, 0xF59E0Bu, 240u);
+        fx6_draw_corner_ticks(341, 180, 682, 360, 14, 2, 0xE0F2FEu, 176u);
+    }
+
+    /* 4. Cinema Line Assist Tools HUD Badge Strip (bottom-center, crystal clear) */
+    int hx = 220, hy = 508, hw = 584, hh = 26;
+    fx6_osd_fill_rect(hx, hy, hw, hh, 0xFF0B1220u);
+    fx6_osd_border_rect(hx, hy, hw, hh, 0xFF22D3EEu);
+    if (zebra_idx > 0u) {
+        for (int zy = 0; zy < 16; zy++) {
+            for (int zx = 0; zx < 18; zx++) {
+                uint32_t zc = (((zx + zy) & 5) < 3) ? 0xFFF59E0Bu : 0xFF1F2937u;
+                g_osd[(unsigned long)(hy + 5 + zy) * (unsigned long)FX6_W + (unsigned long)(hx + 6 + zx)] = zc;
+            }
+        }
+    } else {
+        fx6_osd_fill_rect(hx + 6, hy + 5, 18, 16, 0xFF1E293Bu);
+    }
+    if (peaking_idx > 0u) {
+        uint32_t pc = (peaking_idx == 2u) ? 0xFFFACC15u : ((peaking_idx == 3u) ? 0xFFF8FAFCu : 0xFFEF4444u);
+        fx6_osd_fill_rect(hx + 28, hy + 5, 10, 16, pc);
+    } else {
+        fx6_osd_fill_rect(hx + 28, hy + 5, 10, 16, 0xFF1E293Bu);
+    }
+
+    static const char * const k_aspect_lbl[6] = { "Off", "2.39:1", "1.85:1", "17:9", "9:16", "Cross" };
+    static const char * const k_zebra_lbl[4]  = { "Off", "70%", "94%S3", "100%" };
+    static const char * const k_peak_lbl[4]   = { "Off", "Red", "Yel", "Wht" };
+    static const char * const k_desq_lbl[4]   = { "1.0x", "1.33x", "2.0x", "1.0x" };
+
+    char assist_lbl[80];
+    unsigned pos = 0u;
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "MK:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_aspect_lbl[aspect_idx < 6u ? aspect_idx : 0u]);
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "  ZEB:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_zebra_lbl[zebra_idx & 3u]);
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "  PK:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_peak_lbl[peaking_idx & 3u]);
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "  DSQ:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_desq_lbl[desqueeze_idx & 3u]);
+    (void)pos;
+
+    fx6_render_string_text_styled(appfw, hx + 44, hy + 2, hw - 52, 22, assist_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -2178,6 +2387,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
         break;
     }
     fx6_render_phase40_hud_strip(appfw, page, cell_vals);
+    fx6_render_phase56_assist_overlays(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */

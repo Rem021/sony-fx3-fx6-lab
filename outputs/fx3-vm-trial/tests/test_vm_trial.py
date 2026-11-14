@@ -2865,5 +2865,500 @@ class TestPhase49MenuCatalogMultilangDiffAndSocketHardening(unittest.TestCase):
                 srv.server_close()
 
 
+class TestPhase56AssistToolsScopesAndMarkers(unittest.TestCase):
+    @staticmethod
+    def _make_grad_amber_frame() -> bytes:
+        w = run_fx6_menu_trial.GPE0_W
+        h = run_fx6_menu_trial.GPE0_H
+        raw = bytearray(run_fx6_menu_trial.GPE0_BYTES)
+        u32 = memoryview(raw).cast("I")
+        for x in range(w):
+            v = (x * 255) // (w - 1)
+            px = 0xFF000000 | (v << 16) | (v << 8) | v
+            for y in range(0, 60):
+                u32[y * w + x] = px
+        # Sony Amber band in rows 100..120, cols 100..200
+        for y in range(100, 120):
+            row = y * w
+            for x in range(100, 200):
+                u32[row + x] = 0xFFFF8C10
+        return bytes(raw)
+
+    def test_p56_01_assist_tools_specs_and_defaults(self) -> None:
+        specs = run_fx6_menu_trial.ASSIST_TOOLS_SPECS
+        self.assertEqual(set(specs.keys()), {"aspect_marker", "zebra_mode", "peaking_mode", "desqueeze"})
+        self.assertEqual(specs["aspect_marker"]["choices"], ("Off", "2.39:1", "1.85:1", "17:9", "9:16", "CenterCross"))
+        self.assertEqual(specs["zebra_mode"]["choices"], ("Off", "70%", "94%_SLog3", "100%"))
+        self.assertEqual(specs["peaking_mode"]["choices"], ("Off", "Red", "Yellow", "White"))
+        self.assertEqual(specs["desqueeze"]["choices"], ("1.0x", "1.33x", "2.0x"))
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_def_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            self.assertEqual(
+                sess.get_assist_tools(),
+                {"aspect_marker": "Off", "zebra_mode": "Off", "peaking_mode": "Off", "desqueeze": "1.0x"},
+            )
+
+    def test_p56_02_normalize_assist_field_aliases_and_rejections(self) -> None:
+        norm = run_fx6_menu_trial.normalize_assist_field
+        self.assertEqual(norm("aspect_marker", "2.39"), "2.39:1")
+        self.assertEqual(norm("aspect_marker", "scope"), "2.39:1")
+        self.assertEqual(norm("aspect_marker", "vertical"), "9:16")
+        self.assertEqual(norm("aspect_marker", "center_cross"), "CenterCross")
+        self.assertEqual(norm("zebra_mode", "94%"), "94%_SLog3")
+        self.assertEqual(norm("zebra_mode", "slog3"), "94%_SLog3")
+        self.assertEqual(norm("peaking_mode", "red"), "Red")
+        self.assertEqual(norm("desqueeze", "2x"), "2.0x")
+        self.assertEqual(norm("desqueeze", "1.33"), "1.33x")
+        for bad in (True, False, None, 123, "", "   ", "4:3_unknown"):
+            self.assertIsNone(norm("aspect_marker", bad))
+        self.assertIsNone(norm("unknown_field", "Off"))
+
+    def test_p56_03_validate_assist_tools_patch_partial_reset_and_fail_closed(self) -> None:
+        val = run_fx6_menu_trial.validate_assist_tools_patch
+        ok, upd, err = val({"aspect_marker": "2.39:1", "zebra_mode": "70%"})
+        self.assertTrue(ok)
+        self.assertIsNone(err)
+        self.assertEqual(upd, {"aspect_marker": "2.39:1", "zebra_mode": "70%"})
+
+        ok_rst, upd_rst, _ = val({"reset": True, "peaking_mode": "Yellow"})
+        self.assertTrue(ok_rst)
+        self.assertEqual(
+            upd_rst,
+            {"aspect_marker": "Off", "zebra_mode": "Off", "peaking_mode": "Yellow", "desqueeze": "1.0x"},
+        )
+
+        for bad_payload in (["2.39:1"], "Off", {"desqueeze": "3.0x"}, {"zebra_mode": True}):
+            ok_b, upd_b, err_b = val(bad_payload)
+            self.assertFalse(ok_b)
+            self.assertEqual(upd_b, {})
+            self.assertIsInstance(err_b, dict)
+            self.assertFalse(err_b["ok"])
+
+    def test_p56_04_mailbox_word27_phase56_bit_packing_and_phase40_preservation(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_mb_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.page = 16
+            sess.xlr_phantom_48v = True
+            sess.xlr_handle_attached = True
+            sess.rtmd_0xe304_ibis_lock = "OFF_CENTER_LOCKED"
+            sess.aspect_marker = "9:16"       # idx 4 -> bits 12..14
+            sess.zebra_mode = "94%_SLog3"    # idx 2 -> bits 16..17
+            sess.peaking_mode = "Yellow"     # idx 2 -> bits 18..19
+            sess.desqueeze = "2.0x"          # idx 2 -> bits 20..21
+            sess.cmd_seq = 10
+            raw = sess._pack_mailbox_bytes()
+            self.assertEqual(len(raw), 28 * 4)
+            words = struct.unpack("<28I", raw)
+            self.assertEqual(words[0], 0x4658364C)
+            self.assertEqual(words[1], 10)
+            self.assertEqual(words[3], 16)
+            w27 = words[27]
+            # Phase 40 lower bits 0..11 preserved: attached=1, phantom=2, ibis_mode=1<<4, valid=0x300
+            self.assertEqual(w27 & 0x03, 0x03)
+            self.assertEqual((w27 >> 4) & 0x03, 1)  # OFF_CENTER_LOCKED idx 1
+            # Phase 56 bits:
+            self.assertEqual((w27 >> 12) & 0x07, 4)  # 9:16
+            self.assertEqual((w27 >> 16) & 0x03, 2)  # 94%_SLog3
+            self.assertEqual((w27 >> 18) & 0x03, 2)  # Yellow
+            self.assertEqual((w27 >> 20) & 0x03, 2)  # 2.0x
+            self.assertEqual((w27 >> 24) & 0x01, 1)  # phase56_valid
+
+    def test_p56_05_guest_c_source_phase56_overlay_and_no_alloc_invariants(self) -> None:
+        guest_src = (TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8")
+        self.assertIn("fx6_render_phase56_assist_overlays", guest_src)
+        self.assertIn("fx6_render_phase56_assist_overlays(appfw, page);", guest_src)
+        for tok in ("2.39:1", "1.85:1", "17:9", "9:16", "94%S3", "MK:", "ZEB:", "PK:", "DSQ:"):
+            self.assertIn(tok, guest_src, msg=f"Missing guest C overlay label: {tok}")
+        start = guest_src.index("fx6_render_phase40_hud_strip")
+        end = guest_src.index("fx6_state_hash")
+        section = guest_src[start:end]
+        for forbidden in ("malloc(", "calloc(", "realloc(", "dlsym(", " abs("):
+            self.assertNotIn(forbidden, section)
+
+    def test_p56_06_compute_scope_stats_all_zero_and_all_white_ire_bounds(self) -> None:
+        zero_buf = bytes(run_fx6_menu_trial.GPE0_BYTES)
+        st_z = run_fx6_menu_trial.compute_gpe0_scope_stats(zero_buf)
+        self.assertTrue(st_z["ok"])
+        self.assertEqual(st_z["nonzero_pixels"], 0)
+        self.assertEqual(st_z["nonzero_ratio"], 0.0)
+        self.assertEqual(st_z["highlight_pixels"], 0)
+        self.assertEqual(st_z["amber_pixels"], 0)
+        self.assertEqual(st_z["waveform_columns"], 32)
+        self.assertEqual(st_z["histograms"]["luma"][0], run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        self.assertTrue(all(col["min_ire"] == 0.0 and col["max_ire"] == 0.0 for col in st_z["waveform"]))
+
+        white_buf = (b"\xff\xff\xff\xff") * (run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        st_w = run_fx6_menu_trial.compute_gpe0_scope_stats(white_buf)
+        self.assertEqual(st_w["nonzero_ratio"], 1.0)
+        self.assertEqual(st_w["highlight_pixels"], run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        self.assertEqual(st_w["histograms"]["luma"][15], run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        self.assertEqual(st_w["waveform"][0]["max_ire"], 109.0)
+
+    def test_p56_07_compute_scope_stats_amber_and_gradient_parity_c_vs_python(self) -> None:
+        raw = self._make_grad_amber_frame()
+        st_c = run_fx6_menu_trial.compute_gpe0_scope_stats(raw, use_fast=True)
+        st_py = run_fx6_menu_trial.compute_gpe0_scope_stats(raw, use_fast=False)
+        self.assertEqual(st_c, st_py)
+        total_px = run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H
+        for ch in ("r", "g", "b", "luma"):
+            self.assertEqual(len(st_c["histograms"][ch]), 16)
+            self.assertEqual(sum(st_c["histograms"][ch]), total_px)
+        self.assertEqual(st_c["amber_pixels"], 20 * 100)
+        self.assertGreater(st_c["highlight_pixels"], 0)
+        self.assertLess(st_c["waveform"][0]["avg_ire"], st_c["waveform"][31]["avg_ire"])
+
+    def test_p56_08_compute_scope_stats_rejects_short_buffer(self) -> None:
+        with self.assertRaises(ValueError):
+            run_fx6_menu_trial.compute_gpe0_scope_stats(b"\x00" * 1024)
+
+    def test_p56_09_png_roundtrip_to_raw_gpe0_and_synthetic_fallback(self) -> None:
+        raw = bytearray(run_fx6_menu_trial.GPE0_BYTES)
+        u32_in = memoryview(raw).cast("I")
+        # pixel 0 stays 0 (dark bg 14,16,20 in PNG -> restored as 0); pixel 1 bright Sony amber
+        u32_in[1] = 0xFFFF8C10
+        png, nz = run_fx6_menu_trial.gpe0_raw_to_png(bytes(raw))
+        self.assertEqual(nz, 1)
+        decoded = run_fx6_menu_trial._png_to_raw_gpe0(png)
+        self.assertEqual(len(decoded), run_fx6_menu_trial.GPE0_BYTES)
+        u32 = memoryview(decoded).cast("I")
+        self.assertEqual(u32[0], 0)
+        self.assertEqual(u32[1], 0xFFFF8C10)
+
+        syn = run_fx6_menu_trial._synthetic_fallback_gpe0_raw()
+        self.assertEqual(len(syn), run_fx6_menu_trial.GPE0_BYTES)
+        st_syn = run_fx6_menu_trial.compute_gpe0_scope_stats(syn)
+        self.assertGreater(st_syn["nonzero_pixels"], 10000)
+
+    def test_p56_10_session_set_assist_tools_valid_and_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_sess_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            r1 = sess.set_assist_tools({"aspect_marker": "2.39:1", "zebra_mode": "70%", "peaking_mode": "Red", "desqueeze": "1.33x"})
+            self.assertTrue(r1["ok"])
+            self.assertEqual(
+                r1["assist_tools"],
+                {"aspect_marker": "2.39:1", "zebra_mode": "70%", "peaking_mode": "Red", "desqueeze": "1.33x"},
+            )
+            self.assertEqual(r1["status"]["assist_tools"], r1["assist_tools"])
+
+            r_bad = sess.set_assist_tools({"aspect_marker": "invalid_aspect", "desqueeze": "2.0x"})
+            self.assertFalse(r_bad["ok"])
+            # State must not partially mutate on error
+            self.assertEqual(sess.get_assist_tools()["aspect_marker"], "2.39:1")
+            self.assertEqual(sess.get_assist_tools()["desqueeze"], "1.33x")
+
+    def test_p56_11_session_get_scope_stats_fallback_offline_and_clean_room(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_fb_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            st = sess.get_scope_stats()
+            self.assertTrue(st["ok"])
+            self.assertEqual(st["waveform_columns"], 32)
+            self.assertEqual(st["histogram_bins"], 16)
+            self.assertEqual(st["ire_range"], [0.0, 109.0])
+            self.assertIn(st["source"], ("fallback_png", "synthetic_fallback"))
+
+            orig_rep = run_fx6_menu_trial.FALLBACK_GPE0_PNG
+            orig_cache = run_fx6_menu_trial._FALLBACK_RAW_CACHE
+            run_fx6_menu_trial.FALLBACK_GPE0_PNG = Path(td) / "missing.png"
+            run_fx6_menu_trial._FALLBACK_RAW_CACHE = None
+            try:
+                sess.last_png = b""
+                st_syn = sess.get_scope_stats()
+                self.assertEqual(st_syn["source"], "synthetic_fallback")
+                self.assertGreater(st_syn["nonzero_ratio"], 0.0)
+            finally:
+                run_fx6_menu_trial.FALLBACK_GPE0_PNG = orig_rep
+                run_fx6_menu_trial._FALLBACK_RAW_CACHE = orig_cache
+
+    def test_p56_12_session_get_scope_stats_live_gpe0_source(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_live_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            raw = self._make_grad_amber_frame()
+            sess.last_raw_gpe0 = raw
+            st = sess.get_scope_stats()
+            self.assertEqual(st["source"], "live_gpe0")
+            self.assertEqual(st["amber_pixels"], 2000)
+            self.assertEqual(st["frame_sha256"], hashlib.sha256(raw).hexdigest())
+
+    def test_p56_13_camset_export_and_import_roundtrip_with_assist_tools(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_camset_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({
+                "aspect_marker": "2.39:1",
+                "zebra_mode": "94%_SLog3",
+                "peaking_mode": "Yellow",
+                "desqueeze": "2.0x",
+            })
+            preset = sess.export_camset_preset()
+            self.assertEqual(
+                preset["assist_tools"],
+                {"aspect_marker": "2.39:1", "zebra_mode": "94%_SLog3", "peaking_mode": "Yellow", "desqueeze": "2.0x"},
+            )
+            sess.set_assist_tools({"reset": True})
+            self.assertEqual(sess.get_assist_tools()["aspect_marker"], "Off")
+
+            imp = sess.import_camset_preset(preset)
+            self.assertTrue(imp["ok"])
+            self.assertEqual(sess.get_assist_tools(), preset["assist_tools"])
+
+    def test_p56_14_camset_backward_compatibility_without_assist_tools_and_invalid_rejected(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_camcompat_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            preset = sess.export_camset_preset()
+            # Build legacy Phase 40 preset without assist_tools
+            legacy_body = {k: v for k, v in preset.items() if k not in ("assist_tools", "preset_sha256")}
+            canon = json.dumps(legacy_body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+            legacy_body["preset_sha256"] = hashlib.sha256(canon).hexdigest()
+            imp_ok = sess.import_camset_preset(legacy_body)
+            self.assertTrue(imp_ok["ok"])
+            self.assertEqual(sess.get_assist_tools()["aspect_marker"], "Off")
+
+            # Tampered / invalid assist_tools must fail closed
+            bad = dict(legacy_body)
+            bad.pop("preset_sha256")
+            bad["assist_tools"] = {"aspect_marker": "bad_marker"}
+            bad_canon = json.dumps(bad, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+            bad["preset_sha256"] = hashlib.sha256(bad_canon).hexdigest()
+            imp_bad = sess.import_camset_preset(bad)
+            self.assertFalse(imp_bad["ok"])
+
+    def test_p56_15_p4_nd_lock_still_enforced_with_assist_tools_active(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_p4_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({
+                "aspect_marker": "1.85:1",
+                "zebra_mode": "70%",
+                "peaking_mode": "White",
+                "desqueeze": "1.33x",
+            })
+            r_nd = sess.set_cinema_param("nd", preset="1/16 ND")
+            self.assertTrue(r_nd["ok"])
+            self.assertTrue(r_nd["locked"])
+            self.assertEqual(r_nd["value"], "Clear [FX3 P4 Locked]")
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertGreaterEqual(sess.p4_lock_attempts, 1)
+
+    def test_p56_16_http_api_get_and_post_assist_tools(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_at_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                g0 = json.loads(urllib.request.urlopen(f"{base}/api/assist_tools", timeout=5).read().decode("utf-8"))
+                self.assertTrue(g0["ok"])
+                self.assertEqual(g0["assist_tools"]["aspect_marker"], "Off")
+                self.assertIn("aspect_marker", g0["specs"])
+
+                req = urllib.request.Request(
+                    f"{base}/api/assist_tools",
+                    data=json.dumps({
+                        "aspect_marker": "2.39:1",
+                        "zebra_mode": "70%",
+                        "peaking_mode": "Red",
+                        "desqueeze": "2.0x",
+                    }).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                p_res = json.loads(urllib.request.urlopen(req, timeout=5).read().decode("utf-8"))
+                self.assertTrue(p_res["ok"])
+                self.assertEqual(p_res["assist_tools"]["aspect_marker"], "2.39:1")
+                self.assertEqual(p_res["status"]["assist_tools"]["desqueeze"], "2.0x")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_17_http_api_post_assist_tools_malformed_and_invalid_400(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_bad_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({"aspect_marker": "17:9"})
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                for payload in (b"{malformed", json.dumps(["not_obj"]).encode("utf-8"), json.dumps({"zebra_mode": "99%"}).encode("utf-8")):
+                    req = urllib.request.Request(
+                        f"{base}/api/assist_tools",
+                        data=payload,
+                        headers={"Content-Type": "application/json"},
+                        method="POST",
+                    )
+                    with self.assertRaises(urllib.error.HTTPError) as ctx:
+                        urllib.request.urlopen(req, timeout=5)
+                    self.assertEqual(ctx.exception.code, 400)
+                self.assertEqual(sess.get_assist_tools()["aspect_marker"], "17:9")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_18_http_api_get_scope_stats_live_and_fallback(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_sc_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.last_raw_gpe0 = self._make_grad_amber_frame()
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                st = json.loads(urllib.request.urlopen(f"{base}/api/scope_stats?refresh=1", timeout=5).read().decode("utf-8"))
+                self.assertTrue(st["ok"])
+                self.assertEqual(st["source"], "live_gpe0")
+                self.assertEqual(st["waveform_columns"], 32)
+                self.assertEqual(len(st["waveform"]), 32)
+                self.assertEqual(st["histogram_bins"], 16)
+                self.assertEqual(st["amber_pixels"], 2000)
+                self.assertGreater(st["nonzero_ratio"], 0.0)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_19_http_api_status_includes_assist_tools(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_st_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({"aspect_marker": "CenterCross", "peaking_mode": "White"})
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                st = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{port}/api/status", timeout=5).read().decode("utf-8"))
+                self.assertEqual(st["assist_tools"]["aspect_marker"], "CenterCross")
+                self.assertEqual(st["assist_tools"]["peaking_mode"], "White")
+                self.assertIn("cinema_params", st)
+                self.assertIn("stage_b_telemetry", st)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_20_html_ui_contains_phase56_scope_and_assist_controls(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_html_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                html = urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=5).read().decode("utf-8")
+                for marker in (
+                    "📊 Waveform / IRE Scope",
+                    "assist-aspect-select",
+                    "assist-zebra-select",
+                    "assist-peaking-select",
+                    "assist-desqueeze-select",
+                    "btn-desqueeze-preview",
+                    "waveform-scope-panel",
+                    "scope-waveform-canvas",
+                    "scope-hist-canvas",
+                    "scope-stats-readout",
+                    "/api/assist_tools",
+                    "/api/scope_stats",
+                    "applyDesqueezePreview",
+                    "refreshScopeStats",
+                ):
+                    self.assertIn(marker, html, msg=f"Missing Phase 56 HTML marker: {marker}")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_21_camset_http_roundtrip_with_assist_tools(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_hcam_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                req_set = urllib.request.Request(
+                    f"{base}/api/assist_tools",
+                    data=json.dumps({"aspect_marker": "9:16", "zebra_mode": "100%", "desqueeze": "1.33x"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                urllib.request.urlopen(req_set, timeout=5).read()
+                exp = json.loads(urllib.request.urlopen(f"{base}/api/preset_export", timeout=5).read().decode("utf-8"))
+                self.assertEqual(exp["assist_tools"]["aspect_marker"], "9:16")
+
+                req_rst = urllib.request.Request(
+                    f"{base}/api/assist_tools",
+                    data=json.dumps({"reset": True}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                urllib.request.urlopen(req_rst, timeout=5).read()
+
+                req_imp = urllib.request.Request(
+                    f"{base}/api/preset_import",
+                    data=json.dumps(exp).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                imp = json.loads(urllib.request.urlopen(req_imp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(imp["ok"])
+                self.assertEqual(imp["status"]["assist_tools"]["aspect_marker"], "9:16")
+                self.assertEqual(imp["status"]["assist_tools"]["zebra_mode"], "100%")
+                self.assertEqual(imp["status"]["assist_tools"]["desqueeze"], "1.33x")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_22_backward_compatibility_phases_19_23_30_40_49_endpoints(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_compat_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                for ep in ("/api/pages128", "/api/lang", "/api/fx3_button", "/api/cinema_param", "/api/lut_upload", "/api/menu_catalog", "/api/assist_tools", "/api/scope_stats"):
+                    res = json.loads(urllib.request.urlopen(f"{base}{ep}", timeout=5).read().decode("utf-8"))
+                    self.assertIsNotNone(res)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+
 if __name__ == "__main__":
     unittest.main()

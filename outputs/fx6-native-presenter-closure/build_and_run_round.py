@@ -114,6 +114,49 @@ DONOR_FONT_SCHINESE_LTT = _resolve_migrated_path(
     "FX6_DONOR_FONT_SCHINESE_LTT",
     "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
 )
+DONOR_STRING_TCHINESE_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_TCHINESE_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_traditionalchinese.uxc",
+)
+DONOR_STRING_TCHINESE_2_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_TCHINESE_2_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_traditionalchinese_2.uxc",
+)
+DONOR_FONT_TCHINESE_LTT = _resolve_migrated_path(
+    "FX6_DONOR_FONT_TCHINESE_LTT",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+)
+DONOR_STRING_JAPANESE_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_JAPANESE_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_japanese.uxc",
+)
+DONOR_STRING_JAPANESE_2_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_JAPANESE_2_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_japanese_2.uxc",
+)
+DONOR_FONT_JAPANESE_LTT = _resolve_migrated_path(
+    "FX6_DONOR_FONT_JAPANESE_LTT",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+)
+DONOR_STRING_ENGLISH_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_ENGLISH_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_english.uxc",
+)
+DONOR_STRING_ENGLISH_2_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_ENGLISH_2_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_english_2.uxc",
+)
+DONOR_FONT_ENGLISH_LTT = _resolve_migrated_path(
+    "FX6_DONOR_FONT_ENGLISH_LTT",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/UniversOTS-SJ_wIcon.ltt",
+)
+LANG_CODE_MAP: Dict[str, int] = {
+    "en": 0,
+    "english": 0,
+    "japanese": 1,
+    "tchinese": 2,
+    "schinese": 3,
+}
 DEFAULT_ASSETS_DIR = REPO / "reports/2026-11-10-fx6-native-presenter-closure/assets"
 
 FB_W = 1024
@@ -256,6 +299,7 @@ def build_binaries(
         )
 
     lang_schinese = 1 if lang == "schinese" else 0
+    lang_code = LANG_CODE_MAP.get(lang, 0)
     shim_out = build_dir / "libgrm-fbinit9.so"
     shim_cmd = [
         str(ZIG),
@@ -277,6 +321,7 @@ def build_binaries(
         f"-DFX6_INITIAL_SETTING_DONE={initial_setting_done}",
         f"-DFX6_SHOOTING_MODE_CINE_EI={shooting_mode_cine_ei}",
         f"-DFX6_LANG_SCHINESE={lang_schinese}",
+        f"-DFX6_LANG_CODE={lang_code}",
         *key_flags,
         "-Wl,-soname,libgrm-fbinit9.so",
         str(HERE / "libgrm-fbinit9.c"),
@@ -291,6 +336,7 @@ def build_binaries(
     shim_bytes = shim_out.read_bytes()
     meta = {
         "lang": lang,
+        "lang_code": lang_code,
         "launcher_bytes": len(launcher_bytes),
         "launcher_sha256": sha256_bytes(launcher_bytes),
         "launcher_cmd": launcher_cmd,
@@ -522,10 +568,11 @@ def build_stage_a_overlay(
     enable_p10: bool = False,
     enable_r10: bool = False,
     enable_p12: bool = False,
+    enable_r12: bool = False,
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
-    """Build Stage-A/B P1..P9+Fan(+P10/P11/P12) + 8MiB VFAT + RAM-Shadow BK4 + image_00_169.uxc (+ SChinese UXC/LTT) + Verify-Before-Mount overlay."""
+    """Build Stage-A/B P1..P9+Fan(+P10/P11/P12) + 8MiB VFAT + RAM-Shadow BK4 + image_00_169.uxc (+ Multi-CJK UXC/LTT) + Verify-Before-Mount overlay."""
     patcher, vfat_builder, bmtv = _import_stage_a_modules()
 
     p10_spec = _load_p10_keymap_spec(patcher) if enable_p10 else None
@@ -550,18 +597,52 @@ def build_stage_a_overlay(
         ("usr/lib/libfan.so", patcher.FAN_LIBFAN_SPEC),
         ("usr/lib/appFw.so", appfw_spec),
     )
+    lang_asset_specs = {
+        "schinese": (
+            (
+                ("string_simplifiedchinese", "usr/share/app/string_simplifiedchinese.uxc", DONOR_STRING_SCHINESE_UXC, b"uxc\x07", "uxc_07"),
+                ("string_simplifiedchinese_2", "usr/share/app/string_simplifiedchinese_2.uxc", DONOR_STRING_SCHINESE_2_UXC, b"uxc\x07", "uxc_07"),
+                ("font_gb18030_ltt", "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt", DONOR_FONT_SCHINESE_LTT, b"LTT\n", "LTT"),
+            ),
+            "FONT_S_CHINESE",
+            "MYingHeiC-GB18030-SJ_wIcon.ltt",
+        ),
+        "tchinese": (
+            (
+                ("string_traditionalchinese", "usr/share/app/string_traditionalchinese.uxc", DONOR_STRING_TCHINESE_UXC, b"uxc\x07", "uxc_07"),
+                ("string_traditionalchinese_2", "usr/share/app/string_traditionalchinese_2.uxc", DONOR_STRING_TCHINESE_2_UXC, b"uxc\x07", "uxc_07"),
+                ("font_big5hkscs_ltt", "usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt", DONOR_FONT_TCHINESE_LTT, b"LTT\n", "LTT"),
+            ),
+            "FONT_T_CHINESE",
+            "MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+        ),
+        "japanese": (
+            (
+                ("string_japanese", "usr/share/app/string_japanese.uxc", DONOR_STRING_JAPANESE_UXC, b"uxc\x07", "uxc_07"),
+                ("string_japanese_2", "usr/share/app/string_japanese_2.uxc", DONOR_STRING_JAPANESE_2_UXC, b"uxc\x07", "uxc_07"),
+                ("font_japanese_ltt", "usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt", DONOR_FONT_JAPANESE_LTT, b"LTT\n", "LTT"),
+            ),
+            "FONT_JAPANESE",
+            "HeiseiKakuGothW5-SJ_wIcon.ltt",
+        ),
+        "english": (
+            (
+                ("string_english", "usr/share/app/string_english.uxc", DONOR_STRING_ENGLISH_UXC, b"uxc\x07", "uxc_07"),
+                ("string_english_2", "usr/share/app/string_english_2.uxc", DONOR_STRING_ENGLISH_2_UXC, b"uxc\x07", "uxc_07"),
+                ("font_univers_ltt", "usr/share/app/UniversOTS-SJ_wIcon.ltt", DONOR_FONT_ENGLISH_LTT, b"LTT\n", "LTT"),
+            ),
+            "FONT_UNIVERS",
+            "UniversOTS-SJ_wIcon.ltt",
+        ),
+    }
     extra_extract: Tuple[str, ...] = ("init", "usr/kmod/upm.ko")
     if enable_r10:
         extra_extract = extra_extract + ("usr/share/app/image_00_169.uxc",)
     if enable_p12:
         extra_extract = extra_extract + ("usr/lib/libWlanResource.so",)
-    if lang == "schinese":
-        extra_extract = extra_extract + (
-            "usr/share/app/string_simplifiedchinese.uxc",
-            "usr/share/app/string_simplifiedchinese_2.uxc",
-            "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
-            "usr/share/app/fontlist.dat",
-        )
+    if lang in lang_asset_specs:
+        lang_items, _, _ = lang_asset_specs[lang]
+        extra_extract = extra_extract + tuple(item[1] for item in lang_items) + ("usr/share/app/fontlist.dat",)
     cpio_extract_names = tuple(m for m, _ in member_specs) + extra_extract
     raw_members = _extract_cpio_members(parent_cpio, cpio_extract_names)
 
@@ -680,15 +761,12 @@ def build_stage_a_overlay(
         }
         manifest_rows.append((wlan_receipt.after_sha256, "/usr/lib/libWlanResource.so"))
 
+    lang_assets_meta: Optional[Dict[str, Any]] = None
     schinese_assets_meta: Optional[Dict[str, Any]] = None
-    if lang == "schinese":
-        schinese_specs = (
-            ("string_simplifiedchinese", "usr/share/app/string_simplifiedchinese.uxc", DONOR_STRING_SCHINESE_UXC, b"uxc\x07", "uxc_07"),
-            ("string_simplifiedchinese_2", "usr/share/app/string_simplifiedchinese_2.uxc", DONOR_STRING_SCHINESE_2_UXC, b"uxc\x07", "uxc_07"),
-            ("font_gb18030_ltt", "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt", DONOR_FONT_SCHINESE_LTT, b"LTT\n", "LTT"),
-        )
-        schinese_assets_meta = {}
-        for key, cpio_name, donor_path, expected_magic, magic_label in schinese_specs:
+    if lang in lang_asset_specs:
+        lang_specs, fontlist_key, fontlist_ltt = lang_asset_specs[lang]
+        lang_assets_meta = {}
+        for key, cpio_name, donor_path, expected_magic, magic_label in lang_specs:
             if not clean_room and donor_path.is_file():
                 asset_bytes = read_bytes_readonly(donor_path)
                 asset_source = "donor_o_rdonly"
@@ -700,7 +778,7 @@ def build_stage_a_overlay(
                     f"Invalid {cpio_name} magic: {asset_bytes[:4].hex()} (expected {expected_magic.hex()})"
                 )
             replacements[cpio_name] = asset_bytes
-            schinese_assets_meta[key] = {
+            lang_assets_meta[key] = {
                 "guest_path": f"/{cpio_name}",
                 "source": asset_source,
                 "bytes": len(asset_bytes),
@@ -708,15 +786,21 @@ def build_stage_a_overlay(
                 "magic": magic_label,
             }
         fontlist_bytes = raw_members["usr/share/app/fontlist.dat"]
-        if b"FONT_S_CHINESE" not in fontlist_bytes or b"MYingHeiC-GB18030-SJ_wIcon.ltt" not in fontlist_bytes:
-            raise RuntimeError("fontlist.dat missing FONT_S_CHINESE -> MYingHeiC-GB18030-SJ_wIcon.ltt mapping")
-        schinese_assets_meta["fontlist_dat"] = {
+        if (
+            fontlist_key.encode("ascii") not in fontlist_bytes
+            or fontlist_ltt.encode("ascii") not in fontlist_bytes
+        ):
+            raise RuntimeError(f"fontlist.dat missing {fontlist_key} -> {fontlist_ltt} mapping")
+        lang_assets_meta["fontlist_dat"] = {
             "guest_path": "/usr/share/app/fontlist.dat",
             "source": "cpio_preloaded",
             "bytes": len(fontlist_bytes),
             "sha256": sha256_bytes(fontlist_bytes),
-            "has_font_s_chinese": True,
+            "fontlist_key": fontlist_key,
+            "has_font_s_chinese": (lang == "schinese"),
         }
+        if lang == "schinese":
+            schinese_assets_meta = lang_assets_meta
 
     # Compile fx6-stage-a-verify C guest tool in /private/tmp
     cache_dir = tmp_build / "zig-cache"
@@ -779,10 +863,16 @@ def build_stage_a_overlay(
             f"stage_r11=1\np12_wlan=1\nairplane_mode=1\nlang={lang}\n".encode("utf-8"),
             0o100644,
         )
+    if enable_r12:
+        additions["etc/fx6_stage_r12"] = (
+            f"stage_r12=1\np10_keymap=1\np11_uipc=1\np12_wlan=1\np4_nd_clear=1\nuxc=1\nlang={lang}\n".encode("utf-8"),
+            0o100644,
+        )
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
         "p12_enabled": enable_p12,
+        "r12_enabled": enable_r12,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -810,6 +900,8 @@ def build_stage_a_overlay(
         stage_a_meta["image_00_169_uxc"] = uxc_meta
     if schinese_assets_meta is not None:
         stage_a_meta["schinese_assets"] = schinese_assets_meta
+    if lang_assets_meta is not None:
+        stage_a_meta["lang_assets"] = lang_assets_meta
     return replacements, additions, stage_a_meta
 
 
@@ -868,7 +960,7 @@ def write_rgba_png(out_path: pathlib.Path, width: int, height: int, rgba: bytes)
         scanlines[pos + 1 : pos + 1 + stride] = rgba[row_start : row_start + stride]
         pos += stride + 1
     ihdr = struct.pack(">IIBBBBB", width, height, 8, 6, 0, 0, 0)
-    idat = zlib.compress(bytes(scanlines), level=6)
+    idat = zlib.compress(bytes(scanlines), level=9)
     png_bytes = (
         b"\x89PNG\r\n\x1a\n"
         + _png_chunk(b"IHDR", ihdr)
@@ -1061,6 +1153,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R10_",
         "FX6_P11_",
         "FX6_R11_",
+        "FX6_R12_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -1079,6 +1172,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r10_icon: Optional[Dict[str, Any]] = None
     last_p11_uipc: Optional[Dict[str, Any]] = None
     last_r11_lang: Optional[Dict[str, Any]] = None
+    last_r12_lang: Optional[Dict[str, Any]] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -1090,6 +1184,8 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             last_p11_uipc = _parse_kv_ints(line.split("FX6_P11_UIPC_TELEMETRY ", 1)[1])
         elif "FX6_R11_LANG_TELEMETRY " in line:
             last_r11_lang = _parse_kv_ints(line.split("FX6_R11_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_R12_LANG_TELEMETRY " in line:
+            last_r12_lang = _parse_kv_ints(line.split("FX6_R12_LANG_TELEMETRY ", 1)[1])
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -1129,6 +1225,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "matched_lines": matched,
         "r10_telemetry": r10_telemetry,
         "r11_telemetry": last_r11_lang,
+        "r12_telemetry": last_r12_lang,
     }
 
 
@@ -1152,6 +1249,8 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
+    if args.round >= 12:
+        tmp_prefix = "fx6-r12"
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -1189,12 +1288,16 @@ def run_once(args: argparse.Namespace) -> int:
         stage_a_meta: Optional[Dict[str, Any]] = None
         if args.round >= 8:
             stage_label = (
-                f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
-                if args.round >= 11
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(UXC+Wlan+lang={lang})"
+                if args.round >= 12
                 else (
-                    "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
-                    if args.round >= 10
-                    else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                    f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
+                    if args.round >= 11
+                    else (
+                        "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
+                        if args.round >= 10
+                        else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                    )
                 )
             )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
@@ -1205,6 +1308,7 @@ def run_once(args: argparse.Namespace) -> int:
                 enable_p10=(args.round >= 9),
                 enable_r10=(args.round >= 10),
                 enable_p12=(args.round >= 11),
+                enable_r12=(args.round >= 12),
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -1379,6 +1483,7 @@ def run_once(args: argparse.Namespace) -> int:
             "stage_b": stage_a_meta if args.round >= 9 else None,
             "r10_telemetry": milestones.get("r10_telemetry") if args.round >= 10 else None,
             "r11_telemetry": milestones.get("r11_telemetry") if args.round >= 11 else None,
+            "r12_telemetry": milestones.get("r12_telemetry") if args.round >= 12 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1428,8 +1533,8 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], required=True)
-    ap.add_argument("--lang", type=str, choices=["en", "schinese"], default="en")
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], required=True)
+    ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

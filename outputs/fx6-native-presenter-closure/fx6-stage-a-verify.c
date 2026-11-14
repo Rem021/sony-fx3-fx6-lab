@@ -265,6 +265,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R11_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 uxc=1 schinese=%d\n",
                 count, is_schinese);
     }
+    struct stat r12_st;
+    if (stat("/etc/fx6_stage_r12", &r12_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r12f = fopen("/etc/fx6_stage_r12", "r");
+        if (r12f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r12f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r12f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R12_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 
@@ -556,6 +574,95 @@ int main(void) {
             if (!has_sc) {
                 return 46;
             }
+        }
+    }
+
+    FILE *r12f = fopen("/etc/fx6_stage_r12", "r");
+    if (r12f) {
+        char lang_buf[32] = "en";
+        char rline[128];
+        while (fgets(rline, sizeof(rline), r12f)) {
+            char parsed[32];
+            if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+            }
+        }
+        fclose(r12f);
+
+        const char *str1 = "/usr/share/app/string_english.uxc";
+        const char *str2 = "/usr/share/app/string_english_2.uxc";
+        const char *ltt_path = "/usr/share/app/UniversOTS-SJ_wIcon.ltt";
+        const char *font_key = "FONT_UNIVERS";
+        const char *ltt_name = "UniversOTS-SJ_wIcon.ltt";
+        if (strcmp(lang_buf, "schinese") == 0) {
+            str1 = "/usr/share/app/string_simplifiedchinese.uxc";
+            str2 = "/usr/share/app/string_simplifiedchinese_2.uxc";
+            ltt_path = "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt";
+            font_key = "FONT_S_CHINESE";
+            ltt_name = "MYingHeiC-GB18030-SJ_wIcon.ltt";
+        } else if (strcmp(lang_buf, "tchinese") == 0) {
+            str1 = "/usr/share/app/string_traditionalchinese.uxc";
+            str2 = "/usr/share/app/string_traditionalchinese_2.uxc";
+            ltt_path = "/usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt";
+            font_key = "FONT_T_CHINESE";
+            ltt_name = "MYingHeiC-Big5HKSCS-SJ_wIcon.ltt";
+        } else if (strcmp(lang_buf, "japanese") == 0) {
+            str1 = "/usr/share/app/string_japanese.uxc";
+            str2 = "/usr/share/app/string_japanese_2.uxc";
+            ltt_path = "/usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt";
+            font_key = "FONT_JAPANESE";
+            ltt_name = "HeiseiKakuGothW5-SJ_wIcon.ltt";
+        }
+
+        const char *paths[3] = { str1, str2, ltt_path };
+        const uint8_t magics[3][4] = {
+            { 'u', 'x', 'c', 0x07U },
+            { 'u', 'x', 'c', 0x07U },
+            { 'L', 'T', 'T', '\n' },
+        };
+        const char *labels[3] = { "uxc_07", "uxc_07", "LTT" };
+        for (size_t i = 0U; i < 3U; i++) {
+            int afd = open(paths[i], O_RDONLY);
+            if (afd < 0) {
+                fprintf(stderr, "FX6_STAGE_B_R12_LANG_ASSET lang=%s path=%s status=MISSING errno=%d\n",
+                        lang_buf, paths[i], errno);
+                return 47;
+            }
+            struct stat ast;
+            if (fstat(afd, &ast) != 0 || ast.st_size < 16) {
+                close(afd);
+                fprintf(stderr, "FX6_STAGE_B_R12_LANG_ASSET lang=%s path=%s status=SHORT\n",
+                        lang_buf, paths[i]);
+                return 47;
+            }
+            uint8_t amagic[4];
+            ssize_t an = read(afd, amagic, sizeof(amagic));
+            close(afd);
+            if (an != (ssize_t)sizeof(amagic) || memcmp(amagic, magics[i], 4U) != 0) {
+                fprintf(stderr, "FX6_STAGE_B_R12_LANG_ASSET lang=%s path=%s status=BAD_MAGIC\n",
+                        lang_buf, paths[i]);
+                return 47;
+            }
+            fprintf(stderr,
+                    "FX6_STAGE_B_R12_LANG_ASSET lang=%s path=%s bytes=%llu magic=%s status=OK\n",
+                    lang_buf, paths[i], (unsigned long long)ast.st_size, labels[i]);
+        }
+
+        FILE *fl = fopen("/usr/share/app/fontlist.dat", "r");
+        if (!fl) {
+            fprintf(stderr, "FX6_STAGE_B_R12_FONTLIST path=/usr/share/app/fontlist.dat status=MISSING\n");
+            return 47;
+        }
+        char fbuf[1024];
+        size_t fr = fread(fbuf, 1U, sizeof(fbuf) - 1U, fl);
+        fclose(fl);
+        fbuf[fr] = '\0';
+        int has_font = (strstr(fbuf, font_key) != NULL && strstr(fbuf, ltt_name) != NULL) ? 1 : 0;
+        fprintf(stderr,
+                "FX6_STAGE_B_R12_FONTLIST lang=%s font_key=%s ltt=%s present=%d status=%s\n",
+                lang_buf, font_key, ltt_name, has_font, has_font ? "OK" : "MISSING_FONT");
+        if (!has_font) {
+            return 47;
         }
     }
 

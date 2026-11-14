@@ -23,6 +23,8 @@
  *                           & P11 UIPC telemetry (0x92d2091c RTC + 0x91db059b Handle + 0x92840747 LUT/EI)
  *   -DFX6_ROUND=11 Round 11:+ P12 libWlanResource.so guard + RAM-shadow BK4 Airplane-Mode defaults
  *                           + Simplified Chinese UXC/CJK Font switching (0x02cf019c=0x19, enum 0x2b45, bank 19/23)
+ *   -DFX6_ROUND=12 Round 12:+ Multi-CJK (tchinese 0x18/0x2b44, japanese 0x01/0x2b30, schinese 0x19/0x2b45, english 0x00/0x2b2f)
+ *                           + P10 FX3 body remap + P4 ND-Clear Lock + P11 XLR-H1 + Assignable Button Page 110 (sid=0x34)
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -55,6 +57,11 @@
 
 #ifndef FX6_LANG_SCHINESE
 #define FX6_LANG_SCHINESE 0
+#endif
+
+/* FX6_LANG_CODE: 0=en/english (0x00/0x2b2f), 1=japanese (0x01/0x2b30), 2=tchinese (0x18/0x2b44), 3=schinese (0x19/0x2b45) */
+#ifndef FX6_LANG_CODE
+#define FX6_LANG_CODE (FX6_LANG_SCHINESE ? 3 : 0)
 #endif
 
 #ifndef FX6_KEY_COUNT
@@ -148,6 +155,45 @@ static int g_p11_rtc0_year;
 #if FX6_ROUND >= 11
 static unsigned int g_r11_lang_bk4_hits;
 static unsigned int g_r11_airplane_bk4_hits;
+#if FX6_ROUND >= 12
+static int g_r12_p4_nd_clear_ok;
+#endif
+
+static const char *fx6_lang_name(void) {
+    switch (FX6_LANG_CODE) {
+    case 1: return "japanese";
+    case 2: return "tchinese";
+    case 3: return "schinese";
+    default: return (FX6_ROUND >= 12) ? "english" : "en";
+    }
+}
+
+static uint8_t fx6_lang_bk4_byte(void) {
+    switch (FX6_LANG_CODE) {
+    case 1: return 0x01U; /* 0x20cc -> 0x2b30 LANGUAGE_JAPANESE (bank 12 / font 1) */
+    case 2: return 0x18U; /* 0x20d9 -> 0x2b44 LANGUAGE_CHINESE_TRADITIONAL (bank 22 / font 27) */
+    case 3: return 0x19U; /* 0x20da -> 0x2b45 LANGUAGE_CHINESE_SIMPLIFIED (bank 19 / font 23) */
+    default: return 0x00U; /* 0x20cb -> 0x2b2f LANGUAGE_ENGLISH (bank 4 / font 0) */
+    }
+}
+
+static const char *fx6_lang_enum_label(void) {
+    switch (FX6_LANG_CODE) {
+    case 1: return "0x2b30_LANGUAGE_JAPANESE";
+    case 2: return "0x2b44_LANGUAGE_CHINESE_TRADITIONAL";
+    case 3: return "0x2b45_CHINESE_SIMPLIFIED";
+    default: return "0x2b2f_LANGUAGE_ENGLISH";
+    }
+}
+
+static unsigned int fx6_lang_str_bank(void) {
+    switch (FX6_LANG_CODE) {
+    case 1: return 12U;
+    case 2: return 22U;
+    case 3: return 19U;
+    default: return 4U;
+    }
+}
 #endif
 
 static unsigned int g_gpe_pool_alloc_cnt;
@@ -325,10 +371,27 @@ static void emit_r10_telemetry(const char *reason) {
             "lang_bk4_hits=%u airplane_bk4_hits=%u font_create=%u glyph_blits=%u icon_blits=%u "
             "p12_wlan=1 subst_color=0 subst_image=0\n",
             reason ? reason : "periodic",
-            FX6_LANG_SCHINESE ? "schinese" : "en",
-            FX6_LANG_SCHINESE ? 0x19U : 0x00U,
+            fx6_lang_name(),
+            (unsigned int)fx6_lang_bk4_byte(),
             g_r11_lang_bk4_hits,
             g_r11_airplane_bk4_hits,
+            g_font_create2_cnt,
+            g_glyph_blit_count,
+            g_icon_blit_count);
+#endif
+#if FX6_ROUND >= 12
+    dprintf(2,
+            "FX6_R12_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+            "lang_enum=%s lang_bk4_hits=%u airplane_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 "
+            "p11_xlr_h1=1 font_create=%u glyph_blits=%u icon_blits=%u p12_wlan=1 "
+            "subst_color=0 subst_image=0\n",
+            reason ? reason : "periodic",
+            fx6_lang_name(),
+            (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(),
+            g_r11_lang_bk4_hits,
+            g_r11_airplane_bk4_hits,
+            g_r12_p4_nd_clear_ok,
             g_font_create2_cnt,
             g_glyph_blit_count,
             g_icon_blit_count);
@@ -887,11 +950,12 @@ static uint32_t fx3_phy_to_infra_key_id(uint32_t raw_key, const char *source) {
     case 0x0030U: name = "INFRA_DOWN"; break;
     case 0x0015U: name = "INFRA_LEFT"; break;
     case 0x01afU: name = "INFRA_RIGHT"; break;
+    case 0x7052U: name = "INFRA_STATUS_CHECK"; break;
     default: break;
     }
     if (infra != raw_key || raw_key == 0x7095U || raw_key == 0x0066U ||
         raw_key == 0x70e7U || raw_key == 0x70ecU || raw_key == 0x01f7U ||
-        raw_key == 0x01f8U || raw_key == 0x01abU) {
+        raw_key == 0x01f8U || raw_key == 0x01abU || raw_key == 0x7052U) {
         dprintf(2,
                 "FX3_PHY_KEY_MAP source=%s phy=0x%04x infra=0x%04x name=%s pipeline=0x007a804c->0x005503e0\n",
                 source ? source : "?", raw_key, infra, name);
@@ -2211,9 +2275,25 @@ void Application_System_Init(const char *arg) {
             "FX6_STAGE_B_R11_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 "
             "airplane_mode=1 lang=%s bk4_lang=0x%02x schinese=%d\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL,
-            FX6_LANG_SCHINESE ? "schinese" : "en",
-            FX6_LANG_SCHINESE ? 0x19U : 0x00U,
-            FX6_LANG_SCHINESE ? 1 : 0);
+            fx6_lang_name(),
+            (unsigned int)fx6_lang_bk4_byte(),
+            (FX6_LANG_CODE == 3) ? 1 : 0);
+#endif
+#if FX6_ROUND >= 12
+    if (g_appfw_base) {
+        uint32_t nd_mode_w  = *(const uint32_t *)(g_appfw_base + 0x2111358UL);
+        uint32_t nd_value_w = *(const uint32_t *)(g_appfw_base + 0x21113f0UL);
+        g_r12_p4_nd_clear_ok = (nd_mode_w == 0xd503201fU && nd_value_w == 0x1400001bU) ? 1 : 0;
+        dprintf(2,
+                "FX6_STAGE_B_P4_ND_CLEAR_CHECK ok=%d nd_mode=0x%08x nd_val=0x%08x\n",
+                g_r12_p4_nd_clear_ok, nd_mode_w, nd_value_w);
+    }
+    dprintf(2,
+            "FX6_STAGE_B_R12_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x enum=%s bank=%u\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_str_bank());
 #endif
     if (real) real("AppConfig.so");
     dprintf(2, "FX6_APP_CONFIG_HOLD real_returned round=%d\n", FX6_ROUND);
@@ -2386,14 +2466,20 @@ static int fx6_bk4_lookup_span(uint32_t id, const uint8_t **out_ptr, uint32_t *o
         if (out_len) *out_len = 1U;
         return 1;
     }
-#if FX6_LANG_SCHINESE
+#if (FX6_LANG_CODE > 0) || (FX6_ROUND >= 12)
     if (id == 0x02cf019cU) {
-        static const uint8_t k_fx6_r11_lang_schinese = 0x19U; /* 25 -> 0x23f7ff0[15] (0x20da) -> enum 0x2b45 (CHINESE_SIMPLIFIED: bank 19 / font bank 23) */
+        static uint8_t k_fx6_lang_val;
+        k_fx6_lang_val = fx6_lang_bk4_byte();
         unsigned int lh = __atomic_add_fetch(&g_r11_lang_bk4_hits, 1U, __ATOMIC_RELAXED);
         if (lh <= 24U) {
-            dprintf(2, "FX6_R11_LANG_BK4 hit=%u id=0x02cf019c val=0x19 enum=0x2b45_CHINESE_SIMPLIFIED bank=19\n", lh);
+            dprintf(2, "FX6_R11_LANG_BK4 hit=%u id=0x02cf019c val=0x%02x enum=%s bank=%u\n",
+                    lh, (unsigned int)k_fx6_lang_val, fx6_lang_enum_label(), fx6_lang_str_bank());
+#if FX6_ROUND >= 12
+            dprintf(2, "FX6_R12_LANG_BK4 hit=%u id=0x02cf019c lang=%s val=0x%02x enum=%s bank=%u\n",
+                    lh, fx6_lang_name(), (unsigned int)k_fx6_lang_val, fx6_lang_enum_label(), fx6_lang_str_bank());
+#endif
         }
-        if (out_ptr) *out_ptr = &k_fx6_r11_lang_schinese;
+        if (out_ptr) *out_ptr = &k_fx6_lang_val;
         if (out_len) *out_len = 1U;
         return 1;
     }

@@ -25,12 +25,12 @@
 
 ## 旧 TRY1 入口
 
-这是在 QEMU 中运行的 FX3 原厂菜单，复用已验证的 AP101-r4 模拟器。需要本机已挂载 KAFU2T 外盘，并使用现有 Python 3。每次启动都会从固定保存文件冷启动。
+这是在 QEMU 中运行的 FX3 原厂菜单，复用已验证的 AP101-r4 模拟器。需要本机已部署内盘 `~/AI-Workspace/AI/Projects/Mac/work`（或挂载回退路径），并使用现有 Python 3。每次启动都会从固定保存文件冷启动。
 
 在终端运行，保持终端开启：
 
 ```sh
-python3 -B /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/run_trial.py
+python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/run_trial.py
 ```
 
 打开 **[http://127.0.0.1:8765](http://127.0.0.1:8765)**。等待“固件已就绪”，再按 **MENU** 打开菜单；冷启动及首次打开菜单可能需要几分钟，请等画面更新再继续操作。网页约每 0.4 秒查看新帧，只有固件提交了新画面才更新。画面高亮可能不可见，建议每次只按一下并观察标题、页码和项目文字。

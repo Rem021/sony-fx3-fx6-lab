@@ -7,7 +7,7 @@
 双击 [FX3菜单TRY2.command](FX3菜单TRY2.command)，保持启动的终端窗口开启，然后访问 **http://127.0.0.1:8765**。也可在终端运行：
 
 ```sh
-/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -B /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/run_trial_v4_try2.py --port 8765 --max-minutes 15
+python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/run_trial_v4_try2.py --port 8765 --max-minutes 15
 ```
 
 等待网页出现“固件已就绪”再按 MENU。一次只按一个键，并在实际画面更新后再决定下一键。七键持续 100 ms，单轮最多 30 键，最长 15 分钟。点击网页 **结束试用**，等待终端打印 `HEALTH`、`QEMU_EXIT`、`REAPED`、`API16_RESTORED` 和 `INPUTS_UNCHANGED`；关闭浏览器页面本身不会结束 QEMU。Ctrl-C 也进入相同收尾路径，但独立的标准 Ctrl-C 网页轮尚未完成验收。

@@ -293,6 +293,10 @@ int main(void) {
     sigaction(SIGILL, &sa, NULL);
     sigaction(SIGABRT, &sa, NULL);
 
+#if defined(FX6_ROUND) && (FX6_ROUND >= 8)
+    fprintf(stderr, "FX6_HYBRID_BRIDGE_INIT round=%d faithful=%d\n", FX6_ROUND, FX6_NATIVE_FAITHFUL);
+#endif
+
     void *sh0 = dlopen("/usr/lib/libgrm-fbinit9.so", RTLD_NOW | RTLD_GLOBAL);
     if (!sh0) {
         fprintf(stderr, "appfw-launch: stub preload failed: %s\n", dlerror());

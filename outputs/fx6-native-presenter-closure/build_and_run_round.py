@@ -16,36 +16,86 @@ import struct
 import subprocess
 import sys
 import time
+import types
 import zlib
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
+HOME_AI_MAC = pathlib.Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac"
+HOME_AI_LAB = HOME_AI_MAC / "outputs" / "sony-fx3-fx6-lab"
+LEGACY_MAC = pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac")
 
-ZIG = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
-    "menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig"
+
+def _resolve_migrated_path(
+    env_var: str,
+    rel_subpath: str,
+    legacy_abs: Optional[str] = None,
+    *,
+    prefer_repo: bool = False,
+) -> pathlib.Path:
+    override = os.environ.get(env_var, "").strip()
+    if override:
+        return pathlib.Path(override)
+    candidates: List[pathlib.Path] = []
+    if prefer_repo:
+        candidates.append(REPO / rel_subpath)
+    candidates.extend(
+        [
+            HOME_AI_MAC / rel_subpath,
+            HOME_AI_LAB / rel_subpath,
+        ]
+    )
+    if not prefer_repo:
+        candidates.append(REPO / rel_subpath)
+    if legacy_abs:
+        candidates.append(pathlib.Path(legacy_abs))
+    for cand in candidates:
+        if cand.exists():
+            return cand
+    return candidates[0]
+
+
+ZIG = _resolve_migrated_path(
+    "FX6_ZIG",
+    "work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
 )
-QEMU_BIN = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
-    "menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb"
+QEMU_BIN = _resolve_migrated_path(
+    "FX6_QEMU_BIN",
+    "work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
 )
-PARENT_CPIO = (
-    REPO / "work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio"
+PARENT_CPIO = _resolve_migrated_path(
+    "FX6_PARENT_CPIO",
+    "work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+    "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio",
+    prefer_repo=True,
 )
-KERNEL_BIN = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/"
-    "stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin"
+KERNEL_BIN = _resolve_migrated_path(
+    "FX3_KERNEL_BIN",
+    "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
 )
-GUEST_DTB = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/"
-    "vm-optimization-20261103/runtime/try2-usability/"
-    "vmopt-20261103-try2-long-media-gap-v2/guest.dtb"
+GUEST_DTB = _resolve_migrated_path(
+    "FX3_GUEST_DTB",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
 )
-DONOR_BK4_NTSC = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/"
-    "SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
+DONOR_BK4_NTSC = _resolve_migrated_path(
+    "FX6_DONOR_BK4_NTSC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin",
+)
+FX3_UPM_KO = _resolve_migrated_path(
+    "FX3_UPM_KO",
+    "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+)
+FX3_SEED_BK4 = _resolve_migrated_path(
+    "FX3_SEED_BK4",
+    "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-seeds/FX3-CX95900_ALLLANG-Backup.bin",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-seeds/FX3-CX95900_ALLLANG-Backup.bin",
 )
 DEFAULT_ASSETS_DIR = REPO / "reports/2026-11-10-fx6-native-presenter-closure/assets"
 
@@ -215,12 +265,17 @@ def build_binaries(
     return launcher_bytes, shim_bytes, meta
 
 
-def make_cpio_member(name: str, payload: bytes, ino: int = 0x999900) -> bytes:
+def make_cpio_member(
+    name: str,
+    payload: bytes,
+    ino: int = 0x999900,
+    mode: int = 0o100644,
+) -> bytes:
     name_b = name.encode("utf-8") + b"\x00"
     hdr = (
         "070701"
         f"{ino:08x}"
-        f"{0o100644:08x}"
+        f"{mode:08x}"
         f"{0:08x}{0:08x}{1:08x}{0:08x}"
         f"{len(payload):08x}"
         f"{0:08x}{0:08x}{0:08x}{0:08x}"
@@ -240,7 +295,7 @@ def patch_cpio(
     parent_cpio: pathlib.Path,
     out_cpio: pathlib.Path,
     replacements: Dict[str, bytes],
-    additions: Optional[Dict[str, bytes]] = None,
+    additions: Optional[Dict[str, Union[bytes, Tuple[bytes, int]]]] = None,
 ) -> Dict[str, Any]:
     replaced_seen: List[str] = []
     added_seen: List[str] = []
@@ -252,12 +307,25 @@ def patch_cpio(
                 fo.write(raw[cursor : r["header"]])
                 name = r["name"]
                 if name == "TRAILER!!!" and additions and not added_seen:
-                    for idx, (add_name, add_payload) in enumerate(additions.items()):
-                        fo.write(make_cpio_member(add_name, add_payload, 0x999900 + idx))
+                    for idx, (add_name, add_val) in enumerate(additions.items()):
+                        if isinstance(add_val, tuple):
+                            add_payload, add_mode = add_val
+                        else:
+                            add_payload, add_mode = add_val, 0o100644
+                        fo.write(
+                            make_cpio_member(
+                                add_name,
+                                add_payload,
+                                0x999900 + idx,
+                                mode=add_mode,
+                            )
+                        )
                         added_seen.append(add_name)
                 if name in replacements:
                     payload = replacements[name]
                     header = bytearray(raw[r["header"] : r["header"] + 110])
+                    if int(header[14:22].decode("ascii"), 16) == 0:
+                        header[14:22] = f"{0o100755:08x}".encode("ascii")
                     header[54:62] = f"{len(payload):08x}".encode("ascii")
                     fo.write(header)
                     fo.write(raw[r["header"] + 110 : r["offset"]])
@@ -276,6 +344,199 @@ def patch_cpio(
         "replaced_members": replaced_seen,
         "added_members": added_seen,
     }
+
+
+def _import_stage_a_modules() -> Tuple[Any, Any, Any]:
+    """Read-only import of pure-stdlib Stage-A builders without triggering unicorn."""
+    fx3_safety_dir = str(REPO / "outputs" / "fx3-safety")
+    if fx3_safety_dir not in sys.path:
+        sys.path.insert(0, fx3_safety_dir)
+    closure_pkg_dir = REPO / "outputs" / "fx6-on-fx3-closure" / "fx6_closure"
+    if "fx6_closure" not in sys.modules:
+        pkg = types.ModuleType("fx6_closure")
+        pkg.__path__ = [str(closure_pkg_dir)]
+        sys.modules["fx6_closure"] = pkg
+    from fx6_closure import backup_mount_tolerance_verifier, patcher, vfat_builder
+
+    return patcher, vfat_builder, backup_mount_tolerance_verifier
+
+
+def _extract_cpio_members(parent_cpio: pathlib.Path, names: Tuple[str, ...]) -> Dict[str, bytes]:
+    wanted = set(names)
+    found: Dict[str, bytes] = {}
+    with parent_cpio.open("rb") as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as raw:
+        for r in scan_cpio(raw):
+            nm = r["name"]
+            if nm in wanted:
+                found[nm] = raw[r["offset"] : r["offset"] + r["bytes"]]
+    missing = sorted(wanted - set(found.keys()))
+    if missing:
+        raise FileNotFoundError(f"Missing members in {parent_cpio}: {missing}")
+    return found
+
+
+def build_stage_a_overlay(
+    tmp_build: pathlib.Path,
+    parent_cpio: pathlib.Path,
+    bk4_ntsc_bytes: Optional[bytes],
+) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
+    """Build Stage-A P1..P9+Fan + 8MiB VFAT + RAM-Shadow BK4 + Verify-Before-Mount overlay in /private/tmp."""
+    patcher, vfat_builder, bmtv = _import_stage_a_modules()
+
+    member_specs = (
+        ("usr/lib/libInfraSetupFile.so", patcher.P1_LIB_INFRA_SETUP_FILE_SPEC),
+        ("usr/lib/libInfraMediaCommon.so", patcher.P1_LIB_INFRA_MEDIA_COMMON_SPEC),
+        ("usr/lib/libInfraMediaConfig.so", patcher.P1_LIB_INFRA_MEDIA_CONFIG_SPEC),
+        ("usr/lib/libInfraAppRemoteBoard.so", patcher.P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC),
+        ("usr/lib/libfan.so", patcher.FAN_LIBFAN_SPEC),
+        ("usr/lib/appFw.so", patcher.P1_P4_P8_APPFW_COMBINED_SPEC),
+    )
+    cpio_extract_names = tuple(m for m, _ in member_specs) + ("init", "usr/kmod/upm.ko")
+    raw_members = _extract_cpio_members(parent_cpio, cpio_extract_names)
+
+    replacements: Dict[str, bytes] = {}
+    patch_receipts: Dict[str, Any] = {}
+    manifest_rows: List[Tuple[str, str]] = []
+
+    for cpio_name, spec in member_specs:
+        patched_bytes, receipt = patcher.apply_patch_spec(
+            raw_members[cpio_name], spec, verify_donor_sha256=True
+        )
+        replacements[cpio_name] = patched_bytes
+        patch_receipts[spec.spec_id] = {
+            "library": spec.library_name,
+            "before_sha256": receipt.before_sha256,
+            "after_sha256": receipt.after_sha256,
+            "changed_bytes": receipt.changed_byte_count,
+            "sites": [s.site_id for s in receipt.resolutions],
+        }
+        manifest_rows.append((receipt.after_sha256, f"/{cpio_name}"))
+
+    # P9 upm.ko: patch FX3 donor upm.ko in-memory when present, else verify CPIO's already-patched upm.ko
+    if FX3_UPM_KO.exists():
+        upm_patched, upm_receipt = patcher.apply_patch_spec(
+            FX3_UPM_KO.read_bytes(), patcher.P9_UPM_KO_SPEC, verify_donor_sha256=True
+        )
+        replacements["usr/kmod/upm.ko"] = upm_patched
+        upm_sha = upm_receipt.after_sha256
+        patch_receipts[patcher.P9_UPM_KO_SPEC.spec_id] = {
+            "library": patcher.P9_UPM_KO_SPEC.library_name,
+            "source": str(FX3_UPM_KO),
+            "before_sha256": upm_receipt.before_sha256,
+            "after_sha256": upm_sha,
+            "changed_bytes": upm_receipt.changed_byte_count,
+            "sites": [s.site_id for s in upm_receipt.resolutions],
+        }
+    else:
+        upm_bytes = raw_members["usr/kmod/upm.ko"]
+        upm_res = patcher.resolve_and_verify_sites(
+            upm_bytes, patcher.P9_UPM_KO_SPEC, expect_patched_state=True
+        )
+        upm_sha = sha256_bytes(upm_bytes)
+        patch_receipts[patcher.P9_UPM_KO_SPEC.spec_id] = {
+            "library": patcher.P9_UPM_KO_SPEC.library_name,
+            "source": "cpio_prepatched",
+            "after_sha256": upm_sha,
+            "sites": [s.site_id for s in upm_res],
+        }
+    manifest_rows.append((upm_sha, "/usr/kmod/upm.ko"))
+
+    # P2: 8 MiB RAM opelog.vfat
+    vfat_bytes, vfat_receipt = vfat_builder.build_opelog_vfat_image("8m_ram")
+    vfat_audit = vfat_builder.verify_vfat_image(vfat_bytes)
+    if not vfat_audit.valid:
+        raise RuntimeError(f"Invalid P2 VFAT image: {vfat_audit.errors}")
+    manifest_rows.append((vfat_receipt.sha256, "/tmp/opelog.vfat"))
+
+    # RAM-Shadow BK4\0 container
+    fa0080_tbl = bmtv.build_canonical_fa0080_normal_boot_table(
+        donor_seed_bk4_path=FX3_SEED_BK4 if FX3_SEED_BK4.exists() else None
+    )
+    bk4_bundle = bmtv.synthesize_ram_shadow_bk4(
+        flash_write_allowed=False,
+        active_byte8=0x00,
+        fa0080_table=fa0080_tbl,
+    )
+    manifest_rows.append((bk4_bundle.sha256, "/etc/fx6_ram_shadow_bk4.bin"))
+
+    if bk4_ntsc_bytes is not None:
+        manifest_rows.append((sha256_bytes(bk4_ntsc_bytes), "/etc/fx6_chaplin_ntsc.bk4"))
+
+    # Compile fx6-stage-a-verify C guest tool in /private/tmp
+    cache_dir = tmp_build / "zig-cache"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    zig_env = os.environ.copy()
+    zig_env["ZIG_LOCAL_CACHE_DIR"] = str(cache_dir / "local")
+    zig_env["ZIG_GLOBAL_CACHE_DIR"] = str(cache_dir / "global")
+    verify_out = tmp_build / "fx6-stage-a-verify"
+    verify_cmd = [
+        str(ZIG),
+        "cc",
+        "-target",
+        "aarch64-linux-gnu.2.17",
+        "-std=gnu11",
+        "-no-pie",
+        "-fno-sanitize=all",
+        "-fno-stack-protector",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        str(HERE / "fx6-stage-a-verify.c"),
+        "-o",
+        str(verify_out),
+    ]
+    r_ver = subprocess.run(verify_cmd, env=zig_env, capture_output=True, text=True)
+    if r_ver.returncode != 0:
+        raise RuntimeError(f"fx6-stage-a-verify compile failed:\n{r_ver.stderr}")
+    verify_bytes = verify_out.read_bytes()
+
+    # Rewrite guest /init in-memory to execute Stage-A Verify-Before-Mount right before appfw-launch
+    init_txt = raw_members["init"].decode("utf-8", errors="replace")
+    launch_needle = 'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch'
+    if launch_needle not in init_txt:
+        raise RuntimeError(f"Expected launch line not found in {parent_cpio} /init")
+    verify_hook = (
+        "/usr/bin/fx6-stage-a-verify > /dev/console 2>&1\n"
+        "fx6_stage_a_rc=$?\n"
+        "echo FX6_STAGE_A_VERIFY_RC=$fx6_stage_a_rc\n"
+        'if [ "$fx6_stage_a_rc" != 0 ]; then\n'
+        " echo FX6_STAGE_A_ABORT_BEFORE_LAUNCH rc=$fx6_stage_a_rc\n"
+        " while true; do /bin/busybox sleep 1; done\n"
+        "fi\n"
+    )
+    replacements["init"] = init_txt.replace(launch_needle, verify_hook + launch_needle, 1).encode("utf-8")
+
+    manifest_text = "".join(f"{digest} {gpath}\n" for digest, gpath in manifest_rows).encode("utf-8")
+    additions: Dict[str, Tuple[bytes, int]] = {
+        "usr/bin/fx6-stage-a-verify": (verify_bytes, 0o100755),
+        "etc/fx6_stage_a_manifest.txt": (manifest_text, 0o100644),
+        "tmp/opelog.vfat": (vfat_bytes, 0o100644),
+        "etc/fx6_ram_shadow_bk4.bin": (bk4_bundle.bk4_bytes, 0o100644),
+    }
+    stage_a_meta = {
+        "verify_bin_bytes": len(verify_bytes),
+        "verify_bin_sha256": sha256_bytes(verify_bytes),
+        "manifest_items": [
+            {"guest_path": gpath, "sha256": digest} for digest, gpath in manifest_rows
+        ],
+        "patches": patch_receipts,
+        "p2_vfat": {
+            "mode": vfat_receipt.mode,
+            "fat_type": vfat_receipt.fat_type,
+            "bytes": vfat_receipt.total_bytes,
+            "sha256": vfat_receipt.sha256,
+            "precreated_dirs": list(vfat_receipt.precreated_dirs),
+        },
+        "ram_shadow_bk4": {
+            "bytes": bk4_bundle.total_bytes,
+            "sha256": bk4_bundle.sha256,
+            "flash_write_allowed": bk4_bundle.flash_write_allowed,
+            "active_byte8_selector": bk4_bundle.active_byte8_selector,
+            "synthesized_key_count": bk4_bundle.synthesized_key_count,
+        },
+    }
+    return replacements, additions, stage_a_meta
 
 
 class QmpClient:
@@ -473,6 +734,9 @@ def analyze_gpe0_raw(raw_path: pathlib.Path) -> Dict[str, Any]:
 
 def extract_milestones(serial_text: str) -> Dict[str, Any]:
     important_prefixes = (
+        "Linux version ",
+        "FX6_STAGE_A_",
+        "FX6_HYBRID_",
         "FX6_NATIVE_FAITHFUL_SHIM_LOADED",
         "FX6_MWF_",
         "FX6_IMCFG_",
@@ -517,8 +781,12 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     )
     matched: List[str] = []
     counts: Dict[str, int] = collections.Counter()
+    kernel_version = ""
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
+        if not kernel_version and "Linux version " in line:
+            kv_idx = line.find("Linux version ")
+            kernel_version = line[kv_idx:].strip()
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -544,6 +812,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         }
 
     return {
+        "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
         "total_threads_seen": len(latest_by_tid),
         "sample_threads": list(latest_by_tid.values())[:25],
@@ -554,18 +823,23 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
 def run_once(args: argparse.Namespace) -> int:
     duration = min(max(int(args.duration), 15), 105)
     run_id = args.run_id
-    run_dir = HERE / "runs" / run_id
+    run_dir = (
+        pathlib.Path(args.run_dir)
+        if getattr(args, "run_dir", "")
+        else (HERE / "runs" / run_id)
+    )
     run_dir.mkdir(parents=True, exist_ok=True)
     serial_log = run_dir / "serial.log"
     if serial_log.exists():
         serial_log.unlink()
 
     owner_pid = os.getpid()
-    tmp_build = pathlib.Path(f"/private/tmp/fx6-native-closure-build-{owner_pid}-{run_id}")
-    tmp_cpio = pathlib.Path(f"/private/tmp/fx6-native-closure-{owner_pid}-{run_id}.cpio")
-    qmp_sock = pathlib.Path(f"/private/tmp/fx6-native-{owner_pid}-{run_id}-qmp.sock")
-    gdb_sock = pathlib.Path(f"/private/tmp/fx6-native-{owner_pid}-{run_id}-gdb.sock")
-    gpe_raw = pathlib.Path(f"/private/tmp/fx6-native-{owner_pid}-{run_id}-gpe0.raw")
+    tmp_prefix = "fx6-hybrid" if args.round >= 8 else "fx6-native"
+    tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
+    tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
+    qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
+    gdb_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-gdb.sock")
+    gpe_raw = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-gpe0.raw")
 
     proc: Optional[subprocess.Popen[bytes]] = None
     qmp: Optional[QmpClient] = None
@@ -584,18 +858,31 @@ def run_once(args: argparse.Namespace) -> int:
             key_seq=args.key_seq,
             key_settle_ms=args.key_settle_ms,
         )
-        print(f"[{run_id}] Patching temporary CPIO -> {tmp_cpio}...", flush=True)
-        additions: Optional[Dict[str, bytes]] = None
+        replacements: Dict[str, bytes] = {
+            "usr/bin/appfw-launch": launcher_bytes,
+            "usr/lib/libgrm-fbinit9.so": shim_bytes,
+        }
+        additions: Dict[str, Union[bytes, Tuple[bytes, int]]] = {}
+        bk4_bytes: Optional[bytes] = None
         if args.round >= 4 and DONOR_BK4_NTSC.exists():
-            additions = {"etc/fx6_chaplin_ntsc.bk4": DONOR_BK4_NTSC.read_bytes()}
+            bk4_bytes = DONOR_BK4_NTSC.read_bytes()
+            additions["etc/fx6_chaplin_ntsc.bk4"] = (bk4_bytes, 0o100644)
+
+        stage_a_meta: Optional[Dict[str, Any]] = None
+        if args.round >= 8:
+            print(f"[{run_id}] Building Stage-A P1..P9+Fan + VFAT + BK4-Shadow overlay...", flush=True)
+            sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
+                tmp_build, PARENT_CPIO, bk4_bytes
+            )
+            replacements.update(sa_rep)
+            additions.update(sa_add)
+
+        print(f"[{run_id}] Patching temporary CPIO -> {tmp_cpio}...", flush=True)
         cpio_meta = patch_cpio(
             PARENT_CPIO,
             tmp_cpio,
-            {
-                "usr/bin/appfw-launch": launcher_bytes,
-                "usr/lib/libgrm-fbinit9.so": shim_bytes,
-            },
-            additions=additions,
+            replacements,
+            additions=additions or None,
         )
 
         qemu_env = os.environ.copy()
@@ -684,7 +971,11 @@ def run_once(args: argparse.Namespace) -> int:
                 break
             if serial_log.exists():
                 txt = serial_log.read_text(encoding="utf-8", errors="replace")
-                if "APPFW_SEGV" in txt or "FX6_ABORT_BT" in txt:
+                if (
+                    "APPFW_SEGV" in txt
+                    or "FX6_ABORT_BT" in txt
+                    or "FX6_STAGE_A_ABORT_BEFORE_LAUNCH" in txt
+                ):
                     # Wait 2s to flush remaining diagnostic output then stop early
                     time.sleep(2.0)
                     print(f"[{run_id}] Detected crash/abort signature; stopping early.", flush=True)
@@ -735,6 +1026,9 @@ def run_once(args: argparse.Namespace) -> int:
         summary = {
             "run_id": run_id,
             "round": args.round,
+            "kernel_bin": str(KERNEL_BIN),
+            "kernel_version": milestones["kernel_version"],
+            "dtb_bin": str(GUEST_DTB),
             "restore_infra70": args.restore_infra70,
             "restore_all_early": args.restore_all_early,
             "reply_all_200d": args.reply_all_200d,
@@ -746,6 +1040,7 @@ def run_once(args: argparse.Namespace) -> int:
             "wall_elapsed_sec": elapsed,
             "qemu_pid": proc.pid,
             "build": build_meta,
+            "stage_a": stage_a_meta,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -758,7 +1053,8 @@ def run_once(args: argparse.Namespace) -> int:
             json.dumps(summary, indent=2, ensure_ascii=True) + "\n", encoding="utf-8"
         )
         print(
-            f"[{run_id}] Done in {elapsed}s | threads={milestones['total_threads_seen']} "
+            f"[{run_id}] Done in {elapsed}s | kernel={milestones['kernel_version']!r} "
+            f"| threads={milestones['total_threads_seen']} "
             f"| gpe0_nz={gpe0_nz if (gpe0_nz := gpe_stats.get('nonzero_pixels')) is not None else None} unique_colors={gpe_stats.get('unique_colors')} "
             f"| counts={milestones['prefix_counts']}",
             flush=True,
@@ -773,11 +1069,11 @@ def run_once(args: argparse.Namespace) -> int:
             qmp.close()
         if proc is not None and proc.poll() is None:
             try:
-                os.killpg(proc.pid, signal.SIGTERM)
+                proc.terminate()
                 proc.wait(timeout=4.0)
             except Exception:
                 try:
-                    os.killpg(proc.pid, signal.SIGKILL)
+                    proc.kill()
                     proc.wait(timeout=2.0)
                 except Exception:
                     pass
@@ -794,7 +1090,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8], required=True)
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)
@@ -805,6 +1101,7 @@ def main() -> int:
     ap.add_argument("--key-settle-ms", type=int, default=1500)
     ap.add_argument("--export-png-stem", type=str, default="")
     ap.add_argument("--export-png-dir", type=str, default="")
+    ap.add_argument("--run-dir", type=str, default="")
     args = ap.parse_args()
     r5_default = 1 if args.round >= 5 else 0
     if args.restore_infra70 is None:

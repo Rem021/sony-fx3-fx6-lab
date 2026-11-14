@@ -6,12 +6,12 @@
 
 双击本目录 [启动FX3最小研究虚拟机.command](启动FX3最小研究虚拟机.command)。终端运行约 12 秒后正常退出，显示状态和日志路径。该 `.command` 是可审阅的终端入口，不是图形相机界面。
 
-也可使用本机已安装的 Python 3.14：
+也可使用本机已安装的 Python 3（优先探测 `$FX3_PYTHON`、`~/.local/bin/python3`、系统 `python3`）：
 
 ```sh
-/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/run_probe.py --self-check
-/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/run_probe.py --profile minimal-linux --seconds 12
-/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/run_probe.py --profile app-loader --seconds 12
+python3 outputs/fx3-vm/run_probe.py --self-check
+python3 outputs/fx3-vm/run_probe.py --profile minimal-linux --seconds 12
+python3 outputs/fx3-vm/run_probe.py --profile app-loader --seconds 12
 ```
 
 `--seconds` 是宿主机壁钟观察窗，可设 1–30 秒。未满足标记或出现 guest exception 时退出码为 2，不把 QEMU 自身正常退出当作 FX3 启动通过。运行中按 Ctrl-C 会收尾所属 QEMU 子进程。日志位于 `work/fx3-vm-20261101/host/runs/a-<8位ID>/`。
@@ -32,11 +32,11 @@ QEMU、glib、pcre2、intl 的运行闭包在 `bin/` 和 `lib/`，采用相对 d
 实验 DTB 和最小 CPIO 在 `share/`；CPIO 中原 ELF 均从本机已经解包的自有固件逐字节引用，无完整 BODYDATA.DAT 或完整分区。原内核只读引用：
 
 ```text
-/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin
+~/AI-Workspace/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin
 SHA256 da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c
 ```
 
-入口核对外盘 UUID、原内核与运行文件 SHA；有缺失/变化会停止。未连接相机或手机；运行参数不提供网卡、USB/宿主磁盘/宿主目录透传。当前验收是短时运行，长期稳定性未验证。
+入口按需核对内核与运行文件 SHA（若显式回退外盘路径则核对卷 UUID）；有缺失/变化会停止。未连接相机或手机；运行参数不提供网卡、USB/宿主磁盘/宿主目录透传。当前验收是短时运行，长期稳定性未验证。
 
 ## 证据与来源
 
@@ -54,7 +54,7 @@ SHA256 da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c
 
 默认两profile验收之外，另用同一最终QEMU尝试原 `im.elf target=qemu`，guest进程限2秒、宿主观察12秒。实际报告 `open /dev/uipc error: No such file or directory` 后退出，原wait RC为133；未出现kernel panic，所属QEMU已回收。syscall trace不可用，未证明到达应用main或显示菜单，未将该返回值解释成ABI不兼容。
 
-这给出下一处具体环境缺口：Sony UIPC设备与服务模型。默认运行包/profile保持不变，当前停止追加仿真修复轮。[alpha原始记录](/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/ap-entry-alpha-summary.json)。
+这给出下一处具体环境缺口：Sony UIPC设备与服务模型。默认运行包/profile保持不变，当前停止追加仿真修复轮。`~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/host/ap-entry-alpha-summary.json`。
 
 ## 离线补丁与溯源自动化校验
 

@@ -27,6 +27,11 @@
   - **4 通道 `XLR-H1` 音频增益/VU 表与 `RTMD 0xE304` 遥测（`POST /api/cinema_param` & `mb[26..27]`）**：扩展 `ch1_db..ch4_db`（钳位 `[-60..+12]` dB）、`xlr_phantom_48v`、`xlr_handle_attached` 与 `rtmd_0xe304_ibis_lock`（`ACTIVE_5AXIS` / `OFF_CENTER_LOCKED` / `STANDARD`）。当 `xlr_handle_attached == False` 时，遵循 `P11` `0x91db059b` 契约无崩溃自动回退至 `Internal Stereo` 并更新 `GPE0` HUD 条与 Web VU 电平条。
   - **`CAMSET` 场景预设导出/导入（`GET /api/preset_export`、`POST /api/preset_import`）**：导出含确定性 `preset_sha256` 的 `fx6_on_fx3_camset_v1` JSON 快照；导入恢复完整 Cinema Line / User LUT / 4-Ch 音频 / `RTMD 0xE304` / 语言配置，同时强制执行 `P4` ND-Clear 硬件锁（拦截任何光学/电子 ND 篡改并递增 `p4_nd_reject_count`）及 `P12` `BK4` 飞行模式影子锁。详情见 [Phase 40 报告](../../reports/2026-11-14-phase40-vm-trial-cube-lut-xlr-presets/README.md)。
 
+- **Phase 49 — 128 页双语菜单即时搜索/直跳目录、机内 `EN/ZH/JA` `GPE0` 像素差异自检与 HTTP 断连零堆栈加固（2026-11-14）**：
+  - **零堆栈客户端断连加固（`HardenedThreadingHTTPServer` + `make_handler`）**：在 `ThreadingHTTPServer.handle_error` 与 `handle_one_request` / `finish` / `do_GET` / `do_POST` / `_send_bytes` / `_send_json` / `_safe_send_error` 中统一捕获 `BrokenPipeError`、`ConnectionResetError`、`ConnectionAbortedError`、`TimeoutError`、`socket.timeout` 及 `EPIPE`/`ECONNRESET`/`ECONNABORTED`/`ETIMEDOUT` 等 `OSError`，快速刷新浏览器标签或并发中断 `/frame.png` / `/api/frame.png` 拉取不再向终端输出 `Exception occurred during processing of request` 堆栈。
+  - **11 大分类 / 128 页中英双语菜单目录与即时搜索直跳（`GET /api/menu_catalog`、`POST /api/jump_page`）**：结构化暴露全部 11 个 FX6 分类、`15` 个旗舰入口（`Big-6 Home`、`Shooting -> Cine EI / S&Q / Shutter`、`Project -> Base Look / Rec Format`、`Paint/Look -> User 3D LUT`、`TC/Media -> Dual CFexpress Slot`、`Monitoring -> Output / Display`、`Audio -> XLR-H1 4ch`、`Thumbnail`、`Technical -> P4 ND Lock / IBIS`、`Network -> P12 Airplane Guard`、`Maintenance -> Version`、`Assignable Buttons Page 110`）以及全量 `fx6_all_pages[0..127]`（含 `zh_title`、`en_title`、`category`、`page_id`、`macro`、`fx3_bridge_note`）。Web 界面顶部新增 `🔍 搜索菜单 / Quick Jump (128 Pages)` 中英文实时搜索栏与一键直跳胶囊。
+  - **按需机内三语（`EN -> ZH -> JA`）`GPE0` 像素差异校验器（`POST /api/verify_multilang_diff` & `GET` 缓存回执）**：Web 顶部新增 **`驗 / Verify EN-ZH-JA GPE0`** 按钮；触发后自动切换 `en -> zh -> ja`（并在 `finally` 中严格恢复用户原语言与页面），采集三帧 `1024x540` `GPE0` 物理显存的 `SHA-256` 及成对字节/像素差异（验证 `en_vs_zh_diff_bytes > 0`、`zh_vs_ja_diff_bytes > 0`、`ack_seq` 严格递增）。详情见 [Phase 49 报告](../../reports/2026-11-14-phase49-vm-trial-menu-search-hardening/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -69,7 +74,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 网页仅监听本机 `127.0.0.1`。原始固件和已完成的运行目录保持只读；每轮日志、按钮记录、提交帧证据和退出回执分别保存到新建的 `work/fx3-vm-20261101/menu-repair-01/runtime/runs/try1-*`。退出会核对原 API 16 字节恢复、QEMU 退出码、进程回收、输入 SHA 和锁释放。
 
-技术参考：[QEMU 监视器](https://www.qemu.org/docs/master/system/monitor.html)、[Python 本地 HTTP 服务接口](https://docs.python.org/3/library/http.server.html)。这些接口仅用于宿主控制与观察，设备模型沿用冻结基线。
+技术参考：[QEMU 监视器](https://www.qemu.org/docs/master/system/monitor.html)、[Python 本地 HTTP 服务接口](https://docs.python.org/3/library/http.server.html)。这些接口仅用于宿主机控制与观察，设备模型沿用冻结基线。
 
 验证记录：[实际网页菜单截图与退出回执](../../reports/2026-11-01-fx3-vm-resumed-repair/try1-local-ui-trial.md)。已完成待机→MENU→菜单→网页结束，以及独立一轮Ctrl-C收尾；自测实例均已退出。
 
@@ -77,7 +82,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ## 离线自动化单元测试（`tests/test_vm_trial.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 端口隔离、多语言 `.uxc` 发现、`/api/lang` & `/api/fx3_button` & `/api/cinema_param` & `/api/lut_upload` & `/api/preset_export` & `/api/preset_import` HTTP 路由、`.cube` 防崩溃清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁、`P11`/`RTMD 0xE304` 遥测与回执校验（共 **59 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 / Phase 49 端口隔离、多语言 `.uxc` 发现、11 分类 128 页双语菜单搜索直跳（`/api/menu_catalog` & `/api/jump_page`）、`EN/ZH/JA` `GPE0` 像素差自检（`/api/verify_multilang_diff`）、HTTP 客户端断连零堆栈加固（`HardenedThreadingHTTPServer`）、`.cube` 防崩清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁与回执校验（共 **81 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

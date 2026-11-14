@@ -138,7 +138,7 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room --summary
 
-# 3. 运行 outputs/fx3-vm 全量 99 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项 + Phase 41 28 项，< 3s）
+# 3. 运行 outputs/fx3-vm 全量 127 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项 + Phase 41 28 项 + Phase 45 28 项，< 4s）
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 ```
@@ -170,6 +170,33 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/cxd90057_dtb_and_mh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_cxd90057_dtb_and_mhlx.py -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_cxd90057_dtb_and_mhlx.py -v
 ```
+
+## Phase 45：`IMX510` VSYNC 帧管线、`libmpr` XAVC-I / XAVC S-I 录制管线、`RTMD 0xE304` 逐帧打包与双 CFexpress Type A / SDXC 槽位仿真器
+
+[`imx510_xavc_cfexpress_pipeline_emulator.py`](imx510_xavc_cfexpress_pipeline_emulator.py) 作为 **Stage 5** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase45` 跳过），打通 `IMX510 -> BIONZ XR -> SMPTE RDD 18 RTMD -> Dual Slot A/B` 虚拟录制闭环：
+
+1. **只读（`os.O_RDONLY`）`libmpr.so` / `appFw.so` / `cpapp-b.bin` 录制管线审计 + 洁净室回退**：
+   - 使用 C 级 `bytes.find` 检视 FX3 `v7.02` 与 FX6 `v6.01` 的 `IMX510` 读出模式（`4096x2160` DCI 4K、`3840x2160` QFHD、`1920x1080` FHD、`23.98p..120p` / `240p` S&Q 与 `5016x3344` Open-Gate 编码器缺失反证）、`libmpr.so` `XAVC-I`（`MXF` `libXavcMxf`）与 `XAVC S-I` / `XAVC S` / `XAVC HS`（`MP4` `libXavcMp4`）码率配置表、`KlvConverter` `RDD18`、`P4` `set_nd_filter_*` 及 `CFexpress Type A` / `SDXC` 速率警告契约；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下切换确定性洁净室基线。
+2. **逐帧 `IMX510` VSYNC、`SMPTE RDD 18` `RTMD`（`0xE304` + `0xE305`）与双卡槽仿真**：
+   - 建模精确有理数时基（`24000/1001..240000/1001`）、`90 kHz` PTS、SMPTE 时间码、Dual Base ISO（`800` / `12800`）+ EI 增益（dB）、`33^3` 3D LUT 激活标记、`P4` `ND=Clear` 光学锁（`mode=4`, `val=(1,1)`）及 5 轴 IBIS 遥测逐帧 KLV 校验。
+   - 覆盖 `SIMULTANEOUS`（双槽 SHA-256 一致性）、`RELAY_AUTO_SWITCH`（低水位无丢帧切换）、`SORT_PROXY_MAIN`（Main + `16 Mbps` HEVC Proxy）与故障隔离 `SPEED_CLASS_REJECT`（例如 `4K 120p XAVC-I 600Mbps` 写入 `V30` SD 卡时安全拒绝，`appFw.so` 零崩溃、`wdt_resets == 0`），全程强制 `cp_mutation_bytes == 0`、`wbi_mutation_bytes == 0`、`physical_device_writes == 0`。
+
+### Phase 45 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/imx510_xavc_cfexpress_pipeline_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/imx510_xavc_cfexpress_pipeline_emulator.py --self-test --json
+
+# 2. 全板 Stage 1..5 统一校验（< 2s）
+make verify-coemulation
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-coemulation
+
+# 3. 单独运行 Phase 45 28 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_imx510_xavc_cfexpress_pipeline.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_imx510_xavc_cfexpress_pipeline.py -v
+```
+
 
 
 

@@ -1,13 +1,15 @@
 #!/usr/bin/env node
-import { rpcBatch } from "/Volumes/KAFU2T/AI/Projects/Mac/outputs/orca-naming-guard/adapter.mjs";
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const REPO_ID = "e52bdbc7-1cf3-4bc8-bdd4-f37b01044ebd";
-const REPO_PATH = "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab";
+const REPO_PATH = resolve(import.meta.dirname, "..");
+const MAC_PATH = resolve(REPO_PATH, "../..");
+const { rpcBatch } = await import(pathToFileURL(join(MAC_PATH, "outputs/orca-naming-guard/adapter.mjs")).href);
 const ACTIVE_SESSION_ID = "antigravity_7a23fc7b_dfcf_4785_bc33_b678bbc0e0f0";
-const LEGACY_WORKSPACE_ID = "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577";
+const LEGACY_WORKSPACE_ID = `3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::${MAC_PATH}::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577`;
 
 const WORKSPACES = {
   cat1: {
@@ -119,9 +121,12 @@ const dbPath = "/Users/kafu/Library/Application Support/orca/agent-session-journ
 const db = new DatabaseSync(dbPath);
 
 const TargetWids = new Set([
+  LEGACY_WORKSPACE_ID,
+  `3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::${MAC_PATH}`,
   "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
   "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac",
-  ...Object.values(WORKSPACES).map(w => w.id)
+  ...Object.values(WORKSPACES).map(w => w.id),
+  ...Object.values(WORKSPACES).map(w => w.id.replace(REPO_PATH, "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab"))
 ]);
 
 const SKIP_SIDS = new Set([

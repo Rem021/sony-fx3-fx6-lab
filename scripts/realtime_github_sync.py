@@ -15,8 +15,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path("/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab")
-MAC_REPORTS = Path("/Volumes/KAFU2T/AI/Projects/Mac/reports")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+MAC_REPORTS = REPO_ROOT.parents[1] / "reports"
 EXPORT_SCRIPT = REPO_ROOT / "scripts" / "export_orca_conversations.mjs"
 
 REPORT_PAT = re.compile(r"(fx3|fx5|fx6|venice|sony-fx|索尼\s*FX)", re.IGNORECASE)

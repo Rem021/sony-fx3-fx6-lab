@@ -138,7 +138,7 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room --summary
 
-# 3. 运行 outputs/fx3-vm 全量 127 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项 + Phase 41 28 项 + Phase 45 28 项，< 4s）
+# 3. 运行 outputs/fx3-vm 全量 155 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项 + Phase 41 28 项 + Phase 45 28 项 + Phase 53 28 项，< 4.5s）
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 ```
@@ -188,7 +188,7 @@ PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/imx510_xavc_cfexpress_pipeline_emulator.py --self-test --summary
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/imx510_xavc_cfexpress_pipeline_emulator.py --self-test --json
 
-# 2. 全板 Stage 1..5 统一校验（< 2s）
+# 2. 全板 Stage 1..6 统一校验（< 2.5s）
 make verify-coemulation
 FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-coemulation
 
@@ -196,6 +196,36 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-coemulation
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_imx510_xavc_cfexpress_pipeline.py -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_imx510_xavc_cfexpress_pipeline.py -v
 ```
+
+## Phase 53：Stage 6 HIL 动态故障注入与热管理 / `NP-FZ100` / `XLR-H1` / `C2PA` 协同仿真台
+
+[`fx3_vm_hil_fault_harness.py`](fx3_vm_hil_fault_harness.py) 作为 **Stage 6** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase53` 跳过），打通 `CXD90057 AP` + `CXD90058 Stock-CP`（`cp_mutation_bytes == 0`）+ `Soft-GPE0` + `IMX510/XAVC` 全板 8 场景确定性硬件在环（HIL）动态故障注入闭环：
+
+1. **`HIL-01` 4K 60p Cine EI + `XLR-H1` + `EXT-LK` 标称拍摄**：`SoC 54°C`、`NP-FZ100 88% (7980mV)` + `USB-PD 9.0V`、`XLR-H1`（`24-bit 48kHz`）、`VMC-BNCM1 EXT-LK` 锁定，`0` 丢帧。
+2. **`HIL-02` `OFF_IN_REC` 阶梯温升（`48°C -> 64°C -> 83°C -> 91°C`）**：`>=62°C` SoC / `>=68°C` CFexpress 自动风扇 PWM 覆写、`>=82°C` 琥珀色 HUD 告警、`>=90°C` 优雅封口 XAVC 尾标并干净卸载 exFAT（`VolumeDirty == 0`、零 `.RSV` 残片）与 `tmpfs` RAM overlay。
+3. **`HIL-03` 实时 `XLR-H1` MI 热靴热拔出**：验证 `P11`（`0x91db059b -> 0x88000002`）秒级回落至 `INTERNAL_STEREO` 且 `IVSHMEM` TX 环零泄漏、Stock-CP 零唤醒/零崩溃。
+4. **`HIL-04` `NP-FZ100`（`7200 mV`）InfoLITHIUM vs `BP-U`（`11500 mV`）抗误切 + VBUS 压降保护**：证明 `7200 mV` 正常运行不被 `11500 mV` 阈值误关机，而 `VBUS` 压降 `>450 mV` 失效关闭阻塞 `H0`/`H1` 进入。
+5. **`HIL-05` `C2PA RQ_LIC.DAT` 与 `SPACC 0xf7fc0000 cnflasha` 读写陷阱**：立即拦截针对 `cnflasha*`、C2PA 证书与出厂校准区及用户态 `SPACC` MMIO 的写入/挂载探测（`calibration_mutation_bytes == 0`）。
+6. **`HIL-06` `P4` 光学可变 ND 指令注入（`Auto ND` / `1/4..1/128`）**：在无光学 ND 硬件的 FX3 机身上强制钳位至 `ND=Clear`（`mode=4, val=(1,1)`），`0` 电机超时并校验 `RTMD 0xE107`。
+7. **`HIL-07` `P12` `libWlanResource.so` `0x70d4` + `virtual-rom-v1` `/dev/ttyAMA3` 超时**：中和索尼 `00342260`（`WF-12`）死循环挂起（`ALLOWED_DEGRADED`、`wdt_resets == 0`、HUD UI 保持响应）。
+8. **`HIL-08` 双 CFexpress Slot A 写满切换 Slot B `RELAY_AUTO_SWITCH` + 低速 `V30` 拒绝**：零丢帧无缝接力与 `V30` 安全 `SPEED_CLASS_REJECT`。
+
+### Phase 53 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 8 场景 HIL 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_hil_fault_harness.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_hil_fault_harness.py --self-test --json
+
+# 2. 全板 Stage 1..6 统一校验（< 2.5s）
+make verify-coemulation
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-coemulation
+
+# 3. 单独运行 Phase 53 28 项单测（双模式）& 全量 155 项单测（< 4.5s）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_fx3_vm_hil_fault_harness.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_fx3_vm_hil_fault_harness.py -v
+```
+
 
 
 

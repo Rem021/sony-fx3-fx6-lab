@@ -23,11 +23,12 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import struct
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple, TypeVar
 
 import unicorn as U
 from unicorn import arm64_const as A
@@ -99,6 +100,8 @@ from .patcher import (
     FX6_APPFW_P10_ONLY_SHA256,
     FX6_APPFW_STAGE_A_SHA256,
     FX6_APPFW_STAGE_B_SHA256,
+    FX6_WLAN_RSRC_DONOR_SHA256,
+    FX6_WLAN_RSRC_P12_SHA256,
     P1_APPFW_SITE,
     P1_P4_P8_APPFW_COMBINED_SPEC,
     P1_P4_P8_P10_APPFW_COMBINED_SPEC,
@@ -106,13 +109,16 @@ from .patcher import (
     P4_APPFW_VALUE_SITE,
     P8_APPFW_SITE,
     P10_KEYMAP_PATCH_SPEC,
+    P12_WLAN_FATAL_GUARD_SPEC,
     STAGE_B_PATCH_SPECS,
+    STAGE_B_WITH_P12_PATCH_SPECS,
     LibraryPatchSpec,
     PatchReceipt,
     PatchSiteSpec,
     RollbackReceipt,
     apply_patch_spec,
     build_stage_b_appfw_image,
+    build_stage_b_wlan_rsrc_image,
     generate_p1_lut_mount_snippet,
     get_target_patch_specs,
     read_donor_bytes_readonly,
@@ -151,6 +157,7 @@ from .tier0_unicorn_verifier import (
     WORKER_OK,
     CompiledWorkerArtifact,
     Tier0UnicornRunResult,
+    compile_tier0_worker_shared_object,
     run_tier0_worker_in_unicorn,
 )
 from .uipc_completion_verifier import (
@@ -168,10 +175,37 @@ from .vfat_builder import (
     generate_p2_opelog_mount_snippet,
     verify_vfat_image,
 )
+from .wireless_fault_isolation_verifier import (
+    Phase22WirelessFaultIsolationReport,
+    run_phase22_wireless_fault_isolation_verification,
+)
 
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
 COMPLETE_MATRIX_ITEMS: Tuple[str, ...] = ("P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "Fan")
+
+_T = TypeVar("_T")
+_DRY_RUN_HELPER_CACHE: Dict[Tuple[object, ...], object] = {}
+
+
+def _dry_run_env_key(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+) -> Tuple[str, str, str, bool, str]:
+    return (
+        str(repo_root.resolve()),
+        str(fx6_lib_dir.resolve()),
+        str(fx3_modules_dir.resolve()),
+        is_forced_clean_room(),
+        os.environ.get("FX3_FX6_DONOR_ROOT", ""),
+    )
+
+
+def _cached_dry_run_step(key: Tuple[object, ...], fn: Callable[[], _T]) -> _T:
+    if key not in _DRY_RUN_HELPER_CACHE:
+        _DRY_RUN_HELPER_CACHE[key] = fn()
+    return _DRY_RUN_HELPER_CACHE[key]  # type: ignore[return-value]
 
 EXPECTED_STAGE_B_NATIVE_KEYMAP: Dict[int, int] = {
     0x0002: 0x001,       # POWER
@@ -732,6 +766,10 @@ class CandidateDryRunReport:
     stage_b_p10_summary: Optional[StageBCombinedAppFwReport] = None
     uipc_cp_shim_ok: bool = True
     uipc_cp_shim_audit: Optional[Phase21UipcCpShimReport] = None
+    stage_b_p12_wireless_guard_enabled: bool = False
+    stage_b_wlan_rsrc_sha256: str = ""
+    wireless_fault_isolation_ok: bool = True
+    wireless_fault_isolation_audit: Optional[Phase22WirelessFaultIsolationReport] = None
 
 
 def run_offline_candidate_dry_run(
@@ -740,6 +778,7 @@ def run_offline_candidate_dry_run(
     fx3_modules_dir: Path = DEFAULT_FX3_MODULES_DIR,
     vfat_mode: str = "8m_ram",
     include_p10_keymap: bool = True,
+    include_p12_wireless_guard: bool = True,
     compiled_worker: Optional[CompiledWorkerArtifact] = None,
     precomputed_tier0_result: Optional[Tier0UnicornRunResult] = None,
     precomputed_rollback_drill: Optional[RollbackDrillReport] = None,
@@ -756,6 +795,7 @@ def run_offline_candidate_dry_run(
     precomputed_ap_cp_imaging: Optional[Phase18ImagingAuditReport] = None,
     precomputed_stage_b_appfw: Optional[StageBCombinedAppFwReport] = None,
     precomputed_uipc_cp_shim: Optional[Phase21UipcCpShimReport] = None,
+    precomputed_wireless_fault_isolation: Optional[Phase22WirelessFaultIsolationReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -774,13 +814,15 @@ def run_offline_candidate_dry_run(
     corrupt_ap_cp_imaging: bool = False,
     corrupt_stage_b_p10: bool = False,
     corrupt_uipc_cp_shim: bool = False,
+    corrupt_wireless_guard: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
     tamper_failsafe_hook: bool = False,
 ) -> CandidateDryRunReport:
-    """Assemble and verify a complete P1..P9 + Fan (+ Stage-B P10) FX6-on-FX3 candidate."""
+    """Assemble and verify a complete P1..P9 + Fan (+ Stage-B P10 & P12) FX6-on-FX3 candidate."""
     repo_root = repo_root.resolve()
+    env_key = _dry_run_env_key(repo_root, fx6_lib_dir, fx3_modules_dir)
     target_specs = get_target_patch_specs(include_p10_keymap=include_p10_keymap)
     target_by_lib: Dict[str, LibraryPatchSpec] = {s.library_name: s for s in target_specs}
 
@@ -969,33 +1011,40 @@ def run_offline_candidate_dry_run(
             failsafe_hook = failsafe_hook.replace('rm -f "/tmp/mod_arm_once"', "# tampered")
         (scripts_dir / "init2_guard.sh").write_text(failsafe_hook, encoding="utf-8")
 
-        rollback_drill_res = precomputed_rollback_drill or run_four_layer_rollback_drill(
-            overlay_bundle=stage_a_bundle,
-            fx6_lib_dir=fx6_lib_dir,
-            fx3_modules_dir=fx3_modules_dir,
+        rollback_drill_res = precomputed_rollback_drill or _cached_dry_run_step(
+            ("rollback_drill", env_key, vfat_mode, stage_a_bundle.cpio_sha256),
+            lambda: run_four_layer_rollback_drill(
+                overlay_bundle=stage_a_bundle,
+                fx6_lib_dir=fx6_lib_dir,
+                fx3_modules_dir=fx3_modules_dir,
+            ),
         )
 
-        feature_routing_res = precomputed_feature_routing or run_feature_routing_verification(
-            fx6_lib_dir=fx6_lib_dir,
+        feature_routing_res = precomputed_feature_routing or _cached_dry_run_step(
+            ("feature_routing", env_key),
+            lambda: run_feature_routing_verification(fx6_lib_dir=fx6_lib_dir),
         )
         feature_routing_ok = feature_routing_res.all_checks_passed and not corrupt_feature_routing
 
-        backup_mount_res = precomputed_backup_mount_tolerance or run_backup_mount_tolerance_verification(
-            fx6_lib_dir=fx6_lib_dir,
+        backup_mount_res = precomputed_backup_mount_tolerance or _cached_dry_run_step(
+            ("backup_mount_tolerance", env_key),
+            lambda: run_backup_mount_tolerance_verification(fx6_lib_dir=fx6_lib_dir),
         )
         backup_mount_tolerance_ok = (
             backup_mount_res.all_checks_passed and not corrupt_backup_mount_tolerance
         )
 
-        boot_selector_banks_res = (
-            precomputed_boot_selector_and_banks or run_boot_selector_and_bank_verification()
+        boot_selector_banks_res = precomputed_boot_selector_and_banks or _cached_dry_run_step(
+            ("boot_selector_banks", env_key),
+            run_boot_selector_and_bank_verification,
         )
         boot_selector_and_banks_ok = (
             boot_selector_banks_res.all_checks_passed and not corrupt_boot_selector_and_banks
         )
 
-        kernel_dtb_res = precomputed_kernel_dtb or run_kernel_dtb_verification(
-            fx3_modules_dir=fx3_modules_dir
+        kernel_dtb_res = precomputed_kernel_dtb or _cached_dry_run_step(
+            ("kernel_dtb", env_key),
+            lambda: run_kernel_dtb_verification(fx3_modules_dir=fx3_modules_dir),
         )
         kernel_dtb_ok = kernel_dtb_res.all_checks_passed and not corrupt_kernel_dtb
 
@@ -1028,63 +1077,115 @@ def run_offline_candidate_dry_run(
         )
         cp_rtos_ok = cp_rtos_res.all_checks_passed and not corrupt_cp_rtos
 
-        p1_recovery_bridge_res = (
-            precomputed_p1_recovery_bridge
-            or run_p1_recovery_bridge_verification(repo_root=repo_root)
+        p1_recovery_bridge_res = precomputed_p1_recovery_bridge or _cached_dry_run_step(
+            ("p1_recovery_bridge", env_key),
+            lambda: run_p1_recovery_bridge_verification(repo_root=repo_root),
         )
         p1_recovery_bridge_ok = (
             p1_recovery_bridge_res.all_checks_passed and not corrupt_p1_recovery_bridge
         )
 
-        stage_a_orchestrator_res = (
-            precomputed_stage_a_orchestrator
-            or run_stage_a_boot_orchestrator_verification(
+        stage_a_orchestrator_res = precomputed_stage_a_orchestrator or _cached_dry_run_step(
+            ("stage_a_orchestrator", env_key, vfat_mode, stage_a_bundle.cpio_sha256),
+            lambda: run_stage_a_boot_orchestrator_verification(
                 overlay_bundle=stage_a_bundle,
                 fx6_lib_dir=fx6_lib_dir,
                 fx3_modules_dir=fx3_modules_dir,
-            )
+            ),
         )
         stage_a_orchestrator_ok = (
             stage_a_orchestrator_res.all_checks_passed and not corrupt_stage_a_orchestrator
         )
 
-        kmod_userland_abi_res = (
-            precomputed_kmod_userland_abi
-            or run_kmod_and_userland_abi_verification(
+        kmod_userland_abi_res = precomputed_kmod_userland_abi or _cached_dry_run_step(
+            ("kmod_userland_abi", env_key),
+            lambda: run_kmod_and_userland_abi_verification(
                 fx6_lib_dir=fx6_lib_dir,
                 fx3_modules_dir=fx3_modules_dir,
-            )
+            ),
         )
         kmod_userland_abi_ok = (
             kmod_userland_abi_res.all_checks_passed and not corrupt_kmod_userland_abi
         )
 
-        peripheral_ux_res = (
-            precomputed_peripheral_ux
-            or verify_peripheral_ux_compatibility()
+        peripheral_ux_res = precomputed_peripheral_ux or _cached_dry_run_step(
+            ("peripheral_ux", env_key),
+            verify_peripheral_ux_compatibility,
         )
         peripheral_ux_ok = (
             peripheral_ux_res.all_passed and not corrupt_peripheral_ux
         )
 
-        ap_cp_imaging_res = (
-            precomputed_ap_cp_imaging
-            or verify_ap_cp_imaging_pipeline()
+        ap_cp_imaging_res = precomputed_ap_cp_imaging or _cached_dry_run_step(
+            ("ap_cp_imaging", env_key),
+            verify_ap_cp_imaging_pipeline,
         )
         ap_cp_imaging_ok = (
             ap_cp_imaging_res.passed and not corrupt_ap_cp_imaging
         )
 
-        uipc_cp_shim_res = (
-            precomputed_uipc_cp_shim
-            or run_phase21_uipc_cp_shim_verification()
+        uipc_cp_shim_res = precomputed_uipc_cp_shim or _cached_dry_run_step(
+            ("uipc_cp_shim", env_key),
+            run_phase21_uipc_cp_shim_verification,
         )
         uipc_cp_shim_ok = (
             uipc_cp_shim_res.passed and not corrupt_uipc_cp_shim
         )
 
+        if include_p12_wireless_guard:
+            wireless_res: Optional[Phase22WirelessFaultIsolationReport] = (
+                precomputed_wireless_fault_isolation
+                if (precomputed_wireless_fault_isolation is not None and not corrupt_wireless_guard)
+                else (
+                    run_phase22_wireless_fault_isolation_verification(corrupt_wireless_guard=True)
+                    if corrupt_wireless_guard
+                    else _cached_dry_run_step(
+                        ("p22_wireless", env_key),
+                        run_phase22_wireless_fault_isolation_verification,
+                    )
+                )
+            )
+            wlan_rsrc_path = fx6_lib_dir / "libWlanResource.so"
+            if wlan_rsrc_path.is_file():
+                wlan_raw = read_donor_bytes_readonly(wlan_rsrc_path)
+                wlan_patched, wlan_p_rec = build_stage_b_wlan_rsrc_image(wlan_raw)
+                staged_wlan = adapted_dir / "libWlanResource.so"
+                staged_wlan.write_bytes(wlan_patched)
+                wlan_staged_bytes = staged_wlan.read_bytes()
+                wlan_restored, wlan_rb_rec = rollback_patch_spec(
+                    wlan_staged_bytes,
+                    P12_WLAN_FATAL_GUARD_SPEC,
+                )
+                p12_wlan_patch_ok = (
+                    wlan_p_rec.before_sha256 == FX6_WLAN_RSRC_DONOR_SHA256
+                    and wlan_p_rec.after_sha256 == FX6_WLAN_RSRC_P12_SHA256
+                    and wlan_rb_rec.donor_sha256_matched
+                    and wlan_restored == wlan_raw
+                )
+                stage_b_wlan_sha = wlan_p_rec.after_sha256
+            else:
+                p12_wlan_patch_ok = wireless_res.p12_wlan_fatal_guard.rollback_sha256_matched
+                stage_b_wlan_sha = wireless_res.p12_wlan_fatal_guard.after_sha256
+            wireless_fault_isolation_ok = (
+                wireless_res.passed and p12_wlan_patch_ok and not corrupt_wireless_guard
+            )
+        else:
+            wireless_res = precomputed_wireless_fault_isolation
+            stage_b_wlan_sha = ""
+            wireless_fault_isolation_ok = not corrupt_wireless_guard
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
-        tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
+        if precomputed_tier0_result is not None:
+            tier0_res = precomputed_tier0_result
+        else:
+            effective_cw = compiled_worker or _cached_dry_run_step(
+                ("compiled_worker", env_key),
+                compile_tier0_worker_shared_object,
+            )
+            tier0_res = _cached_dry_run_step(
+                ("tier0", env_key, hashlib.sha256(effective_cw.so_bytes).hexdigest()),
+                lambda: run_tier0_worker_in_unicorn(compiled_worker=effective_cw),
+            )
         assert tier0_res.manifest_json is not None
         manifest_payload: Dict[str, object] = copy.deepcopy(tier0_res.manifest_json)
         syscall_list: List[Dict[str, object]] = [dict(r) for r in tier0_res.syscall_trace]
@@ -1131,6 +1232,7 @@ def run_offline_candidate_dry_run(
             and peripheral_ux_ok
             and ap_cp_imaging_ok
             and uipc_cp_shim_ok
+            and wireless_fault_isolation_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -1221,4 +1323,8 @@ def run_offline_candidate_dry_run(
         stage_b_p10_summary=stage_b_appfw_res,
         uipc_cp_shim_ok=uipc_cp_shim_ok,
         uipc_cp_shim_audit=uipc_cp_shim_res,
+        stage_b_p12_wireless_guard_enabled=include_p12_wireless_guard,
+        stage_b_wlan_rsrc_sha256=stage_b_wlan_sha,
+        wireless_fault_isolation_ok=wireless_fault_isolation_ok,
+        wireless_fault_isolation_audit=wireless_res,
     )

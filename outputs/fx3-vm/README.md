@@ -138,10 +138,39 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --clean-room --summary
 
-# 3. 运行 outputs/fx3-vm 全量 71 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项，< 3s）
+# 3. 运行 outputs/fx3-vm 全量 99 项单测（Phase 24 22 项 + Phase 29 25 项 + Phase 33 24 项 + Phase 41 28 项，< 3s）
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py" -v
 ```
+
+## Phase 41：QEMU CXD90057 纯 Python FDT/DTB 合成器、`mhlx`/`ipcu` 硬件邮箱环与 `0xf0000000..0xf8ffffff` MMIO 窗口仿真器
+
+[`cxd90057_dtb_and_mhlx_emulator.py`](cxd90057_dtb_and_mhlx_emulator.py) 为 `outputs/fx3-vm/` 补齐了纯 Python 设备树编解码、SoC 外设 MMIO 窗口总线与 `mhlx`/`ipcu` 邮箱/冷热启动握手能力，并作为可选/默认 **Stage 4** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（`--skip-phase41` 可跳过）：
+
+1. **只读（`os.O_RDONLY`）FX3 v7.02 / FX6 v6.01 内核与模块 MMIO 契约审计 + 洁净室回退**：
+   - 本地供体存在时以严格 `os.O_RDONLY` 检视 `vmlinux.bin`、`cxd90057.dtb`（`17,131 B`）、`osal_uipc.ko`、`utimer.ko`、`elpspacc.ko`、`elpspaccusr.ko`、`grm_ma.ko`、`pcie-if.ko`、`pci_ep_cp.ko`、`libspaccdev.so`、`libosal_uipc.so`、`libbt-vendor.so`、`libInfraBluetoothCore.so` 及 `cpapp-b.bin` 中涵盖 `mhlx`、`ipcu`、`shm`、`gpe`、`spacc`、`timer`、`ttyAMA0..ttyAMA3` 7 大子系统的符号与 MMIO 契约；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时切换至固定 SHA-256 洁净室基线。
+2. **零外部 `dtc` 依赖纯 Python FDT v17（`0xd00dfeed`）编译器与解析器**：
+   - `compile_cxd90057_hybrid_fdt()` 与 `parse_fdt_blob()` 全程内存完成 `.dts` 生成、大端 FDT v17 打包与严格解析校验（`4,614 B`、`29` 节点、`127` 属性、`3` 项非重叠 `/memreserve/`，绝不向仓库写入 `.dtb`/`.bin`）。
+   - 覆盖 `cpus`（4x `arm,cortex-a53`）、`memory@40000000`（`2048 MiB`）、`/reserved-memory`（`shm_ipc@41df00000`、`wbi_hib_guard@41df80000`、`gpe0_fb@41e001000` 零重叠）、`soc/timer-ip@f0100000`（hwtimer + WDT）、`soc/serial@f0200000..f0203000`（`ttyAMA0..ttyAMA3`，含 `virtual-rom-v1` 蓝牙 UART）、`soc/mhlx@f0800000`、`soc/spacc@f7fc0000`（AES-XTS `cnflasha` 内核态隔离）及 `soc/ivshmem@10000000`（BAR0/BAR2）。
+3. **`0xf0000000..0xf8ffffff` MMIO 窗口、`mhlx` 邮箱环与 `shm_Loader` 冷/热启动握手**：
+   - [`MmioWindowBus`](cxd90057_dtb_and_mhlx_emulator.py) 建模 `144 MiB` MMIO 窗口分发、SPAcc 用户态越界拦截、`timer-ip` WDT 喂狗计数、`mhlx` 8 通道 16 槽位环形描述符、`W1C` 中断清除寄存器，以及 `shm_Loader` 冷启动（`0x4101 -> 0xc101`）与热唤醒（`0x4102 -> 0xc102`）握手，全程强制 `cp_mutation_bytes == 0`、`wbi_mutation_bytes == 0`。
+
+### Phase 41 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/cxd90057_dtb_and_mhlx_emulator.py --self-test --json
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/cxd90057_dtb_and_mhlx_emulator.py --self-test --summary
+
+# 2. 导出合成 CXD90057 混合设备树 .dts 与 FDT v17 元数据
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/cxd90057_dtb_and_mhlx_emulator.py --dts
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/cxd90057_dtb_and_mhlx_emulator.py --fdt-info
+
+# 3. 单独运行 Phase 41 28 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_cxd90057_dtb_and_mhlx.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_cxd90057_dtb_and_mhlx.py -v
+```
+
 
 
 

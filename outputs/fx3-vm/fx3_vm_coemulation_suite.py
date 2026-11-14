@@ -53,6 +53,7 @@ FX3_VM_DIR = Path(__file__).resolve().parent
 if str(FX3_VM_DIR) not in sys.path:
     sys.path.insert(0, str(FX3_VM_DIR))
 
+import cxd90057_dtb_and_mhlx_emulator as p41  # noqa: E402
 import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 
@@ -95,6 +96,7 @@ class CoEmulationConfig:
     bkid_0x019e0012: Optional[int] = None
     bkid_0x01a20002: Optional[int] = None
     include_bt_containment_matrix: bool = True
+    include_phase41_dtb_mhlx: bool = True
     force_clean_room: Optional[bool] = None
 
     def validate(self) -> None:
@@ -582,6 +584,37 @@ def run_stage3_soft_gpe_hud_composite(
 
 
 # ---------------------------------------------------------------------------
+# Stage 4 (Phase 41): CXD90057 Pure-Python FDT/DTB + MHLX Ring + MMIO Window
+# ---------------------------------------------------------------------------
+
+
+def run_stage4_dtb_mhlx_mmio(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 4 (Phase 41): FDT v17 synthesizer, `0xf0000000..0xf8ffffff` MMIO, MHLX ring & `shm_Loader`."""
+    config.validate()
+    rep = p41.run_phase41_emulator_audit(
+        bt_mode=config.bt_mode,
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage4_phase41_dtb_mhlx_mmio",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["donor_kernel_mmio_audit"]["source_mode"],
+        "cp_mutation_bytes": rep["redlines"]["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["redlines"]["wbi_mutation_bytes"],
+        "fdt_synthesis_and_audit": rep["fdt_synthesis_and_audit"],
+        "donor_kernel_mmio_audit": rep["donor_kernel_mmio_audit"],
+        "mmio_window_emulation": rep["mmio_window_emulation"],
+        "shm_loader_handshakes": rep["shm_loader_handshakes"],
+        "phase41_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -591,23 +624,33 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified Phase 33 Full-Board Virtual Camera Co-Emulation Pipeline."""
+    """Run the unified Phase 33 + Phase 41 Full-Board Virtual Camera Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
     stage1 = run_stage1_bt_and_coldboot(cfg, env=env)
     stage2 = run_stage2_dual_isa_shooting_cycle(cfg, env=env)
     stage3 = run_stage3_soft_gpe_hud_composite(cfg, bt_result=stage1, cp_result=stage2, env=env)
+    stage4: Optional[Dict[str, object]] = (
+        run_stage4_dtb_mhlx_mmio(cfg, env=env) if cfg.include_phase41_dtb_mhlx else None
+    )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
+
+    stage4_ok = True if stage4 is None else (
+        bool(stage4["all_checks_passed"])
+        and stage4["cp_mutation_bytes"] == 0
+        and stage4["wbi_mutation_bytes"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
         and bool(stage2["all_checks_passed"])
         and bool(stage3["all_checks_passed"])
         and stage2["cp_mutation_bytes"] == 0
+        and stage4_ok
     )
 
-    core_payload = {
+    core_payload: Dict[str, object] = {
         "schema": PHASE_33_SCHEMA,
         "version": PHASE_33_VERSION,
         "all_checks_passed": all_passed,
@@ -621,6 +664,7 @@ def run_fx3_vm_coemulation_suite(
             "ibis_mode": cfg.ibis_mode,
             "rtc_valid": cfg.rtc_valid,
             "include_bt_containment_matrix": cfg.include_bt_containment_matrix,
+            "include_phase41_dtb_mhlx": cfg.include_phase41_dtb_mhlx,
         },
         "redlines": {
             "p8_cp_mutation_forbidden": P8_CP_MUTATION_FORBIDDEN,
@@ -641,6 +685,8 @@ def run_fx3_vm_coemulation_suite(
             "cp_read_only": topo.peer1_cp_cetus["cp_read_only"],
         },
     }
+    if stage4 is not None:
+        core_payload["stage4_phase41_dtb_mhlx"] = stage4
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -652,12 +698,17 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + Phase 41 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
     parser.add_argument("--summary", action="store_true", help="Emit concise one-line summary instead of JSON")
     parser.add_argument("--topology", action="store_true", help="Emit Dual-QEMU IVSHMEM topology JSON only")
+    parser.add_argument(
+        "--skip-phase41",
+        action="store_true",
+        help="Skip optional Stage 4 (Phase 41 CXD90057 FDT/DTB & MHLX MMIO check)",
+    )
     parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
@@ -700,6 +751,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         lut_mode=args.lut_mode,
         ibis_mode=args.ibis_mode,
         rtc_valid=not args.rtc_invalid,
+        include_phase41_dtb_mhlx=not args.skip_phase41,
         force_clean_room=True if args.clean_room else None,
     )
     rep = run_fx3_vm_coemulation_suite(cfg)
@@ -708,6 +760,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s1 = rep["stage1_coldboot_and_bt"]
         s2 = rep["stage2_dual_isa_cp_shooting"]
         s3 = rep["stage3_soft_gpe_hud_ramfb"]
+        s4 = rep.get("stage4_phase41_dtb_mhlx")
+        s4_str = (
+            f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
+            if isinstance(s4, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -715,7 +773,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"iso={s2['cine_ei_iso']} lut={s2['lut_mode']}({s2['lut_bytes']}B) "
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
-            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]} | "
+            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

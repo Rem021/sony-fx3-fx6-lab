@@ -17,8 +17,10 @@ Sony FX6 Authentic In-Guest Native GPE0 Menu Runner (Port 8768)
 from __future__ import annotations
 
 import argparse
+import hashlib
 import io
 import json
+import math
 import os
 import re
 import signal
@@ -333,7 +335,64 @@ CAT_NAMES = [
 ]
 
 CELL_NAMES = ["FPS", "EI / Base ISO", "Shutter", "ND Filter", "Base Look / 3D LUT", "White Balance"]
-CELL_N_VALS = [7, 6, 7, 1, 6, 6]
+CELL_N_VALS = [7, 6, 7, 1, 8, 6]
+
+USER_LUT_SLOTS = ("User1", "User2", "User3", "User4")
+USER_LUT_SLOT_TO_CELL_IDX: dict[str, int] = {
+    "User1": 4,
+    "User2": 5,
+    "User3": 6,
+    "User4": 7,
+}
+RTMD_0XE304_MODES = ("ACTIVE_5AXIS", "OFF_CENTER_LOCKED", "STANDARD")
+RTMD_0XE304_ALIASES: dict[str, str] = {
+    "active_5axis": "ACTIVE_5AXIS",
+    "5axis": "ACTIVE_5AXIS",
+    "5-axis": "ACTIVE_5AXIS",
+    "center_lock": "ACTIVE_5AXIS",
+    "active": "ACTIVE_5AXIS",
+    "0": "ACTIVE_5AXIS",
+    "off_center_locked": "OFF_CENTER_LOCKED",
+    "off": "OFF_CENTER_LOCKED",
+    "locked": "OFF_CENTER_LOCKED",
+    "active_off": "OFF_CENTER_LOCKED",
+    "1": "OFF_CENTER_LOCKED",
+    "standard": "STANDARD",
+    "active_standard": "STANDARD",
+    "std": "STANDARD",
+    "2": "STANDARD",
+}
+
+BUILTIN_CUBE_PRESETS: dict[str, dict[str, Any]] = {
+    "709_typeA": {
+        "id": "709_typeA",
+        "name": "709 Type-A",
+        "title": "Sony_709_TypeA_SLog3",
+        "size": 17,
+        "description": "Sony LC-709TypeA filmic highlight roll-off for S-Log3",
+    },
+    "teal_orange": {
+        "id": "teal_orange",
+        "name": "Teal & Orange",
+        "title": "Cinema_Teal_Orange_Grade",
+        "size": 17,
+        "description": "Split-tone cool cyan shadows with warm amber midtones/highlights",
+    },
+    "film_2383": {
+        "id": "film_2383",
+        "name": "Film 2383",
+        "title": "Print_Film_2383_D65",
+        "size": 17,
+        "description": "2383 print-stock S-curve with rich emerald-teal density",
+    },
+    "slog3_bypass": {
+        "id": "slog3_bypass",
+        "name": "S-Log3 Bypass",
+        "title": "SLog3_SGamut3Cine_Bypass",
+        "size": 17,
+        "description": "1:1 neutral identity S-Log3 monitoring bypass cube",
+    },
+}
 
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
     "fps": {
@@ -390,6 +449,8 @@ CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
             "R709 (800%)",
             "User1 (33³ .cube)",
             "User2 (33³ .cube)",
+            "User3 (33³ .cube)",
+            "User4 (33³ .cube)",
         ],
         "locked": False,
         "contract": "P1 /dev/nflasha30 + P11 33³ 3D LUT DMA (0x0165/0x0166)",
@@ -408,7 +469,7 @@ CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
         "cell_idx": None,
         "presets": ["5-Axis Center Lock (P11)", "Active Off", "Active Standard"],
         "locked": False,
-        "contract": "P11 5-Axis IBIS Center-Lock",
+        "contract": "P11 5-Axis IBIS Center-Lock (RTMD 0xE304)",
     },
     "xlr": {
         "key": "xlr",
@@ -416,7 +477,7 @@ CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
         "cell_idx": None,
         "presets": ["XLR-H1 Ch1/2 +48V (0x5d90)", "XLR-H1 Line In (0x5d90)", "Internal Stereo Mic"],
         "locked": False,
-        "contract": "P11 XLR-H1 Audio Handle 0x5d90 Preserved",
+        "contract": "P11 XLR-H1 Audio Handle 0x5d90 / 0x91db059b Fallback",
     },
 }
 
@@ -451,6 +512,319 @@ CINEMA_PARAM_ALIASES: dict[str, str] = {
     "xlr_h1": "xlr",
     "audio": "xlr",
 }
+
+AUDIO_PARAM_KEYS = ("ch1_db", "ch2_db", "ch3_db", "ch4_db", "xlr_phantom_48v", "xlr_handle_attached", "rtmd_0xe304_ibis_lock")
+
+
+def _clamp01(x: float) -> float:
+    if x < 0.0:
+        return 0.0
+    if x > 1.0:
+        return 1.0
+    return x
+
+
+def _eval_builtin_cube_rgb(preset_id: str, r: float, g: float, b: float) -> tuple[float, float, float]:
+    if preset_id == "slog3_bypass":
+        return (_clamp01(r), _clamp01(g), _clamp01(b))
+    if preset_id == "709_typeA":
+        # Warm cinema Rec.709 roll-off: gently lifts warm mids and softens blue highlights
+        ro = _clamp01(0.02 + 1.12 * r - 0.14 * r * r + 0.02 * g)
+        go = _clamp01(0.01 + 1.04 * g - 0.06 * g * g)
+        bo = _clamp01(0.90 * b - 0.04 * b * b + 0.02 * g)
+        return (ro, go, bo)
+    if preset_id == "teal_orange":
+        # Distinct split-tone orange-amber mid/high + teal shadows
+        ro = _clamp01(0.14 + 1.15 * r - 0.16 * b + 0.10 * g)
+        go = _clamp01(0.06 + 0.94 * g + 0.03 * r - 0.04 * b)
+        bo = _clamp01(0.22 + 0.62 * b - 0.24 * r + 0.08 * (1.0 - r))
+        return (ro, go, bo)
+    if preset_id == "film_2383":
+        # Kodak 2383 emerald-cool density curve
+        ro = _clamp01(0.03 + 0.72 * r + 0.04 * g - 0.05 * b)
+        go = _clamp01(0.08 + 1.16 * g - 0.04 * r + 0.05 * b)
+        bo = _clamp01(0.07 + 1.02 * b + 0.04 * g - 0.03 * r)
+        return (ro, go, bo)
+    raise ValueError(f"Unknown built-in .cube preset: {preset_id!r}")
+
+
+def generate_builtin_cube_lut(preset_id: str, size: int = 17) -> str:
+    """Generate a deterministic, standard R-fastest Adobe .cube 3D LUT string."""
+    key = str(preset_id or "").strip()
+    if key not in BUILTIN_CUBE_PRESETS:
+        raise ValueError(f"Unknown built-in .cube preset: {preset_id!r}")
+    n = int(size)
+    if n not in (2, 17, 33):
+        raise ValueError(f"Unsupported .cube size: {size!r}")
+    meta = BUILTIN_CUBE_PRESETS[key]
+    lines = [
+        f'# {meta["description"]}',
+        f'TITLE "{meta["title"]}"',
+        f"LUT_3D_SIZE {n}",
+        "DOMAIN_MIN 0.0 0.0 0.0",
+        "DOMAIN_MAX 1.0 1.0 1.0",
+    ]
+    denom = float(n - 1)
+    for bi in range(n):
+        b = bi / denom
+        for gi in range(n):
+            g = gi / denom
+            for ri in range(n):
+                r = ri / denom
+                ro, go, bo = _eval_builtin_cube_rgb(key, r, g, b)
+                lines.append(f"{ro:.6f} {go:.6f} {bo:.6f}")
+    return "\n".join(lines) + "\n"
+
+
+def _trilinear_cube_sample(
+    triplets: list[tuple[float, float, float]],
+    size: int,
+    r_in: float,
+    g_in: float,
+    b_in: float,
+) -> tuple[float, float, float]:
+    """Sample an R-fastest `.cube` 3D LUT table using exact trilinear interpolation."""
+    n = size
+    rf = _clamp01(r_in) * (n - 1)
+    gf = _clamp01(g_in) * (n - 1)
+    bf = _clamp01(b_in) * (n - 1)
+    r0 = min(n - 2, int(math.floor(rf)))
+    g0 = min(n - 2, int(math.floor(gf)))
+    b0 = min(n - 2, int(math.floor(bf)))
+    r1 = r0 + 1
+    g1 = g0 + 1
+    b1 = b0 + 1
+    dr = rf - r0
+    dg = gf - g0
+    db = bf - b0
+
+    def at(ri: int, gi: int, bi: int) -> tuple[float, float, float]:
+        return triplets[(bi * n + gi) * n + ri]
+
+    c000 = at(r0, g0, b0)
+    c100 = at(r1, g0, b0)
+    c010 = at(r0, g1, b0)
+    c110 = at(r1, g1, b0)
+    c001 = at(r0, g0, b1)
+    c101 = at(r1, g0, b1)
+    c011 = at(r0, g1, b1)
+    c111 = at(r1, g1, b1)
+
+    out: list[float] = []
+    for k in range(3):
+        c00 = c000[k] * (1.0 - dr) + c100[k] * dr
+        c10 = c010[k] * (1.0 - dr) + c110[k] * dr
+        c01 = c001[k] * (1.0 - dr) + c101[k] * dr
+        c11 = c011[k] * (1.0 - dr) + c111[k] * dr
+        c0 = c00 * (1.0 - dg) + c10 * dg
+        c1 = c01 * (1.0 - dg) + c11 * dg
+        out.append(_clamp01(c0 * (1.0 - db) + c1 * db))
+    return (out[0], out[1], out[2])
+
+
+def _is_unsafe_lut_label(raw: str) -> bool:
+    if "\x00" in raw:
+        return True
+    if any(ord(c) < 32 or ord(c) == 127 for c in raw):
+        return True
+    if ".." in raw or "/" in raw or "\\" in raw:
+        return True
+    return False
+
+
+def validate_and_sanitize_cube_lut(
+    cube_text: Any,
+    *,
+    name: str = "",
+    allow_mini_grid: bool = False,
+) -> dict[str, Any]:
+    """Strictly validate and sanitize Adobe `.cube` 3D LUT text fail-closed before touching guest state."""
+    if not isinstance(cube_text, str):
+        return {"ok": False, "error": "invalid_cube_type", "message": "cube_text must be a UTF-8 string"}
+    if not cube_text.strip():
+        return {"ok": False, "error": "empty_cube_payload", "message": "Empty .cube payload"}
+    if "\x00" in cube_text or any((ord(c) < 32 and c not in "\n\r\t") or ord(c) == 127 for c in cube_text):
+        return {"ok": False, "error": "control_characters_forbidden", "message": "Control or NUL bytes in .cube payload"}
+    raw_bytes = cube_text.encode("utf-8", errors="strict")
+    if len(raw_bytes) > 2 * 1024 * 1024:
+        return {"ok": False, "error": "cube_payload_too_large", "message": ".cube payload exceeds 2 MiB safety limit"}
+
+    req_name = str(name or "").strip()
+    if req_name and _is_unsafe_lut_label(req_name):
+        return {"ok": False, "error": "unsafe_lut_name", "message": "LUT name contains forbidden path/control characters"}
+
+    lines = cube_text.splitlines()
+    if len(lines) > 40000:
+        return {"ok": False, "error": "too_many_lines", "message": ".cube exceeds 40,000 lines safety limit"}
+
+    allowed_sizes = {17, 33}
+    if allow_mini_grid:
+        allowed_sizes.add(2)
+
+    lut_size: int | None = None
+    domain_min: list[float] | None = None
+    domain_max: list[float] | None = None
+    title = ""
+    triplets: list[tuple[float, float, float]] = []
+    clamped_components = 0
+    seen_data = False
+
+    for line_no, raw_ln in enumerate(lines, start=1):
+        ln = raw_ln.strip()
+        if not ln or ln.startswith("#"):
+            continue
+        if "#" in ln:
+            ln = ln.split("#", 1)[0].strip()
+            if not ln:
+                continue
+
+        parts = ln.split()
+        head = parts[0].upper()
+
+        if head == "LUT_1D_SIZE":
+            return {"ok": False, "error": "unsupported_lut_1d_size", "message": f"Line {line_no}: LUT_1D_SIZE is rejected; 3D LUT required"}
+        if head == "TITLE":
+            if seen_data:
+                return {"ok": False, "error": "header_after_data", "message": f"Line {line_no}: TITLE after LUT data"}
+            t_raw = ln[len(parts[0]):].strip()
+            if len(t_raw) >= 2 and ((t_raw[0] == '"' and t_raw[-1] == '"') or (t_raw[0] == "'" and t_raw[-1] == "'")):
+                t_raw = t_raw[1:-1].strip()
+            if _is_unsafe_lut_label(t_raw):
+                return {"ok": False, "error": "unsafe_title", "message": f"Line {line_no}: TITLE contains unsafe path/control characters"}
+            title = t_raw
+            continue
+        if head == "LUT_3D_SIZE":
+            if seen_data:
+                return {"ok": False, "error": "header_after_data", "message": f"Line {line_no}: LUT_3D_SIZE after LUT data"}
+            if lut_size is not None:
+                return {"ok": False, "error": "duplicate_lut_3d_size", "message": f"Line {line_no}: duplicate LUT_3D_SIZE"}
+            if len(parts) != 2:
+                return {"ok": False, "error": "invalid_lut_3d_size", "message": f"Line {line_no}: expected 'LUT_3D_SIZE <N>'"}
+            try:
+                lut_size = int(parts[1])
+            except ValueError:
+                return {"ok": False, "error": "invalid_lut_3d_size", "message": f"Line {line_no}: non-integer LUT_3D_SIZE"}
+            if lut_size not in allowed_sizes:
+                return {
+                    "ok": False,
+                    "error": "unsupported_lut_3d_size",
+                    "message": f"LUT_3D_SIZE={lut_size} unsupported (allowed: {sorted(allowed_sizes)})",
+                }
+            continue
+        if head in ("DOMAIN_MIN", "DOMAIN_MAX"):
+            if seen_data:
+                return {"ok": False, "error": "header_after_data", "message": f"Line {line_no}: {head} after LUT data"}
+            if len(parts) != 4:
+                return {"ok": False, "error": f"invalid_{head.lower()}", "message": f"Line {line_no}: {head} requires 3 floats"}
+            try:
+                vec = [float(parts[1]), float(parts[2]), float(parts[3])]
+            except ValueError:
+                return {"ok": False, "error": f"invalid_{head.lower()}", "message": f"Line {line_no}: non-numeric {head}"}
+            if not all(math.isfinite(v) for v in vec):
+                return {"ok": False, "error": "non_finite_domain", "message": f"Line {line_no}: NaN/Inf in {head}"}
+            if head == "DOMAIN_MIN":
+                if domain_min is not None:
+                    return {"ok": False, "error": "duplicate_domain_min", "message": f"Line {line_no}: duplicate DOMAIN_MIN"}
+                domain_min = vec
+            else:
+                if domain_max is not None:
+                    return {"ok": False, "error": "duplicate_domain_max", "message": f"Line {line_no}: duplicate DOMAIN_MAX"}
+                domain_max = vec
+            continue
+
+        # Must be an RGB triplet data line
+        if len(parts) != 3:
+            return {
+                "ok": False,
+                "error": "invalid_row_or_keyword",
+                "message": f"Line {line_no}: expected 3 numeric RGB values, got {len(parts)} tokens ({parts[0]!r})",
+            }
+        try:
+            r_v, g_v, b_v = float(parts[0]), float(parts[1]), float(parts[2])
+        except ValueError:
+            return {
+                "ok": False,
+                "error": "invalid_row_or_keyword",
+                "message": f"Line {line_no}: non-numeric token {parts[0]!r}",
+            }
+        if not (math.isfinite(r_v) and math.isfinite(g_v) and math.isfinite(b_v)):
+            return {
+                "ok": False,
+                "error": "nan_or_inf_triplet",
+                "message": f"Line {line_no}: NaN/Inf forbidden in 3D LUT triplet",
+            }
+        seen_data = True
+        cr, cg, cb = _clamp01(r_v), _clamp01(g_v), _clamp01(b_v)
+        if cr != r_v:
+            clamped_components += 1
+        if cg != g_v:
+            clamped_components += 1
+        if cb != b_v:
+            clamped_components += 1
+        triplets.append((cr, cg, cb))
+        if lut_size is not None and len(triplets) > lut_size ** 3:
+            return {
+                "ok": False,
+                "error": "triplet_count_mismatch",
+                "message": f"Too many RGB triplets: exceeds {lut_size}^3 ({lut_size ** 3})",
+            }
+
+    if lut_size is None:
+        return {"ok": False, "error": "missing_lut_3d_size", "message": "Missing required LUT_3D_SIZE header"}
+
+    dmin = domain_min if domain_min is not None else [0.0, 0.0, 0.0]
+    dmax = domain_max if domain_max is not None else [1.0, 1.0, 1.0]
+    for c in range(3):
+        if not (dmin[c] < dmax[c]):
+            return {
+                "ok": False,
+                "error": "invalid_domain_bounds",
+                "message": f"Invalid domain on channel {c}: DOMAIN_MIN={dmin[c]} >= DOMAIN_MAX={dmax[c]}",
+            }
+
+    expected = lut_size ** 3
+    if len(triplets) != expected:
+        return {
+            "ok": False,
+            "error": "triplet_count_mismatch",
+            "message": f"Expected {expected} ({lut_size}^3) RGB triplets, found {len(triplets)}",
+        }
+
+    safe_name = (req_name or title or f"Custom {lut_size}^3")[:23]
+    safe_name = "".join(ch if 32 <= ord(ch) < 127 else "_" for ch in safe_name).strip() or f"Custom {lut_size}^3"
+
+    canonical_lines = [
+        f'TITLE "{safe_name}"',
+        f"LUT_3D_SIZE {lut_size}",
+        f"DOMAIN_MIN {dmin[0]:.6f} {dmin[1]:.6f} {dmin[2]:.6f}",
+        f"DOMAIN_MAX {dmax[0]:.6f} {dmax[1]:.6f} {dmax[2]:.6f}",
+    ]
+    canonical_lines.extend(f"{r:.6f} {g:.6f} {b:.6f}" for (r, g, b) in triplets)
+    canonical_text = "\n".join(canonical_lines) + "\n"
+    sha256 = hashlib.sha256(canonical_text.encode("utf-8")).hexdigest()
+
+    in_r = (0.5 - dmin[0]) / (dmax[0] - dmin[0])
+    in_g = (0.5 - dmin[1]) / (dmax[1] - dmin[1])
+    in_b = (0.5 - dmin[2]) / (dmax[2] - dmin[2])
+    mr, mg, mb = _trilinear_cube_sample(triplets, lut_size, in_r, in_g, in_b)
+    r8 = max(0, min(255, int(round(mr * 255.0))))
+    g8 = max(0, min(255, int(round(mg * 255.0))))
+    b8 = max(0, min(255, int(round(mb * 255.0))))
+
+    return {
+        "ok": True,
+        "name": safe_name,
+        "title": title or safe_name,
+        "size": lut_size,
+        "triplets": expected,
+        "clamped_components": clamped_components,
+        "domain_min": dmin,
+        "domain_max": dmax,
+        "sha256": sha256,
+        "mid_gray_rgb": [round(mr, 6), round(mg, 6), round(mb, 6)],
+        "tint_rgb8": [r8, g8, b8],
+        "tint_hex": f"#{r8:02x}{g8:02x}{b8:02x}",
+    }
 
 
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
@@ -543,7 +917,7 @@ def gpe0_raw_to_png(raw: bytes) -> tuple[bytes, int]:
                 scanlines_ba[o + 2] = v & 0xFF
         raw_scanlines = bytes(scanlines_ba)
     ihdr = struct.pack(">IIBBBBB", GPE0_W, GPE0_H, 8, 6, 0, 0, 0)
-    compressed = zlib.compress(raw_scanlines, level=2)
+    compressed = zlib.compress(raw_scanlines, level=6)
     png = b"\x89PNG\r\n\x1a\n" + _png_chunk(b"IHDR", ihdr) + _png_chunk(b"IDAT", compressed) + _png_chunk(b"IEND", b"")
     return png, nz
 
@@ -730,7 +1104,7 @@ class FX6LiveGpe0Session:
         self.gpe0_bin = self.workdir / "gpe0-live.bin"
         self.started_at: float | None = None
 
-        # Shadow state matching guest 0x41e000e00 mailbox (mb[0..18])
+        # Shadow state matching guest 0x41e000e00 mailbox (mb[0..27])
         self.cmd_seq = 1
         self.ack_seq = 0
         self.page = 0
@@ -742,6 +1116,13 @@ class FX6LiveGpe0Session:
         self.ibis_idx = 0
         self.xlr_idx = 0
         self.p4_lock_attempts = 0
+        self.p4_nd_reject_count = 0
+        self.p12_bk4_airplane_mode_locked = True
+        self.audio_ch_db: list[int] = [-12, -12, -18, -18]
+        self.xlr_phantom_48v = True
+        self.xlr_handle_attached = True
+        self.rtmd_0xe304_ibis_lock = "ACTIVE_5AXIS"
+        self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
         self.table_off = ALL_128_PAGES[0]["off"] if ALL_128_PAGES else 0x02E90FB0
         self.table_rows = ALL_128_PAGES[0]["rows"] if ALL_128_PAGES else 7
@@ -771,6 +1152,24 @@ class FX6LiveGpe0Session:
         self.live_ready = False
         self.crashed = False
         self.crash_reason = ""
+
+    @staticmethod
+    def _default_user_lut_slots() -> dict[str, dict[str, Any]]:
+        slots: dict[str, dict[str, Any]] = {}
+        for slot in USER_LUT_SLOTS:
+            slots[slot] = {
+                "slot": slot,
+                "name": f"{slot} .cube",
+                "uploaded": False,
+                "preset": None,
+                "size": 33,
+                "triplets": 33 ** 3,
+                "sha256": None,
+                "mid_gray_rgb": [0.5, 0.5, 0.5],
+                "tint_rgb8": [128, 128, 128],
+                "tint_hex": "#808080",
+            }
+        return slots
 
     def is_running(self) -> bool:
         return self.proc is not None and self.proc.poll() is None
@@ -842,6 +1241,13 @@ class FX6LiveGpe0Session:
             self.ibis_idx = 0
             self.xlr_idx = 0
             self.p4_lock_attempts = 0
+            self.p4_nd_reject_count = 0
+            self.p12_bk4_airplane_mode_locked = True
+            self.audio_ch_db = [-12, -12, -18, -18]
+            self.xlr_phantom_48v = True
+            self.xlr_handle_attached = True
+            self.rtmd_0xe304_ibis_lock = "ACTIVE_5AXIS"
+            self.user_lut_slots = self._default_user_lut_slots()
             self.last_toast = ""
             self.lang_code = "en"
             self.lang_id = 0
@@ -1063,10 +1469,8 @@ class FX6LiveGpe0Session:
             print(f"[FX6-LIVE-GPE0] Warning: fallback to donor CPIO ({exc})")
             return str(donor_cpio)
 
-    def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..18] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
-        if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
-            return False
+    def _pack_mailbox_bytes(self) -> bytes:
+        """Pack guest control mailbox mb[0..27] (112 bytes) matching fx6_live_guest.c."""
         mb_vals = (
             [self.table_off, self.table_rows, self.table_off2, self.table_rows2, 0, 0]
             if self.page == 24
@@ -1096,7 +1500,44 @@ class FX6LiveGpe0Session:
             self.last_p10_hwcode & 0xFFFFFFFF,
         ]
         p11_state_word = ((self.xlr_idx & 0x0F) << 4) | (self.ibis_idx & 0x0F)
-        raw = struct.pack("<18I", *words) + struct.pack("<I", p11_state_word)
+        active_lut_idx = self.cell_vals[4] % len(CINEMA_PARAM_SPECS["lut"]["presets"])
+        if active_lut_idx >= 4:
+            slot_num = active_lut_idx - 3
+            slot_key = f"User{slot_num}"
+            slot_info = self.user_lut_slots.get(slot_key, {})
+            r8, g8, b8 = [max(0, min(255, int(v))) for v in slot_info.get("tint_rgb8", [128, 128, 128])]
+            tint_valid = 1 if slot_info.get("uploaded") else 0
+            lut_meta_word = ((slot_num & 0xF) << 28) | (tint_valid << 24) | (r8 << 16) | (g8 << 8) | b8
+            raw_name = str(slot_info.get("name", slot_key)).encode("ascii", errors="replace")[:23]
+        else:
+            lut_meta_word = 0
+            raw_name = b""
+        lut_name_bytes = raw_name.ljust(24, b"\x00")
+        name_words = struct.unpack("<6I", lut_name_bytes)
+        ch_bytes = [max(-60, min(12, int(v))) + 60 for v in self.audio_ch_db[:4]]
+        audio_packed_word = (
+            (ch_bytes[0] & 0xFF)
+            | ((ch_bytes[1] & 0xFF) << 8)
+            | ((ch_bytes[2] & 0xFF) << 16)
+            | ((ch_bytes[3] & 0xFF) << 24)
+        )
+        rtmd_idx = RTMD_0XE304_MODES.index(self.rtmd_0xe304_ibis_lock) if self.rtmd_0xe304_ibis_lock in RTMD_0XE304_MODES else 0
+        p40_flags_word = (
+            (1 if self.xlr_handle_attached else 0)
+            | ((1 if (self.xlr_handle_attached and self.xlr_phantom_48v) else 0) << 1)
+            | ((rtmd_idx & 0x3) << 4)
+            | (1 << 8)
+            | (1 << 9)
+        )
+        ext_raw = struct.pack("<I6III", lut_meta_word, *name_words, audio_packed_word, p40_flags_word)
+        raw = struct.pack("<18I", *words) + struct.pack("<I", p11_state_word) + ext_raw
+        return raw
+
+    def _write_ctrl_mailbox(self) -> bool:
+        """Write mb[0..27] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
+            return False
+        raw = self._pack_mailbox_bytes()
         with self.gdb_lock:
             for _ in range(2):
                 s: socket.socket | None = None
@@ -1282,12 +1723,78 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    @staticmethod
+    def _normalize_bool(val: Any) -> bool | None:
+        if isinstance(val, bool):
+            return val
+        if isinstance(val, int) and val in (0, 1):
+            return bool(val)
+        s = str(val or "").strip().lower()
+        if s in ("1", "true", "yes", "on", "enable", "enabled", "attached"):
+            return True
+        if s in ("0", "false", "no", "off", "disable", "disabled", "detached"):
+            return False
+        return None
+
+    @staticmethod
+    def _normalize_rtmd_ibis(val: Any) -> str | None:
+        raw = str(val or "").strip()
+        if not raw:
+            return None
+        upper = raw.upper()
+        if upper in RTMD_0XE304_MODES:
+            return upper
+        return RTMD_0XE304_ALIASES.get(raw.lower())
+
+    @staticmethod
+    def _normalize_lut_slot(slot: Any) -> str | None:
+        s = str(slot or "User1").strip()
+        low = s.lower().replace(" ", "")
+        mapping = {
+            "user1": "User1",
+            "1": "User1",
+            "user1(33³.cube)": "User1",
+            "user2": "User2",
+            "2": "User2",
+            "user2(33³.cube)": "User2",
+            "user3": "User3",
+            "3": "User3",
+            "user3(33³.cube)": "User3",
+            "user4": "User4",
+            "4": "User4",
+            "user4(33³.cube)": "User4",
+        }
+        return mapping.get(low)
+
+    def _effective_audio_route(self) -> tuple[str, str]:
+        if not self.xlr_handle_attached:
+            return ("INTERNAL_STEREO_FALLBACK", "Internal Stereo (P11 0x91db059b Fallback)")
+        if self.xlr_idx == 2:
+            return ("INTERNAL_STEREO", "Internal Stereo Mic")
+        if self.xlr_phantom_48v or self.xlr_idx == 0:
+            return ("XLR_H1_48V", "XLR-H1 Ch1/2 +48V (0x5d90)")
+        return ("XLR_H1_LINE", "XLR-H1 Ch1/2 Line In (0x5d90)")
+
+    def get_lut_slots(self) -> dict[str, Any]:
+        lut_presets = CINEMA_PARAM_SPECS["lut"]["presets"]
+        lut_idx = self.cell_vals[4] % len(lut_presets)
+        active_slot = f"User{lut_idx - 3}" if lut_idx >= 4 else None
+        return {
+            "ok": True,
+            "active_lut_index": lut_idx,
+            "active_lut_preset": lut_presets[lut_idx],
+            "active_user_slot": active_slot,
+            "slots": {k: dict(v) for k, v in self.user_lut_slots.items()},
+            "builtin_presets": list(BUILTIN_CUBE_PRESETS.values()),
+        }
+
     def get_cinema_params(self) -> dict[str, Any]:
         ei_presets = CINEMA_PARAM_SPECS["ei"]["presets"]
         ei_idx = self.cell_vals[1] % len(ei_presets)
         base_iso = "12800" if ei_idx >= 3 else "800"
         ibis_presets = CINEMA_PARAM_SPECS["ibis"]["presets"]
         xlr_presets = CINEMA_PARAM_SPECS["xlr"]["presets"]
+        effective_xlr_idx = 2 if not self.xlr_handle_attached else (self.xlr_idx % len(xlr_presets))
         indices = {
             "fps": self.cell_vals[0] % len(CINEMA_PARAM_SPECS["fps"]["presets"]),
             "ei": ei_idx,
@@ -1296,12 +1803,18 @@ class FX6LiveGpe0Session:
             "lut": self.cell_vals[4] % len(CINEMA_PARAM_SPECS["lut"]["presets"]),
             "wb": self.cell_vals[5] % len(CINEMA_PARAM_SPECS["wb"]["presets"]),
             "ibis": self.ibis_idx % len(ibis_presets),
-            "xlr": self.xlr_idx % len(xlr_presets),
+            "xlr": effective_xlr_idx,
         }
         values = {
             k: CINEMA_PARAM_SPECS[k]["presets"][idx]
             for k, idx in indices.items()
         }
+        active_user_lut = None
+        if indices["lut"] >= 4:
+            slot_key = f"User{indices['lut'] - 3}"
+            active_user_lut = dict(self.user_lut_slots[slot_key])
+        audio_route, ch12_source = self._effective_audio_route()
+        effective_48v = bool(self.xlr_handle_attached and self.xlr_phantom_48v and effective_xlr_idx != 2)
         return {
             "values": values,
             "indices": indices,
@@ -1309,9 +1822,25 @@ class FX6LiveGpe0Session:
             "nd_locked": True,
             "nd_lock_contract": "P4 set_nd_filter_mode_i -> Clear",
             "p4_lock_attempts": self.p4_lock_attempts,
+            "p4_nd_reject_count": self.p4_nd_reject_count,
+            "p12_bk4_airplane_mode_locked": True,
             "lut_source": "/dev/nflasha30 (0x0165/0x0166 33x33x33)",
+            "active_user_lut": active_user_lut,
+            "user_lut_slots": {k: dict(v) for k, v in self.user_lut_slots.items()},
             "ibis_status": values["ibis"],
+            "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "xlr_status": values["xlr"],
+            "ch1_db": int(self.audio_ch_db[0]),
+            "ch2_db": int(self.audio_ch_db[1]),
+            "ch3_db": int(self.audio_ch_db[2]),
+            "ch4_db": int(self.audio_ch_db[3]),
+            "xlr_phantom_48v": effective_48v,
+            "xlr_phantom_48v_setting": bool(self.xlr_phantom_48v),
+            "xlr_handle_attached": bool(self.xlr_handle_attached),
+            "audio_route": audio_route,
+            "ch1_ch2_source": ch12_source,
+            "ch3_ch4_active": bool(self.xlr_handle_attached),
+            "p11_audio_fallback_contract": "0x91db059b",
             "specs": CINEMA_PARAM_SPECS,
         }
 
@@ -1323,19 +1852,28 @@ class FX6LiveGpe0Session:
             if p10_btn
             else "FX3 Deck Ready (Fn/MENU/DISP/C1..C6)"
         )
+        active_user = cp.get("active_user_lut")
+        lut_detail = (
+            f"/dev/nflasha30 -> {active_user['slot']}:{active_user['name']} ({active_user['tint_hex']})"
+            if active_user and active_user.get("uploaded")
+            else f"/dev/nflasha30 -> {cp['values']['lut']}"
+        )
         return {
             "P1": {
                 "id": "P1",
                 "label": "P1 (/lut->p30)",
-                "detail": f"/dev/nflasha30 -> {cp['values']['lut']}",
+                "detail": lut_detail,
                 "active": True,
+                "active_user_lut": active_user,
+                "user_lut_slots": cp["user_lut_slots"],
             },
             "P4": {
                 "id": "P4",
                 "label": "P4 (ND=Clear)",
-                "detail": f"Clear [FX3 P4 Locked] (attempts={self.p4_lock_attempts})",
+                "detail": f"Clear [FX3 P4 Locked] (attempts={self.p4_lock_attempts}, rejects={self.p4_nd_reject_count})",
                 "locked": True,
                 "attempts": self.p4_lock_attempts,
+                "p4_nd_reject_count": self.p4_nd_reject_count,
             },
             "P10": {
                 "id": "P10",
@@ -1349,30 +1887,190 @@ class FX6LiveGpe0Session:
                 "detail": (
                     f"Base {cp['base_iso']} ({cp['values']['ei']}) | "
                     f"33³ LUT 0x0165/0x0166={cp['values']['lut']} | "
-                    f"XLR-H1=0x5d90 ({cp['values']['xlr']}) | "
-                    f"IBIS={cp['values']['ibis']}"
+                    f"XLR-H1=0x5d90 ({cp['ch1_ch2_source']}, ch={self.audio_ch_db[0]}/{self.audio_ch_db[1]}/{self.audio_ch_db[2]}/{self.audio_ch_db[3]}dB) | "
+                    f"RTMD 0xE304={self.rtmd_0xe304_ibis_lock}"
                 ),
                 "base_iso": cp["base_iso"],
                 "xlr_handle": "0x5d90",
+                "xlr_handle_attached": bool(self.xlr_handle_attached),
+                "xlr_fallback_contract": "0x91db059b",
+                "audio_route": cp["audio_route"],
+                "ch1_ch2_source": cp["ch1_ch2_source"],
+                "ch1_db": int(self.audio_ch_db[0]),
+                "ch2_db": int(self.audio_ch_db[1]),
+                "ch3_db": int(self.audio_ch_db[2]),
+                "ch4_db": int(self.audio_ch_db[3]),
+                "xlr_phantom_48v": cp["xlr_phantom_48v"],
                 "ibis": cp["values"]["ibis"],
+                "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
                 "lut_dma": "0x0165/0x0166",
             },
             "P12": {
                 "id": "P12",
                 "label": "P12 (WF-12 Safe)",
-                "detail": "Direct O_RDONLY / LRU Pool / Bounded Write Safe",
+                "detail": "Direct O_RDONLY / LRU Pool / Bounded Write / BK4 Airplane Lock",
                 "safe": True,
+                "bk4_airplane_mode_locked": True,
             },
         }
 
-    def set_cinema_param(self, param: Any, delta: Any = None, preset: Any = None) -> dict[str, Any]:
+    def _sync_mailbox_and_capture(self) -> tuple[bool, bool]:
+        self.cmd_seq += 1
+        wrote = self._write_ctrl_mailbox()
+        synced = False
+        if wrote:
+            synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
+            self.capture_live_gpe0()
+        return wrote, synced
+
+    def _apply_flat_phase40_fields(self, body: dict[str, Any]) -> dict[str, Any]:
+        """Validate & apply flat audio/RTMD fields (`ch1_db..ch4_db`, `xlr_phantom_48v`, `xlr_handle_attached`, `rtmd_0xe304_ibis_lock`)."""
+        parsed_ch: dict[int, int] = {}
+        for idx in range(4):
+            k = f"ch{idx + 1}_db"
+            if k in body and body[k] is not None:
+                v = body[k]
+                if isinstance(v, bool):
+                    return {"ok": False, "error": "invalid_audio_db", "message": f"{k} cannot be bool"}
+                try:
+                    fv = float(v)
+                except (TypeError, ValueError):
+                    return {"ok": False, "error": "invalid_audio_db", "message": f"{k} must be numeric"}
+                if not math.isfinite(fv):
+                    return {"ok": False, "error": "invalid_audio_db", "message": f"{k} must be finite"}
+                parsed_ch[idx] = max(-60, min(12, int(round(fv))))
+
+        parsed_attached: bool | None = None
+        if "xlr_handle_attached" in body and body["xlr_handle_attached"] is not None:
+            parsed_attached = self._normalize_bool(body["xlr_handle_attached"])
+            if parsed_attached is None:
+                return {"ok": False, "error": "invalid_xlr_handle_attached", "message": "xlr_handle_attached must be boolean"}
+
+        parsed_phantom: bool | None = None
+        if "xlr_phantom_48v" in body and body["xlr_phantom_48v"] is not None:
+            parsed_phantom = self._normalize_bool(body["xlr_phantom_48v"])
+            if parsed_phantom is None:
+                return {"ok": False, "error": "invalid_xlr_phantom_48v", "message": "xlr_phantom_48v must be boolean"}
+
+        parsed_rtmd: str | None = None
+        if "rtmd_0xe304_ibis_lock" in body and body["rtmd_0xe304_ibis_lock"] is not None:
+            parsed_rtmd = self._normalize_rtmd_ibis(body["rtmd_0xe304_ibis_lock"])
+            if parsed_rtmd is None:
+                return {
+                    "ok": False,
+                    "error": "invalid_rtmd_0xe304_ibis_lock",
+                    "message": f"Unsupported rtmd_0xe304_ibis_lock: {body['rtmd_0xe304_ibis_lock']!r}",
+                    "allowed": list(RTMD_0XE304_MODES),
+                }
+
+        with self.cmd_lock:
+            for idx, val in parsed_ch.items():
+                self.audio_ch_db[idx] = val
+            if parsed_phantom is not None:
+                self.xlr_phantom_48v = parsed_phantom
+                if self.xlr_handle_attached:
+                    self.xlr_idx = 0 if parsed_phantom else 1
+            if parsed_attached is not None:
+                was_attached = self.xlr_handle_attached
+                self.xlr_handle_attached = parsed_attached
+                if not parsed_attached:
+                    self.xlr_idx = 2  # P11 0x91db059b Internal Stereo fallback
+                elif not was_attached and self.xlr_idx == 2:
+                    self.xlr_idx = 0 if self.xlr_phantom_48v else 1
+            if not self.xlr_handle_attached:
+                self.xlr_idx = 2
+            if parsed_rtmd is not None:
+                self.rtmd_0xe304_ibis_lock = parsed_rtmd
+                self.ibis_idx = RTMD_0XE304_MODES.index(parsed_rtmd)
+
+            if not self.xlr_handle_attached:
+                self.last_toast = "P11 0x91db059b: XLR-H1 detached -> CH1/2 auto-fallback to Internal Stereo Mic"
+            else:
+                self.last_toast = (
+                    f"XLR-H1 CH1..4={self.audio_ch_db}dB (+48V={'ON' if self.xlr_phantom_48v else 'OFF'}) | "
+                    f"RTMD 0xE304={self.rtmd_0xe304_ibis_lock}"
+                )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "param": "audio_rtmd",
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "cinema_params": self.get_cinema_params(),
+                "stage_b_telemetry": self.get_stage_b_telemetry(),
+                "status": self.get_status(),
+            }
+
+    def set_cinema_param(
+        self,
+        param: Any = None,
+        delta: Any = None,
+        preset: Any = None,
+        *,
+        payload: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        if (param is None or str(param).strip() == "") and isinstance(payload, dict):
+            if any(k in payload for k in AUDIO_PARAM_KEYS):
+                return self._apply_flat_phase40_fields(payload)
+
         raw_param = str(param or "").strip().lower()
+        # Support Phase 40 audio & RTMD params via set_cinema_param(param=..., delta=..., preset=...)
+        phase40_alias = {
+            "ch1_db": ("ch", 0),
+            "ch2_db": ("ch", 1),
+            "ch3_db": ("ch", 2),
+            "ch4_db": ("ch", 3),
+            "xlr_phantom_48v": ("phantom", None),
+            "phantom_48v": ("phantom", None),
+            "xlr_handle_attached": ("attached", None),
+            "xlr_attached": ("attached", None),
+            "rtmd_0xe304_ibis_lock": ("rtmd", None),
+            "rtmd_ibis": ("rtmd", None),
+            "ibis_lock": ("rtmd", None),
+        }.get(raw_param)
+        if phase40_alias is not None:
+            kind, ch_idx = phase40_alias
+            if kind == "ch" and ch_idx is not None:
+                if preset is not None and str(preset).strip() != "":
+                    if isinstance(preset, bool):
+                        return {"ok": False, "error": "invalid_audio_db"}
+                    try:
+                        fv = float(preset)
+                    except (TypeError, ValueError):
+                        return {"ok": False, "error": f"Invalid dB value: {preset!r}"}
+                    if not math.isfinite(fv):
+                        return {"ok": False, "error": "Non-finite dB value"}
+                    new_db = max(-60, min(12, int(round(fv))))
+                else:
+                    try:
+                        step = int(delta) if delta is not None and str(delta).strip() != "" else 3
+                    except Exception:
+                        return {"ok": False, "error": f"Invalid delta {delta!r}"}
+                    new_db = max(-60, min(12, self.audio_ch_db[ch_idx] + step))
+                return self._apply_flat_phase40_fields({f"ch{ch_idx + 1}_db": new_db})
+            if kind == "phantom":
+                new_val = (not self.xlr_phantom_48v) if (preset is None or str(preset).strip() == "") else preset
+                return self._apply_flat_phase40_fields({"xlr_phantom_48v": new_val})
+            if kind == "attached":
+                new_val = (not self.xlr_handle_attached) if (preset is None or str(preset).strip() == "") else preset
+                return self._apply_flat_phase40_fields({"xlr_handle_attached": new_val})
+            if kind == "rtmd":
+                if preset is not None and str(preset).strip() != "":
+                    return self._apply_flat_phase40_fields({"rtmd_0xe304_ibis_lock": preset})
+                try:
+                    step = int(delta) if delta is not None and str(delta).strip() != "" else 1
+                except Exception:
+                    return {"ok": False, "error": f"Invalid delta {delta!r}"}
+                cur = RTMD_0XE304_MODES.index(self.rtmd_0xe304_ibis_lock) if self.rtmd_0xe304_ibis_lock in RTMD_0XE304_MODES else 0
+                return self._apply_flat_phase40_fields({"rtmd_0xe304_ibis_lock": RTMD_0XE304_MODES[(cur + step) % len(RTMD_0XE304_MODES)]})
+
         key = CINEMA_PARAM_ALIASES.get(raw_param)
         if key is None or key not in CINEMA_PARAM_SPECS:
             return {
                 "ok": False,
                 "error": f"Unknown cinema param: {param!r}",
-                "supported_params": list(CINEMA_PARAM_SPECS.keys()),
+                "supported_params": list(CINEMA_PARAM_SPECS.keys()) + list(AUDIO_PARAM_KEYS),
             }
         spec = CINEMA_PARAM_SPECS[key]
         presets = list(spec["presets"])
@@ -1432,18 +2130,22 @@ class FX6LiveGpe0Session:
                     self.cell_vals[cell_idx] = new_idx
                     if self.page in (0, 3):
                         self.sel_box = cell_idx
+                    self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
                 elif key == "ibis":
                     self.ibis_idx = new_idx
+                    self.rtmd_0xe304_ibis_lock = RTMD_0XE304_MODES[new_idx % len(RTMD_0XE304_MODES)]
+                    self.last_toast = f"{spec['label']}: {presets[new_idx]} (RTMD 0xE304={self.rtmd_0xe304_ibis_lock})"
                 else:
-                    self.xlr_idx = new_idx
-                self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
+                    if not self.xlr_handle_attached:
+                        self.xlr_idx = 2
+                        new_idx = 2
+                        self.last_toast = "P11 0x91db059b: XLR-H1 detached -> CH1/2 auto-fallback to Internal Stereo Mic"
+                    else:
+                        self.xlr_idx = new_idx
+                        self.xlr_phantom_48v = (new_idx == 0)
+                        self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
 
-            self.cmd_seq += 1
-            wrote = self._write_ctrl_mailbox()
-            synced = False
-            if wrote:
-                synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
-                self.capture_live_gpe0()
+            wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
                 "param": key,
@@ -1454,6 +2156,355 @@ class FX6LiveGpe0Session:
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
                 "cinema_params": self.get_cinema_params(),
+                "status": self.get_status(),
+            }
+
+    def upload_cube_lut(self, body: Any, *, allow_mini_grid: bool = False) -> dict[str, Any]:
+        """Validate/sanitize `.cube` 3D LUT fail-closed, store into User1..User4, and sync guest GPE0."""
+        if not isinstance(body, dict):
+            return {"ok": False, "error": "invalid_request_body", "message": "Request body must be a JSON object"}
+
+        slot = self._normalize_lut_slot(body.get("slot", "User1"))
+        if slot is None:
+            return {
+                "ok": False,
+                "error": "invalid_lut_slot",
+                "message": f"Unsupported User LUT slot: {body.get('slot')!r} (expected User1..User4)",
+            }
+
+        preset_id = body.get("preset")
+        cube_text = body.get("cube_text")
+        req_name = str(body.get("name") or "").strip()
+
+        if cube_text is None and preset_id is not None and str(preset_id).strip() != "":
+            pid = str(preset_id).strip()
+            if pid not in BUILTIN_CUBE_PRESETS:
+                return {
+                    "ok": False,
+                    "error": "unknown_builtin_cube_preset",
+                    "message": f"Unknown built-in .cube preset: {pid!r}",
+                    "builtin_presets": list(BUILTIN_CUBE_PRESETS.keys()),
+                }
+            size_req = body.get("size", BUILTIN_CUBE_PRESETS[pid]["size"])
+            try:
+                size_int = int(size_req)
+            except (TypeError, ValueError):
+                return {"ok": False, "error": "invalid_lut_3d_size", "message": f"Invalid size {size_req!r}"}
+            if size_int not in ({2, 17, 33} if allow_mini_grid else {17, 33}):
+                return {
+                    "ok": False,
+                    "error": "unsupported_lut_3d_size",
+                    "message": f"Unsupported built-in LUT size: {size_int}",
+                }
+            cube_text = generate_builtin_cube_lut(pid, size=size_int)
+            if not req_name:
+                req_name = BUILTIN_CUBE_PRESETS[pid]["name"]
+
+        if cube_text is None:
+            return {
+                "ok": False,
+                "error": "missing_cube_payload",
+                "message": "Provide either 'cube_text' or built-in 'preset' (709_typeA, teal_orange, film_2383, slog3_bypass)",
+            }
+
+        sanitized = validate_and_sanitize_cube_lut(cube_text, name=req_name, allow_mini_grid=allow_mini_grid)
+        if not sanitized["ok"]:
+            return sanitized
+
+        slot_record = {
+            "slot": slot,
+            "name": sanitized["name"],
+            "title": sanitized["title"],
+            "uploaded": True,
+            "preset": str(preset_id).strip() if preset_id else None,
+            "size": sanitized["size"],
+            "triplets": sanitized["triplets"],
+            "clamped_components": sanitized["clamped_components"],
+            "domain_min": sanitized["domain_min"],
+            "domain_max": sanitized["domain_max"],
+            "sha256": sanitized["sha256"],
+            "mid_gray_rgb": sanitized["mid_gray_rgb"],
+            "tint_rgb8": sanitized["tint_rgb8"],
+            "tint_hex": sanitized["tint_hex"],
+        }
+
+        with self.cmd_lock:
+            self.user_lut_slots[slot] = slot_record
+            cell_idx = USER_LUT_SLOT_TO_CELL_IDX[slot]
+            self.cell_vals[4] = cell_idx
+            if self.page in (0, 3):
+                self.sel_box = 4
+            self.last_toast = (
+                f"{slot} .cube Imported: {slot_record['name']} ({slot_record['size']}³, "
+                f"tint={slot_record['tint_hex']}, sha={slot_record['sha256'][:12]})"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "slot": slot,
+                "lut_index": cell_idx,
+                "lut": dict(slot_record),
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "cinema_params": self.get_cinema_params(),
+                "status": self.get_status(),
+            }
+
+    def export_camset_preset(self) -> dict[str, Any]:
+        """Export deterministic `fx6_on_fx3_camset_v1` JSON snapshot with SHA-256."""
+        cp = self.get_cinema_params()
+        canonical_body = {
+            "schema": "fx6_on_fx3_camset_v1",
+            "lang": self.lang_code,
+            "cinema_params": {
+                "fps": cp["values"]["fps"],
+                "ei": cp["values"]["ei"],
+                "shutter": cp["values"]["shutter"],
+                "nd": "Clear [FX3 P4 Locked]",
+                "lut": cp["values"]["lut"],
+                "wb": cp["values"]["wb"],
+                "ibis": cp["values"]["ibis"],
+                "xlr": cp["values"]["xlr"],
+            },
+            "audio": {
+                "ch1_db": int(self.audio_ch_db[0]),
+                "ch2_db": int(self.audio_ch_db[1]),
+                "ch3_db": int(self.audio_ch_db[2]),
+                "ch4_db": int(self.audio_ch_db[3]),
+                "xlr_phantom_48v": bool(self.xlr_phantom_48v),
+                "xlr_handle_attached": bool(self.xlr_handle_attached),
+            },
+            "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
+            "p12_bk4_airplane_mode_locked": True,
+            "active_user_lut": cp.get("active_user_lut"),
+            "user_lut_slots": {k: dict(v) for k, v in self.user_lut_slots.items()},
+        }
+        canonical_json = json.dumps(canonical_body, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        preset_sha256 = hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()
+        return {
+            "ok": True,
+            **canonical_body,
+            "preset_sha256": preset_sha256,
+        }
+
+    def import_camset_preset(self, payload: Any) -> dict[str, Any]:
+        """Validate & apply `fx6_on_fx3_camset_v1` while enforcing P4 ND=Clear & P12 BK4 Airplane-Mode locks."""
+        if not isinstance(payload, dict):
+            return {"ok": False, "error": "invalid_camset_payload", "message": "CAMSET payload must be a JSON object"}
+        if payload.get("schema") != "fx6_on_fx3_camset_v1":
+            return {
+                "ok": False,
+                "error": "invalid_camset_schema",
+                "message": f"Expected schema 'fx6_on_fx3_camset_v1', got {payload.get('schema')!r}",
+            }
+
+        cparams = payload.get("cinema_params")
+        if cparams is None:
+            cparams = {}
+        if not isinstance(cparams, dict):
+            return {"ok": False, "error": "invalid_cinema_params", "message": "cinema_params must be a JSON object"}
+
+        # Detect any P4 ND tamper attempts across cinema_params or top-level keys
+        nd_tamper_val = None
+        for cand_nd in (cparams.get("nd"), payload.get("nd"), payload.get("nd_filter"), payload.get("variable_nd")):
+            if cand_nd is not None:
+                s_nd = str(cand_nd).strip().lower()
+                if s_nd not in ("", "clear [fx3 p4 locked]", "clear", "0", "false", "none", "off"):
+                    nd_tamper_val = cand_nd
+                    break
+        if nd_tamper_val is None and payload.get("nd_enabled") is True:
+            nd_tamper_val = True
+
+        # Validate cinema param choices before mutating state
+        new_cells: dict[int, int] = {}
+        for pkey in ("fps", "ei", "shutter", "lut", "wb"):
+            if pkey in cparams and cparams[pkey] is not None:
+                spec = CINEMA_PARAM_SPECS[pkey]
+                presets = list(spec["presets"])
+                target = str(cparams[pkey]).strip()
+                t_low = target.lower()
+                matched = next((idx for idx, cand in enumerate(presets) if cand.lower() == t_low), None)
+                if matched is None:
+                    matched = next(
+                        (idx for idx, cand in enumerate(presets) if cand.lower().startswith(t_low) or t_low in cand.lower()),
+                        None,
+                    )
+                if matched is None:
+                    return {"ok": False, "error": f"invalid_camset_{pkey}", "message": f"Unknown {pkey} preset: {target!r}"}
+                new_cells[int(spec["cell_idx"])] = matched
+
+        new_rtmd = None
+        if "rtmd_0xe304_ibis_lock" in payload and payload["rtmd_0xe304_ibis_lock"] is not None:
+            new_rtmd = self._normalize_rtmd_ibis(payload["rtmd_0xe304_ibis_lock"])
+            if new_rtmd is None:
+                return {"ok": False, "error": "invalid_rtmd_0xe304_ibis_lock", "message": f"Invalid rtmd_0xe304_ibis_lock: {payload['rtmd_0xe304_ibis_lock']!r}"}
+        elif "ibis" in cparams and cparams["ibis"] is not None:
+            ibis_presets = CINEMA_PARAM_SPECS["ibis"]["presets"]
+            t_low = str(cparams["ibis"]).strip().lower()
+            matched_ibis = next((idx for idx, cand in enumerate(ibis_presets) if cand.lower() == t_low), None)
+            if matched_ibis is None:
+                return {"ok": False, "error": "invalid_camset_ibis", "message": f"Unknown ibis preset: {cparams['ibis']!r}"}
+            new_rtmd = RTMD_0XE304_MODES[matched_ibis % len(RTMD_0XE304_MODES)]
+
+        audio_in = payload.get("audio")
+        if audio_in is None:
+            audio_in = {}
+        if not isinstance(audio_in, dict):
+            return {"ok": False, "error": "invalid_camset_audio", "message": "audio must be a JSON object"}
+
+        new_ch_db: dict[int, int] = {}
+        for idx in range(4):
+            ak = f"ch{idx + 1}_db"
+            if ak in audio_in and audio_in[ak] is not None:
+                v = audio_in[ak]
+                if isinstance(v, bool):
+                    return {"ok": False, "error": "invalid_audio_db", "message": f"{ak} cannot be bool"}
+                try:
+                    fv = float(v)
+                except (TypeError, ValueError):
+                    return {"ok": False, "error": "invalid_audio_db", "message": f"{ak} must be numeric"}
+                if not math.isfinite(fv):
+                    return {"ok": False, "error": "invalid_audio_db", "message": f"{ak} must be finite"}
+                new_ch_db[idx] = max(-60, min(12, int(round(fv))))
+
+        new_attached: bool | None = None
+        if "xlr_handle_attached" in audio_in and audio_in["xlr_handle_attached"] is not None:
+            new_attached = self._normalize_bool(audio_in["xlr_handle_attached"])
+            if new_attached is None:
+                return {"ok": False, "error": "invalid_xlr_handle_attached"}
+
+        new_phantom: bool | None = None
+        if "xlr_phantom_48v" in audio_in and audio_in["xlr_phantom_48v"] is not None:
+            new_phantom = self._normalize_bool(audio_in["xlr_phantom_48v"])
+            if new_phantom is None:
+                return {"ok": False, "error": "invalid_xlr_phantom_48v"}
+
+        new_lang_code: str | None = None
+        new_lang_id: int | None = None
+        if "lang" in payload and payload["lang"] is not None:
+            nc = self._normalize_lang(payload["lang"])
+            packs = discover_available_lang_packs()
+            if nc is not None and nc in packs and packs[nc]["available"]:
+                new_lang_code = nc
+                new_lang_id = int(packs[nc]["id"])
+
+        new_slots: dict[str, dict[str, Any]] = {}
+        raw_slots = payload.get("user_lut_slots")
+        if isinstance(raw_slots, dict):
+            for skey, sdata in raw_slots.items():
+                norm_s = self._normalize_lut_slot(skey)
+                if norm_s is None or not isinstance(sdata, dict):
+                    continue
+                if "cube_text" in sdata and isinstance(sdata["cube_text"], str):
+                    san = validate_and_sanitize_cube_lut(sdata["cube_text"], name=str(sdata.get("name", norm_s)))
+                    if not san["ok"]:
+                        return san
+                    new_slots[norm_s] = {
+                        "slot": norm_s,
+                        "name": san["name"],
+                        "title": san["title"],
+                        "uploaded": True,
+                        "preset": sdata.get("preset"),
+                        "size": san["size"],
+                        "triplets": san["triplets"],
+                        "clamped_components": san["clamped_components"],
+                        "domain_min": san["domain_min"],
+                        "domain_max": san["domain_max"],
+                        "sha256": san["sha256"],
+                        "mid_gray_rgb": san["mid_gray_rgb"],
+                        "tint_rgb8": san["tint_rgb8"],
+                        "tint_hex": san["tint_hex"],
+                    }
+                else:
+                    rgb8 = sdata.get("tint_rgb8", [128, 128, 128])
+                    if not (isinstance(rgb8, list) and len(rgb8) == 3):
+                        rgb8 = [128, 128, 128]
+                    rgb8_clean = [max(0, min(255, int(x))) for x in rgb8]
+                    safe_n = str(sdata.get("name", f"{norm_s} .cube"))[:23]
+                    if _is_unsafe_lut_label(safe_n):
+                        return {"ok": False, "error": "unsafe_lut_name", "message": "Unsafe LUT name in CAMSET"}
+                    new_slots[norm_s] = {
+                        "slot": norm_s,
+                        "name": safe_n,
+                        "title": safe_n,
+                        "uploaded": bool(sdata.get("uploaded", False)),
+                        "preset": sdata.get("preset"),
+                        "size": int(sdata.get("size", 33)) if int(sdata.get("size", 33)) in (2, 17, 33) else 33,
+                        "triplets": int(sdata.get("triplets", 33 ** 3)),
+                        "sha256": sdata.get("sha256"),
+                        "mid_gray_rgb": sdata.get("mid_gray_rgb", [0.5, 0.5, 0.5]),
+                        "tint_rgb8": rgb8_clean,
+                        "tint_hex": f"#{rgb8_clean[0]:02x}{rgb8_clean[1]:02x}{rgb8_clean[2]:02x}",
+                    }
+
+        p12_clamped = payload.get("p12_bk4_airplane_mode_locked") is False
+
+        with self.cmd_lock:
+            for c_idx, c_val in new_cells.items():
+                self.cell_vals[c_idx] = c_val
+            self.cell_vals[3] = 0  # P4 ND=Clear Hardware Lock always enforced!
+            p4_rejected = nd_tamper_val is not None
+            if p4_rejected:
+                self.p4_nd_reject_count += 1
+                self.p4_lock_attempts += 1
+
+            for skey, srec in new_slots.items():
+                self.user_lut_slots[skey] = srec
+
+            if new_rtmd is not None:
+                self.rtmd_0xe304_ibis_lock = new_rtmd
+                self.ibis_idx = RTMD_0XE304_MODES.index(new_rtmd)
+
+            for idx, val in new_ch_db.items():
+                self.audio_ch_db[idx] = val
+            if new_phantom is not None:
+                self.xlr_phantom_48v = new_phantom
+            if new_attached is not None:
+                self.xlr_handle_attached = new_attached
+
+            if not self.xlr_handle_attached:
+                self.xlr_idx = 2
+            elif "xlr" in cparams and cparams["xlr"] is not None:
+                xlr_presets = CINEMA_PARAM_SPECS["xlr"]["presets"]
+                x_low = str(cparams["xlr"]).strip().lower()
+                x_idx = next((idx for idx, cand in enumerate(xlr_presets) if cand.lower() == x_low), None)
+                if x_idx is not None:
+                    self.xlr_idx = x_idx
+            else:
+                self.xlr_idx = 0 if self.xlr_phantom_48v else 1
+
+            if new_lang_code is not None and new_lang_id is not None:
+                self.lang_code = new_lang_code
+                self.lang_id = new_lang_id
+
+            self.p12_bk4_airplane_mode_locked = True  # P12 BK4 Airplane-Mode shadow lock always enforced!
+
+            if p4_rejected:
+                self.last_toast = (
+                    f"P4 ND=Clear Lock Enforced: rejected ND={nd_tamper_val!r} in CAMSET "
+                    f"(p4_nd_reject_count={self.p4_nd_reject_count})"
+                )
+            elif p12_clamped:
+                self.last_toast = "CAMSET Imported (P12 BK4 Airplane-Mode shadow lock preserved)"
+            else:
+                self.last_toast = "CAMSET fx6_on_fx3_camset_v1 Imported & Applied"
+
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "schema": "fx6_on_fx3_camset_v1",
+                "p4_nd_rejected": p4_rejected,
+                "p4_nd_clamped": p4_rejected,
+                "p4_nd_reject_count": self.p4_nd_reject_count,
+                "p4_lock_attempts": self.p4_lock_attempts,
+                "p12_bk4_airplane_mode_locked": True,
+                "p12_bk4_clamped": p12_clamped,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "cinema_params": self.get_cinema_params(),
+                "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
             }
 
@@ -1800,6 +2851,13 @@ class FX6LiveGpe0Session:
             "ibis_idx": self.ibis_idx,
             "xlr_idx": self.xlr_idx,
             "p4_lock_attempts": self.p4_lock_attempts,
+            "p4_nd_reject_count": self.p4_nd_reject_count,
+            "p12_bk4_airplane_mode_locked": True,
+            "audio_ch_db": list(self.audio_ch_db),
+            "xlr_phantom_48v": bool(self.xlr_handle_attached and self.xlr_phantom_48v and self.xlr_idx != 2),
+            "xlr_handle_attached": bool(self.xlr_handle_attached),
+            "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
+            "user_lut_slots": {k: dict(v) for k, v in self.user_lut_slots.items()},
             "last_toast": self.last_toast,
             "cinema_params": self.get_cinema_params(),
             "stage_b_telemetry": self.get_stage_b_telemetry(),
@@ -2250,6 +3308,98 @@ HTML_UI = """<!DOCTYPE html>
     </div>
 
     <div class="card" style="margin-top:14px;">
+      <h3>Phase 40 · 4-Ch XLR-H1 音频 VU 表 &amp; RTMD 0xE304 + .cube 3D LUT 导入 + CAMSET 场景预设</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px;">
+        <div class="cparam-box">
+          <div class="cparam-head">
+            <span>4-Ch XLR-H1 Audio Trim / VU</span>
+            <span id="xlr-route-badge" style="color:#22d3ee;">XLR-H1 0x5d90</span>
+          </div>
+          <div id="xlr-vu-rows" style="display:flex;flex-direction:column;gap:5px;font-family:'SF Mono',Menlo,monospace;font-size:11px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="width:32px;">CH1</span>
+              <input id="audio-ch1" type="range" min="-60" max="12" value="-12" style="flex:1;" onchange="setAudioTrim()" />
+              <span id="audio-ch1-db" style="width:42px;text-align:right;">-12dB</span>
+              <div style="width:48px;height:8px;background:#1f2937;border-radius:3px;overflow:hidden;"><div id="audio-vu1" style="height:100%;width:66%;background:#10b981;"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="width:32px;">CH2</span>
+              <input id="audio-ch2" type="range" min="-60" max="12" value="-12" style="flex:1;" onchange="setAudioTrim()" />
+              <span id="audio-ch2-db" style="width:42px;text-align:right;">-12dB</span>
+              <div style="width:48px;height:8px;background:#1f2937;border-radius:3px;overflow:hidden;"><div id="audio-vu2" style="height:100%;width:66%;background:#10b981;"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="width:32px;">CH3</span>
+              <input id="audio-ch3" type="range" min="-60" max="12" value="-18" style="flex:1;" onchange="setAudioTrim()" />
+              <span id="audio-ch3-db" style="width:42px;text-align:right;">-18dB</span>
+              <div style="width:48px;height:8px;background:#1f2937;border-radius:3px;overflow:hidden;"><div id="audio-vu3" style="height:100%;width:58%;background:#10b981;"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="width:32px;">CH4</span>
+              <input id="audio-ch4" type="range" min="-60" max="12" value="-18" style="flex:1;" onchange="setAudioTrim()" />
+              <span id="audio-ch4-db" style="width:42px;text-align:right;">-18dB</span>
+              <div style="width:48px;height:8px;background:#1f2937;border-radius:3px;overflow:hidden;"><div id="audio-vu4" style="height:100%;width:58%;background:#10b981;"></div></div>
+            </div>
+          </div>
+          <div class="pill-row" style="margin-top:8px;">
+            <button id="btn-xlr-attach" onclick="toggleXlrAttach()">XLR-H1: Attached</button>
+            <button id="btn-xlr-48v" onclick="toggleXlr48v()">+48V: ON</button>
+            <select id="rtmd-ibis-select" onchange="setRtmdIbis()" style="background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px 6px;font-size:11px;">
+              <option value="ACTIVE_5AXIS">RTMD 0xE304: ACTIVE_5AXIS</option>
+              <option value="OFF_CENTER_LOCKED">RTMD 0xE304: OFF_CENTER_LOCKED</option>
+              <option value="STANDARD">RTMD 0xE304: STANDARD</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head">
+            <span>.cube 3D LUT User1..User4 Uploader</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;">
+              <span id="lut-swatch" style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#808080;border:1px solid #e5e7eb;"></span>
+              <span id="lut-tint-hex">#808080</span>
+            </span>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:6px;">
+            <select id="lut-slot-select" style="background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11px;">
+              <option value="User1">User1</option>
+              <option value="User2">User2</option>
+              <option value="User3">User3</option>
+              <option value="User4">User4</option>
+            </select>
+            <input id="lut-name-input" type="text" placeholder="LUT Name (e.g. Kodak2383)" style="flex:1;background:#0a0f18;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px 7px;font-size:11px;" />
+            <input id="lut-file-input" type="file" accept=".cube,.txt" onchange="onCubeFilePick(event)" style="width:82px;font-size:10px;color:#9ca3af;" />
+          </div>
+          <div class="pill-row" style="margin-bottom:6px;">
+            <button onclick="uploadBuiltinCube('709_typeA')">709 Type-A</button>
+            <button onclick="uploadBuiltinCube('teal_orange')">Teal&amp;Orange</button>
+            <button onclick="uploadBuiltinCube('film_2383')">Film 2383</button>
+            <button onclick="uploadBuiltinCube('slog3_bypass')">SLog3 Bypass</button>
+          </div>
+          <textarea id="cube-text-input" rows="2" placeholder="Paste Adobe .cube text (LUT_3D_SIZE 17 or 33)..." style="width:100%;background:#07090c;color:#cbd5e1;border:1px solid #283548;border-radius:6px;padding:5px;font-family:'SF Mono',Menlo,monospace;font-size:10.5px;"></textarea>
+          <div style="display:flex;gap:6px;margin-top:5px;align-items:center;">
+            <button onclick="uploadCustomCube()" style="background:#0f2b46;border-color:#22d3ee;">Sanitize &amp; Load .cube</button>
+            <span id="lut-upload-status" style="font-size:10.5px;color:#9ca3af;font-family:'SF Mono',Menlo,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ready (libmpr SetLutData Guard Active)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cparam-box">
+        <div class="cparam-head">
+          <span>CAMSET Scene File Preset Save / Load (fx6_on_fx3_camset_v1 · P4 &amp; BK4 Enforced)</span>
+          <span id="camset-sha-readout" style="color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">sha256: -</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+          <button onclick="exportCamset()">Export CAMSET JSON</button>
+          <button onclick="importCamset()">Import CAMSET JSON</button>
+          <button onclick="testCamsetP4Tamper()" style="border-color:#f59e0b;color:#fde68a;">Test P4 ND Tamper Lock</button>
+          <span id="camset-lock-badge" style="font-size:11px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">P4 rejects=0 | BK4=LOCKED</span>
+        </div>
+        <textarea id="camset-json-box" rows="2" placeholder="Exported fx6_on_fx3_camset_v1 JSON appears here..." style="width:100%;background:#07090c;color:#a7f3d0;border:1px solid #283548;border-radius:6px;padding:5px;font-family:'SF Mono',Menlo,monospace;font-size:10.5px;"></textarea>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
       <h3>FX6 原生页面直达切换 (Guest 0x41e000e00 Mailbox -> appFw.so 实时重绘)</h3>
       <div class="page-grid" id="page-buttons">
         <button onclick="setPage(0)" id="pbtn-0">0. Big-6 主界面</button>
@@ -2463,6 +3613,55 @@ async function updateUI(st, forceImg) {
       : 'Stage-B P10 遥测: IDLE (点击任意 FX3 物理按键发送 /api/fx3_button)';
   }
 
+  // Phase 40: 4-Ch XLR-H1 Audio VU + RTMD 0xE304 + .cube LUT + CAMSET sync
+  const chDb = st.audio_ch_db || [-12, -12, -18, -18];
+  for (let c = 0; c < 4; c++) {
+    const dbVal = (chDb[c] !== undefined) ? Number(chDb[c]) : -12;
+    const rng = document.getElementById('audio-ch' + (c + 1));
+    const lbl = document.getElementById('audio-ch' + (c + 1) + '-db');
+    const vu = document.getElementById('audio-vu' + (c + 1));
+    if (rng && document.activeElement !== rng) rng.value = String(dbVal);
+    if (lbl) lbl.textContent = `${dbVal >= 0 ? '+' : ''}${dbVal}dB`;
+    if (vu) {
+      const pct = Math.max(4, Math.min(100, Math.round(((dbVal + 60) / 72) * 100)));
+      vu.style.width = pct + '%';
+      vu.style.background = (!st.xlr_handle_attached && c >= 2) ? '#4b5563' : (dbVal > -6 ? '#f59e0b' : '#10b981');
+    }
+  }
+  const routeBadge = document.getElementById('xlr-route-badge');
+  if (routeBadge) {
+    routeBadge.textContent = st.xlr_handle_attached
+      ? (st.xlr_phantom_48v ? 'XLR-H1 0x5d90 (+48V)' : 'XLR-H1 0x5d90 (LINE)')
+      : 'Internal Stereo (P11 Fallback)';
+    routeBadge.style.color = st.xlr_handle_attached ? '#22d3ee' : '#fbbf24';
+  }
+  const xlrAttachBtn = document.getElementById('btn-xlr-attach');
+  if (xlrAttachBtn) xlrAttachBtn.textContent = st.xlr_handle_attached ? 'XLR-H1: Attached' : 'XLR-H1: Detached (Internal)';
+  const xlr48Btn = document.getElementById('btn-xlr-48v');
+  if (xlr48Btn) xlr48Btn.textContent = st.xlr_phantom_48v ? '+48V: ON' : '+48V: OFF';
+  const rtmdSel = document.getElementById('rtmd-ibis-select');
+  if (rtmdSel && st.rtmd_0xe304_ibis_lock && document.activeElement !== rtmdSel) {
+    rtmdSel.value = st.rtmd_0xe304_ibis_lock;
+  }
+
+  const activeLut = cp.active_user_lut || null;
+  const lutSlots = st.user_lut_slots || {};
+  const slotSel = document.getElementById('lut-slot-select');
+  const shownLut = activeLut || (slotSel && lutSlots[slotSel.value]) || lutSlots.User1;
+  const swatchEl = document.getElementById('lut-swatch');
+  const hexEl = document.getElementById('lut-tint-hex');
+  if (shownLut && swatchEl && hexEl) {
+    const tintHex = shownLut.tint_hex || '#808080';
+    swatchEl.style.background = tintHex;
+    hexEl.textContent = `${shownLut.slot || 'User1'}: ${tintHex}`;
+  }
+  const lockBadge = document.getElementById('camset-lock-badge');
+  if (lockBadge) {
+    const rej = st.p4_nd_reject_count || 0;
+    const bk4 = st.p12_bk4_airplane_mode_locked !== false ? 'LOCKED' : 'OPEN';
+    lockBadge.textContent = `P4 rejects=${rej} | BK4=${bk4}`;
+  }
+
   document.getElementById('st-nz').textContent = st.gpe0_nonzero_px;
   document.getElementById('st-text').textContent = st.text_ok;
   document.getElementById('st-fill').textContent = `${st.fill_n} / ${st.icon_n}`;
@@ -2543,6 +3742,153 @@ async function setCinemaPreset(param, preset) {
     toast.style.display = 'none';
     busy = false;
   }
+}
+
+async function postCinemaRaw(bodyObj) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/cinema_param', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(bodyObj)
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
+    return data;
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function setAudioTrim() {
+  const payload = {
+    ch1_db: Number(document.getElementById('audio-ch1').value),
+    ch2_db: Number(document.getElementById('audio-ch2').value),
+    ch3_db: Number(document.getElementById('audio-ch3').value),
+    ch4_db: Number(document.getElementById('audio-ch4').value)
+  };
+  postCinemaRaw(payload);
+}
+
+function toggleXlrAttach() {
+  const cur = currentStatus ? !!currentStatus.xlr_handle_attached : true;
+  postCinemaRaw({xlr_handle_attached: !cur});
+}
+
+function toggleXlr48v() {
+  const cur = currentStatus ? !!currentStatus.xlr_phantom_48v : true;
+  postCinemaRaw({xlr_phantom_48v: !cur});
+}
+
+function setRtmdIbis() {
+  const sel = document.getElementById('rtmd-ibis-select');
+  if (sel) postCinemaRaw({rtmd_0xe304_ibis_lock: sel.value});
+}
+
+function onCubeFilePick(e) {
+  const f = e.target && e.target.files && e.target.files[0];
+  if (!f) return;
+  const nameIn = document.getElementById('lut-name-input');
+  if (nameIn && !nameIn.value.trim()) {
+    nameIn.value = f.name.replace(/\.cube$/i, '').slice(0, 23);
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const box = document.getElementById('cube-text-input');
+    if (box) box.value = String(reader.result || '');
+  };
+  reader.readAsText(f);
+}
+
+async function uploadBuiltinCube(presetKey) {
+  const slot = (document.getElementById('lut-slot-select') || {}).value || 'User1';
+  const name = (document.getElementById('lut-name-input') || {}).value || '';
+  await _postLutUpload({slot: slot, preset: presetKey, name: name || undefined});
+}
+
+async function uploadCustomCube() {
+  const slot = (document.getElementById('lut-slot-select') || {}).value || 'User1';
+  const name = (document.getElementById('lut-name-input') || {}).value || '';
+  const cubeText = (document.getElementById('cube-text-input') || {}).value || '';
+  await _postLutUpload({slot: slot, name: name, cube_text: cubeText});
+}
+
+async function _postLutUpload(payload) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const statusEl = document.getElementById('lut-upload-status');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/lut_upload', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    if (statusEl) {
+      if (data.ok && data.lut) {
+        statusEl.style.color = '#a7f3d0';
+        statusEl.textContent = `OK ${data.lut.slot}: ${data.lut.name} (${data.lut.size}³ ${data.lut.tint_hex})`;
+      } else {
+        statusEl.style.color = '#fca5a5';
+        statusEl.textContent = `Rejected (${data.error || 'err'}): ${data.message || ''}`;
+      }
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+async function exportCamset() {
+  const r = await fetch('/api/preset_export');
+  const data = await r.json();
+  const box = document.getElementById('camset-json-box');
+  const sha = document.getElementById('camset-sha-readout');
+  if (box) box.value = JSON.stringify(data, null, 2);
+  if (sha && data.preset_sha256) sha.textContent = `sha256: ${data.preset_sha256.slice(0, 16)}...`;
+}
+
+async function importCamset() {
+  const box = document.getElementById('camset-json-box');
+  const sha = document.getElementById('camset-sha-readout');
+  if (!box) return;
+  let parsed;
+  try {
+    parsed = JSON.parse(box.value);
+  } catch (e) {
+    if (sha) sha.textContent = 'Invalid JSON in CAMSET box';
+    return;
+  }
+  const r = await fetch('/api/preset_import', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(parsed)
+  });
+  const data = await r.json();
+  if (data.status) await updateUI(data.status, true);
+}
+
+async function testCamsetP4Tamper() {
+  const rExp = await fetch('/api/preset_export');
+  const camset = await rExp.json();
+  camset.cinema_params = camset.cinema_params || {};
+  camset.cinema_params.nd = '1/16 ND';
+  const box = document.getElementById('camset-json-box');
+  if (box) box.value = JSON.stringify(camset, null, 2);
+  const rImp = await fetch('/api/preset_import', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(camset)
+  });
+  const data = await rImp.json();
+  if (data.status) await updateUI(data.status, true);
 }
 
 async function setLang(langCode) {
@@ -2759,6 +4105,12 @@ def make_handler(session: FX6LiveGpe0Session):
                     "last_toast": session.last_toast,
                 })
                 return
+            if path == "/api/lut_upload":
+                self._send_json(session.get_lut_slots())
+                return
+            if path == "/api/preset_export":
+                self._send_json(session.export_camset_preset())
+                return
             if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
                 png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)
                 self.send_response(HTTPStatus.OK)
@@ -2777,10 +4129,26 @@ def make_handler(session: FX6LiveGpe0Session):
 
             length = int(self.headers.get("Content-Length", "0"))
             raw_body = self.rfile.read(length) if length > 0 else b"{}"
+            json_err = False
             try:
                 body = json.loads(raw_body.decode("utf-8")) if raw_body else {}
             except Exception:
                 body = {}
+                json_err = True
+
+            if json_err and path in ("/api/lut_upload", "/api/preset_import", "/api/cinema_param"):
+                self._send_json(
+                    {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
+                    status=HTTPStatus.BAD_REQUEST,
+                )
+                return
+
+            if not isinstance(body, dict):
+                self._send_json(
+                    {"ok": False, "error": "invalid_json_object", "message": "JSON body must be an object"},
+                    status=HTTPStatus.BAD_REQUEST,
+                )
+                return
 
             # Support legacy query parameters from older browser tabs
             if "name" in qs and "key" not in body:
@@ -2827,7 +4195,16 @@ def make_handler(session: FX6LiveGpe0Session):
                     body.get("param", ""),
                     delta=body.get("delta"),
                     preset=body.get("preset"),
+                    payload=body,
                 )
+                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                return
+            if path == "/api/lut_upload":
+                res = session.upload_cube_lut(body)
+                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                return
+            if path == "/api/preset_import":
+                res = session.import_camset_preset(body)
                 self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                 return
             if path in ("/api/key", "/api/page", "/api/box"):

@@ -25,6 +25,7 @@
  *                           + Simplified Chinese UXC/CJK Font switching (0x02cf019c=0x19, enum 0x2b45, bank 19/23)
  *   -DFX6_ROUND=12 Round 12:+ Multi-CJK (tchinese 0x18/0x2b44, japanese 0x01/0x2b30, schinese 0x19/0x2b45, english 0x00/0x2b2f)
  *                           + P10 FX3 body remap + P4 ND-Clear Lock + P11 XLR-H1 + Assignable Button Page 110 (sid=0x34)
+ *   -DFX6_ROUND=13 Round 13:+ Full 4-Language (EN/ZH-CN/ZH-TW/JA) 3-Layer Menu Parity + Status Check & Paint/Look CJK Closure
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -192,6 +193,15 @@ static unsigned int fx6_lang_str_bank(void) {
     case 2: return 22U;
     case 3: return 19U;
     default: return 4U;
+    }
+}
+
+static unsigned int fx6_lang_font_bank(void) {
+    switch (FX6_LANG_CODE) {
+    case 1: return 1U;
+    case 2: return 27U;
+    case 3: return 23U;
+    default: return 0U;
     }
 }
 #endif
@@ -395,6 +405,27 @@ static void emit_r10_telemetry(const char *reason) {
             g_font_create2_cnt,
             g_glyph_blit_count,
             g_icon_blit_count);
+#endif
+#if FX6_ROUND >= 13
+    dprintf(2,
+            "FX6_R13_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+            "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+            "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 font_create=%u glyph_blits=%u "
+            "icon_blits=%u gpe_alloc=%u gpe_fb=%u subst_color=0 subst_image=0\n",
+            reason ? reason : "periodic",
+            fx6_lang_name(),
+            (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(),
+            fx6_lang_font_bank(),
+            fx6_lang_str_bank(),
+            g_r11_lang_bk4_hits,
+            g_r11_airplane_bk4_hits,
+            g_r12_p4_nd_clear_ok,
+            g_font_create2_cnt,
+            g_glyph_blit_count,
+            g_icon_blit_count,
+            g_gpe_pool_alloc_cnt,
+            g_gpe_pool_fallback_cnt);
 #endif
 }
 
@@ -2294,6 +2325,15 @@ void Application_System_Init(const char *arg) {
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 13
+    dprintf(2,
+            "FX6_STAGE_B_R13_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u 4lang_matrix=1\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
 #endif
     if (real) real("AppConfig.so");
     dprintf(2, "FX6_APP_CONFIG_HOLD real_returned round=%d\n", FX6_ROUND);

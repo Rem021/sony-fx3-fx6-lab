@@ -609,3 +609,26 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r12d-c2-menu-3layer-japanese`: FX3 `Fn` + `C2` + `MENU` (`1300ms`) + `DOWN` + `RIGHT` + `RIGHT` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `japanese`, `437,575` px / `233` colors / `1,257` `0xffffaa00` amber px / `109,578` px diff vs `r10d`, `14,486` icon blits, `16,530` glyph blits, `86` `LDEC103` ioctls).
 - **Full Report, Receipts, & `42` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/README.md`](../../reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/summary.json).
 
+---
+
+## 13. Round 13: Real FX3 `7.02` Kernel + `13/13` Stage-B `P1..P12+Fan` + Simplified Chinese `Status Check` / `Paint-Look` & Full 4-Language (`EN` / `ZH-CN` / `ZH-TW` / `JA`) 3-Layer Menu Parity Closure
+
+`build_and_run_round.py --round 13 --lang {en,english,schinese,tchinese,japanese}` completes 4-language (`EN`, `ZH-CN`, `ZH-TW`, `JA`) 3-layer menu parity and cross-language pixel-delta matrix closure on the real FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R13_VERIFY_PASS`, `FX6_STAGE_B_R13_BRIDGE`, and `FX6_R13_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 13 --lang tchinese --initial-setting-done 1 --run-id r13b-menu-3layer-tchinese --duration 80 \
+  --run-dir /private/tmp/fx6-r13-runs/r13b \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:3200,0x0024:120:3200,0x0011:1300:4500,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r13b-menu-3layer-tchinese \
+  --export-png-dir reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/assets
+```
+
+- **3 Live Round 13 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`) + `r13d` 6-Pair Matrix**:
+  - `r13a-status-check-schinese`: `INFRA_STATUS_CHECK` (`0x7052`) -> `34procam_touch_status_main_presenter` (`sid=0x2f`, `schinese`, `437,403` px / `85` colors / `237` `0xffffaa00` amber px, `68,614` px diff vs `r12c`, `53` `LDEC103` ioctls).
+  - `r13b-menu-3layer-tchinese`: `FX3_MENU` (`1300ms`) + `DOWN` + `RIGHT` + `RIGHT` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `tchinese`, `437,575` px / `248` colors / `1,257` `0xffffaa00` amber px, `31,822` px diff vs `r12d`, `85` `LDEC103` ioctls — completing `EN` R10 + `ZH-CN` R11 + `JA` R12 + `ZH-TW` R13 4-language menu closure).
+  - `r13c-menu-3layer-paintlook-schinese`: `FX3_MENU` (`1300ms`) + `3x DOWN` (`Paint/Look`) + `RIGHT` + `RIGHT` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `schinese`, `437,095` px / `268` colors / `804` `0xffffaa00` amber px, `138,994` px diff vs `r11d`, `86` `LDEC103` ioctls).
+  - `r13d-4lang-6pair-matrix-closure`: Proves all 6 language pairs (`EN`/`ZH-CN`/`ZH-TW`/`JA`) have strictly positive pixel deltas on both `Big6 Home` (`88..11,961` px) and `Full Menu` (`31,822..137,817` px) alongside verified `UXEngine::ResourceManager::switchBank` bank mappings (`en=0/4/4`, `schinese=23/19/19`, `tchinese=27/22/22`, `japanese=1/12/12`).
+- **Full Report, Receipts, & `>=50` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/README.md`](../../reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/summary.json).
+
+

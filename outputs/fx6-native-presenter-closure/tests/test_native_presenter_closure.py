@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-12)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-13)."""
 from __future__ import annotations
 
 import ast
@@ -32,6 +32,8 @@ ROUND11_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round11-fx6-on-fx3-schi
 ROUND11_ASSETS_DIR = ROUND11_REPORT_DIR / "assets"
 ROUND12_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter"
 ROUND12_ASSETS_DIR = ROUND12_REPORT_DIR / "assets"
+ROUND13_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round13-fx6-on-fx3-status-4lang-closure"
+ROUND13_ASSETS_DIR = ROUND13_REPORT_DIR / "assets"
 
 
 def _load_closure_module(module_name: str, filename: str):
@@ -535,7 +537,7 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
 
         # Verify CLI accepts --round 8/9/10 and --run-dir, and patch_cpio fixes c_mode==0
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]", runner_src)
         self.assertIn("--run-dir", runner_src)
         self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
 
@@ -1120,7 +1122,7 @@ class TestRound10IconBlitterUipcAndReport(unittest.TestCase):
             "enable_r10",
             "etc/fx6_stage_r10",
             '"r10_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2072,7 +2074,7 @@ class TestRound12MultiCjkP4P110AndReport(unittest.TestCase):
             },
         )
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]", runner_src)
         self.assertIn(
             'choices=["en", "english", "schinese", "tchinese", "japanese"]', runner_src
         )
@@ -2530,6 +2532,231 @@ class TestRound12MultiCjkP4P110AndReport(unittest.TestCase):
                 for row in rows
                 for x in range(0, 1024 * 4, 4)
                 if row[x : x + 4] == b"\xff\xaa\x00\xff"
+            )
+            self.assertEqual(amber_px, exp_amber)
+
+
+class TestRound13StatusCheckAndFourLangMatrixClosure(unittest.TestCase):
+    EXPECTED_STEMS = (
+        "r13a-status-check-schinese",
+        "r13b-menu-3layer-tchinese",
+        "r13c-menu-3layer-paintlook-schinese",
+    )
+    EXPECTED_RUN_KEYS = (
+        "r13a_status_check_schinese",
+        "r13b_menu_3layer_tchinese",
+        "r13c_menu_3layer_paintlook_schinese",
+    )
+
+    def test_round13_c_source_guards_and_runner_support(self) -> None:
+        shim_src = (CLOSURE_DIR / "libgrm-fbinit9.c").read_text(encoding="utf-8")
+        verify_src = (CLOSURE_DIR / "fx6-stage-a-verify.c").read_text(encoding="utf-8")
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+
+        self.assertIn("#if FX6_ROUND >= 13", shim_src)
+        for token in (
+            "fx6_lang_font_bank",
+            "FX6_R13_LANG_TELEMETRY",
+            "FX6_STAGE_B_R13_BRIDGE",
+            "4lang_matrix=1",
+        ):
+            self.assertIn(token, shim_src)
+
+        for token in ("/etc/fx6_stage_r13", "FX6_STAGE_B_R13_VERIFY_PASS"):
+            self.assertIn(token, verify_src)
+
+        for token in (
+            "enable_r13",
+            "etc/fx6_stage_r13",
+            '"r13_telemetry"',
+            "def decode_png_rgba_rows",
+            "def compute_png_pixel_diff",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]",
+        ):
+            self.assertIn(token, runner_src)
+
+    def test_round13_stage_a_overlay_english_and_clean_room_fallback(self) -> None:
+        r12_helper = TestRound12MultiCjkP4P110AndReport()
+        r12_helper._run_overlay_lang_dual_mode(
+            lang="english",
+            uxc1_name="string_english.uxc",
+            uxc2_name="string_english_2.uxc",
+            ltt_name="UniversOTS-SJ_wIcon.ltt",
+            fontlist_key="FONT_UNIVERS",
+            asset_key_u1="string_english",
+            asset_key_ltt="font_univers_ltt",
+            donor_attr_u1="DONOR_STRING_ENGLISH_UXC",
+            donor_attr_u2="DONOR_STRING_ENGLISH_2_UXC",
+            donor_attr_ltt="DONOR_FONT_ENGLISH_LTT",
+        )
+
+    def test_round13_stage_a_overlay_r13_flag_and_4lang_map(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r13_map", "build_and_run_round.py"
+        )
+        self.assertEqual(
+            runner.LANG_CODE_MAP,
+            {"en": 0, "english": 0, "japanese": 1, "tchinese": 2, "schinese": 3},
+        )
+        self.assertEqual(runner.parse_key_seq("0x7052:120:5500"), [(0x7052, 120, 5500)])
+
+    def test_round13_extract_milestones_lang_telemetry_parser(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r13_ms", "build_and_run_round.py"
+        )
+        serial = "\n".join(
+            [
+                "Linux version 4.9.337-scel+ #1 SMP PREEMPT",
+                "FX6_STAGE_B_R13_VERIFY_PASS count=13 stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 lang=tchinese",
+                "FX6_STAGE_B_R13_BRIDGE round=13 faithful=1 nop_count=0 p12_wlan=1 p10_keymap=1 p4_nd_clear=1 p11_xlr_h1=1 lang=tchinese bk4_lang=0x18 enum=0x2b44_LANGUAGE_CHINESE_TRADITIONAL font_bank=27 str_bank=22 4lang_matrix=1",
+                "FX6_R13_LANG_TELEMETRY reason=pump lang=tchinese bk4_lang_id=0x02cf019c bk4_lang_val=0x18 lang_enum=0x2b44_LANGUAGE_CHINESE_TRADITIONAL font_bank=27 str_bank=22 lang_bk4_hits=3 airplane_bk4_hits=0 p4_nd_clear=1 p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 font_create=26569 glyph_blits=16282 icon_blits=14282 gpe_alloc=167 gpe_fb=0 subst_color=0 subst_image=0",
+            ]
+        )
+        ms = runner.extract_milestones(serial)
+        self.assertEqual(ms["prefix_counts"]["FX6_R13_"], 1)
+        r13 = ms["r13_telemetry"]
+        self.assertIsNotNone(r13)
+        self.assertEqual(r13["lang"], "tchinese")
+        self.assertEqual(r13["font_bank"], 27)
+        self.assertEqual(r13["str_bank"], 22)
+        self.assertEqual(r13["gpe_alloc"], 167)
+        self.assertEqual(r13["gpe_fb"], 0)
+        self.assertEqual(r13["subst_color"], 0)
+        self.assertEqual(r13["subst_image"], 0)
+
+    def test_round13_png_pixel_diff_helper_synthetic_vectors(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r13_diff", "build_and_run_round.py"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            p1 = pathlib.Path(tmp) / "a.png"
+            p2 = pathlib.Path(tmp) / "b.png"
+            p3 = pathlib.Path(tmp) / "c.png"
+            buf_a = bytearray(b"\x10\x20\x30\xff" * 4)
+            buf_b = bytearray(buf_a)
+            buf_b[0:4] = b"\xff\xaa\x00\xff"
+            runner.write_rgba_png(p1, 2, 2, bytes(buf_a))
+            runner.write_rgba_png(p2, 2, 2, bytes(buf_b))
+            runner.write_rgba_png(p3, 4, 1, bytes(buf_a))
+            self.assertEqual(runner.compute_png_pixel_diff(p1, p1), 0)
+            self.assertEqual(runner.compute_png_pixel_diff(p1, p2), 1)
+            with self.assertRaises(ValueError):
+                runner.compute_png_pixel_diff(p1, p3)
+
+    def test_round13_donor_english_assets_readonly_when_present(self) -> None:
+        if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM") == "1":
+            self.skipTest("FX3_FX6_FORCE_CLEAN_ROOM=1")
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r13_en_assets", "build_and_run_round.py"
+        )
+        checked = 0
+        for path, magic in (
+            (runner.DONOR_STRING_ENGLISH_UXC, b"uxc\x07"),
+            (runner.DONOR_STRING_ENGLISH_2_UXC, b"uxc\x07"),
+            (runner.DONOR_FONT_ENGLISH_LTT, b"LTT\n"),
+        ):
+            if not path.is_file():
+                continue
+            data = runner.read_bytes_readonly(path)
+            self.assertEqual(data[:4], magic)
+            self.assertGreater(len(data), 50000)
+            checked += 1
+        if checked == 0:
+            self.skipTest("Optional donor English UXC/LTT assets absent")
+
+    def test_round13_report_and_summary_json_invariants(self) -> None:
+        self.assertTrue((ROUND13_REPORT_DIR / "README.md").is_file())
+        closure_readme = (CLOSURE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertIn("2026-11-14-round13-fx6-on-fx3-status-4lang-closure", closure_readme)
+        r13_readme = (ROUND13_REPORT_DIR / "README.md").read_text(encoding="utf-8")
+        for forbidden in ("/Volumes/KAFU2T", "/Users/"):
+            self.assertNotIn(forbidden, r13_readme)
+
+        summary_path = ROUND13_REPORT_DIR / "summary.json"
+        self.assertTrue(summary_path.is_file())
+        raw_text = summary_path.read_text(encoding="utf-8")
+        for forbidden in ("/Volumes/KAFU2T", "/private/tmp", "/Users/"):
+            self.assertNotIn(forbidden, raw_text)
+        data = json.loads(raw_text)
+        self.assertEqual(data["schema"], "fx6-on-fx3-round13-status-4lang-closure-v1")
+        self.assertIn("Linux version 4.9.337-scel+", data["kernel_version"])
+        self.assertEqual(set(data["languages"].keys()), {"en", "tchinese", "japanese", "schinese"})
+
+        runs = data["runs"]
+        self.assertEqual(set(runs.keys()), set(self.EXPECTED_RUN_KEYS))
+        expectations = {
+            "r13a_status_check_schinese": ("schinese", "0x2f", "0x19", 437403, 85, 237),
+            "r13b_menu_3layer_tchinese": ("tchinese", "0x11", "0x18", 437575, 248, 1257),
+            "r13c_menu_3layer_paintlook_schinese": ("schinese", "0x11", "0x19", 437095, 268, 804),
+        }
+        for key, (lang, sid, bk4_val, exp_px, exp_col, exp_amber) in expectations.items():
+            run = runs[key]
+            self.assertEqual(run["round"], 13)
+            self.assertEqual(run["lang"], lang)
+            self.assertEqual(run["target_sid"], sid)
+            self.assertEqual(run["nop_count"], 0)
+            self.assertEqual(run["crashes"], 0)
+            self.assertGreater(run["ldec103_ioctl_count"], 40)
+            self.assertGreaterEqual(run["total_threads_seen"], 161)
+            sb = run["stage_b"]
+            self.assertTrue(sb["r13_enabled"])
+            self.assertEqual(sb["manifest_count"], 13)
+            markers = "\n".join(sb["guest_boot_markers"])
+            self.assertIn("FX6_STAGE_A_VERIFY_PASS count=13", markers)
+            self.assertIn(f"FX6_STAGE_B_R13_VERIFY_PASS count=13", markers)
+            self.assertIn("FX6_STAGE_B_R13_BRIDGE round=13 faithful=1 nop_count=0", markers)
+            self.assertEqual(run["r13_telemetry"]["bk4_lang_val"], bk4_val)
+            self.assertEqual(run["r13_telemetry"]["gpe_fb"], 0)
+            self.assertEqual(run["gpe0_readback"]["nonzero_pixels"], exp_px)
+            self.assertEqual(run["gpe0_readback"]["unique_colors"], exp_col)
+            self.assertEqual(run["amber_0xffffaa00_pixels"], exp_amber)
+
+    def test_round13_4lang_6pair_matrix_and_switchbank_invariants(self) -> None:
+        data = json.loads((ROUND13_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        audit = data["r13d_4lang_matrix_audit"]
+        self.assertEqual(audit["languages_verified"], ["en", "schinese", "tchinese", "japanese"])
+        self.assertTrue(audit["all_6_pairs_strictly_positive_big6"])
+        self.assertTrue(audit["all_6_pairs_strictly_positive_menu"])
+
+        sw = audit["switch_bank_matrix"]
+        self.assertEqual(sw["en"]["uxc_banks"], {"font": 0, "ns1_string": 4, "ns2_string": 4})
+        self.assertEqual(sw["schinese"]["uxc_banks"], {"font": 23, "ns1_string": 19, "ns2_string": 19})
+        self.assertEqual(sw["tchinese"]["uxc_banks"], {"font": 27, "ns1_string": 22, "ns2_string": 22})
+        self.assertEqual(sw["japanese"]["uxc_banks"], {"font": 1, "ns1_string": 12, "ns2_string": 12})
+
+        for section in ("big6_home_6pair_deltas", "full_menu_6pair_deltas"):
+            pairs = audit[section]
+            self.assertEqual(len(pairs), 6)
+            for pair_info in pairs.values():
+                self.assertTrue(pair_info["strictly_positive"])
+                self.assertGreater(pair_info["diff_pixels"], 0)
+                self.assertTrue((REPO_ROOT / pair_info["png_a"]).is_file())
+                self.assertTrue((REPO_ROOT / pair_info["png_b"]).is_file())
+
+    def test_round13_png_receipts_valid_size_under_85kib_and_amber(self) -> None:
+        self.assertTrue(ROUND13_ASSETS_DIR.is_dir())
+        alpha_digests: Dict[str, str] = {}
+        comp_digests: Dict[str, str] = {}
+        for stem in self.EXPECTED_STEMS:
+            for variant, bucket in (("alpha", alpha_digests), ("composited", comp_digests)):
+                png_path = ROUND13_ASSETS_DIR / f"{stem}-{variant}.png"
+                self.assertTrue(png_path.is_file(), f"Missing Round 13 PNG: {png_path}")
+                raw = png_path.read_bytes()
+                self.assertLess(len(raw), 85 * 1024, f"PNG exceeds 85 KiB: {png_path}")
+                w, h, _ = _parse_and_validate_png(raw)
+                self.assertEqual((w, h), (1024, 540))
+                bucket[stem] = hashlib.sha256(raw).hexdigest()
+        self.assertEqual(len(set(alpha_digests.values())), len(self.EXPECTED_STEMS))
+        self.assertEqual(len(set(comp_digests.values())), len(self.EXPECTED_STEMS))
+
+        for stem, exp_amber in (
+            ("r13a-status-check-schinese", 237),
+            ("r13b-menu-3layer-tchinese", 1257),
+            ("r13c-menu-3layer-paintlook-schinese", 804),
+        ):
+            _, _, rows = _decode_png_rgba_rows((ROUND13_ASSETS_DIR / f"{stem}-alpha.png").read_bytes())
+            amber_px = sum(
+                1 for row in rows for x in range(0, 1024 * 4, 4) if row[x : x + 4] == b"\xff\xaa\x00\xff"
             )
             self.assertEqual(amber_px, exp_amber)
 

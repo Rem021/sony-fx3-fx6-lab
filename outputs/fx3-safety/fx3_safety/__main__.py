@@ -16,6 +16,7 @@ from .boot_contracts import (
     verify_sector0_partition_table,
 )
 from .brick_classifier import classify_brick_state, generate_failsafe_init2_overlay_hook
+from .master_16gate_preflight import DEFAULT_REPO_ROOT, evaluate_16_master_safety_gates
 from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
 from .thermal_pwm_and_power_guard import evaluate_thermal_pwm_and_power_guard
 
@@ -114,6 +115,25 @@ def main(argv: Optional[List[str]] = None) -> int:
     p_therm.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
     p_therm.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
+    # 8. verify-16-gates
+    p_16 = sub.add_parser(
+        "verify-16-gates",
+        help="Run Phase 50 16-Gate Master Safety Preflight Engine (G01..G16)",
+    )
+    p_16.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_16.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_16.add_argument(
+        "--dry-run-tier0",
+        action="store_true",
+        help="Supply synthetic dry-run Tier-0 inputs so G01..G16 can be exercised offline",
+    )
+    p_16.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "evaluate-preflight":
@@ -188,6 +208,25 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         return 0 if report.all_passed else 1
+
+    if args.cmd == "verify-16-gates":
+        report = evaluate_16_master_safety_gates(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            use_synthetic_dry_run_tier0=bool(args.dry_run_tier0),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/16 "
+                f"g13_to_g16_all_passed={report.g13_to_g16_all_passed} "
+                f"all_16_gates_verified={report.all_16_gates_verified} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_16_gates_verified if args.dry_run_tier0 else report.offline_13_gates_verified
+        return 0 if ok else 1
 
     return 2
 

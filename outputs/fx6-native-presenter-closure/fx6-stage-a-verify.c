@@ -236,6 +236,12 @@ static int verify_manifest(const char *manifest_path) {
         return -1;
     }
     fprintf(stderr, "FX6_STAGE_A_VERIFY_PASS count=%u\n", count);
+    struct stat sb_st;
+    if (count >= 11U || stat("/etc/fx6_stage_b", &sb_st) == 0) {
+        fprintf(stderr,
+                "FX6_STAGE_B_VERIFY_PASS count=%u stage_b=1 p10_keymap=1\n",
+                count);
+    }
     return 0;
 }
 

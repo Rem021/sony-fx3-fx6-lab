@@ -59,6 +59,7 @@ import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
+import uvc_hdmi_raw_output_emulator as p63  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -103,6 +104,7 @@ class CoEmulationConfig:
     include_phase45_imx510_xavc: bool = True
     include_phase53_hil_fault_harness: bool = True
     include_phase58_qmp_introspection: bool = True
+    include_phase63_hdmi_raw_uvc: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -766,6 +768,44 @@ def run_stage7_qmp_guest_introspection(
 
 
 # ---------------------------------------------------------------------------
+# Stage 8 (Phase 63): HDMI Type-A RAW16 EDID, MLUT Clean-Feed & USB-C Arbitrator
+# ---------------------------------------------------------------------------
+
+
+def run_stage8_hdmi_raw_uvc_arbitrator(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 8 (Phase 63): 256B EDID RAW16/MLUT handshake, 12G-SDI containment & USB-C arbitrator."""
+    config.validate()
+    rep = p63.run_phase63_hdmi_uvc_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage8_phase63_hdmi_raw_uvc",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": rep["redlines"]["nop_count"],
+        "guest_code_modification_bytes": rep["redlines"]["guest_code_modification_bytes"],
+        "cp_mutation_bytes": rep["redlines"]["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["redlines"]["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": rep["redlines"]["calibration_mutation_bytes"],
+        "nvram_persistent_writes": rep["redlines"]["nvram_persistent_writes"],
+        "physical_device_writes": rep["redlines"]["physical_device_writes"],
+        "persistent_emmc_writes_authorized": rep["redlines"]["persistent_emmc_writes_authorized"],
+        "sdi_transceiver_faults": rep["redlines"]["sdi_transceiver_faults"],
+        "donor_audit": rep["donor_audit"],
+        "edid_synthesis": rep["edid_synthesis"],
+        "hdmi_negotiation_matrix": rep["hdmi_negotiation_matrix"],
+        "sdi_noop_containment": rep["sdi_noop_containment"],
+        "usbc_arbitrator_matrix": rep["usbc_arbitrator_matrix"],
+        "phase63_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -775,7 +815,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 7-stage (Phase 33 + 41 + 45 + 53 + 58) Full-Board Virtual Camera Co-Emulation Pipeline."""
+    """Run the unified 8-stage (Phase 33 + 41 + 45 + 53 + 58 + 63) Full-Board Virtual Camera Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -793,6 +833,9 @@ def run_fx3_vm_coemulation_suite(
     )
     stage7: Optional[Dict[str, object]] = (
         run_stage7_qmp_guest_introspection(cfg, env=env) if cfg.include_phase58_qmp_introspection else None
+    )
+    stage8: Optional[Dict[str, object]] = (
+        run_stage8_hdmi_raw_uvc_arbitrator(cfg, env=env) if cfg.include_phase63_hdmi_raw_uvc else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
 
@@ -826,6 +869,18 @@ def run_fx3_vm_coemulation_suite(
         and stage7["nvram_persistent_writes"] == 0
         and stage7["physical_device_writes"] == 0
     )
+    stage8_ok = True if stage8 is None else (
+        bool(stage8["all_checks_passed"])
+        and stage8["nop_count"] == 0
+        and stage8["guest_code_modification_bytes"] == 0
+        and stage8["cp_mutation_bytes"] == 0
+        and stage8["wbi_mutation_bytes"] == 0
+        and stage8["calibration_mutation_bytes"] == 0
+        and stage8["nvram_persistent_writes"] == 0
+        and stage8["physical_device_writes"] == 0
+        and (not stage8["persistent_emmc_writes_authorized"])
+        and stage8["sdi_transceiver_faults"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -836,6 +891,7 @@ def run_fx3_vm_coemulation_suite(
         and stage5_ok
         and stage6_ok
         and stage7_ok
+        and stage8_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -856,6 +912,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase45_imx510_xavc": cfg.include_phase45_imx510_xavc,
             "include_phase53_hil_fault_harness": cfg.include_phase53_hil_fault_harness,
             "include_phase58_qmp_introspection": cfg.include_phase58_qmp_introspection,
+            "include_phase63_hdmi_raw_uvc": cfg.include_phase63_hdmi_raw_uvc,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -888,6 +945,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage6_phase53_hil_fault_harness"] = stage6
     if stage7 is not None:
         core_payload["stage7_phase58_qmp_introspection"] = stage7
+    if stage8 is not None:
+        core_payload["stage8_phase63_hdmi_raw_uvc"] = stage8
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -899,7 +958,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -924,6 +983,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase58",
         action="store_true",
         help="Skip optional Stage 7 (Phase 58 QMP Guest Introspection & USB-LAN PTP-IP Tracer)",
+    )
+    parser.add_argument(
+        "--skip-phase63",
+        action="store_true",
+        help="Skip optional Stage 8 (Phase 63 HDMI RAW16 EDID, MLUT Clean-Feed & USB-C Arbitrator)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -995,6 +1059,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase45_imx510_xavc=not args.skip_phase45,
         include_phase53_hil_fault_harness=not args.skip_phase53,
         include_phase58_qmp_introspection=not args.skip_phase58,
+        include_phase63_hdmi_raw_uvc=not args.skip_phase63,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1011,6 +1076,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s5 = rep.get("stage5_phase45_imx510_xavc")
         s6 = rep.get("stage6_phase53_hil_fault_harness")
         s7 = rep.get("stage7_phase58_qmp_introspection")
+        s8 = rep.get("stage8_phase63_hdmi_raw_uvc")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1033,6 +1099,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s7, dict)
             else ""
         )
+        s8_str = (
+            f" | hdmi_uvc={s8['source_mode']}(raw16=4264x2408@59.94p,"
+            f"sdi_faults={s8['sdi_transceiver_faults']},"
+            f"usbc={s8['usbc_arbitrator_matrix']['allowed_transitions']}ok/"
+            f"{s8['usbc_arbitrator_matrix']['blocked_transitions']}blk)"
+            if isinstance(s8, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1040,7 +1114,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"iso={s2['cine_ei_iso']} lut={s2['lut_mode']}({s2['lut_bytes']}B) "
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
-            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str}{s5_str}{s6_str}{s7_str} | "
+            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

@@ -1588,5 +1588,551 @@ class TestPhase30CinemaLineParametersAndBridge(unittest.TestCase):
             self.assertEqual((w, h), (1024, 540), msg=f"Unexpected dimensions in {png_p.name}")
 
 
+class TestPhase40CubeLutXlrAudioAndCamset(unittest.TestCase):
+    @staticmethod
+    def _build_mini_cube(
+        size: int = 2,
+        *,
+        r_bias: float = 0.0,
+        g_bias: float = 0.0,
+        b_bias: float = 0.0,
+        title: str = "MiniTest",
+        domain_min: str = "0.0 0.0 0.0",
+        domain_max: str = "1.0 1.0 1.0",
+    ) -> str:
+        lines = [f'TITLE "{title}"', f"LUT_3D_SIZE {size}", f"DOMAIN_MIN {domain_min}", f"DOMAIN_MAX {domain_max}"]
+        denom = max(1, size - 1)
+        for b in range(size):
+            fb = b / denom
+            for g in range(size):
+                fg = g / denom
+                for r in range(size):
+                    fr = r / denom
+                    lines.append(f"{fr + r_bias:.6f} {fg + g_bias:.6f} {fb + b_bias:.6f}")
+        return "\n".join(lines) + "\n"
+
+    def test_p40_01_builtin_cube_presets_17_and_33_generate_and_sanitize(self) -> None:
+        self.assertEqual(
+            set(run_fx6_menu_trial.BUILTIN_CUBE_PRESETS.keys()),
+            {"709_typeA", "teal_orange", "film_2383", "slog3_bypass"},
+        )
+        for pid in ("709_typeA", "teal_orange", "film_2383", "slog3_bypass"):
+            cube17 = run_fx6_menu_trial.generate_builtin_cube_lut(pid, size=17)
+            san17 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(cube17, name=pid)
+            self.assertTrue(san17["ok"], msg=f"{pid} 17^3 failed: {san17}")
+            self.assertEqual(san17["size"], 17)
+            self.assertEqual(san17["triplets"], 17 ** 3)
+            self.assertEqual(len(san17["sha256"]), 64)
+            self.assertRegex(san17["tint_hex"], r"^#[0-9a-f]{6}$")
+
+        cube33 = run_fx6_menu_trial.generate_builtin_cube_lut("709_typeA", size=33)
+        san33 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(cube33, name="Sony709_33")
+        self.assertTrue(san33["ok"])
+        self.assertEqual(san33["size"], 33)
+        self.assertEqual(san33["triplets"], 33 ** 3)
+
+    def test_p40_02_allow_mini_grid_default_false_and_true(self) -> None:
+        mini = self._build_mini_cube(size=2)
+        rej = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini, name="Mini2")
+        self.assertFalse(rej["ok"])
+        self.assertEqual(rej["error"], "unsupported_lut_3d_size")
+
+        ok = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini, name="Mini2", allow_mini_grid=True)
+        self.assertTrue(ok["ok"])
+        self.assertEqual(ok["size"], 2)
+        self.assertEqual(ok["triplets"], 8)
+
+    def test_p40_03_trilinear_mid_gray_interpolation_math(self) -> None:
+        # Linear cube with all values in [0, 1] mapping midpoint (0.5, 0.5, 0.5) -> (0.70, 0.40, 0.55)
+        lines = ['TITLE "LinearTint"', "LUT_3D_SIZE 2", "DOMAIN_MIN 0.0 0.0 0.0", "DOMAIN_MAX 1.0 1.0 1.0"]
+        for bi in (0, 1):
+            for gi in (0, 1):
+                for ri in (0, 1):
+                    lines.append(f"{0.40 + 0.60 * ri:.6f} {0.10 + 0.60 * gi:.6f} {0.25 + 0.60 * bi:.6f}")
+        res = run_fx6_menu_trial.validate_and_sanitize_cube_lut("\n".join(lines), allow_mini_grid=True)
+        self.assertTrue(res["ok"])
+        mr, mg, mb = res["mid_gray_rgb"]
+        self.assertAlmostEqual(mr, 0.70, places=3)
+        self.assertAlmostEqual(mg, 0.40, places=3)
+        self.assertAlmostEqual(mb, 0.55, places=3)
+        self.assertEqual(res["tint_rgb8"], [round(0.70 * 255), round(0.40 * 255), round(0.55 * 255)])
+
+    def test_p40_04_cube_rejects_nan_and_inf_fail_closed(self) -> None:
+        base_lines = run_fx6_menu_trial.generate_builtin_cube_lut("slog3_bypass", size=17).splitlines()
+        for bad_tok in ("NaN", "nan", "inf", "-Inf", "+Infinity"):
+            corrupt = list(base_lines)
+            corrupt[-1] = f"{bad_tok} 0.5 0.5"
+            res = run_fx6_menu_trial.validate_and_sanitize_cube_lut("\n".join(corrupt))
+            self.assertFalse(res["ok"], msg=f"Should reject {bad_tok}")
+            self.assertEqual(res["error"], "nan_or_inf_triplet")
+
+    def test_p40_05_cube_rejects_1d_and_unsupported_sizes(self) -> None:
+        bad_1d = "LUT_1D_SIZE 17\n" + ("0.5 0.5 0.5\n" * 17)
+        r1 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_1d)
+        self.assertFalse(r1["ok"])
+        self.assertEqual(r1["error"], "unsupported_lut_1d_size")
+
+        bad_size = self._build_mini_cube(size=5)
+        r2 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_size)
+        self.assertFalse(r2["ok"])
+        self.assertEqual(r2["error"], "unsupported_lut_3d_size")
+
+        missing_size = "TITLE \"NoSize\"\n0.0 0.0 0.0\n"
+        r3 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(missing_size)
+        self.assertFalse(r3["ok"])
+        self.assertEqual(r3["error"], "missing_lut_3d_size")
+
+    def test_p40_06_cube_rejects_wrong_triplet_count_and_bad_rows(self) -> None:
+        lines = run_fx6_menu_trial.generate_builtin_cube_lut("slog3_bypass", size=17).splitlines()
+        too_few = "\n".join(lines[:-1])
+        r1 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(too_few)
+        self.assertFalse(r1["ok"])
+        self.assertEqual(r1["error"], "triplet_count_mismatch")
+
+        too_many = "\n".join(lines + ["0.5 0.5 0.5"])
+        r2 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(too_many)
+        self.assertFalse(r2["ok"])
+        self.assertEqual(r2["error"], "triplet_count_mismatch")
+
+        bad_cols = "\n".join(lines[:-1] + ["0.5 0.5"])
+        r3 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_cols)
+        self.assertFalse(r3["ok"])
+        self.assertEqual(r3["error"], "invalid_row_or_keyword")
+
+        bad_num = "\n".join(lines[:-1] + ["0.5 abc 0.5"])
+        r4 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_num)
+        self.assertFalse(r4["ok"])
+        self.assertEqual(r4["error"], "invalid_row_or_keyword")
+
+    def test_p40_07_cube_rejects_invalid_domains_and_late_headers(self) -> None:
+        bad_dom = "LUT_3D_SIZE 2\nDOMAIN_MIN 0.8 0.0 0.0\nDOMAIN_MAX 0.5 1.0 1.0\n" + ("0.5 0.5 0.5\n" * 8)
+        r1 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_dom, allow_mini_grid=True)
+        self.assertFalse(r1["ok"])
+        self.assertEqual(r1["error"], "invalid_domain_bounds")
+
+        late_hdr = "LUT_3D_SIZE 2\n0.0 0.0 0.0\nTITLE \"Late\"\n" + ("0.5 0.5 0.5\n" * 7)
+        r2 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(late_hdr, allow_mini_grid=True)
+        self.assertFalse(r2["ok"])
+        self.assertEqual(r2["error"], "header_after_data")
+
+        unk_hdr = "LUT_3D_SIZE 2\nWEIRD_DIRECTIVE 1\n" + ("0.5 0.5 0.5\n" * 8)
+        r3 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(unk_hdr, allow_mini_grid=True)
+        self.assertFalse(r3["ok"])
+        self.assertEqual(r3["error"], "invalid_row_or_keyword")
+
+    def test_p40_08_cube_rejects_control_chars_traversal_and_oversize_lines(self) -> None:
+        mini = self._build_mini_cube(size=2)
+        r_nul = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini + "\x00", allow_mini_grid=True)
+        self.assertFalse(r_nul["ok"])
+        self.assertEqual(r_nul["error"], "control_characters_forbidden")
+
+        r_trav = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini, name="../etc/passwd", allow_mini_grid=True)
+        self.assertFalse(r_trav["ok"])
+        self.assertEqual(r_trav["error"], "unsafe_lut_name")
+
+        r_big = run_fx6_menu_trial.validate_and_sanitize_cube_lut("LUT_3D_SIZE 33\n" + ("# c\n" * 40050))
+        self.assertFalse(r_big["ok"])
+        self.assertEqual(r_big["error"], "too_many_lines")
+
+        r_type = run_fx6_menu_trial.validate_and_sanitize_cube_lut(12345)  # type: ignore[arg-type]
+        self.assertFalse(r_type["ok"])
+        self.assertEqual(r_type["error"], "invalid_cube_type")
+
+    def test_p40_09_cube_clamps_out_of_range_finite_values_with_domain_normalization(self) -> None:
+        lines = [
+            'TITLE "DomainClamp"',
+            "LUT_3D_SIZE 2",
+            "DOMAIN_MIN 0.0 0.0 0.0",
+            "DOMAIN_MAX 2.0 2.0 2.0",
+            "-0.50 -0.25 0.00",
+            "2.50 0.50 0.50",
+            "0.50 2.50 0.50",
+            "1.00 1.00 0.50",
+            "0.50 0.50 2.50",
+            "1.00 0.50 1.00",
+            "0.50 1.00 1.00",
+            "2.50 2.50 2.50",
+        ]
+        res = run_fx6_menu_trial.validate_and_sanitize_cube_lut("\n".join(lines), allow_mini_grid=True)
+        self.assertTrue(res["ok"])
+        self.assertGreater(res["clamped_components"], 0)
+        for v in res["mid_gray_rgb"]:
+            self.assertGreaterEqual(v, 0.0)
+            self.assertLessEqual(v, 1.0)
+
+    def test_p40_10_user_slots_1_to_4_upload_and_select_cell4(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_slots_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            for idx, (slot, pid) in enumerate(
+                [("User1", "709_typeA"), ("User2", "teal_orange"), ("User3", "film_2383"), ("User4", "slog3_bypass")]
+            ):
+                r = sess.upload_cube_lut({"slot": slot, "preset": pid, "name": f"Slot{idx + 1}_{pid}"})
+                self.assertTrue(r["ok"], msg=f"Upload failed for {slot}: {r}")
+                self.assertEqual(r["slot"], slot)
+                self.assertEqual(sess.cell_vals[4], 4 + idx)
+                self.assertEqual(r["cinema_params"]["active_user_lut"]["slot"], slot)
+                self.assertTrue(sess.user_lut_slots[slot]["uploaded"])
+
+            bad_slot = sess.upload_cube_lut({"slot": "User5", "preset": "teal_orange"})
+            self.assertFalse(bad_slot["ok"])
+            self.assertEqual(bad_slot["error"], "invalid_lut_slot")
+            # Active slot remained User4
+            self.assertEqual(sess.cell_vals[4], 7)
+
+    def test_p40_11_mailbox_packing_phase40_words_19_to_27(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_mb_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            sess.upload_cube_lut({"slot": "User2", "preset": "teal_orange", "name": "TealOrange17"})
+            sess.set_cinema_param("", payload={"ch1_db": -6, "ch2_db": 6, "ch3_db": -24, "ch4_db": -60, "xlr_handle_attached": True, "xlr_phantom_48v": False, "rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED"})
+
+            raw = sess._pack_mailbox_bytes()
+            self.assertEqual(len(raw), 28 * 4)
+            words = struct.unpack("<28I", raw)
+            self.assertEqual(words[3], 0)  # P4 ND=Clear invariant
+            self.assertEqual((words[18] >> 4) & 0x0F, sess.xlr_idx)
+            self.assertEqual(words[18] & 0x0F, sess.ibis_idx)
+            tint_r, tint_g, tint_b = sess.user_lut_slots["User2"]["tint_rgb8"]
+            expected_meta = (2 << 28) | (1 << 24) | (tint_r << 16) | (tint_g << 8) | tint_b
+            self.assertEqual(words[19], expected_meta)
+            name_bytes = struct.pack("<6I", *words[20:26]).split(b"\x00", 1)[0].decode("ascii")
+            self.assertEqual(name_bytes, "TealOrange17")
+            ch_unpacked = [b - 60 for b in struct.unpack("<4B", struct.pack("<I", words[26]))]
+            self.assertEqual(ch_unpacked, [-6, 6, -24, -60])
+            flags = words[27]
+            self.assertEqual(flags & 0x01, 1)  # attached
+            self.assertEqual((flags >> 1) & 0x01, 0)  # +48V OFF
+            self.assertEqual((flags >> 4) & 0x03, 1)  # OFF_CENTER_LOCKED
+
+    def test_p40_12_guest_c_phase40_hud_and_no_malloc_invariants(self) -> None:
+        c_src = (TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8")
+        for sym in (
+            "fx6_render_phase40_hud_strip",
+            "g_live_lut_meta",
+            "g_live_audio_packed",
+            "g_live_p40_flags",
+            "User3 (33",
+            "User4 (33",
+            "E304:5AX",
+            "E304:LOCK",
+            "E304:STD",
+        ):
+            self.assertIn(sym, c_src)
+        idx = c_src.index("static void fx6_render_phase40_hud_strip")
+        end_idx = c_src.index("static uint64_t fx6_state_hash", idx)
+        helper_body = c_src[idx:end_idx]
+        for forbidden in ("malloc(", "calloc(", "realloc(", "dlsym("):
+            self.assertNotIn(forbidden, helper_body)
+
+    def test_p40_13_audio_4ch_trim_clamping_and_validation(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_aud_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            r1 = sess.set_cinema_param("", payload={"ch1_db": -99, "ch2_db": 40, "ch3_db": -3, "ch4_db": 0})
+            self.assertTrue(r1["ok"])
+            self.assertEqual(sess.audio_ch_db, [-60, 12, -3, 0])
+
+            r_bool = sess.set_cinema_param("", payload={"ch1_db": True})
+            self.assertFalse(r_bool["ok"])
+            self.assertEqual(r_bool["error"], "invalid_audio_db")
+
+            r_nan = sess.set_cinema_param("", payload={"ch2_db": float("nan")})
+            self.assertFalse(r_nan["ok"])
+            self.assertEqual(r_nan["error"], "invalid_audio_db")
+            self.assertEqual(sess.audio_ch_db, [-60, 12, -3, 0])
+
+    def test_p40_14_xlr_h1_detach_p11_0x91db059b_internal_stereo_fallback(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_xlr_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            self.assertTrue(sess.xlr_handle_attached)
+            self.assertTrue(sess.xlr_phantom_48v)
+
+            r_det = sess.set_cinema_param("", payload={"xlr_handle_attached": False})
+            self.assertTrue(r_det["ok"])
+            self.assertFalse(sess.xlr_handle_attached)
+            self.assertEqual(sess.xlr_idx, 2)
+            self.assertEqual(r_det["cinema_params"]["values"]["xlr"], "Internal Stereo Mic")
+            self.assertEqual(r_det["cinema_params"]["audio_route"], "INTERNAL_STEREO_FALLBACK")
+            self.assertIn("0x91db059b", r_det["cinema_params"]["ch1_ch2_source"])
+            sbt = sess.get_stage_b_telemetry()
+            self.assertEqual(sbt["P11"]["audio_route"], "INTERNAL_STEREO_FALLBACK")
+            self.assertEqual(sbt["P11"]["xlr_handle"], "0x5d90")
+            self.assertEqual(sbt["P11"]["xlr_fallback_contract"], "0x91db059b")
+            self.assertIn("0x91db059b", r_det["toast"])
+
+            # Attempting +48V while detached keeps Internal Stereo fallback without crashing
+            r_step = sess.set_cinema_param("xlr", delta=1)
+            self.assertTrue(r_step["ok"])
+            self.assertEqual(sess.xlr_idx, 2)
+
+            # Re-attach restores XLR-H1
+            r_att = sess.set_cinema_param("", payload={"xlr_handle_attached": True, "xlr_phantom_48v": True})
+            self.assertTrue(r_att["ok"])
+            self.assertTrue(sess.xlr_handle_attached)
+            self.assertEqual(sess.xlr_idx, 0)
+            self.assertEqual(sess.get_stage_b_telemetry()["P11"]["audio_route"], "XLR_H1_48V")
+
+    def test_p40_15_rtmd_0xe304_ibis_mode_bidirectional_sync(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_rtmd_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            r1 = sess.set_cinema_param("", payload={"rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED"})
+            self.assertTrue(r1["ok"])
+            self.assertEqual(sess.rtmd_0xe304_ibis_lock, "OFF_CENTER_LOCKED")
+            self.assertEqual(sess.ibis_idx, 1)
+            self.assertEqual(r1["cinema_params"]["values"]["ibis"], "Active Off")
+
+            r2 = sess.set_cinema_param("ibis", preset="Active Standard")
+            self.assertTrue(r2["ok"])
+            self.assertEqual(sess.rtmd_0xe304_ibis_lock, "STANDARD")
+            self.assertEqual(sess.ibis_idx, 2)
+            self.assertEqual(sess.get_stage_b_telemetry()["P11"]["rtmd_0xe304_ibis_lock"], "STANDARD")
+
+            r_bad = sess.set_cinema_param("", payload={"rtmd_0xe304_ibis_lock": "WARP_9"})
+            self.assertFalse(r_bad["ok"])
+            self.assertEqual(r_bad["error"], "invalid_rtmd_0xe304_ibis_lock")
+
+    def test_p40_16_camset_export_deterministic_sha256_and_schema(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_exp_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            e1 = sess.export_camset_preset()
+            e2 = sess.export_camset_preset()
+            self.assertTrue(e1["ok"])
+            self.assertEqual(e1["schema"], "fx6_on_fx3_camset_v1")
+            self.assertEqual(e1["preset_sha256"], e2["preset_sha256"])
+            self.assertEqual(len(e1["preset_sha256"]), 64)
+            self.assertTrue(e1["p12_bk4_airplane_mode_locked"])
+
+            sess.set_cinema_param("", payload={"ch1_db": -3})
+            e3 = sess.export_camset_preset()
+            self.assertNotEqual(e1["preset_sha256"], e3["preset_sha256"])
+
+    def test_p40_17_camset_import_roundtrip_restores_full_state(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_rt_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            sess.set_cinema_param("fps", preset="59.94p")
+            sess.set_cinema_param("ei", preset="12800 EI (12800 Base)")
+            sess.set_cinema_param("shutter", preset="1/100")
+            sess.set_cinema_param("wb", preset="3200K")
+            sess.upload_cube_lut({"slot": "User3", "preset": "film_2383", "name": "Film2383_P40"})
+            sess.set_cinema_param("", payload={
+                "ch1_db": -8,
+                "ch2_db": -10,
+                "ch3_db": -22,
+                "ch4_db": -30,
+                "xlr_handle_attached": False,
+                "rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED",
+            })
+            exported = sess.export_camset_preset()
+
+            # Mutate everything to other settings
+            sess.set_cinema_param("fps", preset="23.98p")
+            sess.set_cinema_param("ei", preset="800 EI (800 Base)")
+            sess.set_cinema_param("wb", preset="ATW")
+            sess.upload_cube_lut({"slot": "User1", "preset": "slog3_bypass", "name": "Bypass"})
+            sess.set_cinema_param("", payload={
+                "ch1_db": 0,
+                "ch2_db": 0,
+                "xlr_handle_attached": True,
+                "rtmd_0xe304_ibis_lock": "STANDARD",
+            })
+
+            imp = sess.import_camset_preset(exported)
+            self.assertTrue(imp["ok"], msg=f"Import failed: {imp}")
+            self.assertFalse(imp["p4_nd_rejected"])
+            cp = imp["cinema_params"]["values"]
+            self.assertEqual(cp["fps"], "59.94p")
+            self.assertEqual(cp["ei"], "12800 EI (12800 Base)")
+            self.assertEqual(cp["shutter"], "1/100")
+            self.assertEqual(cp["wb"], "3200K")
+            self.assertEqual(cp["lut"], "User3 (33³ .cube)")
+            self.assertEqual(sess.audio_ch_db, [-8, -10, -22, -30])
+            self.assertFalse(sess.xlr_handle_attached)
+            self.assertEqual(sess.rtmd_0xe304_ibis_lock, "OFF_CENTER_LOCKED")
+            self.assertEqual(sess.user_lut_slots["User3"]["name"], "Film2383_P40")
+
+    def test_p40_18_camset_import_enforces_p4_nd_lock_and_p12_bk4_shadow(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_p4tamper_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            camset = sess.export_camset_preset()
+            camset["cinema_params"]["nd"] = "1/16 ND"
+            camset["p12_bk4_airplane_mode_locked"] = False
+
+            imp = sess.import_camset_preset(camset)
+            self.assertTrue(imp["ok"])
+            self.assertTrue(imp["p4_nd_rejected"])
+            self.assertTrue(imp["p4_nd_clamped"])
+            self.assertEqual(imp["p4_nd_reject_count"], 1)
+            self.assertEqual(sess.p4_nd_reject_count, 1)
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(imp["cinema_params"]["values"]["nd"], "Clear [FX3 P4 Locked]")
+            self.assertTrue(imp["p12_bk4_airplane_mode_locked"])
+            self.assertTrue(imp["p12_bk4_clamped"])
+            self.assertTrue(sess.get_stage_b_telemetry()["P12"]["bk4_airplane_mode_locked"])
+
+    def test_p40_19_camset_import_rejects_bad_schema_or_corrupt_cube_without_mutating(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_badcamset_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            sess.set_cinema_param("fps", preset="59.94p")
+
+            r_bad_schema = sess.import_camset_preset({"schema": "wrong_v99", "cinema_params": {"fps": "23.98p"}})
+            self.assertFalse(r_bad_schema["ok"])
+            self.assertEqual(r_bad_schema["error"], "invalid_camset_schema")
+            self.assertEqual(sess.cell_vals[0], 5)  # unchanged 59.94p
+
+            camset = sess.export_camset_preset()
+            camset["cinema_params"]["fps"] = "23.98p"
+            camset["user_lut_slots"]["User1"]["cube_text"] = "LUT_3D_SIZE 17\nNaN 0.0 0.0\n"
+            r_bad_cube = sess.import_camset_preset(camset)
+            self.assertFalse(r_bad_cube["ok"])
+            self.assertEqual(sess.cell_vals[0], 5)  # still unchanged!
+
+    def test_p40_20_http_api_lut_upload_and_malformed_json_400(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_http_lut_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                g_slots = json.loads(urllib.request.urlopen(f"{base}/api/lut_upload", timeout=5).read().decode("utf-8"))
+                self.assertTrue(g_slots["ok"])
+                self.assertEqual(set(g_slots["slots"].keys()), {"User1", "User2", "User3", "User4"})
+
+                # Built-in preset upload -> 200
+                req1 = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=json.dumps({"slot": "User1", "preset": "teal_orange"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                r1 = json.loads(urllib.request.urlopen(req1, timeout=5).read().decode("utf-8"))
+                self.assertTrue(r1["ok"])
+                self.assertEqual(r1["lut"]["size"], 17)
+
+                # Raw custom 17^3 .cube upload -> 200
+                raw_cube = run_fx6_menu_trial.generate_builtin_cube_lut("film_2383", size=17)
+                req2 = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=json.dumps({"slot": "User2", "name": "Custom2383", "cube_text": raw_cube}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                r2 = json.loads(urllib.request.urlopen(req2, timeout=5).read().decode("utf-8"))
+                self.assertTrue(r2["ok"])
+                self.assertEqual(r2["lut"]["name"], "Custom2383")
+
+                # Malformed .cube -> 400 with structured error
+                req_bad_cube = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=json.dumps({"slot": "User1", "cube_text": "LUT_3D_SIZE 17\nNaN 0.1 0.2\n"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx_cube:
+                    urllib.request.urlopen(req_bad_cube, timeout=5)
+                self.assertEqual(ctx_cube.exception.code, 400)
+                err_payload = json.loads(ctx_cube.exception.read().decode("utf-8"))
+                self.assertFalse(err_payload["ok"])
+                self.assertEqual(err_payload["error"], "nan_or_inf_triplet")
+
+                # Malformed JSON -> 400
+                req_bad_json = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=b"{not-valid-json",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx_json:
+                    urllib.request.urlopen(req_bad_json, timeout=5)
+                self.assertEqual(ctx_json.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p40_21_http_api_cinema_param_audio_rtmd_and_camset_endpoints(self) -> None:
+        import threading
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_http_cam_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                html = urllib.request.urlopen(f"{base}/", timeout=5).read().decode("utf-8")
+                for marker in (
+                    "/api/lut_upload",
+                    "/api/preset_export",
+                    "/api/preset_import",
+                    "audio-ch1",
+                    "rtmd-ibis-select",
+                    "camset-lock-badge",
+                    "🌐 中文 / EN",
+                    "ILME-FX3",
+                ):
+                    self.assertIn(marker, html)
+
+                req_cp = urllib.request.Request(
+                    f"{base}/api/cinema_param",
+                    data=json.dumps({
+                        "ch1_db": -9,
+                        "ch2_db": -9,
+                        "ch3_db": -20,
+                        "ch4_db": -20,
+                        "xlr_handle_attached": False,
+                        "rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED",
+                    }).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                cp_res = json.loads(urllib.request.urlopen(req_cp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(cp_res["ok"])
+                self.assertFalse(cp_res["status"]["xlr_handle_attached"])
+                self.assertEqual(cp_res["status"]["rtmd_0xe304_ibis_lock"], "OFF_CENTER_LOCKED")
+
+                camset = json.loads(urllib.request.urlopen(f"{base}/api/preset_export", timeout=5).read().decode("utf-8"))
+                self.assertEqual(camset["schema"], "fx6_on_fx3_camset_v1")
+                camset["cinema_params"]["nd"] = "1/64 ND"
+
+                req_imp = urllib.request.Request(
+                    f"{base}/api/preset_import",
+                    data=json.dumps(camset).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                imp_res = json.loads(urllib.request.urlopen(req_imp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(imp_res["ok"])
+                self.assertTrue(imp_res["p4_nd_rejected"])
+                self.assertEqual(imp_res["p4_nd_reject_count"], 1)
+                self.assertEqual(imp_res["cinema_params"]["values"]["nd"], "Clear [FX3 P4 Locked]")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p40_22_phase40_report_receipts_when_present(self) -> None:
+        rep_dir = REPO_ROOT / "reports" / "2026-11-14-phase40-vm-trial-cube-lut-xlr-presets"
+        readme = rep_dir / "README.md"
+        if not readme.is_file():
+            self.skipTest("Phase 40 report README/receipts not yet generated")
+        text = readme.read_text(encoding="utf-8")
+        self.assertIn("18772", text)
+        pngs = sorted(rep_dir.glob("*.png"))
+        self.assertGreaterEqual(len(pngs), 1)
+        self.assertLessEqual(len(pngs), 3)
+        for png_p in pngs:
+            raw = png_p.read_bytes()
+            self.assertLess(len(raw), 90 * 1024, msg=f"Phase 40 PNG >= 90 KiB: {png_p.name} ({len(raw)} B)")
+            chunks = _parse_png_chunks(raw)
+            w, h = struct.unpack(">II", chunks[0][1][:8])
+            self.assertEqual((w, h), (1024, 540), msg=f"Unexpected PNG size in {png_p.name}")
+
+
 if __name__ == "__main__":
     unittest.main()

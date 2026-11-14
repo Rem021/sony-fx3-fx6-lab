@@ -21,6 +21,10 @@
  *     mb[16] = lang_id (0=English/bank4, 1=Simplified Chinese/bank19, 2=Japanese/bank12)
  *     mb[17] = fx3_p10_hwcode telemetry ((phy_code << 16) | infra_code)
  *     mb[18] = cinema_p11_state ((xlr_idx << 4) | ibis_idx) for P11 XLR-H1 & 5-axis IBIS lock
+ *     mb[19] = lut_tint_meta ((user_slot_1to4 << 28) | (valid << 24) | (r << 16) | (g << 8) | b)
+ *     mb[20..25] = active User LUT short name (24 bytes NUL-terminated)
+ *     mb[26] = audio_db_packed (4x uint8_t (db + 60) for ch1..ch4 in [-60..+12])
+ *     mb[27] = phase40_flags (bit0=xlr_attached, bit1=+48V, bits4..5=rtmd_ibis, bit8=bk4_locked, bit9=valid)
  */
 #include "fx6_static_assist.h"
 
@@ -985,6 +989,56 @@ typedef struct {
     int n_vals;
 } fx6_cell_spec_t;
 
+static uint32_t g_live_lut_meta = 0u;
+static char     g_live_lut_name[28];
+static uint32_t g_live_audio_packed = 0x30303030u; /* -12 dB default on ch1..ch4 */
+static uint32_t g_live_p40_flags = 0x303u;       /* attached=1, +48V=1, rtmd=0, bk4=1, valid=1 */
+static char     g_lut_disp_buf[40];
+static char     g_lut_hud_buf[24];
+
+static void fx6_osd_fill_rect(int x, int y, int w, int h, uint32_t argb) {
+    if (!g_osd || w <= 0 || h <= 0) return;
+    int x0 = (x < 0) ? 0 : x;
+    int y0 = (y < 0) ? 0 : y;
+    int x1 = x + w;
+    int y1 = y + h;
+    if (x1 > FX6_W) x1 = FX6_W;
+    if (y1 > FX6_H) y1 = FX6_H;
+    for (int py = y0; py < y1; py++) {
+        uint32_t *row = g_osd + (unsigned long)py * (unsigned long)FX6_W;
+        for (int px = x0; px < x1; px++) {
+            row[px] = argb;
+        }
+    }
+}
+
+static void fx6_osd_border_rect(int x, int y, int w, int h, uint32_t argb) {
+    if (w < 2 || h < 2) return;
+    fx6_osd_fill_rect(x, y, w, 1, argb);
+    fx6_osd_fill_rect(x, y + h - 1, w, 1, argb);
+    fx6_osd_fill_rect(x, y, 1, h, argb);
+    fx6_osd_fill_rect(x + w - 1, y, 1, h, argb);
+}
+
+static void fx6_unpack_lut_name(const volatile uint32_t *mb, char *out, unsigned max_len) {
+    if (!out || max_len == 0u) return;
+    out[0] = 0;
+    if (!mb) return;
+    unsigned pos = 0u;
+    for (unsigned w = 0u; w < 6u && pos + 1u < max_len; w++) {
+        uint32_t word = mb[20u + w];
+        for (unsigned b = 0u; b < 4u && pos + 1u < max_len; b++) {
+            unsigned char ch = (unsigned char)((word >> (b * 8u)) & 0xffu);
+            if (ch == 0u) {
+                out[pos] = 0;
+                return;
+            }
+            out[pos++] = (ch >= 0x20u && ch <= 0x7eu) ? (char)ch : '?';
+        }
+    }
+    out[pos] = 0;
+}
+
 static const fx6_cell_spec_t g_cell_specs[6] = {
     /* 0: FPS */
     { 0x02005082u, 0u, 7 },
@@ -995,41 +1049,43 @@ static const fx6_cell_spec_t g_cell_specs[6] = {
     /* 3: ND Filter (P4 Hardware-Locked on non-ND FX3 sensor body) */
     { 0x02004288u, 3u, 1 },
     /* 4: Base Look / 3D LUT */
-    { 0x020023f8u, 5u, 6 },
+    { 0x020023f8u, 5u, 8 },
     /* 5: White Balance */
     { 0x02005689u, 4u, 6 },
 };
 
-static const char * const g_cell_val_strs[6][7] = {
+static const char * const g_cell_val_strs[6][8] = {
     /* 0: FPS */
-    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p (S&Q)" },
+    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p (S&Q)", 0 },
     /* 1: EI / Base ISO (Dual Base ISO 800 / 12800) */
     { "800 EI (800 Base)", "400 EI (800 Base)", "1600 EI (800 Base)",
-      "12800 EI (12800 Base)", "6400 EI (12800 Base)", "25600 EI (12800 Base)", 0 },
+      "12800 EI (12800 Base)", "6400 EI (12800 Base)", "25600 EI (12800 Base)", 0, 0 },
     /* 2: Shutter Angle / Speed (BK4 0x02cf1702 / 0x02cf1704) */
-    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100" },
+    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100", 0 },
     /* 3: ND Filter (P4 Hardware Contract) */
-    { "Clear [FX3 P4 Locked]", 0, 0, 0, 0, 0, 0 },
+    { "Clear [FX3 P4 Locked]", 0, 0, 0, 0, 0, 0, 0 },
     /* 4: Base Look / 3D LUT (P1 /dev/nflasha30 + P11 0x0165/0x0166) */
     { "S-Cinetone", "S-Log3.Cine / S-Gamut3.Cine", "s709",
-      "R709 (800%)", "User1 (33\xc2\xb3 .cube)", "User2 (33\xc2\xb3 .cube)", 0 },
+      "R709 (800%)", "User1 (33\xc2\xb3 .cube)", "User2 (33\xc2\xb3 .cube)",
+      "User3 (33\xc2\xb3 .cube)", "User4 (33\xc2\xb3 .cube)" },
     /* 5: White Balance */
-    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0 },
+    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0, 0 },
 };
 
-static const char * const g_cell_hud_strs[6][7] = {
+static const char * const g_cell_hud_strs[6][8] = {
     /* 0: FPS (narrow HUD) */
-    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p" },
+    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p", 0 },
     /* 1: EI (narrow HUD) */
-    { "800 EI", "400 EI", "1600 EI", "12800EI", "6400 EI", "25600EI", 0 },
+    { "800 EI", "400 EI", "1600 EI", "12800EI", "6400 EI", "25600EI", 0, 0 },
     /* 2: Shutter */
-    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100" },
+    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100", 0 },
     /* 3: ND Filter */
-    { "Clear[P4]", 0, 0, 0, 0, 0, 0 },
+    { "Clear[P4]", 0, 0, 0, 0, 0, 0, 0 },
     /* 4: LUT (medium HUD) */
-    { "S-Cinetone", "S-Log3.Cine", "s709", "R709 800%", "User1 .cube", "User2 .cube", 0 },
+    { "S-Cinetone", "S-Log3.Cine", "s709", "R709 800%",
+      "User1 .cube", "User2 .cube", "User3 .cube", "User4 .cube" },
     /* 5: WB */
-    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0 },
+    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0, 0 },
 };
 
 static const char *fx6_cell_val_str(int cell_idx, const uint32_t *cell_vals) {
@@ -1037,6 +1093,21 @@ static const char *fx6_cell_val_str(int cell_idx, const uint32_t *cell_vals) {
     if (cell_idx == 3) return g_cell_val_strs[3][0];
     int n = g_cell_specs[cell_idx].n_vals;
     uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0u;
+    if (cell_idx == 4 && idx >= 4u && g_live_lut_name[0]) {
+        unsigned slot_num = idx - 3u;
+        g_lut_disp_buf[0] = 'U';
+        g_lut_disp_buf[1] = 's';
+        g_lut_disp_buf[2] = 'r';
+        g_lut_disp_buf[3] = (char)('0' + slot_num);
+        g_lut_disp_buf[4] = ':';
+        g_lut_disp_buf[5] = ' ';
+        unsigned p = 6u;
+        for (unsigned i = 0u; g_live_lut_name[i] && p + 1u < sizeof(g_lut_disp_buf); i++) {
+            g_lut_disp_buf[p++] = g_live_lut_name[i];
+        }
+        g_lut_disp_buf[p] = 0;
+        return g_lut_disp_buf;
+    }
     const char *s = g_cell_val_strs[cell_idx][idx];
     return s ? s : g_cell_val_strs[cell_idx][0];
 }
@@ -1046,6 +1117,18 @@ static const char *fx6_cell_hud_str(int cell_idx, const uint32_t *cell_vals) {
     if (cell_idx == 3) return g_cell_hud_strs[3][0];
     int n = g_cell_specs[cell_idx].n_vals;
     uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0u;
+    if (cell_idx == 4 && idx >= 4u && g_live_lut_name[0]) {
+        unsigned slot_num = idx - 3u;
+        g_lut_hud_buf[0] = 'U';
+        g_lut_hud_buf[1] = (char)('0' + slot_num);
+        g_lut_hud_buf[2] = ':';
+        unsigned p = 3u;
+        for (unsigned i = 0u; g_live_lut_name[i] && p + 1u < 16u; i++) {
+            g_lut_hud_buf[p++] = g_live_lut_name[i];
+        }
+        g_lut_hud_buf[p] = 0;
+        return g_lut_hud_buf;
+    }
     const char *s = g_cell_hud_strs[cell_idx][idx];
     return s ? s : g_cell_hud_strs[cell_idx][0];
 }
@@ -1134,6 +1217,11 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         fx6_render_string_rid(appfw, x + 36, y + 6, w - 42, th, g_cell_specs[c].title_rid, "cell-title");
         fx6_render_string_text(appfw, x + 8, y + 6 + th, w - 16, h - th - 10,
                                fx6_cell_val_str(c, cell_vals), "cell-value");
+        if (c == 4 && ((g_live_lut_meta & 0x01000000u) || (cell_vals && (cell_vals[4] % 8u) >= 4u))) {
+            uint32_t sw_rgb = (g_live_lut_meta & 0x01000000u) ? (g_live_lut_meta & 0x00ffffffu) : 0x808080u;
+            fx6_osd_fill_rect((int)x + (int)w - 28, (int)y + 8, 20, 20, 0xFF000000u | sw_rgb);
+            fx6_osd_border_rect((int)x + (int)w - 28, (int)y + 8, 20, 20, 0xFFE5E7EBu);
+        }
         if (proccmd) proccmd(0);
     }
 }
@@ -1390,7 +1478,7 @@ static uint32_t g_live_ibis_xlr = 0u;
 
 static const char * const g_ibis_hud_strs[3] = { "IBIS:Lock", "IBIS:Off", "IBIS:Std" };
 static const char * const g_xlr_hud_strs[3]  = { "XLR:+48V",  "XLR:Line", "IntMic" };
-static const char * const g_lut_short_strs[6] = { "S-Cine", "SLog3", "s709", "R709", "Usr1", "Usr2" };
+static const char * const g_lut_short_strs[8] = { "S-Cine", "SLog3", "s709", "R709", "Usr1", "Usr2", "Usr3", "Usr4" };
 
 static const char *fx6_hud_live_str(const char *name) {
     if (!name) return 0;
@@ -1398,6 +1486,9 @@ static const char *fx6_hud_live_str(const char *name) {
     uint32_t xlr_idx  = (g_live_ibis_xlr >> 4) & 0x0fu;
     if (ibis_idx >= 3u) ibis_idx = 0u;
     if (xlr_idx >= 3u) xlr_idx = 0u;
+    if ((g_live_p40_flags & 0x200u) && !(g_live_p40_flags & 1u)) {
+        xlr_idx = 2u; /* P11 0x91db059b Internal Stereo Mic fallback */
+    }
 
     /* FPS */
     if (!strcmp_(name, "No2048_sandq_frame_rate") ||
@@ -1449,7 +1540,7 @@ static const char *fx6_hud_live_str(const char *name) {
     }
     if (!strcmp_(name, "No2031_output_lut2_type") ||
         !strcmp_(name, "No2029_output_lut1_type")) {
-        return g_lut_short_strs[g_live_cells[4] % 6u];
+        return g_lut_short_strs[g_live_cells[4] % 8u];
     }
     /* White Balance */
     if (!strcmp_(name, "No55_white_balance_value") ||
@@ -1727,10 +1818,21 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
             fx6_fill_rect(appfw, x, y, (w * slider_num) / 10, h, 0x0200c013u);
         } else if (tag == 0x42d5930u && w >= 30 && h >= 60) {
             fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
+            uint32_t attached = (g_live_p40_flags & 0x200u) ? (g_live_p40_flags & 1u) : 1u;
             for (int ch = 0; ch < 4; ch++) {
                 int bx = x + 8 + ch * 16;
-                int bh = (h * (3 + ((ch + (int)sel_box) % 2))) / 5;
-                fx6_fill_rect(appfw, bx, y + h - bh - 4, 10, bh, 0x0200c013u);
+                uint32_t raw_v = (g_live_audio_packed >> (ch * 8)) & 0xffu;
+                if (raw_v > 72u) raw_v = 72u;
+                if (!attached && ch >= 2) {
+                    int bh = 4;
+                    fx6_osd_fill_rect(bx, y + h - bh - 4, 10, bh, 0xFF374151u);
+                } else {
+                    int max_bh = (h > 10) ? (h - 10) : 10;
+                    int bh = 4 + (max_bh * (int)raw_v) / 72;
+                    if (bh > h - 6) bh = h - 6;
+                    uint32_t bar_col = (raw_v >= 60u) ? 0xFFEF4444u : ((raw_v >= 54u) ? 0xFFF59E0Bu : 0xFF10B981u);
+                    fx6_osd_fill_rect(bx, y + h - bh - 4, 10, bh, bar_col);
+                }
             }
         } else if (tag == 0x42d5850u && w >= 40 && h >= 24) {
             fx6_fill_rect(appfw, x, y, w, h - 2, (btn_idx == active_btn && sel_box > 0) ? 0x0200c00eu : 0x0200c008u);
@@ -1767,6 +1869,101 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
     }
 }
 
+static unsigned fx6_append_cstr(char *dst, unsigned pos, unsigned cap, const char *s) {
+    if (!dst || !s) return pos;
+    for (unsigned i = 0u; s[i] && pos + 1u < cap; i++) {
+        dst[pos++] = s[i];
+    }
+    dst[pos] = 0;
+    return pos;
+}
+
+static unsigned fx6_append_db(char *dst, unsigned pos, unsigned cap, int db) {
+    if (pos + 4u >= cap) return pos;
+    if (db < 0) {
+        dst[pos++] = '-';
+        db = -db;
+    } else {
+        dst[pos++] = '+';
+    }
+    if (db >= 10) dst[pos++] = (char)('0' + (db / 10));
+    dst[pos++] = (char)('0' + (db % 10));
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase40_hud_strip(uint64_t appfw, uint32_t page, const uint32_t *cell_vals) {
+    uint32_t p = page % 25u;
+    int bx = 0, by = 0, bw = 768, bh = 34;
+    if (p <= 3u) {
+        bx = 236; by = 10;
+    } else if (p == 6u || p == 16u || p == 17u) {
+        bx = 152; by = 382;
+    } else {
+        return;
+    }
+
+    uint32_t attached  = (g_live_p40_flags & 0x200u) ? (g_live_p40_flags & 1u) : 1u;
+    uint32_t phantom   = (g_live_p40_flags & 0x200u) ? ((g_live_p40_flags >> 1) & 1u) : 1u;
+    uint32_t rtmd_mode = (g_live_p40_flags & 0x200u) ? ((g_live_p40_flags >> 4) & 3u) : (g_live_ibis_xlr & 0x0fu);
+    if (rtmd_mode > 2u) rtmd_mode = 0u;
+
+    fx6_osd_fill_rect(bx, by, bw, bh, 0xFF101622u);
+    fx6_osd_border_rect(bx, by, bw, bh, attached ? 0xFF22D3EEu : 0xFFF59E0Bu);
+
+    uint32_t sw_rgb = (g_live_lut_meta & 0x01000000u) ? (g_live_lut_meta & 0x00ffffffu) : 0x808080u;
+    fx6_osd_fill_rect(bx + 6, by + 6, 22, 22, 0xFF000000u | sw_rgb);
+    fx6_osd_border_rect(bx + 6, by + 6, 22, 22, 0xFFE5E7EBu);
+
+    char lut_lbl[36];
+    const char *lut_s = fx6_cell_hud_str(4, cell_vals);
+    fx6_append_cstr(lut_lbl, 0u, sizeof(lut_lbl), lut_s);
+    fx6_render_string_text_styled(appfw, bx + 34, by + 5, 198, 24, lut_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* 4-Ch VU Bars right next to LUT label */
+    int vx0 = bx + 238;
+    for (int ch = 0; ch < 4; ch++) {
+        int vx = vx0 + ch * 11;
+        fx6_osd_fill_rect(vx, by + 6, 8, 22, 0xFF1F2937u);
+        uint32_t raw_v = (g_live_audio_packed >> (ch * 8)) & 0xffu;
+        if (raw_v > 72u) raw_v = 72u;
+        if (!attached && ch >= 2) {
+            fx6_osd_fill_rect(vx, by + 25, 8, 3, 0xFF4B5563u);
+        } else {
+            int vh = 3 + (19 * (int)raw_v) / 72;
+            uint32_t col = (raw_v >= 60u) ? 0xFFEF4444u : ((raw_v >= 54u) ? 0xFFF59E0Bu : 0xFF10B981u);
+            fx6_osd_fill_rect(vx, by + 28 - vh, 8, vh, col);
+        }
+    }
+
+    int ch1_db = (int)(g_live_audio_packed & 0xffu) - 60;
+    int ch2_db = (int)((g_live_audio_packed >> 8) & 0xffu) - 60;
+    if (ch1_db > 12) ch1_db = 12;
+    if (ch2_db > 12) ch2_db = 12;
+
+    char info_lbl[64];
+    unsigned pos = 0u;
+    if (!attached) {
+        pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "INT-ST ");
+    } else if (phantom) {
+        pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "XLR+48V ");
+    } else {
+        pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "XLR-LN ");
+    }
+    pos = fx6_append_db(info_lbl, pos, sizeof(info_lbl), ch1_db);
+    pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "/");
+    pos = fx6_append_db(info_lbl, pos, sizeof(info_lbl), ch2_db);
+    if (rtmd_mode == 0u) pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " E304:5AX");
+    else if (rtmd_mode == 1u) pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " E304:LOCK");
+    else pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " E304:STD");
+    pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " BK4:LOCK");
+    (void)pos;
+
+    fx6_render_string_text_styled(appfw, bx + 290, by + 5, 470, 24, info_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -1794,6 +1991,12 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ rec_fmt_idx) * 1099511628211ULL;
     h = (h ^ lang) * 1099511628211ULL;
     h = (h ^ ibis_xlr) * 1099511628211ULL;
+    h = (h ^ g_live_lut_meta) * 1099511628211ULL;
+    h = (h ^ g_live_audio_packed) * 1099511628211ULL;
+    h = (h ^ g_live_p40_flags) * 1099511628211ULL;
+    for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
+        h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
+    }
     for (int i = 0; i < 6; i++) {
         h = (h ^ cell_vals[i]) * 1099511628211ULL;
     }
@@ -1974,6 +2177,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
         }
         break;
     }
+    fx6_render_phase40_hud_strip(appfw, page, cell_vals);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -2187,7 +2391,7 @@ void fx6_force_update(void) {
 
     uint32_t cell_vals[6] = { 0, 0, 0, 0, 0, 0 };
     if (mb) {
-        for (int i = 0; i < 20; i++) mb[i] = 0;
+        for (int i = 0; i < 32; i++) mb[i] = 0;
         mb[0] = 0x4658364cu; /* 'FX6L' */
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
@@ -2199,7 +2403,14 @@ void fx6_force_update(void) {
         mb[16] = 0u;         /* lang_id: 0=EN */
         mb[17] = 0u;         /* fx3_p10_hwcode telemetry */
         mb[18] = 0u;         /* cinema_p11_state (ibis_idx=0, xlr_idx=0) */
+        mb[19] = 0u;         /* lut_tint_meta */
+        mb[26] = 0x30303030u;/* audio_db_packed (-12 dB ch1..ch4) */
+        mb[27] = 0x303u;     /* phase40_flags: attached=1, +48V=1, bk4=1, valid=1 */
     }
+    g_live_lut_meta = 0u;
+    g_live_lut_name[0] = 0;
+    g_live_audio_packed = 0x30303030u;
+    g_live_p40_flags = 0x303u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -2248,14 +2459,20 @@ void fx6_force_update(void) {
                 cell_vals[3] = 0u; /* P4 ND-Clear Lock */
                 mb[8 + 3] = 0u;
             }
+            if (mb[27] & 0x200u) {
+                g_live_lut_meta     = mb[19];
+                fx6_unpack_lut_name(mb, g_live_lut_name, sizeof(g_live_lut_name));
+                g_live_audio_packed = mb[26];
+                g_live_p40_flags    = mb[27] | 0x100u; /* P12 BK4 Airplane-Mode Shadow Locked */
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags);
         }
     }
 }

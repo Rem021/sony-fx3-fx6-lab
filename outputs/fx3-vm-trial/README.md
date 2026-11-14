@@ -22,6 +22,11 @@
   - **`P4` ND-Clear 硬件契约强制锁定**：在非内置电子可变 ND 的 ILME-FX3 机身上，`Cell 3 (ND Filter)` 始终锁定为 `Clear [FX3 P4 Locked]`；无论通过 `/api/cinema_param` 还是 Big-6 `SET` / `WHEEL_SET` 尝试切换 ND，`mb[8+3]` 均在客体与宿主双端被锁定为 `0`，并在 Web 控制台弹出 `P4` 硬件契约提示横幅。
   - **Web 控制台 `/api/cinema_param` & FX6-on-FX3 硬件桥接遥测条**：新增 `GET/POST /api/cinema_param`（`fps|ei|shutter|nd|lut|wb|ibis|xlr`）、`/api/status` `stage_b_telemetry` 与顶部遥测条，实时展示 **`P1 (/lut->p30)` · `P4 (ND=Clear)` · `P10 (FX3 Keys)` · `P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)` · `P12 (WF-12 Safe)`**，并支持 `EN / 中文 / 日本語` 一键切换。已在隔离端口 `--port 18771` 完成 **105/105** 连续交互压力验证（0 崩溃、`ack_seq == cmd_seq == 116`，全参数与三语 GPE0 像素差异全通过）。详情见 [Phase 30 报告](../../reports/2026-11-14-phase30-cineei-lut-nd-interactive-trial/README.md)。
 
+- **Phase 40 交互式 `.cube` 3D LUT 防崩溃实时导入、4 通道 `XLR-H1` 音频 VU/回退与 `CAMSET` 场景预设（2026-11-14）**：
+  - **防崩溃 `.cube` 3D LUT 导入与 `User1..User4` 槽位（`GET/POST /api/lut_upload`）**：支持直接粘贴/上传 `.cube` 文本或一键导入内置预设（`709_typeA`、`teal_orange`、`film_2383`、`slog3_bypass`）。在写入客体状态前执行全量确定性防崩溃清洗：校验 `LUT_3D_SIZE`（默认仅允许 Sony 标准的 `17` 与 `33`，拒绝 `LUT_1D_SIZE`）、精确 `N³` RGB 三元组行数、零 `NaN`/`Inf`、`DOMAIN_MIN < DOMAIN_MAX` 与 `[0.0, 1.0]` 钳位，以及路径/控制字符拦截；非法载荷按 fail-closed 返回 HTTP `400` + 结构化错误码保护 `libmpr.so::SetLutData`。校验通过后计算 `sha256` 与 `(0.5, 0.5, 0.5)` 三线性中灰 RGB 色块，并通过 `mb[19..25]` 驱动客体 `fx6_live_guest.c` 在 `GPE0` (`0x41e001000`) 实时绘制激活 User LUT 名称与色块（真实非零 `GPE0` 像素变化）。
+  - **4 通道 `XLR-H1` 音频增益/VU 表与 `RTMD 0xE304` 遥测（`POST /api/cinema_param` & `mb[26..27]`）**：扩展 `ch1_db..ch4_db`（钳位 `[-60..+12]` dB）、`xlr_phantom_48v`、`xlr_handle_attached` 与 `rtmd_0xe304_ibis_lock`（`ACTIVE_5AXIS` / `OFF_CENTER_LOCKED` / `STANDARD`）。当 `xlr_handle_attached == False` 时，遵循 `P11` `0x91db059b` 契约无崩溃自动回退至 `Internal Stereo` 并更新 `GPE0` HUD 条与 Web VU 电平条。
+  - **`CAMSET` 场景预设导出/导入（`GET /api/preset_export`、`POST /api/preset_import`）**：导出含确定性 `preset_sha256` 的 `fx6_on_fx3_camset_v1` JSON 快照；导入恢复完整 Cinema Line / User LUT / 4-Ch 音频 / `RTMD 0xE304` / 语言配置，同时强制执行 `P4` ND-Clear 硬件锁（拦截任何光学/电子 ND 篡改并递增 `p4_nd_reject_count`）及 `P12` `BK4` 飞行模式影子锁。详情见 [Phase 40 报告](../../reports/2026-11-14-phase40-vm-trial-cube-lut-xlr-presets/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -60,7 +65,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 每次按键持续 100ms，每轮最多 **30 次**。点击网页的 **“结束试用”**，或在启动终端按 **Ctrl-C**。等待终端显示回执及退出检查结果后即可关闭；关闭网页本身不会退出模拟器。默认最长 **60 分钟**，到时自动收尾。端口冲突时可用 `--port 8766`，并打开终端打印的新网址；也可用 `--max-minutes 10` 缩短上限。已有运行占用锁时会直接拒绝启动，避免互相干扰。
 
-当前限制：**高亮可能不可见、部分底色缺失和文字叠印、无实时取景、语言修改暂未确认落盘、画面为近似混合**。下一轮仍从固定保存文件启动；画面和菜单试用不代表拍摄、录像或实体相机硬件已模拟完成。出现原厂断言、异常或当前模型不支持的请求时，网页会提示并停止接收按钮，随后退出和保存证据。
+当前限制：**高亮可能不可见、部分底色缺失和文字叠印、无实时取景、语言修改暂未确认落盘、画面为近似混合**。下一轮仍从固定保存文件启动；画面和菜单试用不代表拍摄、录像或实体相机硬件已完成模拟。出现原厂断言、异常或当前模型不支持的请求时，网页会提示并停止接收按钮，随后退出和保存证据。
 
 网页仅监听本机 `127.0.0.1`。原始固件和已完成的运行目录保持只读；每轮日志、按钮记录、提交帧证据和退出回执分别保存到新建的 `work/fx3-vm-20261101/menu-repair-01/runtime/runs/try1-*`。退出会核对原 API 16 字节恢复、QEMU 退出码、进程回收、输入 SHA 和锁释放。
 
@@ -72,7 +77,7 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ## 离线自动化单元测试（`tests/test_vm_trial.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 端口隔离、多语言 `.uxc` 发现、`/api/lang` & `/api/fx3_button` & `/api/cinema_param` HTTP 路由、`P4` ND-Clear 锁、`P11` 遥测与回执校验（共 **37 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 端口隔离、多语言 `.uxc` 发现、`/api/lang` & `/api/fx3_button` & `/api/cinema_param` & `/api/lut_upload` & `/api/preset_export` & `/api/preset_import` HTTP 路由、`.cube` 防崩溃清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁、`P11`/`RTMD 0xE304` 遥测与回执校验（共 **59 项** 测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

@@ -2,9 +2,9 @@
 """
 Real-time GitHub Sync Daemon for `sony-fx3-fx6-lab` (`FX3｜FX5 & FX6 系统研究`).
 1. Exports and categorizes all FX3 / FX5 / FX6 conversations from Orca (`export_orca_conversations.mjs`).
-2. Syncs any new or updated FX3 / FX5 / FX6 / VENICE reports from `/Volumes/KAFU2T/AI/Projects/Mac/reports/`.
+2. Syncs any new or updated FX3 / FX5 / FX6 / VENICE reports from `$HOME/AI-Workspace/AI/Projects/Mac/reports/`.
 3. Enforces clean-room rules (excludes proprietary firmware binaries and files > 25 MB).
-4. Commits and pushes any changes in `/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab` to `origin/main`.
+4. Commits and pushes any changes in `$HOME/AI-Workspace/AI/Projects/Mac/outputs/sony-fx3-fx6-lab` to `origin/main`.
 """
 import argparse
 import datetime
@@ -88,6 +88,7 @@ def run_git(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--skip-conversations", action="store_true")
+    parser.add_argument("--allow-direct-main-push", action="store_true", help="Explicitly bypass PR/agent-ship gate (not recommended)")
     args = parser.parse_args()
 
     if not args.skip_conversations and EXPORT_SCRIPT.exists():
@@ -98,6 +99,10 @@ def main():
     status = run_git(["status", "--porcelain"])
     if not status.stdout.strip():
         print("No changes to sync.")
+        return 0
+
+    if not args.allow_direct_main_push:
+        print("Refusing direct commit/push to main without --allow-direct-main-push; ship changes via a worktree + agent-ship.")
         return 0
 
     run_git(["add", "-A"])

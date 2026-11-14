@@ -24,18 +24,11 @@ from typing import Dict, Sequence, Tuple
 
 from .elf_verify import parse_elf64_relocatable_aarch64, section_offset_to_file_offset
 
-_LOCAL_UNICORN_SITE = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/"
-    "tools/venv/lib/python3.14/site-packages"
-)
-try:
-    import unicorn as U
-    from unicorn import arm64_const as A
-except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
-    import unicorn as U
-    from unicorn import arm64_const as A
+from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable, resolve_mac_work_dir as _resolve_mac_work_dir
+
+_ensure_unicorn_importable()
+import unicorn as U
+from unicorn import arm64_const as A
 
 
 ND_MODE_FUNC_VMA = 0x2111358

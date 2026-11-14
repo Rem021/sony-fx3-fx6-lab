@@ -9,16 +9,13 @@ import subprocess
 import sys
 from typing import Any, Dict, List
 
-DONOR_ROOT = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/nflasha15-files"
+_REPO = pathlib.Path(__file__).resolve().parents[2]
+_MAC_WORK = next(
+    (c for c in (_REPO.parents[1] / "work", pathlib.Path.home() / "AI-Workspace/AI/Projects/Mac/work", pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac/work")) if c.is_dir()),
+    pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac/work"),
 )
-
-DONOR_BK4_NTSC = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/"
-    "SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
-)
+DONOR_ROOT = _MAC_WORK / "fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files"
+DONOR_BK4_NTSC = _MAC_WORK / "fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
 
 TARGET_BINARIES = [
     "bin/im.elf",

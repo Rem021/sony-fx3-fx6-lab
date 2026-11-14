@@ -52,10 +52,9 @@ from .patcher import (
 )
 
 
-UNICORN_SITE_PACKAGES = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22"
-    "/tools/venv/lib/python3.14/site-packages"
-)
+from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable
+_ensure_unicorn_importable()
+UNICORN_SITE_PACKAGES = Path("/nonexistent-legacy-unicorn-site")
 
 DEFAULT_FX6_DONOR_BIN_DIR = (
     DEFAULT_FX6_DONOR_LIB_DIR.parent / "bin"

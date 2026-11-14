@@ -28,32 +28,39 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-_LOCAL_UNICORN_SITE = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/"
-    "tools/venv/lib/python3.14/site-packages"
-)
-try:
-    import unicorn as U
-    from unicorn import arm64_const as A
-except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
-    import unicorn as U
-    from unicorn import arm64_const as A
+from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable, resolve_mac_project_root as _resolve_mac_project_root, resolve_mac_work_dir as _resolve_mac_work_dir
+
+_ensure_unicorn_importable()
+import unicorn as U
+from unicorn import arm64_const as A
 
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_FX6_ASSESSMENT_ROOT = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor"
+_MAC_WORK_DIR = _resolve_mac_work_dir(DEFAULT_REPO_ROOT)
+DEFAULT_FX6_ASSESSMENT_ROOT = (
+    _MAC_WORK_DIR / "fx3-color-port-20261027" / "FX6-donor-assessment-20261103" / "team" / "donor"
 )
 DEFAULT_FX6_KERNEL_IMAGE_PATH = DEFAULT_FX6_ASSESSMENT_ROOT / "fat-files" / "nflasha3" / "vmlinux.bin"
 DEFAULT_DUAL_KERNEL_EVIDENCE_PATH = (
     DEFAULT_FX6_ASSESSMENT_ROOT / "fx6-boot-readiness" / "early-kernel" / "fx3-modules-vs-fx6-kernel.json"
 )
 DEFAULT_FX6_LIBBACKUP_PATH = DEFAULT_FX6_ASSESSMENT_ROOT / "nflasha15-files" / "lib" / "libbackup.so"
-DEFAULT_CONTRACT_EVIDENCE_PATH = (
-    DEFAULT_REPO_ROOT / "work" / "fx6-backup-contract-fix-20261107" / "contract-evidence.json"
+_REPO_CONTRACT_EVIDENCE = DEFAULT_REPO_ROOT / "work" / "fx6-backup-contract-fix-20261107" / "contract-evidence.json"
+_MAIN_CLONE_CONTRACT_EVIDENCE = (
+    _resolve_mac_project_root(DEFAULT_REPO_ROOT)
+    / "outputs/sony-fx3-fx6-lab/work/fx6-backup-contract-fix-20261107/contract-evidence.json"
+)
+_RETAINED_CONTRACT_EVIDENCE = (
+    _MAC_WORK_DIR
+    / "retained/sony-fx3-fx6-lab-local-work-20261114/fx6-backup-contract-fix-20261107/contract-evidence.json"
+)
+DEFAULT_CONTRACT_EVIDENCE_PATH = next(
+    (
+        cand
+        for cand in (_REPO_CONTRACT_EVIDENCE, _MAIN_CLONE_CONTRACT_EVIDENCE, _RETAINED_CONTRACT_EVIDENCE)
+        if cand.is_file()
+    ),
+    _REPO_CONTRACT_EVIDENCE,
 )
 
 ARM64_IMAGE_MAGIC = b"ARM\x64"
@@ -576,6 +583,12 @@ def verify_p7_backup_bridge(
 
     tx_audit = simulate_sync100_dma_and_unlock_transaction()
 
+    if (
+        not contract_evidence_path.is_file()
+        and contract_evidence_path.parts[-2:] == ("fx6-backup-contract-fix-20261107", "contract-evidence.json")
+        and DEFAULT_CONTRACT_EVIDENCE_PATH.is_file()
+    ):
+        contract_evidence_path = DEFAULT_CONTRACT_EVIDENCE_PATH
     contract_json = json.loads(contract_evidence_path.read_text(encoding="utf-8"))
     expected_libbackup_sha = str(contract_json["sources"]["libbackup.so"]["sha256"])
     libbackup_sha_ok = hashlib.sha256(fx6_libbackup_path.read_bytes()).hexdigest() == expected_libbackup_sha

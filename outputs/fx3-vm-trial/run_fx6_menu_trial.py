@@ -39,6 +39,40 @@ TRIAL_DIR = REPO_ROOT / "outputs" / "fx3-vm-trial"
 MANIFEST_PATH = TRIAL_DIR / "vm-candidate-gpecap25-live700.json"
 FALLBACK_GPE0_PNG = REPO_ROOT / "reports" / "2026-11-08-fx6-native-text-gpe0" / "menu-677-big6-framed.png"
 
+
+def _resolve_manifest_path(raw: str) -> Path:
+    """Resolve legacy `/Volumes/KAFU2T/AI/Projects/Mac/...` paths across internal SSD, worktrees, and KAFU2T."""
+    p = Path(raw)
+    if p.exists():
+        return p
+    legacy_repo_prefix = "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/"
+    if raw.startswith(legacy_repo_prefix):
+        rel_repo = raw[len(legacy_repo_prefix):]
+        for base_repo in (REPO_ROOT, Path.home() / "AI-Workspace/AI/Projects/Mac/outputs/sony-fx3-fx6-lab"):
+            cand = base_repo / rel_repo
+            if cand.exists():
+                return cand
+    legacy_mac_prefix = "/Volumes/KAFU2T/AI/Projects/Mac/"
+    if raw.startswith(legacy_mac_prefix):
+        rel_mac = raw[len(legacy_mac_prefix):]
+        for base_mac in (REPO_ROOT.parents[1], REPO_ROOT, Path.home() / "AI-Workspace/AI/Projects/Mac", Path.home() / "AI-Workspace/AI/Projects/Mac/outputs/sony-fx3-fx6-lab"):
+            cand = base_mac / rel_mac
+            if cand.exists():
+                return cand
+    return p
+
+
+def _rewrite_manifest_arg(arg: str) -> str:
+    prefix = "/Volumes/KAFU2T/AI/Projects/Mac/"
+    idx = arg.find(prefix)
+    if idx == -1:
+        return arg
+    head = arg[:idx]
+    tail = arg[idx:]
+    path_part, sep, rest = tail.partition(",")
+    resolved = _resolve_manifest_path(path_part)
+    return f"{head}{resolved}{sep}{rest}"
+
 GPE0_PHYS = 0x41E001000
 GPE0_BYTES = 0x21C000  # 1024 * 540 * 4
 GPE0_W = 1024
@@ -317,7 +351,7 @@ class FX6LiveGpe0Session:
                 elif argv[i] == "-S":
                     i += 1
                 else:
-                    out_argv.append(argv[i])
+                    out_argv.append(_rewrite_manifest_arg(argv[i]))
                     i += 1
 
             env = os.environ.copy()
@@ -1407,9 +1441,12 @@ def main() -> int:
             raise SystemExit(f"Missing manifest: {MANIFEST_PATH}")
         manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
         for key in ("kernel", "initrd", "dtb", "backup"):
-            p = Path(manifest[key]["path"])
+            p = _resolve_manifest_path(manifest[key]["path"])
             if not p.exists():
                 raise SystemExit(f"Missing {key}: {p}")
+        qemu_bin = _resolve_manifest_path(manifest["candidate_argv_before_observer_serial_retarget"][0])
+        if not qemu_bin.is_file():
+            raise SystemExit(f"Missing qemu binary: {qemu_bin}")
         print(json.dumps({"ok": True, "manifest": str(MANIFEST_PATH), "initrd": manifest["initrd"]["path"]}, ensure_ascii=False))
         return 0
 

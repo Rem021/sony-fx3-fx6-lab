@@ -22,31 +22,24 @@ from typing import Any, Dict, List, Optional, Tuple
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 
-ZIG = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
-    "menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig"
-)
-QEMU_BIN = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
-    "menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb"
-)
-PARENT_CPIO = (
-    REPO / "work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio"
-)
-KERNEL_BIN = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/"
-    "stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin"
-)
-GUEST_DTB = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/"
-    "vm-optimization-20261103/runtime/try2-usability/"
-    "vmopt-20261103-try2-long-media-gap-v2/guest.dtb"
-)
-DONOR_BK4_NTSC = pathlib.Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/tree/0110_backup/"
-    "SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
-)
+def _resolve_mac_work(repo: pathlib.Path) -> pathlib.Path:
+    for cand in (
+        repo.parents[1] / "work",
+        pathlib.Path.home() / "AI-Workspace/AI/Projects/Mac/work",
+        pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac/work"),
+    ):
+        if cand.is_dir():
+            return cand
+    return pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac/work")
+
+
+_MAC_WORK = _resolve_mac_work(REPO)
+ZIG = _MAC_WORK / "fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig"
+QEMU_BIN = _MAC_WORK / "fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb"
+PARENT_CPIO = REPO / "work/fx6-worker-pool-restore-20261107/guest-worker-pool-restore295.cpio"
+KERNEL_BIN = _MAC_WORK / "sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin"
+GUEST_DTB = _MAC_WORK / "fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb"
+DONOR_BK4_NTSC = _MAC_WORK / "fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
 DEFAULT_ASSETS_DIR = REPO / "reports/2026-11-10-fx6-native-presenter-closure/assets"
 
 FB_W = 1024

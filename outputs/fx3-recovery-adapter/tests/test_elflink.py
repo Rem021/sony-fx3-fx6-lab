@@ -15,7 +15,9 @@ import sys
 import time
 import unittest
 
-_LOCAL_UNICORN_SITE = Path('/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/tools/venv/lib/python3.14/site-packages')
+import glob as _glob
+_UNICORN_CANDS = [Path(p) for p in (*sorted(_glob.glob(str(Path.home() / 'Library/Python/*/lib/python/site-packages'))), *sorted(_glob.glob(str(Path.home() / '.local/share/uv/**/site-packages'), recursive=True)), '/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/tools/venv/lib/python3.14/site-packages') if (Path(p) / 'unicorn').is_dir()]
+_LOCAL_UNICORN_SITE = _UNICORN_CANDS[0] if _UNICORN_CANDS else Path('/nonexistent-unicorn-site')
 try:
     import unicorn as U
     from unicorn import arm64_const as A

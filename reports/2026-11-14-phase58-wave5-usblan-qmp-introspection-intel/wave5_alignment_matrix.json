@@ -1,0 +1,207 @@
+{
+  "schema": "phase58_wave5_usblan_qmp_introspection_matrix_v1",
+  "date": "2026-11-14",
+  "owner": "Hydrogen-51",
+  "target_module": "outputs/fx3-vm/qmp_guest_introspection_tracer.py",
+  "coemulation_suite": "outputs/fx3-vm/fx3_vm_coemulation_suite.py",
+  "stage": "stage7_phase58_qmp_introspection",
+  "skip_flag": "--skip-phase58",
+  "test_file": "outputs/fx3-vm/tests/test_qmp_guest_introspection_tracer.py",
+  "redlines": {
+    "p8_cp_mutation_forbidden": true,
+    "nop_count": 0,
+    "guest_code_modification_bytes": 0,
+    "cp_mutation_bytes": 0,
+    "wbi_mutation_bytes": 0,
+    "calibration_mutation_bytes": 0,
+    "nvram_persistent_writes": 0,
+    "physical_device_writes": 0,
+    "donor_access_mode": "os.O_RDONLY",
+    "guest_text_sw_breakpoints": 0
+  },
+  "public_citations": {
+    "sony_monitor_and_control": [
+      {
+        "title": "Sony Monitor & Control Help Guide Index",
+        "url": "https://helpguide.sony.net/promobile/mc/v1/en/index.html"
+      },
+      {
+        "title": "Monitor & Control Supported Cameras (ILME-FX3 Ver. 4.00+, ILME-FX6 Ver. 4.00+/5.00+ Wired LAN)",
+        "url": "https://helpguide.sony.net/promobile/mc/v1/en/contents/supported_camera.html"
+      },
+      {
+        "title": "Connecting Camera via USB-LAN / Router (ILME-FX3/FX3A/FX30 Same-Subnet Gateway Requirement & Android Limitation)",
+        "url": "https://helpguide.sony.net/promobile/mc/v1/en/contents/connecting_router_ILCE-9M3.html"
+      },
+      {
+        "title": "Connecting ILME-FX6 via Wired LAN & Access Authentication",
+        "url": "https://helpguide.sony.net/promobile/mc/v1/en/contents/connecting_router.html"
+      },
+      {
+        "title": "Monitor & Control Shooting Assist Functions (False Color, Waveform, Focus Map, Touch Focus)",
+        "url": "https://helpguide.sony.net/promobile/mc/v1/en/contents/shooting_assist_functions.html"
+      },
+      {
+        "title": "Sony Camera Remote SDK (v2.02.00 June 2026: USB / Wired LAN / Wi-Fi)",
+        "url": "https://www.sony.net/CameraRemoteSDK/"
+      },
+      {
+        "title": "Sony Camera Remote Command (ISO 15740 PTP-IP TCP 15740, SSDP UDP 1900, Remote Ports)",
+        "url": "https://www.sony.net/app/cameraremotecommand/en/index.html"
+      }
+    ],
+    "qemu_non_intrusive_introspection": [
+      {
+        "title": "QEMU QMP Reference Manual (qmp_capabilities, oob, query-status, query-cpus-fast, pmemsave, human-monitor-command)",
+        "url": "https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html"
+      },
+      {
+        "title": "QEMU Human Monitor (xp, x, gva2gpa, gpa2hva, info registers)",
+        "url": "https://www.qemu.org/docs/master/system/monitor.html"
+      },
+      {
+        "title": "QEMU TCG Plugins API (qemu-plugin.h, QEMU_PLUGIN_VERSION, vcpu_tb_trans_cb, vcpu_mem_cb, read_memory_hwaddr)",
+        "url": "https://www.qemu.org/docs/master/devel/tcg-plugins.html"
+      },
+      {
+        "title": "QEMU GDB Usage (gdbstub -s/-S, TCG Unlimited HW Watchpoints, Qqemu.PhyMemMode:1)",
+        "url": "https://www.qemu.org/docs/master/system/gdb.html"
+      }
+    ]
+  },
+  "donor_artifacts_o_rdonly": {
+    "fx6_cdc_ncm_ko": {
+      "relative_donor_path": "nflasha15-files/kmod/cdc_ncm.ko",
+      "bytes": 32208,
+      "sha256": "8b992509f7a25f6c5d6ca6d27c22c6c2fa4539a25d1b3d405ea7dfc31fb843e2",
+      "required_marker": "cdc_ncm_rx_verify_nth16"
+    },
+    "fx6_rndis_host_ko": {
+      "relative_donor_path": "nflasha15-files/kmod/rndis_host.ko",
+      "bytes": 14064,
+      "sha256": "f469d8d5624d0afd7a72734e4f651e6a63691c68ebf4cc63ea49df7821e035c4",
+      "required_marker": "RNDIS_MSG_QUERY"
+    },
+    "fx6_libnet_service_ether": {
+      "relative_donor_path": "nflasha15-files/lib/libNetServiceEther.so",
+      "bytes": 175376,
+      "sha256": "5bc521ed8845a0be00be7d686b3519de478ca125d00731930624670c6f067dd0",
+      "required_marker": "EN_STATE_USB_CONNECTED_USB_ETHER_DEVICE"
+    },
+    "fx6_libinfra_ptp_control": {
+      "relative_donor_path": "nflasha15-files/lib/libInfraPtpControl.so",
+      "bytes": 152520,
+      "sha256": "5af1afff957290bbd2519e237af5df761413e54193e149ee70189f32fe646a27",
+      "required_marker": "PTPT_EE_end_ip_remote"
+    },
+    "fx6_libptp": {
+      "relative_donor_path": "nflasha15-files/lib/libptp.so",
+      "bytes": 77408,
+      "sha256": "21e212ae68a6d8fe1ae8fc4eb40bd3629e3f126a41ddfc1e00e750cd46a134aa",
+      "required_marker": "PTPT_open"
+    },
+    "fx6_libssh_infra_net": {
+      "relative_donor_path": "nflasha15-files/lib/libSshInfraNetworkCommon.so",
+      "bytes": 14568,
+      "sha256": "ab57fe723a05171bc9bdaf4208147b5f7397a419b92c19624f389cde48a0ada4",
+      "required_marker": "InfraSshUtil"
+    }
+  },
+  "usblan_p12_isolation_matrix": {
+    "p12_airplane_mode_shadow": {
+      "bkid_0x019e0012": "0x00",
+      "bkid_0x01a20002": "0x00",
+      "bt_hci_tx_packets": 0,
+      "wlan_disabled": true,
+      "wf12_00342260_immune": true
+    },
+    "allowed_transport": {
+      "usb_class": "CDC-NCM",
+      "allowed_1gbps_chipsets": ["RTL8153", "AX88179"],
+      "required_link_speed_mbps": 1000,
+      "fx3_manual_ip_requires_same_subnet_gateway": true,
+      "remote_control_ports": [22, 80, 8080, 15740, 60152, 64321],
+      "ssdp_udp_port": 1900
+    },
+    "rejected_configurations": [
+      {
+        "case": "RNDIS / CDC-ECM USB gadget class",
+        "decision": "REJECTED_UNSUPPORTED_USB_CLASS_RNDIS / CDC-ECM"
+      },
+      {
+        "case": "AX88179A / AX88179B / 2.5G / 5G / 10G adapters",
+        "decision": "REJECTED_INCOMPATIBLE_ADAPTER_CHIPSET_OR_SPEED"
+      },
+      {
+        "case": "FX3 Manual IP missing or off-subnet default gateway",
+        "decision": "MISCONFIGURED_MISSING_SAME_SUBNET_GATEWAY"
+      }
+    ]
+  },
+  "ptpip_15740_safe_channel_matrix": {
+    "tcp_port": 15740,
+    "allowed_readonly_opcodes": {
+      "0x1001": "GetDeviceInfo",
+      "0x1002": "OpenSession",
+      "0x1003": "CloseSession",
+      "0x1014": "GetDevicePropDesc",
+      "0x1015": "GetDevicePropValue",
+      "0x9201": "SonySDIOConnect_AccessAuth",
+      "0x9202": "SonySDIOGetExtDeviceInfo",
+      "0x9209": "SonyGetLiveView_FalseColor_Waveform"
+    },
+    "allowed_safe_control_props": {
+      "opcode": "0x9205",
+      "whitelisted_prop_ids": ["0xD2C1", "0xD2C2", "0xD2C3", "0xD2C4"]
+    },
+    "blocked_mutation_opcodes": {
+      "0x9280": "SonyFirmwareUpdateInit",
+      "0x9281": "SonyFirmwareUpdateWrite",
+      "0x9282": "SonyFirmwareUpdateCommit",
+      "0x92F0": "SonyNvramRawWrite",
+      "0x92F1": "SonyCalibrationPartitionWrite",
+      "0x92F2": "SonyFactoryResetServiceCmd"
+    }
+  },
+  "qemu_introspection_apertures": [
+    {
+      "name": "KEY_MB_PHYS",
+      "phys_addr": "0x41df00000",
+      "magic": "SRM3KYE5",
+      "method": "QMP human-monitor-command xp /16xw"
+    },
+    {
+      "name": "CTRL_MB_PHYS",
+      "phys_addr": "0x41e000e00",
+      "magic": "0x4658364c",
+      "method": "QMP human-monitor-command xp /28xw + gva2gpa"
+    },
+    {
+      "name": "GPE0_PHYS",
+      "phys_addr": "0x41e001000",
+      "magic": "0xfff08018 (fx6_px amber)",
+      "method": "QMP pmemsave mem://gpe0_slice.bin"
+    },
+    {
+      "name": "MHLX_PHYS / MHLX_RING_SHM_PHYS",
+      "phys_addr": "0xf0800000 / 0x41df01000",
+      "magic": "0x4d484c58",
+      "method": "QMP pmemsave mem://mhlx_mmio.bin + mem://mhlx_ring.bin"
+    }
+  ],
+  "verification_receipts": {
+    "standalone_cli_local_donor_s": 0.070,
+    "standalone_cli_local_donor_digest": "74fc22811e3c",
+    "standalone_cli_clean_room_s": 0.067,
+    "standalone_cli_clean_room_digest": "9f5ec1809ffc",
+    "verify_coemulation_7_stages_local_donor_s": 1.167,
+    "verify_coemulation_7_stages_clean_room_s": 0.329,
+    "phase58_tests_count": 28,
+    "phase58_tests_local_donor_s": 0.331,
+    "phase58_tests_clean_room_s": 0.327,
+    "all_fx3_vm_tests_count": 183,
+    "all_fx3_vm_tests_local_donor_s": 4.289,
+    "all_fx3_vm_tests_clean_room_s": 2.719,
+    "clean_audit": "CLEAN"
+  }
+}

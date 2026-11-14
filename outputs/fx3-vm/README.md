@@ -226,6 +226,37 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_fx3_vm_hil_fault_harness.py -v
 ```
 
+## Phase 58：Stage 7 非侵入式 QMP 客体自省追踪器与 USB-LAN（`CDC-NCM` / `PTP-IP 15740`）安全通道
+
+[`qmp_guest_introspection_tracer.py`](qmp_guest_introspection_tracer.py) 作为 **Stage 7** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase58` 跳过），在严格保持 **`nop_count == 0`**、**`guest_code_modification_bytes == 0`** 与 **`cp_mutation_bytes == 0`** 的前提下落地三大能力：
+
+1. **严格只读（`os.O_RDONLY`）USB-LAN / PTP-IP 供体模块与动态库审计（含洁净室回退）**：
+   - 检查 FX6 `cdc_ncm.ko`（`32,208 B`）、`rndis_host.ko`（`14,064 B`）、`libNetServiceEther.so`（`175,376 B`）、`libInfraPtpControl.so`（`152,520 B`）、`libptp.so`（`77,408 B`）与 `libSshInfraNetworkCommon.so`（`14,568 B`）的 SHA-256 与关键导出标记，并在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **零代码改写 QMP JSON-RPC / HMP `xp` / `pmemsave` / TCG 插件与 GDB RSP 自省**：
+   - 完整建模 `qmp_capabilities`（`oob` 协商与未协商拒绝）、`query-status`、`query-cpus-fast`（4x `aarch64` vCPU）、`human-monitor-command`（`info registers`、`gva2gpa`、`xp`；拦截一切变更型 HMP/QMP 命令）及 `pmemsave` 纯内存 `mem://` 捕获。
+   - 无侵入解码 `KEY_MB_PHYS`（`0x41DF00000` `SRM3KYE5`）、`CTRL_MB_PHYS`（`0x41E000E00` `0x4658364C` `'FX6L'` + `P4 ND=Clear` + `bk4_locked`）、`GPE0_PHYS`（`0x41E001000` `fx6_px` `0xFFF08018`）与 `MHLX`（`0xF0800000` / `0x41DF01000`）环形队列槽位（`0x0416`, `0x0400`），并附带 `libqemu-plugin`（`qemu-plugin.h`）与 GDB RSP `Qqemu.PhyMemMode:1` / `Z2` 硬件观察点规范（`guest_text_sw_breakpoints == 0`）。
+3. **有线 USB-C 以太网（`CDC-NCM` / `RTL8153` / `AX88179`）`P12` 飞行模式免疫与 `PTP-IP 15740` 安全门控**：
+   - 验证在 `P12` 飞行模式（`BK4\0` 影子 `0x019e0012=00`, `0x01a20002=00`，Wi-Fi 与 BT 零唤醒、彻底免疫索尼 `00342260` / `WF-12` 死循环）下，有线 `CDC-NCM` `1 Gbps` 网卡可独立承载 **Monitor & Control** / **Content Browser Mobile** / **Camera Remote SDK**（假色、波形、对焦图、触控对焦与 Access Authentication SSH/TLS）；同时拦截不受支持的 `RNDIS`/`CDC-ECM`、`AX88179A`/`2.5G` 网卡、FX3 手动 IP 缺失同网段默认网关，以及 `TCP 15740` 上的一切固件刷写/NVRAM/校准篡改操作码（`0x9280..0x9282`, `0x92F0..0x92F2`）。
+
+### Phase 58 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/qmp_guest_introspection_tracer.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/qmp_guest_introspection_tracer.py --self-test --json
+
+# 2. 全板 Stage 1..7 统一校验（< 2.5s）
+make verify-coemulation
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-coemulation
+
+# 3. 单独运行 Phase 58 28 项单测 & 全量 183 项单测（双模式，< 4.5s）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_qmp_guest_introspection_tracer.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_qmp_guest_introspection_tracer.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

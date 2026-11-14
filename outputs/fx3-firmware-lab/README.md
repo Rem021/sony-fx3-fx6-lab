@@ -44,11 +44,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar A — 4-Channel `24-bit 48kHz LPCM` Audio Matrix**: Audits FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, `libInfraHotshoe.so`, and `AVBB_SCN_START_AUDIO.so` strictly `os.O_RDONLY` (with deterministic Clean-Room fallback), mapping FX6 Smart Handle `CH1/CH2` + MI-Shoe `CH3/CH4` against FX3 `XLR-H1` MI-Shoe digital audio (`4,608,000 bps`), 3.5mm body mic jack, and 3.5mm headphone monitor bus, and verifying `P11` (`0x91db059b` `0x88000002` + `E_TMO = -50 -> 0x8000`) hot-detach graceful fallback to `Internal Stereo` without stalling recording.
    - **Pillar B — `SMPTE 12M` Timecode (`Preset` / `Regen` / `Free Run` / `Rec Run` / `EXT-LK`)**: Audits FX6 dedicated BNC `TC IN/OUT` vs FX3 Multi-Port `VMC-BNCM1` `LTC IN` (`Pin 3 LTC+`, `Pin 6 680 kOhm ID`) + `HDMI TC ON` external trigger (Atomos Ninja/Shogun) + `P11 0x92d2091c` `/dev/rtc0->udate` shim, enforcing normal-shooting `EXT-LK` while cross-checking the Phase 38 rule that `VMC-BNCM1` MUST be disconnected during `H0`/`Tier-3` `uart_boot` (`Pins 7/8/9`).
    - **Pillar C — FX6 `12G-SDI` + `HDMI` Monitoring -> FX3 Full-Size `HDMI Type-A` Safe Routing**: Audits `4264x2408 16-bit Linear RAW` HDMI output, `4K DCI / QFHD 10-bit 4:2:2` clean feed (`HDMI_INFO_DISPLAY_OFF`), independent `MLUT` (`Monitor 3D LUT On/Off` per output), and `SDI Sub-Output` / `SDI Main` no-op containment on FX3 (`VAL_FEATURE_MANAGER_sdi_output_TYPE_SDI_OUTPUT_NOT_SUPPORT`, `0` missing-transceiver panics or black-screen stalls).
+10. [`fx3_firmware_lab/emount_af_breathing_and_ibis_auditor.py`](fx3_firmware_lab/emount_af_breathing_and_ibis_auditor.py)
+   - **Pillar A — E-Mount Servo/Power Zoom (`PZ`) & FX3 Body `T/W` Zoom Lever**: Audits `appFw.so`, `cpapp-b.bin`, and `libInfraHotshoe.so` (`os.O_RDONLY` / Clean-Room fallback), mapping FX6 Handle Zoom Rocker (`1..8`) to FX3's physical shutter-ring `T/W` zoom lever (`P10` keymap safe), Sony `SELP` lenses, and Clear Image Zoom (`CIZ` 1.5x 4K / 2.0x FHD) with zero crash when FX6 Smart Grip is absent (`P11 0x91db059b` `0x88000002` + `E_TMO=-50 -> 0x8000`).
+   - **Pillar B — 627-Point Fast Hybrid PDAF, Face/Eye AF, AF Transition (`1..7`) & Subj. Shift (`1..5`)**: Pure-Python ELF64 comparison proving `libInfraLensCommunicator.so` (`14,544 B`) has `0 B` loadable-segment diff (`6 B` `.comment` only) across FX3 `v7.02` & FX6 `v6.01`, plus Stock-CP `cpapp-b.bin` AF IPC immutability (`cp_mutation_bytes == 0`), Touch Focus / Magnifier (`x4.0`), and Peaking / Focus Map overlays.
+   - **Pillar C — Focus Breathing Compensation (`UDAM` / `RTMD` Tables)**: Audits `Breathing Comp.` On/Off FOV crop, unsupported-lens gating (`BREATHING_CORRECTION_LENS_TYPE_NOT_SUPPORT`), and `libmpr.so` `UDAMSetBreathingCorrectionValue` / `DistortionCorrection` KLV serializers.
+   - **Pillar D — 5-Axis Body `IBIS` + Lens `OSS` & Factory Gyro Calibration Immutability**: Proves FX6 rigid-CMOS gyro-only hardware (`PRM_is_imager_stabilization_unit_fixed`, zero body IBIS stage) vs FX3's energized 5-axis IBIS (`LiroSeq: Restore.`, `36` Thumb-2 `MOVW #0x1400` dispatch hits, `0x0400` `Off` Center-Lock, `calibration_mutation_bytes == 0` preserving `p2:/Backup.bin`, `p2:/psd.bin`, `p6:Jiritsu`).
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 9 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 10 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -62,8 +67,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xdb-menu --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-audio-tc-hdmi
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-audio-tc-hdmi --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-emount-af
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-emount-af --clean-room
 
-# Run all 185 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 213 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

@@ -142,9 +142,16 @@ python3 -B -m fx3_recovery build-boot-worker \
 
 - **[`macos_usb_transport_guard.py`](fx3_recovery/macos_usb_transport_guard.py)**：实现 macOS 26+ `IOUSBHost` `0xe00002be`（`kIOReturnExclusiveAccess`）独占冲突退避状态机（MSC `054C:0DA1` `>= 350 ms` 静默等待 + 指数退避 `50/100/200/400/800 ms` + `IOUSBHost` 接管）、Vendor Control `(0x43, 1, 0x37FF, 0xD7AA)`、USB STALL 非重传保护、Senser v1（FX3 `0x91030080` 7 轮校验 -> `054C:0336`）与 Senser v2（RSA 挑战 fail-closed 拒止）分类，以及硬锁定的只读 Jiritsu (`0x40 / 0x1001`) 防火墙（`ALLOW_PERSISTENT_JIRITSU_WRITES = False`、`ALLOW_DESTRUCTIVE_JIRITSU_COMMANDS = False`）。
 - **[`p1_symbol_autolocator.py`](fx3_recovery/p1_symbol_autolocator.py)**：提供面向 FX3 Ver. 7.02 `p1` 更新库（`libsdfileinputupdaterapi.so` 与 `libupdatercorecommon.so`）的偏移无关 4 位点自动重定位（`autolocate_4_sites`）、合成偏移镜像闭环校验（`run_autolocated_p1_roundtrip`）、逐字节回滚恢复（`rollback_autolocated_patches`）与可选 Unicorn AArch64 仿真校验（`verify_sites_in_unicorn`），强制保持 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False` 与只读供体访问。
-- **包级导出（[`fx3_recovery/__init__.py`](fx3_recovery/__init__.py)）**：直接导出 `macos_usb_transport_guard`、`p1_symbol_autolocator` 及其核心类与函数（`MacOSUSBTransportSession`、`SenserChallenge`、`audit_jiritsu_sequence`、`autolocate_4_sites`、`run_autolocated_p1_roundtrip`、`verify_sites_in_unicorn` 等），支持 `fx3_safety.h0_hardware_rehearsal` 自动集成。
+- **[`emmc_dump_forensic_verifier.py`](fx3_recovery/emmc_dump_forensic_verifier.py)**（Phase 42 Tier-4 只读 eMMC 转储取证审计器）：在任何硬件恢复或 Phase `H0` 演练采信本地转储之前，严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 双次 SHA-256 一致性读取与校验 eMMC 分区镜像与 `EXT_CSD`：
+  - **总线卡死 / 截断 / 熵坍缩检测（`analyze_bus_and_entropy`）**：拦截全 `0x00`/全 `0xFF`/单字节恒定填充、`>=16` 页连续 `0xFF` 上拉卡死、非 512B 对齐或长度截断读出，以及 `p1`/AES-XTS-256 `cnflasha` 的全局与 64 KiB 滑窗香农熵坍缩。
+  - **Sony 分区魔数与几何校验（`verify_sector0_dump` / `verify_p1_vfat_dump` / `verify_p2_bk4_nvram_dump` / `verify_p5_wbi2_dump` / `verify_p8_cp_rtos_dump` / `verify_ext_csd_dump`）**：核验 Sector 0 `'8246' '2.00'` 30 项分区表及 FX6 `p18@0x312000` 偏移告警、`p1` FAT12 BPB、`p2` `'BK4\0'` 校验和与 `PRODUCT_MODEL = 0x91030080`（`ALCIN_UUD`）FX3 不可变约束、`p5` `'WBI2'` 88B 休眠头与 `0x0f0f0f0f` 节描述符 XOR 校验、失效魔数 `wbi2`/`WBI3` 识别、`p8` (`nflasha8`) FAT12 (`reserved=32`) `/cpapp-b.bin` ARMv7-R 复位向量与 `[TOMCO]` 标记，以及 `EXT_CSD[179]`（`PART_CONFIG` `0xB3`）启动使能与磨耗指标。
+  - **引导链不可变防火墙（`audit_boot_chain_immutability`）**：硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False` 与 `ALLOW_BOOT_PARTITION_TARGETING = False`，拒绝任何针对 `BOOT0`、`BOOT1`、`RPMB`、`nflashaB0/B1`、`nflasha1..nflasha8`、`sector0`、`loader_nor` 或 `CMD42` 写/擦/锁操作的清单。
+- **包级导出（[`fx3_recovery/__init__.py`](fx3_recovery/__init__.py)）**：直接导出 `macos_usb_transport_guard`、`p1_symbol_autolocator`、`emmc_dump_forensic_verifier` 及其核心类与函数，支持 `fx3_safety.h0_hardware_rehearsal` 自动集成。
 
 ```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-emmc-forensics --clean-room
+
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -v
 ```

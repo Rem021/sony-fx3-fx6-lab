@@ -8,6 +8,12 @@ from .capture import capture_local, verify_capture
 from .worker import assemble_worker_windows
 from .elflink import build_worker
 from . import boot_worker as B
+from .emmc_dump_forensic_verifier import (
+    VALID_ROLES,
+    report_to_dict,
+    run_clean_room_forensic_suite,
+    verify_emmc_dump_file,
+)
 
 
 def main():
@@ -47,6 +53,15 @@ def main():
     bootassemble.add_argument('--windows',nargs='+',required=True)
     bootassemble.add_argument('--returns',nargs='+',type=int,required=True)
     bootassemble.add_argument('--out',required=True);bootassemble.add_argument('--body-tag',required=True)
+    forensic = sub.add_parser('verify-emmc-forensics', help='offline O_RDONLY Tier-4 eMMC dump & EXT_CSD forensic verifier')
+    forensic.add_argument('--input', help='path to regular eMMC dump file opened strictly O_RDONLY')
+    forensic.add_argument('--role', choices=list(VALID_ROLES), default='generic')
+    forensic.add_argument('--expected-size', type=int, default=None)
+    forensic.add_argument('--expect-encrypted', action='store_true')
+    forensic.add_argument('--ext-csd', dest='ext_csd', help='optional 512B EXT_CSD register dump path')
+    forensic.add_argument('--manifest', help='optional JSON manifest path to audit against boot-chain firewall')
+    forensic.add_argument('--clean-room', action='store_true', help='run clean-room synthetic Tier-4 forensic suite')
+    forensic.add_argument('--out', help='optional exclusive new output directory for forensic-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -76,6 +91,32 @@ def main():
             result = B.build_worker(args.out)
         elif args.command == 'assemble-boot-worker':
             result = B.assemble_windows(args.windows,args.returns,args.out,args.body_tag)
+        elif args.command == 'verify-emmc-forensics':
+            if args.clean_room:
+                result = run_clean_room_forensic_suite()
+                if args.out:
+                    new_directory(args.out, {'forensic-report.json': encode(result)})
+            else:
+                if not args.input:
+                    raise ValueError('--input or --clean-room is required for verify-emmc-forensics')
+                manifest_obj = None
+                if args.manifest:
+                    manifest_obj = json.loads(read_file(args.manifest, 1024 * 1024).decode('utf-8'))
+                rep = verify_emmc_dump_file(
+                    args.input,
+                    role=args.role,
+                    expected_size=args.expected_size,
+                    expect_encrypted=args.expect_encrypted,
+                    ext_csd_path=args.ext_csd,
+                    manifest=manifest_obj,
+                )
+                result = report_to_dict(rep)
+                result['status'] = 'VERIFIED_READONLY' if rep.passed else 'REJECTED'
+                if args.out:
+                    new_directory(args.out, {'forensic-report.json': encode(result)})
+                if not rep.passed:
+                    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+                    return 2
         else:
             raise ValueError('unknown local operation')
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))

@@ -696,10 +696,59 @@ def _cmd_verify_stage_b_ram_overlay(
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_verify_stage_b_candidate(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    clean_room: bool,
+    lang: str,
+    json_output: bool,
+    output_path: Optional[Path],
+) -> int:
+    from .stage_b_candidate_integrator import (
+        build_stage_b_integrated_dossier,
+        verify_stage_b_integrated_dossier,
+    )
+
+    dossier = build_stage_b_integrated_dossier(
+        repo_root=repo_root,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        lang=lang,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = dossier.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    v_res = verify_stage_b_integrated_dossier(dossier.to_dict())
+    ok = dossier.all_5_pillars_passed and dossier.candidate_ready and v_res.valid
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        p2 = dossier.phase48_stage_b_ram_overlay_v2
+        p3 = dossier.phase47_unbrick_ladder_and_capsule
+        p5 = dossier.phase39_stage_b_master_readiness
+        summary = (
+            f"status={'OK' if ok else 'FAILED'} "
+            f"schema={dossier.schema} "
+            f"mode={dossier.verification_mode} "
+            f"lang={dossier.selected_lang} "
+            f"pillars={dossier.passed_pillar_count}/{dossier.pillar_count} "
+            f"16gate={'PASS' if v_res.phase50_16gate_ok else 'FAIL'} "
+            f"ram_overlay_mib={p2['tmpfs_budget_audit']['volatile_tmpfs_overlay_mib']:.2f}/48.00 "
+            f"unbrick={p3['scenarios_passed']}/{p3['scenario_count']} "
+            f"lifecycle={p5['phase35_lifecycle']['passed_scenario_count']}/{p5['phase35_lifecycle']['scenario_count']} "
+            f"dossier_sha256={dossier.dossier_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 48 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Stage-B P10/P11/P12 RAM-Overlay v2 CLI",
+        description="FX6-on-FX3 Phase 52 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Unified Stage-B End-to-End Candidate Integrator CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -728,6 +777,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("run-h0-h1-h2-drill", "Execute full offline Phase H0 -> Phase H1 (/bin/sh orchestrator) -> Phase H2 zero-mutation lifecycle drill + 10-case negative fault-injection suite"),
         ("run-stage-b-lifecycle-drill", "Execute Phase 35 complete Stage-B (P1..P12+Fan) 10-scenario H0 -> H1 -> H2 lifecycle, serial_fault_detector_v2 & cryptographic zero-drift verification"),
         ("verify-stage-b-ram-overlay", "Build deterministic Phase 48 Stage-B (P1..P12+Fan, 13/13) CPIO newc RAM-overlay v2 with BK4 language/Airplane shadow and run 9-scenario init2 sandbox drill"),
+        ("verify-stage-b-candidate", "Compose and verify Phase 52 Unified Stage-B End-to-End Candidate Dossier (stage_b_integrated_dossier_v1) across Phase 35..50 pillars"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name != "verify-post-trial":
@@ -738,12 +788,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill"):
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
-        if cmd_name == "verify-stage-b-ram-overlay":
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
         if cmd_name in ("build-readiness-packet", "build-stage-b-readiness-packet"):
@@ -843,6 +893,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
     if args.cmd == "verify-stage-b-ram-overlay":
         return _cmd_verify_stage_b_ram_overlay(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.clean_room,
+            args.lang,
+            args.json,
+            args.output,
+        )
+    if args.cmd == "verify-stage-b-candidate":
+        return _cmd_verify_stage_b_candidate(
+            args.repo_root,
             args.fx6_lib_dir,
             args.fx3_modules_dir,
             args.clean_room,

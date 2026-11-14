@@ -25,16 +25,23 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - Audits all **62** FX6 `.uxc` packs (`29` languages × `ns=1` `5,044` strings + `29` × `ns=2` `5,915` strings + `color_cmn` / `lang_cmn` / `style_cmn` + `image_00_169.uxc`) for strict UTF-8 validity and 1:1 `STRID` slot/`resid16` parity against English, plus FX3 v7.02 (`121` `.uxc` packs across `34` languages) cross-body isolation diff (`MOUNT_FX6_UXC_WITH_FX6_APPFW_ONLY`).
    - Parses OpenType/TrueType `cmap` format-4 and format-12 tables across `.ttf`/`.otf`/`.ttc` and Monotype `.ltt` linked font containers (`Sony_DI_Icons.ttf`, `UniversOTS-SJ_wIcon.ltt`, `HeiseiKakuGothW5-SJ_wIcon.ltt`, `MYingHeiC-GB18030-SJ_wIcon.ltt`, `MYingHeiC-Big5HKSCS-SJ_wIcon.ltt`, `MYingHeiC-KSX1001-SJ_wIcon.ltt`) to prove 100% standard Unicode glyph coverage for Simplified Chinese, Traditional Chinese, Japanese, and English.
    - Sweeps 100% of all `1,610` FX6 sprites (`51,972,736` decoded bytes) and FX3 image pack samples via pure-CPU `fast_decode_ldec_lz77` with deterministic SHA-256 verification.
+5. [`fx3_firmware_lab/sensor_codec_compatibility_analyzer.py`](fx3_firmware_lab/sensor_codec_compatibility_analyzer.py)
+   - Strictly `os.O_RDONLY` (`bytes.find`) & Clean-Room cross-body verifier across FX3 v7.02 (`appFw.so`, `libmpr.so`, `cpapp-b.bin`) and FX6 v6.01 (`appFw.so`, `libmpr.so`, `cpapp-b.bin`).
+   - **IMX510 Sensor & Dual Base ISO (`800 / 12800`) Matrix**: Verifies shared `IMX510` CP drivers (`N6Camera6Imager6IMX51019C_ImagerCtrl_IMX510E`, `4264x2408` effective), `4K DCI (4096x2160)`, `QFHD (3840x2160)`, `FHD (1920x1080)` up to `120p`/`240p` S&Q, `HDMI 16-bit RAW`, and negative proof that `5016x3344` (`IMAGER_SCANMODE_FF_5K_3_2` / `SELECT_CODEC_X_OCN_LT`) has `0` encoder hits in `libmpr.so` and `cpapp-b.bin`.
+   - **MPR / Hardware Encoder Profile Matrix**: Proves `XAVC-I` (`MXF`) and `XAVC S-I` (`MP4`) share the exact same CXD90057 H.264 High422Intra (`AVC480_*_H422IP`) elementary bitstream hardware engine and `mpr::SetMovieRecParam` ABI in `libmpr.so`, diverging only at the container muxer (`libXavcMxf` vs `libXavcMp4`), alongside `XAVC-L`, `XAVC S`, and `XAVC HS` (`HEVC_3840_2160_M42210P` / `M10P`).
+   - **Dual Media Slot & Video Output Boundary**: Verifies `Slot A / Slot B` (`SSA`/`SSB`) <-> `Slot 1 / Slot 2` CFexpress Type A + SDXC dual-slot parity (`SIMULTANEOUS_REC` / `RELAY_REC`) and confirms FX6-only `12G-SDI` (`PRM_FEATURE_MANAGER_sdi_output`, `MoniFpgaSdi_SetRegSDIOutFormat`) gracefully falls back to `HDMI` / `HDMI RAW` on FX3 without blocking recording.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 4 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 5 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-sensor-codec
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-sensor-codec --clean-room
 
-# Run all 51 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 75 unit tests in Local Donor mode and forced Clean-Room mode (< 4s)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

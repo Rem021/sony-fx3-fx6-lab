@@ -49,11 +49,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar B — 627-Point Fast Hybrid PDAF, Face/Eye AF, AF Transition (`1..7`) & Subj. Shift (`1..5`)**: Pure-Python ELF64 comparison proving `libInfraLensCommunicator.so` (`14,544 B`) has `0 B` loadable-segment diff (`6 B` `.comment` only) across FX3 `v7.02` & FX6 `v6.01`, plus Stock-CP `cpapp-b.bin` AF IPC immutability (`cp_mutation_bytes == 0`), Touch Focus / Magnifier (`x4.0`), and Peaking / Focus Map overlays.
    - **Pillar C — Focus Breathing Compensation (`UDAM` / `RTMD` Tables)**: Audits `Breathing Comp.` On/Off FOV crop, unsupported-lens gating (`BREATHING_CORRECTION_LENS_TYPE_NOT_SUPPORT`), and `libmpr.so` `UDAMSetBreathingCorrectionValue` / `DistortionCorrection` KLV serializers.
    - **Pillar D — 5-Axis Body `IBIS` + Lens `OSS` & Factory Gyro Calibration Immutability**: Proves FX6 rigid-CMOS gyro-only hardware (`PRM_is_imager_stabilization_unit_fixed`, zero body IBIS stage) vs FX3's energized 5-axis IBIS (`LiroSeq: Restore.`, `36` Thumb-2 `MOVW #0x1400` dispatch hits, `0x0400` `Off` Center-Lock, `calibration_mutation_bytes == 0` preserving `p2:/Backup.bin`, `p2:/psd.bin`, `p6:Jiritsu`).
+11. [`fx3_firmware_lab/shutter_ecs_sq_and_tally_auditor.py`](fx3_firmware_lab/shutter_ecs_sq_and_tally_auditor.py)
+   - **Pillar A — FX3 Mechanical Focal-Plane Shutter Curtain Protection**: Inspects FX3 `v7.02` & FX6 `v6.01` `appFw.so` and `cpapp-b.bin` strictly `os.O_RDONLY` (`mmap.ACCESS_READ`) / Clean-Room fallback, proving FX6 video-mode electronic rolling shutter IPCs carry zero mechanical-shutter actuation PIDs (`PID_SET_SHUTTER_TYPE`, `SET_SHUTTER_TYPE`, `SET_FRONT_ESHUTTER`), maintaining `mech_shutter_unintended_actuations == 0` with curtains parked safely open during Video and `S&Q` while preserving Stock-CP Stills/Anti-Dust support (`cp_mutation_bytes == 0`).
+   - **Pillar B — True Cinema Shutter Angle (`5.6°..360.0°`, `180.0°` default) & Extended Clear Scan (`ECS` Hz)**: Verifies exact exposure-time math (`t_exp = (angle / 360.0) / fps`) across `23.976..240 fps`, all 19 canonical Sony shutter-angle steps + `2F..64F` slow shutter, `libmpr.so` MXF RTMD shutter writers, and `ECS` fine frequency steps (`t_exp = 1 / ecs_hz`) locked to LED virtual-production walls / mains frequencies.
+   - **Pillar C — Slow & Quick Motion (`S&Q` `1..120fps` in `4K DCI/QFHD` & `1..240fps` in `FHD`) + Proxy / Audio-Mute & CFexpress Coupling**: Verifies exact resolution/fps envelopes, automatic audio disable in off-speed `S&Q` (`rec_fps != sensor_fps`), HFR (`200/240fps`) proxy gating, and CFexpress Type A (`VPG200/400`) vs SDXC `V90/V60/V30` sustained write bitrate enforcement.
+   - **Pillar D — Front / Rear / Top Cinema Tally Lamps (`Technical -> Tally`)**: Maps FX6 `Front Tally Lamp`, `Rear Tally Lamp`, `Tally Lamp Brightness`, and `Rec Tally Blink` onto FX3's physical Front + Top/Rear REC Tally LEDs (`REC_LAMP_ALL_LIGHTS_UP`, `REC_LAMP_ONLY_FRONT_OFF`, `REC_LAMP_LIGHT_UP_ONLY_ONE`, `REC_LAMP_ALL_LIGHTS_OUT`, CP `MSG_ID_INFRABB_SYS_SET_CA_TALLY`) with `0` missing-GPIO faults for FX6-only Green/Yellow broadcast tally controls.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 10 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 11 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -69,8 +74,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-audio-tc-hdmi --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-emount-af
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-emount-af --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-shutter-tally
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-shutter-tally --clean-room
 
-# Run all 213 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 241 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

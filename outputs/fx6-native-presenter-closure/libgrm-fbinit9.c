@@ -1616,6 +1616,11 @@ void Application_System_Init(const char *arg) {
     dprintf(2, "FX6_APP_CONFIG_ENTRY arg=%s appFw=%p real=%p round=%d\n",
             arg ? arg : "(null)", h, (void *)real, FX6_ROUND);
     if (real) fx6_patch_blocking_calls((void *)real);
+#if FX6_ROUND >= 8
+    dprintf(2,
+            "FX6_STAGE_A_BRIDGE round=%d faithful=%d nop_count=0 shadow_bk4=/etc/fx6_ram_shadow_bk4.bin opelog=/etc/opelog\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL);
+#endif
     if (real) real("AppConfig.so");
     dprintf(2, "FX6_APP_CONFIG_HOLD real_returned round=%d\n", FX6_ROUND);
     for (;;) sleep(3600);

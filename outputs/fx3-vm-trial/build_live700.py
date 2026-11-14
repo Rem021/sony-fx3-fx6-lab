@@ -20,12 +20,25 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 SRC_DIR = HERE / "src"
-DEFAULT_ZIG = Path(
-    os.environ.get(
-        "FX6_ZIG",
-        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
-    )
-)
+def resolve_default_zig() -> Path:
+    rel = Path("work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig")
+    env_zig = os.environ.get("FX6_ZIG", "").strip()
+    candidates = []
+    if env_zig:
+        candidates.append(Path(env_zig))
+    candidates.extend([
+        Path.home() / "AI-Workspace/AI/Projects/Mac" / rel,
+        Path.home() / "AI-Workspace/AI/Projects/Mac/outputs/sony-fx3-fx6-lab" / rel,
+        HERE.parents[1] / rel,
+        Path("/Volumes/KAFU2T/AI/Projects/Mac") / rel,
+    ])
+    for cand in candidates:
+        if cand.is_file():
+            return cand
+    return candidates[0]
+
+
+DEFAULT_ZIG = resolve_default_zig()
 SO_OUT = HERE / "libgrm-fbinit25-live700.so"
 CPIO_PATH = HERE / "guest-hybrid-fx6kernel-capid-grmreal-live700.cpio"
 MANIFEST_PATH = HERE / "vm-candidate-gpecap25-live700.json"

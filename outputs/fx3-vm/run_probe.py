@@ -7,6 +7,20 @@ ROOT=Path(__file__).resolve().parent
 def digest(path):
     with path.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 
+def resolve_migrated_path(raw_path,env_var=None):
+    if env_var and os.environ.get(env_var):return Path(os.environ[env_var])
+    p=Path(raw_path)
+    if p.exists():return p
+    for pfx in ('/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/','/Volumes/KAFU2T/AI/Projects/Mac/'):
+        if raw_path.startswith(pfx):
+            rel=raw_path[len(pfx):]
+            for root in (ROOT.parent.parent,Path.home()/'AI-Workspace'/'AI'/'Projects'/'Mac',Path.home()/'AI-Workspace'/'AI'/'Projects'/'Mac'/'outputs'/'sony-fx3-fx6-lab'):
+                cand=root/rel
+                if cand.exists():return cand
+            if raw_path.endswith('/runs'):
+                return Path.home()/'AI-Workspace'/'AI'/'Projects'/'Mac'/'work'/'fx3-vm-20261101'/'host'/'runs'
+    return p
+
 def main():
     ap=argparse.ArgumentParser(description='FX3 原内核最小研究虚拟机（未实现相机菜单/成像）')
     ap.add_argument('--profile',choices=['minimal-linux','app-loader'],default='minimal-linux')
@@ -15,9 +29,11 @@ def main():
     ns=ap.parse_args()
     if not 1<=ns.seconds<=30:ap.error('--seconds 必须为 1..30')
     manifest=json.loads((ROOT/'manifest.json').read_text())
-    vol=plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))
-    if vol.get('VolumeUUID')!=manifest['volume_uuid']:raise RuntimeError('外盘身份不符或未挂载')
-    kernel=Path(manifest['kernel']['path'])
+    kernel=resolve_migrated_path(manifest['kernel']['path'],'FX3_VM_KERNEL')
+    run_root=resolve_migrated_path(manifest['run_root'],'FX3_VM_RUN_ROOT')
+    if str(kernel).startswith('/Volumes/KAFU2T'):
+        vol=plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))
+        if vol.get('VolumeUUID')!=manifest['volume_uuid']:raise RuntimeError('外盘身份不符或未挂载')
     checks=[(ROOT/n,h) for n,h in manifest['runtime_sha256'].items()]+[(kernel,manifest['kernel']['sha256'])]
     for path,expected in checks:
         if not path.is_file() or path.is_symlink() or digest(path)!=expected:raise RuntimeError('源身份校验失败: '+str(path))
@@ -26,7 +42,8 @@ def main():
     lock=(ROOT/'.run.lock').open('a+b')
     try:fcntl.flock(lock.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:raise RuntimeError('此入口已有运行，请等该次结束')
-    run=Path(manifest['run_root'])/('a-'+uuid.uuid4().hex[:8]);run.mkdir()
+    run_root.mkdir(parents=True,exist_ok=True)
+    run=run_root/('a-'+uuid.uuid4().hex[:8]);run.mkdir()
     sock=run/'qmp.sock'
     if len(os.fsencode(sock))>=100:raise RuntimeError('任务Unix socket路径过长')
     profile=manifest['profiles'][ns.profile];qemu=ROOT/manifest['binary']

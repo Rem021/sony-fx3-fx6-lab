@@ -249,6 +249,34 @@ def gpe0_raw_to_png(raw: bytes) -> tuple[bytes, int]:
     return png, nz
 
 
+def _relocate_migrated_path(raw_path: str) -> str:
+    """Relocate historical /Volumes/KAFU2T/AI/Projects/Mac paths to internal AI-Workspace when present."""
+    p = Path(raw_path)
+    if p.exists():
+        return raw_path
+    prefixes = (
+        "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/",
+        "/Volumes/KAFU2T/AI/Projects/Mac/",
+    )
+    rel: str | None = None
+    for pfx in prefixes:
+        if raw_path.startswith(pfx):
+            rel = raw_path[len(pfx):]
+            break
+    if rel is None:
+        return raw_path
+    roots = [
+        REPO_ROOT,
+        Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac" / "outputs" / "sony-fx3-fx6-lab",
+        Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac",
+    ]
+    for root in roots:
+        cand = root / rel
+        if cand.exists():
+            return str(cand)
+    return raw_path
+
+
 class FX6LiveGpe0Session:
     def __init__(self, workdir: Path) -> None:
         self.workdir = workdir
@@ -316,8 +344,16 @@ class FX6LiveGpe0Session:
                     i += 2
                 elif argv[i] == "-S":
                     i += 1
+                elif argv[i] == "-device" and i + 1 < len(argv) and "file=" in argv[i + 1]:
+                    dev_arg = argv[i + 1]
+                    m_file = re.search(r"file=([^,]+)", dev_arg)
+                    if m_file:
+                        reloc = _relocate_migrated_path(m_file.group(1))
+                        dev_arg = dev_arg[:m_file.start(1)] + reloc + dev_arg[m_file.end(1):]
+                    out_argv.extend(["-device", dev_arg])
+                    i += 2
                 else:
-                    out_argv.append(argv[i])
+                    out_argv.append(_relocate_migrated_path(argv[i]) if argv[i].startswith("/") else argv[i])
                     i += 1
 
             env = os.environ.copy()
@@ -1406,11 +1442,13 @@ def main() -> int:
         if not MANIFEST_PATH.exists():
             raise SystemExit(f"Missing manifest: {MANIFEST_PATH}")
         manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+        resolved_paths: dict[str, str] = {}
         for key in ("kernel", "initrd", "dtb", "backup"):
-            p = Path(manifest[key]["path"])
+            p = Path(_relocate_migrated_path(manifest[key]["path"]))
             if not p.exists():
                 raise SystemExit(f"Missing {key}: {p}")
-        print(json.dumps({"ok": True, "manifest": str(MANIFEST_PATH), "initrd": manifest["initrd"]["path"]}, ensure_ascii=False))
+            resolved_paths[key] = str(p)
+        print(json.dumps({"ok": True, "manifest": str(MANIFEST_PATH), "resolved": resolved_paths}, ensure_ascii=False))
         return 0
 
     workdir = TRIAL_DIR / "live-gpe0-run"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-7)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-8)."""
 from __future__ import annotations
 
 import hashlib
@@ -21,6 +21,8 @@ CLOSURE_DIR = TESTS_DIR.parent
 REPO_ROOT = CLOSURE_DIR.parent.parent
 REPORT_DIR = REPO_ROOT / "reports" / "2026-11-10-fx6-native-presenter-closure"
 ASSETS_DIR = REPORT_DIR / "assets"
+HYBRID_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-fx6-on-fx3-qemu-hybrid"
+HYBRID_ASSETS_DIR = HYBRID_REPORT_DIR / "assets"
 
 
 def _load_closure_module(module_name: str, filename: str):
@@ -406,8 +408,13 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
             self.assertNotIn(forbidden, self.launch_src.lower())
 
     def test_clean_room_directory_hygiene(self) -> None:
-        forbidden_suffixes = {".cpio", ".so", ".fb", ".raw", ".o", ".dylib", ".pyc"}
-        for root in (CLOSURE_DIR, REPORT_DIR):
+        forbidden_suffixes = {".cpio", ".so", ".ko", ".fb", ".raw", ".o", ".dylib", ".pyc"}
+        max_bytes = 50 * 1024 * 1024
+        for root in (CLOSURE_DIR, REPORT_DIR, HYBRID_REPORT_DIR):
+            self.assertFalse(
+                (root / "runs").exists(),
+                f"Transient QEMU runs directory must not remain in tracked tree: {root / 'runs'}",
+            )
             for p in root.rglob("*"):
                 if p.is_file():
                     self.assertNotIn(
@@ -415,6 +422,130 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
                         forbidden_suffixes,
                         f"Forbidden binary/bytecode artifact in tracked tree: {p}",
                     )
+                    self.assertLessEqual(
+                        p.stat().st_size,
+                        max_bytes,
+                        f"Tracked file exceeds 50 MiB limit: {p}",
+                    )
+
+    def test_round8_hybrid_c_source_guards(self) -> None:
+        verify_src = (CLOSURE_DIR / "fx6-stage-a-verify.c").read_text(encoding="utf-8")
+        self.assertIn("#if FX6_ROUND >= 8", self.shim_src)
+        self.assertIn("FX6_STAGE_A_BRIDGE", self.shim_src)
+        self.assertIn("FX6_ROUND >= 8", self.launch_src)
+        self.assertIn("FX6_HYBRID_BRIDGE_INIT", self.launch_src)
+        for token in (
+            "FX6_STAGE_A_VERIFY_PASS",
+            "FX6_STAGE_A_P1_LINK",
+            "FX6_STAGE_A_P2_MOUNT",
+            "FX6_STAGE_A_BK4_SHADOW",
+            "FX6_STAGE_A_P9_UPM",
+            "FX6_HYBRID_PROC_VERSION",
+            "/dev/cnflasha30",
+            "/dev/nflasha30",
+            "LOOP_SET_FD",
+            "posix_attr",
+            "/etc/opelog",
+            "magic=BK4_0",
+        ):
+            self.assertIn(token, verify_src)
+
+    def test_round8_migration_and_stage_a_contracts(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r8", "build_and_run_round.py"
+        )
+        readme_text = (CLOSURE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("/Volumes/KAFU2T", readme_text)
+        self.assertIn("2026-11-14-fx6-on-fx3-qemu-hybrid", readme_text)
+
+        # Verify dynamic path probing honors env override and internal HOME_AI_MAC candidate
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = pathlib.Path(tmp)
+            fake_override = tmp_dir / "override.bin"
+            fake_override.write_bytes(b"ok")
+            with mock.patch.dict(os.environ, {"FX6_TEST_PROBE": str(fake_override)}):
+                self.assertEqual(
+                    runner._resolve_migrated_path(
+                        "FX6_TEST_PROBE",
+                        "work/missing/file.bin",
+                        "/Volumes/KAFU2T/AI/Projects/Mac/work/missing/file.bin",
+                    ),
+                    fake_override,
+                )
+
+            fake_home = tmp_dir / "home"
+            expected_internal = (
+                fake_home
+                / "AI-Workspace"
+                / "AI"
+                / "Projects"
+                / "Mac"
+                / "work"
+                / "probe"
+                / "target.bin"
+            )
+            expected_internal.parent.mkdir(parents=True, exist_ok=True)
+            expected_internal.write_bytes(b"internal")
+            with mock.patch.dict(os.environ, {"FX6_TEST_PROBE": ""}, clear=False):
+                with mock.patch.object(
+                    runner,
+                    "HOME_AI_MAC",
+                    fake_home / "AI-Workspace" / "AI" / "Projects" / "Mac",
+                ), mock.patch.object(
+                    runner,
+                    "HOME_AI_LAB",
+                    fake_home
+                    / "AI-Workspace"
+                    / "AI"
+                    / "Projects"
+                    / "Mac"
+                    / "outputs"
+                    / "sony-fx3-fx6-lab",
+                ):
+                    resolved = runner._resolve_migrated_path(
+                        "FX6_TEST_PROBE",
+                        "work/probe/target.bin",
+                        "/Volumes/KAFU2T/AI/Projects/Mac/work/probe/target.bin",
+                    )
+                    self.assertEqual(resolved, expected_internal)
+
+        # Verify read-only Stage-A pure-stdlib import does not pull unicorn
+        patcher_mod, vfat_mod, bmtv_mod = runner._import_stage_a_modules()
+        self.assertTrue(hasattr(patcher_mod, "P1_P4_P8_APPFW_COMBINED_SPEC"))
+        self.assertTrue(hasattr(vfat_mod, "build_opelog_vfat_image"))
+        self.assertTrue(hasattr(bmtv_mod, "synthesize_ram_shadow_bk4"))
+
+        # Verify CLI accepts --round 8 and --run-dir, and patch_cpio fixes c_mode==0
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8]", runner_src)
+        self.assertIn("--run-dir", runner_src)
+        self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = pathlib.Path(tmp)
+            parent_cpio = tmp_dir / "parent.cpio"
+            out_cpio = tmp_dir / "patched.cpio"
+            raw_archive = (
+                runner.make_cpio_member("usr/lib/libInfraSetupFile.so", b"AAAA", ino=10, mode=0)
+                + runner.make_cpio_member("TRAILER!!!", b"", ino=0, mode=0)
+            )
+            parent_cpio.write_bytes(raw_archive)
+            meta = runner.patch_cpio(
+                parent_cpio,
+                out_cpio,
+                {"usr/lib/libInfraSetupFile.so": b"PATCHED_ELF"},
+                additions={"etc/stage_a_flag": (b"1\n", 0o100644)},
+            )
+            self.assertEqual(meta["replaced_members"], ["usr/lib/libInfraSetupFile.so"])
+            self.assertEqual(meta["added_members"], ["etc/stage_a_flag"])
+            with out_cpio.open("rb") as f:
+                import mmap as _mmap
+
+                with _mmap.mmap(f.fileno(), 0, access=_mmap.ACCESS_READ) as mm:
+                    rows = runner.scan_cpio(mm)
+            by_name = {r["name"]: r for r in rows}
+            self.assertEqual(by_name["usr/lib/libInfraSetupFile.so"]["fields"][1], 0o100755)
+            self.assertEqual(by_name["etc/stage_a_flag"]["fields"][1], 0o100644)
 
 
 class TestReportPngAssets(unittest.TestCase):
@@ -514,6 +645,124 @@ class TestReportPngAssets(unittest.TestCase):
         # strictly inside cell[4]'s value readout box with zero extraneous artifact pixels.
         self.assertEqual(diff_px, 1928)
         self.assertEqual((min_x, min_y, max_x, max_y), (378, 413, 572, 440))
+
+
+class TestRound8HybridReportAndAssets(unittest.TestCase):
+    EXPECTED_STEMS = (
+        "r8a-hybrid-shooting-hud",
+        "r8b-hybrid-big6-home",
+    )
+
+    def test_hybrid_summary_json_and_report_present(self) -> None:
+        self.assertTrue((HYBRID_REPORT_DIR / "README.md").is_file())
+        summary_path = HYBRID_REPORT_DIR / "summary.json"
+        self.assertTrue(summary_path.is_file())
+        data = json.loads(summary_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["schema"], "fx6-on-fx3-hybrid-stage-a-qemu-v1")
+        self.assertIn("Linux version 4.9.337-scel+", data["kernel_version"])
+
+        runs = data["runs"]
+        self.assertEqual(set(runs.keys()), {"r8a_shooting_hud", "r8b_big6_menu_home"})
+
+        for key, expected_sid, expected_min_px in (
+            ("r8a_shooting_hud", "0x02", 5000),
+            ("r8b_big6_menu_home", "0x0a", 300000),
+        ):
+            run = runs[key]
+            self.assertEqual(run["round"], 8)
+            self.assertEqual(run["target_sid"], expected_sid)
+            self.assertEqual(run["nop_count"], 0)
+            self.assertGreaterEqual(run["total_threads_seen"], 140)
+            self.assertEqual(
+                run["faithful_invariants"],
+                {
+                    "FX6_NATIVE_FAITHFUL": 1,
+                    "subst_color": 0,
+                    "subst_image": 0,
+                    "forced_render": 0,
+                    "skipped_node": 0,
+                    "lock_bypass": 0,
+                },
+            )
+            sa = run["stage_a"]
+            self.assertEqual(len(sa["manifest_items"]), 10)
+            for patch_key in (
+                "P1_libInfraSetupFile",
+                "P1_libInfraMediaCommon",
+                "P1_libInfraMediaConfig",
+                "P3_libInfraAppRemoteBoard",
+                "Fan_libfan",
+                "P1_P4_P8_appFw_combined",
+                "P9_upm_ko",
+            ):
+                self.assertIn(patch_key, sa["patches"])
+            self.assertEqual(sa["p2_vfat"]["mode"], "8m_ram")
+            self.assertEqual(sa["p2_vfat"]["bytes"], 8 * 1024 * 1024)
+            self.assertFalse(sa["ram_shadow_bk4"]["flash_write_allowed"])
+
+            markers = "\n".join(sa["guest_boot_markers"])
+            self.assertIn("FX6_STAGE_A_VERIFY_PASS count=10", markers)
+            self.assertIn("FX6_STAGE_A_P2_MOUNT rc=0 errno=0", markers)
+            self.assertIn("opts=posix_attr ope=1 ope00=1 ope01=1", markers)
+            self.assertIn("FX6_STAGE_A_P9_UPM module_loaded=1", markers)
+            self.assertIn("FX6_STAGE_A_VERIFY_RC=0", markers)
+            self.assertIn("FX6_HYBRID_BRIDGE_INIT round=8 faithful=1", markers)
+            self.assertIn("FX6_STAGE_A_BRIDGE round=8 faithful=1 nop_count=0", markers)
+
+            gpe = run["gpe0_readback"]
+            self.assertTrue(gpe["present"])
+            self.assertGreaterEqual(gpe["nonzero_pixels"], expected_min_px)
+            self.assertGreaterEqual(gpe["unique_colors"], 25)
+
+    def test_round8_png_receipts_valid_and_pixel_verified(self) -> None:
+        self.assertTrue(HYBRID_ASSETS_DIR.is_dir())
+        for stem in self.EXPECTED_STEMS:
+            for variant in ("alpha", "composited"):
+                png_path = HYBRID_ASSETS_DIR / f"{stem}-{variant}.png"
+                self.assertTrue(png_path.is_file(), f"Missing Round 8 PNG: {png_path}")
+                w, h, _ = _parse_and_validate_png(png_path.read_bytes())
+                self.assertEqual((w, h), (1024, 540))
+
+        # r8a Shooting HUD on FX3 7.02 Kernel + Stage-A must match r5b Shooting HUD bit-for-bit
+        for variant in ("alpha", "composited"):
+            r8a_hash = hashlib.sha256(
+                (HYBRID_ASSETS_DIR / f"r8a-hybrid-shooting-hud-{variant}.png").read_bytes()
+            ).hexdigest()
+            r5b_hash = hashlib.sha256(
+                (ASSETS_DIR / f"r5b-shooting-hud-{variant}.png").read_bytes()
+            ).hexdigest()
+            self.assertEqual(r8a_hash, r5b_hash)
+
+            r8b_hash = hashlib.sha256(
+                (HYBRID_ASSETS_DIR / f"r8b-hybrid-big6-home-{variant}.png").read_bytes()
+            ).hexdigest()
+            self.assertNotEqual(r8a_hash, r8b_hash)
+
+        # r8b Big6 Home should match r5c except dynamic RTC minute/timecode box
+        _, _, r5c_rows = _decode_png_rgba_rows(
+            (ASSETS_DIR / "r5c-big6-menu-home-alpha.png").read_bytes()
+        )
+        _, _, r8b_rows = _decode_png_rgba_rows(
+            (HYBRID_ASSETS_DIR / "r8b-hybrid-big6-home-alpha.png").read_bytes()
+        )
+        diff_px = 0
+        min_x, min_y, max_x, max_y = 1024, 540, -1, -1
+        for y in range(540):
+            a, b = r5c_rows[y], r8b_rows[y]
+            if a != b:
+                for x in range(1024):
+                    if a[x * 4 : x * 4 + 4] != b[x * 4 : x * 4 + 4]:
+                        diff_px += 1
+                        min_x = min(min_x, x)
+                        min_y = min(min_y, y)
+                        max_x = max(max_x, x)
+                        max_y = max(max_y, y)
+        self.assertGreater(diff_px, 0)
+        self.assertLessEqual(diff_px, 400)
+        self.assertGreaterEqual(min_x, 140)
+        self.assertLessEqual(max_x, 220)
+        self.assertGreaterEqual(min_y, 270)
+        self.assertLessEqual(max_y, 320)
 
 
 class TestOptionalDonorBinariesReadOnly(unittest.TestCase):

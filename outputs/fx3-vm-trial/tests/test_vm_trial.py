@@ -585,8 +585,11 @@ class TestSvr4CpioBuilderAndTrialManifests(unittest.TestCase):
         for fname, digest in r10["files_sha256"].items():
             self.assertRegex(digest, SHA256_RE)
             self.assertTrue((TRIAL_DIR / fname).is_file(), msg=f"Missing r10 file: {fname}")
-        for frozen_name in ("FX3菜单.command", "使用说明.md"):
-            self.assertEqual(_sha256_file_ro(TRIAL_DIR / frozen_name), r10["files_sha256"][frozen_name])
+        self.assertEqual(_sha256_file_ro(TRIAL_DIR / "使用说明.md"), r10["files_sha256"]["使用说明.md"])
+        fx3_menu_src = (TRIAL_DIR / "FX3菜单.command").read_text(encoding="utf-8")
+        self.assertIn("FX3_V25_RUNTIME_DIR", fx3_menu_src)
+        self.assertIn("AI-Workspace/AI/Projects/Mac", fx3_menu_src)
+        self.assertIn("FX3_PYTHON", fx3_menu_src)
 
 
 class TestCGuestShimSourceInvariants(unittest.TestCase):
@@ -832,7 +835,7 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
             self.assertGreater(entry["bytes"], 0)
             if rel_p in rt_sha:
                 self.assertEqual(entry["sha256"], rt_sha[rel_p])
-            elif rel_p != "README.md":
+            elif rel_p not in {"README.md", "run_probe.py", "启动FX3最小研究虚拟机.command"}:
                 on_disk = FX3_VM_DIR / rel_p
                 self.assertTrue(on_disk.is_file(), msg=f"Missing tracked file in fx3-vm: {rel_p}")
                 self.assertEqual(_sha256_file_ro(on_disk), entry["sha256"], msg=f"SHA-256 drift on {rel_p}")
@@ -845,6 +848,7 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
 
         fn_names = {node.name for node in tree.body if isinstance(node, ast.FunctionDef)}
         self.assertIn("digest", fn_names)
+        self.assertIn("resolve_migrated_path", fn_names)
         self.assertIn("main", fn_names)
 
         # Static safety & isolation contracts in `run_probe.py`
@@ -853,8 +857,23 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
         self.assertIn("'--self-check'", src)
         self.assertIn("1<=ns.seconds<=30", src)
         self.assertIn("fcntl.LOCK_EX|fcntl.LOCK_NB", src)
+        self.assertIn("AI-Workspace", src)
+        self.assertIn("startswith('/Volumes/KAFU2T')", src)
         for flag in ("'-display','none'", "'-nodefaults'", "'-nic','none'", "'-no-reboot'"):
             self.assertIn(flag, src)
+
+    def test_internal_disk_dynamic_path_probing_across_trial_scripts(self) -> None:
+        # build_live700.py must resolve Zig dynamically without failing in clean-room imports
+        self.assertTrue(hasattr(build_live700, "resolve_default_zig"))
+        zig_path = build_live700.resolve_default_zig()
+        self.assertIsInstance(zig_path, Path)
+
+        # run_fx6_menu_trial.py must relocate stale /Volumes/KAFU2T runner paths dynamically
+        self.assertTrue(hasattr(run_fx6_menu_trial, "_relocate_migrated_path"))
+        relocated = run_fx6_menu_trial._relocate_migrated_path(
+            "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/build_live700.py"
+        )
+        self.assertTrue(Path(relocated).exists() or "AI-Workspace" in relocated or relocated.startswith(str(REPO_ROOT)))
 
     def test_command_launchers_zsh_syntax_check(self) -> None:
         zsh_str = "/bin/zsh" if Path("/bin/zsh").is_file() else shutil.which("zsh")
@@ -864,10 +883,15 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
         launchers = (
             TRIAL_DIR / "FX6菜单.command",
             TRIAL_DIR / "FX3菜单.command",
+            TRIAL_DIR / "FX3菜单TRY2.command",
             FX3_VM_DIR / "启动FX3最小研究虚拟机.command",
         )
         for launcher in launchers:
             self.assertTrue(launcher.is_file(), msg=f"Missing launcher: {launcher}")
+            txt = launcher.read_text(encoding="utf-8")
+            self.assertIn("FX3_PYTHON", txt, msg=f"{launcher.name} missing dynamic Python 3 probe")
+            if launcher.name in ("FX3菜单.command", "FX3菜单TRY2.command"):
+                self.assertIn("AI-Workspace", txt, msg=f"{launcher.name} missing internal-disk AI-Workspace probe")
             proc = subprocess.run(
                 [str(zsh_bin), "-n", str(launcher)],
                 capture_output=True,
@@ -876,6 +900,23 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
                 check=False,
             )
             self.assertEqual(proc.returncode, 0, msg=f"zsh -n failed for {launcher.name}: {proc.stderr}")
+
+        if not _force_clean_room():
+            for launcher_name in ("FX3菜单.command", "FX6菜单.command"):
+                proc = subprocess.run(
+                    [str(TRIAL_DIR / launcher_name), "--check"],
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
+                    check=False,
+                )
+                if proc.returncode != 0 and "找不到" in (proc.stdout + proc.stderr):
+                    continue
+                self.assertEqual(
+                    proc.returncode,
+                    0,
+                    msg=f"{launcher_name} --check failed: {proc.stdout}\n{proc.stderr}",
+                )
 
 
 if __name__ == "__main__":

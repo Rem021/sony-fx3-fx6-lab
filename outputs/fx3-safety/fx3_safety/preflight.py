@@ -499,6 +499,8 @@ def evaluate_12_safety_gates(
     kmod_userland_abi_ok: Optional[bool] = None,
     peripheral_ux_ok: Optional[bool] = None,
     ap_cp_imaging_ok: Optional[bool] = None,
+    stage_b_p10_ok: Optional[bool] = None,
+    uipc_cp_shim_ok: Optional[bool] = None,
 ) -> Dict[str, object]:
     """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository and candidate evidence."""
     repo_root = repo_root.resolve()
@@ -652,6 +654,8 @@ def evaluate_12_safety_gates(
         and (kmod_userland_abi_ok is not False)
         and (peripheral_ux_ok is not False)
         and (ap_cp_imaging_ok is not False)
+        and (stage_b_p10_ok is not False)
+        and (uipc_cp_shim_ok is not False)
     ):
         g12_status = "VERIFIED_OFFLINE_CANDIDATE_DRY_RUN"
     elif backup_mount_tolerance_ok is False:
@@ -674,6 +678,10 @@ def evaluate_12_safety_gates(
         g12_status = "BLOCKED_BY_PERIPHERAL_UX_OR_AUDIO_REDLINE"
     elif ap_cp_imaging_ok is False:
         g12_status = "BLOCKED_BY_AP_CP_IMAGING_OR_IBIS_REDLINE"
+    elif stage_b_p10_ok is False:
+        g12_status = "BLOCKED_BY_STAGE_B_P10_KEYMAP_REDLINE"
+    elif uipc_cp_shim_ok is False:
+        g12_status = "BLOCKED_BY_UIPC_CP_SHIM_REDLINE"
     else:
         g12_status = "BLOCKED_BY_SAFETY_REDLINE"
 

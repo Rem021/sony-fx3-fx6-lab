@@ -157,6 +157,10 @@ from .uipc_completion_verifier import (
     UipcP5P6AuditSummary,
     run_p5_p6_uipc_unicorn_audit,
 )
+from .uipc_cp_shim_verifier import (
+    Phase21UipcCpShimReport,
+    run_phase21_uipc_cp_shim_verification,
+)
 from .vfat_builder import (
     VfatAuditResult,
     VfatBuildReceipt,
@@ -726,6 +730,8 @@ class CandidateDryRunReport:
     stage_b_appfw_sha256: str = ""
     stage_b_combined_appfw_verified: bool = False
     stage_b_p10_summary: Optional[StageBCombinedAppFwReport] = None
+    uipc_cp_shim_ok: bool = True
+    uipc_cp_shim_audit: Optional[Phase21UipcCpShimReport] = None
 
 
 def run_offline_candidate_dry_run(
@@ -749,6 +755,7 @@ def run_offline_candidate_dry_run(
     precomputed_peripheral_ux: Optional[Phase17CompatibilityReport] = None,
     precomputed_ap_cp_imaging: Optional[Phase18ImagingAuditReport] = None,
     precomputed_stage_b_appfw: Optional[StageBCombinedAppFwReport] = None,
+    precomputed_uipc_cp_shim: Optional[Phase21UipcCpShimReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -766,6 +773,7 @@ def run_offline_candidate_dry_run(
     corrupt_peripheral_ux: bool = False,
     corrupt_ap_cp_imaging: bool = False,
     corrupt_stage_b_p10: bool = False,
+    corrupt_uipc_cp_shim: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -1067,6 +1075,14 @@ def run_offline_candidate_dry_run(
             ap_cp_imaging_res.passed and not corrupt_ap_cp_imaging
         )
 
+        uipc_cp_shim_res = (
+            precomputed_uipc_cp_shim
+            or run_phase21_uipc_cp_shim_verification()
+        )
+        uipc_cp_shim_ok = (
+            uipc_cp_shim_res.passed and not corrupt_uipc_cp_shim
+        )
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -1114,6 +1130,7 @@ def run_offline_candidate_dry_run(
             and kmod_userland_abi_ok
             and peripheral_ux_ok
             and ap_cp_imaging_ok
+            and uipc_cp_shim_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -1135,6 +1152,8 @@ def run_offline_candidate_dry_run(
             kmod_userland_abi_ok=kmod_userland_abi_ok,
             peripheral_ux_ok=peripheral_ux_ok,
             ap_cp_imaging_ok=ap_cp_imaging_ok,
+            stage_b_p10_ok=stage_b_ok,
+            uipc_cp_shim_ok=uipc_cp_shim_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -1200,4 +1219,6 @@ def run_offline_candidate_dry_run(
         stage_b_appfw_sha256=appfw_so_sha,
         stage_b_combined_appfw_verified=(stage_b_ok if include_p10_keymap else False),
         stage_b_p10_summary=stage_b_appfw_res,
+        uipc_cp_shim_ok=uipc_cp_shim_ok,
+        uipc_cp_shim_audit=uipc_cp_shim_res,
     )

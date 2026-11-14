@@ -433,6 +433,10 @@ def _cmd_dry_run_candidate(repo_root: Path, fx6_lib_dir: Path, fx3_modules_dir: 
         "ap_cp_imaging_ok": rep.ap_cp_imaging_ok,
         "ap_cp_matched_0x92840747_opcodes": rep.ap_cp_imaging_audit.uipc_queue_scan.total_0x92840747_opcodes_matched_in_fx3_cp,
         "ibis_center_lock_verified": rep.ap_cp_imaging_audit.ibis_safety.center_lock_mechanism_verified,
+        "stage_b_p10_keymap_enabled": rep.stage_b_p10_keymap_enabled,
+        "stage_b_appfw_sha256": rep.stage_b_appfw_sha256,
+        "stage_b_combined_appfw_verified": rep.stage_b_combined_appfw_verified,
+        "uipc_cp_shim_ok": rep.uipc_cp_shim_ok,
         "stage_a_overlay_cpio_sha256": rep.stage_a_overlay_cpio_sha256,
         "stage_a_overlay_cpio_size": rep.stage_a_overlay_cpio_size,
         "stage_a_cpio_valid": rep.stage_a_cpio_audit.valid,
@@ -468,6 +472,35 @@ def _cmd_verify_ap_cp_imaging(clean_room: bool, output_path: Optional[Path]) -> 
         clean_room_overrides={} if clean_room else None,
     )
     rendered = json.dumps(asdict(rep), indent=2) + "\n"
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    return 0 if rep.passed else 1
+
+
+def _cmd_verify_stage_b_p10(fx6_lib_dir: Path, clean_room: bool, output_path: Optional[Path]) -> int:
+    from .candidate_builder import verify_combined_stage_b_appfw_contract
+
+    rep = verify_combined_stage_b_appfw_contract(
+        fx6_lib_dir=fx6_lib_dir,
+        force_synthetic=bool(clean_room),
+    )
+    rendered = json.dumps(asdict(rep), indent=2) + "\n"
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    sys.stdout.write(rendered)
+    return 0 if rep.all_checks_passed else 1
+
+
+def _cmd_verify_uipc_cp_shim(clean_room: bool, output_path: Optional[Path]) -> int:
+    from .uipc_cp_shim_verifier import run_phase21_uipc_cp_shim_verification
+
+    rep = run_phase21_uipc_cp_shim_verification(
+        synthetic_mode=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
     if output_path is not None:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(rendered, encoding="utf-8")
@@ -548,7 +581,7 @@ def _cmd_run_h0_h1_h2_drill(
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 18 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Stage-A Hardware Readiness Packet & Post-Trial Zero-Mutation Auditor CLI",
+        description="FX6-on-FX3 Phase 21 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Stage-B P10 Keymap & P11 UIPC Shim Closure CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -567,7 +600,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-kmod-userland-abi", "Verify Phase 14 Stage-A insmod_drv1/drv2 .ko matrix, userland /dev/* nodes, and ELF64 DT_NEEDED/DYNSYM/VERNEED linkage closure"),
         ("verify-peripheral-ux", "Verify Phase 17 FX3 physical controls (P10 keymap), touch panel, LCD/HDMI OSD routing, and XLR-H1 audio compatibility"),
         ("verify-ap-cp-imaging", "Verify Phase 18 FX6 AP <-> FX3 Stock-CP UIPC queues/opcodes, 3D LUT/Cine EI/Dual ISO, XAVC/AF, and 5-axis IBIS center-lock"),
-        ("dry-run-candidate", "Assemble full P1..P9 + Fan + U1..U5 + p1 Recovery Bridge + Stage-A Orchestrator + Kmod/Userland ABI + Phase 17/18 CPIO candidate and evaluate 12 safety gates"),
+        ("verify-stage-b-p10", "Verify Phase 20 Stage-B combined P1+P4+P8+P10 appFw.so patch non-overlap, Unicorn 21-key dispatch, and SHA-256 rollback"),
+        ("verify-uipc-cp-shim", "Verify Phase 21 P11 AP-side dual-blocking UIPC synthesizer (0x92d2091c RTC & 0x91db059b Smart Handle) and Cine EI/LUT/IBIS bridge"),
+        ("dry-run-candidate", "Assemble full P1..P9 + Fan + Stage-B P10 + P11 UIPC Shim + U1..U5 CPIO candidate and evaluate 12 safety gates"),
         ("build-readiness-packet", "Build deterministic Stage-A non-persistent hardware readiness packet (stage_a_readiness_packet_v1) and optionally validate a physical FX3 Tier-0 capture bundle"),
         ("verify-post-trial", "Verify Phase H2 post-power-cycle zero-mutation parity (stage_a_post_trial_receipt_v1) between H0 and H2 Tier-0 bundles plus optional H1 orchestrator telemetry"),
         ("run-h0-h1-h2-drill", "Execute full offline Phase H0 -> Phase H1 (/bin/sh orchestrator) -> Phase H2 zero-mutation lifecycle drill + 10-case negative fault-injection suite"),
@@ -583,7 +618,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name == "build-readiness-packet":
@@ -628,6 +663,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _cmd_verify_peripheral_ux(args.clean_room, args.output)
     if args.cmd == "verify-ap-cp-imaging":
         return _cmd_verify_ap_cp_imaging(args.clean_room, args.output)
+    if args.cmd == "verify-stage-b-p10":
+        return _cmd_verify_stage_b_p10(args.fx6_lib_dir, args.clean_room, args.output)
+    if args.cmd == "verify-uipc-cp-shim":
+        return _cmd_verify_uipc_cp_shim(args.clean_room, args.output)
     if args.cmd == "dry-run-candidate":
         return _cmd_dry_run_candidate(args.repo_root, args.fx6_lib_dir, args.fx3_modules_dir, args.vfat_mode)
     if args.cmd == "build-readiness-packet":

@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
-__version__ = "18.0.0"
+__version__ = "21.0.0"
 
 from .ap_cp_imaging_pipeline_verifier import (
     PHASE_18_SCHEMA,
     PHASE_18_VERSION,
     Phase18ImagingAuditReport,
     verify_ap_cp_imaging_pipeline,
+)
+from .candidate_builder import (
+    StageBCombinedAppFwReport,
+    verify_combined_stage_b_appfw_contract,
 )
 from .hardware_readiness_packet import (
     FX3_MODEL_ID_HEX,
@@ -48,6 +52,16 @@ from .kmod_and_userland_abi_verifier import (
     parse_elf64_linkage_info,
     parse_insmod_script,
     run_kmod_and_userland_abi_verification,
+)
+from .patcher import (
+    FX6_APPFW_DONOR_SHA256,
+    FX6_APPFW_STAGE_A_SHA256,
+    FX6_APPFW_STAGE_B_SHA256,
+    P1_P4_P8_P10_APPFW_COMBINED_SPEC,
+    P10_KEYMAP_PATCH_SPEC,
+    build_stage_b_appfw_image,
+    get_target_patch_specs,
+    verify_patch_sites_non_overlapping,
 )
 from .peripheral_ux_compatibility_verifier import (
     P10_APPFW_KEYMAP_SPEC,
@@ -94,6 +108,10 @@ from .stage_a_post_trial_auditor import (
     verify_h1_orchestrator_telemetry,
     verify_post_trial_zero_mutation,
 )
+from .uipc_cp_shim_verifier import (
+    Phase21UipcCpShimReport,
+    run_phase21_uipc_cp_shim_verification,
+)
 
 __all__ = [
     "__version__",
@@ -105,6 +123,9 @@ __all__ = [
     "ElfLinkageInfo",
     "ElfSymbolAndVerneedClosureReport",
     "FX3_MODEL_ID_HEX",
+    "FX6_APPFW_DONOR_SHA256",
+    "FX6_APPFW_STAGE_A_SHA256",
+    "FX6_APPFW_STAGE_B_SHA256",
     "H1OrchestratorTelemetryAudit",
     "H1_TELEMETRY_SCHEMA",
     "HardwareExecutionPhaseStep",
@@ -120,6 +141,8 @@ __all__ = [
     "OrchestratorScenarioResult",
     "OrchestratorStateMachineTrace",
     "P10_APPFW_KEYMAP_SPEC",
+    "P10_KEYMAP_PATCH_SPEC",
+    "P1_P4_P8_P10_APPFW_COMBINED_SPEC",
     "P1VfatHeaderAudit",
     "P8TomcoHeaderAudit",
     "PHASE_15_VERSION",
@@ -134,12 +157,14 @@ __all__ = [
     "Phase12StageABootOrchestratorReport",
     "Phase17CompatibilityReport",
     "Phase18ImagingAuditReport",
+    "Phase21UipcCpShimReport",
     "PostTrialItemParityRecord",
     "READINESS_PACKET_SCHEMA",
     "RealTier0CaptureBundleAudit",
     "StageAH0H1H2LifecycleDrillReport",
     "StageAHardwareReadinessPacketReport",
     "StageAPostTrialReceipt",
+    "StageBCombinedAppFwReport",
     "UserlandDevNodeAuditReport",
     "VerneedEntry",
     "Wbi2HeaderAudit",
@@ -152,12 +177,14 @@ __all__ = [
     "audit_userland_dev_nodes",
     "build_gate_ordered_hardware_checklist",
     "build_stage_a_hardware_readiness_packet",
+    "build_stage_b_appfw_image",
     "build_synthetic_elf64_linkage_blob",
     "classify_kmod_driver_matrix",
     "classify_userland_dev_node",
     "evaluate_elf64_linkage_closure",
     "extract_dev_node_references_from_blob",
     "generate_stage_a_boot_orchestrator_script",
+    "get_target_patch_specs",
     "parse_elf64_linkage_info",
     "parse_insmod_script",
     "parse_wbi2_header_bytes",
@@ -166,12 +193,15 @@ __all__ = [
     "rollback_p10_keymap_adapter",
     "run_h0_h1_h2_lifecycle_drill",
     "run_kmod_and_userland_abi_verification",
+    "run_phase21_uipc_cp_shim_verification",
     "run_stage_a_boot_orchestrator_verification",
     "serialize_h1_orchestrator_telemetry_from_sandbox",
     "simulate_orchestrator_state_machine",
     "validate_candidate_wbi_redline",
     "verify_ap_cp_imaging_pipeline",
+    "verify_combined_stage_b_appfw_contract",
     "verify_h1_orchestrator_telemetry",
+    "verify_patch_sites_non_overlapping",
     "verify_peripheral_ux_compatibility",
     "verify_post_trial_zero_mutation",
     "verify_real_tier0_capture_bundle",

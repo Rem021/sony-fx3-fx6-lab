@@ -694,6 +694,10 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.peripheral_ux_audit.all_passed)
         self.assertTrue(rep_ok.ap_cp_imaging_ok)
         self.assertTrue(rep_ok.ap_cp_imaging_audit.passed)
+        self.assertTrue(rep_ok.stage_b_combined_appfw_verified)
+        self.assertTrue(rep_ok.uipc_cp_shim_ok)
+        assert rep_ok.uipc_cp_shim_audit is not None
+        self.assertTrue(rep_ok.uipc_cp_shim_audit.passed)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
@@ -712,6 +716,8 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             precomputed_kmod_userland_abi=rep_ok.kmod_userland_abi_audit,
             precomputed_peripheral_ux=rep_ok.peripheral_ux_audit,
             precomputed_ap_cp_imaging=rep_ok.ap_cp_imaging_audit,
+            precomputed_stage_b_appfw=rep_ok.stage_b_p10_summary,
+            precomputed_uipc_cp_shim=rep_ok.uipc_cp_shim_audit,
         )
 
         # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
@@ -896,6 +902,34 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         ][0]
         self.assertEqual(g12_p18["status"], "BLOCKED_BY_AP_CP_IMAGING_OR_IBIS_REDLINE")
 
+        rep_bad_p20 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_stage_b_p10=True,
+        )
+        self.assertFalse(rep_bad_p20.candidate_ready)
+        self.assertFalse(rep_bad_p20.stage_b_combined_appfw_verified)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p20.blocked_gate_ids)
+        g12_p20 = [
+            g
+            for g in rep_bad_p20.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p20["status"], "BLOCKED_BY_STAGE_B_P10_KEYMAP_REDLINE")
+
+        rep_bad_p21 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_uipc_cp_shim=True,
+        )
+        self.assertFalse(rep_bad_p21.candidate_ready)
+        self.assertFalse(rep_bad_p21.uipc_cp_shim_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p21.blocked_gate_ids)
+        g12_p21 = [
+            g
+            for g in rep_bad_p21.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p21["status"], "BLOCKED_BY_UIPC_CP_SHIM_REDLINE")
+
     def test_cli_verify_peripheral_ux_and_ap_cp_imaging_clean_room_subcommands(self) -> None:
         buf17 = io.StringIO()
         with redirect_stdout(buf17):
@@ -911,6 +945,21 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         p18 = json.loads(buf18.getvalue())
         self.assertTrue(p18["passed"])
         self.assertEqual(p18["cp_mutation_bytes"], 0)
+
+        buf20 = io.StringIO()
+        with redirect_stdout(buf20):
+            rc20 = cli_main(["verify-stage-b-p10", "--clean-room"])
+        self.assertEqual(rc20, 0)
+        p20 = json.loads(buf20.getvalue())
+        self.assertTrue(p20["all_checks_passed"])
+
+        buf21 = io.StringIO()
+        with redirect_stdout(buf21):
+            rc21 = cli_main(["verify-uipc-cp-shim", "--clean-room"])
+        self.assertEqual(rc21, 0)
+        p21 = json.loads(buf21.getvalue())
+        self.assertTrue(p21["passed"])
+        self.assertEqual(p21["cp_mutation_bytes"], 0)
 
     @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:

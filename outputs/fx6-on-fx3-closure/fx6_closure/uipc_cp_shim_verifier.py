@@ -1088,77 +1088,92 @@ class UipcCpShimRuntime:
 
 
 def _scan_cp_0x9xxx_movwt(cp_bytes: bytes) -> Set[int]:
-    mv = memoryview(cp_bytes)
     n = len(cp_bytes)
-    recent: Dict[int, Tuple[int, int]] = {}
+    mv = memoryview(cp_bytes)
     found: Set[int] = set()
-    for i in range(0, n - 4, 2):
-        hw1 = struct.unpack_from("<H", mv, i)[0]
-        if (hw1 & 0xFBF0) == 0xF240:
-            hw2 = struct.unpack_from("<H", mv, i + 2)[0]
-            if (hw2 & 0x8000) == 0:
-                rd = (hw2 >> 8) & 0xF
-                imm16 = (
-                    ((hw1 & 0xF) << 12)
-                    | (((hw1 >> 10) & 1) << 11)
-                    | (((hw2 >> 12) & 7) << 8)
-                    | (hw2 & 0xFF)
-                )
-                recent[rd] = (i, imm16)
-        elif (hw1 & 0xFBF0) == 0xF2C0:
-            hw2 = struct.unpack_from("<H", mv, i + 2)[0]
-            if (hw2 & 0x8000) == 0:
-                rd = (hw2 >> 8) & 0xF
-                prev = recent.get(rd)
-                if prev is not None and (i - prev[0]) <= 24:
-                    imm16_hi = (
-                        ((hw1 & 0xF) << 12)
-                        | (((hw1 >> 10) & 1) << 11)
-                        | (((hw2 >> 12) & 7) << 8)
-                        | (hw2 & 0xFF)
-                    )
-                    val = (imm16_hi << 16) | prev[1]
-                    if 0x90000000 <= val <= 0x9FFFFFFF:
-                        found.add(val)
+    for pat in (b"\xc9\xf2", b"\xc9\xf6"):
+        pos = cp_bytes.find(pat, 0)
+        while pos != -1:
+            if (pos & 1) == 0 and pos + 4 <= n:
+                hw2 = struct.unpack_from("<H", mv, pos + 2)[0]
+                if (hw2 & 0x8000) == 0:
+                    hw1 = struct.unpack_from("<H", mv, pos)[0]
+                    rd = (hw2 >> 8) & 0xF
+                    low_bound = max(0, pos - 24)
+                    for prev_i in range(pos - 2, low_bound - 1, -2):
+                        phw1 = struct.unpack_from("<H", mv, prev_i)[0]
+                        if (phw1 & 0xFBF0) == 0xF240:
+                            phw2 = struct.unpack_from("<H", mv, prev_i + 2)[0]
+                            if (phw2 & 0x8000) == 0 and ((phw2 >> 8) & 0xF) == rd:
+                                imm16_lo = (
+                                    ((phw1 & 0xF) << 12)
+                                    | (((phw1 >> 10) & 1) << 11)
+                                    | (((phw2 >> 12) & 7) << 8)
+                                    | (phw2 & 0xFF)
+                                )
+                                imm16_hi = (
+                                    ((hw1 & 0xF) << 12)
+                                    | (((hw1 >> 10) & 1) << 11)
+                                    | (((hw2 >> 12) & 7) << 8)
+                                    | (hw2 & 0xFF)
+                                )
+                                val = (imm16_hi << 16) | imm16_lo
+                                if 0x90000000 <= val <= 0x9FFFFFFF:
+                                    found.add(val)
+                                break
+            pos = cp_bytes.find(pat, pos + 1)
     return found
 
 
 def _scan_cp_uipc_completion_opcodes(cp_bytes: bytes, opcodes: Iterable[int]) -> Set[int]:
     target_set = {op | UIPC_BB_COMPLETION_MASK for op in opcodes}
     found: Set[int] = set()
-    mv = memoryview(cp_bytes)
     n = len(cp_bytes)
-    for i in range(0, n - 4, 2):
-        hw1 = struct.unpack_from("<H", mv, i)[0]
-        if (hw1 & 0xFBF0) == 0xF240:
-            hw2 = struct.unpack_from("<H", mv, i + 2)[0]
-            if (hw2 & 0x8000) == 0:
-                imm16 = (
-                    ((hw1 & 0xF) << 12)
-                    | (((hw1 >> 10) & 1) << 11)
-                    | (((hw2 >> 12) & 7) << 8)
-                    | (hw2 & 0xFF)
-                )
-                if imm16 in target_set:
-                    found.add(imm16 ^ UIPC_BB_COMPLETION_MASK)
+    mv = memoryview(cp_bytes)
+    hw1_patterns = {
+        struct.pack("<H", 0xF240 | (((imm >> 11) & 1) << 10) | ((imm >> 12) & 0xF))
+        for imm in target_set
+    }
+    for pat in hw1_patterns:
+        pos = cp_bytes.find(pat, 0)
+        while pos != -1:
+            if (pos & 1) == 0 and pos + 4 <= n:
+                hw2 = struct.unpack_from("<H", mv, pos + 2)[0]
+                if (hw2 & 0x8000) == 0:
+                    hw1 = struct.unpack_from("<H", mv, pos)[0]
+                    imm16 = (
+                        ((hw1 & 0xF) << 12)
+                        | (((hw1 >> 10) & 1) << 11)
+                        | (((hw2 >> 12) & 7) << 8)
+                        | (hw2 & 0xFF)
+                    )
+                    if imm16 in target_set:
+                        found.add(imm16 ^ UIPC_BB_COMPLETION_MASK)
+            pos = cp_bytes.find(pat, pos + 1)
     return found
 
 
 def _scan_aarch64_0x9xxx_movzk(elf_bytes: bytes) -> Set[int]:
+    n = len(elf_bytes)
     insns = memoryview(elf_bytes)
-    recent: Dict[int, Tuple[int, int]] = {}
     found: Set[int] = set()
-    for off in range(0, len(elf_bytes) - 4, 4):
-        w = struct.unpack_from("<I", insns, off)[0]
-        if (w & 0x7FE00000) == 0x52800000:
-            recent[w & 0x1F] = (off, (w >> 5) & 0xFFFF)
-        elif (w & 0x7FE00000) == 0x72A00000:
-            rd = w & 0x1F
-            prev = recent.get(rd)
-            if prev is not None and (off - prev[0]) <= 24:
-                val = (((w >> 5) & 0xFFFF) << 16) | prev[1]
-                if 0x90000000 <= val <= 0x9FFFFFFF:
-                    found.add(val)
+    for pat in (b"\xb2\x72", b"\xb3\x72", b"\xb2\xf2", b"\xb3\xf2"):
+        pos = elf_bytes.find(pat, 2)
+        while pos != -1:
+            off = pos - 2
+            if (off & 3) == 0 and off + 4 <= n:
+                w = struct.unpack_from("<I", insns, off)[0]
+                if (w & 0x7FE00000) == 0x72A00000:
+                    rd = w & 0x1F
+                    low_bound = max(0, off - 24)
+                    for prev_off in range(off - 4, low_bound - 1, -4):
+                        pw = struct.unpack_from("<I", insns, prev_off)[0]
+                        if (pw & 0x7FE00000) == 0x52800000 and (pw & 0x1F) == rd:
+                            val = (((w >> 5) & 0xFFFF) << 16) | ((pw >> 5) & 0xFFFF)
+                            if 0x90000000 <= val <= 0x9FFFFFFF:
+                                found.add(val)
+                            break
+            pos = elf_bytes.find(pat, pos + 1)
     return found
 
 

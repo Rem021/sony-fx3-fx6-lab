@@ -1,0 +1,1485 @@
+{
+  "schema": "fx6-on-fx3-round9-stage-b-p10-presenter-v1",
+  "date": "2026-11-14",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "p10_keymap_source": "outputs/fx6-on-fx3-closure/fx6_closure/peripheral_ux_compatibility_verifier.py",
+  "fx3_phy_to_infra_pipeline": "0x007a804c -> 0x005503e0",
+  "runs": {
+    "r9a_stage_b_shooting_hud": {
+      "run_id": "r9a-stage-b-shooting-hud",
+      "round": 9,
+      "target_presenter": "25procam_shooting_presenter",
+      "target_sid": "0x02",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 58,
+      "wall_elapsed_sec": 62.86,
+      "total_threads_seen": 158,
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "verify_bin_bytes": 44856,
+        "verify_bin_sha256": "5ae4d6fde2bd8236bced282deb5458ba460f96ab2cad6937ccc706b537aac814",
+        "manifest_count": 11,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "413bcd01f36a362a9cebfdba5329d405dcbdad8f13295cbf950a45ded2bea47e"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "/Users/kafu/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "guest_boot_markers": [
+          "FX6_STAGE_A_KERNEL sysname=Linux release=4.9.337-scel+ machine=aarch64 version=#1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_HYBRID_PROC_VERSION Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraSetupFile.so bytes=202664 expected=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b actual=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaCommon.so bytes=402624 expected=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 actual=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaConfig.so bytes=52312 expected=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 actual=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraAppRemoteBoard.so bytes=10448 expected=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 actual=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libfan.so bytes=31176 expected=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 actual=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/appFw.so bytes=50520424 expected=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 actual=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/kmod/upm.ko bytes=453896 expected=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 actual=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/tmp/opelog.vfat bytes=8388608 expected=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 actual=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 expected=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 actual=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_chaplin_ntsc.bk4 bytes=2253333 expected=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e actual=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libgrm-fbinit9.so bytes=105808 expected=413bcd01f36a362a9cebfdba5329d405dcbdad8f13295cbf950a45ded2bea47e actual=413bcd01f36a362a9cebfdba5329d405dcbdad8f13295cbf950a45ded2bea47e status=OK",
+          "FX6_STAGE_A_VERIFY_PASS count=11",
+          "FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1",
+          "FX6_STAGE_A_P1_LINK target=/dev/cnflasha30 rc30=0 rc20=0",
+          "FX6_STAGE_A_P2_MOUNT rc=0 errno=0 sym_rc=0 loop=/dev/loop0 target=/etc/opelog opts=posix_attr ope=1 ope00=1 ope01=1",
+          "FX6_STAGE_A_BK4_SHADOW path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 magic=BK4_0 byte8=0x00 flash_write=0 status=OK",
+          "FX6_STAGE_A_P9_UPM module_loaded=1",
+          "FX6_STAGE_A_VERIFY_RC=0",
+          "FX6_HYBRID_BRIDGE_INIT round=9 faithful=1",
+          "FX6_PATCH_PLAN appFw_base=0x7f81ee8000 nop_count=0 round=9",
+          "FX6_STAGE_A_BRIDGE round=9 faithful=1 nop_count=0 shadow_bk4=/etc/fx6_ram_shadow_bk4.bin opelog=/etc/opelog",
+          "FX6_STAGE_B_P10_LIVE_CHECK ok=1 fn=0x7095->0x0184 c1=0x0066->0x0029 c2=0x70e7->0x0192 c3=0x70ec->0x0199 play=0x01f7->0x0183 del=0x01f8->0x0185",
+          "FX6_STAGE_B_BRIDGE round=9 faithful=1 nop_count=0 p10_keymap=1 srm3kye5=1 phy_router=0x007a804c->0x005503e0"
+        ],
+        "fx3_phy_key_events": []
+      },
+      "build": {
+        "launcher_bytes": 104056,
+        "launcher_sha256": "f9fda8be7b3ef32639fe4100b1a0b4acb9a4f451a6fa4a8b5b38da8ab8925f67",
+        "shim_bytes": 105808,
+        "shim_sha256": "413bcd01f36a362a9cebfdba5329d405dcbdad8f13295cbf950a45ded2bea47e",
+        "key_steps": []
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 5451,
+        "unique_colors": 29,
+        "sha256": "485dc42347112074c99ff9501b1b0f7a1fd7e4dff85bb1fb7616ca5e00564d59",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 547509
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 2022
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 1182
+          },
+          {
+            "argb": "0xffcccccc",
+            "pixels": 170
+          },
+          {
+            "argb": "0x88000000",
+            "pixels": 166
+          },
+          {
+            "argb": "0xffbbbbbb",
+            "pixels": 166
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 162
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 113
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 113
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 107
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 106
+          },
+          {
+            "argb": "0xdd000000",
+            "pixels": 94
+          },
+          {
+            "argb": "0xaa000000",
+            "pixels": 89
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 89
+          },
+          {
+            "argb": "0xff999999",
+            "pixels": 85
+          },
+          {
+            "argb": "0x44000000",
+            "pixels": 78
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 0,
+      "png_exports": {
+        "stem": "r9a-stage-b-shooting-hud",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 548438,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9a-stage-b-shooting-hud-alpha.png",
+          "bytes": 6076,
+          "sha256": "17734b662b1b90439f7ace10b1cd2943bae6911c9919faf6fa05c6726548640b"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9a-stage-b-shooting-hud-composited.png",
+          "bytes": 7653,
+          "sha256": "e3137ab1101407afc07b13be78a16b761cda7cfd81eb0ebb3f8c912ec5a88001"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 19,
+        "FX6_STAGE_B_": 3,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_UIPC_SYNC_": 63,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 134,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 371,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 184,
+        "FX6_MILESTONE_": 1074,
+        "FX6_SCREEN_MGR_STATE": 6,
+        "FX6_PRESENTER_SLOT": 42,
+        "FX6_APPFW_MEDIA_SLOTS": 6,
+        "FX6_UX_SCREEN_TREE": 54,
+        "FX6_TRIGGER_PUMP_": 58,
+        "FX6_BACKUP_WRITE": 37,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 153,
+        "FX6_FONT_": 70,
+        "FX6_WAIT_SNAPSHOT": 2745
+      }
+    },
+    "r9b_fn_big6_home": {
+      "run_id": "r9b-fn-big6-home",
+      "round": 9,
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:5500",
+      "key_settle_ms": 5500,
+      "duration_budget_sec": 64,
+      "wall_elapsed_sec": 67.61,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "verify_bin_bytes": 44856,
+        "verify_bin_sha256": "5ae4d6fde2bd8236bced282deb5458ba460f96ab2cad6937ccc706b537aac814",
+        "manifest_count": 11,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "0daf606aabea8cb762f5747aaef35f840a747f18042f8e7183b7598e0a0d0c13"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "/Users/kafu/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "guest_boot_markers": [
+          "FX6_STAGE_A_KERNEL sysname=Linux release=4.9.337-scel+ machine=aarch64 version=#1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_HYBRID_PROC_VERSION Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraSetupFile.so bytes=202664 expected=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b actual=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaCommon.so bytes=402624 expected=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 actual=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaConfig.so bytes=52312 expected=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 actual=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraAppRemoteBoard.so bytes=10448 expected=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 actual=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libfan.so bytes=31176 expected=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 actual=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/appFw.so bytes=50520424 expected=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 actual=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/kmod/upm.ko bytes=453896 expected=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 actual=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/tmp/opelog.vfat bytes=8388608 expected=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 actual=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 expected=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 actual=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_chaplin_ntsc.bk4 bytes=2253333 expected=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e actual=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libgrm-fbinit9.so bytes=108848 expected=0daf606aabea8cb762f5747aaef35f840a747f18042f8e7183b7598e0a0d0c13 actual=0daf606aabea8cb762f5747aaef35f840a747f18042f8e7183b7598e0a0d0c13 status=OK",
+          "FX6_STAGE_A_VERIFY_PASS count=11",
+          "FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1",
+          "FX6_STAGE_A_P1_LINK target=/dev/cnflasha30 rc30=0 rc20=0",
+          "FX6_STAGE_A_P2_MOUNT rc=0 errno=0 sym_rc=0 loop=/dev/loop0 target=/etc/opelog opts=posix_attr ope=1 ope00=1 ope01=1",
+          "FX6_STAGE_A_BK4_SHADOW path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 magic=BK4_0 byte8=0x00 flash_write=0 status=OK",
+          "FX6_STAGE_A_P9_UPM module_loaded=1",
+          "FX6_STAGE_A_VERIFY_RC=0",
+          "FX6_HYBRID_BRIDGE_INIT round=9 faithful=1",
+          "FX6_PATCH_PLAN appFw_base=0x7f51ee8000 nop_count=0 round=9",
+          "FX6_STAGE_A_BRIDGE round=9 faithful=1 nop_count=0 shadow_bk4=/etc/fx6_ram_shadow_bk4.bin opelog=/etc/opelog",
+          "FX6_STAGE_B_P10_LIVE_CHECK ok=1 fn=0x7095->0x0184 c1=0x0066->0x0029 c2=0x70e7->0x0192 c3=0x70ec->0x0199 play=0x01f7->0x0183 del=0x01f8->0x0185",
+          "FX6_STAGE_B_BRIDGE round=9 faithful=1 nop_count=0 p10_keymap=1 srm3kye5=1 phy_router=0x007a804c->0x005503e0"
+        ],
+        "fx3_phy_key_events": [
+          "FX3_PHY_KEY_MAP source=key_seq phy=0x0013 infra=0x7095 name=FX3_Fn pipeline=0x007a804c->0x005503e0"
+        ]
+      },
+      "build": {
+        "launcher_bytes": 104056,
+        "launcher_sha256": "f9fda8be7b3ef32639fe4100b1a0b4acb9a4f451a6fa4a8b5b38da8ab8925f67",
+        "shim_bytes": 108848,
+        "shim_sha256": "0daf606aabea8cb762f5747aaef35f840a747f18042f8e7183b7598e0a0d0c13",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 337227,
+        "unique_colors": 74,
+        "sha256": "c9f88ed7efaf1e3382bf1b0abef6a66588928ecfc0fcbb4ef37de60d2191c805",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 215733
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 173803
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 140988
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8110
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 6153
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 1805
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 232
+          },
+          {
+            "argb": "0xffa9a9a9",
+            "pixels": 210
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 205
+          },
+          {
+            "argb": "0xff4f4f4f",
+            "pixels": 194
+          },
+          {
+            "argb": "0xff383838",
+            "pixels": 189
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 179
+          },
+          {
+            "argb": "0xffcccccc",
+            "pixels": 170
+          },
+          {
+            "argb": "0x88000000",
+            "pixels": 166
+          },
+          {
+            "argb": "0xffbbbbbb",
+            "pixels": 166
+          },
+          {
+            "argb": "0xffadadad",
+            "pixels": 154
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 0,
+      "png_exports": {
+        "stem": "r9b-fn-big6-home",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 216662,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9b-fn-big6-home-alpha.png",
+          "bytes": 20953,
+          "sha256": "e01dcb2987b460d82a50716558b682afd0fc2aa6b872ff8ef4989a4e4597cbcb"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9b-fn-big6-home-composited.png",
+          "bytes": 22648,
+          "sha256": "d7e030d3deaa794f6fbc3a1db3ccdb9c9268a6295dd70ad7253933c7e97a7f0a"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 19,
+        "FX6_STAGE_B_": 3,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 128,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1004,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 66,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 322,
+        "FX6_FONT_": 104,
+        "FX3_PHY_KEY_MAP": 1,
+        "FX6_WAIT_SNAPSHOT": 2756
+      }
+    },
+    "r9c_c1_big6_subdialog": {
+      "run_id": "r9c-c1-big6-subdialog",
+      "round": 9,
+      "target_presenter": "34procam_big6_menu_setting_presenter",
+      "target_sid": "0x0c",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:4500,0x001d:120:900,0x01ac:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 70,
+      "wall_elapsed_sec": 73.89,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "verify_bin_bytes": 44856,
+        "verify_bin_sha256": "5ae4d6fde2bd8236bced282deb5458ba460f96ab2cad6937ccc706b537aac814",
+        "manifest_count": 11,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "87f209a5f0db88e96c3f4f13e604028c380284182f2ad44aa52fe38e50629f2b"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "/Users/kafu/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "guest_boot_markers": [
+          "FX6_STAGE_A_KERNEL sysname=Linux release=4.9.337-scel+ machine=aarch64 version=#1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_HYBRID_PROC_VERSION Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraSetupFile.so bytes=202664 expected=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b actual=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaCommon.so bytes=402624 expected=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 actual=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaConfig.so bytes=52312 expected=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 actual=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraAppRemoteBoard.so bytes=10448 expected=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 actual=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libfan.so bytes=31176 expected=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 actual=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/appFw.so bytes=50520424 expected=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 actual=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/kmod/upm.ko bytes=453896 expected=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 actual=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/tmp/opelog.vfat bytes=8388608 expected=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 actual=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 expected=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 actual=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_chaplin_ntsc.bk4 bytes=2253333 expected=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e actual=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libgrm-fbinit9.so bytes=108848 expected=87f209a5f0db88e96c3f4f13e604028c380284182f2ad44aa52fe38e50629f2b actual=87f209a5f0db88e96c3f4f13e604028c380284182f2ad44aa52fe38e50629f2b status=OK",
+          "FX6_STAGE_A_VERIFY_PASS count=11",
+          "FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1",
+          "FX6_STAGE_A_P1_LINK target=/dev/cnflasha30 rc30=0 rc20=0",
+          "FX6_STAGE_A_P2_MOUNT rc=0 errno=0 sym_rc=0 loop=/dev/loop0 target=/etc/opelog opts=posix_attr ope=1 ope00=1 ope01=1",
+          "FX6_STAGE_A_BK4_SHADOW path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 magic=BK4_0 byte8=0x00 flash_write=0 status=OK",
+          "FX6_STAGE_A_P9_UPM module_loaded=1",
+          "FX6_STAGE_A_VERIFY_RC=0",
+          "FX6_HYBRID_BRIDGE_INIT round=9 faithful=1",
+          "FX6_PATCH_PLAN appFw_base=0x7f55ee8000 nop_count=0 round=9",
+          "FX6_STAGE_A_BRIDGE round=9 faithful=1 nop_count=0 shadow_bk4=/etc/fx6_ram_shadow_bk4.bin opelog=/etc/opelog",
+          "FX6_STAGE_B_P10_LIVE_CHECK ok=1 fn=0x7095->0x0184 c1=0x0066->0x0029 c2=0x70e7->0x0192 c3=0x70ec->0x0199 play=0x01f7->0x0183 del=0x01f8->0x0185",
+          "FX6_STAGE_B_BRIDGE round=9 faithful=1 nop_count=0 p10_keymap=1 srm3kye5=1 phy_router=0x007a804c->0x005503e0"
+        ],
+        "fx3_phy_key_events": [
+          "FX3_PHY_KEY_MAP source=key_seq phy=0x0013 infra=0x7095 name=FX3_Fn pipeline=0x007a804c->0x005503e0",
+          "FX3_PHY_KEY_MAP source=key_seq phy=0x001d infra=0x0066 name=FX3_C1 pipeline=0x007a804c->0x005503e0"
+        ]
+      },
+      "build": {
+        "launcher_bytes": 104056,
+        "launcher_sha256": "f9fda8be7b3ef32639fe4100b1a0b4acb9a4f451a6fa4a8b5b38da8ab8925f67",
+        "shim_bytes": 108848,
+        "shim_sha256": "87f209a5f0db88e96c3f4f13e604028c380284182f2ad44aa52fe38e50629f2b",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x001d",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 37924,
+        "unique_colors": 59,
+        "sha256": "4bbb4cfa833bc063542545eb33e773a6d2fba4634bbe034e0994729c39a2cf7d",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 515036
+          },
+          {
+            "argb": "0xdf000000",
+            "pixels": 19433
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 5236
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 3781
+          },
+          {
+            "argb": "0xffffaa00",
+            "pixels": 2035
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 1157
+          },
+          {
+            "argb": "0xffbbbbbb",
+            "pixels": 466
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 445
+          },
+          {
+            "argb": "0x88000000",
+            "pixels": 375
+          },
+          {
+            "argb": "0xff999999",
+            "pixels": 340
+          },
+          {
+            "argb": "0xffcccccc",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 301
+          },
+          {
+            "argb": "0x99000000",
+            "pixels": 264
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 249
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 234
+          },
+          {
+            "argb": "0xdd000000",
+            "pixels": 211
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 2035,
+      "png_exports": {
+        "stem": "r9c-c1-big6-subdialog",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 537652,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9c-c1-big6-subdialog-alpha.png",
+          "bytes": 12834,
+          "sha256": "88a5dee6d7b624d4311706399bc1fac7ef343bcd222c64ef66645e261220cbf6"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9c-c1-big6-subdialog-composited.png",
+          "bytes": 14273,
+          "sha256": "9cb4c2db45989ae6bdad092c059d5d63fb7439ec74e2226eb6db6d71c27f86d0"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 19,
+        "FX6_STAGE_B_": 3,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 133,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1073,
+        "FX6_SCREEN_MGR_STATE": 13,
+        "FX6_PRESENTER_SLOT": 91,
+        "FX6_APPFW_MEDIA_SLOTS": 13,
+        "FX6_UX_SCREEN_TREE": 117,
+        "FX6_TRIGGER_PUMP_": 72,
+        "FX6_KEY_INJECT": 15,
+        "FX6_BACKUP_WRITE": 50,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 282,
+        "FX6_FONT_": 82,
+        "FX3_PHY_KEY_MAP": 2,
+        "FX6_WAIT_SNAPSHOT": 2757
+      }
+    },
+    "r9d_c2_menu_3layer": {
+      "run_id": "r9d-c2-menu-3layer",
+      "round": 9,
+      "target_presenter": "31procam_menu_layer_2nd_presenter",
+      "target_sid": "0x10",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:3200,0x0024:120:3200,0x0011:1300:4500,0x0030:120:900,0x01af:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 76,
+      "wall_elapsed_sec": 79.38,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "verify_bin_bytes": 44856,
+        "verify_bin_sha256": "5ae4d6fde2bd8236bced282deb5458ba460f96ab2cad6937ccc706b537aac814",
+        "manifest_count": 11,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "382d26ab1189fbfb4e49cadb8d6ff696cdbac3c48dfcf44f4f59eea35612fc06"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "/Users/kafu/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "guest_boot_markers": [
+          "FX6_STAGE_A_KERNEL sysname=Linux release=4.9.337-scel+ machine=aarch64 version=#1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_HYBRID_PROC_VERSION Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraSetupFile.so bytes=202664 expected=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b actual=69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaCommon.so bytes=402624 expected=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 actual=d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraMediaConfig.so bytes=52312 expected=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 actual=295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libInfraAppRemoteBoard.so bytes=10448 expected=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 actual=2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libfan.so bytes=31176 expected=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 actual=456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/appFw.so bytes=50520424 expected=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 actual=e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/kmod/upm.ko bytes=453896 expected=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 actual=5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/tmp/opelog.vfat bytes=8388608 expected=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 actual=48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 expected=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 actual=e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41 status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/etc/fx6_chaplin_ntsc.bk4 bytes=2253333 expected=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e actual=e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e status=OK",
+          "FX6_STAGE_A_VERIFY_ITEM path=/usr/lib/libgrm-fbinit9.so bytes=108848 expected=382d26ab1189fbfb4e49cadb8d6ff696cdbac3c48dfcf44f4f59eea35612fc06 actual=382d26ab1189fbfb4e49cadb8d6ff696cdbac3c48dfcf44f4f59eea35612fc06 status=OK",
+          "FX6_STAGE_A_VERIFY_PASS count=11",
+          "FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1",
+          "FX6_STAGE_A_P1_LINK target=/dev/cnflasha30 rc30=0 rc20=0",
+          "FX6_STAGE_A_P2_MOUNT rc=0 errno=0 sym_rc=0 loop=/dev/loop0 target=/etc/opelog opts=posix_attr ope=1 ope00=1 ope01=1",
+          "FX6_STAGE_A_BK4_SHADOW path=/etc/fx6_ram_shadow_bk4.bin bytes=20588 magic=BK4_0 byte8=0x00 flash_write=0 status=OK",
+          "FX6_STAGE_A_P9_UPM module_loaded=1",
+          "FX6_STAGE_A_VERIFY_RC=0",
+          "FX6_HYBRID_BRIDGE_INIT round=9 faithful=1",
+          "FX6_PATCH_PLAN appFw_base=0x7f7dee8000 nop_count=0 round=9",
+          "FX6_STAGE_A_BRIDGE round=9 faithful=1 nop_count=0 shadow_bk4=/etc/fx6_ram_shadow_bk4.bin opelog=/etc/opelog",
+          "FX6_STAGE_B_P10_LIVE_CHECK ok=1 fn=0x7095->0x0184 c1=0x0066->0x0029 c2=0x70e7->0x0192 c3=0x70ec->0x0199 play=0x01f7->0x0183 del=0x01f8->0x0185",
+          "FX6_STAGE_B_BRIDGE round=9 faithful=1 nop_count=0 p10_keymap=1 srm3kye5=1 phy_router=0x007a804c->0x005503e0"
+        ],
+        "fx3_phy_key_events": [
+          "FX3_PHY_KEY_MAP source=key_seq phy=0x0013 infra=0x7095 name=FX3_Fn pipeline=0x007a804c->0x005503e0",
+          "FX3_PHY_KEY_MAP source=key_seq phy=0x0024 infra=0x70e7 name=FX3_C2 pipeline=0x007a804c->0x005503e0",
+          "FX3_PHY_KEY_MAP source=key_seq phy=0x0011 infra=0x01ab name=FX3_MENU pipeline=0x007a804c->0x005503e0"
+        ]
+      },
+      "build": {
+        "launcher_bytes": 104056,
+        "launcher_sha256": "f9fda8be7b3ef32639fe4100b1a0b4acb9a4f451a6fa4a8b5b38da8ab8925f67",
+        "shim_bytes": 108848,
+        "shim_sha256": "382d26ab1189fbfb4e49cadb8d6ff696cdbac3c48dfcf44f4f59eea35612fc06",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 3200
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 3200
+          },
+          {
+            "key": "0x0011",
+            "hold_ms": 1300,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 434010,
+        "unique_colors": 87,
+        "sha256": "2216e7561fccd0d3b424f19c888ec74d1c8a55da151c44494b4cdaaedf5d442f",
+        "top_colors": [
+          {
+            "argb": "0xcc1b1b1b",
+            "pixels": 383427
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 118950
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 17700
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 12105
+          },
+          {
+            "argb": "0xf43b3b3b",
+            "pixels": 4626
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 3865
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 2672
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 1273
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 1260
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 957
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 825
+          },
+          {
+            "argb": "0xffcccccc",
+            "pixels": 782
+          },
+          {
+            "argb": "0xe5848484",
+            "pixels": 706
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 444
+          },
+          {
+            "argb": "0xf4c2c2c2",
+            "pixels": 158
+          },
+          {
+            "argb": "0xd9535353",
+            "pixels": 141
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 0,
+      "png_exports": {
+        "stem": "r9d-c2-menu-3layer",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 510145,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9d-c2-menu-3layer-alpha.png",
+          "bytes": 14860,
+          "sha256": "02e054c2b4667f25fc131ebfc336c46a467fd544888768fab05c326ccfd8df1b"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets/r9d-c2-menu-3layer-composited.png",
+          "bytes": 13989,
+          "sha256": "f1eaec871e2830972678391d3b5fe28be49486fa05b5792cd4f0b786e526c1de"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 19,
+        "FX6_STAGE_B_": 3,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 126,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 374,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 975,
+        "FX6_SCREEN_MGR_STATE": 15,
+        "FX6_PRESENTER_SLOT": 105,
+        "FX6_APPFW_MEDIA_SLOTS": 15,
+        "FX6_UX_SCREEN_TREE": 135,
+        "FX6_TRIGGER_PUMP_": 78,
+        "FX6_KEY_INJECT": 19,
+        "FX6_BACKUP_WRITE": 50,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 364,
+        "FX6_FONT_": 102,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2757
+      }
+    }
+  }
+}

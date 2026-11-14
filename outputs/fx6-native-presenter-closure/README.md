@@ -534,3 +534,22 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx6-native-presenter-closure/build_
 - **Guest Verifier ([`fx6-stage-a-verify.c`](fx6-stage-a-verify.c))**: Executes Verify-Before-Mount SHA-256 checks across all 10 Stage-A adapted artifacts (`FX6_STAGE_A_VERIFY_PASS count=10`), establishes `P1` `/dev/cnflasha30 -> /dev/nflasha30 & /dev/nflasha20` links, attaches `8m_ram` `opelog.vfat` via `/dev/loop*` + mounts `/etc/opelog` (`opts=posix_attr`, `/OPE/00..01`), validates `/etc/fx6_ram_shadow_bk4.bin` (`BK4\0`, `byte8=0x00`, `flash_write=0`), and confirms `P9` `upm.ko` load before launching `appFw.so` with `nop_count=0`.
 - **Full Report & Receipts**: See [`reports/2026-11-14-fx6-on-fx3-qemu-hybrid/README.md`](../../reports/2026-11-14-fx6-on-fx3-qemu-hybrid/README.md) and [`summary.json`](../../reports/2026-11-14-fx6-on-fx3-qemu-hybrid/summary.json) (`r8a` Shooting HUD `5,451` px / `29` colors; `r8b` Big6 Home `337,227` px / `74` colors; `148` live TIDs).
 
+---
+
+## 9. Round 9: FX3 7.02 Kernel + Stage-B (`P1..P10`) Physical Hardware Key Navigation
+
+`build_and_run_round.py --round 9` upgrades the hybrid FX3 Ver. 7.02 (`Linux version 4.9.337-scel+`) boot pipeline from Stage-A (`10/10`) to **Stage-B (`11/11` `Verify-Before-Mount` + `P10` 24-byte FX3 `.rodata` keymap on `appFw.so`)** and wires real FX3 physical button codes (`Fn` `0x0013` -> `0x7095`, `C1` `0x001d` -> `0x0066`, `C2` `0x0024` -> `0x70e7`, `C3` `0x0025` -> `0x70ec`, `PLAY` `0x000b` -> `0x01f7`, `DELETE` `0x000c` -> `0x01f8`, `MENU` `0x0011` -> `0x01ab`) and `SRM3KYE5` (`0x41df00000`) mailbox polling through `InfraInput` (`0x007a804c -> 0x005503e0`) into `appFw.so`'s live `P10` table (`0x2245a10`) with **`nop_count = 0`** and isolated `/private/tmp/fx6-r9-*` cleanup.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 9 --initial-setting-done 1 --run-id r9c-c1-big6-subdialog --duration 70 \
+  --run-dir /private/tmp/fx6-r9-runs/r9c \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:4500,0x001d:120:900,0x01ac:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r9c-c1-big6-subdialog \
+  --export-png-dir reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/assets
+```
+
+- **Stage-B `11/11` + Live P10 Proof**: Read-only `ast.parse` loader `_load_p10_keymap_spec()` pulls `P10_APPFW_KEYMAP_SPEC` directly from [`peripheral_ux_compatibility_verifier.py`](../fx6-on-fx3-closure/fx6_closure/peripheral_ux_compatibility_verifier.py) without importing `unicorn`; guest [`fx6-stage-a-verify.c`](fx6-stage-a-verify.c) verifies all `11/11` SHA-256 items (`FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1`) and [`libgrm-fbinit9.c`](libgrm-fbinit9.c) verifies all 6 live `appFw.so` `.rodata` P10 pairs (`FX6_STAGE_B_P10_LIVE_CHECK ok=1`).
+- **4 End-to-End QEMU Validations**: `r9a` Shooting HUD (`5,451` px / `29` colors), `r9b` FX3 `Fn` -> Big6 Home (`337,227` px / `74` colors), `r9c` FX3 `Fn` + `C1` + `ENTER` -> Big6 Setting Sub-Dialog (`37,924` px / `2,035` Cinema Line amber `0xffffaa00` pixels), and `r9d` FX3 `Fn` + `C2` + `MENU` (`1300ms`) + `DOWN` + `RIGHT` -> Full Menu 2nd Layer (`434,010` px / `87` colors). See [`reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/README.md`](../../reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/README.md) and [`summary.json`](../../reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/summary.json).
+
+

@@ -399,6 +399,10 @@ static void inspect_screen_manager_and_presenters(const char *tag, void *app_ptr
 }
 
 #if FX6_ROUND >= 3
+#if FX6_ROUND >= 9
+static void poll_srm3kye5_key_mailbox(void);
+#endif
+
 static void *fx6_trigger_pump_main(void *arg) {
     (void)arg;
     dprintf(2, "FX6_TRIGGER_PUMP_START tid=%ld period_us=40000\n", syscall(178L));
@@ -408,6 +412,9 @@ static void *fx6_trigger_pump_main(void *arg) {
         grm_void_cb_t cb = g_trigger_cb;
         void *ud = g_trigger_ud;
         if (cb) {
+#if FX6_ROUND >= 9
+            poll_srm3kye5_key_mailbox();
+#endif
             cb(ud);
             unsigned int tick = ++g_pump_ticks;
             if (tick <= 10U || (tick % 25U) == 0U) {
@@ -559,28 +566,20 @@ static void ensure_uipc_syms(void) {
     g_real_msg_size     = (osal_msg_size_fn)dlsym(h, "osal_msg_size");
 }
 
-#if FX6_KEY_COUNT > 0
+#if (FX6_KEY_COUNT > 0) || (FX6_ROUND >= 9)
 /*
- * Round 5/6 Native InfraInput -> App Queue (0x007a804c -> 0x005503e0) Key Injector:
+ * Round 5..9 Native InfraInput -> App Queue (0x007a804c -> 0x005503e0) Key Injector:
  *   Verified against libInfraInput.so MainThread (+0xa624..0xab18) and
  *   appFw.so App::recv_event_i (+0xc09fb4..0xc0a148) + key codebook (+0x2245a10):
  *     offset +0x00 (u32): infra_key_id (0x718c=HOME/Big6, 0x01ab=MENU, 0x01ac=ENTER,
  *                         0x0003=UP, 0x0030=DOWN, 0x0015=LEFT, 0x01af=RIGHT, 0x719a=CANCEL,
- *                         0x704d=ISO/GAIN, 0x704f=ND, 0x7098=WB, 0x7177=SHUTTER)
+ *                         0x7095=FX3_Fn->P10 HOME, 0x0066=FX3_C1->P10 KURU_PON,
+ *                         0x70e7=FX3_C2->P10 MENU_CANCEL, 0x70ec=FX3_C3->P10 DISP_SEL,
+ *                         0x01f7=FX3_PLAY->P10 THUMBNAIL, 0x01f8=FX3_DELETE->P10 USER)
  *     offset +0x04 (s16): sub_id1 = 0, +0x06 (s16): sub_id2 = 0
  *     offset +0x08 (u32): status (1 = PRESS, 0 = RELEASE)
  *     offset +0x0c..0x1c: flags / param1 / repeat_count / param2 / reserved = 0
  */
-static volatile int g_key_inj_started;
-
-static void sleep_ms_chunked(unsigned int ms) {
-    while (ms > 0U) {
-        unsigned int step = ms > 50U ? 50U : ms;
-        usleep(step * 1000U);
-        ms -= step;
-    }
-}
-
 static int send_infra_input_key_event(uint32_t infra_key_id, uint32_t status) {
     ensure_uipc_syms();
     if (!g_real_valloc_msg || !g_real_set_src || !g_real_snd_msg) return -1;
@@ -594,6 +593,102 @@ static int send_infra_input_key_event(uint32_t infra_key_id, uint32_t status) {
     m32[2] = status;       /* +0x08: 1=PRESS, 0=RELEASE */
     g_real_set_src(msg, 0x007a804cU); /* InfraInput MainThread queue ID */
     return g_real_snd_msg(0x005503e0U, msg);
+}
+#endif
+
+#if FX6_ROUND >= 9
+static uint32_t fx3_phy_to_infra_key_id(uint32_t raw_key, const char *source) {
+    uint32_t infra = raw_key;
+    const char *name = "PASSTHROUGH";
+    switch (raw_key) {
+    case 0x0013U: infra = 0x7095U; name = "FX3_Fn"; break;      /* P10 -> 0x0184 PF_K_HOME */
+    case 0x001dU: infra = 0x0066U; name = "FX3_C1"; break;      /* P10 -> 0x0029 PF_K_KURU_PON */
+    case 0x0024U: infra = 0x70e7U; name = "FX3_C2"; break;      /* P10 -> 0x0192 PF_K_MENU_CANCEL */
+    case 0x0025U: infra = 0x70ecU; name = "FX3_C3"; break;      /* P10 -> 0x0199 PF_K_DISP_SEL */
+    case 0x000bU: infra = 0x01f7U; name = "FX3_PLAY"; break;    /* P10 -> 0x0183 PF_K_THUMBNAIL */
+    case 0x000cU: infra = 0x01f8U; name = "FX3_DELETE"; break;  /* P10 -> 0x0185 PF_K_USER */
+    case 0x0011U: infra = 0x01abU; name = "FX3_MENU"; break;    /* Native 1:1 -> 0x0013 MENU */
+    case 0x7095U: name = "INFRA_FX3_Fn"; break;
+    case 0x0066U: name = "INFRA_FX3_C1"; break;
+    case 0x70e7U: name = "INFRA_FX3_C2"; break;
+    case 0x70ecU: name = "INFRA_FX3_C3"; break;
+    case 0x01f7U: name = "INFRA_FX3_PLAY"; break;
+    case 0x01f8U: name = "INFRA_FX3_DELETE"; break;
+    case 0x01abU: name = "INFRA_MENU"; break;
+    case 0x01acU: name = "INFRA_ENTER"; break;
+    case 0x0003U: name = "INFRA_UP"; break;
+    case 0x0030U: name = "INFRA_DOWN"; break;
+    case 0x0015U: name = "INFRA_LEFT"; break;
+    case 0x01afU: name = "INFRA_RIGHT"; break;
+    default: break;
+    }
+    if (infra != raw_key || raw_key == 0x7095U || raw_key == 0x0066U ||
+        raw_key == 0x70e7U || raw_key == 0x70ecU || raw_key == 0x01f7U ||
+        raw_key == 0x01f8U || raw_key == 0x01abU) {
+        dprintf(2,
+                "FX3_PHY_KEY_MAP source=%s phy=0x%04x infra=0x%04x name=%s pipeline=0x007a804c->0x005503e0\n",
+                source ? source : "?", raw_key, infra, name);
+    }
+    return infra;
+}
+
+static unsigned int g_srm_active_step;
+static uint32_t g_srm_active_raw;
+static uint32_t g_srm_active_infra;
+static unsigned int g_srm_ticks_left;
+
+static void poll_srm3kye5_key_mailbox(void) {
+    init_osd();
+    if (!osd41df) return;
+    volatile unsigned long *k64 = (volatile unsigned long *)osd41df;
+    volatile unsigned int *k32 = (volatile unsigned int *)osd41df;
+    if (k64[0] != FX3_KEY_MAGIC) return;
+
+    if (g_srm_active_step != 0U) {
+        if (g_srm_ticks_left > 0U) {
+            g_srm_ticks_left--;
+        }
+        if (g_srm_ticks_left == 0U) {
+            int rc_up = send_infra_input_key_event(g_srm_active_infra, 0U);
+            k32[6] = g_srm_active_step;
+            k32[7] = g_srm_active_raw;
+            k32[13] = (rc_up == 0) ? 0U : 1U;
+            dprintf(2,
+                    "FX3_SRM3KYE5_KEY step=%u phase=release phy=0x%04x infra=0x%04x rc=%d done=%u\n",
+                    g_srm_active_step, g_srm_active_raw, g_srm_active_infra, rc_up, g_srm_active_step);
+            g_srm_active_step = 0U;
+        }
+        return;
+    }
+
+    unsigned int step = k32[2];
+    unsigned int raw_key = k32[3];
+    unsigned int hold_ms = k32[4] ? k32[4] : 120U;
+    unsigned int done = k32[6];
+    if (step > done && raw_key != 0U) {
+        uint32_t infra = fx3_phy_to_infra_key_id(raw_key, "srm3kye5");
+        int rc_dn = send_infra_input_key_event(infra, 1U);
+        dprintf(2,
+                "FX3_SRM3KYE5_KEY step=%u phase=press phy=0x%04x infra=0x%04x hold_ms=%u rc=%d\n",
+                step, raw_key, infra, hold_ms, rc_dn);
+        g_srm_active_step = step;
+        g_srm_active_raw = raw_key;
+        g_srm_active_infra = infra;
+        g_srm_ticks_left = (hold_ms + 39U) / 40U;
+        if (g_srm_ticks_left == 0U) g_srm_ticks_left = 1U;
+    }
+}
+#endif
+
+#if FX6_KEY_COUNT > 0
+static volatile int g_key_inj_started;
+
+static void sleep_ms_chunked(unsigned int ms) {
+    while (ms > 0U) {
+        unsigned int step = ms > 50U ? 50U : ms;
+        usleep(step * 1000U);
+        ms -= step;
+    }
 }
 
 static void *fx6_key_injector_main(void *arg) {
@@ -615,14 +710,19 @@ static void *fx6_key_injector_main(void *arg) {
     inspect_screen_manager_and_presenters("before_keys", g_app_self);
 
     for (unsigned int i = 0U; i < (unsigned int)FX6_KEY_COUNT; i++) {
-        int rc_dn = send_infra_input_key_event(k_ids[i], 1U);
+#if FX6_ROUND >= 9
+        uint32_t send_key = fx3_phy_to_infra_key_id(k_ids[i], "key_seq");
+#else
+        uint32_t send_key = k_ids[i];
+#endif
+        int rc_dn = send_infra_input_key_event(send_key, 1U);
         dprintf(2, "FX6_KEY_INJECT step=%u phase=press key=0x%04x hold_ms=%u rc=%d blit=%u\n",
-                i, k_ids[i], k_holds[i], rc_dn, rectblit_count);
+                i, send_key, k_holds[i], rc_dn, rectblit_count);
         sleep_ms_chunked(k_holds[i]);
 
-        int rc_up = send_infra_input_key_event(k_ids[i], 0U);
+        int rc_up = send_infra_input_key_event(send_key, 0U);
         dprintf(2, "FX6_KEY_INJECT step=%u phase=release key=0x%04x gap_ms=%u rc=%d blit=%u\n",
-                i, k_ids[i], k_gaps[i], rc_up, rectblit_count);
+                i, send_key, k_gaps[i], rc_up, rectblit_count);
         sleep_ms_chunked(k_gaps[i]);
 
         inspect_screen_manager_and_presenters("after_key", g_app_self);
@@ -1619,6 +1719,34 @@ void Application_System_Init(const char *arg) {
 #if FX6_ROUND >= 8
     dprintf(2,
             "FX6_STAGE_A_BRIDGE round=%d faithful=%d nop_count=0 shadow_bk4=/etc/fx6_ram_shadow_bk4.bin opelog=/etc/opelog\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL);
+#endif
+#if FX6_ROUND >= 9
+    if (g_appfw_base) {
+        uint32_t fn_in = *(const uint32_t *)(g_appfw_base + 0x2245e78UL);
+        uint32_t fn_k  = *(const uint32_t *)(g_appfw_base + 0x2245e7cUL);
+        uint32_t c1_in = *(const uint32_t *)(g_appfw_base + 0x2245a80UL);
+        uint32_t c1_k  = *(const uint32_t *)(g_appfw_base + 0x2245a84UL);
+        uint32_t c2_in = *(const uint32_t *)(g_appfw_base + 0x2246108UL);
+        uint32_t c2_k  = *(const uint32_t *)(g_appfw_base + 0x224610cUL);
+        uint32_t c3_in = *(const uint32_t *)(g_appfw_base + 0x2246130UL);
+        uint32_t c3_k  = *(const uint32_t *)(g_appfw_base + 0x2246134UL);
+        uint32_t pl_in = *(const uint32_t *)(g_appfw_base + 0x2245b20UL);
+        uint32_t pl_k  = *(const uint32_t *)(g_appfw_base + 0x2245b24UL);
+        uint32_t dl_in = *(const uint32_t *)(g_appfw_base + 0x2245b28UL);
+        uint32_t dl_k  = *(const uint32_t *)(g_appfw_base + 0x2245b2cUL);
+        int p10_ok = (fn_in == 0x7095U && fn_k == 0x0184U &&
+                      c1_in == 0x0066U && c1_k == 0x0029U &&
+                      c2_in == 0x70e7U && c2_k == 0x0192U &&
+                      c3_in == 0x70ecU && c3_k == 0x0199U &&
+                      pl_in == 0x01f7U && pl_k == 0x0183U &&
+                      dl_in == 0x01f8U && dl_k == 0x0185U);
+        dprintf(2,
+                "FX6_STAGE_B_P10_LIVE_CHECK ok=%d fn=0x%04x->0x%04x c1=0x%04x->0x%04x c2=0x%04x->0x%04x c3=0x%04x->0x%04x play=0x%04x->0x%04x del=0x%04x->0x%04x\n",
+                p10_ok, fn_in, fn_k, c1_in, c1_k, c2_in, c2_k, c3_in, c3_k, pl_in, pl_k, dl_in, dl_k);
+    }
+    dprintf(2,
+            "FX6_STAGE_B_BRIDGE round=%d faithful=%d nop_count=0 p10_keymap=1 srm3kye5=1 phy_router=0x007a804c->0x005503e0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL);
 #endif
     if (real) real("AppConfig.so");

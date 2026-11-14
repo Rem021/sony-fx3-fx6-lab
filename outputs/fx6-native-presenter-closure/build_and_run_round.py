@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import collections
 import hashlib
 import json
@@ -375,13 +376,76 @@ def _extract_cpio_members(parent_cpio: pathlib.Path, names: Tuple[str, ...]) -> 
     return found
 
 
+def _load_p10_keymap_spec(patcher_mod: Any) -> Any:
+    """Read-only load of P10_APPFW_KEYMAP_SPEC without importing unicorn."""
+    verifier_path = (
+        REPO
+        / "outputs"
+        / "fx6-on-fx3-closure"
+        / "fx6_closure"
+        / "peripheral_ux_compatibility_verifier.py"
+    )
+    src = verifier_path.read_text(encoding="utf-8")
+    tree = ast.parse(src, filename=str(verifier_path))
+    rhs_node: Optional[ast.expr] = None
+    for stmt in tree.body:
+        if isinstance(stmt, ast.Assign):
+            for tgt in stmt.targets:
+                if isinstance(tgt, ast.Name) and tgt.id == "P10_APPFW_KEYMAP_SPEC":
+                    rhs_node = stmt.value
+                    break
+        elif isinstance(stmt, ast.AnnAssign):
+            if (
+                isinstance(stmt.target, ast.Name)
+                and stmt.target.id == "P10_APPFW_KEYMAP_SPEC"
+                and stmt.value is not None
+            ):
+                rhs_node = stmt.value
+        if rhs_node is not None:
+            break
+    if rhs_node is None:
+        raise RuntimeError(f"P10_APPFW_KEYMAP_SPEC not found in {verifier_path}")
+    expr = ast.Expression(rhs_node)
+    ast.fix_missing_locations(expr)
+    spec = eval(
+        compile(expr, str(verifier_path), "eval"),
+        {"__builtins__": {}},
+        {
+            "LibraryPatchSpec": patcher_mod.LibraryPatchSpec,
+            "PatchSiteSpec": patcher_mod.PatchSiteSpec,
+            "PF_R": patcher_mod.PF_R,
+            "struct": struct,
+            "bytes": bytes,
+        },
+    )
+    if spec.spec_id != "P10_FX3_TO_FX6_KEYMAP_ADAPTER" or len(spec.sites) != 6:
+        raise RuntimeError(f"Unexpected P10_APPFW_KEYMAP_SPEC: {spec.spec_id} sites={len(spec.sites)}")
+    return spec
+
+
 def build_stage_a_overlay(
     tmp_build: pathlib.Path,
     parent_cpio: pathlib.Path,
     bk4_ntsc_bytes: Optional[bytes],
+    *,
+    enable_p10: bool = False,
+    shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
-    """Build Stage-A P1..P9+Fan + 8MiB VFAT + RAM-Shadow BK4 + Verify-Before-Mount overlay in /private/tmp."""
+    """Build Stage-A/B P1..P9+Fan(+P10) + 8MiB VFAT + RAM-Shadow BK4 + Verify-Before-Mount overlay in /private/tmp."""
     patcher, vfat_builder, bmtv = _import_stage_a_modules()
+
+    p10_spec = _load_p10_keymap_spec(patcher) if enable_p10 else None
+    appfw_spec = patcher.P1_P4_P8_APPFW_COMBINED_SPEC
+    if p10_spec is not None:
+        appfw_spec = patcher.LibraryPatchSpec(
+            spec_id="P1_P4_P8_P10_appFw_combined",
+            library_name=patcher.P1_P4_P8_APPFW_COMBINED_SPEC.library_name,
+            expected_size=patcher.P1_P4_P8_APPFW_COMBINED_SPEC.expected_size,
+            donor_sha256=patcher.P1_P4_P8_APPFW_COMBINED_SPEC.donor_sha256,
+            sites=patcher.P1_P4_P8_APPFW_COMBINED_SPEC.sites + p10_spec.sites,
+            elf_kind=patcher.P1_P4_P8_APPFW_COMBINED_SPEC.elf_kind,
+            source_domain=patcher.P1_P4_P8_APPFW_COMBINED_SPEC.source_domain,
+        )
 
     member_specs = (
         ("usr/lib/libInfraSetupFile.so", patcher.P1_LIB_INFRA_SETUP_FILE_SPEC),
@@ -389,7 +453,7 @@ def build_stage_a_overlay(
         ("usr/lib/libInfraMediaConfig.so", patcher.P1_LIB_INFRA_MEDIA_CONFIG_SPEC),
         ("usr/lib/libInfraAppRemoteBoard.so", patcher.P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC),
         ("usr/lib/libfan.so", patcher.FAN_LIBFAN_SPEC),
-        ("usr/lib/appFw.so", patcher.P1_P4_P8_APPFW_COMBINED_SPEC),
+        ("usr/lib/appFw.so", appfw_spec),
     )
     cpio_extract_names = tuple(m for m, _ in member_specs) + ("init", "usr/kmod/upm.ko")
     raw_members = _extract_cpio_members(parent_cpio, cpio_extract_names)
@@ -411,6 +475,14 @@ def build_stage_a_overlay(
             "sites": [s.site_id for s in receipt.resolutions],
         }
         manifest_rows.append((receipt.after_sha256, f"/{cpio_name}"))
+
+    if p10_spec is not None:
+        patch_receipts[p10_spec.spec_id] = {
+            "library": p10_spec.library_name,
+            "changed_bytes": sum(s.size for s in p10_spec.sites),
+            "sites": [s.site_id for s in p10_spec.sites],
+            "combined_appfw_after_sha256": patch_receipts[appfw_spec.spec_id]["after_sha256"],
+        }
 
     # P9 upm.ko: patch FX3 donor upm.ko in-memory when present, else verify CPIO's already-patched upm.ko
     if FX3_UPM_KO.exists():
@@ -462,6 +534,9 @@ def build_stage_a_overlay(
     if bk4_ntsc_bytes is not None:
         manifest_rows.append((sha256_bytes(bk4_ntsc_bytes), "/etc/fx6_chaplin_ntsc.bk4"))
 
+    if enable_p10 and shim_bytes is not None:
+        manifest_rows.append((sha256_bytes(shim_bytes), "/usr/lib/libgrm-fbinit9.so"))
+
     # Compile fx6-stage-a-verify C guest tool in /private/tmp
     cache_dir = tmp_build / "zig-cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -491,7 +566,7 @@ def build_stage_a_overlay(
         raise RuntimeError(f"fx6-stage-a-verify compile failed:\n{r_ver.stderr}")
     verify_bytes = verify_out.read_bytes()
 
-    # Rewrite guest /init in-memory to execute Stage-A Verify-Before-Mount right before appfw-launch
+    # Rewrite guest /init in-memory to execute Stage-A/B Verify-Before-Mount right before appfw-launch
     init_txt = raw_members["init"].decode("utf-8", errors="replace")
     launch_needle = 'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch'
     if launch_needle not in init_txt:
@@ -514,9 +589,13 @@ def build_stage_a_overlay(
         "tmp/opelog.vfat": (vfat_bytes, 0o100644),
         "etc/fx6_ram_shadow_bk4.bin": (bk4_bundle.bk4_bytes, 0o100644),
     }
+    if enable_p10:
+        additions["etc/fx6_stage_b"] = (b"stage_b=1\np10_keymap=1\n", 0o100644)
     stage_a_meta = {
+        "stage": "B" if enable_p10 else "A",
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
+        "manifest_count": len(manifest_rows),
         "manifest_items": [
             {"guest_path": gpath, "sha256": digest} for digest, gpath in manifest_rows
         ],
@@ -736,11 +815,14 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     important_prefixes = (
         "Linux version ",
         "FX6_STAGE_A_",
+        "FX6_STAGE_B_",
         "FX6_HYBRID_",
         "FX6_NATIVE_FAITHFUL_SHIM_LOADED",
         "FX6_MWF_",
         "FX6_IMCFG_",
         "FX6_INFRA_INPUT_",
+        "FX3_PHY_KEY_MAP",
+        "FX3_SRM3KYE5_KEY",
         "FX6_KEY_INJECT",
         "FX6_BK4_",
         "FX6_BACKUP_READ8",
@@ -834,7 +916,7 @@ def run_once(args: argparse.Namespace) -> int:
         serial_log.unlink()
 
     owner_pid = os.getpid()
-    tmp_prefix = "fx6-hybrid" if args.round >= 8 else "fx6-native"
+    tmp_prefix = "fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -870,9 +952,14 @@ def run_once(args: argparse.Namespace) -> int:
 
         stage_a_meta: Optional[Dict[str, Any]] = None
         if args.round >= 8:
-            print(f"[{run_id}] Building Stage-A P1..P9+Fan + VFAT + BK4-Shadow overlay...", flush=True)
+            stage_label = "Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan"
+            print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
-                tmp_build, PARENT_CPIO, bk4_bytes
+                tmp_build,
+                PARENT_CPIO,
+                bk4_bytes,
+                enable_p10=(args.round >= 9),
+                shim_bytes=shim_bytes if args.round >= 9 else None,
             )
             replacements.update(sa_rep)
             additions.update(sa_add)
@@ -1041,6 +1128,7 @@ def run_once(args: argparse.Namespace) -> int:
             "qemu_pid": proc.pid,
             "build": build_meta,
             "stage_a": stage_a_meta,
+            "stage_b": stage_a_meta if args.round >= 9 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1090,7 +1178,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9], required=True)
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

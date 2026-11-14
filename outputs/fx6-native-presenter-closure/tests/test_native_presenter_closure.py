@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-8)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-9)."""
 from __future__ import annotations
 
 import hashlib
@@ -23,6 +23,8 @@ REPORT_DIR = REPO_ROOT / "reports" / "2026-11-10-fx6-native-presenter-closure"
 ASSETS_DIR = REPORT_DIR / "assets"
 HYBRID_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-fx6-on-fx3-qemu-hybrid"
 HYBRID_ASSETS_DIR = HYBRID_REPORT_DIR / "assets"
+ROUND9_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round9-fx6-on-fx3-p10-presenter"
+ROUND9_ASSETS_DIR = ROUND9_REPORT_DIR / "assets"
 
 
 def _load_closure_module(module_name: str, filename: str):
@@ -410,11 +412,13 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
     def test_clean_room_directory_hygiene(self) -> None:
         forbidden_suffixes = {".cpio", ".so", ".ko", ".fb", ".raw", ".o", ".dylib", ".pyc"}
         max_bytes = 50 * 1024 * 1024
-        for root in (CLOSURE_DIR, REPORT_DIR, HYBRID_REPORT_DIR):
+        for root in (CLOSURE_DIR, REPORT_DIR, HYBRID_REPORT_DIR, ROUND9_REPORT_DIR):
             self.assertFalse(
                 (root / "runs").exists(),
                 f"Transient QEMU runs directory must not remain in tracked tree: {root / 'runs'}",
             )
+            if not root.exists():
+                continue
             for p in root.rglob("*"):
                 if p.is_file():
                     self.assertNotIn(
@@ -515,9 +519,9 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
         self.assertTrue(hasattr(vfat_mod, "build_opelog_vfat_image"))
         self.assertTrue(hasattr(bmtv_mod, "synthesize_ram_shadow_bk4"))
 
-        # Verify CLI accepts --round 8 and --run-dir, and patch_cpio fixes c_mode==0
+        # Verify CLI accepts --round 8/9 and --run-dir, and patch_cpio fixes c_mode==0
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9]", runner_src)
         self.assertIn("--run-dir", runner_src)
         self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
 
@@ -763,6 +767,219 @@ class TestRound8HybridReportAndAssets(unittest.TestCase):
         self.assertLessEqual(max_x, 220)
         self.assertGreaterEqual(min_y, 270)
         self.assertLessEqual(max_y, 320)
+
+
+class TestRound9StageBP10AndReport(unittest.TestCase):
+    EXPECTED_RUN_KEYS = (
+        "r9a_stage_b_shooting_hud",
+        "r9b_fn_big6_home",
+        "r9c_c1_big6_subdialog",
+        "r9d_c2_menu_3layer",
+    )
+    EXPECTED_STEMS = (
+        "r9a-stage-b-shooting-hud",
+        "r9b-fn-big6-home",
+        "r9c-c1-big6-subdialog",
+        "r9d-c2-menu-3layer",
+    )
+
+    def test_round9_c_source_guards_and_fx3_keymap_router(self) -> None:
+        shim_src = (CLOSURE_DIR / "libgrm-fbinit9.c").read_text(encoding="utf-8")
+        verify_src = (CLOSURE_DIR / "fx6-stage-a-verify.c").read_text(encoding="utf-8")
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+
+        self.assertIn("#if FX6_ROUND >= 9", shim_src)
+        self.assertIn("#if (FX6_KEY_COUNT > 0) || (FX6_ROUND >= 9)", shim_src)
+        for token in (
+            "fx3_phy_to_infra_key_id",
+            "poll_srm3kye5_key_mailbox",
+            "FX6_STAGE_B_P10_LIVE_CHECK",
+            "FX6_STAGE_B_BRIDGE",
+            "FX3_PHY_KEY_MAP",
+            "FX3_SRM3KYE5_KEY",
+            "0x0013U: infra = 0x7095U",
+            "0x001dU: infra = 0x0066U",
+            "0x0024U: infra = 0x70e7U",
+            "0x0025U: infra = 0x70ecU",
+            "0x000bU: infra = 0x01f7U",
+            "0x000cU: infra = 0x01f8U",
+            "0x0011U: infra = 0x01abU",
+            "0x2245e7cUL",
+            "0x2245a84UL",
+            "0x224610cUL",
+            "0x2246134UL",
+            "0x2245b24UL",
+            "0x2245b2cUL",
+        ):
+            self.assertIn(token, shim_src)
+
+        self.assertIn("FX6_STAGE_B_VERIFY_PASS", verify_src)
+        self.assertIn("/etc/fx6_stage_b", verify_src)
+        self.assertIn('tmp_prefix = "fx6-r9" if args.round >= 9', runner_src)
+        self.assertIn("etc/fx6_stage_b", runner_src)
+
+    def test_round9_p10_spec_loading_without_unicorn(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r9", "build_and_run_round.py"
+        )
+        patcher_mod, _, _ = runner._import_stage_a_modules()
+        p10_spec = runner._load_p10_keymap_spec(patcher_mod)
+        self.assertEqual(p10_spec.spec_id, "P10_FX3_TO_FX6_KEYMAP_ADAPTER")
+        self.assertEqual(p10_spec.library_name, "appFw.so")
+        self.assertEqual(len(p10_spec.sites), 6)
+        self.assertEqual(sum(s.size for s in p10_spec.sites), 24)
+        self.assertEqual(
+            [s.site_id for s in p10_spec.sites],
+            [
+                "p10_fn_to_home",
+                "p10_c1_to_kuru_pon",
+                "p10_c2_to_menu_cancel",
+                "p10_c3_to_disp_sel",
+                "p10_play_to_thumbnail",
+                "p10_delete_to_user",
+            ],
+        )
+
+    def test_round9_summary_json_and_stage_b_invariants(self) -> None:
+        self.assertTrue((ROUND9_REPORT_DIR / "README.md").is_file())
+        readme_text = (CLOSURE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertIn("2026-11-14-round9-fx6-on-fx3-p10-presenter", readme_text)
+        r9_readme = (ROUND9_REPORT_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertNotIn("/Volumes/KAFU2T", r9_readme)
+
+        summary_path = ROUND9_REPORT_DIR / "summary.json"
+        self.assertTrue(summary_path.is_file())
+        data = json.loads(summary_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["schema"], "fx6-on-fx3-round9-stage-b-p10-presenter-v1")
+        self.assertIn("Linux version 4.9.337-scel+", data["kernel_version"])
+        self.assertEqual(data["fx3_phy_to_infra_pipeline"], "0x007a804c -> 0x005503e0")
+
+        runs = data["runs"]
+        self.assertEqual(set(runs.keys()), set(self.EXPECTED_RUN_KEYS))
+
+        expectations = {
+            "r9a_stage_b_shooting_hud": ("0x02", 5451, 29, 0, ()),
+            "r9b_fn_big6_home": ("0x0a", 337227, 74, 0, ("name=FX3_Fn",)),
+            "r9c_c1_big6_subdialog": ("0x0c", 37924, 59, 2035, ("name=FX3_Fn", "name=FX3_C1")),
+            "r9d_c2_menu_3layer": (
+                "0x10",
+                434010,
+                87,
+                0,
+                ("name=FX3_Fn", "name=FX3_C2", "name=FX3_MENU"),
+            ),
+        }
+        for key, (sid, min_px, min_col, min_amber, phy_tokens) in expectations.items():
+            run = runs[key]
+            self.assertEqual(run["round"], 9)
+            self.assertEqual(run["target_sid"], sid)
+            self.assertEqual(run["nop_count"], 0)
+            self.assertGreaterEqual(run["total_threads_seen"], 158)
+            self.assertEqual(
+                run["faithful_invariants"],
+                {
+                    "FX6_NATIVE_FAITHFUL": 1,
+                    "subst_color": 0,
+                    "subst_image": 0,
+                    "forced_render": 0,
+                    "skipped_node": 0,
+                    "lock_bypass": 0,
+                },
+            )
+            sb = run["stage_b"]
+            self.assertEqual(sb["stage"], "B")
+            self.assertEqual(sb["manifest_count"], 11)
+            self.assertEqual(len(sb["manifest_items"]), 11)
+            self.assertIn(
+                "/usr/lib/libgrm-fbinit9.so",
+                [item["guest_path"] for item in sb["manifest_items"]],
+            )
+            for patch_key in (
+                "P1_libInfraSetupFile",
+                "P1_libInfraMediaCommon",
+                "P1_libInfraMediaConfig",
+                "P3_libInfraAppRemoteBoard",
+                "Fan_libfan",
+                "P1_P4_P8_P10_appFw_combined",
+                "P10_FX3_TO_FX6_KEYMAP_ADAPTER",
+                "P9_upm_ko",
+            ):
+                self.assertIn(patch_key, sb["patches"])
+            self.assertEqual(sb["patches"]["P10_FX3_TO_FX6_KEYMAP_ADAPTER"]["changed_bytes"], 24)
+
+            markers = "\n".join(sb["guest_boot_markers"])
+            self.assertIn("FX6_STAGE_A_VERIFY_PASS count=11", markers)
+            self.assertIn("FX6_STAGE_B_VERIFY_PASS count=11 stage_b=1 p10_keymap=1", markers)
+            self.assertIn("FX6_STAGE_A_VERIFY_RC=0", markers)
+            self.assertIn(
+                "FX6_STAGE_B_P10_LIVE_CHECK ok=1 fn=0x7095->0x0184 c1=0x0066->0x0029 "
+                "c2=0x70e7->0x0192 c3=0x70ec->0x0199 play=0x01f7->0x0183 del=0x01f8->0x0185",
+                markers,
+            )
+            self.assertIn("FX6_STAGE_B_BRIDGE round=9 faithful=1 nop_count=0", markers)
+
+            phy_log = "\n".join(sb["fx3_phy_key_events"])
+            for tok in phy_tokens:
+                self.assertIn(tok, phy_log)
+
+            gpe = run["gpe0_readback"]
+            self.assertTrue(gpe["present"])
+            self.assertEqual(gpe["nonzero_pixels"], min_px)
+            self.assertGreaterEqual(gpe["unique_colors"], min_col)
+            self.assertEqual(run["amber_0xffffaa00_pixels"], min_amber)
+
+    def test_round9_png_receipts_valid_and_pixel_verified(self) -> None:
+        self.assertTrue(ROUND9_ASSETS_DIR.is_dir())
+        alpha_digests: Dict[str, str] = {}
+        comp_digests: Dict[str, str] = {}
+        for stem in self.EXPECTED_STEMS:
+            for variant, bucket in (("alpha", alpha_digests), ("composited", comp_digests)):
+                png_path = ROUND9_ASSETS_DIR / f"{stem}-{variant}.png"
+                self.assertTrue(png_path.is_file(), f"Missing Round 9 PNG: {png_path}")
+                w, h, _ = _parse_and_validate_png(png_path.read_bytes())
+                self.assertEqual((w, h), (1024, 540))
+                bucket[stem] = hashlib.sha256(png_path.read_bytes()).hexdigest()
+
+        self.assertEqual(len(set(alpha_digests.values())), len(self.EXPECTED_STEMS))
+        self.assertEqual(len(set(comp_digests.values())), len(self.EXPECTED_STEMS))
+
+        # Bit-for-bit consistency with Rounds 5/6/8 visual ground truth
+        for variant in ("alpha", "composited"):
+            self.assertEqual(
+                hashlib.sha256(
+                    (ROUND9_ASSETS_DIR / f"r9a-stage-b-shooting-hud-{variant}.png").read_bytes()
+                ).hexdigest(),
+                hashlib.sha256(
+                    (ASSETS_DIR / f"r5b-shooting-hud-{variant}.png").read_bytes()
+                ).hexdigest(),
+            )
+            self.assertEqual(
+                hashlib.sha256(
+                    (ROUND9_ASSETS_DIR / f"r9c-c1-big6-subdialog-{variant}.png").read_bytes()
+                ).hexdigest(),
+                hashlib.sha256(
+                    (ASSETS_DIR / f"r6a-big6-subdialog-{variant}.png").read_bytes()
+                ).hexdigest(),
+            )
+            self.assertEqual(
+                hashlib.sha256(
+                    (ROUND9_ASSETS_DIR / f"r9d-c2-menu-3layer-{variant}.png").read_bytes()
+                ).hexdigest(),
+                hashlib.sha256(
+                    (ASSETS_DIR / f"r6b-menu-layer-2nd-{variant}.png").read_bytes()
+                ).hexdigest(),
+            )
+
+        # Verify Cinema Line amber 0xffffaa00 highlight in r9c Big6 Setting Sub-Dialog
+        _, _, r9c_rows = _decode_png_rgba_rows(
+            (ROUND9_ASSETS_DIR / "r9c-c1-big6-subdialog-alpha.png").read_bytes()
+        )
+        amber_px = 0
+        for row in r9c_rows:
+            for x in range(0, 1024 * 4, 4):
+                if row[x : x + 4] == b"\xff\xaa\x00\xff":
+                    amber_px += 1
+        self.assertEqual(amber_px, 2035)
 
 
 class TestOptionalDonorBinariesReadOnly(unittest.TestCase):

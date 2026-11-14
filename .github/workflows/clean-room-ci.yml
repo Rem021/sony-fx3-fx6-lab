@@ -54,20 +54,24 @@ jobs:
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-byof
 
-      - name: Run 5-suite donorless clean-room verification (synthetic + Unicorn + POSIX sh)
+      - name: Run 7-suite donorless clean-room verification (synthetic + Unicorn + POSIX sh)
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
 
-      - name: Run Phase 17..21 Peripheral UX, AP-CP Imaging, Stage-B P10 & P11 UIPC Shim CLI checks
+      - name: Run Phase 17..37 Stage-B P10/P11/P12, Firmware-Lab & Co-Emulation CLI checks
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-peripheral-ux > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-ap-cp-imaging > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-stage-b-p10 > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-uipc-cp-shim > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-wireless-guard > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-firmware-lab > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-coemulation > /dev/null
 
-      - name: Run Stage-A H0->H1->H2 zero-mutation lifecycle drill + 10 fault injections
+      - name: Run Stage-A & Stage-B H0->H1->H2 zero-mutation lifecycle drills
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make lifecycle-drill > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make stage-b-lifecycle-drill > /dev/null
 
       - name: Audit zero .pyc / __pycache__ / clean-room hygiene
         run: |

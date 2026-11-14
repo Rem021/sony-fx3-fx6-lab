@@ -40,11 +40,15 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **`O_RDONLY` `global.xdb` (`uxa\x07`) & UX Resource Inspector**: Inspects FX6 `v6.01` (`1,792 B`, `7` active slots, `63/63` `.uxc`/`.uxb` files present, `lang.uxb` `36` entries, `fontlist.dat` `5` fonts) and FX3 `v7.02` (`11,664 B`, `239` slots / `12` active + `227` `__Dummy_NS_ID__*`, `117/117` files present, `lang.uxb` `36` entries, `fontlist.dat` `6` fonts) strictly via `os.O_RDONLY`, plus `file:...?mode=ro&immutable=1` SQLite3 support (never creating `-wal`/`-shm` sidecars) and deterministic Clean-Room synthetic fallback.
    - **11-Category / 128-Page Multilingual Menu Tree Verifier**: Audits all `11` Level-1 Cinema Line categories (`User`, `Edit User Menu`, `Shooting`, `Project`, `Paint/Look`, `TC/Media`, `Monitoring`, `Audio`, `Thumbnail`, `Technical`, `Maintenance`), `Big-6 Home` (`98` rows), `Assignable Buttons Page 110` (`54` rows, `30` pool ResIDs, `P10`), and all `128` widget descriptor pages (`2,224` rows, `4,658` ResID references in donor / `8,896` in clean-room) across `EN`, `Simplified Chinese`, `Traditional Chinese`, and `Japanese` with `0` missing ResIDs, `0` corrupt UTF-8 labels, and `0` null descriptor hazards.
    - **FX3 Hardware-Predicate Safety Verification**: Proves FX6-only physical hardware menu items map cleanly to deterministic FX3 safe states (`VARIABLE_ND` / `P4` -> `LOCKED_CLEAR`, `SDI_12G_OUTPUT` / `P2+P5` -> `HDMI_FALLBACK`, `SMART_GRIP_HANDLE_ZOOM` / `P3+P10+P11` -> `INTERNAL_MIC_FALLBACK`, `WLAN_AIRPLANE_GATE` / `P12` -> `AIRPLANE_ISOLATED`) with zero null-pointer or missing-widget hazards and `nvram_flash_mutation_bytes = 0`.
+9. [`fx3_firmware_lab/audio_tc_hdmi_sdi_routing_auditor.py`](fx3_firmware_lab/audio_tc_hdmi_sdi_routing_auditor.py)
+   - **Pillar A — 4-Channel `24-bit 48kHz LPCM` Audio Matrix**: Audits FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, `libInfraHotshoe.so`, and `AVBB_SCN_START_AUDIO.so` strictly `os.O_RDONLY` (with deterministic Clean-Room fallback), mapping FX6 Smart Handle `CH1/CH2` + MI-Shoe `CH3/CH4` against FX3 `XLR-H1` MI-Shoe digital audio (`4,608,000 bps`), 3.5mm body mic jack, and 3.5mm headphone monitor bus, and verifying `P11` (`0x91db059b` `0x88000002` + `E_TMO = -50 -> 0x8000`) hot-detach graceful fallback to `Internal Stereo` without stalling recording.
+   - **Pillar B — `SMPTE 12M` Timecode (`Preset` / `Regen` / `Free Run` / `Rec Run` / `EXT-LK`)**: Audits FX6 dedicated BNC `TC IN/OUT` vs FX3 Multi-Port `VMC-BNCM1` `LTC IN` (`Pin 3 LTC+`, `Pin 6 680 kOhm ID`) + `HDMI TC ON` external trigger (Atomos Ninja/Shogun) + `P11 0x92d2091c` `/dev/rtc0->udate` shim, enforcing normal-shooting `EXT-LK` while cross-checking the Phase 38 rule that `VMC-BNCM1` MUST be disconnected during `H0`/`Tier-3` `uart_boot` (`Pins 7/8/9`).
+   - **Pillar C — FX6 `12G-SDI` + `HDMI` Monitoring -> FX3 Full-Size `HDMI Type-A` Safe Routing**: Audits `4264x2408 16-bit Linear RAW` HDMI output, `4K DCI / QFHD 10-bit 4:2:2` clean feed (`HDMI_INFO_DISPLAY_OFF`), independent `MLUT` (`Monitor 3D LUT On/Off` per output), and `SDI Sub-Output` / `SDI Main` no-op containment on FX3 (`VAL_FEATURE_MANAGER_sdi_output_TYPE_SDI_OUTPUT_NOT_SUPPORT`, `0` missing-transceiver panics or black-screen stalls).
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 8 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 9 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -56,8 +60,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wbi-elf --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xdb-menu
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xdb-menu --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-audio-tc-hdmi
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-audio-tc-hdmi --clean-room
 
-# Run all 157 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 185 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

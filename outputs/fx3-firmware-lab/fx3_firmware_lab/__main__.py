@@ -10,6 +10,10 @@ import argparse
 import json
 from typing import Dict, Optional, Sequence
 
+from .audio_tc_hdmi_sdi_routing_auditor import (
+    analyze_audio_tc_hdmi_sdi_routing,
+    audio_tc_hdmi_sdi_routing_report_to_dict,
+)
 from .cube_lut_and_rtmd_verifier import (
     analyze_cube_lut_and_rtmd,
     cube_lut_and_rtmd_report_to_dict,
@@ -39,7 +43,7 @@ from .wbi_hibdrv_and_elf_abi_differ import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all eight clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all nine clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -56,6 +60,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     xdb_menu = global_xdb_and_menu_tree_report_to_dict(
         analyze_global_xdb_and_menu_tree(clean_room=clean_room)
     )
+    audio_tc_hdmi = audio_tc_hdmi_sdi_routing_report_to_dict(
+        analyze_audio_tc_hdmi_sdi_routing(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -66,6 +73,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and lut_rtmd.get("all_checks_passed")
         and wbi_elf.get("all_checks_passed")
         and xdb_menu.get("all_checks_passed")
+        and audio_tc_hdmi.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -81,17 +89,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "cube_lut_and_rtmd_audit": lut_rtmd,
         "wbi_hibdrv_and_elf_abi_audit": wbi_elf,
         "global_xdb_and_menu_tree_audit": xdb_menu,
+        "audio_tc_hdmi_sdi_routing_audit": audio_tc_hdmi,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, and global.xdb/128-page menu auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, and 4-ch audio / SMPTE 12M TC / HDMI-SDI routing auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 8 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 9 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -132,6 +141,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
     p_xm.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
 
+    p_at = sub.add_parser(
+        "audit-audio-tc-hdmi",
+        help="Run Phase 51 4-ch 24-bit 48kHz XLR-H1 audio, SMPTE 12M TC (VMC-BNCM1 EXT-LK & HDMI TC), and 12G-SDI->HDMI Type-A 16-bit RAW matrix audit",
+    )
+    p_at.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -159,6 +174,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-xdb-menu":
         payload = global_xdb_and_menu_tree_report_to_dict(
             analyze_global_xdb_and_menu_tree(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-audio-tc-hdmi":
+        payload = audio_tc_hdmi_sdi_routing_report_to_dict(
+            analyze_audio_tc_hdmi_sdi_routing(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

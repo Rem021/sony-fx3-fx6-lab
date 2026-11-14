@@ -16,18 +16,24 @@ from .haita_bk4_feature_analyzer import (
 )
 from .ufu_container_auditor import audit_ufu_suite
 from .uxc_ldec_inspector import inspect_uxc_and_ldec, uxc_report_to_dict
+from .uxc_multilang_and_font_verifier import (
+    multilang_report_to_dict,
+    verify_multilang_and_fonts,
+)
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all three clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all four clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
+    multilang = multilang_report_to_dict(verify_multilang_and_fonts(clean_room=clean_room))
 
     all_passed = bool(
         ufu.get("all_checks_passed")
         and haita.get("all_checks_passed")
         and uxc.get("all_checks_passed")
+        and multilang.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -38,17 +44,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "ufu_container_audit": ufu,
         "haita_bk4_feature_audit": haita,
         "uxc_ldec_asset_audit": uxc,
+        "uxc_multilang_and_font_audit": multilang,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, and .uxc/LDEC asset auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, and .uxc/LDEC/CJK font asset auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run UFU, HAITA/BK4, and .uxc/LDEC audits and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run UFU, HAITA/BK4, .uxc/LDEC, and multilang/font audits and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -58,6 +65,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     p_uxc = sub.add_parser("audit-uxc", help="Run hardware-free .uxc / CPU LDEC asset audit")
     p_uxc.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+
+    p_ml = sub.add_parser(
+        "audit-multilang",
+        help="Run 62-pack .uxc multi-language, CJK/JP/EN font cmap, and CPU sprite sweep audit",
+    )
+    p_ml.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
 
     args = parser.parse_args(argv)
 
@@ -69,6 +82,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         payload = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=bool(args.clean_room)))
     elif args.command == "audit-uxc":
         payload = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=bool(args.clean_room)))
+    elif args.command == "audit-multilang":
+        payload = multilang_report_to_dict(verify_multilang_and_fonts(clean_room=bool(args.clean_room)))
     else:
         parser.error(f"Unknown command: {args.command}")
         return 2

@@ -21,15 +21,20 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
 3. [`fx3_firmware_lab/uxc_ldec_inspector.py`](fx3_firmware_lab/uxc_ldec_inspector.py)
    - Parses `uxd\x07` / `uxc\x07` containers (`image_00_169.uxc` 1,610 sprites / 22 nine-patch, `string_english_2.uxc` 5,915 strings, `string_english.uxc`, `color_cmn.uxc`, `lang_cmn.uxc`, `style_cmn.uxc`, and 62 sibling `.uxc` packs).
    - Implements bounded CPU-only Sony LDEC / LZ77 (`0x0F` raw + `0xF0` flag-byte/match streams, `((w + 15) & ~15)` aligned width) without `/dev/ldec`, plus `RGBA4444` / `RGBA8888` / `ARGB4444` / `A8` -> `ARGB8888` conversion parity.
+4. [`fx3_firmware_lab/uxc_multilang_and_font_verifier.py`](fx3_firmware_lab/uxc_multilang_and_font_verifier.py)
+   - Audits all **62** FX6 `.uxc` packs (`29` languages × `ns=1` `5,044` strings + `29` × `ns=2` `5,915` strings + `color_cmn` / `lang_cmn` / `style_cmn` + `image_00_169.uxc`) for strict UTF-8 validity and 1:1 `STRID` slot/`resid16` parity against English, plus FX3 v7.02 (`121` `.uxc` packs across `34` languages) cross-body isolation diff (`MOUNT_FX6_UXC_WITH_FX6_APPFW_ONLY`).
+   - Parses OpenType/TrueType `cmap` format-4 and format-12 tables across `.ttf`/`.otf`/`.ttc` and Monotype `.ltt` linked font containers (`Sony_DI_Icons.ttf`, `UniversOTS-SJ_wIcon.ltt`, `HeiseiKakuGothW5-SJ_wIcon.ltt`, `MYingHeiC-GB18030-SJ_wIcon.ltt`, `MYingHeiC-Big5HKSCS-SJ_wIcon.ltt`, `MYingHeiC-KSX1001-SJ_wIcon.ltt`) to prove 100% standard Unicode glyph coverage for Simplified Chinese, Traditional Chinese, Japanese, and English.
+   - Sweeps 100% of all `1,610` FX6 sprites (`51,972,736` decoded bytes) and FX3 image pack samples via pure-CPU `fast_decode_ldec_lz77` with deterministic SHA-256 verification.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 3 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 4 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
 
-# Run all 28 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 51 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

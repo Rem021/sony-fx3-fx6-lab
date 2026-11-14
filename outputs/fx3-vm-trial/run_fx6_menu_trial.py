@@ -1136,6 +1136,24 @@ HTML_UI = """<!DOCTYPE html>
     </div>
 
     <div class="card">
+      <h3>FX3 物理机身按键映射预览 (Phase 17 P10 24B .rodata 补丁)</h3>
+      <div class="page-grid" style="margin-bottom:8px;">
+        <button onclick="sendKey('HOME')" title="FX3 Fn (0x0013) -> PF_K_HOME [快捷键 F]">Fn → Big6 HOME</button>
+        <button onclick="sendKey('SET')" class="btn-set" title="FX3 C1 (0x001d) -> PF_K_KURU_PON [快捷键 1]">C1 → 转盘确认</button>
+        <button onclick="sendKey('BACK')" title="FX3 C2 (0x0024) -> PF_K_MENU_CANCEL [快捷键 2]">C2 → 取消/返回</button>
+        <button onclick="sendKey('DISP')" title="FX3 C3 (0x0025) -> PF_K_DISP_SEL [快捷键 3]">C3 → DISP 切换</button>
+        <button onclick="setPage(14)" title="FX3 PLAY (0x000b) -> PF_K_THUMBNAIL [快捷键 P]">PLAY → 缩略图</button>
+        <button onclick="setCat(0)" title="FX3 DELETE (0x000c) -> PF_K_USER [快捷键 U]">DEL → User菜单</button>
+        <button onclick="sendKey('MENU')" title="FX3 MENU 长按 ≥1000ms (0x0011) -> Full Menu">MENU ≥1s 全菜单</button>
+        <button onclick="setPage(16)" title="FX6 主取景器 253 行拍摄 HUD">MODE → 拍摄HUD</button>
+        <button onclick="setCat(4)" title="Cine EI / S-Log3 / 3D LUT 色彩菜单">LUT / Paint菜单</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.45;">
+        实装 Phase 17 审计通过的 6 键 P10 翻译表（<code>Fn/C1/C2/C3/PLAY/DEL</code>）与快捷键 <code>F / 1 / 2 / 3 / P / U</code>。
+      </div>
+    </div>
+
+    <div class="card">
       <h3>QEMU 虚拟机串口实时日志 (FX6_LIVE_READY / FX6_LIVE_FRAME)</h3>
       <div id="serial-box" class="serial-box">正在连接虚拟机串口...</div>
     </div>
@@ -1329,7 +1347,22 @@ window.addEventListener('keydown', (e) => {
     H: 'HOME',
     d: 'DISP',
     D: 'DISP',
+    f: 'HOME',
+    F: 'HOME',
+    '1': 'SET',
+    '2': 'BACK',
+    '3': 'DISP',
   };
+  if (e.key === 'p' || e.key === 'P') {
+    e.preventDefault();
+    setPage(14);
+    return;
+  }
+  if (e.key === 'u' || e.key === 'U') {
+    e.preventDefault();
+    setCat(0);
+    return;
+  }
   if (map[e.key]) {
     e.preventDefault();
     sendKey(map[e.key]);
@@ -1435,6 +1468,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Sony FX6 Authentic In-Guest GPE0 Menu Runner")
     parser.add_argument("--port", type=int, default=8768)
     parser.add_argument("--no-browser", action="store_true")
+    parser.add_argument("--workdir", type=Path, default=Path("/private/tmp/fx6-live-gpe0-run"))
     parser.add_argument("--check", action="store_true", help="Verify manifest and payload paths without starting VM")
     args = parser.parse_args()
 
@@ -1451,7 +1485,7 @@ def main() -> int:
         print(json.dumps({"ok": True, "manifest": str(MANIFEST_PATH), "resolved": resolved_paths}, ensure_ascii=False))
         return 0
 
-    workdir = TRIAL_DIR / "live-gpe0-run"
+    workdir = args.workdir
     session = FX6LiveGpe0Session(workdir)
 
     print("[FX6-LIVE-GPE0] Auto-starting FX3 QEMU VM with FX6 native UI controller (live700)...")

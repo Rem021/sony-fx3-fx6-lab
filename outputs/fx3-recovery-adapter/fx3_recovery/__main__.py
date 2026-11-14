@@ -14,6 +14,7 @@ from .emmc_dump_forensic_verifier import (
     run_clean_room_forensic_suite,
     verify_emmc_dump_file,
 )
+from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .unbrick_ladder_and_capsule_verifier import run_unbrick_ladder_and_capsule_suite
 
 
@@ -67,6 +68,10 @@ def main():
     ladder.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     ladder.add_argument('--json', action='store_true', help='emit full structured JSON report')
     ladder.add_argument('--out', help='optional exclusive new output directory for unbrick-ladder-report.json')
+    fixture = sub.add_parser('verify-rp2040-fixture', help='Phase 59 camera-disconnected RP2040-Zero -DOPEN_DRAIN 1.8V Multi-Port bench fixture self-test')
+    fixture.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    fixture.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    fixture.add_argument('--out', help='optional exclusive new output directory for rp2040-fixture-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -138,6 +143,23 @@ def main():
                     f"scenarios_passed={report.scenarios_passed}/{report.scenario_count} "
                     f"capsule_fat12_sha256={report.capsule_fat12_tripped.capsule_sha256} "
                     f"capsule_fat16_sha256={report.capsule_fat16_tripped.capsule_sha256} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-rp2040-fixture':
+            report = run_rp2040_multiport_fixture_selftest(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'rp2040-fixture-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} board={report.board} "
+                    f"camera_connected={report.camera_connected} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}"
                 )
             return 0 if report.all_passed else 2

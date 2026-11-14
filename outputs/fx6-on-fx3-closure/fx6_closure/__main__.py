@@ -659,10 +659,47 @@ def _cmd_build_stage_b_readiness_packet(
     return 0 if ok else 1
 
 
+def _cmd_verify_stage_b_ram_overlay(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    clean_room: bool,
+    lang: str,
+    json_output: bool,
+    output_path: Optional[Path],
+) -> int:
+    from .stage_b_ram_overlay_packager import verify_stage_b_ram_overlay_v2
+
+    rep = verify_stage_b_ram_overlay_v2(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        lang=lang,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        summary = (
+            f"status={'OK' if rep.all_checks_passed else 'FAILED'} "
+            f"mode={rep.verification_mode} "
+            f"lang={rep.lang}({rep.bk_lang_spec.bk_lang_value:#04x}) "
+            f"lock_table={rep.lock_table_count}/13 "
+            f"tmpfs_mib={rep.tmpfs_budget_audit.volatile_tmpfs_overlay_mib:.2f}/48.00 "
+            f"sandbox={rep.sandbox_drill.passed_count}/{rep.sandbox_drill.scenario_count} "
+            f"cpio_sha256={rep.cpio_sha256[:16]}... "
+            f"report_sha256={rep.report_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if rep.all_checks_passed else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 39 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Stage-B P10/P11/P12 Master Hardware Readiness CLI",
+        description="FX6-on-FX3 Phase 48 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Stage-B P10/P11/P12 RAM-Overlay v2 CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -690,6 +727,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-post-trial", "Verify Phase H2 post-power-cycle zero-mutation parity (stage_a_post_trial_receipt_v1) between H0 and H2 Tier-0 bundles plus optional H1 orchestrator telemetry"),
         ("run-h0-h1-h2-drill", "Execute full offline Phase H0 -> Phase H1 (/bin/sh orchestrator) -> Phase H2 zero-mutation lifecycle drill + 10-case negative fault-injection suite"),
         ("run-stage-b-lifecycle-drill", "Execute Phase 35 complete Stage-B (P1..P12+Fan) 10-scenario H0 -> H1 -> H2 lifecycle, serial_fault_detector_v2 & cryptographic zero-drift verification"),
+        ("verify-stage-b-ram-overlay", "Build deterministic Phase 48 Stage-B (P1..P12+Fan, 13/13) CPIO newc RAM-overlay v2 with BK4 language/Airplane shadow and run 9-scenario init2 sandbox drill"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name != "verify-post-trial":
@@ -702,9 +740,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
+        if cmd_name == "verify-stage-b-ram-overlay":
+            p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
+            p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
         if cmd_name in ("build-readiness-packet", "build-stage-b-readiness-packet"):
             p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 capture directory")
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write deterministic readiness packet")
@@ -799,6 +840,15 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.fx3_modules_dir,
             args.output,
             args.clean_room,
+        )
+    if args.cmd == "verify-stage-b-ram-overlay":
+        return _cmd_verify_stage_b_ram_overlay(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.clean_room,
+            args.lang,
+            args.json,
+            args.output,
         )
     return 2
 

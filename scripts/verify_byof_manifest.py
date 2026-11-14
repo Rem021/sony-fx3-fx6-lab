@@ -45,7 +45,21 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DOC_PATH = REPO_ROOT / "docs" / "BYOF-REPRODUCTION.md"
-DEFAULT_DONOR_ROOT = Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027")
+def _resolve_default_donor_root(repo_root: Path) -> Path:
+    env_dir = os.environ.get("FX3_FX6_MAC_WORK_DIR", "").strip()
+    if env_dir:
+        return Path(env_dir) / "fx3-color-port-20261027"
+    for cand in (
+        repo_root.parents[1] / "work/fx3-color-port-20261027",
+        Path.home() / "AI-Workspace/AI/Projects/Mac/work/fx3-color-port-20261027",
+        Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027"),
+    ):
+        if cand.is_dir():
+            return cand
+    return Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027")
+
+
+DEFAULT_DONOR_ROOT = _resolve_default_donor_root(REPO_ROOT)
 
 HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 

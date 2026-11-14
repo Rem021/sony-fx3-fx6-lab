@@ -31,18 +31,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-_LOCAL_UNICORN_SITE = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/"
-    "tools/venv/lib/python3.14/site-packages"
-)
-try:
-    import unicorn as U
-    from unicorn import arm64_const as A
-except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
-    import unicorn as U
-    from unicorn import arm64_const as A
+from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable, resolve_mac_work_dir as _resolve_mac_work_dir
+
+_ensure_unicorn_importable()
+import unicorn as U
+from unicorn import arm64_const as A
 
 
 UIPC_BB_TARGET_QUEUE = 0x92840747

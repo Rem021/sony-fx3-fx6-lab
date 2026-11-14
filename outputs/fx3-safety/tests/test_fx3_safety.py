@@ -10,10 +10,25 @@ import unittest
 from pathlib import Path
 
 
+def _resolve_color_port_dir() -> Path:
+    repo_root = Path(__file__).resolve().parents[3]
+    for cand in (
+        repo_root.parents[1] / "work/fx3-color-port-20261027",
+        Path.home() / "AI-Workspace/AI/Projects/Mac/work/fx3-color-port-20261027",
+        Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027"),
+    ):
+        if cand.is_dir():
+            return cand
+    return Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027")
+
+
+_COLOR_PORT_DIR = _resolve_color_port_dir()
+
+
 def _clean_room_or_missing_donor(*paths: Path) -> bool:
     if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes"):
         return True
-    if not Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027").is_dir():
+    if not _COLOR_PORT_DIR.is_dir():
         return True
     return any(not p.is_file() for p in paths)
 
@@ -570,17 +585,15 @@ class TestFX3SafetySuite(unittest.TestCase):
 
     @unittest.skipIf(
         _clean_room_or_missing_donor(
-            Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"),
-            Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"),
+            (_COLOR_PORT_DIR / "input-20261028/original-update-engine/2.05/partinf.conf"),
+            (_COLOR_PORT_DIR / "FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"),
         ),
         "Clean-room mode or external donor partinf.conf files absent",
     )
     def test_phase9_donor_partinf_conf_fx3_and_fx6_roundtrip(self) -> None:
-        fx3_pconf = Path(
-            "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"
+        fx3_pconf = (_COLOR_PORT_DIR / "input-20261028/original-update-engine/2.05/partinf.conf"
         )
-        fx6_pconf = Path(
-            "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"
+        fx6_pconf = (_COLOR_PORT_DIR / "FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"
         )
         fx3_s0 = build_sector0_from_partitions(parse_partinf_conf(fx3_pconf.read_text(errors="replace")))
         fx6_s0 = build_sector0_from_partitions(parse_partinf_conf(fx6_pconf.read_text(errors="replace")))

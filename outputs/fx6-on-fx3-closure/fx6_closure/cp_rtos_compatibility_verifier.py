@@ -35,6 +35,7 @@ from pathlib import Path
 from typing import Dict, List, Mapping, Optional, Sequence, Tuple
 
 from .backup_mount_tolerance_verifier import (
+    DEFAULT_COLOR_PORT_WORK_DIR,
     DEFAULT_FX6_TEMPLATE_BK4_PATH,
     read_bk4_property_bytes,
 )
@@ -45,29 +46,17 @@ from .boot_selector_and_bank_verifier import (
 )
 
 
-DEFAULT_FX6_NFLASHA8_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/fat-files/nflasha8"
+DEFAULT_FX6_NFLASHA8_DIR = (DEFAULT_COLOR_PORT_WORK_DIR / "FX6-donor-assessment-20261103/team/donor/fat-files/nflasha8"
 )
-DEFAULT_FX6_CP_AV_ANALYSIS_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/cp-av-analysis"
+DEFAULT_FX6_CP_AV_ANALYSIS_DIR = (DEFAULT_COLOR_PORT_WORK_DIR / "FX6-donor-assessment-20261103/team/donor/cp-av-analysis"
 )
-DEFAULT_FX3_RUNTIME_TOMCO_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "dmm-backup-20261029/tomco.txt"
+DEFAULT_FX3_RUNTIME_TOMCO_PATH = (DEFAULT_COLOR_PORT_WORK_DIR / "dmm-backup-20261029/tomco.txt"
 )
-DEFAULT_FX3_UPDATER_CP_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "package-20261028/updaterfs/cp"
+DEFAULT_FX3_UPDATER_CP_DIR = (DEFAULT_COLOR_PORT_WORK_DIR / "package-20261028/updaterfs/cp"
 )
-DEFAULT_FX3_DMMCFG_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "dmm-config-20261029/original-files/DmmCfg.bin"
+DEFAULT_FX3_DMMCFG_PATH = (DEFAULT_COLOR_PORT_WORK_DIR / "dmm-config-20261029/original-files/DmmCfg.bin"
 )
-DEFAULT_FX3_PFORMAT_CONFIG_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "config-producer-20261029/original-files/pformat_config.txt"
+DEFAULT_FX3_PFORMAT_CONFIG_PATH = (DEFAULT_COLOR_PORT_WORK_DIR / "config-producer-20261029/original-files/pformat_config.txt"
 )
 
 # Canonical pinned sizes & SHA-256 digests for FX6 nflasha8 (/cp) artifacts

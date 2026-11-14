@@ -88,7 +88,9 @@ DEFAULT_FX6_DONOR_ROOT = DEFAULT_FX6_TEAM_DIR / "donor"
 DEFAULT_FX6_P3_INITRD_DIR = DEFAULT_FX6_DONOR_ROOT / "nested-files" / "nflasha3-initrd"
 DEFAULT_FX6_P15_FILES_DIR = DEFAULT_FX6_DONOR_ROOT / "nflasha15-files"
 
-DEFAULT_FX3_VM_WORK_ROOT = Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101")
+from ._donor_paths import resolve_mac_work_dir as _resolve_mac_work_dir
+_MAC_WORK_DIR = _resolve_mac_work_dir()
+DEFAULT_FX3_VM_WORK_ROOT = _MAC_WORK_DIR / "fx3-vm-20261101"
 DEFAULT_FX3_ORIGINAL_SCRIPTS_DIR = (
     DEFAULT_FX3_VM_WORK_ROOT / "menu-repair-01" / "original-uipc" / "original-scripts"
 )
@@ -1626,12 +1628,20 @@ def audit_elf64_symbol_and_verneed_closure(
             for guest_path, soname_key in runtime_pairs:
                 rec = logical.get(guest_path, {})
                 pay_str = rec.get("payload_file") if isinstance(rec, dict) else None
+                pay_path: Optional[Path] = None
+                if pay_str:
+                    cand = Path(pay_str)
+                    if not cand.is_file() and pay_str.startswith("/Volumes/KAFU2T/AI/Projects/Mac/work/"):
+                        remapped = _MAC_WORK_DIR / pay_str[len("/Volumes/KAFU2T/AI/Projects/Mac/work/") :]
+                        if remapped.is_file():
+                            cand = remapped
+                    pay_path = cand
                 fx6_prov = provider_index.get(soname_key)
-                if not pay_str or not Path(pay_str).is_file() or fx6_prov is None:
+                if pay_path is None or not pay_path.is_file() or fx6_prov is None:
                     fx3_abi_parity_ok = False
                     errors.append(f"Missing FX3 runtime payload for ABI parity check: {guest_path}")
                     continue
-                fx3_info = parse_elf64_linkage_info(Path(pay_str).read_bytes(), file_name=Path(pay_str).name)
+                fx3_info = parse_elf64_linkage_info(pay_path.read_bytes(), file_name=pay_path.name)
                 if fx3_info.exported_symbols != fx6_prov.exported_symbols or fx3_info.verdefs != fx6_prov.verdefs:
                     fx3_abi_parity_ok = False
                     errors.append(f"FX3 vs FX6 base runtime ABI/VERDEF mismatch on {guest_path}")

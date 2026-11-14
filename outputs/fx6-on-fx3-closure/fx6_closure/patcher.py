@@ -30,14 +30,26 @@ from .elf_verify import (
 )
 
 
-DEFAULT_FX6_DONOR_LIB_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib"
+from ._donor_paths import resolve_mac_work_dir as _resolve_mac_work_dir
+
+_MAC_WORK_DIR = _resolve_mac_work_dir()
+
+DEFAULT_FX6_DONOR_LIB_DIR = (
+    _MAC_WORK_DIR
+    / "fx3-color-port-20261027"
+    / "FX6-donor-assessment-20261103"
+    / "team"
+    / "donor"
+    / "nflasha15-files"
+    / "lib"
 )
 
-DEFAULT_FX3_MODULES_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
-    "menu-repair-01/original-uipc/original-modules"
+DEFAULT_FX3_MODULES_DIR = (
+    _MAC_WORK_DIR
+    / "fx3-vm-20261101"
+    / "menu-repair-01"
+    / "original-uipc"
+    / "original-modules"
 )
 
 

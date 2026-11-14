@@ -415,6 +415,328 @@ def compute_gpe0_frame_diff(raw_a: bytes, raw_b: bytes) -> dict[str, int]:
     }
 
 
+_FAST_SCOPE_FN = None
+_FAST_SCOPE_TRIED = False
+_FALLBACK_RAW_CACHE: bytes | None = None
+
+
+def _get_fast_scope_fn():
+    """Compile once into /private/tmp for sub-ms GPE0 32-col waveform & 16-bin RGB/Luma histogram."""
+    global _FAST_SCOPE_FN, _FAST_SCOPE_TRIED
+    if _FAST_SCOPE_TRIED:
+        return _FAST_SCOPE_FN
+    _FAST_SCOPE_TRIED = True
+    scope_kernel = (
+        "#include <stddef.h>\n"
+        "#include <stdint.h>\n"
+        "void fx6_compute_scope_stats(const uint32_t *src, uint32_t w, uint32_t h, uint32_t *out) {\n"
+        "    for (uint32_t i = 0; i < 196u; i++) out[i] = 0u;\n"
+        "    for (uint32_t c = 0; c < 32u; c++) out[c * 4u] = 255u;\n"
+        "    uint32_t total_nz = 0u, hi_px = 0u, amber_px = 0u, active_px = 0u;\n"
+        "    for (uint32_t y = 0; y < h; y++) {\n"
+        "        const uint32_t *row = src + (size_t)y * w;\n"
+        "        for (uint32_t x = 0; x < w; x++) {\n"
+        "            uint32_t v = row[x];\n"
+        "            uint32_t col = (x * 32u) / w;\n"
+        "            if (col > 31u) col = 31u;\n"
+        "            uint32_t cbase = col * 4u;\n"
+        "            if (v == 0u) {\n"
+        "                out[cbase] = 0u;\n"
+        "                out[128u + 0u]++;\n"
+        "                out[144u + 0u]++;\n"
+        "                out[160u + 0u]++;\n"
+        "                out[176u + 0u]++;\n"
+        "            } else {\n"
+        "                total_nz++;\n"
+        "                out[cbase + 3u]++;\n"
+        "                uint32_t r = (v >> 16) & 0xffu;\n"
+        "                uint32_t g = (v >> 8) & 0xffu;\n"
+        "                uint32_t b = v & 0xffu;\n"
+        "                uint32_t luma = (54u * r + 183u * g + 19u * b) >> 8;\n"
+        "                out[128u + (r >> 4)]++;\n"
+        "                out[144u + (g >> 4)]++;\n"
+        "                out[160u + (b >> 4)]++;\n"
+        "                out[176u + (luma >> 4)]++;\n"
+        "                out[cbase + 1u] += luma;\n"
+        "                if (luma < out[cbase]) out[cbase] = luma;\n"
+        "                if (luma > out[cbase + 2u]) out[cbase + 2u] = luma;\n"
+        "                uint32_t is_hi = (luma >= 178u) ? 1u : 0u;\n"
+        "                uint32_t is_amb = (r >= 160u && g >= 70u && r > b + 60u && g > b + 20u) ? 1u : 0u;\n"
+        "                hi_px += is_hi;\n"
+        "                amber_px += is_amb;\n"
+        "                if (is_hi || is_amb) active_px++;\n"
+        "            }\n"
+        "        }\n"
+        "    }\n"
+        "    out[192] = total_nz;\n"
+        "    out[193] = hi_px;\n"
+        "    out[194] = amber_px;\n"
+        "    out[195] = active_px;\n"
+        "}\n"
+    )
+    try:
+        import ctypes
+        tag = hashlib.sha256(scope_kernel.encode()).hexdigest()[:12]
+        dylib = Path("/private/tmp") / f"fx6_gpe0_scope_{tag}.dylib"
+        if not dylib.is_file():
+            src_file = Path("/private/tmp") / f"fx6_gpe0_scope_{tag}.c"
+            tmp_dylib = Path("/private/tmp") / f"fx6_gpe0_scope_{tag}.{os.getpid()}.dylib"
+            src_file.write_text(scope_kernel)
+            done = subprocess.run(
+                ["/usr/bin/xcrun", "clang", "-O3", "-dynamiclib", str(src_file), "-o", str(tmp_dylib)],
+                capture_output=True,
+                timeout=10,
+            )
+            if done.returncode == 0:
+                os.replace(tmp_dylib, dylib)
+        if dylib.is_file():
+            lib = ctypes.CDLL(str(dylib))
+            fn = lib.fx6_compute_scope_stats
+            fn.argtypes = [ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32, ctypes.c_void_p]
+            fn.restype = None
+            _FAST_SCOPE_FN = (ctypes, fn)
+    except Exception:
+        _FAST_SCOPE_FN = None
+    return _FAST_SCOPE_FN
+
+
+def _luma8_to_ire(val: float) -> float:
+    return round((float(val) * 109.0) / 255.0, 2)
+
+
+def _format_scope_stats(
+    stats_words: list[int] | tuple[int, ...],
+    frame_sha256: str,
+    width: int = GPE0_W,
+    height: int = GPE0_H,
+) -> dict[str, Any]:
+    total_pixels = width * height
+    col_pixels = max(1, (width // 32) * height)
+    waveform: list[dict[str, Any]] = []
+    for c in range(32):
+        base = c * 4
+        c_min = stats_words[base]
+        c_sum = stats_words[base + 1]
+        c_max = stats_words[base + 2]
+        c_nz = stats_words[base + 3]
+        waveform.append({
+            "col": c,
+            "min_ire": _luma8_to_ire(c_min),
+            "avg_ire": _luma8_to_ire(c_sum / float(col_pixels)),
+            "max_ire": _luma8_to_ire(c_max),
+            "nonzero_px": int(c_nz),
+        })
+    hist_r = [int(stats_words[128 + i]) for i in range(16)]
+    hist_g = [int(stats_words[144 + i]) for i in range(16)]
+    hist_b = [int(stats_words[160 + i]) for i in range(16)]
+    hist_l = [int(stats_words[176 + i]) for i in range(16)]
+    total_nz = int(stats_words[192])
+    hi_px = int(stats_words[193])
+    amber_px = int(stats_words[194])
+    active_px = int(stats_words[195])
+    return {
+        "ok": True,
+        "width": width,
+        "height": height,
+        "total_pixels": total_pixels,
+        "nonzero_pixels": total_nz,
+        "nonzero_ratio": round(total_nz / float(total_pixels), 6) if total_pixels else 0.0,
+        "highlight_pixels": hi_px,
+        "amber_pixels": amber_px,
+        "active_highlight_amber_pixels": active_px,
+        "waveform_columns": 32,
+        "waveform": waveform,
+        "histogram_bins": 16,
+        "histograms": {
+            "r": hist_r,
+            "g": hist_g,
+            "b": hist_b,
+            "luma": hist_l,
+        },
+        "ire_range": [0.0, 109.0],
+        "frame_sha256": frame_sha256,
+    }
+
+
+def _py_compute_scope_stats(raw: bytes, width: int = GPE0_W, height: int = GPE0_H) -> dict[str, Any]:
+    expected = width * height * 4
+    if len(raw) < expected:
+        raise ValueError(f"GPE0 buffer too small for scope stats: {len(raw)} < {expected}")
+    u32_list = memoryview(raw)[:expected].cast("I")
+    col_min = [255] * 32
+    col_sum = [0] * 32
+    col_max = [0] * 32
+    col_nz = [0] * 32
+    hist_r = [0] * 16
+    hist_g = [0] * 16
+    hist_b = [0] * 16
+    hist_l = [0] * 16
+    total_nz = 0
+    hi_px = 0
+    amber_px = 0
+    active_px = 0
+    for idx, v in enumerate(u32_list):
+        col = ((idx % width) * 32) // width
+        if col > 31:
+            col = 31
+        if v == 0:
+            col_min[col] = 0
+            hist_r[0] += 1
+            hist_g[0] += 1
+            hist_b[0] += 1
+            hist_l[0] += 1
+        else:
+            total_nz += 1
+            col_nz[col] += 1
+            r = (v >> 16) & 0xFF
+            g = (v >> 8) & 0xFF
+            b = v & 0xFF
+            luma = (54 * r + 183 * g + 19 * b) >> 8
+            hist_r[r >> 4] += 1
+            hist_g[g >> 4] += 1
+            hist_b[b >> 4] += 1
+            hist_l[luma >> 4] += 1
+            col_sum[col] += luma
+            if luma < col_min[col]:
+                col_min[col] = luma
+            if luma > col_max[col]:
+                col_max[col] = luma
+            is_hi = luma >= 178
+            is_amb = (r >= 160 and g >= 70 and r > b + 60 and g > b + 20)
+            if is_hi:
+                hi_px += 1
+            if is_amb:
+                amber_px += 1
+            if is_hi or is_amb:
+                active_px += 1
+    words: list[int] = []
+    for c in range(32):
+        words.extend([col_min[c], col_sum[c], col_max[c], col_nz[c]])
+    words.extend(hist_r)
+    words.extend(hist_g)
+    words.extend(hist_b)
+    words.extend(hist_l)
+    words.extend([total_nz, hi_px, amber_px, active_px])
+    digest = hashlib.sha256(raw[:expected]).hexdigest()
+    return _format_scope_stats(words, digest, width=width, height=height)
+
+
+def compute_gpe0_scope_stats(raw: bytes, *, use_fast: bool = True) -> dict[str, Any]:
+    """Compute 32-col IRE waveform (0..109%), 16-bin RGB/Luma histograms, NZ ratio & highlight/amber counts."""
+    if len(raw) < GPE0_BYTES:
+        raise ValueError(f"GPE0 buffer too small for scope stats: {len(raw)} < {GPE0_BYTES}")
+    fast = _get_fast_scope_fn() if use_fast else None
+    if fast is not None:
+        ctypes_mod, fn = fast
+        src_buf = (ctypes_mod.c_char * GPE0_BYTES).from_buffer_copy(raw, 0)
+        out_arr = (ctypes_mod.c_uint32 * 196)()
+        fn(ctypes_mod.addressof(src_buf), GPE0_W, GPE0_H, ctypes_mod.addressof(out_arr))
+        digest = hashlib.sha256(raw[:GPE0_BYTES]).hexdigest()
+        return _format_scope_stats(list(out_arr), digest, width=GPE0_W, height=GPE0_H)
+    return _py_compute_scope_stats(raw, width=GPE0_W, height=GPE0_H)
+
+
+def _png_to_raw_gpe0(png_bytes: bytes) -> bytes:
+    """Decode an 8-bit RGB/RGBA PNG (1024x540) into raw GPE0 little-endian 0xAARRGGBB uint32 buffer."""
+    if not png_bytes.startswith(b"\x89PNG\r\n\x1a\n"):
+        return b""
+    pos = 8
+    w = h = bd = ct = 0
+    idat = bytearray()
+    total = len(png_bytes)
+    while pos + 12 <= total:
+        ln = struct.unpack_from(">I", png_bytes, pos)[0]
+        tag = png_bytes[pos + 4 : pos + 8]
+        payload = png_bytes[pos + 8 : pos + 8 + ln]
+        if len(payload) < ln:
+            break
+        if tag == b"IHDR" and len(payload) >= 13:
+            w, h, bd, ct = struct.unpack_from(">IIBB", payload, 0)
+        elif tag == b"IDAT":
+            idat.extend(payload)
+        elif tag == b"IEND":
+            break
+        pos += 12 + ln
+    if w != GPE0_W or h != GPE0_H or bd != 8 or ct not in (2, 6):
+        return b""
+    bpp = 4 if ct == 6 else 3
+    stride = w * bpp
+    raw_scan = zlib.decompress(bytes(idat))
+    if len(raw_scan) < h * (1 + stride):
+        return b""
+    prev_row = bytearray(stride)
+    out = bytearray(GPE0_BYTES)
+    out_u32 = memoryview(out).cast("I")
+    for y in range(h):
+        row_off = y * (1 + stride)
+        ftype = raw_scan[row_off]
+        cur = bytearray(raw_scan[row_off + 1 : row_off + 1 + stride])
+        if ftype == 1:
+            for i in range(bpp, stride):
+                cur[i] = (cur[i] + cur[i - bpp]) & 0xFF
+        elif ftype == 2:
+            for i in range(stride):
+                cur[i] = (cur[i] + prev_row[i]) & 0xFF
+        elif ftype == 3:
+            for i in range(stride):
+                left = cur[i - bpp] if i >= bpp else 0
+                cur[i] = (cur[i] + ((left + prev_row[i]) >> 1)) & 0xFF
+        elif ftype == 4:
+            for i in range(stride):
+                a = cur[i - bpp] if i >= bpp else 0
+                b = prev_row[i]
+                c = prev_row[i - bpp] if i >= bpp else 0
+                p = a + b - c
+                pa, pb, pc = abs(p - a), abs(p - b), abs(p - c)
+                pr = a if (pa <= pb and pa <= pc) else (b if pb <= pc else c)
+                cur[i] = (cur[i] + pr) & 0xFF
+        row_base = y * w
+        for x in range(w):
+            o = x * bpp
+            r, g, b = cur[o], cur[o + 1], cur[o + 2]
+            if r == 14 and g == 16 and b == 20:
+                out_u32[row_base + x] = 0
+            else:
+                out_u32[row_base + x] = 0xFF000000 | (r << 16) | (g << 8) | b
+        prev_row = cur
+    return bytes(out)
+
+
+def _synthetic_fallback_gpe0_raw() -> bytes:
+    """Deterministic fallback 1024x540x4 GPE0 frame when offline PNG is absent."""
+    out = bytearray(GPE0_BYTES)
+    u32 = memoryview(out).cast("I")
+    for y in range(GPE0_H):
+        if 40 <= y < 480:
+            row_base = y * GPE0_W
+            for x in range(GPE0_W):
+                if 32 <= x < 992:
+                    if y < 120:
+                        u32[row_base + x] = 0xFFF59E0B  # amber header highlight
+                    elif x < 340:
+                        u32[row_base + x] = 0xFF22D3EE  # cyan UI column
+                    elif x < 680:
+                        u32[row_base + x] = 0xFF94A3B8  # mid-gray cell
+                    else:
+                        u32[row_base + x] = 0xFFF8FAFC  # crisp white highlight text
+    return bytes(out)
+
+
+def _get_fallback_gpe0_raw(last_png: bytes = b"") -> tuple[bytes, str]:
+    global _FALLBACK_RAW_CACHE
+    if last_png:
+        decoded = _png_to_raw_gpe0(last_png)
+        if len(decoded) == GPE0_BYTES:
+            return decoded, "fallback_png"
+    if _FALLBACK_RAW_CACHE is None and FALLBACK_GPE0_PNG.is_file():
+        decoded = _png_to_raw_gpe0(FALLBACK_GPE0_PNG.read_bytes())
+        if len(decoded) == GPE0_BYTES:
+            _FALLBACK_RAW_CACHE = decoded
+    if _FALLBACK_RAW_CACHE is not None:
+        return _FALLBACK_RAW_CACHE, "fallback_png"
+    return _synthetic_fallback_gpe0_raw(), "synthetic_fallback"
+
+
 MENU_CATEGORIES_BILINGUAL: list[dict[str, Any]] = [
     {
         "cat_idx": 0,
@@ -1043,6 +1365,125 @@ BUILTIN_CUBE_PRESETS: dict[str, dict[str, Any]] = {
         "description": "1:1 neutral identity S-Log3 monitoring bypass cube",
     },
 }
+
+ASSIST_TOOLS_SPECS: dict[str, dict[str, Any]] = {
+    "aspect_marker": {
+        "key": "aspect_marker",
+        "label": "Aspect Marker",
+        "choices": ("Off", "2.39:1", "1.85:1", "17:9", "9:16", "CenterCross"),
+        "default": "Off",
+    },
+    "zebra_mode": {
+        "key": "zebra_mode",
+        "label": "Zebra",
+        "choices": ("Off", "70%", "94%_SLog3", "100%"),
+        "default": "Off",
+    },
+    "peaking_mode": {
+        "key": "peaking_mode",
+        "label": "Focus Peaking",
+        "choices": ("Off", "Red", "Yellow", "White"),
+        "default": "Off",
+    },
+    "desqueeze": {
+        "key": "desqueeze",
+        "label": "Anamorphic Desqueeze",
+        "choices": ("1.0x", "1.33x", "2.0x"),
+        "default": "1.0x",
+    },
+}
+
+_ASSIST_ALIASES: dict[str, dict[str, str]] = {
+    "aspect_marker": {
+        "off": "Off",
+        "2.39:1": "2.39:1",
+        "2.39": "2.39:1",
+        "scope": "2.39:1",
+        "1.85:1": "1.85:1",
+        "1.85": "1.85:1",
+        "17:9": "17:9",
+        "dci": "17:9",
+        "9:16": "9:16",
+        "vertical": "9:16",
+        "centercross": "CenterCross",
+        "center_cross": "CenterCross",
+        "center": "CenterCross",
+    },
+    "zebra_mode": {
+        "off": "Off",
+        "70%": "70%",
+        "70": "70%",
+        "94%_slog3": "94%_SLog3",
+        "94%": "94%_SLog3",
+        "94% slog3": "94%_SLog3",
+        "slog3": "94%_SLog3",
+        "100%": "100%",
+        "100": "100%",
+    },
+    "peaking_mode": {
+        "off": "Off",
+        "red": "Red",
+        "yellow": "Yellow",
+        "white": "White",
+    },
+    "desqueeze": {
+        "1.0x": "1.0x",
+        "1x": "1.0x",
+        "1.0": "1.0x",
+        "off": "1.0x",
+        "1.33x": "1.33x",
+        "1.33": "1.33x",
+        "2.0x": "2.0x",
+        "2x": "2.0x",
+        "2.0": "2.0x",
+    },
+}
+
+
+def normalize_assist_field(field: str, value: Any) -> str | None:
+    if field not in ASSIST_TOOLS_SPECS:
+        return None
+    if isinstance(value, bool) or value is None:
+        return None
+    if not isinstance(value, str):
+        return None
+    raw = value.strip()
+    if not raw:
+        return None
+    low = raw.lower()
+    alias_map = _ASSIST_ALIASES.get(field, {})
+    if low in alias_map:
+        return alias_map[low]
+    for ch in ASSIST_TOOLS_SPECS[field]["choices"]:
+        if ch.lower() == low:
+            return ch
+    return None
+
+
+def validate_assist_tools_patch(body: Any) -> tuple[bool, dict[str, str], dict[str, Any] | None]:
+    if not isinstance(body, dict):
+        return False, {}, {"ok": False, "error": "invalid_assist_tools", "message": "assist_tools payload must be a JSON object"}
+    updates: dict[str, str] = {}
+    if body.get("reset") is True:
+        for k, spec in ASSIST_TOOLS_SPECS.items():
+            updates[k] = str(spec["default"])
+    for key, spec in ASSIST_TOOLS_SPECS.items():
+        if key in body:
+            norm = normalize_assist_field(key, body[key])
+            if norm is None:
+                return (
+                    False,
+                    {},
+                    {
+                        "ok": False,
+                        "error": f"invalid_{key}",
+                        "message": f"Unsupported {key}: {body[key]!r}",
+                        "allowed": list(spec["choices"]),
+                    },
+                )
+            updates[key] = norm
+    return True, updates, None
+
 
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
     "fps": {
@@ -1772,6 +2213,11 @@ class FX6LiveGpe0Session:
         self.xlr_phantom_48v = True
         self.xlr_handle_attached = True
         self.rtmd_0xe304_ibis_lock = "ACTIVE_5AXIS"
+        self.aspect_marker = "Off"
+        self.zebra_mode = "Off"
+        self.peaking_mode = "Off"
+        self.desqueeze = "1.0x"
+        self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
         self.table_off = ALL_128_PAGES[0]["off"] if ALL_128_PAGES else 0x02E90FB0
@@ -1901,6 +2347,11 @@ class FX6LiveGpe0Session:
             self.xlr_phantom_48v = True
             self.xlr_handle_attached = True
             self.rtmd_0xe304_ibis_lock = "ACTIVE_5AXIS"
+            self.aspect_marker = "Off"
+            self.zebra_mode = "Off"
+            self.peaking_mode = "Off"
+            self.desqueeze = "1.0x"
+            self.last_scope_stats = None
             self.user_lut_slots = self._default_user_lut_slots()
             self.last_toast = ""
             self.lang_code = "en"
@@ -2176,12 +2627,26 @@ class FX6LiveGpe0Session:
             | ((ch_bytes[3] & 0xFF) << 24)
         )
         rtmd_idx = RTMD_0XE304_MODES.index(self.rtmd_0xe304_ibis_lock) if self.rtmd_0xe304_ibis_lock in RTMD_0XE304_MODES else 0
+        aspect_choices = ASSIST_TOOLS_SPECS["aspect_marker"]["choices"]
+        zebra_choices = ASSIST_TOOLS_SPECS["zebra_mode"]["choices"]
+        peaking_choices = ASSIST_TOOLS_SPECS["peaking_mode"]["choices"]
+        desqueeze_choices = ASSIST_TOOLS_SPECS["desqueeze"]["choices"]
+        aspect_idx = aspect_choices.index(self.aspect_marker) if self.aspect_marker in aspect_choices else 0
+        zebra_idx = zebra_choices.index(self.zebra_mode) if self.zebra_mode in zebra_choices else 0
+        peaking_idx = peaking_choices.index(self.peaking_mode) if self.peaking_mode in peaking_choices else 0
+        desqueeze_idx = desqueeze_choices.index(self.desqueeze) if self.desqueeze in desqueeze_choices else 0
+        p56_valid = 1 if (aspect_idx or zebra_idx or peaking_idx or desqueeze_idx) else 0
         p40_flags_word = (
             (1 if self.xlr_handle_attached else 0)
             | ((1 if (self.xlr_handle_attached and self.xlr_phantom_48v) else 0) << 1)
             | ((rtmd_idx & 0x3) << 4)
             | (1 << 8)
             | (1 << 9)
+            | ((aspect_idx & 0x7) << 12)
+            | ((zebra_idx & 0x3) << 16)
+            | ((peaking_idx & 0x3) << 18)
+            | ((desqueeze_idx & 0x3) << 20)
+            | (p56_valid << 24)
         )
         ext_raw = struct.pack("<I6III", lut_meta_word, *name_words, audio_packed_word, p40_flags_word)
         raw = struct.pack("<18I", *words) + struct.pack("<I", p11_state_word) + ext_raw
@@ -2911,6 +3376,57 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def get_assist_tools(self) -> dict[str, str]:
+        return {
+            "aspect_marker": self.aspect_marker,
+            "zebra_mode": self.zebra_mode,
+            "peaking_mode": self.peaking_mode,
+            "desqueeze": self.desqueeze,
+        }
+
+    def set_assist_tools(self, body: Any) -> dict[str, Any]:
+        ok, updates, err = validate_assist_tools_patch(body)
+        if not ok:
+            return err or {"ok": False, "error": "invalid_assist_tools"}
+        with self.cmd_lock:
+            if "aspect_marker" in updates:
+                self.aspect_marker = updates["aspect_marker"]
+            if "zebra_mode" in updates:
+                self.zebra_mode = updates["zebra_mode"]
+            if "peaking_mode" in updates:
+                self.peaking_mode = updates["peaking_mode"]
+            if "desqueeze" in updates:
+                self.desqueeze = updates["desqueeze"]
+            self.last_toast = (
+                f"Assist Tools: Marker={self.aspect_marker}, Zebra={self.zebra_mode}, "
+                f"Peaking={self.peaking_mode}, Desqueeze={self.desqueeze}"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "assist_tools": self.get_assist_tools(),
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def get_scope_stats(self, refresh: bool = False) -> dict[str, Any]:
+        if self.is_running() and self.live_ready and not self.crashed and (refresh or len(self.last_raw_gpe0) < GPE0_BYTES):
+            self._capture_live_gpe0_with_raw()
+        if len(self.last_raw_gpe0) >= GPE0_BYTES:
+            raw = self.last_raw_gpe0[:GPE0_BYTES]
+            source = "live_gpe0"
+        else:
+            raw, source = _get_fallback_gpe0_raw(self.last_png)
+        stats = compute_gpe0_scope_stats(raw)
+        stats["source"] = source
+        stats["ack_seq"] = self.ack_seq
+        stats["page"] = self.page
+        stats["assist_tools"] = self.get_assist_tools()
+        self.last_scope_stats = stats
+        return stats
+
     def export_camset_preset(self) -> dict[str, Any]:
         """Export deterministic `fx6_on_fx3_camset_v1` JSON snapshot with SHA-256."""
         cp = self.get_cinema_params()
@@ -2935,6 +3451,7 @@ class FX6LiveGpe0Session:
                 "xlr_phantom_48v": bool(self.xlr_phantom_48v),
                 "xlr_handle_attached": bool(self.xlr_handle_attached),
             },
+            "assist_tools": self.get_assist_tools(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -3098,6 +3615,12 @@ class FX6LiveGpe0Session:
                         "tint_hex": f"#{rgb8_clean[0]:02x}{rgb8_clean[1]:02x}{rgb8_clean[2]:02x}",
                     }
 
+        new_assist_updates: dict[str, str] = {}
+        if "assist_tools" in payload and payload["assist_tools"] is not None:
+            ok_a, new_assist_updates, err_a = validate_assist_tools_patch(payload["assist_tools"])
+            if not ok_a:
+                return err_a or {"ok": False, "error": "invalid_assist_tools"}
+
         p12_clamped = payload.get("p12_bk4_airplane_mode_locked") is False
 
         with self.cmd_lock:
@@ -3115,6 +3638,15 @@ class FX6LiveGpe0Session:
             if new_rtmd is not None:
                 self.rtmd_0xe304_ibis_lock = new_rtmd
                 self.ibis_idx = RTMD_0XE304_MODES.index(new_rtmd)
+
+            if "aspect_marker" in new_assist_updates:
+                self.aspect_marker = new_assist_updates["aspect_marker"]
+            if "zebra_mode" in new_assist_updates:
+                self.zebra_mode = new_assist_updates["zebra_mode"]
+            if "peaking_mode" in new_assist_updates:
+                self.peaking_mode = new_assist_updates["peaking_mode"]
+            if "desqueeze" in new_assist_updates:
+                self.desqueeze = new_assist_updates["desqueeze"]
 
             for idx, val in new_ch_db.items():
                 self.audio_ch_db[idx] = val
@@ -3163,6 +3695,7 @@ class FX6LiveGpe0Session:
                 "toast": self.last_toast,
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
+                "assist_tools": self.get_assist_tools(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -3844,6 +4377,7 @@ class FX6LiveGpe0Session:
             "png_source": self.last_png_source,
             "socket_disconnect_count": self.socket_disconnect_count,
             "last_multilang_diff": self.last_multilang_diff,
+            "assist_tools": self.get_assist_tools(),
             "serial_tail": serial_tail,
         }
 
@@ -4243,6 +4777,71 @@ HTML_UI = """<!DOCTYPE html>
         <span>Fill/Icon: <b id="st-fill">-</b></span>
         <span>Mailbox 序号: <b id="st-seq">-</b></span>
         <span>来源: <b id="st-src">-</b></span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+        <h3 style="margin:0;">Phase 56 · Cinema Line 监看辅助 &amp; 📊 Waveform / IRE Scope (/api/assist_tools · /api/scope_stats)</h3>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button id="btn-desqueeze-preview" onclick="toggleDesqueezePreview()" style="padding:4px 9px;font-size:11px;background:#0f2b46;border-color:#22d3ee;">Anamorphic CSS Preview: ON</button>
+          <button onclick="refreshScopeStats(true)" style="padding:4px 9px;font-size:11px;">刷新 Scope</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Aspect Marker</span><span>In-Guest GPE0</span></div>
+          <select id="assist-aspect-select" onchange="setAssistTools({aspect_marker: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="Off">Off</option>
+            <option value="2.39:1">2.39:1 (Scope)</option>
+            <option value="1.85:1">1.85:1 (Flat)</option>
+            <option value="17:9">17:9 (DCI 4K)</option>
+            <option value="9:16">9:16 (Vertical)</option>
+            <option value="CenterCross">CenterCross</option>
+          </select>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Zebra Overlay</span><span>IRE Threshold</span></div>
+          <select id="assist-zebra-select" onchange="setAssistTools({zebra_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="Off">Off</option>
+            <option value="70%">70% (Skin)</option>
+            <option value="94%_SLog3">94%_SLog3 (Clip)</option>
+            <option value="100%">100% (Peak)</option>
+          </select>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Focus Peaking</span><span>Edge Gradient</span></div>
+          <select id="assist-peaking-select" onchange="setAssistTools({peaking_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="Off">Off</option>
+            <option value="Red">Red</option>
+            <option value="Yellow">Yellow</option>
+            <option value="White">White</option>
+          </select>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Anamorphic Desqueeze</span><span>GPE0 + CSS</span></div>
+          <select id="assist-desqueeze-select" onchange="setAssistTools({desqueeze: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="1.0x">1.0x (Spherical)</option>
+            <option value="1.33x">1.33x (Anamorphic)</option>
+            <option value="2.0x">2.0x (Anamorphic)</option>
+          </select>
+        </div>
+      </div>
+      <div class="pill-row" style="margin-bottom:10px;">
+        <button onclick="setAssistTools({aspect_marker:'2.39:1',zebra_mode:'70%',peaking_mode:'Red',desqueeze:'2.0x'})" style="border-color:#22d3ee;">2.39:1 + Zebra 70% + Peak Red + 2.0x</button>
+        <button onclick="setAssistTools({aspect_marker:'9:16',zebra_mode:'94%_SLog3',peaking_mode:'Yellow',desqueeze:'1.0x'})">9:16 + S-Log3 94% + Peak Yellow</button>
+        <button onclick="setAssistTools({aspect_marker:'CenterCross',zebra_mode:'100%',peaking_mode:'White',desqueeze:'1.33x'})">CenterCross + 100% + 1.33x</button>
+        <button onclick="setAssistTools({reset:true})">Reset Assist Off</button>
+      </div>
+      <div class="cparam-box" id="waveform-scope-panel">
+        <div class="cparam-head">
+          <span style="color:var(--cyan);font-weight:700;">📊 Waveform / IRE Scope (0..109% IRE · 32-Col Luma + 16-Bin RGB)</span>
+          <span id="scope-stats-readout" style="font-family:'SF Mono',Menlo,monospace;color:#a7f3d0;">Waiting for /api/scope_stats...</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <canvas id="scope-waveform-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
+          <canvas id="scope-hist-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
+        </div>
       </div>
     </div>
 
@@ -4707,8 +5306,22 @@ async function updateUI(st, forceImg) {
     if (b) b.className = (st.page === 1 && st.menu_cat === i) ? 'active' : '';
   }
 
+  const at = st.assist_tools || {};
+  const aspSel = document.getElementById('assist-aspect-select');
+  if (aspSel && at.aspect_marker && document.activeElement !== aspSel) aspSel.value = at.aspect_marker;
+  const zebSel = document.getElementById('assist-zebra-select');
+  if (zebSel && at.zebra_mode && document.activeElement !== zebSel) zebSel.value = at.zebra_mode;
+  const pkSel = document.getElementById('assist-peaking-select');
+  if (pkSel && at.peaking_mode && document.activeElement !== pkSel) pkSel.value = at.peaking_mode;
+  const dsqSel = document.getElementById('assist-desqueeze-select');
+  if (dsqSel && at.desqueeze && document.activeElement !== dsqSel) dsqSel.value = at.desqueeze;
+  applyDesqueezePreview(at.desqueeze || '1.0x');
+
   if (forceImg || st.live_ready) {
     document.getElementById('gpe0-img').src = '/api/frame.png?t=' + Date.now();
+  }
+  if (forceImg || !scopeLoadedOnce) {
+    refreshScopeStats(false);
   }
 }
 
@@ -5204,10 +5817,158 @@ async function verifyMultilangDiff() {
   }
 }
 
+let desqueezePreviewEnabled = true;
+let scopeLoadedOnce = false;
+
+function applyDesqueezePreview(desq) {
+  const wrap = document.getElementById('screen-wrap');
+  const img = document.getElementById('gpe0-img');
+  const btn = document.getElementById('btn-desqueeze-preview');
+  if (btn) {
+    btn.textContent = desqueezePreviewEnabled
+      ? `Anamorphic CSS Preview: ON (${desq})`
+      : `Anamorphic CSS Preview: OFF (${desq})`;
+  }
+  if (!wrap || !img) return;
+  if (!desqueezePreviewEnabled || desq === '1.0x') {
+    wrap.style.aspectRatio = '1024 / 540';
+    img.style.objectFit = 'fill';
+  } else if (desq === '1.33x') {
+    wrap.style.aspectRatio = '1362 / 540';
+    img.style.objectFit = 'fill';
+  } else if (desq === '2.0x') {
+    wrap.style.aspectRatio = '2048 / 540';
+    img.style.objectFit = 'fill';
+  }
+}
+
+function toggleDesqueezePreview() {
+  desqueezePreviewEnabled = !desqueezePreviewEnabled;
+  const cur = (currentStatus && currentStatus.assist_tools && currentStatus.assist_tools.desqueeze) || '1.0x';
+  applyDesqueezePreview(cur);
+}
+
+async function setAssistTools(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/assist_tools', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch)
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
+    await refreshScopeStats(false);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function drawWaveformCanvas(scope) {
+  const cvs = document.getElementById('scope-waveform-canvas');
+  if (!cvs || !scope || !scope.waveform) return;
+  const ctx = cvs.getContext('2d');
+  const w = cvs.width, h = cvs.height;
+  ctx.fillStyle = '#07090c';
+  ctx.fillRect(0, 0, w, h);
+  const graticules = [
+    {ire: 109, label: '109', col: '#334155'},
+    {ire: 94,  label: '94',  col: '#78350f'},
+    {ire: 70,  label: '70',  col: '#1e3a5f'},
+    {ire: 50,  label: '50',  col: '#1f2937'},
+    {ire: 0,   label: '0',   col: '#334155'}
+  ];
+  ctx.font = '9px Menlo, monospace';
+  graticules.forEach((g) => {
+    const y = h - 6 - ((g.ire / 109.0) * (h - 14));
+    ctx.strokeStyle = g.col;
+    ctx.beginPath();
+    ctx.moveTo(22, y);
+    ctx.lineTo(w - 4, y);
+    ctx.stroke();
+    ctx.fillStyle = '#64748b';
+    ctx.fillText(g.label, 2, y + 3);
+  });
+  const cols = scope.waveform;
+  const cw = (w - 28) / Math.max(1, cols.length);
+  cols.forEach((c, idx) => {
+    const x = 24 + idx * cw;
+    const yMin = h - 6 - ((c.min_ire / 109.0) * (h - 14));
+    const yMax = h - 6 - ((c.max_ire / 109.0) * (h - 14));
+    const yAvg = h - 6 - ((c.avg_ire / 109.0) * (h - 14));
+    ctx.fillStyle = 'rgba(34, 211, 238, 0.35)';
+    ctx.fillRect(x, yMax, Math.max(2, cw - 2), Math.max(2, yMin - yMax));
+    ctx.fillStyle = c.max_ire >= 94 ? '#f59e0b' : '#22d3ee';
+    ctx.fillRect(x, yMax - 1, Math.max(2, cw - 2), 2);
+    ctx.fillStyle = '#10b981';
+    ctx.fillRect(x, yAvg - 1, Math.max(2, cw - 2), 2);
+  });
+}
+
+function drawHistogramCanvas(scope) {
+  const cvs = document.getElementById('scope-hist-canvas');
+  if (!cvs || !scope || !scope.histograms) return;
+  const ctx = cvs.getContext('2d');
+  const w = cvs.width, h = cvs.height;
+  ctx.fillStyle = '#07090c';
+  ctx.fillRect(0, 0, w, h);
+  const channels = [
+    {key: 'r',    col: 'rgba(239, 68, 68, 0.55)'},
+    {key: 'g',    col: 'rgba(16, 185, 129, 0.50)'},
+    {key: 'b',    col: 'rgba(59, 130, 246, 0.55)'},
+    {key: 'luma', col: 'rgba(248, 250, 252, 0.70)'}
+  ];
+  let maxBin = 1;
+  channels.forEach((ch) => {
+    const arr = scope.histograms[ch.key] || [];
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i] > maxBin) maxBin = arr[i];
+    }
+  });
+  const bw = (w - 16) / 16;
+  channels.forEach((ch, cIdx) => {
+    const arr = scope.histograms[ch.key] || [];
+    ctx.fillStyle = ch.col;
+    for (let i = 0; i < arr.length; i++) {
+      const val = i === 0 ? Math.min(arr[i], maxBin) : arr[i];
+      const bh = Math.max(1, (val / maxBin) * (h - 18));
+      const x = 8 + i * bw + (cIdx * (bw * 0.18));
+      ctx.fillRect(x, h - 6 - bh, Math.max(2, bw * 0.42), bh);
+    }
+  });
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '9px Menlo, monospace';
+  ctx.fillText('16-Bin R/G/B/Luma Histogram', 8, 11);
+}
+
+async function refreshScopeStats(forceRefresh) {
+  try {
+    const url = forceRefresh ? '/api/scope_stats?refresh=1' : '/api/scope_stats';
+    const r = await fetch(url);
+    const scope = await r.json();
+    if (!scope || !scope.ok) return;
+    scopeLoadedOnce = true;
+    drawWaveformCanvas(scope);
+    drawHistogramCanvas(scope);
+    const ro = document.getElementById('scope-stats-readout');
+    if (ro) {
+      const peakIre = Math.max(...(scope.waveform || []).map((c) => c.max_ire || 0), 0);
+      ro.textContent =
+        `NZ=${(scope.nonzero_ratio * 100).toFixed(1)}% | HI=${scope.highlight_pixels}px | ` +
+        `AMB=${scope.amber_pixels}px | Peak=${peakIre.toFixed(1)} IRE | ${scope.source || 'gpe0'}`;
+    }
+  } catch (e) {}
+}
+
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
 pollStatus();
+refreshScopeStats(false);
 </script>
 </body>
 </html>
@@ -5328,6 +6089,18 @@ def make_handler(session: FX6LiveGpe0Session):
                 if path == "/api/preset_export":
                     self._send_json(session.export_camset_preset())
                     return
+                if path == "/api/assist_tools":
+                    self._send_json({
+                        "ok": True,
+                        "assist_tools": session.get_assist_tools(),
+                        "specs": ASSIST_TOOLS_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
+                if path == "/api/scope_stats":
+                    refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
+                    self._send_json(session.get_scope_stats(refresh=refresh))
+                    return
                 if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
                     png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)
                     self._send_bytes(png, "image/png", status=HTTPStatus.OK)
@@ -5367,6 +6140,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/cinema_param",
                     "/api/jump_page",
                     "/api/verify_multilang_diff",
+                    "/api/assist_tools",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -5446,6 +6220,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/preset_import":
                     res = session.import_camset_preset(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/assist_tools":
+                    res = session.set_assist_tools(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

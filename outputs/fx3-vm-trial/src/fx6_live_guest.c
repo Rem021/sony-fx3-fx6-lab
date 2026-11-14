@@ -111,6 +111,13 @@ static inline void fx6_destroy_widget_inplace(void *obj) {
     }
 }
 
+/* Guard PLT call from libra::GenerateImageCommand::notify(bool) when an unloaded
+ * icon/glyph yields Listener::m_imageData == NULL (prevents str xzr,[0,#8] SIGSEGV). */
+void _ZN5libra9ImageData6onLoadEv(void *self) {
+    if (!self) return;
+    *(uint64_t *)((char *)self + 0x8) = 0;
+}
+
 void fx6_model_done(void) {
     dprintf(2, "FX6_MODEL_NONE\n");
 }

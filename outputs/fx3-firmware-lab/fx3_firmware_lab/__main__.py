@@ -10,6 +10,10 @@ import argparse
 import json
 from typing import Dict, Optional, Sequence
 
+from .cube_lut_and_rtmd_verifier import (
+    analyze_cube_lut_and_rtmd,
+    cube_lut_and_rtmd_report_to_dict,
+)
 from .haita_bk4_feature_analyzer import (
     analyze_haita_and_bk4_features,
     haita_report_to_dict,
@@ -27,13 +31,16 @@ from .uxc_multilang_and_font_verifier import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all five clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all six clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
     multilang = multilang_report_to_dict(verify_multilang_and_fonts(clean_room=clean_room))
     sensor_codec = sensor_codec_report_to_dict(
         analyze_sensor_and_codec_compatibility(clean_room=clean_room)
+    )
+    lut_rtmd = cube_lut_and_rtmd_report_to_dict(
+        analyze_cube_lut_and_rtmd(clean_room=clean_room)
     )
 
     all_passed = bool(
@@ -42,6 +49,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and uxc.get("all_checks_passed")
         and multilang.get("all_checks_passed")
         and sensor_codec.get("all_checks_passed")
+        and lut_rtmd.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -54,17 +62,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "uxc_ldec_asset_audit": uxc,
         "uxc_multilang_and_font_audit": multilang,
         "sensor_codec_compatibility_audit": sensor_codec,
+        "cube_lut_and_rtmd_audit": lut_rtmd,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, and IMX510/XAVC codec auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, and .cube 3D LUT / RTMD auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run UFU, HAITA/BK4, .uxc/LDEC, multilang/font, and IMX510/XAVC audits and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 6 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -87,6 +96,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
     p_sc.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
 
+    p_lr = sub.add_parser(
+        "audit-lut-rtmd",
+        help="Run Phase 37 .cube (17^3/33^3) LUT sanitizer/P1+P11 packer and Sony RTMD (0xE304 IMX510 IBIS) audit",
+    )
+    p_lr.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -102,6 +117,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-sensor-codec":
         payload = sensor_codec_report_to_dict(
             analyze_sensor_and_codec_compatibility(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-lut-rtmd":
+        payload = cube_lut_and_rtmd_report_to_dict(
+            analyze_cube_lut_and_rtmd(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

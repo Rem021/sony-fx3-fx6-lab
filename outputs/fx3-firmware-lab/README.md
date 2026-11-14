@@ -30,18 +30,23 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **IMX510 Sensor & Dual Base ISO (`800 / 12800`) Matrix**: Verifies shared `IMX510` CP drivers (`N6Camera6Imager6IMX51019C_ImagerCtrl_IMX510E`, `4264x2408` effective), `4K DCI (4096x2160)`, `QFHD (3840x2160)`, `FHD (1920x1080)` up to `120p`/`240p` S&Q, `HDMI 16-bit RAW`, and negative proof that `5016x3344` (`IMAGER_SCANMODE_FF_5K_3_2` / `SELECT_CODEC_X_OCN_LT`) has `0` encoder hits in `libmpr.so` and `cpapp-b.bin`.
    - **MPR / Hardware Encoder Profile Matrix**: Proves `XAVC-I` (`MXF`) and `XAVC S-I` (`MP4`) share the exact same CXD90057 H.264 High422Intra (`AVC480_*_H422IP`) elementary bitstream hardware engine and `mpr::SetMovieRecParam` ABI in `libmpr.so`, diverging only at the container muxer (`libXavcMxf` vs `libXavcMp4`), alongside `XAVC-L`, `XAVC S`, and `XAVC HS` (`HEVC_3840_2160_M42210P` / `M10P`).
    - **Dual Media Slot & Video Output Boundary**: Verifies `Slot A / Slot B` (`SSA`/`SSB`) <-> `Slot 1 / Slot 2` CFexpress Type A + SDXC dual-slot parity (`SIMULTANEOUS_REC` / `RELAY_REC`) and confirms FX6-only `12G-SDI` (`PRM_FEATURE_MANAGER_sdi_output`, `MoniFpgaSdi_SetRegSDIOutFormat`) gracefully falls back to `HDMI` / `HDMI RAW` on FX3 without blocking recording.
+6. [`fx3_firmware_lab/cube_lut_and_rtmd_verifier.py`](fx3_firmware_lab/cube_lut_and_rtmd_verifier.py)
+   - **Anti-Crash `.cube` (`17^3` / `33^3`) Sanitizer & Trilinear `17^3 -> 33^3` Hardware Packer**: Parses Adobe/Iridas `.cube` files (`TITLE`, `DOMAIN_MIN`, `DOMAIN_MAX`, `LUT_3D_SIZE 17|33`, `LUT_3D_INPUT_RANGE`) while rejecting NaN/Inf, wrong voxel counts, `DOMAIN_MIN >= DOMAIN_MAX`, `LUT_1D_SIZE` mismatches, control chars / unsafe titles, and oversized files (`> 2 MiB` / `> 40,000` lines) that would overflow FX3 `P1` (`/dev/nflasha30`, `48.00 MiB` VFAT, 16-slot `User1..16` budget) or trigger the historical v6.00->v6.01 custom `.cube` parser crash. Performs exact trilinear `17^3 -> 33^3` (`35,937` voxels) upsampling + `U12.0` / `U16` (`215,622 B`) / `U8` (`107,812 B`) DMA packing (`S-Log3` identity ramp `<= 1 LSB`), `P11` 164-byte `mpr::SetLutData` / `0x0165` (36 B) / `0x0166` (10 B) descriptor framing, and `BK4` `0x02cf1453` + `0x02cf14a4..0x02cf14b3` slot-flag generation.
+   - **Sony `RTMD` (`SMPTE RDD 18` / `0xE304`) & `IMX510` IBIS Center-Lock Verifier**: Inspects FX3 v7.02 & FX6 v6.01 `appFw.so` / `libmpr.so` (`O_RDONLY`, with synthetic clean-room fallback) for `/dev/nflasha30`, `model_user_lut_files`, `mpr::SetLutData`, `KlvConverter` (`Rdd18KeyCameraUnit`, `UDAMSetGyroscopeValue`, `UDAMSetAccelerometerValue`), and SMPTE UL `06 0e 2b 34` markers; builds and verifies big-endian KLV `RTMD` packets carrying `IMX510` readout duration, Dual Base ISO (`800`/`12800`) & EI index, Shutter Angle (`180.0°`), Active 3D LUT name, and `0xE304` 5-Axis IBIS Center-Lock + Gyro/Accel telemetry for Catalyst Browse & Gyroflow coherence.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 5 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 6 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-sensor-codec
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-sensor-codec --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-lut-rtmd
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-lut-rtmd --clean-room
 
-# Run all 75 unit tests in Local Donor mode and forced Clean-Room mode (< 4s)
+# Run all 102 unit tests in Local Donor mode and forced Clean-Room mode (< 5s)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

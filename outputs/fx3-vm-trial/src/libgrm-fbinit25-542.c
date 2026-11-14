@@ -281,20 +281,183 @@ int MA_CreateSpaceDirect(void *base, unsigned long sz, const char *name, int flg
 }
 int BMP_AssocMemorySpaceForCompaction(void *sp, int f) { (void)sp; (void)f; return 0; }
 
-/* Intercept BitmapImpl::create overloads using calloc so .bss remains tiny */
+static int query_bpp(int fmt) {
+    typedef int (*bpp_fn_t)(int, short *);
+    static bpp_fn_t bpp_fn;
+    if (!grmbmp) grmbmp = dlopen("/usr/lib/libgrm_bmp.so", 1 | 0x100);
+    if (!bpp_fn && grmbmp) {
+        bpp_fn = (bpp_fn_t)dlsym(grmbmp, "BMP_PixelFormatToBytesPerPixel");
+    }
+    short out_bpp = 0;
+    if (bpp_fn && bpp_fn(fmt, &out_bpp) == 0 && out_bpp > 0 && out_bpp <= 8) {
+        return (int)out_bpp;
+    }
+    switch (fmt) {
+    case 1: return 2;
+    case 2: return 4;
+    case 3: return 2;
+    case 4: return 1;
+    case 5: return 1;
+    default: return 4;
+    }
+}
+
+/* LDEC-legal GPE native physical texture pools (matches fx3_ldec_soft103_v1 spans):
+ *   span 0: 0x410524000 .. 0x410924000 (4.00 MiB)
+ *   span 1: 0x410924000 .. 0x410c64000 (3.25 MiB)
+ *   span 2: 0x410c64000 .. 0x410e64000 (2.00 MiB)
+ * Total contiguous reserved DDR (:uc): 0x940000 bytes (9.25 MiB).
+ */
+#define FX6_GPE_POOL_PHYS_BASE 0x410524000UL
+#define FX6_GPE_POOL_BYTES     0x000940000UL
+#define FX6_GPE_MAX_BLKS       2048
+
+typedef struct {
+    unsigned int off;
+    unsigned int len;
+    unsigned char span;
+    unsigned char used;
+} fx6_gpe_blk_t;
+
+static unsigned char *g_gpe_pool_va;
+static int g_gpe_pool_tried;
+static volatile int g_gpe_pool_lock;
+static fx6_gpe_blk_t g_gpe_blks[FX6_GPE_MAX_BLKS];
+static int g_gpe_blk_n;
+
+static void gpe_lock(void) {
+    while (__sync_lock_test_and_set(&g_gpe_pool_lock, 1)) {}
+}
+
+static void gpe_unlock(void) {
+    __sync_lock_release(&g_gpe_pool_lock);
+}
+
+static void ensure_gpe_pool_locked(void) {
+    if (g_gpe_pool_tried) return;
+    g_gpe_pool_tried = 1;
+    int fd = open("/dev/mem", 2);
+    if (fd < 0) fd = open("/dev/mem", 2 | 0x101000);
+    if (fd < 0) {
+        dprintf(2, "FX6_GPE_POOL open /dev/mem failed\n");
+        return;
+    }
+    void *m = mmap(0, FX6_GPE_POOL_BYTES, 3, 1, fd, (long)FX6_GPE_POOL_PHYS_BASE);
+    close(fd);
+    if (!m || m == (void *)-1) {
+        dprintf(2, "FX6_GPE_POOL mmap failed\n");
+        return;
+    }
+    g_gpe_pool_va = (unsigned char *)m;
+    g_gpe_blks[0].off = 0x000000U; g_gpe_blks[0].len = 0x400000U; g_gpe_blks[0].span = 0; g_gpe_blks[0].used = 0;
+    g_gpe_blks[1].off = 0x400000U; g_gpe_blks[1].len = 0x340000U; g_gpe_blks[1].span = 1; g_gpe_blks[1].used = 0;
+    g_gpe_blks[2].off = 0x740000U; g_gpe_blks[2].len = 0x200000U; g_gpe_blks[2].span = 2; g_gpe_blks[2].used = 0;
+    g_gpe_blk_n = 3;
+    dprintf(2, "FX6_GPE_POOL_READY phys=0x%lx bytes=0x%lx va=%p\n",
+            FX6_GPE_POOL_PHYS_BASE, FX6_GPE_POOL_BYTES, (void *)g_gpe_pool_va);
+}
+
+static void gpe_zero_uc(void *va, unsigned long nbytes) {
+    volatile unsigned int *p = (volatile unsigned int *)va;
+    unsigned long nw = nbytes >> 2;
+    for (unsigned long i = 0; i < nw; i++) p[i] = 0U;
+}
+
+static unsigned char *gpe_pool_alloc(unsigned long want_sz, unsigned long *out_pa) {
+    unsigned long sz = (want_sz + 255UL) & ~255UL;
+    if (sz < 256UL) sz = 256UL;
+    gpe_lock();
+    ensure_gpe_pool_locked();
+    unsigned char *ret_va = 0;
+    unsigned long ret_pa = 0;
+    if (g_gpe_pool_va && sz <= 0x400000UL) {
+        for (int i = 0; i < g_gpe_blk_n; i++) {
+            if (!g_gpe_blks[i].used && (unsigned long)g_gpe_blks[i].len >= sz) {
+                unsigned int rem = (unsigned int)((unsigned long)g_gpe_blks[i].len - sz);
+                if (rem >= 256U && g_gpe_blk_n < FX6_GPE_MAX_BLKS) {
+                    for (int j = g_gpe_blk_n; j > i + 1; j--) g_gpe_blks[j] = g_gpe_blks[j - 1];
+                    g_gpe_blks[i + 1].off = g_gpe_blks[i].off + (unsigned int)sz;
+                    g_gpe_blks[i + 1].len = rem;
+                    g_gpe_blks[i + 1].span = g_gpe_blks[i].span;
+                    g_gpe_blks[i + 1].used = 0;
+                    g_gpe_blks[i].len = (unsigned int)sz;
+                    g_gpe_blk_n++;
+                }
+                g_gpe_blks[i].used = 1;
+                ret_va = g_gpe_pool_va + g_gpe_blks[i].off;
+                ret_pa = FX6_GPE_POOL_PHYS_BASE + (unsigned long)g_gpe_blks[i].off;
+                break;
+            }
+        }
+    }
+    gpe_unlock();
+    if (ret_va) {
+        gpe_zero_uc(ret_va, sz);
+        if (out_pa) *out_pa = ret_pa;
+        return ret_va;
+    }
+    ret_va = (unsigned char *)calloc(1, sz);
+    if (out_pa) *out_pa = (unsigned long)ret_va;
+    return ret_va;
+}
+
+static void gpe_pool_free(void *va) {
+    if (!va) return;
+    gpe_lock();
+    if (g_gpe_pool_va && (unsigned char *)va >= g_gpe_pool_va &&
+        (unsigned char *)va < g_gpe_pool_va + FX6_GPE_POOL_BYTES) {
+        unsigned int off = (unsigned int)((unsigned char *)va - g_gpe_pool_va);
+        for (int i = 0; i < g_gpe_blk_n; i++) {
+            if (g_gpe_blks[i].off == off && g_gpe_blks[i].used) {
+                g_gpe_blks[i].used = 0;
+                if (i + 1 < g_gpe_blk_n && !g_gpe_blks[i + 1].used &&
+                    g_gpe_blks[i + 1].span == g_gpe_blks[i].span) {
+                    g_gpe_blks[i].len += g_gpe_blks[i + 1].len;
+                    for (int j = i + 1; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
+                    g_gpe_blk_n--;
+                }
+                if (i > 0 && !g_gpe_blks[i - 1].used &&
+                    g_gpe_blks[i - 1].span == g_gpe_blks[i].span) {
+                    g_gpe_blks[i - 1].len += g_gpe_blks[i].len;
+                    for (int j = i; j + 1 < g_gpe_blk_n; j++) g_gpe_blks[j] = g_gpe_blks[j + 1];
+                    g_gpe_blk_n--;
+                }
+                break;
+            }
+        }
+    }
+    gpe_unlock();
+}
+
+int _ZN3grm3bmp10BitmapImpl7destroyEi(void *self, int flag) {
+    typedef int (*real_fn_t)(void *, int);
+    static real_fn_t real_fn;
+    if (!grmbmp) grmbmp = dlopen("/usr/lib/libgrm_bmp.so", 1 | 0x100);
+    if (!real_fn && grmbmp) {
+        real_fn = (real_fn_t)dlsym(grmbmp, "_ZN3grm3bmp10BitmapImpl7destroyEi");
+    }
+    void *va = self ? *(void **)((char *)self + 0x10) : 0;
+    int rc = real_fn ? real_fn(self, flag) : 0;
+    gpe_pool_free(va);
+    return rc;
+}
+
+/* Intercept BitmapImpl::create overloads backed by LDEC-legal GPE physical pool while preserving pixel format & row pitch */
 int _ZN3grm3bmp10BitmapImpl6createEPvssssii(void *self, void *space_handle, short addr_align, short size_align, short w_align, short h_align, int lock_opt, int clear_flag) {
     (void)addr_align; (void)size_align; (void)w_align; (void)h_align; (void)lock_opt; (void)clear_flag;
     unsigned char *b = (unsigned char *)self;
     unsigned char *info = *(unsigned char **)(b + 0x08);
-    if (info) *(int *)(info + 0x24) = *(int *)(info + 0x1c);
+    int orig_fmt = info ? *(int *)(info + 0x1c) : 2;
+    int bpp = query_bpp(orig_fmt);
     short w = info ? *(short *)(info + 0x08) : 64;
     short h = info ? *(short *)(info + 0x0a) : 64;
     if (w <= 0) w = 64; if (h <= 0) h = 64;
     short aw = (short)((w + 15) & ~15);
     short ah = (short)((h + 1) & ~1);
     if (aw <= 0) aw = 16; if (ah <= 0) ah = 2;
-    unsigned long sz = (unsigned long)aw * (unsigned long)ah * 4UL;
-    unsigned char *buf = (unsigned char *)calloc(1, sz + 256UL);
+    unsigned long sz = (unsigned long)aw * (unsigned long)ah * (unsigned long)bpp;
+    unsigned long pa = 0;
+    unsigned char *buf = gpe_pool_alloc(sz + 256UL, &pa);
     if (info) {
         *(short *)(info + 0x0c) = 0;
         *(short *)(info + 0x0e) = 0;
@@ -304,28 +467,42 @@ int _ZN3grm3bmp10BitmapImpl6createEPvssssii(void *self, void *space_handle, shor
         *(short *)(info + 0x16) = 0;
         *(short *)(info + 0x18) = aw;
         *(short *)(info + 0x1a) = ah;
-        *(int *)(info + 0x1c) = 2;
+        *(int *)(info + 0x1c) = orig_fmt;
         *(int *)(info + 0x20) = 0;
-        *(unsigned long *)(info + 0x28) = (unsigned long)buf;
+        *(int *)(info + 0x24) = orig_fmt;
+        *(unsigned long *)(info + 0x28) = pa;
     }
     *(void **)(b + 0x10) = buf;
     *(void **)(b + 0x18) = space_handle;
+    *(int *)(b + 0xb0) = 0;
     return 0;
 }
 
 int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(void *self, long phys_addr, short row_bytes, void *sub_rect) {
-    (void)phys_addr;
     unsigned char *b = (unsigned char *)self;
     unsigned char *info = *(unsigned char **)(b + 0x08);
-    if (info) *(int *)(info + 0x24) = *(int *)(info + 0x1c);
+    int orig_fmt = info ? *(int *)(info + 0x1c) : 2;
+    int bpp = query_bpp(orig_fmt);
     short w = info ? *(short *)(info + 0x08) : 64;
     short h = info ? *(short *)(info + 0x0a) : 64;
-    short aw = (row_bytes > 0) ? (row_bytes / 4) : w;
+    short aw = (row_bytes > 0 && bpp > 0) ? (short)(row_bytes / bpp) : w;
     if (aw < w) aw = w;
     if (aw <= 0) aw = 64;
     if (h <= 0) h = 64;
-    unsigned long sz = (unsigned long)aw * (unsigned long)h * 4UL;
-    void *buf = calloc(1, sz + 256UL);
+    unsigned long sz = (unsigned long)aw * (unsigned long)h * (unsigned long)bpp;
+    unsigned long pa = 0;
+    void *buf = 0;
+    gpe_lock();
+    ensure_gpe_pool_locked();
+    unsigned char *pool_va = g_gpe_pool_va;
+    gpe_unlock();
+    if (pool_va && (unsigned long)phys_addr >= FX6_GPE_POOL_PHYS_BASE &&
+        (unsigned long)phys_addr + sz <= FX6_GPE_POOL_PHYS_BASE + FX6_GPE_POOL_BYTES) {
+        pa = (unsigned long)phys_addr;
+        buf = (void *)(pool_va + (pa - FX6_GPE_POOL_PHYS_BASE));
+    } else {
+        buf = (void *)gpe_pool_alloc(sz + 256UL, &pa);
+    }
     if (info) {
         *(short *)(info + 0x0c) = 0;
         *(short *)(info + 0x0e) = 0;
@@ -342,11 +519,13 @@ int _ZN3grm3bmp10BitmapImpl6createElsP19BMP_RectangleRecord(void *self, long phy
             *(short *)(info + 0x10) = sr[2];
             *(short *)(info + 0x12) = sr[3];
         }
-        *(int *)(info + 0x1c) = 2;
+        *(int *)(info + 0x1c) = orig_fmt;
         *(int *)(info + 0x20) = 0;
-        *(unsigned long *)(info + 0x28) = (unsigned long)buf;
+        *(int *)(info + 0x24) = orig_fmt;
+        *(unsigned long *)(info + 0x28) = pa;
     }
     *(void **)(b + 0x10) = buf;
+    *(int *)(b + 0xb0) = 0;
     return 0;
 }
 
@@ -1130,14 +1309,80 @@ static const char *const k_look_opts[5] = { "S-CINETONE", "S-LOG3", "709TONE", "
 static const char *const k_wb_opts[5]   = { "5600K",  "3200K",  "4300K",  "6500K",  "ATW" };
 
 /* Exact 5-argument ABI for GRM_gpermFillrect and GRM_gpermRectblit called by libgemini-grm.so */
+typedef struct {
+    unsigned long cmd_id;
+    void         *user_data;
+    unsigned long reserved0;
+    unsigned long reserved1;
+} GRM_GPERMCmdCbParamRecord;
+
+typedef int (*gpe_cmd_cb_t)(GRM_GPERMCmdCbParamRecord *);
+
+static void invoke_gpe_cmd_cb(void *cb, void *ud) {
+    if (!valid_ptr(cb)) return;
+    GRM_GPERMCmdCbParamRecord rec;
+    rec.cmd_id = 1UL;
+    rec.user_data = ud;
+    rec.reserved0 = 0UL;
+    rec.reserved1 = 0UL;
+    ((gpe_cmd_cb_t)cb)(&rec);
+}
+
+static const unsigned char *g_gpe_argb_surfaces[1024];
+static unsigned int g_gpe_argb_cnt;
+
+static int is_gpe_argb_surface(const unsigned char *bits) {
+    if (!bits) return 0;
+    if (bits == pix_off || bits == pix_on) return 1;
+    unsigned int n = g_gpe_argb_cnt < 1024U ? g_gpe_argb_cnt : 1024U;
+    for (unsigned int i = 0U; i < n; i++) {
+        if (g_gpe_argb_surfaces[i] == bits) return 1;
+    }
+    return 0;
+}
+
+static void mark_gpe_argb_surface(const unsigned char *bits) {
+    if (!bits || is_gpe_argb_surface(bits)) return;
+    if (g_gpe_argb_cnt < 1024U) {
+        g_gpe_argb_surfaces[g_gpe_argb_cnt++] = bits;
+    }
+}
+
+static int resolve_bitmap_surface(
+    void *bmp, unsigned char **out_bits, int *out_w, int *out_h, int *out_stride, int *out_fmt, int *out_bpp
+) {
+    if (!valid_ptr(bmp)) return 0;
+    unsigned char *info = *(unsigned char **)((char *)bmp + 0x08);
+    unsigned char *bits = *(unsigned char **)((char *)bmp + 0x10);
+    if (!valid_ptr(info) || !valid_ptr(bits)) return 0;
+    int w = *(short *)(info + 0x10);
+    int h = *(short *)(info + 0x12);
+    if (w <= 0) w = *(short *)(info + 0x08);
+    if (h <= 0) h = *(short *)(info + 0x0a);
+    int stride = *(short *)(info + 0x18);
+    if (stride < w) stride = w;
+    int fmt = *(int *)(info + 0x1c);
+    int bpp = query_bpp(fmt);
+    if (w <= 0 || h <= 0 || stride <= 0 || bpp <= 0) return 0;
+    *out_bits = bits;
+    *out_w = w;
+    *out_h = h;
+    *out_stride = stride;
+    *out_fmt = fmt;
+    *out_bpp = bpp;
+    return 1;
+}
+
 int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *fill_param, void *cb, void *ud) {
     (void)cmd_param;
-    (void)cb;
-    (void)ud;
     ensure_bitmaps();
-    if (cmd_id) *cmd_id = 1;
-    if (!valid_ptr(fill_param)) return 0;
+    if (cmd_id) *cmd_id = 1U;
+    if (!valid_ptr(fill_param)) {
+        invoke_gpe_cmd_cb(cb, ud);
+        return 0;
+    }
     const unsigned char *fp = (const unsigned char *)fill_param;
+    void *dst_bmp = *(void *const *)(fp + 0x00);
     unsigned char r = fp[0x08];
     unsigned char g = fp[0x09];
     unsigned char b = fp[0x0a];
@@ -1146,133 +1391,269 @@ int GRM_gpermFillrect(unsigned int *cmd_id, const void *cmd_param, const void *f
     short ry = *(const short *)(fp + 0x0e);
     short rw = *(const short *)(fp + 0x10);
     short rh = *(const short *)(fp + 0x12);
-    unsigned int color = ((unsigned int)a << 24) | ((unsigned int)r << 16) | ((unsigned int)g << 8) | (unsigned int)b;
-    unsigned int out_px;
-    if (color != 0) {
-        out_px = (color & 0xFF000000U) ? color : (color | 0xFF000000U);
-    } else if (rw >= FB_W && rh >= FB_H) {
-        out_px = 0xFF101820U; /* Dark slate background for full-screen clear */
-    } else {
-        out_px = 0xFF2860A8U + ((draw_prim_count * 0x192307U) & 0x003F3F3FU);
-    }
-    volatile unsigned int *mb = get_fx6_mailbox();
-    unsigned int has_input = mb ? mb[1] : 0U;
-    unsigned int sel_box   = mb ? (mb[2] % 6U) : 0U;
-    unsigned int fps_idx   = mb ? (mb[3] % 6U) : 0U;
-    unsigned int shut_idx  = mb ? (mb[4] % 6U) : 0U;
-    unsigned int iso_idx   = mb ? (mb[5] % 6U) : 0U;
-    unsigned int nd_idx    = mb ? (mb[6] % 5U) : 0U;
-    unsigned int look_idx  = mb ? (mb[7] % 5U) : 0U;
-    unsigned int wb_idx    = mb ? (mb[8] % 5U) : 0U;
-    unsigned int rec_state = mb ? (mb[9] & 1U) : 0U;
+    int blend_mode = *(const int *)(fp + 0x14);
+    unsigned char const_alpha = fp[0x18];
 
-    int box_id = -1;
-    if (rw == 224 && rh == 140) {
-        if (rx == 8 && ry == 52)        box_id = 0;
-        else if (rx == 8 && ry == 200)  box_id = 1;
-        else if (rx == 8 && ry == 348)  box_id = 2;
-        else if (rx == 792 && ry == 52) box_id = 3;
-        else if (rx == 792 && ry == 200) box_id = 4;
-        else if (rx == 792 && ry == 348) box_id = 5;
+    unsigned char *dbits = pix_off;
+    int dw = FB_W, dh = FB_H, dstride = FB_W, dfmt = 2, dbpp = 4;
+    if (valid_ptr(dst_bmp) && dst_bmp != (void *)bmp_off) {
+        if (!resolve_bitmap_surface(dst_bmp, &dbits, &dw, &dh, &dstride, &dfmt, &dbpp)) {
+            dbits = pix_off; dw = FB_W; dh = FB_H; dstride = FB_W; dfmt = 2; dbpp = 4;
+        }
     }
-    int is_focused = (has_input > 0U && box_id >= 0 && (unsigned int)box_id == sel_box);
-    if (is_focused) {
-        out_px = 0xFF2C3E54U; /* Highlighted active widget background */
-    }
+
+    unsigned int eff_a = (blend_mode == 2)
+        ? (((unsigned int)a * (unsigned int)const_alpha) / 255U)
+        : (unsigned int)a;
+    unsigned int color = (eff_a << 24) | ((unsigned int)r << 16) |
+                         ((unsigned int)g << 8) | (unsigned int)b;
 
     int x0 = rx < 0 ? 0 : rx;
     int y0 = ry < 0 ? 0 : ry;
-    int x1 = (rx + rw > FB_W) ? FB_W : (rx + rw);
-    int y1 = (ry + rh > FB_H) ? FB_H : (ry + rh);
-    unsigned int *base = (unsigned int *)pix_off;
-    for (int y = y0; y < y1; y++) {
-        for (int x = x0; x < x1; x++) {
-            base[y * FB_W + x] = out_px;
+    int x1 = (rx + rw > dw) ? dw : (rx + rw);
+    int y1 = (ry + rh > dh) ? dh : (ry + rh);
+
+    if (dbpp == 4) {
+        mark_gpe_argb_surface(dbits);
+        unsigned int *base = (unsigned int *)dbits;
+        if (blend_mode != 2 || eff_a == 255U) {
+            if (blend_mode != 2 || eff_a != 0U) {
+                for (int y = y0; y < y1; y++) {
+                    unsigned int *row = base + (unsigned long)y * (unsigned long)dstride;
+                    for (int x = x0; x < x1; x++) row[x] = color;
+                }
+            }
+        } else if (eff_a != 0U) {
+            for (int y = y0; y < y1; y++) {
+                unsigned int *row = base + (unsigned long)y * (unsigned long)dstride;
+                for (int x = x0; x < x1; x++) {
+                    unsigned int dst = row[x];
+                    unsigned int da = (dst >> 24) & 0xFFU;
+                    unsigned int dr = (dst >> 16) & 0xFFU;
+                    unsigned int dg = (dst >> 8)  & 0xFFU;
+                    unsigned int db_c = dst & 0xFFU;
+                    unsigned int or_c = ((unsigned int)r * eff_a + dr * (255U - eff_a)) / 255U;
+                    unsigned int og_c = ((unsigned int)g * eff_a + dg * (255U - eff_a)) / 255U;
+                    unsigned int ob_c = ((unsigned int)b * eff_a + db_c * (255U - eff_a)) / 255U;
+                    unsigned int oa_c = eff_a + (da * (255U - eff_a)) / 255U;
+                    row[x] = (oa_c << 24) | (or_c << 16) | (og_c << 8) | ob_c;
+                }
+            }
+        }
+    } else if (dbpp == 2) {
+        unsigned short c16 = (unsigned short)((((unsigned int)r >> 4) << 12) |
+                                              (((unsigned int)g >> 4) << 8)  |
+                                              (((unsigned int)b >> 4) << 4)  |
+                                              (eff_a >> 4));
+        unsigned short *base16 = (unsigned short *)dbits;
+        if (blend_mode != 2 || eff_a != 0U) {
+            for (int y = y0; y < y1; y++) {
+                unsigned short *row = base16 + (unsigned long)y * (unsigned long)dstride;
+                for (int x = x0; x < x1; x++) row[x] = c16;
+            }
+        }
+    } else if (dbpp == 1) {
+        if (blend_mode != 2 || eff_a != 0U) {
+            for (int y = y0; y < y1; y++) {
+                memset(dbits + (unsigned long)y * (unsigned long)dstride + x0,
+                       (int)eff_a, (size_t)(x1 > x0 ? (x1 - x0) : 0));
+            }
         }
     }
-    /* Native-only mode: do not overlay software text/borders. */
+
     draw_prim_count++;
     if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) {
-        dprintf(2, "FX6_GPE_FILLRECT #%u (%d,%d,%d,%d) argb=0x%08x out=0x%08x\n", draw_prim_count, rx, ry, rw, rh, color, out_px);
+        dprintf(2, "FX6_GPE_FILLRECT #%u (%d,%d,%d,%d) argb=0x%08x blend=%d calpha=%u dst=%p\n",
+                draw_prim_count, rx, ry, rw, rh, color, blend_mode, (unsigned int)const_alpha, dst_bmp);
     }
     if (!in_input_redraw) {
         flush_pixels_to_osd("fillrect");
     }
+    invoke_gpe_cmd_cb(cb, ud);
     return 0;
 }
 
 static void fx6_redraw_big6_boxes(void) { }
 
 int GRM_gpermRectblit(unsigned int *cmd_id, const void *cmd_param, const void *blit_param, void *cb, void *ud) {
-    (void)cmd_param; (void)cb; (void)ud;
+    (void)cmd_param;
     ensure_bitmaps();
-    if (cmd_id) *cmd_id = 1;
-    if (!valid_ptr(blit_param)) return 0;
+    if (cmd_id) *cmd_id = 1U;
+    if (!valid_ptr(blit_param)) {
+        invoke_gpe_cmd_cb(cb, ud);
+        return 0;
+    }
     const unsigned char *bp = (const unsigned char *)blit_param;
     void *src = *(void *const *)(bp + 0x00);
     short sx0 = *(const short *)(bp + 0x08);
     short sy0 = *(const short *)(bp + 0x0a);
+    short sw0 = *(const short *)(bp + 0x0c);
+    short sh0 = *(const short *)(bp + 0x0e);
+    void *dst_bmp = *(void *const *)(bp + 0x10);
     short dx0 = *(const short *)(bp + 0x18);
     short dy0 = *(const short *)(bp + 0x1a);
     short dw0 = *(const short *)(bp + 0x1c);
     short dh0 = *(const short *)(bp + 0x1e);
+    short cx0 = *(const short *)(bp + 0x20);
+    short cy0 = *(const short *)(bp + 0x22);
+    short cw0 = *(const short *)(bp + 0x24);
+    short ch0 = *(const short *)(bp + 0x26);
+    int blend_mode = *(const int *)(bp + 0x28);
+    unsigned char const_alpha = bp[0x2c];
+    unsigned char const_alpha2 = bp[0x2d];
+    int color_mod = *(const int *)(bp + 0x50);
+    unsigned int tint_r = (color_mod == 0x0e) ? (unsigned int)bp[0x3c] : 255U;
+    unsigned int tint_g = (color_mod == 0x0e) ? (unsigned int)bp[0x3d] : 255U;
+    unsigned int tint_b = (color_mod == 0x0e) ? (unsigned int)bp[0x3e] : 255U;
+
+    unsigned char *dbits = pix_off;
+    int dst_w = FB_W, dst_h = FB_H, dst_stride = FB_W, dst_fmt = 2, dst_bpp = 4;
+    if (valid_ptr(dst_bmp) && dst_bmp != (void *)bmp_off) {
+        if (!resolve_bitmap_surface(dst_bmp, &dbits, &dst_w, &dst_h, &dst_stride, &dst_fmt, &dst_bpp)) {
+            dbits = pix_off; dst_w = FB_W; dst_h = FB_H; dst_stride = FB_W; dst_fmt = 2; dst_bpp = 4;
+        }
+    }
+
     int x0 = dx0 < 0 ? 0 : dx0;
     int y0 = dy0 < 0 ? 0 : dy0;
-    int x1 = (dx0 + dw0 > FB_W) ? FB_W : (dx0 + dw0);
-    int y1 = (dy0 + dh0 > FB_H) ? FB_H : (dy0 + dh0);
-    unsigned int *db = (unsigned int *)pix_off;
-    if (valid_ptr(src)) {
-        unsigned char *info = *(unsigned char **)((char *)src + 0x08);
-        unsigned char *bits = *(unsigned char **)((char *)src + 0x10);
-        if (valid_ptr(info) && valid_ptr(bits)) {
-            int sw = *(short *)(info + 0x10);
-            int sh = *(short *)(info + 0x12);
-            if (sw <= 0) sw = *(short *)(info + 0x08);
-            if (sh <= 0) sh = *(short *)(info + 0x0a);
-            int stride = *(short *)(info + 0x18);
-            if (stride < sw) stride = sw;
-            int fmt = *(int *)(info + 0x1c);
-            int orig_fmt = *(int *)(info + 0x24);
-            int is_glyph8 = (orig_fmt == 4);
-            for (int y = 0; y < (y1 - y0); y++) {
-                int dy = y0 + y, sy = sy0 + y;
-                if (dy < 0 || dy >= FB_H || sy < 0 || sy >= sh) continue;
-                for (int x = 0; x < (x1 - x0); x++) {
-                    int dx = x0 + x, sx = sx0 + x;
-                    if (dx < 0 || dx >= FB_W || sx < 0 || sx >= sw) continue;
-                    if (is_glyph8) {
-                        const unsigned char *row8 = (const unsigned char *)bits + sy * (stride * 4);
-                        unsigned int a = row8[sx];
-                        if (a > 0U) {
-                            unsigned int dst = db[dy * FB_W + dx];
-                            unsigned int dr = (dst >> 16) & 0xFFU, dg = (dst >> 8) & 0xFFU, db_c = dst & 0xFFU;
-                            unsigned int or_c = (255U * a + dr * (255U - a)) / 255U;
-                            unsigned int og_c = (255U * a + dg * (255U - a)) / 255U;
-                            unsigned int ob_c = (255U * a + db_c * (255U - a)) / 255U;
-                            db[dy * FB_W + dx] = 0xFF000000U | (or_c << 16) | (og_c << 8) | ob_c;
-                        }
+    int x1 = (dx0 + dw0 > dst_w) ? dst_w : (dx0 + dw0);
+    int y1 = (dy0 + dh0 > dst_h) ? dst_h : (dy0 + dh0);
+    if (cw0 > 0 && ch0 > 0) {
+        if (cx0 > x0) x0 = cx0;
+        if (cy0 > y0) y0 = cy0;
+        if (cx0 + cw0 < x1) x1 = cx0 + cw0;
+        if (cy0 + ch0 < y1) y1 = cy0 + ch0;
+    }
+
+    int fmt = -1;
+    int bpp = 0;
+    unsigned char *sbits = 0;
+    int sw = 0, sh = 0, sstride = 0;
+    if (resolve_bitmap_surface(src, &sbits, &sw, &sh, &sstride, &fmt, &bpp)) {
+        int src_is_gpe_argb = (bpp == 4) ? is_gpe_argb_surface(sbits) : 0;
+        if (dst_bpp == 4) {
+            mark_gpe_argb_surface(dbits);
+        }
+        if (sw0 <= 0) sw0 = (short)sw;
+        if (sh0 <= 0) sh0 = (short)sh;
+        unsigned long row_pitch = (unsigned long)sstride * (unsigned long)bpp;
+
+        for (int dy = y0; dy < y1; dy++) {
+            int rel_y = dy - (int)dy0;
+            int sy = (dw0 > 0 && dh0 > 0) ? ((int)sy0 + (rel_y * (int)sh0) / (int)dh0) : ((int)sy0 + rel_y);
+            if (sy < 0 || sy >= sh) continue;
+            const unsigned char *srow = sbits + (unsigned long)sy * row_pitch;
+
+            for (int dx = x0; dx < x1; dx++) {
+                int rel_x = dx - (int)dx0;
+                int sx = (dw0 > 0 && dh0 > 0) ? ((int)sx0 + (rel_x * (int)sw0) / (int)dw0) : ((int)sx0 + rel_x);
+                if (sx < 0 || sx >= sw) continue;
+
+                unsigned int sr = 0U, sg = 0U, sb = 0U, sa = 0U;
+                if (bpp == 4) {
+                    if (src_is_gpe_argb) {
+                        unsigned int p = ((const unsigned int *)srow)[sx];
+                        sa = (p >> 24) & 0xFFU;
+                        sr = (p >> 16) & 0xFFU;
+                        sg = (p >> 8)  & 0xFFU;
+                        sb = p & 0xFFU;
                     } else {
-                        unsigned int p = ((const unsigned int *)bits)[sy * stride + sx];
-                        unsigned int a = (p >> 24) & 0xFFU;
-                        if (a != 0U) {
-                            unsigned int dst = db[dy * FB_W + dx];
-                            unsigned int dr = (dst >> 16) & 0xFFU, dg = (dst >> 8) & 0xFFU, db_c = dst & 0xFFU;
-                            unsigned int sr = (p >> 16) & 0xFFU, sg = (p >> 8) & 0xFFU, sb_c = p & 0xFFU;
-                            unsigned int or_c = (sr * a + dr * (255U - a)) / 255U;
-                            unsigned int og_c = (sg * a + dg * (255U - a)) / 255U;
-                            unsigned int ob_c = (sb_c * a + db_c * (255U - a)) / 255U;
-                            db[dy * FB_W + dx] = 0xFF000000U | (or_c << 16) | (og_c << 8) | ob_c;
-                        }
+                        /* BMP_PixelFormat == 2 -> RGBA8888 bytes [R,G,B,A] */
+                        const unsigned char *px4 = srow + (unsigned long)sx * 4UL;
+                        sr = px4[0];
+                        sg = px4[1];
+                        sb = px4[2];
+                        sa = px4[3];
+                    }
+                } else if (bpp == 1) {
+                    /* BMP_PixelFormat == 4 -> A8 tinted by bp[0x3c..0x3e] */
+                    sa = srow[sx];
+                    sr = tint_r;
+                    sg = tint_g;
+                    sb = tint_b;
+                } else if (bpp == 2) {
+                    unsigned short p16 = ((const unsigned short *)srow)[sx];
+                    if (fmt == 1) {
+                        /* BMP_PixelFormat == 1 -> RGBA4444 ([15:12]=R,[11:8]=G,[7:4]=B,[3:0]=A) */
+                        sr = ((p16 >> 12) & 0xFU) * 17U;
+                        sg = ((p16 >> 8)  & 0xFU) * 17U;
+                        sb = ((p16 >> 4)  & 0xFU) * 17U;
+                        sa = (p16 & 0xFU) * 17U;
+                    } else if (fmt == 3) {
+                        sa = ((p16 >> 12) & 0xFU) * 17U;
+                        sr = ((p16 >> 8)  & 0xFU) * 17U;
+                        sg = ((p16 >> 4)  & 0xFU) * 17U;
+                        sb = (p16 & 0xFU) * 17U;
+                    } else {
+                        sa = (p16 & 0x8000U) ? 255U : 0U;
+                        sr = ((p16 >> 10) & 0x1FU) * 255U / 31U;
+                        sg = ((p16 >> 5)  & 0x1FU) * 255U / 31U;
+                        sb = (p16 & 0x1FU) * 255U / 31U;
+                    }
+                }
+
+                if (blend_mode == 2 || blend_mode == 3) {
+                    sa = (sa * (unsigned int)const_alpha) / 255U;
+                    if (blend_mode == 3) {
+                        sa = (sa * (unsigned int)const_alpha2) / 255U;
+                    }
+                }
+
+                if (dst_bpp == 4) {
+                    unsigned int *drow = (unsigned int *)dbits + (unsigned long)dy * (unsigned long)dst_stride;
+                    if (blend_mode == 1) {
+                        drow[dx] = (sa << 24) | (sr << 16) | (sg << 8) | sb;
+                    } else if (sa != 0U) {
+                        unsigned int dst = drow[dx];
+                        unsigned int da = (dst >> 24) & 0xFFU;
+                        unsigned int dr = (dst >> 16) & 0xFFU;
+                        unsigned int dg = (dst >> 8)  & 0xFFU;
+                        unsigned int db_c = dst & 0xFFU;
+                        unsigned int or_c = (sr * sa + dr * (255U - sa)) / 255U;
+                        unsigned int og_c = (sg * sa + dg * (255U - sa)) / 255U;
+                        unsigned int ob_c = (sb * sa + db_c * (255U - sa)) / 255U;
+                        unsigned int oa_c = sa + (da * (255U - sa)) / 255U;
+                        drow[dx] = (oa_c << 24) | (or_c << 16) | (og_c << 8) | ob_c;
+                    }
+                } else if (dst_bpp == 2) {
+                    unsigned short *drow = (unsigned short *)dbits + (unsigned long)dy * (unsigned long)dst_stride;
+                    if (blend_mode == 1) {
+                        drow[dx] = (unsigned short)(((sr >> 4) << 12) | ((sg >> 4) << 8) | ((sb >> 4) << 4) | (sa >> 4));
+                    } else if (sa != 0U) {
+                        unsigned short d16 = drow[dx];
+                        unsigned int dr = ((d16 >> 12) & 0xFU) * 17U;
+                        unsigned int dg = ((d16 >> 8)  & 0xFU) * 17U;
+                        unsigned int db_c = ((d16 >> 4) & 0xFU) * 17U;
+                        unsigned int da = (d16 & 0xFU) * 17U;
+                        unsigned int or_c = (sr * sa + dr * (255U - sa)) / 255U;
+                        unsigned int og_c = (sg * sa + dg * (255U - sa)) / 255U;
+                        unsigned int ob_c = (sb * sa + db_c * (255U - sa)) / 255U;
+                        unsigned int oa_c = sa + (da * (255U - sa)) / 255U;
+                        drow[dx] = (unsigned short)(((or_c >> 4) << 12) | ((og_c >> 4) << 8) | ((ob_c >> 4) << 4) | (oa_c >> 4));
+                    }
+                } else if (dst_bpp == 1) {
+                    unsigned char *drow = dbits + (unsigned long)dy * (unsigned long)dst_stride;
+                    if (blend_mode == 1) {
+                        drow[dx] = (unsigned char)sa;
+                    } else if (sa != 0U) {
+                        unsigned int da = drow[dx];
+                        unsigned int oa_c = sa + (da * (255U - sa)) / 255U;
+                        drow[dx] = (unsigned char)(oa_c > 255U ? 255U : oa_c);
                     }
                 }
             }
         }
     }
     draw_prim_count++;
-    if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) dprintf(2, "FX6_GPE_RECTBLIT #%u dst=(%d,%d,%d,%d) src=%p\n", draw_prim_count, dx0, dy0, dw0, dh0, src);
+    if (draw_prim_count <= 40 || draw_prim_count % 50 == 0) {
+        dprintf(2, "FX6_GPE_RECTBLIT #%u dst=(%d,%d,%d,%d) src=%p fmt=%d bpp=%d\n",
+                draw_prim_count, dx0, dy0, dw0, dh0, src, fmt, bpp);
+    }
     flush_pixels_to_osd("rectblit");
+    invoke_gpe_cmd_cb(cb, ud);
     return 0;
 }
+
 
 int _ZN2ma4MMap3mapElm(void *self, long addr, unsigned long len) {
     (void)self;

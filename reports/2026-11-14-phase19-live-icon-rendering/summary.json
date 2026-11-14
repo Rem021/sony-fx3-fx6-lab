@@ -1,0 +1,1223 @@
+{
+  "schema": "fx6-phase19-live-icon-rendering-v1",
+  "date": "2026-11-14",
+  "objective": "Integrate authentic Sony FX6 native UI icon/bitmap sprite blitting (image_00_169.uxc + LDEC GPE pool + RGBA4444/RGBA8888/A8) into outputs/fx3-vm-trial and eliminate the multi-click freeze (GenerateImageCommand::notify blr x2=0, static widget buffer race, GDB stop-reply hang, APPFW_SEGV status masking).",
+  "live_verification_env": {
+    "port": 18769,
+    "workdir": "/private/tmp/fx6-h5-live-icon",
+    "isolated_from_port_8768": true,
+    "boot_status": {
+      "running": true,
+      "pid": 209,
+      "elapsed_sec": 38.5,
+      "stage": "LIVE_GPE0_READY",
+      "live_ready": true,
+      "crashed": false,
+      "crash_reason": "",
+      "cmd_seq": 1,
+      "ack_seq": 1,
+      "page": 0,
+      "page_name": "Big-6 Home (0x2e9e210, 98 rows)",
+      "sel_box": 5,
+      "sel_cell_name": "Base Look",
+      "menu_cat": 2,
+      "menu_cat_name": "Shooting",
+      "menu_item": 0,
+      "menu_depth": 0,
+      "cell_vals": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "table_off": "0x02e90fb0",
+      "table_rows": 7,
+      "table_idx128": 0,
+      "gpe0_nonzero_px": 331776,
+      "text_ok": 27,
+      "fill_n": 38,
+      "icon_n": 6,
+      "png_source": "LIVE QEMU GPE0 @ 0x41e001000 (seq=1, nz=331776)",
+      "serial_tail": "FX6_FONT_CREATE2 attr=0x7f8d24b9bc rec=0x7f8d24b960 before=(nil) real=0x7f9f78665c\nFX6_FONT_CREATE2_DONE rec=0x7f8d24b960 after=0x7f8813b35c\nFX6_FONT_CREATE2 attr=0x7f8d24b9bc rec=0x7f8d24b960 before=(nil) real=0x7f9f78665c\nFX6_FONT_CREATE2_DONE rec=0x7f8d24b960 after=0x7f8813aefc\nFX6_COND_WAIT tid=220 cond=0x7f88007ae0 mutex=0x7f88007ab0 ra=0x7f94acede4 mod=/usr/lib/libstella.so off=24de4 ra1=0x7f94ad6990 mod1=/usr/lib/libstella.so off1=2c990\n[ 1179.774593] FX3_LDEC103_OPEN count=13 devno=0xfb000cd result=0 synthetic_ldec=1 original_ldec_hw=0\n[ 1179.797656] FX3_LDEC103_IOCTL seq=42 command=1 src=0x7f646819dc src_bytes=587 p32=0x1056da00 pa=0x41056da00 dst_bytes=3328 records=1 channel=8 source_bypass=0 destination_bypass=1 decode=0 blocks=1 src_fnv=0xcf97af1444ed9866 output_fnv=0x2be4aad80496a1ab result=0 reason=complete synchronous=1 synthetic_ldec=1 original_ldec_hw=0\nFX6_COND_WAIT tid=220 cond=0x7f88007ae0 mutex=0x7f88007ab0 ra=0x7f94acede4 mod=/usr/lib/libstella.so off=24de4 ra1=0x7f94ad6990 mod1=/usr/lib/libstella.so off1=2c990\nFX6_FONT_CREATE2 attr=0x7f8d24b9bc rec=0x7f8d24b960 before=(nil) real=0x7f9f78665c\nFX6_FONT_CREATE2_DONE rec=0x7f8d24b960 after=0x7f8813c7ec\nFX6_FONT_CREATE2 attr=0x7f8d24b9bc rec=0x7f8d24b960 before=(nil) real=0x7f9f78665c\nFX6_FONT_CREATE2_DONE rec=0x7f8d24b960 after=0x7f8813a50c\nFX6_COND_WAIT tid=220 cond=0x7f88007ae0 mutex=0x7f88007ab0 ra=0x7f94acede4 mod=/usr/lib/libstella.so off=24de4 ra1=0x7f94ad6990 mod1=/usr/lib/libstella.so off1=2c990\nFX6_COND_WAIT tid=220 cond=0x7f88007ae0 mutex=0x7f88007ab0 ra=0x7f94acede4 mod=/usr/lib/libstella.so off=24de4 ra1=0x7f94ad6990 mod1=/usr/lib/libstella.so off1=2c990\nFX6_LIVE_READY seq=1 page=0 sel=5 cat=2 item=0 depth=0 nz=331776 text_ok=27 fill=38 icon=6\nFX6_OSD_SCAN 41e nz_words=331784\nFX6_OSD_SCAN 429 nz_words=0\nFX6_OSD_SCAN 480 nz_words=0"
+    },
+    "ldec_ioctl_verified": "FX3_LDEC103_IOCTL seq=42 command=1 src_bytes=587 p32=0x1056da00 pa=0x41056da00 dst_bytes=3328 decode=0 blocks=1 result=0 reason=complete"
+  },
+  "stress_test_60_clicks": {
+    "total_clicks": 60,
+    "passed_clicks": 60,
+    "failed_clicks": [],
+    "appfw_segv_count": 0,
+    "max_icon_n": 119,
+    "pages_with_icons": [
+      0,
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      19,
+      20,
+      23
+    ],
+    "avg_latency_ms": 179.3,
+    "max_latency_ms": 632.5,
+    "last_status": {
+      "click": 60,
+      "payload": {
+        "page": 0
+      },
+      "ok": true,
+      "wrote_mailbox": true,
+      "guest_synced": true,
+      "cmd_seq": 61,
+      "ack_seq": 61,
+      "stage": "LIVE_GPE0_READY",
+      "page": 0,
+      "nz": 331776,
+      "text_ok": 30,
+      "fill_n": 38,
+      "icon_n": 6,
+      "dt_ms": 187.7
+    },
+    "clicks": [
+      {
+        "click": 1,
+        "payload": {
+          "page": 0
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 2,
+        "ack_seq": 2,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 27,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 552.5
+      },
+      {
+        "click": 2,
+        "payload": {
+          "page": 1
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 3,
+        "ack_seq": 3,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 18,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 172.7
+      },
+      {
+        "click": 3,
+        "payload": {
+          "page": 2
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 4,
+        "ack_seq": 4,
+        "stage": "LIVE_GPE0_READY",
+        "page": 2,
+        "nz": 30246,
+        "text_ok": 13,
+        "fill_n": 1,
+        "icon_n": 0,
+        "dt_ms": 150.9
+      },
+      {
+        "click": 4,
+        "payload": {
+          "page": 3
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 5,
+        "ack_seq": 5,
+        "stage": "LIVE_GPE0_READY",
+        "page": 3,
+        "nz": 331776,
+        "text_ok": 13,
+        "fill_n": 32,
+        "icon_n": 0,
+        "dt_ms": 167.0
+      },
+      {
+        "click": 5,
+        "payload": {
+          "page": 4
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 6,
+        "ack_seq": 6,
+        "stage": "LIVE_GPE0_READY",
+        "page": 4,
+        "nz": 435174,
+        "text_ok": 28,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 285.0
+      },
+      {
+        "click": 6,
+        "payload": {
+          "page": 5
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 7,
+        "ack_seq": 7,
+        "stage": "LIVE_GPE0_READY",
+        "page": 5,
+        "nz": 461624,
+        "text_ok": 29,
+        "fill_n": 26,
+        "icon_n": 1,
+        "dt_ms": 255.4
+      },
+      {
+        "click": 7,
+        "payload": {
+          "page": 6
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 8,
+        "ack_seq": 8,
+        "stage": "LIVE_GPE0_READY",
+        "page": 6,
+        "nz": 36066,
+        "text_ok": 32,
+        "fill_n": 0,
+        "icon_n": 5,
+        "dt_ms": 187.9
+      },
+      {
+        "click": 8,
+        "payload": {
+          "page": 7
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 9,
+        "ack_seq": 9,
+        "stage": "LIVE_GPE0_READY",
+        "page": 7,
+        "nz": 461624,
+        "text_ok": 13,
+        "fill_n": 41,
+        "icon_n": 9,
+        "dt_ms": 224.6
+      },
+      {
+        "click": 9,
+        "payload": {
+          "page": 8
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 10,
+        "ack_seq": 10,
+        "stage": "LIVE_GPE0_READY",
+        "page": 8,
+        "nz": 435024,
+        "text_ok": 9,
+        "fill_n": 10,
+        "icon_n": 2,
+        "dt_ms": 175.0
+      },
+      {
+        "click": 10,
+        "payload": {
+          "page": 9
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 11,
+        "ack_seq": 11,
+        "stage": "LIVE_GPE0_READY",
+        "page": 9,
+        "nz": 552960,
+        "text_ok": 11,
+        "fill_n": 11,
+        "icon_n": 7,
+        "dt_ms": 222.2
+      },
+      {
+        "click": 11,
+        "payload": {
+          "page": 10
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 12,
+        "ack_seq": 12,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 153.4
+      },
+      {
+        "click": 12,
+        "payload": {
+          "page": 11
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 13,
+        "ack_seq": 13,
+        "stage": "LIVE_GPE0_READY",
+        "page": 11,
+        "nz": 470397,
+        "text_ok": 16,
+        "fill_n": 34,
+        "icon_n": 44,
+        "dt_ms": 285.7
+      },
+      {
+        "click": 13,
+        "payload": {
+          "page": 12
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 14,
+        "ack_seq": 14,
+        "stage": "LIVE_GPE0_READY",
+        "page": 12,
+        "nz": 435024,
+        "text_ok": 7,
+        "fill_n": 71,
+        "icon_n": 3,
+        "dt_ms": 152.1
+      },
+      {
+        "click": 14,
+        "payload": {
+          "page": 13
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 15,
+        "ack_seq": 15,
+        "stage": "LIVE_GPE0_READY",
+        "page": 13,
+        "nz": 461624,
+        "text_ok": 10,
+        "fill_n": 22,
+        "icon_n": 7,
+        "dt_ms": 182.8
+      },
+      {
+        "click": 15,
+        "payload": {
+          "page": 14
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 16,
+        "ack_seq": 16,
+        "stage": "LIVE_GPE0_READY",
+        "page": 14,
+        "nz": 552960,
+        "text_ok": 9,
+        "fill_n": 19,
+        "icon_n": 9,
+        "dt_ms": 185.6
+      },
+      {
+        "click": 16,
+        "payload": {
+          "page": 15
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 17,
+        "ack_seq": 17,
+        "stage": "LIVE_GPE0_READY",
+        "page": 15,
+        "nz": 435024,
+        "text_ok": 7,
+        "fill_n": 16,
+        "icon_n": 5,
+        "dt_ms": 149.6
+      },
+      {
+        "click": 17,
+        "payload": {
+          "page": 16
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 18,
+        "ack_seq": 18,
+        "stage": "LIVE_GPE0_READY",
+        "page": 16,
+        "nz": 95296,
+        "text_ok": 81,
+        "fill_n": 0,
+        "icon_n": 119,
+        "dt_ms": 632.5
+      },
+      {
+        "click": 18,
+        "payload": {
+          "page": 17
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 19,
+        "ack_seq": 19,
+        "stage": "LIVE_GPE0_READY",
+        "page": 17,
+        "nz": 331776,
+        "text_ok": 7,
+        "fill_n": 23,
+        "icon_n": 0,
+        "dt_ms": 114.4
+      },
+      {
+        "click": 19,
+        "payload": {
+          "page": 18
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 20,
+        "ack_seq": 20,
+        "stage": "LIVE_GPE0_READY",
+        "page": 18,
+        "nz": 435024,
+        "text_ok": 9,
+        "fill_n": 7,
+        "icon_n": 1,
+        "dt_ms": 153.8
+      },
+      {
+        "click": 20,
+        "payload": {
+          "page": 19
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 21,
+        "ack_seq": 21,
+        "stage": "LIVE_GPE0_READY",
+        "page": 19,
+        "nz": 435024,
+        "text_ok": 4,
+        "fill_n": 15,
+        "icon_n": 1,
+        "dt_ms": 118.5
+      },
+      {
+        "click": 21,
+        "payload": {
+          "page": 20
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 22,
+        "ack_seq": 22,
+        "stage": "LIVE_GPE0_READY",
+        "page": 20,
+        "nz": 435024,
+        "text_ok": 5,
+        "fill_n": 15,
+        "icon_n": 1,
+        "dt_ms": 115.6
+      },
+      {
+        "click": 22,
+        "payload": {
+          "page": 21
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 23,
+        "ack_seq": 23,
+        "stage": "LIVE_GPE0_READY",
+        "page": 21,
+        "nz": 144716,
+        "text_ok": 4,
+        "fill_n": 8,
+        "icon_n": 0,
+        "dt_ms": 149.1
+      },
+      {
+        "click": 23,
+        "payload": {
+          "page": 22
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 24,
+        "ack_seq": 24,
+        "stage": "LIVE_GPE0_READY",
+        "page": 22,
+        "nz": 440748,
+        "text_ok": 4,
+        "fill_n": 15,
+        "icon_n": 0,
+        "dt_ms": 144.8
+      },
+      {
+        "click": 24,
+        "payload": {
+          "page": 23
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 25,
+        "ack_seq": 25,
+        "stage": "LIVE_GPE0_READY",
+        "page": 23,
+        "nz": 461624,
+        "text_ok": 2,
+        "fill_n": 30,
+        "icon_n": 1,
+        "dt_ms": 119.5
+      },
+      {
+        "click": 25,
+        "payload": {
+          "page": 10
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 26,
+        "ack_seq": 26,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 84.0
+      },
+      {
+        "click": 26,
+        "payload": {
+          "key": "SET"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 27,
+        "ack_seq": 27,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 153.8
+      },
+      {
+        "click": 27,
+        "payload": {
+          "page": 10
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 28,
+        "ack_seq": 28,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 118.0
+      },
+      {
+        "click": 28,
+        "payload": {
+          "key": "DOWN"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 29,
+        "ack_seq": 29,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 146.5
+      },
+      {
+        "click": 29,
+        "payload": {
+          "page": 2
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 30,
+        "ack_seq": 30,
+        "stage": "LIVE_GPE0_READY",
+        "page": 2,
+        "nz": 30246,
+        "text_ok": 13,
+        "fill_n": 1,
+        "icon_n": 0,
+        "dt_ms": 117.9
+      },
+      {
+        "click": 30,
+        "payload": {
+          "key": "SET"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 31,
+        "ack_seq": 31,
+        "stage": "LIVE_GPE0_READY",
+        "page": 2,
+        "nz": 31836,
+        "text_ok": 15,
+        "fill_n": 1,
+        "icon_n": 0,
+        "dt_ms": 153.3
+      },
+      {
+        "click": 31,
+        "payload": {
+          "page": 1,
+          "menu_cat": 0,
+          "menu_depth": 1
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 32,
+        "ack_seq": 32,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 16,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 191.0
+      },
+      {
+        "click": 32,
+        "payload": {
+          "key": "DOWN"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 33,
+        "ack_seq": 33,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 149.3
+      },
+      {
+        "click": 33,
+        "payload": {
+          "key": "RIGHT"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 34,
+        "ack_seq": 34,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 181.5
+      },
+      {
+        "click": 34,
+        "payload": {
+          "key": "LEFT"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 35,
+        "ack_seq": 35,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 16,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 85.8
+      },
+      {
+        "click": 35,
+        "payload": {
+          "page": 4
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 36,
+        "ack_seq": 36,
+        "stage": "LIVE_GPE0_READY",
+        "page": 4,
+        "nz": 435494,
+        "text_ok": 35,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 153.0
+      },
+      {
+        "click": 36,
+        "payload": {
+          "page": 14
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 37,
+        "ack_seq": 37,
+        "stage": "LIVE_GPE0_READY",
+        "page": 14,
+        "nz": 552960,
+        "text_ok": 9,
+        "fill_n": 19,
+        "icon_n": 9,
+        "dt_ms": 118.7
+      },
+      {
+        "click": 37,
+        "payload": {
+          "page": 16
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 38,
+        "ack_seq": 38,
+        "stage": "LIVE_GPE0_READY",
+        "page": 16,
+        "nz": 95316,
+        "text_ok": 82,
+        "fill_n": 0,
+        "icon_n": 119,
+        "dt_ms": 347.5
+      },
+      {
+        "click": 38,
+        "payload": {
+          "key": "DISP"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 39,
+        "ack_seq": 39,
+        "stage": "LIVE_GPE0_READY",
+        "page": 17,
+        "nz": 331776,
+        "text_ok": 7,
+        "fill_n": 23,
+        "icon_n": 0,
+        "dt_ms": 150.3
+      },
+      {
+        "click": 39,
+        "payload": {
+          "key": "DISP"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 40,
+        "ack_seq": 40,
+        "stage": "LIVE_GPE0_READY",
+        "page": 18,
+        "nz": 435024,
+        "text_ok": 9,
+        "fill_n": 7,
+        "icon_n": 1,
+        "dt_ms": 152.0
+      },
+      {
+        "click": 40,
+        "payload": {
+          "key": "MENU"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 41,
+        "ack_seq": 41,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 148.1
+      },
+      {
+        "click": 41,
+        "payload": {
+          "key": "DOWN"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 42,
+        "ack_seq": 42,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 15,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 155.0
+      },
+      {
+        "click": 42,
+        "payload": {
+          "key": "UP"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 43,
+        "ack_seq": 43,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 117.3
+      },
+      {
+        "click": 43,
+        "payload": {
+          "key": "RIGHT"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 44,
+        "ack_seq": 44,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 16,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 85.3
+      },
+      {
+        "click": 44,
+        "payload": {
+          "key": "SET"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 45,
+        "ack_seq": 45,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 84.1
+      },
+      {
+        "click": 45,
+        "payload": {
+          "key": "LEFT"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 46,
+        "ack_seq": 46,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 16,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 120.9
+      },
+      {
+        "click": 46,
+        "payload": {
+          "key": "BACK"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 47,
+        "ack_seq": 47,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 104.9
+      },
+      {
+        "click": 47,
+        "payload": {
+          "key": "HOME"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 48,
+        "ack_seq": 48,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 249.1
+      },
+      {
+        "click": 48,
+        "payload": {
+          "page": 10
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 49,
+        "ack_seq": 49,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 151.9
+      },
+      {
+        "click": 49,
+        "payload": {
+          "page": 0
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 50,
+        "ack_seq": 50,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 114.2
+      },
+      {
+        "click": 50,
+        "payload": {
+          "key": "RIGHT"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 51,
+        "ack_seq": 51,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 223.2
+      },
+      {
+        "click": 51,
+        "payload": {
+          "key": "SET"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 52,
+        "ack_seq": 52,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 29,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 186.8
+      },
+      {
+        "click": 52,
+        "payload": {
+          "key": "DOWN"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 53,
+        "ack_seq": 53,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 174.4
+      },
+      {
+        "click": 53,
+        "payload": {
+          "key": "LEFT"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 54,
+        "ack_seq": 54,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 185.2
+      },
+      {
+        "click": 54,
+        "payload": {
+          "key": "UP"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 55,
+        "ack_seq": 55,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 152.0
+      },
+      {
+        "click": 55,
+        "payload": {
+          "key": "MENU"
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 56,
+        "ack_seq": 56,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 17,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 151.6
+      },
+      {
+        "click": 56,
+        "payload": {
+          "page": 1,
+          "menu_cat": 2,
+          "menu_depth": 1
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 57,
+        "ack_seq": 57,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 18,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 152.2
+      },
+      {
+        "click": 57,
+        "payload": {
+          "page": 16
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 58,
+        "ack_seq": 58,
+        "stage": "LIVE_GPE0_READY",
+        "page": 16,
+        "nz": 95316,
+        "text_ok": 82,
+        "fill_n": 0,
+        "icon_n": 119,
+        "dt_ms": 359.6
+      },
+      {
+        "click": 58,
+        "payload": {
+          "page": 10
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 59,
+        "ack_seq": 59,
+        "stage": "LIVE_GPE0_READY",
+        "page": 10,
+        "nz": 435024,
+        "text_ok": 10,
+        "fill_n": 32,
+        "icon_n": 4,
+        "dt_ms": 182.2
+      },
+      {
+        "click": 59,
+        "payload": {
+          "page": 1
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 60,
+        "ack_seq": 60,
+        "stage": "LIVE_GPE0_READY",
+        "page": 1,
+        "nz": 435024,
+        "text_ok": 18,
+        "fill_n": 17,
+        "icon_n": 1,
+        "dt_ms": 116.3
+      },
+      {
+        "click": 60,
+        "payload": {
+          "page": 0
+        },
+        "ok": true,
+        "wrote_mailbox": true,
+        "guest_synced": true,
+        "cmd_seq": 61,
+        "ack_seq": 61,
+        "stage": "LIVE_GPE0_READY",
+        "page": 0,
+        "nz": 331776,
+        "text_ok": 30,
+        "fill_n": 38,
+        "icon_n": 6,
+        "dt_ms": 187.7
+      }
+    ]
+  },
+  "offline_unit_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p 'test_*.py' -v",
+    "normal_mode": "20/20 OK",
+    "clean_room_mode": "20/20 OK (FX3_FX6_FORCE_CLEAN_ROOM=1)"
+  },
+  "visual_assets": [
+    {
+      "path": "reports/2026-11-14-phase19-live-icon-rendering/assets/assignable-icons.png",
+      "bytes": 45076,
+      "sha256": "d4a57176d648a5497476a9a220d1884b2dbf946f7cf5e610c83648b83120c5b5",
+      "resolution": "1024x540",
+      "format": "PNG RGBA 8-bit"
+    },
+    {
+      "path": "reports/2026-11-14-phase19-live-icon-rendering/assets/big6-home-icons.png",
+      "bytes": 36783,
+      "sha256": "5c879a38e174286aaf3c22b569e73d6e122de0ed3cde44611979b74a193a8300",
+      "resolution": "1024x540",
+      "format": "PNG RGBA 8-bit"
+    },
+    {
+      "path": "reports/2026-11-14-phase19-live-icon-rendering/assets/shooting-hud-icons.png",
+      "bytes": 82710,
+      "sha256": "b6dd0a4ec6e8be2208923f9a2bb86b03c0c37585a7e0dbc5694d8bf38432464b",
+      "resolution": "1024x540",
+      "format": "PNG RGBA 8-bit"
+    },
+    {
+      "path": "reports/2026-11-14-phase19-live-icon-rendering/assets/three-layer-menu-icons.png",
+      "bytes": 38455,
+      "sha256": "0428539f1908651d9c2b65ca2cfe91aad25bb621e573b781c77da76e376a69f0",
+      "resolution": "1024x540",
+      "format": "PNG RGBA 8-bit"
+    },
+    {
+      "path": "reports/2026-11-14-phase19-live-icon-rendering/assets/touch-menu-icons.png",
+      "bytes": 22547,
+      "sha256": "1fa4a287e2224384877e9b297ace8f4721c62cae1e1f1c082568a024bbd837b4",
+      "resolution": "1024x540",
+      "format": "PNG RGBA 8-bit"
+    }
+  ]
+}

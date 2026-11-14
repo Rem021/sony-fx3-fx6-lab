@@ -277,6 +277,44 @@ def _relocate_migrated_path(raw_path: str) -> str:
     return raw_path
 
 
+def _resolve_donor_image_uxc() -> Path | None:
+    """Locate Sony FX6 donor `image_00_169.uxc` strictly read-only if present locally."""
+    env_uxc = os.environ.get("FX6_IMAGE_00_169_UXC", "").strip()
+    rel = Path("work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/image_00_169.uxc")
+    candidates: list[Path] = []
+    if env_uxc:
+        candidates.append(Path(env_uxc))
+    candidates.extend([
+        REPO_ROOT / rel,
+        Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac" / rel,
+        Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac" / "outputs" / "sony-fx3-fx6-lab" / rel,
+        Path("/Volumes/KAFU2T/AI/Projects/Mac") / rel,
+    ])
+    for cand in candidates:
+        if cand.is_file():
+            return cand
+    return None
+
+
+def _pack_newc_entry(name: str, data: bytes, mode: int = 0o100644, ino: int = 0x9001) -> bytes:
+    """Pack a single SVR4 newc (070701) CPIO record padded to 4-byte boundaries."""
+    name_bytes = name.encode("utf-8") + b"\x00"
+    namesize = len(name_bytes)
+    filesize = len(data)
+    hdr = (
+        b"070701"
+        + f"{ino:08x}{mode:08x}{0:08x}{0:08x}{1:08x}{0:08x}{filesize:08x}"
+          f"{0:08x}{0:08x}{0:08x}{0:08x}{namesize:08x}{0:08x}".encode("ascii")
+    )
+    hdr_and_name = hdr + name_bytes
+    name_pad = b"\x00" * ((-len(hdr_and_name)) % 4)
+    data_pad = b"\x00" * ((-filesize) % 4)
+    return hdr_and_name + name_pad + data + data_pad
+
+
+_GDB_PKT_RE = re.compile(rb"\$([^#$]*)#[0-9a-fA-F]{2}")
+
+
 class FX6LiveGpe0Session:
     def __init__(self, workdir: Path) -> None:
         self.workdir = workdir
@@ -284,6 +322,7 @@ class FX6LiveGpe0Session:
         self.lock = threading.Lock()
         self.gpe_lock = threading.Lock()
         self.cmd_lock = threading.Lock()
+        self.gdb_lock = threading.Lock()
         self.proc: subprocess.Popen[bytes] | None = None
         self.serial_log = self.workdir / "serial.log"
         self.qemu_stderr = self.workdir / "qemu.stderr.log"
@@ -291,6 +330,7 @@ class FX6LiveGpe0Session:
         self.gdb_sock = Path("/private/tmp") / f"fx6-live-gdb-{os.getpid()}.sock"
         self.qmp_conn: socket.socket | None = None
         self.gdb_conn: socket.socket | None = None
+        self._gdb_rx = bytearray()
         self.gpe0_bin = self.workdir / "gpe0-live.bin"
         self.started_at: float | None = None
 
@@ -316,6 +356,8 @@ class FX6LiveGpe0Session:
         self.last_png: bytes = FALLBACK_GPE0_PNG.read_bytes() if FALLBACK_GPE0_PNG.exists() else b""
         self.last_png_source = "real-gpe0-cached-677 (waiting for live VM boot)"
         self.live_ready = False
+        self.crashed = False
+        self.crash_reason = ""
 
     def is_running(self) -> bool:
         return self.proc is not None and self.proc.poll() is None
@@ -374,6 +416,8 @@ class FX6LiveGpe0Session:
             )
             self.started_at = time.time()
             self.live_ready = False
+            self.crashed = False
+            self.crash_reason = ""
             self.cmd_seq = 1
             self.ack_seq = 0
             self.page = 0
@@ -398,14 +442,20 @@ class FX6LiveGpe0Session:
             return {"ok": True}
 
     def _close_connections(self) -> None:
-        for attr in ("qmp_conn", "gdb_conn"):
-            conn = getattr(self, attr, None)
-            if conn is not None:
+        if self.qmp_conn is not None:
+            try:
+                self.qmp_conn.close()
+            except Exception:
+                pass
+            self.qmp_conn = None
+        with self.gdb_lock:
+            if self.gdb_conn is not None:
                 try:
-                    conn.close()
+                    self.gdb_conn.close()
                 except Exception:
                     pass
-                setattr(self, attr, None)
+                self.gdb_conn = None
+            self._gdb_rx.clear()
 
     def _cleanup_sockets(self) -> None:
         self._close_connections()
@@ -416,24 +466,96 @@ class FX6LiveGpe0Session:
             except OSError:
                 pass
 
-    def _gdb_send_packet(self, sock: socket.socket, payload: bytes) -> bytes:
+    def _gdb_pop_packets(self, sock: socket.socket) -> list[bytes]:
+        """Extract all complete `$...#xx` packets from `self._gdb_rx`, sending `+` ACK for each."""
+        pkts: list[bytes] = []
+        while True:
+            m = _GDB_PKT_RE.search(self._gdb_rx)
+            if not m:
+                # Discard leading '+' / '-' ACK bytes when no complete packet starts at 0
+                while self._gdb_rx and self._gdb_rx[0] in (0x2B, 0x2D):
+                    del self._gdb_rx[0]
+                break
+            pkts.append(bytes(m.group(1)))
+            del self._gdb_rx[:m.end()]
+            sock.sendall(b"+")
+        return pkts
+
+    def _gdb_drain_async(self, sock: socket.socket, timeout: float = 0.05) -> list[bytes]:
+        """Drain any pending async GDB packets/ACKs without blocking indefinitely."""
+        pkts = self._gdb_pop_packets(sock)
+        old_to = sock.gettimeout()
+        try:
+            sock.settimeout(timeout)
+            deadline = time.time() + max(timeout, 0.02)
+            while time.time() < deadline:
+                try:
+                    chunk = sock.recv(4096)
+                    if not chunk:
+                        break
+                    self._gdb_rx.extend(chunk)
+                    pkts.extend(self._gdb_pop_packets(sock))
+                    sock.settimeout(0.01)
+                except socket.timeout:
+                    break
+        finally:
+            sock.settimeout(old_to)
+        return pkts
+
+    def _gdb_wait_stop_reply(self, sock: socket.socket, timeout: float = 0.45) -> list[bytes]:
+        """Wait for stop-reply packet (`$T..#xx` / `$S..#xx` / `$W..#xx`) after sending 0x03."""
+        pkts = self._gdb_pop_packets(sock)
+        if any(p[:1] in (b"T", b"S", b"W", b"X") for p in pkts):
+            pkts.extend(self._gdb_drain_async(sock, timeout=0.02))
+            return pkts
+        old_to = sock.gettimeout()
+        deadline = time.time() + timeout
+        try:
+            while time.time() < deadline:
+                rem = max(0.01, min(0.1, deadline - time.time()))
+                sock.settimeout(rem)
+                try:
+                    chunk = sock.recv(4096)
+                    if not chunk:
+                        break
+                    self._gdb_rx.extend(chunk)
+                    got = self._gdb_pop_packets(sock)
+                    pkts.extend(got)
+                    if any(p[:1] in (b"T", b"S", b"W", b"X") for p in got):
+                        pkts.extend(self._gdb_drain_async(sock, timeout=0.02))
+                        break
+                except socket.timeout:
+                    if pkts:
+                        break
+        finally:
+            sock.settimeout(old_to)
+        return pkts
+
+    def _gdb_send_packet(self, sock: socket.socket, payload: bytes, skip_stop_replies: bool = True) -> bytes:
         chk = sum(payload) & 0xFF
         pkt = b"$" + payload + b"#" + f"{chk:02x}".encode("ascii")
         sock.sendall(pkt)
-        buf = b""
         deadline = time.time() + 1.5
         while time.time() < deadline:
+            pkts = self._gdb_pop_packets(sock)
+            for p in pkts:
+                if skip_stop_replies and p[:1] in (b"T", b"S"):
+                    continue
+                return p
             try:
+                sock.settimeout(max(0.05, min(0.5, deadline - time.time())))
                 chunk = sock.recv(4096)
                 if not chunk:
                     break
-                buf += chunk
-                if b"#" in buf:
-                    sock.sendall(b"+")
-                    break
+                self._gdb_rx.extend(chunk)
+                pkts = self._gdb_pop_packets(sock)
+                for p in pkts:
+                    if skip_stop_replies and p[:1] in (b"T", b"S"):
+                        continue
+                    return p
             except socket.timeout:
                 break
-        return buf
+        return b""
 
     def _ensure_gdb(self) -> socket.socket | None:
         if self.gdb_conn is not None:
@@ -443,6 +565,8 @@ class FX6LiveGpe0Session:
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         s.settimeout(1.5)
         s.connect(str(self.gdb_sock))
+        self._gdb_rx.clear()
+        self._gdb_drain_async(s, timeout=0.04)
         self._gdb_send_packet(s, b"Qqemu.PhyMemMode:1")
         self.gdb_conn = s
         return s
@@ -462,22 +586,42 @@ class FX6LiveGpe0Session:
         return s
 
     def _prepare_fresh_live700_cpio(self, donor_cpio: Path) -> str:
-        """Build /private/tmp/fx6-live700-rebuilt.cpio with latest memory-safe src/*.c shim without mutating donor."""
+        """Build workdir/fx6-live700-rebuilt.cpio with latest memory-safe src/*.c shim and optional image_00_169.uxc overlay without mutating donor."""
         try:
+            import mmap as _mmap
             import shutil
             import sys as _sys
             if str(TRIAL_DIR) not in _sys.path:
                 _sys.path.insert(0, str(TRIAL_DIR))
             import build_live700 as b700
-            tmp_so = Path("/private/tmp/fx6-live700-shim.so")
-            tmp_cpio = Path("/private/tmp/fx6-live700-rebuilt.cpio")
-            tmp_stamp = Path("/private/tmp/fx6-live700-rebuilt.sha256")
+            self.workdir.mkdir(parents=True, exist_ok=True)
+            tmp_so = self.workdir / "fx6-live700-shim.so"
+            tmp_cpio = self.workdir / "fx6-live700-rebuilt.cpio"
+            tmp_stamp = self.workdir / "fx6-live700-rebuilt.sha256"
             shim = b700.compile_shim(b700.DEFAULT_ZIG, tmp_so)
-            want_stamp = f"{donor_cpio}:{donor_cpio.stat().st_size}:{shim['sha256']}"
+            uxc_path = _resolve_donor_image_uxc()
+            uxc_tag = f"{uxc_path}:{uxc_path.stat().st_size}" if uxc_path is not None else "no-uxc"
+            want_stamp = f"{donor_cpio}:{donor_cpio.stat().st_size}:{shim['sha256']}:{uxc_tag}"
             if tmp_cpio.is_file() and tmp_stamp.is_file() and tmp_stamp.read_text().strip() == want_stamp:
                 return str(tmp_cpio)
             shutil.copyfile(donor_cpio, tmp_cpio)
             b700.update_cpio_member(tmp_cpio, b700.MEMBER_NAME, tmp_so.read_bytes())
+            if uxc_path is not None:
+                with tmp_cpio.open("rb") as f, _mmap.mmap(f.fileno(), 0, access=_mmap.ACCESS_READ) as mm:
+                    has_uxc = any(r["name"] == "usr/share/app/image_00_169.uxc" for r in b700.scan_newc_cpio(mm))
+                if not has_uxc:
+                    uxc_bytes = uxc_path.read_bytes()
+                    overlay = (
+                        _pack_newc_entry("usr/share/app/image_00_169.uxc", uxc_bytes, mode=0o100644, ino=0x9001)
+                        + _pack_newc_entry("TRAILER!!!", b"", mode=0, ino=0)
+                    )
+                    overlay += b"\x00" * ((-len(overlay)) % 512)
+                    cur_sz = tmp_cpio.stat().st_size
+                    pad_before = b"\x00" * ((-cur_sz) % 512)
+                    with tmp_cpio.open("ab") as out:
+                        if pad_before:
+                            out.write(pad_before)
+                        out.write(overlay)
             tmp_stamp.write_text(want_stamp)
             return str(tmp_cpio)
         except Exception as exc:
@@ -485,8 +629,8 @@ class FX6LiveGpe0Session:
             return str(donor_cpio)
 
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..14] to guest physical 0x41e000e00 via persistent QEMU GDB stub once guest is ready."""
-        if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready:
+        """Write mb[0..14] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         mb_vals = (
             [self.table_off, self.table_rows, self.table_off2, self.table_rows2, 0, 0]
@@ -511,52 +655,58 @@ class FX6LiveGpe0Session:
             self.rec_fmt_idx,
         ]
         raw = struct.pack("<15I", *words)
-        for _ in range(2):
-            try:
-                s = self._ensure_gdb()
-                if s is None:
-                    return False
-                # If the GDB stub was in running state from a previous '$c#63', interrupt it first with 0x03
+        with self.gdb_lock:
+            for _ in range(2):
+                s: socket.socket | None = None
+                interrupted = False
                 try:
-                    s.settimeout(0.05)
+                    s = self._ensure_gdb()
+                    if s is None:
+                        return False
+                    # Drain any stale async packets, interrupt running VCPUs cleanly, and ACK stop reply
+                    self._gdb_drain_async(s, timeout=0.02)
                     s.sendall(b"\x03")
-                    while True:
-                        chunk = s.recv(4096)
-                        if not chunk:
-                            break
-                        if b"#" in chunk:
-                            s.sendall(b"+")
-                            break
-                except socket.timeout:
-                    pass
-                s.settimeout(1.5)
-                self._gdb_send_packet(s, b"Qqemu.PhyMemMode:1")
-                # Write mb[3..14] first, then mb[0..2] so mb[1] (cmd_seq) commits last
-                body_hex = raw[12:].hex().encode("ascii")
-                r1 = self._gdb_send_packet(
-                    s, f"M{CTRL_MB_PHYS + 12:x},{len(raw) - 12:x}:".encode("ascii") + body_hex
-                )
-                hdr_hex = raw[:12].hex().encode("ascii")
-                r2 = self._gdb_send_packet(
-                    s, f"M{CTRL_MB_PHYS:x},c:".encode("ascii") + hdr_hex
-                )
-                # Resume guest execution
-                s.sendall(b"$c#63")
-                try:
-                    s.settimeout(0.1)
-                    s.recv(64)
-                except socket.timeout:
-                    pass
-                s.settimeout(1.5)
-                if b"OK" in r1 and b"OK" in r2:
-                    return True
-            except Exception:
-                if self.gdb_conn is not None:
-                    try:
-                        self.gdb_conn.close()
-                    except Exception:
-                        pass
-                    self.gdb_conn = None
+                    interrupted = True
+                    self._gdb_wait_stop_reply(s, timeout=0.45)
+
+                    s.settimeout(1.5)
+                    self._gdb_send_packet(s, b"Qqemu.PhyMemMode:1")
+                    # Write mb[3..14] first, then mb[0..2] so mb[1] (cmd_seq) commits last
+                    body_hex = raw[12:].hex().encode("ascii")
+                    r1 = self._gdb_send_packet(
+                        s, f"M{CTRL_MB_PHYS + 12:x},{len(raw) - 12:x}:".encode("ascii") + body_hex
+                    )
+                    hdr_hex = raw[:12].hex().encode("ascii")
+                    r2 = self._gdb_send_packet(
+                        s, f"M{CTRL_MB_PHYS:x},c:".encode("ascii") + hdr_hex
+                    )
+                    if r1 == b"OK" and r2 == b"OK":
+                        return True
+                except Exception:
+                    interrupted = False
+                    if self.gdb_conn is not None:
+                        try:
+                            self.gdb_conn.close()
+                        except Exception:
+                            pass
+                        self.gdb_conn = None
+                    self._gdb_rx.clear()
+                finally:
+                    if interrupted and s is not None and self.gdb_conn is s:
+                        try:
+                            s.sendall(b"$c#63")
+                            extra = self._gdb_drain_async(s, timeout=0.05)
+                            if any(p[:1] in (b"T", b"S") for p in extra):
+                                s.sendall(b"$c#63")
+                                self._gdb_drain_async(s, timeout=0.03)
+                            s.settimeout(1.5)
+                        except Exception:
+                            try:
+                                s.close()
+                            except Exception:
+                                pass
+                            self.gdb_conn = None
+                            self._gdb_rx.clear()
         return False
 
     def _wait_for_frame_seq(self, target_seq: int, timeout: float = 3.2) -> bool:
@@ -567,6 +717,14 @@ class FX6LiveGpe0Session:
         while time.time() < deadline:
             if self.serial_log.exists():
                 tail = self.serial_log.read_bytes()[-131072:].decode("latin1", errors="replace")
+                if "APPFW_SEGV" in tail:
+                    self.live_ready = False
+                    self.crashed = True
+                    for ln in reversed(tail.splitlines()):
+                        if "APPFW_SEGV" in ln:
+                            self.crash_reason = ln.strip()
+                            break
+                    return False
                 m = pat.search(tail)
                 if m:
                     self.ack_seq = target_seq
@@ -797,7 +955,15 @@ class FX6LiveGpe0Session:
         if self.serial_log.exists():
             raw = self.serial_log.read_bytes()
             serial_window = raw[-524288:].decode("latin1", errors="replace")
-            if self.live_ready or "FX6_LIVE_READY" in serial_window or "FX6_LIVE_FRAME" in serial_window:
+            if "APPFW_SEGV" in serial_window:
+                self.live_ready = False
+                self.crashed = True
+                for ln in reversed(serial_window.splitlines()):
+                    if "APPFW_SEGV" in ln:
+                        self.crash_reason = ln.strip()
+                        break
+                stage = "CRASHED_APPFW_SEGV"
+            elif self.live_ready or "FX6_LIVE_READY" in serial_window or "FX6_LIVE_FRAME" in serial_window:
                 if not self.live_ready:
                     self.live_ready = True
                     matches = re.findall(
@@ -839,6 +1005,8 @@ class FX6LiveGpe0Session:
             "elapsed_sec": elapsed,
             "stage": stage,
             "live_ready": self.live_ready,
+            "crashed": self.crashed,
+            "crash_reason": self.crash_reason,
             "cmd_seq": self.cmd_seq,
             "ack_seq": self.ack_seq,
             "page": self.page,

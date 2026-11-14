@@ -1,3 +1,126 @@
-"""FX3 Flash Safety, Boot Contract Validator & Brick Recovery Diagnostic Suite (v2.0)."""
+"""FX3 Flash Safety, Boot Contract Validator, Tier-3/Runtime Guards & Phase H0 Rehearsal Suite (v2.0)."""
+
+from __future__ import annotations
+
+from . import (
+    boot_contracts,
+    brick_classifier,
+    h0_hardware_rehearsal,
+    multiport_bootrom_unbrick,
+    preflight,
+    runtime_antibrick_guards,
+)
+from .boot_contracts import (
+    parse_bk4_record,
+    parse_fa0080_table,
+    verify_bksb_ldr_bkup,
+    verify_boot_screen_enum_contract,
+    verify_sector0_partition_table,
+)
+from .brick_classifier import (
+    BrickDiagnosis,
+    classify_brick_state,
+    generate_failsafe_init2_overlay_hook,
+)
+from .h0_hardware_rehearsal import (
+    H0_REHEARSAL_SCHEMA,
+    H0RehearsalConfig,
+    H0RehearsalReport,
+    StageResult,
+    run_h0_hardware_rehearsal,
+    run_stage1_multiport_harness_rehearsal,
+    run_stage2_macos_usb_transport_rehearsal,
+    run_stage3_runtime_antibrick_rehearsal,
+    run_stage4_brick_classifier_matrix_rehearsal,
+    run_stage5_p1_autolocator_rehearsal,
+    run_stage6_preflight_12_gate_rehearsal,
+)
+from .multiport_bootrom_unbrick import (
+    ALLOW_DESTRUCTIVE_FASTBOOT,
+    PERSISTENT_EMMC_WRITES_AUTHORIZED,
+    UART_BOOT_BAUD,
+    UartBootOpcode,
+    audit_fastboot_command_sequence,
+    audit_rp2040_firmware_spec,
+    decode_bootrom_diagnostic_code,
+    decode_uart_boot_frame,
+    encode_uart_boot_frame,
+    generate_rp2040_zero_open_drain_probe_spec,
+    validate_bootrom_read_range,
+    validate_mem_write_range,
+    validate_rp2040_multiport_harness,
+)
+from .preflight import (
+    TIER0_CANONICAL_SOURCES,
+    TIER0_REQUIRED_BACKUPS,
+    audit_tier0_worker_syscall_trace,
+    evaluate_12_safety_gates,
+    verify_failsafe_hook_script,
+    verify_tier0_backup_manifest,
+)
+from .runtime_antibrick_guards import (
+    GuardAuditResult,
+    audit_busybox_dd_commands,
+    audit_camset_bk4_diff,
+    audit_ld_so_preload_and_overlay,
+    audit_nflasha10_vfat_budget,
+    audit_pmca_5step_write_contract,
+    evaluate_runtime_antibrick_guards,
+)
 
 __version__ = "2.0.0"
+
+__all__ = [
+    "__version__",
+    "ALLOW_DESTRUCTIVE_FASTBOOT",
+    "BrickDiagnosis",
+    "GuardAuditResult",
+    "H0RehearsalConfig",
+    "H0RehearsalReport",
+    "H0_REHEARSAL_SCHEMA",
+    "PERSISTENT_EMMC_WRITES_AUTHORIZED",
+    "StageResult",
+    "TIER0_CANONICAL_SOURCES",
+    "TIER0_REQUIRED_BACKUPS",
+    "UART_BOOT_BAUD",
+    "UartBootOpcode",
+    "audit_busybox_dd_commands",
+    "audit_camset_bk4_diff",
+    "audit_fastboot_command_sequence",
+    "audit_ld_so_preload_and_overlay",
+    "audit_nflasha10_vfat_budget",
+    "audit_pmca_5step_write_contract",
+    "audit_rp2040_firmware_spec",
+    "audit_tier0_worker_syscall_trace",
+    "boot_contracts",
+    "brick_classifier",
+    "classify_brick_state",
+    "decode_bootrom_diagnostic_code",
+    "decode_uart_boot_frame",
+    "encode_uart_boot_frame",
+    "evaluate_12_safety_gates",
+    "evaluate_runtime_antibrick_guards",
+    "generate_failsafe_init2_overlay_hook",
+    "generate_rp2040_zero_open_drain_probe_spec",
+    "h0_hardware_rehearsal",
+    "multiport_bootrom_unbrick",
+    "parse_bk4_record",
+    "parse_fa0080_table",
+    "preflight",
+    "run_h0_hardware_rehearsal",
+    "run_stage1_multiport_harness_rehearsal",
+    "run_stage2_macos_usb_transport_rehearsal",
+    "run_stage3_runtime_antibrick_rehearsal",
+    "run_stage4_brick_classifier_matrix_rehearsal",
+    "run_stage5_p1_autolocator_rehearsal",
+    "run_stage6_preflight_12_gate_rehearsal",
+    "runtime_antibrick_guards",
+    "validate_bootrom_read_range",
+    "validate_mem_write_range",
+    "validate_rp2040_multiport_harness",
+    "verify_bksb_ldr_bkup",
+    "verify_boot_screen_enum_contract",
+    "verify_failsafe_hook_script",
+    "verify_sector0_partition_table",
+    "verify_tier0_backup_manifest",
+]

@@ -36,6 +36,15 @@ Expected pre-capture fields in `/tmp/stage-a-preflight-packet.json`:
 - `"real_tier0_hardware_backup_verified": false` (flips `true` **only** after Phase H0 passes)
 - `"stage_a_ram_trial_hardware_go": false` (flips `true` **only** after Phase H0 passes)
 
+Run the **Phase 28 End-to-End Phase H0 Read-Only Rehearsal Engine** immediately before plugging in any physical body (`--unicorn` adds emulated `v7.02` `p1` 4-site execution):
+
+```bash
+PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_safety.h0_hardware_rehearsal --unicorn
+```
+
+Confirm `"all_passed": true`, `"ready_for_physical_h0_capture": true`, and `"persistent_write_release": false` before connecting hardware.
+
 ---
 
 ## 2. Absolute Hardware Redlines (Zero-Tolerance Prohibitions)
@@ -111,6 +120,60 @@ Expected pre-capture fields in `/tmp/stage-a-preflight-packet.json`:
    - **Mandatory Post-Trial Acceptance Criteria**: Command must exit `0` with `"all_checks_passed": true`, `"zero_mutation_verified": true`, `"same_body_identity_verified": true`, `"persistent_bytes_mutated": 0`, `"drifted_items": []` across all **13** persistent surfaces (`11` Tier-0 partitions/calibrations + `p8_tomco.txt` + `p5_wbi_header.bin`), `"u5_sticky_boot_clean": true` (`h2_bk4_byte8 == 0` and `0` `/setting/updater/mode*` residue), and `"persistent_emmc_writes_authorized": false`.
 
 ---
+
+## 4. FX3 15-Pin Multi-Port `RP2040-Zero` (`-DOPEN_DRAIN`) Tier-3 Safety Net
+
+Disassembly-free Tier-3 unbrick & pre-H0 BootROM inspection uses the **Sony 15-Pin Multi-Terminal** at `48,000` baud (`uart_boot` frame magic `"UB"`, CRC-32) before transitioning to `115,200` baud `[mira] fastboot ready` (`18D1:4EE0`). Validate every harness and command sequence offline with `fx3_safety.multiport_bootrom_unbrick` before connecting hardware.
+
+| Multi-Terminal Back Row Pin | Camera Signal | Direction | Approved `RP2040-Zero` Pin | Electrical Requirement |
+| :---: | :--- | :---: | :--- | :--- |
+| **Pin 2** | `GND` | Reference | **`GND`** | Mandatory common ground before any signal line |
+| **Pin 7** | `CAM_UART_RX` | Host $\to$ Cam | **`GP28` (`MULTI_TX`)** | `1.8V` open-drain High-Z (`-DOPEN_DRAIN`), never `3.3V` push-pull |
+| **Pin 8** | `CAM_UART_TX` | Cam $\to$ Host | **`GP29` (`MULTI_RX`)** | Direct high-Z input (standard Pico `GP29` `VSYS/3` divider FORBIDDEN) |
+| **Pin 9** | `XRESET` | Host $\to$ Cam | **`GP27` (`MULTI_RST`)** | `1.8V` open-drain High-Z reset pulse |
+
+- **Strict Board Ban (`BLOCKED_ELECTRICAL_HAZARD`)**: **NEVER** connect a standard Raspberry Pi Pico (`pico`, `pico_w`, `pico_2`), whose `GP29` connects to the `VSYS/3` resistor divider, dragging down Multi Pin 8 `CAM_UART_TX`, causing `0x100D` (`13` short blinks) framing errors, or stressing `1.8V` SoC I/O. Only **Waveshare `RP2040-Zero`** compiled with `-DOPEN_DRAIN` (`1.8V` open-drain High-Z) or an explicit `1.8V` open-drain buffer is permitted.
+- **BootROM WDT Trap & Read-Only Firewall**:
+  - `BOOTROM` range is strictly `0xFFFF0000..0xFFFFBFFF` (`48 KiB`); any access `>= 0xFFFFC000` triggers the `CXD90057` hardware watchdog reset trap (`BLOCKED_WDT_TRAP_HAZARD`).
+  - Route A loads signed `fastboot.bin` into SRAM `0x92028000..0x92427FFF`; Route B loads open bare-metal eSRAM payloads into `0xFE020000..0xFE047FFF` (stopping strictly before `loader_nor` / DDR training `0xFE080000`).
+  - Fastboot (`18D1:4EE0`) is firewalled strictly to read-only diagnostics (`getvar:*`, `oem dumpbrom`, `oem partition dump`, `oem cetus dumpnor`, `oem cetus peek`, `reboot`); `flash:`, `erase:`, `oem format`, `oem cetus poke/exec`, `download:`, and `boot` are blocked (`ALLOW_DESTRUCTIVE_FASTBOOT = False`).
+
+---
+
+## 5. macOS 26+ `IOUSBHost` `0xe00002be` Connection Procedure
+
+macOS 26+ triggers `0xe00002be` (`kIOReturnExclusiveAccess`) contention between kernel mass-storage drivers and libusb when switching Sony ILME-FX3 from MSC (`054C:0DA1`) to Service Mode (`054C:0336`). Follow the deterministic transport guard in `fx3_recovery.macos_usb_transport_guard`:
+
+1. **MSC Quiescence Wait**: After USB MSC (`054C:0DA1`) enumerates, pause `>= 350 ms` for macOS 26+ mass-storage indexing/mounting to settle before claiming the interface.
+2. **Bounded Exponential Backoff & `IOUSBHost` Claim Fallback**: If `0xe00002be` (`kIOReturnExclusiveAccess`) occurs, retry using bounded exponential backoff (`50 -> 100 -> 200 -> 400 -> 800 ms`, max 4 retries) with `IOUSBHost` exclusive-claim fallback rather than tight-loop polling.
+3. **Vendor Control Handshake & STALL Non-Retransmit Rule**: Issue Vendor Control `(bmRequestType=0x43, bRequest=1, wValue=0x37FF, wIndex=0xD7AA)`. **If a USB `STALL` (`0xe000404f`) occurs, ABORT immediately without re-sending or retransmitting** (`STALL_ABORTED_NO_RETRANSMIT`).
+4. **Senser v1 vs. Senser v2 Fail-Closed Rule**:
+   - **Senser v1 (`ILME-FX3` `0x91030080`)**: Performs 7-round challenge authentication (`054C:0DA1 -> 054C:0336`).
+   - **Senser v2 (`ILCE-7M5` / RSA-signed challenge)**: Must **fail closed** (`FAILED_CLOSED_SENSER_V2`)—never brute-force or forge RSA responses.
+5. **Read-Only Jiritsu Channel Firewall (`PFUNC=0x40, block=0x1001`)**: Only `0x4002 MOUNT`, `0x4008 GET_FILE`, `0x4011 GET_FILE2`, and read-only `0x400F SET_FILE_PATH` (paths strictly under `/tmp/jiritsu/`, `/mnt/fx3_tier0_backup/`, or `/log/` with no `..` traversal) are allowed. `0x4003 FORMAT`, `0x4006 FIRMUP`, `0x4005 DEBUG`, `0x4007 SET_FILE`, and `0x4010 SET_FILE2` remain hard-blocked (`ALLOW_PERSISTENT_JIRITSU_WRITES = False`).
+
+---
+
+## 6. Sony Notice `00342260` `WF-12` Cold-Boot Airplane Shadow
+
+Per Sony Service Notice **`00342260`**, **6 Long + 9 Short LED blinks (`6L+9S`)** or a **5–10s System Error reboot loop** indicates a `WF-12` Wi-Fi/Bluetooth IC/BGA communication fault or `CXD90058` Cetus CP NOR (`cpapp-b.bin`) subcomponent mismatch:
+
+1. **60-Second Cold PMIC Discharge**: Remove the NP-FZ100 battery and discharge PMIC rails for **60 seconds**.
+2. **Airplane Mode Isolation (`v3.00–v5.00`)**: If the UI briefly boots, immediately enable **Airplane Mode** to suppress wireless initialization.
+3. **`v7.02` `BODYDATA.DAT` Degraded Mode**: Official FX3 `v7.02` converts `WF-12` failures into a dismissible `"Wi-Fi/Bluetooth unit has malfunctioned"` degraded warning instead of a fatal WDT reboot loop. Stage-A/B software stacks must likewise keep `libInfraAppRemoteBoard.so` / `InfraPericon` / `SeqQueueNetwork` wireless initialization non-blocking.
+4. **Disassembly-Free Tier-3 Triage**: If locked in a `6L+9S` updater loop, enter Fastboot (`18D1:4EE0`) via `RP2040-Zero` (`-DOPEN_DRAIN`) and execute **read-only** `oem cetus dumpnor` and `oem partition` to separate CP NOR corruption from physical `WF-12` BGA solder failure on `SY-1114`. Never flash a foreign CP NOR / SPI NOR dump without keeping this board's own `ddrtraining.dat` (`0x03e210fc`) and `MIS.bin`.
+
+---
+
+## 7. 2026 Forbidden Operations (`ld.so.preload`, `dd` Truncation, `nflasha10` Full, `PRODUCT_MODEL` NVRAM)
+
+Validated statically and dynamically by `fx3_safety.runtime_antibrick_guards`:
+
+1. **`/etc/ld.so.preload` Dynamic BusyBox Deadlock (`V_LD_SO_PRELOAD`)**: `/bin/busybox` and `/bin/sh` on `CXD90057` are dynamically linked; writing `/etc/ld.so.preload` (directly or via Jiritsu `0x400F` `..` traversal) with a missing or incompatible `.so` deadlocks `/sbin/init` before shell or Jiritsu recovery can start. **Use RAM-only `LD_LIBRARY_PATH` / `tmpfs` `mount --bind` strictly behind `/tmp/mod_arm_once` Clear-Before-Exec.**
+2. **Sony BusyBox `dd` Truncation (`V_BUSYBOX_DD_TRUNC`)**: Never run `dd of=<existing_file>` on Sony BusyBox without verified `conv=notrunc` support (unpatched BusyBox `dd` opens `of=` with `O_TRUNC` and destroys the destination file before reading). Stage only under the `pmca-re-reloaded` 5-step atomic contract (Drop exit guard, `tmpfs` staging, full SHA-256 readback, 5-slot rollback manifest).
+3. **`nflasha10` (`12 MiB` VFAT) `0x10000009` Exhaustion (`V_NFLASHA10_FULL`)**: `/setting` (`nflasha10`) is only `12 MiB` and shared across `/tmp`, `/etc`, and `/var`. Always enforce **`>= 2 MiB` free-space headroom** (`1 MiB` hard floor); exhausting clusters triggers `0x10000009` write lockout, blocking `/setting/updater/mode*` and service recovery flags.
+4. **`CAMSET` / `BK4\0` `PRODUCT_MODEL` NVRAM Lock (`V_CAMSET_PRODUCT_MODEL`)**: Never mutate `PRODUCT_MODEL` (`ALCIN_UUD` enum `4`, `0x91030080`), BK4 identity slots (`0x00000000`, `0x00010000`, `0x02CF0001`), `psd.bin`, `defdet.bin`, `lensfile.bin`, `ddrtraining`, or `cert` records. Only non-identity user settings (`0x02CF0004`, `0x02CF1443`, `0x02CF1453`, `0x02CF1702`, `0x02CF1704`, `0x02CF1BF2`) may ever be shadowed in RAM.
+
 ---
 
 # 第二部分 — 简体中文真机执行操作手册 (Stage-A)
@@ -136,6 +199,15 @@ make readiness-packet > /tmp/stage-a-preflight-packet.json
 - `"persistent_emmc_writes_authorized": false`（持久闪存写入硬锁定为 `false`）
 - `"real_tier0_hardware_backup_verified": false`（仅在通过 **Phase H0** 真机备份校验后变为 `true`）
 - `"stage_a_ram_trial_hardware_go": false`（仅在通过 **Phase H0** 真机备份校验后变为 `true`）
+
+在接入任何物理真机前，先运行 **Phase 28 端到端 Phase H0 只读硬件预演引擎**（`--unicorn` 启用 `v7.02` `p1` 4 位点仿真校验）：
+
+```bash
+PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_safety.h0_hardware_rehearsal --unicorn
+```
+
+必须确认输出 `"all_passed": true`、`"ready_for_physical_h0_capture": true` 且 `"persistent_write_release": false`，方允许连接相机。
 
 ---
 
@@ -205,3 +277,59 @@ make readiness-packet > /tmp/stage-a-preflight-packet.json
        --output /tmp/stage-a-post-trial-receipt.json
      ```
    - **强制验收放行判据**：返回码必须为 `0`，且收据输出 `"all_checks_passed": true`、`"zero_mutation_verified": true`、`"same_body_identity_verified": true`（同机 `body_serial` 与 128 位 `cid` 100% 匹配）、全部 **13 项**持久表面（11 项 Tier-0 分区/校准镜像 + `p8_tomco.txt` + `p5_wbi_header.bin`）满足 `"persistent_bytes_mutated": 0` 与 `"drifted_items": []`、`"u5_sticky_boot_clean": true`（`h2_bk4_byte8 == 0` 且零 `/setting/updater/mode*` 残留），同时 `"persistent_emmc_writes_authorized"` 保持硬锁定为 `false`。
+
+---
+
+## 4. FX3 15-Pin Multi-Port `RP2040-Zero`（`-DOPEN_DRAIN`）Tier-3 安全防护网
+
+免拆机 Tier-3 救砖与上机前 BootROM 只读核查通过 **索尼 15 针 Multi 接口** 以 `48,000` 波特率（`uart_boot` 帧魔数 `"UB"` + CRC-32）完成握手，随后切换至 `115,200` 波特率 `[mira] fastboot ready`（`18D1:4EE0`）。接线前必须通过 `fx3_safety.multiport_bootrom_unbrick` 离线验签线束与命令序列。
+
+| Multi 接口后排引脚 | 相机信号 | 方向 | 唯一允许的 `RP2040-Zero` 引脚 | 电气强制规范 |
+| :---: | :--- | :---: | :--- | :--- |
+| **Pin 2** | `GND` | 参考地 | **`GND`** | 接入任意信号线前必须先共地 |
+| **Pin 7** | `CAM_UART_RX` | 主机 $\to$ 相机 | **`GP28` (`MULTI_TX`)** | `1.8V` 开漏高阻（`-DOPEN_DRAIN`），严禁 `3.3V` 推挽输出 |
+| **Pin 8** | `CAM_UART_TX` | 相机 $\to$ 主机 | **`GP29` (`MULTI_RX`)** | 直接高阻输入（**严禁使用标准 Pico 的 `GP29` `VSYS/3` 分压线**） |
+| **Pin 9** | `XRESET` | 主机 $\to$ 相机 | **`GP27` (`MULTI_RST`)** | `1.8V` 开漏高阻复位脉冲 |
+
+- **严禁开发板清单（`BLOCKED_ELECTRICAL_HAZARD`）**：**绝对禁止**使用标准版 Raspberry Pi Pico（`pico`、`pico_w`、`pico_2`），因其 `GP29` 硬件焊接了 `VSYS/3` 电阻分压，会直接拉低 Multi Pin 8 `CAM_UART_TX` 触发 `0x100D`（`13` 短闪）帧错误或损伤 `1.8V` SoC IO。仅允许编译启用 `-DOPEN_DRAIN` 的 **Waveshare `RP2040-Zero`** 或独立 `1.8V` 开漏缓冲器。
+- **BootROM 看门狗陷阱与只读防火墙**：
+  - `BOOTROM` 地址严格限定在 `0xFFFF0000..0xFFFFBFFF`（`48 KiB`）；任何访问落入 `>= 0xFFFFC000` 均会触发 `CXD90057` 硬件看门狗复位陷阱（`BLOCKED_WDT_TRAP_HAZARD`）。
+  - Route A 将官方签名 `fastboot.bin` 载入 SRAM `0x92028000..0x92427FFF`；Route B 将裸机 eSRAM 载荷载入 `0xFE020000..0xFE047FFF`（严格停在 `loader_nor` / DDR 训练入口 `0xFE080000` 之前）。
+  - Fastboot（`18D1:4EE0`）只放行只读诊断命令（`getvar:*`、`oem dumpbrom`、`oem partition dump`、`oem cetus dumpnor`、`oem cetus peek`、`reboot`）；`flash:`、`erase:`、`oem format`、`oem cetus poke/exec`、`download:` 与 `boot` 一律拦截（`ALLOW_DESTRUCTIVE_FASTBOOT = False`）。
+
+---
+
+## 5. macOS 26+ `IOUSBHost` `0xe00002be` 真机接入规程
+
+macOS 26+ 在将 ILME-FX3 从 MSC（`054C:0DA1`）切换至维修模式（`054C:0336`）时，内核大容量存储驱动与 libusb 会竞争产生 `0xe00002be`（`kIOReturnExclusiveAccess`）。必须按 `fx3_recovery.macos_usb_transport_guard` 确定性状态机执行：
+
+1. **MSC 静默等待**：`054C:0DA1` 枚举后等待 `>= 350 ms`，待 macOS 26+ 大容量存储挂载探测稳定后再接管接口。
+2. **有界指数退避与 `IOUSBHost` 回退接管**：遇到 `0xe00002be` 时执行 `50 -> 100 -> 200 -> 400 -> 800 ms` 有界指数退避（最多 4 次重试）并切换 `IOUSBHost` 独占声明，严禁死循环高频轮询。
+3. **Vendor Control 握手与 STALL 禁止重传红线**：发送 `(bmRequestType=0x43, bRequest=1, wValue=0x37FF, wIndex=0xD7AA)`。**一旦发生 USB `STALL`（`0xe000404f`），必须立即终止会话，严禁在 macOS 上重发/重传切换命令**（`STALL_ABORTED_NO_RETRANSMIT`）。
+4. **Senser v1 与 Senser v2 失败关闭（Fail-Closed）规则**：
+   - **Senser v1（`ILME-FX3` `0x91030080`）**：执行 7 轮认证挑战切换至 `054C:0336`。
+   - **Senser v2（如 `ILCE-7M5` RSA 签名认证）**：必须直接 **fail-closed 拒止**（`FAILED_CLOSED_SENSER_V2`），严禁暴力枚举或伪造签名。
+5. **只读 Jiritsu 通道防火墙（`PFUNC=0x40, block=0x1001`）**：仅放行 `0x4002 MOUNT`、`0x4008 GET_FILE`、`0x4011 GET_FILE2` 及限制在 `/tmp/jiritsu/`、`/mnt/fx3_tier0_backup/`、`/log/` 且无 `..` 路径穿越的只读 `0x400F SET_FILE_PATH`；`0x4003 FORMAT`、`0x4006 FIRMUP`、`0x4005 DEBUG`、`0x4007 SET_FILE`、`0x4010 SET_FILE2` 硬锁阻断（`ALLOW_PERSISTENT_JIRITSU_WRITES = False`）。
+
+---
+
+## 6. Sony 公告 `00342260` `WF-12` 冷启飞行模式隔离预案
+
+依据索尼维修公告 **`00342260`**，**6 长 + 9 短红灯闪烁（`6L+9S`）** 或 **开机 5–10 秒 System Error 重启循环** 指示 `WF-12` Wi-Fi/蓝牙 BGA/芯片通信异常或 `CXD90058` Cetus CP NOR（`cpapp-b.bin`）子组件校验失败：
+
+1. **60 秒冷断电放电**：拆下 NP-FZ100 电池并对 PMIC 电源轨静置放电 **60 秒**。
+2. **飞行模式隔离（`v3.00–v5.00`）**：若机身短暂进入菜单界面，立即开启**飞行模式**屏蔽无线模块初始化。
+3. **`v7.02` `BODYDATA.DAT` 降级容错**：索尼官方 FX3 `v7.02` 已将 `WF-12` 故障转为可关闭的 `"Wi-Fi/Bluetooth unit has malfunctioned"` 降级提示而非致命重启循环；Stage-A/B 运行时堆栈同样必须保持 `libInfraAppRemoteBoard.so` / `InfraPericon` / `SeqQueueNetwork` 无线初始化非阻塞超时降级。
+4. **免拆机 Tier-3 鉴真**：若机身卡死在 `6L+9S` 升级死循环，通过 `RP2040-Zero`（`-DOPEN_DRAIN`）进入 Fastboot（`18D1:4EE0`）执行**只读** `oem cetus dumpnor` 与 `oem partition`，区分 CP NOR 损坏与 `SY-1114` 主板物理 `WF-12` 虚焊/损毁。严禁在不保留本机 `ddrtraining.dat`（`0x03e210fc`）与 `MIS.bin` 的前提下刷入他机 CP/SPI NOR。
+
+---
+
+## 7. 2026 高危禁令操作清单（`ld.so.preload`、`dd` 截断、`nflasha10` 写满、`PRODUCT_MODEL` NVRAM）
+
+所有脚本、写入计划与 NVRAM 变更均须通过 `fx3_safety.runtime_antibrick_guards` 审计：
+
+1. **禁止 `/etc/ld.so.preload` 动态 BusyBox 死锁（`V_LD_SO_PRELOAD`）**：`CXD90057` 机身 `/bin/busybox` 与 `/bin/sh` 均为动态链接；直接或经由 Jiritsu `0x400F` `..` 穿越向 `/etc/ld.so.preload` 写入失效/不兼容 `.so` 会导致 `/sbin/init` 启动前即永久死锁。**只允许使用 `/tmp/mod_arm_once` Clear-Before-Exec 保护下的纯内存 `LD_LIBRARY_PATH` / `tmpfs` `mount --bind`。**
+2. **禁止索尼 BusyBox 原地 `dd` 截断（`V_BUSYBOX_DD_TRUNC`）**：未验证 `conv=notrunc` 支持时严禁对既有文件执行 `dd of=<existing_file>`（索尼 BusyBox `dd` 会以 `O_TRUNC` 打开目标文件并直接清空）。所有合法阶段性写入必须遵循 `pmca-re-reloaded` 五步原子契约（Drop exit 防护、`tmpfs` 暂存、全量 SHA-256 回读核验、5 槽位回滚清单）。
+3. **严防 `nflasha10`（`12 MiB` VFAT）`0x10000009` 耗尽锁死（`V_NFLASHA10_FULL`）**：`/setting`（`nflasha10`）总容量仅 `12 MiB` 且与 `/tmp`、`/etc`、`/var` 共享。必须保留 **`>= 2 MiB` 剩余安全余量**（硬底线 `1 MiB`），耗尽簇将触发 `0x10000009` 写入锁死，连升级退出标志与清理恢复命令均无法写入。
+4. **严禁篡改 `CAMSET` / `BK4\0` `PRODUCT_MODEL` NVRAM（`V_CAMSET_PRODUCT_MODEL`）**：严禁修改 `PRODUCT_MODEL`（`ALCIN_UUD` 枚举值 `4`、`0x91030080`）、BK4 身份键槽（`0x00000000`、`0x00010000`、`0x02CF0001`）以及 `psd.bin`、`defdet.bin`、`lensfile.bin`、`ddrtraining`、`cert`。仅允许在 RAM 影子区调整非身份用户设置项（`0x02CF0004`、`0x02CF1443`、`0x02CF1453`、`0x02CF1702`、`0x02CF1704`、`0x02CF1BF2`）。
+

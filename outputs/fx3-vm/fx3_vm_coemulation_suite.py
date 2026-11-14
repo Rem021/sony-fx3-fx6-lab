@@ -55,6 +55,7 @@ if str(FX3_VM_DIR) not in sys.path:
 
 import cxd90057_dtb_and_mhlx_emulator as p41  # noqa: E402
 import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
+import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 
@@ -99,6 +100,7 @@ class CoEmulationConfig:
     include_bt_containment_matrix: bool = True
     include_phase41_dtb_mhlx: bool = True
     include_phase45_imx510_xavc: bool = True
+    include_phase53_hil_fault_harness: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -690,6 +692,40 @@ def run_stage5_imx510_xavc_cfexpress(
 
 
 # ---------------------------------------------------------------------------
+# Stage 6 (Phase 53): HIL Dynamic Fault-Injection & Thermal / C2PA Harness
+# ---------------------------------------------------------------------------
+
+
+def run_stage6_hil_fault_harness(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 6 (Phase 53): 8-scenario HIL fault-injection & thermal/NP-FZ100/XLR-H1/C2PA harness."""
+    config.validate()
+    rep = p53.run_phase53_hil_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage6_phase53_hil_fault_harness",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "scenarios_total": rep["scenarios_total"],
+        "scenarios_passed": rep["scenarios_passed"],
+        "cp_mutation_bytes": rep["redlines"]["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["redlines"]["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": rep["redlines"]["calibration_mutation_bytes"],
+        "nvram_persistent_writes": rep["redlines"]["nvram_persistent_writes"],
+        "physical_device_writes": rep["redlines"]["physical_device_writes"],
+        "donor_audit": rep["donor_audit"],
+        "board_integrity": rep["board_integrity"],
+        "scenarios": rep["scenarios"],
+        "phase53_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -699,7 +735,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified Phase 33 + Phase 41 + Phase 45 Full-Board Virtual Camera Co-Emulation Pipeline."""
+    """Run the unified 6-stage (Phase 33 + 41 + 45 + 53) Full-Board Virtual Camera Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -711,6 +747,9 @@ def run_fx3_vm_coemulation_suite(
     )
     stage5: Optional[Dict[str, object]] = (
         run_stage5_imx510_xavc_cfexpress(cfg, env=env) if cfg.include_phase45_imx510_xavc else None
+    )
+    stage6: Optional[Dict[str, object]] = (
+        run_stage6_hil_fault_harness(cfg, env=env) if cfg.include_phase53_hil_fault_harness else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
 
@@ -725,6 +764,15 @@ def run_fx3_vm_coemulation_suite(
         and stage5["wbi_mutation_bytes"] == 0
         and stage5["physical_device_writes"] == 0
     )
+    stage6_ok = True if stage6 is None else (
+        bool(stage6["all_checks_passed"])
+        and stage6["cp_mutation_bytes"] == 0
+        and stage6["wbi_mutation_bytes"] == 0
+        and stage6["calibration_mutation_bytes"] == 0
+        and stage6["nvram_persistent_writes"] == 0
+        and stage6["physical_device_writes"] == 0
+        and stage6["scenarios_passed"] == stage6["scenarios_total"]
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -733,6 +781,7 @@ def run_fx3_vm_coemulation_suite(
         and stage2["cp_mutation_bytes"] == 0
         and stage4_ok
         and stage5_ok
+        and stage6_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -751,6 +800,7 @@ def run_fx3_vm_coemulation_suite(
             "include_bt_containment_matrix": cfg.include_bt_containment_matrix,
             "include_phase41_dtb_mhlx": cfg.include_phase41_dtb_mhlx,
             "include_phase45_imx510_xavc": cfg.include_phase45_imx510_xavc,
+            "include_phase53_hil_fault_harness": cfg.include_phase53_hil_fault_harness,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -779,6 +829,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage4_phase41_dtb_mhlx"] = stage4
     if stage5 is not None:
         core_payload["stage5_phase45_imx510_xavc"] = stage5
+    if stage6 is not None:
+        core_payload["stage6_phase53_hil_fault_harness"] = stage6
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -790,7 +842,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + Phase 41 + Phase 45 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -805,6 +857,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase45",
         action="store_true",
         help="Skip optional Stage 5 (Phase 45 IMX510 XAVC & Dual CFexpress/SDXC pipeline)",
+    )
+    parser.add_argument(
+        "--skip-phase53",
+        action="store_true",
+        help="Skip optional Stage 6 (Phase 53 HIL Dynamic Fault-Injection & Thermal/C2PA Harness)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -874,6 +931,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         rtc_valid=not args.rtc_invalid,
         include_phase41_dtb_mhlx=not args.skip_phase41,
         include_phase45_imx510_xavc=not args.skip_phase45,
+        include_phase53_hil_fault_harness=not args.skip_phase53,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -888,6 +946,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s3 = rep["stage3_soft_gpe_hud_ramfb"]
         s4 = rep.get("stage4_phase41_dtb_mhlx")
         s5 = rep.get("stage5_phase45_imx510_xavc")
+        s6 = rep.get("stage6_phase53_hil_fault_harness")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -899,6 +958,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s5, dict)
             else ""
         )
+        s6_str = (
+            f" | hil={s6['source_mode']}({s6['scenarios_passed']}/{s6['scenarios_total']})"
+            if isinstance(s6, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -906,7 +970,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"iso={s2['cine_ei_iso']} lut={s2['lut_mode']}({s2['lut_bytes']}B) "
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
-            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str}{s5_str} | "
+            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str}{s5_str}{s6_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

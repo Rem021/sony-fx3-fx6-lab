@@ -9,7 +9,9 @@ import stat
 import subprocess
 import time
 
-WORKSPACE_ROOT = Path('/Volumes/KAFU2T/AI/Projects/Mac')
+_INTERNAL_WORKSPACE = Path.home() / 'AI-Workspace/AI/Projects/Mac'
+_LEGACY_WORKSPACE = Path('/Volumes/KAFU2T/AI/Projects/Mac')
+WORKSPACE_ROOT = _INTERNAL_WORKSPACE if _INTERNAL_WORKSPACE.is_dir() else _LEGACY_WORKSPACE
 _RESOLVED = Path(__file__).resolve()
 ROOT = WORKSPACE_ROOT if _RESOLVED.is_relative_to(WORKSPACE_ROOT) else _RESOLVED.parents[3]
 VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
@@ -73,9 +75,10 @@ def is_clean_room_or_donor_unavailable(required_paths=()):
 
 
 def check_volume():
-    require(ROOT == Path('/Volumes/KAFU2T/AI/Projects/Mac'), 'unexpected installed workspace root')
-    data = plistlib.loads(subprocess.check_output(['/usr/sbin/diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
-    require(data.get('VolumeUUID') == VOLUME_UUID, 'target external volume missing or identity differs')
+    require(ROOT.is_dir(), 'unexpected installed workspace root')
+    if str(ROOT).startswith('/Volumes/KAFU2T'):
+        data = plistlib.loads(subprocess.check_output(['/usr/sbin/diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+        require(data.get('VolumeUUID') == VOLUME_UUID, 'target external volume missing or identity differs')
 
 
 def encode(value):

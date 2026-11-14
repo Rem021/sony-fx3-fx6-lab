@@ -34,7 +34,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
-REPO_ROOT = Path("/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab")
+REPO_ROOT = Path(__file__).resolve().parents[2]
 TRIAL_DIR = REPO_ROOT / "outputs" / "fx3-vm-trial"
 MANIFEST_PATH = TRIAL_DIR / "vm-candidate-gpecap25-live700.json"
 FALLBACK_GPE0_PNG = REPO_ROOT / "reports" / "2026-11-08-fx6-native-text-gpe0" / "menu-677-big6-framed.png"

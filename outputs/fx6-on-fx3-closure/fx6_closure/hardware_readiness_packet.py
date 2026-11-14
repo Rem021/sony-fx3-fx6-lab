@@ -1265,6 +1265,8 @@ def build_stage_a_hardware_readiness_packet(
                 p1_recovery_bridge_ok=dry.p1_recovery_bridge_ok,
                 stage_a_orchestrator_ok=dry.stage_a_orchestrator_ok,
                 kmod_userland_abi_ok=dry.kmod_userland_abi_ok,
+                peripheral_ux_ok=dry.peripheral_ux_ok,
+                ap_cp_imaging_ok=dry.ap_cp_imaging_ok,
             )
         )
         dry_run_gates = _normalize_gates_dict(dry.safety_gates_report)
@@ -1393,6 +1395,25 @@ def build_stage_a_hardware_readiness_packet(
                 "unresolved_required_symbols": abi.unresolved_required_symbols,
                 "unsatisfied_verneed_count": abi.unsatisfied_verneed_count,
             },
+            "Phase_17_peripheral_ux_display_audio_closure": {
+                "closed": dry.peripheral_ux_ok,
+                "p10_keymap_rollback_verified": (
+                    dry.peripheral_ux_audit.input_audit.p10_rollback_receipt.donor_sha256_matched
+                ),
+                "display_routing_passed": dry.peripheral_ux_audit.display_audit.passed,
+                "audio_xlr_h1_passed": dry.peripheral_ux_audit.audio_audit.passed,
+            },
+            "Phase_18_ap_cp_imaging_lut_xavc_ibis_closure": {
+                "closed": dry.ap_cp_imaging_ok,
+                "p8_cp_mutation_forbidden": dry.ap_cp_imaging_audit.p8_cp_mutation_forbidden,
+                "cp_mutation_bytes": dry.ap_cp_imaging_audit.cp_mutation_bytes,
+                "matched_0x92840747_opcodes": (
+                    dry.ap_cp_imaging_audit.uipc_queue_scan.total_0x92840747_opcodes_matched_in_fx3_cp
+                ),
+                "ibis_center_lock_verified": (
+                    dry.ap_cp_imaging_audit.ibis_safety.center_lock_mechanism_verified
+                ),
+            },
         }
 
         offline_complete = (
@@ -1401,8 +1422,13 @@ def build_stage_a_hardware_readiness_packet(
             and dry.all_12_gates_verified
             and dry.stage_a_orchestrator_ok
             and dry.kmod_userland_abi_ok
+            and dry.peripheral_ux_ok
+            and dry.ap_cp_imaging_ok
         )
     else:
+        from .ap_cp_imaging_pipeline_verifier import verify_ap_cp_imaging_pipeline
+        from .peripheral_ux_compatibility_verifier import verify_peripheral_ux_compatibility
+
         verification_mode = "CLEAN_ROOM_SYNTHETIC_VERIFIED"
         cr_bundle = build_stage_a_ram_overlay_package(synthetic_clean_room=True)
         cr_drill = run_four_layer_rollback_drill(
@@ -1415,6 +1441,8 @@ def build_stage_a_hardware_readiness_packet(
         cr_bk4 = synthesize_ram_shadow_bk4()
         cr_bk4_audit = audit_ram_shadow_bk4(cr_bk4.bk4_bytes)
         hook_audit = verify_failsafe_hook_script(cr_bundle.init2_guard_script)
+        cr_p17 = verify_peripheral_ux_compatibility(synthetic_clean_room=True)
+        cr_p18 = verify_ap_cp_imaging_pipeline(clean_room_overrides={})
 
         live_hw_gates = _normalize_gates_dict(
             evaluate_12_safety_gates(
@@ -1430,6 +1458,8 @@ def build_stage_a_hardware_readiness_packet(
                 p1_recovery_bridge_ok=True,
                 stage_a_orchestrator_ok=cr_orch.all_checks_passed,
                 kmod_userland_abi_ok=True,
+                peripheral_ux_ok=cr_p17.all_passed,
+                ap_cp_imaging_ok=cr_p18.passed,
             )
         )
 
@@ -1510,6 +1540,23 @@ def build_stage_a_hardware_readiness_packet(
                 "unresolved_required_symbols": 0,
                 "unsatisfied_verneed_count": 0,
             },
+            "Phase_17_peripheral_ux_display_audio_closure": {
+                "closed": cr_p17.all_passed,
+                "p10_keymap_rollback_verified": (
+                    cr_p17.input_audit.p10_rollback_receipt.donor_sha256_matched
+                ),
+                "display_routing_passed": cr_p17.display_audit.passed,
+                "audio_xlr_h1_passed": cr_p17.audio_audit.passed,
+            },
+            "Phase_18_ap_cp_imaging_lut_xavc_ibis_closure": {
+                "closed": cr_p18.passed,
+                "p8_cp_mutation_forbidden": cr_p18.p8_cp_mutation_forbidden,
+                "cp_mutation_bytes": cr_p18.cp_mutation_bytes,
+                "matched_0x92840747_opcodes": (
+                    cr_p18.uipc_queue_scan.total_0x92840747_opcodes_matched_in_fx3_cp
+                ),
+                "ibis_center_lock_verified": cr_p18.ibis_safety.center_lock_mechanism_verified,
+            },
         }
 
         offline_complete = (
@@ -1519,6 +1566,8 @@ def build_stage_a_hardware_readiness_packet(
             and cr_drill.all_scenarios_passed
             and cr_orch.all_checks_passed
             and cr_bk4_audit.valid
+            and cr_p17.all_passed
+            and cr_p18.passed
         )
         if not offline_complete:
             errors.append("One or more clean-room synthetic offline checks failed")

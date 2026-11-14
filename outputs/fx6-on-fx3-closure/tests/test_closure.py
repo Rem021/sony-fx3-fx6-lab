@@ -689,32 +689,34 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.stage_a_orchestrator_audit.all_checks_passed)
         self.assertTrue(rep_ok.stage_a_orchestrator_audit.wbi_p5_write_and_hibernation_forbidden)
         self.assertEqual(rep_ok.stage_a_orchestrator_audit.wbi_mutation_bytes, 0)
+        self.assertTrue(rep_ok.kmod_userland_abi_ok)
+        self.assertTrue(rep_ok.peripheral_ux_ok)
+        self.assertTrue(rep_ok.peripheral_ux_audit.all_passed)
+        self.assertTrue(rep_ok.ap_cp_imaging_ok)
+        self.assertTrue(rep_ok.ap_cp_imaging_audit.passed)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
-        drill_base = rep_ok.rollback_drill
-        feat_base = rep_ok.feature_routing_audit
-        bmt_base = rep_ok.backup_mount_tolerance_audit
-        bsb_base = rep_ok.boot_selector_and_bank_audit
-        kdtb_base = rep_ok.kernel_dtb_audit
-        sram_base = rep_ok.storage_and_ram_budget_audit
-        cp_base = rep_ok.cp_rtos_audit
-        p1_bridge_base = rep_ok.p1_recovery_bridge_audit
-        stage_a_orch_base = rep_ok.stage_a_orchestrator_audit
-
-        # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
-        rep_missing = run_offline_candidate_dry_run(
+        base_precomputed = dict(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            precomputed_rollback_drill=rep_ok.rollback_drill,
+            precomputed_feature_routing=rep_ok.feature_routing_audit,
+            precomputed_backup_mount_tolerance=rep_ok.backup_mount_tolerance_audit,
+            precomputed_boot_selector_and_banks=rep_ok.boot_selector_and_bank_audit,
+            precomputed_kernel_dtb=rep_ok.kernel_dtb_audit,
+            precomputed_storage_and_ram_budget=rep_ok.storage_and_ram_budget_audit,
+            precomputed_cp_rtos=rep_ok.cp_rtos_audit,
+            precomputed_p1_recovery_bridge=rep_ok.p1_recovery_bridge_audit,
+            precomputed_stage_a_orchestrator=rep_ok.stage_a_orchestrator_audit,
+            precomputed_kmod_userland_abi=rep_ok.kmod_userland_abi_audit,
+            precomputed_peripheral_ux=rep_ok.peripheral_ux_audit,
+            precomputed_ap_cp_imaging=rep_ok.ap_cp_imaging_audit,
+        )
+
+        # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
+        rep_missing = run_offline_candidate_dry_run(
+            **base_precomputed,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -725,17 +727,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
         # 3. Injected source write-flag syscall -> blocks G10, G11, and G12
         rep_bad_sc = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -743,17 +735,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
         # 4. Tampered fail-safe init2 hook -> blocks G11 and G12
         rep_bad_hook = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -762,35 +744,15 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
         # 5. Corrupted 8 MiB opelog.vfat -> blocks G12 candidate release
         rep_bad_vfat = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, CP RTOS, P1 Bridge, or Stage-A Orchestrator -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, CP RTOS, P1 Bridge, Stage-A Orchestrator, Kmod ABI, Phase 17, or Phase 18 -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -798,17 +760,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_uipc.blocked_gate_ids)
 
         rep_bad_p7 = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -816,17 +768,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p7.blocked_gate_ids)
 
         rep_bad_cpio = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -834,34 +776,14 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_cpio.blocked_gate_ids)
 
         rep_bad_feat = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_feat.blocked_gate_ids)
 
         rep_bad_bmt = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -869,17 +791,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bmt.blocked_gate_ids)
 
         rep_bad_bsb = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
@@ -887,17 +799,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bsb.blocked_gate_ids)
 
         rep_bad_kdtb = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_kernel_dtb=True,
         )
         self.assertFalse(rep_bad_kdtb.candidate_ready)
@@ -911,17 +813,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_kdtb["status"], "BLOCKED_BY_KERNEL_OR_DTB_REDLINE")
 
         rep_bad_sram = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_storage_and_ram_budget=True,
         )
         self.assertFalse(rep_bad_sram.candidate_ready)
@@ -935,17 +827,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_sram["status"], "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE")
 
         rep_bad_cp = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_cp_rtos=True,
         )
         self.assertFalse(rep_bad_cp.candidate_ready)
@@ -959,17 +841,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_cp["status"], "BLOCKED_BY_CP_RTOS_REDLINE")
 
         rep_bad_p1_bridge = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_p1_recovery_bridge=True,
         )
         self.assertFalse(rep_bad_p1_bridge.candidate_ready)
@@ -983,17 +855,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_p1b["status"], "BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE")
 
         rep_bad_stage_a_orch = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_stage_a_orchestrator=True,
         )
         self.assertFalse(rep_bad_stage_a_orch.candidate_ready)
@@ -1005,6 +867,50 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_orch["status"], "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE")
+
+        rep_bad_p17 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_peripheral_ux=True,
+        )
+        self.assertFalse(rep_bad_p17.candidate_ready)
+        self.assertFalse(rep_bad_p17.peripheral_ux_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p17.blocked_gate_ids)
+        g12_p17 = [
+            g
+            for g in rep_bad_p17.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p17["status"], "BLOCKED_BY_PERIPHERAL_UX_OR_AUDIO_REDLINE")
+
+        rep_bad_p18 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_ap_cp_imaging=True,
+        )
+        self.assertFalse(rep_bad_p18.candidate_ready)
+        self.assertFalse(rep_bad_p18.ap_cp_imaging_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p18.blocked_gate_ids)
+        g12_p18 = [
+            g
+            for g in rep_bad_p18.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p18["status"], "BLOCKED_BY_AP_CP_IMAGING_OR_IBIS_REDLINE")
+
+    def test_cli_verify_peripheral_ux_and_ap_cp_imaging_clean_room_subcommands(self) -> None:
+        buf17 = io.StringIO()
+        with redirect_stdout(buf17):
+            rc17 = cli_main(["verify-peripheral-ux", "--clean-room"])
+        self.assertEqual(rc17, 0)
+        p17 = json.loads(buf17.getvalue())
+        self.assertTrue(p17["all_passed"])
+
+        buf18 = io.StringIO()
+        with redirect_stdout(buf18):
+            rc18 = cli_main(["verify-ap-cp-imaging", "--clean-room"])
+        self.assertEqual(rc18, 0)
+        p18 = json.loads(buf18.getvalue())
+        self.assertTrue(p18["passed"])
+        self.assertEqual(p18["cp_mutation_bytes"], 0)
 
     @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:

@@ -3,7 +3,7 @@ PYTHON ?= /usr/bin/python3
 PYFLAGS := -B
 CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure
 
-.PHONY: all test test-json dry-run readiness-packet lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-byof
+.PHONY: all test test-json dry-run readiness-packet lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-byof
 
 all: test
 
@@ -33,6 +33,12 @@ verify-stage-a-orchestrator:
 
 verify-kmod-userland-abi:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-kmod-userland-abi
+
+verify-peripheral-ux:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-peripheral-ux
+
+verify-ap-cp-imaging:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$(CLOSURE_PYTHONPATH)" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-ap-cp-imaging
 
 verify-byof:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) $(PYFLAGS) scripts/verify_byof_manifest.py

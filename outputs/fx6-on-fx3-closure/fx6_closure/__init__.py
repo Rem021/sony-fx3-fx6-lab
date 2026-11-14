@@ -1,9 +1,15 @@
-"""FX6-on-FX3 Phase 16 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure, Stage-A Hardware Readiness Packet & Post-Trial Zero-Mutation Receipt Auditor Suite."""
+"""FX6-on-FX3 Phase 18 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A Boot Orchestrator, Stage-A Kernel-Module / `/dev/*` / ELF64 ABI Closure, Stage-A Hardware Readiness Packet, Post-Trial Zero-Mutation Receipt Auditor, Peripheral UX / Audio Closure & AP<->Stock-CP Imaging / IBIS Closure Suite."""
 
 from __future__ import annotations
 
-__version__ = "16.0.0"
+__version__ = "18.0.0"
 
+from .ap_cp_imaging_pipeline_verifier import (
+    PHASE_18_SCHEMA,
+    PHASE_18_VERSION,
+    Phase18ImagingAuditReport,
+    verify_ap_cp_imaging_pipeline,
+)
 from .hardware_readiness_packet import (
     FX3_MODEL_ID_HEX,
     PHASE_15_VERSION,
@@ -42,6 +48,14 @@ from .kmod_and_userland_abi_verifier import (
     parse_elf64_linkage_info,
     parse_insmod_script,
     run_kmod_and_userland_abi_verification,
+)
+from .peripheral_ux_compatibility_verifier import (
+    P10_APPFW_KEYMAP_SPEC,
+    PHASE_17_SCHEMA_VERSION,
+    Phase17CompatibilityReport,
+    apply_p10_keymap_adapter,
+    rollback_p10_keymap_adapter,
+    verify_peripheral_ux_compatibility,
 )
 from .stage_a_boot_orchestrator import (
     BootArtifactDigestRecord,
@@ -105,15 +119,21 @@ __all__ = [
     "OrchestratorSandboxRunResult",
     "OrchestratorScenarioResult",
     "OrchestratorStateMachineTrace",
+    "P10_APPFW_KEYMAP_SPEC",
     "P1VfatHeaderAudit",
     "P8TomcoHeaderAudit",
     "PHASE_15_VERSION",
     "PHASE_16_VERSION",
+    "PHASE_17_SCHEMA_VERSION",
+    "PHASE_18_SCHEMA",
+    "PHASE_18_VERSION",
     "PINNED_FX6_WBI_NFLASH5_BYTES",
     "PINNED_FX6_WBI_NFLASH5_SHA256",
     "PINNED_INITRD_AND_BOOT_ARTIFACTS",
     "POST_TRIAL_RECEIPT_SCHEMA",
     "Phase12StageABootOrchestratorReport",
+    "Phase17CompatibilityReport",
+    "Phase18ImagingAuditReport",
     "PostTrialItemParityRecord",
     "READINESS_PACKET_SCHEMA",
     "RealTier0CaptureBundleAudit",
@@ -123,6 +143,7 @@ __all__ = [
     "UserlandDevNodeAuditReport",
     "VerneedEntry",
     "Wbi2HeaderAudit",
+    "apply_p10_keymap_adapter",
     "audit_elf64_symbol_and_verneed_closure",
     "audit_initrd_boot_chain_and_wbi_contracts",
     "audit_kmod_load_order_and_driver_matrix",
@@ -142,13 +163,16 @@ __all__ = [
     "parse_wbi2_header_bytes",
     "populate_tier0_capture_bundle_fixture",
     "recompute_bk4_record0_checksum",
+    "rollback_p10_keymap_adapter",
     "run_h0_h1_h2_lifecycle_drill",
     "run_kmod_and_userland_abi_verification",
     "run_stage_a_boot_orchestrator_verification",
     "serialize_h1_orchestrator_telemetry_from_sandbox",
     "simulate_orchestrator_state_machine",
     "validate_candidate_wbi_redline",
+    "verify_ap_cp_imaging_pipeline",
     "verify_h1_orchestrator_telemetry",
+    "verify_peripheral_ux_compatibility",
     "verify_post_trial_zero_mutation",
     "verify_real_tier0_capture_bundle",
 ]

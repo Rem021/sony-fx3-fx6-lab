@@ -36,6 +36,10 @@ from fx3_safety.preflight import (
     verify_tier0_backup_manifest,
 )
 
+from .ap_cp_imaging_pipeline_verifier import (
+    Phase18ImagingAuditReport,
+    verify_ap_cp_imaging_pipeline,
+)
 from .backup_bridge_verifier import (
     P7BackupBridgeAuditReport,
     verify_p7_backup_bridge,
@@ -91,6 +95,10 @@ from .patcher import (
     generate_p1_lut_mount_snippet,
     resolve_donor_binary_path,
     rollback_patch_spec,
+)
+from .peripheral_ux_compatibility_verifier import (
+    Phase17CompatibilityReport,
+    verify_peripheral_ux_compatibility,
 )
 from .ram_overlay_packager import (
     CpioArchiveAudit,
@@ -173,6 +181,10 @@ class CandidateDryRunReport:
     stage_a_orchestrator_ok: bool
     kmod_userland_abi_audit: KmodAndUserlandAbiReport
     kmod_userland_abi_ok: bool
+    peripheral_ux_audit: Phase17CompatibilityReport
+    peripheral_ux_ok: bool
+    ap_cp_imaging_audit: Phase18ImagingAuditReport
+    ap_cp_imaging_ok: bool
     tier0_worker_rc: int
     tier0_manifest_audit: BackupManifestAudit
     tier0_syscall_audit: WorkerSyscallAudit
@@ -197,6 +209,8 @@ def run_offline_candidate_dry_run(
     precomputed_p1_recovery_bridge: Optional[Phase11P1RecoveryBridgeReport] = None,
     precomputed_stage_a_orchestrator: Optional[Phase12StageABootOrchestratorReport] = None,
     precomputed_kmod_userland_abi: Optional[KmodAndUserlandAbiReport] = None,
+    precomputed_peripheral_ux: Optional[Phase17CompatibilityReport] = None,
+    precomputed_ap_cp_imaging: Optional[Phase18ImagingAuditReport] = None,
     skip_patch_spec_id: Optional[str] = None,
     corrupt_opelog_vfat: bool = False,
     corrupt_p5_p6_uipc: bool = False,
@@ -211,6 +225,8 @@ def run_offline_candidate_dry_run(
     corrupt_p1_recovery_bridge: bool = False,
     corrupt_stage_a_orchestrator: bool = False,
     corrupt_kmod_userland_abi: bool = False,
+    corrupt_peripheral_ux: bool = False,
+    corrupt_ap_cp_imaging: bool = False,
     missing_manifest_item: Optional[str] = None,
     tamper_manifest_pass2_item: Optional[str] = None,
     inject_write_flag_syscall: bool = False,
@@ -476,6 +492,22 @@ def run_offline_candidate_dry_run(
             kmod_userland_abi_res.all_checks_passed and not corrupt_kmod_userland_abi
         )
 
+        peripheral_ux_res = (
+            precomputed_peripheral_ux
+            or verify_peripheral_ux_compatibility()
+        )
+        peripheral_ux_ok = (
+            peripheral_ux_res.all_passed and not corrupt_peripheral_ux
+        )
+
+        ap_cp_imaging_res = (
+            precomputed_ap_cp_imaging
+            or verify_ap_cp_imaging_pipeline()
+        )
+        ap_cp_imaging_ok = (
+            ap_cp_imaging_res.passed and not corrupt_ap_cp_imaging
+        )
+
         # 6. Run Tier-0 read-only backup worker in Unicorn to produce real 11-item manifest.json
         tier0_res = precomputed_tier0_result or run_tier0_worker_in_unicorn(compiled_worker=compiled_worker)
         assert tier0_res.manifest_json is not None
@@ -520,6 +552,8 @@ def run_offline_candidate_dry_run(
             and p1_recovery_bridge_ok
             and stage_a_orchestrator_ok
             and kmod_userland_abi_ok
+            and peripheral_ux_ok
+            and ap_cp_imaging_ok
             and tier0_res.return_code == WORKER_OK
         )
 
@@ -539,6 +573,8 @@ def run_offline_candidate_dry_run(
             p1_recovery_bridge_ok=p1_recovery_bridge_ok,
             stage_a_orchestrator_ok=stage_a_orchestrator_ok,
             kmod_userland_abi_ok=kmod_userland_abi_ok,
+            peripheral_ux_ok=peripheral_ux_ok,
+            ap_cp_imaging_ok=ap_cp_imaging_ok,
         )
 
     temp_cleaned = not Path(tmp_str).exists()
@@ -591,6 +627,10 @@ def run_offline_candidate_dry_run(
         stage_a_orchestrator_ok=stage_a_orchestrator_ok,
         kmod_userland_abi_audit=kmod_userland_abi_res,
         kmod_userland_abi_ok=kmod_userland_abi_ok,
+        peripheral_ux_audit=peripheral_ux_res,
+        peripheral_ux_ok=peripheral_ux_ok,
+        ap_cp_imaging_audit=ap_cp_imaging_res,
+        ap_cp_imaging_ok=ap_cp_imaging_ok,
         tier0_worker_rc=tier0_res.return_code,
         tier0_manifest_audit=final_manifest_audit,
         tier0_syscall_audit=final_syscall_audit,

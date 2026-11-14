@@ -14,6 +14,7 @@ from .emmc_dump_forensic_verifier import (
     run_clean_room_forensic_suite,
     verify_emmc_dump_file,
 )
+from .unbrick_ladder_and_capsule_verifier import run_unbrick_ladder_and_capsule_suite
 
 
 def main():
@@ -62,6 +63,10 @@ def main():
     forensic.add_argument('--manifest', help='optional JSON manifest path to audit against boot-chain firewall')
     forensic.add_argument('--clean-room', action='store_true', help='run clean-room synthetic Tier-4 forensic suite')
     forensic.add_argument('--out', help='optional exclusive new output directory for forensic-report.json')
+    ladder = sub.add_parser('verify-unbrick-ladder', help='Phase 47 Tier-0..Tier-4 unbrick escalation ladder & p1 VFAT capsule verifier')
+    ladder.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    ladder.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    ladder.add_argument('--out', help='optional exclusive new output directory for unbrick-ladder-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -117,6 +122,25 @@ def main():
                 if not rep.passed:
                     print(json.dumps(result, ensure_ascii=False, sort_keys=True))
                     return 2
+        elif args.command == 'verify-unbrick-ladder':
+            report = run_unbrick_ladder_and_capsule_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'unbrick-ladder-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"scenarios_passed={report.scenarios_passed}/{report.scenario_count} "
+                    f"capsule_fat12_sha256={report.capsule_fat12_tripped.capsule_sha256} "
+                    f"capsule_fat16_sha256={report.capsule_fat16_tripped.capsule_sha256} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}"
+                )
+            return 0 if report.all_passed else 2
         else:
             raise ValueError('unknown local operation')
         print(json.dumps(result, ensure_ascii=False, sort_keys=True))

@@ -15,11 +15,12 @@
  *     mb[5] = menu_cat (0..10 for the 11 Three-Layer Menu categories)
  *     mb[6] = menu_item (0..N-1 item index in right column)
  *     mb[7] = menu_depth (0=left category column, 1=right item list, 2=3rd-layer / subpage variant)
- *     mb[8..13] = cell_val[0..5] (Big6 value indices, or off1/cnt1/off2/cnt2 on Page 24)
+ *     mb[8..13] = cell_val[0..5] (FPS, EI/BaseISO, Shutter, ND[P4-Locked], LUT, WB; or Page 24 table specs)
  *     mb[14] = rec_fmt_idx (0..4 Rec Format option index)
  *     mb[15] = stats ((text_ok << 24) | (nonzero_pixels & 0x00ffffff))
  *     mb[16] = lang_id (0=English/bank4, 1=Simplified Chinese/bank19, 2=Japanese/bank12)
  *     mb[17] = fx3_p10_hwcode telemetry ((phy_code << 16) | infra_code)
+ *     mb[18] = cinema_p11_state ((xlr_idx << 4) | ibis_idx) for P11 XLR-H1 & 5-axis IBIS lock
  */
 #include "fx6_static_assist.h"
 
@@ -678,6 +679,77 @@ static uint32_t fx6_pick(uint32_t a, uint32_t b, const char *want, const char *w
 }
 
 /* ---------------- native widgets ----------------------------------------- */
+#define VS_ROW_BASE    0x220u
+#define VS_ROW_STRIDE  0x5cu
+#define VS_ROW_TYPE    (-4)
+#define VS_ROW_VALUE   0x54u
+#define VS_ROW_COUNT   0x610u
+#define VS_TYPE_STRING 1u
+#define VS_TYPE_VALUE  2u
+
+static void fx6_render_string_text_styled(uint64_t appfw, int x, int y, int w, int h,
+                                          const char *text, uint32_t font, uint32_t font2,
+                                          uint32_t layout, uint32_t d30, uint32_t d34) {
+    if (!text || !text[0]) return;
+    if (w < 8 || h < 4) return;
+    fx6_init_syms();
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
+    char param[0x40];
+    memset(param, 0, sizeof(param));
+    ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
+
+    *(int32_t *)((char *)vs + 0x1e8) = x;
+    *(int32_t *)((char *)vs + 0x1ec) = y;
+    *(int32_t *)((char *)vs + 0x1f0) = w;
+    *(int32_t *)((char *)vs + 0x1f4) = h;
+    *(uint32_t *)((char *)vs + 0x200) = 0xffffffffU;
+    *(uint8_t *)((char *)vs + 0x1fc) = 1;
+    *(uint32_t *)((char *)vs + 0x208) = font ? font : 0x0200600fU;
+    *(uint32_t *)((char *)vs + 0x20c) = font2 ? font2 : 0x0200600eU;
+    *(uint32_t *)((char *)vs + 0x210) = layout ? layout : 0x0200a029U;
+    *(uint32_t *)((char *)vs + 0xa14) = 0x0200600bU;
+    *(int *)((char *)vs + 0x214) = 0;
+    if (d30) *(uint32_t *)((char *)vs + 0x218) = d30;
+    *(uint32_t *)((char *)vs + 0x21c) = d34 ? d34 : (uint32_t)VS_TYPE_STRING;
+    *(uint32_t *)((char *)vs + 0xa30) = fx6_font_ns_rid();
+    *(uint32_t *)((char *)vs + 0xa34) = 0xffffffffU;
+
+    char *row0 = (char *)vs + VS_ROW_BASE;
+    *(int *)(row0 + VS_ROW_TYPE) = (int)VS_TYPE_STRING;
+    unsigned n = 0;
+    while (text[n] && n < 83u) {
+        row0[n] = text[n];
+        n++;
+    }
+    row0[n] = 0;
+    *(int *)((char *)vs + VS_ROW_COUNT) = 1;
+
+    void *ts = (char *)vs + 0xe40;
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
+    *(unsigned short *)((char *)ts + 0xa8) |= 0x0008;
+
+    void **vt = *(void ***)vs;
+    if (vt && vt[0x158 / 8]) {
+        ((void (*)(void *))vt[0x158 / 8])(vs);
+        *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
+        if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
+        fx6_drain_commands(16);
+        g_text_n++;
+    }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
+    fx6_destroy_widget_inplace(vs);
+}
+
+static void fx6_render_string_text(uint64_t appfw, int x, int y, int w, int h,
+                                   const char *text, const char *tag_name) {
+    (void)tag_name;
+    fx6_render_string_text_styled(appfw, x, y, w, h, text,
+                                  0x0200600fU, 0x0200600eU, 0x0200a029U, 0u, 1u);
+}
+
 static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
                                   uint32_t text_resid, const char *tag_name) {
     if (!text_resid || text_resid == 0xffffffffU) return;
@@ -909,30 +981,73 @@ static int fx6_tag_kind(uint64_t appfw, void *proto) {
 /* ---------------- Big-6 Cells & Menu Tables ------------------------------ */
 typedef struct {
     uint32_t title_rid;
-    uint32_t val_rids[7];
+    uint32_t glyph_idx;
     int n_vals;
 } fx6_cell_spec_t;
 
 static const fx6_cell_spec_t g_cell_specs[6] = {
     /* 0: FPS */
-    { 0x02005082u, { 0x020030ceu, 0x020050a7u, 0x0200532du, 0, 0, 0, 0 }, 3 },
-    /* 1: Shutter */
-    { 0x020050e8u, { 0x02002fe1u, 0x020030ceu, 0x02002009u, 0, 0, 0, 0 }, 3 },
-    /* 2: ISO/Gain */
-    { 0x02004c32u, { 0x02005459u, 0x02002063u, 0x020023c2u, 0, 0, 0, 0 }, 3 },
-    /* 3: ND Filter */
-    { 0x02004288u, { 0x020054fdu, 0x02002090u, 0x020023bdu, 0, 0, 0, 0 }, 3 },
-    /* 4: White Bal. */
-    { 0x02005689u, { 0x02002934u, 0x02005281u, 0x02002008u, 0, 0, 0, 0 }, 3 },
-    /* 5: Base Look */
-    { 0x020023f8u, { 0x02002464u, 0x02002460u, 0x020021a0u, 0x0200219eu, 0x020023f1u, 0x020023f5u, 0x020023edu }, 7 },
+    { 0x02005082u, 0u, 7 },
+    /* 1: EI / Base ISO */
+    { 0x02004c32u, 2u, 6 },
+    /* 2: Shutter Angle / Speed */
+    { 0x020050e8u, 1u, 7 },
+    /* 3: ND Filter (P4 Hardware-Locked on non-ND FX3 sensor body) */
+    { 0x02004288u, 3u, 1 },
+    /* 4: Base Look / 3D LUT */
+    { 0x020023f8u, 5u, 6 },
+    /* 5: White Balance */
+    { 0x02005689u, 4u, 6 },
 };
 
-static uint32_t fx6_cell_val_rid(int cell_idx, const uint32_t *cell_vals) {
-    if (cell_idx < 0 || cell_idx >= 6) return 0x02002464u;
+static const char * const g_cell_val_strs[6][7] = {
+    /* 0: FPS */
+    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p (S&Q)" },
+    /* 1: EI / Base ISO (Dual Base ISO 800 / 12800) */
+    { "800 EI (800 Base)", "400 EI (800 Base)", "1600 EI (800 Base)",
+      "12800 EI (12800 Base)", "6400 EI (12800 Base)", "25600 EI (12800 Base)", 0 },
+    /* 2: Shutter Angle / Speed (BK4 0x02cf1702 / 0x02cf1704) */
+    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100" },
+    /* 3: ND Filter (P4 Hardware Contract) */
+    { "Clear [FX3 P4 Locked]", 0, 0, 0, 0, 0, 0 },
+    /* 4: Base Look / 3D LUT (P1 /dev/nflasha30 + P11 0x0165/0x0166) */
+    { "S-Cinetone", "S-Log3.Cine / S-Gamut3.Cine", "s709",
+      "R709 (800%)", "User1 (33\xc2\xb3 .cube)", "User2 (33\xc2\xb3 .cube)", 0 },
+    /* 5: White Balance */
+    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0 },
+};
+
+static const char * const g_cell_hud_strs[6][7] = {
+    /* 0: FPS (narrow HUD) */
+    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p" },
+    /* 1: EI (narrow HUD) */
+    { "800 EI", "400 EI", "1600 EI", "12800EI", "6400 EI", "25600EI", 0 },
+    /* 2: Shutter */
+    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100" },
+    /* 3: ND Filter */
+    { "Clear[P4]", 0, 0, 0, 0, 0, 0 },
+    /* 4: LUT (medium HUD) */
+    { "S-Cinetone", "S-Log3.Cine", "s709", "R709 800%", "User1 .cube", "User2 .cube", 0 },
+    /* 5: WB */
+    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0 },
+};
+
+static const char *fx6_cell_val_str(int cell_idx, const uint32_t *cell_vals) {
+    if (cell_idx < 0 || cell_idx >= 6) return "S-Cinetone";
+    if (cell_idx == 3) return g_cell_val_strs[3][0];
     int n = g_cell_specs[cell_idx].n_vals;
-    uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0;
-    return g_cell_specs[cell_idx].val_rids[idx];
+    uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0u;
+    const char *s = g_cell_val_strs[cell_idx][idx];
+    return s ? s : g_cell_val_strs[cell_idx][0];
+}
+
+static const char *fx6_cell_hud_str(int cell_idx, const uint32_t *cell_vals) {
+    if (cell_idx < 0 || cell_idx >= 6) return "S-Cinetone";
+    if (cell_idx == 3) return g_cell_hud_strs[3][0];
+    int n = g_cell_specs[cell_idx].n_vals;
+    uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0u;
+    const char *s = g_cell_hud_strs[cell_idx][idx];
+    return s ? s : g_cell_hud_strs[cell_idx][0];
 }
 
 /* Page 0: Big-6 Home (TABLE 0x2e9e210, 98 rows) */
@@ -978,9 +1093,9 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         }
         if (kind == 1) {
             if (resid && resid != 0xffffffffU) {
-                /* If this is the center Base Look string (0x02002464), let it reflect cell_vals[5] */
+                /* Center Base Look / 3D LUT string reflects cell_vals[4] */
                 if (resid == 0x02002464u && cell_vals) {
-                    fx6_render_string_rid(appfw, x, y, w, h, fx6_cell_val_rid(5, cell_vals), "center-look");
+                    fx6_render_string_text(appfw, x, y, w, h, fx6_cell_val_str(4, cell_vals), "center-look");
                 } else {
                     fx6_render_string_desc(appfw, p);
                 }
@@ -1007,7 +1122,7 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         uint8_t *p = cell_rows[c];
         uint16_t x = *(uint16_t *)(p + 0x3c), y = *(uint16_t *)(p + 0x3e);
         uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
-        uint32_t glyph = *(uint32_t *)(uintptr_t)(appfw + 0x23be8d8ULL + (uint64_t)c * 8ULL);
+        uint32_t glyph = *(uint32_t *)(uintptr_t)(appfw + 0x23be8d8ULL + (uint64_t)g_cell_specs[c].glyph_idx * 8ULL);
         fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
         if (proccmd) proccmd(0);
         fx6_border(appfw, x, y, w, h, ((uint32_t)c == active_cell) ? 0x0200c011u : 0x0200c00eu);
@@ -1017,8 +1132,8 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         int th = (h * 38) / 100;
         if (th < 18) th = 18;
         fx6_render_string_rid(appfw, x + 36, y + 6, w - 42, th, g_cell_specs[c].title_rid, "cell-title");
-        fx6_render_string_rid(appfw, x + 8, y + 6 + th, w - 16, h - th - 10,
-                              fx6_cell_val_rid(c, cell_vals), "cell-value");
+        fx6_render_string_text(appfw, x + 8, y + 6 + th, w - 16, h - th - 10,
+                               fx6_cell_val_str(c, cell_vals), "cell-value");
         if (proccmd) proccmd(0);
     }
 }
@@ -1180,7 +1295,7 @@ static void render_page_setting_main(uint64_t appfw, uint32_t sel_box, const uin
     const uint32_t *items = fx6_get_cat_items(active_cat, &n_items);
     fx6_render_string_rid(appfw, 519,  95, 305, 32, g_cats[active_cat], "main-string");
     fx6_render_string_rid(appfw, 534, 158, 290, 32, items[0], "setting-item");
-    fx6_render_string_rid(appfw, 534, 193, 290, 32, fx6_cell_val_rid(5, cell_vals), "setting-value");
+    fx6_render_string_text(appfw, 534, 193, 290, 32, fx6_cell_val_str(4, cell_vals), "setting-value");
     {
         uint32_t set = fx6_pick(0x020023dau, 0x020047a4u, "Set", "button label");
         static const int bx[4] = {654, 398, 654, 398}, by[4] = {425, 425, 80, 80};
@@ -1210,7 +1325,7 @@ static void render_page_setting_center(uint64_t appfw, uint32_t sel_box, const u
         int c = i - 11;
         fx6_border(appfw, x, y, w, h, ((uint32_t)c == active_cell) ? 0x0200c011u : 0x0200c00eu);
         fx6_render_string_rid(appfw, x + 8, y + 6, w - 16, 30, g_cell_specs[c].title_rid, "cell-title");
-        fx6_render_string_rid(appfw, x + 8, y + 40, w - 16, h - 46, fx6_cell_val_rid(c, cell_vals), "cell-value");
+        fx6_render_string_text(appfw, x + 8, y + 40, w - 16, h - 46, fx6_cell_val_str(c, cell_vals), "cell-value");
     }
     {
         uint8_t *t = base + 4 * FX6_DESC_STRIDE; /* No7_CENTER_TITLE */
@@ -1220,7 +1335,7 @@ static void render_page_setting_center(uint64_t appfw, uint32_t sel_box, const u
         uint16_t vx = *(uint16_t *)(v + 0x3c), vy = *(uint16_t *)(v + 0x3e);
         uint16_t vw = *(uint16_t *)(v + 0x40), vh = *(uint16_t *)(v + 0x42);
         fx6_render_string_rid(appfw, tx, ty, tw, th, g_cell_specs[active_cell].title_rid, "centre-title");
-        fx6_render_string_rid(appfw, vx, vy, vw, vh, fx6_cell_val_rid((int)active_cell, cell_vals), "centre-value");
+        fx6_render_string_text(appfw, vx, vy, vw, vh, fx6_cell_val_str((int)active_cell, cell_vals), "centre-value");
     }
 }
 
@@ -1270,12 +1385,87 @@ static void render_page_assignable(uint64_t appfw, uint32_t sel_box) {
 }
 
 /* HUD slot bindings for HUD Strip / Network / Clip / Status pages */
-#define VS_ROW_BASE   0x220u
-#define VS_ROW_STRIDE 0x5cu
-#define VS_ROW_TYPE   (-4)
-#define VS_ROW_VALUE  0x54u
-#define VS_ROW_COUNT  0x610u
-#define VS_TYPE_VALUE 2u
+static uint32_t g_live_cells[6] = { 0u, 0u, 0u, 0u, 0u, 0u };
+static uint32_t g_live_ibis_xlr = 0u;
+
+static const char * const g_ibis_hud_strs[3] = { "IBIS:Lock", "IBIS:Off", "IBIS:Std" };
+static const char * const g_xlr_hud_strs[3]  = { "XLR:+48V",  "XLR:Line", "IntMic" };
+static const char * const g_lut_short_strs[6] = { "S-Cine", "SLog3", "s709", "R709", "Usr1", "Usr2" };
+
+static const char *fx6_hud_live_str(const char *name) {
+    if (!name) return 0;
+    uint32_t ibis_idx = g_live_ibis_xlr & 0x0fu;
+    uint32_t xlr_idx  = (g_live_ibis_xlr >> 4) & 0x0fu;
+    if (ibis_idx >= 3u) ibis_idx = 0u;
+    if (xlr_idx >= 3u) xlr_idx = 0u;
+
+    /* FPS */
+    if (!strcmp_(name, "No2048_sandq_frame_rate") ||
+        !strcmp_(name, "No21_sandq_frame_rate") ||
+        !strcmp_(name, "No1022_sandq_frame_rate_value") ||
+        !strcmp_(name, "No1093_sandq_frame_rate_value") ||
+        !strcmp_(name, "No7_frame_rate") ||
+        !strcmp_(name, "No34_video_fps") ||
+        !strcmp_(name, "No422_SQ_FRAME_RATE")) {
+        return fx6_cell_hud_str(0, g_live_cells);
+    }
+    /* EI / Base ISO */
+    if (!strcmp_(name, "No30_gain_value") ||
+        !strcmp_(name, "No2061_gain_value") ||
+        !strcmp_(name, "No1023_gain_value")) {
+        return fx6_cell_hud_str(1, g_live_cells);
+    }
+    if (!strcmp_(name, "No13_base_iso") ||
+        !strcmp_(name, "No1010_base_iso") ||
+        !strcmp_(name, "No2004_base_iso")) {
+        return ((g_live_cells[1] % 6u) >= 3u) ? "12800B" : "800B";
+    }
+    /* Shutter */
+    if (!strcmp_(name, "No18_shutter_value") ||
+        !strcmp_(name, "No1015_shutter_value") ||
+        !strcmp_(name, "No2059_shutter_value")) {
+        return fx6_cell_hud_str(2, g_live_cells);
+    }
+    /* P4 ND-Clear Lock (suppress redundant adjacent ND label so Clear[P4] never overlaps) */
+    if (!strcmp_(name, "No58_nd_filter_mode_nd_filter_clear") ||
+        !strcmp_(name, "No1050_nd_filter_mode_nd_filter_clear") ||
+        !strcmp_(name, "No2054_nd_filter_mode_nd_filter_clear")) {
+        return "";
+    }
+    if (!strcmp_(name, "No60_nd_filter_value_nd_transmittance") ||
+        !strcmp_(name, "No1052_nd_filter_value_nd_transmittance") ||
+        !strcmp_(name, "No2055_nd_filter_value_nd_transmittance")) {
+        return "Clear[P4]";
+    }
+    /* Base Look / 3D LUT */
+    if (!strcmp_(name, "No1066_base_look") ||
+        !strcmp_(name, "No50_monitor_lut")) {
+        return fx6_cell_val_str(4, g_live_cells);
+    }
+    if (!strcmp_(name, "No2090_gamma_display_assist") ||
+        !strcmp_(name, "No9_baselook") ||
+        !strcmp_(name, "No2009_look_name")) {
+        return fx6_cell_hud_str(4, g_live_cells);
+    }
+    if (!strcmp_(name, "No2031_output_lut2_type") ||
+        !strcmp_(name, "No2029_output_lut1_type")) {
+        return g_lut_short_strs[g_live_cells[4] % 6u];
+    }
+    /* White Balance */
+    if (!strcmp_(name, "No55_white_balance_value") ||
+        !strcmp_(name, "No1047_white_balance_value") ||
+        !strcmp_(name, "No2063_white_balance_value")) {
+        return fx6_cell_hud_str(5, g_live_cells);
+    }
+    /* P11 5-axis IBIS Center-Lock & XLR-H1 Audio Status */
+    if (!strcmp_(name, "No2040_steady_shot_focal_length")) {
+        return g_ibis_hud_strs[ibis_idx];
+    }
+    if (!strcmp_(name, "No2041_steady_shot_focal_length_unit")) {
+        return g_xlr_hud_strs[xlr_idx];
+    }
+    return 0;
+}
 
 /* Guard against any NULL Dictionary* passed to libra::Dictionary::addRow */
 void _ZN5libra10Dictionary6addRowERKNS_6StringERKNS_7VariantE(void *self, const void *k, const void *v) {
@@ -1409,6 +1599,16 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     uint16_t x = *(uint16_t *)(p + 0x3c), y = *(uint16_t *)(p + 0x3e);
     uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
     if (w < 8 || h < 4) return;
+
+    const char *live_s = fx6_hud_live_str(name);
+    if (live_s) {
+        if (live_s[0]) {
+            fx6_render_string_text_styled(appfw, x, y, w, h, live_s,
+                                          font, font2, layout, d30, d34);
+        }
+        (void)tag;
+        return;
+    }
 
     const hud_bind_t *b = fx6_hud_for(name);
     if (!b && (!d18 || d18 == 0xffffffffU)) return;
@@ -1583,7 +1783,8 @@ static int g_cache_next = 0;
 
 static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_cat,
                                uint32_t menu_item, uint32_t menu_depth,
-                               const uint32_t *cell_vals, uint32_t rec_fmt_idx, uint32_t lang) {
+                               const uint32_t *cell_vals, uint32_t rec_fmt_idx, uint32_t lang,
+                               uint32_t ibis_xlr) {
     uint64_t h = 1469598103934665603ULL;
     h = (h ^ page) * 1099511628211ULL;
     h = (h ^ sel_box) * 1099511628211ULL;
@@ -1592,6 +1793,7 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ menu_depth) * 1099511628211ULL;
     h = (h ^ rec_fmt_idx) * 1099511628211ULL;
     h = (h ^ lang) * 1099511628211ULL;
+    h = (h ^ ibis_xlr) * 1099511628211ULL;
     for (int i = 0; i < 6; i++) {
         h = (h ^ cell_vals[i]) * 1099511628211ULL;
     }
@@ -1602,9 +1804,13 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
 
 static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
                                 uint32_t menu_cat, uint32_t menu_item, uint32_t menu_depth,
-                                const uint32_t *cell_vals, uint32_t rec_fmt_idx, uint32_t lang) {
+                                const uint32_t *cell_vals, uint32_t rec_fmt_idx, uint32_t lang,
+                                uint32_t ibis_xlr) {
     fx6_init_syms();
-    uint64_t h = fx6_state_hash(page, sel_box, menu_cat, menu_item, menu_depth, cell_vals, rec_fmt_idx, lang);
+    for (int i = 0; i < 6; i++) g_live_cells[i] = cell_vals ? cell_vals[i] : 0u;
+    g_live_cells[3] = 0u; /* P4 ND-Clear Hardware Lock */
+    g_live_ibis_xlr = ibis_xlr;
+    uint64_t h = fx6_state_hash(page, sel_box, menu_cat, menu_item, menu_depth, g_live_cells, rec_fmt_idx, lang, ibis_xlr);
 
     for (int i = 0; i < CACHE_SLOTS; i++) {
         if (g_cache[i].valid && g_cache[i].hash == h && g_cache[i].pixels) {
@@ -1868,7 +2074,12 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
     case 5: /* SET */
         if (page == 0u || page == 3u) {
             uint32_t c = sel_box % 6u;
-            mb[8 + c] = (mb[8 + c] + 1u) % (uint32_t)g_cell_specs[c].n_vals;
+            if (c == 3u) {
+                /* P4 Hardware Contract: FX3 body has no physical ND wheel -> lock to Clear */
+                mb[8 + 3] = 0u;
+            } else {
+                mb[8 + c] = (mb[8 + c] + 1u) % (uint32_t)g_cell_specs[c].n_vals;
+            }
         } else if (page == 1u) {
             if (menu_depth == 0u) {
                 menu_depth = 1u;
@@ -1883,7 +2094,7 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
                     menu_depth = 2u;
                     menu_item = 0u;
                 } else if (menu_cat == 4u && menu_item >= 1u && menu_item <= 6u) {
-                    mb[8 + 5] = menu_item - 1u;
+                    mb[8 + 4] = (menu_item - 1u) % 6u;
                 } else {
                     menu_depth = 2u;
                     menu_item = 0u;
@@ -1892,7 +2103,7 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
                 if (menu_cat == 3u) {
                     mb[14] = menu_item % 5u;
                 } else {
-                    mb[8 + 5] = menu_item % 7u;
+                    mb[8 + 4] = menu_item % 6u;
                 }
                 menu_depth = 1u;
             }
@@ -1919,7 +2130,7 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
         break;
     case 9: /* DISP: cycle through curated FX6 UI pages 0..23 cleanly (skipping 24=Universal unless explicitly set) */
         page = (page + 1u) % 24u;
-        sel_box = (page == 0u) ? 5u : 0u;
+        sel_box = (page == 0u) ? 4u : 0u;
         break;
     default:
         break;
@@ -1981,30 +2192,31 @@ void fx6_force_update(void) {
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
         mb[3] = 0u;          /* page 0: Big-6 Home */
-        mb[4] = 5u;          /* sel_box: Base Look highlighted */
+        mb[4] = 4u;          /* sel_box: Base Look / 3D LUT highlighted */
         mb[5] = 2u;          /* menu_cat: Shooting */
         mb[6] = 0u;          /* menu_item */
         mb[7] = 0u;          /* menu_depth */
         mb[16] = 0u;         /* lang_id: 0=EN */
         mb[17] = 0u;         /* fx3_p10_hwcode telemetry */
+        mb[18] = 0u;         /* cinema_p11_state (ibis_idx=0, xlr_idx=0) */
     }
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
-    fx6_render_dispatch(g_appfw, 1u, 5u, 2u, 0u, 0u, cell_vals, 0u, g_cur_lang);
-    fx6_render_dispatch(g_appfw, 6u, 5u, 2u, 0u, 0u, cell_vals, 0u, g_cur_lang);
+    fx6_render_dispatch(g_appfw, 1u, 4u, 2u, 0u, 0u, cell_vals, 0u, g_cur_lang, 0u);
+    fx6_render_dispatch(g_appfw, 6u, 4u, 2u, 0u, 0u, cell_vals, 0u, g_cur_lang, 0u);
 
     /* Render initial Big-6 Home page */
-    fx6_render_dispatch(g_appfw, mb ? mb[3] : 0u, mb ? mb[4] : 5u,
+    fx6_render_dispatch(g_appfw, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
                         mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-                        cell_vals, mb ? mb[14] : 0u, g_cur_lang);
+                        cell_vals, mb ? mb[14] : 0u, g_cur_lang, mb ? mb[18] : 0u);
     uint32_t nz = fx6_count_nonzero(g_osd);
     if (mb) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
     dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u\n",
-            mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 5u,
+            mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
             nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang);
     fx6_scan_osd();
@@ -2022,23 +2234,28 @@ void fx6_force_update(void) {
             }
         }
         if (mb && mb[0] == 0x4658364cu && mb[1] != mb[2]) {
-            uint32_t req_seq = mb[1];
-            uint32_t page    = mb[3];
-            uint32_t sel_box = mb[4];
-            uint32_t cat     = mb[5];
-            uint32_t item    = mb[6];
-            uint32_t depth   = mb[7];
-            uint32_t rec_fmt = mb[14];
-            uint32_t lang    = mb[16];
+            uint32_t req_seq  = mb[1];
+            uint32_t page     = mb[3];
+            uint32_t sel_box  = mb[4];
+            uint32_t cat      = mb[5];
+            uint32_t item     = mb[6];
+            uint32_t depth    = mb[7];
+            uint32_t rec_fmt  = mb[14];
+            uint32_t lang     = mb[16];
+            uint32_t ibis_xlr = mb[18];
             for (int i = 0; i < 6; i++) cell_vals[i] = mb[8 + i];
+            if ((page % FX6_NUM_PAGES) != 24u) {
+                cell_vals[3] = 0u; /* P4 ND-Clear Lock */
+                mb[8 + 3] = 0u;
+            }
             fx6_apply_lang(lang);
 
-            fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang);
+            fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr);
         }
     }
 }

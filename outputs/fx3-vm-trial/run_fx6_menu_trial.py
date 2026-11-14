@@ -332,8 +332,125 @@ CAT_NAMES = [
     "Maintenance",
 ]
 
-CELL_NAMES = ["FPS", "Shutter", "ISO/Gain", "ND Filter", "White Bal.", "Base Look"]
-CELL_N_VALS = [3, 3, 3, 3, 3, 7]
+CELL_NAMES = ["FPS", "EI / Base ISO", "Shutter", "ND Filter", "Base Look / 3D LUT", "White Balance"]
+CELL_N_VALS = [7, 6, 7, 1, 6, 6]
+
+CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
+    "fps": {
+        "key": "fps",
+        "label": "FPS",
+        "cell_idx": 0,
+        "presets": ["23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p (S&Q)"],
+        "locked": False,
+        "contract": "S&Q / Project Frame Rate",
+    },
+    "ei": {
+        "key": "ei",
+        "label": "EI / Base ISO",
+        "cell_idx": 1,
+        "presets": [
+            "800 EI (800 Base)",
+            "400 EI (800 Base)",
+            "1600 EI (800 Base)",
+            "12800 EI (12800 Base)",
+            "6400 EI (12800 Base)",
+            "25600 EI (12800 Base)",
+        ],
+        "locked": False,
+        "contract": "P11 Dual Base ISO 800/12800",
+    },
+    "shutter": {
+        "key": "shutter",
+        "label": "Shutter",
+        "cell_idx": 2,
+        "presets": ["180.0°", "90.0°", "45.0°", "360.0°", "1/48", "1/50", "1/100"],
+        "locked": False,
+        "contract": "BK4 0x02cf1702 (Angle) / 0x02cf1704 (Speed)",
+    },
+    "nd": {
+        "key": "nd",
+        "label": "ND Filter",
+        "cell_idx": 3,
+        "presets": ["Clear [FX3 P4 Locked]"],
+        "locked": True,
+        "lock_reason": (
+            "Stage-B P4 Hardware Contract: ILME-FX3 sensor body lacks an internal physical electronic "
+            "variable ND filter; set_nd_filter_mode_i is hardware-locked to Clear."
+        ),
+        "contract": "P4 ND=Clear Hardware Lock",
+    },
+    "lut": {
+        "key": "lut",
+        "label": "Base Look / 3D LUT",
+        "cell_idx": 4,
+        "presets": [
+            "S-Cinetone",
+            "S-Log3.Cine / S-Gamut3.Cine",
+            "s709",
+            "R709 (800%)",
+            "User1 (33³ .cube)",
+            "User2 (33³ .cube)",
+        ],
+        "locked": False,
+        "contract": "P1 /dev/nflasha30 + P11 33³ 3D LUT DMA (0x0165/0x0166)",
+    },
+    "wb": {
+        "key": "wb",
+        "label": "White Balance",
+        "cell_idx": 5,
+        "presets": ["5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B"],
+        "locked": False,
+        "contract": "FX6 White Balance / Preset / ATW",
+    },
+    "ibis": {
+        "key": "ibis",
+        "label": "5-Axis IBIS",
+        "cell_idx": None,
+        "presets": ["5-Axis Center Lock (P11)", "Active Off", "Active Standard"],
+        "locked": False,
+        "contract": "P11 5-Axis IBIS Center-Lock",
+    },
+    "xlr": {
+        "key": "xlr",
+        "label": "XLR-H1 Audio",
+        "cell_idx": None,
+        "presets": ["XLR-H1 Ch1/2 +48V (0x5d90)", "XLR-H1 Line In (0x5d90)", "Internal Stereo Mic"],
+        "locked": False,
+        "contract": "P11 XLR-H1 Audio Handle 0x5d90 Preserved",
+    },
+}
+
+CINEMA_PARAM_ALIASES: dict[str, str] = {
+    "fps": "fps",
+    "framerate": "fps",
+    "frame_rate": "fps",
+    "cell0": "fps",
+    "ei": "ei",
+    "iso": "ei",
+    "base_iso": "ei",
+    "gain": "ei",
+    "cell1": "ei",
+    "shutter": "shutter",
+    "shutter_angle": "shutter",
+    "shutter_speed": "shutter",
+    "cell2": "shutter",
+    "nd": "nd",
+    "nd_filter": "nd",
+    "cell3": "nd",
+    "lut": "lut",
+    "baselook": "lut",
+    "base_look": "lut",
+    "3d_lut": "lut",
+    "cell4": "lut",
+    "wb": "wb",
+    "white_balance": "wb",
+    "cell5": "wb",
+    "ibis": "ibis",
+    "steady_shot": "ibis",
+    "xlr": "xlr",
+    "xlr_h1": "xlr",
+    "audio": "xlr",
+}
 
 
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
@@ -613,15 +730,19 @@ class FX6LiveGpe0Session:
         self.gpe0_bin = self.workdir / "gpe0-live.bin"
         self.started_at: float | None = None
 
-        # Shadow state matching guest 0x41e000e00 mailbox (mb[0..17])
+        # Shadow state matching guest 0x41e000e00 mailbox (mb[0..18])
         self.cmd_seq = 1
         self.ack_seq = 0
         self.page = 0
-        self.sel_box = 5
+        self.sel_box = 4
         self.menu_cat = 2
         self.menu_item = 0
         self.menu_depth = 0
         self.cell_vals = [0, 0, 0, 0, 0, 0]
+        self.ibis_idx = 0
+        self.xlr_idx = 0
+        self.p4_lock_attempts = 0
+        self.last_toast = ""
         self.table_off = ALL_128_PAGES[0]["off"] if ALL_128_PAGES else 0x02E90FB0
         self.table_rows = ALL_128_PAGES[0]["rows"] if ALL_128_PAGES else 7
         self.table_off2 = 0
@@ -713,10 +834,15 @@ class FX6LiveGpe0Session:
             self.cmd_seq = 1
             self.ack_seq = 0
             self.page = 0
-            self.sel_box = 5
+            self.sel_box = 4
             self.menu_cat = 2
             self.menu_item = 0
             self.menu_depth = 0
+            self.cell_vals = [0, 0, 0, 0, 0, 0]
+            self.ibis_idx = 0
+            self.xlr_idx = 0
+            self.p4_lock_attempts = 0
+            self.last_toast = ""
             self.lang_code = "en"
             self.lang_id = 0
             self.last_p10_hwcode = 0
@@ -938,7 +1064,7 @@ class FX6LiveGpe0Session:
             return str(donor_cpio)
 
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..17] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..18] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         mb_vals = (
@@ -946,6 +1072,8 @@ class FX6LiveGpe0Session:
             if self.page == 24
             else list(self.cell_vals[:6])
         )
+        if self.page != 24:
+            mb_vals[3] = 0  # Stage-B P4 ND=Clear hardware lock
         stats_word = ((self.last_text_ok & 0xFF) << 24) | (self.last_nz & 0x00FFFFFF)
         words = [
             CTRL_MAGIC,
@@ -967,7 +1095,8 @@ class FX6LiveGpe0Session:
             self.lang_id,
             self.last_p10_hwcode & 0xFFFFFFFF,
         ]
-        raw = struct.pack("<18I", *words)
+        p11_state_word = ((self.xlr_idx & 0x0F) << 4) | (self.ibis_idx & 0x0F)
+        raw = struct.pack("<18I", *words) + struct.pack("<I", p11_state_word)
         with self.gdb_lock:
             for _ in range(2):
                 s: socket.socket | None = None
@@ -984,7 +1113,7 @@ class FX6LiveGpe0Session:
 
                     s.settimeout(1.5)
                     self._gdb_send_packet(s, b"Qqemu.PhyMemMode:1")
-                    # Write mb[3..17] first, then mb[0..2] so mb[1] (cmd_seq) commits last
+                    # Write mb[3..18] first, then mb[0..2] so mb[1] (cmd_seq) commits last
                     body_hex = raw[12:].hex().encode("ascii")
                     r1 = self._gdb_send_packet(
                         s, f"M{CTRL_MB_PHYS + 12:x},{len(raw) - 12:x}:".encode("ascii") + body_hex
@@ -1153,6 +1282,181 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def get_cinema_params(self) -> dict[str, Any]:
+        ei_presets = CINEMA_PARAM_SPECS["ei"]["presets"]
+        ei_idx = self.cell_vals[1] % len(ei_presets)
+        base_iso = "12800" if ei_idx >= 3 else "800"
+        ibis_presets = CINEMA_PARAM_SPECS["ibis"]["presets"]
+        xlr_presets = CINEMA_PARAM_SPECS["xlr"]["presets"]
+        indices = {
+            "fps": self.cell_vals[0] % len(CINEMA_PARAM_SPECS["fps"]["presets"]),
+            "ei": ei_idx,
+            "shutter": self.cell_vals[2] % len(CINEMA_PARAM_SPECS["shutter"]["presets"]),
+            "nd": 0,
+            "lut": self.cell_vals[4] % len(CINEMA_PARAM_SPECS["lut"]["presets"]),
+            "wb": self.cell_vals[5] % len(CINEMA_PARAM_SPECS["wb"]["presets"]),
+            "ibis": self.ibis_idx % len(ibis_presets),
+            "xlr": self.xlr_idx % len(xlr_presets),
+        }
+        values = {
+            k: CINEMA_PARAM_SPECS[k]["presets"][idx]
+            for k, idx in indices.items()
+        }
+        return {
+            "values": values,
+            "indices": indices,
+            "base_iso": base_iso,
+            "nd_locked": True,
+            "nd_lock_contract": "P4 set_nd_filter_mode_i -> Clear",
+            "p4_lock_attempts": self.p4_lock_attempts,
+            "lut_source": "/dev/nflasha30 (0x0165/0x0166 33x33x33)",
+            "ibis_status": values["ibis"],
+            "xlr_status": values["xlr"],
+            "specs": CINEMA_PARAM_SPECS,
+        }
+
+    def get_stage_b_telemetry(self) -> dict[str, Any]:
+        cp = self.get_cinema_params()
+        p10_btn = self.last_p10_telemetry.get("button")
+        p10_detail = (
+            f"{p10_btn}: {self.last_p10_telemetry.get('phy_code')}->{self.last_p10_telemetry.get('infra_code')}"
+            if p10_btn
+            else "FX3 Deck Ready (Fn/MENU/DISP/C1..C6)"
+        )
+        return {
+            "P1": {
+                "id": "P1",
+                "label": "P1 (/lut->p30)",
+                "detail": f"/dev/nflasha30 -> {cp['values']['lut']}",
+                "active": True,
+            },
+            "P4": {
+                "id": "P4",
+                "label": "P4 (ND=Clear)",
+                "detail": f"Clear [FX3 P4 Locked] (attempts={self.p4_lock_attempts})",
+                "locked": True,
+                "attempts": self.p4_lock_attempts,
+            },
+            "P10": {
+                "id": "P10",
+                "label": "P10 (FX3 Keys)",
+                "detail": p10_detail,
+                "last_hwcode": f"0x{self.last_p10_hwcode:08x}",
+            },
+            "P11": {
+                "id": "P11",
+                "label": "P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)",
+                "detail": (
+                    f"Base {cp['base_iso']} ({cp['values']['ei']}) | "
+                    f"33³ LUT 0x0165/0x0166={cp['values']['lut']} | "
+                    f"XLR-H1=0x5d90 ({cp['values']['xlr']}) | "
+                    f"IBIS={cp['values']['ibis']}"
+                ),
+                "base_iso": cp["base_iso"],
+                "xlr_handle": "0x5d90",
+                "ibis": cp["values"]["ibis"],
+                "lut_dma": "0x0165/0x0166",
+            },
+            "P12": {
+                "id": "P12",
+                "label": "P12 (WF-12 Safe)",
+                "detail": "Direct O_RDONLY / LRU Pool / Bounded Write Safe",
+                "safe": True,
+            },
+        }
+
+    def set_cinema_param(self, param: Any, delta: Any = None, preset: Any = None) -> dict[str, Any]:
+        raw_param = str(param or "").strip().lower()
+        key = CINEMA_PARAM_ALIASES.get(raw_param)
+        if key is None or key not in CINEMA_PARAM_SPECS:
+            return {
+                "ok": False,
+                "error": f"Unknown cinema param: {param!r}",
+                "supported_params": list(CINEMA_PARAM_SPECS.keys()),
+            }
+        spec = CINEMA_PARAM_SPECS[key]
+        presets = list(spec["presets"])
+        with self.cmd_lock:
+            if key == "nd":
+                self.cell_vals[3] = 0
+                if self.page in (0, 3):
+                    self.sel_box = 3
+                self.p4_lock_attempts += 1
+                self.last_toast = spec["lock_reason"]
+                new_idx = 0
+            else:
+                cell_idx = spec["cell_idx"]
+                if cell_idx is not None:
+                    cur_idx = self.cell_vals[cell_idx] % len(presets)
+                elif key == "ibis":
+                    cur_idx = self.ibis_idx % len(presets)
+                else:
+                    cur_idx = self.xlr_idx % len(presets)
+
+                if preset is not None and str(preset).strip() != "":
+                    p_str = str(preset).strip()
+                    p_low = p_str.lower()
+                    matched_idx: int | None = None
+                    for idx, cand in enumerate(presets):
+                        if cand.lower() == p_low:
+                            matched_idx = idx
+                            break
+                    if matched_idx is None:
+                        for idx, cand in enumerate(presets):
+                            c_low = cand.lower()
+                            if c_low.startswith(p_low) or p_low in c_low:
+                                matched_idx = idx
+                                break
+                    if matched_idx is None and isinstance(preset, int) and not isinstance(preset, bool):
+                        if 0 <= preset < len(presets):
+                            matched_idx = preset
+                    if matched_idx is None and p_str.isdigit():
+                        idx_num = int(p_str)
+                        if 0 <= idx_num < len(presets):
+                            matched_idx = idx_num
+                    if matched_idx is None:
+                        return {
+                            "ok": False,
+                            "error": f"Unknown preset {preset!r} for {key}",
+                            "presets": presets,
+                        }
+                    new_idx = matched_idx
+                else:
+                    try:
+                        step = int(delta) if delta is not None and str(delta).strip() != "" else 1
+                    except Exception:
+                        return {"ok": False, "error": f"Invalid delta {delta!r}"}
+                    new_idx = (cur_idx + step) % len(presets)
+
+                if cell_idx is not None:
+                    self.cell_vals[cell_idx] = new_idx
+                    if self.page in (0, 3):
+                        self.sel_box = cell_idx
+                elif key == "ibis":
+                    self.ibis_idx = new_idx
+                else:
+                    self.xlr_idx = new_idx
+                self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
+
+            self.cmd_seq += 1
+            wrote = self._write_ctrl_mailbox()
+            synced = False
+            if wrote:
+                synced = self._wait_for_frame_seq(self.cmd_seq, timeout=3.2)
+                self.capture_live_gpe0()
+            return {
+                "ok": True,
+                "param": key,
+                "index": new_idx,
+                "value": presets[new_idx],
+                "locked": bool(spec["locked"]),
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "cinema_params": self.get_cinema_params(),
+                "status": self.get_status(),
+            }
+
     def press_fx3_button(self, button: Any) -> dict[str, Any]:
         raw_btn = str(button or "").strip().upper()
         btn = FX3_BUTTON_ALIASES.get(raw_btn, raw_btn)
@@ -1167,7 +1471,7 @@ class FX6LiveGpe0Session:
             kind = spec["kind"]
             if kind == "home":
                 self.page = 0
-                self.sel_box = 5
+                self.sel_box = 4
                 self.menu_depth = 0
                 self.cmd_seq += 1
             elif kind == "disp_cycle":
@@ -1177,22 +1481,24 @@ class FX6LiveGpe0Session:
                 self.cmd_seq += 1
             elif kind == "c1_baselook":
                 if self.page == 1 and self.menu_cat == 4 and self.menu_depth >= 2:
-                    self.menu_item = (self.menu_item + 1) % 7
-                    self.cell_vals[5] = self.menu_item
+                    self.menu_item = (self.menu_item + 1) % CELL_N_VALS[4]
+                    self.cell_vals[4] = self.menu_item
                 else:
                     self.page = 1
                     self.menu_cat = 4
-                    self.menu_item = self.cell_vals[5] % 7
+                    self.menu_item = self.cell_vals[4] % CELL_N_VALS[4]
                     self.menu_depth = 2
                     self.sel_box = 0
+                self.last_toast = f"Base Look / 3D LUT: {CINEMA_PARAM_SPECS['lut']['presets'][self.cell_vals[4]]}"
                 self.cmd_seq += 1
             elif kind == "c2_wb":
-                if self.page == 3 and (self.sel_box % 6) == 4:
-                    self.cell_vals[4] = (self.cell_vals[4] + 1) % CELL_N_VALS[4]
+                if self.page == 3 and (self.sel_box % 6) == 5:
+                    self.cell_vals[5] = (self.cell_vals[5] + 1) % CELL_N_VALS[5]
                 else:
                     self.page = 3
-                    self.sel_box = 4
+                    self.sel_box = 5
                     self.menu_depth = 0
+                self.last_toast = f"White Balance: {CINEMA_PARAM_SPECS['wb']['presets'][self.cell_vals[5]]}"
                 self.cmd_seq += 1
             elif kind == "page":
                 self.page = int(spec["page"])
@@ -1250,7 +1556,7 @@ class FX6LiveGpe0Session:
                 else:
                     self.page = int(p_val) % 25
                 if "sel_box" not in body:
-                    self.sel_box = 5 if self.page == 0 else 0
+                    self.sel_box = 4 if self.page == 0 else 0
                 if "menu_depth" not in body and self.page != 1:
                     self.menu_depth = 0
             if "table_off" in body and "table_rows" in body:
@@ -1345,9 +1651,18 @@ class FX6LiveGpe0Session:
         elif kcode == 5:  # SET
             if self.page in (0, 3):
                 c = self.sel_box % 6
-                self.cell_vals[c] = (self.cell_vals[c] + 1) % CELL_N_VALS[c]
+                if c == 3:
+                    self.cell_vals[3] = 0
+                    self.p4_lock_attempts += 1
+                    self.last_toast = CINEMA_PARAM_SPECS["nd"]["lock_reason"]
+                else:
+                    self.cell_vals[c] = (self.cell_vals[c] + 1) % CELL_N_VALS[c]
+                    param_key = ["fps", "ei", "shutter", "nd", "lut", "wb"][c]
+                    spec = CINEMA_PARAM_SPECS[param_key]
+                    self.last_toast = f"{spec['label']}: {spec['presets'][self.cell_vals[c]]}"
             elif self.page == 2:
-                self.cell_vals[5] = (self.cell_vals[5] + 1) % CELL_N_VALS[5]
+                self.cell_vals[4] = (self.cell_vals[4] + 1) % CELL_N_VALS[4]
+                self.last_toast = f"Base Look / 3D LUT: {CINEMA_PARAM_SPECS['lut']['presets'][self.cell_vals[4]]}"
             elif self.page == 1:
                 if self.menu_depth == 0:
                     self.menu_depth = 1
@@ -1357,7 +1672,8 @@ class FX6LiveGpe0Session:
                         self.page = 4
                         self.sel_box = 0
                     elif self.menu_cat == 4 and 1 <= self.menu_item <= 6:
-                        self.cell_vals[5] = self.menu_item - 1
+                        self.cell_vals[4] = (self.menu_item - 1) % CELL_N_VALS[4]
+                        self.last_toast = f"Base Look / 3D LUT: {CINEMA_PARAM_SPECS['lut']['presets'][self.cell_vals[4]]}"
                     else:
                         self.menu_depth = 2
                         self.menu_item = 0
@@ -1365,7 +1681,8 @@ class FX6LiveGpe0Session:
                     if self.menu_cat == 3:
                         self.rec_fmt_idx = self.menu_item % 5
                     else:
-                        self.cell_vals[5] = self.menu_item % 7
+                        self.cell_vals[4] = self.menu_item % CELL_N_VALS[4]
+                        self.last_toast = f"Base Look / 3D LUT: {CINEMA_PARAM_SPECS['lut']['presets'][self.cell_vals[4]]}"
                     self.menu_depth = 1
             elif self.page == 24 and ALL_128_PAGES:
                 self.table_idx128 = (self.table_idx128 + 1) % len(ALL_128_PAGES)
@@ -1385,20 +1702,20 @@ class FX6LiveGpe0Session:
                 self.sel_box = 0
             else:
                 self.page = 0
-                self.sel_box = 5
+                self.sel_box = 4
         elif kcode == 7:  # MENU
             if self.page == 1:
                 self.page = 0
-                self.sel_box = 5
+                self.sel_box = 4
             else:
                 self.page = 1
                 self.menu_depth = 0
         elif kcode == 8:  # HOME
             self.page = 0
-            self.sel_box = 5
+            self.sel_box = 4
         elif kcode == 9:  # DISP
             self.page = (self.page + 1) % 24
-            self.sel_box = 5 if self.page == 0 else 0
+            self.sel_box = 4 if self.page == 0 else 0
             self.menu_depth = 0
 
         self.cmd_seq += 1
@@ -1480,6 +1797,12 @@ class FX6LiveGpe0Session:
             "menu_item": self.menu_item,
             "menu_depth": self.menu_depth,
             "cell_vals": self.cell_vals,
+            "ibis_idx": self.ibis_idx,
+            "xlr_idx": self.xlr_idx,
+            "p4_lock_attempts": self.p4_lock_attempts,
+            "last_toast": self.last_toast,
+            "cinema_params": self.get_cinema_params(),
+            "stage_b_telemetry": self.get_stage_b_telemetry(),
             "table_off": f"0x{self.table_off:08x}",
             "table_rows": self.table_rows,
             "table_idx128": self.table_idx128,
@@ -1670,6 +1993,111 @@ HTML_UI = """<!DOCTYPE html>
     border-color: var(--accent);
     color: #fff;
   }
+  .telemetry-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding: 9px 12px;
+    background: #0d131d;
+    border: 1px solid #233044;
+    border-radius: 9px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 11px;
+  }
+  .tel-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 5px 9px;
+    background: #131c2b;
+    border: 1px solid #2b3a52;
+    border-radius: 6px;
+    flex: 1 1 160px;
+  }
+  .tel-pill.locked {
+    border-color: #f59e0b;
+    background: #1f1709;
+  }
+  .tel-pill b {
+    color: var(--cyan);
+    font-size: 11px;
+  }
+  .tel-pill.locked b {
+    color: #fbbf24;
+  }
+  .tel-pill span {
+    color: var(--muted);
+    font-size: 10.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .param-toast {
+    display: none;
+    margin-bottom: 10px;
+    padding: 8px 11px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--cyan);
+    background: #0b2936;
+    color: #cffafe;
+  }
+  .param-toast.warn {
+    border-color: #f59e0b;
+    background: #451a03;
+    color: #fde68a;
+  }
+  .cinema-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .cparam-box {
+    background: #0f1520;
+    border: 1px solid #283548;
+    border-radius: 7px;
+    padding: 8px 10px;
+  }
+  .cparam-box.locked {
+    border-color: #b45309;
+    background: #1a1207;
+  }
+  .cparam-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .cparam-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cparam-val {
+    flex: 1;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #f8fafc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pill-row button {
+    padding: 5px 8px;
+    font-size: 11px;
+    background: #172030;
+  }
   .serial-box {
     background: #07090c;
     border: 1px solid #1f2937;
@@ -1695,12 +2123,23 @@ HTML_UI = """<!DOCTYPE html>
       100% 虚拟机内部 ARM64 <code>appFw.so + libuxengine.so + TextRM</code> 渲染至物理显存 <code>0x41e001000 (gpe0)</code> · 支持直接点击屏幕或右侧按键
     </div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center;">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
     <button id="lang-toggle-btn" onclick="toggleLang()" style="background:#0f2b46;border-color:#22d3ee;color:#cffafe;font-weight:600;">🌐 中文 / EN</button>
+    <button id="lbtn-en" onclick="setLang('en')">EN</button>
+    <button id="lbtn-zh" onclick="setLang('zh')">中文</button>
+    <button id="lbtn-ja" onclick="setLang('ja')">日本語</button>
     <button onclick="refreshGpe0()">刷新 GPE0 显存帧</button>
     <button onclick="restartVm()" style="background:#7f1d1d;border-color:#ef4444;">重启 QEMU 虚拟机</button>
   </div>
 </header>
+
+<div class="telemetry-strip" id="stage-b-telemetry-strip">
+  <div class="tel-pill" id="tel-p1"><b>P1 (/lut->p30)</b><span id="tel-p1-d">/dev/nflasha30 -> S-Cinetone</span></div>
+  <div class="tel-pill locked" id="tel-p4"><b>P4 (ND=Clear)</b><span id="tel-p4-d">Clear [FX3 P4 Locked]</span></div>
+  <div class="tel-pill" id="tel-p10"><b>P10 (FX3 Keys)</b><span id="tel-p10-d">FX3 Deck Ready</span></div>
+  <div class="tel-pill" id="tel-p11"><b>P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)</b><span id="tel-p11-d">Base 800 | 0x0165/0x0166 | 0x5d90 | IBIS Center Lock</span></div>
+  <div class="tel-pill" id="tel-p12"><b>P12 (WF-12 Safe)</b><span id="tel-p12-d">Direct O_RDONLY / LRU Pool / Bounded Write Safe</span></div>
+</div>
 
 <div class="main-grid">
   <div>
@@ -1721,6 +2160,92 @@ HTML_UI = """<!DOCTYPE html>
         <span>Fill/Icon: <b id="st-fill">-</b></span>
         <span>Mailbox 序号: <b id="st-seq">-</b></span>
         <span>来源: <b id="st-src">-</b></span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h3>Cinema Line 实时参数调节面板 (/api/cinema_param · Big-6 + HUD + P4/P11 硬件契约)</h3>
+      <div id="param-toast" class="param-toast"></div>
+      <div class="cinema-grid">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 0 · FPS</span><span>S&amp;Q / Project</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('fps', -1)">◀</button>
+            <span class="cparam-val" id="cp-fps">23.98p</span>
+            <button onclick="setCinemaParam('fps', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 1 · EI / Base ISO</span><span id="cp-base-badge">800 Base</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('ei', -1)">◀</button>
+            <span class="cparam-val" id="cp-ei">800 EI (800 Base)</span>
+            <button onclick="setCinemaParam('ei', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 2 · Shutter</span><span>BK4 0x02cf1702/04</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('shutter', -1)">◀</button>
+            <span class="cparam-val" id="cp-shutter">180.0°</span>
+            <button onclick="setCinemaParam('shutter', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box locked">
+          <div class="cparam-head"><span>Cell 3 · ND Filter</span><span style="color:#fbbf24;">P4 LOCKED</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('nd', -1)">◀</button>
+            <span class="cparam-val" id="cp-nd" style="color:#fde68a;">Clear [FX3 P4 Locked]</span>
+            <button onclick="setCinemaParam('nd', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 4 · Base Look / 3D LUT</span><span>P1 + P11 33³</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('lut', -1)">◀</button>
+            <span class="cparam-val" id="cp-lut">S-Cinetone</span>
+            <button onclick="setCinemaParam('lut', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 5 · White Balance</span><span>Preset / ATW</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('wb', -1)">◀</button>
+            <span class="cparam-val" id="cp-wb">5600K</span>
+            <button onclick="setCinemaParam('wb', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>P11 · 5-Axis IBIS</span><span>Center Lock</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('ibis', -1)">◀</button>
+            <span class="cparam-val" id="cp-ibis">5-Axis Center Lock (P11)</span>
+            <button onclick="setCinemaParam('ibis', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>P11 · XLR-H1 Audio</span><span>Handle 0x5d90</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('xlr', -1)">◀</button>
+            <span class="cparam-val" id="cp-xlr">XLR-H1 Ch1/2 +48V (0x5d90)</span>
+            <button onclick="setCinemaParam('xlr', 1)">▶</button>
+          </div>
+        </div>
+      </div>
+      <div class="pill-row">
+        <button onclick="setCinemaPreset('fps', '23.98p')">23.98p</button>
+        <button onclick="setCinemaPreset('fps', '59.94p')">59.94p</button>
+        <button onclick="setCinemaPreset('fps', '119.88p (S&Q)')">119.88p S&amp;Q</button>
+        <button onclick="setCinemaPreset('ei', '800 EI (800 Base)')">800 EI (Base 800)</button>
+        <button onclick="setCinemaPreset('ei', '12800 EI (12800 Base)')">12800 EI (Base 12800)</button>
+        <button onclick="setCinemaPreset('shutter', '180.0°')">180.0°</button>
+        <button onclick="setCinemaPreset('shutter', '1/48')">1/48</button>
+        <button onclick="setCinemaPreset('lut', 'S-Cinetone')">S-Cinetone</button>
+        <button onclick="setCinemaPreset('lut', 'S-Log3.Cine / S-Gamut3.Cine')">S-Log3.Cine</button>
+        <button onclick="setCinemaPreset('lut', 'User1 (33³ .cube)')">User1 33³</button>
+        <button onclick="setCinemaPreset('wb', '5600K')">5600K</button>
+        <button onclick="setCinemaPreset('wb', 'ATW')">ATW</button>
+        <button onclick="setCinemaParam('nd', 1)" style="border-color:#f59e0b;color:#fde68a;">Test P4 ND Lock</button>
       </div>
     </div>
 
@@ -1893,6 +2418,38 @@ async function updateUI(st, forceImg) {
     const isZh = st.lang === 'zh';
     langBtn.textContent = isZh ? '🌐 中文 / EN [当前: 简体中文]' : '🌐 中文 / EN [Current: EN]';
   }
+  ['en', 'zh', 'ja'].forEach((lc) => {
+    const lb = document.getElementById('lbtn-' + lc);
+    if (lb) lb.className = (st.lang === lc) ? 'active' : '';
+  });
+
+  const cp = st.cinema_params || {};
+  const vals = cp.values || {};
+  ['fps', 'ei', 'shutter', 'nd', 'lut', 'wb', 'ibis', 'xlr'].forEach((k) => {
+    const el = document.getElementById('cp-' + k);
+    if (el && vals[k] !== undefined) el.textContent = vals[k];
+  });
+  const baseBadge = document.getElementById('cp-base-badge');
+  if (baseBadge && cp.base_iso) baseBadge.textContent = `${cp.base_iso} Base`;
+
+  const pToast = document.getElementById('param-toast');
+  if (pToast) {
+    if (st.last_toast) {
+      pToast.style.display = 'block';
+      pToast.textContent = st.last_toast;
+      pToast.className = st.last_toast.includes('P4') ? 'param-toast warn' : 'param-toast';
+    } else {
+      pToast.style.display = 'none';
+    }
+  }
+
+  const sbt = st.stage_b_telemetry || {};
+  if (sbt.P1) document.getElementById('tel-p1-d').textContent = sbt.P1.detail;
+  if (sbt.P4) document.getElementById('tel-p4-d').textContent = sbt.P4.detail;
+  if (sbt.P10) document.getElementById('tel-p10-d').textContent = sbt.P10.detail;
+  if (sbt.P11) document.getElementById('tel-p11-d').textContent = sbt.P11.detail;
+  if (sbt.P12) document.getElementById('tel-p12-d').textContent = sbt.P12.detail;
+
   const p10 = st.p10_telemetry || {};
   const p10Text = p10.button
     ? `${p10.button}: ${p10.phy_code} -> ${p10.infra_code} (${p10.p10_symbol})`
@@ -1944,6 +2501,44 @@ async function sendPayload(payload) {
     });
     const data = await r.json();
     await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+async function setCinemaParam(param, delta) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/cinema_param', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({param: param, delta: delta})
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+async function setCinemaPreset(param, preset) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/cinema_param', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({param: param, preset: preset})
+    });
+    const data = await r.json();
+    if (data.status) await updateUI(data.status, true);
   } finally {
     toast.style.display = 'none';
     busy = false;
@@ -2156,6 +2751,14 @@ def make_handler(session: FX6LiveGpe0Session):
                     "buttons": FX3_BUTTON_MAP,
                 })
                 return
+            if path == "/api/cinema_param":
+                self._send_json({
+                    "ok": True,
+                    "cinema_params": session.get_cinema_params(),
+                    "stage_b_telemetry": session.get_stage_b_telemetry(),
+                    "last_toast": session.last_toast,
+                })
+                return
             if path in ("/api/frame.png", "/api/gpe0.png", "/frame.png"):
                 png, _ = session.capture_live_gpe0() if session.live_ready else (session.last_png, session.last_nz)
                 self.send_response(HTTPStatus.OK)
@@ -2192,6 +2795,12 @@ def make_handler(session: FX6LiveGpe0Session):
                 body["lang"] = qs["lang"][0]
             if "button" in qs and "button" not in body:
                 body["button"] = qs["button"][0]
+            if "param" in qs and "param" not in body:
+                body["param"] = qs["param"][0]
+            if "delta" in qs and "delta" not in body:
+                body["delta"] = qs["delta"][0]
+            if "preset" in qs and "preset" not in body:
+                body["preset"] = qs["preset"][0]
 
             if path in ("/api/start", "/api/vm/start"):
                 res = session.start_vm()
@@ -2211,6 +2820,14 @@ def make_handler(session: FX6LiveGpe0Session):
                 return
             if path == "/api/fx3_button":
                 res = session.press_fx3_button(body.get("button", ""))
+                self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                return
+            if path == "/api/cinema_param":
+                res = session.set_cinema_param(
+                    body.get("param", ""),
+                    delta=body.get("delta"),
+                    preset=body.get("preset"),
+                )
                 self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                 return
             if path in ("/api/key", "/api/page", "/api/box"):

@@ -102,6 +102,18 @@ DONOR_IMAGE_00_169_UXC = _resolve_migrated_path(
     "FX6_DONOR_IMAGE_00_169_UXC",
     "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/image_00_169.uxc",
 )
+DONOR_STRING_SCHINESE_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_SCHINESE_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_simplifiedchinese.uxc",
+)
+DONOR_STRING_SCHINESE_2_UXC = _resolve_migrated_path(
+    "FX6_DONOR_STRING_SCHINESE_2_UXC",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_simplifiedchinese_2.uxc",
+)
+DONOR_FONT_SCHINESE_LTT = _resolve_migrated_path(
+    "FX6_DONOR_FONT_SCHINESE_LTT",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+)
 DEFAULT_ASSETS_DIR = REPO / "reports/2026-11-10-fx6-native-presenter-closure/assets"
 
 FB_W = 1024
@@ -198,6 +210,7 @@ def build_binaries(
     shooting_mode_cine_ei: int = 0,
     key_seq: str = "",
     key_settle_ms: int = 1500,
+    lang: str = "en",
 ) -> Tuple[bytes, bytes, Dict[str, Any]]:
     cache_dir = build_dir / "zig-cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -242,6 +255,7 @@ def build_binaries(
             ]
         )
 
+    lang_schinese = 1 if lang == "schinese" else 0
     shim_out = build_dir / "libgrm-fbinit9.so"
     shim_cmd = [
         str(ZIG),
@@ -262,6 +276,7 @@ def build_binaries(
         f"-DFX6_REPLY_ALL_200D={reply_all_200d}",
         f"-DFX6_INITIAL_SETTING_DONE={initial_setting_done}",
         f"-DFX6_SHOOTING_MODE_CINE_EI={shooting_mode_cine_ei}",
+        f"-DFX6_LANG_SCHINESE={lang_schinese}",
         *key_flags,
         "-Wl,-soname,libgrm-fbinit9.so",
         str(HERE / "libgrm-fbinit9.c"),
@@ -275,6 +290,7 @@ def build_binaries(
     launcher_bytes = launcher_out.read_bytes()
     shim_bytes = shim_out.read_bytes()
     meta = {
+        "lang": lang,
         "launcher_bytes": len(launcher_bytes),
         "launcher_sha256": sha256_bytes(launcher_bytes),
         "launcher_cmd": launcher_cmd,
@@ -445,6 +461,59 @@ def _load_p10_keymap_spec(patcher_mod: Any) -> Any:
     return spec
 
 
+def _load_p12_wlan_spec(patcher_mod: Any) -> Any:
+    """Read-only AST load of P12_WLAN_FATAL_GUARD_SPEC without importing unicorn."""
+    verifier_path = (
+        REPO
+        / "outputs"
+        / "fx6-on-fx3-closure"
+        / "fx6_closure"
+        / "wireless_fault_isolation_verifier.py"
+    )
+    src = verifier_path.read_text(encoding="utf-8")
+    tree = ast.parse(src, filename=str(verifier_path))
+    consts: Dict[str, Any] = {}
+    rhs_node: Optional[ast.expr] = None
+    for stmt in tree.body:
+        if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1:
+            tgt = stmt.targets[0]
+            if isinstance(tgt, ast.Name):
+                if tgt.id in ("FX6_WLAN_RSRC_SHA256", "FX6_WLAN_RSRC_HANDLE_FATAL_VMA"):
+                    consts[tgt.id] = ast.literal_eval(stmt.value)
+                elif tgt.id == "P12_WLAN_FATAL_GUARD_SPEC":
+                    rhs_node = stmt.value
+                    break
+        elif isinstance(stmt, ast.AnnAssign):
+            if (
+                isinstance(stmt.target, ast.Name)
+                and stmt.target.id == "P12_WLAN_FATAL_GUARD_SPEC"
+                and stmt.value is not None
+            ):
+                rhs_node = stmt.value
+                break
+    if rhs_node is None:
+        raise RuntimeError(f"P12_WLAN_FATAL_GUARD_SPEC not found in {verifier_path}")
+    expr = ast.Expression(rhs_node)
+    ast.fix_missing_locations(expr)
+    spec = eval(
+        compile(expr, str(verifier_path), "eval"),
+        {"__builtins__": {}},
+        {
+            "LibraryPatchSpec": patcher_mod.LibraryPatchSpec,
+            "PatchSiteSpec": patcher_mod.PatchSiteSpec,
+            "PF_R": getattr(patcher_mod, "PF_R", 4),
+            "PF_X": getattr(patcher_mod, "PF_X", 1),
+            "_pack_insns": lambda *words: b"".join(struct.pack("<I", w) for w in words),
+            "struct": struct,
+            "bytes": bytes,
+            **consts,
+        },
+    )
+    if spec.spec_id != "P12_libWlanResource_fatal_guard" or len(spec.sites) != 1:
+        raise RuntimeError(f"Unexpected P12_WLAN_FATAL_GUARD_SPEC: {spec.spec_id} sites={len(spec.sites)}")
+    return spec
+
+
 def build_stage_a_overlay(
     tmp_build: pathlib.Path,
     parent_cpio: pathlib.Path,
@@ -452,12 +521,15 @@ def build_stage_a_overlay(
     *,
     enable_p10: bool = False,
     enable_r10: bool = False,
+    enable_p12: bool = False,
+    lang: str = "en",
     shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
-    """Build Stage-A/B P1..P9+Fan(+P10/P11) + 8MiB VFAT + RAM-Shadow BK4 + image_00_169.uxc + Verify-Before-Mount overlay."""
+    """Build Stage-A/B P1..P9+Fan(+P10/P11/P12) + 8MiB VFAT + RAM-Shadow BK4 + image_00_169.uxc (+ SChinese UXC/LTT) + Verify-Before-Mount overlay."""
     patcher, vfat_builder, bmtv = _import_stage_a_modules()
 
     p10_spec = _load_p10_keymap_spec(patcher) if enable_p10 else None
+    p12_spec = _load_p12_wlan_spec(patcher) if enable_p12 else None
     appfw_spec = patcher.P1_P4_P8_APPFW_COMBINED_SPEC
     if p10_spec is not None:
         appfw_spec = patcher.LibraryPatchSpec(
@@ -481,6 +553,15 @@ def build_stage_a_overlay(
     extra_extract: Tuple[str, ...] = ("init", "usr/kmod/upm.ko")
     if enable_r10:
         extra_extract = extra_extract + ("usr/share/app/image_00_169.uxc",)
+    if enable_p12:
+        extra_extract = extra_extract + ("usr/lib/libWlanResource.so",)
+    if lang == "schinese":
+        extra_extract = extra_extract + (
+            "usr/share/app/string_simplifiedchinese.uxc",
+            "usr/share/app/string_simplifiedchinese_2.uxc",
+            "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+            "usr/share/app/fontlist.dat",
+        )
     cpio_extract_names = tuple(m for m, _ in member_specs) + extra_extract
     raw_members = _extract_cpio_members(parent_cpio, cpio_extract_names)
 
@@ -563,9 +644,9 @@ def build_stage_a_overlay(
     if enable_p10 and shim_bytes is not None:
         manifest_rows.append((sha256_bytes(shim_bytes), "/usr/lib/libgrm-fbinit9.so"))
 
+    clean_room = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip() == "1"
     uxc_meta: Optional[Dict[str, Any]] = None
     if enable_r10:
-        clean_room = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip() == "1"
         if not clean_room and DONOR_IMAGE_00_169_UXC.is_file():
             uxc_bytes = read_bytes_readonly(DONOR_IMAGE_00_169_UXC)
             uxc_source = "donor_o_rdonly"
@@ -573,7 +654,7 @@ def build_stage_a_overlay(
             uxc_bytes = raw_members["usr/share/app/image_00_169.uxc"]
             uxc_source = "cpio_preloaded"
         if len(uxc_bytes) < 16 or uxc_bytes[:4] != b"uxd\x07":
-            raise RuntimeError(f"Invalid image_00_169.uxc magic: {uxc_bytes[:4]!r}")
+            raise RuntimeError(f"Invalid image_00_169.uxc magic: {uxc_bytes[:4].hex()}")
         replacements["usr/share/app/image_00_169.uxc"] = uxc_bytes
         uxc_sha = sha256_bytes(uxc_bytes)
         manifest_rows.append((uxc_sha, "/usr/share/app/image_00_169.uxc"))
@@ -583,6 +664,58 @@ def build_stage_a_overlay(
             "bytes": len(uxc_bytes),
             "sha256": uxc_sha,
             "magic": "uxd_07",
+        }
+
+    if p12_spec is not None:
+        wlan_patched, wlan_receipt = patcher.apply_patch_spec(
+            raw_members["usr/lib/libWlanResource.so"], p12_spec, verify_donor_sha256=True
+        )
+        replacements["usr/lib/libWlanResource.so"] = wlan_patched
+        patch_receipts[p12_spec.spec_id] = {
+            "library": p12_spec.library_name,
+            "before_sha256": wlan_receipt.before_sha256,
+            "after_sha256": wlan_receipt.after_sha256,
+            "changed_bytes": wlan_receipt.changed_byte_count,
+            "sites": [s.site_id for s in wlan_receipt.resolutions],
+        }
+        manifest_rows.append((wlan_receipt.after_sha256, "/usr/lib/libWlanResource.so"))
+
+    schinese_assets_meta: Optional[Dict[str, Any]] = None
+    if lang == "schinese":
+        schinese_specs = (
+            ("string_simplifiedchinese", "usr/share/app/string_simplifiedchinese.uxc", DONOR_STRING_SCHINESE_UXC, b"uxc\x07", "uxc_07"),
+            ("string_simplifiedchinese_2", "usr/share/app/string_simplifiedchinese_2.uxc", DONOR_STRING_SCHINESE_2_UXC, b"uxc\x07", "uxc_07"),
+            ("font_gb18030_ltt", "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt", DONOR_FONT_SCHINESE_LTT, b"LTT\n", "LTT"),
+        )
+        schinese_assets_meta = {}
+        for key, cpio_name, donor_path, expected_magic, magic_label in schinese_specs:
+            if not clean_room and donor_path.is_file():
+                asset_bytes = read_bytes_readonly(donor_path)
+                asset_source = "donor_o_rdonly"
+            else:
+                asset_bytes = raw_members[cpio_name]
+                asset_source = "cpio_preloaded"
+            if len(asset_bytes) < 16 or asset_bytes[:4] != expected_magic:
+                raise RuntimeError(
+                    f"Invalid {cpio_name} magic: {asset_bytes[:4].hex()} (expected {expected_magic.hex()})"
+                )
+            replacements[cpio_name] = asset_bytes
+            schinese_assets_meta[key] = {
+                "guest_path": f"/{cpio_name}",
+                "source": asset_source,
+                "bytes": len(asset_bytes),
+                "sha256": sha256_bytes(asset_bytes),
+                "magic": magic_label,
+            }
+        fontlist_bytes = raw_members["usr/share/app/fontlist.dat"]
+        if b"FONT_S_CHINESE" not in fontlist_bytes or b"MYingHeiC-GB18030-SJ_wIcon.ltt" not in fontlist_bytes:
+            raise RuntimeError("fontlist.dat missing FONT_S_CHINESE -> MYingHeiC-GB18030-SJ_wIcon.ltt mapping")
+        schinese_assets_meta["fontlist_dat"] = {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": len(fontlist_bytes),
+            "sha256": sha256_bytes(fontlist_bytes),
+            "has_font_s_chinese": True,
         }
 
     # Compile fx6-stage-a-verify C guest tool in /private/tmp
@@ -641,9 +774,16 @@ def build_stage_a_overlay(
         additions["etc/fx6_stage_b"] = (b"stage_b=1\np10_keymap=1\n", 0o100644)
     if enable_r10:
         additions["etc/fx6_stage_r10"] = (b"stage_r10=1\np11_uipc=1\nuxc=1\n", 0o100644)
+    if enable_p12:
+        additions["etc/fx6_stage_r11"] = (
+            f"stage_r11=1\np12_wlan=1\nairplane_mode=1\nlang={lang}\n".encode("utf-8"),
+            0o100644,
+        )
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
+        "p12_enabled": enable_p12,
+        "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
         "manifest_count": len(manifest_rows),
@@ -668,6 +808,8 @@ def build_stage_a_overlay(
     }
     if uxc_meta is not None:
         stage_a_meta["image_00_169_uxc"] = uxc_meta
+    if schinese_assets_meta is not None:
+        stage_a_meta["schinese_assets"] = schinese_assets_meta
     return replacements, additions, stage_a_meta
 
 
@@ -918,6 +1060,8 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_GPE_",
         "FX6_R10_",
         "FX6_P11_",
+        "FX6_R11_",
+        "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
         "APPFW_SEGV",
@@ -934,6 +1078,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     kernel_version = ""
     last_r10_icon: Optional[Dict[str, Any]] = None
     last_p11_uipc: Optional[Dict[str, Any]] = None
+    last_r11_lang: Optional[Dict[str, Any]] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -943,6 +1088,8 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             last_r10_icon = _parse_kv_ints(line.split("FX6_R10_ICON_TELEMETRY ", 1)[1])
         elif "FX6_P11_UIPC_TELEMETRY " in line:
             last_p11_uipc = _parse_kv_ints(line.split("FX6_P11_UIPC_TELEMETRY ", 1)[1])
+        elif "FX6_R11_LANG_TELEMETRY " in line:
+            last_r11_lang = _parse_kv_ints(line.split("FX6_R11_LANG_TELEMETRY ", 1)[1])
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -981,12 +1128,14 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "sample_threads": list(latest_by_tid.values())[:25],
         "matched_lines": matched,
         "r10_telemetry": r10_telemetry,
+        "r11_telemetry": last_r11_lang,
     }
 
 
 def run_once(args: argparse.Namespace) -> int:
     duration = min(max(int(args.duration), 15), 105)
     run_id = args.run_id
+    lang = getattr(args, "lang", "en")
     run_dir = (
         pathlib.Path(args.run_dir)
         if getattr(args, "run_dir", "")
@@ -999,9 +1148,9 @@ def run_once(args: argparse.Namespace) -> int:
 
     owner_pid = os.getpid()
     tmp_prefix = (
-        "fx6-r10"
-        if args.round >= 10
-        else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native"))
+        "fx6-r11"
+        if args.round >= 11
+        else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
@@ -1014,7 +1163,7 @@ def run_once(args: argparse.Namespace) -> int:
     t0 = time.monotonic()
 
     try:
-        print(f"[{run_id}] Compiling launcher & shim (round={args.round})...", flush=True)
+        print(f"[{run_id}] Compiling launcher & shim (round={args.round} lang={lang})...", flush=True)
         launcher_bytes, shim_bytes, build_meta = build_binaries(
             tmp_build,
             fx6_round=args.round,
@@ -1025,6 +1174,7 @@ def run_once(args: argparse.Namespace) -> int:
             shooting_mode_cine_ei=args.shooting_mode_cine_ei,
             key_seq=args.key_seq,
             key_settle_ms=args.key_settle_ms,
+            lang=lang,
         )
         replacements: Dict[str, bytes] = {
             "usr/bin/appfw-launch": launcher_bytes,
@@ -1039,9 +1189,13 @@ def run_once(args: argparse.Namespace) -> int:
         stage_a_meta: Optional[Dict[str, Any]] = None
         if args.round >= 8:
             stage_label = (
-                "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
-                if args.round >= 10
-                else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
+                if args.round >= 11
+                else (
+                    "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
+                    if args.round >= 10
+                    else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                )
             )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
@@ -1050,6 +1204,8 @@ def run_once(args: argparse.Namespace) -> int:
                 bk4_bytes,
                 enable_p10=(args.round >= 9),
                 enable_r10=(args.round >= 10),
+                enable_p12=(args.round >= 11),
+                lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
             replacements.update(sa_rep)
@@ -1204,6 +1360,7 @@ def run_once(args: argparse.Namespace) -> int:
         summary = {
             "run_id": run_id,
             "round": args.round,
+            "lang": lang,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -1221,6 +1378,7 @@ def run_once(args: argparse.Namespace) -> int:
             "stage_a": stage_a_meta,
             "stage_b": stage_a_meta if args.round >= 9 else None,
             "r10_telemetry": milestones.get("r10_telemetry") if args.round >= 10 else None,
+            "r11_telemetry": milestones.get("r11_telemetry") if args.round >= 11 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1270,7 +1428,8 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], required=True)
+    ap.add_argument("--lang", type=str, choices=["en", "schinese"], default="en")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

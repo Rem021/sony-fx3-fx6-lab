@@ -248,6 +248,23 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R10_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 uxc=1\n",
                 count);
     }
+    struct stat r11_st;
+    if (count >= 13U || stat("/etc/fx6_stage_r11", &r11_st) == 0) {
+        int is_schinese = 0;
+        FILE *r11f = fopen("/etc/fx6_stage_r11", "r");
+        if (r11f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r11f)) {
+                if (strstr(rline, "lang=schinese") != NULL) {
+                    is_schinese = 1;
+                }
+            }
+            fclose(r11f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R11_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 uxc=1 schinese=%d\n",
+                count, is_schinese);
+    }
     return 0;
 }
 
@@ -471,6 +488,75 @@ int main(void) {
             return 45;
         }
         probe_r10_rtc0();
+    }
+
+    FILE *r11f = fopen("/etc/fx6_stage_r11", "r");
+    if (r11f) {
+        int is_schinese = 0;
+        char rline[128];
+        while (fgets(rline, sizeof(rline), r11f)) {
+            if (strstr(rline, "lang=schinese") != NULL) {
+                is_schinese = 1;
+            }
+        }
+        fclose(r11f);
+        if (is_schinese) {
+            static const struct {
+                const char *path;
+                uint8_t magic[4];
+                const char *magic_label;
+            } k_schinese_assets[3] = {
+                { "/usr/share/app/string_simplifiedchinese.uxc", { 'u', 'x', 'c', 0x07U }, "uxc_07" },
+                { "/usr/share/app/string_simplifiedchinese_2.uxc", { 'u', 'x', 'c', 0x07U }, "uxc_07" },
+                { "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt", { 'L', 'T', 'T', '\n' }, "LTT" },
+            };
+            for (size_t i = 0U; i < 3U; i++) {
+                int afd = open(k_schinese_assets[i].path, O_RDONLY);
+                if (afd < 0) {
+                    fprintf(stderr, "FX6_STAGE_B_R11_LANG_ASSET path=%s status=MISSING errno=%d\n",
+                            k_schinese_assets[i].path, errno);
+                    return 46;
+                }
+                struct stat ast;
+                if (fstat(afd, &ast) != 0 || ast.st_size < 16) {
+                    close(afd);
+                    fprintf(stderr, "FX6_STAGE_B_R11_LANG_ASSET path=%s status=SHORT\n",
+                            k_schinese_assets[i].path);
+                    return 46;
+                }
+                uint8_t amagic[4];
+                ssize_t an = read(afd, amagic, sizeof(amagic));
+                close(afd);
+                if (an != (ssize_t)sizeof(amagic) ||
+                    memcmp(amagic, k_schinese_assets[i].magic, 4U) != 0) {
+                    fprintf(stderr, "FX6_STAGE_B_R11_LANG_ASSET path=%s status=BAD_MAGIC\n",
+                            k_schinese_assets[i].path);
+                    return 46;
+                }
+                fprintf(stderr,
+                        "FX6_STAGE_B_R11_LANG_ASSET path=%s bytes=%llu magic=%s status=OK\n",
+                        k_schinese_assets[i].path,
+                        (unsigned long long)ast.st_size,
+                        k_schinese_assets[i].magic_label);
+            }
+            FILE *fl = fopen("/usr/share/app/fontlist.dat", "r");
+            if (!fl) {
+                fprintf(stderr, "FX6_STAGE_B_R11_FONTLIST path=/usr/share/app/fontlist.dat status=MISSING\n");
+                return 46;
+            }
+            char fbuf[1024];
+            size_t fr = fread(fbuf, 1U, sizeof(fbuf) - 1U, fl);
+            fclose(fl);
+            fbuf[fr] = '\0';
+            int has_sc = (strstr(fbuf, "FONT_S_CHINESE") != NULL &&
+                          strstr(fbuf, "MYingHeiC-GB18030-SJ_wIcon.ltt") != NULL) ? 1 : 0;
+            fprintf(stderr,
+                    "FX6_STAGE_B_R11_FONTLIST path=/usr/share/app/fontlist.dat font_s_chinese=%d status=%s\n",
+                    has_sc, has_sc ? "OK" : "MISSING_SC");
+            if (!has_sc) {
+                return 46;
+            }
+        }
     }
 
     fflush(stderr);

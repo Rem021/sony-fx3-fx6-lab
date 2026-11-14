@@ -44,6 +44,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
+from .donor_paths import resolve_unicorn_site_packages
 from .patcher import (
     DEFAULT_FX6_DONOR_LIB_DIR,
     P1_LIB_INFRA_SETUP_FILE_SPEC,
@@ -52,10 +53,7 @@ from .patcher import (
 )
 
 
-UNICORN_SITE_PACKAGES = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22"
-    "/tools/venv/lib/python3.14/site-packages"
-)
+UNICORN_SITE_PACKAGES = resolve_unicorn_site_packages()
 
 DEFAULT_FX6_DONOR_BIN_DIR = (
     DEFAULT_FX6_DONOR_LIB_DIR.parent / "bin"
@@ -135,7 +133,7 @@ MEDIA_ID_UNINITIALIZED = 0x0
 
 
 def _load_unicorn():
-    if UNICORN_SITE_PACKAGES.is_dir() and str(UNICORN_SITE_PACKAGES) not in sys.path:
+    if UNICORN_SITE_PACKAGES is not None and UNICORN_SITE_PACKAGES.is_dir() and str(UNICORN_SITE_PACKAGES) not in sys.path:
         sys.path.insert(0, str(UNICORN_SITE_PACKAGES))
     import unicorn as uc  # type: ignore
     from unicorn import arm64_const as uc_arm64  # type: ignore

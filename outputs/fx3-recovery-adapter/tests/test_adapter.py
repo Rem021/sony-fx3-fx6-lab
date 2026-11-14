@@ -12,12 +12,12 @@ import unittest
 HERE=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(HERE))
 from fx3_recovery import engine as E
-from fx3_recovery.files import ROOT,allocate_test_run_dir,read_file,new_directory,encode,check_volume,is_clean_room_or_donor_unavailable
+from fx3_recovery.files import ROOT,allocate_test_run_dir,read_file,new_directory,encode,check_volume,is_clean_room_or_donor_unavailable,resolve_donor_path
 from fx3_recovery.fat import FatP1,MAX_P1
 from fx3_recovery.squash import inflate_bounded
 
 RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage185-fx3-offline-recovery-adapter/runs','tests',__name__,sys.argv)
-REFERENCES=ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine'
+REFERENCES=resolve_donor_path('fx3-color-port-20261027/input-20261028/original-update-engine',sentinel_relpath='2.05/nflasha1',require_file=True)
 
 
 class AdapterTests(unittest.TestCase):
@@ -68,7 +68,7 @@ class AdapterTests(unittest.TestCase):
     def test_repeated_output_and_original_path_refused(self):
         path=REFERENCES/'2.05/nflasha1';before=E.sha(read_file(path,MAX_P1))
         with self.assertRaises(FileExistsError):E.create_bundle(path,self.bundles['2.05'])
-        with self.assertRaises(FileExistsError):E.create_bundle(path,path)
+        with self.assertRaises((FileExistsError,ValueError)):E.create_bundle(path,path)
         self.assertEqual(E.sha(read_file(path,MAX_P1)),before)
 
     def test_unknown_body_and_foreign_source_scope_rejected(self):

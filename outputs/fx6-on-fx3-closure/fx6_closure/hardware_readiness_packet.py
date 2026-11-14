@@ -58,6 +58,7 @@ from .candidate_builder import (
     run_offline_candidate_dry_run,
 )
 from .cp_rtos_compatibility_verifier import EXPECTED_RUNTIME_MEMCFG_SPEC
+from .donor_paths import is_forced_clean_room
 from .patcher import DEFAULT_FX3_MODULES_DIR, DEFAULT_FX6_DONOR_LIB_DIR
 from .ram_overlay_packager import (
     build_stage_a_ram_overlay_package,
@@ -246,7 +247,7 @@ def _is_forced_clean_room(
     fx6_lib_dir: Path = DEFAULT_FX6_DONOR_LIB_DIR,
     fx3_modules_dir: Path = DEFAULT_FX3_MODULES_DIR,
 ) -> bool:
-    if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip() == "1":
+    if is_forced_clean_room():
         return True
     return not (
         (fx6_lib_dir / "appFw.so").is_file()

@@ -22,18 +22,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Sequence, Tuple
 
+from .donor_paths import ensure_unicorn_site_on_sys_path
 from .elf_verify import parse_elf64_relocatable_aarch64, section_offset_to_file_offset
 
-_LOCAL_UNICORN_SITE = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/"
-    "tools/venv/lib/python3.14/site-packages"
-)
 try:
     import unicorn as U
     from unicorn import arm64_const as A
 except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
+    ensure_unicorn_site_on_sys_path()
     import unicorn as U
     from unicorn import arm64_const as A
 

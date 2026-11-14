@@ -17,10 +17,12 @@ Parses and audits `docs/BYOF-REPRODUCTION.md` (both `# English Guide` and `# 简
      `fx3_recovery.profiles`, `outputs/fx3-safety/readiness-20261025-msc.json`, and
      `outputs/fx3-vm-trial/vm-candidate-gpecap25-live700.json`.
 4. Dual-Mode Donor Verification:
-   - When canonical BYOF donor files are present under `/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027`,
+   - When canonical BYOF donor files are present (resolved dynamically via `fx6_closure.donor_paths`:
+     `FX3_FX6_MAC_WORK_ROOT` / `FX3_FX6_MAC_ROOT` / worktree `work/` / internal SSD
+     `~/AI-Workspace/AI/Projects/Mac/work/fx3-color-port-20261027` / legacy external volume),
      streams and verifies live byte sizes and SHA-256 digests (`LOCAL_DONOR_VERIFIED`).
-   - When run in a clean Git clone without proprietary Sony firmware (or `--simulate-clean-clone`),
-     cleanly reports `CLEAN_ROOM_SCHEMA_VERIFIED` with exit code `0`.
+   - When run in a clean Git clone without proprietary Sony firmware (or `--simulate-clean-clone`
+     or `FX3_FX6_FORCE_CLEAN_ROOM=1`), cleanly reports `CLEAN_ROOM_SCHEMA_VERIFIED` with exit code `0`.
 
 Usage:
     PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py [--json] [--simulate-clean-clone]
@@ -44,8 +46,15 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+for _rel_pkg in ("outputs/fx3-safety", "outputs/fx6-on-fx3-closure", "outputs/fx3-recovery-adapter"):
+    _pkg_path = str((REPO_ROOT / _rel_pkg).resolve())
+    if _pkg_path not in sys.path:
+        sys.path.insert(0, _pkg_path)
+
+from fx6_closure.donor_paths import is_forced_clean_room, resolve_color_port_work_dir
+
 DEFAULT_DOC_PATH = REPO_ROOT / "docs" / "BYOF-REPRODUCTION.md"
-DEFAULT_DONOR_ROOT = Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027")
+DEFAULT_DONOR_ROOT = resolve_color_port_work_dir(repo_root=REPO_ROOT)
 
 HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
 
@@ -661,13 +670,14 @@ def verify_byof_manifest(
     code_constants_ok = len(const_load_errs) == 0 and const_mismatch_count == 0
 
     # Live donor file verification when canonical donor directory exists (unless clean-room mode is forced)
-    env_force_clean_room = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-    )
+    env_force_clean_room = is_forced_clean_room()
     force_clean = simulate_clean_clone or schema_only or env_force_clean_room
-    effective_donor_root = None if force_clean else donor_root
+    if force_clean:
+        effective_donor_root = None
+    elif donor_root is DEFAULT_DONOR_ROOT:
+        effective_donor_root = resolve_color_port_work_dir(repo_root=repo_root)
+    else:
+        effective_donor_root = donor_root
     donor_present = bool(effective_donor_root is not None and effective_donor_root.is_dir())
     live_verified = 0
     digest_cache: Dict[Path, Tuple[int, str]] = {}

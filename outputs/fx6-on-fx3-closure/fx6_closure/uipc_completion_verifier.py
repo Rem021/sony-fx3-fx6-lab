@@ -31,16 +31,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-_LOCAL_UNICORN_SITE = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/"
-    "tools/venv/lib/python3.14/site-packages"
-)
+from .donor_paths import ensure_unicorn_site_on_sys_path
+
 try:
     import unicorn as U
     from unicorn import arm64_const as A
 except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
+    ensure_unicorn_site_on_sys_path()
     import unicorn as U
     from unicorn import arm64_const as A
 

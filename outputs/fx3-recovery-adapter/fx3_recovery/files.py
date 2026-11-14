@@ -5,16 +5,100 @@ import json
 import os
 import plistlib
 import shutil
+import site
 import stat
 import subprocess
+import sys
 import time
+
+ENV_FORCE_CLEAN_ROOM = 'FX3_FX6_FORCE_CLEAN_ROOM'
+ENV_MAC_ROOT = 'FX3_FX6_MAC_ROOT'
+ENV_MAC_WORK_ROOT = 'FX3_FX6_MAC_WORK_ROOT'
+ENV_MAIN_LAB_WORK_ROOT = 'FX3_FX6_MAIN_LAB_WORK_ROOT'
+ENV_UNICORN_SITE = 'FX3_FX6_UNICORN_SITE'
 
 _INTERNAL_WORKSPACE = Path.home() / 'AI-Workspace/AI/Projects/Mac'
 _LEGACY_WORKSPACE = Path('/Volumes/KAFU2T/AI/Projects/Mac')
 WORKSPACE_ROOT = _INTERNAL_WORKSPACE if _INTERNAL_WORKSPACE.is_dir() else _LEGACY_WORKSPACE
 _RESOLVED = Path(__file__).resolve()
-ROOT = WORKSPACE_ROOT if _RESOLVED.is_relative_to(WORKSPACE_ROOT) else _RESOLVED.parents[3]
+ROOT = _RESOLVED.parents[3]
+CLEAN_ROOM_SENTINEL_DIRNAME = '__fx3_fx6_clean_room_donor_disabled__'
 VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+
+
+def is_forced_clean_room(env=None):
+    source = os.environ if env is None else env
+    return source.get(ENV_FORCE_CLEAN_ROOM, '').strip().lower() in ('1', 'true', 'yes')
+
+
+def iter_donor_work_roots(env=None):
+    if is_forced_clean_room(env):
+        return ()
+    source = os.environ if env is None else env
+    candidates = []
+    for key in (ENV_MAC_WORK_ROOT, ENV_MAIN_LAB_WORK_ROOT):
+        raw = source.get(key, '').strip()
+        if raw:
+            candidates.append(Path(os.path.expanduser(raw)))
+    raw_mac = source.get(ENV_MAC_ROOT, '').strip()
+    if raw_mac:
+        mac_base = Path(os.path.expanduser(raw_mac))
+        candidates.append(mac_base / 'work')
+        candidates.append(mac_base / 'outputs' / 'sony-fx3-fx6-lab' / 'work')
+    candidates.append(ROOT / 'work')
+    candidates.append(_INTERNAL_WORKSPACE / 'outputs' / 'sony-fx3-fx6-lab' / 'work')
+    candidates.append(_INTERNAL_WORKSPACE / 'work')
+    candidates.append(_LEGACY_WORKSPACE / 'outputs' / 'sony-fx3-fx6-lab' / 'work')
+    candidates.append(_LEGACY_WORKSPACE / 'work')
+    seen = set()
+    ordered = []
+    for cand in candidates:
+        key = str(cand)
+        if key not in seen:
+            seen.add(key)
+            ordered.append(cand)
+    return tuple(ordered)
+
+
+def resolve_donor_path(rel_subpath, *, sentinel_relpath=None, require_file=False, env=None):
+    rel_norm = rel_subpath.strip('/')
+    if rel_norm.startswith('work/'):
+        rel_norm = rel_norm[len('work/'):]
+    fallback = ROOT / CLEAN_ROOM_SENTINEL_DIRNAME / rel_norm
+    if is_forced_clean_room(env):
+        return fallback
+    probe_rel = f"{rel_norm}/{sentinel_relpath.strip('/')}" if sentinel_relpath else rel_norm
+    for work_root in iter_donor_work_roots(env=env):
+        probe = work_root / probe_rel
+        if probe.is_file() if require_file else probe.exists():
+            return work_root / rel_norm
+    return fallback
+
+
+def resolve_unicorn_site_packages(env=None):
+    source = os.environ if env is None else env
+    candidates = []
+    for key in (ENV_UNICORN_SITE, 'UNICORN_SITE_PACKAGES'):
+        raw = source.get(key, '').strip()
+        if raw:
+            candidates.append(Path(os.path.expanduser(raw)))
+    try:
+        user_site = site.getusersitepackages()
+        if user_site:
+            candidates.append(Path(user_site))
+    except Exception:
+        pass
+    try:
+        for sp in site.getsitepackages():
+            candidates.append(Path(sp))
+    except Exception:
+        pass
+    py_ver = f'python{sys.version_info.major}.{sys.version_info.minor}'
+    candidates.append(Path(sys.prefix) / 'lib' / py_ver / 'site-packages')
+    for cand in candidates:
+        if cand.is_dir() and ((cand / 'unicorn' / '__init__.py').is_file() or (cand / 'unicorn').is_dir()):
+            return cand
+    return None
 
 
 def allocate_test_run_dir(stage_runs_relpath, prefix, module_name, argv):
@@ -34,11 +118,15 @@ def require(ok, message):
         raise ValueError(message)
 
 
-def local_path(path):
+def local_path(path, allow_donor_roots=False):
     path = Path(os.path.abspath(path))
-    require(path.is_relative_to(ROOT), 'path must be inside this Mac project workspace')
-    for part in (ROOT, *reversed(path.relative_to(ROOT).parents)):
-        p = part if part == ROOT else ROOT/part
+    allowed_roots = [ROOT]
+    if allow_donor_roots and not is_forced_clean_room():
+        allowed_roots.extend(r for r in iter_donor_work_roots() if r.is_dir())
+    base = next((r for r in allowed_roots if path.is_relative_to(r)), None)
+    require(base is not None, 'path must be inside this Mac project workspace')
+    for part in (base, *reversed(path.relative_to(base).parents)):
+        p = part if part == base else base/part
         if p.exists():
             require(not p.is_symlink(), 'symlink parent rejected')
     require(not path.is_symlink(), 'symlink rejected')
@@ -46,7 +134,7 @@ def local_path(path):
 
 
 def read_file(path, limit):
-    p = local_path(path)
+    p = local_path(path, allow_donor_roots=True)
     require(hasattr(os, 'O_NOFOLLOW'), 'this build requires POSIX O_NOFOLLOW')
     fd = os.open(p, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     try:
@@ -64,9 +152,9 @@ def read_file(path, limit):
 
 
 def is_clean_room_or_donor_unavailable(required_paths=()):
-    if os.environ.get('FX3_FX6_FORCE_CLEAN_ROOM', '').strip().lower() in ('1', 'true', 'yes'):
+    if is_forced_clean_room():
         return True
-    if ROOT != WORKSPACE_ROOT or not WORKSPACE_ROOT.is_dir():
+    if not ROOT.is_dir():
         return True
     for p in required_paths:
         if not Path(p).exists():

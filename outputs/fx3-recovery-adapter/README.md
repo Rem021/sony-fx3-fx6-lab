@@ -32,7 +32,7 @@
 无需安装新Python依赖。在当前工作区运行：
 
 ```sh
-cd /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter
+cd outputs/fx3-recovery-adapter
 python3 -B -m fx3_recovery --help
 python3 -B -m fx3_recovery inspect \
   --input ../../work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1 \

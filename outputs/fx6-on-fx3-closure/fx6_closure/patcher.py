@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from .donor_paths import resolve_fx3_modules_dir, resolve_fx6_donor_lib_dir
 from .elf_verify import (
     PF_R,
     PF_X,
@@ -30,15 +31,8 @@ from .elf_verify import (
 )
 
 
-DEFAULT_FX6_DONOR_LIB_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib"
-)
-
-DEFAULT_FX3_MODULES_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
-    "menu-repair-01/original-uipc/original-modules"
-)
+DEFAULT_FX6_DONOR_LIB_DIR = resolve_fx6_donor_lib_dir()
+DEFAULT_FX3_MODULES_DIR = resolve_fx3_modules_dir()
 
 
 class PatchVerificationError(ValueError):

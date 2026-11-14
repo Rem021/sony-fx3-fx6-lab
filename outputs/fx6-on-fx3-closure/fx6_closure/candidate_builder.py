@@ -52,6 +52,7 @@ from .cp_rtos_compatibility_verifier import (
     Phase10CpRtosCompatibilityReport,
     run_cp_rtos_compatibility_verification,
 )
+from .donor_paths import resolve_lab_work_file
 from .feature_routing_verifier import (
     FeatureRoutingAuditReport,
     run_feature_routing_verification,
@@ -308,7 +309,12 @@ def run_offline_candidate_dry_run(
         p3_uni = run_p3_remoteboard_unicorn_check(rb_so)
         p4_mode_uni, p4_val_uni = run_p4_nd_unicorn_sweep(appfw_so, patched_label=True)
         p5_p6_uni = run_p5_p6_uipc_unicorn_audit(appfw_so)
-        p7_audit = verify_p7_backup_bridge(contract_evidence_path=repo_root / "work" / "fx6-backup-contract-fix-20261107" / "contract-evidence.json")
+        p7_audit = verify_p7_backup_bridge(
+            contract_evidence_path=resolve_lab_work_file(
+                "fx6-backup-contract-fix-20261107/contract-evidence.json",
+                repo_root=repo_root,
+            )
+        )
         p8_uni = run_p8_appfw_unicorn_check(appfw_so)
         p9_uni = run_p9_upm_ko_unicorn_check(upm_raw, upm_patched)
         fan_uni = run_fan_libfan_unicorn_check(fan_so)

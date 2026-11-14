@@ -44,6 +44,11 @@ from fx3_safety.boot_contracts import (
     verify_boot_screen_enum_contract,
 )
 
+from .donor_paths import (
+    resolve_color_port_work_dir,
+    resolve_fx3_seed_bk4_path,
+    resolve_unicorn_site_packages,
+)
 from .patcher import (
     DEFAULT_FX6_DONOR_LIB_DIR,
     P1_LIB_INFRA_SETUP_FILE_SPEC,
@@ -51,12 +56,9 @@ from .patcher import (
 )
 
 
-UNICORN_SITE_PACKAGES = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22"
-    "/tools/venv/lib/python3.14/site-packages"
-)
+UNICORN_SITE_PACKAGES = resolve_unicorn_site_packages()
 
-DEFAULT_COLOR_PORT_WORK_DIR = Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027")
+DEFAULT_COLOR_PORT_WORK_DIR = resolve_color_port_work_dir()
 DEFAULT_FX6_TEAM_DIR = DEFAULT_COLOR_PORT_WORK_DIR / "FX6-donor-assessment-20261103" / "team"
 DEFAULT_FX6_BACKUP_MANAGER_PATH = (
     DEFAULT_FX6_TEAM_DIR / "parallel-review-20261105" / "fx6-backup-read-contract" / "work" / "libBackupManager.so"
@@ -73,10 +75,7 @@ DEFAULT_FX6_TEMPLATE_BK4_PATH = (
 DEFAULT_FX3_LIBBACKUP_PATH = (
     DEFAULT_COLOR_PORT_WORK_DIR / "input-20261028" / "engine-rootfs" / "2.05" / "usr" / "lib" / "libbackup.so"
 )
-DEFAULT_FX3_SEED_BK4_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-seeds"
-    "/FX3-CX95900_ALLLANG-Backup.bin"
-)
+DEFAULT_FX3_SEED_BK4_PATH = resolve_fx3_seed_bk4_path()
 
 # Pinned donor SHA-256 digests
 PINNED_LIB_INFRA_SETUP_FILE_SHA256 = "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357"
@@ -181,7 +180,7 @@ def _ensure_unicorn_imported():
         import unicorn.arm64_const as arm64_const  # type: ignore
         return unicorn, arm64_const
     except ImportError:
-        if UNICORN_SITE_PACKAGES.exists() and str(UNICORN_SITE_PACKAGES) not in sys.path:
+        if UNICORN_SITE_PACKAGES is not None and UNICORN_SITE_PACKAGES.exists() and str(UNICORN_SITE_PACKAGES) not in sys.path:
             sys.path.insert(0, str(UNICORN_SITE_PACKAGES))
         import unicorn  # type: ignore
         import unicorn.arm64_const as arm64_const  # type: ignore

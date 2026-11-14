@@ -15,33 +15,39 @@ import sys
 import time
 import unittest
 
-_LOCAL_UNICORN_SITE = Path('/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/tools/venv/lib/python3.14/site-packages')
+HERE=Path(__file__).resolve().parent.parent
+sys.path.insert(0,str(HERE))
+from fx3_recovery import elflink as L
+from fx3_recovery import worker as W
+from fx3_recovery import engine as E
+from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,is_clean_room_or_donor_unavailable,new_directory,read_file,encode,resolve_donor_path,resolve_unicorn_site_packages
+
 try:
     import unicorn as U
     from unicorn import arm64_const as A
-    from capstone import Cs,CS_ARCH_ARM64,CS_MODE_ARM
 except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
+    _unicorn_site = resolve_unicorn_site_packages()
+    if _unicorn_site is not None and str(_unicorn_site) not in sys.path:
+        sys.path.append(str(_unicorn_site))
     try:
         import unicorn as U
         from unicorn import arm64_const as A
-        from capstone import Cs,CS_ARCH_ARM64,CS_MODE_ARM
     except ImportError as exc:
-        U = A = Cs = None
-        CS_ARCH_ARM64 = CS_MODE_ARM = 0
+        U = A = None
         _UNICORN_IMPORT_ERROR = str(exc)
     else:
         _UNICORN_IMPORT_ERROR = None
 else:
     _UNICORN_IMPORT_ERROR = None
 
-HERE=Path(__file__).resolve().parent.parent
-sys.path.insert(0,str(HERE))
-from fx3_recovery import elflink as L
-from fx3_recovery import worker as W
-from fx3_recovery import engine as E
-from fx3_recovery.files import ROOT,allocate_test_run_dir,check_volume,is_clean_room_or_donor_unavailable,new_directory,read_file,encode
+try:
+    from capstone import Cs,CS_ARCH_ARM64,CS_MODE_ARM
+except ImportError as exc:
+    Cs = None
+    CS_ARCH_ARM64 = CS_MODE_ARM = 0
+    _CAPSTONE_IMPORT_ERROR = str(exc)
+else:
+    _CAPSTONE_IMPORT_ERROR = None
 
 RUN=allocate_test_run_dir('work/sony-firmware-20261024/stage188-static-ELF-link-and-explicit-entry/runs','link-tests',__name__,sys.argv)
 spec=importlib.util.spec_from_file_location('own_worker_syscall_fixture',HERE/'tests/test_worker.py')
@@ -123,15 +129,15 @@ class LinkTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         if _UNICORN_IMPORT_ERROR is not None:
-            raise unittest.SkipTest(f'unicorn/capstone unavailable: {_UNICORN_IMPORT_ERROR}')
-        donor_ref = ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1'
+            raise unittest.SkipTest(f'unicorn unavailable: {_UNICORN_IMPORT_ERROR}')
+        donor_ref = resolve_donor_path('fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1', require_file=True)
         if is_clean_room_or_donor_unavailable([donor_ref]):
             raise unittest.SkipTest('Clean-room mode or external FX3 2.05 donor image absent')
         check_volume();RUN.mkdir(mode=0o700)
         cls.report=L.build_worker(RUN/'built')
         cls.raw=read_file(RUN/'built/worker.elf',L.MAX_OBJECT)
         cls.objects=[(name,read_file(RUN/'built'/name,L.MAX_OBJECT)) for name in ('worker.o','entry.o')]
-        cls.original=ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1'
+        cls.original=donor_ref
         reference=read_file(cls.original,W.MAX_P1);cls.original_sha=sha256(reference).hexdigest()
         cls.full=reference+b'\xff'*(W.MAX_P1-len(reference))
         new_directory(RUN/'fixture',{'synthetic.p1':cls.full});cls.source=RUN/'fixture/synthetic.p1'
@@ -180,6 +186,8 @@ class LinkTests(unittest.TestCase):
         self.assertFalse(self.report['runtime_loader_or_imports']);self.assertFalse(self.report['flashable'])
 
     def test_relocation_encodings_independently_disassemble(self):
+        if Cs is None:
+            self.skipTest(f'capstone unavailable: {_CAPSTONE_IMPORT_ERROR}')
         md=Cs(CS_ARCH_ARM64,CS_MODE_ARM)
         for word,kind,place,target,mnemonic,fragment in [
             (0x90000008,275,0x401000,0x400000,'adrp','#0x400000'),

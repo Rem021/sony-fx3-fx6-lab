@@ -3634,5 +3634,273 @@ class TestPhase16StageAPostTrialAuditorAndLifecycleDrill(unittest.TestCase):
             self.assertFalse(disk_payload["persistent_emmc_writes_authorized"])
 
 
+class TestDonorPathResolver(unittest.TestCase):
+    """Offline unit tests for `fx6_closure.donor_paths` dynamic SSD/env/clean-room resolution."""
+
+    @staticmethod
+    def _touch(path: Path, data: bytes = b"stub") -> Path:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        return path
+
+    def test_env_overrides_mac_root_and_lab_priority(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = root / "worktree"
+            mac_root = root / "custom_mac"
+            explicit_work = root / "explicit_work"
+            explicit_lab_work = root / "explicit_lab_work"
+
+            # Populate custom_mac/{work, outputs/sony-fx3-fx6-lab/work}
+            self._touch(
+                mac_root
+                / "work"
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self._touch(
+                mac_root
+                / "outputs"
+                / "sony-fx3-fx6-lab"
+                / "work"
+                / "fx6-backup-contract-fix-20261107"
+                / "contract-evidence.json"
+            )
+
+            # 1. FX3_FX6_MAC_ROOT resolves both donor work and main-lab work
+            env_mac = {"FX3_FX6_MAC_ROOT": str(mac_root)}
+            self.assertEqual(
+                dp.resolve_color_port_work_dir(repo_root=repo, env=env_mac, home=root / "nohome"),
+                mac_root / "work" / "fx3-color-port-20261027",
+            )
+            self.assertEqual(
+                dp.resolve_lab_work_file(
+                    "fx6-backup-contract-fix-20261107/contract-evidence.json",
+                    repo_root=repo,
+                    env=env_mac,
+                    home=root / "nohome",
+                ),
+                mac_root
+                / "outputs"
+                / "sony-fx3-fx6-lab"
+                / "work"
+                / "fx6-backup-contract-fix-20261107"
+                / "contract-evidence.json",
+            )
+
+            # 2. FX3_FX6_MAC_WORK_ROOT and FX3_FX6_MAIN_LAB_WORK_ROOT override FX3_FX6_MAC_ROOT
+            self._touch(
+                explicit_work
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self._touch(
+                explicit_lab_work
+                / "fx6-backup-contract-fix-20261107"
+                / "contract-evidence.json"
+            )
+            env_both = {
+                "FX3_FX6_MAC_ROOT": str(mac_root),
+                "FX3_FX6_MAC_WORK_ROOT": str(explicit_work),
+                "FX3_FX6_MAIN_LAB_WORK_ROOT": str(explicit_lab_work),
+            }
+            self.assertEqual(
+                dp.resolve_fx6_donor_lib_dir(repo_root=repo, env=env_both, home=root / "nohome"),
+                explicit_work
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib",
+            )
+            self.assertEqual(
+                dp.resolve_lab_work_file(
+                    "fx6-backup-contract-fix-20261107/contract-evidence.json",
+                    repo_root=repo,
+                    env=env_both,
+                    home=root / "nohome",
+                ),
+                explicit_lab_work / "fx6-backup-contract-fix-20261107" / "contract-evidence.json",
+            )
+
+    def test_force_clean_room_strictly_isolates_donors_even_with_env_overrides(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = root / "worktree"
+            mac_work = root / "mac_work"
+            self._touch(
+                mac_work
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self._touch(
+                mac_work
+                / "fx3-vm-20261101"
+                / "menu-repair-01"
+                / "original-uipc"
+                / "original-modules"
+                / "upm.ko"
+            )
+            zig_bin = self._touch(
+                mac_work
+                / "fx3-vm-20261101"
+                / "menu-repair-01"
+                / "runtime"
+                / "toolchains"
+                / "zig-aarch64-macos-0.17.0"
+                / "zig"
+            )
+
+            for flag in ("1", "true", "YES"):
+                env_cr = {
+                    "FX3_FX6_FORCE_CLEAN_ROOM": flag,
+                    "FX3_FX6_MAC_WORK_ROOT": str(mac_work),
+                    "FX3_FX6_MAIN_LAB_WORK_ROOT": str(mac_work),
+                    "FX3_FX6_MAC_ROOT": str(root),
+                }
+                self.assertTrue(dp.is_forced_clean_room(env_cr))
+                self.assertEqual(dp.iter_work_roots(repo_root=repo, env=env_cr, home=root), ())
+                cp_dir = dp.resolve_color_port_work_dir(repo_root=repo, env=env_cr, home=root)
+                self.assertIn(dp.CLEAN_ROOM_SENTINEL_DIRNAME, str(cp_dir))
+                self.assertFalse(cp_dir.exists())
+                self.assertFalse(dp.resolve_fx6_donor_lib_dir(repo_root=repo, env=env_cr, home=root).exists())
+                self.assertFalse(dp.resolve_fx3_modules_dir(repo_root=repo, env=env_cr, home=root).exists())
+                self.assertFalse(dp.resolve_fx3_seed_bk4_path(repo_root=repo, env=env_cr, home=root).exists())
+                # Host toolchain resolver stays available in clean-room CI mode
+                self.assertEqual(
+                    dp.resolve_zig_binary_default(repo_root=repo, env=env_cr, home=root),
+                    zig_bin,
+                )
+
+    def test_worktree_priority_skips_incomplete_dir_and_falls_back_through_home_and_legacy(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = root / "worktree"
+            fake_home = root / "home"
+            home_mac = fake_home / "AI-Workspace" / "AI" / "Projects" / "Mac"
+
+            # Incomplete tracked directory in worktree (no appFw.so) must NOT shadow home/internal SSD
+            (repo / "work" / "fx3-color-port-20261027" / "FX6-donor-assessment-20261103").mkdir(
+                parents=True, exist_ok=True
+            )
+            self._touch(
+                home_mac
+                / "work"
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self.assertEqual(
+                dp.resolve_color_port_work_dir(repo_root=repo, env={}, home=fake_home),
+                home_mac / "work" / "fx3-color-port-20261027",
+            )
+
+            # Once worktree's own work/ contains the target sentinel, worktree wins (priority 2)
+            self._touch(
+                repo
+                / "work"
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self.assertEqual(
+                dp.resolve_color_port_work_dir(repo_root=repo, env={}, home=fake_home),
+                repo / "work" / "fx3-color-port-20261027",
+            )
+
+            # Verify full fallback order including Path.home() and legacy /Volumes/KAFU2T
+            roots = dp.iter_work_roots(repo_root=repo, env={}, home=fake_home, include_legacy=True)
+            self.assertEqual(
+                roots,
+                (
+                    repo / "work",
+                    home_mac / "outputs" / "sony-fx3-fx6-lab" / "work",
+                    home_mac / "work",
+                    dp.LEGACY_MAC_ROOT / "outputs" / "sony-fx3-fx6-lab" / "work",
+                    dp.LEGACY_MAC_ROOT / "work",
+                ),
+            )
+
+    def test_unicorn_site_packages_env_override(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            site_dir = Path(tmp) / "site-packages"
+            self._touch(site_dir / "unicorn" / "__init__.py", b"# stub\n")
+            found = dp.resolve_unicorn_site_packages(env={"FX3_FX6_UNICORN_SITE": str(site_dir)})
+            self.assertEqual(found, site_dir)
+
+    def test_rebase_legacy_work_path_and_clean_room_isolation(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fake_home = root / "home"
+            live_file = self._touch(
+                fake_home
+                / "AI-Workspace"
+                / "AI"
+                / "Projects"
+                / "Mac"
+                / "work"
+                / "fx3-vm-20261101"
+                / "menu-repair-01"
+                / "original-uipc"
+                / "ap-projection"
+                / "regular-files"
+                / "lib"
+                / "libc-2.25.so"
+            )
+            legacy_str = (
+                "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
+                "menu-repair-01/original-uipc/ap-projection/regular-files/lib/libc-2.25.so"
+            )
+            rebased = dp.rebase_legacy_work_path(
+                legacy_str,
+                repo_root=root / "worktree",
+                env={},
+                home=fake_home,
+            )
+            self.assertEqual(rebased, live_file)
+            isolated = dp.rebase_legacy_work_path(
+                legacy_str,
+                repo_root=root / "worktree",
+                env={"FX3_FX6_FORCE_CLEAN_ROOM": "1"},
+                home=fake_home,
+            )
+            self.assertIn(dp.CLEAN_ROOM_SENTINEL_DIRNAME, str(isolated))
+            self.assertFalse(isolated.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

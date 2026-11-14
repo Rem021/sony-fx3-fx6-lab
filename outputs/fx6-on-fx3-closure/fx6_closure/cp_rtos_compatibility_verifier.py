@@ -45,29 +45,19 @@ from .boot_selector_and_bank_verifier import (
 )
 
 
-DEFAULT_FX6_NFLASHA8_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/fat-files/nflasha8"
-)
-DEFAULT_FX6_CP_AV_ANALYSIS_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor/cp-av-analysis"
-)
-DEFAULT_FX3_RUNTIME_TOMCO_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "dmm-backup-20261029/tomco.txt"
-)
-DEFAULT_FX3_UPDATER_CP_DIR = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "package-20261028/updaterfs/cp"
-)
-DEFAULT_FX3_DMMCFG_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "dmm-config-20261029/original-files/DmmCfg.bin"
-)
-DEFAULT_FX3_PFORMAT_CONFIG_PATH = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "config-producer-20261029/original-files/pformat_config.txt"
+from .donor_paths import resolve_color_port_work_dir, resolve_fx6_donor_root
+
+
+_COLOR_PORT_WORK_DIR = resolve_color_port_work_dir()
+_FX6_DONOR_ROOT = resolve_fx6_donor_root()
+
+DEFAULT_FX6_NFLASHA8_DIR = _FX6_DONOR_ROOT / "fat-files" / "nflasha8"
+DEFAULT_FX6_CP_AV_ANALYSIS_DIR = _FX6_DONOR_ROOT / "cp-av-analysis"
+DEFAULT_FX3_RUNTIME_TOMCO_PATH = _COLOR_PORT_WORK_DIR / "dmm-backup-20261029" / "tomco.txt"
+DEFAULT_FX3_UPDATER_CP_DIR = _COLOR_PORT_WORK_DIR / "package-20261028" / "updaterfs" / "cp"
+DEFAULT_FX3_DMMCFG_PATH = _COLOR_PORT_WORK_DIR / "dmm-config-20261029" / "original-files" / "DmmCfg.bin"
+DEFAULT_FX3_PFORMAT_CONFIG_PATH = (
+    _COLOR_PORT_WORK_DIR / "config-producer-20261029" / "original-files" / "pformat_config.txt"
 )
 
 # Canonical pinned sizes & SHA-256 digests for FX6 nflasha8 (/cp) artifacts

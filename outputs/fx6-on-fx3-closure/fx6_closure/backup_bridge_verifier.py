@@ -28,32 +28,31 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-_LOCAL_UNICORN_SITE = Path(
-    "/Volumes/KAFU2T/AI/Orca/Worktrees/Phayen/dugong/work/firmware-reverse-2026-10-22/"
-    "tools/venv/lib/python3.14/site-packages"
+from .donor_paths import (
+    ensure_unicorn_site_on_sys_path,
+    resolve_fx6_donor_root,
+    resolve_lab_work_file,
 )
+
 try:
     import unicorn as U
     from unicorn import arm64_const as A
 except ImportError:
-    if _LOCAL_UNICORN_SITE.is_dir() and str(_LOCAL_UNICORN_SITE) not in sys.path:
-        sys.path.append(str(_LOCAL_UNICORN_SITE))
+    ensure_unicorn_site_on_sys_path()
     import unicorn as U
     from unicorn import arm64_const as A
 
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_FX6_ASSESSMENT_ROOT = Path(
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/"
-    "FX6-donor-assessment-20261103/team/donor"
-)
+DEFAULT_FX6_ASSESSMENT_ROOT = resolve_fx6_donor_root(repo_root=DEFAULT_REPO_ROOT)
 DEFAULT_FX6_KERNEL_IMAGE_PATH = DEFAULT_FX6_ASSESSMENT_ROOT / "fat-files" / "nflasha3" / "vmlinux.bin"
 DEFAULT_DUAL_KERNEL_EVIDENCE_PATH = (
     DEFAULT_FX6_ASSESSMENT_ROOT / "fx6-boot-readiness" / "early-kernel" / "fx3-modules-vs-fx6-kernel.json"
 )
 DEFAULT_FX6_LIBBACKUP_PATH = DEFAULT_FX6_ASSESSMENT_ROOT / "nflasha15-files" / "lib" / "libbackup.so"
-DEFAULT_CONTRACT_EVIDENCE_PATH = (
-    DEFAULT_REPO_ROOT / "work" / "fx6-backup-contract-fix-20261107" / "contract-evidence.json"
+DEFAULT_CONTRACT_EVIDENCE_PATH = resolve_lab_work_file(
+    "fx6-backup-contract-fix-20261107/contract-evidence.json",
+    repo_root=DEFAULT_REPO_ROOT,
 )
 
 ARM64_IMAGE_MAGIC = b"ARM\x64"

@@ -149,6 +149,7 @@ make verify-byof
 ```
 - **In a clean Git clone (without proprietary Sony firmware)**: Validates every `(path, size_bytes, sha256)` entry across both English and Simplified Chinese tables, checks 100% EN/ZH digest & size parity, cross-checks digests against pinned constants in `fx6_closure`, `fx3_safety`, and `fx3_recovery`, and exits `0` with `CLEAN_ROOM_SCHEMA_VERIFIED`.
 - **When local BYOF donor files are present**: Streams and verifies live byte sizes and SHA-256 digests on disk, exiting `0` with `LOCAL_DONOR_VERIFIED` (or failing closed with exit code `1` on any mismatch).
+- **Dynamic donor root resolution**: Resolves `work/` trees in priority order: explicit environment overrides (`FX3_FX6_MAC_WORK_ROOT`, `FX3_FX6_MAIN_LAB_WORK_ROOT`, `FX3_FX6_MAC_ROOT`), the current worktree `work/` (when target binaries exist), internal SSD defaults (`~/AI-Workspace/AI/Projects/Mac/{outputs/sony-fx3-fx6-lab/work,work}`), and legacy external volume fallback. Set `FX3_FX6_FORCE_CLEAN_ROOM=1` to strictly force donorless CI isolation.
 
 ---
 ---
@@ -298,3 +299,4 @@ make verify-byof
 ```
 - **净室克隆模式（无索尼原厂固件）**：解析中英文双语表格中的全部 `(path, size_bytes, sha256)` 条目，校验 64 位小写十六进制 SHA-256 语法、中英文表格 100% 对齐无冲突，并与 `fx6_closure`、`fx3_safety`、`fx3_recovery` 代码内固定常量交叉核对，输出 `CLEAN_ROOM_SCHEMA_VERIFIED` 并以状态码 `0` 退出。
 - **本地 BYOF 固件就位模式**：对本地 Donor 固件逐流计算真实字节数与 SHA-256 摘要，全部匹配时输出 `LOCAL_DONOR_VERIFIED`（状态码 `0`）；任何不一致均阻断并以非零状态码退出。
+- **动态 Donor 路径解析优先级**：按顺序探测 `work/` 根目录：显式环境变量覆盖（`FX3_FX6_MAC_WORK_ROOT`、`FX3_FX6_MAIN_LAB_WORK_ROOT`、`FX3_FX6_MAC_ROOT`）、当前工作树自身 `work/`（仅当目标文件存在时命中）、内盘 SSD 默认路径（`~/AI-Workspace/AI/Projects/Mac/{outputs/sony-fx3-fx6-lab/work,work}`）及旧外置盘回退。设置 `FX3_FX6_FORCE_CLEAN_ROOM=1` 可严格强制无供体洁净室隔离。

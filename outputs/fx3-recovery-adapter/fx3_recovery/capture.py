@@ -124,7 +124,7 @@ STAT_FIELDS = ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns', 'st_
 class RegularFileSource:
     """Pins one O_RDONLY descriptor. Devices, links, and other sizes rejected."""
     def __init__(self, path, expected_sha256):
-        self.fd = os.open(local_path(path), os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        self.fd = os.open(local_path(path, allow_donor_roots=True), os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
         try:
             info = os.fstat(self.fd)
             require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1, 'single-link regular file required')

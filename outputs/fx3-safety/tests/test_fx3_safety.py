@@ -10,12 +10,38 @@ import unittest
 from pathlib import Path
 
 
-def _clean_room_or_missing_donor(*paths: Path) -> bool:
+def _resolve_color_port_dir() -> Path | None:
+    if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes"):
+        return None
+    repo_root = Path(__file__).resolve().parents[3]
+    candidates: list[Path] = []
+    for env_key in ("FX3_FX6_MAC_WORK_ROOT", "FX3_FX6_MAIN_LAB_WORK_ROOT"):
+        val = os.environ.get(env_key, "").strip()
+        if val:
+            candidates.append(Path(os.path.expanduser(val)))
+    mac_root = os.environ.get("FX3_FX6_MAC_ROOT", "").strip()
+    if mac_root:
+        base = Path(os.path.expanduser(mac_root))
+        candidates.extend([base / "work", base / "outputs" / "sony-fx3-fx6-lab" / "work"])
+    candidates.append(repo_root / "work")
+    home_mac = Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac"
+    candidates.extend([home_mac / "outputs" / "sony-fx3-fx6-lab" / "work", home_mac / "work"])
+    legacy_mac = Path("/Volumes/KAFU2T/AI/Projects/Mac")
+    candidates.extend([legacy_mac / "outputs" / "sony-fx3-fx6-lab" / "work", legacy_mac / "work"])
+    sentinel = "fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"
+    for root in candidates:
+        if (root / sentinel).is_file():
+            return root / "fx3-color-port-20261027"
+    return None
+
+
+def _clean_room_or_missing_donor(*rel_paths: str) -> bool:
     if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in ("1", "true", "yes"):
         return True
-    if not Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027").is_dir():
+    cp_dir = _resolve_color_port_dir()
+    if cp_dir is None or not cp_dir.is_dir():
         return True
-    return any(not p.is_file() for p in paths)
+    return any(not (cp_dir / rel).is_file() for rel in rel_paths)
 
 from fx3_safety.boot_contracts import (
     BK4_HEADER_SIZE,
@@ -570,18 +596,16 @@ class TestFX3SafetySuite(unittest.TestCase):
 
     @unittest.skipIf(
         _clean_room_or_missing_donor(
-            Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"),
-            Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"),
+            "input-20261028/original-update-engine/2.05/partinf.conf",
+            "FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf",
         ),
         "Clean-room mode or external donor partinf.conf files absent",
     )
     def test_phase9_donor_partinf_conf_fx3_and_fx6_roundtrip(self) -> None:
-        fx3_pconf = Path(
-            "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/partinf.conf"
-        )
-        fx6_pconf = Path(
-            "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"
-        )
+        cp_dir = _resolve_color_port_dir()
+        assert cp_dir is not None
+        fx3_pconf = cp_dir / "input-20261028/original-update-engine/2.05/partinf.conf"
+        fx6_pconf = cp_dir / "FX6-donor-assessment-20261103/team/donor/tree/0300_partconf/partinf.conf"
         fx3_s0 = build_sector0_from_partitions(parse_partinf_conf(fx3_pconf.read_text(errors="replace")))
         fx6_s0 = build_sector0_from_partitions(parse_partinf_conf(fx6_pconf.read_text(errors="replace")))
         r3 = verify_sector0_partition_table(fx3_s0)

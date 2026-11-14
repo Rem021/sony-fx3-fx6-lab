@@ -55,6 +55,7 @@ if str(FX3_VM_DIR) not in sys.path:
 
 import cxd90057_dtb_and_mhlx_emulator as p41  # noqa: E402
 import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
+import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 
 
@@ -97,6 +98,11 @@ class CoEmulationConfig:
     bkid_0x01a20002: Optional[int] = None
     include_bt_containment_matrix: bool = True
     include_phase41_dtb_mhlx: bool = True
+    include_phase45_imx510_xavc: bool = True
+    xavc_resolution: str = p45.RES_QFHD_4K
+    xavc_fps: str = "59.94p"
+    xavc_codec: str = p45.CODEC_XAVC_I
+    recording_mode: str = p45.REC_MODE_SIMULTANEOUS
     force_clean_room: Optional[bool] = None
 
     def validate(self) -> None:
@@ -116,6 +122,14 @@ class CoEmulationConfig:
             raise CoEmulationSuiteError(
                 f"Invalid ibis_mode {self.ibis_mode!r}; expected one of {tuple(p24.VALID_STEADYSHOT_MODES.keys())}"
             )
+        if self.recording_mode not in p45.ALL_RECORDING_MODES:
+            raise CoEmulationSuiteError(
+                f"Invalid recording_mode {self.recording_mode!r}; expected one of {p45.ALL_RECORDING_MODES}"
+            )
+        try:
+            p45.resolve_xavc_profile(self.xavc_codec, self.xavc_resolution, self.xavc_fps)
+        except p45.PipelineConfigError as exc:
+            raise CoEmulationSuiteError(str(exc)) from exc
 
 
 @dataclass(frozen=True)
@@ -436,6 +450,9 @@ def run_stage2_dual_isa_shooting_cycle(
 # ---------------------------------------------------------------------------
 
 
+_STAGE3_HUD_CACHE: Dict[Tuple[object, ...], Dict[str, object]] = {}
+
+
 def run_stage3_soft_gpe_hud_composite(
     config: CoEmulationConfig,
     *,
@@ -449,6 +466,30 @@ def run_stage3_soft_gpe_hud_composite(
         force_clean_room=config.force_clean_room,
         env=env,
     )
+    active_bt = bt_result.get("active_bt_result", {})
+    if active_bt.get("bsa_ready"):
+        bt_badge_rgb = (0x28, 0xC8, 0x78)
+    elif active_bt.get("airplane_latched"):
+        bt_badge_rgb = (0xB8, 0x3C, 0x46)
+    else:
+        bt_badge_rgb = (0xF0, 0x98, 0x20)
+    cp_ok = bool(cp_result.get("all_checks_passed"))
+    cache_key = (
+        source_mode,
+        len(uxc_bytes),
+        entry_slots,
+        len(sprites),
+        config.cine_ei_iso,
+        config.lut_mode,
+        config.ibis_mode,
+        bt_badge_rgb,
+        cp_ok,
+    )
+    if cache_key in _STAGE3_HUD_CACHE:
+        cached = dict(_STAGE3_HUD_CACHE[cache_key])
+        cached["ramfb_scanout"] = dict(cached["ramfb_scanout"])  # type: ignore[arg-type]
+        return cached
+
     nine_patches = [s for s in sprites if s.is_nine_patch]
     standards = [s for s in sprites if not s.is_nine_patch]
 
@@ -493,13 +534,6 @@ def run_stage3_soft_gpe_hud_composite(
     engine.grm_fillrect(796, 52, 6, 72, *ibis_rgb, 0xFF)
 
     # Top-right BT status badge (reflects Stage 1 healthy / P12 / 00342260 / airplane-gated)
-    active_bt = bt_result.get("active_bt_result", {})
-    if active_bt.get("bsa_ready"):
-        bt_badge_rgb = (0x28, 0xC8, 0x78)
-    elif active_bt.get("airplane_latched"):
-        bt_badge_rgb = (0xB8, 0x3C, 0x46)
-    else:
-        bt_badge_rgb = (0xF0, 0x98, 0x20)
     engine.grm_fillrect(890, 10, 120, 22, *bt_badge_rgb, 0xFF)
 
     # Big-6 bottom status strip (6 cells across 1008px)
@@ -561,7 +595,7 @@ def run_stage3_soft_gpe_hud_composite(
         and bool(cp_result.get("all_checks_passed"))
     )
 
-    return {
+    result: Dict[str, object] = {
         "stage": "stage3_soft_gpe_hud_ramfb",
         "all_checks_passed": stage_passed,
         "source_mode": source_mode,
@@ -581,6 +615,10 @@ def run_stage3_soft_gpe_hud_composite(
         "hosdap02_header_hex": hdr[:16].hex(),
         "ramfb_scanout": ramfb_stats,
     }
+    _STAGE3_HUD_CACHE[cache_key] = result
+    out = dict(result)
+    out["ramfb_scanout"] = dict(ramfb_stats)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -615,6 +653,43 @@ def run_stage4_dtb_mhlx_mmio(
 
 
 # ---------------------------------------------------------------------------
+# Stage 5 (Phase 45): IMX510 VSYNC, libmpr XAVC, RTMD 0xE304 & Dual Slot A/B
+# ---------------------------------------------------------------------------
+
+
+def run_stage5_imx510_xavc_cfexpress(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 5 (Phase 45): IMX510 VSYNC, libmpr XAVC-I/S-I, RTMD 0xE304 & Dual CFexpress/SDXC."""
+    config.validate()
+    rep = p45.run_phase45_pipeline_audit(
+        resolution_mode=config.xavc_resolution,
+        fps_label=config.xavc_fps,
+        codec_family=config.xavc_codec,
+        recording_mode=config.recording_mode,
+        base_iso=config.cine_ei_iso,
+        lut_mode=config.lut_mode,
+        ibis_mode=config.ibis_mode,
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage5_phase45_imx510_xavc_cfexpress",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "cp_mutation_bytes": rep["redlines"]["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["redlines"]["wbi_mutation_bytes"],
+        "physical_device_writes": rep["redlines"]["physical_device_writes"],
+        "donor_audit": rep["donor_audit"],
+        "primary_recording": rep["primary_recording"],
+        "containment_matrix": rep["containment_matrix"],
+        "phase45_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -624,7 +699,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified Phase 33 + Phase 41 Full-Board Virtual Camera Co-Emulation Pipeline."""
+    """Run the unified Phase 33 + Phase 41 + Phase 45 Full-Board Virtual Camera Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -634,12 +709,21 @@ def run_fx3_vm_coemulation_suite(
     stage4: Optional[Dict[str, object]] = (
         run_stage4_dtb_mhlx_mmio(cfg, env=env) if cfg.include_phase41_dtb_mhlx else None
     )
+    stage5: Optional[Dict[str, object]] = (
+        run_stage5_imx510_xavc_cfexpress(cfg, env=env) if cfg.include_phase45_imx510_xavc else None
+    )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
 
     stage4_ok = True if stage4 is None else (
         bool(stage4["all_checks_passed"])
         and stage4["cp_mutation_bytes"] == 0
         and stage4["wbi_mutation_bytes"] == 0
+    )
+    stage5_ok = True if stage5 is None else (
+        bool(stage5["all_checks_passed"])
+        and stage5["cp_mutation_bytes"] == 0
+        and stage5["wbi_mutation_bytes"] == 0
+        and stage5["physical_device_writes"] == 0
     )
 
     all_passed = (
@@ -648,6 +732,7 @@ def run_fx3_vm_coemulation_suite(
         and bool(stage3["all_checks_passed"])
         and stage2["cp_mutation_bytes"] == 0
         and stage4_ok
+        and stage5_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -665,6 +750,11 @@ def run_fx3_vm_coemulation_suite(
             "rtc_valid": cfg.rtc_valid,
             "include_bt_containment_matrix": cfg.include_bt_containment_matrix,
             "include_phase41_dtb_mhlx": cfg.include_phase41_dtb_mhlx,
+            "include_phase45_imx510_xavc": cfg.include_phase45_imx510_xavc,
+            "xavc_resolution": cfg.xavc_resolution,
+            "xavc_fps": cfg.xavc_fps,
+            "xavc_codec": cfg.xavc_codec,
+            "recording_mode": cfg.recording_mode,
         },
         "redlines": {
             "p8_cp_mutation_forbidden": P8_CP_MUTATION_FORBIDDEN,
@@ -687,6 +777,8 @@ def run_fx3_vm_coemulation_suite(
     }
     if stage4 is not None:
         core_payload["stage4_phase41_dtb_mhlx"] = stage4
+    if stage5 is not None:
+        core_payload["stage5_phase45_imx510_xavc"] = stage5
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -698,7 +790,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + Phase 41 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + Phase 41 + Phase 45 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -708,6 +800,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase41",
         action="store_true",
         help="Skip optional Stage 4 (Phase 41 CXD90057 FDT/DTB & MHLX MMIO check)",
+    )
+    parser.add_argument(
+        "--skip-phase45",
+        action="store_true",
+        help="Skip optional Stage 5 (Phase 45 IMX510 XAVC & Dual CFexpress/SDXC pipeline)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -735,6 +832,30 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="5-axis IBIS SteadyShot mode",
     )
     parser.add_argument(
+        "--xavc-resolution",
+        choices=tuple(p45.IMX510_READOUT_MODES.keys()),
+        default=p45.RES_QFHD_4K,
+        help="Stage 5 IMX510 readout resolution mode",
+    )
+    parser.add_argument(
+        "--xavc-fps",
+        choices=tuple(p45.FRAME_RATE_SPECS.keys()),
+        default="59.94p",
+        help="Stage 5 IMX510 VSYNC frame rate",
+    )
+    parser.add_argument(
+        "--xavc-codec",
+        choices=p45.ALL_CODEC_FAMILIES,
+        default=p45.CODEC_XAVC_I,
+        help="Stage 5 libmpr XAVC codec family",
+    )
+    parser.add_argument(
+        "--rec-mode",
+        choices=p45.ALL_RECORDING_MODES,
+        default=p45.REC_MODE_SIMULTANEOUS,
+        help="Stage 5 Dual Slot A/B recording mode",
+    )
+    parser.add_argument(
         "--rtc-invalid",
         action="store_true",
         help="Simulate unset /dev/rtc0 state in P11 AP filter",
@@ -752,6 +873,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         ibis_mode=args.ibis_mode,
         rtc_valid=not args.rtc_invalid,
         include_phase41_dtb_mhlx=not args.skip_phase41,
+        include_phase45_imx510_xavc=not args.skip_phase45,
+        xavc_resolution=args.xavc_resolution,
+        xavc_fps=args.xavc_fps,
+        xavc_codec=args.xavc_codec,
+        recording_mode=args.rec_mode,
         force_clean_room=True if args.clean_room else None,
     )
     rep = run_fx3_vm_coemulation_suite(cfg)
@@ -761,9 +887,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s2 = rep["stage2_dual_isa_cp_shooting"]
         s3 = rep["stage3_soft_gpe_hud_ramfb"]
         s4 = rep.get("stage4_phase41_dtb_mhlx")
+        s5 = rep.get("stage5_phase45_imx510_xavc")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
+            else ""
+        )
+        s5_str = (
+            f" | xavc={s5['source_mode']}({s5['primary_recording']['xavc_stream']['codec_family']}"
+            f"@{s5['primary_recording']['imx510']['fps_label']})"
+            if isinstance(s5, dict)
             else ""
         )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
@@ -773,7 +906,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"iso={s2['cine_ei_iso']} lut={s2['lut_mode']}({s2['lut_bytes']}B) "
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
-            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str} | "
+            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str}{s5_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

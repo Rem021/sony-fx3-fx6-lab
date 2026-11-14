@@ -57,6 +57,7 @@ import cxd90057_dtb_and_mhlx_emulator as p41  # noqa: E402
 import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
 import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
+import qmp_guest_introspection_tracer as p58  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 
 
@@ -101,6 +102,7 @@ class CoEmulationConfig:
     include_phase41_dtb_mhlx: bool = True
     include_phase45_imx510_xavc: bool = True
     include_phase53_hil_fault_harness: bool = True
+    include_phase58_qmp_introspection: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -726,6 +728,44 @@ def run_stage6_hil_fault_harness(
 
 
 # ---------------------------------------------------------------------------
+# Stage 7 (Phase 58): Non-Intrusive QMP Guest Introspection & USB-LAN PTP-IP Tracer
+# ---------------------------------------------------------------------------
+
+
+def run_stage7_qmp_guest_introspection(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 7 (Phase 58): Non-intrusive QMP introspection + USB-LAN CDC-NCM / PTP-IP 15740 tracer."""
+    config.validate()
+    rep = p58.run_phase58_qmp_tracer_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    return {
+        "stage": "stage7_phase58_qmp_introspection",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": rep["redlines"]["nop_count"],
+        "guest_code_modification_bytes": rep["redlines"]["guest_code_modification_bytes"],
+        "cp_mutation_bytes": rep["redlines"]["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["redlines"]["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": rep["redlines"]["calibration_mutation_bytes"],
+        "nvram_persistent_writes": rep["redlines"]["nvram_persistent_writes"],
+        "physical_device_writes": rep["redlines"]["physical_device_writes"],
+        "donor_audit": rep["donor_audit"],
+        "qmp_session": rep["qmp_session"],
+        "guest_introspection": rep["guest_introspection"],
+        "usblan_p12_isolation": rep["usblan_p12_isolation"],
+        "ptpip_15740_safe_channel": rep["ptpip_15740_safe_channel"],
+        "ptpip_allowed_count": rep["ptpip_15740_safe_channel"]["allowed_count"],
+        "ptpip_blocked_count": rep["ptpip_15740_safe_channel"]["blocked_count"],
+        "phase58_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -735,7 +775,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 6-stage (Phase 33 + 41 + 45 + 53) Full-Board Virtual Camera Co-Emulation Pipeline."""
+    """Run the unified 7-stage (Phase 33 + 41 + 45 + 53 + 58) Full-Board Virtual Camera Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -750,6 +790,9 @@ def run_fx3_vm_coemulation_suite(
     )
     stage6: Optional[Dict[str, object]] = (
         run_stage6_hil_fault_harness(cfg, env=env) if cfg.include_phase53_hil_fault_harness else None
+    )
+    stage7: Optional[Dict[str, object]] = (
+        run_stage7_qmp_guest_introspection(cfg, env=env) if cfg.include_phase58_qmp_introspection else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
 
@@ -773,6 +816,16 @@ def run_fx3_vm_coemulation_suite(
         and stage6["physical_device_writes"] == 0
         and stage6["scenarios_passed"] == stage6["scenarios_total"]
     )
+    stage7_ok = True if stage7 is None else (
+        bool(stage7["all_checks_passed"])
+        and stage7["nop_count"] == 0
+        and stage7["guest_code_modification_bytes"] == 0
+        and stage7["cp_mutation_bytes"] == 0
+        and stage7["wbi_mutation_bytes"] == 0
+        and stage7["calibration_mutation_bytes"] == 0
+        and stage7["nvram_persistent_writes"] == 0
+        and stage7["physical_device_writes"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -782,6 +835,7 @@ def run_fx3_vm_coemulation_suite(
         and stage4_ok
         and stage5_ok
         and stage6_ok
+        and stage7_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -801,6 +855,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase41_dtb_mhlx": cfg.include_phase41_dtb_mhlx,
             "include_phase45_imx510_xavc": cfg.include_phase45_imx510_xavc,
             "include_phase53_hil_fault_harness": cfg.include_phase53_hil_fault_harness,
+            "include_phase58_qmp_introspection": cfg.include_phase58_qmp_introspection,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -831,6 +886,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage5_phase45_imx510_xavc"] = stage5
     if stage6 is not None:
         core_payload["stage6_phase53_hil_fault_harness"] = stage6
+    if stage7 is not None:
+        core_payload["stage7_phase58_qmp_introspection"] = stage7
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -842,7 +899,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -862,6 +919,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase53",
         action="store_true",
         help="Skip optional Stage 6 (Phase 53 HIL Dynamic Fault-Injection & Thermal/C2PA Harness)",
+    )
+    parser.add_argument(
+        "--skip-phase58",
+        action="store_true",
+        help="Skip optional Stage 7 (Phase 58 QMP Guest Introspection & USB-LAN PTP-IP Tracer)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -932,6 +994,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase41_dtb_mhlx=not args.skip_phase41,
         include_phase45_imx510_xavc=not args.skip_phase45,
         include_phase53_hil_fault_harness=not args.skip_phase53,
+        include_phase58_qmp_introspection=not args.skip_phase58,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -947,6 +1010,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s4 = rep.get("stage4_phase41_dtb_mhlx")
         s5 = rep.get("stage5_phase45_imx510_xavc")
         s6 = rep.get("stage6_phase53_hil_fault_harness")
+        s7 = rep.get("stage7_phase58_qmp_introspection")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -963,6 +1027,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s6, dict)
             else ""
         )
+        s7_str = (
+            f" | qmp={s7['source_mode']}(nop={s7['nop_count']},"
+            f"ptpip={s7['ptpip_allowed_count']}ok/{s7['ptpip_blocked_count']}blk)"
+            if isinstance(s7, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -970,7 +1040,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"iso={s2['cine_ei_iso']} lut={s2['lut_mode']}({s2['lut_bytes']}B) "
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
-            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str}{s5_str}{s6_str} | "
+            f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}{s4_str}{s5_str}{s6_str}{s7_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

@@ -183,4 +183,22 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -v
 ```
 
+## Phase 59 — Camera-Disconnected `RP2040-Zero` `-DOPEN_DRAIN` `1.8V` Multi-Port Bench Fixture Self-Test & `48000`-Baud PIO Verifier
+
+- **[`rp2040_multiport_fixture_selftest.py`](fx3_recovery/rp2040_multiport_fixture_selftest.py)**：在将自制 Tier-3 Sony 15-pin Multi-Port 救砖线插入物理 FX3 机身**之前**，提供离机台架（`camera_connected == False`）全自动电气安全与协议自检：
+  - **15 针 Sony Multi-Port 万用表预检防火墙（`audit_ohmmeter_isolation` / `verify_open_drain_1v8_swing` / `verify_multiport_id_keying`）**：
+    - 强制断开相机与 `VMC-BNCM1` LTC 线缆，校验 `VBUS (5.0V)` / `3.3V` 供电轨与 `UART_TX (Pin 8)` / `UART_RX (Pin 7)` / `ID (Pin 6)` / `XRESET (Pin 9)` 之间以及线间隔离电阻 `>= 1 MΩ`、`Pin 2` GND 连续性 `<= 2.0 Ω`，并阻断标准 Raspberry Pi Pico（`GP29` `VSYS/3` 分压下拉缺陷）。
+    - 校验开漏 `1.8V` 上拉摆幅（`V_idle ∈ [1.71V, 1.89V]`、`V_low <= 0.35V`），任何 `> 1.98V` 或 `3.3V` 推挽输出立即触发 `FAIL_OVERVOLTAGE_HAZARD`。
+    - 校验 Multi-Port `Pin 6 (ID)` 电阻键控矩阵：`BOOTROM_UART_BOOT`、`CONSOLE_READONLY`（禁止拉低 `XReset` 与主动 TX 驱动），以及对 `VMC_BNCM1_LTC_ADAPTER`（`680 kΩ`）和 `LANC_REMOTE`（`100 kΩ`）冲突的 fail-closed 阻断。
+  - **`RP2040-Zero` (`125 MHz` / `133 MHz` `clk_sys`) PIO 分频、开漏指令与 CMake 构建标志审计（`compute_pio_uart_clkdiv` / `audit_pio_open_drain_program` / `audit_cmake_open_drain_flags`）**：
+    - 精确核验 RP2040 16.8 小数分频器（`div = clk_sys / (8 * baud)`），证明 `48000` baud（`20.833 µs/bit`）与 `115200` baud（`8.681 µs/bit`）波特率误差均 `<= 0.05%`（拒绝整数截断导致的超差）。
+    - 审计 PIO 汇编程序仅通过 `pindirs` 方向切换实现开漏驱动（`pins_init_level == 0`，严禁 `out pins` / `set pins, 1` 推挽拉高），并强制审计 CMake `-DOPEN_DRAIN=1` 编译定义。
+  - **TX<->RX 8x 过采样台架回环与只读 BootROM 握手仿真（`simulate_uart_loopback_and_handshake`）**：
+    - 逐位验证起始位、8 数据位、奇偶校验/停止位、起始位毛刺（glitch）拦截、帧错误（framing error）拦截，以及只读 `UB` CRC32 BootROM 握手与 `0xFFFF0000` 读回显（`persistent_emmc_writes_authorized = False` 硬件锁死）。
+  - **CLI 与双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-rp2040-fixture [--clean-room] [--json] [--out ...]`，并在 [`tests/test_rp2040_multiport_fixture_selftest.py`](tests/test_rp2040_multiport_fixture_selftest.py) 新增 **30 项快速单元测试**（`< 0.2s`），在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 100% 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-rp2040-fixture --clean-room --json
+```
 

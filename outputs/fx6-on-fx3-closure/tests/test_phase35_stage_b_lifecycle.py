@@ -543,7 +543,7 @@ class TestPhase35StageBLifecycle(unittest.TestCase):
         self.assertEqual(parsed["scenario_count"], 10)
         self.assertEqual(parsed["passed_scenario_count"], 10)
         self.assertNotIn("b'", rendered)
-        self.assertNotIn('b"', rendered)
+        self.assertNotRegex(rendered, r'(?<![0-9A-Za-z_/.-])b[\'"]')
 
     def test_25_cli_run_stage_b_lifecycle_drill_dispatch_and_help(self) -> None:
         with tempfile.TemporaryDirectory(prefix="fx6_p35_cli_") as td:

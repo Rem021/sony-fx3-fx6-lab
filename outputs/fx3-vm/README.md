@@ -256,9 +256,35 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 63：Stage 8 HDMI Type-A `4264x2408 16-bit Linear RAW` EDID 协商、`MLUT` 净流与 USB-C 模式仲裁器
 
+[`uvc_hdmi_raw_output_emulator.py`](uvc_hdmi_raw_output_emulator.py) 作为 **Stage 8** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase63` 跳过），补齐 `outputs/fx3-vm/` 8 阶段全板协同仿真闭环：
 
+1. **严格只读（`os.O_RDONLY`）USB/UVC/HDMI 供体审计 + 洁净室回退**：
+   - 检查 FX6 `usb_f_uvc.ko`、`usb_f_uac2.ko`、`g_webcam.ko`、`usb_f_mass_storage.ko`、`g_mass_storage.ko`、`usbg_stillimage.ko`、`cdc_ncm.ko`、`libUsbControl.so`、`libInfraUsbCmn.so`、`AVBB_SCN_START_PANELEVF.so` 共 10 份核心构件的 SHA-256 与关键导出标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **纯 Python VESA/CEA-861 `256B`（`128B+128B`）`EDID` 合成、校验与外录握手**：
+   - 生成并校验 `00ffffffffffffff00` 头与 Block 0/Block 1 模 256 校验和 `== 0` 的真实 E-EDID：
+     - `ATOMOS_NINJA_RAW16`：协商 `4264x2408 16-bit Linear RAW`（最高 `59.94p`）+ `ProRes RAW` VSDB + `SMPTE 12M` HDMI 时间码录机触发；线性 RAW 旁路 HDMI 端 `MLUT` 烧录而保持内屏 `LCD MLUT` 独立。
+     - `SMALLHD_CINE_10BIT_422`：`3840x2160` / `1920x1080` `10-bit YCbCr 4:2:2` + `MLUT` On/Off + OSD Clean-Feed 切换，拒绝 `16-bit RAW` 并安全回退至 `10-bit YCbCr 4:2:2`（零黑屏）。
+     - `HDMI_DISCONNECTED`（`HPD == 0` 录机热拔出）：零丢帧无感回落至内屏 `GPE0` `1024x540`（`0x41e001000`、`dropped_internal_xavc_frames == 0`）。
+   - 证明 FX6 专属 `12G-SDI` 子输出设置（`PRM_FEATURE_MANAGER_sdi_output`、`AVBB_SCN_START_HDMI_SDI_SUB`、`EXEC_SDI_SUB_OUTPUT`）在 FX3 硬件上安全无操作隔离（`sdi_transceiver_faults == 0`）。
+3. **USB-C Gadget 模式仲裁器（`UVC/UAC` vs `USB-LAN CDC-NCM` vs `CrSDK PTP` vs `MSC`）**：
+   - 强制单功能互斥（并发小工具数 `<= 1`），支持 `UVC/UAC`（`4K30` / `1080p60`）、`USB-LAN CDC-NCM`（`1 Gbps`）与 `CrSDK PTP`（`usbg_stillimage.ko`）原子切换，同时强制 `P12` `BK4\0` 飞行模式无线静默（`0` BT TX、WLAN 关闭、`00342260` 免疫）、`cp_mutation_bytes == 0`、`wbi_mutation_bytes == 0` 与 `persistent_emmc_writes_authorized == False`（拍摄/录像期间拦截 `MSC` 与 `DFU` 原生闪存写入）。
 
+### Phase 63 CLI 运行与测试命令
 
+```sh
+# 1. 本地只读供体模式 & 洁净室模式自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/uvc_hdmi_raw_output_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/uvc_hdmi_raw_output_emulator.py --self-test --json
 
+# 2. 全板 Stage 1..8 统一校验（< 2.5s）
+make verify-coemulation
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-coemulation
 
+# 3. 单独运行 Phase 63 30 项单测 & 全量 213 项单测（双模式，< 5s）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_uvc_hdmi_raw_output_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_uvc_hdmi_raw_output_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

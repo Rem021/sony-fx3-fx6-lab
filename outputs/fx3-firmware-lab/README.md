@@ -36,11 +36,15 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
 7. [`fx3_firmware_lab/wbi_hibdrv_and_elf_abi_differ.py`](fx3_firmware_lab/wbi_hibdrv_and_elf_abi_differ.py)
    - **`WBI2` Hibernation Snapshot & `hibdrv` Warm-Boot Mismatch Verifier**: Opens FX3 v7.02 (`nflasha5.img`, `1,399` sections, `resume_vector=0x4004a67f0`, `[0x400001000, 0x420000000)`) and FX6 v6.01 (`nflasha5`, `1,197` sections, `resume_vector=0x4004a87f0`, `[0x400001000, 0x424000000)`) strictly via `os.O_RDONLY` + `mmap`, validates `wb_header` (`O_DATA`, `R_DATA`, `dVersion`, `sector_size`), `0x0F0F0F0F` metadata XOR checksums, `TTBR1_EL1` linear aliases, `vmlinux.bin` build coupling, and proves fail-closed rejection (`BLOCKED_CROSS_KERNEL_WBI2_EL1_MISMATCH`, `wbi_mutation_bytes == 0`) for cross-kernel / cross-model `WBI2` flashing.
    - **Pure-Python ELF64 `.dynsym` / `.dynstr` / `DT_NEEDED` ABI Differ**: Parses ELF64 `ET_DYN` `EM_AARCH64` dynamic symbol tables directly via `mmap` + `struct` across the 6 core libraries (`appFw.so`, `libuxengine.so`, `libgemini-grm.so`, `libmpr.so`, `libWlanResource.so`, `libInfraBluetoothCore.so`) without external subprocesses, gracefully handling whichever subset is present on disk or deterministic synthetic ELF64 fixtures in clean-room mode, and cross-validating `P1..P12+Fan` closure across all 7 divergent Cinema Line feature families (`Big6`, `CineEI`, `Lut3D`, `VariableND`, `SdiOut`, `SmartHandle`, `WlanFatal`).
+8. [`fx3_firmware_lab/global_xdb_and_menu_tree_auditor.py`](fx3_firmware_lab/global_xdb_and_menu_tree_auditor.py)
+   - **`O_RDONLY` `global.xdb` (`uxa\x07`) & UX Resource Inspector**: Inspects FX6 `v6.01` (`1,792 B`, `7` active slots, `63/63` `.uxc`/`.uxb` files present, `lang.uxb` `36` entries, `fontlist.dat` `5` fonts) and FX3 `v7.02` (`11,664 B`, `239` slots / `12` active + `227` `__Dummy_NS_ID__*`, `117/117` files present, `lang.uxb` `36` entries, `fontlist.dat` `6` fonts) strictly via `os.O_RDONLY`, plus `file:...?mode=ro&immutable=1` SQLite3 support (never creating `-wal`/`-shm` sidecars) and deterministic Clean-Room synthetic fallback.
+   - **11-Category / 128-Page Multilingual Menu Tree Verifier**: Audits all `11` Level-1 Cinema Line categories (`User`, `Edit User Menu`, `Shooting`, `Project`, `Paint/Look`, `TC/Media`, `Monitoring`, `Audio`, `Thumbnail`, `Technical`, `Maintenance`), `Big-6 Home` (`98` rows), `Assignable Buttons Page 110` (`54` rows, `30` pool ResIDs, `P10`), and all `128` widget descriptor pages (`2,224` rows, `4,658` ResID references in donor / `8,896` in clean-room) across `EN`, `Simplified Chinese`, `Traditional Chinese`, and `Japanese` with `0` missing ResIDs, `0` corrupt UTF-8 labels, and `0` null descriptor hazards.
+   - **FX3 Hardware-Predicate Safety Verification**: Proves FX6-only physical hardware menu items map cleanly to deterministic FX3 safe states (`VARIABLE_ND` / `P4` -> `LOCKED_CLEAR`, `SDI_12G_OUTPUT` / `P2+P5` -> `HDMI_FALLBACK`, `SMART_GRIP_HANDLE_ZOOM` / `P3+P10+P11` -> `INTERNAL_MIC_FALLBACK`, `WLAN_AIRPLANE_GATE` / `P12` -> `AIRPLANE_ISOLATED`) with zero null-pointer or missing-widget hazards and `nvram_flash_mutation_bytes = 0`.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 7 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 8 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -50,8 +54,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-lut-rtmd --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wbi-elf
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wbi-elf --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xdb-menu
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xdb-menu --clean-room
 
-# Run all 129 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 157 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

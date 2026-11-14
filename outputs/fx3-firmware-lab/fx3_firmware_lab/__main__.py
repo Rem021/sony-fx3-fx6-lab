@@ -14,6 +14,10 @@ from .cube_lut_and_rtmd_verifier import (
     analyze_cube_lut_and_rtmd,
     cube_lut_and_rtmd_report_to_dict,
 )
+from .global_xdb_and_menu_tree_auditor import (
+    analyze_global_xdb_and_menu_tree,
+    global_xdb_and_menu_tree_report_to_dict,
+)
 from .haita_bk4_feature_analyzer import (
     analyze_haita_and_bk4_features,
     haita_report_to_dict,
@@ -35,7 +39,7 @@ from .wbi_hibdrv_and_elf_abi_differ import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all seven clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all eight clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -49,6 +53,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     wbi_elf = wbi_hibdrv_and_elf_abi_report_to_dict(
         analyze_wbi_hibdrv_and_elf_abi(clean_room=clean_room)
     )
+    xdb_menu = global_xdb_and_menu_tree_report_to_dict(
+        analyze_global_xdb_and_menu_tree(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -58,6 +65,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and sensor_codec.get("all_checks_passed")
         and lut_rtmd.get("all_checks_passed")
         and wbi_elf.get("all_checks_passed")
+        and xdb_menu.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -72,17 +80,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "sensor_codec_compatibility_audit": sensor_codec,
         "cube_lut_and_rtmd_audit": lut_rtmd,
         "wbi_hibdrv_and_elf_abi_audit": wbi_elf,
+        "global_xdb_and_menu_tree_audit": xdb_menu,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, and WBI2/hibdrv/ELF64 ABI auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, and global.xdb/128-page menu auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 7 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 8 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -117,6 +126,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
     p_we.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
 
+    p_xm = sub.add_parser(
+        "audit-xdb-menu",
+        help="Run Phase 46 global.xdb UX database & 128-page FX6-on-FX3 multilingual menu / hardware predicate audit",
+    )
+    p_xm.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -140,6 +155,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-wbi-elf":
         payload = wbi_hibdrv_and_elf_abi_report_to_dict(
             analyze_wbi_hibdrv_and_elf_abi(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-xdb-menu":
+        payload = global_xdb_and_menu_tree_report_to_dict(
+            analyze_global_xdb_and_menu_tree(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

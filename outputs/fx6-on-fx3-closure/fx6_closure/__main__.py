@@ -618,10 +618,51 @@ def _cmd_run_stage_b_lifecycle_drill(
     return 0 if rep.all_checks_passed else 1
 
 
+def _cmd_build_stage_b_readiness_packet(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    tier0_bundle_dir: Optional[Path],
+    output_path: Optional[Path],
+    clean_room: bool,
+    json_output: bool,
+    include_full_dry_run: bool,
+) -> int:
+    from .stage_b_master_readiness_packet import (
+        build_stage_b_master_readiness_packet,
+        verify_stage_b_master_readiness_packet,
+    )
+
+    pkt = build_stage_b_master_readiness_packet(
+        repo_root=repo_root,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        tier0_bundle_dir=tier0_bundle_dir,
+        synthetic_clean_room=True if clean_room else None,
+        include_full_candidate_dry_run=include_full_dry_run,
+    )
+    rendered = pkt.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        sys.stdout.write(rendered)
+    v_res = verify_stage_b_master_readiness_packet(pkt.to_dict())
+    ok = (
+        pkt.offline_engineering_complete
+        and len(pkt.errors) == 0
+        and v_res.valid
+        and (tier0_bundle_dir is None or pkt.real_tier0_hardware_backup_verified)
+    )
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 35 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Stage-B P10/P11/P12 Lifecycle Closure CLI",
+        description="FX6-on-FX3 Phase 39 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Stage-B P10/P11/P12 Master Hardware Readiness CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -645,6 +686,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-wireless-guard", "Verify Phase 22/26 P12 libWlanResource.so 0x70d4 guard, BK4\\0 cold-boot Airplane-Mode RAM shadow, and WF-12 fault isolation"),
         ("dry-run-candidate", "Assemble full P1..P9 + Fan + Stage-B P10 + P11 UIPC Shim + P12 Wireless Guard + U1..U5 CPIO candidate and evaluate 12 safety gates"),
         ("build-readiness-packet", "Build deterministic Stage-A non-persistent hardware readiness packet (stage_a_readiness_packet_v1) and optionally validate a physical FX3 Tier-0 capture bundle"),
+        ("build-stage-b-readiness-packet", "Build deterministic Phase 39 Stage-B (P1..P12+Fan) Master Hardware Readiness Packet (stage_b_readiness_packet_v2) unifying Phase 17..38 safety closures"),
         ("verify-post-trial", "Verify Phase H2 post-power-cycle zero-mutation parity (stage_a_post_trial_receipt_v1) between H0 and H2 Tier-0 bundles plus optional H1 orchestrator telemetry"),
         ("run-h0-h1-h2-drill", "Execute full offline Phase H0 -> Phase H1 (/bin/sh orchestrator) -> Phase H2 zero-mutation lifecycle drill + 10-case negative fault-injection suite"),
         ("run-stage-b-lifecycle-drill", "Execute Phase 35 complete Stage-B (P1..P12+Fan) 10-scenario H0 -> H1 -> H2 lifecycle, serial_fault_detector_v2 & cryptographic zero-drift verification"),
@@ -658,15 +700,18 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "run-stage-b-lifecycle-drill"):
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
         if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
-        if cmd_name == "build-readiness-packet":
+        if cmd_name in ("build-readiness-packet", "build-stage-b-readiness-packet"):
             p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 capture directory")
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write deterministic readiness packet")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
+        if cmd_name == "build-stage-b-readiness-packet":
+            p.add_argument("--json", action="store_true", help="Emit deterministic JSON packet to stdout")
+            p.add_argument("--include-full-dry-run", action="store_true", help="Include slow 165s full candidate dry-run verification")
         if cmd_name == "verify-post-trial":
             p.add_argument("--h0-bundle-dir", type=Path, required=True, help="Path to archived Phase H0 pre-trial Tier-0 capture directory")
             p.add_argument("--h2-bundle-dir", type=Path, required=True, help="Path to Phase H2 post-power-cycle Tier-0 readback directory")
@@ -721,6 +766,17 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.tier0_bundle_dir,
             args.output,
             args.clean_room,
+        )
+    if args.cmd == "build-stage-b-readiness-packet":
+        return _cmd_build_stage_b_readiness_packet(
+            args.repo_root,
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.tier0_bundle_dir,
+            args.output,
+            args.clean_room,
+            args.json,
+            args.include_full_dry_run,
         )
     if args.cmd == "verify-post-trial":
         return _cmd_verify_post_trial(

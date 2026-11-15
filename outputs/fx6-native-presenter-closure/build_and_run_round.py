@@ -460,6 +460,14 @@ def _extract_cpio_members(parent_cpio: pathlib.Path, names: Tuple[str, ...]) -> 
     return found
 
 
+def _extract_optional_cpio_member(parent_cpio: pathlib.Path, member_name: str) -> Optional[bytes]:
+    with parent_cpio.open("rb") as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as raw:
+        for r in scan_cpio(raw):
+            if r["name"] == member_name:
+                return raw[r["offset"] : r["offset"] + r["bytes"]]
+    return None
+
+
 def _load_p10_keymap_spec(patcher_mod: Any) -> Any:
     """Read-only load of P10_APPFW_KEYMAP_SPEC without importing unicorn."""
     verifier_path = (
@@ -777,6 +785,498 @@ def build_hardened_libjit_so(tmp_build: pathlib.Path) -> Tuple[bytes, Dict[str, 
     return so_bytes, meta
 
 
+FX3_TIER0_LIBJIT_C = r"""
+#define SYS_unlinkat 35L
+#define SYS_openat   56L
+#define SYS_close    57L
+#define SYS_read     63L
+#define SYS_write    64L
+#define SYS_fsync    82L
+#define AT_FDCWD     (-100L)
+#define O_RDONLY     0L
+#define O_WRONLY     1L
+#define O_CREAT      0100L
+#define O_EXCL       0200L
+#define O_TRUNC      01000L
+#define O_APPEND     02000L
+#define O_NOFOLLOW   0100000L
+
+#define R30_CHUNK_MAX 2097152U /* 2 MiB <= 4 MiB p6 sliding window bound */
+
+static unsigned char g_r30_chk_buf[R30_CHUNK_MAX];
+static unsigned char g_r30_xfer_buf[65536];
+
+__attribute__((visibility("hidden")))
+void *memset(void *dst, int c, unsigned long n) {
+    volatile unsigned char *p = (volatile unsigned char *)dst;
+    for (unsigned long i = 0UL; i < n; i++) p[i] = (unsigned char)c;
+    return dst;
+}
+
+__attribute__((visibility("hidden")))
+void *memcpy(void *dst, const void *src, unsigned long n) {
+    unsigned char *d = (unsigned char *)dst;
+    const unsigned char *s = (const unsigned char *)src;
+    for (unsigned long i = 0UL; i < n; i++) d[i] = s[i];
+    return dst;
+}
+
+static long r30_sc6(long n, long a, long b, long c, long d, long e, long f) {
+    register long x8 asm("x8") = n;
+    register long x0 asm("x0") = a;
+    register long x1 asm("x1") = b;
+    register long x2 asm("x2") = c;
+    register long x3 asm("x3") = d;
+    register long x4 asm("x4") = e;
+    register long x5 asm("x5") = f;
+    asm volatile("svc #0"
+                 : "+r"(x0)
+                 : "r"(x8), "r"(x1), "r"(x2), "r"(x3), "r"(x4), "r"(x5)
+                 : "memory");
+    return x0;
+}
+
+static int r30_write_all(long fd, const unsigned char *buf, unsigned long len) {
+    unsigned long off = 0UL;
+    while (off < len) {
+        long wn = r30_sc6(SYS_write, fd, (long)(buf + off), (long)(len - off), 0, 0, 0);
+        if (wn == -4L) continue;
+        if (wn <= 0L) return -1;
+        off += (unsigned long)wn;
+    }
+    return 0;
+}
+
+static void r30_put_le32(unsigned char *p, unsigned int v) {
+    p[0] = (unsigned char)(v & 0xFFU);
+    p[1] = (unsigned char)((v >> 8) & 0xFFU);
+    p[2] = (unsigned char)((v >> 16) & 0xFFU);
+    p[3] = (unsigned char)((v >> 24) & 0xFFU);
+}
+
+static void r30_put_le64(unsigned char *p, unsigned long long v) {
+    r30_put_le32(p, (unsigned int)(v & 0xFFFFFFFFULL));
+    r30_put_le32(p + 4, (unsigned int)(v >> 32));
+}
+
+static unsigned int r30_crc32_update(unsigned int crc, const unsigned char *buf, unsigned long len) {
+    for (unsigned long i = 0UL; i < len; i++) {
+        crc ^= (unsigned int)buf[i];
+        for (int b = 0; b < 8; b++) {
+            crc = (crc & 1U) ? ((crc >> 1) ^ 0xEDB88320U) : (crc >> 1);
+        }
+    }
+    return crc;
+}
+
+typedef struct {
+    unsigned int state[8];
+    unsigned long long bitlen;
+    unsigned char data[64];
+    unsigned int datalen;
+} r30_sha256_ctx_t;
+
+static const unsigned int k_r30_sha_k[64] = {
+    0x428a2f98U, 0x71374491U, 0xb5c0fbcfU, 0xe9b5dba5U, 0x3956c25bU, 0x59f111f1U, 0x923f82a4U, 0xab1c5ed5U,
+    0xd807aa98U, 0x12835b01U, 0x243185beU, 0x550c7dc3U, 0x72be5d74U, 0x80deb1feU, 0x9bdc06a7U, 0xc19bf174U,
+    0xe49b69c1U, 0xefbe4786U, 0x0fc19dc6U, 0x240ca1ccU, 0x2de92c6fU, 0x4a7484aaU, 0x5cb0a9dcU, 0x76f988daU,
+    0x983e5152U, 0xa831c66dU, 0xb00327c8U, 0xbf597fc7U, 0xc6e00bf3U, 0xd5a79147U, 0x06ca6351U, 0x14292967U,
+    0x27b70a85U, 0x2e1b2138U, 0x4d2c6dfcU, 0x53380d13U, 0x650a7354U, 0x766a0abbU, 0x81c2c92eU, 0x92722c85U,
+    0xa2bfe8a1U, 0xa81a664bU, 0xc24b8b70U, 0xc76c51a3U, 0xd192e819U, 0xd6990624U, 0xf40e3585U, 0x106aa070U,
+    0x19a4c116U, 0x1e376c08U, 0x2748774cU, 0x34b0bcb5U, 0x391c0cb3U, 0x4ed8aa4aU, 0x5b9cca4fU, 0x682e6ff3U,
+    0x748f82eeU, 0x78a5636fU, 0x84c87814U, 0x8cc70208U, 0x90befffaU, 0xa4506cebU, 0xbef9a3f7U, 0xc67178f2U
+};
+
+static inline unsigned int r30_rotr(unsigned int x, unsigned int n) {
+    return (x >> n) | (x << (32U - n));
+}
+
+static void r30_sha_transform(r30_sha256_ctx_t *ctx, const unsigned char block[64]) {
+    unsigned int m[64];
+    for (unsigned int i = 0U, j = 0U; i < 16U; i++, j += 4U) {
+        m[i] = ((unsigned int)block[j] << 24) | ((unsigned int)block[j + 1U] << 16) |
+               ((unsigned int)block[j + 2U] << 8) | ((unsigned int)block[j + 3U]);
+    }
+    for (unsigned int i = 16U; i < 64U; i++) {
+        unsigned int s0 = r30_rotr(m[i - 15U], 7U) ^ r30_rotr(m[i - 15U], 18U) ^ (m[i - 15U] >> 3);
+        unsigned int s1 = r30_rotr(m[i - 2U], 17U) ^ r30_rotr(m[i - 2U], 19U) ^ (m[i - 2U] >> 10);
+        m[i] = m[i - 16U] + s0 + m[i - 7U] + s1;
+    }
+    unsigned int a = ctx->state[0], b = ctx->state[1], c = ctx->state[2], d = ctx->state[3];
+    unsigned int e = ctx->state[4], f = ctx->state[5], g = ctx->state[6], h = ctx->state[7];
+    for (unsigned int i = 0U; i < 64U; i++) {
+        unsigned int S1 = r30_rotr(e, 6U) ^ r30_rotr(e, 11U) ^ r30_rotr(e, 25U);
+        unsigned int ch = (e & f) ^ ((~e) & g);
+        unsigned int t1 = h + S1 + ch + k_r30_sha_k[i] + m[i];
+        unsigned int S0 = r30_rotr(a, 2U) ^ r30_rotr(a, 13U) ^ r30_rotr(a, 22U);
+        unsigned int maj = (a & b) ^ (a & c) ^ (b & c);
+        unsigned int t2 = S0 + maj;
+        h = g; g = f; f = e; e = d + t1;
+        d = c; c = b; b = a; a = t1 + t2;
+    }
+    ctx->state[0] += a; ctx->state[1] += b; ctx->state[2] += c; ctx->state[3] += d;
+    ctx->state[4] += e; ctx->state[5] += f; ctx->state[6] += g; ctx->state[7] += h;
+}
+
+static void r30_sha_init(r30_sha256_ctx_t *ctx) {
+    ctx->datalen = 0U;
+    ctx->bitlen = 0ULL;
+    ctx->state[0] = 0x6a09e667U; ctx->state[1] = 0xbb67ae85U;
+    ctx->state[2] = 0x3c6ef372U; ctx->state[3] = 0xa54ff53aU;
+    ctx->state[4] = 0x510e527fU; ctx->state[5] = 0x9b05688cU;
+    ctx->state[6] = 0x1f83d9abU; ctx->state[7] = 0x5be0cd19U;
+}
+
+static void r30_sha_update(r30_sha256_ctx_t *ctx, const unsigned char *data, unsigned long len) {
+    for (unsigned long i = 0UL; i < len; i++) {
+        ctx->data[ctx->datalen++] = data[i];
+        if (ctx->datalen == 64U) {
+            r30_sha_transform(ctx, ctx->data);
+            ctx->bitlen += 512ULL;
+            ctx->datalen = 0U;
+        }
+    }
+}
+
+static void r30_sha_final(r30_sha256_ctx_t *ctx, unsigned char out[32]) {
+    unsigned int i = ctx->datalen;
+    if (ctx->datalen < 56U) {
+        ctx->data[i++] = 0x80U;
+        while (i < 56U) ctx->data[i++] = 0x00U;
+    } else {
+        ctx->data[i++] = 0x80U;
+        while (i < 64U) ctx->data[i++] = 0x00U;
+        r30_sha_transform(ctx, ctx->data);
+        memset(ctx->data, 0, 56UL);
+    }
+    ctx->bitlen += (unsigned long long)ctx->datalen * 8ULL;
+    for (unsigned int j = 0U; j < 8U; j++) {
+        ctx->data[63U - j] = (unsigned char)((ctx->bitlen >> (j * 8U)) & 0xFFULL);
+    }
+    r30_sha_transform(ctx, ctx->data);
+    for (unsigned int j = 0U; j < 8U; j++) {
+        out[j * 4U + 0U] = (unsigned char)((ctx->state[j] >> 24) & 0xFFU);
+        out[j * 4U + 1U] = (unsigned char)((ctx->state[j] >> 16) & 0xFFU);
+        out[j * 4U + 2U] = (unsigned char)((ctx->state[j] >> 8) & 0xFFU);
+        out[j * 4U + 3U] = (unsigned char)(ctx->state[j] & 0xFFU);
+    }
+}
+
+static int r30_flush_chk1_window(
+    long sd_out_fd,
+    unsigned int chunk_idx,
+    unsigned int chunk_len,
+    r30_sha256_ctx_t *sha_ctx,
+    unsigned int *io_p6_peak
+) {
+    if (chunk_len == 0U || chunk_len > R30_CHUNK_MAX) return -1;
+    unsigned int ccrc = r30_crc32_update(0xFFFFFFFFU, g_r30_chk_buf, chunk_len) ^ 0xFFFFFFFFU;
+    r30_sha_update(sha_ctx, g_r30_chk_buf, chunk_len);
+
+    unsigned char chdr[24];
+    memset(chdr, 0, sizeof(chdr));
+    chdr[0] = 'F'; chdr[1] = 'X'; chdr[2] = '3'; chdr[3] = 'C';
+    chdr[4] = 'H'; chdr[5] = 'K'; chdr[6] = '1'; chdr[7] = '\0';
+    r30_put_le32(chdr + 8, chunk_idx);
+    r30_put_le32(chdr + 12, chunk_len);
+    r30_put_le32(chdr + 16, ccrc);
+    r30_put_le32(chdr + 20, 0U);
+
+    long wfd = r30_sc6(SYS_openat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin",
+                       O_WRONLY | O_CREAT | O_TRUNC, 0600L, 0, 0);
+    if (wfd < 0L) return -1;
+    if (r30_write_all(wfd, chdr, 24UL) != 0 ||
+        r30_write_all(wfd, g_r30_chk_buf, (unsigned long)chunk_len) != 0) {
+        r30_sc6(SYS_close, wfd, 0, 0, 0, 0, 0);
+        (void)r30_sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin", 0, 0, 0, 0);
+        return -1;
+    }
+    r30_sc6(SYS_close, wfd, 0, 0, 0, 0, 0);
+
+    unsigned int win_bytes = 24U + chunk_len;
+    if (win_bytes > *io_p6_peak) *io_p6_peak = win_bytes;
+
+    /* Pull chunk window from p6 (/tmp/jiritsu/chk_win.bin) to /mnt/sd stream and immediately unlink p6 */
+    long rfd = r30_sc6(SYS_openat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin",
+                       O_RDONLY | O_NOFOLLOW, 0, 0, 0);
+    if (rfd < 0L) {
+        (void)r30_sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin", 0, 0, 0, 0);
+        return -1;
+    }
+    unsigned long pulled = 0UL;
+    while (pulled < (unsigned long)win_bytes) {
+        unsigned long want = (unsigned long)win_bytes - pulled;
+        if (want > sizeof(g_r30_xfer_buf)) want = sizeof(g_r30_xfer_buf);
+        long rn = r30_sc6(SYS_read, rfd, (long)g_r30_xfer_buf, (long)want, 0, 0, 0);
+        if (rn == -4L) continue;
+        if (rn <= 0L) {
+            r30_sc6(SYS_close, rfd, 0, 0, 0, 0, 0);
+            (void)r30_sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin", 0, 0, 0, 0);
+            return -1;
+        }
+        if (r30_write_all(sd_out_fd, g_r30_xfer_buf, (unsigned long)rn) != 0) {
+            r30_sc6(SYS_close, rfd, 0, 0, 0, 0, 0);
+            (void)r30_sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin", 0, 0, 0, 0);
+            return -1;
+        }
+        pulled += (unsigned long)rn;
+    }
+    r30_sc6(SYS_close, rfd, 0, 0, 0, 0, 0);
+    (void)r30_sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/chk_win.bin", 0, 0, 0, 0);
+    return 0;
+}
+
+__attribute__((constructor)) static void fx3_jit_tier0_stream(void) {
+    /* 1. Immediately self-delete so /tmp/jiritsu/libJit.so disappears from p6/tmpfs before work begins. */
+    (void)r30_sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/libJit.so", 0, 0, 0, 0);
+
+    static const char * const k_src_paths[16] = {
+        "/mnt/r30_tier0_src/00_sector0.bin",
+        "/mnt/r30_tier0_src/01_p1_updater.bin",
+        "/mnt/r30_tier0_src/02_p2_setting.bin",
+        "/mnt/r30_tier0_src/03_p3_main.bin",
+        "/mnt/r30_tier0_src/04_p4_mpr_bk.bin",
+        "/mnt/r30_tier0_src/05_p5_wbi.bin",
+        "/mnt/r30_tier0_src/06_p6_jiritsu.bin",
+        "/mnt/r30_tier0_src/07_p7_rootfs.bin",
+        "/mnt/r30_tier0_src/08_p8_cp.bin",
+        "/mnt/r30_tier0_src/09_p10_work.bin",
+        "/mnt/r30_tier0_src/10_p12_cert.bin",
+        "/mnt/r30_tier0_src/11_p15_usr.bin",
+        "/mnt/r30_tier0_src/12_p18_lens.bin",
+        "/mnt/r30_tier0_src/13_p23_pmbp.bin",
+        "/mnt/r30_tier0_src/14_p30_lut.bin",
+        "/mnt/r30_tier0_src/15_nor_loader.bin",
+    };
+
+    long sd_fd = r30_sc6(SYS_openat, AT_FDCWD, (long)"/mnt/sd/FX3_TIER0_BACKUP.BIN",
+                         O_WRONLY | O_CREAT | O_TRUNC, 0644L, 0, 0);
+    if (sd_fd < 0L) return;
+
+    r30_sha256_ctx_t sha_ctx;
+    r30_sha_init(&sha_ctx);
+
+    unsigned int surf_sizes[16];
+    unsigned int surf_crcs[16];
+    unsigned long long total_bytes = 0ULL;
+    unsigned int buf_fill = 0U;
+    unsigned int chunk_idx = 0U;
+    unsigned int p6_peak = 0U;
+
+    for (unsigned int s = 0U; s < 16U; s++) {
+        surf_sizes[s] = 0U;
+        surf_crcs[s] = 0U;
+        long sfd = r30_sc6(SYS_openat, AT_FDCWD, (long)k_src_paths[s],
+                           O_RDONLY | O_NOFOLLOW, 0, 0, 0);
+        if (sfd < 0L) {
+            r30_sc6(SYS_close, sd_fd, 0, 0, 0, 0, 0);
+            return;
+        }
+        unsigned int scrc = 0xFFFFFFFFU;
+        for (;;) {
+            unsigned int avail = R30_CHUNK_MAX - buf_fill;
+            if (avail == 0U) {
+                if (r30_flush_chk1_window(sd_fd, chunk_idx, buf_fill, &sha_ctx, &p6_peak) != 0) {
+                    r30_sc6(SYS_close, sfd, 0, 0, 0, 0, 0);
+                    r30_sc6(SYS_close, sd_fd, 0, 0, 0, 0, 0);
+                    return;
+                }
+                chunk_idx++;
+                buf_fill = 0U;
+                avail = R30_CHUNK_MAX;
+            }
+            long nr = r30_sc6(SYS_read, sfd, (long)(g_r30_chk_buf + buf_fill), (long)avail, 0, 0, 0);
+            if (nr == -4L) continue;
+            if (nr < 0L) {
+                r30_sc6(SYS_close, sfd, 0, 0, 0, 0, 0);
+                r30_sc6(SYS_close, sd_fd, 0, 0, 0, 0, 0);
+                return;
+            }
+            if (nr == 0L) break;
+            scrc = r30_crc32_update(scrc, g_r30_chk_buf + buf_fill, (unsigned long)nr);
+            surf_sizes[s] += (unsigned int)nr;
+            total_bytes += (unsigned long long)nr;
+            buf_fill += (unsigned int)nr;
+        }
+        r30_sc6(SYS_close, sfd, 0, 0, 0, 0, 0);
+        surf_crcs[s] = scrc ^ 0xFFFFFFFFU;
+    }
+
+    if (buf_fill > 0U) {
+        if (r30_flush_chk1_window(sd_fd, chunk_idx, buf_fill, &sha_ctx, &p6_peak) != 0) {
+            r30_sc6(SYS_close, sd_fd, 0, 0, 0, 0, 0);
+            return;
+        }
+        chunk_idx++;
+        buf_fill = 0U;
+    }
+    (void)r30_sc6(SYS_fsync, sd_fd, 0, 0, 0, 0, 0);
+    r30_sc6(SYS_close, sd_fd, 0, 0, 0, 0, 0);
+
+    unsigned char stream_hash[32];
+    r30_sha_final(&sha_ctx, stream_hash);
+
+    /* Assemble 528B FX3RCPT1 receipt: 16B outer header + 512B body */
+    unsigned char rcpt[528];
+    memset(rcpt, 0, sizeof(rcpt));
+    rcpt[0] = 'F'; rcpt[1] = 'X'; rcpt[2] = '3'; rcpt[3] = 'R';
+    rcpt[4] = 'C'; rcpt[5] = 'P'; rcpt[6] = 'T'; rcpt[7] = '1';
+    r30_put_le32(rcpt + 8, 512U);
+    r30_put_le32(rcpt + 16, 0x5430424BU); /* "KBT0" LE */
+    r30_put_le32(rcpt + 20, 16U);
+    r30_put_le64(rcpt + 24, total_bytes);
+    r30_put_le32(rcpt + 32, R30_CHUNK_MAX);
+    r30_put_le32(rcpt + 36, chunk_idx);
+    r30_put_le32(rcpt + 40, p6_peak);
+    r30_put_le32(rcpt + 44, 0U); /* p6_residual_bytes = 0 */
+    memcpy(rcpt + 48, stream_hash, 32UL);
+    for (unsigned int s = 0U; s < 16U; s++) {
+        unsigned char *ent = rcpt + 80U + s * 16U;
+        r30_put_le32(ent + 0, s);
+        r30_put_le32(ent + 4, surf_sizes[s]);
+        r30_put_le32(ent + 8, surf_crcs[s]);
+        r30_put_le32(ent + 12, 1U);
+    }
+    unsigned int body_crc = r30_crc32_update(0xFFFFFFFFU, rcpt + 16, 512UL) ^ 0xFFFFFFFFU;
+    r30_put_le32(rcpt + 12, body_crc);
+
+    long rfd = r30_sc6(SYS_openat, AT_FDCWD, (long)"/mnt/sd/FX3RCPT1.rcpt",
+                       O_WRONLY | O_CREAT | O_EXCL, 0644L, 0, 0);
+    if (rfd < 0L) return;
+    (void)r30_write_all(rfd, rcpt, 528UL);
+    (void)r30_sc6(SYS_fsync, rfd, 0, 0, 0, 0, 0);
+    r30_sc6(SYS_close, rfd, 0, 0, 0, 0, 0);
+}
+"""
+
+
+def build_r30_tier0_libjit_so(tmp_build: pathlib.Path) -> Tuple[bytes, Dict[str, Any]]:
+    """Compile 64KiB-aligned self-unlinking streaming FX3RCPT1/FX3CHK1 libJit.so inside tmp_build."""
+    tmp_build.mkdir(parents=True, exist_ok=True)
+    cache_dir = tmp_build / "zig-cache"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    zig_env = os.environ.copy()
+    zig_env["ZIG_LOCAL_CACHE_DIR"] = str(cache_dir / "local")
+    zig_env["ZIG_GLOBAL_CACHE_DIR"] = str(cache_dir / "global")
+    jit_c = tmp_build / "jit_tier0_r30.c"
+    jit_so = tmp_build / "libJit.so"
+    jit_c.write_text(FX3_TIER0_LIBJIT_C, encoding="utf-8")
+    jit_cmd = [
+        str(ZIG),
+        "cc",
+        "-target",
+        "aarch64-linux-gnu.2.17",
+        "-shared",
+        "-fPIC",
+        "-nostdlib",
+        "-ffreestanding",
+        "-fno-sanitize=all",
+        "-fno-stack-protector",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wl,-z,max-page-size=0x10000",
+        "-Wl,-z,common-page-size=0x10000",
+        "-Wl,--hash-style=sysv",
+        "-Wl,-soname,libJit.so",
+        str(jit_c),
+        "-o",
+        str(jit_so),
+    ]
+    r_jit = subprocess.run(jit_cmd, env=zig_env, capture_output=True, text=True)
+    if r_jit.returncode != 0:
+        raise RuntimeError(f"r30 tier0 libJit.so compile failed:\n{r_jit.stderr}")
+    so_bytes = jit_so.read_bytes()
+    meta = inspect_libjit_elf_pt_load(so_bytes)
+    meta["compile_cmd"] = jit_cmd
+    meta["chunk_max_bytes"] = 2097152
+    meta["p6_window_bound_bytes"] = 4194304
+    meta["receipt_magic"] = "FX3RCPT1"
+    meta["chunk_magic"] = "FX3CHK1"
+    return so_bytes, meta
+
+
+def build_p18_lens_vfat_image(
+    lensfile_bytes: Optional[bytes] = None,
+) -> Tuple[bytes, Dict[str, Any]]:
+    """Build a 4 MiB FAT16 loopback image for /dev/nflasha18 (/lens) containing LENSFILE.BIN."""
+    if lensfile_bytes is None:
+        synth = bytearray(512)
+        struct.pack_into("<I", synth, 0, 57)
+        synth[4:10] = b"VX8900"
+        lens_data = bytes(synth)
+        lens_source = "synthetic_clean_room"
+    else:
+        lens_data = lensfile_bytes
+        lens_source = "donor_cpio"
+
+    bytes_per_sec = 512
+    sec_per_clus = 1
+    rsvd_sec = 4
+    num_fats = 2
+    root_ent = 512
+    tot_sec = 8192  # 4 MiB -> 8092 data clusters (valid FAT16)
+    fat_sz = 32
+    root_secs = (root_ent * 32) // bytes_per_sec
+    data_start_sec = rsvd_sec + num_fats * fat_sz + root_secs
+    max_data_bytes = (tot_sec - data_start_sec) * bytes_per_sec
+    if len(lens_data) == 0 or len(lens_data) > max_data_bytes:
+        raise ValueError(
+            f"LENSFILE.BIN size {len(lens_data)} exceeds 4MiB p18 FAT16 capacity {max_data_bytes}"
+        )
+
+    img = bytearray(tot_sec * bytes_per_sec)
+    # FAT16 BPB
+    img[0:3] = b"\xEB\x3C\x90"
+    img[3:11] = b"FX3P18RO"
+    struct.pack_into("<HBHBHHBHHHII", img, 11,
+                     bytes_per_sec, sec_per_clus, rsvd_sec, num_fats,
+                     root_ent, tot_sec, 0xF8, fat_sz, 32, 64, 0, 0)
+    img[36] = 0x80
+    img[38] = 0x29
+    struct.pack_into("<I", img, 39, 0x46583138)
+    img[43:54] = b"FX3_P18_LNS"
+    img[54:62] = b"FAT16   "
+    img[510:512] = b"\x55\xAA"
+
+    # FAT16 cluster allocation for LENSFILE.BIN
+    n_clus = (len(lens_data) + bytes_per_sec - 1) // bytes_per_sec
+    fat_tbl = bytearray(fat_sz * bytes_per_sec)
+    struct.pack_into("<HH", fat_tbl, 0, 0xFFF8, 0xFFFF)
+    for idx in range(n_clus):
+        c = 2 + idx
+        nxt = (c + 1) if (idx + 1 < n_clus) else 0xFFFF
+        struct.pack_into("<H", fat_tbl, c * 2, nxt)
+    fat1_off = rsvd_sec * bytes_per_sec
+    fat2_off = (rsvd_sec + fat_sz) * bytes_per_sec
+    img[fat1_off : fat1_off + len(fat_tbl)] = fat_tbl
+    img[fat2_off : fat2_off + len(fat_tbl)] = fat_tbl
+
+    # Root directory entry 0 -> LENSFILE.BIN (readonly + archive attribute 0x21)
+    root_off = (rsvd_sec + num_fats * fat_sz) * bytes_per_sec
+    img[root_off : root_off + 11] = b"LENSFILEBIN"
+    img[root_off + 11] = 0x21
+    struct.pack_into("<HI", img, root_off + 26, 2, len(lens_data))
+
+    # Data area starting at cluster 2 (data_start_sec)
+    data_off = data_start_sec * bytes_per_sec
+    img[data_off : data_off + len(lens_data)] = lens_data
+
+    raw = bytes(img)
+    lens_entries = struct.unpack_from("<I", lens_data, 0)[0] if len(lens_data) >= 4 else 0
+    return raw, {
+        "fat_type": "FAT16",
+        "bytes": len(raw),
+        "sha256": sha256_bytes(raw),
+        "lensfile_source": lens_source,
+        "lensfile_bytes": len(lens_data),
+        "lensfile_sha256": sha256_bytes(lens_data),
+        "lensfile_entries": lens_entries,
+        "clusters_allocated": n_clus,
+    }
+
+
 def build_sd_trigger_manifest(
     items: Sequence[Tuple[bytes, str]],
     mode: str,
@@ -831,7 +1331,9 @@ def build_stage_a_overlay(
     enable_r27: bool = False,
     enable_r28: bool = False,
     enable_r29: bool = False,
+    enable_r30: bool = False,
     r29_mode: str = "install_mpr_rec",
+    r30_mode: str = "peripheral_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -904,7 +1406,7 @@ def build_stage_a_overlay(
         extra_extract = extra_extract + ("usr/share/app/image_00_169.uxc",)
     if enable_p12:
         extra_extract = extra_extract + ("usr/lib/libWlanResource.so",)
-    if enable_r29:
+    if enable_r29 or enable_r30:
         extra_extract = extra_extract + ("usr/bin/im.elf",)
     if lang in lang_asset_specs:
         lang_items, _, _ = lang_asset_specs[lang]
@@ -1105,7 +1607,34 @@ def build_stage_a_overlay(
         raise RuntimeError(f"Expected launch line not found in {parent_cpio} /init")
     if enable_r29 and r29_mode not in ("install_mpr_rec", "rollback", "p1_rescue"):
         raise ValueError(f"Unsupported r29_mode: {r29_mode}")
-    if enable_r29 and r29_mode in ("rollback", "p1_rescue"):
+    if enable_r30 and r30_mode not in ("canary_tier0", "peripheral_big6", "jbusy_uninstall"):
+        raise ValueError(f"Unsupported r30_mode: {r30_mode}")
+    if enable_r30 and r30_mode in ("canary_tier0", "jbusy_uninstall"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r30_mode == "canary_tier0":
+            r30_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r30-canary-tier0 > /dev/console 2>&1\n"
+                "fx6_r30_canary_rc=$?\n"
+                "echo FX6_R30_CANARY_TIER0_RC=$fx6_r30_canary_rc\n"
+                "echo FX6_R30_CANARY_TIER0_EXIT rc=$fx6_r30_canary_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r30_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r30-jbusy-uninstall > /dev/console 2>&1\n"
+                "fx6_r30_jbusy_rc=$?\n"
+                "echo FX6_R30_JBUSY_UNINSTALL_RC=$fx6_r30_jbusy_rc\n"
+                "echo FX6_R30_JBUSY_UNINSTALL_EXIT rc=$fx6_r30_jbusy_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r30_early_hook, 1)
+    elif enable_r29 and r29_mode in ("rollback", "p1_rescue"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -1336,6 +1865,41 @@ def build_stage_a_overlay(
             "p1_dat2_expected": "91030080",
             "p1_cfg_uart_expected": 1,
         }
+    r30_meta: Optional[Dict[str, Any]] = None
+    if enable_r30:
+        stock_im_bytes = raw_members["usr/bin/im.elf"]
+        stock_im_sha = sha256_bytes(stock_im_bytes)
+        if "etc/fx3_sector0.bin" not in additions:
+            fx3_sector0_r30 = build_fx3_sector0_table()
+            additions["etc/fx3_sector0.bin"] = (fx3_sector0_r30, 0o100444)
+        if "mnt/sd" not in additions:
+            additions["mnt/sd"] = (b"", 0o040755)
+        if "tmp/jiritsu" not in additions:
+            additions["tmp/jiritsu"] = (b"", 0o040755)
+        r30_libjit_bytes, r30_libjit_meta = build_r30_tier0_libjit_so(tmp_build)
+        lensfile_bytes = _extract_optional_cpio_member(parent_cpio, "lens/lensfile.bin")
+        p18_vfat_bytes, p18_vfat_meta = build_p18_lens_vfat_image(lensfile_bytes)
+        additions["etc/fx6_stage_r30"] = (
+            (
+                f"stage_r30=1\nr30_mode={r30_mode}\n"
+                f"p18_ro=1\nibis_5axis=1\nxlr_h1=1\nsdi_mask=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        additions["etc/fx3_r30_libjit.so"] = (r30_libjit_bytes, 0o100755)
+        additions["etc/fx3_r30_stock_im_sha256.txt"] = f"{stock_im_sha}\n".encode("utf-8")
+        additions["etc/fx3_p18_lens.vfat"] = (p18_vfat_bytes, 0o100444)
+        r30_meta = {
+            "r30_mode": r30_mode,
+            "stock_im_elf_bytes": len(stock_im_bytes),
+            "stock_im_elf_sha256": stock_im_sha,
+            "r30_libjit": r30_libjit_meta,
+            "p18_lens_vfat": p18_vfat_meta,
+            "opff_max_slot": "0x11",
+            "jbusy_abort_rc": "0x10000011",
+            "p18_mount_point": "/lens",
+            "p18_mount_flags": "MS_RDONLY|MS_NOATIME",
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -1358,6 +1922,7 @@ def build_stage_a_overlay(
         "r27_enabled": enable_r27,
         "r28_enabled": enable_r28,
         "r29_enabled": enable_r29,
+        "r30_enabled": enable_r30,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -1391,6 +1956,8 @@ def build_stage_a_overlay(
         stage_a_meta["r28"] = r28_meta
     if r29_meta is not None:
         stage_a_meta["r29"] = r29_meta
+    if r30_meta is not None:
+        stage_a_meta["r30"] = r30_meta
     return replacements, additions, stage_a_meta
 
 
@@ -1709,6 +2276,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R27_",
         "FX6_R28_",
         "FX6_R29_",
+        "FX6_R30_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -1758,6 +2326,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     r29_install_rc: Optional[int] = None
     r29_rollback_rc: Optional[int] = None
     r29_p1_rescue_rc: Optional[int] = None
+    last_r30_ram_canary: Optional[Dict[str, Any]] = None
+    last_r30_tier0_backup: Optional[Dict[str, Any]] = None
+    last_r30_peripheral_init: Optional[Dict[str, Any]] = None
+    last_r30_peripheral_bridge: Optional[Dict[str, Any]] = None
+    last_r30_jbusy_abort: Optional[Dict[str, Any]] = None
+    last_r30_h0_h3_uninstall: Optional[Dict[str, Any]] = None
+    last_r30_lang: Optional[Dict[str, Any]] = None
+    last_r30_bridge: Optional[Dict[str, Any]] = None
+    r30_canary_tier0_rc: Optional[int] = None
+    r30_jbusy_uninstall_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -1839,6 +2417,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R29_P1_RESCUE_RC"), int):
                 r29_p1_rescue_rc = kv["FX6_R29_P1_RESCUE_RC"]
+        elif "FX6_R30_RAM_CANARY " in line:
+            last_r30_ram_canary = _parse_kv_ints(line.split("FX6_R30_RAM_CANARY ", 1)[1])
+        elif "FX6_R30_TIER0_BACKUP " in line:
+            last_r30_tier0_backup = _parse_kv_ints(line.split("FX6_R30_TIER0_BACKUP ", 1)[1])
+        elif "FX6_R30_PERIPHERAL_INIT " in line:
+            last_r30_peripheral_init = _parse_kv_ints(line.split("FX6_R30_PERIPHERAL_INIT ", 1)[1])
+        elif "FX6_R30_PERIPHERAL_BRIDGE " in line:
+            last_r30_peripheral_bridge = _parse_kv_ints(line.split("FX6_R30_PERIPHERAL_BRIDGE ", 1)[1])
+        elif "FX6_R30_JBUSY_ABORT " in line:
+            last_r30_jbusy_abort = _parse_kv_ints(line.split("FX6_R30_JBUSY_ABORT ", 1)[1])
+        elif "FX6_R30_H0_H3_UNINSTALL " in line:
+            last_r30_h0_h3_uninstall = _parse_kv_ints(line.split("FX6_R30_H0_H3_UNINSTALL ", 1)[1])
+        elif "FX6_R30_LANG_TELEMETRY " in line:
+            last_r30_lang = _parse_kv_ints(line.split("FX6_R30_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R30_BRIDGE " in line:
+            last_r30_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R30_BRIDGE ", 1)[1])
+        elif "FX6_R30_CANARY_TIER0_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R30_CANARY_TIER0_RC"), int):
+                r30_canary_tier0_rc = kv["FX6_R30_CANARY_TIER0_RC"]
+        elif "FX6_R30_JBUSY_UNINSTALL_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R30_JBUSY_UNINSTALL_RC"), int):
+                r30_jbusy_uninstall_rc = kv["FX6_R30_JBUSY_UNINSTALL_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -1911,6 +2513,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r29_bridge or {},
         }
 
+    r30_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r30_ram_canary,
+            last_r30_tier0_backup,
+            last_r30_peripheral_init,
+            last_r30_peripheral_bridge,
+            last_r30_jbusy_abort,
+            last_r30_h0_h3_uninstall,
+            last_r30_lang,
+            last_r30_bridge,
+        )
+    ):
+        r30_telemetry = {
+            "canary_tier0_rc": r30_canary_tier0_rc,
+            "jbusy_uninstall_rc": r30_jbusy_uninstall_rc,
+            "ram_canary": last_r30_ram_canary or {},
+            "tier0_backup": last_r30_tier0_backup or {},
+            "peripheral_init": last_r30_peripheral_init or {},
+            "peripheral_bridge": last_r30_peripheral_bridge or {},
+            "jbusy_abort": last_r30_jbusy_abort or {},
+            "h0_h3_uninstall": last_r30_h0_h3_uninstall or {},
+            "lang_telemetry": last_r30_lang or {},
+            "stage_b_bridge": last_r30_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -1937,6 +2566,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r27_telemetry": last_r27_lang,
         "r28_telemetry": r28_telemetry,
         "r29_telemetry": r29_telemetry,
+        "r30_telemetry": r30_telemetry,
     }
 
 
@@ -1960,7 +2590,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 29:
+    if args.round >= 30:
+        tmp_prefix = "fx6-r30"
+    elif args.round >= 29:
         tmp_prefix = "fx6-r29"
     elif args.round >= 28:
         tmp_prefix = "fx6-r28"
@@ -2033,8 +2665,12 @@ def run_once(args: argparse.Namespace) -> int:
         stage_a_meta: Optional[Dict[str, Any]] = None
         sd_manifest_mode = getattr(args, "sd_manifest_mode", "valid")
         r29_mode = getattr(args, "r29_mode", "install_mpr_rec")
+        r30_mode = getattr(args, "r30_mode", "peripheral_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwCanaryTier0PeripheralUninstall+r30_mode={r30_mode}+lang={lang})"
+                if args.round >= 30
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwAtomicInstaller+MPR-REC+P1Rescue+r29_mode={r29_mode}+lang={lang})"
                 if args.round >= 29
                 else (
@@ -2114,6 +2750,7 @@ def run_once(args: argparse.Namespace) -> int:
                     )
                 )
                 )
+                )
             )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
@@ -2141,8 +2778,10 @@ def run_once(args: argparse.Namespace) -> int:
                 enable_r27=(args.round >= 27),
                 enable_r28=(args.round >= 28),
                 sd_manifest_mode=sd_manifest_mode,
-                enable_r29=(args.round >= 29),
+                enable_r29=(args.round == 29),
                 r29_mode=r29_mode,
+                enable_r30=(args.round >= 30),
+                r30_mode=r30_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -2257,6 +2896,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT" in txt
                     or "FX6_R29_ROLLBACK_EXIT" in txt
                     or "FX6_R29_P1_RESCUE_EXIT" in txt
+                    or "FX6_R30_CANARY_TIER0_EXIT" in txt
+                    or "FX6_R30_JBUSY_UNINSTALL_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -2273,6 +2914,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT" in serial_text
             or "FX6_R29_ROLLBACK_EXIT" in serial_text
             or "FX6_R29_P1_RESCUE_EXIT" in serial_text
+            or "FX6_R30_CANARY_TIER0_EXIT" in serial_text
+            or "FX6_R30_JBUSY_UNINSTALL_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -2324,7 +2967,8 @@ def run_once(args: argparse.Namespace) -> int:
             "round": args.round,
             "lang": lang,
             "sd_manifest_mode": sd_manifest_mode if args.round >= 28 else None,
-            "r29_mode": r29_mode if args.round >= 29 else None,
+            "r29_mode": r29_mode if args.round == 29 else None,
+            "r30_mode": r30_mode if args.round >= 30 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -2360,7 +3004,8 @@ def run_once(args: argparse.Namespace) -> int:
             "r26_telemetry": milestones.get("r26_telemetry") if args.round >= 26 else None,
             "r27_telemetry": milestones.get("r27_telemetry") if args.round >= 27 else None,
             "r28_telemetry": milestones.get("r28_telemetry") if args.round >= 28 else None,
-            "r29_telemetry": milestones.get("r29_telemetry") if args.round >= 29 else None,
+            "r29_telemetry": milestones.get("r29_telemetry") if args.round == 29 else None,
+            "r30_telemetry": milestones.get("r30_telemetry") if args.round >= 30 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -2410,10 +3055,11 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
+    ap.add_argument("--r30-mode", type=str, choices=["canary_tier0", "peripheral_big6", "jbusy_uninstall"], default="peripheral_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

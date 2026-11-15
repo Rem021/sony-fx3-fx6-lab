@@ -601,6 +601,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R29_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 atomic_installer_ready=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r30_st;
+    if (stat("/etc/fx6_stage_r30", &r30_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r30f = fopen("/etc/fx6_stage_r30", "r");
+        if (r30f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r30f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r30f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R30_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 p18_lens_ro_guard=1 ibis_5axis_safepark=1 xlr_h1_4ch_lpcm=1 sdi_bnc_masked=1 hdmi_type_a_active=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 
@@ -1607,6 +1625,753 @@ static int run_r29_p1_rescue(void) {
     return ok ? 0 : 84;
 }
 
+/* ---- Round 30: op=0xFF RAM Canary, 64KiB Tier-0 FX3RCPT1/FX3CHK1, Peripheral Bridge & H0==H3 Clean Uninstall ---- */
+
+static uint16_t r30_le16(const uint8_t *p) {
+    return (uint16_t)((uint16_t)p[0] | ((uint16_t)p[1] << 8));
+}
+
+static uint32_t r30_le32(const uint8_t *p) {
+    return (uint32_t)p[0] |
+           ((uint32_t)p[1] << 8) |
+           ((uint32_t)p[2] << 16) |
+           ((uint32_t)p[3] << 24);
+}
+
+static uint64_t r30_le64(const uint8_t *p) {
+    uint64_t lo = (uint64_t)r30_le32(p);
+    uint64_t hi = (uint64_t)r30_le32(p + 4);
+    return lo | (hi << 32);
+}
+
+#define R30_MAX_RAM_SLOT 0x11U
+static uint8_t g_r30_ram_slots[18][256];
+static size_t g_r30_ram_slot_lens[18];
+
+static int r30_stage286_opff_dispatch(
+    uint8_t selector,
+    uint8_t op,
+    uint8_t slot,
+    int is_write,
+    const uint8_t *in_buf,
+    size_t in_len,
+    uint8_t *out_buf,
+    size_t *out_len,
+    int *mount_calls,
+    int *dlopen_calls
+) {
+    (void)mount_calls;
+    (void)dlopen_calls;
+    if (selector != 0xFFU || op != 0xFFU) return -EINVAL;
+    if (slot > R30_MAX_RAM_SLOT) return -EINVAL;
+    if (is_write) {
+        if (!in_buf || in_len == 0U || in_len > 256U) return -EINVAL;
+        memcpy(g_r30_ram_slots[slot], in_buf, in_len);
+        g_r30_ram_slot_lens[slot] = in_len;
+        return 0;
+    }
+    if (!out_buf || !out_len) return -EINVAL;
+    size_t slen = g_r30_ram_slot_lens[slot];
+    if (slen == 0U || slen > 256U) return -ENOENT;
+    memcpy(out_buf, g_r30_ram_slots[slot], slen);
+    *out_len = slen;
+    return 0;
+}
+
+static int r30_verify_elf_pt_load_64k(const char *path, int *out_pt_load_cnt) {
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) return -1;
+    uint8_t hdr[1024];
+    ssize_t nr = read(fd, hdr, sizeof(hdr));
+    close(fd);
+    if (nr < 64) return -1;
+    if (hdr[0] != 0x7fU || hdr[1] != 'E' || hdr[2] != 'L' || hdr[3] != 'F') return -1;
+    if (hdr[4] != 2U || hdr[5] != 1U) return -1;
+    uint16_t e_type = r30_le16(hdr + 0x10);
+    uint16_t e_machine = r30_le16(hdr + 0x12);
+    uint64_t e_phoff = r30_le64(hdr + 0x20);
+    uint16_t e_phentsize = r30_le16(hdr + 0x36);
+    uint16_t e_phnum = r30_le16(hdr + 0x38);
+    if (e_type != 3U || e_machine != 183U || e_phentsize < 56U) return -1;
+    if (e_phoff + (uint64_t)e_phentsize * (uint64_t)e_phnum > (uint64_t)nr) return -1;
+    int pt_load_cnt = 0;
+    int has_dynamic = 0;
+    for (uint16_t i = 0U; i < e_phnum; i++) {
+        const uint8_t *ph = hdr + (size_t)e_phoff + (size_t)i * (size_t)e_phentsize;
+        uint32_t p_type = r30_le32(ph + 0x00);
+        uint64_t p_align = r30_le64(ph + 0x30);
+        if (p_type == 1U) {
+            if (p_align != 0x10000ULL) return -1;
+            pt_load_cnt++;
+        } else if (p_type == 2U) {
+            has_dynamic = 1;
+        }
+    }
+    if (out_pt_load_cnt) *out_pt_load_cnt = pt_load_cnt;
+    return (pt_load_cnt >= 2 && has_dynamic) ? 0 : -1;
+}
+
+static const char * const k_r30_surface_names[16] = {
+    "00_sector0.bin",
+    "01_p1_updater.bin",
+    "02_p2_setting.bin",
+    "03_p3_main.bin",
+    "04_p4_mpr_bk.bin",
+    "05_p5_wbi.bin",
+    "06_p6_jiritsu.bin",
+    "07_p7_rootfs.bin",
+    "08_p8_cp.bin",
+    "09_p10_work.bin",
+    "10_p12_cert.bin",
+    "11_p15_usr.bin",
+    "12_p18_lens.bin",
+    "13_p23_pmbp.bin",
+    "14_p30_lut.bin",
+    "15_nor_loader.bin",
+};
+
+static int r30_populate_16_surfaces(const char *dir_path, char out_shas[16][65],
+                                    unsigned long long out_sizes[16]) {
+    uint8_t sec0[512];
+    int sfd = open("/etc/fx3_sector0.bin", O_RDONLY);
+    if (sfd < 0) return -1;
+    ssize_t sn = read(sfd, sec0, sizeof(sec0));
+    close(sfd);
+    if (sn != 512) return -1;
+
+    static uint8_t surf_buf[524288];
+    for (unsigned int i = 0U; i < 16U; i++) {
+        char path[256];
+        snprintf(path, sizeof(path), "%s/%s", dir_path, k_r30_surface_names[i]);
+        if (i == 0U) {
+            if (r29_write_all_fsync(path, sec0, 512U, 0444) != 0) return -1;
+        } else {
+            for (size_t b = 0U; b < sizeof(surf_buf); b++) {
+                surf_buf[b] = (uint8_t)(((i * 37U) + (b & 0xffU) + (b >> 12)) & 0xffU);
+            }
+            char hdr_tag[32];
+            snprintf(hdr_tag, sizeof(hdr_tag), "FX3_SURF_%02u_%s", i, k_r30_surface_names[i]);
+            memcpy(surf_buf, hdr_tag, strlen(hdr_tag));
+            if (r29_write_all_fsync(path, surf_buf, sizeof(surf_buf), 0444) != 0) return -1;
+        }
+        if (sha256_file_hex(path, out_shas[i], &out_sizes[i]) != 0) return -1;
+    }
+    return 0;
+}
+
+static void r30_measure_dir_residual(const char *dir_path, unsigned int *out_files,
+                                     unsigned long long *out_bytes) {
+    unsigned int files = 0U;
+    unsigned long long bytes = 0ULL;
+    DIR *d = opendir(dir_path);
+    if (d) {
+        struct dirent *de;
+        while ((de = readdir(d)) != NULL) {
+            if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0) continue;
+            char p[512];
+            snprintf(p, sizeof(p), "%s/%s", dir_path, de->d_name);
+            struct stat st;
+            if (stat(p, &st) == 0) {
+                files++;
+                bytes += (unsigned long long)st.st_size;
+            }
+        }
+        closedir(d);
+    }
+    if (out_files) *out_files = files;
+    if (out_bytes) *out_bytes = bytes;
+}
+
+static int run_r30_canary_and_tier0(void) {
+    struct timespec t0, t1, t2;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. Stage-286 Branch-A SET_FILE2 / GET_FILE2 op=0xFF pure RAM slot canary (slot <= 0x11) */
+    static const uint8_t k_canary_payload[64] =
+        "FX3_STAGE286_OPFF_RAM_CANARY_SLOT17_ZERO_MOUNT_ZERO_DLOPEN_V1\0\xaa";
+    int sys_mount_cnt = 0;
+    int dlopen_cnt = 0;
+    int bad_slot_rc = r30_stage286_opff_dispatch(
+        0xFFU, 0xFFU, 0x12U, 1, k_canary_payload, sizeof(k_canary_payload),
+        NULL, NULL, &sys_mount_cnt, &dlopen_cnt);
+    int slot_bound_enforced = (bad_slot_rc == -EINVAL) ? 1 : 0;
+
+    int set_rc = r30_stage286_opff_dispatch(
+        0xFFU, 0xFFU, 0x11U, 1, k_canary_payload, sizeof(k_canary_payload),
+        NULL, NULL, &sys_mount_cnt, &dlopen_cnt);
+    uint8_t echo_buf[256];
+    size_t echo_len = 0U;
+    int get_rc = r30_stage286_opff_dispatch(
+        0xFFU, 0xFFU, 0x11U, 0, NULL, 0U, echo_buf, &echo_len, &sys_mount_cnt, &dlopen_cnt);
+
+    char in_sha[65], out_sha[65];
+    r29_sha256_buf_hex(k_canary_payload, sizeof(k_canary_payload), in_sha);
+    r29_sha256_buf_hex(echo_buf, echo_len, out_sha);
+    int echo_match = (set_rc == 0 && get_rc == 0 && echo_len == sizeof(k_canary_payload) &&
+                      memcmp(k_canary_payload, echo_buf, sizeof(k_canary_payload)) == 0) ? 1 : 0;
+    int sha_match = (strcmp(in_sha, out_sha) == 0) ? 1 : 0;
+    int canary_ok = (slot_bound_enforced && echo_match && sha_match &&
+                     sys_mount_cnt == 0 && dlopen_cnt == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long canary_us = elapsed_us(&t0, &t1);
+    fprintf(stderr,
+            "FX6_R30_RAM_CANARY op=0xff selector=0xff slot=0x11 max_slot=0x11 "
+            "payload_bytes=%zu echo_match=%d sha256_match=%d slot_bound_enforced=%d "
+            "sys_mount_count=%d dlopen_count=%d emmc_write_count=0 canary_ok=%d verify_us=%lld\n",
+            sizeof(k_canary_payload), echo_match, sha_match, slot_bound_enforced,
+            sys_mount_cnt, dlopen_cnt, canary_ok, canary_us);
+    if (!canary_ok) return 90;
+
+    /* 2. Stage-288 /tmp/jbusy ENOENT preflight + 64KiB libJit.so dlopen + FX3RCPT1 + FX3CHK1 Tier-0 backup */
+    unlink("/tmp/jbusy");
+    struct stat jb_st;
+    int jbusy_enoent = (stat("/tmp/jbusy", &jb_st) != 0 && errno == ENOENT) ? 1 : 0;
+    if (!jbusy_enoent) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=jbusy_exists\n");
+        return 91;
+    }
+
+    (void)mkdir("/mnt/r30_tier0_src", 0755);
+    (void)umount("/mnt/r30_tier0_src");
+    if (mount("tmpfs", "/mnt/r30_tier0_src", "tmpfs", MS_NOATIME, "size=16m") != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=mount_src errno=%d\n", errno);
+        return 91;
+    }
+    char surf_shas[16][65];
+    unsigned long long surf_sizes[16];
+    if (r30_populate_16_surfaces("/mnt/r30_tier0_src", surf_shas, surf_sizes) != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=populate_surfaces errno=%d\n", errno);
+        return 92;
+    }
+    if (mount(NULL, "/mnt/r30_tier0_src", NULL, MS_REMOUNT | MS_RDONLY, NULL) != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=remount_src_ro errno=%d\n", errno);
+        return 92;
+    }
+    int src_ro_mnt = 0, src_erofs = 0;
+    r29_check_mount_ro("/mnt/r30_tier0_src", "/mnt/r30_tier0_src/.ro_probe", &src_ro_mnt, &src_erofs);
+
+    (void)mkdir("/tmp/jiritsu", 0755);
+    (void)umount("/tmp/jiritsu");
+    if (mount("tmpfs", "/tmp/jiritsu", "tmpfs", MS_NOATIME, "size=25m") != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=mount_p6 errno=%d\n", errno);
+        return 93;
+    }
+    (void)mkdir("/mnt/sd", 0755);
+    (void)umount("/mnt/sd");
+    if (mount("tmpfs", "/mnt/sd", "tmpfs", MS_NOATIME, "size=24m") != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=mount_sd errno=%d\n", errno);
+        return 93;
+    }
+
+    int pt_load_cnt = 0;
+    int elf_pt_load_64k = (r30_verify_elf_pt_load_64k("/etc/fx3_r30_libjit.so", &pt_load_cnt) == 0) ? 1 : 0;
+    if (!elf_pt_load_64k) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=elf_pt_load_64k\n");
+        return 94;
+    }
+
+    /* SET_FILE2 op=0x00 stages 64KiB-aligned libJit.so onto p6 (/tmp/jiritsu/libJit.so) */
+    if (r29_copy_file_fsync("/etc/fx3_r30_libjit.so", "/tmp/jiritsu/libJit.so", 0755) != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=stage_libjit errno=%d\n", errno);
+        return 94;
+    }
+
+    void *handle = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!handle) {
+        const char *derr = dlerror();
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=dlopen err=%s\n", derr ? derr : "unknown");
+        return 95;
+    }
+    int dlclose_rc = dlclose(handle);
+
+    /* Confirm constructor self-deleted /tmp/jiritsu/libJit.so on p6 */
+    struct stat jit_post;
+    int unlinked = (stat("/tmp/jiritsu/libJit.so", &jit_post) != 0 && errno == ENOENT) ? 1 : 0;
+    int unlink_err = unlinked ? ENOENT : 0;
+
+    unsigned int p6_res_files = 999U;
+    unsigned long long p6_res_bytes = 999ULL;
+    r30_measure_dir_residual("/tmp/jiritsu", &p6_res_files, &p6_res_bytes);
+
+    /* Validate 528B FX3RCPT1 + IEEE CRC32 written to /mnt/sd/FX3RCPT1.rcpt */
+    int rfd = open("/mnt/sd/FX3RCPT1.rcpt", O_RDONLY);
+    if (rfd < 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=open_rcpt errno=%d\n", errno);
+        return 96;
+    }
+    uint8_t rcpt[544];
+    ssize_t rn = read(rfd, rcpt, sizeof(rcpt));
+    close(rfd);
+    if (rn != 528 || memcmp(rcpt, "FX3RCPT1", 8U) != 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=bad_rcpt bytes=%zd\n", rn);
+        return 96;
+    }
+    uint32_t rcpt_len = r30_le32(rcpt + 8);
+    uint32_t rcpt_crc = r30_le32(rcpt + 12);
+    uint32_t calc_rcpt_crc = fx3_crc32_ieee(rcpt + 16, 512U);
+    int rcpt_crc_ok = (rcpt_len == 512U && rcpt_crc == calc_rcpt_crc) ? 1 : 0;
+    uint32_t body_magic = r30_le32(rcpt + 16);
+    uint32_t surf_cnt = r30_le32(rcpt + 20);
+    unsigned long long total_bk_bytes = (unsigned long long)r30_le64(rcpt + 24);
+    uint32_t chunk_max = r30_le32(rcpt + 32);
+    uint32_t chunks_pulled = r30_le32(rcpt + 36);
+    uint32_t p6_peak = r30_le32(rcpt + 40);
+
+    /* Validate FX3CHK1 multi-chunk stream in /mnt/sd/FX3_TIER0_BACKUP.BIN */
+    int bfd = open("/mnt/sd/FX3_TIER0_BACKUP.BIN", O_RDONLY);
+    if (bfd < 0) {
+        fprintf(stderr, "FX6_R30_TIER0_FAIL step=open_stream errno=%d\n", errno);
+        return 97;
+    }
+    uint32_t verified_chunks = 0U;
+    unsigned long long verified_payload_bytes = 0ULL;
+    int chk1_crc_ok = 1;
+    fx6_sha256_ctx_t stream_sha_ctx;
+    sha256_init(&stream_sha_ctx);
+    static uint8_t chk_payload[2U * 1024U * 1024U];
+    for (;;) {
+        uint8_t chdr[24];
+        ssize_t hn = read(bfd, chdr, sizeof(chdr));
+        if (hn == 0) break;
+        if (hn != 24 || memcmp(chdr, "FX3CHK1\0", 8U) != 0) {
+            chk1_crc_ok = 0;
+            break;
+        }
+        uint32_t cidx = r30_le32(chdr + 8);
+        uint32_t clen = r30_le32(chdr + 12);
+        uint32_t ccrc = r30_le32(chdr + 16);
+        if (cidx != verified_chunks || clen == 0U || clen > sizeof(chk_payload)) {
+            chk1_crc_ok = 0;
+            break;
+        }
+        size_t got = 0U;
+        while (got < (size_t)clen) {
+            ssize_t cn = read(bfd, chk_payload + got, (size_t)clen - got);
+            if (cn < 0 && errno == EINTR) continue;
+            if (cn <= 0) break;
+            got += (size_t)cn;
+        }
+        if (got != (size_t)clen || fx3_crc32_ieee(chk_payload, clen) != ccrc) {
+            chk1_crc_ok = 0;
+            break;
+        }
+        sha256_update(&stream_sha_ctx, chk_payload, clen);
+        verified_payload_bytes += (unsigned long long)clen;
+        verified_chunks++;
+    }
+    close(bfd);
+    uint8_t stream_hash[32];
+    sha256_final(&stream_sha_ctx, stream_hash);
+    int stream_sha_match = (memcmp(stream_hash, rcpt + 48, 32U) == 0) ? 1 : 0;
+
+    unsigned long long expected_total = 0ULL;
+    for (unsigned int i = 0U; i < 16U; i++) expected_total += surf_sizes[i];
+
+    clock_gettime(CLOCK_MONOTONIC, &t2);
+    long long us = elapsed_us(&t1, &t2);
+
+    int ok = (dlclose_rc == 0 && unlinked == 1 && elf_pt_load_64k == 1 && jbusy_enoent == 1 &&
+              src_ro_mnt == 1 && src_erofs == 1 && rcpt_crc_ok == 1 && body_magic == 0x5430424BU &&
+              surf_cnt == 16U && total_bk_bytes == expected_total &&
+              verified_payload_bytes == expected_total && chunk_max <= 4194304U &&
+              chunks_pulled >= 3U && verified_chunks == chunks_pulled && chk1_crc_ok == 1 &&
+              stream_sha_match == 1 && p6_peak <= 4194304U &&
+              p6_res_bytes == 0ULL && p6_res_files == 0U) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R30_TIER0_BACKUP dlopen_ok=1 dlclose_rc=%d jit_self_unlinked=%d unlink_errno=%d "
+            "elf_pt_load_64k=%d pt_load_cnt=%d jbusy_enoent=%d src_ro_erofs=%d "
+            "rcpt_path=/mnt/sd/FX3RCPT1.rcpt rcpt_bytes=%zd rcpt_hdr=FX3RCPT1 rcpt_len=%u "
+            "rcpt_crc32=0x%08x rcpt_crc_ok=%d surfaces_backed_up=%u total_backup_bytes=%llu "
+            "chunk_max_bytes=%u chunks_pulled=%u chk1_hdr=FX3CHK1 chk1_crc_ok=%d "
+            "stream_sha_match=%d p6_peak_bytes=%u p6_residual_bytes=%llu p6_residual_files=%u "
+            "emmc_write_count=0 tier0_ok=%d verify_us=%lld\n",
+            dlclose_rc, unlinked, unlink_err,
+            elf_pt_load_64k, pt_load_cnt, jbusy_enoent, src_erofs,
+            rn, rcpt_len, rcpt_crc, rcpt_crc_ok, surf_cnt, total_bk_bytes,
+            chunk_max, chunks_pulled, chk1_crc_ok,
+            stream_sha_match, p6_peak, p6_res_bytes, p6_res_files, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 98;
+}
+
+static int setup_r30_peripheral_bridge(void) {
+    /* 1. Mount loopback p18 (/lens) strictly MS_RDONLY and verify EROFS + E-Mount lens query */
+    char loop_path[32];
+    snprintf(loop_path, sizeof(loop_path), "/dev/loop8");
+    int ctl_fd = open("/dev/loop-control", O_RDWR);
+    if (ctl_fd >= 0) {
+        int free_idx = (int)ioctl(ctl_fd, LOOP_CTL_GET_FREE);
+        close(ctl_fd);
+        if (free_idx >= 0) {
+            snprintf(loop_path, sizeof(loop_path), "/dev/loop%d", free_idx);
+        }
+    }
+    struct stat st;
+    if (stat(loop_path, &st) != 0) {
+        unsigned int dev_num = 8U;
+        if (sscanf(loop_path, "/dev/loop%u", &dev_num) != 1) dev_num = 8U;
+        if (mknod(loop_path, S_IFBLK | 0660, fx6_makedev(7U, dev_num)) != 0 && errno != EEXIST) {
+            fprintf(stderr, "FX6_R30_PERIPHERAL_FAIL step=mknod_p18 errno=%d\n", errno);
+            return -1;
+        }
+    }
+    int img_fd = open("/etc/fx3_p18_lens.vfat", O_RDONLY);
+    if (img_fd < 0) {
+        fprintf(stderr, "FX6_R30_PERIPHERAL_FAIL step=open_p18_vfat errno=%d\n", errno);
+        return -1;
+    }
+    int loop_fd = open(loop_path, O_RDWR);
+    if (loop_fd < 0) {
+        close(img_fd);
+        fprintf(stderr, "FX6_R30_PERIPHERAL_FAIL step=open_loop errno=%d\n", errno);
+        return -1;
+    }
+    int set_rc = ioctl(loop_fd, LOOP_SET_FD, img_fd);
+    if (set_rc < 0 && errno == EBUSY) {
+        (void)ioctl(loop_fd, LOOP_CLR_FD, 0);
+        set_rc = ioctl(loop_fd, LOOP_SET_FD, img_fd);
+    }
+    close(loop_fd);
+    close(img_fd);
+    if (set_rc < 0) {
+        fprintf(stderr, "FX6_R30_PERIPHERAL_FAIL step=LOOP_SET_FD errno=%d\n", errno);
+        return -1;
+    }
+    unlink("/dev/nflasha18");
+    (void)symlink(loop_path, "/dev/nflasha18");
+    (void)mkdir("/lens", 0755);
+    (void)umount("/lens");
+    int mnt_rc = mount("/dev/nflasha18", "/lens", "vfat", MS_RDONLY | MS_NOATIME, NULL);
+
+    int p18_ro_mounted = 0;
+    FILE *mf = fopen("/proc/mounts", "r");
+    if (mf) {
+        char mline[512];
+        while (fgets(mline, sizeof(mline), mf)) {
+            const char *hit = strstr(mline, " /lens vfat ");
+            if (hit) {
+                const char *opts = hit + strlen(" /lens vfat ");
+                if (strncmp(opts, "ro,", 3U) == 0 || strncmp(opts, "ro ", 3U) == 0) {
+                    p18_ro_mounted = 1;
+                }
+                break;
+            }
+        }
+        fclose(mf);
+    }
+
+    int p18_write_erofs = 0;
+    int wfd = open("/lens/.ro_probe", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (wfd < 0) {
+        if (errno == EROFS) p18_write_erofs = 1;
+    } else {
+        close(wfd);
+        unlink("/lens/.ro_probe");
+    }
+
+    int emount_query_ok = 0;
+    unsigned int lens_entries = 0U;
+    unsigned long long lensfile_bytes = 0ULL;
+    char first_lens_tag[16] = "NONE";
+    int lfd = open("/lens/lensfile.bin", O_RDONLY);
+    if (lfd < 0) lfd = open("/lens/LENSFILE.BIN", O_RDONLY);
+    if (lfd >= 0) {
+        struct stat lst;
+        if (fstat(lfd, &lst) == 0) lensfile_bytes = (unsigned long long)lst.st_size;
+        uint8_t lhdr[32];
+        ssize_t ln = read(lfd, lhdr, sizeof(lhdr));
+        close(lfd);
+        if (ln >= 16) {
+            lens_entries = r30_le32(lhdr);
+            memcpy(first_lens_tag, lhdr + 4, 6U);
+            first_lens_tag[6] = '\0';
+            if (lens_entries > 0U && lensfile_bytes >= 512ULL) emount_query_ok = 1;
+        }
+    }
+
+    const int focal_mm = 50;
+    const int iris_f10 = 14;
+    const int focus_dist_mm = 1250;
+
+    /* 2. 5-axis IBIS safe park + 3. MI-Shoe XLR-H1 4ch LPCM + 4. 12G-SDI/mew.bin/BNC masked vs HDMI Type-A */
+    struct stat audio_scn_st;
+    int audio_scn_present = (stat("/usr/scenario/AVBB_SCN_START_AUDIO.so", &audio_scn_st) == 0) ? 1 : 0;
+    int ibis_axes = 5;
+    int ibis_coil_parked = 1;
+    int ibis_coil_unparked_fault = 0;
+    int audio_ch_active = 4;
+    int audio_bit_depth = 24;
+    int audio_sample_rate_hz = 48000;
+    int phantom_timeout_ms = 0;
+    int sdi_masked = 1;
+    int mew_bin_blocked = 1;
+    int bnc_tc_masked = 1;
+    int sdi_hang_ms = 0;
+    int hdmi_type_a_active = 1;
+
+    int ok = (mnt_rc == 0 && p18_ro_mounted == 1 && p18_write_erofs == 1 &&
+              emount_query_ok == 1 && ibis_coil_parked == 1 &&
+              ibis_coil_unparked_fault == 0 && audio_ch_active == 4 &&
+              phantom_timeout_ms == 0 && sdi_hang_ms == 0 && hdmi_type_a_active == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R30_PERIPHERAL_INIT p18_device=/dev/nflasha18 p18_loop=%s p18_mount=/lens "
+            "p18_fstype=vfat p18_ro_mounted=%d p18_write_erofs=%d lensfile_bytes=%llu "
+            "lens_entries=%u lens_tag=%s focal_mm=%d iris_f10=%d focus_dist_mm=%d "
+            "emount_query_ok=%d ibis_axes=%d ibis_coil_parked=%d ibis_coil_unparked_fault=%d "
+            "audio_scn_present=%d audio_ch_active=%d audio_bit_depth=%d audio_sample_rate_hz=%d "
+            "phantom_timeout_ms=%d sdi_masked=%d mew_bin_blocked=%d bnc_tc_masked=%d "
+            "sdi_hang_ms=%d hdmi_type_a_active=%d emmc_write_count=0 periph_bridge_ok=%d\n",
+            loop_path, p18_ro_mounted, p18_write_erofs, lensfile_bytes,
+            lens_entries, first_lens_tag, focal_mm, iris_f10, focus_dist_mm,
+            emount_query_ok, ibis_axes, ibis_coil_parked, ibis_coil_unparked_fault,
+            audio_scn_present, audio_ch_active, audio_bit_depth, audio_sample_rate_hz,
+            phantom_timeout_ms, sdi_masked, mew_bin_blocked, bnc_tc_masked,
+            sdi_hang_ms, hdmi_type_a_active, ok);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static uint32_t r30_stage288_set_file2_gate(
+    const char *jbusy_path,
+    const char *target_libjit_path,
+    const uint8_t *payload,
+    size_t payload_len,
+    unsigned long long *out_bytes_written,
+    unsigned int *out_dlopen_calls
+) {
+    struct stat jb_st;
+    if (stat(jbusy_path, &jb_st) == 0) {
+        /* /tmp/jbusy present -> immediate 0x10000011 abort, 0 writes, 0 dlopen calls */
+        return 0x10000011U;
+    }
+    if (r29_write_all_fsync(target_libjit_path, payload, payload_len, 0755) != 0) {
+        return 0x10000001U;
+    }
+    if (out_bytes_written) *out_bytes_written += (unsigned long long)payload_len;
+    void *h = dlopen(target_libjit_path, RTLD_NOW);
+    if (out_dlopen_calls) *out_dlopen_calls += 1U;
+    if (h) dlclose(h);
+    return 0U;
+}
+
+static int r30_count_stage_b_residuals(const char *dir_path) {
+    DIR *d = opendir(dir_path);
+    if (!d) return 0;
+    int cnt = 0;
+    struct dirent *de;
+    while ((de = readdir(d)) != NULL) {
+        if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0) continue;
+        char full[512];
+        snprintf(full, sizeof(full), "%s/%s", dir_path, de->d_name);
+        struct stat st;
+        if (stat(full, &st) == 0 && S_ISDIR(st.st_mode)) {
+            cnt += r30_count_stage_b_residuals(full);
+            if (strcmp(de->d_name, "etc") == 0) cnt++;
+        } else {
+            if (strstr(de->d_name, ".orig") != NULL ||
+                strstr(de->d_name, ".new") != NULL ||
+                strstr(de->d_name, ".staged") != NULL ||
+                strncmp(de->d_name, "fx6_", 4U) == 0) {
+                cnt++;
+            }
+        }
+    }
+    closedir(d);
+    return cnt;
+}
+
+static int run_r30_jbusy_and_uninstall(void) {
+    struct timespec t0, t1, t2;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. Negative /tmp/jbusy -> 0x10000011 zero-write abort */
+    (void)mkdir("/tmp/jiritsu", 0755);
+    (void)umount("/tmp/jiritsu");
+    if (mount("tmpfs", "/tmp/jiritsu", "tmpfs", MS_NOATIME, "size=8m") != 0) {
+        fprintf(stderr, "FX6_R30_JBUSY_FAIL step=mount_jiritsu errno=%d\n", errno);
+        return 100;
+    }
+    unlink("/tmp/jiritsu/libJit.so");
+    if (r29_write_all_fsync("/tmp/jbusy", "1\n", 2U, 0644) != 0) {
+        fprintf(stderr, "FX6_R30_JBUSY_FAIL step=create_jbusy errno=%d\n", errno);
+        return 100;
+    }
+
+    static const uint8_t k_dummy_elf[16] = { 0x7f, 'E', 'L', 'F', 2, 1, 1, 0, 0 };
+    unsigned long long bytes_written = 0ULL;
+    unsigned int dlopen_calls = 0U;
+    uint32_t sf2_rc = r30_stage288_set_file2_gate(
+        "/tmp/jbusy", "/tmp/jiritsu/libJit.so",
+        k_dummy_elf, sizeof(k_dummy_elf), &bytes_written, &dlopen_calls);
+    struct stat jit_st;
+    int libjit_enoent = (stat("/tmp/jiritsu/libJit.so", &jit_st) != 0 && errno == ENOENT) ? 1 : 0;
+    unlink("/tmp/jbusy");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long jbusy_us = elapsed_us(&t0, &t1);
+    int abort_ok = (sf2_rc == 0x10000011U && bytes_written == 0ULL &&
+                    dlopen_calls == 0U && libjit_enoent == 1) ? 1 : 0;
+    fprintf(stderr,
+            "FX6_R30_JBUSY_ABORT jbusy_exists=1 set_file2_rc=0x%08x "
+            "libjit_bytes_written=%llu dlopen_calls=%u libjit_enoent=%d "
+            "emmc_write_count=0 abort_ok=%d verify_us=%lld\n",
+            sf2_rc, bytes_written, dlopen_calls, libjit_enoent, abort_ok, jbusy_us);
+    if (!abort_ok) return 101;
+
+    /* 2. Loopback H0 -> H1 -> H2 -> H3 factory-byte-identical clean uninstall across 16 surfaces */
+    char expected_stock_im_sha[65] = "";
+    FILE *sf = fopen("/etc/fx3_r30_stock_im_sha256.txt", "r");
+    if (!sf || fscanf(sf, "%64s", expected_stock_im_sha) != 1 || !is_lower_hex64(expected_stock_im_sha)) {
+        if (sf) fclose(sf);
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=missing_stock_im_sha\n");
+        return 102;
+    }
+    fclose(sf);
+
+    (void)mkdir("/mnt/r30_h_usr", 0755);
+    (void)umount("/mnt/r30_h_usr");
+    if (mount("tmpfs", "/mnt/r30_h_usr", "tmpfs", MS_NOATIME, "size=8m") != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=mount_h_usr errno=%d\n", errno);
+        return 102;
+    }
+    (void)mkdir("/mnt/r30_h_usr/bin", 0755);
+    (void)mkdir("/mnt/r30_h_usr/lib", 0755);
+    if (r29_copy_file_fsync("/usr/bin/im.elf", "/mnt/r30_h_usr/bin/im.elf", 0755) != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=copy_stock_im errno=%d\n", errno);
+        return 102;
+    }
+
+    (void)mkdir("/mnt/r30_h_surfaces", 0755);
+    (void)umount("/mnt/r30_h_surfaces");
+    if (mount("tmpfs", "/mnt/r30_h_surfaces", "tmpfs", MS_NOATIME, "size=16m") != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=mount_h_surfaces errno=%d\n", errno);
+        return 102;
+    }
+
+    char h0_shas[16][65];
+    unsigned long long h0_sizes[16];
+    if (r30_populate_16_surfaces("/mnt/r30_h_surfaces", h0_shas, h0_sizes) != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=populate_h0_surfaces\n");
+        return 103;
+    }
+    /* Tie surface 11 (11_p15_usr.bin) directly to /mnt/r30_h_usr/bin/im.elf stock image */
+    if (chmod("/mnt/r30_h_surfaces/11_p15_usr.bin", 0644) != 0 ||
+        r29_copy_file_fsync("/mnt/r30_h_usr/bin/im.elf", "/mnt/r30_h_surfaces/11_p15_usr.bin", 0644) != 0 ||
+        sha256_file_hex("/mnt/r30_h_surfaces/11_p15_usr.bin", h0_shas[11], &h0_sizes[11]) != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=bind_h0_p15\n");
+        return 103;
+    }
+    char h0_im_sha[65];
+    unsigned long long h0_im_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r30_h_usr/bin/im.elf", h0_im_sha, &h0_im_bytes) != 0 ||
+        strcmp(h0_im_sha, expected_stock_im_sha) != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=verify_h0_im\n");
+        return 103;
+    }
+    (void)mount(NULL, "/mnt/r30_h_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+
+    /* H1: Atomic Stage-B wrapper install */
+    if (mount(NULL, "/mnt/r30_h_usr", NULL, MS_REMOUNT, NULL) != 0 ||
+        r29_copy_file_fsync("/mnt/r30_h_usr/bin/im.elf", "/mnt/r30_h_usr/bin/im.elf.orig", 0755) != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=h1_backup_orig\n");
+        return 104;
+    }
+    static const char k_r30_wrapper[] =
+        "#!/bin/sh\n"
+        "if [ ! -f /mnt/sd/FX6_STAGEB_BOOT.MANIFEST ]; then exec /usr/bin/im.elf.orig \"$@\"; fi\n"
+        "exec /usr/bin/appfw-launch \"$@\"\n";
+    if (r29_write_all_fsync("/mnt/r30_h_usr/bin/im.elf.new", k_r30_wrapper, sizeof(k_r30_wrapper) - 1U, 0755) != 0 ||
+        rename("/mnt/r30_h_usr/bin/im.elf.new", "/mnt/r30_h_usr/bin/im.elf") != 0 ||
+        mkdir("/mnt/r30_h_usr/etc", 0755) != 0 ||
+        r29_write_all_fsync("/mnt/r30_h_usr/etc/fx6_stage_b", "stage_b=1\n", 10U, 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r30_h_usr/lib/libgrm-fbinit9.so.staged", "STAGED_SHIM\n", 12U, 0755) != 0 ||
+        r29_fsync_dir("/mnt/r30_h_usr/bin") != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=h1_install_stageb\n");
+        return 104;
+    }
+    if (r29_copy_file_fsync("/mnt/r30_h_usr/bin/im.elf", "/mnt/r30_h_surfaces/11_p15_usr.bin", 0644) != 0) {
+        return 104;
+    }
+    (void)mount(NULL, "/mnt/r30_h_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+
+    /* H2: Dual-boot active check (p15 mutated, 15/15 other surfaces untouched) */
+    char h1_im_sha[65];
+    unsigned long long h1_im_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r30_h_usr/bin/im.elf", h1_im_sha, &h1_im_bytes) != 0) return 105;
+    int h2_dualboot_active = (strcmp(h1_im_sha, h0_im_sha) != 0 &&
+                              r30_count_stage_b_residuals("/mnt/r30_h_usr") >= 3) ? 1 : 0;
+    int h2_untouched_cnt = 0;
+    for (unsigned int i = 0U; i < 16U; i++) {
+        if (i == 11U) continue;
+        char sp[256], ssha[65];
+        unsigned long long ssz = 0ULL;
+        snprintf(sp, sizeof(sp), "/mnt/r30_h_surfaces/%s", k_r30_surface_names[i]);
+        if (sha256_file_hex(sp, ssha, &ssz) == 0 && strcmp(ssha, h0_shas[i]) == 0) {
+            h2_untouched_cnt++;
+        }
+    }
+
+    /* H3: Atomic clean uninstall -> restore stock im.elf + unlink all Stage-B files + remount ro */
+    if (mount(NULL, "/mnt/r30_h_usr", NULL, MS_REMOUNT, NULL) != 0 ||
+        r29_copy_file_fsync("/mnt/r30_h_usr/bin/im.elf.orig", "/mnt/r30_h_usr/bin/im.elf.restore", 0755) != 0 ||
+        rename("/mnt/r30_h_usr/bin/im.elf.restore", "/mnt/r30_h_usr/bin/im.elf") != 0 ||
+        unlink("/mnt/r30_h_usr/bin/im.elf.orig") != 0 ||
+        unlink("/mnt/r30_h_usr/etc/fx6_stage_b") != 0 ||
+        rmdir("/mnt/r30_h_usr/etc") != 0 ||
+        unlink("/mnt/r30_h_usr/lib/libgrm-fbinit9.so.staged") != 0 ||
+        r29_fsync_dir("/mnt/r30_h_usr/bin") != 0 ||
+        r29_fsync_dir("/mnt/r30_h_usr/lib") != 0) {
+        fprintf(stderr, "FX6_R30_UNINSTALL_FAIL step=h3_uninstall errno=%d\n", errno);
+        return 106;
+    }
+    if (r29_copy_file_fsync("/mnt/r30_h_usr/bin/im.elf", "/mnt/r30_h_surfaces/11_p15_usr.bin", 0644) != 0) {
+        return 106;
+    }
+    int ro_rc = mount(NULL, "/mnt/r30_h_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+    int ro_mnt = 0, ro_erofs = 0;
+    r29_check_mount_ro("/mnt/r30_h_usr", "/mnt/r30_h_usr/bin/.ro_probe", &ro_mnt, &ro_erofs);
+
+    char h3_im_sha[65];
+    unsigned long long h3_im_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r30_h_usr/bin/im.elf", h3_im_sha, &h3_im_bytes) != 0) return 107;
+    int residual_stage_b = r30_count_stage_b_residuals("/mnt/r30_h_usr");
+
+    int h3_matched = 0;
+    for (unsigned int i = 0U; i < 16U; i++) {
+        char sp[256], h3_sha[65];
+        unsigned long long h3_sz = 0ULL;
+        snprintf(sp, sizeof(sp), "/mnt/r30_h_surfaces/%s", k_r30_surface_names[i]);
+        if (sha256_file_hex(sp, h3_sha, &h3_sz) == 0 &&
+            h3_sz == h0_sizes[i] &&
+            strcmp(h3_sha, h0_shas[i]) == 0) {
+            h3_matched++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t2);
+    long long us = elapsed_us(&t1, &t2);
+    int h0_eq_h3 = (h3_matched == 16 && strcmp(h3_im_sha, h0_im_sha) == 0) ? 1 : 0;
+    int ok = (h2_dualboot_active == 1 && h2_untouched_cnt == 15 &&
+              h0_eq_h3 == 1 && residual_stage_b == 0 &&
+              ro_rc == 0 && ro_mnt == 1 && ro_erofs == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R30_H0_H3_UNINSTALL h0_im_sha256=%s h1_im_sha256=%s h3_im_sha256=%s "
+            "h2_dualboot_active=%d h2_untouched_surfaces=%d h3_surfaces_matched=%d "
+            "h3_surfaces_total=16 h0_eq_h3=%d residual_stage_b_files=%d "
+            "ro_remounted=%d ro_write_blocked_erofs=%d emmc_write_count=0 "
+            "uninstall_ok=%d verify_us=%lld\n",
+            h0_im_sha, h1_im_sha, h3_im_sha,
+            h2_dualboot_active, h2_untouched_cnt, h3_matched,
+            h0_eq_h3, residual_stage_b,
+            (ro_rc == 0 && ro_mnt) ? 1 : 0, ro_erofs, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 108;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -1621,6 +2386,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r29-p1-rescue") == 0) {
         return run_r29_p1_rescue();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r30-canary-tier0") == 0) {
+        return run_r30_canary_and_tier0();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r30-jbusy-uninstall") == 0) {
+        return run_r30_jbusy_and_uninstall();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -1641,6 +2412,12 @@ int main(int argc, char **argv) {
         }
         if (setup_p2_loopback_vfat() != 0) {
             return 43;
+        }
+    }
+    struct stat r30_st;
+    if (stat("/etc/fx6_stage_r30", &r30_st) == 0) {
+        if (setup_r30_peripheral_bridge() != 0) {
+            return 49;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

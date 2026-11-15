@@ -78,6 +78,7 @@ import realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator as p182  # no
 import realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator as p242  # noqa: E402
 import realhw_fan_pwm_shutter_angle_lut_split_coemulator as p200  # noqa: E402
 import realhw_filesettings_shotmark_tcregen_reclamp_coemulator as p217  # noqa: E402
+import realhw_framing_usbpower_lun_antiflicker_coemulator as p250  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
 import realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator as p213  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
@@ -184,6 +185,8 @@ class CoEmulationConfig:
     include_stage45: bool = True
     include_phase244_realhw_shoe_audio_wind_saveload_c3_hil: bool = True
     include_stage46: bool = True
+    include_phase250_realhw_framing_usbpower_lun_antiflicker_hil: bool = True
+    include_stage47: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2875,6 +2878,78 @@ def run_stage46_realhw_shoe_audio_wind_saveload_c3_hil(
     }
 
 
+def run_stage47_realhw_framing_usbpower_lun_antiflicker_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 47 (Phase 250, 250th Phase Milestone, 47/47): Real-Hardware ILME-FX3 Wave-37 Framing Settings Asymmetric Full/Crop & HDMI RAW Lockout, USB Power Supply Mandatory NP-FZ100 + USB Type-C & USB LUN Setting Multi/Single Setup Persistence, and Anti-flicker Shoot. Mechanical-Still-Only & No Var. Shutter HIL."""
+    config.validate()
+    rep = p250.run_phase250_realhw_framing_usbpower_lun_antiflicker_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage47_realhw_framing_usbpower_lun_antiflicker_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "is_250th_phase_milestone": rep["is_250th_phase_milestone"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "framing_crop_hdmi_raw_conflict_events": red["framing_crop_hdmi_raw_conflict_events"],
+        "zve1_autoframing_conflation_events": red["zve1_autoframing_conflation_events"],
+        "unbuffered_usb_pd_battery_pull_events": red["unbuffered_usb_pd_battery_pull_events"],
+        "multi_micro_usb_power_bypass_events": red["multi_micro_usb_power_bypass_events"],
+        "antiflicker_movie_or_eshutter_bypass_events": red[
+            "antiflicker_movie_or_eshutter_bypass_events"
+        ],
+        "false_var_shutter_or_ecs_node_events": red["false_var_shutter_or_ecs_node_events"],
+        "fx3_has_var_shutter": red["fx3_has_var_shutter"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_framing_asymmetric_and_hdmi_raw_hil": rep[
+            "pillar_a_framing_asymmetric_and_hdmi_raw_hil"
+        ],
+        "pillar_b_usb_power_npfz100_typec_and_lun_setup_hil": rep[
+            "pillar_b_usb_power_npfz100_typec_and_lun_setup_hil"
+        ],
+        "pillar_c_d_antiflicker_no_varshutter_and_redlines": rep[
+            "pillar_c_d_antiflicker_no_varshutter_and_redlines"
+        ],
+        "phase250_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2885,7 +2960,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 46-stage (Phase 33..244, 46/46 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 47-stage (Phase 33..250, 250th Phase Milestone, 47/47) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -3095,6 +3170,14 @@ def run_fx3_vm_coemulation_suite(
         if (
             cfg.include_phase244_realhw_shoe_audio_wind_saveload_c3_hil
             and cfg.include_stage46
+        )
+        else None
+    )
+    stage47: Optional[Dict[str, object]] = (
+        run_stage47_realhw_framing_usbpower_lun_antiflicker_hil(cfg, env=env)
+        if (
+            cfg.include_phase250_realhw_framing_usbpower_lun_antiflicker_hil
+            and cfg.include_stage47
         )
         else None
     )
@@ -4103,6 +4186,45 @@ def run_fx3_vm_coemulation_suite(
         and stage46["appfw_crashes"] == 0
         and stage46["raw_firmware_bytes_leaked"] == 0
     )
+    stage47_ok = True if stage47 is None else (
+        bool(stage47["all_checks_passed"])
+        and stage47["nop_count"] == 0
+        and stage47["guest_code_modification_bytes"] == 0
+        and stage47["cp_mutation_bytes"] == 0
+        and stage47["wbi_mutation_bytes"] == 0
+        and stage47["calibration_mutation_bytes"] == 0
+        and stage47["cnflasha_mutation_bytes"] == 0
+        and bool(stage47["cnflasha_userspace_write_blocked"])
+        and stage47["nvram_persistent_writes"] == 0
+        and stage47["bk4_persistent_nvram_writes"] == 0
+        and stage47["physical_device_writes"] == 0
+        and (not stage47["persistent_emmc_writes_authorized"])
+        and (not stage47["hardware_live_attachment_authorized"])
+        and (not stage47["overall_ready_for_hardware_attach"])
+        and (not stage47["isp_write_authorized"])
+        and stage47["emmc_nflasha_write_count"] == 0
+        and stage47["emmc_mutation_bytes"] == 0
+        and (not stage47["spi_nor_write_authorized"])
+        and stage47["spi_nor_mutation_bytes"] == 0
+        and (not stage47["el3_payload_transmit_authorized"])
+        and stage47["physical_usb_packets_emitted"] == 0
+        and stage47["otp_fuse_touches"] == 0
+        and stage47["rpmb_counter_increments"] == 0
+        and stage47["framing_crop_hdmi_raw_conflict_events"] == 0
+        and stage47["zve1_autoframing_conflation_events"] == 0
+        and stage47["unbuffered_usb_pd_battery_pull_events"] == 0
+        and stage47["multi_micro_usb_power_bypass_events"] == 0
+        and stage47["antiflicker_movie_or_eshutter_bypass_events"] == 0
+        and stage47["false_var_shutter_or_ecs_node_events"] == 0
+        and (not stage47["fx3_has_var_shutter"])
+        and stage47["rsv_orphan_count"] == 0
+        and stage47["null_gpio_derefs"] == 0
+        and stage47["mailbox_stalls"] == 0
+        and stage47["stock_cp_fault_count"] == 0
+        and stage47["wf12_00342260_hits"] == 0
+        and stage47["appfw_crashes"] == 0
+        and stage47["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -4152,6 +4274,7 @@ def run_fx3_vm_coemulation_suite(
         and stage44_ok
         and stage45_ok
         and stage46_ok
+        and stage47_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -4231,6 +4354,14 @@ def run_fx3_vm_coemulation_suite(
             "include_stage46": (
                 cfg.include_phase244_realhw_shoe_audio_wind_saveload_c3_hil
                 and cfg.include_stage46
+            ),
+            "include_phase250_realhw_framing_usbpower_lun_antiflicker_hil": (
+                cfg.include_phase250_realhw_framing_usbpower_lun_antiflicker_hil
+                and cfg.include_stage47
+            ),
+            "include_stage47": (
+                cfg.include_phase250_realhw_framing_usbpower_lun_antiflicker_hil
+                and cfg.include_stage47
             ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
@@ -4342,6 +4473,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil"] = stage45
     if stage46 is not None:
         core_payload["stage46_realhw_shoe_audio_wind_saveload_c3_hil"] = stage46
+    if stage47 is not None:
+        core_payload["stage47_realhw_framing_usbpower_lun_antiflicker_hil"] = stage47
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -4353,7 +4486,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 (46/46 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 (250th Phase Milestone, 47/47 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -4617,6 +4750,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 46 (Phase 244 46/46 Milestone Real-Hardware ILME-FX3 Wave-36 Shoe Audio Set. 48kHz/24bit 4ch Meter Expansion vs 3.5mm/ANALOG/S&Q Lockouts, Wind Noise Reduct. Built-In Mic Exclusivity & Indoor Guard, and Save/Load Settings CAMSET01..10.DAT / C3 Portal Excluded-Items Firewall & Slot-1 Tier-0 Vault Guard HIL)",
     )
     parser.add_argument(
+        "--include-stage47",
+        dest="include_stage47",
+        action="store_true",
+        default=True,
+        help="Include Stage 47 (Phase 250 250th Phase Milestone 47/47 Real-Hardware ILME-FX3 Wave-37 Framing Settings Asymmetric Full/Crop & HDMI RAW Lockout, USB Power Supply Mandatory NP-FZ100 + USB Type-C & USB LUN Setting Multi/Single Setup Persistence, and Anti-flicker Shoot. Mechanical-Still-Only & No Var. Shutter HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage47",
+        "--no-include-stage47",
+        dest="skip_stage47",
+        action="store_true",
+        help="Skip optional Stage 47 (alias for --skip-phase250)",
+    )
+    parser.add_argument(
+        "--skip-phase250",
+        action="store_true",
+        help="Skip optional Stage 47 (Phase 250 250th Phase Milestone 47/47 Real-Hardware ILME-FX3 Wave-37 Framing Settings Asymmetric Full/Crop & HDMI RAW Lockout, USB Power Supply Mandatory NP-FZ100 + USB Type-C & USB LUN Setting Multi/Single Setup Persistence, and Anti-flicker Shoot. Mechanical-Still-Only & No Var. Shutter HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -4679,6 +4831,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage44 = bool(args.include_stage44) and (not args.skip_phase239) and (not args.skip_stage44)
     enable_stage45 = bool(args.include_stage45) and (not args.skip_phase242) and (not args.skip_stage45)
     enable_stage46 = bool(args.include_stage46) and (not args.skip_phase244) and (not args.skip_stage46)
+    enable_stage47 = bool(args.include_stage47) and (not args.skip_phase250) and (not args.skip_stage47)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -4731,6 +4884,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_stage45=enable_stage45,
         include_phase244_realhw_shoe_audio_wind_saveload_c3_hil=enable_stage46,
         include_stage46=enable_stage46,
+        include_phase250_realhw_framing_usbpower_lun_antiflicker_hil=enable_stage47,
+        include_stage47=enable_stage47,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -4786,6 +4941,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s44 = rep.get("stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil")
         s45 = rep.get("stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil")
         s46 = rep.get("stage46_realhw_shoe_audio_wind_saveload_c3_hil")
+        s47 = rep.get("stage47_realhw_framing_usbpower_lun_antiflicker_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -5170,6 +5326,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s46, dict)
             else ""
         )
+        s47_str = (
+            f" | realhw_framing_usbpower_lun_antiflicker_hil={s47['source_mode']}("
+            f"framing={len(s47['pillar_a_framing_asymmetric_and_hdmi_raw_hil']['routing_4way_matrix'])}w,"
+            f"raw_conf={s47['framing_crop_hdmi_raw_conflict_events']},"
+            f"bat_pull={s47['unbuffered_usb_pd_battery_pull_events']},"
+            f"usb_pkt={s47['physical_usb_packets_emitted']},"
+            f"var_sh={s47['fx3_has_var_shutter']},"
+            f"emmc_wr={s47['emmc_nflasha_write_count']})"
+            if isinstance(s47, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -5178,7 +5345,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

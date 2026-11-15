@@ -331,3 +331,26 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --clean-room --json
 ```
+
+## Phase 113 — `CXD90057` / `CXD90058` 双槽 A/B 一致性校验、官方 `BODYDATA.DAT` / USB-OTA 断电半刷取证分诊与 11 支柱总检
+
+- **[`ab_bank_and_interrupted_ota_verifier.py`](fx3_recovery/ab_bank_and_interrupted_ota_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，AP `CXD90057` + CP `CXD90058`）提供三大只读 RAM-only 恢复安全验证支柱（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_ab_bank_and_ota_donors_readonly`）**：只读核验 FX3 `2.05/nflasha1` SquashFS（`/usr/bin/sdfileinput.elf` `BODYDATA.DAT`、`/usr/bin/UdtrMain.sh` `/setting/updater/uincomp` / `mode*`、`/usr/bin/common.src` `ERROR_UINCOMP=54`、`/usr/kmod/usb_buspwr.ko` `BATTERY_STATE_EXIST`）、`udtrbody.squashfs`（`/bin/nor_loader_writer.sh` `cpapp-b.bin` / `loader_nor.bin` / `MIS.bin`）、FX3 与 FX6 `cpapp-b.bin`（`15,980,568` vs `17,952,816` 字节，严禁跨机型刷写）及 `fx3-7.02-BODYDATA.DAT` 有界 `4096 B` UFU 头部（`\x89UFU\r\n\x1a\n`）。
+  - **支柱 1 — `CXD90057` / `CXD90058` 双槽 A/B（Bank-A / Bank-B）AP+CP 同步 Epoch 与半写入检测器（`classify_bank_slot_health` / `audit_dual_bank_ap_cp_consistency`）**：
+    - 精确建模 4 类双槽健康状态：`ACTIVE_VERIFIED`、`PENDING_TRIAL`、`TORN_PARTIAL_WRITE`、`ROLLBACK_FENCED`。
+    - 在纯 RAM 中完成 AP 与 CP 双槽 CRC/写入字节数/Epoch 审计，fail-closed 拦截 AP 启动 Bank-B `7.02` 而 CP 滞留在半写入 Bank-A `2.05` / 坏 CRC 所导致的 AP<->CP IPC 协议死锁（琥珀/红灯闪烁变砖）、跨 SKU 移植与未配置完整回退槽的 `PENDING_TRIAL`。
+  - **支柱 2 — 官方 `BODYDATA.DAT` / Creators'-App OTA 断电半刷取证分诊与预检门禁（`audit_official_ota_preflight` / `triage_interrupted_ota_brick` / `run_interrupted_ota_6_scenario_triage`）**：
+    - 强制校验 Sony 官方升级 `>= 51%` 电量门禁（`SONY_FW_UPDATE_MIN_BATTERY_PCT = 51`）、`0x91030080` 机型与 `NTSC`/`PAL` 同区校验、UFU 魔数与传输介质稳定性。
+    - 精确分诊 6 类真实相机维修/升级场景（`U1_BATTERY_PULLED_DURING_CP_FLASH`、`U2_SD_CARD_READ_CRC_MID_UPDATA`、`U3_USB_CABLE_YANKED_LEGACY_UPDATER`、`U4_CROSS_REGION_NTSC_PAL_MISMATCH`、`U5_STAGE_B_CLEAN_SD_EJECT_ZERO_BRICK`、`U6_INTACT_DUAL_BANK_HEALTHY`），并映射到最小无损恢复动作（SD `FX3_SAFE_STOCK.FLG` 秒级回退 vs 被动 `1.8V` UART 诊断 vs Tier-0 只读转储）。
+    - 显式证明 `U5` Stage-B 易失 RAM/SD 用户态叠加即使突发拔电池/退卡也具有**零闪存中断变砖面**（`emmc_bank_transitions == 0`、`updata_flags_touched == False`、`flash_interruption_brick_surface == False`）。
+  - **支柱 3 — CLI 与 11 支柱总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-ab-bank-triage [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113`（构成 **11/11** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 113 公开符号；[`tests/test_ab_bank_and_interrupted_ota_verifier.py`](tests/test_ab_bank_and_interrupted_ota_verifier.py) 提供快速双模式单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-ab-bank-triage --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --clean-room --json
+```
+

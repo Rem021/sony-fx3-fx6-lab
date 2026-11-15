@@ -960,3 +960,32 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
     - Status Check Tab 6 Assignable Button (`sid=0x34`) across (`r26d EN`, `r26e JA`, `r17a ZH-CN`, `r26f ZH-TW`): `6/6` pairs strictly `> 0` (`29,750 .. 53,424` px).
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `228` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/README.md`](../../reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/summary.json).
+
+---
+
+## 27. Round 27: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) Maintenance & Status Check Tab 7 Battery Dual-Surface Closure (`3-Layer Maintenance Menu sid=0x11` & `Status Check Tab 7 Battery sid=0x35` -> `12/12` Multilingual Deltas)
+
+`build_and_run_round.py --round 27 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) Maintenance & Battery Dual-Surface Closure** across both **3-Layer Maintenance Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`, `10x DOWN + 2x RIGHT`)** and **Status Check Tab 7 Battery (`sid=0x35`, `37procam_touch_status_battery_presenter`, `0x7052 + 6x DOWN`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R27_VERIFY_PASS`, `FX6_STAGE_B_R27_BRIDGE`, and `FX6_R27_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 27 --lang english --initial-setting-done 1 --run-id r27a-menu-3layer-maintenance-english --duration 94 \
+  --run-dir <SCRATCH_ROOT>/fx6-r27-runs/r27a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r27a-menu-3layer-maintenance-english \
+  --export-png-dir reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/assets
+```
+
+- **6 Live Round 27 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P11` `XLR-H1`, `P12` `WF-12` Immune)**:
+  - `r27a-menu-3layer-maintenance-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `10x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `207` colors / `0` `0xffffaa00` amber px, `14,524` icon blits, `9,705` glyph blits, `92` `LDEC103` ioctls).
+  - `r27b-menu-3layer-maintenance-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `10x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `230` colors / `0` `0xffffaa00` amber px, `14,779` icon blits, `9,867` glyph blits, `95` `LDEC103` ioctls).
+  - `r27c-menu-3layer-maintenance-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `10x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `241` colors / `0` `0xffffaa00` amber px, `15,019` icon blits, `10,189` glyph blits, `94` `LDEC103` ioctls).
+  - `r27d-status-tab7-battery-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `6x 0x0030` -> `37procam_touch_status_battery_presenter` (`sid=0x35`, `437,883` px / `80` colors / `290` `0xffffaa00` amber px, `9,459` icon blits, `17,920` glyph blits, `60` `LDEC103` ioctls).
+  - `r27e-status-tab7-battery-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `0x7052` + `6x 0x0030` -> `37procam_touch_status_battery_presenter` (`sid=0x35`, `437,403` px / `80` colors / `249` `0xffffaa00` amber px, `9,259` icon blits, `17,771` glyph blits, `60` `LDEC103` ioctls).
+  - `r27f-status-tab7-battery-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `6x 0x0030` -> `37procam_touch_status_battery_presenter` (`sid=0x35`, `437,883` px / `80` colors / `249` `0xffffaa00` amber px, `9,247` icon blits, `17,277` glyph blits, `62` `LDEC103` ioctls).
+  - **Complete `12/12` Maintenance & Tab 7 Battery Multilingual Pairwise Matrix**:
+    - 3-Layer Maintenance Menu (`sid=0x11`) across (`r27a EN`, `r27b JA`, `r18d ZH-CN`, `r27c ZH-TW`): `6/6` pairs strictly `> 0` (`4,852 .. 10,581` px).
+    - Status Check Tab 7 Battery (`sid=0x35`) across (`r27d EN`, `r27e JA`, `r17b ZH-CN`, `r27f ZH-TW`): `6/6` pairs strictly `> 0` (`9,528 .. 19,649` px).
+  - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
+- **Full Report, Receipts, & `243` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/README.md`](../../reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/summary.json).
+

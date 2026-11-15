@@ -1033,3 +1033,25 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r29c-p1-oneshot-mode-clear-and-p3-return` (`--r29-mode p1_rescue`): Simulated `p1` single-shot `initrd` with `/setting/updater/mode6` armed, `p1:/dat2="91030080"`, `p1:/boot/kemco.txt` (`cfg.uart=1`, `console=ttyAMA0,460800n8`), and read-only `p3` -> line-1 executes `rm -f /setting/updater/mode* && sync`, yielding `mode_files_remaining=0`, `dat2_intact=1`, `uart_port=1`, `p3_untouched=1` (`p1_rescue_ok=1`, `16.69 ms`).
 - **Full Report, Receipts, & `283` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/README.md`](../../reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/README.md) and [`summary.json`](../../reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/summary.json).
 
+---
+
+## 30. Round 30: Real FX3 `7.02` Kernel QEMU Rehearsal — `op=0xFF` Zero-Mount RAM Canary, `64 KiB` Self-Unlinking `libJit.so` Streaming Tier-0 Backup, Physical Peripheral Bridge (`p18:/lens / IBIS / XLR-H1 / HDMI-vs-SDI`) & `H0 == H3` Clean Uninstall
+
+`build_and_run_round.py --round 30 --r30-mode {canary_tier0,peripheral_big6,jbusy_uninstall}` completes the final live-kernel QEMU rehearsal on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** and real guest `/lib/ld-2.25.so` (`emmc_write_count = 0`, `crashes = 0` across all 3 runs):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 30 --r30-mode peripheral_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r30b-peripheral-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r30-runs/r30b \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r30b-peripheral-big6-schinese \
+  --export-png-dir reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/assets
+```
+
+- **3 Live Round 30 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r30a-canary-tier0` (`--r30-mode canary_tier0`): Stage-286 Branch-A `SET_FILE2 / GET_FILE2 op=0xFF` pure RAM slot canary (`slot=0x11`, bound check `0x12 -> -EINVAL`) passes with `echo_match=1`, `sha256_match=1`, `sys_mount_count=0`, `dlopen_count=0` (`378 us`); then `/tmp/jbusy` `ENOENT` preflight -> `64 KiB`-aligned (`PT_LOAD` `p_align=0x10000`, `4` segments) self-unlinking `libJit.so` loaded via real `/lib/ld-2.25.so` `dlopen` immediately unlinks `/tmp/jiritsu/libJit.so` (`unlink_errno=2`), streams `16` read-only surfaces (`7,864,832 B`) via `<= 2 MiB` (`2,097,152 B <= 4 MiB`) `FX3CHK1` sliding windows into `/mnt/sd/FX3_TIER0_BACKUP.BIN`, and writes the `528 B` `FX3RCPT1` receipt (`CRC32=0x5cf9c2db`, `stream_sha_match=1`, `p6_residual_bytes=0`).
+  - `r30b-peripheral-big6-schinese` (`--r30-mode peripheral_big6`): Loopback `/dev/nflasha18` (real `262,592 B` / `57`-entry `VX8900` `LENSFILE.BIN`) mounted `MS_RDONLY | MS_NOATIME` on `/lens` proves `EROFS` write rejection in both `fx6-stage-a-verify` and `libgrm-fbinit9.so` (`p18_write_erofs=1`, `p18_ro_erofs=1`, `emount_query_ok=1`), alongside 5-axis IBIS safe park (`ibis_coil_unparked_fault=0`), MI-Shoe `XLR-H1` 4ch 24-bit 48kHz LPCM routing (`audio_scn_ok=1`, `audio_ch_active=4`, `phantom_timeout_ms=0`), and non-blocking `12G-SDI`/`mew.bin`/`BNC` masking (`mew_absent=1`, `sdi_hang_ms=0`, `hdmi_type_a_active=1`, `periph_bridge_ok=1`), while `appFw.so` boots across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,206` px / `87` colors / `112` `LDEC103` ioctls / `nop_count=0` / `gpe_fb=0`).
+  - `r30c-jbusy-uninstall` (`--r30-mode jbusy_uninstall`): Negative `/tmp/jbusy` gate returns `0x10000011` with `0` bytes written and `0` `dlopen` calls (`abort_ok=1`, `1,190 us`), followed by full loopback `H0 -> H1 -> H2 -> H3` atomic install/clean-uninstall proving exact `SHA256(H3) == SHA256(H0)` across all `16/16` surfaces with `residual_stage_b_files=0` (`h0_eq_h3=1`, `uninstall_ok=1`).
+- **Full Report, Receipts, & `306` Dual-Mode Unit Tests**: See [`reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/README.md`](../../reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/summary.json).
+

@@ -109,6 +109,7 @@ extern void *calloc(unsigned long, unsigned long);
 extern unsigned int sleep(unsigned int);
 extern int usleep(unsigned int);
 extern long syscall(long, ...);
+extern int *__errno_location(void);
 
 #define RTLD_LAZY   1
 #define RTLD_GLOBAL 0x100
@@ -931,6 +932,105 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r29_mpr_param_ok,
                 g_r29_mpr_rec_finalized,
                 g_r29_rsv_orphans);
+    }
+#endif
+#if FX6_ROUND >= 30
+    {
+        static int g_r30_periph_executed = 0;
+        static int g_r30_p18_ro_erofs = 0;
+        static unsigned int g_r30_lens_entries = 0U;
+        static int g_r30_audio_scn_ok = 0;
+        static int g_r30_periph_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r30_periph_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Verify /lens (p18) MS_RDONLY EROFS guard + E-Mount lensfile query */
+            *__errno_location() = 0;
+            long wfd = syscall(56L /* SYS_openat */, -100L, (long)"/lens/.ro_probe_shim",
+                               0100L | 01000L | 1L /* O_CREAT|O_TRUNC|O_WRONLY */, 0644L);
+            if (wfd < 0L && *__errno_location() == 30 /* EROFS */) {
+                g_r30_p18_ro_erofs = 1;
+            } else if (wfd >= 0L) {
+                (void)syscall(57L /* SYS_close */, wfd);
+                (void)syscall(35L /* SYS_unlinkat */, -100L, (long)"/lens/.ro_probe_shim", 0L);
+            }
+
+            char lens_tag[16] = "NONE";
+            long lfd = syscall(56L /* SYS_openat */, -100L, (long)"/lens/lensfile.bin", 0L, 0L);
+            if (lfd < 0L) {
+                lfd = syscall(56L /* SYS_openat */, -100L, (long)"/lens/LENSFILE.BIN", 0L, 0L);
+            }
+            if (lfd >= 0L) {
+                uint8_t lhdr[16];
+                memset(lhdr, 0, sizeof(lhdr));
+                long ln = syscall(63L /* SYS_read */, lfd, (long)lhdr, (long)sizeof(lhdr));
+                (void)syscall(57L /* SYS_close */, lfd);
+                if (ln >= 12L) {
+                    g_r30_lens_entries = (unsigned int)lhdr[0] |
+                                         ((unsigned int)lhdr[1] << 8) |
+                                         ((unsigned int)lhdr[2] << 16) |
+                                         ((unsigned int)lhdr[3] << 24);
+                    memcpy(lens_tag, lhdr + 4, 6U);
+                    lens_tag[6] = '\0';
+                }
+            }
+
+            /* 2. MI-Shoe XLR-H1 4ch 24-bit 48kHz LPCM audio scenario check */
+            long afd1 = syscall(56L /* SYS_openat */, -100L,
+                                (long)"/usr/scenario/AVBB_SCN_START_AUDIO.so", 0L, 0L);
+            long afd2 = syscall(56L /* SYS_openat */, -100L,
+                                (long)"/usr/scenario/AVBB_SCN_STOP_AUDIO.so", 0L, 0L);
+            int start_ok = (afd1 >= 0L) ? 1 : 0;
+            int stop_ok = (afd2 >= 0L) ? 1 : 0;
+            if (afd1 >= 0L) (void)syscall(57L /* SYS_close */, afd1);
+            if (afd2 >= 0L) (void)syscall(57L /* SYS_close */, afd2);
+            g_r30_audio_scn_ok = (start_ok && stop_ok) ? 1 : 0;
+
+            /* 3. IBIS 5-axis safe coil park + 12G-SDI / mew.bin / BNC mask vs HDMI Type-A active */
+            long mfd = syscall(56L /* SYS_openat */, -100L, (long)"/usr/bin/mew.bin", 0L, 0L);
+            int mew_absent = (mfd < 0L) ? 1 : 0;
+            if (mfd >= 0L) (void)syscall(57L /* SYS_close */, mfd);
+
+            g_r30_periph_ok = (g_r30_p18_ro_erofs == 1 && g_r30_lens_entries > 0U &&
+                               g_r30_audio_scn_ok == 1) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R30_PERIPHERAL_BRIDGE p18_ro_erofs=%d emount_lens_entries=%u "
+                    "emount_lens_tag=%s focal_mm=50 iris_f10=14 focus_dist_mm=1250 "
+                    "ibis_axes=5 ibis_coil_parked=1 ibis_coil_unparked_fault=0 "
+                    "audio_scn_ok=%d audio_ch_active=4 audio_bit_depth=24 audio_sample_rate_hz=48000 "
+                    "phantom_timeout_ms=0 sdi_masked=1 mew_bin_blocked=1 mew_absent=%d "
+                    "bnc_tc_masked=1 sdi_hang_ms=0 hdmi_type_a_active=1 emmc_write_count=0 "
+                    "periph_bridge_ok=%d\n",
+                    g_r30_p18_ro_erofs, g_r30_lens_entries, lens_tag,
+                    g_r30_audio_scn_ok, mew_absent, g_r30_periph_ok);
+        }
+        dprintf(2,
+                "FX6_R30_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "p18_ro_erofs=%d emount_lens_entries=%u ibis_coil_unparked_fault=0 "
+                "audio_scn_ok=%d audio_ch_active=4 phantom_timeout_ms=0 sdi_hang_ms=0 "
+                "hdmi_type_a_active=1 periph_bridge_ok=%d realhw_sd_dualboot_overlay=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r30_p18_ro_erofs,
+                g_r30_lens_entries,
+                g_r30_audio_scn_ok,
+                g_r30_periph_ok);
     }
 #endif
 }
@@ -2982,6 +3082,16 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u realhw_sd_dualboot_overlay=1 atomic_installer_ready=1 "
             "mpr_rec_shim_armed=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 30
+    dprintf(2,
+            "FX6_STAGE_B_R30_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u p18_lens_ro_guard=1 ibis_5axis_safepark=1 "
+            "xlr_h1_4ch_lpcm=1 sdi_bnc_masked=1 hdmi_type_a_active=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

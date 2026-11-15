@@ -1536,3 +1536,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 250（第 250 阶段里程碑！`250th` Phase Milestone）：Stage 47（`47/47` 里程碑）真实硬件主线 — Wave-37 `[Framing Settings]` 非对称 `Full`/`Crop` 双路路由与 HDMI `RAW` 互斥锁、`[USB Power Supply]` 强制 `NP-FZ100` 电池在位 + `USB Type-C` 独占与 `[USB LUN Setting]` `Multi`/`Single` 跨重置持久存活、以及 `[Anti-flicker Shoot.]` 仅限机械快门静态照片边界与原厂无 `[Var. Shutter]` HIL 协同仿真器
+
+[`realhw_framing_usbpower_lun_antiflicker_coemulator.py`](realhw_framing_usbpower_lun_antiflicker_coemulator.py) 作为 **Phase 250（`250th` Phase Milestone）Stage 47（`47/47` 里程碑，Schema `realhw_framing_usbpower_lun_antiflicker_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase250_realhw_framing_usbpower_lun_antiflicker_hil=True` / `include_stage47=True`，支持显式 `--include-stage47` 以及通过 `--skip-phase250` / `--skip-stage47` / `--no-include-stage47` 跳过；本地只读供体 47 阶段全板协同仿真 `< 2.9s`、洁净室模式 `< 0.85s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`framing_crop_hdmi_raw_conflict_events == 0`、`zve1_autoframing_conflation_events == 0`、`unbuffered_usb_pd_battery_pull_events == 0`、`multi_micro_usb_power_bypass_events == 0`、`antiflicker_movie_or_eshutter_bypass_events == 0`、`false_var_shutter_or_ecs_node_events == 0`、`fx3_has_var_shutter == False` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **15 份真实供体**：`libUsbBusPower.so`（`48,232 B`：`_ZN11UsbBusPower4MainEv` / `UsbBusPower` / `Backup_read`）、`libInfraMscServer.so`（`64,456 B`：`MscServer_Init` / `MassStorageServer_Create` / `ufw_ko_insmod`）、`libIMDB.so`（`71,536 B`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`）、`string_english_f.uxc`（`373,820 B`：证实 `Framing Settings` / `Recording/Streaming` / `Crop` / `Full` / `USB Power Supply` / `USB LUN Setting` / `USB Connection Mode` / `Sel. When Connect` / `MassStorage(MSC)` / `Multi` / `Single` / `Anti-flicker Shoot.` / `Silent Mode` / `Camera Settings Reset` / `Initialize` 存在且无 `Autoframing Settings` 与 `ECS`）及 FX6 `string_english.uxc`（`118,208 B`：`ECS`），并对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 47A — `[Framing Settings]` 非对称 `Full`/`Crop` 双路路由与 HDMI `RAW` 互斥锁 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Framing Settings]`（支持机内菜单或 Sony *Monitor & Control* 远程控制：`Framing` 默认 `Off`/`On`、`Recording/Streaming` 默认 `Full`/`Crop`、`HDMI` 默认 `Crop`/`Full`，三项均由 `[Camera Settings Reset]` 与 `[Initialize]` 恢复默认）：验证开启 `Framing=On` 时出厂非对称路由（机内存储卡/推流保留 `Full` 全画幅主素材，外部 HDMI 监看输出 `Crop` 裁切构图），拦截 `[Framing]=On` 与 HDMI `RAW` 同时开启冲突（`EBUSY = 16` / 强行绕过返回 `EOPNOTSUPP = 95`，`framing_crop_hdmi_raw_conflict_events == 0`），并拒绝将消费级 `ZV-E1`（`ilc/2330`）的 `[Autoframing Settings]` 混入 `ILME-FX3`（`ilc/2210`）。
+3. **Sub-Model 47B — `[USB Power Supply]` 强制 `NP-FZ100` 电池在位 + `USB Type-C` 独占与 `[USB LUN Setting]` `Multi`/`Single` 持久存活 HIL**：
+   - 协同仿真 `MENU -> Setup -> [USB]`（`[USB Connection Mode]=Sel. When Connect`、`[USB LUN Setting]=Multi`、`[USB Power Supply]=On`）：三项 `[Setup] -> [USB]` 配置在 **`[Camera Settings Reset]` 后完整保留不变**，仅由 **`[Initialize]`** 恢复出厂默认；无 `NP-FZ100` 电池（或 `DC-C1` 假电池耦合器）时拒绝开机（`EACCES = 13`），模拟 USB PD 供电中途拔出 `NP-FZ100` 触发立即无缓冲断电保护（`EBUSY = 16`，`unbuffered_usb_pd_battery_pull_events == 0`），强制 `Multi/Micro USB` 零供电/零充电边界（仅 `USB Type-C` 支持供电与关机机内充电，`EOPNOTSUPP = 95`），区分 `MassStorage(MSC)` 下 `Multi`（Slot 1 + Slot 2 双 LUN）与 `Single`（单主槽 LUN），并硬锁台架禁止直连主机 USB（`physical_usb_packets_emitted == 0`）。
+4. **Sub-Model 47C & Redlines — `[Anti-flicker Shoot.]` 仅限机械快门静态照片边界与原厂 `ILME-FX3` 无 `[Var. Shutter]` HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Shutter/Silent] -> [Anti-flicker Shoot.]`（默认 `Off` / `On`，可由 `[Camera Settings Reset]` 复位）：严格仅在 `Still` 静态拍摄 + `Mechanical` 机械快门 + `[Silent Mode]=Off` 下检测 `100 Hz` / `120 Hz` 人工照明频闪，在 `Movie` / `S&Q Motion` 或电子快门 / `[Silent Mode]=On` 下置灰禁用（强行绕过返回 `EOPNOTSUPP = 95`）；硬锁原厂 `ILME-FX3`（`ilc/2210` 至 `Ver. 7.02`）`fx3_has_var_shutter == False`（`false_var_shutter_or_ecs_node_events == 0`），拦截任何误套用 `FX30` / `ILCE-6700` `[Var. Shutter]` 或 `FX6` `ECS` 的跨机型假设，并锁死全部 14 项硬件安全红线探针。
+
+### Phase 250 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 250（第 250 阶段里程碑！）Stage 47（47/47 里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_framing_usbpower_lun_antiflicker_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_framing_usbpower_lun_antiflicker_coemulator.py --self-test --json
+
+# 2. 全板 47 阶段（Stage 1..47, 47/47 里程碑）统一校验（支持 --include-stage47 与 --skip-phase250）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage47 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 250 双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_framing_usbpower_lun_antiflicker_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_framing_usbpower_lun_antiflicker_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

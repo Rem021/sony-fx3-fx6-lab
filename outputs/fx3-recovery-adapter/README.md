@@ -626,3 +626,21 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-24pillar-recovery --force-clean-room --json
 ```
 
+## Phase 184 — 真机主线 Part 13（Pillar 25）：气隙实验台 SD/CFexpress BYOF 清单（`FX3BNDL1`）、双介质 `FX3RCPT1` 绑定与零联网卫生护栏
+
+- **[`realhw_airgap_sd_bundle_manifest_verifier.py`](fx3_recovery/realhw_airgap_sd_bundle_manifest_verifier.py)**：面向 `Sony ILME-FX3`（`Ver. 7.02`，Model ID `0x91030080`）在物理插卡前提供完全离线的气隙实验台 SD/CFexpress 暂存包校验，并保持 `verify-22pillar-recovery` 与 `verify-24pillar-recovery` 100% 向后兼容；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`、`AIRGAP_SOCKETS_OPENED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退：
+  - **支柱 25A — 单机绑定 `FX3RCPT1` 与 `FX3BNDL1`（HMAC-SHA256 + CRC32）交叉验签（`8/8`）**：
+    - `P25A1`..`P25A8`：将卡内 `FX3BNDL1` 清单绑定至目标物理机身双介质 `FX3RCPT1`（`528 B`）冷备份回执（`serial_hash`、`model_id == 0x91030080`、`body_fw == "7.02"`、5 项核心 Tier-0 `H0` 摘要 `p2`/`p5`/`p12`/`p15`/`p18`、`st_dev_primary != st_dev_secondary`），fail-closed 拦截跨机插卡错配（`CAMERA_SERIAL_RECEIPT_MISMATCH`）、非 FX3 机型（`0x91030084` FX30 / `0x91020080` FX6）、`< 7.02` 机身固件、单介质未复核回执以及 CRC32/HMAC 篡改。
+  - **支柱 25B — macOS/Linux ExFAT 卫生、AppleDouble（`._*`）清洗、AArch64 ELF64 Shim 与 `BODYDATA.DAT` 互斥防火墙（`8/8`）**：
+    - `P25B1`..`P25B8`：拦截 `.DS_Store`、`.Spotlight-V100`、`.fseventsd`、`.Trashes`、`.TemporaryItems` 与 `._*` AppleDouble 残留并支持仅限系统临时目录的 dry-run 清洗（`scrub_exfat_staging_tree_tempdir_dry_run`），校验 `FX6_STAGEB/` 下 `fx6-stage-a-verify`、`libJit.so`（`<= 64 KiB`）与 `libgrm-fbinit9.so` 的 ELF64 `EM_AARCH64`（`e_machine == 183`）头与精确 SHA-256，硬阻断卡根 `BODYDATA.DAT` / `BODYDATA (1).DAT`（`\x89UFU`）与活跃 `p1` 触发器共存及任何网络套接字打开（`airgap_sockets_opened == 0`）。
+  - **CLI 与双模式快速单元测试（[`tests/test_realhw_airgap_sd_bundle_manifest_verifier.py`](tests/test_realhw_airgap_sd_bundle_manifest_verifier.py) / **50 项**）**：
+    - 注册 `verify-airgap-sd-bundle [--force-clean-room] [--json] [--out ...]` 并导出完整 Phase 184 Pillar 25 公开符号。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-airgap-sd-bundle --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-airgap-sd-bundle --force-clean-room --json
+```
+
+

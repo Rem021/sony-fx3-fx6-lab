@@ -31,6 +31,7 @@ from .realhw_24pillar_master_recovery_verifier import (
     verify_24pillar_recovery_suite,
 )
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
+from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
 from .realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier import run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite
@@ -202,6 +203,10 @@ def main():
     p180_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p180_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p180_master.add_argument('--out', help='optional exclusive new output directory for 24pillar-recovery-master-report.json')
+    p184_sd = sub.add_parser('verify-airgap-sd-bundle', help='Phase 184 Pillar 25 real-hardware air-gapped bench SD/CFexpress BYOF bundle manifest (FX3BNDL1), dual-copy FX3RCPT1 cross-binding & ExFAT/AppleDouble/BODYDATA.DAT guard')
+    p184_sd.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p184_sd.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p184_sd.add_argument('--out', help='optional exclusive new output directory for pillar25-airgap-sd-bundle-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -989,6 +994,36 @@ def main():
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-airgap-sd-bundle':
+            report = run_airgap_sd_bundle_manifest_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar25-airgap-sd-bundle-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_25a={report.pillar_25a_fx3bndl1_binding.scenarios_passed}/{report.pillar_25a_fx3bndl1_binding.scenarios_total} "
+                    f"pillar_25b={report.pillar_25b_exfat_hygiene.scenarios_passed}/{report.pillar_25b_exfat_hygiene.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"airgap_sockets_opened={report.airgap_sockets_opened} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
                     f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
                     f"isp_write_authorized={report.isp_write_authorized} "

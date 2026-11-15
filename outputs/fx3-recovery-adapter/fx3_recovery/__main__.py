@@ -24,6 +24,7 @@ from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_s
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
+from .realhw_service_usb_session_and_libjit_elf_hardener import run_realhw_service_usb_and_libjit_hardener_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .secureboot_chain_and_partition_align_verifier import run_secureboot_chain_and_partition_align_suite
@@ -112,6 +113,7 @@ def main():
     master.add_argument('--with-phase134', action='store_true', help='also run Phase 134 Pillar 15 CXD90057 secure-boot chain envelope & nflasha1..20 4KiB/512KiB partition-align verifier')
     master.add_argument('--with-phase138', action='store_true', help='also run Phase 138 Pillar 16 reversible ext2 /dev/nflasha15 atomic Stage-B installer, hash-rollback & p1/p3 mutual-exclusion rescue verifier')
     master.add_argument('--with-phase139', action='store_true', help='also run Phase 139 Pillar 17 host-side AdjustControl (0x40) streaming cold-backup client, p6 25 MiB sliding-window pull & Fake-IOKit verifier')
+    master.add_argument('--with-phase144', action='store_true', help='also run Phase 144 Pillar 18 MSC->SERVICE exclusive session, op=0xFF zero-mount RAM canary & Stage-288 s4 hardened ARM64 libJit.so verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -152,6 +154,10 @@ def main():
     adj_bak.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     adj_bak.add_argument('--json', action='store_true', help='emit full structured JSON report')
     adj_bak.add_argument('--out', help='optional exclusive new output directory for adjustcontrol-streaming-backup-report.json')
+    svc_jit = sub.add_parser('verify-service-usb-libjit', help='Phase 144 Pillar 18 MSC->SERVICE exclusive session, op=0xFF zero-mount RAM canary & Stage-288 s4 hardened ARM64 libJit.so verifier')
+    svc_jit.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    svc_jit.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    svc_jit.add_argument('--out', help='optional exclusive new output directory for service-usb-libjit-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -400,6 +406,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p139_report.all_passed else 0)
                 overall_ok = overall_ok and p139_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase144:
+                p144_report = run_realhw_service_usb_and_libjit_hardener_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase144_pillar18_service_usb_libjit_hardener'] = p144_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p144_report.all_passed else 0)
+                overall_ok = overall_ok and p144_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -416,6 +431,7 @@ def main():
                     or args.with_phase134
                     or args.with_phase138
                     or args.with_phase139
+                    or args.with_phase144
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -673,6 +689,30 @@ def main():
                     f"suite_sha256={report.suite_sha256[:16]} "
                     f"live_usb_iokit_transmit_enabled={report.live_usb_iokit_transmit_enabled} "
                     f"physical_usb_bytes_transmitted={report.physical_usb_bytes_transmitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-service-usb-libjit':
+            report = run_realhw_service_usb_and_libjit_hardener_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'service-usb-libjit-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"service_usb_scenarios={report.pillar_a_service_usb_8_scenarios.scenarios_passed}/{report.pillar_a_service_usb_8_scenarios.scenarios_total} "
+                    f"hardened_libjit_scenarios={report.pillar_b_hardened_libjit_8_scenarios.scenarios_passed}/{report.pillar_b_hardened_libjit_8_scenarios.scenarios_total} "
+                    f"hardened_elf_bytes={report.pillar_b_hardened_libjit_8_scenarios.hardened_elf_bytes} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"live_usb_iokit_transmit_enabled={report.live_usb_iokit_transmit_enabled} "
+                    f"usb_tx_packets_emitted={report.usb_tx_packets_emitted} "
                     f"physical_device_writes={report.physical_device_writes} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"

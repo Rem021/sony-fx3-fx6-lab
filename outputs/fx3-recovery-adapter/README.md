@@ -485,6 +485,33 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --clean-room --json
 ```
 
+## Phase 144 — 真机主线 Part 6：`MSC (054C:0DA1) -> SERVICE (054C:0336)` 独占会话、`op=0xFF` 零挂载 RAM 金丝雀与 Stage-288 §4 (1..6) 加固 ARM64 `libJit.so` 门禁（18 支柱恢复总检）
+
+- **[`realhw_service_usb_session_and_libjit_elf_hardener.py`](fx3_recovery/realhw_service_usb_session_and_libjit_elf_hardener.py)**：严格收口 Stage-285 / Stage-286 / Stage-288 真机主线剩余主机端协议与 ARM64 `libJit.so` ELF64 安全门禁，并接入 **18 支柱**恢复总检门禁（硬锁定 `LIVE_USB_IOKIT_TRANSMIT_ENABLED = False`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`USB_TX_PACKETS_EMITTED = 0`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PHYSICAL_DEVICE_WRITES = 0`；供体严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露回退）：
+  - **供体只读核验（`inspect_service_usb_and_libjit_donors_readonly`）**：只读验证 FX3 `7.02` `libJiritsu.so`（`225,200 B`、`PT_LOAD 0x10000`、5 个 `adj_cmd_*`/`cmd_high_capacity_*` 符号）、`libsencore.so`（`377,328 B`、`PT_LOAD 0x10000`、`AdjustControlFunc`/`Inconcurrent::resource_t::lock`/`TransactionStart` 符号）以及可选 Stage-288 `libJit_test.so`（`8,345 B`、`PT_LOAD 0x1000`），并明确标注未加固 `libJit_test.so` 触发的 §4 预加固拒绝项。
+  - **支柱 A — `STAGE285_286_SERVICE_USB_AND_OP_FF_RAM_CANARY`（`8/8`）**：
+    - 完整建模并校验 9 步会话契约：`MSC (054C:0DA1)` 7 轮握手 -> 同物理端口 `SERVICE (054C:0336)` `USBDeviceOpenSeize` 单航道独占（`SenserThread` `Inconcurrent::resource_t::lock` @ `0xdd00`）-> 7 轮认证到达 Level 2/3（`*0x6aee0`，放行 `flags & 0xe000 == 0x4000`、于 `0xfe48` 拒绝 Level 1）-> `ProductInfoFunc`（`pFunc=0x0010` `read0`：12B 请求 + 12B `version=3, res=1` 响应 + 88B 体）。
+    - **强制 Branch-A `op=0xFF` 零挂载 RAM 金丝雀前置门槛**：在放行任何 `op=0x00`（`/dev/nflasha6` `/tmp/jiritsu`）指令之前，强制通过 `SET_FILE2 / GET_FILE2 op=0xFF`（`slot <= 0x11`、`size <= 5 MiB` @ `*0x46bd8`、零 `sys_mount`、零 `dlopen`）含 `0x124` 内联/DMM 分界与 `Phase 1 (TransactionStart) -> Phase 4 (DoExecute) -> Phase 16 (dmm_free)` 往返校验；硬拒绝 `slot > 0x11`、`size > 5 MiB`、并发重叠 `seq`，以及缺失 `STOP (0336:7) -> release (0336:8) -> 054C:0DA1 return (0da1:9)` 收尾序列；附带被动 `ioreg` XML/文本 USB 拓扑干跑解析器（零 IOKit 建连、零 USB 发包）。
+  - **支柱 B — `STAGE288_SEC4_HARDENED_ARM64_LIBJIT_ELF_GATE`（`8/8`）**：
+    - 净室构造最小 ARM64 `ET_DYN`（`e_machine = 183`、`< 16 KiB`）探针生成器与静态反汇编/Unicorn 行为验证器，强制全部 6 项 Stage-288 §4 P0 安全规则：
+      1. `§4.1` 构造器首条系统调用自删 `unlinkat(AT_FDCWD=-100, "/tmp/jiritsu/libJit.so", 0)`（`mov x8, #35; svc #0`）；
+      2. `§4.2` 先以 `O_RDONLY | O_CLOEXEC` 打开源设备并核验 `read == 512` 后再打开输出，杜绝 `0 B` 截断歧义；
+      3. `§4.3` 输出紧凑 `528 B` 帧（`8B "FX3S0OK\x00"` + `<II(512, crc32_ieee)` + `512 B` Sector 0 `"8246"` / `"2.00"`、`n_partitions == 30`、`p1 == (0x80, 0xbf80)`）；
+      4. `§4.4` 检查 `/dev/nflasha`（`newfstatat` `S_ISBLK`）并带 `/proc/partitions` / `/dev/nflasha1` 回退探测与 `16 B` `b"FX3S0ERR" + <ii(stage, errno)` 错误回执；
+      5. `§4.6` `PT_LOAD` `p_align = 0x10000`（64 KiB）无重叠 `R|E` 与 `R|W`（无 `W+X`），且 `DT_SYMTAB`、`DT_STRTAB`、`DT_HASH`（`nbucket>=1, nchain>=1`）、`DT_INIT` 严格位于文件与 `PT_LOAD` 边界内（拦截旧 `0x2100 > 0x2099` 越界缺陷）；
+      6. 静态系统调用与危险令牌防火墙（拦截 `/dev/nflasha*` / `/dev/cnflasha*` / `/dev/pnflasha*` / `/dev/mtd*` / `/setting` 上的 `O_WRONLY`/`O_RDWR`、块/MTD 上 `write`/`pwrite64`/`ioctl`/`mount`，以及 `edisx` / `uc_mkfs` / `nor_loader_writer`）。
+  - **CLI 与 18 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-service-usb-libjit [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase144`（全开启时汇总为 **18/18** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase139` `17/17` 向后兼容），[`tests/test_realhw_service_usb_session_and_libjit_elf_hardener.py`](tests/test_realhw_service_usb_session_and_libjit_elf_hardener.py) 提供 **46 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-service-usb-libjit --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --clean-room --json
+```
+
+
 
 
 

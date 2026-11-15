@@ -462,11 +462,28 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-36-gates [--clean-room] [--dry-run-simulated-backup] [--json]
 ```
 
+---
 
+## 19. Milestone Phase 120 Unnegotiated 20V USB-C PD Trigger-Cable / Dual-Source D-Tap+USB-PD Cross-Feed & UVC 1.5 Thermal Firewall (`Gate G37`), Sony 15-Pin Multi-Terminal LTC +5V Clash / 1.8V UART Over-Drive & CRSDK PTP Flash-Opcode Guard (`Gate G38`) & 38-Gate Master Preflight (`usbpd_trigger_multiterminal_and_38gate_guard.py`)
 
+`usbpd_trigger_multiterminal_and_38gate_guard.py` (`fx3-usbpd-trigger-multiterminal-38gate-preflight-v1`) composes `hdmi_aoc_5v_cfexpress_and_36gate_guard.py` (`G01..G36`, leaving all prior gate modules untouched) with two new USB-C PD/UVC thermal and Multi-Terminal/UART/PTP hardware-protection gates **`G37`** and **`G38`** into a deterministic **38-Gate Master Safety Preflight (`G01..G38`)**, keeping `PERSISTENT_EMMC_WRITES_AUTHORIZED = False` and `PERSISTENT_WRITE_RELEASE = False` hard-locked:
 
+1. **Unnegotiated `20V` USB-C PD Trigger-Cable, Dual-Source (`D-Tap` Dummy-Batt + `USB-PD` VBUS) Cross-Feed & Continuous `4K30p` `UVC 1.5` Thermal Saturation Firewall (`verify_usbpd_trigger_dual_crossfeed_and_uvc_firewall`, Gate `G37`)**:
+   - Inspects FX3 `v7.02` & FX6 `v6.01` `libBusPower.so` (`_ZN8BusPower32SetUSBPDSinkStatusToPowerManagerEtt`, `_ZN8BusPower27NotifyUSBPowerContractStateEi`, `_ZN8BusPower25NotifyUSBPowerSupplyStateEPvi`, `MSGID_VBUS_ERROR_EVT`), `libUsbBusPower.so` (`_ZN11UsbBusPower11IsVbusReadyEv`, `_ZN11UsbBusPower22SetPowerContractStatusEi`, `_ZN11UsbBusPower15GetCurrentLimitEv`, `_ZN11UsbBusPower18SetWatchSWForceOFFEv`), `libUsbControl.so` (`_ZN12UsbIfWrapper20isMultiPortSupportedEv`, `_ZN10UsbControl18actionOnChangeVbusEPN3UFW3FsmEiPv`, `MSGID_VBUS_CHANGED_EVT`, `MSGID_VBUS_ERROR_EVT`), and `libInfraPtpControl.so` (`InfraPtpControl_Init`, `PTPT_init`, `PTPT_open`, `_ZN31PtptMultiSessionCallBackWrapper15OnPtpCommandCmpEPv`) strictly via `os.open(..., os.O_RDONLY)` (with optional `include_large_binaries=True` scan of `appFw.so` & `cpapp-b.bin` and deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` fallback).
+   - Protects FX3 `SY-1129` USB Type-C CC/VBUS PMIC front-end and `CXD90057` SoC thermal envelope, failing closed on:
+     - `BLOCKED_UNNEGOTIATED_20V_USBC_TRIGGER_CABLE`: `usbc_vbus_measured_v > 9.6` without valid `9V/3A` (`27W`) PD PDO contract (e.g. passive `12V/15V/20V` D-Tap-to-USB-C decoy cable forcing `14.8V..20V` onto VBUS before CC negotiation, or `cc_pin_short_to_vbus == True`),
+     - `BLOCKED_UNISOLATED_DTAP_USBPD_DUAL_POWER_CROSSFEED`: `unregulated_dummy_battery_active == True` and `usbc_pd_power_sink_active == True` and `common_vmount_battery_shared_without_dc_isolator == True`,
+     - `BLOCKED_UVC_4K30P_CONTINUOUS_THERMAL_SATURATION`: `uvc_4k30p_streaming_hours >= 2.0` and `ambient_temp_c > 35.0` and `internal_np_fz100_charging_while_streaming == True` and `auto_power_off_temp_standard == True`.
+2. **Sony `15-Pin Multi-Terminal` `LTC` BNC Adapter `+5V` Pin Clash, `3.3V/5V` UART Over-Drive (`1.8V` `CXD90057` Pad Limit) & Destructive `CRSDK` `PTP` Firmware-Flash Opcode Hardware Guard (`verify_multiterminal_ltc_uart_and_ptp_guard`, Gate `G38`)**:
+   - Protects FX3's `15-pin Multi/Micro-USB` connector (`LTC` Timecode-In, `LANC`/remote, sense pins) and `1.8V` debug UART pads, failing closed on:
+     - `BLOCKED_MULTITERMINAL_LTC_PIN_VOLTAGE_CLASH`: `ltc_bnc_adapter_attached == True` and (`ltc_peak_to_peak_v > 5.0` or `third_party_non_sony_id_resistor_short == True`),
+     - `BLOCKED_UART_3V3_5V_PAD_OVERDRIVE_HAZARD`: `uart_probe_attached == True` and (`uart_logic_level_v > 1.95` or `uart_tx_line_physically_connected == True`), enforcing strictly `1.8V` passive RX-only monitoring,
+     - `BLOCKED_PTP_FIRMWARE_UPDATE_OPCODE_IN_HYBRID_MODE`: `usb_ptp_crsdk_session_active == True` and `ptp_fw_flash_opcodes_blocked_in_filter == False`.
+3. **38-Gate Master Safety Preflight (`evaluate_38gate_preflight`) & `verify-38-gates` CLI**:
+   - **Offline default mode**: `35/38` gates pass (`G01..G09`, `G13..G38` pass; physical Tier-0 `G10..G12` remain `FAIL_OFFLINE_HARDWARE_NOT_ATTACHED` $\rightarrow$ `overall_ready_for_hardware_attach = False`).
+   - **`--dry-run-simulated-backup` rehearsal mode**: `38/38` simulation gates pass (`dry_run_rehearsal_only = True`) while `overall_ready_for_hardware_attach = False`, `persistent_emmc_writes_authorized = False`, and `persistent_write_release = False` remain hard-locked.
 
-
-
-
-
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-38-gates [--clean-room] [--dry-run-simulated-backup] [--json]
+```

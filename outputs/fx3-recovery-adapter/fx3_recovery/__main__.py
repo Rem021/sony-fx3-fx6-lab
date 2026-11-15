@@ -51,6 +51,11 @@ from .realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier import (
     verify_30pillar_recovery_suite,
     verify_proxy_coupled_and_hdmi_only_vault,
 )
+from .realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier import (
+    run_pillar31_standalone_suite,
+    verify_31pillar_recovery_suite,
+    verify_filesettings_shotmark_and_tcregen_slot1_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -268,6 +273,14 @@ def main():
     p212_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p212_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p212_master.add_argument('--out', help='optional exclusive new output directory for 30pillar-recovery-master-report.json')
+    p215_p31 = sub.add_parser('verify-filesettings-shotmark-tcregen-vault', help='Phase 215 Pillar 31 File Settings SDHC/37-char vault, Shot Mark1/2 *M01.XML sidecars, TC Regenerate Slot-1 continuity & EXT-LK drop guard')
+    p215_p31.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p215_p31.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p215_p31.add_argument('--out', help='optional exclusive new output directory for pillar31-filesettings-shotmark-tcregen-vault-report.json')
+    p215_master = sub.add_parser('verify-31pillar-recovery', help='Phase 215 unified 31/31 real-hardware recovery master aggregator (Pillars 1..30 + Pillar 31)')
+    p215_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p215_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p215_master.add_argument('--out', help='optional exclusive new output directory for 31pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1382,6 +1395,66 @@ def main():
                     f"pillar30_a={report.pillar30_a_proxy_coupled_vault.scenarios_passed}/{report.pillar30_a_proxy_coupled_vault.scenarios_total} "
                     f"pillar30_b={report.pillar30_b_hdmi_only_interlock.scenarios_passed}/{report.pillar30_b_hdmi_only_interlock.scenarios_total} "
                     f"master_30pillar_sha256={report.master_30pillar_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-filesettings-shotmark-tcregen-vault':
+            report = run_pillar31_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar31-filesettings-shotmark-tcregen-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_31a={report.pillar_31a_filesettings_shotmark_vault.scenarios_passed}/{report.pillar_31a_filesettings_shotmark_vault.scenarios_total} "
+                    f"pillar_31b={report.pillar_31b_tcregen_slot1_extlk_vault.scenarios_passed}/{report.pillar_31b_tcregen_slot1_extlk_vault.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-31pillar-recovery':
+            report = verify_31pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'31pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_2_8s={report.nominal_under_2_8s} "
+                    f"pillar31_a={report.pillar31_a_filesettings_shotmark_vault.scenarios_passed}/{report.pillar31_a_filesettings_shotmark_vault.scenarios_total} "
+                    f"pillar31_b={report.pillar31_b_tcregen_slot1_extlk_vault.scenarios_passed}/{report.pillar31_b_tcregen_slot1_extlk_vault.scenarios_total} "
+                    f"master_31pillar_sha256={report.master_31pillar_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

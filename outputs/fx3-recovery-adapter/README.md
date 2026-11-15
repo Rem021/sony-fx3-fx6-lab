@@ -738,8 +738,21 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-30pillar-recovery --force-clean-room --json
 ```
 
+## Phase 215 — 真机主线 Part 19（Pillar 31 / `31/31` 统一恢复总检）：`File Settings`（37 字符 / SDHC 强锁）+ `Shot Mark1/2` `*M01.XML` 伴生金库与 `TC Regenerate` Slot-1 连续性总检（`verify-31pillar-recovery` / `verify-filesettings-shotmark-tcregen-vault`）
 
+- **[`realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py`](fx3_recovery/realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 31** 并将全套恢复总检推进至 **`31/31`（`VERIFIED_31OF31_PILLAR_RECOVERY_MASTER`）**（`< 2.8s` 并发运行，保持 `verify-22/24/26/27/28/29/30pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libInfraMediaConfig.so`、`libInfraMediaCommon.so` 与 `libInfraMediaMount.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 31A — `[File Settings]`（5 态格式 / `<=37` ASCII 标题 / SDHC `<=32GB` FAT32 强锁）与 `Shot Mark1/2` `*M01.XML` 伴生金库（`6/6`）**：
+    - `P31A1`..`P31A6`：跨 **Slot 1 & Slot 2** 审计 `[File Number]`（`Series` / `Reset` + `Series Counter Reset`）、5 态 `[File Name Format]`（`Standard`、`Cam ID + Reel#`、`Title`、`Date + Title`、`Title + Date`）、`[Title Name Settings]`（`1..37` 位受限 ASCII 字符且仅对新录片段生效，禁止回溯改名假设）及 **SDHC `<=32GB` FAT32** 插入时强制锁定 `[Standard]` 与禁止自定义文件夹规则；拦截 `Backup.bin` 恢复或回滚后序列号 / 卷号（`Reel#`）与现有 `/M4ROOT/CLIP/` 素材发生冲突；同时审计 `/M4ROOT/CLIP/*M01.XML` 非实时元数据伴生完整性，阻断破坏 `[Image Jump Setting]`（`Shot Mark Only` / `Shot Mark1/2 Only`）或 FTP `[Only Shot Mark Mov.]` 批量抢救传输的孤立/损坏 XML。
+  - **支柱 31B — `[TC/UB]` `[Regenerate]` Slot-1 独占主时间码连续性、`VMC-BNCM1` `EXT-LK` 掉锁告警、S&Q 锁止与耦合 `REC Lamp`（`6/6`）**：
+    - `P31B1`..`P31B6`：校验 `[Time Code Make] = [Regenerate]` 强制切换至 `[Rec Run]` 步进，并在 `[Simult. Recording]` 下严格从 **Slot 1** 读取上一条片段末尾时间码顺延 `+1` 帧；拦截恢复 `Backup.bin` 切换 `Time Code Make != Preset` 或 `Time Code Run != Free Run` 时未确认重同步的 `VMC-BNCM1` `EXT-LK` 外部锁定释放风险；阻断 `S&Q` 模式下 `[Time Code Run]` 覆盖与 HDMI `[Time Code Output = On]`；并校验后部与顶部 `REC` 按键灯硬件同步耦合（`All On` / `Only Front Off` / `All Off`）、`[Silent Mode = On] -> [Audio signals = Off]` 硬锁及 Tier-0 `16/16 H0 == H3`。
+  - **统一 `31/31` 恢复总检聚合器与 CLI（`evaluate_realhw_31pillar_recovery_master` / `verify-31pillar-recovery` / `verify-filesettings-shotmark-tcregen-vault`）**：
+    - 并发调用 `evaluate_realhw_30pillar_recovery_master`（`Pillars 1..30`）+ **Pillar 31**（`run_pillar31_standalone_suite`），汇总产出 **`31/31`**（`VERIFIED_31OF31_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py`](tests/test_realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py) 提供 **54 项**双模快速单元测试。
 
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-filesettings-shotmark-tcregen-vault --json
 
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-31pillar-recovery --json
 
-
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-31pillar-recovery --force-clean-room --json
+```

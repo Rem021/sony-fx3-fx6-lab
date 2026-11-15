@@ -1062,6 +1062,38 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 182：Stage 32（`32/32`）真实硬件主线 — `MIRA_CETUS2` E-Mount `info7/info8/info3D` + `0x02cf0232` 呼吸补偿 & Type-A HDMI `4264x2408` 16-bit RAW（`BRAW` / `ProRes RAW`）HIL 协同仿真器
+
+[`realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py`](realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py) 作为 **Stage 32（`32/32`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil=True`，可通过 `--skip-phase182` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`physical_usb_packets_emitted == 0`**、**`otp_fuse_touches == 0`**、**`rpmb_counter_increments == 0`**、**`lens_partition_writes == 0`**、**`sdi_bnc_mmio_faults == 0`** 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.10s` + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：零差异 ABI `libInfraLensCommunicator.so`（`14,544 B`：`LensCommunicator` / `GetMountedLensInfo` / `SndSyncMsg`）、`libInfraAdjMedia.so`（`318,152 B` vs `334,536 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`string_english*.uxc`（`uxc\x07` 容器，含 `4264x2408`、`Breathing Comp`、`Focus Map`、`ProRes`、`RAW Output Format`），并对 `cpapp-b.bin`（`Draw Widget <FocusMap>`、`fixed_lensfile`、`ExtractFromCombinedLensData`、`MoniFpga`）与 `appFw.so`（`uc_BreathingCorrectionLensType`、`HDMI_RAW_CONNECTSTATE_NOT_SET`、`info7`/`info8` 与小端 `0x02cf0232` BKID）执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `MIRA_CETUS2` E-Mount `info7 / info8 / info3D` 串口握手与 `0x02cf0232` 呼吸补偿 HIL**：
+   - 严格校验 CPAPP 16 位白名单谓词 `((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)`：放行原厂 E-Mount 镜头（如 `FE PZ 16-35mm F4 G` / `FE 24-70mm F2.8 GM II`）激活 `0x02cf0232` 呼吸补偿、Catalyst 呼吸元数据注入与 Monitor & Control `2.1.0+` Focus Map 深度流；门控拦截副厂镜头（如 `0x4210` 与 `0xCFFF` 保留位陷阱）及手动 PL/E 转接环（`0xFFFF`）；并在 Type-A HDMI RAW 激活时强制 `1.0x` 旁路，同时锁定 `p18:/lens/LENSFILE.BIN` `BLKROSET=1`（`lens_partition_writes == 0`）。
+3. **Pillar B — Type-A HDMI `4264 × 2408`（`<= 60p`）16-bit Linear RAW（`Video Assist 12G HDR 3.22+` `.braw` & `Atomos Ninja` `ProRes RAW`）vs 屏蔽 `12G-SDI` HIL**：
+   - 协同仿真 CTA-861 EDID 与 Sony VSIF（`0x81`，模 256 校验和）握手：`Video Assist 12G HDR 3.22+` 接纳 `4264x2408` 16->12-bit `.braw`（Capture-Locked ISO），拒绝 `Video Assist 3G`（`BLOCKED_VIDEO_ASSIST_3G_UNSUPPORTED_FOR_BRAW`）；`Atomos Ninja V/Ultra`（`AtomOS 10.64+`）封装 WB + ISO 偏移输出 `ProRes RAW`；校验机内双卡槽同步录制 `XAVC S-I / HS + Proxy`、`1.5x/1.6x` 变形反挤压仅渲染于 OSD 严禁烘焙入 RAW，以及 `12G-SDI` BNC MMIO 零故障屏蔽（`sdi_bnc_mmio_faults == 0`）。
+4. **Pillar C & D — `WPA2/WPA3` 网络安全净化器与硬安全红线不变式**：
+   - 强制无线连接 `WPA2/WPA3`（或有线 `WIRED_USB_CDC_NCM`），拦截 `WEP`/`WPA1`/`OPEN`/`TKIP`/`IPsec` 及路径穿越/控制字符注入；所有禁止物理写入与发射探针（eMMC 持久写、SPI-NOR 写、EL3 载荷发射、物理 USB 发包、OTP 熔丝、RPMB 递增、`p18` 写入、`12G-SDI` MMIO）均 fail-closed 拦截。
+
+### Phase 182 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 32 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py --self-test --json
+
+# 2. 全板 32 阶段（Stage 1..32）统一校验（支持 --skip-phase182）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 182 48 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

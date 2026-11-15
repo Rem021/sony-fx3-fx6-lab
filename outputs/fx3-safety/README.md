@@ -1318,3 +1318,29 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-96-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
+
+---
+
+## 49. Phase 252 Real-Hardware Main Track Part 36: `ILME-FX3` (`Ver. 7.02`) `[Display Quality]` (`Standard`/`High`) Battery Conservation & `[Bluetooth Rmt Ctrl]` Infrared Remote (`SIRCS`) Lockout + `Reset Network Set.` Split Guard (`Gate G97`), `[My Menu Setting]` 6-Operation Persistence & Slot-1 Tier-0 `CAMSET01.DAT` `O_RDONLY` Firewall Guard (`Gate G98`), and Unified 98-Gate Master Preflight (`realhw_display_quality_bt_rmt_mymenu_and_98gate_guard.py`)
+
+`realhw_display_quality_bt_rmt_mymenu_and_98gate_guard.py` (`realhw_display_quality_bt_rmt_mymenu_and_98gate_guard_v1`) delegates `G01..G96` directly to `evaluate_96gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-96-gates`) and adds Wave-39 real-hardware safety gates **`G97`** and **`G98`** into the unified **`98`-Gate Master Safety Preflight (`G01..G98` / `run_98_gate_preflight` / `evaluate_98gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[Display Quality]` (`Standard`/`High`) Battery Conservation & `[Bluetooth Rmt Ctrl]` Infrared Remote (`SIRCS`) Lockout + `Reset Network Set.` Split Guard (`verify_display_quality_battery_and_bt_rmt_ir_lockout_guard`, Gate `G97`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libInfraBluetooth.so`, `libInfraAirplaneMode.so`, `libSaveLoadSettings.so`, and `libInfraSircs.so` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` synthetic fallback.
+   - Enforces `MENU -> Setup -> [Monitor] -> [Display Quality]` (`Standard` factory default / `High` — **surviving both `[Camera Settings Reset]` and `[Reset Network Set.]`**, restored to `Standard` **exclusively by `[Initialize]`**) and clamps internal `NP-FZ100` battery Tier-0 bench dumps to `[Display Quality] = Standard` + `[Monitor Brightness] = Manual(0)` (`tier0_battery_high_display_violations == 0`).
+   - Enforces `MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]` (`Off` factory default / `On`), requiring `[Bluetooth Function]=On` + `[Airplane Mode]=Off` (blocked/suppressed on our zero-RF `Airplane Mode=On` bench with `passive_tx_bytes_emitted == 0`), enforcing Infrared Remote (`SIRCS`) mutual exclusion whenever `[Bluetooth Rmt Ctrl]=On` (`bt_rmt_ir_lockout_violations == 0`), and enforcing the exact 3-way reset split (survives `[Camera Settings Reset]`, reset to `Off` by **both** `[Reset Network Set.]` and `[Initialize]`).
+2. **`ILME-FX3` (`Ver. 7.02`) `[My Menu Setting]` 6-Operation Persistence & Slot-1 Tier-0 `CAMSET01.DAT` `O_RDONLY` Firewall Guard (`verify_mymenu_6op_persistence_and_slot1_camset_firewall_guard`, Gate `G98`)**:
+   - Enforces `MENU -> My Menu -> [My Menu Setting]` (`Add Item`, `Sort Item`, `Delete Item`, `Delete Page`, `Delete All`, up to `6` pages $\times$ `6` items `= 36` items, and `[Display From My Menu]` `Off` factory default / `On`), verifying non-resettable survival across **both `[Camera Settings Reset]` and `[Reset Network Set.]`** (cleared only by `[Delete All]` / `[Delete Page]` or full `[Initialize]`).
+   - Enforces the Slot-1 Tier-0 `CAMSET01.DAT` `os.O_RDONLY` load-only firewall (`slot1_mymenu_vault_mutation_bytes == 0`, rejecting `SAVE_OVERWRITE`, any write open flags, and cross-model `ILME-FX6` camera-settings blobs).
+3. **Unified `98`-Gate Master Preflight (`evaluate_98gate_preflight` / `verify-98-gates`)**:
+   - **Offline default mode**: `95/98` gates pass (`overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `98/98` simulation gates pass (`VERIFIED_ALL_98_GATES_DRY_RUN_SIMULATED_BACKUP`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-display-quality-bt-rmt-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-mymenu-camset-firewall-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-98-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```

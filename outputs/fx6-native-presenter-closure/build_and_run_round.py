@@ -575,6 +575,7 @@ def build_stage_a_overlay(
     enable_r16: bool = False,
     enable_r17: bool = False,
     enable_r18: bool = False,
+    enable_r19: bool = False,
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
@@ -904,6 +905,11 @@ def build_stage_a_overlay(
             f"stage_r18=1\np10_keymap=1\np11_uipc=1\np12_wlan=1\np4_nd_clear=1\nuxc=1\n4lang_matrix=1\nmenu_8cat_closure=1\nlang={lang}\n".encode("utf-8"),
             0o100644,
         )
+    if enable_r19:
+        additions["etc/fx6_stage_r19"] = (
+            f"stage_r19=1\np10_keymap=1\np11_uipc=1\np12_wlan=1\np4_nd_clear=1\nuxc=1\n4lang_matrix=1\nmenu_11cat_fullsweep=1\nlang={lang}\n".encode("utf-8"),
+            0o100644,
+        )
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -915,6 +921,7 @@ def build_stage_a_overlay(
         "r16_enabled": enable_r16,
         "r17_enabled": enable_r17,
         "r18_enabled": enable_r18,
+        "r19_enabled": enable_r19,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -1251,6 +1258,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R16_",
         "FX6_R17_",
         "FX6_R18_",
+        "FX6_R19_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -1276,6 +1284,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r16_lang: Optional[Dict[str, Any]] = None
     last_r17_lang: Optional[Dict[str, Any]] = None
     last_r18_lang: Optional[Dict[str, Any]] = None
+    last_r19_lang: Optional[Dict[str, Any]] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -1301,6 +1310,8 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             last_r17_lang = _parse_kv_ints(line.split("FX6_R17_LANG_TELEMETRY ", 1)[1])
         elif "FX6_R18_LANG_TELEMETRY " in line:
             last_r18_lang = _parse_kv_ints(line.split("FX6_R18_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_R19_LANG_TELEMETRY " in line:
+            last_r19_lang = _parse_kv_ints(line.split("FX6_R19_LANG_TELEMETRY ", 1)[1])
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -1347,6 +1358,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r16_telemetry": last_r16_lang,
         "r17_telemetry": last_r17_lang,
         "r18_telemetry": last_r18_lang,
+        "r19_telemetry": last_r19_lang,
     }
 
 
@@ -1370,7 +1382,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 18:
+    if args.round >= 19:
+        tmp_prefix = "fx6-r19"
+    elif args.round >= 18:
         tmp_prefix = "fx6-r18"
     elif args.round >= 17:
         tmp_prefix = "fx6-r17"
@@ -1421,33 +1435,37 @@ def run_once(args: argparse.Namespace) -> int:
         stage_a_meta: Optional[Dict[str, Any]] = None
         if args.round >= 8:
             stage_label = (
-                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Menu8CatClosure+UXC+Wlan+lang={lang})"
-                if args.round >= 18
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Menu11CatFullSweep+UXC+Wlan+lang={lang})"
+                if args.round >= 19
                 else (
-                    f"Stage-B P1..P9+Fan+P10+P11+P12+P4(StatusFullSweep-Audio3Layer+UXC+Wlan+lang={lang})"
-                    if args.round >= 17
+                    f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Menu8CatClosure+UXC+Wlan+lang={lang})"
+                    if args.round >= 18
                     else (
-                        f"Stage-B P1..P9+Fan+P10+P11+P12+P4(StatusTabs45-TCMedia+UXC+Wlan+lang={lang})"
-                        if args.round >= 16
+                        f"Stage-B P1..P9+Fan+P10+P11+P12+P4(StatusFullSweep-Audio3Layer+UXC+Wlan+lang={lang})"
+                        if args.round >= 17
                         else (
-                            f"Stage-B P1..P9+Fan+P10+P11+P12+P4(MultiTab-StatusCheck-Monitoring+UXC+Wlan+lang={lang})"
-                            if args.round >= 15
+                            f"Stage-B P1..P9+Fan+P10+P11+P12+P4(StatusTabs45-TCMedia+UXC+Wlan+lang={lang})"
+                            if args.round >= 16
                             else (
-                                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(StatusCheck-4Lang-Matrix+UXC+Wlan+lang={lang})"
-                                if args.round >= 14
+                                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(MultiTab-StatusCheck-Monitoring+UXC+Wlan+lang={lang})"
+                                if args.round >= 15
                                 else (
-                                    f"Stage-B P1..P9+Fan+P10+P11+P12+P4(4Lang-Matrix+UXC+Wlan+lang={lang})"
-                                    if args.round >= 13
+                                    f"Stage-B P1..P9+Fan+P10+P11+P12+P4(StatusCheck-4Lang-Matrix+UXC+Wlan+lang={lang})"
+                                    if args.round >= 14
                                     else (
-                                        f"Stage-B P1..P9+Fan+P10+P11+P12+P4(UXC+Wlan+lang={lang})"
-                                        if args.round >= 12
+                                        f"Stage-B P1..P9+Fan+P10+P11+P12+P4(4Lang-Matrix+UXC+Wlan+lang={lang})"
+                                        if args.round >= 13
                                         else (
-                                            f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
-                                            if args.round >= 11
+                                            f"Stage-B P1..P9+Fan+P10+P11+P12+P4(UXC+Wlan+lang={lang})"
+                                            if args.round >= 12
                                             else (
-                                                "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
-                                                if args.round >= 10
-                                                else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                                                f"Stage-B P1..P9+Fan+P10+P11+P12(UXC+Wlan+lang={lang})"
+                                                if args.round >= 11
+                                                else (
+                                                    "Stage-B P1..P9+Fan+P10+R10(UXC+P11)"
+                                                    if args.round >= 10
+                                                    else ("Stage-B P1..P9+Fan+P10" if args.round >= 9 else "Stage-A P1..P9+Fan")
+                                                )
                                             )
                                         )
                                     )
@@ -1472,6 +1490,7 @@ def run_once(args: argparse.Namespace) -> int:
                 enable_r16=(args.round >= 16),
                 enable_r17=(args.round >= 17),
                 enable_r18=(args.round >= 18),
+                enable_r19=(args.round >= 19),
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -1653,6 +1672,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r16_telemetry": milestones.get("r16_telemetry") if args.round >= 16 else None,
             "r17_telemetry": milestones.get("r17_telemetry") if args.round >= 17 else None,
             "r18_telemetry": milestones.get("r18_telemetry") if args.round >= 18 else None,
+            "r19_telemetry": milestones.get("r19_telemetry") if args.round >= 19 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1702,7 +1722,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)

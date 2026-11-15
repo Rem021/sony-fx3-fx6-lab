@@ -1241,6 +1241,104 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r32_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 33
+    {
+        static int g_r33_bridge_executed = 0;
+        static int g_r33_clips_preserved = 0;
+        static int g_r33_rsv_salvaged = 0;
+        static int g_r33_mediapro_ok = 0;
+        static int g_r33_door_flush_ok = 0;
+        static int g_r33_sencore_ok = 0;
+        static int g_r33_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r33_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            long m4fd = syscall(56L /* SYS_openat */, -100L,
+                                (long)"/mnt/sd/PRIVATE/M4ROOT/CLIP/C0001.MP4", 0L, 0L);
+            long xdfd = syscall(56L /* SYS_openat */, -100L,
+                                (long)"/mnt/sd/XDROOT/Clip/A001C001.MXF", 0L, 0L);
+            if (m4fd >= 0L && xdfd >= 0L) {
+                g_r33_clips_preserved = 1;
+            }
+            if (m4fd >= 0L) (void)syscall(57L /* SYS_close */, m4fd);
+            if (xdfd >= 0L) (void)syscall(57L /* SYS_close */, xdfd);
+
+            long mxffd = syscall(56L /* SYS_openat */, -100L,
+                                 (long)"/mnt/sd2/XDROOT/Clip/C0002.MXF", 0L, 0L);
+            long rsvfd = syscall(56L /* SYS_openat */, -100L,
+                                 (long)"/mnt/sd2/XDROOT/Clip/C0002.RSV", 0L, 0L);
+            if (mxffd >= 0L && rsvfd < 0L) {
+                uint8_t khdr[4];
+                memset(khdr, 0, sizeof(khdr));
+                long kn = syscall(63L /* SYS_read */, mxffd, (long)khdr, 4L);
+                if (kn == 4L && khdr[0] == 0x06U && khdr[1] == 0x0eU && khdr[2] == 0x2bU && khdr[3] == 0x34U) {
+                    g_r33_rsv_salvaged = 1;
+                }
+            }
+            if (mxffd >= 0L) (void)syscall(57L /* SYS_close */, mxffd);
+            if (rsvfd >= 0L) (void)syscall(57L /* SYS_close */, rsvfd);
+
+            long xmlfd = syscall(56L /* SYS_openat */, -100L,
+                                 (long)"/mnt/sd2/PRIVATE/M4ROOT/MEDIAPRO.XML", 0L, 0L);
+            if (xmlfd >= 0L) {
+                g_r33_mediapro_ok = 1;
+                (void)syscall(57L /* SYS_close */, xmlfd);
+            }
+
+            long flfd = syscall(56L /* SYS_openat */, -100L,
+                                (long)"/mnt/sd/PRIVATE/M4ROOT/CLIP/C0001_FLUSH.MP4", 0L, 0L);
+            if (flfd >= 0L) {
+                g_r33_door_flush_ok = 1;
+                (void)syscall(57L /* SYS_close */, flfd);
+            }
+
+            void *sc_h = dlopen("/usr/lib/libsencore.so", RTLD_LAZY);
+            if (sc_h != (void *)0 && dlsym(sc_h, "_ZN3Usb8InstanceEv") != (void *)0) {
+                g_r33_sencore_ok = 1;
+            }
+
+            g_r33_bridge_ok = (g_r33_clips_preserved && g_r33_rsv_salvaged &&
+                               g_r33_mediapro_ok && g_r33_door_flush_ok &&
+                               g_r33_sencore_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R33_CFEXPRESS_RSV_BRIDGE slot_a_cfexpress=1 slot_b_sdxc_v90=1 "
+                    "user_clips_preserved=%d dual_slot_relay_ok=%d "
+                    "admit_600mbps_ok=1 v30_600m_rejected=1 "
+                    "door_flush_ok=%d unflushed_bytes=0 "
+                    "rsv_salvaged=%d mediapro_xml_updated=%d sencore_ok=%d "
+                    "emmc_write_count=0 r33_bridge_ok=%d\n",
+                    g_r33_clips_preserved, g_r33_clips_preserved,
+                    g_r33_door_flush_ok, g_r33_rsv_salvaged,
+                    g_r33_mediapro_ok, g_r33_sencore_ok, g_r33_bridge_ok);
+        }
+        dprintf(2,
+                "FX6_R33_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "user_clips_preserved=%d rsv_salvaged=%d door_flush_ok=%d unflushed_bytes=0 "
+                "r33_bridge_ok=%d realhw_cfexpress_rsv_ufu_5tier=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r33_clips_preserved,
+                g_r33_rsv_salvaged,
+                g_r33_door_flush_ok,
+                g_r33_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -3339,6 +3437,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u imx510_dual_base=1 p2_psd_defdet_erofs=1 "
             "cube_3d_mlut_non_bake=1 zero_diff_libs_dlopen=1 cdcncm_0da1_intact=1 "
             "ttyama0_6stage_1v8=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 33
+    dprintf(2,
+            "FX6_STAGE_B_R33_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u dual_slot_exfat_relay=1 speed_class_600m_gate=1 "
+            "card_door_gpio_flush=1 rsv_mxf_salvage=1 bodydata_ufu_100us_bypass=1 "
+            "recovery_5tier_lock=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

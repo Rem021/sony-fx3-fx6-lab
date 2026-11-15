@@ -62,6 +62,11 @@ from .realhw_cxd90058_sabin_seal_and_54gate_guard import (
     evaluate_g53_cxd90058_sabin,
     evaluate_g54_factory_seal,
 )
+from .realhw_c2pa_tc_gyro_and_56gate_guard import (
+    evaluate_56gate_preflight,
+    evaluate_g55_c2pa_cert,
+    evaluate_g56_tc_gyro_meta,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -726,6 +731,53 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G54 gates can be rehearsed offline",
     )
     p_54.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 41. verify-g55-c2pa-cert
+    p_g55 = sub.add_parser(
+        "verify-g55-c2pa-cert",
+        help="Run Phase 170 Gate G55 (p12:/cert/RQ_LIC.DAT C2PA Read-Only Lock & Cross-Model Signing Firewall)",
+    )
+    p_g55.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g55.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g55.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 42. verify-g56-tc-gyro-meta
+    p_g56 = sub.add_parser(
+        "verify-g56-tc-gyro-meta",
+        help="Run Phase 170 Gate G56 (VMC-BNCM1 EXT-LK LTC Bounds/Mux, TC-OUT Mask & IMX510 Gyro NonRealTimeMeta.xml Guard)",
+    )
+    p_g56.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g56.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g56.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 43. verify-56-gates
+    p_56 = sub.add_parser(
+        "verify-56-gates",
+        help="Run Phase 170 56-Gate Master Safety Preflight Engine (G01..G56)",
+    )
+    p_56.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_56.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_56.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G56 gates can be rehearsed offline",
+    )
+    p_56.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -1494,6 +1546,70 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_54_gates_verified if args.dry_run_simulated_backup else report.offline_51_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g55-c2pa-cert":
+        verdict, res = evaluate_g55_c2pa_cert(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.c2pa_rq_lic_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} p12_flags={guard['p12_cert_mount_flags']} "
+                f"cert_mut={guard['c2pa_cert_mutation_bytes']}B "
+                f"rq_lic_h0_h3={guard['rq_lic_h0_to_h3_preserved']} "
+                f"signing={guard['signing_model_name']}({guard['signing_model_id_hex']}) "
+                f"cross_model_blocked={guard['c2pa_cross_model_signing_blocked']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g56-tc-gyro-meta":
+        verdict, res = evaluate_g56_tc_gyro_meta(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.tc_gyro_meta_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} adapter={guard['adapter_name']}({guard['tc_sync_mode']}) "
+                f"ltc_vpp={guard['ltc_peak_to_peak_mv']}mV uart1v8={guard['multi_usb_uart_1v8_active']} "
+                f"tc_out_masked={guard['fx6_tc_out_bnc_masked']} "
+                f"rs={guard['imx510_rolling_shutter_ms']}ms "
+                f"imu={guard['imu_axes']}axis@{guard['imu_sample_rate_hz']}Hz "
+                f"nrtm_ok={guard['nrtm_xml_validated']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-56-gates":
+        report = evaluate_56gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/56 "
+                f"g55_to_g56_all_passed={report.g55_to_g56_all_passed} "
+                f"all_56_gates_verified={report.all_56_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_56_gates_verified if args.dry_run_simulated_backup else report.offline_53_gates_verified
         return 0 if ok else 1
 
     return 2

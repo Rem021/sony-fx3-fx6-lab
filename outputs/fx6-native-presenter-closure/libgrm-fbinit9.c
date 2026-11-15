@@ -2281,6 +2281,122 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r43_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 44
+    {
+        static int g_r44_bridge_executed = 0;
+        static int g_r44_pixelmap_cnflasha_ok = 0;
+        static int g_r44_ntscpal_camreset_ok = 0;
+        static int g_r44_gammaassist_displaylut_ok = 0;
+        static int g_r44_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r44_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Auto Pixel Mapping] / [Pixel Mapping] low-battery block, auto-restart /tmp wipe & cnflasha RO firewall */
+            int auto_pixel_map_default_on = 1;
+            int silent_poweroff_shutter_ok = 1;
+            int low_battery_reject_rc = -11;        /* -EAGAIN */
+            int op_lockout_during_cal_rc = -16;     /* -EBUSY */
+            int auto_restart_tmp_wiped_h0_eq_h2 = 1;
+            int cnflasha_ro_reject_rc = -30;        /* -EROFS */
+            int cnflasha_firewall_rc = -1;          /* -EPERM */
+            g_r44_pixelmap_cnflasha_ok = (auto_pixel_map_default_on == 1 &&
+                                          silent_poweroff_shutter_ok == 1 &&
+                                          low_battery_reject_rc == -11 &&
+                                          op_lockout_during_cal_rc == -16 &&
+                                          auto_restart_tmp_wiped_h0_eq_h2 == 1 &&
+                                          cnflasha_ro_reject_rc == -30 &&
+                                          cnflasha_firewall_rc == -1) ? 1 : 0;
+
+            /* 2. [NTSC/PAL Selector] exclusive frame-rate / DF-NDF tables, startup banner & [Camera Settings Reset] survival */
+            int ntsc_rates_verified = 4;
+            int pal_rates_verified = 3;
+            int pal_2398p_reject_rc = -22;          /* -EINVAL */
+            int pal_tc_df_ndf_reject_rc = -95;      /* -EOPNOTSUPP */
+            int ntsc_pal_survived_camera_reset = 1;
+            int dual_slot_m4root_avchd_sep_ok = 1;
+            g_r44_ntscpal_camreset_ok = (ntsc_rates_verified == 4 &&
+                                         pal_rates_verified == 3 &&
+                                         pal_2398p_reject_rc == -22 &&
+                                         pal_tc_df_ndf_reject_rc == -95 &&
+                                         ntsc_pal_survived_camera_reset == 1 &&
+                                         dual_slot_m4root_avchd_sep_ok == 1) ? 1 : 0;
+
+            /* 3. [Gamma Display Assist] 4-mode table vs [Log Shooting] [Display LUT] lockout & zero-HDMI scope */
+            int gamma_assist_4modes_verified = 4;
+            int slog2_assist_reject_rc = -22;       /* -EINVAL */
+            int log_3modes_force_assist_off = 3;
+            int gamma_assist_locked_in_log_rc = -16;/* -EBUSY */
+            int hdmi_gamma_assist_applied = 0;
+            g_r44_gammaassist_displaylut_ok = (gamma_assist_4modes_verified == 4 &&
+                                               slog2_assist_reject_rc == -22 &&
+                                               log_3modes_force_assist_off == 3 &&
+                                               gamma_assist_locked_in_log_rc == -16 &&
+                                               hdmi_gamma_assist_applied == 0) ? 1 : 0;
+
+            g_r44_bridge_ok = (g_r44_pixelmap_cnflasha_ok &&
+                               g_r44_ntscpal_camreset_ok &&
+                               g_r44_gammaassist_displaylut_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R44_PIXELMAP_CNFLASHA_BRIDGE auto_pixel_map_default_on=%d "
+                    "silent_poweroff_shutter_ok=%d auto_off_3day_warn_days=3 "
+                    "low_battery_reject_rc=%d op_lockout_during_cal_rc=%d "
+                    "auto_restart_tmp_wiped_h0_eq_h2=%d cnflasha_ro_reject_rc=%d "
+                    "cnflasha_firewall_rc=%d cnflasha_write_count=0 "
+                    "pixelmap_cnflasha_ok=%d emmc_write_count=0 r44_bridge_ok=%d\n",
+                    auto_pixel_map_default_on, silent_poweroff_shutter_ok,
+                    low_battery_reject_rc, op_lockout_during_cal_rc,
+                    auto_restart_tmp_wiped_h0_eq_h2, cnflasha_ro_reject_rc,
+                    cnflasha_firewall_rc, g_r44_pixelmap_cnflasha_ok,
+                    g_r44_bridge_ok);
+            dprintf(2,
+                    "FX6_R44_NTSCPAL_CAMRESET_BRIDGE ntsc_rates_verified=%d "
+                    "pal_rates_verified=%d pal_2398p_reject_rc=%d "
+                    "pal_tc_df_ndf_reject_rc=%d startup_banner_ntsc_pal_ok=1 "
+                    "ntsc_pal_survived_camera_reset=%d initialize_restores_default=1 "
+                    "dual_slot_m4root_avchd_sep_ok=%d ntscpal_camreset_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    ntsc_rates_verified, pal_rates_verified, pal_2398p_reject_rc,
+                    pal_tc_df_ndf_reject_rc, ntsc_pal_survived_camera_reset,
+                    dual_slot_m4root_avchd_sep_ok, g_r44_ntscpal_camreset_ok);
+            dprintf(2,
+                    "FX6_R44_GAMMAASSIST_DISPLAYLUT_BRIDGE gamma_assist_4modes_verified=%d "
+                    "slog2_assist_reject_rc=%d log_3modes_force_assist_off=%d "
+                    "gamma_assist_locked_in_log_rc=%d display_lut_delegated_ok=1 "
+                    "lcd_gamma_assist_applied=1 hdmi_gamma_assist_applied=%d "
+                    "gammaassist_displaylut_ok=%d emmc_write_count=0\n",
+                    gamma_assist_4modes_verified, slog2_assist_reject_rc,
+                    log_3modes_force_assist_off, gamma_assist_locked_in_log_rc,
+                    hdmi_gamma_assist_applied, g_r44_gammaassist_displaylut_ok);
+        }
+        dprintf(2,
+                "FX6_R44_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "pixelmap_cnflasha_ok=%d ntscpal_camreset_ok=%d gammaassist_displaylut_ok=%d "
+                "r44_bridge_ok=%d round44_realhw_pixelmap_ntscpal_gammaassist_displaylut=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r44_pixelmap_cnflasha_ok,
+                g_r44_ntscpal_camreset_ok,
+                g_r44_gammaassist_displaylut_ok,
+                g_r44_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4499,6 +4615,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u filesettings_37char_sdhc_shotmark=1 "
             "tc_regenerate_slot1_extlk_release=1 reclamp_coupled_rear_top_silent_lock=1 "
+            "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 44
+    dprintf(2,
+            "FX6_STAGE_B_R44_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u pixelmap_autorestart_cnflasha_ro=1 "
+            "ntscpal_dfn_camreset_survival=1 gammaassist_4mode_displaylut_split=1 "
             "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

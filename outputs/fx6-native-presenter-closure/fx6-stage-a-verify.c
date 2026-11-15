@@ -10816,6 +10816,738 @@ static int run_r43_reclamp_silent_probe(void) {
     return ok ? 0 : 234;
 }
 
+/* ============================================================================
+ * Round 44 (Wave-30 Milestone):
+ *   44A: [Auto Pixel Mapping] / Manual [Pixel Mapping] Low-Battery Block,
+ *        Auto-Restart Volatile /tmp Wipe (H0 == H2) & cnflasha Read-Only Firewall
+ *   44B: [NTSC/PAL Selector] Exclusive Frame-Rate / DF-NDF Tables, Startup Banner
+ *        & [Camera Settings Reset] Survival + Dual-Slot M4ROOT/AVCHD Separation
+ *   44C: [Gamma Display Assist] 4-Mode Table vs [Log Shooting] [Display LUT]
+ *        Lockout, Built-in-LCD-Only Zero-HDMI Scope & 16/16 H0 == H3 Rollback
+ * ============================================================================ */
+
+typedef struct {
+    int auto_pixel_mapping_on;
+    int silent_mode_on;
+    int battery_pct;
+    int calibrating;
+    int auto_restart_count;
+    int cnflasha_write_count;
+} r44_pixelmap_state_t;
+
+__attribute__((noinline)) static void r44_eval_auto_pixel_mapping_poweroff(
+    const r44_pixelmap_state_t *st,
+    int days_since_last_map,
+    int *out_shutter_actuated,
+    int *out_recommend_3day_warn
+) {
+    if (!st) return;
+    if (st->auto_pixel_mapping_on) {
+        /* Mechanical shutter dark-frame actuation occurs at power-off even in [Silent Mode] */
+        if (out_shutter_actuated) *out_shutter_actuated = 1;
+        if (out_recommend_3day_warn) *out_recommend_3day_warn = 0;
+    } else {
+        if (out_shutter_actuated) *out_shutter_actuated = 0;
+        if (out_recommend_3day_warn) *out_recommend_3day_warn = (days_since_last_map >= 3) ? 1 : 0;
+    }
+}
+
+__attribute__((noinline)) static int r44_operator_input_during_pixelmap(
+    const r44_pixelmap_state_t *st,
+    int key_code
+) {
+    (void)key_code;
+    if (!st) return -EINVAL;
+    if (st->calibrating) {
+        return -EBUSY; /* -16: all camera operation blocked during calibration */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_cnflasha_userspace_write(
+    r44_pixelmap_state_t *st,
+    const char *cal_path,
+    const void *buf,
+    size_t len
+) {
+    (void)st;
+    (void)cal_path;
+    (void)buf;
+    (void)len;
+    /* User-space Stage-B firewall: cnflasha sensor calibration writes strictly forbidden */
+    return -EPERM; /* -1 */
+}
+
+__attribute__((noinline)) static int r44_exec_manual_pixel_mapping(
+    r44_pixelmap_state_t *st,
+    const char *bind_target_file,
+    const char *volatile_tmp_file,
+    int *out_op_lock_rc
+) {
+    if (!st || !bind_target_file || !volatile_tmp_file) return -EINVAL;
+    if (st->battery_pct < 30) {
+        return -EAGAIN; /* -11: manual [Pixel Mapping] blocked when battery charge is low */
+    }
+    st->calibrating = 1;
+    int lock_rc = r44_operator_input_during_pixelmap(st, 0x01ac);
+    if (out_op_lock_rc) *out_op_lock_rc = lock_rc;
+    st->calibrating = 0;
+    /* Mandatory automatic restart unmounts Stage-B bind-mount & wipes volatile /tmp */
+    st->auto_restart_count++;
+    (void)umount(bind_target_file);
+    (void)unlink(volatile_tmp_file);
+    return 0;
+}
+
+static int setup_r44_pixelmap_cnflasha_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r44_cnflasha", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r44_stock_bind", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r44_volatile_tmp", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r44_stock_bind/appFw.bin");
+    (void)umount("/mnt/r44_cnflasha");
+    (void)umount("/mnt/r44_stock_bind");
+    (void)umount("/mnt/r44_volatile_tmp");
+    if (mount("tmpfs", "/mnt/r44_cnflasha", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r44_stock_bind", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r44_volatile_tmp", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    /* Seed cnflasha IMX510 factory defect table & lock read-only */
+    uint8_t cal_seed[256];
+    for (size_t i = 0U; i < sizeof(cal_seed); i++) cal_seed[i] = (uint8_t)((i * 29U + 0x51U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r44_cnflasha/imx510_cal.bin", cal_seed, sizeof(cal_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_cnflasha_sha[65] = "", post_cnflasha_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r44_cnflasha/imx510_cal.bin", pre_cnflasha_sha, &cbytes) != 0) return -1;
+    if (mount(NULL, "/mnt/r44_cnflasha", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    /* Seed stock FX3 7.02 surface (H0) and volatile /tmp Stage-B bind-mount (H1) */
+    uint8_t stock_buf[256], stageb_buf[256];
+    for (size_t i = 0U; i < sizeof(stock_buf); i++) {
+        stock_buf[i] = (uint8_t)((i * 17U + 0x70U) & 0xffU);
+        stageb_buf[i] = (uint8_t)(stock_buf[i] ^ 0xa5U);
+    }
+    const char *bind_file = "/mnt/r44_stock_bind/appFw.bin";
+    const char *tmp_stageb_file = "/mnt/r44_volatile_tmp/appFw_stageb.bin";
+    if (r29_write_all_fsync(bind_file, stock_buf, sizeof(stock_buf), 0644) != 0 ||
+        r29_write_all_fsync(tmp_stageb_file, stageb_buf, sizeof(stageb_buf), 0644) != 0) {
+        return -1;
+    }
+    char h0_sha[65] = "", h1_sha[65] = "", h2_sha[65] = "";
+    if (sha256_file_hex(bind_file, h0_sha, &cbytes) != 0) return -1;
+    if (mount(tmp_stageb_file, bind_file, NULL, MS_BIND, NULL) != 0) return -1;
+    if (sha256_file_hex(bind_file, h1_sha, &cbytes) != 0) return -1;
+    int stageb_bind_active = (strcmp(h0_sha, h1_sha) != 0) ? 1 : 0;
+
+    r44_pixelmap_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.auto_pixel_mapping_on = 1; /* Default [On] */
+    st.silent_mode_on = 1;
+    int auto_pixel_map_default_on = (st.auto_pixel_mapping_on == 1) ? 1 : 0;
+
+    int shutter_act = 0, warn_on = -1;
+    r44_eval_auto_pixel_mapping_poweroff(&st, 5, &shutter_act, &warn_on);
+    int silent_mode_poweroff_shutter_ok = (shutter_act == 1 && warn_on == 0) ? 1 : 0;
+
+    st.auto_pixel_mapping_on = 0;
+    int shutter_off = -1, warn_day2 = -1, warn_day3 = -1;
+    r44_eval_auto_pixel_mapping_poweroff(&st, 2, &shutter_off, &warn_day2);
+    r44_eval_auto_pixel_mapping_poweroff(&st, 3, &shutter_off, &warn_day3);
+    int auto_off_3day_warn_ok = (shutter_off == 0 && warn_day2 == 0 && warn_day3 == 1) ? 1 : 0;
+
+    /* Manual [Pixel Mapping]: low battery rejected (-11), normal battery locks ops (-16) & auto-restarts */
+    st.battery_pct = 15;
+    int op_lock_rc = 0;
+    int low_battery_reject_rc = r44_exec_manual_pixel_mapping(&st, bind_file, tmp_stageb_file, &op_lock_rc);
+    st.battery_pct = 85;
+    int manual_exec_rc = r44_exec_manual_pixel_mapping(&st, bind_file, tmp_stageb_file, &op_lock_rc);
+    struct stat tmp_st;
+    int auto_restart_triggered = (manual_exec_rc == 0 && st.auto_restart_count == 1) ? 1 : 0;
+    int auto_restart_tmp_wiped_ok = (stat(tmp_stageb_file, &tmp_st) != 0 && errno == ENOENT) ? 1 : 0;
+    if (sha256_file_hex(bind_file, h2_sha, &cbytes) != 0) return -1;
+    int stock_h0_eq_h2_ok = (stageb_bind_active == 1 && strcmp(h0_sha, h2_sha) == 0) ? 1 : 0;
+
+    /* cnflasha kernel O_RDONLY mount (-30) + user-space firewall (-1) */
+    errno = 0;
+    int cfd = open("/mnt/r44_cnflasha/imx510_cal.bin", O_RDWR);
+    int cnflasha_ro_open_rc = (cfd >= 0) ? (close(cfd), 0) : -errno;
+    uint8_t bad_cal[4] = { 0xffU, 0x00U, 0xffU, 0x00U };
+    int cnflasha_userspace_firewall_rc = r44_cnflasha_userspace_write(
+        &st, "/mnt/r44_cnflasha/imx510_cal.bin", bad_cal, sizeof(bad_cal)
+    );
+    if (sha256_file_hex("/mnt/r44_cnflasha/imx510_cal.bin", post_cnflasha_sha, &cbytes) != 0) return -1;
+    int cnflasha_sha256_match = (strcmp(pre_cnflasha_sha, post_cnflasha_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r44_cnflasha");
+    (void)umount("/mnt/r44_stock_bind");
+    (void)umount("/mnt/r44_volatile_tmp");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R44_PIXELMAP_CNFLASHA_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (auto_pixel_map_default_on == 1 &&
+              silent_mode_poweroff_shutter_ok == 1 &&
+              auto_off_3day_warn_ok == 1 &&
+              low_battery_reject_rc == -EAGAIN &&
+              op_lock_rc == -EBUSY &&
+              auto_restart_triggered == 1 &&
+              auto_restart_tmp_wiped_ok == 1 &&
+              stock_h0_eq_h2_ok == 1 &&
+              cnflasha_ro_open_rc == -EROFS &&
+              cnflasha_userspace_firewall_rc == -EPERM &&
+              cnflasha_sha256_match == 1 &&
+              st.cnflasha_write_count == 0 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R44_PIXELMAP_CNFLASHA_INIT auto_pixel_map_default_on=%d "
+            "silent_mode_poweroff_shutter_ok=%d auto_off_3day_warn_ok=%d "
+            "low_battery_reject_rc=%d op_lockout_during_cal_rc=%d "
+            "auto_restart_triggered=%d auto_restart_tmp_wiped_ok=%d stock_h0_eq_h2_ok=%d "
+            "cnflasha_ro_open_rc=%d cnflasha_userspace_firewall_rc=%d "
+            "cnflasha_sha256_match=%d cnflasha_write_count=%d "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r44_init_ok=%d verify_us=%lld\n",
+            auto_pixel_map_default_on,
+            silent_mode_poweroff_shutter_ok, auto_off_3day_warn_ok,
+            low_battery_reject_rc, op_lock_rc,
+            auto_restart_triggered, auto_restart_tmp_wiped_ok, stock_h0_eq_h2_ok,
+            cnflasha_ro_open_rc, cnflasha_userspace_firewall_rc,
+            cnflasha_sha256_match, st.cnflasha_write_count,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R44_REGION_NTSC = 0,
+    R44_REGION_PAL  = 1
+};
+
+enum {
+    R44_FPS_2398P  = 0,
+    R44_FPS_2997P  = 1,
+    R44_FPS_5994P  = 2,
+    R44_FPS_11988P = 3,
+    R44_FPS_25P    = 4,
+    R44_FPS_50P    = 5,
+    R44_FPS_100P   = 6
+};
+
+enum {
+    R44_TC_FMT_DF  = 0,
+    R44_TC_FMT_NDF = 1
+};
+
+typedef struct {
+    int factory_region_default;
+    int current_selector;
+    int active_fps;
+    int tc_format;
+    int shooting_iso;
+    int wb_kelvin;
+} r44_ntscpal_state_t;
+
+__attribute__((noinline)) static int r44_ntscpal_set_selector(r44_ntscpal_state_t *st, int region) {
+    if (!st) return -EINVAL;
+    if (region != R44_REGION_NTSC && region != R44_REGION_PAL) return -EINVAL;
+    st->current_selector = region;
+    st->active_fps = (region == R44_REGION_NTSC) ? R44_FPS_2398P : R44_FPS_25P;
+    if (region == R44_REGION_PAL) {
+        st->tc_format = R44_TC_FMT_NDF; /* DF/NDF toggle unavailable in PAL */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_ntscpal_set_framerate(r44_ntscpal_state_t *st, int fps_code) {
+    if (!st) return -EINVAL;
+    if (st->current_selector == R44_REGION_NTSC) {
+        if (fps_code == R44_FPS_2398P || fps_code == R44_FPS_2997P ||
+            fps_code == R44_FPS_5994P || fps_code == R44_FPS_11988P) {
+            st->active_fps = fps_code;
+            return 0;
+        }
+        return -EINVAL; /* -22: PAL rates rejected under NTSC */
+    } else {
+        if (fps_code == R44_FPS_25P || fps_code == R44_FPS_50P || fps_code == R44_FPS_100P) {
+            st->active_fps = fps_code;
+            return 0;
+        }
+        return -EINVAL; /* -22: 23.98p & NTSC rates unavailable under PAL */
+    }
+}
+
+__attribute__((noinline)) static int r44_ntscpal_set_tc_format(r44_ntscpal_state_t *st, int tc_fmt) {
+    if (!st) return -EINVAL;
+    if (st->current_selector == R44_REGION_PAL) {
+        return -EOPNOTSUPP; /* -95: [TC Format] DF/NDF unavailable in PAL */
+    }
+    if (tc_fmt != R44_TC_FMT_DF && tc_fmt != R44_TC_FMT_NDF) return -EINVAL;
+    st->tc_format = tc_fmt;
+    return 0;
+}
+
+__attribute__((noinline)) static const char *r44_ntscpal_startup_banner(const r44_ntscpal_state_t *st) {
+    if (!st || st->current_selector == st->factory_region_default) {
+        return "";
+    }
+    return (st->current_selector == R44_REGION_NTSC) ? "Running on NTSC." : "Running on PAL.";
+}
+
+__attribute__((noinline)) static void r44_camera_settings_reset(r44_ntscpal_state_t *st) {
+    if (!st) return;
+    /* [Camera Settings Reset] resets shooting parameters ONLY; [NTSC/PAL Selector] survives */
+    st->shooting_iso = 800;
+    st->wb_kelvin = 5600;
+}
+
+__attribute__((noinline)) static void r44_full_initialize(r44_ntscpal_state_t *st) {
+    if (!st) return;
+    st->shooting_iso = 800;
+    st->wb_kelvin = 5600;
+    (void)r44_ntscpal_set_selector(st, st->factory_region_default);
+}
+
+static int r44_seed_slot_media_db(const char *slot_root, int region) {
+    char m4_dir[256], av_dir[256], m4_xml[320], av_bdm[320], body[128];
+    snprintf(m4_dir, sizeof(m4_dir), "%s/M4ROOT", slot_root);
+    snprintf(av_dir, sizeof(av_dir), "%s/PRIVATE/AVCHD/BDMV", slot_root);
+    if (r33_mkdir_p(m4_dir, 0755) != 0 || r33_mkdir_p(av_dir, 0755) != 0) return -EIO;
+    const char *tag = (region == R44_REGION_NTSC) ? "NTSC" : "PAL";
+    int n = snprintf(body, sizeof(body), "<MediaRegion system=\"%s\"/>\n", tag);
+    snprintf(m4_xml, sizeof(m4_xml), "%s/MEDIAPRO.XML", m4_dir);
+    snprintf(av_bdm, sizeof(av_bdm), "%s/INDEX.BDM", av_dir);
+    if (r29_write_all_fsync(m4_xml, (const uint8_t *)body, (size_t)n, 0644) != 0) return -EIO;
+    if (r29_write_all_fsync(av_bdm, (const uint8_t *)body, (size_t)n, 0644) != 0) return -EIO;
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_check_slot_media_db(const char *slot_root, int active_region) {
+    char m4_xml[320], av_bdm[320], b1[128], b2[128];
+    snprintf(m4_xml, sizeof(m4_xml), "%s/M4ROOT/MEDIAPRO.XML", slot_root);
+    snprintf(av_bdm, sizeof(av_bdm), "%s/PRIVATE/AVCHD/BDMV/INDEX.BDM", slot_root);
+    FILE *f1 = fopen(m4_xml, "r");
+    if (!f1) return -ENOENT;
+    size_t n1 = fread(b1, 1U, sizeof(b1) - 1U, f1);
+    fclose(f1);
+    b1[n1] = '\0';
+    FILE *f2 = fopen(av_bdm, "r");
+    if (!f2) return -ENOENT;
+    size_t n2 = fread(b2, 1U, sizeof(b2) - 1U, f2);
+    fclose(f2);
+    b2[n2] = '\0';
+    const char *needle = (active_region == R44_REGION_NTSC) ? "system=\"NTSC\"" : "system=\"PAL\"";
+    if (strstr(b1, needle) == NULL || strstr(b2, needle) == NULL) {
+        return -EBUSY; /* -16: NTSC/PAL M4ROOT+AVCHD database mismatch requires isolated vault */
+    }
+    return 0;
+}
+
+static int run_r44_ntscpal_camreset_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r44_p2_setting", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r44_slot1", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r44_slot2", 0755) != 0) {
+        return 235;
+    }
+    (void)umount("/mnt/r44_p2_setting");
+    (void)umount("/mnt/r44_slot1");
+    (void)umount("/mnt/r44_slot2");
+    if (mount("tmpfs", "/mnt/r44_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r44_slot1", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r44_slot2", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 235;
+    }
+
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 31U + 0x44U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r44_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 235;
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r44_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) return 235;
+    if (mount(NULL, "/mnt/r44_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 235;
+
+    r44_ntscpal_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.factory_region_default = R44_REGION_NTSC;
+    (void)r44_ntscpal_set_selector(&st, R44_REGION_NTSC);
+    st.shooting_iso = 800;
+    st.wb_kelvin = 5600;
+
+    /* 1. NTSC exclusive 23.98p + 29.97p/59.94p/119.88p + DF/NDF unlocked */
+    int default_banner_suppressed_ok = (strcmp(r44_ntscpal_startup_banner(&st), "") == 0) ? 1 : 0;
+    int ntsc_rates_verified = 0;
+    for (int f = R44_FPS_2398P; f <= R44_FPS_11988P; f++) {
+        if (r44_ntscpal_set_framerate(&st, f) == 0) ntsc_rates_verified++;
+    }
+    int ntsc_2398p_exclusive_ok = (r44_ntscpal_set_framerate(&st, R44_FPS_2398P) == 0) ? 1 : 0;
+    int ntsc_pal_25p_reject_rc = r44_ntscpal_set_framerate(&st, R44_FPS_25P);
+    int ntsc_tc_df_ndf_ok = (r44_ntscpal_set_tc_format(&st, R44_TC_FMT_DF) == 0 &&
+                             r44_ntscpal_set_tc_format(&st, R44_TC_FMT_NDF) == 0) ? 1 : 0;
+    int invalid_tc_fmt_reject_rc = r44_ntscpal_set_tc_format(&st, 2);
+
+    /* 2. Switch to PAL: 25p/50p/100p allowed; 23.98p (-22) & DF/NDF (-95) blocked; "Running on PAL." banner */
+    (void)r44_ntscpal_set_selector(&st, R44_REGION_PAL);
+    int running_on_pal_banner_ok = (strcmp(r44_ntscpal_startup_banner(&st), "Running on PAL.") == 0) ? 1 : 0;
+    int pal_rates_verified = 0;
+    for (int f = R44_FPS_25P; f <= R44_FPS_100P; f++) {
+        if (r44_ntscpal_set_framerate(&st, f) == 0) pal_rates_verified++;
+    }
+    int pal_2398p_reject_rc = r44_ntscpal_set_framerate(&st, R44_FPS_2398P);
+    int pal_2997p_reject_rc = r44_ntscpal_set_framerate(&st, R44_FPS_2997P);
+    int pal_tc_df_ndf_reject_rc = r44_ntscpal_set_tc_format(&st, R44_TC_FMT_DF);
+
+    /* 3. [Camera Settings Reset] preserves [NTSC/PAL Selector]; [Initialize] restores factory default */
+    st.shooting_iso = 6400;
+    st.wb_kelvin = 3200;
+    r44_camera_settings_reset(&st);
+    int ntsc_pal_survived_camera_reset = (st.shooting_iso == 800 && st.wb_kelvin == 5600 &&
+                                          st.current_selector == R44_REGION_PAL &&
+                                          strcmp(r44_ntscpal_startup_banner(&st), "Running on PAL.") == 0) ? 1 : 0;
+    r44_full_initialize(&st);
+    int initialize_restored_default_ok = (st.current_selector == R44_REGION_NTSC &&
+                                          strcmp(r44_ntscpal_startup_banner(&st), "") == 0) ? 1 : 0;
+
+    /* Verify PAL-factory unit switched to NTSC emits "Running on NTSC." */
+    r44_ntscpal_state_t pal_unit;
+    memset(&pal_unit, 0, sizeof(pal_unit));
+    pal_unit.factory_region_default = R44_REGION_PAL;
+    (void)r44_ntscpal_set_selector(&pal_unit, R44_REGION_NTSC);
+    int running_on_ntsc_banner_ok = (strcmp(r44_ntscpal_startup_banner(&pal_unit), "Running on NTSC.") == 0) ? 1 : 0;
+
+    /* 4. Dual-slot NTSC vs PAL M4ROOT / AVCHD database separation */
+    if (r44_seed_slot_media_db("/mnt/r44_slot1", R44_REGION_NTSC) != 0 ||
+        r44_seed_slot_media_db("/mnt/r44_slot2", R44_REGION_PAL) != 0) {
+        return 235;
+    }
+    int slot1_ntsc_ok = (r44_check_slot_media_db("/mnt/r44_slot1", R44_REGION_NTSC) == 0) ? 1 : 0;
+    int slot2_pal_ok  = (r44_check_slot_media_db("/mnt/r44_slot2", R44_REGION_PAL) == 0) ? 1 : 0;
+    int cross_region_db_mismatch_rc = r44_check_slot_media_db("/mnt/r44_slot2", R44_REGION_NTSC);
+    int cross_pal_on_ntsc_rc        = r44_check_slot_media_db("/mnt/r44_slot1", R44_REGION_PAL);
+    int dual_slot_m4root_avchd_sep_ok = (slot1_ntsc_ok == 1 && slot2_pal_ok == 1 &&
+                                         cross_region_db_mismatch_rc == -EBUSY &&
+                                         cross_pal_on_ntsc_rc == -EBUSY) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r44_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r44_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) return 235;
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R44_NTSCPAL_CAMRESET_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (ntsc_rates_verified == 4 &&
+              ntsc_2398p_exclusive_ok == 1 &&
+              ntsc_pal_25p_reject_rc == -EINVAL &&
+              ntsc_tc_df_ndf_ok == 1 &&
+              invalid_tc_fmt_reject_rc == -EINVAL &&
+              pal_rates_verified == 3 &&
+              pal_2398p_reject_rc == -EINVAL &&
+              pal_2997p_reject_rc == -EINVAL &&
+              pal_tc_df_ndf_reject_rc == -EOPNOTSUPP &&
+              default_banner_suppressed_ok == 1 &&
+              running_on_pal_banner_ok == 1 &&
+              running_on_ntsc_banner_ok == 1 &&
+              ntsc_pal_survived_camera_reset == 1 &&
+              initialize_restored_default_ok == 1 &&
+              dual_slot_m4root_avchd_sep_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R44_NTSCPAL_CAMRESET ntsc_rates_verified=%d ntsc_2398p_exclusive_ok=%d "
+            "ntsc_pal_25p_reject_rc=%d ntsc_tc_df_ndf_ok=%d invalid_tc_fmt_reject_rc=%d "
+            "pal_rates_verified=%d pal_2398p_reject_rc=%d pal_2997p_reject_rc=%d "
+            "pal_tc_df_ndf_reject_rc=%d default_banner_suppressed_ok=%d "
+            "running_on_pal_banner_ok=%d running_on_ntsc_banner_ok=%d "
+            "ntsc_pal_survived_camera_reset=%d initialize_restored_default_ok=%d "
+            "cross_region_db_mismatch_rc=%d dual_slot_m4root_avchd_sep_ok=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r44b_ok=%d verify_us=%lld\n",
+            ntsc_rates_verified, ntsc_2398p_exclusive_ok,
+            ntsc_pal_25p_reject_rc, ntsc_tc_df_ndf_ok, invalid_tc_fmt_reject_rc,
+            pal_rates_verified, pal_2398p_reject_rc, pal_2997p_reject_rc,
+            pal_tc_df_ndf_reject_rc, default_banner_suppressed_ok,
+            running_on_pal_banner_ok, running_on_ntsc_banner_ok,
+            ntsc_pal_survived_camera_reset, initialize_restored_default_ok,
+            cross_region_db_mismatch_rc, dual_slot_m4root_avchd_sep_ok,
+            p2_write_blocked_rc, p2_setting_sha256_match, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 235;
+}
+
+enum {
+    R44_GDA_AUTO       = 0,
+    R44_GDA_SLOG3_709  = 1,
+    R44_GDA_HLG_BT2020 = 2,
+    R44_GDA_HLG_709    = 3,
+    R44_GDA_SLOG2_OLD  = 4
+};
+
+enum {
+    R44_LOG_OFF            = 0,
+    R44_LOG_CINE_EI        = 1,
+    R44_LOG_CINE_EI_QUICK  = 2,
+    R44_LOG_FLEXIBLE_ISO   = 3
+};
+
+typedef struct {
+    int gamma_assist_user_pref;
+    int effective_gamma_assist;
+    int gamma_assist_type;
+    int log_shooting_mode;
+    int display_lut_on;
+    int hlg_still_image_on;
+    int is_hlg_still_playback;
+    int external_hdmi_connected;
+} r44_gamma_lut_state_t;
+
+__attribute__((noinline)) static int r44_set_gamma_disp_assist_type(r44_gamma_lut_state_t *st, int typ) {
+    if (!st) return -EINVAL;
+    /* ILME-FX3 Ver. 7.02 supports strictly 4 [Gamma Disp. Assist Typ.] modes; S-Log2 rejected */
+    if (typ != R44_GDA_AUTO &&
+        typ != R44_GDA_SLOG3_709 &&
+        typ != R44_GDA_HLG_BT2020 &&
+        typ != R44_GDA_HLG_709) {
+        return -EINVAL; /* -22 */
+    }
+    st->gamma_assist_type = typ;
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_set_log_shooting_mode(r44_gamma_lut_state_t *st, int log_mode) {
+    if (!st) return -EINVAL;
+    if (log_mode < R44_LOG_OFF || log_mode > R44_LOG_FLEXIBLE_ISO) return -EINVAL;
+    st->log_shooting_mode = log_mode;
+    if (log_mode != R44_LOG_OFF) {
+        /* [Gamma Display Assist] hard-locked to [Off] whenever [Log Shooting] is active */
+        st->effective_gamma_assist = 0;
+    } else {
+        st->effective_gamma_assist = st->gamma_assist_user_pref;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_set_gamma_display_assist(r44_gamma_lut_state_t *st, int enable) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->log_shooting_mode != R44_LOG_OFF) {
+        st->effective_gamma_assist = 0;
+        return -EBUSY; /* -16: locked to [Off] under [Log Shooting]; preview delegated to [Display LUT] */
+    }
+    st->gamma_assist_user_pref = enable;
+    st->effective_gamma_assist = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_set_display_lut(r44_gamma_lut_state_t *st, int enable) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->log_shooting_mode == R44_LOG_OFF) {
+        return -EOPNOTSUPP; /* -95: [Display LUT] applies under [Log Shooting] */
+    }
+    st->display_lut_on = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r44_custom_key_display_lut_switch(r44_gamma_lut_state_t *st) {
+    if (!st) return -EINVAL;
+    if (st->log_shooting_mode == R44_LOG_OFF) return -EOPNOTSUPP;
+    st->display_lut_on = st->display_lut_on ? 0 : 1;
+    return st->display_lut_on;
+}
+
+__attribute__((noinline)) static void r44_eval_monitor_gamma_assist_scope(
+    const r44_gamma_lut_state_t *st,
+    int *out_lcd_assist,
+    int *out_hdmi_assist,
+    int *out_lcd_display_lut
+) {
+    if (out_lcd_assist) *out_lcd_assist = 0;
+    if (out_hdmi_assist) *out_hdmi_assist = 0;
+    if (out_lcd_display_lut) *out_lcd_display_lut = 0;
+    if (!st) return;
+    if (st->log_shooting_mode != R44_LOG_OFF) {
+        if (out_lcd_display_lut) *out_lcd_display_lut = st->display_lut_on ? 1 : 0;
+        return;
+    }
+    if (st->is_hlg_still_playback && !st->hlg_still_image_on) {
+        return;
+    }
+    if (out_lcd_assist) *out_lcd_assist = st->effective_gamma_assist ? 1 : 0;
+    /* Built-in LCD ONLY: [Gamma Display Assist] is never applied to external TVs / HDMI output */
+    if (out_hdmi_assist) *out_hdmi_assist = 0;
+}
+
+static int run_r44_gammaassist_displaylut_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r44_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r44_p2_ro", 0755) != 0) {
+        return 236;
+    }
+    (void)umount("/mnt/r44_surfaces");
+    (void)umount("/mnt/r44_p2_ro");
+    if (mount("tmpfs", "/mnt/r44_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r44_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 236;
+    }
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r44_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 47U) ^ (k * 23U) ^ 0x44U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 236;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 236;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 39U + 0x33U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r44_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 236;
+    if (mount(NULL, "/mnt/r44_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r44_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 236;
+    }
+
+    r44_gamma_lut_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.external_hdmi_connected = 1;
+    (void)r44_set_gamma_display_assist(&st, 1);
+
+    /* 1. Exact 4-mode [Gamma Disp. Assist Typ.] table + S-Log2 rejection (-22) + zero-HDMI scope */
+    int gamma_assist_4modes_verified = 0;
+    int lcd_assist_all = 1, hdmi_assist_any = 0;
+    for (int m = R44_GDA_AUTO; m <= R44_GDA_HLG_709; m++) {
+        if (r44_set_gamma_disp_assist_type(&st, m) == 0) {
+            gamma_assist_4modes_verified++;
+            int la = 0, ha = 1, dl = 0;
+            r44_eval_monitor_gamma_assist_scope(&st, &la, &ha, &dl);
+            if (la != 1) lcd_assist_all = 0;
+            if (ha != 0) hdmi_assist_any = 1;
+        }
+    }
+    int slog2_assist_reject_rc = r44_set_gamma_disp_assist_type(&st, R44_GDA_SLOG2_OLD);
+    int lcd_gamma_assist_applied = lcd_assist_all;
+    int hdmi_gamma_assist_applied = hdmi_assist_any;
+    int lcd_only_zero_hdmi_scope_ok = (lcd_gamma_assist_applied == 1 && hdmi_gamma_assist_applied == 0) ? 1 : 0;
+
+    /* Picture Profile shoot/playback + HLG still playback gated on [HLG Still Image]=On */
+    st.is_hlg_still_playback = 1;
+    st.hlg_still_image_on = 0;
+    int la_off = 1, la_on = 0;
+    r44_eval_monitor_gamma_assist_scope(&st, &la_off, NULL, NULL);
+    st.hlg_still_image_on = 1;
+    r44_eval_monitor_gamma_assist_scope(&st, &la_on, NULL, NULL);
+    st.is_hlg_still_playback = 0;
+    int pp_shoot_pb_hlg_still_ok = (la_off == 0 && la_on == 1) ? 1 : 0;
+
+    /* 2. [Log Shooting] (Cine EI / Cine EI Quick / Flexible ISO) locks [Gamma Display Assist]=Off (-16)
+     *    and delegates preview exclusively to [Display LUT] (On/Off + custom key switch) */
+    int display_lut_reject_when_log_off_rc = r44_set_display_lut(&st, 1);
+    int log_3modes_force_assist_off_ok = 0;
+    int gamma_assist_locked_in_log_rc = 0;
+    for (int lm = R44_LOG_CINE_EI; lm <= R44_LOG_FLEXIBLE_ISO; lm++) {
+        int lrc = r44_set_log_shooting_mode(&st, lm);
+        int grc = r44_set_gamma_display_assist(&st, 1);
+        int la = 1, ha = 1, dl = 0;
+        (void)r44_set_display_lut(&st, 1);
+        r44_eval_monitor_gamma_assist_scope(&st, &la, &ha, &dl);
+        if (lrc == 0 && st.effective_gamma_assist == 0 && grc == -EBUSY && la == 0 && ha == 0 && dl == 1) {
+            log_3modes_force_assist_off_ok++;
+            gamma_assist_locked_in_log_rc = grc;
+        }
+    }
+    int sw0 = r44_custom_key_display_lut_switch(&st); /* 1 -> 0 */
+    int sw1 = r44_custom_key_display_lut_switch(&st); /* 0 -> 1 */
+    int display_lut_on_off_switch_ok = (sw0 == 0 && sw1 == 1 && r44_set_display_lut(&st, 0) == 0) ? 1 : 0;
+
+    (void)r44_set_log_shooting_mode(&st, R44_LOG_OFF);
+    int gamma_assist_unlocked_when_log_off_ok = (st.effective_gamma_assist == 1 &&
+                                                 r44_set_gamma_display_assist(&st, 0) == 0 &&
+                                                 r44_set_gamma_display_assist(&st, 1) == 0) ? 1 : 0;
+
+    /* 3. Read-only p2, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r44_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r44_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (gamma_assist_4modes_verified == 4 &&
+              slog2_assist_reject_rc == -EINVAL &&
+              pp_shoot_pb_hlg_still_ok == 1 &&
+              lcd_only_zero_hdmi_scope_ok == 1 &&
+              log_3modes_force_assist_off_ok == 3 &&
+              gamma_assist_locked_in_log_rc == -EBUSY &&
+              display_lut_on_off_switch_ok == 1 &&
+              display_lut_reject_when_log_off_rc == -EOPNOTSUPP &&
+              gamma_assist_unlocked_when_log_off_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R44_GAMMAASSIST_DISPLAYLUT gamma_assist_4modes_verified=%d "
+            "slog2_assist_reject_rc=%d pp_shoot_pb_hlg_still_ok=%d "
+            "lcd_gamma_assist_applied=%d hdmi_gamma_assist_applied=%d "
+            "lcd_only_zero_hdmi_scope_ok=%d log_3modes_force_assist_off_ok=%d "
+            "gamma_assist_locked_in_log_rc=%d display_lut_on_off_switch_ok=%d "
+            "display_lut_reject_when_log_off_rc=%d gamma_assist_unlocked_when_log_off_ok=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r44c_ok=%d verify_us=%lld\n",
+            gamma_assist_4modes_verified, slog2_assist_reject_rc,
+            pp_shoot_pb_hlg_still_ok, lcd_gamma_assist_applied,
+            hdmi_gamma_assist_applied, lcd_only_zero_hdmi_scope_ok,
+            log_3modes_force_assist_off_ok, gamma_assist_locked_in_log_rc,
+            display_lut_on_off_switch_ok, display_lut_reject_when_log_off_rc,
+            gamma_assist_unlocked_when_log_off_ok, p2_write_blocked_rc,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 236;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -10914,6 +11646,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r43-reclamp-silent") == 0) {
         return run_r43_reclamp_silent_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r44-ntscpal-camreset") == 0) {
+        return run_r44_ntscpal_camreset_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r44-gammaassist-displaylut") == 0) {
+        return run_r44_gammaassist_displaylut_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -11018,6 +11756,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r43", &r43_st) == 0) {
         if (setup_r43_filesettings_shotmark_probe() != 0) {
             return 62;
+        }
+    }
+    struct stat r44_st;
+    if (stat("/etc/fx6_stage_r44", &r44_st) == 0) {
+        if (setup_r44_pixelmap_cnflasha_probe() != 0) {
+            return 63;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

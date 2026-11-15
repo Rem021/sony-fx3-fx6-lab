@@ -1345,6 +1345,7 @@ def build_stage_a_overlay(
     enable_r41: bool = False,
     enable_r42: bool = False,
     enable_r43: bool = False,
+    enable_r44: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1360,6 +1361,7 @@ def build_stage_a_overlay(
     r41_mode: str = "desqueeze_165x_4locks_big6",
     r42_mode: str = "hdmi_log1080_hdmionly_4k_big6",
     r43_mode: str = "filesettings_shotmark_big6",
+    r44_mode: str = "pixelmap_reboot_cnflasha_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1661,7 +1663,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r42_mode: {r42_mode}")
     if enable_r43 and r43_mode not in ("filesettings_shotmark_big6", "tc_regenerate_slot1_extlk", "reclamp_coupled_tally_h0_h3"):
         raise ValueError(f"Unsupported r43_mode: {r43_mode}")
-    if enable_r43 and r43_mode in ("tc_regenerate_slot1_extlk", "reclamp_coupled_tally_h0_h3"):
+    if enable_r44 and r44_mode not in ("pixelmap_reboot_cnflasha_big6", "ntscpal_dfn_camreset_persist", "gammaassist_displaylut_h0_h3"):
+        raise ValueError(f"Unsupported r44_mode: {r44_mode}")
+    if enable_r44 and r44_mode in ("ntscpal_dfn_camreset_persist", "gammaassist_displaylut_h0_h3"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r44_mode == "ntscpal_dfn_camreset_persist":
+            r44_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r44-ntscpal-camreset > /dev/console 2>&1\n"
+                "fx6_r44_np_rc=$?\n"
+                "echo FX6_R44_NTSCPAL_CAMRESET_RC=$fx6_r44_np_rc\n"
+                "echo FX6_R44_NTSCPAL_CAMRESET_EXIT rc=$fx6_r44_np_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r44_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r44-gammaassist-displaylut > /dev/console 2>&1\n"
+                "fx6_r44_gd_rc=$?\n"
+                "echo FX6_R44_GAMMAASSIST_DISPLAYLUT_RC=$fx6_r44_gd_rc\n"
+                "echo FX6_R44_GAMMAASSIST_DISPLAYLUT_EXIT rc=$fx6_r44_gd_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r44_early_hook, 1)
+    elif enable_r43 and r43_mode in ("tc_regenerate_slot1_extlk", "reclamp_coupled_tally_h0_h3"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2737,6 +2766,46 @@ def build_stage_a_overlay(
             "audio_signals_locked_while_silent_rc": -16,
             "p2_setting_writes": 0,
         }
+    r44_meta: Optional[Dict[str, Any]] = None
+    if enable_r44:
+        additions["etc/fx6_stage_r44"] = (
+            (
+                f"stage_r44=1\nr44_mode={r44_mode}\n"
+                f"pixelmap_autorestart_cnflasha_ro=1\nntscpal_dfn_camreset_survival=1\n"
+                f"gammaassist_4mode_displaylut_split=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r44_meta = {
+            "r44_mode": r44_mode,
+            "auto_pixel_mapping_default": "On",
+            "auto_pixel_mapping_poweroff_shutter_in_silent_mode": True,
+            "auto_pixel_mapping_off_manual_cadence_days": 3,
+            "manual_pixel_mapping_low_battery_reject_rc": -11,
+            "manual_pixel_mapping_op_lockout_rc": -16,
+            "manual_pixel_mapping_triggers_auto_restart_tmp_wipe": True,
+            "cnflasha_ro_open_reject_rc": -30,
+            "cnflasha_userspace_firewall_reject_rc": -1,
+            "cnflasha_write_count": 0,
+            "ntsc_frame_rates": ["23.98p", "29.97p", "59.94p", "119.88p"],
+            "pal_frame_rates": ["25p", "50p", "100p"],
+            "ntsc_tc_formats": ["DF", "NDF"],
+            "pal_2398p_reject_rc": -22,
+            "pal_tc_df_ndf_reject_rc": -95,
+            "startup_banners": ["Running on NTSC.", "Running on PAL."],
+            "ntsc_pal_survives_camera_settings_reset": True,
+            "initialize_restores_regional_default": True,
+            "gamma_disp_assist_types": [
+                "Auto",
+                "S-Log3->709(800%)",
+                "HLG(BT.2020)",
+                "HLG(709)",
+            ],
+            "slog2_assist_reject_rc": -22,
+            "log_shooting_locks_gamma_assist_off_rc": -16,
+            "gamma_assist_hdmi_applied": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2773,6 +2842,7 @@ def build_stage_a_overlay(
         "r41_enabled": enable_r41,
         "r42_enabled": enable_r42,
         "r43_enabled": enable_r43,
+        "r44_enabled": enable_r44,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2834,6 +2904,8 @@ def build_stage_a_overlay(
         stage_a_meta["r42"] = r42_meta
     if r43_meta is not None:
         stage_a_meta["r43"] = r43_meta
+    if r44_meta is not None:
+        stage_a_meta["r44"] = r44_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3166,6 +3238,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R41_",
         "FX6_R42_",
         "FX6_R43_",
+        "FX6_R44_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -3341,6 +3414,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r43_bridge: Optional[Dict[str, Any]] = None
     r43_tc_regenerate_rc: Optional[int] = None
     r43_reclamp_silent_rc: Optional[int] = None
+    last_r44_pixelmap_cnflasha_init: Optional[Dict[str, Any]] = None
+    last_r44_pixelmap_cnflasha_bridge: Optional[Dict[str, Any]] = None
+    last_r44_ntscpal_camreset_bridge: Optional[Dict[str, Any]] = None
+    last_r44_gammaassist_displaylut_bridge: Optional[Dict[str, Any]] = None
+    last_r44_ntscpal_camreset: Optional[Dict[str, Any]] = None
+    last_r44_gammaassist_displaylut: Optional[Dict[str, Any]] = None
+    last_r44_lang: Optional[Dict[str, Any]] = None
+    last_r44_bridge: Optional[Dict[str, Any]] = None
+    r44_ntscpal_camreset_rc: Optional[int] = None
+    r44_gammaassist_displaylut_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -3730,6 +3813,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R43_RECLAMP_SILENT_RC"), int):
                 r43_reclamp_silent_rc = kv["FX6_R43_RECLAMP_SILENT_RC"]
+        elif "FX6_R44_PIXELMAP_CNFLASHA_INIT " in line:
+            last_r44_pixelmap_cnflasha_init = _parse_kv_ints(line.split("FX6_R44_PIXELMAP_CNFLASHA_INIT ", 1)[1])
+        elif "FX6_R44_PIXELMAP_CNFLASHA_BRIDGE " in line:
+            last_r44_pixelmap_cnflasha_bridge = _parse_kv_ints(line.split("FX6_R44_PIXELMAP_CNFLASHA_BRIDGE ", 1)[1])
+        elif "FX6_R44_NTSCPAL_CAMRESET_BRIDGE " in line:
+            last_r44_ntscpal_camreset_bridge = _parse_kv_ints(line.split("FX6_R44_NTSCPAL_CAMRESET_BRIDGE ", 1)[1])
+        elif "FX6_R44_GAMMAASSIST_DISPLAYLUT_BRIDGE " in line:
+            last_r44_gammaassist_displaylut_bridge = _parse_kv_ints(line.split("FX6_R44_GAMMAASSIST_DISPLAYLUT_BRIDGE ", 1)[1])
+        elif "FX6_R44_NTSCPAL_CAMRESET " in line:
+            last_r44_ntscpal_camreset = _parse_kv_ints(line.split("FX6_R44_NTSCPAL_CAMRESET ", 1)[1])
+        elif "FX6_R44_GAMMAASSIST_DISPLAYLUT " in line:
+            last_r44_gammaassist_displaylut = _parse_kv_ints(line.split("FX6_R44_GAMMAASSIST_DISPLAYLUT ", 1)[1])
+        elif "FX6_R44_LANG_TELEMETRY " in line:
+            last_r44_lang = _parse_kv_ints(line.split("FX6_R44_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R44_BRIDGE " in line:
+            last_r44_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R44_BRIDGE ", 1)[1])
+        elif "FX6_R44_NTSCPAL_CAMRESET_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R44_NTSCPAL_CAMRESET_RC"), int):
+                r44_ntscpal_camreset_rc = kv["FX6_R44_NTSCPAL_CAMRESET_RC"]
+        elif "FX6_R44_GAMMAASSIST_DISPLAYLUT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R44_GAMMAASSIST_DISPLAYLUT_RC"), int):
+                r44_gammaassist_displaylut_rc = kv["FX6_R44_GAMMAASSIST_DISPLAYLUT_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -4150,6 +4257,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r43_bridge or {},
         }
 
+    r44_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r44_pixelmap_cnflasha_init,
+            last_r44_pixelmap_cnflasha_bridge,
+            last_r44_ntscpal_camreset_bridge,
+            last_r44_gammaassist_displaylut_bridge,
+            last_r44_ntscpal_camreset,
+            last_r44_gammaassist_displaylut,
+            last_r44_lang,
+            last_r44_bridge,
+        )
+    ):
+        r44_telemetry = {
+            "ntscpal_camreset_rc": r44_ntscpal_camreset_rc,
+            "gammaassist_displaylut_rc": r44_gammaassist_displaylut_rc,
+            "pixelmap_cnflasha_init": last_r44_pixelmap_cnflasha_init or {},
+            "pixelmap_cnflasha_bridge": last_r44_pixelmap_cnflasha_bridge or {},
+            "ntscpal_camreset_bridge": last_r44_ntscpal_camreset_bridge or {},
+            "gammaassist_displaylut_bridge": last_r44_gammaassist_displaylut_bridge or {},
+            "ntscpal_camreset": last_r44_ntscpal_camreset or {},
+            "gammaassist_displaylut": last_r44_gammaassist_displaylut or {},
+            "lang_telemetry": last_r44_lang or {},
+            "stage_b_bridge": last_r44_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -4190,6 +4324,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r41_telemetry": r41_telemetry,
         "r42_telemetry": r42_telemetry,
         "r43_telemetry": r43_telemetry,
+        "r44_telemetry": r44_telemetry,
     }
 
 
@@ -4213,7 +4348,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 43:
+    if args.round >= 44:
+        tmp_prefix = "fx6-r44"
+    elif args.round >= 43:
         tmp_prefix = "fx6-r43"
     elif args.round >= 42:
         tmp_prefix = "fx6-r42"
@@ -4328,8 +4465,12 @@ def run_once(args: argparse.Namespace) -> int:
         r41_mode = getattr(args, "r41_mode", "desqueeze_165x_4locks_big6")
         r42_mode = getattr(args, "r42_mode", "hdmi_log1080_hdmionly_4k_big6")
         r43_mode = getattr(args, "r43_mode", "filesettings_shotmark_big6")
+        r44_mode = getattr(args, "r44_mode", "pixelmap_reboot_cnflasha_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Wave30RealHwPixelMapNtscPalGammaAssistDisplayLut+r44_mode={r44_mode}+lang={lang})"
+                if args.round >= 44
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwFileSettingsShotMarkTcRegenRecLamp+r43_mode={r43_mode}+lang={lang})"
                 if args.round >= 43
                 else (
@@ -4466,6 +4607,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -4522,6 +4664,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r42_mode=r42_mode,
                 enable_r43=(args.round >= 43),
                 r43_mode=r43_mode,
+                enable_r44=(args.round >= 44),
+                r44_mode=r44_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -4664,6 +4808,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R42_FOCUSMAG_BRIGHTMON_EXIT" in txt
                     or "FX6_R43_TC_REGENERATE_EXIT" in txt
                     or "FX6_R43_RECLAMP_SILENT_EXIT" in txt
+                    or "FX6_R44_NTSCPAL_CAMRESET_EXIT" in txt
+                    or "FX6_R44_GAMMAASSIST_DISPLAYLUT_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -4708,6 +4854,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R42_FOCUSMAG_BRIGHTMON_EXIT" in serial_text
             or "FX6_R43_TC_REGENERATE_EXIT" in serial_text
             or "FX6_R43_RECLAMP_SILENT_EXIT" in serial_text
+            or "FX6_R44_NTSCPAL_CAMRESET_EXIT" in serial_text
+            or "FX6_R44_GAMMAASSIST_DISPLAYLUT_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -4774,6 +4922,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r41_mode": r41_mode if args.round >= 41 else None,
             "r42_mode": r42_mode if args.round >= 42 else None,
             "r43_mode": r43_mode if args.round >= 43 else None,
+            "r44_mode": r44_mode if args.round >= 44 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -4824,6 +4973,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r41_telemetry": milestones.get("r41_telemetry") if args.round >= 41 else None,
             "r42_telemetry": milestones.get("r42_telemetry") if args.round >= 42 else None,
             "r43_telemetry": milestones.get("r43_telemetry") if args.round >= 43 else None,
+            "r44_telemetry": milestones.get("r44_telemetry") if args.round >= 44 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -4873,7 +5023,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -4891,6 +5041,7 @@ def main() -> int:
     ap.add_argument("--r41-mode", type=str, choices=["desqueeze_165x_4locks_big6", "external_focusmap_150fps_cutoff", "simult_autoswitch_shocklesswb"], default="desqueeze_165x_4locks_big6")
     ap.add_argument("--r42-mode", type=str, choices=["hdmi_log1080_hdmionly_4k_big6", "proxy_vault_119p_atomic_pair", "focusmag_brightmon_h0_h3"], default="hdmi_log1080_hdmionly_4k_big6")
     ap.add_argument("--r43-mode", type=str, choices=["filesettings_shotmark_big6", "tc_regenerate_slot1_extlk", "reclamp_coupled_tally_h0_h3"], default="filesettings_shotmark_big6")
+    ap.add_argument("--r44-mode", type=str, choices=["pixelmap_reboot_cnflasha_big6", "ntscpal_dfn_camreset_persist", "gammaassist_displaylut_h0_h3"], default="pixelmap_reboot_cnflasha_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

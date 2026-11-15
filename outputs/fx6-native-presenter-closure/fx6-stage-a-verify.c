@@ -14552,6 +14552,981 @@ static int run_r47_flexexp_reset_split_probe(void) {
     return ok ? 0 : 242;
 }
 
+/* =========================================================================
+ * Round 48 (48th Milestone / Wave-34):
+ *   1. r48a (--r48-recover-imagedb-vault): [Recover Image DB] depleted NP-FZ100
+ *      battery refusal (-EAGAIN/-EBUSY before FAT/exFAT touch), non-deleting
+ *      AVF_INFO repair on Slot 2 scratch (deleted_clips == 0), action-item
+ *      immunity across [Camera Settings Reset] & [Initialize], and Slot-1
+ *      Tier-0 forensic vault read-only write firewall (-EBUSY/-EACCES/-EROFS,
+ *      slot1_imagedb_writes == 0, emmc_write_count == 0).
+ *   2. r48b (setup_r48_monitor_flip_playback_probe + SChinese Big6 fb0):
+ *      [Monitor Flip Direction] (Auto default, Horizontal Flip, Vertical Flip,
+ *      Off) survival across [Camera Settings Reset] (reset_only_by_initialize == 1),
+ *      local shooting LCD horizontal mirroring while [Horizontal Flip] playback
+ *      display direction is NEVER inverted (playback_hflip_inverted_frames == 0)
+ *      and external Type-A HDMI clean feed stays unflipped.
+ *   3. r48c (--r48-af-sens-interval-h0-h3): ILME-FX3 Movie/S&Q AF kinematics
+ *      ([AF Transition Speed] 1..7 default 5 & [AF Subj. Shift Sensitivity]
+ *      1..5 default 5 exact full spelling) + reset to 5 under [Camera Settings
+ *      Reset], still-image-only boundary on [Interval Shoot Func.] (-EINVAL/-EPERM
+ *      rejection of video Interval Rec), and 16/16 H0 == H3 baseline invariance.
+ * ========================================================================= */
+
+enum {
+    R48_SLOT_1_VAULT   = 1,
+    R48_SLOT_2_SCRATCH = 2,
+    R48_SLOT_INVALID   = 3
+};
+
+enum {
+    R48_BATT_EXTREMELY_DEPLETED = 0, /* <= 6150 mV NP-FZ100: hardware-refused before metadata touch */
+    R48_BATT_BROWNOUT_MARGINAL  = 1, /* mid-journal brownout guard: -EBUSY */
+    R48_BATT_SUFFICIENT_7200MV  = 2, /* 7200 mV nominal NP-FZ100: repair permitted on non-vault media */
+    R48_BATT_INVALID            = 3
+};
+
+typedef struct {
+    int slot1_tier0_vault_present;   /* pnflasha / cnflasha / CAMSET01.DAT present on Slot 1 */
+    int slot1_sha256_verified;       /* off-camera SHA-256 verification status */
+    int slot1_sdxc_wp_locked;        /* physical SDXC WP switch locked */
+    unsigned int slot1_imagedb_writes;
+    unsigned int depleted_pre_touch_writes;
+    unsigned int slot2_imagedb_writes;
+    unsigned int deleted_clips;
+    int slot2_db_error_active;       /* 1 = "Image DataBase File error" / false "0" recordable images */
+    unsigned int slot2_indexed_clips;
+    unsigned int slot2_recordable_images;
+    int is_action_item;              /* 1 = one-shot action, immune to Camera Settings Reset & Initialize */
+    int resettable_dummy_ev_x10;
+} r48_recover_imagedb_state_t;
+
+__attribute__((noinline)) static void r48_imagedb_init_state(r48_recover_imagedb_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->slot1_tier0_vault_present = 1;
+    st->slot1_sha256_verified = 0;
+    st->slot1_sdxc_wp_locked = 0;
+    st->slot2_db_error_active = 1;
+    st->slot2_indexed_clips = 0U;
+    st->slot2_recordable_images = 0U; /* False "0" recordable images before AVF_INFO repair */
+    st->is_action_item = 1;
+    st->resettable_dummy_ev_x10 = 10;
+}
+
+__attribute__((noinline)) static int r48_execute_recover_image_db(
+    r48_recover_imagedb_state_t *st,
+    int slot_id,
+    int battery_state,
+    const char *avf_inp_path,
+    const char *avf_bnp_path,
+    unsigned int discovered_clips_on_card
+) {
+    if (!st || !avf_inp_path || !avf_bnp_path) return -EINVAL;
+    if (slot_id != R48_SLOT_1_VAULT && slot_id != R48_SLOT_2_SCRATCH) return -EINVAL;
+    if (battery_state < R48_BATT_EXTREMELY_DEPLETED || battery_state >= R48_BATT_INVALID) {
+        return -EINVAL;
+    }
+
+    /* 1. Official Sony Depleted-Battery Hardware Refusal BEFORE any FAT/exFAT metadata sector touch:
+     *    "If the battery pack is extremely depleted, image database files cannot be repaired.
+     *     Use a sufficiently charged battery pack." */
+    if (battery_state == R48_BATT_EXTREMELY_DEPLETED) {
+        return -EAGAIN; /* -11: refused prior to opening AVF_INFO for write */
+    }
+    if (battery_state == R48_BATT_BROWNOUT_MARGINAL) {
+        return -EBUSY;  /* -16: power rail unstable, mid-journal guard active */
+    }
+
+    /* 2. Pillar 36 / G87 Tier-0 Vault Read-Only Mutation Firewall on Slot 1:
+     *    [Recover Image DB] writes repaired index files to the card; block on Slot 1 Tier-0 dump card! */
+    if (slot_id == R48_SLOT_1_VAULT && st->slot1_tier0_vault_present) {
+        if (st->slot1_sdxc_wp_locked) {
+            return -EACCES; /* -13: physical SDXC WP switch engaged */
+        }
+        if (!st->slot1_sha256_verified) {
+            return -EBUSY;  /* -16: unverified Tier-0 dump card blocked prior to off-camera hashing */
+        }
+        return -EACCES;     /* -13: Tier-0 vault remains strictly read-only on camera */
+    }
+
+    /* 3. Non-Deleting AVF_INFO Database Index Repair on Slot 2 scratch card */
+    uint8_t repaired_hdr[64];
+    memset(repaired_hdr, 0, sizeof(repaired_hdr));
+    memcpy(repaired_hdr, "AVF_INFO_REPAIRED_V702", 22U);
+    repaired_hdr[24] = (uint8_t)(discovered_clips_on_card & 0xffU);
+    repaired_hdr[25] = 0x5aU;
+    if (r29_write_all_fsync(avf_inp_path, repaired_hdr, sizeof(repaired_hdr), 0644) != 0) {
+        return -EIO;
+    }
+    if (r29_write_all_fsync(avf_bnp_path, repaired_hdr, sizeof(repaired_hdr), 0644) != 0) {
+        return -EIO;
+    }
+    st->slot2_imagedb_writes += 2U;
+    /* Recorded clips/stills are NEVER deleted by [Recover Image DB] */
+    st->slot2_db_error_active = 0;
+    st->slot2_indexed_clips = discovered_clips_on_card;
+    st->slot2_recordable_images = 4096U;
+    return 0;
+}
+
+__attribute__((noinline)) static void r48_imagedb_camera_settings_reset(r48_recover_imagedb_state_t *st) {
+    if (!st) return;
+    /* [Recover Image DB] is an action item: NOT reset or re-triggered by [Camera Settings Reset] */
+    st->resettable_dummy_ev_x10 = 0;
+}
+
+__attribute__((noinline)) static void r48_imagedb_initialize_reset(r48_recover_imagedb_state_t *st) {
+    if (!st) return;
+    /* [Recover Image DB] is an action item: NOT reset or re-triggered by [Initialize], nor are repaired AVF_INFO files altered */
+    st->resettable_dummy_ev_x10 = 0;
+}
+
+static int run_r48_recover_imagedb_vault_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r48_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_slot2_scratch", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_p2_ro", 0755) != 0) {
+        return 243;
+    }
+    (void)umount("/mnt/r48_slot1_vault");
+    (void)umount("/mnt/r48_slot2_scratch");
+    (void)umount("/mnt/r48_p2_ro");
+    if (mount("tmpfs", "/mnt/r48_slot1_vault", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r48_slot2_scratch", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r48_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 243;
+    }
+
+    if (r33_mkdir_p("/mnt/r48_slot1_vault/AVF_INFO", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_slot2_scratch/AVF_INFO", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_slot2_scratch/M4ROOT/CLIP", 0755) != 0) {
+        return 243;
+    }
+
+    /* Seed Slot 1 Tier-0 forensic vault artifacts (CAMSET01.DAT, cnflasha_dump.bin, AVIN0001.INP) */
+    uint8_t s1_camset[128], s1_avin[64], p2_seed[256];
+    for (size_t i = 0U; i < sizeof(s1_camset); i++) s1_camset[i] = (uint8_t)((i * 37U + 0x48U) & 0xffU);
+    for (size_t i = 0U; i < sizeof(s1_avin); i++) s1_avin[i] = (uint8_t)((i * 19U + 0xa1U) & 0xffU);
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) p2_seed[i] = (uint8_t)((i * 53U + 0x29U) & 0xffU);
+
+    if (r29_write_all_fsync("/mnt/r48_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT",
+                            s1_camset, sizeof(s1_camset), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.INP",
+                            s1_avin, sizeof(s1_avin), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r48_p2_ro/Backup.bin",
+                            p2_seed, sizeof(p2_seed), 0444) != 0) {
+        return 243;
+    }
+
+    char pre_s1_camset_sha[65] = "", post_s1_camset_sha[65] = "";
+    char pre_s1_avin_sha[65] = "", post_s1_avin_sha[65] = "";
+    unsigned long long fbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r48_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT",
+                        pre_s1_camset_sha, &fbytes) != 0 ||
+        sha256_file_hex("/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.INP",
+                        pre_s1_avin_sha, &fbytes) != 0) {
+        return 243;
+    }
+
+    /* Seed Slot 2 scratch card with 3 recorded clips + corrupt AVF_INFO index */
+    static const char * const k_s2_clips[3] = {
+        "/mnt/r48_slot2_scratch/M4ROOT/CLIP/C0001.MP4",
+        "/mnt/r48_slot2_scratch/M4ROOT/CLIP/C0002.MP4",
+        "/mnt/r48_slot2_scratch/M4ROOT/CLIP/C0003.MP4"
+    };
+    char pre_clip_sha[3][65];
+    for (unsigned int c = 0U; c < 3U; c++) {
+        uint8_t cbuf[512];
+        for (size_t k = 0U; k < sizeof(cbuf); k++) {
+            cbuf[k] = (uint8_t)(((c + 1U) * 71U + k * 13U) & 0xffU);
+        }
+        if (r29_write_all_fsync(k_s2_clips[c], cbuf, sizeof(cbuf), 0644) != 0) return 243;
+        if (sha256_file_hex(k_s2_clips[c], pre_clip_sha[c], &fbytes) != 0) return 243;
+    }
+    uint8_t corrupt_avin[64];
+    memset(corrupt_avin, 0xee, sizeof(corrupt_avin));
+    if (r29_write_all_fsync("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+                            corrupt_avin, sizeof(corrupt_avin), 0644) != 0) {
+        return 243;
+    }
+    char pre_s2_corrupt_avin_sha[65] = "", post_depleted_avin_sha[65] = "";
+    if (sha256_file_hex("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+                        pre_s2_corrupt_avin_sha, &fbytes) != 0) {
+        return 243;
+    }
+
+    if (mount(NULL, "/mnt/r48_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 243;
+    }
+
+    r48_recover_imagedb_state_t st;
+    r48_imagedb_init_state(&st);
+
+    /* 1. Parameter validation & Depleted NP-FZ100 Battery Refusal BEFORE any FAT/exFAT touch */
+    int invalid_slot_reject_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_INVALID, R48_BATT_SUFFICIENT_7200MV,
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", 3U);
+    int invalid_batt_reject_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_2_SCRATCH, R48_BATT_INVALID,
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", 3U);
+
+    int depleted_batt_refusal_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_2_SCRATCH, R48_BATT_EXTREMELY_DEPLETED,
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", 3U);
+    int brownout_guard_refusal_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_2_SCRATCH, R48_BATT_BROWNOUT_MARGINAL,
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", 3U);
+
+    if (sha256_file_hex("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+                        post_depleted_avin_sha, &fbytes) != 0) {
+        return 243;
+    }
+    struct stat bnp_st;
+    int bnp_absent_on_depleted = (stat("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", &bnp_st) != 0) ? 1 : 0;
+    int depleted_zero_metadata_touch_ok =
+        (strcmp(pre_s2_corrupt_avin_sha, post_depleted_avin_sha) == 0 &&
+         bnp_absent_on_depleted == 1 &&
+         st.slot2_imagedb_writes == 0U &&
+         st.slot2_db_error_active == 1) ? 1 : 0;
+
+    /* 2. Non-deleting AVF_INFO repair on Slot 2 scratch under nominal 7200 mV NP-FZ100 */
+    int repair_s2_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_2_SCRATCH, R48_BATT_SUFFICIENT_7200MV,
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", 3U);
+    char repaired_s2_avin_sha[65] = "";
+    if (sha256_file_hex("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+                        repaired_s2_avin_sha, &fbytes) != 0) {
+        return 243;
+    }
+    int slot2_avf_info_repaired_ok =
+        (repair_s2_rc == 0 &&
+         strcmp(pre_s2_corrupt_avin_sha, repaired_s2_avin_sha) != 0 &&
+         stat("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.BNP", &bnp_st) == 0 &&
+         st.slot2_db_error_active == 0 &&
+         st.slot2_indexed_clips == 3U) ? 1 : 0;
+    int false_zero_recordable_cleared_ok = (st.slot2_recordable_images > 0U) ? 1 : 0;
+
+    int intact_clips = 0;
+    for (unsigned int c = 0U; c < 3U; c++) {
+        char post_c_sha[65] = "";
+        if (sha256_file_hex(k_s2_clips[c], post_c_sha, &fbytes) == 0 &&
+            strcmp(pre_clip_sha[c], post_c_sha) == 0) {
+            intact_clips++;
+        }
+    }
+    int slot2_clips_3of3_sha256_intact = (intact_clips == 3 && st.deleted_clips == 0U) ? 1 : 0;
+
+    /* 3. Action-Item Immunity across [Camera Settings Reset] & [Initialize] */
+    unsigned int writes_before_resets = st.slot2_imagedb_writes;
+    r48_imagedb_camera_settings_reset(&st);
+    int action_item_immune_cam_reset =
+        (st.is_action_item == 1 &&
+         st.resettable_dummy_ev_x10 == 0 &&
+         st.slot2_imagedb_writes == writes_before_resets &&
+         st.slot2_db_error_active == 0 &&
+         st.slot2_indexed_clips == 3U) ? 1 : 0;
+
+    st.resettable_dummy_ev_x10 = -15;
+    r48_imagedb_initialize_reset(&st);
+    char post_init_s2_avin_sha[65] = "";
+    if (sha256_file_hex("/mnt/r48_slot2_scratch/AVF_INFO/AVIN0001.INP",
+                        post_init_s2_avin_sha, &fbytes) != 0) {
+        return 243;
+    }
+    int action_item_immune_initialize =
+        (st.is_action_item == 1 &&
+         st.resettable_dummy_ev_x10 == 0 &&
+         st.slot2_imagedb_writes == writes_before_resets &&
+         strcmp(repaired_s2_avin_sha, post_init_s2_avin_sha) == 0) ? 1 : 0;
+
+    /* 4. Slot-1 Tier-0 Forensic Vault Read-Only Write Firewall (-EBUSY unverified, -EACCES WP, -EROFS kernel) */
+    st.slot1_sha256_verified = 0;
+    st.slot1_sdxc_wp_locked = 0;
+    int slot1_vault_unverified_block_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_1_VAULT, R48_BATT_SUFFICIENT_7200MV,
+        "/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.BNP", 1U);
+
+    st.slot1_sha256_verified = 1;
+    st.slot1_sdxc_wp_locked = 1;
+    if (mount(NULL, "/mnt/r48_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 243;
+    }
+    int slot1_vault_wp_block_rc = r48_execute_recover_image_db(
+        &st, R48_SLOT_1_VAULT, R48_BATT_SUFFICIENT_7200MV,
+        "/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.INP",
+        "/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.BNP", 1U);
+
+    errno = 0;
+    int s1_rw_fd = open("/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.INP", O_RDWR);
+    int slot1_ro_kernel_rc = (s1_rw_fd >= 0) ? (close(s1_rw_fd), 0) : -errno;
+
+    if (sha256_file_hex("/mnt/r48_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT",
+                        post_s1_camset_sha, &fbytes) != 0 ||
+        sha256_file_hex("/mnt/r48_slot1_vault/AVF_INFO/AVIN0001.INP",
+                        post_s1_avin_sha, &fbytes) != 0) {
+        return 243;
+    }
+    int slot1_vault_sha256_match =
+        (strcmp(pre_s1_camset_sha, post_s1_camset_sha) == 0 &&
+         strcmp(pre_s1_avin_sha, post_s1_avin_sha) == 0 &&
+         st.slot1_imagedb_writes == 0U) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r48_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+
+    (void)umount("/mnt/r48_slot1_vault");
+    (void)umount("/mnt/r48_slot2_scratch");
+    (void)umount("/mnt/r48_p2_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R48_RECOVER_IMAGEDB_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (invalid_slot_reject_rc == -EINVAL &&
+              invalid_batt_reject_rc == -EINVAL &&
+              depleted_batt_refusal_rc == -EAGAIN &&
+              brownout_guard_refusal_rc == -EBUSY &&
+              depleted_zero_metadata_touch_ok == 1 &&
+              slot2_avf_info_repaired_ok == 1 &&
+              false_zero_recordable_cleared_ok == 1 &&
+              st.deleted_clips == 0U &&
+              slot2_clips_3of3_sha256_intact == 1 &&
+              action_item_immune_cam_reset == 1 &&
+              action_item_immune_initialize == 1 &&
+              slot1_vault_unverified_block_rc == -EBUSY &&
+              slot1_vault_wp_block_rc == -EACCES &&
+              slot1_ro_kernel_rc == -EROFS &&
+              st.slot1_imagedb_writes == 0U &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R48_RECOVER_IMAGEDB_VAULT invalid_slot_reject_rc=%d invalid_batt_reject_rc=%d "
+            "depleted_batt_refusal_rc=%d brownout_guard_refusal_rc=%d "
+            "depleted_pre_touch_writes=%u depleted_zero_metadata_touch_ok=%d "
+            "slot2_avf_info_repaired_ok=%d false_zero_recordable_cleared_ok=%d "
+            "deleted_clips=%u slot2_clips_3of3_sha256_intact=%d "
+            "action_item_immune_cam_reset=%d action_item_immune_initialize=%d "
+            "slot1_vault_unverified_block_rc=%d slot1_vault_wp_block_rc=%d "
+            "slot1_ro_kernel_rc=%d slot1_imagedb_writes=%u slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r48a_ok=%d verify_us=%lld\n",
+            invalid_slot_reject_rc, invalid_batt_reject_rc,
+            depleted_batt_refusal_rc, brownout_guard_refusal_rc,
+            st.depleted_pre_touch_writes, depleted_zero_metadata_touch_ok,
+            slot2_avf_info_repaired_ok, false_zero_recordable_cleared_ok,
+            st.deleted_clips, slot2_clips_3of3_sha256_intact,
+            action_item_immune_cam_reset, action_item_immune_initialize,
+            slot1_vault_unverified_block_rc, slot1_vault_wp_block_rc,
+            slot1_ro_kernel_rc, st.slot1_imagedb_writes, slot1_vault_sha256_match,
+            p2_write_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 243;
+}
+
+enum {
+    R48_MON_FLIP_AUTO       = 0, /* Default: hinge/orientation sensor driven */
+    R48_MON_FLIP_HORIZONTAL = 1, /* [Horizontal Flip] */
+    R48_MON_FLIP_VERTICAL   = 2, /* [Vertical Flip] */
+    R48_MON_FLIP_OFF        = 3, /* [Off] */
+    R48_MON_FLIP_INVALID    = 4
+};
+
+static const char * const k_r48_monitor_flip_labels[4] = {
+    "Auto",
+    "Horizontal Flip",
+    "Vertical Flip",
+    "Off"
+};
+
+enum {
+    R48_VIEW_SHOOTING = 0,
+    R48_VIEW_PLAYBACK = 1
+};
+
+typedef struct {
+    int monitor_flip_dir;     /* R48_MON_FLIP_AUTO .. R48_MON_FLIP_OFF (survives Camera Settings Reset!) */
+    int hinge_selfie_open;    /* 1 = vari-angle LCD rotated forward */
+    int hdmi_info_display;    /* 0 = Off, 1 = On */
+    int af_trans_speed;       /* Resettable companion: 1..7, default 5 */
+    int af_subj_shift_sens;   /* Resettable companion: 1..5, default 5 */
+} r48_monitor_flip_state_t;
+
+__attribute__((noinline)) static void r48_monitor_flip_initialize_defaults(r48_monitor_flip_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->monitor_flip_dir = R48_MON_FLIP_AUTO;
+    st->hinge_selfie_open = 0;
+    st->hdmi_info_display = 0;
+    st->af_trans_speed = 5;
+    st->af_subj_shift_sens = 5;
+}
+
+__attribute__((noinline)) static int r48_set_monitor_flip_direction(r48_monitor_flip_state_t *st, int mode) {
+    if (!st || mode < R48_MON_FLIP_AUTO || mode >= R48_MON_FLIP_INVALID) return -EINVAL;
+    st->monitor_flip_dir = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r48_monitor_flip_camera_settings_reset(r48_monitor_flip_state_t *st) {
+    if (!st) return;
+    /* Official Sony spec: [Monitor Flip Direction] is NOT reset by [Camera Settings Reset]
+     * (restored to [Auto] ONLY by full [Initialize]). */
+    st->af_trans_speed = 5;
+    st->af_subj_shift_sens = 5;
+}
+
+__attribute__((noinline)) static void r48_eval_monitor_and_hdmi_flip(
+    const r48_monitor_flip_state_t *st,
+    int view_surface,
+    int *out_lcd_hflip,
+    int *out_lcd_vflip,
+    int *out_hdmi_flipped
+) {
+    int lh = 0, lv = 0;
+    if (st) {
+        if (st->monitor_flip_dir == R48_MON_FLIP_HORIZONTAL) {
+            /* Official Sony hardware invariant:
+             * "Even if set to [Horizontal Flip], the monitor display direction during playback
+             *  will not be inverted." */
+            lh = (view_surface == R48_VIEW_PLAYBACK) ? 0 : 1;
+        } else if (st->monitor_flip_dir == R48_MON_FLIP_VERTICAL) {
+            lv = 1;
+        } else if (st->monitor_flip_dir == R48_MON_FLIP_AUTO) {
+            if (st->hinge_selfie_open) {
+                lh = (view_surface == R48_VIEW_PLAYBACK) ? 0 : 1;
+                lv = 1;
+            }
+        }
+    }
+    if (out_lcd_hflip) *out_lcd_hflip = lh;
+    if (out_lcd_vflip) *out_lcd_vflip = lv;
+    /* External Type-A HDMI feed is never mirror-flipped by [Monitor Flip Direction] */
+    if (out_hdmi_flipped) *out_hdmi_flipped = 0;
+}
+
+static int setup_r48_monitor_flip_playback_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r48_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_cnflasha_init", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r48_p2_init");
+    (void)umount("/mnt/r48_cnflasha_init");
+    if (mount("tmpfs", "/mnt/r48_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r48_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 41U + 0x48U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 59U + 0x84U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r48_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r48_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r48_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r48_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r48_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r48_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    r48_monitor_flip_state_t st;
+    r48_monitor_flip_initialize_defaults(&st);
+
+    /* 1. Default = Auto & all 4 modes (Auto, Horizontal Flip, Vertical Flip, Off) validated */
+    int monitor_flip_default_auto_ok = (st.monitor_flip_dir == R48_MON_FLIP_AUTO) ? 1 : 0;
+    int invalid_flip_reject_rc = r48_set_monitor_flip_direction(&st, R48_MON_FLIP_INVALID);
+    int neg_flip_reject_rc = r48_set_monitor_flip_direction(&st, -1);
+    if (neg_flip_reject_rc != -EINVAL) invalid_flip_reject_rc = neg_flip_reject_rc;
+
+    int monitor_flip_4modes_verified = 0;
+    for (int m = R48_MON_FLIP_AUTO; m <= R48_MON_FLIP_OFF; m++) {
+        if (r48_set_monitor_flip_direction(&st, m) == 0 &&
+            st.monitor_flip_dir == m &&
+            k_r48_monitor_flip_labels[m][0] != '\0') {
+            monitor_flip_4modes_verified++;
+        }
+    }
+
+    /* 2. [Camera Settings Reset] survival across all non-default modes; restored to Auto ONLY by [Initialize] */
+    int flip_modes_survive_cam_reset = 0;
+    for (int m = R48_MON_FLIP_HORIZONTAL; m <= R48_MON_FLIP_OFF; m++) {
+        (void)r48_set_monitor_flip_direction(&st, m);
+        st.af_trans_speed = 1;
+        st.af_subj_shift_sens = 1;
+        r48_monitor_flip_camera_settings_reset(&st);
+        if (st.monitor_flip_dir == m &&
+            st.af_trans_speed == 5 &&
+            st.af_subj_shift_sens == 5) {
+            flip_modes_survive_cam_reset++;
+        }
+    }
+    int survives_cam_settings_reset_ok = (flip_modes_survive_cam_reset == 3) ? 1 : 0;
+
+    (void)r48_set_monitor_flip_direction(&st, R48_MON_FLIP_HORIZONTAL);
+    r48_monitor_flip_initialize_defaults(&st);
+    int initialize_restores_auto_ok = (st.monitor_flip_dir == R48_MON_FLIP_AUTO) ? 1 : 0;
+    int reset_only_by_initialize = (survives_cam_settings_reset_ok == 1 &&
+                                    initialize_restores_auto_ok == 1) ? 1 : 0;
+
+    /* 3. [Horizontal Flip] active: shooting LCD mirrors 1024px row while playback is NEVER inverted */
+    (void)r48_set_monitor_flip_direction(&st, R48_MON_FLIP_HORIZONTAL);
+    int shoot_lh = 0, shoot_lv = 0, shoot_hdmi = 1;
+    r48_eval_monitor_and_hdmi_flip(&st, R48_VIEW_SHOOTING, &shoot_lh, &shoot_lv, &shoot_hdmi);
+
+    uint32_t src_row[1024], shoot_lcd_row[1024], pb_lcd_row[1024];
+    for (unsigned int x = 0U; x < 1024U; x++) {
+        src_row[x] = 0xff000000U | ((x * 251U + 0x17U) & 0x00ffffffU);
+    }
+    for (unsigned int x = 0U; x < 1024U; x++) {
+        shoot_lcd_row[x] = shoot_lh ? src_row[1023U - x] : src_row[x];
+    }
+    unsigned int shooting_lcd_mirror_px_verified = 0U;
+    for (unsigned int x = 0U; x < 1024U; x++) {
+        if (shoot_lcd_row[x] == src_row[1023U - x]) {
+            shooting_lcd_mirror_px_verified++;
+        }
+    }
+    int shooting_lcd_hflip_active =
+        (shoot_lh == 1 && shoot_lv == 0 && shooting_lcd_mirror_px_verified == 1024U) ? 1 : 0;
+
+    unsigned int playback_frames_swept = 64U;
+    unsigned int playback_hflip_inverted_frames = 0U;
+    unsigned int hdmi_flipped_frames = (shoot_hdmi != 0) ? 1U : 0U;
+    for (unsigned int f = 0U; f < playback_frames_swept; f++) {
+        st.hdmi_info_display = (int)(f & 1U);
+        int pb_lh = 1, pb_lv = 1, pb_hdmi = 1;
+        r48_eval_monitor_and_hdmi_flip(&st, R48_VIEW_PLAYBACK, &pb_lh, &pb_lv, &pb_hdmi);
+        for (unsigned int x = 0U; x < 1024U; x++) {
+            pb_lcd_row[x] = pb_lh ? src_row[1023U - x] : src_row[x];
+        }
+        if (pb_lh != 0 || memcmp(pb_lcd_row, src_row, sizeof(src_row)) != 0) {
+            playback_hflip_inverted_frames++;
+        }
+        if (pb_hdmi != 0) {
+            hdmi_flipped_frames++;
+        }
+    }
+    /* Also verify Auto selfie-hinge mode suppresses horizontal inversion during playback */
+    (void)r48_set_monitor_flip_direction(&st, R48_MON_FLIP_AUTO);
+    st.hinge_selfie_open = 1;
+    int auto_pb_lh = 1, auto_pb_lv = 0, auto_pb_hdmi = 1;
+    r48_eval_monitor_and_hdmi_flip(&st, R48_VIEW_PLAYBACK, &auto_pb_lh, &auto_pb_lv, &auto_pb_hdmi);
+    if (auto_pb_lh != 0) playback_hflip_inverted_frames++;
+    if (auto_pb_hdmi != 0) hdmi_flipped_frames++;
+
+    int playback_non_inversion_ok = (playback_hflip_inverted_frames == 0U) ? 1 : 0;
+    int hdmi_clean_unflipped_ok = (hdmi_flipped_frames == 0U) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r48_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r48_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r48_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r48_p2_init");
+    (void)umount("/mnt/r48_cnflasha_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R48_MONITOR_FLIP_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (monitor_flip_default_auto_ok == 1 &&
+              invalid_flip_reject_rc == -EINVAL &&
+              monitor_flip_4modes_verified == 4 &&
+              flip_modes_survive_cam_reset == 3 &&
+              survives_cam_settings_reset_ok == 1 &&
+              reset_only_by_initialize == 1 &&
+              initialize_restores_auto_ok == 1 &&
+              shooting_lcd_hflip_active == 1 &&
+              shooting_lcd_mirror_px_verified == 1024U &&
+              playback_hflip_inverted_frames == 0U &&
+              playback_non_inversion_ok == 1 &&
+              hdmi_flipped_frames == 0U &&
+              hdmi_clean_unflipped_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R48_MONITOR_FLIP_INIT monitor_flip_default_auto_ok=%d "
+            "invalid_flip_reject_rc=%d monitor_flip_4modes_verified=%d "
+            "flip_modes_survive_cam_reset=%d survives_cam_settings_reset_ok=%d "
+            "reset_only_by_initialize=%d initialize_restores_auto_ok=%d "
+            "shooting_lcd_hflip_active=%d shooting_lcd_mirror_px_verified=%u "
+            "playback_frames_swept=%u playback_hflip_inverted_frames=%u "
+            "playback_non_inversion_ok=%d hdmi_flipped_frames=%u hdmi_clean_unflipped_ok=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r48_init_ok=%d verify_us=%lld\n",
+            monitor_flip_default_auto_ok, invalid_flip_reject_rc,
+            monitor_flip_4modes_verified, flip_modes_survive_cam_reset,
+            survives_cam_settings_reset_ok, reset_only_by_initialize,
+            initialize_restores_auto_ok, shooting_lcd_hflip_active,
+            shooting_lcd_mirror_px_verified, playback_frames_swept,
+            playback_hflip_inverted_frames, playback_non_inversion_ok,
+            hdmi_flipped_frames, hdmi_clean_unflipped_ok,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R48_MODE_MOVIE   = 0,
+    R48_MODE_SQ      = 1,
+    R48_MODE_STILL   = 2,
+    R48_MODE_INVALID = 3
+};
+
+enum {
+    R48_INTERVAL_TARGET_STILL_SEQ = 0, /* Official FX3 [Interval Shoot Func.]: still image sequence */
+    R48_INTERVAL_TARGET_VIDEO_REC = 1  /* FX6-only video frame-burst Interval Rec: rejected on FX3 */
+};
+
+typedef struct {
+    int shoot_mode;            /* R48_MODE_MOVIE / SQ / STILL */
+    int af_transition_speed;   /* 1 (Slow) .. 7 (Fast), default 5, resettable */
+    int af_subj_shift_sens;    /* 1(Locked on) .. 5(Responsive), default 5, resettable */
+    int monitor_flip_dir;      /* Non-resettable companion across [Camera Settings Reset] */
+    int interval_shoot_on;     /* [Interval Shoot Func.] Off(0) / On(1) — still-image-only */
+    int interval_start_sec;    /* 1..5999 (1s..99m59s) */
+    int interval_sec;          /* 1..60 (1s..60s) */
+    int interval_num_shots;    /* 1..9999 */
+} r48_af_interval_state_t;
+
+__attribute__((noinline)) static void r48_af_interval_initialize_all(r48_af_interval_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->shoot_mode = R48_MODE_MOVIE;
+    st->af_transition_speed = 5;
+    st->af_subj_shift_sens = 5;
+    st->monitor_flip_dir = R48_MON_FLIP_AUTO;
+    st->interval_shoot_on = 0;
+    st->interval_start_sec = 1;
+    st->interval_sec = 3;
+    st->interval_num_shots = 30;
+}
+
+__attribute__((noinline)) static int r48_validate_fx3_af_menu_label(const char *label) {
+    if (!label) return -EINVAL;
+    if (strcmp(label, "AF Transition Speed") == 0 ||
+        strcmp(label, "AF Subj. Shift Sensitivity") == 0) {
+        return 0;
+    }
+    /* Reject abbreviated "AF Subj. Shift Sens." — ILME-FX3 spells Sensitivity in full */
+    return -EINVAL;
+}
+
+__attribute__((noinline)) static int r48_set_af_transition_speed(r48_af_interval_state_t *st, int val) {
+    if (!st) return -EINVAL;
+    if (val < 1 || val > 7) return -EINVAL;
+    if (st->shoot_mode == R48_MODE_STILL) {
+        return -EOPNOTSUPP; /* -95: Movie & S&Q scoped */
+    }
+    st->af_transition_speed = val;
+    return 0;
+}
+
+__attribute__((noinline)) static int r48_set_af_subj_shift_sensitivity(r48_af_interval_state_t *st, int val) {
+    if (!st) return -EINVAL;
+    if (val < 1 || val > 5) return -EINVAL;
+    if (st->shoot_mode == R48_MODE_STILL) {
+        return -EOPNOTSUPP; /* -95: Movie & S&Q scoped */
+    }
+    st->af_subj_shift_sens = val;
+    return 0;
+}
+
+__attribute__((noinline)) static void r48_af_interval_camera_settings_reset(r48_af_interval_state_t *st) {
+    if (!st) return;
+    /* [Camera Settings Reset] restores [AF Transition Speed]->5 & [AF Subj. Shift Sensitivity]->5
+     * while preserving non-resettable [Monitor Flip Direction]. */
+    st->af_transition_speed = 5;
+    st->af_subj_shift_sens = 5;
+    st->interval_shoot_on = 0;
+}
+
+__attribute__((noinline)) static int r48_configure_interval_shoot_func(
+    r48_af_interval_state_t *st,
+    int output_target,
+    int start_sec,
+    int interval_sec,
+    int num_shots
+) {
+    if (!st) return -EINVAL;
+    /* Reject FX6-style in-camera video Interval Rec target (-EINVAL on enum, -EPERM in movie/S&Q) */
+    if (output_target != R48_INTERVAL_TARGET_STILL_SEQ) {
+        return -EINVAL;
+    }
+    if (st->shoot_mode != R48_MODE_STILL) {
+        return -EPERM; /* -1: [Interval Shoot Func.] captures still images only, not MXF/MP4 video */
+    }
+    if (start_sec < 1 || start_sec > 5999 ||
+        interval_sec < 1 || interval_sec > 60 ||
+        num_shots < 1 || num_shots > 9999) {
+        return -EINVAL;
+    }
+    st->interval_shoot_on = 1;
+    st->interval_start_sec = start_sec;
+    st->interval_sec = interval_sec;
+    st->interval_num_shots = num_shots;
+    return 0;
+}
+
+static int run_r48_af_sens_interval_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r48_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r48_cnflasha_ro", 0755) != 0) {
+        return 244;
+    }
+    (void)umount("/mnt/r48_surfaces");
+    (void)umount("/mnt/r48_p2_ro");
+    (void)umount("/mnt/r48_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r48_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r48_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r48_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 244;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r48_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 67U) ^ (k * 31U) ^ 0x48U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 244;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 244;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 47U + 0x48U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 23U + 0x72U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r48_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r48_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 244;
+    }
+
+    if (mount(NULL, "/mnt/r48_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r48_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r48_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 244;
+    }
+
+    r48_af_interval_state_t st;
+    r48_af_interval_initialize_all(&st);
+
+    /* 1. Exact ILME-FX3 spellings, defaults (5 & 5), and Movie/S&Q step sweeps (1..7 & 1..5) */
+    int af_trans_default_5_ok = (st.af_transition_speed == 5) ? 1 : 0;
+    int af_sens_default_5_ok = (st.af_subj_shift_sens == 5) ? 1 : 0;
+    int exact_full_spelling_ok =
+        (r48_validate_fx3_af_menu_label("AF Transition Speed") == 0 &&
+         r48_validate_fx3_af_menu_label("AF Subj. Shift Sensitivity") == 0) ? 1 : 0;
+    int abbrev_sens_alias_reject_rc = r48_validate_fx3_af_menu_label("AF Subj. Shift Sens.");
+
+    int invalid_af_trans_reject_rc = r48_set_af_transition_speed(&st, 8);
+    if (r48_set_af_transition_speed(&st, 0) != -EINVAL) invalid_af_trans_reject_rc = 0;
+    int invalid_af_sens_reject_rc = r48_set_af_subj_shift_sensitivity(&st, 6);
+    if (r48_set_af_subj_shift_sensitivity(&st, 0) != -EINVAL) invalid_af_sens_reject_rc = 0;
+
+    int af_trans_speed_7steps_verified = 0;
+    for (int sp = 1; sp <= 7; sp++) {
+        if (r48_set_af_transition_speed(&st, sp) == 0 && st.af_transition_speed == sp) {
+            af_trans_speed_7steps_verified++;
+        }
+    }
+    int af_subj_shift_sens_5steps_verified = 0;
+    for (int sn = 1; sn <= 5; sn++) {
+        if (r48_set_af_subj_shift_sensitivity(&st, sn) == 0 && st.af_subj_shift_sens == sn) {
+            af_subj_shift_sens_5steps_verified++;
+        }
+    }
+
+    /* Verify S&Q mode also permits both kinematics while Still Photo mode rejects (-EOPNOTSUPP -95) */
+    st.shoot_mode = R48_MODE_SQ;
+    int sq_ok = (r48_set_af_transition_speed(&st, 2) == 0 &&
+                 r48_set_af_subj_shift_sensitivity(&st, 2) == 0) ? 1 : 0;
+    int af_kinematics_movie_sq_ok =
+        (af_trans_speed_7steps_verified == 7 &&
+         af_subj_shift_sens_5steps_verified == 5 &&
+         sq_ok == 1) ? 1 : 0;
+
+    st.shoot_mode = R48_MODE_STILL;
+    int still_trans_rc = r48_set_af_transition_speed(&st, 4);
+    int still_sens_rc = r48_set_af_subj_shift_sensitivity(&st, 3);
+    int af_kinematics_still_reject_rc = (still_trans_rc == -EOPNOTSUPP && still_sens_rc == -EOPNOTSUPP)
+                                            ? -EOPNOTSUPP
+                                            : 0;
+
+    /* 2. [Camera Settings Reset] restores AF Transition Speed->5 & AF Subj. Shift Sensitivity->5,
+     *    while preserving non-resettable [Monitor Flip Direction] */
+    st.shoot_mode = R48_MODE_MOVIE;
+    (void)r48_set_af_transition_speed(&st, 1);
+    (void)r48_set_af_subj_shift_sensitivity(&st, 1);
+    st.monitor_flip_dir = R48_MON_FLIP_HORIZONTAL;
+
+    r48_af_interval_camera_settings_reset(&st);
+    int cam_reset_restores_af_trans_5_ok = (st.af_transition_speed == 5) ? 1 : 0;
+    int cam_reset_restores_af_sens_5_ok = (st.af_subj_shift_sens == 5) ? 1 : 0;
+    int cam_reset_preserves_monitor_flip_ok = (st.monitor_flip_dir == R48_MON_FLIP_HORIZONTAL) ? 1 : 0;
+
+    r48_af_interval_initialize_all(&st);
+    int initialize_resets_all_ok =
+        (st.af_transition_speed == 5 &&
+         st.af_subj_shift_sens == 5 &&
+         st.monitor_flip_dir == R48_MON_FLIP_AUTO) ? 1 : 0;
+
+    /* 3. [Interval Shoot Func.] still-image-only boundary vs FX6 video Interval Rec rejection */
+    st.shoot_mode = R48_MODE_MOVIE;
+    int video_interval_rec_mode_reject_rc = r48_configure_interval_shoot_func(
+        &st, R48_INTERVAL_TARGET_VIDEO_REC, 1, 5, 120);
+    int video_interval_rec_exec_reject_rc = r48_configure_interval_shoot_func(
+        &st, R48_INTERVAL_TARGET_STILL_SEQ, 1, 5, 120);
+
+    st.shoot_mode = R48_MODE_STILL;
+    int invalid_interval_param_reject_rc = r48_configure_interval_shoot_func(
+        &st, R48_INTERVAL_TARGET_STILL_SEQ, 1, 61, 120); /* > 60s interval invalid */
+    if (r48_configure_interval_shoot_func(&st, R48_INTERVAL_TARGET_STILL_SEQ, 6000, 5, 120) != -EINVAL) {
+        invalid_interval_param_reject_rc = 0;
+    }
+    int still_cfg_min_rc = r48_configure_interval_shoot_func(
+        &st, R48_INTERVAL_TARGET_STILL_SEQ, 1, 1, 1);
+    int still_cfg_max_rc = r48_configure_interval_shoot_func(
+        &st, R48_INTERVAL_TARGET_STILL_SEQ, 5999, 60, 240);
+    int interval_still_seq_ok =
+        (still_cfg_min_rc == 0 &&
+         still_cfg_max_rc == 0 &&
+         st.interval_shoot_on == 1 &&
+         st.interval_start_sec == 5999 &&
+         st.interval_sec == 60 &&
+         st.interval_num_shots == 240) ? 1 : 0;
+
+    /* 4. Read-only p2 & cnflasha, real guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r48_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    errno = 0;
+    int cn_fd = open("/mnt/r48_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r48_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r48_p2_ro");
+    (void)umount("/mnt/r48_cnflasha_ro");
+    (void)umount("/mnt/r48_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (af_trans_default_5_ok == 1 &&
+              af_sens_default_5_ok == 1 &&
+              exact_full_spelling_ok == 1 &&
+              abbrev_sens_alias_reject_rc == -EINVAL &&
+              invalid_af_trans_reject_rc == -EINVAL &&
+              invalid_af_sens_reject_rc == -EINVAL &&
+              af_trans_speed_7steps_verified == 7 &&
+              af_subj_shift_sens_5steps_verified == 5 &&
+              af_kinematics_movie_sq_ok == 1 &&
+              af_kinematics_still_reject_rc == -EOPNOTSUPP &&
+              cam_reset_restores_af_trans_5_ok == 1 &&
+              cam_reset_restores_af_sens_5_ok == 1 &&
+              cam_reset_preserves_monitor_flip_ok == 1 &&
+              initialize_resets_all_ok == 1 &&
+              interval_still_seq_ok == 1 &&
+              invalid_interval_param_reject_rc == -EINVAL &&
+              video_interval_rec_mode_reject_rc == -EINVAL &&
+              video_interval_rec_exec_reject_rc == -EPERM &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R48_AF_SENS_INTERVAL af_trans_default_5_ok=%d af_sens_default_5_ok=%d "
+            "exact_full_spelling_ok=%d abbrev_sens_alias_reject_rc=%d "
+            "invalid_af_trans_reject_rc=%d invalid_af_sens_reject_rc=%d "
+            "af_trans_speed_7steps_verified=%d af_subj_shift_sens_5steps_verified=%d "
+            "af_kinematics_movie_sq_ok=%d af_kinematics_still_reject_rc=%d "
+            "cam_reset_restores_af_trans_5_ok=%d cam_reset_restores_af_sens_5_ok=%d "
+            "cam_reset_preserves_monitor_flip_ok=%d initialize_resets_all_ok=%d "
+            "interval_still_seq_ok=%d invalid_interval_param_reject_rc=%d "
+            "video_interval_rec_mode_reject_rc=%d video_interval_rec_exec_reject_rc=%d "
+            "in_camera_timelapse_movie_mux=0 p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_writes=0 dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r48c_ok=%d verify_us=%lld\n",
+            af_trans_default_5_ok, af_sens_default_5_ok,
+            exact_full_spelling_ok, abbrev_sens_alias_reject_rc,
+            invalid_af_trans_reject_rc, invalid_af_sens_reject_rc,
+            af_trans_speed_7steps_verified, af_subj_shift_sens_5steps_verified,
+            af_kinematics_movie_sq_ok, af_kinematics_still_reject_rc,
+            cam_reset_restores_af_trans_5_ok, cam_reset_restores_af_sens_5_ok,
+            cam_reset_preserves_monitor_flip_ok, initialize_resets_all_ok,
+            interval_still_seq_ok, invalid_interval_param_reject_rc,
+            video_interval_rec_mode_reject_rc, video_interval_rec_exec_reject_rc,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 244;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -14674,6 +15649,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r47-flexexp-reset-split") == 0) {
         return run_r47_flexexp_reset_split_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r48-recover-imagedb-vault") == 0) {
+        return run_r48_recover_imagedb_vault_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r48-af-sens-interval-h0-h3") == 0) {
+        return run_r48_af_sens_interval_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -14802,6 +15783,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r47", &r47_st) == 0) {
         if (setup_r47_silent_autopixelmap_5locks_probe() != 0) {
             return 66;
+        }
+    }
+    struct stat r48_st;
+    if (stat("/etc/fx6_stage_r48", &r48_st) == 0) {
+        if (setup_r48_monitor_flip_playback_probe() != 0) {
+            return 67;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

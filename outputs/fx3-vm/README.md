@@ -897,6 +897,40 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 157：Stage 27（`27/27`）真机 `IMX510` 双原生 ISO `800/12800`、`psd.bin/defdet.bin` 传感器 NVS、`.cube` 3D MLUT、`CDC-NCM` `Monitor & Control` 与 `054C:0DA1` 恢复口 HIL 协同仿真器
+
+[`realhw_imx510_color_and_network_usb_coemulator.py`](realhw_imx510_color_and_network_usb_coemulator.py) 作为 **Stage 27（27/27 阶段完成）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase157_realhw_imx510_network_usb_hil=True`，可通过 `--skip-phase157` 跳过；全板 27 阶段协同仿真在本地只读供体模式下 `< 2.4s`、洁净室模式下 `< 1.0s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`emmc_nflasha_write_count == 0`**、**`sensor_cal_mutation_bytes == 0`**、**`rf_nvs_p12_p13_mutation_bytes == 0`**、**`slog3_master_double_baked == False`**、**`bt_hci_blocking_wait_ms == 0`**、**`bt_hci_blocking_wait_eliminated == True`** 与 **`usb_msc_0da1_recovery_intact == True`** 的前提下完成五大闭环：
+
+1. **双模只读供体审计（`os.O_RDONLY` + `mmap.ACCESS_READ`）+ 洁净室回退**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 **16 份真机供体**（8 FX3 + 8 FX6）：`libInfraMscServer.so`（`64,456 B`，`125` 导出 / `69` 导入，零差异 ABI）、`libUsbControl.so`（`135,424 B`，`351` 导出 / `128` 导入，零差异 ABI）、`libWlanAdjust.so`（`73,168 B`，`188` 导出 / `119` 导入，零差异 ABI）、`libWlanResource.so`（`56,464 B`，`94` 导出 / `90` 导入，零差异 ABI）、`libsencore.so`（`377,328 B` vs `401,952 B`，`355` 导出 / `130` 导入）、`libmpr.so`（`3,517,008 B` / `3,541` 导出 vs `28,921,824 B` / `4,271` 导出，均含 `SetLutData` / `ExecEncStart` / `EncWfiStop`）、`cpapp-b.bin`（均含 `IMX510` 与 `defdet.bin`）及 `Backup.bin`（`BK4\x00`，`819` vs `840` 子系统）；`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线，JSON 零原始固件字节泄漏。
+2. **Pillar A — `IMX510` 双原生基地 Cine EI（`ISO 800` LCG `[200..3200 EI]` <-> `ISO 12800` HCG `[3200..51200 EI]`）与 `p2:/setting/psd.bin` / `defdet.bin` 只读护栏**：
+   - 验证 `ISO 12800` 处精准模拟 HCG 增益切换、未烘焙 `S-Log3` XAVC 母版 + EI XML 元数据保留 `15+` 档动态范围（`15.3` stops），并强制拦截对 `p2:/setting/psd.bin` 与 `defdet.bin` 的直接或跨机身覆盖写入（`sensor_cal_mutation_bytes == 0`）。
+3. **Pillar B — `16-Slot` SD `.cube` 用户 3D MLUT（`17^3 / 33^3`）监看与 `S-Log3` 防双重烘焙护栏**：
+   - 从 `/mnt/sd/PRIVATE/SONY/PRO/LUT/` 装载并校验全部 `16` 个槽位的 `17^3 / 33^3` `.cube` 表至 `/tmp/fx3_mlut_slots/` 易失 RAM，仅在 LCD 与 HDMI Type-A Clean 监看路径应用 MLUT；在 `LUT Burn-in = Off` 时保证 `slog3_master_double_baked == False`，并对 `NaN`/`Inf`/截断/越界槽位/非法的 `65^3` `.cube` 表执行 fail-closed 拒收。
+4. **Pillar C — `802.11ac` Wi-Fi + `CDC-NCM` 千兆 USB-LAN（`PTP-IP TCP/15740` `Monitor & Control` + FTPES）+ `P12` 飞行模式硬切断与 `p12/p13` NVS 锁**：
+   - 证明消除 `/dev/ttyAMA3` BLE 守护进程阻塞等待（`bt_hci_blocking_wait_ms == 0`）、非阻塞掩码 FX6 `WIREDLAN_WOL_*`、`P12` 飞行模式硬切断 `wlan0` 同时保持有线 `CDC-NCM`（`RTL8153`/`AX88179` `1000 Mbps`）`PTP-IP TCP/15740` 与 `FTPES` 正常通畅，并锁定 `p12/p13` RF NVS（`rf_nvs_p12_p13_mutation_bytes == 0`）。
+5. **Pillar D — USB Type-C 多角色切换与不可破坏 `MSC (054C:0DA1)` / `SERVICE (054C:0336)` 恢复口保护**：
+   - 验证在 `MSC (054C:0DA1)` <-> `MTP/PTP Remote` <-> `CDC-NCM` USB-LAN <-> `HDMI-UVC` 之间切换或插拔后，`054C:0DA1` 与 `054C:0336` 恢复口始终完好可达（`usb_msc_0da1_recovery_intact == True`、`persistent_emmc_writes_authorized == False`、`emmc_nflasha_write_count == 0`）。
+
+### Phase 157 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 27 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_imx510_color_and_network_usb_coemulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_imx510_color_and_network_usb_coemulator.py --self-test --json
+
+# 2. 全板 27 阶段（Stage 1..27）统一校验（本地 < 2.4s，洁净室 < 1.0s，支持 --skip-phase157）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 157 46 项单测 & 全量 fx3-vm 单测（双模式）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_imx510_color_and_network_usb_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_imx510_color_and_network_usb_coemulator.py -v
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

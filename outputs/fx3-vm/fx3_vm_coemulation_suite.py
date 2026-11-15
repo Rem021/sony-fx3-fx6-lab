@@ -69,6 +69,7 @@ import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import realhw_body_peripheral_ibis_fan_power_coemulator as p150  # noqa: E402
+import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
 import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
@@ -141,6 +142,7 @@ class CoEmulationConfig:
     include_phase141_realhw_preflash_dualboot_hil: bool = True
     include_phase145_realhw_mpr_dmm_rec: bool = True
     include_phase150_realhw_body_peripheral_hil: bool = True
+    include_phase157_realhw_imx510_network_usb_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1589,6 +1591,56 @@ def run_stage26_realhw_body_peripheral_hil(
     }
 
 
+def run_stage27_realhw_imx510_network_usb_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 27 (Phase 157): Real-Hardware IMX510 Dual-Base ISO 800/12800, psd/defdet NVS, .cube MLUT, CDC-NCM & 054C:0DA1 HIL."""
+    config.validate()
+    rep = p157.run_phase157_realhw_imx510_network_usb_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage27_realhw_imx510_network_usb_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "sensor_cal_mutation_bytes": red["sensor_cal_mutation_bytes"],
+        "psd_defdet_writes_permitted": red["psd_defdet_writes_permitted"],
+        "rf_nvs_p12_p13_writes_permitted": red["rf_nvs_p12_p13_writes_permitted"],
+        "rf_nvs_p12_p13_mutation_bytes": red["rf_nvs_p12_p13_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "slog3_master_double_baked": red["slog3_master_double_baked"],
+        "bt_hci_blocking_wait_ms": red["bt_hci_blocking_wait_ms"],
+        "bt_hci_blocking_wait_eliminated": red["bt_hci_blocking_wait_eliminated"],
+        "usb_msc_0da1_recovery_intact": red["usb_msc_0da1_recovery_intact"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "appfw_crashes": red["appfw_crashes"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_imx510_cine_ei_and_sensor_nvs": rep["pillar_a_imx510_cine_ei_and_sensor_nvs"],
+        "pillar_b_cube_mlut_16slot_and_slog3_guard": rep["pillar_b_cube_mlut_16slot_and_slog3_guard"],
+        "pillar_c_wifi_cdcnm_ptpip_and_rf_lock": rep["pillar_c_wifi_cdcnm_ptpip_and_rf_lock"],
+        "pillar_d_usbc_multirole_0da1_recovery": rep["pillar_d_usbc_multirole_0da1_recovery"],
+        "phase157_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1599,7 +1651,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 26-stage (Phase 33..150) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 27-stage (Phase 33..157) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1701,6 +1753,11 @@ def run_fx3_vm_coemulation_suite(
     stage26: Optional[Dict[str, object]] = (
         run_stage26_realhw_body_peripheral_hil(cfg, env=env)
         if cfg.include_phase150_realhw_body_peripheral_hil
+        else None
+    )
+    stage27: Optional[Dict[str, object]] = (
+        run_stage27_realhw_imx510_network_usb_hil(cfg, env=env)
+        if cfg.include_phase157_realhw_imx510_network_usb_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -2084,6 +2141,34 @@ def run_fx3_vm_coemulation_suite(
         and stage26["false_19v5_dcin_alarms"] == 0
         and (not stage26["persistent_emmc_writes_authorized"])
     )
+    stage27_ok = True if stage27 is None else (
+        bool(stage27["all_checks_passed"])
+        and stage27["nop_count"] == 0
+        and stage27["guest_code_modification_bytes"] == 0
+        and stage27["cp_mutation_bytes"] == 0
+        and stage27["wbi_mutation_bytes"] == 0
+        and stage27["calibration_mutation_bytes"] == 0
+        and stage27["sensor_cal_mutation_bytes"] == 0
+        and (not stage27["psd_defdet_writes_permitted"])
+        and (not stage27["rf_nvs_p12_p13_writes_permitted"])
+        and stage27["rf_nvs_p12_p13_mutation_bytes"] == 0
+        and stage27["nvram_persistent_writes"] == 0
+        and stage27["bk4_persistent_nvram_writes"] == 0
+        and stage27["physical_device_writes"] == 0
+        and stage27["emmc_nflasha_write_count"] == 0
+        and stage27["emmc_mutation_bytes"] == 0
+        and (not stage27["slog3_master_double_baked"])
+        and stage27["bt_hci_blocking_wait_ms"] == 0
+        and bool(stage27["bt_hci_blocking_wait_eliminated"])
+        and bool(stage27["usb_msc_0da1_recovery_intact"])
+        and stage27["null_gpio_derefs"] == 0
+        and stage27["mailbox_stalls"] == 0
+        and stage27["stock_cp_fault_count"] == 0
+        and stage27["wf12_00342260_hits"] == 0
+        and stage27["rsv_orphan_count"] == 0
+        and stage27["appfw_crashes"] == 0
+        and (not stage27["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -2113,6 +2198,7 @@ def run_fx3_vm_coemulation_suite(
         and stage24_ok
         and stage25_ok
         and stage26_ok
+        and stage27_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -2152,6 +2238,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase141_realhw_preflash_dualboot_hil": cfg.include_phase141_realhw_preflash_dualboot_hil,
             "include_phase145_realhw_mpr_dmm_rec": cfg.include_phase145_realhw_mpr_dmm_rec,
             "include_phase150_realhw_body_peripheral_hil": cfg.include_phase150_realhw_body_peripheral_hil,
+            "include_phase157_realhw_imx510_network_usb_hil": cfg.include_phase157_realhw_imx510_network_usb_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -2222,6 +2309,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage25_realhw_mpr_dmm_rec"] = stage25
     if stage26 is not None:
         core_payload["stage26_realhw_body_peripheral_hil"] = stage26
+    if stage27 is not None:
+        core_payload["stage27_realhw_imx510_network_usb_hil"] = stage27
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -2233,7 +2322,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -2355,6 +2444,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 26 (Phase 150 Real-Hardware FX3 Body Controls, IBIS Center-Lock, XLR-H1, Fan PWM & NP-FZ100/USB-PD HIL)",
     )
     parser.add_argument(
+        "--skip-phase157",
+        action="store_true",
+        help="Skip optional Stage 27 (Phase 157 Real-Hardware IMX510 Dual-Base ISO 800/12800, psd/defdet NVS, .cube MLUT, CDC-NCM & 054C:0DA1 HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -2443,6 +2537,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase141_realhw_preflash_dualboot_hil=not args.skip_phase141,
         include_phase145_realhw_mpr_dmm_rec=not args.skip_phase145,
         include_phase150_realhw_body_peripheral_hil=not args.skip_phase150,
+        include_phase157_realhw_imx510_network_usb_hil=not args.skip_phase157,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -2478,6 +2573,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s24 = rep.get("stage24_realhw_preflash_dualboot_hil")
         s25 = rep.get("stage25_realhw_mpr_dmm_rec")
         s26 = rep.get("stage26_realhw_body_peripheral_hil")
+        s27 = rep.get("stage27_realhw_imx510_network_usb_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -2648,6 +2744,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s26, dict)
             else ""
         )
+        s27_str = (
+            f" | realhw_imx510_network_usb_hil={s27['source_mode']}(cal_mut={s27['sensor_cal_mutation_bytes']},"
+            f"mlut={s27['pillar_b_cube_mlut_16slot_and_slog3_guard']['active_slots_count']}/16,"
+            f"dbl_bake={s27['slog3_master_double_baked']},"
+            f"bt_wait={s27['bt_hci_blocking_wait_ms']}ms,"
+            f"rf_mut={s27['rf_nvs_p12_p13_mutation_bytes']},"
+            f"msc_0da1={s27['usb_msc_0da1_recovery_intact']},"
+            f"emmc_wr={s27['emmc_nflasha_write_count']})"
+            if isinstance(s27, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -2656,7 +2763,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

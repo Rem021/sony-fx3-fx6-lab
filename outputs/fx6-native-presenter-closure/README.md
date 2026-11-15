@@ -906,8 +906,29 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `198` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/summary.json).
 
+---
 
+## 25. Round 25: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) TC/Media & Status Check Tab 8 Media Dual-Surface Closure (`3-Layer TC/Media Menu sid=0x11` & `Status Check Media Tab 8 sid=0x36` -> `12/12` Multilingual Deltas)
 
+`build_and_run_round.py --round 25 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) TC/Media Dual-Surface Closure** across both **3-Layer TC/Media Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`, `4x DOWN + 2x RIGHT`)** and **Status Check Tab 8 Media (`sid=0x36`, `35procam_touch_status_media_presenter`, `0x7052 + 7x DOWN`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R25_VERIFY_PASS`, `FX6_STAGE_B_R25_BRIDGE`, and `FX6_R25_LANG_TELEMETRY`):
 
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 25 --lang english --initial-setting-done 1 --run-id r25a-menu-3layer-tcmedia-english --duration 88 \
+  --run-dir <SCRATCH_ROOT>/fx6-r25-runs/r25a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:700,0x0030:120:700,0x0030:120:700,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r25a-menu-3layer-tcmedia-english \
+  --export-png-dir reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/assets
+```
 
-
+- **5 Live Round 25 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P11` `XLR-H1`, `P12` `WF-12` Immune)**:
+  - `r25a-menu-3layer-tcmedia-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `4x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `228` colors / `2,243` `0xffffaa00` amber px, `14,499` icon blits, `13,483` glyph blits, `87` `LDEC103` ioctls).
+  - `r25b-menu-3layer-tcmedia-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `4x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `225` colors / `1,980` `0xffffaa00` amber px, `14,463` icon blits, `13,387` glyph blits, `89` `LDEC103` ioctls).
+  - `r25c-status-tab8-media-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `7x 0x0030` -> `35procam_touch_status_media_presenter` (`sid=0x36`, `437,403` px / `92` colors / `330` `0xffffaa00` amber px, `10,939` icon blits, `15,039` glyph blits, `71` `LDEC103` ioctls).
+  - `r25d-status-tab8-media-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `0x7052` + `7x 0x0030` -> `35procam_touch_status_media_presenter` (`sid=0x36`, `437,883` px / `92` colors / `288` `0xffffaa00` amber px, `11,227` icon blits, `15,653` glyph blits, `70` `LDEC103` ioctls).
+  - `r25e-status-tab8-media-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `7x 0x0030` -> `35procam_touch_status_media_presenter` (`sid=0x36`, `437,883` px / `92` colors / `288` `0xffffaa00` amber px, `10,720` icon blits, `14,632` glyph blits, `70` `LDEC103` ioctls).
+  - **Complete `12/12` TC/Media & Tab 8 Multilingual Pairwise Matrix**:
+    - 3-Layer TC/Media Menu (`sid=0x11`) across (`r25a EN`, `r25b JA`, `r18b ZH-CN`, `r16c ZH-TW`): `6/6` pairs strictly `> 0` (`12,853 .. 24,334` px).
+    - Status Check Tab 8 Media (`sid=0x36`) across (`r25c EN`, `r25d JA`, `r17c ZH-CN`, `r25e ZH-TW`): `6/6` pairs strictly `> 0` (`7,091 .. 16,734` px).
+  - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
+- **Full Report, Receipts, & `213` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/summary.json).

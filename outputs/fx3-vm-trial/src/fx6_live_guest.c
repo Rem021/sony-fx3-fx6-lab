@@ -80,6 +80,21 @@
  *              bits14..21=ftps_queued_count(0..255), bits22..29=ftps_completed_count(0..255),
  *              bit30=ftps_blocked_traversal, bit31=valid)
  *     mb[51] = 0x49434c46 ('ICLF') Phase 102 Picture Cache / Interval Rec / .cube 33^3 / FTPS magic tag
+ *     mb[52] = phase109_fleet_sdi (bits0..2=fleet_role(0=Solo,1=A_Master,2=B,3=C,4=D),
+ *              bits3..5=fleet_cams_online(1..4), bit6=gang_rec_active, bit7=sdi_bridge_active,
+ *              bits8..9=sdi_bridge_idx(0=BMD_12G,1=Teradek,2=Atomos,3=Off), bit10=rp188_rec_bit,
+ *              bit11=avi_range_safe, bit12=avi_quant_idx(0=LIMITED,1=FULL), bits13..20=avi_checksum,
+ *              bits21..26=ptp_skew_div2(0..63), bit27=p12_rf_off_enforced, bit28=hdmi_tc_output_on,
+ *              bit31=valid)
+ *     mb[53] = phase109_mount_shading (bit0=mount_pl_unchipped(0=E_12Pin,1=Manual_PL),
+ *              bit1=shading_identity_1x, bits2..9=shading_corner_gain_x100(100..255),
+ *              bits10..15=lens_kg_x10(1..63), bit16=g31_lws_warning, bit17=rod_support_15mm_lws,
+ *              bits18..21=electronic_pins(12|0), bits22..28=focal_mm_div2, bit31=valid)
+ *     mb[54] = phase109_c2pa_provenance (bits0..1=c2pa_vault_idx(0=CNFLASHA_RDONLY_ZERO_TOUCH,1=BLOCKED),
+ *              bit2=clean_room_research, bit3=hw_attest_claimed(0), bit4=cnflasha_ro_zero_touch(1),
+ *              bit5=c2pa_spoof_blocked, bits6..13=blocked_violation_count,
+ *              bits14..21=fleet_sync_packets_div10, bit31=valid)
+ *     mb[55] = 0x4d43464c ('MCFL') Phase 109 M&C 4-Cam Fleet / HDMI->12G-SDI RP188 / E-Mount-PL / C2PA magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1066,6 +1081,9 @@ static uint32_t g_live_p95_tone_limiter = 0x80507800u;    /* valid=1, tone=-20dB
 static uint32_t g_live_p102_cache_interval = 0xa2800000u; /* valid=1, ae=Mid(1), intvl=5s, cache=0s */
 static uint32_t g_live_p102_interval_ftp   = 0xc01e0000u; /* eshut=1, p12_safe=1, ftps=Off, target=120, shots=0 */
 static uint32_t g_live_p102_lut_ftps       = 0x80001900u; /* valid=1, contrast=1.00(100), slot=0 */
+static uint32_t g_live_p109_fleet_sdi      = 0x98194888u; /* valid=1, tc=1, p12=1, cs=0xca, avi_ok=1, sdi=1, cams=1, role=Solo */
+static uint32_t g_live_p109_mount_shading  = 0x83301e10u; /* valid=1, focal=24mm, pins=12, kg=0.7, gain=1.32x, E-12Pin */
+static uint32_t g_live_p109_c2pa_prov      = 0x80000014u; /* valid=1, ro_zero_touch=1, clean_room=1 */
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -3293,6 +3311,185 @@ static void fx6_render_phase102_cache_interval_lut_ftps_overlay(uint64_t appfw, 
     }
 }
 
+static unsigned fx6_append_hex2(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    static const char k_hex2[16] = "0123456789ABCDEF";
+    if (pos + 2u >= cap) return pos;
+    dst[pos++] = k_hex2[(val >> 4) & 0x0fu];
+    dst[pos++] = k_hex2[val & 0x0fu];
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase109_mcfleet_sdi_c2pa_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p109_fleet_sdi & 0x80000000u) ||
+        !(g_live_p109_mount_shading & 0x80000000u) ||
+        !(g_live_p109_c2pa_prov & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_role_lbl[5] = { "SOLO", "A-MST", "B-FLW", "C-FLW", "D-FLW" };
+    static const char * const k_sdi_lbl[4]  = { "BMD", "TDK", "ATM", "OFF" };
+
+    uint32_t fleet_role_idx  = g_live_p109_fleet_sdi & 0x07u;
+    if (fleet_role_idx > 4u) fleet_role_idx = 0u;
+    uint32_t fleet_cams      = (g_live_p109_fleet_sdi >> 3) & 0x07u;
+    if (fleet_cams < 1u || fleet_cams > 4u) fleet_cams = 1u;
+    uint32_t gang_rec        = (g_live_p109_fleet_sdi >> 6) & 0x01u;
+    uint32_t sdi_active      = (g_live_p109_fleet_sdi >> 7) & 0x01u;
+    uint32_t sdi_idx         = (g_live_p109_fleet_sdi >> 8) & 0x03u;
+    uint32_t rp188_rec       = (g_live_p109_fleet_sdi >> 10) & 0x01u;
+    uint32_t avi_safe        = (g_live_p109_fleet_sdi >> 11) & 0x01u;
+    uint32_t avi_cs          = (g_live_p109_fleet_sdi >> 13) & 0xffu;
+    uint32_t p12_rf_off      = (g_live_p109_fleet_sdi >> 27) & 0x01u;
+
+    uint32_t mount_pl        = g_live_p109_mount_shading & 0x01u;
+    uint32_t shd_ident       = (g_live_p109_mount_shading >> 1) & 0x01u;
+    uint32_t shd_gain_x100   = (g_live_p109_mount_shading >> 2) & 0xffu;
+    if (shd_gain_x100 < 100u) shd_gain_x100 = 100u;
+    uint32_t lens_kg_x10     = (g_live_p109_mount_shading >> 10) & 0x3fu;
+    if (lens_kg_x10 == 0u) lens_kg_x10 = 7u;
+    uint32_t g31_lws_warn    = (g_live_p109_mount_shading >> 16) & 0x01u;
+    uint32_t rod_lws         = (g_live_p109_mount_shading >> 17) & 0x01u;
+    uint32_t e_pins          = mount_pl ? 0u : ((g_live_p109_mount_shading >> 18) & 0x0fu);
+
+    uint32_t c2pa_ro_zt      = (g_live_p109_c2pa_prov >> 4) & 0x01u;
+    uint32_t c2pa_spoof_blk  = (g_live_p109_c2pa_prov >> 5) & 0x01u;
+    uint32_t c2pa_blk_cnt    = (g_live_p109_c2pa_prov >> 6) & 0xffu;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (fleet_role_idx > 0u || fleet_cams > 1u || gang_rec || !avi_safe ||
+                       rp188_rec || mount_pl || g31_lws_warn || c2pa_spoof_blk || c2pa_blk_cnt > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int bx = 636;
+    const int bw = 312;
+    const int bh = 24;
+    int cur_y = 138;
+
+    /* 1. Sony Monitor & Control 4-Cam Wired Gigabit USB-LAN Fleet Badge (A/B/C/D) */
+    {
+        uint32_t fbg = gang_rec ? 0xFF7F1D1Du : (fleet_cams > 1u ? 0xFF083344u : 0xFF0F172Au);
+        uint32_t fbd = gang_rec ? 0xFFEF4444u : (fleet_cams > 1u ? 0xFF22D3EEu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, fbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, fbd);
+
+        /* 4 Camera Status Nodes A..D */
+        for (uint32_t c = 0u; c < 4u; c++) {
+            int nx = bx + 6 + (int)c * 12;
+            int ny = cur_y + 5;
+            uint32_t online = (c < fleet_cams) ? 1u : 0u;
+            uint32_t is_self = (fleet_role_idx > 0u && (fleet_role_idx - 1u) == c) ||
+                               (fleet_role_idx == 0u && c == 0u);
+            uint32_t ncol = !online ? 0xFF1E293Bu : (gang_rec ? 0xFFEF4444u : (is_self ? 0xFFFACC15u : 0xFF10B981u));
+            fx6_osd_fill_rect(nx, ny, 9, 14, ncol);
+            fx6_osd_border_rect(nx, ny, 9, 14, is_self ? 0xFFF8FAFCu : 0xFF334155u);
+        }
+
+        char mlbl[56];
+        unsigned mp = 0u;
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), "[M&C ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), k_role_lbl[fleet_role_idx]);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " ");
+        mp = fx6_append_uint(mlbl, mp, sizeof(mlbl), fleet_cams);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), "/4 ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), gang_rec ? "GANG-REC " : "PTP-LAN ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), p12_rf_off ? "P12]" : "RF!]");
+        (void)mp;
+        fx6_render_string_text_styled(appfw, bx + 58, cur_y + 2, bw - 64, 20, mlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 2. HDMI->12G-SDI AVI InfoFrame & SMPTE RP 188 REC-Trigger Indicator */
+    {
+        uint32_t sbg = !avi_safe ? 0xFF7F1D1Du : (rp188_rec ? 0xFF064E3Bu : 0xFF0B192Cu);
+        uint32_t sbd = !avi_safe ? 0xFFEF4444u : (rp188_rec ? 0xFF10B981u : 0xFF38BDF8u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, sbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, sbd);
+        fx6_osd_fill_rect(bx + 6, cur_y + 6, 10, 12, rp188_rec ? 0xFFFF2D20u : (sdi_active ? 0xFF22D3EEu : 0xFF475569u));
+
+        char slbl[56];
+        unsigned sp = 0u;
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "[SDI:");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), sdi_active ? k_sdi_lbl[sdi_idx & 3u] : "OFF");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), " RP188:");
+        sp = fx6_append_uint(slbl, sp, sizeof(slbl), rp188_rec);
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), avi_safe ? " AVI:OK CS:" : " AVI:BLK! CS:");
+        sp = fx6_append_hex2(slbl, sp, sizeof(slbl), avi_cs);
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "]");
+        (void)sp;
+        fx6_render_string_text_styled(appfw, bx + 20, cur_y + 2, bw - 26, 20, slbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 3. E-Mount 12-Pin vs Manual-PL Shading Hot-Swap & G31 15mm LWS Status */
+    {
+        uint32_t lbg = g31_lws_warn ? 0xFF78350Fu : (mount_pl ? 0xFF1E1B4Bu : 0xFF0F172Au);
+        uint32_t lbd = g31_lws_warn ? 0xFFF59E0Bu : (mount_pl ? 0xFFA78BFAu : 0xFF38BDF8u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, lbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, lbd);
+
+        char llbl[56];
+        unsigned lp = 0u;
+        if (mount_pl) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "[PL-0PIN SHD:1.00x");
+            if (shd_ident) lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "-ID ");
+            else lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " ");
+        } else {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "[E-");
+            lp = fx6_append_uint(llbl, lp, sizeof(llbl), e_pins);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "P SHD:");
+            lp = fx6_append_uint(llbl, lp, sizeof(llbl), shd_gain_x100 / 100u);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), ".");
+            lp = fx6_append_2d(llbl, lp, sizeof(llbl), shd_gain_x100 % 100u);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "x ");
+        }
+        lp = fx6_append_uint(llbl, lp, sizeof(llbl), lens_kg_x10 / 10u);
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), ".");
+        lp = fx6_append_uint(llbl, lp, sizeof(llbl), lens_kg_x10 % 10u);
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "kg");
+        if (g31_lws_warn) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " G31:LWS!");
+        } else if (rod_lws) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " LWS:OK");
+        }
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "]");
+        (void)lp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 2, bw - 12, 20, llbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 4. C2PA 2.1 cnflasha Zero-Touch Research Provenance Shield */
+    {
+        uint32_t cbg = c2pa_spoof_blk ? 0xFF7F1D1Du : 0xFF064E3Bu;
+        uint32_t cbd = c2pa_spoof_blk ? 0xFFEF4444u : 0xFF10B981u;
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, cbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, cbd);
+        /* Shield icon */
+        fx6_osd_fill_rect(bx + 6, cur_y + 5, 10, 14, c2pa_spoof_blk ? 0xFFFCA5A5u : 0xFF34D399u);
+        fx6_osd_fill_rect(bx + 8, cur_y + 7, 6, 10, cbg);
+
+        char clbl[56];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "[C2PA:");
+        if (c2pa_spoof_blk || c2pa_blk_cnt > 0u) {
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "RO-SHIELD BLK:");
+            cp = fx6_append_uint(clbl, cp, sizeof(clbl), c2pa_blk_cnt);
+        } else {
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), c2pa_ro_zt ? "RO-ZERO-TOUCH KR=0 CW=0" : "LOCKED");
+        }
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "]");
+        (void)cp;
+        fx6_render_string_text_styled(appfw, bx + 20, cur_y + 2, bw - 26, 20, clbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -3341,6 +3538,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p102_cache_interval) * 1099511628211ULL;
     h = (h ^ g_live_p102_interval_ftp) * 1099511628211ULL;
     h = (h ^ g_live_p102_lut_ftps) * 1099511628211ULL;
+    h = (h ^ g_live_p109_fleet_sdi) * 1099511628211ULL;
+    h = (h ^ g_live_p109_mount_shading) * 1099511628211ULL;
+    h = (h ^ g_live_p109_c2pa_prov) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -3532,6 +3732,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase88_shotmark_iris_overlay(appfw, page);
     fx6_render_phase95_gyroflow_anamorphic_tone_overlay(appfw, page);
     fx6_render_phase102_cache_interval_lut_ftps_overlay(appfw, page);
+    fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -3784,6 +3985,10 @@ void fx6_force_update(void) {
         mb[49] = 0xc01e0000u;/* phase102_interval_shots_ftp: eshut=1, p12_safe=1, ftps=Off, target=120, shots=0 */
         mb[50] = 0x80001900u;/* phase102_lut_ftps_queue: valid=1, contrast=100, slot=0 */
         mb[51] = 0x49434c46u;/* 'ICLF' */
+        mb[52] = 0x9814c888u;/* phase109_fleet_sdi: valid=1, tc=1, p12=1, cs=0xa6, avi_ok=1, sdi=1, cams=1, role=Solo */
+        mb[53] = 0x83301e10u;/* phase109_mount_shading: valid=1, focal=24mm, pins=12, kg=0.7, gain=1.32x, E-12Pin */
+        mb[54] = 0x80000014u;/* phase109_c2pa_provenance: valid=1, ro_zero_touch=1, clean_room=1 */
+        mb[55] = 0x4d43464cu;/* 'MCFL' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -3807,6 +4012,9 @@ void fx6_force_update(void) {
     g_live_p102_cache_interval = 0xa2800000u;
     g_live_p102_interval_ftp = 0xc01e0000u;
     g_live_p102_lut_ftps = 0x80001900u;
+    g_live_p109_fleet_sdi = 0x98194888u;
+    g_live_p109_mount_shading = 0x83301e10u;
+    g_live_p109_c2pa_prov = 0x80000014u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -3822,10 +4030,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -3891,14 +4099,23 @@ void fx6_force_update(void) {
                 g_live_p102_interval_ftp   = mb[49] | 0xc0000000u; /* Enforce P12-safe & E-Shutter */
                 g_live_p102_lut_ftps       = mb[50];
             }
+            if ((mb[52] & 0x80000000u) && (mb[53] & 0x80000000u) && (mb[54] & 0x80000000u) && mb[55] == 0x4d43464cu) {
+                g_live_p109_fleet_sdi     = mb[52] | 0x08000000u; /* Enforce P12 RF-OFF */
+                g_live_p109_mount_shading = mb[53];
+                if (g_live_p109_mount_shading & 1u) {
+                    /* Manual PL unchipped: enforce 1.00x identity shading & 0 pins */
+                    g_live_p109_mount_shading = (g_live_p109_mount_shading & ~((0xffu << 2) | (0xfu << 18))) | (1u << 1) | (100u << 2);
+                }
+                g_live_p109_c2pa_prov     = (mb[54] & ~(1u << 3)) | (1u << 2) | (1u << 4); /* Enforce zero-touch RO & no HW attestation forgery */
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov);
         }
     }
 }

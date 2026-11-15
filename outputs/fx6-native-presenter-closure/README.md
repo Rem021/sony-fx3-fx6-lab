@@ -675,6 +675,24 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r15d-status-tab2-japanese`: `japanese` (`0x02cf019c=0x01`, `switchBank(ns=4/1/2 = 1/12/12)`) `INFRA_STATUS_CHECK` (`0x7052`) + `1x 0x0030` -> `36procam_touch_status_camera_presenter` (`sid=0x30`, `437,883` px / `80` colors / `260` `0xffffaa00` amber px, `8,359` icon blits, `15,555` glyph blits, `53` `LDEC103` `cmd=1` ioctls, **`62,815` px diff vs `r14a` Japanese Tab 1** & **`33,462` px diff vs `r15a` SChinese Tab 2**).
 - **Full Report, Receipts, & `70+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/README.md`](../../reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/README.md) and [`summary.json`](../../reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/summary.json).
 
+---
 
+## 16. Round 16: Real FX3 `7.02` Kernel `Status Check` Tabs 4 & 5 (`Project 0x32 -> Monitoring 0x33`) & Traditional Chinese `TC/Media` 3-Layer Menu Closure
 
+`build_and_run_round.py --round 16 --lang {en,english,schinese,tchinese,japanese}` completes the 5-tab `Status Check` stepping contract (`Main 0x2f -> Camera 0x30 -> Audio 0x31 -> Project 0x32 -> Monitoring 0x33`) and multi-CJK 3-layer menu category matrix (`TC/Media` `tchinese` + `Monitoring` `japanese`, `sid=0x11`) on the real FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R16_VERIFY_PASS`, `FX6_STAGE_B_R16_BRIDGE`, and `FX6_R16_LANG_TELEMETRY`):
 
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 16 --lang schinese --initial-setting-done 1 --run-id r16b-status-tab5-schinese --duration 92 \
+  --run-dir /private/tmp/fx6-r16-runs/r16b \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:2500,0x0030:120:2500,0x0030:120:2500,0x0030:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r16b-status-tab5-schinese \
+  --export-png-dir reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets
+```
+
+- **4 Live Round 16 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P12` Airplane-Mode immune)**:
+  - `r16a-status-tab4-schinese`: `schinese` (`0x02cf019c=0x19`) `INFRA_STATUS_CHECK` (`0x7052`) + `3x 0x0030` -> `37procam_touch_status_project_presenter` (`sid=0x32`, `437,403` px / `85` colors / `270` `0xffffaa00` amber px, `8,361` icon blits, `15,447` glyph blits, `51` `LDEC103` `cmd=1` ioctls, **`63,255` px diff vs `r13a`**, **`60,513` vs `r15a`**, **`128,493` vs `r15b`**).
+  - `r16b-status-tab5-schinese`: `schinese` (`0x02cf019c=0x19`) `INFRA_STATUS_CHECK` (`0x7052`) + `4x 0x0030` -> `40procam_touch_status_monitoring_presenter` (`sid=0x33`, `437,883` px / `106` colors / `266` `0xffffaa00` amber px, `8,598` icon blits, `14,969` glyph blits, `59` `LDEC103` `cmd=1` ioctls, **`87,492` vs `r13a`**, **`80,436` vs `r15a`**, **`91,456` vs `r15b`**, **`87,504` vs `r16a`** — proving all `C(5,2)=10` tab pairs strictly `> 0`!).
+  - `r16c-menu-3layer-tcmedia-tchinese`: `tchinese` (`0x02cf019c=0x18`, `switchBank(ns=4/1/2 = 27/22/22)`) `FX3_MENU` (`1300ms`) + `4x 0x0030` (`TC/Media`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `250` colors / `2,440` `0xffffaa00` amber px, `14,622` icon blits, `13,499` glyph blits, `84` `LDEC103` `cmd=1` ioctls, **`35,765` px diff vs `r13b` `Shooting`** & **`19,082` px diff vs `r15c` `Monitoring`**).
+  - `r16d-menu-3layer-monitoring-japanese`: `japanese` (`0x02cf019c=0x01`, `switchBank(ns=4/1/2 = 1/12/12)`) `FX3_MENU` (`1300ms`) + `5x 0x0030` (`Monitoring`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `220` colors / `209` `0xffffaa00` amber px, `14,785` icon blits, `10,817` glyph blits, `83` `LDEC103` `cmd=1` ioctls, **`24,616` px diff vs `r12d` `Shooting`**, **`8,114` px diff vs `r15c` `Monitoring`**, & **`20,779` px diff vs `r16c` `TC/Media`**).
+- **Full Report, Receipts, & `82+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/README.md`](../../reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/README.md) and [`summary.json`](../../reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/summary.json).

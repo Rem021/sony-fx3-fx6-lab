@@ -188,11 +188,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Domain B — `SONY_LENS_ID_BITMASK_AND_BREATHING_02CF0232`**: Verifies the exact `MIRA_CETUS2` first-party filter `((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)` gating `BKID_APP_MR_SETTING_LENS_COMP_BREATHING` (`0x02cf0232` verified in `fx6_appfw` `.data.rel.ro` at `0x2c29a5c`) digital crop & Catalyst clip metadata injection, ensuring third-party E-mount (`(lens_id >> 14) != 3`) and unchipped manual PL/E adapters (`0xFFFF`, `0xCFFF`) degrade gracefully without fault.
    - **Domain C — `P18_LENSFILE_BIN_RO_VS_CINEALTA_SLOTS`**: Parses FX6 `lensfile.bin` (`262,592 B`, `57` lens slots `VX8900..VX9202`, `BLKROSET=1`) and verifies read-only lookup isolation vs FX6-exclusive legacy CineAlta `setLensFile` scene/offset slots (`lens_partition_writes == 0`, volatile user offsets routed only to `/tmp/` / `ram://` / SD ExFAT).
    - **Domain D — `MONITOR_CONTROL_210_FOCUS_MAP_STREAM`**: Verifies Monitor & Control `Ver. 2.1.0+` Focus Map warm/cool bokeh DoF depth-of-field telemetry (`libInfraPtpControl.so`, `cpActFocusMap`, `paramYcFocusMap`, `view_mp_focus_map`) over `WPA2/WPA3` Wi-Fi & `P12`-safe wired `CDC-NCM` USB-LAN without mutating `p2:/setting/Backup.bin`, alongside hard zero-write locks (`persistent_emmc_writes_authorized = False`, `spi_nor_write_authorized = False`, `el3_payload_transmit_authorized = False`, `physical_usb_packets_emitted = 0`) and a 12-touchpoint 4-class matrix.
+39. [`fx3_firmware_lab/realhw_fx3_vs_fx3a_and_xlrh1_mishoe_auditor.py`](fx3_firmware_lab/realhw_fx3_vs_fx3a_and_xlrh1_mishoe_auditor.py)
+   - **Domain A — `FX3_702_VS_FX3A_202_HARDWARE_BRANCH_SPLIT`**: Inspects FX3 `Ver. 7.02` (`appFw.so`, `libupdaterufp.so`, bounded `256B+64B` `BODYDATA.DAT` via `os.pread`) strictly `os.O_RDONLY` (with clean-room fallback), contrasting `ILME-FX3` (`0x91030080`, `1,440,000-dot` LCD, NFC, IR receiver) against `ILME-FX3A` (`Ver. 2.02`, `0x91030082`, `2,359,296-dot` XGA LCD, NFC/IR removed) and `ILME-FX30` (`PRODUCT_MODEL_LAX`), proving `< 50 us` Stage-A fail-closed rejection of cross-loading and mismatched `BODYDATA.DAT` / `CAMSET` files.
+   - **Domain B — `XLRH1_MISHOE_48KHZ_24BIT_4CH_BRIDGE`**: Audits FX3 `appFw.so`, `libmpr.so`, `cpapp-b.bin` & FX6 `6.01` `appFw.so`, `libmpr.so`, `cpapp-b.bin`, `libInfraHotshoe.so`, `AVBB_SCN_START_AUDIO.so` across MI-Shoe `XLR-H1` digital audio formats (`48kHz/24bit 4ch`, `24bit 2ch`, `16bit 2ch`; `IN1/IN2` XLR -> `CH1/CH2`, `IN3` 3.5mm -> `CH3/CH4`) vs FX6 dedicated handle audio connector, ensuring FX6 Big-6 `CH1..CH4` meters & `4ch Audio Monitoring` (`CH1/2`, `CH3/4`, `CH1+3/CH2+4`) bind cleanly to FX3's MI-Shoe ALSA/MPR backend without standalone XLR-H1 firmware packages or `P11` detach stalls.
+   - **Domain C — `BODY_35MM_JACK_OVERRIDE_AND_SQ_MUTE`**: Audits hardware jack-detect override (`EVENT_INPUT_KEY_JACK_MICJACK_IN`, `CAUTION_ID_FACTOR_ANALOG_MIC_SHOEMIC_USE_MSG`) locking out `[MI Shoe Audio Set.]` when a plug enters FX3's body `3.5mm` mic port, plus deterministic `S&Q` off-speed audio mute parity.
+   - **Domain D — `POST_UFU_AUDIO_DEFAULT_RESET_HYGIENE`**: Audits `Backup.bin` (`819` vs `840` subsystems) `48kHz/16bit 2ch` post-UFU default invariance across `H0 -> H1 -> H2 -> H3` (`persistent_writes == 0`, `backup_bin_writes == 0`), hard zero-write locks (`persistent_emmc_writes_authorized = False`, `spi_nor_write_authorized = False`, `el3_payload_transmit_authorized = False`, `physical_usb_packets_emitted = 0`), and a 12-touchpoint 4-class compatibility matrix.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 38 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 39 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -264,6 +269,8 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-hdmi-braw-wpa3-702-delta --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-emount-info3d-breathing --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-emount-info3d-breathing --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-fx3a-and-xlrh1-mishoe --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-fx3a-and-xlrh1-mishoe --clean-room --json
 
 # Run all unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v

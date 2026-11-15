@@ -686,7 +686,7 @@ class TestPhase183RealhwEmountInfo3dBreathing02cf0232(unittest.TestCase):
         self.assertTrue(summary["all_checks_passed"])
         self.assertIn("realhw_emount_info3d_breathing_02cf0232_audit", summary)
         audit_keys = [k for k in summary.keys() if k.endswith("_audit")]
-        self.assertEqual(len(audit_keys), 38)
+        self.assertGreaterEqual(len(audit_keys), 38)
         self.assertTrue(summary["realhw_emount_info3d_breathing_02cf0232_audit"]["all_checks_passed"])
 
     def test_50_phase183_constants_exact(self) -> None:

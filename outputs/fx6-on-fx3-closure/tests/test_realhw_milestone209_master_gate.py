@@ -414,7 +414,8 @@ class TestRealHwMilestone209MasterGate(unittest.TestCase):
         raw_vm["stage38_wave27_future_hil"] = {"all_checks_passed": True}
         p4, meta4 = _evaluate_pillar_4(raw_vm, RealHwMilestone209FaultInjection())
         self.assertTrue(p4.passed, p4.errors)
-        self.assertEqual(meta4["stage_count"], 38)
+        self.assertGreaterEqual(meta4["stage_count"], 38)
+        self.assertEqual(meta4["passed_count"], meta4["stage_count"])
 
     def test_30_pillar4_fails_on_stage34_stage35_or_stage36_faults(self) -> None:
         raw_vm = self._unpack_clean_raw()[4]

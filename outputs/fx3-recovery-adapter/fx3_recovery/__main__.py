@@ -96,6 +96,11 @@ from .realhw_39pillar_framing_usbpower_lun_antiflicker_vault_verifier import (
     verify_39pillar_recovery_suite,
     verify_framing_usbpower_lun_and_antiflicker_vault,
 )
+from .realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier import (
+    run_pillar40_standalone_suite,
+    verify_40pillar_recovery_suite,
+    verify_lock_op_parts_audio_timing_and_exp_step_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -385,6 +390,14 @@ def main():
     p243_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p243_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p243_master.add_argument('--out', help='optional exclusive new output directory for 39pillar-recovery-master-report.json')
+    p245_p40 = sub.add_parser('verify-lock-op-parts-audio-timing-exp-step-vault', help='Phase 245 Milestone Pillar 40 Lock Operation Parts survival, Fn hold, MENU + Fn 5s full-body chord vs MENU + Delete 2s guard & My Dial override + Audio Out Timing / Audio signals / Exposure step vs Shutter Angle constant-table verifier')
+    p245_p40.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p245_p40.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p245_p40.add_argument('--out', help='optional exclusive new output directory for pillar40-lock-op-parts-audio-timing-exp-step-vault-report.json')
+    p245_master = sub.add_parser('verify-40pillar-recovery', help='Phase 245 Milestone unified 40/40 real-hardware recovery master aggregator (Pillars 1..39 + Pillar 40)')
+    p245_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p245_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p245_master.add_argument('--out', help='optional exclusive new output directory for 40pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -2066,6 +2079,77 @@ def main():
                     f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_39pillar_sha256={report.master_39pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-lock-op-parts-audio-timing-exp-step-vault':
+            report = run_pillar40_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar40-lock-op-parts-audio-timing-exp-step-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_40a={report.pillar_40a_lock_op_parts_vault.scenarios_passed}/{report.pillar_40a_lock_op_parts_vault.scenarios_total} "
+                    f"pillar_40b={report.pillar_40b_audio_timing_exp_step_vault.scenarios_passed}/{report.pillar_40b_audio_timing_exp_step_vault.scenarios_total} "
+                    f"destructive_menu_delete_confusions={report.destructive_menu_delete_confusions} "
+                    f"shutter_angle_exposure_step_drift_events={report.shutter_angle_exposure_step_drift_events} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-40pillar-recovery':
+            report = verify_40pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'40pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar40_a={report.pillar40_a_lock_op_parts_vault.scenarios_passed}/{report.pillar40_a_lock_op_parts_vault.scenarios_total} "
+                    f"pillar40_b={report.pillar40_b_audio_timing_exp_step_vault.scenarios_passed}/{report.pillar40_b_audio_timing_exp_step_vault.scenarios_total} "
+                    f"destructive_menu_delete_confusions={report.destructive_menu_delete_confusions} "
+                    f"shutter_angle_exposure_step_drift_events={report.shutter_angle_exposure_step_drift_events} "
+                    f"fx3_has_var_shutter={report.fx3_has_var_shutter} "
+                    f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_40pillar_sha256={report.master_40pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

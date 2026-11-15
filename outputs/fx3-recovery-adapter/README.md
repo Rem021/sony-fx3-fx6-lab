@@ -909,3 +909,23 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-39pillar-recovery --force-clean-room --json
 ```
 
+## Phase 245 — 真机主线 Part 28（里程碑 Pillar 40 / `40/40` 统一恢复总检）：`Lock Operation Parts` 跨复位留存与 `MENU + Fn` 5s 整机物理防误触锁（严防 `MENU + Delete` 2s 格式化混淆）、`My Dial` 临时解锁、`Audio Out Timing` vs `Audio signals` 复位分流及 `Exposure step` vs `Shutter Angle` 恒定角度表免疫金库（`verify-40pillar-recovery` / `verify-lock-op-parts-audio-timing-exp-step-vault`）
+
+- **[`realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py`](fx3_recovery/realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`）落地 **`40/40` 里程碑 Pillar 40** 并将全套恢复总检正式推进至 **`40/40`（`VERIFIED_40OF40_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37/38/39pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so` 与 `FX6 6.01` `appFw.so`、`libInfraDial.so`（校验 `_ZN9InfraDial4InitEv`、`_ZN9InfraDial10set4KeyInhEb`、`_ZN10InfraInput12SetKeyInhExtEibi`）、`libInfraInput.so`（校验 `_ZN14InfraInputBase14KeyConfigAllocEi`、`_ZN14InfraInputBase13KeyConfigFreeEv`、`_ZN14InfraInputBase7SuspendEv`）共 10 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 40A — `[Lock Operation Parts]` 跨 `[Camera Settings Reset]` 留存、`Fn` 长按提示、`MENU + Fn` 5s 整机物理键锁（严防 `MENU + Delete` 2s 全盘格式化混淆）与 `My Dial` 临时解锁台架金库（`6/6`）**：
+    - `P40A1`..`P40A6`：精确建模 `MENU` -> `Setup` -> `[Dial Customize]` -> `[Lock Operation Parts]` 四态（默认 `Off`、`Multi-Selector Only` / `Multi-Slct Only`、`Dial + Wheel`、`All`）作为 `[Setup]` 项**在 `[Camera Settings Reset]` 后完整留存**、仅在完整 `[Initialize]` 下归位为 `Off`，并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 确定性恢复；强制校验三大物理按键与覆盖规则：① 长按 `Fn` 触发目标范围锁定并弹出 `"Locked."`（`Off` 时长按 `Fn` 不锁定任何控件）；② 同时按住 **`MENU + Fn` 满 `5` 秒**锁定/解锁**除快门按钮外的全部机身按键、拨盘与控制拨轮**，为无人值守 Tier-0 `pnflasha`/`cnflasha` 冷转储提供物理防误触锁，并 **100% 阻断将其与破坏性 `MENU + Delete` `2` 秒卡槽全盘格式化组合键混淆**（`destructive_menu_delete_confusions == 0`）；③ 即便拨盘/控制拨轮已被 `[Lock Operation Parts]` 锁定，按住 **`My Dial`** 期间仍临时解锁已分配拨盘并在松开后立即恢复锁定（严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **支柱 40B — `[Audio Out Timing]`（`Live`/`Lip Sync`）vs `[Audio signals]` 复位非对称留存、`S&Q` / `Silent Mode` 硬件锁止与 `[Exposure step]`（`0.3EV`/`0.5EV`）vs `[Shutter Angle]` 恒定电影快门角度表免疫恢复（`6/6`）**：
+    - `P40B1`..`P40B6`：精确建模 `MENU` -> `Shooting` -> `[Audio Recording]` -> `[Audio Out Timing]`（默认 `Live` 零延迟监听 vs `Lip Sync` 音画同步延迟，受 `[Camera Settings Reset]` 复位为 `Live`，并在 `S&Q Motion` 慢快动作或 `[Audio Recording] = Off` 时硬件锁止不可用）与 `MENU` -> `Setup` -> `[Sound Option]` -> `[Audio signals]`（默认 `On` / `Off`，**跨 `[Camera Settings Reset]` 完整留存**、仅由 `[Initialize]` 复位，但在 **`[Silent Mode] = On` 时被硬件强制锁死为 `Off`**）之间的复位与锁止边界；同时建模 `MENU` -> `Exposure/Color` -> `[Exposure Comp.]` -> `[Exposure step]`（默认 `0.3EV` / `0.5EV`，受 `[Camera Settings Reset]` 复位）仅调节 `[Shutter Speed]`、光圈（`Aperture`）与曝光补偿（`Exposure Comp.`）步进，而 **`Ver. 6.00+`..`7.02` `[Shutter Mode] = [Shutter Angle]` 下的 `[Shutter Angle]` 对 `[Exposure step]` 100% 免疫、严格保持恒定电影快门角度表**（`5.6°`..`360°`，`shutter_angle_exposure_step_drift_events == 0`），并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 无损恢复。
+  - **统一 `40/40` 里程碑恢复总检聚合器与 CLI（`evaluate_realhw_40pillar_recovery_master` / `verify-40pillar-recovery` / `verify-lock-op-parts-audio-timing-exp-step-vault`）**：
+    - 并发调用 `evaluate_realhw_39pillar_recovery_master`（`Pillars 1..39`）+ **Pillar 40**（`run_pillar40_standalone_suite`），汇总产出 **`40/40`**（`VERIFIED_40OF40_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py`](tests/test_realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 4s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-lock-op-parts-audio-timing-exp-step-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-40pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-40pillar-recovery --force-clean-room --json
+```
+
+

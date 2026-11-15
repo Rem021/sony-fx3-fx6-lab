@@ -102,6 +102,10 @@ from .realhw_hdmi_braw_wpa3_702_delta_auditor import (
     analyze_realhw_hdmi_braw_wpa3_702_delta,
     realhw_hdmi_braw_wpa3_702_delta_report_to_dict,
 )
+from .realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon_auditor import (
+    analyze_realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon,
+    realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon_report_to_dict,
+)
 from .realhw_lens_ibis_audio_hdmi_peripheral_bridge_auditor import (
     analyze_realhw_lens_ibis_audio_hdmi_peripheral_bridge,
     realhw_lens_ibis_audio_hdmi_peripheral_bridge_report_to_dict,
@@ -179,7 +183,7 @@ from .xavc_hevc_intra_aces_idt_and_fz100_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all forty-three clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all forty-four clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -309,6 +313,13 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
             )
         )
     )
+    realhw_hdmi_log1080_proxy_focusmag_brightmon = (
+        realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon_report_to_dict(
+            analyze_realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon(
+                clean_room=clean_room
+            )
+        )
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -354,6 +365,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and realhw_fan_pwm_shutter_lut_split.get("all_checks_passed")
         and realhw_big6_noend_camset_vmcbncm1.get("all_checks_passed")
         and realhw_desqueeze_focusmap_shocklesswb.get("all_checks_passed")
+        and realhw_hdmi_log1080_proxy_focusmag_brightmon.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -404,17 +416,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "realhw_fan_pwm_shutter_angle_and_lut_601_702_split_audit": realhw_fan_pwm_shutter_lut_split,
         "realhw_big6_noend_camset_slot1_and_vmcbncm1_audit": realhw_big6_noend_camset_vmcbncm1,
         "realhw_desqueeze_165x_focusmap_simult_and_shocklesswb_audit": realhw_desqueeze_focusmap_shocklesswb,
+        "realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon_audit": realhw_hdmi_log1080_proxy_focusmag_brightmon,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18 + PTPv2 + TSL UMD v5.0 Tally, Virtual Production LED-Volume Brompton/Megapixel ECS Solver + Wired FreeD D1 LiveLink + P12-Safe Art-Net 4 / sACN Shutter-Sync, BIONZ XR XAVC HS/XAVC S-I + ACES 1.3/2.0 S-Log3/S-Gamut3.Cine IDT + NP-FZ100 InfoLITHIUM C-Pin, Real-Hardware U2 cpapp-b.bin CP RTOS / Route-1 vs Route-2 + U3 Backup.bin 819->840 / 0xfa0080, Phase 140 Real-Hardware libMpr / osal_uipc / DMM MAIN Card-Recording & Parameter-Binding ABI Bridge, Phase 146 Real-Hardware Stage-B Peripheral Bridge, Phase 149 Real-Hardware ILME-FX3 Controls/Keymap, Cooling Fan PWM/Thermal Override, 3x Tally LEDs & NP-FZ100/USB-PD Power Bridge, Phase 152 Real-Hardware Wi-Fi 802.11ac, BLE Creators' App vs FX6 M&C, USB Type-C MSC 054C:0DA1/MTP/UVC & Wired USB-LAN Gigabit FTP Bridge, Phase 156 Real-Hardware IMX510 CMOS Sensor Cal, Dual-Base ISO 800/12800 HCG/LCG & S-Log3/.cube MLUT Color Pipeline, Phase 159 Real-Hardware Dual-Slot CFexpress Type A / SDXC UHS-II Media Bridge, .RSV Clip Salvage & Official Sony BODYDATA.DAT (\\\\x89UFU) Coexistence Guard, Phase 164 Real-Hardware CXD90057 (Mira) + CXD90058 (Cetus) Dual-BIONZ-XR Inter-Chip IPC, sabin 32-bit SA-DSP Microcode & XAVC-I / HEVC Hardware Codec Boundary, Phase 169 Real-Hardware p12:/cert/RQ_LIC.DAT C2PA Lock, VMC-BNCM1 EXT-LK SMPTE-12M TC & NonRealTimeMeta.xml IMX510 Gyro/Lens Provenance, Phase 174 Real-Hardware p5:/wbi (WBI2 / hibdrv.ko) Hibernation Snapshot Isolation, Zero-Write Lock & Stock/Stage-B Cold-Boot Determinism, Phase 179 Real-Hardware FX3 Ver. 7.02 vs FX6 Ver. 6.01 Generation-Delta Bridge, Phase 183 Real-Hardware MIRA_CETUS2 E-Mount info7/info8/info3D Serial Handshake, Sony Lens ID Filter ((lens_id >> 14) == 3), 0x02cf0232 Focus Breathing, p18:/lens/LENSFILE.BIN & Monitor & Control 2.1.0+ Focus Map, Phase 189 Real-Hardware ILME-FX3 (7.02) vs ILME-FX3A (2.02) LCD/NFC/IR Branch Divergence & XLR-H1 MI-Shoe 48kHz/24bit 4ch Audio Bridge, Phase 192 (40th Milestone Auditor, 40/40) Real-Hardware ILME-FX3 (Ver. 7.02) No-UVC USB Gadget, USB-PD (NP-FZ100) vs DC-C1 (>=65W/5A), Dual-Media .cube User LUT Path-Asymmetry & Cine EI (800/12800), Phase 197 (41st Auditor, 41/41) Real-Hardware ILME-FX3 (Ver. 7.02) 4-Mode Fan PWM, Independent Shutter Mode (Speed vs Angle 5.6..64F/360) & Ver. 6.01 vs Ver. 7.00/7.02 p2:/setting User LUT Binary Slot Split, Phase 203 (42nd Auditor, 42/42) Real-Hardware ILME-FX3 (Ver. 7.02) BIG6 [Home (Lower Left)] Zero e-ND Actuator Boundary, Slot-1 CAMSET Dual-Media Path Split & VMC-BNCM1 Body-Only TC IN / HDMI TC OUT, and Phase 205 (43rd Auditor, 43/43) Real-Hardware ILME-FX3 (Ver. 7.02) [De-Squeeze Display] (1.6x=1.65x & 4 Hard Locks / HDMI RAW Bypass), External M&C Focus Map (>=150fps Cutoff) & [Simult. + Auto Switch] / [Shockless WB] auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18 + PTPv2 + TSL UMD v5.0 Tally, Virtual Production LED-Volume Brompton/Megapixel ECS Solver + Wired FreeD D1 LiveLink + P12-Safe Art-Net 4 / sACN Shutter-Sync, BIONZ XR XAVC HS/XAVC S-I + ACES 1.3/2.0 S-Log3/S-Gamut3.Cine IDT + NP-FZ100 InfoLITHIUM C-Pin, Real-Hardware U2 cpapp-b.bin CP RTOS / Route-1 vs Route-2 + U3 Backup.bin 819->840 / 0xfa0080, Phase 140 Real-Hardware libMpr / osal_uipc / DMM MAIN Card-Recording & Parameter-Binding ABI Bridge, Phase 146 Real-Hardware Stage-B Peripheral Bridge, Phase 149 Real-Hardware ILME-FX3 Controls/Keymap, Cooling Fan PWM/Thermal Override, 3x Tally LEDs & NP-FZ100/USB-PD Power Bridge, Phase 152 Real-Hardware Wi-Fi 802.11ac, BLE Creators' App vs FX6 M&C, USB Type-C MSC 054C:0DA1/MTP/UVC & Wired USB-LAN Gigabit FTP Bridge, Phase 156 Real-Hardware IMX510 CMOS Sensor Cal, Dual-Base ISO 800/12800 HCG/LCG & S-Log3/.cube MLUT Color Pipeline, Phase 159 Real-Hardware Dual-Slot CFexpress Type A / SDXC UHS-II Media Bridge, .RSV Clip Salvage & Official Sony BODYDATA.DAT (\\\\x89UFU) Coexistence Guard, Phase 164 Real-Hardware CXD90057 (Mira) + CXD90058 (Cetus) Dual-BIONZ-XR Inter-Chip IPC, sabin 32-bit SA-DSP Microcode & XAVC-I / HEVC Hardware Codec Boundary, Phase 169 Real-Hardware p12:/cert/RQ_LIC.DAT C2PA Lock, VMC-BNCM1 EXT-LK SMPTE-12M TC & NonRealTimeMeta.xml IMX510 Gyro/Lens Provenance, Phase 174 Real-Hardware p5:/wbi (WBI2 / hibdrv.ko) Hibernation Snapshot Isolation, Zero-Write Lock & Stock/Stage-B Cold-Boot Determinism, Phase 179 Real-Hardware FX3 Ver. 7.02 vs FX6 Ver. 6.01 Generation-Delta Bridge, Phase 183 Real-Hardware MIRA_CETUS2 E-Mount info7/info8/info3D Serial Handshake, Sony Lens ID Filter ((lens_id >> 14) == 3), 0x02cf0232 Focus Breathing, p18:/lens/LENSFILE.BIN & Monitor & Control 2.1.0+ Focus Map, Phase 189 Real-Hardware ILME-FX3 (7.02) vs ILME-FX3A (2.02) LCD/NFC/IR Branch Divergence & XLR-H1 MI-Shoe 48kHz/24bit 4ch Audio Bridge, Phase 192 (40th Milestone Auditor, 40/40) Real-Hardware ILME-FX3 (Ver. 7.02) No-UVC USB Gadget, USB-PD (NP-FZ100) vs DC-C1 (>=65W/5A), Dual-Media .cube User LUT Path-Asymmetry & Cine EI (800/12800), Phase 197 (41st Auditor, 41/41) Real-Hardware ILME-FX3 (Ver. 7.02) 4-Mode Fan PWM, Independent Shutter Mode (Speed vs Angle 5.6..64F/360) & Ver. 6.01 vs Ver. 7.00/7.02 p2:/setting User LUT Binary Slot Split, Phase 203 (42nd Auditor, 42/42) Real-Hardware ILME-FX3 (Ver. 7.02) BIG6 [Home (Lower Left)] Zero e-ND Actuator Boundary, Slot-1 CAMSET Dual-Media Path Split & VMC-BNCM1 Body-Only TC IN / HDMI TC OUT, Phase 205 (43rd Auditor, 43/43) Real-Hardware ILME-FX3 (Ver. 7.02) [De-Squeeze Display] (1.6x=1.65x & 4 Hard Locks / HDMI RAW Bypass), External M&C Focus Map (>=150fps Cutoff) & [Simult. + Auto Switch] / [Shockless WB], and Phase 211 (44th Auditor, 44/44) Real-Hardware ILME-FX3 (Ver. 7.02) HDMI Log 1080p vs Off(HDMI Only) 4K, Proxy Coupled Vault & FocusMag/BrightMon auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 43 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 44 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -698,6 +711,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_rh205.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_rh205.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_rh211 = sub.add_parser(
+        "audit-realhw-hdmi-log1080-proxy-focusmag-brightmon",
+        help="Run Phase 211 (44th Auditor, 44/44) Real-Hardware ILME-FX3 (Ver. 7.02) HDMI Log 1080p vs Off(HDMI Only) 4K 10-bit, Px Proxy Coupled Vault & Focus Magnifier / Bright Monitoring auditor",
+    )
+    p_rh211.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_rh211.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -869,6 +889,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-realhw-desqueeze-focusmap-shocklesswb":
         payload = realhw_desqueeze_165x_focusmap_simult_and_shocklesswb_report_to_dict(
             analyze_realhw_desqueeze_165x_focusmap_simult_and_shocklesswb(
+                clean_room=bool(args.clean_room)
+            )
+        )
+    elif args.command == "audit-realhw-hdmi-log1080-proxy-focusmag-brightmon":
+        payload = realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon_report_to_dict(
+            analyze_realhw_hdmi_log1080_proxy_vault_and_focusmag_brightmon(
                 clean_room=bool(args.clean_room)
             )
         )

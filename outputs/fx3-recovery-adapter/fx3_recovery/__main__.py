@@ -14,6 +14,7 @@ from .emmc_dump_forensic_verifier import (
     run_clean_room_forensic_suite,
     verify_emmc_dump_file,
 )
+from .fdt_bootargs_and_kernel_verifier import run_fdt_bootargs_and_kernel_suite
 from .firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite
 from .gpt_rpmb_and_rescue_bundle_verifier import run_gpt_rpmb_and_rescue_bundle_suite
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
@@ -96,6 +97,7 @@ def main():
     master.add_argument('--out', help='optional exclusive new output directory for recovery-master-report.json')
     master.add_argument('--with-phase94', action='store_true', help='also run Phase 94 Pillar 8 GPT/RPMB/SD-rescue verifier')
     master.add_argument('--with-phase101', action='store_true', help='also run Phase 101 Pillar 9 init2 cpio firewall, EXT_CSD health & tmpfs isolation verifier')
+    master.add_argument('--with-phase106', action='store_true', help='also run Phase 106 Pillar 10 FDT /chosen/bootargs firewall & ARM64 kernel verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -104,6 +106,10 @@ def main():
     ramdisk_emmc.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     ramdisk_emmc.add_argument('--json', action='store_true', help='emit full structured JSON report')
     ramdisk_emmc.add_argument('--out', help='optional exclusive new output directory for ramdisk-emmc-health-report.json')
+    fdt_kern = sub.add_parser('verify-fdt-bootargs', help='Phase 106 FDT 0xd00dfeed /chosen/bootargs firewall & ARM64 kernel Image verifier')
+    fdt_kern.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    fdt_kern.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    fdt_kern.add_argument('--out', help='optional exclusive new output directory for fdt-bootargs-kernel-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -280,13 +286,23 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p101_report.all_passed else 0)
                 overall_ok = overall_ok and p101_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase106:
+                p106_report = run_fdt_bootargs_and_kernel_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase106_pillar10_fdt_bootargs_kernel'] = p106_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p106_report.all_passed else 0)
+                overall_ok = overall_ok and p106_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
                 print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
             else:
-                pillar_num = result['pillars_passed'] if (args.with_phase94 or args.with_phase101) else report.pillars_passed
-                pillar_den = result['pillar_count'] if (args.with_phase94 or args.with_phase101) else report.pillar_count
+                has_opt_in = args.with_phase94 or args.with_phase101 or args.with_phase106
+                pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
+                pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
                 print(
                     f"status={report.status} mode={report.verification_mode} "
                     f"all_passed={overall_ok} "
@@ -342,6 +358,31 @@ def main():
                     f"emmc_life_b={report.emmc_healthy_report.life_time_typ_b_hex} "
                     f"zero_rw_block_mounts={report.mount_isolation_report.zero_rw_block_mounts} "
                     f"stage_b_containment_ready={report.stage_b_containment_ready} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-fdt-bootargs':
+            report = run_fdt_bootargs_and_kernel_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'fdt-bootargs-kernel-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"fdt_nodes={report.stage_b_fdt_parse_report.node_count} "
+                    f"kernel_magic={report.fx3_kernel_valid_report.magic_hex} "
+                    f"kernel_release={report.fx3_kernel_valid_report.kernel_release} "
+                    f"stage_b_boot_gate_ready={report.stage_b_boot_gate_ready} "
                     f"suite_sha256={report.suite_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

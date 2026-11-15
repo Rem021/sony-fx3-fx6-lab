@@ -1,16 +1,10 @@
-# Sony FX3 & FX6 Porting, QEMU Virtual Machine & Clean-Room Compatibility Lab (`sony-fx3-fx6-lab`)
+# Sony FX3 / FX6 Lab · Research Guide
 
-[![简体中文](https://img.shields.io/badge/Language-简体中文-0969da?style=flat)](./README.zh-CN.md)
-[![Bilingual](https://img.shields.io/badge/Master_Doc-README.md_(EN_%2B_ZH)-1a7f37?style=flat)](./README.md)
-[![Platform](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
-[![Target](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)-orange?style=flat)](#)
-[![Tests](https://img.shields.io/badge/Automated_Tests-177%2F177_Passing_(make_test)-brightgreen?style=flat)](#4-quick-start--verification)
-[![Clean-Room CI](https://img.shields.io/badge/Clean--Room_CI-Ubuntu_%2B_macOS_(0_Donors)-0969da?style=flat)](./.github/workflows/clean-room-ci.yml)
-[![License](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
+**Explore Sony FX3 and FX6 firmware with QEMU, browser menu tools, and offline checks.**
 
-> **Switch Language**: [**👉 点击切换至简体中文完整版 (`README.zh-CN.md`)**](./README.zh-CN.md) · [**Bilingual Master Overview (`README.md`)**](./README.md)
+For camera firmware researchers. Emulator and offline results do not establish physical-device readiness. Cross-model flashing of a real FX3 remains **BLOCKED / NO-GO**.
 
-**`sony-fx3-fx6-lab`** is a clean-room systems engineering, QEMU AArch64 virtualization, hardware-compatibility verification, and anti-brick safety research repository for the **Sony Cinema Line ILME-FX3 (Ver. 7.02, Model ID `0x91030080`)** and **ILME-FX6 (Ver. 6.01, Model ID `0x91040086`)** digital cinema cameras, both powered by the **Sony CXD90057 AArch64 SoC** running Sony CE Linux `4.9.337-scel+` alongside a TOPPERS-FMP 1.4.0 SMP RTOS co-processor (`cpapp-b.bin` `@ 0x00108000`).
+[Project overview](README.md) · [简体中文](README.zh-CN.md) · **[Prepare firmware](docs/BYOF-REPRODUCTION.md)** · [Run and verify](#4-quick-start--verification)
 
 > [!IMPORTANT]
 > **Clean-Room Open-Source Boundary (BYOF — Bring Your Own Firmware)**

@@ -1,16 +1,10 @@
-# 索尼 FX3 与 FX6 系统移植、QEMU 虚拟机与净室兼容性研究实验室 (`sony-fx3-fx6-lab`)
+# Sony FX3 / FX6 Lab · 中文研究文档
 
-[![English](https://img.shields.io/badge/Language-English-0969da?style=flat)](./README.en.md)
-[![双语总览](https://img.shields.io/badge/主文档-README.md_(中英双语)-1a7f37?style=flat)](./README.md)
-[![宿主平台](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
-[![目标芯片](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)-orange?style=flat)](#)
-[![自动化测试](https://img.shields.io/badge/Automated_Tests-177%2F177_Passing_(make_test)-brightgreen?style=flat)](#四快速开始与验收命令)
-[![无供体净室CI](https://img.shields.io/badge/Clean--Room_CI-Ubuntu_%2B_macOS_(0_Donors)-0969da?style=flat)](./.github/workflows/clean-room-ci.yml)
-[![开源协议](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
+**用 QEMU、浏览器菜单工具和离线校验研究索尼 FX3 / FX6 固件。**
 
-> **语言切换**：[**👉 Switch to Standalone English Documentation (`README.en.md`)**](./README.en.md) · [**中英双语总览文档 (`README.md`)**](./README.md)
+面向相机固件研究者。模拟器与离线结果不代表真机验收，真实 FX3 跨机型刷写仍为 **BLOCKED / NO-GO**。
 
-**`sony-fx3-fx6-lab`** 是面向 **Sony Cinema Line ILME-FX3（Ver. 7.02，机型 ID `0x91030080`）** 与 **ILME-FX6（Ver. 6.01，机型 ID `0x91040086`）** 数字电影摄影机的净室系统工程、QEMU AArch64 虚拟化、跨机型硬件兼容性验证与真机防变砖安全研究开源仓库。两款机型均搭载 **Sony CXD90057 AArch64 SoC**，运行 Sony CE Linux `4.9.337-scel+` 内核与 TOPPERS-FMP 1.4.0 SMP RTOS 协处理器固件（`cpapp-b.bin` `@ 0x00108000`）。
+[项目首页](README.md) · [English](README.en.md) · **[固件准备](docs/BYOF-REPRODUCTION.md)** · [运行与校验](#四快速开始与验收命令)
 
 > [!IMPORTANT]
 > **净室开源合规边界（BYOF：自备官方固件复现）**

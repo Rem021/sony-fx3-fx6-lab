@@ -1,15 +1,47 @@
-# Sony FX3 & FX6 Porting, QEMU Virtual Machine & Clean-Room Compatibility Lab (`sony-fx3-fx6-lab`)
+# Sony FX3 / FX6 Lab
 
-[![English Standalone](https://img.shields.io/badge/Standalone_EN-README.en.md-0969da?style=flat)](./README.en.md)
-[![简体中文独立版](https://img.shields.io/badge/独立中文版-README.zh--CN.md-0969da?style=flat)](./README.zh-CN.md)
-[![Platform](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
-[![Target](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)-orange?style=flat)](#)
-[![Automated Tests](https://img.shields.io/badge/Automated_Tests-177%2F177_Passing_(make_test)-brightgreen?style=flat)](#4-quick-start--verification)
-[![Clean-Room CI](https://img.shields.io/badge/Clean--Room_CI-Ubuntu_%2B_macOS_(0_Donors)-0969da?style=flat)](./.github/workflows/clean-room-ci.yml)
-[![FX6 Cold-Boot GPE0](https://img.shields.io/badge/FX6_Cold--Boot_GPE0-nop__count%3D0_r1a..r7c_(20_PNGs)-success?style=flat)](#track-1b-fx6-native-cold-boot-nop_count--0-gpe0-shooting-big6-base-look-3-layer-menu--backup_write-closure)
-[![FX6-on-FX3 Closure](https://img.shields.io/badge/FX6--on--FX3_Closure-P1..P9%2BFan_%7C_U1..U5_%7C_H0--%3EH2_Drill-1a7f37?style=flat)](#track-3-fx6-on-fx3-p1p9--fan-closure-u1u5-closure--12-gate-anti-brick-suite)
+**Explore Sony FX3 and FX6 firmware with QEMU, browser menu tools, and offline checks.**
 
-> **Language Navigation / 语言切换**: **[English Documentation](#english-documentation)** · **[简体中文文档](#简体中文文档)** · **[Standalone `README.en.md`](./README.en.md)** · **[独立中文版 `README.zh-CN.md`](./README.zh-CN.md)**
+用 QEMU、浏览器菜单工具和离线校验研究索尼 FX3 / FX6 固件。
+
+For firmware researchers and developers interested in camera internals. This repository contains research tools and evidence; it is not a ready-to-flash camera upgrade.
+
+**[Start here](#start-here)** · [English research guide](README.en.md) · [中文研究文档](README.zh-CN.md) · [Firmware setup](docs/BYOF-REPRODUCTION.md)
+
+[![Clean-room CI](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml/badge.svg)](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml) [![License](https://img.shields.io/badge/license-MIT_%2F_GPLv2-blue?style=flat-square)](LICENSE)
+
+> [!IMPORTANT]
+> Firmware-dependent experiments require your own matching official firmware (BYOF). Sony proprietary firmware is not distributed here. Offline tests and emulator results do not establish safe operation on a physical camera. Cross-model flashing of a real FX3 remains **BLOCKED / NO-GO**.
+>
+> 固件实验需自备匹配版本的官方固件；仓库不分发索尼专有固件。离线与模拟器结果不代表真机安全验收，真实 FX3 跨机型刷写仍为 **BLOCKED / NO-GO**。
+
+## What you can explore
+
+| Area | Start with |
+| :--- | :--- |
+| **Camera menus** | [FX3 / FX6 browser menu runners](outputs/fx3-vm-trial/README.md), after BYOF setup |
+| **Emulation and compatibility** | [QEMU research and engineering milestones](README.en.md) |
+| **Recovery research** | [Offline recovery adapter](outputs/fx3-recovery-adapter/README.md) and [safety tools](outputs/fx3-safety/README.md) |
+| **Reproduction** | [Firmware requirements and fingerprints](docs/BYOF-REPRODUCTION.md) |
+
+## Start here
+
+To inspect the source checkout without camera hardware or Sony firmware, install Python 3 and GNU Make, then run the repository's clean-room audit:
+
+```bash
+git clone https://github.com/Rem021/sony-fx3-fx6-lab.git
+cd sony-fx3-fx6-lab
+PYTHON=python3 make clean-audit
+```
+
+The audit checks the repository boundary; it does not run a camera emulator or certify a firmware image. For firmware-dependent menus, follow the [BYOF guide](docs/BYOF-REPRODUCTION.md) before using a runner. Full verification commands and environment requirements are in the language guides above.
+
+## Engineering record
+
+The dated record below preserves detailed milestones, commands, evidence links, and bilingual notes. Treat its measurements as results for the recorded setup and date.
+
+<details>
+<summary>Expand the full bilingual engineering record / 展开中英双语工程记录</summary>
 
 > **2026-11-12 Master Milestones (全线工程里程碑闭环)**:
 > 1. **Track 1A — Interactive FX6 128-Page Guest `GPE0` UI, 22.1x Pipeline Acceleration & 16 Offline Unit Tests**: Rendered **100% of all 128** FX6 Ver. 6.01 (`ILME-FX6V`) page descriptor tables (`2,249` widget rows) into physical `GPE0` (`0x41e001000`, `1024×540` RGBA32, `segv = 0`), refactored leak-free [`fx6_live_guest.c`](outputs/fx3-vm-trial/src/fx6_live_guest.c) (eliminating per-frame `calloc` leaks, ~1,500 `dlsym` lookups, and `DISP` OOB reads), added a **22.1x faster** compiled C BGRA-to-PNG scanline packer (`fx6_pack_scanlines` in [`run_fx6_menu_trial.py`](outputs/fx3-vm-trial/run_fx6_menu_trial.py)), delivered deterministic CPIO builder [`build_live700.py`](outputs/fx3-vm-trial/build_live700.py), and backed both Track 1A & Track 2 (`fx3-vm`) with **16** clean-room offline unit tests ([`test_vm_trial.py`](outputs/fx3-vm-trial/tests/test_vm_trial.py)).
@@ -78,7 +110,7 @@
 
 ### Track 5 & Track 6: VENICE Color Science Research & Categorized Multi-Agent Session Archives
 
-- **Color Science & Encoding Reports**: [FX5 Firmware & FX3 Cinema Menu Review](reports/FX5%20%E5%9B%BA%E4%BB%B6%E4%B8%8E%20FX3%20%E7%A7%BB%E6%A4%8D%E5%A4%8D%E6%A0%B8.md) · [VENICE Color Chain & 3DLUT Audit](reports/2026-10-31-venice-phayen-color-chain/REPORT.md) · [FX3 H.265/HEVC Encoding Pipeline](reports/%E7%B4%A2%E5%B0%BC%20FX3%20%E7%BC%96%E7%A0%81%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%86%99%E5%85%A5%E7%A0%94%E7%A9%B6.md).
+- **Color Science & Encoding Reports**: [FX5 Firmware & FX3 Cinema Menu Review](reports/FX5%20%E5%9B%BA%E4%BB%B6%E4%B8%8E%20FX3%20%E7%A7%BB%E6%A4%8D%E5%A4%8D%E6%A0%B8.md) · [VENICE Color Chain & 3DLUT Audit](reports/2026-10-31-venice-phayen-color-chain/README.md) · [FX3 H.265/HEVC Encoding Pipeline](reports/%E7%B4%A2%E5%B0%BC%20FX3%20%E7%BC%96%E7%A0%81%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%86%99%E5%85%A5%E7%A0%94%E7%A9%B6.md).
 - **Categorized Orca Engineering Archives**: **135** multi-agent research conversations across 5 specialized workspaces (`01-fx6-system-porting`, `02-fx5-unpack-and-cinema-color`, `03-fx3-firmware-re-and-h265`, `04-fx3-vm-menu-and-gpe`, `05-fx3-flash-safety-and-recovery`) are archived in **[conversations/README.md](conversations/README.md)** with clean-room secret/binary filtering.
 
 ---
@@ -202,7 +234,7 @@ After preparing your own official firmware files as documented in **[docs/BYOF-R
 
 ### 主线 5 与主线 6：VENICE 色彩科学审计与 135 篇多智能体对话分类归档
 
-- **色彩与编码专项报告**：[FX5 固件与 FX3 电影菜单移植复核](reports/FX5%20%E5%9B%BA%E4%BB%B6%E4%B8%8E%20FX3%20%E7%A7%BB%E6%A4%8D%E5%A4%8D%E6%A0%B8.md) · [VENICE 色彩科学与 3DLUT 链路审计](reports/2026-10-31-venice-phayen-color-chain/REPORT.md) · [索尼 FX3 H.265/HEVC 编码与码率研究](reports/%E7%B4%A2%E5%B0%BC%20FX3%20%E7%BC%96%E7%A0%81%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%86%99%E5%85%A5%E7%A0%94%E7%A9%B6.md)。
+- **色彩与编码专项报告**：[FX5 固件与 FX3 电影菜单移植复核](reports/FX5%20%E5%9B%BA%E4%BB%B6%E4%B8%8E%20FX3%20%E7%A7%BB%E6%A4%8D%E5%A4%8D%E6%A0%B8.md) · [VENICE 色彩科学与 3DLUT 链路审计](reports/2026-10-31-venice-phayen-color-chain/README.md) · [索尼 FX3 H.265/HEVC 编码与码率研究](reports/%E7%B4%A2%E5%B0%BC%20FX3%20%E7%BC%96%E7%A0%81%E6%A8%A1%E5%BC%8F%E4%B8%8E%E5%86%99%E5%85%A5%E7%A0%94%E7%A9%B6.md)。
 - **Orca 多智能体工程归档**：五大专项工作区共 **135 篇** 工程研究对话已分类归档至 **[conversations/README.md](conversations/README.md)**（内置净室二进制过滤与密钥脱敏门禁）。
 
 ---
@@ -245,3 +277,6 @@ make verify-kmod-userland-abi
 1. 本仓库仅用于嵌入式系统架构研究、QEMU 虚拟化技术探索与固件刷前防变砖安全审计，与 Sony Group Corporation 无任何隶属或合作关系。
 2. 本仓库不分发任何受版权保护的 Sony 专有闭源二进制文件或私有密钥。
 3. 仓库自研源码采用 [MIT](./LICENSE) 协议发布；针对 QEMU 的修改补丁遵循 [GPLv2](outputs/fx3-vm/COPYING-QEMU) 协议发布。
+
+
+</details>

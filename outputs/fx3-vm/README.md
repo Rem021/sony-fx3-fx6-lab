@@ -1470,3 +1470,37 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 242：Stage 45（`45/45` 里程碑）真实硬件主线 — Wave-35 `[Emphasized REC Display]` 与 `[Grid Line Display]` 外接 HDMI Info 分流 vs `[Off(HDMI Only)]` / `RAW` 强制净流锁止、`[Touch Operation]` 4 项跨复位存活与台架误触防护、以及 `[Monitor Brightness]` `[Manual]`（`-2..+2`）对 `[Sunny Weather]` 室内过曝与 `NP-FZ100` 功耗护栏 HIL 协同仿真器
+
+[`realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py`](realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py) 作为 **Stage 45（`45/45` 里程碑，Schema `realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil=True` / `include_stage45=True`，支持显式 `--include-stage45` 以及通过 `--skip-phase242` / `--skip-stage45` / `--no-include-stage45` 跳过；本地只读供体 45 阶段全板协同仿真 `< 2.7s`、洁净室模式 `< 0.75s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`hdmi_only_or_raw_baked_recframe_or_grid_frames == 0`、`hdmi_local_only_marker_zebra_peaking_leaked_pixels == 0`、`unattended_bench_accidental_touch_events == 0`、`indoor_sunny_weather_unclamped_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **14 份真实供体**：`libSaveLoadSettings.so`（`18,760 B`：`Backup_get_datasize` / `Backup_read` / `infra_saveLoadSettings_init`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`libIMDB.so`（`71,536 B`）、`libInfraLensCommunicator.so`（`14,544 B`）、`string_english_f.uxc`（`373,820 B`：证实 `Emphasized REC Display` / `Grid Line Display` / `Grid Line Type` / `Rule of 3rds Grid` / `Square Grid` / `Diag. + Square Grid` / `HDMI Info. Display` / `Rec. Media dur HDMI Output` / `Off(HDMI Only)` / `RAW Output` / `Touch Operation` / `On: Playback Only` / `Touch Sensitivity` / `Swipe Up` / `Open the Fn Menu` / `Touch Func. in Shooting` / `Touch Tracking` / `Touch Focus` / `Brightness` / `Manual` / `Sunny Weather` / `Camera Settings Reset` / `Initialize`）与 FX6 `string_english.uxc`（`118,208 B`），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或本地供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 45A — `[Emphasized REC Display]` 与 `[Grid Line Display]` 外接 HDMI Info 分流 vs `[Off(HDMI Only)]` / `RAW` 强制净流锁止 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Shooting Display] -> [Emphasized REC Display]`（默认 `On`，视频与 `S&Q` 录制时激活四周红框；待机与静照下不激活；执行 **`[Camera Settings Reset]` 会被复位回 `On`**，可经 Slot 1 `CAMSET01..10.DAT` 零持久化写入 `bk4_persistent_nvram_writes == 0` 精确恢复）与 `[Grid Line Display]` / `[Grid Line Type]`（默认 `Off` + `Rule of 3rds Grid`，支持 `Rule of 3rds Grid`、`Square Grid`、`Diag. + Square Grid` 三种构图网格；**跨 `[Camera Settings Reset]` 完整存活**，`grid_line_reset_only_by_initialize == True`，仅全机 `[Initialize]` 清零）。
+   - 严格区分本地专属监看辅助与可随 OSD 外送的叠加层：不同于永不走 HDMI 的本地专属 `Marker` / `Zebra` / `Peaking`（`hdmi_local_only_marker_zebra_peaking_leaked_pixels == 0`，强行外送返回 `EOPNOTSUPP = 95`），当 `[HDMI Info. Display]=On` 且处于常规录制路由时，`[Emphasized REC Display]` 红框与 `[Grid Line Display]` 网格**均会随 OSD 合成输出至外接 HDMI**（同时黑屏关闭机身本地 LCD）；一旦进入 `[Rec. Media dur HDMI Output]=[Off(HDMI Only)]` 或开启 HDMI `RAW Output`，硬件自动强制锁死 `[HDMI Info. Display]=Off`（`hdmi_only_or_raw_baked_recframe_or_grid_frames == 0`，尝试绕过净流锁返回 `EOPNOTSUPP = 95`），彻底杜绝外部录机将录制红框或构图网格永久烧录进主素材。
+3. **Sub-Model 45B — `[Touch Operation]` 4 项跨 `[Camera Settings Reset]` 存活与无人值守台架误触防护 HIL**：
+   - 完整建模 `MENU -> Setup -> [Touch Operation]` 全部 **4 个子项**：`[Touch Operation]`（`On` 默认 / `On: Playback Only` / `Off`）、`[Touch Sensitivity]`（`Standard` 默认 / `Sensitive`）、`[Swipe Up]`（`Open the Fn Menu` 默认 / `Off`）、`[Touch Func. in Shooting]`（`Touch Tracking` 默认 / `Touch Focus` / `Off`）；**全部 4 项均完整跨越 `[Camera Settings Reset]` 保留原设定**（`reset_only_by_initialize == True`），仅全机 `[Initialize]` 恢复出厂默认。
+   - 强执行无人值守台架演练防误触护栏：在台架固定演练下设为 `[Touch Operation]=Off`（或针对拍摄锁止的 `On: Playback Only`）可彻底阻断线束擦碰电容屏诱发的 `Swipe Up` 弹出 Fn 菜单或 `Touch Tracking` 焦点跳变（`unattended_bench_accidental_touch_events == 0`）；无人值守台架若遗留 `[Touch Operation]=On` 则以 `EBUSY = 16` fail-closed 拦截。
+4. **Sub-Model 45C & Redlines — `[Monitor Brightness]` `[Manual]`（`-2..+2`）对 `[Sunny Weather]` 室内过曝与 `NP-FZ100` 功耗护栏 + 安全红线锁死 HIL**：
+   - 精确建模 `MENU -> Setup -> [Monitor] -> [Monitor Brightness]`（默认 `Manual` `0`，覆盖 `-2..+2` 共 5 档背光阶梯 `380..540 mW`，对比户外强光专用的 `[Sunny Weather]` `980 mW`）：跨 **`[Camera Settings Reset]` 完整存活**（`reset_only_by_initialize == True`），仅 `[Initialize]` 恢复回 `Manual`（`0`）；在室内暗房/台架演练下检测到 `[Sunny Weather]` 时立即标定手动曝光偏暗误判与 `NP-FZ100` 额外背光功耗风险并以 `EBUSY = 16` 拦截（`indoor_sunny_weather_unclamped_events == 0`，尝试绕过护栏返回 `EOPNOTSUPP = 95`），同时锁死全部 11 项硬件安全红线探针。
+
+### Phase 242 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 45（45/45 里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py --self-test --json
+
+# 2. 全板 45 阶段（Stage 1..45, 45/45 里程碑）统一校验（支持 --include-stage45 与 --skip-phase242）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage45 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 242 双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+

@@ -232,4 +232,23 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-tier0-backup --clean-room --json
 ```
 
+## Phase 79 — `CXD90057` OTP/RPMB Anti-Rollback Monotonic Epoch Verifier, Bootloader Downgrade Brick Firewall & BYOF Donor Compatibility Matrix
+
+- **[`firmware_updata_and_antirollback_guard.py`](fx3_recovery/firmware_updata_and_antirollback_guard.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）与 FX6（`0x91040086` / `CHAPLIN`）提供三大离线只读防变砖防火墙与零密钥 BYOF 供体审计：
+  - **`CXD90057` 安全启动 OTP 熔丝与 eMMC `RPMB` 单调防回滚防火墙（`evaluate_bootchain_transition` / `evaluate_stage_b_volatile_ram_overlay`）**：
+    - 建模 `BootROM -> nbl_a/b -> tz/optee -> uboot_a/b -> kernel boot_a/b` 启动链单调纪元锁，显式阻断向已被 Sony `v7.00`/`v7.02` 拉高 OTP/`RPMB` 计数器的 FX3 机身回刷旧版 `nbl`/`tz`/`uboot`/`boot`/`firmware.updata`（`v1.01..v6.00`）导致的不可逆安全启动变砖（`BLOCKED_ANTIROLLBACK_EPOCH_DOWNGRADE`）。
+    - 显式阻断向 FX3 机身跨机型刷入 FX6 `nbl`/`tz`/`uboot`/`WBI2`/`cpapp-b.bin` 导致的 TrustZone 密钥阶梯与分区表变砖（`BLOCKED_CROSS_SKU_BOOTCHAIN_BRICK`）。
+    - 结构化证明 Stage-B 易失 RAM 覆盖架构（FX3 `v7.02` 原厂引导链 + FX3 `v7.02` `4.9.337-scel+` 内核 + FX3 `v7.02` 原厂 CP + FX6 `v6.01` 用户态 `/tmp` 绑定挂载）严格满足 `otp_fuse_touches == 0`、`rpmb_counter_increments == 0` 与 `antirollback_brick_risk == "ZERO_USERSPACE_RAM_ONLY"`。
+  - **零密钥 BYOF 供体版本与结构兼容性矩阵（`classify_byof_version_pair` / `build_byof_compatibility_matrix` / `validate_byof_donor_tree`）**：
+    - 严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 有界读取本地供体（内核 `4.9.337-scel+` 横幅、`GLIBC_2.17` / `CXXABI_1.3..1.3.10` ELF64 ABI、`WBI2` 节计数 `1399` vs `1197`、`libInfra*` / `cxd90057.dtb` 标记——零专有密钥），并在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下切换确定性净室合成夹具。
+    - 覆盖 `(FX3 v7.00/v7.01/v7.02) <-> (FX6 v5.02/v6.00/v6.01)` 全矩阵：`FX3 v7.02 + FX6 v6.01 -> TIER_A_GOLD_VERIFIED`，`v7.00/v7.01` 或 `v6.00 -> TIER_B_CONDITIONALLY_COMPATIBLE`（需重定位），缺失 Big6 的 `v5.02` 与 ABI 不匹配组合 -> 明确拒绝并给出可执行修复建议。
+    - 在 Stage-B `cpio` 打包前拦截损坏或不完整的用户解包目录（`MISSING_REQUIRED_DONOR_MEMBER`、`WRONG_ISA_OR_ENDIANNESS`、`TRUNCATED_ELF_LOAD_SEGMENT`、`KERNEL_VERSION_MISMATCH`、`WBI2_SECTION_COUNT_MISMATCH`）。
+  - **eMMC `EXT_CSD` 永久写保护熔丝陷阱防火墙（`audit_ext_csd_write_protect` / `audit_mmc_wp_command_or_write`）**：
+    - 审计 `EXT_CSD[173]` `B_PERM_WP_EN`（`0x04`）与 `EXT_CSD[171]` `US_PERM_WP_EN`（`0x04`）一次性 OTP 永久写保护位，并拦截任何企图触发永久写保护的 `mmc-utils` 命令或清单（`BLOCKED_PERMANENT_EMMC_WP_FUSE_TRAP`）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`PHYSICAL_DEVICE_WRITES = 0`。
+  - **CLI 与 34 项双模快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-antirollback-guard [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_firmware_updata_and_antirollback_guard.py`](tests/test_firmware_updata_and_antirollback_guard.py) 在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 `< 0.05s` 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-antirollback-guard --clean-room --json
+```
 

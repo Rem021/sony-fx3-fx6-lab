@@ -824,5 +824,33 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `153` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round21-fx6-on-fx3-audio-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round21-fx6-on-fx3-audio-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round21-fx6-on-fx3-audio-4lang-dualsurface-closure/summary.json).
 
+---
+
+## 22. Round 22: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) Paint/Look & Status Check Tab 2 Camera Dual-Surface Closure (`3-Layer Paint/Look Menu sid=0x11` & `Status Check Camera Tab 2 sid=0x30` -> `12/12` Multilingual Deltas)
+
+`build_and_run_round.py --round 22 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) Paint/Look & Status Check Tab 2 Camera Dual-Surface Closure** across both **3-Layer Paint/Look Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`, `3x DOWN + 2x RIGHT`)** and **Status Check Tab 2 Camera (`sid=0x30`, `36procam_touch_status_camera_presenter`, `1x DOWN`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R22_VERIFY_PASS`, `FX6_STAGE_B_R22_BRIDGE`, and `FX6_R22_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 22 --lang english --initial-setting-done 1 --run-id r22a-menu-3layer-paintlook-english --duration 86 \
+  --run-dir /private/tmp/fx6-r22-runs/r22a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:700,0x0030:120:700,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r22a-menu-3layer-paintlook-english \
+  --export-png-dir reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/assets
+```
+
+- **5 Live Round 22 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P11` `XLR-H1`, `P12` `WF-12` Immune)**:
+  - `r22a-menu-3layer-paintlook-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `3x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `241` colors / `993` `0xffffaa00` amber px, `14,517` icon blits, `12,673` glyph blits, `89` `LDEC103` ioctls).
+  - `r22b-menu-3layer-paintlook-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `3x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `254` colors / `804` `0xffffaa00` amber px, `14,679` icon blits, `12,817` glyph blits, `89` `LDEC103` ioctls).
+  - `r22c-menu-3layer-paintlook-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `3x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `269` colors / `804` `0xffffaa00` amber px, `14,809` icon blits, `12,901` glyph blits, `89` `LDEC103` ioctls).
+  - `r22d-status-tab2-camera-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `1x 0x0030` -> `36procam_touch_status_camera_presenter` (`sid=0x30`, `437,883` px / `80` colors / `311` `0xffffaa00` amber px, `8,873` icon blits, `18,342` glyph blits, `56` `LDEC103` ioctls).
+  - `r22e-status-tab2-camera-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `1x 0x0030` -> `36procam_touch_status_camera_presenter` (`sid=0x30`, `437,883` px / `80` colors / `260` `0xffffaa00` amber px, `8,514` icon blits, `16,326` glyph blits, `56` `LDEC103` ioctls).
+  - **Complete `12/12` Paint/Look & Camera Tab 2 Multilingual Pairwise Matrix**:
+    - 3-Layer Paint/Look Menu (`sid=0x11`) across (`r22a EN`, `r22b JA`, `r13c ZH-CN`, `r22c ZH-TW`): `6/6` pairs strictly `> 0` (`29,243 .. 45,413` px).
+    - Status Check Tab 2 Camera (`sid=0x30`) across (`r22d EN`, `r15d JA`, `r15a ZH-CN`, `r22e ZH-TW`): `6/6` pairs strictly `> 0` (`19,103 .. 42,855` px).
+  - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
+- **Full Report, Receipts, & `167+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/README.md`](../../reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/summary.json).
+
+
 
 

@@ -1567,3 +1567,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 253：Stage 48（`48/48` 里程碑）真实硬件主线 — Wave-38 `[Lock Operation Parts]`（`Fn >= 3s` 锁键、`MENU + Fn >= 5s` 整机锁定组合键 vs 破坏性 `MENU + Delete >= 2s` 误格式化防火墙与 `[My Dial 1..3]` 临时拨轮覆盖）、`[Audio Out Timing]` vs `[Audio signals]` 跨重置分流与 `[Silent Mode]` 硬静音锁、以及 `[Exposure step]` `0.3EV`/`0.5EV` vs `[Shutter Angle]` 恒定快门角表免疫 HIL 协同仿真器
+
+[`realhw_lock_op_parts_audio_timing_exp_step_coemulator.py`](realhw_lock_op_parts_audio_timing_exp_step_coemulator.py) 作为 **Phase 253 Stage 48（`48/48` 里程碑，Schema `realhw_lock_op_parts_audio_timing_exp_step_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase253_realhw_lock_op_parts_audio_timing_exp_step_hil=True` / `include_stage48=True`，支持显式 `--include-stage48` 以及通过 `--skip-phase253` / `--skip-stage48` / `--no-include-stage48` 跳过；本地只读供体 48 阶段全板协同仿真 `< 3.0s`、洁净室模式 `< 0.9s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`destructive_menu_delete_confusions == 0`、`slot1_vault_format_events == 0`、`silent_mode_audio_signal_leak_events == 0`、`shutter_angle_exposure_step_drift_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **15 份真实供体**：`string_english_f.uxc`（`373,820 B`：证实 `Lock Operation Parts` / `Dial/Wheel` / `Dial + Wheel` / `Multi-Selector` / `My Dial` / `Locked` / `Delete` / `Audio Out Timing` / `Live` / `Lip Sync` / `Audio Recording` / `Sound` / `Beep` / `Silent Mode` / `Exposure step` / `0.3EV` / `0.5EV` / `Shutter Mode` / `Shutter Speed` / `Angle` / `Speed` / `Camera Settings Reset` / `Reset Network Set.` / `Initialize`）、`libInfraAdjMedia.so`（`318,152 B`：`AUDIO` / `Backup_read`）、`libIMDB.so`、`libUsbBusPower.so`、`libInfraMscServer.so`、`libInfraMediaConfig.so` 及 FX6 `string_english.uxc`，并对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 48A — `[Lock Operation Parts]`、整机锁定 `MENU + Fn >= 5s` vs 破坏性 `MENU + Delete >= 2s` 防火墙与 `[My Dial 1..3]` 临时拨轮覆盖 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Operation Customize] -> [Lock Operation Parts]`（`Off` 出厂默认 / `Multi-Slct Only` / `Dial/Wheel` / `Dial+Wheel+MSlct`）：作为 `[Setup]` 项在 **`[Camera Settings Reset]` 与 `[Reset Network Set.]` 后完整存活**，仅由 **`[Initialize]`** 恢复 `Off`；验证 `Fn` 长按 `>= 3.0s` 锁定/解锁切换（`"Locked."` / `"Unlocked."`），整机物理按键锁组合键 **`MENU + Fn >= 5.0s`**（即使 `[Lock Operation Parts]=Off` 亦锁定除快门键外的全部机身按键/拨轮/控制转盘/多向摇杆，并由 **`MENU + Fn >= 3.0s`** 解除），严防误触破坏性 **`MENU + Delete >= 2.0s`** Slot-1/Slot-2 全盘格式化组合键（Slot 1 Tier-0 救援保险箱返回 `EROFS = 30`，Slot 2 误触返回 `EACCES = 13`，`destructive_menu_delete_confusions == 0`、`slot1_vault_format_events == 0`），并验证 `[Lock Operation Parts]` 锁定标准拨轮时按住/唤起 `[My Dial 1..3]` 可临时覆盖解锁拨轮与控制转盘。
+3. **Sub-Model 48B — `[Audio Out Timing]` vs `[Audio signals]` 重置分流与 `[Silent Mode]` 硬静音锁 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Audio Recording] -> [Audio Out Timing]`（`Live` 默认零延迟耳机返听防回声 / `Lip Sync` 匹配视频帧处理延迟，由 `[Camera Settings Reset]` 与 `[Initialize]` 复位至 `Live` 并在 `S&Q Motion` 或 `[Audio Recording]=Off` 下置灰禁用，强行绕过返回 `EOPNOTSUPP = 95`）与 `MENU -> Setup -> [Sound Option] -> [Audio signals]`（`On: all` 默认 / `On: shutter only` / `Off: all`，跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 持久存活，仅由 `[Initialize]` 复位；当 `[Silent Mode]=On` 时强制静音锁定为 `Off: all` 且保留底层 `[Setup]` 寄存器，`silent_mode_audio_signal_leak_events == 0`）。
+4. **Sub-Model 48C & Redlines — `[Exposure step]` `0.3EV`/`0.5EV` 重构量化 vs `[Shutter Angle]` 恒定快门角表免疫 HIL**：
+   - 协同仿真 `MENU -> Exposure/Color -> [Exposure] -> [Exposure step]`（`0.3EV` 默认 / `0.5EV`，可由 `[Camera Settings Reset]` 复位至 `0.3EV`）：验证切换 `0.5EV` 时同步重量化光圈（`F-stop`）、快门速度（`[Shutter Mode]=Speed`）、`ISO` 与曝光补偿（`EV`），而 `Ver. 7.02`（`Ver. 6.00+`）`[Shutter Mode]=Angle`（`5.6°..360°` 电影快门角表，含 `90°`、`172.8°`、`180°`、`360°`）对 `[Exposure step]` 100% 恒定表免疫（`shutter_angle_exposure_step_drift_events == 0`），并锁死全部 14 项硬件安全红线探针。
+
+### Phase 253 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 253 Stage 48（48/48 里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_lock_op_parts_audio_timing_exp_step_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_lock_op_parts_audio_timing_exp_step_coemulator.py --self-test --json
+
+# 2. 全板 48 阶段（Stage 1..48, 48/48 里程碑）统一校验（支持 --include-stage48 与 --skip-phase253）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage48 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 253 双模 66 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_lock_op_parts_audio_timing_exp_step_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_lock_op_parts_audio_timing_exp_step_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

@@ -1309,3 +1309,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 222：Stage 40（`40/40` 里程碑）真实硬件主线 — `ILME-FX3` `[Pixel Mapping]` 自动重启清零 `/tmp` & `cnflasha` 只读防火墙、`[NTSC/PAL Selector]` 跨 `[Camera Settings Reset]` 持久化与 `[Gamma Display Assist]` 4 档 vs `[Display LUT]` 锁定分离 HIL 协同仿真器
+
+[`realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator.py`](realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator.py) 作为 **Stage 40（`40/40` 里程碑）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase222_realhw_pixelmap_ntscpal_gammaassist_displaylut_hil=True`，可通过 `--skip-phase222` 跳过；本地只读供体 40 阶段全板协同仿真 `< 2.2s`、洁净室模式 `< 0.6s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`stage_b_tmp_mount_residuals_after_pixelmap_reboot == 0`、`ntsc_pal_cross_region_db_contamination_events == 0`、`log_shooting_gamma_assist_or_hdmi_leakage_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B` 零差异 ABI）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`string_english_f.uxc`（`373,820 B`：证实 `Auto Pixel Mapping` / `Pixel Mapping` / `Silent Mode` / `NTSC/PAL Selector` / `Camera Settings Reset` / `Initialize` / `TC Format` / `DF` / `NDF` / `23.98p` / `25p` / `Gamma Display Assist` / `Gamma Disp. Assist Typ.` / `S-Log3→709(800%)` / `HLG(BT.2020)` / `HLG(709)` / `HLG Still Image` / `Log Shooting` / `Cine EI` / `Cine EI Quick` / `Flexible ISO` / `Display LUT` / `Display LUT Switch`）与 `string_english.uxc`（`118,208 B`：含 FX6 `APR` / `Black Balance`），并对 `appFw.so`（含 `AUTO_PIXEL_MAPPING` / `PIXEL_MAPPING` / `SILENT_MODE` / `NTSC_PAL` / `INITIALIZE` / `AVCHD` / `M4ROOT` / `LOG_SHOOTING` / `GAMMA_DISP`）、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-model A — `[Auto Pixel Mapping]` / 手动 `[Pixel Mapping]` 强制自动重启清零 `/tmp` & `cnflasha` 只读防火墙 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Setup Option] -> [Auto Pixel Mapping]`（默认 `On`，电源关闭暗场采样期间即便 `[Silent Mode]=On` 仍允许机械快门暗场闭合发声；关闭为 `Off` 且距上次校准 `>= 3` 天时发出手动校准周期告警）与手动 `[Pixel Mapping]`：电池电量 `< 20%` 时以 `EOPNOTSUPP`（`95`）拒绝执行，校准期间以 `EBUSY`（`16`）全锁定操作员按键输入，校准完成后**强制触发整机自动重启（Automatic Camera Restart）**，100% 清零易失性 `/tmp` Stage-B 绑定挂载并干净引导回原厂 `ILME-FX3 Ver. 7.02 (Stock)`（`H0 == H2`，`stage_b_tmp_mount_residuals_after_pixelmap_reboot == 0`），同时以 `EROFS`（`30`）硬拦截任何用户态直写 `cnflasha` 出厂校准分区行为（`cnflasha_userspace_write_blocked == True`）。
+3. **Sub-model B — `[NTSC/PAL Selector]` 独占帧率 / `DF-NDF` 矩阵、开机提示横幅与 `[Camera Settings Reset]` 持久化 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Area/Date] -> [NTSC/PAL Selector]`：`NTSC` 开放 `23.98p`（NTSC 独占）、`29.97p`、`59.94p`、`119.88p`（及可选 DCI `24.00p`）与 `[TC Format]` `DF`/`NDF`（`23.98p`/`24.00p` 自动锁定 `NDF`），而 `PAL` 仅开放 `25p`、`50p`、`100p` 并以 `EOPNOTSUPP`（`95`）阻断 `23.98p` 与 `DF`/`NDF`；当有效制式偏离机身区域出厂默认值时显示 `"Running on NTSC."` 或 `"Running on PAL."` 开机横幅；验证 **`[Camera Settings Reset]` 完整保留当前 `[NTSC/PAL Selector]` 制式**，唯有全量 **`[Initialize]`** 才恢复区域出厂默认制式，并对跨制式双卡槽媒体数据库未重初始化混录执行 `EOPNOTSUPP`（`95`）隔离保护。
+4. **Sub-model C & Redlines — `[Gamma Display Assist]` 4 档精确表 vs `[Log Shooting]` `[Display LUT]` 硬锁定分离与仅限机内 LCD 作用域 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Display Option] -> [Gamma Disp. Assist Typ.]` 官方 Ver. `7.02` 精确 **4 档表**（`Auto`、`S-Log3->709(800%)`、`HLG(BT.2020)`、`HLG(709)`；尝试请求 `S-Log2` 立即以 `EINVAL = 22` 拒绝并标记 `slog2_assist_rejected == True`）；一旦激活 `[Log Shooting]`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`），**硬锁定灰显 `[Gamma Display Assist] = Off`**（强制覆盖尝试返回 `EOPNOTSUPP = 95`）并将机内监看预览移交 `[Display LUT]` `On`/`Off`（及 `[Display LUT Switch]` 快捷键翻转）；严格锁死 `[Gamma Display Assist]` 仅作用于机身内置 LCD 面板（`external_hdmi_gamma_assist_applied == False`，尝试注入外接 HDMI 返回 `EOPNOTSUPP = 95`），并 fail-closed 锁死全部 9 项物理写入/发射/绕过红线。
+
+### Phase 222 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 40（40/40 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator.py --self-test --json
+
+# 2. 全板 40 阶段（Stage 1..40, 40/40 里程碑）统一校验（支持 --skip-phase222）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 222 48 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

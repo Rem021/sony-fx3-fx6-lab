@@ -1351,6 +1351,7 @@ def build_stage_a_overlay(
     enable_r47: bool = False,
     enable_r48: bool = False,
     enable_r49: bool = False,
+    enable_r50: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1372,6 +1373,7 @@ def build_stage_a_overlay(
     r47_mode: str = "silent_autopixelmap_5locks_big6",
     r48_mode: str = "monitor_flip_playback_big6",
     r49_mode: str = "emphasized_rec_grid_hdmi_big6",
+    r50_mode: str = "shoe_audio_4ch_osd_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1685,7 +1687,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r48_mode: {r48_mode}")
     if enable_r49 and r49_mode not in ("emphasized_rec_grid_hdmi_big6", "touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"):
         raise ValueError(f"Unsupported r49_mode: {r49_mode}")
-    if enable_r49 and r49_mode in ("touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"):
+    if enable_r50 and r50_mode not in ("shoe_audio_4ch_osd_big6", "wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"):
+        raise ValueError(f"Unsupported r50_mode: {r50_mode}")
+    if enable_r50 and r50_mode in ("wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r50_mode == "wind_noise_builtin_only_guard":
+            r50_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r50-wind-noise-builtin-guard > /dev/console 2>&1\n"
+                "fx6_r50_wn_rc=$?\n"
+                "echo FX6_R50_WIND_NOISE_GUARD_RC=$fx6_r50_wn_rc\n"
+                "echo FX6_R50_WIND_NOISE_GUARD_EXIT rc=$fx6_r50_wn_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r50_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r50-saveload-c3-vault-h0-h3 > /dev/console 2>&1\n"
+                "fx6_r50_sl_rc=$?\n"
+                "echo FX6_R50_SAVELOAD_C3_VAULT_RC=$fx6_r50_sl_rc\n"
+                "echo FX6_R50_SAVELOAD_C3_VAULT_EXIT rc=$fx6_r50_sl_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r50_early_hook, 1)
+    elif enable_r49 and r49_mode in ("touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3270,6 +3299,67 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r50_meta: Optional[Dict[str, Any]] = None
+    if enable_r50:
+        additions["etc/fx6_stage_r50"] = (
+            (
+                f"stage_r50=1\nr50_mode={r50_mode}\n"
+                f"shoe_audio_4ch_osd_3locks=1\nwind_noise_builtin_only_guard=1\n"
+                f"saveload_camset_c3_8excl_slot1_vault=1\nmilestone_50=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r50_meta = {
+            "r50_mode": r50_mode,
+            "milestone_50": True,
+            "shoe_audio_set_menu_item": "Shoe Audio Set.",
+            "shoe_audio_set_3_modes": [
+                "48kHz/16bit 2ch",
+                "48kHz/24bit 2ch",
+                "48kHz/24bit 4ch",
+            ],
+            "shoe_audio_set_default": "48kHz/16bit 2ch",
+            "shoe_audio_set_reset_by_camera_settings_reset": True,
+            "audio_level_display_4ch_osd_meters": ["CH1", "CH2", "CH3", "CH4"],
+            "shoe_audio_3_disqualifications": [
+                "Audio Recording=Off or S&Q Motion -> 0 tracks (-EBUSY)",
+                "3.5mm MIC plug-in -> 2ch analog ADC override (-EBUSY)",
+                "XLR-H1 ANALOG switch -> 2ch 48kHz/16bit override (-EINVAL)",
+            ],
+            "disqualified_4ch_active_leaks": 0,
+            "wind_noise_reduct_menu_item": "Wind Noise Reduct.",
+            "wind_noise_reduct_modes": ["Off", "On"],
+            "wind_noise_reduct_default": "Off",
+            "wind_noise_reduct_reset_by_camera_settings_reset": True,
+            "wind_noise_reduct_builtin_stereo_mic_only": True,
+            "external_mic_wind_reduct_active": 0,
+            "xlrh1_hardware_lowcut_positions": ["Off", "100Hz", "300Hz"],
+            "indoor_low_wind_clamped_to_off": True,
+            "indoor_low_freq_attenuation_events": 0,
+            "save_load_settings_menu_item": "Save/Load Settings",
+            "camset_max_files_per_card": 10,
+            "camset_file_range": ["CAMSET01.DAT", "CAMSET10.DAT"],
+            "camset_model_lock": "ILME-FX3",
+            "fx6_cross_model_dat_reject_rc": -22,
+            "c3_portal_cloud_targets": ["Cloud(Private)", "Cloud(Share)"],
+            "excluded_8_register_categories": [
+                "IPTC Information",
+                "Copyright Info",
+                "Custom White Balance (Custom 1/2/3)",
+                "Face Memory",
+                "FTP Transfer Func. Credentials",
+                "Streaming RTMP/SRT Keys",
+                "Wi-Fi SSID/Passphrases & Static IP",
+                "Imported Root/Client TLS Certificates",
+            ],
+            "excluded_leaks": 0,
+            "slot1_tier0_vault_save_blocked_rc": -13,
+            "slot1_camset_writes": 0,
+            "slot1_readonly_load_allowed": True,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3312,6 +3402,7 @@ def build_stage_a_overlay(
         "r47_enabled": enable_r47,
         "r48_enabled": enable_r48,
         "r49_enabled": enable_r49,
+        "r50_enabled": enable_r50,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3385,6 +3476,8 @@ def build_stage_a_overlay(
         stage_a_meta["r48"] = r48_meta
     if r49_meta is not None:
         stage_a_meta["r49"] = r49_meta
+    if r50_meta is not None:
+        stage_a_meta["r50"] = r50_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3723,6 +3816,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R47_",
         "FX6_R48_",
         "FX6_R49_",
+        "FX6_R50_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -3958,6 +4052,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r49_bridge: Optional[Dict[str, Any]] = None
     r49_touch_op_vault_rc: Optional[int] = None
     r49_monitor_brightness_rc: Optional[int] = None
+    last_r50_shoe_audio_4ch_init: Optional[Dict[str, Any]] = None
+    last_r50_shoe_audio_4ch_bridge: Optional[Dict[str, Any]] = None
+    last_r50_wind_noise_bridge: Optional[Dict[str, Any]] = None
+    last_r50_saveload_c3_bridge: Optional[Dict[str, Any]] = None
+    last_r50_wind_noise_guard: Optional[Dict[str, Any]] = None
+    last_r50_saveload_c3_vault: Optional[Dict[str, Any]] = None
+    last_r50_lang: Optional[Dict[str, Any]] = None
+    last_r50_bridge: Optional[Dict[str, Any]] = None
+    r50_wind_noise_guard_rc: Optional[int] = None
+    r50_saveload_c3_vault_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -4491,6 +4595,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R49_MONITOR_BRIGHTNESS_RC"), int):
                 r49_monitor_brightness_rc = kv["FX6_R49_MONITOR_BRIGHTNESS_RC"]
+        elif "FX6_R50_SHOE_AUDIO_4CH_INIT " in line:
+            last_r50_shoe_audio_4ch_init = _parse_kv_ints(line.split("FX6_R50_SHOE_AUDIO_4CH_INIT ", 1)[1])
+        elif "FX6_R50_SHOE_AUDIO_4CH_BRIDGE " in line:
+            last_r50_shoe_audio_4ch_bridge = _parse_kv_ints(line.split("FX6_R50_SHOE_AUDIO_4CH_BRIDGE ", 1)[1])
+        elif "FX6_R50_WIND_NOISE_BRIDGE " in line:
+            last_r50_wind_noise_bridge = _parse_kv_ints(line.split("FX6_R50_WIND_NOISE_BRIDGE ", 1)[1])
+        elif "FX6_R50_SAVELOAD_C3_BRIDGE " in line:
+            last_r50_saveload_c3_bridge = _parse_kv_ints(line.split("FX6_R50_SAVELOAD_C3_BRIDGE ", 1)[1])
+        elif "FX6_R50_WIND_NOISE_GUARD " in line:
+            last_r50_wind_noise_guard = _parse_kv_ints(line.split("FX6_R50_WIND_NOISE_GUARD ", 1)[1])
+        elif "FX6_R50_SAVELOAD_C3_VAULT " in line:
+            last_r50_saveload_c3_vault = _parse_kv_ints(line.split("FX6_R50_SAVELOAD_C3_VAULT ", 1)[1])
+        elif "FX6_R50_LANG_TELEMETRY " in line:
+            last_r50_lang = _parse_kv_ints(line.split("FX6_R50_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R50_BRIDGE " in line:
+            last_r50_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R50_BRIDGE ", 1)[1])
+        elif "FX6_R50_WIND_NOISE_GUARD_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R50_WIND_NOISE_GUARD_RC"), int):
+                r50_wind_noise_guard_rc = kv["FX6_R50_WIND_NOISE_GUARD_RC"]
+        elif "FX6_R50_SAVELOAD_C3_VAULT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R50_SAVELOAD_C3_VAULT_RC"), int):
+                r50_saveload_c3_vault_rc = kv["FX6_R50_SAVELOAD_C3_VAULT_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -5073,6 +5201,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r49_bridge or {},
         }
 
+    r50_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r50_shoe_audio_4ch_init,
+            last_r50_shoe_audio_4ch_bridge,
+            last_r50_wind_noise_bridge,
+            last_r50_saveload_c3_bridge,
+            last_r50_wind_noise_guard,
+            last_r50_saveload_c3_vault,
+            last_r50_lang,
+            last_r50_bridge,
+        )
+    ):
+        r50_telemetry = {
+            "wind_noise_guard_rc": r50_wind_noise_guard_rc,
+            "saveload_c3_vault_rc": r50_saveload_c3_vault_rc,
+            "shoe_audio_4ch_init": last_r50_shoe_audio_4ch_init or {},
+            "shoe_audio_4ch_bridge": last_r50_shoe_audio_4ch_bridge or {},
+            "wind_noise_bridge": last_r50_wind_noise_bridge or {},
+            "saveload_c3_bridge": last_r50_saveload_c3_bridge or {},
+            "wind_noise_guard": last_r50_wind_noise_guard or {},
+            "saveload_c3_vault": last_r50_saveload_c3_vault or {},
+            "lang_telemetry": last_r50_lang or {},
+            "stage_b_bridge": last_r50_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -5119,6 +5274,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r47_telemetry": r47_telemetry,
         "r48_telemetry": r48_telemetry,
         "r49_telemetry": r49_telemetry,
+        "r50_telemetry": r50_telemetry,
     }
 
 
@@ -5218,6 +5374,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r48"
     if args.round >= 49:
         tmp_prefix = "fx6-r49"
+    if args.round >= 50:
+        tmp_prefix = "fx6-r50"
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -5275,8 +5433,12 @@ def run_once(args: argparse.Namespace) -> int:
         r47_mode = getattr(args, "r47_mode", "silent_autopixelmap_5locks_big6")
         r48_mode = getattr(args, "r48_mode", "monitor_flip_playback_big6")
         r49_mode = getattr(args, "r49_mode", "emphasized_rec_grid_hdmi_big6")
+        r50_mode = getattr(args, "r50_mode", "shoe_audio_4ch_osd_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone50Wave36RealHwShoeAudio4chWindNoiseBuiltinOnlySaveLoadC3Vault+r50_mode={r50_mode}+lang={lang})"
+                if args.round >= 50
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone49Wave35RealHwEmphasizedRecGridHdmiTouchOpSunnyWeather+r49_mode={r49_mode}+lang={lang})"
                 if args.round >= 49
                 else (
@@ -5437,6 +5599,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -5505,6 +5668,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r48_mode=r48_mode,
                 enable_r49=(args.round >= 49),
                 r49_mode=r49_mode,
+                enable_r50=(args.round >= 50),
+                r50_mode=r50_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -5659,6 +5824,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R48_AF_SENS_INTERVAL_EXIT" in txt
                     or "FX6_R49_TOUCH_OP_VAULT_EXIT" in txt
                     or "FX6_R49_MONITOR_BRIGHTNESS_EXIT" in txt
+                    or "FX6_R50_WIND_NOISE_GUARD_EXIT" in txt
+                    or "FX6_R50_SAVELOAD_C3_VAULT_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -5715,6 +5882,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R48_AF_SENS_INTERVAL_EXIT" in serial_text
             or "FX6_R49_TOUCH_OP_VAULT_EXIT" in serial_text
             or "FX6_R49_MONITOR_BRIGHTNESS_EXIT" in serial_text
+            or "FX6_R50_WIND_NOISE_GUARD_EXIT" in serial_text
+            or "FX6_R50_SAVELOAD_C3_VAULT_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -5787,6 +5956,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r47_mode": r47_mode if args.round >= 47 else None,
             "r48_mode": r48_mode if args.round >= 48 else None,
             "r49_mode": r49_mode if args.round >= 49 else None,
+            "r50_mode": r50_mode if args.round >= 50 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -5843,6 +6013,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r47_telemetry": milestones.get("r47_telemetry") if args.round >= 47 else None,
             "r48_telemetry": milestones.get("r48_telemetry") if args.round >= 48 else None,
             "r49_telemetry": milestones.get("r49_telemetry") if args.round >= 49 else None,
+            "r50_telemetry": milestones.get("r50_telemetry") if args.round >= 50 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -5894,7 +6065,8 @@ def main() -> int:
     ap.add_argument("--run-id", required=True)
     # r47_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47]
     # r48_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49], required=True)
+    # r49_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -5918,6 +6090,7 @@ def main() -> int:
     ap.add_argument("--r47-mode", type=str, choices=["silent_autopixelmap_5locks_big6", "marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"], default="silent_autopixelmap_5locks_big6")
     ap.add_argument("--r48-mode", type=str, choices=["recover_imagedb_battery_vault", "monitor_flip_playback_big6", "af_sens_interval_still_h0_h3"], default="monitor_flip_playback_big6")
     ap.add_argument("--r49-mode", type=str, choices=["emphasized_rec_grid_hdmi_big6", "touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"], default="emphasized_rec_grid_hdmi_big6")
+    ap.add_argument("--r50-mode", type=str, choices=["shoe_audio_4ch_osd_big6", "wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"], default="shoe_audio_4ch_osd_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

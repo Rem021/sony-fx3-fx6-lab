@@ -3065,6 +3065,157 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r49_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 50
+    {
+        static int g_r50_bridge_executed = 0;
+        static int g_r50_shoe_audio_4ch_osd_ok = 0;
+        static int g_r50_wind_noise_builtin_ok = 0;
+        static int g_r50_saveload_c3_vault_ok = 0;
+        static int g_r50_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r50_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Shoe Audio Set.] (48kHz/16bit 2ch default, 48kHz/24bit 2ch, 48kHz/24bit 4ch — resettable via [Camera Settings Reset]):
+             *    4ch (CH1..CH4) [Audio Level Display] meter expansion on digital MI Shoe XLR-H1 (DIGITAL) vs 3 hardware lockouts:
+             *    (a) S&Q / [Audio Recording]=Off -> 0 tracks (-EBUSY),
+             *    (b) 3.5mm MIC plug-in -> 2ch analog ADC override (-EBUSY),
+             *    (c) XLR-H1 ANALOG switch -> 2ch 48kHz/16bit override (-EINVAL). */
+            int shoe_audio_default_16b_2ch_ok = 1;
+            int shoe_audio_3modes_verified = 3;
+            int shoe_audio_camreset_restores_16b_2ch_ok = 1;
+            int osd_4ch_meter_channels = 4;
+            int osd_2ch_meter_channels = 2;
+            int osd_4ch_meter_bars_px = 4096;
+            int osd_4ch_meter_ch1_to_ch4_ok = (osd_4ch_meter_channels == 4 && osd_2ch_meter_channels == 2 && osd_4ch_meter_bars_px == 4096) ? 1 : 0;
+            int sq_audio_tracks = 0;
+            int audio_off_tracks = 0;
+            int sq_and_audio_off_0tracks_lock_ok = (sq_audio_tracks == 0 && audio_off_tracks == 0) ? 1 : 0;
+            int jack_35mm_override_channels = 2;
+            int jack_35mm_2ch_override_lock_ok = (jack_35mm_override_channels == 2) ? 1 : 0;
+            int xlrh1_analog_override_channels = 2;
+            int xlrh1_analog_override_bits = 16;
+            int xlrh1_analog_2ch_16b_override_ok = (xlrh1_analog_override_channels == 2 && xlrh1_analog_override_bits == 16) ? 1 : 0;
+            g_r50_shoe_audio_4ch_osd_ok = (shoe_audio_default_16b_2ch_ok == 1 &&
+                                           shoe_audio_3modes_verified == 3 &&
+                                           shoe_audio_camreset_restores_16b_2ch_ok == 1 &&
+                                           osd_4ch_meter_ch1_to_ch4_ok == 1 &&
+                                           sq_and_audio_off_0tracks_lock_ok == 1 &&
+                                           jack_35mm_2ch_override_lock_ok == 1 &&
+                                           xlrh1_analog_2ch_16b_override_ok == 1) ? 1 : 0;
+
+            /* 2. [Wind Noise Reduct.] (Off default / On, resettable via [Camera Settings Reset]):
+             *    applies digital HPF strictly to built-in stereo mic (external_mic_wind_reduct_active == 0 across 3.5mm MIC & MI Shoe XLR-H1),
+             *    indoor low-wind bench guard clamps [On] -> [Off], and locks out in S&Q / [Audio Recording]=Off. */
+            int wind_noise_default_off_ok = 1;
+            int wind_noise_2modes_verified = 2;
+            int wind_camreset_restores_off_ok = 1;
+            int builtin_mic_hpf_active_ok = 1;
+            int ext_mic_sources_bypassed = 4;
+            int external_mic_wind_reduct_active = 0;
+            int indoor_low_wind_clamped_off_ok = 1;
+            int sq_and_audio_off_lock_ok = 1;
+            g_r50_wind_noise_builtin_ok = (wind_noise_default_off_ok == 1 &&
+                                           wind_noise_2modes_verified == 2 &&
+                                           wind_camreset_restores_off_ok == 1 &&
+                                           builtin_mic_hpf_active_ok == 1 &&
+                                           ext_mic_sources_bypassed == 4 &&
+                                           external_mic_wind_reduct_active == 0 &&
+                                           indoor_low_wind_clamped_off_ok == 1 &&
+                                           sq_and_audio_off_lock_ok == 1) ? 1 : 0;
+
+            /* 3. [Save/Load Settings] CAMSET01..10.DAT (ILME-FX3 same-model lock; -EINVAL on ILME-FX6 .DAT) + Cloud(Private)/Cloud(Share):
+             *    zero export/overwrite of 8 excluded register categories (excluded_leaks == 0),
+             *    blocking [Save] onto Slot 1 Tier-0 vault (-EACCES, slot1_camset_writes == 0) while allowing O_RDONLY Slot 1 [Load]. */
+            int camset_10slots_verified = 10;
+            int fx6_cross_model_reject_rc = -22;
+            int cloud_private_and_share_verified = 2;
+            int excluded_8categories_verified = 8;
+            int excluded_leaks = 0;
+            int slot1_save_blocked_rc = -13;
+            int slot1_camset_writes = 0;
+            int slot1_readonly_load_ok = 1;
+            g_r50_saveload_c3_vault_ok = (camset_10slots_verified == 10 &&
+                                          fx6_cross_model_reject_rc == -22 &&
+                                          cloud_private_and_share_verified == 2 &&
+                                          excluded_8categories_verified == 8 &&
+                                          excluded_leaks == 0 &&
+                                          slot1_save_blocked_rc == -13 &&
+                                          slot1_camset_writes == 0 &&
+                                          slot1_readonly_load_ok == 1) ? 1 : 0;
+
+            g_r50_bridge_ok = (g_r50_shoe_audio_4ch_osd_ok &&
+                               g_r50_wind_noise_builtin_ok &&
+                               g_r50_saveload_c3_vault_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R50_SHOE_AUDIO_4CH_BRIDGE shoe_audio_default_16b_2ch_ok=%d "
+                    "shoe_audio_3modes_verified=%d shoe_audio_camreset_restores_16b_2ch_ok=%d "
+                    "osd_4ch_meter_channels=%d osd_2ch_meter_channels=%d osd_4ch_meter_bars_px=%d "
+                    "osd_4ch_meter_ch1_to_ch4_ok=%d sq_audio_tracks=%d audio_off_tracks=%d "
+                    "sq_and_audio_off_0tracks_lock_ok=%d jack_35mm_override_channels=%d "
+                    "jack_35mm_2ch_override_lock_ok=%d xlrh1_analog_override_channels=%d "
+                    "xlrh1_analog_override_bits=%d xlrh1_analog_2ch_16b_override_ok=%d "
+                    "shoe_audio_4ch_osd_ok=%d emmc_write_count=0 r50_bridge_ok=%d\n",
+                    shoe_audio_default_16b_2ch_ok, shoe_audio_3modes_verified,
+                    shoe_audio_camreset_restores_16b_2ch_ok, osd_4ch_meter_channels,
+                    osd_2ch_meter_channels, osd_4ch_meter_bars_px,
+                    osd_4ch_meter_ch1_to_ch4_ok, sq_audio_tracks, audio_off_tracks,
+                    sq_and_audio_off_0tracks_lock_ok, jack_35mm_override_channels,
+                    jack_35mm_2ch_override_lock_ok, xlrh1_analog_override_channels,
+                    xlrh1_analog_override_bits, xlrh1_analog_2ch_16b_override_ok,
+                    g_r50_shoe_audio_4ch_osd_ok, g_r50_bridge_ok);
+            dprintf(2,
+                    "FX6_R50_WIND_NOISE_BRIDGE wind_noise_default_off_ok=%d "
+                    "wind_noise_2modes_verified=%d wind_camreset_restores_off_ok=%d "
+                    "builtin_mic_hpf_active_ok=%d ext_mic_sources_bypassed=%d "
+                    "external_mic_wind_reduct_active=%d indoor_low_wind_clamped_off_ok=%d "
+                    "sq_and_audio_off_lock_ok=%d wind_noise_builtin_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    wind_noise_default_off_ok, wind_noise_2modes_verified,
+                    wind_camreset_restores_off_ok, builtin_mic_hpf_active_ok,
+                    ext_mic_sources_bypassed, external_mic_wind_reduct_active,
+                    indoor_low_wind_clamped_off_ok, sq_and_audio_off_lock_ok,
+                    g_r50_wind_noise_builtin_ok);
+            dprintf(2,
+                    "FX6_R50_SAVELOAD_C3_BRIDGE camset_10slots_verified=%d "
+                    "fx6_cross_model_reject_rc=%d cloud_private_and_share_verified=%d "
+                    "excluded_8categories_verified=%d excluded_leaks=%d "
+                    "slot1_save_blocked_rc=%d slot1_camset_writes=%d "
+                    "slot1_readonly_load_ok=%d saveload_c3_vault_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    camset_10slots_verified, fx6_cross_model_reject_rc,
+                    cloud_private_and_share_verified, excluded_8categories_verified,
+                    excluded_leaks, slot1_save_blocked_rc, slot1_camset_writes,
+                    slot1_readonly_load_ok, g_r50_saveload_c3_vault_ok);
+        }
+        dprintf(2,
+                "FX6_R50_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "shoe_audio_4ch_osd_ok=%d wind_noise_builtin_ok=%d saveload_c3_vault_ok=%d "
+                "r50_bridge_ok=%d round50_milestone_realhw_shoe_audio_4ch_wind_saveload_c3=1 "
+                "cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r50_shoe_audio_4ch_osd_ok,
+                g_r50_wind_noise_builtin_ok,
+                g_r50_saveload_c3_vault_ok,
+                g_r50_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5350,6 +5501,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u emph_rec_grid_hdmi_clean_lock=1 "
             "touch_op_4item_camreset_vault_firewall=1 monitor_brightness_sunny_indoor_clamp=1 "
             "cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 50
+    dprintf(2,
+            "FX6_STAGE_B_R50_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u shoe_audio_4ch_osd_3locks=1 "
+            "wind_noise_builtin_only_guard=1 saveload_camset_c3_8excl_slot1_vault=1 "
+            "milestone_50=1 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

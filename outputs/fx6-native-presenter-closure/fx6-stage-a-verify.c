@@ -16632,6 +16632,1139 @@ static int run_r49_monitor_brightness_probe(void) {
     return ok ? 0 : 246;
 }
 
+/* ==========================================================================
+ * Round 50 (Wave-36 / 50th Grand Milestone! / 22nd Real-HW QEMU Round):
+ *   1. r50a (setup_r50_shoe_audio_4ch_osd_probe + SChinese Big6 fb0):
+ *      [Shoe Audio Set.] (48kHz/16bit 2ch default, 48kHz/24bit 2ch,
+ *      48kHz/24bit 4ch — resettable via [Camera Settings Reset]):
+ *      4-channel (CH1..CH4) [Audio Level Display] meter expansion on digital
+ *      MI Shoe XLR-H1 (DIGITAL) vs 3 hardware disqualifications:
+ *        (a) S&Q / [Audio Recording]=Off -> 0 tracks (-EBUSY),
+ *        (b) 3.5mm MIC terminal plug-in -> 2ch analog ADC override (-EBUSY),
+ *        (c) XLR-H1 ANALOG slide switch -> 2ch 48kHz/16bit override (-EINVAL).
+ *   2. r50b (--r50-wind-noise-builtin-guard):
+ *      [Wind Noise Reduct.] (Off default / On, resettable via [Camera Settings Reset]):
+ *      applies digital high-pass filter strictly to built-in stereo mic
+ *      (external_mic_wind_reduct_active == 0 across 3.5mm MIC, XLR-H1 DIGITAL,
+ *      XLR-H1 ANALOG, and MI Shoe digital mic), suppresses indoor low-wind
+ *      bench [On] low-frequency attenuation, and locks out in S&Q / Audio=Off.
+ *   3. r50c (--r50-saveload-c3-vault-h0-h3):
+ *      [Save/Load Settings] CAMSET01..10.DAT (ILME-FX3 same-model lock; -EINVAL
+ *      on ILME-FX6 / ILME-FX30 .DAT) + Cloud(Private)/Cloud(Share) (C3 Portal,
+ *      Ver. 4.00+): zero export/overwrite of all 8 excluded privacy/calibration
+ *      register categories (excluded_leaks == 0), blocking [Save] onto Slot 1
+ *      Tier-0 vault (-EACCES, slot1_camset_writes == 0, emmc_write_count == 0)
+ *      while allowing O_RDONLY Slot 1 [Load], plus 16/16 H0 == H3 baseline.
+ * ========================================================================== */
+
+typedef enum {
+    R50_SHOE_AUDIO_48K_16BIT_2CH = 0, /* Factory default */
+    R50_SHOE_AUDIO_48K_24BIT_2CH = 1,
+    R50_SHOE_AUDIO_48K_24BIT_4CH = 2,
+    R50_SHOE_AUDIO_INVALID       = 3
+} r50_shoe_audio_mode_t;
+
+static const char * const k_r50_shoe_audio_labels[3] = {
+    "48kHz/16bit 2ch",
+    "48kHz/24bit 2ch",
+    "48kHz/24bit 4ch"
+};
+
+typedef enum {
+    R50_SHOOT_MODE_MOVIE = 0,
+    R50_SHOOT_MODE_SQ    = 1,
+    R50_SHOOT_MODE_STILL = 2
+} r50_shoot_mode_t;
+
+typedef enum {
+    R50_MI_SHOE_NONE          = 0, /* Camera body built-in stereo mic */
+    R50_MI_SHOE_XLRH1_DIGITAL = 1, /* Digital I2S/MI-Shoe 4ch/24bit capable (XLR-H1 DIGITAL / ECM-M1) */
+    R50_MI_SHOE_XLRH1_ANALOG  = 2  /* XLR-H1 [DIGITAL/ANALOG] slide switch = ANALOG -> 2ch 16-bit */
+} r50_mi_shoe_kind_t;
+
+typedef struct {
+    int shoe_audio_set;       /* R50_SHOE_AUDIO_48K_16BIT_2CH (default) .. 4CH; reset by [Camera Settings Reset] */
+    int audio_recording_on;   /* 1 = On (default), 0 = Off */
+    int audio_level_display;  /* 1 = On (default), 0 = Off */
+    int shoot_mode;           /* R50_SHOOT_MODE_MOVIE / SQ / STILL */
+    int jack_35mm_plugged;    /* 1 = 3.5mm stereo MIC plug inserted -> overrides built-in & MI Shoe */
+    int mi_shoe_kind;         /* R50_MI_SHOE_NONE / XLRH1_DIGITAL / XLRH1_ANALOG */
+} r50_shoe_audio_state_t;
+
+typedef struct {
+    unsigned int active_lpcm_tracks;
+    unsigned int active_sample_bits;
+    unsigned int active_sample_hz;
+    unsigned int osd_meter_channels;
+    unsigned int osd_meter_bars_px;
+} r50_shoe_audio_eval_t;
+
+__attribute__((noinline)) static void r50_shoe_audio_initialize_defaults(r50_shoe_audio_state_t *st) {
+    if (!st) return;
+    st->shoe_audio_set = R50_SHOE_AUDIO_48K_16BIT_2CH;
+    st->audio_recording_on = 1;
+    st->audio_level_display = 1;
+    st->shoot_mode = R50_SHOOT_MODE_MOVIE;
+    st->jack_35mm_plugged = 0;
+    st->mi_shoe_kind = R50_MI_SHOE_XLRH1_DIGITAL;
+}
+
+__attribute__((noinline)) static void r50_shoe_audio_camera_settings_reset(r50_shoe_audio_state_t *st) {
+    if (!st) return;
+    /* Official Sony ILME-FX3 Help Guide: [Shoe Audio Set.] IS reset to [48kHz/16bit 2ch]
+     * by [Camera Settings Reset]. */
+    st->shoe_audio_set = R50_SHOE_AUDIO_48K_16BIT_2CH;
+    st->audio_recording_on = 1;
+    st->audio_level_display = 1;
+}
+
+__attribute__((noinline)) static int r50_set_shoe_audio_mode(
+    r50_shoe_audio_state_t *st, int mode
+) {
+    if (!st) return -EINVAL;
+    if (mode < R50_SHOE_AUDIO_48K_16BIT_2CH || mode >= R50_SHOE_AUDIO_INVALID) {
+        return -EINVAL;
+    }
+    /* Disqualification 1: [Audio Recording]=[Off] or S&Q Motion -> grayed out / unavailable */
+    if (st->audio_recording_on == 0 || st->shoot_mode == R50_SHOOT_MODE_SQ) {
+        return -EBUSY;
+    }
+    /* Disqualification 2: 3.5mm MIC plug-in overrides MI Shoe digital audio */
+    if (st->jack_35mm_plugged != 0) {
+        return -EBUSY;
+    }
+    /* Disqualification 3: XLR-H1 slide switch = ANALOG (or no digital MI Shoe) rejects 24bit/4ch */
+    if (st->mi_shoe_kind == R50_MI_SHOE_XLRH1_ANALOG &&
+        mode != R50_SHOE_AUDIO_48K_16BIT_2CH) {
+        return -EINVAL;
+    }
+    if (st->mi_shoe_kind == R50_MI_SHOE_NONE &&
+        mode != R50_SHOE_AUDIO_48K_16BIT_2CH) {
+        return -EBUSY;
+    }
+    st->shoe_audio_set = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r50_eval_shoe_audio_routing_and_osd(
+    const r50_shoe_audio_state_t *st, r50_shoe_audio_eval_t *out
+) {
+    if (!out) return;
+    memset(out, 0, sizeof(*out));
+    if (!st) return;
+
+    /* Disqualification 1: S&Q Motion or [Audio Recording]=Off -> 0 audio tracks, 0 OSD meters */
+    if (st->audio_recording_on == 0 ||
+        st->shoot_mode == R50_SHOOT_MODE_SQ ||
+        st->shoot_mode == R50_SHOOT_MODE_STILL) {
+        return;
+    }
+
+    out->active_sample_hz = 48000U;
+    /* Disqualification 2: Body 3.5mm stereo MIC plug-in overrides both built-in & MI Shoe -> 2ch 16-bit ADC */
+    if (st->jack_35mm_plugged != 0) {
+        out->active_lpcm_tracks = 2U;
+        out->active_sample_bits = 16U;
+    } else if (st->mi_shoe_kind == R50_MI_SHOE_XLRH1_ANALOG ||
+               st->mi_shoe_kind == R50_MI_SHOE_NONE) {
+        /* Disqualification 3: XLR-H1 ANALOG switch (or built-in stereo mic) -> 2ch 48kHz/16bit */
+        out->active_lpcm_tracks = 2U;
+        out->active_sample_bits = 16U;
+    } else {
+        /* Digital MI Shoe (XLR-H1 DIGITAL / ECM-M1) */
+        if (st->shoe_audio_set == R50_SHOE_AUDIO_48K_24BIT_4CH) {
+            out->active_lpcm_tracks = 4U;
+            out->active_sample_bits = 24U;
+        } else if (st->shoe_audio_set == R50_SHOE_AUDIO_48K_24BIT_2CH) {
+            out->active_lpcm_tracks = 2U;
+            out->active_sample_bits = 24U;
+        } else {
+            out->active_lpcm_tracks = 2U;
+            out->active_sample_bits = 16U;
+        }
+    }
+
+    if (st->audio_level_display != 0) {
+        out->osd_meter_channels = out->active_lpcm_tracks;
+        /* Each OSD level meter bar on 1024x540 spans 8x128 = 1024 px (2ch = 2048 px, 4ch = 4096 px) */
+        out->osd_meter_bars_px = out->osd_meter_channels * 1024U;
+    }
+}
+
+static int setup_r50_shoe_audio_4ch_osd_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r50_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_cnflasha_init", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r50_p2_init");
+    (void)umount("/mnt/r50_cnflasha_init");
+    if (mount("tmpfs", "/mnt/r50_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r50_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 47U + 0x50U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 67U + 0x05U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r50_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r50_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r50_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r50_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r50_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r50_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    r50_shoe_audio_state_t st;
+    r50_shoe_audio_initialize_defaults(&st);
+
+    /* 1. Validate factory default [48kHz/16bit 2ch] & all 3 [Shoe Audio Set.] modes */
+    int shoe_audio_default_16b_2ch_ok =
+        (st.shoe_audio_set == R50_SHOE_AUDIO_48K_16BIT_2CH &&
+         strcmp(k_r50_shoe_audio_labels[0], "48kHz/16bit 2ch") == 0) ? 1 : 0;
+    int invalid_shoe_mode_reject_rc = r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_INVALID);
+
+    int shoe_audio_3modes_verified = 0;
+    for (int m = R50_SHOE_AUDIO_48K_16BIT_2CH; m <= R50_SHOE_AUDIO_48K_24BIT_4CH; m++) {
+        if (r50_set_shoe_audio_mode(&st, m) == 0 &&
+            st.shoe_audio_set == m &&
+            k_r50_shoe_audio_labels[m][0] != '\0') {
+            shoe_audio_3modes_verified++;
+        }
+    }
+
+    /* 2. [Camera Settings Reset] & [Initialize] both restore [Shoe Audio Set.] -> [48kHz/16bit 2ch] */
+    (void)r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_4CH);
+    r50_shoe_audio_camera_settings_reset(&st);
+    int shoe_audio_camreset_restores_16b_2ch_ok =
+        (st.shoe_audio_set == R50_SHOE_AUDIO_48K_16BIT_2CH) ? 1 : 0;
+
+    (void)r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_2CH);
+    r50_shoe_audio_initialize_defaults(&st);
+    int initialize_restores_16b_2ch_ok =
+        (st.shoe_audio_set == R50_SHOE_AUDIO_48K_16BIT_2CH) ? 1 : 0;
+
+    /* 3. Digital MI Shoe XLR-H1 (DIGITAL): 2ch vs 4ch [Audio Level Display] OSD meter expansion */
+    r50_shoe_audio_initialize_defaults(&st);
+    (void)r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_2CH);
+    r50_shoe_audio_eval_t ev_24b_2ch;
+    r50_eval_shoe_audio_routing_and_osd(&st, &ev_24b_2ch);
+
+    (void)r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_4CH);
+    r50_shoe_audio_eval_t ev_24b_4ch;
+    r50_eval_shoe_audio_routing_and_osd(&st, &ev_24b_4ch);
+
+    int lpcm_4ch_24bit_active_ok =
+        (ev_24b_4ch.active_lpcm_tracks == 4U &&
+         ev_24b_4ch.active_sample_bits == 24U &&
+         ev_24b_4ch.active_sample_hz == 48000U) ? 1 : 0;
+    int osd_4ch_meter_ch1_to_ch4_ok =
+        (ev_24b_4ch.osd_meter_channels == 4U &&
+         ev_24b_4ch.osd_meter_bars_px == 4096U &&
+         ev_24b_2ch.osd_meter_channels == 2U &&
+         ev_24b_2ch.osd_meter_bars_px == 2048U) ? 1 : 0;
+
+    /* 4. Three Hardware Override / Lockout Conditions while user setting was 48kHz/24bit 4ch */
+    unsigned int disqualified_4ch_active_leaks = 0U;
+
+    /* (a) [Audio Recording]=Off & S&Q Motion -> 0 tracks, -EBUSY on [Shoe Audio Set.] */
+    st.audio_recording_on = 0;
+    int audio_off_lock_rc = r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_4CH);
+    r50_shoe_audio_eval_t ev_audio_off;
+    r50_eval_shoe_audio_routing_and_osd(&st, &ev_audio_off);
+    if (ev_audio_off.active_lpcm_tracks >= 4U || ev_audio_off.osd_meter_channels >= 4U) {
+        disqualified_4ch_active_leaks++;
+    }
+
+    st.audio_recording_on = 1;
+    st.shoot_mode = R50_SHOOT_MODE_SQ;
+    int sq_motion_lock_rc = r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_4CH);
+    r50_shoe_audio_eval_t ev_sq;
+    r50_eval_shoe_audio_routing_and_osd(&st, &ev_sq);
+    if (ev_sq.active_lpcm_tracks >= 4U || ev_sq.osd_meter_channels >= 4U) {
+        disqualified_4ch_active_leaks++;
+    }
+
+    /* (b) Body 3.5mm MIC plug-in -> overrides MI Shoe to 2ch 16-bit ADC, -EBUSY on [Shoe Audio Set.] */
+    st.shoot_mode = R50_SHOOT_MODE_MOVIE;
+    st.jack_35mm_plugged = 1;
+    int jack_35mm_shoe_set_lock_rc = r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_4CH);
+    r50_shoe_audio_eval_t ev_35mm;
+    r50_eval_shoe_audio_routing_and_osd(&st, &ev_35mm);
+    if (ev_35mm.active_lpcm_tracks >= 4U || ev_35mm.osd_meter_channels >= 4U) {
+        disqualified_4ch_active_leaks++;
+    }
+
+    /* (c) XLR-H1 [DIGITAL/ANALOG] slide switch = ANALOG -> 2ch 48kHz/16bit, -EINVAL on 24bit/4ch */
+    st.jack_35mm_plugged = 0;
+    st.mi_shoe_kind = R50_MI_SHOE_XLRH1_ANALOG;
+    int xlrh1_analog_24bit_4ch_reject_rc = r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_4CH);
+    int xlrh1_analog_24bit_2ch_reject_rc = r50_set_shoe_audio_mode(&st, R50_SHOE_AUDIO_48K_24BIT_2CH);
+    r50_shoe_audio_eval_t ev_analog;
+    r50_eval_shoe_audio_routing_and_osd(&st, &ev_analog);
+    if (ev_analog.active_lpcm_tracks >= 4U || ev_analog.osd_meter_channels >= 4U) {
+        disqualified_4ch_active_leaks++;
+    }
+
+    errno = 0;
+    int ro_fd = open("/mnt/r50_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r50_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r50_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r50_p2_init");
+    (void)umount("/mnt/r50_cnflasha_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R50_SHOE_AUDIO_4CH_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (shoe_audio_default_16b_2ch_ok == 1 &&
+              invalid_shoe_mode_reject_rc == -EINVAL &&
+              shoe_audio_3modes_verified == 3 &&
+              shoe_audio_camreset_restores_16b_2ch_ok == 1 &&
+              initialize_restores_16b_2ch_ok == 1 &&
+              lpcm_4ch_24bit_active_ok == 1 &&
+              osd_4ch_meter_ch1_to_ch4_ok == 1 &&
+              audio_off_lock_rc == -EBUSY &&
+              sq_motion_lock_rc == -EBUSY &&
+              ev_sq.active_lpcm_tracks == 0U &&
+              ev_audio_off.active_lpcm_tracks == 0U &&
+              jack_35mm_shoe_set_lock_rc == -EBUSY &&
+              ev_35mm.active_lpcm_tracks == 2U &&
+              ev_35mm.active_sample_bits == 16U &&
+              ev_35mm.osd_meter_channels == 2U &&
+              xlrh1_analog_24bit_4ch_reject_rc == -EINVAL &&
+              xlrh1_analog_24bit_2ch_reject_rc == -EINVAL &&
+              ev_analog.active_lpcm_tracks == 2U &&
+              ev_analog.active_sample_bits == 16U &&
+              ev_analog.osd_meter_channels == 2U &&
+              disqualified_4ch_active_leaks == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R50_SHOE_AUDIO_4CH_INIT shoe_audio_default_16b_2ch_ok=%d "
+            "invalid_shoe_mode_reject_rc=%d shoe_audio_3modes_verified=%d "
+            "shoe_audio_camreset_restores_16b_2ch_ok=%d initialize_restores_16b_2ch_ok=%d "
+            "lpcm_4ch_24bit_active_ok=%d osd_4ch_meter_channels=%u osd_2ch_meter_channels=%u "
+            "osd_4ch_meter_bars_px=%u osd_4ch_meter_ch1_to_ch4_ok=%d "
+            "audio_off_lock_rc=%d sq_motion_lock_rc=%d sq_audio_tracks=%u audio_off_tracks=%u "
+            "jack_35mm_shoe_set_lock_rc=%d jack_35mm_override_channels=%u jack_35mm_override_bits=%u "
+            "xlrh1_analog_24bit_4ch_reject_rc=%d xlrh1_analog_override_channels=%u "
+            "xlrh1_analog_override_bits=%u disqualified_4ch_active_leaks=%u "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r50_init_ok=%d verify_us=%lld\n",
+            shoe_audio_default_16b_2ch_ok, invalid_shoe_mode_reject_rc,
+            shoe_audio_3modes_verified, shoe_audio_camreset_restores_16b_2ch_ok,
+            initialize_restores_16b_2ch_ok, lpcm_4ch_24bit_active_ok,
+            ev_24b_4ch.osd_meter_channels, ev_24b_2ch.osd_meter_channels,
+            ev_24b_4ch.osd_meter_bars_px, osd_4ch_meter_ch1_to_ch4_ok,
+            audio_off_lock_rc, sq_motion_lock_rc, ev_sq.active_lpcm_tracks,
+            ev_audio_off.active_lpcm_tracks, jack_35mm_shoe_set_lock_rc,
+            ev_35mm.active_lpcm_tracks, ev_35mm.active_sample_bits,
+            xlrh1_analog_24bit_4ch_reject_rc, ev_analog.active_lpcm_tracks,
+            ev_analog.active_sample_bits, disqualified_4ch_active_leaks,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+/* --- r50b: [Wind Noise Reduct.] Built-In Stereo Mic Exclusivity & Indoor Low-Cut Attenuation Guard --- */
+
+typedef enum {
+    R50_WIND_NOISE_OFF     = 0, /* Factory default */
+    R50_WIND_NOISE_ON      = 1,
+    R50_WIND_NOISE_INVALID = 2
+} r50_wind_noise_mode_t;
+
+static const char * const k_r50_wind_noise_labels[2] = {
+    "Off",
+    "On"
+};
+
+typedef enum {
+    R50_AUDIO_SRC_BUILTIN_STEREO_MIC = 0, /* Body built-in stereo mic ONLY receives [Wind Noise Reduct.] */
+    R50_AUDIO_SRC_EXT_35MM_MIC       = 1, /* External 3.5mm MIC jack -> [Wind Noise Reduct.] does NOT function */
+    R50_AUDIO_SRC_EXT_XLRH1_DIGITAL  = 2, /* External MI Shoe XLR-H1 DIGITAL -> physical LOW CUT switch governs */
+    R50_AUDIO_SRC_EXT_XLRH1_ANALOG   = 3, /* External MI Shoe XLR-H1 ANALOG -> physical LOW CUT switch governs */
+    R50_AUDIO_SRC_EXT_MISHOE_ECM_M1  = 4  /* External MI Shoe digital mic -> mic-side filter governs */
+} r50_audio_source_t;
+
+typedef enum {
+    R50_XLRH1_LOWCUT_OFF   = 0,
+    R50_XLRH1_LOWCUT_100HZ = 1,
+    R50_XLRH1_LOWCUT_300HZ = 2
+} r50_xlrh1_hw_lowcut_t;
+
+typedef enum {
+    R50_ACOUSTIC_OUTDOOR_HIGH_WIND = 0,
+    R50_ACOUSTIC_INDOOR_LOW_WIND   = 1
+} r50_acoustic_env_t;
+
+typedef struct {
+    int wind_noise_reduct;  /* R50_WIND_NOISE_OFF (default) / ON; resettable via [Camera Settings Reset] */
+    int audio_recording_on; /* 1 = On, 0 = Off */
+    int shoot_mode;         /* R50_SHOOT_MODE_MOVIE / SQ */
+    int audio_source;       /* r50_audio_source_t */
+    int xlrh1_hw_lowcut_hz; /* 0, 100, or 300 Hz physical handle switch */
+} r50_wind_noise_state_t;
+
+__attribute__((noinline)) static void r50_wind_initialize_defaults(r50_wind_noise_state_t *st) {
+    if (!st) return;
+    st->wind_noise_reduct = R50_WIND_NOISE_OFF;
+    st->audio_recording_on = 1;
+    st->shoot_mode = R50_SHOOT_MODE_MOVIE;
+    st->audio_source = R50_AUDIO_SRC_BUILTIN_STEREO_MIC;
+    st->xlrh1_hw_lowcut_hz = 0;
+}
+
+__attribute__((noinline)) static void r50_wind_camera_settings_reset(r50_wind_noise_state_t *st) {
+    if (!st) return;
+    /* Official Sony ILME-FX3 Help Guide: [Wind Noise Reduct.] IS reset to [Off]
+     * by [Camera Settings Reset]. */
+    st->wind_noise_reduct = R50_WIND_NOISE_OFF;
+    st->audio_recording_on = 1;
+}
+
+__attribute__((noinline)) static int r50_set_wind_noise_reduct(
+    r50_wind_noise_state_t *st, int mode
+) {
+    if (!st) return -EINVAL;
+    if (mode < R50_WIND_NOISE_OFF || mode >= R50_WIND_NOISE_INVALID) {
+        return -EINVAL;
+    }
+    if (st->audio_recording_on == 0 || st->shoot_mode == R50_SHOOT_MODE_SQ) {
+        return -EBUSY;
+    }
+    st->wind_noise_reduct = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r50_eval_body_wind_hpf_active(
+    const r50_wind_noise_state_t *st
+) {
+    if (!st) return 0;
+    if (st->audio_recording_on == 0 || st->shoot_mode == R50_SHOOT_MODE_SQ) {
+        return 0;
+    }
+    /* Official Sony boundary: [Wind Noise Reduct.] functions ONLY for the built-in stereo mic;
+     * it does NOT function when any external microphone (3.5mm MIC or MI Shoe) is used. */
+    if (st->audio_source != R50_AUDIO_SRC_BUILTIN_STEREO_MIC) {
+        return 0;
+    }
+    return (st->wind_noise_reduct == R50_WIND_NOISE_ON) ? 1 : 0;
+}
+
+__attribute__((noinline)) static void r50_apply_indoor_wind_bench_guard(
+    r50_wind_noise_state_t *st,
+    r50_acoustic_env_t env,
+    int *out_clamped,
+    int *out_low_freq_loss_db
+) {
+    if (out_clamped) *out_clamped = 0;
+    if (out_low_freq_loss_db) *out_low_freq_loss_db = 0;
+    if (!st) return;
+    if (env == R50_ACOUSTIC_INDOOR_LOW_WIND &&
+        st->audio_source == R50_AUDIO_SRC_BUILTIN_STEREO_MIC &&
+        st->wind_noise_reduct == R50_WIND_NOISE_ON) {
+        st->wind_noise_reduct = R50_WIND_NOISE_OFF;
+        if (out_clamped) *out_clamped = 1;
+    }
+    if (r50_eval_body_wind_hpf_active(st) && env == R50_ACOUSTIC_INDOOR_LOW_WIND) {
+        if (out_low_freq_loss_db) *out_low_freq_loss_db = 12;
+    }
+}
+
+static int run_r50_wind_noise_builtin_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r50_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_cnflasha_ro", 0755) != 0) {
+        return 247;
+    }
+    (void)umount("/mnt/r50_p2_ro");
+    (void)umount("/mnt/r50_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r50_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r50_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 247;
+    }
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 29U + 0x51U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 53U + 0x15U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r50_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r50_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 247;
+    }
+    if (mount(NULL, "/mnt/r50_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r50_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 247;
+    }
+
+    r50_wind_noise_state_t st;
+    r50_wind_initialize_defaults(&st);
+
+    /* 1. Default [Off], enum validation, & [Camera Settings Reset] / [Initialize] restore [Off] */
+    int wind_noise_default_off_ok =
+        (st.wind_noise_reduct == R50_WIND_NOISE_OFF &&
+         strcmp(k_r50_wind_noise_labels[0], "Off") == 0 &&
+         strcmp(k_r50_wind_noise_labels[1], "On") == 0) ? 1 : 0;
+    int invalid_wind_mode_reject_rc = r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_INVALID);
+
+    int wind_noise_2modes_verified = 0;
+    for (int m = R50_WIND_NOISE_OFF; m <= R50_WIND_NOISE_ON; m++) {
+        if (r50_set_wind_noise_reduct(&st, m) == 0 && st.wind_noise_reduct == m) {
+            wind_noise_2modes_verified++;
+        }
+    }
+
+    (void)r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+    r50_wind_camera_settings_reset(&st);
+    int wind_camreset_restores_off_ok = (st.wind_noise_reduct == R50_WIND_NOISE_OFF) ? 1 : 0;
+
+    (void)r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+    r50_wind_initialize_defaults(&st);
+    int initialize_restores_off_ok = (st.wind_noise_reduct == R50_WIND_NOISE_OFF) ? 1 : 0;
+
+    /* 2. Built-in stereo mic exclusivity vs 4 external mic topologies (external_mic_wind_reduct_active == 0) */
+    r50_wind_initialize_defaults(&st);
+    (void)r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+    st.audio_source = R50_AUDIO_SRC_BUILTIN_STEREO_MIC;
+    int builtin_mic_hpf_active_ok = (r50_eval_body_wind_hpf_active(&st) == 1) ? 1 : 0;
+
+    unsigned int ext_sources_tested = 0U;
+    unsigned int ext_sources_bypassed = 0U;
+    unsigned int external_mic_wind_reduct_active = 0U;
+    for (int src = R50_AUDIO_SRC_EXT_35MM_MIC; src <= R50_AUDIO_SRC_EXT_MISHOE_ECM_M1; src++) {
+        st.audio_source = src;
+        ext_sources_tested++;
+        if (r50_eval_body_wind_hpf_active(&st) == 0) {
+            ext_sources_bypassed++;
+        } else {
+            external_mic_wind_reduct_active++;
+        }
+    }
+
+    /* Verify XLR-H1 physical [LOW CUT] switch (Off / 100Hz / 300Hz) operates independently */
+    static const int k_lowcut_hz[3] = { 0, 100, 300 };
+    int xlrh1_hw_lowcut_3positions_verified = 0;
+    st.audio_source = R50_AUDIO_SRC_EXT_XLRH1_DIGITAL;
+    for (int p = R50_XLRH1_LOWCUT_OFF; p <= R50_XLRH1_LOWCUT_300HZ; p++) {
+        st.xlrh1_hw_lowcut_hz = k_lowcut_hz[p];
+        if (r50_eval_body_wind_hpf_active(&st) == 0 && st.xlrh1_hw_lowcut_hz == k_lowcut_hz[p]) {
+            xlrh1_hw_lowcut_3positions_verified++;
+        }
+    }
+
+    /* 3. Outdoor high-wind allowed vs 32-cycle indoor low-wind attenuation guard */
+    r50_wind_initialize_defaults(&st);
+    (void)r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+    int outdoor_clamped = 0, outdoor_loss = 0;
+    r50_apply_indoor_wind_bench_guard(&st, R50_ACOUSTIC_OUTDOOR_HIGH_WIND, &outdoor_clamped, &outdoor_loss);
+    int outdoor_high_wind_hpf_allowed_ok =
+        (outdoor_clamped == 0 && r50_eval_body_wind_hpf_active(&st) == 1) ? 1 : 0;
+
+    unsigned int indoor_rehearsal_cycles = 32U;
+    unsigned int indoor_clamped_cnt = 0U;
+    unsigned int indoor_low_freq_attenuation_events = 0U;
+    for (unsigned int c = 0U; c < indoor_rehearsal_cycles; c++) {
+        (void)r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+        int was_clamped = 0, loss_db = 0;
+        r50_apply_indoor_wind_bench_guard(&st, R50_ACOUSTIC_INDOOR_LOW_WIND, &was_clamped, &loss_db);
+        if (was_clamped == 1 && st.wind_noise_reduct == R50_WIND_NOISE_OFF && loss_db == 0) {
+            indoor_clamped_cnt++;
+        } else {
+            indoor_low_freq_attenuation_events++;
+        }
+    }
+    int indoor_clamped_to_off_ok =
+        (indoor_clamped_cnt == indoor_rehearsal_cycles &&
+         indoor_low_freq_attenuation_events == 0U) ? 1 : 0;
+
+    /* 4. S&Q Motion & [Audio Recording]=Off lockouts */
+    r50_wind_initialize_defaults(&st);
+    st.audio_recording_on = 0;
+    int audio_off_wind_lock_rc = r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+
+    r50_wind_initialize_defaults(&st);
+    st.shoot_mode = R50_SHOOT_MODE_SQ;
+    int sq_wind_lock_rc = r50_set_wind_noise_reduct(&st, R50_WIND_NOISE_ON);
+
+    errno = 0;
+    int p2_fd = open("/mnt/r50_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+
+    errno = 0;
+    int cn_fd = open("/mnt/r50_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    (void)umount("/mnt/r50_p2_ro");
+    (void)umount("/mnt/r50_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R50_WIND_NOISE_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (wind_noise_default_off_ok == 1 &&
+              invalid_wind_mode_reject_rc == -EINVAL &&
+              wind_noise_2modes_verified == 2 &&
+              wind_camreset_restores_off_ok == 1 &&
+              initialize_restores_off_ok == 1 &&
+              builtin_mic_hpf_active_ok == 1 &&
+              ext_sources_tested == 4U &&
+              ext_sources_bypassed == 4U &&
+              external_mic_wind_reduct_active == 0U &&
+              xlrh1_hw_lowcut_3positions_verified == 3 &&
+              outdoor_high_wind_hpf_allowed_ok == 1 &&
+              indoor_clamped_to_off_ok == 1 &&
+              indoor_low_freq_attenuation_events == 0U &&
+              audio_off_wind_lock_rc == -EBUSY &&
+              sq_wind_lock_rc == -EBUSY &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R50_WIND_NOISE_GUARD wind_noise_default_off_ok=%d "
+            "invalid_wind_mode_reject_rc=%d wind_noise_2modes_verified=%d "
+            "wind_camreset_restores_off_ok=%d initialize_restores_off_ok=%d "
+            "builtin_mic_hpf_active_ok=%d ext_sources_tested=%u ext_sources_bypassed=%u "
+            "external_mic_wind_reduct_active=%u xlrh1_hw_lowcut_3positions_verified=%d "
+            "outdoor_high_wind_hpf_allowed_ok=%d indoor_rehearsal_cycles=%u "
+            "indoor_clamped_to_off_ok=%d indoor_low_freq_attenuation_events=%u "
+            "audio_off_wind_lock_rc=%d sq_wind_lock_rc=%d p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 "
+            "emmc_write_count=0 r50b_ok=%d verify_us=%lld\n",
+            wind_noise_default_off_ok, invalid_wind_mode_reject_rc,
+            wind_noise_2modes_verified, wind_camreset_restores_off_ok,
+            initialize_restores_off_ok, builtin_mic_hpf_active_ok,
+            ext_sources_tested, ext_sources_bypassed, external_mic_wind_reduct_active,
+            xlrh1_hw_lowcut_3positions_verified, outdoor_high_wind_hpf_allowed_ok,
+            indoor_rehearsal_cycles, indoor_clamped_to_off_ok,
+            indoor_low_freq_attenuation_events, audio_off_wind_lock_rc, sq_wind_lock_rc,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 247;
+}
+
+/* --- r50c: [Save/Load Settings] CAMSET01..10.DAT / C3 Portal Excluded-Items Firewall & Slot-1 Vault Guard + 16/16 H0 == H3 --- */
+
+typedef enum {
+    R50_SAVELOAD_TARGET_SLOT1_TIER0_VAULT = 0,
+    R50_SAVELOAD_TARGET_SLOT2_SCRATCH     = 1,
+    R50_SAVELOAD_TARGET_CLOUD_PRIVATE     = 2,
+    R50_SAVELOAD_TARGET_CLOUD_SHARE       = 3
+} r50_saveload_target_t;
+
+typedef struct {
+    /* Allowed exportable/loadable camera settings */
+    int shoe_audio_set;
+    int wind_noise_reduct;
+    int emphasized_rec_display;
+    int rec_frame_rate_fps;
+    /* 8 Official Sony Excluded Privacy / Calibration / Credential Categories (NEVER saved or loaded!) */
+    char iptc_info[32];
+    char copyright_owner[32];
+    uint32_t custom_wb_kelvin[3]; /* Custom 1, Custom 2, Custom 3 */
+    uint8_t face_memory_digest[16];
+    char ftp_account_secret[32];
+    char streaming_rtmp_key[32];
+    char wifi_ssid_psk[32];
+    char tls_client_cert_id[32];
+} r50_camera_body_regs_t;
+
+typedef struct {
+    char magic[8];      /* "SONYDAT" */
+    char model_id[16];  /* Strictly "ILME-FX3" */
+    uint32_t version;   /* 0x00070002 (Ver. 7.02) */
+    uint32_t slot_num;  /* 1..10 for CAMSET01..10.DAT, 0 for Cloud(Private)/Cloud(Share) */
+    int shoe_audio_set;
+    int wind_noise_reduct;
+    int emphasized_rec_display;
+    int rec_frame_rate_fps;
+    /* Reserved padding strictly zeroed — excluded registers NEVER serialized here */
+    uint8_t zero_excluded_pad[64];
+} r50_camset_blob_t;
+
+__attribute__((noinline)) static void r50_seed_body_registers(r50_camera_body_regs_t *body) {
+    if (!body) return;
+    memset(body, 0, sizeof(*body));
+    body->shoe_audio_set = R50_SHOE_AUDIO_48K_24BIT_4CH;
+    body->wind_noise_reduct = R50_WIND_NOISE_ON;
+    body->emphasized_rec_display = 0;
+    body->rec_frame_rate_fps = 60;
+    snprintf(body->iptc_info, sizeof(body->iptc_info), "IPTC_BODY_UNIT_01");
+    snprintf(body->copyright_owner, sizeof(body->copyright_owner), "COPYRIGHT_STUDIO_A");
+    body->custom_wb_kelvin[0] = 3200U;
+    body->custom_wb_kelvin[1] = 4300U;
+    body->custom_wb_kelvin[2] = 5600U;
+    for (size_t i = 0U; i < sizeof(body->face_memory_digest); i++) {
+        body->face_memory_digest[i] = (uint8_t)(0xA0U + i);
+    }
+    snprintf(body->ftp_account_secret, sizeof(body->ftp_account_secret), "FTP_SECRET_TOKEN_X9");
+    snprintf(body->streaming_rtmp_key, sizeof(body->streaming_rtmp_key), "RTMPS_LIVE_KEY_Z7");
+    snprintf(body->wifi_ssid_psk, sizeof(body->wifi_ssid_psk), "WPA3_PSK_CREW_NET");
+    snprintf(body->tls_client_cert_id, sizeof(body->tls_client_cert_id), "TLS_CERT_FINGERPRINT_Q4");
+}
+
+__attribute__((noinline)) static int r50_serialize_camset_filtered(
+    const r50_camera_body_regs_t *body,
+    uint32_t slot_num,
+    r50_camset_blob_t *out_blob
+) {
+    if (!body || !out_blob) return -EINVAL;
+    memset(out_blob, 0, sizeof(*out_blob));
+    memcpy(out_blob->magic, "SONYDAT", 8U);
+    snprintf(out_blob->model_id, sizeof(out_blob->model_id), "ILME-FX3");
+    out_blob->version = 0x00070002U;
+    out_blob->slot_num = slot_num;
+    out_blob->shoe_audio_set = body->shoe_audio_set;
+    out_blob->wind_noise_reduct = body->wind_noise_reduct;
+    out_blob->emphasized_rec_display = body->emphasized_rec_display;
+    out_blob->rec_frame_rate_fps = body->rec_frame_rate_fps;
+    return 0;
+}
+
+__attribute__((noinline)) static int r50_save_settings_to_target(
+    const r50_camera_body_regs_t *body,
+    r50_saveload_target_t target,
+    int slot1_is_tier0_vault,
+    uint32_t camset_index,
+    const char *base_dir
+) {
+    if (!body || !base_dir) return -EINVAL;
+    if (target == R50_SAVELOAD_TARGET_SLOT1_TIER0_VAULT ||
+        target == R50_SAVELOAD_TARGET_SLOT2_SCRATCH) {
+        if (camset_index < 1U || camset_index > 10U) {
+            return -EINVAL;
+        }
+    }
+    /* Slot-1 Tier-0 Vault Write Firewall: block [Save] onto Slot 1 Tier-0 vault card (-EACCES) */
+    if (target == R50_SAVELOAD_TARGET_SLOT1_TIER0_VAULT && slot1_is_tier0_vault != 0) {
+        return -EACCES;
+    }
+
+    r50_camset_blob_t blob;
+    if (r50_serialize_camset_filtered(body, camset_index, &blob) != 0) {
+        return -EINVAL;
+    }
+
+    char out_path[192];
+    if (target == R50_SAVELOAD_TARGET_SLOT2_SCRATCH ||
+        target == R50_SAVELOAD_TARGET_SLOT1_TIER0_VAULT) {
+        snprintf(out_path, sizeof(out_path),
+                 "%s/PRIVATE/SONY/PRO/CAMERA/ILME-FX3/CAMSET%02u.DAT",
+                 base_dir, camset_index);
+    } else if (target == R50_SAVELOAD_TARGET_CLOUD_PRIVATE) {
+        snprintf(out_path, sizeof(out_path), "%s/c3_portal_cloud_private.dat", base_dir);
+    } else if (target == R50_SAVELOAD_TARGET_CLOUD_SHARE) {
+        snprintf(out_path, sizeof(out_path), "%s/c3_portal_cloud_share.dat", base_dir);
+    } else {
+        return -EINVAL;
+    }
+    return r29_write_all_fsync(out_path, (const uint8_t *)&blob, sizeof(blob), 0644);
+}
+
+__attribute__((noinline)) static int r50_load_settings_from_file(
+    const char *path,
+    r50_camera_body_regs_t *body
+) {
+    if (!path || !body) return -EINVAL;
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) return -errno;
+    r50_camset_blob_t blob;
+    ssize_t n = read(fd, &blob, sizeof(blob));
+    close(fd);
+    if (n != (ssize_t)sizeof(blob)) return -EINVAL;
+    if (memcmp(blob.magic, "SONYDAT", 7U) != 0) return -EINVAL;
+    /* Strict same-model lock: reject ILME-FX6 / ILME-FX30 or any non-ILME-FX3 .DAT */
+    if (strcmp(blob.model_id, "ILME-FX3") != 0) {
+        return -EINVAL;
+    }
+    /* Apply ONLY allowed shooting/audio registers; NEVER touch the 8 excluded categories! */
+    body->shoe_audio_set = blob.shoe_audio_set;
+    body->wind_noise_reduct = blob.wind_noise_reduct;
+    body->emphasized_rec_display = blob.emphasized_rec_display;
+    body->rec_frame_rate_fps = blob.rec_frame_rate_fps;
+    return 0;
+}
+
+static unsigned int r50_scan_blob_for_secrets(const uint8_t *buf, size_t len) {
+    static const char * const k_forbidden_tokens[7] = {
+        "IPTC_BODY",
+        "COPYRIGHT_STUDIO",
+        "FTP_SECRET",
+        "RTMPS_LIVE",
+        "WPA3_PSK",
+        "TLS_CERT",
+        "\xa0\xa1\xa2\xa3"
+    };
+    unsigned int hits = 0U;
+    for (size_t t = 0U; t < 7U; t++) {
+        size_t tlen = strlen(k_forbidden_tokens[t]);
+        if (tlen == 0U || len < tlen) continue;
+        for (size_t off = 0U; off + tlen <= len; off++) {
+            if (memcmp(buf + off, k_forbidden_tokens[t], tlen) == 0) {
+                hits++;
+                break;
+            }
+        }
+    }
+    /* Also verify zero Custom WB Kelvin u32 values leaked into zero_excluded_pad */
+    if (len >= sizeof(r50_camset_blob_t)) {
+        const r50_camset_blob_t *b = (const r50_camset_blob_t *)buf;
+        for (size_t i = 0U; i < sizeof(b->zero_excluded_pad); i++) {
+            if (b->zero_excluded_pad[i] != 0U) {
+                hits++;
+                break;
+            }
+        }
+    }
+    return hits;
+}
+
+static int run_r50_saveload_c3_vault_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r50_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_slot2_scratch", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_c3_cloud", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_cnflasha_ro", 0755) != 0) {
+        return 248;
+    }
+    (void)umount("/mnt/r50_slot1_vault");
+    (void)umount("/mnt/r50_slot2_scratch");
+    (void)umount("/mnt/r50_c3_cloud");
+    (void)umount("/mnt/r50_surfaces");
+    (void)umount("/mnt/r50_p2_ro");
+    (void)umount("/mnt/r50_cnflasha_ro");
+
+    if (mount("tmpfs", "/mnt/r50_slot1_vault", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r50_slot2_scratch", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r50_c3_cloud", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r50_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r50_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r50_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 248;
+    }
+
+    if (r33_mkdir_p("/mnt/r50_slot1_vault/PRIVATE/SONY/PRO/CAMERA/ILME-FX3", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r50_slot2_scratch/PRIVATE/SONY/PRO/CAMERA/ILME-FX3", 0755) != 0) {
+        return 248;
+    }
+
+    /* Seed Slot 1 Tier-0 vault baseline CAMSET01.DAT (with 24fps, Shoe Audio 24bit 2ch) + 16 H0 surfaces */
+    r50_camera_body_regs_t vault_seed_regs;
+    r50_seed_body_registers(&vault_seed_regs);
+    vault_seed_regs.shoe_audio_set = R50_SHOE_AUDIO_48K_24BIT_2CH;
+    vault_seed_regs.wind_noise_reduct = R50_WIND_NOISE_OFF;
+    vault_seed_regs.emphasized_rec_display = 1;
+    vault_seed_regs.rec_frame_rate_fps = 24;
+
+    r50_camset_blob_t slot1_blob;
+    (void)r50_serialize_camset_filtered(&vault_seed_regs, 1U, &slot1_blob);
+    const char *slot1_camset_path =
+        "/mnt/r50_slot1_vault/PRIVATE/SONY/PRO/CAMERA/ILME-FX3/CAMSET01.DAT";
+    if (r29_write_all_fsync(slot1_camset_path, (const uint8_t *)&slot1_blob, sizeof(slot1_blob), 0444) != 0) {
+        return 248;
+    }
+
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex(slot1_camset_path, pre_slot1_sha, &vbytes) != 0) {
+        return 248;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 37U + i * 19U + 0x50U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r50_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return 248;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 31U + 0x52U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 59U + 0x25U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r50_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r50_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 248;
+    }
+
+    /* Lock Slot 1 Tier-0 vault, H0 surfaces, p2, and cnflasha read-only */
+    if (mount(NULL, "/mnt/r50_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r50_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r50_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r50_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 248;
+    }
+
+    /* 1. Exercise CAMSET01.DAT .. CAMSET10.DAT on Slot 2 scratch + out-of-range slot rejection */
+    r50_camera_body_regs_t body_orig;
+    r50_seed_body_registers(&body_orig);
+
+    int invalid_slot0_rc = r50_save_settings_to_target(
+        &body_orig, R50_SAVELOAD_TARGET_SLOT2_SCRATCH, 0, 0U, "/mnt/r50_slot2_scratch");
+    int invalid_slot11_rc = r50_save_settings_to_target(
+        &body_orig, R50_SAVELOAD_TARGET_SLOT2_SCRATCH, 0, 11U, "/mnt/r50_slot2_scratch");
+    int invalid_camset_slot_reject_rc =
+        (invalid_slot0_rc == -EINVAL && invalid_slot11_rc == -EINVAL) ? -EINVAL : 0;
+
+    int camset_10slots_verified = 0;
+    unsigned int saved_payload_secret_hits = 0U;
+    for (uint32_t idx = 1U; idx <= 10U; idx++) {
+        if (r50_save_settings_to_target(
+                &body_orig, R50_SAVELOAD_TARGET_SLOT2_SCRATCH, 0, idx, "/mnt/r50_slot2_scratch") == 0) {
+            char cpath[192];
+            snprintf(cpath, sizeof(cpath),
+                     "/mnt/r50_slot2_scratch/PRIVATE/SONY/PRO/CAMERA/ILME-FX3/CAMSET%02u.DAT", idx);
+            int fd = open(cpath, O_RDONLY);
+            if (fd >= 0) {
+                uint8_t raw[sizeof(r50_camset_blob_t)];
+                ssize_t rn = read(fd, raw, sizeof(raw));
+                close(fd);
+                if (rn == (ssize_t)sizeof(raw)) {
+                    saved_payload_secret_hits += r50_scan_blob_for_secrets(raw, sizeof(raw));
+                    camset_10slots_verified++;
+                }
+            }
+        }
+    }
+    int slot2_scratch_camset_ok = (camset_10slots_verified == 10) ? 1 : 0;
+
+    /* 2. Exercise Cloud(Private) & Cloud(Share) (Creators' Cloud / C3 Portal Ver. 4.00+) */
+    int cloud_2targets_verified = 0;
+    const r50_saveload_target_t k_cloud_targets[2] = {
+        R50_SAVELOAD_TARGET_CLOUD_PRIVATE,
+        R50_SAVELOAD_TARGET_CLOUD_SHARE
+    };
+    const char * const k_cloud_files[2] = {
+        "/mnt/r50_c3_cloud/c3_portal_cloud_private.dat",
+        "/mnt/r50_c3_cloud/c3_portal_cloud_share.dat"
+    };
+    for (size_t c = 0U; c < 2U; c++) {
+        if (r50_save_settings_to_target(&body_orig, k_cloud_targets[c], 0, 0U, "/mnt/r50_c3_cloud") == 0) {
+            int fd = open(k_cloud_files[c], O_RDONLY);
+            if (fd >= 0) {
+                uint8_t raw[sizeof(r50_camset_blob_t)];
+                ssize_t rn = read(fd, raw, sizeof(raw));
+                close(fd);
+                if (rn == (ssize_t)sizeof(raw)) {
+                    saved_payload_secret_hits += r50_scan_blob_for_secrets(raw, sizeof(raw));
+                    cloud_2targets_verified++;
+                }
+            }
+        }
+    }
+
+    /* 3. Cross-model firewall: ILME-FX6 & ILME-FX30 .DAT files rejected with -EINVAL */
+    r50_camset_blob_t fx6_blob, fx30_blob;
+    (void)r50_serialize_camset_filtered(&body_orig, 1U, &fx6_blob);
+    snprintf(fx6_blob.model_id, sizeof(fx6_blob.model_id), "ILME-FX6");
+    (void)r50_serialize_camset_filtered(&body_orig, 1U, &fx30_blob);
+    snprintf(fx30_blob.model_id, sizeof(fx30_blob.model_id), "ILME-FX30");
+
+    const char *fx6_dat_path = "/mnt/r50_slot2_scratch/FX6_FOREIGN.DAT";
+    const char *fx30_dat_path = "/mnt/r50_slot2_scratch/FX30_FOREIGN.DAT";
+    (void)r29_write_all_fsync(fx6_dat_path, (const uint8_t *)&fx6_blob, sizeof(fx6_blob), 0644);
+    (void)r29_write_all_fsync(fx30_dat_path, (const uint8_t *)&fx30_blob, sizeof(fx30_blob), 0644);
+
+    r50_camera_body_regs_t body_target;
+    r50_seed_body_registers(&body_target);
+    int fx6_dat_reject_rc = r50_load_settings_from_file(fx6_dat_path, &body_target);
+    int fx30_dat_reject_rc = r50_load_settings_from_file(fx30_dat_path, &body_target);
+    unsigned int cross_model_loads_accepted =
+        ((fx6_dat_reject_rc == 0) ? 1U : 0U) + ((fx30_dat_reject_rc == 0) ? 1U : 0U);
+
+    /* 4. Slot-1 Tier-0 Vault Firewall: block [Save] (-EACCES & -EROFS, slot1_camset_writes == 0)
+     *    while allowing O_RDONLY Slot-1 [Load] and preserving all 8 excluded register categories */
+    int slot1_save_blocked_rc = r50_save_settings_to_target(
+        &body_orig, R50_SAVELOAD_TARGET_SLOT1_TIER0_VAULT, 1, 1U, "/mnt/r50_slot1_vault");
+    errno = 0;
+    int s1_rw_fd = open(slot1_camset_path, O_RDWR);
+    int slot1_ro_kernel_rc = (s1_rw_fd >= 0) ? (close(s1_rw_fd), 0) : -errno;
+    unsigned int slot1_camset_writes = (slot1_save_blocked_rc == 0 || slot1_ro_kernel_rc == 0) ? 1U : 0U;
+
+    /* Poison zero_excluded_pad on a Cloud(Share) file to prove [Load] never overwrites excluded items */
+    r50_camset_blob_t poisoned_share;
+    (void)r50_serialize_camset_filtered(&vault_seed_regs, 0U, &poisoned_share);
+    memset(poisoned_share.zero_excluded_pad, 0xEE, sizeof(poisoned_share.zero_excluded_pad));
+    const char *poisoned_share_path = "/mnt/r50_c3_cloud/c3_portal_poisoned_share.dat";
+    (void)r29_write_all_fsync(
+        poisoned_share_path, (const uint8_t *)&poisoned_share, sizeof(poisoned_share), 0644);
+
+    r50_seed_body_registers(&body_target);
+    int slot1_readonly_load_rc = r50_load_settings_from_file(slot1_camset_path, &body_target);
+    int slot1_readonly_load_ok =
+        (slot1_readonly_load_rc == 0 &&
+         body_target.shoe_audio_set == R50_SHOE_AUDIO_48K_24BIT_2CH &&
+         body_target.wind_noise_reduct == R50_WIND_NOISE_OFF &&
+         body_target.emphasized_rec_display == 1 &&
+         body_target.rec_frame_rate_fps == 24) ? 1 : 0;
+
+    /* Also load poisoned Cloud(Share) & Slot 2 CAMSET10.DAT and verify 8/8 excluded categories untouched */
+    int share_load_rc = r50_load_settings_from_file(poisoned_share_path, &body_target);
+    int slot2_roundtrip_rc = r50_load_settings_from_file(
+        "/mnt/r50_slot2_scratch/PRIVATE/SONY/PRO/CAMERA/ILME-FX3/CAMSET10.DAT", &body_target);
+    int allowed_regs_roundtrip_ok =
+        (share_load_rc == 0 &&
+         slot2_roundtrip_rc == 0 &&
+         body_target.shoe_audio_set == R50_SHOE_AUDIO_48K_24BIT_4CH &&
+         body_target.wind_noise_reduct == R50_WIND_NOISE_ON &&
+         body_target.emphasized_rec_display == 0 &&
+         body_target.rec_frame_rate_fps == 60) ? 1 : 0;
+
+    int custom_wb_3regs_preserved = 0;
+    for (size_t w = 0U; w < 3U; w++) {
+        if (body_target.custom_wb_kelvin[w] == body_orig.custom_wb_kelvin[w]) {
+            custom_wb_3regs_preserved++;
+        }
+    }
+
+    int excluded_8categories_verified = 0;
+    if (strcmp(body_target.iptc_info, body_orig.iptc_info) == 0) excluded_8categories_verified++;
+    if (strcmp(body_target.copyright_owner, body_orig.copyright_owner) == 0) excluded_8categories_verified++;
+    if (custom_wb_3regs_preserved == 3) excluded_8categories_verified++;
+    if (memcmp(body_target.face_memory_digest, body_orig.face_memory_digest,
+               sizeof(body_orig.face_memory_digest)) == 0) excluded_8categories_verified++;
+    if (strcmp(body_target.ftp_account_secret, body_orig.ftp_account_secret) == 0) excluded_8categories_verified++;
+    if (strcmp(body_target.streaming_rtmp_key, body_orig.streaming_rtmp_key) == 0) excluded_8categories_verified++;
+    if (strcmp(body_target.wifi_ssid_psk, body_orig.wifi_ssid_psk) == 0) excluded_8categories_verified++;
+    if (strcmp(body_target.tls_client_cert_id, body_orig.tls_client_cert_id) == 0) excluded_8categories_verified++;
+
+    unsigned int loaded_excluded_overwrites = (unsigned int)(8 - excluded_8categories_verified);
+    unsigned int excluded_leaks = saved_payload_secret_hits + loaded_excluded_overwrites;
+
+    if (sha256_file_hex(slot1_camset_path, post_slot1_sha, &vbytes) != 0) {
+        return 248;
+    }
+    int slot1_vault_sha256_match = (strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    /* 5. Read-only p2 & cnflasha, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r50_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+
+    errno = 0;
+    int cn_fd = open("/mnt/r50_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r50_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r50_slot1_vault");
+    (void)umount("/mnt/r50_slot2_scratch");
+    (void)umount("/mnt/r50_c3_cloud");
+    (void)umount("/mnt/r50_p2_ro");
+    (void)umount("/mnt/r50_cnflasha_ro");
+    (void)umount("/mnt/r50_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (camset_10slots_verified == 10 &&
+              invalid_camset_slot_reject_rc == -EINVAL &&
+              fx6_dat_reject_rc == -EINVAL &&
+              fx30_dat_reject_rc == -EINVAL &&
+              cross_model_loads_accepted == 0U &&
+              cloud_2targets_verified == 2 &&
+              allowed_regs_roundtrip_ok == 1 &&
+              excluded_8categories_verified == 8 &&
+              custom_wb_3regs_preserved == 3 &&
+              saved_payload_secret_hits == 0U &&
+              loaded_excluded_overwrites == 0U &&
+              excluded_leaks == 0U &&
+              slot1_save_blocked_rc == -EACCES &&
+              slot1_ro_kernel_rc == -EROFS &&
+              slot1_camset_writes == 0U &&
+              slot1_vault_sha256_match == 1 &&
+              slot1_readonly_load_rc == 0 &&
+              slot1_readonly_load_ok == 1 &&
+              slot2_scratch_camset_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R50_SAVELOAD_C3_VAULT camset_10slots_verified=%d "
+            "invalid_camset_slot_reject_rc=%d fx6_dat_reject_rc=%d fx30_dat_reject_rc=%d "
+            "cross_model_loads_accepted=%u cloud_2targets_verified=%d "
+            "allowed_regs_roundtrip_ok=%d excluded_8categories_verified=%d "
+            "custom_wb_3regs_preserved=%d saved_payload_secret_hits=%u "
+            "loaded_excluded_overwrites=%u excluded_leaks=%u "
+            "slot1_save_blocked_rc=%d slot1_ro_kernel_rc=%d slot1_camset_writes=%u "
+            "slot1_vault_sha256_match=%d slot1_readonly_load_rc=%d slot1_readonly_load_ok=%d "
+            "slot2_scratch_camset_ok=%d p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "cnflasha_writes=0 dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r50c_ok=%d verify_us=%lld\n",
+            camset_10slots_verified, invalid_camset_slot_reject_rc,
+            fx6_dat_reject_rc, fx30_dat_reject_rc, cross_model_loads_accepted,
+            cloud_2targets_verified, allowed_regs_roundtrip_ok,
+            excluded_8categories_verified, custom_wb_3regs_preserved,
+            saved_payload_secret_hits, loaded_excluded_overwrites, excluded_leaks,
+            slot1_save_blocked_rc, slot1_ro_kernel_rc, slot1_camset_writes,
+            slot1_vault_sha256_match, slot1_readonly_load_rc, slot1_readonly_load_ok,
+            slot2_scratch_camset_ok, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 248;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -16766,6 +17899,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r49-monitor-brightness-h0-h3") == 0) {
         return run_r49_monitor_brightness_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r50-wind-noise-builtin-guard") == 0) {
+        return run_r50_wind_noise_builtin_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r50-saveload-c3-vault-h0-h3") == 0) {
+        return run_r50_saveload_c3_vault_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -16906,6 +18045,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r49", &r49_st) == 0) {
         if (setup_r49_emphasized_rec_grid_hdmi_probe() != 0) {
             return 68;
+        }
+    }
+    struct stat r50_st;
+    if (stat("/etc/fx6_stage_r50", &r50_st) == 0) {
+        if (setup_r50_shoe_audio_4ch_osd_probe() != 0) {
+            return 69;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

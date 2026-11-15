@@ -265,6 +265,32 @@ make verify-coemulation
 make verify-milestone-90
 ```
 
+### 2.8 Milestone Phase 130 — 40-Gate Safety, 13+ Pillar Recovery, 24+ Firmware Auditors, 21-Stage VM, Real-Kernel Multilingual Closures (`Rounds 14/17/19/20..24`) & Live Port `8768` Console (`Phases 109/116/123`)
+
+All Milestone Phase 130 gates execute in **both Local Donor (`os.O_RDONLY`) and Donorless Clean-Room (`FX3_FX6_FORCE_CLEAN_ROOM=1`) modes** in `< 2.5s`, scaling the repository to **`3,743` Local Donor / `3,685` Clean-Room passing tests across all 7 suites** while locking `persistent_emmc_writes_authorized = False`, `hardware_live_attachment_authorized = False`, `otp_fuse_touches = 0`, `rpmb_counter_increments = 0`, and `passive_tx_bytes_emitted = 0`:
+
+```sh
+# 1. Unified 6-Pillar Milestone Phase 130 Master Gate (< 2.5s in BOTH modes)
+make verify-milestone-130
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-130
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-130 --json
+
+# 2. 40-Gate Master Safety Preflight (G01..G40 incl. G33..G40 Salt-Spray/FIZ CoG, HDMI AOC +5V/CFexpress Flush, USB-PD 20V Decoy/Multi-Terminal, Wet MI-Shoe & XLR-H1 Whip Shear/Cage-Twist FFD)
+make verify-40-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-40-gates
+
+# 3. 13-Pillar Recovery Master Suite (Pillars 1..10 + Ph113 A/B Bank & Interrupted OTA + Ph119 SquashFS/hibdrv WBI2 + Ph124 Mask-BootROM USB & JEDEC eMMC BOOT0/BOOT1)
+make verify-13pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-13pillar-recovery
+
+# 4. 24+ Unified Firmware-Lab Auditors, 21-Stage VM Co-Emulation, Fast Composite Gates & Full 7-Suite Audit
+make verify-firmware-lab
+make verify-coemulation
+make verify-fast
+make test
+```
+
 ---
 
 ## 3. Automated BYOF Manifest Auditor (`make verify-byof`)
@@ -539,6 +565,32 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-10pillar-recovery
 make verify-firmware-lab
 make verify-coemulation
 make verify-milestone-90
+```
+
+### 2.8 Milestone Phase 130 — 40 门禁安全、13+ 支柱救砖、24+ 固件审计、21 阶段共仿真、真内核多语言全闭环（`Rounds 14/17/19/20..24`）与 `8768` 交互台（`Phases 109/116/123`）
+
+全部 Milestone Phase 130 门禁均原生支持 **本地 BYOF Donor (`os.O_RDONLY`) 模式** 与 **无供体洁净室 CI 模式 (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**（`< 2.5s`），全仓 `7` 大套件扩展至 **`3,743` 本地供体 / `3,685` 洁净室** 全绿通过，并硬锁 `persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`otp_fuse_touches = 0`、`rpmb_counter_increments = 0` 与 `passive_tx_bytes_emitted = 0`：
+
+```sh
+# 1. Milestone Phase 130 六柱一体化总闸（双模式均 < 2.5s）
+make verify-milestone-130
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-130
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-130 --json
+
+# 2. 40 门禁主安全预检（G01..G40，含 G33..G40 盐雾/无线跟焦 CoG、HDMI AOC +5V/CFexpress 刷写、USB-PD 20V 诱骗/多端接口、湿润热靴与 XLR-H1 甩力/兔笼形变）
+make verify-40-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-40-gates
+
+# 3. 13 支柱救砖恢复主套件（支柱 1..10 + Ph113 A/B 分区断电 OTA + Ph119 SquashFS/hibdrv WBI2 + Ph124 Mask-BootROM USB 与 eMMC BOOT0/BOOT1）
+make verify-13pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-13pillar-recovery
+
+# 4. 24+ 固件实验室审计器、21 阶段 VM 协同仿真、快速组合总闸与全量 7 套件验收
+make verify-firmware-lab
+make verify-coemulation
+make verify-fast
+make test
 ```
 
 ---

@@ -104,10 +104,14 @@ from .wb_color_matrix_and_look_auditor import (
     analyze_wb_color_matrix_and_look,
     wb_color_matrix_and_look_report_to_dict,
 )
+from .xavc_hevc_intra_aces_idt_and_fz100_auditor import (
+    analyze_xavc_hevc_intra_aces_idt_and_fz100,
+    xavc_hevc_intra_aces_idt_and_fz100_report_to_dict,
+)
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all twenty-five clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all twenty-six clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -175,6 +179,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     vp_ledwall_freed = vp_ledwall_ecs_freed_and_artnet_report_to_dict(
         analyze_vp_ledwall_ecs_freed_and_artnet(clean_room=clean_room)
     )
+    xavc_hevc_aces_fz100 = xavc_hevc_intra_aces_idt_and_fz100_report_to_dict(
+        analyze_xavc_hevc_intra_aces_idt_and_fz100(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -202,6 +209,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and uvc_srt_crsdk.get("all_checks_passed")
         and mxf_mp4_tally.get("all_checks_passed")
         and vp_ledwall_freed.get("all_checks_passed")
+        and xavc_hevc_aces_fz100.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -234,17 +242,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "usb_uvc_uac_srt_and_crsdk_ptp_audit": uvc_srt_crsdk,
         "mxf_mp4_essence_ptpv2_and_tally_umd_audit": mxf_mp4_tally,
         "vp_ledwall_ecs_freed_and_artnet_audit": vp_ledwall_freed,
+        "xavc_hevc_intra_aces_idt_and_fz100_audit": xavc_hevc_aces_fz100,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18 + PTPv2 + TSL UMD v5.0 Tally, and Virtual Production LED-Volume Brompton/Megapixel ECS Solver + Wired FreeD D1 LiveLink + P12-Safe Art-Net 4 / sACN Shutter-Sync auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18 + PTPv2 + TSL UMD v5.0 Tally, Virtual Production LED-Volume Brompton/Megapixel ECS Solver + Wired FreeD D1 LiveLink + P12-Safe Art-Net 4 / sACN Shutter-Sync, and BIONZ XR XAVC HS/XAVC S-I + ACES 1.3/2.0 S-Log3/S-Gamut3.Cine IDT + NP-FZ100 InfoLITHIUM C-Pin auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 25 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 26 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -402,6 +411,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_vp.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_vp.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_xaf = sub.add_parser(
+        "audit-xavc-aces-fz100",
+        help="Run Phase 133 BIONZ XR XAVC HS/XAVC S-I/XAVC-I, ACES 1.3/2.0 S-Log3/S-Gamut3.Cine IDT, & NP-FZ100 InfoLITHIUM C-Pin auditor",
+    )
+    p_xaf.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_xaf.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -497,6 +513,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-vp-ledwall-freed":
         payload = vp_ledwall_ecs_freed_and_artnet_report_to_dict(
             analyze_vp_ledwall_ecs_freed_and_artnet(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-xavc-aces-fz100":
+        payload = xavc_hevc_intra_aces_idt_and_fz100_report_to_dict(
+            analyze_xavc_hevc_intra_aces_idt_and_fz100(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

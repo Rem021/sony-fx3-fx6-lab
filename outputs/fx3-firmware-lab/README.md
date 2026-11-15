@@ -123,11 +123,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar B — Wired `FreeD` (`0xD1` 29-Byte UDP Packet with Modulo-256 `0x40 - sum` Checksum) E-Mount 12-Pin Focus/Zoom/Iris -> Unreal Engine `LiveLinkFreeD` Bridge (`P12` Wi-Fi-OFF)**: Encodes and verifies bit-exact 29-byte `0xD1` packets carrying signed 24-bit Pan/Tilt/Roll (`deg * 32768`), signed 24-bit X/Y/Z (`mm * 64`), 24-bit Zoom/Focus encoder ticks, and 16-bit Sony Iris/Frame-Counter spare fields from `libInfraLensCommunicator.so` / `EVENT_REMOTE_ABSOLUTE_FOCUS_POSITION` / `EVENT_REMOTE_ZOOM_POSITION_SETTING` / `EVENT_REMOTE_IRIS_POSITION`, enforcing wired `CDC-NCM` / `RNDIS` transport (`wf12_00342260_risk == 0`) and blocking unchipped lenses lacking external FIZ encoders.
    - **Pillar C — `Art-Net 4` (`OpDmx 0x5000`, `ArtSync 0x5200`, `UDP 6454`) & `sACN` (`ANSI E1.31`, `UDP 5568`, `239.255.x.y`) Lighting-Flash & Frame-Boundary Shutter-Sync Guard (`P12`)**: Synthesizes and verifies bit-exact `Art-Net 4` and `sACN E1.31` packets, enforces multi-universe `ArtSync` / `E1.31` Sync Universe frame latching, and blocks mid-readout rolling-shutter flash tearing across `IMX510` readout windows under strict `P12` Wi-Fi-OFF (`wf12_00342260_risk == 0`).
    - **Pillar D — Volatile RAM Staging & Zero Persistent `eMMC` / Calibration Mutation Proof**: Validates FX3 & FX6 `global.xdb` (`uxa\x07`) read-only and proves `emmc_mutation_bytes == 0`, `calibration_mutation_bytes == 0`, and `persistent_emmc_writes_authorized == False`.
+26. [`fx3_firmware_lab/xavc_hevc_intra_aces_idt_and_fz100_auditor.py`](fx3_firmware_lab/xavc_hevc_intra_aces_idt_and_fz100_auditor.py)
+   - **Pillar A — `BIONZ XR` Hardware Codec Matrix (`FX6 XAVC-I Class 300 MXF` <-> `FX3 XAVC S-I 4K 240..600 Mbps` & `S&Q 120p 1200 Mbps` vs `XAVC HS 4K HEVC 4:2:2 10-bit` Long-GOP VBR/VBV)**: Audits FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, and `.uxc` packs strictly `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback), verifies shared `AVC480_*_H422IP` / `HEVC_3840_2160_M42210P` elementary encoder profiles across `libXavcMp4` vs `libXavcMxf`, enforces `VPG200/VPG400` vs `SDXC V90/V60` speed-class gates, and blocks FX3 internal `25p / 29.97p` `XAVC HS` gaps.
+   - **Pillar B — `ACES 1.3 / 2.0` `S-Log3` Piece-Wise Log<->Linear Transfer (`95 / 420 / 598`, breakpoint `171.2102946929`) & `S-Gamut3 / S-Gamut3.Cine -> AP0 / AP1` `3x3` IDT Matrix Verifier**: Proves exact $C^0$ continuity (`< 1e-6`), `< 1e-11` roundtrip precision, and invertibility (`|det| > 0.50`, inversion residual `< 1e-9`) + `(1.0, 1.0, 1.0)` white-point conservation (`max_whitepoint_error < 1e-4`) across both `BRADFORD` and `CAT02` (`OCIO v2 / CLF` `urn:ampas:aces:transformId:v2.0`) matrices, failing closed on singular or tint-drifted matrices.
+   - **Pillar C — `NP-FZ100` (`7.2 V`, `16.4 Wh`, `2280 mAh`) `C-Pin` `InfoLITHIUM Z` Telemetry vs FX6 `BP-U35/U70` (`14.4 V` / `19.5 V DC IN`) Cross-Rail Isolation**: Audits `appFw.so`, `cpapp-b.bin` (`BATT_AUTH_Snd`, `BATT_STATE1_Snd`, `BATT_STATE2_Snd`, `BATT_TYPE1_Snd`), and `.uxc` authenticity strings (`0x0000e24e`, `0x00006013`), verifying `OEM`, decoded 3P, un-decoded 3P safe degraded mode (no-pct / no-fw-update), and regulated dummy `C`-pin-absent continuation while hard-blocking unmapped FX6 `14.4 V` (`12.0 V` shutdown) comparisons against FX3's `7.2 V` rail and over-voltage dummy couplers.
+   - **Pillar D — Volatile RAM Staging & Zero Persistent `eMMC` / Calibration Mutation Proof**: Validates FX3 & FX6 `global.xdb` (`uxa\x07`) read-only and proves `emmc_mutation_bytes == 0`, `calibration_mutation_bytes == 0`, and `persistent_emmc_writes_authorized == False`.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 25 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 26 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -173,6 +178,8 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-mxf-mp4-tally --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-vp-ledwall-freed --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-vp-ledwall-freed --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xavc-aces-fz100 --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xavc-aces-fz100 --clean-room --json
 
 # Run all unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v

@@ -1445,6 +1445,95 @@ def _cmd_preflight_realhw_bench(
     return 0 if ok else 1
 
 
+def _cmd_preflight_card_insert(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    dry_run_simulated: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    sd_dir: Optional[Path],
+    exfat_vbr: Optional[Path],
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: Optional[str],
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+    battery_soc: float,
+    battery_voltage: float,
+    body_temp_c: float,
+    uart_1v8_attached: bool,
+    vmc_bncm1_attached: bool,
+) -> int:
+    from .realhw_card_insert_readiness_verifier import (
+        build_default_h0_baselines,
+        render_phase186_markdown,
+        run_card_insert_preflight,
+        verify_phase186_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else None
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = run_card_insert_preflight(
+        dry_run_simulated=dry_run_simulated,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        slot1_exfat_vbr_path=exfat_vbr,
+        sd_dir=sd_dir,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        model_id=parsed_model_id,
+        body_fw=body_fw,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+        np_fz100_soc_pct=battery_soc,
+        np_fz100_voltage_v=battery_voltage,
+        body_temp_c=body_temp_c,
+        uart_rx_1v8_attached=uart_1v8_attached,
+        vmc_bncm1_ltc_attached=vmc_bncm1_attached,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase186_markdown(rep), encoding="utf-8")
+    v_res = verify_phase186_report(rep.to_dict())
+    ok = v_res.valid and (
+        (rep.simulated_dry_run and rep.all_4_gates_passed)
+        or rep.card_insert_authorized
+    )
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        summary = (
+            f"go_no_go={rep.go_no_go} "
+            f"mode={rep.verification_mode} "
+            f"dry_run={rep.simulated_dry_run} "
+            f"gates={rep.gates_passed}/{rep.gate_count} "
+            f"card_insert_auth={rep.card_insert_authorized} "
+            f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+            f"spi_nor_auth={rep.spi_nor_write_authorized} "
+            f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+            f"usb_pkts={rep.physical_usb_packets_emitted} "
+            f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+            f"report_sha256={rep.report_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
@@ -1490,6 +1579,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-147", "Verify Milestone Phase 147 6-Pillar Real-Hardware Bench Readiness Master Gate (44-Gate + >=17 Recovery + >=28 Auditors + >=24 VM + Ph136/143 U4/U5/U6/H0==H3 + FX3 7.02 QEMU R28/R29, realhw_milestone147_master_gate_v1)"),
         ("preflight-realhw-bench", "Run Phase 154 100% passive zero-USB-packet physical bench preflight, ioreg USB mode classifier, SD staging verifier & dual-copy FX3RCPT1 Go/No-Go receipt generator"),
         ("verify-milestone-175", "Verify Milestone Phase 175 Grand Unified 6-Pillar Real-Hardware Final Pre-Bench Master Gate (58-Gate + >=22 Recovery + >=36 Auditors + >=30 VM + Ph136/143/154 + FX3 7.02 QEMU R28..R34, realhw_milestone175_master_gate_v1)"),
+        ("preflight-card-insert", "Run Phase 186 host-side final card-insert preflight (Slot-1/2 ExFAT geometry & hygiene, dual-media FX3RCPT1 binding, NP-FZ100/thermal/cable interlock, and EH1..EH3 + H0..H3 dry-run)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -1507,10 +1597,27 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-card-insert":
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 186 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--dry-run-simulated", action="store_true", help="Run full simulated pre-card-insert gates C1..C4 dry-run without authorizing physical card insert")
+            p.add_argument("--sd-dir", type=Path, default=None, help="Candidate Slot-1 ExFAT SD/CFexpress staging root directory to inspect O_RDONLY")
+            p.add_argument("--exfat-vbr", type=Path, default=None, help="Optional path to 512B/6KiB Slot-1 ExFAT boot sector image to audit O_RDONLY")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A (e.g., Host Vault)")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (separate physical device st_dev_b)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default=None, help="Target FX3 body firmware version (must be 7.02, >= 2.04 floor)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
+            p.add_argument("--battery-soc", type=float, default=92.0, help="NP-FZ100 battery state-of-charge percentage (must be >= 80.0)")
+            p.add_argument("--battery-voltage", type=float, default=8.05, help="NP-FZ100 battery voltage in Volts (must be >= 7.6V and <= 8.5V)")
+            p.add_argument("--body-temp-c", type=float, default=29.5, help="Camera body start temperature in Celsius (must be < 45.0C)")
+            p.add_argument("--uart-1v8-attached", action="store_true", help="Indicate 1.8V UART RX triage is attached on Multi-Terminal")
+            p.add_argument("--vmc-bncm1-attached", action="store_true", help="Indicate VMC-BNCM1 LTC cable is attached on Multi-Terminal (blocked if 1.8V UART attached)")
         if cmd_name == "preflight-realhw-bench":
             p.add_argument("--usb-snapshot", type=Path, default=None, help="Path to passive ioreg -p IOUSB -l -w 0 text or XML plist snapshot")
             p.add_argument("--probe-host-usb", action="store_true", help="Run read-only macOS ioreg subprocess capture (zero IOKit handles or USB packets)")
@@ -1762,6 +1869,29 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-card-insert":
+        return _cmd_preflight_card_insert(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.dry_run_simulated,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.sd_dir,
+            args.exfat_vbr,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
+            args.battery_soc,
+            args.battery_voltage,
+            args.body_temp_c,
+            args.uart_1v8_attached,
+            args.vmc_bncm1_attached,
         )
     return 2
 

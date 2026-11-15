@@ -33,6 +33,7 @@ import threading
 import time
 import urllib.parse
 import webbrowser
+import xml.etree.ElementTree as ET
 import zlib
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -1962,6 +1963,631 @@ def validate_cine_exposure_patch(
     return True, updates, None
 
 
+WB_MODES: tuple[str, ...] = (
+    "preset_3200k",
+    "preset_4300k",
+    "preset_5600k",
+    "mem_a",
+    "mem_b",
+    "atw",
+)
+WB_PRESET_KELVIN: dict[str, int] = {
+    "preset_3200k": 3200,
+    "preset_4300k": 4300,
+    "preset_5600k": 5600,
+}
+WB_KELVIN_MIN: int = 2000
+WB_KELVIN_MAX: int = 15000
+WB_KELVIN_STEP: int = 50
+WB_TINT_MIN: int = -99
+WB_TINT_MAX: int = 99
+SHOCKLESS_WB_MODES: tuple[str, ...] = ("off", "1", "2", "3")
+SHOCKLESS_WB_TAU_SEC: dict[str, float] = {"off": 0.0, "1": 0.65, "2": 1.60, "3": 3.20}
+
+BASE_LOOK_VALUES: tuple[str, ...] = (
+    "S-Cinetone",
+    "S-Log3 / S-Gamut3.Cine",
+    "S-Log3 / S-Gamut3",
+    "ITU709",
+    "709(800%)",
+    "HLG Live",
+    "User 3D LUT",
+)
+BASE_LOOK_NLE_TAGS: dict[str, dict[str, Any]] = {
+    "S-Cinetone": {
+        "capture_gamma_equation": "s-cinetone",
+        "capture_color_primaries": "rec709",
+        "cell_lut_idx": 0,
+        "guest_idx": 0,
+    },
+    "S-Log3 / S-Gamut3.Cine": {
+        "capture_gamma_equation": "s-log3-cine",
+        "capture_color_primaries": "s-gamut3-cine",
+        "cell_lut_idx": 1,
+        "guest_idx": 1,
+    },
+    "S-Log3 / S-Gamut3": {
+        "capture_gamma_equation": "s-log3",
+        "capture_color_primaries": "s-gamut3",
+        "cell_lut_idx": 1,
+        "guest_idx": 2,
+    },
+    "ITU709": {
+        "capture_gamma_equation": "rec709",
+        "capture_color_primaries": "rec709",
+        "cell_lut_idx": 2,
+        "guest_idx": 3,
+    },
+    "709(800%)": {
+        "capture_gamma_equation": "rec709-800",
+        "capture_color_primaries": "rec709",
+        "cell_lut_idx": 3,
+        "guest_idx": 4,
+    },
+    "HLG Live": {
+        "capture_gamma_equation": "rec2100-hlg",
+        "capture_color_primaries": "rec2020",
+        "cell_lut_idx": 2,
+        "guest_idx": 5,
+    },
+    "User 3D LUT": {
+        "capture_gamma_equation": "s-log3-cine",
+        "capture_color_primaries": "s-gamut3-cine",
+        "cell_lut_idx": 4,
+        "guest_idx": 6,
+    },
+}
+_BASE_LOOK_ALIASES: dict[str, str] = {
+    "s-cinetone": "S-Cinetone",
+    "scinetone": "S-Cinetone",
+    "s-log3 / s-gamut3.cine": "S-Log3 / S-Gamut3.Cine",
+    "s-log3.cine / s-gamut3.cine": "S-Log3 / S-Gamut3.Cine",
+    "s-log3.cine": "S-Log3 / S-Gamut3.Cine",
+    "slog3.cine": "S-Log3 / S-Gamut3.Cine",
+    "s-log3 / s-gamut3": "S-Log3 / S-Gamut3",
+    "s-log3": "S-Log3 / S-Gamut3",
+    "slog3": "S-Log3 / S-Gamut3",
+    "itu709": "ITU709",
+    "s709": "ITU709",
+    "709(800%)": "709(800%)",
+    "r709 (800%)": "709(800%)",
+    "709_800": "709(800%)",
+    "hlg live": "HLG Live",
+    "hlg_live": "HLG Live",
+    "user 3d lut": "User 3D LUT",
+    "user_3d_lut": "User 3D LUT",
+    "user lut": "User 3D LUT",
+}
+
+CAM_POS_VALUES: tuple[str, ...] = ("C", "L", "R")
+DUAL_SLOT_MODES: tuple[str, ...] = ("simul", "relay", "sort_main_proxy", "single_slot_a")
+PROXY_MODES: tuple[str, ...] = (
+    "xavc_hs_1080p_16m",
+    "xavc_hs_1080p_9m",
+    "xavc_s_720p_6m",
+    "off",
+)
+PROXY_MODE_DETAILS: dict[str, dict[str, Any]] = {
+    "xavc_hs_1080p_16m": {"codec": "XAVC HS (HEVC)", "resolution": "1920x1080", "bit_depth": 10, "bitrate_mbps": 16.0},
+    "xavc_hs_1080p_9m": {"codec": "XAVC HS (HEVC)", "resolution": "1920x1080", "bit_depth": 10, "bitrate_mbps": 9.0},
+    "xavc_s_720p_6m": {"codec": "XAVC S (H.264)", "resolution": "1280x720", "bit_depth": 8, "bitrate_mbps": 6.0},
+    "off": {"codec": "Off", "resolution": None, "bit_depth": None, "bitrate_mbps": 0.0},
+}
+DEFAULT_CLIP_DATE_YYMMDD: str = "261114"
+DEFAULT_CLIP_CAM_UID: str = "FX3B"
+NRTM_NAMESPACE_V220: str = "urn:schemas-professionalDisc:nonRealTimeMeta:ver.2.20"
+NRTM_LIB_NAMESPACE_V220: str = "urn:schemas-professionalDisc:lib:ver.2.20"
+
+COLOR_AND_MEDIA_DEFAULTS: dict[str, Any] = {
+    "wb_mode": "preset_5600k",
+    "kelvin": 5600,
+    "tint_gm": 0,
+    "shockless_wb": "off",
+    "base_look": "S-Cinetone",
+    "cam_id": "A",
+    "reel_num": 1,
+    "cam_pos": "C",
+    "clip_seq": 1,
+    "dual_slot_mode": "simul",
+    "proxy_mode": "xavc_hs_1080p_16m",
+}
+
+COLOR_AND_MEDIA_SPECS: dict[str, Any] = {
+    "wb_modes": list(WB_MODES),
+    "wb_preset_kelvin": dict(WB_PRESET_KELVIN),
+    "kelvin_range": [WB_KELVIN_MIN, WB_KELVIN_MAX],
+    "kelvin_step": WB_KELVIN_STEP,
+    "tint_gm_range": [WB_TINT_MIN, WB_TINT_MAX],
+    "shockless_wb_modes": list(SHOCKLESS_WB_MODES),
+    "shockless_wb_tau_sec": dict(SHOCKLESS_WB_TAU_SEC),
+    "fx3_wb_switch_soft_mapped": True,
+    "base_looks": list(BASE_LOOK_VALUES),
+    "base_look_nle_tags": {
+        k: {
+            "capture_gamma_equation": v["capture_gamma_equation"],
+            "capture_color_primaries": v["capture_color_primaries"],
+        }
+        for k, v in BASE_LOOK_NLE_TAGS.items()
+    },
+    "cam_id_range": ["A", "Z"],
+    "reel_num_range": [1, 999],
+    "cam_pos_values": list(CAM_POS_VALUES),
+    "clip_seq_range": [1, 999],
+    "dual_slot_modes": list(DUAL_SLOT_MODES),
+    "proxy_modes": list(PROXY_MODES),
+    "nrtm_namespace": NRTM_NAMESPACE_V220,
+}
+
+
+def compute_color_and_media_derived(
+    state: dict[str, Any],
+    *,
+    sq_enabled: bool = False,
+    active_user_lut: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Compute NLE color tags, Cinema Line clip/proxy names, and S&Q proxy suspension."""
+    wb_mode = str(state["wb_mode"])
+    kelvin = WB_PRESET_KELVIN[wb_mode] if wb_mode in WB_PRESET_KELVIN else int(state["kelvin"])
+    tint_gm = int(state["tint_gm"])
+    shockless_wb = str(state["shockless_wb"])
+    base_look = str(state["base_look"])
+    look_meta = BASE_LOOK_NLE_TAGS[base_look]
+
+    cam_id = str(state["cam_id"])
+    reel_num = int(state["reel_num"])
+    cam_pos = str(state["cam_pos"])
+    clip_seq = int(state["clip_seq"])
+    dual_slot_mode = str(state["dual_slot_mode"])
+    proxy_mode = str(state["proxy_mode"])
+
+    clip_id = f"{cam_id}{reel_num:03d}{cam_pos}{clip_seq:03d}"
+    clip_basename = f"{clip_id}_{DEFAULT_CLIP_DATE_YYMMDD}_{DEFAULT_CLIP_CAM_UID}"
+    main_clip_name = f"{clip_basename}.MP4"
+    proxy_clip_name = f"{clip_basename}S03.MP4"
+    sidecar_xml_name = f"{clip_basename}M01.XML"
+
+    proxy_requested = proxy_mode != "off"
+    proxy_auto_suspended_by_sq = bool(sq_enabled)
+    proxy_effective_active = bool(proxy_requested and not sq_enabled)
+
+    return {
+        "wb_mode": wb_mode,
+        "kelvin": kelvin,
+        "kelvin_locked": wb_mode in WB_PRESET_KELVIN,
+        "tint_gm": tint_gm,
+        "wb_display": f"{kelvin}K{tint_gm:+d}",
+        "shockless_wb": shockless_wb,
+        "shockless_tau_sec": SHOCKLESS_WB_TAU_SEC[shockless_wb],
+        "fx3_wb_switch_soft_mapped": True,
+        "base_look": base_look,
+        "capture_gamma_equation": look_meta["capture_gamma_equation"],
+        "capture_color_primaries": look_meta["capture_color_primaries"],
+        "active_user_lut_slot": active_user_lut.get("slot") if (base_look == "User 3D LUT" and active_user_lut) else None,
+        "active_user_lut": dict(active_user_lut) if (base_look == "User 3D LUT" and active_user_lut) else None,
+        "cam_id": cam_id,
+        "reel_num": reel_num,
+        "cam_pos": cam_pos,
+        "clip_seq": clip_seq,
+        "clip_id": clip_id,
+        "clip_basename": clip_basename,
+        "main_clip_name": main_clip_name,
+        "proxy_clip_name": proxy_clip_name,
+        "proxy_active_clip_name": proxy_clip_name if proxy_effective_active else None,
+        "sidecar_xml_name": sidecar_xml_name,
+        "main_relpath": f"M4ROOT/CLIP/{main_clip_name}",
+        "proxy_relpath": f"M4ROOT/SUB/{proxy_clip_name}" if proxy_effective_active else None,
+        "sidecar_xml_relpath": f"M4ROOT/CLIP/{sidecar_xml_name}",
+        "dual_slot_mode": dual_slot_mode,
+        "proxy_mode": proxy_mode,
+        "proxy_detail": dict(PROXY_MODE_DETAILS[proxy_mode]),
+        "proxy_requested": proxy_requested,
+        "proxy_effective_active": proxy_effective_active,
+        "proxy_auto_suspended_by_sq": proxy_auto_suspended_by_sq,
+    }
+
+
+def format_wb_media_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 73 WB_MEDIA host<->guest protocol string."""
+    return (
+        f"WB_MEDIA wb={state['wb_mode']}:{state['kelvin']}K:{state['tint_gm']:+d} "
+        f"shockless={state['shockless_wb']} look=\"{state['base_look']}\" "
+        f"gamma={state['capture_gamma_equation']} primaries={state['capture_color_primaries']} "
+        f"clip={state['main_clip_name']} slot={state['dual_slot_mode']} "
+        f"proxy={state['proxy_mode']} eff={1 if state['proxy_effective_active'] else 0} "
+        f"sq_susp={1 if state['proxy_auto_suspended_by_sq'] else 0}"
+    )
+
+
+def _parse_strict_int(raw: Any) -> int | None:
+    if isinstance(raw, bool):
+        return None
+    if isinstance(raw, int):
+        return raw
+    if isinstance(raw, float):
+        if not math.isfinite(raw) or not raw.is_integer():
+            return None
+        return int(raw)
+    if isinstance(raw, str):
+        s = raw.strip()
+        if not s:
+            return None
+        if s[0] in ("+", "-"):
+            if len(s) > 1 and s[1:].isdigit():
+                return int(s)
+            return None
+        if s.isdigit():
+            return int(s)
+    return None
+
+
+def validate_color_and_media_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 73 White Balance, Base Look, CamID/Reel & Dual-Slot updates."""
+    if not isinstance(body, dict):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "invalid_color_and_media",
+                "message": "color_and_media payload must be a JSON object",
+            },
+        )
+
+    cur = dict(COLOR_AND_MEDIA_DEFAULTS)
+    if current_state:
+        cur.update(current_state)
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(COLOR_AND_MEDIA_DEFAULTS)
+        cur.update(COLOR_AND_MEDIA_DEFAULTS)
+
+    eff_wb_mode = str(cur.get("wb_mode", "preset_5600k"))
+    if "wb_mode" in body and body["wb_mode"] is not None:
+        raw_wb = body["wb_mode"]
+        if isinstance(raw_wb, bool) or not isinstance(raw_wb, str):
+            return False, {}, {"ok": False, "error": "invalid_wb_mode", "message": f"Invalid wb_mode: {raw_wb!r}"}
+        wb_low = raw_wb.strip().lower()
+        if wb_low not in WB_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_wb_mode",
+                    "message": f"Unsupported wb_mode: {raw_wb!r}",
+                    "allowed": list(WB_MODES),
+                },
+            )
+        eff_wb_mode = wb_low
+        updates["wb_mode"] = eff_wb_mode
+
+    if "kelvin" in body and body["kelvin"] is not None:
+        k_val = _parse_strict_int(body["kelvin"])
+        if k_val is None or k_val < WB_KELVIN_MIN or k_val > WB_KELVIN_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_kelvin",
+                    "message": f"kelvin must be an integer in [{WB_KELVIN_MIN}, {WB_KELVIN_MAX}], got {body['kelvin']!r}",
+                },
+            )
+        if eff_wb_mode in WB_PRESET_KELVIN:
+            updates["kelvin"] = WB_PRESET_KELVIN[eff_wb_mode]
+        else:
+            snapped = int(round(float(k_val) / float(WB_KELVIN_STEP))) * WB_KELVIN_STEP
+            updates["kelvin"] = max(WB_KELVIN_MIN, min(WB_KELVIN_MAX, snapped))
+    elif eff_wb_mode in WB_PRESET_KELVIN:
+        updates["kelvin"] = WB_PRESET_KELVIN[eff_wb_mode]
+
+    if "tint_gm" in body and body["tint_gm"] is not None:
+        t_val = _parse_strict_int(body["tint_gm"])
+        if t_val is None or t_val < WB_TINT_MIN or t_val > WB_TINT_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_tint_gm",
+                    "message": f"tint_gm must be an integer in [{WB_TINT_MIN}, {WB_TINT_MAX}], got {body['tint_gm']!r}",
+                },
+            )
+        updates["tint_gm"] = t_val
+
+    if "shockless_wb" in body and body["shockless_wb"] is not None:
+        raw_sl = body["shockless_wb"]
+        if isinstance(raw_sl, bool):
+            return False, {}, {"ok": False, "error": "invalid_shockless_wb", "message": "shockless_wb cannot be bool"}
+        if isinstance(raw_sl, int) and raw_sl in (1, 2, 3):
+            sl_norm = str(raw_sl)
+        elif isinstance(raw_sl, str):
+            sl_norm = raw_sl.strip().lower()
+        else:
+            sl_norm = ""
+        if sl_norm not in SHOCKLESS_WB_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_shockless_wb",
+                    "message": f"Unsupported shockless_wb: {raw_sl!r}",
+                    "allowed": list(SHOCKLESS_WB_MODES),
+                },
+            )
+        updates["shockless_wb"] = sl_norm
+
+    if "base_look" in body and body["base_look"] is not None:
+        raw_lk = body["base_look"]
+        if isinstance(raw_lk, bool) or not isinstance(raw_lk, str):
+            return False, {}, {"ok": False, "error": "invalid_base_look", "message": f"Invalid base_look: {raw_lk!r}"}
+        lk_key = raw_lk.strip().lower()
+        lk_norm = _BASE_LOOK_ALIASES.get(lk_key)
+        if lk_norm is None:
+            for cand in BASE_LOOK_VALUES:
+                if cand.lower() == lk_key:
+                    lk_norm = cand
+                    break
+        if lk_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_base_look",
+                    "message": f"Unsupported base_look: {raw_lk!r}",
+                    "allowed": list(BASE_LOOK_VALUES),
+                },
+            )
+        updates["base_look"] = lk_norm
+
+    if "user_lut_slot" in body and body["user_lut_slot"] is not None:
+        raw_us = body["user_lut_slot"]
+        if isinstance(raw_us, bool) or not isinstance(raw_us, str):
+            return False, {}, {"ok": False, "error": "invalid_user_lut_slot", "message": f"Invalid user_lut_slot: {raw_us!r}"}
+        norm_us = FX6LiveGpe0Session._normalize_lut_slot(raw_us)
+        if norm_us is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_user_lut_slot",
+                    "message": f"Unsupported user_lut_slot: {raw_us!r} (expected User1..User4)",
+                },
+            )
+        updates["user_lut_slot"] = norm_us
+        if "base_look" not in updates:
+            updates["base_look"] = "User 3D LUT"
+
+    if "cam_id" in body and body["cam_id"] is not None:
+        raw_cid = body["cam_id"]
+        if isinstance(raw_cid, bool) or not isinstance(raw_cid, str):
+            return False, {}, {"ok": False, "error": "invalid_cam_id", "message": f"Invalid cam_id: {raw_cid!r}"}
+        cid = raw_cid.strip().upper()
+        if len(cid) != 1 or not ("A" <= cid <= "Z"):
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_cam_id", "message": f"cam_id must be a single letter A..Z, got {raw_cid!r}"},
+            )
+        updates["cam_id"] = cid
+
+    if "reel_num" in body and body["reel_num"] is not None:
+        r_val = _parse_strict_int(body["reel_num"])
+        if r_val is None or r_val < 1 or r_val > 999:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_reel_num", "message": f"reel_num must be in [1, 999], got {body['reel_num']!r}"},
+            )
+        updates["reel_num"] = r_val
+
+    if "cam_pos" in body and body["cam_pos"] is not None:
+        raw_cp = body["cam_pos"]
+        if isinstance(raw_cp, bool) or not isinstance(raw_cp, str):
+            return False, {}, {"ok": False, "error": "invalid_cam_pos", "message": f"Invalid cam_pos: {raw_cp!r}"}
+        cp_up = raw_cp.strip().upper()
+        if cp_up not in CAM_POS_VALUES:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_cam_pos", "message": f"cam_pos must be one of {CAM_POS_VALUES}, got {raw_cp!r}"},
+            )
+        updates["cam_pos"] = cp_up
+
+    if "clip_seq" in body and body["clip_seq"] is not None:
+        c_val = _parse_strict_int(body["clip_seq"])
+        if c_val is None or c_val < 1 or c_val > 999:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_clip_seq", "message": f"clip_seq must be in [1, 999], got {body['clip_seq']!r}"},
+            )
+        updates["clip_seq"] = c_val
+
+    if "dual_slot_mode" in body and body["dual_slot_mode"] is not None:
+        raw_ds = body["dual_slot_mode"]
+        if isinstance(raw_ds, bool) or not isinstance(raw_ds, str):
+            return False, {}, {"ok": False, "error": "invalid_dual_slot_mode", "message": f"Invalid dual_slot_mode: {raw_ds!r}"}
+        ds_low = raw_ds.strip().lower()
+        if ds_low not in DUAL_SLOT_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_dual_slot_mode",
+                    "message": f"Unsupported dual_slot_mode: {raw_ds!r}",
+                    "allowed": list(DUAL_SLOT_MODES),
+                },
+            )
+        updates["dual_slot_mode"] = ds_low
+
+    if "proxy_mode" in body and body["proxy_mode"] is not None:
+        raw_pm = body["proxy_mode"]
+        if isinstance(raw_pm, bool) or not isinstance(raw_pm, str):
+            return False, {}, {"ok": False, "error": "invalid_proxy_mode", "message": f"Invalid proxy_mode: {raw_pm!r}"}
+        pm_low = raw_pm.strip().lower()
+        if pm_low not in PROXY_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_proxy_mode",
+                    "message": f"Unsupported proxy_mode: {raw_pm!r}",
+                    "allowed": list(PROXY_MODES),
+                },
+            )
+        updates["proxy_mode"] = pm_low
+
+    return True, updates, None
+
+
+def build_nrtm_xml_sidecar(
+    cine_exposure: dict[str, Any],
+    color_and_media: dict[str, Any],
+    *,
+    active_user_lut: dict[str, Any] | None = None,
+) -> str:
+    """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
+    ET.register_namespace("", NRTM_NAMESPACE_V220)
+    ET.register_namespace("lib", NRTM_LIB_NAMESPACE_V220)
+
+    def _q(tag: str) -> str:
+        return f"{{{NRTM_NAMESPACE_V220}}}{tag}"
+
+    clip_id = str(color_and_media.get("clip_id", "A001C001"))
+    umid_ref = f"060A2B340101010501010D4313000000{clip_id}{DEFAULT_CLIP_DATE_YYMMDD}FX"
+    creation_ts = "2026-11-14T16:00:00-08:00"
+    duration_frames = max(240, int(cine_exposure.get("rec_tc_frames", 0)))
+
+    base_fps = float(cine_exposure.get("base_fps", 23.98))
+    eff_fps = float(cine_exposure.get("effective_fps", base_fps))
+    fmt_fps_str = f"{base_fps:.2f}p"
+    cap_fps_str = f"{eff_fps:.2f}p"
+
+    ei_index = int(cine_exposure.get("ei_index", 800))
+    cine_ei_base = int(cine_exposure.get("cine_ei_base", "800"))
+    ei_offset_stops = round(math.log2(float(ei_index) / float(cine_ei_base)), 4)
+
+    gamma_eq = str(color_and_media.get("capture_gamma_equation", "s-cinetone"))
+    primaries = str(color_and_media.get("capture_color_primaries", "rec709"))
+    base_look = str(color_and_media.get("base_look", "S-Cinetone"))
+
+    if base_look == "User 3D LUT" and active_user_lut:
+        lut_slot = str(active_user_lut.get("slot", "User1"))
+        monitoring_lut_cube = f"{lut_slot}.cube"
+        monitoring_lut_name = str(active_user_lut.get("name", monitoring_lut_cube))
+        monitoring_lut_sha = str(active_user_lut.get("sha256") or "none")
+    elif active_user_lut and active_user_lut.get("uploaded"):
+        lut_slot = str(active_user_lut.get("slot", "User1"))
+        monitoring_lut_cube = f"{lut_slot}.cube"
+        monitoring_lut_name = str(active_user_lut.get("name", monitoring_lut_cube))
+        monitoring_lut_sha = str(active_user_lut.get("sha256") or "none")
+    else:
+        monitoring_lut_cube = "S709.cube" if gamma_eq.startswith("s-log3") else "R709.cube"
+        monitoring_lut_name = base_look
+        monitoring_lut_sha = "none"
+
+    root = ET.Element(_q("NonRealTimeMeta"), {"lastUpdate": creation_ts})
+    ET.SubElement(root, _q("TargetMaterial"), {"umidRef": umid_ref})
+    ET.SubElement(root, _q("Duration"), {"value": str(duration_frames)})
+    ET.SubElement(root, _q("CreationDate"), {"value": creation_ts})
+
+    vfmt = ET.SubElement(root, _q("VideoFormat"))
+    ET.SubElement(vfmt, _q("VideoRecPort"), {"port": "DIRECT"})
+    ET.SubElement(
+        vfmt,
+        _q("VideoFrame"),
+        {"videoCodec": "XAVC_S_4K", "captureFps": cap_fps_str, "formatFps": fmt_fps_str},
+    )
+    ET.SubElement(
+        vfmt,
+        _q("VideoLayout"),
+        {"pixel": "3840", "numOfVerticalLine": "2160", "aspectRatio": "16:9"},
+    )
+
+    ET.SubElement(
+        root,
+        _q("Device"),
+        {
+            "manufacturer": "Sony",
+            "modelName": "ILME-FX3",
+            "serialNo": "00000000",
+            "ver": "7.02-stageB-ram-overlay",
+        },
+    )
+
+    acq = ET.SubElement(root, _q("AcquisitionRecord"))
+
+    cam_grp = ET.SubElement(acq, _q("Group"), {"name": "CameraUnitMetadataSet"})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "CaptureGammaEquation", "value": gamma_eq})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "CaptureColorPrimaries", "value": primaries})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "ExposureIndexOfPhotoMeter", "value": str(ei_index)})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "BaseLook", "value": base_look})
+    ET.SubElement(
+        cam_grp,
+        _q("Item"),
+        {"name": "WhiteBalance", "value": f"{color_and_media['wb_mode']}:{color_and_media['kelvin']}K"},
+    )
+    ET.SubElement(cam_grp, _q("Item"), {"name": "WhiteBalanceColorTemperature", "value": str(color_and_media["kelvin"])})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "WhiteBalanceTint", "value": f"{int(color_and_media['tint_gm']):+d}"})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "ShocklessWhiteBalance", "value": str(color_and_media["shockless_wb"])})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "ShutterMode", "value": str(cine_exposure.get("shutter_mode", "angle"))})
+    ET.SubElement(cam_grp, _q("Item"), {"name": "ShutterDisplay", "value": str(cine_exposure.get("shutter_display", "180.0°"))})
+    ET.SubElement(
+        cam_grp,
+        _q("Item"),
+        {
+            "name": "SlowAndQuickMotion",
+            "value": f"{'on' if cine_exposure.get('sq_enabled') else 'off'}:{base_fps:.2f}->{cine_exposure.get('sq_fps', 24)}fps",
+        },
+    )
+    ET.SubElement(cam_grp, _q("Item"), {"name": "DualSlotMode", "value": str(color_and_media["dual_slot_mode"])})
+    ET.SubElement(
+        cam_grp,
+        _q("Item"),
+        {
+            "name": "ProxyRecording",
+            "value": f"{color_and_media['proxy_mode']}:effective={str(bool(color_and_media['proxy_effective_active'])).lower()}",
+        },
+    )
+
+    mon_grp = ET.SubElement(acq, _q("Group"), {"name": "MonitoringDescriptions"})
+    ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringBaseCurve", "value": gamma_eq})
+    ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringDescription", "value": monitoring_lut_cube})
+    ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringLutName", "value": monitoring_lut_name})
+    ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringLutSha256", "value": monitoring_lut_sha})
+
+    media_grp = ET.SubElement(acq, _q("Group"), {"name": "ClipMediaIdentity"})
+    ET.SubElement(media_grp, _q("Item"), {"name": "CamID", "value": str(color_and_media["cam_id"])})
+    ET.SubElement(media_grp, _q("Item"), {"name": "ReelNumber", "value": f"{int(color_and_media['reel_num']):03d}"})
+    ET.SubElement(media_grp, _q("Item"), {"name": "CameraPosition", "value": str(color_and_media["cam_pos"])})
+    ET.SubElement(media_grp, _q("Item"), {"name": "ClipSequence", "value": f"{int(color_and_media['clip_seq']):03d}"})
+    ET.SubElement(media_grp, _q("Item"), {"name": "MainClipName", "value": str(color_and_media["main_clip_name"])})
+    ET.SubElement(media_grp, _q("Item"), {"name": "ProxyClipName", "value": str(color_and_media["proxy_clip_name"])})
+    ET.SubElement(media_grp, _q("Item"), {"name": "SidecarFileName", "value": str(color_and_media["sidecar_xml_name"])})
+
+    prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "ExposureIndexOffsetStops", "value": f"{ei_offset_stops:+.4f}"})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "OverlayMode", "value": "FX6_STAGE_B_RAM_SHADOW"})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "VolatileRamProvenance", "value": "true"})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "PersistentEmmcWritesAuthorized", "value": "false"})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "C2PASpoofAttempted", "value": "false"})
+    ET.SubElement(prov_grp, _q("Item"), {"name": "RqLicPreserved", "value": "true"})
+
+    ET.indent(root, space="  ")
+    return '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
+
+
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
     "fps": {
         "key": "fps",
@@ -2722,6 +3348,30 @@ class FX6LiveGpe0Session:
             "wired_io_mode": self.wired_io_mode,
             **compute_cine_ei_latitude(self.cine_ei_base, self.ei_index),
         })
+        self.wb_mode = "preset_5600k"
+        self.kelvin = 5600
+        self.tint_gm = 0
+        self.shockless_wb = "off"
+        self.base_look = "S-Cinetone"
+        self.cam_id = "A"
+        self.reel_num = 1
+        self.cam_pos = "C"
+        self.clip_seq = 1
+        self.dual_slot_mode = "simul"
+        self.proxy_mode = "xavc_hs_1080p_16m"
+        self.last_wb_media_cmd = format_wb_media_command(compute_color_and_media_derived({
+            "wb_mode": self.wb_mode,
+            "kelvin": self.kelvin,
+            "tint_gm": self.tint_gm,
+            "shockless_wb": self.shockless_wb,
+            "base_look": self.base_look,
+            "cam_id": self.cam_id,
+            "reel_num": self.reel_num,
+            "cam_pos": self.cam_pos,
+            "clip_seq": self.clip_seq,
+            "dual_slot_mode": self.dual_slot_mode,
+            "proxy_mode": self.proxy_mode,
+        }, sq_enabled=self.sq_enabled))
         self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
@@ -2856,6 +3506,17 @@ class FX6LiveGpe0Session:
             self.zebra_mode = "Off"
             self.peaking_mode = "Off"
             self.desqueeze = "1.0x"
+            self.wb_mode = "preset_5600k"
+            self.kelvin = 5600
+            self.tint_gm = 0
+            self.shockless_wb = "off"
+            self.base_look = "S-Cinetone"
+            self.cam_id = "A"
+            self.reel_num = 1
+            self.cam_pos = "C"
+            self.clip_seq = 1
+            self.dual_slot_mode = "simul"
+            self.proxy_mode = "xavc_hs_1080p_16m"
             self.last_scope_stats = None
             self.user_lut_slots = self._default_user_lut_slots()
             self.last_toast = ""
@@ -3199,11 +3860,51 @@ class FX6LiveGpe0Session:
         """Pack complete guest control mailbox mb[0..31] (128 bytes)."""
         return self._pack_mailbox_bytes() + self._pack_phase64_mailbox_bytes()
 
+    def _pack_phase73_mailbox_bytes(self) -> bytes:
+        """Pack Phase 73 guest control mailbox mb[32..35] (16 bytes) matching fx6_live_guest.c."""
+        wb_mode_idx = WB_MODES.index(self.wb_mode) if self.wb_mode in WB_MODES else 2
+        kelvin_val = WB_PRESET_KELVIN[self.wb_mode] if self.wb_mode in WB_PRESET_KELVIN else int(self.kelvin)
+        kelvin_val = max(WB_KELVIN_MIN, min(WB_KELVIN_MAX, kelvin_val))
+        tint_enc = (max(WB_TINT_MIN, min(WB_TINT_MAX, int(self.tint_gm))) + 99) & 0xFF
+        shockless_idx = SHOCKLESS_WB_MODES.index(self.shockless_wb) if self.shockless_wb in SHOCKLESS_WB_MODES else 0
+        look_idx = BASE_LOOK_NLE_TAGS.get(self.base_look, BASE_LOOK_NLE_TAGS["S-Cinetone"])["guest_idx"]
+        mb32 = (
+            (wb_mode_idx & 0x7)
+            | ((kelvin_val & 0x3FFF) << 3)
+            | ((tint_enc & 0xFF) << 17)
+            | ((shockless_idx & 0x3) << 25)
+            | ((look_idx & 0x7) << 27)
+            | (1 << 30)   # wb_soft_mapped (FX3 physical B/A/PRST switch absent)
+            | (1 << 31)   # phase73_valid
+        )
+        cam_id_idx = max(0, min(25, ord(str(self.cam_id or "A")[0].upper()) - ord("A")))
+        reel_val = max(1, min(999, int(self.reel_num)))
+        cam_pos_idx = CAM_POS_VALUES.index(self.cam_pos) if self.cam_pos in CAM_POS_VALUES else 0
+        clip_seq_val = max(1, min(999, int(self.clip_seq)))
+        dual_slot_idx = DUAL_SLOT_MODES.index(self.dual_slot_mode) if self.dual_slot_mode in DUAL_SLOT_MODES else 0
+        proxy_map = {"off": 0, "xavc_hs_1080p_16m": 1, "xavc_hs_1080p_9m": 2, "xavc_s_720p_6m": 3}
+        proxy_mode_idx = proxy_map.get(self.proxy_mode, 1)
+        proxy_eff = 1 if (self.proxy_mode != "off" and not self.sq_enabled) else 0
+        mb33 = (
+            (cam_id_idx & 0x1F)
+            | ((reel_val & 0x3FF) << 5)
+            | ((cam_pos_idx & 0x3) << 15)
+            | ((clip_seq_val & 0x3FF) << 17)
+            | ((dual_slot_idx & 0x3) << 27)
+            | ((proxy_mode_idx & 0x3) << 29)
+            | ((proxy_eff & 0x1) << 31)
+        )
+        lut_cell_idx = self.cell_vals[4] % 8
+        active_lut_slot_num = (lut_cell_idx - 3) if lut_cell_idx >= 4 else (1 if self.base_look == "User 3D LUT" else 0)
+        mb34 = (1 if self.sq_enabled else 0) | ((active_lut_slot_num & 0x7) << 1)
+        mb35 = 0x57424C4D  # 'WBLM'
+        return struct.pack("<4I", mb32, mb33, mb34, mb35)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..31] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..35] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
-        raw = self._pack_full_mailbox_bytes()
+        raw = self._pack_full_mailbox_bytes() + self._pack_phase73_mailbox_bytes()
         with self.gdb_lock:
             for _ in range(2):
                 s: socket.socket | None = None
@@ -3842,6 +4543,34 @@ class FX6LiveGpe0Session:
                             if den is not None:
                                 self.shutter_speed_denom = den
                             self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                    elif key == "lut":
+                        lut_look_map = [
+                            "S-Cinetone",
+                            "S-Log3 / S-Gamut3.Cine",
+                            "ITU709",
+                            "709(800%)",
+                            "User 3D LUT",
+                            "User 3D LUT",
+                            "User 3D LUT",
+                            "User 3D LUT",
+                        ]
+                        if 0 <= new_idx < len(lut_look_map):
+                            self.base_look = lut_look_map[new_idx]
+                            self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+                    elif key == "wb":
+                        wb_cell_map = [
+                            ("preset_5600k", 5600),
+                            ("preset_4300k", 4300),
+                            ("preset_3200k", 3200),
+                            ("atw", None),
+                            ("mem_a", None),
+                            ("mem_b", None),
+                        ]
+                        if 0 <= new_idx < len(wb_cell_map):
+                            self.wb_mode, preset_k = wb_cell_map[new_idx]
+                            if preset_k is not None:
+                                self.kelvin = preset_k
+                            self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
                     self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
                 elif key == "ibis":
                     self.ibis_idx = new_idx
@@ -3944,6 +4673,8 @@ class FX6LiveGpe0Session:
             self.user_lut_slots[slot] = slot_record
             cell_idx = USER_LUT_SLOT_TO_CELL_IDX[slot]
             self.cell_vals[4] = cell_idx
+            self.base_look = "User 3D LUT"
+            self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
             if self.page in (0, 3):
                 self.sel_box = 4
             self.last_toast = (
@@ -4095,6 +4826,7 @@ class FX6LiveGpe0Session:
         self.cell_vals[3] = 0  # P4 ND=Clear Hardware Lock
         self.p12_bk4_airplane_mode_locked = True
         self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+        self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -4142,6 +4874,147 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def _active_user_lut_for_color(self) -> dict[str, Any] | None:
+        lut_idx = self.cell_vals[4] % len(CINEMA_PARAM_SPECS["lut"]["presets"])
+        if lut_idx >= 4:
+            slot_key = f"User{lut_idx - 3}"
+            return dict(self.user_lut_slots[slot_key])
+        if self.base_look == "User 3D LUT":
+            for slot_key in USER_LUT_SLOTS:
+                if self.user_lut_slots[slot_key].get("uploaded"):
+                    return dict(self.user_lut_slots[slot_key])
+            return dict(self.user_lut_slots["User1"])
+        return None
+
+    def get_color_and_media(self) -> dict[str, Any]:
+        state = compute_color_and_media_derived(
+            {
+                "wb_mode": self.wb_mode,
+                "kelvin": self.kelvin,
+                "tint_gm": self.tint_gm,
+                "shockless_wb": self.shockless_wb,
+                "base_look": self.base_look,
+                "cam_id": self.cam_id,
+                "reel_num": self.reel_num,
+                "cam_pos": self.cam_pos,
+                "clip_seq": self.clip_seq,
+                "dual_slot_mode": self.dual_slot_mode,
+                "proxy_mode": self.proxy_mode,
+            },
+            sq_enabled=self.sq_enabled,
+            active_user_lut=self._active_user_lut_for_color(),
+        )
+        state["wb_media_cmd"] = format_wb_media_command(state)
+        return state
+
+    def _apply_color_and_media_updates_locked(self, updates: dict[str, Any]) -> None:
+        if "wb_mode" in updates:
+            self.wb_mode = str(updates["wb_mode"])
+        if "kelvin" in updates:
+            self.kelvin = int(updates["kelvin"])
+        if "tint_gm" in updates:
+            self.tint_gm = int(updates["tint_gm"])
+        if "shockless_wb" in updates:
+            self.shockless_wb = str(updates["shockless_wb"])
+        if "base_look" in updates:
+            self.base_look = str(updates["base_look"])
+        if "cam_id" in updates:
+            self.cam_id = str(updates["cam_id"])
+        if "reel_num" in updates:
+            self.reel_num = int(updates["reel_num"])
+        if "cam_pos" in updates:
+            self.cam_pos = str(updates["cam_pos"])
+        if "clip_seq" in updates:
+            self.clip_seq = int(updates["clip_seq"])
+        if "dual_slot_mode" in updates:
+            self.dual_slot_mode = str(updates["dual_slot_mode"])
+        if "proxy_mode" in updates:
+            self.proxy_mode = str(updates["proxy_mode"])
+
+        wb_to_cell = {
+            "preset_5600k": 0,
+            "preset_4300k": 1,
+            "preset_3200k": 2,
+            "atw": 3,
+            "mem_a": 4,
+            "mem_b": 5,
+        }
+        if self.wb_mode in wb_to_cell:
+            self.cell_vals[5] = wb_to_cell[self.wb_mode]
+
+        if "user_lut_slot" in updates and updates["user_lut_slot"] in USER_LUT_SLOT_TO_CELL_IDX:
+            self.cell_vals[4] = USER_LUT_SLOT_TO_CELL_IDX[updates["user_lut_slot"]]
+        elif "base_look" in updates:
+            if self.base_look == "User 3D LUT":
+                if (self.cell_vals[4] % 8) < 4:
+                    self.cell_vals[4] = 4
+            elif self.base_look in BASE_LOOK_NLE_TAGS:
+                self.cell_vals[4] = int(BASE_LOOK_NLE_TAGS[self.base_look]["cell_lut_idx"])
+
+        self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+
+    def set_color_and_media(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "wb_mode": self.wb_mode,
+                "kelvin": self.kelvin,
+                "tint_gm": self.tint_gm,
+                "shockless_wb": self.shockless_wb,
+                "base_look": self.base_look,
+                "cam_id": self.cam_id,
+                "reel_num": self.reel_num,
+                "cam_pos": self.cam_pos,
+                "clip_seq": self.clip_seq,
+                "dual_slot_mode": self.dual_slot_mode,
+                "proxy_mode": self.proxy_mode,
+            }
+            ok, updates, err = validate_color_and_media_patch(body, current_state=cur)
+            if not ok:
+                return err or {"ok": False, "error": "invalid_color_and_media"}
+
+            self._apply_color_and_media_updates_locked(updates)
+            cm = self.get_color_and_media()
+            prx_note = "PRX:OFF(S&Q)" if cm["proxy_auto_suspended_by_sq"] else (
+                "PRX:ON" if cm["proxy_effective_active"] else "PRX:OFF"
+            )
+            self.last_toast = (
+                f"ColorMedia: {cm['wb_display']} ({cm['wb_mode']}, SL={cm['shockless_wb']}) | "
+                f"{cm['base_look']} ({cm['capture_gamma_equation']}/{cm['capture_color_primaries']}) | "
+                f"{cm['main_clip_name']} [{cm['dual_slot_mode']}] {prx_note}"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "color_and_media": cm,
+                "wb_media_cmd": cm["wb_media_cmd"],
+                "fx3_wb_switch_soft_mapped": True,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def get_xml_sidecar(self) -> dict[str, Any]:
+        with self.cmd_lock:
+            ce = self.get_cine_exposure()
+            cm = self.get_color_and_media()
+            active_user = self._active_user_lut_for_color()
+        xml_text = build_nrtm_xml_sidecar(ce, cm, active_user_lut=active_user)
+        return {
+            "ok": True,
+            "filename": cm["sidecar_xml_name"],
+            "main_clip_name": cm["main_clip_name"],
+            "proxy_clip_name": cm["proxy_active_clip_name"],
+            "nrtm_namespace": NRTM_NAMESPACE_V220,
+            "content_type": "application/xml; charset=utf-8",
+            "c2pa_spoofed": False,
+            "persistent_emmc_writes_authorized": False,
+            "xml_sha256": hashlib.sha256(xml_text.encode("utf-8")).hexdigest(),
+            "xml": xml_text,
+            "color_and_media": cm,
+            "cine_exposure": ce,
+        }
+
     def get_scope_stats(self, refresh: bool = False) -> dict[str, Any]:
         if self.is_running() and self.live_ready and not self.crashed and (refresh or len(self.last_raw_gpe0) < GPE0_BYTES):
             self._capture_live_gpe0_with_raw()
@@ -4184,6 +5057,7 @@ class FX6LiveGpe0Session:
             },
             "assist_tools": self.get_assist_tools(),
             "cine_exposure": self.get_cine_exposure(),
+            "color_and_media": self.get_color_and_media(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -4396,6 +5270,26 @@ class FX6LiveGpe0Session:
                     return {"ok": False, "error": "invalid_rec_tc_frames", "message": "rec_tc_frames must be non-negative int"}
                 ce_tc_frames = raw_tcf
 
+        cm_raw = payload.get("color_and_media")
+        new_cm_updates: dict[str, Any] = {}
+        if cm_raw is not None:
+            cur_cm = {
+                "wb_mode": self.wb_mode,
+                "kelvin": self.kelvin,
+                "tint_gm": self.tint_gm,
+                "shockless_wb": self.shockless_wb,
+                "base_look": self.base_look,
+                "cam_id": self.cam_id,
+                "reel_num": self.reel_num,
+                "cam_pos": self.cam_pos,
+                "clip_seq": self.clip_seq,
+                "dual_slot_mode": self.dual_slot_mode,
+                "proxy_mode": self.proxy_mode,
+            }
+            ok_cm, new_cm_updates, err_cm = validate_color_and_media_patch(cm_raw, current_state=cur_cm)
+            if not ok_cm:
+                return err_cm or {"ok": False, "error": "invalid_color_and_media"}
+
         p12_clamped = (payload.get("p12_bk4_airplane_mode_locked") is False) or ce_p12_tamper
 
         with self.cmd_lock:
@@ -4405,8 +5299,50 @@ class FX6LiveGpe0Session:
                     self.rec_tc_frames = ce_tc_frames
                     self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
 
+            if new_cm_updates:
+                self._apply_color_and_media_updates_locked(new_cm_updates)
+
+            wb_to_cell = {
+                "preset_5600k": 0,
+                "preset_4300k": 1,
+                "preset_3200k": 2,
+                "atw": 3,
+                "mem_a": 4,
+                "mem_b": 5,
+            }
+            wb_cell_map = [
+                ("preset_5600k", 5600),
+                ("preset_4300k", 4300),
+                ("preset_3200k", 3200),
+                ("atw", None),
+                ("mem_a", None),
+                ("mem_b", None),
+            ]
+            lut_look_map = [
+                "S-Cinetone",
+                "S-Log3 / S-Gamut3.Cine",
+                "ITU709",
+                "709(800%)",
+                "User 3D LUT",
+                "User 3D LUT",
+                "User 3D LUT",
+                "User 3D LUT",
+            ]
             for c_idx, c_val in new_cells.items():
                 self.cell_vals[c_idx] = c_val
+                if c_idx == 4:
+                    cur_look_cell = BASE_LOOK_NLE_TAGS.get(self.base_look, {}).get("cell_lut_idx")
+                    matches_user = (self.base_look == "User 3D LUT" and 4 <= c_val <= 7)
+                    if (not new_cm_updates) or (not matches_user and cur_look_cell != c_val):
+                        if 0 <= c_val < len(lut_look_map):
+                            self.base_look = lut_look_map[c_val]
+                elif c_idx == 5:
+                    cur_wb_cell = wb_to_cell.get(self.wb_mode)
+                    if (not new_cm_updates) or (cur_wb_cell != c_val):
+                        if 0 <= c_val < len(wb_cell_map):
+                            self.wb_mode, preset_k = wb_cell_map[c_val]
+                            if preset_k is not None:
+                                self.kelvin = preset_k
             self.cell_vals[3] = 0  # P4 ND=Clear Hardware Lock always enforced!
             p4_rejected = nd_tamper_val is not None
             if p4_rejected:
@@ -4452,6 +5388,7 @@ class FX6LiveGpe0Session:
                 self.lang_id = new_lang_id
 
             self.p12_bk4_airplane_mode_locked = True  # P12 BK4 Airplane-Mode shadow lock always enforced!
+            self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
 
             if p4_rejected:
                 self.last_toast = (
@@ -4479,6 +5416,7 @@ class FX6LiveGpe0Session:
                 "guest_synced": synced,
                 "assist_tools": self.get_assist_tools(),
                 "cine_exposure": self.get_cine_exposure(),
+                "color_and_media": self.get_color_and_media(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -5162,6 +6100,7 @@ class FX6LiveGpe0Session:
             "last_multilang_diff": self.last_multilang_diff,
             "assist_tools": self.get_assist_tools(),
             "cine_exposure": self.get_cine_exposure(),
+            "color_and_media": self.get_color_and_media(),
             "serial_tail": serial_tail,
         }
 
@@ -5721,6 +6660,106 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p64-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">CINE_EXP ...</div>
     </div>
 
+    <div class="card" id="phase73-color-media-card" style="margin-top:14px;border-color:#0e7490;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+        <h3 style="margin:0;">Phase 73 · 色彩白平衡 / 双卡槽场记命名 &amp; 达芬奇 M01.XML 导出 (Color/WB, Dual-Slot CamID &amp; Resolve XML)</h3>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#0f2b46;color:#67e8f9;border:1px solid #0891b2;">FX3 B/A/PRST Soft-Mapped</span>
+          <span id="p73-sq-proxy-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#064e3b;color:#a7f3d0;border:1px solid #10b981;">Proxy Active</span>
+        </div>
+      </div>
+      <div id="p73-error-banner" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#450a0a;border:1px solid #ef4444;color:#fecaca;font-size:11.5px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>White Balance · 白平衡 (Shockless)</span><span id="p73-wb-readout" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">5600K+0</span></div>
+          <select id="p73-wb-mode-select" onchange="setColorAndMedia({wb_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="preset_5600k">Preset 5600K (Daylight)</option>
+            <option value="preset_4300k">Preset 4300K</option>
+            <option value="preset_3200k">Preset 3200K (Tungsten)</option>
+            <option value="mem_a">Memory A (Custom K + Tint)</option>
+            <option value="mem_b">Memory B (Custom K + Tint)</option>
+            <option value="atw">ATW (Auto Tracing WB)</option>
+          </select>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:6px;">
+            <input id="p73-kelvin-input" type="number" min="2000" max="15000" step="50" value="5600" title="Kelvin [2000..15000]" style="width:74px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <input id="p73-tint-input" type="number" min="-99" max="99" step="1" value="0" title="Tint MG/GR [-99..+99]" style="width:54px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <select id="p73-shockless-select" title="Shockless WB Speed" onchange="setColorAndMedia({shockless_wb: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="off">SL: Off</option>
+              <option value="1">SL: 1 (Fast 0.65s)</option>
+              <option value="2">SL: 2 (Med 1.60s)</option>
+              <option value="3">SL: 3 (Slow 3.20s)</option>
+            </select>
+          </div>
+          <button onclick="applyPhase73WbKelvinTint()" style="width:100%;padding:4px 8px;font-size:11px;">Apply K / Tint · 应用色温偏移</button>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Base Look · 色彩科学管线</span><span id="p73-nle-tags" style="color:#a78bfa;font-family:'SF Mono',Menlo,monospace;">s-cinetone / rec709</span></div>
+          <select id="p73-base-look-select" onchange="setColorAndMedia({base_look: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="S-Cinetone">S-Cinetone (Cinema Portrait)</option>
+            <option value="S-Log3 / S-Gamut3.Cine">S-Log3 / S-Gamut3.Cine</option>
+            <option value="S-Log3 / S-Gamut3">S-Log3 / S-Gamut3</option>
+            <option value="ITU709">ITU709 (s709)</option>
+            <option value="709(800%)">709(800%) (R709)</option>
+            <option value="HLG Live">HLG Live (BT.2100)</option>
+            <option value="User 3D LUT">User 3D LUT (User1..User4 .cube)</option>
+          </select>
+          <div style="font-size:10.5px;color:#94a3b8;line-height:1.4;margin-bottom:6px;">
+            Active LUT: <b id="p73-active-lut-readout" style="color:#67e8f9;">-</b>
+          </div>
+          <div class="pill-row">
+            <button onclick="setColorAndMedia({wb_mode:'preset_3200k',tint_gm:-5,base_look:'S-Log3 / S-Gamut3.Cine'})">3200K S-Log3.Cine</button>
+            <button onclick="setColorAndMedia({wb_mode:'atw',shockless_wb:'2',base_look:'S-Cinetone'})">ATW SL:2</button>
+          </div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>CamID/Reel &amp; Dual-Slot · 双卡槽场记</span><span id="p73-slot-readout" style="color:#34d399;font-family:'SF Mono',Menlo,monospace;">simul</span></div>
+          <div style="display:grid;grid-template-columns:44px 58px 48px 58px;gap:4px;margin-bottom:6px;">
+            <input id="p73-cam-id-input" type="text" maxlength="1" value="A" title="CamID A..Z" style="background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;text-align:center;" />
+            <input id="p73-reel-input" type="number" min="1" max="999" value="1" title="Reel 1..999" style="background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <select id="p73-pos-select" title="Camera Position" style="background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="C">C</option>
+              <option value="L">L</option>
+              <option value="R">R</option>
+            </select>
+            <input id="p73-clip-seq-input" type="number" min="1" max="999" value="1" title="Clip Seq 1..999" style="background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p73-dualslot-select" onchange="setColorAndMedia({dual_slot_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="simul">Simul (A+B 同录)</option>
+              <option value="relay">Relay (A->B 接力)</option>
+              <option value="sort_main_proxy">Sort Main/Proxy</option>
+              <option value="single_slot_a">Single Slot A</option>
+            </select>
+            <select id="p73-proxy-select" onchange="setColorAndMedia({proxy_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="xavc_hs_1080p_16m">Proxy HS 1080p 16M</option>
+              <option value="xavc_hs_1080p_9m">Proxy HS 1080p 9M</option>
+              <option value="xavc_s_720p_6m">Proxy S 720p 6M</option>
+              <option value="off">Proxy Off</option>
+            </select>
+          </div>
+          <button onclick="applyPhase73MediaNaming()" style="width:100%;padding:4px 8px;font-size:11px;">Apply Clip Naming · 应用场记号</button>
+        </div>
+      </div>
+
+      <div class="cparam-box" style="margin-bottom:8px;">
+        <div class="cparam-head">
+          <span>Cinema Line Clip / Proxy Paths &amp; Resolve NonRealTimeMeta (M01.XML)</span>
+          <span id="p73-clip-readout" style="color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">A001C001_261114_FX3B.MP4</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+          <button onclick="downloadXmlSidecar()" style="background:#0f2b46;border-color:#22d3ee;color:#cffafe;">⬇ Download M01.XML (达芬奇 / Resolve Sidecar)</button>
+          <button onclick="refreshXmlSidecarPreview()">Refresh XML Preview · 刷新预览</button>
+          <button onclick="setColorAndMedia({cam_id:'B',reel_num:4,cam_pos:'C',clip_seq:12,dual_slot_mode:'relay',wb_mode:'preset_3200k',tint_gm:-5,base_look:'S-Log3 / S-Gamut3.Cine'})" style="border-color:#818cf8;">B004C012 Relay + S-Log3.Cine</button>
+          <button onclick="setColorAndMedia({reset:true})">Reset Color/Media</button>
+          <span id="p73-proxy-path-readout" style="font-size:10.5px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">SUB: A001C001_261114_FX3BS03.MP4</span>
+        </div>
+        <pre id="p73-xml-preview" style="margin:0;max-height:130px;overflow:auto;background:#07090c;border:1px solid #1f2937;border-radius:6px;padding:7px;font-family:'SF Mono',Menlo,monospace;font-size:10px;color:#a7f3d0;">Click "Refresh XML Preview" or "Download M01.XML" to inspect Sony NonRealTimeMeta v2.20...</pre>
+      </div>
+      <div id="p73-cmd-readout" style="font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">WB_MEDIA ...</div>
+    </div>
+
     <div class="card" style="margin-top:14px;">
       <h3>Cinema Line 实时参数调节面板 (/api/cinema_param · Big-6 + HUD + P4/P11 硬件契约)</h3>
       <div id="param-toast" class="param-toast"></div>
@@ -6195,6 +7234,9 @@ async function updateUI(st, forceImg) {
 
   if (st.cine_exposure) {
     syncCineExposureUI(st.cine_exposure);
+  }
+  if (st.color_and_media) {
+    syncColorAndMediaUI(st.color_and_media);
   }
 
   if (forceImg || st.live_ready) {
@@ -6877,6 +7919,165 @@ function applyPhase64ShutterVal() {
   else setCineExposure({shutter_mode: 'angle', shutter_angle_deg: val});
 }
 
+function syncColorAndMediaUI(cm) {
+  if (!cm) return;
+  const wbRead = document.getElementById('p73-wb-readout');
+  if (wbRead) wbRead.textContent = (cm.wb_display || (cm.kelvin + 'K')) + ' [' + (cm.wb_mode || 'preset_5600k') + ']';
+  const wbSel = document.getElementById('p73-wb-mode-select');
+  if (wbSel && cm.wb_mode && document.activeElement !== wbSel) wbSel.value = cm.wb_mode;
+  const kInp = document.getElementById('p73-kelvin-input');
+  if (kInp && cm.kelvin !== undefined && document.activeElement !== kInp) {
+    kInp.value = String(cm.kelvin);
+    kInp.disabled = !!cm.kelvin_locked;
+  }
+  const tInp = document.getElementById('p73-tint-input');
+  if (tInp && cm.tint_gm !== undefined && document.activeElement !== tInp) tInp.value = String(cm.tint_gm);
+  const slSel = document.getElementById('p73-shockless-select');
+  if (slSel && cm.shockless_wb && document.activeElement !== slSel) slSel.value = cm.shockless_wb;
+
+  const lookSel = document.getElementById('p73-base-look-select');
+  if (lookSel && cm.base_look && document.activeElement !== lookSel) lookSel.value = cm.base_look;
+  const nleEl = document.getElementById('p73-nle-tags');
+  if (nleEl) nleEl.textContent = (cm.capture_gamma_equation || '-') + ' / ' + (cm.capture_color_primaries || '-');
+  const lutEl = document.getElementById('p73-active-lut-readout');
+  if (lutEl) {
+    const lutName = cm.active_user_lut && cm.active_user_lut.name;
+    lutEl.textContent = lutName ? (cm.active_user_lut_slot + ': ' + lutName) : (cm.base_look || '-');
+  }
+
+  const slotRead = document.getElementById('p73-slot-readout');
+  if (slotRead) slotRead.textContent = (cm.dual_slot_mode || 'simul');
+  const camInp = document.getElementById('p73-cam-id-input');
+  if (camInp && cm.cam_id && document.activeElement !== camInp) camInp.value = cm.cam_id;
+  const reelInp = document.getElementById('p73-reel-input');
+  if (reelInp && cm.reel_num !== undefined && document.activeElement !== reelInp) reelInp.value = String(cm.reel_num);
+  const posSel = document.getElementById('p73-pos-select');
+  if (posSel && cm.cam_pos && document.activeElement !== posSel) posSel.value = cm.cam_pos;
+  const seqInp = document.getElementById('p73-clip-seq-input');
+  if (seqInp && cm.clip_seq !== undefined && document.activeElement !== seqInp) seqInp.value = String(cm.clip_seq);
+  const dsSel = document.getElementById('p73-dualslot-select');
+  if (dsSel && cm.dual_slot_mode && document.activeElement !== dsSel) dsSel.value = cm.dual_slot_mode;
+  const prxSel = document.getElementById('p73-proxy-select');
+  if (prxSel && cm.proxy_mode && document.activeElement !== prxSel) prxSel.value = cm.proxy_mode;
+
+  const prxBadge = document.getElementById('p73-sq-proxy-badge');
+  if (prxBadge) {
+    if (cm.proxy_auto_suspended_by_sq) {
+      prxBadge.textContent = 'Proxy Auto-Suspended (S&Q Active)';
+      prxBadge.style.background = '#78350f';
+      prxBadge.style.borderColor = '#f59e0b';
+      prxBadge.style.color = '#fde68a';
+    } else if (cm.proxy_effective_active) {
+      prxBadge.textContent = 'Proxy Active (' + (cm.proxy_mode || '') + ')';
+      prxBadge.style.background = '#064e3b';
+      prxBadge.style.borderColor = '#10b981';
+      prxBadge.style.color = '#a7f3d0';
+    } else {
+      prxBadge.textContent = 'Proxy Off';
+      prxBadge.style.background = '#1f2937';
+      prxBadge.style.borderColor = '#4b5563';
+      prxBadge.style.color = '#d1d5db';
+    }
+  }
+  const clipRead = document.getElementById('p73-clip-readout');
+  if (clipRead) clipRead.textContent = (cm.main_clip_name || '') + ' (' + (cm.sidecar_xml_name || '') + ')';
+  const prxPathRead = document.getElementById('p73-proxy-path-readout');
+  if (prxPathRead) {
+    prxPathRead.textContent = cm.proxy_active_clip_name ? ('SUB: ' + cm.proxy_active_clip_name) : 'SUB: OFF';
+  }
+  const cmdEl = document.getElementById('p73-cmd-readout');
+  if (cmdEl) cmdEl.textContent = cm.wb_media_cmd || 'WB_MEDIA ...';
+}
+
+async function setColorAndMedia(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p73-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/color_and_media', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Invalid color_and_media parameter';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase73WbKelvinTint() {
+  const wbMode = (document.getElementById('p73-wb-mode-select') || {}).value || 'preset_5600k';
+  const kInp = document.getElementById('p73-kelvin-input');
+  const tInp = document.getElementById('p73-tint-input');
+  const slSel = document.getElementById('p73-shockless-select');
+  const patch = {
+    tint_gm: Number((tInp || {}).value || 0),
+    shockless_wb: (slSel || {}).value || 'off'
+  };
+  if (wbMode === 'mem_a' || wbMode === 'mem_b' || wbMode === 'atw') {
+    patch.wb_mode = wbMode;
+    patch.kelvin = Number((kInp || {}).value || 5600);
+  } else {
+    patch.wb_mode = wbMode;
+  }
+  setColorAndMedia(patch);
+}
+
+function applyPhase73MediaNaming() {
+  const camId = String((document.getElementById('p73-cam-id-input') || {}).value || 'A').trim().toUpperCase();
+  const reelNum = Number((document.getElementById('p73-reel-input') || {}).value || 1);
+  const camPos = (document.getElementById('p73-pos-select') || {}).value || 'C';
+  const clipSeq = Number((document.getElementById('p73-clip-seq-input') || {}).value || 1);
+  const dualSlot = (document.getElementById('p73-dualslot-select') || {}).value || 'simul';
+  const proxyMode = (document.getElementById('p73-proxy-select') || {}).value || 'xavc_hs_1080p_16m';
+  setColorAndMedia({
+    cam_id: camId,
+    reel_num: reelNum,
+    cam_pos: camPos,
+    clip_seq: clipSeq,
+    dual_slot_mode: dualSlot,
+    proxy_mode: proxyMode
+  });
+}
+
+async function refreshXmlSidecarPreview() {
+  const pre = document.getElementById('p73-xml-preview');
+  try {
+    const r = await fetch('/api/xml_sidecar?format=json');
+    const data = await r.json();
+    if (pre && data && data.xml) {
+      pre.textContent = data.xml;
+    }
+  } catch (e) {
+    if (pre) pre.textContent = 'XML sidecar preview error: ' + String(e);
+  }
+}
+
+async function downloadXmlSidecar() {
+  await refreshXmlSidecarPreview();
+  const r = await fetch('/api/xml_sidecar?format=json');
+  const data = await r.json();
+  const fname = (data && data.filename) ? data.filename : 'A001C001_261114_FX3BM01.XML';
+  const a = document.createElement('a');
+  a.href = '/api/xml_sidecar?t=' + Date.now();
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 function drawWaveformCanvas(scope) {
   const cvs = document.getElementById('scope-waveform-canvas');
   if (!cvs || !scope || !scope.waveform) return;
@@ -7024,12 +8225,21 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 raise
 
-        def _send_bytes(self, raw: bytes, content_type: str, status: int = 200) -> bool:
+        def _send_bytes(
+            self,
+            raw: bytes,
+            content_type: str,
+            status: int = 200,
+            extra_headers: dict[str, str] | None = None,
+        ) -> bool:
             try:
                 self.send_response(int(status))
                 self.send_header("Content-Type", content_type)
                 self.send_header("Content-Length", str(len(raw)))
                 self.send_header("Cache-Control", "no-store")
+                if extra_headers:
+                    for hk, hv in extra_headers.items():
+                        self.send_header(str(hk), str(hv))
                 self.end_headers()
                 if raw:
                     self.wfile.write(raw)
@@ -7106,6 +8316,28 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/color_and_media":
+                    self._send_json({
+                        "ok": True,
+                        "color_and_media": session.get_color_and_media(),
+                        "specs": COLOR_AND_MEDIA_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
+                if path == "/api/xml_sidecar":
+                    res = session.get_xml_sidecar()
+                    fmt = qs.get("format", [""])[0].strip().lower()
+                    if fmt == "json":
+                        self._send_json(res)
+                    else:
+                        xml_bytes = str(res["xml"]).encode("utf-8")
+                        self._send_bytes(
+                            xml_bytes,
+                            "application/xml; charset=utf-8",
+                            status=HTTPStatus.OK,
+                            extra_headers={"Content-Disposition": f'attachment; filename="{res["filename"]}"'},
+                        )
+                    return
                 if path == "/api/assist_tools":
                     self._send_json({
                         "ok": True,
@@ -7157,6 +8389,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/camset_import",
                     "/api/cinema_param",
                     "/api/cine_exposure",
+                    "/api/color_and_media",
                     "/api/jump_page",
                     "/api/verify_multilang_diff",
                     "/api/assist_tools",
@@ -7235,6 +8468,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/cine_exposure":
                     res = session.set_cine_exposure(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/color_and_media":
+                    res = session.set_color_and_media(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/lut_upload":

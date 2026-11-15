@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-14)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-15)."""
 from __future__ import annotations
 
 import ast
@@ -36,6 +36,8 @@ ROUND13_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round13-fx6-on-fx3-stat
 ROUND13_ASSETS_DIR = ROUND13_REPORT_DIR / "assets"
 ROUND14_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix"
 ROUND14_ASSETS_DIR = ROUND14_REPORT_DIR / "assets"
+ROUND15_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring"
+ROUND15_ASSETS_DIR = ROUND15_REPORT_DIR / "assets"
 
 
 def _load_closure_module(module_name: str, filename: str):
@@ -105,7 +107,14 @@ def _parse_and_validate_png(png_bytes: bytes) -> Tuple[int, int, bytes]:
     return width, height, raw_scanlines
 
 
+_DECODED_PNG_CACHE: Dict[bytes, Tuple[int, int, List[bytes]]] = {}
+
+
 def _decode_png_rgba_rows(png_bytes: bytes) -> Tuple[int, int, List[bytes]]:
+    cache_key = hashlib.sha256(png_bytes).digest()
+    cached = _DECODED_PNG_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
     width, height, raw_scanlines = _parse_and_validate_png(png_bytes)
     stride = width * 4
     rows: List[bytes] = []
@@ -140,7 +149,9 @@ def _decode_png_rgba_rows(png_bytes: bytes) -> Tuple[int, int, List[bytes]]:
             raise AssertionError(f"Unsupported PNG filter {filt}")
         prev = row
         rows.append(bytes(row))
-    return width, height, rows
+    result = (width, height, rows)
+    _DECODED_PNG_CACHE[cache_key] = result
+    return result
 
 
 class TestPixelUnpackingAndPngExport(unittest.TestCase):
@@ -539,7 +550,7 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
 
         # Verify CLI accepts --round 8/9/10 and --run-dir, and patch_cpio fixes c_mode==0
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", runner_src)
         self.assertIn("--run-dir", runner_src)
         self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
 
@@ -1124,7 +1135,7 @@ class TestRound10IconBlitterUipcAndReport(unittest.TestCase):
             "enable_r10",
             "etc/fx6_stage_r10",
             '"r10_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2076,7 +2087,7 @@ class TestRound12MultiCjkP4P110AndReport(unittest.TestCase):
             },
         )
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", runner_src)
         self.assertIn(
             'choices=["en", "english", "schinese", "tchinese", "japanese"]', runner_src
         )
@@ -2573,7 +2584,7 @@ class TestRound13StatusCheckAndFourLangMatrixClosure(unittest.TestCase):
             '"r13_telemetry"',
             "def decode_png_rgba_rows",
             "def compute_png_pixel_diff",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2801,7 +2812,7 @@ class TestRound14StatusCheck4LangFullMatrix(unittest.TestCase):
             "etc/fx6_stage_r14",
             '"r14_telemetry"',
             '"fx6-r14"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",
         ):
             self.assertIn(token, runner_src)
 
@@ -3282,6 +3293,547 @@ class TestRound14StatusCheck4LangFullMatrix(unittest.TestCase):
         for forbidden in ("/Volumes/KAFU2T", "/Users/"):
             self.assertNotIn(forbidden, r14_readme)
         tmp_matches = list(pathlib.Path("/private/tmp").glob("fx6-r14*"))
+        self.assertEqual(tmp_matches, [], f"Leftover scratch dirs in /private/tmp: {tmp_matches}")
+
+
+class TestRound15MultiTabStatusCheckAndMonitoring(unittest.TestCase):
+    EXPECTED_STEMS = (
+        "r15a-status-tab2-schinese",
+        "r15b-status-tab3-schinese",
+        "r15c-menu-3layer-monitoring-schinese",
+        "r15d-status-tab2-japanese",
+    )
+    EXPECTED_RUN_KEYS = (
+        "r15a_status_tab2_schinese",
+        "r15b_status_tab3_schinese",
+        "r15c_menu_3layer_monitoring_schinese",
+        "r15d_status_tab2_japanese",
+    )
+
+    def test_round15_c_source_guards_and_runner_support(self) -> None:
+        shim_src = (CLOSURE_DIR / "libgrm-fbinit9.c").read_text(encoding="utf-8")
+        verify_src = (CLOSURE_DIR / "fx6-stage-a-verify.c").read_text(encoding="utf-8")
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+
+        self.assertIn("#if FX6_ROUND >= 15", shim_src)
+        for token in (
+            "FX6_R15_LANG_TELEMETRY",
+            "FX6_STAGE_B_R15_BRIDGE",
+            "multitab_status_monitoring=1",
+            "statuscheck_multitab=1",
+            "monitoring_3layer=1",
+        ):
+            self.assertIn(token, shim_src)
+
+        for token in (
+            "/etc/fx6_stage_r15",
+            "FX6_STAGE_B_R15_VERIFY_PASS",
+            "statuscheck_multitab=1",
+            "monitoring_3layer=1",
+        ):
+            self.assertIn(token, verify_src)
+
+        for token in (
+            "enable_r15",
+            "etc/fx6_stage_r15",
+            '"r15_telemetry"',
+            '"fx6-r15"',
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]",
+        ):
+            self.assertIn(token, runner_src)
+
+    def _assert_r15_overlay_dual_mode(
+        self,
+        lang: str,
+        uxc1_name: str,
+        uxc2_name: str,
+        ltt_name: str,
+        fontlist_key: str,
+        asset_key_u1: str,
+        asset_key_ltt: str,
+        donor_attr_u1: str,
+        donor_attr_u2: str,
+        donor_attr_ltt: str,
+    ) -> None:
+        runner = _load_closure_module(
+            f"fx6_build_and_run_round_r15_ovl_{lang}", "build_and_run_round.py"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = pathlib.Path(tmp)
+            parent_cpio = tmp_dir / "parent.cpio"
+            init_body = (
+                b"#!/bin/sh\n"
+                b'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch\n'
+            )
+            members = (
+                ("init", init_body),
+                ("usr/lib/libInfraSetupFile.so", b"SETUP"),
+                ("usr/lib/libInfraMediaCommon.so", b"MCOMM"),
+                ("usr/lib/libInfraMediaConfig.so", b"MCFG"),
+                ("usr/lib/libInfraAppRemoteBoard.so", b"RBRD"),
+                ("usr/lib/libfan.so", b"FAN"),
+                ("usr/lib/appFw.so", b"APPFW"),
+                ("usr/lib/libWlanResource.so", b"WLAN_DONOR_12345"),
+                ("usr/kmod/upm.ko", b"UPMKO"),
+                ("usr/share/app/image_00_169.uxc", b"uxd\x07" + b"C" * 32),
+                (f"usr/share/app/{uxc1_name}", b"uxc\x07" + b"C1" * 16),
+                (f"usr/share/app/{uxc2_name}", b"uxc\x07" + b"C2" * 16),
+                (f"usr/share/app/{ltt_name}", b"LTT\n" + b"CL" * 16),
+                (
+                    "usr/share/app/fontlist.dat",
+                    f"{fontlist_key}\t/usr/share/app/{ltt_name}\t0\t0\n".encode("ascii"),
+                ),
+            )
+            archive = b"".join(
+                runner.make_cpio_member(name, body, ino=idx + 1, mode=0o100755)
+                for idx, (name, body) in enumerate(members)
+            ) + runner.make_cpio_member("TRAILER!!!", b"", ino=0, mode=0)
+            parent_cpio.write_bytes(archive)
+
+            class _FakeRes:
+                def __init__(self, site_id: str) -> None:
+                    self.site_id = site_id
+
+            class _FakeReceipt:
+                def __init__(self, before: bytes, after: bytes, sites: list) -> None:
+                    self.before_sha256 = hashlib.sha256(before).hexdigest()
+                    self.after_sha256 = hashlib.sha256(after).hexdigest()
+                    self.changed_byte_count = 8
+                    self.resolutions = [_FakeRes(s.site_id) for s in sites]
+
+            class _FakePatcher:
+                P1_P4_P8_APPFW_COMBINED_SPEC = mock.Mock(
+                    library_name="appFw.so",
+                    expected_size=5,
+                    donor_sha256="0" * 64,
+                    sites=(mock.Mock(site_id="p1"),),
+                    elf_kind="so",
+                    source_domain="fx6",
+                )
+                P1_LIB_INFRA_SETUP_FILE_SPEC = mock.Mock(spec_id="P1_s", library_name="s", sites=[mock.Mock(site_id="s1")])
+                P1_LIB_INFRA_MEDIA_COMMON_SPEC = mock.Mock(spec_id="P1_c", library_name="c", sites=[mock.Mock(site_id="c1")])
+                P1_LIB_INFRA_MEDIA_CONFIG_SPEC = mock.Mock(spec_id="P1_g", library_name="g", sites=[mock.Mock(site_id="g1")])
+                P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC = mock.Mock(spec_id="P3_r", library_name="r", sites=[mock.Mock(site_id="r1")])
+                FAN_LIBFAN_SPEC = mock.Mock(spec_id="Fan_f", library_name="f", sites=[mock.Mock(site_id="f1")])
+                P9_UPM_KO_SPEC = mock.Mock(spec_id="P9_u", library_name="upm.ko", sites=[mock.Mock(site_id="u1")])
+                LibraryPatchSpec = lambda **kw: type("FakeSpec", (), kw)()
+                PatchSiteSpec = object
+                PF_R = 4
+
+                @staticmethod
+                def apply_patch_spec(data: bytes, spec: object, verify_donor_sha256: bool = True):
+                    after = data + b"_P"
+                    return after, _FakeReceipt(data, after, getattr(spec, "sites", []))
+
+                @staticmethod
+                def resolve_and_verify_sites(data: bytes, spec: object, expect_patched_state: bool = True):
+                    return [_FakeRes("u1")]
+
+            class _FakeVfat:
+                @staticmethod
+                def build_opelog_vfat_image(mode: str):
+                    img = b"VFAT" * 16
+                    receipt = mock.Mock(
+                        mode=mode,
+                        fat_type="FAT16",
+                        total_bytes=len(img),
+                        sha256=hashlib.sha256(img).hexdigest(),
+                        precreated_dirs=("OPE", "OPE/00", "OPE/01"),
+                    )
+                    return img, receipt
+
+                @staticmethod
+                def verify_vfat_image(_img: bytes):
+                    return mock.Mock(valid=True, errors=[])
+
+            class _FakeBmtv:
+                @staticmethod
+                def build_canonical_fa0080_normal_boot_table(donor_seed_bk4_path=None):
+                    return b"T"
+
+                @staticmethod
+                def synthesize_ram_shadow_bk4(**_kw):
+                    bk = b"BK4\x00" + b"\x00" * 12
+                    return mock.Mock(
+                        bk4_bytes=bk,
+                        total_bytes=len(bk),
+                        sha256=hashlib.sha256(bk).hexdigest(),
+                        flash_write_allowed=False,
+                        active_byte8_selector=0,
+                        synthesized_key_count=1,
+                    )
+
+            fake_p10 = type(
+                "FakeP10",
+                (),
+                {
+                    "spec_id": "P10_FX3_TO_FX6_KEYMAP_ADAPTER",
+                    "library_name": "appFw.so",
+                    "sites": (mock.Mock(site_id="p10_fn", size=4),),
+                },
+            )()
+            fake_p12 = type(
+                "FakeP12",
+                (),
+                {
+                    "spec_id": "P12_libWlanResource_fatal_guard",
+                    "library_name": "libWlanResource.so",
+                    "sites": (mock.Mock(site_id="p12_wlan", size=8),),
+                },
+            )()
+
+            def _fake_subproc_run(cmd, **_kw):
+                out_path = pathlib.Path(cmd[-1])
+                out_path.write_bytes(b"ELF_VERIFY_15")
+                return mock.Mock(returncode=0, stderr="")
+
+            donor_u1 = tmp_dir / "donor_u1.uxc"
+            donor_u2 = tmp_dir / "donor_u2.uxc"
+            donor_ltt = tmp_dir / "donor_font.ltt"
+            donor_uxc = tmp_dir / "donor_img.uxc"
+            donor_u1.write_bytes(b"uxc\x07" + b"D1" * 16)
+            donor_u2.write_bytes(b"uxc\x07" + b"D2" * 16)
+            donor_ltt.write_bytes(b"LTT\n" + b"FD" * 16)
+            donor_uxc.write_bytes(b"uxd\x07" + b"D" * 32)
+            build_dir = tmp_dir / "build"
+
+            with mock.patch.object(
+                runner, "_import_stage_a_modules", return_value=(_FakePatcher, _FakeVfat, _FakeBmtv)
+            ), mock.patch.object(
+                runner, "_load_p10_keymap_spec", return_value=fake_p10
+            ), mock.patch.object(
+                runner, "_load_p12_wlan_spec", return_value=fake_p12
+            ), mock.patch.object(
+                runner, "DONOR_IMAGE_00_169_UXC", donor_uxc
+            ), mock.patch.object(
+                runner, donor_attr_u1, donor_u1
+            ), mock.patch.object(
+                runner, donor_attr_u2, donor_u2
+            ), mock.patch.object(
+                runner, donor_attr_ltt, donor_ltt
+            ), mock.patch.object(
+                runner, "FX3_UPM_KO", tmp_dir / "absent_upm.ko"
+            ), mock.patch.object(
+                runner, "FX3_SEED_BK4", tmp_dir / "absent_seed.bin"
+            ), mock.patch.object(
+                runner.subprocess, "run", side_effect=_fake_subproc_run
+            ):
+                with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "1"}):
+                    rep, add, meta = runner.build_stage_a_overlay(
+                        build_dir,
+                        parent_cpio,
+                        b"BK4_NTSC",
+                        enable_p10=True,
+                        enable_r10=True,
+                        enable_p12=True,
+                        enable_r12=True,
+                        enable_r13=True,
+                        enable_r14=True,
+                        enable_r15=True,
+                        lang=lang,
+                        shim_bytes=b"SHIM15",
+                    )
+                self.assertEqual(meta["manifest_count"], 13)
+                self.assertTrue(meta["r14_enabled"])
+                self.assertTrue(meta["r15_enabled"])
+                self.assertEqual(meta["lang"], lang)
+                self.assertIn("etc/fx6_stage_r15", add)
+                self.assertIn(
+                    f"statuscheck_multitab=1\nmonitoring_3layer=1\nlang={lang}\n".encode("utf-8"),
+                    add["etc/fx6_stage_r15"][0],
+                )
+                self.assertEqual(meta["lang_assets"][asset_key_u1]["source"], "cpio_preloaded")
+                self.assertEqual(meta["lang_assets"][asset_key_ltt]["source"], "cpio_preloaded")
+                self.assertEqual(meta["lang_assets"]["fontlist_dat"]["fontlist_key"], fontlist_key)
+                self.assertEqual(rep[f"usr/share/app/{uxc2_name}"], b"uxc\x07" + b"C2" * 16)
+
+                with mock.patch.dict(os.environ, {"FX3_FX6_FORCE_CLEAN_ROOM": "0"}):
+                    rep2, add2, meta2 = runner.build_stage_a_overlay(
+                        build_dir,
+                        parent_cpio,
+                        b"BK4_NTSC",
+                        enable_p10=True,
+                        enable_r10=True,
+                        enable_p12=True,
+                        enable_r12=True,
+                        enable_r13=True,
+                        enable_r14=True,
+                        enable_r15=True,
+                        lang=lang,
+                        shim_bytes=b"SHIM15",
+                    )
+                self.assertTrue(meta2["r15_enabled"])
+                self.assertIn("etc/fx6_stage_r15", add2)
+                self.assertEqual(meta2["lang_assets"][asset_key_u1]["source"], "donor_o_rdonly")
+                self.assertEqual(rep2[f"usr/share/app/{ltt_name}"], b"LTT\n" + b"FD" * 16)
+
+    def test_round15_stage_a_overlay_schinese_dual_mode(self) -> None:
+        self._assert_r15_overlay_dual_mode(
+            lang="schinese",
+            uxc1_name="string_simplifiedchinese.uxc",
+            uxc2_name="string_simplifiedchinese_2.uxc",
+            ltt_name="MYingHeiC-GB18030-SJ_wIcon.ltt",
+            fontlist_key="FONT_S_CHINESE",
+            asset_key_u1="string_simplifiedchinese",
+            asset_key_ltt="font_gb18030_ltt",
+            donor_attr_u1="DONOR_STRING_SCHINESE_UXC",
+            donor_attr_u2="DONOR_STRING_SCHINESE_2_UXC",
+            donor_attr_ltt="DONOR_FONT_SCHINESE_LTT",
+        )
+
+    def test_round15_stage_a_overlay_japanese_dual_mode(self) -> None:
+        self._assert_r15_overlay_dual_mode(
+            lang="japanese",
+            uxc1_name="string_japanese.uxc",
+            uxc2_name="string_japanese_2.uxc",
+            ltt_name="HeiseiKakuGothW5-SJ_wIcon.ltt",
+            fontlist_key="FONT_JAPANESE",
+            asset_key_u1="string_japanese",
+            asset_key_ltt="font_japanese_ltt",
+            donor_attr_u1="DONOR_STRING_JAPANESE_UXC",
+            donor_attr_u2="DONOR_STRING_JAPANESE_2_UXC",
+            donor_attr_ltt="DONOR_FONT_JAPANESE_LTT",
+        )
+
+    def test_round15_extract_milestones_telemetry_parser(self) -> None:
+        runner = _load_closure_module(
+            "fx6_build_and_run_round_r15_ms", "build_and_run_round.py"
+        )
+        serial = "\n".join(
+            [
+                "Linux version 4.9.337-scel+ #1 SMP PREEMPT",
+                "FX6_STAGE_B_R15_VERIFY_PASS count=13 stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 statuscheck_multitab=1 monitoring_3layer=1 lang=schinese",
+                "FX6_STAGE_B_R15_BRIDGE round=15 faithful=1 nop_count=0 p12_wlan=1 p10_keymap=1 p4_nd_clear=1 p11_xlr_h1=1 lang=schinese bk4_lang=0x19 enum=0x2b45_CHINESE_SIMPLIFIED font_bank=23 str_bank=19 multitab_status_monitoring=1",
+                "FX6_R15_LANG_TELEMETRY reason=pump lang=schinese bk4_lang_id=0x02cf019c bk4_lang_val=0x19 lang_enum=0x2b45_CHINESE_SIMPLIFIED font_bank=23 str_bank=19 lang_bk4_hits=3 airplane_bk4_hits=0 p4_nd_clear=1 p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 font_create=19534 glyph_blits=9204 icon_blits=7501 gpe_alloc=144 gpe_fb=0 statuscheck_multitab=1 monitoring_3layer=1 subst_color=0 subst_image=0",
+            ]
+        )
+        ms = runner.extract_milestones(serial)
+        self.assertEqual(ms["prefix_counts"]["FX6_R15_"], 1)
+        r15 = ms["r15_telemetry"]
+        self.assertIsNotNone(r15)
+        self.assertEqual(r15["lang"], "schinese")
+        self.assertEqual(r15["bk4_lang_val"], "0x19")
+        self.assertEqual(r15["font_bank"], 23)
+        self.assertEqual(r15["str_bank"], 19)
+        self.assertEqual(r15["gpe_alloc"], 144)
+        self.assertEqual(r15["gpe_fb"], 0)
+        self.assertEqual(r15["statuscheck_multitab"], 1)
+        self.assertEqual(r15["monitoring_3layer"], 1)
+        self.assertEqual(r15["subst_color"], 0)
+        self.assertEqual(r15["subst_image"], 0)
+
+    def test_round15_report_and_summary_json_invariants(self) -> None:
+        self.assertTrue((ROUND15_REPORT_DIR / "README.md").is_file())
+        summary_path = ROUND15_REPORT_DIR / "summary.json"
+        self.assertTrue(summary_path.is_file())
+        raw_text = summary_path.read_text(encoding="utf-8")
+        for forbidden in ("/Volumes/KAFU2T", "/private/tmp", "/Users/"):
+            self.assertNotIn(forbidden, raw_text)
+        data = json.loads(raw_text)
+        self.assertEqual(data["schema"], "fx6-on-fx3-round15-multitab-status-monitoring-v1")
+        self.assertIn("Linux version 4.9.337-scel+", data["kernel_version"])
+        self.assertEqual(set(data["languages"].keys()), {"en", "tchinese", "japanese", "schinese"})
+
+        runs = data["runs"]
+        self.assertEqual(set(runs.keys()), set(self.EXPECTED_RUN_KEYS))
+        expectations = {
+            "r15a_status_tab2_schinese": (
+                "schinese", "0x30", "36procam_touch_status_camera_presenter", "0x19", 23, 19, 437883, 80, 260,
+            ),
+            "r15b_status_tab3_schinese": (
+                "schinese", "0x31", "35procam_touch_status_audio_presenter", "0x19", 23, 19, 437883, 114, 404,
+            ),
+            "r15c_menu_3layer_monitoring_schinese": (
+                "schinese", "0x11", "31procam_menu_layer_3rd_presenter", "0x19", 23, 19, 437095, 218, 232,
+            ),
+            "r15d_status_tab2_japanese": (
+                "japanese", "0x30", "36procam_touch_status_camera_presenter", "0x01", 1, 12, 437883, 80, 260,
+            ),
+        }
+        for key, (lang, sid, presenter, bk4_val, font_b, str_b, exp_px, exp_col, exp_amber) in expectations.items():
+            run = runs[key]
+            self.assertEqual(run["round"], 15)
+            self.assertEqual(run["lang"], lang)
+            self.assertEqual(run["target_sid"], sid)
+            self.assertEqual(run["target_presenter"], presenter)
+            self.assertEqual(run["nop_count"], 0)
+            self.assertEqual(run["crashes"], 0)
+            self.assertGreater(run["ldec103_ioctl_count"], 40)
+            self.assertGreaterEqual(run["total_threads_seen"], 161)
+            self.assertEqual(
+                run["faithful_invariants"],
+                {
+                    "FX6_NATIVE_FAITHFUL": 1,
+                    "subst_color": 0,
+                    "subst_image": 0,
+                    "forced_render": 0,
+                    "skipped_node": 0,
+                    "lock_bypass": 0,
+                },
+            )
+            sb = run["stage_b"]
+            self.assertTrue(sb["r14_enabled"])
+            self.assertTrue(sb["r15_enabled"])
+            self.assertEqual(sb["manifest_count"], 13)
+            markers = "\n".join(sb["guest_boot_markers"])
+            self.assertIn("FX6_STAGE_A_VERIFY_PASS count=13", markers)
+            self.assertIn(
+                f"FX6_STAGE_B_R15_VERIFY_PASS count=13 stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 statuscheck_multitab=1 monitoring_3layer=1 lang={lang}",
+                markers,
+            )
+            self.assertIn("FX6_STAGE_B_R15_BRIDGE round=15 faithful=1 nop_count=0", markers)
+            self.assertIn("FX6_STAGE_B_P4_ND_CLEAR_CHECK ok=1 nd_mode=0xd503201f nd_val=0x1400001b", markers)
+            telem = run["r15_telemetry"]
+            self.assertEqual(telem["lang"], lang)
+            self.assertEqual(telem["bk4_lang_val"], bk4_val)
+            self.assertEqual(telem["font_bank"], font_b)
+            self.assertEqual(telem["str_bank"], str_b)
+            self.assertEqual(telem["airplane_bk4_hits"], 0)
+            self.assertEqual(telem["p12_wlan"], 1)
+            self.assertEqual(telem["gpe_fb"], 0)
+            self.assertEqual(telem["statuscheck_multitab"], 1)
+            self.assertEqual(telem["monitoring_3layer"], 1)
+            self.assertEqual(telem["subst_color"], 0)
+            self.assertEqual(telem["subst_image"], 0)
+            self.assertEqual(run["gpe0_readback"]["nonzero_pixels"], exp_px)
+            self.assertEqual(run["gpe0_readback"]["unique_colors"], exp_col)
+            self.assertEqual(run["amber_0xffffaa00_pixels"], exp_amber)
+
+    def test_round15_stage_b_manifest_13_sha256_integrity(self) -> None:
+        data = json.loads((ROUND15_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        shared_by_path: Dict[str, str] = {}
+        for key in self.EXPECTED_RUN_KEYS:
+            items = data["runs"][key]["stage_b"]["manifest_items"]
+            self.assertEqual(len(items), 13)
+            for item in items:
+                gpath = item["guest_path"]
+                digest = item["sha256"]
+                self.assertEqual(len(digest), 64)
+                int(digest, 16)
+                if gpath == "/usr/lib/libgrm-fbinit9.so":
+                    continue
+                if gpath in shared_by_path:
+                    self.assertEqual(shared_by_path[gpath], digest, f"SHA mismatch on {gpath}")
+                else:
+                    shared_by_path[gpath] = digest
+        self.assertEqual(len(shared_by_path), 12)
+
+    @staticmethod
+    def _diff_rows(ra: List[bytes], rb: List[bytes]) -> int:
+        import operator
+        ne = operator.ne
+        return sum(
+            sum(map(ne, memoryview(ya).cast("I"), memoryview(yb).cast("I")))
+            for ya, yb in zip(ra, rb)
+            if ya != yb
+        )
+
+    @staticmethod
+    def _count_amber(rows: List[bytes]) -> int:
+        amber_word = int.from_bytes(b"\xff\xaa\x00\xff", sys.byteorder)
+        return sum(
+            sum(1 for px in memoryview(row).cast("I") if px == amber_word)
+            for row in rows
+            if b"\xff\xaa\x00\xff" in row
+        )
+
+    def test_round15_multitab_statuscheck_pairwise_pixel_deltas_exact(self) -> None:
+        data = json.loads((ROUND15_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        mt = data["r15_multitab_and_category_audit"]["status_check_multitab_stepping_schinese"]
+        self.assertTrue(mt["all_3_tab_pairs_strictly_positive"])
+
+        p13a = ROUND13_ASSETS_DIR / "r13a-status-check-schinese-alpha.png"
+        p15a = ROUND15_ASSETS_DIR / "r15a-status-tab2-schinese-alpha.png"
+        p15b = ROUND15_ASSETS_DIR / "r15b-status-tab3-schinese-alpha.png"
+        rows = {
+            "tab1": _decode_png_rgba_rows(p13a.read_bytes())[2],
+            "tab2": _decode_png_rgba_rows(p15a.read_bytes())[2],
+            "tab3": _decode_png_rgba_rows(p15b.read_bytes())[2],
+        }
+        for key_name, a_key, b_key, exp_diff in (
+            ("tab1_vs_tab2", "tab1", "tab2", 69094),
+            ("tab2_vs_tab3", "tab2", "tab3", 125103),
+            ("tab1_vs_tab3", "tab1", "tab3", 130085),
+        ):
+            self.assertEqual(mt[key_name]["diff_pixels"], exp_diff)
+            self.assertTrue(mt[key_name]["strictly_positive"])
+            diff = self._diff_rows(rows[a_key], rows[b_key])
+            self.assertGreater(diff, 0)
+            self.assertEqual(diff, exp_diff)
+
+    def test_round15_monitoring_3layer_category_pixel_deltas_exact(self) -> None:
+        data = json.loads((ROUND15_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        cat = data["r15_multitab_and_category_audit"]["menu_3layer_category_navigation_schinese"]
+        self.assertTrue(cat["all_category_deltas_strictly_positive"])
+
+        p11d = ROUND11_ASSETS_DIR / "r11d-c2-menu-3layer-schinese-alpha.png"
+        p13c = ROUND13_ASSETS_DIR / "r13c-menu-3layer-paintlook-schinese-alpha.png"
+        p15c = ROUND15_ASSETS_DIR / "r15c-menu-3layer-monitoring-schinese-alpha.png"
+        rows_15c = _decode_png_rgba_rows(p15c.read_bytes())[2]
+        for entry_key, other_path, exp_diff in (
+            ("monitoring_vs_shooting_r11d", p11d, 124819),
+            ("monitoring_vs_paintlook_r13c", p13c, 31140),
+        ):
+            self.assertEqual(cat[entry_key]["diff_pixels"], exp_diff)
+            self.assertTrue(cat[entry_key]["strictly_positive"])
+            rows_other = _decode_png_rgba_rows(other_path.read_bytes())[2]
+            diff = self._diff_rows(rows_15c, rows_other)
+            self.assertGreater(diff, 0)
+            self.assertEqual(diff, exp_diff)
+
+    def test_round15_cjk_cross_engine_tab2_pixel_deltas_exact(self) -> None:
+        data = json.loads((ROUND15_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        cjk = data["r15_multitab_and_category_audit"]["cjk_cross_engine_tab2_audit"]
+
+        p14a = ROUND14_ASSETS_DIR / "r14a-status-check-japanese-alpha.png"
+        p15a = ROUND15_ASSETS_DIR / "r15a-status-tab2-schinese-alpha.png"
+        p15d = ROUND15_ASSETS_DIR / "r15d-status-tab2-japanese-alpha.png"
+        rows_15d = _decode_png_rgba_rows(p15d.read_bytes())[2]
+        for entry_key, other_path, exp_diff in (
+            ("japanese_tab1_vs_tab2", p14a, 62815),
+            ("schinese_tab2_vs_japanese_tab2", p15a, 33462),
+        ):
+            self.assertEqual(cjk[entry_key]["diff_pixels"], exp_diff)
+            self.assertTrue(cjk[entry_key]["strictly_positive"])
+            rows_other = _decode_png_rgba_rows(other_path.read_bytes())[2]
+            diff = self._diff_rows(rows_15d, rows_other)
+            self.assertGreater(diff, 0)
+            self.assertEqual(diff, exp_diff)
+
+    def test_round15_png_receipts_valid_under_85kib_and_amber(self) -> None:
+        self.assertTrue(ROUND15_ASSETS_DIR.is_dir())
+        alpha_digests: Dict[str, str] = {}
+        comp_digests: Dict[str, str] = {}
+        for stem in self.EXPECTED_STEMS:
+            for variant, bucket in (("alpha", alpha_digests), ("composited", comp_digests)):
+                png_path = ROUND15_ASSETS_DIR / f"{stem}-{variant}.png"
+                self.assertTrue(png_path.is_file(), f"Missing Round 15 PNG: {png_path}")
+                raw = png_path.read_bytes()
+                self.assertLess(len(raw), 85 * 1024, f"PNG exceeds 85 KiB: {png_path}")
+                w, h, _ = _parse_and_validate_png(raw)
+                self.assertEqual((w, h), (1024, 540))
+                bucket[stem] = hashlib.sha256(raw).hexdigest()
+        self.assertEqual(len(set(alpha_digests.values())), len(self.EXPECTED_STEMS))
+        self.assertEqual(len(set(comp_digests.values())), len(self.EXPECTED_STEMS))
+
+        for stem, exp_amber in (
+            ("r15a-status-tab2-schinese", 260),
+            ("r15b-status-tab3-schinese", 404),
+            ("r15c-menu-3layer-monitoring-schinese", 232),
+            ("r15d-status-tab2-japanese", 260),
+        ):
+            _, _, rows = _decode_png_rgba_rows((ROUND15_ASSETS_DIR / f"{stem}-alpha.png").read_bytes())
+            self.assertEqual(self._count_amber(rows), exp_amber)
+
+    def test_round15_readme_and_no_tmp_scratch_residue(self) -> None:
+        closure_readme = (CLOSURE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertIn("2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring", closure_readme)
+        r15_readme = (ROUND15_REPORT_DIR / "README.md").read_text(encoding="utf-8")
+        for tok in ("0x2f", "0x30", "0x31", "0x11", "Monitoring"):
+            self.assertIn(tok, r15_readme)
+        for forbidden in ("/Volumes/KAFU2T", "/Users/"):
+            self.assertNotIn(forbidden, r15_readme)
+        tmp_matches = list(pathlib.Path("/private/tmp").glob("fx6-r15*"))
         self.assertEqual(tmp_matches, [], f"Leftover scratch dirs in /private/tmp: {tmp_matches}")
 
 

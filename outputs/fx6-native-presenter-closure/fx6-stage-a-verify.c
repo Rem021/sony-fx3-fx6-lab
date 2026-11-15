@@ -319,6 +319,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R14_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 statuscheck_4lang=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r15_st;
+    if (stat("/etc/fx6_stage_r15", &r15_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r15f = fopen("/etc/fx6_stage_r15", "r");
+        if (r15f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r15f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r15f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R15_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 statuscheck_multitab=1 monitoring_3layer=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 

@@ -653,5 +653,28 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
 - **Complete `18/18` (`3 Surfaces x 6 Language Pairs`) Matrix Closure (`r14d`)**: Combining Round 10–13 (`Big6 Home` `sid=0x0a`, `3-Layer Full Menu` `sid=0x10..0x11`, `ZH-CN` `r13a` `Status Check`) with `r14a..r14c` proves all 6 language pairs (`EN`/`ZH-CN`/`ZH-TW`/`JA`) have strictly positive pixel deltas across all 3 core FX6 surfaces (`Big6 Home`: `88..11,961` px; `Full Menu`: `31,822..137,817` px; `Status Check`: `22,055..54,998` px).
 - **Full Report, Receipts, & `60+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/README.md`](../../reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/README.md) and [`summary.json`](../../reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/summary.json).
 
+---
+
+## 15. Round 15: Real FX3 `7.02` Kernel Multi-Tab `Status Check` Stepping (`Main 0x2f -> Camera 0x30 -> Audio 0x31`) & `Monitoring` 3-Layer CJK Closure
+
+`build_and_run_round.py --round 15 --lang {en,english,schinese,tchinese,japanese}` validates intra-`Status Check` multi-tab stepping (`0x7052` `INFRA_STATUS_CHECK` -> `34procam_touch_status_main_presenter` `sid=0x2f` -> `0x0030` `DOWN` stepping `0xcbdfd4 -> 0xcadb58` over `appFw.so+0x2384f80` to `36procam_touch_status_camera_presenter` `sid=0x30` -> `35procam_touch_status_audio_presenter` `sid=0x31`) and deep left-rail category navigation (`5x DOWN` -> `Monitoring` -> `2x RIGHT` -> `31procam_menu_layer_3rd_presenter` `sid=0x11`) on the real FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R15_VERIFY_PASS`, `FX6_STAGE_B_R15_BRIDGE`, and `FX6_R15_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 15 --lang schinese --initial-setting-done 1 --run-id r15b-status-tab3-schinese --duration 84 \
+  --run-dir /private/tmp/fx6-r15-runs/r15b-down2 \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:2500,0x0030:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r15b-status-tab3-schinese \
+  --export-png-dir reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets
+```
+
+- **4 Live Round 15 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P12` Airplane-Mode immune)**:
+  - `r15a-status-tab2-schinese`: `schinese` (`0x02cf019c=0x19`) `INFRA_STATUS_CHECK` (`0x7052`) + `1x 0x0030` -> `36procam_touch_status_camera_presenter` (`sid=0x30`, `437,883` px / `80` colors / `260` `0xffffaa00` amber px, `8,304` icon blits, `13,998` glyph blits, `53` `LDEC103` `cmd=1` ioctls, **`69,094` px diff vs `r13a` Tab 1**).
+  - `r15b-status-tab3-schinese`: `schinese` (`0x02cf019c=0x19`) `INFRA_STATUS_CHECK` (`0x7052`) + `2x 0x0030` -> `35procam_touch_status_audio_presenter` (`sid=0x31`, `437,883` px / `114` colors / `404` `0xffffaa00` amber px, `7,501` icon blits, `9,204` glyph blits, `55` `LDEC103` `cmd=1` ioctls, **`125,103` px diff vs `r15a` Tab 2** & **`130,085` px diff vs `r13a` Tab 1**).
+  - `r15c-menu-3layer-monitoring-schinese`: `schinese` (`0x02cf019c=0x19`) `FX3_MENU` (`1300ms`) + `5x 0x0030` (`Monitoring`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `218` colors / `232` `0xffffaa00` amber px, `14,482` icon blits, `10,570` glyph blits, `81` `LDEC103` `cmd=1` ioctls, **`124,819` px diff vs `r11d` `Shooting`** & **`31,140` px diff vs `r13c` `Paint/Look`**).
+  - `r15d-status-tab2-japanese`: `japanese` (`0x02cf019c=0x01`, `switchBank(ns=4/1/2 = 1/12/12)`) `INFRA_STATUS_CHECK` (`0x7052`) + `1x 0x0030` -> `36procam_touch_status_camera_presenter` (`sid=0x30`, `437,883` px / `80` colors / `260` `0xffffaa00` amber px, `8,359` icon blits, `15,555` glyph blits, `53` `LDEC103` `cmd=1` ioctls, **`62,815` px diff vs `r14a` Japanese Tab 1** & **`33,462` px diff vs `r15a` SChinese Tab 2**).
+- **Full Report, Receipts, & `70+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/README.md`](../../reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/README.md) and [`summary.json`](../../reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/summary.json).
+
+
 
 

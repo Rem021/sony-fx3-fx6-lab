@@ -1055,3 +1055,25 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r30c-jbusy-uninstall` (`--r30-mode jbusy_uninstall`): Negative `/tmp/jbusy` gate returns `0x10000011` with `0` bytes written and `0` `dlopen` calls (`abort_ok=1`, `1,190 us`), followed by full loopback `H0 -> H1 -> H2 -> H3` atomic install/clean-uninstall proving exact `SHA256(H3) == SHA256(H0)` across all `16/16` surfaces with `residual_stage_b_files=0` (`h0_eq_h3=1`, `uninstall_ok=1`).
 - **Full Report, Receipts, & `306` Dual-Mode Unit Tests**: See [`reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/README.md`](../../reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round30-realhw-canary-tier0-peripheral-uninstall-qemu/summary.json).
 
+---
+
+## 31. Round 31: Real FX3 `7.02` Kernel QEMU Rehearsal — FX3 Body Keymap (`MODE->Big-6 / DISP->Status / Custom 1..6 / T-W Zoom`), 3x Tally LEDs, Fan `Off-in-Rec` Thermal Override, `NP-FZ100`/USB-PD Curve & Dual-Layer `pnflasha/mtd0ro` Firewall
+
+`build_and_run_round.py --round 31 --r31-mode {keymap_big6,fan_fz100_power,mtdro_firewall}` rehearses Phase 149 & Phase 151 in live native ARM64 C execution on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 31 --r31-mode keymap_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r31a-keymap-tally-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r31-runs/r31a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r31a-keymap-tally-big6-schinese \
+  --export-png-dir reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/assets
+```
+
+- **3 Live Round 31 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r31a-keymap-tally-big6-schinese` (`--r31-mode keymap_big6`): Injects real FX3 hardware `0x7028` (`UIBIZ_KEY_TACT_MODE`) translated by `libgrm-fbinit9.so` (`FX3_PHY_KEY_MAP phy=0x7028 infra=0x718c name=FX3_MODE_TO_BIG6`), verifies live `appFw.so + 0x2245a10` keymap codebook (`0x7028->0x718c` Big-6 Home, `0x01fb->0x7052` DISP Status Check, `EVENT_INPUT_KEY_TACT_CUSTOM1..6`, `UIBIZ_SLIKEY_ZOOM` rocker `0x01d1`/`0x7151`/`0x7152` without `0x00df` handle fault, `MENU+SHUTTER+POWER` escape hatch), synchronizes `Front/Top/Rear` 3x Tally LED GPIO state (`REC_LAMP_ALL_LIGHTS_UP` on `REC`, Green/Yellow `OSD-only`, `gpio_mismatch_count=0`), and renders **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** across `13/13` Stage-B SHA-256 locks (`346,686` px / `87` colors / `110` `LDEC103` ioctls / `nop_count=0` / `gpe_fb=0`).
+  - `r31b-fan-off-in-rec-fz100-usbpd` (`--r31-mode fan_fz100_power`): Probes real `/usr/lib/libfan.so`, `/usr/lib/libsencore.so`, and `/usr/lib/libmpr.so` (`EncWfiStop` x2), keeps `Fan Control = Off in Rec` silent (`0 RPM` / `0% PWM`) at `42 °C` (`always_off_blocked=1`), engages mandatory `100% PWM` (`4,800 RPM`) spin-up at `T_cmos = 68 °C >= 65 °C` (`cmos_thermal_damage_prevented=1`, `5,058 us`), maps `NP-FZ100` (`7.2V` / `84%`) + `USB-PD` (`9V/3A`, `27W`) with `false_19v5_dcin_alarm=0`, and triggers `EncWfiStop` on `7.2V -> 6.3V` sag finalizing `C0001.RSV -> C0001.MXF` (`rsv_orphan_count=0`, `18,152 us`).
+  - `r31c-dual-layer-pnflasha-mtdro-firewall` (`--r31-mode mtdro_firewall`): Blocks `cnflasha15` `ext2` (`0xEF53 @ 0x438`) restoration onto raw `/dev/pnflasha15` (`cross_domain_rejected=1`) and `camera_cid_sha256` mismatch (`cid_mismatch_rejected=1`, `bytes_written=0`, `pnflasha_sha_intact=1`), blocks `/dev/mtd0` write (`-EACCES`) and `O_RDWR` on `MS_RDONLY` `/dev/mtd0ro` (`EROFS=30`, `mtd_rw_rejected=1`), while completing `O_RDONLY /dev/mtd0ro` verified dump (`16,384 B`, `spi_nor_write_count=0`, `3,593 us`).
+- **Full Report, Receipts, & `330` Dual-Mode Unit Tests**: See [`reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/README.md`](../../reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/summary.json).
+

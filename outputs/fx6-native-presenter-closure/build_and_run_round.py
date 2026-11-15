@@ -1332,8 +1332,10 @@ def build_stage_a_overlay(
     enable_r28: bool = False,
     enable_r29: bool = False,
     enable_r30: bool = False,
+    enable_r31: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
+    r31_mode: str = "keymap_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1609,7 +1611,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r29_mode: {r29_mode}")
     if enable_r30 and r30_mode not in ("canary_tier0", "peripheral_big6", "jbusy_uninstall"):
         raise ValueError(f"Unsupported r30_mode: {r30_mode}")
-    if enable_r30 and r30_mode in ("canary_tier0", "jbusy_uninstall"):
+    if enable_r31 and r31_mode not in ("keymap_big6", "fan_fz100_power", "mtdro_firewall"):
+        raise ValueError(f"Unsupported r31_mode: {r31_mode}")
+    if enable_r31 and r31_mode in ("fan_fz100_power", "mtdro_firewall"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r31_mode == "fan_fz100_power":
+            r31_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r31-fan-fz100-power > /dev/console 2>&1\n"
+                "fx6_r31_fan_rc=$?\n"
+                "echo FX6_R31_FAN_FZ100_RC=$fx6_r31_fan_rc\n"
+                "echo FX6_R31_FAN_FZ100_EXIT rc=$fx6_r31_fan_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r31_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r31-mtdro-firewall > /dev/console 2>&1\n"
+                "fx6_r31_mtdro_rc=$?\n"
+                "echo FX6_R31_MTDRO_RC=$fx6_r31_mtdro_rc\n"
+                "echo FX6_R31_MTDRO_EXIT rc=$fx6_r31_mtdro_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r31_early_hook, 1)
+    elif enable_r30 and r30_mode in ("canary_tier0", "jbusy_uninstall"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -1900,6 +1929,31 @@ def build_stage_a_overlay(
             "p18_mount_point": "/lens",
             "p18_mount_flags": "MS_RDONLY|MS_NOATIME",
         }
+    r31_meta: Optional[Dict[str, Any]] = None
+    if enable_r31:
+        additions["etc/fx6_stage_r31"] = (
+            (
+                f"stage_r31=1\nr31_mode={r31_mode}\n"
+                f"fx3_body_keymap=1\ntally_3x_gpio=1\n"
+                f"fan_off_in_rec_override=1\nfz100_usb_pd_curve=1\n"
+                f"pnflasha_mtdro_firewall=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r31_meta = {
+            "r31_mode": r31_mode,
+            "mode_key_mapping": "0x7028->0x718c (Big-6 Home)",
+            "disp_key_mapping": "0x01fb->0x7052 (Status Check)",
+            "custom_keys_count": 6,
+            "tally_3x_policy": "REC_LAMP_ALL_LIGHTS_UP / OSD_ONLY_GREEN_YELLOW",
+            "fan_mode": "OFF_IN_REC",
+            "fan_emergency_override_c": 65.0,
+            "fz100_nominal_mv": 7200,
+            "fz100_near_end_mv": 6350,
+            "usb_pd_profile": "9V/3A (27W)",
+            "ext2_super_magic": "0xEF53",
+            "mtd_ro_device": "/dev/mtd0ro",
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -1923,6 +1977,7 @@ def build_stage_a_overlay(
         "r28_enabled": enable_r28,
         "r29_enabled": enable_r29,
         "r30_enabled": enable_r30,
+        "r31_enabled": enable_r31,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -1958,6 +2013,8 @@ def build_stage_a_overlay(
         stage_a_meta["r29"] = r29_meta
     if r30_meta is not None:
         stage_a_meta["r30"] = r30_meta
+    if r31_meta is not None:
+        stage_a_meta["r31"] = r31_meta
     return replacements, additions, stage_a_meta
 
 
@@ -2277,6 +2334,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R28_",
         "FX6_R29_",
         "FX6_R30_",
+        "FX6_R31_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -2336,6 +2394,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r30_bridge: Optional[Dict[str, Any]] = None
     r30_canary_tier0_rc: Optional[int] = None
     r30_jbusy_uninstall_rc: Optional[int] = None
+    last_r31_keymap_tally_init: Optional[Dict[str, Any]] = None
+    last_r31_keymap_tally_bridge: Optional[Dict[str, Any]] = None
+    last_r31_fan_thermal: Optional[Dict[str, Any]] = None
+    last_r31_fz100_power: Optional[Dict[str, Any]] = None
+    last_r31_mtdro_firewall: Optional[Dict[str, Any]] = None
+    last_r31_lang: Optional[Dict[str, Any]] = None
+    last_r31_bridge: Optional[Dict[str, Any]] = None
+    r31_fan_fz100_rc: Optional[int] = None
+    r31_mtdro_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -2441,6 +2508,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R30_JBUSY_UNINSTALL_RC"), int):
                 r30_jbusy_uninstall_rc = kv["FX6_R30_JBUSY_UNINSTALL_RC"]
+        elif "FX6_R31_KEYMAP_TALLY_INIT " in line:
+            last_r31_keymap_tally_init = _parse_kv_ints(line.split("FX6_R31_KEYMAP_TALLY_INIT ", 1)[1])
+        elif "FX6_R31_KEYMAP_TALLY_BRIDGE " in line:
+            last_r31_keymap_tally_bridge = _parse_kv_ints(line.split("FX6_R31_KEYMAP_TALLY_BRIDGE ", 1)[1])
+        elif "FX6_R31_FAN_THERMAL " in line:
+            last_r31_fan_thermal = _parse_kv_ints(line.split("FX6_R31_FAN_THERMAL ", 1)[1])
+        elif "FX6_R31_FZ100_POWER " in line:
+            last_r31_fz100_power = _parse_kv_ints(line.split("FX6_R31_FZ100_POWER ", 1)[1])
+        elif "FX6_R31_MTDRO_FIREWALL " in line:
+            last_r31_mtdro_firewall = _parse_kv_ints(line.split("FX6_R31_MTDRO_FIREWALL ", 1)[1])
+        elif "FX6_R31_LANG_TELEMETRY " in line:
+            last_r31_lang = _parse_kv_ints(line.split("FX6_R31_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R31_BRIDGE " in line:
+            last_r31_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R31_BRIDGE ", 1)[1])
+        elif "FX6_R31_FAN_FZ100_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R31_FAN_FZ100_RC"), int):
+                r31_fan_fz100_rc = kv["FX6_R31_FAN_FZ100_RC"]
+        elif "FX6_R31_MTDRO_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R31_MTDRO_RC"), int):
+                r31_mtdro_rc = kv["FX6_R31_MTDRO_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -2540,6 +2629,31 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r30_bridge or {},
         }
 
+    r31_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r31_keymap_tally_init,
+            last_r31_keymap_tally_bridge,
+            last_r31_fan_thermal,
+            last_r31_fz100_power,
+            last_r31_mtdro_firewall,
+            last_r31_lang,
+            last_r31_bridge,
+        )
+    ):
+        r31_telemetry = {
+            "fan_fz100_rc": r31_fan_fz100_rc,
+            "mtdro_rc": r31_mtdro_rc,
+            "keymap_tally_init": last_r31_keymap_tally_init or {},
+            "keymap_tally_bridge": last_r31_keymap_tally_bridge or {},
+            "fan_thermal": last_r31_fan_thermal or {},
+            "fz100_power": last_r31_fz100_power or {},
+            "mtdro_firewall": last_r31_mtdro_firewall or {},
+            "lang_telemetry": last_r31_lang or {},
+            "stage_b_bridge": last_r31_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -2567,6 +2681,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r28_telemetry": r28_telemetry,
         "r29_telemetry": r29_telemetry,
         "r30_telemetry": r30_telemetry,
+        "r31_telemetry": r31_telemetry,
     }
 
 
@@ -2590,7 +2705,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 30:
+    if args.round >= 31:
+        tmp_prefix = "fx6-r31"
+    elif args.round >= 30:
         tmp_prefix = "fx6-r30"
     elif args.round >= 29:
         tmp_prefix = "fx6-r29"
@@ -2666,8 +2783,12 @@ def run_once(args: argparse.Namespace) -> int:
         sd_manifest_mode = getattr(args, "sd_manifest_mode", "valid")
         r29_mode = getattr(args, "r29_mode", "install_mpr_rec")
         r30_mode = getattr(args, "r30_mode", "peripheral_big6")
+        r31_mode = getattr(args, "r31_mode", "keymap_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwKeymapTallyFanFz100Mtdro+r31_mode={r31_mode}+lang={lang})"
+                if args.round >= 31
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwCanaryTier0PeripheralUninstall+r30_mode={r30_mode}+lang={lang})"
                 if args.round >= 30
                 else (
@@ -2752,6 +2873,7 @@ def run_once(args: argparse.Namespace) -> int:
                 )
                 )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -2782,6 +2904,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r29_mode=r29_mode,
                 enable_r30=(args.round >= 30),
                 r30_mode=r30_mode,
+                enable_r31=(args.round >= 31),
+                r31_mode=r31_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -2898,6 +3022,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R29_P1_RESCUE_EXIT" in txt
                     or "FX6_R30_CANARY_TIER0_EXIT" in txt
                     or "FX6_R30_JBUSY_UNINSTALL_EXIT" in txt
+                    or "FX6_R31_FAN_FZ100_EXIT" in txt
+                    or "FX6_R31_MTDRO_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -2916,6 +3042,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R29_P1_RESCUE_EXIT" in serial_text
             or "FX6_R30_CANARY_TIER0_EXIT" in serial_text
             or "FX6_R30_JBUSY_UNINSTALL_EXIT" in serial_text
+            or "FX6_R31_FAN_FZ100_EXIT" in serial_text
+            or "FX6_R31_MTDRO_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -2969,6 +3097,7 @@ def run_once(args: argparse.Namespace) -> int:
             "sd_manifest_mode": sd_manifest_mode if args.round >= 28 else None,
             "r29_mode": r29_mode if args.round == 29 else None,
             "r30_mode": r30_mode if args.round >= 30 else None,
+            "r31_mode": r31_mode if args.round >= 31 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -3006,6 +3135,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r28_telemetry": milestones.get("r28_telemetry") if args.round >= 28 else None,
             "r29_telemetry": milestones.get("r29_telemetry") if args.round == 29 else None,
             "r30_telemetry": milestones.get("r30_telemetry") if args.round >= 30 else None,
+            "r31_telemetry": milestones.get("r31_telemetry") if args.round >= 31 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -3055,11 +3185,12 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
     ap.add_argument("--r30-mode", type=str, choices=["canary_tier0", "peripheral_big6", "jbusy_uninstall"], default="peripheral_big6")
+    ap.add_argument("--r31-mode", type=str, choices=["keymap_big6", "fan_fz100_power", "mtdro_firewall"], default="keymap_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

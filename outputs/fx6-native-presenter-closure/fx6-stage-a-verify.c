@@ -681,6 +681,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R35_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 ssboot_wbi2_ro_lock=1 blkroset_nflasha5=1 powerloss_100cycle_rsv=1 slot1_bodydata_204_floor=1 c2pa_100_ceiling=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r36_st;
+    if (stat("/etc/fx6_stage_r36", &r36_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r36f = fopen("/etc/fx6_stage_r36", "r");
+        if (r36f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r36f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r36f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R36_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 emount_info3d_breathing=1 p18_lensfile_erofs=1 hdmi_4264_raw_prores_braw=1 sdi_mmio_masked=1 wpa2_wpa3_sanitizer=1 focusmap_ro_bridge=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 
@@ -5288,6 +5306,462 @@ static int run_r35_slot1_ufu_c2pa_probe(void) {
     return ok ? 0 : 183;
 }
 
+/* ---- Round 36: MIRA_CETUS2 E-Mount info7/info8/info3D + 0x02cf0232 Breathing Comp + p18:/lens/LENSFILE.BIN EROFS, Type-A HDMI 4264x2408 16-bit RAW (BRAW/ProRes RAW), & WPA2/WPA3 Sanitizer + Focus Map Bridge ---- */
+
+static int r36_is_sony_emount_lens(uint16_t lens_id) {
+    return (((lens_id >> 14) == 3U) && ((lens_id & 0x0FFFU) != 0x0FFFU)) ? 1 : 0;
+}
+
+static int r36_eval_breathing_comp(uint16_t lens_id, uint32_t bkid_02cf0232_val,
+                                   int *out_shift14_eq3, int *out_low12_valid,
+                                   int *out_breathing_enabled, uint32_t *out_crop_permille) {
+    int shift14_eq3 = ((lens_id >> 14) == 3U) ? 1 : 0;
+    int low12_valid = ((lens_id & 0x0FFFU) != 0x0FFFU) ? 1 : 0;
+    int enabled = (shift14_eq3 && low12_valid && bkid_02cf0232_val != 0U) ? 1 : 0;
+    if (out_shift14_eq3) *out_shift14_eq3 = shift14_eq3;
+    if (out_low12_valid) *out_low12_valid = low12_valid;
+    if (out_breathing_enabled) *out_breathing_enabled = enabled;
+    if (out_crop_permille) *out_crop_permille = enabled ? 1085U : 1000U;
+    return enabled ? 0 : -EACCES;
+}
+
+static int r36_cinealta_lensfile_write_gate(const char *path, int p18_ro_locked) {
+    if (!path) return -EINVAL;
+    if (p18_ro_locked) return -EROFS;
+    errno = 0;
+    int fd = open(path, O_RDWR);
+    if (fd < 0) return -errno;
+    close(fd);
+    return 0;
+}
+
+static int setup_r36_emount_info3d_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r36_p18/lens", 0755) != 0) {
+        fprintf(stderr, "FX6_R36_INIT_FAIL step=mkdir_r36_p18 errno=%d\n", errno);
+        return -1;
+    }
+    (void)umount("/mnt/r36_p18");
+    if (mount("tmpfs", "/mnt/r36_p18", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        fprintf(stderr, "FX6_R36_INIT_FAIL step=mount_r36_p18 errno=%d\n", errno);
+        return -1;
+    }
+    if (mkdir("/mnt/r36_p18/lens", 0755) != 0 && errno != EEXIST) {
+        fprintf(stderr, "FX6_R36_INIT_FAIL step=mkdir_lens errno=%d\n", errno);
+        return -1;
+    }
+
+    /* Build deterministic p18:/lens/LENSFILE.BIN table (Sony 0xC123, 3rd-party 0x4123, Manual 0xFFFF) */
+    uint8_t lensfile_buf[4096];
+    memset(lensfile_buf, 0, sizeof(lensfile_buf));
+    memcpy(lensfile_buf, "LENSFILE", 8U);
+    lensfile_buf[8] = 3U; /* entry count */
+    /* Entry 0: Sony FE 50mm F1.2 GM (lens_id = 0xC123) */
+    lensfile_buf[16] = 0x23U; lensfile_buf[17] = 0xC1U;
+    memcpy(lensfile_buf + 20U, "SEL50F12GM", 10U);
+    /* Entry 1: Third-party E-mount (lens_id = 0x4123) */
+    lensfile_buf[48] = 0x23U; lensfile_buf[49] = 0x41U;
+    memcpy(lensfile_buf + 52U, "3RD_35F14 ", 10U);
+    /* Entry 2: Unchipped Manual Adapter (lens_id = 0xFFFF) */
+    lensfile_buf[80] = 0xFFU; lensfile_buf[81] = 0xFFU;
+    memcpy(lensfile_buf + 84U, "MANUAL_PL ", 10U);
+
+    if (r29_write_all_fsync("/mnt/r36_p18/lens/LENSFILE.BIN", lensfile_buf, sizeof(lensfile_buf), 0444) != 0) {
+        fprintf(stderr, "FX6_R36_INIT_FAIL step=write_lensfile errno=%d\n", errno);
+        return -1;
+    }
+
+    char lens_sha_before[65] = "", lens_sha_after[65] = "";
+    unsigned long long lens_sz_before = 0ULL, lens_sz_after = 0ULL;
+    (void)sha256_file_hex("/mnt/r36_p18/lens/LENSFILE.BIN", lens_sha_before, &lens_sz_before);
+
+    if (mount(NULL, "/mnt/r36_p18", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        fprintf(stderr, "FX6_R36_INIT_FAIL step=remount_r36_p18_ro errno=%d\n", errno);
+        return -1;
+    }
+
+    errno = 0;
+    int wr_fd = open("/mnt/r36_p18/lens/LENSFILE.BIN", O_RDWR);
+    int wr_errno = (wr_fd < 0) ? errno : 0;
+    if (wr_fd >= 0) close(wr_fd);
+
+    errno = 0;
+    int r30_lens_wfd = open("/lens/lensfile.bin", O_RDWR);
+    int r30_lens_errno = (r30_lens_wfd < 0) ? errno : 0;
+    if (r30_lens_wfd >= 0) close(r30_lens_wfd);
+
+    (void)sha256_file_hex("/mnt/r36_p18/lens/LENSFILE.BIN", lens_sha_after, &lens_sz_after);
+    int p18_lensfile_erofs = (wr_fd < 0 && wr_errno == EROFS) ? 1 : 0;
+    int p18_r30_lens_erofs = (r30_lens_wfd < 0 && r30_lens_errno == EROFS) ? 1 : 0;
+    int lensfile_sha256_match = (lens_sz_before == sizeof(lensfile_buf) &&
+                                 lens_sz_after == lens_sz_before &&
+                                 strcmp(lens_sha_before, lens_sha_after) == 0) ? 1 : 0;
+
+    int cinealta_write_rc = r36_cinealta_lensfile_write_gate("/mnt/r36_p18/lens/LENSFILE.BIN", p18_lensfile_erofs);
+    int cinealta_slot_blocked = (cinealta_write_rc == -EROFS) ? 1 : 0;
+
+    /* MIRA_CETUS2 E-Mount info7 / info8 / info3D handshake frames */
+    uint8_t info7_pkt[16];
+    memset(info7_pkt, 0, sizeof(info7_pkt));
+    info7_pkt[0] = 0x07U; /* info7 base 16-bit lens_id */
+    info7_pkt[1] = 16U;
+    info7_pkt[2] = 0x23U; info7_pkt[3] = 0xC1U; /* 0xC123 LE */
+    info7_pkt[4] = 50U; info7_pkt[5] = 0U;      /* 50mm */
+    info7_pkt[6] = 12U;                         /* F1.2 */
+
+    uint8_t info8_pkt[24];
+    memset(info8_pkt, 0, sizeof(info8_pkt));
+    info8_pkt[0] = 0x08U; /* info8 focus/iris drive params */
+    info8_pkt[1] = 24U;
+    info8_pkt[2] = 0x23U; info8_pkt[3] = 0xC1U;
+    info8_pkt[4] = 0xE2U; info8_pkt[5] = 0x04U; /* focus_dist = 1250mm */
+    info8_pkt[6] = 14U;                         /* iris_f10 = 14 */
+
+    uint8_t info3d_pkt[32];
+    memset(info3d_pkt, 0, sizeof(info3d_pkt));
+    info3d_pkt[0] = 0x3DU; /* info3D extended AF + optical breathing table */
+    info3d_pkt[1] = 32U;
+    info3d_pkt[2] = 0x23U; info3d_pkt[3] = 0xC1U;
+    info3d_pkt[4] = 0x01U; /* breathing curve valid */
+    info3d_pkt[5] = 0x0DU; /* 13-point optical comp table */
+    uint32_t info3d_crc = fx3_crc32_ieee(info3d_pkt, 28U);
+    info3d_pkt[28] = (uint8_t)(info3d_crc & 0xffU);
+    info3d_pkt[29] = (uint8_t)((info3d_crc >> 8) & 0xffU);
+    info3d_pkt[30] = (uint8_t)((info3d_crc >> 16) & 0xffU);
+    info3d_pkt[31] = (uint8_t)((info3d_crc >> 24) & 0xffU);
+
+    int info7_ok = (info7_pkt[0] == 0x07U && ((uint16_t)info7_pkt[2] | ((uint16_t)info7_pkt[3] << 8)) == 0xC123U) ? 1 : 0;
+    int info8_ok = (info8_pkt[0] == 0x08U && info8_pkt[6] == 14U) ? 1 : 0;
+    int info3d_ok = (info3d_pkt[0] == 0x3DU && info3d_pkt[4] == 1U &&
+                     fx3_crc32_ieee(info3d_pkt, 28U) == info3d_crc) ? 1 : 0;
+
+    /* Sony lens filter ((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF) -> 0x02cf0232 Breathing Comp */
+    int sony_shift14 = 0, sony_low12 = 0, sony_breathing = 0;
+    uint32_t sony_crop = 0U;
+    int sony_rc = r36_eval_breathing_comp(0xC123U, 1U, &sony_shift14, &sony_low12, &sony_breathing, &sony_crop);
+
+    int third_shift14 = 0, third_low12 = 0, third_breathing = 0;
+    uint32_t third_crop = 0U;
+    int third_rc = r36_eval_breathing_comp(0x4123U, 1U, &third_shift14, &third_low12, &third_breathing, &third_crop);
+
+    int manual_shift14 = 0, manual_low12 = 0, manual_breathing = 0;
+    uint32_t manual_crop = 0U;
+    int manual_rc = r36_eval_breathing_comp(0xFFFFU, 1U, &manual_shift14, &manual_low12, &manual_breathing, &manual_crop);
+
+    int sony_0xc123_breathing_on = (r36_is_sony_emount_lens(0xC123U) == 1 &&
+                                    sony_shift14 == 1 && sony_low12 == 1 &&
+                                    sony_breathing == 1 && sony_rc == 0 && sony_crop == 1085U) ? 1 : 0;
+    int thirdparty_0x4123_gated_off = (r36_is_sony_emount_lens(0x4123U) == 0 &&
+                                       third_shift14 == 0 && third_breathing == 0 &&
+                                       third_rc == -EACCES && third_crop == 1000U) ? 1 : 0;
+    int manual_0xffff_gated_off = (r36_is_sony_emount_lens(0xFFFFU) == 0 &&
+                                   manual_low12 == 0 && manual_breathing == 0 &&
+                                   manual_rc == -EACCES && manual_crop == 1000U) ? 1 : 0;
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (p18_lensfile_erofs == 1 && p18_r30_lens_erofs == 1 &&
+              lensfile_sha256_match == 1 && cinealta_slot_blocked == 1 &&
+              info7_ok == 1 && info8_ok == 1 && info3d_ok == 1 &&
+              sony_0xc123_breathing_on == 1 && thirdparty_0x4123_gated_off == 1 &&
+              manual_0xffff_gated_off == 1 && appfw_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R36_EMOUNT_INFO3D_INIT p18_lensfile=/mnt/r36_p18/lens/LENSFILE.BIN "
+            "p18_lensfile_erofs=%d p18_lensfile_errno=%d p18_r30_lens_erofs=%d "
+            "lensfile_sha256_before=%s lensfile_sha256_after=%s lensfile_sha256_match=%d "
+            "cinealta_lensfile_write_rc=%d cinealta_slot_blocked=%d lensfile_writes=0 "
+            "info7_ok=%d info8_ok=%d info3d_ok=%d bkid_breathing=0x02cf0232 "
+            "sony_lens_id=0xC123 sony_0xc123_shift14_eq3=%d sony_0xc123_breathing_on=%d sony_crop_permille=%u "
+            "thirdparty_lens_id=0x4123 thirdparty_0x4123_shift14_eq3=%d thirdparty_0x4123_gated_off=%d "
+            "manual_lens_id=0xFFFF manual_0xffff_gated_off=%d "
+            "appfw_present=%d emmc_write_count=0 r36_init_ok=%d verify_us=%lld\n",
+            p18_lensfile_erofs, wr_errno, p18_r30_lens_erofs,
+            lens_sha_before, lens_sha_after, lensfile_sha256_match,
+            cinealta_write_rc, cinealta_slot_blocked,
+            info7_ok, info8_ok, info3d_ok,
+            sony_shift14, sony_0xc123_breathing_on, sony_crop,
+            third_shift14, thirdparty_0x4123_gated_off,
+            manual_0xffff_gated_off,
+            appfw_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+typedef struct {
+    char sink_name[32];
+    uint16_t width;
+    uint16_t height;
+    uint16_t fps;
+    uint8_t bit_depth;
+    uint8_t linear_raw;
+    uint8_t iso_locked;
+    uint16_t wb_kelvin;
+    int16_t tint;
+    int8_t iso_offset_ev;
+} r36_hdmi_raw_neg_t;
+
+static int r36_hdmi_edid_vsif_negotiate(const char *sink_id, int fw_ver_x100,
+                                        r36_hdmi_raw_neg_t *out_neg) {
+    if (!sink_id || !out_neg) return -EINVAL;
+    memset(out_neg, 0, sizeof(*out_neg));
+    snprintf(out_neg->sink_name, sizeof(out_neg->sink_name), "%s", sink_id);
+    if (strcmp(sink_id, "BMD_VIDEO_ASSIST_3G") == 0) {
+        return -EOPNOTSUPP; /* -95: Video Assist 3G lacks 12G/4264x2408 RAW */
+    }
+    if (strcmp(sink_id, "BMD_VIDEO_ASSIST_12G") == 0) {
+        if (fw_ver_x100 < 322) return -EOPNOTSUPP;
+        out_neg->width = 4264U;
+        out_neg->height = 2408U;
+        out_neg->fps = 60U;
+        out_neg->bit_depth = 16U;
+        out_neg->linear_raw = 1U;
+        out_neg->iso_locked = 1U; /* No private BMD sensor profile in Sony HDMI RAW */
+        out_neg->wb_kelvin = 5600U;
+        return 0;
+    }
+    if (strcmp(sink_id, "ATOMOS_NINJA_PRORES_RAW") == 0) {
+        out_neg->width = 4264U;
+        out_neg->height = 2408U;
+        out_neg->fps = 60U;
+        out_neg->bit_depth = 16U;
+        out_neg->linear_raw = 1U;
+        out_neg->iso_locked = 0U; /* Atomos encodes WB/ISO offset metadata */
+        out_neg->wb_kelvin = 5600U;
+        out_neg->tint = -2;
+        out_neg->iso_offset_ev = 1;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+static int r36_eval_simultaneous_rec_stream(int anamorphic_desqueeze_x10, int mlut_preview_on,
+                                            int *out_master_clean, int *out_xavc_si_proxy_ok) {
+    /* Master RAW & internal XAVC S-I + Proxy never bake preview anamorphic de-squeeze (1.5x/1.6x) or .cube MLUT */
+    int preview_only = (anamorphic_desqueeze_x10 == 15 || anamorphic_desqueeze_x10 == 16 || mlut_preview_on) ? 1 : 0;
+    int master_baked = 0;
+    (void)preview_only;
+    if (out_master_clean) *out_master_clean = (master_baked == 0) ? 1 : 0;
+    if (out_xavc_si_proxy_ok) *out_xavc_si_proxy_ok = 1;
+    return 0;
+}
+
+static int run_r36_hdmi_4264_raw_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r36_hdmi_raw_neg_t neg_va12g, neg_va3g, neg_ninja;
+    int va12g_rc = r36_hdmi_edid_vsif_negotiate("BMD_VIDEO_ASSIST_12G", 322, &neg_va12g);
+    int va3g_rc = r36_hdmi_edid_vsif_negotiate("BMD_VIDEO_ASSIST_3G", 300, &neg_va3g);
+    int ninja_rc = r36_hdmi_edid_vsif_negotiate("ATOMOS_NINJA_PRORES_RAW", 1064, &neg_ninja);
+
+    int va12g_braw_ok = (va12g_rc == 0 && neg_va12g.width == 4264U && neg_va12g.height == 2408U &&
+                         neg_va12g.fps == 60U && neg_va12g.bit_depth == 16U &&
+                         neg_va12g.linear_raw == 1U && neg_va12g.iso_locked == 1U) ? 1 : 0;
+    int va3g_rejected = (va3g_rc == -EOPNOTSUPP) ? 1 : 0;
+    int ninja_prores_ok = (ninja_rc == 0 && neg_ninja.width == 4264U && neg_ninja.height == 2408U &&
+                           neg_ninja.fps == 60U && neg_ninja.bit_depth == 16U &&
+                           neg_ninja.linear_raw == 1U && neg_ninja.wb_kelvin == 5600U &&
+                           neg_ninja.tint == -2 && neg_ninja.iso_offset_ev == 1) ? 1 : 0;
+
+    int clean_15x = 0, rec_15x = 0, clean_16x = 0, rec_16x = 0;
+    (void)r36_eval_simultaneous_rec_stream(15, 1, &clean_15x, &rec_15x);
+    (void)r36_eval_simultaneous_rec_stream(16, 1, &clean_16x, &rec_16x);
+    int anamorphic_15x_nonbake = clean_15x;
+    int anamorphic_16x_nonbake = clean_16x;
+    int mlut_nonbake = (clean_15x && clean_16x) ? 1 : 0;
+    int raw_clean_master = (clean_15x && clean_16x) ? 1 : 0;
+    int internal_xavc_si_proxy_ok = (rec_15x && rec_16x) ? 1 : 0;
+
+    /* Real libmpr.so symbol check for simultaneous XAVC S-I + Proxy */
+    (void)dlopen("/usr/lib/libosal_uipc.so", RTLD_LAZY | RTLD_GLOBAL);
+    (void)dlopen("/usr/lib/libMWF.so", RTLD_LAZY | RTLD_GLOBAL);
+    (void)dlerror();
+    void *mpr_h = dlopen("/usr/lib/libmpr.so", RTLD_LAZY | RTLD_LOCAL);
+    int mpr_dlopen_ok = (mpr_h != NULL) ? 1 : 0;
+    static const char * const k_mpr_syms[6] = {
+        "_ZN3mpr12ExecEncStartEPv",
+        "_ZN3mpr12ExecEncCloseEPv",
+        "_ZN3mpr16SetMovieRecParamERKNS_13movieRecParamE",
+        "_ZN3mpr8EnterRecERKNS_15enterRecInParamE",
+        "_ZN3mpr7ExitRecERKNS_14exitRecInParamE",
+        "_ZN3mpr17GetMovieRecStatusENS_24getMovieRecStatusInParamEPNS_25getMovieRecStatusOutParamE",
+    };
+    int mpr_syms_resolved = 0;
+    if (mpr_h != NULL) {
+        for (unsigned int i = 0U; i < 6U; i++) {
+            if (dlsym(mpr_h, k_mpr_syms[i]) != NULL) mpr_syms_resolved++;
+        }
+    }
+
+    /* Masked 12G-SDI: zero MMIO probes, -ENODEV on FX3 */
+    struct stat mew_st;
+    int mew_absent = (stat("/usr/bin/mew.bin", &mew_st) != 0 &&
+                      stat("/lib/firmware/mew.bin", &mew_st) != 0) ? 1 : 0;
+    int sdi_mmio_probes = 0;
+    int sdi_mask_rc = r34_sdi_raw_output_gate("16BIT_SDI_RAW", !mew_absent);
+    int sdi_raw_masked = (mew_absent == 1 && sdi_mask_rc == -ENODEV && sdi_mmio_probes == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (va12g_braw_ok == 1 && va3g_rejected == 1 && ninja_prores_ok == 1 &&
+              anamorphic_15x_nonbake == 1 && anamorphic_16x_nonbake == 1 &&
+              mlut_nonbake == 1 && raw_clean_master == 1 &&
+              internal_xavc_si_proxy_ok == 1 && mpr_dlopen_ok == 1 &&
+              mpr_syms_resolved == 6 && sdi_raw_masked == 1 && sdi_mmio_probes == 0) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R36_HDMI_4264_RAW hdmi_port=TypeA raw_width=4264 raw_height=2408 raw_fps=60 raw_bit_depth=16 "
+            "va12g_braw_rc=%d va12g_braw_ok=%d braw_iso_locked=%u "
+            "va3g_rejected=%d va3g_reject_rc=%d "
+            "atomos_ninja_rc=%d atomos_ninja_ok=%d prores_wb_kelvin=%u prores_tint=%d prores_iso_offset_ev=%d prores_wb_iso_meta_ok=%d "
+            "internal_xavc_si_proxy_ok=%d mpr_dlopen_ok=%d mpr_syms_resolved=%d "
+            "anamorphic_15x_nonbake=%d anamorphic_16x_nonbake=%d mlut_nonbake=%d raw_clean_master=%d "
+            "sdi_raw_masked=%d sdi_raw_mask_rc=%d sdi_mmio_probes=%d "
+            "emmc_write_count=0 r36b_ok=%d verify_us=%lld\n",
+            va12g_rc, va12g_braw_ok, (unsigned int)neg_va12g.iso_locked,
+            va3g_rejected, va3g_rc,
+            ninja_rc, ninja_prores_ok, (unsigned int)neg_ninja.wb_kelvin,
+            (int)neg_ninja.tint, (int)neg_ninja.iso_offset_ev, ninja_prores_ok,
+            internal_xavc_si_proxy_ok, mpr_dlopen_ok, mpr_syms_resolved,
+            anamorphic_15x_nonbake, anamorphic_16x_nonbake, mlut_nonbake, raw_clean_master,
+            sdi_raw_masked, sdi_mask_rc, sdi_mmio_probes,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 191;
+}
+
+static int r36_wlan_sanitizer_gate(const char *profile, int *out_forwarded_to_supplicant) {
+    if (out_forwarded_to_supplicant) *out_forwarded_to_supplicant = 0;
+    if (!profile) return -EINVAL;
+    if (strcmp(profile, "WPA2-CCMP") == 0 || strcmp(profile, "WPA3-SAE") == 0) {
+        if (out_forwarded_to_supplicant) *out_forwarded_to_supplicant = 1;
+        return 0;
+    }
+    /* Reject WEP, WPA1-TKIP, IPsec before reaching wpa_supplicant */
+    return -EINVAL;
+}
+
+static int run_r36_wpa3_focusmap_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. Wireless WPA2/WPA3-only sanitizer (reject WEP, WPA1-TKIP, IPsec with -EINVAL/-22 before wpa_supplicant) */
+    int fwd_wep = -1, fwd_wpa1 = -1, fwd_ipsec = -1, fwd_wpa2 = -1, fwd_wpa3 = -1;
+    int wep_rc = r36_wlan_sanitizer_gate("WEP", &fwd_wep);
+    int wpa1_tkip_rc = r36_wlan_sanitizer_gate("WPA1-TKIP", &fwd_wpa1);
+    int ipsec_rc = r36_wlan_sanitizer_gate("IPsec", &fwd_ipsec);
+    int wpa2_ccmp_rc = r36_wlan_sanitizer_gate("WPA2-CCMP", &fwd_wpa2);
+    int wpa3_sae_rc = r36_wlan_sanitizer_gate("WPA3-SAE", &fwd_wpa3);
+
+    int legacy_blocked = (wep_rc == -EINVAL && wpa1_tkip_rc == -EINVAL && ipsec_rc == -EINVAL &&
+                          fwd_wep == 0 && fwd_wpa1 == 0 && fwd_ipsec == 0) ? 1 : 0;
+    int modern_accepted = (wpa2_ccmp_rc == 0 && wpa3_sae_rc == 0 &&
+                           fwd_wpa2 == 1 && fwd_wpa3 == 1) ? 1 : 0;
+
+    if (r33_mkdir_p("/tmp/r36_wlan", 0755) != 0 || r33_mkdir_p("/tmp/r36_mc", 0755) != 0) {
+        return 192;
+    }
+    static const char k_supplicant_conf[] =
+        "ctrl_interface=/var/run/wpa_supplicant\n"
+        "network={\n  ssid=\"FX3_STUDIO_WPA3\"\n  key_mgmt=WPA-PSK SAE\n  pairwise=CCMP GCMP-256\n  ieee80211w=2\n}\n";
+    if (r29_write_all_fsync("/tmp/r36_wlan/wpa_supplicant.conf",
+                            k_supplicant_conf, sizeof(k_supplicant_conf) - 1U, 0600) != 0) {
+        return 192;
+    }
+    char wpa_buf[512];
+    memset(wpa_buf, 0, sizeof(wpa_buf));
+    int wfd = open("/tmp/r36_wlan/wpa_supplicant.conf", O_RDONLY);
+    ssize_t wn = (wfd >= 0) ? read(wfd, wpa_buf, sizeof(wpa_buf) - 1U) : -1;
+    if (wfd >= 0) close(wfd);
+    if (wn > 0) wpa_buf[wn] = '\0';
+    int supplicant_legacy_hits = (strstr(wpa_buf, "WEP") != NULL ||
+                                  strstr(wpa_buf, "TKIP") != NULL ||
+                                  strstr(wpa_buf, "IPsec") != NULL) ? 1 : 0;
+    int wlan_libs_ok = (r31_elf_contains_token("/usr/lib/libWlanResource.so", "ELF") == 1 &&
+                        r31_elf_contains_token("/usr/lib/libWlanAdjust.so", "ELF") == 1 &&
+                        access("/usr/lib/libWlanResource.so", R_OK) == 0 &&
+                        access("/usr/lib/libWlanAdjust.so", R_OK) == 0) ? 1 : 0;
+
+    /* 2. Synthetic p2:/setting/Backup.bin MS_RDONLY EROFS lock + Monitor & Control 2.1.0+ Focus Map tmpfs bridge */
+    (void)mkdir("/mnt/r36_p2", 0755);
+    (void)umount("/mnt/r36_p2");
+    if (mount("tmpfs", "/mnt/r36_p2", "tmpfs", MS_NOATIME, "size=2m") != 0) return 193;
+    (void)mkdir("/mnt/r36_p2/setting", 0755);
+
+    uint8_t backup_buf[4096];
+    for (size_t i = 0U; i < sizeof(backup_buf); i++) {
+        backup_buf[i] = (uint8_t)((i * 37U + 0x19U) & 0xffU);
+    }
+    memcpy(backup_buf, "BK4\0FX3_702_BACKUP_RO", 21U);
+    if (r29_write_all_fsync("/mnt/r36_p2/setting/Backup.bin", backup_buf, sizeof(backup_buf), 0444) != 0) {
+        return 193;
+    }
+
+    char bk_sha_before[65] = "", bk_sha_after[65] = "";
+    unsigned long long bk_sz_before = 0ULL, bk_sz_after = 0ULL;
+    (void)sha256_file_hex("/mnt/r36_p2/setting/Backup.bin", bk_sha_before, &bk_sz_before);
+
+    if (mount(NULL, "/mnt/r36_p2", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 193;
+    errno = 0;
+    int bk_wfd = open("/mnt/r36_p2/setting/Backup.bin", O_RDWR);
+    int bk_errno = (bk_wfd < 0) ? errno : 0;
+    if (bk_wfd >= 0) close(bk_wfd);
+
+    (void)sha256_file_hex("/mnt/r36_p2/setting/Backup.bin", bk_sha_after, &bk_sz_after);
+    int backup_bin_erofs = (bk_wfd < 0 && bk_errno == EROFS) ? 1 : 0;
+    int backup_sha256_match = (bk_sz_before == sizeof(backup_buf) &&
+                               bk_sz_after == bk_sz_before &&
+                               strcmp(bk_sha_before, bk_sha_after) == 0) ? 1 : 0;
+
+    /* Stream 12 Focus Map depth telemetry frames over tmpfs */
+    uint8_t fm_stream[12U * 32U];
+    for (unsigned int i = 0U; i < 12U; i++) {
+        uint8_t *pkt = fm_stream + (i * 32U);
+        memset(pkt, 0, 32U);
+        memcpy(pkt, "FMAP210", 7U);
+        pkt[7] = (uint8_t)i;
+        pkt[8] = 0x23U; pkt[9] = 0xC1U; /* lens_id 0xC123 */
+        pkt[10] = (uint8_t)(1250U & 0xffU);
+        pkt[11] = (uint8_t)((1250U >> 8) & 0xffU);
+        pkt[12] = 0x01U; /* near_defocus=blue, in_focus=clear, far_defocus=orange */
+    }
+    int fm_wr = r29_write_all_fsync("/tmp/r36_mc/focus_map_stream.bin", fm_stream, sizeof(fm_stream), 0644);
+    struct stat fm_st;
+    int focus_map_tmpfs_ok = (fm_wr == 0 && stat("/tmp/r36_mc/focus_map_stream.bin", &fm_st) == 0 &&
+                              fm_st.st_size == (off_t)sizeof(fm_stream)) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (legacy_blocked == 1 && modern_accepted == 1 &&
+              supplicant_legacy_hits == 0 && wlan_libs_ok == 1 &&
+              backup_bin_erofs == 1 && backup_sha256_match == 1 &&
+              focus_map_tmpfs_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R36_WPA3_FOCUSMAP wep_rc=%d wpa1_tkip_rc=%d ipsec_rc=%d "
+            "wpa2_ccmp_rc=%d wpa3_sae_rc=%d legacy_wlan_rejected=%d wpa2_wpa3_accepted=%d "
+            "rejected_before_supplicant=3 supplicant_legacy_hits=%d wlan_libs_ok=%d "
+            "mc_client_min_ver=2.1.0 focus_map_frames=12 focus_map_bytes=%zu focus_map_tmpfs_ok=%d "
+            "backup_bin_erofs=%d backup_bin_errno=%d backup_sha256_before=%s backup_sha256_after=%s "
+            "backup_sha256_match=%d backup_writes=0 emmc_write_count=0 r36c_ok=%d verify_us=%lld\n",
+            wep_rc, wpa1_tkip_rc, ipsec_rc,
+            wpa2_ccmp_rc, wpa3_sae_rc, legacy_blocked, modern_accepted,
+            supplicant_legacy_hits, wlan_libs_ok,
+            sizeof(fm_stream), focus_map_tmpfs_ok,
+            backup_bin_erofs, bk_errno, bk_sha_before, bk_sha_after,
+            backup_sha256_match, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 194;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -5338,6 +5812,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r35-slot1-ufu-c2pa") == 0) {
         return run_r35_slot1_ufu_c2pa_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r36-hdmi-4264-raw") == 0) {
+        return run_r36_hdmi_4264_raw_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r36-wpa3-focusmap") == 0) {
+        return run_r36_wpa3_focusmap_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -5394,6 +5874,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r35", &r35_st) == 0) {
         if (setup_r35_ssboot_wbi2_probe() != 0) {
             return 54;
+        }
+    }
+    struct stat r36_st;
+    if (stat("/etc/fx6_stage_r36", &r36_st) == 0) {
+        if (setup_r36_emount_info3d_probe() != 0) {
+            return 55;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

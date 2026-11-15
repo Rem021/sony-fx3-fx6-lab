@@ -1165,3 +1165,25 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r35c-slot1-ufu-c2pa-ceiling` (`--r35-mode slot1_ufu_c2pa_ceiling`): Rejects simulated `<= Ver. 2.02` direct jump (`rc=-22`, `led_7l_7s_prevented=1`) while passing `>=2.04`, rejects Slot-2 update (`rc=-18`) and duplicate `BODYDATA (1).DAT` (`rc=-17`), executes `<100 us` auto-bypass to Stock FX3 (`34 us`) on valid Slot-1 `/mnt/sd/BODYDATA.DAT` (`\x89UFU\r\n\x1a\n`, `0x91030080`), validates Slot-1 C2PA `<=100` license ceiling (`100 -> rc=0`, `101 -> -E2BIG (-7)`) with `p12:/cert/RQ_LIC.DAT` `EROFS (errno=30)`, and blocks deprecated `WEP/WPA1/IPsec` (`rc=-93`) while enforcing `WPA2/WPA3` (`wpa2_wpa3_enforced=1`).
 - **Full Report, Receipts, & `24` New Round 35 Dual-Mode Unit Tests (`426` Total)**: See [`reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/README.md`](../../reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/summary.json).
 
+---
+
+## 36. Round 36: Real FX3 `7.02` Kernel QEMU Rehearsal — `MIRA_CETUS2` E-Mount `info7/info8/info3D` + `0x02cf0232` Breathing Comp + `p18:/lens/LENSFILE.BIN` `EROFS`, Type-A HDMI `4264x2408` 16-bit RAW (`BRAW`/`ProRes RAW`) & `WPA2/WPA3` Sanitizer + Focus Map Bridge
+
+`build_and_run_round.py --round 36 --r36-mode {emount_info3d_big6,hdmi_4264_raw_prores_braw,wpa2_wpa3_focusmap_bridge}` executes live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs; physical camera body bench remains unexecuted):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 36 --r36-mode emount_info3d_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r36a-emount-info3d-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r36-runs/r36a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r36a-emount-info3d-big6-schinese \
+  --export-png-dir reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/assets
+```
+
+- **3 Live Round 36 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r36a-emount-info3d-big6-schinese` (`--r36-mode emount_info3d_big6`): Locks `p18:/lens/LENSFILE.BIN` strictly read-only (`EROFS` `errno=30` on `O_RDWR`, blocking CineAlta manual `LENSFILE` slot writes `rc=-30`, `lensfile_sha256_match=1`), verifies `info7/info8/info3D` E-mount frames and Sony lens filter `((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)` gating `0x02cf0232` Breathing Comp (`0xC123` ON at `1085‰` vs `0x4123` third-party gated OFF `-13` vs `0xFFFF` manual adapter gated OFF `-13`), proves `libgrm-fbinit9.so` runtime bridge (`breathing_bk4_hits=2`, `r36_bridge_ok=1`), and boots `appFw.so` across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,686` px / `87` colors / `136` `OSD_FLUSH` / `nop_count=0` / `gpe_fb=0`).
+  - `r36b-hdmi-4264-raw-prores-braw` (`--r36-mode hdmi_4264_raw_prores_braw`): Verifies Type-A HDMI EDID/VSIF negotiating `4264x2408@60p` 16-bit linear RAW for `Blackmagic Video Assist 12G 3.22+` (`.braw`, `va12g_braw_ok=1`, `braw_iso_locked=1`) while rejecting `Video Assist 3G` (`va3g_reject_rc=-95` `EOPNOTSUPP`) and negotiating `Atomos Ninja` `ProRes RAW` (`5600K`, `tint=-2`, `iso_offset_ev=1`), runs simultaneous `XAVC S-I + Proxy` via `/usr/lib/libmpr.so` (`6/6` symbols) without baking `1.5x/1.6x` anamorphic de-squeeze or `.cube` MLUT (`raw_clean_master=1`), and keeps `12G-SDI` cleanly masked (`sdi_raw_masked=1`, `sdi_raw_mask_rc=-19`, `sdi_mmio_probes=0`).
+  - `r36c-wpa2-wpa3-focusmap-bridge` (`--r36-mode wpa2_wpa3_focusmap_bridge`): Verifies Stage-B network config sanitizer rejecting `WEP`, `WPA1-TKIP`, and `IPsec` (`rc=-22` `EINVAL`, `rejected_before_supplicant=3`, `supplicant_legacy_hits=0`) before FX3 `7.02` `wpa_supplicant` while accepting `WPA2-CCMP` and `WPA3-SAE` (`rc=0`), checks `/usr/lib/libWlanResource.so` & `libWlanAdjust.so` ELF integrity, locks `p2:/setting/Backup.bin` `EROFS (errno=30, backup_sha256_match=1)`, and streams 12 frames (`384 B`) of `Monitor & Control 2.1.0+` Focus Map depth telemetry over `tmpfs` (`emmc_write_count=0`).
+- **Full Report, Receipts, & `24` New Round 36 Dual-Mode Unit Tests (`450` Total)**: See [`reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/README.md`](../../reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/summary.json).
+

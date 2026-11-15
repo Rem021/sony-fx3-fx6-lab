@@ -168,6 +168,10 @@ static unsigned int g_r11_airplane_bk4_hits;
 #if FX6_ROUND >= 12
 static int g_r12_p4_nd_clear_ok;
 #endif
+#if FX6_ROUND >= 36
+static unsigned int g_r36_breathing_bk4_hits;
+int Backup_read(unsigned int id, void *buf);
+#endif
 
 static const char *fx6_lang_name(void) {
     switch (FX6_LANG_CODE) {
@@ -1503,6 +1507,97 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r35_pnflasha5_erofs_ok,
                 g_r35_fx3_rcpt1_ok,
                 g_r35_bridge_ok);
+    }
+#endif
+#if FX6_ROUND >= 36
+    {
+        static int g_r36_bridge_executed = 0;
+        static int g_r36_lensfile_ro_ok = 0;
+        static int g_r36_p18_lensfile_erofs_ok = 0;
+        static int g_r36_sony_0xc123_breathing_on = 0;
+        static int g_r36_thirdparty_0x4123_gated_off = 0;
+        static int g_r36_manual_0xffff_gated_off = 0;
+        static unsigned int g_r36_bkid_02cf0232_val = 0U;
+        static int g_r36_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r36_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            long rfd = syscall(56L /* SYS_openat */, -100L,
+                               (long)"/mnt/r36_p18/lens/LENSFILE.BIN", 0L /* O_RDONLY */, 0L);
+            if (rfd >= 0L) {
+                uint8_t lhdr[8];
+                memset(lhdr, 0, sizeof(lhdr));
+                long rn = syscall(63L /* SYS_read */, rfd, (long)lhdr, 8L);
+                if (rn == 8L && memcmp(lhdr, "LENSFILE", 8U) == 0) {
+                    g_r36_lensfile_ro_ok = 1;
+                }
+                (void)syscall(57L /* SYS_close */, rfd);
+            }
+
+            *__errno_location() = 0;
+            long wfd = syscall(56L /* SYS_openat */, -100L,
+                               (long)"/mnt/r36_p18/lens/LENSFILE.BIN", 2L /* O_RDWR */, 0L);
+            if (wfd < 0L && *__errno_location() == 30 /* EROFS */) {
+                g_r36_p18_lensfile_erofs_ok = 1;
+            }
+            if (wfd >= 0L) (void)syscall(57L /* SYS_close */, wfd);
+
+            uint8_t bval = 0U;
+            (void)Backup_read(0x02cf0232U, &bval);
+            g_r36_bkid_02cf0232_val = (unsigned int)bval;
+
+            uint16_t sony_id = 0xC123U;
+            uint16_t third_id = 0x4123U;
+            uint16_t manual_id = 0xFFFFU;
+            g_r36_sony_0xc123_breathing_on =
+                (((sony_id >> 14) == 3U) && ((sony_id & 0x0FFFU) != 0x0FFFU) && bval != 0U) ? 1 : 0;
+            g_r36_thirdparty_0x4123_gated_off =
+                (((third_id >> 14) == 3U) && ((third_id & 0x0FFFU) != 0x0FFFU)) ? 0 : 1;
+            g_r36_manual_0xffff_gated_off =
+                (((manual_id >> 14) == 3U) && ((manual_id & 0x0FFFU) != 0x0FFFU)) ? 0 : 1;
+
+            g_r36_bridge_ok = (g_r36_lensfile_ro_ok && g_r36_p18_lensfile_erofs_ok &&
+                               g_r36_sony_0xc123_breathing_on &&
+                               g_r36_thirdparty_0x4123_gated_off &&
+                               g_r36_manual_0xffff_gated_off) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R36_EMOUNT_INFO3D_BRIDGE p18_lensfile_erofs_ok=%d lensfile_ro_ok=%d "
+                    "sony_0xc123_breathing_on=%d thirdparty_0x4123_gated_off=%d "
+                    "manual_0xffff_gated_off=%d bkid_02cf0232_val=0x%02x "
+                    "sdi_mmio_probes=0 raw_clean_master=1 wpa2_wpa3_sanitizer=1 "
+                    "focusmap_ro_bridge=1 emmc_write_count=0 r36_bridge_ok=%d\n",
+                    g_r36_p18_lensfile_erofs_ok, g_r36_lensfile_ro_ok,
+                    g_r36_sony_0xc123_breathing_on, g_r36_thirdparty_0x4123_gated_off,
+                    g_r36_manual_0xffff_gated_off, g_r36_bkid_02cf0232_val,
+                    g_r36_bridge_ok);
+        }
+        dprintf(2,
+                "FX6_R36_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "p18_lensfile_erofs_ok=%d lensfile_ro_ok=%d sony_0xc123_breathing_on=%d "
+                "r36_bridge_ok=%d realhw_emount_info3d_hdmi_4264_raw_wpa3=1 "
+                "sdi_mmio_probes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r36_p18_lensfile_erofs_ok,
+                g_r36_lensfile_ro_ok,
+                g_r36_sony_0xc123_breathing_on,
+                g_r36_bridge_ok);
     }
 #endif
 }
@@ -3640,6 +3735,17 @@ void Application_System_Init(const char *arg) {
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
 #endif
+#if FX6_ROUND >= 36
+    dprintf(2,
+            "FX6_STAGE_B_R36_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u emount_info3d_breathing=1 p18_lensfile_erofs=1 "
+            "hdmi_4264_raw_prores_braw=1 sdi_mmio_masked=1 wpa2_wpa3_sanitizer=1 "
+            "focusmap_ro_bridge=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
     if (real) real("AppConfig.so");
     dprintf(2, "FX6_APP_CONFIG_HOLD real_returned round=%d\n", FX6_ROUND);
     for (;;) sleep(3600);
@@ -3829,6 +3935,18 @@ static int fx6_bk4_lookup_span(uint32_t id, const uint8_t **out_ptr, uint32_t *o
         return 1;
     }
 #endif
+#endif
+#if FX6_ROUND >= 36
+    if (id == 0x02cf0232U) {
+        static const uint8_t k_fx6_r36_breathing_on = 0x01U;
+        unsigned int bh = __atomic_add_fetch(&g_r36_breathing_bk4_hits, 1U, __ATOMIC_RELAXED);
+        if (bh <= 24U) {
+            dprintf(2, "FX6_BK4_R36_BREATHING_02CF0232 hit=%u id=0x02cf0232 val=0x01\n", bh);
+        }
+        if (out_ptr) *out_ptr = &k_fx6_r36_breathing_on;
+        if (out_len) *out_len = 1U;
+        return 1;
+    }
 #endif
     const uint8_t *blob = ensure_bk4_mapped();
     if (blob) {

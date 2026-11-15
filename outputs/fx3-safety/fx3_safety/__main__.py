@@ -72,6 +72,11 @@ from .realhw_desqueeze_focusmap_simult_shocklesswb_and_74gate_guard import (
     evaluate_g73_desqueeze_focusmap_guard,
     evaluate_g74_simult_autoswitch_shocklesswb_guard,
 )
+from .realhw_hdmi_log1080_proxy_focusmag_brightmon_and_76gate_guard import (
+    evaluate_76gate_preflight,
+    evaluate_g75_hdmi_log1080_hdmionly_guard,
+    evaluate_g76_proxy_focusmag_brightmon_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1448,6 +1453,90 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G74 gates can be rehearsed offline",
     )
     p_74.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 71. verify-g75-hdmi-log1080-hdmionly
+    p_g75 = sub.add_parser(
+        "verify-g75-hdmi-log1080-hdmionly",
+        help="Verify Gate G75: [HDMI Output Settings] Log/PPLUT 1080p Downshift, [Off(HDMI Only)] 4K & LCD Blanking Guard",
+    )
+    p_g75.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g75.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g75.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g75.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 72. verify-g76-proxy-focusmag-brightmon
+    p_g76 = sub.add_parser(
+        "verify-g76-proxy-focusmag-brightmon",
+        help="Verify Gate G76: [Proxy Settings] Coupled Vault Parity & [Focus Magnifier]/[Bright Monitoring] Interlock Guard",
+    )
+    p_g76.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g76.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g76.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g76.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 73. verify-76-gates
+    p_76 = sub.add_parser(
+        "verify-76-gates",
+        help="Run Phase 210 Unified 76-Gate Master Safety Preflight Engine (G01..G76)",
+    )
+    p_76.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_76.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_76.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G76 gates can be rehearsed offline",
+    )
+    p_76.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -2933,6 +3022,83 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_74_gates_verified if args.dry_run_simulated else report.offline_71_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g75-hdmi-log1080-hdmionly":
+        verdict, res = evaluate_g75_hdmi_log1080_hdmionly_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.hdmi_log1080_hdmionly_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} rec_dur_hdmi={guard['canonical_rec_media_dur_hdmi']} "
+                f"log={guard['canonical_log_shooting_mode']} pp={guard['canonical_picture_profile']} "
+                f"hdmi_eff={guard['modeled_effective_hdmi_output']} "
+                f"downshift1080p={guard['log_or_pplut_1080p_downshift_active']} "
+                f"card_rec={guard['internal_card_recording_active']} "
+                f"lcd_blanked={guard['camera_lcd_panel_blanked']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g76-proxy-focusmag-brightmon":
+        verdict, res = evaluate_g76_proxy_focusmag_brightmon_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.proxy_focusmag_brightmon_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} proxy={guard['canonical_proxy_format']}/"
+                f"{guard['canonical_proxy_setting']}({guard['proxy_width']}x{guard['proxy_height']}) "
+                f"coupled_del={guard['coupled_vault_delete_parity']} "
+                f"coupled_prot={guard['coupled_vault_protect_parity']} "
+                f"focus_mag={guard['canonical_initial_focus_mag']} "
+                f"bright_mon={guard['bright_monitoring_active']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-76-gates":
+        report = evaluate_76gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/76 "
+                f"g75_to_g76_all_passed={report.g75_to_g76_all_passed} "
+                f"all_76_gates_verified={report.all_76_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_76_gates_verified if args.dry_run_simulated else report.offline_73_gates_verified
         return 0 if ok else 1
 
     return 2

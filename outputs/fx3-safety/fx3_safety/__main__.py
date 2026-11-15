@@ -122,6 +122,11 @@ from .realhw_framing_usbpower_lun_antiflicker_and_94gate_guard import (
     evaluate_g93_framing_and_antiflicker_guard,
     evaluate_g94_usb_power_and_lun_persistence_guard,
 )
+from .realhw_lock_op_parts_audio_timing_exp_step_and_96gate_guard import (
+    evaluate_96gate_preflight,
+    evaluate_g95_lock_operation_parts_and_chord_guard,
+    evaluate_g96_audio_timing_signals_and_exp_step_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2342,6 +2347,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G94 gates can be rehearsed offline",
     )
     p_94.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 101. verify-lock-op-parts-chord-guard
+    p_g95 = sub.add_parser(
+        "verify-lock-op-parts-chord-guard",
+        aliases=["verify-g95-lock-op-parts-chord"],
+        help="Verify Gate G95: [Lock Operation Parts] Fn Hold, MENU + Fn 5s Full-Body Lock Chord vs Destructive MENU + Delete 2s Firewall & My Dial Temporary Override Guard",
+    )
+    p_g95.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g95.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g95.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g95.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 102. verify-audio-timing-exp-step-guard
+    p_g96 = sub.add_parser(
+        "verify-audio-timing-exp-step-guard",
+        aliases=["verify-g96-audio-timing-exp-step"],
+        help="Verify Gate G96: [Audio Out Timing] Live/Lip Sync vs [Audio signals] Setup Persistence & [Exposure step] 0.3EV/0.5EV vs [Shutter Angle] Constant-Table Guard",
+    )
+    p_g96.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g96.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g96.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g96.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 103. verify-96-gates
+    p_96 = sub.add_parser(
+        "verify-96-gates",
+        help="Run Phase 249 Unified 96-Gate Master Safety Preflight Engine (G01..G96)",
+    )
+    p_96.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_96.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_96.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G96 gates can be rehearsed offline",
+    )
+    p_96.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -4661,6 +4752,102 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_94_gates_verified if args.dry_run_simulated else report.offline_91_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in ("verify-lock-op-parts-chord-guard", "verify-g95-lock-op-parts-chord"):
+        verdict, res = evaluate_g95_lock_operation_parts_and_chord_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.lock_op_parts_chord_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} lock_op_parts={guard['effective_post_reset_lock_operation_parts']}"
+                f"(survives_reset={guard['lock_op_parts_survives_camera_settings_reset']},"
+                f"fn_engaged={guard['fn_hold_lock_engaged']},"
+                f"osd={guard['locked_osd_banner']!r}) "
+                f"menu_fn_5s={guard['menu_fn_5s_full_body_lock_engaged']}"
+                f"(hold={guard['chord_hold_seconds']:.1f}s,"
+                f"shutter_unlocked={guard['shutter_button_remains_unlocked']},"
+                f"menu_del_blocked={guard['destructive_menu_delete_chord_blocked']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in ("verify-audio-timing-exp-step-guard", "verify-g96-audio-timing-exp-step"):
+        verdict, res = evaluate_g96_audio_timing_signals_and_exp_step_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.audio_timing_exp_step_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} audio_timing={guard['effective_post_reset_audio_out_timing']}"
+                f"(avail={guard['audio_out_timing_available']}) "
+                f"audio_signals={guard['effective_audio_signals']}"
+                f"(survives_reset={guard['audio_signals_survives_camera_settings_reset']},"
+                f"silent_locked={guard['audio_signals_locked_off_by_silent_mode']}) "
+                f"exp_step={guard['effective_post_reset_exposure_step']}"
+                f"(shutter_angle_unaffected={guard['shutter_angle_unaffected_by_exposure_step']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-96-gates":
+        report = evaluate_96gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/96 "
+                f"g95_to_g96_all_passed={report.g95_to_g96_all_passed} "
+                f"all_96_gates_verified={report.all_96_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_96_gates_verified if args.dry_run_simulated else report.offline_93_gates_verified
         return 0 if ok else 1
 
     return 2

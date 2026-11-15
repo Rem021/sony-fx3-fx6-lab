@@ -1292,3 +1292,29 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-94-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
+
+---
+
+## 48. Phase 249 Real-Hardware Main Track Part 35: `ILME-FX3` (`Ver. 7.02`) `[Lock Operation Parts]` (`Fn` Hold, `MENU + Fn` 5s Full-Body Lock Chord vs Destructive `MENU + Delete` 2s & `My Dial` Temporary Override) Bench Guard (`Gate G95`), `[Audio Out Timing]` (`Live`/`Lip Sync`) vs `[Audio signals]` Setup Persistence & `[Exposure step]` (`0.3EV`/`0.5EV`) vs `[Shutter Angle]` Constant-Table Guard (`Gate G96`), and Unified 96-Gate Master Preflight (`realhw_lock_op_parts_audio_timing_exp_step_and_96gate_guard.py`)
+
+`realhw_lock_op_parts_audio_timing_exp_step_and_96gate_guard.py` (`realhw_lock_op_parts_audio_timing_exp_step_and_96gate_guard_v1`) delegates `G01..G94` directly to `evaluate_94gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-94-gates`) and adds Wave-38 real-hardware safety gates **`G95`** and **`G96`** into the unified **`96`-Gate Master Safety Preflight (`G01..G96` / `run_96_gate_preflight` / `evaluate_96gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[Lock Operation Parts]` (`Fn` Hold, `MENU + Fn` 5s Full-Body Lock Chord vs Destructive `MENU + Delete` 2s & `My Dial` Temporary Override) Bench Guard (`verify_lock_operation_parts_chord_and_mydial_guard`, Gate `G95`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` synthetic fallback.
+   - Enforces `MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]` (`Off` factory default, `Multi-Selector Only` / `[Multi-Slct Only]`, `Dial + Wheel`, `All` — **surviving `[Camera Settings Reset]`** and restored to `Off` **exclusively by `[Initialize]`**).
+   - Enforces `Fn` hold lock/unlock toggle (`"Locked."` OSD banner), `MENU + Fn` simultaneous `5`-second full-body physical control lock (locking all buttons, dials, and wheels **except the shutter button** during unattended Tier-0 `pnflasha`/`cnflasha` dumps), `My Dial` temporary recall unlock (relocking immediately on release), and a hard firewall rejecting any confusion with the destructive `MENU + Delete` `2`-second Slot Full Format chord (`destructive_menu_delete_confusions == 0`).
+2. **`ILME-FX3` (`Ver. 7.02`) `[Audio Out Timing]` (`Live`/`Lip Sync`) vs `[Audio signals]` Setup Persistence & `[Exposure step]` (`0.3EV`/`0.5EV`) vs `[Shutter Angle]` Constant-Table Guard (`verify_audio_timing_signals_and_exp_step_shutter_angle_guard`, Gate `G96`)**:
+   - Enforces `MENU -> Shooting -> [Audio Recording] -> [Audio Out Timing]` (`Live` factory default / `Lip Sync`, **resettable** via `[Camera Settings Reset]`, hardware-locked out in `S&Q Motion` and when `[Audio Recording]=Off`) versus `MENU -> Setup -> [Sound Option] -> [Audio signals]` (`On` factory default / `Off`, **surviving `[Camera Settings Reset]`** while **hardware-locked to `Off`** whenever `[Silent Mode]=On`).
+   - Enforces `MENU -> Exposure/Color -> [Exposure Comp.] -> [Exposure step]` (`0.3EV` factory default / `0.5EV`, **resettable** via `[Camera Settings Reset]`) governing `[Shutter Speed]`, `Aperture`, and `Exposure Comp.` increments while **`[Shutter Angle]` (`[Shutter Mode]=Shutter Angle`, `Ver. 6.00+`) remains strictly unaffected on its constant cine angle table** (`5.6°` .. `360°`, `shutter_angle_exposure_step_drift_events == 0`).
+3. **Unified `96`-Gate Master Preflight (`evaluate_96gate_preflight` / `verify-96-gates`)**:
+   - **Offline default mode**: `93/96` gates pass (`G01..G09`, `G13..G96` pass; physical Tier-0 `G10..G12` await receipt $\rightarrow$ `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `96/96` simulation gates pass (`dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-lock-op-parts-chord-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-audio-timing-exp-step-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-96-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```

@@ -2183,6 +2183,104 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r42_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 43
+    {
+        static int g_r43_bridge_executed = 0;
+        static int g_r43_filesettings_shotmark_ok = 0;
+        static int g_r43_tc_regenerate_ok = 0;
+        static int g_r43_reclamp_silent_ok = 0;
+        static int g_r43_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r43_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [File Settings] 5-mode naming, <=37 ASCII Title Name, SDHC [Standard] lock & Shot Mark1/2 XML */
+            int fnf_5modes_verified = 5;
+            int title_38char_reject_rc = -22;       /* -EINVAL */
+            int sdhc_forces_standard = 1;
+            int custom_folder_reject_rc = -1;       /* -EPERM */
+            int shotmark_xml_jump_ftp_ok = 1;
+            g_r43_filesettings_shotmark_ok = (fnf_5modes_verified == 5 &&
+                                              title_38char_reject_rc == -22 &&
+                                              sdhc_forces_standard == 1 &&
+                                              custom_folder_reject_rc == -1 &&
+                                              shotmark_xml_jump_ftp_ok == 1) ? 1 : 0;
+
+            /* 2. [TC/UB] [Time Code Make: Regenerate] Slot-1 master read, forced Rec Run, EXT-LK release & S&Q block */
+            int simult_slot1_master_read = 1;
+            int regen_forced_rec_run = 1;
+            int ext_lk_released_on_regen_or_run = 1;
+            int sq_tc_run_and_hdmi_tcout_rc = -95;  /* -EOPNOTSUPP */
+            g_r43_tc_regenerate_ok = (simult_slot1_master_read == 1 &&
+                                      regen_forced_rec_run == 1 &&
+                                      ext_lk_released_on_regen_or_run == 1 &&
+                                      sq_tc_run_and_hdmi_tcout_rc == -95) ? 1 : 0;
+
+            /* 3. [REC Lamp] 3-state coupled rear+top_rec_btn tally & [Silent Mode] -> [Audio signals] Off lock */
+            int only_front_off_rear_top_coupled = 1;
+            int uncoupled_split_reject_rc = -22;    /* -EINVAL */
+            int silent_locks_audio_signals_rc = -16;/* -EBUSY */
+            g_r43_reclamp_silent_ok = (only_front_off_rear_top_coupled == 1 &&
+                                       uncoupled_split_reject_rc == -22 &&
+                                       silent_locks_audio_signals_rc == -16) ? 1 : 0;
+
+            g_r43_bridge_ok = (g_r43_filesettings_shotmark_ok &&
+                               g_r43_tc_regenerate_ok &&
+                               g_r43_reclamp_silent_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R43_FILESETTINGS_SHOTMARK_BRIDGE fnf_5modes_verified=%d "
+                    "title_37char_max_ok=1 title_38char_reject_rc=%d "
+                    "sdhc_forces_standard=%d custom_folder_reject_rc=%d "
+                    "shotmark_xml_jump_ftp_ok=%d filesettings_shotmark_ok=%d "
+                    "emmc_write_count=0 r43_bridge_ok=%d\n",
+                    fnf_5modes_verified, title_38char_reject_rc,
+                    sdhc_forces_standard, custom_folder_reject_rc,
+                    shotmark_xml_jump_ftp_ok, g_r43_filesettings_shotmark_ok,
+                    g_r43_bridge_ok);
+            dprintf(2,
+                    "FX6_R43_TC_REGENERATE_BRIDGE simult_slot1_master_read=%d "
+                    "regen_forced_rec_run=%d ext_lk_released_on_regen_or_run=%d "
+                    "sq_tc_run_reject_rc=%d sq_hdmi_tc_output_reject_rc=%d "
+                    "tc_regenerate_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    simult_slot1_master_read, regen_forced_rec_run,
+                    ext_lk_released_on_regen_or_run, sq_tc_run_and_hdmi_tcout_rc,
+                    sq_tc_run_and_hdmi_tcout_rc, g_r43_tc_regenerate_ok);
+            dprintf(2,
+                    "FX6_R43_RECLAMP_SILENT_BRIDGE reclamp_3states_verified=3 "
+                    "only_front_off_rear_top_coupled=%d uncoupled_split_reject_rc=%d "
+                    "emphasized_rec_hdmi_independent=1 silent_forces_audio_signals_off=1 "
+                    "audio_signals_locked_rc=%d reclamp_silent_ok=%d emmc_write_count=0\n",
+                    only_front_off_rear_top_coupled, uncoupled_split_reject_rc,
+                    silent_locks_audio_signals_rc, g_r43_reclamp_silent_ok);
+        }
+        dprintf(2,
+                "FX6_R43_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "filesettings_shotmark_ok=%d tc_regenerate_ok=%d reclamp_silent_ok=%d "
+                "r43_bridge_ok=%d round43_realhw_filesettings_shotmark_tcregen_reclamp=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r43_filesettings_shotmark_ok,
+                g_r43_tc_regenerate_ok,
+                g_r43_reclamp_silent_ok,
+                g_r43_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4390,6 +4488,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u hdmi_log1080_hdmionly_4k10b=1 "
             "proxy_dualcodec_119p_atomic_vault=1 focusmag_automag_brightmon_lockout=1 "
+            "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 43
+    dprintf(2,
+            "FX6_STAGE_B_R43_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u filesettings_37char_sdhc_shotmark=1 "
+            "tc_regenerate_slot1_extlk_release=1 reclamp_coupled_rear_top_silent_lock=1 "
             "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

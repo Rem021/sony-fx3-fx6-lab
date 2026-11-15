@@ -2461,6 +2461,7 @@ def build_nrtm_xml_sidecar(
     gyroflow_anamorphic: dict[str, Any] | None = None,
     interval_cache_lut_ftp: dict[str, Any] | None = None,
     mc_fleet_sdi_c2pa: dict[str, Any] | None = None,
+    hdr_hlg_raw_breathing: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2489,6 +2490,11 @@ def build_nrtm_xml_sidecar(
     gamma_eq = str(color_and_media.get("capture_gamma_equation", "s-cinetone"))
     primaries = str(color_and_media.get("capture_color_primaries", "rec709"))
     base_look = str(color_and_media.get("base_look", "S-Cinetone"))
+    if hdr_hlg_raw_breathing:
+        if str(hdr_hlg_raw_breathing.get("hlg_profile", "OFF")) != "OFF":
+            gamma_eq = str(hdr_hlg_raw_breathing.get("capture_gamma_equation", "rec2100-hlg"))
+        if str(hdr_hlg_raw_breathing.get("color_gamut", "BT.709")) == "BT.2020":
+            primaries = "rec2020"
 
     if base_look == "User 3D LUT" and active_user_lut:
         lut_slot = str(active_user_lut.get("slot", "User1"))
@@ -2700,6 +2706,29 @@ def build_nrtm_xml_sidecar(
         ET.SubElement(p109_grp, _q("Item"), {"name": "PrivateKeyReads", "value": str(int(mc_fleet_sdi_c2pa["private_key_reads"]))})
         ET.SubElement(p109_grp, _q("Item"), {"name": "CnflashaWrites", "value": str(int(mc_fleet_sdi_c2pa["cnflasha_writes"]))})
         ET.SubElement(p109_grp, _q("Item"), {"name": "HardwareAttestationClaimed", "value": "false"})
+
+    if hdr_hlg_raw_breathing:
+        p116_grp = ET.SubElement(acq, _q("Group"), {"name": "HlgBt2100AssistRawBreathing"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "HlgProfile", "value": str(hdr_hlg_raw_breathing["hlg_profile"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "HlgColorGamut", "value": str(hdr_hlg_raw_breathing["color_gamut"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "HlgKneePercent", "value": f"{float(hdr_hlg_raw_breathing['knee_pct']):.1f}"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "HlgPeakLuminanceNits", "value": str(int(hdr_hlg_raw_breathing["peak_nits"]))})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "HlgDetailLevel", "value": f"{int(hdr_hlg_raw_breathing['detail_level']):+d}"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "Cta8613HdrInfoFrameHex", "value": str(hdr_hlg_raw_breathing["cta_infoframe_hex"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "Cta8613Eotf", "value": str(int(hdr_hlg_raw_breathing["cta_eotf"]))})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "Cta8613ChecksumValid", "value": str(bool(hdr_hlg_raw_breathing["cta_checksum_valid"])).lower()})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "GammaDisplayAssistRequested", "value": str(hdr_hlg_raw_breathing["display_assist_mode"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "GammaDisplayAssistResolved", "value": str(hdr_hlg_raw_breathing["resolved_assist_mode"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "CleanHdmiSdiUnassisted", "value": "true"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "XavcInternalUnassisted", "value": "true"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "ExternalRawOutputMode", "value": str(hdr_hlg_raw_breathing["ext_raw_mode"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "ExternalRawBitPacking", "value": f"{int(hdr_hlg_raw_breathing['raw_bit_depth_in'])}to{int(hdr_hlg_raw_breathing['raw_bit_depth_packed'])}Log"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "ExternalRawBaseIso", "value": str(int(hdr_hlg_raw_breathing["raw_base_iso"]))})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "ExternalRawKelvin", "value": str(int(hdr_hlg_raw_breathing["raw_kelvin"]))})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingCompRequested", "value": str(hdr_hlg_raw_breathing["breathing_comp_mode"])})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingCompEffective", "value": str(bool(hdr_hlg_raw_breathing["breathing_effective_active"])).lower()})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingCropFactor", "value": f"{float(hdr_hlg_raw_breathing['breathing_crop_factor']):.2f}x"})
+        ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingBypassReason", "value": str(hdr_hlg_raw_breathing["breathing_bypass_reason"])})
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -6322,6 +6351,682 @@ def validate_mc_fleet_sdi_c2pa_patch(
     return True, updates, None
 
 
+# ---------------------------------------------------------------------------
+# Phase 116: HLG1/HLG2/HLG3 BT.2100 / ARIB STD-B67, Gamma Display Assist
+# Isolation, CTA-861.3 (0x87) HDR InfoFrame, External ProRes RAW / BRAW
+# 16->12-bit Log & Focus Breathing Compensation ('HLGA' mb[56..59])
+# ---------------------------------------------------------------------------
+
+HLG_PROFILES = ("OFF", "HLG1", "HLG2", "HLG3", "FX6_HLG_LIVE", "FX6_HLG_NATURAL")
+_HLG_PROFILE_TO_IDX: dict[str, int] = {
+    "OFF": 0,
+    "HLG1": 1,
+    "HLG2": 2,
+    "HLG3": 3,
+    "FX6_HLG_LIVE": 4,
+    "FX6_HLG_NATURAL": 5,
+}
+_HLG_PROFILE_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "sdr": "OFF",
+    "none": "OFF",
+    "hlg1": "HLG1",
+    "hlg_1": "HLG1",
+    "hlg1_87": "HLG1",
+    "hlg2": "HLG2",
+    "hlg_2": "HLG2",
+    "hlg2_95": "HLG2",
+    "hlg3": "HLG3",
+    "hlg_3": "HLG3",
+    "hlg3_100": "HLG3",
+    "fx6_hlg_live": "FX6_HLG_LIVE",
+    "hlg_live": "FX6_HLG_LIVE",
+    "hlg live": "FX6_HLG_LIVE",
+    "fx6_hlg_natural": "FX6_HLG_NATURAL",
+    "hlg_natural": "FX6_HLG_NATURAL",
+    "hlg natural": "FX6_HLG_NATURAL",
+}
+
+HLG_PROFILE_SPECS: dict[str, dict[str, Any]] = {
+    "OFF": {
+        "eotf": "SDR_OR_SLOG",
+        "cta_eotf": 0,
+        "knee_pct": 100.0,
+        "peak_nits": 100,
+        "noise_floor_ire": 0.0,
+        "dr_stops": 10.0,
+        "description": "SDR / Cinema Base Look (HLG bypassed)",
+    },
+    "HLG1": {
+        "eotf": "ARIB_STD_B67_BT2100",
+        "cta_eotf": 3,
+        "knee_pct": 87.0,
+        "peak_nits": 925,
+        "noise_floor_ire": 4.2,
+        "dr_stops": 11.8,
+        "description": "HLG1 (87% ~925 nit low-noise, BT.709 compat)",
+    },
+    "HLG2": {
+        "eotf": "ARIB_STD_B67_BT2100",
+        "cta_eotf": 3,
+        "knee_pct": 95.0,
+        "peak_nits": 1000,
+        "noise_floor_ire": 5.0,
+        "dr_stops": 12.6,
+        "description": "HLG2 (95% ~1000 nit balanced HDR)",
+    },
+    "HLG3": {
+        "eotf": "ARIB_STD_B67_BT2100",
+        "cta_eotf": 3,
+        "knee_pct": 100.0,
+        "peak_nits": 1090,
+        "noise_floor_ire": 5.8,
+        "dr_stops": 13.4,
+        "description": "HLG3 (100% ~1090 nit wide-DR ARIB STD-B67)",
+    },
+    "FX6_HLG_LIVE": {
+        "eotf": "ARIB_STD_B67_BT2100",
+        "cta_eotf": 3,
+        "knee_pct": 96.0,
+        "peak_nits": 1000,
+        "noise_floor_ire": 5.0,
+        "dr_stops": 12.6,
+        "description": "FX6 HLG Live (broadcast BT.2100)",
+    },
+    "FX6_HLG_NATURAL": {
+        "eotf": "ARIB_STD_B67_BT2100",
+        "cta_eotf": 3,
+        "knee_pct": 100.0,
+        "peak_nits": 1090,
+        "noise_floor_ire": 5.6,
+        "dr_stops": 13.2,
+        "description": "FX6 HLG Natural (cinema BT.2100)",
+    },
+}
+
+HLG_COLOR_GAMUTS = ("BT.709", "BT.2020", "S-Gamut3.Cine")
+_HLG_GAMUT_TO_IDX: dict[str, int] = {"BT.709": 0, "BT.2020": 1, "S-Gamut3.Cine": 2}
+_HLG_GAMUT_ALIASES: dict[str, str] = {
+    "bt.709": "BT.709",
+    "bt709": "BT.709",
+    "rec709": "BT.709",
+    "rec.709": "BT.709",
+    "itu709": "BT.709",
+    "bt.2020": "BT.2020",
+    "bt2020": "BT.2020",
+    "rec2020": "BT.2020",
+    "rec.2020": "BT.2020",
+    "s-gamut3.cine": "S-Gamut3.Cine",
+    "sgamut3.cine": "S-Gamut3.Cine",
+    "sg3c": "S-Gamut3.Cine",
+}
+
+HLG_KNEE_MODES = ("Auto", "87%", "95%", "100%")
+_HLG_KNEE_TO_IDX: dict[str, int] = {"Auto": 0, "87%": 1, "95%": 2, "100%": 3}
+_HLG_KNEE_ALIASES: dict[str, str] = {
+    "auto": "Auto",
+    "87": "87%",
+    "87%": "87%",
+    "95": "95%",
+    "95%": "95%",
+    "100": "100%",
+    "100%": "100%",
+}
+
+DISPLAY_ASSIST_MODES = (
+    "OFF",
+    "AUTO",
+    "S-Log3->709(800%)",
+    "HLG->709(BT.2020)",
+    "HLG->709(709)",
+)
+_DISPLAY_ASSIST_TO_IDX: dict[str, int] = {
+    "OFF": 0,
+    "AUTO": 1,
+    "S-Log3->709(800%)": 2,
+    "HLG->709(BT.2020)": 3,
+    "HLG->709(709)": 4,
+}
+_DISPLAY_ASSIST_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "auto": "AUTO",
+    "s-log3->709(800%)": "S-Log3->709(800%)",
+    "slog3->709(800%)": "S-Log3->709(800%)",
+    "slog3_to_709_800pct": "S-Log3->709(800%)",
+    "slog3->709": "S-Log3->709(800%)",
+    "hlg->709(bt.2020)": "HLG->709(BT.2020)",
+    "hlg_bt2020_to_709": "HLG->709(BT.2020)",
+    "hlg->709(2020)": "HLG->709(BT.2020)",
+    "hlg->709(709)": "HLG->709(709)",
+    "hlg_bt709_to_709": "HLG->709(709)",
+}
+
+EXT_RAW_OUTPUT_MODES = (
+    "OFF",
+    "Atomos_ProRes_RAW_16_12L",
+    "Blackmagic_BRAW_16_12L",
+)
+_EXT_RAW_TO_IDX: dict[str, int] = {
+    "OFF": 0,
+    "Atomos_ProRes_RAW_16_12L": 1,
+    "Blackmagic_BRAW_16_12L": 2,
+}
+_EXT_RAW_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "xavc": "OFF",
+    "atomos_prores_raw_16_12l": "Atomos_ProRes_RAW_16_12L",
+    "prores_raw": "Atomos_ProRes_RAW_16_12L",
+    "prores raw": "Atomos_ProRes_RAW_16_12L",
+    "prores": "Atomos_ProRes_RAW_16_12L",
+    "atomos": "Atomos_ProRes_RAW_16_12L",
+    "blackmagic_braw_16_12l": "Blackmagic_BRAW_16_12L",
+    "braw": "Blackmagic_BRAW_16_12L",
+    "blackmagic_braw": "Blackmagic_BRAW_16_12L",
+}
+
+FOCUS_BREATHING_MODES = ("OFF", "AUTO")
+_FOCUS_BREATHING_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "0": "OFF",
+    "false": "OFF",
+    "auto": "AUTO",
+    "on": "AUTO",
+    "1": "AUTO",
+    "true": "AUTO",
+}
+
+# CTA-861.3 Dynamic Range and Mastering InfoFrame (0x87)
+CTA861_3_HDR_INFOFRAME_TYPE = 0x87
+CTA861_3_HDR_INFOFRAME_VERSION = 0x01
+CTA861_3_HDR_INFOFRAME_PAYLOAD_LEN = 26
+CTA861_3_HDR_INFOFRAME_TOTAL_LEN = 30
+_BT2020_CTA_PRIMARIES = ((8500, 39850), (6550, 2300), (35400, 14600))
+_BT709_CTA_PRIMARIES = ((15000, 30000), (7500, 3000), (32000, 16500))
+_D65_CTA_WHITEPOINT = (15635, 16450)
+
+# E-Mount 12-pin dynamic Focus Breathing Compensation FOV crop lookup (focal_mm ceiling -> crop factor)
+FOCUS_BREATHING_EMOUNT_CROP_TABLE: tuple[tuple[int, float], ...] = (
+    (20, 1.02),
+    (35, 1.04),
+    (55, 1.06),
+    (85, 1.07),
+    (250, 1.08),
+)
+
+HDR_HLG_RAW_BREATHING_DEFAULTS: dict[str, Any] = {
+    "hlg_profile": "OFF",
+    "color_gamut": "BT.709",
+    "knee_mode": "Auto",
+    "detail_level": 0,
+    "display_assist_mode": "OFF",
+    "ext_raw_mode": "OFF",
+    "breathing_comp_mode": "OFF",
+}
+
+HDR_HLG_RAW_BREATHING_SPECS: dict[str, Any] = {
+    "hlg_profiles": list(HLG_PROFILES),
+    "hlg_profile_specs": HLG_PROFILE_SPECS,
+    "color_gamuts": list(HLG_COLOR_GAMUTS),
+    "knee_modes": list(HLG_KNEE_MODES),
+    "detail_level_range": [-7, 7],
+    "display_assist_modes": list(DISPLAY_ASSIST_MODES),
+    "ext_raw_modes": list(EXT_RAW_OUTPUT_MODES),
+    "breathing_comp_modes": list(FOCUS_BREATHING_MODES),
+    "breathing_emount_crop_range": [1.00, 1.08],
+    "cta861_3_infoframe_type": "0x87",
+    "cta861_3_infoframe_bytes": CTA861_3_HDR_INFOFRAME_TOTAL_LEN,
+    "clean_hdmi_sdi_isolation_enforced": True,
+    "mailbox_magic": "0x484C4741",
+    "mailbox_slots": "mb[56..59]",
+    "supported_langs": ["en", "zh-CN", "zh-TW", "ja"],
+}
+
+
+def build_cta861_3_hdr_infoframe(
+    *,
+    eotf: int = 3,
+    use_bt2020_primaries: bool = True,
+    max_mastering_nits: int = 1000,
+    min_mastering_0001_nits: int = 50,
+    max_cll_nits: int = 1000,
+    max_fall_nits: int = 400,
+) -> dict[str, Any]:
+    """Build deterministic 30-byte CTA-861.3 (0x87) HDR Static Metadata InfoFrame with (sum % 256) == 0."""
+    eotf_i = int(eotf) & 0xFF
+    primaries = _BT2020_CTA_PRIMARIES if use_bt2020_primaries else _BT709_CTA_PRIMARIES
+    header = bytes((
+        CTA861_3_HDR_INFOFRAME_TYPE,
+        CTA861_3_HDR_INFOFRAME_VERSION,
+        CTA861_3_HDR_INFOFRAME_PAYLOAD_LEN,
+    ))
+    payload = struct.pack(
+        "<BB12H",
+        eotf_i,
+        0x00,
+        primaries[0][0],
+        primaries[0][1],
+        primaries[1][0],
+        primaries[1][1],
+        primaries[2][0],
+        primaries[2][1],
+        _D65_CTA_WHITEPOINT[0],
+        _D65_CTA_WHITEPOINT[1],
+        max(0, min(65535, int(max_mastering_nits))),
+        max(0, min(65535, int(min_mastering_0001_nits))),
+        max(0, min(65535, int(max_cll_nits))),
+        max(0, min(65535, int(max_fall_nits))),
+    )
+    checksum = (0x100 - ((sum(header) + sum(payload)) & 0xFF)) & 0xFF
+    packet = header + bytes((checksum,)) + payload
+    total_mod256 = sum(packet) & 0xFF
+    eotf_labels = {
+        0: "SDR_TRADITIONAL_GAMMA",
+        1: "HDR_TRADITIONAL_GAMMA",
+        2: "SMPTE_ST2084_PQ",
+        3: "HLG_ITU_R_BT2100",
+    }
+    return {
+        "packet_bytes": len(packet),
+        "packet_hex": packet.hex().upper(),
+        "infoframe_type": f"0x{CTA861_3_HDR_INFOFRAME_TYPE:02X}",
+        "infoframe_version": CTA861_3_HDR_INFOFRAME_VERSION,
+        "payload_length": CTA861_3_HDR_INFOFRAME_PAYLOAD_LEN,
+        "checksum_byte": checksum,
+        "checksum_hex": f"0x{checksum:02X}",
+        "checksum_zero_mod256": total_mod256,
+        "checksum_valid": total_mod256 == 0,
+        "eotf": eotf_i,
+        "eotf_label": eotf_labels.get(eotf_i, f"RESERVED_0x{eotf_i:02X}"),
+        "gamut_primaries_standard": "BT.2020" if use_bt2020_primaries else "BT.709",
+        "max_mastering_luminance_nits": int(max_mastering_nits),
+        "max_cll_nits": int(max_cll_nits),
+        "max_fall_nits": int(max_fall_nits),
+    }
+
+
+def _lookup_emount_breathing_crop(focal_length_mm: int) -> float:
+    fl = max(10, min(250, int(focal_length_mm)))
+    for max_fl, factor in FOCUS_BREATHING_EMOUNT_CROP_TABLE:
+        if fl <= max_fl:
+            return round(factor, 2)
+    return 1.08
+
+
+def compute_hdr_hlg_raw_breathing_derived(
+    state: dict[str, Any],
+    *,
+    base_look: str = "S-Cinetone",
+    cine_ei_base: str = "800",
+    kelvin: int = 5600,
+    base_fps: float = 23.98,
+    wired_io_mode: str = "off",
+    mount_type: str = "Sony_EMount_12Pin_GM",
+    lens_model: str = "SEL2470GM2 (FE 24-70mm F2.8 GM II)",
+    focal_length_mm: int = 24,
+    iris_fstop: float = 2.8,
+    assist_leak_blocked_count: int = 0,
+    bt2020_in_bt709_blocked_count: int = 0,
+) -> dict[str, Any]:
+    """Compute Phase 116 HLG BT.2100/STD-B67, Display Assist Isolation, ProRes RAW/BRAW & Focus Breathing state."""
+    hlg_profile = str(state.get("hlg_profile", "OFF"))
+    if hlg_profile not in HLG_PROFILES:
+        hlg_profile = "OFF"
+    spec = HLG_PROFILE_SPECS[hlg_profile]
+
+    color_gamut = str(state.get("color_gamut", "BT.709"))
+    if color_gamut not in HLG_COLOR_GAMUTS:
+        color_gamut = "BT.709"
+
+    knee_mode = str(state.get("knee_mode", "Auto"))
+    if knee_mode not in HLG_KNEE_MODES:
+        knee_mode = "Auto"
+    if knee_mode == "Auto":
+        eff_knee_pct = float(spec["knee_pct"])
+    else:
+        eff_knee_pct = float(knee_mode.rstrip("%"))
+
+    detail_level = max(-7, min(7, int(state.get("detail_level", 0))))
+    peak_nits = int(spec["peak_nits"])
+    cta_eotf = int(spec["cta_eotf"])
+    is_hlg = (hlg_profile != "OFF")
+    use_bt2020 = (color_gamut == "BT.2020")
+    cta = build_cta861_3_hdr_infoframe(
+        eotf=cta_eotf,
+        use_bt2020_primaries=use_bt2020,
+        max_mastering_nits=peak_nits if is_hlg else 100,
+        min_mastering_0001_nits=50 if is_hlg else 1000,
+        max_cll_nits=peak_nits if is_hlg else 0,
+        max_fall_nits=400 if is_hlg else 0,
+    )
+
+    assist_req = str(state.get("display_assist_mode", "OFF"))
+    if assist_req not in DISPLAY_ASSIST_MODES:
+        assist_req = "OFF"
+    look_l = str(base_look or "").lower()
+    if assist_req == "AUTO":
+        if is_hlg:
+            assist_resolved = "HLG->709(BT.2020)" if color_gamut == "BT.2020" else "HLG->709(709)"
+        elif "s-log3" in look_l or "slog3" in look_l:
+            assist_resolved = "S-Log3->709(800%)"
+        else:
+            assist_resolved = "OFF"
+    else:
+        assist_resolved = assist_req
+    evf_lcd_assist_active = (assist_resolved != "OFF")
+
+    ext_raw_mode = str(state.get("ext_raw_mode", "OFF"))
+    if ext_raw_mode not in EXT_RAW_OUTPUT_MODES:
+        ext_raw_mode = "OFF"
+    raw_active = (ext_raw_mode != "OFF")
+    hdmi_raw_any = raw_active or (str(wired_io_mode or "off").lower() == "hdmi_raw16")
+
+    raw_base_iso = 12800 if str(cine_ei_base) == "12800" else 800
+    raw_kelvin = max(2000, min(15000, int(kelvin)))
+    is_pl = (str(mount_type) == "Manual_PL_Adapter_Unchipped")
+    e_pins = 0 if is_pl else 12
+    focal_mm = max(10, min(250, int(focal_length_mm)))
+
+    breath_req = str(state.get("breathing_comp_mode", "OFF"))
+    if breath_req not in FOCUS_BREATHING_MODES:
+        breath_req = "OFF"
+    bypass_pl = bool(breath_req == "AUTO" and is_pl)
+    bypass_raw = bool(breath_req == "AUTO" and hdmi_raw_any)
+    if breath_req == "AUTO" and not bypass_pl and not bypass_raw:
+        breath_eff = True
+        crop_factor = _lookup_emount_breathing_crop(focal_mm)
+        bypass_reason = "NONE_EMOUNT_12PIN_ACTIVE"
+    else:
+        breath_eff = False
+        crop_factor = 1.00
+        if bypass_pl and bypass_raw:
+            bypass_reason = "PL_UNCHIPPED_AND_HDMI_RAW"
+        elif bypass_pl:
+            bypass_reason = "PL_UNCHIPPED_0PIN_IDENTITY"
+        elif bypass_raw:
+            bypass_reason = "HDMI_RAW_FULL_SENSOR_NO_CROP"
+        else:
+            bypass_reason = "USER_OFF"
+
+    if is_hlg:
+        cap_gamma = "rec2100-hlg"
+    elif "s-log3" in look_l or "slog3" in look_l:
+        cap_gamma = "s-log3"
+    elif "cinetone" in look_l:
+        cap_gamma = "s-cinetone"
+    else:
+        cap_gamma = "rec709"
+    cap_primaries = "rec2020" if color_gamut == "BT.2020" else ("s-gamut3.cine" if color_gamut == "S-Gamut3.Cine" else "rec709")
+
+    if raw_active:
+        vendor = "Atomos_Ninja" if ext_raw_mode == "Atomos_ProRes_RAW_16_12L" else "Blackmagic_VideoAssist"
+        raw_summary = f"{vendor} 16->12L Base{raw_base_iso} {raw_kelvin}K {focal_mm}mm {'E12P' if not is_pl else 'PL0P'}"
+    else:
+        raw_summary = "Internal XAVC (Ext RAW OFF)"
+
+    waveform_peak_ire = int(round(eff_knee_pct)) if is_hlg else 41
+
+    return {
+        "hlg_profile": hlg_profile,
+        "hlg_eotf": spec["eotf"],
+        "hlg_description": spec["description"],
+        "color_gamut": color_gamut,
+        "knee_mode": knee_mode,
+        "knee_pct": eff_knee_pct,
+        "peak_nits": peak_nits,
+        "noise_floor_ire": float(spec["noise_floor_ire"]),
+        "dynamic_range_stops": float(spec["dr_stops"]),
+        "detail_level": detail_level,
+        "capture_gamma_equation": cap_gamma,
+        "capture_color_primaries": cap_primaries,
+        "cicp_color_primaries": 9 if color_gamut == "BT.2020" else 1,
+        "cicp_transfer_characteristics": 18 if is_hlg else 1,
+        "cicp_matrix_coefficients": 9 if color_gamut == "BT.2020" else 1,
+        "cta_infoframe_type": cta["infoframe_type"],
+        "cta_infoframe_bytes": cta["packet_bytes"],
+        "cta_infoframe_hex": cta["packet_hex"],
+        "cta_checksum_byte": cta["checksum_byte"],
+        "cta_checksum_hex": cta["checksum_hex"],
+        "cta_checksum_zero_mod256": cta["checksum_zero_mod256"],
+        "cta_checksum_valid": cta["checksum_valid"],
+        "cta_eotf": cta["eotf"],
+        "cta_eotf_label": cta["eotf_label"],
+        "cta_gamut_primaries_standard": cta["gamut_primaries_standard"],
+        "display_assist_mode": assist_req,
+        "resolved_assist_mode": assist_resolved,
+        "evf_lcd_assist_active": evf_lcd_assist_active,
+        "vf_nit_ceiling": 100,
+        "waveform_peak_ire": waveform_peak_ire,
+        "clean_hdmi_sdi_unassisted": True,
+        "xavc_internal_unassisted": True,
+        "external_output_assist_leak_px": 0,
+        "assist_leak_blocked_count": int(assist_leak_blocked_count),
+        "bt2020_in_bt709_blocked_count": int(bt2020_in_bt709_blocked_count),
+        "ext_raw_mode": ext_raw_mode,
+        "ext_raw_active": raw_active,
+        "raw_bit_depth_in": 16 if raw_active else 10,
+        "raw_bit_depth_packed": 12 if raw_active else 10,
+        "raw_transfer_curve": "16bit_Linear_to_12bit_Log_Packing" if raw_active else "XAVC_Normal",
+        "raw_base_iso": raw_base_iso,
+        "raw_kelvin": raw_kelvin,
+        "raw_fps": float(base_fps),
+        "raw_lens_metadata": {
+            "mount_type": mount_type,
+            "lens_model": lens_model,
+            "focal_length_mm": focal_mm,
+            "iris_fstop": round(float(iris_fstop), 1),
+            "electronic_pins": e_pins,
+            "attached": not is_pl,
+        },
+        "raw_hdmi_packet_summary": raw_summary,
+        "breathing_comp_mode": breath_req,
+        "breathing_effective_active": breath_eff,
+        "breathing_crop_factor": crop_factor,
+        "breathing_bypassed_by_pl_mount": bypass_pl,
+        "breathing_bypassed_by_raw": bypass_raw,
+        "breathing_bypass_reason": bypass_reason,
+        "persistent_emmc_writes_authorized": False,
+    }
+
+
+def format_hdr_hlg_raw_breathing_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 116 HLGA host<->guest protocol telemetry line."""
+    return (
+        f"HLGA hlg={state['hlg_profile']}({state['color_gamut']},{state['peak_nits']}nit,kn={state['knee_pct']:.0f}%,det={state['detail_level']:+d}) "
+        f"cta87=(eotf={state['cta_eotf']},cs={state['cta_checksum_hex']},ok=1) "
+        f"assist={state['resolved_assist_mode']}(clean_out=1,leak=0,blk={state['assist_leak_blocked_count']}) "
+        f"raw={state['ext_raw_mode']}(16->12L,B{state['raw_base_iso']},{state['raw_kelvin']}K) "
+        f"fbc={state['breathing_comp_mode']}->{'ON' if state['breathing_effective_active'] else 'BYP'}({state['breathing_crop_factor']:.2f}x)"
+    )
+
+
+def validate_hdr_hlg_raw_breathing_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+    *,
+    mount_type: str = "Sony_EMount_12Pin_GM",
+    wired_io_mode: str = "off",
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 116 HLG BT.2100, Display Assist, External RAW & Focus Breathing updates fail-closed."""
+    if not isinstance(body, dict):
+        return False, {}, {"ok": False, "error": "invalid_hdr_hlg_raw_breathing", "message": "Payload must be a JSON object"}
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(HDR_HLG_RAW_BREATHING_DEFAULTS)
+
+    # 1. Clean HDMI/SDI Display Assist isolation guard (fail-closed)
+    if (
+        body.get("apply_assist_to_hdmi") is True
+        or body.get("apply_assist_to_sdi") is True
+        or body.get("bake_assist_into_hdmi") is True
+        or body.get("bake_assist_into_xavc") is True
+        or body.get("clean_hdmi_sdi_unassisted") is False
+        or body.get("xavc_internal_unassisted") is False
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "display_assist_clean_feed_leak_blocked",
+                "message": "Gamma Display Assist is strictly isolated to EVF/LCD; Clean HDMI/SDI & internal XAVC burn-in blocked",
+                "clean_hdmi_sdi_unassisted": True,
+                "xavc_internal_unassisted": True,
+                "external_output_assist_leak_px": 0,
+            },
+        )
+
+    # 2. Focus Breathing interlock guard (cannot force crop on PL unchipped or HDMI RAW)
+    cur_raw = str((current_state or {}).get("ext_raw_mode", "OFF"))
+    if body.get("force_breathing_on_pl") is True:
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "focus_breathing_interlock_blocked",
+                "message": "Manual PL unchipped lens has 0 E-Mount pins; Focus Breathing Compensation enforces 1.00x bypass",
+                "breathing_crop_factor": 1.00,
+            },
+        )
+    if body.get("force_breathing_in_raw") is True:
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "focus_breathing_interlock_blocked",
+                "message": "External HDMI 16->12-bit RAW output requires full-sensor readout; Focus Breathing Compensation enforces 1.00x bypass",
+                "breathing_crop_factor": 1.00,
+            },
+        )
+
+    # 3. HLG profile
+    eff_hlg = str((current_state or {}).get("hlg_profile", "OFF"))
+    if "hlg_profile" in body and body["hlg_profile"] is not None:
+        raw_hp = body["hlg_profile"]
+        if not isinstance(raw_hp, str):
+            return False, {}, {"ok": False, "error": "invalid_hlg_profile", "message": f"Invalid hlg_profile: {raw_hp!r}"}
+        hp_norm = _HLG_PROFILE_ALIASES.get(raw_hp.strip().lower())
+        if hp_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_hlg_profile", "message": f"Unsupported hlg_profile: {raw_hp!r}", "allowed": list(HLG_PROFILES)},
+            )
+        updates["hlg_profile"] = hp_norm
+        eff_hlg = hp_norm
+        if "color_gamut" not in body:
+            if hp_norm != "OFF" and str((current_state or {}).get("color_gamut", "BT.709")) == "BT.709":
+                updates["color_gamut"] = "BT.2020"
+            elif hp_norm == "OFF" and str((current_state or {}).get("color_gamut", "BT.709")) == "BT.2020":
+                updates["color_gamut"] = "BT.709"
+
+    # 4. Color Gamut & BT.2020-in-BT.709 container guard
+    eff_gamut = str(updates.get("color_gamut", (current_state or {}).get("color_gamut", "BT.709")))
+    if "color_gamut" in body and body["color_gamut"] is not None:
+        raw_cg = body["color_gamut"]
+        if not isinstance(raw_cg, str):
+            return False, {}, {"ok": False, "error": "invalid_color_gamut", "message": f"Invalid color_gamut: {raw_cg!r}"}
+        cg_norm = _HLG_GAMUT_ALIASES.get(raw_cg.strip().lower())
+        if cg_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_color_gamut", "message": f"Unsupported color_gamut: {raw_cg!r}", "allowed": list(HLG_COLOR_GAMUTS)},
+            )
+        updates["color_gamut"] = cg_norm
+        eff_gamut = cg_norm
+
+    container_tag = str(body.get("container_colorimetry") or "").strip().upper()
+    if (body.get("force_bt2020_in_bt709") is True) or (
+        eff_gamut == "BT.2020" and container_tag in ("BT709", "BT.709", "REC709")
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "bt2020_in_bt709_container_blocked",
+                "message": "Blocked mismatched BT.2020 signal packaged inside BT.709 container tags (CICP 9/18/9 required)",
+            },
+        )
+
+    # 5. Knee & Detail Level
+    if "knee_mode" in body and body["knee_mode"] is not None:
+        raw_km = body["knee_mode"]
+        if not isinstance(raw_km, str):
+            return False, {}, {"ok": False, "error": "invalid_knee_mode", "message": f"Invalid knee_mode: {raw_km!r}"}
+        km_norm = _HLG_KNEE_ALIASES.get(raw_km.strip().lower())
+        if km_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_knee_mode", "message": f"Unsupported knee_mode: {raw_km!r}", "allowed": list(HLG_KNEE_MODES)},
+            )
+        updates["knee_mode"] = km_norm
+
+    if "detail_level" in body and body["detail_level"] is not None:
+        raw_dl = body["detail_level"]
+        if isinstance(raw_dl, bool) or not isinstance(raw_dl, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_detail_level", "message": f"Invalid detail_level: {raw_dl!r}"}
+        try:
+            f_dl = float(raw_dl)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_detail_level", "message": f"Invalid detail_level: {raw_dl!r}"}
+        if not math.isfinite(f_dl) or f_dl != float(int(f_dl)) or int(f_dl) < -7 or int(f_dl) > 7:
+            return False, {}, {"ok": False, "error": "invalid_detail_level", "message": "detail_level must be integer in [-7, +7]"}
+        updates["detail_level"] = int(f_dl)
+
+    # 6. Gamma Display Assist mode
+    if "display_assist_mode" in body and body["display_assist_mode"] is not None:
+        raw_da = body["display_assist_mode"]
+        if not isinstance(raw_da, str):
+            return False, {}, {"ok": False, "error": "invalid_display_assist_mode", "message": f"Invalid display_assist_mode: {raw_da!r}"}
+        da_norm = _DISPLAY_ASSIST_ALIASES.get(raw_da.strip().lower())
+        if da_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_display_assist_mode", "message": f"Unsupported display_assist_mode: {raw_da!r}", "allowed": list(DISPLAY_ASSIST_MODES)},
+            )
+        updates["display_assist_mode"] = da_norm
+
+    # 7. External HDMI RAW mode
+    if "ext_raw_mode" in body and body["ext_raw_mode"] is not None:
+        raw_em = body["ext_raw_mode"]
+        if not isinstance(raw_em, str):
+            return False, {}, {"ok": False, "error": "invalid_ext_raw_mode", "message": f"Invalid ext_raw_mode: {raw_em!r}"}
+        em_norm = _EXT_RAW_ALIASES.get(raw_em.strip().lower())
+        if em_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_ext_raw_mode", "message": f"Unsupported ext_raw_mode: {raw_em!r}", "allowed": list(EXT_RAW_OUTPUT_MODES)},
+            )
+        updates["ext_raw_mode"] = em_norm
+
+    # 8. Focus Breathing Compensation mode
+    if "breathing_comp_mode" in body and body["breathing_comp_mode"] is not None:
+        raw_bm = body["breathing_comp_mode"]
+        if isinstance(raw_bm, bool):
+            bm_norm = "AUTO" if raw_bm else "OFF"
+        elif isinstance(raw_bm, str):
+            bm_norm = _FOCUS_BREATHING_ALIASES.get(raw_bm.strip().lower())
+        else:
+            bm_norm = None
+        if bm_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_breathing_comp_mode", "message": f"Unsupported breathing_comp_mode: {raw_bm!r}", "allowed": list(FOCUS_BREATHING_MODES)},
+            )
+        updates["breathing_comp_mode"] = bm_norm
+
+    return True, updates, None
+
+
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
     return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
@@ -6790,6 +7495,28 @@ class FX6LiveGpe0Session:
                     "lens_kg": self.lens_kg,
                     "focal_length_mm": self.focal_length_mm,
                     "rod_support_15mm_lws": self.rod_support_15mm_lws,
+                }
+            )
+        )
+        self.hlg_profile = "OFF"
+        self.color_gamut = "BT.709"
+        self.knee_mode = "Auto"
+        self.detail_level = 0
+        self.display_assist_mode = "OFF"
+        self.ext_raw_mode = "OFF"
+        self.breathing_comp_mode = "OFF"
+        self.p116_assist_leak_blocked_count = 0
+        self.p116_bt2020_blocked_count = 0
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(
+            compute_hdr_hlg_raw_breathing_derived(
+                {
+                    "hlg_profile": self.hlg_profile,
+                    "color_gamut": self.color_gamut,
+                    "knee_mode": self.knee_mode,
+                    "detail_level": self.detail_level,
+                    "display_assist_mode": self.display_assist_mode,
+                    "ext_raw_mode": self.ext_raw_mode,
+                    "breathing_comp_mode": self.breathing_comp_mode,
                 }
             )
         )
@@ -7657,8 +8384,85 @@ class FX6LiveGpe0Session:
         mb55 = 0x4D43464C  # 'MCFL'
         return struct.pack("<4I", mb52, mb53, mb54, mb55)
 
+    def _pack_phase116_mailbox_bytes(self) -> bytes:
+        """Pack Phase 116 guest control mailbox mb[56..59] (16 bytes) matching fx6_live_guest.c."""
+        p116 = self.get_hdr_hlg_raw_breathing()
+        hlg_idx = _HLG_PROFILE_TO_IDX.get(str(p116["hlg_profile"]), 0)
+        gamut_idx = _HLG_GAMUT_TO_IDX.get(str(p116["color_gamut"]), 0)
+        detail_enc = max(0, min(14, int(p116["detail_level"]) + 7))
+        knee_idx = _HLG_KNEE_TO_IDX.get(str(p116["knee_mode"]), 0)
+        cta_eotf = int(p116["cta_eotf"]) & 0x3
+        cta_ok = 1 if p116["cta_checksum_valid"] else 0
+        cta_cs = int(p116["cta_checksum_byte"]) & 0xFF
+        peak_nits_div10 = max(10, min(255, int(p116["peak_nits"]) // 10))
+        bt2020_blk = 1 if int(p116["bt2020_in_bt709_blocked_count"]) > 0 else 0
+
+        mb56 = (
+            (hlg_idx & 0x7)
+            | ((gamut_idx & 0x3) << 3)
+            | ((detail_enc & 0xF) << 5)
+            | ((knee_idx & 0x3) << 9)
+            | ((cta_eotf & 0x3) << 11)
+            | ((cta_ok & 0x1) << 13)
+            | ((cta_cs & 0xFF) << 14)
+            | ((peak_nits_div10 & 0xFF) << 22)
+            | ((bt2020_blk & 0x1) << 30)
+            | (1 << 31)
+        )
+
+        ast_req = _DISPLAY_ASSIST_TO_IDX.get(str(p116["display_assist_mode"]), 0)
+        ast_res = _DISPLAY_ASSIST_TO_IDX.get(str(p116["resolved_assist_mode"]), 0)
+        evf_ast_on = 1 if p116["evf_lcd_assist_active"] else 0
+        clean_hdmi = 1 if p116["clean_hdmi_sdi_unassisted"] else 0
+        xavc_unassist = 1 if p116["xavc_internal_unassisted"] else 0
+        leak_cnt = max(0, min(127, int(p116["assist_leak_blocked_count"])))
+        vf_nit_div10 = max(1, min(255, int(p116["vf_nit_ceiling"]) // 10))
+        peak_ire = max(0, min(109, int(p116["waveform_peak_ire"])))
+
+        mb57 = (
+            (ast_req & 0x7)
+            | ((ast_res & 0x7) << 3)
+            | ((evf_ast_on & 0x1) << 6)
+            | ((clean_hdmi & 0x1) << 7)
+            | ((xavc_unassist & 0x1) << 8)
+            | ((leak_cnt & 0x7F) << 9)
+            | ((vf_nit_div10 & 0xFF) << 16)
+            | ((peak_ire & 0x7F) << 24)
+            | (1 << 31)
+        )
+
+        ext_raw_idx = _EXT_RAW_TO_IDX.get(str(p116["ext_raw_mode"]), 0)
+        raw_b12800 = 1 if int(p116["raw_base_iso"]) >= 12800 else 0
+        raw_kelvin_div100 = max(20, min(150, int(p116["raw_kelvin"]) // 100))
+        lens_meta = 1 if p116["raw_lens_metadata"]["attached"] else 0
+        tc_trig = 1 if (self.rec_state == "REC" and ext_raw_idx > 0) else 0
+        breath_req = 1 if p116["breathing_comp_mode"] == "AUTO" else 0
+        breath_eff = 1 if p116["breathing_effective_active"] else 0
+        byp_pl = 1 if p116["breathing_bypassed_by_pl_mount"] else 0
+        byp_raw = 1 if p116["breathing_bypassed_by_raw"] else 0
+        crop_x100 = max(100, min(108, int(round(float(p116["breathing_crop_factor"]) * 100.0))))
+        fps_list = [23.98, 24.0, 25.0, 29.97, 50.0, 59.94]
+        raw_fps_idx = min(range(len(fps_list)), key=lambda i: abs(fps_list[i] - float(self.base_fps)))
+
+        mb58 = (
+            (ext_raw_idx & 0x3)
+            | ((raw_b12800 & 0x1) << 2)
+            | ((raw_kelvin_div100 & 0xFF) << 3)
+            | ((lens_meta & 0x1) << 11)
+            | ((tc_trig & 0x1) << 12)
+            | ((breath_req & 0x1) << 13)
+            | ((breath_eff & 0x1) << 14)
+            | ((byp_pl & 0x1) << 15)
+            | ((byp_raw & 0x1) << 16)
+            | ((crop_x100 & 0xFF) << 17)
+            | ((raw_fps_idx & 0x3F) << 25)
+            | (1 << 31)
+        )
+        mb59 = 0x484C4741  # 'HLGA'
+        return struct.pack("<4I", mb56, mb57, mb58, mb59)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..55] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..59] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
@@ -7669,6 +8473,7 @@ class FX6LiveGpe0Session:
             + self._pack_phase95_mailbox_bytes()
             + self._pack_phase102_mailbox_bytes()
             + self._pack_phase109_mailbox_bytes()
+            + self._pack_phase116_mailbox_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -8290,6 +9095,7 @@ class FX6LiveGpe0Session:
                         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
                         self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
                         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+                        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
                     elif key == "ei":
                         ei_map = [
                             ("800", 800),
@@ -8302,6 +9108,7 @@ class FX6LiveGpe0Session:
                         if 0 <= new_idx < len(ei_map):
                             self.cine_ei_base, self.ei_index = ei_map[new_idx]
                             self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                            self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
                     elif key == "shutter":
                         shutter_map = [
                             ("angle", 180.0, None),
@@ -8337,6 +9144,7 @@ class FX6LiveGpe0Session:
                             self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
                             self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
                             self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+                            self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
                     elif key == "wb":
                         wb_cell_map = [
                             ("preset_5600k", 5600),
@@ -8351,6 +9159,7 @@ class FX6LiveGpe0Session:
                             if preset_k is not None:
                                 self.kelvin = preset_k
                             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+                            self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
                     self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
                 elif key == "ibis":
                     self.ibis_idx = new_idx
@@ -8484,6 +9293,7 @@ class FX6LiveGpe0Session:
             p102 = self.get_interval_cache_lut_ftp()
             self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(p102)
             self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+            self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
             if self.page in (0, 3):
                 self.sel_box = 4
             self.last_toast = (
@@ -8658,6 +9468,11 @@ class FX6LiveGpe0Session:
         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
         self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+        if "wired_io_mode" in updates and str(updates["wired_io_mode"]).lower() != "hdmi_raw16":
+            self.ext_raw_mode = "OFF"
+        elif "wired_io_mode" in updates and str(updates["wired_io_mode"]).lower() == "hdmi_raw16" and self.ext_raw_mode == "OFF":
+            self.ext_raw_mode = "Atomos_ProRes_RAW_16_12L"
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -8786,6 +9601,7 @@ class FX6LiveGpe0Session:
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
 
     def set_color_and_media(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -8836,6 +9652,7 @@ class FX6LiveGpe0Session:
             ga = self.get_gyroflow_anamorphic()
             ic = self.get_interval_cache_lut_ftp()
             p109 = self.get_mc_fleet_sdi_c2pa()
+            p116 = self.get_hdr_hlg_raw_breathing()
             active_user = self._active_user_lut_for_color()
         xml_text = build_nrtm_xml_sidecar(
             ce,
@@ -8845,6 +9662,7 @@ class FX6LiveGpe0Session:
             gyroflow_anamorphic=ga,
             interval_cache_lut_ftp=ic,
             mc_fleet_sdi_c2pa=p109,
+            hdr_hlg_raw_breathing=p116,
         )
         return {
             "ok": True,
@@ -8863,6 +9681,7 @@ class FX6LiveGpe0Session:
             "gyroflow_anamorphic": ga,
             "interval_cache_lut_ftp": ic,
             "mc_fleet_sdi_c2pa": p109,
+            "hdr_hlg_raw_breathing": p116,
         }
 
     def get_mc_fleet_sdi_c2pa(self) -> dict[str, Any]:
@@ -8947,6 +9766,7 @@ class FX6LiveGpe0Session:
         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
         self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
 
     def set_mc_fleet_sdi_c2pa(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -8999,6 +9819,123 @@ class FX6LiveGpe0Session:
                 "c2pa_vault_status": p109["c2pa_vault_status"],
                 "private_key_reads": 0,
                 "cnflasha_writes": 0,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def get_hdr_hlg_raw_breathing(self) -> dict[str, Any]:
+        state = compute_hdr_hlg_raw_breathing_derived(
+            {
+                "hlg_profile": self.hlg_profile,
+                "color_gamut": self.color_gamut,
+                "knee_mode": self.knee_mode,
+                "detail_level": self.detail_level,
+                "display_assist_mode": self.display_assist_mode,
+                "ext_raw_mode": self.ext_raw_mode,
+                "breathing_comp_mode": self.breathing_comp_mode,
+            },
+            base_look=self.base_look,
+            cine_ei_base=self.cine_ei_base,
+            kelvin=self.kelvin,
+            base_fps=self.base_fps,
+            wired_io_mode=self.wired_io_mode,
+            mount_type=self.mount_type,
+            lens_model=self.lens_model,
+            focal_length_mm=self.focal_length_mm,
+            iris_fstop=self.iris_fstop,
+            assist_leak_blocked_count=self.p116_assist_leak_blocked_count,
+            bt2020_in_bt709_blocked_count=self.p116_bt2020_blocked_count,
+        )
+        state["hdr_hlg_raw_breathing_cmd"] = format_hdr_hlg_raw_breathing_command(state)
+        return state
+
+    def _apply_hdr_hlg_raw_breathing_updates_locked(
+        self,
+        updates: dict[str, Any],
+        *,
+        is_reset: bool = False,
+        preserve_wired_io: bool = False,
+    ) -> None:
+        if is_reset:
+            self.p116_assist_leak_blocked_count = 0
+            self.p116_bt2020_blocked_count = 0
+        if "hlg_profile" in updates:
+            self.hlg_profile = str(updates["hlg_profile"])
+        if "color_gamut" in updates:
+            self.color_gamut = str(updates["color_gamut"])
+        if "knee_mode" in updates:
+            self.knee_mode = str(updates["knee_mode"])
+        if "detail_level" in updates:
+            self.detail_level = int(updates["detail_level"])
+        if "display_assist_mode" in updates:
+            self.display_assist_mode = str(updates["display_assist_mode"])
+        if "ext_raw_mode" in updates:
+            self.ext_raw_mode = str(updates["ext_raw_mode"])
+            if not preserve_wired_io:
+                if self.ext_raw_mode != "OFF":
+                    self.wired_io_mode = "hdmi_raw16"
+                elif self.wired_io_mode == "hdmi_raw16":
+                    self.wired_io_mode = "off"
+        if "breathing_comp_mode" in updates:
+            self.breathing_comp_mode = str(updates["breathing_comp_mode"])
+
+        self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+
+    def set_hdr_hlg_raw_breathing(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "hlg_profile": self.hlg_profile,
+                "color_gamut": self.color_gamut,
+                "knee_mode": self.knee_mode,
+                "detail_level": self.detail_level,
+                "display_assist_mode": self.display_assist_mode,
+                "ext_raw_mode": self.ext_raw_mode,
+                "breathing_comp_mode": self.breathing_comp_mode,
+            }
+            ok, updates, err = validate_hdr_hlg_raw_breathing_patch(
+                body,
+                current_state=cur,
+                mount_type=self.mount_type,
+                wired_io_mode=self.wired_io_mode,
+            )
+            if not ok:
+                err_code = (err or {}).get("error")
+                if err_code == "display_assist_clean_feed_leak_blocked":
+                    self.p116_assist_leak_blocked_count += 1
+                    self.last_toast = str(err.get("message", "Display Assist clean-feed isolation enforced"))
+                    self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+                    self._sync_mailbox_and_capture()
+                    err["assist_leak_blocked_count"] = self.p116_assist_leak_blocked_count
+                    err["hdr_hlg_raw_breathing"] = self.get_hdr_hlg_raw_breathing()
+                elif err_code == "bt2020_in_bt709_container_blocked":
+                    self.p116_bt2020_blocked_count += 1
+                    self.last_toast = str(err.get("message", "BT.2020-in-BT.709 container blocked"))
+                    self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+                    self._sync_mailbox_and_capture()
+                    err["bt2020_in_bt709_blocked_count"] = self.p116_bt2020_blocked_count
+                    err["hdr_hlg_raw_breathing"] = self.get_hdr_hlg_raw_breathing()
+                return err or {"ok": False, "error": "invalid_hdr_hlg_raw_breathing"}
+
+            is_reset = isinstance(body, dict) and body.get("reset") is True
+            self._apply_hdr_hlg_raw_breathing_updates_locked(updates, is_reset=is_reset)
+            p116 = self.get_hdr_hlg_raw_breathing()
+            self.last_toast = (
+                f"Phase116: HLG={p116['hlg_profile']}({p116['color_gamut']},{p116['peak_nits']}nit,87:CS={p116['cta_checksum_hex']}) | "
+                f"Assist={p116['resolved_assist_mode']}(CleanHDMI=1) | "
+                f"RAW={p116['ext_raw_mode']} | FBC={p116['breathing_crop_factor']:.2f}x"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "hdr_hlg_raw_breathing": p116,
+                "hdr_hlg_raw_breathing_cmd": p116["hdr_hlg_raw_breathing_cmd"],
+                "clean_hdmi_sdi_unassisted": True,
+                "xavc_internal_unassisted": True,
+                "external_output_assist_leak_px": 0,
                 "toast": self.last_toast,
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
@@ -9330,6 +10267,7 @@ class FX6LiveGpe0Session:
         if "last_scene_ev" in updates:
             self.last_scene_ev = float(updates["last_scene_ev"])
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
 
     def set_shotmark_and_iris(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -9567,6 +10505,7 @@ class FX6LiveGpe0Session:
             "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
             "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
             "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
+            "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -10020,6 +10959,37 @@ class FX6LiveGpe0Session:
             if not ok_p109:
                 return err_p109 or {"ok": False, "error": "invalid_mc_fleet_sdi_c2pa"}
 
+        p116_raw = payload.get("hdr_hlg_raw_breathing")
+        new_p116_updates: dict[str, Any] = {}
+        if p116_raw is not None:
+            if not isinstance(p116_raw, dict):
+                return {"ok": False, "error": "invalid_hdr_hlg_raw_breathing", "message": "hdr_hlg_raw_breathing must be a JSON object"}
+            if p116_raw.get("external_output_assist_leak_px") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "display_assist_clean_feed_leak_blocked",
+                    "message": "Gamma Display Assist clean-feed leak forbidden in CAMSET import",
+                }
+            cur_p116 = {
+                "hlg_profile": self.hlg_profile,
+                "color_gamut": self.color_gamut,
+                "knee_mode": self.knee_mode,
+                "detail_level": self.detail_level,
+                "display_assist_mode": self.display_assist_mode,
+                "ext_raw_mode": self.ext_raw_mode,
+                "breathing_comp_mode": self.breathing_comp_mode,
+            }
+            eff_mount = str(new_p109_updates.get("mount_type", self.mount_type))
+            eff_io = str(new_cine_updates.get("wired_io_mode", self.wired_io_mode))
+            ok_p116, new_p116_updates, err_p116 = validate_hdr_hlg_raw_breathing_patch(
+                p116_raw,
+                current_state=cur_p116,
+                mount_type=eff_mount,
+                wired_io_mode=eff_io,
+            )
+            if not ok_p116:
+                return err_p116 or {"ok": False, "error": "invalid_hdr_hlg_raw_breathing"}
+
         p12_clamped = (
             (payload.get("p12_bk4_airplane_mode_locked") is False)
             or ce_p12_tamper
@@ -10190,6 +11160,16 @@ class FX6LiveGpe0Session:
                 self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(
                     self.get_mc_fleet_sdi_c2pa()
                 )
+            if p116_raw is not None:
+                self._apply_hdr_hlg_raw_breathing_updates_locked(
+                    new_p116_updates,
+                    is_reset=bool(p116_raw.get("reset") is True),
+                    preserve_wired_io=("wired_io_mode" in new_cine_updates),
+                )
+            else:
+                self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(
+                    self.get_hdr_hlg_raw_breathing()
+                )
 
             if p4_rejected:
                 self.last_toast = (
@@ -10235,6 +11215,7 @@ class FX6LiveGpe0Session:
                 "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
                 "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
                 "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
+                "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -10924,6 +11905,7 @@ class FX6LiveGpe0Session:
             "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
             "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
             "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
+            "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
             "serial_tail": serial_tail,
         }
 
@@ -11805,6 +12787,96 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
 
+    <div class="card" id="phase116-hlg-raw-breathing-card" style="margin-top:14px;border-color:#f59e0b;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p116-card-title" style="margin:0;">Phase 116 · HLG1/HLG2/HLG3 BT.2100 &amp; CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW &amp; BRAW / 呼吸效应补偿</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p116-lang-en" onclick="setP116Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p116-lang-zh-CN" onclick="setP116Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;">简体中文</button>
+          <button id="p116-lang-zh-TW" onclick="setP116Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p116-lang-ja" onclick="setP116Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p116-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p116-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#f59e0b;">
+          <div class="cparam-head"><span id="p116-lbl-hlg">HLG BT.2100 &amp; CTA-861.3 (0x87)</span><span id="p116-hlg-badge" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">OFF · 100nit · CS=0x69</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p116-hlg-select" onchange="setPhase116State({hlg_profile: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF (SDR / Log)</option>
+              <option value="HLG1">HLG1 (87% ~925nit Low-Noise)</option>
+              <option value="HLG2">HLG2 (95% ~1000nit Balanced)</option>
+              <option value="HLG3">HLG3 (100% ~1090nit Wide-DR)</option>
+            </select>
+            <select id="p116-gamut-select" onchange="setPhase116State({color_gamut: this.value})" style="width:90px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="BT.2020">BT.2020</option>
+              <option value="BT.709">BT.709</option>
+            </select>
+            <select id="p116-knee-select" onchange="setPhase116State({knee_mode: this.value})" style="width:74px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="Auto">Auto</option>
+              <option value="87%">87%</option>
+              <option value="95%">95%</option>
+              <option value="100%">100%</option>
+            </select>
+            <input id="p116-detail-input" type="number" step="1" min="-7" max="7" value="0" title="HLG Detail (-7..+7)" style="width:52px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p116-btn-apply-detail" onclick="applyPhase116Detail()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;">Apply</button>
+          </div>
+          <div id="p116-hlg-readout" style="font-size:10px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">CTA-861.3 0x87 EOTF=0 CS=0x69 (sum%256=0) | Peak=100nit</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p116-lbl-assist">Gamma Display Assist (Clean HDMI/SDI)</span><span id="p116-assist-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">OFF · CLEAN=1</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p116-assist-select" onchange="setPhase116State({display_assist_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF</option>
+              <option value="AUTO">AUTO (Follow HLG / S-Log3)</option>
+              <option value="S-Log3->709(800%)">S-Log3-&gt;709(800%)</option>
+              <option value="HLG->709(BT.2020)">HLG-&gt;709(BT.2020)</option>
+              <option value="HLG->709(709)">HLG-&gt;709(709)</option>
+            </select>
+            <button id="p116-btn-test-leak" onclick="setPhase116State({apply_assist_to_hdmi: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test Clean Leak Guard</button>
+          </div>
+          <div id="p116-assist-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">EVF/LCD=OFF | Clean HDMI/SDI=1 XAVC=1 Leak=0px Blk=0</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#22d3ee;">
+          <div class="cparam-head"><span id="p116-lbl-raw">External HDMI RAW (16-&gt;12-Bit Log)</span><span id="p116-raw-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · XAVC 10b</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p116-raw-select" onchange="setPhase116State({ext_raw_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF (Internal XAVC)</option>
+              <option value="Atomos_ProRes_RAW_16_12L">Atomos ProRes RAW (16-&gt;12L)</option>
+              <option value="Blackmagic_BRAW_16_12L">Blackmagic BRAW (16-&gt;12L)</option>
+            </select>
+            <button id="p116-btn-xml-sidecar" onclick="window.open('/api/xml_sidecar','_blank')" style="padding:4px 7px;font-size:10.5px;border-color:#22d3ee;color:#a5f3fc;">Inspect HDR XML</button>
+          </div>
+          <div id="p116-raw-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">Internal XAVC | Base800 5600K 24mm F2.8</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#a78bfa;">
+          <div class="cparam-head"><span id="p116-lbl-fbc">Focus Breathing Comp (E-Mount 12-Pin)</span><span id="p116-fbc-badge" style="color:#ddd6fe;font-family:'SF Mono',Menlo,monospace;">OFF · 1.00x</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p116-fbc-select" onchange="setPhase116State({breathing_comp_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF (1.00x)</option>
+              <option value="AUTO">AUTO (E-Mount 1.02x..1.08x)</option>
+            </select>
+            <button id="p116-btn-test-fbc-pl" onclick="setPhase116State({force_breathing_on_pl: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test PL Bypass</button>
+          </div>
+          <div id="p116-fbc-readout" style="font-size:10px;color:#ddd6fe;font-family:'SF Mono',Menlo,monospace;">FBC=OFF (1.00x) | E-Mount 12-Pin Ready</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p116-preset-hlg3-assist" onclick="setPhase116State({hlg_profile:'HLG3',color_gamut:'BT.2020',display_assist_mode:'AUTO',ext_raw_mode:'OFF'})" style="border-color:#f59e0b;color:#fde68a;">HLG3 BT.2020 (1090nit) + Assist AUTO</button>
+        <button id="p116-preset-prores-raw" onclick="setPhase116State({ext_raw_mode:'Atomos_ProRes_RAW_16_12L',breathing_comp_mode:'AUTO'})" style="border-color:#22d3ee;color:#a5f3fc;">Atomos ProRes RAW 16-&gt;12L (FBC 1.00x Bypass)</button>
+        <button id="p116-preset-braw" onclick="setPhase116State({ext_raw_mode:'Blackmagic_BRAW_16_12L',breathing_comp_mode:'AUTO'})" style="border-color:#3b82f6;color:#bfdbfe;">Blackmagic BRAW 16-&gt;12L (FBC 1.00x Bypass)</button>
+        <button id="p116-preset-fbc-emount" onclick="setPhase116State({ext_raw_mode:'OFF',breathing_comp_mode:'AUTO'})" style="border-color:#a78bfa;color:#ddd6fe;">E-Mount 12-Pin Breathing Comp AUTO</button>
+        <button id="p116-btn-reset" onclick="setPhase116State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P116</button>
+      </div>
+      <div id="p116-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">HLGA ...</div>
+    </div>
+
     <div class="card" id="phase109-mcfleet-sdi-c2pa-card" style="margin-top:14px;border-color:#06b6d4;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
         <h3 id="p109-card-title" style="margin:0;">Phase 109 · M&amp;C 4机位有线同步 / HDMI→12G-SDI RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源</h3>
@@ -12483,6 +13555,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.mc_fleet_sdi_c2pa) {
     syncPhase109McFleetSdiC2paUI(st.mc_fleet_sdi_c2pa);
+  }
+  if (st.hdr_hlg_raw_breathing) {
+    syncPhase116HlgRawBreathingUI(st.hdr_hlg_raw_breathing);
   }
 
   if (forceImg || st.live_ready) {
@@ -14492,9 +15567,210 @@ function togglePhase109Lws() {
   setPhase109State({rod_support_15mm_lws: !cur});
 }
 
+const P116_I18N = {
+  en: {
+    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Clean HDMI Display Assist / ProRes RAW & BRAW / Breathing Comp',
+    hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
+    assist: 'Gamma Display Assist (Clean HDMI/SDI)',
+    raw: 'External HDMI RAW (16->12-Bit Log)',
+    fbc: 'Focus Breathing Comp (E-Mount 12-Pin)',
+    applyDetail: 'Apply',
+    testLeak: 'Test Clean Leak Guard',
+    xmlSidecar: 'Inspect HDR XML',
+    testFbcPl: 'Test PL Bypass',
+    presetHlg3: 'HLG3 BT.2020 (1090nit) + Assist AUTO',
+    presetProRes: 'Atomos ProRes RAW 16->12L (FBC 1.00x Bypass)',
+    presetBraw: 'Blackmagic BRAW 16->12L (FBC 1.00x Bypass)',
+    presetFbcEmount: 'E-Mount 12-Pin Breathing Comp AUTO',
+    reset: 'Reset P116'
+  },
+  'zh-CN': {
+    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW & BRAW / 呼吸效应补偿',
+    hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
+    assist: '伽马显示辅助 (VF/LCD 隔离 · HDMI/SDI 洁净输出)',
+    raw: '外录 HDMI RAW (16->12-Bit Log)',
+    fbc: '呼吸效应补偿 (E卡口 12-Pin / PL 旁路)',
+    applyDetail: '应用',
+    testLeak: '测试洁净输出防泄漏',
+    xmlSidecar: '查看 HDR XML 边车',
+    testFbcPl: '测试 PL 卡口旁路',
+    presetHlg3: 'HLG3 BT.2020 (1090nit) + 辅助 AUTO',
+    presetProRes: 'Atomos ProRes RAW 16->12L (呼吸补偿 1.00x 旁路)',
+    presetBraw: 'Blackmagic BRAW 16->12L (呼吸补偿 1.00x 旁路)',
+    presetFbcEmount: 'E-卡口 12-Pin 呼吸效应补偿 AUTO',
+    reset: '重置 P116'
+  },
+  'zh-TW': {
+    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Display Assist 潔淨隔離 / ProRes RAW & BRAW / 呼吸效應補償',
+    hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
+    assist: 'Gamma 顯示輔助 (VF/LCD 隔離 · HDMI/SDI 潔淨輸出)',
+    raw: '外錄 HDMI RAW (16->12-Bit Log)',
+    fbc: '呼吸效應補償 (E接環 12-Pin / PL 旁路)',
+    applyDetail: '套用',
+    testLeak: '測試潔淨輸出防洩漏',
+    xmlSidecar: '檢視 HDR XML Sidecar',
+    testFbcPl: '測試 PL 接環旁路',
+    presetHlg3: 'HLG3 BT.2020 (1090nit) + 輔助 AUTO',
+    presetProRes: 'Atomos ProRes RAW 16->12L (呼吸補償 1.00x 旁路)',
+    presetBraw: 'Blackmagic BRAW 16->12L (呼吸補償 1.00x 旁路)',
+    presetFbcEmount: 'E-接環 12-Pin 呼吸效應補償 AUTO',
+    reset: '重設 P116'
+  },
+  ja: {
+    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / ガンマ表示アシスト隔離 / ProRes RAW & BRAW / ブリージング補正',
+    hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
+    assist: 'ガンマ表示アシスト (EVF/LCD 専用 · クリーン HDMI/SDI)',
+    raw: '外部 HDMI RAW (16->12-Bit Log)',
+    fbc: 'ブリージング補正 (Eマウント 12ピン / PL バイパス)',
+    applyDetail: '適用',
+    testLeak: 'クリーン出力漏洩ガード',
+    xmlSidecar: 'HDR XML サイドカー確認',
+    testFbcPl: 'PL バイパステスト',
+    presetHlg3: 'HLG3 BT.2020 (1090nit) + アシスト AUTO',
+    presetProRes: 'Atomos ProRes RAW 16->12L (補正 1.00x バイパス)',
+    presetBraw: 'Blackmagic BRAW 16->12L (補正 1.00x バイパス)',
+    presetFbcEmount: 'Eマウント 12ピン ブリージング補正 AUTO',
+    reset: 'P116 リセット'
+  }
+};
+
+function setP116Lang(lang) {
+  const d = P116_I18N[lang] || P116_I18N['en'];
+  const map = {
+    'p116-card-title': d.title,
+    'p116-lbl-hlg': d.hlg,
+    'p116-lbl-assist': d.assist,
+    'p116-lbl-raw': d.raw,
+    'p116-lbl-fbc': d.fbc,
+    'p116-btn-apply-detail': d.applyDetail,
+    'p116-btn-test-leak': d.testLeak,
+    'p116-btn-xml-sidecar': d.xmlSidecar,
+    'p116-btn-test-fbc-pl': d.testFbcPl,
+    'p116-preset-hlg3-assist': d.presetHlg3,
+    'p116-preset-prores-raw': d.presetProRes,
+    'p116-preset-braw': d.presetBraw,
+    'p116-preset-fbc-emount': d.presetFbcEmount,
+    'p116-btn-reset': d.reset
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map[id];
+  });
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((code) => {
+    const b = document.getElementById('p116-lang-' + code);
+    if (b) b.style.borderColor = (code === lang) ? '#f59e0b' : '#374151';
+  });
+}
+
+function syncPhase116HlgRawBreathingUI(p116) {
+  if (!p116) return;
+  const hlgSel = document.getElementById('p116-hlg-select');
+  if (hlgSel && p116.hlg_profile && document.activeElement !== hlgSel) hlgSel.value = p116.hlg_profile;
+  const gamSel = document.getElementById('p116-gamut-select');
+  if (gamSel && p116.color_gamut && document.activeElement !== gamSel) gamSel.value = p116.color_gamut;
+  const kneeSel = document.getElementById('p116-knee-select');
+  if (kneeSel && p116.knee_mode && document.activeElement !== kneeSel) kneeSel.value = p116.knee_mode;
+  const detIn = document.getElementById('p116-detail-input');
+  if (detIn && p116.detail_level !== undefined && document.activeElement !== detIn) detIn.value = String(p116.detail_level);
+
+  const hlgBadge = document.getElementById('p116-hlg-badge');
+  if (hlgBadge) {
+    hlgBadge.textContent = `${p116.hlg_profile} · ${p116.peak_nits ?? 100}nit · CS=${p116.cta_checksum_hex || '0x00'}`;
+  }
+  const hlgRo = document.getElementById('p116-hlg-readout');
+  if (hlgRo) {
+    hlgRo.textContent =
+      `CTA-861.3 0x87 EOTF=${p116.cta_eotf ?? 0} CS=${p116.cta_checksum_hex} (sum%256=${p116.cta_checksum_zero_mod256}) | ` +
+      `CICP ${p116.cicp_color_primaries}/${p116.cicp_transfer_characteristics}/${p116.cicp_matrix_coefficients} | Knee=${Number(p116.knee_pct || 0).toFixed(0)}% Det=${p116.detail_level ?? 0}`;
+  }
+
+  const assSel = document.getElementById('p116-assist-select');
+  if (assSel && p116.display_assist_mode && document.activeElement !== assSel) assSel.value = p116.display_assist_mode;
+  const assBadge = document.getElementById('p116-assist-badge');
+  if (assBadge) {
+    assBadge.textContent = `${p116.resolved_assist_mode || 'OFF'} · CLEAN=${p116.clean_hdmi_sdi_unassisted ? 1 : 0}`;
+  }
+  const assRo = document.getElementById('p116-assist-readout');
+  if (assRo) {
+    assRo.textContent =
+      `EVF/LCD=${p116.resolved_assist_mode} (Ceil=${p116.vf_nit_ceiling ?? 100}nit) | Clean HDMI/SDI=${p116.clean_hdmi_sdi_unassisted ? 1 : 0} ` +
+      `XAVC=${p116.xavc_internal_unassisted ? 1 : 0} Leak=${p116.external_output_assist_leak_px ?? 0}px Blk=${p116.assist_leak_blocked_count ?? 0}`;
+  }
+
+  const rawSel = document.getElementById('p116-raw-select');
+  if (rawSel && p116.ext_raw_mode && document.activeElement !== rawSel) rawSel.value = p116.ext_raw_mode;
+  const rawBadge = document.getElementById('p116-raw-badge');
+  if (rawBadge) {
+    rawBadge.textContent = p116.ext_raw_active ? `${p116.raw_bit_depth_in}->${p116.raw_bit_depth_packed}b Log` : 'OFF · XAVC 10b';
+  }
+  const rawRo = document.getElementById('p116-raw-readout');
+  if (rawRo) {
+    rawRo.textContent = p116.raw_hdmi_packet_summary || 'Internal XAVC (Ext RAW OFF)';
+  }
+
+  const fbcSel = document.getElementById('p116-fbc-select');
+  if (fbcSel && p116.breathing_comp_mode && document.activeElement !== fbcSel) fbcSel.value = p116.breathing_comp_mode;
+  const fbcBadge = document.getElementById('p116-fbc-badge');
+  if (fbcBadge) {
+    fbcBadge.textContent = `${p116.breathing_effective_active ? 'ON' : (p116.breathing_comp_mode === 'AUTO' ? 'BYPASS' : 'OFF')} · ${Number(p116.breathing_crop_factor || 1.0).toFixed(2)}x`;
+  }
+  const fbcRo = document.getElementById('p116-fbc-readout');
+  if (fbcRo) {
+    fbcRo.textContent = `FBC=${p116.breathing_comp_mode}->${p116.breathing_effective_active ? 'ACTIVE' : 'BYPASS'} (${Number(p116.breathing_crop_factor || 1.0).toFixed(2)}x) | ${p116.breathing_bypass_reason || ''}`;
+  }
+
+  const warnEl = document.getElementById('p116-warn-banner');
+  if (warnEl) {
+    if (p116.breathing_bypassed_by_pl_mount || p116.breathing_bypassed_by_raw) {
+      warnEl.style.display = 'block';
+      warnEl.textContent = `Focus Breathing Bypassed (1.00x): ${p116.breathing_bypass_reason}`;
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
+
+  const cmdEl = document.getElementById('p116-cmd-readout');
+  if (cmdEl) cmdEl.textContent = p116.hdr_hlg_raw_breathing_cmd || 'HLGA ...';
+}
+
+async function setPhase116State(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p116-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/hdr_hlg_raw_breathing', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Blocked / Invalid Phase 116 parameter';
+      }
+      if (data.hdr_hlg_raw_breathing) syncPhase116HlgRawBreathingUI(data.hdr_hlg_raw_breathing);
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase116Detail() {
+  const det = Number((document.getElementById('p116-detail-input') || {}).value || 0);
+  setPhase116State({detail_level: det});
+}
+
 setP95Lang('zh-CN');
 setP102Lang('zh-CN');
 setP109Lang('zh-CN');
+setP116Lang('zh-CN');
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -14707,6 +15983,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/hdr_hlg_raw_breathing":
+                    self._send_json({
+                        "ok": True,
+                        "hdr_hlg_raw_breathing": session.get_hdr_hlg_raw_breathing(),
+                        "specs": HDR_HLG_RAW_BREATHING_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -14760,6 +16044,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/gyroflow_anamorphic",
                     "/api/interval_cache_lut_ftp",
                     "/api/mc_fleet_sdi_c2pa",
+                    "/api/hdr_hlg_raw_breathing",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -14871,6 +16156,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/mc_fleet_sdi_c2pa":
                     res = session.set_mc_fleet_sdi_c2pa(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/hdr_hlg_raw_breathing":
+                    res = session.set_hdr_hlg_raw_breathing(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

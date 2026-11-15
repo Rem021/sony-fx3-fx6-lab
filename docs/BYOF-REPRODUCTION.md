@@ -200,6 +200,46 @@ Covers all **4** deterministic Stage-A/B adapted outputs (`fx6_closure.patcher` 
     /usr/bin/python3 -B -m fx3_firmware_lab audit-all
   ```
 
+### 2.6 Phase 83 Stage-B Capstone — 22-Gate Safety, OTP/RPMB Anti-Rollback, 11-Stage VM, 14+ Firmware Auditors, Round 15 Multi-Tab UI & Live `8768` Console
+
+Every Capstone suite supports both **Local BYOF Donor (`os.O_RDONLY`) mode** and **Donorless Clean-Room mode (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**, with persistent eMMC writes, OTP fuse touches, and RPMB counter increments hard-locked to zero (`persistent_emmc_writes_authorized = False`, `hardware_live_attachment_authorized = False`, `otp_fuse_touches = 0`, `rpmb_counter_increments = 0`):
+
+```sh
+# Unified Environment (prepend FX3_FX6_FORCE_CLEAN_ROOM=1 for donorless clean-room CI mode)
+export PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure"
+
+# 1. Unified Stage-B Capstone 22-Gate + OTP/RPMB + 11-Stage VM + Round 15 CLI Certificate (< 3.5s)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --json
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --clean-room --markdown-out /tmp/stage_b_capstone_22gate.md
+
+# 2. 22-Gate Master Preflight (G01..G22 incl. G21 XLR-H1 +48V Firewall & G22 Gimbal/Laser/Shutter Guard)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "import fx3_safety.phantom48v_gimbal_and_22gate_guard as g; r = g.evaluate_22gate_preflight(dry_run_simulated_backup=True); print(r.schema, r.summary['verified_gates'], r.g21_to_g22_all_passed)"
+
+# 3. OTP / RPMB Anti-Rollback, Cross-SKU & EXT_CSD Permanent Write-Protect Firewall
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "from fx3_recovery.firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite; r = run_antirollback_and_byof_guard_suite(); print(r.schema, r.all_passed, r.otp_fuse_touches, r.rpmb_counter_increments)"
+
+# 4. GF(256) P+Q Tier-0 Self-Healer, Anti-Transplant Lock & SD FX3_SAFE_STOCK.FLG Escape
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.tier0_gf256_selfheal_and_manifest_guard
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.init2_escape_watchdog_fat_verifier
+
+# 5. 11-Stage Heterogeneous VM Co-Emulation Suite (Stages 1..11 incl. Touch-AF / CIZ / Assignable)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py
+
+# 6. 14+ Firmware-Lab Auditors & Round 15 Real-Kernel Multi-Tab Closure
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_firmware_lab audit-all
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx6-on-fx3-closure/tests/test_phase83_stage_b_capstone_22gate_verifier.py
+
+# 7. Browser Interactive Menu Emulator Console (HTTP port 8768, read-only local trial)
+# Check readiness on http://127.0.0.1:8768/ or launch when not already running:
+# curl -s http://127.0.0.1:8768/ | head -n 5
+# /usr/bin/python3 -B outputs/fx3-vm-trial/run_fx6_menu_trial.py --port 8768
+
+# Run full repository clean-only suite + dual-mode BYOF manifest audit:
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+```
+
 ---
 
 ## 3. Automated BYOF Manifest Auditor (`make verify-byof`)
@@ -410,6 +450,46 @@ make verify-byof
   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-firmware-lab" \
     /usr/bin/python3 -B -m fx3_firmware_lab audit-all
   ```
+
+### 2.6 Phase 83 Stage-B 终局闭环 — 22-Gate 安全门禁、OTP/RPMB 防回滚、11 阶段共仿真、14+ 固件审计与 Round 15 多标签真核验证 + `8768` 交互台
+
+本节 7 大验证套件均原生支持 **本地 BYOF Donor (`os.O_RDONLY`) 模式** 与 **无供体净室 CI 模式 (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**，且强制锁死零持久写入、零 OTP 熔丝触碰与零 RPMB 计数递增（`persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`otp_fuse_touches = 0`、`rpmb_counter_increments = 0`）：
+
+```sh
+# 统一环境变量（无供体净室 CI 模式下请在命令前添加 FX3_FX6_FORCE_CLEAN_ROOM=1）
+export PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure"
+
+# 1. Stage-B 终局 22-Gate + OTP/RPMB + 11 阶段 VM + Round 15 统一签章验证 CLI (< 3.5s)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --json
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --clean-room --markdown-out /tmp/stage_b_capstone_22gate.md
+
+# 2. 22-Gate 主预检（G01..G22，含 G21 XLR-H1 +48V 防烧毁防火墙与 G22 稳定器/跟焦器/激光/快门保护）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "import fx3_safety.phantom48v_gimbal_and_22gate_guard as g; r = g.evaluate_22gate_preflight(dry_run_simulated_backup=True); print(r.schema, r.summary['verified_gates'], r.g21_to_g22_all_passed)"
+
+# 3. OTP / RPMB 防回滚、跨机身防火墙与 EXT_CSD 永久写保护熔丝拦截
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "from fx3_recovery.firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite; r = run_antirollback_and_byof_guard_suite(); print(r.schema, r.all_passed, r.otp_fuse_touches, r.rpmb_counter_increments)"
+
+# 4. GF(256) P+Q Tier-0 自愈、防跨机移植锁与 SD 卡 FX3_SAFE_STOCK.FLG 一秒回退逃生
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.tier0_gf256_selfheal_and_manifest_guard
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.init2_escape_watchdog_fat_verifier
+
+# 5. 11 阶段异构硬件共仿真全集（Stage 1..11，含 Touch-AF / CIZ / 可自定义键）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py
+
+# 6. 14+ 固件实验室审计器与 Round 15 真核多标签 UI 闭环单测
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_firmware_lab audit-all
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx6-on-fx3-closure/tests/test_phase83_stage_b_capstone_22gate_verifier.py
+
+# 7. 浏览器交互式菜单仿真控制台（HTTP 8768 端口，只读本地试用）
+# 可先探测 http://127.0.0.1:8768/ 是否已在运行，未启动时再按需运行：
+# curl -s http://127.0.0.1:8768/ | head -n 5
+# /usr/bin/python3 -B outputs/fx3-vm-trial/run_fx6_menu_trial.py --port 8768
+
+# 全仓净室回归测试与双模 BYOF 清单审计：
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+```
 
 ---
 

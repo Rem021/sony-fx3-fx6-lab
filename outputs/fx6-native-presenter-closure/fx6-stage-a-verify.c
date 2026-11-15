@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <dlfcn.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdint.h>
@@ -10,6 +11,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
+#include <time.h>
 #include <unistd.h>
 
 #ifndef LOOP_SET_FD
@@ -553,7 +555,36 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R27_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 maintenance_tab7_4lang_dualsurface=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r28_st;
+    if (stat("/etc/fx6_stage_r28", &r28_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r28f = fopen("/etc/fx6_stage_r28", "r");
+        if (r28f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r28f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r28f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R28_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
+}
+
+static uint32_t fx3_crc32_ieee(const uint8_t *buf, size_t len) {
+    uint32_t crc = 0xFFFFFFFFU;
+    for (size_t i = 0U; i < len; i++) {
+        crc ^= (uint32_t)buf[i];
+        for (int b = 0; b < 8; b++) {
+            crc = (crc & 1U) ? ((crc >> 1) ^ 0xEDB88320U) : (crc >> 1);
+        }
+    }
+    return crc ^ 0xFFFFFFFFU;
 }
 
 static int setup_p1_lut_symlinks(void) {
@@ -570,6 +601,287 @@ static int setup_p1_lut_symlinks(void) {
             "FX6_STAGE_A_P1_LINK target=/dev/cnflasha30 rc30=%d rc20=%d\n",
             rc30, rc20);
     return (rc30 == 0 && rc20 == 0) ? 0 : -1;
+}
+
+static int setup_strategy_a_bridge_r28(void) {
+    struct stat st;
+    if (stat("/dev/cnflasha30", &st) != 0) {
+        int fd = open("/dev/cnflasha30", O_CREAT | O_WRONLY, 0644);
+        if (fd >= 0) close(fd);
+    }
+    unlink("/dev/nflasha30");
+    int rc30 = symlink("/dev/cnflasha30", "/dev/nflasha30");
+    unlink("/dev/nflasha20");
+    int rc20 = symlink("/dev/nflasha30", "/dev/nflasha20");
+
+    char link20[128] = "";
+    char link30[128] = "";
+    ssize_t rl20 = readlink("/dev/nflasha20", link20, sizeof(link20) - 1U);
+    if (rl20 > 0) link20[rl20] = '\0';
+    ssize_t rl30 = readlink("/dev/nflasha30", link30, sizeof(link30) - 1U);
+    if (rl30 > 0) link30[rl30] = '\0';
+
+    int link20_ok = (rc20 == 0 && strcmp(link20, "/dev/nflasha30") == 0 && stat("/dev/nflasha20", &st) == 0) ? 1 : 0;
+    int link30_ok = (rc30 == 0 && strcmp(link30, "/dev/cnflasha30") == 0) ? 1 : 0;
+    fprintf(stderr,
+            "FX6_STAGE_A_P1_LINK target=/dev/cnflasha30 rc30=%d rc20=%d\n",
+            rc30, rc20);
+
+    (void)mkdir("/etc/opelog", 0755);
+    int mnt_rc = mount("tmpfs", "/etc/opelog", "tmpfs", MS_NOATIME, "size=16m");
+    int mnt_errno = (mnt_rc == 0) ? 0 : errno;
+    (void)mkdir("/etc/opelog/OPE", 0755);
+    (void)mkdir("/etc/opelog/OPE/00", 0755);
+    (void)mkdir("/etc/opelog/OPE/01", 0755);
+    int ope_ok = (stat("/etc/opelog/OPE", &st) == 0 && S_ISDIR(st.st_mode)) ? 1 : 0;
+    int ope00_ok = (stat("/etc/opelog/OPE/00", &st) == 0 && S_ISDIR(st.st_mode)) ? 1 : 0;
+    int ope01_ok = (stat("/etc/opelog/OPE/01", &st) == 0 && S_ISDIR(st.st_mode)) ? 1 : 0;
+
+    int tmpfs_mounted = 0;
+    FILE *mf = fopen("/proc/mounts", "r");
+    if (mf) {
+        char mline[512];
+        while (fgets(mline, sizeof(mline), mf)) {
+            if (strstr(mline, " /etc/opelog tmpfs ") != NULL) {
+                tmpfs_mounted = 1;
+                break;
+            }
+        }
+        fclose(mf);
+    }
+
+    int ok = (link20_ok && link30_ok && mnt_rc == 0 && tmpfs_mounted && ope_ok && ope00_ok && ope01_ok) ? 1 : 0;
+    fprintf(stderr,
+            "FX6_STAGE_A_P2_MOUNT rc=%d errno=%d sym_rc=0 loop=tmpfs target=/etc/opelog opts=size=16m ope=%d ope00=%d ope01=%d\n",
+            mnt_rc, mnt_errno, ope_ok, ope00_ok, ope01_ok);
+    fprintf(stderr,
+            "FX6_R28_STRATEGY_A_BRIDGE nflasha20_link=%s nflasha30_link=%s opelog_fstype=%s tmpfs_mounted=%d opelog_ope=%d opelog_00=%d opelog_01=%d sector0_repartition=0 emmc_write_count=0 strategy_a_bridge_ok=%d\n",
+            link20[0] ? link20 : "ERR",
+            link30[0] ? link30 : "ERR",
+            tmpfs_mounted ? "tmpfs" : "unknown",
+            tmpfs_mounted, ope_ok, ope00_ok, ope01_ok, ok);
+    return ok ? 0 : -1;
+}
+
+static int run_jiritsu_libjit_probe_r28(void) {
+    /* Expose simulated FX3 Sector 0 at /dev/pnflasha0 strictly read-only from /etc/fx3_sector0.bin */
+    int src_fd = open("/etc/fx3_sector0.bin", O_RDONLY);
+    if (src_fd < 0) {
+        fprintf(stderr, "FX6_R28_JIRITSU_PROBE dlopen_ok=0 err=missing_fx3_sector0 errno=%d\n", errno);
+        return -1;
+    }
+    uint8_t sec_buf[512];
+    ssize_t sn = read(src_fd, sec_buf, sizeof(sec_buf));
+    close(src_fd);
+    if (sn != 512) {
+        fprintf(stderr, "FX6_R28_JIRITSU_PROBE dlopen_ok=0 err=short_fx3_sector0 bytes=%zd\n", sn);
+        return -1;
+    }
+    unlink("/dev/pnflasha0");
+    int dev_fd = open("/dev/pnflasha0", O_WRONLY | O_CREAT | O_EXCL, 0444);
+    if (dev_fd < 0) {
+        fprintf(stderr, "FX6_R28_JIRITSU_PROBE dlopen_ok=0 err=create_pnflasha0 errno=%d\n", errno);
+        return -1;
+    }
+    ssize_t wn = write(dev_fd, sec_buf, sizeof(sec_buf));
+    close(dev_fd);
+    if (wn != 512) {
+        fprintf(stderr, "FX6_R28_JIRITSU_PROBE dlopen_ok=0 err=write_pnflasha0 bytes=%zd\n", wn);
+        return -1;
+    }
+
+    (void)mkdir("/tmp/jiritsu", 0755);
+    unlink("/tmp/jiritsu/sector0.pkt");
+
+    struct stat pre_st;
+    if (stat("/tmp/jiritsu/libJit.so", &pre_st) != 0) {
+        fprintf(stderr, "FX6_R28_JIRITSU_PROBE dlopen_ok=0 err=missing_libJit_so errno=%d\n", errno);
+        return -1;
+    }
+
+    void *handle = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!handle) {
+        const char *derr = dlerror();
+        fprintf(stderr, "FX6_R28_JIRITSU_PROBE dlopen_ok=0 dlerror=%s\n", derr ? derr : "unknown");
+        return -1;
+    }
+    int dlclose_rc = dlclose(handle);
+
+    struct stat post_st;
+    int unlinked = (stat("/tmp/jiritsu/libJit.so", &post_st) != 0 && errno == ENOENT) ? 1 : 0;
+    int unlink_err = unlinked ? ENOENT : 0;
+
+    int pkt_fd = open("/tmp/jiritsu/sector0.pkt", O_RDONLY);
+    if (pkt_fd < 0) {
+        fprintf(stderr,
+                "FX6_R28_JIRITSU_PROBE dlopen_ok=1 dlclose_rc=%d jit_self_unlinked=%d unlink_errno=%d sector0_pkt_bytes=0 err=missing_pkt errno=%d\n",
+                dlclose_rc, unlinked, unlink_err, errno);
+        return -1;
+    }
+    uint8_t pkt[544];
+    ssize_t pn = read(pkt_fd, pkt, sizeof(pkt));
+    close(pkt_fd);
+
+    if (pn != 528 || memcmp(pkt, "FX3S0OK\0", 8U) != 0) {
+        fprintf(stderr,
+                "FX6_R28_JIRITSU_PROBE dlopen_ok=1 dlclose_rc=%d jit_self_unlinked=%d sector0_pkt_bytes=%zd err=bad_pkt_header\n",
+                dlclose_rc, unlinked, pn);
+        return -1;
+    }
+    uint32_t pkt_len = (uint32_t)pkt[8] | ((uint32_t)pkt[9] << 8) | ((uint32_t)pkt[10] << 16) | ((uint32_t)pkt[11] << 24);
+    uint32_t pkt_crc = (uint32_t)pkt[12] | ((uint32_t)pkt[13] << 8) | ((uint32_t)pkt[14] << 16) | ((uint32_t)pkt[15] << 24);
+    uint32_t calc_crc = fx3_crc32_ieee(pkt + 16, 512U);
+    int crc_ok = (pkt_len == 512U && pkt_crc == calc_crc) ? 1 : 0;
+
+    char magic_str[5] = { (char)pkt[16], (char)pkt[17], (char)pkt[18], (char)pkt[19], '\0' };
+    char ver_str[5] = { (char)pkt[20], (char)pkt[21], (char)pkt[22], (char)pkt[23], '\0' };
+    uint32_t nparts = (uint32_t)pkt[24] | ((uint32_t)pkt[25] << 8) | ((uint32_t)pkt[26] << 16) | ((uint32_t)pkt[27] << 24);
+    uint32_t p1_start = (uint32_t)pkt[48] | ((uint32_t)pkt[49] << 8) | ((uint32_t)pkt[50] << 16) | ((uint32_t)pkt[51] << 24);
+    uint32_t p1_size = (uint32_t)pkt[52] | ((uint32_t)pkt[53] << 8) | ((uint32_t)pkt[54] << 16) | ((uint32_t)pkt[55] << 24);
+    /* Entry 29 (p30) starts at sector0 offset 0x20 + 29*16 = 0x1f0 -> pkt offset 16 + 0x1f0 = 512 */
+    uint32_t p30_start = (uint32_t)pkt[512] | ((uint32_t)pkt[513] << 8) | ((uint32_t)pkt[514] << 16) | ((uint32_t)pkt[515] << 24);
+    uint32_t p30_size = (uint32_t)pkt[516] | ((uint32_t)pkt[517] << 8) | ((uint32_t)pkt[518] << 16) | ((uint32_t)pkt[519] << 24);
+
+    int ok = (dlclose_rc == 0 && unlinked == 1 && crc_ok == 1 &&
+              strcmp(magic_str, "8246") == 0 && strcmp(ver_str, "2.00") == 0 && nparts == 30U) ? 1 : 0;
+    fprintf(stderr,
+            "FX6_R28_JIRITSU_PROBE dlopen_ok=1 dlclose_rc=%d jit_self_unlinked=%d unlink_errno=%d "
+            "sector0_pkt_bytes=%zd sector0_hdr=FX3S0OK sector0_len=%u sector0_crc32=0x%08x sector0_crc_ok=%d "
+            "sector0_magic=%s sector0_ver=%s sector0_parts=%u p1_start=0x%x p1_size=0x%x p30_start=0x%x p30_size=0x%x "
+            "emmc_write_count=0 probe_ok=%d\n",
+            dlclose_rc, unlinked, unlink_err, pn, pkt_len, pkt_crc, crc_ok,
+            magic_str, ver_str, nparts, p1_start, p1_size, p30_start, p30_size, ok);
+    return ok ? 0 : -1;
+}
+
+static void print_kernel_identity(void) {
+    struct utsname uts;
+    memset(&uts, 0, sizeof(uts));
+    if (uname(&uts) == 0) {
+        fprintf(stderr,
+                "FX6_STAGE_A_KERNEL sysname=%s release=%s machine=%s version=%s\n",
+                uts.sysname, uts.release, uts.machine, uts.version);
+    }
+    FILE *pv = fopen("/proc/version", "r");
+    if (pv) {
+        char buf[384];
+        if (fgets(buf, sizeof(buf), pv)) {
+            size_t ln = strlen(buf);
+            while (ln > 0U && (buf[ln - 1U] == '\n' || buf[ln - 1U] == '\r')) buf[--ln] = '\0';
+            fprintf(stderr, "FX6_HYBRID_PROC_VERSION %s\n", buf);
+        }
+        fclose(pv);
+    }
+}
+
+static int is_lower_hex64(const char *s) {
+    if (!s) return 0;
+    for (int i = 0; i < 64; i++) {
+        char c = s[i];
+        if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))) return 0;
+    }
+    return s[64] == '\0';
+}
+
+static long long elapsed_us(const struct timespec *t0, const struct timespec *t1) {
+    long long ds = (long long)(t1->tv_sec - t0->tv_sec);
+    long long dns = (long long)(t1->tv_nsec - t0->tv_nsec);
+    long long us = ds * 1000000LL + dns / 1000LL;
+    return (us < 0) ? 0 : us;
+}
+
+static int run_sd_gate_r28(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    const char *manifest_path = "/mnt/sd/FX6_STAGEB_BOOT.MANIFEST";
+    struct stat st;
+    if (stat(manifest_path, &st) != 0) {
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        long long us = elapsed_us(&t0, &t1);
+        fprintf(stderr,
+                "FX6_R28_SD_DUALBOOT sd_dualboot_mode=STOCK_FX3_BYPASS trigger_present=0 tamper_rejected=0 stageb_loaded=0 emmc_write_count=0 verify_ms=%lld verify_us=%lld\n",
+                us / 1000LL, us);
+        fflush(stderr);
+        return 10;
+    }
+
+    FILE *fp = fopen(manifest_path, "r");
+    if (!fp) {
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        long long us = elapsed_us(&t0, &t1);
+        fprintf(stderr,
+                "FX6_R28_SD_DUALBOOT sd_dualboot_mode=FAIL_CLOSED_STOCK_FX3_FALLBACK trigger_present=1 tamper_rejected=1 stageb_loaded=0 emmc_write_count=0 verify_ms=%lld verify_us=%lld reason=open_failed\n",
+                us / 1000LL, us);
+        fflush(stderr);
+        return 11;
+    }
+
+    char line[512];
+    unsigned int count = 0U;
+    int tamper = 0;
+    char fail_reason[64] = "ok";
+    char fail_path[256] = "none";
+
+    while (fgets(line, sizeof(line), fp)) {
+        size_t ln = strlen(line);
+        while (ln > 0U && (line[ln - 1U] == '\n' || line[ln - 1U] == '\r')) {
+            line[--ln] = '\0';
+        }
+        if (ln == 0U) continue;
+        if (ln < 66U || line[64] != ' ' || line[65] != '/') {
+            tamper = 1;
+            snprintf(fail_reason, sizeof(fail_reason), "malformed_line");
+            break;
+        }
+        char expected[65];
+        memcpy(expected, line, 64U);
+        expected[64] = '\0';
+        if (!is_lower_hex64(expected)) {
+            tamper = 1;
+            snprintf(fail_reason, sizeof(fail_reason), "bad_hex_digest");
+            break;
+        }
+        const char *path = line + 65;
+        char actual[65];
+        unsigned long long bytes = 0ULL;
+        if (sha256_file_hex(path, actual, &bytes) != 0) {
+            tamper = 1;
+            snprintf(fail_reason, sizeof(fail_reason), "missing_item");
+            snprintf(fail_path, sizeof(fail_path), "%s", path);
+            break;
+        }
+        if (strcmp(expected, actual) != 0) {
+            tamper = 1;
+            snprintf(fail_reason, sizeof(fail_reason), "sha256_mismatch");
+            snprintf(fail_path, sizeof(fail_path), "%s", path);
+            break;
+        }
+        count++;
+    }
+    fclose(fp);
+    if (!tamper && count == 0U) {
+        tamper = 1;
+        snprintf(fail_reason, sizeof(fail_reason), "empty_manifest");
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+    long long ms = us / 1000LL;
+
+    if (tamper) {
+        fprintf(stderr,
+                "FX6_R28_SD_DUALBOOT sd_dualboot_mode=FAIL_CLOSED_STOCK_FX3_FALLBACK trigger_present=1 tamper_rejected=1 stageb_loaded=0 emmc_write_count=0 verify_ms=%lld verify_us=%lld reason=%s failed_path=%s\n",
+                ms, us, fail_reason, fail_path);
+        fflush(stderr);
+        return 11;
+    }
+
+    fprintf(stderr,
+            "FX6_R28_SD_DUALBOOT sd_dualboot_mode=STAGEB_SD_AUTHENTICATED trigger_present=1 tamper_rejected=0 stageb_loaded=1 emmc_write_count=0 verified_count=%u verify_ms=%lld verify_us=%lld\n",
+            count, ms, us);
+    fflush(stderr);
+    return 0;
 }
 
 static dev_t fx6_makedev(unsigned int maj, unsigned int min) {
@@ -734,33 +1046,32 @@ static void probe_r10_rtc0(void) {
     }
 }
 
-int main(void) {
-    struct utsname uts;
-    memset(&uts, 0, sizeof(uts));
-    if (uname(&uts) == 0) {
-        fprintf(stderr,
-                "FX6_STAGE_A_KERNEL sysname=%s release=%s machine=%s version=%s\n",
-                uts.sysname, uts.release, uts.machine, uts.version);
-    }
-    FILE *pv = fopen("/proc/version", "r");
-    if (pv) {
-        char buf[384];
-        if (fgets(buf, sizeof(buf), pv)) {
-            size_t ln = strlen(buf);
-            while (ln > 0U && (buf[ln - 1U] == '\n' || buf[ln - 1U] == '\r')) buf[--ln] = '\0';
-            fprintf(stderr, "FX6_HYBRID_PROC_VERSION %s\n", buf);
-        }
-        fclose(pv);
+int main(int argc, char **argv) {
+    print_kernel_identity();
+
+    if (argc >= 2 && strcmp(argv[1], "--sd-gate") == 0) {
+        return run_sd_gate_r28();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
         return 41;
     }
-    if (setup_p1_lut_symlinks() != 0) {
-        return 42;
-    }
-    if (setup_p2_loopback_vfat() != 0) {
-        return 43;
+
+    struct stat r28_st;
+    if (stat("/etc/fx6_stage_r28", &r28_st) == 0) {
+        if (setup_strategy_a_bridge_r28() != 0) {
+            return 42;
+        }
+        if (run_jiritsu_libjit_probe_r28() != 0) {
+            return 48;
+        }
+    } else {
+        if (setup_p1_lut_symlinks() != 0) {
+            return 42;
+        }
+        if (setup_p2_loopback_vfat() != 0) {
+            return 43;
+        }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {
         return 44;

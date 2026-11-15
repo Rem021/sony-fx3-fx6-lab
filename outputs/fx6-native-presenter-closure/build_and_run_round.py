@@ -19,7 +19,7 @@ import sys
 import time
 import types
 import zlib
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent.parent
@@ -560,6 +560,251 @@ def _load_p12_wlan_spec(patcher_mod: Any) -> Any:
     return spec
 
 
+FX3_SECTOR0_PARTITIONS: Tuple[Tuple[int, int, int, int], ...] = (
+    (0x00000080, 0x0000BF80, 0x00000005, 0xFFFFFFFF),  # p1: SYSTEM (Updater)
+    (0x0000C000, 0x0000A000, 0x00000005, 0xFFFFFFFF),  # p2: SYSTEM (Setting)
+    (0x00016000, 0x00025800, 0x00000005, 0xFFFFFFFF),  # p3: SYSTEM (Main)
+    (0x0003B800, 0x00006000, 0x00000004, 0xFFFFFFFF),  # p4: MPR Flash Backup
+    (0x00041800, 0x00096000, 0x00000006, 0xFFFFFFFF),  # p5: Warm Boot Image
+    (0x000D7800, 0x0000C800, 0x00000005, 0xFFFFFFFF),  # p6: Jiritsu
+    (0x000E4000, 0x00008000, 0x00000004, 0xFFFFFFFF),  # p7: Rootfs
+    (0x000EC000, 0x00020000, 0x00000005, 0xFFFFFFFF),  # p8: CP Data
+    (0x0010C000, 0x00000000, 0x00000004, 0x00000000),  # p9: reserved
+    (0x0010C000, 0x00006000, 0x00000005, 0xFFFFFFFF),  # p10: Work
+    (0x00112000, 0x000FA000, 0x00000005, 0xFFFFFFFF),  # p11: Log
+    (0x0020C000, 0x00014000, 0x00000005, 0xFFFFFFFF),  # p12: Network
+    (0x00220000, 0x00002000, 0x00000005, 0xFFFFFFFF),  # p13: UpdaterWork
+    (0x00222000, 0x00000000, 0x00000004, 0x00000000),  # p14: reserved
+    (0x00222000, 0x000FA000, 0x00000004, 0xFFFFFFFF),  # p15: usr
+    (0x0031C000, 0x00000000, 0x00000004, 0x00000000),  # p16: reserved
+    (0x0031C000, 0x00000000, 0x00000004, 0x00000000),  # p17: reserved
+    (0x0031C000, 0x0000A000, 0x00000005, 0xFFFFFFFF),  # p18: LensData
+    (0x00326000, 0x00000000, 0x00000004, 0x00000000),  # p19: reserved
+    (0x00326000, 0x00000000, 0x00000004, 0x00000000),  # p20: reserved (FX3=0)
+    (0x00326000, 0x00000000, 0x00000004, 0x00000000),  # p21: reserved (FX3=0)
+    (0x00326000, 0x00000000, 0x00000004, 0x00000000),  # p22: reserved
+    (0x00326000, 0x00020000, 0x00000005, 0xFFFFFFFF),  # p23: PMBP
+    (0x00346000, 0x00000000, 0x00000004, 0x00000000),  # p24: Storage
+    (0x00346000, 0x00000000, 0x00000004, 0x00000000),  # p25: BGM(MP3)
+    (0x00346000, 0x00000000, 0x00000004, 0x00000000),  # p26: BGM(AC3)
+    (0x00346000, 0x00000000, 0x00000004, 0x00000000),  # p27: reserved
+    (0x00346000, 0x00000000, 0x00000004, 0x00000000),  # p28: reserved
+    (0x00346000, 0x00000000, 0x00000004, 0x00000000),  # p29: reserved
+    (0x00346000, 0x00018000, 0x00000005, 0xFFFFFFFF),  # p30: LutData (48 MiB)
+)
+
+
+def build_fx3_sector0_table() -> bytes:
+    """Assemble the canonical 512-byte Sony FX3 7.02 Sector-0 partition table ('8246'/'2.00', n=30)."""
+    out = bytearray(512)
+    out[0:4] = b"8246"
+    out[4:8] = b"2.00"
+    struct.pack_into("<I", out, 8, len(FX3_SECTOR0_PARTITIONS))
+    for idx, (start_sec, size_sec, ptype, flag) in enumerate(FX3_SECTOR0_PARTITIONS):
+        struct.pack_into("<IIII", out, 0x20 + idx * 16, start_sec, size_sec, ptype, flag)
+    return bytes(out)
+
+
+FX3_HARDENED_LIBJIT_C = r"""
+#define SYS_unlinkat 35L
+#define SYS_openat   56L
+#define SYS_close    57L
+#define SYS_read     63L
+#define SYS_write    64L
+#define AT_FDCWD     (-100L)
+#define O_RDONLY     0L
+#define O_WRONLY     1L
+#define O_CREAT      0100L
+#define O_EXCL       0200L
+#define O_NOFOLLOW   0100000L
+
+static long sc6(long n, long a, long b, long c, long d, long e, long f) {
+    register long x8 asm("x8") = n;
+    register long x0 asm("x0") = a;
+    register long x1 asm("x1") = b;
+    register long x2 asm("x2") = c;
+    register long x3 asm("x3") = d;
+    register long x4 asm("x4") = e;
+    register long x5 asm("x5") = f;
+    asm volatile("svc #0"
+                 : "+r"(x0)
+                 : "r"(x8), "r"(x1), "r"(x2), "r"(x3), "r"(x4), "r"(x5)
+                 : "memory");
+    return x0;
+}
+
+__attribute__((constructor)) static void fx3_jit_sector0_probe(void) {
+    /* 1. Immediately self-delete so /tmp/jiritsu/libJit.so never lingers on p6/tmpfs. */
+    (void)sc6(SYS_unlinkat, AT_FDCWD, (long)"/tmp/jiritsu/libJit.so", 0, 0, 0, 0);
+
+    /* 2. Open /dev/pnflasha0 strictly read-only without following symlinks. */
+    long fd = sc6(SYS_openat, AT_FDCWD, (long)"/dev/pnflasha0", O_RDONLY | O_NOFOLLOW, 0, 0, 0);
+    if (fd < 0) return;
+
+    unsigned char sec0[512];
+    long total = 0;
+    while (total < 512) {
+        long n = sc6(SYS_read, fd, (long)(sec0 + total), 512 - total, 0, 0, 0);
+        if (n == -4L) continue; /* EINTR */
+        if (n <= 0) break;
+        total += n;
+    }
+    sc6(SYS_close, fd, 0, 0, 0, 0, 0);
+
+    /* 3. Verify exact 512B read and Sony PTBL header without truncating on error. */
+    if (total != 512) return;
+    if (sec0[0] != '8' || sec0[1] != '2' || sec0[2] != '4' || sec0[3] != '6') return;
+    if (sec0[4] != '2' || sec0[5] != '.' || sec0[6] != '0' || sec0[7] != '0') return;
+    unsigned int nparts = (unsigned int)sec0[8] |
+                          ((unsigned int)sec0[9] << 8) |
+                          ((unsigned int)sec0[10] << 16) |
+                          ((unsigned int)sec0[11] << 24);
+    if (nparts != 30U) return;
+
+    /* 4. IEEE CRC32 over the 512B Sector-0 table. */
+    unsigned int crc = 0xFFFFFFFFU;
+    for (int i = 0; i < 512; i++) {
+        crc ^= (unsigned int)sec0[i];
+        for (int b = 0; b < 8; b++) {
+            crc = (crc & 1U) ? ((crc >> 1) ^ 0xEDB88320U) : (crc >> 1);
+        }
+    }
+    crc ^= 0xFFFFFFFFU;
+
+    /* 5. Assemble 528B packet: [8B "FX3S0OK\0" + u32 len=512 + u32 crc32 + 512B sector0]. */
+    unsigned char pkt[528];
+    pkt[0] = 'F'; pkt[1] = 'X'; pkt[2] = '3'; pkt[3] = 'S';
+    pkt[4] = '0'; pkt[5] = 'O'; pkt[6] = 'K'; pkt[7] = '\0';
+    pkt[8] = 0x00; pkt[9] = 0x02; pkt[10] = 0x00; pkt[11] = 0x00;
+    pkt[12] = (unsigned char)(crc & 0xFFU);
+    pkt[13] = (unsigned char)((crc >> 8) & 0xFFU);
+    pkt[14] = (unsigned char)((crc >> 16) & 0xFFU);
+    pkt[15] = (unsigned char)((crc >> 24) & 0xFFU);
+    for (int i = 0; i < 512; i++) pkt[16 + i] = sec0[i];
+
+    /* 6. Write via O_CREAT|O_EXCL only after all validations pass (no truncation on error). */
+    long out = sc6(SYS_openat, AT_FDCWD, (long)"/tmp/jiritsu/sector0.pkt",
+                   O_WRONLY | O_CREAT | O_EXCL, 0644, 0, 0);
+    if (out < 0) return;
+    long wtot = 0;
+    while (wtot < 528) {
+        long wn = sc6(SYS_write, out, (long)(pkt + wtot), 528 - wtot, 0, 0, 0);
+        if (wn == -4L) continue;
+        if (wn <= 0) break;
+        wtot += wn;
+    }
+    sc6(SYS_close, out, 0, 0, 0, 0, 0);
+}
+"""
+
+
+def inspect_libjit_elf_pt_load(so_bytes: bytes) -> Dict[str, Any]:
+    """Validate ELF64 AArch64 ET_DYN headers and 64KiB-safe PT_LOAD alignment."""
+    if len(so_bytes) < 64 or so_bytes[:4] != b"\x7fELF":
+        raise ValueError("libJit.so is not a valid ELF")
+    ei_class, ei_data = so_bytes[4], so_bytes[5]
+    e_type, e_machine = struct.unpack_from("<HH", so_bytes, 0x10)
+    e_phoff = struct.unpack_from("<Q", so_bytes, 0x20)[0]
+    e_phentsize, e_phnum = struct.unpack_from("<HH", so_bytes, 0x36)
+    if ei_class != 2 or ei_data != 1 or e_type != 3 or e_machine != 183:
+        raise ValueError(
+            f"Unexpected libJit.so ELF header class={ei_class} data={ei_data} type={e_type} mach={e_machine}"
+        )
+    pt_load_aligns: List[int] = []
+    has_dynamic = False
+    for i in range(e_phnum):
+        p_type, _p_flags, _p_off, _p_va, _p_pa, _p_fsz, _p_msz, p_align = struct.unpack_from(
+            "<IIQQQQQQ", so_bytes, e_phoff + i * e_phentsize
+        )
+        if p_type == 1:
+            pt_load_aligns.append(p_align)
+        elif p_type == 2:
+            has_dynamic = True
+    if not pt_load_aligns or any(a != 0x10000 for a in pt_load_aligns) or not has_dynamic:
+        raise ValueError(
+            f"libJit.so PT_LOAD/DYNAMIC validation failed: aligns={pt_load_aligns} dynamic={has_dynamic}"
+        )
+    return {
+        "bytes": len(so_bytes),
+        "sha256": sha256_bytes(so_bytes),
+        "e_type": e_type,
+        "e_machine": e_machine,
+        "pt_load_count": len(pt_load_aligns),
+        "pt_load_align": "0x10000",
+        "has_pt_dynamic": has_dynamic,
+    }
+
+
+def build_hardened_libjit_so(tmp_build: pathlib.Path) -> Tuple[bytes, Dict[str, Any]]:
+    """Compile hardened 64KiB-aligned self-unlinking ARM64 libJit.so strictly inside tmp_build."""
+    tmp_build.mkdir(parents=True, exist_ok=True)
+    cache_dir = tmp_build / "zig-cache"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    zig_env = os.environ.copy()
+    zig_env["ZIG_LOCAL_CACHE_DIR"] = str(cache_dir / "local")
+    zig_env["ZIG_GLOBAL_CACHE_DIR"] = str(cache_dir / "global")
+    jit_c = tmp_build / "jit_payload.c"
+    jit_so = tmp_build / "libJit.so"
+    jit_c.write_text(FX3_HARDENED_LIBJIT_C, encoding="utf-8")
+    jit_cmd = [
+        str(ZIG),
+        "cc",
+        "-target",
+        "aarch64-linux-gnu.2.17",
+        "-shared",
+        "-fPIC",
+        "-nostdlib",
+        "-fno-sanitize=all",
+        "-fno-stack-protector",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wl,-z,max-page-size=0x10000",
+        "-Wl,-z,common-page-size=0x10000",
+        "-Wl,--hash-style=sysv",
+        "-Wl,-soname,libJit.so",
+        str(jit_c),
+        "-o",
+        str(jit_so),
+    ]
+    r_jit = subprocess.run(jit_cmd, env=zig_env, capture_output=True, text=True)
+    if r_jit.returncode != 0:
+        raise RuntimeError(f"libJit.so compile failed:\n{r_jit.stderr}")
+    so_bytes = jit_so.read_bytes()
+    meta = inspect_libjit_elf_pt_load(so_bytes)
+    meta["compile_cmd"] = jit_cmd
+    return so_bytes, meta
+
+
+def build_sd_trigger_manifest(
+    items: Sequence[Tuple[bytes, str]],
+    mode: str,
+) -> Tuple[bytes, Dict[str, Any]]:
+    """Build /mnt/sd/FX6_STAGEB_BOOT.MANIFEST (valid or deterministic 1-byte tampered)."""
+    lines = [f"{sha256_bytes(blob)} {gpath}\n" for blob, gpath in items]
+    raw = "".join(lines).encode("utf-8")
+    meta: Dict[str, Any] = {
+        "mode": mode,
+        "item_count": len(items),
+        "items": [{"guest_path": gp, "sha256": sha256_bytes(b), "bytes": len(b)} for b, gp in items],
+        "valid_sha256": sha256_bytes(raw),
+    }
+    if mode == "tampered":
+        corrupted = bytearray(raw)
+        orig_byte = chr(corrupted[0])
+        new_char = "1" if orig_byte != "1" else "0"
+        corrupted[0] = ord(new_char)
+        raw = bytes(corrupted)
+        meta["tamper_offset"] = 0
+        meta["tamper_bytes_flipped"] = 1
+        meta["orig_char"] = orig_byte
+        meta["corrupted_char"] = new_char
+    meta["manifest_bytes"] = len(raw)
+    meta["manifest_sha256"] = sha256_bytes(raw)
+    return raw, meta
+
+
 def build_stage_a_overlay(
     tmp_build: pathlib.Path,
     parent_cpio: pathlib.Path,
@@ -584,6 +829,8 @@ def build_stage_a_overlay(
     enable_r25: bool = False,
     enable_r26: bool = False,
     enable_r27: bool = False,
+    enable_r28: bool = False,
+    sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
 ) -> Tuple[Dict[str, bytes], Dict[str, Tuple[bytes, int]], Dict[str, Any]]:
@@ -838,6 +1085,7 @@ def build_stage_a_overlay(
         "-Wextra",
         "-Werror",
         str(HERE / "fx6-stage-a-verify.c"),
+        "-ldl",
         "-o",
         str(verify_out),
     ]
@@ -851,6 +1099,26 @@ def build_stage_a_overlay(
     launch_needle = 'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch'
     if launch_needle not in init_txt:
         raise RuntimeError(f"Expected launch line not found in {parent_cpio} /init")
+    if enable_r28:
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        sd_gate_hook = (
+            "/usr/bin/fx6-stage-a-verify --sd-gate > /dev/console 2>&1\n"
+            "fx6_sd_gate_rc=$?\n"
+            "echo FX6_R28_SD_GATE_RC=$fx6_sd_gate_rc\n"
+            'if [ "$fx6_sd_gate_rc" != 0 ]; then\n'
+            ' if [ "$fx6_sd_gate_rc" = 10 ]; then\n'
+            "  echo FX6_R28_STOCK_FX3_BYPASS_EXIT mode=STOCK_FX3_BYPASS stageb_loaded=0 emmc_write_count=0\n"
+            " else\n"
+            "  echo FX6_R28_FAIL_CLOSED_FALLBACK_EXIT mode=FAIL_CLOSED_STOCK_FX3_FALLBACK stageb_loaded=0 emmc_write_count=0\n"
+            " fi\n"
+            " /bin/busybox sync 2>/dev/null\n"
+            " /bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            " while true; do /bin/busybox sleep 1; done\n"
+            "fi\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + sd_gate_hook, 1)
     verify_hook = (
         "/usr/bin/fx6-stage-a-verify > /dev/console 2>&1\n"
         "fx6_stage_a_rc=$?\n"
@@ -958,6 +1226,54 @@ def build_stage_a_overlay(
             f"stage_r27=1\np10_keymap=1\np11_uipc=1\np12_wlan=1\np4_nd_clear=1\nuxc=1\n4lang_matrix=1\nmaintenance_tab7_4lang_dualsurface=1\nlang={lang}\n".encode("utf-8"),
             0o100644,
         )
+    r28_meta: Optional[Dict[str, Any]] = None
+    if enable_r28:
+        if sd_manifest_mode not in ("valid", "absent", "tampered"):
+            raise ValueError(f"Unsupported sd_manifest_mode: {sd_manifest_mode}")
+        additions["etc/fx6_stage_r28"] = (
+            f"stage_r28=1\nsd_manifest_mode={sd_manifest_mode}\nstrategy_a=1\nlang={lang}\n".encode("utf-8"),
+            0o100644,
+        )
+        additions["mnt/sd"] = (b"", 0o040755)
+        additions["tmp/jiritsu"] = (b"", 0o040755)
+        r28_meta = {
+            "sd_manifest_mode": sd_manifest_mode,
+            "strategy_a_nflasha20_target": "/dev/nflasha30",
+            "strategy_a_opelog_fstype": "tmpfs",
+        }
+        if sd_manifest_mode in ("valid", "tampered"):
+            fx3_sector0_bytes = build_fx3_sector0_table()
+            libjit_bytes, libjit_meta = build_hardened_libjit_so(tmp_build)
+            sd_cfg_bytes = (
+                f"mode=fx6_stageb_dualboot\nlang={lang}\nstrategy_a=1\n"
+                f"sector0_crc32=0x{zlib.crc32(fx3_sector0_bytes) & 0xFFFFFFFF:08x}\n"
+            ).encode("utf-8")
+            sd_manifest_bytes, sd_manifest_meta = build_sd_trigger_manifest(
+                [
+                    (sd_cfg_bytes, "/mnt/sd/FX6_STAGEB_BOOT.CFG"),
+                    (fx3_sector0_bytes, "/etc/fx3_sector0.bin"),
+                    (libjit_bytes, "/tmp/jiritsu/libJit.so"),
+                    (bk4_bundle.bk4_bytes, "/etc/fx6_ram_shadow_bk4.bin"),
+                    (manifest_text, "/etc/fx6_stage_a_manifest.txt"),
+                ],
+                mode=sd_manifest_mode,
+            )
+            additions["etc/fx3_sector0.bin"] = (fx3_sector0_bytes, 0o100444)
+            additions["tmp/jiritsu/libJit.so"] = (libjit_bytes, 0o100755)
+            additions["mnt/sd/FX6_STAGEB_BOOT.CFG"] = (sd_cfg_bytes, 0o100644)
+            additions["mnt/sd/FX6_STAGEB_BOOT.MANIFEST"] = (sd_manifest_bytes, 0o100644)
+            r28_meta["fx3_sector0"] = {
+                "bytes": len(fx3_sector0_bytes),
+                "sha256": sha256_bytes(fx3_sector0_bytes),
+                "crc32": f"0x{zlib.crc32(fx3_sector0_bytes) & 0xFFFFFFFF:08x}",
+                "magic": "8246",
+                "ver": "2.00",
+                "n_partition": len(FX3_SECTOR0_PARTITIONS),
+            }
+            r28_meta["libjit"] = libjit_meta
+            r28_meta["sd_manifest"] = sd_manifest_meta
+        else:
+            r28_meta["sd_manifest"] = {"mode": "absent", "manifest_present": False}
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -978,6 +1294,7 @@ def build_stage_a_overlay(
         "r25_enabled": enable_r25,
         "r26_enabled": enable_r26,
         "r27_enabled": enable_r27,
+        "r28_enabled": enable_r28,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -1007,6 +1324,8 @@ def build_stage_a_overlay(
         stage_a_meta["schinese_assets"] = schinese_assets_meta
     if lang_assets_meta is not None:
         stage_a_meta["lang_assets"] = lang_assets_meta
+    if r28_meta is not None:
+        stage_a_meta["r28"] = r28_meta
     return replacements, additions, stage_a_meta
 
 
@@ -1323,6 +1642,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R25_",
         "FX6_R26_",
         "FX6_R27_",
+        "FX6_R28_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -1357,6 +1677,11 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r25_lang: Optional[Dict[str, Any]] = None
     last_r26_lang: Optional[Dict[str, Any]] = None
     last_r27_lang: Optional[Dict[str, Any]] = None
+    last_r28_lang: Optional[Dict[str, Any]] = None
+    last_r28_sd: Optional[Dict[str, Any]] = None
+    last_r28_jit: Optional[Dict[str, Any]] = None
+    last_r28_bridge: Optional[Dict[str, Any]] = None
+    r28_sd_gate_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -1400,6 +1725,18 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             last_r26_lang = _parse_kv_ints(line.split("FX6_R26_LANG_TELEMETRY ", 1)[1])
         elif "FX6_R27_LANG_TELEMETRY " in line:
             last_r27_lang = _parse_kv_ints(line.split("FX6_R27_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_R28_LANG_TELEMETRY " in line:
+            last_r28_lang = _parse_kv_ints(line.split("FX6_R28_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_R28_SD_DUALBOOT " in line:
+            last_r28_sd = _parse_kv_ints(line.split("FX6_R28_SD_DUALBOOT ", 1)[1])
+        elif "FX6_R28_JIRITSU_PROBE " in line:
+            last_r28_jit = _parse_kv_ints(line.split("FX6_R28_JIRITSU_PROBE ", 1)[1])
+        elif "FX6_R28_STRATEGY_A_BRIDGE " in line:
+            last_r28_bridge = _parse_kv_ints(line.split("FX6_R28_STRATEGY_A_BRIDGE ", 1)[1])
+        elif "FX6_R28_SD_GATE_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R28_SD_GATE_RC"), int):
+                r28_sd_gate_rc = kv["FX6_R28_SD_GATE_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -1431,6 +1768,21 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "p11_uipc": last_p11_uipc or {},
         }
 
+    r28_telemetry: Optional[Dict[str, Any]] = None
+    if (
+        last_r28_sd is not None
+        or last_r28_jit is not None
+        or last_r28_bridge is not None
+        or last_r28_lang is not None
+    ):
+        r28_telemetry = {
+            "sd_gate_rc": r28_sd_gate_rc,
+            "sd_dualboot": last_r28_sd or {},
+            "jiritsu_probe": last_r28_jit or {},
+            "strategy_a_bridge": last_r28_bridge or {},
+            "lang_telemetry": last_r28_lang or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -1455,6 +1807,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r25_telemetry": last_r25_lang,
         "r26_telemetry": last_r26_lang,
         "r27_telemetry": last_r27_lang,
+        "r28_telemetry": r28_telemetry,
     }
 
 
@@ -1478,7 +1831,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 27:
+    if args.round >= 28:
+        tmp_prefix = "fx6-r28"
+    elif args.round >= 27:
         tmp_prefix = "fx6-r27"
     elif args.round >= 26:
         tmp_prefix = "fx6-r26"
@@ -1545,11 +1900,15 @@ def run_once(args: argparse.Namespace) -> int:
             additions["etc/fx6_chaplin_ntsc.bk4"] = (bk4_bytes, 0o100644)
 
         stage_a_meta: Optional[Dict[str, Any]] = None
+        sd_manifest_mode = getattr(args, "sd_manifest_mode", "valid")
         if args.round >= 8:
             stage_label = (
-                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(MaintenanceTab7-4LangDualSurface+UXC+Wlan+lang={lang})"
-                if args.round >= 27
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwSDDualBoot+libJit+StrategyA+mode={sd_manifest_mode}+lang={lang})"
+                if args.round >= 28
                 else (
+                    f"Stage-B P1..P9+Fan+P10+P11+P12+P4(MaintenanceTab7-4LangDualSurface+UXC+Wlan+lang={lang})"
+                    if args.round >= 27
+                    else (
                     f"Stage-B P1..P9+Fan+P10+P11+P12+P4(TechnicalTab6-4LangDualSurface+UXC+Wlan+lang={lang})"
                     if args.round >= 26
                     else (
@@ -1617,6 +1976,7 @@ def run_once(args: argparse.Namespace) -> int:
                             )
                         )
                     )
+                    )
                 )
             )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
@@ -1643,6 +2003,8 @@ def run_once(args: argparse.Namespace) -> int:
                 enable_r25=(args.round >= 25),
                 enable_r26=(args.round >= 26),
                 enable_r27=(args.round >= 27),
+                enable_r28=(args.round >= 28),
+                sd_manifest_mode=sd_manifest_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -1752,11 +2114,31 @@ def run_once(args: argparse.Namespace) -> int:
                     time.sleep(2.0)
                     print(f"[{run_id}] Detected crash/abort signature; stopping early.", flush=True)
                     break
+                if (
+                    "FX6_R28_STOCK_FX3_BYPASS_EXIT" in txt
+                    or "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT" in txt
+                ):
+                    time.sleep(1.0)
+                    print(f"[{run_id}] Detected clean Round 28 stock-FX3 escape-hatch exit; stopping early.", flush=True)
+                    break
             time.sleep(1.0)
 
-        gpe_stats: Dict[str, Any] = {"present": False}
+        serial_text = (
+            serial_log.read_text(encoding="utf-8", errors="replace")
+            if serial_log.exists()
+            else ""
+        )
+        stock_fx3_exit = (
+            "FX6_R28_STOCK_FX3_BYPASS_EXIT" in serial_text
+            or "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT" in serial_text
+        )
+        gpe_stats: Dict[str, Any] = (
+            {"present": False, "skipped_stock_fx3_mode": True}
+            if stock_fx3_exit
+            else {"present": False}
+        )
         png_exports: Optional[Dict[str, Any]] = None
-        if qmp is not None and proc.poll() is None:
+        if not stock_fx3_exit and qmp is not None and proc.poll() is None:
             try:
                 qmp.cmd(
                     "pmemsave",
@@ -1799,6 +2181,7 @@ def run_once(args: argparse.Namespace) -> int:
             "run_id": run_id,
             "round": args.round,
             "lang": lang,
+            "sd_manifest_mode": sd_manifest_mode if args.round >= 28 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -1833,6 +2216,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r25_telemetry": milestones.get("r25_telemetry") if args.round >= 25 else None,
             "r26_telemetry": milestones.get("r26_telemetry") if args.round >= 26 else None,
             "r27_telemetry": milestones.get("r27_telemetry") if args.round >= 27 else None,
+            "r28_telemetry": milestones.get("r28_telemetry") if args.round >= 28 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -1882,8 +2266,9 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
+    ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

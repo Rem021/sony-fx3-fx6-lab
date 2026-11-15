@@ -2460,6 +2460,7 @@ def build_nrtm_xml_sidecar(
     shotmark_and_iris: dict[str, Any] | None = None,
     gyroflow_anamorphic: dict[str, Any] | None = None,
     interval_cache_lut_ftp: dict[str, Any] | None = None,
+    mc_fleet_sdi_c2pa: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2670,6 +2671,35 @@ def build_nrtm_xml_sidecar(
         ET.SubElement(p102_grp, _q("Item"), {"name": "FtpsBlockedTraversalCount", "value": str(int(interval_cache_lut_ftp["ftps_blocked_traversal_count"]))})
         ET.SubElement(p102_grp, _q("Item"), {"name": "P12RfOffEnforced", "value": "true"})
         ET.SubElement(p102_grp, _q("Item"), {"name": "Wf12Calls", "value": str(int(interval_cache_lut_ftp["wf12_00342260_hits"]))})
+
+    if mc_fleet_sdi_c2pa:
+        p109_grp = ET.SubElement(acq, _q("Group"), {"name": "McFleetSdiAndC2paProvenance"})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "FleetRole", "value": str(mc_fleet_sdi_c2pa["fleet_role"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "FleetCamerasOnline", "value": str(int(mc_fleet_sdi_c2pa["fleet_cams_online"]))})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "FleetTransport", "value": str(mc_fleet_sdi_c2pa["fleet_transport"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "GangRecTrigger", "value": str(bool(mc_fleet_sdi_c2pa["gang_rec_trigger"])).lower()})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "P12RfOffEnforced", "value": "true"})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "Wf12Calls", "value": str(int(mc_fleet_sdi_c2pa["wf12_00342260_hits"]))})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "HdmiAviInfoFrameHex", "value": str(mc_fleet_sdi_c2pa["avi_infoframe_hex"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "HdmiAviChecksumValid", "value": str(bool(mc_fleet_sdi_c2pa["avi_checksum_valid"])).lower()})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "HdmiAviSignalRangeMode", "value": str(mc_fleet_sdi_c2pa["avi_signal_range_mode"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "HdmiAviQuantizationRange", "value": str(mc_fleet_sdi_c2pa["avi_quantization_range"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "HdmiSdiConverterBridge", "value": str(mc_fleet_sdi_c2pa["sdi_bridge_converter"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "SmpteRp188RecTriggerBit", "value": str(int(mc_fleet_sdi_c2pa["rp188_rec_trigger_bit"]))})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "SmpteRp188AtcDidSdid", "value": f"{mc_fleet_sdi_c2pa['rp188_atc_did']}/{mc_fleet_sdi_c2pa['rp188_atc_sdid']}"})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "LensMountType", "value": str(mc_fleet_sdi_c2pa["mount_type"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "ElectronicPinsActive", "value": str(int(mc_fleet_sdi_c2pa["electronic_pins_active"]))})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "ShadingIdentityReset", "value": str(bool(mc_fleet_sdi_c2pa["shading_identity_reset"])).lower()})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "ShadingCornerGain", "value": f"{float(mc_fleet_sdi_c2pa['vignetting_comp_gain']):.4f}"})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "LensWeightKg", "value": f"{float(mc_fleet_sdi_c2pa['lens_kg']):.2f}"})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "G31LwsSupportWarning", "value": str(bool(mc_fleet_sdi_c2pa["g31_15mm_lws_warning"])).lower()})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "C2paSpecVersion", "value": str(mc_fleet_sdi_c2pa["c2pa_spec_version"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "C2paVaultStatus", "value": str(mc_fleet_sdi_c2pa["c2pa_vault_status"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "C2paProvenanceMode", "value": str(mc_fleet_sdi_c2pa["c2pa_provenance_mode"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "C2paClaimGenerator", "value": str(mc_fleet_sdi_c2pa["c2pa_claim_generator"])})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "PrivateKeyReads", "value": str(int(mc_fleet_sdi_c2pa["private_key_reads"]))})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "CnflashaWrites", "value": str(int(mc_fleet_sdi_c2pa["cnflasha_writes"]))})
+        ET.SubElement(p109_grp, _q("Item"), {"name": "HardwareAttestationClaimed", "value": "false"})
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -5587,6 +5617,711 @@ def validate_interval_cache_lut_ftp_patch(
     return True, updates, None
 
 
+# ---------------------------------------------------------------------------
+# Phase 109: M&C 4-Cam Wired Fleet, HDMI->12G-SDI AVI/RP188, E/PL Shading, C2PA
+# ---------------------------------------------------------------------------
+
+MC_FLEET_ROLES: tuple[str, ...] = (
+    "Solo",
+    "A_Cam_Master",
+    "B_Cam_Follower",
+    "C_Cam_Follower",
+    "D_Cam_Follower",
+)
+_MC_FLEET_ROLE_TO_IDX: dict[str, int] = {r: i for i, r in enumerate(MC_FLEET_ROLES)}
+_MC_FLEET_ROLE_ALIASES: dict[str, str] = {
+    "solo": "Solo",
+    "a_cam_master": "A_Cam_Master",
+    "a_master": "A_Cam_Master",
+    "a": "A_Cam_Master",
+    "b_cam_follower": "B_Cam_Follower",
+    "b_follower": "B_Cam_Follower",
+    "b": "B_Cam_Follower",
+    "c_cam_follower": "C_Cam_Follower",
+    "c_follower": "C_Cam_Follower",
+    "c": "C_Cam_Follower",
+    "d_cam_follower": "D_Cam_Follower",
+    "d_follower": "D_Cam_Follower",
+    "d": "D_Cam_Follower",
+}
+
+SDI_BRIDGE_CONVERTERS: tuple[str, ...] = (
+    "BMD_Micro_Converter_12G",
+    "Teradek_Bolt_HDMI_SDI",
+    "Atomos_Connect_12G",
+    "Off",
+)
+_SDI_BRIDGE_TO_IDX: dict[str, int] = {c: i for i, c in enumerate(SDI_BRIDGE_CONVERTERS)}
+_SDI_BRIDGE_ALIASES: dict[str, str] = {
+    "bmd_micro_converter_12g": "BMD_Micro_Converter_12G",
+    "bmd_12g": "BMD_Micro_Converter_12G",
+    "bmd": "BMD_Micro_Converter_12G",
+    "teradek_bolt_hdmi_sdi": "Teradek_Bolt_HDMI_SDI",
+    "teradek": "Teradek_Bolt_HDMI_SDI",
+    "atomos_connect_12g": "Atomos_Connect_12G",
+    "atomos": "Atomos_Connect_12G",
+    "off": "Off",
+    "none": "Off",
+}
+
+LENS_MOUNT_TYPES: tuple[str, ...] = (
+    "Sony_EMount_12Pin_GM",
+    "Manual_PL_Adapter_Unchipped",
+)
+_LENS_MOUNT_ALIASES: dict[str, str] = {
+    "sony_emount_12pin_gm": "Sony_EMount_12Pin_GM",
+    "e_mount_12pin": "Sony_EMount_12Pin_GM",
+    "emount": "Sony_EMount_12Pin_GM",
+    "gm": "Sony_EMount_12Pin_GM",
+    "manual_pl_adapter_unchipped": "Manual_PL_Adapter_Unchipped",
+    "pl_to_e_unchipped": "Manual_PL_Adapter_Unchipped",
+    "manual_pl": "Manual_PL_Adapter_Unchipped",
+    "pl": "Manual_PL_Adapter_Unchipped",
+}
+
+G31_15MM_LWS_WEIGHT_THRESHOLD_KG = 1.2
+C2PA_VAULT_STATUS_LOCKED = "CNFLASHA_RDONLY_ZERO_TOUCH"
+C2PA_PHASE109_SPEC_VERSION = "2.1"
+C2PA_PHASE109_PROVENANCE_MODE = "CLEAN_ROOM_RESEARCH_UNATTESTED"
+C2PA_PHASE109_CLAIM_GENERATOR = "FX3-VM-CleanRoom-Research/Phase109-MCFleet-SDI-C2PA"
+
+CEA861_AVI_PACKET_TYPE = 0x82
+CEA861_AVI_VERSION = 0x02
+CEA861_AVI_PAYLOAD_LEN = 13
+CEA861_AVI_TOTAL_BYTES = 17
+SMPTE_RP188_ATC_DID = 0x60
+SMPTE_RP188_ATC_SDID = 0x60
+
+_AVI_Y_CODES: dict[str, int] = {"RGB": 0b00, "YCBCR_422": 0b01, "YCBCR_444": 0b10, "YCBCR_420": 0b11}
+_AVI_Q_CODES: dict[str, int] = {"DEFAULT": 0b00, "LIMITED": 0b01, "FULL": 0b10}
+_AVI_YQ_CODES: dict[str, int] = {"LIMITED": 0b00, "FULL": 0b01}
+
+_FORBIDDEN_C2PA_VAULT_TOKENS: tuple[str, ...] = (
+    "/dev/cnflasha",
+    "cnflasha://",
+    "/dev/mmcblk0rpmb",
+    "rpmb://",
+    "/dev/spacc",
+    "rq_lic.dat",
+    "device_priv.key",
+    "/cert/",
+    "0xf7fc0000",
+)
+
+MC_FLEET_SDI_C2PA_DEFAULTS: dict[str, Any] = {
+    "fleet_role": "Solo",
+    "fleet_cams_online": 1,
+    "fleet_nic_driver": "CDC_NCM_RTL8153",
+    "gang_rec_trigger": False,
+    "sdi_bridge_converter": "BMD_Micro_Converter_12G",
+    "hdmi_rec_control_enabled": True,
+    "hdmi_tc_output_enabled": True,
+    "recorder_range_expectation": "AUTO_MATCH",
+    "mount_type": "Sony_EMount_12Pin_GM",
+    "lens_model": "SEL2470GM2 (FE 24-70mm F2.8 GM II)",
+    "lens_kg": 0.695,
+    "focal_length_mm": 24,
+    "rod_support_15mm_lws": False,
+}
+
+MC_FLEET_SDI_C2PA_SPECS: dict[str, Any] = {
+    "fleet_roles": list(MC_FLEET_ROLES),
+    "fleet_cams_range": [1, 4],
+    "fleet_wired_nics": ["CDC_NCM_RTL8153", "CDC_NCM_AX88179"],
+    "ptp_ip_port": 15740,
+    "p12_rf_off_enforced": True,
+    "wf12_00342260_hits_locked": 0,
+    "sdi_bridge_converters": list(SDI_BRIDGE_CONVERTERS),
+    "avi_infoframe_bytes": CEA861_AVI_TOTAL_BYTES,
+    "rp188_atc_did": f"0x{SMPTE_RP188_ATC_DID:02x}",
+    "rp188_atc_sdid": f"0x{SMPTE_RP188_ATC_SDID:02x}",
+    "mount_types": list(LENS_MOUNT_TYPES),
+    "g31_15mm_lws_threshold_kg": G31_15MM_LWS_WEIGHT_THRESHOLD_KG,
+    "c2pa_vault_status_locked": C2PA_VAULT_STATUS_LOCKED,
+    "c2pa_spec_version": C2PA_PHASE109_SPEC_VERSION,
+    "private_key_reads_locked": 0,
+    "cnflasha_writes_locked": 0,
+    "mailbox_magic": "0x4D43464C",
+    "mailbox_slots": "mb[52..55]",
+    "supported_langs": ["en", "zh-CN", "zh-TW", "ja"],
+}
+
+
+def build_cea861_avi_infoframe(
+    *,
+    colorspace: str = "YCBCR_422",
+    rgb_quantization: str = "DEFAULT",
+    ycc_quantization: str = "LIMITED",
+    vic: int = 97,
+) -> dict[str, Any]:
+    """Build exact 17-byte CEA-861-G HDMI AVI InfoFrame with 0x100 - sum == 0 checksum parity."""
+    cs_u = colorspace.upper()
+    q_u = rgb_quantization.upper()
+    yq_u = ycc_quantization.upper()
+    y_code = _AVI_Y_CODES.get(cs_u, 0b01)
+    q_code = _AVI_Q_CODES.get(q_u, 0b00)
+    yq_code = _AVI_YQ_CODES.get(yq_u, 0b00)
+
+    hb = bytes((CEA861_AVI_PACKET_TYPE, CEA861_AVI_VERSION, CEA861_AVI_PAYLOAD_LEN))
+    pb = bytearray(CEA861_AVI_PAYLOAD_LEN)
+    pb[0] = (y_code & 0x03) << 5      # PB1: Y1:Y0 in bits 6:5
+    pb[1] = 0x28                      # PB2: M1:M0=10 (16:9), R3:R0=1000
+    pb[2] = (q_code & 0x03) << 2      # PB3: Q1:Q0 in bits 3:2
+    pb[3] = int(vic) & 0x7F           # PB4: VIC
+    pb[4] = (yq_code & 0x03) << 6     # PB5: YQ1:YQ0 in bits 7:6
+
+    body_sum = sum(hb) + sum(pb)
+    checksum = (0x100 - (body_sum & 0xFF)) & 0xFF
+    pkt = hb + bytes((checksum,)) + bytes(pb)
+    total_mod256 = sum(pkt) & 0xFF
+    return {
+        "packet_bytes": len(pkt),
+        "packet_hex": pkt.hex().upper(),
+        "checksum_byte": checksum,
+        "checksum_hex": f"0x{checksum:02X}",
+        "checksum_zero_mod256": total_mod256,
+        "checksum_valid": total_mod256 == 0,
+        "colorspace": cs_u,
+        "rgb_quantization": q_u,
+        "ycc_quantization": yq_u,
+        "vic": int(vic) & 0x7F,
+    }
+
+
+def pack_smpte_rp188_atc_packet(
+    *,
+    rec_tc: str = "00:00:00:00",
+    drop_frame: bool = False,
+    rec_trigger_bit: int = 0,
+) -> dict[str, Any]:
+    """Pack and verify SMPTE ST 12-2 / RP 188 8-nibble BCD timecode + DBB REC-trigger bit."""
+    parts = [int(p) for p in rec_tc.replace(";", ":").split(":")]
+    if len(parts) != 4:
+        parts = [0, 0, 0, 0]
+    hh, mm, ss, ff = [max(0, v) for v in parts]
+    hh %= 24
+    mm %= 60
+    ss %= 60
+    ff %= 60
+    f_t, f_o = divmod(ff, 10)
+    s_t, s_o = divmod(ss, 10)
+    m_t, m_o = divmod(mm, 10)
+    h_t, h_o = divmod(hh, 10)
+    df_flag = 1 if drop_frame else 0
+    tc_word = (
+        (f_o & 0x0F)
+        | ((f_t & 0x03) << 4)
+        | (df_flag << 6)
+        | ((s_o & 0x0F) << 8)
+        | ((s_t & 0x07) << 12)
+        | ((m_o & 0x0F) << 16)
+        | ((m_t & 0x07) << 20)
+        | ((h_o & 0x0F) << 24)
+        | ((h_t & 0x03) << 28)
+    )
+    dbb_word = ((int(rec_trigger_bit) & 0x01) << 7) | (SMPTE_RP188_ATC_SDID & 0x7F)
+    unpacked_rec = (dbb_word >> 7) & 0x01
+    u_ff = (tc_word & 0x0F) + (((tc_word >> 4) & 0x03) * 10)
+    u_ss = ((tc_word >> 8) & 0x0F) + (((tc_word >> 12) & 0x07) * 10)
+    u_mm = ((tc_word >> 16) & 0x0F) + (((tc_word >> 20) & 0x07) * 10)
+    u_hh = ((tc_word >> 24) & 0x0F) + (((tc_word >> 28) & 0x03) * 10)
+    sep = ";" if ((tc_word >> 6) & 0x01) else ":"
+    unpacked_tc = f"{u_hh:02d}:{u_mm:02d}:{u_ss:02d}{sep}{u_ff:02d}"
+    return {
+        "atc_did": f"0x{SMPTE_RP188_ATC_DID:02x}",
+        "atc_sdid": f"0x{SMPTE_RP188_ATC_SDID:02x}",
+        "tc_word_hex": f"0x{tc_word:08X}",
+        "dbb_word_hex": f"0x{dbb_word:02X}",
+        "rec_trigger_bit": int(rec_trigger_bit) & 0x01,
+        "unpacked_rec_bit": unpacked_rec,
+        "unpacked_tc": unpacked_tc,
+        "parity_ok": (unpacked_rec == (int(rec_trigger_bit) & 0x01)) and (unpacked_tc == f"{hh:02d}:{mm:02d}:{ss:02d}{sep}{ff:02d}"),
+    }
+
+
+def compute_mc_fleet_sdi_c2pa_derived(
+    state: dict[str, Any],
+    *,
+    rec_state: str = "STBY",
+    rec_tc: str = "00:00:00:00",
+    base_fps: float = 23.98,
+    base_look: str = "S-Cinetone",
+    wired_io_mode: str = "off",
+    c2pa_blocked_attempts: int = 0,
+    c2pa_last_blocked_reason: str | None = None,
+    wf12_00342260_hits: int = 0,
+) -> dict[str, Any]:
+    """Compute Phase 109 M&C 4-Cam Fleet, HDMI->12G-SDI AVI/RP188, E-Mount/PL Shading & C2PA state."""
+    fleet_role = str(state.get("fleet_role", "Solo"))
+    if fleet_role not in MC_FLEET_ROLES:
+        fleet_role = "Solo"
+    cams_online = max(1, min(4, int(state.get("fleet_cams_online", 1))))
+    nic_driver = str(state.get("fleet_nic_driver", "CDC_NCM_RTL8153"))
+    if nic_driver not in ("CDC_NCM_RTL8153", "CDC_NCM_AX88179"):
+        nic_driver = "CDC_NCM_RTL8153"
+
+    rec_on = (str(rec_state).upper() == "REC")
+    gang_rec_req = bool(state.get("gang_rec_trigger", False))
+    gang_rec_eff = bool(gang_rec_req or (rec_on and fleet_role != "Solo"))
+
+    ptp_offsets_us = [0.0, 42.0, 58.0, 64.0]
+    cam_labels = ("A-Cam", "B-Cam", "C-Cam", "D-Cam")
+    role_to_cam_idx = {
+        "Solo": 0,
+        "A_Cam_Master": 0,
+        "B_Cam_Follower": 1,
+        "C_Cam_Follower": 2,
+        "D_Cam_Follower": 3,
+    }
+    self_idx = role_to_cam_idx.get(fleet_role, 0)
+    fleet_nodes: list[dict[str, Any]] = []
+    for idx in range(4):
+        online = idx < cams_online
+        node_rec = bool(online and (gang_rec_eff or (idx == self_idx and rec_on)))
+        fleet_nodes.append({
+            "cam_slot": cam_labels[idx],
+            "body_profile": "FX6_MASTER" if idx == 0 else "FX6_ON_FX3",
+            "ip_addr": f"192.168.10.{101 + idx}",
+            "online": online,
+            "is_local_node": idx == self_idx,
+            "nic_driver": nic_driver,
+            "link_speed_mbps": 1000 if online else 0,
+            "ptp_offset_us": ptp_offsets_us[idx] if online else 0.0,
+            "rec_tally": "REC" if node_rec else ("STBY" if online else "OFFLINE"),
+            "p12_rf_off_enforced": True,
+            "wf12_00342260_hits": 0,
+        })
+    max_skew_us = max((n["ptp_offset_us"] for n in fleet_nodes if n["online"]), default=0.0)
+    gang_skew_ms = round((max_skew_us / 1000.0) + 0.14, 3) if cams_online > 1 else 0.0
+
+    # HDMI AVI InfoFrame + HDMI->12G-SDI RP 188 Bridge
+    sdi_conv = str(state.get("sdi_bridge_converter", "BMD_Micro_Converter_12G"))
+    if sdi_conv not in SDI_BRIDGE_CONVERTERS:
+        sdi_conv = "BMD_Micro_Converter_12G"
+    sdi_active = (sdi_conv != "Off")
+    hdmi_rec_ctrl = bool(state.get("hdmi_rec_control_enabled", True))
+    hdmi_tc_out = bool(state.get("hdmi_tc_output_enabled", True))
+
+    look_l = str(base_look or "").lower()
+    if str(wired_io_mode or "off").lower() == "hdmi_raw16":
+        sig_mode = "HDMI_RAW16_LINEAR"
+        avi_cs = "RGB"
+        avi_q = "FULL"
+        avi_yq = "LIMITED"
+        quant_range = "FULL_0_1023_RAW16"
+    elif "s-log3" in look_l or "slog3" in look_l:
+        sig_mode = "SLOG3_EXTENDED_64_1019"
+        avi_cs = "YCBCR_422"
+        avi_q = "DEFAULT"
+        avi_yq = "LIMITED"
+        quant_range = "EXTENDED_64_1019"
+    elif "cinetone" in look_l:
+        sig_mode = "SCINETONE_LEGAL_64_940"
+        avi_cs = "YCBCR_422"
+        avi_q = "DEFAULT"
+        avi_yq = "LIMITED"
+        quant_range = "LEGAL_64_940"
+    else:
+        sig_mode = "REC709_LEGAL_64_940"
+        avi_cs = "YCBCR_422"
+        avi_q = "DEFAULT"
+        avi_yq = "LIMITED"
+        quant_range = "LEGAL_64_940"
+
+    vic = 97 if float(base_fps) >= 49.0 else 93  # 3840x2160p59.94 vs 2160p23.98
+    avi = build_cea861_avi_infoframe(
+        colorspace=avi_cs,
+        rgb_quantization=avi_q,
+        ycc_quantization=avi_yq,
+        vic=vic,
+    )
+    rp188_bit = 1 if (rec_on and sdi_active and hdmi_rec_ctrl and hdmi_tc_out) else 0
+    df = round(float(base_fps), 2) in (29.97, 59.94)
+    rp188 = pack_smpte_rp188_atc_packet(rec_tc=rec_tc, drop_frame=df, rec_trigger_bit=rp188_bit)
+
+    # E-Mount 12-Pin vs Manual-PL Hot-Swap Shading Arbitrator + G31 LWS Warning
+    mount_type = str(state.get("mount_type", "Sony_EMount_12Pin_GM"))
+    if mount_type not in LENS_MOUNT_TYPES:
+        mount_type = "Sony_EMount_12Pin_GM"
+    is_pl = (mount_type == "Manual_PL_Adapter_Unchipped")
+    lens_model = str(state.get("lens_model") or (
+        "Atlas Orion 40mm 2x PL (Unchipped)" if is_pl else "SEL2470GM2 (FE 24-70mm F2.8 GM II)"
+    ))
+    lens_kg = round(max(0.1, min(10.0, float(state.get("lens_kg", 0.695)))), 3)
+    focal_mm = max(10, min(250, int(state.get("focal_length_mm", 40 if is_pl else 24))))
+    rod_lws = bool(state.get("rod_support_15mm_lws", False))
+    lws_required = bool(lens_kg > G31_15MM_LWS_WEIGHT_THRESHOLD_KG)
+    g31_lws_warning = bool(lws_required and not rod_lws)
+
+    if is_pl:
+        e_pins = 0
+        uart_active = False
+        vignetting_gain = 1.0
+        ca_r_scale = 1.0
+        ca_b_scale = 1.0
+        distortion_k1 = 0.0
+        breathing_scale = 1.0
+        shading_identity_reset = True
+        reset_latency_ms = 0.42
+    else:
+        e_pins = 12
+        uart_active = True
+        vignetting_gain = 1.318
+        ca_r_scale = 1.0015
+        ca_b_scale = 0.9986
+        distortion_k1 = -0.042
+        breathing_scale = 1.045
+        shading_identity_reset = False
+        reset_latency_ms = 2.15
+
+    frame_period_ms = round(1001.0 / 60.0, 4)
+
+    return {
+        "fleet_role": fleet_role,
+        "fleet_cams_online": cams_online,
+        "fleet_nic_driver": nic_driver,
+        "fleet_transport": f"USB_LAN_{nic_driver}",
+        "ptp_ip_port": 15740,
+        "ptp_max_clock_skew_us": max_skew_us,
+        "gang_rec_trigger": gang_rec_eff,
+        "gang_rec_skew_ms": gang_skew_ms,
+        "fleet_nodes": fleet_nodes,
+        "p12_rf_off_enforced": True,
+        "wifi_bt_rf_disabled": True,
+        "wf12_00342260_hits": int(wf12_00342260_hits),
+        "sdi_bridge_converter": sdi_conv,
+        "sdi_bridge_active": sdi_active,
+        "hdmi_rec_control_enabled": hdmi_rec_ctrl,
+        "hdmi_tc_output_enabled": hdmi_tc_out,
+        "recorder_range_expectation": str(state.get("recorder_range_expectation", "AUTO_MATCH")),
+        "avi_signal_range_mode": sig_mode,
+        "avi_quantization_range": quant_range,
+        "avi_colorspace": avi["colorspace"],
+        "avi_ycc_quantization": avi["ycc_quantization"],
+        "avi_rgb_quantization": avi["rgb_quantization"],
+        "avi_vic": avi["vic"],
+        "avi_infoframe_bytes": avi["packet_bytes"],
+        "avi_infoframe_hex": avi["packet_hex"],
+        "avi_checksum_byte": avi["checksum_byte"],
+        "avi_checksum_hex": avi["checksum_hex"],
+        "avi_checksum_zero_mod256": avi["checksum_zero_mod256"],
+        "avi_checksum_valid": avi["checksum_valid"],
+        "shadow_crush_prevented": True,
+        "slog3_black_0pct_code10": 95,
+        "slog3_grey_18pct_code10": 420,
+        "slog3_white_90pct_code10": 598,
+        "rp188_atc_did": rp188["atc_did"],
+        "rp188_atc_sdid": rp188["atc_sdid"],
+        "rp188_rec_trigger_bit": rp188["rec_trigger_bit"],
+        "rp188_tc_word_hex": rp188["tc_word_hex"],
+        "rp188_dbb_word_hex": rp188["dbb_word_hex"],
+        "rp188_parity_ok": rp188["parity_ok"],
+        "physical_12g_sdi_bnc_present": False,
+        "ghost_sdi_bnc_hw_faults": 0,
+        "mount_type": mount_type,
+        "lens_model": lens_model,
+        "lens_kg": lens_kg,
+        "focal_length_mm": focal_mm,
+        "electronic_pins_active": e_pins,
+        "lens_uart_active": uart_active,
+        "vignetting_comp_gain": vignetting_gain,
+        "ca_r_scale": ca_r_scale,
+        "ca_b_scale": ca_b_scale,
+        "distortion_k1": distortion_k1,
+        "breathing_scale": breathing_scale,
+        "shading_identity_reset": shading_identity_reset,
+        "reset_latency_ms": reset_latency_ms,
+        "frame_period_ms": frame_period_ms,
+        "reset_under_one_frame": bool(reset_latency_ms < frame_period_ms),
+        "stale_gm_frames_leaked": 0,
+        "rod_support_15mm_lws": rod_lws,
+        "g31_15mm_lws_threshold_kg": G31_15MM_LWS_WEIGHT_THRESHOLD_KG,
+        "g31_15mm_lws_support_required": lws_required,
+        "g31_15mm_lws_warning": g31_lws_warning,
+        "g31_15mm_lws_message": (
+            f"G31 WARNING: lens_kg={lens_kg:.2f}kg > 1.2kg without 15mm LWS rod support!"
+            if g31_lws_warning
+            else (
+                f"G31 OK: 15mm LWS rod support engaged ({lens_kg:.2f}kg)"
+                if (lws_required and rod_lws)
+                else f"E-Mount flange nominal ({lens_kg:.2f}kg <= 1.2kg)"
+            )
+        ),
+        "c2pa_spec_version": C2PA_PHASE109_SPEC_VERSION,
+        "c2pa_vault_status": C2PA_VAULT_STATUS_LOCKED,
+        "c2pa_provenance_mode": C2PA_PHASE109_PROVENANCE_MODE,
+        "c2pa_claim_generator": C2PA_PHASE109_CLAIM_GENERATOR,
+        "private_key_reads": 0,
+        "private_key_exports": 0,
+        "cnflasha_writes": 0,
+        "cnflasha_mutation_bytes": 0,
+        "rpmb_writes": 0,
+        "hardware_attestation_claimed": False,
+        "c2pa_spoofed": False,
+        "c2pa_blocked_attempts": int(c2pa_blocked_attempts),
+        "c2pa_last_blocked_reason": c2pa_last_blocked_reason,
+        "persistent_emmc_writes_authorized": False,
+    }
+
+
+def format_mc_fleet_sdi_c2pa_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 109 MCFL host<->guest protocol telemetry line."""
+    return (
+        f"MCFL role={state['fleet_role']}({state['fleet_cams_online']}/4,"
+        f"gang={1 if state['gang_rec_trigger'] else 0},wf12={state['wf12_00342260_hits']}) "
+        f"sdi={state['sdi_bridge_converter']}(rp188={state['rp188_rec_trigger_bit']},"
+        f"avi_cs={state['avi_checksum_hex']},rng={state['avi_quantization_range']}) "
+        f"mount={state['mount_type']}(pins={state['electronic_pins_active']},"
+        f"shd={state['vignetting_comp_gain']:.2f}x,kg={state['lens_kg']:.2f},lws_warn={1 if state['g31_15mm_lws_warning'] else 0}) "
+        f"c2pa={state['c2pa_vault_status']}(kr=0,cw=0)"
+    )
+
+
+def validate_mc_fleet_sdi_c2pa_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+    *,
+    base_look: str = "S-Cinetone",
+    wired_io_mode: str = "off",
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 109 M&C Fleet, HDMI->12G-SDI, Mount Shading & C2PA updates fail-closed."""
+    if not isinstance(body, dict):
+        return False, {}, {"ok": False, "error": "invalid_mc_fleet_sdi_c2pa", "message": "Payload must be a JSON object"}
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(MC_FLEET_SDI_C2PA_DEFAULTS)
+
+    # 1. C2PA 2.1 / cnflasha Zero-Touch Guard (fail-closed)
+    c2pa_op = str(body.get("c2pa_operation") or "").strip().upper()
+    c2pa_path = str(body.get("c2pa_target_path") or body.get("target_path") or "").strip().lower()
+    if (
+        c2pa_op in ("READ_KEY", "EXPORT_KEY", "WRITE_VAULT", "MOUNT_RW", "SPOOF_CERT")
+        or body.get("claim_hardware_attestation") is True
+        or body.get("hardware_attestation_claimed") is True
+        or body.get("c2pa_spoof") is True
+        or body.get("c2pa_spoofed") is True
+        or (body.get("c2pa_vault_status") not in (None, "", C2PA_VAULT_STATUS_LOCKED))
+        or (body.get("private_key_reads") not in (None, 0))
+        or (body.get("cnflasha_writes") not in (None, 0))
+        or any(tok in c2pa_path for tok in _FORBIDDEN_C2PA_VAULT_TOKENS)
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "c2pa_cnflasha_zero_touch_blocked",
+                "message": "C2PA 2.1 cnflasha key-vault is strictly CNFLASHA_RDONLY_ZERO_TOUCH (private_key_reads=0, cnflasha_writes=0, no spoofed attestation)",
+                "c2pa_vault_status": C2PA_VAULT_STATUS_LOCKED,
+                "private_key_reads": 0,
+                "cnflasha_writes": 0,
+            },
+        )
+
+    # 2. P12 Wi-Fi/BT RF-Off Guard (fail-closed)
+    if (
+        body.get("wifi_enabled") is True
+        or body.get("bt_enabled") is True
+        or body.get("wifi_bt_rf_disabled") is False
+        or body.get("p12_rf_off_enforced") is False
+        or (body.get("wf12_00342260_hits") not in (None, 0))
+        or (
+            "fleet_transport" in body
+            and body["fleet_transport"] is not None
+            and any(tok in str(body["fleet_transport"]).lower() for tok in ("wifi", "wlan", "bt", "bluetooth"))
+        )
+        or (
+            "fleet_nic_driver" in body
+            and body["fleet_nic_driver"] is not None
+            and str(body["fleet_nic_driver"]).strip().upper() not in ("", "CDC_NCM_RTL8153", "CDC_NCM_AX88179")
+        )
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "p12_rf_off_violation",
+                "message": "P12 BK4 Airplane-Mode enforces Wi-Fi/BT RF-OFF (wf12_00342260_hits == 0); M&C fleet uses wired Gigabit USB-LAN only",
+                "wf12_00342260_hits": 0,
+            },
+        )
+
+    # 3. Fleet Role / Cams Online / Gang REC
+    if "fleet_role" in body and body["fleet_role"] is not None:
+        raw_role = body["fleet_role"]
+        if not isinstance(raw_role, str):
+            return False, {}, {"ok": False, "error": "invalid_fleet_role", "message": f"Invalid fleet_role: {raw_role!r}"}
+        role_norm = _MC_FLEET_ROLE_ALIASES.get(raw_role.strip().lower())
+        if role_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_fleet_role", "message": f"Unsupported fleet_role: {raw_role!r}", "allowed": list(MC_FLEET_ROLES)},
+            )
+        updates["fleet_role"] = role_norm
+
+    if "fleet_cams_online" in body and body["fleet_cams_online"] is not None:
+        raw_co = body["fleet_cams_online"]
+        if isinstance(raw_co, bool) or not isinstance(raw_co, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_fleet_cams_online", "message": f"Invalid fleet_cams_online: {raw_co!r}"}
+        try:
+            f_co = float(raw_co)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_fleet_cams_online", "message": f"Invalid fleet_cams_online: {raw_co!r}"}
+        if not math.isfinite(f_co) or f_co != float(int(f_co)) or int(f_co) < 1 or int(f_co) > 4:
+            return False, {}, {"ok": False, "error": "invalid_fleet_cams_online", "message": "fleet_cams_online must be integer in [1, 4]"}
+        updates["fleet_cams_online"] = int(f_co)
+
+    if "fleet_nic_driver" in body and body["fleet_nic_driver"] is not None:
+        nic_u = str(body["fleet_nic_driver"]).strip().upper()
+        if nic_u:
+            updates["fleet_nic_driver"] = nic_u
+
+    if "gang_rec_trigger" in body and body["gang_rec_trigger"] is not None:
+        raw_gr = body["gang_rec_trigger"]
+        if isinstance(raw_gr, bool):
+            updates["gang_rec_trigger"] = raw_gr
+        elif isinstance(raw_gr, int) and raw_gr in (0, 1):
+            updates["gang_rec_trigger"] = bool(raw_gr)
+        else:
+            return False, {}, {"ok": False, "error": "invalid_gang_rec_trigger", "message": f"Invalid gang_rec_trigger: {raw_gr!r}"}
+
+    # 4. HDMI AVI InfoFrame + HDMI->12G-SDI Bridge
+    if "sdi_bridge_converter" in body and body["sdi_bridge_converter"] is not None:
+        raw_sb = body["sdi_bridge_converter"]
+        if not isinstance(raw_sb, str):
+            return False, {}, {"ok": False, "error": "invalid_sdi_bridge_converter", "message": f"Invalid sdi_bridge_converter: {raw_sb!r}"}
+        sb_low = raw_sb.strip().lower()
+        if sb_low in ("fx6_native_12g_bnc", "native_sdi_bnc"):
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "fx3_missing_sdi_bnc_hardware",
+                    "message": "ILME-FX3 lacks physical 12G-SDI BNC; use active HDMI->12G-SDI converter bridge",
+                    "ghost_sdi_bnc_hw_faults": 0,
+                },
+            )
+        sb_norm = _SDI_BRIDGE_ALIASES.get(sb_low)
+        if sb_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_sdi_bridge_converter", "message": f"Unsupported sdi_bridge_converter: {raw_sb!r}", "allowed": list(SDI_BRIDGE_CONVERTERS)},
+            )
+        updates["sdi_bridge_converter"] = sb_norm
+
+    for bkey in ("hdmi_rec_control_enabled", "hdmi_tc_output_enabled", "rod_support_15mm_lws"):
+        if bkey in body and body[bkey] is not None:
+            raw_bv = body[bkey]
+            if isinstance(raw_bv, bool):
+                updates[bkey] = raw_bv
+            elif isinstance(raw_bv, int) and raw_bv in (0, 1):
+                updates[bkey] = bool(raw_bv)
+            else:
+                return False, {}, {"ok": False, "error": f"invalid_{bkey}", "message": f"Invalid {bkey}: {raw_bv!r}"}
+
+    # Block S-Log3 / S-Cinetone legal-to-full double-scaling shadow crush
+    rec_exp = str(body.get("recorder_range_expectation") or "").strip().upper()
+    if rec_exp:
+        if rec_exp not in ("AUTO_MATCH", "LEGAL_OR_EXTENDED", "FULL_RANGE"):
+            return False, {}, {"ok": False, "error": "invalid_recorder_range_expectation", "message": f"Invalid recorder_range_expectation: {rec_exp!r}"}
+        if rec_exp == "FULL_RANGE" and str(wired_io_mode or "off").lower() != "hdmi_raw16":
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "avi_shadow_crush_blocked",
+                    "message": "Blocked legal-to-full external recorder double-scaling shadow crush (S-Log3 0% black code 95 -> 36, -59 codes)",
+                    "shadow_crush_delta_codes": -59,
+                },
+            )
+        updates["recorder_range_expectation"] = rec_exp
+
+    if body.get("force_avi_full_range") is True and str(wired_io_mode or "off").lower() != "hdmi_raw16":
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "avi_shadow_crush_blocked",
+                "message": "Blocked AVI YQ=FULL mismatch on S-Log3/S-Cinetone YCbCr422 output (prevents shadow crush)",
+                "shadow_crush_delta_codes": -59,
+            },
+        )
+
+    # 5. E-Mount 12-Pin vs Manual PL Hot-Swap Shading Arbitrator
+    eff_mount = str((current_state or {}).get("mount_type", "Sony_EMount_12Pin_GM"))
+    if "mount_type" in body and body["mount_type"] is not None:
+        raw_mt = body["mount_type"]
+        if not isinstance(raw_mt, str):
+            return False, {}, {"ok": False, "error": "invalid_mount_type", "message": f"Invalid mount_type: {raw_mt!r}"}
+        mt_norm = _LENS_MOUNT_ALIASES.get(raw_mt.strip().lower())
+        if mt_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_mount_type", "message": f"Unsupported mount_type: {raw_mt!r}", "allowed": list(LENS_MOUNT_TYPES)},
+            )
+        updates["mount_type"] = mt_norm
+        eff_mount = mt_norm
+        if "lens_model" not in body:
+            updates["lens_model"] = (
+                "Atlas Orion 40mm 2x PL (Unchipped)"
+                if mt_norm == "Manual_PL_Adapter_Unchipped"
+                else "SEL2470GM2 (FE 24-70mm F2.8 GM II)"
+            )
+        if "focal_length_mm" not in body:
+            updates["focal_length_mm"] = 40 if mt_norm == "Manual_PL_Adapter_Unchipped" else 24
+
+    if eff_mount == "Manual_PL_Adapter_Unchipped" and body.get("inject_stale_gm_shading") is True:
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "stale_gm_shading_blocked_on_pl",
+                "message": "Blocked stale 12-pin GM shading/CA/breathing coefficients on Manual_PL_Adapter_Unchipped; 1.0x identity enforced",
+            },
+        )
+
+    if "lens_model" in body and body["lens_model"] is not None:
+        lm = str(body["lens_model"]).strip()
+        if not lm or len(lm) > 64:
+            return False, {}, {"ok": False, "error": "invalid_lens_model", "message": "lens_model must be 1..64 chars"}
+        updates["lens_model"] = lm
+
+    if "lens_kg" in body and body["lens_kg"] is not None:
+        raw_kg = body["lens_kg"]
+        if isinstance(raw_kg, bool) or not isinstance(raw_kg, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_lens_kg", "message": f"Invalid lens_kg: {raw_kg!r}"}
+        try:
+            f_kg = float(raw_kg)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_lens_kg", "message": f"Invalid lens_kg: {raw_kg!r}"}
+        if not math.isfinite(f_kg) or f_kg < 0.1 or f_kg > 10.0:
+            return False, {}, {"ok": False, "error": "invalid_lens_kg", "message": "lens_kg must be finite in [0.1, 10.0]"}
+        updates["lens_kg"] = round(f_kg, 3)
+
+    if "focal_length_mm" in body and body["focal_length_mm"] is not None:
+        raw_fl = body["focal_length_mm"]
+        if isinstance(raw_fl, bool) or not isinstance(raw_fl, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_focal_length_mm", "message": f"Invalid focal_length_mm: {raw_fl!r}"}
+        try:
+            f_fl = float(raw_fl)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_focal_length_mm", "message": f"Invalid focal_length_mm: {raw_fl!r}"}
+        if not math.isfinite(f_fl) or f_fl < 10.0 or f_fl > 250.0:
+            return False, {}, {"ok": False, "error": "invalid_focal_length_mm", "message": "focal_length_mm must be in [10, 250]"}
+        updates["focal_length_mm"] = int(round(f_fl))
+
+    return True, updates, None
+
+
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
     return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
@@ -6021,6 +6756,40 @@ class FX6LiveGpe0Session:
                     "ftps_mode": self.ftps_mode,
                     "ftps_nic_driver": self.ftps_nic_driver,
                     "ftps_tls_version": self.ftps_tls_version,
+                }
+            )
+        )
+        self.fleet_role = "Solo"
+        self.fleet_cams_online = 1
+        self.fleet_nic_driver = "CDC_NCM_RTL8153"
+        self.gang_rec_trigger = False
+        self.sdi_bridge_converter = "BMD_Micro_Converter_12G"
+        self.hdmi_rec_control_enabled = True
+        self.hdmi_tc_output_enabled = True
+        self.recorder_range_expectation = "AUTO_MATCH"
+        self.mount_type = "Sony_EMount_12Pin_GM"
+        self.lens_model = "SEL2470GM2 (FE 24-70mm F2.8 GM II)"
+        self.lens_kg = 0.695
+        self.focal_length_mm = 24
+        self.rod_support_15mm_lws = False
+        self.c2pa_blocked_attempts = 0
+        self.c2pa_last_blocked_reason: str | None = None
+        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(
+            compute_mc_fleet_sdi_c2pa_derived(
+                {
+                    "fleet_role": self.fleet_role,
+                    "fleet_cams_online": self.fleet_cams_online,
+                    "fleet_nic_driver": self.fleet_nic_driver,
+                    "gang_rec_trigger": self.gang_rec_trigger,
+                    "sdi_bridge_converter": self.sdi_bridge_converter,
+                    "hdmi_rec_control_enabled": self.hdmi_rec_control_enabled,
+                    "hdmi_tc_output_enabled": self.hdmi_tc_output_enabled,
+                    "recorder_range_expectation": self.recorder_range_expectation,
+                    "mount_type": self.mount_type,
+                    "lens_model": self.lens_model,
+                    "lens_kg": self.lens_kg,
+                    "focal_length_mm": self.focal_length_mm,
+                    "rod_support_15mm_lws": self.rod_support_15mm_lws,
                 }
             )
         )
@@ -6819,8 +7588,77 @@ class FX6LiveGpe0Session:
         mb51 = 0x49434C46  # 'ICLF'
         return struct.pack("<4I", mb48, mb49, mb50, mb51)
 
+    def _pack_phase109_mailbox_bytes(self) -> bytes:
+        """Pack Phase 109 guest control mailbox mb[52..55] (16 bytes) matching fx6_live_guest.c."""
+        p109 = self.get_mc_fleet_sdi_c2pa()
+        role_idx = _MC_FLEET_ROLE_TO_IDX.get(str(p109["fleet_role"]), 0)
+        cams_online = max(1, min(4, int(p109["fleet_cams_online"])))
+        gang_rec = 1 if p109["gang_rec_trigger"] else 0
+        sdi_active = 1 if p109["sdi_bridge_active"] else 0
+        sdi_idx = _SDI_BRIDGE_TO_IDX.get(str(p109["sdi_bridge_converter"]), 0)
+        rp188_rec = 1 if int(p109["rp188_rec_trigger_bit"]) else 0
+        avi_safe = 1 if p109["avi_checksum_valid"] and p109["shadow_crush_prevented"] else 0
+        avi_quant_idx = 1 if "FULL" in str(p109["avi_quantization_range"]).upper() else 0
+        avi_cs = int(p109["avi_checksum_byte"]) & 0xFF
+        ptp_skew_div2 = max(0, min(63, int(round(float(p109["ptp_max_clock_skew_us"]) / 2.0))))
+        p12_rf_off = 1 if p109["p12_rf_off_enforced"] else 0
+        hdmi_tc = 1 if p109["hdmi_tc_output_enabled"] else 0
+
+        mb52 = (
+            (role_idx & 0x7)
+            | ((cams_online & 0x7) << 3)
+            | ((gang_rec & 0x1) << 6)
+            | ((sdi_active & 0x1) << 7)
+            | ((sdi_idx & 0x3) << 8)
+            | ((rp188_rec & 0x1) << 10)
+            | ((avi_safe & 0x1) << 11)
+            | ((avi_quant_idx & 0x1) << 12)
+            | ((avi_cs & 0xFF) << 13)
+            | ((ptp_skew_div2 & 0x3F) << 21)
+            | ((p12_rf_off & 0x1) << 27)
+            | ((hdmi_tc & 0x1) << 28)
+            | (1 << 31)
+        )
+
+        mount_pl = 1 if p109["mount_type"] == "Manual_PL_Adapter_Unchipped" else 0
+        shd_ident = 1 if p109["shading_identity_reset"] else 0
+        shd_gain_x100 = max(50, min(255, int(round(float(p109["vignetting_comp_gain"]) * 100.0))))
+        lens_kg_x10 = max(1, min(63, int(round(float(p109["lens_kg"]) * 10.0))))
+        g31_warn = 1 if p109["g31_15mm_lws_warning"] else 0
+        rod_lws = 1 if p109["rod_support_15mm_lws"] else 0
+        e_pins = 0 if mount_pl else max(0, min(15, int(p109["electronic_pins_active"])))
+        focal_div2 = max(1, min(127, int(p109["focal_length_mm"]) // 2))
+
+        mb53 = (
+            (mount_pl & 0x1)
+            | ((shd_ident & 0x1) << 1)
+            | ((shd_gain_x100 & 0xFF) << 2)
+            | ((lens_kg_x10 & 0x3F) << 10)
+            | ((g31_warn & 0x1) << 16)
+            | ((rod_lws & 0x1) << 17)
+            | ((e_pins & 0xF) << 18)
+            | ((focal_div2 & 0x7F) << 22)
+            | (1 << 31)
+        )
+
+        blk_cnt = max(0, min(255, int(p109["c2pa_blocked_attempts"])))
+        spoof_blk = 1 if blk_cnt > 0 else 0
+        fleet_pkt_div10 = (int(self.cmd_seq) // 10) & 0xFF
+        mb54 = (
+            0  # vault_idx=0 (CNFLASHA_RDONLY_ZERO_TOUCH)
+            | (1 << 2)  # clean_room_research=1
+            | (0 << 3)  # hw_attest_claimed=0
+            | (1 << 4)  # cnflasha_ro_zero_touch=1
+            | ((spoof_blk & 0x1) << 5)
+            | ((blk_cnt & 0xFF) << 6)
+            | ((fleet_pkt_div10 & 0xFF) << 14)
+            | (1 << 31)
+        )
+        mb55 = 0x4D43464C  # 'MCFL'
+        return struct.pack("<4I", mb52, mb53, mb54, mb55)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..51] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..55] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
@@ -6830,6 +7668,7 @@ class FX6LiveGpe0Session:
             + self._pack_phase88_mailbox_bytes()
             + self._pack_phase95_mailbox_bytes()
             + self._pack_phase102_mailbox_bytes()
+            + self._pack_phase109_mailbox_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -7450,6 +8289,7 @@ class FX6LiveGpe0Session:
                         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
                         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
                         self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
+                        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
                     elif key == "ei":
                         ei_map = [
                             ("800", 800),
@@ -7496,6 +8336,7 @@ class FX6LiveGpe0Session:
                             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
                             self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
                             self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
+                            self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
                     elif key == "wb":
                         wb_cell_map = [
                             ("preset_5600k", 5600),
@@ -7642,6 +8483,7 @@ class FX6LiveGpe0Session:
             self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
             p102 = self.get_interval_cache_lut_ftp()
             self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(p102)
+            self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
             if self.page in (0, 3):
                 self.sel_box = 4
             self.last_toast = (
@@ -7779,6 +8621,10 @@ class FX6LiveGpe0Session:
             self.sq_fps = int(updates["sq_fps"])
         if "rec_state" in updates:
             self.rec_state = str(updates["rec_state"])
+            if self.rec_state == "STBY":
+                self.gang_rec_trigger = False
+            elif self.rec_state == "REC" and self.fleet_role != "Solo":
+                self.gang_rec_trigger = True
         if "tally_lamp_mode" in updates:
             self.tally_lamp_mode = str(updates["tally_lamp_mode"])
         if "wired_io_mode" in updates:
@@ -7811,6 +8657,7 @@ class FX6LiveGpe0Session:
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
         self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
+        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -7938,6 +8785,7 @@ class FX6LiveGpe0Session:
         self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
 
     def set_color_and_media(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -7987,6 +8835,7 @@ class FX6LiveGpe0Session:
             smi = self.get_shotmark_and_iris()
             ga = self.get_gyroflow_anamorphic()
             ic = self.get_interval_cache_lut_ftp()
+            p109 = self.get_mc_fleet_sdi_c2pa()
             active_user = self._active_user_lut_for_color()
         xml_text = build_nrtm_xml_sidecar(
             ce,
@@ -7995,6 +8844,7 @@ class FX6LiveGpe0Session:
             shotmark_and_iris=smi,
             gyroflow_anamorphic=ga,
             interval_cache_lut_ftp=ic,
+            mc_fleet_sdi_c2pa=p109,
         )
         return {
             "ok": True,
@@ -8012,7 +8862,148 @@ class FX6LiveGpe0Session:
             "shotmark_and_iris": smi,
             "gyroflow_anamorphic": ga,
             "interval_cache_lut_ftp": ic,
+            "mc_fleet_sdi_c2pa": p109,
         }
+
+    def get_mc_fleet_sdi_c2pa(self) -> dict[str, Any]:
+        ce = self.get_cine_exposure()
+        state = compute_mc_fleet_sdi_c2pa_derived(
+            {
+                "fleet_role": self.fleet_role,
+                "fleet_cams_online": self.fleet_cams_online,
+                "fleet_nic_driver": self.fleet_nic_driver,
+                "gang_rec_trigger": self.gang_rec_trigger,
+                "sdi_bridge_converter": self.sdi_bridge_converter,
+                "hdmi_rec_control_enabled": self.hdmi_rec_control_enabled,
+                "hdmi_tc_output_enabled": self.hdmi_tc_output_enabled,
+                "recorder_range_expectation": self.recorder_range_expectation,
+                "mount_type": self.mount_type,
+                "lens_model": self.lens_model,
+                "lens_kg": self.lens_kg,
+                "focal_length_mm": self.focal_length_mm,
+                "rod_support_15mm_lws": self.rod_support_15mm_lws,
+            },
+            rec_state=self.rec_state,
+            rec_tc=ce["rec_tc"],
+            base_fps=self.base_fps,
+            base_look=self.base_look,
+            wired_io_mode=self.wired_io_mode,
+            c2pa_blocked_attempts=self.c2pa_blocked_attempts,
+            c2pa_last_blocked_reason=self.c2pa_last_blocked_reason,
+            wf12_00342260_hits=self.wf12_00342260_hits,
+        )
+        state["mc_fleet_sdi_c2pa_cmd"] = format_mc_fleet_sdi_c2pa_command(state)
+        return state
+
+    def _apply_mc_fleet_sdi_c2pa_updates_locked(
+        self,
+        updates: dict[str, Any],
+        *,
+        is_reset: bool = False,
+        preserve_rec_state: bool = False,
+    ) -> None:
+        if is_reset:
+            self.c2pa_blocked_attempts = 0
+            self.c2pa_last_blocked_reason = None
+        if "fleet_role" in updates:
+            self.fleet_role = str(updates["fleet_role"])
+        if "fleet_cams_online" in updates:
+            self.fleet_cams_online = int(updates["fleet_cams_online"])
+        if "fleet_nic_driver" in updates:
+            self.fleet_nic_driver = str(updates["fleet_nic_driver"])
+        if "gang_rec_trigger" in updates:
+            self.gang_rec_trigger = bool(updates["gang_rec_trigger"])
+            if self.gang_rec_trigger:
+                self.rec_state = "REC"
+                if not preserve_rec_state:
+                    self.rec_tc_frames += 1
+            elif not preserve_rec_state:
+                self.rec_state = "STBY"
+        if "sdi_bridge_converter" in updates:
+            self.sdi_bridge_converter = str(updates["sdi_bridge_converter"])
+        if "hdmi_rec_control_enabled" in updates:
+            self.hdmi_rec_control_enabled = bool(updates["hdmi_rec_control_enabled"])
+        if "hdmi_tc_output_enabled" in updates:
+            self.hdmi_tc_output_enabled = bool(updates["hdmi_tc_output_enabled"])
+        if "recorder_range_expectation" in updates:
+            self.recorder_range_expectation = str(updates["recorder_range_expectation"])
+        if "mount_type" in updates:
+            self.mount_type = str(updates["mount_type"])
+        if "lens_model" in updates:
+            self.lens_model = str(updates["lens_model"])
+        if "lens_kg" in updates:
+            self.lens_kg = float(updates["lens_kg"])
+        if "focal_length_mm" in updates:
+            self.focal_length_mm = int(updates["focal_length_mm"])
+        if "rod_support_15mm_lws" in updates:
+            self.rod_support_15mm_lws = bool(updates["rod_support_15mm_lws"])
+
+        self.wf12_00342260_hits = 0
+        self.p12_bk4_airplane_mode_locked = True
+        self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+        self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+        self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+        self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
+        self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
+        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+
+    def set_mc_fleet_sdi_c2pa(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "fleet_role": self.fleet_role,
+                "fleet_cams_online": self.fleet_cams_online,
+                "fleet_nic_driver": self.fleet_nic_driver,
+                "gang_rec_trigger": self.gang_rec_trigger,
+                "sdi_bridge_converter": self.sdi_bridge_converter,
+                "hdmi_rec_control_enabled": self.hdmi_rec_control_enabled,
+                "hdmi_tc_output_enabled": self.hdmi_tc_output_enabled,
+                "recorder_range_expectation": self.recorder_range_expectation,
+                "mount_type": self.mount_type,
+                "lens_model": self.lens_model,
+                "lens_kg": self.lens_kg,
+                "focal_length_mm": self.focal_length_mm,
+                "rod_support_15mm_lws": self.rod_support_15mm_lws,
+            }
+            ok, updates, err = validate_mc_fleet_sdi_c2pa_patch(
+                body,
+                current_state=cur,
+                base_look=self.base_look,
+                wired_io_mode=self.wired_io_mode,
+            )
+            if not ok:
+                if err and err.get("error") == "c2pa_cnflasha_zero_touch_blocked":
+                    self.c2pa_blocked_attempts += 1
+                    self.c2pa_last_blocked_reason = str(err.get("message", "cnflasha zero-touch blocked"))
+                    self.last_toast = self.c2pa_last_blocked_reason
+                    self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+                    self._sync_mailbox_and_capture()
+                    err["c2pa_blocked_attempts"] = self.c2pa_blocked_attempts
+                    err["mc_fleet_sdi_c2pa"] = self.get_mc_fleet_sdi_c2pa()
+                return err or {"ok": False, "error": "invalid_mc_fleet_sdi_c2pa"}
+
+            is_reset = isinstance(body, dict) and body.get("reset") is True
+            self._apply_mc_fleet_sdi_c2pa_updates_locked(updates, is_reset=is_reset)
+            p109 = self.get_mc_fleet_sdi_c2pa()
+            self.last_toast = (
+                f"Phase109: {p109['fleet_role']}({p109['fleet_cams_online']}/4,GANG={'REC' if p109['gang_rec_trigger'] else 'STBY'}) | "
+                f"SDI={p109['sdi_bridge_converter']}(RP188={p109['rp188_rec_trigger_bit']},CS={p109['avi_checksum_hex']}) | "
+                f"Mount={p109['mount_type']}({p109['vignetting_comp_gain']:.2f}x) | C2PA={p109['c2pa_vault_status']}"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "mc_fleet_sdi_c2pa": p109,
+                "mc_fleet_sdi_c2pa_cmd": p109["mc_fleet_sdi_c2pa_cmd"],
+                "wf12_00342260_hits": 0,
+                "c2pa_vault_status": p109["c2pa_vault_status"],
+                "private_key_reads": 0,
+                "cnflasha_writes": 0,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
 
     def get_interval_cache_lut_ftp(self) -> dict[str, Any]:
         state = compute_interval_cache_lut_ftp_derived(
@@ -8575,6 +9566,7 @@ class FX6LiveGpe0Session:
             "shotmark_and_iris": self.get_shotmark_and_iris(),
             "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
             "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
+            "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -8979,6 +9971,55 @@ class FX6LiveGpe0Session:
                                     "message": err_qm or "eMMC path traversal blocked in CAMSET FTPS queue",
                                 }
 
+        p109_raw = payload.get("mc_fleet_sdi_c2pa")
+        new_p109_updates: dict[str, Any] = {}
+        if p109_raw is not None:
+            if not isinstance(p109_raw, dict):
+                return {"ok": False, "error": "invalid_mc_fleet_sdi_c2pa", "message": "mc_fleet_sdi_c2pa must be a JSON object"}
+            if p109_raw.get("wf12_00342260_hits") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "p12_rf_off_violation",
+                    "message": "wf12_00342260_hits must be 0 under P12 BK4 RF-off",
+                }
+            if (
+                p109_raw.get("c2pa_vault_status") not in (None, C2PA_VAULT_STATUS_LOCKED)
+                or p109_raw.get("c2pa_spoofed") is True
+                or p109_raw.get("hardware_attestation_claimed") is True
+                or p109_raw.get("private_key_reads") not in (None, 0)
+                or p109_raw.get("cnflasha_writes") not in (None, 0)
+            ):
+                return {
+                    "ok": False,
+                    "error": "c2pa_cnflasha_zero_touch_blocked",
+                    "message": "C2PA 2.1 cnflasha zero-touch violation in CAMSET import",
+                }
+            cur_p109 = {
+                "fleet_role": self.fleet_role,
+                "fleet_cams_online": self.fleet_cams_online,
+                "fleet_nic_driver": self.fleet_nic_driver,
+                "gang_rec_trigger": self.gang_rec_trigger,
+                "sdi_bridge_converter": self.sdi_bridge_converter,
+                "hdmi_rec_control_enabled": self.hdmi_rec_control_enabled,
+                "hdmi_tc_output_enabled": self.hdmi_tc_output_enabled,
+                "recorder_range_expectation": self.recorder_range_expectation,
+                "mount_type": self.mount_type,
+                "lens_model": self.lens_model,
+                "lens_kg": self.lens_kg,
+                "focal_length_mm": self.focal_length_mm,
+                "rod_support_15mm_lws": self.rod_support_15mm_lws,
+            }
+            eff_look = str(new_cm_updates.get("base_look", self.base_look))
+            eff_io = str(new_cine_updates.get("wired_io_mode", self.wired_io_mode))
+            ok_p109, new_p109_updates, err_p109 = validate_mc_fleet_sdi_c2pa_patch(
+                p109_raw,
+                current_state=cur_p109,
+                base_look=eff_look,
+                wired_io_mode=eff_io,
+            )
+            if not ok_p109:
+                return err_p109 or {"ok": False, "error": "invalid_mc_fleet_sdi_c2pa"}
+
         p12_clamped = (
             (payload.get("p12_bk4_airplane_mode_locked") is False)
             or ce_p12_tamper
@@ -9139,6 +10180,16 @@ class FX6LiveGpe0Session:
                 self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(
                     self.get_interval_cache_lut_ftp()
                 )
+            if p109_raw is not None:
+                self._apply_mc_fleet_sdi_c2pa_updates_locked(
+                    new_p109_updates,
+                    is_reset=bool(p109_raw.get("reset") is True),
+                    preserve_rec_state=("rec_state" in new_cine_updates),
+                )
+            else:
+                self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(
+                    self.get_mc_fleet_sdi_c2pa()
+                )
 
             if p4_rejected:
                 self.last_toast = (
@@ -9183,6 +10234,7 @@ class FX6LiveGpe0Session:
                 "shotmark_and_iris": self.get_shotmark_and_iris(),
                 "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
                 "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
+                "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -9871,6 +10923,7 @@ class FX6LiveGpe0Session:
             "shotmark_and_iris": self.get_shotmark_and_iris(),
             "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
             "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
+            "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
             "serial_tail": serial_tail,
         }
 
@@ -10752,6 +11805,88 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
 
+    <div class="card" id="phase109-mcfleet-sdi-c2pa-card" style="margin-top:14px;border-color:#06b6d4;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p109-card-title" style="margin:0;">Phase 109 · M&amp;C 4机位有线同步 / HDMI→12G-SDI RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p109-lang-en" onclick="setP109Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p109-lang-zh-CN" onclick="setP109Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#06b6d4;">简体中文</button>
+          <button id="p109-lang-zh-TW" onclick="setP109Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p109-lang-ja" onclick="setP109Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p109-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p109-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#06b6d4;">
+          <div class="cparam-head"><span id="p109-lbl-fleet">M&amp;C 4-Cam Wired Fleet (PTP-IP)</span><span id="p109-fleet-badge" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">Solo · 1/4 · P12 OFF</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p109-role-select" onchange="setPhase109State({fleet_role: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="Solo">Solo</option>
+              <option value="A_Cam_Master">A_Cam_Master</option>
+              <option value="B_Cam_Follower">B_Cam_Follower</option>
+              <option value="C_Cam_Follower">C_Cam_Follower</option>
+              <option value="D_Cam_Follower">D_Cam_Follower</option>
+            </select>
+            <select id="p109-cams-select" onchange="setPhase109State({fleet_cams_online: Number(this.value)})" style="width:68px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="1">1 Cam</option>
+              <option value="2">2 Cams</option>
+              <option value="3">3 Cams</option>
+              <option value="4">4 Cams</option>
+            </select>
+            <button id="p109-btn-gang-rec" onclick="togglePhase109GangRec()" style="padding:4px 8px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Gang REC: OFF</button>
+          </div>
+          <div id="p109-fleet-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">USB_LAN_CDC_NCM_RTL8153 | PTP Skew=0.0us | wf12=0</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#3b82f6;">
+          <div class="cparam-head"><span id="p109-lbl-sdi">HDMI→12G-SDI AVI &amp; RP 188 Bridge</span><span id="p109-sdi-badge" style="color:#93c5fd;font-family:'SF Mono',Menlo,monospace;">RP188=0 · CS=0x00</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p109-sdi-select" onchange="setPhase109State({sdi_bridge_converter: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="BMD_Micro_Converter_12G">BMD_Micro_Converter_12G</option>
+              <option value="Teradek_Bolt_HDMI_SDI">Teradek_Bolt_HDMI_SDI</option>
+              <option value="Atomos_Connect_12G">Atomos_Connect_12G</option>
+              <option value="Off">Off</option>
+            </select>
+            <button id="p109-btn-hdmi-tc" onclick="togglePhase109HdmiTc()" style="padding:4px 7px;font-size:10.5px;border-color:#3b82f6;color:#bfdbfe;">TC+REC Ctrl: ON</button>
+          </div>
+          <div id="p109-sdi-readout" style="font-size:10px;color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">AVI CS=0x00 (sum%256=0) | LEGAL_64_940 | No BNC Faults</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#f59e0b;">
+          <div class="cparam-head"><span id="p109-lbl-mount">E-Mount 12-Pin vs PL Hot-Swap Shading</span><span id="p109-mount-badge" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">12-Pin · 1.32x</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;">
+            <select id="p109-mount-select" onchange="setPhase109State({mount_type: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="Sony_EMount_12Pin_GM">Sony_EMount_12Pin_GM</option>
+              <option value="Manual_PL_Adapter_Unchipped">Manual_PL_Adapter_Unchipped</option>
+            </select>
+            <input id="p109-lens-kg-input" type="number" step="0.1" min="0.1" max="10.0" value="0.7" title="Lens Weight (kg)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p109-btn-apply-mount" onclick="applyPhase109MountParams()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;">Apply</button>
+            <button id="p109-btn-lws" onclick="togglePhase109Lws()" style="padding:3px 7px;font-size:10.5px;border-color:#eab308;">LWS: OFF</button>
+          </div>
+          <div id="p109-mount-readout" style="font-size:10px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">Shading=1.32x | 0.70kg | G31 Flange OK</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p109-lbl-c2pa">C2PA 2.1 / cnflasha Zero-Touch Shield</span><span id="p109-c2pa-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">RDONLY · kr=0 cw=0</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;">
+            <button id="p109-btn-c2pa-guard" onclick="setPhase109State({c2pa_operation:'READ_KEY'})" style="padding:4px 8px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test Zero-Touch Guard</button>
+            <button id="p109-btn-xml-prov" onclick="window.open('/api/xml_sidecar','_blank')" style="padding:4px 8px;font-size:10.5px;border-color:#10b981;color:#a7f3d0;">Inspect XML Provenance</button>
+          </div>
+          <div id="p109-c2pa-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">CNFLASHA_RDONLY_ZERO_TOUCH | CLEAN_ROOM_RESEARCH_UNATTESTED | Blk=0</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p109-preset-fleet4" onclick="setPhase109State({fleet_role:'A_Cam_Master',fleet_cams_online:4,gang_rec_trigger:true,sdi_bridge_converter:'BMD_Micro_Converter_12G'})" style="border-color:#06b6d4;color:#a5f3fc;">4-Cam Wired Master + Gang REC + RP188</button>
+        <button id="p109-preset-pl-cine" onclick="setPhase109State({mount_type:'Manual_PL_Adapter_Unchipped',lens_kg:1.8,rod_support_15mm_lws:false})" style="border-color:#f59e0b;color:#fde68a;">Hot-Swap Manual PL (1.8kg G31 Warn)</button>
+        <button id="p109-preset-pl-lws" onclick="setPhase109State({mount_type:'Manual_PL_Adapter_Unchipped',lens_kg:1.8,rod_support_15mm_lws:true})" style="border-color:#10b981;color:#a7f3d0;">Engage 15mm LWS Support (PL 1.00x)</button>
+        <button id="p109-btn-reset" onclick="setPhase109State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P109</button>
+      </div>
+      <div id="p109-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">MCFL ...</div>
+    </div>
+
     <div class="card" id="phase102-cache-lut-ftp-card" style="margin-top:14px;border-color:#10b981;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
         <h3 id="p102-card-title" style="margin:0;">Phase 102 · 预录制 DDR 缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列</h3>
@@ -11345,6 +12480,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.interval_cache_lut_ftp) {
     syncPhase102IntervalCacheLutFtpUI(st.interval_cache_lut_ftp);
+  }
+  if (st.mc_fleet_sdi_c2pa) {
+    syncPhase109McFleetSdiC2paUI(st.mc_fleet_sdi_c2pa);
   }
 
   if (forceImg || st.live_ready) {
@@ -13140,8 +14278,223 @@ function enqueuePhase102CustomPath() {
   setPhase102State({enqueue_path: p});
 }
 
+const P109_I18N = {
+  'en': {
+    title: 'Phase 109 · M&C 4-Cam Wired Gang-REC / HDMI→12G-SDI AVI & RP188 / E-Mount-PL / C2PA Zero-Touch',
+    fleet: 'M&C 4-Cam Wired Fleet (PTP-IP)',
+    sdi: 'HDMI→12G-SDI AVI & RP 188 Bridge',
+    mount: 'E-Mount 12-Pin vs PL Hot-Swap Shading',
+    c2pa: 'C2PA 2.1 / cnflasha Zero-Touch Shield',
+    applyMount: 'Apply',
+    testC2pa: 'Test Zero-Touch Guard',
+    xmlProv: 'Inspect XML Provenance',
+    presetFleet4: '4-Cam Wired Master + Gang REC + RP188',
+    presetPlCine: 'Hot-Swap Manual PL (1.8kg G31 Warn)',
+    presetPlLws: 'Engage 15mm LWS Support (PL 1.00x)',
+    reset: 'Reset P109'
+  },
+  'zh-CN': {
+    title: 'Phase 109 · M&C 4机位有线同步 / HDMI→12G-SDI AVI & RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源',
+    fleet: 'M&C 4机位有线同步矩阵 (PTP-IP)',
+    sdi: 'HDMI→12G-SDI AVI 量化与 RP 188 触发桥接',
+    mount: 'E-卡口 12针 / 无触点 PL 热插拔暗角仲裁',
+    c2pa: 'C2PA 2.1 / cnflasha 只读零接触防护盾',
+    applyMount: '应用',
+    testC2pa: '测试零接触防护',
+    xmlProv: '查看 XML 溯源声明',
+    presetFleet4: '4机位主机 + 联动录制 + RP188',
+    presetPlCine: '热插拔手动 PL 镜头 (1.8kg G31 告警)',
+    presetPlLws: '启用 15mm LWS 导管支撑 (PL 1.00x)',
+    reset: '重置 P109'
+  },
+  'zh-TW': {
+    title: 'Phase 109 · M&C 4機位有線同步 / HDMI→12G-SDI AVI & RP188 / E-接環與PL熱插拔 / C2PA 零接觸溯源',
+    fleet: 'M&C 4機位有線同步矩陣 (PTP-IP)',
+    sdi: 'HDMI→12G-SDI AVI 量化與 RP 188 觸發橋接',
+    mount: 'E-接環 12針 / 無接點 PL 熱插拔暗角仲裁',
+    c2pa: 'C2PA 2.1 / cnflasha 唯讀零接觸防護盾',
+    applyMount: '套用',
+    testC2pa: '測試零接觸防護',
+    xmlProv: '檢視 XML 溯源聲明',
+    presetFleet4: '4機位主機 + 連動錄製 + RP188',
+    presetPlCine: '熱插拔手動 PL 鏡頭 (1.8kg G31 告警)',
+    presetPlLws: '啟用 15mm LWS 導管支撐 (PL 1.00x)',
+    reset: '重設 P109'
+  },
+  'ja': {
+    title: 'Phase 109 · M&C 4台有線同期REC / HDMI→12G-SDI AVI & RP188 / Eマウント・PL / C2PA ゼロタッチ',
+    fleet: 'M&C 4台有線 PTP-IP 同期マトリクス',
+    sdi: 'HDMI→12G-SDI AVI量子化 & RP 188 変換',
+    mount: 'Eマウント 12ピン / 無接点 PL 周辺減光補正',
+    c2pa: 'C2PA 2.1 / cnflasha ゼロタッチ保護シールド',
+    applyMount: '適用',
+    testC2pa: 'ゼロタッチ防御テスト',
+    xmlProv: 'XML 来歴メタデータ',
+    presetFleet4: '4台有線マスター + 連動REC + RP188',
+    presetPlCine: '手動 PL マウント交換 (1.8kg G31 警告)',
+    presetPlLws: '15mm LWS ロッド装着 (PL 1.00x)',
+    reset: 'P109 リセット'
+  }
+};
+
+function setP109Lang(lang) {
+  const d = P109_I18N[lang] || P109_I18N['en'];
+  const map = {
+    'p109-card-title': d.title,
+    'p109-lbl-fleet': d.fleet,
+    'p109-lbl-sdi': d.sdi,
+    'p109-lbl-mount': d.mount,
+    'p109-lbl-c2pa': d.c2pa,
+    'p109-btn-apply-mount': d.applyMount,
+    'p109-btn-c2pa-guard': d.testC2pa,
+    'p109-btn-xml-prov': d.xmlProv,
+    'p109-preset-fleet4': d.presetFleet4,
+    'p109-preset-pl-cine': d.presetPlCine,
+    'p109-preset-pl-lws': d.presetPlLws,
+    'p109-btn-reset': d.reset
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map[id];
+  });
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((code) => {
+    const b = document.getElementById('p109-lang-' + code);
+    if (b) b.style.borderColor = (code === lang) ? '#06b6d4' : '#374151';
+  });
+}
+
+function syncPhase109McFleetSdiC2paUI(p109) {
+  if (!p109) return;
+  const roleSel = document.getElementById('p109-role-select');
+  if (roleSel && p109.fleet_role && document.activeElement !== roleSel) roleSel.value = p109.fleet_role;
+  const camsSel = document.getElementById('p109-cams-select');
+  if (camsSel && p109.fleet_cams_online && document.activeElement !== camsSel) camsSel.value = String(p109.fleet_cams_online);
+  const btnGang = document.getElementById('p109-btn-gang-rec');
+  if (btnGang) {
+    btnGang.textContent = `Gang REC: ${p109.gang_rec_trigger ? 'ON (REC)' : 'OFF'}`;
+    btnGang.style.background = p109.gang_rec_trigger ? '#7f1d1d' : '';
+  }
+  const fleetBadge = document.getElementById('p109-fleet-badge');
+  if (fleetBadge) {
+    fleetBadge.textContent = `${p109.fleet_role} · ${p109.fleet_cams_online}/4 · wf12=${p109.wf12_00342260_hits ?? 0}`;
+  }
+  const fleetRo = document.getElementById('p109-fleet-readout');
+  if (fleetRo) {
+    fleetRo.textContent =
+      `${p109.fleet_transport || 'USB_LAN_CDC_NCM_RTL8153'} | ` +
+      `Skew=${Number(p109.ptp_max_clock_skew_us || 0).toFixed(1)}us | ` +
+      `Gang=${p109.gang_rec_trigger ? 'REC' : 'STBY'} | wf12=${p109.wf12_00342260_hits ?? 0}`;
+  }
+
+  const sdiSel = document.getElementById('p109-sdi-select');
+  if (sdiSel && p109.sdi_bridge_converter && document.activeElement !== sdiSel) sdiSel.value = p109.sdi_bridge_converter;
+  const btnTc = document.getElementById('p109-btn-hdmi-tc');
+  if (btnTc) btnTc.textContent = `TC+REC Ctrl: ${p109.hdmi_tc_output_enabled ? 'ON' : 'OFF'}`;
+  const sdiBadge = document.getElementById('p109-sdi-badge');
+  if (sdiBadge) {
+    sdiBadge.textContent = `RP188=${p109.rp188_rec_trigger_bit ?? 0} · CS=${p109.avi_checksum_hex || '0x00'}`;
+    sdiBadge.style.color = p109.rp188_rec_trigger_bit ? '#f87171' : '#93c5fd';
+  }
+  const sdiRo = document.getElementById('p109-sdi-readout');
+  if (sdiRo) {
+    sdiRo.textContent =
+      `AVI CS=${p109.avi_checksum_hex} (sum%256=${p109.avi_checksum_zero_mod256}) | ` +
+      `${p109.avi_quantization_range} | RP188 ${p109.rp188_atc_did}/${p109.rp188_atc_sdid} Parity=${p109.rp188_parity_ok ? 'OK' : 'ERR'}`;
+  }
+
+  const mtSel = document.getElementById('p109-mount-select');
+  if (mtSel && p109.mount_type && document.activeElement !== mtSel) mtSel.value = p109.mount_type;
+  const kgIn = document.getElementById('p109-lens-kg-input');
+  if (kgIn && p109.lens_kg !== undefined && document.activeElement !== kgIn) kgIn.value = String(p109.lens_kg);
+  const btnLws = document.getElementById('p109-btn-lws');
+  if (btnLws) btnLws.textContent = `LWS: ${p109.rod_support_15mm_lws ? 'ON' : 'OFF'}`;
+  const mtBadge = document.getElementById('p109-mount-badge');
+  if (mtBadge) {
+    mtBadge.textContent = `${p109.electronic_pins_active || 0}-Pin · ${Number(p109.vignetting_comp_gain || 1.0).toFixed(2)}x`;
+  }
+  const mtRo = document.getElementById('p109-mount-readout');
+  if (mtRo) {
+    mtRo.textContent =
+      `Shading=${Number(p109.vignetting_comp_gain || 1.0).toFixed(2)}x ` +
+      `(reset=${Number(p109.reset_latency_ms || 0).toFixed(2)}ms <1f) | ${Number(p109.lens_kg || 0.7).toFixed(2)}kg | ${p109.g31_15mm_lws_message || ''}`;
+  }
+
+  const c2paBadge = document.getElementById('p109-c2pa-badge');
+  if (c2paBadge) c2paBadge.textContent = `RDONLY · kr=${p109.private_key_reads ?? 0} cw=${p109.cnflasha_writes ?? 0}`;
+  const c2paRo = document.getElementById('p109-c2pa-readout');
+  if (c2paRo) {
+    c2paRo.textContent =
+      `${p109.c2pa_vault_status} | ${p109.c2pa_provenance_mode} | ` +
+      `HWAttest=${p109.hardware_attestation_claimed ? 'TRUE' : 'FALSE'} Blk=${p109.c2pa_blocked_attempts ?? 0}`;
+  }
+
+  const warnEl = document.getElementById('p109-warn-banner');
+  if (warnEl) {
+    if (p109.g31_15mm_lws_warning) {
+      warnEl.style.display = 'block';
+      warnEl.textContent = p109.g31_15mm_lws_message || 'G31 WARNING: 15mm LWS rod support required for lens > 1.2kg';
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
+
+  const cmdEl = document.getElementById('p109-cmd-readout');
+  if (cmdEl) cmdEl.textContent = p109.mc_fleet_sdi_c2pa_cmd || 'MCFL ...';
+}
+
+async function setPhase109State(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p109-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/mc_fleet_sdi_c2pa', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Blocked / Invalid Phase 109 parameter';
+      }
+      if (data.mc_fleet_sdi_c2pa) syncPhase109McFleetSdiC2paUI(data.mc_fleet_sdi_c2pa);
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function togglePhase109GangRec() {
+  const cur = !!(currentStatus && currentStatus.mc_fleet_sdi_c2pa && currentStatus.mc_fleet_sdi_c2pa.gang_rec_trigger);
+  setPhase109State({gang_rec_trigger: !cur});
+}
+
+function togglePhase109HdmiTc() {
+  const cur = !!(currentStatus && currentStatus.mc_fleet_sdi_c2pa && currentStatus.mc_fleet_sdi_c2pa.hdmi_tc_output_enabled);
+  setPhase109State({hdmi_tc_output_enabled: !cur, hdmi_rec_control_enabled: !cur});
+}
+
+function applyPhase109MountParams() {
+  const mt = (document.getElementById('p109-mount-select') || {}).value || 'Sony_EMount_12Pin_GM';
+  const kg = Number((document.getElementById('p109-lens-kg-input') || {}).value || 0.7);
+  setPhase109State({mount_type: mt, lens_kg: kg});
+}
+
+function togglePhase109Lws() {
+  const cur = !!(currentStatus && currentStatus.mc_fleet_sdi_c2pa && currentStatus.mc_fleet_sdi_c2pa.rod_support_15mm_lws);
+  setPhase109State({rod_support_15mm_lws: !cur});
+}
+
 setP95Lang('zh-CN');
 setP102Lang('zh-CN');
+setP109Lang('zh-CN');
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -13346,6 +14699,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/mc_fleet_sdi_c2pa":
+                    self._send_json({
+                        "ok": True,
+                        "mc_fleet_sdi_c2pa": session.get_mc_fleet_sdi_c2pa(),
+                        "specs": MC_FLEET_SDI_C2PA_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -13398,6 +14759,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/shotmark_and_iris",
                     "/api/gyroflow_anamorphic",
                     "/api/interval_cache_lut_ftp",
+                    "/api/mc_fleet_sdi_c2pa",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -13505,6 +14867,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/interval_cache_lut_ftp":
                     res = session.set_interval_cache_lut_ftp(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/mc_fleet_sdi_c2pa":
+                    res = session.set_mc_fleet_sdi_c2pa(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

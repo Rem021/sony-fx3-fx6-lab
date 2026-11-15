@@ -122,6 +122,17 @@
  *              bit5=p4_nd_clear_clamped, bits6..13=last_d2xx_low, bits14..20=blocked_flash_cnt,
  *              bits21..27=safe_cmd_cnt, bits28..30=last_action_kind, bit31=valid)
  *     mb[63] = 0x55564353 ('UVCS') Phase 123 UVC 1.5/UAC 2.0 / Wired SRT-RTMPS / CRSDK PTP Firewall magic tag
+ *     mb[64] = phase129_mxf_bridge (bits0..1=container_mode(0=MP4_ISOBMFF_RTMD,1=MXF_OP1A_RDD09_WRAP,2=DUAL_MP4_PLUS_MXF_SIDECAR),
+ *              bits2..9=umid_digest8, bits10..13=gamma_idx, bits14..23=ei_div100, bit24=zero_essence_loss(1),
+ *              bit25=emmc_mutation_zero(1), bit26=rdd18_klv_valid(1), bit27=mxf_blk_flag, bits28..30=mxf_blk_cnt, bit31=valid)
+ *     mb[65] = phase129_ptpv2_ltc (bits0..1=sync_mode(0=OFF,1=PTPV2_SLAVE_WIRED,2=LTC_MULTITERMINAL_FALLBACK),
+ *              bit2=servo_locked, bit3=ltc_holdover_active, bit4=p12_wlan_off(1), bit5=wf12_zero(1), bit6=cdc_ncm_wired(1),
+ *              bits7..18=offset_ns(0..4095), bits19..24=holdover_slip_mframes(0..63), bits25..30=p12_blk_cnt, bit31=valid)
+ *     mb[66] = phase129_tsl_tally_umd (bits0..1=tally_state(0=OFF,1=PVW_GREEN,2=PGM_RED,3=PGM_PLUS_PVW),
+ *              bit2=stealth_led_mute, bit3=osd_tally_indicator, bit4=p12_wlan_off(1), bit5=tcp_dle_stx,
+ *              bit6=fx6_green_gpio_zero_fault(1), bits7..9=cam_slot_0to7(CAM1..CAM8), bits10..30=3x7bit UMD tag, bit31=valid)
+ *     mb[67] = 0x4d584654 ('MXFT') Phase 129 XAVC MXF/MP4 RDD-18/UMID / ST 2059-2 PTPv2-LTC / TSL UMD v5.0 Tally magic tag
+ *     mb[68..71] = 16-byte NUL-terminated dynamic 16-char TSL UMD camera nameplate (UTF-8/ASCII)
  */
 #include "fx6_static_assist.h"
 
@@ -1117,6 +1128,10 @@ static uint32_t g_live_p116_raw_breathing   = 0x80c809c0u; /* valid=1, crop=1.00
 static uint32_t g_live_p123_uvc_uac         = 0x820000c0u; /* valid=1, uac_ch=2, clean_feed=1, uac=1, uvc=OFF */
 static uint32_t g_live_p123_srt_rtmps       = 0x80660788u; /* valid=1, wired=1, p12_wlan_off=1, 12Mbps, 120ms, AES-256, srt=OFF */
 static uint32_t g_live_p123_crsdk_ptp       = 0x8000043cu; /* valid=1, d2xx=0x10, nd_clr=1, p12=1, emmc0=1, blk=1, ptp=OFF */
+static uint32_t g_live_p129_mxf_bridge    = 0x870203c4u; /* valid=1, klv=1, emmc0=1, loss0=1, ei=800, gamma=s-cinetone, umid=0xf1, mode=MP4_RTMD */
+static uint32_t g_live_p129_ptpv2_ltc     = 0x80000070u; /* valid=1, cdc_ncm=1, wf12_0=1, p12_wlan_off=1, sync=OFF */
+static uint32_t g_live_p129_tsl_tally_umd = 0xb3b11858u; /* valid=1, tag=FX3, cam=CAM1, green_ok=1, p12=1, osd=1, tally=OFF */
+static char     g_live_p129_umd_name[20]  = "FX3-CAM1-STUDIO";
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -1161,6 +1176,35 @@ static void fx6_unpack_lut_name(const volatile uint32_t *mb, char *out, unsigned
         }
     }
     out[pos] = 0;
+}
+
+static void fx6_unpack_umd_name(const volatile uint32_t *mb, uint32_t mb66, char *out, unsigned max_len) {
+    if (!out || max_len == 0u) return;
+    out[0] = 0;
+    if (mb && mb[68u] != 0u) {
+        unsigned pos = 0u;
+        for (unsigned w = 0u; w < 4u && pos + 1u < max_len; w++) {
+            uint32_t word = mb[68u + w];
+            for (unsigned b = 0u; b < 4u && pos + 1u < max_len; b++) {
+                unsigned char ch = (unsigned char)((word >> (b * 8u)) & 0xffu);
+                if (ch == 0u) {
+                    out[pos] = 0;
+                    return;
+                }
+                out[pos++] = (ch >= 0x20u && ch != 0x7fu) ? (char)ch : '?';
+            }
+        }
+        out[pos] = 0;
+        if (pos > 0u) return;
+    }
+    uint32_t cam_slot = (mb66 >> 7) & 0x07u;
+    if (max_len >= 5u) {
+        out[0] = 'C';
+        out[1] = 'A';
+        out[2] = 'M';
+        out[3] = (char)('1' + cam_slot);
+        out[4] = 0;
+    }
 }
 
 static const fx6_cell_spec_t g_cell_specs[6] = {
@@ -3926,6 +3970,198 @@ static void fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(uint64_t appfw, uint32
     }
 }
 
+static void fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p129_mxf_bridge & 0x80000000u) ||
+        !(g_live_p129_ptpv2_ltc & 0x80000000u) ||
+        !(g_live_p129_tsl_tally_umd & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_mxf_lbl[4]   = { "MP4-RTMD", "OP1A-RDD09", "DUAL-MXF", "MP4-RTMD" };
+    static const char * const k_gamma_lbl[6] = { "CINE", "SL3C", "SL3", "709", "HLG", "CINE" };
+    static const char * const k_sync_lbl[4]  = { "OFF", "PTP2", "LTC-HO", "OFF" };
+    static const char * const k_tly_lbl[4]   = { "OFF", "PVW", "PGM", "PGM+PVW" };
+
+    uint32_t container_idx   = g_live_p129_mxf_bridge & 0x03u;
+    if (container_idx > 2u) container_idx = 0u;
+    uint32_t umid_digest8    = (g_live_p129_mxf_bridge >> 2) & 0xffu;
+    uint32_t gamma_idx       = (g_live_p129_mxf_bridge >> 10) & 0x0fu;
+    if (gamma_idx > 4u) gamma_idx = 0u;
+    uint32_t ei_val          = ((g_live_p129_mxf_bridge >> 14) & 0x3ffu) * 100u;
+    if (ei_val < 200u) ei_val = 800u;
+    uint32_t zero_loss       = (g_live_p129_mxf_bridge >> 24) & 0x01u;
+    uint32_t emmc_zero       = (g_live_p129_mxf_bridge >> 25) & 0x01u;
+    uint32_t klv_valid       = (g_live_p129_mxf_bridge >> 26) & 0x01u;
+    uint32_t mxf_blk_cnt     = (g_live_p129_mxf_bridge >> 28) & 0x07u;
+
+    uint32_t sync_mode       = g_live_p129_ptpv2_ltc & 0x03u;
+    if (sync_mode > 2u) sync_mode = 0u;
+    uint32_t servo_locked    = (g_live_p129_ptpv2_ltc >> 2) & 0x01u;
+    uint32_t ltc_holdover    = (g_live_p129_ptpv2_ltc >> 3) & 0x01u;
+    uint32_t p12_wlan_off    = (g_live_p129_ptpv2_ltc >> 4) & 0x01u;
+    uint32_t wf12_zero       = (g_live_p129_ptpv2_ltc >> 5) & 0x01u;
+    uint32_t offset_ns       = (g_live_p129_ptpv2_ltc >> 7) & 0xfffu;
+    uint32_t slip_mf         = (g_live_p129_ptpv2_ltc >> 19) & 0x3fu;
+    uint32_t p12_blk_cnt     = (g_live_p129_ptpv2_ltc >> 25) & 0x3fu;
+
+    uint32_t tally_state     = g_live_p129_tsl_tally_umd & 0x03u;
+    uint32_t stealth_mute    = (g_live_p129_tsl_tally_umd >> 2) & 0x01u;
+    uint32_t osd_tally_on    = (g_live_p129_tsl_tally_umd >> 3) & 0x01u;
+    uint32_t tcp_dle_stx     = (g_live_p129_tsl_tally_umd >> 5) & 0x01u;
+    uint32_t green_gpio_ok   = (g_live_p129_tsl_tally_umd >> 6) & 0x01u;
+    uint32_t cam_slot        = (g_live_p129_tsl_tally_umd >> 7) & 0x07u;
+
+    /* 1. Studio Broadcast TSL UMD v5.0 Perimeter Tally Frame Border (ARGB8888) */
+    if (tally_state > 0u && osd_tally_on) {
+        uint32_t outer_c = (tally_state == 1u) ? 0xFF10B981u : 0xFFEF4444u;
+        uint32_t inner_c = (tally_state == 1u) ? 0xFF047857u : ((tally_state == 3u) ? 0xFF10B981u : 0xFFB91C1Cu);
+        /* 4px outer border around full 1024x540 frame */
+        fx6_osd_fill_rect(0, 0, FX6_W, 4, outer_c);
+        fx6_osd_fill_rect(0, FX6_H - 4, FX6_W, 4, outer_c);
+        fx6_osd_fill_rect(0, 0, 4, FX6_H, outer_c);
+        fx6_osd_fill_rect(FX6_W - 4, 0, 4, FX6_H, outer_c);
+        /* 3px inner accent border */
+        fx6_osd_fill_rect(4, 4, FX6_W - 8, 3, inner_c);
+        fx6_osd_fill_rect(4, FX6_H - 7, FX6_W - 8, 3, inner_c);
+        fx6_osd_fill_rect(4, 4, 3, FX6_H - 8, inner_c);
+        fx6_osd_fill_rect(FX6_W - 7, 4, 3, FX6_H - 8, inner_c);
+    }
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (container_idx > 0u || mxf_blk_cnt > 0u ||
+                       sync_mode > 0u || ltc_holdover || p12_blk_cnt > 0u ||
+                       tally_state > 0u || stealth_mute || tcp_dle_stx || cam_slot > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int row1_y = 350;
+    const int row2_y = 382;
+
+    /* 2. Left Badge (x=18..342): XAVC MXF OP1a <-> MP4 RDD-18/UMID Container Bridge */
+    {
+        int bx = 18, bw = 324, bh = 28;
+        uint32_t bg = mxf_blk_cnt ? 0xFF7F1D1Du : (container_idx > 0u ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t bd = mxf_blk_cnt ? 0xFFEF4444u : (container_idx > 0u ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, (zero_loss && emmc_zero && klv_valid) ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, container_idx > 0u ? 0xFF34D399u : 0xFF38BDF8u);
+
+        char mlbl[64];
+        unsigned mp = 0u;
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), "[MXF:");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), k_mxf_lbl[container_idx]);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " U:");
+        mp = fx6_append_hex2(mlbl, mp, sizeof(mlbl), umid_digest8);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), k_gamma_lbl[gamma_idx]);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " EI");
+        mp = fx6_append_uint(mlbl, mp, sizeof(mlbl), ei_val);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), zero_loss ? " L0]" : " L!]");
+        (void)mp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, mlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 3. Center Badge (x=350..674): SMPTE ST 2059-2 PTPv2 vs LTC Frame-Phase Servo + P12 */
+    {
+        int bx = 350, bw = 324, bh = 28;
+        uint32_t bg = p12_blk_cnt ? 0xFF78350Fu : (ltc_holdover ? 0xFF451A03u : (servo_locked ? 0xFF083344u : 0xFF0F172Au));
+        uint32_t bd = p12_blk_cnt ? 0xFFF59E0Bu : (ltc_holdover ? 0xFFF59E0Bu : (servo_locked ? 0xFF22D3EEu : 0xFF475569u));
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, (p12_wlan_off && wf12_zero) ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, 0xFF1E293Bu);
+        if (sync_mode > 0u) {
+            int bar_w = servo_locked ? (ltc_holdover ? 38 : 54) : 14;
+            fx6_osd_fill_rect(bx + 6, row1_y + 21, bar_w, 3, ltc_holdover ? 0xFFF59E0Bu : 0xFF22D3EEu);
+        }
+
+        char plbl[64];
+        unsigned pp = 0u;
+        pp = fx6_append_cstr(plbl, pp, sizeof(plbl), "[");
+        pp = fx6_append_cstr(plbl, pp, sizeof(plbl), k_sync_lbl[sync_mode]);
+        if (sync_mode == 1u) {
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), servo_locked ? ":LOCK " : ":UNLOCK ");
+            pp = fx6_append_uint(plbl, pp, sizeof(plbl), offset_ns);
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), "ns");
+        } else if (sync_mode == 2u) {
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), ":0.");
+            pp = fx6_append_2d(plbl, pp, sizeof(plbl), slip_mf);
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), "f SLIP");
+        } else {
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), ":IDLE");
+        }
+        pp = fx6_append_cstr(plbl, pp, sizeof(plbl), p12_wlan_off ? " P12]" : " RF!]");
+        (void)pp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, plbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 4. Right Badge (x=682..1006): TSL UMD v5.0 Studio Tally + 16-Char Camera Nameplate */
+    {
+        int bx = 682, bw = 324, bh = 28;
+        uint32_t bg = (tally_state >= 2u) ? 0xFF7F1D1Du : (tally_state == 1u ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t bd = (tally_state >= 2u) ? 0xFFEF4444u : (tally_state == 1u ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        uint32_t led_c = 0xFF475569u;
+        if (tally_state == 1u) led_c = 0xFF10B981u;
+        else if (tally_state == 2u) led_c = 0xFFEF4444u;
+        else if (tally_state == 3u) led_c = 0xFFF59E0Bu;
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 10, 12, stealth_mute ? 0xFF334155u : led_c);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, led_c);
+
+        char tlbl[64];
+        unsigned tp = 0u;
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), "[TSL CAM");
+        tp = fx6_append_uint(tlbl, tp, sizeof(tlbl), cam_slot + 1u);
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), " ");
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), k_tly_lbl[tally_state]);
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), ": ");
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), g_live_p129_umd_name);
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), "]");
+        (void)tp;
+        fx6_render_string_text_styled(appfw, bx + 20, row1_y + 2, bw - 26, 18, tlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 5. Full-Width Row 2 Dynamic 16-Char UMD & MXFT Guard Strip (x=18..1006, y=382..406) */
+    {
+        int sx = 18, sw = 988, sh = 24;
+        uint32_t sbg = (tally_state >= 2u) ? 0xFF450A0Au : (tally_state == 1u ? 0xFF052E16u : 0xFF090D16u);
+        uint32_t sbd = (tally_state >= 2u) ? 0xFFEF4444u : (tally_state == 1u ? 0xFF10B981u : 0xFF38BDF8u);
+        fx6_osd_fill_rect(sx, row2_y, sw, sh, sbg);
+        fx6_osd_border_rect(sx, row2_y, sw, sh, sbd);
+
+        fx6_osd_fill_rect(sx + 6, row2_y + 5, 10, 14, (zero_loss && emmc_zero) ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 20, row2_y + 5, 10, 14, (p12_wlan_off && wf12_zero) ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 34, row2_y + 5, 10, 14, green_gpio_ok ? 0xFFA78BFAu : 0xFFEF4444u);
+
+        char ulbl[112];
+        unsigned up = 0u;
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "[UMD:\"");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), g_live_p129_umd_name);
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "\" TSL5:");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), tcp_dle_stx ? "TCP" : "UDP");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), stealth_mute ? " STL_MUTE=1" : " LED=ACT");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), osd_tally_on ? " OSD=1" : " OSD=0");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " P12_WLAN_OFF=");
+        up = fx6_append_uint(ulbl, up, sizeof(ulbl), p12_wlan_off);
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " EMMC=0B MXF_LOSS=0 SPVC_BLK=");
+        up = fx6_append_uint(ulbl, up, sizeof(ulbl), mxf_blk_cnt);
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "]");
+        (void)up;
+        fx6_render_string_text_styled(appfw, sx + 50, row2_y + 2, sw - 58, 20, ulbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -3983,6 +4219,12 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p123_uvc_uac) * 1099511628211ULL;
     h = (h ^ g_live_p123_srt_rtmps) * 1099511628211ULL;
     h = (h ^ g_live_p123_crsdk_ptp) * 1099511628211ULL;
+    h = (h ^ g_live_p129_mxf_bridge) * 1099511628211ULL;
+    h = (h ^ g_live_p129_ptpv2_ltc) * 1099511628211ULL;
+    h = (h ^ g_live_p129_tsl_tally_umd) * 1099511628211ULL;
+    for (int i = 0; i < 16 && g_live_p129_umd_name[i]; i++) {
+        h = (h ^ (uint64_t)(unsigned char)g_live_p129_umd_name[i]) * 1099511628211ULL;
+    }
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -4177,6 +4419,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
     fx6_render_phase116_hlg_raw_breathing_overlay(appfw, page);
     fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(appfw, page);
+    fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -4441,6 +4684,14 @@ void fx6_force_update(void) {
         mb[61] = 0x80660788u;/* phase123_srt_rtmps: valid=1, wired=1, p12_wlan_off=1, 12Mbps, 120ms, AES-256, srt=OFF */
         mb[62] = 0x8000043cu;/* phase123_crsdk_ptp: valid=1, d2xx=0x10, nd_clr=1, p12=1, emmc0=1, blk=1, ptp=OFF */
         mb[63] = 0x55564353u;/* 'UVCS' */
+        mb[64] = 0x870203c4u;/* phase129_mxf_bridge: valid=1, klv=1, emmc0=1, loss0=1, ei=800, umid=0xf1, mode=MP4_RTMD */
+        mb[65] = 0x80000070u;/* phase129_ptpv2_ltc: valid=1, cdc_ncm=1, wf12_0=1, p12_wlan_off=1, sync=OFF */
+        mb[66] = 0xb3b11858u;/* phase129_tsl_tally_umd: valid=1, tag=FX3, cam=CAM1, green_ok=1, p12=1, osd=1, tally=OFF */
+        mb[67] = 0x4d584654u;/* 'MXFT' */
+        mb[68] = 0x2d335846u;/* "FX3-" */
+        mb[69] = 0x314d4143u;/* "CAM1" */
+        mb[70] = 0x5554532du;/* "-STU" */
+        mb[71] = 0x004f4944u;/* "DIO\0" */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -4473,6 +4724,10 @@ void fx6_force_update(void) {
     g_live_p123_uvc_uac = 0x820000c0u;
     g_live_p123_srt_rtmps = 0x80660788u;
     g_live_p123_crsdk_ptp = 0x8000043cu;
+    g_live_p129_mxf_bridge = 0x870203c4u;
+    g_live_p129_ptpv2_ltc = 0x80000070u;
+    g_live_p129_tsl_tally_umd = 0xb3b11858u;
+    fx6_unpack_umd_name(mb, g_live_p129_tsl_tally_umd, g_live_p129_umd_name, sizeof(g_live_p129_umd_name));
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -4488,10 +4743,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x p116=0x%08x p123=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x p116=0x%08x p123=0x%08x p129=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi, g_live_p116_hlg_colorimetry, g_live_p123_uvc_uac);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi, g_live_p116_hlg_colorimetry, g_live_p123_uvc_uac, g_live_p129_mxf_bridge);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -4593,14 +4848,23 @@ void fx6_force_update(void) {
                 /* Hard-enforce Destructive PTP Flash-Opcode Firewall (bit2), eMMC 0-mutation (bit3), P12 Wi-Fi-OFF (bit4) */
                 g_live_p123_crsdk_ptp = mb[62] | (1u << 2) | (1u << 3) | (1u << 4);
             }
+            if ((mb[64] & 0x80000000u) && (mb[65] & 0x80000000u) && (mb[66] & 0x80000000u) && mb[67] == 0x4d584654u) {
+                /* Hard-enforce 0 essence re-encode loss (bit24), eMMC 0-mutation (bit25), RDD-18 KLV valid (bit26) */
+                g_live_p129_mxf_bridge    = mb[64] | (1u << 24) | (1u << 25) | (1u << 26);
+                /* Hard-enforce P12 Wi-Fi-OFF (bit4), wf12=0 (bit5), wired CDC-NCM (bit6) */
+                g_live_p129_ptpv2_ltc     = mb[65] | (1u << 4) | (1u << 5) | (1u << 6);
+                /* Hard-enforce P12 Wi-Fi-OFF (bit4) & FX6 green GPIO zero-fault (bit6) */
+                g_live_p129_tsl_tally_umd = mb[66] | (1u << 4) | (1u << 6);
+                fx6_unpack_umd_name(mb, g_live_p129_tsl_tally_umd, g_live_p129_umd_name, sizeof(g_live_p129_umd_name));
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x HLGA=0x%08x:0x%08x:0x%08x UVCS=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov, g_live_p116_hlg_colorimetry, g_live_p116_display_assist, g_live_p116_raw_breathing, g_live_p123_uvc_uac, g_live_p123_srt_rtmps, g_live_p123_crsdk_ptp);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x HLGA=0x%08x:0x%08x:0x%08x UVCS=0x%08x:0x%08x:0x%08x MXFT=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov, g_live_p116_hlg_colorimetry, g_live_p116_display_assist, g_live_p116_raw_breathing, g_live_p123_uvc_uac, g_live_p123_srt_rtmps, g_live_p123_crsdk_ptp, g_live_p129_mxf_bridge, g_live_p129_ptpv2_ltc, g_live_p129_tsl_tally_umd);
         }
     }
 }

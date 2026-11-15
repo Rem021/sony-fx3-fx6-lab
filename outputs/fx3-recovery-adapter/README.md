@@ -719,6 +719,26 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-29pillar-recovery --force-clean-room --json
 ```
 
+## Phase 212 — 真机主线 Part 18（Pillar 30 / `30/30` 里程碑恢复总检）：`Px` 主片+代理双槽原子联动金库与 `[Off(HDMI Only)]` 零内录卡互锁（`verify-30pillar-recovery` / `verify-proxy-coupled-hdmi-vault`）
+
+- **[`realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py`](fx3_recovery/realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 30** 并将全套恢复总检正式收口至 **`30/30` 里程碑（`VERIFIED_30OF30_PILLAR_RECOVERY_MASTER`）**（`< 2.6s` 并发运行，保持 `verify-22/24/26/27/28/29pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libInfraMediaConfig.so`、`libBackupManager.so` 与 `libbackup.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 30A — `M4ROOT/CLIP/` 与 `M4ROOT/SUB/` `(Px)` 原子联动金库（`6/6`）**：
+    - `P30A1`..`P30A6`：跨 **Slot 1 & Slot 2** 审计 `M4ROOT/CLIP/`（`XAVC HS` / `XAVC S` / `XAVC S-I` `.MP4` + `.XML` 伴生元数据）与 `M4ROOT/SUB/`（`*S03.MP4`：`XAVC HS HD` `1920x1080` 10-bit `16M`/`9M` HEVC 或 `XAVC S HD` `1280x720` 8-bit `6M` AVC）原子联动一致性；强制机内 Delete / Protect 对 `CLIP/` 与 `SUB/` 双侧原子生效，fail-closed 拦截孤立 `SUB/`、带 `(Px)` 位但缺 `SUB/`、保护只读属性不一致与单侧操作请求；同时强制 `119.88p`/`100p` Normal 及 `>=120fps`/`100fps` S&Q 代理生成硬截断，严禁机内代理直接回放假设。
+  - **支柱 30B — `[Off(HDMI Only)]` 零内录卡互锁、HDMI Log `1080p` 降档与 `FocusMag × BrightMon` 互斥（`6/6`）**：
+    - `P30B1`..`P30B6`：阻断将 `[Rec. Media dur HDMI Output] = [Off(HDMI Only)]`（`[4K Output Set.(HDMI Only)]` `59.94p..24.00p 10bit`）误判为 Slot 1 / Slot 2 已开启内录的重大风险；校验 `[On]` 且关闭 HDMI RAW 输出时 `Log Shooting`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`）或 `PPLUT1..4` 强制 HDMI `1080p` 降档、`[HDMI Info. Display]` 黑屏/自动抑制逻辑，以及 `Focus Magnifier`（`x1.0`/`x4.0`）与 `Bright Monitoring`（`Setting Effect OFF` + `P/A/S/M + MF` 硬锁）双向互斥互锁；证明 Stage-B 易失 `tmpfs` 覆盖层与 `Backup.bin` / `16/16` Tier-0 表面干净复位（`H0 == H3`）。
+  - **统一 `30/30` 里程碑恢复总检聚合器与 CLI（`evaluate_realhw_30pillar_recovery_master` / `verify-30pillar-recovery` / `verify-proxy-coupled-hdmi-vault`）**：
+    - 并发调度 `evaluate_29pillar_recovery_master`（`Pillars 1..29`）+ **Pillar 30**（`run_pillar30_standalone_suite`），汇总产出 **`30/30`**（`VERIFIED_30OF30_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py`](tests/test_realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py) 提供 **52 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-proxy-coupled-hdmi-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-30pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-30pillar-recovery --force-clean-room --json
+```
+
+
 
 
 

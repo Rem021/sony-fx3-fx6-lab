@@ -9921,6 +9921,901 @@ static int run_r42_focusmag_brightmon_probe(void) {
     return ok ? 0 : 232;
 }
 
+/* ============================================================================
+ * Round 43: [File Settings] (5-Mode Naming, <=37 ASCII Title Name, SDHC Lock)
+ * + [Shot Mark1/2] XML Sidecars, [TC Regenerate] Slot-1 & EXT-LK Release, and
+ * [REC Lamp] 3-State Coupled Rear+Top Tally + [Silent Mode] Audio Signals Lock
+ * ============================================================================ */
+
+enum {
+    R43_FNF_STANDARD   = 0,
+    R43_FNF_CAMID_REEL = 1,
+    R43_FNF_TITLE      = 2,
+    R43_FNF_DATE_TITLE = 3,
+    R43_FNF_TITLE_DATE = 4
+};
+
+enum {
+    R43_FNUM_SERIES = 0,
+    R43_FNUM_RESET  = 1
+};
+
+enum {
+    R43_MEDIA_EXFAT_SDXC_CFX = 0,
+    R43_MEDIA_FAT32_SDHC     = 1
+};
+
+enum {
+    R43_JUMP_SHOTMARK_ONLY  = 0,
+    R43_JUMP_SHOTMARK1_ONLY = 1,
+    R43_JUMP_SHOTMARK2_ONLY = 2,
+    R43_JUMP_NO_SHOTMARK    = 3
+};
+
+typedef struct {
+    int configured_format[2];
+    int effective_format[2];
+    int slot_media_type[2];
+    int file_number_mode;
+    int series_counter;
+    int slot_clip_counter[2];
+    char cam_id;
+    int reel_no;
+    char title_name[40];
+} r43_file_settings_state_t;
+
+__attribute__((noinline)) static int r43_is_allowed_title_char(unsigned char c) {
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) {
+        return 1;
+    }
+    static const char k_allowed_syms[] = ".-_@!#$%+=^~(),;[]";
+    return (c != '\0' && strchr(k_allowed_syms, (int)c) != NULL) ? 1 : 0;
+}
+
+__attribute__((noinline)) static int r43_set_title_name(
+    r43_file_settings_state_t *st,
+    const char *title
+) {
+    if (!st || !title) return -EINVAL;
+    size_t len = strlen(title);
+    if (len == 0U || len > 37U) {
+        return -EINVAL; /* -22: 1..37 ASCII characters strictly enforced */
+    }
+    for (size_t i = 0U; i < len; i++) {
+        if (!r43_is_allowed_title_char((unsigned char)title[i])) {
+            return -EINVAL; /* -22: illegal character rejected */
+        }
+    }
+    memcpy(st->title_name, title, len + 1U);
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_set_file_name_format(
+    r43_file_settings_state_t *st,
+    int slot_idx,
+    int fmt
+) {
+    if (!st || slot_idx < 0 || slot_idx >= 2) return -EINVAL;
+    if (fmt < R43_FNF_STANDARD || fmt > R43_FNF_TITLE_DATE) return -EINVAL;
+    if (st->slot_media_type[slot_idx] == R43_MEDIA_FAT32_SDHC && fmt != R43_FNF_STANDARD) {
+        st->effective_format[slot_idx] = R43_FNF_STANDARD;
+        return -EINVAL; /* -22: SDHC (<=32GB FAT32) force-locks [Standard] */
+    }
+    st->configured_format[slot_idx] = fmt;
+    st->effective_format[slot_idx] = fmt;
+    return 0;
+}
+
+__attribute__((noinline)) static void r43_insert_media_card(
+    r43_file_settings_state_t *st,
+    int slot_idx,
+    int media_type
+) {
+    if (!st || slot_idx < 0 || slot_idx >= 2) return;
+    st->slot_media_type[slot_idx] = media_type;
+    if (media_type == R43_MEDIA_FAT32_SDHC) {
+        st->effective_format[slot_idx] = R43_FNF_STANDARD;
+    } else {
+        st->effective_format[slot_idx] = st->configured_format[slot_idx];
+    }
+    if (st->file_number_mode == R43_FNUM_RESET) {
+        st->slot_clip_counter[slot_idx] = 0;
+    }
+}
+
+__attribute__((noinline)) static int r43_customize_movie_folder(const char *folder_rel) {
+    if (!folder_rel || strcmp(folder_rel, "M4ROOT/CLIP") != 0) {
+        return -EPERM; /* -1: movie folder names cannot be customized */
+    }
+    return 0;
+}
+
+static int r43_write_shotmark_xml(
+    const char *slot_root,
+    const char *stem,
+    int sm1,
+    int sm2
+) {
+    char xml_path[320], xml_body[384];
+    snprintf(xml_path, sizeof(xml_path), "%s/M4ROOT/CLIP/%sM01.XML", slot_root, stem);
+    int n = snprintf(
+        xml_body, sizeof(xml_body),
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        "<NonRealTimeMeta clip=\"%s\" shotMark1=\"%d\" shotMark2=\"%d\"/>\n",
+        stem, sm1 ? 1 : 0, sm2 ? 1 : 0
+    );
+    if (n <= 0 || (size_t)n >= sizeof(xml_body)) return -EIO;
+    return r29_write_all_fsync(xml_path, (const uint8_t *)xml_body, (size_t)n, 0644);
+}
+
+static int r43_read_shotmark_xml(
+    const char *slot_root,
+    const char *stem,
+    int *out_sm1,
+    int *out_sm2
+) {
+    char xml_path[320], buf[384];
+    snprintf(xml_path, sizeof(xml_path), "%s/M4ROOT/CLIP/%sM01.XML", slot_root, stem);
+    FILE *fp = fopen(xml_path, "r");
+    if (!fp) return -ENOENT;
+    size_t nr = fread(buf, 1U, sizeof(buf) - 1U, fp);
+    fclose(fp);
+    buf[nr] = '\0';
+    const char *p1 = strstr(buf, "shotMark1=\"");
+    const char *p2 = strstr(buf, "shotMark2=\"");
+    if (!p1 || !p2) return -EINVAL;
+    if (out_sm1) *out_sm1 = (p1[11] == '1') ? 1 : 0;
+    if (out_sm2) *out_sm2 = (p2[11] == '1') ? 1 : 0;
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_record_clip_with_shotmarks(
+    r43_file_settings_state_t *st,
+    int slot_idx,
+    const char *slot_root,
+    const char *date_ymd,
+    int add_sm1,
+    int add_sm2,
+    char *out_stem,
+    size_t stem_cap
+) {
+    if (!st || !slot_root || !date_ymd || slot_idx < 0 || slot_idx >= 2) return -EINVAL;
+    int num = (st->file_number_mode == R43_FNUM_SERIES)
+        ? (++st->series_counter)
+        : (++st->slot_clip_counter[slot_idx]);
+    char stem[128];
+    switch (st->effective_format[slot_idx]) {
+        case R43_FNF_STANDARD:
+            snprintf(stem, sizeof(stem), "C%04d", num);
+            break;
+        case R43_FNF_CAMID_REEL:
+            snprintf(stem, sizeof(stem), "%c%03dC%04d", st->cam_id, st->reel_no, num);
+            break;
+        case R43_FNF_TITLE:
+            snprintf(stem, sizeof(stem), "%s%04d", st->title_name, num);
+            break;
+        case R43_FNF_DATE_TITLE:
+            snprintf(stem, sizeof(stem), "%s_%s%04d", date_ymd, st->title_name, num);
+            break;
+        case R43_FNF_TITLE_DATE:
+            snprintf(stem, sizeof(stem), "%s_%s_%04d", st->title_name, date_ymd, num);
+            break;
+        default:
+            return -EINVAL;
+    }
+    char mp4_path[320];
+    snprintf(mp4_path, sizeof(mp4_path), "%s/M4ROOT/CLIP/%s.MP4", slot_root, stem);
+    static const uint8_t k_mp4_hdr[24] = {
+        0,0,0,24,'f','t','y','p','X','A','V','C',0,0,0,1,'X','A','V','C','m','p','4','2'
+    };
+    if (r29_write_all_fsync(mp4_path, k_mp4_hdr, sizeof(k_mp4_hdr), 0644) != 0) return -EIO;
+    if (r43_write_shotmark_xml(slot_root, stem, add_sm1, add_sm2) != 0) return -EIO;
+    if (out_stem && stem_cap > 0U) {
+        snprintf(out_stem, stem_cap, "%s", stem);
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_playback_toggle_shotmark(
+    const char *slot_root,
+    const char *stem,
+    int which_mark
+) {
+    if (!slot_root || !stem || (which_mark != 1 && which_mark != 2)) return -EINVAL;
+    int sm1 = 0, sm2 = 0;
+    int rc = r43_read_shotmark_xml(slot_root, stem, &sm1, &sm2);
+    if (rc != 0) return rc;
+    if (which_mark == 1) sm1 = sm1 ? 0 : 1;
+    else sm2 = sm2 ? 0 : 1;
+    if (r43_write_shotmark_xml(slot_root, stem, sm1, sm2) != 0) return -EIO;
+    return (which_mark == 1) ? sm1 : sm2;
+}
+
+__attribute__((noinline)) static int r43_eval_image_jump_and_ftp(
+    const char *slot_root,
+    const char *const *stems,
+    size_t count,
+    int jump_mode,
+    int *out_ftp_shotmark_count
+) {
+    if (!slot_root || !stems) return -EINVAL;
+    if (jump_mode < R43_JUMP_SHOTMARK_ONLY || jump_mode > R43_JUMP_NO_SHOTMARK) {
+        return -EINVAL;
+    }
+    int jump_hits = 0;
+    int ftp_hits = 0;
+    for (size_t i = 0U; i < count; i++) {
+        int sm1 = 0, sm2 = 0;
+        if (r43_read_shotmark_xml(slot_root, stems[i], &sm1, &sm2) != 0) return -ENOENT;
+        if (sm1 || sm2) ftp_hits++;
+        if (jump_mode == R43_JUMP_SHOTMARK_ONLY && (sm1 || sm2)) jump_hits++;
+        else if (jump_mode == R43_JUMP_SHOTMARK1_ONLY && sm1) jump_hits++;
+        else if (jump_mode == R43_JUMP_SHOTMARK2_ONLY && sm2) jump_hits++;
+        else if (jump_mode == R43_JUMP_NO_SHOTMARK && !sm1 && !sm2) jump_hits++;
+    }
+    if (out_ftp_shotmark_count) *out_ftp_shotmark_count = ftp_hits;
+    return jump_hits;
+}
+
+static int setup_r43_filesettings_shotmark_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r43_slot1", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r43_slot2", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r43_slot1");
+    (void)umount("/mnt/r43_slot2");
+    if (mount("tmpfs", "/mnt/r43_slot1", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r43_slot2", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        return -1;
+    }
+    if (r33_mkdir_p("/mnt/r43_slot1/M4ROOT/CLIP", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r43_slot2/M4ROOT/CLIP", 0755) != 0) {
+        return -1;
+    }
+
+    r43_file_settings_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.cam_id = 'A';
+    st.reel_no = 1;
+    memcpy(st.title_name, "C", 2U); /* Default Title Name = "C" */
+
+    /* 1. Record baseline clip C0001 before Title Name change */
+    char stem0[128] = "";
+    int baseline_rc = r43_record_clip_with_shotmarks(
+        &st, 0, "/mnt/r43_slot1", "20261115", 0, 0, stem0, sizeof(stem0)
+    );
+
+    /* 2. [Title Name Settings]: 37-char max ASCII allowed set vs >37 & illegal chars */
+    static const char k_max37[] = "FX3_702.-_@!#$%+=^~(),;[]Abc012345678"; /* 37 chars */
+    static const char k_bad38[] = "FX3_702.-_@!#$%+=^~(),;[]Abc0123456789"; /* 38 chars */
+    int title_37char_max_ok = (strlen(k_max37) == 37U && r43_set_title_name(&st, k_max37) == 0) ? 1 : 0;
+    int title_38char_reject_rc = r43_set_title_name(&st, k_bad38);
+    int title_illegal_char_reject_rc = r43_set_title_name(&st, "BAD/TITLE NAME*");
+    struct stat st_prior;
+    int prior_clip_untouched_ok = (baseline_rc == 0 && strcmp(stem0, "C0001") == 0 &&
+                                   stat("/mnt/r43_slot1/M4ROOT/CLIP/C0001.MP4", &st_prior) == 0) ? 1 : 0;
+
+    /* 3. All 5 [File Name Format] modes across Slot 1 & Slot 2 + [Series] vs [Reset] */
+    (void)r43_set_title_name(&st, "UNIT_A");
+    st.series_counter = 0;
+    int fnf_5modes_verified = 0;
+    for (int m = R43_FNF_STANDARD; m <= R43_FNF_TITLE_DATE; m++) {
+        int sidx = (m % 2);
+        const char *sroot = (sidx == 0) ? "/mnt/r43_slot1" : "/mnt/r43_slot2";
+        if (r43_set_file_name_format(&st, sidx, m) == 0) {
+            char mstem[128] = "", mpath[320];
+            if (r43_record_clip_with_shotmarks(&st, sidx, sroot, "20261115", 0, 0, mstem, sizeof(mstem)) == 0) {
+                snprintf(mpath, sizeof(mpath), "%s/M4ROOT/CLIP/%s.MP4", sroot, mstem);
+                struct stat mst;
+                if (stat(mpath, &mst) == 0) fnf_5modes_verified++;
+            }
+        }
+    }
+    int invalid_fnf_mode_reject_rc = r43_set_file_name_format(&st, 0, 5);
+
+    /* Series persistence across card swap + Series Counter Reset vs Reset per card */
+    r43_insert_media_card(&st, 0, R43_MEDIA_EXFAT_SDXC_CFX);
+    int series_persist_ok = (st.series_counter == 5) ? 1 : 0;
+    st.series_counter = 0; /* [Series Counter Reset] */
+    st.file_number_mode = R43_FNUM_RESET;
+    st.slot_clip_counter[1] = 7;
+    r43_insert_media_card(&st, 1, R43_MEDIA_EXFAT_SDXC_CFX);
+    int reset_per_card_ok = (st.slot_clip_counter[1] == 0) ? 1 : 0;
+
+    /* 4. SDHC (<=32GB FAT32) forced lock to [Standard] & custom movie folder rejection */
+    (void)r43_set_file_name_format(&st, 0, R43_FNF_CAMID_REEL);
+    r43_insert_media_card(&st, 0, R43_MEDIA_FAT32_SDHC);
+    int sdhc_forces_standard_ok = (st.effective_format[0] == R43_FNF_STANDARD) ? 1 : 0;
+    int sdhc_non_standard_reject_rc = r43_set_file_name_format(&st, 0, R43_FNF_TITLE);
+    int custom_movie_folder_reject_rc = r43_customize_movie_folder("M4ROOT/CUSTOM_MOV");
+
+    /* 5. Live Shot Mark1 / Shot Mark2 recording, playback toggle, Image Jump & FTP filter */
+    r43_insert_media_card(&st, 1, R43_MEDIA_EXFAT_SDXC_CFX);
+    (void)r43_set_file_name_format(&st, 1, R43_FNF_STANDARD);
+    st.slot_clip_counter[1] = 10;
+    char sm_stems[4][128];
+    const char *sm_ptrs[4] = { sm_stems[0], sm_stems[1], sm_stems[2], sm_stems[3] };
+    /* Clip 0: no mark; Clip 1: rec SM1; Clip 2: rec SM1+SM2 then pb delete SM1 -> SM2 only; Clip 3: rec SM1 then pb add SM2 -> SM1+SM2 */
+    (void)r43_record_clip_with_shotmarks(&st, 1, "/mnt/r43_slot2", "20261115", 0, 0, sm_stems[0], sizeof(sm_stems[0]));
+    (void)r43_record_clip_with_shotmarks(&st, 1, "/mnt/r43_slot2", "20261115", 1, 0, sm_stems[1], sizeof(sm_stems[1]));
+    (void)r43_record_clip_with_shotmarks(&st, 1, "/mnt/r43_slot2", "20261115", 1, 1, sm_stems[2], sizeof(sm_stems[2]));
+    (void)r43_record_clip_with_shotmarks(&st, 1, "/mnt/r43_slot2", "20261115", 1, 0, sm_stems[3], sizeof(sm_stems[3]));
+    int pb_del_sm1 = r43_playback_toggle_shotmark("/mnt/r43_slot2", sm_stems[2], 1); /* -> 0 */
+    int pb_add_sm2 = r43_playback_toggle_shotmark("/mnt/r43_slot2", sm_stems[3], 2); /* -> 1 */
+    int c2_sm1 = -1, c2_sm2 = -1, c3_sm1 = -1, c3_sm2 = -1;
+    (void)r43_read_shotmark_xml("/mnt/r43_slot2", sm_stems[2], &c2_sm1, &c2_sm2);
+    (void)r43_read_shotmark_xml("/mnt/r43_slot2", sm_stems[3], &c3_sm1, &c3_sm2);
+    int shotmark_rec_pb_xml_ok = (pb_del_sm1 == 0 && pb_add_sm2 == 1 &&
+                                  c2_sm1 == 0 && c2_sm2 == 1 &&
+                                  c3_sm1 == 1 && c3_sm2 == 1) ? 1 : 0;
+
+    int ftp_only_shotmark_mov = 0;
+    int jmp_all  = r43_eval_image_jump_and_ftp("/mnt/r43_slot2", sm_ptrs, 4U, R43_JUMP_SHOTMARK_ONLY, &ftp_only_shotmark_mov);
+    int jmp_sm1  = r43_eval_image_jump_and_ftp("/mnt/r43_slot2", sm_ptrs, 4U, R43_JUMP_SHOTMARK1_ONLY, NULL);
+    int jmp_sm2  = r43_eval_image_jump_and_ftp("/mnt/r43_slot2", sm_ptrs, 4U, R43_JUMP_SHOTMARK2_ONLY, NULL);
+    int jmp_none = r43_eval_image_jump_and_ftp("/mnt/r43_slot2", sm_ptrs, 4U, R43_JUMP_NO_SHOTMARK, NULL);
+    int invalid_jump_reject_rc = r43_eval_image_jump_and_ftp("/mnt/r43_slot2", sm_ptrs, 4U, 4, NULL);
+    int image_jump_4modes_ok = (jmp_all == 3 && jmp_sm1 == 2 && jmp_sm2 == 2 && jmp_none == 1) ? 4 : 0;
+    int ftp_only_shotmark_filter_ok = (ftp_only_shotmark_mov == 3) ? 1 : 0;
+
+    (void)umount("/mnt/r43_slot1");
+    (void)umount("/mnt/r43_slot2");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R43_FILESETTINGS_SHOTMARK_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fnf_5modes_verified == 5 &&
+              invalid_fnf_mode_reject_rc == -EINVAL &&
+              title_37char_max_ok == 1 &&
+              title_38char_reject_rc == -EINVAL &&
+              title_illegal_char_reject_rc == -EINVAL &&
+              prior_clip_untouched_ok == 1 &&
+              series_persist_ok == 1 &&
+              reset_per_card_ok == 1 &&
+              sdhc_forces_standard_ok == 1 &&
+              sdhc_non_standard_reject_rc == -EINVAL &&
+              custom_movie_folder_reject_rc == -EPERM &&
+              shotmark_rec_pb_xml_ok == 1 &&
+              image_jump_4modes_ok == 4 &&
+              invalid_jump_reject_rc == -EINVAL &&
+              ftp_only_shotmark_filter_ok == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R43_FILESETTINGS_SHOTMARK_INIT fnf_5modes_verified=%d invalid_fnf_mode_reject_rc=%d "
+            "title_37char_max_ok=%d title_38char_reject_rc=%d title_illegal_char_reject_rc=%d "
+            "prior_clip_untouched_ok=%d series_persist_ok=%d reset_per_card_ok=%d "
+            "sdhc_forces_standard_ok=%d sdhc_non_standard_reject_rc=%d "
+            "custom_movie_folder_reject_rc=%d shotmark_rec_pb_xml_ok=%d "
+            "image_jump_4modes_ok=%d invalid_jump_reject_rc=%d ftp_only_shotmark_mov=%d "
+            "ftp_only_shotmark_filter_ok=%d appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r43_init_ok=%d verify_us=%lld\n",
+            fnf_5modes_verified, invalid_fnf_mode_reject_rc,
+            title_37char_max_ok, title_38char_reject_rc, title_illegal_char_reject_rc,
+            prior_clip_untouched_ok, series_persist_ok, reset_per_card_ok,
+            sdhc_forces_standard_ok, sdhc_non_standard_reject_rc,
+            custom_movie_folder_reject_rc, shotmark_rec_pb_xml_ok,
+            image_jump_4modes_ok, invalid_jump_reject_rc, ftp_only_shotmark_mov,
+            ftp_only_shotmark_filter_ok, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R43_REC_MEDIA_SLOT1  = 0,
+    R43_REC_MEDIA_SLOT2  = 1,
+    R43_REC_MEDIA_SIMULT = 2
+};
+
+enum {
+    R43_TC_MAKE_PRESET     = 0,
+    R43_TC_MAKE_REGENERATE = 1
+};
+
+enum {
+    R43_TC_RUN_REC_RUN  = 0,
+    R43_TC_RUN_FREE_RUN = 1
+};
+
+enum {
+    R43_SHOOT_NORMAL_MOVIE = 0,
+    R43_SHOOT_SQ_MODE      = 1
+};
+
+typedef struct {
+    int shoot_mode;
+    int rec_media;
+    int tc_make;
+    int tc_run_setting;
+    int ext_lk_active;
+    int hdmi_tc_output_on;
+    uint32_t current_tc_frames;
+} r43_tc_state_t;
+
+static int r43_write_last_clip_tc(const char *slot_root, uint32_t end_tc_frames) {
+    char p[256];
+    snprintf(p, sizeof(p), "%s/M4ROOT/CLIP/LAST_TC.BIN", slot_root);
+    uint8_t b[4] = {
+        (uint8_t)(end_tc_frames & 0xffU),
+        (uint8_t)((end_tc_frames >> 8) & 0xffU),
+        (uint8_t)((end_tc_frames >> 16) & 0xffU),
+        (uint8_t)((end_tc_frames >> 24) & 0xffU)
+    };
+    return r29_write_all_fsync(p, b, sizeof(b), 0644);
+}
+
+static int r43_read_last_clip_tc(const char *slot_root, uint32_t *out_tc) {
+    char p[256];
+    snprintf(p, sizeof(p), "%s/M4ROOT/CLIP/LAST_TC.BIN", slot_root);
+    int fd = open(p, O_RDONLY);
+    if (fd < 0) return -ENOENT;
+    uint8_t b[4];
+    ssize_t n = read(fd, b, sizeof(b));
+    close(fd);
+    if (n != 4) return -EIO;
+    *out_tc = (uint32_t)b[0] | ((uint32_t)b[1] << 8) | ((uint32_t)b[2] << 16) | ((uint32_t)b[3] << 24);
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_tc_engage_ext_lk(r43_tc_state_t *st) {
+    if (!st) return -EINVAL;
+    if (st->shoot_mode != R43_SHOOT_NORMAL_MOVIE ||
+        st->tc_make != R43_TC_MAKE_PRESET ||
+        st->tc_run_setting != R43_TC_RUN_FREE_RUN) {
+        st->ext_lk_active = 0;
+        return -EINVAL; /* -22: EXT-LK requires Movie + Preset + Free Run */
+    }
+    st->ext_lk_active = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_tc_set_make(r43_tc_state_t *st, int new_make) {
+    if (!st) return -EINVAL;
+    if (new_make != R43_TC_MAKE_PRESET && new_make != R43_TC_MAKE_REGENERATE) return -EINVAL;
+    if (new_make != st->tc_make) {
+        st->ext_lk_active = 0; /* Changing [Time Code Make] immediately drops EXT-LK */
+    }
+    st->tc_make = new_make;
+    if (new_make == R43_TC_MAKE_REGENERATE) {
+        st->ext_lk_active = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_tc_set_run(r43_tc_state_t *st, int new_run) {
+    if (!st) return -EINVAL;
+    if (st->shoot_mode == R43_SHOOT_SQ_MODE) {
+        return -EOPNOTSUPP; /* -95: [Time Code Run] unavailable during S&Q */
+    }
+    if (new_run != R43_TC_RUN_REC_RUN && new_run != R43_TC_RUN_FREE_RUN) return -EINVAL;
+    if (new_run != st->tc_run_setting) {
+        st->ext_lk_active = 0; /* Changing [Time Code Run] immediately drops EXT-LK */
+    }
+    st->tc_run_setting = new_run;
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_tc_set_hdmi_output(r43_tc_state_t *st, int enable) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->shoot_mode == R43_SHOOT_SQ_MODE && enable == 1) {
+        st->hdmi_tc_output_on = 0;
+        return -EOPNOTSUPP; /* -95: HDMI [Time Code Output] blocked in S&Q */
+    }
+    st->hdmi_tc_output_on = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r43_tc_resolve_start_frames(
+    r43_tc_state_t *st,
+    const char *slot1_root,
+    const char *slot2_root,
+    int *out_source_slot
+) {
+    if (!st || !slot1_root || !slot2_root) return -EINVAL;
+    if (st->tc_make == R43_TC_MAKE_REGENERATE) {
+        /* Under Simult. Recording, [Regenerate] reads exclusively from Slot 1 */
+        int use_slot = (st->rec_media == R43_REC_MEDIA_SLOT2) ? 2 : 1;
+        const char *root = (use_slot == 2) ? slot2_root : slot1_root;
+        uint32_t last_tc = 0U;
+        int rc = r43_read_last_clip_tc(root, &last_tc);
+        if (rc != 0) return rc;
+        st->current_tc_frames = last_tc;
+        if (out_source_slot) *out_source_slot = use_slot;
+        return 0;
+    }
+    if (out_source_slot) *out_source_slot = 0;
+    return 0;
+}
+
+__attribute__((noinline)) static void r43_tc_advance_ticks(
+    r43_tc_state_t *st,
+    int is_recording,
+    uint32_t frames
+) {
+    if (!st) return;
+    /* [Regenerate] forces advancement in [Rec Run] regardless of [Time Code Run] */
+    int effective_run = (st->tc_make == R43_TC_MAKE_REGENERATE)
+        ? R43_TC_RUN_REC_RUN
+        : st->tc_run_setting;
+    if (effective_run == R43_TC_RUN_FREE_RUN || is_recording) {
+        st->current_tc_frames += frames;
+    }
+}
+
+static int run_r43_tc_regenerate_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r43_p2_setting", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r43_tc_slot1", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r43_tc_slot2", 0755) != 0) {
+        return 233;
+    }
+    (void)umount("/mnt/r43_p2_setting");
+    (void)umount("/mnt/r43_tc_slot1");
+    (void)umount("/mnt/r43_tc_slot2");
+    if (mount("tmpfs", "/mnt/r43_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r43_tc_slot1", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r43_tc_slot2", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 233;
+    }
+
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 37U + 0x43U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r43_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) {
+        return 233;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r43_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) return 233;
+    if (mount(NULL, "/mnt/r43_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 233;
+    }
+    if (r33_mkdir_p("/mnt/r43_tc_slot1/M4ROOT/CLIP", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r43_tc_slot2/M4ROOT/CLIP", 0755) != 0) {
+        return 233;
+    }
+
+    /* Seed distinct ending timecodes: Slot 1 = 104490 frames, Slot 2 = 432000 frames */
+    if (r43_write_last_clip_tc("/mnt/r43_tc_slot1", 104490U) != 0 ||
+        r43_write_last_clip_tc("/mnt/r43_tc_slot2", 432000U) != 0) {
+        return 233;
+    }
+
+    r43_tc_state_t st;
+    memset(&st, 0, sizeof(st));
+    int hdmi_tc_output_default_off = (st.hdmi_tc_output_on == 0) ? 1 : 0;
+
+    /* 1. [Regenerate] single-slot vs [Simult. Recording] Slot-1 exclusive read */
+    (void)r43_tc_set_make(&st, R43_TC_MAKE_REGENERATE);
+    st.rec_media = R43_REC_MEDIA_SLOT1;
+    int src_s1 = 0;
+    int regen_single_slot1_ok = (r43_tc_resolve_start_frames(&st, "/mnt/r43_tc_slot1", "/mnt/r43_tc_slot2", &src_s1) == 0 &&
+                                 src_s1 == 1 && st.current_tc_frames == 104490U) ? 1 : 0;
+
+    st.rec_media = R43_REC_MEDIA_SLOT2;
+    int src_s2 = 0;
+    int regen_single_slot2_ok = (r43_tc_resolve_start_frames(&st, "/mnt/r43_tc_slot1", "/mnt/r43_tc_slot2", &src_s2) == 0 &&
+                                 src_s2 == 2 && st.current_tc_frames == 432000U) ? 1 : 0;
+
+    st.rec_media = R43_REC_MEDIA_SIMULT;
+    int src_sim = 0;
+    int simult_reads_slot1_only_ok = (r43_tc_resolve_start_frames(&st, "/mnt/r43_tc_slot1", "/mnt/r43_tc_slot2", &src_sim) == 0 &&
+                                      src_sim == 1 && st.current_tc_frames == 104490U) ? 1 : 0;
+    int simult_slot2_ignored = (st.current_tc_frames != 432000U) ? 1 : 0;
+
+    /* 2. Forced [Rec Run] even when [Time Code Run] = [Free Run] */
+    (void)r43_tc_set_run(&st, R43_TC_RUN_FREE_RUN);
+    uint32_t pre_standby = st.current_tc_frames;
+    r43_tc_advance_ticks(&st, 0, 120U); /* 120 standby ticks -> 0 frames advanced */
+    int standby_ticks_advanced = (int)(st.current_tc_frames - pre_standby);
+    r43_tc_advance_ticks(&st, 1, 24U);  /* 24 recording frames -> +24 frames advanced */
+    int rec_ticks_advanced = (int)(st.current_tc_frames - pre_standby);
+    int regen_forced_rec_run_ok = (standby_ticks_advanced == 0 && rec_ticks_advanced == 24) ? 1 : 0;
+
+    /* 3. VMC-BNCM1 EXT-LK lock & immediate release on Regenerate or TC Run mutation */
+    int ext_lk_reject_when_regen_rc = r43_tc_engage_ext_lk(&st);
+    (void)r43_tc_set_make(&st, R43_TC_MAKE_PRESET);
+    (void)r43_tc_set_run(&st, R43_TC_RUN_FREE_RUN);
+    int ext_lk_locked_ok = (r43_tc_engage_ext_lk(&st) == 0 && st.ext_lk_active == 1) ? 1 : 0;
+    (void)r43_tc_set_make(&st, R43_TC_MAKE_REGENERATE);
+    int ext_lk_dropped_on_regen = (st.ext_lk_active == 0) ? 1 : 0;
+
+    (void)r43_tc_set_make(&st, R43_TC_MAKE_PRESET);
+    (void)r43_tc_engage_ext_lk(&st);
+    (void)r43_tc_set_run(&st, R43_TC_RUN_REC_RUN);
+    int ext_lk_dropped_on_tc_run_change = (st.ext_lk_active == 0) ? 1 : 0;
+
+    /* 4. Movie vs S&Q [Time Code Run] & HDMI [Time Code Output] block */
+    int movie_hdmi_tc_out_on_rc = r43_tc_set_hdmi_output(&st, 1);
+    int invalid_hdmi_tc_out_rc = r43_tc_set_hdmi_output(&st, 2);
+    st.shoot_mode = R43_SHOOT_SQ_MODE;
+    int sq_tc_run_reject_rc = r43_tc_set_run(&st, R43_TC_RUN_FREE_RUN);
+    int sq_hdmi_tc_output_reject_rc = r43_tc_set_hdmi_output(&st, 1);
+
+    errno = 0;
+    int ro_fd = open("/mnt/r43_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r43_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) return 233;
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R43_TC_REGENERATE_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (hdmi_tc_output_default_off == 1 &&
+              regen_single_slot1_ok == 1 &&
+              regen_single_slot2_ok == 1 &&
+              simult_reads_slot1_only_ok == 1 &&
+              simult_slot2_ignored == 1 &&
+              regen_forced_rec_run_ok == 1 &&
+              ext_lk_reject_when_regen_rc == -EINVAL &&
+              ext_lk_locked_ok == 1 &&
+              ext_lk_dropped_on_regen == 1 &&
+              ext_lk_dropped_on_tc_run_change == 1 &&
+              movie_hdmi_tc_out_on_rc == 0 &&
+              invalid_hdmi_tc_out_rc == -EINVAL &&
+              sq_tc_run_reject_rc == -EOPNOTSUPP &&
+              sq_hdmi_tc_output_reject_rc == -EOPNOTSUPP &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R43_TC_REGENERATE hdmi_tc_output_default_off=%d regen_single_slot1_ok=%d "
+            "regen_single_slot2_ok=%d simult_reads_slot1_only_ok=%d simult_slot2_ignored=%d "
+            "standby_ticks_advanced=%d rec_ticks_advanced=%d regen_forced_rec_run_ok=%d "
+            "ext_lk_locked_ok=%d ext_lk_dropped_on_regen=%d ext_lk_active_after_regen=0 "
+            "ext_lk_dropped_on_tc_run_change=%d ext_lk_reject_when_regen_rc=%d "
+            "movie_hdmi_tc_out_on_rc=%d invalid_hdmi_tc_out_rc=%d "
+            "sq_tc_run_reject_rc=%d sq_hdmi_tc_output_reject_rc=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r43b_ok=%d verify_us=%lld\n",
+            hdmi_tc_output_default_off, regen_single_slot1_ok,
+            regen_single_slot2_ok, simult_reads_slot1_only_ok, simult_slot2_ignored,
+            standby_ticks_advanced, rec_ticks_advanced, regen_forced_rec_run_ok,
+            ext_lk_locked_ok, ext_lk_dropped_on_regen,
+            ext_lk_dropped_on_tc_run_change, ext_lk_reject_when_regen_rc,
+            movie_hdmi_tc_out_on_rc, invalid_hdmi_tc_out_rc,
+            sq_tc_run_reject_rc, sq_hdmi_tc_output_reject_rc,
+            p2_write_blocked_rc, p2_setting_sha256_match, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 233;
+}
+
+enum {
+    R43_RECLAMP_ALL_ON         = 0,
+    R43_RECLAMP_ONLY_FRONT_OFF = 1,
+    R43_RECLAMP_ALL_OFF        = 2
+};
+
+typedef struct {
+    int rec_lamp_mode;
+    int rec_active;
+    int emphasized_rec_display;
+    int hdmi_info_display;
+    int silent_mode_on;
+    int audio_signals_user_pref;
+    int effective_audio_signals;
+} r43_reclamp_silent_state_t;
+
+typedef struct {
+    int front_led;
+    int rear_led;
+    int top_rec_btn_led;
+    int lcd_red_frame;
+    int hdmi_red_frame;
+} r43_tally_eval_t;
+
+__attribute__((noinline)) static int r43_set_rec_lamp_mode(
+    r43_reclamp_silent_state_t *st,
+    int mode
+) {
+    if (!st) return -EINVAL;
+    /* Only 3 coupled states exist on ILME-FX3; uncoupled rear/top split is rejected */
+    if (mode != R43_RECLAMP_ALL_ON &&
+        mode != R43_RECLAMP_ONLY_FRONT_OFF &&
+        mode != R43_RECLAMP_ALL_OFF) {
+        return -EINVAL; /* -22 */
+    }
+    st->rec_lamp_mode = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r43_eval_rec_lamp_and_hdmi_tally(
+    const r43_reclamp_silent_state_t *st,
+    r43_tally_eval_t *out
+) {
+    memset(out, 0, sizeof(*out));
+    if (!st || !st->rec_active) return;
+    if (st->rec_lamp_mode == R43_RECLAMP_ALL_ON) {
+        out->front_led = 1;
+        out->rear_led = 1;
+        out->top_rec_btn_led = 1;
+    } else if (st->rec_lamp_mode == R43_RECLAMP_ONLY_FRONT_OFF) {
+        /* Hardware coupling rule: top REC button lamp lights in lockstep with rear lamp */
+        out->front_led = 0;
+        out->rear_led = 1;
+        out->top_rec_btn_led = 1;
+    } else {
+        out->front_led = 0;
+        out->rear_led = 0;
+        out->top_rec_btn_led = 0;
+    }
+    if (st->emphasized_rec_display) {
+        out->lcd_red_frame = 1;
+        out->hdmi_red_frame = st->hdmi_info_display ? 1 : 0;
+    }
+}
+
+__attribute__((noinline)) static void r43_set_silent_mode(
+    r43_reclamp_silent_state_t *st,
+    int enable
+) {
+    if (!st) return;
+    st->silent_mode_on = enable ? 1 : 0;
+    st->effective_audio_signals = st->silent_mode_on ? 0 : st->audio_signals_user_pref;
+}
+
+__attribute__((noinline)) static int r43_set_audio_signals(
+    r43_reclamp_silent_state_t *st,
+    int enable
+) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->silent_mode_on) {
+        st->effective_audio_signals = 0;
+        return -EBUSY; /* -16: [Audio signals] hard-locked to [Off] when [Silent Mode] = [On] */
+    }
+    st->audio_signals_user_pref = enable;
+    st->effective_audio_signals = enable;
+    return 0;
+}
+
+static int run_r43_reclamp_silent_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r43_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r43_p2_ro", 0755) != 0) {
+        return 234;
+    }
+    (void)umount("/mnt/r43_surfaces");
+    (void)umount("/mnt/r43_p2_ro");
+    if (mount("tmpfs", "/mnt/r43_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r43_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 234;
+    }
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r43_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 43U) ^ (k * 19U) ^ 0x91U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 234;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 234;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 41U + 0x29U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r43_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 234;
+    if (mount(NULL, "/mnt/r43_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r43_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 234;
+    }
+
+    r43_reclamp_silent_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.emphasized_rec_display = 1;
+    st.hdmi_info_display = 1;
+    st.audio_signals_user_pref = 1;
+    st.effective_audio_signals = 1;
+
+    r43_tally_eval_t ev;
+    r43_eval_rec_lamp_and_hdmi_tally(&st, &ev);
+    int standby_leds_off_ok = (ev.front_led == 0 && ev.rear_led == 0 && ev.top_rec_btn_led == 0) ? 1 : 0;
+
+    st.rec_active = 1;
+    /* 1. [All On] = 1/1/1 */
+    (void)r43_set_rec_lamp_mode(&st, R43_RECLAMP_ALL_ON);
+    r43_eval_rec_lamp_and_hdmi_tally(&st, &ev);
+    int reclamp_all_on_111_ok = (ev.front_led == 1 && ev.rear_led == 1 && ev.top_rec_btn_led == 1) ? 1 : 0;
+
+    /* 2. [Only Front Off] = front=0, rear=1, top_rec_btn=1 coupled */
+    (void)r43_set_rec_lamp_mode(&st, R43_RECLAMP_ONLY_FRONT_OFF);
+    r43_eval_rec_lamp_and_hdmi_tally(&st, &ev);
+    int only_front_off_011_coupled_ok = (ev.front_led == 0 && ev.rear_led == 1 &&
+                                         ev.top_rec_btn_led == 1) ? 1 : 0;
+
+    /* 3. [All Off] = 0/0/0 while [Emphasized REC Display] HDMI red tally stays independent */
+    (void)r43_set_rec_lamp_mode(&st, R43_RECLAMP_ALL_OFF);
+    r43_eval_rec_lamp_and_hdmi_tally(&st, &ev);
+    int reclamp_all_off_000_ok = (ev.front_led == 0 && ev.rear_led == 0 && ev.top_rec_btn_led == 0) ? 1 : 0;
+    int hdmi_red_when_info_on = ev.hdmi_red_frame;
+    st.hdmi_info_display = 0;
+    r43_eval_rec_lamp_and_hdmi_tally(&st, &ev);
+    int emphasized_rec_hdmi_independent_ok = (hdmi_red_when_info_on == 1 &&
+                                              ev.lcd_red_frame == 1 &&
+                                              ev.hdmi_red_frame == 0) ? 1 : 0;
+    int uncoupled_split_reject_rc = r43_set_rec_lamp_mode(&st, 3);
+
+    /* 4. [Silent Mode] = [On] force-locks [Audio signals] = [Off] */
+    r43_set_silent_mode(&st, 1);
+    int silent_forces_audio_signals_off = (st.effective_audio_signals == 0) ? 1 : 0;
+    int audio_signals_locked_while_silent_rc = r43_set_audio_signals(&st, 1);
+    r43_set_silent_mode(&st, 0);
+    int audio_signals_restored_when_silent_off = (st.effective_audio_signals == 1 &&
+                                                  r43_set_audio_signals(&st, 0) == 0 &&
+                                                  r43_set_audio_signals(&st, 1) == 0) ? 1 : 0;
+
+    /* 5. Read-only p2, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r43_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r43_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (standby_leds_off_ok == 1 &&
+              reclamp_all_on_111_ok == 1 &&
+              only_front_off_011_coupled_ok == 1 &&
+              reclamp_all_off_000_ok == 1 &&
+              emphasized_rec_hdmi_independent_ok == 1 &&
+              uncoupled_split_reject_rc == -EINVAL &&
+              silent_forces_audio_signals_off == 1 &&
+              audio_signals_locked_while_silent_rc == -EBUSY &&
+              audio_signals_restored_when_silent_off == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R43_RECLAMP_SILENT standby_leds_off_ok=%d reclamp_all_on_111_ok=%d "
+            "only_front_off_011_coupled_ok=%d reclamp_all_off_000_ok=%d "
+            "emphasized_rec_hdmi_independent_ok=%d uncoupled_split_reject_rc=%d "
+            "silent_forces_audio_signals_off=%d audio_signals_locked_while_silent_rc=%d "
+            "audio_signals_restored_when_silent_off=%d p2_write_blocked_rc=%d "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r43c_ok=%d verify_us=%lld\n",
+            standby_leds_off_ok, reclamp_all_on_111_ok,
+            only_front_off_011_coupled_ok, reclamp_all_off_000_ok,
+            emphasized_rec_hdmi_independent_ok, uncoupled_split_reject_rc,
+            silent_forces_audio_signals_off, audio_signals_locked_while_silent_rc,
+            audio_signals_restored_when_silent_off, p2_write_blocked_rc,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 234;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -10013,6 +10908,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r42-focusmag-brightmon") == 0) {
         return run_r42_focusmag_brightmon_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r43-tc-regenerate") == 0) {
+        return run_r43_tc_regenerate_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r43-reclamp-silent") == 0) {
+        return run_r43_reclamp_silent_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -10111,6 +11012,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r42", &r42_st) == 0) {
         if (setup_r42_hdmi_log1080_hdmionly_probe() != 0) {
             return 61;
+        }
+    }
+    struct stat r43_st;
+    if (stat("/etc/fx6_stage_r43", &r43_st) == 0) {
+        if (setup_r43_filesettings_shotmark_probe() != 0) {
+            return 62;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

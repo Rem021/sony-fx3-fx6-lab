@@ -73,6 +73,7 @@ import tc_genlock_lens_paint_emulator as p67  # noqa: E402
 import touch_af_ciz_assignable_emulator as p78  # noqa: E402
 import usb_uvc_uac_srt_crsdk_usbpd_emulator as p121  # noqa: E402
 import uvc_hdmi_raw_output_emulator as p63  # noqa: E402
+import vp_ledwall_freed_artnet_vib_emulator as p132  # noqa: E402
 import wireless_emi_exfat_endurance_emulator as p103  # noqa: E402
 
 
@@ -133,6 +134,7 @@ class CoEmulationConfig:
     include_phase117_proresraw_breathing_mishoe_hil: bool = True
     include_phase121_uvc_srt_crsdk_usbpd_hil: bool = True
     include_phase127_mxf_ptpv2_tally_monsoon_hil: bool = True
+    include_phase132_vp_ledwall_freed_artnet_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1395,6 +1397,50 @@ def run_stage22_mxf_ptpv2_tally_monsoon_hil(
     }
 
 
+def run_stage23_vp_ledwall_freed_artnet_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 23 (Phase 132): VP LED-Wall ECS Solver, FreeD 0xD1 LiveLink, Art-Net 4/sACN Sync & G41/G42 Genlock/IBIS HIL."""
+    config.validate()
+    rep = p132.run_phase132_vp_ledwall_freed_artnet_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage23_vp_ledwall_freed_artnet_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "flash_split_band_frames": red["flash_split_band_frames"],
+        "cxd90057_pin_damage_events": red["cxd90057_pin_damage_events"],
+        "imx510_sensor_burn_events": red["imx510_sensor_burn_events"],
+        "ibis_endstop_slam_events": red["ibis_endstop_slam_events"],
+        "ibis_coil_thermal_runaway_events": red["ibis_coil_thermal_runaway_events"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_vp_ledwall_ecs_solver": rep["pillar_a_vp_ledwall_ecs_solver"],
+        "pillar_b_freed_0xd1_livelink_bridge": rep["pillar_b_freed_0xd1_livelink_bridge"],
+        "pillar_c_artnet4_sacn_flash_sync": rep["pillar_c_artnet4_sacn_flash_sync"],
+        "pillar_d_g41_g42_genlock_vib_hil": rep["pillar_d_g41_g42_genlock_vib_hil"],
+        "phase132_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1405,7 +1451,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 22-stage (Phase 33..127) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 23-stage (Phase 33..132) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1487,6 +1533,11 @@ def run_fx3_vm_coemulation_suite(
     stage22: Optional[Dict[str, object]] = (
         run_stage22_mxf_ptpv2_tally_monsoon_hil(cfg, env=env)
         if cfg.include_phase127_mxf_ptpv2_tally_monsoon_hil
+        else None
+    )
+    stage23: Optional[Dict[str, object]] = (
+        run_stage23_vp_ledwall_freed_artnet_hil(cfg, env=env)
+        if cfg.include_phase132_vp_ledwall_freed_artnet_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1780,6 +1831,28 @@ def run_fx3_vm_coemulation_suite(
         and stage22["chassis_damage_events"] == 0
         and (not stage22["persistent_emmc_writes_authorized"])
     )
+    stage23_ok = True if stage23 is None else (
+        bool(stage23["all_checks_passed"])
+        and stage23["nop_count"] == 0
+        and stage23["guest_code_modification_bytes"] == 0
+        and stage23["cp_mutation_bytes"] == 0
+        and stage23["wbi_mutation_bytes"] == 0
+        and stage23["calibration_mutation_bytes"] == 0
+        and stage23["nvram_persistent_writes"] == 0
+        and stage23["bk4_persistent_nvram_writes"] == 0
+        and stage23["physical_device_writes"] == 0
+        and stage23["null_gpio_derefs"] == 0
+        and stage23["mailbox_stalls"] == 0
+        and stage23["stock_cp_fault_count"] == 0
+        and stage23["emmc_mutation_bytes"] == 0
+        and stage23["wf12_00342260_hits"] == 0
+        and stage23["flash_split_band_frames"] == 0
+        and stage23["cxd90057_pin_damage_events"] == 0
+        and stage23["imx510_sensor_burn_events"] == 0
+        and stage23["ibis_endstop_slam_events"] == 0
+        and stage23["ibis_coil_thermal_runaway_events"] == 0
+        and (not stage23["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1805,6 +1878,7 @@ def run_fx3_vm_coemulation_suite(
         and stage20_ok
         and stage21_ok
         and stage22_ok
+        and stage23_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1840,6 +1914,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase117_proresraw_breathing_mishoe_hil": cfg.include_phase117_proresraw_breathing_mishoe_hil,
             "include_phase121_uvc_srt_crsdk_usbpd_hil": cfg.include_phase121_uvc_srt_crsdk_usbpd_hil,
             "include_phase127_mxf_ptpv2_tally_monsoon_hil": cfg.include_phase127_mxf_ptpv2_tally_monsoon_hil,
+            "include_phase132_vp_ledwall_freed_artnet_hil": cfg.include_phase132_vp_ledwall_freed_artnet_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1902,6 +1977,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage21_uvc_srt_crsdk_usbpd_hil"] = stage21
     if stage22 is not None:
         core_payload["stage22_mxf_ptpv2_tally_monsoon_hil"] = stage22
+    if stage23 is not None:
+        core_payload["stage23_vp_ledwall_freed_artnet_hil"] = stage23
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1913,7 +1990,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -2015,6 +2092,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 22 (Phase 127 MXF/MP4 RDD-18/UMID Bridge, ST 2059-2 PTPv2/LTC Sync, TSL UMD v5.0 Tally & G39/G40 HIL)",
     )
     parser.add_argument(
+        "--skip-phase132",
+        action="store_true",
+        help="Skip optional Stage 23 (Phase 132 VP LED-Wall ECS Solver, FreeD 0xD1 LiveLink, Art-Net 4/sACN Sync & G41/G42 Genlock/IBIS HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -2099,6 +2181,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase117_proresraw_breathing_mishoe_hil=not args.skip_phase117,
         include_phase121_uvc_srt_crsdk_usbpd_hil=not args.skip_phase121,
         include_phase127_mxf_ptpv2_tally_monsoon_hil=not args.skip_phase127,
+        include_phase132_vp_ledwall_freed_artnet_hil=not args.skip_phase132,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -2130,6 +2213,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s20 = rep.get("stage20_proresraw_breathing_mishoe_hil")
         s21 = rep.get("stage21_uvc_srt_crsdk_usbpd_hil")
         s22 = rep.get("stage22_mxf_ptpv2_tally_monsoon_hil")
+        s23 = rep.get("stage23_vp_ledwall_freed_artnet_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -2262,6 +2346,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s22, dict)
             else ""
         )
+        s23_str = (
+            f" | vp_ledwall_freed_artnet={s23['source_mode']}(ecs={s23['pillar_a_vp_ledwall_ecs_solver']['brompton_4k24_3840hz_locked']['luminance_banding_residual_pct']}%,"
+            f"freed={s23['pillar_b_freed_0xd1_livelink_bridge']['emount_12pin_120hz_livelink']['glass_to_engine_latency_ms']}ms/wf12={s23['wf12_00342260_hits']},"
+            f"dmx_split={s23['flash_split_band_frames']},"
+            f"g41_iso={s23['pillar_d_g41_g42_genlock_vib_hil']['g41_genlock_clash_and_uv_hil']['trilevel_genlock_isolated']['isolation_latency_us']}us/pin_dmg={s23['cxd90057_pin_damage_events']},"
+            f"g42={s23['pillar_d_g41_g42_genlock_vib_hil']['g42_helicopter_ibis_resonance_hil']['helicopter_autopark_gyroflow']['ibis_state']}/slam={s23['ibis_endstop_slam_events']})"
+            if isinstance(s23, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -2270,7 +2363,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

@@ -78,11 +78,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar 2 — Cinema Line `Shot Mark 1` / `Shot Mark 2` (`_ShotMark1`, `_ShotMark2`, `OK / KEEP`) & `EssenceMark` XML Verifier**: Verifies live `IN_REC` and `IN_PLAY` frame-indexed ShotMark insertion/removal (`0..100` marks/clip) serialized into Sony `NonRealTimeMeta v2.20` `<KlvPacketTable>` / `<EssenceMark start="<frame>" .../>` XML recognized by `DaVinci Resolve`, `Premiere Pro`, and `Catalyst Browse`, proving lossless frame-accurate round-trip across `23.98p / 24.00p / 25.00p / 29.97p / 59.94p`.
    - **Pillar 3 — `Push Auto Iris`, `AE Shift (-2.0..+2.0 EV)`, Photometry (`MULTI / CENTER / SPOT / ENTIRE_SCREEN_AVG / HIGHLIGHT`) & `P4` Auto-ND Redirection**: Proves that under `Cine EI` (`ISO/EI` locked to Base `800`/`12800` and Shutter Angle locked to `180.0°`), FX6's `Auto Variable ND / Push Auto` cleanly redirects on FX3 to E-Mount `Push Auto Iris` (`1/8`-stop smooth aperture servo via `libInfraLensCommunicator.so`) with **`0` `P4` Variable ND motor fault attempts**, plus `Highlight` metering (`94% IRE` `S-Log3` highlight-clip protection) and `Face/Eye Priority in Multi Metering` (`EVENT_FUNC_FACE_DETECTION_IN_MULTI_ON` / `FACE_DETECTION_IN_MULTI_VALUE_ON`).
    - **Pillar 4 — Zero Calibration / Zero NVRAM Mutation Proof**: Proves `calibration_mutation_bytes == 0`, `internal_emmc_format_possible == False`, and `persistent_emmc_writes_authorized == False`, hard-blocking `/dev/mmcblk0*`, `/dev/nflasha*`, `/dev/cnflasha*`, and `p2:/Backup.bin` while permitting volatile `/tmp`/`ram://` shadow state.
+17. [`fx3_firmware_lab/metadata_gyro_catalyst_and_anamorphic_auditor.py`](fx3_firmware_lab/metadata_gyro_catalyst_and_anamorphic_auditor.py)
+   - **Pillar 1 — `Gyroflow` / `Catalyst Browse` Sony `RTMD` (`0xE304` / `0xE43B` / `0xE44B`) IMU Telemetry Verifier**: Probes FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, `cpapp-b.bin`, `libInfraLensCommunicator.so`, `global.xdb`, and `.uxc` string packs strictly `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback), verifying `2000 Hz` IMU sample windows (`83/84` at `23.976p`, `80` at `25.00p`, `33/34` at `59.94p`, `16/17` at `119.88p`), zero-drift rational accumulation over 1,000+ frames, unit `SO(3)` orientation quaternions/matrices (`||q|| = 1`, `det(R) = +1`), SMPTE RDD 18 KLV packet round-trips, and deterministic compatibility rules (`IBIS = Off` `0x0400` Center-Lock required for `GYROFLOW_3D_LENS_PROFILE`, or `GYROFLOW_V17_IBIS_METADATA_AWARE` with per-frame IBIS offset telemetry).
+   - **Pillar 2 — Anamorphic (`1.3x / 1.33x / 1.5x / 1.8x / 2.0x`) 5-Axis IBIS Asymmetric Gain Containment**: Proves FX6 `De-Squeeze` (`1.3x` / `2.0x`) is monitoring-only on rigid `IMX510` CMOS (`has_physical_ibis == False`), whereas on FX3's physical 5-axis IBIS stage, applying spherical focal length `f` over-drives horizontal yaw by $S\times$ (`100.0%` error at `2.0x`), enforcing safe `Anamorphic SteadyShot` asymmetric gain (`f_x = f / S, f_y = f`) OR automatic `IBIS = Off (0x0400 Center-Lock) + 2000 Hz Gyro RTMD` for manual anamorphic lenses.
+   - **Pillar 3 — `IMX510` Rolling-Shutter Line-Readout Timing Matrix**: Audits `MetaConverterImpl::ConvertReadoutDuration` and `NormalImageControl_EffectivePixelReadoutTime` readout metadata (`8.70 ms` full-width `4K 24..60p`, `4.35 ms` `S&Q 4K 120p`, `2.20 ms` `FHD 240p`) and detects skew-shear mismatches (`8700 us` stamped on `4K120` -> `vertical_shear_risk == True`).
+   - **Pillar 4 — Stock-CP IMU Factory Bias/Orthogonality Calibration Immutability**: Proves factory gyro bias, orthogonality, and thermal-drift LUTs in `cnflasha` / Stock-CP remain 100% untouched (`imu_calibration_mutation_bytes == 0`, `cp_mutation_bytes == 0`, `persistent_emmc_writes_authorized == False`).
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 16 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 17 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -110,8 +115,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-falsecolor-lpcm-ub --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-playback-shotmark-ae --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-playback-shotmark-ae --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-gyroflow-anamorphic --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-gyroflow-anamorphic --clean-room --json
 
-# Run all 403 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 437 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

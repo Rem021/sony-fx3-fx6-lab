@@ -62,6 +62,10 @@ from .metadata_gyro_catalyst_and_anamorphic_auditor import (
     analyze_metadata_gyro_catalyst_and_anamorphic,
     metadata_gyro_catalyst_and_anamorphic_report_to_dict,
 )
+from .mxf_mp4_essence_ptpv2_and_tally_umd_auditor import (
+    analyze_mxf_mp4_essence_ptpv2_and_tally_umd,
+    mxf_mp4_essence_ptpv2_and_tally_umd_report_to_dict,
+)
 from .playback_shotmark_and_ae_auditor import (
     analyze_playback_shotmark_and_ae,
     playback_shotmark_and_ae_report_to_dict,
@@ -99,7 +103,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all twenty-three clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all twenty-four clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -161,6 +165,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     uvc_srt_crsdk = usb_uvc_uac_srt_and_crsdk_ptp_report_to_dict(
         analyze_usb_uvc_uac_srt_and_crsdk_ptp(clean_room=clean_room)
     )
+    mxf_mp4_tally = mxf_mp4_essence_ptpv2_and_tally_umd_report_to_dict(
+        analyze_mxf_mp4_essence_ptpv2_and_tally_umd(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -186,6 +193,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and hdr_hlg_assist.get("all_checks_passed")
         and proresraw_breathing_mishoe.get("all_checks_passed")
         and uvc_srt_crsdk.get("all_checks_passed")
+        and mxf_mp4_tally.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -216,17 +224,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "hdr_hlg_bt2100_and_display_assist_audit": hdr_hlg_assist,
         "hdmi_raw_prores_breathing_and_mishoe_clock_audit": proresraw_breathing_mishoe,
         "usb_uvc_uac_srt_and_crsdk_ptp_audit": uvc_srt_crsdk,
+        "mxf_mp4_essence_ptpv2_and_tally_umd_audit": mxf_mp4_tally,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, and USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, and XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18, SMPTE ST 2059-2 PTPv2 Phase Sync, & Wired P12-Safe TSL UMD v5.0 Tally auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 23 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 24 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -370,6 +379,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_usc.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_usc.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_mmt = sub.add_parser(
+        "audit-mxf-mp4-tally",
+        help="Run Phase 122 XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18, SMPTE ST 2059-2 PTPv2 Phase Sync, & Wired P12-Safe TSL UMD v5.0 Tally audit",
+    )
+    p_mmt.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_mmt.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -457,6 +473,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-uvc-srt-crsdk":
         payload = usb_uvc_uac_srt_and_crsdk_ptp_report_to_dict(
             analyze_usb_uvc_uac_srt_and_crsdk_ptp(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-mxf-mp4-tally":
+        payload = mxf_mp4_essence_ptpv2_and_tally_umd_report_to_dict(
+            analyze_mxf_mp4_essence_ptpv2_and_tally_umd(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

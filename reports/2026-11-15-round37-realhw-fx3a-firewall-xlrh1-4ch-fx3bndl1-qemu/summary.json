@@ -1,0 +1,756 @@
+{
+  "schema": "fx6-on-fx3-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu-v1",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "fx3a_vs_fx3_hardware_identity_firewall": {
+      "fx3a_reject_rc": -22,
+      "fx3a_reason": "FAIL_CLOSED_FX3A_BRANCH_MISMATCH",
+      "fx3a_gate_ns": 34000,
+      "fx3a_gate_us": 34,
+      "fx3a_under_50us": 1,
+      "fx3a_stageb_mounted": 0,
+      "fx3a_fallback": "FAIL_CLOSED_STOCK_FX3A",
+      "fx3a_bodydata_reject_rc": -79,
+      "fx3a_camset_reject_rc": -79,
+      "fx3_camset_accept_rc": 0,
+      "fx3_model_id": "0x91030080",
+      "fx3_fw_ver": "7.02",
+      "fx3_lcd_dots": 1440000,
+      "fx3_nfc": 1,
+      "fx3_ir": 1,
+      "fx3_pass_rc": 0,
+      "fx3_reason": "PASS_ILME_FX3_702_144M",
+      "appfw_present": 1,
+      "emmc_write_count": 0,
+      "r37_init_ok": 1,
+      "verify_us": 664122
+    },
+    "fx3a_firewall_stage_b_bridge": {
+      "fx3a_reject_rc": -22,
+      "fx3a_camset_rc": -79,
+      "fx3_pass_rc": 0,
+      "fx3_model_id": "0x91030080",
+      "fx3_lcd_dots": 1440000,
+      "fx3a_rejected_ok": 1,
+      "fx3a_camset_blocked_ok": 1,
+      "fx3_702_pass_ok": 1,
+      "xlrh1_4ch_ok": 1,
+      "body35_override_ok": 1,
+      "sq_mute_ok": 1,
+      "fx3bndl1_serial_ok": 1,
+      "transplant_reject_rc": -13,
+      "emmc_write_count": 0,
+      "r37_bridge_ok": 1
+    },
+    "xlrh1_mishoe_4ch_and_body35_sq_override": {
+      "sample_rate_hz": 48000,
+      "bit_depth": 24,
+      "channels": 4,
+      "ch_map": "IN1_CH1,IN2_CH2,IN3L_CH3,IN3R_CH4",
+      "monitor_matrix": "CH1+3_CH2+4",
+      "hp_mix_left_mask": "0x5",
+      "hp_mix_right_mask": "0xa",
+      "modes_supported": 3,
+      "body35_inserted_override": 1,
+      "mishoe_locked_by_body_35mm": 1,
+      "mishoe_when_body35_rc": -16,
+      "active_source_on_body35": "BODY_35MM",
+      "body35_removed_restored": 1,
+      "sq_mode_active": 1,
+      "sq_audio_muted": 1,
+      "upgrade_reset_default": "48kHz_16bit_2ch",
+      "pre_upgrade_snapshot_saved": 1,
+      "audio_scn_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r37b_ok": 1,
+      "verify_us": 731
+    },
+    "airgapped_fx3bndl1_serial_and_appledouble_hygiene": {
+      "host_serial": "FX3-091030080-A001",
+      "foreign_serial": "FX3-091030080-B999",
+      "host_serial_bind_rc": 0,
+      "transplant_reject_rc": -13,
+      "split_pair_reject_rc": -13,
+      "transplant_rejected": 1,
+      "bndl_magic": "FX3BNDL1",
+      "rcpt_magic": "FX3RCPT1",
+      "rcpt_bytes": 528,
+      "appledouble_elf_rejected": 1,
+      "appledouble_stripped": 2,
+      "ds_store_stripped": 1,
+      "dot_underscore_dlopen_attempted": 0,
+      "dot_underscore_remaining": 0,
+      "dlopen_ok": 1,
+      "dlopen_failures": 0,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r37c_ok": 1,
+      "verify_us": 5370
+    }
+  },
+  "runs": {
+    "r37a_fx3a_firewall_big6_schinese": {
+      "run_id": "r37a-fx3a-firewall-big6-schinese",
+      "round": 37,
+      "lang": "schinese",
+      "r37_mode": "fx3a_firewall_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Stage-A ILME-FX3 vs ILME-FX3A (<50 us) fail-closed hardware-identity firewall (2,359,296 XGA LCD / Ver. 2.02 / no NFC-IR rejected with rc=-22 FAIL_CLOSED_FX3A_BRANCH_MISMATCH; FX3A BODYDATA.DAT & CAMSET cross-imports rejected with rc=-79 ELIBBAD; genuine ILME-FX3 0x91030080 Ver. 7.02 1,440,000 LCD accepted) -> Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 71.64,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "9ef0b9f0f4d89106d720c105fd75da19684dbdb3585d87d425a6539b49cce1a3"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r37": {
+          "r37_mode": "fx3a_firewall_big6",
+          "fx3_model_id": "0x91030080",
+          "fx3_fw_ver": "7.02",
+          "fx3_lcd_dots": 1440000,
+          "fx3a_fw_ver": "2.02",
+          "fx3a_lcd_dots": 2359296,
+          "fx3a_gate_budget_us": 50,
+          "fx3a_reject_rc": -22,
+          "fx3a_cross_import_rc": -79,
+          "xlrh1_sample_rate_hz": 48000,
+          "xlrh1_bit_depth": 24,
+          "xlrh1_channels": 4,
+          "xlrh1_monitor_matrix": "CH1+3/CH2+4",
+          "body_35mm_overrides_mishoe": true,
+          "sq_mutes_mishoe": true,
+          "fx3bndl1_magic": "FX3BNDL1",
+          "fx3rcpt1_magic": "FX3RCPT1",
+          "transplant_reject_rc": -13,
+          "appledouble_clutter_stripped": true
+        }
+      },
+      "r37_telemetry": {
+        "xlrh1_rc": null,
+        "fx3bndl1_rc": null,
+        "fx3a_firewall_init": {
+          "fx3a_reject_rc": -22,
+          "fx3a_reason": "FAIL_CLOSED_FX3A_BRANCH_MISMATCH",
+          "fx3a_gate_ns": 34000,
+          "fx3a_gate_us": 34,
+          "fx3a_under_50us": 1,
+          "fx3a_stageb_mounted": 0,
+          "fx3a_fallback": "FAIL_CLOSED_STOCK_FX3A",
+          "fx3a_bodydata_reject_rc": -79,
+          "fx3a_camset_reject_rc": -79,
+          "fx3_camset_accept_rc": 0,
+          "fx3_model_id": "0x91030080",
+          "fx3_fw_ver": "7.02",
+          "fx3_lcd_dots": 1440000,
+          "fx3_nfc": 1,
+          "fx3_ir": 1,
+          "fx3_pass_rc": 0,
+          "fx3_reason": "PASS_ILME_FX3_702_144M",
+          "appfw_present": 1,
+          "emmc_write_count": 0,
+          "r37_init_ok": 1,
+          "verify_us": 664122
+        },
+        "fx3a_firewall_bridge": {
+          "fx3a_reject_rc": -22,
+          "fx3a_camset_rc": -79,
+          "fx3_pass_rc": 0,
+          "fx3_model_id": "0x91030080",
+          "fx3_lcd_dots": 1440000,
+          "fx3a_rejected_ok": 1,
+          "fx3a_camset_blocked_ok": 1,
+          "fx3_702_pass_ok": 1,
+          "xlrh1_4ch_ok": 1,
+          "body35_override_ok": 1,
+          "sq_mute_ok": 1,
+          "fx3bndl1_serial_ok": 1,
+          "transplant_reject_rc": -13,
+          "emmc_write_count": 0,
+          "r37_bridge_ok": 1
+        },
+        "xlrh1_4ch_bridge": {
+          "sr": 48000,
+          "bits": 24,
+          "ch": 4,
+          "monitor": "CH1+3_CH2+4",
+          "mishoe_locked_by_body_35mm": 1,
+          "sq_audio_muted": 1,
+          "xlrh1_4ch_ok": 1,
+          "body35_override_ok": 1,
+          "sq_mute_ok": 1,
+          "emmc_write_count": 0
+        },
+        "xlrh1_4ch": {},
+        "fx3bndl1_serial": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34726,
+          "glyph_blits": 17664,
+          "icon_blits": 23099,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "fx3a_rejected_ok": 1,
+          "fx3_702_pass_ok": 1,
+          "xlrh1_4ch_ok": 1,
+          "fx3bndl1_serial_ok": 1,
+          "r37_bridge_ok": 1,
+          "realhw_fx3a_firewall_xlrh1_4ch_fx3bndl1": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 37,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "fx3a_firewall_50us": 1,
+          "fx3a_camset_blocked": 1,
+          "xlrh1_4ch_mishoe": 1,
+          "body35_override_sq_mute": 1,
+          "fx3bndl1_serial_appledouble": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r37a-fx3a-firewall-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/assets/r37a-fx3a-firewall-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/assets/r37a-fx3a-firewall-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 195,
+        "FX6_STAGE_B_": 66,
+        "FX6_R30_": 193,
+        "FX6_R31_": 193,
+        "FX6_R32_": 196,
+        "FX6_R33_": 193,
+        "FX6_R34_": 193,
+        "FX6_R35_": 193,
+        "FX6_R36_": 193,
+        "FX6_R37_": 194,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 193,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 136,
+        "FX6_R10_": 191,
+        "FX6_R11_": 202,
+        "FX6_R12_": 194,
+        "FX6_R13_": 191,
+        "FX6_R14_": 191,
+        "FX6_R15_": 191,
+        "FX6_R16_": 191,
+        "FX6_R17_": 191,
+        "FX6_R18_": 191,
+        "FX6_R19_": 191,
+        "FX6_R20_": 191,
+        "FX6_R21_": 191,
+        "FX6_R22_": 191,
+        "FX6_R23_": 191,
+        "FX6_R24_": 191,
+        "FX6_R25_": 191,
+        "FX6_R26_": 191,
+        "FX6_R27_": 191,
+        "FX6_R29_": 193,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1080,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 64,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 603,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2754,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r37b_xlrh1_4ch_override": {
+      "run_id": "r37b-xlrh1-4ch-override",
+      "round": 37,
+      "lang": "en",
+      "r37_mode": "xlrh1_4ch_override",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 XLR-H1 MI-Shoe 48kHz/24bit 4ch LPCM (IN1/IN2 XLR -> CH1/CH2, IN3 3.5mm -> CH3/CH4) + 4ch Audio Monitoring (CH1+3/CH2+4), body 3.5mm jack physical override (mishoe_locked_by_body_35mm=1, rc=-16 EBUSY), unplugging restoration, S&Q audio mute (sq_audio_muted=1), and major upgrade reset tracking (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.45,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "f3d6c8b657424c37513366a67feb045a7cdf578663d0af309acdd28b332f6018"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r37": {
+          "r37_mode": "xlrh1_4ch_override",
+          "fx3_model_id": "0x91030080",
+          "fx3_fw_ver": "7.02",
+          "fx3_lcd_dots": 1440000,
+          "fx3a_fw_ver": "2.02",
+          "fx3a_lcd_dots": 2359296,
+          "fx3a_gate_budget_us": 50,
+          "fx3a_reject_rc": -22,
+          "fx3a_cross_import_rc": -79,
+          "xlrh1_sample_rate_hz": 48000,
+          "xlrh1_bit_depth": 24,
+          "xlrh1_channels": 4,
+          "xlrh1_monitor_matrix": "CH1+3/CH2+4",
+          "body_35mm_overrides_mishoe": true,
+          "sq_mutes_mishoe": true,
+          "fx3bndl1_magic": "FX3BNDL1",
+          "fx3rcpt1_magic": "FX3RCPT1",
+          "transplant_reject_rc": -13,
+          "appledouble_clutter_stripped": true
+        }
+      },
+      "r37_telemetry": {
+        "xlrh1_rc": 0,
+        "fx3bndl1_rc": null,
+        "fx3a_firewall_init": {},
+        "fx3a_firewall_bridge": {},
+        "xlrh1_4ch_bridge": {},
+        "xlrh1_4ch": {
+          "sample_rate_hz": 48000,
+          "bit_depth": 24,
+          "channels": 4,
+          "ch_map": "IN1_CH1,IN2_CH2,IN3L_CH3,IN3R_CH4",
+          "monitor_matrix": "CH1+3_CH2+4",
+          "hp_mix_left_mask": "0x5",
+          "hp_mix_right_mask": "0xa",
+          "modes_supported": 3,
+          "body35_inserted_override": 1,
+          "mishoe_locked_by_body_35mm": 1,
+          "mishoe_when_body35_rc": -16,
+          "active_source_on_body35": "BODY_35MM",
+          "body35_removed_restored": 1,
+          "sq_mode_active": 1,
+          "sq_audio_muted": 1,
+          "upgrade_reset_default": "48kHz_16bit_2ch",
+          "pre_upgrade_snapshot_saved": 1,
+          "audio_scn_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r37b_ok": 1,
+          "verify_us": 731
+        },
+        "fx3bndl1_serial": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R37_": 3
+      }
+    },
+    "r37c_fx3bndl1_serial_appledouble": {
+      "run_id": "r37c-fx3bndl1-serial-appledouble",
+      "round": 37,
+      "lang": "en",
+      "r37_mode": "fx3bndl1_serial_appledouble",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 air-gapped FX3BNDL1 <-> FX3RCPT1 hardware-serial binding (host FX3-091030080-A001 pass rc=0 vs foreign transplant FX3-091030080-B999 rejected rc=-13 EACCES), macOS AppleDouble ._* / .DS_Store ExFAT clutter stripping without dlopen failure (dot_underscore_dlopen_attempted=0, dlopen_ok=1), and 16/16 H0 == H3 restoration (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.12,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "f3d6c8b657424c37513366a67feb045a7cdf578663d0af309acdd28b332f6018"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r37": {
+          "r37_mode": "fx3bndl1_serial_appledouble",
+          "fx3_model_id": "0x91030080",
+          "fx3_fw_ver": "7.02",
+          "fx3_lcd_dots": 1440000,
+          "fx3a_fw_ver": "2.02",
+          "fx3a_lcd_dots": 2359296,
+          "fx3a_gate_budget_us": 50,
+          "fx3a_reject_rc": -22,
+          "fx3a_cross_import_rc": -79,
+          "xlrh1_sample_rate_hz": 48000,
+          "xlrh1_bit_depth": 24,
+          "xlrh1_channels": 4,
+          "xlrh1_monitor_matrix": "CH1+3/CH2+4",
+          "body_35mm_overrides_mishoe": true,
+          "sq_mutes_mishoe": true,
+          "fx3bndl1_magic": "FX3BNDL1",
+          "fx3rcpt1_magic": "FX3RCPT1",
+          "transplant_reject_rc": -13,
+          "appledouble_clutter_stripped": true
+        }
+      },
+      "r37_telemetry": {
+        "xlrh1_rc": null,
+        "fx3bndl1_rc": 0,
+        "fx3a_firewall_init": {},
+        "fx3a_firewall_bridge": {},
+        "xlrh1_4ch_bridge": {},
+        "xlrh1_4ch": {},
+        "fx3bndl1_serial": {
+          "host_serial": "FX3-091030080-A001",
+          "foreign_serial": "FX3-091030080-B999",
+          "host_serial_bind_rc": 0,
+          "transplant_reject_rc": -13,
+          "split_pair_reject_rc": -13,
+          "transplant_rejected": 1,
+          "bndl_magic": "FX3BNDL1",
+          "rcpt_magic": "FX3RCPT1",
+          "rcpt_bytes": 528,
+          "appledouble_elf_rejected": 1,
+          "appledouble_stripped": 2,
+          "ds_store_stripped": 1,
+          "dot_underscore_dlopen_attempted": 0,
+          "dot_underscore_remaining": 0,
+          "dlopen_ok": 1,
+          "dlopen_failures": 0,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r37c_ok": 1,
+          "verify_us": 5370
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R37_": 3
+      }
+    }
+  },
+  "r37_realhw_fx3a_firewall_xlrh1_4ch_fx3bndl1_audit": {
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r37a_fx3a_rejected_under_50us_rc_minus_22_verified": true,
+    "r37a_fx3a_bodydata_and_camset_blocked_rc_minus_79_verified": true,
+    "r37a_fx3_702_144m_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r37b_xlrh1_48khz_24bit_4ch_and_monitor_matrix_verified": true,
+    "r37b_body35_override_and_sq_mute_verified": true,
+    "r37c_fx3bndl1_foreign_serial_transplant_rejected_rc_minus_13_verified": true,
+    "r37c_appledouble_stripped_dlopen_ok_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 (Ver. 7.02, 1.44M LCD + NFC + IR) and ILME-FX3A (Ver. 2.02, 2.36M XGA LCD, no NFC/IR) side-by-side bench boot and SD card CAMSET / BODYDATA.DAT cross-insert testing.",
+    "Physical Sony XLR-H1 top handle mounted on ILME-FX3 MI-Shoe with dual XLR condenser/dynamic microphones (IN1/IN2) and 3.5mm stereo mic (IN3) plus physical body 3.5mm TRS insertion and S&Q dial toggle verification.",
+    "Physical ExFAT SDXC card written on macOS Finder (generating real ._AppleDouble and .DS_Store files) inserted into two distinct physical ILME-FX3 bodies verifying cross-serial FX3BNDL1/FX3RCPT1 rejection on real hardware."
+  ]
+}

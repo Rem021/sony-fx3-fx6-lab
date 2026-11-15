@@ -761,3 +761,37 @@ PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
 ```
 
+## Phase 132：Stage 23 虚拟制片 LED-Volume `Brompton/Megapixel` 抗频闪分数 `ECS` 求解器、有线 `FreeD (0xD1 29-Byte)` 镜头追踪 -> `Unreal LiveLink` 桥接、`P12` 安全 `Art-Net 4 / sACN` 同步与 `G41/G42` 锁相冲突 / 直升机 IBIS 共振 HIL
+
+[`vp_ledwall_freed_artnet_vib_emulator.py`](vp_ledwall_freed_artnet_vib_emulator.py) 作为 **Stage 23** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase132_vp_ledwall_freed_artnet_hil=True`，可通过 `--skip-phase132` 向后兼容跳过；全板 23 阶段协同仿真在本地只读供体模式下保持 `~1.30s < 1.8s`、洁净室模式下 `~0.50s < 0.7s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`calibration_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`bk4_persistent_nvram_writes == 0`**、**`physical_device_writes == 0`**、**`emmc_mutation_bytes == 0`**、**`wf12_00342260_hits == 0`**、**`flash_split_band_frames == 0`**、**`cxd90057_pin_damage_events == 0`**、**`imx510_sensor_burn_events == 0`**、**`ibis_endstop_slam_events == 0`**、**`ibis_coil_thermal_runaway_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成五大闭环：
+
+1. **严格只读（`os.O_RDONLY`）16 份 FX3 `v7.02` / FX6 `v6.01` 供体审计 + 洁净室回退**：
+   - 检查 FX3/FX6 `string_english*.uxc`、`global.xdb`、`libInfraLensCommunicator.so`、`libNetServiceEther.so`、`cdc_ncm.ko`、`rndis_host.ko`、`libInfraMultiIF.so`、`libInfraPtpControl.so`、`libptp.so` 与 `cpapp-b.bin` 等 16 份紧凑构件（合计 `~1.67 MB`）的 SHA-256 与 34+ 条关键符号/字节标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线（`mutation_bytes == 0`）。
+2. **Pillar A — 虚拟制片 LED-Volume `IMX510` 卷帘快门 & `Brompton Tessera / Megapixel HELIOS` 分数 `ECS` 求解器**：
+   - 建模 `IMX510` 卷帘读出（`4K120p 8.7 ms` / `4K24p 13.2 ms`）与扫描复用 LED 墙（`1/8`、`1/16`、`960..7680 Hz` PWM），自动求解与扫描周期及 PWM 整数倍锁定的安全分数 `ECS` 快门：锁定时亮度条纹残差 **`< 0.5%`**（`0.195%` / `0.264%`），未锁定（如 `125 Hz` 非整倍快门或 Genlock 失锁）准确检出 **`> 18%`** 频闪条纹故障并拦截。
+3. **Pillar B — 有线 `FreeD 0xD1`（`29-Byte` UDP 包，`0x40 - sum` mod 256 校验和）E 卡口 12 针镜头追踪 -> `Unreal LiveLink` 桥接**：
+   - 在严格 `P12` Wi-Fi-OFF（`wf12_00342260_hits == 0`）的有线 `CDC-NCM` / `RNDIS` 链路上编码/校验 `29-byte` `FreeD 0xD1` UDP 包，以 **`60/120 Hz`**、**`< 1.2 ms`**（实测 `0.54 ms` / `0.72 ms`）端到端延迟推送 Focus/Zoom/Iris 与 6-DoF 位姿至 Unreal Engine `LiveLink`；面对无触点 PL 电影镜头时无缝切换中性编码器基线（`0x800000` / `0x0000`），同时拦截 RF 违反、超延迟与校验和错误。
+4. **Pillar C — `P12` 安全有线 `Art-Net 4`（`OpDmx 0x5000` UDP `6454`）& `sACN`（`E1.31`）DMX 闪电/闪光帧边界同步器**：
+   - 真实编解码 `Art-Net 4` 与 `ANSI E1.31 sACN` DMX 数据包，将闪光/雷电触发严格对齐至 `IMX510` VSYNC 帧边界（`aligned_fire_phase_ms = 0.0`），消除卷帘快门半帧撕裂条带（`flash_split_band_frames == 0`、`wf12_00342260_hits == 0`），并拒收未同步半帧撕裂与无线发射企图。
+5. **Pillar D — `G41` & `G42` 硬件在环（`Tri-Level Genlock / 5V TTL Word-Clock` 误插隔离、UV 弧光辐照保护与直升机/追车台 IBIS 机械停泊 + `2000 Hz RTMD`）**：
+   - `G41`：当三电平 Genlock 或 `5V TTL` 字时钟误接入 FX3 `仅限 LTC` `15 针 Multi-Terminal` 时，在 **`12.4 us < 20 us`** 内触发硬件过压/高频隔离（`cxd90057_pin_damage_events == 0`），并联动近距 UV 电弧/强闪光辐照阈值保护（`imx510_sensor_burn_events == 0`）。
+   - `G42`：直升机/追车臂 `> 1.8 g`、`20..200 Hz` 共振下通过 Stock-CP `0x0400` 自动将 5 轴 IBIS 音圈切换至 **`OFF_MECHANICAL_PARK`**（`vcm_drive_ma == 0.0`、`cp_mutation_bytes == 0`）并维持 **`2000 Hz` `RTMD`** Gyroflow 采集，保证 **`ibis_endstop_slam_events == 0`** 与 **`ibis_coil_thermal_runaway_events == 0`**。
+
+### Phase 132 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 23 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/vp_ledwall_freed_artnet_vib_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/vp_ledwall_freed_artnet_vib_emulator.py --self-test --json
+
+# 2. 全板 23 阶段（Stage 1..23）统一校验（本地 ~1.30s < 1.8s，洁净室 ~0.50s < 0.7s，支持 --skip-phase132）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 132 40 项单测 & 全量 764 项单测（双模式）
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_vp_ledwall_freed_artnet_vib_emulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_vp_ledwall_freed_artnet_vib_emulator.py -v
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+```
+

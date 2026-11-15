@@ -795,3 +795,23 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-33pillar-recovery --force-clean-room --json
 ```
 
+## Phase 229 — 真机主线 Part 22（Pillar 34 / `34/34` 统一恢复总检）：`Zebra` 跨复位留存、`(Delete)` `Full Format` & `MENU+Delete` 2s 组合键 Slot-1 金库防火墙与 `S&Q` 状态恢复总检（`verify-34pillar-recovery` / `verify-zebra-fullformat-chord-vault`）
+
+- **[`realhw_34pillar_zebra_fullformat_chord_vault_verifier.py`](fx3_recovery/realhw_34pillar_zebra_fullformat_chord_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 34** 并将全套恢复总检正式收口至 **`34/34`（`VERIFIED_34OF34_PILLAR_RECOVERY_MASTER`）**（`< 3.4s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libInfraMediaConfig.so` 与 `libInfraMediaCommon.so`（校验 `GetFormatProgress`、`mmcdIoctlFormat`、`msdFormat`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 34A — Slot-1 Tier-0 金库防格式化防火墙（`Quick Format`、`(Delete)` 切换 `Full Format`、中途 `Cancel` 已擦除风险与拍摄界面 `MENU + (Delete)` 约 2s 硬件组合键）（`6/6`）**：
+    - `P34A1`..`P34A6`：当 **Slot 1** 存有活跃或未完成离线校验的 Tier-0 恢复金库（`pnflasha` / `cnflasha` / `CAMSET01.DAT`）时，全面建模并阻断 4 类高危擦除向量：① 默认 `[Quick Format]` 文件系统管理区擦除；② 格式化对话框内按 `(Delete)` 键切换触发的 `[Full Format]` 全盘数据块彻底物理擦除（不可通过数据恢复软件找回）；③ `[Full Format]` 执行中途按下 `[Cancel]` 虽使存储卡保持可用但已将先前扇区永久擦除的残损风险；④ 拍摄画面长按 `MENU + (Delete)` 约 `2s` 直接唤起 `[Format]` 的盲按组合键误触；强制要求完成离机 `SHA-256` 校验回执 + 拨下 SDXC 物理 `LOCK/WP` 写保护开关 + 取出/替换金库卡后方可格式化，并对仍处于物理 WP 锁定的 SDXC 卡执行硬件拒写拦截。
+  - **支柱 34B — `[Zebra Display]` / `[Zebra Level]` 跨 `[Camera Settings Reset]` 非对称留存、LCD 独占监看隔离（`0` HDMI 辅助泄漏）与 `Ver. 7.02` `[Mode Settings]`（`Fixed/Variable` vs `S&Q`）状态恢复（`6/6`）**：
+    - `P34B1`..`P34B6`：校验 `[Zebra Display]`（`Off`/`On`）与 `[Zebra Level]`（`70..100+`、`Custom 1` `Std ± Range`、`Custom 2` `Lower Limit`）在 `[Camera Settings Reset]` 后完整保留、仅在完整 `[Initialize]` 下归零至 `Off` / `70`；强制校验 `[Zebra]` 条纹与 `[Peaking]` 峰值轮廓（`High`/`Mid`/`Low`、`Red`/`Yellow`/`Blue`/`White`）严格仅在机身本地 LCD（`fb0` OSD）渲染、绝不泄漏至外接 HDMI 输出（`0` 辅助像素泄漏，即便 `[HDMI Info. Display] = [On]`）；审计 `Ver. 7.00+/7.02` `[Mode Settings] = [Fixed/Variable]` 对旧版 `[S&Q Settings]` 的锁定关系及 `S&Q` 全部 6 项硬件录制锁止（`0ch` 无音频、`[Audio Out Timing]` 禁用、`[Time Code Run]`/`[Time Code Output]` 禁用、`240/200fps` 禁 4K、`120/100fps` 禁 `XAVC S-I DCI 4K`、`119.88p/100p` 或 `>=100fps` 禁 `[Proxy Recording]`），并验证退出 `S&Q` 与恢复 `CAMSET01..10.DAT` / `Backup.bin` 后 `[Mode Settings]`、`[Audio Out Timing]`（`Live`/`Lip Sync`）、`[Time Code Run]`/`[Time Code Output]` 与 `[Proxy Recording]` 的无漂移恢复及 Tier-0 `16/16 H0 == H3`。
+  - **统一 `34/34` 恢复总检聚合器与 CLI（`evaluate_realhw_34pillar_recovery_master` / `verify-34pillar-recovery` / `verify-zebra-fullformat-chord-vault`）**：
+    - 并发调用 `evaluate_realhw_33pillar_recovery_master`（`Pillars 1..33`）+ **Pillar 34**（`run_pillar34_standalone_suite`），汇总产出 **`34/34`**（`VERIFIED_34OF34_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_34pillar_zebra_fullformat_chord_vault_verifier.py`](tests/test_realhw_34pillar_zebra_fullformat_chord_vault_verifier.py) 提供 **60 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-zebra-fullformat-chord-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-34pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-34pillar-recovery --force-clean-room --json
+```
+
+

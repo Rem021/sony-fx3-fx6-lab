@@ -92,6 +92,11 @@ from .realhw_steadyshot_ciz_powersave_autotemp_and_82gate_guard import (
     evaluate_g81_steadyshot_ciz_guard,
     evaluate_g82_powersave_autotemp_guard,
 )
+from .realhw_sq_fixedvar_zebra_peaking_fullformat_and_84gate_guard import (
+    evaluate_84gate_preflight,
+    evaluate_g83_sq_fixedvar_zebra_peaking_hdmi_guard,
+    evaluate_g84_zebra_reset_and_fullformat_chord_vault_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1804,6 +1809,90 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G82 gates can be rehearsed offline",
     )
     p_82.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 83. verify-g83-sq-fixedvar-zebra-peaking
+    p_g83 = sub.add_parser(
+        "verify-g83-sq-fixedvar-zebra-peaking",
+        help="Verify Gate G83: Ver. 7.02 [Mode Settings] Fixed/Variable S&Q 6-Lock Matrix & Zebra/Peaking Local-LCD-Only HDMI Clean-Feed Guard",
+    )
+    p_g83.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g83.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g83.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g83.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 84. verify-g84-zebra-reset-fullformat-chord
+    p_g84 = sub.add_parser(
+        "verify-g84-zebra-reset-fullformat-chord",
+        help="Verify Gate G84: [Zebra Display] Camera Settings Reset Survival & Format Quick/Full + MENU+Delete 2s Chord Tier-0 Vault Guard",
+    )
+    p_g84.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g84.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g84.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g84.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 85. verify-84-gates
+    p_84 = sub.add_parser(
+        "verify-84-gates",
+        help="Run Phase 228 Unified 84-Gate Master Safety Preflight Engine (G01..G84)",
+    )
+    p_84.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_84.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_84.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G84 gates can be rehearsed offline",
+    )
+    p_84.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -3601,6 +3690,83 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_82_gates_verified if args.dry_run_simulated else report.offline_79_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g83-sq-fixedvar-zebra-peaking":
+        verdict, res = evaluate_g83_sq_fixedvar_zebra_peaking_hdmi_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.sq_fixedvar_zebra_peaking_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} sq_mode={guard['sq_mode_settings']}"
+                f"(sq_locked={guard['legacy_sq_settings_menu_locked']},"
+                f"fps={guard['sq_capture_fps']}fps@{guard['movie_file_format']},"
+                f"6locks={guard['all_6_sq_locks_enforced']}) "
+                f"cleanfeed={guard['hdmi_assist_clean_feed_enforced']}"
+                f"(hdmi_zebra={guard['hdmi_zebra_overlay_rendered']},"
+                f"hdmi_peaking={guard['hdmi_peaking_overlay_rendered']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g84-zebra-reset-fullformat-chord":
+        verdict, res = evaluate_g84_zebra_reset_and_fullformat_chord_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.zebra_reset_fullformat_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} zebra={guard['effective_post_reset_zebra_display']}/"
+                f"{guard['effective_post_reset_zebra_level']}(rst={guard['reset_action']},"
+                f"survived={guard['zebra_survived_camera_settings_reset']}) "
+                f"slot1_vault_lock={guard['slot1_format_hard_locked']}"
+                f"(slot={guard['target_slot']},trig={guard['format_trigger']},fmt={guard['format_mode']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-84-gates":
+        report = evaluate_84gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/84 "
+                f"g83_to_g84_all_passed={report.g83_to_g84_all_passed} "
+                f"all_84_gates_verified={report.all_84_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_84_gates_verified if args.dry_run_simulated else report.offline_81_gates_verified
         return 0 if ok else 1
 
     return 2

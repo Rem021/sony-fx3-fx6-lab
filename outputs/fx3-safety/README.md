@@ -1107,4 +1107,31 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-80-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 41. Phase 224 Real-Hardware Main Track Part 28: `ILME-FX3` (`Ver. 7.02`) `[SteadyShot]` `[Active]` RAW/HFR Cutoff & `[Clear Image Zoom]` / `[Digital Zoom]` 4-Locks Guard (`Gate G81`), `[Power Save Start Time]` 9-Condition Bypass / Air-Gapped Tier-0 Pre-Check & `[Auto Power OFF Temp.]` Tripod Guard (`Gate G82`), and Unified 82-Gate Master Preflight (`realhw_steadyshot_ciz_powersave_autotemp_and_82gate_guard.py`)
+
+`realhw_steadyshot_ciz_powersave_autotemp_and_82gate_guard.py` (`fx3-realhw-steadyshot-ciz-powersave-autotemp-82gate-preflight-v1`) delegates `G01..G80` directly to `evaluate_80gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-80-gates`) and adds Wave-31 real-hardware safety gates **`G81`** and **`G82`** into the unified **82-Gate Master Safety Preflight (`G01..G82` / `run_82_gate_preflight` / `evaluate_82gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[SteadyShot]` `[Active]` 3-Condition Disqualification & Narrower AoV Crop + `[Clear Image Zoom]` / `[Digital Zoom]` RAW/HFR Cutoff & 4 Mandatory State Locks Guard (`verify_steadyshot_active_cutoff_and_ciz_4lock_guard`, Gate `G81`)**:
+   - Performs a bounded `< 0.15s` `os.open(..., os.O_RDONLY)` local donor audit (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` synthetic fallback.
+   - Models movie `[SteadyShot]` (`Active` narrower angle-of-view crop `~1.1x` vs `Standard` / `Off`), enforcing all 3 `[Active]` disqualification conditions: Normal movie `119.88p`/`100p`, `S&Q` `[Frame Rate]` `>=120fps`/`100fps` (`100fps`/`120fps`/`200fps`/`240fps`), and external HDMI `[RAW Output] = [On]`, plus manual `[SteadyShot Focal Len.]` (`8mm..1000mm`) validation.
+   - Models `[Clear Image Zoom]` / `[Digital Zoom]` (`[Zoom Range]`): blocks non-optical zoom when still `[File Format]` is `RAW` / `RAW & JPEG` / `RAW & HEIF`, Normal movie `119.88p`/`100p`, or `S&Q` `120fps/100fps`/`240fps/200fps`, and enforces all 4 automatic camera state locks whenever non-optical zoom is active: `[Focus Area]` disabled (center-priority AF), `[Metering Mode]` hard-locked to `[Multi]`, `[Face/Eye Prior. in AF]` & `[Face Priority in Multi Metering]` disabled, and `Real-time Tracking` unavailable.
+2. **`ILME-FX3` (`Ver. 7.02`) `[Power Save Start Time]` Exact Menu Item, 9 Automatic Deactivation Conditions, Air-Gapped `NP-FZ100` Tier-0 `75 MiB` `p3` Dump Pre-Check & `[Auto Power OFF Temp.]` `[High]` Tripod / `[Fan Control]` Thermal Guard (`verify_powersave_9cond_and_autotemp_tripod_guard`, Gate `G82`)**:
+   - Enforces exact `ILME-FX3` menu item `[Power Save Start Time]` (`MENU -> Setup -> [Power Setting Option] -> [Power Save Start Time]`, default `5 Min`; options `Off`, `30 Min`, `5 Min`, `2 Min`, `1 Min`, `10 Sec`) and its 9 automatic sleep-deactivation conditions (USB power supply, slideshow playback, FTP transfer, movie recording, PC connection, TV/HDMI connection, `[IR Remote Ctrl] = [On]`, `[Bluetooth Rmt Ctrl] = [On]`, streaming / Creators' Cloud upload), plus air-gapped internal-battery (`NP-FZ100` without USB/HDMI/FTP/Remote/PC/Streaming) Tier-0 `75 MiB` `p3` dump pre-check requiring `[Power Save Start Time]` = `Off` or `30 Min`.
+   - Enforces `[Auto Power OFF Temp.]` (`Standard` default vs `High`): requires `tripod_mounted == True` whenever `[Auto Power OFF Temp.] = [High]` (blocking prolonged hand-held low-temperature contact burn hazard) and couples with `[Fan Control]` thermal safety (`Always Off` forbidden under `High`, `>=62.0C` override / `>=90.0C` fail-closed ceiling enforced).
+3. **Unified 82-Gate Master Preflight (`evaluate_82gate_preflight` / `verify-82-gates`)**:
+   - **Offline default mode**: `79/82` gates pass (`G01..G09`, `G13..G82` pass; physical Tier-0 `G10..G12` await receipt $\rightarrow$ `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `82/82` simulation gates pass (`dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-g81-steadyshot-ciz [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-g82-powersave-autotemp [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-82-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
+
 

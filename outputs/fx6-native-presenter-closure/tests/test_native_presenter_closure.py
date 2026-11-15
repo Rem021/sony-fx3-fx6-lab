@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-27)."""
+"""Offline clean-room unit tests for FX6 native presenter closure (Rounds 1-28)."""
 from __future__ import annotations
 
 import ast
@@ -62,6 +62,8 @@ ROUND26_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round26-fx6-on-fx3-tech
 ROUND26_ASSETS_DIR = ROUND26_REPORT_DIR / "assets"
 ROUND27_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure"
 ROUND27_ASSETS_DIR = ROUND27_REPORT_DIR / "assets"
+ROUND28_REPORT_DIR = REPO_ROOT / "reports" / "2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal"
+ROUND28_ASSETS_DIR = ROUND28_REPORT_DIR / "assets"
 
 
 def _load_closure_module(module_name: str, filename: str):
@@ -593,7 +595,7 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
 
         # Verify CLI accepts --round 8/9/10 and --run-dir, and patch_cpio fixes c_mode==0
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]", runner_src)
         self.assertIn("--run-dir", runner_src)
         self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
 
@@ -1178,7 +1180,7 @@ class TestRound10IconBlitterUipcAndReport(unittest.TestCase):
             "enable_r10",
             "etc/fx6_stage_r10",
             '"r10_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2118,7 +2120,7 @@ class TestRound12MultiCjkP4P110AndReport(unittest.TestCase):
             },
         )
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]", runner_src)
         self.assertIn(
             'choices=["en", "english", "schinese", "tchinese", "japanese"]', runner_src
         )
@@ -2602,7 +2604,7 @@ class TestRound13StatusCheckAndFourLangMatrixClosure(unittest.TestCase):
             '"r13_telemetry"',
             "def decode_png_rgba_rows",
             "def compute_png_pixel_diff",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2827,7 +2829,7 @@ class TestRound14StatusCheck4LangFullMatrix(unittest.TestCase):
             "etc/fx6_stage_r14",
             '"r14_telemetry"',
             '"fx6-r14"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -3342,7 +3344,7 @@ class TestRound15MultiTabStatusCheckAndMonitoring(unittest.TestCase):
             "etc/fx6_stage_r15",
             '"r15_telemetry"',
             '"fx6-r15"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -3883,7 +3885,7 @@ class TestRound16StatusTabs45AndTcMedia(unittest.TestCase):
             "etc/fx6_stage_r16",
             '"r16_telemetry"',
             '"fx6-r16"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -4449,7 +4451,7 @@ class TestRound17StatusFullSweepAndAudio3Layer(unittest.TestCase):
             "etc/fx6_stage_r17",
             '"r17_telemetry"',
             '"fx6-r17"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -5069,7 +5071,7 @@ class TestRound18Menu8CategorySChineseClosure(unittest.TestCase):
             "etc/fx6_stage_r18",
             '"r18_telemetry"',
             '"fx6-r18"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -5666,7 +5668,7 @@ class TestRound19Menu11CategoryFullSweepClosure(unittest.TestCase):
             "etc/fx6_stage_r19",
             '"r19_telemetry"',
             '"fx6-r19"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -6308,7 +6310,7 @@ class TestRound20Network4LangWF12Closure(unittest.TestCase):
             "etc/fx6_stage_r20",
             '"r20_telemetry"',
             '"fx6-r20"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -6927,7 +6929,7 @@ class TestRound21Audio4LangDualSurfaceClosure(unittest.TestCase):
             '"r21_telemetry"',
             '"fx6-r21"',
             "audio_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -7549,7 +7551,7 @@ class TestRound22PaintLookCamTab24LangClosure(unittest.TestCase):
             '"r22_telemetry"',
             '"fx6-r22"',
             "paintlook_camtab2_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -8196,7 +8198,7 @@ class TestRound23MonitoringTab54LangClosure(unittest.TestCase):
             '"r23_telemetry"',
             '"fx6-r23"',
             "monitoring_tab5_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -8847,7 +8849,7 @@ class TestRound24ProjectTab44LangClosure(unittest.TestCase):
             '"r24_telemetry"',
             '"fx6-r24"',
             "project_tab4_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -9500,7 +9502,7 @@ class TestRound25TcMediaTab84LangClosure(unittest.TestCase):
             '"r25_telemetry"',
             '"fx6-r25"',
             "tcmedia_tab8_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -10155,7 +10157,7 @@ class TestRound26TechnicalTab64LangClosure(unittest.TestCase):
             '"r26_telemetry"',
             '"fx6-r26"',
             "technical_tab6_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -10814,7 +10816,7 @@ class TestRound27MaintenanceTab74LangClosure(unittest.TestCase):
             '"r27_telemetry"',
             '"fx6-r27"',
             "maintenance_tab7_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28]",
         ):
             self.assertIn(token, runner_src)
 
@@ -11427,6 +11429,510 @@ class TestRound27MaintenanceTab74LangClosure(unittest.TestCase):
             self.assertNotIn(forbidden, r27_readme)
         tmp_matches = list(pathlib.Path("/private/tmp").glob("fx6-r27*"))
         self.assertEqual(tmp_matches, [], f"Leftover scratch dirs in /private/tmp: {tmp_matches}")
+
+
+class TestRound28RealHwSdDualBootLibJitQemu(unittest.TestCase):
+    EXPECTED_RUN_KEYS = (
+        "r28a_sd_escape_absent_stock_fx3",
+        "r28b_sd_trigger_valid_jiritsu_and_stageb_big6",
+        "r28c_sd_trigger_tampered_fail_closed_fallback",
+    )
+
+    def test_round28_c_and_python_source_guards(self) -> None:
+        shim_src = (CLOSURE_DIR / "libgrm-fbinit9.c").read_text(encoding="utf-8")
+        verify_src = (CLOSURE_DIR / "fx6-stage-a-verify.c").read_text(encoding="utf-8")
+        runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
+
+        self.assertIn("#if FX6_ROUND >= 28", shim_src)
+        for token in (
+            "FX6_STAGE_B_R28_BRIDGE",
+            "FX6_R28_LANG_TELEMETRY",
+            "realhw_sd_dualboot_overlay=1",
+            "emmc_write_count=0",
+        ):
+            self.assertIn(token, shim_src)
+
+        for token in (
+            "FX6_STAGE_B_R28_VERIFY_PASS",
+            "FX6_R28_SD_DUALBOOT",
+            "FX6_R28_JIRITSU_PROBE",
+            "FX6_R28_STRATEGY_A_BRIDGE",
+            "--sd-gate",
+            "STOCK_FX3_BYPASS",
+            "FAIL_CLOSED_STOCK_FX3_FALLBACK",
+            "STAGEB_SD_AUTHENTICATED",
+            "/tmp/jiritsu/libJit.so",
+            "/tmp/jiritsu/sector0.pkt",
+            "/dev/pnflasha0",
+            "FX3S0OK",
+        ):
+            self.assertIn(token, verify_src)
+
+        for token in (
+            "FX3_SECTOR0_PARTITIONS",
+            "build_fx3_sector0_table",
+            "FX3_HARDENED_LIBJIT_C",
+            "inspect_libjit_elf_pt_load",
+            "build_hardened_libjit_so",
+            "build_sd_trigger_manifest",
+            "--sd-manifest-mode",
+            "FX6_R28_STOCK_FX3_BYPASS_EXIT",
+            "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT",
+            '"r28_telemetry"',
+        ):
+            self.assertIn(token, runner_src)
+
+    def test_round28_fx3_sector0_ptbl_builder_8246_200_30parts(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_sec0", "build_and_run_round.py")
+        sec0 = runner.build_fx3_sector0_table()
+        self.assertEqual(len(sec0), 512)
+        self.assertEqual(sec0[0:4], b"8246")
+        self.assertEqual(sec0[4:8], b"2.00")
+        nparts = struct.unpack_from("<I", sec0, 8)[0]
+        self.assertEqual(nparts, 30)
+        p1_start, p1_size = struct.unpack_from("<II", sec0, 0x20)
+        p20_start, p20_size = struct.unpack_from("<II", sec0, 0x20 + 19 * 16)
+        p21_start, p21_size = struct.unpack_from("<II", sec0, 0x20 + 20 * 16)
+        p30_start, p30_size = struct.unpack_from("<II", sec0, 0x20 + 29 * 16)
+        self.assertEqual((p1_start, p1_size), (0x80, 0xBF80))
+        self.assertEqual((p20_start, p20_size), (0x326000, 0))
+        self.assertEqual((p21_start, p21_size), (0x326000, 0))
+        self.assertEqual((p30_start, p30_size), (0x346000, 0x18000))
+        self.assertEqual(zlib.crc32(sec0) & 0xFFFFFFFF, 0x29F1A341)
+
+    def test_round28_fx3_sector0_packet_528_bytes_crc32_roundtrip(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_pkt", "build_and_run_round.py")
+        sec0 = runner.build_fx3_sector0_table()
+        crc = zlib.crc32(sec0) & 0xFFFFFFFF
+        pkt = b"FX3S0OK\x00" + struct.pack("<II", 512, crc) + sec0
+        self.assertEqual(len(pkt), 528)
+        self.assertEqual(pkt[:8], b"FX3S0OK\x00")
+        plen, pcrc = struct.unpack_from("<II", pkt, 8)
+        self.assertEqual(plen, 512)
+        self.assertEqual(pcrc, crc)
+        self.assertEqual(zlib.crc32(pkt[16:]) & 0xFFFFFFFF, pcrc)
+
+    def test_round28_hardened_libjit_c_source_security_invariants(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_jitc", "build_and_run_round.py")
+        src = runner.FX3_HARDENED_LIBJIT_C
+        self.assertIn("__attribute__((constructor))", src)
+        self.assertIn("SYS_unlinkat", src)
+        self.assertIn('"/tmp/jiritsu/libJit.so"', src)
+        self.assertIn('"/dev/pnflasha0"', src)
+        self.assertIn("O_RDONLY | O_NOFOLLOW", src)
+        self.assertNotIn("O_RDWR", src)
+        self.assertIn("if (total != 512) return;", src)
+        self.assertIn('"/tmp/jiritsu/sector0.pkt"', src)
+        self.assertIn("O_WRONLY | O_CREAT | O_EXCL", src)
+        self.assertNotIn("O_TRUNC", src)
+
+    def test_round28_hardened_libjit_compile_and_64kib_pt_load_elf(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_jitso", "build_and_run_round.py")
+        if not runner.ZIG.is_file():
+            self.skipTest(f"Optional zig compiler absent: {runner.ZIG}")
+        with tempfile.TemporaryDirectory() as tmp:
+            so_bytes, meta = runner.build_hardened_libjit_so(pathlib.Path(tmp))
+            self.assertGreater(len(so_bytes), 1024)
+            self.assertEqual(meta["e_type"], 3)
+            self.assertEqual(meta["e_machine"], 183)
+            self.assertEqual(meta["pt_load_align"], "0x10000")
+            self.assertGreaterEqual(meta["pt_load_count"], 2)
+            self.assertTrue(meta["has_pt_dynamic"])
+
+    def test_round28_inspect_libjit_elf_rejects_4kib_align_or_non_elf(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_elfbad", "build_and_run_round.py")
+        with self.assertRaises(ValueError):
+            runner.inspect_libjit_elf_pt_load(b"NOT_AN_ELF")
+        # Construct minimal ELF64 AArch64 ET_DYN with 1 PT_LOAD aligned to 0x1000 instead of 0x10000
+        ehdr = bytearray(64)
+        ehdr[0:4] = b"\x7fELF"
+        ehdr[4] = 2  # ELFCLASS64
+        ehdr[5] = 1  # ELFDATA2LSB
+        struct.pack_into("<HH", ehdr, 0x10, 3, 183)  # ET_DYN, EM_AARCH64
+        struct.pack_into("<Q", ehdr, 0x20, 64)  # e_phoff
+        struct.pack_into("<HH", ehdr, 0x36, 56, 2)  # e_phentsize, e_phnum
+        ph_load = struct.pack("<IIQQQQQQ", 1, 5, 0, 0, 0, 64, 64, 0x1000)
+        ph_dyn = struct.pack("<IIQQQQQQ", 2, 6, 0, 0, 0, 0, 0, 8)
+        with self.assertRaises(ValueError):
+            runner.inspect_libjit_elf_pt_load(bytes(ehdr) + ph_load + ph_dyn)
+
+    def test_round28_sd_trigger_manifest_valid_and_1byte_tamper(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_man", "build_and_run_round.py")
+        items = [
+            (b"cfg-data", "/mnt/sd/FX6_STAGEB_BOOT.CFG"),
+            (runner.build_fx3_sector0_table(), "/etc/fx3_sector0.bin"),
+        ]
+        valid_bytes, valid_meta = runner.build_sd_trigger_manifest(items, mode="valid")
+        tamp_bytes, tamp_meta = runner.build_sd_trigger_manifest(items, mode="tampered")
+        self.assertEqual(len(valid_bytes), len(tamp_bytes))
+        self.assertNotEqual(valid_bytes, tamp_bytes)
+        diffs = sum(1 for a, b in zip(valid_bytes, tamp_bytes) if a != b)
+        self.assertEqual(diffs, 1)
+        self.assertEqual(valid_meta["manifest_sha256"], valid_meta["valid_sha256"])
+        self.assertNotEqual(tamp_meta["manifest_sha256"], tamp_meta["valid_sha256"])
+        self.assertEqual(tamp_meta["tamper_bytes_flipped"], 1)
+
+    def test_round28_extract_milestones_r28a_stock_fx3_bypass(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_msa", "build_and_run_round.py")
+        serial = "\n".join(
+            [
+                "Linux version 4.9.337-scel+ #1 SMP PREEMPT",
+                "FX6_R28_SD_DUALBOOT sd_dualboot_mode=STOCK_FX3_BYPASS trigger_present=0 tamper_rejected=0 stageb_loaded=0 emmc_write_count=0 verify_ms=0 verify_us=47",
+                "FX6_R28_SD_GATE_RC=10",
+                "FX6_R28_STOCK_FX3_BYPASS_EXIT mode=STOCK_FX3_BYPASS stageb_loaded=0 emmc_write_count=0",
+            ]
+        )
+        ms = runner.extract_milestones(serial)
+        r28 = ms["r28_telemetry"]
+        self.assertIsNotNone(r28)
+        self.assertEqual(r28["sd_gate_rc"], 10)
+        self.assertEqual(r28["sd_dualboot"]["sd_dualboot_mode"], "STOCK_FX3_BYPASS")
+        self.assertEqual(r28["sd_dualboot"]["stageb_loaded"], 0)
+        self.assertEqual(r28["sd_dualboot"]["emmc_write_count"], 0)
+        self.assertEqual(r28["sd_dualboot"]["verify_us"], 47)
+
+    def test_round28_extract_milestones_r28b_jiritsu_strategy_a_and_lang(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_msb", "build_and_run_round.py")
+        serial = "\n".join(
+            [
+                "Linux version 4.9.337-scel+ #1 SMP PREEMPT",
+                "FX6_R28_SD_DUALBOOT sd_dualboot_mode=STAGEB_SD_AUTHENTICATED trigger_present=1 tamper_rejected=0 stageb_loaded=1 emmc_write_count=0 verified_count=5 verify_ms=1 verify_us=1210",
+                "FX6_R28_SD_GATE_RC=0",
+                "FX6_R28_STRATEGY_A_BRIDGE nflasha20_link=/dev/nflasha30 nflasha30_link=/dev/cnflasha30 opelog_fstype=tmpfs tmpfs_mounted=1 opelog_ope=1 opelog_00=1 opelog_01=1 sector0_repartition=0 emmc_write_count=0 strategy_a_bridge_ok=1",
+                "FX6_R28_JIRITSU_PROBE dlopen_ok=1 dlclose_rc=0 jit_self_unlinked=1 unlink_errno=2 sector0_pkt_bytes=528 sector0_hdr=FX3S0OK sector0_len=512 sector0_crc32=0x29f1a341 sector0_crc_ok=1 sector0_magic=8246 sector0_ver=2.00 sector0_parts=30 p1_start=0x80 p1_size=0xbf80 p30_start=0x346000 p30_size=0x18000 emmc_write_count=0 probe_ok=1",
+                "FX6_R28_LANG_TELEMETRY reason=pump lang=schinese gpe_fb=0 realhw_sd_dualboot_overlay=1 emmc_write_count=0 subst_color=0 subst_image=0",
+            ]
+        )
+        ms = runner.extract_milestones(serial)
+        r28 = ms["r28_telemetry"]
+        self.assertIsNotNone(r28)
+        self.assertEqual(r28["sd_gate_rc"], 0)
+        self.assertEqual(r28["sd_dualboot"]["verified_count"], 5)
+        self.assertEqual(r28["strategy_a_bridge"]["strategy_a_bridge_ok"], 1)
+        self.assertEqual(r28["strategy_a_bridge"]["opelog_fstype"], "tmpfs")
+        self.assertEqual(r28["jiritsu_probe"]["probe_ok"], 1)
+        self.assertEqual(r28["jiritsu_probe"]["jit_self_unlinked"], 1)
+        self.assertEqual(r28["jiritsu_probe"]["sector0_pkt_bytes"], 528)
+        self.assertEqual(r28["lang_telemetry"]["gpe_fb"], 0)
+
+    def test_round28_extract_milestones_r28c_fail_closed_tamper(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_msc", "build_and_run_round.py")
+        serial = "\n".join(
+            [
+                "Linux version 4.9.337-scel+ #1 SMP PREEMPT",
+                "FX6_R28_SD_DUALBOOT sd_dualboot_mode=FAIL_CLOSED_STOCK_FX3_FALLBACK trigger_present=1 tamper_rejected=1 stageb_loaded=0 emmc_write_count=0 verify_ms=0 verify_us=669 reason=sha256_mismatch failed_path=/mnt/sd/FX6_STAGEB_BOOT.CFG",
+                "FX6_R28_SD_GATE_RC=11",
+                "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT mode=FAIL_CLOSED_STOCK_FX3_FALLBACK stageb_loaded=0 emmc_write_count=0",
+            ]
+        )
+        ms = runner.extract_milestones(serial)
+        r28 = ms["r28_telemetry"]
+        self.assertIsNotNone(r28)
+        self.assertEqual(r28["sd_gate_rc"], 11)
+        self.assertEqual(r28["sd_dualboot"]["sd_dualboot_mode"], "FAIL_CLOSED_STOCK_FX3_FALLBACK")
+        self.assertEqual(r28["sd_dualboot"]["tamper_rejected"], 1)
+        self.assertEqual(r28["sd_dualboot"]["verify_us"], 669)
+        self.assertEqual(r28["sd_dualboot"]["reason"], "sha256_mismatch")
+
+    def test_round28_stage_a_overlay_3_sd_modes_mocked_clean_room(self) -> None:
+        runner = _load_closure_module("fx6_brr_r28_ovl", "build_and_run_round.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = pathlib.Path(tmp)
+            parent_cpio = tmp_dir / "parent.cpio"
+            init_body = (
+                b"#!/bin/sh\n"
+                b"mount -t devtmpfs devtmpfs /dev\n"
+                b"echo FX3_DEVTMPFS_RC=$?\n"
+                b'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch\n'
+            )
+            members = (
+                ("init", init_body),
+                ("usr/lib/libInfraSetupFile.so", b"SETUP"),
+                ("usr/lib/libInfraMediaCommon.so", b"MCOMM"),
+                ("usr/lib/libInfraMediaConfig.so", b"MCFG"),
+                ("usr/lib/libInfraAppRemoteBoard.so", b"RBRD"),
+                ("usr/lib/libfan.so", b"FAN"),
+                ("usr/lib/appFw.so", b"APPFW"),
+                ("usr/lib/libWlanResource.so", b"WLAN_DONOR_12345"),
+                ("usr/kmod/upm.ko", b"UPMKO"),
+                ("usr/share/app/image_00_169.uxc", b"uxd\x07" + b"C" * 32),
+                ("usr/share/app/string_simplifiedchinese.uxc", b"uxc\x07" + b"S1" * 16),
+                ("usr/share/app/string_simplifiedchinese_2.uxc", b"uxc\x07" + b"S2" * 16),
+                ("usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt", b"LTT\n" + b"FC" * 16),
+                ("usr/share/app/fontlist.dat", b"FONT_S_CHINESE\t/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt\t0\t0\n"),
+            )
+            archive = b"".join(
+                runner.make_cpio_member(name, body, ino=idx + 1, mode=0o100755)
+                for idx, (name, body) in enumerate(members)
+            ) + runner.make_cpio_member("TRAILER!!!", b"", ino=0, mode=0)
+            parent_cpio.write_bytes(archive)
+
+            class _FakeRes:
+                def __init__(self, site_id: str) -> None:
+                    self.site_id = site_id
+
+            class _FakeReceipt:
+                def __init__(self, before: bytes, after: bytes, sites: list) -> None:
+                    self.before_sha256 = hashlib.sha256(before).hexdigest()
+                    self.after_sha256 = hashlib.sha256(after).hexdigest()
+                    self.changed_byte_count = 8
+                    self.resolutions = [_FakeRes(s.site_id) for s in sites]
+
+            class _FakePatcher:
+                P1_P4_P8_APPFW_COMBINED_SPEC = mock.Mock(
+                    library_name="appFw.so", expected_size=5, donor_sha256="0" * 64,
+                    sites=(mock.Mock(site_id="p1"),), elf_kind="so", source_domain="fx6",
+                )
+                P1_LIB_INFRA_SETUP_FILE_SPEC = mock.Mock(spec_id="P1_s", library_name="s", sites=[mock.Mock(site_id="s1")])
+                P1_LIB_INFRA_MEDIA_COMMON_SPEC = mock.Mock(spec_id="P1_c", library_name="c", sites=[mock.Mock(site_id="c1")])
+                P1_LIB_INFRA_MEDIA_CONFIG_SPEC = mock.Mock(spec_id="P1_g", library_name="g", sites=[mock.Mock(site_id="g1")])
+                P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC = mock.Mock(spec_id="P3_r", library_name="r", sites=[mock.Mock(site_id="r1")])
+                FAN_LIBFAN_SPEC = mock.Mock(spec_id="Fan_f", library_name="f", sites=[mock.Mock(site_id="f1")])
+                P9_UPM_KO_SPEC = mock.Mock(spec_id="P9_u", library_name="upm.ko", sites=[mock.Mock(site_id="u1")])
+                LibraryPatchSpec = lambda **kw: type("FakeSpec", (), kw)()
+                PatchSiteSpec = object
+                PF_R = 4
+
+                @staticmethod
+                def apply_patch_spec(data: bytes, spec: object, verify_donor_sha256: bool = True):
+                    after = data + b"_P"
+                    return after, _FakeReceipt(data, after, getattr(spec, "sites", []))
+
+                @staticmethod
+                def resolve_and_verify_sites(data: bytes, spec: object, expect_patched_state: bool = True):
+                    return [_FakeRes("u1")]
+
+            class _FakeVfat:
+                @staticmethod
+                def build_opelog_vfat_image(mode: str):
+                    img = b"VFAT" * 16
+                    return img, mock.Mock(
+                        mode=mode, fat_type="FAT16", total_bytes=len(img),
+                        sha256=hashlib.sha256(img).hexdigest(),
+                        precreated_dirs=("OPE", "OPE/00", "OPE/01"),
+                    )
+
+                @staticmethod
+                def verify_vfat_image(_img: bytes):
+                    return mock.Mock(valid=True, errors=[])
+
+            class _FakeBmtv:
+                @staticmethod
+                def build_canonical_fa0080_normal_boot_table(donor_seed_bk4_path=None):
+                    return b"T"
+
+                @staticmethod
+                def synthesize_ram_shadow_bk4(**_kw):
+                    bk4 = b"BK4" * 16
+                    return mock.Mock(
+                        bk4_bytes=bk4, total_bytes=len(bk4),
+                        sha256=hashlib.sha256(bk4).hexdigest(),
+                        flash_write_allowed=False, active_byte8_selector=0, synthesized_key_count=1,
+                    )
+
+            def fake_subproc_run(cmd, **_kw):
+                out_idx = cmd.index("-o") + 1
+                pathlib.Path(cmd[out_idx]).write_bytes(b"\x7fELF" + b"\x00" * 60)
+                return mock.Mock(returncode=0, stdout="", stderr="")
+
+            fake_jit_meta = {
+                "bytes": 64, "sha256": "a" * 64, "e_type": 3, "e_machine": 183,
+                "pt_load_count": 3, "pt_load_align": "0x10000", "has_pt_dynamic": True,
+            }
+            for mode in ("absent", "valid", "tampered"):
+                work = tmp_dir / f"build_{mode}"
+                with mock.patch.object(runner, "_import_stage_a_modules", return_value=(_FakePatcher, _FakeVfat, _FakeBmtv)), \
+                     mock.patch.object(runner, "_load_p10_keymap_spec", return_value=mock.Mock(spec_id="P10_k", library_name="appFw.so", sites=(mock.Mock(site_id="p10", size=4),))), \
+                     mock.patch.object(runner, "_load_p12_wlan_spec", return_value=mock.Mock(spec_id="P12_w", library_name="libWlanResource.so", sites=(mock.Mock(site_id="p12", size=8),))), \
+                     mock.patch.object(runner, "build_hardened_libjit_so", return_value=(b"\x7fELF_JIT", dict(fake_jit_meta))), \
+                     mock.patch.object(runner.subprocess, "run", side_effect=fake_subproc_run):
+                    rep, add, meta = runner.build_stage_a_overlay(
+                        work, parent_cpio, b"BK4NTSC",
+                        enable_p10=True, enable_r10=True, enable_p12=True, enable_r28=True,
+                        sd_manifest_mode=mode, lang="schinese", shim_bytes=b"SHIM",
+                    )
+                init_out = rep["init"].decode("utf-8")
+                self.assertIn("--sd-gate", init_out)
+                self.assertIn("FX6_R28_STOCK_FX3_BYPASS_EXIT", init_out)
+                self.assertIn("mnt/sd", add)
+                self.assertIn("tmp/jiritsu", add)
+                self.assertTrue(meta["r28_enabled"])
+                self.assertEqual(meta["r28"]["sd_manifest_mode"], mode)
+                if mode == "absent":
+                    self.assertNotIn("mnt/sd/FX6_STAGEB_BOOT.MANIFEST", add)
+                    self.assertNotIn("tmp/jiritsu/libJit.so", add)
+                else:
+                    self.assertIn("mnt/sd/FX6_STAGEB_BOOT.MANIFEST", add)
+                    self.assertIn("mnt/sd/FX6_STAGEB_BOOT.CFG", add)
+                    self.assertIn("tmp/jiritsu/libJit.so", add)
+                    self.assertIn("etc/fx3_sector0.bin", add)
+
+    def test_round28_summary_json_schema_and_audit_flags(self) -> None:
+        summary_path = ROUND28_REPORT_DIR / "summary.json"
+        self.assertTrue(summary_path.is_file())
+        raw = summary_path.read_text(encoding="utf-8")
+        for forbidden in ("/Users/", "/Volumes/KAFU2T", "/private/tmp"):
+            self.assertNotIn(forbidden, raw)
+        data = json.loads(raw)
+        self.assertEqual(data["schema"], "fx6-on-fx3-round28-realhw-sd-dualboot-overlay-qemu-rehearsal-v1")
+        self.assertIn("Linux version 4.9.337-scel+", data["kernel_version"])
+        self.assertEqual(set(data["runs"].keys()), set(self.EXPECTED_RUN_KEYS))
+        self.assertTrue(data["fx3_sector0_ptbl"]["p20_absent_on_fx3"])
+        self.assertTrue(data["fx3_sector0_ptbl"]["p21_absent_on_fx3"])
+        audit = data["r28_realhw_escape_hatch_audit"]
+        self.assertEqual(audit["total_runs"], 3)
+        for k in (
+            "all_3_runs_crashes_zero",
+            "all_3_runs_emmc_write_zero",
+            "r28a_stock_fx3_bypass_verified",
+            "r28b_libjit_probe_verified",
+            "r28b_strategy_a_bridge_verified",
+            "r28b_stageb_big6_verified",
+            "r28c_tamper_fail_closed_under_50ms",
+        ):
+            self.assertTrue(audit[k], f"Audit flag {k} must be True")
+
+    def test_round28_r28a_absent_sd_trigger_stock_fx3_bypass_receipt(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        r28a = data["runs"]["r28a_sd_escape_absent_stock_fx3"]
+        self.assertEqual(r28a["round"], 28)
+        self.assertEqual(r28a["sd_manifest_mode"], "absent")
+        self.assertEqual(r28a["crashes"], 0)
+        self.assertEqual(r28a["emmc_write_count"], 0)
+        self.assertTrue(r28a["gpe0_readback"]["skipped_stock_fx3_mode"])
+        sd = r28a["r28_telemetry"]["sd_dualboot"]
+        self.assertEqual(r28a["r28_telemetry"]["sd_gate_rc"], 10)
+        self.assertEqual(sd["sd_dualboot_mode"], "STOCK_FX3_BYPASS")
+        self.assertEqual(sd["trigger_present"], 0)
+        self.assertEqual(sd["stageb_loaded"], 0)
+        self.assertEqual(sd["emmc_write_count"], 0)
+
+    def test_round28_r28c_tampered_sd_trigger_fail_closed_under_50ms_receipt(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        r28c = data["runs"]["r28c_sd_trigger_tampered_fail_closed_fallback"]
+        self.assertEqual(r28c["round"], 28)
+        self.assertEqual(r28c["sd_manifest_mode"], "tampered")
+        self.assertEqual(r28c["crashes"], 0)
+        self.assertEqual(r28c["emmc_write_count"], 0)
+        self.assertTrue(r28c["gpe0_readback"]["skipped_stock_fx3_mode"])
+        sd = r28c["r28_telemetry"]["sd_dualboot"]
+        self.assertEqual(r28c["r28_telemetry"]["sd_gate_rc"], 11)
+        self.assertEqual(sd["sd_dualboot_mode"], "FAIL_CLOSED_STOCK_FX3_FALLBACK")
+        self.assertEqual(sd["trigger_present"], 1)
+        self.assertEqual(sd["tamper_rejected"], 1)
+        self.assertEqual(sd["stageb_loaded"], 0)
+        self.assertLess(sd["verify_ms"], 50)
+        self.assertLess(sd["verify_us"], 50000)
+        self.assertEqual(sd["reason"], "sha256_mismatch")
+        self.assertEqual(sd["failed_path"], "/mnt/sd/FX6_STAGEB_BOOT.CFG")
+
+    def test_round28_r28b_real_ld225_libjit_self_unlink_and_crc32_receipt(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        r28b = data["runs"]["r28b_sd_trigger_valid_jiritsu_and_stageb_big6"]
+        jit = r28b["r28_telemetry"]["jiritsu_probe"]
+        self.assertEqual(jit["dlopen_ok"], 1)
+        self.assertEqual(jit["dlclose_rc"], 0)
+        self.assertEqual(jit["jit_self_unlinked"], 1)
+        self.assertEqual(jit["unlink_errno"], 2)
+        self.assertEqual(jit["sector0_pkt_bytes"], 528)
+        self.assertEqual(jit["sector0_hdr"], "FX3S0OK")
+        self.assertEqual(jit["sector0_len"], 512)
+        self.assertEqual(jit["sector0_crc_ok"], 1)
+        self.assertEqual(jit["sector0_crc32"], "0x29f1a341")
+        self.assertEqual(jit["sector0_magic"], 8246)
+        self.assertEqual(jit["sector0_ver"], "2.00")
+        self.assertEqual(jit["sector0_parts"], 30)
+        self.assertEqual(jit["probe_ok"], 1)
+        self.assertEqual(jit["emmc_write_count"], 0)
+        self.assertEqual(r28b["stage_b"]["r28"]["libjit"]["pt_load_align"], "0x10000")
+
+    def test_round28_r28b_strategy_a_nflasha20_opelog_bridge_receipt(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        r28b = data["runs"]["r28b_sd_trigger_valid_jiritsu_and_stageb_big6"]
+        br = r28b["r28_telemetry"]["strategy_a_bridge"]
+        self.assertEqual(br["nflasha20_link"], "/dev/nflasha30")
+        self.assertEqual(br["nflasha30_link"], "/dev/cnflasha30")
+        self.assertEqual(br["opelog_fstype"], "tmpfs")
+        self.assertEqual(br["tmpfs_mounted"], 1)
+        self.assertEqual(br["opelog_ope"], 1)
+        self.assertEqual(br["opelog_00"], 1)
+        self.assertEqual(br["opelog_01"], 1)
+        self.assertEqual(br["sector0_repartition"], 0)
+        self.assertEqual(br["emmc_write_count"], 0)
+        self.assertEqual(br["strategy_a_bridge_ok"], 1)
+
+    def test_round28_r28b_stage_b_13_sha256_and_faithful_big6_invariants(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        r28b = data["runs"]["r28b_sd_trigger_valid_jiritsu_and_stageb_big6"]
+        self.assertEqual(r28b["target_presenter"], "31procam_big6_menu_home_presenter")
+        self.assertEqual(r28b["target_sid"], "0x0a")
+        self.assertEqual(r28b["nop_count"], 0)
+        self.assertEqual(r28b["crashes"], 0)
+        self.assertEqual(r28b["emmc_write_count"], 0)
+        self.assertGreaterEqual(r28b["total_threads_seen"], 160)
+        self.assertEqual(r28b["stage_b"]["manifest_count"], 13)
+        self.assertEqual(len(r28b["stage_b"]["manifest_items"]), 13)
+        for item in r28b["stage_b"]["manifest_items"]:
+            self.assertEqual(len(item["sha256"]), 64)
+            int(item["sha256"], 16)
+        lt = r28b["r28_telemetry"]["lang_telemetry"]
+        self.assertEqual(lt["gpe_fb"], 0)
+        self.assertEqual(lt["subst_color"], 0)
+        self.assertEqual(lt["subst_image"], 0)
+        self.assertEqual(lt["p4_nd_clear"], 1)
+        self.assertEqual(lt["p10_keymap"], 1)
+        self.assertEqual(lt["p11_xlr_h1"], 1)
+        self.assertEqual(lt["p12_wlan"], 1)
+        self.assertEqual(lt["wf12_00342260_immune"], 1)
+        self.assertEqual(lt["realhw_sd_dualboot_overlay"], 1)
+        self.assertEqual(lt["emmc_write_count"], 0)
+        self.assertEqual(r28b["gpe0_readback"]["nonzero_pixels"], 346686)
+        self.assertEqual(r28b["gpe0_readback"]["unique_colors"], 87)
+
+    def test_round28_r28b_png_receipts_under_85kib_and_dimensions(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        exports = data["runs"]["r28b_sd_trigger_valid_jiritsu_and_stageb_big6"]["png_exports"]
+        for key in ("alpha_png", "composited_png"):
+            p = REPO_ROOT / exports[key]["path"]
+            self.assertTrue(p.is_file(), f"Missing Round 28 PNG: {p}")
+            raw = p.read_bytes()
+            self.assertLess(len(raw), 85 * 1024, f"PNG exceeds 85 KiB: {p}")
+            self.assertEqual(len(raw), exports[key]["bytes"])
+            self.assertEqual(hashlib.sha256(raw).hexdigest(), exports[key]["sha256"])
+            w, h, rows = _decode_png_rgba_rows(raw)
+            self.assertEqual((w, h), (1024, 540))
+            if key == "alpha_png":
+                nonzero_alpha = sum(
+                    sum(1 for a in row[3::4] if a != 0)
+                    for row in rows
+                )
+                self.assertGreater(nonzero_alpha, 300000)
+
+    def test_round28_readme_sanitization_and_no_tmp_or_binary_residue(self) -> None:
+        closure_readme = (CLOSURE_DIR / "README.md").read_text(encoding="utf-8")
+        self.assertIn("2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal", closure_readme)
+        r28_readme = (ROUND28_REPORT_DIR / "README.md").read_text(encoding="utf-8")
+        for tok in ("libJit.so", "FX3S0OK", "Strategy-A", "STOCK_FX3_BYPASS", "FAIL_CLOSED_STOCK_FX3_FALLBACK", "13/13"):
+            self.assertIn(tok, r28_readme)
+        for forbidden in ("/Volumes/KAFU2T", "/Users/", "/private/tmp"):
+            self.assertNotIn(forbidden, r28_readme)
+        tmp_matches = list(pathlib.Path("/private/tmp").glob("fx6-r28*"))
+        self.assertEqual(tmp_matches, [], f"Leftover scratch dirs in /private/tmp: {tmp_matches}")
+        for tree in (CLOSURE_DIR, ROUND28_REPORT_DIR):
+            for ext in ("*.so", "*.elf", "*.o", "*.cpio"):
+                hits = list(tree.rglob(ext))
+                self.assertEqual(hits, [], f"Unexpected binary residue {ext} in {tree}: {hits}")
+
+    def test_round28_cross_run_cryptographic_hash_linkage(self) -> None:
+        data = json.loads((ROUND28_REPORT_DIR / "summary.json").read_text(encoding="utf-8"))
+        r28b = data["runs"]["r28b_sd_trigger_valid_jiritsu_and_stageb_big6"]
+        r28c = data["runs"]["r28c_sd_trigger_tampered_fail_closed_fallback"]
+        b_r28 = r28b["stage_b"]["r28"]
+        c_r28 = r28c["stage_b"]["r28"]
+        self.assertEqual(b_r28["fx3_sector0"]["sha256"], c_r28["fx3_sector0"]["sha256"])
+        self.assertEqual(b_r28["fx3_sector0"]["crc32"], c_r28["fx3_sector0"]["crc32"])
+        self.assertEqual(b_r28["sd_manifest"]["valid_sha256"], b_r28["sd_manifest"]["manifest_sha256"])
+        self.assertNotEqual(c_r28["sd_manifest"]["valid_sha256"], c_r28["sd_manifest"]["manifest_sha256"])
 
 
 if __name__ == "__main__":

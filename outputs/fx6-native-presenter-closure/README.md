@@ -989,3 +989,24 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `243` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/README.md`](../../reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round27-fx6-on-fx3-maintenance-battery-4lang-closure/summary.json).
 
+---
+
+## 28. Round 28: Real FX3 `7.02` Kernel QEMU Rehearsal — Reversible SD-Card Dual-Boot Escape Hatch, `ld-2.25.so` Hardened Self-Unlinking `libJit.so` Sector-0 Probe & Strategy-A `nflasha20/21` Bridge
+
+`build_and_run_round.py --round 28 --sd-manifest-mode {absent,valid,tampered}` proves live on the unmodified FX3 `7.02` ARM64 Linux kernel (`Linux version 4.9.337-scel+`) and real guest `/lib/ld-2.25.so` three critical real-hardware mechanisms (`emmc_write_count = 0`, `crashes = 0` across all 3 runs):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 28 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r28b-sd-trigger-valid-jiritsu-stageb-big6 --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r28-runs/r28b \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r28b-sd-trigger-valid-jiritsu-stageb-big6 \
+  --export-png-dir reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/assets
+```
+
+- **3 Live Round 28 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r28a-sd-escape-absent-stock-fx3` (`--sd-manifest-mode absent`): `/mnt/sd/FX6_STAGEB_BOOT.MANIFEST` absent -> `--sd-gate` returns `rc=10` in `47 us` (`STOCK_FX3_BYPASS`, `stageb_loaded=0`), exiting cleanly without loading Stage-B.
+  - `r28b-sd-trigger-valid-jiritsu-and-stageb-big6` (`--sd-manifest-mode valid`): `5/5` SD trust-root SHA-256 passes in `1.21 ms` (`STAGEB_SD_AUTHENTICATED`, `rc=0`) -> real `ld-2.25.so` `dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW)` (`64 KiB` `PT_LOAD` aligned) immediately self-unlinks (`jit_self_unlinked=1`, `unlink_errno=2`), reads `/dev/pnflasha0` strictly `O_RDONLY | O_NOFOLLOW`, writes `528 B` `FX3S0OK` packet (`CRC32=0x29f1a341`, `"8246"`, `"2.00"`, `n_partition=30`), activates Strategy-A `/dev/nflasha20 -> /dev/nflasha30` + `tmpfs` `/etc/opelog` (`OPE`, `OPE/00`, `OPE/01`, `sector0_repartition=0`), verifies `13/13` Stage-B SHA-256 locks, and boots `appFw.so` rendering **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** with `346,686` px / `87` colors / `gpe_fb=0` / `nop_count=0`.
+  - `r28c-sd-trigger-tampered-fail-closed-fallback` (`--sd-manifest-mode tampered`): 1-byte corrupted SD manifest -> SHA-256 gate rejects in `669 us` (`< 50 ms`, `FX6_R28_SD_GATE_RC=11`, `FAIL_CLOSED_STOCK_FX3_FALLBACK`, `tamper_rejected=1`, `stageb_loaded=0`).
+- **Full Report, Receipts, & `263` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/README.md`](../../reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/README.md) and [`summary.json`](../../reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/summary.json).

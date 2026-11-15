@@ -1403,3 +1403,35 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 236：Stage 43（`43/43` 里程碑）真实硬件主线 — Wave-33 `[Silent Mode Settings]` `[Auto Pixel Mapping]` 目标抑制与 `[Shutter When Pwr OFF]` 硬件缺席、`[Marker Display]` 15 比例跨复位存活与本地 LCD 专属 HDMI 零像素隔离、以及 `[Flexible Exp. Mode]` 复位分流 HIL 协同仿真器
+
+[`realhw_silent_autopixelmap_marker_flexexp_coemulator.py`](realhw_silent_autopixelmap_marker_flexexp_coemulator.py) 作为 **Stage 43（`43/43` 里程碑，Schema `realhw_silent_autopixelmap_marker_flexexp_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil=True`，可通过 `--skip-phase236` 跳过；本地只读供体 43 阶段全板协同仿真 `< 2.5s`、洁净室模式 `< 0.70s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`silent_mode_5func_or_pwrshutter_bypass_events == 0`、`bench_shutdown_unsuppressed_auto_pixelmap_events == 0`、`hdmi_marker_leaked_overlay_pixels == 0`、`flexexp_or_marker_reset_split_drift_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI` / `HDMI` / `Auto`）、`string_english_f.uxc`（`373,820 B`：证实 `Silent Mode Settings` / `Silent Mode` / `Target Function Settings` / `Target` / `Not Target` / `Aperture Drive in AF` / `Auto Pixel Mapping` / `Pixel Mapping` / `Sensor Cleaning` / `Shutter Type` / `Shutter Type in Interval` / `Electronic Shutter` / `Mechanical Shutter` / `Long Exposure NR` / `e-Front Curtain Shut.` / `Anti-flicker Shoot.` / `BULB` / `Flash` / `Marker Display` / `Center Marker` / `Aspect Marker` / `Safety Zone` / `Guideframe` / 全部 15 种画幅比例 `9:16`..`2.39:1` / `80%` / `90%` / `HDMI Info. Display` / `Exposure Ctrl Type` / `P/A/S/M Mode` / `Flexible Exp. Mode` / `Auto/Manual Swt. Set.` / `Av Auto/Manual Switch` / `Tv Auto/Manual Switch` / `ISO Auto/Manual Set` / `Auto Slow Shutter` / `Camera Settings Reset` / `Initialize`）与 `string_english.uxc`（`118,208 B`），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-model A — `[Silent Mode Settings]` 5 项拍摄功能锁止、`[Target Function Settings]`（`[Aperture Drive in AF]` & `[Auto Pixel Mapping]`）断电暗场校准抑制与 `ILME-FX3`（`Ver. 2.00..7.02`）`[Shutter When Pwr OFF]` 硬件缺席拦截 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Shutter/Silent] -> [Silent Mode Settings]`：开启 `[Silent Mode] = [On]` 自动将 `[Shutter Type]` 与 `[Shutter Type in Interval]` 锁定为 `[Electronic Shutter]`、将 `[Audio signals]` 锁定为 `[Off]`，并禁用 **全部 5 项拍摄功能**（`Flash`、`Long Exposure NR`、`e-Front Curtain Shut.`、`BULB`、`Anti-flicker Shoot.`，强行调用返回 `EOPNOTSUPP = 95`）。
+   - `[Target Function Settings]` 独立控制 `[Aperture Drive in AF]` 与 `[Auto Pixel Mapping]`：设为 `[Not Target]` 时即便 `[Silent Mode] = [On]` 亦保留原设定；将 `[Auto Pixel Mapping]` 设为 `[Target]` 并在受控 Tier-0 备份/恢复台架关机前启用 `[Silent Mode] = [On]`，可非侵入式抑制周期性断电机械快门暗场像素映射（`poweroff_mech_shutter_darkframe_actuations == 0`、`poweroff_cnflasha_calibration_touches == 0`；未抑制的受控台架关机以 `EBUSY = 16` 硬拦截）。
+   - 严格区分微单拍照机身与 `ILME-FX3`（`Ver. 2.00..7.02`）：`ILME-FX3` 在 `[Anti-dust Function]` 下仅提供 `[Sensor Cleaning]`、`[Auto Pixel Mapping]` 与 `[Pixel Mapping]`，任何请求或挂载不存在的 **`[Shutter When Pwr OFF]`** 均一律以 `EOPNOTSUPP = 95` fail-closed 硬拦截。
+3. **Sub-model B — `[Marker Display]`（`Center Marker`、`Aspect Marker` `Off` + 15 种 `Ver. 3.00+/7.02` 比例、`Safety Zone` `Off/80%/90%`、`Guideframe`）跨 `[Camera Settings Reset]` 存活与本地 LCD 专属 HDMI 零像素隔离 HIL**：
+   - 完整建模 `Off` 与 **全部 15 种 `Ver. 3.00+/7.02` 画幅标记比例**（`9:16`、`4:5`、`1:1`、`4:3`、`13:9`、`14:9`、`15:9`、`16:9` *(`Ver. 3.00+` 新增，`Ver. 2.00` 下返回 `EOPNOTSUPP = 95`)*、`17:9`、`1.66:1`、`1.85:1`、`1.91:1`、`2:1`、`2.35:1`、`2.39:1`）：执行 **`[Camera Settings Reset]` 时全部标记配置原样保留**，仅 **`[Initialize]`** 清零回 `Off`；同时严格执行机身本地 LCD 独占渲染——即便 **`[HDMI Info. Display] = [On]`**，外接 HDMI 视频流中的画幅/安全框/十字中心标记像素恒为 **`0`**（强行向 HDMI 输出标记叠加层返回 `EOPNOTSUPP = 95`）。
+4. **Sub-model C & Redlines — `[Exposure Ctrl Type]`（`P/A/S/M Mode` vs `Flexible Exp. Mode`）与 `[Auto/Manual Swt. Set.]` / `[Auto Slow Shutter]` 复位分流 + 安全红线锁死 HIL**：
+   - 协同仿真 `[Exposure Ctrl Type]` 切换（`P/A/S/M Mode` 下直接访问 `[Auto/Manual Swt. Set.]` 以 `EOPNOTSUPP = 95` 拦截）与 `Flexible Exp. Mode` 下的 `Av` / `Tv` / `ISO` 独立自动/手动切换（三项默认均为 `Manual`）及 `[Auto Slow Shutter]`（默认 `On`）：执行 **`[Camera Settings Reset]` 时 `Av`/`Tv`/`ISO` 干净复位回 `Manual`、`[Auto Slow Shutter]` 干净复位回 `On`**，与同机跨复位保留的 `[Marker Display]` / `[Aspect Marker]` 构成确定性复位分流对照，并支持从 Slot 1 `CAMSET01..10.DAT` 零持久化写入（`bk4_persistent_nvram_writes == 0`）无漂移恢复及锁死全部 10 项硬件安全红线。
+
+### Phase 236 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 43（43/43 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_silent_autopixelmap_marker_flexexp_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_silent_autopixelmap_marker_flexexp_coemulator.py --self-test --json
+
+# 2. 全板 43 阶段（Stage 1..43, 43/43 里程碑）统一校验（支持 --skip-phase236）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 236 双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_silent_autopixelmap_marker_flexexp_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_silent_autopixelmap_marker_flexexp_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

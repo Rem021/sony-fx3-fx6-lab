@@ -4,7 +4,7 @@
 
 - **日期 / Date**: 2026-11-14
 - **任务分支 / Branch**: `codex/h137-phase129-vm-trial-mxf-ptpv2-tsl-tally-live`
-- **隔离验证端口 / Isolated Port**: `http://127.0.0.1:18784/`（`--workdir /private/tmp/fx6_p129_trial_18784 --no-browser`，实测完成后已通过 `POST /api/stop` 停止该隔离 QEMU 会话、仅终止子进程 `PID=66840` 并彻底删除 `/private/tmp/fx6_p129_trial_18784`；实时端口 `8768` 全程零接触、零干扰）
+- **隔离验证端口 / Isolated Port**: `http://127.0.0.1:18784/`（`--workdir /private/tmp/fx6_p129_trial_18784 --no-browser`，实测完成后已通过 `POST /api/stop` 停止该隔离 QEMU 会话、仅终止子进程 `PID=974` 并彻底删除 `/private/tmp/fx6_p129_trial_18784`；实时端口 `8768` 全程零接触、零干扰）
 
 ---
 
@@ -27,13 +27,13 @@
    - 支持 `OFF`、`PVW_GREEN`、`PGM_RED` 与 `PGM_PLUS_PVW`，8 机位槽位 `CAM1..CAM8` 与 16 字节可清洗动态标签 `umd_label`（映射至 `mb[68..71]`）。
    - 支持暗场隐身模式 `stealth_led_mute`（切断物理机身 LED `fx3_front_led_on == False`，同时按 `osd_tally_indicator` 保留取景器红/绿提示），并硬锁定 `fx6_green_gpio_faults == 0`。
 
-4. **`NonRealTimeMeta M01.XML`、`CAMSET` 往返与四语控制台 / XML Sidecar, CAMSET & 4-Language Console**
+4. **`NonRealTimeMeta M01.XML`、`CAMSET` 往返与四语紧凑折叠控制台 / XML Sidecar, CAMSET & 4-Language Collapsed Console**
    - `GET /api/xml_sidecar` 自动将 `TargetMaterial umidRef` 对齐至 64-Hex `SMPTE 330M` UMID，并在 `<AcquisitionRecord>` 注入 `<Group name="MxfRdd18Ptpv2TslTallyBridge">`。
    - `GET/POST /api/camset` 完整支持 Phase 129 状态导出与严格篡改拦截导入（拦截 `emmc_mutation_bytes != 0`、`essence_reencode_loss != 0`、`fx6_green_gpio_faults != 0`）。
-   - Web 控制台新增支持 **EN / 简体中文 / 繁體中文 / 日本語** 的 `#phase129-mxf-ptpv2-tally-card` 交互卡片。
+   - Web 控制台将支持 **EN / 简体中文 / 繁體中文 / 日本語** 的 `#phase129-mxf-ptpv2-tally-card` 置于原生 FX6 页面/菜单导航下方，并默认折叠于紧凑 `<details id="p129-details">` 内（带实时状态摘要胶囊 `#p129-summary-pill`），不挤压核心原生控件布局。
 
 5. **客体 `GPE0` (`0x41e001000`) `'MXFT'` 原生 ARGB8888 边框与 HUD / Guest GPE0 Overlay (`mb[64..67]` + `mb[68..71]`)**
-   - 在 [fx6_live_guest.c](../../outputs/fx3-vm-trial/src/fx6_live_guest.c) 中扩展 `mb[64..67]`（偏移 `256..271`，魔数 `0x4d584654` `'MXFT'`）与 16 字符 UMD 邮箱 `mb[68..71]`（偏移 `272..287`，默认 `"FX3-CAM1-STUDIO\0"`）。
+   - 在 [fx6_live_guest.c](../../outputs/fx3-vm-trial/src/fx6_live_guest.c) 中扩展 `mb[64..67]`（偏移 `256..271`，魔数 `0x4d584654` `'MXFT'`）与 16 字符 UMD 邮箱 `mb[68..71]`（偏移 `272..287`，默认 `"FX3-CAM1-STUDIO\0"`），由邮箱 `bit31`（`0x80000000u`）显式门控（支持清零 `bit31` 关闭叠加）。
    - `fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay()` 零堆分配绘制 7px 全周长 `PGM` 红 / `PVW` 绿 / 红绿双色 Tally 边框、第 1 行 `y=350` 三联状态徽章（`MXF/MP4 + RDD18/UMID`、`ST2059 PTPv2/LTC + P12`、`TSL5 CAM# PGM/PVW`）及第 2 行 `y=382` 全宽动态 16 字符 UMD 护栏条，随 `FX6_LIVE_FRAME ... MXFT=0x%08x:0x%08x:0x%08x` 实时回传。
 
 ---
@@ -54,14 +54,14 @@
 
 ### 3.1 隔离端口 `--port 18784` 实机 QEMU `GPE0` 像素差异实测 / Live QEMU GPE0 Pixel Delta Proof
 
-在完全隔离工作目录 `/private/tmp/fx6_p129_trial_18784`（`--port 18784 --workdir /private/tmp/fx6_p129_trial_18784 --no-browser`，进程 `PID=66840`）启动完整 FX3+FX6 QEMU 虚拟机（`91.01s` 就绪，分辨率 `1024x540`）：
+在完全隔离工作目录 `/private/tmp/fx6_p129_trial_18784`（`--port 18784 --workdir /private/tmp/fx6_p129_trial_18784 --no-browser`，进程 `PID=974`）启动完整 FX3+FX6 QEMU 虚拟机（`40.82s` 就绪，分辨率 `1024x540`）：
 
 | 验证阶段 / Scenario | 关键状态与遥测结果 / Telemetry | `ack_seq` | `GPE0` 真实像素变化 / Pixel Delta | `APPFW_SEGV` |
 |---|---|---|---|---|
 | **Baseline Boot** | `boot_crashed=false`, `frame_dims=[1024, 540]` | `1` | 基线帧 | `0` |
-| **Step 1 — `PGM_RED` + `PTPV2_SLAVE_WIRED` (`142ns`) + `MXF_OP1A_RDD09_WRAP` + `CAM-A WIDE 24GM`** | `effective_sync_mode=PTPV2_SLAVE_WIRED`, `servo_locked=true`, `fx3_front_led_on=true`, `p12_wlan_off=true`, `wf12_00342260_hits=0`, `emmc_mutation_bytes=0`, `MXFT=0x870203c5:0x80002c75:0xb3b11a7f` | `1 -> 2` | **`72,685` pixels** vs 基线（含 **`24,611`** 红域像素） | `0` |
-| **Step 2 — 网线拔除 `PVW_GREEN` + `LTC_MULTITERMINAL_FALLBACK` + `DUAL_MP4_PLUS_MXF_SIDECAR` + `CAM-B CRANE 50GM` (`TCP_DLE_STX`)** | `effective_sync_mode=LTC_MULTITERMINAL_FALLBACK`, `ltc_holdover_active=true`, `holdover_slip_frames=0.0173`, `tsl_packet_hex_prefix=fe021a00000000000300ea00` | `2 -> 3` | **`72,662` pixels** vs 基线；**`62,213` pixels** vs `PGM_RED` | `0` |
-| **Step 3 — `PGM_PLUS_PVW` + `stealth_led_mute=True` + `CAM5-STEALTH`** | `fx3_front_led_on=false`, `osd_tally_border_color=RED_GREEN`, `MXFT=0x9f0203c5:0x82002c75:0xb3b11a7f` | `3 -> 4` | **`72,207` pixels** vs 基线（含 **`15,112`** 红域像素） | `0` |
+| **Step 1 — `PGM_RED` + `PTPV2_SLAVE_WIRED` (`142ns`) + `MXF_OP1A_RDD09_WRAP` + `CAM-A WIDE 24GM`** | `effective_sync_mode=PTPV2_SLAVE_WIRED`, `servo_locked=true`, `fx3_front_led_on=true`, `p12_wlan_off=true`, `wf12_00342260_hits=0`, `emmc_mutation_bytes=0`, `MXFT=0x870203c5:0x80002c75:0xb3b11a7f` | `1 -> 2` | **`73,536` pixels** vs 基线（含 **`24,611`** 红域像素） | `0` |
+| **Step 2 — 网线拔除 `PVW_GREEN` + `LTC_MULTITERMINAL_FALLBACK` + `DUAL_MP4_PLUS_MXF_SIDECAR` + `CAM-B CRANE 50GM` (`TCP_DLE_STX`)** | `effective_sync_mode=LTC_MULTITERMINAL_FALLBACK`, `ltc_holdover_active=true`, `holdover_slip_frames=0.0173`, `tsl_packet_hex_prefix=fe021a00000000000300ea00` | `2 -> 3` | **`73,533` pixels** vs 基线；**`64,178` pixels** vs `PGM_RED` | `0` |
+| **Step 3 — `PGM_PLUS_PVW` + `stealth_led_mute=True` + `CAM5-STEALTH`** | `fx3_front_led_on=false`, `osd_tally_border_color=RED_GREEN`, `MXFT=0x9f0203c5:0x82002c75:0xb3b11a7f` | `3 -> 4` | **`72,997` pixels** vs 基线（含 **`15,138`** 红域像素） | `0` |
 | **Step 4 — XML Sidecar, CAMSET Roundtrip & Fail-Closed HTTP 400** | XML 含 `MxfRdd18Ptpv2TslTallyBridge` 与 `CAM5-STEALTH`；`/api/camset` 往返无损；`use_wifi` -> `400 p12_wlan_off_enforced`，`raw_mxf_on_mp4_slot` -> `400 raw_mxf_slot_write_blocked` | 往返同步 | `final_crashed=false`, `final_p12_wlan_off=true` | `0` |
 
 > **实测串口遥测抽样 / Live Serial Telemetry Sample (`serial.log`, `mxft_line_count=7`, `APPFW_SEGV=0`)**:
@@ -71,7 +71,7 @@
 > FX6_LIVE_FRAME seq=8 page=0 ... UVCS=0x820000c0:0x80660788:0x8020043c MXFT=0x9f0203c5:0x82002c75:0xb3b11a7f
 > ```
 
-实测结束后已通过 `POST /api/stop` 停止该隔离会话并仅终止子进程 `PID=66840`，同时彻底删除 `/private/tmp/fx6_p129_trial_18784`（`exists=False`），全程未触碰 `8768` 端口，也未使用 `pkill`/`killall`。
+实测结束后已通过 `POST /api/stop` 停止该隔离会话并仅终止子进程 `PID=974`，同时彻底删除 `/private/tmp/fx6_p129_trial_18784`（`exists=False`），全程未触碰 `8768` 端口，也未使用 `pkill`/`killall`。
 
 ### 3.2 离线双模单元测试与全仓洁净门禁 / Dual-Mode Unit & Clean-Only Gates
 

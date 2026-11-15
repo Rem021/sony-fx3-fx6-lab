@@ -4856,6 +4856,10 @@ void fx6_force_update(void) {
                 /* Hard-enforce P12 Wi-Fi-OFF (bit4) & FX6 green GPIO zero-fault (bit6) */
                 g_live_p129_tsl_tally_umd = mb[66] | (1u << 4) | (1u << 6);
                 fx6_unpack_umd_name(mb, g_live_p129_tsl_tally_umd, g_live_p129_umd_name, sizeof(g_live_p129_umd_name));
+            } else if (mb[67] == 0x4d584654u) {
+                g_live_p129_mxf_bridge    = mb[64] & ~0x80000000u;
+                g_live_p129_ptpv2_ltc     = mb[65] & ~0x80000000u;
+                g_live_p129_tsl_tally_umd = mb[66] & ~0x80000000u;
             }
             fx6_apply_lang(lang);
 

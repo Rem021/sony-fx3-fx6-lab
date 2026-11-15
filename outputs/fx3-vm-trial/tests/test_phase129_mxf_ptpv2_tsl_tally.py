@@ -611,6 +611,8 @@ class TestPhase129MxfPtpv2TslTally(unittest.TestCase):
                 self.assertEqual(st, 200)
                 for marker in (
                     'id="phase129-mxf-ptpv2-tally-card"',
+                    '<details id="p129-details">',
+                    'id="p129-summary-pill"',
                     "const P129_I18N",
                     "setP129Lang('en')",
                     "setP129Lang('zh-CN')",
@@ -620,6 +622,9 @@ class TestPhase129MxfPtpv2TslTally(unittest.TestCase):
                     "/api/mxf_ptpv2_tally",
                 ):
                     self.assertIn(marker, html)
+                self.assertNotIn('<details id="p129-details" open', html)
+                self.assertGreater(html.index('id="phase129-mxf-ptpv2-tally-card"'), html.index('id="page-buttons"'))
+                self.assertGreater(html.index('id="phase129-mxf-ptpv2-tally-card"'), html.index('id="cat-buttons"'))
             finally:
                 srv.shutdown()
                 srv.server_close()
@@ -631,6 +636,7 @@ class TestPhase129MxfPtpv2TslTally(unittest.TestCase):
             "0x80000070u",
             "0xb3b11858u",
             "fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay",
+            "& ~0x80000000u",
             "MXFT=0x%08x:0x%08x:0x%08x",
         ):
             self.assertIn(c_marker, c_src)

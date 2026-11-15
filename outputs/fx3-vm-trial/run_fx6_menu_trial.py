@@ -14906,86 +14906,6 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
 
-    <div class="card" id="phase129-mxf-ptpv2-tally-card" style="margin-top:14px;border-color:#ef4444;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <h3 id="p129-card-title" style="margin:0;">Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally</h3>
-        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
-          <button id="p129-lang-en" onclick="setP129Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
-          <button id="p129-lang-zh-CN" onclick="setP129Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;">简体中文</button>
-          <button id="p129-lang-zh-TW" onclick="setP129Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
-          <button id="p129-lang-ja" onclick="setP129Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
-        </div>
-      </div>
-      <div id="p129-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
-      <div id="p129-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
-
-      <div class="cinema-grid">
-        <div class="cparam-box" style="border-color:#10b981;">
-          <div class="cparam-head"><span id="p129-lbl-mxf">XAVC MXF OP1a ↔ MP4 RDD-18 / UMID Bridge</span><span id="p129-mxf-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">MP4_ISOBMFF_RTMD · LOSS=0</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p129-container-select" onchange="setPhase129State({container_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="MP4_ISOBMFF_RTMD">MP4 ISOBMFF + RTMD</option>
-              <option value="MXF_OP1A_RDD09_WRAP">MXF OP1a RDD-09 Rewrap</option>
-              <option value="DUAL_MP4_PLUS_MXF_SIDECAR">Dual MP4 + MXF Sidecar</option>
-            </select>
-            <button id="p129-btn-test-raw-mxf" onclick="setPhase129State({raw_mxf_on_mp4_slot: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block Raw MXF</button>
-            <button id="p129-btn-test-spvc" onclick="setPhase129State({spoof_spvc: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block SPVC</button>
-          </div>
-          <div id="p129-mxf-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">UMID=... | RDD-18 EI=800 | Loss=0 eMMC=0B</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#22d3ee;">
-          <div class="cparam-head"><span id="p129-lbl-ptpv2">SMPTE ST 2059-2 PTPv2 vs LTC Servo (P12)</span><span id="p129-ptp-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · P12=1</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p129-sync-select" onchange="setPhase129State({sync_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="OFF">Sync OFF</option>
-              <option value="PTPV2_SLAVE_WIRED">ST 2059-2 PTPv2 (Wired)</option>
-              <option value="LTC_MULTITERMINAL_FALLBACK">LTC Multi-Terminal Holdover</option>
-            </select>
-            <input id="p129-offset-input" type="number" min="0" max="499" value="184" title="PTPv2 Offset (ns)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
-            <button id="p129-btn-apply-ptp" onclick="applyPhase129PtpParams()" style="padding:3px 7px;font-size:10.5px;border-color:#22d3ee;">Apply</button>
-            <button id="p129-btn-unplug-eth" onclick="setPhase129State({sync_mode:'PTPV2_SLAVE_WIRED', ethernet_link_up: false})" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Unplug ETH -> LTC</button>
-            <button id="p129-btn-test-wifi" onclick="setPhase129State({use_wifi: true})" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test P12 Wi-Fi</button>
-          </div>
-          <div id="p129-ptp-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">GM=00:1B:1B:FF:FE:20:59:02 | Lock=0 | P12=1 wf12=0</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#ef4444;">
-          <div class="cparam-head"><span id="p129-lbl-tally">TSL UMD v5.0 Broadcast Tally &amp; 16-Char UMD</span><span id="p129-tally-badge" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">OFF · CAM1</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p129-tally-select" onchange="setPhase129State({tally_state: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="OFF">Tally OFF</option>
-              <option value="PVW_GREEN">PVW Green (OSD Preview)</option>
-              <option value="PGM_RED">PGM Red (Live On-Air)</option>
-              <option value="PGM_PLUS_PVW">PGM + PVW Dual</option>
-            </select>
-            <select id="p129-cam-select" onchange="setPhase129State({umd_camera_index: Number(this.value)})" style="width:74px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="1">CAM1</option><option value="2">CAM2</option><option value="3">CAM3</option><option value="4">CAM4</option>
-              <option value="5">CAM5</option><option value="6">CAM6</option><option value="7">CAM7</option><option value="8">CAM8</option>
-            </select>
-            <select id="p129-framing-select" onchange="setPhase129State({tsl_framing: this.value})" style="width:94px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="UDP">UDP:40003</option>
-              <option value="TCP_DLE_STX">TCP DLE/STX</option>
-            </select>
-          </div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;align-items:center;">
-            <input id="p129-umd-input" type="text" maxlength="16" value="FX3-CAM1-STUDIO" placeholder="16-char UMD" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 6px;font-size:10.5px;font-family:'SF Mono',Menlo,monospace;" />
-            <button id="p129-btn-apply-umd" onclick="applyPhase129TslUmd()" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Set UMD</button>
-            <button id="p129-btn-stealth-toggle" onclick="togglePhase129Stealth()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Stealth Mute: OFF</button>
-          </div>
-          <div id="p129-tally-readout" style="font-size:10px;color:#fecaca;font-family:'SF Mono',Menlo,monospace;">LED=0 | OSD_Border=NONE | FX6_Green_Fault=0</div>
-        </div>
-      </div>
-
-      <div class="pill-row">
-        <button id="p129-preset-pgm-ptp-mxf" onclick="setPhase129State({container_mode:'MXF_OP1A_RDD09_WRAP',sync_mode:'PTPV2_SLAVE_WIRED',ethernet_link_up:true,offset_ns:142,tally_state:'PGM_RED',umd_camera_index:2,umd_label:'CAM-A WIDE 24GM'})" style="border-color:#ef4444;color:#fecaca;">PGM Red + PTPv2 Locked + MXF OP1a (CAM2)</button>
-        <button id="p129-preset-pvw-ltc-dual" onclick="setPhase129State({container_mode:'DUAL_MP4_PLUS_MXF_SIDECAR',sync_mode:'PTPV2_SLAVE_WIRED',ethernet_link_up:false,ltc_multiterminal_attached:true,tally_state:'PVW_GREEN',umd_camera_index:3,umd_label:'CAM-B CRANE 50GM'})" style="border-color:#10b981;color:#a7f3d0;">PVW Green + LTC Holdover + Dual MXF (CAM3)</button>
-        <button id="p129-preset-stealth-pgm" onclick="setPhase129State({tally_state:'PGM_RED',stealth_led_mute:true,osd_tally_indicator:true})" style="border-color:#f59e0b;color:#fde68a;">Stealth PGM (Body LED Mute + OSD Red)</button>
-        <button id="p129-btn-reset" onclick="setPhase129State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P129</button>
-      </div>
-      <div id="p129-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">MXFT ...</div>
-    </div>
-
     <div class="card" id="phase123-uvc-srt-crsdk-ptp-card" style="margin-top:14px;border-color:#10b981;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
         <h3 id="p123-card-title" style="margin:0;">Phase 123 · USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙</h3>
@@ -15589,6 +15509,91 @@ HTML_UI = """<!DOCTYPE html>
         <button onclick="setCat(9)" id="cbtn-9">10. Technical</button>
         <button onclick="setCat(10)" id="cbtn-10">11. Maintenance</button>
       </div>
+    </div>
+
+    <div class="card" id="phase129-mxf-ptpv2-tally-card" style="margin-top:14px;border-color:#ef4444;padding:10px 14px;">
+      <details id="p129-details">
+        <summary style="cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;user-select:none;">
+          <h3 id="p129-card-title" style="margin:0;font-size:13.5px;">&#9656; Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally</h3>
+          <span id="p129-summary-pill" style="font-size:10.5px;color:#fca5a5;font-family:'SF Mono',Menlo,monospace;background:#1f2937;border:1px solid #374151;border-radius:999px;padding:2px 8px;">MP4_ISOBMFF_RTMD · OFF · CAM1</span>
+        </summary>
+        <div style="margin-top:10px;">
+          <div style="display:flex;justify-content:flex-end;gap:4px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+            <button id="p129-lang-en" onclick="setP129Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+            <button id="p129-lang-zh-CN" onclick="setP129Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;">简体中文</button>
+            <button id="p129-lang-zh-TW" onclick="setP129Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+            <button id="p129-lang-ja" onclick="setP129Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+          </div>
+          <div id="p129-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+          <div id="p129-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+          <div class="cinema-grid">
+            <div class="cparam-box" style="border-color:#10b981;">
+              <div class="cparam-head"><span id="p129-lbl-mxf">XAVC MXF OP1a ↔ MP4 RDD-18 / UMID Bridge</span><span id="p129-mxf-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">MP4_ISOBMFF_RTMD · LOSS=0</span></div>
+              <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+                <select id="p129-container-select" onchange="setPhase129State({container_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+                  <option value="MP4_ISOBMFF_RTMD">MP4 ISOBMFF + RTMD</option>
+                  <option value="MXF_OP1A_RDD09_WRAP">MXF OP1a RDD-09 Rewrap</option>
+                  <option value="DUAL_MP4_PLUS_MXF_SIDECAR">Dual MP4 + MXF Sidecar</option>
+                </select>
+                <button id="p129-btn-test-raw-mxf" onclick="setPhase129State({raw_mxf_on_mp4_slot: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block Raw MXF</button>
+                <button id="p129-btn-test-spvc" onclick="setPhase129State({spoof_spvc: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block SPVC</button>
+              </div>
+              <div id="p129-mxf-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">UMID=... | RDD-18 EI=800 | Loss=0 eMMC=0B</div>
+            </div>
+
+            <div class="cparam-box" style="border-color:#22d3ee;">
+              <div class="cparam-head"><span id="p129-lbl-ptpv2">SMPTE ST 2059-2 PTPv2 vs LTC Servo (P12)</span><span id="p129-ptp-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · P12=1</span></div>
+              <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+                <select id="p129-sync-select" onchange="setPhase129State({sync_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+                  <option value="OFF">Sync OFF</option>
+                  <option value="PTPV2_SLAVE_WIRED">ST 2059-2 PTPv2 (Wired)</option>
+                  <option value="LTC_MULTITERMINAL_FALLBACK">LTC Multi-Terminal Holdover</option>
+                </select>
+                <input id="p129-offset-input" type="number" min="0" max="499" value="184" title="PTPv2 Offset (ns)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+                <button id="p129-btn-apply-ptp" onclick="applyPhase129PtpParams()" style="padding:3px 7px;font-size:10.5px;border-color:#22d3ee;">Apply</button>
+                <button id="p129-btn-unplug-eth" onclick="setPhase129State({sync_mode:'PTPV2_SLAVE_WIRED', ethernet_link_up: false})" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Unplug ETH -> LTC</button>
+                <button id="p129-btn-test-wifi" onclick="setPhase129State({use_wifi: true})" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test P12 Wi-Fi</button>
+              </div>
+              <div id="p129-ptp-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">GM=00:1B:1B:FF:FE:20:59:02 | Lock=0 | P12=1 wf12=0</div>
+            </div>
+
+            <div class="cparam-box" style="border-color:#ef4444;">
+              <div class="cparam-head"><span id="p129-lbl-tally">TSL UMD v5.0 Broadcast Tally &amp; 16-Char UMD</span><span id="p129-tally-badge" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">OFF · CAM1</span></div>
+              <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+                <select id="p129-tally-select" onchange="setPhase129State({tally_state: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+                  <option value="OFF">Tally OFF</option>
+                  <option value="PVW_GREEN">PVW Green (OSD Preview)</option>
+                  <option value="PGM_RED">PGM Red (Live On-Air)</option>
+                  <option value="PGM_PLUS_PVW">PGM + PVW Dual</option>
+                </select>
+                <select id="p129-cam-select" onchange="setPhase129State({umd_camera_index: Number(this.value)})" style="width:74px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+                  <option value="1">CAM1</option><option value="2">CAM2</option><option value="3">CAM3</option><option value="4">CAM4</option>
+                  <option value="5">CAM5</option><option value="6">CAM6</option><option value="7">CAM7</option><option value="8">CAM8</option>
+                </select>
+                <select id="p129-framing-select" onchange="setPhase129State({tsl_framing: this.value})" style="width:94px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+                  <option value="UDP">UDP:40003</option>
+                  <option value="TCP_DLE_STX">TCP DLE/STX</option>
+                </select>
+              </div>
+              <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;align-items:center;">
+                <input id="p129-umd-input" type="text" maxlength="16" value="FX3-CAM1-STUDIO" placeholder="16-char UMD" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 6px;font-size:10.5px;font-family:'SF Mono',Menlo,monospace;" />
+                <button id="p129-btn-apply-umd" onclick="applyPhase129TslUmd()" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Set UMD</button>
+                <button id="p129-btn-stealth-toggle" onclick="togglePhase129Stealth()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Stealth Mute: OFF</button>
+              </div>
+              <div id="p129-tally-readout" style="font-size:10px;color:#fecaca;font-family:'SF Mono',Menlo,monospace;">LED=0 | OSD_Border=NONE | FX6_Green_Fault=0</div>
+            </div>
+          </div>
+
+          <div class="pill-row">
+            <button id="p129-preset-pgm-ptp-mxf" onclick="setPhase129State({container_mode:'MXF_OP1A_RDD09_WRAP',sync_mode:'PTPV2_SLAVE_WIRED',ethernet_link_up:true,offset_ns:142,tally_state:'PGM_RED',umd_camera_index:2,umd_label:'CAM-A WIDE 24GM'})" style="border-color:#ef4444;color:#fecaca;">PGM Red + PTPv2 Locked + MXF OP1a (CAM2)</button>
+            <button id="p129-preset-pvw-ltc-dual" onclick="setPhase129State({container_mode:'DUAL_MP4_PLUS_MXF_SIDECAR',sync_mode:'PTPV2_SLAVE_WIRED',ethernet_link_up:false,ltc_multiterminal_attached:true,tally_state:'PVW_GREEN',umd_camera_index:3,umd_label:'CAM-B CRANE 50GM'})" style="border-color:#10b981;color:#a7f3d0;">PVW Green + LTC Holdover + Dual MXF (CAM3)</button>
+            <button id="p129-preset-stealth-pgm" onclick="setPhase129State({tally_state:'PGM_RED',stealth_led_mute:true,osd_tally_indicator:true})" style="border-color:#f59e0b;color:#fde68a;">Stealth PGM (Body LED Mute + OSD Red)</button>
+            <button id="p129-btn-reset" onclick="setPhase129State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P129</button>
+          </div>
+          <div id="p129-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">MXFT ...</div>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -18473,6 +18478,11 @@ function syncPhase129MxfPtpv2TallyUI(p129) {
 
   const cmdEl = document.getElementById('p129-cmd-readout');
   if (cmdEl) cmdEl.textContent = p129.mxf_ptpv2_tally_cmd || 'MXFT ...';
+  const sumPill = document.getElementById('p129-summary-pill');
+  if (sumPill) {
+    sumPill.textContent = `${p129.container_mode || 'MP4_ISOBMFF_RTMD'} · ${p129.effective_sync_mode || 'OFF'} · ${p129.tally_state || 'OFF'} · ${p129.umd_camera_slot || 'CAM1'}`;
+    sumPill.style.color = (p129.tally_state === 'PGM_RED' || p129.tally_state === 'PGM_PLUS_PVW') ? '#fecaca' : (p129.tally_state === 'PVW_GREEN' ? '#a7f3d0' : '#cbd5e1');
+  }
 }
 
 async function setPhase129State(patch) {

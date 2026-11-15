@@ -32,6 +32,7 @@
  *   -DFX6_ROUND=17 Round 17:+ Complete Status Check Tabs 6, 7 & 8 Sweep (Assignable / Media / Network P12 + Wrap-Around) & Audio 3-Layer Menu
  *   -DFX6_ROUND=21 Round 21:+ 4-Language (EN/JA/ZH-CN/ZH-TW) Audio Dual-Surface Closure (3-Layer Menu sid=0x11 & Status Tab 3 sid=0x31)
  *   -DFX6_ROUND=22 Round 22:+ 4-Language (EN/JA/ZH-CN/ZH-TW) Paint/Look (sid=0x11) & Status Tab 2 Camera (sid=0x30) Dual-Surface Closure
+ *   -DFX6_ROUND=23 Round 23:+ 4-Language (EN/JA/ZH-CN/ZH-TW) Monitoring 3-Layer Menu (sid=0x11) & Status Tab 5 Monitoring (sid=0x33) Dual-Surface Closure
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -613,6 +614,28 @@ static void emit_r10_telemetry(const char *reason) {
             "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
             "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
             "paintlook_camtab2_4lang_dualsurface=1 subst_color=0 subst_image=0\n",
+            reason ? reason : "periodic",
+            fx6_lang_name(),
+            (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(),
+            fx6_lang_font_bank(),
+            fx6_lang_str_bank(),
+            g_r11_lang_bk4_hits,
+            g_r11_airplane_bk4_hits,
+            g_r12_p4_nd_clear_ok,
+            g_font_create2_cnt,
+            g_glyph_blit_count,
+            g_icon_blit_count,
+            g_gpe_pool_alloc_cnt,
+            g_gpe_pool_fallback_cnt);
+#endif
+#if FX6_ROUND >= 23
+    dprintf(2,
+            "FX6_R23_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+            "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+            "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+            "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+            "monitoring_tab5_4lang_dualsurface=1 subst_color=0 subst_image=0\n",
             reason ? reason : "periodic",
             fx6_lang_name(),
             (unsigned int)fx6_lang_bk4_byte(),
@@ -2613,6 +2636,15 @@ void Application_System_Init(const char *arg) {
             "FX6_STAGE_B_R22_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u paintlook_camtab2_4lang_dualsurface=1\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 23
+    dprintf(2,
+            "FX6_STAGE_B_R23_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u monitoring_tab5_4lang_dualsurface=1\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

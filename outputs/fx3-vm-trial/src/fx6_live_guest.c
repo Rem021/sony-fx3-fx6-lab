@@ -40,6 +40,15 @@
  *              bits17..26=clip_seq, bits27..28=dual_slot_mode, bits29..30=proxy_mode, bit31=proxy_eff)
  *     mb[34] = phase73_flags2 (bit0=proxy_auto_suspended_by_sq, bits1..3=user_lut_slot_1to4)
  *     mb[35] = 0x57424c4d ('WBLM') Phase 73 WB_MEDIA magic tag
+ *     mb[36] = phase81_touch_af (bits0..1=touch_af_mode(0=off,1=focus,2=tracking),
+ *              bits2..11=touch_x(0..959), bits12..21=touch_y(0..539), bits22..31=pdaf_index(0..626))
+ *     mb[37] = phase81_pdaf_mag_fc (bits0..5=pdaf_col(0..32), bits6..10=pdaf_row(0..18),
+ *              bits11..12=focus_mag(0=1x,1=2x,2=4x), bits13..14=false_color(0=off,1=slog3_ire,2=el_zone),
+ *              bit15=clean_hdmi_unmagnified, bits16..23=eff_ciz_x100(100..200), bits24..31=req_ciz_x100(100..200))
+ *     mb[38] = phase81_ciz_flags (bits0..3=rocker_speed(1..8), bit4=ciz_res_fhd,
+ *              bit5=ciz_clamped_by_exclusion, bit6=ciz_clamped_by_res_limit,
+ *              bit7=slog3_zebra100_clip_warning, bit8=letterbox_ignored, bit31=valid)
+ *     mb[39] = 0x54414643 ('TAFC') Phase 81 Touch-AF / False-Color / CIZ magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1014,6 +1023,9 @@ static uint32_t g_live_p64_tc = 0u;
 static uint32_t g_live_p73_wb_look = 0xc0c6af02u; /* valid=1, soft_map=1, S-Cinetone, SL=off, tint=0(99), 5600K, preset_5600k */
 static uint32_t g_live_p73_media_clip = 0xa0020020u; /* proxy_eff=1, 16M, simul, clip=1, pos=C, reel=1, cam=A */
 static uint32_t g_live_p73_flags2 = 0u;
+static uint32_t g_live_p81_touch_af = 0x4e50e780u;    /* af=off, x=480, y=270, pdaf_idx=313 */
+static uint32_t g_live_p81_pdaf_mag_fc = 0x64648250u; /* col=16, row=9, mag=1x, fc=off, clean_hdmi=1, eff_ciz=100, req_ciz=100 */
+static uint32_t g_live_p81_ciz_flags = 0x80000004u;   /* valid=1, rocker_speed=4 */
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -2562,6 +2574,214 @@ static void fx6_render_phase73_wb_look_dualslot_overlay(uint64_t appfw, uint32_t
                                   0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
 }
 
+static void fx6_render_phase81_touchaf_falsecolor_ciz_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p81_ciz_flags & 0x80000000u)) return;
+
+    uint32_t af_mode    = g_live_p81_touch_af & 0x03u;
+    uint32_t touch_x    = (g_live_p81_touch_af >> 2) & 0x3ffu;
+    uint32_t touch_y    = (g_live_p81_touch_af >> 12) & 0x3ffu;
+    uint32_t pdaf_idx   = (g_live_p81_touch_af >> 22) & 0x3ffu;
+    if (touch_x > 959u) touch_x = 959u;
+    if (touch_y > 539u) touch_y = 539u;
+    if (pdaf_idx > 626u) pdaf_idx = 626u;
+
+    uint32_t pdaf_col   = g_live_p81_pdaf_mag_fc & 0x3fu;
+    uint32_t pdaf_row   = (g_live_p81_pdaf_mag_fc >> 6) & 0x1fu;
+    uint32_t mag_idx    = (g_live_p81_pdaf_mag_fc >> 11) & 0x03u;
+    uint32_t fc_mode    = (g_live_p81_pdaf_mag_fc >> 13) & 0x03u;
+    uint32_t clean_hdmi = (g_live_p81_pdaf_mag_fc >> 15) & 0x01u;
+    uint32_t eff_ciz    = (g_live_p81_pdaf_mag_fc >> 16) & 0xffu;
+    if (pdaf_col > 32u) pdaf_col = 32u;
+    if (pdaf_row > 18u) pdaf_row = 18u;
+    if (eff_ciz < 100u || eff_ciz > 200u) eff_ciz = 100u;
+
+    uint32_t spd         = g_live_p81_ciz_flags & 0x0fu;
+    uint32_t ciz_excl    = (g_live_p81_ciz_flags >> 5) & 0x01u;
+    uint32_t zeb100_warn = (g_live_p81_ciz_flags >> 7) & 0x01u;
+    if (spd < 1u || spd > 8u) spd = 4u;
+
+    if (af_mode == 0u && mag_idx == 0u && fc_mode == 0u && eff_ciz <= 100u && !ciz_excl && !zeb100_warn) {
+        return;
+    }
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+
+    /* 1. S-Log3 False Color / EL-Zone pixel colorization + Right-side IRE/EV Legend Bar */
+    if (fc_mode > 0u) {
+        if (g_syms.processCommands) g_syms.processCommands(0);
+        int fc_y0 = 46;
+        int fc_y1 = is_shooting_page ? 444 : 504;
+        int fc_x0 = 16;
+        int fc_x1 = 950;
+        for (int y = fc_y0; y < fc_y1; y++) {
+            uint32_t *row = g_osd + (unsigned long)y * (unsigned long)FX6_W;
+            for (int x = fc_x0; x < fc_x1; x++) {
+                uint32_t v = row[x];
+                if (!v) continue;
+                uint32_t r = (v >> 16) & 0xffu;
+                uint32_t g = (v >> 8) & 0xffu;
+                uint32_t b = v & 0xffu;
+                uint32_t luma = (54u * r + 183u * g + 19u * b) >> 8;
+                uint32_t ire_x10 = (luma * 1090u) / 255u;
+                uint32_t fc_rgb = 0x2563EBu;
+                if (fc_mode == 1u) {
+                    /* Sony S-Log3 IRE bands: 3.5% purple, 41% green, 52% pink, 94% red */
+                    if (ire_x10 <= 35u)       fc_rgb = 0x7E22CEu;
+                    else if (ire_x10 <= 200u) fc_rgb = 0x2563EBu;
+                    else if (ire_x10 <= 380u) fc_rgb = 0x06B6D4u;
+                    else if (ire_x10 <= 440u) fc_rgb = 0x22C55Eu;
+                    else if (ire_x10 <= 560u) fc_rgb = 0xF472B6u;
+                    else if (ire_x10 <= 780u) fc_rgb = 0xFACC15u;
+                    else if (ire_x10 < 940u)  fc_rgb = 0xF97316u;
+                    else                      fc_rgb = 0xEF4444u;
+                } else {
+                    /* EL-Zone Stop-Based bands */
+                    if (ire_x10 <= 80u)       fc_rgb = 0x6D28D9u;
+                    else if (ire_x10 <= 260u) fc_rgb = 0x0284C7u;
+                    else if (ire_x10 <= 450u) fc_rgb = 0x16A34Au;
+                    else if (ire_x10 <= 580u) fc_rgb = 0xEC4899u;
+                    else if (ire_x10 < 900u)  fc_rgb = 0xF59E0Bu;
+                    else                      fc_rgb = 0xDC2626u;
+                }
+                fx6_osd_blend_px(x, y, fc_rgb, 148u);
+            }
+        }
+
+        /* Right-side IRE / EV Legend Bar */
+        int lx = 956, ly = 68, lw = 60, lh = 354;
+        fx6_osd_fill_rect(lx, ly, lw, lh, 0xFF0A0F1Au);
+        fx6_osd_border_rect(lx, ly, lw, lh, (fc_mode == 1u) ? 0xFFA855F7u : 0xFFEC4899u);
+        fx6_render_string_text_styled(appfw, lx + 4, ly + 4, lw - 8, 20,
+                                      (fc_mode == 1u) ? "S3 IRE" : "EL-ZN",
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        static const uint32_t k_fc_cols[7] = {
+            0xFFEF4444u, 0xFFFACC15u, 0xFFF472B6u, 0xFF22C55Eu, 0xFF06B6D4u, 0xFF2563EBu, 0xFF7E22CEu
+        };
+        static const char * const k_s3_lbls[7] = {
+            "94%", "70%", "52%", "41%", "25%", "10%", "3.5"
+        };
+        static const char * const k_el_lbls[7] = {
+            "+5EV", "+3EV", "+1EV", " 0EV", "-2EV", "-3EV", "-5EV"
+        };
+        for (int b = 0; b < 7; b++) {
+            int by = ly + 30 + b * 45;
+            fx6_osd_fill_rect(lx + 5, by, 14, 38, k_fc_cols[b]);
+            fx6_osd_border_rect(lx + 5, by, 14, 38, 0xFFE5E7EBu);
+            fx6_render_string_text_styled(appfw, lx + 21, by + 8, lw - 24, 22,
+                                          (fc_mode == 1u) ? k_s3_lbls[b] : k_el_lbls[b],
+                                          0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        }
+    }
+
+    /* 2. Focus Magnifier Orange Corner Border + [MAG x4.0] Badge (HDMI Clean Feed 1.0x) */
+    int badge_y = 48;
+    if (mag_idx > 0u) {
+        fx6_draw_corner_ticks(16, 48, 948, 440, 34, 4, 0xF97316u, 248u);
+        fx6_osd_border_rect(16, 48, 933, 393, 0xFFF97316u);
+        int mx = 22, my = badge_y, mw = 212, mh = 26;
+        fx6_osd_fill_rect(mx, my, mw, mh, 0xFF7C2D12u);
+        fx6_osd_border_rect(mx, my, mw, mh, 0xFFF97316u);
+        const char *mag_lbl = (mag_idx >= 2u)
+            ? (clean_hdmi ? "[MAG x4.0] HDMI:1x" : "[MAG x4.0]")
+            : (clean_hdmi ? "[MAG x2.0] HDMI:1x" : "[MAG x2.0]");
+        fx6_render_string_text_styled(appfw, mx + 6, my + 2, mw - 12, 22, mag_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        badge_y += 30;
+    }
+
+    /* 3. Clear Image Zoom [CIZ 1.40x] Zoom Bar Badge (or Exclusion Clamp Badge) */
+    if (eff_ciz > 100u || ciz_excl) {
+        int cx = 22, cy = badge_y, cw = 220, ch = 26;
+        uint32_t c_bg = ciz_excl ? 0xFF78350Fu : 0xFF0E7490u;
+        uint32_t c_bd = ciz_excl ? 0xFFF59E0Bu : 0xFF22D3EEu;
+        fx6_osd_fill_rect(cx, cy, cw, ch, c_bg);
+        fx6_osd_border_rect(cx, cy, cw, ch, c_bd);
+
+        /* Proportional CIZ bar 1.00x .. 2.00x */
+        int bar_x = cx + 6, bar_y = cy + 19, bar_w = cw - 12;
+        fx6_osd_fill_rect(bar_x, bar_y, bar_w, 4, 0xFF0F172Au);
+        int fill_w = (int)(((eff_ciz - 100u) * (uint32_t)bar_w) / 100u);
+        if (fill_w < 4) fill_w = 4;
+        if (fill_w > bar_w) fill_w = bar_w;
+        fx6_osd_fill_rect(bar_x, bar_y, fill_w, 4, ciz_excl ? 0xFFF59E0Bu : 0xFF67E8F9u);
+
+        char ciz_lbl[40];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), "[CIZ ");
+        cp = fx6_append_uint(ciz_lbl, cp, sizeof(ciz_lbl), eff_ciz / 100u);
+        cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), ".");
+        cp = fx6_append_2d(ciz_lbl, cp, sizeof(ciz_lbl), eff_ciz % 100u);
+        cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), "x]");
+        if (ciz_excl) {
+            cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), " EXCL");
+        } else {
+            cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), " S");
+            cp = fx6_append_uint(ciz_lbl, cp, sizeof(ciz_lbl), spd);
+        }
+        (void)cp;
+        fx6_render_string_text_styled(appfw, cx + 6, cy + 1, cw - 12, 18, ciz_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        badge_y += 30;
+    }
+
+    /* 4. S-Log3 + Zebra 100% Clip Warning Badge */
+    if (zeb100_warn) {
+        int wx = 22, wy = badge_y, ww = 290, wh = 24;
+        fx6_osd_fill_rect(wx, wy, ww, wh, 0xFF7F1D1Du);
+        fx6_osd_border_rect(wx, wy, ww, wh, 0xFFEF4444u);
+        fx6_render_string_text_styled(appfw, wx + 6, wy + 2, ww - 12, 20,
+                                      "WARN: S-Log3 ZEB100% CLIP@94%",
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 5. Touch Tracking AF Double-Frame Reticle + PDAF Cell Badge */
+    if (af_mode > 0u) {
+        int rx = (int)((touch_x * 1024u) / 960u);
+        int ry = (int)touch_y;
+        if (rx < 44) rx = 44;
+        if (rx > 940) rx = 940;
+        if (ry < 44) ry = 44;
+        if (ry > 438) ry = 438;
+
+        int rw = 36, rh = 28;
+        int rw2 = 26, rh2 = 20;
+        uint32_t ret_rgb  = (af_mode == 2u) ? 0x22C55Eu : 0xF8FAFCu;
+        uint32_t ret_in   = (af_mode == 2u) ? 0x86EFACu : 0xCBD5E1u;
+        uint32_t ret_argb = 0xFF000000u | ret_rgb;
+
+        /* Outer bracket corners */
+        fx6_draw_corner_ticks(rx - rw, ry - rh, rx + rw, ry + rh, 14, 3, ret_rgb, 252u);
+        /* Inner tracking double-frame corners */
+        fx6_draw_corner_ticks(rx - rw2, ry - rh2, rx + rw2, ry + rh2, 10, 2, ret_in, 240u);
+        /* Crisp center crosshairs */
+        fx6_osd_fill_rect(rx - 6, ry, 13, 2, ret_argb);
+        fx6_osd_fill_rect(rx, ry - 6, 2, 13, ret_argb);
+
+        /* PDAF 33x19 Cell Badge right below (or above) reticle */
+        int bx = rx - 82;
+        if (bx < 16) bx = 16;
+        if (bx + 166 > 952) bx = 952 - 166;
+        int by = (ry + rh + 30 <= 444) ? (ry + rh + 4) : (ry - rh - 26);
+        int bw = 166, bh = 22;
+        fx6_osd_fill_rect(bx, by, bw, bh, (af_mode == 2u) ? 0xFF052E16u : 0xFF0F172Au);
+        fx6_osd_border_rect(bx, by, bw, bh, ret_argb);
+
+        char af_lbl[40];
+        unsigned ap = 0u;
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), (af_mode == 2u) ? "TRK #" : "AF #");
+        ap = fx6_append_uint(af_lbl, ap, sizeof(af_lbl), pdaf_idx);
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), " (");
+        ap = fx6_append_uint(af_lbl, ap, sizeof(af_lbl), pdaf_col);
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), ",");
+        ap = fx6_append_uint(af_lbl, ap, sizeof(af_lbl), pdaf_row);
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), ")");
+        (void)ap;
+        fx6_render_string_text_styled(appfw, bx + 5, by + 1, bw - 10, 20, af_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -2598,6 +2818,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p73_wb_look) * 1099511628211ULL;
     h = (h ^ g_live_p73_media_clip) * 1099511628211ULL;
     h = (h ^ g_live_p73_flags2) * 1099511628211ULL;
+    h = (h ^ g_live_p81_touch_af) * 1099511628211ULL;
+    h = (h ^ g_live_p81_pdaf_mag_fc) * 1099511628211ULL;
+    h = (h ^ g_live_p81_ciz_flags) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -2785,6 +3008,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase56_assist_overlays(appfw, page);
     fx6_render_phase64_cine_exposure_overlay(appfw, page);
     fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
+    fx6_render_phase81_touchaf_falsecolor_ciz_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -2998,7 +3222,7 @@ void fx6_force_update(void) {
 
     uint32_t cell_vals[6] = { 0, 0, 0, 0, 0, 0 };
     if (mb) {
-        for (int i = 0; i < 36; i++) mb[i] = 0;
+        for (int i = 0; i < 40; i++) mb[i] = 0;
         mb[0] = 0x4658364cu; /* 'FX6L' */
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
@@ -3021,6 +3245,10 @@ void fx6_force_update(void) {
         mb[33] = 0xa0020020u;/* phase73_media_clip: proxy_eff=1, 16M, simul, clip=1, pos=C, reel=1, cam=A */
         mb[34] = 0u;         /* phase73_flags2 */
         mb[35] = 0x57424c4du;/* 'WBLM' */
+        mb[36] = 0x4e50e780u;/* phase81_touch_af: off, (480,270), pdaf=313 */
+        mb[37] = 0x64648250u;/* phase81_pdaf_mag_fc: (16,9), mag=1x, fc=off, hdmi=1x, eff=100, req=100 */
+        mb[38] = 0x80000004u;/* phase81_ciz_flags: valid=1, spd=4 */
+        mb[39] = 0x54414643u;/* 'TAFC' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -3032,6 +3260,9 @@ void fx6_force_update(void) {
     g_live_p73_wb_look = 0xc0c6af02u;
     g_live_p73_media_clip = 0xa0020020u;
     g_live_p73_flags2 = 0u;
+    g_live_p81_touch_af = 0x4e50e780u;
+    g_live_p81_pdaf_mag_fc = 0x64648250u;
+    g_live_p81_ciz_flags = 0x80000004u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -3047,10 +3278,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -3096,14 +3327,19 @@ void fx6_force_update(void) {
                 g_live_p73_media_clip = mb[33];
                 g_live_p73_flags2     = mb[34];
             }
+            if ((mb[38] & 0x80000000u) && mb[39] == 0x54414643u) {
+                g_live_p81_touch_af    = mb[36];
+                g_live_p81_pdaf_mag_fc = mb[37] | 0x8000u; /* clean_hdmi_unmagnified = 1 */
+                g_live_p81_ciz_flags   = mb[38];
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags);
         }
     }
 }

@@ -1432,6 +1432,7 @@ _ASSIST_ALIASES: dict[str, dict[str, str]] = {
         "1x": "1.0x",
         "1.0": "1.0x",
         "off": "1.0x",
+        "1.3x": "1.33x",
         "1.33x": "1.33x",
         "1.33": "1.33x",
         "2.0x": "2.0x",
@@ -2588,6 +2589,480 @@ def build_nrtm_xml_sidecar(
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
 
 
+TOUCH_AF_MODES: tuple[str, ...] = ("off", "touch_focus", "touch_tracking")
+TOUCH_X_MIN = 0
+TOUCH_X_MAX = 959
+TOUCH_Y_MIN = 0
+TOUCH_Y_MAX = 539
+PDAF_COLS = 33
+PDAF_ROWS = 19
+PDAF_TOTAL_POINTS = PDAF_COLS * PDAF_ROWS  # 627
+FOCUS_MAG_MODES: tuple[str, ...] = ("1.0x", "2.0x", "4.0x")
+FOCUS_MAG_FACTORS: dict[str, float] = {"1.0x": 1.0, "2.0x": 2.0, "4.0x": 4.0}
+FALSE_COLOR_MODES: tuple[str, ...] = ("off", "slog3_ire", "el_zone")
+CIZ_RES_MODES: tuple[str, ...] = ("4K", "FHD")
+CIZ_RES_MAX_SCALE: dict[str, float] = {"4K": 1.50, "FHD": 2.00}
+CIZ_SCALE_MIN = 1.00
+CIZ_SCALE_MAX = 2.00
+ZOOM_ROCKER_SPEED_MIN = 1
+ZOOM_ROCKER_SPEED_MAX = 8
+
+SLOG3_IRE_LANDMARKS: dict[str, dict[str, Any]] = {
+    "black_clip": {
+        "ire": 3.5,
+        "label": "3.5% Black Clip (黑位裁切)",
+        "color": "purple",
+        "hex": "#7E22CE",
+    },
+    "middle_grey": {
+        "ire": 41.0,
+        "label": "41.0% (18% Middle-Grey / 18%中灰)",
+        "color": "green",
+        "hex": "#22C55E",
+    },
+    "skin_plus1ev": {
+        "ire": 52.0,
+        "label": "52.0% (+1EV Skin / 肤色+1EV)",
+        "color": "pink",
+        "hex": "#F472B6",
+    },
+    "sensor_clip": {
+        "ire": 94.0,
+        "label": "94.0% Sensor Clip (传感器高光裁切)",
+        "color": "red",
+        "hex": "#EF4444",
+    },
+}
+
+EL_ZONE_STOPS: tuple[dict[str, Any], ...] = (
+    {"ev": "-5EV", "ire": 3.5, "color": "purple", "hex": "#6D28D9"},
+    {"ev": "-3EV", "ire": 12.0, "color": "blue", "hex": "#0284C7"},
+    {"ev": "-1EV", "ire": 31.0, "color": "cyan", "hex": "#06B6D4"},
+    {"ev": "0EV (18% Grey)", "ire": 41.0, "color": "green", "hex": "#16A34A"},
+    {"ev": "+1EV (Skin)", "ire": 52.0, "color": "pink", "hex": "#EC4899"},
+    {"ev": "+3EV", "ire": 74.0, "color": "yellow", "hex": "#F59E0B"},
+    {"ev": "+5EV+ (Clip)", "ire": 94.0, "color": "red", "hex": "#DC2626"},
+)
+
+TOUCH_FOCUS_CIZ_DEFAULTS: dict[str, Any] = {
+    "touch_af_mode": "off",
+    "touch_x": 480,
+    "touch_y": 270,
+    "focus_mag": "1.0x",
+    "false_color_mode": "off",
+    "ciz_scale": 1.00,
+    "ciz_res_mode": "4K",
+    "zoom_rocker_speed": 4,
+}
+
+TOUCH_FOCUS_CIZ_SPECS: dict[str, Any] = {
+    "touch_af_modes": list(TOUCH_AF_MODES),
+    "touch_x_range": [TOUCH_X_MIN, TOUCH_X_MAX],
+    "touch_y_range": [TOUCH_Y_MIN, TOUCH_Y_MAX],
+    "pdaf_cols": PDAF_COLS,
+    "pdaf_rows": PDAF_ROWS,
+    "pdaf_total_points": PDAF_TOTAL_POINTS,
+    "focus_mag_modes": list(FOCUS_MAG_MODES),
+    "clean_hdmi_unmagnified": True,
+    "false_color_modes": list(FALSE_COLOR_MODES),
+    "slog3_ire_landmarks": dict(SLOG3_IRE_LANDMARKS),
+    "el_zone_stops": list(EL_ZONE_STOPS),
+    "ciz_res_modes": list(CIZ_RES_MODES),
+    "ciz_res_max_scale": dict(CIZ_RES_MAX_SCALE),
+    "ciz_scale_range": [CIZ_SCALE_MIN, CIZ_SCALE_MAX],
+    "zoom_rocker_speed_range": [ZOOM_ROCKER_SPEED_MIN, ZOOM_ROCKER_SPEED_MAX],
+}
+
+_TOUCH_AF_ALIASES: dict[str, str] = {
+    "off": "off",
+    "none": "off",
+    "touch_focus": "touch_focus",
+    "focus": "touch_focus",
+    "spot": "touch_focus",
+    "touch_tracking": "touch_tracking",
+    "tracking": "touch_tracking",
+    "real-time tracking af": "touch_tracking",
+    "realtime_tracking": "touch_tracking",
+}
+
+_FOCUS_MAG_ALIASES: dict[str, str] = {
+    "1.0x": "1.0x",
+    "1x": "1.0x",
+    "1.0": "1.0x",
+    "1": "1.0x",
+    "off": "1.0x",
+    "2.0x": "2.0x",
+    "2x": "2.0x",
+    "2.0": "2.0x",
+    "2": "2.0x",
+    "4.0x": "4.0x",
+    "4x": "4.0x",
+    "4.0": "4.0x",
+    "4": "4.0x",
+}
+
+_FALSE_COLOR_ALIASES: dict[str, str] = {
+    "off": "off",
+    "none": "off",
+    "slog3_ire": "slog3_ire",
+    "slog3": "slog3_ire",
+    "ire": "slog3_ire",
+    "el_zone": "el_zone",
+    "el-zone": "el_zone",
+    "elzone": "el_zone",
+}
+
+_CIZ_RES_ALIASES: dict[str, str] = {
+    "4k": "4K",
+    "uhd": "4K",
+    "qfhd": "4K",
+    "dci": "4K",
+    "fhd": "FHD",
+    "1080p": "FHD",
+    "hd": "FHD",
+}
+
+
+def compute_imx510_pdaf_cell(touch_x: int, touch_y: int) -> dict[str, int]:
+    """Map 960x540 sensor preview coordinates to exact IMX510 33x19 = 627-pt PDAF cell."""
+    cx = max(TOUCH_X_MIN, min(TOUCH_X_MAX, int(touch_x)))
+    cy = max(TOUCH_Y_MIN, min(TOUCH_Y_MAX, int(touch_y)))
+    col = min(PDAF_COLS - 1, (cx * PDAF_COLS) // (TOUCH_X_MAX + 1))
+    row = min(PDAF_ROWS - 1, (cy * PDAF_ROWS) // (TOUCH_Y_MAX + 1))
+    idx = row * PDAF_COLS + col
+    return {"pdaf_col": col, "pdaf_row": row, "pdaf_index": idx}
+
+
+def compute_active_sensor_rect(aspect_marker: str = "Off", desqueeze: str = "1.0x") -> dict[str, Any]:
+    """Compute active 960x540 sensor image bounds accounting for aspect-guide mattes and anamorphic desqueeze."""
+    x_min, x_max = TOUCH_X_MIN, TOUCH_X_MAX
+    y_min, y_max = TOUCH_Y_MIN, TOUCH_Y_MAX
+
+    asp = str(aspect_marker or "Off").strip()
+    dsq = str(desqueeze or "1.0x").strip().lower()
+
+    if asp == "2.39:1":
+        y_min = max(y_min, 56)
+        y_max = min(y_max, 483)
+    elif asp == "1.85:1":
+        x_min = max(x_min, 11)
+        x_max = min(x_max, 948)
+    elif asp == "9:16":
+        x_min = max(x_min, 341)
+        x_max = min(x_max, 618)
+
+    if dsq in ("1.3x", "1.33x"):
+        y_min = max(y_min, 68)
+        y_max = min(y_max, 471)
+    elif dsq == "2.0x":
+        y_min = max(y_min, 135)
+        y_max = min(y_max, 404)
+
+    has_letterbox = (x_min > TOUCH_X_MIN) or (x_max < TOUCH_X_MAX) or (y_min > TOUCH_Y_MIN) or (y_max < TOUCH_Y_MAX)
+    return {
+        "x_min": x_min,
+        "x_max": x_max,
+        "y_min": y_min,
+        "y_max": y_max,
+        "has_letterbox": has_letterbox,
+    }
+
+
+def compute_touch_focus_ciz_derived(
+    state: dict[str, Any],
+    *,
+    aspect_marker: str = "Off",
+    desqueeze: str = "1.0x",
+    zebra_mode: str = "Off",
+    base_look: str = "S-Cinetone",
+    wired_io_mode: str = "off",
+    sq_enabled: bool = False,
+    sq_fps: int = 24,
+    letterbox_ignored: bool = False,
+) -> dict[str, Any]:
+    """Compute Phase 81 PDAF cell, Focus Mag ROI, S-Log3 False Color / Zebra warning, and CIZ exclusion coupling."""
+    touch_af_mode = str(state.get("touch_af_mode", "off"))
+    touch_x = max(TOUCH_X_MIN, min(TOUCH_X_MAX, int(state.get("touch_x", 480))))
+    touch_y = max(TOUCH_Y_MIN, min(TOUCH_Y_MAX, int(state.get("touch_y", 270))))
+    focus_mag = str(state.get("focus_mag", "1.0x"))
+    false_color_mode = str(state.get("false_color_mode", "off"))
+    ciz_res_mode = str(state.get("ciz_res_mode", "4K"))
+    ciz_scale = round(max(CIZ_SCALE_MIN, min(CIZ_SCALE_MAX, float(state.get("ciz_scale", 1.00)))), 2)
+    zoom_rocker_speed = max(ZOOM_ROCKER_SPEED_MIN, min(ZOOM_ROCKER_SPEED_MAX, int(state.get("zoom_rocker_speed", 4))))
+
+    pdaf = compute_imx510_pdaf_cell(touch_x, touch_y)
+    active_rect = compute_active_sensor_rect(aspect_marker=aspect_marker, desqueeze=desqueeze)
+
+    mag_factor = FOCUS_MAG_FACTORS.get(focus_mag, 1.0)
+    roi_w = max(1, int(round(960.0 / mag_factor)))
+    roi_h = max(1, int(round(540.0 / mag_factor)))
+    roi_x = max(0, min(960 - roi_w, touch_x - roi_w // 2))
+    roi_y = max(0, min(540 - roi_h, touch_y - roi_h // 2))
+
+    slog3_active = str(base_look or "").startswith("S-Log3")
+    slog3_zebra100_clip_warning = bool(slog3_active and str(zebra_mode or "Off") == "100%")
+    slog3_zebra100_warning_message = (
+        "Warning: S-Log3 clips at 94% IRE; Zebra 100% will miss highlight saturation! "
+        "(警告：S-Log3 在 94% IRE 即达传感器裁切点，斑马线设为 100% 将漏报高光过曝！)"
+        if slog3_zebra100_clip_warning
+        else None
+    )
+
+    ciz_max_scale = CIZ_RES_MAX_SCALE.get(ciz_res_mode, 1.50)
+    excl_reasons: list[str] = []
+    if str(wired_io_mode or "off") == "hdmi_raw16":
+        excl_reasons.append("hdmi_raw16")
+    if bool(sq_enabled) and int(sq_fps) >= 120:
+        excl_reasons.append("sq_120fps_plus")
+
+    ciz_clamped_by_exclusion = len(excl_reasons) > 0
+    if ciz_clamped_by_exclusion:
+        effective_ciz_scale = 1.00
+        ciz_clamped_by_res_limit = False
+        reason_parts_en: list[str] = []
+        reason_parts_zh: list[str] = []
+        if "hdmi_raw16" in excl_reasons:
+            reason_parts_en.append("HDMI 16-bit Linear RAW (4264x2408) requires 1:1 sensor readout")
+            reason_parts_zh.append("HDMI 16-bit RAW 输出需 1:1 传感器全幅读取")
+        if "sq_120fps_plus" in excl_reasons:
+            reason_parts_en.append(f"S&Q {int(sq_fps)}fps (>=120fps) disables Clear Image Zoom")
+            reason_parts_zh.append(f"S&Q {int(sq_fps)}fps (>=120fps) 高帧率模式自动禁用清晰影像缩放")
+        ciz_exclusion_reason = f"{'; '.join(reason_parts_en)} ({'；'.join(reason_parts_zh)})"
+    else:
+        ciz_clamped_by_res_limit = ciz_scale > ciz_max_scale + 1e-9
+        effective_ciz_scale = round(min(ciz_scale, ciz_max_scale), 2)
+        ciz_exclusion_reason = None
+
+    return {
+        "touch_af_mode": touch_af_mode,
+        "touch_x": touch_x,
+        "touch_y": touch_y,
+        "pdaf_col": pdaf["pdaf_col"],
+        "pdaf_row": pdaf["pdaf_row"],
+        "pdaf_index": pdaf["pdaf_index"],
+        "pdaf_grid": "33x19 (627-pt)",
+        "active_sensor_rect": active_rect,
+        "letterbox_ignored": bool(letterbox_ignored),
+        "focus_mag": focus_mag,
+        "focus_mag_factor": mag_factor,
+        "focus_mag_center": {"x": touch_x, "y": touch_y},
+        "focus_mag_roi": {"x": roi_x, "y": roi_y, "w": roi_w, "h": roi_h},
+        "clean_hdmi_unmagnified": True,
+        "false_color_mode": false_color_mode,
+        "slog3_ire_landmarks": {k: dict(v) for k, v in SLOG3_IRE_LANDMARKS.items()},
+        "el_zone_stops": [dict(s) for s in EL_ZONE_STOPS],
+        "slog3_zebra100_clip_warning": slog3_zebra100_clip_warning,
+        "slog3_zebra100_warning_message": slog3_zebra100_warning_message,
+        "ciz_res_mode": ciz_res_mode,
+        "ciz_max_scale": ciz_max_scale,
+        "ciz_scale": ciz_scale,
+        "effective_ciz_scale": effective_ciz_scale,
+        "ciz_clamped_by_res_limit": ciz_clamped_by_res_limit,
+        "ciz_clamped_by_exclusion": ciz_clamped_by_exclusion,
+        "ciz_exclusion_reasons": excl_reasons,
+        "ciz_exclusion_reason": ciz_exclusion_reason,
+        "zoom_rocker_speed": zoom_rocker_speed,
+    }
+
+
+def format_touch_focus_ciz_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 81 TOUCH_CIZ host<->guest protocol string."""
+    return (
+        f"TOUCH_CIZ af={state['touch_af_mode']}@({state['touch_x']},{state['touch_y']})"
+        f"[col={state['pdaf_col']},row={state['pdaf_row']},idx={state['pdaf_index']}] "
+        f"mag={state['focus_mag']}(hdmi=1.0x) fc={state['false_color_mode']} "
+        f"ciz={state['ciz_scale']:.2f}x(eff={state['effective_ciz_scale']:.2f}x,"
+        f"res={state['ciz_res_mode']},spd={state['zoom_rocker_speed']}) "
+        f"excl={1 if state['ciz_clamped_by_exclusion'] else 0} "
+        f"zeb100_warn={1 if state['slog3_zebra100_clip_warning'] else 0}"
+    )
+
+
+def validate_touch_focus_ciz_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+    *,
+    aspect_marker: str = "Off",
+    desqueeze: str = "1.0x",
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 81 Touch-AF, Focus Mag, False Color & CIZ updates."""
+    if not isinstance(body, dict):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "invalid_touch_focus_ciz",
+                "message": "touch_focus_ciz payload must be a JSON object",
+            },
+        )
+
+    cur = dict(TOUCH_FOCUS_CIZ_DEFAULTS)
+    if current_state:
+        cur.update(current_state)
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(TOUCH_FOCUS_CIZ_DEFAULTS)
+        cur.update(TOUCH_FOCUS_CIZ_DEFAULTS)
+
+    if "touch_af_mode" in body and body["touch_af_mode"] is not None:
+        raw_af = body["touch_af_mode"]
+        if isinstance(raw_af, bool) or not isinstance(raw_af, str):
+            return False, {}, {"ok": False, "error": "invalid_touch_af_mode", "message": f"Invalid touch_af_mode: {raw_af!r}"}
+        af_norm = _TOUCH_AF_ALIASES.get(raw_af.strip().lower())
+        if af_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_touch_af_mode",
+                    "message": f"Unsupported touch_af_mode: {raw_af!r}",
+                    "allowed": list(TOUCH_AF_MODES),
+                },
+            )
+        updates["touch_af_mode"] = af_norm
+
+    touch_coord_sent = False
+    if "touch_x" in body and body["touch_x"] is not None:
+        tx = _parse_strict_int(body["touch_x"])
+        if tx is None or tx < TOUCH_X_MIN or tx > TOUCH_X_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_touch_x",
+                    "message": f"touch_x must be an integer in [{TOUCH_X_MIN}, {TOUCH_X_MAX}], got {body['touch_x']!r}",
+                },
+            )
+        updates["touch_x"] = tx
+        touch_coord_sent = True
+
+    if "touch_y" in body and body["touch_y"] is not None:
+        ty = _parse_strict_int(body["touch_y"])
+        if ty is None or ty < TOUCH_Y_MIN or ty > TOUCH_Y_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_touch_y",
+                    "message": f"touch_y must be an integer in [{TOUCH_Y_MIN}, {TOUCH_Y_MAX}], got {body['touch_y']!r}",
+                },
+            )
+        updates["touch_y"] = ty
+        touch_coord_sent = True
+
+    if "focus_mag" in body and body["focus_mag"] is not None:
+        raw_mag = body["focus_mag"]
+        if isinstance(raw_mag, bool):
+            return False, {}, {"ok": False, "error": "invalid_focus_mag", "message": "focus_mag cannot be bool"}
+        if isinstance(raw_mag, (int, float)) and not math.isfinite(float(raw_mag)):
+            return False, {}, {"ok": False, "error": "invalid_focus_mag", "message": "focus_mag must be finite"}
+        mag_key = str(raw_mag).strip().lower()
+        mag_norm = _FOCUS_MAG_ALIASES.get(mag_key)
+        if mag_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_focus_mag",
+                    "message": f"Unsupported focus_mag: {raw_mag!r}",
+                    "allowed": list(FOCUS_MAG_MODES),
+                },
+            )
+        updates["focus_mag"] = mag_norm
+
+    if "false_color_mode" in body and body["false_color_mode"] is not None:
+        raw_fc = body["false_color_mode"]
+        if isinstance(raw_fc, bool) or not isinstance(raw_fc, str):
+            return False, {}, {"ok": False, "error": "invalid_false_color_mode", "message": f"Invalid false_color_mode: {raw_fc!r}"}
+        fc_norm = _FALSE_COLOR_ALIASES.get(raw_fc.strip().lower())
+        if fc_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_false_color_mode",
+                    "message": f"Unsupported false_color_mode: {raw_fc!r}",
+                    "allowed": list(FALSE_COLOR_MODES),
+                },
+            )
+        updates["false_color_mode"] = fc_norm
+
+    if "ciz_res_mode" in body and body["ciz_res_mode"] is not None:
+        raw_res = body["ciz_res_mode"]
+        if isinstance(raw_res, bool) or not isinstance(raw_res, str):
+            return False, {}, {"ok": False, "error": "invalid_ciz_res_mode", "message": f"Invalid ciz_res_mode: {raw_res!r}"}
+        res_norm = _CIZ_RES_ALIASES.get(raw_res.strip().lower())
+        if res_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ciz_res_mode",
+                    "message": f"Unsupported ciz_res_mode: {raw_res!r}",
+                    "allowed": list(CIZ_RES_MODES),
+                },
+            )
+        updates["ciz_res_mode"] = res_norm
+
+    if "ciz_scale" in body and body["ciz_scale"] is not None:
+        raw_ciz = body["ciz_scale"]
+        if isinstance(raw_ciz, bool):
+            return False, {}, {"ok": False, "error": "invalid_ciz_scale", "message": "ciz_scale cannot be bool"}
+        try:
+            f_ciz = float(raw_ciz)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_ciz_scale", "message": f"Invalid ciz_scale: {raw_ciz!r}"}
+        if not math.isfinite(f_ciz) or f_ciz < CIZ_SCALE_MIN - 1e-9 or f_ciz > CIZ_SCALE_MAX + 1e-9:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ciz_scale",
+                    "message": f"ciz_scale must be in [{CIZ_SCALE_MIN:.2f}, {CIZ_SCALE_MAX:.2f}], got {raw_ciz!r}",
+                },
+            )
+        updates["ciz_scale"] = round(max(CIZ_SCALE_MIN, min(CIZ_SCALE_MAX, f_ciz)), 2)
+
+    if "zoom_rocker_speed" in body and body["zoom_rocker_speed"] is not None:
+        spd = _parse_strict_int(body["zoom_rocker_speed"])
+        if spd is None or spd < ZOOM_ROCKER_SPEED_MIN or spd > ZOOM_ROCKER_SPEED_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_zoom_rocker_speed",
+                    "message": f"zoom_rocker_speed must be an integer in [{ZOOM_ROCKER_SPEED_MIN}, {ZOOM_ROCKER_SPEED_MAX}], got {body['zoom_rocker_speed']!r}",
+                },
+            )
+        updates["zoom_rocker_speed"] = spd
+
+    # Letterbox / Anamorphic matte bar awareness: ignore clicks outside active sensor area
+    letterbox_ignored = False
+    if touch_coord_sent and body.get("reset") is not True:
+        cand_x = int(updates.get("touch_x", cur.get("touch_x", 480)))
+        cand_y = int(updates.get("touch_y", cur.get("touch_y", 270)))
+        rect = compute_active_sensor_rect(aspect_marker=aspect_marker, desqueeze=desqueeze)
+        if cand_x < rect["x_min"] or cand_x > rect["x_max"] or cand_y < rect["y_min"] or cand_y > rect["y_max"]:
+            letterbox_ignored = True
+            updates.pop("touch_x", None)
+            updates.pop("touch_y", None)
+            if updates.get("touch_af_mode") in ("touch_focus", "touch_tracking"):
+                updates.pop("touch_af_mode", None)
+    updates["_letterbox_ignored"] = letterbox_ignored
+
+    return True, updates, None
+
+
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
     "fps": {
         "key": "fps",
@@ -3372,6 +3847,25 @@ class FX6LiveGpe0Session:
             "dual_slot_mode": self.dual_slot_mode,
             "proxy_mode": self.proxy_mode,
         }, sq_enabled=self.sq_enabled))
+        self.touch_af_mode = "off"
+        self.touch_x = 480
+        self.touch_y = 270
+        self.focus_mag = "1.0x"
+        self.false_color_mode = "off"
+        self.ciz_scale = 1.00
+        self.ciz_res_mode = "4K"
+        self.zoom_rocker_speed = 4
+        self.last_letterbox_ignored = False
+        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(compute_touch_focus_ciz_derived({
+            "touch_af_mode": self.touch_af_mode,
+            "touch_x": self.touch_x,
+            "touch_y": self.touch_y,
+            "focus_mag": self.focus_mag,
+            "false_color_mode": self.false_color_mode,
+            "ciz_scale": self.ciz_scale,
+            "ciz_res_mode": self.ciz_res_mode,
+            "zoom_rocker_speed": self.zoom_rocker_speed,
+        }))
         self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
@@ -3517,6 +4011,15 @@ class FX6LiveGpe0Session:
             self.clip_seq = 1
             self.dual_slot_mode = "simul"
             self.proxy_mode = "xavc_hs_1080p_16m"
+            self.touch_af_mode = "off"
+            self.touch_x = 480
+            self.touch_y = 270
+            self.focus_mag = "1.0x"
+            self.false_color_mode = "off"
+            self.ciz_scale = 1.00
+            self.ciz_res_mode = "4K"
+            self.zoom_rocker_speed = 4
+            self.last_letterbox_ignored = False
             self.last_scope_stats = None
             self.user_lut_slots = self._default_user_lut_slots()
             self.last_toast = ""
@@ -3900,11 +4403,62 @@ class FX6LiveGpe0Session:
         mb35 = 0x57424C4D  # 'WBLM'
         return struct.pack("<4I", mb32, mb33, mb34, mb35)
 
+    def _pack_phase81_mailbox_bytes(self) -> bytes:
+        """Pack Phase 81 guest control mailbox mb[36..39] (16 bytes) matching fx6_live_guest.c."""
+        tfc = self.get_touch_focus_ciz()
+        af_idx = TOUCH_AF_MODES.index(tfc["touch_af_mode"]) if tfc["touch_af_mode"] in TOUCH_AF_MODES else 0
+        tx = max(0, min(959, int(tfc["touch_x"])))
+        ty = max(0, min(539, int(tfc["touch_y"])))
+        p_idx = max(0, min(626, int(tfc["pdaf_index"])))
+        p_col = max(0, min(32, int(tfc["pdaf_col"])))
+        p_row = max(0, min(18, int(tfc["pdaf_row"])))
+        mag_idx = FOCUS_MAG_MODES.index(tfc["focus_mag"]) if tfc["focus_mag"] in FOCUS_MAG_MODES else 0
+        fc_idx = FALSE_COLOR_MODES.index(tfc["false_color_mode"]) if tfc["false_color_mode"] in FALSE_COLOR_MODES else 0
+        eff_ciz_x100 = max(100, min(200, int(round(float(tfc["effective_ciz_scale"]) * 100.0))))
+        req_ciz_x100 = max(100, min(200, int(round(float(tfc["ciz_scale"]) * 100.0))))
+        spd = max(1, min(8, int(tfc["zoom_rocker_speed"])))
+        res_fhd = 1 if tfc["ciz_res_mode"] == "FHD" else 0
+        excl_bit = 1 if tfc["ciz_clamped_by_exclusion"] else 0
+        res_clamp_bit = 1 if tfc["ciz_clamped_by_res_limit"] else 0
+        zeb_warn_bit = 1 if tfc["slog3_zebra100_clip_warning"] else 0
+        lb_bit = 1 if tfc["letterbox_ignored"] else 0
+
+        mb36 = (
+            (af_idx & 0x3)
+            | ((tx & 0x3FF) << 2)
+            | ((ty & 0x3FF) << 12)
+            | ((p_idx & 0x3FF) << 22)
+        )
+        mb37 = (
+            (p_col & 0x3F)
+            | ((p_row & 0x1F) << 6)
+            | ((mag_idx & 0x3) << 11)
+            | ((fc_idx & 0x3) << 13)
+            | (1 << 15)  # clean_hdmi_unmagnified = True
+            | ((eff_ciz_x100 & 0xFF) << 16)
+            | ((req_ciz_x100 & 0xFF) << 24)
+        )
+        mb38 = (
+            (spd & 0xF)
+            | ((res_fhd & 0x1) << 4)
+            | ((excl_bit & 0x1) << 5)
+            | ((res_clamp_bit & 0x1) << 6)
+            | ((zeb_warn_bit & 0x1) << 7)
+            | ((lb_bit & 0x1) << 8)
+            | (1 << 31)  # phase81_valid
+        )
+        mb39 = 0x54414643  # 'TAFC'
+        return struct.pack("<4I", mb36, mb37, mb38, mb39)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..35] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..39] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
-        raw = self._pack_full_mailbox_bytes() + self._pack_phase73_mailbox_bytes()
+        raw = (
+            self._pack_full_mailbox_bytes()
+            + self._pack_phase73_mailbox_bytes()
+            + self._pack_phase81_mailbox_bytes()
+        )
         with self.gdb_lock:
             for _ in range(2):
                 s: socket.socket | None = None
@@ -4513,6 +5067,7 @@ class FX6LiveGpe0Session:
                             self.base_fps = fps_map[new_idx]
                             self.sq_enabled = False
                         self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
                     elif key == "ei":
                         ei_map = [
                             ("800", 800),
@@ -4557,6 +5112,7 @@ class FX6LiveGpe0Session:
                         if 0 <= new_idx < len(lut_look_map):
                             self.base_look = lut_look_map[new_idx]
                             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+                            self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
                     elif key == "wb":
                         wb_cell_map = [
                             ("preset_5600k", 5600),
@@ -4675,6 +5231,7 @@ class FX6LiveGpe0Session:
             self.cell_vals[4] = cell_idx
             self.base_look = "User 3D LUT"
             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+            self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
             if self.page in (0, 3):
                 self.sel_box = 4
             self.last_toast = (
@@ -4715,6 +5272,8 @@ class FX6LiveGpe0Session:
                 self.peaking_mode = updates["peaking_mode"]
             if "desqueeze" in updates:
                 self.desqueeze = updates["desqueeze"]
+            self.last_letterbox_ignored = False
+            self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
             self.last_toast = (
                 f"Assist Tools: Marker={self.aspect_marker}, Zebra={self.zebra_mode}, "
                 f"Peaking={self.peaking_mode}, Desqueeze={self.desqueeze}"
@@ -4827,6 +5386,7 @@ class FX6LiveGpe0Session:
         self.p12_bk4_airplane_mode_locked = True
         self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
         self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -4952,6 +5512,7 @@ class FX6LiveGpe0Session:
                 self.cell_vals[4] = int(BASE_LOOK_NLE_TAGS[self.base_look]["cell_lut_idx"])
 
         self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
 
     def set_color_and_media(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -5015,6 +5576,108 @@ class FX6LiveGpe0Session:
             "cine_exposure": ce,
         }
 
+    def get_touch_focus_ciz(self) -> dict[str, Any]:
+        state = compute_touch_focus_ciz_derived(
+            {
+                "touch_af_mode": self.touch_af_mode,
+                "touch_x": self.touch_x,
+                "touch_y": self.touch_y,
+                "focus_mag": self.focus_mag,
+                "false_color_mode": self.false_color_mode,
+                "ciz_scale": self.ciz_scale,
+                "ciz_res_mode": self.ciz_res_mode,
+                "zoom_rocker_speed": self.zoom_rocker_speed,
+            },
+            aspect_marker=self.aspect_marker,
+            desqueeze=self.desqueeze,
+            zebra_mode=self.zebra_mode,
+            base_look=self.base_look,
+            wired_io_mode=self.wired_io_mode,
+            sq_enabled=self.sq_enabled,
+            sq_fps=self.sq_fps,
+            letterbox_ignored=self.last_letterbox_ignored,
+        )
+        state["touch_af_ciz_cmd"] = format_touch_focus_ciz_command(state)
+        return state
+
+    def _apply_touch_focus_ciz_updates_locked(self, updates: dict[str, Any]) -> None:
+        if "touch_af_mode" in updates:
+            self.touch_af_mode = str(updates["touch_af_mode"])
+        if "touch_x" in updates:
+            self.touch_x = int(updates["touch_x"])
+        if "touch_y" in updates:
+            self.touch_y = int(updates["touch_y"])
+        if "focus_mag" in updates:
+            self.focus_mag = str(updates["focus_mag"])
+        if "false_color_mode" in updates:
+            self.false_color_mode = str(updates["false_color_mode"])
+        if "ciz_scale" in updates:
+            self.ciz_scale = float(updates["ciz_scale"])
+        if "ciz_res_mode" in updates:
+            self.ciz_res_mode = str(updates["ciz_res_mode"])
+        if "zoom_rocker_speed" in updates:
+            self.zoom_rocker_speed = int(updates["zoom_rocker_speed"])
+        self.last_letterbox_ignored = bool(updates.get("_letterbox_ignored", False))
+        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+
+    def set_touch_focus_ciz(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "touch_af_mode": self.touch_af_mode,
+                "touch_x": self.touch_x,
+                "touch_y": self.touch_y,
+                "focus_mag": self.focus_mag,
+                "false_color_mode": self.false_color_mode,
+                "ciz_scale": self.ciz_scale,
+                "ciz_res_mode": self.ciz_res_mode,
+                "zoom_rocker_speed": self.zoom_rocker_speed,
+            }
+            ok, updates, err = validate_touch_focus_ciz_patch(
+                body,
+                current_state=cur,
+                aspect_marker=self.aspect_marker,
+                desqueeze=self.desqueeze,
+            )
+            if not ok:
+                return err or {"ok": False, "error": "invalid_touch_focus_ciz"}
+
+            self._apply_touch_focus_ciz_updates_locked(updates)
+            tfc = self.get_touch_focus_ciz()
+            if tfc["letterbox_ignored"]:
+                self.last_toast = (
+                    f"Touch-AF Letterbox Ignored ({self.aspect_marker}/{self.desqueeze}): "
+                    f"AF locked @ ({tfc['touch_x']},{tfc['touch_y']}) #{tfc['pdaf_index']}"
+                )
+            elif tfc["ciz_clamped_by_exclusion"]:
+                self.last_toast = (
+                    f"Touch-AF={tfc['touch_af_mode']}#{tfc['pdaf_index']} | Mag={tfc['focus_mag']} | "
+                    f"FC={tfc['false_color_mode']} | CIZ Clamped->1.00x ({tfc['ciz_exclusion_reason']})"
+                )
+            elif tfc["slog3_zebra100_clip_warning"]:
+                self.last_toast = (
+                    f"Touch-AF={tfc['touch_af_mode']}#{tfc['pdaf_index']} | FC={tfc['false_color_mode']} | "
+                    "WARN: S-Log3 clips@94% vs Zebra100%"
+                )
+            else:
+                self.last_toast = (
+                    f"Touch-AF={tfc['touch_af_mode']}@({tfc['touch_x']},{tfc['touch_y']}) "
+                    f"PDAF#{tfc['pdaf_index']}({tfc['pdaf_col']},{tfc['pdaf_row']}) | "
+                    f"Mag={tfc['focus_mag']} | FC={tfc['false_color_mode']} | "
+                    f"CIZ={tfc['effective_ciz_scale']:.2f}x ({tfc['ciz_res_mode']})"
+                )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "touch_focus_ciz": tfc,
+                "touch_af_ciz_cmd": tfc["touch_af_ciz_cmd"],
+                "letterbox_ignored": tfc["letterbox_ignored"],
+                "clean_hdmi_unmagnified": tfc["clean_hdmi_unmagnified"],
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
     def get_scope_stats(self, refresh: bool = False) -> dict[str, Any]:
         if self.is_running() and self.live_ready and not self.crashed and (refresh or len(self.last_raw_gpe0) < GPE0_BYTES):
             self._capture_live_gpe0_with_raw()
@@ -5058,6 +5721,7 @@ class FX6LiveGpe0Session:
             "assist_tools": self.get_assist_tools(),
             "cine_exposure": self.get_cine_exposure(),
             "color_and_media": self.get_color_and_media(),
+            "touch_focus_ciz": self.get_touch_focus_ciz(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -5290,6 +5954,30 @@ class FX6LiveGpe0Session:
             if not ok_cm:
                 return err_cm or {"ok": False, "error": "invalid_color_and_media"}
 
+        tfc_raw = payload.get("touch_focus_ciz")
+        new_tfc_updates: dict[str, Any] = {}
+        if tfc_raw is not None:
+            eff_aspect = new_assist_updates.get("aspect_marker", self.aspect_marker)
+            eff_desqueeze = new_assist_updates.get("desqueeze", self.desqueeze)
+            cur_tfc = {
+                "touch_af_mode": self.touch_af_mode,
+                "touch_x": self.touch_x,
+                "touch_y": self.touch_y,
+                "focus_mag": self.focus_mag,
+                "false_color_mode": self.false_color_mode,
+                "ciz_scale": self.ciz_scale,
+                "ciz_res_mode": self.ciz_res_mode,
+                "zoom_rocker_speed": self.zoom_rocker_speed,
+            }
+            ok_tfc, new_tfc_updates, err_tfc = validate_touch_focus_ciz_patch(
+                tfc_raw,
+                current_state=cur_tfc,
+                aspect_marker=eff_aspect,
+                desqueeze=eff_desqueeze,
+            )
+            if not ok_tfc:
+                return err_tfc or {"ok": False, "error": "invalid_touch_focus_ciz"}
+
         p12_clamped = (payload.get("p12_bk4_airplane_mode_locked") is False) or ce_p12_tamper
 
         with self.cmd_lock:
@@ -5389,6 +6077,10 @@ class FX6LiveGpe0Session:
 
             self.p12_bk4_airplane_mode_locked = True  # P12 BK4 Airplane-Mode shadow lock always enforced!
             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+            if new_tfc_updates:
+                self._apply_touch_focus_ciz_updates_locked(new_tfc_updates)
+            else:
+                self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
 
             if p4_rejected:
                 self.last_toast = (
@@ -5417,6 +6109,7 @@ class FX6LiveGpe0Session:
                 "assist_tools": self.get_assist_tools(),
                 "cine_exposure": self.get_cine_exposure(),
                 "color_and_media": self.get_color_and_media(),
+                "touch_focus_ciz": self.get_touch_focus_ciz(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -6101,6 +6794,7 @@ class FX6LiveGpe0Session:
             "assist_tools": self.get_assist_tools(),
             "cine_exposure": self.get_cine_exposure(),
             "color_and_media": self.get_color_and_media(),
+            "touch_focus_ciz": self.get_touch_focus_ciz(),
             "serial_tail": serial_tail,
         }
 
@@ -6486,6 +7180,7 @@ HTML_UI = """<!DOCTYPE html>
     <div class="card">
       <div class="screen-wrap" id="screen-wrap" onclick="onScreenClick(event)">
         <img id="gpe0-img" src="/api/frame.png" alt="FX6 Real GPE0 Framebuffer" />
+        <div id="p81-canvas-reticle" style="display:none;position:absolute;pointer-events:none;border:2px solid #22c55e;box-shadow:0 0 0 1px rgba(0,0,0,0.65);border-radius:3px;transform:translate(-50%,-50%);width:48px;height:36px;"></div>
         <div id="render-toast" class="render-toast">正在虚拟机内渲染 GPE0 帧...</div>
         <div id="boot-overlay" class="boot-overlay">
           正在等待 FX3 QEMU 虚拟机加载 FX6 内核与 appFw.so (约 42 秒)...
@@ -6758,6 +7453,92 @@ HTML_UI = """<!DOCTYPE html>
         <pre id="p73-xml-preview" style="margin:0;max-height:130px;overflow:auto;background:#07090c;border:1px solid #1f2937;border-radius:6px;padding:7px;font-family:'SF Mono',Menlo,monospace;font-size:10px;color:#a7f3d0;">Click "Refresh XML Preview" or "Download M01.XML" to inspect Sony NonRealTimeMeta v2.20...</pre>
       </div>
       <div id="p73-cmd-readout" style="font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">WB_MEDIA ...</div>
+    </div>
+
+    <div class="card" id="phase81-touchaf-ciz-card" style="margin-top:14px;border-color:#16a34a;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+        <h3 style="margin:0;">Phase 81 · 触控跟焦 627点 PDAF / S-Log3 伪色曝光 / 超解析变焦 CIZ (Touch-AF, S-Log3 False Color &amp; CIZ)</h3>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <button id="p81-click-toggle-btn" onclick="toggleClickCanvasToFocus()" style="padding:4px 9px;font-size:11px;background:#0f2b46;border-color:#22d3ee;color:#cffafe;">🎯 点击画面触控对焦: OFF (Click-Canvas-to-Focus)</button>
+          <span id="p81-pdaf-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#052e16;color:#86efac;border:1px solid #22c55e;">PDAF 33x19 #313 (16,9)</span>
+          <span id="p81-clean-hdmi-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#064e3b;color:#a7f3d0;border:1px solid #10b981;">HDMI Clean: 1.0x</span>
+        </div>
+      </div>
+      <div id="p81-error-banner" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#450a0a;border:1px solid #ef4444;color:#fecaca;font-size:11.5px;"></div>
+      <div id="p81-zebra100-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#451a03;border:1px solid #f59e0b;color:#fde68a;font-size:11px;"></div>
+      <div id="p81-ciz-excl-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#431407;border:1px solid #f97316;color:#fed7aa;font-size:11px;"></div>
+      <div id="p81-letterbox-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#3f2d06;border:1px solid #eab308;color:#fef08a;font-size:11px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Touch AF · 触控跟焦 (627-pt)</span><span id="p81-af-readout" style="color:#4ade80;font-family:'SF Mono',Menlo,monospace;">off</span></div>
+          <select id="p81-af-mode-select" onchange="setTouchFocusCiz({touch_af_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="off">Off (关闭)</option>
+            <option value="touch_focus">Touch Focus (单点触控对焦)</option>
+            <option value="touch_tracking">Real-time Tracking AF (实时追踪跟焦)</option>
+          </select>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:6px;">
+            <input id="p81-touch-x-input" type="number" min="0" max="959" value="480" title="touch_x [0..959]" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <input id="p81-touch-y-input" type="number" min="0" max="539" value="270" title="touch_y [0..539]" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase81TouchCoords()" style="flex:1;padding:4px 6px;font-size:11px;">Set XY</button>
+          </div>
+          <div id="p81-pdaf-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">col=16, row=9, idx=313</div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Focus Magnifier · 对焦放大</span><span id="p81-mag-readout" style="color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">1.0x</span></div>
+          <select id="p81-mag-select" onchange="setTouchFocusCiz({focus_mag: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="1.0x">1.0x (Full Frame)</option>
+            <option value="2.0x">2.0x (Preview Zoom)</option>
+            <option value="4.0x">4.0x (Critical Focus)</option>
+          </select>
+          <div id="p81-mag-roi-readout" style="font-size:10px;color:#94a3b8;line-height:1.4;font-family:'SF Mono',Menlo,monospace;">ROI: 960x540 @ (480,270)<br/>HDMI Clean Feed: 1.0x Unmagnified</div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>S-Log3 False Color / EL-Zone</span><span id="p81-fc-readout" style="color:#f472b6;font-family:'SF Mono',Menlo,monospace;">off</span></div>
+          <select id="p81-fc-select" onchange="setTouchFocusCiz({false_color_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="off">Off (关闭)</option>
+            <option value="slog3_ire">S-Log3 IRE False Color (伪色)</option>
+            <option value="el_zone">EL-Zone (EV Stops 色阶)</option>
+          </select>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;font-size:9.5px;font-family:'SF Mono',Menlo,monospace;">
+            <span style="padding:1px 5px;border-radius:4px;background:#7e22ce;color:#fff;">3.5% Clip</span>
+            <span style="padding:1px 5px;border-radius:4px;background:#16a34a;color:#fff;">41% Grey</span>
+            <span style="padding:1px 5px;border-radius:4px;background:#db2777;color:#fff;">52% Skin</span>
+            <span style="padding:1px 5px;border-radius:4px;background:#dc2626;color:#fff;">94% Clip</span>
+          </div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Clear Image Zoom (CIZ)</span><span id="p81-ciz-eff-readout" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">1.00x (4K)</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p81-ciz-res-select" onchange="setTouchFocusCiz({ciz_res_mode: this.value})" style="width:48%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="4K">4K (Max 1.50x)</option>
+              <option value="FHD">FHD (Max 2.00x)</option>
+            </select>
+            <select id="p81-rocker-speed-select" onchange="setTouchFocusCiz({zoom_rocker_speed: Number(this.value)})" title="Zoom Rocker Speed 1..8" style="width:52%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="1">Speed 1</option>
+              <option value="2">Speed 2</option>
+              <option value="3">Speed 3</option>
+              <option value="4">Speed 4</option>
+              <option value="5">Speed 5</option>
+              <option value="6">Speed 6</option>
+              <option value="7">Speed 7</option>
+              <option value="8">Speed 8</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <input id="p81-ciz-scale-input" type="number" min="1.00" max="2.00" step="0.05" value="1.00" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase81CizScale()" style="padding:4px 8px;font-size:11px;">Apply</button>
+          </div>
+        </div>
+      </div>
+      <div class="pill-row">
+        <button onclick="setTouchFocusCiz({touch_af_mode:'touch_tracking',touch_x:640,touch_y:260,focus_mag:'1.0x',false_color_mode:'slog3_ire',ciz_res_mode:'4K',ciz_scale:1.40,zoom_rocker_speed:5})" style="border-color:#22c55e;color:#bbf7d0;">Tracking (640,260) + S-Log3 FC + CIZ 1.40x</button>
+        <button onclick="setTouchFocusCiz({touch_af_mode:'touch_focus',touch_x:480,touch_y:270,focus_mag:'4.0x',false_color_mode:'el_zone',ciz_res_mode:'FHD',ciz_scale:1.80})" style="border-color:#f59e0b;">EL-Zone + Focus Mag x4.0 + FHD CIZ 1.80x</button>
+        <button onclick="setTouchFocusCiz({reset:true})">Reset Touch-AF / FC / CIZ</button>
+      </div>
+      <div id="p81-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#86efac;font-family:'SF Mono',Menlo,monospace;">TOUCH_CIZ ...</div>
     </div>
 
     <div class="card" style="margin-top:14px;">
@@ -7238,6 +8019,9 @@ async function updateUI(st, forceImg) {
   if (st.color_and_media) {
     syncColorAndMediaUI(st.color_and_media);
   }
+  if (st.touch_focus_ciz) {
+    syncTouchFocusCizUI(st.touch_focus_ciz);
+  }
 
   if (forceImg || st.live_ready) {
     document.getElementById('gpe0-img').src = '/api/frame.png?t=' + Date.now();
@@ -7498,11 +8282,23 @@ function sendKey(k) { sendPayload({key: k}); }
 function setPage(p) { sendPayload({page: p}); }
 function setCat(c)  { sendPayload({page: 1, menu_cat: c, menu_item: 0, menu_depth: 0}); }
 
+let clickCanvasToFocusEnabled = false;
+
 function onScreenClick(e) {
   const wrap = document.getElementById('screen-wrap');
   const rect = wrap.getBoundingClientRect();
   const x = ((e.clientX - rect.left) / rect.width) * 1024;
   const y = ((e.clientY - rect.top) / rect.height) * 540;
+
+  if (clickCanvasToFocusEnabled) {
+    const tx = Math.max(0, Math.min(959, Math.round(((e.clientX - rect.left) / rect.width) * 960)));
+    const ty = Math.max(0, Math.min(539, Math.round(((e.clientY - rect.top) / rect.height) * 540)));
+    const curAf = (currentStatus && currentStatus.touch_focus_ciz && currentStatus.touch_focus_ciz.touch_af_mode) || 'off';
+    const nextAf = (curAf === 'off') ? 'touch_tracking' : curAf;
+    setTouchFocusCiz({touch_af_mode: nextAf, touch_x: tx, touch_y: ty});
+    return;
+  }
+
   const page = currentStatus ? currentStatus.page : 0;
 
   // Top-left Menu button hotspot on FX6 screen
@@ -8174,6 +8970,163 @@ async function refreshScopeStats(forceRefresh) {
   } catch (e) {}
 }
 
+function toggleClickCanvasToFocus() {
+  clickCanvasToFocusEnabled = !clickCanvasToFocusEnabled;
+  const btn = document.getElementById('p81-click-toggle-btn');
+  const wrap = document.getElementById('screen-wrap');
+  if (btn) {
+    btn.textContent = clickCanvasToFocusEnabled
+      ? '🎯 点击画面触控对焦: ON (Click-Canvas-to-Focus)'
+      : '🎯 点击画面触控对焦: OFF (Click-Canvas-to-Focus)';
+    btn.style.background = clickCanvasToFocusEnabled ? '#052e16' : '#0f2b46';
+    btn.style.borderColor = clickCanvasToFocusEnabled ? '#22c55e' : '#22d3ee';
+  }
+  if (wrap) {
+    wrap.style.cursor = clickCanvasToFocusEnabled ? 'crosshair' : 'pointer';
+  }
+}
+
+function syncTouchFocusCizUI(tfc) {
+  if (!tfc) return;
+  const afEl = document.getElementById('p81-af-readout');
+  if (afEl) afEl.textContent = tfc.touch_af_mode || 'off';
+  const afSel = document.getElementById('p81-af-mode-select');
+  if (afSel && tfc.touch_af_mode && document.activeElement !== afSel) afSel.value = tfc.touch_af_mode;
+  const txIn = document.getElementById('p81-touch-x-input');
+  if (txIn && tfc.touch_x !== undefined && document.activeElement !== txIn) txIn.value = String(tfc.touch_x);
+  const tyIn = document.getElementById('p81-touch-y-input');
+  if (tyIn && tfc.touch_y !== undefined && document.activeElement !== tyIn) tyIn.value = String(tfc.touch_y);
+
+  const pdafBadge = document.getElementById('p81-pdaf-badge');
+  if (pdafBadge) pdafBadge.textContent = `PDAF 33x19 #${tfc.pdaf_index} (${tfc.pdaf_col},${tfc.pdaf_row})`;
+  const pdafRo = document.getElementById('p81-pdaf-readout');
+  if (pdafRo) pdafRo.textContent = `col=${tfc.pdaf_col}, row=${tfc.pdaf_row}, idx=${tfc.pdaf_index}`;
+
+  const magEl = document.getElementById('p81-mag-readout');
+  if (magEl) magEl.textContent = tfc.focus_mag || '1.0x';
+  const magSel = document.getElementById('p81-mag-select');
+  if (magSel && tfc.focus_mag && document.activeElement !== magSel) magSel.value = tfc.focus_mag;
+  const roi = tfc.focus_mag_roi || {w: 960, h: 540};
+  const roiRo = document.getElementById('p81-mag-roi-readout');
+  if (roiRo) {
+    roiRo.innerHTML = `ROI: ${roi.w}x${roi.h} @ (${tfc.touch_x},${tfc.touch_y})<br/>HDMI Clean Feed: 1.0x Unmagnified`;
+  }
+  const hdmiBadge = document.getElementById('p81-clean-hdmi-badge');
+  if (hdmiBadge) {
+    hdmiBadge.textContent = tfc.focus_mag && tfc.focus_mag !== '1.0x'
+      ? `Preview ${tfc.focus_mag} · HDMI Clean 1.0x`
+      : 'HDMI Clean: 1.0x';
+  }
+
+  const fcEl = document.getElementById('p81-fc-readout');
+  if (fcEl) fcEl.textContent = tfc.false_color_mode || 'off';
+  const fcSel = document.getElementById('p81-fc-select');
+  if (fcSel && tfc.false_color_mode && document.activeElement !== fcSel) fcSel.value = tfc.false_color_mode;
+
+  const cizEff = Number(tfc.effective_ciz_scale || 1.0).toFixed(2);
+  const cizEl = document.getElementById('p81-ciz-eff-readout');
+  if (cizEl) cizEl.textContent = `${cizEff}x (${tfc.ciz_res_mode || '4K'})`;
+  const resSel = document.getElementById('p81-ciz-res-select');
+  if (resSel && tfc.ciz_res_mode && document.activeElement !== resSel) resSel.value = tfc.ciz_res_mode;
+  const spdSel = document.getElementById('p81-rocker-speed-select');
+  if (spdSel && tfc.zoom_rocker_speed !== undefined && document.activeElement !== spdSel) {
+    spdSel.value = String(tfc.zoom_rocker_speed);
+  }
+  const cizIn = document.getElementById('p81-ciz-scale-input');
+  if (cizIn && tfc.ciz_scale !== undefined && document.activeElement !== cizIn) {
+    cizIn.value = Number(tfc.ciz_scale).toFixed(2);
+  }
+
+  const zebWarn = document.getElementById('p81-zebra100-warn');
+  if (zebWarn) {
+    if (tfc.slog3_zebra100_clip_warning) {
+      zebWarn.style.display = 'block';
+      zebWarn.textContent = tfc.slog3_zebra100_warning_message || 'Warning: S-Log3 clips at 94% IRE vs Zebra 100%';
+    } else {
+      zebWarn.style.display = 'none';
+    }
+  }
+  const exclWarn = document.getElementById('p81-ciz-excl-warn');
+  if (exclWarn) {
+    if (tfc.ciz_clamped_by_exclusion) {
+      exclWarn.style.display = 'block';
+      exclWarn.textContent = 'CIZ Auto-Clamped to 1.00x: ' + (tfc.ciz_exclusion_reason || 'Mutual Exclusion');
+    } else {
+      exclWarn.style.display = 'none';
+    }
+  }
+  const lbWarn = document.getElementById('p81-letterbox-warn');
+  if (lbWarn) {
+    if (tfc.letterbox_ignored) {
+      lbWarn.style.display = 'block';
+      lbWarn.textContent = 'Letterbox / Matte Bar Click Ignored: AF lock preserved inside active sensor area.';
+    } else {
+      lbWarn.style.display = 'none';
+    }
+  }
+
+  const reticle = document.getElementById('p81-canvas-reticle');
+  if (reticle) {
+    if (tfc.touch_af_mode && tfc.touch_af_mode !== 'off') {
+      reticle.style.display = 'block';
+      reticle.style.left = `${(Number(tfc.touch_x) / 960.0) * 100.0}%`;
+      reticle.style.top = `${(Number(tfc.touch_y) / 540.0) * 100.0}%`;
+      reticle.style.borderColor = tfc.touch_af_mode === 'touch_tracking' ? '#22c55e' : '#f8fafc';
+    } else {
+      reticle.style.display = 'none';
+    }
+  }
+
+  const cmdEl = document.getElementById('p81-cmd-readout');
+  if (cmdEl) cmdEl.textContent = tfc.touch_af_ciz_cmd || 'TOUCH_CIZ ...';
+}
+
+async function setTouchFocusCiz(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p81-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/touch_focus_ciz', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Invalid touch_focus_ciz parameter';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase81TouchCoords() {
+  const tx = Number((document.getElementById('p81-touch-x-input') || {}).value || 480);
+  const ty = Number((document.getElementById('p81-touch-y-input') || {}).value || 270);
+  const curAf = (document.getElementById('p81-af-mode-select') || {}).value || 'touch_tracking';
+  setTouchFocusCiz({
+    touch_af_mode: curAf === 'off' ? 'touch_tracking' : curAf,
+    touch_x: tx,
+    touch_y: ty
+  });
+}
+
+function applyPhase81CizScale() {
+  const sc = Number((document.getElementById('p81-ciz-scale-input') || {}).value || 1.00);
+  const res = (document.getElementById('p81-ciz-res-select') || {}).value || '4K';
+  const spd = Number((document.getElementById('p81-rocker-speed-select') || {}).value || 4);
+  setTouchFocusCiz({ciz_scale: sc, ciz_res_mode: res, zoom_rocker_speed: spd});
+}
+
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -8346,6 +9299,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/touch_focus_ciz":
+                    self._send_json({
+                        "ok": True,
+                        "touch_focus_ciz": session.get_touch_focus_ciz(),
+                        "specs": TOUCH_FOCUS_CIZ_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -8393,6 +9354,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/jump_page",
                     "/api/verify_multilang_diff",
                     "/api/assist_tools",
+                    "/api/touch_focus_ciz",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -8484,6 +9446,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/assist_tools":
                     res = session.set_assist_tools(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/touch_focus_ciz":
+                    res = session.set_touch_focus_ciz(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

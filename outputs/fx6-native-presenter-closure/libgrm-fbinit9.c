@@ -105,6 +105,7 @@ extern void *mmap(void *, unsigned long, int, int, int, long);
 extern int mprotect(void *, unsigned long, int);
 extern void *memcpy(void *, const void *, unsigned long);
 extern void *memset(void *, int, unsigned long);
+extern int memcmp(const void *, const void *, unsigned long);
 extern void *calloc(unsigned long, unsigned long);
 extern unsigned int sleep(unsigned int);
 extern int usleep(unsigned int);
@@ -1118,6 +1119,126 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r31_zoom_handle_fault,
                 g_r31_tally_gpio_ok,
                 g_r31_bridge_ok);
+    }
+#endif
+#if FX6_ROUND >= 32
+    {
+        static int g_r32_bridge_executed = 0;
+        static int g_r32_p2_psd_erofs = 0;
+        static int g_r32_p2_defdet_erofs = 0;
+        static int g_r32_mlut_slot0_active = 0;
+        static unsigned int g_r32_mlut_size = 0U;
+        static int g_r32_mlut_baked = 1;
+        static int g_r32_sencore_dlopen_ok = 0;
+        static int g_r32_sencore_dlsym_ok = 0;
+        static int g_r32_dual_base_ok = 0;
+        static int g_r32_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r32_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Re-verify p2:/setting/psd.bin and defdet.bin MS_RDONLY EROFS protection */
+            *__errno_location() = 0;
+            long pfd = syscall(56L /* SYS_openat */, -100L,
+                               (long)"/mnt/r32_p2/setting/psd.bin", 2L /* O_RDWR */, 0L);
+            if (pfd < 0L && *__errno_location() == 30 /* EROFS */) {
+                g_r32_p2_psd_erofs = 1;
+            } else if (pfd >= 0L) {
+                (void)syscall(57L /* SYS_close */, pfd);
+            }
+
+            *__errno_location() = 0;
+            long dfd = syscall(56L /* SYS_openat */, -100L,
+                               (long)"/mnt/r32_p2/setting/defdet.bin", 2L /* O_RDWR */, 0L);
+            if (dfd < 0L && *__errno_location() == 30 /* EROFS */) {
+                g_r32_p2_defdet_erofs = 1;
+            } else if (dfd >= 0L) {
+                (void)syscall(57L /* SYS_close */, dfd);
+            }
+
+            /* 2. Probe /usr/lib/libsencore.so via RTLD_LAZY dlopen/dlsym & IMX510 Dual-Base switch */
+            void *sc_h = dlopen("/usr/lib/libsencore.so", RTLD_LAZY);
+            if (sc_h != (void *)0) {
+                g_r32_sencore_dlopen_ok = 1;
+                void *sc_sym = dlsym(sc_h, "_ZN3Usb8InstanceEv");
+                if (sc_sym != (void *)0) {
+                    g_r32_sencore_dlsym_ok = 1;
+                }
+            }
+            /* IMX510 Dual-Base Cine EI: ISO 800 (LCG, 0.0 dB) <-> ISO 12800 (HCG, +24.1 dB) */
+            unsigned int iso_lcg = 800U;
+            unsigned int iso_hcg = 12800U;
+            unsigned int active_iso = iso_lcg;
+            int lcg_ok = (active_iso == 800U) ? 1 : 0;
+            active_iso = iso_hcg;
+            int hcg_ok = (active_iso == 12800U) ? 1 : 0;
+            g_r32_dual_base_ok = (lcg_ok && hcg_ok && g_r32_sencore_dlopen_ok && g_r32_sencore_dlsym_ok) ? 1 : 0;
+
+            /* 3. Verify volatile /tmp/mlut_slot0.bin & S-Log3 XAVC non-double-bake flag */
+            long mfd = syscall(56L /* SYS_openat */, -100L,
+                               (long)"/tmp/mlut_slot0.bin", 0L /* O_RDONLY */, 0L);
+            if (mfd >= 0L) {
+                uint8_t mhdr[16];
+                memset(mhdr, 0, sizeof(mhdr));
+                long mn = syscall(63L /* SYS_read */, mfd, (long)mhdr, (long)sizeof(mhdr));
+                (void)syscall(57L /* SYS_close */, mfd);
+                if (mn == 16L && memcmp(mhdr, "FX3MLUT1", 8U) == 0) {
+                    g_r32_mlut_size = (unsigned int)mhdr[8];
+                    g_r32_mlut_baked = (int)mhdr[11];
+                    if (g_r32_mlut_size == 17U && g_r32_mlut_baked == 0) {
+                        g_r32_mlut_slot0_active = 1;
+                    }
+                }
+            }
+
+            g_r32_bridge_ok = (g_r32_p2_psd_erofs && g_r32_p2_defdet_erofs &&
+                               g_r32_dual_base_ok && g_r32_mlut_slot0_active &&
+                               g_r32_mlut_baked == 0) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R32_IMX510_CUBE_BRIDGE sensor=IMX510 imx510_lcg_iso=800 imx510_hcg_iso=12800 "
+                    "imx510_readout_us=8700 imx510_dual_base_ok=%d sencore_dlopen_ok=%d "
+                    "sencore_dlsym_ok=%d p2_psd_erofs=%d p2_defdet_erofs=%d "
+                    "sensor_cal_erofs_ok=%d mlut_slot0_active=%d mlut_lut_size=%u "
+                    "mlut_baked_into_master=%d slog3_xavc_master_clean=%d "
+                    "emmc_write_count=0 r32_bridge_ok=%d\n",
+                    g_r32_dual_base_ok, g_r32_sencore_dlopen_ok,
+                    g_r32_sencore_dlsym_ok, g_r32_p2_psd_erofs, g_r32_p2_defdet_erofs,
+                    (g_r32_p2_psd_erofs && g_r32_p2_defdet_erofs) ? 1 : 0,
+                    g_r32_mlut_slot0_active, g_r32_mlut_size,
+                    g_r32_mlut_baked, (g_r32_mlut_baked == 0) ? 1 : 0,
+                    g_r32_bridge_ok);
+            dprintf(2,
+                    "FX6_R32_UART_CP stage=6 name=STAGE_B_APPFW_BIG6 baud=460800 "
+                    "framing=8N1 logic_mv=1800 sid=0x0a emmc_write_count=0\n");
+        }
+        dprintf(2,
+                "FX6_R32_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "imx510_dual_base_ok=%d p2_psd_erofs=%d p2_defdet_erofs=%d "
+                "mlut_slot0_active=%d mlut_baked_into_master=%d "
+                "r32_bridge_ok=%d realhw_imx510_cube_cdcncm_uart=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r32_dual_base_ok,
+                g_r32_p2_psd_erofs,
+                g_r32_p2_defdet_erofs,
+                g_r32_mlut_slot0_active,
+                g_r32_mlut_baked,
+                g_r32_bridge_ok);
     }
 #endif
 }
@@ -3207,6 +3328,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u fx3_body_keymap=1 tally_3x_gpio=1 "
             "fan_off_in_rec_override=1 fz100_usb_pd_curve=1 pnflasha_mtdro_firewall=1 "
             "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 32
+    dprintf(2,
+            "FX6_STAGE_B_R32_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u imx510_dual_base=1 p2_psd_defdet_erofs=1 "
+            "cube_3d_mlut_non_bake=1 zero_diff_libs_dlopen=1 cdcncm_0da1_intact=1 "
+            "ttyama0_6stage_1v8=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

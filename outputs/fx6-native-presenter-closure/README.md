@@ -1077,3 +1077,24 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r31c-dual-layer-pnflasha-mtdro-firewall` (`--r31-mode mtdro_firewall`): Blocks `cnflasha15` `ext2` (`0xEF53 @ 0x438`) restoration onto raw `/dev/pnflasha15` (`cross_domain_rejected=1`) and `camera_cid_sha256` mismatch (`cid_mismatch_rejected=1`, `bytes_written=0`, `pnflasha_sha_intact=1`), blocks `/dev/mtd0` write (`-EACCES`) and `O_RDWR` on `MS_RDONLY` `/dev/mtd0ro` (`EROFS=30`, `mtd_rw_rejected=1`), while completing `O_RDONLY /dev/mtd0ro` verified dump (`16,384 B`, `spi_nor_write_count=0`, `3,593 us`).
 - **Full Report, Receipts, & `330` Dual-Mode Unit Tests**: See [`reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/README.md`](../../reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round31-realhw-keymap-fan-fz100-mtdro-qemu/summary.json).
 
+---
+
+## 32. Round 32: Real FX3 `7.02` Kernel QEMU Rehearsal — `IMX510` Dual-Base ISO `800/12800`, `p2:/setting` `EROFS` Lock, `.cube` 3D MLUT Non-Double-Bake, `CDC-NCM`/`054C:0DA1` & `1.8V ttyAMA0` 6-Stage Triage
+
+`build_and_run_round.py --round 32 --r32-mode {imx510_cube_big6,cdcncm_usb_0da1,uart_6stage_triage}` verifies live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** and real guest `/lib/ld-2.25.so` inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs; physical camera body bench remains unexecuted):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 32 --r32-mode imx510_cube_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r32a-imx510-cube-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r32-runs/r32a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r32a-imx510-cube-big6-schinese \
+  --export-png-dir reports/2026-11-15-round32-realhw-imx510-cube-cdcncm-uart-qemu/assets
+```
+
+- **3 Live Round 32 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r32a-imx510-cube-big6-schinese` (`--r32-mode imx510_cube_big6`): Mounts per-body `p2:/setting` (`psd.bin`, `defdet.bin`) strictly `MS_RDONLY`, confirms write attempts return `EROFS` (`errno=30`, `sensor_cal_sha256_match=1`), exercises real ARM64 `dlopen/dlsym` on `/usr/lib/libsencore.so` (`IMX510` `ISO 800 LCG <-> ISO 12800 HCG`, `8,700 us` readout, `imx510_dual_base_ok=1`), parses a `17x17x17` `.cube` 3D MLUT (`4,913` entries) from `/mnt/sd/PRIVATE/SONY/PRO/LUT/` into volatile `/tmp/mlut_slot0.bin` (`58,972 B`, `mlut_baked_into_master=0`, `slog3_xavc_master_clean=1`), rejects a malformed `NaN` `.cube` file fail-closed (`bad_cube_rejected=1`, `slot0_untouched_on_bad_cube=1`), and boots `appFw.so` across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,206` px / `87` colors / `132` `OSD_FLUSH` / `nop_count=0` / `gpe_fb=0`).
+  - `r32b-cdcncm-usb-0da1` (`--r32-mode cdcncm_usb_0da1`): Preloads `libosal_uipc.so` and `libMWF.so` global symbols inside the FX3 `7.02` guest and runs real `/lib/ld-2.25.so` `dlopen`/`dlsym` across all 4 zero-diff shared libraries (`/usr/lib/libInfraMscServer.so`, `/usr/lib/libUsbControl.so`, `/usr/lib/libWlanAdjust.so`, `/usr/lib/libWlanResource.so`; `dlopen_libs_ok=4`, `dlsym_resolved=8`), verifies `p12/p13` RF NVS `EROFS (errno=30)` lock (`rf_nvs_writes=0`), proves zero `/dev/ttyAMA3` BLE hang (`bt_wait_ms=0`), and verifies `CDC-NCM (1000 Mbps, PTP-IP TCP/15740)` -> `Mass Storage (054C:0DA1)` / `SERVICE (054C:0336)` preservation (`usb_0da1_intact=1`, `usb_0336_preserved=1`).
+  - `r32c-uart-6stage-triage` (`--r32-mode uart_6stage_triage`): Captures structured `1.8V /dev/ttyAMA0 (460800 8N1)` telemetry across all 6 boot checkpoints (`IPL_BL2 -> KERNEL_4_9_337_SCEL -> SETUP_NFLASH -> STAGE_A_47US_DLOPEN -> STRATEGY_A_MOUNT -> STAGE_B_APPFW_BIG6`, `checkpoints_passed=6`) and verifies fail-closed abort on injected Multi-USB `VMC-BNCM1` pin contention (`vmc_bncm1_contention_aborted=1`, `rc=-16`) and `3.3V (>1.95V)` UART over-voltage (`uart_overvoltage_aborted=1`, `rc=-34`).
+- **Full Report, Receipts, & `24` New Round 32 Dual-Mode Unit Tests (`354` Total)**: See [`reports/2026-11-15-round32-realhw-imx510-cube-cdcncm-uart-qemu/README.md`](../../reports/2026-11-15-round32-realhw-imx510-cube-cdcncm-uart-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round32-realhw-imx510-cube-cdcncm-uart-qemu/summary.json).

@@ -631,4 +631,27 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r13d-4lang-6pair-matrix-closure`: Proves all 6 language pairs (`EN`/`ZH-CN`/`ZH-TW`/`JA`) have strictly positive pixel deltas on both `Big6 Home` (`88..11,961` px) and `Full Menu` (`31,822..137,817` px) alongside verified `UXEngine::ResourceManager::switchBank` bank mappings (`en=0/4/4`, `schinese=23/19/19`, `tchinese=27/22/22`, `japanese=1/12/12`).
 - **Full Report, Receipts, & `>=50` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/README.md`](../../reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/summary.json).
 
+---
+
+## 14. Round 14: Real FX3 `7.02` Kernel `Status Check` (`sid=0x2f`) Japanese / Traditional Chinese / English Closure & Complete `18/18` (`3 Surfaces x 4 Languages`) Matrix
+
+`build_and_run_round.py --round 14 --lang {en,english,schinese,tchinese,japanese}` completes the 4-language `Status Check` (`34procam_touch_status_main_presenter`, `sid=0x2f`) matrix on the real FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R14_VERIFY_PASS`, `FX6_STAGE_B_R14_BRIDGE`, and `FX6_R14_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 14 --lang japanese --initial-setting-done 1 --run-id r14a-status-check-japanese --duration 76 \
+  --run-dir /private/tmp/fx6-r14-runs/r14a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r14a-status-check-japanese \
+  --export-png-dir reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/assets
+```
+
+- **3 Live Round 14 `Status Check` (`sid=0x2f`) QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`)**:
+  - `r14a-status-check-japanese`: `INFRA_STATUS_CHECK` (`0x7052`) -> `34procam_touch_status_main_presenter` (`sid=0x2f`, `japanese`, `0x02cf019c=0x01`, `switchBank(ns=4/1/2 = 1/12/12)`, `437,883` px / `85` colors / `237` `0xffffaa00` amber px, `8,127` icon blits, `16,741` glyph blits, `55` `LDEC103` ioctls).
+  - `r14b-status-check-tchinese`: `INFRA_STATUS_CHECK` (`0x7052`) -> `34procam_touch_status_main_presenter` (`sid=0x2f`, `tchinese`, `0x02cf019c=0x18`, `switchBank(ns=4/1/2 = 27/22/22)`, `437,883` px / `85` colors / `237` `0xffffaa00` amber px, `8,252` icon blits, `16,650` glyph blits, `56` `LDEC103` ioctls).
+  - `r14c-status-check-english`: `INFRA_STATUS_CHECK` (`0x7052`) -> `34procam_touch_status_main_presenter` (`sid=0x2f`, `english`, `0x02cf019c=0x00`, `switchBank(ns=4/1/2 = 0/4/4)`, `437,883` px / `83` colors / `272` `0xffffaa00` amber px, `8,176` icon blits, `15,324` glyph blits, `55` `LDEC103` ioctls).
+- **Complete `18/18` (`3 Surfaces x 6 Language Pairs`) Matrix Closure (`r14d`)**: Combining Round 10–13 (`Big6 Home` `sid=0x0a`, `3-Layer Full Menu` `sid=0x10..0x11`, `ZH-CN` `r13a` `Status Check`) with `r14a..r14c` proves all 6 language pairs (`EN`/`ZH-CN`/`ZH-TW`/`JA`) have strictly positive pixel deltas across all 3 core FX6 surfaces (`Big6 Home`: `88..11,961` px; `Full Menu`: `31,822..137,817` px; `Status Check`: `22,055..54,998` px).
+- **Full Report, Receipts, & `60+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/README.md`](../../reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/README.md) and [`summary.json`](../../reports/2026-11-14-round14-fx6-on-fx3-statuscheck-4lang-matrix/summary.json).
+
+
 

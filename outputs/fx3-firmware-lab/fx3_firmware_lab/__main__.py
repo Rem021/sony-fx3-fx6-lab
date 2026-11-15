@@ -42,6 +42,10 @@ from .interval_cache_and_ftp_auditor import (
     analyze_interval_cache_and_ftp,
     interval_cache_and_ftp_report_to_dict,
 )
+from .lut3d_cube_tetrahedral_and_sdi_hdmi_auditor import (
+    analyze_lut3d_cube_tetrahedral_and_sdi_hdmi,
+    lut3d_cube_tetrahedral_and_sdi_hdmi_report_to_dict,
+)
 from .metadata_gyro_catalyst_and_anamorphic_auditor import (
     analyze_metadata_gyro_catalyst_and_anamorphic,
     metadata_gyro_catalyst_and_anamorphic_report_to_dict,
@@ -79,7 +83,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all eighteen clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all nineteen clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -126,6 +130,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     interval_cache_ftp = interval_cache_and_ftp_report_to_dict(
         analyze_interval_cache_and_ftp(clean_room=clean_room)
     )
+    lut3d_sdi_hdmi = lut3d_cube_tetrahedral_and_sdi_hdmi_report_to_dict(
+        analyze_lut3d_cube_tetrahedral_and_sdi_hdmi(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -146,6 +153,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and playback_shotmark_ae.get("all_checks_passed")
         and gyroflow_anamorphic_ibis.get("all_checks_passed")
         and interval_cache_ftp.get("all_checks_passed")
+        and lut3d_sdi_hdmi.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -171,17 +179,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "playback_shotmark_and_ae_audit": playback_shotmark_ae,
         "metadata_gyro_catalyst_and_anamorphic_audit": gyroflow_anamorphic_ibis,
         "interval_cache_and_ftp_audit": interval_cache_ftp,
+        "lut3d_cube_tetrahedral_and_sdi_hdmi_audit": lut3d_sdi_hdmi,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, and Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12 auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, and User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 18 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 19 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -290,6 +299,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_icf.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_icf.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_lut3d = sub.add_parser(
+        "audit-lut3d-sdi-hdmi",
+        help="Run Phase 98 User 3D LUT (.cube 17^3/33^3/65^3) Domain/NaN Sanitizer & Tetrahedral vs Trilinear CXD90058 Quantization, S-Log3 HDMI AVI InfoFrame Guard, and HDMI->12G-SDI REC-Trigger Parity audit",
+    )
+    p_lut3d.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_lut3d.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -357,6 +373,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-interval-cache-ftp":
         payload = interval_cache_and_ftp_report_to_dict(
             analyze_interval_cache_and_ftp(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-lut3d-sdi-hdmi":
+        payload = lut3d_cube_tetrahedral_and_sdi_hdmi_report_to_dict(
+            analyze_lut3d_cube_tetrahedral_and_sdi_hdmi(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

@@ -86,6 +86,7 @@ import realhw_nouvc_dcc1_lut_path_cineei_coemulator as p194  # noqa: E402
 import realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator as p222  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
 import realhw_recover_imagedb_monitor_flip_af_sens_coemulator as p239  # noqa: E402
+import realhw_shoe_audio_wind_saveload_c3_coemulator as p244  # noqa: E402
 import realhw_silent_autopixelmap_marker_flexexp_coemulator as p236  # noqa: E402
 import realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator as p232  # noqa: E402
 import realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator as p178  # noqa: E402
@@ -181,6 +182,8 @@ class CoEmulationConfig:
     include_stage44: bool = True
     include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil: bool = True
     include_stage45: bool = True
+    include_phase244_realhw_shoe_audio_wind_saveload_c3_hil: bool = True
+    include_stage46: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2798,6 +2801,80 @@ def run_stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil(
     }
 
 
+def run_stage46_realhw_shoe_audio_wind_saveload_c3_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 46 (Phase 244, 46/46 Milestone): Real-Hardware ILME-FX3 Wave-36 Shoe Audio Set. 48kHz/24bit 4ch Meter Expansion vs 3.5mm/ANALOG/S&Q Lockouts, Wind Noise Reduct. Built-In Mic Exclusivity & Indoor Guard, and Save/Load Settings CAMSET01..10.DAT / C3 Portal Excluded-Items Firewall & Slot-1 Tier-0 Vault Guard HIL."""
+    config.validate()
+    rep = p244.run_phase244_realhw_shoe_audio_wind_saveload_c3_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage46_realhw_shoe_audio_wind_saveload_c3_hil",
+        "schema": rep["schema"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "shoe_audio_4ch_disqualification_bypass_events": red[
+            "shoe_audio_4ch_disqualification_bypass_events"
+        ],
+        "external_mic_wind_reduct_applied_frames": red[
+            "external_mic_wind_reduct_applied_frames"
+        ],
+        "excluded_secret_or_calibration_leak_events": red[
+            "excluded_secret_or_calibration_leak_events"
+        ],
+        "tier0_slot1_unverified_camset_save_events": red[
+            "tier0_slot1_unverified_camset_save_events"
+        ],
+        "cross_model_fx6_camset_load_events": red["cross_model_fx6_camset_load_events"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_shoe_audio_4ch_and_3lockouts_hil": rep[
+            "pillar_a_shoe_audio_4ch_and_3lockouts_hil"
+        ],
+        "pillar_b_wind_noise_reduct_builtin_only_hil": rep[
+            "pillar_b_wind_noise_reduct_builtin_only_hil"
+        ],
+        "pillar_c_d_saveload_camset_c3_firewall_and_redlines": rep[
+            "pillar_c_d_saveload_camset_c3_firewall_and_redlines"
+        ],
+        "phase244_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2808,7 +2885,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 45-stage (Phase 33..242, 45/45 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 46-stage (Phase 33..244, 46/46 Milestone) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -3010,6 +3087,14 @@ def run_fx3_vm_coemulation_suite(
         if (
             cfg.include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil
             and cfg.include_stage45
+        )
+        else None
+    )
+    stage46: Optional[Dict[str, object]] = (
+        run_stage46_realhw_shoe_audio_wind_saveload_c3_hil(cfg, env=env)
+        if (
+            cfg.include_phase244_realhw_shoe_audio_wind_saveload_c3_hil
+            and cfg.include_stage46
         )
         else None
     )
@@ -3981,6 +4066,43 @@ def run_fx3_vm_coemulation_suite(
         and stage45["appfw_crashes"] == 0
         and stage45["raw_firmware_bytes_leaked"] == 0
     )
+    stage46_ok = True if stage46 is None else (
+        bool(stage46["all_checks_passed"])
+        and stage46["nop_count"] == 0
+        and stage46["guest_code_modification_bytes"] == 0
+        and stage46["cp_mutation_bytes"] == 0
+        and stage46["wbi_mutation_bytes"] == 0
+        and stage46["calibration_mutation_bytes"] == 0
+        and stage46["cnflasha_mutation_bytes"] == 0
+        and bool(stage46["cnflasha_userspace_write_blocked"])
+        and stage46["nvram_persistent_writes"] == 0
+        and stage46["bk4_persistent_nvram_writes"] == 0
+        and stage46["physical_device_writes"] == 0
+        and (not stage46["persistent_emmc_writes_authorized"])
+        and (not stage46["hardware_live_attachment_authorized"])
+        and (not stage46["overall_ready_for_hardware_attach"])
+        and (not stage46["isp_write_authorized"])
+        and stage46["emmc_nflasha_write_count"] == 0
+        and stage46["emmc_mutation_bytes"] == 0
+        and (not stage46["spi_nor_write_authorized"])
+        and stage46["spi_nor_mutation_bytes"] == 0
+        and (not stage46["el3_payload_transmit_authorized"])
+        and stage46["physical_usb_packets_emitted"] == 0
+        and stage46["otp_fuse_touches"] == 0
+        and stage46["rpmb_counter_increments"] == 0
+        and stage46["shoe_audio_4ch_disqualification_bypass_events"] == 0
+        and stage46["external_mic_wind_reduct_applied_frames"] == 0
+        and stage46["excluded_secret_or_calibration_leak_events"] == 0
+        and stage46["tier0_slot1_unverified_camset_save_events"] == 0
+        and stage46["cross_model_fx6_camset_load_events"] == 0
+        and stage46["rsv_orphan_count"] == 0
+        and stage46["null_gpio_derefs"] == 0
+        and stage46["mailbox_stalls"] == 0
+        and stage46["stock_cp_fault_count"] == 0
+        and stage46["wf12_00342260_hits"] == 0
+        and stage46["appfw_crashes"] == 0
+        and stage46["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -4029,6 +4151,7 @@ def run_fx3_vm_coemulation_suite(
         and stage43_ok
         and stage44_ok
         and stage45_ok
+        and stage46_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -4100,6 +4223,14 @@ def run_fx3_vm_coemulation_suite(
             "include_stage45": (
                 cfg.include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil
                 and cfg.include_stage45
+            ),
+            "include_phase244_realhw_shoe_audio_wind_saveload_c3_hil": (
+                cfg.include_phase244_realhw_shoe_audio_wind_saveload_c3_hil
+                and cfg.include_stage46
+            ),
+            "include_stage46": (
+                cfg.include_phase244_realhw_shoe_audio_wind_saveload_c3_hil
+                and cfg.include_stage46
             ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
@@ -4209,6 +4340,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil"] = stage44
     if stage45 is not None:
         core_payload["stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil"] = stage45
+    if stage46 is not None:
+        core_payload["stage46_realhw_shoe_audio_wind_saveload_c3_hil"] = stage46
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -4220,7 +4353,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 (45/45 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 (46/46 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -4465,6 +4598,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 45 (Phase 242 45/45 Milestone Real-Hardware ILME-FX3 Wave-35 Emphasized REC Display & Grid Line HDMI Info Routing vs Forced Off(HDMI Only)/RAW Clean-Feed Lock, Touch Operation 4-Item Reset Survival & Bench Tap Guard, and Monitor Brightness Manual (-2..+2) vs Sunny Weather Indoor/NP-FZ100 Power Guard HIL)",
     )
     parser.add_argument(
+        "--include-stage46",
+        dest="include_stage46",
+        action="store_true",
+        default=True,
+        help="Include Stage 46 (Phase 244 46/46 Milestone Real-Hardware ILME-FX3 Wave-36 Shoe Audio Set. 48kHz/24bit 4ch Meter Expansion vs 3.5mm/ANALOG/S&Q Lockouts, Wind Noise Reduct. Built-In Mic Exclusivity & Indoor Guard, and Save/Load Settings CAMSET01..10.DAT / C3 Portal Excluded-Items Firewall & Slot-1 Tier-0 Vault Guard HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage46",
+        "--no-include-stage46",
+        dest="skip_stage46",
+        action="store_true",
+        help="Skip optional Stage 46 (alias for --skip-phase244)",
+    )
+    parser.add_argument(
+        "--skip-phase244",
+        action="store_true",
+        help="Skip optional Stage 46 (Phase 244 46/46 Milestone Real-Hardware ILME-FX3 Wave-36 Shoe Audio Set. 48kHz/24bit 4ch Meter Expansion vs 3.5mm/ANALOG/S&Q Lockouts, Wind Noise Reduct. Built-In Mic Exclusivity & Indoor Guard, and Save/Load Settings CAMSET01..10.DAT / C3 Portal Excluded-Items Firewall & Slot-1 Tier-0 Vault Guard HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -4526,6 +4678,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     enable_stage44 = bool(args.include_stage44) and (not args.skip_phase239) and (not args.skip_stage44)
     enable_stage45 = bool(args.include_stage45) and (not args.skip_phase242) and (not args.skip_stage45)
+    enable_stage46 = bool(args.include_stage46) and (not args.skip_phase244) and (not args.skip_stage46)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -4576,6 +4729,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_stage44=enable_stage44,
         include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil=enable_stage45,
         include_stage45=enable_stage45,
+        include_phase244_realhw_shoe_audio_wind_saveload_c3_hil=enable_stage46,
+        include_stage46=enable_stage46,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -4630,6 +4785,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s43 = rep.get("stage43_realhw_silent_autopixelmap_marker_flexexp_hil")
         s44 = rep.get("stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil")
         s45 = rep.get("stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil")
+        s46 = rep.get("stage46_realhw_shoe_audio_wind_saveload_c3_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -5003,6 +5159,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s45, dict)
             else ""
         )
+        s46_str = (
+            f" | realhw_shoe_audio_wind_saveload_c3_hil={s46['source_mode']}("
+            f"shoe_4ch={len(s46['pillar_a_shoe_audio_4ch_and_3lockouts_hil']['all_3_shoe_audio_modes'])}m,"
+            f"shoe_byp={s46['shoe_audio_4ch_disqualification_bypass_events']},"
+            f"wind_ext={s46['external_mic_wind_reduct_applied_frames']},"
+            f"excl_leak={s46['excluded_secret_or_calibration_leak_events']},"
+            f"t0_save={s46['tier0_slot1_unverified_camset_save_events']},"
+            f"emmc_wr={s46['emmc_nflasha_write_count']})"
+            if isinstance(s46, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -5011,7 +5178,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

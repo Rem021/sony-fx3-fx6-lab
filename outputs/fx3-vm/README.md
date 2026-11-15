@@ -1504,3 +1504,35 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 244：Stage 46（`46/46` 里程碑）真实硬件主线 — Wave-36 `[Shoe Audio Set.]` `48kHz/24bit 4ch` 电平表扩展 vs `3.5mm` / `ANALOG` / `S&Q` 三重锁止、`[Wind Noise Reduct.]` 机身内置麦克风独占与室内低切护栏、以及 `[Save/Load Settings]` `CAMSET01..10.DAT` / `C3 Portal` 隐私校准排除防火墙与 Slot-1 Tier-0 写保护 HIL 协同仿真器
+
+[`realhw_shoe_audio_wind_saveload_c3_coemulator.py`](realhw_shoe_audio_wind_saveload_c3_coemulator.py) 作为 **Stage 46（`46/46` 里程碑，Schema `realhw_shoe_audio_wind_saveload_c3_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase244_realhw_shoe_audio_wind_saveload_c3_hil=True` / `include_stage46=True`，支持显式 `--include-stage46` 以及通过 `--skip-phase244` / `--skip-stage46` / `--no-include-stage46` 跳过；本地只读供体 46 阶段全板协同仿真 `< 2.8s`、洁净室模式 `< 0.80s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`shoe_audio_4ch_disqualification_bypass_events == 0`、`external_mic_wind_reduct_applied_frames == 0`、`excluded_secret_or_calibration_leak_events == 0`、`tier0_slot1_unverified_camset_save_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **14 份真实供体**：`libSaveLoadSettings.so`（`18,760 B`：`Backup_get_datasize` / `Backup_read` / `infra_saveLoadSettings_init`）、`libIMDB.so`（`71,536 B`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`）、`string_english_f.uxc`（`373,820 B`：证实 `Shoe Audio Set.` / `48kHz` / `16bit` / `24bit` / `2ch` / `4ch` / `Audio Recording` / `Audio Level Display` / `Wind Noise Reduct.` / `S&Q` / `Save/Load Settings` / `Cloud(Private)` / `Cloud(Share)` / `IPTC Information` / `Copyright Info` / `Write Copyright Info` / `Custom` / `White Balance` / `Face Memory` / `FTP Transfer Func.` / `Streaming` / `Wi-Fi` / `Slot 1` / `Slot 2` / `Camera Settings Reset` / `Initialize`）与 FX6 `string_english.uxc`（`118,208 B`：`All File` / `Shoe` / `Wind`），并对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或本地供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 46A — `[Shoe Audio Set.]` `48kHz/24bit 4ch` 电平表扩展 vs `3.5mm` 插孔、`ANALOG` 拨杆与 `S&Q` 三重锁止 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Audio Recording] -> [Shoe Audio Set.]`（出厂默认 `48kHz/16bit 2ch`，可选 `48kHz/24bit 2ch` 与 `48kHz/24bit 4ch`；执行 **`[Camera Settings Reset]` 会干净复位回 `48kHz/16bit 2ch`**，并可经 Slot 1 `CAMSET01..10.DAT` 零持久化写入 `bk4_persistent_nvram_writes == 0` 精确恢复）：当挂载支持数字 4ch 的 MI 热靴配件（`XLR-H1` `DIGITAL` 模式或 `ECM-M1`）并启用 `48kHz/24bit 4ch` 时，`[Audio Level Display]` 自动将拍摄 OSD 电平表由 `2ch` 扩展为 `4ch`（`CH1..CH4`）。
+   - 严格强制 **3 项硬件锁止/覆盖规则**（`shoe_audio_4ch_disqualification_bypass_events == 0`，强行绕过一律以 `EOPNOTSUPP = 95` 拦截）：① `[Audio Recording]=Off` 或 `S&Q Motion` 下禁用音频录制（`0` 音轨，菜单置灰）；② 机身 `3.5mm` `MIC` 插孔接入时硬件优先接管，强制覆盖内置麦与 MI 热靴为 `2ch` `48kHz/16bit` 模拟 ADC 采集；③ `XLR-H1` `[DIGITAL/ANALOG]` 拨杆置于 `ANALOG` 时旁路数字 I2S `24bit/4ch` 链路并回退至 `2ch` `48kHz/16bit` 模拟通道。
+3. **Sub-Model 46B — `[Wind Noise Reduct.]` 机身内置立体声麦克风独占与室内台架低切护栏 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Audio Recording] -> [Wind Noise Reduct.]`（默认 `Off` / `On`，可由 `[Camera Settings Reset]` 复位回 `Off`）：数字风噪高通滤波**严格仅对机身内置立体声麦克风生效**——外接机身 `3.5mm` `MIC` 或 MI 热靴 `XLR-H1` / `ECM-M1` 时恒不作用（`external_mic_wind_reduct_applied_frames == 0`，`XLR-H1` 由手柄物理 `[LOW CUT]` `Off`/`100Hz`/`300Hz` 拨杆独立控制硬件低切，强行对外置麦注入机身风噪 DSP 返回 `EOPNOTSUPP = 95`）；在室内无强风台架演练下开启 `On` 立即触发低频衰减告警并以 `EBUSY = 16` 抑制，且在 `S&Q Motion` / `[Audio Recording]=Off` 下锁止置灰。
+4. **Sub-Model 46C & Redlines — `[Save/Load Settings]` `CAMSET01..10.DAT` / `C3 Portal` 排除项隐私校准防火墙、同机型锁与 Slot-1 Tier-0 保险库写保护 HIL**：
+   - 完整建模 `MENU -> Setup -> [Reset/Save Settings] -> [Save/Load Settings]` 在 `Media`（`Slot 1` / `Slot 2`，每卡最多 `10` 组 `CAMSET01.DAT..CAMSET10.DAT`，严格锁定 `ILME-FX3` 并以 `EOPNOTSUPP = 95` 拦截 `ILME-FX6` 跨机型配置）与 `Cloud(Private)` / `Cloud(Share)`（`Creators' Cloud` / `C3 Portal`，要求 `Ver. 4.00+`）下的读写契约。
+   - 强执行索尼官方 **4 大类排除项防火墙**（`excluded_secret_or_calibration_leak_events == 0`）：`IPTC Information` / `Copyright Info`、`Custom White Balance 1..3` 传感器校准值、`Face Memory` 人脸特征库、以及 `FTP` / `Streaming` / `Wi-Fi` / 静态 IP / TLS 证书凭据在 `[Save]` 时彻底剥离、在 `[Load]` 时 100% 保留机内原值（强行夹带返回 `EOPNOTSUPP = 95`）；同时对驻留 Slot 1 的 Tier-0 取证备份卡阻断 `[Save]` 覆写（物理 `WP` 锁返回 `EROFS = 30`，未离线 SHA-256 核验退出的保险库卡返回 `EBUSY = 16`，`tier0_slot1_unverified_camset_save_events == 0`），而 `[Load]` 保持严格 `O_RDONLY` 零扇区写入，并锁死全部 12 项硬件安全红线探针。
+
+### Phase 244 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 46（46/46 里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_shoe_audio_wind_saveload_c3_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_shoe_audio_wind_saveload_c3_coemulator.py --self-test --json
+
+# 2. 全板 46 阶段（Stage 1..46, 46/46 里程碑）统一校验（支持 --include-stage46 与 --skip-phase244）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage46 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 244 双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_shoe_audio_wind_saveload_c3_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_shoe_audio_wind_saveload_c3_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

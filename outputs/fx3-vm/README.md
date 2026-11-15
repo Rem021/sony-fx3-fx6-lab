@@ -320,3 +320,40 @@ PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 71：Stage 10 双卡槽 `Relay`/`Simul`/`Sort` Proxy、`NonRealTimeMeta.xml` 伴随文件与 `USB-PD -> NP-FZ100` UPS / `.RSV` 断电救援
+
+[`dualslot_proxy_ups_salvage_emulator.py`](dualslot_proxy_ups_salvage_emulator.py) 作为最终 **Stage 10** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase71` 跳过，10 阶段全套协同仿真在本地只读供体模式下保持 `< 1.5s`、洁净室模式下 `< 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`p1_emmc_mutations == 0`**、**`internal_emmc_writes == 0`**、**`c2pa_license_untouched == True`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成全板 **10 阶段协同仿真闭环**：
+
+1. **严格只读（`os.O_RDONLY`）双卡槽/代理/XML/电源/救援供体审计 + 洁净室回退**：
+   - 检查 FX3 `libmpr.so` 与 FX6 `libInfraFsys.so`、`libInfraMediaCommon.so`、`libInfraMediaDetect.so`、`libInfraMediaMount.so`、`libInfraMediaConfig.so`、`libInfraMetaSupplier.so`、`libul_xml.so`、`libBusPower.so`、`libUsbBusPower.so` 共 10 份构件的 SHA-256 与关键导出符号标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **双卡槽（`Slot A` + `Slot B`）`Relay` / `Simultaneous` / `Sort` 弹性环形缓冲与零丢帧切换**：
+   - 建模 `256 MiB` DRAM Elastic FIFO 承载 `600 Mbps` `4K 59.94p XAVC S-I`（`1.25 MB/frame` GOP=1）+ `16 Mbps` `1080p XAVC HS 10-bit Proxy`（`S03.MP4`）：
+     - **`Relay` 自动接力**：`Slot A` 写满至 `0` 空闲簇时干净闭合 `A001C001_261114_FX3V.MP4`（`moov` 落盘、`VolumeDirty=0`），`256 MiB` FIFO 吸收 `<= 85 ms` 的 `Slot B` 打开/FAT 簇分配延迟，实现 **`0` 丢帧**无缝续写 `A001C002_261114_FX3V.MP4`。
+     - **`Simultaneous` 双卡同录**：验证 `Slot A == Slot B` 逐帧 CRC32 / SHA-256 一致性，并在录制途中热拔出 `Slot B` 时隔离故障，确保 `Slot A` **`0` 丢帧**存活（`app_crashes == 0`、`wdt_resets == 0`）。
+     - **`Sort` 分流（`CFexpress Type A VPG400` 主码流 + `SDXC UHS-II V60` `S03.MP4` 代理）**：验证启用 `S&Q` 升格（`120fps` / `240fps`）时 Proxy 自动干净挂起（`SQ_OFF_SPEED_AUTO_SUSPEND`）且绝不阻塞主码流录制。
+3. **纯内存 `NonRealTimeMeta`（`*M01.XML`）+ `RTMD 0xE304` 逐剪辑元数据一致性校验器**：
+   - 在虚拟剪辑封口时于内存生成并解析 `NonRealTimeMeta` XML，并与 Stage 9/10 实时管线及 `RTMD 0xE304` 交叉核验（`Cine EI 800/12800`、`S-Gamut3.Cine / S-Log3`、`.cube` User LUT 槽位、`SMPTE 12M` `StartTimecode`、`SELP1635G` 焦距/呼吸补偿 FOV 缩放系数与 `IBIS Active` 模式），实现 100% 一致性且 `c2pa_license_untouched == True`、`internal_emmc_writes == 0`。
+4. **录中掉电（`USB-PD 9V/3A` 热拔 -> `NP-FZ100` UPS 与无电池 `.RSV` 应急救援）协同仿真**：
+   - 场景 1：`NP-FZ100` `65%` SoC 下拔掉 `USB-PD` -> `0.4 ms` 理想二极管切换，**`0` 丢帧**连续录制。
+   - 场景 2：`NP-FZ100` 跌至 `2%`（`6.2V` / `6200 mV` 欠压阈值）-> Stock-CP `PMIC` 触发 `libmpr` 可控紧急刷盘，关断前完成 `moov` + `M01.XML` + exFAT `VolumeDirty=0`（**`0` 损坏剪辑**）。
+   - 场景 3：无电池瞬时掉电演练 -> 合成内存建立 Sony `.RSV` 原始流救援容器并恢复全部已提交环帧（`salvageable_frames == committed_ring_frames`、`VolumeDirty=0`、`p1_emmc_mutations == 0`、`persistent_emmc_writes_authorized == False`）。
+
+### Phase 71 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 10 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/dualslot_proxy_ups_salvage_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/dualslot_proxy_ups_salvage_emulator.py --self-test --json
+
+# 2. 全板 10 阶段（Stage 1..10）统一校验（本地 < 1.5s，洁净室 < 0.5s，支持 --skip-phase71）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 71 34 项单测 & 全量 280 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_dualslot_proxy_ups_salvage_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_dualslot_proxy_ups_salvage_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+

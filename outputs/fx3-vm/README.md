@@ -724,3 +724,40 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /
 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
 ```
+
+## Phase 127：Stage 22 `XAVC MXF OP1a <-> MP4 RDD-18/UMID` 元数据与净荷桥接、`SMPTE ST 2059-2 PTPv2` vs `LTC` 亚微秒同步、`P12` 安全有线 `TSL UMD v5.0` Tally 与 `G39/G40` 暴雨热靴 / 笼架扭转 FFD HIL
+
+[`mxf_mp4_ptpv2_tally_monsoon_emulator.py`](mxf_mp4_ptpv2_tally_monsoon_emulator.py) 作为 **Stage 22** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase127_mxf_ptpv2_tally_monsoon_hil=True`，可通过 `--skip-phase127` 向后兼容跳过；全板 22 阶段协同仿真在本地只读供体模式下保持 `~1.39s < 1.8s`、洁净室模式下 `~0.51s < 0.7s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`calibration_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`bk4_persistent_nvram_writes == 0`**、**`physical_device_writes == 0`**、**`emmc_mutation_bytes == 0`**、**`dropped_klv_tags == 0`**、**`frame_essence_reencode_loss == 0`**、**`wf12_00342260_hits == 0`**、**`fx6_green_gpio_faults == 0`**、**`mishoe_rail_corrosion_events == 0`**、**`chassis_damage_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成五大闭环：
+
+1. **严格只读（`os.O_RDONLY`）16 份 FX3 `v7.02` / FX6 `v6.01` 供体审计 + 洁净室回退**：
+   - 检查 `string_english.uxc`、`string_english_g.uxc`、FX6 `string_english.uxc` / `string_english_2.uxc`、FX3/FX6 `global.xdb`、`libInfraPtpControl.so`、`libNetServiceEther.so`、`cdc_ncm.ko`、`rndis_host.ko`、`libInfraHotshoe.so`、FX3/FX6 `libInfraLensCommunicator.so`、FX3/FX6 `libBusPower.so` 与 FX3 `libmpr.so`（合计 `~4.5 MB`）的 SHA-256 与 42+ 条关键符号/字节标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线（`mutation_bytes == 0`）。
+2. **Pillar A — `XAVC MXF OP1a`（`SMPTE ST 377-1 / RDD-09 / RDD-18`）<-> `FX3 MP4 ISO-BMFF`（`rtmd` KLV + `.XML` `NonRealTimeMeta` + `.CUBE` 3D-LUT）无损双向桥接**：
+   - 双向无损重封装（`XAVC-I <-> XAVC S-I`）全程保持 32 字节 `SMPTE 330M` Basic `UMID`、CRC-32 校验 `rtmd` KLV 包（`ExposureIndex`、双原生 ISO `800/12800`、`CaptureGammaEquation`、`CaptureColorPrimaries`、帧率、光圈、快门角、色温、`.CUBE` 路径）与 `.XML` 边车，实现 **`dropped_klv_tags == 0`** 与 **`frame_essence_reencode_loss == 0`**（`essence_sha256_preserved == True`）。
+   - 失败关闭拦截跨编码无损直转、未转换原始 `MXF OP1a` 直写 FX3 `MP4` 卡槽、`rtmd` CRC 损坏及伪造 `SPVC` 认证指纹。
+3. **Pillar B — `SMPTE ST 2059-2 PTPv2` 亚微秒级有线时钟伺服 & `15-Pin Multi-Terminal` `LTC` 8 小时无毛刺保持**：
+   - 在 `P12` Wi-Fi 强制关闭（`wf12_00342260_hits == 0`）的有线 `CDC-NCM / RNDIS` 链路上运行 `ST 2059-2`（`Announce / Sync / Follow_Up / Delay_Req / Delay_Resp`），硬件时间戳伺服达到 **`0.184 us < 0.5 us`** RMS 偏差，软件降级伺服达到 `0.342 us < 0.5 us`。
+   - 有线网口断开后无毛刺平滑切换至 `15-Pin Multi-Terminal` `LTC`（`VMC-BNCM1`）保持，8 小时（`28,800 s`）累计相位漂移仅 **`0.01726 < 0.05` 帧**且 **0 丢帧**；同时拦截 `PTP-IP` 混用、无线/蓝牙/蜂窝通道及 `uart_boot` 引脚冲突。
+4. **Pillar C — 广电 `TSL UMD v5.0`（有线 `CDC-NCM` UDP/TCP）`PGM` 红 / `PVW` 绿 Tally 与 `16-char` UTF-8/ASCII 台标桥接**：
+   - 解析小端 `TSL UMD v5.0` UDP 与 TCP `DLE/STX`（`0xFE 0x02`）帧及 `16-char` 台标，驱动 FX3 前/顶/后三向 Tally LED：`PGM Red` 点亮前/顶/后红灯 + `RED` OSD；`PVW Green` 保持物理红灯严格关闭 + `GREEN` OSD 且 **`fx6_green_gpio_faults == 0`**；**`OFF` 隐身覆盖（Stealth Override）** 即使处于 `PGM` 也强制熄灭全部物理 LED。全程受 `P12` 保护（`wf12_00342260_hits == 0`）。
+5. **Pillar D — `G39` & `G40` 硬件在环（暴雨渗水 `24-Pin MI-Shoe` 负载开关 & `XLR-H1` 甩击 / 笼架扭转 FFD 互锁）**：
+   - `G39`：暴雨渗水导致 `24-pin MI-Shoe` 阻抗跌破 `50 kOhm`（`18.5 kOhm`）时，负载开关在 **`14.8 us < 25 us`** 内硬件分断，隔离 `+3.15V/+5V` 供电轨防止电化学腐蚀（`mishoe_rail_corrosion_events == 0`），并联动检查无盖淋雨及侧门未闭毛细渗水告警。
+   - `G40`：`XLR-H1` 手柄载荷超 `2.8 kg`（`3.45 kg`）触发甩击剪力告警、`1/4"-20` 底孔扭矩超 `3.5 N*m`（`4.15 N*m`）触发滑牙保护，以及非对称提笼扭转导致 E 卡口 `18.00 mm` 法兰距（`FFD`）翘曲超 `12 um`（`16.8 um`）时立即触发刚性互锁，确保 **`chassis_damage_events == 0`**。
+
+### Phase 127 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 22 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/mxf_mp4_ptpv2_tally_monsoon_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/mxf_mp4_ptpv2_tally_monsoon_emulator.py --self-test --json
+
+# 2. 全板 22 阶段（Stage 1..22）统一校验（本地 ~1.39s < 1.8s，洁净室 ~0.51s < 0.7s，支持 --skip-phase127）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 127 40 项单测 & 全量 724 项单测（双模式）
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_mxf_mp4_ptpv2_tally_monsoon_emulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_mxf_mp4_ptpv2_tally_monsoon_emulator.py -v
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+```
+

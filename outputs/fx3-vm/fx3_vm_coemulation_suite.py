@@ -65,6 +65,7 @@ import hdmi_raw_prores_breathing_mishoe_aoc_emulator as p117  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
 import interval_cache_ftp_fan_emulator as p96  # noqa: E402
 import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
+import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
@@ -131,6 +132,7 @@ class CoEmulationConfig:
     include_phase112_hdr_hlg_fiz_gimbal: bool = True
     include_phase117_proresraw_breathing_mishoe_hil: bool = True
     include_phase121_uvc_srt_crsdk_usbpd_hil: bool = True
+    include_phase127_mxf_ptpv2_tally_monsoon_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1349,6 +1351,50 @@ def run_stage21_uvc_srt_crsdk_usbpd_hil(
     }
 
 
+def run_stage22_mxf_ptpv2_tally_monsoon_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 22 (Phase 127): MXF/MP4 RDD-18/UMID Bridge, ST 2059-2 PTPv2/LTC Sync, TSL UMD v5.0 Tally & G39/G40 HIL."""
+    config.validate()
+    rep = p127.run_phase127_mxf_ptpv2_tally_monsoon_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage22_mxf_ptpv2_tally_monsoon_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "dropped_klv_tags": red["dropped_klv_tags"],
+        "frame_essence_reencode_loss": red["frame_essence_reencode_loss"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "fx6_green_gpio_faults": red["fx6_green_gpio_faults"],
+        "mishoe_rail_corrosion_events": red["mishoe_rail_corrosion_events"],
+        "chassis_damage_events": red["chassis_damage_events"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_mxf_mp4_essence_bridge": rep["pillar_a_mxf_mp4_essence_bridge"],
+        "pillar_b_st2059_ptpv2_ltc_servo": rep["pillar_b_st2059_ptpv2_ltc_servo"],
+        "pillar_c_tsl_umd_v5_tally_bridge": rep["pillar_c_tsl_umd_v5_tally_bridge"],
+        "pillar_d_g39_g40_monsoon_cagetwist_hil": rep["pillar_d_g39_g40_monsoon_cagetwist_hil"],
+        "phase127_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1359,7 +1405,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 21-stage (Phase 33..121) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 22-stage (Phase 33..127) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1436,6 +1482,11 @@ def run_fx3_vm_coemulation_suite(
     stage21: Optional[Dict[str, object]] = (
         run_stage21_uvc_srt_crsdk_usbpd_hil(cfg, env=env)
         if cfg.include_phase121_uvc_srt_crsdk_usbpd_hil
+        else None
+    )
+    stage22: Optional[Dict[str, object]] = (
+        run_stage22_mxf_ptpv2_tally_monsoon_hil(cfg, env=env)
+        if cfg.include_phase127_mxf_ptpv2_tally_monsoon_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1707,6 +1758,28 @@ def run_fx3_vm_coemulation_suite(
         and stage21["uart_tx_bytes"] == 0
         and (not stage21["persistent_emmc_writes_authorized"])
     )
+    stage22_ok = True if stage22 is None else (
+        bool(stage22["all_checks_passed"])
+        and stage22["nop_count"] == 0
+        and stage22["guest_code_modification_bytes"] == 0
+        and stage22["cp_mutation_bytes"] == 0
+        and stage22["wbi_mutation_bytes"] == 0
+        and stage22["calibration_mutation_bytes"] == 0
+        and stage22["nvram_persistent_writes"] == 0
+        and stage22["bk4_persistent_nvram_writes"] == 0
+        and stage22["physical_device_writes"] == 0
+        and stage22["null_gpio_derefs"] == 0
+        and stage22["mailbox_stalls"] == 0
+        and stage22["stock_cp_fault_count"] == 0
+        and stage22["emmc_mutation_bytes"] == 0
+        and stage22["dropped_klv_tags"] == 0
+        and stage22["frame_essence_reencode_loss"] == 0
+        and stage22["wf12_00342260_hits"] == 0
+        and stage22["fx6_green_gpio_faults"] == 0
+        and stage22["mishoe_rail_corrosion_events"] == 0
+        and stage22["chassis_damage_events"] == 0
+        and (not stage22["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1731,6 +1804,7 @@ def run_fx3_vm_coemulation_suite(
         and stage19_ok
         and stage20_ok
         and stage21_ok
+        and stage22_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1765,6 +1839,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase112_hdr_hlg_fiz_gimbal": cfg.include_phase112_hdr_hlg_fiz_gimbal,
             "include_phase117_proresraw_breathing_mishoe_hil": cfg.include_phase117_proresraw_breathing_mishoe_hil,
             "include_phase121_uvc_srt_crsdk_usbpd_hil": cfg.include_phase121_uvc_srt_crsdk_usbpd_hil,
+            "include_phase127_mxf_ptpv2_tally_monsoon_hil": cfg.include_phase127_mxf_ptpv2_tally_monsoon_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1825,6 +1900,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage20_proresraw_breathing_mishoe_hil"] = stage20
     if stage21 is not None:
         core_payload["stage21_uvc_srt_crsdk_usbpd_hil"] = stage21
+    if stage22 is not None:
+        core_payload["stage22_mxf_ptpv2_tally_monsoon_hil"] = stage22
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1836,7 +1913,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1933,6 +2010,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 21 (Phase 121 USB-C UVC 1.5/UAC 2.0, Wired P12-Safe SRT/RTMPS, CRSDK PTP/Firewall & G37/G38 HIL)",
     )
     parser.add_argument(
+        "--skip-phase127",
+        action="store_true",
+        help="Skip optional Stage 22 (Phase 127 MXF/MP4 RDD-18/UMID Bridge, ST 2059-2 PTPv2/LTC Sync, TSL UMD v5.0 Tally & G39/G40 HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -2016,6 +2098,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase112_hdr_hlg_fiz_gimbal=not args.skip_phase112,
         include_phase117_proresraw_breathing_mishoe_hil=not args.skip_phase117,
         include_phase121_uvc_srt_crsdk_usbpd_hil=not args.skip_phase121,
+        include_phase127_mxf_ptpv2_tally_monsoon_hil=not args.skip_phase127,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -2046,6 +2129,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s19 = rep.get("stage19_phase112_hdr_hlg_fiz_gimbal")
         s20 = rep.get("stage20_proresraw_breathing_mishoe_hil")
         s21 = rep.get("stage21_uvc_srt_crsdk_usbpd_hil")
+        s22 = rep.get("stage22_mxf_ptpv2_tally_monsoon_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -2169,6 +2253,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s21, dict)
             else ""
         )
+        s22_str = (
+            f" | mxf_ptpv2_tally_monsoon={s22['source_mode']}(klv_drop={s22['dropped_klv_tags']}/reenc={s22['frame_essence_reencode_loss']},"
+            f"ptp_rms={s22['pillar_b_st2059_ptpv2_ltc_servo']['hw_ptpv2_servo_locked']['ptpv2_rms_offset_us']}us/ltc_8h={s22['pillar_b_st2059_ptpv2_ltc_servo']['ltc_8h_holdover_locked']['holdover_phase_slip_frames']}f,"
+            f"tally_wf12={s22['wf12_00342260_hits']}/g_flt={s22['fx6_green_gpio_faults']},"
+            f"g39_trip={s22['pillar_d_g39_g40_monsoon_cagetwist_hil']['g39_monsoon_mishoe_hil']['wet_mishoe_short_tripped']['load_switch_trip_us']}us/corr={s22['mishoe_rail_corrosion_events']},"
+            f"g40_ffd={s22['pillar_d_g39_g40_monsoon_cagetwist_hil']['g40_xlrh1_cagetwist_ffd_hil']['cage_twist_ffd_interlock']['estimated_ffd_tilt_um']}um/dmg={s22['chassis_damage_events']})"
+            if isinstance(s22, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -2177,7 +2270,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

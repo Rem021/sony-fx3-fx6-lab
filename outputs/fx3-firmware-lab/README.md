@@ -93,11 +93,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar 2 — `S-Log3` 10-Bit Legal (`64..940`) vs Extended Super-White (`64..1019`) & CEA-861 HDMI AVI InfoFrame Quantization Guard**: Audits Sony Cinema Line `S-Log3` code-value landmarks (`0% black = 95/1023`, `18% grey = 420/1023`, `90% white = 598/1023`, extended super-white `949..1019`) and builds/decodes 17-byte CEA-861 AVI InfoFrames (`Y1:Y0`, `Q1:Q0`, `YQ1:YQ0`, checksum parity), blocking Atomos/SmallHD legal-to-full double-scaling shadow-crush (`95 -> 36`, `-59` codes) and `HDMI RAW16` mislabeling.
    - **Pillar 3 — FX6 Native `12G-SDI` (`SMPTE ST 2082` ANC / `RP 188` / `ST 12-2` ATC) vs FX3 HDMI-to-12G-SDI Active Converter REC-Trigger & TC Bridge**: Audits bit-level `DID=0x60 / SDID=0x60` + DBB REC-trigger + drop/non-drop BCD timecode parity across Blackmagic Micro Converter 12G, Teradek Bolt, and Atomos Connect HDMI->SDI bridges so FX6 UI `SDI/HDMI Rec Control = On` drives FX3 HDMI REC without ghost SDI BNC hardware faults (`ghost_sdi_bnc_hw_faults == 0`).
    - **Pillar 4 — `MLUT` Burn-In vs Proxy-Only vs Clean-HDMI Routing Matrix & Zero-Calibration-Mutation Proof**: Validates independent `Main`, `Proxy`, `LCD/VF`, `HDMI Type-A`, and gated `SDI1` LUT routing (`RAW16` isolation) alongside volatile RAM staging (`/tmp/`, `ram://`) with `calibration_mutation_bytes == 0`, `emmc_mutation_bytes == 0`, and `persistent_emmc_writes_authorized == False`.
+20. [`fx3_firmware_lab/c2pa_lens_shading_and_mc_fleet_auditor.py`](fx3_firmware_lab/c2pa_lens_shading_and_mc_fleet_auditor.py)
+   - **Pillar 1 — C2PA 2.1 / Sony Camera Authenticity & `cnflasha` Key-Vault Zero-Touch Firewall**: Audits FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, `libCertificateManager.so`, and `.uxc` packs strictly `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback) for `InfraC2PA` (`lc2pa.createdlsony.created`, `(C2PA+SSIG)`), C2PA 2.1 `jumb`/`jumd`/`c2ma`/`c2cl`/`c2as`/`c2cs` boxes, `cnflasha`/`RPMB`/`p12:/cert` strict `O_RDONLY` isolation (`0` writes, `0` key extraction, `0` cross-body certificate spoofing), transparent unsigned clean-room marking on Stage-B userland-overlay clips, and FX3 `<= 222 Mbps` MP4 / `S&Q` / `<= 100` `RQ_LIC.DAT` license bounds.
+   - **Pillar 2 — E-Mount 12-Pin Lens Shading / Vignetting, Lateral Chromatic Aberration & Distortion Polynomial Compensation**: Audits radial $\cos^4(\theta)$ peripheral illumination falloff, R/B lateral CA micro-scale polynomials (`>= 95%` corner fringe reduction, `< 0.15 px` residual), and Newton-Raphson invertible barrel/pincushion distortion tables (`< 1e-8` residual) across native Sony G-Master lenses (`SEL1635GM2_16MM`, `SEL50F12GM`, `SEL70200GM2_200MM`) vs unchipped manual PL / anamorphic lenses (strict identity `1.0x` fail-safe, zero stale electronic coefficient leaks).
+   - **Pillar 3 — Sony Monitor & Control Wired USB-LAN `PTP-IP` 4-Camera Fleet & `P12` RF-Off Isolation**: Audits `libInfraPtpControl.so`, `libNetServiceEther.so`, `appFw.so`, and `.uxc` packs (`os.O_RDONLY`) for 4-camera wired Ethernet (`CDC-NCM` / `RTL8153` via switching hub / router) `PTP-IP` (`TCP/15740`) + `Access Authentication`, synchronized `False Color` / `Waveform` / `Focus Map` telemetry, and gang `REC` trigger (`<= 16.7 ms` skew) under `P12` Airplane RF-Off (`0` `WF-12 00342260` hits, `0` HCI TX), blocking direct camera-to-iPad Ethernet and unsupported FX6 `USB Tethering` on iPadOS.
+   - **Pillar 4 — Per-Body Factory Shading / Defect-Pixel Map Bit-Exact Preservation Proof**: Verifies SHA-256 bit-exact immutability across `p2:/setting/psd.bin`, `p2:/setting/defdet.bin`, `p2:/setting/Backup.bin`, `p6:/tmp/jiritsu`, `p18:/lens/lensfile.bin`, and `p12:/cert`, ensuring volatile `/tmp/` / `ram://` staging with `calibration_mutation_bytes == 0`, `emmc_mutation_bytes == 0`, and `persistent_emmc_writes_authorized == False`.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 19 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 20 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -131,8 +136,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-interval-cache-ftp --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-lut3d-sdi-hdmi --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-lut3d-sdi-hdmi --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-c2pa-shading-mc --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-c2pa-shading-mc --clean-room --json
 
-# Run all 513 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

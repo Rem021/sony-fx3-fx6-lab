@@ -75,6 +75,7 @@ import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
 import realhw_cxd90058_sabin_codec_and_seal_coemulator as p167  # noqa: E402
 import realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator as p207  # noqa: E402
 import realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator as p182  # noqa: E402
+import realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator as p242  # noqa: E402
 import realhw_fan_pwm_shutter_angle_lut_split_coemulator as p200  # noqa: E402
 import realhw_filesettings_shotmark_tcregen_reclamp_coemulator as p217  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
@@ -178,6 +179,8 @@ class CoEmulationConfig:
     include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil: bool = True
     include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil: bool = True
     include_stage44: bool = True
+    include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil: bool = True
+    include_stage45: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2722,6 +2725,79 @@ def run_stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil(
     }
 
 
+def run_stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 45 (Phase 242, 45/45 Milestone): Real-Hardware ILME-FX3 Wave-35 Emphasized REC Display & Grid Line HDMI Info Routing vs Forced Off(HDMI Only)/RAW Clean-Feed Lock, Touch Operation 4-Item Reset Survival & Unattended Bench Tap Guard, and Monitor Brightness Manual (-2..+2) vs Sunny Weather Indoor/NP-FZ100 Power Guard HIL."""
+    config.validate()
+    rep = p242.run_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil",
+        "schema": rep["schema"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "hdmi_only_or_raw_baked_recframe_or_grid_frames": red[
+            "hdmi_only_or_raw_baked_recframe_or_grid_frames"
+        ],
+        "hdmi_local_only_marker_zebra_peaking_leaked_pixels": red[
+            "hdmi_local_only_marker_zebra_peaking_leaked_pixels"
+        ],
+        "unattended_bench_accidental_touch_events": red[
+            "unattended_bench_accidental_touch_events"
+        ],
+        "indoor_sunny_weather_unclamped_events": red[
+            "indoor_sunny_weather_unclamped_events"
+        ],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_emphasized_rec_and_grid_hdmi_cleanfeed_hil": rep[
+            "pillar_a_emphasized_rec_and_grid_hdmi_cleanfeed_hil"
+        ],
+        "pillar_b_touch_operation_4item_reset_and_bench_tap_guard_hil": rep[
+            "pillar_b_touch_operation_4item_reset_and_bench_tap_guard_hil"
+        ],
+        "pillar_c_d_monitor_brightness_sunny_weather_and_redlines": rep[
+            "pillar_c_d_monitor_brightness_sunny_weather_and_redlines"
+        ],
+        "phase242_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2732,7 +2808,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 42-stage (Phase 33..232, 42/42 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 45-stage (Phase 33..242, 45/45 Milestone) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -2926,6 +3002,14 @@ def run_fx3_vm_coemulation_suite(
         if (
             cfg.include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil
             and cfg.include_stage44
+        )
+        else None
+    )
+    stage45: Optional[Dict[str, object]] = (
+        run_stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil(cfg, env=env)
+        if (
+            cfg.include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil
+            and cfg.include_stage45
         )
         else None
     )
@@ -3861,6 +3945,42 @@ def run_fx3_vm_coemulation_suite(
         and stage44["appfw_crashes"] == 0
         and stage44["raw_firmware_bytes_leaked"] == 0
     )
+    stage45_ok = True if stage45 is None else (
+        bool(stage45["all_checks_passed"])
+        and stage45["nop_count"] == 0
+        and stage45["guest_code_modification_bytes"] == 0
+        and stage45["cp_mutation_bytes"] == 0
+        and stage45["wbi_mutation_bytes"] == 0
+        and stage45["calibration_mutation_bytes"] == 0
+        and stage45["cnflasha_mutation_bytes"] == 0
+        and bool(stage45["cnflasha_userspace_write_blocked"])
+        and stage45["nvram_persistent_writes"] == 0
+        and stage45["bk4_persistent_nvram_writes"] == 0
+        and stage45["physical_device_writes"] == 0
+        and (not stage45["persistent_emmc_writes_authorized"])
+        and (not stage45["hardware_live_attachment_authorized"])
+        and (not stage45["overall_ready_for_hardware_attach"])
+        and (not stage45["isp_write_authorized"])
+        and stage45["emmc_nflasha_write_count"] == 0
+        and stage45["emmc_mutation_bytes"] == 0
+        and (not stage45["spi_nor_write_authorized"])
+        and stage45["spi_nor_mutation_bytes"] == 0
+        and (not stage45["el3_payload_transmit_authorized"])
+        and stage45["physical_usb_packets_emitted"] == 0
+        and stage45["otp_fuse_touches"] == 0
+        and stage45["rpmb_counter_increments"] == 0
+        and stage45["hdmi_only_or_raw_baked_recframe_or_grid_frames"] == 0
+        and stage45["hdmi_local_only_marker_zebra_peaking_leaked_pixels"] == 0
+        and stage45["unattended_bench_accidental_touch_events"] == 0
+        and stage45["indoor_sunny_weather_unclamped_events"] == 0
+        and stage45["rsv_orphan_count"] == 0
+        and stage45["null_gpio_derefs"] == 0
+        and stage45["mailbox_stalls"] == 0
+        and stage45["stock_cp_fault_count"] == 0
+        and stage45["wf12_00342260_hits"] == 0
+        and stage45["appfw_crashes"] == 0
+        and stage45["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -3908,6 +4028,7 @@ def run_fx3_vm_coemulation_suite(
         and stage42_ok
         and stage43_ok
         and stage44_ok
+        and stage45_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -3971,6 +4092,14 @@ def run_fx3_vm_coemulation_suite(
             "include_stage44": (
                 cfg.include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil
                 and cfg.include_stage44
+            ),
+            "include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil": (
+                cfg.include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil
+                and cfg.include_stage45
+            ),
+            "include_stage45": (
+                cfg.include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil
+                and cfg.include_stage45
             ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
@@ -4078,6 +4207,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage43_realhw_silent_autopixelmap_marker_flexexp_hil"] = stage43
     if stage44 is not None:
         core_payload["stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil"] = stage44
+    if stage45 is not None:
+        core_payload["stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil"] = stage45
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -4089,7 +4220,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 (44/44 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 (45/45 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -4315,6 +4446,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 44 (Phase 239 44/44 Milestone Real-Hardware ILME-FX3 Wave-34 Recover Image DB Battery & Tier-0 Vault Firewall, Monitor Flip Direction Reset Survival & Playback Non-Inversion, and AF Subj. Shift Sensitivity / AF Transition Speed vs Interval Shoot HIL)",
     )
     parser.add_argument(
+        "--include-stage45",
+        dest="include_stage45",
+        action="store_true",
+        default=True,
+        help="Include Stage 45 (Phase 242 45/45 Milestone Real-Hardware ILME-FX3 Wave-35 Emphasized REC Display & Grid Line HDMI Info Routing vs Forced Off(HDMI Only)/RAW Clean-Feed Lock, Touch Operation 4-Item Reset Survival & Bench Tap Guard, and Monitor Brightness Manual (-2..+2) vs Sunny Weather Indoor/NP-FZ100 Power Guard HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage45",
+        "--no-include-stage45",
+        dest="skip_stage45",
+        action="store_true",
+        help="Skip optional Stage 45 (alias for --skip-phase242)",
+    )
+    parser.add_argument(
+        "--skip-phase242",
+        action="store_true",
+        help="Skip optional Stage 45 (Phase 242 45/45 Milestone Real-Hardware ILME-FX3 Wave-35 Emphasized REC Display & Grid Line HDMI Info Routing vs Forced Off(HDMI Only)/RAW Clean-Feed Lock, Touch Operation 4-Item Reset Survival & Bench Tap Guard, and Monitor Brightness Manual (-2..+2) vs Sunny Weather Indoor/NP-FZ100 Power Guard HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -4375,6 +4525,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         return 0
 
     enable_stage44 = bool(args.include_stage44) and (not args.skip_phase239) and (not args.skip_stage44)
+    enable_stage45 = bool(args.include_stage45) and (not args.skip_phase242) and (not args.skip_stage45)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -4423,6 +4574,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil=not args.skip_phase236,
         include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil=enable_stage44,
         include_stage44=enable_stage44,
+        include_phase242_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil=enable_stage45,
+        include_stage45=enable_stage45,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -4476,6 +4629,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s42 = rep.get("stage42_realhw_sq_fixedvar_zebra_peaking_fullformat_hil")
         s43 = rep.get("stage43_realhw_silent_autopixelmap_marker_flexexp_hil")
         s44 = rep.get("stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil")
+        s45 = rep.get("stage45_realhw_emphasized_rec_grid_hdmi_touch_sunny_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -4838,6 +4992,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s44, dict)
             else ""
         )
+        s45_str = (
+            f" | realhw_emphasized_rec_grid_hdmi_touch_sunny_hil={s45['source_mode']}("
+            f"grid={len(s45['pillar_a_emphasized_rec_and_grid_hdmi_cleanfeed_hil']['all_3_grid_line_types'])}t,"
+            f"baked={s45['hdmi_only_or_raw_baked_recframe_or_grid_frames']},"
+            f"touch={len(s45['pillar_b_touch_operation_4item_reset_and_bench_tap_guard_hil']['all_4_touch_setup_items'])}i,"
+            f"tap_ev={s45['unattended_bench_accidental_touch_events']},"
+            f"sunny_ev={s45['indoor_sunny_weather_unclamped_events']},"
+            f"emmc_wr={s45['emmc_nflasha_write_count']})"
+            if isinstance(s45, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -4846,7 +5011,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

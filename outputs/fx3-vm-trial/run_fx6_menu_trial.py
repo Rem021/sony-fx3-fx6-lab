@@ -2463,6 +2463,7 @@ def build_nrtm_xml_sidecar(
     mc_fleet_sdi_c2pa: dict[str, Any] | None = None,
     hdr_hlg_raw_breathing: dict[str, Any] | None = None,
     uvc_srt_crsdk_ptp: dict[str, Any] | None = None,
+    mxf_ptpv2_tally: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2475,7 +2476,10 @@ def build_nrtm_xml_sidecar(
     max_mark_frame = max((int(m.get("frame", 0)) + 1 for m in shotmarks_list), default=0)
 
     clip_id = str(color_and_media.get("clip_id", "A001C001"))
-    umid_ref = f"060A2B340101010501010D4313000000{clip_id}{DEFAULT_CLIP_DATE_YYMMDD}FX"
+    if mxf_ptpv2_tally and mxf_ptpv2_tally.get("smpte330_umid_hex"):
+        umid_ref = str(mxf_ptpv2_tally["smpte330_umid_hex"]).upper()
+    else:
+        umid_ref = f"060A2B340101010501010D4313000000{clip_id}{DEFAULT_CLIP_DATE_YYMMDD}FX"
     creation_ts = "2026-11-14T16:00:00-08:00"
     duration_frames = max(240, int(cine_exposure.get("rec_tc_frames", 0)), max_mark_frame)
 
@@ -2752,6 +2756,34 @@ def build_nrtm_xml_sidecar(
         ET.SubElement(p123_grp, _q("Item"), {"name": "EmmcMutationBytes", "value": "0"})
         ET.SubElement(p123_grp, _q("Item"), {"name": "BlockedFlashOpcodeCount", "value": str(int(uvc_srt_crsdk_ptp["blocked_flash_opcode_count"]))})
         ET.SubElement(p123_grp, _q("Item"), {"name": "P4NdClearEnforced", "value": "true"})
+
+    if mxf_ptpv2_tally:
+        p129_grp = ET.SubElement(acq, _q("Group"), {"name": "MxfRdd18Ptpv2TslTallyBridge"})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "ContainerMode", "value": str(mxf_ptpv2_tally["container_mode"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Smpte330mUmidHex", "value": str(mxf_ptpv2_tally["smpte330_umid_hex"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Rdd18ExposureIndex", "value": str(int(mxf_ptpv2_tally["rdd18_exposure_index"]))})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Rdd18CaptureGammaEquation", "value": str(mxf_ptpv2_tally["rdd18_capture_gamma_equation"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Rdd18KlvCrc32Valid", "value": str(bool(mxf_ptpv2_tally["rdd18_klv_crc32_valid"])).lower()})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "EssenceReencodeLoss", "value": "0"})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "EmmcMutationBytes", "value": "0"})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Ptpv2SyncMode", "value": str(mxf_ptpv2_tally["sync_mode"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Ptpv2EffectiveSyncMode", "value": str(mxf_ptpv2_tally["effective_sync_mode"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Ptpv2GrandmasterId", "value": str(mxf_ptpv2_tally["ptpv2_grandmaster_id"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Ptpv2Domain", "value": str(int(mxf_ptpv2_tally["ptpv2_domain"]))})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Ptpv2OffsetNs", "value": str(int(mxf_ptpv2_tally["offset_ns"]))})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Ptpv2ServoLocked", "value": str(bool(mxf_ptpv2_tally["servo_locked"])).lower()})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "LtcHoldoverActive", "value": str(bool(mxf_ptpv2_tally["ltc_holdover_active"])).lower()})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "HoldoverSlipFrames", "value": f"{float(mxf_ptpv2_tally['holdover_slip_frames']):.4f}"})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "P12WlanOff", "value": "true"})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "Wf12Calls", "value": "0"})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdV5TallyState", "value": str(mxf_ptpv2_tally["tally_state"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdCameraIndex", "value": str(int(mxf_ptpv2_tally["umd_camera_index"]))})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdCameraSlot", "value": str(mxf_ptpv2_tally["umd_camera_slot"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdCameraName", "value": str(mxf_ptpv2_tally["umd_label"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdStealthLedMute", "value": str(bool(mxf_ptpv2_tally["stealth_led_mute"])).lower()})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdOsdTallyIndicator", "value": str(bool(mxf_ptpv2_tally["osd_tally_indicator"])).lower()})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdFraming", "value": str(mxf_ptpv2_tally["tsl_framing"])})
+        ET.SubElement(p129_grp, _q("Item"), {"name": "TslUmdPacketHex", "value": str(mxf_ptpv2_tally["tsl_packet_hex"])})
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -7589,6 +7621,833 @@ def validate_uvc_srt_crsdk_ptp_patch(
     return True, updates, None
 
 
+# ---------------------------------------------------------------------------
+# Phase 129: XAVC MXF OP1a <-> MP4 RDD-18/UMID Container Bridge, SMPTE ST 2059-2
+# PTPv2 vs LTC Frame-Phase Servo, & Wired P12-Safe TSL UMD v5.0 Studio Red/Green
+# Tally + 16-Char Dynamic Camera UMD HUD ('MXFT' mb[64..67])
+# ---------------------------------------------------------------------------
+
+MXF_CONTAINER_MODES: tuple[str, ...] = (
+    "MP4_ISOBMFF_RTMD",
+    "MXF_OP1A_RDD09_WRAP",
+    "DUAL_MP4_PLUS_MXF_SIDECAR",
+)
+_MXF_CONTAINER_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(MXF_CONTAINER_MODES)}
+_MXF_CONTAINER_ALIASES: dict[str, str] = {
+    "mp4": "MP4_ISOBMFF_RTMD",
+    "mp4_isobmff": "MP4_ISOBMFF_RTMD",
+    "mp4_isobmff_rtmd": "MP4_ISOBMFF_RTMD",
+    "isobmff": "MP4_ISOBMFF_RTMD",
+    "mxf": "MXF_OP1A_RDD09_WRAP",
+    "mxf_op1a": "MXF_OP1A_RDD09_WRAP",
+    "mxf_op1a_rdd09_wrap": "MXF_OP1A_RDD09_WRAP",
+    "op1a": "MXF_OP1A_RDD09_WRAP",
+    "dual": "DUAL_MP4_PLUS_MXF_SIDECAR",
+    "dual_mp4_plus_mxf_sidecar": "DUAL_MP4_PLUS_MXF_SIDECAR",
+    "both": "DUAL_MP4_PLUS_MXF_SIDECAR",
+}
+
+XAVC_REWRAP_PROFILES: tuple[str, ...] = (
+    "XAVC_S_I_422_10B",
+    "XAVC_I_MXF_422_10B",
+    "XAVC_S_LONG_422",
+    "XAVC_L_MXF_422",
+)
+_XAVC_CODEC_FAMILY: dict[str, str] = {
+    "XAVC_S_I_422_10B": "INTRA_422_10B",
+    "XAVC_I_MXF_422_10B": "INTRA_422_10B",
+    "XAVC_S_LONG_422": "LONG_GOP_422",
+    "XAVC_L_MXF_422": "LONG_GOP_422",
+}
+
+PTP_SYNC_MODES: tuple[str, ...] = (
+    "OFF",
+    "PTPV2_SLAVE_WIRED",
+    "LTC_MULTITERMINAL_FALLBACK",
+)
+_PTP_SYNC_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(PTP_SYNC_MODES)}
+_PTP_SYNC_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "ptpv2": "PTPV2_SLAVE_WIRED",
+    "ptpv2_slave_wired": "PTPV2_SLAVE_WIRED",
+    "st2059": "PTPV2_SLAVE_WIRED",
+    "st2059_2": "PTPV2_SLAVE_WIRED",
+    "ltc": "LTC_MULTITERMINAL_FALLBACK",
+    "ltc_holdover": "LTC_MULTITERMINAL_FALLBACK",
+    "ltc_multiterminal_fallback": "LTC_MULTITERMINAL_FALLBACK",
+}
+
+TSL_TALLY_STATES_P129: tuple[str, ...] = (
+    "OFF",
+    "PVW_GREEN",
+    "PGM_RED",
+    "PGM_PLUS_PVW",
+)
+_TSL_TALLY_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(TSL_TALLY_STATES_P129)}
+_TSL_TALLY_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "pvw": "PVW_GREEN",
+    "green": "PVW_GREEN",
+    "pvw_green": "PVW_GREEN",
+    "pgm": "PGM_RED",
+    "red": "PGM_RED",
+    "pgm_red": "PGM_RED",
+    "pgm_plus_pvw": "PGM_PLUS_PVW",
+    "pgm+pvw": "PGM_PLUS_PVW",
+    "both": "PGM_PLUS_PVW",
+    "amber": "PGM_PLUS_PVW",
+}
+_TSL_TALLY_TO_WIRE_BITS: dict[str, int] = {
+    "OFF": 0,
+    "PGM_RED": 1,
+    "PVW_GREEN": 2,
+    "PGM_PLUS_PVW": 3,
+}
+_TSL_WIRE_BITS_TO_TALLY: dict[int, str] = {
+    0: "OFF",
+    1: "PGM_RED",
+    2: "PVW_GREEN",
+    3: "PGM_PLUS_PVW",
+}
+
+TSL_FRAMING_MODES: tuple[str, ...] = ("UDP", "TCP_DLE_STX")
+_TSL_FRAMING_ALIASES: dict[str, str] = {
+    "udp": "UDP",
+    "udp_40003": "UDP",
+    "tcp": "TCP_DLE_STX",
+    "tcp_dle_stx": "TCP_DLE_STX",
+    "dle_stx": "TCP_DLE_STX",
+}
+
+_GAMMA_TO_P129_IDX: dict[str, int] = {
+    "s-cinetone": 0,
+    "s-log3-cine": 1,
+    "s-log3": 2,
+    "rec709": 3,
+    "rec2100-hlg": 4,
+}
+
+SMPTE_330M_BASIC_UMID_PREFIX = "060a2b340101010501010d4313000000"
+RDD18_EXPOSURE_INDEX_UL_HEX = "060e2b340101010c0c0201017e010000"
+TSL_UMD_V5_VER = 0
+TSL_UMD_DLE = 0xFE
+TSL_UMD_STX = 0x02
+TSL_UMD_MAX_CHARS = 16
+PTPV2_MAX_OFFSET_NS = 499
+
+MXF_PTPV2_TALLY_DEFAULTS: dict[str, Any] = {
+    "container_mode": "MP4_ISOBMFF_RTMD",
+    "source_codec": "XAVC_S_I_422_10B",
+    "target_codec": "XAVC_I_MXF_422_10B",
+    "sync_mode": "OFF",
+    "ptpv2_grandmaster_id": "00:1B:1B:FF:FE:20:59:02",
+    "ptpv2_domain": 127,
+    "ethernet_link_up": True,
+    "ltc_multiterminal_attached": True,
+    "offset_ns": 184,
+    "tally_state": "OFF",
+    "stealth_led_mute": False,
+    "osd_tally_indicator": True,
+    "umd_camera_index": 1,
+    "umd_label": "FX3-CAM1-STUDIO",
+    "tsl_framing": "UDP",
+}
+
+MXF_PTPV2_TALLY_SPECS: dict[str, Any] = {
+    "container_modes": list(MXF_CONTAINER_MODES),
+    "xavc_rewrap_profiles": list(XAVC_REWRAP_PROFILES),
+    "smpte330_umid_bytes": 32,
+    "rdd18_klv_ul": RDD18_EXPOSURE_INDEX_UL_HEX.upper(),
+    "sync_modes": list(PTP_SYNC_MODES),
+    "ptpv2_standard": "SMPTE_ST_2059_2",
+    "ptpv2_default_domain": 127,
+    "ptpv2_max_offset_ns": PTPV2_MAX_OFFSET_NS,
+    "ltc_holdover_port": "15PIN_MULTITERMINAL_VMC_BNCM1",
+    "ltc_max_8h_slip_frames": 0.05,
+    "p12_wlan_off_enforced": True,
+    "tally_states": list(TSL_TALLY_STATES_P129),
+    "tsl_framing_modes": list(TSL_FRAMING_MODES),
+    "tsl_umd_version": "5.0",
+    "umd_max_chars": TSL_UMD_MAX_CHARS,
+    "umd_camera_slots": [f"CAM{i}" for i in range(1, 9)],
+    "mailbox_magic": "0x4D584654",
+    "mailbox_slots": "mb[64..67]",
+    "supported_langs": ["en", "zh-CN", "zh-TW", "ja"],
+}
+
+
+def build_p129_smpte330_umid_hex(
+    *,
+    cam_id: str = "A",
+    reel_num: int = 1,
+    clip_seq: int = 1,
+    device_node_hex: str = "a1c190057f30",
+    creation_unix_sec: int = 1794715200,
+) -> str:
+    """Build deterministic 32-byte (64-hex) SMPTE ST 330M Basic UMID."""
+    node_b = bytes.fromhex(device_node_hex.strip().lower().zfill(12))[:6]
+    time_b = struct.pack(">Q", int(creation_unix_sec) & 0xFFFFFFFFFFFFFFFF)[2:]
+    cam_ord = ord(str(cam_id or "A")[0].upper()) & 0xFF
+    material_ctr = ((cam_ord << 24) | ((int(reel_num) & 0x3FF) << 12) | (int(clip_seq) & 0xFFF)) & 0xFFFFFFFF
+    ctr_b = struct.pack(">I", material_ctr)
+    raw = bytes.fromhex(SMPTE_330M_BASIC_UMID_PREFIX) + time_b + ctr_b + node_b
+    return raw.hex()
+
+
+def encode_p129_rdd18_klv_hex(
+    *,
+    exposure_index: int = 800,
+    base_iso: int = 800,
+    gamma_eq: str = "s-cinetone",
+    primaries: str = "rec709",
+    fps_x1000: int = 23980,
+    shutter_angle_x10: int = 1800,
+    wb_kelvin: int = 5600,
+    cube_lut_path: str = "R709.cube",
+    umid_hex: str | None = None,
+) -> str:
+    """Encode a deterministic CRC32-verified SMPTE RDD-18 / MP4 `rtmd` KLV packet."""
+    hdr = bytes.fromhex(RDD18_EXPOSURE_INDEX_UL_HEX)
+    gamma_b = str(gamma_eq).encode("ascii", "replace")[:16].ljust(16, b"\x00")
+    prim_b = str(primaries).encode("ascii", "replace")[:16].ljust(16, b"\x00")
+    lut_b = str(cube_lut_path).encode("utf-8", "replace")[:48].ljust(48, b"\x00")
+    umid_b = bytes.fromhex((umid_hex or build_p129_smpte330_umid_hex()).strip().lower())
+    body = struct.pack(
+        ">16sII16s16sIII48s32s",
+        hdr,
+        int(exposure_index),
+        int(base_iso),
+        gamma_b,
+        prim_b,
+        int(fps_x1000),
+        int(shutter_angle_x10),
+        int(wb_kelvin),
+        lut_b,
+        umid_b,
+    )
+    crc = zlib.crc32(body) & 0xFFFFFFFF
+    return (body + struct.pack(">I", crc)).hex()
+
+
+def decode_p129_rdd18_klv_hex(packet_hex: str) -> dict[str, Any]:
+    """Decode and CRC32-verify an SMPTE RDD-18 / MP4 `rtmd` KLV packet."""
+    expected_len = struct.calcsize(">16sII16s16sIII48s32s") + 4
+    try:
+        raw = bytes.fromhex(packet_hex)
+    except ValueError:
+        return {"valid": False, "error": "invalid_rdd18_hex", "crc32_valid": False}
+    if len(raw) != expected_len:
+        return {"valid": False, "error": "invalid_rdd18_length", "crc32_valid": False}
+    body = raw[:-4]
+    (rx_crc,) = struct.unpack(">I", raw[-4:])
+    crc_ok = rx_crc == (zlib.crc32(body) & 0xFFFFFFFF)
+    hdr, ei, base_iso, gamma_b, prim_b, fps_x1000, sh_x10, wb_k, lut_b, umid_b = struct.unpack(
+        ">16sII16s16sIII48s32s", body
+    )
+    return {
+        "valid": bool(crc_ok and hdr == bytes.fromhex(RDD18_EXPOSURE_INDEX_UL_HEX)),
+        "crc32_valid": crc_ok,
+        "exposure_index": int(ei),
+        "base_iso": int(base_iso),
+        "capture_gamma_equation": gamma_b.rstrip(b"\x00").decode("ascii", "replace"),
+        "capture_color_primaries": prim_b.rstrip(b"\x00").decode("ascii", "replace"),
+        "fps_x1000": int(fps_x1000),
+        "shutter_angle_x10": int(sh_x10),
+        "wb_kelvin": int(wb_k),
+        "cube_lut_path": lut_b.rstrip(b"\x00").decode("utf-8", "replace"),
+        "umid_hex": umid_b.hex(),
+        "packet_bytes": len(raw),
+    }
+
+
+def sanitize_p129_umd_label_16(raw_label: str) -> str:
+    """Strip ANSI escape codes/control characters and clamp UMD label to 16 chars."""
+    no_ansi = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", raw_label)
+    cleaned = "".join(ch for ch in no_ansi if ch >= " " and ord(ch) != 0x7F).strip()
+    return cleaned[:TSL_UMD_MAX_CHARS]
+
+
+def encode_p129_tsl_umd_v5_packet(
+    *,
+    screen: int = 0,
+    index: int = 1,
+    tally_state: str = "OFF",
+    brightness: int = 3,
+    text: str = "FX3-CAM1-STUDIO",
+    tcp_dle_stx: bool = False,
+) -> str:
+    """Encode little-endian TSL UMD v5.0 UDP or TCP DLE/STX (0xFE 0x02) packet hex."""
+    t_bits = _TSL_TALLY_TO_WIRE_BITS.get(tally_state, 0)
+    clean_text = sanitize_p129_umd_label_16(text)
+    text_b = clean_text.encode("utf-8")
+    control = (
+        (t_bits & 0x03)
+        | ((t_bits & 0x03) << 2)
+        | ((t_bits & 0x03) << 4)
+        | ((brightness & 0x03) << 6)
+    )
+    dmsg = struct.pack("<HHH", int(index) & 0xFFFF, control & 0xFFFF, len(text_b) & 0xFFFF) + text_b
+    pbc = 4 + len(dmsg)
+    core = struct.pack("<HBBH", pbc, TSL_UMD_V5_VER, 0x00, int(screen) & 0xFFFF) + dmsg
+    if not tcp_dle_stx:
+        return core.hex()
+    stuffed = bytearray([TSL_UMD_DLE, TSL_UMD_STX])
+    for b in core:
+        stuffed.append(b)
+        if b == TSL_UMD_DLE:
+            stuffed.append(TSL_UMD_DLE)
+    return bytes(stuffed).hex()
+
+
+def decode_p129_tsl_umd_v5_packet(packet_hex: str, *, tcp_dle_stx: bool | None = None) -> dict[str, Any]:
+    """Decode and verify a TSL UMD v5.0 UDP or TCP DLE/STX wire packet."""
+    try:
+        raw = bytes.fromhex(str(packet_hex).strip())
+    except ValueError:
+        return {"valid": False, "error": "invalid_tsl_hex"}
+
+    use_dle = tcp_dle_stx
+    if use_dle is None:
+        use_dle = len(raw) >= 2 and raw[0] == TSL_UMD_DLE and raw[1] == TSL_UMD_STX
+
+    if use_dle:
+        if len(raw) < 2 or raw[0] != TSL_UMD_DLE or raw[1] != TSL_UMD_STX:
+            return {"valid": False, "error": "bad_tsl_dle_stx_header"}
+        unstuffed = bytearray()
+        i = 2
+        while i < len(raw):
+            b = raw[i]
+            if b == TSL_UMD_DLE:
+                if i + 1 >= len(raw) or raw[i + 1] != TSL_UMD_DLE:
+                    return {"valid": False, "error": "unescaped_tsl_dle"}
+                unstuffed.append(TSL_UMD_DLE)
+                i += 2
+            else:
+                unstuffed.append(b)
+                i += 1
+        core = bytes(unstuffed)
+    else:
+        if len(raw) > 2048:
+            return {"valid": False, "error": "tsl_udp_packet_too_large"}
+        core = raw
+
+    if len(core) < 12:
+        return {"valid": False, "error": "tsl_packet_too_short"}
+
+    pbc, ver, flags, screen = struct.unpack("<HBBH", core[:6])
+    if ver != TSL_UMD_V5_VER or pbc + 2 != len(core):
+        return {"valid": False, "error": "bad_tsl_pbc_or_version"}
+
+    idx, ctrl, length = struct.unpack("<HHH", core[6:12])
+    text_b = core[12 : 12 + length]
+    if len(text_b) != length:
+        return {"valid": False, "error": "truncated_tsl_umd_text"}
+
+    is_utf16 = bool(flags & 0x01)
+    text_str = text_b.decode("utf-16-le" if is_utf16 else "utf-8", "replace")
+    lh_tally = (ctrl >> 4) & 0x03
+    tally_state = _TSL_WIRE_BITS_TO_TALLY.get(lh_tally, "OFF")
+    return {
+        "valid": True,
+        "pbc": pbc,
+        "ver": ver,
+        "screen": screen,
+        "index": idx,
+        "lh_tally": lh_tally,
+        "tally_state": tally_state,
+        "brightness": (ctrl >> 6) & 0x03,
+        "text": sanitize_p129_umd_label_16(text_str),
+        "tcp_dle_stx": bool(use_dle),
+    }
+
+
+def _normalize_ptpv2_gm_id(raw_gm: str) -> str | None:
+    s = str(raw_gm).strip().replace("-", ":").upper()
+    parts = s.split(":")
+    if len(parts) != 8:
+        return None
+    for p in parts:
+        if len(p) != 2:
+            return None
+        try:
+            int(p, 16)
+        except ValueError:
+            return None
+    return ":".join(parts)
+
+
+def compute_mxf_ptpv2_tally_derived(
+    state: dict[str, Any],
+    *,
+    cine_ei_base: str = "800",
+    ei_index: int = 800,
+    base_fps: float = 23.98,
+    shutter_angle_deg: float = 180.0,
+    kelvin: int = 5600,
+    gamma_eq: str = "s-cinetone",
+    primaries: str = "rec709",
+    cam_id: str = "A",
+    reel_num: int = 1,
+    clip_seq: int = 1,
+    cube_lut_path: str = "R709.cube",
+    mxf_blocked_count: int = 0,
+    p12_blocked_count: int = 0,
+    last_blocked_reason: str | None = None,
+    wf12_00342260_hits: int = 0,
+) -> dict[str, Any]:
+    """Compute Phase 129 MXF/MP4 RDD-18/UMID, ST 2059-2 PTPv2/LTC servo & TSL UMD v5.0 derived state."""
+    container_mode = str(state.get("container_mode", "MP4_ISOBMFF_RTMD"))
+    if container_mode not in MXF_CONTAINER_MODES:
+        container_mode = "MP4_ISOBMFF_RTMD"
+
+    source_codec = str(state.get("source_codec", "XAVC_S_I_422_10B"))
+    if source_codec not in XAVC_REWRAP_PROFILES:
+        source_codec = "XAVC_S_I_422_10B"
+    target_codec = str(state.get("target_codec", "XAVC_I_MXF_422_10B"))
+    if target_codec not in XAVC_REWRAP_PROFILES:
+        target_codec = "XAVC_I_MXF_422_10B"
+
+    umid_hex = build_p129_smpte330_umid_hex(
+        cam_id=cam_id,
+        reel_num=reel_num,
+        clip_seq=clip_seq,
+    )
+    umid_digest8 = zlib.crc32(bytes.fromhex(umid_hex)) & 0xFF
+
+    rdd18_hex = encode_p129_rdd18_klv_hex(
+        exposure_index=int(ei_index),
+        base_iso=int(cine_ei_base),
+        gamma_eq=gamma_eq,
+        primaries=primaries,
+        fps_x1000=int(round(float(base_fps) * 1000.0)),
+        shutter_angle_x10=int(round(float(shutter_angle_deg) * 10.0)),
+        wb_kelvin=int(kelvin),
+        cube_lut_path=cube_lut_path,
+        umid_hex=umid_hex,
+    )
+    rdd18_dec = decode_p129_rdd18_klv_hex(rdd18_hex)
+
+    sync_mode = str(state.get("sync_mode", "OFF"))
+    if sync_mode not in PTP_SYNC_MODES:
+        sync_mode = "OFF"
+    gm_id = _normalize_ptpv2_gm_id(str(state.get("ptpv2_grandmaster_id", "00:1B:1B:FF:FE:20:59:02"))) or "00:1B:1B:FF:FE:20:59:02"
+    ptpv2_domain = max(0, min(255, int(state.get("ptpv2_domain", 127))))
+    eth_up = bool(state.get("ethernet_link_up", True))
+    ltc_attached = bool(state.get("ltc_multiterminal_attached", True))
+    req_offset_ns = max(0, min(PTPV2_MAX_OFFSET_NS, int(state.get("offset_ns", 184))))
+
+    if sync_mode == "PTPV2_SLAVE_WIRED":
+        if eth_up:
+            effective_sync_mode = "PTPV2_SLAVE_WIRED"
+            servo_locked = True
+            ltc_holdover_active = False
+            glitch_free_holdover = True
+            holdover_slip_frames = 0.0
+            eff_offset_ns = req_offset_ns
+        elif ltc_attached:
+            effective_sync_mode = "LTC_MULTITERMINAL_FALLBACK"
+            servo_locked = True
+            ltc_holdover_active = True
+            glitch_free_holdover = True
+            holdover_slip_frames = round(28800.0 * 0.025e-6 * float(base_fps), 4)
+            eff_offset_ns = req_offset_ns
+        else:
+            effective_sync_mode = "OFF"
+            servo_locked = False
+            ltc_holdover_active = False
+            glitch_free_holdover = False
+            holdover_slip_frames = 0.0
+            eff_offset_ns = 0
+    elif sync_mode == "LTC_MULTITERMINAL_FALLBACK":
+        if ltc_attached:
+            effective_sync_mode = "LTC_MULTITERMINAL_FALLBACK"
+            servo_locked = True
+            ltc_holdover_active = True
+            glitch_free_holdover = True
+            holdover_slip_frames = round(28800.0 * 0.025e-6 * float(base_fps), 4)
+            eff_offset_ns = req_offset_ns
+        else:
+            effective_sync_mode = "OFF"
+            servo_locked = False
+            ltc_holdover_active = False
+            glitch_free_holdover = False
+            holdover_slip_frames = 0.0
+            eff_offset_ns = 0
+    else:
+        effective_sync_mode = "OFF"
+        servo_locked = False
+        ltc_holdover_active = False
+        glitch_free_holdover = True
+        holdover_slip_frames = 0.0
+        eff_offset_ns = 0
+
+    tally_state = str(state.get("tally_state", "OFF"))
+    if tally_state not in TSL_TALLY_STATES_P129:
+        tally_state = "OFF"
+    stealth_led_mute = bool(state.get("stealth_led_mute", False))
+    osd_tally_indicator = bool(state.get("osd_tally_indicator", True))
+    umd_camera_index = max(1, min(8, int(state.get("umd_camera_index", 1))))
+    umd_label = sanitize_p129_umd_label_16(str(state.get("umd_label", "FX3-CAM1-STUDIO"))) or f"FX3-CAM{umd_camera_index}"
+    tsl_framing = str(state.get("tsl_framing", "UDP"))
+    if tsl_framing not in TSL_FRAMING_MODES:
+        tsl_framing = "UDP"
+    tcp_dle_stx = tsl_framing == "TCP_DLE_STX"
+
+    tsl_packet_hex = encode_p129_tsl_umd_v5_packet(
+        screen=0,
+        index=umd_camera_index,
+        tally_state=tally_state,
+        brightness=3,
+        text=umd_label,
+        tcp_dle_stx=tcp_dle_stx,
+    )
+    tsl_decoded = decode_p129_tsl_umd_v5_packet(tsl_packet_hex, tcp_dle_stx=tcp_dle_stx)
+
+    if stealth_led_mute:
+        front_led = False
+        top_led = False
+        rear_led = False
+    elif tally_state in ("PGM_RED", "PGM_PLUS_PVW"):
+        front_led = True
+        top_led = True
+        rear_led = True
+    else:
+        # PVW_GREEN and OFF keep physical red LEDs strictly OFF (fx6_green_gpio_faults == 0)
+        front_led = False
+        top_led = False
+        rear_led = False
+
+    if tally_state == "OFF":
+        osd_border_color = "NONE"
+    elif not osd_tally_indicator:
+        osd_border_color = "HIDDEN"
+    elif tally_state == "PVW_GREEN":
+        osd_border_color = "GREEN"
+    elif tally_state == "PGM_RED":
+        osd_border_color = "RED"
+    else:
+        osd_border_color = "RED_GREEN"
+
+    return {
+        "container_mode": container_mode,
+        "source_codec": source_codec,
+        "target_codec": target_codec,
+        "smpte330_umid_hex": umid_hex,
+        "umid_digest8": umid_digest8,
+        "rdd18_exposure_index": int(ei_index),
+        "rdd18_base_iso": int(cine_ei_base),
+        "rdd18_capture_gamma_equation": gamma_eq,
+        "rdd18_capture_color_primaries": primaries,
+        "rdd18_klv_crc32_valid": bool(rdd18_dec.get("crc32_valid", False)),
+        "rdd18_klv_packet_bytes": int(rdd18_dec.get("packet_bytes", 0)),
+        "rdd18_klv_packet_hex": rdd18_hex,
+        "essence_reencode_loss": 0,
+        "frame_essence_reencode_loss": 0,
+        "essence_sha256_preserved": True,
+        "dropped_klv_tags": 0,
+        "emmc_mutation_bytes": 0,
+        "persistent_emmc_writes_authorized": False,
+        "mxf_blocked_count": int(mxf_blocked_count),
+        "sync_mode": sync_mode,
+        "effective_sync_mode": effective_sync_mode,
+        "ptpv2_grandmaster_id": gm_id,
+        "ptpv2_domain": ptpv2_domain,
+        "ethernet_link_up": eth_up,
+        "ltc_multiterminal_attached": ltc_attached,
+        "offset_ns": eff_offset_ns,
+        "servo_locked": servo_locked,
+        "ltc_holdover_active": ltc_holdover_active,
+        "glitch_free_holdover": glitch_free_holdover,
+        "holdover_slip_frames": holdover_slip_frames,
+        "dropped_frames": 0,
+        "sync_transport": "CDC_NCM_WIRED_ETHERNET" if effective_sync_mode == "PTPV2_SLAVE_WIRED" else (
+            "15PIN_MULTITERMINAL_LTC" if effective_sync_mode == "LTC_MULTITERMINAL_FALLBACK" else "IDLE"
+        ),
+        "p12_wlan_off": True,
+        "wf12_00342260_hits": int(wf12_00342260_hits),
+        "p12_blocked_count": int(p12_blocked_count),
+        "last_blocked_reason": last_blocked_reason,
+        "tally_state": tally_state,
+        "stealth_led_mute": stealth_led_mute,
+        "osd_tally_indicator": osd_tally_indicator,
+        "fx3_front_led_on": front_led,
+        "fx3_top_led_on": top_led,
+        "fx3_rear_led_on": rear_led,
+        "fx6_green_gpio_faults": 0,
+        "osd_tally_border_color": osd_border_color,
+        "umd_camera_index": umd_camera_index,
+        "umd_camera_slot": f"CAM{umd_camera_index}",
+        "umd_label": umd_label,
+        "umd_label_len": len(umd_label),
+        "tsl_framing": tsl_framing,
+        "tsl_packet_hex": tsl_packet_hex,
+        "tsl_packet_valid": bool(tsl_decoded.get("valid", False)),
+    }
+
+
+def format_mxf_ptpv2_tally_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 129 MXFT host<->guest protocol telemetry line."""
+    return (
+        f"MXFT mxf={state['container_mode']}(umid={state['smpte330_umid_hex'][-8:]},ei={state['rdd18_exposure_index']},"
+        f"gamma={state['rdd18_capture_gamma_equation']},loss=0,emmc=0) "
+        f"sync={state['effective_sync_mode']}(gm={state['ptpv2_grandmaster_id']},ns={state['offset_ns']},"
+        f"lock={int(state['servo_locked'])},ho={int(state['ltc_holdover_active'])},p12=1,wf12={state['wf12_00342260_hits']}) "
+        f"tsl={state['tally_state']}({state['umd_camera_slot']},\"{state['umd_label']}\","
+        f"stl={int(state['stealth_led_mute'])},osd={int(state['osd_tally_indicator'])},led={int(state['fx3_front_led_on'])})"
+    )
+
+
+def validate_mxf_ptpv2_tally_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 129 MXF/RDD-18, PTPv2/LTC & TSL UMD v5.0 updates fail-closed."""
+    if not isinstance(body, dict):
+        return False, {}, {"ok": False, "error": "invalid_mxf_ptpv2_tally", "message": "Payload must be a JSON object"}
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(MXF_PTPV2_TALLY_DEFAULTS)
+
+    # 1. Fail-closed P12 Wi-Fi/BT RF-OFF guard
+    iface = str(body.get("network_interface") or body.get("sync_interface") or body.get("tsl_interface") or "").strip().lower()
+    if (
+        body.get("use_wifi") is True
+        or body.get("enable_wlan") is True
+        or body.get("enable_wifi") is True
+        or body.get("enable_bt") is True
+        or body.get("p12_wlan_off") is False
+        or iface in ("wifi", "wlan", "wlan0", "bt", "bluetooth", "ap", "sta")
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "p12_wlan_off_enforced",
+                "message": "P12 Airplane-Mode Shadow Lock enforced: Wi-Fi/BT disabled (wf12_00342260_hits=0); use wired CDC-NCM or Multi-Terminal LTC",
+                "p12_wlan_off": True,
+                "wf12_00342260_hits": 0,
+            },
+        )
+
+    # 2. Fail-closed MXF/MP4 container & SPVC/eMMC security guards
+    if body.get("raw_mxf_on_mp4_slot") is True or body.get("untranslated_mxf_write") is True:
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "raw_mxf_slot_write_blocked",
+                "message": "Untranslated raw MXF OP1a write onto FX3 MP4 card slot blocked; use lossless container bridge",
+                "emmc_mutation_bytes": 0,
+            },
+        )
+    if (
+        body.get("spoof_spvc") is True
+        or body.get("spvc_cert_spoof") is True
+        or body.get("emmc_write") is True
+        or body.get("nvram_tamper") is True
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "spvc_cert_spoof_blocked",
+                "message": "SPVC certificate spoofing / persistent eMMC write blocked (emmc_mutation_bytes=0)",
+                "emmc_mutation_bytes": 0,
+            },
+        )
+
+    # 3. Fail-closed PTP-IP vs ST 2059-2 confusion & UART/LTC pin conflict
+    if body.get("ptp_ip_15740_as_st2059") is True or body.get("use_ptpip_for_genlock") is True:
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "ptpip_not_st2059_ptpv2",
+                "message": "CRSDK PTP-IP (TCP 15740) is camera remote control, not SMPTE ST 2059-2 PTPv2 phase sync",
+            },
+        )
+    if body.get("uart_boot_active") is True:
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "uart_boot_ltc_pin_conflict",
+                "message": "15-Pin Multi-Terminal VMC-BNCM1 LTC conflicts with UART boot console",
+            },
+        )
+
+    # 4. Container Mode & Codec Lossless Rewrap Check
+    if "container_mode" in body and body["container_mode"] is not None:
+        raw_cm = body["container_mode"]
+        if not isinstance(raw_cm, str):
+            return False, {}, {"ok": False, "error": "invalid_container_mode", "message": f"Invalid container_mode: {raw_cm!r}"}
+        cm_norm = _MXF_CONTAINER_ALIASES.get(raw_cm.strip().lower())
+        if cm_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_container_mode", "message": f"Unsupported container_mode: {raw_cm!r}", "allowed": list(MXF_CONTAINER_MODES)},
+            )
+        updates["container_mode"] = cm_norm
+
+    cur_src = str((current_state or {}).get("source_codec", "XAVC_S_I_422_10B"))
+    cur_dst = str((current_state or {}).get("target_codec", "XAVC_I_MXF_422_10B"))
+    if "source_codec" in body and body["source_codec"] is not None:
+        s_c = str(body["source_codec"]).strip().upper()
+        if s_c not in XAVC_REWRAP_PROFILES:
+            return False, {}, {"ok": False, "error": "cross_codec_lossless_rewrap_blocked", "message": f"Unsupported source_codec for lossless bridge: {s_c!r}"}
+        cur_src = s_c
+        updates["source_codec"] = s_c
+    if "target_codec" in body and body["target_codec"] is not None:
+        t_c = str(body["target_codec"]).strip().upper()
+        if t_c not in XAVC_REWRAP_PROFILES:
+            return False, {}, {"ok": False, "error": "cross_codec_lossless_rewrap_blocked", "message": f"Unsupported target_codec for lossless bridge: {t_c!r}"}
+        cur_dst = t_c
+        updates["target_codec"] = t_c
+    if _XAVC_CODEC_FAMILY.get(cur_src) != _XAVC_CODEC_FAMILY.get(cur_dst):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "cross_codec_lossless_rewrap_blocked",
+                "message": f"Cross-codec lossless rewrap rejected: {cur_src} -> {cur_dst} requires matching essence family",
+                "frame_essence_reencode_loss": 0,
+            },
+        )
+
+    # 5. SMPTE ST 2059-2 PTPv2 & LTC Holdover Parameters
+    if "sync_mode" in body and body["sync_mode"] is not None:
+        raw_sm = body["sync_mode"]
+        if not isinstance(raw_sm, str):
+            return False, {}, {"ok": False, "error": "invalid_sync_mode", "message": f"Invalid sync_mode: {raw_sm!r}"}
+        sm_norm = _PTP_SYNC_ALIASES.get(raw_sm.strip().lower())
+        if sm_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_sync_mode", "message": f"Unsupported sync_mode: {raw_sm!r}", "allowed": list(PTP_SYNC_MODES)},
+            )
+        updates["sync_mode"] = sm_norm
+
+    if "ptpv2_grandmaster_id" in body and body["ptpv2_grandmaster_id"] is not None:
+        gm_norm = _normalize_ptpv2_gm_id(str(body["ptpv2_grandmaster_id"]))
+        if gm_norm is None:
+            return False, {}, {"ok": False, "error": "invalid_ptpv2_grandmaster_id", "message": "ptpv2_grandmaster_id must be 8-octet hex EUI-64 (XX:XX:XX:XX:XX:XX:XX:XX)"}
+        updates["ptpv2_grandmaster_id"] = gm_norm
+
+    if "ptpv2_domain" in body and body["ptpv2_domain"] is not None:
+        raw_dom = body["ptpv2_domain"]
+        if isinstance(raw_dom, bool) or not isinstance(raw_dom, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_ptpv2_domain", "message": "ptpv2_domain must be integer in [0, 255]"}
+        try:
+            f_dom = float(raw_dom)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_ptpv2_domain", "message": "ptpv2_domain must be integer in [0, 255]"}
+        if not math.isfinite(f_dom) or f_dom != float(int(f_dom)) or int(f_dom) < 0 or int(f_dom) > 255:
+            return False, {}, {"ok": False, "error": "invalid_ptpv2_domain", "message": "ptpv2_domain must be integer in [0, 255]"}
+        updates["ptpv2_domain"] = int(f_dom)
+
+    if "ethernet_link_up" in body and body["ethernet_link_up"] is not None:
+        if not isinstance(body["ethernet_link_up"], bool):
+            return False, {}, {"ok": False, "error": "invalid_ethernet_link_up", "message": "ethernet_link_up must be bool"}
+        updates["ethernet_link_up"] = body["ethernet_link_up"]
+
+    if "ltc_multiterminal_attached" in body and body["ltc_multiterminal_attached"] is not None:
+        if not isinstance(body["ltc_multiterminal_attached"], bool):
+            return False, {}, {"ok": False, "error": "invalid_ltc_multiterminal_attached", "message": "ltc_multiterminal_attached must be bool"}
+        updates["ltc_multiterminal_attached"] = body["ltc_multiterminal_attached"]
+
+    eff_sync = updates.get("sync_mode", (current_state or {}).get("sync_mode", "OFF"))
+    eff_ltc = updates.get("ltc_multiterminal_attached", (current_state or {}).get("ltc_multiterminal_attached", True))
+    if eff_sync == "LTC_MULTITERMINAL_FALLBACK" and not eff_ltc:
+        return False, {}, {"ok": False, "error": "ltc_source_absent", "message": "15-Pin Multi-Terminal LTC source not attached"}
+
+    if "offset_ns" in body and body["offset_ns"] is not None:
+        raw_ns = body["offset_ns"]
+        if isinstance(raw_ns, bool) or not isinstance(raw_ns, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_offset_ns", "message": "offset_ns must be non-negative integer"}
+        try:
+            f_ns = float(raw_ns)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_offset_ns", "message": "offset_ns must be non-negative integer"}
+        if not math.isfinite(f_ns) or f_ns != float(int(f_ns)) or int(f_ns) < 0:
+            return False, {}, {"ok": False, "error": "invalid_offset_ns", "message": "offset_ns must be non-negative integer"}
+        if int(f_ns) > PTPV2_MAX_OFFSET_NS:
+            return False, {}, {"ok": False, "error": "ptpv2_offset_budget_exceeded", "message": f"PTPv2 phase offset {int(f_ns)}ns exceeds <500ns (<0.5us) ST 2059-2 servo budget"}
+        updates["offset_ns"] = int(f_ns)
+
+    # 6. TSL UMD v5.0 Wire Packet Injection (Optional) or Direct Fields
+    if "tsl_framing" in body and body["tsl_framing"] is not None:
+        raw_fr = body["tsl_framing"]
+        if not isinstance(raw_fr, str):
+            return False, {}, {"ok": False, "error": "invalid_tsl_framing", "message": f"Invalid tsl_framing: {raw_fr!r}"}
+        fr_norm = _TSL_FRAMING_ALIASES.get(raw_fr.strip().lower())
+        if fr_norm is None:
+            return False, {}, {"ok": False, "error": "invalid_tsl_framing", "message": f"Unsupported tsl_framing: {raw_fr!r}", "allowed": list(TSL_FRAMING_MODES)}
+        updates["tsl_framing"] = fr_norm
+
+    if "tsl_packet_hex" in body and body["tsl_packet_hex"] is not None and body.get("_from_camset") is not True:
+        dec = decode_p129_tsl_umd_v5_packet(str(body["tsl_packet_hex"]))
+        if not dec.get("valid"):
+            return False, {}, {"ok": False, "error": "invalid_tsl_umd_v5_packet", "message": f"Malformed TSL UMD v5.0 packet: {dec.get('error')}"}
+        updates["tally_state"] = str(dec["tally_state"])
+        idx_clamped = max(1, min(8, int(dec["index"])))
+        updates["umd_camera_index"] = idx_clamped
+        if dec.get("text"):
+            updates["umd_label"] = str(dec["text"])
+        updates["tsl_framing"] = "TCP_DLE_STX" if dec.get("tcp_dle_stx") else "UDP"
+
+    if "tally_state" in body and body["tally_state"] is not None:
+        raw_ts = body["tally_state"]
+        if not isinstance(raw_ts, str):
+            return False, {}, {"ok": False, "error": "invalid_tally_state", "message": f"Invalid tally_state: {raw_ts!r}"}
+        ts_norm = _TSL_TALLY_ALIASES.get(raw_ts.strip().lower())
+        if ts_norm is None:
+            return False, {}, {"ok": False, "error": "invalid_tally_state", "message": f"Unsupported tally_state: {raw_ts!r}", "allowed": list(TSL_TALLY_STATES_P129)}
+        updates["tally_state"] = ts_norm
+
+    if "stealth_led_mute" in body and body["stealth_led_mute"] is not None:
+        if not isinstance(body["stealth_led_mute"], bool):
+            return False, {}, {"ok": False, "error": "invalid_stealth_led_mute", "message": "stealth_led_mute must be bool"}
+        updates["stealth_led_mute"] = body["stealth_led_mute"]
+
+    if "osd_tally_indicator" in body and body["osd_tally_indicator"] is not None:
+        if not isinstance(body["osd_tally_indicator"], bool):
+            return False, {}, {"ok": False, "error": "invalid_osd_tally_indicator", "message": "osd_tally_indicator must be bool"}
+        updates["osd_tally_indicator"] = body["osd_tally_indicator"]
+
+    if "umd_camera_index" in body and body["umd_camera_index"] is not None:
+        raw_ci = body["umd_camera_index"]
+        if isinstance(raw_ci, bool) or not isinstance(raw_ci, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_umd_camera_index", "message": "umd_camera_index must be integer in [1, 8]"}
+        try:
+            f_ci = float(raw_ci)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_umd_camera_index", "message": "umd_camera_index must be integer in [1, 8]"}
+        if not math.isfinite(f_ci) or f_ci != float(int(f_ci)) or int(f_ci) < 1 or int(f_ci) > 8:
+            return False, {}, {"ok": False, "error": "invalid_umd_camera_index", "message": "umd_camera_index must be integer in [1, 8]"}
+        updates["umd_camera_index"] = int(f_ci)
+
+    if "umd_label" in body and body["umd_label"] is not None:
+        if not isinstance(body["umd_label"], str):
+            return False, {}, {"ok": False, "error": "invalid_umd_label", "message": "umd_label must be a string"}
+        cleaned_lbl = sanitize_p129_umd_label_16(body["umd_label"])
+        if not cleaned_lbl:
+            return False, {}, {"ok": False, "error": "invalid_umd_label", "message": "umd_label cannot be empty after sanitization"}
+        updates["umd_label"] = cleaned_lbl
+
+    return True, updates, None
+
+
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
     return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
@@ -8112,6 +8971,27 @@ class FX6LiveGpe0Session:
                     "crsdk_ptp_mode": self.crsdk_ptp_mode,
                 }
             )
+        )
+        self.container_mode = str(MXF_PTPV2_TALLY_DEFAULTS["container_mode"])
+        self.source_codec = str(MXF_PTPV2_TALLY_DEFAULTS["source_codec"])
+        self.target_codec = str(MXF_PTPV2_TALLY_DEFAULTS["target_codec"])
+        self.sync_mode = str(MXF_PTPV2_TALLY_DEFAULTS["sync_mode"])
+        self.ptpv2_grandmaster_id = str(MXF_PTPV2_TALLY_DEFAULTS["ptpv2_grandmaster_id"])
+        self.ptpv2_domain = int(MXF_PTPV2_TALLY_DEFAULTS["ptpv2_domain"])
+        self.ethernet_link_up = bool(MXF_PTPV2_TALLY_DEFAULTS["ethernet_link_up"])
+        self.ltc_multiterminal_attached = bool(MXF_PTPV2_TALLY_DEFAULTS["ltc_multiterminal_attached"])
+        self.offset_ns = int(MXF_PTPV2_TALLY_DEFAULTS["offset_ns"])
+        self.tally_state = str(MXF_PTPV2_TALLY_DEFAULTS["tally_state"])
+        self.stealth_led_mute = bool(MXF_PTPV2_TALLY_DEFAULTS["stealth_led_mute"])
+        self.osd_tally_indicator = bool(MXF_PTPV2_TALLY_DEFAULTS["osd_tally_indicator"])
+        self.umd_camera_index = int(MXF_PTPV2_TALLY_DEFAULTS["umd_camera_index"])
+        self.umd_label = str(MXF_PTPV2_TALLY_DEFAULTS["umd_label"])
+        self.tsl_framing = str(MXF_PTPV2_TALLY_DEFAULTS["tsl_framing"])
+        self.p129_mxf_blocked_count = 0
+        self.p129_p12_blocked_count = 0
+        self.p129_last_blocked_reason: str | None = None
+        self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(
+            compute_mxf_ptpv2_tally_derived(dict(MXF_PTPV2_TALLY_DEFAULTS))
         )
         self.last_toast = ""
         self.table_off = ALL_128_PAGES[0]["off"] if ALL_128_PAGES else 0x02E90FB0
@@ -9130,8 +10010,84 @@ class FX6LiveGpe0Session:
         mb63 = 0x55564353  # 'UVCS'
         return struct.pack("<4I", mb60, mb61, mb62, mb63)
 
+    def _pack_phase129_mailbox_bytes(self) -> bytes:
+        """Pack Phase 129 guest control mailbox mb[64..67] (16 bytes, 'MXFT') matching fx6_live_guest.c."""
+        p129 = self.get_mxf_ptpv2_tally()
+        container_idx = _MXF_CONTAINER_TO_IDX.get(str(p129["container_mode"]), 0)
+        umid_digest8 = int(p129["umid_digest8"]) & 0xFF
+        gamma_idx = _GAMMA_TO_P129_IDX.get(str(p129["rdd18_capture_gamma_equation"]), 0)
+        ei_div100 = max(2, min(1023, int(p129["rdd18_exposure_index"]) // 100))
+        zero_loss = 1 if int(p129["essence_reencode_loss"]) == 0 else 0
+        emmc_zero = 1 if int(p129["emmc_mutation_bytes"]) == 0 else 0
+        klv_valid = 1 if p129["rdd18_klv_crc32_valid"] else 0
+        mxf_blk_cnt = max(0, min(7, int(p129["mxf_blocked_count"])))
+        mxf_blk_flag = 1 if mxf_blk_cnt > 0 else 0
+
+        mb64 = (
+            (container_idx & 0x3)
+            | ((umid_digest8 & 0xFF) << 2)
+            | ((gamma_idx & 0xF) << 10)
+            | ((ei_div100 & 0x3FF) << 14)
+            | ((zero_loss & 0x1) << 24)
+            | ((emmc_zero & 0x1) << 25)
+            | ((klv_valid & 0x1) << 26)
+            | ((mxf_blk_flag & 0x1) << 27)
+            | ((mxf_blk_cnt & 0x7) << 28)
+            | (1 << 31)
+        )
+
+        eff_sync_idx = _PTP_SYNC_TO_IDX.get(str(p129["effective_sync_mode"]), 0)
+        servo_locked = 1 if p129["servo_locked"] else 0
+        ltc_ho = 1 if p129["ltc_holdover_active"] else 0
+        p12_wlan_off = 1 if p129["p12_wlan_off"] else 0
+        wf12_zero = 1 if int(p129["wf12_00342260_hits"]) == 0 else 0
+        cdc_ncm_ok = 1
+        offset_ns = max(0, min(4095, int(p129["offset_ns"])))
+        slip_mf = max(0, min(63, int(round(float(p129["holdover_slip_frames"]) * 1000.0))))
+        p12_blk_cnt = max(0, min(63, int(p129["p12_blocked_count"])))
+
+        mb65 = (
+            (eff_sync_idx & 0x3)
+            | ((servo_locked & 0x1) << 2)
+            | ((ltc_ho & 0x1) << 3)
+            | ((p12_wlan_off & 0x1) << 4)
+            | ((wf12_zero & 0x1) << 5)
+            | ((cdc_ncm_ok & 0x1) << 6)
+            | ((offset_ns & 0xFFF) << 7)
+            | ((slip_mf & 0x3F) << 19)
+            | ((p12_blk_cnt & 0x3F) << 25)
+            | (1 << 31)
+        )
+
+        tally_idx = _TSL_TALLY_TO_IDX.get(str(p129["tally_state"]), 0)
+        stealth_mute = 1 if p129["stealth_led_mute"] else 0
+        osd_ind = 1 if p129["osd_tally_indicator"] else 0
+        tcp_dle = 1 if p129["tsl_framing"] == "TCP_DLE_STX" else 0
+        green_ok = 1 if int(p129["fx6_green_gpio_faults"]) == 0 else 0
+        cam_slot_0to7 = max(0, min(7, int(p129["umd_camera_index"]) - 1))
+        umd_tag = (0x46 << 10) | (0x58 << 17) | (0x33 << 24)
+
+        mb66 = (
+            (tally_idx & 0x3)
+            | ((stealth_mute & 0x1) << 2)
+            | ((osd_ind & 0x1) << 3)
+            | ((p12_wlan_off & 0x1) << 4)
+            | ((tcp_dle & 0x1) << 5)
+            | ((green_ok & 0x1) << 6)
+            | ((cam_slot_0to7 & 0x7) << 7)
+            | umd_tag
+            | (1 << 31)
+        )
+        mb67 = 0x4D584654  # 'MXFT'
+        return struct.pack("<4I", mb64, mb65, mb66, mb67)
+
+    def _pack_phase129_umd_bytes(self) -> bytes:
+        """Pack Phase 129 16-char dynamic camera UMD label into mb[68..71] (16 bytes)."""
+        raw_b = sanitize_p129_umd_label_16(self.umd_label).encode("utf-8", "replace")[:16]
+        return raw_b.ljust(16, b"\x00")
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..63] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..71] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
@@ -9144,6 +10100,8 @@ class FX6LiveGpe0Session:
             + self._pack_phase109_mailbox_bytes()
             + self._pack_phase116_mailbox_bytes()
             + self._pack_phase123_mailbox_bytes()
+            + self._pack_phase129_mailbox_bytes()
+            + self._pack_phase129_umd_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -9780,6 +10738,7 @@ class FX6LiveGpe0Session:
                             self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
                             self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
                             self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+                            self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
                     elif key == "shutter":
                         shutter_map = [
                             ("angle", 180.0, None),
@@ -9798,6 +10757,7 @@ class FX6LiveGpe0Session:
                             if den is not None:
                                 self.shutter_speed_denom = den
                             self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                            self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
                     elif key == "lut":
                         lut_look_map = [
                             "S-Cinetone",
@@ -9817,6 +10777,7 @@ class FX6LiveGpe0Session:
                             self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
                             self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
                             self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+                            self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
                     elif key == "wb":
                         wb_cell_map = [
                             ("preset_5600k", 5600),
@@ -10146,6 +11107,7 @@ class FX6LiveGpe0Session:
             self.ext_raw_mode = "Atomos_ProRes_RAW_16_12L"
         self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
         self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+        self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -10276,6 +11238,7 @@ class FX6LiveGpe0Session:
         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
         self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
         self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+        self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
 
     def set_color_and_media(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -10328,6 +11291,7 @@ class FX6LiveGpe0Session:
             p109 = self.get_mc_fleet_sdi_c2pa()
             p116 = self.get_hdr_hlg_raw_breathing()
             p123 = self.get_uvc_srt_crsdk_ptp()
+            p129 = self.get_mxf_ptpv2_tally()
             active_user = self._active_user_lut_for_color()
         xml_text = build_nrtm_xml_sidecar(
             ce,
@@ -10339,6 +11303,7 @@ class FX6LiveGpe0Session:
             mc_fleet_sdi_c2pa=p109,
             hdr_hlg_raw_breathing=p116,
             uvc_srt_crsdk_ptp=p123,
+            mxf_ptpv2_tally=p129,
         )
         return {
             "ok": True,
@@ -10359,6 +11324,7 @@ class FX6LiveGpe0Session:
             "mc_fleet_sdi_c2pa": p109,
             "hdr_hlg_raw_breathing": p116,
             "uvc_srt_crsdk_ptp": p123,
+            "mxf_ptpv2_tally": p129,
         }
 
     def get_mc_fleet_sdi_c2pa(self) -> dict[str, Any]:
@@ -10731,6 +11697,7 @@ class FX6LiveGpe0Session:
         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
         self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
         self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+        self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
 
     def set_uvc_srt_crsdk_ptp(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -10804,6 +11771,172 @@ class FX6LiveGpe0Session:
                 "uvc_osd_burnin_px": 0,
                 "p4_nd_clear_enforced": True,
                 "crsdk_nd_clamped": bool(updates.get("crsdk_nd_clamped", False)),
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def get_mxf_ptpv2_tally(self) -> dict[str, Any]:
+        ce = self.get_cine_exposure()
+        cm = self.get_color_and_media()
+        active_lut = self._active_user_lut_for_color()
+        cube_lut_path = str((active_lut or {}).get("title") or BASE_LOOK_NLE_TAGS.get(self.base_look, {}).get("lut", "R709.cube"))
+        state = compute_mxf_ptpv2_tally_derived(
+            {
+                "container_mode": self.container_mode,
+                "source_codec": self.source_codec,
+                "target_codec": self.target_codec,
+                "sync_mode": self.sync_mode,
+                "ptpv2_grandmaster_id": self.ptpv2_grandmaster_id,
+                "ptpv2_domain": self.ptpv2_domain,
+                "ethernet_link_up": self.ethernet_link_up,
+                "ltc_multiterminal_attached": self.ltc_multiterminal_attached,
+                "offset_ns": self.offset_ns,
+                "tally_state": self.tally_state,
+                "stealth_led_mute": self.stealth_led_mute,
+                "osd_tally_indicator": self.osd_tally_indicator,
+                "umd_camera_index": self.umd_camera_index,
+                "umd_label": self.umd_label,
+                "tsl_framing": self.tsl_framing,
+            },
+            cine_ei_base=str(ce["cine_ei_base"]),
+            ei_index=int(ce["ei_index"]),
+            base_fps=float(ce["base_fps"]),
+            shutter_angle_deg=float(ce["shutter_angle_deg"]),
+            kelvin=int(cm["kelvin"]),
+            gamma_eq=str(cm["capture_gamma_equation"]),
+            primaries=str(cm["capture_color_primaries"]),
+            cam_id=str(cm["cam_id"]),
+            reel_num=int(cm["reel_num"]),
+            clip_seq=int(cm["clip_seq"]),
+            cube_lut_path=cube_lut_path,
+            mxf_blocked_count=self.p129_mxf_blocked_count,
+            p12_blocked_count=self.p129_p12_blocked_count,
+            last_blocked_reason=self.p129_last_blocked_reason,
+            wf12_00342260_hits=self.wf12_00342260_hits,
+        )
+        state["mxf_ptpv2_tally_cmd"] = format_mxf_ptpv2_tally_command(state)
+        return state
+
+    def _apply_mxf_ptpv2_tally_updates_locked(
+        self,
+        updates: dict[str, Any],
+        *,
+        is_reset: bool = False,
+    ) -> None:
+        if is_reset:
+            self.p129_mxf_blocked_count = 0
+            self.p129_p12_blocked_count = 0
+            self.p129_last_blocked_reason = None
+        if "container_mode" in updates:
+            self.container_mode = str(updates["container_mode"])
+        if "source_codec" in updates:
+            self.source_codec = str(updates["source_codec"])
+        if "target_codec" in updates:
+            self.target_codec = str(updates["target_codec"])
+        if "sync_mode" in updates:
+            self.sync_mode = str(updates["sync_mode"])
+        if "ptpv2_grandmaster_id" in updates:
+            self.ptpv2_grandmaster_id = str(updates["ptpv2_grandmaster_id"])
+        if "ptpv2_domain" in updates:
+            self.ptpv2_domain = int(updates["ptpv2_domain"])
+        if "ethernet_link_up" in updates:
+            self.ethernet_link_up = bool(updates["ethernet_link_up"])
+        if "ltc_multiterminal_attached" in updates:
+            self.ltc_multiterminal_attached = bool(updates["ltc_multiterminal_attached"])
+        if "offset_ns" in updates:
+            self.offset_ns = int(updates["offset_ns"])
+        if "tally_state" in updates:
+            self.tally_state = str(updates["tally_state"])
+        if "stealth_led_mute" in updates:
+            self.stealth_led_mute = bool(updates["stealth_led_mute"])
+        if "osd_tally_indicator" in updates:
+            self.osd_tally_indicator = bool(updates["osd_tally_indicator"])
+        if "umd_camera_index" in updates:
+            self.umd_camera_index = int(updates["umd_camera_index"])
+        if "umd_label" in updates:
+            self.umd_label = str(updates["umd_label"])
+        if "tsl_framing" in updates:
+            self.tsl_framing = str(updates["tsl_framing"])
+
+        self.wf12_00342260_hits = 0
+        self.p12_bk4_airplane_mode_locked = True
+        self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
+
+    def set_mxf_ptpv2_tally(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "container_mode": self.container_mode,
+                "source_codec": self.source_codec,
+                "target_codec": self.target_codec,
+                "sync_mode": self.sync_mode,
+                "ptpv2_grandmaster_id": self.ptpv2_grandmaster_id,
+                "ptpv2_domain": self.ptpv2_domain,
+                "ethernet_link_up": self.ethernet_link_up,
+                "ltc_multiterminal_attached": self.ltc_multiterminal_attached,
+                "offset_ns": self.offset_ns,
+                "tally_state": self.tally_state,
+                "stealth_led_mute": self.stealth_led_mute,
+                "osd_tally_indicator": self.osd_tally_indicator,
+                "umd_camera_index": self.umd_camera_index,
+                "umd_label": self.umd_label,
+                "tsl_framing": self.tsl_framing,
+            }
+            ok, updates, err = validate_mxf_ptpv2_tally_patch(body, current_state=cur)
+            if not ok:
+                err_code = (err or {}).get("error")
+                if err_code == "p12_wlan_off_enforced":
+                    self.p129_p12_blocked_count += 1
+                    self.p129_last_blocked_reason = err_code
+                    self.last_toast = str(err.get("message", "P12 Airplane-Mode Wi-Fi-OFF enforced"))
+                    self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
+                    self._sync_mailbox_and_capture()
+                    err["p12_blocked_count"] = self.p129_p12_blocked_count
+                    err["p12_wlan_off"] = True
+                    err["wf12_00342260_hits"] = 0
+                    err["mxf_ptpv2_tally"] = self.get_mxf_ptpv2_tally()
+                    err["status"] = self.get_status()
+                elif err_code in (
+                    "raw_mxf_slot_write_blocked",
+                    "spvc_cert_spoof_blocked",
+                    "cross_codec_lossless_rewrap_blocked",
+                ):
+                    self.p129_mxf_blocked_count += 1
+                    self.p129_last_blocked_reason = err_code
+                    self.last_toast = str(err.get("message", "MXF/SPVC write blocked"))
+                    self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
+                    self._sync_mailbox_and_capture()
+                    err["mxf_blocked_count"] = self.p129_mxf_blocked_count
+                    err["emmc_mutation_bytes"] = 0
+                    err["essence_reencode_loss"] = 0
+                    err["mxf_ptpv2_tally"] = self.get_mxf_ptpv2_tally()
+                    err["status"] = self.get_status()
+                elif err_code in ("ptpip_not_st2059_ptpv2", "uart_boot_ltc_pin_conflict"):
+                    self.p129_last_blocked_reason = err_code
+                    self.last_toast = str(err.get("message", "PTPv2/LTC guard blocked"))
+                    err["mxf_ptpv2_tally"] = self.get_mxf_ptpv2_tally()
+                    err["status"] = self.get_status()
+                return err or {"ok": False, "error": "invalid_mxf_ptpv2_tally"}
+
+            is_reset = isinstance(body, dict) and body.get("reset") is True
+            self._apply_mxf_ptpv2_tally_updates_locked(updates, is_reset=is_reset)
+            p129 = self.get_mxf_ptpv2_tally()
+            self.last_toast = (
+                f"Phase129: MXF={p129['container_mode']}(UMID={p129['smpte330_umid_hex'][-8:]},Loss=0) | "
+                f"Sync={p129['effective_sync_mode']}({p129['offset_ns']}ns,P12=1) | "
+                f"TSL={p129['tally_state']}({p129['umd_camera_slot']}:{p129['umd_label']})"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "mxf_ptpv2_tally": p129,
+                "mxf_ptpv2_tally_cmd": p129["mxf_ptpv2_tally_cmd"],
+                "p12_wlan_off": True,
+                "wf12_00342260_hits": 0,
+                "emmc_mutation_bytes": 0,
+                "essence_reencode_loss": 0,
+                "fx6_green_gpio_faults": 0,
                 "toast": self.last_toast,
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
@@ -11375,6 +12508,7 @@ class FX6LiveGpe0Session:
             "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
             "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
             "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
+            "mxf_ptpv2_tally": self.get_mxf_ptpv2_tally(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -11899,6 +13033,55 @@ class FX6LiveGpe0Session:
             if not ok_p123:
                 return err_p123 or {"ok": False, "error": "invalid_uvc_srt_crsdk_ptp"}
 
+        p129_raw = payload.get("mxf_ptpv2_tally")
+        new_p129_updates: dict[str, Any] = {}
+        if p129_raw is not None:
+            if not isinstance(p129_raw, dict):
+                return {"ok": False, "error": "invalid_mxf_ptpv2_tally", "message": "mxf_ptpv2_tally must be a JSON object"}
+            if p129_raw.get("emmc_mutation_bytes") not in (None, 0) or p129_raw.get("persistent_emmc_writes_authorized") is True:
+                return {
+                    "ok": False,
+                    "error": "spvc_cert_spoof_blocked",
+                    "message": "SPVC / persistent eMMC mutation forbidden in CAMSET import (emmc_mutation_bytes=0)",
+                    "emmc_mutation_bytes": 0,
+                }
+            if p129_raw.get("essence_reencode_loss") not in (None, 0) or p129_raw.get("frame_essence_reencode_loss") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "cross_codec_lossless_rewrap_blocked",
+                    "message": "Non-zero essence re-encode loss forbidden in CAMSET import",
+                    "essence_reencode_loss": 0,
+                }
+            if p129_raw.get("fx6_green_gpio_faults") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "invalid_mxf_ptpv2_tally",
+                    "message": "FX3 body lacks physical green tally LED GPIO (fx6_green_gpio_faults must be 0)",
+                }
+            cur_p129 = {
+                "container_mode": self.container_mode,
+                "source_codec": self.source_codec,
+                "target_codec": self.target_codec,
+                "sync_mode": self.sync_mode,
+                "ptpv2_grandmaster_id": self.ptpv2_grandmaster_id,
+                "ptpv2_domain": self.ptpv2_domain,
+                "ethernet_link_up": self.ethernet_link_up,
+                "ltc_multiterminal_attached": self.ltc_multiterminal_attached,
+                "offset_ns": self.offset_ns,
+                "tally_state": self.tally_state,
+                "stealth_led_mute": self.stealth_led_mute,
+                "osd_tally_indicator": self.osd_tally_indicator,
+                "umd_camera_index": self.umd_camera_index,
+                "umd_label": self.umd_label,
+                "tsl_framing": self.tsl_framing,
+            }
+            ok_p129, new_p129_updates, err_p129 = validate_mxf_ptpv2_tally_patch(
+                {**p129_raw, "_from_camset": True},
+                current_state=cur_p129,
+            )
+            if not ok_p129:
+                return err_p129 or {"ok": False, "error": "invalid_mxf_ptpv2_tally"}
+
         p12_clamped = (
             (payload.get("p12_bk4_airplane_mode_locked") is False)
             or ce_p12_tamper
@@ -12093,6 +13276,16 @@ class FX6LiveGpe0Session:
                     self.get_uvc_srt_crsdk_ptp()
                 )
 
+            if p129_raw is not None:
+                self._apply_mxf_ptpv2_tally_updates_locked(
+                    new_p129_updates,
+                    is_reset=bool(p129_raw.get("reset") is True),
+                )
+            else:
+                self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(
+                    self.get_mxf_ptpv2_tally()
+                )
+
             if p4_rejected:
                 self.last_toast = (
                     f"P4 ND=Clear Lock Enforced: rejected ND={nd_tamper_val!r} in CAMSET "
@@ -12139,6 +13332,7 @@ class FX6LiveGpe0Session:
                 "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
                 "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
                 "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
+                "mxf_ptpv2_tally": self.get_mxf_ptpv2_tally(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -12830,6 +14024,7 @@ class FX6LiveGpe0Session:
             "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
             "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
             "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
+            "mxf_ptpv2_tally": self.get_mxf_ptpv2_tally(),
             "serial_tail": serial_tail,
         }
 
@@ -13711,6 +14906,86 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
 
+    <div class="card" id="phase129-mxf-ptpv2-tally-card" style="margin-top:14px;border-color:#ef4444;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p129-card-title" style="margin:0;">Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p129-lang-en" onclick="setP129Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p129-lang-zh-CN" onclick="setP129Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;">简体中文</button>
+          <button id="p129-lang-zh-TW" onclick="setP129Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p129-lang-ja" onclick="setP129Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p129-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p129-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p129-lbl-mxf">XAVC MXF OP1a ↔ MP4 RDD-18 / UMID Bridge</span><span id="p129-mxf-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">MP4_ISOBMFF_RTMD · LOSS=0</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p129-container-select" onchange="setPhase129State({container_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="MP4_ISOBMFF_RTMD">MP4 ISOBMFF + RTMD</option>
+              <option value="MXF_OP1A_RDD09_WRAP">MXF OP1a RDD-09 Rewrap</option>
+              <option value="DUAL_MP4_PLUS_MXF_SIDECAR">Dual MP4 + MXF Sidecar</option>
+            </select>
+            <button id="p129-btn-test-raw-mxf" onclick="setPhase129State({raw_mxf_on_mp4_slot: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block Raw MXF</button>
+            <button id="p129-btn-test-spvc" onclick="setPhase129State({spoof_spvc: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block SPVC</button>
+          </div>
+          <div id="p129-mxf-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">UMID=... | RDD-18 EI=800 | Loss=0 eMMC=0B</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#22d3ee;">
+          <div class="cparam-head"><span id="p129-lbl-ptpv2">SMPTE ST 2059-2 PTPv2 vs LTC Servo (P12)</span><span id="p129-ptp-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · P12=1</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p129-sync-select" onchange="setPhase129State({sync_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">Sync OFF</option>
+              <option value="PTPV2_SLAVE_WIRED">ST 2059-2 PTPv2 (Wired)</option>
+              <option value="LTC_MULTITERMINAL_FALLBACK">LTC Multi-Terminal Holdover</option>
+            </select>
+            <input id="p129-offset-input" type="number" min="0" max="499" value="184" title="PTPv2 Offset (ns)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p129-btn-apply-ptp" onclick="applyPhase129PtpParams()" style="padding:3px 7px;font-size:10.5px;border-color:#22d3ee;">Apply</button>
+            <button id="p129-btn-unplug-eth" onclick="setPhase129State({sync_mode:'PTPV2_SLAVE_WIRED', ethernet_link_up: false})" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Unplug ETH -> LTC</button>
+            <button id="p129-btn-test-wifi" onclick="setPhase129State({use_wifi: true})" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test P12 Wi-Fi</button>
+          </div>
+          <div id="p129-ptp-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">GM=00:1B:1B:FF:FE:20:59:02 | Lock=0 | P12=1 wf12=0</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#ef4444;">
+          <div class="cparam-head"><span id="p129-lbl-tally">TSL UMD v5.0 Broadcast Tally &amp; 16-Char UMD</span><span id="p129-tally-badge" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">OFF · CAM1</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p129-tally-select" onchange="setPhase129State({tally_state: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">Tally OFF</option>
+              <option value="PVW_GREEN">PVW Green (OSD Preview)</option>
+              <option value="PGM_RED">PGM Red (Live On-Air)</option>
+              <option value="PGM_PLUS_PVW">PGM + PVW Dual</option>
+            </select>
+            <select id="p129-cam-select" onchange="setPhase129State({umd_camera_index: Number(this.value)})" style="width:74px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="1">CAM1</option><option value="2">CAM2</option><option value="3">CAM3</option><option value="4">CAM4</option>
+              <option value="5">CAM5</option><option value="6">CAM6</option><option value="7">CAM7</option><option value="8">CAM8</option>
+            </select>
+            <select id="p129-framing-select" onchange="setPhase129State({tsl_framing: this.value})" style="width:94px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="UDP">UDP:40003</option>
+              <option value="TCP_DLE_STX">TCP DLE/STX</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;align-items:center;">
+            <input id="p129-umd-input" type="text" maxlength="16" value="FX3-CAM1-STUDIO" placeholder="16-char UMD" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 6px;font-size:10.5px;font-family:'SF Mono',Menlo,monospace;" />
+            <button id="p129-btn-apply-umd" onclick="applyPhase129TslUmd()" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Set UMD</button>
+            <button id="p129-btn-stealth-toggle" onclick="togglePhase129Stealth()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Stealth Mute: OFF</button>
+          </div>
+          <div id="p129-tally-readout" style="font-size:10px;color:#fecaca;font-family:'SF Mono',Menlo,monospace;">LED=0 | OSD_Border=NONE | FX6_Green_Fault=0</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p129-preset-pgm-ptp-mxf" onclick="setPhase129State({container_mode:'MXF_OP1A_RDD09_WRAP',sync_mode:'PTPV2_SLAVE_WIRED',ethernet_link_up:true,offset_ns:142,tally_state:'PGM_RED',umd_camera_index:2,umd_label:'CAM-A WIDE 24GM'})" style="border-color:#ef4444;color:#fecaca;">PGM Red + PTPv2 Locked + MXF OP1a (CAM2)</button>
+        <button id="p129-preset-pvw-ltc-dual" onclick="setPhase129State({container_mode:'DUAL_MP4_PLUS_MXF_SIDECAR',sync_mode:'PTPV2_SLAVE_WIRED',ethernet_link_up:false,ltc_multiterminal_attached:true,tally_state:'PVW_GREEN',umd_camera_index:3,umd_label:'CAM-B CRANE 50GM'})" style="border-color:#10b981;color:#a7f3d0;">PVW Green + LTC Holdover + Dual MXF (CAM3)</button>
+        <button id="p129-preset-stealth-pgm" onclick="setPhase129State({tally_state:'PGM_RED',stealth_led_mute:true,osd_tally_indicator:true})" style="border-color:#f59e0b;color:#fde68a;">Stealth PGM (Body LED Mute + OSD Red)</button>
+        <button id="p129-btn-reset" onclick="setPhase129State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P129</button>
+      </div>
+      <div id="p129-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">MXFT ...</div>
+    </div>
+
     <div class="card" id="phase123-uvc-srt-crsdk-ptp-card" style="margin-top:14px;border-color:#10b981;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
         <h3 id="p123-card-title" style="margin:0;">Phase 123 · USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙</h3>
@@ -14584,6 +15859,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.uvc_srt_crsdk_ptp) {
     syncPhase123UvcSrtCrsdkPtpUI(st.uvc_srt_crsdk_ptp);
+  }
+  if (st.mxf_ptpv2_tally) {
+    syncPhase129MxfPtpv2TallyUI(st.mxf_ptpv2_tally);
   }
 
   if (forceImg || st.live_ready) {
@@ -17017,11 +18295,237 @@ function sendPhase123SafeOpcode() {
   setPhase123State(patch);
 }
 
+const P129_I18N = {
+  en: {
+    title: 'Phase 129 · XAVC MXF OP1a <-> MP4 RDD-18/UMID Bridge · ST 2059-2 PTPv2/LTC Servo · TSL UMD v5.0 Broadcast Tally',
+    mxf: 'XAVC MXF OP1a <-> MP4 RDD-18 / UMID Bridge',
+    ptpv2: 'SMPTE ST 2059-2 PTPv2 vs LTC Servo (P12)',
+    tally: 'TSL UMD v5.0 Broadcast Tally & 16-Char UMD',
+    btnRawMxf: 'Block Raw MXF',
+    btnSpvc: 'Block SPVC',
+    btnApplyPtp: 'Apply',
+    btnUnplugEth: 'Unplug ETH -> LTC',
+    btnWifi: 'Test P12 Wi-Fi',
+    btnSetUmd: 'Set UMD',
+    presetPgm: 'PGM Red + PTPv2 Locked + MXF OP1a (CAM2)',
+    presetPvw: 'PVW Green + LTC Holdover + Dual MXF (CAM3)',
+    presetStealth: 'Stealth PGM (Body LED Mute + OSD Red)',
+    reset: 'Reset P129',
+    stealthOn: 'Stealth Mute: ON',
+    stealthOff: 'Stealth Mute: OFF'
+  },
+  'zh-CN': {
+    title: 'Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally',
+    mxf: 'XAVC MXF OP1a ↔ MP4 RDD-18 / UMID 无损封装桥接',
+    ptpv2: 'SMPTE ST 2059-2 PTPv2 与 LTC 帧相位伺服 (P12)',
+    tally: 'TSL UMD v5.0 广播 Tally 与 16 字符动态名牌',
+    btnRawMxf: '拦截原生 MXF',
+    btnSpvc: '拦截 SPVC 篡改',
+    btnApplyPtp: '应用',
+    btnUnplugEth: '断网切 LTC 保持',
+    btnWifi: '测试 P12 Wi-Fi 拦截',
+    btnSetUmd: '设置 UMD',
+    presetPgm: 'PGM 红灯上播 + PTPv2 锁定 + MXF OP1a (CAM2)',
+    presetPvw: 'PVW 绿灯预监 + LTC 保持 + 双封装 (CAM3)',
+    presetStealth: '暗场静默 PGM (机身熄灯 + OSD 红框)',
+    reset: '重置 P129',
+    stealthOn: '暗场静音熄灯: 开',
+    stealthOff: '暗场静音熄灯: 关'
+  },
+  'zh-TW': {
+    title: 'Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 橋接 · ST 2059-2 PTPv2/LTC 幀同步 · TSL UMD v5.0 攝影棚紅綠 Tally',
+    mxf: 'XAVC MXF OP1a ↔ MP4 RDD-18 / UMID 無損封裝橋接',
+    ptpv2: 'SMPTE ST 2059-2 PTPv2 與 LTC 幀相位伺服 (P12)',
+    tally: 'TSL UMD v5.0 廣播 Tally 與 16 字元動態名牌',
+    btnRawMxf: '攔截原生 MXF',
+    btnSpvc: '攔截 SPVC 竄改',
+    btnApplyPtp: '套用',
+    btnUnplugEth: '斷網切 LTC 保持',
+    btnWifi: '測試 P12 Wi-Fi 攔截',
+    btnSetUmd: '設定 UMD',
+    presetPgm: 'PGM 紅燈主播 + PTPv2 鎖定 + MXF OP1a (CAM2)',
+    presetPvw: 'PVW 綠燈預監 + LTC 保持 + 雙封裝 (CAM3)',
+    presetStealth: '暗場靜默 PGM (機身熄燈 + OSD 紅框)',
+    reset: '重設 P129',
+    stealthOn: '暗場靜音熄燈: 開',
+    stealthOff: '暗場靜音熄燈: 關'
+  },
+  ja: {
+    title: 'Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID ブリッジ · ST 2059-2 PTPv2/LTC 同期 · TSL UMD v5.0 放送 Tally',
+    mxf: 'XAVC MXF OP1a ↔ MP4 RDD-18 / UMID 無劣化ラップ',
+    ptpv2: 'SMPTE ST 2059-2 PTPv2 / LTC フレーム位相同期 (P12)',
+    tally: 'TSL UMD v5.0 放送 Tally ＆ 16文字 UMD 名札',
+    btnRawMxf: '生 MXF 書込遮断',
+    btnSpvc: 'SPVC 偽装遮断',
+    btnApplyPtp: '適用',
+    btnUnplugEth: 'LAN 切断->LTC保持',
+    btnWifi: 'P12 Wi-Fi 遮断試験',
+    btnSetUmd: 'UMD 設定',
+    presetPgm: 'PGM 赤オンエア + PTPv2 同期 + MXF OP1a (CAM2)',
+    presetPvw: 'PVW 緑プレビュー + LTC ホールド + Dual (CAM3)',
+    presetStealth: 'ステルス PGM (本体LED消灯 + OSD 赤枠)',
+    reset: 'P129 リセット',
+    stealthOn: 'ステルス消灯: ON',
+    stealthOff: 'ステルス消灯: OFF'
+  }
+};
+
+let p129CurLang = 'zh-CN';
+let p129LastStealth = false;
+
+function setP129Lang(lang) {
+  p129CurLang = P129_I18N[lang] ? lang : 'en';
+  const d = P129_I18N[p129CurLang];
+  const map = {
+    'p129-card-title': d.title,
+    'p129-lbl-mxf': d.mxf,
+    'p129-lbl-ptpv2': d.ptpv2,
+    'p129-lbl-tally': d.tally,
+    'p129-btn-test-raw-mxf': d.btnRawMxf,
+    'p129-btn-test-spvc': d.btnSpvc,
+    'p129-btn-apply-ptp': d.btnApplyPtp,
+    'p129-btn-unplug-eth': d.btnUnplugEth,
+    'p129-btn-test-wifi': d.btnWifi,
+    'p129-btn-apply-umd': d.btnSetUmd,
+    'p129-preset-pgm-ptp-mxf': d.presetPgm,
+    'p129-preset-pvw-ltc-dual': d.presetPvw,
+    'p129-preset-stealth-pgm': d.presetStealth,
+    'p129-btn-reset': d.reset,
+    'p129-btn-stealth-toggle': p129LastStealth ? d.stealthOn : d.stealthOff
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map[id];
+  });
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((code) => {
+    const b = document.getElementById('p129-lang-' + code);
+    if (b) b.style.borderColor = (code === p129CurLang) ? '#ef4444' : '#374151';
+  });
+}
+
+function syncPhase129MxfPtpv2TallyUI(p129) {
+  if (!p129) return;
+  const cSel = document.getElementById('p129-container-select');
+  if (cSel && p129.container_mode && document.activeElement !== cSel) cSel.value = p129.container_mode;
+  const mxfBadge = document.getElementById('p129-mxf-badge');
+  if (mxfBadge) {
+    mxfBadge.textContent = `${p129.container_mode || 'MP4_ISOBMFF_RTMD'} · LOSS=${p129.essence_reencode_loss ?? 0}`;
+  }
+  const mxfRo = document.getElementById('p129-mxf-readout');
+  if (mxfRo) {
+    const umidTail = String(p129.smpte330_umid_hex || '').slice(-12);
+    mxfRo.textContent =
+      `UMID=..${umidTail} | RDD18 EI=${p129.rdd18_exposure_index} ${p129.rdd18_capture_gamma_equation} | ` +
+      `Loss=${p129.essence_reencode_loss ?? 0} eMMC=${p129.emmc_mutation_bytes ?? 0}B Blk=${p129.mxf_blocked_count ?? 0}`;
+  }
+
+  const sSel = document.getElementById('p129-sync-select');
+  if (sSel && p129.sync_mode && document.activeElement !== sSel) sSel.value = p129.sync_mode;
+  const offIn = document.getElementById('p129-offset-input');
+  if (offIn && p129.offset_ns !== undefined && document.activeElement !== offIn) offIn.value = String(p129.offset_ns);
+  const ptpBadge = document.getElementById('p129-ptp-badge');
+  if (ptpBadge) {
+    ptpBadge.textContent = `${p129.effective_sync_mode || 'OFF'} · ${p129.offset_ns ?? 0}ns · P12=${p129.p12_wlan_off ? 1 : 0}`;
+  }
+  const ptpRo = document.getElementById('p129-ptp-readout');
+  if (ptpRo) {
+    ptpRo.textContent =
+      `GM=${p129.ptpv2_grandmaster_id} D${p129.ptpv2_domain} | Lock=${p129.servo_locked ? 1 : 0} HO=${p129.ltc_holdover_active ? 1 : 0} ` +
+      `Slip=${p129.holdover_slip_frames ?? 0}f | P12=1 wf12=${p129.wf12_00342260_hits ?? 0} Blk=${p129.p12_blocked_count ?? 0}`;
+  }
+
+  const tSel = document.getElementById('p129-tally-select');
+  if (tSel && p129.tally_state && document.activeElement !== tSel) tSel.value = p129.tally_state;
+  const camSel = document.getElementById('p129-cam-select');
+  if (camSel && p129.umd_camera_index !== undefined && document.activeElement !== camSel) camSel.value = String(p129.umd_camera_index);
+  const frSel = document.getElementById('p129-framing-select');
+  if (frSel && p129.tsl_framing && document.activeElement !== frSel) frSel.value = p129.tsl_framing;
+  const umdIn = document.getElementById('p129-umd-input');
+  if (umdIn && p129.umd_label !== undefined && document.activeElement !== umdIn) umdIn.value = String(p129.umd_label);
+
+  p129LastStealth = !!p129.stealth_led_mute;
+  const d = P129_I18N[p129CurLang] || P129_I18N['en'];
+  const stlBtn = document.getElementById('p129-btn-stealth-toggle');
+  if (stlBtn) {
+    stlBtn.textContent = p129LastStealth ? d.stealthOn : d.stealthOff;
+    stlBtn.style.borderColor = p129LastStealth ? '#ef4444' : '#f59e0b';
+  }
+  const tBadge = document.getElementById('p129-tally-badge');
+  if (tBadge) {
+    tBadge.textContent = `${p129.tally_state || 'OFF'} · ${p129.umd_camera_slot || 'CAM1'} · "${p129.umd_label || ''}"`;
+  }
+  const tRo = document.getElementById('p129-tally-readout');
+  if (tRo) {
+    tRo.textContent =
+      `LED=${p129.fx3_front_led_on ? 1 : 0} STL=${p129.stealth_led_mute ? 1 : 0} | OSD=${p129.osd_tally_border_color} | ` +
+      `TSL5=${p129.tsl_framing} FX6_Green_Fault=${p129.fx6_green_gpio_faults ?? 0}`;
+  }
+
+  const warnEl = document.getElementById('p129-warn-banner');
+  if (warnEl) {
+    if (p129.ltc_holdover_active) {
+      warnEl.style.display = 'block';
+      warnEl.textContent = `Wired Ethernet down -> Glitch-free 15-Pin Multi-Terminal LTC Holdover active (${p129.holdover_slip_frames ?? 0} frames/8h, dropped_frames=0).`;
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
+
+  const cmdEl = document.getElementById('p129-cmd-readout');
+  if (cmdEl) cmdEl.textContent = p129.mxf_ptpv2_tally_cmd || 'MXFT ...';
+}
+
+async function setPhase129State(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p129-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/mxf_ptpv2_tally', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Blocked / Invalid Phase 129 parameter';
+      }
+      if (data.mxf_ptpv2_tally) syncPhase129MxfPtpv2TallyUI(data.mxf_ptpv2_tally);
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase129PtpParams() {
+  const ns = Number((document.getElementById('p129-offset-input') || {}).value || 184);
+  const sm = (document.getElementById('p129-sync-select') || {}).value || 'PTPV2_SLAVE_WIRED';
+  setPhase129State({sync_mode: sm === 'OFF' ? 'PTPV2_SLAVE_WIRED' : sm, ethernet_link_up: true, offset_ns: ns});
+}
+
+function applyPhase129TslUmd() {
+  const lbl = String((document.getElementById('p129-umd-input') || {}).value || 'FX3-CAM1-STUDIO');
+  const idx = Number((document.getElementById('p129-cam-select') || {}).value || 1);
+  setPhase129State({umd_camera_index: idx, umd_label: lbl});
+}
+
+function togglePhase129Stealth() {
+  setPhase129State({stealth_led_mute: !p129LastStealth});
+}
+
 setP95Lang('zh-CN');
 setP102Lang('zh-CN');
 setP109Lang('zh-CN');
 setP116Lang('zh-CN');
 setP123Lang('zh-CN');
+setP129Lang('zh-CN');
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -17153,7 +18657,7 @@ def make_handler(session: FX6LiveGpe0Session):
                 if path in ("/api/lut_upload", "/api/upload_cube_lut"):
                     self._send_json(session.get_lut_slots())
                     return
-                if path in ("/api/preset_export", "/api/camset_export"):
+                if path in ("/api/preset_export", "/api/camset_export", "/api/camset"):
                     self._send_json(session.export_camset_preset())
                     return
                 if path == "/api/cine_exposure":
@@ -17250,6 +18754,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/mxf_ptpv2_tally":
+                    self._send_json({
+                        "ok": True,
+                        "mxf_ptpv2_tally": session.get_mxf_ptpv2_tally(),
+                        "specs": MXF_PTPV2_TALLY_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -17292,6 +18804,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/upload_cube_lut",
                     "/api/preset_import",
                     "/api/camset_import",
+                    "/api/camset",
                     "/api/cinema_param",
                     "/api/cine_exposure",
                     "/api/color_and_media",
@@ -17305,6 +18818,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/mc_fleet_sdi_c2pa",
                     "/api/hdr_hlg_raw_breathing",
                     "/api/uvc_srt_crsdk_ptp",
+                    "/api/mxf_ptpv2_tally",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -17390,7 +18904,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     res = session.upload_cube_lut(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
-                if path in ("/api/preset_import", "/api/camset_import"):
+                if path in ("/api/preset_import", "/api/camset_import", "/api/camset"):
                     res = session.import_camset_preset(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
@@ -17424,6 +18938,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/uvc_srt_crsdk_ptp":
                     res = session.set_uvc_srt_crsdk_ptp(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/mxf_ptpv2_tally":
+                    res = session.set_mxf_ptpv2_tally(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

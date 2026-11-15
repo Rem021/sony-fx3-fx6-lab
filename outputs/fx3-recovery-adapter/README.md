@@ -574,3 +574,22 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-sa
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --with-phase155 --with-phase160 --clean-room --json
 ```
 
+## Phase 166 — 真机主线 Part 10（Pillar 22 / `22/22` 统一恢复总检）：双介质独立 Tier-0 冷备份 Bit-Rot 校验、`GF(256)` 恢复预演与 `verify-22pillar-recovery`
+
+- **[`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py)**：面向 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`CXD90057`）补齐操作员冷备份存储持久性门禁并落地 **22/22 支柱**统一实时恢复总检 CLI（`< 2.0s`），硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 只读检查本地 `7.02` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露回退：
+  - **支柱 22A — 双介质独立 Tier-0 16 表面冷备份与 `528 B FX3RCPT1` 门禁（`verify_dual_media_cold_backup_vault` / `6/6`）**：
+    - 强制要求同一机身的 16 表面 Tier-0 冷备份（`FX3RCPT1` 528 B CRC32 收据 + `pnflasha*`/`cnflasha*`/`mtd0ro`/`ext_csd` + `p2:/setting/{psd.bin,defdet.bin,Backup.bin}` + `p18:/lens/LENSFILE.BIN`）必须同时存在于**两个物理独立存储介质**（`media_a_device_id != media_b_device_id` 且 `hardware_uuid`、`mount_point` 不同，如主机 NVMe + 外置 SSD/SDXC）且 SHA-256 清单完全一致后，才允许进入 Stage-A 暂存准备（`stage_a_staging_permitted`）。
+  - **支柱 22B — RAID-6 `GF(256)`（`0x11d`）静默 Bit-Rot 清洗与 `16/16` RAM 恢复前预演（`encode_16_surface_gf256_archive` / `scrub_and_rehearse_dual_media_bitrot_recovery` / `6/6`）**：
+    - 模拟最多 2 块（1 块纯代数 `GF(256)` 伴随式定位或 2 块 `P+Q` 双校验）静默 bit-rot 损坏并完成无损重建与 `16/16` 内存魔数/域隔离/SHA-256 恢复前预演；`>= 3` 块超法定人数损坏、跨域混淆或写解锁请求 100% fail-closed 拦截（`physical_device_writes == 0`）。
+  - **统一 `22/22` 总检聚合器与 CLI（`evaluate_22pillar_recovery_master` / `verify_22pillar_recovery_suite` / `verify-22pillar-recovery`）**：
+    - 并发评估并聚合 Pillars `1..22`（含 Pillars 18、19、20、21、22），在 `< 2.0s` 内输出摘要或 `--json` / `--out`，同时在 `verify-all-recovery` 中注册 `--with-phase166`（保持无标志默认 `7/7` 与 `--with-phase160` `21/21` 完全向后兼容）；[`tests/test_realhw_22pillar_master_recovery_verifier.py`](tests/test_realhw_22pillar_master_recovery_verifier.py) 提供 **50 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-22pillar-recovery
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-22pillar-recovery --clean-room --json
+```
+
+

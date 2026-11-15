@@ -22,6 +22,10 @@ from .firmware_updata_and_antirollback_guard import run_antirollback_and_byof_gu
 from .gpt_rpmb_and_rescue_bundle_verifier import run_gpt_rpmb_and_rescue_bundle_suite
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
+from .realhw_22pillar_master_recovery_verifier import (
+    run_pillar22_standalone_suite,
+    verify_22pillar_recovery_suite,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
@@ -120,6 +124,7 @@ def main():
     master.add_argument('--with-phase151', action='store_true', help='also run Phase 151 Pillar 19 /dev/pnflasha* raw ISP + /dev/cnflasha* logical + /dev/mtd*ro SPI NOR dual-layer Tier-0 vault verifier')
     master.add_argument('--with-phase155', action='store_true', help='also run Phase 155 Pillar 20 real-hardware CXD90057 1.8V ttyAMA0 460800n8 boot-stage triage, multi-USB firewall & last-resort ISP checklist verifier (20/20 milestone)')
     master.add_argument('--with-phase160', action='store_true', help='also run Phase 160 Pillar 21 real-hardware 5-tier unbrickable recovery escalation, CXD90057 EL3 (0xfe020000) cold-boot guard & official BODYDATA.DAT (\\x89UFU) stock-reflash verifier (21/21 milestone)')
+    master.add_argument('--with-phase166', action='store_true', help='also run Phase 166 Pillar 22 dual-media Tier-0 cold-backup bit-rot scrub & GF(256) pre-restore verifier (22/22 milestone)')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -176,6 +181,10 @@ def main():
     p160_5tier.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p160_5tier.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p160_5tier.add_argument('--out', help='optional exclusive new output directory for realhw-5tier-el3-ufu-report.json')
+    p166_master = sub.add_parser('verify-22pillar-recovery', help='Phase 166 Pillar 22 (22/22) unified real-hardware recovery master verifier & dual-media Tier-0 GF(256) bit-rot/pre-restore rehearsal engine')
+    p166_master.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p166_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p166_master.add_argument('--out', help='optional exclusive new output directory for 22pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -460,6 +469,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p160_report.all_passed else 0)
                 overall_ok = overall_ok and p160_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase166:
+                p166_report = run_pillar22_standalone_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase166_pillar22_dual_media_cold_backup_gf256'] = p166_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p166_report.all_passed else 0)
+                overall_ok = overall_ok and p166_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -480,6 +498,7 @@ def main():
                     or args.with_phase151
                     or args.with_phase155
                     or args.with_phase160
+                    or args.with_phase166
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -838,6 +857,35 @@ def main():
                     f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"physical_device_writes={report.physical_device_writes}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-22pillar-recovery':
+            report = verify_22pillar_recovery_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'22pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_2s_budget={report.under_2s_budget} "
+                    f"pillar22_a={report.pillar22_a_dual_media.scenarios_passed}/{report.pillar22_a_dual_media.scenarios_total} "
+                    f"pillar22_b={report.pillar22_b_gf256_scrub.scenarios_passed}/{report.pillar22_b_gf256_scrub.scenarios_total} "
+                    f"master_22pillar_sha256={report.master_22pillar_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"physical_device_writes={report.physical_device_writes}"
                 )
             return 0 if report.all_passed else 2

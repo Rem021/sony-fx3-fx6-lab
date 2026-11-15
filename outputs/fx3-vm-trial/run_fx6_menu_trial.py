@@ -9026,6 +9026,9 @@ class FX6LiveGpe0Session:
         self.live_ready = False
         self.crashed = False
         self.crash_reason = ""
+        self.pure_native_screen = False
+        self.studio_overlays_cleared = False
+        self.studio_screen_mode_seq = 0
 
     @staticmethod
     def _default_user_lut_slots() -> dict[str, dict[str, Any]]:
@@ -9186,6 +9189,9 @@ class FX6LiveGpe0Session:
                 "target_page": 0,
                 "cmd_seq": 1,
             }
+            self.pure_native_screen = False
+            self.studio_overlays_cleared = False
+            self.studio_screen_mode_seq = 0
             return {"ok": True, "pid": self.proc.pid}
 
     def stop_vm(self) -> dict[str, Any]:
@@ -9454,7 +9460,7 @@ class FX6LiveGpe0Session:
         zebra_idx = zebra_choices.index(self.zebra_mode) if self.zebra_mode in zebra_choices else 0
         peaking_idx = peaking_choices.index(self.peaking_mode) if self.peaking_mode in peaking_choices else 0
         desqueeze_idx = desqueeze_choices.index(self.desqueeze) if self.desqueeze in desqueeze_choices else 0
-        p56_valid = 1 if (aspect_idx or zebra_idx or peaking_idx or desqueeze_idx) else 0
+        p56_valid = 0 if self.studio_overlays_cleared else (1 if (aspect_idx or zebra_idx or peaking_idx or desqueeze_idx) else 0)
         p40_flags_word = (
             (1 if self.xlr_handle_attached else 0)
             | ((1 if (self.xlr_handle_attached and self.xlr_phantom_48v) else 0) << 1)
@@ -9466,10 +9472,14 @@ class FX6LiveGpe0Session:
             | ((peaking_idx & 0x3) << 18)
             | ((desqueeze_idx & 0x3) << 20)
             | (p56_valid << 24)
+            | ((1 if self.pure_native_screen else 0) << 30)
         )
         ext_raw = struct.pack("<I6III", lut_meta_word, *name_words, audio_packed_word, p40_flags_word)
         raw = struct.pack("<18I", *words) + struct.pack("<I", p11_state_word) + ext_raw
         return raw
+
+    def _apply_overlay_gate(self, word: int) -> int:
+        return (int(word) & ~0x80000000) if self.studio_overlays_cleared else int(word)
 
     def _pack_phase64_mailbox_bytes(self) -> bytes:
         """Pack Phase 64 guest control mailbox mb[28..31] (16 bytes) matching fx6_live_guest.c."""
@@ -9485,7 +9495,7 @@ class FX6LiveGpe0Session:
         rec_flag = 1 if self.rec_state == "REC" else 0
         tally_idx = TALLY_LAMP_MODES.index(self.tally_lamp_mode) if self.tally_lamp_mode in TALLY_LAMP_MODES else 0
         wired_io_idx = WIRED_IO_MODES.index(self.wired_io_mode) if self.wired_io_mode in WIRED_IO_MODES else 0
-        mb28 = (
+        mb28 = self._apply_overlay_gate(
             (base_high & 0x1)
             | ((ei_step & 0xF) << 1)
             | ((shutter_mode_idx & 0x3) << 5)
@@ -9521,7 +9531,7 @@ class FX6LiveGpe0Session:
         tint_enc = (max(WB_TINT_MIN, min(WB_TINT_MAX, int(self.tint_gm))) + 99) & 0xFF
         shockless_idx = SHOCKLESS_WB_MODES.index(self.shockless_wb) if self.shockless_wb in SHOCKLESS_WB_MODES else 0
         look_idx = BASE_LOOK_NLE_TAGS.get(self.base_look, BASE_LOOK_NLE_TAGS["S-Cinetone"])["guest_idx"]
-        mb32 = (
+        mb32 = self._apply_overlay_gate(
             (wb_mode_idx & 0x7)
             | ((kelvin_val & 0x3FFF) << 3)
             | ((tint_enc & 0xFF) << 17)
@@ -9588,7 +9598,7 @@ class FX6LiveGpe0Session:
             | ((eff_ciz_x100 & 0xFF) << 16)
             | ((req_ciz_x100 & 0xFF) << 24)
         )
-        mb38 = (
+        mb38 = self._apply_overlay_gate(
             (spd & 0xF)
             | ((res_fhd & 0x1) << 4)
             | ((excl_bit & 0x1) << 5)
@@ -9628,7 +9638,7 @@ class FX6LiveGpe0Session:
         push_bit = 1 if smi["push_auto_iris_active"] else 0
         target_ire_int = max(1, min(109, int(round(float(smi["target_ire"])))))
 
-        mb41 = (
+        mb41 = self._apply_overlay_gate(
             (iris_x100 & 0xFFF)
             | ((meter_idx & 0x3) << 12)
             | ((ae_enc & 0xFF) << 14)
@@ -9666,7 +9676,7 @@ class FX6LiveGpe0Session:
         tx_sync_bit = 1 if ga["touch_af_desqueeze_synced"] else 0
         wobble_bit = 1 if ga["anamorphic_edge_wobble_prevented"] else 0
 
-        mb44 = (
+        mb44 = self._apply_overlay_gate(
             (sq_idx & 0x7)
             | ((eff_ibis_idx & 0x7) << 3)
             | ((req_ibis_idx & 0x7) << 6)
@@ -9708,7 +9718,7 @@ class FX6LiveGpe0Session:
         ceil_x10 = 30
         ref_lvl_abs = 20
 
-        mb46 = (
+        mb46 = self._apply_overlay_gate(
             (tone_req & 0x1)
             | ((tone_eff & 0x1) << 1)
             | ((tone_inhib & 0x1) << 2)
@@ -9737,7 +9747,7 @@ class FX6LiveGpe0Session:
         ae_map = {"High": 0, "Mid": 1, "Low": 2, "Lock": 3}
         ae_idx = ae_map.get(str(p102["ae_tracking"]), 1)
 
-        mb48 = (
+        mb48 = self._apply_overlay_gate(
             (eff_sec & 0x1F)
             | ((req_sec & 0x1F) << 5)
             | ((ddr_mib & 0x1FF) << 10)
@@ -9775,7 +9785,7 @@ class FX6LiveGpe0Session:
         ftps_done_cnt = max(0, min(255, int(p102["ftps_completed_count"])))
         ftps_trav_blk = 1 if int(p102["ftps_blocked_traversal_count"]) > 0 else 0
 
-        mb50 = (
+        mb50 = self._apply_overlay_gate(
             (lut_slot & 0x7)
             | ((lut_res33 & 0x1) << 3)
             | ((lut_src_idx & 0x3) << 4)
@@ -9804,7 +9814,7 @@ class FX6LiveGpe0Session:
         p12_rf_off = 1 if p109["p12_rf_off_enforced"] else 0
         hdmi_tc = 1 if p109["hdmi_tc_output_enabled"] else 0
 
-        mb52 = (
+        mb52 = self._apply_overlay_gate(
             (role_idx & 0x7)
             | ((cams_online & 0x7) << 3)
             | ((gang_rec & 0x1) << 6)
@@ -9829,7 +9839,7 @@ class FX6LiveGpe0Session:
         e_pins = 0 if mount_pl else max(0, min(15, int(p109["electronic_pins_active"])))
         focal_div2 = max(1, min(127, int(p109["focal_length_mm"]) // 2))
 
-        mb53 = (
+        mb53 = self._apply_overlay_gate(
             (mount_pl & 0x1)
             | ((shd_ident & 0x1) << 1)
             | ((shd_gain_x100 & 0xFF) << 2)
@@ -9844,7 +9854,7 @@ class FX6LiveGpe0Session:
         blk_cnt = max(0, min(255, int(p109["c2pa_blocked_attempts"])))
         spoof_blk = 1 if blk_cnt > 0 else 0
         fleet_pkt_div10 = (int(self.cmd_seq) // 10) & 0xFF
-        mb54 = (
+        mb54 = self._apply_overlay_gate(
             0  # vault_idx=0 (CNFLASHA_RDONLY_ZERO_TOUCH)
             | (1 << 2)  # clean_room_research=1
             | (0 << 3)  # hw_attest_claimed=0
@@ -9870,7 +9880,7 @@ class FX6LiveGpe0Session:
         peak_nits_div10 = max(10, min(255, int(p116["peak_nits"]) // 10))
         bt2020_blk = 1 if int(p116["bt2020_in_bt709_blocked_count"]) > 0 else 0
 
-        mb56 = (
+        mb56 = self._apply_overlay_gate(
             (hlg_idx & 0x7)
             | ((gamut_idx & 0x3) << 3)
             | ((detail_enc & 0xF) << 5)
@@ -9892,7 +9902,7 @@ class FX6LiveGpe0Session:
         vf_nit_div10 = max(1, min(255, int(p116["vf_nit_ceiling"]) // 10))
         peak_ire = max(0, min(109, int(p116["waveform_peak_ire"])))
 
-        mb57 = (
+        mb57 = self._apply_overlay_gate(
             (ast_req & 0x7)
             | ((ast_res & 0x7) << 3)
             | ((evf_ast_on & 0x1) << 6)
@@ -9917,7 +9927,7 @@ class FX6LiveGpe0Session:
         fps_list = [23.98, 24.0, 25.0, 29.97, 50.0, 59.94]
         raw_fps_idx = min(range(len(fps_list)), key=lambda i: abs(fps_list[i] - float(self.base_fps)))
 
-        mb58 = (
+        mb58 = self._apply_overlay_gate(
             (ext_raw_idx & 0x3)
             | ((raw_b12800 & 0x1) << 2)
             | ((raw_kelvin_div100 & 0xFF) << 3)
@@ -9948,7 +9958,7 @@ class FX6LiveGpe0Session:
         uac_ch = max(0, min(15, int(p123["uac_channels"])))
         uvc_osd_blk = 1 if int(p123["uvc_osd_blocked_count"]) > 0 else 0
 
-        mb60 = (
+        mb60 = self._apply_overlay_gate(
             (uvc_req_idx & 0x3)
             | ((uvc_eff_idx & 0x3) << 2)
             | ((usb2_non_ss & 0x1) << 4)
@@ -9972,7 +9982,7 @@ class FX6LiveGpe0Session:
         p12_blk_cnt = max(0, min(127, int(p123["p12_blocked_count"])))
         arq_en = 1 if p123["srt_arq_enabled"] else 0
 
-        mb61 = (
+        mb61 = self._apply_overlay_gate(
             (srt_idx & 0x3)
             | ((pk_idx & 0x3) << 2)
             | ((srt_lat & 0x3FF) << 4)
@@ -9995,7 +10005,7 @@ class FX6LiveGpe0Session:
         safe_cmd_cnt = max(0, min(127, int(p123["crsdk_safe_cmd_count"])))
         action_kind = 5 if blk_flash_cnt > 0 else (4 if int(p123["crsdk_nd_clamp_count"]) > 0 else 0)
 
-        mb62 = (
+        mb62 = self._apply_overlay_gate(
             (ptp_idx & 0x3)
             | ((flash_blk & 0x1) << 2)
             | ((emmc_zero & 0x1) << 3)
@@ -10023,7 +10033,7 @@ class FX6LiveGpe0Session:
         mxf_blk_cnt = max(0, min(7, int(p129["mxf_blocked_count"])))
         mxf_blk_flag = 1 if mxf_blk_cnt > 0 else 0
 
-        mb64 = (
+        mb64 = self._apply_overlay_gate(
             (container_idx & 0x3)
             | ((umid_digest8 & 0xFF) << 2)
             | ((gamma_idx & 0xF) << 10)
@@ -10046,7 +10056,7 @@ class FX6LiveGpe0Session:
         slip_mf = max(0, min(63, int(round(float(p129["holdover_slip_frames"]) * 1000.0))))
         p12_blk_cnt = max(0, min(63, int(p129["p12_blocked_count"])))
 
-        mb65 = (
+        mb65 = self._apply_overlay_gate(
             (eff_sync_idx & 0x3)
             | ((servo_locked & 0x1) << 2)
             | ((ltc_ho & 0x1) << 3)
@@ -10067,7 +10077,7 @@ class FX6LiveGpe0Session:
         cam_slot_0to7 = max(0, min(7, int(p129["umd_camera_index"]) - 1))
         umd_tag = (0x46 << 10) | (0x58 << 17) | (0x33 << 24)
 
-        mb66 = (
+        mb66 = self._apply_overlay_gate(
             (tally_idx & 0x3)
             | ((stealth_mute & 0x1) << 2)
             | ((osd_ind & 0x1) << 3)
@@ -10982,6 +10992,7 @@ class FX6LiveGpe0Session:
                 f"Assist Tools: Marker={self.aspect_marker}, Zebra={self.zebra_mode}, "
                 f"Peaking={self.peaking_mode}, Desqueeze={self.desqueeze}"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -11142,6 +11153,7 @@ class FX6LiveGpe0Session:
                 f"{('S&Q ' + str(ce['sq_fps']) + 'fps ' + ce['motion_label']) if ce['sq_enabled'] else str(ce['base_fps']) + 'p'} | "
                 f"IO={ce['wired_io_mode']}"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -11269,6 +11281,7 @@ class FX6LiveGpe0Session:
                 f"{cm['base_look']} ({cm['capture_gamma_equation']}/{cm['capture_color_primaries']}) | "
                 f"{cm['main_clip_name']} [{cm['dual_slot_mode']}] {prx_note}"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -11453,6 +11466,7 @@ class FX6LiveGpe0Session:
                 f"SDI={p109['sdi_bridge_converter']}(RP188={p109['rp188_rec_trigger_bit']},CS={p109['avi_checksum_hex']}) | "
                 f"Mount={p109['mount_type']}({p109['vignetting_comp_gain']:.2f}x) | C2PA={p109['c2pa_vault_status']}"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -11571,6 +11585,7 @@ class FX6LiveGpe0Session:
                 f"Assist={p116['resolved_assist_mode']}(CleanHDMI=1) | "
                 f"RAW={p116['ext_raw_mode']} | FBC={p116['breathing_crop_factor']:.2f}x"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -11758,6 +11773,7 @@ class FX6LiveGpe0Session:
                 f"RTMPS={p123['rtmps_mode']}@{p123['stream_bitrate_mbps']}M(P12=1) | "
                 f"CRSDK={p123['crsdk_ptp_mode']}({p123['crsdk_last_safe_opcode']},FlashBlk=1)"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -11927,6 +11943,7 @@ class FX6LiveGpe0Session:
                 f"Sync={p129['effective_sync_mode']}({p129['offset_ns']}ns,P12=1) | "
                 f"TSL={p129['tally_state']}({p129['umd_camera_slot']}:{p129['umd_label']})"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -12105,6 +12122,7 @@ class FX6LiveGpe0Session:
                 f"Intvl={'ON' if p102['interval_rec_enabled'] else 'OFF'}({p102['shots_taken']}/{p102['target_shots']} E-SH) | "
                 f"FTPS={p102['ftps_mode']}(Q={p102['ftps_queued_count']}/D={p102['ftps_completed_count']} P12=OFF)"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -12210,6 +12228,7 @@ class FX6LiveGpe0Session:
                     f"Mag={tfc['focus_mag']} | FC={tfc['false_color_mode']} | "
                     f"CIZ={tfc['effective_ciz_scale']:.2f}x ({tfc['ciz_res_mode']})"
                 )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -12305,6 +12324,7 @@ class FX6LiveGpe0Session:
                 f"{smi['iris_display']} ({smi['metering_mode']}, AE={smi['ae_shift_ev']:+.2f}EV) | "
                 f"41%IRE | CH3/4={smi['ch34_safety_pad_db']}dB | UB={smi['user_bits_effective']}"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
@@ -12430,12 +12450,162 @@ class FX6LiveGpe0Session:
                 f"{ga['rolling_shutter_skew_ms']:.1f}ms [{ga['rtmd_status']}] | {tone_tag} | "
                 f"LIM={'ON' if ga['limiter_enabled'] else 'OFF'}"
             )
+            self.studio_overlays_cleared = False
             wrote, synced = self._sync_mailbox_and_capture()
             return {
                 "ok": True,
                 "gyroflow_anamorphic": ga,
                 "gyroflow_anamorphic_cmd": ga["gyroflow_anamorphic_cmd"],
                 "touch_focus_ciz": self.get_touch_focus_ciz(),
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def get_studio_screen_mode(self) -> dict[str, Any]:
+        summary = {
+            "aspect_marker": self.aspect_marker,
+            "zebra_mode": self.zebra_mode,
+            "peaking_mode": self.peaking_mode,
+            "desqueeze": self.desqueeze,
+            "false_color_mode": self.false_color_mode,
+            "touch_af_mode": self.touch_af_mode,
+            "focus_mag": self.focus_mag,
+            "tally_state": self.tally_state,
+            "osd_tally_indicator": bool(self.osd_tally_indicator),
+        }
+        active_cnt = 0
+        if self.aspect_marker != "Off":
+            active_cnt += 1
+        if self.zebra_mode != "Off":
+            active_cnt += 1
+        if self.peaking_mode != "Off":
+            active_cnt += 1
+        if self.desqueeze != "1.0x":
+            active_cnt += 1
+        if self.false_color_mode != "off":
+            active_cnt += 1
+        if self.touch_af_mode != "off":
+            active_cnt += 1
+        if self.focus_mag != "1.0x":
+            active_cnt += 1
+        if self.tally_state != "OFF":
+            active_cnt += 1
+        return {
+            "pure_native_screen": bool(self.pure_native_screen),
+            "overlays_cleared": bool(self.studio_overlays_cleared),
+            "studio_overlays_cleared": bool(self.studio_overlays_cleared),
+            "active_overlay_count": int(active_cnt),
+            "guest_bit30_pure_native": 1 if self.pure_native_screen else 0,
+            "studio_screen_mode_seq": int(self.studio_screen_mode_seq),
+            "active_overlay_summary": summary,
+        }
+
+    def set_studio_screen_mode(self, body: Any) -> dict[str, Any]:
+        if not isinstance(body, dict):
+            return {
+                "ok": False,
+                "error": "invalid_request_body",
+                "message": "Request body must be a JSON object",
+            }
+        has_any = any(k in body for k in ("pure_native_screen", "clear_all_overlays", "toggle", "reset"))
+        if not has_any:
+            return {
+                "ok": False,
+                "error": "missing_studio_screen_mode_param",
+                "message": "Provide pure_native_screen, clear_all_overlays, toggle, or reset",
+            }
+
+        req_pure: bool | None = None
+        if "pure_native_screen" in body and body["pure_native_screen"] is not None:
+            req_pure = self._normalize_bool(body["pure_native_screen"])
+            if req_pure is None:
+                return {
+                    "ok": False,
+                    "error": "invalid_pure_native_screen",
+                    "message": "pure_native_screen must be boolean",
+                }
+
+        req_clear: bool | None = None
+        if "clear_all_overlays" in body and body["clear_all_overlays"] is not None:
+            req_clear = self._normalize_bool(body["clear_all_overlays"])
+            if req_clear is None:
+                return {
+                    "ok": False,
+                    "error": "invalid_clear_all_overlays",
+                    "message": "clear_all_overlays must be boolean",
+                }
+
+        req_toggle: bool | None = None
+        if "toggle" in body and body["toggle"] is not None:
+            req_toggle = self._normalize_bool(body["toggle"])
+            if req_toggle is None:
+                return {
+                    "ok": False,
+                    "error": "invalid_toggle",
+                    "message": "toggle must be boolean",
+                }
+
+        req_reset: bool | None = None
+        if "reset" in body and body["reset"] is not None:
+            req_reset = self._normalize_bool(body["reset"])
+            if req_reset is None:
+                return {
+                    "ok": False,
+                    "error": "invalid_reset",
+                    "message": "reset must be boolean",
+                }
+
+        with self.cmd_lock:
+            if req_reset is True:
+                self.pure_native_screen = False
+                self.studio_overlays_cleared = False
+            if req_clear is True:
+                self.aspect_marker = "Off"
+                self.zebra_mode = "Off"
+                self.peaking_mode = "Off"
+                self.desqueeze = "1.0x"
+                self.squeeze_factor = 1.0
+                self.touch_af_mode = "off"
+                self.focus_mag = "1.0x"
+                self.false_color_mode = "off"
+                self.ciz_scale = 1.0
+                self.last_letterbox_ignored = False
+                self.color_bars_enabled = False
+                self.ref_tone_enabled = False
+                self.push_auto_iris_active = False
+                self.tally_state = "OFF"
+                self.osd_tally_indicator = False
+                self.studio_overlays_cleared = True
+                if req_pure is None:
+                    self.pure_native_screen = True
+                self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+                self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
+                self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+                self.last_mxf_ptpv2_tally_cmd = format_mxf_ptpv2_tally_command(self.get_mxf_ptpv2_tally())
+
+            if req_pure is not None:
+                self.pure_native_screen = req_pure
+                if not req_pure and req_clear is not True:
+                    self.studio_overlays_cleared = False
+            elif req_toggle is True:
+                self.pure_native_screen = not self.pure_native_screen
+                if not self.pure_native_screen and req_clear is not True:
+                    self.studio_overlays_cleared = False
+            elif req_clear is False:
+                self.studio_overlays_cleared = False
+
+            self.studio_screen_mode_seq += 1
+            mode_tag = "PURE_NATIVE" if self.pure_native_screen else "LAB_HUD"
+            clr_tag = " | HUDs=CLEARED" if self.studio_overlays_cleared else ""
+            self.last_toast = f"Studio Screen: {mode_tag} (bit30={1 if self.pure_native_screen else 0}{clr_tag})"
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "studio_screen_mode": self.get_studio_screen_mode(),
+                "pure_native_screen": bool(self.pure_native_screen),
+                "overlays_cleared": bool(self.studio_overlays_cleared),
                 "toast": self.last_toast,
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
@@ -14025,6 +14195,8 @@ class FX6LiveGpe0Session:
             "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
             "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
             "mxf_ptpv2_tally": self.get_mxf_ptpv2_tally(),
+            "pure_native_screen": bool(self.pure_native_screen),
+            "studio_screen_mode": self.get_studio_screen_mode(),
             "serial_tail": serial_tail,
         }
 
@@ -14358,6 +14530,165 @@ HTML_UI = """<!DOCTYPE html>
     overflow-y: auto;
     white-space: pre-wrap;
   }
+  .studio-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    background: #0d131d;
+    border: 1px solid #243044;
+    border-radius: 8px;
+  }
+  .studio-lang-group, .studio-mode-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .studio-lang-btn {
+    padding: 4px 9px;
+    font-size: 11px;
+    border-radius: 6px;
+    background: #172030;
+    border-color: #334155;
+  }
+  .studio-lang-btn.active {
+    background: #0f2b46;
+    border-color: var(--cyan);
+    color: #cffafe;
+  }
+  .pure-native-btn {
+    padding: 5px 11px;
+    font-size: 11.5px;
+    background: #172030;
+    border: 1px solid #475569;
+    color: #e2e8f0;
+    border-radius: 7px;
+  }
+  .pure-native-btn.active {
+    background: #064e3b;
+    border-color: #10b981;
+    color: #ecfdf5;
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35);
+  }
+  .studio-clear-btn {
+    padding: 5px 10px;
+    font-size: 11.5px;
+    background: #1e293b;
+    border: 1px solid #64748b;
+    color: #e2e8f0;
+    border-radius: 7px;
+  }
+  .studio-mode-badge {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 10.5px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+  }
+  .studio-mode-badge.native-on {
+    background: #052e16;
+    border-color: #22c55e;
+    color: #86efac;
+  }
+  .studio-right-col {
+    position: sticky;
+    top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .studio-sub-details {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    background: #0d131d;
+    border: 1px solid #243044;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .studio-sub-details > summary {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cyan);
+    user-select: none;
+  }
+  .lab-drawer {
+    margin-top: 18px;
+    background: #0f141d;
+    border: 1px solid #2a364a;
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .lab-drawer-summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #e2e8f0;
+    user-select: none;
+  }
+  .lab-drawer-summary::-webkit-details-marker {
+    display: none;
+  }
+  .lab-drawer-pill {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #93c5fd;
+    background: #172554;
+    border: 1px solid #1d4ed8;
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+  .lab-drawer-body {
+    margin-top: 14px;
+  }
+  .lab-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #233044;
+  }
+  .lab-tab {
+    padding: 6px 11px;
+    font-size: 11.5px;
+    border-radius: 7px;
+    background: #172030;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+  }
+  .lab-tab.active {
+    background: #164e63;
+    border-color: var(--cyan);
+    color: #ffffff;
+  }
+  .lab-tab-panel {
+    display: none;
+  }
+  .lab-tab-panel.active {
+    display: block;
+  }
+  @media (max-width: 1120px) {
+    .main-grid {
+      grid-template-columns: 1fr;
+    }
+    .studio-right-col {
+      position: static;
+    }
+  }
 </style>
 </head>
 <body>
@@ -14382,32 +14713,24 @@ HTML_UI = """<!DOCTYPE html>
   </div>
 </header>
 
-<div class="telemetry-strip" id="stage-b-telemetry-strip">
-  <div class="tel-pill" id="tel-p1"><b>P1 (/lut->p30)</b><span id="tel-p1-d">/dev/nflasha30 -> S-Cinetone</span></div>
-  <div class="tel-pill locked" id="tel-p4"><b>P4 (ND=Clear)</b><span id="tel-p4-d">Clear [FX3 P4 Locked]</span></div>
-  <div class="tel-pill" id="tel-p10"><b>P10 (FX3 Keys)</b><span id="tel-p10-d">FX3 Deck Ready</span></div>
-  <div class="tel-pill" id="tel-p11"><b>P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)</b><span id="tel-p11-d">Base 800 | 0x0165/0x0166 | 0x5d90 | IBIS Center Lock</span></div>
-  <div class="tel-pill" id="tel-p12"><b>P12 (WF-12 Safe)</b><span id="tel-p12-d">Direct O_RDONLY / LRU Pool / Bounded Write Safe</span></div>
-</div>
-
-<div id="multilang-diff-readout" class="multilang-diff-box"></div>
-
-<div class="search-jump-bar" id="menu-search-jump-bar">
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
-    <span style="font-size:12px;font-weight:700;color:var(--cyan);">🔍 搜索菜单 / Quick Jump (128 Pages)</span>
-    <input id="menu-search-input" type="text" oninput="filterMenuCatalog()" placeholder="输入中文或英文关键词搜索 (如: Cine EI, LUT, XLR-H1, ND, CFexpress, Airplane, Page 110)..." style="flex:1;min-width:240px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:6px 10px;font-size:12px;" />
-    <select id="menu-cat-filter" onchange="filterMenuCatalog()" style="background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:6px 8px;font-size:11.5px;">
-      <option value="">All 11 Categories + 128 Pages</option>
-    </select>
-    <span id="menu-catalog-count" style="font-size:11px;color:var(--muted);font-family:'SF Mono',Menlo,monospace;">11 Categories · 128 Pages</span>
-  </div>
-  <div class="pill-row" id="quick-jump-pills"></div>
-  <div class="search-results-list" id="menu-search-results"></div>
-</div>
 
 <div class="main-grid">
   <div>
-    <div class="card">
+    <div class="card" id="studio-monitor-card">
+      <div class="studio-bar" id="studio-top-bar">
+        <div class="studio-lang-group">
+          <span style="font-size:11px;color:var(--muted);font-weight:600;">OSD Language:</span>
+          <button id="studio-lang-en" class="studio-lang-btn" onclick="setStudioLanguage('en')">EN</button>
+          <button id="studio-lang-zh-CN" class="studio-lang-btn active" onclick="setStudioLanguage('zh-CN')">简体中文</button>
+          <button id="studio-lang-zh-TW" class="studio-lang-btn" onclick="setStudioLanguage('zh-TW')">繁體中文</button>
+          <button id="studio-lang-ja" class="studio-lang-btn" onclick="setStudioLanguage('ja')">日本語</button>
+        </div>
+        <div class="studio-mode-group">
+          <button id="pure-native-screen-toggle" class="pure-native-btn" onclick="togglePureNativeScreen()">纯净原生画面 / Pure Native Screen: OFF</button>
+          <button id="reset-all-overlays-btn" class="studio-clear-btn" onclick="clearAllStudioHuds()">一键清空叠加HUD / Clear HUDs</button>
+          <span id="studio-screen-mode-badge" class="studio-mode-badge">HUD Overlays Active</span>
+        </div>
+      </div>
       <div class="screen-wrap" id="screen-wrap" onclick="onScreenClick(event)">
         <img id="gpe0-img" src="/api/frame.png" alt="FX6 Real GPE0 Framebuffer" />
         <div id="p81-canvas-reticle" style="display:none;position:absolute;pointer-events:none;border:2px solid #22c55e;box-shadow:0 0 0 1px rgba(0,0,0,0.65);border-radius:3px;transform:translate(-50%,-50%);width:48px;height:36px;"></div>
@@ -14428,74 +14751,220 @@ HTML_UI = """<!DOCTYPE html>
       </div>
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
-        <h3 style="margin:0;">Phase 56 · Cinema Line 监看辅助 &amp; 📊 Waveform / IRE Scope (/api/assist_tools · /api/scope_stats)</h3>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <button id="btn-desqueeze-preview" onclick="toggleDesqueezePreview()" style="padding:4px 9px;font-size:11px;background:#0f2b46;border-color:#22d3ee;">Anamorphic CSS Preview: ON</button>
-          <button onclick="refreshScopeStats(true)" style="padding:4px 9px;font-size:11px;">刷新 Scope</button>
-        </div>
+
+    <div class="card" id="fx6-native-nav-card" style="margin-top:14px;">
+      <h3>FX6 原生页面直达切换 (Guest 0x41e000e00 Mailbox -> appFw.so 实时重绘)</h3>
+      <div class="page-grid" id="page-buttons">
+        <button onclick="setPage(0)" id="pbtn-0">0. Big-6 主界面</button>
+        <button onclick="setPage(1)" id="pbtn-1">1. 三层完整菜单</button>
+        <button onclick="setPage(2)" id="pbtn-2">2. Setting Main</button>
+        <button onclick="setPage(3)" id="pbtn-3">3. Setting Center</button>
+        <button onclick="setPage(4)" id="pbtn-4">4. Assignable 30键</button>
+        <button onclick="setPage(5)" id="pbtn-5">5. Network 状态/176</button>
+        <button onclick="setPage(6)" id="pbtn-6">6. 寻像器 HUD 条</button>
+        <button onclick="setPage(7)" id="pbtn-7">7. Clip / Playback</button>
+        <button onclick="setPage(8)" id="pbtn-8">8. Status / Grid 69</button>
+        <button onclick="setPage(9)" id="pbtn-9">9. Thumbnail 全屏页</button>
+        <button onclick="setPage(10)" id="pbtn-10">10. Touch 触控浮层</button>
+        <button onclick="setPage(11)" id="pbtn-11">11. Subpage + Gamma</button>
+        <button onclick="setPage(12)" id="pbtn-12">12. Paint 键盘输入102</button>
+        <button onclick="setPage(13)" id="pbtn-13">13. Media 状态页48</button>
+        <button onclick="setPage(14)" id="pbtn-14">14. Clip 12宫格缩略图</button>
+        <button onclick="setPage(15)" id="pbtn-15">15. StatusIcon/Date/Track</button>
+        <button onclick="setPage(16)" id="pbtn-16">16. HUD 253行完整主界面</button>
+        <button onclick="setPage(17)" id="pbtn-17">17. TC/电平表/6键状态页</button>
+        <button onclick="setPage(18)" id="pbtn-18">18. 6行通知对话框 p81</button>
+        <button onclick="setPage(19)" id="pbtn-19">19. Wi-Fi SSID 扫描页</button>
+        <button onclick="setPage(20)" id="pbtn-20">20. 三列设置列表 p66/73</button>
+        <button onclick="setPage(21)" id="pbtn-21">21. 确认/执行弹窗 p72/93</button>
+        <button onclick="setPage(22)" id="pbtn-22">22. 双栏设置/横幅 p77/112</button>
+        <button onclick="setPage(23)" id="pbtn-23">23. 15键/10键宫格 p64/57</button>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Aspect Marker</span><span>In-Guest GPE0</span></div>
-          <select id="assist-aspect-select" onchange="setAssistTools({aspect_marker: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
-            <option value="Off">Off</option>
-            <option value="2.39:1">2.39:1 (Scope)</option>
-            <option value="1.85:1">1.85:1 (Flat)</option>
-            <option value="17:9">17:9 (DCI 4K)</option>
-            <option value="9:16">9:16 (Vertical)</option>
-            <option value="CenterCross">CenterCross</option>
+
+      <details id="all128-pages-details" class="studio-sub-details">
+        <summary>▸ 全量 128 个 FX6 原生页面描述符直达 (fx6_all_pages[0..127])</summary>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center;">
+          <button onclick="step128(-1)">◀ 上一页</button>
+          <select id="all128-select" onchange="onSelect128()" style="flex:1;background:#1f2633;color:var(--text);border:1px solid #374151;border-radius:7px;padding:8px 10px;font-size:12px;font-family:'SF Mono',Menlo,monospace;">
+            <option value="">-- 选择 fx6_all_pages[0..127] 任意原生页面描述符表 --</option>
           </select>
+          <button onclick="step128(1)">下一页 ▶</button>
         </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Zebra Overlay</span><span>IRE Threshold</span></div>
-          <select id="assist-zebra-select" onchange="setAssistTools({zebra_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
-            <option value="Off">Off</option>
-            <option value="70%">70% (Skin)</option>
-            <option value="94%_SLog3">94%_SLog3 (Clip)</option>
-            <option value="100%">100% (Peak)</option>
-          </select>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Focus Peaking</span><span>Edge Gradient</span></div>
-          <select id="assist-peaking-select" onchange="setAssistTools({peaking_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
-            <option value="Off">Off</option>
-            <option value="Red">Red</option>
-            <option value="Yellow">Yellow</option>
-            <option value="White">White</option>
-          </select>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Anamorphic Desqueeze</span><span>GPE0 + CSS</span></div>
-          <select id="assist-desqueeze-select" onchange="setAssistTools({desqueeze: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
-            <option value="1.0x">1.0x (Spherical)</option>
-            <option value="1.33x">1.33x (Anamorphic)</option>
-            <option value="2.0x">2.0x (Anamorphic)</option>
-          </select>
-        </div>
-      </div>
-      <div class="pill-row" style="margin-bottom:10px;">
-        <button onclick="setAssistTools({aspect_marker:'2.39:1',zebra_mode:'70%',peaking_mode:'Red',desqueeze:'2.0x'})" style="border-color:#22d3ee;">2.39:1 + Zebra 70% + Peak Red + 2.0x</button>
-        <button onclick="setAssistTools({aspect_marker:'9:16',zebra_mode:'94%_SLog3',peaking_mode:'Yellow',desqueeze:'1.0x'})">9:16 + S-Log3 94% + Peak Yellow</button>
-        <button onclick="setAssistTools({aspect_marker:'CenterCross',zebra_mode:'100%',peaking_mode:'White',desqueeze:'1.33x'})">CenterCross + 100% + 1.33x</button>
-        <button onclick="setAssistTools({reset:true})">Reset Assist Off</button>
-      </div>
-      <div class="cparam-box" id="waveform-scope-panel">
-        <div class="cparam-head">
-          <span style="color:var(--cyan);font-weight:700;">📊 Waveform / IRE Scope (0..109% IRE · 32-Col Luma + 16-Bin RGB)</span>
-          <span id="scope-stats-readout" style="font-family:'SF Mono',Menlo,monospace;color:#a7f3d0;">Waiting for /api/scope_stats...</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <canvas id="scope-waveform-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
-          <canvas id="scope-hist-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
-        </div>
+      </details>
+
+      <h3>三层菜单 11 大分类直达 (TABLE 0x2ea02f8 + string_english_2.uxc)</h3>
+      <div class="cat-grid" id="cat-buttons">
+        <button onclick="setCat(0)" id="cbtn-0">1. User</button>
+        <button onclick="setCat(1)" id="cbtn-1">2. Edit User Menu</button>
+        <button onclick="setCat(2)" id="cbtn-2">3. Shooting</button>
+        <button onclick="setCat(3)" id="cbtn-3">4. Project</button>
+        <button onclick="setCat(4)" id="cbtn-4">5. Paint/Look</button>
+        <button onclick="setCat(5)" id="cbtn-5">6. TC/Media</button>
+        <button onclick="setCat(6)" id="cbtn-6">7. Monitoring</button>
+        <button onclick="setCat(7)" id="cbtn-7">8. Audio</button>
+        <button onclick="setCat(8)" id="cbtn-8">9. Thumbnail</button>
+        <button onclick="setCat(9)" id="cbtn-9">10. Technical</button>
+        <button onclick="setCat(10)" id="cbtn-10">11. Maintenance</button>
       </div>
     </div>
 
+
+    <div class="card" id="cinema-big6-card" style="margin-top:14px;">
+      <h3>Cinema Line Big-6 实时参数调节面板</h3>
+      <div id="param-toast" class="param-toast"></div>
+      <div class="cinema-grid">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 0 · FPS</span><span>S&amp;Q / Project</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('fps', -1)">◀</button>
+            <span class="cparam-val" id="cp-fps">23.98p</span>
+            <button onclick="setCinemaParam('fps', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 1 · EI / Base ISO</span><span id="cp-base-badge">800 Base</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('ei', -1)">◀</button>
+            <span class="cparam-val" id="cp-ei">800 EI (800 Base)</span>
+            <button onclick="setCinemaParam('ei', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 2 · Shutter</span><span>BK4 0x02cf1702/04</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('shutter', -1)">◀</button>
+            <span class="cparam-val" id="cp-shutter">180.0°</span>
+            <button onclick="setCinemaParam('shutter', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box locked">
+          <div class="cparam-head"><span>Cell 3 · ND Filter</span><span style="color:#fbbf24;">P4 LOCKED</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('nd', -1)">◀</button>
+            <span class="cparam-val" id="cp-nd" style="color:#fde68a;">Clear [FX3 P4 Locked]</span>
+            <button onclick="setCinemaParam('nd', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 4 · Base Look / 3D LUT</span><span>P1 + P11 33³</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('lut', -1)">◀</button>
+            <span class="cparam-val" id="cp-lut">S-Cinetone</span>
+            <button onclick="setCinemaParam('lut', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cell 5 · White Balance</span><span>Preset / ATW</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('wb', -1)">◀</button>
+            <span class="cparam-val" id="cp-wb">5600K</span>
+            <button onclick="setCinemaParam('wb', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>P11 · 5-Axis IBIS</span><span>Center Lock</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('ibis', -1)">◀</button>
+            <span class="cparam-val" id="cp-ibis">5-Axis Center Lock (P11)</span>
+            <button onclick="setCinemaParam('ibis', 1)">▶</button>
+          </div>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>P11 · XLR-H1 Audio</span><span>Handle 0x5d90</span></div>
+          <div class="cparam-row">
+            <button onclick="setCinemaParam('xlr', -1)">◀</button>
+            <span class="cparam-val" id="cp-xlr">XLR-H1 Ch1/2 +48V (0x5d90)</span>
+            <button onclick="setCinemaParam('xlr', 1)">▶</button>
+          </div>
+        </div>
+      </div>
+      <div class="pill-row">
+        <button onclick="setCinemaPreset('fps', '23.98p')">23.98p</button>
+        <button onclick="setCinemaPreset('fps', '59.94p')">59.94p</button>
+        <button onclick="setCinemaPreset('fps', '119.88p (S&Q)')">119.88p S&amp;Q</button>
+        <button onclick="setCinemaPreset('ei', '800 EI (800 Base)')">800 EI (Base 800)</button>
+        <button onclick="setCinemaPreset('ei', '12800 EI (12800 Base)')">12800 EI (Base 12800)</button>
+        <button onclick="setCinemaPreset('shutter', '180.0°')">180.0°</button>
+        <button onclick="setCinemaPreset('shutter', '1/48')">1/48</button>
+        <button onclick="setCinemaPreset('lut', 'S-Cinetone')">S-Cinetone</button>
+        <button onclick="setCinemaPreset('lut', 'S-Log3.Cine / S-Gamut3.Cine')">S-Log3.Cine</button>
+        <button onclick="setCinemaPreset('lut', 'User1 (33³ .cube)')">User1 33³</button>
+        <button onclick="setCinemaPreset('wb', '5600K')">5600K</button>
+        <button onclick="setCinemaPreset('wb', 'ATW')">ATW</button>
+        <button onclick="setCinemaParam('nd', 1)" style="border-color:#f59e0b;color:#fde68a;">Test P4 ND Lock</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="studio-right-col">
+    <div class="card">
+      <h3>FX6 机身按键面板 (支持直接点击画面 / 键盘方向键 / Enter / M / H)</h3>
+      <div class="dpad-grid">
+        <button onclick="sendKey('HOME')">HOME</button>
+        <button onclick="sendKey('UP')">▲ UP</button>
+        <button onclick="sendKey('MENU')">MENU</button>
+
+        <button onclick="sendKey('LEFT')">◀ LEFT</button>
+        <button onclick="sendKey('SET')" class="btn-set">● SET</button>
+        <button onclick="sendKey('RIGHT')">RIGHT ▶</button>
+
+        <button onclick="sendKey('BACK')">BACK</button>
+        <button onclick="sendKey('DOWN')">▼ DOWN</button>
+        <button onclick="sendKey('DISP')">DISP</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.5;">
+        • <b>直接点击画面</b>：点击画面左上角 <b>Menu</b> 区域即可进入/退出三层菜单；在 Big-6 主界面点击任意外围 6 格可选中或切换值；在三层菜单点击左侧分类或右侧条目可直接切换。<br/>
+        • <b>机身按键/键盘</b>：方向键移动高亮框 (<code>0x0200c011</code>)，<b>SET (Enter)</b> 切换值，<b>MENU (M)</b> 打开三层菜单。
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h3>ILME-FX3 物理机身控制面板 (Top / Rear Deck · Stage-B P10 映射)</h3>
+      <div class="page-grid" style="margin-bottom:8px;">
+        <button onclick="sendFx3Button('FN')" title="FX3 Fn (0x0013 -> 0x7095 / PF_K_HOME)">Fn → Big-6 主页</button>
+        <button onclick="sendFx3Button('MENU')" title="FX3 MENU (0x0011 -> 0x01ab / UIBIZ_KEY_TACT_MENU)">MENU → 3层菜单</button>
+        <button onclick="sendFx3Button('DISP')" title="FX3 DISP (0x0025 -> 0x70ec / PF_K_DISP_SEL)">DISP → HUD p16/p6</button>
+        <button onclick="sendFx3Button('C1')" title="FX3 C1 (0x001d -> 0x0066 / PF_K_KURU_PON)">C1 → Base Look/LUT</button>
+        <button onclick="sendFx3Button('C2')" title="FX3 C2 (0x0024 -> 0x70e7 / PF_K_MENU_CANCEL)">C2 → 白平衡/Setting</button>
+        <button onclick="sendFx3Button('C3')" title="FX3 C3 (0x0025 -> 0x70ec / PF_K_DISP_SEL)">C3 → Audio/TC p17</button>
+        <button onclick="sendFx3Button('C4')" title="FX3 C4 (0x0026 -> 0x70ed / PF_K_SLOT_SEL)">C4 → Media SSA/SSB p13</button>
+        <button onclick="sendFx3Button('C5')" title="FX3 C5/DEL (0x000c -> 0x01f8 / PF_K_USER)">C5 → Assignable p4</button>
+        <button onclick="sendFx3Button('C6')" title="FX3 C6/PLAY (0x000b -> 0x01f7 / PF_K_THUMBNAIL)">C6 → Clip 浏览器 p14</button>
+        <button onclick="sendFx3Button('WHEEL_UP')" title="FX3 Rear Dial UP (0x0003 -> 0x7081 / PF_K_UP)">WHEEL ▲ UP</button>
+        <button onclick="sendFx3Button('WHEEL_SET')" class="btn-set" title="FX3 Rear Dial SET (0x001c -> 0x01ac / PF_K_SET)">● WHEEL SET</button>
+        <button onclick="sendFx3Button('WHEEL_DOWN')" title="FX3 Rear Dial DOWN (0x0030 -> 0x7082 / PF_K_DOWN)">WHEEL ▼ DOWN</button>
+        <button onclick="sendFx3Button('BACK')" title="FX3 BACK/CANCEL (0x0024 -> 0x70e7 / PF_K_MENU_CANCEL)" style="grid-column:span 3;">BACK / CANCEL (返回/取消)</button>
+      </div>
+      <div id="p10-telemetry-readout" style="font-size:11px;color:#67e8f9;background:#0a0f18;border:1px solid #1e293b;border-radius:6px;padding:7px 9px;font-family:'SF Mono',Menlo,monospace;line-height:1.45;">
+        Stage-B P10 遥测: IDLE (点击任意 FX3 物理按键发送 /api/fx3_button)
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<details id="studio-advanced-lab-drawer" class="lab-drawer">
+  <summary class="lab-drawer-summary">
+    <span>▸ 高级工程实验台 / Advanced Engineering Lab (12 Subsystems &amp; Diagnostics)</span>
+    <span class="lab-drawer-pill">Collapsed by Default · 6 Categories · All /api/* Preserved</span>
+  </summary>
+  <div class="lab-drawer-body">
+    <div class="lab-tabs" id="studio-lab-tabs">
+      <button class="lab-tab active" data-lab-tab="exposure" onclick="selectLabTab('exposure')">曝光与色彩 (Exposure &amp; Color)</button>
+      <button class="lab-tab" data-lab-tab="focus" onclick="selectLabTab('focus')">对焦与防抖 (AF &amp; IBIS)</button>
+      <button class="lab-tab" data-lab-tab="monitor" onclick="selectLabTab('monitor')">监看与LUT (Monitoring &amp; LUT)</button>
+      <button class="lab-tab" data-lab-tab="audio" onclick="selectLabTab('audio')">音频与场记 (Audio, Tally &amp; Timecode)</button>
+      <button class="lab-tab" data-lab-tab="stream" onclick="selectLabTab('stream')">推流与多机位 (Streaming &amp; Multi-Cam)</button>
+      <button class="lab-tab" data-lab-tab="debug" onclick="selectLabTab('debug')">真机诊断与全页表 (128-Page &amp; Serial Log)</button>
+      <button class="lab-tab" data-lab-tab="all" onclick="selectLabTab('all')">展开全部 / Show All</button>
+    </div>
+
+    <div class="lab-tab-panel active" id="lab-panel-exposure" data-lab-panel="exposure">
     <div class="card" id="phase64-cine-exposure-card" style="margin-top:14px;border-color:#334155;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
-        <h3 style="margin:0;">Phase 64 · Cinema Line Cine EI / Shutter-ECS / S&amp;Q (1–240fps) / REC Tally &amp; Wired I/O (/api/cine_exposure)</h3>
+        <h3 style="margin:0;">Cinema Line Cine EI / Shutter-ECS / S&amp;Q (1–240fps) / REC Tally &amp; Wired I/O</h3>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
           <span id="p64-bilingual-hint" style="font-size:10.5px;color:#94a3b8;">EN · 简体中文 · 繁體中文 · 日本語</span>
           <span id="p64-p4-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#451a03;color:#fde68a;border:1px solid #f59e0b;">P4 ND=Clear (HW Absent)</span>
@@ -14585,9 +15054,10 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p64-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">CINE_EXP ...</div>
     </div>
 
+
     <div class="card" id="phase73-color-media-card" style="margin-top:14px;border-color:#0e7490;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
-        <h3 style="margin:0;">Phase 73 · 色彩白平衡 / 双卡槽场记命名 &amp; 达芬奇 M01.XML 导出 (Color/WB, Dual-Slot CamID &amp; Resolve XML)</h3>
+        <h3 style="margin:0;">色彩白平衡 / 双卡槽场记命名 &amp; 达芬奇 M01.XML 导出 (Color/WB, Dual-Slot CamID &amp; Resolve XML)</h3>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
           <span style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#0f2b46;color:#67e8f9;border:1px solid #0891b2;">FX3 B/A/PRST Soft-Mapped</span>
           <span id="p73-sq-proxy-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#064e3b;color:#a7f3d0;border:1px solid #10b981;">Proxy Active</span>
@@ -14685,329 +15155,10 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p73-cmd-readout" style="font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">WB_MEDIA ...</div>
     </div>
 
-    <div class="card" id="phase81-touchaf-ciz-card" style="margin-top:14px;border-color:#16a34a;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
-        <h3 style="margin:0;">Phase 81 · 触控跟焦 627点 PDAF / S-Log3 伪色曝光 / 超解析变焦 CIZ (Touch-AF, S-Log3 False Color &amp; CIZ)</h3>
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-          <button id="p81-click-toggle-btn" onclick="toggleClickCanvasToFocus()" style="padding:4px 9px;font-size:11px;background:#0f2b46;border-color:#22d3ee;color:#cffafe;">🎯 点击画面触控对焦: OFF (Click-Canvas-to-Focus)</button>
-          <span id="p81-pdaf-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#052e16;color:#86efac;border:1px solid #22c55e;">PDAF 33x19 #313 (16,9)</span>
-          <span id="p81-clean-hdmi-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#064e3b;color:#a7f3d0;border:1px solid #10b981;">HDMI Clean: 1.0x</span>
-        </div>
-      </div>
-      <div id="p81-error-banner" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#450a0a;border:1px solid #ef4444;color:#fecaca;font-size:11.5px;"></div>
-      <div id="p81-zebra100-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#451a03;border:1px solid #f59e0b;color:#fde68a;font-size:11px;"></div>
-      <div id="p81-ciz-excl-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#431407;border:1px solid #f97316;color:#fed7aa;font-size:11px;"></div>
-      <div id="p81-letterbox-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#3f2d06;border:1px solid #eab308;color:#fef08a;font-size:11px;"></div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Touch AF · 触控跟焦 (627-pt)</span><span id="p81-af-readout" style="color:#4ade80;font-family:'SF Mono',Menlo,monospace;">off</span></div>
-          <select id="p81-af-mode-select" onchange="setTouchFocusCiz({touch_af_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
-            <option value="off">Off (关闭)</option>
-            <option value="touch_focus">Touch Focus (单点触控对焦)</option>
-            <option value="touch_tracking">Real-time Tracking AF (实时追踪跟焦)</option>
-          </select>
-          <div style="display:flex;gap:4px;align-items:center;margin-bottom:6px;">
-            <input id="p81-touch-x-input" type="number" min="0" max="959" value="480" title="touch_x [0..959]" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
-            <input id="p81-touch-y-input" type="number" min="0" max="539" value="270" title="touch_y [0..539]" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
-            <button onclick="applyPhase81TouchCoords()" style="flex:1;padding:4px 6px;font-size:11px;">Set XY</button>
-          </div>
-          <div id="p81-pdaf-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">col=16, row=9, idx=313</div>
-        </div>
-
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Focus Magnifier · 对焦放大</span><span id="p81-mag-readout" style="color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">1.0x</span></div>
-          <select id="p81-mag-select" onchange="setTouchFocusCiz({focus_mag: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
-            <option value="1.0x">1.0x (Full Frame)</option>
-            <option value="2.0x">2.0x (Preview Zoom)</option>
-            <option value="4.0x">4.0x (Critical Focus)</option>
-          </select>
-          <div id="p81-mag-roi-readout" style="font-size:10px;color:#94a3b8;line-height:1.4;font-family:'SF Mono',Menlo,monospace;">ROI: 960x540 @ (480,270)<br/>HDMI Clean Feed: 1.0x Unmagnified</div>
-        </div>
-
-        <div class="cparam-box">
-          <div class="cparam-head"><span>S-Log3 False Color / EL-Zone</span><span id="p81-fc-readout" style="color:#f472b6;font-family:'SF Mono',Menlo,monospace;">off</span></div>
-          <select id="p81-fc-select" onchange="setTouchFocusCiz({false_color_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
-            <option value="off">Off (关闭)</option>
-            <option value="slog3_ire">S-Log3 IRE False Color (伪色)</option>
-            <option value="el_zone">EL-Zone (EV Stops 色阶)</option>
-          </select>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;font-size:9.5px;font-family:'SF Mono',Menlo,monospace;">
-            <span style="padding:1px 5px;border-radius:4px;background:#7e22ce;color:#fff;">3.5% Clip</span>
-            <span style="padding:1px 5px;border-radius:4px;background:#16a34a;color:#fff;">41% Grey</span>
-            <span style="padding:1px 5px;border-radius:4px;background:#db2777;color:#fff;">52% Skin</span>
-            <span style="padding:1px 5px;border-radius:4px;background:#dc2626;color:#fff;">94% Clip</span>
-          </div>
-        </div>
-
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Clear Image Zoom (CIZ)</span><span id="p81-ciz-eff-readout" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">1.00x (4K)</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;">
-            <select id="p81-ciz-res-select" onchange="setTouchFocusCiz({ciz_res_mode: this.value})" style="width:48%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
-              <option value="4K">4K (Max 1.50x)</option>
-              <option value="FHD">FHD (Max 2.00x)</option>
-            </select>
-            <select id="p81-rocker-speed-select" onchange="setTouchFocusCiz({zoom_rocker_speed: Number(this.value)})" title="Zoom Rocker Speed 1..8" style="width:52%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
-              <option value="1">Speed 1</option>
-              <option value="2">Speed 2</option>
-              <option value="3">Speed 3</option>
-              <option value="4">Speed 4</option>
-              <option value="5">Speed 5</option>
-              <option value="6">Speed 6</option>
-              <option value="7">Speed 7</option>
-              <option value="8">Speed 8</option>
-            </select>
-          </div>
-          <div style="display:flex;gap:4px;">
-            <input id="p81-ciz-scale-input" type="number" min="1.00" max="2.00" step="0.05" value="1.00" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
-            <button onclick="applyPhase81CizScale()" style="padding:4px 8px;font-size:11px;">Apply</button>
-          </div>
-        </div>
-      </div>
-      <div class="pill-row">
-        <button onclick="setTouchFocusCiz({touch_af_mode:'touch_tracking',touch_x:640,touch_y:260,focus_mag:'1.0x',false_color_mode:'slog3_ire',ciz_res_mode:'4K',ciz_scale:1.40,zoom_rocker_speed:5})" style="border-color:#22c55e;color:#bbf7d0;">Tracking (640,260) + S-Log3 FC + CIZ 1.40x</button>
-        <button onclick="setTouchFocusCiz({touch_af_mode:'touch_focus',touch_x:480,touch_y:270,focus_mag:'4.0x',false_color_mode:'el_zone',ciz_res_mode:'FHD',ciz_scale:1.80})" style="border-color:#f59e0b;">EL-Zone + Focus Mag x4.0 + FHD CIZ 1.80x</button>
-        <button onclick="setTouchFocusCiz({reset:true})">Reset Touch-AF / FC / CIZ</button>
-      </div>
-      <div id="p81-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#86efac;font-family:'SF Mono',Menlo,monospace;">TOUCH_CIZ ...</div>
-    </div>
-
-    <div class="card" id="phase88-shotmark-iris-card" style="margin-top:14px;border-color:#f59e0b;">
-      <h3>场记打点 ShotMark1/2 / 一键自动光圈 41%IRE / FX6->FX3 多机位配置克隆 (ShotMark, Push Auto Iris &amp; Fleet CAMSET)</h3>
-      <div id="p88-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
-      <div class="cinema-grid">
-        <div class="cparam-box" style="border-color:#b45309;">
-          <div class="cparam-head"><span>ShotMark1/2 · 场记打点</span><span id="p88-sm-count-readout" style="color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">M1:0 / M2:0</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <button onclick="setShotmarkAndIris({action:'add_shotmark1'})" style="border-color:#fbbf24;color:#fde68a;padding:4px 8px;font-size:11px;">★ ShotMark1 (OK)</button>
-            <button onclick="setShotmarkAndIris({action:'add_shotmark2'})" style="border-color:#38bdf8;color:#bae6fd;padding:4px 8px;font-size:11px;">★ ShotMark2 (KEEP)</button>
-            <button onclick="setShotmarkAndIris({action:'clear_shotmarks'})" style="padding:4px 8px;font-size:11px;">Clear</button>
-          </div>
-          <div id="p88-sm-latest-readout" style="font-size:10px;color:#cbd5e1;font-family:'SF Mono',Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">EssenceMark: none (0/64)</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#15803d;">
-          <div class="cparam-head"><span>Push Auto Iris · 1/8-Stop</span><span id="p88-iris-readout" style="color:#4ade80;font-family:'SF Mono',Menlo,monospace;">F2.8 · 41.0%IRE</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;">
-            <select id="p88-metering-select" onchange="setShotmarkAndIris({metering_mode:this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
-              <option value="multi">Multi (41% Grey)</option>
-              <option value="center">Center</option>
-              <option value="spot">Spot</option>
-              <option value="highlight">Highlight (&lt;94% IRE)</option>
-            </select>
-            <input id="p88-ev-input" type="number" min="0" max="18" step="0.5" value="12.0" title="Scene EV [0..18]" style="width:54px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
-            <button onclick="applyPhase88PushAutoIris()" style="border-color:#22c55e;color:#bbf7d0;padding:4px 7px;font-size:11px;">Push</button>
-          </div>
-          <div id="p88-ire-est-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">Est Grey: 41.0% | HL: 89.2% | ND Faults: 0</div>
-        </div>
-
-        <div class="cparam-box">
-          <div class="cparam-head"><span>4-Ch 24-bit Pad &amp; SMPTE User-Bits</span><span id="p88-pad-readout" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">0 dB</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;">
-            <button onclick="setShotmarkAndIris({ch34_safety_pad_db:0})" style="padding:4px 7px;font-size:11px;">CH3/4 0dB</button>
-            <button onclick="setShotmarkAndIris({ch34_safety_pad_db:-20})" style="border-color:#10b981;color:#a7f3d0;padding:4px 7px;font-size:11px;">CH3/4 -20dB SAFE</button>
-          </div>
-          <div style="display:flex;gap:4px;">
-            <input id="p88-ub-input" type="text" value="auto_camid_reel" placeholder="auto_camid_reel or AA:BB:CC:DD" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;font-family:'SF Mono',Menlo,monospace;" />
-            <button onclick="applyPhase88UserBits()" style="padding:4px 7px;font-size:11px;">UB</button>
-          </div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#0284c7;">
-          <div class="cparam-head"><span>FX6->FX3 Fleet CAMSET &amp; XML</span><span id="p88-fleet-badge" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">Ready</span></div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
-            <button onclick="importFx6FleetCamsetPreset()" style="border-color:#38bdf8;color:#bae6fd;padding:4px 8px;font-size:11px;">FX6->FX3 Sanitize Clone</button>
-            <a href="/api/xml_sidecar" target="_blank" style="display:inline-block;padding:4px 8px;font-size:11px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;text-decoration:none;">Download M01.XML</a>
-          </div>
-          <div id="p88-ub-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">UB: A0:01:00:01 (auto_camid_reel)</div>
-        </div>
-      </div>
-      <div id="p88-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">SMRK_IRIS ...</div>
-    </div>
-
-    <div class="card" id="phase95-gyroflow-anamorphic-card" style="margin-top:14px;border-color:#06b6d4;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <h3 id="p95-card-title" style="margin:0;">Phase 95 · 变形镜头 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基准音与 -3dB 限幅器</h3>
-        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
-          <button id="p95-lang-en" onclick="setP95Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
-          <button id="p95-lang-zh-CN" onclick="setP95Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#22d3ee;">简体中文</button>
-          <button id="p95-lang-zh-TW" onclick="setP95Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
-          <button id="p95-lang-ja" onclick="setP95Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
-        </div>
-      </div>
-      <div id="p95-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
-      <div id="p95-arbitration-banner" style="display:none;background:#083344;border:1px solid #22d3ee;color:#cffafe;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
-      <div id="p95-sq-warn-banner" style="display:none;background:#450a0a;border:1px solid #f87171;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
-
-      <div class="cinema-grid">
-        <div class="cparam-box" style="border-color:#0891b2;">
-          <div class="cparam-head"><span id="p95-lbl-anamorphic">Anamorphic &amp; IBIS Arbitrator</span><span id="p95-sq-readout" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">1.00x · Standard</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;">
-            <select id="p95-squeeze-select" onchange="setGyroflowAnamorphic({squeeze_factor: Number(this.value)})" style="width:36%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
-              <option value="1.0">1.00x</option>
-              <option value="1.3">1.30x</option>
-              <option value="1.33">1.33x</option>
-              <option value="1.5">1.50x</option>
-              <option value="1.8">1.80x</option>
-              <option value="2.0">2.00x</option>
-            </select>
-            <select id="p95-ibis-select" onchange="setGyroflowAnamorphic({ibis_mode: this.value})" style="width:64%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
-              <option value="Off">Off</option>
-              <option value="Standard">Standard (5-Axis)</option>
-              <option value="Active">Active (Auto-Arbitrated &gt;1.0x)</option>
-              <option value="Anamorphic_Asymmetric">Anamorphic Asymmetric (1/Sq Yaw)</option>
-              <option value="Center_Lock_Gyroflow">Center-Lock 0x0400 (Gyroflow)</option>
-            </select>
-          </div>
-          <div style="display:flex;gap:4px;align-items:center;margin-bottom:5px;">
-            <span id="p95-lbl-fallback" style="font-size:10px;color:#94a3b8;">Fallback:</span>
-            <select id="p95-fallback-select" onchange="setGyroflowAnamorphic({anamorphic_fallback_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:3px;font-size:10.5px;">
-              <option value="Anamorphic_Asymmetric">Anamorphic_Asymmetric</option>
-              <option value="Center_Lock_Gyroflow">Center_Lock_Gyroflow (0x0400)</option>
-            </select>
-          </div>
-          <div id="p95-yaw-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">Yaw Gain: 1.0000 | Pitch: 1.0000 | Center-Lock: OFF</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#0e7490;">
-          <div class="cparam-head"><span id="p95-lbl-gyro">Gyroflow 2000Hz RTMD &amp; Skew</span><span id="p95-rtmd-badge" style="color:#10b981;font-family:'SF Mono',Menlo,monospace;">RTMD_READY</span></div>
-          <div id="p95-imu-readout" style="font-size:10.5px;color:#e2e8f0;font-family:'SF Mono',Menlo,monospace;margin-bottom:4px;">2000 Hz · 83.4 samples/frame @ 23.98p</div>
-          <div id="p95-skew-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;margin-bottom:6px;">IMX510 Skew: 8.7ms | Wobble Safe: false</div>
-          <div style="display:flex;gap:4px;align-items:center;">
-            <input id="p95-dsq-touchx-input" type="number" min="0" max="1919" value="480" title="Desqueezed Touch X" style="width:74px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
-            <button id="p95-btn-sync-af" onclick="applyPhase95DesqueezedTouch()" style="flex:1;padding:3px 6px;font-size:10.5px;border-color:#22d3ee;">Sync Touch-AF X</button>
-          </div>
-          <div id="p95-touchaf-sync-readout" style="margin-top:4px;font-size:9.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">Touch-AF: sensor=480 (dsq=480, scale=1.0000)</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#6d28d9;">
-          <div class="cparam-head"><span id="p95-lbl-tone">1kHz -20dBFS Tone &amp; SMPTE Bars</span><span id="p95-tone-badge" style="color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">OFF</span></div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
-            <button id="p95-btn-tone-toggle" onclick="togglePhase95RefTone()" style="padding:4px 8px;font-size:11px;border-color:#a78bfa;color:#ddd6fe;">1kHz -20dBFS: OFF</button>
-            <button id="p95-btn-bars-toggle" onclick="togglePhase95ColorBars()" style="padding:4px 8px;font-size:11px;border-color:#38bdf8;color:#bae6fd;">SMPTE Bars: OFF</button>
-          </div>
-          <div id="p95-tone-status-readout" style="font-size:10px;color:#cbd5e1;font-family:'SF Mono',Menlo,monospace;">STBY Ready · Auto-inhibited on REC tally</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#15803d;">
-          <div class="cparam-head"><span id="p95-lbl-limiter">4-Ch 24-bit -3.0dBFS Peak Limiter</span><span id="p95-lim-badge" style="color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">OFF</span></div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
-            <button id="p95-btn-lim-toggle" onclick="togglePhase95Limiter()" style="padding:4px 8px;font-size:11px;border-color:#10b981;color:#a7f3d0;">Limiter -3.0dBFS: OFF</button>
-            <button id="p95-btn-reset" onclick="setGyroflowAnamorphic({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P95</button>
-          </div>
-          <div id="p95-lim-ch-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">Eff Ch: -12/-12/-18/-18 dB | Clamped: 0/4</div>
-        </div>
-      </div>
-
-      <div class="pill-row">
-        <button id="p95-preset-2x-asym" onclick="setGyroflowAnamorphic({squeeze_factor:2.0,ibis_mode:'Active',anamorphic_fallback_mode:'Anamorphic_Asymmetric'})" style="border-color:#22d3ee;color:#a5f3fc;">2.0x Active -> Anamorphic_Asymmetric (50% Yaw)</button>
-        <button id="p95-preset-18x-ctrlock" onclick="setGyroflowAnamorphic({squeeze_factor:1.8,ibis_mode:'Active',anamorphic_fallback_mode:'Center_Lock_Gyroflow'})" style="border-color:#f59e0b;color:#fde68a;">1.8x Active -> 0x0400 Center-Lock (Gyroflow)</button>
-        <button id="p95-preset-tone-bars" onclick="setGyroflowAnamorphic({ref_tone_enabled:true,color_bars_enabled:true,limiter_enabled:true})" style="border-color:#a78bfa;color:#ddd6fe;">Calibrate: 1kHz -20dBFS + Bars + Limiter</button>
-      </div>
-      <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
-    </div>
-
-    <div class="card" id="phase123-uvc-srt-crsdk-ptp-card" style="margin-top:14px;border-color:#10b981;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <h3 id="p123-card-title" style="margin:0;">Phase 123 · USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙</h3>
-        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
-          <button id="p123-lang-en" onclick="setP123Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
-          <button id="p123-lang-zh-CN" onclick="setP123Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">简体中文</button>
-          <button id="p123-lang-zh-TW" onclick="setP123Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
-          <button id="p123-lang-ja" onclick="setP123Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
-        </div>
-      </div>
-      <div id="p123-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
-      <div id="p123-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
-
-      <div class="cinema-grid">
-        <div class="cparam-box" style="border-color:#22d3ee;">
-          <div class="cparam-head"><span id="p123-lbl-uvc">USB-C UVC 1.5 / UAC 2.0 Clean Feed</span><span id="p123-uvc-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · CLEAN=1</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p123-uvc-select" onchange="setPhase123State({uvc_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="OFF">OFF</option>
-              <option value="UVC_4K30P_MJPEG_5G">UVC 4K30p MJPEG (5Gbps)</option>
-              <option value="UVC_1080P60P_YUY2_5G">UVC 1080p60 YUY2 (5Gbps)</option>
-              <option value="UVC_720P30P_MJPEG_USB2_FALLBACK">UVC 720p30 MJPEG (USB2)</option>
-            </select>
-            <select id="p123-usb-speed-select" onchange="setPhase123State({usb_link_speed: this.value})" style="width:94px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="USB3_5G">USB3 5G</option>
-              <option value="USB2_480M">USB2 480M</option>
-            </select>
-            <button id="p123-btn-test-osd-leak" onclick="setPhase123State({uvc_bake_osd: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test OSD Block</button>
-          </div>
-          <div id="p123-uvc-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">UAC 48kHz 16-bit 2ch PCM | CleanFeed=1 OSD=0px</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#10b981;">
-          <div class="cparam-head"><span id="p123-lbl-srt">Wired CDC-NCM SRT / RTMPS TLS 1.3 (P12)</span><span id="p123-srt-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">OFF · P12 WLAN=OFF</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p123-srt-select" onchange="setPhase123State({srt_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="OFF">SRT OFF</option>
-              <option value="SRT_CALLER">SRT Caller (ARQ)</option>
-              <option value="SRT_LISTENER">SRT Listener (ARQ)</option>
-            </select>
-            <select id="p123-pbkey-select" onchange="setPhase123State({srt_pbkeylen: this.value})" style="width:84px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="AES-256">AES-256</option>
-              <option value="AES-128">AES-128</option>
-              <option value="NONE">NONE</option>
-            </select>
-            <input id="p123-latency-input" type="number" step="10" min="20" max="1000" value="120" title="SRT ARQ Latency (ms)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
-            <select id="p123-rtmps-select" onchange="setPhase123State({rtmps_mode: this.value})" style="width:98px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="OFF">RTMPS OFF</option>
-              <option value="RTMPS_TLS13">RTMPS TLS1.3</option>
-            </select>
-            <input id="p123-bitrate-input" type="number" step="1" min="1" max="50" value="12" title="Bitrate (Mbps)" style="width:48px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
-            <button id="p123-btn-apply-srt" onclick="applyPhase123SrtParams()" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">Apply</button>
-            <button id="p123-btn-test-wifi" onclick="setPhase123State({use_wifi: true})" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test P12 Wi-Fi</button>
-          </div>
-          <div id="p123-srt-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">CDC-NCM Wired | P12 WLAN=OFF wf12=0 | 12Mbps</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#3b82f6;">
-          <div class="cparam-head"><span id="p123-lbl-ptp">CRSDK PTP / PTP-IP (0x054C) Remote</span><span id="p123-ptp-badge" style="color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">OFF · 0xD210</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p123-ptp-select" onchange="setPhase123State({crsdk_ptp_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="OFF">OFF</option>
-              <option value="USB_PTP">USB PTP (0x054C)</option>
-              <option value="WIRED_PTPIP">Wired PTP-IP (15740)</option>
-            </select>
-            <select id="p123-d2xx-select" style="width:128px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="0xD210">0xD210 Base/EI</option>
-              <option value="0xD20D">0xD20D Shutter</option>
-              <option value="0xD21C">0xD21C WB/K</option>
-              <option value="0xD220">0xD220 Look/LUT</option>
-              <option value="0xD224">0xD224 P4 ND-Clear</option>
-              <option value="0xD2C1">0xD2C1 Touch AF</option>
-              <option value="0xD2C4">0xD2C4 REC Trig</option>
-            </select>
-            <button id="p123-btn-send-d2xx" onclick="sendPhase123SafeOpcode()" style="padding:3px 7px;font-size:10.5px;border-color:#3b82f6;color:#bfdbfe;">Run 0xD2xx</button>
-            <button id="p123-btn-test-nd-clamp" onclick="setPhase123State({ptp_opcode:'0xD224',crsdk_nd_preset:'1/16'})" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Test P4 ND</button>
-          </div>
-          <div id="p123-ptp-readout" style="font-size:10px;color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">VID 0x054C | Base800 EI800 | Look=S-Cinetone | P4 ND=Clear</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#ef4444;">
-          <div class="cparam-head"><span id="p123-lbl-fw">PTP Flash-Opcode Firewall (0x9280..)</span><span id="p123-fw-badge" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">ARMED · eMMC=0B</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <button id="p123-btn-test-flash-9280" onclick="setPhase123State({ptp_opcode:'0x9280'})" style="flex:1;padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block 0x9280 Flash</button>
-            <button id="p123-btn-test-flash-9285" onclick="setPhase123State({ptp_opcode:'0x9285',crsdk_action:'firmware_flash'})" style="flex:1;padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block 0x9285 UFU</button>
-          </div>
-          <div id="p123-fw-readout" style="font-size:10px;color:#fecaca;font-family:'SF Mono',Menlo,monospace;">Firewall=ON | eMMC_Mutation=0B | Blocked=0</div>
-        </div>
-      </div>
-
-      <div class="pill-row">
-        <button id="p123-preset-uvc4k-srt-ptpip" onclick="setPhase123State({uvc_mode:'UVC_4K30P_MJPEG_5G',usb_link_speed:'USB3_5G',srt_mode:'SRT_CALLER',srt_pbkeylen:'AES-256',srt_latency_ms:120,crsdk_ptp_mode:'WIRED_PTPIP'})" style="border-color:#10b981;color:#a7f3d0;">UVC 4K30p + SRT Caller AES-256 + PTP-IP</button>
-        <button id="p123-preset-usb2-fallback" onclick="setPhase123State({uvc_mode:'UVC_4K30P_MJPEG_5G',usb_link_speed:'USB2_480M',rtmps_mode:'RTMPS_TLS13',stream_bitrate_mbps:18})" style="border-color:#f59e0b;color:#fde68a;">USB2 480M Stepdown (720p30) + RTMPS TLS1.3</button>
-        <button id="p123-preset-ptp-ei12800" onclick="setPhase123State({crsdk_ptp_mode:'USB_PTP',ptp_opcode:'0xD210',crsdk_cine_ei_base:'12800',crsdk_ei_index:12800,crsdk_base_look:'S-Log3 / S-Gamut3.Cine'})" style="border-color:#3b82f6;color:#bfdbfe;">CRSDK 0xD210 EI 12800 + S-Log3</button>
-        <button id="p123-btn-reset" onclick="setPhase123State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P123</button>
-      </div>
-      <div id="p123-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">UVCS ...</div>
-    </div>
 
     <div class="card" id="phase116-hlg-raw-breathing-card" style="margin-top:14px;border-color:#f59e0b;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <h3 id="p116-card-title" style="margin:0;">Phase 116 · HLG1/HLG2/HLG3 BT.2100 &amp; CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW &amp; BRAW / 呼吸效应补偿</h3>
+        <h3 id="p116-card-title" style="margin:0;">HLG1/HLG2/HLG3 BT.2100 &amp; CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW &amp; BRAW / 呼吸效应补偿</h3>
         <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
           <button id="p116-lang-en" onclick="setP116Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
           <button id="p116-lang-zh-CN" onclick="setP116Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;">简体中文</button>
@@ -15095,91 +15246,250 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p116-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">HLGA ...</div>
     </div>
 
-    <div class="card" id="phase109-mcfleet-sdi-c2pa-card" style="margin-top:14px;border-color:#06b6d4;">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <h3 id="p109-card-title" style="margin:0;">Phase 109 · M&amp;C 4机位有线同步 / HDMI→12G-SDI RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源</h3>
-        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
-          <button id="p109-lang-en" onclick="setP109Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
-          <button id="p109-lang-zh-CN" onclick="setP109Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#06b6d4;">简体中文</button>
-          <button id="p109-lang-zh-TW" onclick="setP109Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
-          <button id="p109-lang-ja" onclick="setP109Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+    </div>
+
+    <div class="lab-tab-panel" id="lab-panel-focus" data-lab-panel="focus">
+    <div class="card" id="phase81-touchaf-ciz-card" style="margin-top:14px;border-color:#16a34a;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+        <h3 style="margin:0;">触控跟焦 627点 PDAF / S-Log3 伪色曝光 / 超解析变焦 CIZ (Touch-AF, S-Log3 False Color &amp; CIZ)</h3>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <button id="p81-click-toggle-btn" onclick="toggleClickCanvasToFocus()" style="padding:4px 9px;font-size:11px;background:#0f2b46;border-color:#22d3ee;color:#cffafe;">🎯 点击画面触控对焦: OFF (Click-Canvas-to-Focus)</button>
+          <span id="p81-pdaf-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#052e16;color:#86efac;border:1px solid #22c55e;">PDAF 33x19 #313 (16,9)</span>
+          <span id="p81-clean-hdmi-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#064e3b;color:#a7f3d0;border:1px solid #10b981;">HDMI Clean: 1.0x</span>
         </div>
       </div>
-      <div id="p109-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
-      <div id="p109-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+      <div id="p81-error-banner" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#450a0a;border:1px solid #ef4444;color:#fecaca;font-size:11.5px;"></div>
+      <div id="p81-zebra100-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#451a03;border:1px solid #f59e0b;color:#fde68a;font-size:11px;"></div>
+      <div id="p81-ciz-excl-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#431407;border:1px solid #f97316;color:#fed7aa;font-size:11px;"></div>
+      <div id="p81-letterbox-warn" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#3f2d06;border:1px solid #eab308;color:#fef08a;font-size:11px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Touch AF · 触控跟焦 (627-pt)</span><span id="p81-af-readout" style="color:#4ade80;font-family:'SF Mono',Menlo,monospace;">off</span></div>
+          <select id="p81-af-mode-select" onchange="setTouchFocusCiz({touch_af_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="off">Off (关闭)</option>
+            <option value="touch_focus">Touch Focus (单点触控对焦)</option>
+            <option value="touch_tracking">Real-time Tracking AF (实时追踪跟焦)</option>
+          </select>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:6px;">
+            <input id="p81-touch-x-input" type="number" min="0" max="959" value="480" title="touch_x [0..959]" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <input id="p81-touch-y-input" type="number" min="0" max="539" value="270" title="touch_y [0..539]" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase81TouchCoords()" style="flex:1;padding:4px 6px;font-size:11px;">Set XY</button>
+          </div>
+          <div id="p81-pdaf-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">col=16, row=9, idx=313</div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Focus Magnifier · 对焦放大</span><span id="p81-mag-readout" style="color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">1.0x</span></div>
+          <select id="p81-mag-select" onchange="setTouchFocusCiz({focus_mag: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="1.0x">1.0x (Full Frame)</option>
+            <option value="2.0x">2.0x (Preview Zoom)</option>
+            <option value="4.0x">4.0x (Critical Focus)</option>
+          </select>
+          <div id="p81-mag-roi-readout" style="font-size:10px;color:#94a3b8;line-height:1.4;font-family:'SF Mono',Menlo,monospace;">ROI: 960x540 @ (480,270)<br/>HDMI Clean Feed: 1.0x Unmagnified</div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>S-Log3 False Color / EL-Zone</span><span id="p81-fc-readout" style="color:#f472b6;font-family:'SF Mono',Menlo,monospace;">off</span></div>
+          <select id="p81-fc-select" onchange="setTouchFocusCiz({false_color_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="off">Off (关闭)</option>
+            <option value="slog3_ire">S-Log3 IRE False Color (伪色)</option>
+            <option value="el_zone">EL-Zone (EV Stops 色阶)</option>
+          </select>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;font-size:9.5px;font-family:'SF Mono',Menlo,monospace;">
+            <span style="padding:1px 5px;border-radius:4px;background:#7e22ce;color:#fff;">3.5% Clip</span>
+            <span style="padding:1px 5px;border-radius:4px;background:#16a34a;color:#fff;">41% Grey</span>
+            <span style="padding:1px 5px;border-radius:4px;background:#db2777;color:#fff;">52% Skin</span>
+            <span style="padding:1px 5px;border-radius:4px;background:#dc2626;color:#fff;">94% Clip</span>
+          </div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Clear Image Zoom (CIZ)</span><span id="p81-ciz-eff-readout" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">1.00x (4K)</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p81-ciz-res-select" onchange="setTouchFocusCiz({ciz_res_mode: this.value})" style="width:48%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="4K">4K (Max 1.50x)</option>
+              <option value="FHD">FHD (Max 2.00x)</option>
+            </select>
+            <select id="p81-rocker-speed-select" onchange="setTouchFocusCiz({zoom_rocker_speed: Number(this.value)})" title="Zoom Rocker Speed 1..8" style="width:52%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="1">Speed 1</option>
+              <option value="2">Speed 2</option>
+              <option value="3">Speed 3</option>
+              <option value="4">Speed 4</option>
+              <option value="5">Speed 5</option>
+              <option value="6">Speed 6</option>
+              <option value="7">Speed 7</option>
+              <option value="8">Speed 8</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <input id="p81-ciz-scale-input" type="number" min="1.00" max="2.00" step="0.05" value="1.00" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase81CizScale()" style="padding:4px 8px;font-size:11px;">Apply</button>
+          </div>
+        </div>
+      </div>
+      <div class="pill-row">
+        <button onclick="setTouchFocusCiz({touch_af_mode:'touch_tracking',touch_x:640,touch_y:260,focus_mag:'1.0x',false_color_mode:'slog3_ire',ciz_res_mode:'4K',ciz_scale:1.40,zoom_rocker_speed:5})" style="border-color:#22c55e;color:#bbf7d0;">Tracking (640,260) + S-Log3 FC + CIZ 1.40x</button>
+        <button onclick="setTouchFocusCiz({touch_af_mode:'touch_focus',touch_x:480,touch_y:270,focus_mag:'4.0x',false_color_mode:'el_zone',ciz_res_mode:'FHD',ciz_scale:1.80})" style="border-color:#f59e0b;">EL-Zone + Focus Mag x4.0 + FHD CIZ 1.80x</button>
+        <button onclick="setTouchFocusCiz({reset:true})">Reset Touch-AF / FC / CIZ</button>
+      </div>
+      <div id="p81-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#86efac;font-family:'SF Mono',Menlo,monospace;">TOUCH_CIZ ...</div>
+    </div>
+
+
+    <div class="card" id="phase95-gyroflow-anamorphic-card" style="margin-top:14px;border-color:#06b6d4;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p95-card-title" style="margin:0;">变形镜头 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基准音与 -3dB 限幅器</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p95-lang-en" onclick="setP95Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p95-lang-zh-CN" onclick="setP95Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#22d3ee;">简体中文</button>
+          <button id="p95-lang-zh-TW" onclick="setP95Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p95-lang-ja" onclick="setP95Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p95-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p95-arbitration-banner" style="display:none;background:#083344;border:1px solid #22d3ee;color:#cffafe;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+      <div id="p95-sq-warn-banner" style="display:none;background:#450a0a;border:1px solid #f87171;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
 
       <div class="cinema-grid">
-        <div class="cparam-box" style="border-color:#06b6d4;">
-          <div class="cparam-head"><span id="p109-lbl-fleet">M&amp;C 4-Cam Wired Fleet (PTP-IP)</span><span id="p109-fleet-badge" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">Solo · 1/4 · P12 OFF</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p109-role-select" onchange="setPhase109State({fleet_role: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="Solo">Solo</option>
-              <option value="A_Cam_Master">A_Cam_Master</option>
-              <option value="B_Cam_Follower">B_Cam_Follower</option>
-              <option value="C_Cam_Follower">C_Cam_Follower</option>
-              <option value="D_Cam_Follower">D_Cam_Follower</option>
+        <div class="cparam-box" style="border-color:#0891b2;">
+          <div class="cparam-head"><span id="p95-lbl-anamorphic">Anamorphic &amp; IBIS Arbitrator</span><span id="p95-sq-readout" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">1.00x · Standard</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p95-squeeze-select" onchange="setGyroflowAnamorphic({squeeze_factor: Number(this.value)})" style="width:36%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="1.0">1.00x</option>
+              <option value="1.3">1.30x</option>
+              <option value="1.33">1.33x</option>
+              <option value="1.5">1.50x</option>
+              <option value="1.8">1.80x</option>
+              <option value="2.0">2.00x</option>
             </select>
-            <select id="p109-cams-select" onchange="setPhase109State({fleet_cams_online: Number(this.value)})" style="width:68px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="1">1 Cam</option>
-              <option value="2">2 Cams</option>
-              <option value="3">3 Cams</option>
-              <option value="4">4 Cams</option>
-            </select>
-            <button id="p109-btn-gang-rec" onclick="togglePhase109GangRec()" style="padding:4px 8px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Gang REC: OFF</button>
-          </div>
-          <div id="p109-fleet-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">USB_LAN_CDC_NCM_RTL8153 | PTP Skew=0.0us | wf12=0</div>
-        </div>
-
-        <div class="cparam-box" style="border-color:#3b82f6;">
-          <div class="cparam-head"><span id="p109-lbl-sdi">HDMI→12G-SDI AVI &amp; RP 188 Bridge</span><span id="p109-sdi-badge" style="color:#93c5fd;font-family:'SF Mono',Menlo,monospace;">RP188=0 · CS=0x00</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
-            <select id="p109-sdi-select" onchange="setPhase109State({sdi_bridge_converter: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="BMD_Micro_Converter_12G">BMD_Micro_Converter_12G</option>
-              <option value="Teradek_Bolt_HDMI_SDI">Teradek_Bolt_HDMI_SDI</option>
-              <option value="Atomos_Connect_12G">Atomos_Connect_12G</option>
+            <select id="p95-ibis-select" onchange="setGyroflowAnamorphic({ibis_mode: this.value})" style="width:64%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
               <option value="Off">Off</option>
+              <option value="Standard">Standard (5-Axis)</option>
+              <option value="Active">Active (Auto-Arbitrated &gt;1.0x)</option>
+              <option value="Anamorphic_Asymmetric">Anamorphic Asymmetric (1/Sq Yaw)</option>
+              <option value="Center_Lock_Gyroflow">Center-Lock 0x0400 (Gyroflow)</option>
             </select>
-            <button id="p109-btn-hdmi-tc" onclick="togglePhase109HdmiTc()" style="padding:4px 7px;font-size:10.5px;border-color:#3b82f6;color:#bfdbfe;">TC+REC Ctrl: ON</button>
           </div>
-          <div id="p109-sdi-readout" style="font-size:10px;color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">AVI CS=0x00 (sum%256=0) | LEGAL_64_940 | No BNC Faults</div>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:5px;">
+            <span id="p95-lbl-fallback" style="font-size:10px;color:#94a3b8;">Fallback:</span>
+            <select id="p95-fallback-select" onchange="setGyroflowAnamorphic({anamorphic_fallback_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:3px;font-size:10.5px;">
+              <option value="Anamorphic_Asymmetric">Anamorphic_Asymmetric</option>
+              <option value="Center_Lock_Gyroflow">Center_Lock_Gyroflow (0x0400)</option>
+            </select>
+          </div>
+          <div id="p95-yaw-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">Yaw Gain: 1.0000 | Pitch: 1.0000 | Center-Lock: OFF</div>
         </div>
 
-        <div class="cparam-box" style="border-color:#f59e0b;">
-          <div class="cparam-head"><span id="p109-lbl-mount">E-Mount 12-Pin vs PL Hot-Swap Shading</span><span id="p109-mount-badge" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">12-Pin · 1.32x</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;">
-            <select id="p109-mount-select" onchange="setPhase109State({mount_type: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
-              <option value="Sony_EMount_12Pin_GM">Sony_EMount_12Pin_GM</option>
-              <option value="Manual_PL_Adapter_Unchipped">Manual_PL_Adapter_Unchipped</option>
-            </select>
-            <input id="p109-lens-kg-input" type="number" step="0.1" min="0.1" max="10.0" value="0.7" title="Lens Weight (kg)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
-            <button id="p109-btn-apply-mount" onclick="applyPhase109MountParams()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;">Apply</button>
-            <button id="p109-btn-lws" onclick="togglePhase109Lws()" style="padding:3px 7px;font-size:10.5px;border-color:#eab308;">LWS: OFF</button>
+        <div class="cparam-box" style="border-color:#0e7490;">
+          <div class="cparam-head"><span id="p95-lbl-gyro">Gyroflow 2000Hz RTMD &amp; Skew</span><span id="p95-rtmd-badge" style="color:#10b981;font-family:'SF Mono',Menlo,monospace;">RTMD_READY</span></div>
+          <div id="p95-imu-readout" style="font-size:10.5px;color:#e2e8f0;font-family:'SF Mono',Menlo,monospace;margin-bottom:4px;">2000 Hz · 83.4 samples/frame @ 23.98p</div>
+          <div id="p95-skew-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;margin-bottom:6px;">IMX510 Skew: 8.7ms | Wobble Safe: false</div>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <input id="p95-dsq-touchx-input" type="number" min="0" max="1919" value="480" title="Desqueezed Touch X" style="width:74px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p95-btn-sync-af" onclick="applyPhase95DesqueezedTouch()" style="flex:1;padding:3px 6px;font-size:10.5px;border-color:#22d3ee;">Sync Touch-AF X</button>
           </div>
-          <div id="p109-mount-readout" style="font-size:10px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">Shading=1.32x | 0.70kg | G31 Flange OK</div>
+          <div id="p95-touchaf-sync-readout" style="margin-top:4px;font-size:9.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">Touch-AF: sensor=480 (dsq=480, scale=1.0000)</div>
         </div>
 
-        <div class="cparam-box" style="border-color:#10b981;">
-          <div class="cparam-head"><span id="p109-lbl-c2pa">C2PA 2.1 / cnflasha Zero-Touch Shield</span><span id="p109-c2pa-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">RDONLY · kr=0 cw=0</span></div>
-          <div style="display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;">
-            <button id="p109-btn-c2pa-guard" onclick="setPhase109State({c2pa_operation:'READ_KEY'})" style="padding:4px 8px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test Zero-Touch Guard</button>
-            <button id="p109-btn-xml-prov" onclick="window.open('/api/xml_sidecar','_blank')" style="padding:4px 8px;font-size:10.5px;border-color:#10b981;color:#a7f3d0;">Inspect XML Provenance</button>
+        <div class="cparam-box" style="border-color:#6d28d9;">
+          <div class="cparam-head"><span id="p95-lbl-tone">1kHz -20dBFS Tone &amp; SMPTE Bars</span><span id="p95-tone-badge" style="color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">OFF</span></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+            <button id="p95-btn-tone-toggle" onclick="togglePhase95RefTone()" style="padding:4px 8px;font-size:11px;border-color:#a78bfa;color:#ddd6fe;">1kHz -20dBFS: OFF</button>
+            <button id="p95-btn-bars-toggle" onclick="togglePhase95ColorBars()" style="padding:4px 8px;font-size:11px;border-color:#38bdf8;color:#bae6fd;">SMPTE Bars: OFF</button>
           </div>
-          <div id="p109-c2pa-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">CNFLASHA_RDONLY_ZERO_TOUCH | CLEAN_ROOM_RESEARCH_UNATTESTED | Blk=0</div>
+          <div id="p95-tone-status-readout" style="font-size:10px;color:#cbd5e1;font-family:'SF Mono',Menlo,monospace;">STBY Ready · Auto-inhibited on REC tally</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#15803d;">
+          <div class="cparam-head"><span id="p95-lbl-limiter">4-Ch 24-bit -3.0dBFS Peak Limiter</span><span id="p95-lim-badge" style="color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">OFF</span></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+            <button id="p95-btn-lim-toggle" onclick="togglePhase95Limiter()" style="padding:4px 8px;font-size:11px;border-color:#10b981;color:#a7f3d0;">Limiter -3.0dBFS: OFF</button>
+            <button id="p95-btn-reset" onclick="setGyroflowAnamorphic({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P95</button>
+          </div>
+          <div id="p95-lim-ch-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">Eff Ch: -12/-12/-18/-18 dB | Clamped: 0/4</div>
         </div>
       </div>
 
       <div class="pill-row">
-        <button id="p109-preset-fleet4" onclick="setPhase109State({fleet_role:'A_Cam_Master',fleet_cams_online:4,gang_rec_trigger:true,sdi_bridge_converter:'BMD_Micro_Converter_12G'})" style="border-color:#06b6d4;color:#a5f3fc;">4-Cam Wired Master + Gang REC + RP188</button>
-        <button id="p109-preset-pl-cine" onclick="setPhase109State({mount_type:'Manual_PL_Adapter_Unchipped',lens_kg:1.8,rod_support_15mm_lws:false})" style="border-color:#f59e0b;color:#fde68a;">Hot-Swap Manual PL (1.8kg G31 Warn)</button>
-        <button id="p109-preset-pl-lws" onclick="setPhase109State({mount_type:'Manual_PL_Adapter_Unchipped',lens_kg:1.8,rod_support_15mm_lws:true})" style="border-color:#10b981;color:#a7f3d0;">Engage 15mm LWS Support (PL 1.00x)</button>
-        <button id="p109-btn-reset" onclick="setPhase109State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P109</button>
+        <button id="p95-preset-2x-asym" onclick="setGyroflowAnamorphic({squeeze_factor:2.0,ibis_mode:'Active',anamorphic_fallback_mode:'Anamorphic_Asymmetric'})" style="border-color:#22d3ee;color:#a5f3fc;">2.0x Active -> Anamorphic_Asymmetric (50% Yaw)</button>
+        <button id="p95-preset-18x-ctrlock" onclick="setGyroflowAnamorphic({squeeze_factor:1.8,ibis_mode:'Active',anamorphic_fallback_mode:'Center_Lock_Gyroflow'})" style="border-color:#f59e0b;color:#fde68a;">1.8x Active -> 0x0400 Center-Lock (Gyroflow)</button>
+        <button id="p95-preset-tone-bars" onclick="setGyroflowAnamorphic({ref_tone_enabled:true,color_bars_enabled:true,limiter_enabled:true})" style="border-color:#a78bfa;color:#ddd6fe;">Calibrate: 1kHz -20dBFS + Bars + Limiter</button>
       </div>
-      <div id="p109-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">MCFL ...</div>
+      <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
+
+    </div>
+
+    <div class="lab-tab-panel" id="lab-panel-monitor" data-lab-panel="monitor">
+    <div class="card" id="phase56-assist-scope-card" style="margin-top:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+        <h3 style="margin:0;">Cinema Line 监看辅助 &amp; 📊 Waveform / IRE Scope</h3>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button id="btn-desqueeze-preview" onclick="toggleDesqueezePreview()" style="padding:4px 9px;font-size:11px;background:#0f2b46;border-color:#22d3ee;">Anamorphic CSS Preview: ON</button>
+          <button onclick="refreshScopeStats(true)" style="padding:4px 9px;font-size:11px;">刷新 Scope</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Aspect Marker</span><span>In-Guest GPE0</span></div>
+          <select id="assist-aspect-select" onchange="setAssistTools({aspect_marker: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="Off">Off</option>
+            <option value="2.39:1">2.39:1 (Scope)</option>
+            <option value="1.85:1">1.85:1 (Flat)</option>
+            <option value="17:9">17:9 (DCI 4K)</option>
+            <option value="9:16">9:16 (Vertical)</option>
+            <option value="CenterCross">CenterCross</option>
+          </select>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Zebra Overlay</span><span>IRE Threshold</span></div>
+          <select id="assist-zebra-select" onchange="setAssistTools({zebra_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="Off">Off</option>
+            <option value="70%">70% (Skin)</option>
+            <option value="94%_SLog3">94%_SLog3 (Clip)</option>
+            <option value="100%">100% (Peak)</option>
+          </select>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Focus Peaking</span><span>Edge Gradient</span></div>
+          <select id="assist-peaking-select" onchange="setAssistTools({peaking_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="Off">Off</option>
+            <option value="Red">Red</option>
+            <option value="Yellow">Yellow</option>
+            <option value="White">White</option>
+          </select>
+        </div>
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Anamorphic Desqueeze</span><span>GPE0 + CSS</span></div>
+          <select id="assist-desqueeze-select" onchange="setAssistTools({desqueeze: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:5px;font-size:11.5px;">
+            <option value="1.0x">1.0x (Spherical)</option>
+            <option value="1.33x">1.33x (Anamorphic)</option>
+            <option value="2.0x">2.0x (Anamorphic)</option>
+          </select>
+        </div>
+      </div>
+      <div class="pill-row" style="margin-bottom:10px;">
+        <button onclick="setAssistTools({aspect_marker:'2.39:1',zebra_mode:'70%',peaking_mode:'Red',desqueeze:'2.0x'})" style="border-color:#22d3ee;">2.39:1 + Zebra 70% + Peak Red + 2.0x</button>
+        <button onclick="setAssistTools({aspect_marker:'9:16',zebra_mode:'94%_SLog3',peaking_mode:'Yellow',desqueeze:'1.0x'})">9:16 + S-Log3 94% + Peak Yellow</button>
+        <button onclick="setAssistTools({aspect_marker:'CenterCross',zebra_mode:'100%',peaking_mode:'White',desqueeze:'1.33x'})">CenterCross + 100% + 1.33x</button>
+        <button onclick="setAssistTools({reset:true})">Reset Assist Off</button>
+      </div>
+      <div class="cparam-box" id="waveform-scope-panel">
+        <div class="cparam-head">
+          <span style="color:var(--cyan);font-weight:700;">📊 Waveform / IRE Scope (0..109% IRE · 32-Col Luma + 16-Bin RGB)</span>
+          <span id="scope-stats-readout" style="font-family:'SF Mono',Menlo,monospace;color:#a7f3d0;">Waiting for /api/scope_stats...</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <canvas id="scope-waveform-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
+          <canvas id="scope-hist-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
+        </div>
+      </div>
+    </div>
+
 
     <div class="card" id="phase102-cache-lut-ftp-card" style="margin-top:14px;border-color:#10b981;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-        <h3 id="p102-card-title" style="margin:0;">Phase 102 · 预录制 DDR 缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列</h3>
+        <h3 id="p102-card-title" style="margin:0;">预录制 DDR 缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列</h3>
         <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
           <button id="p102-lang-en" onclick="setP102Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
           <button id="p102-lang-zh-CN" onclick="setP102Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">简体中文</button>
@@ -15278,94 +15588,11 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p102-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#34d399;font-family:'SF Mono',Menlo,monospace;">ICLF ...</div>
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <h3>Cinema Line 实时参数调节面板 (/api/cinema_param · Big-6 + HUD + P4/P11 硬件契约)</h3>
-      <div id="param-toast" class="param-toast"></div>
-      <div class="cinema-grid">
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Cell 0 · FPS</span><span>S&amp;Q / Project</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('fps', -1)">◀</button>
-            <span class="cparam-val" id="cp-fps">23.98p</span>
-            <button onclick="setCinemaParam('fps', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Cell 1 · EI / Base ISO</span><span id="cp-base-badge">800 Base</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('ei', -1)">◀</button>
-            <span class="cparam-val" id="cp-ei">800 EI (800 Base)</span>
-            <button onclick="setCinemaParam('ei', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Cell 2 · Shutter</span><span>BK4 0x02cf1702/04</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('shutter', -1)">◀</button>
-            <span class="cparam-val" id="cp-shutter">180.0°</span>
-            <button onclick="setCinemaParam('shutter', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box locked">
-          <div class="cparam-head"><span>Cell 3 · ND Filter</span><span style="color:#fbbf24;">P4 LOCKED</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('nd', -1)">◀</button>
-            <span class="cparam-val" id="cp-nd" style="color:#fde68a;">Clear [FX3 P4 Locked]</span>
-            <button onclick="setCinemaParam('nd', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Cell 4 · Base Look / 3D LUT</span><span>P1 + P11 33³</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('lut', -1)">◀</button>
-            <span class="cparam-val" id="cp-lut">S-Cinetone</span>
-            <button onclick="setCinemaParam('lut', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>Cell 5 · White Balance</span><span>Preset / ATW</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('wb', -1)">◀</button>
-            <span class="cparam-val" id="cp-wb">5600K</span>
-            <button onclick="setCinemaParam('wb', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>P11 · 5-Axis IBIS</span><span>Center Lock</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('ibis', -1)">◀</button>
-            <span class="cparam-val" id="cp-ibis">5-Axis Center Lock (P11)</span>
-            <button onclick="setCinemaParam('ibis', 1)">▶</button>
-          </div>
-        </div>
-        <div class="cparam-box">
-          <div class="cparam-head"><span>P11 · XLR-H1 Audio</span><span>Handle 0x5d90</span></div>
-          <div class="cparam-row">
-            <button onclick="setCinemaParam('xlr', -1)">◀</button>
-            <span class="cparam-val" id="cp-xlr">XLR-H1 Ch1/2 +48V (0x5d90)</span>
-            <button onclick="setCinemaParam('xlr', 1)">▶</button>
-          </div>
-        </div>
-      </div>
-      <div class="pill-row">
-        <button onclick="setCinemaPreset('fps', '23.98p')">23.98p</button>
-        <button onclick="setCinemaPreset('fps', '59.94p')">59.94p</button>
-        <button onclick="setCinemaPreset('fps', '119.88p (S&Q)')">119.88p S&amp;Q</button>
-        <button onclick="setCinemaPreset('ei', '800 EI (800 Base)')">800 EI (Base 800)</button>
-        <button onclick="setCinemaPreset('ei', '12800 EI (12800 Base)')">12800 EI (Base 12800)</button>
-        <button onclick="setCinemaPreset('shutter', '180.0°')">180.0°</button>
-        <button onclick="setCinemaPreset('shutter', '1/48')">1/48</button>
-        <button onclick="setCinemaPreset('lut', 'S-Cinetone')">S-Cinetone</button>
-        <button onclick="setCinemaPreset('lut', 'S-Log3.Cine / S-Gamut3.Cine')">S-Log3.Cine</button>
-        <button onclick="setCinemaPreset('lut', 'User1 (33³ .cube)')">User1 33³</button>
-        <button onclick="setCinemaPreset('wb', '5600K')">5600K</button>
-        <button onclick="setCinemaPreset('wb', 'ATW')">ATW</button>
-        <button onclick="setCinemaParam('nd', 1)" style="border-color:#f59e0b;color:#fde68a;">Test P4 ND Lock</button>
-      </div>
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <h3>Phase 40 · 4-Ch XLR-H1 音频 VU 表 &amp; RTMD 0xE304 + .cube 3D LUT 导入 + CAMSET 场景预设</h3>
+    <div class="lab-tab-panel" id="lab-panel-audio" data-lab-panel="audio">
+    <div class="card" id="phase40-audio-lut-camset-card" style="margin-top:14px;">
+      <h3>4-Ch XLR-H1 音频 VU 表 &amp; RTMD 0xE304 + .cube 3D LUT 导入 + CAMSET 场景预设</h3>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px;">
         <div class="cparam-box">
           <div class="cparam-head">
@@ -15457,64 +15684,65 @@ HTML_UI = """<!DOCTYPE html>
       </div>
     </div>
 
-    <div class="card" style="margin-top:14px;">
-      <h3>FX6 原生页面直达切换 (Guest 0x41e000e00 Mailbox -> appFw.so 实时重绘)</h3>
-      <div class="page-grid" id="page-buttons">
-        <button onclick="setPage(0)" id="pbtn-0">0. Big-6 主界面</button>
-        <button onclick="setPage(1)" id="pbtn-1">1. 三层完整菜单</button>
-        <button onclick="setPage(2)" id="pbtn-2">2. Setting Main</button>
-        <button onclick="setPage(3)" id="pbtn-3">3. Setting Center</button>
-        <button onclick="setPage(4)" id="pbtn-4">4. Assignable 30键</button>
-        <button onclick="setPage(5)" id="pbtn-5">5. Network 状态/176</button>
-        <button onclick="setPage(6)" id="pbtn-6">6. 寻像器 HUD 条</button>
-        <button onclick="setPage(7)" id="pbtn-7">7. Clip / Playback</button>
-        <button onclick="setPage(8)" id="pbtn-8">8. Status / Grid 69</button>
-        <button onclick="setPage(9)" id="pbtn-9">9. Thumbnail 全屏页</button>
-        <button onclick="setPage(10)" id="pbtn-10">10. Touch 触控浮层</button>
-        <button onclick="setPage(11)" id="pbtn-11">11. Subpage + Gamma</button>
-        <button onclick="setPage(12)" id="pbtn-12">12. Paint 键盘输入102</button>
-        <button onclick="setPage(13)" id="pbtn-13">13. Media 状态页48</button>
-        <button onclick="setPage(14)" id="pbtn-14">14. Clip 12宫格缩略图</button>
-        <button onclick="setPage(15)" id="pbtn-15">15. StatusIcon/Date/Track</button>
-        <button onclick="setPage(16)" id="pbtn-16">16. HUD 253行完整主界面</button>
-        <button onclick="setPage(17)" id="pbtn-17">17. TC/电平表/6键状态页</button>
-        <button onclick="setPage(18)" id="pbtn-18">18. 6行通知对话框 p81</button>
-        <button onclick="setPage(19)" id="pbtn-19">19. Wi-Fi SSID 扫描页</button>
-        <button onclick="setPage(20)" id="pbtn-20">20. 三列设置列表 p66/73</button>
-        <button onclick="setPage(21)" id="pbtn-21">21. 确认/执行弹窗 p72/93</button>
-        <button onclick="setPage(22)" id="pbtn-22">22. 双栏设置/横幅 p77/112</button>
-        <button onclick="setPage(23)" id="pbtn-23">23. 15键/10键宫格 p64/57</button>
-      </div>
 
-      <h3>全量 128 个 FX6 原生页面描述符直达 (fx6_all_pages[0..127] · Universal Descriptor Table Mode)</h3>
-      <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
-        <button onclick="step128(-1)">◀ 上一页</button>
-        <select id="all128-select" onchange="onSelect128()" style="flex:1;background:#1f2633;color:var(--text);border:1px solid #374151;border-radius:7px;padding:8px 10px;font-size:12px;font-family:'SF Mono',Menlo,monospace;">
-          <option value="">-- 选择 fx6_all_pages[0..127] 任意原生页面描述符表 --</option>
-        </select>
-        <button onclick="step128(1)">下一页 ▶</button>
-      </div>
+    <div class="card" id="phase88-shotmark-iris-card" style="margin-top:14px;border-color:#f59e0b;">
+      <h3>场记打点 ShotMark1/2 / 一键自动光圈 41%IRE / FX6->FX3 多机位配置克隆 (ShotMark, Push Auto Iris &amp; Fleet CAMSET)</h3>
+      <div id="p88-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#b45309;">
+          <div class="cparam-head"><span>ShotMark1/2 · 场记打点</span><span id="p88-sm-count-readout" style="color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">M1:0 / M2:0</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <button onclick="setShotmarkAndIris({action:'add_shotmark1'})" style="border-color:#fbbf24;color:#fde68a;padding:4px 8px;font-size:11px;">★ ShotMark1 (OK)</button>
+            <button onclick="setShotmarkAndIris({action:'add_shotmark2'})" style="border-color:#38bdf8;color:#bae6fd;padding:4px 8px;font-size:11px;">★ ShotMark2 (KEEP)</button>
+            <button onclick="setShotmarkAndIris({action:'clear_shotmarks'})" style="padding:4px 8px;font-size:11px;">Clear</button>
+          </div>
+          <div id="p88-sm-latest-readout" style="font-size:10px;color:#cbd5e1;font-family:'SF Mono',Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">EssenceMark: none (0/64)</div>
+        </div>
 
-      <h3>三层菜单 11 大分类直达 (TABLE 0x2ea02f8 + string_english_2.uxc)</h3>
-      <div class="cat-grid" id="cat-buttons">
-        <button onclick="setCat(0)" id="cbtn-0">1. User</button>
-        <button onclick="setCat(1)" id="cbtn-1">2. Edit User Menu</button>
-        <button onclick="setCat(2)" id="cbtn-2">3. Shooting</button>
-        <button onclick="setCat(3)" id="cbtn-3">4. Project</button>
-        <button onclick="setCat(4)" id="cbtn-4">5. Paint/Look</button>
-        <button onclick="setCat(5)" id="cbtn-5">6. TC/Media</button>
-        <button onclick="setCat(6)" id="cbtn-6">7. Monitoring</button>
-        <button onclick="setCat(7)" id="cbtn-7">8. Audio</button>
-        <button onclick="setCat(8)" id="cbtn-8">9. Thumbnail</button>
-        <button onclick="setCat(9)" id="cbtn-9">10. Technical</button>
-        <button onclick="setCat(10)" id="cbtn-10">11. Maintenance</button>
+        <div class="cparam-box" style="border-color:#15803d;">
+          <div class="cparam-head"><span>Push Auto Iris · 1/8-Stop</span><span id="p88-iris-readout" style="color:#4ade80;font-family:'SF Mono',Menlo,monospace;">F2.8 · 41.0%IRE</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p88-metering-select" onchange="setShotmarkAndIris({metering_mode:this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="multi">Multi (41% Grey)</option>
+              <option value="center">Center</option>
+              <option value="spot">Spot</option>
+              <option value="highlight">Highlight (&lt;94% IRE)</option>
+            </select>
+            <input id="p88-ev-input" type="number" min="0" max="18" step="0.5" value="12.0" title="Scene EV [0..18]" style="width:54px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase88PushAutoIris()" style="border-color:#22c55e;color:#bbf7d0;padding:4px 7px;font-size:11px;">Push</button>
+          </div>
+          <div id="p88-ire-est-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">Est Grey: 41.0% | HL: 89.2% | ND Faults: 0</div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>4-Ch 24-bit Pad &amp; SMPTE User-Bits</span><span id="p88-pad-readout" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">0 dB</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <button onclick="setShotmarkAndIris({ch34_safety_pad_db:0})" style="padding:4px 7px;font-size:11px;">CH3/4 0dB</button>
+            <button onclick="setShotmarkAndIris({ch34_safety_pad_db:-20})" style="border-color:#10b981;color:#a7f3d0;padding:4px 7px;font-size:11px;">CH3/4 -20dB SAFE</button>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <input id="p88-ub-input" type="text" value="auto_camid_reel" placeholder="auto_camid_reel or AA:BB:CC:DD" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;font-family:'SF Mono',Menlo,monospace;" />
+            <button onclick="applyPhase88UserBits()" style="padding:4px 7px;font-size:11px;">UB</button>
+          </div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#0284c7;">
+          <div class="cparam-head"><span>FX6->FX3 Fleet CAMSET &amp; XML</span><span id="p88-fleet-badge" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">Ready</span></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+            <button onclick="importFx6FleetCamsetPreset()" style="border-color:#38bdf8;color:#bae6fd;padding:4px 8px;font-size:11px;">FX6->FX3 Sanitize Clone</button>
+            <a href="/api/xml_sidecar" target="_blank" style="display:inline-block;padding:4px 8px;font-size:11px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;text-decoration:none;">Download M01.XML</a>
+          </div>
+          <div id="p88-ub-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">UB: A0:01:00:01 (auto_camid_reel)</div>
+        </div>
       </div>
+      <div id="p88-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">SMRK_IRIS ...</div>
     </div>
+
 
     <div class="card" id="phase129-mxf-ptpv2-tally-card" style="margin-top:14px;border-color:#ef4444;padding:10px 14px;">
       <details id="p129-details">
         <summary style="cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;user-select:none;">
-          <h3 id="p129-card-title" style="margin:0;font-size:13.5px;">&#9656; Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally</h3>
+          <h3 id="p129-card-title" style="margin:0;font-size:13.5px;">&#9656; XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally</h3>
           <span id="p129-summary-pill" style="font-size:10.5px;color:#fca5a5;font-family:'SF Mono',Menlo,monospace;background:#1f2937;border:1px solid #374151;border-radius:999px;padding:2px 8px;">MP4_ISOBMFF_RTMD · OFF · CAM1</span>
         </summary>
         <div style="margin-top:10px;">
@@ -15595,59 +15823,227 @@ HTML_UI = """<!DOCTYPE html>
         </div>
       </details>
     </div>
+    </div>
+
+    <div class="lab-tab-panel" id="lab-panel-stream" data-lab-panel="stream">
+    <div class="card" id="phase123-uvc-srt-crsdk-ptp-card" style="margin-top:14px;border-color:#10b981;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p123-card-title" style="margin:0;">USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p123-lang-en" onclick="setP123Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p123-lang-zh-CN" onclick="setP123Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">简体中文</button>
+          <button id="p123-lang-zh-TW" onclick="setP123Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p123-lang-ja" onclick="setP123Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p123-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p123-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#22d3ee;">
+          <div class="cparam-head"><span id="p123-lbl-uvc">USB-C UVC 1.5 / UAC 2.0 Clean Feed</span><span id="p123-uvc-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · CLEAN=1</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p123-uvc-select" onchange="setPhase123State({uvc_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF</option>
+              <option value="UVC_4K30P_MJPEG_5G">UVC 4K30p MJPEG (5Gbps)</option>
+              <option value="UVC_1080P60P_YUY2_5G">UVC 1080p60 YUY2 (5Gbps)</option>
+              <option value="UVC_720P30P_MJPEG_USB2_FALLBACK">UVC 720p30 MJPEG (USB2)</option>
+            </select>
+            <select id="p123-usb-speed-select" onchange="setPhase123State({usb_link_speed: this.value})" style="width:94px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="USB3_5G">USB3 5G</option>
+              <option value="USB2_480M">USB2 480M</option>
+            </select>
+            <button id="p123-btn-test-osd-leak" onclick="setPhase123State({uvc_bake_osd: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test OSD Block</button>
+          </div>
+          <div id="p123-uvc-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">UAC 48kHz 16-bit 2ch PCM | CleanFeed=1 OSD=0px</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p123-lbl-srt">Wired CDC-NCM SRT / RTMPS TLS 1.3 (P12)</span><span id="p123-srt-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">OFF · P12 WLAN=OFF</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p123-srt-select" onchange="setPhase123State({srt_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">SRT OFF</option>
+              <option value="SRT_CALLER">SRT Caller (ARQ)</option>
+              <option value="SRT_LISTENER">SRT Listener (ARQ)</option>
+            </select>
+            <select id="p123-pbkey-select" onchange="setPhase123State({srt_pbkeylen: this.value})" style="width:84px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="AES-256">AES-256</option>
+              <option value="AES-128">AES-128</option>
+              <option value="NONE">NONE</option>
+            </select>
+            <input id="p123-latency-input" type="number" step="10" min="20" max="1000" value="120" title="SRT ARQ Latency (ms)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <select id="p123-rtmps-select" onchange="setPhase123State({rtmps_mode: this.value})" style="width:98px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">RTMPS OFF</option>
+              <option value="RTMPS_TLS13">RTMPS TLS1.3</option>
+            </select>
+            <input id="p123-bitrate-input" type="number" step="1" min="1" max="50" value="12" title="Bitrate (Mbps)" style="width:48px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p123-btn-apply-srt" onclick="applyPhase123SrtParams()" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">Apply</button>
+            <button id="p123-btn-test-wifi" onclick="setPhase123State({use_wifi: true})" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test P12 Wi-Fi</button>
+          </div>
+          <div id="p123-srt-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">CDC-NCM Wired | P12 WLAN=OFF wf12=0 | 12Mbps</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#3b82f6;">
+          <div class="cparam-head"><span id="p123-lbl-ptp">CRSDK PTP / PTP-IP (0x054C) Remote</span><span id="p123-ptp-badge" style="color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">OFF · 0xD210</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p123-ptp-select" onchange="setPhase123State({crsdk_ptp_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF</option>
+              <option value="USB_PTP">USB PTP (0x054C)</option>
+              <option value="WIRED_PTPIP">Wired PTP-IP (15740)</option>
+            </select>
+            <select id="p123-d2xx-select" style="width:128px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="0xD210">0xD210 Base/EI</option>
+              <option value="0xD20D">0xD20D Shutter</option>
+              <option value="0xD21C">0xD21C WB/K</option>
+              <option value="0xD220">0xD220 Look/LUT</option>
+              <option value="0xD224">0xD224 P4 ND-Clear</option>
+              <option value="0xD2C1">0xD2C1 Touch AF</option>
+              <option value="0xD2C4">0xD2C4 REC Trig</option>
+            </select>
+            <button id="p123-btn-send-d2xx" onclick="sendPhase123SafeOpcode()" style="padding:3px 7px;font-size:10.5px;border-color:#3b82f6;color:#bfdbfe;">Run 0xD2xx</button>
+            <button id="p123-btn-test-nd-clamp" onclick="setPhase123State({ptp_opcode:'0xD224',crsdk_nd_preset:'1/16'})" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Test P4 ND</button>
+          </div>
+          <div id="p123-ptp-readout" style="font-size:10px;color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">VID 0x054C | Base800 EI800 | Look=S-Cinetone | P4 ND=Clear</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#ef4444;">
+          <div class="cparam-head"><span id="p123-lbl-fw">PTP Flash-Opcode Firewall (0x9280..)</span><span id="p123-fw-badge" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">ARMED · eMMC=0B</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <button id="p123-btn-test-flash-9280" onclick="setPhase123State({ptp_opcode:'0x9280'})" style="flex:1;padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block 0x9280 Flash</button>
+            <button id="p123-btn-test-flash-9285" onclick="setPhase123State({ptp_opcode:'0x9285',crsdk_action:'firmware_flash'})" style="flex:1;padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block 0x9285 UFU</button>
+          </div>
+          <div id="p123-fw-readout" style="font-size:10px;color:#fecaca;font-family:'SF Mono',Menlo,monospace;">Firewall=ON | eMMC_Mutation=0B | Blocked=0</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p123-preset-uvc4k-srt-ptpip" onclick="setPhase123State({uvc_mode:'UVC_4K30P_MJPEG_5G',usb_link_speed:'USB3_5G',srt_mode:'SRT_CALLER',srt_pbkeylen:'AES-256',srt_latency_ms:120,crsdk_ptp_mode:'WIRED_PTPIP'})" style="border-color:#10b981;color:#a7f3d0;">UVC 4K30p + SRT Caller AES-256 + PTP-IP</button>
+        <button id="p123-preset-usb2-fallback" onclick="setPhase123State({uvc_mode:'UVC_4K30P_MJPEG_5G',usb_link_speed:'USB2_480M',rtmps_mode:'RTMPS_TLS13',stream_bitrate_mbps:18})" style="border-color:#f59e0b;color:#fde68a;">USB2 480M Stepdown (720p30) + RTMPS TLS1.3</button>
+        <button id="p123-preset-ptp-ei12800" onclick="setPhase123State({crsdk_ptp_mode:'USB_PTP',ptp_opcode:'0xD210',crsdk_cine_ei_base:'12800',crsdk_ei_index:12800,crsdk_base_look:'S-Log3 / S-Gamut3.Cine'})" style="border-color:#3b82f6;color:#bfdbfe;">CRSDK 0xD210 EI 12800 + S-Log3</button>
+        <button id="p123-btn-reset" onclick="setPhase123State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P123</button>
+      </div>
+      <div id="p123-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">UVCS ...</div>
+    </div>
+
+
+    <div class="card" id="phase109-mcfleet-sdi-c2pa-card" style="margin-top:14px;border-color:#06b6d4;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p109-card-title" style="margin:0;">M&amp;C 4机位有线同步 / HDMI→12G-SDI RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p109-lang-en" onclick="setP109Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p109-lang-zh-CN" onclick="setP109Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#06b6d4;">简体中文</button>
+          <button id="p109-lang-zh-TW" onclick="setP109Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p109-lang-ja" onclick="setP109Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p109-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p109-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#06b6d4;">
+          <div class="cparam-head"><span id="p109-lbl-fleet">M&amp;C 4-Cam Wired Fleet (PTP-IP)</span><span id="p109-fleet-badge" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">Solo · 1/4 · P12 OFF</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p109-role-select" onchange="setPhase109State({fleet_role: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="Solo">Solo</option>
+              <option value="A_Cam_Master">A_Cam_Master</option>
+              <option value="B_Cam_Follower">B_Cam_Follower</option>
+              <option value="C_Cam_Follower">C_Cam_Follower</option>
+              <option value="D_Cam_Follower">D_Cam_Follower</option>
+            </select>
+            <select id="p109-cams-select" onchange="setPhase109State({fleet_cams_online: Number(this.value)})" style="width:68px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="1">1 Cam</option>
+              <option value="2">2 Cams</option>
+              <option value="3">3 Cams</option>
+              <option value="4">4 Cams</option>
+            </select>
+            <button id="p109-btn-gang-rec" onclick="togglePhase109GangRec()" style="padding:4px 8px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Gang REC: OFF</button>
+          </div>
+          <div id="p109-fleet-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">USB_LAN_CDC_NCM_RTL8153 | PTP Skew=0.0us | wf12=0</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#3b82f6;">
+          <div class="cparam-head"><span id="p109-lbl-sdi">HDMI→12G-SDI AVI &amp; RP 188 Bridge</span><span id="p109-sdi-badge" style="color:#93c5fd;font-family:'SF Mono',Menlo,monospace;">RP188=0 · CS=0x00</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p109-sdi-select" onchange="setPhase109State({sdi_bridge_converter: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="BMD_Micro_Converter_12G">BMD_Micro_Converter_12G</option>
+              <option value="Teradek_Bolt_HDMI_SDI">Teradek_Bolt_HDMI_SDI</option>
+              <option value="Atomos_Connect_12G">Atomos_Connect_12G</option>
+              <option value="Off">Off</option>
+            </select>
+            <button id="p109-btn-hdmi-tc" onclick="togglePhase109HdmiTc()" style="padding:4px 7px;font-size:10.5px;border-color:#3b82f6;color:#bfdbfe;">TC+REC Ctrl: ON</button>
+          </div>
+          <div id="p109-sdi-readout" style="font-size:10px;color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">AVI CS=0x00 (sum%256=0) | LEGAL_64_940 | No BNC Faults</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#f59e0b;">
+          <div class="cparam-head"><span id="p109-lbl-mount">E-Mount 12-Pin vs PL Hot-Swap Shading</span><span id="p109-mount-badge" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">12-Pin · 1.32x</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;">
+            <select id="p109-mount-select" onchange="setPhase109State({mount_type: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="Sony_EMount_12Pin_GM">Sony_EMount_12Pin_GM</option>
+              <option value="Manual_PL_Adapter_Unchipped">Manual_PL_Adapter_Unchipped</option>
+            </select>
+            <input id="p109-lens-kg-input" type="number" step="0.1" min="0.1" max="10.0" value="0.7" title="Lens Weight (kg)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p109-btn-apply-mount" onclick="applyPhase109MountParams()" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;">Apply</button>
+            <button id="p109-btn-lws" onclick="togglePhase109Lws()" style="padding:3px 7px;font-size:10.5px;border-color:#eab308;">LWS: OFF</button>
+          </div>
+          <div id="p109-mount-readout" style="font-size:10px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">Shading=1.32x | 0.70kg | G31 Flange OK</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p109-lbl-c2pa">C2PA 2.1 / cnflasha Zero-Touch Shield</span><span id="p109-c2pa-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">RDONLY · kr=0 cw=0</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap;">
+            <button id="p109-btn-c2pa-guard" onclick="setPhase109State({c2pa_operation:'READ_KEY'})" style="padding:4px 8px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test Zero-Touch Guard</button>
+            <button id="p109-btn-xml-prov" onclick="window.open('/api/xml_sidecar','_blank')" style="padding:4px 8px;font-size:10.5px;border-color:#10b981;color:#a7f3d0;">Inspect XML Provenance</button>
+          </div>
+          <div id="p109-c2pa-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">CNFLASHA_RDONLY_ZERO_TOUCH | CLEAN_ROOM_RESEARCH_UNATTESTED | Blk=0</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p109-preset-fleet4" onclick="setPhase109State({fleet_role:'A_Cam_Master',fleet_cams_online:4,gang_rec_trigger:true,sdi_bridge_converter:'BMD_Micro_Converter_12G'})" style="border-color:#06b6d4;color:#a5f3fc;">4-Cam Wired Master + Gang REC + RP188</button>
+        <button id="p109-preset-pl-cine" onclick="setPhase109State({mount_type:'Manual_PL_Adapter_Unchipped',lens_kg:1.8,rod_support_15mm_lws:false})" style="border-color:#f59e0b;color:#fde68a;">Hot-Swap Manual PL (1.8kg G31 Warn)</button>
+        <button id="p109-preset-pl-lws" onclick="setPhase109State({mount_type:'Manual_PL_Adapter_Unchipped',lens_kg:1.8,rod_support_15mm_lws:true})" style="border-color:#10b981;color:#a7f3d0;">Engage 15mm LWS Support (PL 1.00x)</button>
+        <button id="p109-btn-reset" onclick="setPhase109State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P109</button>
+      </div>
+      <div id="p109-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">MCFL ...</div>
+    </div>
+
+    </div>
+
+    <div class="lab-tab-panel" id="lab-panel-debug" data-lab-panel="debug">
+<div class="telemetry-strip" id="stage-b-telemetry-strip">
+  <div class="tel-pill" id="tel-p1"><b>P1 (/lut->p30)</b><span id="tel-p1-d">/dev/nflasha30 -> S-Cinetone</span></div>
+  <div class="tel-pill locked" id="tel-p4"><b>P4 (ND=Clear)</b><span id="tel-p4-d">Clear [FX3 P4 Locked]</span></div>
+  <div class="tel-pill" id="tel-p10"><b>P10 (FX3 Keys)</b><span id="tel-p10-d">FX3 Deck Ready</span></div>
+  <div class="tel-pill" id="tel-p11"><b>P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)</b><span id="tel-p11-d">Base 800 | 0x0165/0x0166 | 0x5d90 | IBIS Center Lock</span></div>
+  <div class="tel-pill" id="tel-p12"><b>P12 (WF-12 Safe)</b><span id="tel-p12-d">Direct O_RDONLY / LRU Pool / Bounded Write Safe</span></div>
+</div>
+
+
+<div id="multilang-diff-readout" class="multilang-diff-box"></div>
+
+
+<div class="search-jump-bar" id="menu-search-jump-bar">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+    <span style="font-size:12px;font-weight:700;color:var(--cyan);">🔍 搜索菜单 / Quick Jump (128 Pages)</span>
+    <input id="menu-search-input" type="text" oninput="filterMenuCatalog()" placeholder="输入中文或英文关键词搜索 (如: Cine EI, LUT, XLR-H1, ND, CFexpress, Airplane, Page 110)..." style="flex:1;min-width:240px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:6px 10px;font-size:12px;" />
+    <select id="menu-cat-filter" onchange="filterMenuCatalog()" style="background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:6px 8px;font-size:11.5px;">
+      <option value="">All 11 Categories + 128 Pages</option>
+    </select>
+    <span id="menu-catalog-count" style="font-size:11px;color:var(--muted);font-family:'SF Mono',Menlo,monospace;">11 Categories · 128 Pages</span>
   </div>
+  <div class="pill-row" id="quick-jump-pills"></div>
+  <div class="search-results-list" id="menu-search-results"></div>
+</div>
 
-  <div style="display:flex;flex-direction:column;gap:14px;">
-    <div class="card">
-      <h3>FX6 机身按键面板 (支持直接点击画面 / 键盘方向键 / Enter / M / H)</h3>
-      <div class="dpad-grid">
-        <button onclick="sendKey('HOME')">HOME</button>
-        <button onclick="sendKey('UP')">▲ UP</button>
-        <button onclick="sendKey('MENU')">MENU</button>
-
-        <button onclick="sendKey('LEFT')">◀ LEFT</button>
-        <button onclick="sendKey('SET')" class="btn-set">● SET</button>
-        <button onclick="sendKey('RIGHT')">RIGHT ▶</button>
-
-        <button onclick="sendKey('BACK')">BACK</button>
-        <button onclick="sendKey('DOWN')">▼ DOWN</button>
-        <button onclick="sendKey('DISP')">DISP</button>
-      </div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.5;">
-        • <b>直接点击画面</b>：点击画面左上角 <b>Menu</b> 区域即可进入/退出三层菜单；在 Big-6 主界面点击任意外围 6 格可选中或切换值；在三层菜单点击左侧分类或右侧条目可直接切换。<br/>
-        • <b>机身按键/键盘</b>：方向键移动高亮框 (<code>0x0200c011</code>)，<b>SET (Enter)</b> 切换值，<b>MENU (M)</b> 打开三层菜单。
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>ILME-FX3 物理机身控制面板 (Top / Rear Deck · Stage-B P10 映射)</h3>
-      <div class="page-grid" style="margin-bottom:8px;">
-        <button onclick="sendFx3Button('FN')" title="FX3 Fn (0x0013 -> 0x7095 / PF_K_HOME)">Fn → Big-6 主页</button>
-        <button onclick="sendFx3Button('MENU')" title="FX3 MENU (0x0011 -> 0x01ab / UIBIZ_KEY_TACT_MENU)">MENU → 3层菜单</button>
-        <button onclick="sendFx3Button('DISP')" title="FX3 DISP (0x0025 -> 0x70ec / PF_K_DISP_SEL)">DISP → HUD p16/p6</button>
-        <button onclick="sendFx3Button('C1')" title="FX3 C1 (0x001d -> 0x0066 / PF_K_KURU_PON)">C1 → Base Look/LUT</button>
-        <button onclick="sendFx3Button('C2')" title="FX3 C2 (0x0024 -> 0x70e7 / PF_K_MENU_CANCEL)">C2 → 白平衡/Setting</button>
-        <button onclick="sendFx3Button('C3')" title="FX3 C3 (0x0025 -> 0x70ec / PF_K_DISP_SEL)">C3 → Audio/TC p17</button>
-        <button onclick="sendFx3Button('C4')" title="FX3 C4 (0x0026 -> 0x70ed / PF_K_SLOT_SEL)">C4 → Media SSA/SSB p13</button>
-        <button onclick="sendFx3Button('C5')" title="FX3 C5/DEL (0x000c -> 0x01f8 / PF_K_USER)">C5 → Assignable p4</button>
-        <button onclick="sendFx3Button('C6')" title="FX3 C6/PLAY (0x000b -> 0x01f7 / PF_K_THUMBNAIL)">C6 → Clip 浏览器 p14</button>
-        <button onclick="sendFx3Button('WHEEL_UP')" title="FX3 Rear Dial UP (0x0003 -> 0x7081 / PF_K_UP)">WHEEL ▲ UP</button>
-        <button onclick="sendFx3Button('WHEEL_SET')" class="btn-set" title="FX3 Rear Dial SET (0x001c -> 0x01ac / PF_K_SET)">● WHEEL SET</button>
-        <button onclick="sendFx3Button('WHEEL_DOWN')" title="FX3 Rear Dial DOWN (0x0030 -> 0x7082 / PF_K_DOWN)">WHEEL ▼ DOWN</button>
-        <button onclick="sendFx3Button('BACK')" title="FX3 BACK/CANCEL (0x0024 -> 0x70e7 / PF_K_MENU_CANCEL)" style="grid-column:span 3;">BACK / CANCEL (返回/取消)</button>
-      </div>
-      <div id="p10-telemetry-readout" style="font-size:11px;color:#67e8f9;background:#0a0f18;border:1px solid #1e293b;border-radius:6px;padding:7px 9px;font-family:'SF Mono',Menlo,monospace;line-height:1.45;">
-        Stage-B P10 遥测: IDLE (点击任意 FX3 物理按键发送 /api/fx3_button)
-      </div>
-    </div>
 
     <div class="card">
       <h3>QEMU 虚拟机串口实时日志 (FX6_LIVE_READY / FX6_LIVE_FRAME)</h3>
       <div id="serial-box" class="serial-box">正在连接虚拟机串口...</div>
     </div>
+    </div>
   </div>
-</div>
-
+</details>
 <script>
 let busy = false;
 let currentStatus = null;
@@ -15868,6 +16264,9 @@ async function updateUI(st, forceImg) {
   if (st.mxf_ptpv2_tally) {
     syncPhase129MxfPtpv2TallyUI(st.mxf_ptpv2_tally);
   }
+  if (st.studio_screen_mode) {
+    syncStudioScreenModeUI(st.studio_screen_mode);
+  }
 
   if (forceImg || st.live_ready) {
     document.getElementById('gpe0-img').src = '/api/frame.png?t=' + Date.now();
@@ -15984,7 +16383,7 @@ function onCubeFilePick(e) {
   if (!f) return;
   const nameIn = document.getElementById('lut-name-input');
   if (nameIn && !nameIn.value.trim()) {
-    nameIn.value = f.name.replace(/\.cube$/i, '').slice(0, 23);
+    nameIn.value = f.name.replace(/\\.cube$/i, '').slice(0, 23);
   }
   const reader = new FileReader();
   reader.onload = () => {
@@ -16284,7 +16683,7 @@ function filterMenuCatalog() {
   if (!listEl) return;
   const q = (qEl ? qEl.value : '').trim().toLowerCase();
   const cat = (cEl ? cEl.value : '').trim().toLowerCase();
-  const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
+  const tokens = q ? q.split(/\\s+/).filter(Boolean) : [];
   const filtered = menuCatalogData.items.filter((it) => {
     if (cat && (it.category || '').toLowerCase() !== cat) return false;
     if (!tokens.length) return true;
@@ -17109,7 +17508,7 @@ async function importFx6FleetCamsetPreset() {
 let p95Lang = 'zh-CN';
 const P95_I18N = {
   'en': {
-    title: 'Phase 95 · Anamorphic IBIS Arbitrator / Gyroflow 2000Hz RTMD / 1kHz -20dBFS Tone & -3dB Limiter',
+    title: 'Anamorphic IBIS Arbitrator / Gyroflow 2000Hz RTMD / 1kHz -20dBFS Tone & -3dB Limiter',
     anamorphic: 'Anamorphic & IBIS Arbitrator',
     fallback: 'Fallback:',
     gyro: 'Gyroflow 2000Hz RTMD & Skew',
@@ -17122,7 +17521,7 @@ const P95_I18N = {
     presetTone: 'Calibrate: 1kHz -20dBFS + Bars + Limiter'
   },
   'zh-CN': {
-    title: 'Phase 95 · 变形镜头 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基准音与 -3dB 限幅器',
+    title: '变形镜头 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基准音与 -3dB 限幅器',
     anamorphic: '变形反挤压 & IBIS 仲裁器',
     fallback: '仲裁回退:',
     gyro: 'Gyroflow 2000Hz 陀螺仪 & 卷帘果冻',
@@ -17135,7 +17534,7 @@ const P95_I18N = {
     presetTone: '校准: 1kHz -20dBFS + SMPTE 彩条 + 限幅'
   },
   'zh-TW': {
-    title: 'Phase 95 · 變形鏡頭 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基準音與 -3dB 限幅器',
+    title: '變形鏡頭 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基準音與 -3dB 限幅器',
     anamorphic: '變形反擠壓 & IBIS 仲裁器',
     fallback: '仲裁回退:',
     gyro: 'Gyroflow 2000Hz 陀螺儀 & 捲簾果凍',
@@ -17148,7 +17547,7 @@ const P95_I18N = {
     presetTone: '校準: 1kHz -20dBFS + SMPTE 彩條 + 限幅'
   },
   'ja': {
-    title: 'Phase 95 · アナモルフィック IBIS 調停 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基準音・-3dB リミッター',
+    title: 'アナモルフィック IBIS 調停 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基準音・-3dB リミッター',
     anamorphic: 'アナモルフィック & IBIS 調停',
     fallback: '調停先:',
     gyro: 'Gyroflow 2000Hz IMU & ローリング歪み',
@@ -17367,7 +17766,7 @@ function togglePhase95Limiter() {
 
 const P102_I18N = {
   'en': {
-    title: 'Phase 102 · Picture Cache DDR Ring / Interval E-Shutter / .cube 33³ LUT / USB-LAN FTPS',
+    title: 'Picture Cache DDR Ring / Interval E-Shutter / .cube 33³ LUT / USB-LAN FTPS',
     cache: 'Picture Cache (Pre-Rec DDR)',
     interval: 'Interval Rec (E-Shutter Only)',
     lut: 'User .cube 3D-LUT (17/33/65³ -> 33³ RAM)',
@@ -17385,7 +17784,7 @@ const P102_I18N = {
     reset: 'Reset P102'
   },
   'zh-CN': {
-    title: 'Phase 102 · 预录制 DDR 环形缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列',
+    title: '预录制 DDR 环形缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列',
     cache: '预录制 Picture Cache (DDR 环缓)',
     interval: '间隔摄影 Interval Rec (仅电子快门)',
     lut: '用户 .cube 3D-LUT (17/33/65³ -> 33³ 内存)',
@@ -17403,7 +17802,7 @@ const P102_I18N = {
     reset: '重置 P102'
   },
   'zh-TW': {
-    title: 'Phase 102 · 預錄製 DDR 環形快取 / 電子快門間隔攝影 / .cube 33³ 四面體上傳 / USB-LAN FTPS 佇列',
+    title: '預錄製 DDR 環形快取 / 電子快門間隔攝影 / .cube 33³ 四面體上傳 / USB-LAN FTPS 佇列',
     cache: '預錄製 Picture Cache (DDR 環緩)',
     interval: '間隔攝影 Interval Rec (僅電子快門)',
     lut: '使用者 .cube 3D-LUT (17/33/65³ -> 33³ 記憶體)',
@@ -17421,7 +17820,7 @@ const P102_I18N = {
     reset: '重設 P102'
   },
   'ja': {
-    title: 'Phase 102 · ピクチャーキャッシュ DDR / 電子シャッターインターバル / .cube 33³ LUT / USB-LAN FTPS',
+    title: 'ピクチャーキャッシュ DDR / 電子シャッターインターバル / .cube 33³ LUT / USB-LAN FTPS',
     cache: 'ピクチャーキャッシュ (Pre-Rec DDR)',
     interval: 'インターバル撮影 (電子シャッター専用)',
     lut: 'ユーザー .cube 3D-LUT (17/33/65³ -> 33³ RAM)',
@@ -17664,7 +18063,7 @@ function enqueuePhase102CustomPath() {
 
 const P109_I18N = {
   'en': {
-    title: 'Phase 109 · M&C 4-Cam Wired Gang-REC / HDMI→12G-SDI AVI & RP188 / E-Mount-PL / C2PA Zero-Touch',
+    title: 'M&C 4-Cam Wired Gang-REC / HDMI→12G-SDI AVI & RP188 / E-Mount-PL / C2PA Zero-Touch',
     fleet: 'M&C 4-Cam Wired Fleet (PTP-IP)',
     sdi: 'HDMI→12G-SDI AVI & RP 188 Bridge',
     mount: 'E-Mount 12-Pin vs PL Hot-Swap Shading',
@@ -17678,7 +18077,7 @@ const P109_I18N = {
     reset: 'Reset P109'
   },
   'zh-CN': {
-    title: 'Phase 109 · M&C 4机位有线同步 / HDMI→12G-SDI AVI & RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源',
+    title: 'M&C 4机位有线同步 / HDMI→12G-SDI AVI & RP188 / E-卡口与PL热插拔 / C2PA 零接触溯源',
     fleet: 'M&C 4机位有线同步矩阵 (PTP-IP)',
     sdi: 'HDMI→12G-SDI AVI 量化与 RP 188 触发桥接',
     mount: 'E-卡口 12针 / 无触点 PL 热插拔暗角仲裁',
@@ -17692,7 +18091,7 @@ const P109_I18N = {
     reset: '重置 P109'
   },
   'zh-TW': {
-    title: 'Phase 109 · M&C 4機位有線同步 / HDMI→12G-SDI AVI & RP188 / E-接環與PL熱插拔 / C2PA 零接觸溯源',
+    title: 'M&C 4機位有線同步 / HDMI→12G-SDI AVI & RP188 / E-接環與PL熱插拔 / C2PA 零接觸溯源',
     fleet: 'M&C 4機位有線同步矩陣 (PTP-IP)',
     sdi: 'HDMI→12G-SDI AVI 量化與 RP 188 觸發橋接',
     mount: 'E-接環 12針 / 無接點 PL 熱插拔暗角仲裁',
@@ -17706,7 +18105,7 @@ const P109_I18N = {
     reset: '重設 P109'
   },
   'ja': {
-    title: 'Phase 109 · M&C 4台有線同期REC / HDMI→12G-SDI AVI & RP188 / Eマウント・PL / C2PA ゼロタッチ',
+    title: 'M&C 4台有線同期REC / HDMI→12G-SDI AVI & RP188 / Eマウント・PL / C2PA ゼロタッチ',
     fleet: 'M&C 4台有線 PTP-IP 同期マトリクス',
     sdi: 'HDMI→12G-SDI AVI量子化 & RP 188 変換',
     mount: 'Eマウント 12ピン / 無接点 PL 周辺減光補正',
@@ -17878,7 +18277,7 @@ function togglePhase109Lws() {
 
 const P116_I18N = {
   en: {
-    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Clean HDMI Display Assist / ProRes RAW & BRAW / Breathing Comp',
+    title: 'HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Clean HDMI Display Assist / ProRes RAW & BRAW / Breathing Comp',
     hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
     assist: 'Gamma Display Assist (Clean HDMI/SDI)',
     raw: 'External HDMI RAW (16->12-Bit Log)',
@@ -17894,7 +18293,7 @@ const P116_I18N = {
     reset: 'Reset P116'
   },
   'zh-CN': {
-    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW & BRAW / 呼吸效应补偿',
+    title: 'HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW & BRAW / 呼吸效应补偿',
     hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
     assist: '伽马显示辅助 (VF/LCD 隔离 · HDMI/SDI 洁净输出)',
     raw: '外录 HDMI RAW (16->12-Bit Log)',
@@ -17910,7 +18309,7 @@ const P116_I18N = {
     reset: '重置 P116'
   },
   'zh-TW': {
-    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Display Assist 潔淨隔離 / ProRes RAW & BRAW / 呼吸效應補償',
+    title: 'HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / Display Assist 潔淨隔離 / ProRes RAW & BRAW / 呼吸效應補償',
     hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
     assist: 'Gamma 顯示輔助 (VF/LCD 隔離 · HDMI/SDI 潔淨輸出)',
     raw: '外錄 HDMI RAW (16->12-Bit Log)',
@@ -17926,7 +18325,7 @@ const P116_I18N = {
     reset: '重設 P116'
   },
   ja: {
-    title: 'Phase 116 · HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / ガンマ表示アシスト隔離 / ProRes RAW & BRAW / ブリージング補正',
+    title: 'HLG1/HLG2/HLG3 BT.2100 & CTA-861.3 (0x87) / ガンマ表示アシスト隔離 / ProRes RAW & BRAW / ブリージング補正',
     hlg: 'HLG BT.2100 & CTA-861.3 (0x87)',
     assist: 'ガンマ表示アシスト (EVF/LCD 専用 · クリーン HDMI/SDI)',
     raw: '外部 HDMI RAW (16->12-Bit Log)',
@@ -18078,7 +18477,7 @@ function applyPhase116Detail() {
 
 const P123_I18N = {
   en: {
-    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 Clean Stream · P12 Wired SRT/RTMPS · CRSDK PTP Remote & Flash Firewall',
+    title: 'USB-C UVC 1.5 / UAC 2.0 Clean Stream · P12 Wired SRT/RTMPS · CRSDK PTP Remote & Flash Firewall',
     uvc: 'USB-C UVC 1.5 / UAC 2.0 Clean Feed',
     srt: 'Wired CDC-NCM SRT / RTMPS TLS 1.3 (P12)',
     ptp: 'CRSDK PTP / PTP-IP (0x054C) Remote',
@@ -18096,7 +18495,7 @@ const P123_I18N = {
     reset: 'Reset P123'
   },
   'zh-CN': {
-    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙',
+    title: 'USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙',
     uvc: 'USB-C UVC 1.5 / UAC 2.0 洁净输出',
     srt: '有线 CDC-NCM SRT / RTMPS TLS 1.3 (P12 关 Wi-Fi)',
     ptp: 'Sony CRSDK PTP / PTP-IP (0x054C) 遥控',
@@ -18114,7 +18513,7 @@ const P123_I18N = {
     reset: '重置 P123'
   },
   'zh-TW': {
-    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 潔淨串流 · P12 有線 SRT/RTMPS · CRSDK PTP 遙控與刷寫防火牆',
+    title: 'USB-C UVC 1.5 / UAC 2.0 潔淨串流 · P12 有線 SRT/RTMPS · CRSDK PTP 遙控與刷寫防火牆',
     uvc: 'USB-C UVC 1.5 / UAC 2.0 潔淨輸出',
     srt: '有線 CDC-NCM SRT / RTMPS TLS 1.3 (P12 關 Wi-Fi)',
     ptp: 'Sony CRSDK PTP / PTP-IP (0x054C) 遙控',
@@ -18132,7 +18531,7 @@ const P123_I18N = {
     reset: '重設 P123'
   },
   ja: {
-    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 クリーン配信 · P12 有線 SRT/RTMPS · CRSDK PTP 制御＆書換FW',
+    title: 'USB-C UVC 1.5 / UAC 2.0 クリーン配信 · P12 有線 SRT/RTMPS · CRSDK PTP 制御＆書換FW',
     uvc: 'USB-C UVC 1.5 / UAC 2.0 クリーン出力',
     srt: '有線 CDC-NCM SRT / RTMPS TLS 1.3 (P12 Wi-Fi OFF)',
     ptp: 'Sony CRSDK PTP / PTP-IP (0x054C) 遠隔制御',
@@ -18302,7 +18701,7 @@ function sendPhase123SafeOpcode() {
 
 const P129_I18N = {
   en: {
-    title: 'Phase 129 · XAVC MXF OP1a <-> MP4 RDD-18/UMID Bridge · ST 2059-2 PTPv2/LTC Servo · TSL UMD v5.0 Broadcast Tally',
+    title: 'XAVC MXF OP1a <-> MP4 RDD-18/UMID Bridge · ST 2059-2 PTPv2/LTC Servo · TSL UMD v5.0 Broadcast Tally',
     mxf: 'XAVC MXF OP1a <-> MP4 RDD-18 / UMID Bridge',
     ptpv2: 'SMPTE ST 2059-2 PTPv2 vs LTC Servo (P12)',
     tally: 'TSL UMD v5.0 Broadcast Tally & 16-Char UMD',
@@ -18320,7 +18719,7 @@ const P129_I18N = {
     stealthOff: 'Stealth Mute: OFF'
   },
   'zh-CN': {
-    title: 'Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally',
+    title: 'XAVC MXF OP1a ↔ MP4 RDD-18/UMID 桥接 · ST 2059-2 PTPv2/LTC 帧同步 · TSL UMD v5.0 演播室红绿 Tally',
     mxf: 'XAVC MXF OP1a ↔ MP4 RDD-18 / UMID 无损封装桥接',
     ptpv2: 'SMPTE ST 2059-2 PTPv2 与 LTC 帧相位伺服 (P12)',
     tally: 'TSL UMD v5.0 广播 Tally 与 16 字符动态名牌',
@@ -18338,7 +18737,7 @@ const P129_I18N = {
     stealthOff: '暗场静音熄灯: 关'
   },
   'zh-TW': {
-    title: 'Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID 橋接 · ST 2059-2 PTPv2/LTC 幀同步 · TSL UMD v5.0 攝影棚紅綠 Tally',
+    title: 'XAVC MXF OP1a ↔ MP4 RDD-18/UMID 橋接 · ST 2059-2 PTPv2/LTC 幀同步 · TSL UMD v5.0 攝影棚紅綠 Tally',
     mxf: 'XAVC MXF OP1a ↔ MP4 RDD-18 / UMID 無損封裝橋接',
     ptpv2: 'SMPTE ST 2059-2 PTPv2 與 LTC 幀相位伺服 (P12)',
     tally: 'TSL UMD v5.0 廣播 Tally 與 16 字元動態名牌',
@@ -18356,7 +18755,7 @@ const P129_I18N = {
     stealthOff: '暗場靜音熄燈: 關'
   },
   ja: {
-    title: 'Phase 129 · XAVC MXF OP1a ↔ MP4 RDD-18/UMID ブリッジ · ST 2059-2 PTPv2/LTC 同期 · TSL UMD v5.0 放送 Tally',
+    title: 'XAVC MXF OP1a ↔ MP4 RDD-18/UMID ブリッジ · ST 2059-2 PTPv2/LTC 同期 · TSL UMD v5.0 放送 Tally',
     mxf: 'XAVC MXF OP1a ↔ MP4 RDD-18 / UMID 無劣化ラップ',
     ptpv2: 'SMPTE ST 2059-2 PTPv2 / LTC フレーム位相同期 (P12)',
     tally: 'TSL UMD v5.0 放送 Tally ＆ 16文字 UMD 名札',
@@ -18529,6 +18928,117 @@ function applyPhase129TslUmd() {
 function togglePhase129Stealth() {
   setPhase129State({stealth_led_mute: !p129LastStealth});
 }
+
+let studioPureNativeActive = false;
+
+function selectLabTab(tabName) {
+  const name = tabName || 'exposure';
+  const tabs = document.querySelectorAll('#studio-lab-tabs .lab-tab');
+  tabs.forEach((btn) => {
+    btn.classList.toggle('active', btn.getAttribute('data-lab-tab') === name);
+  });
+  const panels = document.querySelectorAll('#studio-advanced-lab-drawer .lab-tab-panel');
+  panels.forEach((panel) => {
+    const show = (name === 'all') || (panel.getAttribute('data-lab-panel') === name);
+    panel.classList.toggle('active', show);
+  });
+}
+
+function setStudioLanguage(langCode) {
+  const code = langCode || 'zh-CN';
+  const guestLang = code.startsWith('zh') ? 'zh' : (code === 'ja' ? 'ja' : 'en');
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((k) => {
+    const b = document.getElementById('studio-lang-' + k);
+    if (b) b.classList.toggle('active', k === code);
+  });
+  if (typeof setP95Lang === 'function') setP95Lang(code);
+  if (typeof setP102Lang === 'function') setP102Lang(code);
+  if (typeof setP109Lang === 'function') setP109Lang(code);
+  if (typeof setP116Lang === 'function') setP116Lang(code);
+  if (typeof setP123Lang === 'function') setP123Lang(code);
+  if (typeof setP129Lang === 'function') setP129Lang(code);
+  if (typeof setLang === 'function') setLang(guestLang);
+}
+
+function syncStudioScreenModeUI(mode) {
+  if (!mode) return;
+  studioPureNativeActive = !!mode.pure_native_screen;
+  const btn = document.getElementById('pure-native-screen-toggle');
+  const badge = document.getElementById('studio-screen-mode-badge');
+  if (btn) {
+    btn.classList.toggle('active', studioPureNativeActive);
+    btn.textContent = studioPureNativeActive
+      ? '纯净原生画面 / Pure Native Screen: ON'
+      : '纯净原生画面 / Pure Native Screen: OFF';
+  }
+  if (badge) {
+    badge.classList.toggle('native-on', studioPureNativeActive);
+    if (studioPureNativeActive) {
+      badge.textContent = mode.studio_overlays_cleared
+        ? 'Pure Native 100% (HUDs Cleared)'
+        : 'Pure Native 100% (HUDs Masked)';
+    } else {
+      badge.textContent = `HUD Overlays (${mode.active_overlay_count ?? 0} Active)`;
+    }
+  }
+}
+
+async function setStudioScreenMode(payload) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  if (toast) toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/studio_screen_mode', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload || {})
+    });
+    const data = await r.json();
+    if (data.studio_screen_mode) syncStudioScreenModeUI(data.studio_screen_mode);
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    if (toast) toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function togglePureNativeScreen() {
+  const nextVal = !studioPureNativeActive;
+  try {
+    window.localStorage.setItem('fx6_pure_native_screen', nextVal ? '1' : '0');
+  } catch (e) {}
+  setStudioScreenMode({pure_native_screen: nextVal});
+}
+
+function clearAllStudioHuds() {
+  try {
+    window.localStorage.setItem('fx6_pure_native_screen', '1');
+  } catch (e) {}
+  setStudioScreenMode({pure_native_screen: true, clear_all_overlays: true});
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  selectLabTab('exposure');
+  let shouldEnablePure = false;
+  try {
+    const q = new URLSearchParams(window.location.search || '');
+    const studioParam = q.get('studio');
+    const saved = window.localStorage.getItem('fx6_pure_native_screen');
+    if (studioParam === 'clean' || (studioParam !== 'lab' && saved !== '0')) {
+      shouldEnablePure = true;
+    }
+  } catch (e) {
+    shouldEnablePure = true;
+  }
+  if (shouldEnablePure) {
+    setTimeout(() => {
+      if (!studioPureNativeActive && !busy) {
+        setStudioScreenMode({pure_native_screen: true});
+      }
+    }, 350);
+  }
+});
 
 setP95Lang('zh-CN');
 setP102Lang('zh-CN');
@@ -18772,6 +19282,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/studio_screen_mode":
+                    self._send_json({
+                        "ok": True,
+                        "studio_screen_mode": session.get_studio_screen_mode(),
+                        "pure_native_screen": bool(session.pure_native_screen),
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -18829,6 +19347,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/hdr_hlg_raw_breathing",
                     "/api/uvc_srt_crsdk_ptp",
                     "/api/mxf_ptpv2_tally",
+                    "/api/studio_screen_mode",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -18872,6 +19391,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     body["query"] = qs["query"][0]
                 if "category" in qs and "category" not in body:
                     body["category"] = qs["category"][0]
+                if "pure_native_screen" in qs and "pure_native_screen" not in body:
+                    body["pure_native_screen"] = qs["pure_native_screen"][0]
+                if "clear_all_overlays" in qs and "clear_all_overlays" not in body:
+                    body["clear_all_overlays"] = qs["clear_all_overlays"][0]
 
                 if path in ("/api/start", "/api/vm/start"):
                     res = session.start_vm()
@@ -18952,6 +19475,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/mxf_ptpv2_tally":
                     res = session.set_mxf_ptpv2_tally(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/studio_screen_mode":
+                    res = session.set_studio_screen_mode(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

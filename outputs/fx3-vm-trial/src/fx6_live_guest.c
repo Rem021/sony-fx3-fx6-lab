@@ -2061,6 +2061,7 @@ static unsigned fx6_append_db(char *dst, unsigned pos, unsigned cap, int db) {
 }
 
 static void fx6_render_phase40_hud_strip(uint64_t appfw, uint32_t page, const uint32_t *cell_vals) {
+    if (!g_osd || (g_live_p40_flags & 0x40000000u)) return;
     uint32_t p = page % 25u;
     int bx = 0, by = 0, bw = 768, bh = 34;
     if (p <= 3u) {
@@ -4408,18 +4409,20 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
         }
         break;
     }
-    fx6_render_phase40_hud_strip(appfw, page, cell_vals);
-    fx6_render_phase56_assist_overlays(appfw, page);
-    fx6_render_phase64_cine_exposure_overlay(appfw, page);
-    fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
-    fx6_render_phase81_touchaf_falsecolor_ciz_overlay(appfw, page);
-    fx6_render_phase88_shotmark_iris_overlay(appfw, page);
-    fx6_render_phase95_gyroflow_anamorphic_tone_overlay(appfw, page);
-    fx6_render_phase102_cache_interval_lut_ftps_overlay(appfw, page);
-    fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
-    fx6_render_phase116_hlg_raw_breathing_overlay(appfw, page);
-    fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(appfw, page);
-    fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay(appfw, page);
+    if (!(g_live_p40_flags & 0x40000000u)) {
+        fx6_render_phase40_hud_strip(appfw, page, cell_vals);
+        fx6_render_phase56_assist_overlays(appfw, page);
+        fx6_render_phase64_cine_exposure_overlay(appfw, page);
+        fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
+        fx6_render_phase81_touchaf_falsecolor_ciz_overlay(appfw, page);
+        fx6_render_phase88_shotmark_iris_overlay(appfw, page);
+        fx6_render_phase95_gyroflow_anamorphic_tone_overlay(appfw, page);
+        fx6_render_phase102_cache_interval_lut_ftps_overlay(appfw, page);
+        fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
+        fx6_render_phase116_hlg_raw_breathing_overlay(appfw, page);
+        fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(appfw, page);
+        fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay(appfw, page);
+    }
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -4786,31 +4789,45 @@ void fx6_force_update(void) {
                 g_live_p64_flags      = mb[28] | 0x00030000u; /* Enforce P4 ND absent & P12 RF-OFF */
                 g_live_p64_shutter_sq = mb[29];
                 g_live_p64_tc         = mb[30];
+            } else if (mb[31] == 0x43494e45u) {
+                g_live_p64_flags      = mb[28] & ~0x80000000u;
             }
             if ((mb[32] & 0x80000000u) && mb[35] == 0x57424c4du) {
                 g_live_p73_wb_look    = mb[32] | 0x40000000u; /* FX3 WB switch soft-mapped */
                 g_live_p73_media_clip = mb[33];
                 g_live_p73_flags2     = mb[34];
+            } else if (mb[35] == 0x57424c4du) {
+                g_live_p73_wb_look    = mb[32] & ~0x80000000u;
             }
             if ((mb[38] & 0x80000000u) && mb[39] == 0x54414643u) {
                 g_live_p81_touch_af    = mb[36];
                 g_live_p81_pdaf_mag_fc = mb[37] | 0x8000u; /* clean_hdmi_unmagnified = 1 */
                 g_live_p81_ciz_flags   = mb[38];
+            } else if (mb[39] == 0x54414643u) {
+                g_live_p81_ciz_flags   = mb[38] & ~0x80000000u;
             }
             if ((mb[41] & 0x80000000u) && mb[43] == 0x534d524bu) {
                 g_live_p88_shotmark   = mb[40];
                 g_live_p88_iris_audio = mb[41];
                 g_live_p88_user_bits  = mb[42];
+            } else if (mb[43] == 0x534d524bu) {
+                g_live_p88_iris_audio = mb[41] & ~0x80000000u;
             }
             if ((mb[44] & 0x80000000u) && (mb[46] & 0x80000000u) && mb[47] == 0x4759524fu) {
                 g_live_p95_anamorphic_ibis = mb[44];
                 g_live_p95_gyro_rtmd       = mb[45];
                 g_live_p95_tone_limiter    = mb[46];
+            } else if (mb[47] == 0x4759524fu) {
+                g_live_p95_anamorphic_ibis = mb[44] & ~0x80000000u;
+                g_live_p95_tone_limiter    = mb[46] & ~0x80000000u;
             }
             if ((mb[48] & 0x80000000u) && (mb[50] & 0x80000000u) && mb[51] == 0x49434c46u) {
                 g_live_p102_cache_interval = mb[48];
                 g_live_p102_interval_ftp   = mb[49] | 0xc0000000u; /* Enforce P12-safe & E-Shutter */
                 g_live_p102_lut_ftps       = mb[50];
+            } else if (mb[51] == 0x49434c46u) {
+                g_live_p102_cache_interval = mb[48] & ~0x80000000u;
+                g_live_p102_lut_ftps       = mb[50] & ~0x80000000u;
             }
             if ((mb[52] & 0x80000000u) && (mb[53] & 0x80000000u) && (mb[54] & 0x80000000u) && mb[55] == 0x4d43464cu) {
                 g_live_p109_fleet_sdi     = mb[52] | 0x08000000u; /* Enforce P12 RF-OFF */
@@ -4820,6 +4837,10 @@ void fx6_force_update(void) {
                     g_live_p109_mount_shading = (g_live_p109_mount_shading & ~((0xffu << 2) | (0xfu << 18))) | (1u << 1) | (100u << 2);
                 }
                 g_live_p109_c2pa_prov     = (mb[54] & ~(1u << 3)) | (1u << 2) | (1u << 4); /* Enforce zero-touch RO & no HW attestation forgery */
+            } else if (mb[55] == 0x4d43464cu) {
+                g_live_p109_fleet_sdi     = mb[52] & ~0x80000000u;
+                g_live_p109_mount_shading = mb[53] & ~0x80000000u;
+                g_live_p109_c2pa_prov     = mb[54] & ~0x80000000u;
             }
             if ((mb[56] & 0x80000000u) && (mb[57] & 0x80000000u) && (mb[58] & 0x80000000u) && mb[59] == 0x484c4741u) {
                 g_live_p116_hlg_colorimetry = mb[56];
@@ -4832,6 +4853,10 @@ void fx6_force_update(void) {
                     uint32_t raw_byp = ((g_live_p116_raw_breathing & 0x03u) || (((g_live_p64_flags >> 14) & 0x03u) == 2u)) ? (1u << 16) : 0u;
                     g_live_p116_raw_breathing = (g_live_p116_raw_breathing & ~((1u << 14) | (0xffu << 17))) | pl_byp | raw_byp | (100u << 17);
                 }
+            } else if (mb[59] == 0x484c4741u) {
+                g_live_p116_hlg_colorimetry = mb[56] & ~0x80000000u;
+                g_live_p116_display_assist  = mb[57] & ~0x80000000u;
+                g_live_p116_raw_breathing   = mb[58] & ~0x80000000u;
             }
             if ((mb[60] & 0x80000000u) && (mb[61] & 0x80000000u) && (mb[62] & 0x80000000u) && mb[63] == 0x55564353u) {
                 uint32_t uvc_w = mb[60];
@@ -4847,6 +4872,10 @@ void fx6_force_update(void) {
                 g_live_p123_srt_rtmps = mb[61] | (1u << 21) | (1u << 22);
                 /* Hard-enforce Destructive PTP Flash-Opcode Firewall (bit2), eMMC 0-mutation (bit3), P12 Wi-Fi-OFF (bit4) */
                 g_live_p123_crsdk_ptp = mb[62] | (1u << 2) | (1u << 3) | (1u << 4);
+            } else if (mb[63] == 0x55564353u) {
+                g_live_p123_uvc_uac   = mb[60] & ~0x80000000u;
+                g_live_p123_srt_rtmps = mb[61] & ~0x80000000u;
+                g_live_p123_crsdk_ptp = mb[62] & ~0x80000000u;
             }
             if ((mb[64] & 0x80000000u) && (mb[65] & 0x80000000u) && (mb[66] & 0x80000000u) && mb[67] == 0x4d584654u) {
                 /* Hard-enforce 0 essence re-encode loss (bit24), eMMC 0-mutation (bit25), RDD-18 KLV valid (bit26) */

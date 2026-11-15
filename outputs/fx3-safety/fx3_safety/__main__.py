@@ -112,6 +112,11 @@ from .realhw_emphasized_rec_grid_hdmi_touch_sunny_and_90gate_guard import (
     evaluate_g89_emphasized_rec_and_grid_hdmi_guard,
     evaluate_g90_touch_op_reset_and_sunny_weather_guard,
 )
+from .realhw_shoe_audio_wind_saveload_c3_and_92gate_guard import (
+    evaluate_92gate_preflight,
+    evaluate_g91_shoe_audio_and_wind_noise_guard,
+    evaluate_g92_saveload_c3_exclusions_and_slot1_vault_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2160,6 +2165,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G90 gates can be rehearsed offline",
     )
     p_90.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 95. verify-shoe-audio-wind-guard
+    p_g91 = sub.add_parser(
+        "verify-shoe-audio-wind-guard",
+        aliases=["verify-g91-shoe-audio-wind"],
+        help="Verify Gate G91: [Shoe Audio Set.] 48kHz/24bit 4ch Meter/Routing Guard & [Wind Noise Reduct.] Built-In-Mic-Only Boundary",
+    )
+    p_g91.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g91.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g91.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g91.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 96. verify-saveload-c3-exclusions-guard
+    p_g92 = sub.add_parser(
+        "verify-saveload-c3-exclusions-guard",
+        aliases=["verify-g92-saveload-c3-exclusions"],
+        help="Verify Gate G92: [Save/Load Settings] CAMSET01..10.DAT / C3 Portal Excluded-Items Firewall & Slot-1 Tier-0 Vault Write Guard",
+    )
+    p_g92.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g92.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g92.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g92.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 97. verify-92-gates
+    p_92 = sub.add_parser(
+        "verify-92-gates",
+        help="Run Phase 241 Unified 92-Gate Master Safety Preflight Engine (G01..G92)",
+    )
+    p_92.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_92.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_92.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G92 gates can be rehearsed offline",
+    )
+    p_92.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -4287,6 +4378,102 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_90_gates_verified if args.dry_run_simulated else report.offline_87_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in ("verify-shoe-audio-wind-guard", "verify-g91-shoe-audio-wind"):
+        verdict, res = evaluate_g91_shoe_audio_and_wind_noise_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.shoe_audio_wind_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} shoe_audio={guard['effective_post_reset_shoe_audio_set']}"
+                f"->{guard['effective_audio_format']}"
+                f"(src={guard['active_audio_input_source']},"
+                f"rec_ch={guard['effective_recorded_audio_channels']},"
+                f"meter_ch={guard['audio_level_meter_channels']},"
+                f"meter_4ch_expanded={guard['four_ch_audio_level_meter_expanded']}) "
+                f"wind={guard['effective_post_reset_wind_noise_reduct']}"
+                f"(ext_eff={guard['external_mic_wind_reduct_effective']},"
+                f"builtin_eff={guard['builtin_mic_wind_reduct_effective']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in ("verify-saveload-c3-exclusions-guard", "verify-g92-saveload-c3-exclusions"):
+        verdict, res = evaluate_g92_saveload_c3_exclusions_and_slot1_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.saveload_c3_exclusions_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} op={guard['saveload_operation']}@{guard['saveload_target']}"
+                f"({guard['camset_filename']},hdr={guard['profile_model_header']},"
+                f"same_model={guard['same_model_ilme_fx3_locked']}) "
+                f"exclusions_ok={guard['excluded_items_firewall_enforced']} "
+                f"load_rdonly={guard['load_is_card_o_rdonly_safe']} "
+                f"slot1_save_blocked={guard['slot1_unverified_camset_save_blocked']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-92-gates":
+        report = evaluate_92gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/92 "
+                f"g91_to_g92_all_passed={report.g91_to_g92_all_passed} "
+                f"all_92_gates_verified={report.all_92_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_92_gates_verified if args.dry_run_simulated else report.offline_89_gates_verified
         return 0 if ok else 1
 
     return 2

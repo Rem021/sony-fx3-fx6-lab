@@ -878,6 +878,35 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `180+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/summary.json).
 
+---
+
+## 24. Round 24: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) Project & Status Check Tab 4 Project Dual-Surface Closure (`3-Layer Project Menu sid=0x11` & `Status Check Project Tab 4 sid=0x32` -> `12/12` Multilingual Deltas)
+
+`build_and_run_round.py --round 24 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) Project Dual-Surface Closure** across both **3-Layer Project Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`, `2x DOWN + 2x RIGHT`)** and **Status Check Tab 4 Project (`sid=0x32`, `37procam_touch_status_project_presenter`, `0x7052 + 3x DOWN`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R24_VERIFY_PASS`, `FX6_STAGE_B_R24_BRIDGE`, and `FX6_R24_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 24 --lang english --initial-setting-done 1 --run-id r24a-menu-3layer-project-english --duration 85 \
+  --run-dir <SCRATCH_ROOT>/fx6-r24-runs/r24a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:700,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r24a-menu-3layer-project-english \
+  --export-png-dir reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/assets
+```
+
+- **6 Live Round 24 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P11` `XLR-H1`, `P12` `WF-12` Immune)**:
+  - `r24a-menu-3layer-project-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `2x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `239` colors / `1,390` `0xffffaa00` amber px, `14,810` icon blits, `10,491` glyph blits, `85` `LDEC103` ioctls).
+  - `r24b-menu-3layer-project-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `2x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `246` colors / `1,074` `0xffffaa00` amber px, `14,300` icon blits, `10,105` glyph blits, `80` `LDEC103` ioctls).
+  - `r24c-menu-3layer-project-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `2x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `257` colors / `1,074` `0xffffaa00` amber px, `14,074` icon blits, `10,069` glyph blits, `85` `LDEC103` ioctls).
+  - `r24d-status-tab4-project-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `3x 0x0030` -> `37procam_touch_status_project_presenter` (`sid=0x32`, `437,883` px / `83` colors / `304` `0xffffaa00` amber px, `8,988` icon blits, `16,388` glyph blits, `58` `LDEC103` ioctls).
+  - `r24e-status-tab4-project-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `0x7052` + `3x 0x0030` -> `37procam_touch_status_project_presenter` (`sid=0x32`, `437,883` px / `85` colors / `270` `0xffffaa00` amber px, `7,996` icon blits, `15,909` glyph blits, `56` `LDEC103` ioctls).
+  - `r24f-status-tab4-project-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `3x 0x0030` -> `37procam_touch_status_project_presenter` (`sid=0x32`, `437,403` px / `85` colors / `270` `0xffffaa00` amber px, `8,523` icon blits, `15,962` glyph blits, `58` `LDEC103` ioctls).
+  - **Complete `12/12` Project & Tab 4 Multilingual Pairwise Matrix**:
+    - 3-Layer Project Menu (`sid=0x11`) across (`r24a EN`, `r24b JA`, `r18a ZH-CN`, `r24c ZH-TW`): `6/6` pairs strictly `> 0` (`8,548 .. 19,252` px).
+    - Status Check Tab 4 Project (`sid=0x32`) across (`r24d EN`, `r24e JA`, `r16a ZH-CN`, `r24f ZH-TW`): `6/6` pairs strictly `> 0` (`19,087 .. 43,395` px).
+  - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
+- **Full Report, Receipts, & `198` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/summary.json).
+
+
 
 
 

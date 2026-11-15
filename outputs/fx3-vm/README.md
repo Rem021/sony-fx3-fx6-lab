@@ -864,5 +864,39 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/
 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 150：Stage 26（`26/26`）真机机身物理按键、5 轴 IBIS `0x0400->0x1400` 中心锁死、`XLR-H1` 热插拔、散热风扇与 `NP-FZ100`/USB-PD HIL 协同仿真器
+
+[`realhw_body_peripheral_ibis_fan_power_coemulator.py`](realhw_body_peripheral_ibis_fan_power_coemulator.py) 作为 **Stage 26（26/26 阶段完成）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase150_realhw_body_peripheral_hil=True`，可通过 `--skip-phase150` 跳过；全板 26 阶段协同仿真在本地只读供体模式下 `< 2.2s`、洁净室模式下 `< 0.9s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`emmc_nflasha_write_count == 0`**、**`p18_mutation_bytes == 0`**、**`floating_coil_ms == 0`**、**`sdi_blocking_wait_ms == 0.0`**、**`false_19v5_dcin_alarms == 0`** 与 **`rsv_orphan_count == 0`** 的前提下完成五大闭环：
+
+1. **双模只读供体审计（`os.O_RDONLY` + `mmap.ACCESS_READ`）+ 洁净室回退**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 `appFw.so`（`79,015,712 B` vs `50,520,424 B`）、`libsencore.so`（`377,328 B` vs `401,952 B`，均 `355` 导出 / `130` 导入）、`libInfraLensCommunicator.so`（`14,544 B`，均 `27` 导出 / `25` 导入）、`libInfraAvbbc.so`（`1,734,632 B` vs `1,743,200 B`）、`cpapp-b.bin`（FX3 含 **`529`** 处 `LiroSeq` 5 轴 IBIS 伺服位点 vs FX6 `148` 处）、FX6 `p18:/lens/lensfile.bin`（`262,592 B` `VX8900..`）与 `Backup.bin`（`BK4\x00`，`819` vs `840` 子系统）共 **13 份真机供体**；`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线，JSON 零原始固件字节泄漏。
+2. **Pillar A — 5 轴 IBIS `LiroSeq` 伺服、`0x0400 -> 0x1400` 中心锁死与 E-Mount `p18:/lens` 只读护栏**：
+   - 仿真 `Boot -> Active IBIS -> Standard IBIS -> Off -> Power-Down` 全生命周期，拦截 FX6 `PRM_is_imager_stabilization_unit_fixed` 刚性卡口误判并在 `Off`/关机时强制执行 `0x0400 -> 0x1400` 音圈物理中心锁死停放（`floating_coil_ms == 0`）；同时覆盖 E-Mount 12-pin 变焦/光圈（T-Stop/F-Stop）与呼吸效应补偿（`EVENT_FUNC_LENS_COMP_LENS_COMP_BREATHING_ON`），强制阻断任何对 `p18:/lens/lensfile.bin` 或 `nflasha` 的写入（`p18_mutation_bytes == 0`）。
+3. **Pillar B — `XLR-H1` MI 热靴 4ch LPCM 实时热插拔、`VMC-BNCM1` LTC 与 `HDMI Type-A RAW` vs 屏蔽 `12G-SDI`/`BNC`**：
+   - 仿真 `XLR-H1` 在待机与录制态下热拔出时将 `P11 0x91db059b` `E_TMO=-50 -> 0x8000` 并于 `0.0 ms` 回退至机内立体声/3.5mm TRS，零 UI 卡顿与断流；覆盖 Multi-USB `VMC-BNCM1` LTC 外锁（且在 `H0 uart_boot` 模式硬阻断）；激活 `HDMI Type-A 4K60 16-bit RAW` 并全程静默屏蔽 FX6 `12G-SDI`/`BNC`（`sdi_blocking_wait_ms == 0.0`）。
+4. **Pillar C — FX3 机身物理按键映射与 `3x Tally` 灯可达性 HIL**：
+   - 覆盖 FX3 实体 `Custom 1..6`、`T/W Zoom Rocker`、`MODE -> Big-6 Home`、`DISP -> Status Check` 与直连摇杆/拨轮，证明对 FX6 `Big-6 Home`、`128-Page Full Menu`、`Status Check`、`Direct Joystick` 与 `Servo Zoom` 的 **`100.0%` 逻辑可达性**，联动前/顶/后 **3 路 Tally LED**，同时严格保留 `MENU + SHUTTER + POWER` 物理逃生组合键不被接管覆盖。
+5. **Pillar D — 主动散热风扇（`Off-in-Rec` 高温强制接管）与 `NP-FZ100` (`7.2V`) / `USB-PD` (`9V/3A`) 供电与优雅 `EncWfiStop`**：
+   - 证明在 `Auto1`/`Auto2`/`Minimum`/`Off in Rec` 四档模式下，一旦温度传感器越过高温阈值即在 CMOS 热跳闸前强制接管 PWM 风扇拉升（`90% PWM`），并验证 `NP-FZ100`（`7.2V`）与 `USB-PD`（`9V/3A`）放电及欠压关断 cleanly 完成 `M4ROOT/CLIP` 封口（`EncWfiStop`），零 `19.5V DC-IN` 误报警且 `emmc_nflasha_write_count == 0`。
+
+### Phase 150 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 26 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_body_peripheral_ibis_fan_power_coemulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_body_peripheral_ibis_fan_power_coemulator.py --self-test --json
+
+# 2. 全板 26 阶段（Stage 1..26）统一校验（本地 < 2.2s，洁净室 < 0.9s，支持 --skip-phase150）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 150 46 项单测 & 全量 fx3-vm 单测（双模式）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_body_peripheral_ibis_fan_power_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_body_peripheral_ibis_fan_power_coemulator.py -v
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 

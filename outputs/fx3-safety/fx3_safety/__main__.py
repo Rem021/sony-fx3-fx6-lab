@@ -37,6 +37,11 @@ from .realhw_jiritsu_cnflasha_and_44gate_guard import (
     evaluate_g43_jiritsu_service,
     evaluate_g44_cnflasha_dualboot,
 )
+from .realhw_service0336_mpr_ibis_and_46gate_guard import (
+    evaluate_46gate_preflight,
+    evaluate_g45_service_0336_canary,
+    evaluate_g46_mpr_ibis_p18_guard,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -466,6 +471,53 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G44 gates can be rehearsed offline",
     )
     p_44.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 26. verify-g45-service-0336-canary
+    p_g45 = sub.add_parser(
+        "verify-g45-service-0336-canary",
+        help="Run Phase 148 Gate G45 (054C:0336 op=0xFF RAM Canary, Single-Flight SenserPacket, 64KiB ELF Self-Unlink & MSC Return Watchdog)",
+    )
+    p_g45.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g45.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g45.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 27. verify-g46-mpr-ibis-p18-guard
+    p_g46 = sub.add_parser(
+        "verify-g46-mpr-ibis-p18-guard",
+        help="Run Phase 148 Gate G46 (Stage-B p18:/lens MS_RDONLY Lock, 5-Axis IBIS Safe Coil Park & Stock DmmCfg.bin 20-Pool Guard)",
+    )
+    p_g46.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g46.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g46.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 28. verify-46-gates
+    p_46 = sub.add_parser(
+        "verify-46-gates",
+        help="Run Phase 148 46-Gate Master Safety Preflight Engine (G01..G46)",
+    )
+    p_46.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_46.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_46.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G46 gates can be rehearsed offline",
+    )
+    p_46.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -931,6 +983,65 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_44_gates_verified if args.dry_run_simulated_backup else report.offline_41_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g45-service-0336-canary":
+        verdict, res = evaluate_g45_service_0336_canary(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.service_0336_canary_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} slot=0x{guard['op_ff_canary_slot']:02x} "
+                f"inflight={guard['concurrent_inflight_packets']} "
+                f"pkt={guard['fx3s0ok_packet_bytes']}B/{guard['fx3s0ok_header_magic']} "
+                f"msc_return={guard['msc_return_elapsed_ms']}ms->{guard['usb_reenum_msc_vid_pid']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g46-mpr-ibis-p18-guard":
+        verdict, res = evaluate_g46_mpr_ibis_p18_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.stageb_mpr_ibis_p18_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} p18_flags={guard['p18_mount_flags']} "
+                f"coil={guard['coil_current_ma']}mA "
+                f"dmm_pools={guard['allocated_main_pools']}/{guard['shared_main_pools_count']} "
+                f"sdi_wait={guard['sdi_blocking_wait_ms']}ms "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-46-gates":
+        report = evaluate_46gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/46 "
+                f"g45_to_g46_all_passed={report.g45_to_g46_all_passed} "
+                f"all_46_gates_verified={report.all_46_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_46_gates_verified if args.dry_run_simulated_backup else report.offline_43_gates_verified
         return 0 if ok else 1
 
     return 2

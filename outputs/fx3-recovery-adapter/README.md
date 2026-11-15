@@ -374,4 +374,25 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --clean-room --json
 ```
 
+## Phase 124 — `CXD90057` Mask-BootROM USB 冷插拔枚举校验器、JEDEC eMMC `BOOT0/BOOT1` 硬件引导分区（`EXT_CSD[179]`/`[177]`/`[173]`）防损坏分诊与 13 支柱恢复总检
+
+- **[`bootrom_usb_and_emmc_bootpart_verifier.py`](fx3_recovery/bootrom_usb_and_emmc_bootpart_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057`）提供两大只读与 RAM-only 防变砖恢复支柱并接入 **13 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`EMMC_PERSISTENT_PROGRAM_COMMANDS = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_bootrom_and_bootpart_donors_readonly`）**：严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查本地 FX3 `v7.02`（`loader_nor.bin` `101,888 B` SRAM `0xFE049000`、`pformat_config.txt` `awake_memaddr=0xFE040800`、`loader_nor.tar`、`partinf.conf`）与 FX6 `v6.01`（`loader_nor.tar` 内含 `92,448 B` `loader_nor.bin`、`partinf.conf`），验证跨机型 `SBL`/分区配置严格隔离且零原始固件字节输出。
+  - **支柱 A — JEDEC `eMMC 5.1` `BOOT0 / BOOT1` 硬件引导分区与 `EXT_CSD` 配置分诊（`parse_ext_csd_boot_config` / `audit_boot_wp_script_or_profile` / `triage_emmc_boot_partitions_and_ext_csd` / `run_emmc_bootpart_6_scenario_triage`）**：
+    - 建模 `CXD90057` 一级引导程序（`SBL`/`ipl`/`loader`）驻留的 `4 MiB` `BOOT0` 与冗余 `4 MiB` `BOOT1` 硬件分区，核验 `EXT_CSD[179]`（`PART_CONFIG`）、`EXT_CSD[177]`（`BOOT_BUS_CONDITIONS`）、`EXT_CSD[173]`（`BOOT_WP`）与 `EXT_CSD[226]`（`BOOT_SIZE_MULT == 32`）。
+    - fail-closed 检出四大致命风险：`BOOT_PART_DISABLED_DEAD_BOOT_TRAP`（`BOOT_PARTITION_ENABLE == 0x0` 或 `0x7` UDA 误配）、`BOOT0_CORRUPTED_FAILOVER_TO_BOOT1_AVAILABLE`（主 `BOOT0` SHA-256/头损坏而冗余 `BOOT1` 完好）、`BLOCKED_PERMANENT_BOOT_WP_FUSE_HAZARD`（任何配置/脚本试图置位不可逆永久写保护 `EXT_CSD[173]` `B_PERM_WP_EN` `bit 2` 或 `bit 6`）、以及 `PARTITION_ACCESS_NONZERO_LEAK`（`PART_CONFIG[2:0]` 读取后未归 `0x0` 导致用户区失活），并在 `BOOT0/BOOT1` 双毁时升级分诊至 Mask-BootROM 救援。
+  - **支柱 B — `CXD90057` Mask-BootROM USB 冷插拔枚举与 `RAM_LOAD_ONLY` 沙盒校验（`verify_bootrom_usb_coldplug_and_ram_sandbox` / `run_bootrom_usb_5_scenario_sandbox`）**：
+    - 建模 `CXD90057` Mask-BootROM 回退枚举（`USB VID 0x054C` PID `0x0C90`/`0x0336`/`0x0DA1` 冷插拔描述符与 Bulk IN/OUT 端点握手），强制校验任何恢复载荷暂存仅允许面向 CXD90057 SRAM（`0xFE040000..0xFE100000`）/DRAM（`0x40000000..0xC0000000`）原地执行（`RAM_LOAD_ONLY`），对跨机型 FX6 载荷、非 Sony VID 与任何持久 `eMMC/NOR/OTP` 刷写指令（`emmc_program`/`flash_boot0`/`mmc_write`/`cmd42`/`burn_otp`）实现 100% 阻断（`emmc_persistent_program_commands == 0`）。
+  - **支柱 C — CLI 与 13 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-bootrom-bootpart [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124`（构成 **13/13** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 124 公开符号；[`tests/test_bootrom_usb_and_emmc_bootpart_verifier.py`](tests/test_bootrom_usb_and_emmc_bootpart_verifier.py) 提供 **40 项快速双模单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-bootrom-bootpart --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --clean-room --json
+```
+
+
 

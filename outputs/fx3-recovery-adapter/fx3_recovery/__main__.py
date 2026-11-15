@@ -76,6 +76,11 @@ from .realhw_35pillar_silent_autopixelmap_marker_vault_verifier import (
     verify_35pillar_recovery_suite,
     verify_silent_autopixelmap_and_marker_flexexp_vault,
 )
+from .realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier import (
+    run_pillar36_standalone_suite,
+    verify_36pillar_recovery_suite,
+    verify_recover_imagedb_and_monitor_flip_af_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -333,6 +338,14 @@ def main():
     p231_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p231_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p231_master.add_argument('--out', help='optional exclusive new output directory for 35pillar-recovery-master-report.json')
+    p234_p36 = sub.add_parser('verify-recover-imagedb-monitor-flip-vault', help='Phase 234 Pillar 36 Recover Image DB depleted-battery & Slot-1 Tier-0 vault mutation firewall + Monitor Flip Direction reset survival / playback non-inversion & AF/Interval vault verifier')
+    p234_p36.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p234_p36.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p234_p36.add_argument('--out', help='optional exclusive new output directory for pillar36-recover-imagedb-monitor-flip-vault-report.json')
+    p234_master = sub.add_parser('verify-36pillar-recovery', help='Phase 234 unified 36/36 real-hardware recovery master aggregator (Pillars 1..35 + Pillar 36)')
+    p234_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p234_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p234_master.add_argument('--out', help='optional exclusive new output directory for 36pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1754,6 +1767,68 @@ def main():
                     f"pillar35_a={report.pillar35_a_silent_autopixelmap_firewall.scenarios_passed}/{report.pillar35_a_silent_autopixelmap_firewall.scenarios_total} "
                     f"pillar35_b={report.pillar35_b_marker_hdmi_flexexp_vault.scenarios_passed}/{report.pillar35_b_marker_hdmi_flexexp_vault.scenarios_total} "
                     f"master_35pillar_sha256={report.master_35pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-recover-imagedb-monitor-flip-vault':
+            report = run_pillar36_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar36-recover-imagedb-monitor-flip-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_36a={report.pillar_36a_recover_imagedb_vault_firewall.scenarios_passed}/{report.pillar_36a_recover_imagedb_vault_firewall.scenarios_total} "
+                    f"pillar_36b={report.pillar_36b_monitor_flip_af_interval_vault.scenarios_passed}/{report.pillar_36b_monitor_flip_af_interval_vault.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-36pillar-recovery':
+            report = verify_36pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'36pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_3_8s={report.nominal_under_3_8s} "
+                    f"pillar36_a={report.pillar36_a_recover_imagedb_vault_firewall.scenarios_passed}/{report.pillar36_a_recover_imagedb_vault_firewall.scenarios_total} "
+                    f"pillar36_b={report.pillar36_b_monitor_flip_af_interval_vault.scenarios_passed}/{report.pillar36_b_monitor_flip_af_interval_vault.scenarios_total} "
+                    f"master_36pillar_sha256={report.master_36pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

@@ -602,7 +602,7 @@ class TestStaticContractsAndSourceGuards(unittest.TestCase):
 
         # Verify CLI accepts --round 8/9/10 and --run-dir, and patch_cpio fixes c_mode==0
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]", runner_src)
         self.assertIn("--run-dir", runner_src)
         self.assertIn("/private/tmp/{tmp_prefix}", runner_src)
 
@@ -1187,7 +1187,7 @@ class TestRound10IconBlitterUipcAndReport(unittest.TestCase):
             "enable_r10",
             "etc/fx6_stage_r10",
             '"r10_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2127,7 +2127,7 @@ class TestRound12MultiCjkP4P110AndReport(unittest.TestCase):
             },
         )
         runner_src = (CLOSURE_DIR / "build_and_run_round.py").read_text(encoding="utf-8")
-        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]", runner_src)
+        self.assertIn("choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]", runner_src)
         self.assertIn(
             'choices=["en", "english", "schinese", "tchinese", "japanese"]', runner_src
         )
@@ -2611,7 +2611,7 @@ class TestRound13StatusCheckAndFourLangMatrixClosure(unittest.TestCase):
             '"r13_telemetry"',
             "def decode_png_rgba_rows",
             "def compute_png_pixel_diff",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -2836,7 +2836,7 @@ class TestRound14StatusCheck4LangFullMatrix(unittest.TestCase):
             "etc/fx6_stage_r14",
             '"r14_telemetry"',
             '"fx6-r14"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -3351,7 +3351,7 @@ class TestRound15MultiTabStatusCheckAndMonitoring(unittest.TestCase):
             "etc/fx6_stage_r15",
             '"r15_telemetry"',
             '"fx6-r15"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -3892,7 +3892,7 @@ class TestRound16StatusTabs45AndTcMedia(unittest.TestCase):
             "etc/fx6_stage_r16",
             '"r16_telemetry"',
             '"fx6-r16"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -4458,7 +4458,7 @@ class TestRound17StatusFullSweepAndAudio3Layer(unittest.TestCase):
             "etc/fx6_stage_r17",
             '"r17_telemetry"',
             '"fx6-r17"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -5078,7 +5078,7 @@ class TestRound18Menu8CategorySChineseClosure(unittest.TestCase):
             "etc/fx6_stage_r18",
             '"r18_telemetry"',
             '"fx6-r18"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -5675,7 +5675,7 @@ class TestRound19Menu11CategoryFullSweepClosure(unittest.TestCase):
             "etc/fx6_stage_r19",
             '"r19_telemetry"',
             '"fx6-r19"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -6317,7 +6317,7 @@ class TestRound20Network4LangWF12Closure(unittest.TestCase):
             "etc/fx6_stage_r20",
             '"r20_telemetry"',
             '"fx6-r20"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -6936,7 +6936,7 @@ class TestRound21Audio4LangDualSurfaceClosure(unittest.TestCase):
             '"r21_telemetry"',
             '"fx6-r21"',
             "audio_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -7558,7 +7558,7 @@ class TestRound22PaintLookCamTab24LangClosure(unittest.TestCase):
             '"r22_telemetry"',
             '"fx6-r22"',
             "paintlook_camtab2_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -8205,7 +8205,7 @@ class TestRound23MonitoringTab54LangClosure(unittest.TestCase):
             '"r23_telemetry"',
             '"fx6-r23"',
             "monitoring_tab5_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -8856,7 +8856,7 @@ class TestRound24ProjectTab44LangClosure(unittest.TestCase):
             '"r24_telemetry"',
             '"fx6-r24"',
             "project_tab4_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -9509,7 +9509,7 @@ class TestRound25TcMediaTab84LangClosure(unittest.TestCase):
             '"r25_telemetry"',
             '"fx6-r25"',
             "tcmedia_tab8_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -10164,7 +10164,7 @@ class TestRound26TechnicalTab64LangClosure(unittest.TestCase):
             '"r26_telemetry"',
             '"fx6-r26"',
             "technical_tab6_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -10823,7 +10823,7 @@ class TestRound27MaintenanceTab74LangClosure(unittest.TestCase):
             '"r27_telemetry"',
             '"fx6-r27"',
             "maintenance_tab7_4lang_dualsurface=1",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -12103,7 +12103,7 @@ class TestRound29RealHwAtomicInstallerRollbackP1RescueMprRec(unittest.TestCase):
             "FX6_R29_ROLLBACK_EXIT",
             "FX6_R29_P1_RESCUE_EXIT",
             '"r29_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -12613,7 +12613,7 @@ class TestRound30RealHwCanaryTier0PeripheralCleanUninstall(unittest.TestCase):
             '"r30_telemetry"',
             "def build_r30_tier0_libjit_so",
             "def build_p18_lens_vfat_image",
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 
@@ -13168,7 +13168,7 @@ class TestRound31RealHwKeymapTallyFanFz100MtdroFirewall(unittest.TestCase):
             "FX6_R31_FAN_FZ100_EXIT",
             "FX6_R31_MTDRO_EXIT",
             '"r31_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]",
         ):
             self.assertIn(token, runner_src)
 

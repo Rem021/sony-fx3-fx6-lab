@@ -833,5 +833,22 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-35pillar-recovery --force-clean-room --json
 ```
 
+## Phase 234 — 真机主线 Part 24（Pillar 36 / `36/36` 统一恢复总检）：`Recover Image DB` 亏电拒执与 Slot-1 Tier-0 金库防篡改防火墙、`Monitor Flip Direction` 跨复位留存 / 回放不翻转与 `AF` 运动学 + `Interval Shoot Func.` 状态恢复金库（`verify-36pillar-recovery` / `verify-recover-imagedb-monitor-flip-vault`）
 
+- **[`realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py`](fx3_recovery/realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 36** 并将全套恢复总检正式推进至 **`36/36`（`VERIFIED_36OF36_PILLAR_RECOVERY_MASTER`）**（`< 3.8s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libInfraMediaConfig.so` 与 `libIMDB.so`（校验 `IMDB_find_entry`、`IMDB_get_entries`、`InfraDatabase_Init`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 36A — `[Recover Image DB]` 极端亏电硬件拒执、零删片 `AVF_INFO` 修复与 Slot-1 Tier-0 金库防写入防火墙（`6/6`）**：
+    - `P36A1`..`P36A6`：精确建模 `MENU` -> `Shooting` -> `[Media]` -> `[Recover Image DB]` 在不删除任何已录制视频片段或静态照片的前提下修复 `AVF_INFO` / 媒体管理数据库不一致（消除 `"Image DataBase File error"` 告警与虚假 `"0"` 可拍张数显示）；强制拦截极端亏电 `NP-FZ100` 电池包（`battery_extremely_depleted` 或 `< 10%` / `< 6.60V`）下的执行请求以防中途断电导致 FAT/exFAT 元数据二次损坏；验证 `[Recover Image DB]` 按需动作项对 `[Camera Settings Reset]` 与 `[Initialize]` 双重免疫；并在 **Slot 1** 存有未完成离机 `SHA-256` 校验或处于物理 `WP/LOCK` 保护的 Tier-0 冷转储金库（`pnflasha` / `cnflasha` / `CAMSET01.DAT`）时，100% 阻断 `[Recover Image DB]` 对 Slot 1 文件系统元数据的任何写入。
+  - **支柱 36B — `[Monitor Flip Direction]` 跨复位留存与回放零镜像反转、`Movie/S&Q` 对焦运动学（`[AF Subj. Shift Sensitivity]` / `[AF Transition Speed]`）与仅限静态照片的 `[Interval Shoot Func.]` 状态恢复（`6/6`）**：
+    - `P36B1`..`P36B6`：校验 `[Monitor Flip Direction]`（`Auto` 默认、`Horizontal Flip`、`Vertical Flip`、`Off`）在 `[Camera Settings Reset]` 后完整保留、仅在完整 `[Initialize]` 下归位为 `Auto`，且即使设为 `[Horizontal Flip]` 时**回放模式绝不翻转监视器画面与时间码/文件名文字**；校验精确全称菜单项 `[AF Subj. Shift Sensitivity]`（`1(Locked on)..5(Responsive)`，默认 `5(Responsive)`，硬拦截缩写 `AF Subj. Shift Sens.`）与 `[AF Transition Speed]`（`1(Slow)..7(Fast)`，默认 `5`）在 `[Camera Settings Reset]` 下干净复位或经 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` 无漂移恢复；强制校验 `ILME-FX3` `[Interval Shoot Func.]`（拍摄开始时间 `1s..99m59s`、拍摄间隔 `1s..60s`）严格仅限静态照片序列连拍（需外部后期合成延时视频），阻断将其误判为 FX6 机内视频抽帧 `Interval Rec`（`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `36/36` 恢复总检聚合器与 CLI（`evaluate_realhw_36pillar_recovery_master` / `verify-36pillar-recovery` / `verify-recover-imagedb-monitor-flip-vault`）**：
+    - 并发调用 `evaluate_realhw_35pillar_recovery_master`（`Pillars 1..35`）+ **Pillar 36**（`run_pillar36_standalone_suite`），汇总产出 **`36/36`**（`VERIFIED_36OF36_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py`](tests/test_realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py) 提供 **64 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-recover-imagedb-monitor-flip-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-36pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-36pillar-recovery --force-clean-room --json
+```
 

@@ -127,6 +127,11 @@ from .realhw_lock_op_parts_audio_timing_exp_step_and_96gate_guard import (
     evaluate_g95_lock_operation_parts_and_chord_guard,
     evaluate_g96_audio_timing_signals_and_exp_step_guard,
 )
+from .realhw_display_quality_bt_rmt_mymenu_and_98gate_guard import (
+    evaluate_98gate_preflight,
+    evaluate_g97_display_quality_and_bt_rmt_guard,
+    evaluate_g98_mymenu_and_camset_firewall_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2433,6 +2438,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G96 gates can be rehearsed offline",
     )
     p_96.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 104. verify-display-quality-bt-rmt-guard
+    p_g97 = sub.add_parser(
+        "verify-display-quality-bt-rmt-guard",
+        aliases=["verify-g97-display-quality-bt-rmt"],
+        help="Verify Gate G97: [Display Quality] Standard/High Battery Conservation & [Bluetooth Rmt Ctrl] IR Lockout / Reset Network Set. Split Guard",
+    )
+    p_g97.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g97.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g97.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g97.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 105. verify-mymenu-camset-firewall-guard
+    p_g98 = sub.add_parser(
+        "verify-mymenu-camset-firewall-guard",
+        aliases=["verify-g98-mymenu-camset"],
+        help="Verify Gate G98: [My Menu Setting] 6-Op Persistence & Slot-1 CAMSET01.DAT O_RDONLY Load-Only Firewall Guard",
+    )
+    p_g98.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g98.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g98.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g98.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 106. verify-98-gates
+    p_98 = sub.add_parser(
+        "verify-98-gates",
+        help="Run Phase 252 Unified 98-Gate Master Safety Preflight Engine (G01..G98)",
+    )
+    p_98.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_98.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_98.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G98 gates can be rehearsed offline",
+    )
+    p_98.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -4848,6 +4939,102 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_96_gates_verified if args.dry_run_simulated else report.offline_93_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in ("verify-display-quality-bt-rmt-guard", "verify-g97-display-quality-bt-rmt"):
+        verdict, res = evaluate_g97_display_quality_and_bt_rmt_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.display_quality_bt_rmt_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} display_quality={guard['effective_post_reset_display_quality']}"
+                f"(tier0_clamped={guard['tier0_battery_clamped_to_standard_and_manual0']},"
+                f"batt_viol={guard['tier0_battery_high_display_violations']}) "
+                f"bt_rmt={guard['effective_post_reset_bt_rmt_ctrl']}"
+                f"(active={guard['effective_bt_rmt_ctrl_active']},"
+                f"airplane={guard['airplane_mode']},"
+                f"tx={guard['passive_tx_bytes_emitted']},"
+                f"ir_viol={guard['bt_rmt_ir_lockout_violations']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in ("verify-mymenu-camset-firewall-guard", "verify-g98-mymenu-camset"):
+        verdict, res = evaluate_g98_mymenu_and_camset_firewall_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.mymenu_camset_firewall_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} mymenu_pages={guard['effective_post_reset_page_count']}"
+                f"(items={guard['effective_post_reset_total_items']},"
+                f"dfmm={guard['effective_post_reset_display_from_my_menu']},"
+                f"open={guard['menu_button_open_target']}) "
+                f"slot1_camset={guard['slot1_camset_filename']}"
+                f"(op={guard['slot1_camset_operation']},"
+                f"mut_bytes={guard['slot1_mymenu_vault_mutation_bytes']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-98-gates":
+        report = evaluate_98gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/98 "
+                f"g97_to_g98_all_passed={report.g97_to_g98_all_passed} "
+                f"all_98_gates_verified={report.all_98_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_98_gates_verified if args.dry_run_simulated else report.offline_95_gates_verified
         return 0 if ok else 1
 
     return 2

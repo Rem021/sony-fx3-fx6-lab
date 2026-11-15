@@ -681,5 +681,25 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-27pillar-recovery --force-clean-room --json
 ```
 
+## Phase 198 — 真机主线 Part 16（Pillar 28 / `28/28` 统一恢复总检）：`[Fan Control] = Always Off -> Auto` 备份前温控覆盖互锁、`Backup.bin` 快门 `Speed/Angle` 独立槽位与 `Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` User LUT 代际防污染总检（`verify-28pillar-recovery`）
+
+- **[`realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py`](fx3_recovery/realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 28** 并提供统一 **28/28 恢复总检聚合器**（`< 2.4s` 并发运行，保留 `verify-22pillar-recovery`、`verify-24pillar-recovery`、`verify-26pillar-recovery` 与 `verify-27pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02`、`FX6 6.01`、`Backup.bin`、`libfan.so` 与 `libbackup.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 28A — `ILME-FX3` 精确四态 `[Fan Control]`（`Auto`、`Minimum`、`Off in Rec`、`Always Off`，硬拒 `Auto1/Auto2`）与冷备份前温控覆盖互锁（`6/6`）**：
+    - `P28A1`..`P28A6`：若原厂 FX3 `[Fan Control]` 停留在 `Always Off`（或非 `Auto`），在进入 `AdjustControl (0x40)` 75 MiB `p3` 冷备份或高负载 Stage-B 前硬阻断直至关切为 `Auto`（严格识别 `[Auto Power OFF Temp.] = Standard / High`）；建模 `Off in Rec` 待机 `MAX PWM (100%)` vs 录制 `0% PWM` 及 `>= 82°C` 紧急热保护满速覆盖，并 fail-closed 拦截不存在的 `Auto1`/`Auto2` 伪枚举。
+  - **支柱 28B — `Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` `User1..User16` LUT 二进制代际分裂防污染金库与 `Backup.bin` `[Speed]`/`[Angle]` 独立槽位完整性（`6/6`）**：
+    - `P28B1`..`P28B6`：阻断供体 `FX6 Ver. 6.01`（`<= 6.01` 旧版 LUT 槽位序列化格式）污染宿主 `Stock FX3 Ver. 7.02`（`7.00+` 优化后 LUT 序列化格式）的 `p2:/setting` `User1..User16` 槽位，强制 Stage-B 严格重定向至易失 `/tmp/fx6_lut_overlay`（`tmpfs`）；校验 `Backup.bin` 中 `[Speed]` 与 `[Angle]` 独立键槽存储（与 `[Exposure step]` `0.3EV / 0.5EV` 解耦）、常规 `5.6°..64F` vs `119.88p / 100p` & `S&Q` `5.6°..360°` 量程边界，以及冷重启回原厂 `7.02` 后 `16/16 H0 == H3`。
+  - **统一 `28/28` 恢复总检聚合器与 CLI（`evaluate_28pillar_recovery_master` / `verify-28pillar-recovery` / `verify-fan-pwm-lut-split-vault`）**：
+    - 并发调度 `evaluate_27pillar_recovery_master`（`Pillars 1..27`）+ **Pillar 28**（`run_pillar28_standalone_suite`），汇总产出 **`28/28`**（`VERIFIED_28OF28_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py`](tests/test_realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py) 提供 **52 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-fan-pwm-lut-split-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-28pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-28pillar-recovery --force-clean-room --json
+```
+
+
 
 

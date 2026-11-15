@@ -25,6 +25,7 @@ from .exfat_media_integrity_guard import (
     evaluate_exfat_media_integrity_guard,
 )
 from .master_16gate_preflight import DEFAULT_REPO_ROOT, evaluate_16_master_safety_gates
+from .phantom48v_gimbal_and_22gate_guard import evaluate_22gate_preflight
 from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .thermal_pwm_and_power_guard import evaluate_thermal_pwm_and_power_guard
@@ -194,6 +195,25 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G20 gates can be rehearsed offline",
     )
     p_20.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 12. verify-22-gates
+    p_22 = sub.add_parser(
+        "verify-22-gates",
+        help="Run Phase 77 22-Gate Master Safety Preflight Engine (G01..G22)",
+    )
+    p_22.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_22.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_22.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G22 gates can be rehearsed offline",
+    )
+    p_22.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -371,6 +391,27 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_20_gates_verified if args.dry_run_simulated_backup else report.offline_17_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-22-gates":
+        report = evaluate_22gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/22 "
+                f"g21_to_g22_all_passed={report.g21_to_g22_all_passed} "
+                f"all_22_gates_verified={report.all_22_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_22_gates_verified if args.dry_run_simulated_backup else report.offline_19_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -268,4 +268,24 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --clean-room --json
 ```
 
+## Phase 94 — `CXD90057` eMMC Primary/Backup GPT & Sony Sub-Partition Header Healer, RPMB HMAC-SHA256 Monotonic Write-Counter Replay Guard & Offline SD-Rescue Bundle Verifier
+
+- **[`gpt_rpmb_and_rescue_bundle_verifier.py`](fx3_recovery/gpt_rpmb_and_rescue_bundle_verifier.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）`CXD90057` eMMC 恢复链路提供三大只读 RAM-only 防变砖支柱（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`RPMB_WRITES_EMITTED = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 净室回退）：
+  - **支柱 1 — Primary/Backup GPT（LBA 1 vs Last LBA）IEEE 802.3 CRC32 与 15 分区几何重建器（`build_gpt_pair_bytes` / `verify_gpt_copy` / `heal_gpt_pair_ram_only`）**：
+    - 建模 `CXD90057` FX3 15 分区布局（`p1` FAT boot、`p2..p15` kernel/rootfs/app/calibration/userdata/`cnflasha`，`FX3_LENS_CAL_START_LBA = 0x0031C000`），覆盖 92 字节 `EFI PART` 头 CRC32 与 128 项分区表数组 CRC32、4 KiB（8-LBA）边界对齐及 Sony Sector 0（`'8246' '2.00'`）交叉验证。
+    - 证明在纯 RAM 中确定性重建损坏的 Primary GPT <- Backup GPT（以及 Backup GPT <- Primary GPT），并对重叠 LBA 区间（`ERR_GPT_PARTITION_OVERLAP`）、非 4 KiB 对齐（`ERR_GPT_MISALIGNED_4K`）、双副本同毁（`ERR_GPT_BOTH_COPIES_CORRUPTED`）及跨机型 FX6 分区几何移植（`ERR_CROSS_SKU_FX6_GPT_TRANSPLANT`，`0x00312000`）严格 fail-closed 拦截。
+  - **支柱 2 — eMMC RPMB（JEDEC eMMC 5.1 512 字节帧）HMAC-SHA256 单调写计数器与防重放沙箱（`build_rpmb_frame` / `parse_rpmb_frame` / `RpmbSandboxController` / `prove_stage_b_zero_rpmb_writes`）**：
+    - 仅使用公开合成测试密钥（`SYNTHETIC_RPMB_TEST_KEY`，绝不嵌入任何专有密钥）建模 512 字节 RPMB 帧（196B 填充 + 32B MAC + 284B 载荷、16B nonce、4B 大端 `write_counter`、2B `address`/`block_count`/`result`/`req_resp`）。
+    - 证明 fail-closed 拒绝旧写计数器重放（`RPMB_RESULT_COUNTER_FAILURE = 0x0003`）、nonce 不匹配（`ERR_RPMB_NONCE_MISMATCH`）、MAC 伪造（`RPMB_RESULT_AUTH_FAILURE = 0x0002`）及接近 `0xFFFFFFFF` 耗尽拦截（`RPMB_RESULT_COUNTER_EXPIRED = 0x0080`），同时证明 Stage-B RAM/SD 覆盖启动需 **0 次**物理 RPMB 写入（`rpmb_writes_emitted == 0`）。
+  - **支柱 3 — 离线气隙 SD-Rescue 急救包清单与双人复核验证器（`build_synthetic_sd_rescue_bundle` / `verify_sd_rescue_bundle`）**：
+    - 在允许任何 Stage-B 演练前，核验 `FX3_SAFE_STOCK.FLG` 哨兵、`p1..p15` 全量 SHA-256 清单（拦截缺失/截断/全空读出）、基于 [`tier0_backup_parity_and_manifest_guard.py`](fx3_recovery/tier0_backup_parity_and_manifest_guard.py) 的 `GF(256)` P+Q RAID-6 校验分片与单分片擦除自愈演练、机身序列号绑定（`build_body_hardware_identity`）以及不同双操作员独立摘要复核（`TwoManAttestation`）。
+  - **CLI 与 36 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-gpt-rpmb-bundle [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94`（Pillar 8），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部公开符号；[`tests/test_gpt_rpmb_and_rescue_bundle_verifier.py`](tests/test_gpt_rpmb_and_rescue_bundle_verifier.py) 包含 **36 项双模式快速单元测试**（`< 0.4s`）。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-gpt-rpmb-bundle --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --clean-room --json
+```
 

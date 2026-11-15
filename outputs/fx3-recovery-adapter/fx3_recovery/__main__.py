@@ -15,6 +15,7 @@ from .emmc_dump_forensic_verifier import (
     verify_emmc_dump_file,
 )
 from .firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite
+from .gpt_rpmb_and_rescue_bundle_verifier import run_gpt_rpmb_and_rescue_bundle_suite
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
@@ -92,6 +93,11 @@ def main():
     master.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     master.add_argument('--out', help='optional exclusive new output directory for recovery-master-report.json')
+    master.add_argument('--with-phase94', action='store_true', help='also run Phase 94 Pillar 8 GPT/RPMB/SD-rescue verifier')
+    gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
+    gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    gpt_rpmb.add_argument('--out', help='optional exclusive new output directory for gpt-rpmb-bundle-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -249,18 +255,54 @@ def main():
                 force_clean_room=True if args.clean_room else None,
             )
             result = report.to_dict()
+            overall_ok = report.all_passed
+            if args.with_phase94:
+                p94_report = run_gpt_rpmb_and_rescue_bundle_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase94_pillar8_gpt_rpmb_rescue'] = p94_report.to_dict()
+                result['pillar_count'] = report.pillar_count + 1
+                result['pillars_passed'] = report.pillars_passed + (1 if p94_report.all_passed else 0)
+                overall_ok = overall_ok and p94_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                pillar_num = result['pillars_passed'] if args.with_phase94 else report.pillars_passed
+                pillar_den = result['pillar_count'] if args.with_phase94 else report.pillar_count
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={overall_ok} "
+                    f"pillars={pillar_num}/{pillar_den} "
+                    f"uart_scenarios={report.uart_decoder_suite.scenarios_passed}/{report.uart_decoder_suite.scenarios_total} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"recovery_master_sha256={report.recovery_master_sha256[:16]} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if overall_ok else 2
+        elif args.command == 'verify-gpt-rpmb-bundle':
+            report = run_gpt_rpmb_and_rescue_bundle_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'gpt-rpmb-bundle-report.json': encode(result)})
             if args.json:
                 print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
             else:
                 print(
                     f"status={report.status} mode={report.verification_mode} "
                     f"all_passed={report.all_passed} "
-                    f"pillars={report.pillars_passed}/{report.pillar_count} "
-                    f"uart_scenarios={report.uart_decoder_suite.scenarios_passed}/{report.uart_decoder_suite.scenarios_total} "
+                    f"gpt_partitions={report.gpt_healthy_check.primary_audit.active_partition_count} "
+                    f"rpmb_writes_emitted={report.rpmb_writes_emitted} "
+                    f"stage_b_rehearsal_permitted={report.sd_rescue_valid_report.stage_b_rehearsal_permitted} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
-                    f"recovery_master_sha256={report.recovery_master_sha256[:16]} "
                     f"physical_device_writes={report.physical_device_writes} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"

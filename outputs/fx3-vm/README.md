@@ -522,5 +522,39 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 99：Stage 16 `65^3->33^3` `.cube` 四面体 3D-LUT DMA 引擎、HDMI AVI InfoFrame + HDMI->12G-SDI `ST 2082` REC-Trigger 桥接、与零下（`-20°C`）Li-Ion ESR / 高海拔（`5,200m`）降额 HIL
+
+[`lut3d_tetrahedral_subzero_sdi_emulator.py`](lut3d_tetrahedral_subzero_sdi_emulator.py) 作为 **Stage 16** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase99` 向后兼容跳过；全板 16 阶段协同仿真在本地只读供体模式下保持 `~1.38s < 1.5s`、洁净室模式下 `~0.47s < 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`sdi_transceiver_faults == 0`**、**`lithium_plating_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成四大闭环：
+
+1. **严格只读（`os.O_RDONLY`）3D-LUT / HDMI-SDI / USB-PD / 风扇供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`libmpr.so`、`libInfraAvbbc.so` x2、`AVBB_SCN_START_PANELEVF.so`、`AVBB_SCN_START_VIDEO.so`、`libBusPower.so`、`libUsbBusPower.so` x2、`libfan.so` x2）的 SHA-256 与关键导出标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **用户 `.cube` 3D LUT 清洗器与 `65^3 / 17^3 -> 33^3` 6-子四面体（Kuhn `T1..T6`）DMA 重采样引擎**：
+   - 解析 `17^3`、`33^3` 与 `65^3` DaVinci Resolve `.cube` 文件，对 `NaN`/`Inf`、`LUT_1D_SIZE`、倒置 `DOMAIN_MIN >= DOMAIN_MAX`、体素计数不匹配、超大载荷及路径穿越/控制字符执行 100% 失败关闭拦截（`CubeLutSanitizationError`）。
+   - 通过精确 6-子四面体重心插值重采样至 `CXD90058` 硬件 `33^3`（`35,937` 体素），打包为 `U8`（`107,812 B`）或 `U16`（`215,622 B`）DMA 查表并经 `IVSHMEM` `0x0165`（`> 0xbb80` DRAM 路径）/ `0x0166` 槽位切换载入易失共享内存（`nvram_persistent_writes == 0`），强制锁定 **Main-SLog3 内录无烧录 + Proxy MLUT 独立开关 + HDMI Clean-Feed / RAW16 旁路** 路由隔离。
+3. **CEA-861-G HDMI AVI InfoFrame + Sony VSIF REC-Trigger -> 12G-SDI（SMPTE ST 2082）无损桥接**：
+   - 合成并反向校验标准 17 字节 CEA-861-G HDMI AVI InfoFrame（模 256 校验和 `(0x100 - sum) & 0xFF == 0`、`YCbCr 4:2:2 10-bit`、`S-Gamut3.Cine/S-Log3` 与 `LIMITED_LEGAL` TRS 防碰撞门控，阻断全范围 `YQ=1` 与 SDI 保留字 `0x000..0x003` / `0x3FC..0x3FF` 冲突）+ Sony VSIF 帧精确 `RISING_START` / `FALLING_STOP` 触发边沿，验证外置 HDMI->12G-SDI 桥接器 **0 丢触发（`dropped_rec_triggers == 0`）**、**SMPTE RP 188 LTC/VITC 零帧偏移锁相（`ltc_vitc_frame_offset == 0`）** 且 FX3 机身无假性 SDI-BNC 报错（`sdi_transceiver_faults == 0`）。
+4. **零下（`-20°C`）`NP-FZ100` Arrhenius ESR 压降热切换与高海拔（`5,200m`）对流降额 HIL**：
+   - 建模 `-20°C` 深冷下 2S Li-Ion 内阻急升（`R_int ≈ 1.0784 Ω`）在 `8.5W`（`4K120 + Active IBIS`）瞬态负载下的端电压跌落预测，在跨越 `6.0V` PMIC UVLO 前无感切换至 **`USB-PD 9V/3A`（`8.88V` 总线）** 并严格闭锁 `<= 0°C` 锂电充电以消除析锂（`lithium_plating_events == 0`），无 USB-PD 时提前触发零丢帧 `.RSV` 抢救封口。
+   - 建模 ISA `5,200m` 高原气压（`~52.6 kPa`、空气密度与风机质量流量比 `~0.587x`）对流降额，主动拉升 Sigma 离心风扇 PWM（`55% -> 95%` / `~3,530 RPM`）并卸除后台非关键 `FTPS`（`1.4W`）功耗，确保 `CXD90057` 峰值结温稳定控制在 `T_warn = 82.0°C` 以下。
+
+### Phase 99 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 16 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/lut3d_tetrahedral_subzero_sdi_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/lut3d_tetrahedral_subzero_sdi_emulator.py --self-test --json
+
+# 2. 全板 16 阶段（Stage 1..16）统一校验（本地 ~1.38s < 1.5s，洁净室 ~0.47s < 0.5s，支持 --skip-phase99）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 99 36 项单测 & 全量 496 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_lut3d_tetrahedral_subzero_sdi_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_lut3d_tetrahedral_subzero_sdi_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 

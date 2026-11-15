@@ -1,8 +1,8 @@
 # Stage-B Field Operator SOP, Rig Electrical Safety & Unbrick Runbook (`EN / 简体中文`)
 
-> **Document Scope / 文档定位**: Authoritative field & bench safety Standard Operating Procedure (SOP) for **Milestone Phase 130 Stage-B (`P1..P12+Fan`, `G01..G40`, `13-Pillar Recovery` / `Tier-0..Tier-4`)** targeting **Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`)** with **ILME-FX6 (`Ver. 6.01`)** volatile RAM-overlay compatibility.  
-> **Companion Documents / 配套文档**: [`docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md`](./STAGE-B-ARCHITECTURE-AND-SAFETY.md) · [`docs/STAGE-A-HARDWARE-RUNBOOK.md`](./STAGE-A-HARDWARE-RUNBOOK.md) · [`docs/BYOF-REPRODUCTION.md`](./BYOF-REPRODUCTION.md) · [`README.md`](../README.md)  
-> **Quick Verification Gates / 快速门禁指令**: `make verify-rp2040-fixture` · `make verify-24-gates` · `make verify-32-gates` · `make verify-40-gates` · `make verify-10pillar-recovery` · `make verify-13pillar-recovery` · `make verify-tier0-backup` · `make verify-antirollback-guard` · `make verify-init2-escape` · `make verify-post-trial-audit` · `make verify-milestone-90` · `make verify-milestone-110` · `make verify-milestone-130`
+> **Document Scope / 文档定位**: Authoritative field & bench safety Standard Operating Procedure (SOP) for **Milestone Phase 130 & Phase 147 Stage-B (`P1..P12+Fan`, `G01..G44`, `17+ Pillar Recovery` / `Tier-0..Tier-4`)** targeting **Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`)** with **ILME-FX6 (`Ver. 6.01`)** volatile RAM-overlay & BYOF SD dual-boot compatibility.  
+> **Companion Documents / 配套文档**: [`docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md`](./REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md) · [`docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md`](./STAGE-B-ARCHITECTURE-AND-SAFETY.md) · [`docs/STAGE-A-HARDWARE-RUNBOOK.md`](./STAGE-A-HARDWARE-RUNBOOK.md) · [`docs/BYOF-REPRODUCTION.md`](./BYOF-REPRODUCTION.md) · [`README.md`](../README.md)  
+> **Quick Verification Gates / 快速门禁指令**: `make verify-rp2040-fixture` · `make verify-24-gates` · `make verify-32-gates` · `make verify-40-gates` · `make verify-44-gates` · `make verify-10pillar-recovery` · `make verify-13pillar-recovery` · `make verify-17pillar-recovery` · `make verify-tier0-backup` · `make verify-antirollback-guard` · `make verify-init2-escape` · `make verify-sd-stageb-bundle` · `make verify-post-trial-audit` · `make verify-milestone-90` · `make verify-milestone-110` · `make verify-milestone-130` · `make verify-milestone-147`
 
 > [!CAUTION]
 > **HARD-LOCKED FLASH POSTURE / 硬件写入硬锁红线 (`persistent_emmc_writes_authorized = False`)**
@@ -369,3 +369,19 @@ Stage-B 入口脚本 `stage_b_init2_guard.sh` 在解压 CPIO 或执行任何 `mo
   │    make verify-13pillar-recovery && make verify-milestone-130           │
   └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 五、Milestone Phase 147 实机上台架就绪扩展与权威部署总册导航（Addendum）
+
+- **权威部署与无痕卸载总册**：请参阅 [`docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md`](./REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md) 获取完整实机链路 SOP：
+  1. **`054C:0DA1 -> 054C:0336` `SET_FILE2` + `AdjustControl (0x40)` 16 面流式冷备（`G43` / Pillars 14–17）**：Stage-288 P0 加固 `libJiritsu.so`（入口 `unlinkat` 自毁、`O_RDONLY | O_NOFOLLOW`、`ld-2.25.so` `0x10000` 对齐）、`FX3RCPT1` SD 流式转储与 `p6 <= 4 MiB` `FX3CHK1` 滑窗拉取。
+  2. **Strategy-A 零 Sector-0 桥接与 BYOF SD 载荷包（`U4` / Phase 143）**：`/dev/nflasha20 -> /dev/nflasha30` 符号链接 + `tmpfs /etc/opelog`，`/FX6_STAGEB/FX6_STAGEB_BOOT.MANIFEST` 机身绑定与 `13/13` SHA-256 验签。
+  3. **`/dev/cnflasha15` 原子 `/usr/bin/im.elf` 逃生舱包装器（`G44` / Round 29）**：严禁直接写入 `/dev/pnflasha15`（`pnflasha15_rejected=1`）；写中故障自动回滚 `.orig`；3 道物理逃生舱（`EH1` 无卡 `47 us <= 50 us` 旁路、`EH2` `STOP_STAGEB.FLAG` / `MENU+PLAY`、`EH3` 篡改失效关闭 + `LAST_BOOT_DIAG.TXT`）。
+  4. **`p1` 首行救援（`U5`）与 `H0 == H3` 16 面无痕卸载**：`/sbin/init` 首行 `rm -f /setting/updater/mode* && sync` + `ud_send_lsi.elf 0` 无条件退回 `p3`，干净卸载验证 `16/16` 存储面 `SHA256(H0) == SHA256(H3)`。
+- **Milestone 147 一键门禁指令**：
+  ```sh
+  make verify-44-gates && make verify-17pillar-recovery && make verify-sd-stageb-bundle && make verify-milestone-147
+  FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-147
+  ```
+

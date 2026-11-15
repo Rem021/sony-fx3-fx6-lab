@@ -1010,3 +1010,26 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r28b-sd-trigger-valid-jiritsu-and-stageb-big6` (`--sd-manifest-mode valid`): `5/5` SD trust-root SHA-256 passes in `1.21 ms` (`STAGEB_SD_AUTHENTICATED`, `rc=0`) -> real `ld-2.25.so` `dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW)` (`64 KiB` `PT_LOAD` aligned) immediately self-unlinks (`jit_self_unlinked=1`, `unlink_errno=2`), reads `/dev/pnflasha0` strictly `O_RDONLY | O_NOFOLLOW`, writes `528 B` `FX3S0OK` packet (`CRC32=0x29f1a341`, `"8246"`, `"2.00"`, `n_partition=30`), activates Strategy-A `/dev/nflasha20 -> /dev/nflasha30` + `tmpfs` `/etc/opelog` (`OPE`, `OPE/00`, `OPE/01`, `sector0_repartition=0`), verifies `13/13` Stage-B SHA-256 locks, and boots `appFw.so` rendering **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** with `346,686` px / `87` colors / `gpe_fb=0` / `nop_count=0`.
   - `r28c-sd-trigger-tampered-fail-closed-fallback` (`--sd-manifest-mode tampered`): 1-byte corrupted SD manifest -> SHA-256 gate rejects in `669 us` (`< 50 ms`, `FX6_R28_SD_GATE_RC=11`, `FAIL_CLOSED_STOCK_FX3_FALLBACK`, `tamper_rejected=1`, `stageb_loaded=0`).
 - **Full Report, Receipts, & `263` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/README.md`](../../reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/README.md) and [`summary.json`](../../reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/summary.json).
+
+---
+
+## 29. Round 29: Real FX3 `7.02` Kernel QEMU Rehearsal — Native ARM64 C Atomic `/dev/nflasha15` Installer, Mid-Write `.orig` Rollback, `p1` One-Shot `mode*` Rescue & Live `libMpr` AP→CP REC Shim
+
+`build_and_run_round.py --round 29 --r29-mode {install_mpr_rec,rollback,p1_rescue}` proves live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside RAM-staged `tmpfs` (`emmc_write_count = 0`, `crashes = 0` across all 3 runs) the native C atomic `/dev/cnflasha15` installer, mid-write fault rollback, `p1` one-shot rescue, and live `libMpr` 6-parameter + `C0001.MXF` recording cycle:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 29 --r29-mode install_mpr_rec --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r29a-atomic-install-and-live-mpr-rec-big6 --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r29-runs/r29a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r29a-atomic-install-and-live-mpr-rec-big6 \
+  --export-png-dir reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/assets
+```
+
+- **3 Live Round 29 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r29a-atomic-install-and-live-mpr-rec-big6` (`--r29-mode install_mpr_rec`): Native ARM64 C installer rejects `/dev/pnflasha15`, accepts `/dev/cnflasha15` & `/dev/nflasha15`, verifies stock `usr/bin/im.elf` (`40,920 B`, SHA `2838e5da0fcaf7e8db543f0bd33a9e73411143be293d4509b7fa3edcc26ab772`), writes `.orig` + `128 B` SD-escape launcher (`edb450bb...`), remounts `ro` with `EROFS` probe (`atomic_install_ok=1`, `ro_remounted=1`); then `libgrm-fbinit9.so` resolves `11/11` real `/usr/lib/libmpr.so` symbols, executes 6-param `ParameterControl` AP→CP translation (`Base ISO 800->12800`, `23.98p`, `180.0 deg -> 1/48s`, `5600K`, `S-Log3/S-Gamut3.Cine`, `SDI/darwin-ND masked=1`) and `C0001.RSV -> C0001.MXF` (`640 B`) REC cycle (`mpr_rec_finalized=1`, `rsv_orphan_count=0`), and renders **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** across `13/13` Stage-B SHA-256 locks (`346,206` px / `87` colors / `gpe_fb=0` / `nop_count=0` / `53` `LDEC103` ioctls).
+  - `r29b-fault-injected-midwrite-atomic-rollback` (`--r29-mode rollback`): Injects deterministic 1-bit flip & `50%` short-write during transaction -> detects SHA-256 mismatch & short-write -> atomic `.orig` rollback + `fsync` + `ro` `EROFS` remount -> restored `im.elf` SHA-256 `100%` matches stock (`atomic_rollback_verified=1`, `stock_sha256_restored=1`, `8.90 ms`).
+  - `r29c-p1-oneshot-mode-clear-and-p3-return` (`--r29-mode p1_rescue`): Simulated `p1` single-shot `initrd` with `/setting/updater/mode6` armed, `p1:/dat2="91030080"`, `p1:/boot/kemco.txt` (`cfg.uart=1`, `console=ttyAMA0,460800n8`), and read-only `p3` -> line-1 executes `rm -f /setting/updater/mode* && sync`, yielding `mode_files_remaining=0`, `dat2_intact=1`, `uart_port=1`, `p3_untouched=1` (`p1_rescue_ok=1`, `16.69 ms`).
+- **Full Report, Receipts, & `283` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/README.md`](../../reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/README.md) and [`summary.json`](../../reports/2026-11-14-round29-realhw-atomic-installer-mpr-rec-qemu-rehearsal/summary.json).
+

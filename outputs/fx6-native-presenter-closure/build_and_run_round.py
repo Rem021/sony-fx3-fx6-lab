@@ -830,6 +830,8 @@ def build_stage_a_overlay(
     enable_r26: bool = False,
     enable_r27: bool = False,
     enable_r28: bool = False,
+    enable_r29: bool = False,
+    r29_mode: str = "install_mpr_rec",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -902,6 +904,8 @@ def build_stage_a_overlay(
         extra_extract = extra_extract + ("usr/share/app/image_00_169.uxc",)
     if enable_p12:
         extra_extract = extra_extract + ("usr/lib/libWlanResource.so",)
+    if enable_r29:
+        extra_extract = extra_extract + ("usr/bin/im.elf",)
     if lang in lang_asset_specs:
         lang_items, _, _ = lang_asset_specs[lang]
         extra_extract = extra_extract + tuple(item[1] for item in lang_items) + ("usr/share/app/fontlist.dat",)
@@ -1099,7 +1103,34 @@ def build_stage_a_overlay(
     launch_needle = 'LD_PRELOAD="$FX6_PRELOAD" /usr/bin/appfw-launch'
     if launch_needle not in init_txt:
         raise RuntimeError(f"Expected launch line not found in {parent_cpio} /init")
-    if enable_r28:
+    if enable_r29 and r29_mode not in ("install_mpr_rec", "rollback", "p1_rescue"):
+        raise ValueError(f"Unsupported r29_mode: {r29_mode}")
+    if enable_r29 and r29_mode in ("rollback", "p1_rescue"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r29_mode == "rollback":
+            r29_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r29-installer-rollback > /dev/console 2>&1\n"
+                "fx6_r29_rb_rc=$?\n"
+                "echo FX6_R29_ROLLBACK_RC=$fx6_r29_rb_rc\n"
+                "echo FX6_R29_ROLLBACK_EXIT rc=$fx6_r29_rb_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r29_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r29-p1-rescue > /dev/console 2>&1\n"
+                "fx6_r29_p1_rc=$?\n"
+                "echo FX6_R29_P1_RESCUE_RC=$fx6_r29_p1_rc\n"
+                "echo FX6_R29_P1_RESCUE_EXIT rc=$fx6_r29_p1_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r29_early_hook, 1)
+    elif enable_r28:
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -1119,14 +1150,26 @@ def build_stage_a_overlay(
             "fi\n"
         )
         init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + sd_gate_hook, 1)
+    r29_install_hook = ""
+    if enable_r29 and r29_mode == "install_mpr_rec":
+        r29_install_hook = (
+            "/usr/bin/fx6-stage-a-verify --r29-installer-install > /dev/console 2>&1\n"
+            "fx6_r29_install_rc=$?\n"
+            "echo FX6_R29_INSTALL_RC=$fx6_r29_install_rc\n"
+            'if [ "$fx6_r29_install_rc" != 0 ]; then\n'
+            " echo FX6_STAGE_A_ABORT_BEFORE_LAUNCH rc=$fx6_r29_install_rc\n"
+            " while true; do /bin/busybox sleep 1; done\n"
+            "fi\n"
+        )
     verify_hook = (
-        "/usr/bin/fx6-stage-a-verify > /dev/console 2>&1\n"
-        "fx6_stage_a_rc=$?\n"
-        "echo FX6_STAGE_A_VERIFY_RC=$fx6_stage_a_rc\n"
-        'if [ "$fx6_stage_a_rc" != 0 ]; then\n'
-        " echo FX6_STAGE_A_ABORT_BEFORE_LAUNCH rc=$fx6_stage_a_rc\n"
-        " while true; do /bin/busybox sleep 1; done\n"
-        "fi\n"
+        r29_install_hook
+        + "/usr/bin/fx6-stage-a-verify > /dev/console 2>&1\n"
+        + "fx6_stage_a_rc=$?\n"
+        + "echo FX6_STAGE_A_VERIFY_RC=$fx6_stage_a_rc\n"
+        + 'if [ "$fx6_stage_a_rc" != 0 ]; then\n'
+        + " echo FX6_STAGE_A_ABORT_BEFORE_LAUNCH rc=$fx6_stage_a_rc\n"
+        + " while true; do /bin/busybox sleep 1; done\n"
+        + "fi\n"
     )
     replacements["init"] = init_txt.replace(launch_needle, verify_hook + launch_needle, 1).encode("utf-8")
 
@@ -1274,6 +1317,25 @@ def build_stage_a_overlay(
             r28_meta["sd_manifest"] = sd_manifest_meta
         else:
             r28_meta["sd_manifest"] = {"mode": "absent", "manifest_present": False}
+    r29_meta: Optional[Dict[str, Any]] = None
+    if enable_r29:
+        stock_im_bytes = raw_members["usr/bin/im.elf"]
+        stock_im_sha = sha256_bytes(stock_im_bytes)
+        additions["etc/fx6_stage_r29"] = (
+            f"stage_r29=1\nr29_mode={r29_mode}\nlang={lang}\n".encode("utf-8"),
+            0o100644,
+        )
+        additions["etc/fx6_r29_stock_im_sha256.txt"] = f"{stock_im_sha}\n".encode("utf-8")
+        r29_meta = {
+            "r29_mode": r29_mode,
+            "stock_im_elf_bytes": len(stock_im_bytes),
+            "stock_im_elf_sha256": stock_im_sha,
+            "target_device": "/dev/cnflasha15",
+            "target_alias": "/dev/nflasha15",
+            "blocked_plaintext_device": "/dev/pnflasha15",
+            "p1_dat2_expected": "91030080",
+            "p1_cfg_uart_expected": 1,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -1295,6 +1357,7 @@ def build_stage_a_overlay(
         "r26_enabled": enable_r26,
         "r27_enabled": enable_r27,
         "r28_enabled": enable_r28,
+        "r29_enabled": enable_r29,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -1326,6 +1389,8 @@ def build_stage_a_overlay(
         stage_a_meta["lang_assets"] = lang_assets_meta
     if r28_meta is not None:
         stage_a_meta["r28"] = r28_meta
+    if r29_meta is not None:
+        stage_a_meta["r29"] = r29_meta
     return replacements, additions, stage_a_meta
 
 
@@ -1643,6 +1708,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R26_",
         "FX6_R27_",
         "FX6_R28_",
+        "FX6_R29_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -1682,6 +1748,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r28_jit: Optional[Dict[str, Any]] = None
     last_r28_bridge: Optional[Dict[str, Any]] = None
     r28_sd_gate_rc: Optional[int] = None
+    last_r29_install: Optional[Dict[str, Any]] = None
+    last_r29_rollback: Optional[Dict[str, Any]] = None
+    last_r29_p1_rescue: Optional[Dict[str, Any]] = None
+    last_r29_mpr_param: Optional[Dict[str, Any]] = None
+    last_r29_mpr_rec: Optional[Dict[str, Any]] = None
+    last_r29_lang: Optional[Dict[str, Any]] = None
+    last_r29_bridge: Optional[Dict[str, Any]] = None
+    r29_install_rc: Optional[int] = None
+    r29_rollback_rc: Optional[int] = None
+    r29_p1_rescue_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -1737,6 +1813,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R28_SD_GATE_RC"), int):
                 r28_sd_gate_rc = kv["FX6_R28_SD_GATE_RC"]
+        elif "FX6_R29_ATOMIC_INSTALL " in line:
+            last_r29_install = _parse_kv_ints(line.split("FX6_R29_ATOMIC_INSTALL ", 1)[1])
+        elif "FX6_R29_ATOMIC_ROLLBACK " in line:
+            last_r29_rollback = _parse_kv_ints(line.split("FX6_R29_ATOMIC_ROLLBACK ", 1)[1])
+        elif "FX6_R29_P1_RESCUE " in line:
+            last_r29_p1_rescue = _parse_kv_ints(line.split("FX6_R29_P1_RESCUE ", 1)[1])
+        elif "FX6_R29_MPR_PARAM_SHIM " in line:
+            last_r29_mpr_param = _parse_kv_ints(line.split("FX6_R29_MPR_PARAM_SHIM ", 1)[1])
+        elif "FX6_R29_MPR_REC_CYCLE " in line:
+            last_r29_mpr_rec = _parse_kv_ints(line.split("FX6_R29_MPR_REC_CYCLE ", 1)[1])
+        elif "FX6_R29_LANG_TELEMETRY " in line:
+            last_r29_lang = _parse_kv_ints(line.split("FX6_R29_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R29_BRIDGE " in line:
+            last_r29_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R29_BRIDGE ", 1)[1])
+        elif "FX6_R29_INSTALL_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R29_INSTALL_RC"), int):
+                r29_install_rc = kv["FX6_R29_INSTALL_RC"]
+        elif "FX6_R29_ROLLBACK_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R29_ROLLBACK_RC"), int):
+                r29_rollback_rc = kv["FX6_R29_ROLLBACK_RC"]
+        elif "FX6_R29_P1_RESCUE_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R29_P1_RESCUE_RC"), int):
+                r29_p1_rescue_rc = kv["FX6_R29_P1_RESCUE_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -1783,6 +1885,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "lang_telemetry": last_r28_lang or {},
         }
 
+    r29_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r29_install,
+            last_r29_rollback,
+            last_r29_p1_rescue,
+            last_r29_mpr_param,
+            last_r29_mpr_rec,
+            last_r29_lang,
+            last_r29_bridge,
+        )
+    ):
+        r29_telemetry = {
+            "install_rc": r29_install_rc,
+            "rollback_rc": r29_rollback_rc,
+            "p1_rescue_rc": r29_p1_rescue_rc,
+            "atomic_install": last_r29_install or {},
+            "atomic_rollback": last_r29_rollback or {},
+            "p1_rescue": last_r29_p1_rescue or {},
+            "mpr_param_shim": last_r29_mpr_param or {},
+            "mpr_rec_cycle": last_r29_mpr_rec or {},
+            "lang_telemetry": last_r29_lang or {},
+            "stage_b_bridge": last_r29_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -1808,6 +1936,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r26_telemetry": last_r26_lang,
         "r27_telemetry": last_r27_lang,
         "r28_telemetry": r28_telemetry,
+        "r29_telemetry": r29_telemetry,
     }
 
 
@@ -1831,7 +1960,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 28:
+    if args.round >= 29:
+        tmp_prefix = "fx6-r29"
+    elif args.round >= 28:
         tmp_prefix = "fx6-r28"
     elif args.round >= 27:
         tmp_prefix = "fx6-r27"
@@ -1901,8 +2032,12 @@ def run_once(args: argparse.Namespace) -> int:
 
         stage_a_meta: Optional[Dict[str, Any]] = None
         sd_manifest_mode = getattr(args, "sd_manifest_mode", "valid")
+        r29_mode = getattr(args, "r29_mode", "install_mpr_rec")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwAtomicInstaller+MPR-REC+P1Rescue+r29_mode={r29_mode}+lang={lang})"
+                if args.round >= 29
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwSDDualBoot+libJit+StrategyA+mode={sd_manifest_mode}+lang={lang})"
                 if args.round >= 28
                 else (
@@ -1978,6 +2113,7 @@ def run_once(args: argparse.Namespace) -> int:
                     )
                     )
                 )
+                )
             )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
@@ -2005,6 +2141,8 @@ def run_once(args: argparse.Namespace) -> int:
                 enable_r27=(args.round >= 27),
                 enable_r28=(args.round >= 28),
                 sd_manifest_mode=sd_manifest_mode,
+                enable_r29=(args.round >= 29),
+                r29_mode=r29_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -2117,9 +2255,11 @@ def run_once(args: argparse.Namespace) -> int:
                 if (
                     "FX6_R28_STOCK_FX3_BYPASS_EXIT" in txt
                     or "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT" in txt
+                    or "FX6_R29_ROLLBACK_EXIT" in txt
+                    or "FX6_R29_P1_RESCUE_EXIT" in txt
                 ):
                     time.sleep(1.0)
-                    print(f"[{run_id}] Detected clean Round 28 stock-FX3 escape-hatch exit; stopping early.", flush=True)
+                    print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
                     break
             time.sleep(1.0)
 
@@ -2131,6 +2271,8 @@ def run_once(args: argparse.Namespace) -> int:
         stock_fx3_exit = (
             "FX6_R28_STOCK_FX3_BYPASS_EXIT" in serial_text
             or "FX6_R28_FAIL_CLOSED_FALLBACK_EXIT" in serial_text
+            or "FX6_R29_ROLLBACK_EXIT" in serial_text
+            or "FX6_R29_P1_RESCUE_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -2182,6 +2324,7 @@ def run_once(args: argparse.Namespace) -> int:
             "round": args.round,
             "lang": lang,
             "sd_manifest_mode": sd_manifest_mode if args.round >= 28 else None,
+            "r29_mode": r29_mode if args.round >= 29 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -2217,6 +2360,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r26_telemetry": milestones.get("r26_telemetry") if args.round >= 26 else None,
             "r27_telemetry": milestones.get("r27_telemetry") if args.round >= 27 else None,
             "r28_telemetry": milestones.get("r28_telemetry") if args.round >= 28 else None,
+            "r29_telemetry": milestones.get("r29_telemetry") if args.round >= 29 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -2266,9 +2410,10 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
+    ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

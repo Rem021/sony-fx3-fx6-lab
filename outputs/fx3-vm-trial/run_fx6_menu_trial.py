@@ -1485,6 +1485,483 @@ def validate_assist_tools_patch(body: Any) -> tuple[bool, dict[str, str], dict[s
     return True, updates, None
 
 
+CINE_EI_BASE_VALUES: tuple[str, ...] = ("800", "12800")
+CINE_EI_STEPS: dict[str, tuple[int, ...]] = {
+    "800": (200, 250, 320, 400, 500, 640, 800, 1000, 1250, 1600, 2000, 2500, 3200),
+    "12800": (3200, 4000, 5000, 6400, 8000, 10000, 12800, 16000, 20000, 25600, 32000, 40000, 51200),
+}
+SHUTTER_MODES: tuple[str, ...] = ("angle", "speed", "ecs")
+SHUTTER_ANGLE_PRESETS: tuple[float, ...] = (180.0, 172.8, 90.0, 45.0, 360.0)
+SHUTTER_ANGLE_MIN: float = 5.6
+SHUTTER_ANGLE_MAX: float = 360.0
+SHUTTER_SPEED_MIN: int = 24
+SHUTTER_SPEED_MAX: int = 8000
+ECS_FREQ_MIN: float = 23.98
+ECS_FREQ_MAX: float = 7900.0
+ECS_FREQ_PRESETS: tuple[float, ...] = (50.0, 60.0, 100.2, 120.0)
+SQ_BASE_FPS_VALUES: tuple[float, ...] = (23.98, 24.0, 25.0, 29.97, 50.0, 59.94)
+SQ_FPS_MIN: int = 1
+SQ_FPS_MAX: int = 240
+REC_STATES: tuple[str, ...] = ("STBY", "REC")
+TALLY_LAMP_MODES: tuple[str, ...] = ("on", "front_only", "rear_only", "off")
+WIRED_IO_MODES: tuple[str, ...] = ("off", "usblan_ptpip", "hdmi_raw16")
+
+CINE_EXPOSURE_DEFAULTS: dict[str, Any] = {
+    "cine_ei_base": "800",
+    "ei_index": 800,
+    "shutter_mode": "angle",
+    "shutter_angle_deg": 180.0,
+    "shutter_speed_denom": 48,
+    "ecs_freq_hz": 60.0,
+    "sq_enabled": False,
+    "base_fps": 23.98,
+    "sq_fps": 24,
+    "rec_state": "STBY",
+    "tally_lamp_mode": "on",
+    "wired_io_mode": "off",
+    "nd_preset": "Clear",
+}
+
+CINE_EXPOSURE_SPECS: dict[str, Any] = {
+    "cine_ei_base": list(CINE_EI_BASE_VALUES),
+    "ei_steps": {k: list(v) for k, v in CINE_EI_STEPS.items()},
+    "shutter_modes": list(SHUTTER_MODES),
+    "shutter_angle_range": [SHUTTER_ANGLE_MIN, SHUTTER_ANGLE_MAX],
+    "shutter_angle_presets": list(SHUTTER_ANGLE_PRESETS),
+    "shutter_speed_denom_range": [SHUTTER_SPEED_MIN, SHUTTER_SPEED_MAX],
+    "ecs_freq_hz_range": [ECS_FREQ_MIN, ECS_FREQ_MAX],
+    "ecs_freq_presets": list(ECS_FREQ_PRESETS),
+    "sq_base_fps_values": list(SQ_BASE_FPS_VALUES),
+    "sq_fps_range": [SQ_FPS_MIN, SQ_FPS_MAX],
+    "rec_states": list(REC_STATES),
+    "tally_lamp_modes": list(TALLY_LAMP_MODES),
+    "wired_io_modes": list(WIRED_IO_MODES),
+    "p4_nd_hardware_absent": True,
+    "p12_bk4_airplane_mode_locked": True,
+}
+
+
+def compute_cine_ei_latitude(cine_ei_base: str, ei_index: int) -> dict[str, Any]:
+    """Compute exact 14.0-stop Cine EI latitude (+over/-under) centered on +6.0/-8.0 at Base ISO."""
+    steps = CINE_EI_STEPS[cine_ei_base]
+    step_idx = steps.index(int(ei_index))
+    offset_stops = round((step_idx - 6) / 3.0, 2)
+    over_stops = round(6.0 + (step_idx - 6) / 3.0, 2)
+    under_stops = round(14.0 - over_stops, 2)
+    return {
+        "ei_step_idx": step_idx,
+        "offset_stops": offset_stops,
+        "over_stops": over_stops,
+        "under_stops": under_stops,
+        "total_stops": 14.0,
+        "latitude_label": f"+{over_stops:g} / -{under_stops:g}",
+    }
+
+
+def compute_sq_motion_metrics(sq_enabled: bool, base_fps: float, sq_fps: int) -> dict[str, Any]:
+    """Compute S&Q motion ratio (sq_fps / base_fps) and FX6/FX3 S&Q audio mute invariant."""
+    raw_ratio = round(float(sq_fps) / float(base_fps), 2)
+    motion_ratio = raw_ratio if sq_enabled else 1.0
+    if sq_enabled:
+        if float(sq_fps) > float(base_fps) + 0.05:
+            motion_label = f"{raw_ratio:.2f}x Slow"
+        elif float(sq_fps) < float(base_fps) - 0.05:
+            motion_label = f"{raw_ratio:.2f}x Quick"
+        else:
+            motion_label = "1.00x Normal"
+    else:
+        motion_label = "1.00x Normal"
+    return {
+        "motion_ratio": motion_ratio,
+        "sq_preview_ratio": raw_ratio,
+        "motion_label": motion_label,
+        "audio_rec_muted_by_sq": bool(sq_enabled),
+        "effective_fps": float(sq_fps) if sq_enabled else float(base_fps),
+    }
+
+
+def build_wired_io_detail(wired_io_mode: str) -> dict[str, Any]:
+    """Return P12 Airplane-Mode-safe wired I/O descriptor for USB-LAN PTP-IP or HDMI 16-bit RAW."""
+    if wired_io_mode == "usblan_ptpip":
+        return {
+            "mode": "usblan_ptpip",
+            "protocol": "USB CDC-NCM + PTP-IP 15740",
+            "usb_class": "CDC-NCM",
+            "ptpip_port": 15740,
+            "wifi_off": True,
+            "bt_off": True,
+            "p12_safe": True,
+        }
+    if wired_io_mode == "hdmi_raw16":
+        return {
+            "mode": "hdmi_raw16",
+            "protocol": "HDMI 16-bit Linear RAW",
+            "resolution": "4264x2408",
+            "bit_depth": 16,
+            "edid_target": "Atomos Ninja/Shogun",
+            "mlut_clean_feed": True,
+            "wifi_off": True,
+            "bt_off": True,
+            "p12_safe": True,
+        }
+    return {
+        "mode": "off",
+        "protocol": "Off",
+        "wifi_off": True,
+        "bt_off": True,
+        "p12_safe": True,
+    }
+
+
+def format_cine_exp_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 64 CINE_EXP host<->guest serial/mailbox protocol string."""
+    shutter_mode = state["shutter_mode"]
+    if shutter_mode == "speed":
+        sh_tok = f"speed:1/{state['shutter_speed_denom']}"
+    elif shutter_mode == "ecs":
+        sh_tok = f"ecs:{state['ecs_freq_hz']:.2f}Hz"
+    else:
+        sh_tok = f"angle:{state['shutter_angle_deg']:.1f}deg"
+    return (
+        f"CINE_EXP base={state['cine_ei_base']} ei={state['ei_index']} "
+        f"lat={state['latitude_label'].replace(' ', '')} shutter={sh_tok} "
+        f"sq={1 if state['sq_enabled'] else 0}:{state['base_fps']:.2f}:{state['sq_fps']} "
+        f"rec={state['rec_state']} tally={state['tally_lamp_mode']} "
+        f"io={state['wired_io_mode']} nd=Clear p12=1"
+    )
+
+
+def validate_cine_exposure_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 64 Cine Exposure, Shutter/ECS, S&Q, Tally & Wired I/O updates."""
+    if not isinstance(body, dict):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "invalid_cine_exposure",
+                "message": "cine_exposure payload must be a JSON object",
+            },
+        )
+
+    cur = dict(CINE_EXPOSURE_DEFAULTS)
+    if current_state:
+        cur.update(current_state)
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(CINE_EXPOSURE_DEFAULTS)
+        cur.update(CINE_EXPOSURE_DEFAULTS)
+
+    # P4 Electronic Variable ND hardware-absence lock
+    if "nd_preset" in body and body["nd_preset"] is not None:
+        raw_nd = body["nd_preset"]
+        if isinstance(raw_nd, bool) or not isinstance(raw_nd, str):
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "p4_nd_hardware_absent",
+                    "p4_nd_hardware_absent": True,
+                    "nd_preset": "Clear",
+                    "message": "Stage-B P4 ND=Clear lock: invalid nd_preset type; FX3 body lacks physical variable ND",
+                },
+            )
+        nd_low = raw_nd.strip().lower()
+        if nd_low not in ("clear", "clear [fx3 p4 locked]"):
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "p4_nd_hardware_absent",
+                    "p4_nd_hardware_absent": True,
+                    "nd_preset": "Clear",
+                    "rejected_nd": raw_nd,
+                    "message": (
+                        f"Stage-B P4 Hardware Lock: FX3 body lacks electronic variable ND; "
+                        f"rejected nd_preset={raw_nd!r} and locked to 'Clear'"
+                    ),
+                },
+            )
+        updates["nd_preset"] = "Clear"
+
+    # P12 Airplane-Mode RF-OFF lock
+    if (
+        body.get("wifi_enabled") is True
+        or body.get("bt_enabled") is True
+        or body.get("wifi_bt_rf_disabled") is False
+        or body.get("p12_bk4_airplane_mode_locked") is False
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "p12_airplane_mode_locked",
+                "wifi_bt_rf_disabled": True,
+                "p12_bk4_airplane_mode_locked": True,
+                "message": "Stage-B P12 BK4 Airplane-Mode invariant: Wi-Fi/BT RF cannot be enabled",
+            },
+        )
+
+    eff_base = str(cur.get("cine_ei_base", "800"))
+    if "cine_ei_base" in body and body["cine_ei_base"] is not None:
+        raw_base = body["cine_ei_base"]
+        if isinstance(raw_base, bool) or not isinstance(raw_base, (str, int)):
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_cine_ei_base", "message": f"Invalid cine_ei_base: {raw_base!r}"},
+            )
+        norm_base = str(raw_base).strip()
+        if norm_base not in CINE_EI_BASE_VALUES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_cine_ei_base",
+                    "message": f"Unsupported cine_ei_base: {raw_base!r}",
+                    "allowed": list(CINE_EI_BASE_VALUES),
+                },
+            )
+        eff_base = norm_base
+        updates["cine_ei_base"] = eff_base
+
+    if "ei_index" in body and body["ei_index"] is not None:
+        raw_ei = body["ei_index"]
+        if isinstance(raw_ei, bool):
+            return False, {}, {"ok": False, "error": "invalid_ei_index", "message": "ei_index cannot be bool"}
+        if isinstance(raw_ei, float):
+            if not math.isfinite(raw_ei) or not raw_ei.is_integer():
+                return False, {}, {"ok": False, "error": "invalid_ei_index", "message": f"ei_index must be integer: {raw_ei!r}"}
+            ei_val = int(raw_ei)
+        elif isinstance(raw_ei, int):
+            ei_val = raw_ei
+        elif isinstance(raw_ei, str) and raw_ei.strip().isdigit():
+            ei_val = int(raw_ei.strip())
+        else:
+            return False, {}, {"ok": False, "error": "invalid_ei_index", "message": f"Invalid ei_index: {raw_ei!r}"}
+        allowed_ei = CINE_EI_STEPS[eff_base]
+        if ei_val not in allowed_ei:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ei_index",
+                    "message": f"EI {ei_val} is invalid for Base {eff_base}",
+                    "allowed": list(allowed_ei),
+                },
+            )
+        updates["ei_index"] = ei_val
+    elif "cine_ei_base" in updates:
+        cur_ei = int(cur.get("ei_index", 800))
+        if cur_ei not in CINE_EI_STEPS[eff_base]:
+            updates["ei_index"] = int(eff_base)
+
+    if "shutter_mode" in body and body["shutter_mode"] is not None:
+        raw_sm = body["shutter_mode"]
+        if isinstance(raw_sm, bool) or not isinstance(raw_sm, str):
+            return False, {}, {"ok": False, "error": "invalid_shutter_mode", "message": f"Invalid shutter_mode: {raw_sm!r}"}
+        sm_low = raw_sm.strip().lower()
+        if sm_low not in SHUTTER_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_shutter_mode",
+                    "message": f"Unsupported shutter_mode: {raw_sm!r}",
+                    "allowed": list(SHUTTER_MODES),
+                },
+            )
+        updates["shutter_mode"] = sm_low
+
+    if "shutter_angle_deg" in body and body["shutter_angle_deg"] is not None:
+        raw_ang = body["shutter_angle_deg"]
+        if isinstance(raw_ang, bool):
+            return False, {}, {"ok": False, "error": "invalid_shutter_angle_deg", "message": "shutter_angle_deg cannot be bool"}
+        try:
+            ang = float(raw_ang)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_shutter_angle_deg", "message": f"Non-numeric shutter_angle_deg: {raw_ang!r}"}
+        if not math.isfinite(ang) or ang < SHUTTER_ANGLE_MIN or ang > SHUTTER_ANGLE_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_shutter_angle_deg",
+                    "message": f"shutter_angle_deg must be in [{SHUTTER_ANGLE_MIN}, {SHUTTER_ANGLE_MAX}], got {ang!r}",
+                },
+            )
+        updates["shutter_angle_deg"] = round(ang, 1)
+
+    if "shutter_speed_denom" in body and body["shutter_speed_denom"] is not None:
+        raw_den = body["shutter_speed_denom"]
+        if isinstance(raw_den, bool):
+            return False, {}, {"ok": False, "error": "invalid_shutter_speed_denom", "message": "shutter_speed_denom cannot be bool"}
+        if isinstance(raw_den, float):
+            if not math.isfinite(raw_den) or not raw_den.is_integer():
+                return False, {}, {"ok": False, "error": "invalid_shutter_speed_denom", "message": f"shutter_speed_denom must be int: {raw_den!r}"}
+            den = int(raw_den)
+        elif isinstance(raw_den, int):
+            den = raw_den
+        elif isinstance(raw_den, str) and raw_den.strip().isdigit():
+            den = int(raw_den.strip())
+        else:
+            return False, {}, {"ok": False, "error": "invalid_shutter_speed_denom", "message": f"Invalid shutter_speed_denom: {raw_den!r}"}
+        if den < SHUTTER_SPEED_MIN or den > SHUTTER_SPEED_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_shutter_speed_denom",
+                    "message": f"shutter_speed_denom must be in [{SHUTTER_SPEED_MIN}, {SHUTTER_SPEED_MAX}], got {den}",
+                },
+            )
+        updates["shutter_speed_denom"] = den
+
+    if "ecs_freq_hz" in body and body["ecs_freq_hz"] is not None:
+        raw_ecs = body["ecs_freq_hz"]
+        if isinstance(raw_ecs, bool):
+            return False, {}, {"ok": False, "error": "invalid_ecs_freq_hz", "message": "ecs_freq_hz cannot be bool"}
+        try:
+            ecs = float(raw_ecs)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_ecs_freq_hz", "message": f"Non-numeric ecs_freq_hz: {raw_ecs!r}"}
+        if not math.isfinite(ecs) or ecs < ECS_FREQ_MIN or ecs > ECS_FREQ_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ecs_freq_hz",
+                    "message": f"ecs_freq_hz must be in [{ECS_FREQ_MIN}, {ECS_FREQ_MAX}], got {ecs!r}",
+                },
+            )
+        updates["ecs_freq_hz"] = round(ecs, 2)
+
+    if "sq_enabled" in body and body["sq_enabled"] is not None:
+        raw_sq = body["sq_enabled"]
+        if not isinstance(raw_sq, bool):
+            return False, {}, {"ok": False, "error": "invalid_sq_enabled", "message": f"sq_enabled must be bool, got {raw_sq!r}"}
+        updates["sq_enabled"] = raw_sq
+
+    if "base_fps" in body and body["base_fps"] is not None:
+        raw_bf = body["base_fps"]
+        if isinstance(raw_bf, bool):
+            return False, {}, {"ok": False, "error": "invalid_base_fps", "message": "base_fps cannot be bool"}
+        try:
+            bf = float(raw_bf)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_base_fps", "message": f"Invalid base_fps: {raw_bf!r}"}
+        if not math.isfinite(bf):
+            return False, {}, {"ok": False, "error": "invalid_base_fps", "message": "base_fps must be finite"}
+        matched_bf = next((cand for cand in SQ_BASE_FPS_VALUES if abs(cand - bf) < 1e-3), None)
+        if matched_bf is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_base_fps",
+                    "message": f"Unsupported base_fps: {raw_bf!r}",
+                    "allowed": list(SQ_BASE_FPS_VALUES),
+                },
+            )
+        updates["base_fps"] = matched_bf
+
+    if "sq_fps" in body and body["sq_fps"] is not None:
+        raw_sf = body["sq_fps"]
+        if isinstance(raw_sf, bool):
+            return False, {}, {"ok": False, "error": "invalid_sq_fps", "message": "sq_fps cannot be bool"}
+        if isinstance(raw_sf, float):
+            if not math.isfinite(raw_sf) or not raw_sf.is_integer():
+                return False, {}, {"ok": False, "error": "invalid_sq_fps", "message": f"sq_fps must be integer 1..240, got {raw_sf!r}"}
+            sf = int(raw_sf)
+        elif isinstance(raw_sf, int):
+            sf = raw_sf
+        elif isinstance(raw_sf, str) and raw_sf.strip().isdigit():
+            sf = int(raw_sf.strip())
+        else:
+            return False, {}, {"ok": False, "error": "invalid_sq_fps", "message": f"Invalid sq_fps: {raw_sf!r}"}
+        if sf < SQ_FPS_MIN or sf > SQ_FPS_MAX:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_sq_fps",
+                    "message": f"sq_fps must be in [{SQ_FPS_MIN}, {SQ_FPS_MAX}], got {sf}",
+                },
+            )
+        updates["sq_fps"] = sf
+
+    if "rec_state" in body and body["rec_state"] is not None:
+        raw_rs = body["rec_state"]
+        if isinstance(raw_rs, bool) or not isinstance(raw_rs, str):
+            return False, {}, {"ok": False, "error": "invalid_rec_state", "message": f"Invalid rec_state: {raw_rs!r}"}
+        rs_up = raw_rs.strip().upper()
+        if rs_up not in REC_STATES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_rec_state",
+                    "message": f"Unsupported rec_state: {raw_rs!r}",
+                    "allowed": list(REC_STATES),
+                },
+            )
+        updates["rec_state"] = rs_up
+
+    if "tally_lamp_mode" in body and body["tally_lamp_mode"] is not None:
+        raw_tl = body["tally_lamp_mode"]
+        if isinstance(raw_tl, bool) or not isinstance(raw_tl, str):
+            return False, {}, {"ok": False, "error": "invalid_tally_lamp_mode", "message": f"Invalid tally_lamp_mode: {raw_tl!r}"}
+        tl_low = raw_tl.strip().lower()
+        if tl_low not in TALLY_LAMP_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_tally_lamp_mode",
+                    "message": f"Unsupported tally_lamp_mode: {raw_tl!r}",
+                    "allowed": list(TALLY_LAMP_MODES),
+                },
+            )
+        updates["tally_lamp_mode"] = tl_low
+
+    if "wired_io_mode" in body and body["wired_io_mode"] is not None:
+        raw_io = body["wired_io_mode"]
+        if isinstance(raw_io, bool) or not isinstance(raw_io, str):
+            return False, {}, {"ok": False, "error": "invalid_wired_io_mode", "message": f"Invalid wired_io_mode: {raw_io!r}"}
+        io_low = raw_io.strip().lower()
+        if io_low not in WIRED_IO_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_wired_io_mode",
+                    "message": f"Unsupported wired_io_mode: {raw_io!r}",
+                    "allowed": list(WIRED_IO_MODES),
+                },
+            )
+        updates["wired_io_mode"] = io_low
+
+    return True, updates, None
+
+
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
     "fps": {
         "key": "fps",
@@ -2217,6 +2694,34 @@ class FX6LiveGpe0Session:
         self.zebra_mode = "Off"
         self.peaking_mode = "Off"
         self.desqueeze = "1.0x"
+        self.cine_ei_base = "800"
+        self.ei_index = 800
+        self.shutter_mode = "angle"
+        self.shutter_angle_deg = 180.0
+        self.shutter_speed_denom = 48
+        self.ecs_freq_hz = 60.0
+        self.sq_enabled = False
+        self.base_fps = 23.98
+        self.sq_fps = 24
+        self.rec_state = "STBY"
+        self.tally_lamp_mode = "on"
+        self.wired_io_mode = "off"
+        self.rec_tc_frames = 0
+        self.last_cine_exp_cmd = format_cine_exp_command({
+            "cine_ei_base": self.cine_ei_base,
+            "ei_index": self.ei_index,
+            "shutter_mode": self.shutter_mode,
+            "shutter_angle_deg": self.shutter_angle_deg,
+            "shutter_speed_denom": self.shutter_speed_denom,
+            "ecs_freq_hz": self.ecs_freq_hz,
+            "sq_enabled": self.sq_enabled,
+            "base_fps": self.base_fps,
+            "sq_fps": self.sq_fps,
+            "rec_state": self.rec_state,
+            "tally_lamp_mode": self.tally_lamp_mode,
+            "wired_io_mode": self.wired_io_mode,
+            **compute_cine_ei_latitude(self.cine_ei_base, self.ei_index),
+        })
         self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
@@ -2652,11 +3157,53 @@ class FX6LiveGpe0Session:
         raw = struct.pack("<18I", *words) + struct.pack("<I", p11_state_word) + ext_raw
         return raw
 
+    def _pack_phase64_mailbox_bytes(self) -> bytes:
+        """Pack Phase 64 guest control mailbox mb[28..31] (16 bytes) matching fx6_live_guest.c."""
+        base_high = 1 if self.cine_ei_base == "12800" else 0
+        steps = CINE_EI_STEPS[self.cine_ei_base]
+        ei_step = steps.index(self.ei_index) if self.ei_index in steps else 6
+        shutter_mode_idx = SHUTTER_MODES.index(self.shutter_mode) if self.shutter_mode in SHUTTER_MODES else 0
+        sq_flag = 1 if self.sq_enabled else 0
+        base_fps_idx = next(
+            (i for i, v in enumerate(SQ_BASE_FPS_VALUES) if abs(v - float(self.base_fps)) < 1e-3),
+            0,
+        )
+        rec_flag = 1 if self.rec_state == "REC" else 0
+        tally_idx = TALLY_LAMP_MODES.index(self.tally_lamp_mode) if self.tally_lamp_mode in TALLY_LAMP_MODES else 0
+        wired_io_idx = WIRED_IO_MODES.index(self.wired_io_mode) if self.wired_io_mode in WIRED_IO_MODES else 0
+        mb28 = (
+            (base_high & 0x1)
+            | ((ei_step & 0xF) << 1)
+            | ((shutter_mode_idx & 0x3) << 5)
+            | ((sq_flag & 0x1) << 7)
+            | ((base_fps_idx & 0x7) << 8)
+            | ((rec_flag & 0x1) << 11)
+            | ((tally_idx & 0x3) << 12)
+            | ((wired_io_idx & 0x3) << 14)
+            | (1 << 16)   # P4 ND hardware absent
+            | (1 << 17)   # P12 Wi-Fi/BT RF disabled
+            | (1 << 31)   # phase64_valid
+        )
+        if self.shutter_mode == "speed":
+            sh_val = int(self.shutter_speed_denom) & 0xFFFFF
+        elif self.shutter_mode == "ecs":
+            sh_val = int(round(float(self.ecs_freq_hz) * 100.0)) & 0xFFFFF
+        else:
+            sh_val = int(round(float(self.shutter_angle_deg) * 10.0)) & 0xFFFFF
+        mb29 = sh_val | ((int(self.sq_fps) & 0xFF) << 20)
+        mb30 = int(self.rec_tc_frames) & 0xFFFFFFFF
+        mb31 = 0x43494E45  # 'CINE'
+        return struct.pack("<4I", mb28, mb29, mb30, mb31)
+
+    def _pack_full_mailbox_bytes(self) -> bytes:
+        """Pack complete guest control mailbox mb[0..31] (128 bytes)."""
+        return self._pack_mailbox_bytes() + self._pack_phase64_mailbox_bytes()
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..27] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..31] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
-        raw = self._pack_mailbox_bytes()
+        raw = self._pack_full_mailbox_bytes()
         with self.gdb_lock:
             for _ in range(2):
                 s: socket.socket | None = None
@@ -3255,6 +3802,46 @@ class FX6LiveGpe0Session:
                     self.cell_vals[cell_idx] = new_idx
                     if self.page in (0, 3):
                         self.sel_box = cell_idx
+                    if key == "fps":
+                        fps_map = [23.98, 24.0, 25.0, 29.97, 50.0, 59.94]
+                        if new_idx == 6:
+                            self.sq_enabled = True
+                            self.sq_fps = 120
+                            self.base_fps = 23.98
+                        elif 0 <= new_idx < len(fps_map):
+                            self.base_fps = fps_map[new_idx]
+                            self.sq_enabled = False
+                        self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                    elif key == "ei":
+                        ei_map = [
+                            ("800", 800),
+                            ("800", 400),
+                            ("800", 1600),
+                            ("12800", 12800),
+                            ("12800", 6400),
+                            ("12800", 25600),
+                        ]
+                        if 0 <= new_idx < len(ei_map):
+                            self.cine_ei_base, self.ei_index = ei_map[new_idx]
+                            self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                    elif key == "shutter":
+                        shutter_map = [
+                            ("angle", 180.0, None),
+                            ("angle", 90.0, None),
+                            ("angle", 45.0, None),
+                            ("angle", 360.0, None),
+                            ("speed", None, 48),
+                            ("speed", None, 50),
+                            ("speed", None, 100),
+                        ]
+                        if 0 <= new_idx < len(shutter_map):
+                            sm, ang, den = shutter_map[new_idx]
+                            self.shutter_mode = sm
+                            if ang is not None:
+                                self.shutter_angle_deg = ang
+                            if den is not None:
+                                self.shutter_speed_denom = den
+                            self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
                     self.last_toast = f"{spec['label']}: {presets[new_idx]} ({spec['contract']})"
                 elif key == "ibis":
                     self.ibis_idx = new_idx
@@ -3411,6 +3998,150 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def get_cine_exposure(self) -> dict[str, Any]:
+        lat = compute_cine_ei_latitude(self.cine_ei_base, self.ei_index)
+        sq = compute_sq_motion_metrics(self.sq_enabled, self.base_fps, self.sq_fps)
+        if self.shutter_mode == "speed":
+            shutter_display = f"1/{self.shutter_speed_denom}"
+        elif self.shutter_mode == "ecs":
+            shutter_display = f"ECS {self.ecs_freq_hz:.2f}Hz"
+        else:
+            shutter_display = f"{self.shutter_angle_deg:.1f}\u00b0"
+        f_rate = 25 if self.base_fps in (25.0, 50.0) else 24
+        tc_total = int(self.rec_tc_frames)
+        ff = tc_total % f_rate
+        tot_s = tc_total // f_rate
+        ss = tot_s % 60
+        mm = (tot_s // 60) % 60
+        hh = (tot_s // 3600) % 24
+        rec_tc = f"{hh:02d}:{mm:02d}:{ss:02d}:{ff:02d}"
+        rec_on = self.rec_state == "REC"
+        tally_front_lit = rec_on and self.tally_lamp_mode in ("on", "front_only")
+        tally_rear_lit = rec_on and self.tally_lamp_mode in ("on", "rear_only")
+        state = {
+            "cine_ei_base": self.cine_ei_base,
+            "ei_index": int(self.ei_index),
+            **lat,
+            "shutter_mode": self.shutter_mode,
+            "shutter_angle_deg": float(self.shutter_angle_deg),
+            "shutter_speed_denom": int(self.shutter_speed_denom),
+            "ecs_freq_hz": float(self.ecs_freq_hz),
+            "shutter_display": shutter_display,
+            "sq_enabled": bool(self.sq_enabled),
+            "base_fps": float(self.base_fps),
+            "sq_fps": int(self.sq_fps),
+            **sq,
+            "rec_state": self.rec_state,
+            "tally_lamp_mode": self.tally_lamp_mode,
+            "tally_front_lit": tally_front_lit,
+            "tally_rear_lit": tally_rear_lit,
+            "rec_tc_frames": tc_total,
+            "rec_tc": rec_tc,
+            "wired_io_mode": self.wired_io_mode,
+            "wired_io_detail": build_wired_io_detail(self.wired_io_mode),
+            "wifi_bt_rf_disabled": True,
+            "p12_bk4_airplane_mode_locked": True,
+            "nd_preset": "Clear",
+            "p4_nd_hardware_absent": True,
+        }
+        state["cine_exp_cmd"] = format_cine_exp_command(state)
+        return state
+
+    def _apply_cine_exposure_updates_locked(self, updates: dict[str, Any]) -> None:
+        if "cine_ei_base" in updates:
+            self.cine_ei_base = str(updates["cine_ei_base"])
+        if "ei_index" in updates:
+            self.ei_index = int(updates["ei_index"])
+        if "shutter_mode" in updates:
+            self.shutter_mode = str(updates["shutter_mode"])
+        if "shutter_angle_deg" in updates:
+            self.shutter_angle_deg = float(updates["shutter_angle_deg"])
+        if "shutter_speed_denom" in updates:
+            self.shutter_speed_denom = int(updates["shutter_speed_denom"])
+        if "ecs_freq_hz" in updates:
+            self.ecs_freq_hz = float(updates["ecs_freq_hz"])
+        if "sq_enabled" in updates:
+            self.sq_enabled = bool(updates["sq_enabled"])
+        if "base_fps" in updates:
+            self.base_fps = float(updates["base_fps"])
+        if "sq_fps" in updates:
+            self.sq_fps = int(updates["sq_fps"])
+        if "rec_state" in updates:
+            self.rec_state = str(updates["rec_state"])
+        if "tally_lamp_mode" in updates:
+            self.tally_lamp_mode = str(updates["tally_lamp_mode"])
+        if "wired_io_mode" in updates:
+            self.wired_io_mode = str(updates["wired_io_mode"])
+        if "reset" in updates or (
+            updates.get("rec_state") == "STBY" and self.rec_state == "STBY" and len(updates) == len(CINE_EXPOSURE_DEFAULTS)
+        ):
+            self.rec_tc_frames = 0
+        elif self.rec_state == "REC":
+            self.rec_tc_frames += 1
+
+        # Keep Big-6 cells aligned when matching standard presets
+        if self.sq_enabled and self.sq_fps >= 100:
+            self.cell_vals[0] = 6  # 119.88p (S&Q)
+        else:
+            fps_map = {23.98: 0, 24.0: 1, 25.0: 2, 29.97: 3, 50.0: 4, 59.94: 5}
+            self.cell_vals[0] = fps_map.get(round(self.base_fps, 2), 0)
+        ei_map = {800: 0, 400: 1, 1600: 2, 12800: 3, 6400: 4, 25600: 5}
+        if self.ei_index in ei_map:
+            self.cell_vals[1] = ei_map[self.ei_index]
+        elif self.cine_ei_base == "12800":
+            self.cell_vals[1] = 3
+        else:
+            self.cell_vals[1] = 0
+        self.cell_vals[3] = 0  # P4 ND=Clear Hardware Lock
+        self.p12_bk4_airplane_mode_locked = True
+        self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+
+    def set_cine_exposure(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "cine_ei_base": self.cine_ei_base,
+                "ei_index": self.ei_index,
+                "shutter_mode": self.shutter_mode,
+                "shutter_angle_deg": self.shutter_angle_deg,
+                "shutter_speed_denom": self.shutter_speed_denom,
+                "ecs_freq_hz": self.ecs_freq_hz,
+                "sq_enabled": self.sq_enabled,
+                "base_fps": self.base_fps,
+                "sq_fps": self.sq_fps,
+                "rec_state": self.rec_state,
+                "tally_lamp_mode": self.tally_lamp_mode,
+                "wired_io_mode": self.wired_io_mode,
+            }
+            ok, updates, err = validate_cine_exposure_patch(body, current_state=cur)
+            if not ok:
+                if err and err.get("error") == "p4_nd_hardware_absent":
+                    self.cell_vals[3] = 0
+                    self.p4_lock_attempts += 1
+                    self.p4_nd_reject_count += 1
+                    self.last_toast = str(err.get("message", "Stage-B P4 ND=Clear Hardware Lock"))
+                return err or {"ok": False, "error": "invalid_cine_exposure"}
+
+            self._apply_cine_exposure_updates_locked(updates)
+            ce = self.get_cine_exposure()
+            self.last_toast = (
+                f"CineExposure: {ce['rec_state']} | {ce['ei_index']}EI (B{ce['cine_ei_base']} {ce['latitude_label']}) | "
+                f"{ce['shutter_display']} | "
+                f"{('S&Q ' + str(ce['sq_fps']) + 'fps ' + ce['motion_label']) if ce['sq_enabled'] else str(ce['base_fps']) + 'p'} | "
+                f"IO={ce['wired_io_mode']}"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "cine_exposure": ce,
+                "cine_exp_cmd": ce["cine_exp_cmd"],
+                "p4_nd_hardware_absent": True,
+                "wifi_bt_rf_disabled": True,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
     def get_scope_stats(self, refresh: bool = False) -> dict[str, Any]:
         if self.is_running() and self.live_ready and not self.crashed and (refresh or len(self.last_raw_gpe0) < GPE0_BYTES):
             self._capture_live_gpe0_with_raw()
@@ -3452,6 +4183,7 @@ class FX6LiveGpe0Session:
                 "xlr_handle_attached": bool(self.xlr_handle_attached),
             },
             "assist_tools": self.get_assist_tools(),
+            "cine_exposure": self.get_cine_exposure(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -3482,9 +4214,14 @@ class FX6LiveGpe0Session:
         if not isinstance(cparams, dict):
             return {"ok": False, "error": "invalid_cinema_params", "message": "cinema_params must be a JSON object"}
 
-        # Detect any P4 ND tamper attempts across cinema_params or top-level keys
+        ce_raw = payload.get("cine_exposure")
+        if ce_raw is not None and not isinstance(ce_raw, dict):
+            return {"ok": False, "error": "invalid_cine_exposure", "message": "cine_exposure must be a JSON object"}
+
+        # Detect any P4 ND tamper attempts across cinema_params, cine_exposure, or top-level keys
         nd_tamper_val = None
-        for cand_nd in (cparams.get("nd"), payload.get("nd"), payload.get("nd_filter"), payload.get("variable_nd")):
+        ce_nd_val = ce_raw.get("nd_preset") if isinstance(ce_raw, dict) else None
+        for cand_nd in (cparams.get("nd"), ce_nd_val, payload.get("nd"), payload.get("nd_filter"), payload.get("variable_nd")):
             if cand_nd is not None:
                 s_nd = str(cand_nd).strip().lower()
                 if s_nd not in ("", "clear [fx3 p4 locked]", "clear", "0", "false", "none", "off"):
@@ -3621,9 +4358,53 @@ class FX6LiveGpe0Session:
             if not ok_a:
                 return err_a or {"ok": False, "error": "invalid_assist_tools"}
 
-        p12_clamped = payload.get("p12_bk4_airplane_mode_locked") is False
+        new_cine_updates: dict[str, Any] = {}
+        ce_tc_frames: int | None = None
+        ce_p12_tamper = False
+        if ce_raw is not None:
+            ce_p12_tamper = (
+                ce_raw.get("wifi_enabled") is True
+                or ce_raw.get("bt_enabled") is True
+                or ce_raw.get("wifi_bt_rf_disabled") is False
+                or ce_raw.get("p12_bk4_airplane_mode_locked") is False
+            )
+            ce_clean = {
+                k: v
+                for k, v in ce_raw.items()
+                if k not in ("nd_preset", "wifi_enabled", "bt_enabled", "wifi_bt_rf_disabled", "p12_bk4_airplane_mode_locked")
+            }
+            cur_ce = {
+                "cine_ei_base": self.cine_ei_base,
+                "ei_index": self.ei_index,
+                "shutter_mode": self.shutter_mode,
+                "shutter_angle_deg": self.shutter_angle_deg,
+                "shutter_speed_denom": self.shutter_speed_denom,
+                "ecs_freq_hz": self.ecs_freq_hz,
+                "sq_enabled": self.sq_enabled,
+                "base_fps": self.base_fps,
+                "sq_fps": self.sq_fps,
+                "rec_state": self.rec_state,
+                "tally_lamp_mode": self.tally_lamp_mode,
+                "wired_io_mode": self.wired_io_mode,
+            }
+            ok_ce, new_cine_updates, err_ce = validate_cine_exposure_patch(ce_clean, current_state=cur_ce)
+            if not ok_ce:
+                return err_ce or {"ok": False, "error": "invalid_cine_exposure"}
+            if "rec_tc_frames" in ce_raw and ce_raw["rec_tc_frames"] is not None:
+                raw_tcf = ce_raw["rec_tc_frames"]
+                if isinstance(raw_tcf, bool) or not isinstance(raw_tcf, int) or raw_tcf < 0:
+                    return {"ok": False, "error": "invalid_rec_tc_frames", "message": "rec_tc_frames must be non-negative int"}
+                ce_tc_frames = raw_tcf
+
+        p12_clamped = (payload.get("p12_bk4_airplane_mode_locked") is False) or ce_p12_tamper
 
         with self.cmd_lock:
+            if new_cine_updates:
+                self._apply_cine_exposure_updates_locked(new_cine_updates)
+                if ce_tc_frames is not None:
+                    self.rec_tc_frames = ce_tc_frames
+                    self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+
             for c_idx, c_val in new_cells.items():
                 self.cell_vals[c_idx] = c_val
             self.cell_vals[3] = 0  # P4 ND=Clear Hardware Lock always enforced!
@@ -3688,6 +4469,7 @@ class FX6LiveGpe0Session:
                 "schema": "fx6_on_fx3_camset_v1",
                 "p4_nd_rejected": p4_rejected,
                 "p4_nd_clamped": p4_rejected,
+                "p4_nd_hardware_absent": True,
                 "p4_nd_reject_count": self.p4_nd_reject_count,
                 "p4_lock_attempts": self.p4_lock_attempts,
                 "p12_bk4_airplane_mode_locked": True,
@@ -3696,6 +4478,7 @@ class FX6LiveGpe0Session:
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
                 "assist_tools": self.get_assist_tools(),
+                "cine_exposure": self.get_cine_exposure(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -4378,6 +5161,7 @@ class FX6LiveGpe0Session:
             "socket_disconnect_count": self.socket_disconnect_count,
             "last_multilang_diff": self.last_multilang_diff,
             "assist_tools": self.get_assist_tools(),
+            "cine_exposure": self.get_cine_exposure(),
             "serial_tail": serial_tail,
         }
 
@@ -4843,6 +5627,98 @@ HTML_UI = """<!DOCTYPE html>
           <canvas id="scope-hist-canvas" width="384" height="120" style="width:100%;height:120px;background:#07090c;border:1px solid #1f2937;border-radius:6px;"></canvas>
         </div>
       </div>
+    </div>
+
+    <div class="card" id="phase64-cine-exposure-card" style="margin-top:14px;border-color:#334155;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
+        <h3 style="margin:0;">Phase 64 · Cinema Line Cine EI / Shutter-ECS / S&amp;Q (1–240fps) / REC Tally &amp; Wired I/O (/api/cine_exposure)</h3>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <span id="p64-bilingual-hint" style="font-size:10.5px;color:#94a3b8;">EN · 简体中文 · 繁體中文 · 日本語</span>
+          <span id="p64-p4-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#451a03;color:#fde68a;border:1px solid #f59e0b;">P4 ND=Clear (HW Absent)</span>
+          <span id="p64-p12-badge" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:#064e3b;color:#a7f3d0;border:1px solid #10b981;">P12 Wi-Fi/BT OFF</span>
+        </div>
+      </div>
+      <div id="p64-error-banner" style="display:none;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#450a0a;border:1px solid #ef4444;color:#fecaca;font-size:11.5px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;">
+        <div class="cparam-box">
+          <div class="cparam-head"><span>REC / 录制 · 錄製 · 記録 &amp; Tally</span><span id="p64-tc-readout" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">00:00:00:00</span></div>
+          <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;">
+            <button id="p64-rec-btn" onclick="toggleCineRec()" style="flex:1;font-weight:700;background:#064e3b;border-color:#10b981;color:#ecfdf5;">● STBY -> REC</button>
+            <span id="p64-tally-front" title="Front Tally" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#374151;border:1px solid #6b7280;"></span>
+            <span id="p64-tally-rear" title="Rear Tally" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#374151;border:1px solid #6b7280;"></span>
+          </div>
+          <select id="p64-tally-select" onchange="setCineExposure({tally_lamp_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+            <option value="on">Tally: On (Front + Rear)</option>
+            <option value="front_only">Tally: Front Only</option>
+            <option value="rear_only">Tally: Rear Only</option>
+            <option value="off">Tally: Off (Stealth 隱蔽/ステルス)</option>
+          </select>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Cine EI · 双原生ISO / 基準EI</span><span id="p64-lat-readout" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">+6 / -8</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p64-ei-base-select" onchange="setCineExposure({cine_ei_base: this.value})" style="width:48%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="800">Base 800</option>
+              <option value="12800">Base 12800</option>
+            </select>
+            <select id="p64-ei-index-select" onchange="setCineExposure({ei_index: Number(this.value)})" style="width:52%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="800">800 EI</option>
+            </select>
+          </div>
+          <div style="height:8px;background:#1f2937;border-radius:4px;overflow:hidden;display:flex;" title="14-Stop Dynamic Latitude">
+            <div id="p64-lat-over-bar" style="width:43%;background:#f59e0b;"></div>
+            <div id="p64-lat-under-bar" style="width:57%;background:#0284c7;"></div>
+          </div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>Shutter · 快门角度 / ECS消閃</span><span id="p64-shutter-readout" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">180.0°</span></div>
+          <select id="p64-shutter-mode-select" onchange="setCineExposure({shutter_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;margin-bottom:6px;">
+            <option value="angle">Angle (5.6°–360.0°)</option>
+            <option value="speed">Speed (1/24–1/8000)</option>
+            <option value="ecs">ECS Anti-Flicker (23.98–7900Hz)</option>
+          </select>
+          <div style="display:flex;gap:4px;">
+            <input id="p64-shutter-val-input" type="number" step="0.1" value="180.0" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase64ShutterVal()" style="padding:4px 8px;font-size:11px;">Apply</button>
+          </div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>S&amp;Q (1–240fps) &amp; Wired I/O</span><span id="p64-sq-mute-badge" style="color:#94a3b8;font-size:10px;">Audio Active</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;align-items:center;">
+            <button id="p64-sq-btn" onclick="toggleCineSq()" style="padding:4px 7px;font-size:11px;">S&amp;Q: OFF</button>
+            <select id="p64-base-fps-select" onchange="setCineExposure({base_fps: Number(this.value)})" style="width:68px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="23.98">23.98</option>
+              <option value="24.0">24.00</option>
+              <option value="25.0">25.00</option>
+              <option value="29.97">29.97</option>
+              <option value="50.0">50.00</option>
+              <option value="59.94">59.94</option>
+            </select>
+            <input id="p64-sq-fps-input" type="number" min="1" max="240" value="24" style="width:52px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" onchange="setCineExposure({sq_fps: Number(this.value)})" />
+          </div>
+          <select id="p64-wired-io-select" onchange="setCineExposure({wired_io_mode: this.value})" style="width:100%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+            <option value="off">Wired I/O: Off (P12 Safe)</option>
+            <option value="usblan_ptpip">USB-LAN CDC-NCM + PTP-IP 15740</option>
+            <option value="hdmi_raw16">HDMI 16-bit Linear RAW 4264x2408</option>
+          </select>
+        </div>
+      </div>
+      <div class="pill-row">
+        <button onclick="setCineExposure({cine_ei_base:'800',ei_index:400})">400 EI (+5/-9)</button>
+        <button onclick="setCineExposure({cine_ei_base:'800',ei_index:800})">800 EI (+6/-8)</button>
+        <button onclick="setCineExposure({cine_ei_base:'800',ei_index:1600})">1600 EI (+7/-7)</button>
+        <button onclick="setCineExposure({cine_ei_base:'12800',ei_index:12800})">12800 Base</button>
+        <button onclick="setCineExposure({shutter_mode:'angle',shutter_angle_deg:172.8})">172.8°</button>
+        <button onclick="setCineExposure({shutter_mode:'ecs',ecs_freq_hz:100.2})">ECS 100.2Hz</button>
+        <button onclick="setCineExposure({sq_enabled:true,base_fps:23.98,sq_fps:120})" style="border-color:#f59e0b;">S&amp;Q 120fps (5.00x Slow)</button>
+        <button onclick="setCineExposure({sq_enabled:true,base_fps:24.0,sq_fps:4})">S&amp;Q 4fps (0.17x Quick)</button>
+        <button onclick="setCineExposure({rec_state:'REC',sq_enabled:true,base_fps:23.98,sq_fps:120,shutter_mode:'ecs',ecs_freq_hz:100.2,wired_io_mode:'hdmi_raw16'})" style="border-color:#ef4444;color:#fecaca;">REC + S&amp;Q120 + ECS100.2 + RAW16</button>
+        <button onclick="setCineExposure({reset:true})">Reset CineExposure</button>
+      </div>
+      <div id="p64-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">CINE_EXP ...</div>
     </div>
 
     <div class="card" style="margin-top:14px;">
@@ -5316,6 +6192,10 @@ async function updateUI(st, forceImg) {
   const dsqSel = document.getElementById('assist-desqueeze-select');
   if (dsqSel && at.desqueeze && document.activeElement !== dsqSel) dsqSel.value = at.desqueeze;
   applyDesqueezePreview(at.desqueeze || '1.0x');
+
+  if (st.cine_exposure) {
+    syncCineExposureUI(st.cine_exposure);
+  }
 
   if (forceImg || st.live_ready) {
     document.getElementById('gpe0-img').src = '/api/frame.png?t=' + Date.now();
@@ -5868,6 +6748,135 @@ async function setAssistTools(patch) {
   }
 }
 
+const P64_EI_STEPS = {
+  '800': [200, 250, 320, 400, 500, 640, 800, 1000, 1250, 1600, 2000, 2500, 3200],
+  '12800': [3200, 4000, 5000, 6400, 8000, 10000, 12800, 16000, 20000, 25600, 32000, 40000, 51200]
+};
+
+function syncCineExposureUI(ce) {
+  if (!ce) return;
+  const recBtn = document.getElementById('p64-rec-btn');
+  const isRec = ce.rec_state === 'REC';
+  if (recBtn) {
+    recBtn.textContent = isRec ? '■ REC -> STBY' : '● STBY -> REC';
+    recBtn.style.background = isRec ? '#991b1b' : '#064e3b';
+    recBtn.style.borderColor = isRec ? '#ef4444' : '#10b981';
+  }
+  const tcEl = document.getElementById('p64-tc-readout');
+  if (tcEl) tcEl.textContent = ce.rec_tc || '00:00:00:00';
+  const tf = document.getElementById('p64-tally-front');
+  const tr = document.getElementById('p64-tally-rear');
+  if (tf) tf.style.background = ce.tally_front_lit ? '#ef4444' : '#374151';
+  if (tr) tr.style.background = ce.tally_rear_lit ? '#f97316' : '#374151';
+  const tlSel = document.getElementById('p64-tally-select');
+  if (tlSel && document.activeElement !== tlSel) tlSel.value = ce.tally_lamp_mode || 'on';
+
+  const baseSel = document.getElementById('p64-ei-base-select');
+  const baseStr = String(ce.cine_ei_base || '800');
+  if (baseSel && document.activeElement !== baseSel) baseSel.value = baseStr;
+  const eiSel = document.getElementById('p64-ei-index-select');
+  if (eiSel && document.activeElement !== eiSel) {
+    const steps = P64_EI_STEPS[baseStr] || P64_EI_STEPS['800'];
+    const curEi = Number(ce.ei_index || 800);
+    if (eiSel.options.length !== steps.length || Number(eiSel.options[0].value) !== steps[0]) {
+      eiSel.innerHTML = '';
+      steps.forEach((v) => {
+        const opt = document.createElement('option');
+        opt.value = String(v);
+        opt.textContent = `${v} EI`;
+        eiSel.appendChild(opt);
+      });
+    }
+    eiSel.value = String(curEi);
+  }
+  const latEl = document.getElementById('p64-lat-readout');
+  if (latEl) latEl.textContent = ce.latitude_label || '+6 / -8';
+  const overBar = document.getElementById('p64-lat-over-bar');
+  const underBar = document.getElementById('p64-lat-under-bar');
+  if (overBar && underBar && ce.over_stops !== undefined) {
+    const overPct = Math.round((Number(ce.over_stops) / 14.0) * 100);
+    overBar.style.width = `${overPct}%`;
+    underBar.style.width = `${100 - overPct}%`;
+  }
+
+  const shRo = document.getElementById('p64-shutter-readout');
+  if (shRo) shRo.textContent = ce.shutter_display || '180.0°';
+  const smSel = document.getElementById('p64-shutter-mode-select');
+  if (smSel && document.activeElement !== smSel) smSel.value = ce.shutter_mode || 'angle';
+  const svIn = document.getElementById('p64-shutter-val-input');
+  if (svIn && document.activeElement !== svIn) {
+    if (ce.shutter_mode === 'speed') svIn.value = String(ce.shutter_speed_denom || 48);
+    else if (ce.shutter_mode === 'ecs') svIn.value = String(ce.ecs_freq_hz || 60.0);
+    else svIn.value = String(ce.shutter_angle_deg || 180.0);
+  }
+
+  const sqBtn = document.getElementById('p64-sq-btn');
+  if (sqBtn) {
+    sqBtn.textContent = ce.sq_enabled ? `S&Q: ON (${ce.motion_label || ''})` : 'S&Q: OFF';
+    sqBtn.style.background = ce.sq_enabled ? '#78350f' : '';
+    sqBtn.style.borderColor = ce.sq_enabled ? '#f59e0b' : '';
+  }
+  const sqMute = document.getElementById('p64-sq-mute-badge');
+  if (sqMute) {
+    sqMute.textContent = ce.audio_rec_muted_by_sq ? '[CH1-4 MUTE by S&Q]' : 'Audio Active';
+    sqMute.style.color = ce.audio_rec_muted_by_sq ? '#fbbf24' : '#94a3b8';
+  }
+  const bfSel = document.getElementById('p64-base-fps-select');
+  if (bfSel && document.activeElement !== bfSel) bfSel.value = String(ce.base_fps || 23.98);
+  const sfIn = document.getElementById('p64-sq-fps-input');
+  if (sfIn && document.activeElement !== sfIn) sfIn.value = String(ce.sq_fps || 24);
+  const ioSel = document.getElementById('p64-wired-io-select');
+  if (ioSel && document.activeElement !== ioSel) ioSel.value = ce.wired_io_mode || 'off';
+  const cmdEl = document.getElementById('p64-cmd-readout');
+  if (cmdEl) cmdEl.textContent = ce.cine_exp_cmd || '';
+}
+
+async function setCineExposure(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p64-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/cine_exposure', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch)
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Invalid cine_exposure parameter';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function toggleCineRec() {
+  const cur = (currentStatus && currentStatus.cine_exposure && currentStatus.cine_exposure.rec_state) || 'STBY';
+  setCineExposure({rec_state: cur === 'REC' ? 'STBY' : 'REC'});
+}
+
+function toggleCineSq() {
+  const cur = !!(currentStatus && currentStatus.cine_exposure && currentStatus.cine_exposure.sq_enabled);
+  setCineExposure({sq_enabled: !cur});
+}
+
+function applyPhase64ShutterVal() {
+  const mode = (document.getElementById('p64-shutter-mode-select') || {}).value || 'angle';
+  const val = Number((document.getElementById('p64-shutter-val-input') || {}).value);
+  if (mode === 'speed') setCineExposure({shutter_mode: 'speed', shutter_speed_denom: val});
+  else if (mode === 'ecs') setCineExposure({shutter_mode: 'ecs', ecs_freq_hz: val});
+  else setCineExposure({shutter_mode: 'angle', shutter_angle_deg: val});
+}
+
 function drawWaveformCanvas(scope) {
   const cvs = document.getElementById('scope-waveform-canvas');
   if (!cvs || !scope || !scope.waveform) return;
@@ -6086,8 +7095,16 @@ def make_handler(session: FX6LiveGpe0Session):
                 if path == "/api/lut_upload":
                     self._send_json(session.get_lut_slots())
                     return
-                if path == "/api/preset_export":
+                if path in ("/api/preset_export", "/api/camset_export"):
                     self._send_json(session.export_camset_preset())
+                    return
+                if path == "/api/cine_exposure":
+                    self._send_json({
+                        "ok": True,
+                        "cine_exposure": session.get_cine_exposure(),
+                        "specs": CINE_EXPOSURE_SPECS,
+                        "last_toast": session.last_toast,
+                    })
                     return
                 if path == "/api/assist_tools":
                     self._send_json({
@@ -6137,7 +7154,9 @@ def make_handler(session: FX6LiveGpe0Session):
                 if json_err and path in (
                     "/api/lut_upload",
                     "/api/preset_import",
+                    "/api/camset_import",
                     "/api/cinema_param",
+                    "/api/cine_exposure",
                     "/api/jump_page",
                     "/api/verify_multilang_diff",
                     "/api/assist_tools",
@@ -6214,11 +7233,15 @@ def make_handler(session: FX6LiveGpe0Session):
                     )
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
+                if path == "/api/cine_exposure":
+                    res = session.set_cine_exposure(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
                 if path == "/api/lut_upload":
                     res = session.upload_cube_lut(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
-                if path == "/api/preset_import":
+                if path in ("/api/preset_import", "/api/camset_import"):
                     res = session.import_camset_preset(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return

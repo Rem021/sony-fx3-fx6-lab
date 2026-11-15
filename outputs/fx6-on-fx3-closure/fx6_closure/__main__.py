@@ -1209,6 +1209,56 @@ def _cmd_verify_realhw_jiritsu_tier0(
     return 0 if ok else 1
 
 
+def _cmd_verify_sd_stageb_bundle_uninstaller(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    clean_room: bool,
+    lang: str,
+    json_output: bool,
+    output_path: Optional[Path],
+) -> int:
+    from .realhw_sd_stageb_bundle_and_uninstaller import (
+        run_phase143_sd_stageb_bundle_uninstaller_audit,
+        verify_phase143_report,
+    )
+
+    rep = run_phase143_sd_stageb_bundle_uninstaller_audit(
+        lang=lang,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    v_res = verify_phase143_report(rep.to_dict())
+    ok = rep.all_checks_passed and v_res.valid
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        p1 = rep.pillar1_bundle_builder
+        p2 = rep.pillar2_escape_hatch_launcher
+        p3 = rep.pillar3_atomic_uninstaller_h0_h3
+        summary = (
+            f"status={'OK' if ok else 'FAILED'} "
+            f"schema={rep.schema} "
+            f"mode={rep.verification_mode} "
+            f"lang={rep.lang} "
+            f"sd_entries={p1.sd_entry_count} "
+            f"tmpfs_mib={p1.ram_tmpfs_mib:.3f} "
+            f"eh_scenarios={p2.passed_scenario_count}/{p2.scenario_count} "
+            f"eh1_us={p2.eh1_observed_latency_us} "
+            f"h0_eq_h3={p3.h0_equals_h3_count}/{p3.surface_count} "
+            f"power_loss={p3.power_loss_drills_passed}/{p3.power_loss_drill_count} "
+            f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+            f"sd_written={rep.sd_physical_media_written} "
+            f"report_sha256={rep.report_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
@@ -1250,6 +1300,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-110", "Verify Phase 110 6-Pillar Century+10 Master Gate (32-Gate + 10-Pillar Recovery + >=20 Auditors + >=18 VM + R14/R17/R19 UI Closures, stage_b_milestone110_master_gate_v1)"),
         ("verify-milestone-130", "Verify Phase 130 6-Pillar Master Gate (40-Gate + >=13 Recovery + >=24 Auditors + >=21 VM + R14/R17/R19/R20..24 UI Closures, stage_b_milestone130_master_gate_v1)"),
         ("verify-realhw-jiritsu-tier0", "Verify Phase 136 Stage-288 libJiritsu.so SET_FILE2 P0 hardening, U4/U5/U6 disassembly closures & Tier-0 cold-backup stop-gate"),
+        ("verify-sd-stageb-bundle-uninstaller", "Verify Phase 143 BYOF SD-Card Stage-B bundle builder, im.elf escape-hatch launcher & H0==H3 16-surface atomic uninstaller"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -1262,12 +1313,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
         if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
@@ -1467,6 +1518,15 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.output,
             args.tier0_bundle_dir,
+        )
+    if args.cmd == "verify-sd-stageb-bundle-uninstaller":
+        return _cmd_verify_sd_stageb_bundle_uninstaller(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.clean_room,
+            args.lang,
+            args.json,
+            args.output,
         )
     return 2
 

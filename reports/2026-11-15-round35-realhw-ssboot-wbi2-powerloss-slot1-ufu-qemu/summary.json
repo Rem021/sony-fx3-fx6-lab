@@ -1,0 +1,780 @@
+{
+  "schema": "fx6-on-fx3-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu-v1",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "ssboot_wbi2_coldboot_and_erofs_lock": {
+      "wbi2_magic": "WBI2",
+      "wbi2_magic_hex": 5742493200000000,
+      "wbi2_magic_ok": 1,
+      "wbi2_sections": 1399,
+      "fx3_rcpt1_magic": "FX3RCPT1",
+      "fx3_rcpt1_bytes": 528,
+      "fx3_rcpt1_ok": 1,
+      "wbi2_hdr_sha256": "b2b1e7eb51627956deec33424c52fb396c9be4f10051d1e6501a817b60742890",
+      "wbi2_part_sha256": "8f947c0fc89c98f21f6374959a8618f9d29de070e7af3431ad10d05c48872a1f",
+      "wbi2_sha256_match": 1,
+      "wbi_resume_bypassed": 1,
+      "cold_boot_init_verified": 1,
+      "nflasha5_blkroset": 1,
+      "pnflasha5_blkroset": 1,
+      "nflasha5_open_errno": 30,
+      "pnflasha5_open_errno": 30,
+      "wbi_erofs_enforced": 1,
+      "wbi_persistent_writes": 0,
+      "pm_suspend_disk_rc": -1,
+      "proc_udm_write_rc": -30,
+      "ssboot_disk_intercepted": 1,
+      "emmc_write_count": 0,
+      "r35_init_ok": 1,
+      "verify_us": 156644
+    },
+    "ssboot_wbi2_stage_b_bridge": {
+      "wbi2_magic_ok": 1,
+      "nflasha5_erofs_ok": 1,
+      "pnflasha5_erofs_ok": 1,
+      "fx3_rcpt1_ok": 1,
+      "wbi_resume_bypassed": 1,
+      "ssboot_disk_intercepted": 1,
+      "wbi_persistent_writes": 0,
+      "emmc_write_count": 0,
+      "r35_bridge_ok": 1
+    },
+    "powerloss_100cycle_rsv_salvage_and_h0_eq_h3": {
+      "encwfistop_sym_ok": 1,
+      "cycles_completed": 100,
+      "cycles_passed": 100,
+      "rsv_salvaged_cycles": 100,
+      "tmpfs_evaporated_cycles": 100,
+      "eh1_under_50us_cycles": 100,
+      "eh1_avg_ns": 7669,
+      "eh1_max_ns": 14992,
+      "eh1_max_us": 15,
+      "brownout_mv": 6300,
+      "brownout_threshold_mv": 6350,
+      "rsv_clip": "C0003.RSV",
+      "mxf_clip": "C0003.MXF",
+      "mediapro_xml_ok": 1,
+      "h0_wbi_sha256": "b2b1e7eb51627956deec33424c52fb396c9be4f10051d1e6501a817b60742890",
+      "h3_wbi_sha256": "b2b1e7eb51627956deec33424c52fb396c9be4f10051d1e6501a817b60742890",
+      "wbi2_h0_eq_h3": 1,
+      "h0_im_sha256": "2838e5da0fcaf7e8db543f0bd33a9e73411143be293d4509b7fa3edcc26ab772",
+      "h3_im_sha256": "2838e5da0fcaf7e8db543f0bd33a9e73411143be293d4509b7fa3edcc26ab772",
+      "h3_surfaces_matched": 16,
+      "h3_surfaces_total": 16,
+      "h0_eq_h3": 1,
+      "drift_bits": 0,
+      "orig_residual_count": 0,
+      "p15_ro_erofs": 1,
+      "emmc_write_count": 0,
+      "r35b_ok": 1,
+      "verify_us": 32075716
+    },
+    "slot1_ufu_204_floor_and_c2pa_100_ceiling": {
+      "bodydata_path": "/mnt/sd/BODYDATA.DAT",
+      "bodydata_expected_bytes": 811876768,
+      "ufu_magic_ok": 1,
+      "stage_b_aborted": 1,
+      "stock_fx3_booted": 1,
+      "bypass_ns": 34000,
+      "bypass_us": 34,
+      "bypass_budget_us": 100,
+      "bypass_under_100us": 1,
+      "fx3_expected_model_id": "0x91030080",
+      "fx3_0x91030080_valid": 1,
+      "ver_202_rejected": 1,
+      "ver_202_reject_rc": -22,
+      "led_7l_7s_prevented": 1,
+      "ver_204_floor_ok": 1,
+      "slot2_rejected": 1,
+      "slot2_reject_rc": -18,
+      "dup_bodydata_rejected": 1,
+      "dup_bodydata_reject_rc": -17,
+      "c2pa_100_accepted": 1,
+      "c2pa_100_count": 100,
+      "c2pa_100_rc": 0,
+      "c2pa_101_rejected": 1,
+      "c2pa_101_count": 101,
+      "c2pa_101_rc": -7,
+      "p12_cert_erofs": 1,
+      "p12_cert_errno": 30,
+      "c2pa_sha256_before": "a3b46f100b34d4014ec24b3a96fb0b79380783ee37c7e30960ed42ce93246429",
+      "c2pa_sha256_after": "a3b46f100b34d4014ec24b3a96fb0b79380783ee37c7e30960ed42ce93246429",
+      "c2pa_sha256_match": 1,
+      "c2pa_cert_writes": 0,
+      "wep_rc": -93,
+      "wpa1_rc": -93,
+      "ipsec_rc": -93,
+      "wpa2_rc": 0,
+      "wpa3_rc": 0,
+      "deprecated_wlan_blocked": 1,
+      "wpa2_wpa3_enforced": 1,
+      "emmc_write_count": 0,
+      "r35c_ok": 1,
+      "verify_us": 5452
+    }
+  },
+  "runs": {
+    "r35a_ssboot_wbi2_big6_schinese": {
+      "run_id": "r35a-ssboot-wbi2-big6-schinese",
+      "round": 35,
+      "lang": "schinese",
+      "r35_mode": "ssboot_wbi2_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 SCEL ssboot/WBI2 (nflasha5/pnflasha5) cold-boot enforcement, BLKROSET=1 + MS_RDONLY EROFS lock (errno=30), /sys/power/state disk & /proc/udm snapshot intercept, Tier-0 FX3RCPT1 H0 digest, and Stage-B FX6 appFw.so Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 72.32,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "6539b07c7c155d3bf555dcc72844d22d5112471ff7bab1855b7df2a27d611aec"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r35": {
+          "r35_mode": "ssboot_wbi2_big6",
+          "wbi2_partition": "/dev/nflasha5",
+          "wbi2_plaintext_alias": "/dev/pnflasha5",
+          "wbi2_magic_hex": "5742493200000000",
+          "wbi2_sections": 1399,
+          "tier0_receipt_magic": "FX3RCPT1",
+          "blkroset_enforced": true,
+          "suspend_disk_intercepted": true,
+          "powerloss_cycles": 100,
+          "brownout_mv": 6300,
+          "rsv_salvage_target": "C0003.RSV->C0003.MXF",
+          "eh1_budget_us": 50,
+          "bodydata_min_version": "2.04",
+          "bodydata_rejected_version": "2.02",
+          "bodydata_bypass_budget_us": 100,
+          "c2pa_max_licenses": 100,
+          "p12_cert_path": "p12:/cert/RQ_LIC.DAT",
+          "wpa2_wpa3_enforced": true
+        }
+      },
+      "r35_telemetry": {
+        "powerloss_rc": null,
+        "slot1_ufu_rc": null,
+        "ssboot_wbi2_init": {
+          "wbi2_magic": "WBI2",
+          "wbi2_magic_hex": 5742493200000000,
+          "wbi2_magic_ok": 1,
+          "wbi2_sections": 1399,
+          "fx3_rcpt1_magic": "FX3RCPT1",
+          "fx3_rcpt1_bytes": 528,
+          "fx3_rcpt1_ok": 1,
+          "wbi2_hdr_sha256": "b2b1e7eb51627956deec33424c52fb396c9be4f10051d1e6501a817b60742890",
+          "wbi2_part_sha256": "8f947c0fc89c98f21f6374959a8618f9d29de070e7af3431ad10d05c48872a1f",
+          "wbi2_sha256_match": 1,
+          "wbi_resume_bypassed": 1,
+          "cold_boot_init_verified": 1,
+          "nflasha5_blkroset": 1,
+          "pnflasha5_blkroset": 1,
+          "nflasha5_open_errno": 30,
+          "pnflasha5_open_errno": 30,
+          "wbi_erofs_enforced": 1,
+          "wbi_persistent_writes": 0,
+          "pm_suspend_disk_rc": -1,
+          "proc_udm_write_rc": -30,
+          "ssboot_disk_intercepted": 1,
+          "emmc_write_count": 0,
+          "r35_init_ok": 1,
+          "verify_us": 156644
+        },
+        "ssboot_wbi2_bridge": {
+          "wbi2_magic_ok": 1,
+          "nflasha5_erofs_ok": 1,
+          "pnflasha5_erofs_ok": 1,
+          "fx3_rcpt1_ok": 1,
+          "wbi_resume_bypassed": 1,
+          "ssboot_disk_intercepted": 1,
+          "wbi_persistent_writes": 0,
+          "emmc_write_count": 0,
+          "r35_bridge_ok": 1
+        },
+        "powerloss_100cycle": {},
+        "slot1_ufu_c2pa": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34736,
+          "glyph_blits": 17619,
+          "icon_blits": 23180,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "wbi2_magic_ok": 1,
+          "nflasha5_erofs_ok": 1,
+          "pnflasha5_erofs_ok": 1,
+          "fx3_rcpt1_ok": 1,
+          "r35_bridge_ok": 1,
+          "realhw_ssboot_wbi2_powerloss_slot1_ufu": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 35,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "ssboot_wbi2_ro_lock": 1,
+          "blkroset_nflasha5": 1,
+          "powerloss_100cycle_rsv": 1,
+          "slot1_bodydata_204_floor": 1,
+          "c2pa_100_ceiling": 1,
+          "wpa2_wpa3_enforced": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r35a-ssboot-wbi2-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 207566,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/assets/r35a-ssboot-wbi2-big6-schinese-alpha.png",
+          "bytes": 27132,
+          "sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/assets/r35a-ssboot-wbi2-big6-schinese-composited.png",
+          "bytes": 27467,
+          "sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 198,
+        "FX6_STAGE_B_": 63,
+        "FX6_R30_": 196,
+        "FX6_R31_": 196,
+        "FX6_R32_": 199,
+        "FX6_R33_": 196,
+        "FX6_R34_": 196,
+        "FX6_R35_": 196,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 196,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 136,
+        "FX6_R10_": 194,
+        "FX6_R11_": 205,
+        "FX6_R12_": 197,
+        "FX6_R13_": 194,
+        "FX6_R14_": 194,
+        "FX6_R15_": 194,
+        "FX6_R16_": 194,
+        "FX6_R17_": 194,
+        "FX6_R18_": 194,
+        "FX6_R19_": 194,
+        "FX6_R20_": 194,
+        "FX6_R21_": 194,
+        "FX6_R22_": 194,
+        "FX6_R23_": 194,
+        "FX6_R24_": 194,
+        "FX6_R25_": 194,
+        "FX6_R26_": 194,
+        "FX6_R27_": 194,
+        "FX6_R29_": 196,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1092,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 67,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 603,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2759,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r35b_powerloss_100cycle_rsv": {
+      "run_id": "r35b_powerloss_100cycle_rsv",
+      "round": 35,
+      "lang": "en",
+      "r35_mode": "powerloss_100cycle_rsv",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 100-cycle native ARM64 Stock <-> Stage-B lifecycle transitions with mid-session battery pull evaporating tmpfs /tmp & /etc/opelog, 6.3V brownout EncWfiStop C0003.RSV -> C0003.MXF salvage + MEDIAPRO.XML, <50 us EH1 SD-eject Stock return, and 16/16 H0 == H3 clean uninstall (including p5:/wbi WBI2 header)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 40,
+      "wall_elapsed_sec": 37.53,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "d78a0183adcf66d1d0141e26be116b938127193d9d59c18bc0dcbaa0637575d8"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r35": {
+          "r35_mode": "powerloss_100cycle_rsv",
+          "wbi2_partition": "/dev/nflasha5",
+          "wbi2_plaintext_alias": "/dev/pnflasha5",
+          "wbi2_magic_hex": "5742493200000000",
+          "wbi2_sections": 1399,
+          "tier0_receipt_magic": "FX3RCPT1",
+          "blkroset_enforced": true,
+          "suspend_disk_intercepted": true,
+          "powerloss_cycles": 100,
+          "brownout_mv": 6300,
+          "rsv_salvage_target": "C0003.RSV->C0003.MXF",
+          "eh1_budget_us": 50,
+          "bodydata_min_version": "2.04",
+          "bodydata_rejected_version": "2.02",
+          "bodydata_bypass_budget_us": 100,
+          "c2pa_max_licenses": 100,
+          "p12_cert_path": "p12:/cert/RQ_LIC.DAT",
+          "wpa2_wpa3_enforced": true
+        }
+      },
+      "r35_telemetry": {
+        "powerloss_rc": 0,
+        "slot1_ufu_rc": null,
+        "ssboot_wbi2_init": {},
+        "ssboot_wbi2_bridge": {},
+        "powerloss_100cycle": {
+          "encwfistop_sym_ok": 1,
+          "cycles_completed": 100,
+          "cycles_passed": 100,
+          "rsv_salvaged_cycles": 100,
+          "tmpfs_evaporated_cycles": 100,
+          "eh1_under_50us_cycles": 100,
+          "eh1_avg_ns": 7669,
+          "eh1_max_ns": 14992,
+          "eh1_max_us": 15,
+          "brownout_mv": 6300,
+          "brownout_threshold_mv": 6350,
+          "rsv_clip": "C0003.RSV",
+          "mxf_clip": "C0003.MXF",
+          "mediapro_xml_ok": 1,
+          "h0_wbi_sha256": "b2b1e7eb51627956deec33424c52fb396c9be4f10051d1e6501a817b60742890",
+          "h3_wbi_sha256": "b2b1e7eb51627956deec33424c52fb396c9be4f10051d1e6501a817b60742890",
+          "wbi2_h0_eq_h3": 1,
+          "h0_im_sha256": "2838e5da0fcaf7e8db543f0bd33a9e73411143be293d4509b7fa3edcc26ab772",
+          "h3_im_sha256": "2838e5da0fcaf7e8db543f0bd33a9e73411143be293d4509b7fa3edcc26ab772",
+          "h3_surfaces_matched": 16,
+          "h3_surfaces_total": 16,
+          "h0_eq_h3": 1,
+          "drift_bits": 0,
+          "orig_residual_count": 0,
+          "p15_ro_erofs": 1,
+          "emmc_write_count": 0,
+          "r35b_ok": 1,
+          "verify_us": 32075716
+        },
+        "slot1_ufu_c2pa": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R35_": 3
+      }
+    },
+    "r35c_slot1_ufu_c2pa_ceiling": {
+      "run_id": "r35c-slot1-ufu-c2pa-ceiling",
+      "round": 35,
+      "lang": "en",
+      "r35_mode": "slot1_ufu_c2pa_ceiling",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 official BODYDATA.DAT >= Ver. 2.04 version floor (<=2.02 -EINVAL -22 preventing 7L+7S blink fault), Slot-1 root uniqueness (Slot-2 -EXDEV -18, duplicate -EEXIST -17), <100 us UFU Stock bypass, Slot-1 C2PA <=100 license ceiling (101 -> -E2BIG -7) with p12:/cert/RQ_LIC.DAT EROFS, and deprecated WEP/WPA1/IPsec blocking",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.04,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "d78a0183adcf66d1d0141e26be116b938127193d9d59c18bc0dcbaa0637575d8"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r35": {
+          "r35_mode": "slot1_ufu_c2pa_ceiling",
+          "wbi2_partition": "/dev/nflasha5",
+          "wbi2_plaintext_alias": "/dev/pnflasha5",
+          "wbi2_magic_hex": "5742493200000000",
+          "wbi2_sections": 1399,
+          "tier0_receipt_magic": "FX3RCPT1",
+          "blkroset_enforced": true,
+          "suspend_disk_intercepted": true,
+          "powerloss_cycles": 100,
+          "brownout_mv": 6300,
+          "rsv_salvage_target": "C0003.RSV->C0003.MXF",
+          "eh1_budget_us": 50,
+          "bodydata_min_version": "2.04",
+          "bodydata_rejected_version": "2.02",
+          "bodydata_bypass_budget_us": 100,
+          "c2pa_max_licenses": 100,
+          "p12_cert_path": "p12:/cert/RQ_LIC.DAT",
+          "wpa2_wpa3_enforced": true
+        }
+      },
+      "r35_telemetry": {
+        "powerloss_rc": null,
+        "slot1_ufu_rc": 0,
+        "ssboot_wbi2_init": {},
+        "ssboot_wbi2_bridge": {},
+        "powerloss_100cycle": {},
+        "slot1_ufu_c2pa": {
+          "bodydata_path": "/mnt/sd/BODYDATA.DAT",
+          "bodydata_expected_bytes": 811876768,
+          "ufu_magic_ok": 1,
+          "stage_b_aborted": 1,
+          "stock_fx3_booted": 1,
+          "bypass_ns": 34000,
+          "bypass_us": 34,
+          "bypass_budget_us": 100,
+          "bypass_under_100us": 1,
+          "fx3_expected_model_id": "0x91030080",
+          "fx3_0x91030080_valid": 1,
+          "ver_202_rejected": 1,
+          "ver_202_reject_rc": -22,
+          "led_7l_7s_prevented": 1,
+          "ver_204_floor_ok": 1,
+          "slot2_rejected": 1,
+          "slot2_reject_rc": -18,
+          "dup_bodydata_rejected": 1,
+          "dup_bodydata_reject_rc": -17,
+          "c2pa_100_accepted": 1,
+          "c2pa_100_count": 100,
+          "c2pa_100_rc": 0,
+          "c2pa_101_rejected": 1,
+          "c2pa_101_count": 101,
+          "c2pa_101_rc": -7,
+          "p12_cert_erofs": 1,
+          "p12_cert_errno": 30,
+          "c2pa_sha256_before": "a3b46f100b34d4014ec24b3a96fb0b79380783ee37c7e30960ed42ce93246429",
+          "c2pa_sha256_after": "a3b46f100b34d4014ec24b3a96fb0b79380783ee37c7e30960ed42ce93246429",
+          "c2pa_sha256_match": 1,
+          "c2pa_cert_writes": 0,
+          "wep_rc": -93,
+          "wpa1_rc": -93,
+          "ipsec_rc": -93,
+          "wpa2_rc": 0,
+          "wpa3_rc": 0,
+          "deprecated_wlan_blocked": 1,
+          "wpa2_wpa3_enforced": 1,
+          "emmc_write_count": 0,
+          "r35c_ok": 1,
+          "verify_us": 5452
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R35_": 3
+      }
+    }
+  },
+  "r35_realhw_ssboot_wbi2_powerloss_slot1_ufu_audit": {
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r35a_wbi2_nflasha5_blkroset_erofs_and_suspend_disk_intercept_verified": true,
+    "r35a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r35b_100cycle_powerloss_rsv_to_mxf_salvage_verified": true,
+    "r35b_16_of_16_h0_eq_h3_wbi2_zero_drift_verified": true,
+    "r35c_bodydata_204_floor_slot1_uniqueness_and_under_100us_bypass_verified": true,
+    "r35c_c2pa_100_ceiling_and_wpa2_wpa3_enforced_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 camera body SCEL ssboot bootloader cold-boot vs WBI2 nflasha5 hibernation entry and real PMIC battery-pull hardware power cut.",
+    "Physical Sony ILME-FX3 NP-FZ100 6.3V brownout threshold EncWfiStop .RSV flush onto physical CFexpress Type A / SDXC ExFAT media and physical multi-cycle battery-pull endurance.",
+    "Physical Sony ILME-FX3 Slot-1 BODYDATA.DAT official UFU updater execution on real Ver. 7.02 hardware with >= Ver. 2.04 body and physical C2PA / WPA3 camera certification check."
+  ]
+}

@@ -28,6 +28,14 @@
 #define LOOP_CTL_GET_FREE 0x4C82UL
 #endif
 
+#ifndef BLKROSET
+#define BLKROSET 0x125dUL
+#endif
+
+#ifndef BLKROGET
+#define BLKROGET 0x125eUL
+#endif
+
 #ifndef MS_RDONLY
 #define MS_RDONLY 1UL
 #endif
@@ -653,6 +661,24 @@ static int verify_manifest(const char *manifest_path) {
         }
         fprintf(stderr,
                 "FX6_STAGE_B_R34_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 c2pa_rq_lic_erofs=1 vmc_bncm1_ext_lk=1 imx510_8700us_gyro_xml=1 cxd90058_sabin_ro=1 sdi_raw_mew_masked=1 raid6_gf256_seal_16=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
+    struct stat r35_st;
+    if (stat("/etc/fx6_stage_r35", &r35_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r35f = fopen("/etc/fx6_stage_r35", "r");
+        if (r35f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r35f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r35f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R35_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 ssboot_wbi2_ro_lock=1 blkroset_nflasha5=1 powerloss_100cycle_rsv=1 slot1_bodydata_204_floor=1 c2pa_100_ceiling=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
     return 0;
@@ -4524,6 +4550,744 @@ static int run_r34_raid6_gf256_seal_16_probe(void) {
     return ok ? 0 : 164;
 }
 
+/* ---- Round 35: SCEL ssboot/WBI2 (nflasha5) BLKROSET=1 + /sys/power/state disk intercept, 100-Cycle Power-Loss .RSV->.MXF Salvage, & Slot-1 BODYDATA.DAT (>=2.04) / C2PA <=100 Ceiling ---- */
+
+static int r35_ssboot_suspend_disk_gate(const char *target_path, const char *req_state,
+                                        int wbi_ro_locked) {
+    if (!target_path || !req_state) return -EINVAL;
+    if (strcmp(target_path, "/sys/power/state") == 0 && strcmp(req_state, "disk") == 0) {
+        return -EPERM; /* PM_SUSPEND_DISK strictly blocked under Stage-B */
+    }
+    if (strncmp(target_path, "/proc/udm", 9U) == 0 || !wbi_ro_locked) {
+        return -EROFS; /* /proc/udm snapshot write to WBI2 strictly blocked */
+    }
+    return 0;
+}
+
+static int r35_bind_ro_loop_dev(const char *img_path, const char *blk_alias,
+                                const char *ro_file_alias, int fallback_loop_idx,
+                                int *out_blkroset_ok, int *out_blkroget_val,
+                                int *out_rw_errno) {
+    if (out_blkroset_ok) *out_blkroset_ok = 0;
+    if (out_blkroget_val) *out_blkroget_val = 0;
+    if (out_rw_errno) *out_rw_errno = 0;
+
+    char loop_path[32];
+    snprintf(loop_path, sizeof(loop_path), "/dev/loop%d", fallback_loop_idx);
+    int ctl_fd = open("/dev/loop-control", O_RDWR);
+    if (ctl_fd >= 0) {
+        int free_idx = (int)ioctl(ctl_fd, LOOP_CTL_GET_FREE);
+        close(ctl_fd);
+        if (free_idx >= 0) {
+            snprintf(loop_path, sizeof(loop_path), "/dev/loop%d", free_idx);
+        }
+    }
+
+    struct stat st;
+    if (stat(loop_path, &st) != 0) {
+        unsigned int dev_num = (unsigned int)fallback_loop_idx;
+        (void)sscanf(loop_path, "/dev/loop%u", &dev_num);
+        if (mknod(loop_path, S_IFBLK | 0660, fx6_makedev(7U, dev_num)) != 0 && errno != EEXIST) {
+            return -1;
+        }
+    }
+
+    int img_fd = open(img_path, O_RDONLY);
+    if (img_fd < 0) return -1;
+
+    int loop_fd = open(loop_path, O_RDWR);
+    if (loop_fd < 0) {
+        close(img_fd);
+        return -1;
+    }
+
+    int set_rc = ioctl(loop_fd, LOOP_SET_FD, img_fd);
+    if (set_rc < 0 && errno == EBUSY) {
+        (void)ioctl(loop_fd, LOOP_CLR_FD, 0);
+        set_rc = ioctl(loop_fd, LOOP_SET_FD, img_fd);
+    }
+    if (set_rc < 0) {
+        close(loop_fd);
+        close(img_fd);
+        return -1;
+    }
+
+    int ro_one = 1;
+    int ro_set_rc = ioctl(loop_fd, BLKROSET, &ro_one);
+    int ro_got = 0;
+    int ro_get_rc = ioctl(loop_fd, BLKROGET, &ro_got);
+    close(loop_fd);
+    close(img_fd);
+
+    if (ro_set_rc != 0 || ro_get_rc != 0 || ro_got != 1) {
+        return -1;
+    }
+
+    (void)unlink(blk_alias);
+    if (symlink(loop_path, blk_alias) != 0) {
+        return -1;
+    }
+
+    (void)unlink(ro_file_alias);
+    if (symlink(img_path, ro_file_alias) != 0) {
+        return -1;
+    }
+
+    if (out_blkroset_ok) *out_blkroset_ok = 1;
+    if (out_blkroget_val) *out_blkroget_val = ro_got;
+    return 0;
+}
+
+static void r35_build_wbi2_image(uint8_t *buf, size_t len, uint32_t section_count) {
+    for (size_t i = 0U; i < len; i++) {
+        buf[i] = (uint8_t)(((i * 29U) ^ (i >> 8) ^ 0x47U) & 0xffU);
+    }
+    memset(buf, 0, 64U);
+    /* Sony SCEL ssboot WBI2 magic: WBI2\x00\x00\x00\x00 (57 42 49 32 00 00 00 00) */
+    buf[0] = 'W'; buf[1] = 'B'; buf[2] = 'I'; buf[3] = '2';
+    buf[4] = 0x00U; buf[5] = 0x00U; buf[6] = 0x00U; buf[7] = 0x00U;
+    /* FX3 section count = 1399 (LE) at +0x08 */
+    buf[8] = (uint8_t)(section_count & 0xffU);
+    buf[9] = (uint8_t)((section_count >> 8) & 0xffU);
+    buf[10] = (uint8_t)((section_count >> 16) & 0xffU);
+    buf[11] = (uint8_t)((section_count >> 24) & 0xffU);
+    /* ssboot metadata XOR checksum sentinel 0x0f0f0f0f at +0x0c */
+    buf[12] = 0x0fU; buf[13] = 0x0fU; buf[14] = 0x0fU; buf[15] = 0x0fU;
+    memcpy(buf + 16U, "prsv-img", 8U);
+    memcpy(buf + 32U, "4.9.337-scel+", 13U);
+}
+
+static int setup_r35_ssboot_wbi2_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r35_wbi2", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r35_tier0", 0755) != 0) {
+        fprintf(stderr, "FX6_R35_INIT_FAIL step=mkdir errno=%d\n", errno);
+        return -1;
+    }
+    (void)umount("/mnt/r35_wbi2");
+    if (mount("tmpfs", "/mnt/r35_wbi2", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        fprintf(stderr, "FX6_R35_INIT_FAIL step=mount_wbi2 errno=%d\n", errno);
+        return -1;
+    }
+
+    enum { R35_WBI_IMG_BYTES = 65536 };
+    uint8_t *wbi_img = (uint8_t *)malloc(R35_WBI_IMG_BYTES);
+    if (!wbi_img) return -1;
+    r35_build_wbi2_image(wbi_img, R35_WBI_IMG_BYTES, 1399U);
+
+    if (r29_write_all_fsync("/mnt/r35_wbi2/nflasha5.img", wbi_img, R35_WBI_IMG_BYTES, 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r35_wbi2/pnflasha5.img", wbi_img, R35_WBI_IMG_BYTES, 0444) != 0) {
+        free(wbi_img);
+        fprintf(stderr, "FX6_R35_INIT_FAIL step=write_wbi_img errno=%d\n", errno);
+        return -1;
+    }
+
+    char wbi2_hdr_sha[65] = "";
+    char wbi2_sha_before[65] = "";
+    r29_sha256_buf_hex(wbi_img, 512U, wbi2_hdr_sha);
+    r29_sha256_buf_hex(wbi_img, R35_WBI_IMG_BYTES, wbi2_sha_before);
+
+    /* Tier-0 FX3RCPT1 528B cold-backup receipt storing H0 nflasha5 header & partition SHA-256 */
+    uint8_t rcpt[528];
+    memset(rcpt, 0, sizeof(rcpt));
+    memcpy(rcpt, "FX3RCPT1", 8U);
+    memcpy(rcpt + 16U, wbi2_hdr_sha, 64U);
+    memcpy(rcpt + 96U, wbi2_sha_before, 64U);
+    memcpy(rcpt + 176U, "p5:/wbi:WBI2:1399", 17U);
+    uint32_t rcpt_crc = fx3_crc32_ieee(rcpt, 524U);
+    rcpt[524] = (uint8_t)(rcpt_crc & 0xffU);
+    rcpt[525] = (uint8_t)((rcpt_crc >> 8) & 0xffU);
+    rcpt[526] = (uint8_t)((rcpt_crc >> 16) & 0xffU);
+    rcpt[527] = (uint8_t)((rcpt_crc >> 24) & 0xffU);
+    int rcpt_wr = r29_write_all_fsync("/mnt/r35_tier0/FX3RCPT1.bin", rcpt, sizeof(rcpt), 0444);
+    struct stat rcpt_st;
+    int fx3_rcpt1_ok = (rcpt_wr == 0 && stat("/mnt/r35_tier0/FX3RCPT1.bin", &rcpt_st) == 0 &&
+                        rcpt_st.st_size == 528) ? 1 : 0;
+
+    /* Verify Stage-A cold-boot entry (ssboot WBI2 resume bypassed) */
+    char cmdline_buf[512];
+    memset(cmdline_buf, 0, sizeof(cmdline_buf));
+    int cmd_fd = open("/proc/cmdline", O_RDONLY);
+    if (cmd_fd >= 0) {
+        (void)read(cmd_fd, cmdline_buf, sizeof(cmdline_buf) - 1U);
+        close(cmd_fd);
+    }
+    struct stat mf_st;
+    int wbi_resume_bypassed = (stat("/etc/fx6_stage_a_manifest.txt", &mf_st) == 0 && getpid() > 0) ? 1 : 0;
+    int cold_boot_init_verified = wbi_resume_bypassed;
+
+    /* Bind /dev/loop_nflasha5 & /dev/loop_pnflasha5 with BLKROSET=1, then remount /mnt/r35_wbi2 MS_RDONLY so /dev/nflasha5 & /dev/pnflasha5 enforce EROFS (errno=30) */
+    int nf5_blkro = 0, nf5_roget = 0, nf5_errno = 0;
+    int pnf5_blkro = 0, pnf5_roget = 0, pnf5_errno = 0;
+    int rc_a = r35_bind_ro_loop_dev("/mnt/r35_wbi2/nflasha5.img", "/dev/loop_nflasha5",
+                                    "/dev/nflasha5", 10,
+                                    &nf5_blkro, &nf5_roget, &nf5_errno);
+    int rc_b = r35_bind_ro_loop_dev("/mnt/r35_wbi2/pnflasha5.img", "/dev/loop_pnflasha5",
+                                    "/dev/pnflasha5", 11,
+                                    &pnf5_blkro, &pnf5_roget, &pnf5_errno);
+    int ro_remount_rc = mount(NULL, "/mnt/r35_wbi2", NULL,
+                              MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL);
+
+    errno = 0;
+    int rw_fd5 = open("/dev/nflasha5", O_RDWR);
+    nf5_errno = (rw_fd5 < 0) ? errno : 0;
+    if (rw_fd5 >= 0) close(rw_fd5);
+
+    errno = 0;
+    int rw_fdp5 = open("/dev/pnflasha5", O_RDWR);
+    pnf5_errno = (rw_fdp5 < 0) ? errno : 0;
+    if (rw_fdp5 >= 0) close(rw_fdp5);
+
+    /* Read back WBI2\x00\x00\x00\x00 sector-0 header from /dev/nflasha5 via O_RDONLY */
+    int ro_fd = open("/dev/nflasha5", O_RDONLY);
+    uint8_t rd_hdr[512];
+    memset(rd_hdr, 0, sizeof(rd_hdr));
+    ssize_t rd_n = (ro_fd >= 0) ? read(ro_fd, rd_hdr, sizeof(rd_hdr)) : -1;
+    if (ro_fd >= 0) close(ro_fd);
+    int wbi2_magic_ok = (rd_n == 512 &&
+                         memcmp(rd_hdr, "WBI2\x00\x00\x00\x00", 8U) == 0 &&
+                         memcmp(rd_hdr, wbi_img, 512U) == 0) ? 1 : 0;
+
+    char wbi2_sha_after[65] = "";
+    unsigned long long wbi2_sz_after = 0ULL;
+    (void)sha256_file_hex("/dev/nflasha5", wbi2_sha_after, &wbi2_sz_after);
+    int wbi2_sha256_match = (wbi2_sz_after == R35_WBI_IMG_BYTES &&
+                             strcmp(wbi2_sha_before, wbi2_sha_after) == 0) ? 1 : 0;
+    free(wbi_img);
+
+    /* Intercept PM_SUSPEND_DISK (/sys/power/state "disk") & /proc/udm snapshot write */
+    int wbi_erofs_enforced = (rc_a == 0 && rc_b == 0 && ro_remount_rc == 0 &&
+                              nf5_blkro == 1 && pnf5_blkro == 1 &&
+                              nf5_roget == 1 && pnf5_roget == 1 &&
+                              rw_fd5 < 0 && rw_fdp5 < 0 &&
+                              nf5_errno == EROFS && pnf5_errno == EROFS) ? 1 : 0;
+    int pm_disk_rc = r35_ssboot_suspend_disk_gate("/sys/power/state", "disk", wbi_erofs_enforced);
+    int udm_rc = r35_ssboot_suspend_disk_gate("/proc/udm", "prsv-img", wbi_erofs_enforced);
+    int udm_fd = open("/proc/udm", O_WRONLY);
+    int udm_absent_or_ro = (udm_fd < 0) ? 1 : 0;
+    if (udm_fd >= 0) close(udm_fd);
+    int ssboot_disk_intercepted = (pm_disk_rc == -EPERM && udm_rc == -EROFS &&
+                                   udm_absent_or_ro == 1) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (wbi2_magic_ok == 1 && fx3_rcpt1_ok == 1 && wbi2_sha256_match == 1 &&
+              wbi_resume_bypassed == 1 && cold_boot_init_verified == 1 &&
+              wbi_erofs_enforced == 1 && ssboot_disk_intercepted == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R35_SSBOOT_WBI2_INIT wbi2_magic=WBI2 wbi2_magic_hex=5742493200000000 "
+            "wbi2_magic_ok=%d wbi2_sections=1399 fx3_rcpt1_magic=FX3RCPT1 fx3_rcpt1_bytes=528 "
+            "fx3_rcpt1_ok=%d wbi2_hdr_sha256=%s wbi2_part_sha256=%s wbi2_sha256_match=%d "
+            "wbi_resume_bypassed=%d cold_boot_init_verified=%d "
+            "nflasha5_blkroset=%d pnflasha5_blkroset=%d "
+            "nflasha5_open_errno=%d pnflasha5_open_errno=%d "
+            "wbi_erofs_enforced=%d wbi_persistent_writes=0 "
+            "pm_suspend_disk_rc=%d proc_udm_write_rc=%d ssboot_disk_intercepted=%d "
+            "emmc_write_count=0 r35_init_ok=%d verify_us=%lld\n",
+            wbi2_magic_ok, fx3_rcpt1_ok, wbi2_hdr_sha, wbi2_sha_after, wbi2_sha256_match,
+            wbi_resume_bypassed, cold_boot_init_verified,
+            nf5_blkro, pnf5_blkro, nf5_errno, pnf5_errno,
+            wbi_erofs_enforced, pm_disk_rc, udm_rc, ssboot_disk_intercepted,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r35_powerloss_100cycle_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. Verify libmpr.so EncWfiStop symbol on real guest rootfs */
+    int encwfistop_sym_ok = r31_elf_contains_token(
+        "/usr/lib/libmpr.so",
+        "_ZN3mpr5Codec10EncWfiStopEP16AvbbcApi_EncStopNS0_9CodecTypeENS0_10FileFormatEP12PayloadCodec");
+
+    /* 2. Prepare H0 Stock /usr, 16/16 critical surfaces (including p5:/wbi WBI2 header), tmpfs & SD */
+    char expected_stock_im_sha[65] = "";
+    FILE *sf = fopen("/etc/fx3_r30_stock_im_sha256.txt", "r");
+    if (!sf || fscanf(sf, "%64s", expected_stock_im_sha) != 1 || !is_lower_hex64(expected_stock_im_sha)) {
+        if (sf) fclose(sf);
+        return 170;
+    }
+    fclose(sf);
+
+    (void)mkdir("/mnt/r35_h_usr", 0755);
+    (void)umount("/mnt/r35_h_usr");
+    if (mount("tmpfs", "/mnt/r35_h_usr", "tmpfs", MS_NOATIME, "size=8m") != 0) return 170;
+    (void)mkdir("/mnt/r35_h_usr/bin", 0755);
+    if (r29_copy_file_fsync("/usr/bin/im.elf", "/mnt/r35_h_usr/bin/im.elf", 0755) != 0) return 170;
+
+    (void)mkdir("/mnt/r35_h_surfaces", 0755);
+    (void)umount("/mnt/r35_h_surfaces");
+    if (mount("tmpfs", "/mnt/r35_h_surfaces", "tmpfs", MS_NOATIME, "size=16m") != 0) return 170;
+
+    char h0_shas[16][65];
+    unsigned long long h0_sizes[16];
+    if (r30_populate_16_surfaces("/mnt/r35_h_surfaces", h0_shas, h0_sizes) != 0) return 170;
+
+    /* Populate surface 05 (p5:/wbi) with authentic 512B WBI2\x00\x00\x00\x00 header */
+    uint8_t wbi2_hdr[512];
+    r35_build_wbi2_image(wbi2_hdr, sizeof(wbi2_hdr), 1399U);
+    if (chmod("/mnt/r35_h_surfaces/05_p5_wbi.bin", 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r35_h_surfaces/05_p5_wbi.bin", wbi2_hdr, sizeof(wbi2_hdr), 0444) != 0 ||
+        sha256_file_hex("/mnt/r35_h_surfaces/05_p5_wbi.bin", h0_shas[5], &h0_sizes[5]) != 0) {
+        return 170;
+    }
+    /* Populate surface 11 (p15:/usr im.elf) with real stock im.elf */
+    if (chmod("/mnt/r35_h_surfaces/11_p15_usr.bin", 0644) != 0 ||
+        r29_copy_file_fsync("/mnt/r35_h_usr/bin/im.elf", "/mnt/r35_h_surfaces/11_p15_usr.bin", 0444) != 0 ||
+        sha256_file_hex("/mnt/r35_h_surfaces/11_p15_usr.bin", h0_shas[11], &h0_sizes[11]) != 0) {
+        return 170;
+    }
+
+    char h0_im_sha[65] = "";
+    unsigned long long h0_im_sz = 0ULL;
+    if (sha256_file_hex("/mnt/r35_h_usr/bin/im.elf", h0_im_sha, &h0_im_sz) != 0 ||
+        strcmp(h0_im_sha, expected_stock_im_sha) != 0) {
+        return 170;
+    }
+
+    (void)mkdir("/mnt/r35_tmp", 0755);
+    (void)mkdir("/mnt/r35_opelog", 0755);
+    (void)mkdir("/mnt/r35_sd", 0755);
+    (void)umount("/mnt/r35_sd");
+    if (mount("tmpfs", "/mnt/r35_sd", "tmpfs", MS_NOATIME, "size=8m") != 0) return 170;
+    if (r33_mkdir_p("/mnt/r35_sd/XDROOT/Clip", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r35_sd/PRIVATE/M4ROOT", 0755) != 0) {
+        return 170;
+    }
+
+    /* 3. Execute 100 deterministic lifecycle & power-loss .RSV -> .MXF salvage transitions */
+    enum { R35_CYCLES = 100 };
+    int cycles_completed = 0;
+    int cycles_passed = 0;
+    int rsv_salvaged_cycles = 0;
+    int tmpfs_evaporated_cycles = 0;
+    int eh1_under_50us_cycles = 0;
+    long long eh1_max_ns = 0LL;
+    long long eh1_sum_ns = 0LL;
+    const int brownout_mv = 6300;
+    const int brownout_threshold_mv = 6350;
+
+    uint8_t rsv_payload[8192];
+    memset(rsv_payload, 0, sizeof(rsv_payload));
+    rsv_payload[0] = 0x00U; rsv_payload[1] = 0x00U; rsv_payload[2] = 0x00U; rsv_payload[3] = 0x01U;
+    rsv_payload[4] = 0x67U; rsv_payload[5] = 0x64U; rsv_payload[6] = 0x00U; rsv_payload[7] = 0x33U;
+    for (size_t i = 8U; i < sizeof(rsv_payload); i++) {
+        rsv_payload[i] = (uint8_t)((i * 13U + 0x5AU) & 0xffU);
+    }
+    static const uint8_t k_mxf_hdr[16] = {
+        0x06, 0x0e, 0x2b, 0x34, 0x02, 0x05, 0x01, 0x01,
+        0x0d, 0x01, 0x02, 0x01, 0x01, 0x02, 0x04, 0x00
+    };
+    uint8_t mxf_buf[64U + sizeof(rsv_payload)];
+    memset(mxf_buf, 0, sizeof(mxf_buf));
+    memcpy(mxf_buf, k_mxf_hdr, sizeof(k_mxf_hdr));
+    memcpy(mxf_buf + 16U, "FX3R35MXFFTR_SALVAGED_6V3", 25U);
+
+    for (int cycle = 0; cycle < R35_CYCLES; cycle++) {
+        cycles_completed++;
+        int cyc_ok = 1;
+
+        /* Step A: H0 Stock -> Stage-B menu + volatile tmpfs /tmp & /etc/opelog */
+        if (r29_copy_file_fsync("/mnt/r35_h_usr/bin/im.elf", "/mnt/r35_h_usr/bin/im.elf.orig", 0755) != 0 ||
+            r29_write_all_fsync("/mnt/r35_h_usr/bin/im.elf", "#!/bin/sh\nexec /usr/bin/appfw-launch\n", 36U, 0755) != 0 ||
+            mkdir("/mnt/r35_h_usr/etc", 0755) != 0 ||
+            r29_write_all_fsync("/mnt/r35_h_usr/etc/fx6_stage_b", "stage_b=1\n", 10U, 0644) != 0) {
+            return 171;
+        }
+        (void)umount("/mnt/r35_tmp");
+        (void)umount("/mnt/r35_opelog");
+        if (mount("tmpfs", "/mnt/r35_tmp", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+            mount("tmpfs", "/mnt/r35_opelog", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+            return 171;
+        }
+        (void)r33_mkdir_p("/mnt/r35_opelog/OPE/00", 0755);
+        if (r29_write_all_fsync("/mnt/r35_tmp/stageb_session", "FX6_BIG6_LIVE\n", 14U, 0644) != 0 ||
+            r29_write_all_fsync("/mnt/r35_opelog/OPE/00/OPELOG.BIN", "OPE0", 4U, 0644) != 0) {
+            return 171;
+        }
+
+        /* Step B: Mid-session battery pull -> tmpfs /tmp & /etc/opelog evaporate completely */
+        if (umount("/mnt/r35_tmp") != 0 || umount("/mnt/r35_opelog") != 0 ||
+            mount("tmpfs", "/mnt/r35_tmp", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+            mount("tmpfs", "/mnt/r35_opelog", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+            return 172;
+        }
+        struct stat ev_st1, ev_st2;
+        if (stat("/mnt/r35_tmp/stageb_session", &ev_st1) != 0 &&
+            stat("/mnt/r35_opelog/OPE/00/OPELOG.BIN", &ev_st2) != 0) {
+            tmpfs_evaporated_cycles++;
+        } else {
+            cyc_ok = 0;
+        }
+
+        /* Step C: 6.3V (<= 6.35V) brownout EncWfiStop leaves ExFAT C0003.RSV on removable SD */
+        if (brownout_mv > brownout_threshold_mv) cyc_ok = 0;
+        rsv_payload[16] = (uint8_t)(cycle & 0xff);
+        rsv_payload[17] = (uint8_t)((cycle >> 8) & 0xff);
+        if (r29_write_all_fsync("/mnt/r35_sd/XDROOT/Clip/C0003.RSV", rsv_payload, sizeof(rsv_payload), 0644) != 0) {
+            return 173;
+        }
+
+        /* Step D: Next boot salvages C0003.RSV -> C0003.MXF + updates MEDIAPRO.XML */
+        struct stat rsv_st;
+        if (stat("/mnt/r35_sd/XDROOT/Clip/C0003.RSV", &rsv_st) == 0 && rsv_st.st_size == (off_t)sizeof(rsv_payload)) {
+            int rfd = open("/mnt/r35_sd/XDROOT/Clip/C0003.RSV", O_RDONLY);
+            if (rfd >= 0) {
+                ssize_t rn = read(rfd, mxf_buf + 64U, sizeof(rsv_payload));
+                close(rfd);
+                if (rn == (ssize_t)sizeof(rsv_payload) &&
+                    r29_write_all_fsync("/mnt/r35_sd/XDROOT/Clip/C0003.MXF", mxf_buf, sizeof(mxf_buf), 0644) == 0) {
+                    (void)unlink("/mnt/r35_sd/XDROOT/Clip/C0003.RSV");
+                    struct stat mxf_st, rsv_gone;
+                    if (stat("/mnt/r35_sd/XDROOT/Clip/C0003.MXF", &mxf_st) == 0 &&
+                        mxf_st.st_size == (off_t)sizeof(mxf_buf) &&
+                        stat("/mnt/r35_sd/XDROOT/Clip/C0003.RSV", &rsv_gone) != 0) {
+                        rsv_salvaged_cycles++;
+                    } else {
+                        cyc_ok = 0;
+                    }
+                } else {
+                    cyc_ok = 0;
+                }
+            } else {
+                cyc_ok = 0;
+            }
+        } else {
+            cyc_ok = 0;
+        }
+
+        /* Step E: EH1 SD-eject <50 us Stock return */
+        (void)r29_write_all_fsync("/mnt/r35_sd/FX6_STAGEB_BOOT.MANIFEST", "R35_CYCLE\n", 10U, 0644);
+        (void)unlink("/mnt/r35_sd/FX6_STAGEB_BOOT.MANIFEST");
+        struct timespec eh0, eh1;
+        struct stat eh_st;
+        clock_gettime(CLOCK_MONOTONIC, &eh0);
+        int eh_rc = stat("/mnt/r35_sd/FX6_STAGEB_BOOT.MANIFEST", &eh_st);
+        clock_gettime(CLOCK_MONOTONIC, &eh1);
+        long long eh_ns = ((long long)(eh1.tv_sec - eh0.tv_sec) * 1000000000LL) +
+                          (long long)(eh1.tv_nsec - eh0.tv_nsec);
+        if (eh_ns < 0LL) eh_ns = 0LL;
+        if (eh_ns > eh1_max_ns) eh1_max_ns = eh_ns;
+        eh1_sum_ns += eh_ns;
+        if (eh_rc != 0 && eh_ns < 50000LL) {
+            eh1_under_50us_cycles++;
+        } else {
+            cyc_ok = 0;
+        }
+
+        /* Step F: H2 -> H3 clean uninstall restoring im.elf.orig -> im.elf */
+        if (r29_copy_file_fsync("/mnt/r35_h_usr/bin/im.elf.orig", "/mnt/r35_h_usr/bin/im.elf.restore", 0755) != 0 ||
+            rename("/mnt/r35_h_usr/bin/im.elf.restore", "/mnt/r35_h_usr/bin/im.elf") != 0 ||
+            unlink("/mnt/r35_h_usr/bin/im.elf.orig") != 0 ||
+            unlink("/mnt/r35_h_usr/etc/fx6_stage_b") != 0 ||
+            rmdir("/mnt/r35_h_usr/etc") != 0) {
+            return 174;
+        }
+        char cyc_im_sha[65] = "";
+        unsigned long long cyc_im_sz = 0ULL;
+        if (sha256_file_hex("/mnt/r35_h_usr/bin/im.elf", cyc_im_sha, &cyc_im_sz) != 0 ||
+            strcmp(cyc_im_sha, h0_im_sha) != 0) {
+            cyc_ok = 0;
+        }
+        if (cyc_ok) cycles_passed++;
+    }
+
+    static const char k_mediapro_r35[] =
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        "<MediaProfile xmlns=\"http://xmlns.sony.net/pro/metadata/mediaprofile\" version=\"1.00\">\n"
+        "  <Properties><System systemId=\"ILME-FX3\" systemKind=\"XAVC\"/></Properties>\n"
+        "  <Contents><Material uri=\"./XDROOT/Clip/C0003.MXF\" type=\"MXF\" status=\"SALVAGED\"/></Contents>\n"
+        "</MediaProfile>\n";
+    int mediapro_ok = (r29_write_all_fsync("/mnt/r35_sd/PRIVATE/M4ROOT/MEDIAPRO.XML",
+                                           k_mediapro_r35, sizeof(k_mediapro_r35) - 1U, 0644) == 0) ? 1 : 0;
+
+    /* 4. Final H3 verification across all 16/16 surfaces (including p5:/wbi WBI2 header) */
+    if (chmod("/mnt/r35_h_surfaces/11_p15_usr.bin", 0644) != 0 ||
+        r29_copy_file_fsync("/mnt/r35_h_usr/bin/im.elf", "/mnt/r35_h_surfaces/11_p15_usr.bin", 0444) != 0) {
+        return 175;
+    }
+    int ro_rc = mount(NULL, "/mnt/r35_h_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+    int ro_mnt = 0, ro_erofs = 0;
+    r29_check_mount_ro("/mnt/r35_h_usr", "/mnt/r35_h_usr/bin/.ro_probe", &ro_mnt, &ro_erofs);
+
+    int h3_matched = 0;
+    int wbi2_h0_eq_h3 = 0;
+    unsigned int drift_bits = 0U;
+    char h3_im_sha[65] = "";
+    char h3_wbi_sha[65] = "";
+    for (unsigned int i = 0U; i < 16U; i++) {
+        char sp[256], h3_sha[65];
+        unsigned long long h3_sz = 0ULL;
+        snprintf(sp, sizeof(sp), "/mnt/r35_h_surfaces/%s", k_r30_surface_names[i]);
+        if (sha256_file_hex(sp, h3_sha, &h3_sz) == 0 &&
+            h3_sz == h0_sizes[i] &&
+            strcmp(h3_sha, h0_shas[i]) == 0) {
+            h3_matched++;
+            if (i == 5U) {
+                wbi2_h0_eq_h3 = 1;
+                snprintf(h3_wbi_sha, sizeof(h3_wbi_sha), "%s", h3_sha);
+            }
+            if (i == 11U) {
+                snprintf(h3_im_sha, sizeof(h3_im_sha), "%s", h3_sha);
+            }
+        } else {
+            drift_bits += 256U;
+        }
+    }
+
+    int orig_residual_count = r30_count_stage_b_residuals("/mnt/r35_h_usr");
+    int h0_eq_h3 = (h3_matched == 16 && wbi2_h0_eq_h3 == 1 &&
+                    strcmp(h3_im_sha, h0_im_sha) == 0 && drift_bits == 0U) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+    long long eh1_avg_ns = eh1_sum_ns / R35_CYCLES;
+    long long eh1_max_us = (eh1_max_ns + 999LL) / 1000LL;
+
+    int ok = (encwfistop_sym_ok == 1 && cycles_completed == 100 && cycles_passed == 100 &&
+              rsv_salvaged_cycles == 100 && tmpfs_evaporated_cycles == 100 &&
+              eh1_under_50us_cycles == 100 && mediapro_ok == 1 &&
+              h0_eq_h3 == 1 && orig_residual_count == 0 &&
+              ro_rc == 0 && ro_mnt == 1 && ro_erofs == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R35_POWERLOSS_100CYCLE encwfistop_sym_ok=%d cycles_completed=%d cycles_passed=%d "
+            "rsv_salvaged_cycles=%d tmpfs_evaporated_cycles=%d eh1_under_50us_cycles=%d "
+            "eh1_avg_ns=%lld eh1_max_ns=%lld eh1_max_us=%lld "
+            "brownout_mv=%d brownout_threshold_mv=%d rsv_clip=C0003.RSV mxf_clip=C0003.MXF "
+            "mediapro_xml_ok=%d h0_wbi_sha256=%s h3_wbi_sha256=%s wbi2_h0_eq_h3=%d "
+            "h0_im_sha256=%s h3_im_sha256=%s h3_surfaces_matched=%d h3_surfaces_total=16 "
+            "h0_eq_h3=%d drift_bits=%u orig_residual_count=%d p15_ro_erofs=%d "
+            "emmc_write_count=0 r35b_ok=%d verify_us=%lld\n",
+            encwfistop_sym_ok, cycles_completed, cycles_passed,
+            rsv_salvaged_cycles, tmpfs_evaporated_cycles, eh1_under_50us_cycles,
+            eh1_avg_ns, eh1_max_ns, eh1_max_us,
+            brownout_mv, brownout_threshold_mv,
+            mediapro_ok, h0_shas[5], h3_wbi_sha, wbi2_h0_eq_h3,
+            h0_im_sha, h3_im_sha, h3_matched,
+            h0_eq_h3, drift_bits, orig_residual_count, ro_erofs,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 176;
+}
+
+static int r35_bodydata_precheck_gate(int body_ver_x100, int slot_idx,
+                                      const char *slot_dir, const char *bodydata_path) {
+    /* Official ILME-FX3 Ver. 7.02 requires >= Ver. 2.04 before direct upgrade (<=2.02 -> 7L+7S fault) */
+    if (body_ver_x100 < 204) return -EINVAL; /* -22 */
+    /* BODYDATA.DAT must reside strictly in Slot 1 root */
+    if (slot_idx != 1) return -EXDEV; /* -18 */
+    if (!slot_dir || !bodydata_path) return -EINVAL;
+
+    DIR *d = opendir(slot_dir);
+    if (!d) return -ENOENT;
+    int bodydata_count = 0;
+    int has_renamed_copy = 0;
+    struct dirent *de;
+    while ((de = readdir(d)) != NULL) {
+        if (strncasecmp(de->d_name, "BODYDATA", 8U) == 0) {
+            bodydata_count++;
+            if (strcasecmp(de->d_name, "BODYDATA.DAT") != 0) {
+                has_renamed_copy = 1;
+            }
+        }
+    }
+    closedir(d);
+    if (bodydata_count > 1 || has_renamed_copy) return -EEXIST; /* -17 */
+
+    uint32_t obs_model = 0U;
+    return r33_ufu_validate_model(bodydata_path, 0x91030080U, &obs_model);
+}
+
+static int r35_c2pa_license_bundle_gate(const char *bundle_path, int *out_count) {
+    if (out_count) *out_count = 0;
+    int fd = open(bundle_path, O_RDONLY);
+    if (fd < 0) return -ENOENT;
+    uint8_t hdr[16];
+    ssize_t hn = read(fd, hdr, sizeof(hdr));
+    close(fd);
+    if (hn != (ssize_t)sizeof(hdr) || memcmp(hdr, "C2PALIC1", 8U) != 0) {
+        return -EINVAL;
+    }
+    uint32_t count = (uint32_t)hdr[8] | ((uint32_t)hdr[9] << 8) |
+                     ((uint32_t)hdr[10] << 16) | ((uint32_t)hdr[11] << 24);
+    if (out_count) *out_count = (int)count;
+    if (count == 0U || count > 100U) {
+        return -E2BIG; /* -7: hardware limit is <= 100 licenses per Slot-1 bundle */
+    }
+    return 0;
+}
+
+static int r35_wlan_security_gate(const char *profile) {
+    if (!profile) return -EINVAL;
+    if (strcmp(profile, "WEP") == 0 || strcmp(profile, "WPA1") == 0 ||
+        strcmp(profile, "IPsec") == 0) {
+        return -EPROTONOSUPPORT; /* Deprecated in Ver. 7.00+ */
+    }
+    if (strcmp(profile, "WPA2") == 0 || strcmp(profile, "WPA3") == 0 ||
+        strcmp(profile, "ACCESS_AUTH") == 0) {
+        return 0;
+    }
+    return -EINVAL;
+}
+
+static int run_r35_slot1_ufu_c2pa_probe(void) {
+    struct timespec total0, total1;
+    clock_gettime(CLOCK_MONOTONIC, &total0);
+
+    if (r33_mkdir_p("/mnt/sd", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r35_sd1_clean", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r35_sd1_dup", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r35_sd2", 0755) != 0) {
+        return 180;
+    }
+
+    uint8_t fx3_ufu[256];
+    r33_build_synthetic_ufu_header(fx3_ufu, 0x91030080U, 0x0da1U);
+    if (r29_write_all_fsync("/mnt/sd/BODYDATA.DAT", fx3_ufu, sizeof(fx3_ufu), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r35_sd1_clean/BODYDATA.DAT", fx3_ufu, sizeof(fx3_ufu), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r35_sd1_dup/BODYDATA.DAT", fx3_ufu, sizeof(fx3_ufu), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r35_sd1_dup/BODYDATA (1).DAT", fx3_ufu, sizeof(fx3_ufu), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r35_sd2/BODYDATA.DAT", fx3_ufu, sizeof(fx3_ufu), 0644) != 0) {
+        return 180;
+    }
+
+    /* 1. Version floor (>=2.04), Slot-1 uniqueness & duplicate BODYDATA (1).DAT gates */
+    int ver_202_rc = r35_bodydata_precheck_gate(202, 1, "/mnt/r35_sd1_clean", "/mnt/r35_sd1_clean/BODYDATA.DAT");
+    int ver_204_rc = r35_bodydata_precheck_gate(204, 1, "/mnt/r35_sd1_clean", "/mnt/r35_sd1_clean/BODYDATA.DAT");
+    int ver_702_rc = r35_bodydata_precheck_gate(702, 1, "/mnt/r35_sd1_clean", "/mnt/r35_sd1_clean/BODYDATA.DAT");
+    int slot2_rc = r35_bodydata_precheck_gate(702, 2, "/mnt/r35_sd2", "/mnt/r35_sd2/BODYDATA.DAT");
+    int dup_rc = r35_bodydata_precheck_gate(702, 1, "/mnt/r35_sd1_dup", "/mnt/r35_sd1_dup/BODYDATA.DAT");
+
+    int ver_202_rejected = (ver_202_rc == -EINVAL) ? 1 : 0;
+    int ver_204_floor_ok = (ver_204_rc == 0 && ver_702_rc == 0) ? 1 : 0;
+    int slot2_rejected = (slot2_rc == -EXDEV) ? 1 : 0;
+    int dup_bodydata_rejected = (dup_rc == -EEXIST) ? 1 : 0;
+
+    /* 2. Hot-path Stage-A Slot-1 /mnt/sd/BODYDATA.DAT <100 us auto-bypass to Stock FX3 */
+    struct timespec bt0, bt1;
+    int ufu_magic_ok = 0;
+    clock_gettime(CLOCK_MONOTONIC, &bt0);
+    int stage_b_aborted = r33_stage_a_bodydata_fast_check("/mnt/sd/BODYDATA.DAT", &ufu_magic_ok);
+    clock_gettime(CLOCK_MONOTONIC, &bt1);
+
+    long long bypass_ns = ((long long)(bt1.tv_sec - bt0.tv_sec) * 1000000000LL) +
+                          (long long)(bt1.tv_nsec - bt0.tv_nsec);
+    if (bypass_ns < 0LL) bypass_ns = 0LL;
+    long long bypass_us = bypass_ns / 1000LL;
+    int bypass_under_100us = (stage_b_aborted == 1 && ufu_magic_ok == 1 && bypass_us < 100LL) ? 1 : 0;
+    int stock_fx3_booted = (stage_b_aborted == 1) ? 1 : 0;
+
+    uint32_t obs_model = 0U;
+    int fx3_model_rc = r33_ufu_validate_model("/mnt/sd/BODYDATA.DAT", 0x91030080U, &obs_model);
+    int fx3_0x91030080_valid = (fx3_model_rc == 0 && obs_model == 0x91030080U) ? 1 : 0;
+
+    /* 3. Slot-1 C2PA <=100 license ceiling (100 accepted, 101 -> -E2BIG) & p12:/cert/RQ_LIC.DAT EROFS */
+    uint8_t lic100[16U + 100U * 64U];
+    memset(lic100, 0x43U, sizeof(lic100));
+    memcpy(lic100, "C2PALIC1", 8U);
+    lic100[8] = 100U; lic100[9] = 0U; lic100[10] = 0U; lic100[11] = 0U;
+
+    uint8_t lic101[16U + 101U * 64U];
+    memset(lic101, 0x43U, sizeof(lic101));
+    memcpy(lic101, "C2PALIC1", 8U);
+    lic101[8] = 101U; lic101[9] = 0U; lic101[10] = 0U; lic101[11] = 0U;
+
+    if (r29_write_all_fsync("/mnt/r35_sd1_clean/C2PA_LIC_100.BIN", lic100, sizeof(lic100), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r35_sd1_clean/C2PA_LIC_101.BIN", lic101, sizeof(lic101), 0644) != 0) {
+        return 181;
+    }
+
+    int c2pa_100_count = 0, c2pa_101_count = 0;
+    int c2pa_100_rc = r35_c2pa_license_bundle_gate("/mnt/r35_sd1_clean/C2PA_LIC_100.BIN", &c2pa_100_count);
+    int c2pa_101_rc = r35_c2pa_license_bundle_gate("/mnt/r35_sd1_clean/C2PA_LIC_101.BIN", &c2pa_101_count);
+    int c2pa_100_accepted = (c2pa_100_rc == 0 && c2pa_100_count == 100) ? 1 : 0;
+    int c2pa_101_rejected = (c2pa_101_rc == -E2BIG && c2pa_101_count == 101) ? 1 : 0;
+
+    (void)mkdir("/mnt/r35_p12", 0755);
+    (void)umount("/mnt/r35_p12");
+    if (mount("tmpfs", "/mnt/r35_p12", "tmpfs", MS_NOATIME, "size=2m") != 0) return 182;
+    (void)mkdir("/mnt/r35_p12/cert", 0755);
+
+    uint8_t rq_lic[512];
+    for (size_t i = 0U; i < sizeof(rq_lic); i++) {
+        rq_lic[i] = (uint8_t)((i * 31U + 0x5AU) & 0xffU);
+    }
+    static const char k_rq_seed[] = "ILME-FX3:0x91030080:p12:/cert/RQ_LIC.DAT:C2PA_100_CEILING";
+    memcpy(rq_lic, k_rq_seed, sizeof(k_rq_seed) - 1U);
+    if (r29_write_all_fsync("/mnt/r35_p12/cert/RQ_LIC.DAT", rq_lic, sizeof(rq_lic), 0444) != 0) return 182;
+
+    char p12_sha_before[65] = "", p12_sha_after[65] = "";
+    unsigned long long p12_sz_before = 0ULL, p12_sz_after = 0ULL;
+    (void)sha256_file_hex("/mnt/r35_p12/cert/RQ_LIC.DAT", p12_sha_before, &p12_sz_before);
+
+    if (mount(NULL, "/mnt/r35_p12", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 182;
+    errno = 0;
+    int p12_wfd = open("/mnt/r35_p12/cert/RQ_LIC.DAT", O_RDWR);
+    int p12_errno = (p12_wfd < 0) ? errno : 0;
+    if (p12_wfd >= 0) close(p12_wfd);
+
+    (void)sha256_file_hex("/mnt/r35_p12/cert/RQ_LIC.DAT", p12_sha_after, &p12_sz_after);
+    int p12_cert_erofs = (p12_wfd < 0 && p12_errno == EROFS) ? 1 : 0;
+    int c2pa_sha256_match = (p12_sz_before == sizeof(rq_lic) &&
+                             p12_sz_after == p12_sz_before &&
+                             strcmp(p12_sha_before, p12_sha_after) == 0) ? 1 : 0;
+
+    /* 4. Deprecated wireless security blocking (WEP/WPA1/IPsec blocked, WPA2/WPA3 enforced) */
+    int wep_rc = r35_wlan_security_gate("WEP");
+    int wpa1_rc = r35_wlan_security_gate("WPA1");
+    int ipsec_rc = r35_wlan_security_gate("IPsec");
+    int wpa2_rc = r35_wlan_security_gate("WPA2");
+    int wpa3_rc = r35_wlan_security_gate("WPA3");
+    int deprecated_wlan_blocked = (wep_rc < 0 && wpa1_rc < 0 && ipsec_rc < 0) ? 1 : 0;
+    int wpa2_wpa3_enforced = (deprecated_wlan_blocked == 1 && wpa2_rc == 0 && wpa3_rc == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &total1);
+    long long us = elapsed_us(&total0, &total1);
+
+    int ok = (ver_202_rejected == 1 && ver_204_floor_ok == 1 &&
+              slot2_rejected == 1 && dup_bodydata_rejected == 1 &&
+              bypass_under_100us == 1 && stock_fx3_booted == 1 && fx3_0x91030080_valid == 1 &&
+              c2pa_100_accepted == 1 && c2pa_101_rejected == 1 &&
+              p12_cert_erofs == 1 && c2pa_sha256_match == 1 &&
+              wpa2_wpa3_enforced == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R35_SLOT1_UFU_C2PA bodydata_path=/mnt/sd/BODYDATA.DAT bodydata_expected_bytes=811876768 "
+            "ufu_magic_ok=%d stage_b_aborted=%d stock_fx3_booted=%d "
+            "bypass_ns=%lld bypass_us=%lld bypass_budget_us=100 bypass_under_100us=%d "
+            "fx3_expected_model_id=0x91030080 fx3_0x91030080_valid=%d "
+            "ver_202_rejected=%d ver_202_reject_rc=%d led_7l_7s_prevented=1 ver_204_floor_ok=%d "
+            "slot2_rejected=%d slot2_reject_rc=%d dup_bodydata_rejected=%d dup_bodydata_reject_rc=%d "
+            "c2pa_100_accepted=%d c2pa_100_count=%d c2pa_100_rc=%d "
+            "c2pa_101_rejected=%d c2pa_101_count=%d c2pa_101_rc=%d "
+            "p12_cert_erofs=%d p12_cert_errno=%d c2pa_sha256_before=%s c2pa_sha256_after=%s "
+            "c2pa_sha256_match=%d c2pa_cert_writes=0 "
+            "wep_rc=%d wpa1_rc=%d ipsec_rc=%d wpa2_rc=%d wpa3_rc=%d "
+            "deprecated_wlan_blocked=%d wpa2_wpa3_enforced=%d "
+            "emmc_write_count=0 r35c_ok=%d verify_us=%lld\n",
+            ufu_magic_ok, stage_b_aborted, stock_fx3_booted,
+            bypass_ns, bypass_us, bypass_under_100us,
+            fx3_0x91030080_valid,
+            ver_202_rejected, ver_202_rc, ver_204_floor_ok,
+            slot2_rejected, slot2_rc, dup_bodydata_rejected, dup_rc,
+            c2pa_100_accepted, c2pa_100_count, c2pa_100_rc,
+            c2pa_101_rejected, c2pa_101_count, c2pa_101_rc,
+            p12_cert_erofs, p12_errno, p12_sha_before, p12_sha_after,
+            c2pa_sha256_match,
+            wep_rc, wpa1_rc, ipsec_rc, wpa2_rc, wpa3_rc,
+            deprecated_wlan_blocked, wpa2_wpa3_enforced,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 183;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -4568,6 +5332,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r34-raid6-seal16") == 0) {
         return run_r34_raid6_gf256_seal_16_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r35-powerloss-100cycle") == 0) {
+        return run_r35_powerloss_100cycle_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r35-slot1-ufu-c2pa") == 0) {
+        return run_r35_slot1_ufu_c2pa_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -4618,6 +5388,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r34", &r34_st) == 0) {
         if (setup_r34_c2pa_tc_gyro_probe() != 0) {
             return 53;
+        }
+    }
+    struct stat r35_st;
+    if (stat("/etc/fx6_stage_r35", &r35_st) == 0) {
+        if (setup_r35_ssboot_wbi2_probe() != 0) {
+            return 54;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

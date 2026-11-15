@@ -128,11 +128,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar B — `ACES 1.3 / 2.0` `S-Log3` Piece-Wise Log<->Linear Transfer (`95 / 420 / 598`, breakpoint `171.2102946929`) & `S-Gamut3 / S-Gamut3.Cine -> AP0 / AP1` `3x3` IDT Matrix Verifier**: Proves exact $C^0$ continuity (`< 1e-6`), `< 1e-11` roundtrip precision, and invertibility (`|det| > 0.50`, inversion residual `< 1e-9`) + `(1.0, 1.0, 1.0)` white-point conservation (`max_whitepoint_error < 1e-4`) across both `BRADFORD` and `CAT02` (`OCIO v2 / CLF` `urn:ampas:aces:transformId:v2.0`) matrices, failing closed on singular or tint-drifted matrices.
    - **Pillar C — `NP-FZ100` (`7.2 V`, `16.4 Wh`, `2280 mAh`) `C-Pin` `InfoLITHIUM Z` Telemetry vs FX6 `BP-U35/U70` (`14.4 V` / `19.5 V DC IN`) Cross-Rail Isolation**: Audits `appFw.so`, `cpapp-b.bin` (`BATT_AUTH_Snd`, `BATT_STATE1_Snd`, `BATT_STATE2_Snd`, `BATT_TYPE1_Snd`), and `.uxc` authenticity strings (`0x0000e24e`, `0x00006013`), verifying `OEM`, decoded 3P, un-decoded 3P safe degraded mode (no-pct / no-fw-update), and regulated dummy `C`-pin-absent continuation while hard-blocking unmapped FX6 `14.4 V` (`12.0 V` shutdown) comparisons against FX3's `7.2 V` rail and over-voltage dummy couplers.
    - **Pillar D — Volatile RAM Staging & Zero Persistent `eMMC` / Calibration Mutation Proof**: Validates FX3 & FX6 `global.xdb` (`uxa\x07`) read-only and proves `emmc_mutation_bytes == 0`, `calibration_mutation_bytes == 0`, and `persistent_emmc_writes_authorized == False`.
+27. [`fx3_firmware_lab/realhw_cp_rtos_and_backup_bin_auditor.py`](fx3_firmware_lab/realhw_cp_rtos_and_backup_bin_auditor.py)
+   - **Pillar 1 — Unknown `U2` (`cpapp-b.bin` TOPPERS CP RTOS & `tomco.txt`/`kemco.txt` Divergence)**: Inspects FX3 `v7.02` & FX6 `v6.01` `cpapp-b.bin` (`@ 0x00108000` ARM32 entry), `tomco.txt`, and `kemco.txt` strictly `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback), proving an identical `128 KiB` (`0x20000`) boot stub and `1,724.00 MiB` uncached `memcfg=` pools while isolating FX6-exclusive peripheral drivers (`Darwin`, `VariableNd`, `Mew`, `MoniFpga`) and `cfg.uart=1` vs `cfg.uart=9`.
+   - **Pillar 2 — Route-1 vs Route-2 Real-Hardware Architecture & Brick-Hazard Proof**: Audits `nor_loader_writer.sh` (`bksb.elf`, `ud_nor_pformat.elf`, `ud_cp_firmup.elf` LEDs `0x51/0x52/0x53/0x92`), `us_spi_firmup.sh` (`mew.bin` LED `0x68`), `us_darwin_firm.sh` (`darwin_core.bin` LED `0x63`), and `pformat_config.txt`, proving Route-1 (Stock FX3 `loader_nor.bin` + `p3` Kernel + `p8/cpapp-b.bin` + `p2:/Backup.bin` + Reversible `/usr` Stage-B Overlay) preserves 100% native `IMX510` ISP/IBIS/AF/XAVC while hard-blocking Route-2 brick vectors.
+   - **Pillar 3 — Unknown `U3` (`Backup.bin` `819 -> 840` & `0x00fa0080` Bank 0/1 Boot Descriptors & Per-Body Calibration)**: Verifies dual `BK4\x00` records, O(1) `0x00fa0080` Bank 0 (`0x400001000..0x408ffffff` identical AP slots `0..4`) & Bank 1 (`0x800100000..0x809a35dff`, exact `+0x14000`/`+0xE0000` DDR shifts, `p8:\cpImg.dat` vs `p3:\cmrbnb.bin`, non-overlapping DDR intervals), `LdrBkupList.txt` (65 loader keys), `big_backup.conf`, and `ud_keep_backup.elf -r` (`BK_PROTECT_ADJ_RST_USER_FIRMUP`).
+   - **Pillar 4 — Volatile RAM Staging & Zero `eMMC` / `SPI NOR` Write Authorization**: Proves `persistent_emmc_writes_authorized == False`, `spi_nor_write_authorized == False`, `emmc_mutation_bytes == 0`, `spi_nor_mutation_bytes == 0`, `calibration_mutation_bytes == 0`, and zero raw proprietary byte slices in JSON output.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 26 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 27 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -180,6 +185,8 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-vp-ledwall-freed --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xavc-aces-fz100 --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xavc-aces-fz100 --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-cp-backup --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-cp-backup --clean-room --json
 
 # Run all unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v

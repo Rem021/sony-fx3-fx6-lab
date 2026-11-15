@@ -27,6 +27,8 @@
  *                           + P10 FX3 body remap + P4 ND-Clear Lock + P11 XLR-H1 + Assignable Button Page 110 (sid=0x34)
  *   -DFX6_ROUND=13 Round 13:+ Full 4-Language (EN/ZH-CN/ZH-TW/JA) 3-Layer Menu Parity + Status Check & Paint/Look CJK Closure
  *   -DFX6_ROUND=14 Round 14:+ Complete 4-Language (EN/ZH-CN/ZH-TW/JA) Status Check (sid=0x2f) & 3-Surface 6-Pair Matrix
+ *   -DFX6_ROUND=15 Round 15:+ Multi-Tab Status Check Stepping (0x2f->0x30->0x31) & 3-Layer Menu Monitoring CJK Closure
+ *   -DFX6_ROUND=16 Round 16:+ Deep Status Check Tabs 4 & 5 (Assignable / Media / Network) + Traditional Chinese & Japanese TC/Media 3-Layer Menu
  */
 
 #ifndef FX6_NATIVE_FAITHFUL
@@ -455,6 +457,27 @@ static void emit_r10_telemetry(const char *reason) {
             "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
             "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 font_create=%u glyph_blits=%u "
             "icon_blits=%u gpe_alloc=%u gpe_fb=%u statuscheck_multitab=1 monitoring_3layer=1 subst_color=0 subst_image=0\n",
+            reason ? reason : "periodic",
+            fx6_lang_name(),
+            (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(),
+            fx6_lang_font_bank(),
+            fx6_lang_str_bank(),
+            g_r11_lang_bk4_hits,
+            g_r11_airplane_bk4_hits,
+            g_r12_p4_nd_clear_ok,
+            g_font_create2_cnt,
+            g_glyph_blit_count,
+            g_icon_blit_count,
+            g_gpe_pool_alloc_cnt,
+            g_gpe_pool_fallback_cnt);
+#endif
+#if FX6_ROUND >= 16
+    dprintf(2,
+            "FX6_R16_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+            "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+            "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 font_create=%u glyph_blits=%u "
+            "icon_blits=%u gpe_alloc=%u gpe_fb=%u statuscheck_tabs45=1 tcmedia_3layer=1 subst_color=0 subst_image=0\n",
             reason ? reason : "periodic",
             fx6_lang_name(),
             (unsigned int)fx6_lang_bk4_byte(),
@@ -2392,6 +2415,15 @@ void Application_System_Init(const char *arg) {
             "FX6_STAGE_B_R15_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 "
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u multitab_status_monitoring=1\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 16
+    dprintf(2,
+            "FX6_STAGE_B_R16_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u statuscheck_tabs45=1 tcmedia_3layer=1\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

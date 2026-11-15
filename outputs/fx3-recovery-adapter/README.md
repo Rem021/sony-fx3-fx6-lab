@@ -415,3 +415,28 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --clean-room --json
 ```
 
+## Phase 134 — `CXD90057` `IPL / BLoader / ATF BL31 / Kernel` 安全启动信任链信封校验器、`nflasha1..nflasha20` `4 KiB / 512 KiB` 擦除组分区边界重叠防火墙，及 15 支柱恢复总检
+
+- **[`secureboot_chain_and_partition_align_verifier.py`](fx3_recovery/secureboot_chain_and_partition_align_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057`）提供两大只读防变砖/防跨界擦写支柱并接入 **15 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`SPACC_KEY_READS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_secureboot_and_partalign_donors_readonly`）**：严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查本地 FX3 `v7.02`（`loader_nor.bin` `101,888 B`、`partinf.conf` `3,999 B` `LensData @ 0x0031C000`、`vmlinux.bin` `6,610,952 B`）与 FX6 `v6.01`（`loader_nor.tar` 内含 `92,448 B` `loader_nor.bin`、`partinf.conf` `3,990 B` `LensData @ 0x00312000`、`vmlinux.bin` `6,610,952 B`）引导/分区/`SPAcc`/`eFuse`/`OTP` 符号锚点与跨机型边界差异，零原始固件字节或硬件私钥输出。
+  - **支柱 A — `CXD90057` `IPL -> BLoader -> ARM Trusted Firmware (BL31) -> Kernel` 安全启动信封与跨机型签名失配防火墙（`verify_cxd90057_secureboot_envelope` / `audit_otp_efuse_and_spacc_operation` / `run_secureboot_envelope_6_scenario_firewall`）**：
+    - `BLOCKED_UNSIGNED_OR_PATCHED_BOOT_STAGE_ON_LOCKED_SOC`：当面向锁定 SoC 的 eMMC 引导时，任何引导阶段（`IPL` / `BLoader` / `BL31` / `Kernel`）出现摘要篡改、缺失原厂签名信封、分区容量溢出或防回滚代次降级即 fail-closed 拦截（而 Stage-B `QEMU` / 内核后用户态 bind-mount 易失覆盖不修改任何已签名引导阶段，正常放行）；
+    - `BLOCKED_CROSS_SKU_FX6_BOOTLOADER_ON_FX3_SOC`：拦截混入 FX6 引导加载器或 `PMIC` 初始化镜像；
+    - `BLOCKED_OTP_EFUSE_OR_SPACC_KEYSLOT_ACCESS`：拦截任何 `eFuse/OTP` 烧断或 `SPAcc` 密钥槽转储请求（`otp_fuse_writes == 0`、`spacc_key_reads == 0`，`6/6` 场景绿色通过）。
+  - **支柱 B — `nflasha1..nflasha20` `eMMC` `512 B` LBA / `4 KiB` 页 / `512 KiB` 擦除组边界与邻分区串写防火墙（`LbaIntervalTree` / `find_partition_lba_overlaps` / `verify_partition_map_and_flash_ops` / `run_partition_align_6_scenario_firewall`）**：
+    - 通过增强区间树确定性校验分区映射（`erase_group_lba_multiple = 1024` 扇区 = `512 KiB`）与恢复操作：
+      - `PARTITION_LBA_OVERLAP_DETECTED`：检测任意两分区之间的 LBA 重叠；
+      - `UNALIGNED_ERASE_GROUP_BLEED_HAZARD`：拦截非 `512 KiB` 擦除组对齐（如 `dd seek=1` 差一偏移）或越过 `partition_sector_count` 串写邻近 `nvs`/`cnflasha` 校准分区；
+      - `PROTECTED_PARTITION_WRITE_ATTEMPT_BLOCKED`：拦截对 `BOOT0`、`BOOT1`、`RPMB`、`nvs`、`adj`、`cnflasha` 的写入/擦除请求（`6/6` 场景绿色通过）。
+  - **支柱 C — CLI 与 15 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-secureboot-partalign [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134`（构成 **15/15** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 134 公开符号；[`tests/test_secureboot_chain_and_partition_align_verifier.py`](tests/test_secureboot_chain_and_partition_align_verifier.py) 提供 **42 项快速双模单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-secureboot-partalign --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --clean-room --json
+```
+
+

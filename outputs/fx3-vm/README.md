@@ -1029,6 +1029,40 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 178：Stage 31（`31/31`）真实硬件主线 — Sony SCEL `ssboot` / `WBI2` Bootloader 旁路防火墙、100 轮断电/跌压恢复与 Slot-1 `BODYDATA.DAT`（`>=2.04`）/ C2PA 100-License 协同仿真
+
+[`realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator.py`](realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator.py) 作为 **Stage 31（`31/31`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase178_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil=True`，可通过 `--skip-phase178` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`physical_usb_packets_emitted == 0`**、**`otp_fuse_touches == 0`**、**`rpmb_counter_increments == 0`**、**`wbi_persistent_writes == 0`**、**`emmc_nflasha_write_count == 0`** 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **9 份真实供体**：`nflasha5.img`（`209,112,512 B`、`WBI2\x00\x00\x00\x00`、`1,399` 节）vs FX6 `wbi2-receipt.json`（`202,677,056 B`、`WBI2`、`1,197` 节）、FX3/FX6 `liro.ko`（`121,488 B` ELF64 AArch64，包含 `liro`/`4.9.337`/`suspend`/`vermagic`，哈希体机专用）、FX3 `vmlinux.bin`（`6,610,952 B`，包含 `4.9.337-scel+`/`WBI2`/`ssboot`/`hibernate`/`wbi`/`udm`）、`<= 4096 B` 有界头部读取 FX3 `7.02` `BODYDATA.DAT`（`811,876,768 B`、`\x89UFU\r\n\x1a\n`、`DATV=1`、`PROV=1`、`054c:0da1`）vs FX6 `BODYDATA.DAT`（`847,081,840 B`、`054c:0d21`），以及零差异 ABI 的 `im.elf`（`40,920 B`、`11` 导出 / `85` 导入）；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换至确定性洁净室合成基线。
+2. **Pillar A — Sony SCEL `ssboot` / `WBI2` Bootloader 旁路防火墙 HIL**：
+   - 协同仿真 `WBI2\x00\x00\x00\x00`（`57 42 49 32`）引导恢复路径与 Stage-A 冷启动入口（`/sbin/init` -> `fx6-stage-a-verify`），证明：未捕获的 `WBI2` 陷阱会在双启动激活前被阻断；Stage-B 对 `/dev/nflasha5` 与 `/dev/pnflasha5` 锁定 `BLKROSET=1` 并屏蔽 `PM_SUSPEND_DISK`（`disk`）与 `/proc/udm` 快照写入（`wbi_persistent_writes == 0`）；`EH1` 拔卡逃生（`38.5 us < 50 us`）与干净卸载（`H2 -> H3`）完整保留 Stock FX3 的 `0.5s` `WBI2` 热启动与 `nflasha5` SHA-256（`H0 == H3`）。
+3. **Pillar B — 100 轮 `NP-FZ100` 骤拔电池 & `6.3V` 跌压（`EncWfiStop`）HIL**：
+   - 连续运行 100 轮 Stock <-> Stage-B 状态切换（覆盖菜单中拔电池、录制中 `6.3V` 跌压 `EncWfiStop` exFAT `.RSV -> .MXF` 抢救、`EH2` `DISP+MENU+SHUTTER` 安全冷启动、以及 `EH3` 1 字节 `libJit.so` CRC32 fail-closed 回退），证明 `p1`、`p2:/setting`、`p5:/wbi`、`p12:/cert`、`p15:/usr`、`p18:/lens` 6 个核心分区保持 `0` 日志/元数据漂移。
+4. **Pillar C — 官方 ILME-FX3 `Ver. 7.02` `BODYDATA.DAT`（`811,876,768 B`）`>=2.04` 门槛 & Slot-1 C2PA 100-License HIL**：
+   - 拦截 `<= Ver. 2.02` 机身版本（避免 `7L+7S` LED 报错闪烁），强制 Slot-1 根目录唯一放置（禁止 `BODYDATA (1).DAT` 副本或 Slot-2），验证有效 `\x89UFU` `<100 us` Stage-A 旁路至 Stock FX3，校验 Slot-1 单包 `<= 100` 份 C2PA 许可与 `p12:/cert/RQ_LIC.DAT` `EROFS` 只读锁定，并强制 `WPA2/WPA3` 无线安全下限（拒绝 `WEP`/`WPA1`/`IPsec`）。
+5. **Pillar D — 硬安全红线不变式**：
+   - 所有禁止的物理写入与发射探针（eMMC 持久写、SPI-NOR 写、EL3 载荷发送、物理 USB 发包、OTP 熔丝触碰、RPMB 计数递增）均 fail-closed 拦截。
+
+### Phase 178 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 31 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator.py --self-test --json
+
+# 2. 全板 31 阶段（Stage 1..31）统一校验（支持 --skip-phase178）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 178 48 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator.py -v
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

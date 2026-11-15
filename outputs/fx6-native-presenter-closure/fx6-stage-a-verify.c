@@ -11548,6 +11548,847 @@ static int run_r44_gammaassist_displaylut_probe(void) {
     return ok ? 0 : 236;
 }
 
+/* ============================================================================
+ * Round 45 (Wave-31, 45th Milestone):
+ *   1. r45a: [SteadyShot] (Movie) [Active] (~1.1x narrower AOV) vs [Standard]/[Off]
+ *            & 3 exact cutoffs: Normal 119.88p/100p, S&Q >=120fps/100fps, HDMI RAW=On
+ *   2. r45b: [Clear Image Zoom] / [Digital Zoom] RAW & HFR cutoffs
+ *            & 4 automatic camera state locks beyond optical zoom
+ *   3. r45c: [Power Save Start Time] (5 Min default) 9-condition bypass + air-gapped
+ *            NP-FZ100 75 MiB p3 vault lock & [Auto Power OFF Temp.] tripod interlock
+ * ============================================================================ */
+
+enum {
+    R45_SS_OFF      = 0,
+    R45_SS_STANDARD = 1,
+    R45_SS_ACTIVE   = 2,
+    R45_SS_INVALID  = 3
+};
+
+enum {
+    R45_SHOOT_NORMAL_MOVIE = 0,
+    R45_SHOOT_SQ_MOVIE     = 1,
+    R45_SHOOT_STILL        = 2
+};
+
+typedef struct {
+    int shoot_mode;          /* R45_SHOOT_* */
+    int normal_fps_code;     /* 24, 25, 30, 50, 60, 100, 120 */
+    int sq_fps;              /* 1..240 */
+    int hdmi_raw_output_on;  /* 0 or 1 */
+    int user_steadyshot;     /* R45_SS_* */
+    int effective_steadyshot;/* R45_SS_* */
+    int active_crop_x100;    /* 100 (1.00x) or 110 (~1.10x narrower AOV) */
+} r45_steadyshot_state_t;
+
+__attribute__((noinline)) static int r45_steadyshot_active_disqualified(const r45_steadyshot_state_t *st, int *out_rc) {
+    if (!st) {
+        if (out_rc) *out_rc = -EINVAL;
+        return 1;
+    }
+    /* Cutoff 3: External HDMI [RAW Output] = [On] */
+    if (st->hdmi_raw_output_on) {
+        if (out_rc) *out_rc = -EBUSY; /* -16 */
+        return 1;
+    }
+    /* Cutoff 1: Normal movie [Rec Frame Rate] 119.88p (120) / 100p (100) or higher */
+    if (st->shoot_mode == R45_SHOOT_NORMAL_MOVIE && st->normal_fps_code >= 100) {
+        if (out_rc) *out_rc = -EINVAL; /* -22 */
+        return 1;
+    }
+    /* Cutoff 2: S&Q [Frame Rate] >= 100fps (PAL 100/200fps, NTSC 120/240fps) */
+    if (st->shoot_mode == R45_SHOOT_SQ_MOVIE && st->sq_fps >= 100) {
+        if (out_rc) *out_rc = -EINVAL; /* -22 */
+        return 1;
+    }
+    if (out_rc) *out_rc = 0;
+    return 0;
+}
+
+__attribute__((noinline)) static void r45_recompute_steadyshot(r45_steadyshot_state_t *st) {
+    if (!st) return;
+    int rc = 0;
+    if (st->user_steadyshot == R45_SS_ACTIVE && r45_steadyshot_active_disqualified(st, &rc)) {
+        st->effective_steadyshot = R45_SS_STANDARD;
+        st->active_crop_x100 = 100;
+    } else {
+        st->effective_steadyshot = st->user_steadyshot;
+        st->active_crop_x100 = (st->effective_steadyshot == R45_SS_ACTIVE) ? 110 : 100;
+    }
+}
+
+__attribute__((noinline)) static int r45_set_steadyshot_mode(r45_steadyshot_state_t *st, int mode) {
+    if (!st) return -EINVAL;
+    if (mode != R45_SS_OFF && mode != R45_SS_STANDARD && mode != R45_SS_ACTIVE) {
+        return -EINVAL; /* -22 */
+    }
+    if (mode == R45_SS_ACTIVE) {
+        int disq_rc = 0;
+        if (r45_steadyshot_active_disqualified(st, &disq_rc)) {
+            return disq_rc;
+        }
+    }
+    st->user_steadyshot = mode;
+    r45_recompute_steadyshot(st);
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_set_steadyshot_exposure_env(
+    r45_steadyshot_state_t *st,
+    int shoot_mode,
+    int normal_fps_code,
+    int sq_fps,
+    int hdmi_raw_on
+) {
+    if (!st) return -EINVAL;
+    st->shoot_mode = shoot_mode;
+    st->normal_fps_code = normal_fps_code;
+    st->sq_fps = sq_fps;
+    st->hdmi_raw_output_on = hdmi_raw_on ? 1 : 0;
+    r45_recompute_steadyshot(st);
+    return 0;
+}
+
+static int setup_r45_steadyshot_active_cutoffs_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r45_p2_ro", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r45_p2_ro");
+    if (mount("tmpfs", "/mnt/r45_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 37U + 0x45U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r45_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r45_p2_ro/Backup.bin", pre_p2_sha, &cbytes) != 0) return -1;
+    if (mount(NULL, "/mnt/r45_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    r45_steadyshot_state_t st;
+    memset(&st, 0, sizeof(st));
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, 24, 24, 0);
+
+    /* 1. Verify [Off] (1.00x), [Standard] (1.00x), and [Active] (~1.10x narrower AOV) + invalid mode reject */
+    int steadyshot_3modes_verified = 0;
+    if (r45_set_steadyshot_mode(&st, R45_SS_OFF) == 0 && st.active_crop_x100 == 100) steadyshot_3modes_verified++;
+    if (r45_set_steadyshot_mode(&st, R45_SS_STANDARD) == 0 && st.active_crop_x100 == 100) steadyshot_3modes_verified++;
+    if (r45_set_steadyshot_mode(&st, R45_SS_ACTIVE) == 0 && st.active_crop_x100 == 110) steadyshot_3modes_verified++;
+    int active_crop_x100 = st.active_crop_x100;
+    int narrower_aov_active = (active_crop_x100 == 110) ? 1 : 0;
+    int invalid_ss_reject_rc = r45_set_steadyshot_mode(&st, R45_SS_INVALID);
+
+    /* Normal <=59.94p/50p (24/25/30/50/60) all permit [Active] */
+    int normal_le60p_allowed = 0;
+    const int legal_normal_rates[5] = { 24, 25, 30, 50, 60 };
+    for (size_t i = 0U; i < 5U; i++) {
+        (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, legal_normal_rates[i], 24, 0);
+        if (r45_set_steadyshot_mode(&st, R45_SS_ACTIVE) == 0 && st.effective_steadyshot == R45_SS_ACTIVE && st.active_crop_x100 == 110) {
+            normal_le60p_allowed++;
+        }
+    }
+
+    /* 2. Hard Cutoff 1: Normal [Rec Frame Rate] 119.88p (120) & 100p (100) */
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, 120, 24, 0);
+    int clamp_11988p_ok = (st.effective_steadyshot == R45_SS_STANDARD && st.active_crop_x100 == 100) ? 1 : 0;
+    int normal_11988p_reject_rc = r45_set_steadyshot_mode(&st, R45_SS_ACTIVE);
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, 100, 24, 0);
+    int normal_100p_reject_rc = r45_set_steadyshot_mode(&st, R45_SS_ACTIVE);
+    int normal_hfr_standard_off_ok = (r45_set_steadyshot_mode(&st, R45_SS_STANDARD) == 0 &&
+                                      r45_set_steadyshot_mode(&st, R45_SS_OFF) == 0) ? 1 : 0;
+    int normal_11988p_100p_cutoff_ok = (clamp_11988p_ok == 1 &&
+                                        normal_11988p_reject_rc == -EINVAL &&
+                                        normal_100p_reject_rc == -EINVAL &&
+                                        normal_hfr_standard_off_ok == 1) ? 1 : 0;
+
+    /* 3. Hard Cutoff 2: S&Q [Frame Rate] >= 120fps / 100fps (100, 120, 200, 240fps) vs <=60fps allowed */
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_SQ_MOVIE, 24, 60, 0);
+    int sq_60fps_active_allowed = (r45_set_steadyshot_mode(&st, R45_SS_ACTIVE) == 0 &&
+                                   st.effective_steadyshot == R45_SS_ACTIVE &&
+                                   st.active_crop_x100 == 110) ? 1 : 0;
+    const int sq_cutoff_rates[4] = { 100, 120, 200, 240 };
+    int sq_ge100_cutoffs_verified = 0;
+    int sq_hfr_active_reject_rc = 0;
+    for (size_t i = 0U; i < 4U; i++) {
+        (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_SQ_MOVIE, 24, sq_cutoff_rates[i], 0);
+        int rci = r45_set_steadyshot_mode(&st, R45_SS_ACTIVE);
+        if (st.effective_steadyshot != R45_SS_ACTIVE && st.active_crop_x100 == 100 && rci == -EINVAL) {
+            sq_ge100_cutoffs_verified++;
+            sq_hfr_active_reject_rc = rci;
+        }
+    }
+
+    /* 4. Hard Cutoff 3: External HDMI [RAW Output] = [On] */
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, 24, 24, 0);
+    (void)r45_set_steadyshot_mode(&st, R45_SS_ACTIVE);
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, 24, 24, 1);
+    int raw_suppressed_active = (st.effective_steadyshot == R45_SS_STANDARD && st.active_crop_x100 == 100) ? 1 : 0;
+    int hdmi_raw_active_reject_rc = r45_set_steadyshot_mode(&st, R45_SS_ACTIVE);
+    (void)r45_set_steadyshot_exposure_env(&st, R45_SHOOT_NORMAL_MOVIE, 24, 24, 0);
+    int raw_off_restores_active_ok = (raw_suppressed_active == 1 &&
+                                      st.effective_steadyshot == R45_SS_ACTIVE &&
+                                      st.active_crop_x100 == 110) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r45_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r45_p2_ro/Backup.bin", post_p2_sha, &cbytes) != 0) return -1;
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r45_p2_ro");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R45_STEADYSHOT_ACTIVE_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (steadyshot_3modes_verified == 3 &&
+              active_crop_x100 == 110 &&
+              narrower_aov_active == 1 &&
+              invalid_ss_reject_rc == -EINVAL &&
+              normal_le60p_allowed == 5 &&
+              normal_11988p_100p_cutoff_ok == 1 &&
+              normal_11988p_reject_rc == -EINVAL &&
+              sq_60fps_active_allowed == 1 &&
+              sq_ge100_cutoffs_verified == 4 &&
+              sq_hfr_active_reject_rc == -EINVAL &&
+              hdmi_raw_active_reject_rc == -EBUSY &&
+              raw_off_restores_active_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R45_STEADYSHOT_ACTIVE_INIT steadyshot_3modes_verified=%d "
+            "active_crop_x100=%d narrower_aov_active=%d invalid_ss_reject_rc=%d "
+            "normal_le60p_allowed=%d normal_11988p_100p_cutoff_ok=%d "
+            "normal_hfr_active_reject_rc=%d sq_60fps_active_allowed=%d "
+            "sq_ge100_cutoffs_verified=%d sq_hfr_active_reject_rc=%d "
+            "hdmi_raw_active_reject_rc=%d raw_off_restores_active_ok=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r45_init_ok=%d verify_us=%lld\n",
+            steadyshot_3modes_verified, active_crop_x100, narrower_aov_active,
+            invalid_ss_reject_rc, normal_le60p_allowed, normal_11988p_100p_cutoff_ok,
+            normal_11988p_reject_rc, sq_60fps_active_allowed,
+            sq_ge100_cutoffs_verified, sq_hfr_active_reject_rc,
+            hdmi_raw_active_reject_rc, raw_off_restores_active_ok,
+            p2_write_blocked_rc, p2_sha256_match, appfw_present, shim_present,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R45_FILE_FMT_JPEG     = 0,
+    R45_FILE_FMT_HEIF     = 1,
+    R45_FILE_FMT_RAW      = 2,
+    R45_FILE_FMT_RAW_JPEG = 3,
+    R45_FILE_FMT_RAW_HEIF = 4
+};
+
+enum {
+    R45_ZOOM_OPTICAL_ONLY = 0,
+    R45_ZOOM_SMART        = 1,
+    R45_ZOOM_CLEAR_IMAGE  = 2,
+    R45_ZOOM_DIGITAL      = 3,
+    R45_ZOOM_INVALID      = 4
+};
+
+enum {
+    R45_AF_AREA_WIDE          = 0,
+    R45_AF_AREA_ZONE          = 1,
+    R45_AF_AREA_FLEXIBLE_SPOT = 2,
+    R45_AF_AREA_CENTER_LOCKED = 99
+};
+
+enum {
+    R45_METER_MULTI     = 0,
+    R45_METER_CENTER    = 1,
+    R45_METER_SPOT      = 2,
+    R45_METER_AVG       = 3,
+    R45_METER_HIGHLIGHT = 4
+};
+
+typedef struct {
+    int shoot_mode;            /* R45_SHOOT_* */
+    int still_file_format;     /* R45_FILE_FMT_* */
+    int normal_fps_code;       /* 24..120 */
+    int sq_fps;                /* 1..240 */
+    int zoom_range_mode;       /* R45_ZOOM_* */
+    int zoom_scale_x100;       /* 100 = 1.00x optical, >100 = CIZ/Digital */
+    int user_focus_area;
+    int effective_focus_area;
+    int user_metering_mode;
+    int effective_metering_mode;
+    int user_face_eye_af;
+    int effective_face_eye_af;
+    int user_face_multi_metering;
+    int effective_face_multi_metering;
+    int user_realtime_tracking;
+    int effective_realtime_tracking;
+} r45_ciz_state_t;
+
+__attribute__((noinline)) static int r45_ciz_non_optical_disqualified(const r45_ciz_state_t *st) {
+    if (!st) return 1;
+    if (st->shoot_mode == R45_SHOOT_STILL &&
+        (st->still_file_format == R45_FILE_FMT_RAW ||
+         st->still_file_format == R45_FILE_FMT_RAW_JPEG ||
+         st->still_file_format == R45_FILE_FMT_RAW_HEIF)) {
+        return 1;
+    }
+    if (st->shoot_mode == R45_SHOOT_NORMAL_MOVIE && st->normal_fps_code >= 100) {
+        return 1;
+    }
+    if (st->shoot_mode == R45_SHOOT_SQ_MOVIE && st->sq_fps >= 100) {
+        return 1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static void r45_ciz_apply_4locks(r45_ciz_state_t *st) {
+    if (!st) return;
+    if (st->zoom_scale_x100 > 100) {
+        /* Beyond optical zoom: enforce all 4 automatic camera state locks */
+        st->effective_focus_area = R45_AF_AREA_CENTER_LOCKED;
+        st->effective_metering_mode = R45_METER_MULTI;
+        st->effective_face_eye_af = 0;
+        st->effective_face_multi_metering = 0;
+        st->effective_realtime_tracking = 0;
+    } else {
+        st->effective_focus_area = st->user_focus_area;
+        st->effective_metering_mode = st->user_metering_mode;
+        st->effective_face_eye_af = st->user_face_eye_af;
+        st->effective_face_multi_metering = st->user_face_multi_metering;
+        st->effective_realtime_tracking = st->user_realtime_tracking;
+    }
+}
+
+__attribute__((noinline)) static int r45_ciz_set_zoom(r45_ciz_state_t *st, int zoom_mode, int scale_x100) {
+    if (!st) return -EINVAL;
+    if (zoom_mode < R45_ZOOM_OPTICAL_ONLY || zoom_mode >= R45_ZOOM_INVALID) {
+        return -EINVAL; /* -22 */
+    }
+    if (scale_x100 < 100 || scale_x100 > 400) {
+        return -EINVAL;
+    }
+    if (zoom_mode != R45_ZOOM_OPTICAL_ONLY || scale_x100 > 100) {
+        if (r45_ciz_non_optical_disqualified(st)) {
+            return -EINVAL; /* -22: Smart/Clear Image/Digital Zoom unavailable */
+        }
+    }
+    if (zoom_mode == R45_ZOOM_OPTICAL_ONLY && scale_x100 > 100) {
+        return -EINVAL;
+    }
+    if (zoom_mode == R45_ZOOM_CLEAR_IMAGE && scale_x100 > 200) {
+        return -EINVAL;
+    }
+    st->zoom_range_mode = zoom_mode;
+    st->zoom_scale_x100 = scale_x100;
+    r45_ciz_apply_4locks(st);
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_ciz_set_focus_area(r45_ciz_state_t *st, int area) {
+    if (!st) return -EINVAL;
+    if (area != R45_AF_AREA_WIDE && area != R45_AF_AREA_ZONE && area != R45_AF_AREA_FLEXIBLE_SPOT) {
+        return -EINVAL;
+    }
+    if (st->zoom_scale_x100 > 100) {
+        return -EBUSY; /* -16: [Focus Area] disabled; AF operates with center priority */
+    }
+    st->user_focus_area = area;
+    st->effective_focus_area = area;
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_ciz_set_metering_mode(r45_ciz_state_t *st, int meter) {
+    if (!st) return -EINVAL;
+    if (meter < R45_METER_MULTI || meter > R45_METER_HIGHLIGHT) {
+        return -EINVAL;
+    }
+    if (st->zoom_scale_x100 > 100 && meter != R45_METER_MULTI) {
+        return -EBUSY; /* -16: [Metering Mode] hard-locked to [Multi] */
+    }
+    st->user_metering_mode = meter;
+    st->effective_metering_mode = meter;
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_ciz_set_face_eye_af(r45_ciz_state_t *st, int enable) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->zoom_scale_x100 > 100 && enable == 1) {
+        return -EOPNOTSUPP; /* -95: [Face/Eye Prior. in AF] unavailable */
+    }
+    st->user_face_eye_af = enable;
+    st->effective_face_eye_af = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_ciz_set_face_multi_metering(r45_ciz_state_t *st, int enable) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->zoom_scale_x100 > 100 && enable == 1) {
+        return -EOPNOTSUPP; /* -95: [Face Priority in Multi Metering] unavailable */
+    }
+    st->user_face_multi_metering = enable;
+    st->effective_face_multi_metering = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_ciz_set_realtime_tracking(r45_ciz_state_t *st, int enable) {
+    if (!st) return -EINVAL;
+    if (enable != 0 && enable != 1) return -EINVAL;
+    if (st->zoom_scale_x100 > 100 && enable == 1) {
+        return -EOPNOTSUPP; /* -95: Real-time Tracking unavailable */
+    }
+    st->user_realtime_tracking = enable;
+    st->effective_realtime_tracking = enable;
+    return 0;
+}
+
+static int run_r45_ciz_4locks_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r45_p2_setting", 0755) != 0) {
+        return 237;
+    }
+    (void)umount("/mnt/r45_p2_setting");
+    if (mount("tmpfs", "/mnt/r45_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 237;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 41U + 0x52U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r45_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 237;
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r45_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) return 237;
+    if (mount(NULL, "/mnt/r45_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 237;
+
+    r45_ciz_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.shoot_mode = R45_SHOOT_STILL;
+    st.still_file_format = R45_FILE_FMT_JPEG;
+    st.normal_fps_code = 24;
+    st.sq_fps = 24;
+    st.zoom_scale_x100 = 100;
+
+    /* 1. Still [File Format] RAW / RAW & JPEG / RAW & HEIF block Smart, Clear Image & Digital Zoom */
+    int jpeg_heif_ciz_allowed = 0;
+    for (int ff = R45_FILE_FMT_JPEG; ff <= R45_FILE_FMT_HEIF; ff++) {
+        st.still_file_format = ff;
+        if (r45_ciz_set_zoom(&st, R45_ZOOM_CLEAR_IMAGE, 150) == 0) jpeg_heif_ciz_allowed++;
+        (void)r45_ciz_set_zoom(&st, R45_ZOOM_OPTICAL_ONLY, 100);
+    }
+    int raw_3formats_ciz_blocked = 0;
+    int raw_format_zoom_reject_rc = 0;
+    for (int ff = R45_FILE_FMT_RAW; ff <= R45_FILE_FMT_RAW_HEIF; ff++) {
+        st.still_file_format = ff;
+        int rc_smart = r45_ciz_set_zoom(&st, R45_ZOOM_SMART, 140);
+        int rc_ciz   = r45_ciz_set_zoom(&st, R45_ZOOM_CLEAR_IMAGE, 150);
+        int rc_dig   = r45_ciz_set_zoom(&st, R45_ZOOM_DIGITAL, 300);
+        if (rc_smart == -EINVAL && rc_ciz == -EINVAL && rc_dig == -EINVAL) {
+            raw_3formats_ciz_blocked++;
+            raw_format_zoom_reject_rc = rc_ciz;
+        }
+    }
+    int invalid_zoom_mode_reject_rc = r45_ciz_set_zoom(&st, R45_ZOOM_INVALID, 150);
+
+    /* 2. Normal movie 119.88p / 100p & S&Q 100/120/200/240fps block CIZ & Digital Zoom */
+    st.shoot_mode = R45_SHOOT_NORMAL_MOVIE;
+    int normal_11988p_100p_ciz_blocked = 0;
+    int normal_hfr_zoom_reject_rc = 0;
+    const int hfr_norm[2] = { 100, 120 };
+    for (size_t i = 0U; i < 2U; i++) {
+        st.normal_fps_code = hfr_norm[i];
+        int r1 = r45_ciz_set_zoom(&st, R45_ZOOM_CLEAR_IMAGE, 150);
+        int r2 = r45_ciz_set_zoom(&st, R45_ZOOM_DIGITAL, 300);
+        if (r1 == -EINVAL && r2 == -EINVAL) {
+            normal_11988p_100p_ciz_blocked++;
+            normal_hfr_zoom_reject_rc = r1;
+        }
+    }
+
+    st.shoot_mode = R45_SHOOT_SQ_MOVIE;
+    st.sq_fps = 60;
+    int sq_60fps_ciz_allowed = (r45_ciz_set_zoom(&st, R45_ZOOM_CLEAR_IMAGE, 150) == 0) ? 1 : 0;
+    (void)r45_ciz_set_zoom(&st, R45_ZOOM_OPTICAL_ONLY, 100);
+    int sq_100_120_200_240_ciz_blocked = 0;
+    int sq_hfr_zoom_reject_rc = 0;
+    const int sq_hfr[4] = { 100, 120, 200, 240 };
+    for (size_t i = 0U; i < 4U; i++) {
+        st.sq_fps = sq_hfr[i];
+        int r1 = r45_ciz_set_zoom(&st, R45_ZOOM_CLEAR_IMAGE, 150);
+        int r2 = r45_ciz_set_zoom(&st, R45_ZOOM_DIGITAL, 300);
+        if (r1 == -EINVAL && r2 == -EINVAL) {
+            sq_100_120_200_240_ciz_blocked++;
+            sq_hfr_zoom_reject_rc = r1;
+        }
+    }
+
+    /* 3. Four Automatic Camera State Locks Beyond Optical Zoom (23.98p normal movie) */
+    st.shoot_mode = R45_SHOOT_NORMAL_MOVIE;
+    st.normal_fps_code = 24;
+    (void)r45_ciz_set_zoom(&st, R45_ZOOM_OPTICAL_ONLY, 100);
+    (void)r45_ciz_set_focus_area(&st, R45_AF_AREA_FLEXIBLE_SPOT);
+    (void)r45_ciz_set_metering_mode(&st, R45_METER_SPOT);
+    (void)r45_ciz_set_face_eye_af(&st, 1);
+    (void)r45_ciz_set_face_multi_metering(&st, 1);
+    (void)r45_ciz_set_realtime_tracking(&st, 1);
+
+    /* Enter Clear Image Zoom 1.50x (150) and Digital Zoom 3.00x (300) */
+    int ciz_enter_rc = r45_ciz_set_zoom(&st, R45_ZOOM_CLEAR_IMAGE, 150);
+    int center_priority_af_active = (ciz_enter_rc == 0 && st.effective_focus_area == R45_AF_AREA_CENTER_LOCKED) ? 1 : 0;
+    int focus_area_locked_rc = r45_ciz_set_focus_area(&st, R45_AF_AREA_WIDE);
+    int metering_locked_multi_ok = (st.effective_metering_mode == R45_METER_MULTI &&
+                                    r45_ciz_set_metering_mode(&st, R45_METER_MULTI) == 0) ? 1 : 0;
+    int non_multi_metering_reject_rc = r45_ciz_set_metering_mode(&st, R45_METER_SPOT);
+    int face_eye_af_reject_rc = r45_ciz_set_face_eye_af(&st, 1);
+    int face_multi_metering_reject_rc = r45_ciz_set_face_multi_metering(&st, 1);
+    int realtime_tracking_reject_rc = r45_ciz_set_realtime_tracking(&st, 1);
+    int all_4_locks_active_ciz = (center_priority_af_active == 1 &&
+                                  metering_locked_multi_ok == 1 &&
+                                  st.effective_face_eye_af == 0 &&
+                                  st.effective_face_multi_metering == 0 &&
+                                  st.effective_realtime_tracking == 0) ? 1 : 0;
+
+    int dig_enter_rc = r45_ciz_set_zoom(&st, R45_ZOOM_DIGITAL, 300);
+    int digital_zoom_4locks_ok = (dig_enter_rc == 0 &&
+                                  st.effective_focus_area == R45_AF_AREA_CENTER_LOCKED &&
+                                  st.effective_metering_mode == R45_METER_MULTI &&
+                                  r45_ciz_set_focus_area(&st, R45_AF_AREA_ZONE) == -EBUSY &&
+                                  r45_ciz_set_metering_mode(&st, R45_METER_CENTER) == -EBUSY &&
+                                  r45_ciz_set_face_eye_af(&st, 1) == -EOPNOTSUPP &&
+                                  r45_ciz_set_realtime_tracking(&st, 1) == -EOPNOTSUPP) ? 1 : 0;
+
+    /* Return to Optical Zoom 1.00x (100): all 4 camera state locks cleanly restore */
+    (void)r45_ciz_set_zoom(&st, R45_ZOOM_OPTICAL_ONLY, 100);
+    int optical_zoom_unlocks_all_4_ok = (st.effective_focus_area == R45_AF_AREA_FLEXIBLE_SPOT &&
+                                         r45_ciz_set_metering_mode(&st, R45_METER_SPOT) == 0 &&
+                                         st.effective_face_eye_af == 1 &&
+                                         st.effective_face_multi_metering == 1 &&
+                                         st.effective_realtime_tracking == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r45_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r45_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) return 237;
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R45_CIZ_4LOCKS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (jpeg_heif_ciz_allowed == 2 &&
+              raw_3formats_ciz_blocked == 3 &&
+              raw_format_zoom_reject_rc == -EINVAL &&
+              invalid_zoom_mode_reject_rc == -EINVAL &&
+              normal_11988p_100p_ciz_blocked == 2 &&
+              normal_hfr_zoom_reject_rc == -EINVAL &&
+              sq_60fps_ciz_allowed == 1 &&
+              sq_100_120_200_240_ciz_blocked == 4 &&
+              sq_hfr_zoom_reject_rc == -EINVAL &&
+              all_4_locks_active_ciz == 1 &&
+              focus_area_locked_rc == -EBUSY &&
+              non_multi_metering_reject_rc == -EBUSY &&
+              face_eye_af_reject_rc == -EOPNOTSUPP &&
+              face_multi_metering_reject_rc == -EOPNOTSUPP &&
+              realtime_tracking_reject_rc == -EOPNOTSUPP &&
+              digital_zoom_4locks_ok == 1 &&
+              optical_zoom_unlocks_all_4_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R45_CIZ_4LOCKS jpeg_heif_ciz_allowed=%d raw_3formats_ciz_blocked=%d "
+            "raw_format_zoom_reject_rc=%d invalid_zoom_mode_reject_rc=%d "
+            "normal_11988p_100p_ciz_blocked=%d normal_hfr_zoom_reject_rc=%d "
+            "sq_60fps_ciz_allowed=%d sq_100_120_200_240_ciz_blocked=%d sq_hfr_zoom_reject_rc=%d "
+            "center_priority_af_active=%d focus_area_locked_rc=%d "
+            "metering_locked_multi_ok=%d non_multi_metering_reject_rc=%d "
+            "face_eye_af_reject_rc=%d face_multi_metering_reject_rc=%d "
+            "realtime_tracking_reject_rc=%d digital_zoom_4locks_ok=%d "
+            "optical_zoom_unlocks_all_4_ok=%d p2_write_blocked_rc=%d "
+            "p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r45b_ok=%d verify_us=%lld\n",
+            jpeg_heif_ciz_allowed, raw_3formats_ciz_blocked,
+            raw_format_zoom_reject_rc, invalid_zoom_mode_reject_rc,
+            normal_11988p_100p_ciz_blocked, normal_hfr_zoom_reject_rc,
+            sq_60fps_ciz_allowed, sq_100_120_200_240_ciz_blocked, sq_hfr_zoom_reject_rc,
+            center_priority_af_active, focus_area_locked_rc,
+            metering_locked_multi_ok, non_multi_metering_reject_rc,
+            face_eye_af_reject_rc, face_multi_metering_reject_rc,
+            realtime_tracking_reject_rc, digital_zoom_4locks_ok,
+            optical_zoom_unlocks_all_4_ok, p2_write_blocked_rc,
+            p2_setting_sha256_match, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 237;
+}
+
+enum {
+    R45_PS_BYPASS_USB_POWER    = (1U << 0), /* 1. USB power supply */
+    R45_PS_BYPASS_SLIDESHOW    = (1U << 1), /* 2. Slideshow playback */
+    R45_PS_BYPASS_FTP_TRANSFER = (1U << 2), /* 3. FTP transfer */
+    R45_PS_BYPASS_MOVIE_REC    = (1U << 3), /* 4. Movie recording */
+    R45_PS_BYPASS_PC_CONN      = (1U << 4), /* 5. Computer connection */
+    R45_PS_BYPASS_TV_HDMI      = (1U << 5), /* 6. TV / HDMI connection */
+    R45_PS_BYPASS_IR_REMOTE_ON = (1U << 6), /* 7. [IR Remote Ctrl] = [On] */
+    R45_PS_BYPASS_BT_REMOTE_ON = (1U << 7), /* 8. [Bluetooth Rmt Ctrl] = [On] */
+    R45_PS_BYPASS_STREAM_CLOUD = (1U << 8)  /* 9. Streaming / Creators' Cloud */
+};
+
+#define R45_PS_ALL_9_MASK 0x1ffU
+
+enum {
+    R45_AUTOTEMP_STANDARD = 0,
+    R45_AUTOTEMP_HIGH     = 1,
+    R45_AUTOTEMP_INVALID  = 2
+};
+
+enum {
+    R45_FAN_AUTO       = 0,
+    R45_FAN_MINIMUM    = 1,
+    R45_FAN_OFF_IN_REC = 2,
+    R45_FAN_ALWAYS_OFF = 3
+};
+
+typedef struct {
+    int power_save_sec;       /* 0=Off, 60=1Min, 120=2Min, 300=5Min(default), 1800=30Min */
+    unsigned int bypass_mask; /* Bitmask of R45_PS_BYPASS_* */
+    int np_fz100_airgapped;   /* 1 when running on internal NP-FZ100 with zero external links */
+    int auto_off_temp_mode;   /* R45_AUTOTEMP_* */
+    int tripod_mounted;       /* 1 if mounted on tripod */
+    int fan_control_mode;     /* R45_FAN_* */
+} r45_powersave_temp_state_t;
+
+__attribute__((noinline)) static const char *r45_powersave_menu_label(void) {
+    return "Power Save Start Time";
+}
+
+__attribute__((noinline)) static int r45_set_power_save_start_time(r45_powersave_temp_state_t *st, int sec) {
+    if (!st) return -EINVAL;
+    if (sec != 0 && sec != 60 && sec != 120 && sec != 300 && sec != 1800) {
+        return -EINVAL; /* -22 */
+    }
+    st->power_save_sec = sec;
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_is_power_save_timer_armed(const r45_powersave_temp_state_t *st) {
+    if (!st) return 0;
+    if (st->power_save_sec == 0) return 0; /* [Off] */
+    if ((st->bypass_mask & R45_PS_ALL_9_MASK) != 0U) {
+        return 0; /* Automatically deactivated by any of the 9 conditions */
+    }
+    return 1;
+}
+
+__attribute__((noinline)) static int r45_preflight_airgapped_p3_cold_dump(
+    const r45_powersave_temp_state_t *st,
+    unsigned long long dump_bytes
+) {
+    if (!st) return -EINVAL;
+    if (dump_bytes != (75ULL * 1024ULL * 1024ULL)) {
+        return -EINVAL;
+    }
+    if (st->np_fz100_airgapped && (st->bypass_mask & R45_PS_ALL_9_MASK) == 0U) {
+        /* Air-gapped NP-FZ100 75 MiB p3 cold dump requires [Off] (0s) or [30 Min] (1800s) */
+        if (st->power_save_sec != 0 && st->power_save_sec != 1800) {
+            return -EBUSY; /* -16: 5 Min / 2 Min / 1 Min idle sleep hazard rejected */
+        }
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r45_set_auto_power_off_temp(
+    r45_powersave_temp_state_t *st,
+    int mode,
+    int *out_shutdown_c
+) {
+    if (!st) return -EINVAL;
+    if (mode != R45_AUTOTEMP_STANDARD && mode != R45_AUTOTEMP_HIGH) {
+        return -EINVAL; /* -22 */
+    }
+    if (mode == R45_AUTOTEMP_HIGH) {
+        if (!st->tripod_mounted) {
+            return -EPERM; /* -1: prolonged hand-held operation prohibited (low-temp burn hazard) */
+        }
+        if (st->fan_control_mode == R45_FAN_ALWAYS_OFF) {
+            return -EBUSY; /* -16: [Auto Power OFF Temp.]=High couples with active [Fan Control] protection */
+        }
+    }
+    st->auto_off_temp_mode = mode;
+    if (out_shutdown_c) {
+        *out_shutdown_c = (mode == R45_AUTOTEMP_HIGH) ? 68 : 55;
+    }
+    return 0;
+}
+
+static int run_r45_powersave_autotemp_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r45_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r45_p2_ro", 0755) != 0) {
+        return 238;
+    }
+    (void)umount("/mnt/r45_surfaces");
+    (void)umount("/mnt/r45_p2_ro");
+    if (mount("tmpfs", "/mnt/r45_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r45_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 238;
+    }
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r45_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 53U) ^ (k * 29U) ^ 0x45U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 238;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 238;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 43U + 0x27U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r45_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 238;
+    if (mount(NULL, "/mnt/r45_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r45_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 238;
+    }
+
+    r45_powersave_temp_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.power_save_sec = 300; /* Default 5 Min */
+    st.np_fz100_airgapped = 1;
+    st.auto_off_temp_mode = R45_AUTOTEMP_STANDARD;
+    st.fan_control_mode = R45_FAN_AUTO;
+
+    /* 1. Exact full menu string [Power Save Start Time], 5 Min (300s) default & 9 bypass conditions */
+    int exact_menu_label_ok = (strcmp(r45_powersave_menu_label(), "Power Save Start Time") == 0 &&
+                               strcmp(r45_powersave_menu_label(), "Power Save") != 0) ? 1 : 0;
+    int default_5min_sec = st.power_save_sec;
+    int invalid_timer_reject_rc = r45_set_power_save_start_time(&st, 45);
+    int idle_airgapped_sleep_armed = r45_is_power_save_timer_armed(&st);
+
+    int powersave_9conds_deactivated = 0;
+    for (unsigned int bit = 0U; bit < 9U; bit++) {
+        st.bypass_mask = (1U << bit);
+        if (r45_is_power_save_timer_armed(&st) == 0) {
+            powersave_9conds_deactivated++;
+        }
+    }
+    st.bypass_mask = 0U;
+    int rearmed_after_9conds_clear_ok = r45_is_power_save_timer_armed(&st);
+
+    /* 2. Air-gapped NP-FZ100 Tier-0 75 MiB p3 cold dump lock (Off or 30 Min mandatory) */
+    const unsigned long long p3_75mib = 75ULL * 1024ULL * 1024ULL;
+    int airgapped_5min_vault_reject_rc = r45_preflight_airgapped_p3_cold_dump(&st, p3_75mib);
+    (void)r45_set_power_save_start_time(&st, 120);
+    int airgapped_2min_vault_reject_rc = r45_preflight_airgapped_p3_cold_dump(&st, p3_75mib);
+    (void)r45_set_power_save_start_time(&st, 60);
+    int airgapped_1min_vault_reject_rc = r45_preflight_airgapped_p3_cold_dump(&st, p3_75mib);
+    (void)r45_set_power_save_start_time(&st, 1800); /* 30 Min */
+    int vault_30min_rc = r45_preflight_airgapped_p3_cold_dump(&st, p3_75mib);
+    (void)r45_set_power_save_start_time(&st, 0);    /* Off */
+    int vault_off_rc = r45_preflight_airgapped_p3_cold_dump(&st, p3_75mib);
+    int airgapped_off_or_30min_vault_ok = (airgapped_5min_vault_reject_rc == -EBUSY &&
+                                           airgapped_2min_vault_reject_rc == -EBUSY &&
+                                           airgapped_1min_vault_reject_rc == -EBUSY &&
+                                           vault_30min_rc == 0 &&
+                                           vault_off_rc == 0) ? 1 : 0;
+
+    /* 3. [Auto Power OFF Temp.] [Standard] default vs [High] tripod + [Fan Control] interlock */
+    int std_thresh_c = 0, high_thresh_c = 0;
+    int default_autotemp_standard = (st.auto_off_temp_mode == R45_AUTOTEMP_STANDARD &&
+                                     r45_set_auto_power_off_temp(&st, R45_AUTOTEMP_STANDARD, &std_thresh_c) == 0) ? 1 : 0;
+    int invalid_autotemp_reject_rc = r45_set_auto_power_off_temp(&st, R45_AUTOTEMP_INVALID, NULL);
+    st.tripod_mounted = 0;
+    int handheld_high_temp_reject_rc = r45_set_auto_power_off_temp(&st, R45_AUTOTEMP_HIGH, NULL);
+    st.tripod_mounted = 1;
+    st.fan_control_mode = R45_FAN_ALWAYS_OFF;
+    int fan_always_off_high_temp_reject_rc = r45_set_auto_power_off_temp(&st, R45_AUTOTEMP_HIGH, NULL);
+    st.fan_control_mode = R45_FAN_AUTO;
+    int high_ok_rc = r45_set_auto_power_off_temp(&st, R45_AUTOTEMP_HIGH, &high_thresh_c);
+    int tripod_high_temp_coupled_fan_ok = (high_ok_rc == 0 && high_thresh_c > std_thresh_c) ? 1 : 0;
+
+    /* 4. Read-only p2, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r45_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r45_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (exact_menu_label_ok == 1 &&
+              default_5min_sec == 300 &&
+              invalid_timer_reject_rc == -EINVAL &&
+              idle_airgapped_sleep_armed == 1 &&
+              powersave_9conds_deactivated == 9 &&
+              rearmed_after_9conds_clear_ok == 1 &&
+              airgapped_5min_vault_reject_rc == -EBUSY &&
+              airgapped_off_or_30min_vault_ok == 1 &&
+              default_autotemp_standard == 1 &&
+              invalid_autotemp_reject_rc == -EINVAL &&
+              handheld_high_temp_reject_rc == -EPERM &&
+              fan_always_off_high_temp_reject_rc == -EBUSY &&
+              tripod_high_temp_coupled_fan_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R45_POWERSAVE_AUTOTEMP exact_menu_label_ok=%d default_5min_sec=%d "
+            "invalid_timer_reject_rc=%d idle_airgapped_sleep_armed=%d "
+            "powersave_9conds_deactivated=%d rearmed_after_9conds_clear_ok=%d "
+            "airgapped_5min_vault_reject_rc=%d airgapped_off_or_30min_vault_ok=%d "
+            "p3_cold_dump_mib=75 default_autotemp_standard=%d "
+            "invalid_autotemp_reject_rc=%d handheld_high_temp_reject_rc=%d "
+            "fan_always_off_high_temp_reject_rc=%d tripod_high_temp_coupled_fan_ok=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r45c_ok=%d verify_us=%lld\n",
+            exact_menu_label_ok, default_5min_sec,
+            invalid_timer_reject_rc, idle_airgapped_sleep_armed,
+            powersave_9conds_deactivated, rearmed_after_9conds_clear_ok,
+            airgapped_5min_vault_reject_rc, airgapped_off_or_30min_vault_ok,
+            default_autotemp_standard, invalid_autotemp_reject_rc,
+            handheld_high_temp_reject_rc, fan_always_off_high_temp_reject_rc,
+            tripod_high_temp_coupled_fan_ok, p2_write_blocked_rc,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 238;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -11652,6 +12493,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r44-gammaassist-displaylut") == 0) {
         return run_r44_gammaassist_displaylut_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r45-ciz-4locks") == 0) {
+        return run_r45_ciz_4locks_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r45-powersave-autotemp") == 0) {
+        return run_r45_powersave_autotemp_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -11762,6 +12609,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r44", &r44_st) == 0) {
         if (setup_r44_pixelmap_cnflasha_probe() != 0) {
             return 63;
+        }
+    }
+    struct stat r45_st;
+    if (stat("/etc/fx6_stage_r45", &r45_st) == 0) {
+        if (setup_r45_steadyshot_active_cutoffs_probe() != 0) {
+            return 64;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

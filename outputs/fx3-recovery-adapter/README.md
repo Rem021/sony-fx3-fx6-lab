@@ -530,6 +530,27 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --clean-room --json
 ```
+
+## Phase 155 — 真机主线 Part 8（Pillar 20 / `20/20` 里程碑）：`CXD90057` `1.8V ttyAMA0 460800n8` 被动启动阶段分诊、多 USB `1.8V` 电气防火墙与最后手段硬件 ISP 检查单校验器
+
+- **[`realhw_uart_460800_post_triage_and_isp_guard.py`](fx3_recovery/realhw_uart_460800_post_triage_and_isp_guard.py)**：闭合真实物理 `Sony ILME-FX3`（`7.02`，`p1:/boot/kemco.txt` `cfg.uart=1 console=ttyAMA0,460800n8`）的被动只读串口诊断与最后手段硬件 ISP 应急核验链路，完成 **20/20 支柱**恢复总检里程碑（硬锁定 `PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`；供体严格通过 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退）：
+  - **供体只读核验（`inspect_uart_460800_and_isp_donors_readonly`）**：只读验证 5 项 FX3 `7.02` 本地供体（`kemco.txt` `1,736 B`、`tomco.txt` `710 B`、`init` `735 B`、`libsencore.so` `377,328 B` 及有界 4 KiB 头部 `cpapp-b.bin` `15,980,568 B`），并校验 `p1:/boot/kemco.txt` 诊断模式（`cfg.uart=1` + `console=ttyAMA0,460800n8`，硬拒 FX6 `cfg.uart=9` 与 `console=ttynull`），JSON 输出零原始专有固件字节。
+  - **支柱 A — 被动 `1.8V` 只接收 `460800 8N1` 六阶段启动分诊引擎（`8/8`）**：
+    - 跨全 6 个启动阶段（`STAGE_0_BOOTROM_SPI_NOR_IPL` -> `STAGE_1_BLOADER_BL31_ATF` -> `STAGE_2_LINUX_4_9_337_SCEL_KERNEL` -> `STAGE_3_SPACC_CNFLASHA15_EXT2_USR` -> `STAGE_4_IM_ELF_SD_ESCAPE_WRAPPER` -> `STAGE_5_STAGEB_APPFW_BIG6_READY`）解析真实/捕获 `ttyAMA0` 启动日志并验证单调递增与时序。
+    - 将任意卡死/Panic/EROFS/清单不匹配精准映射至最低影响确定性恢复动作：`EJECT_SD_47US_BYPASS`、`CREATE_STOP_STAGEB_FLAG`、`HOLD_MENU_SHUTTER_POWER`、`P1_LINE1_MODE_CLEAR` 或 `TIER0_VAULT_RESTORE`；遇到乱码/空日志 fail-closed 拒绝盲写。
+  - **支柱 B — `1.8V` 逻辑电平与多 USB `VMC-BNCM1` 竞争防火墙（`6/6`）**：
+    - 硬拦截 `3.3V` / `5.0V` 串口适配器（致命 `CXD90057` `1.8V` IO 引脚过压烧毁）与欠压探头（`< 1.65V`），强制物理 TX 引脚悬空只接收（`passive_tx_bytes_emitted == 0`），拦截非 `460800 8N1` 波特率/帧格式、H0 期间同时挂载 `VMC-BNCM1`（`680 kOhm` LTC 适配器）/ `LANC`（`100 kOhm`）及多 USB 并发主机竞争。
+  - **支柱 C — 最后手段脱机硬件 ISP（`1.8V VCCQ` eMMC + `1.8V` SPI-NOR）应急校验清单（`6/6`）**：
+    - 在任何理论台架修复前核验 `1.8V VCCQ` eMMC 与 `1.8V` SPI-NOR 供电轨、SoC `RESET_N` 拉低隔离 + 主电池/USB 断开、飞线长度 `<= 10.0 cm`、`EXT_CSD[179]`（`BOOT_PARTITION_ENABLE`、`BOOT_ACK`、`PARTITION_ACCESS == 0`）、`EXT_CSD[177]`（`BOOT_BUS_CONDITIONS`）、`EXT_CSD[162]`（`RST_n_FUNCTION`，永久阻断 OTP 写入），以及单机身 `CID` 绑定的 `pnflasha*` + `/dev/mtd0ro` 双遍 SHA-256 仓库配对（硬锁定 `persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`）。
+  - **CLI 与 `20/20` 恢复总检里程碑（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-uart-460800-isp-triage [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase155`（全开启时汇总为 **20/20** 支柱总检里程碑，同时保持无标志默认 `7/7` 与 `--with-phase151` `19/19` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 155 公开符号；[`tests/test_realhw_uart_460800_post_triage_and_isp_guard.py`](tests/test_realhw_uart_460800_post_triage_and_isp_guard.py) 提供 **48 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-uart-460800-isp-triage --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --with-phase155 --clean-room --json
 ```
 
 

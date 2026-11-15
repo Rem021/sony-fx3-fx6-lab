@@ -1435,3 +1435,38 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 239：Stage 44（`44/44` 里程碑）真实硬件主线 — Wave-34 `[Recover Image DB]` 低电量拒写与非删除 `AVF_INFO` 修复 + Slot-1 Tier-0 保险库只读防火墙、`[Monitor Flip Direction]` 跨复位存活与 `[Horizontal Flip]` 回放永不倒置、以及 `[AF Transition Speed]` / `[AF Subj. Shift Sensitivity]` 完整拼写对静照 `[Interval Shoot Func.]` HIL 协同仿真器
+
+[`realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py`](realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py) 作为 **Stage 44（`44/44` 里程碑，Schema `realhw_recover_imagedb_monitor_flip_af_sens_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil=True` / `include_stage44=True`，支持显式 `--include-stage44` 以及通过 `--skip-phase239` / `--skip-stage44` 跳过；本地只读供体 44 阶段全板协同仿真 `< 2.6s`、洁净室模式 `< 0.70s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`tier0_slot1_unverified_imagedb_mutation_events == 0`、`playback_horizontal_flip_inversion_events == 0`、`monitor_flip_or_af_kinematics_drift_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **14 份真实供体**：`libIMDB.so`（`71,536 B`：`IMDB_find_entry` / `IMDB_get_entries` / `IMDB_find_target_bit`）、`libSaveLoadSettings.so`（`18,760 B`：`Backup_get_datasize` / `Backup_read` / `infra_saveLoadSettings_init`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`libInfraLensCommunicator.so`（`14,544 B`）、`string_english_f.uxc`（`373,820 B`：证实 `Recover Image DB` / `Slot 1` / `Slot 2` / `Monitor Flip Direction` / `Horizontal Flip` / `AF Transition Speed` / `AF Subj. Shift Sensitivity` / `1(Locked on)` / `5(Responsive)` / `Interval Shoot Func.` / `Shooting Start Time` / `Shooting Interval` / `Number of Shots` / `Playback` / `HDMI Info. Display` / `Camera Settings Reset` / `Initialize`）与 `string_english.uxc`（`118,208 B`：`AF Transition Speed` / `AF Subj. Shift Sens.`），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 44A — `[Recover Image DB]` 低电量拒写、非删除 `AVF_INFO` 修复、动作项复位免疫与 Slot-1 Tier-0 保险库只读防火墙 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Media] -> [Recover Image DB]`：当 `NP-FZ100` 处于极度亏电状态（`battery_state == "extremely_depleted"`、`battery_soc_pct < 10` 或 `battery_mv < 6400`）时，硬件在任何 FAT/exFAT 扇区写入发生之前立即以 `EAGAIN = 11` 拒绝执行（`hardware_refused_before_fat_exfat_write == True`、`card_metadata_sector_writes == 0`），防止掉电损坏分区表。
+   - 在电量充足的工作卡上重建 `AVF_INFO`（`AVIN0001.INP`、`AVIN0001.BNP`、`PRV00001.BIN`）与 `M4ROOT/MEDIAPRO.XML` 以消除 `"Image DataBase File error"` 或可拍摄张数误显示为 `"0"` 的索引不一致，**严格不删除任何已录制的视频或照片**（`deleted_clip_or_still_count == 0`，尝试借机删除媒体返回 `EOPNOTSUPP = 95`），并验证其作为即时动作项对 `[Camera Settings Reset]` 与 `[Initialize]` 的免疫性。
+   - 强执行 **Slot-1 Tier-0 取证冷备保险库只读防火墙**：当 Slot 1 驻留包含 `pnflasha` / `cnflasha` / `CAMSET01.DAT` / `FX3RCPT1.BIN` 的活跃或未完成离机 SHA-256 核验的 Tier-0 备份卡时，对 Slot 1 的 `[Recover Image DB]` 请求一律以 `EROFS = 30`（SDXC 物理 `WP` 锁止）或 `EBUSY = 16` fail-closed 硬阻断（`tier0_slot1_unverified_imagedb_mutation_events == 0`）；同时允许电量充足时对 Slot 2 独立工作卡执行非删除修复，或仅在 Tier-0 保险库卡完成离机 SHA-256 核验并安全退出现场更换为未锁工作卡后放行 Slot 1 修复。
+3. **Sub-Model 44B — `[Monitor Flip Direction]` 跨 `[Camera Settings Reset]` 存活与 `[Horizontal Flip]` 回放永不倒置 HIL**：
+   - 完整建模 `MENU -> Setup -> [Monitor] -> [Monitor Flip Direction]` 四档（出厂默认 `Auto`、`Horizontal Flip`、`Vertical Flip`、`Off`）：执行 **`[Camera Settings Reset]` 时完整保留原设定**（`reset_only_by_initialize == True`），仅全机 **`[Initialize]`** 将其恢复回 `Auto`。
+   - 严格区分实时取景与机内回放：开启 `[Horizontal Flip]` 时仅对实时拍摄取景（`live_shooting`）下的本地 LCD 画面做水平镜像（`live_shooting_lcd_horizontally_mirrored == True`），而**回放模式（`playback`）下画面方向永不水平翻转**（`playback_display_horizontally_inverted == False`、`playback_horizontal_flip_inversion_events == 0`，保证时间码与文字正常可读；强行翻转回放画面返回 `EOPNOTSUPP = 95`），且外接 HDMI 净流始终保持未翻转（`external_hdmi_clean_feed_flipped == False`）。
+4. **Sub-Model 44C & Redlines — 视频/S&Q 对焦运动学（`[AF Transition Speed]` `1..7` & `[AF Subj. Shift Sensitivity]` `1..5` 完整拼写）对静照 `[Interval Shoot Func.]` 隔离 + 安全红线锁死 HIL**：
+   - 精确建模 `ILME-FX3` 完整菜单拼写 **`[AF Subj. Shift Sensitivity]`**（`1(Locked on)`..`5(Responsive)`，默认 `5(Responsive)`；对 `FX6`/`Alpha` 缩写幻觉 `"AF Subj. Shift Sens."` 等一律以 `EINVAL = 22` 拒绝）与 **`[AF Transition Speed]`**（`1(Slow)`..`7(Fast)`，默认 `5`）：二者均作用于视频与 S&Q 模式（静照模式下强行启用返回 `EOPNOTSUPP = 95`），并在 **`[Camera Settings Reset]` 下干净复位回 `5` / `5(Responsive)`**，与同机跨复位保留的 `[Monitor Flip Direction]` 构成确定性非对称复位分流对照（`monitor_flip_or_af_kinematics_drift_events == 0`），同时支持从 Slot 1 `CAMSET01..10.DAT` 零持久化写入（`bk4_persistent_nvram_writes == 0`）无漂移恢复。
+   - 对照建模 `MENU -> Shooting -> [Drive Mode] -> [Interval Shoot Func.]`（`Shooting Start Time` `1s..99m59s` = `1..5999s`、`Shooting Interval` `1s..60s`、`Number of Shots` `1..9999`）：严格限定为静照序列采集（`JPEG`/`HEIF`/`RAW`，后期通过 `Imaging Edge Desktop (Viewer)` 合成），任何将其混淆为 FX6 机内 MXF/MP4 视频 `Interval Rec` 的请求一律以 `EOPNOTSUPP = 95` fail-closed 拦截，并锁死全部 10 项硬件安全红线。
+
+### Phase 239 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 44（44/44 里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py --self-test --json
+
+# 2. 全板 44 阶段（Stage 1..44, 44/44 里程碑）统一校验（支持 --include-stage44 与 --skip-phase239）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage44 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 239 双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

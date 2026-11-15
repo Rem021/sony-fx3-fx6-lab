@@ -84,6 +84,7 @@ import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
 import realhw_nouvc_dcc1_lut_path_cineei_coemulator as p194  # noqa: E402
 import realhw_pixelmap_ntscpal_gammaassist_displaylut_coemulator as p222  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
+import realhw_recover_imagedb_monitor_flip_af_sens_coemulator as p239  # noqa: E402
 import realhw_silent_autopixelmap_marker_flexexp_coemulator as p236  # noqa: E402
 import realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator as p232  # noqa: E402
 import realhw_ssboot_wbi2_powerloss_and_slot1_ufu_coemulator as p178  # noqa: E402
@@ -175,6 +176,8 @@ class CoEmulationConfig:
     include_phase226_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_hil: bool = True
     include_phase232_realhw_sq_fixedvar_zebra_peaking_fullformat_hil: bool = True
     include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil: bool = True
+    include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil: bool = True
+    include_stage44: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2649,6 +2652,76 @@ def run_stage43_realhw_silent_autopixelmap_marker_flexexp_hil(
     }
 
 
+def run_stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 44 (Phase 239, 44/44 Milestone): Real-Hardware ILME-FX3 Wave-34 Recover Image DB Battery & Tier-0 Vault Firewall, Monitor Flip Direction Reset Survival & Playback Non-Inversion, and AF Subj. Shift Sensitivity / AF Transition Speed vs Interval Shoot HIL."""
+    config.validate()
+    rep = p239.run_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil",
+        "schema": rep["schema"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "tier0_slot1_unverified_imagedb_mutation_events": red[
+            "tier0_slot1_unverified_imagedb_mutation_events"
+        ],
+        "playback_horizontal_flip_inversion_events": red[
+            "playback_horizontal_flip_inversion_events"
+        ],
+        "monitor_flip_or_af_kinematics_drift_events": red[
+            "monitor_flip_or_af_kinematics_drift_events"
+        ],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_recover_imagedb_battery_and_vault_hil": rep[
+            "pillar_a_recover_imagedb_battery_and_vault_hil"
+        ],
+        "pillar_b_monitor_flip_reset_and_playback_hil": rep[
+            "pillar_b_monitor_flip_reset_and_playback_hil"
+        ],
+        "pillar_c_d_af_kinematics_interval_and_redlines": rep[
+            "pillar_c_d_af_kinematics_interval_and_redlines"
+        ],
+        "phase239_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2846,6 +2919,14 @@ def run_fx3_vm_coemulation_suite(
     stage43: Optional[Dict[str, object]] = (
         run_stage43_realhw_silent_autopixelmap_marker_flexexp_hil(cfg, env=env)
         if cfg.include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil
+        else None
+    )
+    stage44: Optional[Dict[str, object]] = (
+        run_stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil(cfg, env=env)
+        if (
+            cfg.include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil
+            and cfg.include_stage44
+        )
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -3745,6 +3826,41 @@ def run_fx3_vm_coemulation_suite(
         and stage43["appfw_crashes"] == 0
         and stage43["raw_firmware_bytes_leaked"] == 0
     )
+    stage44_ok = True if stage44 is None else (
+        bool(stage44["all_checks_passed"])
+        and stage44["nop_count"] == 0
+        and stage44["guest_code_modification_bytes"] == 0
+        and stage44["cp_mutation_bytes"] == 0
+        and stage44["wbi_mutation_bytes"] == 0
+        and stage44["calibration_mutation_bytes"] == 0
+        and stage44["cnflasha_mutation_bytes"] == 0
+        and bool(stage44["cnflasha_userspace_write_blocked"])
+        and stage44["nvram_persistent_writes"] == 0
+        and stage44["bk4_persistent_nvram_writes"] == 0
+        and stage44["physical_device_writes"] == 0
+        and (not stage44["persistent_emmc_writes_authorized"])
+        and (not stage44["hardware_live_attachment_authorized"])
+        and (not stage44["overall_ready_for_hardware_attach"])
+        and (not stage44["isp_write_authorized"])
+        and stage44["emmc_nflasha_write_count"] == 0
+        and stage44["emmc_mutation_bytes"] == 0
+        and (not stage44["spi_nor_write_authorized"])
+        and stage44["spi_nor_mutation_bytes"] == 0
+        and (not stage44["el3_payload_transmit_authorized"])
+        and stage44["physical_usb_packets_emitted"] == 0
+        and stage44["otp_fuse_touches"] == 0
+        and stage44["rpmb_counter_increments"] == 0
+        and stage44["tier0_slot1_unverified_imagedb_mutation_events"] == 0
+        and stage44["playback_horizontal_flip_inversion_events"] == 0
+        and stage44["monitor_flip_or_af_kinematics_drift_events"] == 0
+        and stage44["rsv_orphan_count"] == 0
+        and stage44["null_gpio_derefs"] == 0
+        and stage44["mailbox_stalls"] == 0
+        and stage44["stock_cp_fault_count"] == 0
+        and stage44["wf12_00342260_hits"] == 0
+        and stage44["appfw_crashes"] == 0
+        and stage44["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -3791,6 +3907,7 @@ def run_fx3_vm_coemulation_suite(
         and stage41_ok
         and stage42_ok
         and stage43_ok
+        and stage44_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -3847,6 +3964,14 @@ def run_fx3_vm_coemulation_suite(
             "include_phase226_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_hil": cfg.include_phase226_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_hil,
             "include_phase232_realhw_sq_fixedvar_zebra_peaking_fullformat_hil": cfg.include_phase232_realhw_sq_fixedvar_zebra_peaking_fullformat_hil,
             "include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil": cfg.include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil,
+            "include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil": (
+                cfg.include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil
+                and cfg.include_stage44
+            ),
+            "include_stage44": (
+                cfg.include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil
+                and cfg.include_stage44
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -3951,6 +4076,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage42_realhw_sq_fixedvar_zebra_peaking_fullformat_hil"] = stage42
     if stage43 is not None:
         core_payload["stage43_realhw_silent_autopixelmap_marker_flexexp_hil"] = stage43
+    if stage44 is not None:
+        core_payload["stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil"] = stage44
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -3962,7 +4089,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 (42/42 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 (44/44 Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -4169,6 +4296,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 43 (Phase 236 43/43 Milestone Real-Hardware ILME-FX3 Wave-33 Silent Mode Auto Pixel Mapping Target & Shutter When Pwr OFF Absence, Marker Display 15-Ratio HDMI Isolation & Flexible Exp. Mode Reset Split HIL)",
     )
     parser.add_argument(
+        "--include-stage44",
+        dest="include_stage44",
+        action="store_true",
+        default=True,
+        help="Include Stage 44 (Phase 239 44/44 Milestone Real-Hardware ILME-FX3 Wave-34 Recover Image DB Battery & Tier-0 Vault Firewall, Monitor Flip Direction Reset Survival & Playback Non-Inversion, and AF Subj. Shift Sensitivity / AF Transition Speed vs Interval Shoot HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage44",
+        "--no-include-stage44",
+        dest="skip_stage44",
+        action="store_true",
+        help="Skip optional Stage 44 (alias for --skip-phase239)",
+    )
+    parser.add_argument(
+        "--skip-phase239",
+        action="store_true",
+        help="Skip optional Stage 44 (Phase 239 44/44 Milestone Real-Hardware ILME-FX3 Wave-34 Recover Image DB Battery & Tier-0 Vault Firewall, Monitor Flip Direction Reset Survival & Playback Non-Inversion, and AF Subj. Shift Sensitivity / AF Transition Speed vs Interval Shoot HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -4228,6 +4374,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         sys.stdout.write(json.dumps(asdict(p24.build_dual_qemu_ivshmem_topology_spec()), indent=2) + "\n")
         return 0
 
+    enable_stage44 = bool(args.include_stage44) and (not args.skip_phase239) and (not args.skip_stage44)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -4274,6 +4421,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase226_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_hil=not args.skip_phase226,
         include_phase232_realhw_sq_fixedvar_zebra_peaking_fullformat_hil=not args.skip_phase232,
         include_phase236_realhw_silent_autopixelmap_marker_flexexp_hil=not args.skip_phase236,
+        include_phase239_realhw_recover_imagedb_monitor_flip_af_sens_hil=enable_stage44,
+        include_stage44=enable_stage44,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -4326,6 +4475,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s41 = rep.get("stage41_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_hil")
         s42 = rep.get("stage42_realhw_sq_fixedvar_zebra_peaking_fullformat_hil")
         s43 = rep.get("stage43_realhw_silent_autopixelmap_marker_flexexp_hil")
+        s44 = rep.get("stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -4677,6 +4827,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s43, dict)
             else ""
         )
+        s44_str = (
+            f" | realhw_recover_imagedb_monitor_flip_af_sens_hil={s44['source_mode']}("
+            f"imagedb_del={s44['pillar_a_recover_imagedb_battery_and_vault_hil']['slot2_scratch_db_error_repair_ok']['deleted_clip_or_still_count']},"
+            f"t0_mut={s44['tier0_slot1_unverified_imagedb_mutation_events']},"
+            f"flip={len(s44['pillar_b_monitor_flip_reset_and_playback_hil']['all_4_monitor_flip_directions'])}m,"
+            f"pb_inv={s44['playback_horizontal_flip_inversion_events']},"
+            f"csr_split={int(s44['pillar_c_d_af_kinematics_interval_and_redlines']['monitor_flip_vs_af_kinematics_reset_lifecycle']['lifecycle_verified'])},"
+            f"emmc_wr={s44['emmc_nflasha_write_count']})"
+            if isinstance(s44, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -4685,7 +4846,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

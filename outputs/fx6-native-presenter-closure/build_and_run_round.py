@@ -1337,6 +1337,7 @@ def build_stage_a_overlay(
     enable_r33: bool = False,
     enable_r34: bool = False,
     enable_r35: bool = False,
+    enable_r36: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1344,6 +1345,7 @@ def build_stage_a_overlay(
     r33_mode: str = "cfexpress_rsv_big6",
     r34_mode: str = "c2pa_tc_gyro_big6",
     r35_mode: str = "ssboot_wbi2_big6",
+    r36_mode: str = "emount_info3d_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1629,7 +1631,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r34_mode: {r34_mode}")
     if enable_r35 and r35_mode not in ("ssboot_wbi2_big6", "powerloss_100cycle_rsv", "slot1_ufu_c2pa_ceiling"):
         raise ValueError(f"Unsupported r35_mode: {r35_mode}")
-    if enable_r35 and r35_mode in ("powerloss_100cycle_rsv", "slot1_ufu_c2pa_ceiling"):
+    if enable_r36 and r36_mode not in ("emount_info3d_big6", "hdmi_4264_raw_prores_braw", "wpa2_wpa3_focusmap_bridge"):
+        raise ValueError(f"Unsupported r36_mode: {r36_mode}")
+    if enable_r36 and r36_mode in ("hdmi_4264_raw_prores_braw", "wpa2_wpa3_focusmap_bridge"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r36_mode == "hdmi_4264_raw_prores_braw":
+            r36_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r36-hdmi-4264-raw > /dev/console 2>&1\n"
+                "fx6_r36_hdmi_rc=$?\n"
+                "echo FX6_R36_HDMI_RAW_RC=$fx6_r36_hdmi_rc\n"
+                "echo FX6_R36_HDMI_4264_RAW_EXIT rc=$fx6_r36_hdmi_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r36_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r36-wpa3-focusmap > /dev/console 2>&1\n"
+                "fx6_r36_wpa3_rc=$?\n"
+                "echo FX6_R36_WPA3_FOCUSMAP_RC=$fx6_r36_wpa3_rc\n"
+                "echo FX6_R36_WPA3_FOCUSMAP_EXIT rc=$fx6_r36_wpa3_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r36_early_hook, 1)
+    elif enable_r35 and r35_mode in ("powerloss_100cycle_rsv", "slot1_ufu_c2pa_ceiling"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2203,6 +2232,39 @@ def build_stage_a_overlay(
             "p12_cert_path": "p12:/cert/RQ_LIC.DAT",
             "wpa2_wpa3_enforced": True,
         }
+    r36_meta: Optional[Dict[str, Any]] = None
+    if enable_r36:
+        additions["etc/fx6_stage_r36"] = (
+            (
+                f"stage_r36=1\nr36_mode={r36_mode}\n"
+                f"emount_info3d_breathing=1\np18_lensfile_erofs=1\n"
+                f"hdmi_4264_raw_prores_braw=1\nsdi_mmio_masked=1\n"
+                f"wpa2_wpa3_sanitizer=1\nfocusmap_ro_bridge=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r36_meta = {
+            "r36_mode": r36_mode,
+            "p18_lensfile_path": "p18:/lens/LENSFILE.BIN",
+            "emount_packets": ["info7", "info8", "info3D"],
+            "sony_lens_filter_expr": "((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)",
+            "bkid_breathing_hex": "0x02cf0232",
+            "sony_lens_id_example": "0xC123",
+            "thirdparty_lens_id_example": "0x4123",
+            "manual_lens_id_example": "0xFFFF",
+            "hdmi_port": "Type-A",
+            "hdmi_raw_resolution": "4264x2408",
+            "hdmi_raw_fps": 60,
+            "hdmi_raw_bit_depth": 16,
+            "braw_recorder": "Blackmagic Video Assist 12G HDR 3.22+",
+            "braw_rejected_recorder": "Blackmagic Video Assist 3G",
+            "prores_raw_recorder": "Atomos Ninja",
+            "sdi_mmio_probes": 0,
+            "wpa2_wpa3_only": True,
+            "rejected_legacy_wlan": ["WEP", "WPA1-TKIP", "IPsec"],
+            "mc_client_min_version": "2.1.0",
+            "backup_ro_path": "p2:/setting/Backup.bin",
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2231,6 +2293,7 @@ def build_stage_a_overlay(
         "r33_enabled": enable_r33,
         "r34_enabled": enable_r34,
         "r35_enabled": enable_r35,
+        "r36_enabled": enable_r36,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2276,6 +2339,8 @@ def build_stage_a_overlay(
         stage_a_meta["r34"] = r34_meta
     if r35_meta is not None:
         stage_a_meta["r35"] = r35_meta
+    if r36_meta is not None:
+        stage_a_meta["r36"] = r36_meta
     return replacements, additions, stage_a_meta
 
 
@@ -2600,6 +2665,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R33_",
         "FX6_R34_",
         "FX6_R35_",
+        "FX6_R36_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -2702,6 +2768,14 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r35_bridge: Optional[Dict[str, Any]] = None
     r35_powerloss_rc: Optional[int] = None
     r35_slot1_ufu_rc: Optional[int] = None
+    last_r36_emount_info3d_init: Optional[Dict[str, Any]] = None
+    last_r36_emount_info3d_bridge: Optional[Dict[str, Any]] = None
+    last_r36_hdmi_4264_raw: Optional[Dict[str, Any]] = None
+    last_r36_wpa3_focusmap: Optional[Dict[str, Any]] = None
+    last_r36_lang: Optional[Dict[str, Any]] = None
+    last_r36_bridge: Optional[Dict[str, Any]] = None
+    r36_hdmi_raw_rc: Optional[int] = None
+    r36_wpa3_focusmap_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -2913,6 +2987,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R35_SLOT1_UFU_RC"), int):
                 r35_slot1_ufu_rc = kv["FX6_R35_SLOT1_UFU_RC"]
+        elif "FX6_R36_EMOUNT_INFO3D_INIT " in line:
+            last_r36_emount_info3d_init = _parse_kv_ints(line.split("FX6_R36_EMOUNT_INFO3D_INIT ", 1)[1])
+        elif "FX6_R36_EMOUNT_INFO3D_BRIDGE " in line:
+            last_r36_emount_info3d_bridge = _parse_kv_ints(line.split("FX6_R36_EMOUNT_INFO3D_BRIDGE ", 1)[1])
+        elif "FX6_R36_HDMI_4264_RAW " in line:
+            last_r36_hdmi_4264_raw = _parse_kv_ints(line.split("FX6_R36_HDMI_4264_RAW ", 1)[1])
+        elif "FX6_R36_WPA3_FOCUSMAP " in line:
+            last_r36_wpa3_focusmap = _parse_kv_ints(line.split("FX6_R36_WPA3_FOCUSMAP ", 1)[1])
+        elif "FX6_R36_LANG_TELEMETRY " in line:
+            last_r36_lang = _parse_kv_ints(line.split("FX6_R36_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R36_BRIDGE " in line:
+            last_r36_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R36_BRIDGE ", 1)[1])
+        elif "FX6_R36_HDMI_RAW_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R36_HDMI_RAW_RC"), int):
+                r36_hdmi_raw_rc = kv["FX6_R36_HDMI_RAW_RC"]
+        elif "FX6_R36_WPA3_FOCUSMAP_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R36_WPA3_FOCUSMAP_RC"), int):
+                r36_wpa3_focusmap_rc = kv["FX6_R36_WPA3_FOCUSMAP_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -3131,6 +3225,29 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r35_bridge or {},
         }
 
+    r36_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r36_emount_info3d_init,
+            last_r36_emount_info3d_bridge,
+            last_r36_hdmi_4264_raw,
+            last_r36_wpa3_focusmap,
+            last_r36_lang,
+            last_r36_bridge,
+        )
+    ):
+        r36_telemetry = {
+            "hdmi_raw_rc": r36_hdmi_raw_rc,
+            "wpa3_focusmap_rc": r36_wpa3_focusmap_rc,
+            "emount_info3d_init": last_r36_emount_info3d_init or {},
+            "emount_info3d_bridge": last_r36_emount_info3d_bridge or {},
+            "hdmi_4264_raw": last_r36_hdmi_4264_raw or {},
+            "wpa3_focusmap": last_r36_wpa3_focusmap or {},
+            "lang_telemetry": last_r36_lang or {},
+            "stage_b_bridge": last_r36_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -3163,6 +3280,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r33_telemetry": r33_telemetry,
         "r34_telemetry": r34_telemetry,
         "r35_telemetry": r35_telemetry,
+        "r36_telemetry": r36_telemetry,
     }
 
 
@@ -3186,7 +3304,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 35:
+    if args.round >= 36:
+        tmp_prefix = "fx6-r36"
+    elif args.round >= 35:
         tmp_prefix = "fx6-r35"
     elif args.round >= 34:
         tmp_prefix = "fx6-r34"
@@ -3277,8 +3397,12 @@ def run_once(args: argparse.Namespace) -> int:
         r33_mode = getattr(args, "r33_mode", "cfexpress_rsv_big6")
         r34_mode = getattr(args, "r34_mode", "c2pa_tc_gyro_big6")
         r35_mode = getattr(args, "r35_mode", "ssboot_wbi2_big6")
+        r36_mode = getattr(args, "r36_mode", "emount_info3d_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwEmountInfo3dHdmi4264RawWpa3+r36_mode={r36_mode}+lang={lang})"
+                if args.round >= 36
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwSsbootWbi2PowerLossSlot1Ufu+r35_mode={r35_mode}+lang={lang})"
                 if args.round >= 35
                 else (
@@ -3377,6 +3501,7 @@ def run_once(args: argparse.Namespace) -> int:
                 )
                 )
                 )
+                )
             )
             )
             )
@@ -3423,6 +3548,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r34_mode=r34_mode,
                 enable_r35=(args.round >= 35),
                 r35_mode=r35_mode,
+                enable_r36=(args.round >= 36),
+                r36_mode=r36_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -3549,6 +3676,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R34_RAID6_SEAL16_EXIT" in txt
                     or "FX6_R35_POWERLOSS_100CYCLE_EXIT" in txt
                     or "FX6_R35_SLOT1_UFU_C2PA_EXIT" in txt
+                    or "FX6_R36_HDMI_4264_RAW_EXIT" in txt
+                    or "FX6_R36_WPA3_FOCUSMAP_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -3577,6 +3706,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R34_RAID6_SEAL16_EXIT" in serial_text
             or "FX6_R35_POWERLOSS_100CYCLE_EXIT" in serial_text
             or "FX6_R35_SLOT1_UFU_C2PA_EXIT" in serial_text
+            or "FX6_R36_HDMI_4264_RAW_EXIT" in serial_text
+            or "FX6_R36_WPA3_FOCUSMAP_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -3635,6 +3766,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r33_mode": r33_mode if args.round >= 33 else None,
             "r34_mode": r34_mode if args.round >= 34 else None,
             "r35_mode": r35_mode if args.round >= 35 else None,
+            "r36_mode": r36_mode if args.round >= 36 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -3677,6 +3809,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r33_telemetry": milestones.get("r33_telemetry") if args.round >= 33 else None,
             "r34_telemetry": milestones.get("r34_telemetry") if args.round >= 34 else None,
             "r35_telemetry": milestones.get("r35_telemetry") if args.round >= 35 else None,
+            "r36_telemetry": milestones.get("r36_telemetry") if args.round >= 36 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -3726,7 +3859,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -3736,6 +3869,7 @@ def main() -> int:
     ap.add_argument("--r33-mode", type=str, choices=["cfexpress_rsv_big6", "bodydata_ufu_bypass", "recovery_5tier"], default="cfexpress_rsv_big6")
     ap.add_argument("--r34-mode", type=str, choices=["c2pa_tc_gyro_big6", "cxd90058_sabin_sdi_mask", "raid6_gf256_seal_16"], default="c2pa_tc_gyro_big6")
     ap.add_argument("--r35-mode", type=str, choices=["ssboot_wbi2_big6", "powerloss_100cycle_rsv", "slot1_ufu_c2pa_ceiling"], default="ssboot_wbi2_big6")
+    ap.add_argument("--r36-mode", type=str, choices=["emount_info3d_big6", "hdmi_4264_raw_prores_braw", "wpa2_wpa3_focusmap_bridge"], default="emount_info3d_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

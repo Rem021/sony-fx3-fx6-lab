@@ -1,0 +1,790 @@
+{
+  "schema": "fx6-on-fx3-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu-v1",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "emount_info3d_breathing_and_p18_erofs": {
+      "p18_lensfile": "/mnt/r36_p18/lens/LENSFILE.BIN",
+      "p18_lensfile_erofs": 1,
+      "p18_lensfile_errno": 30,
+      "p18_r30_lens_erofs": 1,
+      "lensfile_sha256_before": "a3d05530305be9800f69c4621ddf1896b293c6fc4d9b0f7f7bcbef514bea0017",
+      "lensfile_sha256_after": "a3d05530305be9800f69c4621ddf1896b293c6fc4d9b0f7f7bcbef514bea0017",
+      "lensfile_sha256_match": 1,
+      "cinealta_lensfile_write_rc": -30,
+      "cinealta_slot_blocked": 1,
+      "lensfile_writes": 0,
+      "info7_ok": 1,
+      "info8_ok": 1,
+      "info3d_ok": 1,
+      "bkid_breathing": "0x02cf0232",
+      "sony_lens_id": "0xC123",
+      "sony_0xc123_shift14_eq3": 1,
+      "sony_0xc123_breathing_on": 1,
+      "sony_crop_permille": 1085,
+      "thirdparty_lens_id": "0x4123",
+      "thirdparty_0x4123_shift14_eq3": 0,
+      "thirdparty_0x4123_gated_off": 1,
+      "manual_lens_id": "0xFFFF",
+      "manual_0xffff_gated_off": 1,
+      "appfw_present": 1,
+      "emmc_write_count": 0,
+      "r36_init_ok": 1,
+      "verify_us": 656452
+    },
+    "emount_info3d_stage_b_bridge": {
+      "p18_lensfile_erofs_ok": 1,
+      "lensfile_ro_ok": 1,
+      "sony_0xc123_breathing_on": 1,
+      "thirdparty_0x4123_gated_off": 1,
+      "manual_0xffff_gated_off": 1,
+      "bkid_02cf0232_val": "0x01",
+      "sdi_mmio_probes": 0,
+      "raw_clean_master": 1,
+      "wpa2_wpa3_sanitizer": 1,
+      "focusmap_ro_bridge": 1,
+      "emmc_write_count": 0,
+      "r36_bridge_ok": 1
+    },
+    "hdmi_type_a_4264x2408_16bit_raw_braw_prores": {
+      "hdmi_port": "TypeA",
+      "raw_width": 4264,
+      "raw_height": 2408,
+      "raw_fps": 60,
+      "raw_bit_depth": 16,
+      "va12g_braw_rc": 0,
+      "va12g_braw_ok": 1,
+      "braw_iso_locked": 1,
+      "va3g_rejected": 1,
+      "va3g_reject_rc": -95,
+      "atomos_ninja_rc": 0,
+      "atomos_ninja_ok": 1,
+      "prores_wb_kelvin": 5600,
+      "prores_tint": -2,
+      "prores_iso_offset_ev": 1,
+      "prores_wb_iso_meta_ok": 1,
+      "internal_xavc_si_proxy_ok": 1,
+      "mpr_dlopen_ok": 1,
+      "mpr_syms_resolved": 6,
+      "anamorphic_15x_nonbake": 1,
+      "anamorphic_16x_nonbake": 1,
+      "mlut_nonbake": 1,
+      "raw_clean_master": 1,
+      "sdi_raw_masked": 1,
+      "sdi_raw_mask_rc": -19,
+      "sdi_mmio_probes": 0,
+      "emmc_write_count": 0,
+      "r36b_ok": 1,
+      "verify_us": 24272
+    },
+    "wpa2_wpa3_sanitizer_and_focusmap_ro_bridge": {
+      "wep_rc": -22,
+      "wpa1_tkip_rc": -22,
+      "ipsec_rc": -22,
+      "wpa2_ccmp_rc": 0,
+      "wpa3_sae_rc": 0,
+      "legacy_wlan_rejected": 1,
+      "wpa2_wpa3_accepted": 1,
+      "rejected_before_supplicant": 3,
+      "supplicant_legacy_hits": 0,
+      "wlan_libs_ok": 1,
+      "mc_client_min_ver": "2.1.0",
+      "focus_map_frames": 12,
+      "focus_map_bytes": 384,
+      "focus_map_tmpfs_ok": 1,
+      "backup_bin_erofs": 1,
+      "backup_bin_errno": 30,
+      "backup_sha256_before": "39b2e6f2b67cf7f04f5d8bf77dae4d9359dae27e179cda8adcfaa5d52ad719bb",
+      "backup_sha256_after": "39b2e6f2b67cf7f04f5d8bf77dae4d9359dae27e179cda8adcfaa5d52ad719bb",
+      "backup_sha256_match": 1,
+      "backup_writes": 0,
+      "emmc_write_count": 0,
+      "r36c_ok": 1,
+      "verify_us": 2816
+    }
+  },
+  "runs": {
+    "r36a_emount_info3d_big6_schinese": {
+      "run_id": "r36a-emount-info3d-big6-schinese",
+      "round": 36,
+      "lang": "schinese",
+      "r36_mode": "emount_info3d_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 MIRA_CETUS2 E-Mount info7/info8/info3D handshake, Sony lens filter ((lens_id >> 14) == 3) -> 0x02cf0232 Breathing Comp (0xC123 ON vs 0x4123/0xFFFF gated OFF), p18:/lens/LENSFILE.BIN EROFS lock (errno=30), and Stage-B FX6 appFw.so Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 72.61,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "a9192838c1c39256a3e83a8adfbc55eb609b692b6d5447f1d2cc47786f0e87b4"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r36": {
+          "r36_mode": "emount_info3d_big6",
+          "p18_lensfile_path": "p18:/lens/LENSFILE.BIN",
+          "emount_packets": [
+            "info7",
+            "info8",
+            "info3D"
+          ],
+          "sony_lens_filter_expr": "((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)",
+          "bkid_breathing_hex": "0x02cf0232",
+          "sony_lens_id_example": "0xC123",
+          "thirdparty_lens_id_example": "0x4123",
+          "manual_lens_id_example": "0xFFFF",
+          "hdmi_port": "Type-A",
+          "hdmi_raw_resolution": "4264x2408",
+          "hdmi_raw_fps": 60,
+          "hdmi_raw_bit_depth": 16,
+          "braw_recorder": "Blackmagic Video Assist 12G HDR 3.22+",
+          "braw_rejected_recorder": "Blackmagic Video Assist 3G",
+          "prores_raw_recorder": "Atomos Ninja",
+          "sdi_mmio_probes": 0,
+          "wpa2_wpa3_only": true,
+          "rejected_legacy_wlan": [
+            "WEP",
+            "WPA1-TKIP",
+            "IPsec"
+          ],
+          "mc_client_min_version": "2.1.0",
+          "backup_ro_path": "p2:/setting/Backup.bin"
+        }
+      },
+      "r36_telemetry": {
+        "hdmi_raw_rc": null,
+        "wpa3_focusmap_rc": null,
+        "emount_info3d_init": {
+          "p18_lensfile": "/mnt/r36_p18/lens/LENSFILE.BIN",
+          "p18_lensfile_erofs": 1,
+          "p18_lensfile_errno": 30,
+          "p18_r30_lens_erofs": 1,
+          "lensfile_sha256_before": "a3d05530305be9800f69c4621ddf1896b293c6fc4d9b0f7f7bcbef514bea0017",
+          "lensfile_sha256_after": "a3d05530305be9800f69c4621ddf1896b293c6fc4d9b0f7f7bcbef514bea0017",
+          "lensfile_sha256_match": 1,
+          "cinealta_lensfile_write_rc": -30,
+          "cinealta_slot_blocked": 1,
+          "lensfile_writes": 0,
+          "info7_ok": 1,
+          "info8_ok": 1,
+          "info3d_ok": 1,
+          "bkid_breathing": "0x02cf0232",
+          "sony_lens_id": "0xC123",
+          "sony_0xc123_shift14_eq3": 1,
+          "sony_0xc123_breathing_on": 1,
+          "sony_crop_permille": 1085,
+          "thirdparty_lens_id": "0x4123",
+          "thirdparty_0x4123_shift14_eq3": 0,
+          "thirdparty_0x4123_gated_off": 1,
+          "manual_lens_id": "0xFFFF",
+          "manual_0xffff_gated_off": 1,
+          "appfw_present": 1,
+          "emmc_write_count": 0,
+          "r36_init_ok": 1,
+          "verify_us": 656452
+        },
+        "emount_info3d_bridge": {
+          "p18_lensfile_erofs_ok": 1,
+          "lensfile_ro_ok": 1,
+          "sony_0xc123_breathing_on": 1,
+          "thirdparty_0x4123_gated_off": 1,
+          "manual_0xffff_gated_off": 1,
+          "bkid_02cf0232_val": "0x01",
+          "sdi_mmio_probes": 0,
+          "raw_clean_master": 1,
+          "wpa2_wpa3_sanitizer": 1,
+          "focusmap_ro_bridge": 1,
+          "emmc_write_count": 0,
+          "r36_bridge_ok": 1
+        },
+        "hdmi_4264_raw": {},
+        "wpa3_focusmap": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 35008,
+          "glyph_blits": 17958,
+          "icon_blits": 23250,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "p18_lensfile_erofs_ok": 1,
+          "lensfile_ro_ok": 1,
+          "sony_0xc123_breathing_on": 1,
+          "r36_bridge_ok": 1,
+          "realhw_emount_info3d_hdmi_4264_raw_wpa3": 1,
+          "sdi_mmio_probes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 36,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "emount_info3d_breathing": 1,
+          "p18_lensfile_erofs": 1,
+          "hdmi_4264_raw_prores_braw": 1,
+          "sdi_mmio_masked": 1,
+          "wpa2_wpa3_sanitizer": 1,
+          "focusmap_ro_bridge": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r36a-emount-info3d-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 207566,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/assets/r36a-emount-info3d-big6-schinese-alpha.png",
+          "bytes": 27132,
+          "sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/assets/r36a-emount-info3d-big6-schinese-composited.png",
+          "bytes": 27467,
+          "sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 197,
+        "FX6_STAGE_B_": 65,
+        "FX6_R30_": 195,
+        "FX6_R31_": 195,
+        "FX6_R32_": 198,
+        "FX6_R33_": 195,
+        "FX6_R34_": 195,
+        "FX6_R35_": 195,
+        "FX6_R36_": 195,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 195,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 136,
+        "FX6_R10_": 193,
+        "FX6_R11_": 204,
+        "FX6_R12_": 196,
+        "FX6_R13_": 193,
+        "FX6_R14_": 193,
+        "FX6_R15_": 193,
+        "FX6_R16_": 193,
+        "FX6_R17_": 193,
+        "FX6_R18_": 193,
+        "FX6_R19_": 193,
+        "FX6_R20_": 193,
+        "FX6_R21_": 193,
+        "FX6_R22_": 193,
+        "FX6_R23_": 193,
+        "FX6_R24_": 193,
+        "FX6_R25_": 193,
+        "FX6_R26_": 193,
+        "FX6_R27_": 193,
+        "FX6_R29_": 195,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1082,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 66,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 610,
+        "FX6_FONT_": 110,
+        "FX3_PHY_KEY_MAP": 1,
+        "FX6_WAIT_SNAPSHOT": 2757
+      }
+    },
+    "r36b_hdmi_4264_raw_prores_braw": {
+      "run_id": "r36b-hdmi-4264-raw-prores-braw",
+      "round": 36,
+      "lang": "en",
+      "r36_mode": "hdmi_4264_raw_prores_braw",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Type-A HDMI EDID/VSIF 4264x2408@60p 16-bit linear RAW negotiation (BMD Video Assist 12G 3.22+ .braw accepted, Video Assist 3G -EOPNOTSUPP -95 rejected, Atomos Ninja ProRes RAW with WB/ISO offset metadata), simultaneous XAVC S-I + Proxy without 1.5x/1.6x anamorphic or .cube MLUT bake, and masked 12G-SDI (sdi_mmio_probes=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.72,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "8c04890db8f5c7eb919865dc62aef94397f4fd98686450849a3b94f55f5749ab"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r36": {
+          "r36_mode": "hdmi_4264_raw_prores_braw",
+          "p18_lensfile_path": "p18:/lens/LENSFILE.BIN",
+          "emount_packets": [
+            "info7",
+            "info8",
+            "info3D"
+          ],
+          "sony_lens_filter_expr": "((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)",
+          "bkid_breathing_hex": "0x02cf0232",
+          "sony_lens_id_example": "0xC123",
+          "thirdparty_lens_id_example": "0x4123",
+          "manual_lens_id_example": "0xFFFF",
+          "hdmi_port": "Type-A",
+          "hdmi_raw_resolution": "4264x2408",
+          "hdmi_raw_fps": 60,
+          "hdmi_raw_bit_depth": 16,
+          "braw_recorder": "Blackmagic Video Assist 12G HDR 3.22+",
+          "braw_rejected_recorder": "Blackmagic Video Assist 3G",
+          "prores_raw_recorder": "Atomos Ninja",
+          "sdi_mmio_probes": 0,
+          "wpa2_wpa3_only": true,
+          "rejected_legacy_wlan": [
+            "WEP",
+            "WPA1-TKIP",
+            "IPsec"
+          ],
+          "mc_client_min_version": "2.1.0",
+          "backup_ro_path": "p2:/setting/Backup.bin"
+        }
+      },
+      "r36_telemetry": {
+        "hdmi_raw_rc": 0,
+        "wpa3_focusmap_rc": null,
+        "emount_info3d_init": {},
+        "emount_info3d_bridge": {},
+        "hdmi_4264_raw": {
+          "hdmi_port": "TypeA",
+          "raw_width": 4264,
+          "raw_height": 2408,
+          "raw_fps": 60,
+          "raw_bit_depth": 16,
+          "va12g_braw_rc": 0,
+          "va12g_braw_ok": 1,
+          "braw_iso_locked": 1,
+          "va3g_rejected": 1,
+          "va3g_reject_rc": -95,
+          "atomos_ninja_rc": 0,
+          "atomos_ninja_ok": 1,
+          "prores_wb_kelvin": 5600,
+          "prores_tint": -2,
+          "prores_iso_offset_ev": 1,
+          "prores_wb_iso_meta_ok": 1,
+          "internal_xavc_si_proxy_ok": 1,
+          "mpr_dlopen_ok": 1,
+          "mpr_syms_resolved": 6,
+          "anamorphic_15x_nonbake": 1,
+          "anamorphic_16x_nonbake": 1,
+          "mlut_nonbake": 1,
+          "raw_clean_master": 1,
+          "sdi_raw_masked": 1,
+          "sdi_raw_mask_rc": -19,
+          "sdi_mmio_probes": 0,
+          "emmc_write_count": 0,
+          "r36b_ok": 1,
+          "verify_us": 24272
+        },
+        "wpa3_focusmap": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R36_": 3
+      }
+    },
+    "r36c_wpa2_wpa3_focusmap_bridge": {
+      "run_id": "r36c-wpa2-wpa3-focusmap-bridge",
+      "round": 36,
+      "lang": "en",
+      "r36_mode": "wpa2_wpa3_focusmap_bridge",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 WPA2/WPA3-only wireless sanitizer rejecting WEP/WPA1-TKIP/IPsec (-EINVAL -22) before wpa_supplicant, accepting WPA2-CCMP & WPA3-SAE, and streaming Monitor & Control 2.1.0+ Focus Map telemetry over tmpfs with p2:/setting/Backup.bin locked EROFS (errno=30, emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.1,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "8c04890db8f5c7eb919865dc62aef94397f4fd98686450849a3b94f55f5749ab"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r36": {
+          "r36_mode": "wpa2_wpa3_focusmap_bridge",
+          "p18_lensfile_path": "p18:/lens/LENSFILE.BIN",
+          "emount_packets": [
+            "info7",
+            "info8",
+            "info3D"
+          ],
+          "sony_lens_filter_expr": "((lens_id >> 14) == 3) && ((lens_id & 0x0FFF) != 0x0FFF)",
+          "bkid_breathing_hex": "0x02cf0232",
+          "sony_lens_id_example": "0xC123",
+          "thirdparty_lens_id_example": "0x4123",
+          "manual_lens_id_example": "0xFFFF",
+          "hdmi_port": "Type-A",
+          "hdmi_raw_resolution": "4264x2408",
+          "hdmi_raw_fps": 60,
+          "hdmi_raw_bit_depth": 16,
+          "braw_recorder": "Blackmagic Video Assist 12G HDR 3.22+",
+          "braw_rejected_recorder": "Blackmagic Video Assist 3G",
+          "prores_raw_recorder": "Atomos Ninja",
+          "sdi_mmio_probes": 0,
+          "wpa2_wpa3_only": true,
+          "rejected_legacy_wlan": [
+            "WEP",
+            "WPA1-TKIP",
+            "IPsec"
+          ],
+          "mc_client_min_version": "2.1.0",
+          "backup_ro_path": "p2:/setting/Backup.bin"
+        }
+      },
+      "r36_telemetry": {
+        "hdmi_raw_rc": null,
+        "wpa3_focusmap_rc": 0,
+        "emount_info3d_init": {},
+        "emount_info3d_bridge": {},
+        "hdmi_4264_raw": {},
+        "wpa3_focusmap": {
+          "wep_rc": -22,
+          "wpa1_tkip_rc": -22,
+          "ipsec_rc": -22,
+          "wpa2_ccmp_rc": 0,
+          "wpa3_sae_rc": 0,
+          "legacy_wlan_rejected": 1,
+          "wpa2_wpa3_accepted": 1,
+          "rejected_before_supplicant": 3,
+          "supplicant_legacy_hits": 0,
+          "wlan_libs_ok": 1,
+          "mc_client_min_ver": "2.1.0",
+          "focus_map_frames": 12,
+          "focus_map_bytes": 384,
+          "focus_map_tmpfs_ok": 1,
+          "backup_bin_erofs": 1,
+          "backup_bin_errno": 30,
+          "backup_sha256_before": "39b2e6f2b67cf7f04f5d8bf77dae4d9359dae27e179cda8adcfaa5d52ad719bb",
+          "backup_sha256_after": "39b2e6f2b67cf7f04f5d8bf77dae4d9359dae27e179cda8adcfaa5d52ad719bb",
+          "backup_sha256_match": 1,
+          "backup_writes": 0,
+          "emmc_write_count": 0,
+          "r36c_ok": 1,
+          "verify_us": 2816
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R36_": 3
+      }
+    }
+  },
+  "r36_realhw_emount_info3d_hdmi_4264_raw_wpa3_audit": {
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r36a_p18_lensfile_erofs_and_emount_info3d_breathing_verified": true,
+    "r36a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r36b_hdmi_4264x2408_braw_prores_and_va3g_reject_verified": true,
+    "r36b_anamorphic_nonbake_and_masked_sdi_mmio_zero_verified": true,
+    "r36c_wpa2_wpa3_sanitizer_rejects_legacy_before_supplicant_verified": true,
+    "r36c_mc210_focusmap_tmpfs_bridge_and_backup_erofs_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 camera body E-Mount bayonet info7/info8/info3D UART/SPI wire capture with mounted FE GM, third-party E-mount, and unchipped manual PL adapter lenses verifying real optical crop breathing behavior.",
+    "Physical Type-A HDMI 4264x2408@60p 16-bit Linear RAW electrical signal handshake against physical Blackmagic Video Assist 12G HDR (3.22+) and Atomos Ninja recorders with simultaneous CFexpress Type A XAVC S-I recording.",
+    "Physical Sony ILME-FX3 Ver. 7.02 Wi-Fi WPA2-CCMP / WPA3-SAE association and live Monitor & Control v2.1.0+ tablet Focus Map telemetry over RF link."
+  ]
+}

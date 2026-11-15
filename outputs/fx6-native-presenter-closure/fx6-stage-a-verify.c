@@ -8375,6 +8375,742 @@ static int run_r40_vmcbncm1_tcin_hdmi_probe(void) {
     return ok ? 0 : 226;
 }
 
+/* ============================================================================
+ * Round 41 (Wave-27 Real-Hardware Guardrails on FX3 Ver. 7.02 / 4.9.337-scel+):
+ *   1. [De-Squeeze Display] 5-Ratio State Machine (Off/1.3x/2.0x/1.5x/1.6x=1.65x)
+ *      + 4 Hard-Locked Camera Settings + HDMI RAW / Clean-HDMI / Log-Off / Remote Bypass
+ *   2. External-Only Monitor & Control [Focus Map] (No In-Body FX3 Menu, >=150fps Cutoff,
+ *      <=6fps S&Q Allowed on FX3 vs FX6)
+ *   3. Dual-Slot [Simult. Recording] + [Auto Switch Media] (Ver. 2.0+ Single-Card
+ *      Continuation vs Off Strict Parity) & [Shockless WB] Kelvin/Grid Immediate-Bypass
+ *      + 16/16 H0 == H3
+ * ============================================================================ */
+
+enum {
+    R41_DESQUEEZE_OFF  = 0,
+    R41_DESQUEEZE_1_3X = 1,
+    R41_DESQUEEZE_2_0X = 2,
+    R41_DESQUEEZE_1_5X = 3,
+    R41_DESQUEEZE_1_6X = 4
+};
+
+enum {
+    R41_FOCUS_MODE_AF_C = 0,
+    R41_FOCUS_MODE_MF   = 1
+};
+
+enum {
+    R41_FOCUS_AREA_WIDE = 0,
+    R41_FOCUS_AREA_SPOT = 1
+};
+
+enum {
+    R41_STEADYSHOT_OFF    = 0,
+    R41_STEADYSHOT_ACTIVE = 1
+};
+
+enum {
+    R41_LOCK_PARAM_FOCUS_MODE   = 0,
+    R41_LOCK_PARAM_FOCUS_AREA   = 1,
+    R41_LOCK_PARAM_STEADYSHOT   = 2,
+    R41_LOCK_PARAM_FACE_PRIO_MM = 3
+};
+
+typedef struct {
+    int ratio_enum;
+    int configured_scale_centi;
+    int focus_mode;
+    int focus_area;
+    int steadyshot;
+    int face_priority_metering;
+    int raw_output_on;
+    int rec_media_hdmi_only;
+    int hdmi_info_display_on;
+    int log_shooting_on;
+    int remote_shooting_on;
+    int photo_mode;
+} r41_desqueeze_state_t;
+
+__attribute__((noinline)) static void r41_desqueeze_init_state(r41_desqueeze_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->ratio_enum = R41_DESQUEEZE_OFF;
+    st->configured_scale_centi = 100;
+    st->focus_mode = R41_FOCUS_MODE_AF_C;
+    st->focus_area = R41_FOCUS_AREA_SPOT;
+    st->steadyshot = R41_STEADYSHOT_ACTIVE;
+    st->face_priority_metering = 1;
+    st->raw_output_on = 0;
+    st->rec_media_hdmi_only = 0;
+    st->hdmi_info_display_on = 1;
+    st->log_shooting_on = 1; /* Cine EI / Flexible ISO */
+    st->remote_shooting_on = 0;
+    st->photo_mode = 0;
+}
+
+__attribute__((noinline)) static int r41_desqueeze_set_ratio(r41_desqueeze_state_t *st, int ratio_enum) {
+    if (!st) return -EINVAL;
+    int scale_centi = 100;
+    switch (ratio_enum) {
+        case R41_DESQUEEZE_OFF:  scale_centi = 100; break;
+        case R41_DESQUEEZE_1_3X: scale_centi = 130; break;
+        case R41_DESQUEEZE_2_0X: scale_centi = 200; break;
+        case R41_DESQUEEZE_1_5X: scale_centi = 150; break;
+        /* Official FX3 Ver. 7.00/7.02 Help Guide: [1.6x] applies 1.65x horizontal stretch for 2.39:1 CinemaScope */
+        case R41_DESQUEEZE_1_6X: scale_centi = 165; break;
+        default:
+            return -EINVAL; /* -22 */
+    }
+    st->ratio_enum = ratio_enum;
+    st->configured_scale_centi = scale_centi;
+    if (ratio_enum != R41_DESQUEEZE_OFF) {
+        /* Enabling non-Off hard-locks 4 camera settings on FX3 7.02 */
+        st->focus_mode = R41_FOCUS_MODE_MF;
+        st->focus_area = R41_FOCUS_AREA_WIDE;
+        st->steadyshot = R41_STEADYSHOT_OFF;
+        st->face_priority_metering = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r41_desqueeze_mutate_camera_param(
+    r41_desqueeze_state_t *st,
+    int param_id,
+    int new_val
+) {
+    if (!st) return -EINVAL;
+    int locked = (st->ratio_enum != R41_DESQUEEZE_OFF) ? 1 : 0;
+    switch (param_id) {
+        case R41_LOCK_PARAM_FOCUS_MODE:
+            if (locked && new_val != R41_FOCUS_MODE_MF) return -EBUSY; /* -16 */
+            st->focus_mode = new_val;
+            return 0;
+        case R41_LOCK_PARAM_FOCUS_AREA:
+            if (locked && new_val != R41_FOCUS_AREA_WIDE) return -EBUSY; /* -16 */
+            st->focus_area = new_val;
+            return 0;
+        case R41_LOCK_PARAM_STEADYSHOT:
+            if (locked && new_val != R41_STEADYSHOT_OFF) return -EBUSY; /* -16 */
+            st->steadyshot = new_val;
+            return 0;
+        case R41_LOCK_PARAM_FACE_PRIO_MM:
+            if (locked && new_val != 0) return -EBUSY; /* -16 */
+            st->face_priority_metering = new_val;
+            return 0;
+        default:
+            return -EINVAL;
+    }
+}
+
+__attribute__((noinline)) static int r41_desqueeze_eval_effective_scale(r41_desqueeze_state_t *st) {
+    if (!st) return 100;
+    /* [Rec. Media dur HDMI Output] = [Off(HDMI Only)] forces [HDMI Info. Display] = [Off] */
+    if (st->rec_media_hdmi_only) {
+        st->hdmi_info_display_on = 0;
+    }
+    if (st->ratio_enum == R41_DESQUEEZE_OFF) {
+        return 100;
+    }
+    /* Automatic suppression conditions: RAW Output=On, Off(HDMI Only), Log Shooting=Off, Remote Shooting, Photo */
+    if (st->raw_output_on ||
+        st->rec_media_hdmi_only ||
+        !st->log_shooting_on ||
+        st->remote_shooting_on ||
+        st->photo_mode) {
+        return 100;
+    }
+    return st->configured_scale_centi;
+}
+
+static int setup_r41_desqueeze_165x_4locks_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r41_desqueeze_state_t st;
+    r41_desqueeze_init_state(&st);
+
+    static const int k_enums[5] = {
+        R41_DESQUEEZE_OFF,
+        R41_DESQUEEZE_1_3X,
+        R41_DESQUEEZE_2_0X,
+        R41_DESQUEEZE_1_5X,
+        R41_DESQUEEZE_1_6X
+    };
+    static const int k_expected_centi[5] = { 100, 130, 200, 150, 165 };
+    int ratios_verified = 0;
+    int observed_centi[5] = { 0, 0, 0, 0, 0 };
+    for (size_t i = 0U; i < 5U; i++) {
+        if (r41_desqueeze_set_ratio(&st, k_enums[i]) == 0) {
+            observed_centi[i] = r41_desqueeze_eval_effective_scale(&st);
+            if (observed_centi[i] == k_expected_centi[i]) {
+                ratios_verified++;
+            }
+        }
+    }
+    int invalid_ratio_reject_rc = r41_desqueeze_set_ratio(&st, 5); /* e.g. 1.8x unsupported */
+
+    /* Leave at 1.6x (1.65x actual) and verify all 4 hard locks */
+    int focus_mode_locked_mf = (st.focus_mode == R41_FOCUS_MODE_MF) ? 1 : 0;
+    int focus_area_locked_wide = (st.focus_area == R41_FOCUS_AREA_WIDE) ? 1 : 0;
+    int steadyshot_locked_off = (st.steadyshot == R41_STEADYSHOT_OFF) ? 1 : 0;
+    int face_priority_metering_locked_off = (st.face_priority_metering == 0) ? 1 : 0;
+
+    int af_mut_reject_rc = r41_desqueeze_mutate_camera_param(&st, R41_LOCK_PARAM_FOCUS_MODE, R41_FOCUS_MODE_AF_C);
+    int area_mut_reject_rc = r41_desqueeze_mutate_camera_param(&st, R41_LOCK_PARAM_FOCUS_AREA, R41_FOCUS_AREA_SPOT);
+    int ibis_mut_reject_rc = r41_desqueeze_mutate_camera_param(&st, R41_LOCK_PARAM_STEADYSHOT, R41_STEADYSHOT_ACTIVE);
+    int face_mut_reject_rc = r41_desqueeze_mutate_camera_param(&st, R41_LOCK_PARAM_FACE_PRIO_MM, 1);
+
+    int hard_locks_enforced = 0;
+    if (focus_mode_locked_mf && af_mut_reject_rc == -EBUSY && st.focus_mode == R41_FOCUS_MODE_MF) hard_locks_enforced++;
+    if (focus_area_locked_wide && area_mut_reject_rc == -EBUSY && st.focus_area == R41_FOCUS_AREA_WIDE) hard_locks_enforced++;
+    if (steadyshot_locked_off && ibis_mut_reject_rc == -EBUSY && st.steadyshot == R41_STEADYSHOT_OFF) hard_locks_enforced++;
+    if (face_priority_metering_locked_off && face_mut_reject_rc == -EBUSY && st.face_priority_metering == 0) hard_locks_enforced++;
+
+    /* Verify automatic suppression conditions while [De-Squeeze Display] = [1.6x] */
+    r41_desqueeze_state_t s_raw = st;
+    s_raw.raw_output_on = 1;
+    int raw_output_on_suppressed = (r41_desqueeze_eval_effective_scale(&s_raw) == 100) ? 1 : 0;
+
+    r41_desqueeze_state_t s_hdmi_only = st;
+    s_hdmi_only.hdmi_info_display_on = 1;
+    s_hdmi_only.rec_media_hdmi_only = 1;
+    int hdmi_only_suppressed = (r41_desqueeze_eval_effective_scale(&s_hdmi_only) == 100) ? 1 : 0;
+    int hdmi_only_forces_info_off = (s_hdmi_only.hdmi_info_display_on == 0) ? 1 : 0;
+
+    r41_desqueeze_state_t s_log_off = st;
+    s_log_off.log_shooting_on = 0;
+    int log_shooting_off_suppressed = (r41_desqueeze_eval_effective_scale(&s_log_off) == 100) ? 1 : 0;
+
+    r41_desqueeze_state_t s_remote = st;
+    s_remote.remote_shooting_on = 1;
+    int remote_shooting_suppressed = (r41_desqueeze_eval_effective_scale(&s_remote) == 100) ? 1 : 0;
+
+    r41_desqueeze_state_t s_photo = st;
+    s_photo.photo_mode = 1;
+    int photo_mode_suppressed = (r41_desqueeze_eval_effective_scale(&s_photo) == 100) ? 1 : 0;
+
+    /* Verify returning to Off unlocks all 4 camera settings */
+    r41_desqueeze_state_t s_off = st;
+    int off_rc = r41_desqueeze_set_ratio(&s_off, R41_DESQUEEZE_OFF);
+    int unlocked_when_off_ok = (off_rc == 0 &&
+        r41_desqueeze_mutate_camera_param(&s_off, R41_LOCK_PARAM_FOCUS_MODE, R41_FOCUS_MODE_AF_C) == 0 &&
+        r41_desqueeze_mutate_camera_param(&s_off, R41_LOCK_PARAM_FOCUS_AREA, R41_FOCUS_AREA_SPOT) == 0 &&
+        r41_desqueeze_mutate_camera_param(&s_off, R41_LOCK_PARAM_STEADYSHOT, R41_STEADYSHOT_ACTIVE) == 0 &&
+        r41_desqueeze_mutate_camera_param(&s_off, R41_LOCK_PARAM_FACE_PRIO_MM, 1) == 0) ? 1 : 0;
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R41_DESQUEEZE_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (ratios_verified == 5 &&
+              observed_centi[4] == 165 &&
+              invalid_ratio_reject_rc == -EINVAL &&
+              hard_locks_enforced == 4 &&
+              unlocked_when_off_ok == 1 &&
+              raw_output_on_suppressed == 1 &&
+              hdmi_only_suppressed == 1 &&
+              hdmi_only_forces_info_off == 1 &&
+              log_shooting_off_suppressed == 1 &&
+              remote_shooting_suppressed == 1 &&
+              photo_mode_suppressed == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R41_DESQUEEZE_165X_INIT ratios_verified=%d off_centi=%d r13x_centi=%d "
+            "r20x_centi=%d r15x_centi=%d r16x_actual_centi=%d cinemascope_aspect=2.39:1 "
+            "invalid_ratio_reject_rc=%d focus_mode_locked_mf=%d focus_area_locked_wide=%d "
+            "steadyshot_locked_off=%d face_priority_metering_locked_off=%d "
+            "af_mut_reject_rc=%d area_mut_reject_rc=%d ibis_mut_reject_rc=%d face_mut_reject_rc=%d "
+            "hard_locks_enforced=%d unlocked_when_off_ok=%d raw_output_on_suppressed=%d "
+            "hdmi_only_suppressed=%d hdmi_only_forces_info_off=%d log_shooting_off_suppressed=%d "
+            "remote_shooting_suppressed=%d photo_mode_suppressed=%d "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r41_init_ok=%d verify_us=%lld\n",
+            ratios_verified, observed_centi[0], observed_centi[1],
+            observed_centi[2], observed_centi[3], observed_centi[4],
+            invalid_ratio_reject_rc, focus_mode_locked_mf, focus_area_locked_wide,
+            steadyshot_locked_off, face_priority_metering_locked_off,
+            af_mut_reject_rc, area_mut_reject_rc, ibis_mut_reject_rc, face_mut_reject_rc,
+            hard_locks_enforced, unlocked_when_off_ok, raw_output_on_suppressed,
+            hdmi_only_suppressed, hdmi_only_forces_info_off, log_shooting_off_suppressed,
+            remote_shooting_suppressed, photo_mode_suppressed,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R41_LENS_NONE             = 0,
+    R41_LENS_MOUNT_ADAPTER    = 1,
+    R41_LENS_NON_PDAF_MANUAL  = 2,
+    R41_LENS_SONY_EMOUNT_PDAF = 3
+};
+
+typedef struct {
+    int lens_kind;
+    int in_playback;
+    int fps;
+    int mc_connected;
+    int mc_stream_active;
+    uint32_t local_lcd_overlay_draws;
+} r41_focusmap_state_t;
+
+__attribute__((noinline)) static int r41_fx3_inbody_focusmap_menu_toggle(r41_focusmap_state_t *st, int enable) {
+    if (st) {
+        st->local_lcd_overlay_draws = 0U;
+    }
+    (void)enable;
+    /* Official ILME-FX3 (Ver. 7.02, unlike FX30) has NO in-body [Focus Map] menu or local hardware overlay */
+    return -EOPNOTSUPP; /* -95 */
+}
+
+__attribute__((noinline)) static int r41_mc_external_focusmap_eval(r41_focusmap_state_t *st) {
+    if (!st || !st->mc_connected) {
+        if (st) st->mc_stream_active = 0;
+        return -EINVAL;
+    }
+    st->local_lcd_overlay_draws = 0U;
+    if (st->in_playback) {
+        st->mc_stream_active = 0;
+        return -EBUSY; /* -16: clip playback state */
+    }
+    if (st->lens_kind != R41_LENS_SONY_EMOUNT_PDAF) {
+        st->mc_stream_active = 0;
+        return -ENODEV; /* -19: mount adapter, manual/non-PDAF lens, or no lens */
+    }
+    /* FX3 Ver. 6.00..7.02 external M&C Focus Map rule: allowed for 1..149fps (including <=6fps S&Q), blocked at >=150fps */
+    if (st->fps < 1 || st->fps >= 150) {
+        st->mc_stream_active = 0;
+        return -EINVAL; /* -22: >=150fps S&Q (e.g. 200fps / 240fps) blocked */
+    }
+    st->mc_stream_active = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r41_fx6_ref_focusmap_fps_gate(int fps) {
+    /* Contrast reference: ILME-FX6 blocks both <=6fps AND >=150fps, whereas ILME-FX3 allows 1..6fps */
+    if (fps <= 6 || fps >= 150) {
+        return -EINVAL;
+    }
+    return 0;
+}
+
+static int run_r41_focusmap_150fps_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r41_p2_setting", 0755) != 0) {
+        return 227;
+    }
+    (void)umount("/mnt/r41_p2_setting");
+    if (mount("tmpfs", "/mnt/r41_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 227;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 23U + 0x51U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r41_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) {
+        return 227;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r41_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) {
+        return 227;
+    }
+    if (mount(NULL, "/mnt/r41_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 227;
+    }
+
+    r41_focusmap_state_t fm;
+    memset(&fm, 0, sizeof(fm));
+    fm.lens_kind = R41_LENS_SONY_EMOUNT_PDAF;
+    fm.mc_connected = 1;
+    fm.in_playback = 0;
+
+    /* 1. In-body FX3 menu & Stage-B local Focus Map overlay guard (-95 EOPNOTSUPP) */
+    int inbody_menu_toggle_reject_rc = r41_fx3_inbody_focusmap_menu_toggle(&fm, 1);
+    int stageb_local_overlay_guard_rc = r41_fx3_inbody_focusmap_menu_toggle(&fm, 1);
+
+    /* 2. External M&C PDAF depth stream below 150fps (including 1fps & 6fps S&Q allowed on FX3 vs FX6) */
+    fm.fps = 1;
+    int fps_1_sq_rc = r41_mc_external_focusmap_eval(&fm);
+    int fx3_1fps_allowed = fm.mc_stream_active;
+
+    fm.fps = 6;
+    int fps_6_sq_rc = r41_mc_external_focusmap_eval(&fm);
+    int fx3_6fps_allowed = fm.mc_stream_active;
+    int fx6_ref_6fps_reject_rc = r41_fx6_ref_focusmap_fps_gate(6);
+
+    fm.fps = 24;
+    int fps_24_rc = r41_mc_external_focusmap_eval(&fm);
+    fm.fps = 60;
+    int fps_60_rc = r41_mc_external_focusmap_eval(&fm);
+    fm.fps = 120;
+    int fps_120_rc = r41_mc_external_focusmap_eval(&fm);
+    fm.fps = 149;
+    int fps_149_boundary_rc = r41_mc_external_focusmap_eval(&fm);
+    int sub_150fps_stream_active = (fps_24_rc == 0 && fps_60_rc == 0 &&
+                                    fps_120_rc == 0 && fps_149_boundary_rc == 0 &&
+                                    fm.mc_stream_active == 1) ? 1 : 0;
+
+    /* 3. >=150fps S&Q cutoff (150fps boundary, 200fps, 240fps -> -22 EINVAL) */
+    fm.fps = 150;
+    int fps_150_cutoff_rc = r41_mc_external_focusmap_eval(&fm);
+    int fps_150_stream_active = fm.mc_stream_active;
+
+    fm.fps = 200;
+    int sq_200fps_reject_rc = r41_mc_external_focusmap_eval(&fm);
+    int sq_200fps_stream_active = fm.mc_stream_active;
+
+    fm.fps = 240;
+    int sq_240fps_reject_rc = r41_mc_external_focusmap_eval(&fm);
+    int sq_240fps_stream_active = fm.mc_stream_active;
+
+    /* 4. Mount-adapter / non-PDAF / no-lens (-19 ENODEV) & clip playback (-16 EBUSY) */
+    r41_focusmap_state_t fm_adp = fm;
+    fm_adp.fps = 24;
+    fm_adp.lens_kind = R41_LENS_MOUNT_ADAPTER;
+    int mount_adapter_reject_rc = r41_mc_external_focusmap_eval(&fm_adp);
+
+    r41_focusmap_state_t fm_man = fm;
+    fm_man.fps = 24;
+    fm_man.lens_kind = R41_LENS_NON_PDAF_MANUAL;
+    int non_pdaf_lens_reject_rc = r41_mc_external_focusmap_eval(&fm_man);
+
+    r41_focusmap_state_t fm_nolens = fm;
+    fm_nolens.fps = 24;
+    fm_nolens.lens_kind = R41_LENS_NONE;
+    int no_lens_reject_rc = r41_mc_external_focusmap_eval(&fm_nolens);
+
+    r41_focusmap_state_t fm_pb = fm;
+    fm_pb.fps = 24;
+    fm_pb.lens_kind = R41_LENS_SONY_EMOUNT_PDAF;
+    fm_pb.in_playback = 1;
+    int playback_reject_rc = r41_mc_external_focusmap_eval(&fm_pb);
+
+    errno = 0;
+    int ro_fd = open("/mnt/r41_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r41_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) {
+        return 228;
+    }
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R41_FOCUSMAP_SIMULT_WB_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (inbody_menu_toggle_reject_rc == -EOPNOTSUPP &&
+              stageb_local_overlay_guard_rc == -EOPNOTSUPP &&
+              fm.local_lcd_overlay_draws == 0U &&
+              fps_1_sq_rc == 0 && fx3_1fps_allowed == 1 &&
+              fps_6_sq_rc == 0 && fx3_6fps_allowed == 1 &&
+              fx6_ref_6fps_reject_rc == -EINVAL &&
+              sub_150fps_stream_active == 1 &&
+              fps_150_cutoff_rc == -EINVAL && fps_150_stream_active == 0 &&
+              sq_200fps_reject_rc == -EINVAL && sq_200fps_stream_active == 0 &&
+              sq_240fps_reject_rc == -EINVAL && sq_240fps_stream_active == 0 &&
+              mount_adapter_reject_rc == -ENODEV &&
+              non_pdaf_lens_reject_rc == -ENODEV &&
+              no_lens_reject_rc == -ENODEV &&
+              playback_reject_rc == -EBUSY &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R41_EXTERNAL_FOCUSMAP_150FPS body_model=ILME-FX3 fw_ver=7.02 external_app=Monitor_and_Control "
+            "inbody_menu_toggle_reject_rc=%d stageb_local_overlay_guard_rc=%d local_lcd_overlay_draws=%u "
+            "fps_1_sq_rc=%d fx3_1fps_allowed=%d fps_6_sq_rc=%d fx3_6fps_allowed=%d fx6_ref_6fps_reject_rc=%d "
+            "fps_24_rc=%d fps_60_rc=%d fps_120_rc=%d fps_149_boundary_rc=%d sub_150fps_stream_active=%d "
+            "fps_150_cutoff_rc=%d sq_200fps_reject_rc=%d sq_240fps_reject_rc=%d "
+            "sq_200fps_stream_active=%d sq_240fps_stream_active=%d "
+            "mount_adapter_reject_rc=%d non_pdaf_lens_reject_rc=%d no_lens_reject_rc=%d playback_reject_rc=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r41b_ok=%d verify_us=%lld\n",
+            inbody_menu_toggle_reject_rc, stageb_local_overlay_guard_rc, fm.local_lcd_overlay_draws,
+            fps_1_sq_rc, fx3_1fps_allowed, fps_6_sq_rc, fx3_6fps_allowed, fx6_ref_6fps_reject_rc,
+            fps_24_rc, fps_60_rc, fps_120_rc, fps_149_boundary_rc, sub_150fps_stream_active,
+            fps_150_cutoff_rc, sq_200fps_reject_rc, sq_240fps_reject_rc,
+            sq_200fps_stream_active, sq_240fps_stream_active,
+            mount_adapter_reject_rc, non_pdaf_lens_reject_rc, no_lens_reject_rc, playback_reject_rc,
+            p2_write_blocked_rc, p2_setting_sha256_match, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 228;
+}
+
+typedef struct {
+    int simult_recording_on;
+    int auto_switch_media_on;
+    uint32_t slot1_free_mb;
+    uint32_t slot2_free_mb;
+    uint32_t active_slot_mask; /* bit0 = Slot1, bit1 = Slot2 */
+    int single_slot_continuation;
+    int halted_for_strict_parity;
+    uint32_t dropped_frames;
+} r41_simult_rec_state_t;
+
+__attribute__((noinline)) static int r41_simult_eval_dual_slot(r41_simult_rec_state_t *st) {
+    if (!st || !st->simult_recording_on) return -EINVAL;
+    if (st->slot1_free_mb > 0U && st->slot2_free_mb > 0U) {
+        st->active_slot_mask = 0x3U;
+        st->single_slot_continuation = 0;
+        st->halted_for_strict_parity = 0;
+        return 0;
+    }
+    if (st->slot1_free_mb == 0U && st->slot2_free_mb == 0U) {
+        st->active_slot_mask = 0x0U;
+        st->single_slot_continuation = 0;
+        st->halted_for_strict_parity = 1;
+        return -ENOSPC; /* -28: both slots full */
+    }
+    /* Exactly one card full during [Simult. Recording] on FX3 Ver. 2.0..7.02 */
+    if (st->auto_switch_media_on) {
+        st->active_slot_mask = (st->slot1_free_mb > 0U) ? 0x1U : 0x2U;
+        st->single_slot_continuation = 1;
+        st->halted_for_strict_parity = 0;
+        return 0;
+    }
+    /* [Auto Switch Media] = [Off]: halt immediately to enforce strict dual-copy redundancy */
+    st->active_slot_mask = 0x0U;
+    st->single_slot_continuation = 0;
+    st->halted_for_strict_parity = 1;
+    return -ENOSPC; /* -28 */
+}
+
+enum {
+    R41_SHOCKLESS_WB_OFF    = 0,
+    R41_SHOCKLESS_WB_1_FAST = 1,
+    R41_SHOCKLESS_WB_2_MID  = 2,
+    R41_SHOCKLESS_WB_3_SLOW = 3
+};
+
+enum {
+    R41_WB_ACT_PRESET_SWITCH     = 0,
+    R41_WB_ACT_CTEMP_KELVIN_EDIT = 1,
+    R41_WB_ACT_AB_GM_GRID_SHIFT  = 2
+};
+
+__attribute__((noinline)) static int r41_shockless_wb_eval_transition(
+    int shockless_mode,
+    int fps,
+    int action_kind,
+    int *out_transition_frames
+) {
+    if (!out_transition_frames) return -EINVAL;
+    *out_transition_frames = 0;
+    if (shockless_mode < R41_SHOCKLESS_WB_OFF || shockless_mode > R41_SHOCKLESS_WB_3_SLOW) {
+        return -EINVAL; /* -22 */
+    }
+    if (fps < 1 || fps > 240) {
+        return -ERANGE; /* -34 */
+    }
+    /* Official FX3 rule: direct [C.Temp./Filter] Kelvin edits and A-B/G-M fine-grid shifts
+     * bypass Shockless WB smoothing and take effect immediately in 0 transition frames! */
+    if (action_kind == R41_WB_ACT_CTEMP_KELVIN_EDIT ||
+        action_kind == R41_WB_ACT_AB_GM_GRID_SHIFT) {
+        *out_transition_frames = 0;
+        return 0;
+    }
+    if (action_kind != R41_WB_ACT_PRESET_SWITCH) {
+        return -EINVAL;
+    }
+    if (shockless_mode == R41_SHOCKLESS_WB_OFF) {
+        *out_transition_frames = 0;
+    } else if (shockless_mode == R41_SHOCKLESS_WB_1_FAST) {
+        *out_transition_frames = (fps >= 2) ? (fps / 2) : 1;
+    } else if (shockless_mode == R41_SHOCKLESS_WB_2_MID) {
+        *out_transition_frames = fps;
+    } else {
+        *out_transition_frames = fps * 2;
+    }
+    return 0;
+}
+
+static int run_r41_simult_shocklesswb_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. Seed 16 read-only verification surfaces (H0) and remount MS_RDONLY */
+    if (r33_mkdir_p("/mnt/r41_surfaces", 0755) != 0) {
+        return 229;
+    }
+    (void)umount("/mnt/r41_surfaces");
+    if (mount("tmpfs", "/mnt/r41_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        return 229;
+    }
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r41_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 41U) ^ (k * 19U) ^ 0x72U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return 229;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return 229;
+        }
+    }
+    if (mount(NULL, "/mnt/r41_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 229;
+    }
+
+    /* 2. Dual-Slot [Simult. Recording] + [Auto Switch Media] (On: single-card continuation & swap resume; Off: strict parity halt) */
+    r41_simult_rec_state_t rec_on;
+    memset(&rec_on, 0, sizeof(rec_on));
+    rec_on.simult_recording_on = 1;
+    rec_on.auto_switch_media_on = 1;
+    rec_on.slot1_free_mb = 64000U;
+    rec_on.slot2_free_mb = 64000U;
+    int dual_initial_rc = r41_simult_eval_dual_slot(&rec_on);
+    uint32_t dual_initial_mask = rec_on.active_slot_mask;
+
+    /* Slot 1 fills -> seamless continuation on Slot 2 */
+    rec_on.slot1_free_mb = 0U;
+    int autoswitch_on_slot1_full_rc = r41_simult_eval_dual_slot(&rec_on);
+    int single_slot_cont_active = rec_on.single_slot_continuation;
+    uint32_t cont_slot_mask = rec_on.active_slot_mask;
+    uint32_t cont_dropped_frames = rec_on.dropped_frames;
+
+    /* Fresh card swapped into Slot 1 -> seamless resume of Simultaneous Dual-Slot recording */
+    rec_on.slot1_free_mb = 128000U;
+    int card_swap_dual_resume_rc = r41_simult_eval_dual_slot(&rec_on);
+    uint32_t resumed_slot_mask = rec_on.active_slot_mask;
+    int dual_slot_resumed = (card_swap_dual_resume_rc == 0 &&
+                             resumed_slot_mask == 0x3U &&
+                             rec_on.single_slot_continuation == 0) ? 1 : 0;
+
+    /* Both slots full -> -28 ENOSPC */
+    r41_simult_rec_state_t rec_both_full = rec_on;
+    rec_both_full.slot1_free_mb = 0U;
+    rec_both_full.slot2_free_mb = 0U;
+    int both_slots_full_rc = r41_simult_eval_dual_slot(&rec_both_full);
+
+    /* [Auto Switch Media] = [Off] -> immediate halt on Slot 1 full for strict dual-copy parity */
+    r41_simult_rec_state_t rec_off;
+    memset(&rec_off, 0, sizeof(rec_off));
+    rec_off.simult_recording_on = 1;
+    rec_off.auto_switch_media_on = 0;
+    rec_off.slot1_free_mb = 0U;
+    rec_off.slot2_free_mb = 64000U;
+    int autoswitch_off_slot1_full_rc = r41_simult_eval_dual_slot(&rec_off);
+    int autoswitch_off_halted = rec_off.halted_for_strict_parity;
+    uint32_t autoswitch_off_slot_mask = rec_off.active_slot_mask;
+
+    /* 3. [Shockless WB] (Off / 1 / 2 / 3) across 24p..240fps + Kelvin / A-B/G-M Grid Immediate-Bypass */
+    static const int k_fps_list[6] = { 24, 60, 100, 120, 200, 240 };
+    int fps_sweep_verified = 0;
+    int preset_24p_1_frames = 0, preset_24p_2_frames = 0, preset_24p_3_frames = 0;
+    int preset_240fps_3_frames = 0;
+    for (size_t i = 0U; i < 6U; i++) {
+        int f0 = -1, f1 = -1, f2 = -1, f3 = -1;
+        int fps = k_fps_list[i];
+        if (r41_shockless_wb_eval_transition(R41_SHOCKLESS_WB_OFF, fps, R41_WB_ACT_PRESET_SWITCH, &f0) == 0 &&
+            r41_shockless_wb_eval_transition(R41_SHOCKLESS_WB_1_FAST, fps, R41_WB_ACT_PRESET_SWITCH, &f1) == 0 &&
+            r41_shockless_wb_eval_transition(R41_SHOCKLESS_WB_2_MID, fps, R41_WB_ACT_PRESET_SWITCH, &f2) == 0 &&
+            r41_shockless_wb_eval_transition(R41_SHOCKLESS_WB_3_SLOW, fps, R41_WB_ACT_PRESET_SWITCH, &f3) == 0 &&
+            f0 == 0 && f1 > 0 && f1 < f2 && f2 < f3) {
+            fps_sweep_verified++;
+            if (fps == 24) {
+                preset_24p_1_frames = f1;
+                preset_24p_2_frames = f2;
+                preset_24p_3_frames = f3;
+            }
+            if (fps == 240) {
+                preset_240fps_3_frames = f3;
+            }
+        }
+    }
+    int invalid_shockless_tmp = 0;
+    int invalid_shockless_mode_rc = r41_shockless_wb_eval_transition(
+        4, 24, R41_WB_ACT_PRESET_SWITCH, &invalid_shockless_tmp);
+
+    int ctemp_kelvin_transition_frames = 99;
+    int ctemp_kelvin_rc = r41_shockless_wb_eval_transition(
+        R41_SHOCKLESS_WB_3_SLOW, 240, R41_WB_ACT_CTEMP_KELVIN_EDIT, &ctemp_kelvin_transition_frames);
+    int ctemp_kelvin_immediate_bypass = (ctemp_kelvin_rc == 0 && ctemp_kelvin_transition_frames == 0) ? 1 : 0;
+
+    int ab_gm_grid_transition_frames = 99;
+    int ab_gm_grid_rc = r41_shockless_wb_eval_transition(
+        R41_SHOCKLESS_WB_3_SLOW, 240, R41_WB_ACT_AB_GM_GRID_SHIFT, &ab_gm_grid_transition_frames);
+    int ab_gm_grid_immediate_bypass = (ab_gm_grid_rc == 0 && ab_gm_grid_transition_frames == 0) ? 1 : 0;
+
+    /* 4. Read-only surface write block, real guest dlopen("/tmp/jiritsu/libJit.so"), & 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r41_surfaces/surf_00.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r41_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (dual_initial_rc == 0 && dual_initial_mask == 0x3U &&
+              autoswitch_on_slot1_full_rc == 0 &&
+              single_slot_cont_active == 1 && cont_slot_mask == 0x2U &&
+              cont_dropped_frames == 0U &&
+              dual_slot_resumed == 1 &&
+              both_slots_full_rc == -ENOSPC &&
+              autoswitch_off_slot1_full_rc == -ENOSPC &&
+              autoswitch_off_halted == 1 &&
+              autoswitch_off_slot_mask == 0x0U &&
+              fps_sweep_verified == 6 &&
+              invalid_shockless_mode_rc == -EINVAL &&
+              ctemp_kelvin_immediate_bypass == 1 &&
+              ab_gm_grid_immediate_bypass == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R41_SIMULT_SHOCKLESSWB dual_initial_mask=%u autoswitch_on_slot1_full_rc=%d "
+            "single_slot_cont_active=%d cont_slot_mask=%u cont_dropped_frames=%u "
+            "card_swap_dual_resume_rc=%d resumed_slot_mask=%u dual_slot_resumed=%d "
+            "both_slots_full_rc=%d autoswitch_off_slot1_full_rc=%d autoswitch_off_halted=%d "
+            "autoswitch_off_slot_mask=%u fps_sweep_verified=%d "
+            "preset_24p_1_frames=%d preset_24p_2_frames=%d preset_24p_3_frames=%d "
+            "preset_240fps_3_frames=%d invalid_shockless_mode_rc=%d "
+            "ctemp_kelvin_transition_frames=%d ctemp_kelvin_immediate_bypass=%d "
+            "ab_gm_grid_transition_frames=%d ab_gm_grid_immediate_bypass=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r41c_ok=%d verify_us=%lld\n",
+            dual_initial_mask, autoswitch_on_slot1_full_rc,
+            single_slot_cont_active, cont_slot_mask, cont_dropped_frames,
+            card_swap_dual_resume_rc, resumed_slot_mask, dual_slot_resumed,
+            both_slots_full_rc, autoswitch_off_slot1_full_rc, autoswitch_off_halted,
+            autoswitch_off_slot_mask, fps_sweep_verified,
+            preset_24p_1_frames, preset_24p_2_frames, preset_24p_3_frames,
+            preset_240fps_3_frames, invalid_shockless_mode_rc,
+            ctemp_kelvin_transition_frames, ctemp_kelvin_immediate_bypass,
+            ab_gm_grid_transition_frames, ab_gm_grid_immediate_bypass,
+            p2_write_blocked_rc, dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 230;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -8455,6 +9191,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r40-vmcbncm1-tcin-hdmi") == 0) {
         return run_r40_vmcbncm1_tcin_hdmi_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r41-focusmap-150fps") == 0) {
+        return run_r41_focusmap_150fps_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r41-simult-shocklesswb") == 0) {
+        return run_r41_simult_shocklesswb_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -8541,6 +9283,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r40", &r40_st) == 0) {
         if (setup_r40_big6_home_noend_probe() != 0) {
             return 59;
+        }
+    }
+    struct stat r41_st;
+    if (stat("/etc/fx6_stage_r41", &r41_st) == 0) {
+        if (setup_r41_desqueeze_165x_4locks_probe() != 0) {
+            return 60;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

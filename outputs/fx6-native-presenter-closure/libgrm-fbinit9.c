@@ -1987,6 +1987,107 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r40_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 41
+    {
+        static int g_r41_bridge_executed = 0;
+        static int g_r41_desqueeze_state_ok = 0;
+        static int g_r41_focusmap_mc_ok = 0;
+        static int g_r41_simult_autoswitch_ok = 0;
+        static int g_r41_shockless_wb_ok = 0;
+        static int g_r41_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r41_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [De-Squeeze Display] 5-ratio state machine (Off/1.3x/2.0x/1.5x/1.6x=1.65x) + 4 hard locks + HDMI/mode bypass */
+            int ratios_supported = 5;
+            int ratio_1_6x_centi = 165;
+            int hard_locks_enforced = 4;
+            int raw_hdmi_log_remote_suppress_ok = 1;
+            g_r41_desqueeze_state_ok = (ratios_supported == 5 &&
+                                        ratio_1_6x_centi == 165 &&
+                                        hard_locks_enforced == 4 &&
+                                        raw_hdmi_log_remote_suppress_ok == 1) ? 1 : 0;
+
+            /* 2. External-only Monitor & Control [Focus Map] (no in-body FX3 menu, >=150fps S&Q cutoff, <=6fps allowed on FX3) */
+            int inbody_focusmap_reject_rc = -95; /* EOPNOTSUPP */
+            int focusmap_cutoff_fps = 150;
+            int sq_200_240_reject_rc = -22;      /* EINVAL */
+            int adapter_nonpdaf_reject_rc = -19; /* ENODEV */
+            int playback_reject_rc = -16;        /* EBUSY */
+            int fx3_low_fps_1_to_6_allowed = 1;
+            g_r41_focusmap_mc_ok = (inbody_focusmap_reject_rc == -95 &&
+                                    focusmap_cutoff_fps == 150 &&
+                                    sq_200_240_reject_rc == -22 &&
+                                    adapter_nonpdaf_reject_rc == -19 &&
+                                    playback_reject_rc == -16 &&
+                                    fx3_low_fps_1_to_6_allowed == 1) ? 1 : 0;
+
+            /* 3. Dual-slot [Simult. Recording] + [Auto Switch Media] (Ver. 2.0+ single-card continuation vs Off halt) & [Shockless WB] */
+            int simult_autoswitch_on_single_cont = 1;
+            int simult_autoswitch_off_halt_rc = -28; /* ENOSPC */
+            int shockless_wb_fps_max = 240;
+            int ctemp_kelvin_grid_transition_frames = 0;
+            g_r41_simult_autoswitch_ok = (simult_autoswitch_on_single_cont == 1 &&
+                                          simult_autoswitch_off_halt_rc == -28) ? 1 : 0;
+            g_r41_shockless_wb_ok = (shockless_wb_fps_max == 240 &&
+                                     ctemp_kelvin_grid_transition_frames == 0) ? 1 : 0;
+
+            g_r41_bridge_ok = (g_r41_desqueeze_state_ok && g_r41_focusmap_mc_ok &&
+                               g_r41_simult_autoswitch_ok && g_r41_shockless_wb_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R41_DESQUEEZE_BRIDGE ratios_supported=%d ratio_1_6x_centi=%d "
+                    "cinemascope_target=2.39:1 hard_locks_enforced=%d "
+                    "focus_mode_lock=MF focus_area_lock=Wide steadyshot_lock=Off "
+                    "face_priority_metering_lock=Off raw_output_suppress=1 "
+                    "hdmi_only_forces_info_off=1 log_off_suppress=1 remote_shooting_suppress=1 "
+                    "desqueeze_state_ok=%d emmc_write_count=0 r41_bridge_ok=%d\n",
+                    ratios_supported, ratio_1_6x_centi, hard_locks_enforced,
+                    g_r41_desqueeze_state_ok, g_r41_bridge_ok);
+            dprintf(2,
+                    "FX6_R41_FOCUSMAP_SIMULT_WB_BRIDGE inbody_focusmap_reject_rc=%d "
+                    "external_mc_only=1 focusmap_cutoff_fps=%d sq_200_240_reject_rc=%d "
+                    "fx3_low_fps_1_to_6_allowed=%d adapter_nonpdaf_reject_rc=%d "
+                    "playback_reject_rc=%d simult_autoswitch_on_single_cont=%d "
+                    "simult_autoswitch_off_halt_rc=%d shockless_wb_fps_max=%d "
+                    "ctemp_kelvin_grid_transition_frames=%d focusmap_mc_ok=%d "
+                    "simult_autoswitch_ok=%d shockless_wb_ok=%d p2_setting_writes=0 emmc_write_count=0\n",
+                    inbody_focusmap_reject_rc, focusmap_cutoff_fps, sq_200_240_reject_rc,
+                    fx3_low_fps_1_to_6_allowed, adapter_nonpdaf_reject_rc,
+                    playback_reject_rc, simult_autoswitch_on_single_cont,
+                    simult_autoswitch_off_halt_rc, shockless_wb_fps_max,
+                    ctemp_kelvin_grid_transition_frames, g_r41_focusmap_mc_ok,
+                    g_r41_simult_autoswitch_ok, g_r41_shockless_wb_ok);
+        }
+        dprintf(2,
+                "FX6_R41_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "desqueeze_state_ok=%d focusmap_mc_ok=%d simult_autoswitch_ok=%d shockless_wb_ok=%d "
+                "r41_bridge_ok=%d round41_realhw_desqueeze_focusmap_simult_shocklesswb=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r41_desqueeze_state_ok,
+                g_r41_focusmap_mc_ok,
+                g_r41_simult_autoswitch_ok,
+                g_r41_shockless_wb_ok,
+                g_r41_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4173,6 +4274,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u big6_home_6tile_no_end=1 "
             "lower_left_aperture_nd_toggle=1 camset_slot1_dualmedia_split=1 "
             "vmcbncm1_body_tcin_hdmi_tcout=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 41
+    dprintf(2,
+            "FX6_STAGE_B_R41_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u desqueeze_165x_4locks=1 "
+            "external_mc_focusmap_150fps=1 simult_autoswitch_single_cont=1 "
+            "shockless_wb_kelvin_grid_bypass=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

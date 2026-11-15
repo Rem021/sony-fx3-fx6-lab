@@ -1371,3 +1371,35 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 232：Stage 42（`42/42` 里程碑）真实硬件主线 — Wave-32 `[Mode Settings]` (`Fixed/Variable`) S&Q 6 项硬锁矩阵、`[Zebra]`/`[Peaking]` 本地 LCD 专属与 HDMI 零像素净流隔离、以及 `[Full Format]` / `MENU+(Delete)` 2 秒组合键 Tier-0 保险库防火墙 HIL 协同仿真器
+
+[`realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py`](realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py) 作为 **Stage 42（`42/42` 里程碑，Schema `realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase232_realhw_sq_fixedvar_zebra_peaking_fullformat_hil=True`，可通过 `--skip-phase232` 跳过；本地只读供体 42 阶段全板协同仿真 `< 2.4s`、洁净室模式 `< 0.65s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`sq_fixedvar_6lock_bypass_events == 0`、`hdmi_zebra_or_peaking_leaked_overlay_pixels == 0`、`tier0_slot1_format_or_chord_wipe_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI` / `Format` / `Delete`）、`string_english_f.uxc`（`373,820 B`：证实 `Mode Settings` / `Fixed/Variable` / `S&Q Settings` / `FPS` / `Home` / `Audio Out Timing` / `Live` / `Lip Sync` / `Time Code Run` / `Time Code Output` / `XAVC HS 4K` / `XAVC S 4K` / `XAVC S-I 4K` / `XAVC S-I DCI 4K` / `240fps` / `200fps` / `120fps` / `100fps` / `Proxy Recording` / `Zebra Display` / `Zebra Display Select` / `Zebra Level` / `100+` / `Peaking Display` / `Peaking Display Select` / `Peaking Level` / `Peaking Color` / `HDMI Info. Display` / `Camera Settings Reset` / `Initialize` / `Format` / `Quick Format` / `Full Format` / `Switch Full Format` / `Slot 1` / `Slot 2` / `Enter` / `Delete`）与 `string_english.uxc`（`118,208 B`），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-model A — Ver. 7.00+/7.02 `[Mode Settings]` = `[Fixed/Variable]` 锁定旧版 `[S&Q Settings]` 与 6 项 S&Q 硬件禁用矩阵 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Shooting Mode] -> [Mode Settings] = [Fixed/Variable]`：旧版 `[S&Q Settings]` 菜单锁定不可用（强行访问返回 `EOPNOTSUPP = 95`），帧率直接由 `Home (FPS)` / `[FPS]` 控制；在 `Variable`（S&Q）模式下确定性执行 **全部 6 项硬件录制禁令**：① `0ch` 零音频录制（尝试采集音频返回 `EOPNOTSUPP = 95`）、② `[Audio Out Timing]`（`Live` / `Lip Sync`）禁用、③ `[Time Code Run]` 与 `[Time Code Output]` 不可用、④ `240fps`（NTSC）/ `200fps`（PAL）在全部 4 种 4K 格式（`XAVC HS 4K`、`XAVC S 4K`、`XAVC S-I 4K`、`XAVC S-I DCI 4K`）下硬拦截（仅允许 `XAVC S HD` / `XAVC S-I HD`）、⑤ `120fps`（NTSC）/ `100fps`（PAL）在 `XAVC S-I DCI 4K`（`4096x2160`）下硬拦截、⑥ 当 `Rec Frame Rate` 为 `119.88p/100p` 或拍摄帧率 `>= 120fps/100fps` 时硬阻断同时录制 `[Proxy Recording]`。
+3. **Sub-model B — `[Zebra Display]` / `[Zebra Level]` 跨 `[Camera Settings Reset]` 存活（仅 `[Initialize]` 清零）与 `[Zebra]` + `[Peaking]` 严格本地 LCD 专属 HDMI 零像素隔离 HIL**：
+   - 协同仿真 `[Zebra Display]`（`Off`/`On`，控制拨轮左键 `[Zebra Display Select]`）与 `[Zebra Level]`（`70..100+` 预设、`Custom 1` `Standard+Range` 曝光带、`Custom 2` `Minimum/Lower-Limit` 过曝下限）：执行 **`[Camera Settings Reset]` 时斑马纹开关与等级（含 `Custom 1`/`Custom 2`）完整保留**（常规参数如 `[Peaking Display]` 则重置回 `Off`/`Mid`/`White`），仅 **`[Initialize]`** 将斑马纹清零回 `Off` / `70`；同时严格执行硬件 HDMI 净流隔离——即便 **`[HDMI Info. Display] = On`**，外接 HDMI 信号上的斑马纹像素与峰值对焦描边像素（`High/Mid/Low`、`Red/Yellow/Blue/White`）恒为 **`0`**（强行向 HDMI 注入辅助叠加层返回 `EOPNOTSUPP = 95`）。
+4. **Sub-model C & Redlines — Slot 1 `[Format]`（`[Enter]` 快速格式化 vs `(Delete)` 完全格式化 + 中途取消数据已擦除隐患）与拍摄界面 `MENU + (Delete)`（`~2s`）组合键 Tier-0 保险库防火墙 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Media] -> [Format]`（`[Enter]` 仅重置文件系统管理元数据的 **Quick Format** vs 确认框按 `(Delete)` 切换初始化全卡数据块 + 元数据的 **Full Format**，以及 Full Format 中途取消导致旧数据永久擦除但卡片立即可用的物理行为）与拍摄界面同时长按 **`MENU + (Delete)` `>= 2.0s`** 直达格式化确认框（`< 2.0s` 短按忽略、非拍摄界面以 `EOPNOTSUPP = 95` 拦截）；只要 **Slot 1** 存放未完成离机 SHA-256 校验或仍在位的 Tier-0 恢复保险库（`pnflasha` / `cnflasha` / `CAMSET01.DAT`），对上述全部 3 条破坏性格式化入口一律以 `EBUSY = 16` / `EROFS = 30`（SDXC 物理 WP 锁）fail-closed 硬拦截（`tier0_slot1_format_or_chord_wipe_events == 0`），并锁死全部 9 项硬件写入/挂载/越权红线。
+
+### Phase 232 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 42（42/42 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py --self-test --json
+
+# 2. 全板 42 阶段（Stage 1..42, 42/42 里程碑）统一校验（支持 --skip-phase232）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 232 58 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+

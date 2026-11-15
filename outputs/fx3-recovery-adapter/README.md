@@ -394,5 +394,24 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --clean-room --json
 ```
 
+## Phase 126 — 单机身出厂校准（`nvs` / `cnflasha` / `adj`）三副本校验与跨机身投毒防火墙、`IMX510` 坏点/双原生 ISO 列 ADC 与 5 轴 `IBIS` 霍尔零点/陀螺仪温漂表校验器，及 14 支柱恢复总检
 
+- **[`factory_cal_ibis_defectpixel_and_nvs_verifier.py`](fx3_recovery/factory_cal_ibis_defectpixel_and_nvs_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057` / `CXD90058`）提供两大只读防变砖/防校准中毒支柱并接入 **14 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`FACTORY_CAL_MUTATION_BYTES = 0`、`PRIVATE_KEY_BYTES_READ = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_factory_cal_and_sensor_donors_readonly`）**：严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查本地 FX3 `v7.02`（`libbackup.so` `14,232 B`、`backup.ko` `144,976 B`、`appFw.so` `79,015,712 B`、按需 `cpapp-b.bin` `15,980,568 B`）与 FX6 `v6.01`（`libbackup.so` `14,232 B`、`appFw.so` `50,520,424 B`、按需 `cpapp-b.bin` `17,952,816 B`）校准/备份/传感器/`IBIS` 符号锚点，验证跨机型摘要严格隔离且零原始固件字节/私钥输出。
+  - **支柱 A — 单机身出厂校准分区（`nvs` / `adj` / `cnflasha`）三副本 SHA-256 仲裁与跨机身移植防火墙（`verify_factory_cal_triple_parity_and_firewall` / `audit_cnflasha_key_vault_operation` / `run_factory_cal_6_scenario_firewall`）**：
+    - `BLOCKED_CROSS_SERIAL_FACTORY_CAL_TRANSPLANT`：恢复清单 `body_serial_hash` / `board_uid_hash` 或机型 SKU 与目标相机 Tier-0 身份不匹配时 fail-closed 拦截跨机身移植；
+    - `BLOCKED_MISSING_TIER0_FACTORY_CAL_TRIPLE_PARITY`：`nvs` / `adj` / `cnflasha` 任一分区独立一致 SHA-256 副本少于 2/3 时拒绝；
+    - `BLOCKED_CNFLASHA_KEY_VAULT_WRITE_OR_EXTRACTION`：严格拦截任何修改 `cnflasha` 或读取原始非对称私钥材质的请求（`private_key_bytes_read == 0`、`factory_cal_mutation_bytes == 0`，`6/6` 场景绿色通过）。
+  - **支柱 B — `IMX510` 坏点表（`Base ISO 800 / 12800` 双增益列 ADC）与 5 轴 `IBIS` 霍尔/陀螺仪温漂表校验器（`verify_imx510_and_ibis_cal_tables` / `run_sensor_ibis_cal_6_scenario_suite`）**：
+    - 校验 `4264 x 2408` 有效像素阵列内严格行主序单调坏点坐标、有界双增益 `ISO 800 / 12800` 暗电流与列 FPN 偏置（`±32 LSB`）、完整 5 轴 `IBIS`（`pitch` / `yaw` / `roll` / `x` / `y`）霍尔零点中心与限位、`-10°C..+60°C` 覆盖及有限边界内的 `IMU` 陀螺仪温漂多项式与 `CRC32` 篡改校验（`6/6` 场景绿色通过）。
+  - **支柱 C — CLI 与 14 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-factory-cal-guard [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126`（构成 **14/14** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 126 公开符号；[`tests/test_factory_cal_ibis_defectpixel_and_nvs_verifier.py`](tests/test_factory_cal_ibis_defectpixel_and_nvs_verifier.py) 提供 **40 项快速双模单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-factory-cal-guard --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --clean-room --json
+```
 

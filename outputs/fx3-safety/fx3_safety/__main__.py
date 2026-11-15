@@ -52,6 +52,11 @@ from .realhw_uart1v8_imx510_cal_and_50gate_guard import (
     evaluate_g49_uart1v8_isp,
     evaluate_g50_imx510_sensor_cal,
 )
+from .realhw_cfexpress_ufu_el3_and_52gate_guard import (
+    evaluate_52gate_preflight,
+    evaluate_g51_cfexpress_ufu,
+    evaluate_g52_5tier_el3_guard,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -622,6 +627,53 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G50 gates can be rehearsed offline",
     )
     p_50.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 35. verify-g51-cfexpress-ufu
+    p_g51 = sub.add_parser(
+        "verify-g51-cfexpress-ufu",
+        help="Run Phase 161 Gate G51 (Dual-Slot CFexpress Type A / SDXC V90 Bitrate, Card-Door GPIO Flush & BODYDATA.DAT UFU Guard)",
+    )
+    p_g51.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g51.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g51.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 36. verify-g52-5tier-el3-guard
+    p_g52 = sub.add_parser(
+        "verify-g52-5tier-el3-guard",
+        help="Run Phase 161 Gate G52 (5-Tier Unbrickable Recovery Ladder, ILME-FX3 0x91030080 Lock & CXD90057 EL3 RO Guard)",
+    )
+    p_g52.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g52.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g52.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 37. verify-52-gates
+    p_52 = sub.add_parser(
+        "verify-52-gates",
+        help="Run Phase 161 52-Gate Master Safety Preflight Engine (G01..G52)",
+    )
+    p_52.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_52.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_52.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G52 gates can be rehearsed offline",
+    )
+    p_52.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -1264,6 +1316,68 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_50_gates_verified if args.dry_run_simulated_backup else report.offline_47_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g51-cfexpress-ufu":
+        verdict, res = evaluate_g51_cfexpress_ufu(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.cfexpress_ufu_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} codec={guard['codec_profile']}@{guard['codec_bitrate_mbps']:.0f}Mbps "
+                f"slotA={guard['slot_a_media_type']}/{guard['slot_a_speed_class']} "
+                f"unflushed_fifo={guard['unflushed_fifo_bytes_on_door_open']}B "
+                f"ufu_present={guard['bodydata_dat_present']} h0_eq_h3={guard['h0_equals_h3_verified']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g52-5tier-el3-guard":
+        verdict, res = evaluate_g52_5tier_el3_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.five_tier_el3_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} tiers={len(guard['recovery_ladder'])}/5 "
+                f"model={guard['target_model_name']}({guard['target_model_id_hex']}) "
+                f"el3={guard['soc_name']}@{guard['el3_entry_addr_hex']}({guard['el3_monitor_mode']}) "
+                f"el3_payload_transmit_authorized={res.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={res.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-52-gates":
+        report = evaluate_52gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/52 "
+                f"g51_to_g52_all_passed={report.g51_to_g52_all_passed} "
+                f"all_52_gates_verified={report.all_52_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_52_gates_verified if args.dry_run_simulated_backup else report.offline_49_gates_verified
         return 0 if ok else 1
 
     return 2

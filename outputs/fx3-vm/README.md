@@ -1340,3 +1340,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 226：Stage 41（`41/41` 里程碑）真实硬件主线 — Wave-31 `[SteadyShot]` `[Active]` 三重截止、`[Clear Image Zoom]` 4 项自动对焦/测光锁死与 `1.0x` 恢复、以及 `[Power Save Start Time]` 9 条件旁路 + `[Auto Power OFF Temp.]` HIL 协同仿真器
+
+[`realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py`](realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py) 作为 **Stage 41（`41/41` 里程碑，Schema `realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase226_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_hil=True`，可通过 `--skip-phase226` 跳过；本地只读供体 41 阶段全板协同仿真 `< 2.3s`、洁净室模式 `< 0.65s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`steadyshot_active_cutoff_bypass_events == 0`、`ciz_4lock_unrestored_or_bypass_events == 0`、`tier0_p3_sleep_abort_or_thermal_burn_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B` 零差异 ABI）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`string_english_f.uxc`（`373,820 B`：证实 `SteadyShot` / `Active` / `Standard` / `RAW Output` / `119.88p` / `100p` / `120fps` / `Clear Image Zoom` / `Digital Zoom` / `Zoom Range` / `Optical zoom only` / `Focus Area` / `Metering Mode` / `Multi` / `Face/Eye Prior. in AF` / `Face Priority in Multi Metering` / `Tracking` / `Power Save Start Time` / `30 Min` / `10 Sec` / `IR Remote Ctrl` / `Bluetooth Rmt Ctrl` / `Auto Power OFF Temp.` / `High` / `Fan Control`）与 `string_english.uxc`（`118,208 B`），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-model A — 视频 `[SteadyShot]` `[Active]` `~1.1x` 裁切 vs `[Standard]`/`[Off]` 与三重硬截止 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Image Stabilization] -> [SteadyShot]`：`[Active]` 施加 `1.10x` 视角裁切并启用 5 轴光学移轴 + 电子陀螺仪裁切增稳（尝试强行抑制 `1.10x` 裁切返回 `EOPNOTSUPP = 95`），`[Standard]` 保持 `1.00x` 纯 5 轴光学移轴，`[Off]` 锁定音圈防抖机构并校验手动焦距 `[SteadyShot Focal Len.]` `8..1000mm` 范围（越界返回 `EINVAL = 22`）；严格执行 **`[Active]` 三重硬截止**：① 常规视频 `119.88p / 100p`、② `S&Q` 传感器采样帧率 `>= 100fps / 120fps`（`1..60fps` 正常开放）、③ 外接 Type-A HDMI `[RAW Output] = On`（未开启自动降级时以 `EOPNOTSUPP = 95` 阻断，开启自动回退时平滑钳位至 `Standard` `1.00x`）。
+3. **Sub-model B — `[Clear Image Zoom]` / `[Digital Zoom]`（`[Zoom Range]`）RAW/HFR 禁用矩阵、4 项自动状态锁死与 `1.0x` 无损恢复 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Zoom] -> [Zoom Range]`（`Optical zoom only` `1.0x`、`Smart Zoom`、`Clear Image Zoom` 4K `1.5x` / HD & 照片 `2.0x`、`Digital Zoom` `4.0x`），在外接 HDMI `[RAW Output]=On`、常规 `119.88p/100p`、`S&Q >= 100fps` 及照片 `RAW / RAW & JPEG / RAW & HEIF` 下以 `EOPNOTSUPP = 95` 硬禁用超光学变焦；一旦进入 `> 1.0x` 超光学变焦区间，**自动联动施加全部 4 项相机状态锁**：① `[Focus Area]` 灰显禁用并退化为中心优先对焦框、② `[Metering Mode]` 强制锁定为 `[Multi]`、③ `[Face/Eye Prior. in AF]` 与 `[Face Priority in Multi Metering]` 禁用归 `Off`、④ 主体 `Real-time Tracking` 实时追踪禁用（越权覆盖尝试返回 `EOPNOTSUPP = 95`），并在变焦退回 `1.0x` 光学范围时 **100% 比特精确恢复** 用户原设定的对焦区域、测光模式、人脸/人眼对焦与追踪状态。
+4. **Sub-model C & Redlines — `[Power Save Start Time]`（默认 `5 Min`）9 条件自动解除矩阵、气隙 `NP-FZ100` Tier-0 `75 MiB` `p3` 防休眠门控与 `[Auto Power OFF Temp.]` + `[Fan Control]` 耦合 HIL**：
+   - 协同仿真完整菜单键名 `"Power Save Start Time"`（6 档：`Off`、`30 Min`、默认 `5 Min`、`2 Min`、`1 Min`、`10 Sec`）的 **9 项自动失效条件**（AC/USB-PD 供电、USB 数据连接、HDMI 输出连接、视频录制中、间隔拍摄中、幻灯片播放中、`[IR Remote Ctrl]=On`、`[Bluetooth Rmt Ctrl]=On`、FTP/手机无线传输中）；针对 9 项条件全为 `False` 的气隙纯电池 `NP-FZ100` 台架场景，强门控 **Tier-0 `75 MiB` `p3` 冷备导出必须设为 `Off` 或 `30 Min`** + 电量 `>= 51%` + `[Fan Control]=Auto` + 物理气隙隔离（保留默认 `5 Min` 或更短档位立即返回 `EOPNOTSUPP = 95` 防止中途待机休眠中断）；同时仿真 `[Auto Power OFF Temp.]`（`Standard` `68°C` vs `High` `78°C`），在手持（`Handheld`）状态下硬拦截 `[High]` 防止低温接触烫伤，禁止 `[High]` + `[Fan Control]=Always Off` 危险组合，高温自动触发 `100%` 风扇覆盖与优雅关机刷盘，并 fail-closed 锁死全部 9 项硬件写入/挂载/越权红线。
+
+### Phase 226 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 41（41/41 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py --self-test --json
+
+# 2. 全板 41 阶段（Stage 1..41, 41/41 里程碑）统一校验（支持 --skip-phase226）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 226 56 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

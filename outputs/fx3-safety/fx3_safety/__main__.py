@@ -67,6 +67,11 @@ from .realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard import (
     evaluate_g71_big6_noend_camset_slot1_guard,
     evaluate_g72_vmcbncm1_tcin_hdmi_tcout_guard,
 )
+from .realhw_desqueeze_focusmap_simult_shocklesswb_and_74gate_guard import (
+    evaluate_74gate_preflight,
+    evaluate_g73_desqueeze_focusmap_guard,
+    evaluate_g74_simult_autoswitch_shocklesswb_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1362,6 +1367,87 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G72 gates can be rehearsed offline",
     )
     p_72.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 68. verify-g73-desqueeze-focusmap
+    p_g73 = sub.add_parser(
+        "verify-g73-desqueeze-focusmap",
+        help="Verify Gate G73: ILME-FX3 (Ver. 7.02) [De-Squeeze Display] (1.6x=1.65x 4-Locks / Auto-Suppression) & External M&C Focus Map (<150fps Cutoff) Guard",
+    )
+    p_g73.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g73.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g73.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g73.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 69. verify-g74-simult-autoswitch-shocklesswb
+    p_g74 = sub.add_parser(
+        "verify-g74-simult-autoswitch-shocklesswb",
+        help="Verify Gate G74: Dual-Slot [Simult. Recording] + [Auto Switch Media] Parity & [Shockless WB] Immediate-Bypass Guard",
+    )
+    p_g74.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g74.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g74.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g74.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 70. verify-74-gates
+    p_74 = sub.add_parser(
+        "verify-74-gates",
+        help="Run Phase 206 74-Gate Master Safety Preflight Engine (G01..G74)",
+    )
+    p_74.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_74.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_74.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G74 gates can be rehearsed offline",
+    )
+    p_74.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -2756,6 +2842,97 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_72_gates_verified if args.dry_run_simulated else report.offline_69_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g73-desqueeze-focusmap":
+        verdict, res = evaluate_g73_desqueeze_focusmap_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.desqueeze_focusmap_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} body={guard['body_model_name']}({guard['body_model_id_hex']}) "
+                f"fw={guard['firmware_version']} desqueeze={guard['canonical_desqueeze_option']}->"
+                f"{guard['effective_horizontal_factor']:.2f}x "
+                f"suppressed={guard['desqueeze_auto_suppressed']} 4locks={guard['four_locks_enforced']} "
+                f"focus_map={guard['canonical_focus_map_target']}@{guard['frame_rate_fps']:.2f}fps "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g74-simult-autoswitch-shocklesswb":
+        verdict, res = evaluate_g74_simult_autoswitch_shocklesswb_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.simult_autoswitch_shocklesswb_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} rec_mode={guard['canonical_rec_media_mode']} "
+                f"auto_switch={guard['auto_switch_media_enabled']} "
+                f"strict_parity={guard['strict_dual_vault_parity_required']} "
+                f"state={guard['modeled_dual_slot_state']} slots={guard['active_recording_slot_count']} "
+                f"shockless_wb={guard['canonical_shockless_wb_level']}/"
+                f"{guard['canonical_wb_operation_type']}@{guard['observed_wb_ramp_frames']}F "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-74-gates":
+        report = evaluate_74gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/74 "
+                f"g73_to_g74_all_passed={report.g73_to_g74_all_passed} "
+                f"all_74_gates_verified={report.all_74_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_74_gates_verified if args.dry_run_simulated else report.offline_71_gates_verified
         return 0 if ok else 1
 
     return 2

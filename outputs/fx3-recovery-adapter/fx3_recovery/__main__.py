@@ -23,6 +23,7 @@ from .gpt_rpmb_and_rescue_bundle_verifier import run_gpt_rpmb_and_rescue_bundle_
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
+from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
 from .realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier import run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite
 from .realhw_service_usb_session_and_libjit_elf_hardener import run_realhw_service_usb_and_libjit_hardener_suite
@@ -118,6 +119,7 @@ def main():
     master.add_argument('--with-phase144', action='store_true', help='also run Phase 144 Pillar 18 MSC->SERVICE exclusive session, op=0xFF zero-mount RAM canary & Stage-288 s4 hardened ARM64 libJit.so verifier')
     master.add_argument('--with-phase151', action='store_true', help='also run Phase 151 Pillar 19 /dev/pnflasha* raw ISP + /dev/cnflasha* logical + /dev/mtd*ro SPI NOR dual-layer Tier-0 vault verifier')
     master.add_argument('--with-phase155', action='store_true', help='also run Phase 155 Pillar 20 real-hardware CXD90057 1.8V ttyAMA0 460800n8 boot-stage triage, multi-USB firewall & last-resort ISP checklist verifier (20/20 milestone)')
+    master.add_argument('--with-phase160', action='store_true', help='also run Phase 160 Pillar 21 real-hardware 5-tier unbrickable recovery escalation, CXD90057 EL3 (0xfe020000) cold-boot guard & official BODYDATA.DAT (\\x89UFU) stock-reflash verifier (21/21 milestone)')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -170,6 +172,10 @@ def main():
     u460800.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     u460800.add_argument('--json', action='store_true', help='emit full structured JSON report')
     u460800.add_argument('--out', help='optional exclusive new output directory for uart-460800-isp-triage-report.json')
+    p160_5tier = sub.add_parser('verify-realhw-5tier-el3-ufu', help='Phase 160 Pillar 21 real-hardware 5-tier unbrickable recovery escalation, CXD90057 EL3 (0xfe020000) cold-boot guard & official BODYDATA.DAT (\\x89UFU) stock-reflash verifier')
+    p160_5tier.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p160_5tier.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p160_5tier.add_argument('--out', help='optional exclusive new output directory for realhw-5tier-el3-ufu-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -445,6 +451,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p155_report.all_passed else 0)
                 overall_ok = overall_ok and p155_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase160:
+                p160_report = run_realhw_bootrom_el3_and_ufu_stock_reflash_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase160_pillar21_5tier_el3_ufu_recovery'] = p160_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p160_report.all_passed else 0)
+                overall_ok = overall_ok and p160_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -464,6 +479,7 @@ def main():
                     or args.with_phase144
                     or args.with_phase151
                     or args.with_phase155
+                    or args.with_phase160
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -798,6 +814,31 @@ def main():
                     f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-realhw-5tier-el3-ufu':
+            report = run_realhw_bootrom_el3_and_ufu_stock_reflash_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'realhw-5tier-el3-ufu-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_a_ufu={report.pillar_a_ufu_8_scenarios.scenarios_passed}/{report.pillar_a_ufu_8_scenarios.scenarios_total} "
+                    f"pillar_b_el3={report.pillar_b_el3_6_scenarios.scenarios_passed}/{report.pillar_b_el3_6_scenarios.scenarios_total} "
+                    f"pillar_c_5tier={report.pillar_c_5tier_8_scenarios.scenarios_passed}/{report.pillar_c_5tier_8_scenarios.scenarios_total} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"physical_device_writes={report.physical_device_writes}"
                 )
             return 0 if report.all_passed else 2
         else:

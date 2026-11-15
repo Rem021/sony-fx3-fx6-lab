@@ -1,14 +1,14 @@
 # Stage-B Field Operator SOP, Rig Electrical Safety & Unbrick Runbook (`EN / 简体中文`)
 
-> **Document Scope / 文档定位**: Authoritative field & bench safety Standard Operating Procedure (SOP) for **Stage-B (`P1..P12+Fan`, `G01..G20`, `Tier-0..Tier-4`)** targeting **Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`)** with **ILME-FX6 (`Ver. 6.01`)** volatile RAM-overlay compatibility.  
+> **Document Scope / 文档定位**: Authoritative field & bench safety Standard Operating Procedure (SOP) for **Milestone Phase 90 Stage-B (`P1..P12+Fan`, `G01..G24`, `Tier-0..Tier-4`)** targeting **Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`)** with **ILME-FX6 (`Ver. 6.01`)** volatile RAM-overlay compatibility.  
 > **Companion Documents / 配套文档**: [`docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md`](./STAGE-B-ARCHITECTURE-AND-SAFETY.md) · [`docs/STAGE-A-HARDWARE-RUNBOOK.md`](./STAGE-A-HARDWARE-RUNBOOK.md) · [`docs/BYOF-REPRODUCTION.md`](./BYOF-REPRODUCTION.md) · [`README.md`](../README.md)  
-> **Quick Verification Gates / 快速门禁指令**: `make verify-rp2040-fixture` · `make verify-20-gates` · `make verify-init2-escape` · `make verify-post-trial-audit`
+> **Quick Verification Gates / 快速门禁指令**: `make verify-rp2040-fixture` · `make verify-20-gates` · `make verify-24-gates` · `make verify-tier0-backup` · `make verify-antirollback-guard` · `make verify-init2-escape` · `make verify-post-trial-audit` · `make verify-milestone-90`
 
 > [!CAUTION]
 > **HARD-LOCKED FLASH POSTURE / 硬件写入硬锁红线 (`persistent_emmc_writes_authorized = False`)**
-> - `persistent_emmc_writes_authorized = False` · `persistent_write_release = False` · `allow_boot_partition_targeting = False` · `allow_destructive_fastboot = False`
-> - `sector0_mutation_bytes = 0` · `wbi_mutation_bytes = 0` (`p5:/wbi` blocked) · `cp_mutation_bytes = 0` (`p8:/cpapp-b.bin` untouched) · `calibration_mutation_bytes = 0` (`C2PA` / `cnflasha` untouched)
-> - **NEVER** attach an unverified `3.3V` push-pull UART adapter or standard Raspberry Pi Pico to the FX3 Multi-Port (`Gate G13`), **NEVER** run an unisolated V-Mount D-Tap + copper HDMI Type-A rig with loose ground (`Gate G19`), and **NEVER** run battery-less `USB-PD` recording (`Gate G20`).
+> - `persistent_emmc_writes_authorized = False` · `persistent_write_release = False` · `allow_boot_partition_targeting = False` · `allow_destructive_fastboot = False` · `hardware_live_attachment_authorized = False`
+> - `sector0_mutation_bytes = 0` · `wbi_mutation_bytes = 0` (`p5:/wbi` blocked) · `cp_mutation_bytes = 0` (`p8:/cpapp-b.bin` untouched) · `calibration_mutation_bytes = 0` (`C2PA` / `cnflasha` untouched) · `otp_fuse_touches = 0` · `rpmb_counter_increments = 0`
+> - **NEVER** attach an unverified `3.3V` push-pull UART adapter or standard Raspberry Pi Pico to the FX3 Multi-Port (`Gate G13`), **NEVER** run an unisolated V-Mount D-Tap + copper HDMI Type-A rig with loose ground (`Gate G19`), **NEVER** run battery-less `USB-PD` recording (`Gate G20`), **NEVER** hot-plug `XLR-H1 +48V` phantom or run unregulated sub-dewpoint `TEC` coolers (`Gates G21, G23`), and **NEVER** exceed the `900 mA` `5V` PMIC rail or bypass `OTP/RPMB`/`EXT_CSD` locks (`Gates G24, Phase 79`).
 
 ---
 
@@ -29,7 +29,7 @@ Execute every multimeter check below **with the Sony FX3 camera physically disco
 
 ---
 
-## 2. Cinema Rig Electrical & Mechanical Safety (`Gates G14, G19, G20`)
+## 2. Cinema Rig Electrical, Optical & Environmental Safety (`Gates G14, G19..G24`)
 
 ### 2.1 Preventing V-Mount `D-Tap` + Copper `HDMI Type-A` Blowouts (`Gate G19`)
 
@@ -67,15 +67,31 @@ When a camera body and an external SDI/HDMI monitor/recorder share an **unisolat
   - Keep a genuine `NP-FZ100` at **`>= 15%` SoC (`>= 6.8V` under load)** inside the grip at all times; if `USB-PD 9V/3A` is tripped mid-take (`4K 60p XAVC S-I 600 Mbps`), the `>= 15%` UPS reserve sustains seamless trailer closure (`moov` / `MXF FooterPartition`) with `0` dropped frames.
 - **Unfinalized `.RSV` Emergency Salvage**: If power loss leaves a `.RSV` file (`ISO-BMFF` `ftyp`+`mdat` missing `moov`, or `MXF` missing `FooterPartition`), remove the card, copy strictly read-only (`os.O_RDONLY`, `physical_media_writes == 0`), and run offline inspection—never reformat or write in-place on the original media.
 
+### 2.4 `XLR-H1` `+48V` Phantom Power & Hot-Plug Guard (`Gate G21`)
+
+- **Mic-Type & Termination Rules**: Enable **`MIC+48V`** (`+48.0V / 6.81 kΩ` IEC 61937) **ONLY** for true condenser microphones or transformer-isolated active DIs. **NEVER** apply `+48V` to **passive ribbon microphones** or **unbalanced `3.5 mm TRS -> XLR` wireless receivers / timecode (`LTC`) feeds** (`BLOCKED_PHANTOM_48V_SOURCE_HAZARD`).
+- **Mandatory Zero-Voltage Unplug Sequence**: Disable phantom (`+48V -> OFF`) via menu/physical toggle, wait for `CH1/CH2` ADC mute & capacitor bleed-down **`<= 1.0 V`** before unplugging or plugging any XLR cable (`hot_plug_while_48v_live=True` is blocked).
+
+### 2.5 Gimbal Follow-Focus Torque, Venue Laser & Shutter Curtain Protection (`Gate G22`)
+
+- **E-Mount Follow-Focus Torque & Single-Bus Arbitration**: Limit `14.8V` brushless focus/zoom motors (Tilta Nucleus / DJI Focus Pro) on plastic/metal E-Mount barrels to **`<= 0.35 N·m`** (or calibrate electronic end-stops / use `15 mm` rod clamps). Connect the gimbal via **ONLY ONE** control bus (`USB-C CrSDK` **OR** `Multi-Port RSS`—never both simultaneously) and keep `IBIS` in `Standard`/`Off` when gimbal-mounted.
+- **Venue Laser Optical-Cut & Sensor Curtain Park**: Do not aim an uncovered sensor directly at Class-3B/4 show lasers; keep **`Shutter When Power Off = OFF` (`OPEN`)** so the mechanical focal-plane curtain never acts as an accidental barrier or catches dust/impact during Stage-B cold resets.
+
+### 2.6 Tropical Dew-Point `TEC` Condensation & PMIC `5V 900 mA` Rail Budget (`Gates G23, G24`)
+
+- **Magnus-Tetens Dew-Point Lock (`Gate G23`, $a=17.625, b=243.04^\circ\text{C}$)**: External clip-on Peltier `TEC` coolers (`Ulanzi`/`SmallRig`) MUST NEVER drive the rear LCD hinge cold-plate below **`T_dp + 2.0°C`** (e.g., at `31°C / 80% RH`, $T_{dp} \approx 27.1^\circ\text{C}$, a `11.0°C` cold plate triggers **`BLOCKED_SUB_DEWPOINT_TEC_CONDENSATION`** and can short `MI-Shoe` or `HDMI` pins). Cold-to-warm transitions (`-5°C -> +26°C / 65% RH`) require sealed desiccant bagging until body temperature stabilizes above `T_dp`. Internal `libfan.so` centrifugal air cooling stays `>= T_amb > T_dp` with `0%` condensation risk.
+- **PMIC `5V 900 mA` Accessory Rail Budget (`Gate G24`)**: Total simultaneous `5V` draw across `MI-Shoe XLR-H1` + `HDMI Pin-18 (<= 55 mA)` + `USB-C VBUS` + `Multi-Port` MUST stay **`<= 900.0 mA`** (exceeding e.g. `940 mA` without an externally powered USB-C PD hub triggers brownout shed `BLOCKED_PMIC_5V_OVERCURRENT`). Avoid un-E-marked `> 2 m` USB-C cables (`IR droop > 0.65V @ 3.0A`) and lock HDMI/USB-C strain-relief clamps on handheld/gimbal rigs (`make verify-24-gates`).
+
 ---
 
-## 3. Media, Network & License Isolation (`Gates G15, G16, G17, G18`)
+## 3. Media, Network, License & Firmware Anti-Rollback Isolation (`Gates G15..G18`, `Phases 72, 79`)
 
 | Domain | Gate | Mandatory Field Rule | Verification Command / Redline |
 | :--- | :---: | :--- | :--- |
 | **Dedicated Blank Lab Card** | **`G17`** | Use a **dedicated blank lab CFexpress Type A / UHS-II SDXC card**. Never insert cards holding client footage (`XDROOT/Clip/*.MXF`, `PRIVATE/M4ROOT/CLIP/*.MP4`, `DCIM/*`), unfinalized `.RSV`, or `FOUND.000/*.CHK`. Verify Microsoft `exFAT` 12-sector `BootChecksum` (`Main == Backup`) & `VolumeDirty == 0` (`offset 106`). Match speed class: **`CFexpress VPG200/VPG400`** for `S&Q 4K120` / `XAVC S-I 600 Mbps`, **`SDXC V90+`** for `XAVC S-I 4K60`. Never confuse external `exFAT` with internal `p1` `FAT12`/`FAT16`. | `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m fx3_safety verify-media-guard` |
-| **`P12` Airplane-Mode + Wired `USB-LAN`** | **`G16`**, **`G18`** | Keep Stage-B **`P12`** (`libWlanResource.so @ 0x70d4 -> rc=0`) + `/tmp/bk4_shadow` (`0x019e0012=00`, `0x0051000f=00`, `0x01a20002=00`) active so Wi-Fi & BT (`/dev/ttyAMA3`) stay 100% dark (`0` HCI TX, immune to Sony Notice `00342260` `WF-12`). For remote monitoring/control (*Monitor & Control* / `CrSDK`), use wired **`USB-LAN` (`CDC-NCM` `1 Gbps` `RTL8153` or original `AX88179`)** + **`PTP-IP TCP 15740`**. Reject `RNDIS`, `AX88179A/B`, `2.5G/5G/10G`, and remember FX3 `[Manual]` IPv4 requires a valid same-subnet `Default Gateway`. | `make verify-wireless-guard` & `make verify-20-gates` |
-| **`C2PA` & Factory Calib Zero-Write** | **`G15`** | Strictly **zero writes or rw mounts** on `/dev/cnflasha*`, `RPMB`, TrustZone/OP-TEE, Sony **C2PA** (`RQ_LIC.DAT`, `sigcert.p12/.pfx`, `p12:/cert`), or per-body factory calibrations (`p2:/setting/Backup.bin`, `psd.bin`, `defdet.bin`, `p6:Jiritsu`, `p18:/lens/lensfile.bin`, SPI NOR `ddrtraining.dat`). | `make verify-20-gates` (`calibration_mutation_bytes == 0`, `c2pa_keystore_untouched == True`) |
+| **`P12` Airplane-Mode + Wired `USB-LAN`** | **`G16`**, **`G18`** | Keep Stage-B **`P12`** (`libWlanResource.so @ 0x70d4 -> rc=0`) + `/tmp/bk4_shadow` (`0x019e0012=00`, `0x0051000f=00`, `0x01a20002=00`) active so Wi-Fi & BT (`/dev/ttyAMA3`) stay 100% dark (`0` HCI TX, immune to Sony Notice `00342260` `WF-12`). For remote monitoring/control (*Monitor & Control* / `CrSDK`), use wired **`USB-LAN` (`CDC-NCM` `1 Gbps` `RTL8153` or original `AX88179`)** + **`PTP-IP TCP 15740`**. Reject `RNDIS`, `AX88179A/B`, `2.5G/5G/10G`, and remember FX3 `[Manual]` IPv4 requires a valid same-subnet `Default Gateway`. | `make verify-wireless-guard` & `make verify-24-gates` |
+| **`C2PA` & Factory Calib Zero-Write** | **`G15`** | Strictly **zero writes or rw mounts** on `/dev/cnflasha*`, `RPMB`, TrustZone/OP-TEE, Sony **C2PA** (`RQ_LIC.DAT`, `sigcert.p12/.pfx`, `p12:/cert`), or per-body factory calibrations (`p2:/setting/Backup.bin`, `psd.bin`, `defdet.bin`, `p6:Jiritsu`, `p18:/lens/lensfile.bin`, SPI NOR `ddrtraining.dat`). | `make verify-24-gates` (`calibration_mutation_bytes == 0`, `c2pa_keystore_untouched == True`) |
+| **Tier-0 `GF(256)` Backup & `OTP/RPMB` Lock** | **Ph 72 / 79** | Archive all 11 Tier-0 partitions into two **per-body** SHA-256 + `GF(2^8)` (`0x11d`) P+Q RAID-6 parity vaults (`CROSS_BODY_TRANSPLANT_FORBIDDEN` blocks donor swaps); keep `CXD90057` OTP fuses (`otp_fuse_touches == 0`), `RPMB` counters (`rpmb_counter_increments == 0`), pre-`v7.00` downgrades, and JEDEC `EXT_CSD[173/171]` `B_PERM_WP_EN`/`US_PERM_WP_EN` fuses blocked. | `make verify-tier0-backup`, `make verify-antirollback-guard`, `make verify-milestone-90` |
 
 ---
 
@@ -106,7 +122,8 @@ Every Stage-B volatile overlay executes inside `stage_b_init2_guard.sh` **before
   │ TIER 0: Instant Field Recovery (Zero Cables, Zero Flash Writes)         │
   │  1. Pull NP-FZ100 + USB-PD >= 60s -> volatile tmpfs wiped -> Stock 7.02 │
   │  2. Or insert SD/CFexpress with FX3_SAFE_STOCK.FLG -> <1s stock boot    │
-  │  3. Verify H0 == H2 zero-drift: make verify-post-trial-audit            │
+  │  3. Verify GF(256) vault, H0 == H2 & Milestone-90:                      │
+  │     make verify-tier0-backup && make verify-post-trial-audit            │
   └──────┬──────────────────────────────────────────────────────────────────┘
          │ Camera still stuck in p1 updater loop or host MSC stall?
          ▼
@@ -120,10 +137,11 @@ Every Stage-B volatile overlay executes inside `stage_b_init2_guard.sh` **before
          │ p1 refuses normal exit or v7.02 VMA check fails?
          ▼
   ┌─────────────────────────────────────────────────────────────────────────┐
-  │ TIER 2: p1 FAT12/FAT16 Atomic Capsule & Shifted-VMA v7.02 Autolocator   │
+  │ TIER 2: p1 FAT12/FAT16 Capsule, Shifted-VMA v7.02 & Anti-Rollback Lock  │
   │  - Verify FAT1 == FAT2, LFN checksums, 6-step fsync atomic staging      │
   │  - Resolve shifted v7.02 p1 sites via AArch64 ADRP/BL (p1_autolocator)  │
-  │  - Gate check: make verify-init2-escape                                 │
+  │  - Enforce CXD90057 OTP/RPMB zero-touch & block <v7.00 / cross-SKU      │
+  │  - Gate check: make verify-init2-escape && make verify-antirollback-guard│
   └──────┬──────────────────────────────────────────────────────────────────┘
          │ Both p3 (Linux) and p1 (Updater) dead on USB MSC?
          ▼
@@ -140,8 +158,9 @@ Every Stage-B volatile overlay executes inside `stage_b_init2_guard.sh` **before
   ┌─────────────────────────────────────────────────────────────────────────┐
   │ TIER 4: Offline O_RDONLY eMMC 5.1 ISP Forensics (Bench Hardware Repair) │
   │  - Open strictly O_RDONLY | O_NOFOLLOW | O_NONBLOCK                     │
-  │  - Audit Sector 0 ('8246'), EXT_CSD[179], BK4\0, WBI2, cpapp-b.bin      │
-  │  - Reject CMD42 forced-erase & BOOT_PARTITION_ENABLE == 0               │
+  │  - Audit Sector 0 ('8246'), EXT_CSD[179/173/171], BK4\0, WBI2, cpapp-b  │
+  │  - Reject CMD42 forced-erase, Perm-WP traps & BOOT_PARTITION_ENABLE == 0│
+  │  - Full 6-Pillar Master Gate: make verify-milestone-90                  │
   └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -167,7 +186,7 @@ Every Stage-B volatile overlay executes inside `stage_b_init2_guard.sh` **before
 
 ---
 
-## 二、电影机套件电气安全与上下电规程（`Gates G14, G19, G20`）
+## 二、电影机套件电气、光学与环境安全规程（`Gates G14, G19..G24`）
 
 ### 2.1 防治 V 口电池 `D-Tap` + 铜缆 `HDMI Type-A` 烧接口（`Gate G19`）
 
@@ -186,7 +205,7 @@ Every Stage-B volatile overlay executes inside `stage_b_init2_guard.sh` **before
 ### 2.2 E 卡口 `V_LENS`（`3.3V / 5.0V`）热拆保护与 IBIS 规则（`Gate G19`）
 
 - 录制中或 Stage-B 试验期间**严禁带电拧下 E 卡口镜头**；换镜头前务必关机待机。
-- 发生意外旋动时，E 卡口 10 针触点由 **`Pin 9 (LENS_DET)` 率先断开触发中断**，在 `<= 2.0 ms` 内（早于 `3.5 ms` 滑刷接触窗口）将 `V_LENS_SERVO_5V0` 撬棒泄放至 `0.0 mA` 并三态隔离 `V_LENS_LOGIC_3V3`，同时由原厂 Stock-CP **`0x0400`（`LiroSeq: Restore.`）** 完成 5 轴防抖居中锁止（`cp_mutation_bytes == 0`）。
+- 发生意外旋动时，E 卡口 10 针触点由 **`Pin 9 (LENS_DET)` 率先断开触发中断**，在 `<= 2.0 ms` 内（早于 `3.5 ms` 滑刷接触窗口）将 `V_LENS_SERVO_5V0` 撬棍泄放至 `0.0 mA` 并三态隔离 `V_LENS_LOGIC_3V3`，同时由原厂 Stock-CP **`0x0400`（`LiroSeq: Restore.`）** 完成 5 轴防抖居中锁止（`cp_mutation_bytes == 0`）。
 
 ### 2.3 温控、`USB-PD` 下 `NP-FZ100 >= 15%` 留底电量与 `.RSV` 抢救（`Gates G14, G20`）
 
@@ -196,15 +215,31 @@ Every Stage-B volatile overlay executes inside `stage_b_init2_guard.sh` **before
   - 机内必须安装真实 `NP-FZ100` 且电量 **`>= 15%`（带载 `>= 6.8V`）** 作为 UPS 后备；高码率 `4K 60p 600 Mbps` 录制时若 USB-PD 意外脱落，留底电量可确保无损写入 `moov` / `MXF FooterPartition`，实现 **0 丢帧安全封口**。
 - **断电未封口 `.RSV` 只读抢救**：如意外生成 `.RSV` 残缺文件，立即停录并只读拷贝（`os.O_RDONLY`，`physical_media_writes == 0`）进行离线修复，绝不在原实验卡上进行就地写修复。
 
+### 2.4 `XLR-H1` `+48V` 幻象供电与带电热插拔防护（`Gate G21`）
+
+- **话筒选型与端接规则**：仅允许为真电容话筒或带变压器隔离的有源 DI 开启 **`MIC+48V`**（`+48.0V / 6.81 kΩ` IEC 61937）。**严禁**对**无源铝带话筒**或**非平衡 `3.5 mm TRS -> XLR` 无线接收机 / 时间码（`LTC`）输入**施加 `+48V`（触发 `BLOCKED_PHANTOM_48V_SOURCE_HAZARD`）。
+- **强制零电压拔插流程**：先通过菜单或开关关闭幻象供电（`+48V -> OFF`），等待 `CH1/CH2` ADC 静音且电容泄放至 **`<= 1.0 V`** 后方可插拔卡农线（`hot_plug_while_48v_live=True` 硬拦截）。
+
+### 2.5 稳定器跟焦扭矩、演出激光与机械快门帘幕保护（`Gate G22`）
+
+- **E 卡口跟焦马达扭矩与单总线仲裁**：`14.8V` 无刷跟焦/变焦马达（Tilta Nucleus / DJI Focus Pro）必须限制在 **`<= 0.35 N·m`**（或标定电子软限位 / 使用 `15 mm` 导管夹固定）。稳定器仅允许通过**单一**控制总线连接（`USB-C CrSDK` **或** `Multi-Port RSS` 二选一，严禁双总线同时争抢），架上稳定器时关闭或设为 `Standard` IBIS。
+- **演出激光滤光与快门帘幕常开规则**：严禁无防护直面 Class-3B/4 舞台激光；始终保持 **`Shutter When Power Off = OFF`（常开 `OPEN`）**，防止 Stage-B 冷复位时机械帘幕误闭合受损。
+
+### 2.6 湿热露点 `TEC` 结露拦截与 PMIC `5V 900 mA` 配件总预算（`Gates G23, G24`）
+
+- **Magnus-Tetens 露点门禁（`Gate G23`，`a=17.625, b=243.04°C`）**：外挂半导体制冷片 `TEC`（如 `Ulanzi`/`SmallRig`）冷面温度严禁低于 **`T_dp + 2.0°C`**（例如 `31°C / 80% RH` 环境下露点约为 `27.1°C`，`11.0°C` 冷板将立即触发 **`BLOCKED_SUB_DEWPOINT_TEC_CONDENSATION`**，避免冷凝水沿 `MI` 热靴或 `HDMI` 短路）。冷进暖（`-5°C -> +26°C / 65% RH`）转场必须先密封干燥袋平衡至高于 `T_dp`。机内 `libfan.so` 离心风冷始终 `>= T_amb > T_dp`，**结露风险 0%**。
+- **PMIC `5V 900 mA` 供电总线预算（`Gate G24`）**：`MI 热靴 XLR-H1` + `HDMI Pin-18 (<= 55 mA)` + `USB-C VBUS` + `Multi-Port` 的 `5V` 并发总电流必须 **`<= 900.0 mA`**（例如 `940 mA` 无外接带电 PD Hub 将触发过流卸载 `BLOCKED_PMIC_5V_OVERCURRENT`）。严禁使用无 E-Marker 且 `> 2 m` 的 `USB-C` 线缆（`3.0A` 压降 `> 0.65V`），并在手持/稳定器套件上锁紧抗拉线夹（`make verify-24-gates`）。
+
 ---
 
-## 三、存储介质、有线网络与 `C2PA` / 校准分区隔离（`Gates G15, G16, G17, G18`）
+## 三、存储介质、有线网络与 `C2PA` / 防回滚锁隔离（`Gates G15..G18`，`Phases 72, 79`）
 
 | 隔离域 | 门禁 | 现场操作铁律 | 自检与红线指标 |
 | :--- | :---: | :--- | :--- |
 | **专用空白实验卡** | **`G17`** | 必须使用**专用空白 CFexpress Type A / SDXC UHS-II 实验卡**；严禁插入存有客户素材（`XDROOT/Clip/*.MXF`、`PRIVATE/M4ROOT/CLIP/*.MP4`、`DCIM/*`）、未封口 `.RSV` 或 `FOUND.000/*.CHK` 的生产卡。要求 Microsoft `exFAT` 12 扇区 `BootChecksum` 一致、`VolumeDirty == 0`；高码率 `S&Q 4K120`/`600M` 须匹配 `VPG200/VPG400`（或 `V90`）。严格隔离外置 `exFAT` 与内部 `p1` `FAT12/FAT16`。 | `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m fx3_safety verify-media-guard` |
-| **`P12` 飞行模式 + 有线 `USB-LAN`** | **`G16`**, **`G18`** | Stage-B **`P12`**（`libWlanResource.so @ 0x70d4 -> rc=0`）叠加 `/tmp/bk4_shadow`（`0x019e0012=00`、`0x0051000f=00`、`0x01a20002=00`）彻底关闭 Wi-Fi 与蓝牙（`0` HCI 发包，免疫 **`00342260` `WF-12` 无限重启**）。外联监看/控制统一通过 **有线 `USB-LAN`（`CDC-NCM` `1 Gbps` `RTL8153` 或原版 `AX88179`）+ `PTP-IP TCP 15740`**（拒绝 `RNDIS`/`AX88179A/B`/`2.5G+`；FX3 手动静态 IP 必须填写同网段默认网关），防火墙放行 *Monitor & Control* / `CrSDK` 安全指令并阻断刷机/NVRAM 操作码。 | `make verify-wireless-guard` 与 `make verify-20-gates` |
-| **`C2PA` 密钥与出厂校准保护** | **`G15`** | 全程对 `/dev/cnflasha*`、`RPMB`、TrustZone/OP-TEE、Sony **`C2PA`**（`RQ_LIC.DAT`、`sigcert.p12`、`p12:/cert`）及出厂传感器/镜头校准区（`p2:/setting/Backup.bin`、`psd.bin`、`defdet.bin`、`p6:Jiritsu`、`p18:/lens/lensfile.bin`、SPI NOR `ddrtraining.dat`）保持 **0 字节修改、0 读写挂载**。 | `make verify-20-gates`（`calibration_mutation_bytes == 0`、`c2pa_keystore_untouched == True`） |
+| **`P12` 飞行模式 + 有线 `USB-LAN`** | **`G16`**, **`G18`** | Stage-B **`P12`**（`libWlanResource.so @ 0x70d4 -> rc=0`）叠加 `/tmp/bk4_shadow`（`0x019e0012=00`、`0x0051000f=00`、`0x01a20002=00`）彻底关闭 Wi-Fi 与蓝牙（`0` HCI 发包，免疫 **`00342260` `WF-12` 无限重启**）。外联监看/控制统一通过 **有线 `USB-LAN`（`CDC-NCM` `1 Gbps` `RTL8153` 或原版 `AX88179`）+ `PTP-IP TCP 15740`**（拒绝 `RNDIS`/`AX88179A/B`/`2.5G+`；FX3 手动静态 IP 必须填写同网段默认网关），防火墙放行 *Monitor & Control* / `CrSDK` 安全指令并阻断刷机/NVRAM 操作码。 | `make verify-wireless-guard` 与 `make verify-24-gates` |
+| **`C2PA` 密钥与出厂校准保护** | **`G15`** | 全程对 `/dev/cnflasha*`、`RPMB`、TrustZone/OP-TEE、Sony **`C2PA`**（`RQ_LIC.DAT`、`sigcert.p12`、`p12:/cert`）及出厂传感器/镜头校准区（`p2:/setting/Backup.bin`、`psd.bin`、`defdet.bin`、`p6:Jiritsu`、`p18:/lens/lensfile.bin`、SPI NOR `ddrtraining.dat`）保持 **0 字节修改、0 读写挂载**。 | `make verify-24-gates`（`calibration_mutation_bytes == 0`、`c2pa_keystore_untouched == True`） |
+| **Tier-0 `GF(256)` 备份与 `OTP/RPMB` 锁** | **Ph 72 / 79** | 将全部 11 项 Tier-0 分区封存进两套**同机绑定** SHA-256 + `GF(2^8)`（`0x11d`）P+Q RAID-6 校验库（`CROSS_BODY_TRANSPLANT_FORBIDDEN` 严防跨机移植）；严守 `CXD90057` OTP 熔丝 0 触碰（`otp_fuse_touches == 0`）、`RPMB` 计数 0 递增、拦截 `v7.00` 以下降级及 `EXT_CSD[173/171]` `B_PERM_WP_EN`/`US_PERM_WP_EN` 永久写保护陷阱。 | `make verify-tier0-backup`、`make verify-antirollback-guard`、`make verify-milestone-90` |
 
 ---
 
@@ -231,7 +266,8 @@ Stage-B 入口脚本 `stage_b_init2_guard.sh` 在解压 CPIO 或执行任何 `mo
   │ TIER 0：现场零线缆秒级恢复（0 持久化写入）                                │
   │  1. 拔除 NP-FZ100 与 USB-PD >= 60 秒 -> 易失性 tmpfs 清零 -> 原厂 v7.02  │
   │  2. 或插入含根目录 FX3_SAFE_STOCK.FLG 的存储卡 -> < 1 秒直达原厂系统     │
-  │  3. 执行 H0 == H2 零漂移审计：make verify-post-trial-audit               │
+  │  3. 核验 GF(256) 备份库与 H0 == H2：                                     │
+  │     make verify-tier0-backup && make verify-post-trial-audit            │
   └──────┬──────────────────────────────────────────────────────────────────┘
          │ 仍停留在 p1 升级模式循环或宿主机 MSC 挂载超时？
          ▼
@@ -245,10 +281,11 @@ Stage-B 入口脚本 `stage_b_init2_guard.sh` 在解压 CPIO 或执行任何 `mo
          │ p1 容器异常或 v7.02 VMA 校验失败？
          ▼
   ┌─────────────────────────────────────────────────────────────────────────┐
-  │ TIER 2：p1 FAT12/FAT16 原子回滚胶囊与 v7.02 4 锚点自动定位               │
+  │ TIER 2：p1 FAT12/FAT16 原子胶囊、v7.02 4 锚点与防回滚硬锁                │
   │  - 校验 FAT1 == FAT2、LFN 校验和及 6 步 fsync 原子写                    │
   │  - AArch64 ADRP/BL 自动解析 v7.02 p1 地址（拒绝写死 v2.00 偏移）        │
-  │  - 运行门禁校验：make verify-init2-escape                                │
+  │  - 守护 CXD90057 OTP/RPMB 零写入并拦截 <v7.00 降级与跨机型镜像           │
+  │  - 门禁校验：make verify-init2-escape && make verify-antirollback-guard │
   └──────┬──────────────────────────────────────────────────────────────────┘
          │ p3 (Linux) 与 p1 (Updater) 均无法通过 USB MSC 启动？
          ▼
@@ -265,7 +302,8 @@ Stage-B 入口脚本 `stage_b_init2_guard.sh` 在解压 CPIO 或执行任何 `mo
   ┌─────────────────────────────────────────────────────────────────────────┐
   │ TIER 4：离线 O_RDONLY eMMC 5.1 ISP 取证诊断（硬件台架维修）              │
   │  - 严格使用 O_RDONLY | O_NOFOLLOW | O_NONBLOCK 打开转储文件              │
-  │  - 审计 Sector 0 ('8246')、EXT_CSD[179]、BK4\0、WBI2 与 cpapp-b.bin     │
-  │  - 拦截 CMD42 强擦与 BOOT_PARTITION_ENABLE == 0 异常                     │
+  │  - 审计 Sector 0 ('8246')、EXT_CSD[179/173/171]、BK4\0、WBI2 与 cpapp-b │
+  │  - 拦截 CMD42 强擦、永久写保护陷阱与 BOOT_PARTITION_ENABLE == 0          │
+  │  - Phase 90 六柱总闸总验：make verify-milestone-90                       │
   └─────────────────────────────────────────────────────────────────────────┘
 ```

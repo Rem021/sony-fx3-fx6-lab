@@ -3,7 +3,7 @@ PYTHON ?= /usr/bin/python3
 PYFLAGS := -B
 CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure
 
-.PHONY: all test test-json dry-run readiness-packet lifecycle-drill stage-b-lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-stage-b-p10 verify-uipc-cp-shim verify-wireless-guard verify-firmware-lab verify-coemulation verify-byof verify-20-gates verify-rp2040-fixture verify-init2-escape verify-post-trial-audit
+.PHONY: all test test-json dry-run readiness-packet lifecycle-drill stage-b-lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-stage-b-p10 verify-uipc-cp-shim verify-wireless-guard verify-firmware-lab verify-coemulation verify-byof verify-20-gates verify-24-gates verify-rp2040-fixture verify-init2-escape verify-tier0-backup verify-antirollback-guard verify-post-trial-audit verify-milestone-90
 
 all: test
 
@@ -64,14 +64,26 @@ verify-byof:
 verify-20-gates:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety" $(PYTHON) $(PYFLAGS) -m fx3_safety verify-20-gates --dry-run-simulated-backup
 
+verify-24-gates:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety" $(PYTHON) $(PYFLAGS) -m fx3_safety verify-24-gates --dry-run-simulated-backup
+
 verify-rp2040-fixture:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-rp2040-fixture
 
 verify-init2-escape:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-init2-escape
 
+verify-tier0-backup:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-tier0-backup
+
+verify-antirollback-guard:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-antirollback-guard
+
 verify-post-trial-audit:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx6-on-fx3-closure:outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab" $(PYTHON) $(PYFLAGS) -m fx6_closure audit-stage-b-post-trial
+
+verify-milestone-90:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-milestone-90
 
 clean-audit:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) $(PYFLAGS) scripts/run_all_lab_tests.py --clean-only

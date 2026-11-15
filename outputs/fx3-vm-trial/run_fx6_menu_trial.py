@@ -2459,6 +2459,7 @@ def build_nrtm_xml_sidecar(
     active_user_lut: dict[str, Any] | None = None,
     shotmark_and_iris: dict[str, Any] | None = None,
     gyroflow_anamorphic: dict[str, Any] | None = None,
+    interval_cache_lut_ftp: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2492,16 +2493,22 @@ def build_nrtm_xml_sidecar(
         lut_slot = str(active_user_lut.get("slot", "User1"))
         monitoring_lut_cube = f"{lut_slot}.cube"
         monitoring_lut_name = str(active_user_lut.get("name", monitoring_lut_cube))
+        monitoring_lut_title = str(active_user_lut.get("title") or monitoring_lut_name)
         monitoring_lut_sha = str(active_user_lut.get("sha256") or "none")
+        monitoring_lut_res33_sha = str(active_user_lut.get("resampled_33_sha256") or monitoring_lut_sha)
     elif active_user_lut and active_user_lut.get("uploaded"):
         lut_slot = str(active_user_lut.get("slot", "User1"))
         monitoring_lut_cube = f"{lut_slot}.cube"
         monitoring_lut_name = str(active_user_lut.get("name", monitoring_lut_cube))
+        monitoring_lut_title = str(active_user_lut.get("title") or monitoring_lut_name)
         monitoring_lut_sha = str(active_user_lut.get("sha256") or "none")
+        monitoring_lut_res33_sha = str(active_user_lut.get("resampled_33_sha256") or monitoring_lut_sha)
     else:
         monitoring_lut_cube = "S709.cube" if gamma_eq.startswith("s-log3") else "R709.cube"
         monitoring_lut_name = base_look
+        monitoring_lut_title = base_look
         monitoring_lut_sha = "none"
+        monitoring_lut_res33_sha = "none"
 
     root = ET.Element(_q("NonRealTimeMeta"), {"lastUpdate": creation_ts})
     ET.SubElement(root, _q("TargetMaterial"), {"umidRef": umid_ref})
@@ -2590,7 +2597,9 @@ def build_nrtm_xml_sidecar(
     ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringBaseCurve", "value": gamma_eq})
     ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringDescription", "value": monitoring_lut_cube})
     ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringLutName", "value": monitoring_lut_name})
+    ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringLutTitle", "value": monitoring_lut_title})
     ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringLutSha256", "value": monitoring_lut_sha})
+    ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringLutResampled33Sha256", "value": monitoring_lut_res33_sha})
 
     media_grp = ET.SubElement(acq, _q("Group"), {"name": "ClipMediaIdentity"})
     ET.SubElement(media_grp, _q("Item"), {"name": "CamID", "value": str(color_and_media["cam_id"])})
@@ -2633,6 +2642,34 @@ def build_nrtm_xml_sidecar(
         ET.SubElement(aud_grp, _q("Item"), {"name": "PeakLimiterEnabled", "value": str(bool(gyroflow_anamorphic["limiter_enabled"])).lower()})
         ET.SubElement(aud_grp, _q("Item"), {"name": "PeakLimiterCeilingDbfs", "value": f"{float(gyroflow_anamorphic['limiter_ceiling_dbfs']):.1f}"})
         ET.SubElement(aud_grp, _q("Item"), {"name": "PeakLimiterEngaging", "value": str(bool(gyroflow_anamorphic["limiter_engaging"])).lower()})
+
+    if interval_cache_lut_ftp:
+        p102_grp = ET.SubElement(acq, _q("Group"), {"name": "PictureCacheIntervalCubeFtps"})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "PictureCacheRequestedSec", "value": str(int(interval_cache_lut_ftp["cache_seconds"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "PictureCacheEffectiveSec", "value": str(int(interval_cache_lut_ftp["effective_cache_seconds"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "PictureCacheDdrMib", "value": f"{float(interval_cache_lut_ftp['allocated_ddr_mib']):.2f}"})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "PictureCacheDdrBudgetMib", "value": f"{float(interval_cache_lut_ftp['ddr_budget_mib']):.2f}"})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "PictureCacheSuspended", "value": str(bool(interval_cache_lut_ftp["picture_cache_suspended"])).lower()})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "PictureCacheSuspensionReason", "value": str(interval_cache_lut_ftp.get("picture_cache_suspension_reason") or "none")})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "IntervalRecEnabled", "value": str(bool(interval_cache_lut_ftp["interval_rec_enabled"])).lower()})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "IntervalSec", "value": str(int(interval_cache_lut_ftp["interval_sec"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "IntervalTargetShots", "value": str(int(interval_cache_lut_ftp["target_shots"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "IntervalShotsTaken", "value": str(int(interval_cache_lut_ftp["shots_taken"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "IntervalAeTracking", "value": str(interval_cache_lut_ftp["ae_tracking"])})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "ElectronicShutterEnforced", "value": str(bool(interval_cache_lut_ftp["electronic_shutter_enforced"])).lower()})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "MechanicalCurtainActuations", "value": str(int(interval_cache_lut_ftp["mechanical_curtain_actuations"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "UserLutTitle", "value": str(interval_cache_lut_ftp.get("active_user_lut_title") or "none")})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "UserLutResampled33Sha256", "value": str(interval_cache_lut_ftp.get("active_user_lut_resampled_33_sha256") or "none")})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "UserLutSourceGridSize", "value": str(int(interval_cache_lut_ftp.get("active_user_lut_source_size", 0)))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "UserLutTargetGridSize", "value": str(int(interval_cache_lut_ftp.get("active_user_lut_target_size", 0)))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "UserLutVolatileRamOnly", "value": "true"})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "FtpsMode", "value": str(interval_cache_lut_ftp["ftps_mode"])})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "FtpsTransport", "value": str(interval_cache_lut_ftp["ftps_transport"])})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "FtpsQueuedCount", "value": str(int(interval_cache_lut_ftp["ftps_queued_count"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "FtpsCompletedCount", "value": str(int(interval_cache_lut_ftp["ftps_completed_count"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "FtpsBlockedTraversalCount", "value": str(int(interval_cache_lut_ftp["ftps_blocked_traversal_count"]))})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "P12RfOffEnforced", "value": "true"})
+        ET.SubElement(p102_grp, _q("Item"), {"name": "Wf12Calls", "value": str(int(interval_cache_lut_ftp["wf12_00342260_hits"]))})
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -4540,12 +4577,12 @@ def _eval_builtin_cube_rgb(preset_id: str, r: float, g: float, b: float) -> tupl
 
 
 def generate_builtin_cube_lut(preset_id: str, size: int = 17) -> str:
-    """Generate a deterministic, standard R-fastest Adobe .cube 3D LUT string."""
+    """Generate a deterministic, standard R-fastest Adobe .cube 3D LUT string (2^3/17^3/33^3/65^3)."""
     key = str(preset_id or "").strip()
     if key not in BUILTIN_CUBE_PRESETS:
         raise ValueError(f"Unknown built-in .cube preset: {preset_id!r}")
     n = int(size)
-    if n not in (2, 17, 33):
+    if n not in (2, 17, 33, 65):
         raise ValueError(f"Unsupported .cube size: {size!r}")
     meta = BUILTIN_CUBE_PRESETS[key]
     lines = [
@@ -4613,6 +4650,131 @@ def _trilinear_cube_sample(
     return (out[0], out[1], out[2])
 
 
+def _tetrahedral_cube_sample(
+    triplets: Sequence[tuple[float, float, float]],
+    size: int,
+    r_in: float,
+    g_in: float,
+    b_in: float,
+) -> tuple[float, float, float]:
+    """Sample an R-fastest `.cube` 3D LUT table using exact 6-tetrahedra Sakamoto interpolation."""
+    n = size
+    rf = _clamp01(r_in) * (n - 1)
+    gf = _clamp01(g_in) * (n - 1)
+    bf = _clamp01(b_in) * (n - 1)
+    r0 = min(n - 2, int(math.floor(rf)))
+    g0 = min(n - 2, int(math.floor(gf)))
+    b0 = min(n - 2, int(math.floor(bf)))
+    r1 = r0 + 1
+    g1 = g0 + 1
+    b1 = b0 + 1
+    dr = rf - r0
+    dg = gf - g0
+    db = bf - b0
+
+    n2 = n * n
+    b0_off = b0 * n2
+    b1_off = b1 * n2
+    g0_off = g0 * n
+    g1_off = g1 * n
+
+    c000 = triplets[b0_off + g0_off + r0]
+    c111 = triplets[b1_off + g1_off + r1]
+
+    if dr >= dg:
+        if dg >= db:
+            c100 = triplets[b0_off + g0_off + r1]
+            c110 = triplets[b0_off + g1_off + r1]
+            return (
+                _clamp01(c000[0] + dr * (c100[0] - c000[0]) + dg * (c110[0] - c100[0]) + db * (c111[0] - c110[0])),
+                _clamp01(c000[1] + dr * (c100[1] - c000[1]) + dg * (c110[1] - c100[1]) + db * (c111[1] - c110[1])),
+                _clamp01(c000[2] + dr * (c100[2] - c000[2]) + dg * (c110[2] - c100[2]) + db * (c111[2] - c110[2])),
+            )
+        if dr >= db:
+            c100 = triplets[b0_off + g0_off + r1]
+            c101 = triplets[b1_off + g0_off + r1]
+            return (
+                _clamp01(c000[0] + dr * (c100[0] - c000[0]) + db * (c101[0] - c100[0]) + dg * (c111[0] - c101[0])),
+                _clamp01(c000[1] + dr * (c100[1] - c000[1]) + db * (c101[1] - c100[1]) + dg * (c111[1] - c101[1])),
+                _clamp01(c000[2] + dr * (c100[2] - c000[2]) + db * (c101[2] - c100[2]) + dg * (c111[2] - c101[2])),
+            )
+        c001 = triplets[b1_off + g0_off + r0]
+        c101 = triplets[b1_off + g0_off + r1]
+        return (
+            _clamp01(c000[0] + db * (c001[0] - c000[0]) + dr * (c101[0] - c001[0]) + dg * (c111[0] - c101[0])),
+            _clamp01(c000[1] + db * (c001[1] - c000[1]) + dr * (c101[1] - c001[1]) + dg * (c111[1] - c101[1])),
+            _clamp01(c000[2] + db * (c001[2] - c000[2]) + dr * (c101[2] - c001[2]) + dg * (c111[2] - c101[2])),
+        )
+    else:
+        if dr >= db:
+            c010 = triplets[b0_off + g1_off + r0]
+            c110 = triplets[b0_off + g1_off + r1]
+            return (
+                _clamp01(c000[0] + dg * (c010[0] - c000[0]) + dr * (c110[0] - c010[0]) + db * (c111[0] - c110[0])),
+                _clamp01(c000[1] + dg * (c010[1] - c000[1]) + dr * (c110[1] - c010[1]) + db * (c111[1] - c110[1])),
+                _clamp01(c000[2] + dg * (c010[2] - c000[2]) + dr * (c110[2] - c010[2]) + db * (c111[2] - c110[2])),
+            )
+        if dg >= db:
+            c010 = triplets[b0_off + g1_off + r0]
+            c011 = triplets[b1_off + g1_off + r0]
+            return (
+                _clamp01(c000[0] + dg * (c010[0] - c000[0]) + db * (c011[0] - c010[0]) + dr * (c111[0] - c011[0])),
+                _clamp01(c000[1] + dg * (c010[1] - c000[1]) + db * (c011[1] - c010[1]) + dr * (c111[1] - c011[1])),
+                _clamp01(c000[2] + dg * (c010[2] - c000[2]) + db * (c011[2] - c010[2]) + dr * (c111[2] - c011[2])),
+            )
+        c001 = triplets[b1_off + g0_off + r0]
+        c011 = triplets[b1_off + g1_off + r0]
+        return (
+            _clamp01(c000[0] + db * (c001[0] - c000[0]) + dg * (c011[0] - c001[0]) + dr * (c111[0] - c011[0])),
+            _clamp01(c000[1] + db * (c001[1] - c000[1]) + dg * (c011[1] - c001[1]) + dr * (c111[1] - c011[1])),
+            _clamp01(c000[2] + db * (c001[2] - c000[2]) + dg * (c011[2] - c001[2]) + dr * (c111[2] - c011[2])),
+        )
+
+
+def resample_cube_tetrahedral_33(
+    triplets: Sequence[tuple[float, float, float]],
+    src_size: int,
+    domain_min: Sequence[float] = (0.0, 0.0, 0.0),
+    domain_max: Sequence[float] = (1.0, 1.0, 1.0),
+) -> tuple[tuple[float, float, float], ...]:
+    """Resample any 17^3/33^3/65^3 (or 2^3) R-fastest .cube LUT to 33^3 (35,937) via tetrahedral interpolation in volatile RAM."""
+    is_unit_domain = (
+        abs(domain_min[0]) < 1e-9
+        and abs(domain_min[1]) < 1e-9
+        and abs(domain_min[2]) < 1e-9
+        and abs(domain_max[0] - 1.0) < 1e-9
+        and abs(domain_max[1] - 1.0) < 1e-9
+        and abs(domain_max[2] - 1.0) < 1e-9
+    )
+    if src_size == 33 and is_unit_domain and len(triplets) == 33 ** 3:
+        return tuple(triplets)
+    if src_size == 65 and is_unit_domain and len(triplets) == 65 ** 3:
+        out_fast: list[tuple[float, float, float]] = []
+        n2 = 65 * 65
+        for bi in range(33):
+            b_off = (bi * 2) * n2
+            for gi in range(33):
+                g_off = b_off + (gi * 2) * 65
+                for ri in range(33):
+                    out_fast.append(triplets[g_off + ri * 2])
+        return tuple(out_fast)
+
+    span_r = domain_max[0] - domain_min[0]
+    span_g = domain_max[1] - domain_min[1]
+    span_b = domain_max[2] - domain_min[2]
+    u_r = [_clamp01((i / 32.0 - domain_min[0]) / span_r) for i in range(33)]
+    u_g = [_clamp01((i / 32.0 - domain_min[1]) / span_g) for i in range(33)]
+    u_b = [_clamp01((i / 32.0 - domain_min[2]) / span_b) for i in range(33)]
+    out: list[tuple[float, float, float]] = []
+    for bi in range(33):
+        wb = u_b[bi]
+        for gi in range(33):
+            vg = u_g[gi]
+            for ri in range(33):
+                out.append(_tetrahedral_cube_sample(triplets, src_size, u_r[ri], vg, wb))
+    return tuple(out)
+
+
 def _is_unsafe_lut_label(raw: str) -> bool:
     if "\x00" in raw:
         return True
@@ -4628,8 +4790,9 @@ def validate_and_sanitize_cube_lut(
     *,
     name: str = "",
     allow_mini_grid: bool = False,
+    include_33_table: bool = False,
 ) -> dict[str, Any]:
-    """Strictly validate and sanitize Adobe `.cube` 3D LUT text fail-closed before touching guest state."""
+    """Strictly validate, sanitize, and tetrahedrally resample Adobe `.cube` 3D LUT (17^3/33^3/65^3 -> 33^3) in volatile RAM."""
     if not isinstance(cube_text, str):
         return {"ok": False, "error": "invalid_cube_type", "message": "cube_text must be a UTF-8 string"}
     if not cube_text.strip():
@@ -4637,18 +4800,22 @@ def validate_and_sanitize_cube_lut(
     if "\x00" in cube_text or any((ord(c) < 32 and c not in "\n\r\t") or ord(c) == 127 for c in cube_text):
         return {"ok": False, "error": "control_characters_forbidden", "message": "Control or NUL bytes in .cube payload"}
     raw_bytes = cube_text.encode("utf-8", errors="strict")
-    if len(raw_bytes) > 2 * 1024 * 1024:
-        return {"ok": False, "error": "cube_payload_too_large", "message": ".cube payload exceeds 2 MiB safety limit"}
+    header_probe = cube_text[:4096].upper()
+    has_65_header = bool(re.search(r"(?:^|\n)\s*LUT_3D_SIZE\s+65\b", header_probe))
+    max_bytes = (16 * 1024 * 1024) if has_65_header else (2 * 1024 * 1024)
+    if len(raw_bytes) > max_bytes:
+        return {"ok": False, "error": "cube_payload_too_large", "message": f".cube payload exceeds {max_bytes // (1024 * 1024)} MiB safety limit"}
 
     req_name = str(name or "").strip()
     if req_name and _is_unsafe_lut_label(req_name):
         return {"ok": False, "error": "unsafe_lut_name", "message": "LUT name contains forbidden path/control characters"}
 
     lines = cube_text.splitlines()
-    if len(lines) > 40000:
-        return {"ok": False, "error": "too_many_lines", "message": ".cube exceeds 40,000 lines safety limit"}
+    max_lines = 290000 if has_65_header else 40000
+    if len(lines) > max_lines:
+        return {"ok": False, "error": "too_many_lines", "message": f".cube exceeds {max_lines} lines safety limit"}
 
-    allowed_sizes = {17, 33}
+    allowed_sizes = {17, 33, 65}
     if allow_mini_grid:
         allowed_sizes.add(2)
 
@@ -4658,15 +4825,20 @@ def validate_and_sanitize_cube_lut(
     title = ""
     triplets: list[tuple[float, float, float]] = []
     clamped_components = 0
+    comment_or_blank_lines = 0
     seen_data = False
 
     for line_no, raw_ln in enumerate(lines, start=1):
         ln = raw_ln.strip()
         if not ln or ln.startswith("#"):
+            comment_or_blank_lines += 1
+            if comment_or_blank_lines > 40000:
+                return {"ok": False, "error": "too_many_lines", "message": ".cube exceeds 40,000 comment/blank lines safety limit"}
             continue
         if "#" in ln:
             ln = ln.split("#", 1)[0].strip()
             if not ln:
+                comment_or_blank_lines += 1
                 continue
 
         parts = ln.split()
@@ -4745,7 +4917,9 @@ def validate_and_sanitize_cube_lut(
                 "message": f"Line {line_no}: NaN/Inf forbidden in 3D LUT triplet",
             }
         seen_data = True
-        cr, cg, cb = _clamp01(r_v), _clamp01(g_v), _clamp01(b_v)
+        cr = 0.0 if r_v < 0.0 else (1.0 if r_v > 1.0 else r_v)
+        cg = 0.0 if g_v < 0.0 else (1.0 if g_v > 1.0 else g_v)
+        cb = 0.0 if b_v < 0.0 else (1.0 if b_v > 1.0 else b_v)
         if cr != r_v:
             clamped_components += 1
         if cg != g_v:
@@ -4784,38 +4958,633 @@ def validate_and_sanitize_cube_lut(
     safe_name = (req_name or title or f"Custom {lut_size}^3")[:23]
     safe_name = "".join(ch if 32 <= ord(ch) < 127 else "_" for ch in safe_name).strip() or f"Custom {lut_size}^3"
 
-    canonical_lines = [
-        f'TITLE "{safe_name}"',
-        f"LUT_3D_SIZE {lut_size}",
-        f"DOMAIN_MIN {dmin[0]:.6f} {dmin[1]:.6f} {dmin[2]:.6f}",
-        f"DOMAIN_MAX {dmax[0]:.6f} {dmax[1]:.6f} {dmax[2]:.6f}",
-    ]
-    canonical_lines.extend(f"{r:.6f} {g:.6f} {b:.6f}" for (r, g, b) in triplets)
-    canonical_text = "\n".join(canonical_lines) + "\n"
-    sha256 = hashlib.sha256(canonical_text.encode("utf-8")).hexdigest()
+    src_hasher = hashlib.sha256()
+    src_hasher.update(
+        (
+            f'TITLE "{safe_name}"\n'
+            f"LUT_3D_SIZE {lut_size}\n"
+            f"DOMAIN_MIN {dmin[0]:.6f} {dmin[1]:.6f} {dmin[2]:.6f}\n"
+            f"DOMAIN_MAX {dmax[0]:.6f} {dmax[1]:.6f} {dmax[2]:.6f}\n"
+        ).encode("utf-8")
+    )
+    if lut_size <= 33:
+        src_hasher.update(("\n".join(f"{r:.6f} {g:.6f} {b:.6f}" for (r, g, b) in triplets) + "\n").encode("utf-8"))
+    else:
+        chunk: list[str] = []
+        for idx, (r, g, b) in enumerate(triplets, start=1):
+            chunk.append(f"{r:.6f} {g:.6f} {b:.6f}")
+            if (idx & 4095) == 0:
+                src_hasher.update(("\n".join(chunk) + "\n").encode("utf-8"))
+                chunk.clear()
+        if chunk:
+            src_hasher.update(("\n".join(chunk) + "\n").encode("utf-8"))
+    sha256 = src_hasher.hexdigest()
 
-    in_r = (0.5 - dmin[0]) / (dmax[0] - dmin[0])
-    in_g = (0.5 - dmin[1]) / (dmax[1] - dmin[1])
-    in_b = (0.5 - dmin[2]) / (dmax[2] - dmin[2])
-    mr, mg, mb = _trilinear_cube_sample(triplets, lut_size, in_r, in_g, in_b)
+    table_33 = resample_cube_tetrahedral_33(triplets, lut_size, dmin, dmax)
+    res_hasher = hashlib.sha256()
+    res_hasher.update(
+        (
+            f'TITLE "{safe_name}"\n'
+            f"LUT_3D_SIZE 33\n"
+            f"DOMAIN_MIN 0.000000 0.000000 0.000000\n"
+            f"DOMAIN_MAX 1.000000 1.000000 1.000000\n"
+        ).encode("utf-8")
+    )
+    res_hasher.update(("\n".join(f"{r:.6f} {g:.6f} {b:.6f}" for (r, g, b) in table_33) + "\n").encode("utf-8"))
+    resampled_33_sha256 = res_hasher.hexdigest()
+
+    mr, mg, mb = _tetrahedral_cube_sample(table_33, 33, 0.5, 0.5, 0.5)
+    sr, sg, sb = _tetrahedral_cube_sample(table_33, 33, 0.15, 0.15, 0.15)
+    hr, hg, hb = _tetrahedral_cube_sample(table_33, 33, 0.85, 0.85, 0.85)
+    lo_r, lo_g, lo_b = _tetrahedral_cube_sample(table_33, 33, 0.05, 0.05, 0.05)
+    hi_r, hi_g, hi_b = _tetrahedral_cube_sample(table_33, 33, 0.95, 0.95, 0.95)
+    luma_lo = 0.2126 * lo_r + 0.7152 * lo_g + 0.0722 * lo_b
+    luma_hi = 0.2126 * hi_r + 0.7152 * hi_g + 0.0722 * hi_b
+    contrast_signature = round(max(0.25, min(2.50, (luma_hi - luma_lo) / 0.90)), 4)
+
     r8 = max(0, min(255, int(round(mr * 255.0))))
     g8 = max(0, min(255, int(round(mg * 255.0))))
     b8 = max(0, min(255, int(round(mb * 255.0))))
 
-    return {
+    res: dict[str, Any] = {
         "ok": True,
         "name": safe_name,
         "title": title or safe_name,
         "size": lut_size,
+        "source_grid_size": lut_size,
+        "target_grid_size": 33,
         "triplets": expected,
+        "resampled_33_triplets": 33 ** 3,
+        "resampling_method": "tetrahedral",
         "clamped_components": clamped_components,
         "domain_min": dmin,
         "domain_max": dmax,
         "sha256": sha256,
+        "resampled_33_sha256": resampled_33_sha256,
         "mid_gray_rgb": [round(mr, 6), round(mg, 6), round(mb, 6)],
         "tint_rgb8": [r8, g8, b8],
         "tint_hex": f"#{r8:02x}{g8:02x}{b8:02x}",
+        "shadow_tint_rgb8": [
+            max(0, min(255, int(round(sr * 255.0)))),
+            max(0, min(255, int(round(sg * 255.0)))),
+            max(0, min(255, int(round(sb * 255.0)))),
+        ],
+        "highlight_tint_rgb8": [
+            max(0, min(255, int(round(hr * 255.0)))),
+            max(0, min(255, int(round(hg * 255.0)))),
+            max(0, min(255, int(round(hb * 255.0)))),
+        ],
+        "contrast_signature": contrast_signature,
+        "volatile_ram_only": True,
+        "persistent_emmc_writes_authorized": False,
+        "emmc_mutation_bytes": 0,
     }
+    if include_33_table:
+        res["_table_33"] = table_33
+    return res
+
+
+# ---------------------------------------------------------------------------
+# Phase 102 — Picture Cache DDR Ring-Buffer, Interval Rec E-Shutter,
+#             .cube 33^3 Tetrahedral LUT & Wired USB-LAN FTPS Queue
+# ---------------------------------------------------------------------------
+
+FX3_TOTAL_AP_DRAM_MIB: float = 2048.0
+FX3_PICTURE_CACHE_DDR_BUDGET_MIB: float = 384.0
+PICTURE_CACHE_ALLOWED_SECONDS: tuple[int, ...] = (0, 2, 4, 8, 16)
+PICTURE_CACHE_CODEC_PROFILES: dict[str, dict[str, Any]] = {
+    "XAVC_I_4K60": {"codec": "XAVC-I 4K 59.94p", "bitrate_mbps": 600.0, "mib_per_sec": 75.0, "fps": 59.94},
+    "XAVC_I_4K24": {"codec": "XAVC-I 4K 23.98p", "bitrate_mbps": 240.0, "mib_per_sec": 30.0, "fps": 23.98},
+    "XAVC_L_4K60": {"codec": "XAVC-L 4K 59.94p", "bitrate_mbps": 200.0, "mib_per_sec": 25.0, "fps": 59.94},
+    "XAVC_L_4K30": {"codec": "XAVC-L 4K 29.97p", "bitrate_mbps": 100.0, "mib_per_sec": 12.5, "fps": 29.97},
+    "XAVC_I_FHD60": {"codec": "XAVC-I FHD 59.94p", "bitrate_mbps": 222.0, "mib_per_sec": 27.75, "fps": 59.94},
+    "XAVC_L_FHD60": {"codec": "XAVC-L FHD 59.94p", "bitrate_mbps": 50.0, "mib_per_sec": 6.25, "fps": 59.94},
+    "XAVC_HS_4K60": {"codec": "XAVC HS 4K 59.94p", "bitrate_mbps": 200.0, "mib_per_sec": 25.0, "fps": 59.94},
+}
+INTERVAL_SEC_MIN: int = 1
+INTERVAL_SEC_MAX: int = 60
+INTERVAL_TARGET_SHOTS_MIN: int = 1
+INTERVAL_TARGET_SHOTS_MAX: int = 9999
+INTERVAL_AE_TRACKING_MODES: tuple[str, ...] = ("High", "Mid", "Low", "Lock")
+_INTERVAL_AE_ALIASES: dict[str, str] = {m.lower(): m for m in INTERVAL_AE_TRACKING_MODES}
+INTERVAL_AE_SLEW_ALPHA: dict[str, float] = {"High": 0.65, "Mid": 0.30, "Low": 0.10, "Lock": 0.0}
+
+FTPS_MODES: tuple[str, ...] = ("Off", "Proxy_Only", "Original_And_Proxy")
+_FTPS_MODE_ALIASES: dict[str, str] = {
+    "off": "Off",
+    "0": "Off",
+    "none": "Off",
+    "proxy_only": "Proxy_Only",
+    "proxy": "Proxy_Only",
+    "original_and_proxy": "Original_And_Proxy",
+    "proxy_and_original": "Original_And_Proxy",
+    "both": "Original_And_Proxy",
+    "orig_and_proxy": "Original_And_Proxy",
+}
+ALLOWED_FTPS_WIRED_NICS: tuple[str, ...] = ("CDC_NCM_RTL8153", "CDC_NCM_AX88179")
+ALLOWED_FTPS_MEDIA_ROOTS: tuple[str, ...] = (
+    "/mnt/sd",
+    "/mnt/slot_a",
+    "/mnt/slot_b",
+    "/mnt/cfexpress_a",
+    "/mnt/cfexpress_b",
+)
+_FORBIDDEN_EMMC_PATH_RE = re.compile(
+    r"(?:^|/)(?:p(?:[1-9]|1[0-5])|nflasha\d*|cnflasha\d*|mmcblk0(?:p\d+)?|mtdblock\d*)(?:/|$)",
+    re.IGNORECASE,
+)
+_FORBIDDEN_FTPS_SYS_PREFIXES: tuple[str, ...] = (
+    "/etc",
+    "/lib",
+    "/usr",
+    "/bin",
+    "/sbin",
+    "/boot",
+    "/dev",
+    "/proc",
+    "/sys",
+    "/root",
+    "/var",
+    "/nvram",
+)
+
+INTERVAL_CACHE_LUT_FTP_DEFAULTS: dict[str, Any] = {
+    "cache_seconds": 0,
+    "codec_profile": "auto",
+    "interval_rec_enabled": False,
+    "interval_sec": 5,
+    "target_shots": 120,
+    "shots_taken": 0,
+    "ae_tracking": "Mid",
+    "ftps_mode": "Off",
+    "ftps_nic_driver": "CDC_NCM_RTL8153",
+    "ftps_tls_version": "FTPES_TLS13",
+    "ftps_data_mode": "PASV",
+}
+
+INTERVAL_CACHE_LUT_FTP_SPECS: dict[str, Any] = {
+    "cache_seconds_choices": list(PICTURE_CACHE_ALLOWED_SECONDS),
+    "fx3_total_dram_mib": FX3_TOTAL_AP_DRAM_MIB,
+    "ddr_budget_mib": FX3_PICTURE_CACHE_DDR_BUDGET_MIB,
+    "cache_ddr_budget_mib": FX3_PICTURE_CACHE_DDR_BUDGET_MIB,
+    "codec_profiles": {k: dict(v) for k, v in PICTURE_CACHE_CODEC_PROFILES.items()},
+    "interval_sec_range": [INTERVAL_SEC_MIN, INTERVAL_SEC_MAX],
+    "target_shots_range": [INTERVAL_TARGET_SHOTS_MIN, INTERVAL_TARGET_SHOTS_MAX],
+    "ae_tracking_modes": list(INTERVAL_AE_TRACKING_MODES),
+    "electronic_shutter_enforced": True,
+    "mechanical_curtain_actuations_locked": 0,
+    "cube_supported_sizes": [17, 33, 65],
+    "cube_target_size": 33,
+    "cube_resampling_method": "tetrahedral",
+    "ftps_modes": list(FTPS_MODES),
+    "ftps_wired_nics": list(ALLOWED_FTPS_WIRED_NICS),
+    "ftps_allowed_media_roots": list(ALLOWED_FTPS_MEDIA_ROOTS),
+    "p12_rf_off_enforced": True,
+    "wf12_00342260_hits_locked": 0,
+    "mailbox_magic": "0x49434C46",
+    "mailbox_slots": "mb[48..51]",
+    "supported_langs": ["en", "zh-CN", "zh-TW", "ja"],
+}
+
+
+def resolve_effective_cache_codec_profile(
+    codec_profile: str = "auto",
+    *,
+    base_fps: float = 23.98,
+    rec_fmt_idx: int = 0,
+) -> tuple[str, dict[str, Any]]:
+    """Resolve active Picture Cache codec/bitrate profile from explicit selection or active rec_fmt/fps."""
+    if codec_profile in PICTURE_CACHE_CODEC_PROFILES:
+        return codec_profile, PICTURE_CACHE_CODEC_PROFILES[codec_profile]
+    idx = int(rec_fmt_idx) % 5
+    if idx == 1:
+        key = "XAVC_L_4K30"
+    elif idx == 2:
+        key = "XAVC_I_FHD60"
+    elif idx == 3:
+        key = "XAVC_L_FHD60"
+    elif idx == 4:
+        key = "XAVC_HS_4K60"
+    else:
+        key = "XAVC_I_4K60" if float(base_fps) >= 49.0 else "XAVC_I_4K24"
+    return key, PICTURE_CACHE_CODEC_PROFILES[key]
+
+
+def validate_ftps_media_path(raw_path: Any) -> tuple[bool, str, str | None, str | None]:
+    """Validate FTPS path strictly against removable media roots and block all eMMC p1..p15 traversal."""
+    import posixpath
+
+    if not isinstance(raw_path, str) or not raw_path.strip():
+        return False, "", "invalid_ftps_path", "FTPS target path must be a non-empty string"
+    s = raw_path.strip()
+    if "\x00" in s or any(ord(c) < 32 or ord(c) == 127 for c in s):
+        return False, "", "emmc_path_traversal_blocked", "Control or NUL bytes forbidden in FTPS path"
+    if "\\" in s or ".." in s.split("/"):
+        return False, "", "emmc_path_traversal_blocked", f"Path traversal blocked in FTPS path: {s!r}"
+    if ".." in s:
+        return False, "", "emmc_path_traversal_blocked", f"Parent traversal '..' blocked in FTPS path: {s!r}"
+
+    if not s.startswith("/"):
+        low_s = s.lower()
+        if _FORBIDDEN_EMMC_PATH_RE.search(low_s) or any(tok in low_s for tok in ("nflasha", "mmcblk", "mtdblock", "backup.bin", "psd.bin")):
+            return False, "", "emmc_path_traversal_blocked", f"eMMC/NVRAM target blocked in FTPS path: {s!r}"
+        s = f"/mnt/slot_a/PRIVATE/M4ROOT/CLIP/{s}"
+
+    norm = posixpath.normpath(s)
+    if _FORBIDDEN_EMMC_PATH_RE.search(norm) or any(tok in norm.lower() for tok in ("nflasha", "cnflasha", "mmcblk", "mtdblock", "backup.bin", "psd.bin")):
+        return False, "", "emmc_path_traversal_blocked", f"Internal eMMC partition p1..p15 traversal blocked: {norm!r}"
+    if any(norm == pref or norm.startswith(pref + "/") for pref in _FORBIDDEN_FTPS_SYS_PREFIXES):
+        return False, "", "emmc_path_traversal_blocked", f"System/eMMC path blocked for FTPS: {norm!r}"
+    if not any(norm == root or norm.startswith(root + "/") for root in ALLOWED_FTPS_MEDIA_ROOTS):
+        return False, "", "emmc_path_traversal_blocked", f"FTPS path {norm!r} outside removable media roots {ALLOWED_FTPS_MEDIA_ROOTS}"
+    return True, norm, None, None
+
+
+def compute_interval_cache_lut_ftp_derived(
+    state: dict[str, Any],
+    *,
+    base_fps: float = 23.98,
+    rec_fmt_idx: int = 0,
+    sq_enabled: bool = False,
+    wired_io_mode: str = "off",
+    active_user_lut: dict[str, Any] | None = None,
+    ftps_queue: Sequence[dict[str, Any]] = (),
+    ftps_completed: Sequence[dict[str, Any]] = (),
+    ftps_blocked_traversal_count: int = 0,
+    ftps_last_blocked_path: str | None = None,
+    wf12_00342260_hits: int = 0,
+    mechanical_curtain_actuations: int = 0,
+) -> dict[str, Any]:
+    """Compute Phase 102 Picture Cache DDR budget, Interval Rec E-Shutter state, 3D LUT 33^3 status, & Wired FTPS state."""
+    req_cache_sec = int(state.get("cache_seconds", 0))
+    if req_cache_sec not in PICTURE_CACHE_ALLOWED_SECONDS:
+        req_cache_sec = 0
+    codec_req = str(state.get("codec_profile", "auto"))
+    eff_profile, prof_meta = resolve_effective_cache_codec_profile(
+        codec_req, base_fps=base_fps, rec_fmt_idx=rec_fmt_idx
+    )
+    mib_per_sec = float(prof_meta["mib_per_sec"])
+    max_safe_sec = min(16, int(FX3_PICTURE_CACHE_DDR_BUDGET_MIB // mib_per_sec))
+    requested_ddr_mib = round(req_cache_sec * mib_per_sec, 2)
+
+    interval_en = bool(state.get("interval_rec_enabled", False)) and not bool(sq_enabled)
+    interval_sec = max(INTERVAL_SEC_MIN, min(INTERVAL_SEC_MAX, int(state.get("interval_sec", 5))))
+    target_shots = max(INTERVAL_TARGET_SHOTS_MIN, min(INTERVAL_TARGET_SHOTS_MAX, int(state.get("target_shots", 120))))
+    shots_taken = max(0, min(target_shots, int(state.get("shots_taken", 0))))
+    ae_tracking = str(state.get("ae_tracking", "Mid"))
+    if ae_tracking not in INTERVAL_AE_TRACKING_MODES:
+        ae_tracking = "Mid"
+
+    suspension_reason: str | None = None
+    if bool(sq_enabled):
+        suspension_reason = "S&Q_VFR_ACTIVE"
+    elif interval_en:
+        suspension_reason = "INTERVAL_REC_ACTIVE"
+    elif str(wired_io_mode or "off").lower() == "hdmi_raw16":
+        suspension_reason = "HDMI_RAW16_ACTIVE"
+
+    picture_cache_suspended = bool(req_cache_sec > 0 and suspension_reason is not None)
+    if req_cache_sec == 0 or suspension_reason is not None:
+        eff_cache_sec = 0
+        allocated_ddr_mib = 0.0
+        clamped_by_ddr = False
+        picture_cache_active = False
+    else:
+        clamped_by_ddr = requested_ddr_mib > FX3_PICTURE_CACHE_DDR_BUDGET_MIB
+        eff_cache_sec = min(req_cache_sec, max_safe_sec)
+        allocated_ddr_mib = round(min(FX3_PICTURE_CACHE_DDR_BUDGET_MIB, eff_cache_sec * mib_per_sec), 2)
+        picture_cache_active = eff_cache_sec > 0
+
+    remaining_ddr_mib = round(FX3_PICTURE_CACHE_DDR_BUDGET_MIB - allocated_ddr_mib, 2)
+
+    ftps_mode = str(state.get("ftps_mode", "Off"))
+    if ftps_mode not in FTPS_MODES:
+        ftps_mode = "Off"
+    ftps_nic = str(state.get("ftps_nic_driver", "CDC_NCM_RTL8153"))
+    if ftps_nic not in ALLOWED_FTPS_WIRED_NICS:
+        ftps_nic = "CDC_NCM_RTL8153"
+
+    lut_uploaded = bool(active_user_lut and active_user_lut.get("uploaded"))
+    lut_slot = str(active_user_lut.get("slot")) if active_user_lut and lut_uploaded else None
+    lut_title = str(active_user_lut.get("title") or active_user_lut.get("name")) if active_user_lut and lut_uploaded else None
+    lut_sha = str(active_user_lut.get("sha256")) if active_user_lut and active_user_lut.get("sha256") else None
+    lut_res33_sha = (
+        str(active_user_lut.get("resampled_33_sha256"))
+        if active_user_lut and active_user_lut.get("resampled_33_sha256")
+        else lut_sha
+    )
+    lut_src_size = int(active_user_lut.get("source_grid_size", active_user_lut.get("size", 33))) if active_user_lut and lut_uploaded else 0
+    lut_contrast = float(active_user_lut.get("contrast_signature", 1.0)) if active_user_lut and lut_uploaded else 1.0
+
+    return {
+        "cache_seconds": req_cache_sec,
+        "effective_cache_seconds": eff_cache_sec,
+        "max_safe_cache_seconds": max_safe_sec,
+        "codec_profile": codec_req,
+        "effective_codec_profile": eff_profile,
+        "codec_label": prof_meta["codec"],
+        "bitrate_mbps": float(prof_meta["bitrate_mbps"]),
+        "mib_per_sec": mib_per_sec,
+        "requested_ddr_mib": requested_ddr_mib,
+        "allocated_ddr_mib": allocated_ddr_mib,
+        "ddr_budget_mib": FX3_PICTURE_CACHE_DDR_BUDGET_MIB,
+        "remaining_ddr_headroom_mib": remaining_ddr_mib,
+        "fx3_total_dram_mib": FX3_TOTAL_AP_DRAM_MIB,
+        "clamped_by_ddr_budget": clamped_by_ddr,
+        "picture_cache_active": picture_cache_active,
+        "picture_cache_suspended": picture_cache_suspended,
+        "picture_cache_suspension_reason": suspension_reason,
+        "timecode_forced_free_run": bool(picture_cache_active),
+        "interval_rec_enabled": interval_en,
+        "interval_sec": interval_sec,
+        "target_shots": target_shots,
+        "shots_taken": shots_taken,
+        "ae_tracking": ae_tracking,
+        "ae_slew_alpha": INTERVAL_AE_SLEW_ALPHA[ae_tracking],
+        "shutter_type": "ELECTRONIC",
+        "electronic_shutter_enforced": True,
+        "mechanical_curtain_actuations": int(mechanical_curtain_actuations),
+        "estimated_capture_wall_sec": interval_sec * target_shots,
+        "packed_clip_duration_sec": round(float(target_shots) / max(1.0, float(base_fps)), 2),
+        "mutually_excludes_sq_and_cache": True,
+        "active_user_lut_uploaded": lut_uploaded,
+        "active_user_lut_slot": lut_slot,
+        "active_user_lut_title": lut_title,
+        "active_user_lut_sha256": lut_sha,
+        "active_user_lut_resampled_33_sha256": lut_res33_sha,
+        "active_user_lut_source_size": lut_src_size,
+        "active_user_lut_target_size": 33 if lut_uploaded else 0,
+        "active_user_lut_resampling_method": "tetrahedral" if lut_uploaded else None,
+        "active_user_lut_contrast_signature": lut_contrast,
+        "active_user_lut_tint_hex": active_user_lut.get("tint_hex", "#808080") if active_user_lut and lut_uploaded else "#808080",
+        "volatile_ram_only": True,
+        "ftps_mode": ftps_mode,
+        "ftps_transport": f"USB_LAN_{ftps_nic}",
+        "ftps_nic_driver": ftps_nic,
+        "ftps_tls_version": str(state.get("ftps_tls_version", "FTPES_TLS13")),
+        "ftps_data_mode": "PASV",
+        "ftps_active": ftps_mode != "Off",
+        "ftps_queued_count": len(ftps_queue),
+        "ftps_completed_count": len(ftps_completed),
+        "ftps_queue": [dict(j) for j in ftps_queue[-16:]],
+        "ftps_completed": [dict(j) for j in ftps_completed[-16:]],
+        "ftps_blocked_traversal_count": int(ftps_blocked_traversal_count),
+        "ftps_last_blocked_path": ftps_last_blocked_path,
+        "p12_rf_off_enforced": True,
+        "wifi_bt_rf_disabled": True,
+        "wf12_00342260_hits": int(wf12_00342260_hits),
+        "persistent_emmc_writes_authorized": False,
+        "emmc_mutation_bytes": 0,
+    }
+
+
+def format_interval_cache_lut_ftp_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 102 ICLF host<->guest protocol telemetry line."""
+    return (
+        f"ICLF cache={state['effective_cache_seconds']}/{state['cache_seconds']}s"
+        f"({state['allocated_ddr_mib']:.1f}/384MiB,susp={1 if state['picture_cache_suspended'] else 0}) "
+        f"intvl={'ON' if state['interval_rec_enabled'] else 'OFF'}"
+        f"({state['shots_taken']}/{state['target_shots']}@{state['interval_sec']}s,{state['ae_tracking']},MECH=0) "
+        f"lut={state['active_user_lut_slot'] or 'none'} "
+        f"ftps={state['ftps_mode']}(Q={state['ftps_queued_count']}/D={state['ftps_completed_count']},wf12={state['wf12_00342260_hits']})"
+    )
+
+
+def validate_interval_cache_lut_ftp_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 102 Picture Cache, Interval Rec, and Wired USB-LAN FTPS updates fail-closed."""
+    if not isinstance(body, dict):
+        return (
+            False,
+            {},
+            {"ok": False, "error": "invalid_interval_cache_lut_ftp", "message": "Payload must be a JSON object"},
+        )
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(INTERVAL_CACHE_LUT_FTP_DEFAULTS)
+
+    # Reject mechanical shutter tampering in Interval Recording
+    if body.get("mechanical_shutter") is True or (
+        "shutter_type" in body
+        and body["shutter_type"] is not None
+        and str(body["shutter_type"]).strip().upper() not in ("", "ELECTRONIC", "E-SHUTTER", "ESHUT")
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "mechanical_shutter_forbidden_in_interval_rec",
+                "message": "Interval Recording strictly enforces Electronic Shutter (mechanical_curtain_actuations == 0) to protect FX3 shutter curtain",
+            },
+        )
+
+    # Reject P12 Wi-Fi/BT RF-on tampering for FTPS
+    if (
+        body.get("wifi_enabled") is True
+        or body.get("bt_enabled") is True
+        or body.get("wifi_bt_rf_disabled") is False
+        or body.get("p12_rf_off_enforced") is False
+        or (
+            "ftps_transport" in body
+            and body["ftps_transport"] is not None
+            and any(tok in str(body["ftps_transport"]).lower() for tok in ("wifi", "wlan", "bt", "bluetooth"))
+        )
+        or (
+            "ftps_nic_driver" in body
+            and body["ftps_nic_driver"] is not None
+            and str(body["ftps_nic_driver"]).strip().upper() not in ("", "CDC_NCM_RTL8153", "CDC_NCM_AX88179")
+        )
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "p12_rf_off_violation",
+                "message": "P12 BK4 Airplane-Mode enforces Wi-Fi/BT RF-OFF (wf12_00342260_hits == 0); FTPS permitted strictly over wired USB-LAN (CDC-NCM / RTL8153)",
+                "wf12_00342260_hits": 0,
+            },
+        )
+
+    # Picture Cache seconds (0, 2, 4, 8, 16)
+    if "cache_seconds" in body and body["cache_seconds"] is not None:
+        raw_cs = body["cache_seconds"]
+        if isinstance(raw_cs, bool):
+            return False, {}, {"ok": False, "error": "invalid_cache_seconds", "message": "cache_seconds cannot be bool"}
+        if isinstance(raw_cs, str):
+            s_cs = raw_cs.strip().lower().rstrip("s")
+            if s_cs == "off":
+                s_cs = "0"
+            try:
+                cs_val = int(s_cs)
+            except ValueError:
+                return False, {}, {"ok": False, "error": "invalid_cache_seconds", "message": f"Invalid cache_seconds: {raw_cs!r}"}
+        elif isinstance(raw_cs, (int, float)):
+            if not math.isfinite(float(raw_cs)) or float(raw_cs) != float(int(raw_cs)):
+                return False, {}, {"ok": False, "error": "invalid_cache_seconds", "message": f"Invalid cache_seconds: {raw_cs!r}"}
+            cs_val = int(raw_cs)
+        else:
+            return False, {}, {"ok": False, "error": "invalid_cache_seconds", "message": f"Invalid cache_seconds: {raw_cs!r}"}
+        if cs_val not in PICTURE_CACHE_ALLOWED_SECONDS:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_cache_seconds",
+                    "message": f"Unsupported cache_seconds={cs_val} (allowed: {list(PICTURE_CACHE_ALLOWED_SECONDS)})",
+                    "allowed": list(PICTURE_CACHE_ALLOWED_SECONDS),
+                },
+            )
+        updates["cache_seconds"] = cs_val
+
+    if "codec_profile" in body and body["codec_profile"] is not None:
+        cp_raw = str(body["codec_profile"]).strip()
+        if cp_raw != "auto" and cp_raw not in PICTURE_CACHE_CODEC_PROFILES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_codec_profile",
+                    "message": f"Unsupported codec_profile: {cp_raw!r}",
+                    "allowed": ["auto"] + list(PICTURE_CACHE_CODEC_PROFILES.keys()),
+                },
+            )
+        updates["codec_profile"] = cp_raw
+
+    # Interval Recording fields
+    if "interval_rec_enabled" in body and body["interval_rec_enabled"] is not None:
+        raw_ie = body["interval_rec_enabled"]
+        if isinstance(raw_ie, bool):
+            updates["interval_rec_enabled"] = raw_ie
+        elif isinstance(raw_ie, int) and raw_ie in (0, 1):
+            updates["interval_rec_enabled"] = bool(raw_ie)
+        elif isinstance(raw_ie, str) and raw_ie.strip().lower() in ("true", "1", "on", "yes", "false", "0", "off", "no"):
+            updates["interval_rec_enabled"] = raw_ie.strip().lower() in ("true", "1", "on", "yes")
+        else:
+            return False, {}, {"ok": False, "error": "invalid_interval_rec_enabled", "message": f"Invalid interval_rec_enabled: {raw_ie!r}"}
+
+    if "interval_sec" in body and body["interval_sec"] is not None:
+        raw_is = body["interval_sec"]
+        if isinstance(raw_is, bool) or not isinstance(raw_is, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_interval_sec", "message": f"Invalid interval_sec: {raw_is!r}"}
+        try:
+            f_is = float(raw_is)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_interval_sec", "message": f"Invalid interval_sec: {raw_is!r}"}
+        if not math.isfinite(f_is) or int(f_is) < INTERVAL_SEC_MIN or int(f_is) > INTERVAL_SEC_MAX or f_is != float(int(f_is)):
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_interval_sec", "message": f"interval_sec must be integer in [{INTERVAL_SEC_MIN}, {INTERVAL_SEC_MAX}]"},
+            )
+        updates["interval_sec"] = int(f_is)
+
+    if "target_shots" in body and body["target_shots"] is not None:
+        raw_ts = body["target_shots"]
+        if isinstance(raw_ts, bool) or not isinstance(raw_ts, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_target_shots", "message": f"Invalid target_shots: {raw_ts!r}"}
+        try:
+            f_ts = float(raw_ts)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_target_shots", "message": f"Invalid target_shots: {raw_ts!r}"}
+        if not math.isfinite(f_ts) or int(f_ts) < INTERVAL_TARGET_SHOTS_MIN or int(f_ts) > INTERVAL_TARGET_SHOTS_MAX or f_ts != float(int(f_ts)):
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_target_shots", "message": f"target_shots must be integer in [{INTERVAL_TARGET_SHOTS_MIN}, {INTERVAL_TARGET_SHOTS_MAX}]"},
+            )
+        updates["target_shots"] = int(f_ts)
+
+    if "ae_tracking" in body and body["ae_tracking"] is not None:
+        raw_ae = body["ae_tracking"]
+        if isinstance(raw_ae, bool) or not isinstance(raw_ae, str):
+            return False, {}, {"ok": False, "error": "invalid_ae_tracking", "message": f"Invalid ae_tracking: {raw_ae!r}"}
+        ae_norm = _INTERVAL_AE_ALIASES.get(raw_ae.strip().lower())
+        if ae_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ae_tracking",
+                    "message": f"Unsupported ae_tracking: {raw_ae!r}",
+                    "allowed": list(INTERVAL_AE_TRACKING_MODES),
+                },
+            )
+        updates["ae_tracking"] = ae_norm
+
+    if "ftps_mode" in body and body["ftps_mode"] is not None:
+        raw_fm = body["ftps_mode"]
+        if isinstance(raw_fm, bool) or not isinstance(raw_fm, str):
+            return False, {}, {"ok": False, "error": "invalid_ftps_mode", "message": f"Invalid ftps_mode: {raw_fm!r}"}
+        fm_norm = _FTPS_MODE_ALIASES.get(raw_fm.strip().lower())
+        if fm_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ftps_mode",
+                    "message": f"Unsupported ftps_mode: {raw_fm!r}",
+                    "allowed": list(FTPS_MODES),
+                },
+            )
+        updates["ftps_mode"] = fm_norm
+
+    if "ftps_nic_driver" in body and body["ftps_nic_driver"] is not None:
+        nic_norm = str(body["ftps_nic_driver"]).strip().upper()
+        if nic_norm in ALLOWED_FTPS_WIRED_NICS:
+            updates["ftps_nic_driver"] = nic_norm
+
+    if "ftps_data_mode" in body and body["ftps_data_mode"] is not None:
+        dm = str(body["ftps_data_mode"]).strip().upper()
+        if dm != "PASV":
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_ftps_data_mode", "message": "FTPS requires passive PASV mode; Active PORT rejected"},
+            )
+
+    if "advance_shots" in body and body["advance_shots"] is not None:
+        raw_adv = body["advance_shots"]
+        if isinstance(raw_adv, bool) or not isinstance(raw_adv, int) or raw_adv < 0 or raw_adv > 9999:
+            return False, {}, {"ok": False, "error": "invalid_advance_shots", "message": "advance_shots must be int in [0, 9999]"}
+        updates["advance_shots"] = raw_adv
+
+    if body.get("trigger_shot") is True:
+        updates["advance_shots"] = int(updates.get("advance_shots", 0)) + 1
+    if body.get("reset_shots") is True:
+        updates["reset_shots"] = True
+
+    enqueue_path = body.get("enqueue_path") or body.get("ftp_path") or body.get("target_path")
+    if enqueue_path is not None:
+        ok_p, norm_p, err_code, err_msg = validate_ftps_media_path(enqueue_path)
+        if not ok_p:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": err_code or "emmc_path_traversal_blocked",
+                    "message": err_msg or "eMMC path traversal blocked",
+                    "blocked_emmc_partition": True,
+                    "blocked_path": str(enqueue_path),
+                    "wf12_00342260_hits": 0,
+                },
+            )
+        updates["enqueue_path"] = norm_p
+
+    for flag_key in ("enqueue_current_clip", "process_next_job", "advance_queue", "clear_queue"):
+        if body.get(flag_key) is True:
+            updates[flag_key] = True
+
+    return True, updates, None
 
 
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
@@ -5222,6 +5991,39 @@ class FX6LiveGpe0Session:
         }))
         self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
+        self.cache_seconds = 0
+        self.codec_profile = "auto"
+        self.interval_rec_enabled = False
+        self.interval_sec = 5
+        self.target_shots = 120
+        self.shots_taken = 0
+        self.ae_tracking = "Mid"
+        self.mechanical_curtain_actuations = 0
+        self.ftps_mode = "Off"
+        self.ftps_nic_driver = "CDC_NCM_RTL8153"
+        self.ftps_tls_version = "FTPES_TLS13"
+        self.ftps_queue: list[dict[str, Any]] = []
+        self.ftps_completed: list[dict[str, Any]] = []
+        self.ftps_blocked_traversal_count = 0
+        self.ftps_last_blocked_path: str | None = None
+        self.wf12_00342260_hits = 0
+        self._user_lut_33_ram_tables: dict[str, list[tuple[float, float, float]]] = {}
+        self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(
+            compute_interval_cache_lut_ftp_derived(
+                {
+                    "cache_seconds": self.cache_seconds,
+                    "codec_profile": self.codec_profile,
+                    "interval_rec_enabled": self.interval_rec_enabled,
+                    "interval_sec": self.interval_sec,
+                    "target_shots": self.target_shots,
+                    "shots_taken": self.shots_taken,
+                    "ae_tracking": self.ae_tracking,
+                    "ftps_mode": self.ftps_mode,
+                    "ftps_nic_driver": self.ftps_nic_driver,
+                    "ftps_tls_version": self.ftps_tls_version,
+                }
+            )
+        )
         self.last_toast = ""
         self.table_off = ALL_128_PAGES[0]["off"] if ALL_128_PAGES else 0x02E90FB0
         self.table_rows = ALL_128_PAGES[0]["rows"] if ALL_128_PAGES else 7
@@ -5263,14 +6065,25 @@ class FX6LiveGpe0Session:
             slots[slot] = {
                 "slot": slot,
                 "name": f"{slot} .cube",
+                "title": f"{slot} .cube",
                 "uploaded": False,
                 "preset": None,
                 "size": 33,
+                "source_grid_size": 33,
+                "target_grid_size": 33,
                 "triplets": 33 ** 3,
+                "resampled_33_triplets": 33 ** 3,
+                "resampling_method": "tetrahedral",
                 "sha256": None,
+                "resampled_33_sha256": None,
+                "contrast_signature": 1.0,
                 "mid_gray_rgb": [0.5, 0.5, 0.5],
                 "tint_rgb8": [128, 128, 128],
                 "tint_hex": "#808080",
+                "shadow_tint_rgb8": [128, 128, 128],
+                "highlight_tint_rgb8": [128, 128, 128],
+                "volatile_ram_only": True,
+                "emmc_mutation_bytes": 0,
             }
         return slots
 
@@ -5941,8 +6754,73 @@ class FX6LiveGpe0Session:
         mb47 = 0x4759524F  # 'GYRO'
         return struct.pack("<4I", mb44, mb45, mb46, mb47)
 
+    def _pack_phase102_mailbox_bytes(self) -> bytes:
+        """Pack Phase 102 guest control mailbox mb[48..51] (16 bytes) matching fx6_live_guest.c."""
+        p102 = self.get_interval_cache_lut_ftp()
+        eff_sec = max(0, min(16, int(p102["effective_cache_seconds"])))
+        req_sec = max(0, min(16, int(p102["cache_seconds"])))
+        ddr_mib = max(0, min(384, int(round(float(p102["allocated_ddr_mib"])))))
+        cache_active = 1 if p102["picture_cache_active"] else 0
+        cache_susp = 1 if p102["picture_cache_suspended"] else 0
+        cache_clamped = 1 if p102["clamped_by_ddr_budget"] else 0
+        intvl_en = 1 if p102["interval_rec_enabled"] else 0
+        intvl_sec = max(1, min(60, int(p102["interval_sec"])))
+        ae_map = {"High": 0, "Mid": 1, "Low": 2, "Lock": 3}
+        ae_idx = ae_map.get(str(p102["ae_tracking"]), 1)
+
+        mb48 = (
+            (eff_sec & 0x1F)
+            | ((req_sec & 0x1F) << 5)
+            | ((ddr_mib & 0x1FF) << 10)
+            | ((cache_active & 0x1) << 19)
+            | ((cache_susp & 0x1) << 20)
+            | ((cache_clamped & 0x1) << 21)
+            | ((intvl_en & 0x1) << 22)
+            | ((intvl_sec & 0x3F) << 23)
+            | ((ae_idx & 0x3) << 29)
+            | (1 << 31)  # phase102_cache_interval valid
+        )
+
+        shots_taken = max(0, min(9999, int(p102["shots_taken"])))
+        target_shots = max(1, min(9999, int(p102["target_shots"])))
+        ftps_map = {"Off": 0, "Proxy_Only": 1, "Original_And_Proxy": 2}
+        ftps_idx = ftps_map.get(str(p102["ftps_mode"]), 0)
+        ftps_p12_safe = 1 if p102["p12_rf_off_enforced"] else 0
+        eshut_enforced = 1 if p102["electronic_shutter_enforced"] else 0
+
+        mb49 = (
+            (shots_taken & 0x3FFF)
+            | ((target_shots & 0x3FFF) << 14)
+            | ((ftps_idx & 0x3) << 28)
+            | ((ftps_p12_safe & 0x1) << 30)
+            | ((eshut_enforced & 0x1) << 31)
+        )
+
+        slot_map = {"User1": 1, "User2": 2, "User3": 3, "User4": 4}
+        lut_slot = slot_map.get(str(p102.get("active_user_lut_slot") or ""), 0) if p102["active_user_lut_uploaded"] else 0
+        lut_res33 = 1 if (p102["active_user_lut_uploaded"] and p102.get("active_user_lut_target_size") == 33) else 0
+        src_map = {17: 1, 33: 2, 65: 3}
+        lut_src_idx = src_map.get(int(p102.get("active_user_lut_source_size", 0)), 0) if p102["active_user_lut_uploaded"] else 0
+        contrast_x100 = max(25, min(250, int(round(float(p102.get("active_user_lut_contrast_signature", 1.0)) * 100.0))))
+        ftps_q_cnt = max(0, min(255, int(p102["ftps_queued_count"])))
+        ftps_done_cnt = max(0, min(255, int(p102["ftps_completed_count"])))
+        ftps_trav_blk = 1 if int(p102["ftps_blocked_traversal_count"]) > 0 else 0
+
+        mb50 = (
+            (lut_slot & 0x7)
+            | ((lut_res33 & 0x1) << 3)
+            | ((lut_src_idx & 0x3) << 4)
+            | ((contrast_x100 & 0xFF) << 6)
+            | ((ftps_q_cnt & 0xFF) << 14)
+            | ((ftps_done_cnt & 0xFF) << 22)
+            | ((ftps_trav_blk & 0x1) << 30)
+            | (1 << 31)  # phase102_lut_ftps valid
+        )
+        mb51 = 0x49434C46  # 'ICLF'
+        return struct.pack("<4I", mb48, mb49, mb50, mb51)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..47] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..51] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
@@ -5951,6 +6829,7 @@ class FX6LiveGpe0Session:
             + self._pack_phase81_mailbox_bytes()
             + self._pack_phase88_mailbox_bytes()
             + self._pack_phase95_mailbox_bytes()
+            + self._pack_phase102_mailbox_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -6563,12 +7442,14 @@ class FX6LiveGpe0Session:
                             self.sq_enabled = True
                             self.sq_fps = 120
                             self.base_fps = 23.98
+                            self.interval_rec_enabled = False
                         elif 0 <= new_idx < len(fps_map):
                             self.base_fps = fps_map[new_idx]
                             self.sq_enabled = False
                         self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
                         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
                         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
+                        self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
                     elif key == "ei":
                         ei_map = [
                             ("800", 800),
@@ -6614,6 +7495,7 @@ class FX6LiveGpe0Session:
                             self.base_look = lut_look_map[new_idx]
                             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
                             self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+                            self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
                     elif key == "wb":
                         wb_cell_map = [
                             ("preset_5600k", 5600),
@@ -6665,7 +7547,7 @@ class FX6LiveGpe0Session:
             }
 
     def upload_cube_lut(self, body: Any, *, allow_mini_grid: bool = False) -> dict[str, Any]:
-        """Validate/sanitize `.cube` 3D LUT fail-closed, store into User1..User4, and sync guest GPE0."""
+        """Validate/sanitize `.cube` 3D LUT fail-closed, resample 17^3/33^3/65^3 -> 33^3 in volatile RAM, and sync guest GPE0."""
         if not isinstance(body, dict):
             return {"ok": False, "error": "invalid_request_body", "message": "Request body must be a JSON object"}
 
@@ -6695,7 +7577,7 @@ class FX6LiveGpe0Session:
                 size_int = int(size_req)
             except (TypeError, ValueError):
                 return {"ok": False, "error": "invalid_lut_3d_size", "message": f"Invalid size {size_req!r}"}
-            if size_int not in ({2, 17, 33} if allow_mini_grid else {17, 33}):
+            if size_int not in ({2, 17, 33, 65} if allow_mini_grid else {17, 33, 65}):
                 return {
                     "ok": False,
                     "error": "unsupported_lut_3d_size",
@@ -6712,10 +7594,16 @@ class FX6LiveGpe0Session:
                 "message": "Provide either 'cube_text' or built-in 'preset' (709_typeA, teal_orange, film_2383, slog3_bypass)",
             }
 
-        sanitized = validate_and_sanitize_cube_lut(cube_text, name=req_name, allow_mini_grid=allow_mini_grid)
+        sanitized = validate_and_sanitize_cube_lut(
+            cube_text,
+            name=req_name,
+            allow_mini_grid=allow_mini_grid,
+            include_33_table=True,
+        )
         if not sanitized["ok"]:
             return sanitized
 
+        table_33 = sanitized.pop("_table_33", [])
         slot_record = {
             "slot": slot,
             "name": sanitized["name"],
@@ -6723,28 +7611,43 @@ class FX6LiveGpe0Session:
             "uploaded": True,
             "preset": str(preset_id).strip() if preset_id else None,
             "size": sanitized["size"],
+            "source_grid_size": sanitized["source_grid_size"],
+            "target_grid_size": sanitized["target_grid_size"],
             "triplets": sanitized["triplets"],
+            "resampled_33_triplets": sanitized["resampled_33_triplets"],
+            "resampling_method": sanitized["resampling_method"],
             "clamped_components": sanitized["clamped_components"],
             "domain_min": sanitized["domain_min"],
             "domain_max": sanitized["domain_max"],
             "sha256": sanitized["sha256"],
+            "resampled_33_sha256": sanitized["resampled_33_sha256"],
+            "contrast_signature": sanitized["contrast_signature"],
             "mid_gray_rgb": sanitized["mid_gray_rgb"],
             "tint_rgb8": sanitized["tint_rgb8"],
             "tint_hex": sanitized["tint_hex"],
+            "shadow_tint_rgb8": sanitized["shadow_tint_rgb8"],
+            "highlight_tint_rgb8": sanitized["highlight_tint_rgb8"],
+            "volatile_ram_only": True,
+            "persistent_emmc_writes_authorized": False,
+            "emmc_mutation_bytes": 0,
         }
 
         with self.cmd_lock:
             self.user_lut_slots[slot] = slot_record
+            self._user_lut_33_ram_tables[slot] = list(table_33)
             cell_idx = USER_LUT_SLOT_TO_CELL_IDX[slot]
             self.cell_vals[4] = cell_idx
             self.base_look = "User 3D LUT"
             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
             self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+            p102 = self.get_interval_cache_lut_ftp()
+            self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(p102)
             if self.page in (0, 3):
                 self.sel_box = 4
             self.last_toast = (
-                f"{slot} .cube Imported: {slot_record['name']} ({slot_record['size']}³, "
-                f"tint={slot_record['tint_hex']}, sha={slot_record['sha256'][:12]})"
+                f"{slot} .cube Imported (RAM): {slot_record['title']} ({slot_record['source_grid_size']}³->33³ tetrahedral, "
+                f"tint={slot_record['tint_hex']}, contrast={slot_record['contrast_signature']:.2f}, "
+                f"sha33={slot_record['resampled_33_sha256'][:12]})"
             )
             wrote, synced = self._sync_mailbox_and_capture()
             return {
@@ -6752,6 +7655,12 @@ class FX6LiveGpe0Session:
                 "slot": slot,
                 "lut_index": cell_idx,
                 "lut": dict(slot_record),
+                "resampled_33_sha256": slot_record["resampled_33_sha256"],
+                "contrast_signature": slot_record["contrast_signature"],
+                "volatile_ram_only": True,
+                "persistent_emmc_writes_authorized": False,
+                "emmc_mutation_bytes": 0,
+                "interval_cache_lut_ftp": p102,
                 "toast": self.last_toast,
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
@@ -6862,6 +7771,8 @@ class FX6LiveGpe0Session:
             self.ecs_freq_hz = float(updates["ecs_freq_hz"])
         if "sq_enabled" in updates:
             self.sq_enabled = bool(updates["sq_enabled"])
+            if self.sq_enabled:
+                self.interval_rec_enabled = False
         if "base_fps" in updates:
             self.base_fps = float(updates["base_fps"])
         if "sq_fps" in updates:
@@ -6899,6 +7810,7 @@ class FX6LiveGpe0Session:
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
         self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
+        self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -7074,6 +7986,7 @@ class FX6LiveGpe0Session:
             cm = self.get_color_and_media()
             smi = self.get_shotmark_and_iris()
             ga = self.get_gyroflow_anamorphic()
+            ic = self.get_interval_cache_lut_ftp()
             active_user = self._active_user_lut_for_color()
         xml_text = build_nrtm_xml_sidecar(
             ce,
@@ -7081,6 +7994,7 @@ class FX6LiveGpe0Session:
             active_user_lut=active_user,
             shotmark_and_iris=smi,
             gyroflow_anamorphic=ga,
+            interval_cache_lut_ftp=ic,
         )
         return {
             "ok": True,
@@ -7097,7 +8011,183 @@ class FX6LiveGpe0Session:
             "cine_exposure": ce,
             "shotmark_and_iris": smi,
             "gyroflow_anamorphic": ga,
+            "interval_cache_lut_ftp": ic,
         }
+
+    def get_interval_cache_lut_ftp(self) -> dict[str, Any]:
+        state = compute_interval_cache_lut_ftp_derived(
+            {
+                "cache_seconds": self.cache_seconds,
+                "codec_profile": self.codec_profile,
+                "interval_rec_enabled": self.interval_rec_enabled,
+                "interval_sec": self.interval_sec,
+                "target_shots": self.target_shots,
+                "shots_taken": self.shots_taken,
+                "ae_tracking": self.ae_tracking,
+                "ftps_mode": self.ftps_mode,
+                "ftps_nic_driver": self.ftps_nic_driver,
+                "ftps_tls_version": self.ftps_tls_version,
+            },
+            base_fps=self.base_fps,
+            rec_fmt_idx=self.rec_fmt_idx,
+            sq_enabled=self.sq_enabled,
+            wired_io_mode=self.wired_io_mode,
+            active_user_lut=self._active_user_lut_for_color(),
+            ftps_queue=self.ftps_queue,
+            ftps_completed=self.ftps_completed,
+            ftps_blocked_traversal_count=self.ftps_blocked_traversal_count,
+            ftps_last_blocked_path=self.ftps_last_blocked_path,
+            wf12_00342260_hits=self.wf12_00342260_hits,
+            mechanical_curtain_actuations=self.mechanical_curtain_actuations,
+        )
+        state["interval_cache_lut_ftp_cmd"] = format_interval_cache_lut_ftp_command(state)
+        return state
+
+    def _enqueue_ftps_path_locked(self, norm_path: str, kind: str = "auto") -> dict[str, Any]:
+        seq_id = len(self.ftps_queue) + len(self.ftps_completed) + 1
+        eff_kind = kind
+        if eff_kind == "auto":
+            eff_kind = "proxy" if (self.ftps_mode == "Proxy_Only" or "/SUB/" in norm_path) else "original"
+        job = {
+            "job_id": f"ftps-{seq_id:04d}",
+            "path": norm_path,
+            "kind": eff_kind,
+            "transport": f"USB_LAN_{self.ftps_nic_driver}",
+            "nic_driver": self.ftps_nic_driver,
+            "tls_version": self.ftps_tls_version,
+            "data_mode": "PASV",
+            "p12_rf_off_enforced": True,
+            "wf12_00342260_hits": 0,
+            "status": "QUEUED",
+        }
+        self.ftps_queue.append(job)
+        if len(self.ftps_queue) > 64:
+            self.ftps_queue = self.ftps_queue[-64:]
+        return job
+
+    def _apply_interval_cache_lut_ftp_updates_locked(
+        self,
+        updates: dict[str, Any],
+        *,
+        is_reset: bool = False,
+        restored_shots_taken: int | None = None,
+    ) -> None:
+        if is_reset:
+            self.ftps_queue.clear()
+            self.ftps_completed.clear()
+            self.ftps_blocked_traversal_count = 0
+            self.ftps_last_blocked_path = None
+            self.shots_taken = 0
+        if "cache_seconds" in updates:
+            self.cache_seconds = int(updates["cache_seconds"])
+        if "codec_profile" in updates:
+            self.codec_profile = str(updates["codec_profile"])
+        if "interval_rec_enabled" in updates:
+            self.interval_rec_enabled = bool(updates["interval_rec_enabled"])
+            if self.interval_rec_enabled and self.sq_enabled:
+                self.sq_enabled = False
+                fps_map = {23.98: 0, 24.0: 1, 25.0: 2, 29.97: 3, 50.0: 4, 59.94: 5}
+                self.cell_vals[0] = fps_map.get(round(self.base_fps, 2), 0)
+                self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+                self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+                self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+                self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
+        if "interval_sec" in updates:
+            self.interval_sec = int(updates["interval_sec"])
+        if "target_shots" in updates:
+            self.target_shots = int(updates["target_shots"])
+        if updates.get("reset_shots"):
+            self.shots_taken = 0
+        if restored_shots_taken is not None:
+            self.shots_taken = max(0, min(self.target_shots, int(restored_shots_taken)))
+        if "advance_shots" in updates:
+            self.shots_taken = max(0, min(self.target_shots, self.shots_taken + int(updates["advance_shots"])))
+        if "ae_tracking" in updates:
+            self.ae_tracking = str(updates["ae_tracking"])
+        if "ftps_mode" in updates:
+            self.ftps_mode = str(updates["ftps_mode"])
+        if "ftps_nic_driver" in updates:
+            self.ftps_nic_driver = str(updates["ftps_nic_driver"])
+        if updates.get("clear_queue"):
+            self.ftps_queue.clear()
+            self.ftps_completed.clear()
+        if "enqueue_path" in updates:
+            self._enqueue_ftps_path_locked(str(updates["enqueue_path"]))
+        if updates.get("enqueue_current_clip"):
+            cm = self.get_color_and_media()
+            if self.ftps_mode == "Proxy_Only":
+                ok_p, norm_p, _, _ = validate_ftps_media_path(f"/mnt/slot_a/PRIVATE/M4ROOT/SUB/{cm['proxy_clip_name']}")
+                if ok_p:
+                    self._enqueue_ftps_path_locked(norm_p, kind="proxy")
+            else:
+                ok_m, norm_m, _, _ = validate_ftps_media_path(f"/mnt/slot_a/PRIVATE/M4ROOT/CLIP/{cm['main_clip_name']}")
+                if ok_m:
+                    self._enqueue_ftps_path_locked(norm_m, kind="original")
+                if self.ftps_mode == "Original_And_Proxy":
+                    ok_s, norm_s, _, _ = validate_ftps_media_path(f"/mnt/slot_a/PRIVATE/M4ROOT/SUB/{cm['proxy_clip_name']}")
+                    if ok_s:
+                        self._enqueue_ftps_path_locked(norm_s, kind="proxy")
+        if (updates.get("process_next_job") or updates.get("advance_queue")) and self.ftps_mode != "Off" and self.ftps_queue:
+            job = dict(self.ftps_queue.pop(0))
+            job["status"] = "COMPLETED"
+            job["wf12_00342260_hits"] = 0
+            job["p12_rf_off_enforced"] = True
+            self.ftps_completed.append(job)
+            if len(self.ftps_completed) > 64:
+                self.ftps_completed = self.ftps_completed[-64:]
+
+        self.shots_taken = max(0, min(self.target_shots, self.shots_taken))
+        self.mechanical_curtain_actuations = 0
+        self.wf12_00342260_hits = 0
+        self.p12_bk4_airplane_mode_locked = True
+        self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
+
+    def set_interval_cache_lut_ftp(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "cache_seconds": self.cache_seconds,
+                "codec_profile": self.codec_profile,
+                "interval_rec_enabled": self.interval_rec_enabled,
+                "interval_sec": self.interval_sec,
+                "target_shots": self.target_shots,
+                "shots_taken": self.shots_taken,
+                "ae_tracking": self.ae_tracking,
+                "ftps_mode": self.ftps_mode,
+                "ftps_nic_driver": self.ftps_nic_driver,
+            }
+            ok, updates, err = validate_interval_cache_lut_ftp_patch(body, current_state=cur)
+            if not ok:
+                if err and err.get("error") == "emmc_path_traversal_blocked":
+                    self.ftps_blocked_traversal_count += 1
+                    self.ftps_last_blocked_path = str(err.get("blocked_path", ""))
+                    self.last_toast = str(err.get("message", "Blocked eMMC p1..p15 traversal"))
+                    self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(
+                        self.get_interval_cache_lut_ftp()
+                    )
+                    self._sync_mailbox_and_capture()
+                    err["ftps_blocked_traversal_count"] = self.ftps_blocked_traversal_count
+                return err or {"ok": False, "error": "invalid_interval_cache_lut_ftp"}
+
+            is_reset = isinstance(body, dict) and body.get("reset") is True
+            self._apply_interval_cache_lut_ftp_updates_locked(updates, is_reset=is_reset)
+            p102 = self.get_interval_cache_lut_ftp()
+            self.last_toast = (
+                f"Phase102: Cache={p102['effective_cache_seconds']}s({p102['allocated_ddr_mib']:.1f}MiB) | "
+                f"Intvl={'ON' if p102['interval_rec_enabled'] else 'OFF'}({p102['shots_taken']}/{p102['target_shots']} E-SH) | "
+                f"FTPS={p102['ftps_mode']}(Q={p102['ftps_queued_count']}/D={p102['ftps_completed_count']} P12=OFF)"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "interval_cache_lut_ftp": p102,
+                "interval_cache_lut_ftp_cmd": p102["interval_cache_lut_ftp_cmd"],
+                "mechanical_curtain_actuations": 0,
+                "wf12_00342260_hits": 0,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
 
     def get_touch_focus_ciz(self) -> dict[str, Any]:
         state = compute_touch_focus_ciz_derived(
@@ -7435,6 +8525,22 @@ class FX6LiveGpe0Session:
         stats["ack_seq"] = self.ack_seq
         stats["page"] = self.page
         stats["assist_tools"] = self.get_assist_tools()
+        active_lut = self._active_user_lut_for_color()
+        lut_uploaded = bool(active_lut and active_lut.get("uploaded"))
+        stats["lut_preview"] = {
+            "active": lut_uploaded,
+            "slot": active_lut.get("slot") if active_lut and lut_uploaded else None,
+            "title": (active_lut.get("title") or active_lut.get("name")) if active_lut and lut_uploaded else None,
+            "target_grid_size": 33 if lut_uploaded else 0,
+            "resampling_method": "tetrahedral" if lut_uploaded else None,
+            "resampled_33_sha256": active_lut.get("resampled_33_sha256") if active_lut and lut_uploaded else None,
+            "contrast_signature": float(active_lut.get("contrast_signature", 1.0)) if active_lut and lut_uploaded else 1.0,
+            "tint_rgb8": list(active_lut.get("tint_rgb8", [128, 128, 128])) if active_lut and lut_uploaded else [128, 128, 128],
+            "tint_hex": active_lut.get("tint_hex", "#808080") if active_lut and lut_uploaded else "#808080",
+            "shadow_tint_rgb8": list(active_lut.get("shadow_tint_rgb8", [128, 128, 128])) if active_lut and lut_uploaded else [128, 128, 128],
+            "highlight_tint_rgb8": list(active_lut.get("highlight_tint_rgb8", [128, 128, 128])) if active_lut and lut_uploaded else [128, 128, 128],
+            "volatile_ram_only": True,
+        }
         self.last_scope_stats = stats
         return stats
 
@@ -7468,6 +8574,7 @@ class FX6LiveGpe0Session:
             "touch_focus_ciz": self.get_touch_focus_ciz(),
             "shotmark_and_iris": self.get_shotmark_and_iris(),
             "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
+            "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -7602,6 +8709,7 @@ class FX6LiveGpe0Session:
                 new_lang_id = int(packs[nc]["id"])
 
         new_slots: dict[str, dict[str, Any]] = {}
+        new_slot_tables: dict[str, list[tuple[float, float, float]]] = {}
         raw_slots = payload.get("user_lut_slots")
         if isinstance(raw_slots, dict):
             for skey, sdata in raw_slots.items():
@@ -7609,9 +8717,14 @@ class FX6LiveGpe0Session:
                 if norm_s is None or not isinstance(sdata, dict):
                     continue
                 if "cube_text" in sdata and isinstance(sdata["cube_text"], str):
-                    san = validate_and_sanitize_cube_lut(sdata["cube_text"], name=str(sdata.get("name", norm_s)))
+                    san = validate_and_sanitize_cube_lut(
+                        sdata["cube_text"],
+                        name=str(sdata.get("name", norm_s)),
+                        include_33_table=True,
+                    )
                     if not san["ok"]:
                         return san
+                    new_slot_tables[norm_s] = list(san.pop("_table_33", []))
                     new_slots[norm_s] = {
                         "slot": norm_s,
                         "name": san["name"],
@@ -7619,14 +8732,25 @@ class FX6LiveGpe0Session:
                         "uploaded": True,
                         "preset": sdata.get("preset"),
                         "size": san["size"],
+                        "source_grid_size": san["source_grid_size"],
+                        "target_grid_size": san["target_grid_size"],
                         "triplets": san["triplets"],
+                        "resampled_33_triplets": san["resampled_33_triplets"],
+                        "resampling_method": san["resampling_method"],
                         "clamped_components": san["clamped_components"],
                         "domain_min": san["domain_min"],
                         "domain_max": san["domain_max"],
                         "sha256": san["sha256"],
+                        "resampled_33_sha256": san["resampled_33_sha256"],
+                        "contrast_signature": san["contrast_signature"],
                         "mid_gray_rgb": san["mid_gray_rgb"],
                         "tint_rgb8": san["tint_rgb8"],
                         "tint_hex": san["tint_hex"],
+                        "shadow_tint_rgb8": san["shadow_tint_rgb8"],
+                        "highlight_tint_rgb8": san["highlight_tint_rgb8"],
+                        "volatile_ram_only": True,
+                        "persistent_emmc_writes_authorized": False,
+                        "emmc_mutation_bytes": 0,
                     }
                 else:
                     rgb8 = sdata.get("tint_rgb8", [128, 128, 128])
@@ -7636,18 +8760,32 @@ class FX6LiveGpe0Session:
                     safe_n = str(sdata.get("name", f"{norm_s} .cube"))[:23]
                     if _is_unsafe_lut_label(safe_n):
                         return {"ok": False, "error": "unsafe_lut_name", "message": "Unsafe LUT name in CAMSET"}
+                    src_sz = int(sdata.get("source_grid_size", sdata.get("size", 33)))
+                    if src_sz not in (2, 17, 33, 65):
+                        src_sz = 33
                     new_slots[norm_s] = {
                         "slot": norm_s,
                         "name": safe_n,
-                        "title": safe_n,
+                        "title": str(sdata.get("title") or safe_n)[:23],
                         "uploaded": bool(sdata.get("uploaded", False)),
                         "preset": sdata.get("preset"),
-                        "size": int(sdata.get("size", 33)) if int(sdata.get("size", 33)) in (2, 17, 33) else 33,
-                        "triplets": int(sdata.get("triplets", 33 ** 3)),
+                        "size": int(sdata.get("size", src_sz)) if int(sdata.get("size", src_sz)) in (2, 17, 33, 65) else 33,
+                        "source_grid_size": src_sz,
+                        "target_grid_size": 33,
+                        "triplets": int(sdata.get("triplets", src_sz ** 3)),
+                        "resampled_33_triplets": 33 ** 3,
+                        "resampling_method": "tetrahedral",
                         "sha256": sdata.get("sha256"),
+                        "resampled_33_sha256": sdata.get("resampled_33_sha256") or sdata.get("sha256"),
+                        "contrast_signature": float(sdata.get("contrast_signature", 1.0)),
                         "mid_gray_rgb": sdata.get("mid_gray_rgb", [0.5, 0.5, 0.5]),
                         "tint_rgb8": rgb8_clean,
                         "tint_hex": f"#{rgb8_clean[0]:02x}{rgb8_clean[1]:02x}{rgb8_clean[2]:02x}",
+                        "shadow_tint_rgb8": sdata.get("shadow_tint_rgb8", rgb8_clean),
+                        "highlight_tint_rgb8": sdata.get("highlight_tint_rgb8", rgb8_clean),
+                        "volatile_ram_only": True,
+                        "persistent_emmc_writes_authorized": False,
+                        "emmc_mutation_bytes": 0,
                     }
 
         new_assist_updates: dict[str, str] = {}
@@ -7791,6 +8929,56 @@ class FX6LiveGpe0Session:
             if not ok_smi:
                 return err_smi or {"ok": False, "error": "invalid_shotmark_and_iris"}
 
+        ic_raw = payload.get("interval_cache_lut_ftp")
+        new_ic_updates: dict[str, Any] = {}
+        ic_restored_shots: int | None = None
+        if ic_raw is not None:
+            if not isinstance(ic_raw, dict):
+                return {"ok": False, "error": "invalid_interval_cache_lut_ftp", "message": "interval_cache_lut_ftp must be a JSON object"}
+            if ic_raw.get("mechanical_curtain_actuations") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "mechanical_shutter_forbidden_in_interval_rec",
+                    "message": "mechanical_curtain_actuations must be 0 in CAMSET",
+                }
+            if ic_raw.get("wf12_00342260_hits") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "p12_rf_off_violation",
+                    "message": "wf12_00342260_hits must be 0 under P12 BK4 RF-off",
+                }
+            cur_ic = {
+                "cache_seconds": self.cache_seconds,
+                "codec_profile": self.codec_profile,
+                "interval_rec_enabled": self.interval_rec_enabled,
+                "interval_sec": self.interval_sec,
+                "target_shots": self.target_shots,
+                "shots_taken": self.shots_taken,
+                "ae_tracking": self.ae_tracking,
+                "ftps_mode": self.ftps_mode,
+                "ftps_nic_driver": self.ftps_nic_driver,
+            }
+            ok_ic, new_ic_updates, err_ic = validate_interval_cache_lut_ftp_patch(ic_raw, current_state=cur_ic)
+            if not ok_ic:
+                return err_ic or {"ok": False, "error": "invalid_interval_cache_lut_ftp"}
+            if "shots_taken" in ic_raw and ic_raw["shots_taken"] is not None:
+                st_raw = ic_raw["shots_taken"]
+                if isinstance(st_raw, bool) or not isinstance(st_raw, int) or st_raw < 0 or st_raw > 9999:
+                    return {"ok": False, "error": "invalid_shots_taken", "message": "shots_taken must be int in [0, 9999]"}
+                ic_restored_shots = st_raw
+            for q_key in ("ftps_queue", "ftps_completed"):
+                q_list = ic_raw.get(q_key)
+                if isinstance(q_list, list):
+                    for q_item in q_list:
+                        if isinstance(q_item, dict) and q_item.get("path") is not None:
+                            ok_qp, _, err_qc, err_qm = validate_ftps_media_path(q_item["path"])
+                            if not ok_qp:
+                                return {
+                                    "ok": False,
+                                    "error": err_qc or "emmc_path_traversal_blocked",
+                                    "message": err_qm or "eMMC path traversal blocked in CAMSET FTPS queue",
+                                }
+
         p12_clamped = (
             (payload.get("p12_bk4_airplane_mode_locked") is False)
             or ce_p12_tamper
@@ -7856,6 +9044,8 @@ class FX6LiveGpe0Session:
 
             for skey, srec in new_slots.items():
                 self.user_lut_slots[skey] = srec
+            for skey, tbl in new_slot_tables.items():
+                self._user_lut_33_ram_tables[skey] = tbl
 
             if new_rtmd is not None:
                 self.rtmd_0xe304_ibis_lock = new_rtmd
@@ -7906,6 +9096,49 @@ class FX6LiveGpe0Session:
             else:
                 self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
             self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
+            if ic_raw is not None:
+                if isinstance(ic_raw.get("ftps_queue"), list):
+                    self.ftps_queue = [
+                        {
+                            "job_id": str(j.get("job_id", f"ftps-{idx+1:04d}")),
+                            "path": str(j.get("path", "")),
+                            "kind": str(j.get("kind", "original")),
+                            "transport": f"USB_LAN_{self.ftps_nic_driver}",
+                            "nic_driver": self.ftps_nic_driver,
+                            "tls_version": self.ftps_tls_version,
+                            "data_mode": "PASV",
+                            "p12_rf_off_enforced": True,
+                            "wf12_00342260_hits": 0,
+                            "status": "QUEUED",
+                        }
+                        for idx, j in enumerate(ic_raw["ftps_queue"][-64:])
+                        if isinstance(j, dict) and j.get("path")
+                    ]
+                if isinstance(ic_raw.get("ftps_completed"), list):
+                    self.ftps_completed = [
+                        {
+                            "job_id": str(j.get("job_id", f"ftps-{idx+1:04d}")),
+                            "path": str(j.get("path", "")),
+                            "kind": str(j.get("kind", "original")),
+                            "transport": f"USB_LAN_{self.ftps_nic_driver}",
+                            "nic_driver": self.ftps_nic_driver,
+                            "tls_version": self.ftps_tls_version,
+                            "data_mode": "PASV",
+                            "p12_rf_off_enforced": True,
+                            "wf12_00342260_hits": 0,
+                            "status": "COMPLETED",
+                        }
+                        for idx, j in enumerate(ic_raw["ftps_completed"][-64:])
+                        if isinstance(j, dict) and j.get("path")
+                    ]
+                self._apply_interval_cache_lut_ftp_updates_locked(
+                    new_ic_updates,
+                    restored_shots_taken=ic_restored_shots,
+                )
+            else:
+                self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(
+                    self.get_interval_cache_lut_ftp()
+                )
 
             if p4_rejected:
                 self.last_toast = (
@@ -7949,6 +9182,7 @@ class FX6LiveGpe0Session:
                 "touch_focus_ciz": self.get_touch_focus_ciz(),
                 "shotmark_and_iris": self.get_shotmark_and_iris(),
                 "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
+                "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -8636,6 +9870,7 @@ class FX6LiveGpe0Session:
             "touch_focus_ciz": self.get_touch_focus_ciz(),
             "shotmark_and_iris": self.get_shotmark_and_iris(),
             "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
+            "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
             "serial_tail": serial_tail,
         }
 
@@ -9517,6 +10752,107 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
 
+    <div class="card" id="phase102-cache-lut-ftp-card" style="margin-top:14px;border-color:#10b981;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p102-card-title" style="margin:0;">Phase 102 · 预录制 DDR 缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p102-lang-en" onclick="setP102Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p102-lang-zh-CN" onclick="setP102Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">简体中文</button>
+          <button id="p102-lang-zh-TW" onclick="setP102Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p102-lang-ja" onclick="setP102Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p102-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p102-susp-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p102-lbl-cache">Picture Cache (Pre-Rec DDR)</span><span id="p102-cache-badge" style="color:#10b981;font-family:'SF Mono',Menlo,monospace;">0s / 384 MiB</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p102-cache-sec-select" onchange="setPhase102State({cache_seconds: Number(this.value)})" style="width:40%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="0">Off (0s)</option>
+              <option value="2">2s</option>
+              <option value="4">4s</option>
+              <option value="8">8s</option>
+              <option value="16">16s (Max)</option>
+            </select>
+            <select id="p102-codec-select" onchange="setPhase102State({codec_profile: this.value})" style="width:60%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="auto">Auto (Active Format)</option>
+              <option value="XAVC_I_4K60">XAVC-I 4K60 (600Mbps · 75 MiB/s)</option>
+              <option value="XAVC_I_4K24">XAVC-I 4K24 (240Mbps · 30 MiB/s)</option>
+              <option value="XAVC_L_4K60">XAVC-L 4K60 (200Mbps · 25 MiB/s)</option>
+              <option value="XAVC_L_4K30">XAVC-L 4K30 (100Mbps · 12.5 MiB/s)</option>
+              <option value="XAVC_HS_4K60">XAVC-HS 4K60 (150Mbps · 18.75 MiB/s)</option>
+            </select>
+          </div>
+          <div id="p102-ddr-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">DDR Ring: 0.0 / 384.0 MiB (2048 MiB DRAM)</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#8b5cf6;">
+          <div class="cparam-head"><span id="p102-lbl-interval">Interval Rec (E-Shutter Only)</span><span id="p102-intvl-badge" style="color:#c4b5fd;font-family:'SF Mono',Menlo,monospace;">OFF · MECH=0</span></div>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:6px;">
+            <button id="p102-btn-intvl-toggle" onclick="togglePhase102Interval()" style="padding:4px 8px;font-size:11px;border-color:#a78bfa;color:#ddd6fe;">Interval: OFF</button>
+            <input id="p102-intvl-sec-input" type="number" min="1" max="60" value="5" title="Interval (1..60s)" style="width:52px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <input id="p102-target-shots-input" type="number" min="1" max="9999" value="120" title="Target Shots (1..9999)" style="width:62px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <select id="p102-ae-select" onchange="setPhase102State({ae_tracking: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:3px;font-size:10.5px;">
+              <option value="High">AE: High</option>
+              <option value="Mid">AE: Mid</option>
+              <option value="Low">AE: Low</option>
+              <option value="Lock">AE: Lock</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:4px;">
+            <button id="p102-btn-apply-intvl" onclick="applyPhase102IntervalParams()" style="padding:3px 7px;font-size:10.5px;border-color:#8b5cf6;">Apply Intvl</button>
+            <button id="p102-btn-trigger-shot" onclick="setPhase102State({trigger_shot:true})" style="padding:3px 7px;font-size:10.5px;border-color:#a78bfa;">+1 E-Shot</button>
+            <button id="p102-btn-reset-shots" onclick="setPhase102State({reset_shots:true})" style="padding:3px 7px;font-size:10.5px;">Reset Shots</button>
+          </div>
+          <div id="p102-intvl-readout" style="font-size:10px;color:#ddd6fe;font-family:'SF Mono',Menlo,monospace;">Shots: 0/120 @ 5s | Curtain Actuations: 0 (E-SH)</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#f59e0b;">
+          <div class="cparam-head"><span id="p102-lbl-lut">User .cube 3D-LUT (17/33/65³ -> 33³ RAM)</span><span id="p102-lut-badge" style="color:#fde68a;font-family:'SF Mono',Menlo,monospace;">RAM 0B eMMC</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:5px;">
+            <select id="p102-lut-slot-select" style="width:30%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:3px;font-size:10.5px;">
+              <option value="User1">User1</option>
+              <option value="User2">User2</option>
+              <option value="User3">User3</option>
+              <option value="User4">User4</option>
+            </select>
+            <input id="p102-lut-title-input" type="text" placeholder="LUT Title (optional)" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 6px;font-size:10.5px;" />
+            <button id="p102-btn-upload-lut" onclick="uploadPhase102CubeLut()" style="padding:3px 8px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Upload .cube</button>
+          </div>
+          <textarea id="p102-cube-text" rows="2" placeholder="Paste Adobe .cube (17^3/33^3/65^3) or leave empty to test preset" style="width:100%;background:#07090c;color:#e2e8f0;border:1px solid #374151;border-radius:6px;padding:4px 6px;font-size:10px;font-family:'SF Mono',Menlo,monospace;resize:vertical;"></textarea>
+          <div id="p102-lut-readout" style="margin-top:4px;font-size:10px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">LUT: None | 33³ SHA: none | Volatile RAM only</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#38bdf8;">
+          <div class="cparam-head"><span id="p102-lbl-ftps">Wired USB-LAN FTPS (P12 RF-OFF)</span><span id="p102-ftps-badge" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">P12 SAFE · wf12=0</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:5px;">
+            <select id="p102-ftps-mode-select" onchange="setPhase102State({ftps_mode: this.value})" style="width:46%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:3px;font-size:10.5px;">
+              <option value="Off">Off</option>
+              <option value="Proxy_Only">Proxy_Only (USB-LAN)</option>
+              <option value="Original_And_Proxy">Original_And_Proxy</option>
+            </select>
+            <button id="p102-btn-ftp-enq" onclick="setPhase102State({enqueue_current_clip:true})" style="padding:3px 6px;font-size:10.5px;border-color:#38bdf8;">+Queue Clip</button>
+            <button id="p102-btn-ftp-step" onclick="setPhase102State({process_next_job:true})" style="padding:3px 6px;font-size:10.5px;border-color:#10b981;">Send Next</button>
+          </div>
+          <div style="display:flex;gap:4px;margin-bottom:4px;">
+            <input id="p102-ftp-path-input" type="text" value="/mnt/slot_a/PRIVATE/M4ROOT/CLIP/A001C001.MXF" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10px;font-family:'SF Mono',Menlo,monospace;" />
+            <button id="p102-btn-ftp-custom" onclick="enqueuePhase102CustomPath()" style="padding:3px 7px;font-size:10.5px;">Enqueue</button>
+          </div>
+          <div id="p102-ftps-readout" style="font-size:10px;color:#bae6fd;font-family:'SF Mono',Menlo,monospace;">USB_LAN_CDC_NCM_RTL8153 | Q=0 Done=0 BlkTrav=0 | wf12=0</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p102-preset-cache8" onclick="setPhase102State({cache_seconds:8,codec_profile:'XAVC_I_4K60'})" style="border-color:#10b981;color:#a7f3d0;">Cache 8s @ 4K60 (384 MiB Clamp)</button>
+        <button id="p102-preset-intvl" onclick="setPhase102State({interval_rec_enabled:true,interval_sec:2,target_shots:240,ae_tracking:'Low'})" style="border-color:#a78bfa;color:#ddd6fe;">Interval 2s/240f (E-Shutter)</button>
+        <button id="p102-preset-ftps" onclick="setPhase102State({ftps_mode:'Proxy_Only',enqueue_current_clip:true})" style="border-color:#38bdf8;color:#bae6fd;">USB-LAN FTPS Proxy Queue</button>
+        <button id="p102-btn-reset" onclick="setPhase102State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P102</button>
+      </div>
+      <div id="p102-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#34d399;font-family:'SF Mono',Menlo,monospace;">ICLF ...</div>
+    </div>
+
     <div class="card" style="margin-top:14px;">
       <h3>Cinema Line 实时参数调节面板 (/api/cinema_param · Big-6 + HUD + P4/P11 硬件契约)</h3>
       <div id="param-toast" class="param-toast"></div>
@@ -10006,6 +11342,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.gyroflow_anamorphic) {
     syncGyroflowAnamorphicUI(st.gyroflow_anamorphic);
+  }
+  if (st.interval_cache_lut_ftp) {
+    syncPhase102IntervalCacheLutFtpUI(st.interval_cache_lut_ftp);
   }
 
   if (forceImg || st.live_ready) {
@@ -11504,7 +12843,305 @@ function togglePhase95Limiter() {
   setGyroflowAnamorphic({limiter_enabled: !cur});
 }
 
+const P102_I18N = {
+  'en': {
+    title: 'Phase 102 · Picture Cache DDR Ring / Interval E-Shutter / .cube 33³ LUT / USB-LAN FTPS',
+    cache: 'Picture Cache (Pre-Rec DDR)',
+    interval: 'Interval Rec (E-Shutter Only)',
+    lut: 'User .cube 3D-LUT (17/33/65³ -> 33³ RAM)',
+    ftps: 'Wired USB-LAN FTPS (P12 RF-OFF)',
+    applyIntvl: 'Apply Intvl',
+    triggerShot: '+1 E-Shot',
+    resetShots: 'Reset Shots',
+    uploadLut: 'Upload .cube',
+    enqClip: '+Queue Clip',
+    sendNext: 'Send Next',
+    enqCustom: 'Enqueue',
+    presetCache8: 'Cache 8s @ 4K60 (384 MiB Clamp)',
+    presetIntvl: 'Interval 2s/240f (E-Shutter)',
+    presetFtps: 'USB-LAN FTPS Proxy Queue',
+    reset: 'Reset P102'
+  },
+  'zh-CN': {
+    title: 'Phase 102 · 预录制 DDR 环形缓存 / 电子快门间隔摄影 / .cube 33³ 四面体上传 / USB-LAN FTPS 队列',
+    cache: '预录制 Picture Cache (DDR 环缓)',
+    interval: '间隔摄影 Interval Rec (仅电子快门)',
+    lut: '用户 .cube 3D-LUT (17/33/65³ -> 33³ 内存)',
+    ftps: '有线 USB-LAN FTPS (P12 射频关闭)',
+    applyIntvl: '应用间隔',
+    triggerShot: '+1 电子张',
+    resetShots: '清零计数',
+    uploadLut: '上传 .cube',
+    enqClip: '+当前素材入队',
+    sendNext: '传输下一项',
+    enqCustom: '路径入队',
+    presetCache8: '8秒预录 @ 4K60 (384 MiB 上限)',
+    presetIntvl: '间隔 2s/240张 (电子快门)',
+    presetFtps: 'USB-LAN FTPS 代理队列',
+    reset: '重置 P102'
+  },
+  'zh-TW': {
+    title: 'Phase 102 · 預錄製 DDR 環形快取 / 電子快門間隔攝影 / .cube 33³ 四面體上傳 / USB-LAN FTPS 佇列',
+    cache: '預錄製 Picture Cache (DDR 環緩)',
+    interval: '間隔攝影 Interval Rec (僅電子快門)',
+    lut: '使用者 .cube 3D-LUT (17/33/65³ -> 33³ 記憶體)',
+    ftps: '有線 USB-LAN FTPS (P12 射頻關閉)',
+    applyIntvl: '套用間隔',
+    triggerShot: '+1 電子張',
+    resetShots: '歸零計數',
+    uploadLut: '上傳 .cube',
+    enqClip: '+目前素材入佇列',
+    sendNext: '傳送下一筆',
+    enqCustom: '路徑入佇列',
+    presetCache8: '8秒預錄 @ 4K60 (384 MiB 上限)',
+    presetIntvl: '間隔 2s/240張 (電子快門)',
+    presetFtps: 'USB-LAN FTPS 代理佇列',
+    reset: '重設 P102'
+  },
+  'ja': {
+    title: 'Phase 102 · ピクチャーキャッシュ DDR / 電子シャッターインターバル / .cube 33³ LUT / USB-LAN FTPS',
+    cache: 'ピクチャーキャッシュ (Pre-Rec DDR)',
+    interval: 'インターバル撮影 (電子シャッター専用)',
+    lut: 'ユーザー .cube 3D-LUT (17/33/65³ -> 33³ RAM)',
+    ftps: '有線 USB-LAN FTPS (P12 無線OFF)',
+    applyIntvl: '間隔適用',
+    triggerShot: '+1 電子撮影',
+    resetShots: '枚数リセット',
+    uploadLut: '.cube 転送',
+    enqClip: '+クリップ登録',
+    sendNext: '次を転送',
+    enqCustom: 'パス追加',
+    presetCache8: '8秒キャッシュ @ 4K60 (384 MiB上限)',
+    presetIntvl: '間隔 2秒/240枚 (電子シャッター)',
+    presetFtps: 'USB-LAN FTPS プロキシキュー',
+    reset: 'P102 リセット'
+  }
+};
+
+function setP102Lang(lang) {
+  const d = P102_I18N[lang] || P102_I18N['en'];
+  const map = {
+    'p102-card-title': d.title,
+    'p102-lbl-cache': d.cache,
+    'p102-lbl-interval': d.interval,
+    'p102-lbl-lut': d.lut,
+    'p102-lbl-ftps': d.ftps,
+    'p102-btn-apply-intvl': d.applyIntvl,
+    'p102-btn-trigger-shot': d.triggerShot,
+    'p102-btn-reset-shots': d.resetShots,
+    'p102-btn-upload-lut': d.uploadLut,
+    'p102-btn-ftp-enq': d.enqClip,
+    'p102-btn-ftp-step': d.sendNext,
+    'p102-btn-ftp-custom': d.enqCustom,
+    'p102-preset-cache8': d.presetCache8,
+    'p102-preset-intvl': d.presetIntvl,
+    'p102-preset-ftps': d.presetFtps,
+    'p102-btn-reset': d.reset
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map[id];
+  });
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((code) => {
+    const b = document.getElementById('p102-lang-' + code);
+    if (b) b.style.borderColor = (code === lang) ? '#10b981' : '#374151';
+  });
+}
+
+function syncPhase102IntervalCacheLutFtpUI(p102) {
+  if (!p102) return;
+  const cacheSel = document.getElementById('p102-cache-sec-select');
+  if (cacheSel && document.activeElement !== cacheSel) {
+    cacheSel.value = String(p102.cache_seconds !== undefined ? p102.cache_seconds : 0);
+  }
+  const codecSel = document.getElementById('p102-codec-select');
+  if (codecSel && p102.codec_profile && document.activeElement !== codecSel) {
+    codecSel.value = p102.codec_profile;
+  }
+  const cacheBadge = document.getElementById('p102-cache-badge');
+  if (cacheBadge) {
+    if (p102.picture_cache_suspended) {
+      cacheBadge.textContent = `SUSPENDED (${p102.picture_cache_suspension_reason || 'MUTEX'})`;
+      cacheBadge.style.color = '#fbbf24';
+    } else {
+      cacheBadge.textContent = `${p102.effective_cache_seconds || 0}s / ${Number(p102.allocated_ddr_mib || 0).toFixed(1)} MiB`;
+      cacheBadge.style.color = p102.clamped_by_ddr_budget ? '#f59e0b' : '#10b981';
+    }
+  }
+  const ddrRo = document.getElementById('p102-ddr-readout');
+  if (ddrRo) {
+    ddrRo.textContent =
+      `DDR Ring: ${Number(p102.allocated_ddr_mib || 0).toFixed(1)} / ${Number(p102.ddr_budget_mib || 384).toFixed(1)} MiB ` +
+      `(${Number(p102.fx3_total_dram_mib || 2048).toFixed(0)} MiB DRAM) · ${p102.effective_codec_profile || 'XAVC_I_4K24'}` +
+      `${p102.clamped_by_ddr_budget ? ' [CLAMPED<=384]' : ''}`;
+  }
+
+  const suspBanner = document.getElementById('p102-susp-banner');
+  if (suspBanner) {
+    const warns = [];
+    if (p102.picture_cache_suspended) {
+      warns.push(`Picture Cache auto-suspended (${p102.picture_cache_suspension_reason})`);
+    }
+    if (p102.interval_rec_enabled) {
+      warns.push('Interval Rec active: Electronic Shutter enforced (mechanical_curtain_actuations=0) & S&Q excluded');
+    }
+    if (warns.length > 0) {
+      suspBanner.style.display = 'block';
+      suspBanner.textContent = warns.join(' | ');
+    } else {
+      suspBanner.style.display = 'none';
+    }
+  }
+
+  const intvlBadge = document.getElementById('p102-intvl-badge');
+  if (intvlBadge) {
+    intvlBadge.textContent = `${p102.interval_rec_enabled ? 'ON' : 'OFF'} · MECH=${p102.mechanical_curtain_actuations ?? 0}`;
+    intvlBadge.style.color = p102.interval_rec_enabled ? '#a78bfa' : '#94a3b8';
+  }
+  const btnIntvl = document.getElementById('p102-btn-intvl-toggle');
+  if (btnIntvl) btnIntvl.textContent = `Interval: ${p102.interval_rec_enabled ? 'ON' : 'OFF'}`;
+  const isecIn = document.getElementById('p102-intvl-sec-input');
+  if (isecIn && document.activeElement !== isecIn && p102.interval_sec !== undefined) {
+    isecIn.value = String(p102.interval_sec);
+  }
+  const tshotIn = document.getElementById('p102-target-shots-input');
+  if (tshotIn && document.activeElement !== tshotIn && p102.target_shots !== undefined) {
+    tshotIn.value = String(p102.target_shots);
+  }
+  const aeSel = document.getElementById('p102-ae-select');
+  if (aeSel && p102.ae_tracking && document.activeElement !== aeSel) {
+    aeSel.value = p102.ae_tracking;
+  }
+  const intvlRo = document.getElementById('p102-intvl-readout');
+  if (intvlRo) {
+    intvlRo.textContent =
+      `Shots: ${p102.shots_taken ?? 0}/${p102.target_shots ?? 120} @ ${p102.interval_sec ?? 5}s | ` +
+      `Curtain Actuations: ${p102.mechanical_curtain_actuations ?? 0} (E-SH, AE=${p102.ae_tracking || 'Mid'})`;
+  }
+
+  const lutBadge = document.getElementById('p102-lut-badge');
+  if (lutBadge) {
+    lutBadge.textContent = p102.active_user_lut_uploaded
+      ? `${p102.active_user_lut_slot} (${p102.active_user_lut_source_size || 33}->33³ RAM)`
+      : 'RAM 0B eMMC';
+  }
+  const lutRo = document.getElementById('p102-lut-readout');
+  if (lutRo) {
+    const shaShort = p102.active_user_lut_resampled_33_sha256
+      ? String(p102.active_user_lut_resampled_33_sha256).slice(0, 12)
+      : 'none';
+    lutRo.textContent =
+      `LUT: ${p102.active_user_lut_title || 'None'} | 33³ SHA: ${shaShort} | ` +
+      `eMMC=${p102.emmc_mutation_bytes ?? 0}B (Volatile RAM only)`;
+  }
+
+  const ftpsModeSel = document.getElementById('p102-ftps-mode-select');
+  if (ftpsModeSel && p102.ftps_mode && document.activeElement !== ftpsModeSel) {
+    ftpsModeSel.value = p102.ftps_mode;
+  }
+  const ftpsBadge = document.getElementById('p102-ftps-badge');
+  if (ftpsBadge) {
+    ftpsBadge.textContent = `P12 SAFE · wf12=${p102.wf12_00342260_hits ?? 0}`;
+  }
+  const ftpsRo = document.getElementById('p102-ftps-readout');
+  if (ftpsRo) {
+    ftpsRo.textContent =
+      `${p102.ftps_transport || 'USB_LAN_CDC_NCM_RTL8153'} | ` +
+      `Q=${p102.ftps_queued_count ?? 0} Done=${p102.ftps_completed_count ?? 0} ` +
+      `BlkTrav=${p102.ftps_blocked_traversal_count ?? 0} | wf12=${p102.wf12_00342260_hits ?? 0}`;
+  }
+
+  const cmdEl = document.getElementById('p102-cmd-readout');
+  if (cmdEl) cmdEl.textContent = p102.interval_cache_lut_ftp_cmd || 'ICLF ...';
+}
+
+async function setPhase102State(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p102-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/interval_cache_lut_ftp', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Invalid Phase 102 parameter';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function togglePhase102Interval() {
+  const cur = !!(currentStatus && currentStatus.interval_cache_lut_ftp && currentStatus.interval_cache_lut_ftp.interval_rec_enabled);
+  setPhase102State({interval_rec_enabled: !cur});
+}
+
+function applyPhase102IntervalParams() {
+  const isec = Number((document.getElementById('p102-intvl-sec-input') || {}).value || 5);
+  const tshots = Number((document.getElementById('p102-target-shots-input') || {}).value || 120);
+  const ae = (document.getElementById('p102-ae-select') || {}).value || 'Mid';
+  setPhase102State({interval_sec: isec, target_shots: tshots, ae_tracking: ae});
+}
+
+async function uploadPhase102CubeLut() {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p102-error-banner');
+  toast.style.display = 'block';
+  try {
+    const slot = (document.getElementById('p102-lut-slot-select') || {}).value || 'User1';
+    const name = String((document.getElementById('p102-lut-title-input') || {}).value || '').trim();
+    const cubeText = String((document.getElementById('p102-cube-text') || {}).value || '').trim();
+    const payload = {slot};
+    if (name) payload.name = name;
+    if (cubeText) {
+      payload.cube_text = cubeText;
+    } else {
+      payload.preset = 'teal_orange';
+      payload.size = 17;
+    }
+    const r = await fetch('/api/upload_cube_lut', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Failed to upload .cube LUT';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+    await refreshScopeStats(true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function enqueuePhase102CustomPath() {
+  const p = String((document.getElementById('p102-ftp-path-input') || {}).value || '').trim();
+  setPhase102State({enqueue_path: p});
+}
+
 setP95Lang('zh-CN');
+setP102Lang('zh-CN');
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -11633,7 +13270,7 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
-                if path == "/api/lut_upload":
+                if path in ("/api/lut_upload", "/api/upload_cube_lut"):
                     self._send_json(session.get_lut_slots())
                     return
                 if path in ("/api/preset_export", "/api/camset_export"):
@@ -11701,6 +13338,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/interval_cache_lut_ftp":
+                    self._send_json({
+                        "ok": True,
+                        "interval_cache_lut_ftp": session.get_interval_cache_lut_ftp(),
+                        "specs": INTERVAL_CACHE_LUT_FTP_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -11740,6 +13385,7 @@ def make_handler(session: FX6LiveGpe0Session):
 
                 if json_err and path in (
                     "/api/lut_upload",
+                    "/api/upload_cube_lut",
                     "/api/preset_import",
                     "/api/camset_import",
                     "/api/cinema_param",
@@ -11751,6 +13397,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/touch_focus_ciz",
                     "/api/shotmark_and_iris",
                     "/api/gyroflow_anamorphic",
+                    "/api/interval_cache_lut_ftp",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -11832,7 +13479,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     res = session.set_color_and_media(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
-                if path == "/api/lut_upload":
+                if path in ("/api/lut_upload", "/api/upload_cube_lut"):
                     res = session.upload_cube_lut(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
@@ -11854,6 +13501,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/gyroflow_anamorphic":
                     res = session.set_gyroflow_anamorphic(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/interval_cache_lut_ftp":
+                    res = session.set_interval_cache_lut_ftp(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":
@@ -11907,6 +13558,8 @@ def main() -> int:
     parser.add_argument("--no-browser", action="store_true")
     parser.add_argument(
         "--workdir",
+        "--work-dir",
+        dest="workdir",
         type=Path,
         default=None,
         help="Runtime workdir (defaults to port-scoped /private/tmp/fx6-live-gpe0-run[-<port>])",

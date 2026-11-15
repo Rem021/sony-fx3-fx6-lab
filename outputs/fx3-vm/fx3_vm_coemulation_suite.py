@@ -70,6 +70,7 @@ import qmp_guest_introspection_tracer as p58  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 import tc_genlock_lens_paint_emulator as p67  # noqa: E402
 import touch_af_ciz_assignable_emulator as p78  # noqa: E402
+import usb_uvc_uac_srt_crsdk_usbpd_emulator as p121  # noqa: E402
 import uvc_hdmi_raw_output_emulator as p63  # noqa: E402
 import wireless_emi_exfat_endurance_emulator as p103  # noqa: E402
 
@@ -129,6 +130,7 @@ class CoEmulationConfig:
     include_phase107_c2pa_shading_mcfleet_ovp: bool = True
     include_phase112_hdr_hlg_fiz_gimbal: bool = True
     include_phase117_proresraw_breathing_mishoe_hil: bool = True
+    include_phase121_uvc_srt_crsdk_usbpd_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1304,6 +1306,49 @@ def run_stage20_proresraw_breathing_mishoe_hil(
     }
 
 
+def run_stage21_uvc_srt_crsdk_usbpd_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 21 (Phase 121): USB-C UVC 1.5/UAC 2.0, Wired P12-Safe SRT/RTMPS, CRSDK PTP/Firewall & G37/G38 HIL."""
+    config.validate()
+    rep = p121.run_phase121_uvc_srt_crsdk_usbpd_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage21_uvc_srt_crsdk_usbpd_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "emmc_flash_mutation_bytes": red["emmc_flash_mutation_bytes"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "cxd90057_pad_damage_events": red["cxd90057_pad_damage_events"],
+        "uvc_osd_burn_in_frames": red["uvc_osd_burn_in_frames"],
+        "srt_dropped_gops": red["srt_dropped_gops"],
+        "uart_tx_bytes": red["uart_tx_bytes"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_uvc15_uac20_negotiator": rep["pillar_a_uvc15_uac20_negotiator"],
+        "pillar_b_wired_srt_rtmps_p12": rep["pillar_b_wired_srt_rtmps_p12"],
+        "pillar_c_crsdk_ptp_flash_firewall": rep["pillar_c_crsdk_ptp_flash_firewall"],
+        "pillar_d_g37_g38_usbpd_uart_hil": rep["pillar_d_g37_g38_usbpd_uart_hil"],
+        "phase121_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1314,7 +1359,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 20-stage (Phase 33..117) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 21-stage (Phase 33..121) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1386,6 +1431,11 @@ def run_fx3_vm_coemulation_suite(
     stage20: Optional[Dict[str, object]] = (
         run_stage20_proresraw_breathing_mishoe_hil(cfg, env=env)
         if cfg.include_phase117_proresraw_breathing_mishoe_hil
+        else None
+    )
+    stage21: Optional[Dict[str, object]] = (
+        run_stage21_uvc_srt_crsdk_usbpd_hil(cfg, env=env)
+        if cfg.include_phase121_uvc_srt_crsdk_usbpd_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1636,6 +1686,27 @@ def run_fx3_vm_coemulation_suite(
         and stage20["cfexpress_fat_corruption_events"] == 0
         and (not stage20["persistent_emmc_writes_authorized"])
     )
+    stage21_ok = True if stage21 is None else (
+        bool(stage21["all_checks_passed"])
+        and stage21["nop_count"] == 0
+        and stage21["guest_code_modification_bytes"] == 0
+        and stage21["cp_mutation_bytes"] == 0
+        and stage21["wbi_mutation_bytes"] == 0
+        and stage21["calibration_mutation_bytes"] == 0
+        and stage21["nvram_persistent_writes"] == 0
+        and stage21["bk4_persistent_nvram_writes"] == 0
+        and stage21["physical_device_writes"] == 0
+        and stage21["null_gpio_derefs"] == 0
+        and stage21["mailbox_stalls"] == 0
+        and stage21["stock_cp_fault_count"] == 0
+        and stage21["emmc_flash_mutation_bytes"] == 0
+        and stage21["wf12_00342260_hits"] == 0
+        and stage21["cxd90057_pad_damage_events"] == 0
+        and stage21["uvc_osd_burn_in_frames"] == 0
+        and stage21["srt_dropped_gops"] == 0
+        and stage21["uart_tx_bytes"] == 0
+        and (not stage21["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1659,6 +1730,7 @@ def run_fx3_vm_coemulation_suite(
         and stage18_ok
         and stage19_ok
         and stage20_ok
+        and stage21_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1692,6 +1764,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase107_c2pa_shading_mcfleet_ovp": cfg.include_phase107_c2pa_shading_mcfleet_ovp,
             "include_phase112_hdr_hlg_fiz_gimbal": cfg.include_phase112_hdr_hlg_fiz_gimbal,
             "include_phase117_proresraw_breathing_mishoe_hil": cfg.include_phase117_proresraw_breathing_mishoe_hil,
+            "include_phase121_uvc_srt_crsdk_usbpd_hil": cfg.include_phase121_uvc_srt_crsdk_usbpd_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1750,6 +1823,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage19_phase112_hdr_hlg_fiz_gimbal"] = stage19
     if stage20 is not None:
         core_payload["stage20_proresraw_breathing_mishoe_hil"] = stage20
+    if stage21 is not None:
+        core_payload["stage21_uvc_srt_crsdk_usbpd_hil"] = stage21
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1761,7 +1836,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1853,6 +1928,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 20 (Phase 117 ProRes RAW/BRAW Handshake, Focus Breathing vs PL/RAW Bypass, MI-Shoe 48kHz PLL & G35/G36 HIL)",
     )
     parser.add_argument(
+        "--skip-phase121",
+        action="store_true",
+        help="Skip optional Stage 21 (Phase 121 USB-C UVC 1.5/UAC 2.0, Wired P12-Safe SRT/RTMPS, CRSDK PTP/Firewall & G37/G38 HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -1935,6 +2015,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase107_c2pa_shading_mcfleet_ovp=not args.skip_phase107,
         include_phase112_hdr_hlg_fiz_gimbal=not args.skip_phase112,
         include_phase117_proresraw_breathing_mishoe_hil=not args.skip_phase117,
+        include_phase121_uvc_srt_crsdk_usbpd_hil=not args.skip_phase121,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1964,6 +2045,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s18 = rep.get("stage18_phase107_c2pa_shading_mcfleet_ovp")
         s19 = rep.get("stage19_phase112_hdr_hlg_fiz_gimbal")
         s20 = rep.get("stage20_proresraw_breathing_mishoe_hil")
+        s21 = rep.get("stage21_uvc_srt_crsdk_usbpd_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -2078,6 +2160,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s20, dict)
             else ""
         )
+        s21_str = (
+            f" | uvc_srt_crsdk_usbpd={s21['source_mode']}(uvc_usb2={s21['pillar_a_uvc15_uac20_negotiator']['usb2_cable_auto_stepdown']['total_payload_mbps']}Mbps/osd={s21['uvc_osd_burn_in_frames']},"
+            f"srt_drop={s21['srt_dropped_gops']}/wf12={s21['wf12_00342260_hits']},"
+            f"crsdk_fw_mut={s21['emmc_flash_mutation_bytes']},"
+            f"g37_20v={s21['pillar_d_g37_g38_usbpd_uart_hil']['g37_usbpd_decoy_isolator_hil']['unnegotiated_20v_decoy_crowbar']['crowbar_latency_us']}us/pad_dmg={s21['cxd90057_pad_damage_events']},"
+            f"g38_tx={s21['uart_tx_bytes']})"
+            if isinstance(s21, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -2086,7 +2177,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

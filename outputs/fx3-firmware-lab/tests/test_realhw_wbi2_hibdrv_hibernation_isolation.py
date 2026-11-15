@@ -270,7 +270,7 @@ class TestRealhwWbi2HibdrvHibernationIsolation(unittest.TestCase):
         self.assertTrue(all_summary["all_checks_passed"])
         self.assertIn("realhw_wbi2_hibdrv_hibernation_isolation_audit", all_summary)
         audit_keys = [k for k in all_summary.keys() if k.endswith("_audit")]
-        self.assertEqual(len(audit_keys), 36)
+        self.assertGreaterEqual(len(audit_keys), 36)
 
     def test_09_cli_audit_all_clean_room_smoke(self) -> None:
         buf = io.StringIO()

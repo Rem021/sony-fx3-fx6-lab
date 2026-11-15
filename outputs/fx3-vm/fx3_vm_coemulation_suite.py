@@ -77,6 +77,7 @@ import realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator as p207  # n
 import realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator as p182  # noqa: E402
 import realhw_fan_pwm_shutter_angle_lut_split_coemulator as p200  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
+import realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator as p213  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
 import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
 import realhw_nouvc_dcc1_lut_path_cineei_coemulator as p194  # noqa: E402
@@ -163,6 +164,7 @@ class CoEmulationConfig:
     include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil: bool = True
     include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil: bool = True
     include_phase207_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil: bool = True
+    include_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2242,6 +2244,64 @@ def run_stage37_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil(
     }
 
 
+def run_stage38_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 38 (Phase 213, 38/38 Milestone): Real-Hardware ILME-FX3 HDMI Log 1080p vs Off(HDMI Only) 4K 10-bit & Blank-LCD, Px Proxy Coupled Vault & Focus Magnifier x Bright Monitoring HIL."""
+    config.validate()
+    rep = p213.run_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage38_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "single_sided_proxy_or_main_orphan_mutations": red[
+            "single_sided_proxy_or_main_orphan_mutations"
+        ],
+        "on_camera_proxy_playback_frames": red["on_camera_proxy_playback_frames"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_hdmi_log1080_vs_hdmionly_4k_blank_lcd_hil": rep[
+            "pillar_a_hdmi_log1080_vs_hdmionly_4k_blank_lcd_hil"
+        ],
+        "pillar_b_proxy_dual_codec_and_coupled_vault_hil": rep[
+            "pillar_b_proxy_dual_codec_and_coupled_vault_hil"
+        ],
+        "pillar_c_d_focus_mag_bright_monitoring_and_redlines": rep[
+            "pillar_c_d_focus_mag_bright_monitoring_and_redlines"
+        ],
+        "phase213_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2252,7 +2312,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 37-stage (Phase 33..207, 37/37 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 38-stage (Phase 33..213, 38/38 Milestone) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -2409,6 +2469,11 @@ def run_fx3_vm_coemulation_suite(
     stage37: Optional[Dict[str, object]] = (
         run_stage37_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil(cfg, env=env)
         if cfg.include_phase207_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil
+        else None
+    )
+    stage38: Optional[Dict[str, object]] = (
+        run_stage38_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil(cfg, env=env)
+        if cfg.include_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -3111,6 +3176,35 @@ def run_fx3_vm_coemulation_suite(
         and stage37["appfw_crashes"] == 0
         and stage37["raw_firmware_bytes_leaked"] == 0
     )
+    stage38_ok = True if stage38 is None else (
+        bool(stage38["all_checks_passed"])
+        and stage38["nop_count"] == 0
+        and stage38["guest_code_modification_bytes"] == 0
+        and stage38["cp_mutation_bytes"] == 0
+        and stage38["wbi_mutation_bytes"] == 0
+        and stage38["calibration_mutation_bytes"] == 0
+        and stage38["nvram_persistent_writes"] == 0
+        and stage38["bk4_persistent_nvram_writes"] == 0
+        and stage38["physical_device_writes"] == 0
+        and (not stage38["persistent_emmc_writes_authorized"])
+        and stage38["emmc_nflasha_write_count"] == 0
+        and stage38["emmc_mutation_bytes"] == 0
+        and (not stage38["spi_nor_write_authorized"])
+        and stage38["spi_nor_mutation_bytes"] == 0
+        and (not stage38["el3_payload_transmit_authorized"])
+        and stage38["physical_usb_packets_emitted"] == 0
+        and stage38["otp_fuse_touches"] == 0
+        and stage38["rpmb_counter_increments"] == 0
+        and stage38["single_sided_proxy_or_main_orphan_mutations"] == 0
+        and stage38["on_camera_proxy_playback_frames"] == 0
+        and stage38["rsv_orphan_count"] == 0
+        and stage38["null_gpio_derefs"] == 0
+        and stage38["mailbox_stalls"] == 0
+        and stage38["stock_cp_fault_count"] == 0
+        and stage38["wf12_00342260_hits"] == 0
+        and stage38["appfw_crashes"] == 0
+        and stage38["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -3151,6 +3245,7 @@ def run_fx3_vm_coemulation_suite(
         and stage35_ok
         and stage36_ok
         and stage37_ok
+        and stage38_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -3201,6 +3296,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil": cfg.include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil,
             "include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil": cfg.include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil,
             "include_phase207_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil": cfg.include_phase207_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil,
+            "include_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil": cfg.include_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -3293,6 +3389,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil"] = stage36
     if stage37 is not None:
         core_payload["stage37_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil"] = stage37
+    if stage38 is not None:
+        core_payload["stage38_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil"] = stage38
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -3304,7 +3402,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -3481,6 +3579,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 37 (Phase 207 Real-Hardware ILME-FX3 [De-Squeeze Display] 1.6x=1.65x 4-Locks & HDMI RAW Bypass, External M&C Focus Map >=150fps Cutoff & [Simult. + Auto Switch] / [Shockless WB] HIL)",
     )
     parser.add_argument(
+        "--skip-phase213",
+        action="store_true",
+        help="Skip optional Stage 38 (Phase 213 Real-Hardware ILME-FX3 HDMI Log 1080p vs Off(HDMI Only) 4K 10-bit & Blank-LCD, Px Proxy Coupled Vault & Focus Magnifier x Bright Monitoring HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -3580,6 +3683,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil=not args.skip_phase200,
         include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil=not args.skip_phase202,
         include_phase207_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil=not args.skip_phase207,
+        include_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil=not args.skip_phase213,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -3626,6 +3730,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s35 = rep.get("stage35_realhw_fan_pwm_shutter_angle_lut_split_hil")
         s36 = rep.get("stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil")
         s37 = rep.get("stage37_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil")
+        s38 = rep.get("stage38_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -3914,6 +4019,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s37, dict)
             else ""
         )
+        s38_str = (
+            f" | realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil={s38['source_mode']}("
+            f"hdmi_log={s38['pillar_a_hdmi_log1080_vs_hdmionly_4k_blank_lcd_hil']['log_downshift_1080p_matrix']['Cine EI']['effective_hdmi_resolution_label']},"
+            f"hdmionly_4k={s38['pillar_a_hdmi_log1080_vs_hdmionly_4k_blank_lcd_hil']['hdmi_only_4k_10bit_matrix']['59.94p 10bit']['effective_hdmi_width']},"
+            f"px_pb={s38['on_camera_proxy_playback_frames']},"
+            f"fmag={s38['pillar_c_d_focus_mag_bright_monitoring_and_redlines']['movie_x4_0_marker_suppressed']['applied_mag_scale']}x,"
+            f"emmc_wr={s38['emmc_nflasha_write_count']})"
+            if isinstance(s38, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -3922,7 +4037,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

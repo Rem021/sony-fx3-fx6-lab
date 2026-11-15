@@ -1247,3 +1247,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 213：Stage 38（`38/38` 里程碑）真实硬件主线 — `ILME-FX3` HDMI Log `1080p` 强制降档 vs `[Off(HDMI Only)]` `4K 10-bit` 黑屏联动、`Px` 代理双编码耦合保险库与 `[Focus Magnifier]` × `[Bright Monitoring]` 互斥 HIL 协同仿真器
+
+[`realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator.py`](realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator.py) 作为 **Stage 38（`38/38` 里程碑）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase213_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_hil=True`，可通过 `--skip-phase213` 跳过；洁净室 38 阶段全板仿真 `< 0.6s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`single_sided_proxy_or_main_orphan_mutations == 0`、`on_camera_proxy_playback_frames == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B` 零差异 ABI）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`string_english_f.uxc`（`373,820 B`：证实 `HDMI Output Settings` / `Rec. Media dur HDMI Output` / `Off(HDMI Only)` / `4K Output Set.(HDMI Only)` / `HDMI Info. Display` / `Emphasized REC Display` / `Proxy Settings` / `XAVC HS HD` / `XAVC S HD` / `16M 4:2:0 10bit` / `9M 4:2:0 10bit` / `6M 4:2:0 8bit` / `Initial Focus Mag.` / `Auto Magnifier in MF` / `Marker Display` / `Bright Monitoring` / `Setting Effect OFF`）与 `string_english.uxc`（`118,208 B`），并对 `appFw.so`（含 `LOG_SHOOTING` / `PPLUT` / `M4ROOT` / `CLIP` / `SUB` / `FOCUS_MAG` / `BrightMonitoring`）、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-model A — HDMI Log `1080p` 强制降档 vs `[Off(HDMI Only)]` `4K 10-bit` & `[HDMI Info. Display]` 机内 LCD 黑屏联动 HIL**：
+   - 协同仿真 `MENU -> Setup -> [External Output] -> [HDMI Output Settings]`：当 `[Rec. Media dur HDMI Output]=On`、`[RAW Output]=Off` 且开启 `[Log Shooting]`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`）或选用 `PPLUT1..PPLUT4` 时，即便请求 `2160p`/`Auto`，HDMI 输出强制降档为 **`1920x1080`（`1080p`）** 且机内双卡正常录制（`internal_card_recording_active == True`）；当切换 `[Off(HDMI Only)]` + `[4K Output Set.(HDMI Only)]`（`59.94p / 50p / 29.97p / 25p / 23.98p / 24.00p 10bit` 共 6 档）时输出原生 **`3840x2160` `4K 10-bit`**，同时以 `EOPNOTSUPP`（`95`）硬封锁机内存储卡录制（`internal_card_recording_active == False`）、自动强制 `[HDMI Info. Display]=Off` 并抑制 HDMI 反挤压；在 `[Rec. Media dur HDMI Output]=On` 下开启 `[HDMI Info. Display]=On` 时自动熄灭机身内置 LCD 面板（`camera_lcd_blanked == True`）并同步输出 `[Emphasized REC Display]` 红框 Tally。
+3. **Sub-model B — `[Proxy Settings]` 双编码矩阵、高帧率截止、零机内代理回放与 `M4ROOT/CLIP/`+`SUB/` 原子耦合保险库 HIL**：
+   - 协同仿真 `XAVC HS HD`（`1920x1080` 10-bit HEVC `4:2:0`：`16M` 与默认 `9M`，最高 `59.94p/50p`）与全局默认 `XAVC S HD`（`1280x720` 8-bit AVC `4:2:0`：`6M`，最高 `59.94p/50p`），在常规 `119.88p/100p`、S&Q 录制帧率 `119.88p/100p`、S&Q 传感器采样帧率 `>= 100fps/120fps` 及 `[Off(HDMI Only)]` 下以 `EOPNOTSUPP`（`95`）阻断代理生成；严格执行 **零机内代理独立回放**（`on_camera_proxy_playback_frames == 0`，仅在主片缩略图叠加 `(Px)` 徽标），并保证机内 Delete / Protect 对 `/PRIVATE/M4ROOT/CLIP/<Clip>.MP4` 与 `/PRIVATE/M4ROOT/SUB/<Clip>S03.MP4` **100% 原子同步执行**（单边机内修改拒绝返回 `EOPNOTSUPP`，外部读卡器孤儿文件返回 `EINVAL` 完整性告警）。
+4. **Sub-model C & Redlines — `[Focus Magnifier]` 动态/静态倍率分野 × `[Bright Monitoring]` 自定义键互锁与硬安全红线 HIL**：
+   - 协同仿真 `[Initial Focus Mag.]` 在视频（`Movie`/`S&Q`：`x1.0` / `x4.0`）与照片（全画幅 `x1.0` / `x2.1`、APS-C/S35 `x1.0` / `x1.5`）下的倍率边界，拦截视频模式下被禁用的 `[Auto Magnifier in MF]` 对焦环自动放大（`EOPNOTSUPP` `95`），并在放大激活期间自动隐藏 `[Marker Display]`；在 `[Focus Magnifier]` 或 `[Auto Magnifier in MF]` 放大激活期间锁定 `[Bright Monitoring]` 自定义按键（`EOPNOTSUPP` `95`），验证 `[Bright Monitoring]` 仅在 `P/A/S/M` + `MF` 下激活并强制 `[Live View Display] -> [Setting Effect OFF]`（切出 `P/A/S/M`、切入 `AF` 或关机立即自动取消），同时 fail-closed 锁死全部 8 项物理写入/发射/单边代理孤儿红线。
+
+### Phase 213 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 38（38/38 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator.py --self-test --json
+
+# 2. 全板 38 阶段（Stage 1..38, 38/38 里程碑）统一校验（支持 --skip-phase213）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 213 48 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

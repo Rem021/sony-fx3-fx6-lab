@@ -871,4 +871,24 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-37pillar-recovery --force-clean-room --json
 ```
 
+## Phase 240 — 真机主线 Part 26（Pillar 38 / `38/38` 统一恢复总检）：`Shoe Audio Set.` `24bit 4ch` 三重锁止与四轨电平表联动、`Wind Noise Reduct.` 内置麦独占护栏与 `Save/Load Settings` `C3 Portal` 隐私/校准排除防火墙 + Slot-1 金库写锁（`verify-38pillar-recovery` / `verify-shoe-audio-wind-saveload-vault`）
+
+- **[`realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py`](fx3_recovery/realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 38** 并将全套恢复总检正式推进至 **`38/38`（`VERIFIED_38OF38_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`（校验 `SaveLoadSettingsIf`、`requestToRead`、`requestToCheck`、`requestToWrite`）与 `FX6 6.01` `appFw.so`、`libInfraHotshoe.so`（校验 `_ZN12InfraHotshoe9GetShoeIdEj`、`_ZN12InfraHotshoe13QueryShoeIdOnEij`、`_ZN12InfraHotshoe11SetAdcLevelEiPj`）8 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室合成回退：
+  - **支柱 38A — `[Shoe Audio Set.]`（`48kHz/16bit 2ch` 默认 / `24bit 2ch` / `24bit 4ch`）恢复、三重硬件锁止、`CH1..CH4` 四轨电平表联动与 `[Wind Noise Reduct.]` 仅限内置麦复位 `[Off]` 基线（`6/6`）**：
+    - `P38A1`..`P38A6`：精确建模 `MENU` -> `Shooting` -> `[Audio Recording]` -> `[Shoe Audio Set.]` 与 `[Wind Noise Reduct.]` 在 `[Camera Settings Reset]`（及 `[Initialize]`）下分别归位至 `48kHz/16bit 2ch` 与 `Off`，并可经 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` `[Load]` 确定性恢复；强制校验 `[Shoe Audio Set.]` 三重硬件锁止：① `[Audio Recording] = Off` 或 `S&Q Motion` 静音锁止（`0ch`、无电平表）；② 机身 `3.5mm` `MIC` 插孔接入模拟外麦时抢占覆盖内置麦与 MI 热靴，强制回落 `2ch 16bit` 模拟采集并禁用数字 `24bit/4ch`；③ `XLR-H1` 手柄物理拨杆置于 `[ANALOG]`（或接入模拟 MI 热靴麦）时绕过数字 I2S 并回落 `2ch 16bit`；同时验证 `XLR-H1`/`ECM-M1` 数字 `48kHz/24bit 4ch` 模式下 `[Audio Level Display] = On` 自动扩展为 `CH1..CH4` 四轨电平表；强制审计 `[Wind Noise Reduct.]` 仅作用于机身内置立体声麦克风（接入 `3.5mm` 外麦或 MI 热靴 `XLR-H1` 时完全不生效，外接手柄改由物理 `[LOW CUT]` `Off`/`100Hz`/`300Hz` 控制），并将室内台架恢复演练硬锁为 `[Off]` 以杜绝正常低频音频被高通衰减。
+  - **支柱 38B — `[Save/Load Settings]`（`CAMSET01..10.DAT` & `C3 Portal` `Cloud(Private)` / `Cloud(Share)`）同机型锁、Sony 官方排除隐私/校准项防火墙与 Slot-1 Tier-0 金库写锁（`6/6`）**：
+    - `P38B1`..`P38B6`：精确建模 `MENU` -> `Setup` -> `[Reset/Save Settings]` -> `[Save/Load Settings]` 在本地存储卡 `Media`（`/PRIVATE/SONY/PRO/CAMERA/ILME-FX3` 下 `CAMSET01.DAT..CAMSET10.DAT` 单卡上限 `10` 份、严格锁定 `ILME-FX3` 同机型并硬拦截跨机型 `ILME-FX6` `.DAT` 导入）与 `Ver. 4.00+` `Creators' Cloud` / `C3 Portal`（`Cloud(Private)` / `Cloud(Share)`，在气隙 Tier-0 冷转储激活时硬阻断云同步）上的读写边界；强制执行 Sony 官方帮助指南 **8 类排除项防火墙**，确保 `[Save]` 与 `[Load]` 绝不导出或覆写 `[IPTC Information]`、`[Copyright Info]`、`[Custom White Balance]`（`Custom 1..3`）、`[Face Memory]` 人脸生物特征及全部网络凭据（`FTP`、`RTMP/SRT` 推流密钥、`Wi-Fi` SSID/密码、静态 IP/TLS 证书，`excluded_secret_or_cal_leak_count == 0`）；同时强制执行 **Slot-1 Tier-0 金库写锁**：从 Slot 1 执行 `[Load]` 严格 `O_RDONLY` 安全，而任何针对未完成离线 `SHA-256` 校验、处于物理 `WP/LOCK` 保护或存有基线 `pnflasha`/`cnflasha`/`CAMSET01.DAT` 的 Slot 1 金库卡发起的 `[Save]` 覆写均被 100% 阻断（`slot1_unverified_camset_save_mutations == 0`，临时配置 `[Save]` 仅允许落入 Slot 2 或已完成离线哈希验讫的专用测试卡，且严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **统一 `38/38` 恢复总检聚合器与 CLI（`evaluate_realhw_38pillar_recovery_master` / `verify-38pillar-recovery` / `verify-shoe-audio-wind-saveload-vault`）**：
+    - 并发调用 `evaluate_realhw_37pillar_recovery_master`（`Pillars 1..37`）+ **Pillar 38**（`run_pillar38_standalone_suite`），汇总产出 **`38/38`**（`VERIFIED_38OF38_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py`](tests/test_realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py) 提供 **66 项**双模快速单元测试（`< 5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-shoe-audio-wind-saveload-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-38pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-38pillar-recovery --force-clean-room --json
+```
+
+
 

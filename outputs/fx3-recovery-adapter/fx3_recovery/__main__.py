@@ -86,6 +86,11 @@ from .realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier import (
     verify_37pillar_recovery_suite,
     verify_touch_recframe_hdmi_and_sunny_weather_vault,
 )
+from .realhw_38pillar_shoe_audio_wind_saveload_vault_verifier import (
+    run_pillar38_standalone_suite,
+    verify_38pillar_recovery_suite,
+    verify_shoe_audio_wind_and_saveload_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -359,6 +364,14 @@ def main():
     p238_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p238_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p238_master.add_argument('--out', help='optional exclusive new output directory for 37pillar-recovery-master-report.json')
+    p240_p38 = sub.add_parser('verify-shoe-audio-wind-saveload-vault', help='Phase 240 Pillar 38 Shoe Audio Set. 48kHz/24bit 4ch recovery & 3 lockouts + Wind Noise Reduct. built-in-mic-only guard + Save/Load Settings CAMSET/C3 Portal exclusions & Slot-1 Tier-0 vault write lock verifier')
+    p240_p38.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p240_p38.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p240_p38.add_argument('--out', help='optional exclusive new output directory for pillar38-shoe-audio-wind-saveload-vault-report.json')
+    p240_master = sub.add_parser('verify-38pillar-recovery', help='Phase 240 unified 38/38 real-hardware recovery master aggregator (Pillars 1..37 + Pillar 38)')
+    p240_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p240_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p240_master.add_argument('--out', help='optional exclusive new output directory for 38pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1904,6 +1917,73 @@ def main():
                     f"pillar37_a={report.pillar37_a_touch_bench_sunny_weather_guard.scenarios_passed}/{report.pillar37_a_touch_bench_sunny_weather_guard.scenarios_total} "
                     f"pillar37_b={report.pillar37_b_recframe_grid_hdmi_clean_feed_vault.scenarios_passed}/{report.pillar37_b_recframe_grid_hdmi_clean_feed_vault.scenarios_total} "
                     f"master_37pillar_sha256={report.master_37pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-shoe-audio-wind-saveload-vault':
+            report = run_pillar38_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar38-shoe-audio-wind-saveload-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_38a={report.pillar_38a_shoe_audio_wind_vault.scenarios_passed}/{report.pillar_38a_shoe_audio_wind_vault.scenarios_total} "
+                    f"pillar_38b={report.pillar_38b_saveload_c3_exclusion_vault.scenarios_passed}/{report.pillar_38b_saveload_c3_exclusion_vault.scenarios_total} "
+                    f"excluded_secret_or_cal_leak_count={report.excluded_secret_or_cal_leak_count} "
+                    f"slot1_unverified_camset_save_mutations={report.slot1_unverified_camset_save_mutations} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-38pillar-recovery':
+            report = verify_38pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'38pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar38_a={report.pillar38_a_shoe_audio_wind_vault.scenarios_passed}/{report.pillar38_a_shoe_audio_wind_vault.scenarios_total} "
+                    f"pillar38_b={report.pillar38_b_saveload_c3_exclusion_vault.scenarios_passed}/{report.pillar38_b_saveload_c3_exclusion_vault.scenarios_total} "
+                    f"excluded_secret_or_cal_leak_count={report.excluded_secret_or_cal_leak_count} "
+                    f"slot1_unverified_camset_save_mutations={report.slot1_unverified_camset_save_mutations} "
+                    f"master_38pillar_sha256={report.master_38pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

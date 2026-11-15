@@ -32,6 +32,11 @@ from .monsoon_mishoe_cagetwist_and_40gate_guard import evaluate_40gate_preflight
 from .phantom48v_gimbal_and_22gate_guard import evaluate_22gate_preflight
 from .pl_cantilever_dummybatt_and_32gate_guard import evaluate_32gate_preflight
 from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
+from .realhw_jiritsu_cnflasha_and_44gate_guard import (
+    evaluate_44gate_preflight,
+    evaluate_g43_jiritsu_service,
+    evaluate_g44_cnflasha_dualboot,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -414,6 +419,53 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G42 gates can be rehearsed offline",
     )
     p_42.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 23. verify-g43-jiritsu-service
+    p_g43 = sub.add_parser(
+        "verify-g43-jiritsu-service",
+        help="Run Phase 142 Gate G43 (AdjustControl 0x40 / libJiritsu.so Electrical, /tmp/jbusy & p6 25 MiB Quota Guard)",
+    )
+    p_g43.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g43.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g43.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 24. verify-g44-cnflasha-dualboot
+    p_g44 = sub.add_parser(
+        "verify-g44-cnflasha-dualboot",
+        help="Run Phase 142 Gate G44 (/dev/cnflasha15 SPACC Cipher-Boundary, Tier-0 Receipt, SD Escape & p1/p3 Mutex)",
+    )
+    p_g44.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g44.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_g44.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 25. verify-44-gates
+    p_44 = sub.add_parser(
+        "verify-44-gates",
+        help="Run Phase 142 44-Gate Master Safety Preflight Engine (G01..G44)",
+    )
+    p_44.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_44.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_44.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G44 gates can be rehearsed offline",
+    )
+    p_44.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -822,6 +874,63 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_42_gates_verified if args.dry_run_simulated_backup else report.offline_39_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g43-jiritsu-service":
+        verdict, res = evaluate_g43_jiritsu_service(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.jiritsu_service_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} soc={guard['np_fz100_soc_pct']}% "
+                f"jbusy={guard['jbusy_precheck_code_hex']} "
+                f"p6_peak={guard['peak_p6_bytes']}B "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g44-cnflasha-dualboot":
+        verdict, res = evaluate_g44_cnflasha_dualboot(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.cnflasha_dualboot_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} dev={guard['target_block_device']} "
+                f"sd_escape_us={guard['sd_escape_bypass_latency_us']} "
+                f"p1_uart={guard['p1_kemco_cfg_uart']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-44-gates":
+        report = evaluate_44gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/44 "
+                f"g43_to_g44_all_passed={report.g43_to_g44_all_passed} "
+                f"all_44_gates_verified={report.all_44_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_44_gates_verified if args.dry_run_simulated_backup else report.offline_41_gates_verified
         return 0 if ok else 1
 
     return 2

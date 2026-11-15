@@ -1,7 +1,7 @@
-# Sony ILME-FX3 (`Ver. 7.02`) 实机 Stage-B 双系统部署、逃生舱与无痕卸载权威手册（Grand Milestone Phase 193 Dossier）
+# Sony ILME-FX3 (`Ver. 7.02`) 实机 Stage-B 双系统部署、逃生舱与无痕卸载权威手册（Grand Milestone Phase 209 Dossier）
 
-> **文档定位 / Document Scope**: 本手册为 **Grand Milestone Phase 193 实机主线最终台架前总闸门（`realhw_milestone193_master_gate_v1` / `make verify-milestone-193`）** 的权威工程总册，完整同步 **Wave 21–24** 全量实机主线子系统（Phases 134–192 & QEMU Rounds 28–37），覆盖 **Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`, SoC `CXD90057` Mira + `CXD90058` Cetus)** 上部署 **ILME-FX6 (`Ver. 6.01`)** Hybrid Userland Stage-B 双系统的完整闭环链路：  
-> `preflight-realhw-bench` + **`preflight-card-insert`**（零发射 `ioreg` 被动分类 + Slot-1 ExFAT `>=128 KiB`/`._*` 卫生与 `FX3BNDL1 ↔ FX3RCPT1` 绑定）→ `054C:0DA1 -> 054C:0336`（`SET_FILE2` + `op=0xFF` 金丝雀 + `AdjustControl 0x40` + `64 KiB libJit.so` + 双介质 RAID-6 `GF(256)`）Tier-0 16 面冷备 → 实机全硬件/外设/光学/音频/供电/双 SoC 二进制兼容与防火墙（`U2/U3/libmpr.so/U6` · `ssboot/WBI2` · `Slot-1 BODYDATA >= 2.04` UFU · `MIRA_CETUS2` E-Mount `info7/8/3D` & `0x02cf0232` 呼吸补偿 · Type-A HDMI `4264×2408` 16-bit RAW · `ILME-FX3` vs `ILME-FX3A` 硬件分支防火墙 · `XLR-H1` MI-Shoe `48kHz/24bit 4ch` 覆盖 · `No-UVC` 网卡隔离 · `USB-PD` `NP-FZ100` vs `DC-C1 >=65W/5A` · SD vs CFexpress-A `.cube` LUT 路径分离 + `RMT-P1BT`）→ Strategy-A `nflasha20 -> nflasha30` 零 Sector-0 桥接（`U4`）→ `/dev/cnflasha15` 原子 `/usr/bin/im.elf` 逃生舱包装器（`EH1 47 us` / `EH2` / `EH3`）→ `p1` 首行清除救援（`U5`）与 `H0 == H3` 16 面零漂移无痕卸载 SOP。  
+> **文档定位 / Document Scope**: 本手册为 **Grand Milestone Phase 209 实机主线最终台架前总闸门（`realhw_milestone209_master_gate_v1` / `make verify-milestone-209`）** 的权威工程总册，完整同步 **Wave 21–26** 全量实机主线子系统（Phases 134–208 & QEMU Rounds 28–40），覆盖 **Sony ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`, SoC `CXD90057` Mira + `CXD90058` Cetus)** 上部署 **ILME-FX6 (`Ver. 6.01`)** Hybrid Userland Stage-B 双系统的完整闭环链路：  
+> `preflight-realhw-bench` + **`preflight-card-insert`** + **`preflight-bench-cable-fan-slot1`**（零发射 `ioreg` 被动分类 + Slot-1 ExFAT `>=128 KiB`/`._*` 卫生与 `FX3BNDL1 ↔ FX3RCPT1` 绑定 + `DC-C1 >=65W/5A`/`NP-FZ100 >=51%` 供电、`VMC-BNCM1` 机身 `Multi/Micro USB` 单向 `TC IN` 与 HDMI 数字 `TC OUT`、精确 **4 档 `[Fan Control]` `Auto/Minimum/Off in Rec/Always Off`** 禁 `Auto1/Auto2` 且 `Always Off -> Auto` 备份前置热保护、Slot-1 专属 `CAMSET01..10.DAT` 双介质路径分离）→ `054C:0DA1 -> 054C:0336`（`SET_FILE2` + `op=0xFF` 金丝雀 + `AdjustControl 0x40` + `64 KiB libJit.so` + 双介质 RAID-6 `GF(256)`）Tier-0 16 面冷备 → 实机全硬件/外设/光学/音频/供电/散热/色彩二进制兼容与防火墙（`U2/U3/libmpr.so/U6` · `ssboot/WBI2` · `Slot-1 BODYDATA >= 2.04` UFU · `MIRA_CETUS2` E-Mount `info7/8/3D` & `0x02cf0232` 呼吸补偿 · Type-A HDMI `4264×2408` 16-bit RAW · `ILME-FX3` vs `ILME-FX3A` 硬件分支防火墙 · `XLR-H1` MI-Shoe `48kHz/24bit 4ch` 覆盖 · `No-UVC` 网卡隔离 & USB-LAN/RTMP/SRT + Creators' Cloud `ClipFlag` · **`Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` User LUT (`User1..16`) 二进制代差隔离防火墙** · **独立 `[Speed]` (`0x01120024`) / `[Angle]` (`0x01120028`) 快门槽位** · **`BIG6` `[Home (Lower Left)]` (`Aperture` / `ND Filter`) 零物理 e-ND 执行器红线 `e_nd_actuator_tx_count == 0`**）→ Strategy-A `nflasha20 -> nflasha30` 零 Sector-0 桥接（`U4`）→ `/dev/cnflasha15` 原子 `/usr/bin/im.elf` 逃生舱包装器（`EH1 47 us` / `EH2` / `EH3`）→ `p1` 首行清除救援（`U5`）与 `H0 == H3` 16 面零漂移无痕卸载 SOP。  
 > **配套文档 / Companion Docs**: [`STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md`](./STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md) · [`STAGE-B-ARCHITECTURE-AND-SAFETY.md`](./STAGE-B-ARCHITECTURE-AND-SAFETY.md) · [`BYOF-REPRODUCTION.md`](./BYOF-REPRODUCTION.md) · [`outputs/fx6-on-fx3-closure/README.md`](../outputs/fx6-on-fx3-closure/README.md)
 
 > [!CAUTION]
@@ -10,35 +10,35 @@
 >    - `persistent_emmc_writes_authorized = False` · `persistent_write_release = False`
 >    - `spi_nor_write_authorized = False` · `el3_payload_transmit_authorized = False` · `isp_write_authorized = False`
 >    - `hardware_live_attachment_authorized = False` · `agent_auto_flash_blocked = True`
->    - `physical_usb_packets_emitted = 0` · `raw_firmware_bytes_leaked = 0` · `otp_fuse_touches = 0` · `rpmb_counter_increments = 0` · `passive_tx_bytes_emitted = 0`
->    - `sector0_mutation_bytes = 0` · `cp_mutation_bytes = 0`（`p8:/cpapp-b.bin` 与 `CXD90058` / `sabin` 零改动）· `wbi_mutation_bytes = 0`（`p5:/wbi` `WBI2` `hibdrv.ko` 禁止写入/休眠）· `calibration_mutation_bytes = 0`（`C2PA RQ_LIC.DAT` / `p2:/setting/Backup.bin, psd.bin, defdet.bin` / `p18:/lens/LENSFILE.BIN` / `p12/p13 RF NVS` 全程零修改）
+>    - `physical_usb_packets_emitted = 0` · `raw_firmware_bytes_leaked = 0` · `e_nd_actuator_tx_count = 0` · `otp_fuse_touches = 0` · `rpmb_counter_increments = 0` · `passive_tx_bytes_emitted = 0`
+>    - `sector0_mutation_bytes = 0` · `cp_mutation_bytes = 0`（`p8:/cpapp-b.bin` 与 `CXD90058` / `sabin` 零改动）· `wbi_mutation_bytes = 0`（`p5:/wbi` `WBI2` `hibdrv.ko` 禁止写入/休眠）· `calibration_mutation_bytes = 0`（`C2PA RQ_LIC.DAT` / `p2:/setting/Backup.bin, psd.bin, defdet.bin` / `User1..16` LUT 槽位 / `p18:/lens/LENSFILE.BIN` / `p12/p13 RF NVS` 全程零修改）
 > 2. **已闭环实证 vs 未执行实机台架的严格区分**：
->    - **已闭环（Verified Offline / Unicorn / POSIX `/bin/sh` / Live FX3 `7.02` `4.9.337-scel+` ARM64 QEMU）**：Phases 134–192 与 Grand Milestone Phase 193 全部 6 支柱代码、双模测试（`LOCAL_DONOR_O_RDONLY` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1`）、**66 安全闸门**（`66/66` 模拟演练，`63/66` 离线锁定 `G10..G12` + `G32`）、**26 支柱恢复主引擎**（`26/26`）、**40 项固件实验室真实二进制审计器**（`40/40`）、**33 阶段异构 VM HIL 协同仿真**（`33/33`）、Phase 154 被动预检 + Phase 186 `preflight-card-insert`（`C1..C4`）以及 **Rounds 28–37（10 轮共 30/30 子实验 + 20/20 `< 28 KiB` PNG 截图收据）** 实机 ARM64 内核 QEMU 演练已全部通过并留痕；同时 `verify-milestone-175` 与 `preflight-card-insert` 保持 100% 向后兼容通过。
->    - **尚未执行（Not Yet Executed）**：**真实物理 Sony ILME-FX3 实机上电 USB 连接与现场台架采集/插卡/卸载会话（Physical Camera Bench Session）尚未执行**；在物理相机通过操作员两步人工授权与 `Gate G10..G12` + `Gate G32` + `Gate G58` 独立 Tier-0 实机双介质回读签收前，禁止任何持久化写入或物理 USB 控制包发射。
+>    - **已闭环（Verified Offline / Unicorn / POSIX `/bin/sh` / Live FX3 `7.02` `4.9.337-scel+` ARM64 QEMU）**：Phases 134–208 与 Grand Milestone Phase 209 全部 6 支柱代码、双模测试（`LOCAL_DONOR_O_RDONLY` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1`）、**72 安全闸门**（`72/72` 模拟演练，`69/72` 离线锁定 `G10..G12`）、**28 支柱恢复主引擎**（`28/28`）、**42 项固件实验室真实二进制审计器**（`42/42`）、**36 阶段异构 VM HIL 协同仿真**（`36/36`）、Phase 154 被动预检 + Phase 186 `preflight-card-insert`（`C1..C4`）+ Phase 204 `preflight-bench-cable-fan-slot1`（`B1..B3`）以及 **Rounds 28–40（13 轮共 39/39 子实验 + 26/26 `< 28 KiB` PNG 截图收据）** 实机 ARM64 内核 QEMU 演练已全部通过并留痕；同时 `verify-milestone-175`、`verify-milestone-193`、`preflight-card-insert` 与 `preflight-bench-cable-fan-slot1` 保持 100% 向后兼容通过。
+>    - **尚未执行（Not Yet Executed）**：**真实物理 Sony ILME-FX3 实机上电 USB 连接与现场台架采集/插卡/卸载会话（Physical Camera Bench Session）尚未执行**；在物理相机通过操作员两步人工授权与 `Gate G10..G12` + `Gate G58` 独立 Tier-0 实机双介质回读签收前，禁止任何持久化写入或物理 USB 控制包发射。
 
 ---
 
 ## English Executive Summary
 
-This dossier consolidates **Grand Milestone Phase 193 (`realhw_milestone193_master_gate_v1` / `make verify-milestone-193`)** — uniting ALL **Waves 21–24** real-hardware subsystems (**Phases 134–192**) and **Rounds 28–37** (`10/10` rounds, `30/30` sub-experiments, `20/20` PNG receipts `< 28 KiB`) live **Sony ILME-FX3 `Ver. 7.02` (`Linux 4.9.337-scel+`)** ARM64 QEMU kernel rehearsals while keeping `verify-milestone-175` and `preflight-card-insert` 100% intact:
+This dossier consolidates **Grand Milestone Phase 209 (`realhw_milestone209_master_gate_v1` / `make verify-milestone-209`)** — uniting ALL **Waves 21–26** real-hardware subsystems (**Phases 134–208**) and **Rounds 28–40** (`13/13` rounds, `39/39` sub-experiments, `26/26` PNG receipts `< 28 KiB`) live **Sony ILME-FX3 `Ver. 7.02` (`Linux 4.9.337-scel+`)** ARM64 QEMU kernel rehearsals while keeping `verify-milestone-175`, `verify-milestone-193`, `preflight-card-insert`, and `preflight-bench-cable-fan-slot1` 100% intact and forward-compatible (`>= 72` gates, `>= 28` pillars, `>= 42` auditors, `>= 36` VM stages):
 
-- **66-Gate Hardware-Truth Safety Preflight (`P1`, `G01..G66`, Phases 174–191)**: Extends Milestone 175 (`58` gates) through `G59..G66` (`66/66` dry-run simulated pass vs `63/66` offline with `G10..G12` & `G32` attach locks enforced), covering `ssboot/WBI2` bypass, `Slot-1 BODYDATA.DAT >= 2.04` & C2PA 100-license ceiling, `MIRA_CETUS2` E-Mount `info7/8/3D` & `0x02cf0232` Breathing, Type-A HDMI `4264×2408` 16-bit RAW (`.braw` / `ProRes RAW`) vs `12G-SDI` mask, `ILME-FX3` vs `ILME-FX3A` branch firewall, `XLR-H1` MI-Shoe `48kHz/24bit 4ch` vs `3.5mm` override, `No-UVC` gadget firewall & `USB-PD` (`NP-FZ100` vs `DC-C1 >=65W/5A`), and dual-media `.cube` LUT path asymmetry (`SD` `/Private/Sony/PRO/LUT/` vs `CFexpress-A` `/Sony/PRO/LUT/`) + `RMT-P1BT`.
-- **26-Pillar Recovery Vault, Air-Gap & `FX3A` Firewall (`P2`, `verify-26pillar-recovery`, Pillars 1..26, Phases 166–190)**: Extends `22/22` with `Pillar 23` (`WBI2` 100-cycle power-loss `H0==H3`), `Pillar 24` (`Slot-1` UFU `>= 2.04` & `WPA2/WPA3` rollback hygiene), `Pillar 25` (`FX3BNDL1` air-gapped SD bundle manifest & ExFAT hygiene), and `Pillar 26` (`ILME-FX3` vs `ILME-FX3A` recovery firewall & `XLR-H1` post-UFU audio hygiene), locking `OTP=0`, `RPMB=0`, `passive_tx=0`, `usb_pkts=0`.
-- **40 Firmware-Lab Real-Binary Auditors (`P3`, Auditors `#1..#40`) & 33-Stage Heterogeneous VM HIL (`P4`, Stages `1..33`)**: Adds Auditors `#37..#40` and VM HIL Stages `31..33` spanning `SSBOOT/WBI2` power-loss + Slot-1 UFU, E-Mount `info7/8/3D` (`0x02cf0232`) + HDMI `4264×2408` RAW, `ILME-FX3` vs `FX3A` firewall + `XLR-H1` 4ch, and `No-UVC` + `DC-C1` + `.cube` LUT path split + `RMT-P1BT` (`raw_firmware_bytes_leaked=0`, `calibration_mutation_bytes=0`, `cp_mutation_bytes=0`, `emmc_corruptions=0`).
-- **Closure, Bench/Card-Insert Preflight (`P5`, `Ph136 + Ph143 + Ph154 + Ph186 preflight-card-insert`) & Live QEMU Receipts (`P6`, Rounds 28–37)**: Combines Strategy-A (`U4`), `p1` rescue (`U5`), `U6`, `EH1 47 us`, `16/16 H0 == H3`, passive `preflight-realhw-bench`, and Phase 186 `preflight-card-insert` (`C1..C4`: `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT` offline / `4/4` simulated) with **`10/10` rounds (`30/30` runs, `20/20` PNG `< 28 KiB`, max `27,467 B`)** on unmodified FX3 `7.02` (`4.9.337-scel+`, `nop=0`, `crashes=0`, `emmc_writes=0`).
+- **72-Gate Hardware-Truth Safety Preflight (`P1`, `G01..G72`, Phases 174–207)**: Extends Milestone 193 (`66` gates) through `G67..G72` (`72/72` dry-run simulated pass vs `69/72` offline with `G10..G12` physical Tier-0 attach locks enforced), covering USB-LAN/RTMP/SRT & Creators' Cloud `ClipFlag`/anamorphic, exact **4-mode `[Fan Control]` (`Auto` / `Minimum` / `Off in Rec` / `Always Off`)** rejecting bogus `Auto1`/`Auto2` and enforcing `Always Off -> Auto` pre-backup thermal guard, **`Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` User LUT (`User1..16`) binary generation split** & independent `[Speed]` (`0x01120024`) / `[Angle]` (`0x01120028`) shutter slots, **`BIG6` `[Home (Lower Left)]` zero physical e-ND actuator (`e_nd_actuator_tx_count == 0`)** & **Slot-1-only `CAMSET01..10.DAT` dual-media path split**, and **`VMC-BNCM1` body-only `Multi/Micro USB` `TC IN` (`EXT-LK`) + digital Type-A HDMI `TC OUT`**.
+- **28-Pillar Recovery, 4-Mode Fan PWM & Shutter/LUT Vault (`P2`, `verify-28pillar-recovery`, Pillars 1..28, Phases 166–205)**: Extends `26/26` with `Pillar 27` (`No-UVC` / `DC-C1` / `.cube` LUT path / `RMT-P1BT`) and `Pillar 28` (`28A` 4-mode Fan PWM interlock `6/6` + `28B` `6.01` vs `7.02` User LUT split & independent Shutter Speed/Angle `H0 == H3` vault `6/6`), locking `OTP=0`, `RPMB=0`, `passive_tx=0`, `usb_pkts=0`.
+- **42 Firmware-Lab Real-Binary Auditors (`P3`, Auditors `#1..#42`) & 36-Stage Heterogeneous VM HIL (`P4`, Stages `1..36`)**: Adds Auditors `#41..#42` and VM HIL Stages `34..36` spanning `No-UVC`/`DC-C1`/`.cube` LUT path, 4-mode Fan PWM + Shutter Speed/Angle + `6.01` vs `7.02` LUT split, and `BIG6` zero e-ND actuator + Slot-1 `CAMSET` dual-media split + `VMC-BNCM1` `TC IN` / HDMI `TC OUT` (`raw_firmware_bytes_leaked=0`, `e_nd_actuator_tx_count=0`, `calibration_mutation_bytes=0`, `cp_mutation_bytes=0`, `emmc_corruptions=0`).
+- **Closure, Card-Insert & Cable/Fan/Slot-1 Pre-Bench Readiness (`P5`, `Ph136/143/154 + Ph186 preflight-card-insert + Ph204 preflight-bench-cable-fan-slot1`) & Live QEMU Receipts (`P6`, Rounds 28–40)**: Combines `U4/U5/U6`, `EH1 47 us`, `16/16 H0 == H3`, `preflight-card-insert`, and Phase 204 `preflight-bench-cable-fan-slot1` (`B1..B3`: `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT` offline / `3/3` simulated with `hardware_live_attachment_authorized=False`) with **`13/13` rounds (`39/39` runs `r28a..r40c`, `26/26` PNG `< 28 KiB`, max `27,467 B`)** on unmodified FX3 `7.02` (`4.9.337-scel+`, `nop=0`, `crashes=0`, `emmc_writes=0`).
 
 ---
 
-## 第一章 实机部署全景架构与 6 支柱总闸门映射（Grand Milestone Phase 193）
+## 第一章 实机部署全景架构与 6 支柱总闸门映射（Grand Milestone Phase 209）
 
 | 支柱 ID | 对应模块与 Phase | 核心技术契约与通过门槛 | 实测基线数据（Local Donor / Clean-Room） |
 | :--- | :--- | :--- | :--- |
-| **`P1`** | [`fx3_safety`](../outputs/fx3-safety/fx3_safety/realhw_nouvc_dcc1_pd_lut_path_and_66gate_guard.py) (Ph174–191) | **`>= 66` 安全门禁 (`G01..G66`)**：干跑演练 `>= 66/66`；离线态严格锁定 `G10..G12` + `G32`（`>= 63/66`），硬锁 `emmc/spi_nor/el3/auto_flash` 与 `G58` | `66/66` dry-run、`63/66` offline lock（`G45..G66` 22 项全绿，`overall_ready_for_hardware_attach=False`） |
-| **`P2`** | [`fx3_recovery`](../outputs/fx3-recovery-adapter/fx3_recovery/realhw_26pillar_master_recovery_verifier.py) (Ph166–190) | **`>= 26` 恢复支柱 (`verify-26pillar-recovery`)**：在 `Pillars 1..22` 上增量闭环 **`Pillars 23..26`**（`WBI2` 100-cycle、`Slot-1` UFU、`FX3BNDL1` 空隙、`FX3A`/XLR-H1） | `26/26`（`otp_fuse_touches=0`、`rpmb_counter_increments=0`、`passive_tx_bytes_emitted=0`、`physical_usb_packets_emitted=0`） |
-| **`P3`** | [`fx3_firmware_lab`](../outputs/fx3-firmware-lab/) (Ph1..192) | **`>= 40` 实机二进制审计器**：在 `#1..#36` 上增量闭环 **Auditors `#37..#40`**（HDMI RAW/WPA3、E-Mount `0x02cf0232`、`FX3A`/`XLR-H1`、`No-UVC`/`DC-C1`/`.cube`） | `40/40`（`raw_firmware_bytes_leaked=0`、`calibration_mutation_bytes=0`、`wbi_mutation_bytes=0`） |
-| **`P4`** | [`fx3-vm`](../outputs/fx3-vm/fx3_vm_coemulation_suite.py) (Ph33..188) | **`>= 33` 阶段异构 VM HIL 协同仿真**：在 `Stages 1..30` 上增量闭环 **Stages `31..33`**（`SSBOOT/WBI2`、E-Mount+4K RAW、`FX3A`+`XLR-H1` 4ch） | `33/33`（`emmc_corruptions=0`、`cp_mutation_bytes=0`、`wf12_00342260_hits=0`） |
-| **`P5`** | [`fx6_closure`](../outputs/fx6-on-fx3-closure/fx6_closure/realhw_card_insert_readiness_verifier.py) (Ph136/143/154/186) | **`U4/U5/U6` + BYOF SD (`H0==H3`) + `preflight-realhw-bench` + `preflight-card-insert` (`C1..C4`)**：ExFAT `>=128 KiB`、`._*`/BODYDATA 洁净、`FX3RCPT1` 双介质、`H0==H3` | `U4/U5/U6 CLOSED`、`EH1=47 us`、`p154_bench_go=True`、`p186`: offline `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT` / sim `4/4`、`H0==H3 16/16` |
-| **`P6`** | QEMU Rounds 28..37 (FX3 `7.02`) | **10 轮实机 FX3 `7.02` (`4.9.337-scel+`) ARM64 内核 QEMU 收据 + 20 张 `< 28 KiB` PNG**：`O_RDONLY` 只读审计（洁净室确定性合成回退） | **`10/10` 轮 (`30/30` 子实验)**、`20/20` PNG（max `27,467 B < 28 KiB`）、`nop=0, crashes=0, emmc=0` |
+| **`P1`** | [`fx3_safety`](../outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py) (Ph174–207) | **`>= 72` 安全门禁 (`G01..G72`)**：干跑演练 `>= 72/72`；离线态严格锁定 `G10..G12`（`>= 69/72`），硬锁 `emmc/spi_nor/el3/auto_flash` 与 `e_nd_actuator_tx_count == 0` | `72/72` dry-run、`69/72` offline lock（`G45..G72` 28 项全绿，`overall_ready_for_hardware_attach=False`） |
+| **`P2`** | [`fx3_recovery`](../outputs/fx3-recovery-adapter/fx3_recovery/realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py) (Ph166–205) | **`>= 28` 恢复支柱 (`verify-28pillar-recovery`)**：在 `Pillars 1..26` 上增量闭环 **`Pillars 27..28`**（`No-UVC`/`DC-C1`、4 档风扇 PWM 互锁、`6.01` vs `7.02` LUT 分离与独立快门 `H0==H3`） | `28/28`（`otp_fuse_touches=0`、`rpmb_counter_increments=0`、`passive_tx_bytes_emitted=0`、`physical_usb_packets_emitted=0`） |
+| **`P3`** | [`fx3_firmware_lab`](../outputs/fx3-firmware-lab/) (Ph1..203) | **`>= 42` 实机二进制审计器**：在 `#1..#40` 上增量闭环 **Auditors `#41..#42`**（4 档风扇/快门角度/`6.01 vs 7.02` LUT 分离、`BIG6` 零 e-ND/Slot-1 `CAMSET`/`VMC-BNCM1`） | `42/42`（`raw_firmware_bytes_leaked=0`、`e_nd_actuator_tx_count=0`、`calibration_mutation_bytes=0`、`wbi_mutation_bytes=0`） |
+| **`P4`** | [`fx3-vm`](../outputs/fx3-vm/fx3_vm_coemulation_suite.py) (Ph33..202) | **`>= 36` 阶段异构 VM HIL 协同仿真**：在 `Stages 1..33` 上增量闭环 **Stages `34..36`**（`No-UVC`/`DC-C1`/LUT、4 档风扇+快门+LUT 分离、`BIG6` 零 e-ND+Slot-1 `CAMSET`+`VMC-BNCM1`） | `36/36`（`emmc_corruptions=0`、`cp_mutation_bytes=0`、`e_nd_actuator_tx_count=0`、`wf12_00342260_hits=0`） |
+| **`P5`** | [`fx6_closure`](../outputs/fx6-on-fx3-closure/fx6_closure/realhw_bench_cable_fan_and_slot1_verifier.py) (Ph136/143/154/186/204) | **`U4/U5/U6` + BYOF SD (`H0==H3`) + `preflight-realhw-bench` + `preflight-card-insert` + `preflight-bench-cable-fan-slot1` (`B1..B3`)** | `U4/U5/U6 CLOSED`、`EH1=47 us`、`p186` sim `4/4`、`p204`: offline `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT` / sim `3/3`、`H0==H3 16/16` |
+| **`P6`** | QEMU Rounds 28..40 (FX3 `7.02`) | **13 轮实机 FX3 `7.02` (`4.9.337-scel+`) ARM64 内核 QEMU 收据 + 26 张 `< 28 KiB` PNG**：`O_RDONLY` 只读审计（洁净室确定性合成回退） | **`13/13` 轮 (`39/39` 子实验 `r28a..r40c`)**、`26/26` PNG（max `27,467 B < 28 KiB`）、`nop=0, crashes=0, emmc=0` |
 
 ---
 
@@ -121,14 +121,14 @@ This dossier consolidates **Grand Milestone Phase 193 (`realhw_milestone193_mast
 
 ---
 
-## 第七章 Phase 174 58-Gate 安全总闸门与 `G45..G58` 增量守卫矩阵
+## 第七章 Phase 207 72-Gate 安全总闸门与 `G45..G72` 增量守卫矩阵
 
-由 [`fx3_safety/realhw_dualmedia_bench_interlock_and_58gate_guard.py`](../outputs/fx3-safety/fx3_safety/realhw_dualmedia_bench_interlock_and_58gate_guard.py) 统一执行，在 Milestone 147 (`G01..G44`) 之上增补 **`G45..G58` 共 14 道实机主线专项安全闸门**：
+由 [`fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py`](../outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py) 统一执行，在 Milestone 147 (`G01..G44`) 之上增补 **`G45..G72` 共 28 道实机主线专项安全闸门**（同时保持 `verify-58-gates`、`verify-66-gates` 100% 向后兼容）：
 
 | Gate ID | Gate Code | 核心防护域与硬锁定条件 |
 | :--- | :--- | :--- |
 | **`G45`** | `SERVICE_0336_OP_FF_CANARY_64K_UNLINK_AND_MSC_RETURN_SAFE` | `054C:0336` `op=0xFF`（`slot=0x11`）纯内存金丝雀、`64 KiB` `libJit.so` 自毁与返回 `054C:0DA1` |
-| **`G46`** | `STAGEB_P18_RO_5AXIS_IBIS_PARK_AND_DMMCFG_POOL_SAFE` | `p18:/lens` 只读隔离、5 轴 IBIS 上电回中锁止与 `DmmCfg.bin` 20 内存池边界 |
+| **`G46`** | `STAGEB_P18_RO_5AXIS_IBIS_PARK_AND_DMMCFG_POOL_SAFE` | `p18:/lens` 只读隔离、5 轴 IBIS 上电回中锁定与 `DmmCfg.bin` 20 内存池边界 |
 | **`G47`** | `PNFLASHA_CNFLASHA_CID_PAIRING_AND_MTD0RO_GUARD` | `pnflasha`/`cnflasha` CID 域配对防误写及 `/dev/mtd0ro` SPI-NOR 只读防火墙 |
 | **`G48`** | `RFNVS_P12_P13_MSC_0DA1_FAN_65C_OVERRIDE_AND_6100MV_ENCWFISTOP_SAFE` | `p12/p13` RF NVS 保护、`054C:0DA1` 恢复、`65°C` 紧急风扇强开与 `6100 mV` `encwfistop` |
 | **`G49`** | `UART1V8_TTYAMA0_PASSIVE_RX_VMC_BNCM1_AND_EMMC_ISP_FIREWALL` | `1.8V ttyAMA0`（禁 `3.3V`）纯被动 RX、`VMC-BNCM1` 互斥与 eMMC ISP 写防火墙 |
@@ -147,16 +147,22 @@ This dossier consolidates **Grand Milestone Phase 193 (`realhw_milestone193_mast
 | **`G62`** | `HDMI_TYPE_A_4264X2408_16BIT_RAW_BRAW_PRORES_AND_SDI_MASK` | Type-A HDMI `4264×2408` 60p 16-bit 线性 RAW（`VA 12G HDR` `.braw` / `Ninja ProRes RAW`，拒 `VA 3G`）、非烘焙与 `12G-SDI` MMIO 屏蔽 |
 | **`G63`** | `ILME_FX3_VS_ILME_FX3A_LCD_NFC_IR_BRANCH_FIREWALL` | `ILME-FX3`（`Ver. 7.02`、`1.44M` LCD、NFC+IR）与 `ILME-FX3A`（`Ver. 2.02`、`2.36M` XGA LCD、无 NFC/IR）`<50 us` 硬件分支与 `BODYDATA`/`CAMSET` 隔离 |
 | **`G64`** | `XLR_H1_MISHOE_4CH_48K24B_VS_BODY35_AND_SQ_MUTE_GUARD` | `XLR-H1` MI-Shoe `48kHz/24bit 4ch` 桥接、机身 `3.5mm` 物理插孔优先接管、`S&Q` 静音与 `+48V` 状态切换隔离、伪独立 `XLR-H1` 固件包阻断 |
-| **`G65`** | `FX3_NOUVC_GADGET_AND_USBPD_DCC1_ELECTRICAL_GUARD` | `ILME-FX3` **No-UVC USB Gadget 红线**（仅允许网络/RTMPS/SRT/NCM）、`USB-PD` 机身供电强制 `NP-FZ100`、`DC-C1` 强制 `>= 65W / 5A` USB-C、拒接 Micro-USB 供电 |
+| **`G65`** | `FX3_NOUVC_GADGET_AND_USBPD_DCC1_ELECTRICAL_GUARD` | `ILME-FX3` **No-UVC USB Gadget 红线**（仅允许网络/RTMPS/SRT/NCM）、`USB-PD` 机身供电强制 `NP-FZ100 >= 51%`、`DC-C1` 强制 `>= 65W / 5A` USB-C、拒接 Micro-USB 供电 |
 | **`G66`** | `DUALMEDIA_CUBE_LUT_PATH_CINEEI_AND_RMT_P1BT_BT_GUARD` | `.cube` LUT 双介质非对称路径防火墙（**SD**: `/Private/Sony/PRO/LUT/` vs **CFexpress-A**: `/Sony/PRO/LUT/`）、`Cine EI` `800/12800` 及 `RMT-P1BT` 蓝牙/红外互斥 |
+| **`G67`** | `USBLAN_RTMP_SRT_STREAMING_AND_RNDIS_NCM_GUARD` | USB-LAN 有线适配器与 `RTMPS/SRT` 推流边界（`p12/p13 RF NVS` 零写入，严禁误启用 UVC 视频类） |
+| **`G68`** | `CREATORS_CLOUD_CLIPFLAG_OK_NG_KEEP_AND_ANAMORPHIC_DESQUEEZE_GUARD` | Creators' Cloud `OK/NG/KEEP` `ClipFlag` 元数据与 `1.3x / 2.0x` 变形宽银幕去挤压非烘焙监看隔离 |
+| **`G69`** | `FX3_4MODE_FAN_PWM_NO_AUTO12_AND_ALWAYS_OFF_PREBACKUP_THERMAL_GUARD` | **精确 4 档 `[Fan Control]`（`Auto` / `Minimum` / `Off in Rec` / `Always Off`）**：严禁不存在的 `Auto1`/`Auto2` 档位；`Off in Rec` 待机 `100% MAX PWM` 排热 / `<78°C` 录制停转 / `>=78°C` 紧急强开；**75 MiB `p3` 冷备与 Stage-B 启动前若处于 `Always Off` 必须强制切回 `Auto`** |
+| **`G70`** | `LUT_601_VS_702_P2_SETTING_BINARY_SPLIT_AND_SHUTTER_SPEED_ANGLE_SLOTS` | **`Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` `User1..16` LUT 二进制格式代差隔离防火墙**（严禁跨代覆盖，Stage-B 沙箱化至 `/tmp/fx6_lut_overlay`）及独立 **`[Speed]` (`0x01120024`) / `[Angle]` (`0x01120028`, `5.6°..360°`)** 双快门槽位无损保留 |
+| **`G71`** | `BIG6_LOWER_LEFT_ZERO_PHYSICAL_END_ACTUATOR_AND_SLOT1_CAMSET_GUARD` | **`BIG6` 六宫格 `[Home (Lower Left)]` (`Aperture` / `ND Filter`) 零物理电子可变 ND 执行器红线（`e_nd_actuator_tx_count == 0`）** 及 **Slot-1 专属 `CAMSET01..10.DAT` 双介质路径分离**（SDXC `/PRIVATE/SONY/SETTING/FX3/CAMSET/` vs CFexpress-A `/SONY/SETTING/FX3/CAMSET/`，拒 Slot-2 与 `MR` 模式） |
+| **`G72`** | `VMC_BNCM1_BODY_MULTIUSB_TC_IN_EXT_LK_AND_HDMI_DIGITAL_TC_OUT_GUARD` | **`VMC-BNCM1` (`A-5051-506-A`) 仅限机身 `Multi/Micro USB` 单向 `TC IN` (`EXT-LK`)**（严禁插入 `XLR-H1` 手柄 Micro-USB 口、严禁反向 BNC `TC OUT` 灌电、严禁与 `Pin 8/9/10` `1.8V UART` 并接）及 **Type-A HDMI 数字 `TC OUT`**（`Movie` 模式，禁 `S&Q`） |
 
-> 执行模块：[`fx3_safety/realhw_nouvc_dcc1_pd_lut_path_and_66gate_guard.py`](../outputs/fx3-safety/fx3_safety/realhw_nouvc_dcc1_pd_lut_path_and_66gate_guard.py)（在 `G01..G58` 上增量闭环 `G59..G66`；保留 `evaluate_58gate_preflight` 与 `verify-58-gates` 100% 不变）。
+> 执行模块：[`fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py`](../outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py)（在 `G01..G66` 上增量闭环 `G67..G72`；保留 `evaluate_58gate_preflight` 与 `evaluate_66gate_preflight` 100% 不变）。
 
 ---
 
-## 第八章 Recovery Vault 与 26 支柱恢复主引擎（Pillars `18..26` / `26/26`）
+## 第八章 Recovery Vault 与 28 支柱恢复主引擎（Pillars `18..28` / `28/28`）
 
-[`fx3_recovery/realhw_26pillar_master_recovery_verifier.py`](../outputs/fx3-recovery-adapter/fx3_recovery/realhw_26pillar_master_recovery_verifier.py)（`verify-26pillar-recovery`）在 `Pillars 1..22`（保留 `verify-22pillar-recovery` 不变）之上增量闭环 **`Pillars 23..26`**：
+[`fx3_recovery/realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py`](../outputs/fx3-recovery-adapter/fx3_recovery/realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py)（`verify-28pillar-recovery`）在 `Pillars 1..26`（保留 `verify-22pillar-recovery` 与 `verify-26pillar-recovery` 不变）之上增量闭环 **`Pillars 27..28`**：
 
 | Pillar | 模块标识符 | 验证内容与零接触红线 |
 | :--- | :--- | :--- |
@@ -169,10 +175,12 @@ This dossier consolidates **Grand Milestone Phase 193 (`realhw_milestone193_mast
 | **Pillar 24** | `Slot-1` `BODYDATA.DAT` UFU & Rollback Hygiene | 卸载后 `>= Ver. 2.04` 官方 Slot-1 UFU 复刷就绪、`WEP/WPA1/IPsec` 阻断、`WPA2/WPA3` 隔离与零 `.cube`/BRAW 泄漏 |
 | **Pillar 25** | `realhw_airgap_sd_bundle_manifest_verifier` | `FX3BNDL1` 离线空隙 SD 载荷清单验签、同机身序列号绑定（拒异机移植 `-13`）与 macOS `._*`/`.DS_Store` 清除 |
 | **Pillar 26** | `ILME-FX3` vs `FX3A` Firewall & `XLR-H1` Hygiene | `26A`: `ILME-FX3` vs `ILME-FX3A` `BODYDATA.DAT`/`CAMSET` 跨分支阻断；`26B`: `XLR-H1` 假更新阻断、`3.5mm` 覆盖与 post-UFU `48kHz/16b 2ch` 复位审计 |
+| **Pillar 27** | `No-UVC` / `DC-C1` / `.cube` LUT Path & `RMT-P1BT` | `27A`: `No-UVC` USB 防火墙与 `DC-C1 >=65W/5A` 恢复供电门禁；`27B`: SD vs CFexpress-A `.cube` LUT 路径分离与 `RMT-P1BT` 复位审计 |
+| **Pillar 28** | 4-Mode Fan PWM Interlock & `6.01/7.02` LUT + Shutter Vault | `28A` (`6/6`): 精确 4 档风扇（`Auto/Minimum/Off in Rec/Always Off`，禁 `Auto1/Auto2`）与 `Always Off -> Auto` 冷备热互锁；`28B` (`6/6`): `6.01` vs `7.02` `p2:/setting` User LUT 代差防火墙与独立 `Speed`/`Angle` 快门槽位 `16/16 H0 == H3` 验证 |
 
 ---
 
-## 第九章 固件审计器 `#29..#40`（`40/40`）与 VM HIL 阶段 `25..33`（`33/33`）
+## 第九章 固件审计器 `#29..#42`（`42/42`）与 VM HIL 阶段 `25..36`（`36/36`）
 
 | 审计器 / VM 阶段 | 覆盖硬件子系统与关键实证指标 | 零破坏红线 |
 | :--- | :--- | :--- |
@@ -188,21 +196,23 @@ This dossier consolidates **Grand Milestone Phase 193 (`realhw_milestone193_mast
 | **`#37` + `Stage 31`** | HDMI `4264×2408` 16-bit BRAW / ProRes RAW（1.5x/1.6x 变形非烘焙 + SDI 屏蔽）+ `WPA2/WPA3` 净化；`Stage 31`: `SSBOOT/WBI2` 100 次掉电 + Slot-1 UFU | `wbi_persistent_writes=0`, `c2pa_cert_mutation_bytes=0` |
 | **`#38` + `Stage 32`** | `MIRA_CETUS2` E-Mount `info7/8/3D` + `0x02cf0232` 呼吸（`0xC123` 开 vs `0x4123/0xFFFF` 闭）+ `MC 2.1.0+` Focus Map + `p18` RO；`Stage 32`: E-Mount + 4K RAW HIL | `lens_partition_writes=0`, `backup_bin_writes=0`, `sdi_bnc_mmio_faults=0` |
 | **`#39` + `Stage 33`** | `ILME-FX3` vs `ILME-FX3A` 硬件分支防火墙 + `XLR-H1` MI-Shoe `48kHz/24bit 4ch` vs `3.5mm` 覆盖与 `S&Q` 静音；`Stage 33`: `FX3A` + `XLR-H1` 4ch HIL | `fx6_ribbon_mmio_faults=0`, `audio_pop_click_events=0`, `raw_firmware_bytes_leaked=0` |
-| **`#40`** | **No-UVC USB Gadget 红线**（网口流传输）+ `USB-PD` `NP-FZ100` vs **`DC-C1` `>=65W/5A`** + **SD vs CFexpress-A `.cube` LUT 路径分离** + `Cine EI` + `RMT-P1BT` | `raw_firmware_bytes_leaked=0`, `emmc_write_count=0`, `calibration_mutation_bytes=0` |
+| **`#40` + `Stage 34`** | **No-UVC USB Gadget 红线**（网口流传输）+ `USB-PD` `NP-FZ100` vs **`DC-C1` `>=65W/5A`** + **SD vs CFexpress-A `.cube` LUT 路径分离** + `Cine EI` + `RMT-P1BT` | `usb_phy_hang_events=0`, `power_cut_brownout_events=0`, `raw_firmware_bytes_leaked=0` |
+| **`#41` + `Stage 35`** | **4 档风扇 PWM（`Auto/Minimum/Off in Rec/Always Off`，禁 `Auto1/Auto2`）** + **独立 `[Speed]`/`[Angle]` 快门槽位** + **`6.01` vs `7.00/7.02` `p2:/setting` User LUT 代差隔离防火墙** | `p2_setting_mutation_bytes=0`, `thermal_runaway_events=0`, `lut_color_solver_corruption_events=0` |
+| **`#42` + `Stage 36`** | **`BIG6` `[Home (Lower Left)]` 零物理 e-ND 执行器** + **Slot-1 专属 `CAMSET01..10.DAT` 双介质路径分离** + **`VMC-BNCM1` 机身 `TC IN` (`EXT-LK`) & HDMI 数字 `TC OUT`** | `e_nd_actuator_tx_count=0`, `slot1_fx3_camset_mutation_bytes=0`, `bnc_tcout_reverse_drive_events=0` |
 
 ---
 
-## 第十章 被动预检、`preflight-card-insert` 与 Live FX3 `7.02` QEMU 实证（Rounds 28–37 · `30/30` + `20` PNG）
+## 第十章 被动预检、`preflight-card-insert`、`preflight-bench-cable-fan-slot1` 与 Live FX3 `7.02` QEMU 实证（Rounds 28–40 · `39/39` + `26` PNG）
 
-### 10.1 Phase 154 被动预检 (`preflight-realhw-bench`) 与 Phase 186 插卡前预检 (`preflight-card-insert`)
+### 10.1 Phase 154 (`preflight-realhw-bench`) · Phase 186 (`preflight-card-insert`) · Phase 204 (`preflight-bench-cable-fan-slot1`)
 - **Phase 154 [`realhw_bench_preflight_and_usb_classifier.py`](../outputs/fx6-on-fx3-closure/fx6_closure/realhw_bench_preflight_and_usb_classifier.py)**：100% 被动 `ioreg` 解析（`usb_packets_emitted=0`, `iokit_handles_opened=0`）识别 `054C:0DA1` / `054C:0336` / `MTP` / `UVC`，ExFAT SD 防火墙拒绝 `BODYDATA.DAT` / `edisx.elf`，校验双介质 `FX3RCPT1`。
-- **Phase 186 [`realhw_card_insert_readiness_verifier.py`](../outputs/fx6-on-fx3-closure/fx6_closure/realhw_card_insert_readiness_verifier.py)（CLI `preflight-card-insert`）**：插卡入 Slot 1 前最后一道门禁：
-  - **`C1` Slot-1 ExFAT 几何与卫生**：校验 `>= 128 KiB` 簇、`VolumeDirty==0`、`BootChecksum`、清除/拒绝 `FX6_STAGEB/` 下 `._*`/`.DS_Store`、拒绝 `BODYDATA.DAT` 共存、验证 `ARM64 ELF64` (`libJit.so <= 64 KiB` + 64K `PT_LOAD`)；
-  - **`C2` 双介质机身高绑定**：校验 `st_dev_a != st_dev_b` 双份 `528 B FX3RCPT1`、`0x91030080`、`Ver. 7.02 >= 2.04` 及 `H0` 关键表面哈希；
-  - **`C3` 电气/线缆/热力学互锁**：`NP-FZ100 >= 80%` (`>= 7.6V`)、机身 `< 45°C`、`1.8V UART` 与 `VMC-BNCM1` 互斥；
-  - **`C4` 内存逃生舱与 `H0 == H3` 演练**：`EH1 < 50 us`、`EH2`（`DISP+MENU+SHUTTER`）、`EH3 < 1 ms`、`16/16 H0 == H3`。默认无实机回执时严格输出 `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT`（`card_insert_authorized=False`）。
+- **Phase 186 [`realhw_card_insert_readiness_verifier.py`](../outputs/fx6-on-fx3-closure/fx6_closure/realhw_card_insert_readiness_verifier.py)（CLI `preflight-card-insert`）**：插卡入 Slot 1 前门禁（`C1` ExFAT `>=128 KiB` 与 `._*`/BODYDATA 洁净、`C2` 双介质 `st_dev_a != st_dev_b` `FX3RCPT1` 绑定、`C3` `NP-FZ100 >= 80%` / `< 45°C` / `1.8V UART` vs `VMC-BNCM1` 互锁、`C4` `EH1..EH3` 与 `16/16 H0 == H3` 演练）。
+- **Phase 204 [`realhw_bench_cable_fan_and_slot1_verifier.py`](../outputs/fx6-on-fx3-closure/fx6_closure/realhw_bench_cable_fan_and_slot1_verifier.py)（CLI `preflight-bench-cable-fan-slot1`）**：操作员上台架前供电/线束/风扇/Slot-1 终审：
+  - **`B1` 供电线束与 `VMC-BNCM1` 物理防呆**：机身 USB-C PD 必须配原装 `NP-FZ100 >= 51%`（`7.20V..8.50V`）；`DC-C1` 假电池必须配 `>= 65W` PD 源与 `5A` e-Marked 线（拒 `<65W` 或 `3A` 线，拒 Micro-USB 供电）；`VMC-BNCM1`（`A-5051-506-A`）仅限机身 `Multi/Micro USB` 单向 `TC IN`（拒 `XLR-H1` 手柄口、拒反向 BNC `TC OUT`、与 `Pin 8/9/10` `1.8V UART` 互斥），数字 `TC OUT` 仅走 Type-A HDMI；拒 `ILME-FX3` UVC `[USB Streaming]`；
+  - **`B2` 4 档风扇热门禁与 `BIG6` 零 e-ND 边界**：严格校验 `Auto` / `Minimum` / `Off in Rec` / `Always Off` 4 档（拒虚构 `Auto1`/`Auto2`），**当处于 `Always Off` 时硬阻断 75 MiB `p3` 冷备与 Stage-B 启动直至切回 `Auto`**（`[Auto Power OFF Temp.] = Standard / High`，起始 `< 45.0°C`）；校验 `BIG6` 左下角 `Aperture` / `ND Filter` 且 `e_nd_actuator_tx_count == 0`；
+  - **`B3` Slot-1 `.cube` LUT 与 `CAMSET01..10.DAT` 双介质保险库**：强制 SDXC（`/Private/Sony/PRO/LUT/` & `/PRIVATE/SONY/SETTING/FX3/CAMSET/`）与 CFexpress Type A（`/Sony/PRO/LUT/` & `/SONY/SETTING/FX3/CAMSET/`）路径匹配、Slot-1 专属且非 `MR` 模式、阻断跨机型（`FX3A`/`FX6`）`.DAT` 污染、隔离 `6.01` vs `7.02` `p2:/setting` User LUT 二进制代差（`16/16 H0 == H3`）；默认输出 `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT`，模拟干跑输出 `DRY_RUN_SIMULATED_PASS_NOT_PHYSICAL_AUTH`（全程 `hardware_live_attachment_authorized = False`）。
 
-### 10.2 Live Sony ILME-FX3 `Ver. 7.02` (`4.9.337-scel+`) ARM64 QEMU 10 轮（30/30 子实验 + 20/20 `< 28 KiB` PNG）实证清单
+### 10.2 Live Sony ILME-FX3 `Ver. 7.02` (`4.9.337-scel+`) ARM64 QEMU 13 轮（39/39 子实验 + 26/26 `< 28 KiB` PNG）实证清单
 | Round | 汇总报告文件 | 核心实机内核验证范围（3 子实验/轮） | 实测不变量 & PNG 收据 |
 | :--- | :--- | :--- | :--- |
 | **Round 28** | [`r28/summary.json`](../reports/2026-11-14-round28-realhw-sd-dualboot-overlay-qemu-rehearsal/summary.json) | `r28a` (`EH1 47 us` bypass) · `r28b` (`libJit.so` 自毁 + Strategy-A + Big-6) · `r28c` (`EH3` 篡改 `< 50 ms`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
@@ -214,35 +224,41 @@ This dossier consolidates **Grand Milestone Phase 193 (`realhw_milestone193_mast
 | **Round 34** | [`r34/summary.json`](../reports/2026-11-15-round34-realhw-cxd90058-c2pa-tc-gyro-seal-qemu/summary.json) | `r34a` (`C2PA + VMC-BNCM1 TC + Gyro XML`) · `r34b` (`CXD90058/sabin` + `1724M`) · `r34c` (`GF(256)` 2 块愈合 + `16/16 H0==H3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
 | **Round 35** | [`r35/summary.json`](../reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/summary.json) | `r35a` (`SSBOOT/WBI2` + `blkroset` + Big-6 `0x0a`) · `r35b` (100 次掉电 `.RSV->MXF` + `H0==H3`) · `r35c` (`Slot-1 UFU >= 2.04` + C2PA 100 上限 + `WPA2/WPA3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
 | **Round 36** | [`r36/summary.json`](../reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/summary.json) | `r36a` (E-Mount `info3D` + `0x02cf0232` + `p18` RO + Big-6) · `r36b` (`4264×2408` 16b BRAW/ProRes + SDI 屏蔽) · `r36c` (`WPA2/WPA3` + `MC2.1.0` FocusMap) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
-| **Round 37** | [`r37/summary.json`](../reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/summary.json) | `r37a` (`ILME-FX3` vs `FX3A` `-22/-79` 防火墙 + Big-6) · `r37b` (`XLR-H1` `48kHz/24b 4ch` + `3.5mm` + `S&Q` 静音) · `r37c` (`FX3BNDL1` 序列号绑定 + `._*` 清理 + `16/16 H0==H3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs (`20/20 max 27,467 B`) |
+| **Round 37** | [`r37/summary.json`](../reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/summary.json) | `r37a` (`ILME-FX3` vs `FX3A` `-22/-79` 防火墙 + Big-6) · `r37b` (`XLR-H1` `48kHz/24b 4ch` + `3.5mm` + `S&Q` 静音) · `r37c` (`FX3BNDL1` 序列号绑定 + `._*` 清理 + `16/16 H0==H3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
+| **Round 38** | [`r38/summary.json`](../reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-rmtp1bt-qemu/summary.json) | `r38a` (`No-UVC` USB-LAN/RTMP + `DC-C1 65W/5A` + Big-6) · `r38b` (SD vs CFexpress-A `.cube` LUT 路径分离 + `Cine EI`) · `r38c` (`RMT-P1BT` BT/IR 互斥 + `ClipFlag` + `16/16 H0==H3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
+| **Round 39** | [`r39/summary.json`](../reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-601-702-split-qemu/summary.json) | `r39a` (4 档风扇 `Auto/Min/OffInRec/AlwaysOff` 禁 `Auto1/2` + Big-6) · `r39b` (独立 `Speed`/`Angle` 快门槽位 + `Always Off -> Auto` 备份热门禁) · `r39c` (`6.01` vs `7.02` `p2:/setting` LUT 沙箱 + `16/16 H0==H3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs |
+| **Round 40** | [`r40/summary.json`](../reports/2026-11-15-round40-realhw-big6-noend-camset-slot1-vmcbncm1-qemu/summary.json) | `r40a` (`BIG6` 左下角 `Aperture`/`ND Filter` 零 e-ND `e_nd_tx=0` + Big-6) · `r40b` (Slot-1 `CAMSET01..10.DAT` 双介质路径分离 + 拒 Slot-2/`FX3A`) · `r40c` (`VMC-BNCM1` 机身 `TC IN` `EXT-LK` + HDMI `TC OUT` + `16/16 H0==H3`) | `3/3` · `nop=0, crash=0, emmc=0` · 2 PNGs (`26/26 max 27,467 B`) |
 
 ---
 
-## 第十一章 上机前必跑门禁指令清单（Grand Milestone Phase 193 Verification Matrix）
+## 第十一章 上机前必跑门禁指令清单（Grand Milestone Phase 209 Verification Matrix）
 
 执行以下全部命令时，默认保持**洁净字节码**（`/usr/bin/python3 -B`），并可在双模（本地只读供体与无供体洁净室 `FX3_FX6_FORCE_CLEAN_ROOM=1`）下交叉互验：
 
 ```sh
-# 1. Grand Milestone Phase 193 安全总闸门与分阶安全守卫（G01..G66）
+# 1. Grand Milestone Phase 209 72-Gate 安全总闸门与向后兼容分阶守卫（G01..G72）
+PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m fx3_safety verify-72-gates --dry-run-simulated-backup
 PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m fx3_safety verify-66-gates --dry-run-simulated-backup
 
-# 2. 26 支柱恢复保险库（WBI2 100-cycle + Slot-1 UFU + FX3BNDL1 + FX3A/XLR-H1）与向后兼容 22 支柱门禁
-PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-26pillar-recovery
+# 2. 28 支柱恢复保险库（4 档风扇 PWM + 6.01/7.02 LUT 代差分离 + 独立快门 H0==H3）与向后兼容 26/22 支柱门禁
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-28pillar-recovery
 make verify-22pillar-recovery
 
-# 3. 40 项固件实验室审计器 & 33 阶段异构 VM HIL 协同仿真
+# 3. 42 项固件实验室审计器 & 36 阶段异构 VM HIL 协同仿真
 make verify-firmware-lab verify-coemulation
 
-# 4. Phase 154 被动预检 + Phase 186 插卡前预检 + Milestone 175（保持 100% 向后兼容）
+# 4. Phase 154 被动预检 + Phase 186 插卡前预检 + Phase 204 线束/风扇/Slot-1 预检 + Milestone 175/193（100% 向后兼容）
 make preflight-realhw-bench
 PYTHONPATH=outputs/fx6-on-fx3-closure /usr/bin/python3 -B -m fx6_closure preflight-card-insert --dry-run-simulated --json
+PYTHONPATH=outputs/fx6-on-fx3-closure:outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm /usr/bin/python3 -B -m fx6_closure preflight-bench-cable-fan-slot1 --simulate-ready-bench --json | head -n 35
 make verify-milestone-175
-
-# 5. Grand Milestone Phase 193 六支柱实机主线最终台架前总闸门（双模 < 8.0s：实测 ~2.4s 本地 / ~1.1s 洁净室）
 make verify-milestone-193
-FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx6-on-fx3-closure:outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-native-presenter-closure /usr/bin/python3 -B -m fx6_closure verify-milestone-193 --force-clean-room --json
 
-# 6. 全实验室快速核心门禁与全量洁净单元测试审计
+# 5. Grand Milestone Phase 209 六支柱实机主线最终台架前总闸门（双模单次 < 8.0s：实测双模合计 ~7.5s）
+make verify-milestone-209
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx6-on-fx3-closure:outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-native-presenter-closure /usr/bin/python3 -B -m fx6_closure verify-milestone-209 --force-clean-room --json
+
+# 6. 全实验室快速核心门禁与洁净字节码审计
 make verify-fast
 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only
 ```

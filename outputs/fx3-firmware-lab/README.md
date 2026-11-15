@@ -73,11 +73,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar 2 — 4-Ch `24-bit / 48 kHz` Uncompressed LPCM Headroom, Digital Limiter & Wind-Filter DSP Verifier**: Audits FX6 `v6.01` & FX3 `v7.02` `appFw.so`, `cpapp-b.bin`, `libInfraHotshoe.so`, and `AVBB_SCN_START_AUDIO.so` across `XLR-H1` MI-Shoe 4-ch (`4,608,000 bps`) vs Internal Body Stereo Mic (`2,304,000 bps`) fallback, SMPTE `RP 155` (`-20.0 dBFS = +4 dBu = 0 VU`, `+24 dBu` clip) vs EBU `R68` (`-18.0 dBFS = 0 dBu`, `+18 dBu` clip), `1 kHz` `-20.0 dBFS` `int24` little-endian 3B PCM synthesis/roundtrip, `-3.0 dBFS` soft-knee digital peak limiter (`< -0.1 dBFS` brickwall ceiling, `0` `int24` wrap-around overflows), and `CH1..CH4` Wind-Filter HPF masks.
    - **Pillar 3 — SMPTE 12M Timecode `User Bits` (`BG1..BG8` 32-bit BCD/Hex) & HDMI/Multi-Port TC Direction Guard**: Verifies 8-nibble (`XX:XX:XX:XX`) SMPTE 12M Binary Group packing/unpacking across `FIX_HEX`, `DATE_YYMMDD`, `CLK_TIME`, `FRAME_RATE`, and Cinema `CAM_ID_REEL` (`A0:01:00:01`), plus FX3 Multi-Port (`VMC-BNCM1` `TC_IN` only) vs `HDMI Type-A` (`TC_OUT` only) directional arbitration (`0` bus contention, Phase 38 `uart_boot` Pins 7/8/9 safety guard).
    - **Pillar 4 — Zero Calibration / Zero eMMC Mutation Proof**: Proves `calibration_mutation_bytes == 0` and `persistent_emmc_writes_authorized == False`, hard-blocking `/dev/cnflasha*`, `/dev/nflasha*`, and `p2:/Backup.bin` while permitting volatile `/tmp`/`ram://` overlays.
+16. [`fx3_firmware_lab/playback_shotmark_and_ae_auditor.py`](fx3_firmware_lab/playback_shotmark_and_ae_auditor.py)
+   - **Pillar 1 — Playback / Thumbnail Presenter (`icx1295`) & Internal `p1` Media Delete/Format Firewall**: Probes FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, `cpapp-b.bin`, `global.xdb`, and `.uxc` string packs strictly `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback) for Playback/Thumbnail Browser symbols, `Cue/Review` shuttle speeds (`1x, 2x, 5x, 15x`), Clip Protect (`Lock`), Clip Delete, and Media Format targets, proving **100% isolation of internal eMMC `p1` (`/dev/mmcblk0p1`)** (`internal_emmc_format_possible == False`, allowing only external `Slot A` / `Slot B` `/dev/mmcblk1p1`, `/dev/mmcblk2p1`, `/dev/nvme*` targets).
+   - **Pillar 2 — Cinema Line `Shot Mark 1` / `Shot Mark 2` (`_ShotMark1`, `_ShotMark2`, `OK / KEEP`) & `EssenceMark` XML Verifier**: Verifies live `IN_REC` and `IN_PLAY` frame-indexed ShotMark insertion/removal (`0..100` marks/clip) serialized into Sony `NonRealTimeMeta v2.20` `<KlvPacketTable>` / `<EssenceMark start="<frame>" .../>` XML recognized by `DaVinci Resolve`, `Premiere Pro`, and `Catalyst Browse`, proving lossless frame-accurate round-trip across `23.98p / 24.00p / 25.00p / 29.97p / 59.94p`.
+   - **Pillar 3 — `Push Auto Iris`, `AE Shift (-2.0..+2.0 EV)`, Photometry (`MULTI / CENTER / SPOT / ENTIRE_SCREEN_AVG / HIGHLIGHT`) & `P4` Auto-ND Redirection**: Proves that under `Cine EI` (`ISO/EI` locked to Base `800`/`12800` and Shutter Angle locked to `180.0°`), FX6's `Auto Variable ND / Push Auto` cleanly redirects on FX3 to E-Mount `Push Auto Iris` (`1/8`-stop smooth aperture servo via `libInfraLensCommunicator.so`) with **`0` `P4` Variable ND motor fault attempts**, plus `Highlight` metering (`94% IRE` `S-Log3` highlight-clip protection) and `Face/Eye Priority in Multi Metering` (`EVENT_FUNC_FACE_DETECTION_IN_MULTI_ON` / `FACE_DETECTION_IN_MULTI_VALUE_ON`).
+   - **Pillar 4 — Zero Calibration / Zero NVRAM Mutation Proof**: Proves `calibration_mutation_bytes == 0`, `internal_emmc_format_possible == False`, and `persistent_emmc_writes_authorized == False`, hard-blocking `/dev/mmcblk0*`, `/dev/nflasha*`, `/dev/cnflasha*`, and `p2:/Backup.bin` while permitting volatile `/tmp`/`ram://` shadow state.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 15 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 16 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -103,8 +108,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-assignable-ciz --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-falsecolor-lpcm-ub --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-falsecolor-lpcm-ub --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-playback-shotmark-ae --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-playback-shotmark-ae --clean-room --json
 
-# Run all 369 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 403 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

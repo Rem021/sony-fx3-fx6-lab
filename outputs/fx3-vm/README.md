@@ -1278,3 +1278,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 217：Stage 39（`39/39` 里程碑）真实硬件主线 — `ILME-FX3` `[File Settings]` 37 字符 / `SDHC` 强制 `[Standard]` 锁定 + `Shot Mark1/2`、`[TC Regenerate]` 独占 Slot 1 & `EXT-LK` 解锁与 `[REC Lamp]` 后置+顶部 REC 键硬件耦合 Tally HIL 协同仿真器
+
+[`realhw_filesettings_shotmark_tcregen_reclamp_coemulator.py`](realhw_filesettings_shotmark_tcregen_reclamp_coemulator.py) 作为 **Stage 39（`39/39` 里程碑）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase217_realhw_filesettings_shotmark_tcregen_reclamp_hil=True`，可通过 `--skip-phase217` 跳过；本地只读供体 39 阶段全板协同仿真 `< 2.0s`、洁净室模式 `< 0.65s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`sdhc_non_standard_filename_or_custom_folder_bypasses == 0`、`slot2_simult_tc_regenerate_contamination_events == 0`、`decoupled_top_rec_button_vs_rear_tally_mismatches == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B` 零差异 ABI）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`：`AVBB_SCN_START_HDMI` / `AVBB_SCN_STOP_HDMI`）、`string_english_f.uxc`（`373,820 B`：证实 `File Settings` / `File Name Format` / `File Number` / `Series` / `Reset` / `Series Counter Reset` / `Title Name Settings` / `Cam ID + Reel#` / `Standard` / `Title` / `Date + Title` / `Title + Date` / `Shot Mark` / `Add Shot Mark1` / `Add Shot Mark2` / `Add/Delete Shot Mark1` / `Add/Delete Shot Mark2` / `Image Jump Setting` / `Only Shot Mark Mov.` / `Time Code Make` / `Regenerate` / `Time Code Output` / `REC Lamp` / `Only Front Off` / `Silent Mode`）与 `string_english.uxc`（`118,208 B`），并对 `appFw.so`（含 `SILENT_MODE` / `SHOT_MARK` / `REC_LAMP` / `CLIP` / `M4ROOT` / `REGENERATE`）、`cpapp-b.bin` 与 `libmpr.so`（含 `NonRealTimeMeta` / `LtcChangeTable` / `ShotMark`）执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-model A — `[File Settings]` 5 种命名格式、37 字符 ASCII `[Title Name]`、`SDHC` 强制 `[Standard]` 锁定与 `Shot Mark1/2` `*M01.XML` 旁路车 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [File] -> [File Settings]` 的全部 5 种 `[File Name Format]`（`Standard`、`Cam ID + Reel#`、`Title`、`Date + Title`、`Title + Date`）与双卡 `[File Number]`（`Series` 跨卡递增 vs `Reset` 新卡归 `0001` + `Series Counter Reset`），严格执行 **`<= 37` 个允许 ASCII 字符**（`A-Za-z0-9` + `.-_@!#$%+=^~(),;[]`，共 80 字符；空串、`>= 38` 字符或非法字符返回 `EINVAL` `22`），对 `SDHC`（`<= 32GB` FAT32）强制锁定 `[Standard]`（尝试强行解锁非标准命名或自定义 `/PRIVATE/M4ROOT/CLIP` 之外的视频目录均返回 `EOPNOTSUPP` `95`），且修改标题绝不追溯重命名既有素材；同时仿真录制中 `Add Shot Mark1/2` 与回放中 `Add/Delete Shot Mark1/2` 写入 `*M01.XML`（`NonRealTimeMeta`）旁路车、`[Image Jump Setting]` 四模式检索及 FTP `[Only Shot Mark Mov.]` / `[Only Shot Mark]` 过滤传输。
+3. **Sub-model B — `[TC/UB]` `[Time Code Make: Regenerate]` 独占 Slot 1 主卡读取、强制 `Rec Run`、`VMC-BNCM1` `EXT-LK` 解锁与 `S&Q` HDMI 时间码阻断 HIL**：
+   - 协同仿真 `[Regenerate]` 在单卡模式下读取当前活动卡槽最末时间码，而在 **`[Simult. Recording]` 双卡同录下严格只读取 `Slot 1`**（忽略不一致的 `Slot 2` 时间码，尝试强制从 `Slot 2` 再生返回 `EOPNOTSUPP` `95`），且无论 `[Time Code Run]` 原设为 `Free Run` 还是 `Rec Run` 一律强制按 **`[Rec Run]`** 递增；验证 `VMC-BNCM1` 外部 `EXT-LK`（要求 `Movie` + `Preset` + `Free Run` 同步 `>= 10s`）一旦切换 `[Time Code Make]`、`[Time Code Run]`、进入 `S&Q`/`Photo` 或拔除线缆即刻释放外部锁定回退内部基准，并在 `S&Q` 模式下同时封锁 `[Time Code Run]` 与 HDMI `[Time Code Output]`（强制开启返回 `EOPNOTSUPP` `95`）。
+4. **Sub-model C & Redlines — `[REC Lamp]` 3 态后置+顶部 `REC` 键硬件耦合 Tally 与 `[Silent Mode]` -> `[Audio signals]` 硬锁定 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Setup Option] -> [REC Lamp]` 三态硬件耦合规则：`[All On]` 点亮前置灯 + 后置灯 + 顶部 `REC` 按键红灯；**`[Only Front Off]` 仅熄灭前置 Tally 灯而同时保持后置灯与顶部 `REC` 按键 LED 常亮**（拒绝 `Only Rear Off` 等电影机独占项 `EINVAL` `22`，拒绝拆解顶部 `REC` 键与后置灯硬件耦合 `EOPNOTSUPP` `95`）；`[All Off]` 熄灭全部物理 LED，但保持 `[Emphasized REC Display]` 红框 Tally 独立运行（当 `[HDMI Info. Display]=On` 时同步输出至 HDMI）；同时验证 `[Silent Mode]=On` 将 `[Audio signals]` 硬锁定灰显为 `Off`（消隐对焦合焦与自拍蜂鸣，强行开启返回 `EOPNOTSUPP` `95`），并 fail-closed 锁死全部 9 项物理写入/发射/绕过红线。
+
+### Phase 217 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 39（39/39 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_filesettings_shotmark_tcregen_reclamp_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_filesettings_shotmark_tcregen_reclamp_coemulator.py --self-test --json
+
+# 2. 全板 39 阶段（Stage 1..39, 39/39 里程碑）统一校验（支持 --skip-phase217）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 217 48 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_filesettings_shotmark_tcregen_reclamp_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_filesettings_shotmark_tcregen_reclamp_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

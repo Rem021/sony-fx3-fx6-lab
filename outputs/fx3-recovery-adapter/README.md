@@ -310,4 +310,24 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --clean-room --json
 ```
 
+## Phase 106 — `CXD90057` Flattened Device-Tree (`FDT 0xd00dfeed` v17) `/chosen/bootargs` 只读 Rootfs 与 Init 路径防火墙、ARM64 内核 `Image`（`0x644d5241`）魔数校验器及 10 支柱总检集成
 
+- **[`fdt_bootargs_and_kernel_verifier.py`](fx3_recovery/fdt_bootargs_and_kernel_verifier.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）`CXD90057` Stage-B 恢复门禁提供三大只读 RAM-only 安全验证支柱（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室合成回退）：
+  - **支柱 1 — 纯 Python IEEE 1275 / Devicetree v17（`0xd00dfeed`）二进制解析器与 `/chosen/bootargs` 防火墙（`build_synthetic_fdt_blob` / `parse_fdt_blob` / `audit_fdt_chosen_bootargs`）**：
+    - 解析 40 字节大端 `fdt_header`、8 字节对齐且 `(0, 0)` 终结的 `mem_rsvmap`、`FDT_BEGIN_NODE (1)` / `FDT_END_NODE (2)` / `FDT_PROP (3)` / `FDT_NOP (4)` / `FDT_END (9)` 令牌流，严格校验 `off_dt_struct` / `off_dt_strings` 边界、重叠区域、`nameoff` 字符串越界、零填充对齐与非闭节点（测试夹具均在纯内存中合成，绝不提交 `.dtb` 二进制文件）。
+    - 审计 `/chosen/bootargs` 与 `/chosen/linux,initrd-start..end`（4B/8B 边界校验）：
+      * 对 `/dev/mmcblk0p*` / `/dev/nflasha*` / `/dev/cnflasha*` eMMC rootfs 传入 `rw`、缺少 `ro` 或缺少 `rootwait` 时 fail-closed 拦截；
+      * 当 `init=` / `rdinit=` 指向白名单（`/sbin/init`、`/init`、`/sbin/init2` 及 Stage-B 易失 RAM 包装器）之外路径时 fail-closed 拦截；
+      * 拦截任何企图重分区的 `mtdparts=` / `blkdevparts=` / `mmcparts=` 参数，并严禁 `nowatchdog` 等关闭 `CXD90057` 硬件看门狗的启动参数。
+  - **支柱 2 — ARM64 Linux 内核 `Image`（`0x644d5241` `'ARM\x64'` @ `0x38`）头部与跨机型防火墙（`build_synthetic_arm64_kernel_image` / `audit_arm64_kernel_image`）**：
+    - 解析 64 字节 ARM64 `Image` 头部（`code0`、`code1`、`text_offset = 0x80000`、`image_size = 0x6af000`、`flags = 0xa` LE + 4K 页 + 2MB 对齐、`magic == 0x644d5241`），核验真机 FX3 `vmlinux.bin`（`6,610,952` 字节，`4.9.337-scel+`，`dic-build-scm-u20-028`）并 fail-closed 拒绝 FX6 跨机型内核移植（`dic-build-scm-u24-002` / `Sony CE Linux 14.0.2.0`）、大端/非 4K 页标志或截断镜像。
+  - **支柱 3 — CLI 与 10 支柱总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-fdt-bootargs [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106`（构成 **10/10** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 106 公开符号（采用 `FDT_MAGIC_U32` 与 `ARM64_IMAGE_MAGIC_U32` 避免覆盖既有 `tier0` bytes 常量）；[`tests/test_fdt_bootargs_and_kernel_verifier.py`](tests/test_fdt_bootargs_and_kernel_verifier.py) 提供 **36 项快速双模式单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-fdt-bootargs --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --clean-room --json
+```

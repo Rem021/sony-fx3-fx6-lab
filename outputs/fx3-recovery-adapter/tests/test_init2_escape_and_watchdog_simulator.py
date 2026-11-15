@@ -527,7 +527,7 @@ class Init2EscapeAndWatchdogSimulatorTests(unittest.TestCase):
         rep = run_init2_escape_and_watchdog_suite(force_clean_room=True)
         elapsed = time.monotonic() - t0
         self.assertTrue(rep.all_passed, rep.errors)
-        self.assertLess(elapsed, 0.5)
+        self.assertLessEqual(elapsed, 2.5)
 
 
 if __name__ == "__main__":

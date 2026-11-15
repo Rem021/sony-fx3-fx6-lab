@@ -357,3 +357,38 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 78：Stage 11 `evdev` 627 点 `PDAF` 触控对焦、`Clear Image Zoom (CIZ)` 仲裁与可分配按键分发器
+
+[`touch_af_ciz_assignable_emulator.py`](touch_af_ciz_assignable_emulator.py) 作为 **Stage 11** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase78` 向后兼容跳过；全板 11 阶段协同仿真在本地只读供体模式下保持 `< 1.4s`、洁净室模式下 `< 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`bk4_persistent_nvram_writes == 0`**、**`null_gpio_derefs == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成三大互动与变焦控制闭环：
+
+1. **严格只读（`os.O_RDONLY`）触控/变焦/可分配按键供体审计 + 洁净室回退**：
+   - 检查 FX3 `libInfraLensCommunicator.so`、`global.xdb`、`string_english.g.uxc` 与 FX6 `libInfraLensCommunicator.so`、`libInfraTp.so`、`libInfraInput.so`、`libInfraDial.so`、`libul_GpioCtrl.so`、`libInfraSetupFile.so`、`string_english.uxc` 共 10 份精简构件（合计 `613,744 B`）的 SHA-256 与关键导出标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Linux `evdev`（`ABS_MT_POSITION_X/Y`）-> Stock-CP `IMX510` 627 点（`33x19`）`PDAF` 与变形宽银幕逆映射**：
+   - 建模 `960x540` `GPE0` 电容触摸（`touch_down` / `drag` / `double_tap_cancel`）通过 `MHLX` 环形邮箱（`0x0310..0x0314 -> 0x8310..0x8314`，`0` 阻塞）映射至 `IMX510` `95%` 覆盖范围 `33 x 19 = 627` 相位检测对焦网格。
+   - **变形宽银幕反挤压逆映射（`1.3x` / `2.0x`）**：精确计算光学传感器 `(u, v)` 坐标，并拦截落在上下黑边遮幅（letterbox matte）内的误触（`OUTSIDE_ACTIVE_IMAGE_LETTERBOX_IGNORED`，零边缘误对焦）。
+   - **对焦放大（`Focus Magnifier` `1.0x -> 4.0x -> 1.0x`）**：验证 `GPE0` 预览围绕选中 `PDAF` 网格实时放大与平移时，内录 `XAVC` 与 `HDMI RAW16` 净流保持 `1.0x` 未裁剪（`clean-feed invariant`），并支持按 Cinema Line 规则退出或锁定。
+3. **机身 `T/W` 8 档变焦拨杆 + `Clear Image Zoom`（`CIZ` `4K 1.5x` / `FHD 2.0x`）运行时仲裁器**：
+   - 完整闭环 `SELP1635G` 光学伺服变焦（`16..35mm`、`1.00x`）-> 光端平滑接力 `CIZ`（`4K` `1.00x..1.50x`、`FHD` `1.00x..2.00x`，完整保留 627 点 `PDAF` 与实时眼部追踪）-> `Digital Zoom`（`>1.5x/2.0x` 自动切换 `CENTER_SPOT_CONTRAST_ONLY`）。
+   - 验证开启 `HDMI RAW16` 或 `S&Q >= 120fps` 时平滑重置 `ciz_scale = 1.00x`（`CIZ_CLAMPED_BY_MODE_EXCLUSION`），`0` 邮箱阻塞。
+4. **可分配按键（`Custom 1..6` + `Lens Hold` + `XLR-H1` + `Big6` 易失影子）安全分发器**：
+   - 验证 FX3 全部实体键（`Base ISO 800<->12800`、`Zebra`、`Peaking`、`S&Q`、`Focus Magnifier`、`Status Check`、`Big6 Home`）及 `Big6` 易失内存状态覆盖（`ram://tmp/camset_big6_shadow.json`），同时确保触发 FX3 缺失硬件的 FX6 动作（`ND Preset`、`Auto ND`、`VF Adjust`）安全返回 `CONTAINED_NO_OP_TOAST`（`0` 空 GPIO 解引用、`bk4_persistent_nvram_writes == 0`）。
+
+### Phase 78 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 11 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/touch_af_ciz_assignable_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/touch_af_ciz_assignable_emulator.py --self-test --json
+
+# 2. 全板 11 阶段（Stage 1..11）统一校验（本地 < 1.4s，洁净室 < 0.5s，支持 --skip-phase78）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 78 36 项单测 & 全量 316 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_touch_af_ciz_assignable_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_touch_af_ciz_assignable_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+

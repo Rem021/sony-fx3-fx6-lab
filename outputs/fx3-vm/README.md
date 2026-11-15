@@ -1123,3 +1123,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 194：Stage 34（`34/34`）真实硬件主线 — `ILME-FX3` No-UVC USB Gadget 防火墙、`USB-PD` (`NP-FZ100`) vs `DC-C1` (`>=65W / 5A`) 功耗预算、双卡 `.cube` LUT 路径非对称、`Cine EI` 与 `RMT-P1BT` BT/IR HIL 协同仿真器
+
+[`realhw_nouvc_dcc1_lut_path_cineei_coemulator.py`](realhw_nouvc_dcc1_lut_path_cineei_coemulator.py) 作为 **Stage 34（`34/34`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil=True`，可通过 `--skip-phase194` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`physical_usb_packets_emitted == 0`**、**`otp_fuse_touches == 0`**、**`rpmb_counter_increments == 0`**、**`usb_phy_hang_events == 0`**、**`power_cut_brownout_events == 0`**、**`sensor_analog_gain_contamination_events == 0`** 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.10s` + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libUsbControl.so`（`135,424 B`）、`cdc_ncm.ko`（`32,208 B`）、`rndis_host.ko`（`14,064 B`）、`libInfraBluetoothCore.so`（`267,592 B`）、`string_english_f.uxc`（`373,820 B`：`USB Connection Mode` / `Sel. When Connect` / `Mass Storage` / `MTP` / `Remote Shoot` / `USB-LAN` / `USB Power Supply` / `Network Streaming` / `Cine EI` / `Bluetooth Rmt Ctrl` / `IR Remote Ctrl`），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `ILME-FX3`（`0x91030080`）No-UVC USB Gadget 防火墙 & `USB-LAN`（`RNDIS/CDC-NCM`）/ 网络推流（`<= 38 Mbps`）HIL**：
+   - 协同仿真 `[USB Connection Mode]`（`Sel. When Connect`、`MassStorage(MSC)`、`MTP`、`Remote Shooting`）与 `USB-LAN` 开机自动连接，拒绝不支持的 `[USB Streaming]` UVC/UAC 复合 Gadget 描述符（返回 `EOPNOTSUPP` `95`，零 USB PHY 挂死），并将 `4K 59.94p` 实时输出路由至 Network Streaming（`RTMP/RTMPS/SRT <= 38 Mbps`）或 Type-A HDMI（以及无音频 `1024x576` 旧版 `Remote Shooting` Webcam）。
+3. **Pillar B — `USB Power Supply`（`NP-FZ100` 强制在位）vs `DC-C1`（`>=65W + 5A` e-Marked 线缆）电气 HIL**：
+   - 协同仿真机身 Type-C PD 供电开启时拔出 `NP-FZ100` 的瞬时断电风险（与开机暂停内充 / 关机续充）、Micro-USB 供电硬拒绝，以及 `DC-C1` 假电池耦合器的电源/线缆门控（`<65W` 或 `3A`/非 e-Marker 触发红灯闪烁欠压拦截；达标则释放机身 Type-C 用于高速数据并锁定 LCD 最大亮度）。
+4. **Pillar C & D — 双卡 `.cube` User LUT 路径非对称、`Cine EI`、`RMT-P1BT` BT/IR 互斥与硬安全红线**：
+   - 强制校验 `SD: /Private/Sony/PRO/LUT/` vs `CFexpress-A: /Sony/PRO/LUT/` 路径非对称（交叉错配立即拦截）、`17pt/33pt` 网格（拒绝 `65pt`）、`<=63 B` ASCII 文件名、`16` 个 `p2:/setting` User LUT 槽位与 `0..+2EV` `1/3` 档 AE 偏移；验证 `Cine EI`（`800/12800` 双原生基地与 `3200..51200 EI`）零 CMOS 模拟增益污染、`RMT-P1BT`（BT 4.2）开启时禁用 IR (`SIRCS`) 与手机 GPS 联动（以及 `FX3A` 无 IR/NFC 硬件）、`Creators' Cloud` `OK/NG/KEEP` 片段筛选（`H0 == H3`）与 9 项物理写入红线 fail-closed 拦截。
+
+### Phase 194 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 34 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_nouvc_dcc1_lut_path_cineei_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_nouvc_dcc1_lut_path_cineei_coemulator.py --self-test --json
+
+# 2. 全板 34 阶段（Stage 1..34）统一校验（支持 --skip-phase194）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 194 48 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_nouvc_dcc1_lut_path_cineei_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_nouvc_dcc1_lut_path_cineei_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

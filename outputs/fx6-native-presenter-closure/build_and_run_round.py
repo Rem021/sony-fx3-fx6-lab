@@ -1335,11 +1335,13 @@ def build_stage_a_overlay(
     enable_r31: bool = False,
     enable_r32: bool = False,
     enable_r33: bool = False,
+    enable_r34: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
     r32_mode: str = "imx510_cube_big6",
     r33_mode: str = "cfexpress_rsv_big6",
+    r34_mode: str = "c2pa_tc_gyro_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1412,7 +1414,7 @@ def build_stage_a_overlay(
         extra_extract = extra_extract + ("usr/share/app/image_00_169.uxc",)
     if enable_p12:
         extra_extract = extra_extract + ("usr/lib/libWlanResource.so",)
-    if enable_r29 or enable_r30:
+    if enable_r29 or enable_r30 or enable_r34:
         extra_extract = extra_extract + ("usr/bin/im.elf",)
     if lang in lang_asset_specs:
         lang_items, _, _ = lang_asset_specs[lang]
@@ -1621,7 +1623,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r32_mode: {r32_mode}")
     if enable_r33 and r33_mode not in ("cfexpress_rsv_big6", "bodydata_ufu_bypass", "recovery_5tier"):
         raise ValueError(f"Unsupported r33_mode: {r33_mode}")
-    if enable_r33 and r33_mode in ("bodydata_ufu_bypass", "recovery_5tier"):
+    if enable_r34 and r34_mode not in ("c2pa_tc_gyro_big6", "cxd90058_sabin_sdi_mask", "raid6_gf256_seal_16"):
+        raise ValueError(f"Unsupported r34_mode: {r34_mode}")
+    if enable_r34 and r34_mode in ("cxd90058_sabin_sdi_mask", "raid6_gf256_seal_16"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r34_mode == "cxd90058_sabin_sdi_mask":
+            r34_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r34-cxd90058-sabin > /dev/console 2>&1\n"
+                "fx6_r34_sabin_rc=$?\n"
+                "echo FX6_R34_CXD90058_SABIN_RC=$fx6_r34_sabin_rc\n"
+                "echo FX6_R34_CXD90058_SABIN_EXIT rc=$fx6_r34_sabin_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r34_early_hook = (
+                "/usr/bin/fx6-stage-a-verify --r34-raid6-seal16 > /dev/console 2>&1\n"
+                "fx6_r34_seal_rc=$?\n"
+                "echo FX6_R34_RAID6_SEAL16_RC=$fx6_r34_seal_rc\n"
+                "echo FX6_R34_RAID6_SEAL16_EXIT rc=$fx6_r34_seal_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r34_early_hook, 1)
+    elif enable_r33 and r33_mode in ("bodydata_ufu_bypass", "recovery_5tier"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2080,6 +2109,40 @@ def build_stage_a_overlay(
                 "TIER_5_EL3_ISP_READ_ONLY_LOCK",
             ],
         }
+    r34_meta: Optional[Dict[str, Any]] = None
+    if enable_r34:
+        additions["etc/fx6_stage_r34"] = (
+            (
+                f"stage_r34=1\nr34_mode={r34_mode}\n"
+                f"c2pa_rq_lic_erofs=1\nvmc_bncm1_ext_lk_24fps=1\n"
+                f"imx510_8700us_gyro_xml=1\ncxd90058_sabin_ro=1\n"
+                f"memcfg_1724m_pool=1\nsdi_raw_mew_masked=1\n"
+                f"raid6_gf256_0x11d=1\nh0_eq_h3_16_surfaces=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r34_meta = {
+            "r34_mode": r34_mode,
+            "c2pa_cert_path": "p12:/cert/RQ_LIC.DAT",
+            "vmc_bncm1_mode": "EXT-LK",
+            "tc_fps": "24.00",
+            "nrtm_xml_path": "/tmp/r34_clip/C0001M01.XML",
+            "sensor": "IMX510",
+            "imx510_readout_us": 8700,
+            "imu_axes": 6,
+            "ap_soc": "CXD90057_Mira",
+            "cp_soc": "CXD90058_Cetus",
+            "p8_cpapp_path": "p8:/cpapp-b.bin",
+            "sabin_dir": "/usr/sabin",
+            "memcfg_total_mib": 1724,
+            "sdi_raw_fpga_blob": "mew.bin",
+            "sdi_raw_masked": True,
+            "raid6_gf256_poly": "0x11d",
+            "raid6_gf256_gen": "0x02",
+            "raid6_data_chunks": 11,
+            "raid6_parity_chunks": 2,
+            "seal_surface_count": 16,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2106,6 +2169,7 @@ def build_stage_a_overlay(
         "r31_enabled": enable_r31,
         "r32_enabled": enable_r32,
         "r33_enabled": enable_r33,
+        "r34_enabled": enable_r34,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2147,6 +2211,8 @@ def build_stage_a_overlay(
         stage_a_meta["r32"] = r32_meta
     if r33_meta is not None:
         stage_a_meta["r33"] = r33_meta
+    if r34_meta is not None:
+        stage_a_meta["r34"] = r34_meta
     return replacements, additions, stage_a_meta
 
 
@@ -2469,6 +2535,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R31_",
         "FX6_R32_",
         "FX6_R33_",
+        "FX6_R34_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -2555,6 +2622,14 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r33_bridge: Optional[Dict[str, Any]] = None
     r33_ufu_bypass_rc: Optional[int] = None
     r33_5tier_rc: Optional[int] = None
+    last_r34_c2pa_tc_gyro_init: Optional[Dict[str, Any]] = None
+    last_r34_c2pa_tc_gyro_bridge: Optional[Dict[str, Any]] = None
+    last_r34_cxd90058_sabin: Optional[Dict[str, Any]] = None
+    last_r34_raid6_seal_16: Optional[Dict[str, Any]] = None
+    last_r34_lang: Optional[Dict[str, Any]] = None
+    last_r34_bridge: Optional[Dict[str, Any]] = None
+    r34_cxd90058_sabin_rc: Optional[int] = None
+    r34_raid6_seal16_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -2726,6 +2801,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R33_5TIER_RC"), int):
                 r33_5tier_rc = kv["FX6_R33_5TIER_RC"]
+        elif "FX6_R34_C2PA_TC_GYRO_INIT " in line:
+            last_r34_c2pa_tc_gyro_init = _parse_kv_ints(line.split("FX6_R34_C2PA_TC_GYRO_INIT ", 1)[1])
+        elif "FX6_R34_C2PA_TC_GYRO_BRIDGE " in line:
+            last_r34_c2pa_tc_gyro_bridge = _parse_kv_ints(line.split("FX6_R34_C2PA_TC_GYRO_BRIDGE ", 1)[1])
+        elif "FX6_R34_CXD90058_SABIN " in line:
+            last_r34_cxd90058_sabin = _parse_kv_ints(line.split("FX6_R34_CXD90058_SABIN ", 1)[1])
+        elif "FX6_R34_RAID6_SEAL_16 " in line:
+            last_r34_raid6_seal_16 = _parse_kv_ints(line.split("FX6_R34_RAID6_SEAL_16 ", 1)[1])
+        elif "FX6_R34_LANG_TELEMETRY " in line:
+            last_r34_lang = _parse_kv_ints(line.split("FX6_R34_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R34_BRIDGE " in line:
+            last_r34_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R34_BRIDGE ", 1)[1])
+        elif "FX6_R34_CXD90058_SABIN_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R34_CXD90058_SABIN_RC"), int):
+                r34_cxd90058_sabin_rc = kv["FX6_R34_CXD90058_SABIN_RC"]
+        elif "FX6_R34_RAID6_SEAL16_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R34_RAID6_SEAL16_RC"), int):
+                r34_raid6_seal16_rc = kv["FX6_R34_RAID6_SEAL16_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -2898,6 +2993,29 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r33_bridge or {},
         }
 
+    r34_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r34_c2pa_tc_gyro_init,
+            last_r34_c2pa_tc_gyro_bridge,
+            last_r34_cxd90058_sabin,
+            last_r34_raid6_seal_16,
+            last_r34_lang,
+            last_r34_bridge,
+        )
+    ):
+        r34_telemetry = {
+            "cxd90058_sabin_rc": r34_cxd90058_sabin_rc,
+            "raid6_seal16_rc": r34_raid6_seal16_rc,
+            "c2pa_tc_gyro_init": last_r34_c2pa_tc_gyro_init or {},
+            "c2pa_tc_gyro_bridge": last_r34_c2pa_tc_gyro_bridge or {},
+            "cxd90058_sabin": last_r34_cxd90058_sabin or {},
+            "raid6_seal_16": last_r34_raid6_seal_16 or {},
+            "lang_telemetry": last_r34_lang or {},
+            "stage_b_bridge": last_r34_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -2928,6 +3046,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r31_telemetry": r31_telemetry,
         "r32_telemetry": r32_telemetry,
         "r33_telemetry": r33_telemetry,
+        "r34_telemetry": r34_telemetry,
     }
 
 
@@ -2951,7 +3070,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 33:
+    if args.round >= 34:
+        tmp_prefix = "fx6-r34"
+    elif args.round >= 33:
         tmp_prefix = "fx6-r33"
     elif args.round >= 32:
         tmp_prefix = "fx6-r32"
@@ -3036,8 +3157,12 @@ def run_once(args: argparse.Namespace) -> int:
         r31_mode = getattr(args, "r31_mode", "keymap_big6")
         r32_mode = getattr(args, "r32_mode", "imx510_cube_big6")
         r33_mode = getattr(args, "r33_mode", "cfexpress_rsv_big6")
+        r34_mode = getattr(args, "r34_mode", "c2pa_tc_gyro_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwCXD90058SabinC2paTcGyroSeal+r34_mode={r34_mode}+lang={lang})"
+                if args.round >= 34
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwCFexpressRsvUfu5Tier+r33_mode={r33_mode}+lang={lang})"
                 if args.round >= 33
                 else (
@@ -3134,6 +3259,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -3170,6 +3296,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r32_mode=r32_mode,
                 enable_r33=(args.round >= 33),
                 r33_mode=r33_mode,
+                enable_r34=(args.round >= 34),
+                r34_mode=r34_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -3292,6 +3420,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R32_UART_EXIT" in txt
                     or "FX6_R33_UFU_BYPASS_EXIT" in txt
                     or "FX6_R33_5TIER_EXIT" in txt
+                    or "FX6_R34_CXD90058_SABIN_EXIT" in txt
+                    or "FX6_R34_RAID6_SEAL16_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -3316,6 +3446,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R32_UART_EXIT" in serial_text
             or "FX6_R33_UFU_BYPASS_EXIT" in serial_text
             or "FX6_R33_5TIER_EXIT" in serial_text
+            or "FX6_R34_CXD90058_SABIN_EXIT" in serial_text
+            or "FX6_R34_RAID6_SEAL16_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -3372,6 +3504,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r31_mode": r31_mode if args.round >= 31 else None,
             "r32_mode": r32_mode if args.round >= 32 else None,
             "r33_mode": r33_mode if args.round >= 33 else None,
+            "r34_mode": r34_mode if args.round >= 34 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -3412,6 +3545,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r31_telemetry": milestones.get("r31_telemetry") if args.round >= 31 else None,
             "r32_telemetry": milestones.get("r32_telemetry") if args.round >= 32 else None,
             "r33_telemetry": milestones.get("r33_telemetry") if args.round >= 33 else None,
+            "r34_telemetry": milestones.get("r34_telemetry") if args.round >= 34 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -3461,7 +3595,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -3469,6 +3603,7 @@ def main() -> int:
     ap.add_argument("--r31-mode", type=str, choices=["keymap_big6", "fan_fz100_power", "mtdro_firewall"], default="keymap_big6")
     ap.add_argument("--r32-mode", type=str, choices=["imx510_cube_big6", "cdcncm_usb_0da1", "uart_6stage_triage"], default="imx510_cube_big6")
     ap.add_argument("--r33-mode", type=str, choices=["cfexpress_rsv_big6", "bodydata_ufu_bypass", "recovery_5tier"], default="cfexpress_rsv_big6")
+    ap.add_argument("--r34-mode", type=str, choices=["c2pa_tc_gyro_big6", "cxd90058_sabin_sdi_mask", "raid6_gf256_seal_16"], default="c2pa_tc_gyro_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

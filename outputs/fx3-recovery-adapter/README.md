@@ -775,3 +775,23 @@ PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery veri
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-32pillar-recovery --force-clean-room --json
 ```
+
+## Phase 225 — 真机主线 Part 21（Pillar 33 / `33/33` 统一恢复总检）：`Power Save Start Time` 9 条件气隙防休眠互锁、`Auto Power OFF Temp.` 脚架热安全金库与 `SteadyShot Active` / `Clear Image Zoom` 档案一致性总检（`verify-33pillar-recovery` / `verify-powersave-9cond-temp-vault`）
+
+- **[`realhw_33pillar_powersave_9cond_temp_vault_verifier.py`](fx3_recovery/realhw_33pillar_powersave_9cond_temp_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 33** 并将全套恢复总检正式收口至 **`33/33`（`VERIFIED_33OF33_PILLAR_RECOVERY_MASTER`）**（`< 3.2s` 并发运行，保持 `verify-22/24/26/27/28/29/30/31/32pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so` 与 `libInfraMediaConfig.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 33A — `[Power Save Start Time]` 9 条件自动解除矩阵、气隙 `NP-FZ100` `75 MiB` `p3` 冷备份防休眠互锁与 `[Auto Power OFF Temp.]` + `[Fan Control]` 备份前冷却热金库（`6/6`）**：
+    - `P33A1`..`P33A6`：全量审计官方 9 项自动解除待机休眠条件（USB 供电、幻灯片播放、FTP 传输、动态影像录制、连接电脑、HDMI/TV 连接、`[IR Remote Ctrl] = [On]`、`[Bluetooth Rmt Ctrl] = [On]`、流媒体 / Creators' Cloud 上传）；在纯气隙机内 `NP-FZ100` 电池（`>= 51%` 底线）执行 Tier-0 `75 MiB` `p3` 冷转储或 `CAMSET` 恢复且 9 项解除条件均未激活时，强制 `[Power Save Start Time]` 设为 `30 Min` 或 `Off`（拦截默认 `5 Min`、`2 Min`、`1 Min`、`10 Sec` 防中途休眠中断）；审计 `[Auto Power OFF Temp.]`（`Standard` 默认 vs `High` 强制三脚架固定防低温烫伤），并在冷转储 / `CAMSET` 恢复前强制将 `[Fan Control] = [Always Off]` 预冷切换至 `[Auto]`（`< 85.0°C` SoC 上限）。
+  - **支柱 33B — `[SteadyShot]`（`Active` 三重禁入截断）与 `[Clear Image Zoom]`（四重自动锁定）`Backup.bin` / `CAMSET01..10.DAT` 档案一致性金库（`6/6`）**：
+    - `P33B1`..`P33B6`：强制拦截 `[SteadyShot] = [Active]`（`~1.1x` 视角裁切）在 `119.88p`/`100p`、S&Q `>=100fps`/`120fps` 与外接 HDMI `[RAW Output = On]` 下的非法组合；拦截 `[Clear Image Zoom]` / `[Digital Zoom]` 在静态 `RAW`、`119.88p`/`100p` 与 S&Q `100/120/200/240fps` 下的禁用状态，并审计超出光学变焦范围时的 4 项自动锁定（`[Focus Area]` 禁用并锁定中心优先、`[Metering Mode]` 锁定 `Multi`、`[Face/Eye Prior. in AF]` 及多重测光人脸优先禁用、实时追踪禁用）；校验 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` 与 `Backup.bin`（`BK4\x00`）恢复前后参数对等（`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `33/33` 恢复总检聚合器与 CLI（`evaluate_realhw_33pillar_recovery_master` / `verify-33pillar-recovery` / `verify-powersave-9cond-temp-vault`）**：
+    - 并发调用 `evaluate_realhw_32pillar_recovery_master`（`Pillars 1..32`）+ **Pillar 33**（`run_pillar33_standalone_suite`），汇总产出 **`33/33`**（`VERIFIED_33OF33_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_33pillar_powersave_9cond_temp_vault_verifier.py`](tests/test_realhw_33pillar_powersave_9cond_temp_vault_verifier.py) 提供 **58 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-powersave-9cond-temp-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-33pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-33pillar-recovery --force-clean-room --json
+```
+

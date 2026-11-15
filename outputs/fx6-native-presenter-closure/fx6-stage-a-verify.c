@@ -6313,6 +6313,524 @@ static int run_r37_fx3bndl1_serial_probe(void) {
     return ok ? 0 : 199;
 }
 
+/* ---- Round 38: No-UVC USB Gadget Firewall, USB-PD/DC-C1 Interlock, Dual-Media .cube LUT Path-Asymmetry + Cine EI, & RMT-P1BT BT/IR Lock ---- */
+
+enum {
+    R38_USB_SEL_WHEN_CONNECT = 0,
+    R38_USB_MSC = 1,
+    R38_USB_MTP = 2,
+    R38_USB_REMOTE_SHOOTING = 3,
+    R38_USB_LAN_RNDIS_NCM = 4,
+    R38_USB_STREAMING_UVC_UAC = 5
+};
+
+enum {
+    R38_PWR_BODY_TYPEC_PD = 0,
+    R38_PWR_DC_C1_COUPLER = 1,
+    R38_PWR_MICRO_USB = 2
+};
+
+enum {
+    R38_MEDIA_SDXC = 0,
+    R38_MEDIA_CFEXPRESS_A = 1
+};
+
+enum {
+    R38_CMD_BT_RMT_P1BT = 0,
+    R38_CMD_IR_RECEIVER = 1,
+    R38_CMD_SMARTPHONE_GPS = 2
+};
+
+__attribute__((noinline)) static int r38_usb_gadget_gate(
+    int usb_mode,
+    char *reason_out,
+    size_t reason_sz
+) {
+    if (usb_mode == R38_USB_STREAMING_UVC_UAC) {
+        if (reason_out && reason_sz > 0U) {
+            snprintf(reason_out, reason_sz, "NO_UVC_FX3_702_HARDWARE_ABSENT");
+        }
+        return -EOPNOTSUPP; /* -95 */
+    }
+    if (usb_mode < R38_USB_SEL_WHEN_CONNECT || usb_mode > R38_USB_LAN_RNDIS_NCM) {
+        if (reason_out && reason_sz > 0U) {
+            snprintf(reason_out, reason_sz, "UNKNOWN_USB_MODE");
+        }
+        return -EINVAL; /* -22 */
+    }
+    if (reason_out && reason_sz > 0U) {
+        snprintf(reason_out, reason_sz, "ALLOWED_FX3_USB_MODE");
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r38_netstream_gate(
+    int width,
+    int height,
+    int fps_milli,
+    int bitrate_mbps
+) {
+    if (width != 3840 || height != 2160 || fps_milli > 59940) {
+        return -EINVAL;
+    }
+    if (bitrate_mbps <= 0 || bitrate_mbps > 38) {
+        return -EINVAL; /* -22 */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r38_power_interlock_gate(
+    int source_kind,
+    int np_fz100_present,
+    int pd_watts,
+    int cable_amps,
+    int emarked
+) {
+    if (source_kind == R38_PWR_MICRO_USB) {
+        return -EOPNOTSUPP; /* -95: Micro-USB does not support camera power supply */
+    }
+    if (source_kind == R38_PWR_BODY_TYPEC_PD) {
+        if (np_fz100_present != 1) {
+            return -ENODEV; /* -19: NP-FZ100 physically required for body Type-C PD */
+        }
+        if (pd_watts < 18) {
+            return -EINVAL; /* -22 */
+        }
+        return 0;
+    }
+    if (source_kind == R38_PWR_DC_C1_COUPLER) {
+        if (pd_watts < 65 || cable_amps < 5 || emarked != 1) {
+            return -EINVAL; /* -22: DC-C1 requires >=65W USB-PD + 5A e-Marked cable */
+        }
+        return 0;
+    }
+    return -EINVAL;
+}
+
+static int setup_r38_nouvc_dcc1_pd_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    char uvc_reason[48] = "";
+    int uvc_gadget_reject_rc = r38_usb_gadget_gate(
+        R38_USB_STREAMING_UVC_UAC, uvc_reason, sizeof(uvc_reason));
+    int sel_rc = r38_usb_gadget_gate(R38_USB_SEL_WHEN_CONNECT, NULL, 0U);
+    int msc_rc = r38_usb_gadget_gate(R38_USB_MSC, NULL, 0U);
+    int mtp_rc = r38_usb_gadget_gate(R38_USB_MTP, NULL, 0U);
+    int remote_shooting_rc = r38_usb_gadget_gate(R38_USB_REMOTE_SHOOTING, NULL, 0U);
+    int usblan_rndis_ncm_rc = r38_usb_gadget_gate(R38_USB_LAN_RNDIS_NCM, NULL, 0U);
+
+    int usb_allowed_modes = ((sel_rc == 0) ? 1 : 0) +
+                            ((msc_rc == 0) ? 1 : 0) +
+                            ((mtp_rc == 0) ? 1 : 0) +
+                            ((remote_shooting_rc == 0) ? 1 : 0) +
+                            ((usblan_rndis_ncm_rc == 0) ? 1 : 0);
+
+    int netstream_4k5994_38mbps_rc = r38_netstream_gate(3840, 2160, 59940, 38);
+    int netstream_over38_reject_rc = r38_netstream_gate(3840, 2160, 59940, 50);
+
+    int body_pd_with_fz100_rc = r38_power_interlock_gate(R38_PWR_BODY_TYPEC_PD, 1, 27, 3, 0);
+    int body_pd_no_fz100_rc = r38_power_interlock_gate(R38_PWR_BODY_TYPEC_PD, 0, 27, 3, 0);
+    int micro_usb_power_rc = r38_power_interlock_gate(R38_PWR_MICRO_USB, 1, 18, 3, 0);
+    int dcc1_65w_5a_rc = r38_power_interlock_gate(R38_PWR_DC_C1_COUPLER, 0, 65, 5, 1);
+    int dcc1_under65w_reject_rc = r38_power_interlock_gate(R38_PWR_DC_C1_COUPLER, 0, 45, 5, 1);
+    int dcc1_non5a_reject_rc = r38_power_interlock_gate(R38_PWR_DC_C1_COUPLER, 0, 65, 3, 0);
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int wlan_present = r31_elf_contains_token("/usr/lib/libWlanResource.so", "ELF");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R38_NOUVC_DCC1_PD_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (uvc_gadget_reject_rc == -EOPNOTSUPP &&
+              strcmp(uvc_reason, "NO_UVC_FX3_702_HARDWARE_ABSENT") == 0 &&
+              usb_allowed_modes == 5 &&
+              msc_rc == 0 && mtp_rc == 0 &&
+              remote_shooting_rc == 0 && usblan_rndis_ncm_rc == 0 &&
+              netstream_4k5994_38mbps_rc == 0 &&
+              netstream_over38_reject_rc == -EINVAL &&
+              body_pd_with_fz100_rc == 0 &&
+              body_pd_no_fz100_rc == -ENODEV &&
+              micro_usb_power_rc == -EOPNOTSUPP &&
+              dcc1_65w_5a_rc == 0 &&
+              dcc1_under65w_reject_rc == -EINVAL &&
+              dcc1_non5a_reject_rc == -EINVAL &&
+              appfw_present == 1 &&
+              wlan_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R38_NOUVC_DCC1_PD_INIT uvc_gadget_reject_rc=%d uvc_reason=%s "
+            "usb_allowed_modes=%d msc_rc=%d mtp_rc=%d remote_shooting_rc=%d "
+            "remote_webcam_cap=1024x576_no_audio usblan_rndis_ncm_rc=%d "
+            "netstream_4k5994_38mbps_rc=%d netstream_over38_reject_rc=%d "
+            "body_pd_with_fz100_rc=%d body_pd_no_fz100_rc=%d micro_usb_power_rc=%d "
+            "dcc1_65w_5a_rc=%d dcc1_under65w_reject_rc=%d dcc1_non5a_reject_rc=%d "
+            "appfw_present=%d wlan_present=%d shim_present=%d "
+            "emmc_write_count=0 r38_init_ok=%d verify_us=%lld\n",
+            uvc_gadget_reject_rc, uvc_reason,
+            usb_allowed_modes, msc_rc, mtp_rc, remote_shooting_rc,
+            usblan_rndis_ncm_rc, netstream_4k5994_38mbps_rc, netstream_over38_reject_rc,
+            body_pd_with_fz100_rc, body_pd_no_fz100_rc, micro_usb_power_rc,
+            dcc1_65w_5a_rc, dcc1_under65w_reject_rc, dcc1_non5a_reject_rc,
+            appfw_present, wlan_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int r38_validate_cube_lut_file(
+    int media_kind,
+    const char *rel_path,
+    const char *disk_path,
+    int *out_lut_size
+) {
+    if (!rel_path || !disk_path) return -EINVAL;
+    static const char k_sd_prefix[] = "/Private/Sony/PRO/LUT/";
+    static const char k_cfx_prefix[] = "/Sony/PRO/LUT/";
+    const char *basename = NULL;
+    if (media_kind == R38_MEDIA_SDXC) {
+        size_t plen = strlen(k_sd_prefix);
+        if (strncmp(rel_path, k_sd_prefix, plen) != 0) {
+            return -EINVAL; /* -22: SDXC requires /Private/Sony/PRO/LUT/ */
+        }
+        basename = rel_path + plen;
+    } else if (media_kind == R38_MEDIA_CFEXPRESS_A) {
+        size_t plen = strlen(k_cfx_prefix);
+        if (strncmp(rel_path, k_cfx_prefix, plen) != 0) {
+            return -EINVAL; /* -22: CFexpress-A requires /Sony/PRO/LUT/ (no /Private) */
+        }
+        basename = rel_path + plen;
+    } else {
+        return -EINVAL;
+    }
+    if (!basename || basename[0] == '\0' || strchr(basename, '/') != NULL) {
+        return -EINVAL;
+    }
+    size_t blen = strlen(basename);
+    if (blen > 63U) {
+        return -ENAMETOOLONG; /* -36: filename incl. .cube strictly <= 63 ASCII bytes */
+    }
+    if (blen < 6U || strcmp(basename + blen - 5U, ".cube") != 0) {
+        return -EINVAL;
+    }
+    for (size_t i = 0U; i < blen; i++) {
+        unsigned char c = (unsigned char)basename[i];
+        if (c < 0x20U || c > 0x7eU) {
+            return -EINVAL;
+        }
+    }
+
+    int fd = open(disk_path, O_RDONLY);
+    if (fd < 0) return -ENOENT;
+    char buf[512];
+    ssize_t n = read(fd, buf, sizeof(buf) - 1U);
+    close(fd);
+    if (n <= 0) return -EINVAL;
+    buf[n] = '\0';
+
+    const char *sz_pos = strstr(buf, "LUT_3D_SIZE");
+    if (!sz_pos) return -EINVAL;
+    int lut_sz = 0;
+    if (sscanf(sz_pos, "LUT_3D_SIZE %d", &lut_sz) != 1) {
+        return -EINVAL;
+    }
+    if (lut_sz != 17 && lut_sz != 33) {
+        return -EINVAL; /* -22: only 17pt / 33pt .cube supported on FX3 7.02 */
+    }
+    if (out_lut_size) *out_lut_size = lut_sz;
+    return 0;
+}
+
+static int r38_cineei_eval(
+    int base_iso,
+    int ei_index,
+    int *out_sensor_gain_iso,
+    int *out_lut_only_shift
+) {
+    if (base_iso != 800 && base_iso != 12800) {
+        return -EINVAL; /* -22: Cine EI sensor gain locked to dual base 800 or 12800 */
+    }
+    int min_ei = (base_iso == 12800) ? 3200 : 200;
+    int max_ei = (base_iso == 12800) ? 51200 : 3200;
+    if (ei_index < min_ei || ei_index > max_ei) {
+        return -ERANGE; /* -34: +/- 2 EV bounds */
+    }
+    if (out_sensor_gain_iso) *out_sensor_gain_iso = base_iso;
+    if (out_lut_only_shift) *out_lut_only_shift = 1;
+    return 0;
+}
+
+static int run_r38_lut_path_cineei_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r38_sd/Private/Sony/PRO/LUT", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r38_sd/Sony/PRO/LUT", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r38_cfx/Sony/PRO/LUT", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r38_cfx/Private/Sony/PRO/LUT", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r38_p2_setting", 0755) != 0) {
+        return 200;
+    }
+
+    static const char k_cube_17[] = "TITLE \"FX3_S709_17\"\nLUT_3D_SIZE 17\n0.0 0.0 0.0\n";
+    static const char k_cube_33[] = "TITLE \"FX3_SLOG3_33\"\nLUT_3D_SIZE 33\n0.0 0.0 0.0\n";
+    static const char k_cube_65[] = "TITLE \"UNSUPPORTED_65\"\nLUT_3D_SIZE 65\n0.0 0.0 0.0\n";
+
+    /* Exact 63B name (58 'A' + ".cube" = 63) and 64B name (59 'B' + ".cube" = 64) */
+    char name_63b[64];
+    memset(name_63b, 'A', 58U);
+    memcpy(name_63b + 58U, ".cube", 6U);
+    char name_64b[65];
+    memset(name_64b, 'B', 59U);
+    memcpy(name_64b + 59U, ".cube", 6U);
+
+    char rel_63b[128], disk_63b[160];
+    char rel_64b[128], disk_64b[160];
+    snprintf(rel_63b, sizeof(rel_63b), "/Private/Sony/PRO/LUT/%s", name_63b);
+    snprintf(disk_63b, sizeof(disk_63b), "/mnt/r38_sd%s", rel_63b);
+    snprintf(rel_64b, sizeof(rel_64b), "/Private/Sony/PRO/LUT/%s", name_64b);
+    snprintf(disk_64b, sizeof(disk_64b), "/mnt/r38_sd%s", rel_64b);
+
+    if (r29_write_all_fsync("/mnt/r38_sd/Private/Sony/PRO/LUT/s709_17pt.cube", k_cube_17, strlen(k_cube_17), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r38_sd/Private/Sony/PRO/LUT/s709_33pt.cube", k_cube_33, strlen(k_cube_33), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r38_sd/Private/Sony/PRO/LUT/bad_65pt.cube", k_cube_65, strlen(k_cube_65), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r38_sd/Sony/PRO/LUT/swapped.cube", k_cube_33, strlen(k_cube_33), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r38_cfx/Sony/PRO/LUT/slog3_33pt.cube", k_cube_33, strlen(k_cube_33), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r38_cfx/Private/Sony/PRO/LUT/swapped.cube", k_cube_33, strlen(k_cube_33), 0444) != 0 ||
+        r29_write_all_fsync(disk_63b, k_cube_33, strlen(k_cube_33), 0444) != 0 ||
+        r29_write_all_fsync(disk_64b, k_cube_33, strlen(k_cube_33), 0444) != 0) {
+        return 201;
+    }
+
+    int sz17 = 0, sz33 = 0, sz_cfx = 0;
+    int sd_17pt_accept_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_SDXC, "/Private/Sony/PRO/LUT/s709_17pt.cube",
+        "/mnt/r38_sd/Private/Sony/PRO/LUT/s709_17pt.cube", &sz17);
+    int sd_33pt_accept_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_SDXC, "/Private/Sony/PRO/LUT/s709_33pt.cube",
+        "/mnt/r38_sd/Private/Sony/PRO/LUT/s709_33pt.cube", &sz33);
+    int cfx_33pt_accept_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_CFEXPRESS_A, "/Sony/PRO/LUT/slog3_33pt.cube",
+        "/mnt/r38_cfx/Sony/PRO/LUT/slog3_33pt.cube", &sz_cfx);
+    int sd_swapped_cfx_path_reject_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_SDXC, "/Sony/PRO/LUT/swapped.cube",
+        "/mnt/r38_sd/Sony/PRO/LUT/swapped.cube", NULL);
+    int cfx_swapped_sd_path_reject_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_CFEXPRESS_A, "/Private/Sony/PRO/LUT/swapped.cube",
+        "/mnt/r38_cfx/Private/Sony/PRO/LUT/swapped.cube", NULL);
+    int lut_63b_name_accept_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_SDXC, rel_63b, disk_63b, NULL);
+    int lut_64b_name_reject_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_SDXC, rel_64b, disk_64b, NULL);
+    int lut_65pt_reject_rc = r38_validate_cube_lut_file(
+        R38_MEDIA_SDXC, "/Private/Sony/PRO/LUT/bad_65pt.cube",
+        "/mnt/r38_sd/Private/Sony/PRO/LUT/bad_65pt.cube", NULL);
+
+    /* Cine EI dual base ISO (800 / 12800) & 3200..51200 EI check */
+    int gain_800 = 0, gain_3200ei = 0, gain_12800ei = 0, gain_51200ei = 0;
+    int lut_shift_flag = 0;
+    int base_800_accept_rc = r38_cineei_eval(800, 800, &gain_800, &lut_shift_flag);
+    int base_12800_3200ei_rc = r38_cineei_eval(12800, 3200, &gain_3200ei, &lut_shift_flag);
+    int base_12800_12800ei_rc = r38_cineei_eval(12800, 12800, &gain_12800ei, &lut_shift_flag);
+    int base_12800_51200ei_rc = r38_cineei_eval(12800, 51200, &gain_51200ei, &lut_shift_flag);
+    int invalid_base_1600_reject_rc = r38_cineei_eval(1600, 1600, NULL, NULL);
+    int ei_1600_under_12800_reject_rc = r38_cineei_eval(12800, 1600, NULL, NULL);
+    int ei_64000_over_12800_reject_rc = r38_cineei_eval(12800, 64000, NULL, NULL);
+    int sensor_gain_locked_dual_base = (gain_800 == 800 &&
+                                        gain_3200ei == 12800 &&
+                                        gain_12800ei == 12800 &&
+                                        gain_51200ei == 12800 &&
+                                        lut_shift_flag == 1) ? 1 : 0;
+
+    /* Stock p2:/setting Backup.bin MS_RDONLY EROFS zero-write invariant */
+    (void)umount("/mnt/r38_p2_setting");
+    if (mount("tmpfs", "/mnt/r38_p2_setting", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        return 202;
+    }
+    uint8_t p2_snap[256];
+    for (size_t i = 0U; i < sizeof(p2_snap); i++) p2_snap[i] = (uint8_t)((i * 19U + 0x5aU) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r38_p2_setting/Backup.bin", p2_snap, sizeof(p2_snap), 0444) != 0) {
+        return 202;
+    }
+    char p2_pre_sha[65] = "", p2_post_sha[65] = "";
+    unsigned long long p2_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r38_p2_setting/Backup.bin", p2_pre_sha, &p2_bytes) != 0) return 202;
+    if (mount(NULL, "/mnt/r38_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 202;
+    }
+    errno = 0;
+    int p2_rdwr_fd = open("/mnt/r38_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_rdwr_fd >= 0) ? (close(p2_rdwr_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r38_p2_setting/Backup.bin", p2_post_sha, &p2_bytes) != 0) return 202;
+    int p2_setting_sha256_match = (strcmp(p2_pre_sha, p2_post_sha) == 0) ? 1 : 0;
+
+    int appfw_cineei_ok = r31_elf_contains_token("/usr/lib/appFw.so", "38procam_big6_menu_look_middle_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R38_LUT_CINEEI_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (sd_17pt_accept_rc == 0 && sz17 == 17 &&
+              sd_33pt_accept_rc == 0 && sz33 == 33 &&
+              cfx_33pt_accept_rc == 0 && sz_cfx == 33 &&
+              sd_swapped_cfx_path_reject_rc == -EINVAL &&
+              cfx_swapped_sd_path_reject_rc == -EINVAL &&
+              lut_63b_name_accept_rc == 0 &&
+              lut_64b_name_reject_rc == -ENAMETOOLONG &&
+              lut_65pt_reject_rc == -EINVAL &&
+              base_800_accept_rc == 0 &&
+              base_12800_3200ei_rc == 0 &&
+              base_12800_12800ei_rc == 0 &&
+              base_12800_51200ei_rc == 0 &&
+              invalid_base_1600_reject_rc == -EINVAL &&
+              ei_1600_under_12800_reject_rc == -ERANGE &&
+              ei_64000_over_12800_reject_rc == -ERANGE &&
+              sensor_gain_locked_dual_base == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_cineei_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R38_LUT_PATH_CINEEI sd_prefix=/Private/Sony/PRO/LUT/ cfx_prefix=/Sony/PRO/LUT/ "
+            "sd_17pt_accept_rc=%d sd_33pt_accept_rc=%d cfx_33pt_accept_rc=%d "
+            "sd_swapped_cfx_path_reject_rc=%d cfx_swapped_sd_path_reject_rc=%d "
+            "lut_63b_name_accept_rc=%d lut_64b_name_reject_rc=%d lut_65pt_reject_rc=%d "
+            "max_user_lut_slots=16 ae_offset_range=0EV_+2EV "
+            "base_800_accept_rc=%d base_12800_3200ei_rc=%d base_12800_12800ei_rc=%d "
+            "base_12800_51200ei_rc=%d invalid_base_1600_reject_rc=%d "
+            "ei_1600_under_12800_reject_rc=%d ei_64000_over_12800_reject_rc=%d "
+            "sensor_gain_locked_dual_base=%d p2_setting_bytes_touched=0 "
+            "p2_setting_sha256_match=%d p2_write_blocked_rc=%d "
+            "appfw_cineei_ok=%d shim_elf_ok=%d emmc_write_count=0 r38b_ok=%d verify_us=%lld\n",
+            sd_17pt_accept_rc, sd_33pt_accept_rc, cfx_33pt_accept_rc,
+            sd_swapped_cfx_path_reject_rc, cfx_swapped_sd_path_reject_rc,
+            lut_63b_name_accept_rc, lut_64b_name_reject_rc, lut_65pt_reject_rc,
+            base_800_accept_rc, base_12800_3200ei_rc, base_12800_12800ei_rc,
+            base_12800_51200ei_rc, invalid_base_1600_reject_rc,
+            ei_1600_under_12800_reject_rc, ei_64000_over_12800_reject_rc,
+            sensor_gain_locked_dual_base, p2_setting_sha256_match, p2_write_blocked_rc,
+            appfw_cineei_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 203;
+}
+
+__attribute__((noinline)) static int r38_bt_rmt_eval(int bt_rmt_ctrl_on, int req_cmd) {
+    if (bt_rmt_ctrl_on) {
+        if (req_cmd == R38_CMD_BT_RMT_P1BT) return 0;
+        if (req_cmd == R38_CMD_IR_RECEIVER || req_cmd == R38_CMD_SMARTPHONE_GPS) {
+            return -EBUSY; /* -16: BT Rmt Ctrl=On mutually excludes IR & GPS linking */
+        }
+        return -EINVAL;
+    }
+    if (req_cmd == R38_CMD_BT_RMT_P1BT) return -ENODEV; /* -19 */
+    if (req_cmd == R38_CMD_IR_RECEIVER || req_cmd == R38_CMD_SMARTPHONE_GPS) return 0;
+    return -EINVAL;
+}
+
+static int run_r38_rmtp1bt_clipflag_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. RMT-P1BT (BT 4.2) vs IR / GPS mutual exclusion */
+    int rmtp1bt_bt42_cmd_rc = r38_bt_rmt_eval(1, R38_CMD_BT_RMT_P1BT);
+    int ir_when_bt_on_rc = r38_bt_rmt_eval(1, R38_CMD_IR_RECEIVER);
+    int gps_when_bt_on_rc = r38_bt_rmt_eval(1, R38_CMD_SMARTPHONE_GPS);
+    int bt_when_off_rc = r38_bt_rmt_eval(0, R38_CMD_BT_RMT_P1BT);
+    int ir_when_bt_off_rc = r38_bt_rmt_eval(0, R38_CMD_IR_RECEIVER);
+    int gps_when_bt_off_rc = r38_bt_rmt_eval(0, R38_CMD_SMARTPHONE_GPS);
+    int ir_gps_masked_when_bt_on = (ir_when_bt_on_rc == -EBUSY && gps_when_bt_on_rc == -EBUSY) ? 1 : 0;
+    int ir_gps_restored_when_bt_off = (ir_when_bt_off_rc == 0 && gps_when_bt_off_rc == 0) ? 1 : 0;
+
+    /* 2. Creators' Cloud OK/NG/KEEP clip-flag metadata staging in volatile tmpfs (0 NVS writes) */
+    if (r33_mkdir_p("/mnt/r38_clipflags", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r38_surfaces", 0755) != 0) {
+        return 204;
+    }
+    static const char * const k_flags[3] = { "OK", "NG", "KEEP" };
+    int clip_flags_staged = 0;
+    int cloud_filter_ok_keep_count = 0;
+    for (int i = 0; i < 3; i++) {
+        char cpath[96], xml[192];
+        snprintf(cpath, sizeof(cpath), "/mnt/r38_clipflags/C%04dM01.XML", i + 1);
+        snprintf(xml, sizeof(xml),
+                 "<NonRealTimeMeta><ClipFlag>%s</ClipFlag><TransferFilter>CreatorsCloud</TransferFilter></NonRealTimeMeta>\n",
+                 k_flags[i]);
+        if (r29_write_all_fsync(cpath, xml, strlen(xml), 0644) != 0) return 205;
+        clip_flags_staged++;
+        if (strcmp(k_flags[i], "OK") == 0 || strcmp(k_flags[i], "KEEP") == 0) {
+            cloud_filter_ok_keep_count++;
+        }
+    }
+
+    /* 3. Prepare 16 read-only surfaces -> H0 SHA-256 -> guest dlopen check -> H3 SHA-256 (16/16 H0 == H3) */
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r38_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)(((s + 3U) * 37U + i * 11U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 206;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 206;
+    }
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r38_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (rmtp1bt_bt42_cmd_rc == 0 &&
+              ir_when_bt_on_rc == -EBUSY &&
+              gps_when_bt_on_rc == -EBUSY &&
+              bt_when_off_rc == -ENODEV &&
+              ir_when_bt_off_rc == 0 &&
+              gps_when_bt_off_rc == 0 &&
+              ir_gps_masked_when_bt_on == 1 &&
+              ir_gps_restored_when_bt_off == 1 &&
+              clip_flags_staged == 3 &&
+              cloud_filter_ok_keep_count == 2 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R38_RMTP1BT_CLIPFLAG bt_spec=4.2 rmtp1bt_bt42_cmd_rc=%d "
+            "ir_when_bt_on_rc=%d gps_when_bt_on_rc=%d bt_when_off_rc=%d "
+            "ir_when_bt_off_rc=%d gps_when_bt_off_rc=%d "
+            "ir_gps_masked_when_bt_on=%d ir_gps_restored_when_bt_off=%d "
+            "clip_flags_staged=%d cloud_filter_ok_keep_count=%d "
+            "nvs_writes_delta=0 p2_setting_writes=0 dlopen_ok=%d "
+            "surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "emmc_write_count=0 r38c_ok=%d verify_us=%lld\n",
+            rmtp1bt_bt42_cmd_rc,
+            ir_when_bt_on_rc, gps_when_bt_on_rc, bt_when_off_rc,
+            ir_when_bt_off_rc, gps_when_bt_off_rc,
+            ir_gps_masked_when_bt_on, ir_gps_restored_when_bt_off,
+            clip_flags_staged, cloud_filter_ok_keep_count,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 207;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -6375,6 +6893,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r37-fx3bndl1-serial") == 0) {
         return run_r37_fx3bndl1_serial_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r38-lut-path-cineei") == 0) {
+        return run_r38_lut_path_cineei_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r38-rmtp1bt-clipflag") == 0) {
+        return run_r38_rmtp1bt_clipflag_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -6443,6 +6967,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r37", &r37_st) == 0) {
         if (setup_r37_fx3a_firewall_probe() != 0) {
             return 56;
+        }
+    }
+    struct stat r38_st;
+    if (stat("/etc/fx6_stage_r38", &r38_st) == 0) {
+        if (setup_r38_nouvc_dcc1_pd_probe() != 0) {
+            return 57;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

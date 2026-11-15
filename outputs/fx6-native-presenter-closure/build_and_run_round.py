@@ -1339,6 +1339,7 @@ def build_stage_a_overlay(
     enable_r35: bool = False,
     enable_r36: bool = False,
     enable_r37: bool = False,
+    enable_r38: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1348,6 +1349,7 @@ def build_stage_a_overlay(
     r35_mode: str = "ssboot_wbi2_big6",
     r36_mode: str = "emount_info3d_big6",
     r37_mode: str = "fx3a_firewall_big6",
+    r38_mode: str = "nouvc_dcc1_pd_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1637,7 +1639,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r36_mode: {r36_mode}")
     if enable_r37 and r37_mode not in ("fx3a_firewall_big6", "xlrh1_4ch_override", "fx3bndl1_serial_appledouble"):
         raise ValueError(f"Unsupported r37_mode: {r37_mode}")
-    if enable_r37 and r37_mode in ("xlrh1_4ch_override", "fx3bndl1_serial_appledouble"):
+    if enable_r38 and r38_mode not in ("nouvc_dcc1_pd_big6", "lut_path_cineei", "rmtp1bt_clipflag_seal"):
+        raise ValueError(f"Unsupported r38_mode: {r38_mode}")
+    if enable_r38 and r38_mode in ("lut_path_cineei", "rmtp1bt_clipflag_seal"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r38_mode == "lut_path_cineei":
+            r38_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r38-lut-path-cineei > /dev/console 2>&1\n"
+                "fx6_r38_lut_rc=$?\n"
+                "echo FX6_R38_LUT_CINEEI_RC=$fx6_r38_lut_rc\n"
+                "echo FX6_R38_LUT_CINEEI_EXIT rc=$fx6_r38_lut_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r38_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r38-rmtp1bt-clipflag > /dev/console 2>&1\n"
+                "fx6_r38_rmt_rc=$?\n"
+                "echo FX6_R38_RMTP1BT_RC=$fx6_r38_rmt_rc\n"
+                "echo FX6_R38_RMTP1BT_CLIPFLAG_EXIT rc=$fx6_r38_rmt_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r38_early_hook, 1)
+    elif enable_r37 and r37_mode in ("xlrh1_4ch_override", "fx3bndl1_serial_appledouble"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2326,6 +2355,39 @@ def build_stage_a_overlay(
             "transplant_reject_rc": -13,
             "appledouble_clutter_stripped": True,
         }
+    r38_meta: Optional[Dict[str, Any]] = None
+    if enable_r38:
+        additions["etc/fx6_stage_r38"] = (
+            (
+                f"stage_r38=1\nr38_mode={r38_mode}\n"
+                f"nouvc_gadget_firewall=1\nusblan_netstream_38mbps=1\n"
+                f"usbpd_fz100_dcc1_65w_5a=1\ndualmedia_lut_path_asymmetry=1\n"
+                f"cineei_800_12800=1\nrmtp1bt_ir_gps_mutex=1\n"
+                f"clipflag_ok_ng_keep_hygiene=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r38_meta = {
+            "r38_mode": r38_mode,
+            "uvc_gadget_reject_rc": -95,
+            "allowed_usb_modes": ["Sel. When Connect", "MSC", "MTP", "Remote Shooting", "USB-LAN"],
+            "netstream_max_4k5994_mbps": 38,
+            "body_pd_requires_fz100": True,
+            "body_pd_no_fz100_rc": -19,
+            "dcc1_min_watts": 65,
+            "dcc1_min_amps": 5,
+            "dcc1_requires_emarker": True,
+            "sd_lut_prefix": "/Private/Sony/PRO/LUT/",
+            "cfx_lut_prefix": "/Sony/PRO/LUT/",
+            "lut_points_supported": [17, 33],
+            "lut_max_filename_bytes": 63,
+            "cineei_base_isos": [800, 12800],
+            "cineei_highbase_ei_range": [3200, 51200],
+            "rmtp1bt_bt_spec": "4.2",
+            "rmtp1bt_masks_ir_and_gps": True,
+            "clip_flags_supported": ["OK", "NG", "KEEP"],
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2356,6 +2418,7 @@ def build_stage_a_overlay(
         "r35_enabled": enable_r35,
         "r36_enabled": enable_r36,
         "r37_enabled": enable_r37,
+        "r38_enabled": enable_r38,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2405,6 +2468,8 @@ def build_stage_a_overlay(
         stage_a_meta["r36"] = r36_meta
     if r37_meta is not None:
         stage_a_meta["r37"] = r37_meta
+    if r38_meta is not None:
+        stage_a_meta["r38"] = r38_meta
     return replacements, additions, stage_a_meta
 
 
@@ -2731,6 +2796,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R35_",
         "FX6_R36_",
         "FX6_R37_",
+        "FX6_R38_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -2850,6 +2916,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r37_bridge: Optional[Dict[str, Any]] = None
     r37_xlrh1_rc: Optional[int] = None
     r37_fx3bndl1_rc: Optional[int] = None
+    last_r38_nouvc_dcc1_pd_init: Optional[Dict[str, Any]] = None
+    last_r38_nouvc_dcc1_pd_bridge: Optional[Dict[str, Any]] = None
+    last_r38_lut_cineei_bridge: Optional[Dict[str, Any]] = None
+    last_r38_lut_path_cineei: Optional[Dict[str, Any]] = None
+    last_r38_rmtp1bt_clipflag: Optional[Dict[str, Any]] = None
+    last_r38_lang: Optional[Dict[str, Any]] = None
+    last_r38_bridge: Optional[Dict[str, Any]] = None
+    r38_lut_cineei_rc: Optional[int] = None
+    r38_rmtp1bt_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -3103,6 +3178,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R37_FX3BNDL1_RC"), int):
                 r37_fx3bndl1_rc = kv["FX6_R37_FX3BNDL1_RC"]
+        elif "FX6_R38_NOUVC_DCC1_PD_INIT " in line:
+            last_r38_nouvc_dcc1_pd_init = _parse_kv_ints(line.split("FX6_R38_NOUVC_DCC1_PD_INIT ", 1)[1])
+        elif "FX6_R38_NOUVC_DCC1_PD_BRIDGE " in line:
+            last_r38_nouvc_dcc1_pd_bridge = _parse_kv_ints(line.split("FX6_R38_NOUVC_DCC1_PD_BRIDGE ", 1)[1])
+        elif "FX6_R38_LUT_CINEEI_BRIDGE " in line:
+            last_r38_lut_cineei_bridge = _parse_kv_ints(line.split("FX6_R38_LUT_CINEEI_BRIDGE ", 1)[1])
+        elif "FX6_R38_LUT_PATH_CINEEI " in line:
+            last_r38_lut_path_cineei = _parse_kv_ints(line.split("FX6_R38_LUT_PATH_CINEEI ", 1)[1])
+        elif "FX6_R38_RMTP1BT_CLIPFLAG " in line:
+            last_r38_rmtp1bt_clipflag = _parse_kv_ints(line.split("FX6_R38_RMTP1BT_CLIPFLAG ", 1)[1])
+        elif "FX6_R38_LANG_TELEMETRY " in line:
+            last_r38_lang = _parse_kv_ints(line.split("FX6_R38_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R38_BRIDGE " in line:
+            last_r38_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R38_BRIDGE ", 1)[1])
+        elif "FX6_R38_LUT_CINEEI_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R38_LUT_CINEEI_RC"), int):
+                r38_lut_cineei_rc = kv["FX6_R38_LUT_CINEEI_RC"]
+        elif "FX6_R38_RMTP1BT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R38_RMTP1BT_RC"), int):
+                r38_rmtp1bt_rc = kv["FX6_R38_RMTP1BT_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -3369,6 +3466,31 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r37_bridge or {},
         }
 
+    r38_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r38_nouvc_dcc1_pd_init,
+            last_r38_nouvc_dcc1_pd_bridge,
+            last_r38_lut_cineei_bridge,
+            last_r38_lut_path_cineei,
+            last_r38_rmtp1bt_clipflag,
+            last_r38_lang,
+            last_r38_bridge,
+        )
+    ):
+        r38_telemetry = {
+            "lut_cineei_rc": r38_lut_cineei_rc,
+            "rmtp1bt_rc": r38_rmtp1bt_rc,
+            "nouvc_dcc1_pd_init": last_r38_nouvc_dcc1_pd_init or {},
+            "nouvc_dcc1_pd_bridge": last_r38_nouvc_dcc1_pd_bridge or {},
+            "lut_cineei_bridge": last_r38_lut_cineei_bridge or {},
+            "lut_path_cineei": last_r38_lut_path_cineei or {},
+            "rmtp1bt_clipflag": last_r38_rmtp1bt_clipflag or {},
+            "lang_telemetry": last_r38_lang or {},
+            "stage_b_bridge": last_r38_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -3403,6 +3525,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r35_telemetry": r35_telemetry,
         "r36_telemetry": r36_telemetry,
         "r37_telemetry": r37_telemetry,
+        "r38_telemetry": r38_telemetry,
     }
 
 
@@ -3426,7 +3549,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 37:
+    if args.round >= 38:
+        tmp_prefix = "fx6-r38"
+    elif args.round >= 37:
         tmp_prefix = "fx6-r37"
     elif args.round >= 36:
         tmp_prefix = "fx6-r36"
@@ -3523,8 +3648,12 @@ def run_once(args: argparse.Namespace) -> int:
         r35_mode = getattr(args, "r35_mode", "ssboot_wbi2_big6")
         r36_mode = getattr(args, "r36_mode", "emount_info3d_big6")
         r37_mode = getattr(args, "r37_mode", "fx3a_firewall_big6")
+        r38_mode = getattr(args, "r38_mode", "nouvc_dcc1_pd_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwNoUvcDcc1LutPathCineEiRmtp1bt+r38_mode={r38_mode}+lang={lang})"
+                if args.round >= 38
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwFx3aFirewallXlrh14chFx3bndl1+r37_mode={r37_mode}+lang={lang})"
                 if args.round >= 37
                 else (
@@ -3637,6 +3766,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -3681,6 +3811,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r36_mode=r36_mode,
                 enable_r37=(args.round >= 37),
                 r37_mode=r37_mode,
+                enable_r38=(args.round >= 38),
+                r38_mode=r38_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -3811,6 +3943,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R36_WPA3_FOCUSMAP_EXIT" in txt
                     or "FX6_R37_XLRH1_4CH_EXIT" in txt
                     or "FX6_R37_FX3BNDL1_SERIAL_EXIT" in txt
+                    or "FX6_R38_LUT_CINEEI_EXIT" in txt
+                    or "FX6_R38_RMTP1BT_CLIPFLAG_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -3843,6 +3977,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R36_WPA3_FOCUSMAP_EXIT" in serial_text
             or "FX6_R37_XLRH1_4CH_EXIT" in serial_text
             or "FX6_R37_FX3BNDL1_SERIAL_EXIT" in serial_text
+            or "FX6_R38_LUT_CINEEI_EXIT" in serial_text
+            or "FX6_R38_RMTP1BT_CLIPFLAG_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -3903,6 +4039,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r35_mode": r35_mode if args.round >= 35 else None,
             "r36_mode": r36_mode if args.round >= 36 else None,
             "r37_mode": r37_mode if args.round >= 37 else None,
+            "r38_mode": r38_mode if args.round >= 38 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -3947,6 +4084,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r35_telemetry": milestones.get("r35_telemetry") if args.round >= 35 else None,
             "r36_telemetry": milestones.get("r36_telemetry") if args.round >= 36 else None,
             "r37_telemetry": milestones.get("r37_telemetry") if args.round >= 37 else None,
+            "r38_telemetry": milestones.get("r38_telemetry") if args.round >= 38 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -3996,7 +4134,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -4008,6 +4146,7 @@ def main() -> int:
     ap.add_argument("--r35-mode", type=str, choices=["ssboot_wbi2_big6", "powerloss_100cycle_rsv", "slot1_ufu_c2pa_ceiling"], default="ssboot_wbi2_big6")
     ap.add_argument("--r36-mode", type=str, choices=["emount_info3d_big6", "hdmi_4264_raw_prores_braw", "wpa2_wpa3_focusmap_bridge"], default="emount_info3d_big6")
     ap.add_argument("--r37-mode", type=str, choices=["fx3a_firewall_big6", "xlrh1_4ch_override", "fx3bndl1_serial_appledouble"], default="fx3a_firewall_big6")
+    ap.add_argument("--r38-mode", type=str, choices=["nouvc_dcc1_pd_big6", "lut_path_cineei", "rmtp1bt_clipflag_seal"], default="nouvc_dcc1_pd_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

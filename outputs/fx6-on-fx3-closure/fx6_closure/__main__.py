@@ -1800,10 +1800,164 @@ def _cmd_verify_milestone_209(
     return 0 if ok else 1
 
 
+def _cmd_preflight_hdmi_proxy_desqueeze_and_simult(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    desqueeze_ratio: str,
+    hdmi_raw_output: bool,
+    rec_media_dur_hdmi: str,
+    require_internal_card_rec: bool,
+    ack_hdmi_only_no_card_rec: bool,
+    log_shooting_mode: str,
+    picture_profile: str,
+    hdmi_info_display: str,
+    require_unblanked_lcd: bool,
+    mc_focus_map_enabled: bool,
+    mc_sensor_fps: float,
+    simult_recording: bool,
+    auto_switch_media: str,
+    require_strict_vault_parity: bool,
+    slot1_media_type: str,
+    slot2_media_type: str,
+    slot1_capacity_gb: int,
+    slot2_capacity_gb: int,
+    proxy_enabled: bool,
+    proxy_format: str,
+    rec_fps: float,
+    sq_enabled: bool,
+    sq_fps: float,
+    file_name_format: str,
+    file_number_mode: str,
+    title_name: str,
+    shoot_mode: str,
+    tc_make: str,
+    tc_run: str,
+    vmc_bncm1_ext_lk_required: bool,
+    rec_lamp_mode: str,
+    silent_mode: bool,
+    audio_signals: str,
+    shockless_wb_mode: str,
+    wb_kelvin_k: int,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_hdmi_proxy_desqueeze_and_simult_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_HDMI_PROXY_DESQUEEZE_SIMULT_VERIFIED,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+        evaluate_realhw_hdmi_proxy_desqueeze_and_simult_readiness,
+        render_phase216_markdown,
+        verify_phase216_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = evaluate_realhw_hdmi_proxy_desqueeze_and_simult_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        desqueeze_ratio=desqueeze_ratio,
+        hdmi_raw_output=hdmi_raw_output,
+        rec_media_dur_hdmi_output=rec_media_dur_hdmi,
+        require_internal_card_recording=require_internal_card_rec,
+        ack_hdmi_only_no_internal_card_rec=ack_hdmi_only_no_card_rec,
+        log_shooting_mode=log_shooting_mode,
+        picture_profile=picture_profile,
+        hdmi_info_display=hdmi_info_display,
+        require_unblanked_camera_lcd=require_unblanked_lcd,
+        mc_external_focus_map_enabled=mc_focus_map_enabled,
+        mc_sensor_fps=mc_sensor_fps,
+        simult_recording_enabled=simult_recording,
+        auto_switch_media=auto_switch_media,
+        require_strict_dual_vault_parity=require_strict_vault_parity,
+        slot1_media_type=slot1_media_type,
+        slot2_media_type=slot2_media_type,
+        slot1_capacity_gb=slot1_capacity_gb,
+        slot2_capacity_gb=slot2_capacity_gb,
+        proxy_recording_enabled=proxy_enabled,
+        proxy_file_format=proxy_format,
+        rec_frame_rate_fps=rec_fps,
+        sq_mode_enabled=sq_enabled,
+        sq_frame_rate_fps=sq_fps,
+        file_name_format=file_name_format,
+        file_number_mode=file_number_mode,
+        title_name=title_name,
+        shoot_mode=shoot_mode,
+        tc_make=tc_make,
+        tc_run=tc_run,
+        vmc_bncm1_ext_lk_required=vmc_bncm1_ext_lk_required,
+        rec_lamp_mode=rec_lamp_mode,
+        silent_mode_enabled=silent_mode,
+        audio_signals_mode=audio_signals,
+        shockless_wb_mode=shockless_wb_mode,
+        wb_kelvin_k=wb_kelvin_k,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase216_markdown(rep), encoding="utf-8")
+    v_res = verify_phase216_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_HDMI_PROXY_DESQUEEZE_SIMULT_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"checklists={rep.checklists_passed}/{rep.checklist_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 209/193/175/147 Real-Hardware Master Gates, Phase 204 Operator Pre-Bench Power/Cable/Fan/Slot-1 Verifier, Phase 186 Card-Insert Preflight, Phase 154 Bench Preflight & Passive USB Classifier, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 209/193/175/147 Real-Hardware Master Gates, Phase 216 Physical Shoot & Monitoring Readiness Preflight, Phase 204 Operator Pre-Bench Power/Cable/Fan/Slot-1 Verifier, Phase 186 Card-Insert Preflight, Phase 154 Bench Preflight & Passive USB Classifier, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -1839,7 +1993,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-stage-b-capstone", "Verify Phase 83 7-Domain Stage-B Capstone 22-Gate + OTP/RPMB Anti-Rollback + 11-Stage VM + Round 15 Multi-Tab UI Certificate (stage_b_capstone_22gate_v1)"),
         ("verify-milestone-90", "Verify Phase 90 6-Pillar Unified 24-Gate + OTP/RPMB/Tier-0 + 16-Auditor + 13-Stage VM + Round 16 Master Gate (stage_b_milestone90_master_gate_v1)"),
         ("verify-milestone-110", "Verify Phase 110 6-Pillar Century+10 Master Gate (32-Gate + 10-Pillar Recovery + >=20 Auditors + >=18 VM + R14/R17/R19 UI Closures, stage_b_milestone110_master_gate_v1)"),
-        ("verify-milestone-130", "Verify Phase 130 6-Pillar Master Gate (40-Gate + >=13 Recovery + >=24 Auditors + >=21 VM + R14/R17/R19/R20..24 UI Closures, stage_b_milestone130_master_gate_v1)"),
+        ("verify-milestone-130", "Verify Phase 130 6-Pillar Master Gate (40-Gate + >=13 Recovery + >=24 Auditors + >=21 VM + R14/17/19/R20..24 UI Closures, stage_b_milestone130_master_gate_v1)"),
         ("verify-realhw-jiritsu-tier0", "Verify Phase 136 Stage-288 libJiritsu.so SET_FILE2 P0 hardening, U4/U5/U6 disassembly closures & Tier-0 cold-backup stop-gate"),
         ("verify-sd-stageb-bundle-uninstaller", "Verify Phase 143 BYOF SD-Card Stage-B bundle builder, im.elf escape-hatch launcher & H0==H3 16-surface atomic uninstaller"),
         ("verify-milestone-147", "Verify Milestone Phase 147 6-Pillar Real-Hardware Bench Readiness Master Gate (44-Gate + >=17 Recovery + >=28 Auditors + >=24 VM + Ph136/143 U4/U5/U6/H0==H3 + FX3 7.02 QEMU R28/R29, realhw_milestone147_master_gate_v1)"),
@@ -1849,6 +2003,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-193", "Verify Grand Milestone Phase 193 Unified 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Pre-Bench Master Gate (66-Gate + >=26 Recovery + >=40 Auditors + >=33 VM + Ph136/143/154/186 + FX3 7.02 QEMU R28..R37, realhw_milestone193_master_gate_v1)"),
         ("preflight-bench-cable-fan-slot1", "Run Phase 204 real-hardware operator pre-bench power/cable (DC-C1 / NP-FZ100 / VMC-BNCM1), 4-mode fan thermal (Always Off block) & Slot-1 CAMSET/.cube vault readiness verifier"),
         ("verify-milestone-209", "Verify Grand Milestone Phase 209 Unified 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Pre-Bench Master Gate (>=72-Gate + >=28 Recovery + >=42 Auditors + >=36 VM + preflight-card-insert/preflight-bench-cable-fan-slot1 + FX3 7.02 QEMU R28..R40, realhw_milestone209_master_gate_v1)"),
+        ("preflight-hdmi-proxy-desqueeze-and-simult", "Run Phase 216 real-hardware pre-shoot bench & media readiness verifier (De-Squeeze 1.6x=1.65x & M&C Focus Map <150fps, HDMI Log 1080p vs Off(HDMI Only) 4K & Blank LCD, Dual-Slot Simult + Px Proxy Coupled Vault, File Settings/SDHC/ShotMark/TC Slot-1, and Coupled REC Lamp/Shockless WB/Tier-0 gate)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -1869,10 +2024,55 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-hdmi-proxy-desqueeze-and-simult":
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 216 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--desqueeze-ratio", default="OFF", help="Anamorphic De-Squeeze Display ratio: Off, 1.3x, 1.5x, 1.6x, 1.8x, 2.0x")
+            p.add_argument("--hdmi-raw-output", action="store_true", help="Indicate HDMI 16-bit RAW output is enabled")
+            p.add_argument("--rec-media-dur-hdmi", default="ON", help="[Rec. Media dur HDMI Output]: ON or OFF_HDMI_ONLY")
+            p.add_argument("--no-require-internal-card-rec", dest="require_internal_card_rec", action="store_false", help="Allow external-only HDMI capture when acknowledged")
+            p.add_argument("--ack-hdmi-only-no-card-rec", action="store_true", help="Acknowledge that [Off(HDMI Only)] disables internal card recording")
+            p.add_argument("--log-shooting-mode", default="CINE_EI", help="[Log Shooting]: OFF, CINE_EI, CINE_EI_QUICK, FLEXIBLE_ISO")
+            p.add_argument("--picture-profile", default="OFF", help="[Picture Profile], e.g. OFF or PPLUT1..PPLUT4")
+            p.add_argument("--hdmi-info-display", default="OFF", help="[HDMI Info. Display]: OFF or ON (ON blanks built-in camera LCD)")
+            p.add_argument("--allow-blank-camera-lcd", dest="require_unblanked_lcd", action="store_false", help="Allow built-in camera LCD blanking when [HDMI Info. Display]=[On]")
+            p.add_argument("--mc-focus-map-enabled", action="store_true", help="Enable external Monitor & Control Focus Map (<150fps ceiling)")
+            p.add_argument("--mc-sensor-fps", type=float, default=23.98, help="Sensor frame rate for external Monitor & Control Focus Map (<150fps)")
+            p.add_argument("--no-simult-recording", dest="simult_recording", action="store_false", help="Disable Dual-Slot Simult. Recording")
+            p.add_argument("--auto-switch-media", default="OFF", help="[Auto Switch Media]: OFF (strict 1:1 dual vault) or ON")
+            p.add_argument("--allow-auto-switch-rollover", dest="require_strict_vault_parity", action="store_false", help="Allow single-card rollover under Auto Switch Media=ON")
+            p.add_argument("--slot1-media-type", default="CFEXPRESS_A", help="Slot-1 media type: CFEXPRESS_A, SDXC, SDHC, NONE")
+            p.add_argument("--slot2-media-type", default="CFEXPRESS_A", help="Slot-2 media type: CFEXPRESS_A, SDXC, SDHC, NONE")
+            p.add_argument("--slot1-capacity-gb", type=int, default=160, help="Slot-1 capacity in GB")
+            p.add_argument("--slot2-capacity-gb", type=int, default=160, help="Slot-2 capacity in GB")
+            p.add_argument("--no-proxy-enabled", dest="proxy_enabled", action="store_false", help="Disable Px proxy recording")
+            p.add_argument("--proxy-format", default="XAVC_HS_HD", help="Px proxy format: XAVC_HS_HD or XAVC_S_HD")
+            p.add_argument("--rec-fps", type=float, default=23.98, help="Main recording frame rate (<100p required for Px proxy)")
+            p.add_argument("--sq-enabled", action="store_true", help="Enable S&Q mode")
+            p.add_argument("--sq-fps", type=float, default=60.0, help="S&Q sensor frame rate (<100fps required for Px proxy)")
+            p.add_argument("--file-name-format", default="CAM_ID_PLUS_REEL", help="[File Name Format]: STANDARD, CAM_ID_PLUS_REEL, TITLE, DATE_PLUS_TITLE, TITLE_PLUS_DATE")
+            p.add_argument("--file-number-mode", default="SERIES", help="[File Number]: SERIES or RESET")
+            p.add_argument("--title-name", default="FX3_BENCH_A", help="[Title Name Settings] <= 37 ASCII chars")
+            p.add_argument("--shoot-mode", default="MOVIE", help="[Shoot Mode]: MOVIE, S_AND_Q, PHOTO")
+            p.add_argument("--tc-make", default="PRESET", help="[Time Code Make]: PRESET or REGENERATE")
+            p.add_argument("--tc-run", default="FREE_RUN", help="[Time Code Run]: FREE_RUN or REC_RUN")
+            p.add_argument("--vmc-bncm1-ext-lk-required", action="store_true", help="Require VMC-BNCM1 EXT-LK lock (Movie + Preset + Free Run)")
+            p.add_argument("--rec-lamp-mode", default="ONLY_FRONT_OFF", help="[REC Lamp]: ALL_ON, ONLY_FRONT_OFF, ALL_OFF")
+            p.add_argument("--silent-mode", action="store_true", help="Enable [Silent Mode] (requires [Audio signals]=OFF)")
+            p.add_argument("--audio-signals", default="ON", help="[Audio signals]: ON, OFF_SHUTTER_ONLY, OFF")
+            p.add_argument("--shockless-wb-mode", default="1", help="[Shockless WB]: OFF, 1, 2, 3")
+            p.add_argument("--wb-kelvin-k", type=int, default=5600, help="White balance color temperature (2500..9900K)")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-bench-cable-fan-slot1":
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 204 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -2254,6 +2454,57 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-hdmi-proxy-desqueeze-and-simult":
+        return _cmd_preflight_hdmi_proxy_desqueeze_and_simult(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.desqueeze_ratio,
+            args.hdmi_raw_output,
+            args.rec_media_dur_hdmi,
+            args.require_internal_card_rec,
+            args.ack_hdmi_only_no_card_rec,
+            args.log_shooting_mode,
+            args.picture_profile,
+            args.hdmi_info_display,
+            args.require_unblanked_lcd,
+            args.mc_focus_map_enabled,
+            args.mc_sensor_fps,
+            args.simult_recording,
+            args.auto_switch_media,
+            args.require_strict_vault_parity,
+            args.slot1_media_type,
+            args.slot2_media_type,
+            args.slot1_capacity_gb,
+            args.slot2_capacity_gb,
+            args.proxy_enabled,
+            args.proxy_format,
+            args.rec_fps,
+            args.sq_enabled,
+            args.sq_fps,
+            args.file_name_format,
+            args.file_number_mode,
+            args.title_name,
+            args.shoot_mode,
+            args.tc_make,
+            args.tc_run,
+            args.vmc_bncm1_ext_lk_required,
+            args.rec_lamp_mode,
+            args.silent_mode,
+            args.audio_signals,
+            args.shockless_wb_mode,
+            args.wb_kelvin_k,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
         )
     return 2
 

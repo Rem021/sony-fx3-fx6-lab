@@ -831,4 +831,38 @@ PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 145：Stage 25 真机主线 `FX6 appFw.so -> 原厂 FX3 libmpr.so / DmmCfg.bin` 插卡录制协同仿真器
+
+[`realhw_mpr_dmm_recording_coemulator.py`](realhw_mpr_dmm_recording_coemulator.py) 作为 **Stage 25（25/25 阶段完成）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase145_realhw_mpr_dmm_rec=True`，可通过 `--skip-phase145` 跳过；全板 25 阶段协同仿真在本地只读供体模式下 `< 2.0s`、洁净室模式下 `< 0.8s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`emmc_nflasha_write_count == 0`**、**`cp_mutation_bytes == 0`**、**`dmm_allocated_after_stop == 0`**、**`m_user_count == 0`**、**`uipc_lock_depth == 0`**、**`rsv_orphan_count == 0`** 与 **`appfw_crashes == 0`** 的前提下完成五大闭环：
+
+1. **双模式只读供体审计（`os.O_RDONLY` + `mmap.ACCESS_READ`）+ 洁净室回退（`< 0.08s`）**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 `libmpr.so`（`3,517,008 B` / `3,541` 导出含 `libsecvlt.so` 依赖 vs `28,921,824 B` / `4,271` 导出）、`appFw.so`（`50,520,424 B` / `89` 条 `libmpr.so` 导入 = `74` 透传 + `15` Shim）、`im.elf`（`40,920 B`）、AP `DmmCfg.bin`（`66,796 B` `603` 单元 vs `59,364 B` `556` 单元，含 `for ilc32g12m-ipsxmp` 邮戳）、CP `DmmCfg.bin`（`43,320 B` `348` 单元，含 `for ilc8g8g-ipsxcp` 邮戳）及 FX3 `libsecvlt.so`（`10,216 B` / `9` 导出），同时校验 Linux `4.9` AArch64 `ld-2.25.so` 强制要求的 `PT_LOAD p_align == 0x10000`（64 KiB）页对齐；`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 描述符。
+2. **Pillar A — `LD_PRELOAD` `libmpr.so` + `libsecvlt.so` 符号与 ABI Shim 协同仿真器**：
+   - 仿真 FX6 `appFw.so` 调用全部 **74** 项透传录制符号（含 `ExecEncStart`、`SetEncStartParam`、`EnqueueExecEncStart`、`EnqueueExecEncStop`、`DmmMemInfo::GetUnitInfo`、`ExecAudioEncStart/Stop`），安全拦截并放行 **15** 项 FX6 专属 SDI/RAW/Sub-Proxy 符号（`0` / `ENOENT_SAFE`），严格保留原厂 FX3 `libsecvlt.so` 绑定（`9` 导出），并在结构隔离守卫中阻断 `g_videoParamComb`（`312 B` vs `480 B`）/`s_movieRecInfo`（`3144 B` vs `5248 B`）直解引用以及非 64 KiB `PT_LOAD`（`0x1000`）加载。
+3. **Pillar B — 原厂 FX3 `DmmCfg.bin` 内存池预算与零泄漏验证器**：
+   - 覆盖 `4K 24p/60p/120p XAVC-I / XAVC-S / XAVC-HS 10-bit 4:2:2` + `S-Log3.Cine / Cine EI` MLUT 预览，证明峰值占用严格收敛在原厂 FX3 **20 个共享 `MAIN` DMM 单元**与 `512 MiB` 预算内，停录后 `dmm_allocated_after_stop == 0` 且 `m_user_count == 0`，并在溢出前拒收未屏蔽的 FX6 `SDI-RAW` 与 `Darwin-ND` 池请求。
+4. **Pillar C — 物理 `REC` 按键 -> `ParameterControl` -> 双槽 `M4ROOT/CLIP` 生命周期**：
+   - 仿真 `Standby` -> `REC_START` -> 6 项拍摄域 `ParameterControl` 翻译 -> `SIMUL` / `RELAY` Slot-A（`CFexpress Type A`）& Slot-B（`SDXC UHS-II`）虚拟 ExFAT 短片与非实时 XML（`M4ROOT/CLIP/A001C001_*.MP4` + `*.XML`，含 Cine EI 曝光指数与 `.cube` User 3D LUT 标签）-> `REC_STOP` -> `osal_uipc` `s_recordCounter == 0` 与 `s_movieRWlock` 锁深归零（`uipc_lock_depth == 0`）。
+5. **Pillar D — 故障注入韧性与零持久化写入红线**：
+   - 注入 `CARD_FULL_STOP`（卡满优雅 `EncWfiStop`）、`SLOT_A_HOT_PULL_RELAY_FAILOVER`（热拔 Slot-A 无缝切至 Slot-B）与 `LOW_BATTERY_ENCWFISTOP`（低电安全封口），验证 `appfw_crashes == 0`、`rsv_orphan_count == 0`、`emmc_nflasha_write_count == 0` 且 `persistent_emmc_writes_authorized == False`。
+
+### Phase 145 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 25 自检（< 0.08s）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_mpr_dmm_recording_coemulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_mpr_dmm_recording_coemulator.py --self-test --json
+
+# 2. 全板 25 阶段（Stage 1..25）统一校验（支持 --skip-phase145）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 145 46 项单测 & 全量 fx3-vm 单测（双模式）
+/usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_mpr_dmm_recording_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_mpr_dmm_recording_coemulator.py -v
+/usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 

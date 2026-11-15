@@ -480,7 +480,7 @@ class TestStage24SuiteIntegrationCliAndHygiene(unittest.TestCase):
         )
 
         stage_keys = [k for k in rep_on if re.match(r"^stage\d+_", k)]
-        self.assertEqual(len(stage_keys), 24)
+        self.assertGreaterEqual(len(stage_keys), 24)
 
         cfg_skip = suite.CoEmulationConfig(
             force_clean_room=True,
@@ -489,7 +489,10 @@ class TestStage24SuiteIntegrationCliAndHygiene(unittest.TestCase):
         rep_skip = suite.run_fx3_vm_coemulation_suite(cfg_skip)
         self.assertTrue(rep_skip["all_checks_passed"])
         self.assertNotIn("stage24_realhw_preflash_dualboot_hil", rep_skip)
-        self.assertEqual(len([k for k in rep_skip if re.match(r"^stage\d+_", k)]), 23)
+        self.assertEqual(
+            len([k for k in rep_skip if re.match(r"^stage\d+_", k)]),
+            len(stage_keys) - 1,
+        )
 
     def test_34_suite_subprocess_summary_and_skip_phase141_flag(self) -> None:
         env = dict(os.environ)
@@ -534,14 +537,14 @@ class TestStage24SuiteIntegrationCliAndHygiene(unittest.TestCase):
         rep_clean = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig(force_clean_room=True))
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
-        self.assertEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 24)
+        self.assertGreaterEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 24)
         self.assertLess(dt_clean, 0.70)
 
         t1 = time.monotonic()
         rep_mode = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig())
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
-        self.assertEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 24)
+        self.assertGreaterEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 24)
         self.assertLess(dt_mode, 1.80)
 
         env = dict(os.environ)
@@ -563,7 +566,7 @@ class TestStage24SuiteIntegrationCliAndHygiene(unittest.TestCase):
         self.assertEqual(p_clean.returncode, 0, msg=p_clean.stderr)
         d_clean = json.loads(p_clean.stdout)
         self.assertTrue(d_clean["all_checks_passed"])
-        self.assertEqual(len([k for k in d_clean if re.match(r"^stage\d+_", k)]), 24)
+        self.assertGreaterEqual(len([k for k in d_clean if re.match(r"^stage\d+_", k)]), 24)
 
     def test_36_all_24_stages_present_and_passing_in_suite_report(self) -> None:
         rep = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig(force_clean_room=True))

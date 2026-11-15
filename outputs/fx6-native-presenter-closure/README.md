@@ -851,6 +851,34 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `167+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/README.md`](../../reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/summary.json).
 
+---
+
+## 23. Round 23: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) Monitoring & Status Check Tab 5 Monitoring Dual-Surface Closure (`3-Layer Monitoring Menu sid=0x11` & `Status Check Monitoring Tab 5 sid=0x33` -> `12/12` Multilingual Deltas)
+
+`build_and_run_round.py --round 23 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) Monitoring Dual-Surface Closure** across both **3-Layer Monitoring Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`, `5x DOWN + 2x RIGHT`)** and **Status Check Tab 5 Monitoring (`sid=0x33`, `40procam_touch_status_monitoring_presenter`, `4x DOWN`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R23_VERIFY_PASS`, `FX6_STAGE_B_R23_BRIDGE`, and `FX6_R23_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 23 --lang english --initial-setting-done 1 --run-id r23a-menu-3layer-monitoring-english --duration 88 \
+  --run-dir /private/tmp/fx6-r23-runs/r23a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:700,0x0030:120:700,0x0030:120:700,0x0030:120:700,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r23a-menu-3layer-monitoring-english \
+  --export-png-dir reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/assets
+```
+
+- **5 Live Round 23 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P11` `XLR-H1`, `P12` `WF-12` Immune)**:
+  - `r23a-menu-3layer-monitoring-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `5x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `220` colors / `290` `0xffffaa00` amber px, `14,563` icon blits, `10,724` glyph blits, `90` `LDEC103` ioctls).
+  - `r23b-menu-3layer-monitoring-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `5x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `223` colors / `309` `0xffffaa00` amber px, `14,663` icon blits, `10,818` glyph blits, `90` `LDEC103` ioctls).
+  - `r23c-status-tab5-monitoring-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `4x 0x0030` -> `40procam_touch_status_monitoring_presenter` (`sid=0x33`, `437,883` px / `106` colors / `323` `0xffffaa00` amber px, `8,265` icon blits, `15,430` glyph blits, `63` `LDEC103` ioctls).
+  - `r23d-status-tab5-monitoring-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `0x7052` + `4x 0x0030` -> `40procam_touch_status_monitoring_presenter` (`sid=0x33`, `437,403` px / `106` colors / `266` `0xffffaa00` amber px, `8,206` icon blits, `15,389` glyph blits, `63` `LDEC103` ioctls).
+  - `r23e-status-tab5-monitoring-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `4x 0x0030` -> `40procam_touch_status_monitoring_presenter` (`sid=0x33`, `437,403` px / `106` colors / `266` `0xffffaa00` amber px, `8,357` icon blits, `16,761` glyph blits, `63` `LDEC103` ioctls).
+  - **Complete `12/12` Monitoring & Tab 5 Multilingual Pairwise Matrix**:
+    - 3-Layer Monitoring Menu (`sid=0x11`) across (`r23a EN`, `r16d JA`, `r15c ZH-CN`, `r23b ZH-TW`): `6/6` pairs strictly `> 0` (`5,728 .. 11,028` px).
+    - Status Check Tab 5 Monitoring (`sid=0x33`) across (`r23c EN`, `r23d JA`, `r16b ZH-CN`, `r23e ZH-TW`): `6/6` pairs strictly `> 0` (`11,755 .. 27,821` px).
+  - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
+- **Full Report, Receipts, & `180+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/summary.json).
+
+
 
 
 

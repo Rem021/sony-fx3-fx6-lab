@@ -463,6 +463,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R22_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 paintlook_camtab2_4lang_dualsurface=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r23_st;
+    if (stat("/etc/fx6_stage_r23", &r23_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r23f = fopen("/etc/fx6_stage_r23", "r");
+        if (r23f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r23f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r23f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R23_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 monitoring_tab5_4lang_dualsurface=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 

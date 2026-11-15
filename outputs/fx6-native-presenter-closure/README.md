@@ -722,3 +722,27 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r17g-status-wraparound-tab1-schinese`: `10x 0x0030` -> exact carousel wrap-around back to `34procam_touch_status_main_presenter` (`sid=0x2f`, `437,883` px / `85` colors / `237` `0xffffaa00` amber px, `8,400` icon blits, `14,029` glyph blits, `70` `LDEC103` ioctls).
 - **Full Report, Receipts, & `95` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/README.md`](../../reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/README.md) and [`summary.json`](../../reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/summary.json).
 
+---
+
+## 18. Round 18: Real FX3 `7.02` Kernel 3-Layer Full Menu Remaining Category Closure (`Project`, `TC/Media`, `Network P12 WF-12 Immune`, & `Maintenance` -> Complete 8-Category `C(8,2)=28` Pairwise Closure)
+
+`build_and_run_round.py --round 18 --lang schinese` completes the **8-category Simplified Chinese 3-layer Full Menu closure** (`31procam_menu_layer_3rd_presenter`, `sid=0x11`, `bk4=0x19`, `font=23`, `str=19`) on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R18_VERIFY_PASS`, `FX6_STAGE_B_R18_BRIDGE`, and `FX6_R18_LANG_TELEMETRY`), adding `Project` (`2x 0x0030`), `TC/Media` (`4x 0x0030`), `Network` (`9x 0x0030`, proving `WF-12` `00342260` `P12` immunity inside the interactive `Network` 3-layer menu), and `Maintenance` (`10x 0x0030`) alongside prior `Shooting` (`r11d`), `Paint/Look` (`r13c`), `Monitoring` (`r15c`), and `Audio` (`r17d`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 18 --lang schinese --initial-setting-done 1 --run-id r18c-menu-3layer-network-schinese --duration 92 \
+  --run-dir /private/tmp/fx6-r18-runs/r18c \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r18c-menu-3layer-network-schinese \
+  --export-png-dir reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/assets
+```
+
+- **4 Live Round 18 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P12` `WF-12` `00342260` Immune)**:
+  - `r18a-menu-3layer-project-schinese`: `2x 0x0030` (`Project`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `253` colors / `1,074` `0xffffaa00` amber px, `14,611` icon blits, `10,401` glyph blits, `85` `LDEC103` ioctls).
+  - `r18b-menu-3layer-tcmedia-schinese`: `4x 0x0030` (`TC/Media`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `245` colors / `2,430` `0xffffaa00` amber px, `14,516` icon blits, `13,305` glyph blits, `88` `LDEC103` ioctls, **`12,853` px diff vs `r16c` Traditional Chinese `TC/Media`**).
+  - `r18c-menu-3layer-network-schinese`: `9x 0x0030` (`Network`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `273` colors, `14,916` icon blits, `10,579` glyph blits, `93` `LDEC103` ioctls) with live `WF-12` `00342260` `100%` immunity (`p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`).
+  - `r18d-menu-3layer-maintenance-schinese`: `10x 0x0030` (`Maintenance`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `238` colors, `14,879` icon blits, `10,071` glyph blits, `92` `LDEC103` ioctls).
+  - **Complete `C(8,2) = 28` Pairwise Matrix**: All `28/28` pairs across `Shooting` (`r11d`), `Project` (`r18a`), `Paint/Look` (`r13c`), `TC/Media` (`r18b`), `Monitoring` (`r15c`), `Audio` (`r17d`), `Network` (`r18c`), and `Maintenance` (`r18d`) are strictly `> 0` (`8,755 .. 146,605` px).
+- **Full Report, Receipts, & `108+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/README.md`](../../reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/summary.json).
+
+

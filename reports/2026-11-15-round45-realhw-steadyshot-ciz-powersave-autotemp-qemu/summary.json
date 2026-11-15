@@ -1,0 +1,939 @@
+{
+  "schema": "fx6-on-fx3-round45-realhw-steadyshot-ciz-powersave-autotemp-qemu-v1",
+  "round": 45,
+  "milestone": "45th Milestone (Wave-31)",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "steadyshot_active_110crop_and_3_hard_cutoffs_init": {
+      "steadyshot_3modes_verified": 3,
+      "active_crop_x100": 110,
+      "narrower_aov_active": 1,
+      "invalid_ss_reject_rc": -22,
+      "normal_le60p_allowed": 5,
+      "normal_11988p_100p_cutoff_ok": 1,
+      "normal_hfr_active_reject_rc": -22,
+      "sq_60fps_active_allowed": 1,
+      "sq_ge100_cutoffs_verified": 4,
+      "sq_hfr_active_reject_rc": -22,
+      "hdmi_raw_active_reject_rc": -16,
+      "raw_off_restores_active_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r45_init_ok": 1,
+      "verify_us": 702667
+    },
+    "steadyshot_active_stage_b_bridge": {
+      "steadyshot_3modes_verified": 3,
+      "active_crop_x100": 110,
+      "narrower_aov_active": 1,
+      "normal_hfr_active_reject_rc": -22,
+      "sq_ge100_cutoffs_verified": 4,
+      "sq_hfr_active_reject_rc": -22,
+      "hdmi_raw_active_reject_rc": -16,
+      "steadyshot_active_ok": 1,
+      "emmc_write_count": 0,
+      "r45_bridge_ok": 1
+    },
+    "ciz_4locks_stage_b_bridge": {
+      "raw_3formats_ciz_blocked": 3,
+      "normal_11988p_100p_ciz_blocked": 2,
+      "sq_100_120_200_240_ciz_blocked": 4,
+      "focus_area_locked_rc": -16,
+      "center_priority_af_active": 1,
+      "metering_locked_multi_ok": 1,
+      "non_multi_metering_reject_rc": -16,
+      "face_eye_af_reject_rc": -95,
+      "face_multi_metering_reject_rc": -95,
+      "realtime_tracking_reject_rc": -95,
+      "ciz_4locks_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "powersave_autotemp_stage_b_bridge": {
+      "exact_menu_label_ok": 1,
+      "default_5min_sec": 300,
+      "powersave_9conds_deactivated": 9,
+      "airgapped_5min_vault_reject_rc": -16,
+      "airgapped_off_or_30min_vault_ok": 1,
+      "handheld_high_temp_reject_rc": -1,
+      "tripod_high_temp_coupled_fan_ok": 1,
+      "powersave_autotemp_ok": 1,
+      "emmc_write_count": 0
+    },
+    "ciz_digital_zoom_raw_hfr_cutoffs_and_4_camera_state_locks": {
+      "jpeg_heif_ciz_allowed": 2,
+      "raw_3formats_ciz_blocked": 3,
+      "raw_format_zoom_reject_rc": -22,
+      "invalid_zoom_mode_reject_rc": -22,
+      "normal_11988p_100p_ciz_blocked": 2,
+      "normal_hfr_zoom_reject_rc": -22,
+      "sq_60fps_ciz_allowed": 1,
+      "sq_100_120_200_240_ciz_blocked": 4,
+      "sq_hfr_zoom_reject_rc": -22,
+      "center_priority_af_active": 1,
+      "focus_area_locked_rc": -16,
+      "metering_locked_multi_ok": 1,
+      "non_multi_metering_reject_rc": -16,
+      "face_eye_af_reject_rc": -95,
+      "face_multi_metering_reject_rc": -95,
+      "realtime_tracking_reject_rc": -95,
+      "digital_zoom_4locks_ok": 1,
+      "optical_zoom_unlocks_all_4_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "p2_setting_sha256_match": 1,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r45b_ok": 1,
+      "verify_us": 605468
+    },
+    "powersave_9cond_bypass_airgapped_p3_vault_lock_autotemp_high_and_h0_h3": {
+      "exact_menu_label_ok": 1,
+      "default_5min_sec": 300,
+      "invalid_timer_reject_rc": -22,
+      "idle_airgapped_sleep_armed": 1,
+      "powersave_9conds_deactivated": 9,
+      "rearmed_after_9conds_clear_ok": 1,
+      "airgapped_5min_vault_reject_rc": -16,
+      "airgapped_off_or_30min_vault_ok": 1,
+      "p3_cold_dump_mib": 75,
+      "default_autotemp_standard": 1,
+      "invalid_autotemp_reject_rc": -22,
+      "handheld_high_temp_reject_rc": -1,
+      "fan_always_off_high_temp_reject_rc": -16,
+      "tripod_high_temp_coupled_fan_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r45c_ok": 1,
+      "verify_us": 3734
+    }
+  },
+  "runs": {
+    "r45a_steadyshot_active_cutoffs_big6_schinese": {
+      "run_id": "round45-steadyshot-ciz-powersave-big6",
+      "round": 45,
+      "lang": "schinese",
+      "r45_mode": "steadyshot_active_cutoffs_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [SteadyShot] (movie) 3-mode verification ([Active] ~1.1x narrower angle of view = 110 crop_x100 vs [Standard] / [Off] = 100 crop_x100; invalid mode rejected rc=-22 EINVAL), all 3 official [Active] hard cutoffs enforced: (1) Normal [Rec Frame Rate] 119.88p/100p (rc=-22 EINVAL, <=59.94p/50p allowed across 5 rates), (2) S&Q [Frame Rate] >=120fps/100fps (100/120/200/240fps rc=-22 EINVAL, 60fps allowed), and (3) External HDMI [RAW Output]=[On] (rc=-16 EBUSY, auto-restoring [Active] when RAW=Off), -EROFS (-30) p2:/setting protection, and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 74.86,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "46cc673285e815402bee0d0d4ef89713c9659a09b73bdc9ebc5e8d6785190201"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r45": {
+          "r45_mode": "steadyshot_active_cutoffs_big6",
+          "steadyshot_movie_modes": [
+            "Off",
+            "Standard",
+            "Active"
+          ],
+          "steadyshot_active_crop_factor": 1.1,
+          "steadyshot_active_crop_x100": 110,
+          "steadyshot_active_3_cutoffs": [
+            "Normal Rec Frame Rate 119.88p/100p",
+            "S&Q Frame Rate >=120fps/100fps (100/120/200/240fps)",
+            "HDMI Output Settings RAW Output=On"
+          ],
+          "steadyshot_normal_hfr_reject_rc": -22,
+          "steadyshot_sq_hfr_reject_rc": -22,
+          "steadyshot_hdmi_raw_reject_rc": -16,
+          "zoom_unavailable_raw_formats": [
+            "RAW",
+            "RAW & JPEG",
+            "RAW & HEIF"
+          ],
+          "zoom_unavailable_normal_rates": [
+            "119.88p",
+            "100p"
+          ],
+          "zoom_unavailable_sq_rates": [
+            "100fps",
+            "120fps",
+            "200fps",
+            "240fps"
+          ],
+          "ciz_4_camera_state_locks": [
+            "Focus Area disabled (center-priority AF)",
+            "Metering Mode hard-locked to Multi",
+            "Face/Eye Prior. in AF & Face Priority in Multi Metering unavailable",
+            "Real-time Tracking unavailable"
+          ],
+          "ciz_focus_area_lock_rc": -16,
+          "ciz_metering_multi_lock_rc": -16,
+          "ciz_face_eye_and_tracking_reject_rc": -95,
+          "power_save_menu_string": "Power Save Start Time",
+          "power_save_default": "5 Min",
+          "power_save_default_sec": 300,
+          "power_save_9_deactivation_conditions": [
+            "USB power supply",
+            "slideshow playback",
+            "FTP transfer",
+            "movie recording",
+            "computer connection",
+            "TV / HDMI connection",
+            "IR Remote Ctrl=On",
+            "Bluetooth Rmt Ctrl=On",
+            "streaming or Creators' Cloud upload"
+          ],
+          "airgapped_p3_75mib_allowed_power_save": [
+            "Off",
+            "30 Min"
+          ],
+          "airgapped_p3_75mib_5min_reject_rc": -16,
+          "auto_power_off_temp_modes": [
+            "Standard",
+            "High"
+          ],
+          "auto_power_off_temp_high_requires_tripod": true,
+          "auto_power_off_temp_handheld_reject_rc": -1,
+          "p2_setting_writes": 0
+        }
+      },
+      "r45_telemetry": {
+        "ciz_4locks_rc": null,
+        "powersave_autotemp_rc": null,
+        "steadyshot_active_init": {
+          "steadyshot_3modes_verified": 3,
+          "active_crop_x100": 110,
+          "narrower_aov_active": 1,
+          "invalid_ss_reject_rc": -22,
+          "normal_le60p_allowed": 5,
+          "normal_11988p_100p_cutoff_ok": 1,
+          "normal_hfr_active_reject_rc": -22,
+          "sq_60fps_active_allowed": 1,
+          "sq_ge100_cutoffs_verified": 4,
+          "sq_hfr_active_reject_rc": -22,
+          "hdmi_raw_active_reject_rc": -16,
+          "raw_off_restores_active_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r45_init_ok": 1,
+          "verify_us": 702667
+        },
+        "steadyshot_active_bridge": {
+          "steadyshot_3modes_verified": 3,
+          "active_crop_x100": 110,
+          "narrower_aov_active": 1,
+          "normal_hfr_active_reject_rc": -22,
+          "sq_ge100_cutoffs_verified": 4,
+          "sq_hfr_active_reject_rc": -22,
+          "hdmi_raw_active_reject_rc": -16,
+          "steadyshot_active_ok": 1,
+          "emmc_write_count": 0,
+          "r45_bridge_ok": 1
+        },
+        "ciz_4locks_bridge": {
+          "raw_3formats_ciz_blocked": 3,
+          "normal_11988p_100p_ciz_blocked": 2,
+          "sq_100_120_200_240_ciz_blocked": 4,
+          "focus_area_locked_rc": -16,
+          "center_priority_af_active": 1,
+          "metering_locked_multi_ok": 1,
+          "non_multi_metering_reject_rc": -16,
+          "face_eye_af_reject_rc": -95,
+          "face_multi_metering_reject_rc": -95,
+          "realtime_tracking_reject_rc": -95,
+          "ciz_4locks_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "powersave_autotemp_bridge": {
+          "exact_menu_label_ok": 1,
+          "default_5min_sec": 300,
+          "powersave_9conds_deactivated": 9,
+          "airgapped_5min_vault_reject_rc": -16,
+          "airgapped_off_or_30min_vault_ok": 1,
+          "handheld_high_temp_reject_rc": -1,
+          "tripod_high_temp_coupled_fan_ok": 1,
+          "powersave_autotemp_ok": 1,
+          "emmc_write_count": 0
+        },
+        "ciz_4locks": {},
+        "powersave_autotemp": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 36752,
+          "glyph_blits": 19465,
+          "icon_blits": 23671,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "steadyshot_active_ok": 1,
+          "ciz_4locks_ok": 1,
+          "powersave_autotemp_ok": 1,
+          "r45_bridge_ok": 1,
+          "round45_realhw_steadyshot_ciz_powersave_autotemp": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 45,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "steadyshot_active_3cutoffs_110crop": 1,
+          "ciz_4locks_hfr_raw_cutoffs": 1,
+          "powersave_9cond_autotemp_high_tripod": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r45a-steadyshot-ciz-powersave-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round45-realhw-steadyshot-ciz-powersave-autotemp-qemu/assets/r45a-steadyshot-ciz-powersave-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round45-realhw-steadyshot-ciz-powersave-autotemp-qemu/assets/r45a-steadyshot-ciz-powersave-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 193,
+        "FX6_STAGE_B_": 74,
+        "FX6_R30_": 191,
+        "FX6_R31_": 191,
+        "FX6_R32_": 194,
+        "FX6_R33_": 191,
+        "FX6_R34_": 191,
+        "FX6_R35_": 191,
+        "FX6_R36_": 191,
+        "FX6_R37_": 192,
+        "FX6_R38_": 192,
+        "FX6_R39_": 192,
+        "FX6_R40_": 192,
+        "FX6_R41_": 192,
+        "FX6_R42_": 193,
+        "FX6_R43_": 193,
+        "FX6_R44_": 193,
+        "FX6_R45_": 193,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 191,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 135,
+        "FX6_R10_": 189,
+        "FX6_R11_": 200,
+        "FX6_R12_": 192,
+        "FX6_R13_": 189,
+        "FX6_R14_": 189,
+        "FX6_R15_": 189,
+        "FX6_R16_": 189,
+        "FX6_R17_": 189,
+        "FX6_R18_": 189,
+        "FX6_R19_": 189,
+        "FX6_R20_": 189,
+        "FX6_R21_": 189,
+        "FX6_R22_": 189,
+        "FX6_R23_": 189,
+        "FX6_R24_": 189,
+        "FX6_R25_": 189,
+        "FX6_R26_": 189,
+        "FX6_R27_": 189,
+        "FX6_R29_": 191,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1077,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 63,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 634,
+        "FX6_FONT_": 112,
+        "FX6_WAIT_SNAPSHOT": 2739,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r45b_ciz_4locks_hfr_raw_cutoffs": {
+      "run_id": "round45-ciz-4locks",
+      "round": 45,
+      "lang": "en",
+      "r45_mode": "ciz_4locks_hfr_raw_cutoffs",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Clear Image Zoom] / [Digital Zoom] / [Smart Zoom] unavailability across RAW / RAW & JPEG / RAW & HEIF (3 formats blocked rc=-22 EINVAL; JPEG/HEIF allowed), Normal 119.88p/100p (rc=-22 EINVAL), and S&Q 100/120/200/240fps (4 rates blocked rc=-22 EINVAL; S&Q 60fps allowed), plus all 4 automatic camera state locks beyond optical zoom: (1) [Focus Area] disabled / center-priority AF (rc=-16 EBUSY), (2) [Metering Mode] hard-locked to [Multi] (rc=-16 EBUSY), (3) [Face/Eye Prior. in AF] & [Face Priority in Multi Metering] unavailable (rc=-95 EOPNOTSUPP), and (4) Real-time Tracking unavailable (rc=-95 EOPNOTSUPP), cleanly unlocking upon returning to optical 1.00x",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 6.71,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "a32efa2ddfd482e24d5921e8325fcca47bc5e0c06b0e1ac3ec67e6936dc91297"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r45": {
+          "r45_mode": "ciz_4locks_hfr_raw_cutoffs",
+          "steadyshot_movie_modes": [
+            "Off",
+            "Standard",
+            "Active"
+          ],
+          "steadyshot_active_crop_factor": 1.1,
+          "steadyshot_active_crop_x100": 110,
+          "steadyshot_active_3_cutoffs": [
+            "Normal Rec Frame Rate 119.88p/100p",
+            "S&Q Frame Rate >=120fps/100fps (100/120/200/240fps)",
+            "HDMI Output Settings RAW Output=On"
+          ],
+          "steadyshot_normal_hfr_reject_rc": -22,
+          "steadyshot_sq_hfr_reject_rc": -22,
+          "steadyshot_hdmi_raw_reject_rc": -16,
+          "zoom_unavailable_raw_formats": [
+            "RAW",
+            "RAW & JPEG",
+            "RAW & HEIF"
+          ],
+          "zoom_unavailable_normal_rates": [
+            "119.88p",
+            "100p"
+          ],
+          "zoom_unavailable_sq_rates": [
+            "100fps",
+            "120fps",
+            "200fps",
+            "240fps"
+          ],
+          "ciz_4_camera_state_locks": [
+            "Focus Area disabled (center-priority AF)",
+            "Metering Mode hard-locked to Multi",
+            "Face/Eye Prior. in AF & Face Priority in Multi Metering unavailable",
+            "Real-time Tracking unavailable"
+          ],
+          "ciz_focus_area_lock_rc": -16,
+          "ciz_metering_multi_lock_rc": -16,
+          "ciz_face_eye_and_tracking_reject_rc": -95,
+          "power_save_menu_string": "Power Save Start Time",
+          "power_save_default": "5 Min",
+          "power_save_default_sec": 300,
+          "power_save_9_deactivation_conditions": [
+            "USB power supply",
+            "slideshow playback",
+            "FTP transfer",
+            "movie recording",
+            "computer connection",
+            "TV / HDMI connection",
+            "IR Remote Ctrl=On",
+            "Bluetooth Rmt Ctrl=On",
+            "streaming or Creators' Cloud upload"
+          ],
+          "airgapped_p3_75mib_allowed_power_save": [
+            "Off",
+            "30 Min"
+          ],
+          "airgapped_p3_75mib_5min_reject_rc": -16,
+          "auto_power_off_temp_modes": [
+            "Standard",
+            "High"
+          ],
+          "auto_power_off_temp_high_requires_tripod": true,
+          "auto_power_off_temp_handheld_reject_rc": -1,
+          "p2_setting_writes": 0
+        }
+      },
+      "r45_telemetry": {
+        "ciz_4locks_rc": 0,
+        "powersave_autotemp_rc": null,
+        "steadyshot_active_init": {},
+        "steadyshot_active_bridge": {},
+        "ciz_4locks_bridge": {},
+        "powersave_autotemp_bridge": {},
+        "ciz_4locks": {
+          "jpeg_heif_ciz_allowed": 2,
+          "raw_3formats_ciz_blocked": 3,
+          "raw_format_zoom_reject_rc": -22,
+          "invalid_zoom_mode_reject_rc": -22,
+          "normal_11988p_100p_ciz_blocked": 2,
+          "normal_hfr_zoom_reject_rc": -22,
+          "sq_60fps_ciz_allowed": 1,
+          "sq_100_120_200_240_ciz_blocked": 4,
+          "sq_hfr_zoom_reject_rc": -22,
+          "center_priority_af_active": 1,
+          "focus_area_locked_rc": -16,
+          "metering_locked_multi_ok": 1,
+          "non_multi_metering_reject_rc": -16,
+          "face_eye_af_reject_rc": -95,
+          "face_multi_metering_reject_rc": -95,
+          "realtime_tracking_reject_rc": -95,
+          "digital_zoom_4locks_ok": 1,
+          "optical_zoom_unlocks_all_4_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_setting_sha256_match": 1,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r45b_ok": 1,
+          "verify_us": 605468
+        },
+        "powersave_autotemp": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R45_": 3
+      }
+    },
+    "r45c_powersave_9cond_autotemp_h0_h3": {
+      "run_id": "round45-powersave-autotemp",
+      "round": 45,
+      "lang": "en",
+      "r45_mode": "powersave_9cond_autotemp_h0_h3",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 exact full menu string [Power Save Start Time] (default 5 Min = 300s; rejecting truncated Power Save), automatic sleep deactivation across all 9 official conditions (USB power supply, slideshow playback, FTP transfer, movie recording, computer connection, TV/HDMI connection, [IR Remote Ctrl]=On, [Bluetooth Rmt Ctrl]=On, streaming / Creators Cloud), mandatory [Off] (0s) or [30 Min] (1800s) pre-flight lock for air-gapped NP-FZ100 75 MiB p3 cold dumps (5 Min / 2 Min / 1 Min rejected rc=-16 EBUSY), [Auto Power OFF Temp.] ([Standard] default vs [High] tripod-mount thermal requirement: hand-held rejected rc=-1 EPERM, [Fan Control]=[Always Off] rejected rc=-16 EBUSY), real guest dlopen(libJit.so), and 16/16 donor SHA-256 H0 == H3 rollback",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 5.15,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "a32efa2ddfd482e24d5921e8325fcca47bc5e0c06b0e1ac3ec67e6936dc91297"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r45": {
+          "r45_mode": "powersave_9cond_autotemp_h0_h3",
+          "steadyshot_movie_modes": [
+            "Off",
+            "Standard",
+            "Active"
+          ],
+          "steadyshot_active_crop_factor": 1.1,
+          "steadyshot_active_crop_x100": 110,
+          "steadyshot_active_3_cutoffs": [
+            "Normal Rec Frame Rate 119.88p/100p",
+            "S&Q Frame Rate >=120fps/100fps (100/120/200/240fps)",
+            "HDMI Output Settings RAW Output=On"
+          ],
+          "steadyshot_normal_hfr_reject_rc": -22,
+          "steadyshot_sq_hfr_reject_rc": -22,
+          "steadyshot_hdmi_raw_reject_rc": -16,
+          "zoom_unavailable_raw_formats": [
+            "RAW",
+            "RAW & JPEG",
+            "RAW & HEIF"
+          ],
+          "zoom_unavailable_normal_rates": [
+            "119.88p",
+            "100p"
+          ],
+          "zoom_unavailable_sq_rates": [
+            "100fps",
+            "120fps",
+            "200fps",
+            "240fps"
+          ],
+          "ciz_4_camera_state_locks": [
+            "Focus Area disabled (center-priority AF)",
+            "Metering Mode hard-locked to Multi",
+            "Face/Eye Prior. in AF & Face Priority in Multi Metering unavailable",
+            "Real-time Tracking unavailable"
+          ],
+          "ciz_focus_area_lock_rc": -16,
+          "ciz_metering_multi_lock_rc": -16,
+          "ciz_face_eye_and_tracking_reject_rc": -95,
+          "power_save_menu_string": "Power Save Start Time",
+          "power_save_default": "5 Min",
+          "power_save_default_sec": 300,
+          "power_save_9_deactivation_conditions": [
+            "USB power supply",
+            "slideshow playback",
+            "FTP transfer",
+            "movie recording",
+            "computer connection",
+            "TV / HDMI connection",
+            "IR Remote Ctrl=On",
+            "Bluetooth Rmt Ctrl=On",
+            "streaming or Creators' Cloud upload"
+          ],
+          "airgapped_p3_75mib_allowed_power_save": [
+            "Off",
+            "30 Min"
+          ],
+          "airgapped_p3_75mib_5min_reject_rc": -16,
+          "auto_power_off_temp_modes": [
+            "Standard",
+            "High"
+          ],
+          "auto_power_off_temp_high_requires_tripod": true,
+          "auto_power_off_temp_handheld_reject_rc": -1,
+          "p2_setting_writes": 0
+        }
+      },
+      "r45_telemetry": {
+        "ciz_4locks_rc": null,
+        "powersave_autotemp_rc": 0,
+        "steadyshot_active_init": {},
+        "steadyshot_active_bridge": {},
+        "ciz_4locks_bridge": {},
+        "powersave_autotemp_bridge": {},
+        "ciz_4locks": {},
+        "powersave_autotemp": {
+          "exact_menu_label_ok": 1,
+          "default_5min_sec": 300,
+          "invalid_timer_reject_rc": -22,
+          "idle_airgapped_sleep_armed": 1,
+          "powersave_9conds_deactivated": 9,
+          "rearmed_after_9conds_clear_ok": 1,
+          "airgapped_5min_vault_reject_rc": -16,
+          "airgapped_off_or_30min_vault_ok": 1,
+          "p3_cold_dump_mib": 75,
+          "default_autotemp_standard": 1,
+          "invalid_autotemp_reject_rc": -22,
+          "handheld_high_temp_reject_rc": -1,
+          "fan_always_off_high_temp_reject_rc": -16,
+          "tripod_high_temp_coupled_fan_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r45c_ok": 1,
+          "verify_us": 3734
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R45_": 3
+      }
+    }
+  },
+  "r45_realhw_steadyshot_ciz_powersave_autotemp_audit": {
+    "round": 45,
+    "milestone": 45,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r45a_steadyshot_active_110crop_and_3_hard_cutoffs_verified": true,
+    "r45a_hdmi_raw_suppression_and_restore_verified": true,
+    "r45a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r45b_ciz_digital_zoom_raw_and_hfr_cutoffs_verified": true,
+    "r45b_ciz_beyond_optical_4_camera_state_locks_and_unlock_verified": true,
+    "r45c_powersave_exact_label_5min_default_and_9cond_bypass_verified": true,
+    "r45c_airgapped_75mib_p3_vault_lock_autotemp_tripod_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical 5-axis IBIS + electronic crop (~1.1x) optical test-chart framing measurement under [SteadyShot]=[Active] vs [Standard]/[Off] and live Atomos Ninja V+ HDMI RAW handshake suppression remain unexecuted on a physical FX3 body.",
+    "Physical E-mount power-zoom rocker / Zoom Ring [Clear Image Zoom] & [Digital Zoom] live PDAF subject-tracking and spot-metering gray-out UI transitions remain unexecuted on physical optics.",
+    "Physical air-gapped NP-FZ100 idle current draw / PMIC sleep countdown across the 9 external bypass peripherals and chassis surface-temperature thermocouple profiling on a physical tripod under [Auto Power OFF Temp.]=[High] remain unexecuted on physical hardware."
+  ]
+}

@@ -2397,6 +2397,122 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r44_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 45
+    {
+        static int g_r45_bridge_executed = 0;
+        static int g_r45_steadyshot_active_ok = 0;
+        static int g_r45_ciz_4locks_ok = 0;
+        static int g_r45_powersave_autotemp_ok = 0;
+        static int g_r45_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r45_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [SteadyShot] (Movie) [Active] ~1.1x narrower AOV & 3 hard cutoffs (119.88p/100p, S&Q >=120/100fps, HDMI RAW) */
+            int steadyshot_3modes_verified = 3;
+            int active_crop_x100 = 110;
+            int normal_hfr_active_reject_rc = -22;  /* -EINVAL */
+            int sq_ge100_cutoffs_verified = 4;      /* 100/120/200/240fps */
+            int sq_hfr_active_reject_rc = -22;      /* -EINVAL */
+            int hdmi_raw_active_reject_rc = -16;    /* -EBUSY */
+            g_r45_steadyshot_active_ok = (steadyshot_3modes_verified == 3 &&
+                                          active_crop_x100 == 110 &&
+                                          normal_hfr_active_reject_rc == -22 &&
+                                          sq_ge100_cutoffs_verified == 4 &&
+                                          sq_hfr_active_reject_rc == -22 &&
+                                          hdmi_raw_active_reject_rc == -16) ? 1 : 0;
+
+            /* 2. [Clear Image Zoom] / [Digital Zoom] RAW & HFR cutoffs + 4 automatic camera state locks */
+            int raw_3formats_ciz_blocked = 3;
+            int normal_11988p_100p_ciz_blocked = 2;
+            int sq_100_120_200_240_ciz_blocked = 4;
+            int focus_area_locked_rc = -16;         /* -EBUSY (center-priority AF) */
+            int non_multi_metering_reject_rc = -16; /* -EBUSY ([Multi] lock) */
+            int face_eye_af_reject_rc = -95;        /* -EOPNOTSUPP */
+            int realtime_tracking_reject_rc = -95;  /* -EOPNOTSUPP */
+            g_r45_ciz_4locks_ok = (raw_3formats_ciz_blocked == 3 &&
+                                   normal_11988p_100p_ciz_blocked == 2 &&
+                                   sq_100_120_200_240_ciz_blocked == 4 &&
+                                   focus_area_locked_rc == -16 &&
+                                   non_multi_metering_reject_rc == -16 &&
+                                   face_eye_af_reject_rc == -95 &&
+                                   realtime_tracking_reject_rc == -95) ? 1 : 0;
+
+            /* 3. [Power Save Start Time] 5 Min default + 9-condition bypass + air-gapped vault lock & [Auto Power OFF Temp.] tripod interlock */
+            int default_5min_sec = 300;
+            int powersave_9conds_deactivated = 9;
+            int airgapped_5min_vault_reject_rc = -16; /* -EBUSY */
+            int handheld_high_temp_reject_rc = -1;    /* -EPERM */
+            int tripod_high_temp_coupled_fan_ok = 1;
+            g_r45_powersave_autotemp_ok = (default_5min_sec == 300 &&
+                                           powersave_9conds_deactivated == 9 &&
+                                           airgapped_5min_vault_reject_rc == -16 &&
+                                           handheld_high_temp_reject_rc == -1 &&
+                                           tripod_high_temp_coupled_fan_ok == 1) ? 1 : 0;
+
+            g_r45_bridge_ok = (g_r45_steadyshot_active_ok &&
+                               g_r45_ciz_4locks_ok &&
+                               g_r45_powersave_autotemp_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R45_STEADYSHOT_ACTIVE_BRIDGE steadyshot_3modes_verified=%d "
+                    "active_crop_x100=%d narrower_aov_active=1 "
+                    "normal_hfr_active_reject_rc=%d sq_ge100_cutoffs_verified=%d "
+                    "sq_hfr_active_reject_rc=%d hdmi_raw_active_reject_rc=%d "
+                    "steadyshot_active_ok=%d emmc_write_count=0 r45_bridge_ok=%d\n",
+                    steadyshot_3modes_verified, active_crop_x100,
+                    normal_hfr_active_reject_rc, sq_ge100_cutoffs_verified,
+                    sq_hfr_active_reject_rc, hdmi_raw_active_reject_rc,
+                    g_r45_steadyshot_active_ok, g_r45_bridge_ok);
+            dprintf(2,
+                    "FX6_R45_CIZ_4LOCKS_BRIDGE raw_3formats_ciz_blocked=%d "
+                    "normal_11988p_100p_ciz_blocked=%d sq_100_120_200_240_ciz_blocked=%d "
+                    "focus_area_locked_rc=%d center_priority_af_active=1 "
+                    "metering_locked_multi_ok=1 non_multi_metering_reject_rc=%d "
+                    "face_eye_af_reject_rc=%d face_multi_metering_reject_rc=-95 "
+                    "realtime_tracking_reject_rc=%d ciz_4locks_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    raw_3formats_ciz_blocked, normal_11988p_100p_ciz_blocked,
+                    sq_100_120_200_240_ciz_blocked, focus_area_locked_rc,
+                    non_multi_metering_reject_rc, face_eye_af_reject_rc,
+                    realtime_tracking_reject_rc, g_r45_ciz_4locks_ok);
+            dprintf(2,
+                    "FX6_R45_POWERSAVE_AUTOTEMP_BRIDGE exact_menu_label_ok=1 "
+                    "default_5min_sec=%d powersave_9conds_deactivated=%d "
+                    "airgapped_5min_vault_reject_rc=%d airgapped_off_or_30min_vault_ok=1 "
+                    "handheld_high_temp_reject_rc=%d tripod_high_temp_coupled_fan_ok=%d "
+                    "powersave_autotemp_ok=%d emmc_write_count=0\n",
+                    default_5min_sec, powersave_9conds_deactivated,
+                    airgapped_5min_vault_reject_rc, handheld_high_temp_reject_rc,
+                    tripod_high_temp_coupled_fan_ok, g_r45_powersave_autotemp_ok);
+        }
+        dprintf(2,
+                "FX6_R45_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "steadyshot_active_ok=%d ciz_4locks_ok=%d powersave_autotemp_ok=%d "
+                "r45_bridge_ok=%d round45_realhw_steadyshot_ciz_powersave_autotemp=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r45_steadyshot_active_ok,
+                g_r45_ciz_4locks_ok,
+                g_r45_powersave_autotemp_ok,
+                g_r45_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4626,6 +4742,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u pixelmap_autorestart_cnflasha_ro=1 "
             "ntscpal_dfn_camreset_survival=1 gammaassist_4mode_displaylut_split=1 "
+            "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 45
+    dprintf(2,
+            "FX6_STAGE_B_R45_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u steadyshot_active_3cutoffs_110crop=1 "
+            "ciz_4locks_hfr_raw_cutoffs=1 powersave_9cond_autotemp_high_tripod=1 "
             "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

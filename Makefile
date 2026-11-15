@@ -3,7 +3,7 @@ PYTHON ?= /usr/bin/python3
 PYFLAGS := -B
 CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure
 
-.PHONY: all test test-json dry-run readiness-packet lifecycle-drill stage-b-lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-stage-b-p10 verify-uipc-cp-shim verify-wireless-guard verify-firmware-lab verify-coemulation verify-byof verify-20-gates verify-24-gates verify-32-gates verify-40-gates verify-rp2040-fixture verify-init2-escape verify-tier0-backup verify-antirollback-guard verify-10pillar-recovery verify-13pillar-recovery verify-post-trial-audit verify-milestone-90 verify-milestone-110 verify-milestone-130 verify-fast
+.PHONY: all test test-json dry-run readiness-packet lifecycle-drill stage-b-lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-stage-b-p10 verify-uipc-cp-shim verify-wireless-guard verify-firmware-lab verify-coemulation verify-byof verify-20-gates verify-24-gates verify-32-gates verify-40-gates verify-44-gates verify-rp2040-fixture verify-init2-escape verify-tier0-backup verify-antirollback-guard verify-10pillar-recovery verify-13pillar-recovery verify-17pillar-recovery verify-post-trial-audit verify-milestone-90 verify-milestone-110 verify-milestone-130 verify-sd-stageb-bundle verify-milestone-147 verify-fast
 
 all: test
 
@@ -73,6 +73,9 @@ verify-32-gates:
 verify-40-gates:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety" $(PYTHON) $(PYFLAGS) -m fx3_safety verify-40-gates --dry-run-simulated-backup
 
+verify-44-gates:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety" $(PYTHON) $(PYFLAGS) -m fx3_safety verify-44-gates --dry-run-simulated-backup
+
 verify-rp2040-fixture:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-rp2040-fixture
 
@@ -91,6 +94,9 @@ verify-10pillar-recovery:
 verify-13pillar-recovery:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124
 
+verify-17pillar-recovery:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-recovery-adapter" $(PYTHON) $(PYFLAGS) -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139
+
 verify-post-trial-audit:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx6-on-fx3-closure:outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab" $(PYTHON) $(PYFLAGS) -m fx6_closure audit-stage-b-post-trial
 
@@ -103,7 +109,13 @@ verify-milestone-110:
 verify-milestone-130:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-milestone-130
 
-verify-fast: verify-byof verify-40-gates verify-13pillar-recovery verify-firmware-lab verify-coemulation verify-milestone-130
+verify-sd-stageb-bundle:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-sd-stageb-bundle-uninstaller
+
+verify-milestone-147:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-milestone-147
+
+verify-fast: verify-byof verify-40-gates verify-44-gates verify-13pillar-recovery verify-17pillar-recovery verify-firmware-lab verify-coemulation verify-milestone-130 verify-milestone-147
 
 clean-audit:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) $(PYFLAGS) scripts/run_all_lab_tests.py --clean-only

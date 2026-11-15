@@ -1163,6 +1163,52 @@ def _cmd_verify_milestone_130(
     return 0 if ok else 1
 
 
+def _cmd_verify_realhw_jiritsu_tier0(
+    clean_room: bool,
+    json_output: bool,
+    output_path: Optional[Path],
+    tier0_bundle_dir: Optional[Path],
+) -> int:
+    from .realhw_jiritsu_and_tier0_dumper_auditor import (
+        run_phase136_realhw_jiritsu_tier0_audit,
+        verify_phase136_report,
+    )
+
+    rep = run_phase136_realhw_jiritsu_tier0_audit(
+        tier0_bundle_dir=tier0_bundle_dir,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    v_res = verify_phase136_report(rep.to_dict())
+    ok = rep.all_checks_passed and v_res.valid
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        p1 = rep.pillar1_jiritsu_stage288
+        p2 = rep.pillar2_u4_zero_sector0
+        p3 = rep.pillar3_u5_p1_fallback
+        p4 = rep.pillar4_tier0_stop_gate
+        summary = (
+            f"status={'OK' if ok else 'FAILED'} "
+            f"schema={rep.schema} "
+            f"mode={rep.verification_mode} "
+            f"decoder={p1.decoder_backend} "
+            f"u6_cmds={p1.u6_command_count}(direct_nflasha={len(p1.u6_direct_setting_or_nflasha_opcodes)}) "
+            f"stage288_p0={p1.stage288_hardening.all_p0_items_closed} "
+            f"u4_closed={p2.u4_closed}(strategy_a={p2.strategy_a_bridge.valid}) "
+            f"u5_closed={p3.u5_closed} "
+            f"tier0_ok={p4.all_checks_passed}(neg={p4.negative_gate_drills_passed}/5) "
+            f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+            f"usb_attach={rep.usb_device_attach_executed} "
+            f"report_sha256={rep.report_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
@@ -1203,9 +1249,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-90", "Verify Phase 90 6-Pillar Unified 24-Gate + OTP/RPMB/Tier-0 + 16-Auditor + 13-Stage VM + Round 16 Master Gate (stage_b_milestone90_master_gate_v1)"),
         ("verify-milestone-110", "Verify Phase 110 6-Pillar Century+10 Master Gate (32-Gate + 10-Pillar Recovery + >=20 Auditors + >=18 VM + R14/R17/R19 UI Closures, stage_b_milestone110_master_gate_v1)"),
         ("verify-milestone-130", "Verify Phase 130 6-Pillar Master Gate (40-Gate + >=13 Recovery + >=24 Auditors + >=21 VM + R14/R17/R19/R20..24 UI Closures, stage_b_milestone130_master_gate_v1)"),
+        ("verify-realhw-jiritsu-tier0", "Verify Phase 136 Stage-288 libJiritsu.so SET_FILE2 P0 hardening, U4/U5/U6 disassembly closures & Tier-0 cold-backup stop-gate"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
-        if cmd_name != "verify-post-trial":
+        if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
             p.add_argument("--fx6-lib-dir", type=Path, default=DEFAULT_FX6_DONOR_LIB_DIR)
             p.add_argument("--fx3-modules-dir", type=Path, default=DEFAULT_FX3_MODULES_DIR)
         if cmd_name == "verify-feature-routing":
@@ -1215,12 +1262,12 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
         if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
@@ -1231,6 +1278,8 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 capture directory")
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write deterministic readiness packet")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
+        if cmd_name == "verify-realhw-jiritsu-tier0":
+            p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 cold-backup bundle directory")
         if cmd_name == "build-stage-b-readiness-packet":
             p.add_argument("--json", action="store_true", help="Emit deterministic JSON packet to stdout")
             p.add_argument("--include-full-dry-run", action="store_true", help="Include slow 165s full candidate dry-run verification")
@@ -1411,6 +1460,13 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "verify-realhw-jiritsu-tier0":
+        return _cmd_verify_realhw_jiritsu_tier0(
+            args.clean_room,
+            args.json,
+            args.output,
+            args.tier0_bundle_dir,
         )
     return 2
 

@@ -46,6 +46,11 @@ from .realhw_29pillar_camset_slot1_simult_vault_verifier import (
     run_pillar29_standalone_suite,
     verify_29pillar_recovery_suite,
 )
+from .realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier import (
+    run_pillar30_standalone_suite,
+    verify_30pillar_recovery_suite,
+    verify_proxy_coupled_and_hdmi_only_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -255,6 +260,14 @@ def main():
     p208_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p208_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p208_master.add_argument('--out', help='optional exclusive new output directory for 29pillar-recovery-master-report.json')
+    p212_p30 = sub.add_parser('verify-proxy-coupled-hdmi-vault', help='Phase 212 Pillar 30 Px atomic main+proxy coupled vault (Slot 1/2), Off(HDMI Only) zero-card interlock, Log/PPLUT 1080p downshift & FocusMag x BrightMon verifier')
+    p212_p30.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p212_p30.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p212_p30.add_argument('--out', help='optional exclusive new output directory for pillar30-proxy-coupled-hdmi-vault-report.json')
+    p212_master = sub.add_parser('verify-30pillar-recovery', help='Phase 212 unified 30/30 milestone real-hardware recovery master aggregator (Pillars 1..29 + Pillar 30)')
+    p212_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p212_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p212_master.add_argument('--out', help='optional exclusive new output directory for 30pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1309,6 +1322,66 @@ def main():
                     f"pillar29_a={report.pillar29_a_camset_big6_vault.scenarios_passed}/{report.pillar29_a_camset_big6_vault.scenarios_total} "
                     f"pillar29_b={report.pillar29_b_simult_tcin_desqueeze_vault.scenarios_passed}/{report.pillar29_b_simult_tcin_desqueeze_vault.scenarios_total} "
                     f"master_29pillar_sha256={report.master_29pillar_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-proxy-coupled-hdmi-vault':
+            report = run_pillar30_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar30-proxy-coupled-hdmi-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_30a={report.pillar_30a_proxy_coupled_vault.scenarios_passed}/{report.pillar_30a_proxy_coupled_vault.scenarios_total} "
+                    f"pillar_30b={report.pillar_30b_hdmi_only_interlock.scenarios_passed}/{report.pillar_30b_hdmi_only_interlock.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-30pillar-recovery':
+            report = verify_30pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'30pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_2_6s={report.nominal_under_2_6s} "
+                    f"pillar30_a={report.pillar30_a_proxy_coupled_vault.scenarios_passed}/{report.pillar30_a_proxy_coupled_vault.scenarios_total} "
+                    f"pillar30_b={report.pillar30_b_hdmi_only_interlock.scenarios_passed}/{report.pillar30_b_hdmi_only_interlock.scenarios_total} "
+                    f"master_30pillar_sha256={report.master_30pillar_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

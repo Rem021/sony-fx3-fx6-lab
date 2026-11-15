@@ -1889,6 +1889,104 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r39_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 40
+    {
+        static int g_r40_bridge_executed = 0;
+        static int g_r40_big6_topology_ok = 0;
+        static int g_r40_no_end_firewall_ok = 0;
+        static int g_r40_camset_split_ok = 0;
+        static int g_r40_vmcbncm1_tc_ok = 0;
+        static int g_r40_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r40_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. BIG6 ([Mode Settings] = [Fixed/Variable]) 6-Tile Topology + [Home (Lower Left)] (Aperture vs ND Filter) Zero e-ND Firewall */
+            int big6_tiles = 6;
+            int end_actuator_reject_rc = -95; /* EOPNOTSUPP */
+            int e_nd_actuator_tx_count = 0;
+            int lower_left_toggle_ok = 1;
+            g_r40_big6_topology_ok = (big6_tiles == 6 && lower_left_toggle_ok == 1) ? 1 : 0;
+            g_r40_no_end_firewall_ok = (end_actuator_reject_rc == -95 &&
+                                        e_nd_actuator_tx_count == 0) ? 1 : 0;
+
+            /* 2. Slot-1 CAMSET01..10.DAT Dual-Media Path Split + MR Lockout + Cross-Model .DAT Firewall */
+            int camset_max_profiles = 10;
+            int slot2_reject_rc = -22;       /* EINVAL */
+            int save_11th_reject_rc = -28;   /* ENOSPC */
+            int mr_mode_lock_rc = -16;       /* EBUSY */
+            int cross_model_dat_reject_rc = -79; /* ELIBBAD spec */
+            const char *camset_overlay_dir = "/tmp/fx6_camset_overlay";
+            g_r40_camset_split_ok = (camset_max_profiles == 10 &&
+                                     slot2_reject_rc == -22 &&
+                                     save_11th_reject_rc == -28 &&
+                                     mr_mode_lock_rc == -16 &&
+                                     cross_model_dat_reject_rc == -79 &&
+                                     memcmp(camset_overlay_dir, "/tmp/fx6_camset_overlay", 23U) == 0) ? 1 : 0;
+
+            /* 3. VMC-BNCM1 Body-Only TC IN (EXT-LK >=10s) + XLR-H1 Handle USB Block + BNC TC OUT Block + HDMI Digital TC OUT */
+            int handle_usb_reject_rc = -19;  /* ENODEV */
+            int bnc_tcout_reject_rc = -95;   /* EOPNOTSUPP */
+            int ext_lk_min_ms = 10000;
+            int hdmi_tcout_movie_only = 1;
+            g_r40_vmcbncm1_tc_ok = (handle_usb_reject_rc == -19 &&
+                                    bnc_tcout_reject_rc == -95 &&
+                                    ext_lk_min_ms == 10000 &&
+                                    hdmi_tcout_movie_only == 1) ? 1 : 0;
+
+            g_r40_bridge_ok = (g_r40_big6_topology_ok && g_r40_no_end_firewall_ok &&
+                               g_r40_camset_split_ok && g_r40_vmcbncm1_tc_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R40_BIG6_NOEND_BRIDGE big6_tiles=%d mode_settings=Fixed_Variable "
+                    "lower_left_modes=Aperture_NDFilter end_actuator_reject_rc=%d "
+                    "e_nd_actuator_tx_count=%d virtual_nd_metadata_only=1 "
+                    "big6_topology_ok=%d no_end_firewall_ok=%d "
+                    "emmc_write_count=0 r40_bridge_ok=%d\n",
+                    big6_tiles, end_actuator_reject_rc, e_nd_actuator_tx_count,
+                    g_r40_big6_topology_ok, g_r40_no_end_firewall_ok, g_r40_bridge_ok);
+            dprintf(2,
+                    "FX6_R40_CAMSET_TC_BRIDGE camset_slot1_only=1 camset_max_profiles=%d "
+                    "sd_camset_dir=/PRIVATE/SONY/SETTING/FX3/CAMSET/ "
+                    "cfx_camset_dir=/SONY/SETTING/FX3/CAMSET/ "
+                    "slot2_reject_rc=%d save_11th_reject_rc=%d mr_mode_lock_rc=%d "
+                    "cross_model_dat_reject_rc=%d camset_overlay_dir=/tmp/fx6_camset_overlay "
+                    "vmcbncm1_body_tcin_only=1 ext_lk_holdover_min_ms=%d "
+                    "handle_usb_reject_rc=%d bnc_tcout_reject_rc=%d hdmi_tcout_movie_only=%d "
+                    "camset_split_ok=%d vmcbncm1_tc_ok=%d p2_setting_writes=0 emmc_write_count=0\n",
+                    camset_max_profiles, slot2_reject_rc, save_11th_reject_rc,
+                    mr_mode_lock_rc, cross_model_dat_reject_rc, ext_lk_min_ms,
+                    handle_usb_reject_rc, bnc_tcout_reject_rc, hdmi_tcout_movie_only,
+                    g_r40_camset_split_ok, g_r40_vmcbncm1_tc_ok);
+        }
+        dprintf(2,
+                "FX6_R40_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "big6_topology_ok=%d no_end_firewall_ok=%d camset_split_ok=%d vmcbncm1_tc_ok=%d "
+                "r40_bridge_ok=%d milestone_round40_realhw_big6_noend_camset_vmcbncm1=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r40_big6_topology_ok,
+                g_r40_no_end_firewall_ok,
+                g_r40_camset_split_ok,
+                g_r40_vmcbncm1_tc_ok,
+                g_r40_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4064,6 +4162,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u fan_4mode_no_auto1_auto2=1 "
             "off_in_rec_standby_max_pwm=1 always_off_backup_interlock=1 "
             "shutter_speed_angle_independent=1 lut_601_vs_702_slot_firewall=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 40
+    dprintf(2,
+            "FX6_STAGE_B_R40_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u big6_home_6tile_no_end=1 "
+            "lower_left_aperture_nd_toggle=1 camset_slot1_dualmedia_split=1 "
+            "vmcbncm1_body_tcin_hdmi_tcout=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

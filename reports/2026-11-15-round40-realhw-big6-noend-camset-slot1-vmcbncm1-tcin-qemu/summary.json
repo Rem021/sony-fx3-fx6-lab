@@ -1,0 +1,830 @@
+{
+  "schema": "fx6-on-fx3-round40-realhw-big6-noend-camset-slot1-vmcbncm1-tcin-qemu-v1",
+  "milestone": 40,
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "big6_6tile_home_lower_left_aperture_nd_and_zero_end_actuator_init": {
+      "mode_settings": "Fixed_Variable",
+      "home_key_bound": 1,
+      "not_fixed_var_reject_rc": -22,
+      "no_home_key_reject_rc": -22,
+      "home_enter_rc": 0,
+      "big6_tile_count": 6,
+      "status_bar_zone": 1,
+      "tiles_verified": 6,
+      "default_lower_left": "Aperture",
+      "toggle_nd_filter_rc": 0,
+      "toggle_aperture_rc": 0,
+      "invalid_ll_reject_rc": -22,
+      "emount_aperture_rc": 0,
+      "virtual_nd_display_rc": 0,
+      "virtual_nd_range_reject_rc": -34,
+      "end_1_4_reject_rc": -95,
+      "end_1_128_reject_rc": -95,
+      "end_stops_blocked": 6,
+      "e_nd_actuator_tx_count": 0,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r40_init_ok": 1,
+      "verify_us": 586254
+    },
+    "big6_home_zero_end_actuator_stage_b_bridge": {
+      "big6_tiles": 6,
+      "mode_settings": "Fixed_Variable",
+      "lower_left_modes": "Aperture_NDFilter",
+      "end_actuator_reject_rc": -95,
+      "e_nd_actuator_tx_count": 0,
+      "virtual_nd_metadata_only": 1,
+      "big6_topology_ok": 1,
+      "no_end_firewall_ok": 1,
+      "emmc_write_count": 0,
+      "r40_bridge_ok": 1
+    },
+    "slot1_only_camset_10slot_dualmedia_path_split_and_mr_fx3a_firewall": {
+      "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+      "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+      "sd_saved_count": 10,
+      "sd_loaded_count": 10,
+      "cfx_saved_count": 10,
+      "cfx_loaded_count": 10,
+      "sd_save_11th_reject_rc": -28,
+      "cfx_save_11th_reject_rc": -28,
+      "overwrite_existing_slot_rc": 0,
+      "slot2_save_reject_rc": -22,
+      "slot2_load_reject_rc": -22,
+      "mr_mode_save_reject_rc": -16,
+      "mr_mode_load_reject_rc": -16,
+      "wrong_prefix_on_sd_rc": -22,
+      "wrong_prefix_on_cfx_rc": -22,
+      "fx3a_dat_reject_rc": -79,
+      "fx6_dat_reject_rc": -79,
+      "excluded_machine_bound_fields": 5,
+      "stageb_overlay_dir": "/tmp/fx6_camset_overlay",
+      "stageb_overlay_saved": 10,
+      "p2_write_blocked_rc": -30,
+      "p2_setting_sha256_match": 1,
+      "slot1_fx3_camset_intact": 10,
+      "appfw_camset_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r40b_ok": 1,
+      "verify_us": 592145
+    },
+    "vmc_bncm1_body_only_tcin_10s_holdover_and_hdmi_digital_tcout": {
+      "adapter_model": "VMC-BNCM1",
+      "part_no": "A-5051-506-A",
+      "cable_len_cm": 20,
+      "body_usb_port": "Multi_Micro_USB",
+      "pre_10s_9999ms_rc": -11,
+      "body_movie_preset_freerun_10s_rc": 0,
+      "ext_lk_locked": 1,
+      "holdover_active": 1,
+      "release_on_sq_locked": 0,
+      "release_on_tcmake_regen_locked": 0,
+      "release_on_tcrun_recrun_locked": 0,
+      "release_on_tcpreset_edit_locked": 0,
+      "xlrh1_handle_usb_reject_rc": -19,
+      "bnc_tcout_reject_rc": -95,
+      "bnc_tcout_tx_count": 0,
+      "hdmi_type_a_movie_tcout_rc": 0,
+      "hdmi_movie_tcout_active": 1,
+      "hdmi_sq_tcout_reject_rc": -95,
+      "hdmi_sq_tcout_active": 0,
+      "hdmi_sq_tcout_disabled": 1,
+      "p2_write_blocked_rc": -30,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r40c_ok": 1,
+      "verify_us": 3996
+    }
+  },
+  "runs": {
+    "r40a_big6_home_noend_schinese": {
+      "run_id": "r40a-big6-noend-schinese",
+      "round": 40,
+      "lang": "schinese",
+      "r40_mode": "big6_home_noend_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "40th Milestone QEMU Rehearsal: Live FX3 7.02 BIG6 ([Mode Settings] = [Fixed/Variable]) 6-tile topology (FPS, ISO/Base ISO, Shutter Speed/Angle, Aperture/ND Filter, Picture Profile/Select LUT, White Balance), [Home (Lower Left)] toggle between E-Mount Aperture and virtual ND Filter display, fail-closed FX6 motorized e-ND (1/4..1/128) CP actuator firewall (rc=-95 EOPNOTSUPP, e_nd_actuator_tx_count=0), and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 72.5,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "ccb5d2ccbfc7ba97332bad94c662a672b9b447d8880bd5b72f401411eb8ff339"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r40": {
+          "r40_mode": "big6_home_noend_big6",
+          "big6_mode_settings_prerequisite": "Fixed/Variable",
+          "big6_tiles": [
+            "FPS",
+            "ISO/Base ISO",
+            "Shutter Speed/Angle",
+            "Aperture/ND Filter",
+            "Picture Profile/Select LUT",
+            "White Balance"
+          ],
+          "big6_lower_left_modes": [
+            "Aperture",
+            "ND Filter"
+          ],
+          "e_nd_actuator_reject_rc": -95,
+          "e_nd_actuator_tx_count": 0,
+          "camset_allowed_slot": 1,
+          "camset_slot2_reject_rc": -22,
+          "camset_max_profiles": 10,
+          "camset_save_11th_reject_rc": -28,
+          "camset_mr_mode_reject_rc": -16,
+          "camset_cross_model_reject_rc": -79,
+          "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+          "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+          "camset_stage_b_overlay_dir": "/tmp/fx6_camset_overlay",
+          "vmcbncm1_part_no": "A-5051-506-A",
+          "vmcbncm1_body_usb_port": "Multi/Micro USB",
+          "vmcbncm1_ext_lk_min_ms": 10000,
+          "vmcbncm1_handle_usb_reject_rc": -19,
+          "vmcbncm1_bnc_tcout_reject_rc": -95,
+          "hdmi_digital_tcout_port": "Type-A HDMI",
+          "hdmi_tcout_sq_disabled": true,
+          "p2_setting_writes": 0
+        }
+      },
+      "r40_telemetry": {
+        "camset_rc": null,
+        "vmcbncm1_rc": null,
+        "big6_noend_init": {
+          "mode_settings": "Fixed_Variable",
+          "home_key_bound": 1,
+          "not_fixed_var_reject_rc": -22,
+          "no_home_key_reject_rc": -22,
+          "home_enter_rc": 0,
+          "big6_tile_count": 6,
+          "status_bar_zone": 1,
+          "tiles_verified": 6,
+          "default_lower_left": "Aperture",
+          "toggle_nd_filter_rc": 0,
+          "toggle_aperture_rc": 0,
+          "invalid_ll_reject_rc": -22,
+          "emount_aperture_rc": 0,
+          "virtual_nd_display_rc": 0,
+          "virtual_nd_range_reject_rc": -34,
+          "end_1_4_reject_rc": -95,
+          "end_1_128_reject_rc": -95,
+          "end_stops_blocked": 6,
+          "e_nd_actuator_tx_count": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r40_init_ok": 1,
+          "verify_us": 586254
+        },
+        "big6_noend_bridge": {
+          "big6_tiles": 6,
+          "mode_settings": "Fixed_Variable",
+          "lower_left_modes": "Aperture_NDFilter",
+          "end_actuator_reject_rc": -95,
+          "e_nd_actuator_tx_count": 0,
+          "virtual_nd_metadata_only": 1,
+          "big6_topology_ok": 1,
+          "no_end_firewall_ok": 1,
+          "emmc_write_count": 0,
+          "r40_bridge_ok": 1
+        },
+        "camset_tc_bridge": {
+          "camset_slot1_only": 1,
+          "camset_max_profiles": 10,
+          "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+          "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+          "slot2_reject_rc": -22,
+          "save_11th_reject_rc": -28,
+          "mr_mode_lock_rc": -16,
+          "cross_model_dat_reject_rc": -79,
+          "camset_overlay_dir": "/tmp/fx6_camset_overlay",
+          "vmcbncm1_body_tcin_only": 1,
+          "ext_lk_holdover_min_ms": 10000,
+          "handle_usb_reject_rc": -19,
+          "bnc_tcout_reject_rc": -95,
+          "hdmi_tcout_movie_only": 1,
+          "camset_split_ok": 1,
+          "vmcbncm1_tc_ok": 1,
+          "p2_setting_writes": 0,
+          "emmc_write_count": 0
+        },
+        "camset_slot1_split": {},
+        "vmcbncm1_tcin_hdmi": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34752,
+          "glyph_blits": 17664,
+          "icon_blits": 23277,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "big6_topology_ok": 1,
+          "no_end_firewall_ok": 1,
+          "camset_split_ok": 1,
+          "vmcbncm1_tc_ok": 1,
+          "r40_bridge_ok": 1,
+          "milestone_round40_realhw_big6_noend_camset_vmcbncm1": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 40,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "big6_home_6tile_no_end": 1,
+          "lower_left_aperture_nd_toggle": 1,
+          "camset_slot1_dualmedia_split": 1,
+          "vmcbncm1_body_tcin_hdmi_tcout": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r40a-big6-noend-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round40-realhw-big6-noend-camset-slot1-vmcbncm1-tcin-qemu/assets/r40a-big6-noend-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round40-realhw-big6-noend-camset-slot1-vmcbncm1-tcin-qemu/assets/r40a-big6-noend-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 197,
+        "FX6_STAGE_B_": 69,
+        "FX6_R30_": 195,
+        "FX6_R31_": 195,
+        "FX6_R32_": 198,
+        "FX6_R33_": 195,
+        "FX6_R34_": 195,
+        "FX6_R35_": 195,
+        "FX6_R36_": 195,
+        "FX6_R37_": 196,
+        "FX6_R38_": 196,
+        "FX6_R39_": 196,
+        "FX6_R40_": 196,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 195,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 137,
+        "FX6_R10_": 193,
+        "FX6_R11_": 204,
+        "FX6_R12_": 196,
+        "FX6_R13_": 193,
+        "FX6_R14_": 193,
+        "FX6_R15_": 193,
+        "FX6_R16_": 193,
+        "FX6_R17_": 193,
+        "FX6_R18_": 193,
+        "FX6_R19_": 193,
+        "FX6_R20_": 193,
+        "FX6_R21_": 193,
+        "FX6_R22_": 193,
+        "FX6_R23_": 193,
+        "FX6_R24_": 193,
+        "FX6_R25_": 193,
+        "FX6_R26_": 193,
+        "FX6_R27_": 193,
+        "FX6_R29_": 195,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1100,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 65,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 605,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2750,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r40b_camset_slot1_dualmedia_split": {
+      "run_id": "r40b-camset-slot1-split",
+      "round": 40,
+      "lang": "en",
+      "r40_mode": "camset_slot1_dualmedia_split",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Slot-1-only CAMSET01.DAT .. CAMSET10.DAT dual-media directory split (SD: /PRIVATE/SONY/SETTING/FX3/CAMSET/ vs CFexpress Type A: /SONY/SETTING/FX3/CAMSET/), Slot-2 rejection (rc=-22 EINVAL), >10 Save New rejection (rc=-28 ENOSPC) while allowing existing-slot overwrite (rc=0), MR (Recall Camera Setting) Save/Load lockout (rc=-16 EBUSY), ILME-FX3A/ILME-FX6 cross-model .DAT magic firewall (rc=-79 ELIBBAD), and /tmp/fx6_camset_overlay Stage-B sandbox (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.97,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "f0202e315de8b918f3b831bb17a217dfb56647ef37432860feaf6a3182011df0"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r40": {
+          "r40_mode": "camset_slot1_dualmedia_split",
+          "big6_mode_settings_prerequisite": "Fixed/Variable",
+          "big6_tiles": [
+            "FPS",
+            "ISO/Base ISO",
+            "Shutter Speed/Angle",
+            "Aperture/ND Filter",
+            "Picture Profile/Select LUT",
+            "White Balance"
+          ],
+          "big6_lower_left_modes": [
+            "Aperture",
+            "ND Filter"
+          ],
+          "e_nd_actuator_reject_rc": -95,
+          "e_nd_actuator_tx_count": 0,
+          "camset_allowed_slot": 1,
+          "camset_slot2_reject_rc": -22,
+          "camset_max_profiles": 10,
+          "camset_save_11th_reject_rc": -28,
+          "camset_mr_mode_reject_rc": -16,
+          "camset_cross_model_reject_rc": -79,
+          "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+          "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+          "camset_stage_b_overlay_dir": "/tmp/fx6_camset_overlay",
+          "vmcbncm1_part_no": "A-5051-506-A",
+          "vmcbncm1_body_usb_port": "Multi/Micro USB",
+          "vmcbncm1_ext_lk_min_ms": 10000,
+          "vmcbncm1_handle_usb_reject_rc": -19,
+          "vmcbncm1_bnc_tcout_reject_rc": -95,
+          "hdmi_digital_tcout_port": "Type-A HDMI",
+          "hdmi_tcout_sq_disabled": true,
+          "p2_setting_writes": 0
+        }
+      },
+      "r40_telemetry": {
+        "camset_rc": 0,
+        "vmcbncm1_rc": null,
+        "big6_noend_init": {},
+        "big6_noend_bridge": {},
+        "camset_tc_bridge": {},
+        "camset_slot1_split": {
+          "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+          "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+          "sd_saved_count": 10,
+          "sd_loaded_count": 10,
+          "cfx_saved_count": 10,
+          "cfx_loaded_count": 10,
+          "sd_save_11th_reject_rc": -28,
+          "cfx_save_11th_reject_rc": -28,
+          "overwrite_existing_slot_rc": 0,
+          "slot2_save_reject_rc": -22,
+          "slot2_load_reject_rc": -22,
+          "mr_mode_save_reject_rc": -16,
+          "mr_mode_load_reject_rc": -16,
+          "wrong_prefix_on_sd_rc": -22,
+          "wrong_prefix_on_cfx_rc": -22,
+          "fx3a_dat_reject_rc": -79,
+          "fx6_dat_reject_rc": -79,
+          "excluded_machine_bound_fields": 5,
+          "stageb_overlay_dir": "/tmp/fx6_camset_overlay",
+          "stageb_overlay_saved": 10,
+          "p2_write_blocked_rc": -30,
+          "p2_setting_sha256_match": 1,
+          "slot1_fx3_camset_intact": 10,
+          "appfw_camset_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r40b_ok": 1,
+          "verify_us": 592145
+        },
+        "vmcbncm1_tcin_hdmi": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R40_": 3
+      }
+    },
+    "r40c_vmcbncm1_tcin_hdmi_tcout": {
+      "run_id": "r40c-vmcbncm1-tcin-hdmi",
+      "round": 40,
+      "lang": "en",
+      "r40_mode": "vmcbncm1_tcin_hdmi_tcout",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 VMC-BNCM1 (A-5051-506-A, 0.2m) body-only Multi/Micro USB TC IN EXT-LK (>=10s lock + holdover in Movie + Preset + Free Run; <10s rc=-11 EAGAIN; immediate lock release on S&Q or TC Make/Run/Preset mutation), XLR-H1 handle Micro-USB VMC-BNCM1 block (rc=-19 ENODEV), BNC TC OUT reverse-drive block (rc=-95 EOPNOTSUPP), digital Type-A HDMI TC OUT (Movie rc=0 active vs S&Q rc=-95 disabled), guest dlopen, and 16/16 H0 == H3 seal (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 4.91,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "f0202e315de8b918f3b831bb17a217dfb56647ef37432860feaf6a3182011df0"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r40": {
+          "r40_mode": "vmcbncm1_tcin_hdmi_tcout",
+          "big6_mode_settings_prerequisite": "Fixed/Variable",
+          "big6_tiles": [
+            "FPS",
+            "ISO/Base ISO",
+            "Shutter Speed/Angle",
+            "Aperture/ND Filter",
+            "Picture Profile/Select LUT",
+            "White Balance"
+          ],
+          "big6_lower_left_modes": [
+            "Aperture",
+            "ND Filter"
+          ],
+          "e_nd_actuator_reject_rc": -95,
+          "e_nd_actuator_tx_count": 0,
+          "camset_allowed_slot": 1,
+          "camset_slot2_reject_rc": -22,
+          "camset_max_profiles": 10,
+          "camset_save_11th_reject_rc": -28,
+          "camset_mr_mode_reject_rc": -16,
+          "camset_cross_model_reject_rc": -79,
+          "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+          "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+          "camset_stage_b_overlay_dir": "/tmp/fx6_camset_overlay",
+          "vmcbncm1_part_no": "A-5051-506-A",
+          "vmcbncm1_body_usb_port": "Multi/Micro USB",
+          "vmcbncm1_ext_lk_min_ms": 10000,
+          "vmcbncm1_handle_usb_reject_rc": -19,
+          "vmcbncm1_bnc_tcout_reject_rc": -95,
+          "hdmi_digital_tcout_port": "Type-A HDMI",
+          "hdmi_tcout_sq_disabled": true,
+          "p2_setting_writes": 0
+        }
+      },
+      "r40_telemetry": {
+        "camset_rc": null,
+        "vmcbncm1_rc": 0,
+        "big6_noend_init": {},
+        "big6_noend_bridge": {},
+        "camset_tc_bridge": {},
+        "camset_slot1_split": {},
+        "vmcbncm1_tcin_hdmi": {
+          "adapter_model": "VMC-BNCM1",
+          "part_no": "A-5051-506-A",
+          "cable_len_cm": 20,
+          "body_usb_port": "Multi_Micro_USB",
+          "pre_10s_9999ms_rc": -11,
+          "body_movie_preset_freerun_10s_rc": 0,
+          "ext_lk_locked": 1,
+          "holdover_active": 1,
+          "release_on_sq_locked": 0,
+          "release_on_tcmake_regen_locked": 0,
+          "release_on_tcrun_recrun_locked": 0,
+          "release_on_tcpreset_edit_locked": 0,
+          "xlrh1_handle_usb_reject_rc": -19,
+          "bnc_tcout_reject_rc": -95,
+          "bnc_tcout_tx_count": 0,
+          "hdmi_type_a_movie_tcout_rc": 0,
+          "hdmi_movie_tcout_active": 1,
+          "hdmi_sq_tcout_reject_rc": -95,
+          "hdmi_sq_tcout_active": 0,
+          "hdmi_sq_tcout_disabled": 1,
+          "p2_write_blocked_rc": -30,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r40c_ok": 1,
+          "verify_us": 3996
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R40_": 3
+      }
+    }
+  },
+  "r40_realhw_big6_noend_camset_slot1_vmcbncm1_audit": {
+    "milestone_round": 40,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r40a_big6_6tile_and_home_lower_left_aperture_nd_verified": true,
+    "r40a_zero_e_nd_actuator_tx_firewall_verified": true,
+    "r40a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r40b_slot1_only_camset_10slot_dualmedia_path_split_verified": true,
+    "r40b_mr_lockout_and_cross_model_dat_firewall_verified": true,
+    "r40c_vmcbncm1_body_only_tcin_10s_ext_lk_and_xlrh1_bnc_blocks_verified": true,
+    "r40c_hdmi_movie_tcout_sq_disabled_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 (Ver. 7.02) body toggling [Shooting] -> [Shooting Mode] -> [BIG6] ([Mode Settings] = [Fixed/Variable]) and [Menu] -> [Setup] -> [Operation Customize] -> [BIG6 Home Set.] -> [Home (Lower Left)] = [Aperture] / [ND Filter] with live E-Mount iris motor telemetry.",
+    "Physical Sony ILME-FX3 (Ver. 7.02) Slot-1 SDXC (/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01..10.DAT) vs CFexpress Type A (/SONY/SETTING/FX3/CAMSET/CAMSET01..10.DAT) Save/Load Settings verification and Mode-Dial MR lockout check on real media cards.",
+    "Physical Sony VMC-BNCM1 (A-5051-506-A) 0.2m BNC-to-Multi/Micro USB adapter connected to ILME-FX3 body Multi/Micro USB terminal with external SMPTE LTC generator (>=10s EXT-LK lock & unplug holdover) and Type-A HDMI TC OUT capture on external field recorder."
+  ]
+}

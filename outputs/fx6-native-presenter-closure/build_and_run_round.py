@@ -1341,6 +1341,7 @@ def build_stage_a_overlay(
     enable_r37: bool = False,
     enable_r38: bool = False,
     enable_r39: bool = False,
+    enable_r40: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1352,6 +1353,7 @@ def build_stage_a_overlay(
     r37_mode: str = "fx3a_firewall_big6",
     r38_mode: str = "nouvc_dcc1_pd_big6",
     r39_mode: str = "fan_pwm_offinrec_big6",
+    r40_mode: str = "big6_home_noend_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1645,7 +1647,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r38_mode: {r38_mode}")
     if enable_r39 and r39_mode not in ("fan_pwm_offinrec_big6", "shutter_speed_angle_clamp", "lut_601_vs_702_firewall"):
         raise ValueError(f"Unsupported r39_mode: {r39_mode}")
-    if enable_r39 and r39_mode in ("shutter_speed_angle_clamp", "lut_601_vs_702_firewall"):
+    if enable_r40 and r40_mode not in ("big6_home_noend_big6", "camset_slot1_dualmedia_split", "vmcbncm1_tcin_hdmi_tcout"):
+        raise ValueError(f"Unsupported r40_mode: {r40_mode}")
+    if enable_r40 and r40_mode in ("camset_slot1_dualmedia_split", "vmcbncm1_tcin_hdmi_tcout"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r40_mode == "camset_slot1_dualmedia_split":
+            r40_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r40-camset-slot1-split > /dev/console 2>&1\n"
+                "fx6_r40_camset_rc=$?\n"
+                "echo FX6_R40_CAMSET_RC=$fx6_r40_camset_rc\n"
+                "echo FX6_R40_CAMSET_SLOT1_SPLIT_EXIT rc=$fx6_r40_camset_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r40_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r40-vmcbncm1-tcin-hdmi > /dev/console 2>&1\n"
+                "fx6_r40_vmc_rc=$?\n"
+                "echo FX6_R40_VMCBNCM1_RC=$fx6_r40_vmc_rc\n"
+                "echo FX6_R40_VMCBNCM1_TCIN_HDMI_EXIT rc=$fx6_r40_vmc_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r40_early_hook, 1)
+    elif enable_r39 and r39_mode in ("shutter_speed_angle_clamp", "lut_601_vs_702_firewall"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2448,6 +2477,48 @@ def build_stage_a_overlay(
             "lut_user_slot_count": 16,
             "p2_setting_writes": 0,
         }
+    r40_meta: Optional[Dict[str, Any]] = None
+    if enable_r40:
+        additions["etc/fx6_stage_r40"] = (
+            (
+                f"stage_r40=1\nr40_mode={r40_mode}\n"
+                f"big6_home_6tile_no_end=1\nlower_left_aperture_nd_toggle=1\n"
+                f"camset_slot1_dualmedia_split=1\nvmcbncm1_body_tcin_hdmi_tcout=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r40_meta = {
+            "r40_mode": r40_mode,
+            "big6_mode_settings_prerequisite": "Fixed/Variable",
+            "big6_tiles": [
+                "FPS",
+                "ISO/Base ISO",
+                "Shutter Speed/Angle",
+                "Aperture/ND Filter",
+                "Picture Profile/Select LUT",
+                "White Balance",
+            ],
+            "big6_lower_left_modes": ["Aperture", "ND Filter"],
+            "e_nd_actuator_reject_rc": -95,
+            "e_nd_actuator_tx_count": 0,
+            "camset_allowed_slot": 1,
+            "camset_slot2_reject_rc": -22,
+            "camset_max_profiles": 10,
+            "camset_save_11th_reject_rc": -28,
+            "camset_mr_mode_reject_rc": -16,
+            "camset_cross_model_reject_rc": -79,
+            "sd_camset_dir": "/PRIVATE/SONY/SETTING/FX3/CAMSET/",
+            "cfx_camset_dir": "/SONY/SETTING/FX3/CAMSET/",
+            "camset_stage_b_overlay_dir": "/tmp/fx6_camset_overlay",
+            "vmcbncm1_part_no": "A-5051-506-A",
+            "vmcbncm1_body_usb_port": "Multi/Micro USB",
+            "vmcbncm1_ext_lk_min_ms": 10000,
+            "vmcbncm1_handle_usb_reject_rc": -19,
+            "vmcbncm1_bnc_tcout_reject_rc": -95,
+            "hdmi_digital_tcout_port": "Type-A HDMI",
+            "hdmi_tcout_sq_disabled": True,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2480,6 +2551,7 @@ def build_stage_a_overlay(
         "r37_enabled": enable_r37,
         "r38_enabled": enable_r38,
         "r39_enabled": enable_r39,
+        "r40_enabled": enable_r40,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2533,6 +2605,8 @@ def build_stage_a_overlay(
         stage_a_meta["r38"] = r38_meta
     if r39_meta is not None:
         stage_a_meta["r39"] = r39_meta
+    if r40_meta is not None:
+        stage_a_meta["r40"] = r40_meta
     return replacements, additions, stage_a_meta
 
 
@@ -2861,6 +2935,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R37_",
         "FX6_R38_",
         "FX6_R39_",
+        "FX6_R40_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -2998,6 +3073,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r39_bridge: Optional[Dict[str, Any]] = None
     r39_shutter_rc: Optional[int] = None
     r39_lut_split_rc: Optional[int] = None
+    last_r40_big6_noend_init: Optional[Dict[str, Any]] = None
+    last_r40_big6_noend_bridge: Optional[Dict[str, Any]] = None
+    last_r40_camset_tc_bridge: Optional[Dict[str, Any]] = None
+    last_r40_camset_slot1_split: Optional[Dict[str, Any]] = None
+    last_r40_vmcbncm1_tcin_hdmi: Optional[Dict[str, Any]] = None
+    last_r40_lang: Optional[Dict[str, Any]] = None
+    last_r40_bridge: Optional[Dict[str, Any]] = None
+    r40_camset_rc: Optional[int] = None
+    r40_vmcbncm1_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -3295,6 +3379,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R39_LUT_SPLIT_RC"), int):
                 r39_lut_split_rc = kv["FX6_R39_LUT_SPLIT_RC"]
+        elif "FX6_R40_BIG6_NOEND_INIT " in line:
+            last_r40_big6_noend_init = _parse_kv_ints(line.split("FX6_R40_BIG6_NOEND_INIT ", 1)[1])
+        elif "FX6_R40_BIG6_NOEND_BRIDGE " in line:
+            last_r40_big6_noend_bridge = _parse_kv_ints(line.split("FX6_R40_BIG6_NOEND_BRIDGE ", 1)[1])
+        elif "FX6_R40_CAMSET_TC_BRIDGE " in line:
+            last_r40_camset_tc_bridge = _parse_kv_ints(line.split("FX6_R40_CAMSET_TC_BRIDGE ", 1)[1])
+        elif "FX6_R40_CAMSET_SLOT1_SPLIT " in line:
+            last_r40_camset_slot1_split = _parse_kv_ints(line.split("FX6_R40_CAMSET_SLOT1_SPLIT ", 1)[1])
+        elif "FX6_R40_VMCBNCM1_TCIN_HDMI " in line:
+            last_r40_vmcbncm1_tcin_hdmi = _parse_kv_ints(line.split("FX6_R40_VMCBNCM1_TCIN_HDMI ", 1)[1])
+        elif "FX6_R40_LANG_TELEMETRY " in line:
+            last_r40_lang = _parse_kv_ints(line.split("FX6_R40_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R40_BRIDGE " in line:
+            last_r40_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R40_BRIDGE ", 1)[1])
+        elif "FX6_R40_CAMSET_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R40_CAMSET_RC"), int):
+                r40_camset_rc = kv["FX6_R40_CAMSET_RC"]
+        elif "FX6_R40_VMCBNCM1_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R40_VMCBNCM1_RC"), int):
+                r40_vmcbncm1_rc = kv["FX6_R40_VMCBNCM1_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -3611,6 +3717,31 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r39_bridge or {},
         }
 
+    r40_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r40_big6_noend_init,
+            last_r40_big6_noend_bridge,
+            last_r40_camset_tc_bridge,
+            last_r40_camset_slot1_split,
+            last_r40_vmcbncm1_tcin_hdmi,
+            last_r40_lang,
+            last_r40_bridge,
+        )
+    ):
+        r40_telemetry = {
+            "camset_rc": r40_camset_rc,
+            "vmcbncm1_rc": r40_vmcbncm1_rc,
+            "big6_noend_init": last_r40_big6_noend_init or {},
+            "big6_noend_bridge": last_r40_big6_noend_bridge or {},
+            "camset_tc_bridge": last_r40_camset_tc_bridge or {},
+            "camset_slot1_split": last_r40_camset_slot1_split or {},
+            "vmcbncm1_tcin_hdmi": last_r40_vmcbncm1_tcin_hdmi or {},
+            "lang_telemetry": last_r40_lang or {},
+            "stage_b_bridge": last_r40_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -3647,6 +3778,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r37_telemetry": r37_telemetry,
         "r38_telemetry": r38_telemetry,
         "r39_telemetry": r39_telemetry,
+        "r40_telemetry": r40_telemetry,
     }
 
 
@@ -3670,7 +3802,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 39:
+    if args.round >= 40:
+        tmp_prefix = "fx6-r40"
+    elif args.round >= 39:
         tmp_prefix = "fx6-r39"
     elif args.round >= 38:
         tmp_prefix = "fx6-r38"
@@ -3773,8 +3907,12 @@ def run_once(args: argparse.Namespace) -> int:
         r37_mode = getattr(args, "r37_mode", "fx3a_firewall_big6")
         r38_mode = getattr(args, "r38_mode", "nouvc_dcc1_pd_big6")
         r39_mode = getattr(args, "r39_mode", "fan_pwm_offinrec_big6")
+        r40_mode = getattr(args, "r40_mode", "big6_home_noend_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone40RealHwBig6NoEndCamsetSlot1VmcBncm1+r40_mode={r40_mode}+lang={lang})"
+                if args.round >= 40
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwFanPwmShutterAngleLutSplit+r39_mode={r39_mode}+lang={lang})"
                 if args.round >= 39
                 else (
@@ -3895,6 +4033,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -3943,6 +4082,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r38_mode=r38_mode,
                 enable_r39=(args.round >= 39),
                 r39_mode=r39_mode,
+                enable_r40=(args.round >= 40),
+                r40_mode=r40_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -4077,6 +4218,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R38_RMTP1BT_CLIPFLAG_EXIT" in txt
                     or "FX6_R39_SHUTTER_SPEED_ANGLE_EXIT" in txt
                     or "FX6_R39_LUT_601_702_FIREWALL_EXIT" in txt
+                    or "FX6_R40_CAMSET_SLOT1_SPLIT_EXIT" in txt
+                    or "FX6_R40_VMCBNCM1_TCIN_HDMI_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -4113,6 +4256,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R38_RMTP1BT_CLIPFLAG_EXIT" in serial_text
             or "FX6_R39_SHUTTER_SPEED_ANGLE_EXIT" in serial_text
             or "FX6_R39_LUT_601_702_FIREWALL_EXIT" in serial_text
+            or "FX6_R40_CAMSET_SLOT1_SPLIT_EXIT" in serial_text
+            or "FX6_R40_VMCBNCM1_TCIN_HDMI_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -4175,6 +4320,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r37_mode": r37_mode if args.round >= 37 else None,
             "r38_mode": r38_mode if args.round >= 38 else None,
             "r39_mode": r39_mode if args.round >= 39 else None,
+            "r40_mode": r40_mode if args.round >= 40 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -4221,6 +4367,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r37_telemetry": milestones.get("r37_telemetry") if args.round >= 37 else None,
             "r38_telemetry": milestones.get("r38_telemetry") if args.round >= 38 else None,
             "r39_telemetry": milestones.get("r39_telemetry") if args.round >= 39 else None,
+            "r40_telemetry": milestones.get("r40_telemetry") if args.round >= 40 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -4270,7 +4417,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -4284,6 +4431,7 @@ def main() -> int:
     ap.add_argument("--r37-mode", type=str, choices=["fx3a_firewall_big6", "xlrh1_4ch_override", "fx3bndl1_serial_appledouble"], default="fx3a_firewall_big6")
     ap.add_argument("--r38-mode", type=str, choices=["nouvc_dcc1_pd_big6", "lut_path_cineei", "rmtp1bt_clipflag_seal"], default="nouvc_dcc1_pd_big6")
     ap.add_argument("--r39-mode", type=str, choices=["fan_pwm_offinrec_big6", "shutter_speed_angle_clamp", "lut_601_vs_702_firewall"], default="fan_pwm_offinrec_big6")
+    ap.add_argument("--r40-mode", type=str, choices=["big6_home_noend_big6", "camset_slot1_dualmedia_split", "vmcbncm1_tcin_hdmi_tcout"], default="big6_home_noend_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

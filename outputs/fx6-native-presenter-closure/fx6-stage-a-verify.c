@@ -7521,6 +7521,860 @@ static int run_r39_lut_601_702_firewall_probe(void) {
     return ok ? 0 : 216;
 }
 
+/* ---- Round 40 (40th Milestone): BIG6 [Home (Lower Left)] Zero e-ND Actuator Firewall, Slot-1 CAMSET01..10.DAT Dual-Media Path Split & VMC-BNCM1 Body-Only TC IN / HDMI Digital TC OUT ---- */
+
+enum {
+    R40_BIG6_LL_APERTURE = 0,
+    R40_BIG6_LL_ND_FILTER = 1
+};
+
+typedef struct {
+    int mode_settings_fixed_variable; /* 1 = [Mode Settings] = [Fixed/Variable] */
+    int home_custom_key_assigned;     /* 1 = [Custom Key/Dial Set.] -> [HOME] bound */
+    int lower_left_mode;              /* R40_BIG6_LL_APERTURE (default) or R40_BIG6_LL_ND_FILTER */
+    int emount_aperture_f10;          /* e.g. 28 = F2.8 */
+    int virtual_nd_denom;             /* software/reference only: 4..128 (ND 1/4..1/128) */
+    uint32_t e_nd_actuator_tx_count;  /* MUST remain strictly 0 on ILME-FX3 */
+    int status_bar_zone_present;      /* 7th status bar region */
+    const char *tiles[6];
+} r40_big6_state_t;
+
+__attribute__((noinline)) static void r40_big6_init_state(r40_big6_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->mode_settings_fixed_variable = 1;
+    st->home_custom_key_assigned = 1;
+    st->lower_left_mode = R40_BIG6_LL_APERTURE;
+    st->emount_aperture_f10 = 28; /* F2.8 */
+    st->virtual_nd_denom = 4;     /* virtual reference only */
+    st->e_nd_actuator_tx_count = 0U;
+    st->status_bar_zone_present = 1;
+    st->tiles[0] = "FPS";
+    st->tiles[1] = "ISO_Base_ISO";
+    st->tiles[2] = "Shutter_Speed_Angle";
+    st->tiles[3] = "Aperture";
+    st->tiles[4] = "Picture_Profile_Select_LUT";
+    st->tiles[5] = "White_Balance";
+}
+
+__attribute__((noinline)) static int r40_big6_enter_home(const r40_big6_state_t *st) {
+    if (!st) return -EINVAL;
+    /* Official FX3 7.00/7.02 prerequisite: [Mode Settings] = [Fixed/Variable] + [HOME] custom key */
+    if (!st->mode_settings_fixed_variable || !st->home_custom_key_assigned) {
+        return -EINVAL; /* -22 */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r40_big6_set_lower_left_mode(
+    r40_big6_state_t *st,
+    int ll_mode
+) {
+    if (!st) return -EINVAL;
+    if (ll_mode != R40_BIG6_LL_APERTURE && ll_mode != R40_BIG6_LL_ND_FILTER) {
+        return -EINVAL; /* -22 */
+    }
+    st->lower_left_mode = ll_mode;
+    st->tiles[3] = (ll_mode == R40_BIG6_LL_ND_FILTER) ? "ND_Filter" : "Aperture";
+    /* Switching [Home (Lower Left)] never transmits any CP e-ND hardware frame */
+    return 0;
+}
+
+__attribute__((noinline)) static int r40_big6_cp_end_actuator_firewall(
+    r40_big6_state_t *st,
+    int nd_denom
+) {
+    if (!st) return -EINVAL;
+    (void)nd_denom;
+    /* ILME-FX3 has ZERO physical optical/electronic variable ND hardware (unlike ILME-FX6 1/4..1/128).
+     * Hard-block every FX6 CP e-ND actuator command with -EOPNOTSUPP (-95) and zero TX frames. */
+    return -EOPNOTSUPP; /* -95 */
+}
+
+__attribute__((noinline)) static int r40_big6_set_emount_aperture(
+    r40_big6_state_t *st,
+    int aperture_f10
+) {
+    if (!st || aperture_f10 < 10 || aperture_f10 > 220) {
+        return -EINVAL;
+    }
+    if (st->lower_left_mode != R40_BIG6_LL_APERTURE) {
+        return -EBUSY;
+    }
+    st->emount_aperture_f10 = aperture_f10;
+    return 0;
+}
+
+__attribute__((noinline)) static int r40_big6_set_virtual_nd_display(
+    r40_big6_state_t *st,
+    int nd_denom
+) {
+    if (!st) return -EINVAL;
+    if (st->lower_left_mode != R40_BIG6_LL_ND_FILTER) {
+        return -EBUSY;
+    }
+    if (nd_denom < 4 || nd_denom > 128) {
+        return -ERANGE; /* -34 */
+    }
+    /* Pure software/metadata reference indicator only — e_nd_actuator_tx_count remains 0 */
+    st->virtual_nd_denom = nd_denom;
+    return 0;
+}
+
+static int setup_r40_big6_home_noend_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r40_big6_state_t st_bad_mode, st_no_key, st;
+    r40_big6_init_state(&st_bad_mode);
+    st_bad_mode.mode_settings_fixed_variable = 0;
+    int not_fixed_var_reject_rc = r40_big6_enter_home(&st_bad_mode);
+
+    r40_big6_init_state(&st_no_key);
+    st_no_key.home_custom_key_assigned = 0;
+    int no_home_key_reject_rc = r40_big6_enter_home(&st_no_key);
+
+    r40_big6_init_state(&st);
+    int home_enter_rc = r40_big6_enter_home(&st);
+    int default_aperture_ok = (st.lower_left_mode == R40_BIG6_LL_APERTURE &&
+                               strcmp(st.tiles[3], "Aperture") == 0) ? 1 : 0;
+
+    static const char *const k_expected_tiles[6] = {
+        "FPS",
+        "ISO_Base_ISO",
+        "Shutter_Speed_Angle",
+        "Aperture",
+        "Picture_Profile_Select_LUT",
+        "White_Balance"
+    };
+    int tiles_verified = 0;
+    for (size_t i = 0U; i < 6U; i++) {
+        if (st.tiles[i] != NULL && strcmp(st.tiles[i], k_expected_tiles[i]) == 0) {
+            tiles_verified++;
+        }
+    }
+
+    int emount_aperture_rc = r40_big6_set_emount_aperture(&st, 28); /* F2.8 */
+    int toggle_nd_filter_rc = r40_big6_set_lower_left_mode(&st, R40_BIG6_LL_ND_FILTER);
+    int nd_tile_label_ok = (strcmp(st.tiles[3], "ND_Filter") == 0) ? 1 : 0;
+    int virtual_nd_display_rc = r40_big6_set_virtual_nd_display(&st, 16); /* ND 1/16 virtual ref */
+    int virtual_nd_range_reject_rc = r40_big6_set_virtual_nd_display(&st, 256);
+    int toggle_aperture_rc = r40_big6_set_lower_left_mode(&st, R40_BIG6_LL_APERTURE);
+    int aperture_restored_ok = (strcmp(st.tiles[3], "Aperture") == 0) ? 1 : 0;
+    int invalid_ll_reject_rc = r40_big6_set_lower_left_mode(&st, 2);
+
+    static const int k_end_stops[6] = { 4, 8, 16, 32, 64, 128 };
+    int end_stops_blocked = 0;
+    int end_1_4_reject_rc = 0;
+    int end_1_128_reject_rc = 0;
+    for (size_t i = 0U; i < 6U; i++) {
+        int rc = r40_big6_cp_end_actuator_firewall(&st, k_end_stops[i]);
+        if (i == 0U) end_1_4_reject_rc = rc;
+        if (i == 5U) end_1_128_reject_rc = rc;
+        if (rc == -EOPNOTSUPP) {
+            end_stops_blocked++;
+        }
+    }
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R40_BIG6_NOEND_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (not_fixed_var_reject_rc == -EINVAL &&
+              no_home_key_reject_rc == -EINVAL &&
+              home_enter_rc == 0 &&
+              default_aperture_ok == 1 &&
+              tiles_verified == 6 &&
+              st.status_bar_zone_present == 1 &&
+              emount_aperture_rc == 0 &&
+              toggle_nd_filter_rc == 0 &&
+              nd_tile_label_ok == 1 &&
+              virtual_nd_display_rc == 0 &&
+              virtual_nd_range_reject_rc == -ERANGE &&
+              toggle_aperture_rc == 0 &&
+              aperture_restored_ok == 1 &&
+              invalid_ll_reject_rc == -EINVAL &&
+              end_1_4_reject_rc == -EOPNOTSUPP &&
+              end_1_128_reject_rc == -EOPNOTSUPP &&
+              end_stops_blocked == 6 &&
+              st.e_nd_actuator_tx_count == 0U &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R40_BIG6_NOEND_INIT mode_settings=Fixed_Variable home_key_bound=1 "
+            "not_fixed_var_reject_rc=%d no_home_key_reject_rc=%d home_enter_rc=%d "
+            "big6_tile_count=6 status_bar_zone=%d tiles_verified=%d "
+            "default_lower_left=%s toggle_nd_filter_rc=%d toggle_aperture_rc=%d "
+            "invalid_ll_reject_rc=%d emount_aperture_rc=%d virtual_nd_display_rc=%d "
+            "virtual_nd_range_reject_rc=%d end_1_4_reject_rc=%d end_1_128_reject_rc=%d "
+            "end_stops_blocked=%d e_nd_actuator_tx_count=%u "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r40_init_ok=%d verify_us=%lld\n",
+            not_fixed_var_reject_rc, no_home_key_reject_rc, home_enter_rc,
+            st.status_bar_zone_present, tiles_verified,
+            default_aperture_ok ? "Aperture" : "Invalid",
+            toggle_nd_filter_rc, toggle_aperture_rc,
+            invalid_ll_reject_rc, emount_aperture_rc, virtual_nd_display_rc,
+            virtual_nd_range_reject_rc, end_1_4_reject_rc, end_1_128_reject_rc,
+            end_stops_blocked, st.e_nd_actuator_tx_count,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R40_MEDIA_SD = 0,
+    R40_MEDIA_CFEXPRESS_A = 1
+};
+
+typedef struct __attribute__((packed)) {
+    char magic[8];                 /* "SCAMFX3\0" vs "SCAMFX3A" vs "SCAMFX6\0" */
+    char model_name[16];           /* "ILME-FX3", "ILME-FX3A", "ILME-FX6" */
+    uint16_t fw_bcd;               /* 0x0702, 0x0202, 0x0601 */
+    uint16_t file_index;           /* 1..10 -> CAMSET01.DAT .. CAMSET10.DAT */
+    uint32_t excluded_bind_mask;   /* 0x1f: WB_CUSTOM123|FTP|STREAM|IP_CERT|DATETIME */
+    uint32_t payload_crc32;
+} r40_camset_dat_hdr_t;
+
+__attribute__((noinline)) static int r40_camset_resolve_slot1_dir(
+    int slot_num,
+    int media_type,
+    const char *requested_rel_dir,
+    const char *mount_root,
+    char *abs_dir_out,
+    size_t abs_dir_sz
+) {
+    if (!mount_root || !abs_dir_out || abs_dir_sz == 0U) return -EINVAL;
+    /* Official FX3 rule: Save/Load Settings strictly restricted to Slot 1 */
+    if (slot_num != 1) {
+        return -EINVAL; /* -22 */
+    }
+    const char *expected_rel = NULL;
+    if (media_type == R40_MEDIA_SD) {
+        expected_rel = "/PRIVATE/SONY/SETTING/FX3/CAMSET/";
+    } else if (media_type == R40_MEDIA_CFEXPRESS_A) {
+        expected_rel = "/SONY/SETTING/FX3/CAMSET/";
+    } else {
+        return -EINVAL;
+    }
+    if (requested_rel_dir != NULL && strcmp(requested_rel_dir, expected_rel) != 0) {
+        return -EINVAL; /* -22: wrong media root prefix */
+    }
+    snprintf(abs_dir_out, abs_dir_sz, "%s%s", mount_root, expected_rel);
+    return 0;
+}
+
+__attribute__((noinline)) static int r40_camset_save_or_load_gate(
+    int is_save,
+    int is_save_new,
+    int in_mr_recall_mode,
+    int slot_num,
+    int media_type,
+    const char *requested_rel_dir,
+    const char *mount_root,
+    const r40_camset_dat_hdr_t *hdr
+) {
+    if (!hdr) return -EINVAL;
+    /* Greyed out / locked while camera is in MR (Recall Camera Setting) mode */
+    if (in_mr_recall_mode) {
+        return -EBUSY; /* -16 */
+    }
+    char abs_dir[192];
+    int dir_rc = r40_camset_resolve_slot1_dir(
+        slot_num, media_type, requested_rel_dir, mount_root, abs_dir, sizeof(abs_dir));
+    if (dir_rc != 0) {
+        return dir_rc;
+    }
+    /* Cross-model .DAT header firewall: block ILME-FX3A / ILME-FX6 with -79 (ELIBBAD spec) */
+    if (memcmp(hdr->magic, "SCAMFX3\0", 8U) != 0 ||
+        strcmp(hdr->model_name, "ILME-FX3") != 0 ||
+        hdr->fw_bcd != 0x0702U) {
+        return -79;
+    }
+    /* Machine-bound settings (WB Custom 1/2/3, FTP, Stream, IP/Cert, Date/Time) must be excluded */
+    if ((hdr->excluded_bind_mask & 0x1fU) != 0x1fU) {
+        return -EINVAL;
+    }
+    /* Max 10 profiles per card: CAMSET01.DAT .. CAMSET10.DAT */
+    if (hdr->file_index < 1U || hdr->file_index > 10U) {
+        return is_save_new ? -ENOSPC : -EINVAL; /* -28 ENOSPC for >10 Save New */
+    }
+    if (r33_mkdir_p(abs_dir, 0755) != 0) {
+        return -EIO;
+    }
+
+    if (is_save && is_save_new) {
+        int occupied = 0;
+        for (unsigned int idx = 1U; idx <= 10U; idx++) {
+            char probe_path[240];
+            struct stat pst;
+            snprintf(probe_path, sizeof(probe_path), "%sCAMSET%02u.DAT", abs_dir, idx);
+            if (stat(probe_path, &pst) == 0) {
+                occupied++;
+            }
+        }
+        if (occupied >= 10) {
+            return -ENOSPC; /* -28: all 10 CAMSET slots full, Save New blocked */
+        }
+    }
+
+    char fpath[240];
+    snprintf(fpath, sizeof(fpath), "%sCAMSET%02u.DAT", abs_dir, (unsigned int)hdr->file_index);
+    if (is_save) {
+        uint8_t blob[128];
+        memset(blob, 0, sizeof(blob));
+        memcpy(blob, hdr, sizeof(*hdr));
+        for (size_t i = sizeof(*hdr); i < sizeof(blob); i++) {
+            blob[i] = (uint8_t)(((hdr->file_index * 29U) + i * 7U) & 0xffU);
+        }
+        if (r29_write_all_fsync(fpath, blob, sizeof(blob), 0644) != 0) {
+            return -EIO;
+        }
+        return 0;
+    }
+
+    int fd = open(fpath, O_RDONLY);
+    if (fd < 0) return -ENOENT;
+    r40_camset_dat_hdr_t on_disk;
+    ssize_t nr = read(fd, &on_disk, sizeof(on_disk));
+    close(fd);
+    if (nr != (ssize_t)sizeof(on_disk)) return -EIO;
+    if (memcmp(on_disk.magic, "SCAMFX3\0", 8U) != 0 ||
+        strcmp(on_disk.model_name, "ILME-FX3") != 0 ||
+        on_disk.fw_bcd != 0x0702U ||
+        on_disk.file_index != hdr->file_index) {
+        return -79;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r40_camset_stage_b_sandbox_save(
+    const char *target_root,
+    unsigned int slot_idx,
+    const r40_camset_dat_hdr_t *fx6_hdr
+) {
+    if (!target_root || !fx6_hdr || slot_idx < 1U || slot_idx > 10U) return -EINVAL;
+    if (strncmp(target_root, "/mnt/r40_p2_setting", 19U) == 0) {
+        errno = 0;
+        int fd = open("/mnt/r40_p2_setting/Backup.bin", O_RDWR);
+        if (fd >= 0) {
+            close(fd);
+            return -79;
+        }
+        return -errno; /* -30 EROFS */
+    }
+    if (strcmp(target_root, "/tmp/fx6_camset_overlay") != 0) {
+        return -EACCES;
+    }
+    if (memcmp(fx6_hdr->magic, "SCAMFX6\0", 8U) != 0 ||
+        strcmp(fx6_hdr->model_name, "ILME-FX6") != 0 ||
+        fx6_hdr->fw_bcd != 0x0601U) {
+        return -79;
+    }
+    if (r33_mkdir_p(target_root, 0755) != 0) return -EIO;
+    char ovl_path[160];
+    snprintf(ovl_path, sizeof(ovl_path), "%s/CAMSET%02u.FX6", target_root, slot_idx);
+    if (r29_write_all_fsync(ovl_path, fx6_hdr, sizeof(*fx6_hdr), 0644) != 0) {
+        return -EIO;
+    }
+    return 0;
+}
+
+static int run_r40_camset_slot1_split_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r40_slot1_sd", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r40_slot1_cfx", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r40_slot2_sd", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r40_p2_setting", 0755) != 0 ||
+        r33_mkdir_p("/tmp/fx6_camset_overlay", 0755) != 0) {
+        return 220;
+    }
+    (void)umount("/mnt/r40_slot1_sd");
+    (void)umount("/mnt/r40_slot1_cfx");
+    (void)umount("/mnt/r40_slot2_sd");
+    (void)umount("/mnt/r40_p2_setting");
+    if (mount("tmpfs", "/mnt/r40_slot1_sd", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r40_slot1_cfx", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r40_slot2_sd", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r40_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 220;
+    }
+
+    /* Seed Stock p2:/setting Backup.bin and remount MS_RDONLY */
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 31U + 0x40U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r40_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) {
+        return 221;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r40_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) {
+        return 221;
+    }
+    if (mount(NULL, "/mnt/r40_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 221;
+    }
+
+    /* 1. Save & Load CAMSET01.DAT .. CAMSET10.DAT on Slot-1 SD (/PRIVATE/SONY/SETTING/FX3/CAMSET/)
+     *    and Slot-1 CFexpress Type A (/SONY/SETTING/FX3/CAMSET/) */
+    int sd_saved_count = 0, sd_loaded_count = 0;
+    int cfx_saved_count = 0, cfx_loaded_count = 0;
+    char sd_slot_h0[10][65];
+
+    for (unsigned int idx = 1U; idx <= 10U; idx++) {
+        r40_camset_dat_hdr_t hdr;
+        memset(&hdr, 0, sizeof(hdr));
+        memcpy(hdr.magic, "SCAMFX3\0", 8U);
+        snprintf(hdr.model_name, sizeof(hdr.model_name), "ILME-FX3");
+        hdr.fw_bcd = 0x0702U;
+        hdr.file_index = (uint16_t)idx;
+        hdr.excluded_bind_mask = 0x1fU;
+        hdr.payload_crc32 = 0x70240000U + idx * 13U;
+
+        if (r40_camset_save_or_load_gate(
+                1, 1, 0, 1, R40_MEDIA_SD,
+                "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr) == 0) {
+            sd_saved_count++;
+            char spath[240];
+            unsigned long long sb = 0ULL;
+            snprintf(spath, sizeof(spath),
+                     "/mnt/r40_slot1_sd/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET%02u.DAT", idx);
+            (void)sha256_file_hex(spath, sd_slot_h0[idx - 1U], &sb);
+        }
+        if (r40_camset_save_or_load_gate(
+                0, 0, 0, 1, R40_MEDIA_SD,
+                "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr) == 0) {
+            sd_loaded_count++;
+        }
+
+        if (r40_camset_save_or_load_gate(
+                1, 1, 0, 1, R40_MEDIA_CFEXPRESS_A,
+                "/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_cfx", &hdr) == 0) {
+            cfx_saved_count++;
+        }
+        if (r40_camset_save_or_load_gate(
+                0, 0, 0, 1, R40_MEDIA_CFEXPRESS_A,
+                "/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_cfx", &hdr) == 0) {
+            cfx_loaded_count++;
+        }
+    }
+
+    /* 2. Boundary & lockout checks: >10 Save New (-28 ENOSPC), Slot 2 (-22 EINVAL), MR mode (-16 EBUSY), wrong prefix (-22) */
+    r40_camset_dat_hdr_t hdr11, hdr1;
+    memset(&hdr11, 0, sizeof(hdr11));
+    memcpy(hdr11.magic, "SCAMFX3\0", 8U);
+    snprintf(hdr11.model_name, sizeof(hdr11.model_name), "ILME-FX3");
+    hdr11.fw_bcd = 0x0702U;
+    hdr11.file_index = 11U;
+    hdr11.excluded_bind_mask = 0x1fU;
+
+    hdr1 = hdr11;
+    hdr1.file_index = 1U;
+    hdr1.payload_crc32 = 0x70240000U + 13U;
+
+    int sd_save_11th_reject_rc = r40_camset_save_or_load_gate(
+        1, 1, 0, 1, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr11);
+    int cfx_save_11th_reject_rc = r40_camset_save_or_load_gate(
+        1, 1, 0, 1, R40_MEDIA_CFEXPRESS_A, "/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_cfx", &hdr1);
+    int overwrite_existing_slot_rc = r40_camset_save_or_load_gate(
+        1, 0, 0, 1, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr1);
+
+    int slot2_save_reject_rc = r40_camset_save_or_load_gate(
+        1, 0, 0, 2, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot2_sd", &hdr1);
+    int slot2_load_reject_rc = r40_camset_save_or_load_gate(
+        0, 0, 0, 2, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot2_sd", &hdr1);
+
+    int mr_mode_save_reject_rc = r40_camset_save_or_load_gate(
+        1, 0, 1, 1, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr1);
+    int mr_mode_load_reject_rc = r40_camset_save_or_load_gate(
+        0, 0, 1, 1, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr1);
+
+    int wrong_prefix_on_sd_rc = r40_camset_save_or_load_gate(
+        0, 0, 0, 1, R40_MEDIA_SD, "/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &hdr1);
+    int wrong_prefix_on_cfx_rc = r40_camset_save_or_load_gate(
+        0, 0, 0, 1, R40_MEDIA_CFEXPRESS_A, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_cfx", &hdr1);
+
+    /* 3. Cross-model .DAT magic firewall: ILME-FX3A and ILME-FX6 rejected with -79 (ELIBBAD spec) */
+    r40_camset_dat_hdr_t fx3a_hdr, fx6_hdr;
+    memset(&fx3a_hdr, 0, sizeof(fx3a_hdr));
+    memcpy(fx3a_hdr.magic, "SCAMFX3A", 8U);
+    snprintf(fx3a_hdr.model_name, sizeof(fx3a_hdr.model_name), "ILME-FX3A");
+    fx3a_hdr.fw_bcd = 0x0202U;
+    fx3a_hdr.file_index = 1U;
+    fx3a_hdr.excluded_bind_mask = 0x1fU;
+
+    memset(&fx6_hdr, 0, sizeof(fx6_hdr));
+    memcpy(fx6_hdr.magic, "SCAMFX6\0", 8U);
+    snprintf(fx6_hdr.model_name, sizeof(fx6_hdr.model_name), "ILME-FX6");
+    fx6_hdr.fw_bcd = 0x0601U;
+    fx6_hdr.file_index = 1U;
+    fx6_hdr.excluded_bind_mask = 0x1fU;
+
+    int fx3a_dat_reject_rc = r40_camset_save_or_load_gate(
+        0, 0, 0, 1, R40_MEDIA_SD, "/PRIVATE/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_sd", &fx3a_hdr);
+    int fx6_dat_reject_rc = r40_camset_save_or_load_gate(
+        0, 0, 0, 1, R40_MEDIA_CFEXPRESS_A, "/SONY/SETTING/FX3/CAMSET/", "/mnt/r40_slot1_cfx", &fx6_hdr);
+
+    /* 4. Stage-B profile isolation inside /tmp/fx6_camset_overlay & p2:/setting zero-write proof */
+    int p2_write_blocked_rc = r40_camset_stage_b_sandbox_save("/mnt/r40_p2_setting", 1U, &fx6_hdr);
+    int stageb_overlay_saved = 0;
+    for (unsigned int idx = 1U; idx <= 10U; idx++) {
+        fx6_hdr.file_index = (uint16_t)idx;
+        if (r40_camset_stage_b_sandbox_save("/tmp/fx6_camset_overlay", idx, &fx6_hdr) == 0) {
+            stageb_overlay_saved++;
+        }
+    }
+
+    int slot1_fx3_camset_intact = 0;
+    for (unsigned int idx = 1U; idx <= 10U; idx++) {
+        char spath[240], cur_sha[65] = "";
+        unsigned long long sb = 0ULL;
+        snprintf(spath, sizeof(spath),
+                 "/mnt/r40_slot1_sd/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET%02u.DAT", idx);
+        if (sha256_file_hex(spath, cur_sha, &sb) == 0 &&
+            strcmp(sd_slot_h0[idx - 1U], cur_sha) == 0) {
+            slot1_fx3_camset_intact++;
+        }
+    }
+
+    if (sha256_file_hex("/mnt/r40_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) {
+        return 222;
+    }
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int appfw_camset_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R40_CAMSET_TC_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (sd_saved_count == 10 &&
+              sd_loaded_count == 10 &&
+              cfx_saved_count == 10 &&
+              cfx_loaded_count == 10 &&
+              sd_save_11th_reject_rc == -ENOSPC &&
+              cfx_save_11th_reject_rc == -ENOSPC &&
+              overwrite_existing_slot_rc == 0 &&
+              slot2_save_reject_rc == -EINVAL &&
+              slot2_load_reject_rc == -EINVAL &&
+              mr_mode_save_reject_rc == -EBUSY &&
+              mr_mode_load_reject_rc == -EBUSY &&
+              wrong_prefix_on_sd_rc == -EINVAL &&
+              wrong_prefix_on_cfx_rc == -EINVAL &&
+              fx3a_dat_reject_rc == -79 &&
+              fx6_dat_reject_rc == -79 &&
+              p2_write_blocked_rc == -EROFS &&
+              stageb_overlay_saved == 10 &&
+              slot1_fx3_camset_intact == 10 &&
+              p2_setting_sha256_match == 1 &&
+              appfw_camset_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R40_CAMSET_SLOT1_SPLIT sd_camset_dir=/PRIVATE/SONY/SETTING/FX3/CAMSET/ "
+            "cfx_camset_dir=/SONY/SETTING/FX3/CAMSET/ "
+            "sd_saved_count=%d sd_loaded_count=%d cfx_saved_count=%d cfx_loaded_count=%d "
+            "sd_save_11th_reject_rc=%d cfx_save_11th_reject_rc=%d overwrite_existing_slot_rc=%d "
+            "slot2_save_reject_rc=%d slot2_load_reject_rc=%d "
+            "mr_mode_save_reject_rc=%d mr_mode_load_reject_rc=%d "
+            "wrong_prefix_on_sd_rc=%d wrong_prefix_on_cfx_rc=%d "
+            "fx3a_dat_reject_rc=%d fx6_dat_reject_rc=%d excluded_machine_bound_fields=5 "
+            "stageb_overlay_dir=/tmp/fx6_camset_overlay stageb_overlay_saved=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d slot1_fx3_camset_intact=%d "
+            "appfw_camset_ok=%d shim_elf_ok=%d emmc_write_count=0 r40b_ok=%d verify_us=%lld\n",
+            sd_saved_count, sd_loaded_count, cfx_saved_count, cfx_loaded_count,
+            sd_save_11th_reject_rc, cfx_save_11th_reject_rc, overwrite_existing_slot_rc,
+            slot2_save_reject_rc, slot2_load_reject_rc,
+            mr_mode_save_reject_rc, mr_mode_load_reject_rc,
+            wrong_prefix_on_sd_rc, wrong_prefix_on_cfx_rc,
+            fx3a_dat_reject_rc, fx6_dat_reject_rc,
+            stageb_overlay_saved, p2_write_blocked_rc, p2_setting_sha256_match,
+            slot1_fx3_camset_intact, appfw_camset_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 223;
+}
+
+enum {
+    R40_USB_PORT_BODY_MULTI = 0,
+    R40_USB_PORT_XLRH1_HANDLE_MICRO = 1
+};
+
+enum {
+    R40_BNC_DIR_TC_IN = 0,
+    R40_BNC_DIR_TC_OUT = 1
+};
+
+enum {
+    R40_SHOOT_MOVIE = 0,
+    R40_SHOOT_SQ = 1
+};
+
+enum {
+    R40_TC_MAKE_PRESET = 0,
+    R40_TC_MAKE_REGENERATE = 1
+};
+
+enum {
+    R40_TC_RUN_FREE_RUN = 0,
+    R40_TC_RUN_REC_RUN = 1
+};
+
+typedef struct {
+    int usb_port;
+    int bnc_direction;
+    int shoot_mode;
+    int tc_make;
+    int tc_run;
+    int tc_preset_mutated;
+    int cable_attached;
+    uint32_t continuous_ltc_ms;
+    int ext_lk_locked;
+    int holdover_active;
+    uint32_t bnc_tcout_tx_count;
+} r40_vmcbncm1_state_t;
+
+__attribute__((noinline)) static int r40_vmcbncm1_eval_tcin(r40_vmcbncm1_state_t *st) {
+    if (!st) return -EINVAL;
+    /* Trap 1: VMC-BNCM1 strictly forbidden on XLR-H1 handle side Micro-USB port */
+    if (st->usb_port == R40_USB_PORT_XLRH1_HANDLE_MICRO) {
+        st->ext_lk_locked = 0;
+        st->holdover_active = 0;
+        return -ENODEV; /* -19 */
+    }
+    if (st->usb_port != R40_USB_PORT_BODY_MULTI) {
+        st->ext_lk_locked = 0;
+        st->holdover_active = 0;
+        return -EINVAL;
+    }
+    /* Trap 2: ILME-FX3 Multi/Micro USB + VMC-BNCM1 is unidirectional TC IN only (no BNC TC OUT) */
+    if (st->bnc_direction == R40_BNC_DIR_TC_OUT) {
+        /* Do NOT increment bnc_tcout_tx_count — reverse drive blocked */
+        return -EOPNOTSUPP; /* -95 */
+    }
+
+    /* Shooting mode / TC Make / TC Run / Preset mutation immediately releases EXT-LK */
+    if (st->shoot_mode != R40_SHOOT_MOVIE ||
+        st->tc_make != R40_TC_MAKE_PRESET ||
+        st->tc_run != R40_TC_RUN_FREE_RUN ||
+        st->tc_preset_mutated) {
+        st->ext_lk_locked = 0;
+        st->holdover_active = 0;
+        return -EINVAL; /* -22 */
+    }
+
+    if (st->cable_attached) {
+        if (st->continuous_ltc_ms >= 10000U) {
+            st->ext_lk_locked = 1;
+            st->holdover_active = 1;
+            return 0;
+        }
+        st->ext_lk_locked = 0;
+        st->holdover_active = 0;
+        return -EAGAIN; /* -11: still acquiring (<10s) */
+    }
+
+    /* Cable detached after valid >=10s EXT-LK lock: internal holdover maintains sync until mode/TC edit */
+    if (st->ext_lk_locked && st->holdover_active) {
+        return 0;
+    }
+    return -ENOLINK;
+}
+
+__attribute__((noinline)) static int r40_hdmi_eval_digital_tcout(
+    int hdmi_tc_output_menu_on,
+    int shoot_mode,
+    int *out_hdmi_tcout_active
+) {
+    if (!out_hdmi_tcout_active) return -EINVAL;
+    *out_hdmi_tcout_active = 0;
+    if (!hdmi_tc_output_menu_on) {
+        return 0;
+    }
+    /* S&Q mode automatically disables Type-A HDMI digital Time Code Output */
+    if (shoot_mode == R40_SHOOT_SQ) {
+        *out_hdmi_tcout_active = 0;
+        return -EOPNOTSUPP; /* -95 */
+    }
+    if (shoot_mode == R40_SHOOT_MOVIE) {
+        *out_hdmi_tcout_active = 1;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+static int run_r40_vmcbncm1_tcin_hdmi_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r40_surfaces", 0755) != 0) {
+        return 224;
+    }
+    (void)umount("/mnt/r40_surfaces");
+    if (mount("tmpfs", "/mnt/r40_surfaces", "tmpfs", MS_NOATIME, "size=4m") != 0) {
+        return 224;
+    }
+
+    /* 1. Seed 16 FX3 7.02 flash/setting/calibration/cert surfaces and remount strictly MS_RDONLY */
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r40_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)(((s + 5U) * 41U + i * 13U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) {
+            return 225;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) {
+            return 225;
+        }
+    }
+    if (mount(NULL, "/mnt/r40_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 225;
+    }
+
+    /* 2. VMC-BNCM1 (A-5051-506-A) Body Multi/Micro USB EXT-LK (>=10s) state machine + release triggers */
+    r40_vmcbncm1_state_t tc;
+    memset(&tc, 0, sizeof(tc));
+    tc.usb_port = R40_USB_PORT_BODY_MULTI;
+    tc.bnc_direction = R40_BNC_DIR_TC_IN;
+    tc.shoot_mode = R40_SHOOT_MOVIE;
+    tc.tc_make = R40_TC_MAKE_PRESET;
+    tc.tc_run = R40_TC_RUN_FREE_RUN;
+    tc.cable_attached = 1;
+    tc.continuous_ltc_ms = 9999U;
+    int pre_10s_9999ms_rc = r40_vmcbncm1_eval_tcin(&tc);
+    int pre_10s_locked = tc.ext_lk_locked;
+
+    tc.continuous_ltc_ms = 10000U;
+    int body_movie_preset_freerun_10s_rc = r40_vmcbncm1_eval_tcin(&tc);
+    int ext_lk_locked = tc.ext_lk_locked;
+
+    /* Detach BNC cable after 10s lock -> holdover remains locked while Movie+Preset+Free Run untouched */
+    tc.cable_attached = 0;
+    int holdover_rc = r40_vmcbncm1_eval_tcin(&tc);
+    int holdover_active = (holdover_rc == 0 && tc.ext_lk_locked == 1 && tc.holdover_active == 1) ? 1 : 0;
+
+    /* Verify immediate EXT-LK lock release on S&Q, TC Make=Regenerate, TC Run=Rec Run, or TC Preset edit */
+    r40_vmcbncm1_state_t tc_sq = tc;
+    tc_sq.cable_attached = 1;
+    tc_sq.shoot_mode = R40_SHOOT_SQ;
+    int sq_release_rc = r40_vmcbncm1_eval_tcin(&tc_sq);
+    int release_on_sq_locked = tc_sq.ext_lk_locked;
+
+    r40_vmcbncm1_state_t tc_regen = tc;
+    tc_regen.cable_attached = 1;
+    tc_regen.tc_make = R40_TC_MAKE_REGENERATE;
+    int regen_release_rc = r40_vmcbncm1_eval_tcin(&tc_regen);
+    int release_on_tcmake_regen_locked = tc_regen.ext_lk_locked;
+
+    r40_vmcbncm1_state_t tc_recrun = tc;
+    tc_recrun.cable_attached = 1;
+    tc_recrun.tc_run = R40_TC_RUN_REC_RUN;
+    int recrun_release_rc = r40_vmcbncm1_eval_tcin(&tc_recrun);
+    int release_on_tcrun_recrun_locked = tc_recrun.ext_lk_locked;
+
+    r40_vmcbncm1_state_t tc_edit = tc;
+    tc_edit.cable_attached = 1;
+    tc_edit.tc_preset_mutated = 1;
+    int preset_edit_release_rc = r40_vmcbncm1_eval_tcin(&tc_edit);
+    int release_on_tcpreset_edit_locked = tc_edit.ext_lk_locked;
+
+    /* 3. XLR-H1 Handle Micro-USB block (-19 ENODEV) & BNC TC OUT reverse-drive block (-95 EOPNOTSUPP) */
+    r40_vmcbncm1_state_t tc_handle = tc;
+    tc_handle.cable_attached = 1;
+    tc_handle.usb_port = R40_USB_PORT_XLRH1_HANDLE_MICRO;
+    int xlrh1_handle_usb_reject_rc = r40_vmcbncm1_eval_tcin(&tc_handle);
+
+    r40_vmcbncm1_state_t tc_bnc_out = tc;
+    tc_bnc_out.cable_attached = 1;
+    tc_bnc_out.bnc_direction = R40_BNC_DIR_TC_OUT;
+    int bnc_tcout_reject_rc = r40_vmcbncm1_eval_tcin(&tc_bnc_out);
+    uint32_t bnc_tcout_tx_count = tc_bnc_out.bnc_tcout_tx_count;
+
+    /* 4. Type-A HDMI Digital TC OUT: Movie allowed (active=1, rc=0), S&Q disabled (active=0, rc=-95) */
+    int hdmi_movie_tcout_active = 0;
+    int hdmi_type_a_movie_tcout_rc = r40_hdmi_eval_digital_tcout(
+        1, R40_SHOOT_MOVIE, &hdmi_movie_tcout_active);
+    int hdmi_sq_tcout_active = 1;
+    int hdmi_sq_tcout_reject_rc = r40_hdmi_eval_digital_tcout(
+        1, R40_SHOOT_SQ, &hdmi_sq_tcout_active);
+    int hdmi_sq_tcout_disabled = (hdmi_sq_tcout_reject_rc == -EOPNOTSUPP &&
+                                  hdmi_sq_tcout_active == 0) ? 1 : 0;
+
+    /* 5. Read-only surface write block, real guest dlopen("/tmp/jiritsu/libJit.so"), & 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r40_surfaces/surf_00.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r40_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (pre_10s_9999ms_rc == -EAGAIN &&
+              pre_10s_locked == 0 &&
+              body_movie_preset_freerun_10s_rc == 0 &&
+              ext_lk_locked == 1 &&
+              holdover_active == 1 &&
+              sq_release_rc == -EINVAL && release_on_sq_locked == 0 &&
+              regen_release_rc == -EINVAL && release_on_tcmake_regen_locked == 0 &&
+              recrun_release_rc == -EINVAL && release_on_tcrun_recrun_locked == 0 &&
+              preset_edit_release_rc == -EINVAL && release_on_tcpreset_edit_locked == 0 &&
+              xlrh1_handle_usb_reject_rc == -ENODEV &&
+              bnc_tcout_reject_rc == -EOPNOTSUPP &&
+              bnc_tcout_tx_count == 0U &&
+              hdmi_type_a_movie_tcout_rc == 0 &&
+              hdmi_movie_tcout_active == 1 &&
+              hdmi_sq_tcout_disabled == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R40_VMCBNCM1_TCIN_HDMI adapter_model=VMC-BNCM1 part_no=A-5051-506-A cable_len_cm=20 "
+            "body_usb_port=Multi_Micro_USB pre_10s_9999ms_rc=%d "
+            "body_movie_preset_freerun_10s_rc=%d ext_lk_locked=%d holdover_active=%d "
+            "release_on_sq_locked=%d release_on_tcmake_regen_locked=%d "
+            "release_on_tcrun_recrun_locked=%d release_on_tcpreset_edit_locked=%d "
+            "xlrh1_handle_usb_reject_rc=%d bnc_tcout_reject_rc=%d bnc_tcout_tx_count=%u "
+            "hdmi_type_a_movie_tcout_rc=%d hdmi_movie_tcout_active=%d "
+            "hdmi_sq_tcout_reject_rc=%d hdmi_sq_tcout_active=%d hdmi_sq_tcout_disabled=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r40c_ok=%d verify_us=%lld\n",
+            pre_10s_9999ms_rc,
+            body_movie_preset_freerun_10s_rc, ext_lk_locked, holdover_active,
+            release_on_sq_locked, release_on_tcmake_regen_locked,
+            release_on_tcrun_recrun_locked, release_on_tcpreset_edit_locked,
+            xlrh1_handle_usb_reject_rc, bnc_tcout_reject_rc, bnc_tcout_tx_count,
+            hdmi_type_a_movie_tcout_rc, hdmi_movie_tcout_active,
+            hdmi_sq_tcout_reject_rc, hdmi_sq_tcout_active, hdmi_sq_tcout_disabled,
+            p2_write_blocked_rc, dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 226;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -7595,6 +8449,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r39-lut-601-702-firewall") == 0) {
         return run_r39_lut_601_702_firewall_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r40-camset-slot1-split") == 0) {
+        return run_r40_camset_slot1_split_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r40-vmcbncm1-tcin-hdmi") == 0) {
+        return run_r40_vmcbncm1_tcin_hdmi_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -7675,6 +8535,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r39", &r39_st) == 0) {
         if (setup_r39_fan_pwm_offinrec_probe() != 0) {
             return 58;
+        }
+    }
+    struct stat r40_st;
+    if (stat("/etc/fx6_stage_r40", &r40_st) == 0) {
+        if (setup_r40_big6_home_noend_probe() != 0) {
+            return 59;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

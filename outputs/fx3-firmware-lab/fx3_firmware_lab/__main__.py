@@ -78,6 +78,10 @@ from .shutter_ecs_sq_and_tally_auditor import (
     analyze_shutter_ecs_sq_and_tally,
     shutter_ecs_sq_and_tally_report_to_dict,
 )
+from .usb_uvc_uac_srt_and_crsdk_ptp_auditor import (
+    analyze_usb_uvc_uac_srt_and_crsdk_ptp,
+    usb_uvc_uac_srt_and_crsdk_ptp_report_to_dict,
+)
 from .ufu_container_auditor import audit_ufu_suite
 from .uxc_ldec_inspector import inspect_uxc_and_ldec, uxc_report_to_dict
 from .uxc_multilang_and_font_verifier import (
@@ -95,7 +99,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all twenty-two clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all twenty-three clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -154,6 +158,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     proresraw_breathing_mishoe = hdmi_raw_prores_breathing_and_mishoe_clock_report_to_dict(
         analyze_hdmi_raw_prores_breathing_and_mishoe_clock(clean_room=clean_room)
     )
+    uvc_srt_crsdk = usb_uvc_uac_srt_and_crsdk_ptp_report_to_dict(
+        analyze_usb_uvc_uac_srt_and_crsdk_ptp(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -178,6 +185,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and c2pa_shading_mc.get("all_checks_passed")
         and hdr_hlg_assist.get("all_checks_passed")
         and proresraw_breathing_mishoe.get("all_checks_passed")
+        and uvc_srt_crsdk.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -207,17 +215,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "c2pa_lens_shading_and_mc_fleet_audit": c2pa_shading_mc,
         "hdr_hlg_bt2100_and_display_assist_audit": hdr_hlg_assist,
         "hdmi_raw_prores_breathing_and_mishoe_clock_audit": proresraw_breathing_mishoe,
+        "usb_uvc_uac_srt_and_crsdk_ptp_audit": uvc_srt_crsdk,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, and HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, and USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 22 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 23 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -354,6 +363,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_prbm.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_prbm.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_usc = sub.add_parser(
+        "audit-uvc-srt-crsdk",
+        help="Run Phase 118 USB-C UVC 1.5/UAC 2.0, Wired P12-Safe SRT/RTMPS, & CRSDK PTP/PTP-IP Property + Flash-Opcode Firewall audit",
+    )
+    p_usc.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_usc.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -437,6 +453,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-proresraw-breathing-mishoe":
         payload = hdmi_raw_prores_breathing_and_mishoe_clock_report_to_dict(
             analyze_hdmi_raw_prores_breathing_and_mishoe_clock(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-uvc-srt-crsdk":
+        payload = usb_uvc_uac_srt_and_crsdk_ptp_report_to_dict(
+            analyze_usb_uvc_uac_srt_and_crsdk_ptp(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

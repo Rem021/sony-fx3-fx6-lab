@@ -947,5 +947,25 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-41pillar-recovery --force-clean-room --json
 ```
 
+## Phase 251 — 真机主线 Part 30（Pillar 42 / `42/42` 统一恢复总检）：`Different Set for Still/Mv` 8 项非对称状态跃迁与 `Shutter Angle` 独立解耦、`Custom Key/Dial Set.` 三域键位 / `ISO/EI` 持久化及 `Remain Shoot Display` 连拍缓存边界 + 无 EVF 监视拓扑金库（`verify-42pillar-recovery` / `verify-diff-set-still-mv-custom-key-remain-shoot-vault`）
+
+- **[`realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py`](fx3_recovery/realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-40）落地 **Pillar 42** 并将全套恢复总检正式推进至 **`42/42`（`VERIFIED_42OF42_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..41pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`（校验 `CameraOnDemandSaver`、`_ZN18CAM_ONDEMAND_SAVER17OsalHandleWrapperC1Ejji`）与 `FX6 6.01` `appFw.so`、`libInfraDial.so`（校验 `InfraDial`、`InfraDialEventDataRecord`、`INFRA_DIAL_UIPC_SETDIALEVENTINTERVAL`）、`libInfraInput.so`（校验 `InfraInput`、`ApiGetKeySta`、`ApiSetKeyInh`）共 11 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 42A — `[Different Set for Still/Mv]` 8 项非对称跃迁、跨双复位留存与 `Ver. 7.02` `[Shutter Mode] = [Angle]` 独立解耦（`6/6`）**：
+    - `P42A1`..`P42A6`：精确建模 `MENU` -> `Setup` -> `[Operation Customize]` -> `[Different Set for Still/Mv]` 全部 8 项可勾选参数（`Aperture`、`Shutter Speed`、`ISO`、`Exposure Comp.`、`Metering Mode`、`White Balance`、`Picture Profile`、`Focus Mode`），校验勾选集**同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**、仅在 `[Initialize]` 下归位为未勾选出厂默认（并支持经 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 恢复）；严格校验两项索尼非对称硬件状态跃迁规则（`diff_set_transition_corruption_events == 0`）：① **Common -> Separate**：当前值同时复制到照片与视频寄存器，**唯独 `Custom White Balance` 仅作用于照片拍摄、不复制到视频**；② **Separate -> Common**：各参数回归初始出厂默认，**唯独 `Aperture`、`Shutter Speed` 与 `Custom White Balance` 保留照片端设定值**；同时强制执行 `Ver. 6.00+` / `Ver. 7.02` **`[Shutter Mode] = [Angle]`** 硬件规则——当视频快门设为 `[Angle]`（快门角度）时，即便 `Shutter Speed` 在 `[Different Set for Still/Mv]` 中未勾选（设为通用 Common），照片快门速度与视频快门角度仍作为独立寄存器运行、绝不串写（`shutter_angle_common_bleed_events == 0`）。
+  - **支柱 42B — `[Custom Key/Dial Set.]` 三域键位 / `ISO/EI` 自适应持久化与 `[Remain Shoot Display]` 连拍缓存边界 + 无 EVF 拓扑金库（`6/6`）**：
+    - `P42B1`..`P42B6`：精确建模 `MENU` -> `Setup` -> `[Operation Customize]` -> `[Custom Key/Dial Set.]`（照片/视频/回放三域独立键位、`Custom Button 1..6` + 多功能选择器 + 镜头对焦保持按钮，以及电影机线出厂三拨轮默认：`Front dial = Aperture`、`Rear dial = ISO/EI` 在 `Flexible ISO` 与 `Cine EI` / `Cine EI Quick` 间自动切换 `ISO` 与 `Exposure Index (EI)`、`Control Wheel = Shutter Speed`、`[Follow Custom]` 视频继承照片键位、`[My Dial 1..3]` 与 `[Recall Custom hold 1..3]`）跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存，以及经 `O_RDONLY` + SDXC `WP` 物理锁保护的 Slot-1 `CAMSET01.DAT` `[Load]` 无损往返恢复（`slot1_custom_key_vault_mutation_bytes == 0`）；同时建模 `MENU` -> `Setup` -> `[Display Option]` -> `[Remain Shoot Display]`（默认 `Not Displayed` / `Always Display` / `Shoot-Only Display`）仅面向**照片连拍缓存余量**（绝不混淆视频存储卡剩余录制时长）、跨越双复位留存，并强制锚定 `ILME-FX3`（`ilc/2210`）无内置 EVF 与无 `[Finder/Monitor]` 眼控切换的纯翻转屏监视拓扑（`fx3_has_builtin_evf == False`、`evf_finder_monitor_spoof_events == 0`、`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `42/42` 恢复总检聚合器与 CLI（`evaluate_realhw_42pillar_recovery_master` / `verify-42pillar-recovery` / `verify-diff-set-still-mv-custom-key-remain-shoot-vault`）**：
+    - 并发调用 `evaluate_realhw_41pillar_recovery_master`（`Pillars 1..41`）+ **Pillar 42**（`run_pillar42_standalone_suite`），汇总产出 **`42/42`**（`VERIFIED_42OF42_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py`](tests/test_realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 3.5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-diff-set-still-mv-custom-key-remain-shoot-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-42pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-42pillar-recovery --force-clean-room --json
+```
+
+
 
 

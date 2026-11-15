@@ -58,7 +58,7 @@ jobs:
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
 
-      - name: Run Phase 17..37 Stage-B P10/P11/P12, Firmware-Lab & Co-Emulation CLI checks
+      - name: Run Phase 17..70 Stage-B, Firmware-Lab (13 Auditors) & 9-Stage Co-Emulation CLI checks
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-peripheral-ux > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-ap-cp-imaging > /dev/null
@@ -67,6 +67,13 @@ jobs:
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-wireless-guard > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-firmware-lab > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-coemulation > /dev/null
+
+      - name: Run Phase 59..69 20-Gate Safety Preflight, RP2040 Fixture, init2 Escape & Post-Trial Forensic Gates
+        run: |
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-20-gates > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-rp2040-fixture > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-init2-escape > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-post-trial-audit > /dev/null
 
       - name: Run Stage-A & Stage-B H0->H1->H2 zero-mutation lifecycle drills
         run: |

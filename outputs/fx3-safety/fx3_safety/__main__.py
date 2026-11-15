@@ -72,6 +72,11 @@ from .realhw_dualmedia_bench_interlock_and_58gate_guard import (
     evaluate_g57_dualmedia_vault,
     evaluate_g58_bench_interlock,
 )
+from .realhw_ssboot_wbi2_slot1_ufu_and_60gate_guard import (
+    evaluate_60gate_preflight,
+    evaluate_g59_ssboot_wbi2_guard,
+    evaluate_g60_slot1_ufu_c2pa_guard,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -830,6 +835,73 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G58 gates can be rehearsed offline",
     )
     p_58.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 47. verify-g59-ssboot-wbi2-guard
+    p_g59 = sub.add_parser(
+        "verify-g59-ssboot-wbi2-guard",
+        help="Run Phase 177 Gate G59 (ssboot / WBI2 prsv-img Bootloader-Bypass, liro.ko BLKROSET=1 & H0==H3 Guard)",
+    )
+    p_g59.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g59.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g59.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 48. verify-g60-slot1-ufu-c2pa-guard
+    p_g60 = sub.add_parser(
+        "verify-g60-slot1-ufu-c2pa-guard",
+        help="Run Phase 177 Gate G60 (FX3 7.02 >=2.04 UFU Floor, Slot-1 Root, C2PA <=100 License & Wireless Floor Guard)",
+    )
+    p_g60.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g60.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g60.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 49. verify-60-gates
+    p_60 = sub.add_parser(
+        "verify-60-gates",
+        help="Run Phase 177 60-Gate Milestone Master Safety Preflight Engine (G01..G60)",
+    )
+    p_60.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_60.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_60.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G60 gates can be rehearsed offline",
+    )
+    p_60.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -1725,6 +1797,72 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_58_gates_verified if args.dry_run_simulated_backup else report.offline_55_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g59-ssboot-wbi2-guard":
+        verdict, res = evaluate_g59_ssboot_wbi2_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.ssboot_wbi2_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} dev={guard['wbi_partition_dev']} "
+                f"magic=0x{guard['wbi2_magic_hex']} "
+                f"blkroset=({guard['blkroset_nflasha5']},{guard['blkroset_pnflasha5']}) "
+                f"wbi_writes={guard['wbi_persistent_writes']} "
+                f"h0_eq_h3={guard['h0_equals_h3_wbi2']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g60-slot1-ufu-c2pa-guard":
+        verdict, res = evaluate_g60_slot1_ufu_c2pa_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.slot1_ufu_c2pa_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} body_ver={guard['body_firmware_version']}(>={guard['min_body_firmware_floor']}) "
+                f"ufu={guard['target_ufu_version']}({guard['bodydata_size_bytes']}B) "
+                f"slot={guard['update_slot']}:{guard['bodydata_path']} "
+                f"c2pa_lic={guard['c2pa_license_count']}/{guard['c2pa_max_licenses_ceiling']} "
+                f"p12_ro={guard['p12_blkroset']} wifi_ok={guard['wireless_security_floor_valid']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-60-gates":
+        report = evaluate_60gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/60 "
+                f"g59_to_g60_all_passed={report.g59_to_g60_all_passed} "
+                f"all_60_gates_verified={report.all_60_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_60_gates_verified if args.dry_run_simulated else report.offline_57_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -55,6 +55,7 @@ if str(FX3_VM_DIR) not in sys.path:
 
 import cxd90057_dtb_and_mhlx_emulator as p41  # noqa: E402
 import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
+import dualslot_proxy_ups_salvage_emulator as p71  # noqa: E402
 import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
@@ -107,6 +108,7 @@ class CoEmulationConfig:
     include_phase58_qmp_introspection: bool = True
     include_phase63_hdmi_raw_uvc: bool = True
     include_phase67_tc_lens_paint: bool = True
+    include_phase71_dualslot_ups_salvage: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -844,6 +846,48 @@ def run_stage9_tc_lens_paint(
 
 
 # ---------------------------------------------------------------------------
+# Stage 10 (Phase 71): Dual-Slot Proxy, NonRealTimeMeta.xml & UPS / .RSV Salvage
+# ---------------------------------------------------------------------------
+
+
+def run_stage10_dualslot_proxy_ups_salvage(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 10 (Phase 71): Dual-Slot Relay/Simul/Sort Proxy, NonRealTimeMeta.xml & UPS/.RSV Salvage."""
+    config.validate()
+    rep = p71.run_phase71_dualslot_ups_salvage_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    rsv = rep["ups_brownout_rsv_salvage"]["batteryless_brownout_rsv_salvage"]
+    return {
+        "stage": "stage10_phase71_dualslot_ups_salvage",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": rep["redlines"]["nop_count"],
+        "guest_code_modification_bytes": rep["redlines"]["guest_code_modification_bytes"],
+        "cp_mutation_bytes": rep["redlines"]["cp_mutation_bytes"],
+        "wbi_mutation_bytes": rep["redlines"]["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": rep["redlines"]["calibration_mutation_bytes"],
+        "nvram_persistent_writes": rep["redlines"]["nvram_persistent_writes"],
+        "physical_device_writes": rep["redlines"]["physical_device_writes"],
+        "persistent_emmc_writes_authorized": rep["redlines"]["persistent_emmc_writes_authorized"],
+        "p1_emmc_mutations": rep["redlines"]["p1_emmc_mutations"],
+        "internal_emmc_writes": rep["redlines"]["internal_emmc_writes"],
+        "c2pa_license_untouched": rep["redlines"]["c2pa_license_untouched"],
+        "rsv_salvageable_frames": rsv["salvageable_frames"],
+        "rsv_committed_frames": rsv["committed_ring_frames"],
+        "donor_audit": rep["donor_audit"],
+        "dualslot_proxy_pipeline": rep["dualslot_proxy_pipeline"],
+        "nonrealtimemeta_rtmd_sync": rep["nonrealtimemeta_rtmd_sync"],
+        "ups_brownout_rsv_salvage": rep["ups_brownout_rsv_salvage"],
+        "phase71_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
 
@@ -853,7 +897,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 9-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67) Full-Board Virtual Camera Co-Emulation Pipeline."""
+    """Run the unified 10-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -877,6 +921,9 @@ def run_fx3_vm_coemulation_suite(
     )
     stage9: Optional[Dict[str, object]] = (
         run_stage9_tc_lens_paint(cfg, env=env) if cfg.include_phase67_tc_lens_paint else None
+    )
+    stage10: Optional[Dict[str, object]] = (
+        run_stage10_dualslot_proxy_ups_salvage(cfg, env=env) if cfg.include_phase71_dualslot_ups_salvage else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
 
@@ -933,6 +980,20 @@ def run_fx3_vm_coemulation_suite(
         and stage9["physical_device_writes"] == 0
         and (not stage9["persistent_emmc_writes_authorized"])
     )
+    stage10_ok = True if stage10 is None else (
+        bool(stage10["all_checks_passed"])
+        and stage10["nop_count"] == 0
+        and stage10["guest_code_modification_bytes"] == 0
+        and stage10["cp_mutation_bytes"] == 0
+        and stage10["wbi_mutation_bytes"] == 0
+        and stage10["calibration_mutation_bytes"] == 0
+        and stage10["nvram_persistent_writes"] == 0
+        and stage10["physical_device_writes"] == 0
+        and stage10["p1_emmc_mutations"] == 0
+        and stage10["internal_emmc_writes"] == 0
+        and bool(stage10["c2pa_license_untouched"])
+        and (not stage10["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -945,6 +1006,7 @@ def run_fx3_vm_coemulation_suite(
         and stage7_ok
         and stage8_ok
         and stage9_ok
+        and stage10_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -967,6 +1029,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase58_qmp_introspection": cfg.include_phase58_qmp_introspection,
             "include_phase63_hdmi_raw_uvc": cfg.include_phase63_hdmi_raw_uvc,
             "include_phase67_tc_lens_paint": cfg.include_phase67_tc_lens_paint,
+            "include_phase71_dualslot_ups_salvage": cfg.include_phase71_dualslot_ups_salvage,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1003,6 +1066,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage8_phase63_hdmi_raw_uvc"] = stage8
     if stage9 is not None:
         core_payload["stage9_phase67_tc_lens_paint"] = stage9
+    if stage10 is not None:
+        core_payload["stage10_phase71_dualslot_ups_salvage"] = stage10
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1014,7 +1079,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1049,6 +1114,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase67",
         action="store_true",
         help="Skip optional Stage 9 (Phase 67 SMPTE 12M TC EXT-LK, E-Mount PZ/Breathing & libpaint)",
+    )
+    parser.add_argument(
+        "--skip-phase71",
+        action="store_true",
+        help="Skip optional Stage 10 (Phase 71 Dual-Slot Proxy, NonRealTimeMeta.xml & UPS/.RSV Salvage)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -1122,6 +1192,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase58_qmp_introspection=not args.skip_phase58,
         include_phase63_hdmi_raw_uvc=not args.skip_phase63,
         include_phase67_tc_lens_paint=not args.skip_phase67,
+        include_phase71_dualslot_ups_salvage=not args.skip_phase71,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1140,6 +1211,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s7 = rep.get("stage7_phase58_qmp_introspection")
         s8 = rep.get("stage8_phase63_hdmi_raw_uvc")
         s9 = rep.get("stage9_phase67_tc_lens_paint")
+        s10 = rep.get("stage10_phase71_dualslot_ups_salvage")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1177,6 +1249,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s9, dict)
             else ""
         )
+        s10_str = (
+            f" | dualslot_ups={s10['source_mode']}(relay=0drop,simul_yank=0drop,"
+            f"rsv={s10['rsv_salvageable_frames']}/{s10['rsv_committed_frames']},c2pa_ok=1)"
+            if isinstance(s10, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1185,7 +1263,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

@@ -59,11 +59,15 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar B — Base Look & Gamma/Gamut Matrix**: Verifies `S-Cinetone`, `S-Log3 / S-Gamut3.Cine`, `S-Log3 / S-Gamut3`, `ITU709`, `709(800%)`, `HLG Live`, `HLG Natural`, and `User 3D LUT (MLUT)` routing parity across FX6 `v6.01` and FX3 `v7.02`.
    - **Pillar C — Paint Menu `3x3` Color Matrix (`R-G..B-G`), Multi-Matrix, Knee & Black Gamma**: Enforces exact `3x3` linear matrix row-sum white-point preservation (`sum(row) == 1.0`, `det(M) > 0.05`) so neutral grey `[1, 1, 1]` never tint-shifts under off-diagonal Paint Matrix tweaks, alongside Knee Point (`75.0%..109.0%`), Knee Slope, Black Level, and Black Gamma bounds.
    - **Pillar D — Factory Color/WB Calibration & `cnflasha` Zero-Mutation Proof**: Proves factory per-sensor `IMX510` WB gain / shading / defect-pixel calibration in `cnflasha` / Stock-CP remains 100% read-only (`calibration_mutation_bytes == 0`, `cp_mutation_bytes == 0`, `persistent_emmc_writes_authorized == False`).
+13. [`fx3_firmware_lab/proxy_clipname_and_sidecar_auditor.py`](fx3_firmware_lab/proxy_clipname_and_sidecar_auditor.py)
+   - **Pillar 1 — Cinema Line `CamID / Reel#` (`A001C001_YYMMDD_XXXX`) vs `Title/Alpha` (`C0001`) Clip Naming & Proxy `S03` Pairing**: Probes FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `libmpr.so`, `global.xdb` (`uxa\x07`), and `.uxc` string packs strictly `os.O_RDONLY` (with deterministic Clean-Room fallback), verifying `XDROOT/Clip <-> XDROOT/Sub` (`MXF`) & `M4ROOT/CLIP <-> M4ROOT/SUB` (`MP4`) `S03.MP4` proxy pairing, `Cam ID A..Z`, `Reel 001..999` (`999 -> 001` rollover), `Camera Position C/L/R`, `Date YYMMDD`, 4-char Camera UID, `1920x1080 10-bit 4:2:0 XAVC HS 16/9 Mbps` & `1280x720 8-bit XAVC S 6 Mbps` proxy profiles, and automatic proxy disable during off-speed `S&Q` (`1..240fps`).
+   - **Pillar 2 — Dual-Slot (`Slot A` + `Slot B` CFexpress Type A / SDXC UHS-II) Recording Modes & Speed-Class Gate**: Models and verifies `Simultaneous (Simul)`, `Relay (Auto Switch)` (`0` dropped frames on Slot A -> Slot B rollover), `Sort` (`Main` on Slot A CFexpress VPG400, `Proxy/Sub` on Slot B SDXC), and `Off` (`Single Slot`), enforces `V90` / `CFexpress VPG200/VPG400` speed-class gates for `XAVC S-I 4K60 600Mbps` & `S&Q 4K120` (cleanly rejecting `V30/V60` without crashing `libmpr`), and enforces `internal_emmc_clip_writes == 0` (`p1` isolation, `persistent_emmc_writes_authorized == False`).
+   - **Pillar 3 — Sony `NonRealTimeMeta` XML Sidecar (`*M01.XML`) & NLE (`Resolve` / `Premiere` / `Catalyst`) LUT/EI Auto-Tag Verifier**: Pure-Python `xml.etree.ElementTree` generator & schema validator for `urn:schemas-professionalDisc:nonRealTimeMeta:ver.2.20`, verifying `CaptureGammaEquation` (`s-log3-cine`, `s-log3`, `rec709`, `s-cinetone`), `CaptureColorPrimaries` (`s-gamut3-cine`, `s-gamut3`, `rec709`), `ExposureIndexOfPhotoMeter` (`200..51200` vs Base ISO `800`/`12800` stop shift), `MonitoringDescriptions` (`User1.cube..User4.cube`), and `Device` `ILME-FX3` Stage-B RAM provenance without spoofing C2PA `RQ_LIC.DAT` signatures.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 12 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 13 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -83,8 +87,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-shutter-tally --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wb-color-look --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wb-color-look --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-proxy-clipname --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-proxy-clipname --clean-room --json
 
-# Run all 271 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 303 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

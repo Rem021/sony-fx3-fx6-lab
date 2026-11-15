@@ -288,3 +288,35 @@ PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 67：Stage 9 多机位 SMPTE 12M TC `EXT-LK`、E 卡口 PZ 伺服/呼吸补偿与 `libpaint` 3x3 色彩管线
+
+[`tc_genlock_lens_paint_emulator.py`](tc_genlock_lens_paint_emulator.py) 作为 **Stage 9** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase67` 跳过，9 阶段全套协同仿真保持 `< 1.4s`），在严格保持 **`cp_mutation_bytes == 0`**、**`calibration_mutation_bytes == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下落地三大核心闭环：
+
+1. **严格只读（`os.O_RDONLY`）时间码/E 卡口/色彩矩阵供体审计 + 洁净室回退**：
+   - 检查 FX3 `libInfraLensCommunicator.so`、`CAMERA_SCN_MOVIE_REC_START.so` 与 FX6 `libInfraLensCommunicator.so`、`libInfraLanc.so`、`libInfraMultiIF.so`、`libosal_udate.so`、`libInfraHotshoe.so`、`AVBB_SCN_START_VIDEO.so`、`AVBB_SCN_START_PANELEVF.so`、`libInfraAvbbc.so` 共 10 份精简构件（合计 `2,706,848 B`）的 SHA-256 与关键符号标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **多机位 SMPTE 12M LTC `EXT-LK` PLL 锁相与精确 Drop-Frame 数学模型**：
+   - 覆盖 `23.98p`（`23.976`）、`24.00p`、`25.00p`、`29.97p_ndf`、`29.97p_df`、`50.00p`、`59.94p_ndf`、`59.94p_df` 八大时基与 80-bit SMPTE 12M LTC 正反向同步字（`0x3FFD` / `0xBFFC`）及偶数极性校验位编解码；精确实现 `29.97 DF` 每分钟跳过 `;00/;01` 且逢 `10` 的倍数分钟（`00, 10, 20, 30, 40, 50`）不跳帧（`00:00:59;29 -> 00:01:00;02`、`00:09:59;29 -> 00:10:00;00`）。
+   - 建模 `VMC-BNCM1` Multi Port（`680 kΩ` ID）`EXT-LK` 锁相零漂移（`0.0f`）对比 `±0.5 ppm` TCXO 12 小时 `Free-Run`（`21.6 ms` / `0.5179f`）与拔线 6 小时 `Holdover`（`0.2589f` `PSEUDOLOCK`），并强制执行 **Phase 38 `uart_boot` `1.8V` 电气隔离门控**（BootROM `uart_boot` 锁存期间严禁耦合 `0.5..4.5 Vpp` LTC 输入）。
+3. **E 卡口 `libInfraLensCommunicator` PZ 伺服、呼吸效应补偿与 Stock-CP 5 轴 IBIS+OSS 融合**：
+   - 建模 `SELP1635G` / `SELP28135G` 8 档电动变焦（`PZ 1..8`）加减速受限梯形速度曲线（无焦距过冲、`MHLX 0x0210 -> 0x8210`）、基于对焦距离（`0.28m .. inf`）与焦距（`16..35mm`）动态插值的呼吸补偿 FOV 缩放系数（`1.000x .. 1.075x`）写入 `RTMD 0xE304` 帧内元数据，以及 Stock-CP `cpapp-b.bin`（`cp_mutation_bytes == 0`）5 轴 IBIS（`Active` / `Standard` / `Off 0x0400 Center-Lock`）与镜头 2 轴 OSS 的 `pitch/yaw/roll/shift_x/shift_y` 轴向仲裁。
+4. **`libpaint` Cinema Line 色彩管线（精确 Sony `S-Log3` / `S-Cinetone` / `Knee` / 白点保持 3x3 矩阵）**：
+   - 验证 `IMX510` 16-bit 线性信号到精确 Sony `S-Log3` OETF/EOTF（`18% -> 10-bit 420`）与 `S-Cinetone` + 高光 `Knee` 的无损闭环、所有 3x3 Paint Matrix 行和严格等于 `1.0`（白点中性灰误差 `<= 1e-12`），以及 `HDMI RAW16` 逐比特直通绕过 `MLUT`/Paint Matrix（同时保持 `HDMI 4:2:2 10-bit` `MLUT=On` 烘焙与 FX6 `12G-SDI` 零异常隔离）。
+
+### Phase 67 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 9 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/tc_genlock_lens_paint_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/tc_genlock_lens_paint_emulator.py --self-test --json
+
+# 2. 全板 Stage 1..9 统一校验（< 1.4s，支持 --skip-phase67 向后兼容）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 67 33 项单测 & 全量 246 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_tc_genlock_lens_paint_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_tc_genlock_lens_paint_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

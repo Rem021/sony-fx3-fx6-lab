@@ -252,3 +252,20 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-antirollback-guard --clean-room --json
 ```
 
+## Phase 86 — Passive `1.8V` RX-Only `CXD90057` UART Boot-Stage Decoder (`S0..S6`) & Unified `fx3_recovery` 7-Pillar Master Self-Audit
+
+- **[`recovery_master_suite_and_uart_decoder.py`](fx3_recovery/recovery_master_suite_and_uart_decoder.py)**：面向 FX3（`0x91030080`）提供纯离线只读被动串口启动阶段状态机与全包 7 支柱统一自检门禁：
+  - **被动 `1.8V` RX-Only 串口安全防火墙与 `S0..S6` 10 签名故障分诊（`audit_passive_rx_tap_safety` / `parse_cxd90057_boot_stages` / `decode_uart_boot_log` / `run_uart_boot_decoder_10_scenario_suite`）**：
+    - 强制执行 **RX-Only 被动监听安全约束**（`tx_line_connected == False` 或 `open_drain_tx_idle_1v8 == True`、`passive_tx_bytes_emitted == 0`、`io_voltage_v ∈ [1.65V, 1.98V]`），防止正常启动监控期间误触发 `CXD90057` BootROM `uart_boot`，并对任何主动 TX 注入、推挽 TX 连线、LTC 线冲突或 `3.3V` 过压/帧噪突发 fail-closed 拦截。
+    - 解析 `S0_BOOTROM_ENTRY -> S1_NBL_OPTEE_TRUSTZONE -> S2_UBOOT_BOOT_AB -> S3_LINUX_4_9_337_SCEL -> S4_INIT2_SENTINEL_CHECK -> S5_STAGE_B_TMPFS_MOUNT -> S6_ICX1295_BIG6_READY` 全部 7 个确定性启动阶段，并精确分诊 10 类启动/运行态结局与零 eMMC 写入最小恢复动作（`HEALTHY_STAGE_B_LIVE`、`CLEAN_SD_SENTINEL_STOCK_ESCAPE`、`CLEAN_HASH_FAILOPEN_STOCK_BOOT`、`NO_EMMC_FLASH_NEEDED`、`TIER0_CRASH_BREAKER_RECOVERED`、`TIER0_COLD_REBOOT_WIPES_TMPFS`、`NEVER_CROSS_FLASH_FX6_WBI2`、`TIER1_SD_SENTINEL_OR_P1_83_ROLLBACK`、`CRITICAL_DO_NOT_DOWNGRADE_BOOTCHAIN`、`DISCONNECT_CABLE_CHECK_1V8_OPEN_DRAIN`）。
+  - **统一 `fx3_recovery` 7 支柱主自检套件（`run_recovery_master_suite`）**：
+    - 在 `< 1.0s` 内并发核验并聚合全部 7 大恢复支柱（支持 `LOCAL_DONOR_O_RDONLY` 与 `CLEAN_ROOM_SYNTHETIC` 双模式）：`macos_usb_transport_guard`、`rp2040_multiport_fixture_selftest`（`camera_connected == False`）、`init2_escape_and_watchdog_simulator`（`7/7` 逃生 + `5/5` WDT）、`tier0_backup_parity_and_manifest_guard`（`GF(256)` P+Q 自愈 + 跨机防移植锁）、`firmware_updata_and_antirollback_guard`（`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`EXT_CSD` 永久写保护阻断）、`unbrick_ladder_and_capsule_verifier`（`12/12` 阶梯 + VFAT 胶囊）以及被动 `S0..S6` 10 场景串口解码器（`passive_tx_bytes_emitted == 0`）。
+    - 输出确定性 `recovery_master_sha256`，并硬锁定 `persistent_emmc_writes_authorized = False` 与 `persistent_write_release = False`。
+  - **CLI 与 34 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-all-recovery [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_recovery_master_suite_and_uart_decoder.py`](tests/test_recovery_master_suite_and_uart_decoder.py) 在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均在 `< 0.5s` 内通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --clean-room --json
+```
+
+

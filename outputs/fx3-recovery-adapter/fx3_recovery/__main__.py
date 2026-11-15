@@ -16,6 +16,7 @@ from .emmc_dump_forensic_verifier import (
 )
 from .firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
+from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .tier0_backup_parity_and_manifest_guard import run_tier0_backup_parity_suite
 from .unbrick_ladder_and_capsule_verifier import run_unbrick_ladder_and_capsule_suite
@@ -87,6 +88,10 @@ def main():
     antirollback.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     antirollback.add_argument('--json', action='store_true', help='emit full structured JSON report')
     antirollback.add_argument('--out', help='optional exclusive new output directory for antirollback-guard-report.json')
+    master = sub.add_parser('verify-all-recovery', help='Phase 86 unified 7-pillar fx3_recovery master readiness audit & passive 1.8V RX-only UART boot-stage decoder')
+    master.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    master.add_argument('--out', help='optional exclusive new output directory for recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -234,6 +239,28 @@ def main():
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"antirollback_brick_risk={report.antirollback_brick_risk} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-all-recovery':
+            report = run_recovery_master_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"uart_scenarios={report.uart_decoder_suite.scenarios_passed}/{report.uart_decoder_suite.scenarios_total} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"recovery_master_sha256={report.recovery_master_sha256[:16]} "
                     f"physical_device_writes={report.physical_device_writes} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"

@@ -68,6 +68,7 @@ import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
 import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
+import realhw_big6_noend_camset_slot1_vmcbncm1_coemulator as p202  # noqa: E402
 import realhw_body_peripheral_ibis_fan_power_coemulator as p150  # noqa: E402
 import realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator as p172  # noqa: E402
 import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
@@ -159,6 +160,7 @@ class CoEmulationConfig:
     include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil: bool = True
     include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil: bool = True
     include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil: bool = True
+    include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2118,6 +2120,66 @@ def run_stage35_realhw_fan_pwm_shutter_angle_lut_split_hil(
     }
 
 
+def run_stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 36 (Phase 202, 36/36 Milestone): Real-Hardware ILME-FX3 BIG6 [Home (Lower Left)] Zero e-ND Actuator Firewall, Slot-1 CAMSET Dual-Media Path Split & VMC-BNCM1 Body-Only TC IN / HDMI TC OUT HIL."""
+    config.validate()
+    rep = p202.run_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "e_nd_actuator_tx_count": red["e_nd_actuator_tx_count"],
+        "slot1_fx3_camset_mutation_bytes": red["slot1_fx3_camset_mutation_bytes"],
+        "p2_setting_mutation_bytes": red["p2_setting_mutation_bytes"],
+        "xlrh1_handle_usb_tc_miswire_damage_events": red[
+            "xlrh1_handle_usb_tc_miswire_damage_events"
+        ],
+        "bnc_tcout_reverse_drive_events": red["bnc_tcout_reverse_drive_events"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_big6_home_lower_left_and_no_end_firewall_hil": rep[
+            "pillar_a_big6_home_lower_left_and_no_end_firewall_hil"
+        ],
+        "pillar_b_slot1_camset_dual_media_and_cross_model_firewall_hil": rep[
+            "pillar_b_slot1_camset_dual_media_and_cross_model_firewall_hil"
+        ],
+        "pillar_c_d_vmcbncm1_tcin_hdmi_tcout_and_redlines": rep[
+            "pillar_c_d_vmcbncm1_tcin_hdmi_tcout_and_redlines"
+        ],
+        "phase202_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2128,7 +2190,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 35-stage (Phase 33..200, 35/35 Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 36-stage (Phase 33..202, 36/36 Milestone) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -2275,6 +2337,11 @@ def run_fx3_vm_coemulation_suite(
     stage35: Optional[Dict[str, object]] = (
         run_stage35_realhw_fan_pwm_shutter_angle_lut_split_hil(cfg, env=env)
         if cfg.include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil
+        else None
+    )
+    stage36: Optional[Dict[str, object]] = (
+        run_stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil(cfg, env=env)
+        if cfg.include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -2917,6 +2984,37 @@ def run_fx3_vm_coemulation_suite(
         and stage35["appfw_crashes"] == 0
         and stage35["raw_firmware_bytes_leaked"] == 0
     )
+    stage36_ok = True if stage36 is None else (
+        bool(stage36["all_checks_passed"])
+        and stage36["nop_count"] == 0
+        and stage36["guest_code_modification_bytes"] == 0
+        and stage36["cp_mutation_bytes"] == 0
+        and stage36["wbi_mutation_bytes"] == 0
+        and stage36["calibration_mutation_bytes"] == 0
+        and stage36["nvram_persistent_writes"] == 0
+        and stage36["bk4_persistent_nvram_writes"] == 0
+        and stage36["physical_device_writes"] == 0
+        and (not stage36["persistent_emmc_writes_authorized"])
+        and stage36["emmc_nflasha_write_count"] == 0
+        and stage36["emmc_mutation_bytes"] == 0
+        and (not stage36["spi_nor_write_authorized"])
+        and stage36["spi_nor_mutation_bytes"] == 0
+        and (not stage36["el3_payload_transmit_authorized"])
+        and stage36["physical_usb_packets_emitted"] == 0
+        and stage36["otp_fuse_touches"] == 0
+        and stage36["rpmb_counter_increments"] == 0
+        and stage36["e_nd_actuator_tx_count"] == 0
+        and stage36["slot1_fx3_camset_mutation_bytes"] == 0
+        and stage36["p2_setting_mutation_bytes"] == 0
+        and stage36["xlrh1_handle_usb_tc_miswire_damage_events"] == 0
+        and stage36["bnc_tcout_reverse_drive_events"] == 0
+        and stage36["null_gpio_derefs"] == 0
+        and stage36["mailbox_stalls"] == 0
+        and stage36["stock_cp_fault_count"] == 0
+        and stage36["wf12_00342260_hits"] == 0
+        and stage36["appfw_crashes"] == 0
+        and stage36["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -2955,6 +3053,7 @@ def run_fx3_vm_coemulation_suite(
         and stage33_ok
         and stage34_ok
         and stage35_ok
+        and stage36_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -3003,6 +3102,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil": cfg.include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil,
             "include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil": cfg.include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil,
             "include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil": cfg.include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil,
+            "include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil": cfg.include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -3091,6 +3191,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage34_realhw_nouvc_dcc1_lut_path_cineei_hil"] = stage34
     if stage35 is not None:
         core_payload["stage35_realhw_fan_pwm_shutter_angle_lut_split_hil"] = stage35
+    if stage36 is not None:
+        core_payload["stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil"] = stage36
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -3102,7 +3204,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -3269,6 +3371,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 35 (Phase 200 Real-Hardware ILME-FX3 4-Mode Fan PWM, Independent Shutter Speed/Angle & 6.01 vs 7.02 LUT Split HIL)",
     )
     parser.add_argument(
+        "--skip-phase202",
+        action="store_true",
+        help="Skip optional Stage 36 (Phase 202 Real-Hardware ILME-FX3 BIG6 [Home (Lower Left)] Zero e-ND Firewall, Slot-1 CAMSET Dual-Media Split & VMC-BNCM1 TC IN / HDMI TC OUT HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -3366,6 +3473,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil=not args.skip_phase188,
         include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil=not args.skip_phase194,
         include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil=not args.skip_phase200,
+        include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil=not args.skip_phase202,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -3410,6 +3518,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s33 = rep.get("stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil")
         s34 = rep.get("stage34_realhw_nouvc_dcc1_lut_path_cineei_hil")
         s35 = rep.get("stage35_realhw_fan_pwm_shutter_angle_lut_split_hil")
+        s36 = rep.get("stage36_realhw_big6_noend_camset_slot1_vmcbncm1_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -3677,6 +3786,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s35, dict)
             else ""
         )
+        s36_str = (
+            f" | realhw_big6_noend_camset_slot1_vmcbncm1_hil={s36['source_mode']}("
+            f"big6_tiles={s36['pillar_a_big6_home_lower_left_and_no_end_firewall_hil']['default_home_lower_left_aperture']['tile_count']},"
+            f"end_tx={s36['e_nd_actuator_tx_count']},"
+            f"camset_ovl={s36['pillar_b_slot1_camset_dual_media_and_cross_model_firewall_hil']['stage_b_overlay_profiles_verified']}/10,"
+            f"vmc={s36['pillar_c_d_vmcbncm1_tcin_hdmi_tcout_and_redlines']['body_multi_usb_ext_lk_12s_locked_ok']['tc_status_badge']},"
+            f"xlrh1_errno={s36['pillar_c_d_vmcbncm1_tcin_hdmi_tcout_and_redlines']['xlrh1_handle_micro_usb_blocked_enodev']['errno_code']},"
+            f"emmc_wr={s36['emmc_nflasha_write_count']})"
+            if isinstance(s36, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -3685,7 +3805,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

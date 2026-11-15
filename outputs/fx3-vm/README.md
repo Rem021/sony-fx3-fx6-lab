@@ -1185,3 +1185,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 202：Stage 36（`36/36` 里程碑）真实硬件主线 — `ILME-FX3` `BIG6` `[Home (Lower Left)]` 零物理 e-ND 执行器防火墙、Slot-1 `CAMSET` 双介质根路径分流与 `VMC-BNCM1` 机身专属 `TC IN` / HDMI `TC OUT` HIL 协同仿真器
+
+[`realhw_big6_noend_camset_slot1_vmcbncm1_coemulator.py`](realhw_big6_noend_camset_slot1_vmcbncm1_coemulator.py) 作为 **Stage 36（`36/36` 里程碑）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase202_realhw_big6_noend_camset_slot1_vmcbncm1_hil=True`，可通过 `--skip-phase202` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`physical_usb_packets_emitted == 0`**、**`otp_fuse_touches == 0`**、**`rpmb_counter_increments == 0`**、**`e_nd_actuator_tx_count == 0`**、**`slot1_fx3_camset_mutation_bytes == 0`**、**`p2_setting_mutation_bytes == 0`**、**`xlrh1_handle_usb_tc_miswire_damage_events == 0`**、**`bnc_tcout_reverse_drive_events == 0`** 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.10s` + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libUsbControl.so`（`135,424 B`）、`libInfraHotshoe.so`（`47,808 B`）、`libbackup.so`（`14,232 B`）、`libBackupManager.so`（`10,272 B`）、`im.elf`（`40,920 B`：`/dev/nflasha2` -> `/setting`）、`string_english_f.uxc`（`373,820 B`：证实 `Home (Lower Left)` / `Aperture` / `ND Filter` / `Fixed/Variable` / `Mode Settings` / `Save/Load Settings` / `Slot 1` / `Recall Camera Setting` / `Time Code Make` / `Time Code Run` / `Time Code Output` / `HDMI Output Settings` / `Preset` / `Free Run`），并对 `appFw.so`（含 `%c:%s/SONY/SETTING/%s/CAMSET/%s.DAT` 与 `CAMSET%02d`）、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `ILME-FX3`（`0x91030080`）`BIG6`（`[Mode Settings] = [Fixed/Variable]`）6 格主屏拓扑 & 零物理 e-ND 执行器防火墙 HIL**：
+   - 协同仿真 `BIG6` 6 格参数磁贴（`FPS`、`ISO/Base ISO`、`Shutter Speed/Angle`、`Aperture/ND Filter`、`Picture Profile/Select LUT`、`White Balance`）及第 7 顶部状态栏区，支持 `MENU -> Setup -> [Operation Customize] -> [Home (Lower Left)]` 在默认 E-Mount 电子光圈 `[Aperture]` 与纯虚拟参考显示 `[ND Filter]` 之间无损切换，并以 `EOPNOTSUPP`（`95`）硬拦截一切来自 `FX6` 的 `1/4..1/128` 电动无级可变 e-ND CP 总线驱动帧（`e_nd_actuator_tx_count == 0`）。
+3. **Pillar B — 仅限 `Slot 1` 的 `CAMSET01.DAT .. CAMSET10.DAT` 双介质根路径分流与跨机型 `.DAT` 防火墙 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Reset/Save Settings] -> [Save/Load Settings]`，严格执行 **仅限 `Slot 1`**（`Slot 2` 立即返回 `EINVAL` `22`）、单卡最多 `10` 组（`CAMSET01.DAT .. CAMSET10.DAT`）、`MR`（`Recall Camera Setting`）模式灰显禁用（`EOPNOTSUPP` `95`）、**`SD/SDHC/SDXC`（`/PRIVATE/SONY/SETTING/FX3/CAMSET/`）vs `CFexpress Type A`（`/SONY/SETTING/FX3/CAMSET/`）根路径非对称校验**、拒绝 `ILME-FX3A` / `ILME-FX6` 跨机型 `.DAT` 混读，并将 Stage-B `FX6` 人格隔离至易失性内存沙箱 `/tmp/fx6_camset_overlay`（直接写返回 `EROFS` `30`，保持 `10/10 H0 == H3`）。
+4. **Pillar C & D — `VMC-BNCM1`（`A-5051-506-A`）机身专属单向 `TC IN`（`EXT-LK` `>= 10s`）、`XLR-H1` 手柄 Micro-USB 阻断、HDMI 数字 `TC OUT` 与硬安全红线**：
+   - 协同仿真 `VMC-BNCM1`（`0.2 m` BNC 母头 -> Multi/Micro-USB）仅在机身左侧 `Multi/Micro-USB` + `Movie` + `[TC Make] = [Preset]` + `[TC Run] = [Free Run]` 连续同步 `>= 10s` 后点亮 `EXT-LK`（切入 `S&Q` 或修改 `TC` 设置立即释放锁相）；对误插 `XLR-H1` 手柄侧面 Micro-USB 返回 `ENODEV`（`19`），对反向 BNC 模拟 LTC `TC OUT` 返回 `EOPNOTSUPP`（`95`），将数字 `TC OUT` 路由至标准 Type-A HDMI（`Movie` 开启、`S&Q` 自动关闭），并 fail-closed 锁死全部 9 项物理写入/发射红线。
+
+### Phase 202 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 36（36/36 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_big6_noend_camset_slot1_vmcbncm1_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_big6_noend_camset_slot1_vmcbncm1_coemulator.py --self-test --json
+
+# 2. 全板 36 阶段（Stage 1..36, 36/36 里程碑）统一校验（支持 --skip-phase202）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 202 48 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_big6_noend_camset_slot1_vmcbncm1_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_big6_noend_camset_slot1_vmcbncm1_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

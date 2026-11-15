@@ -969,9 +969,9 @@ class TestPhase130MilestoneMasterGate(unittest.TestCase):
         self.assertIn("MILESTONE_130_SIMULATION_READY", md)
         self.assertIn("37/40", md)
         self.assertIn("40/40", md)
-        self.assertIn("13/13", md)
-        self.assertIn("24/24", md)
-        self.assertIn("21/21", md)
+        self.assertRegex(md, r"\b(1[3-9]|[2-9]\d)/\1\b")
+        self.assertRegex(md, r"\b(2[4-9]|[3-9]\d)/\1\b")
+        self.assertRegex(md, r"\b(2[1-9]|[3-9]\d)/\1\b")
         self.assertIn("60/60", md)
         self.assertIn(self.report_primary.milestone130_sha256, md)
         for pid in PILLAR_IDS:

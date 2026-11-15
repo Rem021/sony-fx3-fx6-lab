@@ -82,6 +82,11 @@ from .realhw_filesettings_shotmark_tcregen_reclamp_and_78gate_guard import (
     evaluate_g77_filesettings_shotmark_guard,
     evaluate_g78_tcregen_reclamp_guard,
 )
+from .realhw_pixelmap_ntscpal_gammaassist_displaylut_and_80gate_guard import (
+    evaluate_80gate_preflight,
+    evaluate_g79_pixelmap_reboot_cnflasha_guard,
+    evaluate_g80_ntscpal_gammaassist_displaylut_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1626,6 +1631,90 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G78 gates can be rehearsed offline",
     )
     p_78.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 77. verify-g79-pixelmap-cnflasha
+    p_g79 = sub.add_parser(
+        "verify-g79-pixelmap-cnflasha",
+        help="Verify Gate G79: [Auto Pixel Mapping] / [Pixel Mapping] Reboot, Low-Battery Lockout & cnflasha Read-Only Firewall",
+    )
+    p_g79.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g79.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g79.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g79.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 78. verify-g80-ntscpal-gammaassist-displaylut
+    p_g80 = sub.add_parser(
+        "verify-g80-ntscpal-gammaassist-displaylut",
+        help="Verify Gate G80: [NTSC/PAL Selector] Reset Persistence & [Gamma Display Assist] / [Display LUT] Split Guard",
+    )
+    p_g80.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g80.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g80.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g80.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 79. verify-80-gates
+    p_80 = sub.add_parser(
+        "verify-80-gates",
+        help="Run Phase 219 Milestone Unified 80-Gate Master Safety Preflight Engine (G01..G80)",
+    )
+    p_80.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_80.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_80.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G80 gates can be rehearsed offline",
+    )
+    p_80.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -3266,6 +3355,85 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_78_gates_verified if args.dry_run_simulated else report.offline_75_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g79-pixelmap-cnflasha":
+        verdict, res = evaluate_g79_pixelmap_reboot_cnflasha_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.pixelmap_cnflasha_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} auto_pixel_map={guard['auto_pixel_mapping_on']}"
+                f"(shutter_snd={guard['power_off_shutter_sound_expected']}) "
+                f"manual={guard['manual_pixel_mapping_requested']}"
+                f"(soc={guard['battery_soc_pct']}%,ctrl_lock={guard['operator_controls_locked_during_exec']},"
+                f"reboot={guard['auto_camera_restart_on_completion']},h0_eq_h2={guard['h0_equals_h2_post_reboot']}) "
+                f"cnflasha_ro={guard['cnflasha_userspace_write_blocked']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g80-ntscpal-gammaassist-displaylut":
+        verdict, res = evaluate_g80_ntscpal_gammaassist_displaylut_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.ntscpal_gammaassist_displaylut_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} system={guard['effective_post_reset_system']}"
+                f"(fps={guard['selected_frame_rate']},tc={guard['selected_tc_format']},"
+                f"banner={guard['startup_notification_banner']}) "
+                f"log={guard['canonical_log_shooting_mode']}"
+                f"(gov={guard['active_preview_governor']},"
+                f"gamma_assist={guard['effective_gamma_display_assist_on']},"
+                f"display_lut={guard['effective_display_lut_preview_on']},"
+                f"hdmi_gamma={guard['external_hdmi_gamma_assist_applied']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-80-gates":
+        report = evaluate_80gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/80 "
+                f"g79_to_g80_all_passed={report.g79_to_g80_all_passed} "
+                f"all_80_gates_verified={report.all_80_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_80_gates_verified if args.dry_run_simulated else report.offline_77_gates_verified
         return 0 if ok else 1
 
     return 2

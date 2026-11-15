@@ -1340,6 +1340,7 @@ def build_stage_a_overlay(
     enable_r36: bool = False,
     enable_r37: bool = False,
     enable_r38: bool = False,
+    enable_r39: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1350,6 +1351,7 @@ def build_stage_a_overlay(
     r36_mode: str = "emount_info3d_big6",
     r37_mode: str = "fx3a_firewall_big6",
     r38_mode: str = "nouvc_dcc1_pd_big6",
+    r39_mode: str = "fan_pwm_offinrec_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1641,7 +1643,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r37_mode: {r37_mode}")
     if enable_r38 and r38_mode not in ("nouvc_dcc1_pd_big6", "lut_path_cineei", "rmtp1bt_clipflag_seal"):
         raise ValueError(f"Unsupported r38_mode: {r38_mode}")
-    if enable_r38 and r38_mode in ("lut_path_cineei", "rmtp1bt_clipflag_seal"):
+    if enable_r39 and r39_mode not in ("fan_pwm_offinrec_big6", "shutter_speed_angle_clamp", "lut_601_vs_702_firewall"):
+        raise ValueError(f"Unsupported r39_mode: {r39_mode}")
+    if enable_r39 and r39_mode in ("shutter_speed_angle_clamp", "lut_601_vs_702_firewall"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r39_mode == "shutter_speed_angle_clamp":
+            r39_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r39-shutter-speed-angle > /dev/console 2>&1\n"
+                "fx6_r39_shutter_rc=$?\n"
+                "echo FX6_R39_SHUTTER_RC=$fx6_r39_shutter_rc\n"
+                "echo FX6_R39_SHUTTER_SPEED_ANGLE_EXIT rc=$fx6_r39_shutter_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r39_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r39-lut-601-702-firewall > /dev/console 2>&1\n"
+                "fx6_r39_lut_rc=$?\n"
+                "echo FX6_R39_LUT_SPLIT_RC=$fx6_r39_lut_rc\n"
+                "echo FX6_R39_LUT_601_702_FIREWALL_EXIT rc=$fx6_r39_lut_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r39_early_hook, 1)
+    elif enable_r38 and r38_mode in ("lut_path_cineei", "rmtp1bt_clipflag_seal"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2388,6 +2417,37 @@ def build_stage_a_overlay(
             "clip_flags_supported": ["OK", "NG", "KEEP"],
             "p2_setting_writes": 0,
         }
+    r39_meta: Optional[Dict[str, Any]] = None
+    if enable_r39:
+        additions["etc/fx6_stage_r39"] = (
+            (
+                f"stage_r39=1\nr39_mode={r39_mode}\n"
+                f"fan_4mode_no_auto1_auto2=1\noff_in_rec_standby_max_pwm=1\n"
+                f"always_off_backup_interlock=1\nshutter_speed_angle_independent=1\n"
+                f"lut_601_vs_702_slot_firewall=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r39_meta = {
+            "r39_mode": r39_mode,
+            "fan_allowed_modes": ["Auto", "Minimum", "Off in Rec", "Always Off"],
+            "fan_invalid_auto1_auto2_reject_rc": -22,
+            "off_in_rec_standby_pwm_pct": 100,
+            "off_in_rec_normal_rec_pwm_pct": 0,
+            "always_off_backup_blocked_rc": -16,
+            "auto_power_off_temp_modes": ["Standard", "High"],
+            "shutter_modes": ["Speed", "Angle"],
+            "shutter_angle_normal_range": "5.6deg..64F",
+            "shutter_angle_120p_100p_sq_range": "5.6deg..360deg",
+            "shutter_slots_independent": True,
+            "exposure_step_drift_ev": 0.0,
+            "lut_donor_stage_b_format": "FX6_6.01_LEGACY_SLOT_V1",
+            "lut_stock_host_format": "FX3_7.00_7.02_OPTIMIZED_SLOT_V2",
+            "lut_p2_direct_write_blocked_rc": -30,
+            "lut_stage_b_overlay_dir": "/tmp/fx6_lut_overlay",
+            "lut_user_slot_count": 16,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2419,6 +2479,7 @@ def build_stage_a_overlay(
         "r36_enabled": enable_r36,
         "r37_enabled": enable_r37,
         "r38_enabled": enable_r38,
+        "r39_enabled": enable_r39,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2470,6 +2531,8 @@ def build_stage_a_overlay(
         stage_a_meta["r37"] = r37_meta
     if r38_meta is not None:
         stage_a_meta["r38"] = r38_meta
+    if r39_meta is not None:
+        stage_a_meta["r39"] = r39_meta
     return replacements, additions, stage_a_meta
 
 
@@ -2797,6 +2860,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R36_",
         "FX6_R37_",
         "FX6_R38_",
+        "FX6_R39_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -2925,6 +2989,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r38_bridge: Optional[Dict[str, Any]] = None
     r38_lut_cineei_rc: Optional[int] = None
     r38_rmtp1bt_rc: Optional[int] = None
+    last_r39_fan_pwm_init: Optional[Dict[str, Any]] = None
+    last_r39_fan_pwm_bridge: Optional[Dict[str, Any]] = None
+    last_r39_shutter_lut_bridge: Optional[Dict[str, Any]] = None
+    last_r39_shutter_speed_angle: Optional[Dict[str, Any]] = None
+    last_r39_lut_601_702_firewall: Optional[Dict[str, Any]] = None
+    last_r39_lang: Optional[Dict[str, Any]] = None
+    last_r39_bridge: Optional[Dict[str, Any]] = None
+    r39_shutter_rc: Optional[int] = None
+    r39_lut_split_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -3200,6 +3273,28 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R38_RMTP1BT_RC"), int):
                 r38_rmtp1bt_rc = kv["FX6_R38_RMTP1BT_RC"]
+        elif "FX6_R39_FAN_PWM_INIT " in line:
+            last_r39_fan_pwm_init = _parse_kv_ints(line.split("FX6_R39_FAN_PWM_INIT ", 1)[1])
+        elif "FX6_R39_FAN_PWM_BRIDGE " in line:
+            last_r39_fan_pwm_bridge = _parse_kv_ints(line.split("FX6_R39_FAN_PWM_BRIDGE ", 1)[1])
+        elif "FX6_R39_SHUTTER_LUT_BRIDGE " in line:
+            last_r39_shutter_lut_bridge = _parse_kv_ints(line.split("FX6_R39_SHUTTER_LUT_BRIDGE ", 1)[1])
+        elif "FX6_R39_SHUTTER_SPEED_ANGLE " in line:
+            last_r39_shutter_speed_angle = _parse_kv_ints(line.split("FX6_R39_SHUTTER_SPEED_ANGLE ", 1)[1])
+        elif "FX6_R39_LUT_601_702_FIREWALL " in line:
+            last_r39_lut_601_702_firewall = _parse_kv_ints(line.split("FX6_R39_LUT_601_702_FIREWALL ", 1)[1])
+        elif "FX6_R39_LANG_TELEMETRY " in line:
+            last_r39_lang = _parse_kv_ints(line.split("FX6_R39_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R39_BRIDGE " in line:
+            last_r39_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R39_BRIDGE ", 1)[1])
+        elif "FX6_R39_SHUTTER_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R39_SHUTTER_RC"), int):
+                r39_shutter_rc = kv["FX6_R39_SHUTTER_RC"]
+        elif "FX6_R39_LUT_SPLIT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R39_LUT_SPLIT_RC"), int):
+                r39_lut_split_rc = kv["FX6_R39_LUT_SPLIT_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -3491,6 +3586,31 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r38_bridge or {},
         }
 
+    r39_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r39_fan_pwm_init,
+            last_r39_fan_pwm_bridge,
+            last_r39_shutter_lut_bridge,
+            last_r39_shutter_speed_angle,
+            last_r39_lut_601_702_firewall,
+            last_r39_lang,
+            last_r39_bridge,
+        )
+    ):
+        r39_telemetry = {
+            "shutter_rc": r39_shutter_rc,
+            "lut_split_rc": r39_lut_split_rc,
+            "fan_pwm_init": last_r39_fan_pwm_init or {},
+            "fan_pwm_bridge": last_r39_fan_pwm_bridge or {},
+            "shutter_lut_bridge": last_r39_shutter_lut_bridge or {},
+            "shutter_speed_angle": last_r39_shutter_speed_angle or {},
+            "lut_601_702_firewall": last_r39_lut_601_702_firewall or {},
+            "lang_telemetry": last_r39_lang or {},
+            "stage_b_bridge": last_r39_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -3526,6 +3646,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r36_telemetry": r36_telemetry,
         "r37_telemetry": r37_telemetry,
         "r38_telemetry": r38_telemetry,
+        "r39_telemetry": r39_telemetry,
     }
 
 
@@ -3549,7 +3670,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 38:
+    if args.round >= 39:
+        tmp_prefix = "fx6-r39"
+    elif args.round >= 38:
         tmp_prefix = "fx6-r38"
     elif args.round >= 37:
         tmp_prefix = "fx6-r37"
@@ -3649,8 +3772,12 @@ def run_once(args: argparse.Namespace) -> int:
         r36_mode = getattr(args, "r36_mode", "emount_info3d_big6")
         r37_mode = getattr(args, "r37_mode", "fx3a_firewall_big6")
         r38_mode = getattr(args, "r38_mode", "nouvc_dcc1_pd_big6")
+        r39_mode = getattr(args, "r39_mode", "fan_pwm_offinrec_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwFanPwmShutterAngleLutSplit+r39_mode={r39_mode}+lang={lang})"
+                if args.round >= 39
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwNoUvcDcc1LutPathCineEiRmtp1bt+r38_mode={r38_mode}+lang={lang})"
                 if args.round >= 38
                 else (
@@ -3767,6 +3894,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -3813,6 +3941,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r37_mode=r37_mode,
                 enable_r38=(args.round >= 38),
                 r38_mode=r38_mode,
+                enable_r39=(args.round >= 39),
+                r39_mode=r39_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -3945,6 +4075,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R37_FX3BNDL1_SERIAL_EXIT" in txt
                     or "FX6_R38_LUT_CINEEI_EXIT" in txt
                     or "FX6_R38_RMTP1BT_CLIPFLAG_EXIT" in txt
+                    or "FX6_R39_SHUTTER_SPEED_ANGLE_EXIT" in txt
+                    or "FX6_R39_LUT_601_702_FIREWALL_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -3979,6 +4111,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R37_FX3BNDL1_SERIAL_EXIT" in serial_text
             or "FX6_R38_LUT_CINEEI_EXIT" in serial_text
             or "FX6_R38_RMTP1BT_CLIPFLAG_EXIT" in serial_text
+            or "FX6_R39_SHUTTER_SPEED_ANGLE_EXIT" in serial_text
+            or "FX6_R39_LUT_601_702_FIREWALL_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -4040,6 +4174,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r36_mode": r36_mode if args.round >= 36 else None,
             "r37_mode": r37_mode if args.round >= 37 else None,
             "r38_mode": r38_mode if args.round >= 38 else None,
+            "r39_mode": r39_mode if args.round >= 39 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -4085,6 +4220,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r36_telemetry": milestones.get("r36_telemetry") if args.round >= 36 else None,
             "r37_telemetry": milestones.get("r37_telemetry") if args.round >= 37 else None,
             "r38_telemetry": milestones.get("r38_telemetry") if args.round >= 38 else None,
+            "r39_telemetry": milestones.get("r39_telemetry") if args.round >= 39 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -4134,7 +4270,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -4147,6 +4283,7 @@ def main() -> int:
     ap.add_argument("--r36-mode", type=str, choices=["emount_info3d_big6", "hdmi_4264_raw_prores_braw", "wpa2_wpa3_focusmap_bridge"], default="emount_info3d_big6")
     ap.add_argument("--r37-mode", type=str, choices=["fx3a_firewall_big6", "xlrh1_4ch_override", "fx3bndl1_serial_appledouble"], default="fx3a_firewall_big6")
     ap.add_argument("--r38-mode", type=str, choices=["nouvc_dcc1_pd_big6", "lut_path_cineei", "rmtp1bt_clipflag_seal"], default="nouvc_dcc1_pd_big6")
+    ap.add_argument("--r39-mode", type=str, choices=["fan_pwm_offinrec_big6", "shutter_speed_angle_clamp", "lut_601_vs_702_firewall"], default="fan_pwm_offinrec_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

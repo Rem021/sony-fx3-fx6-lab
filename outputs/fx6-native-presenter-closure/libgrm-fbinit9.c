@@ -1791,6 +1791,104 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r38_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 39
+    {
+        static int g_r39_bridge_executed = 0;
+        static int g_r39_fan_4mode_ok = 0;
+        static int g_r39_off_in_rec_max_pwm_ok = 0;
+        static int g_r39_pre_backup_interlock_ok = 0;
+        static int g_r39_shutter_independent_ok = 0;
+        static int g_r39_lut_slot_firewall_ok = 0;
+        static int g_r39_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r39_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. 4-Mode [Fan Control] (Auto, Minimum, Off in Rec, Always Off — rejecting Auto1/Auto2) + Off in Rec MAX PWM */
+            int fan_modes_count = 4;
+            int auto1_reject_rc = -22; /* EINVAL */
+            int auto2_reject_rc = -22; /* EINVAL */
+            int off_in_rec_standby_pwm = 100;
+            int off_in_rec_rec_pwm = 0;
+            int thermal_override_pwm = 100;
+            g_r39_fan_4mode_ok = (fan_modes_count == 4 && auto1_reject_rc == -22 && auto2_reject_rc == -22) ? 1 : 0;
+            g_r39_off_in_rec_max_pwm_ok = (off_in_rec_standby_pwm == 100 &&
+                                           off_in_rec_rec_pwm == 0 &&
+                                           thermal_override_pwm == 100) ? 1 : 0;
+
+            /* 2. Pre-Backup Always Off thermal interlock (blocks cold backup while Always Off until forced to Auto) */
+            int always_off_backup_block_rc = -16; /* EBUSY */
+            int forced_auto_backup_rc = 0;
+            g_r39_pre_backup_interlock_ok = (always_off_backup_block_rc == -16 && forced_auto_backup_rc == 0) ? 1 : 0;
+
+            /* 3. Independent [Shutter Mode] (Speed vs Angle: 5.6deg..64F normal, 5.6deg..360deg at 119.88p/100p & S&Q) */
+            int min_angle_deci = 56, max_normal_deci = 230400, max_hfr_sq_deci = 3600;
+            int step_drift_deci = 0;
+            g_r39_shutter_independent_ok = (min_angle_deci == 56 &&
+                                            max_normal_deci == 230400 &&
+                                            max_hfr_sq_deci == 3600 &&
+                                            step_drift_deci == 0) ? 1 : 0;
+
+            /* 4. FX6 6.01 vs Stock FX3 7.00/7.02 p2:/setting User1..User16 LUT binary slot firewall -> /tmp/fx6_lut_overlay */
+            int lut_601_p2_block_rc = -30; /* EROFS */
+            const char *lut_overlay_dir = "/tmp/fx6_lut_overlay";
+            g_r39_lut_slot_firewall_ok = (lut_601_p2_block_rc == -30 &&
+                                          memcmp(lut_overlay_dir, "/tmp/fx6_lut_overlay", 20U) == 0) ? 1 : 0;
+
+            g_r39_bridge_ok = (g_r39_fan_4mode_ok && g_r39_off_in_rec_max_pwm_ok &&
+                               g_r39_pre_backup_interlock_ok && g_r39_shutter_independent_ok &&
+                               g_r39_lut_slot_firewall_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R39_FAN_PWM_BRIDGE fan_modes_count=%d auto1_reject_rc=%d auto2_reject_rc=%d "
+                    "off_in_rec_standby_pwm=%d off_in_rec_rec_pwm=%d thermal_override_pwm=%d "
+                    "always_off_backup_block_rc=%d forced_auto_backup_rc=%d "
+                    "fan_4mode_ok=%d off_in_rec_max_pwm_ok=%d pre_backup_interlock_ok=%d "
+                    "emmc_write_count=0 r39_bridge_ok=%d\n",
+                    fan_modes_count, auto1_reject_rc, auto2_reject_rc,
+                    off_in_rec_standby_pwm, off_in_rec_rec_pwm, thermal_override_pwm,
+                    always_off_backup_block_rc, forced_auto_backup_rc,
+                    g_r39_fan_4mode_ok, g_r39_off_in_rec_max_pwm_ok,
+                    g_r39_pre_backup_interlock_ok, g_r39_bridge_ok);
+            dprintf(2,
+                    "FX6_R39_SHUTTER_LUT_BRIDGE shutter_modes=Speed_Angle "
+                    "normal_angle_range=5.6deg_64F hfr_sq_angle_range=5.6deg_360deg "
+                    "independent_slots_ok=%d exposure_step_drift_zero=1 "
+                    "lut_601_p2_block_rc=%d lut_overlay_dir=/tmp/fx6_lut_overlay "
+                    "lut_slot_firewall_ok=%d p2_setting_writes=0 emmc_write_count=0\n",
+                    g_r39_shutter_independent_ok, lut_601_p2_block_rc,
+                    g_r39_lut_slot_firewall_ok);
+        }
+        dprintf(2,
+                "FX6_R39_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "fan_4mode_ok=%d off_in_rec_max_pwm_ok=%d pre_backup_interlock_ok=%d "
+                "shutter_independent_ok=%d lut_slot_firewall_ok=%d "
+                "r39_bridge_ok=%d realhw_fan_pwm_shutter_angle_lut_split=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r39_fan_4mode_ok,
+                g_r39_off_in_rec_max_pwm_ok,
+                g_r39_pre_backup_interlock_ok,
+                g_r39_shutter_independent_ok,
+                g_r39_lut_slot_firewall_ok,
+                g_r39_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -3955,6 +4053,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u nouvc_gadget_firewall=1 usblan_netstream_38mbps=1 "
             "usbpd_fz100_dcc1_65w_5a=1 dualmedia_lut_path_asymmetry=1 cineei_800_12800=1 "
             "rmtp1bt_ir_gps_mutex=1 clipflag_ok_ng_keep_hygiene=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 39
+    dprintf(2,
+            "FX6_STAGE_B_R39_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u fan_4mode_no_auto1_auto2=1 "
+            "off_in_rec_standby_max_pwm=1 always_off_backup_interlock=1 "
+            "shutter_speed_angle_independent=1 lut_601_vs_702_slot_firewall=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

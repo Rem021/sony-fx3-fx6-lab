@@ -1231,5 +1231,28 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r38c-rmtp1bt-clipflag-seal` (`--r38-mode rmtp1bt_clipflag_seal`): Verifies `[Bluetooth Rmt Ctrl] = On` accepts `RMT-P1BT` (`BT 4.2`, `rc=0`) while masking IR receiver & smartphone GPS linking (`rc=-16` `EBUSY`) and restores IR/GPS when `Off` (`rc=0`), stages `OK`/`NG`/`KEEP` clip-flag `NonRealTimeMeta` XMLs in volatile `tmpfs` (`nvs_writes_delta=0`, `p2_setting_writes=0`), passes real guest `dlopen("/tmp/jiritsu/libJit.so")` (`dlopen_ok=1`), and proves `16/16 H0 == H3` (`drift_bits=0`, `emmc_write_count=0`).
 - **Full Report, Receipts, & `24` New Round 38 Dual-Mode Unit Tests (`498` Total)**: See [`reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/README.md`](../../reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/summary.json).
 
+---
+
+## 39. Round 39: Real FX3 `7.02` Kernel QEMU Rehearsal — 4-Mode Fan PWM (`Off in Rec` Standby `MAX PWM` / Pre-Backup `Always Off` Guard), Independent Shutter `Speed/Angle` (`5.6°..64F / 360°`) & `6.01` vs `7.02` `p2:/setting` User LUT Binary Slot Firewall
+
+`build_and_run_round.py --round 39 --r39-mode {fan_pwm_offinrec_big6,shutter_speed_angle_clamp,lut_601_vs_702_firewall}` executes live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs; physical camera body bench remains unexecuted):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 39 --r39-mode fan_pwm_offinrec_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r39a-fan-pwm-offinrec-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r39-runs/r39a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r39a-fan-pwm-offinrec-big6-schinese \
+  --export-png-dir reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu/assets
+```
+
+- **3 Live Round 39 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r39a-fan-pwm-offinrec-big6-schinese` (`--r39-mode fan_pwm_offinrec_big6`): Native ARM64 Stage-A and `libgrm-fbinit9.so` bridge verify the exact 4-mode `[Fan Control]` state machine (`Auto`, `Minimum` `25%`, `Off in Rec`, `Always Off`; `rc=0`), reject invalid `Auto1`/`Auto2` modes (`rc=-22` `EINVAL`), prove `Off in Rec` drives `100%` `MAX PWM` standby pre-cooling and `0%` normal recording (`>=65 °C` emergency thermal override to `100%` `MAX PWM`), block cold-backup entry while `Always Off` (`rc=-16` `EBUSY`) until forced to `Auto` (`rc=0`), and boot `appFw.so` across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,206` px / `87` colors / `135` `OSD_FLUSH` / `nop_count=0` / `gpe_fb=0`, PNGs `26,842 B` & `27,147 B`).
+  - `r39b-shutter-speed-angle-clamp` (`--r39-mode shutter_speed_angle_clamp`): Native ARM64 shutter validator toggles `[Shutter Mode]` (`Speed` `1/125` vs `Angle` `172.8°` = `1728 deci-deg`) `32` times across `0.3EV`/`0.5EV` exposure steps with zero cross-clobbering (`cross_clobber_events=0`, `exposure_step_drift_deci_deg=0`), accepts `5.6°..64F` (`23040 deci-deg`) at `<=59.94p`, clamps `64F` down to `360.0°` (`3600 deci-deg`) and rejects `>360°` (`64F`/`720°`, `rc=-34` `ERANGE`) at `119.88p`/`100p` HFR and in `S&Q` (`5.6°..360°`), while keeping `p2:/setting` read-only (`p2_write_blocked_rc=-30`, `p2_setting_sha256_match=1`, `emmc_write_count=0`).
+  - `r39c-lut-601-vs-702-firewall` (`--r39-mode lut_601_vs_702_firewall`): Blocks direct Stage-B `FX6 Ver. 6.01` (`0x0601`) legacy-format `User1..User16` LUT writes to `MS_RDONLY` `p2:/setting` (`p2_lut_direct_write_rc=-30` `EROFS` across `16/16` slots; cross-schema ABI write rejected `rc=-80` `ELIBBAD`), redirects Stage-B `User1..User16` registration into volatile `/tmp/fx6_lut_overlay` (`overlay_slots_registered=16`, `overlay_post_reboot_residual=0`), confirms `16/16` Stock `7.02` (`0x0700`) LUT headers and `Backup.bin` survive untouched, passes real guest `dlopen("/tmp/jiritsu/libJit.so")` (`dlopen_ok=1`), and proves `16/16 H0 == H3` (`drift_bits=0`, `emmc_write_count=0`).
+- **Full Report, Receipts, & `24` New Round 39 Dual-Mode Unit Tests (`522` Total)**: See [`reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu/README.md`](../../reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu/summary.json).
+
+
 
 

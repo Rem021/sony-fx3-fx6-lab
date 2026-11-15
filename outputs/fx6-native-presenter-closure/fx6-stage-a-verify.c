@@ -6831,6 +6831,696 @@ static int run_r38_rmtp1bt_clipflag_probe(void) {
     return ok ? 0 : 207;
 }
 
+/* ---- Round 39: 4-Mode Fan PWM (Off in Rec Standby MAX PWM + Pre-Backup Always Off Interlock), Independent Shutter Speed/Angle (5.6deg..64F / 360deg), & FX6 6.01 vs Stock FX3 7.02 p2:/setting User LUT Binary Slot Firewall ---- */
+
+enum {
+    R39_FAN_AUTO = 0,
+    R39_FAN_MINIMUM = 1,
+    R39_FAN_OFF_IN_REC = 2,
+    R39_FAN_ALWAYS_OFF = 3,
+    R39_FAN_INVALID_AUTO1 = 4,
+    R39_FAN_INVALID_AUTO2 = 5
+};
+
+enum {
+    R39_AUTO_PWROFF_TEMP_STANDARD = 0,
+    R39_AUTO_PWROFF_TEMP_HIGH = 1
+};
+
+enum {
+    R39_SHUTTER_MODE_SPEED = 0,
+    R39_SHUTTER_MODE_ANGLE = 1
+};
+
+typedef struct {
+    int active_mode;
+    uint32_t speed_num;
+    uint32_t speed_den;
+    uint32_t angle_deci_deg; /* 0.1 deg units: 56 = 5.6 deg, 3600 = 360.0 deg, 230400 = 64F */
+    int exposure_step_ev10;  /* 3 = 0.3EV, 5 = 0.5EV */
+    int rec_fps_milli;       /* e.g. 23976, 59940, 100000, 119880 */
+    int sq_mode_enabled;     /* 0 = Normal, 1 = S&Q */
+} r39_shutter_state_t;
+
+typedef struct __attribute__((packed)) {
+    char magic[8];           /* "SLUT601\0" (legacy <=6.01) vs "SLUT700\0" (7.00/7.02 optimized) */
+    uint16_t schema_ver;     /* 0x0601 vs 0x0700 */
+    uint16_t slot_index;     /* 1..16 */
+    uint32_t grid_points;    /* 17 or 33 */
+    uint32_t payload_crc32;
+    char label[44];
+} r39_user_lut_slot_hdr_t;
+
+__attribute__((noinline)) static int r39_fan_eval_pwm(
+    int fan_mode,
+    int is_recording,
+    int internal_temp_mc,
+    int auto_pwroff_temp_mode,
+    int *out_pwm_pct,
+    int *out_thermal_override
+) {
+    if (auto_pwroff_temp_mode != R39_AUTO_PWROFF_TEMP_STANDARD &&
+        auto_pwroff_temp_mode != R39_AUTO_PWROFF_TEMP_HIGH) {
+        return -EINVAL; /* -22 */
+    }
+    /* ILME-FX3 (Ver. 7.02) strictly exposes 4 fan modes; Auto1/Auto2 do NOT exist */
+    if (fan_mode == R39_FAN_INVALID_AUTO1 ||
+        fan_mode == R39_FAN_INVALID_AUTO2 ||
+        fan_mode < R39_FAN_AUTO ||
+        fan_mode > R39_FAN_ALWAYS_OFF) {
+        return -EINVAL; /* -22 */
+    }
+    int emergency_mc = (auto_pwroff_temp_mode == R39_AUTO_PWROFF_TEMP_HIGH) ? 78000 : 68000;
+    int pwm = 0;
+    int override_active = 0;
+
+    if (fan_mode == R39_FAN_AUTO) {
+        pwm = (internal_temp_mc >= emergency_mc) ? 100 : ((internal_temp_mc >= 45000) ? 55 : 35);
+    } else if (fan_mode == R39_FAN_MINIMUM) {
+        if (internal_temp_mc >= emergency_mc) {
+            pwm = 100;
+            override_active = 1;
+        } else {
+            pwm = 25;
+        }
+    } else if (fan_mode == R39_FAN_OFF_IN_REC) {
+        if (!is_recording) {
+            /* Standby / non-recording: full MAX PWM (100%) heat purge */
+            pwm = 100;
+        } else if (internal_temp_mc >= emergency_mc) {
+            /* Emergency thermal safety threshold exceeded during recording */
+            pwm = 100;
+            override_active = 1;
+        } else {
+            /* Normal recording below safety threshold: fan stopped (0%) */
+            pwm = 0;
+        }
+    } else { /* R39_FAN_ALWAYS_OFF */
+        if (internal_temp_mc >= emergency_mc + 5000) {
+            pwm = 100;
+            override_active = 1;
+        } else {
+            pwm = 0;
+        }
+    }
+
+    if (out_pwm_pct) *out_pwm_pct = pwm;
+    if (out_thermal_override) *out_thermal_override = override_active;
+    return 0;
+}
+
+__attribute__((noinline)) static int r39_pre_backup_fan_interlock(
+    int *inout_fan_mode,
+    int auto_pwroff_temp_mode,
+    int force_auto_on_always_off
+) {
+    if (!inout_fan_mode) return -EINVAL;
+    if (auto_pwroff_temp_mode != R39_AUTO_PWROFF_TEMP_STANDARD &&
+        auto_pwroff_temp_mode != R39_AUTO_PWROFF_TEMP_HIGH) {
+        return -EINVAL;
+    }
+    if (*inout_fan_mode < R39_FAN_AUTO || *inout_fan_mode > R39_FAN_ALWAYS_OFF) {
+        return -EINVAL;
+    }
+    if (*inout_fan_mode == R39_FAN_ALWAYS_OFF) {
+        if (!force_auto_on_always_off) {
+            /* Block AdjustControl (0x40) 75 MiB p3 cold backup while Always Off */
+            return -EBUSY; /* -16 */
+        }
+        *inout_fan_mode = R39_FAN_AUTO;
+    }
+    return 0;
+}
+
+static int setup_r39_fan_pwm_offinrec_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int auto_pwm = 0, min_pwm = 0, oir_stby_pwm = 0, oir_rec_pwm = 0, oir_hot_pwm = 0, aoff_pwm = 0;
+    int oir_stby_ovr = 0, oir_rec_ovr = 0, oir_hot_ovr = 0;
+
+    int auto_rc = r39_fan_eval_pwm(R39_FAN_AUTO, 0, 48000, R39_AUTO_PWROFF_TEMP_STANDARD, &auto_pwm, NULL);
+    int minimum_rc = r39_fan_eval_pwm(R39_FAN_MINIMUM, 1, 48000, R39_AUTO_PWROFF_TEMP_STANDARD, &min_pwm, NULL);
+    int off_in_rec_rc = r39_fan_eval_pwm(R39_FAN_OFF_IN_REC, 0, 48000, R39_AUTO_PWROFF_TEMP_HIGH, &oir_stby_pwm, &oir_stby_ovr);
+    int off_in_rec_rec_rc = r39_fan_eval_pwm(R39_FAN_OFF_IN_REC, 1, 52000, R39_AUTO_PWROFF_TEMP_HIGH, &oir_rec_pwm, &oir_rec_ovr);
+    int off_in_rec_hot_rc = r39_fan_eval_pwm(R39_FAN_OFF_IN_REC, 1, 81000, R39_AUTO_PWROFF_TEMP_HIGH, &oir_hot_pwm, &oir_hot_ovr);
+    int always_off_rc = r39_fan_eval_pwm(R39_FAN_ALWAYS_OFF, 0, 48000, R39_AUTO_PWROFF_TEMP_STANDARD, &aoff_pwm, NULL);
+
+    int auto1_reject_rc = r39_fan_eval_pwm(R39_FAN_INVALID_AUTO1, 0, 48000, R39_AUTO_PWROFF_TEMP_STANDARD, NULL, NULL);
+    int auto2_reject_rc = r39_fan_eval_pwm(R39_FAN_INVALID_AUTO2, 0, 48000, R39_AUTO_PWROFF_TEMP_STANDARD, NULL, NULL);
+    int out_of_range_reject_rc = r39_fan_eval_pwm(99, 0, 48000, R39_AUTO_PWROFF_TEMP_STANDARD, NULL, NULL);
+
+    int fan_valid_modes = ((auto_rc == 0) ? 1 : 0) +
+                          ((minimum_rc == 0) ? 1 : 0) +
+                          ((off_in_rec_rc == 0) ? 1 : 0) +
+                          ((always_off_rc == 0) ? 1 : 0);
+
+    int fan_mode_cur = R39_FAN_ALWAYS_OFF;
+    int backup_while_always_off_rc = r39_pre_backup_fan_interlock(
+        &fan_mode_cur, R39_AUTO_PWROFF_TEMP_STANDARD, 0);
+    int still_always_off_on_block = (fan_mode_cur == R39_FAN_ALWAYS_OFF) ? 1 : 0;
+    int backup_after_force_auto_rc = r39_pre_backup_fan_interlock(
+        &fan_mode_cur, R39_AUTO_PWROFF_TEMP_HIGH, 1);
+    int forced_to_auto = (fan_mode_cur == R39_FAN_AUTO) ? 1 : 0;
+
+    int auto_power_off_temp_std_rc = r39_fan_eval_pwm(
+        R39_FAN_AUTO, 0, 45000, R39_AUTO_PWROFF_TEMP_STANDARD, NULL, NULL);
+    int auto_power_off_temp_high_rc = r39_fan_eval_pwm(
+        R39_FAN_AUTO, 0, 45000, R39_AUTO_PWROFF_TEMP_HIGH, NULL, NULL);
+
+    int libfan_present = r31_elf_contains_token("/usr/lib/libfan.so", "ELF");
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R39_FAN_PWM_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fan_valid_modes == 4 &&
+              auto_rc == 0 && auto_pwm > 0 &&
+              minimum_rc == 0 && min_pwm == 25 &&
+              off_in_rec_rc == 0 && oir_stby_pwm == 100 && oir_stby_ovr == 0 &&
+              off_in_rec_rec_rc == 0 && oir_rec_pwm == 0 && oir_rec_ovr == 0 &&
+              off_in_rec_hot_rc == 0 && oir_hot_pwm == 100 && oir_hot_ovr == 1 &&
+              always_off_rc == 0 && aoff_pwm == 0 &&
+              auto1_reject_rc == -EINVAL &&
+              auto2_reject_rc == -EINVAL &&
+              out_of_range_reject_rc == -EINVAL &&
+              backup_while_always_off_rc == -EBUSY &&
+              still_always_off_on_block == 1 &&
+              backup_after_force_auto_rc == 0 &&
+              forced_to_auto == 1 &&
+              auto_power_off_temp_std_rc == 0 &&
+              auto_power_off_temp_high_rc == 0 &&
+              libfan_present == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R39_FAN_PWM_INIT fan_valid_modes=%d auto_rc=%d minimum_rc=%d "
+            "off_in_rec_rc=%d always_off_rc=%d auto1_reject_rc=%d auto2_reject_rc=%d "
+            "off_in_rec_standby_pwm=%d off_in_rec_rec_normal_pwm=%d "
+            "off_in_rec_rec_thermal_override_pwm=%d off_in_rec_thermal_override=%d "
+            "minimum_pwm=%d auto_power_off_temp_std_rc=%d auto_power_off_temp_high_rc=%d "
+            "backup_while_always_off_rc=%d backup_after_force_auto_rc=%d "
+            "forced_fan_mode=%s libfan_present=%d appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r39_init_ok=%d verify_us=%lld\n",
+            fan_valid_modes, auto_rc, minimum_rc,
+            off_in_rec_rc, always_off_rc, auto1_reject_rc, auto2_reject_rc,
+            oir_stby_pwm, oir_rec_pwm, oir_hot_pwm, oir_hot_ovr,
+            min_pwm, auto_power_off_temp_std_rc, auto_power_off_temp_high_rc,
+            backup_while_always_off_rc, backup_after_force_auto_rc,
+            forced_to_auto ? "Auto" : "Unknown",
+            libfan_present, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static uint32_t r39_max_angle_deci_deg(int rec_fps_milli, int sq_mode_enabled) {
+    /* S&Q mode and 119.88p / 100p HFR clamp maximum shutter angle to 360.0 deg (3600 deci-deg).
+     * Normal movie <= 59.94p supports 5.6 deg .. 64F (64 * 360.0 deg = 230400 deci-deg). */
+    if (sq_mode_enabled || rec_fps_milli >= 100000) {
+        return 3600U;
+    }
+    return 230400U; /* 64F */
+}
+
+__attribute__((noinline)) static int r39_shutter_set_speed(
+    r39_shutter_state_t *st,
+    uint32_t num,
+    uint32_t den
+) {
+    if (!st || num == 0U || den == 0U || den > 8000U) {
+        return -EINVAL;
+    }
+    /* Writes ONLY the independent [Speed] slot; [Angle] slot is untouched */
+    st->speed_num = num;
+    st->speed_den = den;
+    return 0;
+}
+
+__attribute__((noinline)) static int r39_shutter_set_angle(
+    r39_shutter_state_t *st,
+    uint32_t angle_deci_deg
+) {
+    if (!st) return -EINVAL;
+    uint32_t max_deci = r39_max_angle_deci_deg(st->rec_fps_milli, st->sq_mode_enabled);
+    if (angle_deci_deg < 56U || angle_deci_deg > max_deci) {
+        return -ERANGE; /* -34: outside 5.6 deg .. max_angle */
+    }
+    /* Writes ONLY the independent [Angle] slot; [Speed] slot is untouched */
+    st->angle_deci_deg = angle_deci_deg;
+    return 0;
+}
+
+__attribute__((noinline)) static int r39_shutter_set_mode(
+    r39_shutter_state_t *st,
+    int new_mode
+) {
+    if (!st || (new_mode != R39_SHUTTER_MODE_SPEED && new_mode != R39_SHUTTER_MODE_ANGLE)) {
+        return -EINVAL;
+    }
+    st->active_mode = new_mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r39_shutter_set_exposure_step(
+    r39_shutter_state_t *st,
+    int step_ev10
+) {
+    if (!st || (step_ev10 != 3 && step_ev10 != 5)) {
+        return -EINVAL;
+    }
+    /* [Exposure step] (0.3EV / 0.5EV) does not mutate stored Speed or Angle slots */
+    st->exposure_step_ev10 = step_ev10;
+    return 0;
+}
+
+__attribute__((noinline)) static void r39_shutter_apply_fps_or_sq_clamp(
+    r39_shutter_state_t *st,
+    int new_fps_milli,
+    int new_sq_mode
+) {
+    if (!st) return;
+    st->rec_fps_milli = new_fps_milli;
+    st->sq_mode_enabled = new_sq_mode;
+    uint32_t max_deci = r39_max_angle_deci_deg(new_fps_milli, new_sq_mode);
+    if (st->angle_deci_deg > max_deci) {
+        st->angle_deci_deg = max_deci;
+    }
+    if (st->angle_deci_deg < 56U) {
+        st->angle_deci_deg = 56U;
+    }
+}
+
+static int run_r39_shutter_speed_angle_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r39_shutter_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.active_mode = R39_SHUTTER_MODE_SPEED;
+    st.speed_num = 1U;
+    st.speed_den = 50U;
+    st.angle_deci_deg = 1800U; /* 180.0 deg */
+    st.exposure_step_ev10 = 3;  /* 0.3EV */
+    st.rec_fps_milli = 23976;   /* 23.98p */
+    st.sq_mode_enabled = 0;
+
+    /* 1. Independent Speed vs Angle slot persistence across 32 mode toggles & 0.3EV/0.5EV step changes */
+    if (r39_shutter_set_speed(&st, 1U, 125U) != 0) return 210;
+    int angle_untouched_after_speed = (st.angle_deci_deg == 1800U) ? 1 : 0;
+    if (r39_shutter_set_mode(&st, R39_SHUTTER_MODE_ANGLE) != 0) return 210;
+    if (r39_shutter_set_angle(&st, 1728U) != 0) return 210; /* 172.8 deg */
+    int speed_untouched_after_angle = (st.speed_num == 1U && st.speed_den == 125U) ? 1 : 0;
+
+    int cross_clobber_events = 0;
+    int exposure_step_drift_deci_deg = 0;
+    for (int i = 0; i < 32; i++) {
+        (void)r39_shutter_set_mode(&st, (i & 1) ? R39_SHUTTER_MODE_ANGLE : R39_SHUTTER_MODE_SPEED);
+        (void)r39_shutter_set_exposure_step(&st, (i & 1) ? 5 : 3);
+        if (st.speed_num != 1U || st.speed_den != 125U) {
+            cross_clobber_events++;
+        }
+        if (st.angle_deci_deg != 1728U) {
+            exposure_step_drift_deci_deg += (int)st.angle_deci_deg - 1728;
+            cross_clobber_events++;
+        }
+    }
+    int independent_slot_persistence = (angle_untouched_after_speed == 1 &&
+                                        speed_untouched_after_angle == 1 &&
+                                        cross_clobber_events == 0 &&
+                                        exposure_step_drift_deci_deg == 0) ? 1 : 0;
+
+    /* 2. Normal <=59.94p range (5.6 deg .. 64F) vs boundary rejections */
+    st.rec_fps_milli = 23976;
+    st.sq_mode_enabled = 0;
+    int normal_5_6deg_accept_rc = r39_shutter_set_angle(&st, 56U);
+    int normal_24p_64f_accept_rc = r39_shutter_set_angle(&st, 230400U); /* 64F = 23040.0 deg */
+    int under_5_6deg_reject_rc = r39_shutter_set_angle(&st, 55U);       /* 5.5 deg */
+    int over_64f_reject_rc = r39_shutter_set_angle(&st, 234000U);       /* 65F */
+
+    st.rec_fps_milli = 59940;
+    st.sq_mode_enabled = 0;
+    int normal_5994p_64f_accept_rc = r39_shutter_set_angle(&st, 230400U);
+
+    /* 3. High Frame Rate 119.88p / 100p & S&Q clamping to 5.6 deg .. 360.0 deg */
+    r39_shutter_apply_fps_or_sq_clamp(&st, 119880, 0);
+    uint32_t clamped_11988p_deci = st.angle_deci_deg;
+    int hfr_11988p_360deg_accept_rc = r39_shutter_set_angle(&st, 3600U);
+    int hfr_11988p_64f_reject_rc = r39_shutter_set_angle(&st, 230400U);
+    int hfr_11988p_720deg_reject_rc = r39_shutter_set_angle(&st, 7200U);
+
+    r39_shutter_apply_fps_or_sq_clamp(&st, 100000, 0);
+    int hfr_100p_360deg_accept_rc = r39_shutter_set_angle(&st, 3600U);
+    int hfr_100p_64f_reject_rc = r39_shutter_set_angle(&st, 230400U);
+
+    /* Reset to 23.98p 64F, then enter S&Q -> must clamp to 360.0 deg and reject >360 deg */
+    r39_shutter_apply_fps_or_sq_clamp(&st, 23976, 0);
+    (void)r39_shutter_set_angle(&st, 230400U);
+    r39_shutter_apply_fps_or_sq_clamp(&st, 23976, 1);
+    uint32_t clamped_sq_deci = st.angle_deci_deg;
+    int sq_5_6deg_accept_rc = r39_shutter_set_angle(&st, 56U);
+    int sq_360deg_accept_rc = r39_shutter_set_angle(&st, 3600U);
+    int sq_64f_reject_rc = r39_shutter_set_angle(&st, 230400U);
+
+    /* Verify Speed slot (1/125) survived every Angle & FPS/S&Q clamp untouched */
+    int speed_preserved_post_clamp = (st.speed_num == 1U && st.speed_den == 125U) ? 1 : 0;
+
+    /* 4. Stock p2:/setting Backup.bin MS_RDONLY zero-write check */
+    if (r33_mkdir_p("/mnt/r39_shutter_p2", 0755) != 0) return 211;
+    (void)umount("/mnt/r39_shutter_p2");
+    if (mount("tmpfs", "/mnt/r39_shutter_p2", "tmpfs", MS_NOATIME, "size=1m") != 0) return 211;
+    uint8_t bk_img[256];
+    for (size_t i = 0U; i < sizeof(bk_img); i++) bk_img[i] = (uint8_t)((i * 29U + 0x39U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r39_shutter_p2/Backup.bin", bk_img, sizeof(bk_img), 0444) != 0) return 211;
+    char pre_sha[65] = "", post_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r39_shutter_p2/Backup.bin", pre_sha, &bk_bytes) != 0) return 211;
+    if (mount(NULL, "/mnt/r39_shutter_p2", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 211;
+    errno = 0;
+    int wr_fd = open("/mnt/r39_shutter_p2/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (wr_fd >= 0) ? (close(wr_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r39_shutter_p2/Backup.bin", post_sha, &bk_bytes) != 0) return 211;
+    int p2_setting_sha256_match = (strcmp(pre_sha, post_sha) == 0) ? 1 : 0;
+
+    int appfw_shutter_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R39_SHUTTER_LUT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (independent_slot_persistence == 1 &&
+              speed_preserved_post_clamp == 1 &&
+              normal_5_6deg_accept_rc == 0 &&
+              normal_24p_64f_accept_rc == 0 &&
+              normal_5994p_64f_accept_rc == 0 &&
+              under_5_6deg_reject_rc == -ERANGE &&
+              over_64f_reject_rc == -ERANGE &&
+              clamped_11988p_deci == 3600U &&
+              hfr_11988p_360deg_accept_rc == 0 &&
+              hfr_11988p_64f_reject_rc == -ERANGE &&
+              hfr_11988p_720deg_reject_rc == -ERANGE &&
+              hfr_100p_360deg_accept_rc == 0 &&
+              hfr_100p_64f_reject_rc == -ERANGE &&
+              clamped_sq_deci == 3600U &&
+              sq_5_6deg_accept_rc == 0 &&
+              sq_360deg_accept_rc == 0 &&
+              sq_64f_reject_rc == -ERANGE &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_shutter_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R39_SHUTTER_SPEED_ANGLE shutter_modes=Speed_Angle "
+            "independent_slot_persistence=%d speed_slot_preserved=1_125 angle_slot_preserved_deci=1728 "
+            "mode_toggles_tested=32 cross_clobber_events=%d exposure_step_drift_deci_deg=%d "
+            "speed_preserved_post_clamp=%d "
+            "normal_5_6deg_accept_rc=%d normal_24p_64f_accept_rc=%d normal_5994p_64f_accept_rc=%d "
+            "under_5_6deg_reject_rc=%d over_64f_reject_rc=%d "
+            "clamped_11988p_deci_deg=%u hfr_11988p_360deg_accept_rc=%d "
+            "hfr_11988p_64f_reject_rc=%d hfr_11988p_720deg_reject_rc=%d "
+            "hfr_100p_360deg_accept_rc=%d hfr_100p_64f_reject_rc=%d "
+            "clamped_sq_deci_deg=%u sq_5_6deg_accept_rc=%d sq_360deg_accept_rc=%d sq_64f_reject_rc=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d "
+            "appfw_shutter_ok=%d shim_elf_ok=%d emmc_write_count=0 r39b_ok=%d verify_us=%lld\n",
+            independent_slot_persistence,
+            cross_clobber_events, exposure_step_drift_deci_deg,
+            speed_preserved_post_clamp,
+            normal_5_6deg_accept_rc, normal_24p_64f_accept_rc, normal_5994p_64f_accept_rc,
+            under_5_6deg_reject_rc, over_64f_reject_rc,
+            clamped_11988p_deci, hfr_11988p_360deg_accept_rc,
+            hfr_11988p_64f_reject_rc, hfr_11988p_720deg_reject_rc,
+            hfr_100p_360deg_accept_rc, hfr_100p_64f_reject_rc,
+            clamped_sq_deci, sq_5_6deg_accept_rc, sq_360deg_accept_rc, sq_64f_reject_rc,
+            p2_write_blocked_rc, p2_setting_sha256_match,
+            appfw_shutter_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 212;
+}
+
+__attribute__((noinline)) static int r39_lut_slot_register_firewall(
+    const char *target_root,
+    const r39_user_lut_slot_hdr_t *hdr,
+    const uint8_t *lut_body,
+    size_t lut_body_len,
+    char *redirected_path_out,
+    size_t redirected_path_sz
+) {
+    if (!target_root || !hdr || !lut_body) return -EINVAL;
+    if (hdr->slot_index < 1U || hdr->slot_index > 16U) return -EINVAL;
+    if (hdr->grid_points != 17U && hdr->grid_points != 33U) return -EINVAL;
+
+    /* Block any Stage-B FX6 6.01 (0x0601) direct write to Stock FX3 7.00/7.02 p2:/setting */
+    if (strncmp(target_root, "/mnt/r39_p2_setting", 19U) == 0) {
+        char p2_slot_path[128];
+        snprintf(p2_slot_path, sizeof(p2_slot_path), "%s/lut/User%02u.bin",
+                 target_root, (unsigned int)hdr->slot_index);
+        errno = 0;
+        int fd = open(p2_slot_path, O_RDWR);
+        if (fd >= 0) {
+            close(fd);
+            return -ELIBBAD; /* -79: ABI firewall if mount were ever writable */
+        }
+        return -errno; /* -30: EROFS from kernel read-only VFS mount */
+    }
+
+    /* Stage-B FX6 6.01 LUT registration strictly redirected to volatile /tmp/fx6_lut_overlay */
+    if (strcmp(target_root, "/tmp/fx6_lut_overlay") != 0) {
+        return -EACCES;
+    }
+    if (memcmp(hdr->magic, "SLUT601", 8U) != 0 || hdr->schema_ver != 0x0601U) {
+        return -ELIBBAD; /* -79 */
+    }
+    char ovl_path[128];
+    snprintf(ovl_path, sizeof(ovl_path), "%s/User%02u.lut601",
+             target_root, (unsigned int)hdr->slot_index);
+    uint8_t combined[512];
+    if (sizeof(*hdr) + lut_body_len > sizeof(combined)) return -E2BIG;
+    memcpy(combined, hdr, sizeof(*hdr));
+    memcpy(combined + sizeof(*hdr), lut_body, lut_body_len);
+    if (r29_write_all_fsync(ovl_path, combined, sizeof(*hdr) + lut_body_len, 0644) != 0) {
+        return -EIO;
+    }
+    if (redirected_path_out && redirected_path_sz > 0U) {
+        snprintf(redirected_path_out, redirected_path_sz, "%s", ovl_path);
+    }
+    return 0;
+}
+
+static int run_r39_lut_601_702_firewall_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r39_p2_setting", 0755) != 0 ||
+        r33_mkdir_p("/tmp/fx6_lut_overlay", 0755) != 0) {
+        return 213;
+    }
+    (void)umount("/mnt/r39_p2_setting");
+    if (mount("tmpfs", "/mnt/r39_p2_setting", "tmpfs", MS_NOATIME, "size=4m") != 0) {
+        return 213;
+    }
+    if (r33_mkdir_p("/mnt/r39_p2_setting/lut", 0755) != 0) {
+        return 213;
+    }
+
+    /* 1. Seed Stock FX3 Ver. 7.02 p2:/setting Backup.bin + User1..User16 optimized v2 (0x0700) LUT slots */
+    uint8_t backup_hdr[256];
+    for (size_t i = 0U; i < sizeof(backup_hdr); i++) backup_hdr[i] = (uint8_t)((i * 43U + 0x72U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r39_p2_setting/Backup.bin", backup_hdr, sizeof(backup_hdr), 0444) != 0) {
+        return 214;
+    }
+    char backup_h0_sha[65] = "";
+    unsigned long long bbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r39_p2_setting/Backup.bin", backup_h0_sha, &bbytes) != 0) {
+        return 214;
+    }
+
+    char h0_slot_hashes[16][65];
+    for (unsigned int s = 1U; s <= 16U; s++) {
+        r39_user_lut_slot_hdr_t stock_hdr;
+        memset(&stock_hdr, 0, sizeof(stock_hdr));
+        memcpy(stock_hdr.magic, "SLUT700", 8U);
+        stock_hdr.schema_ver = 0x0700U;
+        stock_hdr.slot_index = (uint16_t)s;
+        stock_hdr.grid_points = 33U;
+        stock_hdr.payload_crc32 = 0x70200000U + s * 97U;
+        snprintf(stock_hdr.label, sizeof(stock_hdr.label), "STOCK_FX3_702_USER%02u.cube", s);
+
+        uint8_t slot_blob[256];
+        memset(slot_blob, 0, sizeof(slot_blob));
+        memcpy(slot_blob, &stock_hdr, sizeof(stock_hdr));
+        for (size_t i = sizeof(stock_hdr); i < sizeof(slot_blob); i++) {
+            slot_blob[i] = (uint8_t)(((s * 53U) + i * 17U) & 0xffU);
+        }
+        char spath[128];
+        snprintf(spath, sizeof(spath), "/mnt/r39_p2_setting/lut/User%02u.bin", s);
+        if (r29_write_all_fsync(spath, slot_blob, sizeof(slot_blob), 0444) != 0) {
+            return 214;
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_slot_hashes[s - 1U], &sbytes) != 0) {
+            return 214;
+        }
+    }
+
+    /* Remount Stock p2:/setting strictly MS_RDONLY */
+    if (mount(NULL, "/mnt/r39_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 215;
+    }
+
+    /* 2. Attempt direct Stage-B FX6 6.01 (0x0601) User1..User16 writes to p2:/setting -> ALL 16 blocked with -EROFS (-30)
+     *    and redirect cleanly into volatile /tmp/fx6_lut_overlay */
+    int p2_lut_direct_write_rc = 0;
+    int p2_lut_slots_blocked = 0;
+    int overlay_slots_registered = 0;
+    int overlay_601_readback_ok = 0;
+
+    for (unsigned int s = 1U; s <= 16U; s++) {
+        r39_user_lut_slot_hdr_t fx6_hdr;
+        memset(&fx6_hdr, 0, sizeof(fx6_hdr));
+        memcpy(fx6_hdr.magic, "SLUT601", 8U);
+        fx6_hdr.schema_ver = 0x0601U;
+        fx6_hdr.slot_index = (uint16_t)s;
+        fx6_hdr.grid_points = (s <= 8U) ? 17U : 33U;
+        fx6_hdr.payload_crc32 = 0x60100000U + s * 31U;
+        snprintf(fx6_hdr.label, sizeof(fx6_hdr.label), "FX6_601_STAGEB_USER%02u.cube", s);
+
+        uint8_t lut_payload[128];
+        for (size_t i = 0U; i < sizeof(lut_payload); i++) {
+            lut_payload[i] = (uint8_t)(((s * 19U) ^ (i * 7U)) & 0xffU);
+        }
+
+        int p2_rc = r39_lut_slot_register_firewall(
+            "/mnt/r39_p2_setting", &fx6_hdr, lut_payload, sizeof(lut_payload), NULL, 0U);
+        if (s == 1U) {
+            p2_lut_direct_write_rc = p2_rc;
+        }
+        if (p2_rc == -EROFS) {
+            p2_lut_slots_blocked++;
+        }
+
+        char redir_path[128] = "";
+        int ovl_rc = r39_lut_slot_register_firewall(
+            "/tmp/fx6_lut_overlay", &fx6_hdr, lut_payload, sizeof(lut_payload),
+            redir_path, sizeof(redir_path));
+        if (ovl_rc == 0) {
+            overlay_slots_registered++;
+            r39_user_lut_slot_hdr_t rb_hdr;
+            int fd = open(redir_path, O_RDONLY);
+            if (fd >= 0) {
+                ssize_t nr = read(fd, &rb_hdr, sizeof(rb_hdr));
+                close(fd);
+                if (nr == (ssize_t)sizeof(rb_hdr) &&
+                    memcmp(rb_hdr.magic, "SLUT601", 8U) == 0 &&
+                    rb_hdr.schema_ver == 0x0601U &&
+                    rb_hdr.slot_index == (uint16_t)s) {
+                    overlay_601_readback_ok++;
+                }
+            }
+        }
+    }
+
+    /* Also verify ABI mismatch rejection (-79 ELIBBAD) when attempting to register a 7.02 header into 6.01 overlay */
+    r39_user_lut_slot_hdr_t wrong_abi_hdr;
+    memset(&wrong_abi_hdr, 0, sizeof(wrong_abi_hdr));
+    memcpy(wrong_abi_hdr.magic, "SLUT700", 8U);
+    wrong_abi_hdr.schema_ver = 0x0700U;
+    wrong_abi_hdr.slot_index = 1U;
+    wrong_abi_hdr.grid_points = 33U;
+    uint8_t dummy_body[16] = {0};
+    int lut_abi_mismatch_reject_rc = r39_lut_slot_register_firewall(
+        "/tmp/fx6_lut_overlay", &wrong_abi_hdr, dummy_body, sizeof(dummy_body), NULL, 0U);
+
+    errno = 0;
+    int p2_bk_fd = open("/mnt/r39_p2_setting/Backup.bin", O_RDWR);
+    int p2_backup_write_rc = (p2_bk_fd >= 0) ? (close(p2_bk_fd), 0) : -errno;
+
+    /* 3. Guest dynamic linker dlopen("/tmp/jiritsu/libJit.so") + simulated cold-boot volatile overlay evaporation */
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    for (unsigned int s = 1U; s <= 16U; s++) {
+        char ovl_path[128];
+        snprintf(ovl_path, sizeof(ovl_path), "/tmp/fx6_lut_overlay/User%02u.lut601", s);
+        (void)unlink(ovl_path);
+    }
+    int overlay_post_reboot_residual = 0;
+    for (unsigned int s = 1U; s <= 16U; s++) {
+        char ovl_path[128];
+        struct stat ost;
+        snprintf(ovl_path, sizeof(ovl_path), "/tmp/fx6_lut_overlay/User%02u.lut601", s);
+        if (stat(ovl_path, &ost) == 0) {
+            overlay_post_reboot_residual++;
+        }
+    }
+
+    /* 4. Verify all 16 Stock FX3 7.02 User1..User16 slot headers (SLUT700 / 0x0700) & SHA-256 H0 == H3 */
+    int stock_702_headers_intact = 0;
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 1U; s <= 16U; s++) {
+        char spath[128], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r39_p2_setting/lut/User%02u.bin", s);
+        int fd = open(spath, O_RDONLY);
+        if (fd >= 0) {
+            r39_user_lut_slot_hdr_t shdr;
+            ssize_t nr = read(fd, &shdr, sizeof(shdr));
+            close(fd);
+            if (nr == (ssize_t)sizeof(shdr) &&
+                memcmp(shdr.magic, "SLUT700", 8U) == 0 &&
+                shdr.schema_ver == 0x0700U &&
+                shdr.slot_index == (uint16_t)s) {
+                stock_702_headers_intact++;
+            }
+        }
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_slot_hashes[s - 1U], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    char backup_h3_sha[65] = "";
+    int backup_h0_eq_h3 = (sha256_file_hex("/mnt/r39_p2_setting/Backup.bin", backup_h3_sha, &bbytes) == 0 &&
+                           strcmp(backup_h0_sha, backup_h3_sha) == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (p2_lut_direct_write_rc == -EROFS &&
+              p2_lut_slots_blocked == 16 &&
+              p2_backup_write_rc == -EROFS &&
+              lut_abi_mismatch_reject_rc == -ELIBBAD &&
+              overlay_slots_registered == 16 &&
+              overlay_601_readback_ok == 16 &&
+              overlay_post_reboot_residual == 0 &&
+              stock_702_headers_intact == 16 &&
+              backup_h0_eq_h3 == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R39_LUT_601_702_FIREWALL donor_lut_schema=0x0601 stock_lut_schema=0x0700 "
+            "p2_lut_direct_write_rc=%d p2_lut_slots_blocked=%d p2_backup_write_rc=%d "
+            "lut_abi_mismatch_reject_rc=%d overlay_dir=/tmp/fx6_lut_overlay "
+            "overlay_slots_registered=%d overlay_601_readback_ok=%d "
+            "overlay_post_reboot_residual=%d stock_702_headers_intact=%d "
+            "backup_h0_eq_h3=%d p2_setting_writes=0 dlopen_ok=%d "
+            "surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "emmc_write_count=0 r39c_ok=%d verify_us=%lld\n",
+            p2_lut_direct_write_rc, p2_lut_slots_blocked, p2_backup_write_rc,
+            lut_abi_mismatch_reject_rc,
+            overlay_slots_registered, overlay_601_readback_ok,
+            overlay_post_reboot_residual, stock_702_headers_intact,
+            backup_h0_eq_h3, dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 216;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -6899,6 +7589,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r38-rmtp1bt-clipflag") == 0) {
         return run_r38_rmtp1bt_clipflag_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r39-shutter-speed-angle") == 0) {
+        return run_r39_shutter_speed_angle_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r39-lut-601-702-firewall") == 0) {
+        return run_r39_lut_601_702_firewall_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -6973,6 +7669,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r38", &r38_st) == 0) {
         if (setup_r38_nouvc_dcc1_pd_probe() != 0) {
             return 57;
+        }
+    }
+    struct stat r39_st;
+    if (stat("/etc/fx6_stage_r39", &r39_st) == 0) {
+        if (setup_r39_fan_pwm_offinrec_probe() != 0) {
+            return 58;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

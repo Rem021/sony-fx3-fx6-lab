@@ -456,3 +456,37 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 91：Stage 14 Gyroflow / Sony Catalyst `2000 Hz` 6 轴 IMU `RTMD`（SMPTE RDD 18 `0xE4xx`）FIFO、变形宽银幕（`1.33x/1.5x/1.8x/2.0x`）非对称 IBIS 增益/中心锁仲裁器与 `IMX510` 卷帘快门读出偏斜 HIL
+
+[`gyroflow_rtmd_anamorphic_emulator.py`](gyroflow_rtmd_anamorphic_emulator.py) 作为 **Stage 14** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase91` 向后兼容跳过；全板 14 阶段协同仿真在本地只读供体模式下保持 `1.12s < 1.5s`、洁净室模式下 `0.35s < 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`stock_cp_fault_count == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成四大核心闭环：
+
+1. **严格只读（`os.O_RDONLY`）IMU / `RTMD` / `SteadyShot` / 变形反挤压供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`dataflowInfraFramework.so` x2、`libmpr.so`、`libInfraCCPFStatic.so`、`CAMERA_SCN_MOVIE_REC_START.so`、`AVBB_SCN_START_VIDEO.so`、`AVBB_SCN_START_PANELEVF.so`、`libGetLog.so` x2、`string_english_f.uxc`）的 SHA-256 与关键导出标记（`UDAMSetGyroscopeValue`、`GetData_GyroInfo`、`PID_SET_ANAMO_DESQUEEZE_SCALE`、`PID_SET_FRAME_LOCK_STEADYSHOT`、`MSG_ID_VDF_INPUT_SET_DE_SQUEEZE`、`De-Squeeze Display` 等）；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **`2000 Hz` 6 轴 IMU 环形 FIFO -> 逐帧 SMPTE RDD 18 `RTMD`（`0xE400..0xE438`）打包与四元数积分验证**：
+   - 仿真 `CXD90057`/`CXD90058` SPI `2000 Hz` 6 轴陀螺仪/加速度计环形缓冲在 `23.98p`（`~83.4` 样本/帧）、`24.00p`（`83, 83, 84` 交替）、`25.00p`（精确 `80`）、`29.97p`（`~66.7`）、`59.94p`（`~33.4`）与 `119.88p`（`~16.7`）下的精确取样，配备微秒晶振漂移补偿（`250 ppm` 漂移收敛至 `< 2.0 us` 残差）、高水位溢出防护门控（`> 512` 样本阻塞自动抑制无效陀螺轨道）与 `S&Q / VFR` `RTMD` 自动禁用安全标志。
+   - 验证 Sony E 卡口 Cinema Line `+X/+Y/+Z` 正交 `SO(3)` 安装矩阵（`det == +1.0`）以及经过 `0xE4xx` KLV 往返封包/解包后的 Gyroflow 中点四元数积分精度（漂移 `0.000013° < 0.02°`）。
+3. **变形宽银幕（`Off=1.0x`, `1.3x`/`1.33x`, `1.5x`, `1.8x`, `2.0x`）非对称 IBIS 偏航缩放 & FX6-on-FX3 中心锁仲裁器**：
+   - 支持两种安全运行模式：`ANAMORPHIC_ASYMMETRIC_YAW_SCALING`（`Standard` IBIS 下将水平偏航增益按 `1 / squeeze_factor` 缩放，消除反挤压水平果冻摆动）与 `POST_GYROFLOW_IBIS_CENTER_LOCK`（锁定 `CXD90058` `0x0400 = Off` 中心锁通电，仅记录 `2000 Hz` 原始陀螺 `RTMD`）。
+   - 对变形倍率下未补偿的球面 `Active` 电子裁切畸变以及在 Gyroflow 后期增稳启用时向 `RTMD` 嵌入非零 `0xE438` IBIS 位移偏移（双重增稳隐患）执行 **100% 失败关闭拦截**。
+4. **`IMX510` 传感器卷帘快门读出时间与偏斜 HIL**：
+   - 精确建模 Full-Frame 4K（`8.7 ms` / `8700 us`）、4K 120p `1.1x` 裁切（`4.3 ms` / `4300 us`）与 HDMI 16-bit Linear RAW（`8.9 ms` / `8900 us` @ `4264x2408`）的逐行读出周期，编码进 `RTMD` `0xE400` 并验证行级去偏斜残差 `< 0.01 px` 且 `0` 次 Stock-CP 故障注入。
+
+### Phase 91 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 14 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/gyroflow_rtmd_anamorphic_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/gyroflow_rtmd_anamorphic_emulator.py --self-test --json
+
+# 2. 全板 14 阶段（Stage 1..14）统一校验（本地 1.12s < 1.5s，洁净室 0.35s < 0.5s，支持 --skip-phase91）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 91 36 项单测 & 全量 424 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_gyroflow_rtmd_anamorphic_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_gyroflow_rtmd_anamorphic_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+

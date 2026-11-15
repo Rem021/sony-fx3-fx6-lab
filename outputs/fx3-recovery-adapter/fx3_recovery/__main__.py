@@ -22,6 +22,7 @@ from .firmware_updata_and_antirollback_guard import run_antirollback_and_byof_gu
 from .gpt_rpmb_and_rescue_bundle_verifier import run_gpt_rpmb_and_rescue_bundle_suite
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
+from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .secureboot_chain_and_partition_align_verifier import run_secureboot_chain_and_partition_align_suite
@@ -108,6 +109,7 @@ def main():
     master.add_argument('--with-phase124', action='store_true', help='also run Phase 124 Pillar 13 CXD90057 Mask-BootROM USB cold-plug & JEDEC eMMC BOOT0/BOOT1 triage verifier')
     master.add_argument('--with-phase126', action='store_true', help='also run Phase 126 Pillar 14 factory calibration nvs/cnflasha/adj, IMX510 defect-pixel & 5-axis IBIS verifier')
     master.add_argument('--with-phase134', action='store_true', help='also run Phase 134 Pillar 15 CXD90057 secure-boot chain envelope & nflasha1..20 4KiB/512KiB partition-align verifier')
+    master.add_argument('--with-phase138', action='store_true', help='also run Phase 138 Pillar 16 reversible ext2 /dev/nflasha15 atomic Stage-B installer, hash-rollback & p1/p3 mutual-exclusion rescue verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -140,6 +142,10 @@ def main():
     sb_pa.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     sb_pa.add_argument('--json', action='store_true', help='emit full structured JSON report')
     sb_pa.add_argument('--out', help='optional exclusive new output directory for secureboot-partalign-report.json')
+    rh_ext2 = sub.add_parser('verify-realhw-ext2-installer', help='Phase 138 reversible ext2 /dev/nflasha15 atomic Stage-B installer, hash-rollback & p1/p3 mutual-exclusion rescue verifier')
+    rh_ext2.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    rh_ext2.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    rh_ext2.add_argument('--out', help='optional exclusive new output directory for realhw-ext2-installer-p1-rescue-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -370,6 +376,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p134_report.all_passed else 0)
                 overall_ok = overall_ok and p134_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase138:
+                p138_report = run_realhw_ext2_installer_and_p1_rescue_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase138_pillar16_realhw_ext2_installer_p1_rescue'] = p138_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p138_report.all_passed else 0)
+                overall_ok = overall_ok and p138_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -384,6 +399,7 @@ def main():
                     or args.with_phase124
                     or args.with_phase126
                     or args.with_phase134
+                    or args.with_phase138
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -591,6 +607,31 @@ def main():
                     f"spacc_key_reads={report.spacc_key_reads} "
                     f"suite_sha256={report.suite_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-realhw-ext2-installer':
+            report = run_realhw_ext2_installer_and_p1_rescue_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'realhw-ext2-installer-p1-rescue-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"ext2_installer_scenarios={report.pillar_a_ext2_installer_6_scenarios.scenarios_passed}/{report.pillar_a_ext2_installer_6_scenarios.scenarios_total} "
+                    f"p1_rescue_scenarios={report.pillar_b_p1_rescue_6_scenarios.scenarios_passed}/{report.pillar_b_p1_rescue_6_scenarios.scenarios_total} "
+                    f"tier0_lock_scenarios={report.pillar_c_tier0_lock_4_scenarios.scenarios_passed}/{report.pillar_c_tier0_lock_4_scenarios.scenarios_total} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"otp_fuse_writes={report.otp_fuse_writes} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
                     f"physical_device_writes={report.physical_device_writes} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "

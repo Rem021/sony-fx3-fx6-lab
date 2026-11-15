@@ -439,4 +439,28 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --clean-room --json
 ```
 
+## Phase 138 — 真机主线 Part 4：可逆 A7C-II 风格 `/dev/nflasha15`（`ext2` `/usr`）文件级原子安装预演、哈希回滚引擎与 `p1` 一次性救援校验器（16 支柱恢复总检）
+
+- **[`realhw_ext2_installer_and_p1_rescue_verifier.py`](fx3_recovery/realhw_ext2_installer_and_p1_rescue_verifier.py)**：面向物理 `ILME-FX3`（`7.02`，`0x91030080` / `ALCIN_UUD`）真机刷入就绪审计提供三大纯内存、只读供体验证支柱并接入 **16 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_realhw_ext2_and_p1_donors_readonly`）**：严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验 FX3 `7.02` 与 FX6 `6.01` `partinf.conf`、`mount.conf`、`kemco.txt`（`FX3 cfg.uart=1` vs `FX6 cfg.uart=9`）、`nflasha1/boot/loadaddr.txt`、`nflasha15` 有界 `4 KiB` ext2 超级块（FX3 `479,846,400 B` 镜像与 `500 MiB` 槽位 `>= 32 MiB` 余量）及 `im.elf`，零原始固件字节输出。
+  - **支柱 A — `EXT2_NFLASHA15_ATOMIC_INSTALLER_AND_ROLLBACK`（`parse_ext2_superblock_bytes` / `audit_crypto_block_device_path` / `validate_sd_escape_hatch_wrapper` / `simulate_atomic_ext2_install_and_rollback` / `run_ext2_atomic_installer_6_scenario_suite`）**：
+    - 校验 `/dev/nflasha15` `ext2` 超级块（`s_magic == 0xEF53`、`>= 32 MiB` 余量、空闲 inode 检查），强制 `type=5, flag=1` 加密分区经由 `/dev/nflashaN` / `/dev/cnflashaN` 透明加密路由并**硬阻断** `/dev/pnflasha3/8/15/23` 原始明文写入风险（`BLOCKED_RAW_PNFLASHA_PLAINTEXT_HAZARD`）。
+    - 强制 SD 卡逃生门哨兵脚本（`if [ ! -f /mnt/sd/FX6_STAGEB_BOOT.MANIFEST ]; then exec /usr/bin/im.elf.orig "$@"; fi`），并在纯内存交易中完整模拟 `remount rw -> 校验原厂 SHA-256 -> 保存 .orig 备份 -> 写入包装器 -> 全量回读 SHA-256 校验 -> 注入 bit-flip / short-write 时自动从 .orig 100% 逐字节回滚 -> remount ro`（`6/6` 场景全绿）。
+  - **支柱 B — `P1_P3_MUTUAL_EXCLUSION_AND_ONESHOT_RESCUE_INITRD`（`audit_p1_p3_mutual_exclusion` / `audit_p1_oneshot_rescue_proposal` / `run_p1_rescue_and_mutual_exclusion_6_scenario_suite`）**：
+    - 强制执行 **p1/p3 黄金互斥律**（严禁在同一事务中同时修改 `p1` `23.94 MiB` 与 `p3` `75 MiB`，确保至少一个可引导分区始终完好）。
+    - 核验 `p1:/dat2 == "91030080"` 与 `p1:/dat3` 原封保留、`p1:/boot/loadaddr.txt` 合法、`p1:/boot/kemco.txt` 强制 `cfg.uart=1` & `console=ttyAMA0,460800n8`（硬阻断 FX6 `cfg.uart=9` 串口黑屏），以及 `/sbin/init` 首条可执行语句必须为 `rm -f /setting/updater/mode* && sync`（`6/6` 场景全绿）。
+  - **支柱 C — `TIER0_PRECONDITION_AND_HARDWARE_WRITE_LOCK`（`verify_tier0_backup_precondition` / `run_tier0_precondition_and_lock_4_scenario_suite`）**：
+    - 强制要求具备已回读 SHA-256 验证的完整 Tier-0 备份回执（`sector0`、`p1`、`p2`、`p6`、`p12`、`p18`、SPI NOR `ddrtraining.dat`）后才允许演练就绪通过，同时硬锁定 `persistent_emmc_writes_authorized = False`（`4/4` 场景全绿）。
+  - **CLI 与 16 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-realhw-ext2-installer [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase138`（构成 **16/16** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase134` `15/15` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 138 公开符号；[`tests/test_realhw_ext2_installer_and_p1_rescue_verifier.py`](tests/test_realhw_ext2_installer_and_p1_rescue_verifier.py) 提供 **44 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-realhw-ext2-installer --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --clean-room --json
+```
+
+
 

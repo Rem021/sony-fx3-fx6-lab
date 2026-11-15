@@ -555,6 +555,39 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 103：Stage 17 无线图传近场 EMI / D-Tap 热插拔 ESD / 3.3V LTC 钳位、12 小时连续 exFAT 无缝分片与 CFexpress SMART 磨损、及零 eMMC NVRAM 磨损耐久协同仿真
+
+[`wireless_emi_exfat_endurance_emulator.py`](wireless_emi_exfat_endurance_emulator.py) 作为 **Stage 17** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase103_emi_exfat_endurance=True`，可通过 `--skip-phase103` 向后兼容跳过；全板 17 阶段协同仿真在本地只读供体模式下保持 `~1.34s < 1.6s`、洁净室模式下 `~0.46s < 0.55s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`emmc_sector_writes == 0`**、**`emmc_wear_level_increments == 0`**、**`cxd90057_gpio_damage_events == 0`**、**`dropped_audio_samples == 0`**、**`dropped_video_frames == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成四大闭环：
+
+1. **严格只读（`os.O_RDONLY`）媒体寿命 / NVMe SMART / 热插拔 / NVRAM 备份供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`libInfraMediaMount.so` x2、`libInfraMediaCommon.so` x2、`libbackup.so` x2、`libBackupManager.so`、`libInfraFsys.so` x2、`libHotplug.so`）的 SHA-256 与关键符号标记（`GetMediaLifeInfo`、`mcmn_drv_nvme_getlogpage_smartinformation`、`NVME_PSCTRL_PS1_MAXPOWER_THRESHOLD_CFE_SPEC4_0`、`Backup_write`、`flash_span`、`guardAcvOn`）；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **12 小时连续纪录片录制（`43,200s` 4K `59.94p` ~`3.24 TB`）exFAT 无缝分片与 CFexpress NVMe SMART 热/磨损 HIL**：
+   - 建模连续 12 小时 `600 Mbps`（`75 MB/s` -> `3,240,000,000,000 B` = `3.24 TB`）双卡槽接力录制（Slot-A -> Slot-B）及 `exFAT` 64 位 `co64` 容器与 `NonRealTimeMeta` LTC 连续性，验证跨越 **754 个 4 GiB 边界**与 **47 个 64 GiB 边界**时 **0 丢帧、0 丢音频采样、0 LTC 跳变**。
+   - 对 `< 32 GB` 的 `FAT32` SDHC 卡执行长录 `BLOCKED_FAT32_4GIB_SPANNING_TRAP` 失败关闭拦截；当 CFexpress `SMART spare_blocks < 10%` 或 `T_nand > 78°C` 时动态触发 `NVMe PS0 -> PS1` 限流并无缝抢先切换至健康 Slot-B（无健康备份槽时失败关闭）。
+3. **1000 mW 5GHz/6GHz 无线图传近场 EMI、D-Tap/HDMI 热插拔 ESD 与 Multi-Port 3.3V LTC 钳位 HIL**：
+   - 建模在 MI-Shoe / HDMI 旁挂载 `1000 mW` `5.0..6.4 GHz` 无线图传：近场未屏蔽时触发 `BLOCKED_NEARFIELD_WIRELESS_TX_EMI_DESENSE` 告警，验证同轴屏蔽线 + **TMDS 自适应均衡（CTLE/DFE）** + **MI-Shoe 音频屏蔽隔离**可将眼高恢复至 `>= 150 mV`（`BER <= 1e-12`）与音频底噪 `<= -98 dBFS`。
+   - 强制执行 **`GND -> Power -> Signal`** 上电时序与 `100 ms` `HPD` 去抖，阻断未隔离带电 D-Tap 下的 HDMI 热插拔浪涌（`BLOCKED_POWERED_TX_HDMI_HOTPLUG_SURGE`）；并在 Multi-Port 接入 `> 5.0 Vpp` 广播级 BNC LTC 时通过 `3.35 V` 钳位级拦截过压（`BLOCKED_TIMECODE_BNC_OVER_VOLTAGE`、`cxd90057_gpio_damage_events == 0`）。
+4. **12 小时（`43,200 s`）零 eMMC NVRAM 磨损耐久闭环**：
+   - 逐秒仿真 `43,200` 秒内的卷号递增（`800` 次）、白平衡色温切换（`144` 次）、3D LUT 切换（`72` 次）、ShotMark 标记（`240` 次）与 Tally 状态切换（`720` 次），证明 **100%（`1,976 / 1,976`）** `BKID`/NVRAM 更新均命中易失 RAM-Shadow 页，物理内部 eMMC（`/dev/mmcblk0p1..p15` 与 `/dev/mmcblk0rpmb`）保持 **0 扇区写入（`emmc_sector_writes == 0`）** 与 **0 磨损均衡递增（`emmc_wear_level_increments == 0`）**，并在周期性 NVRAM 刷写误开启时失败关闭。
+
+### Phase 103 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 17 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/wireless_emi_exfat_endurance_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/wireless_emi_exfat_endurance_emulator.py --self-test --json
+
+# 2. 全板 17 阶段（Stage 1..17）统一校验（本地 ~1.34s < 1.6s，洁净室 ~0.46s < 0.55s，支持 --skip-phase103）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 103 36 项单测 & 全量 532 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_wireless_emi_exfat_endurance_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_wireless_emi_exfat_endurance_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
 
 
 

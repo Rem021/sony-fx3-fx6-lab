@@ -68,6 +68,7 @@ import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 import tc_genlock_lens_paint_emulator as p67  # noqa: E402
 import touch_af_ciz_assignable_emulator as p78  # noqa: E402
 import uvc_hdmi_raw_output_emulator as p63  # noqa: E402
+import wireless_emi_exfat_endurance_emulator as p103  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -121,6 +122,7 @@ class CoEmulationConfig:
     include_phase91_gyroflow_rtmd_anamorphic: bool = True
     include_phase96_interval_cache_ftp_fan: bool = True
     include_phase99_lut3d_subzero_sdi: bool = True
+    include_phase103_emi_exfat_endurance: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1129,6 +1131,47 @@ def run_stage16_lut3d_subzero_sdi(
     }
 
 
+def run_stage17_emi_exfat_endurance(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 17 (Phase 103): Wireless TX EMI/ESD/LTC, 12h exFAT/SMART & Zero-eMMC-Churn Endurance HIL."""
+    config.validate()
+    rep = p103.run_phase103_emi_exfat_endurance_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage17_phase103_emi_exfat_endurance",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "emmc_sector_writes": red["emmc_sector_writes"],
+        "emmc_wear_level_increments": red["emmc_wear_level_increments"],
+        "cxd90057_gpio_damage_events": red["cxd90057_gpio_damage_events"],
+        "dropped_audio_samples": red["dropped_audio_samples"],
+        "dropped_video_frames": red["dropped_video_frames"],
+        "donor_audit": rep["donor_audit"],
+        "longform_exfat_smart_hil": rep["longform_exfat_smart_hil"],
+        "wireless_emi_hotplug_ltc_hil": rep["wireless_emi_hotplug_ltc_hil"],
+        "zero_emmc_nvram_churn_endurance": rep["zero_emmc_nvram_churn_endurance"],
+        "phase103_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1139,7 +1182,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 16-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 17-stage (Phase 33..103) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1191,6 +1234,11 @@ def run_fx3_vm_coemulation_suite(
     stage16: Optional[Dict[str, object]] = (
         run_stage16_lut3d_subzero_sdi(cfg, env=env)
         if cfg.include_phase99_lut3d_subzero_sdi
+        else None
+    )
+    stage17: Optional[Dict[str, object]] = (
+        run_stage17_emi_exfat_endurance(cfg, env=env)
+        if cfg.include_phase103_emi_exfat_endurance
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1360,6 +1408,26 @@ def run_fx3_vm_coemulation_suite(
         and stage16["dropped_rec_triggers"] == 0
         and (not stage16["persistent_emmc_writes_authorized"])
     )
+    stage17_ok = True if stage17 is None else (
+        bool(stage17["all_checks_passed"])
+        and stage17["nop_count"] == 0
+        and stage17["guest_code_modification_bytes"] == 0
+        and stage17["cp_mutation_bytes"] == 0
+        and stage17["wbi_mutation_bytes"] == 0
+        and stage17["calibration_mutation_bytes"] == 0
+        and stage17["nvram_persistent_writes"] == 0
+        and stage17["bk4_persistent_nvram_writes"] == 0
+        and stage17["physical_device_writes"] == 0
+        and stage17["null_gpio_derefs"] == 0
+        and stage17["mailbox_stalls"] == 0
+        and stage17["stock_cp_fault_count"] == 0
+        and stage17["emmc_sector_writes"] == 0
+        and stage17["emmc_wear_level_increments"] == 0
+        and stage17["cxd90057_gpio_damage_events"] == 0
+        and stage17["dropped_audio_samples"] == 0
+        and stage17["dropped_video_frames"] == 0
+        and (not stage17["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1379,6 +1447,7 @@ def run_fx3_vm_coemulation_suite(
         and stage14_ok
         and stage15_ok
         and stage16_ok
+        and stage17_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1408,6 +1477,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase91_gyroflow_rtmd_anamorphic": cfg.include_phase91_gyroflow_rtmd_anamorphic,
             "include_phase96_interval_cache_ftp_fan": cfg.include_phase96_interval_cache_ftp_fan,
             "include_phase99_lut3d_subzero_sdi": cfg.include_phase99_lut3d_subzero_sdi,
+            "include_phase103_emi_exfat_endurance": cfg.include_phase103_emi_exfat_endurance,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1458,6 +1528,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage15_phase96_interval_cache_ftp_fan"] = stage15
     if stage16 is not None:
         core_payload["stage16_phase99_lut3d_subzero_sdi"] = stage16
+    if stage17 is not None:
+        core_payload["stage17_phase103_emi_exfat_endurance"] = stage17
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1469,7 +1541,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1539,6 +1611,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase99",
         action="store_true",
         help="Skip optional Stage 16 (Phase 99 65^3->33^3 Tetrahedral 3D-LUT DMA, HDMI AVI->12G-SDI Bridge & Sub-Zero/Altitude HIL)",
+    )
+    parser.add_argument(
+        "--skip-phase103",
+        action="store_true",
+        help="Skip optional Stage 17 (Phase 103 Wireless TX EMI/ESD/LTC, 12h exFAT/SMART & Zero-eMMC-Churn Endurance HIL)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -1619,6 +1696,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase91_gyroflow_rtmd_anamorphic=not args.skip_phase91,
         include_phase96_interval_cache_ftp_fan=not args.skip_phase96,
         include_phase99_lut3d_subzero_sdi=not args.skip_phase99,
+        include_phase103_emi_exfat_endurance=not args.skip_phase103,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1644,6 +1722,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s14 = rep.get("stage14_phase91_gyroflow_rtmd_anamorphic")
         s15 = rep.get("stage15_phase96_interval_cache_ftp_fan")
         s16 = rep.get("stage16_phase99_lut3d_subzero_sdi")
+        s17 = rep.get("stage17_phase103_emi_exfat_endurance")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1727,6 +1806,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s16, dict)
             else ""
         )
+        s17_str = (
+            f" | emi_exfat_12h={s17['source_mode']}(3.24TB/drop={s17['dropped_video_frames']}/{s17['dropped_audio_samples']},"
+            f"emi=1000mW/eye250mV,ltc=clamp3.35V/gpio_dmg={s17['cxd90057_gpio_damage_events']},"
+            f"emmc_wr={s17['emmc_sector_writes']})"
+            if isinstance(s17, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1735,7 +1821,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

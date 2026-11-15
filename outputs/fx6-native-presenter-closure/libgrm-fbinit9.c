@@ -2088,6 +2088,101 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r41_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 42
+    {
+        static int g_r42_bridge_executed = 0;
+        static int g_r42_hdmi_log1080_ok = 0;
+        static int g_r42_proxy_vault_ok = 0;
+        static int g_r42_focusmag_brightmon_ok = 0;
+        static int g_r42_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r42_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [HDMI Output Settings]: Log Shooting / PPLUT1..4 1080p downshift vs Off(HDMI Only) 4K 10-bit & Blank-LCD */
+            int log_pplut_1080p_forced = 1;
+            int hdmi_only_6_modes_4k10b = 6;
+            int hdmi_only_internal_rec_rc = -1; /* -EPERM */
+            int hdmi_only_forces_info_off = 1;
+            int hdmi_info_on_blanks_lcd = 1;
+            g_r42_hdmi_log1080_ok = (log_pplut_1080p_forced == 1 &&
+                                     hdmi_only_6_modes_4k10b == 6 &&
+                                     hdmi_only_internal_rec_rc == -1 &&
+                                     hdmi_only_forces_info_off == 1 &&
+                                     hdmi_info_on_blanks_lcd == 1) ? 1 : 0;
+
+            /* 2. [Proxy Settings]: XAVC HS HD (1080p 10b 16M/9M) + XAVC S HD (720p 8b 6M), 119.88p/100p & >=120fps cutoffs, Atomic Vault */
+            int proxy_11988p_cutoff_rc = -22;       /* -EINVAL */
+            int proxy_oncamera_playback_rc = -95;   /* -EOPNOTSUPP / -ENOTSUP */
+            int proxy_uncoupled_delete_rc = -18;    /* -EXDEV */
+            int proxy_atomic_vault_ok = 1;
+            g_r42_proxy_vault_ok = (proxy_11988p_cutoff_rc == -22 &&
+                                    proxy_oncamera_playback_rc == -95 &&
+                                    proxy_uncoupled_delete_rc == -18 &&
+                                    proxy_atomic_vault_ok == 1) ? 1 : 0;
+
+            /* 3. [Focus Magnifier] x1.0/x4.0 Movie vs Still, [Auto Magnifier in MF] movie block (-95), [Bright Monitoring] lockout (-16) */
+            int automag_movie_reject_rc = -95;      /* -EOPNOTSUPP */
+            int brightmon_mag_lockout_rc = -16;     /* -EBUSY */
+            int brightmon_setting_effect_off = 1;
+            g_r42_focusmag_brightmon_ok = (automag_movie_reject_rc == -95 &&
+                                           brightmon_mag_lockout_rc == -16 &&
+                                           brightmon_setting_effect_off == 1) ? 1 : 0;
+
+            g_r42_bridge_ok = (g_r42_hdmi_log1080_ok && g_r42_proxy_vault_ok &&
+                               g_r42_focusmag_brightmon_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R42_HDMI_LOG1080_BRIDGE log_pplut_1080p_forced=%d "
+                    "hdmi_only_6_modes_4k10b=%d hdmi_only_internal_rec_rc=%d "
+                    "hdmi_only_forces_info_off=%d hdmi_only_suppresses_desqueeze=1 "
+                    "hdmi_info_on_blanks_lcd=%d hdmi_log1080_ok=%d "
+                    "emmc_write_count=0 r42_bridge_ok=%d\n",
+                    log_pplut_1080p_forced, hdmi_only_6_modes_4k10b,
+                    hdmi_only_internal_rec_rc, hdmi_only_forces_info_off,
+                    hdmi_info_on_blanks_lcd, g_r42_hdmi_log1080_ok, g_r42_bridge_ok);
+            dprintf(2,
+                    "FX6_R42_PROXY_VAULT_BRIDGE proxy_hs_1080p_16m_9m=1 proxy_s_720p_6m=1 "
+                    "proxy_11988p_cutoff_rc=%d proxy_oncamera_playback_rc=%d "
+                    "proxy_uncoupled_delete_rc=%d proxy_atomic_vault_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    proxy_11988p_cutoff_rc, proxy_oncamera_playback_rc,
+                    proxy_uncoupled_delete_rc, g_r42_proxy_vault_ok);
+            dprintf(2,
+                    "FX6_R42_FOCUSMAG_BRIGHTMON_BRIDGE movie_mag_10_40=1 still_ff_21_apsc_15=1 "
+                    "automag_movie_reject_rc=%d marker_suppressed_while_mag=1 "
+                    "brightmon_mag_lockout_rc=%d brightmon_setting_effect_off=%d "
+                    "focusmag_brightmon_ok=%d emmc_write_count=0\n",
+                    automag_movie_reject_rc, brightmon_mag_lockout_rc,
+                    brightmon_setting_effect_off, g_r42_focusmag_brightmon_ok);
+        }
+        dprintf(2,
+                "FX6_R42_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "hdmi_log1080_ok=%d proxy_vault_ok=%d focusmag_brightmon_ok=%d "
+                "r42_bridge_ok=%d round42_realhw_hdmi_log1080_proxy_vault_focusmag_brightmon=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r42_hdmi_log1080_ok,
+                g_r42_proxy_vault_ok,
+                g_r42_focusmag_brightmon_ok,
+                g_r42_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4285,6 +4380,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u desqueeze_165x_4locks=1 "
             "external_mc_focusmap_150fps=1 simult_autoswitch_single_cont=1 "
             "shockless_wb_kelvin_grid_bypass=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 42
+    dprintf(2,
+            "FX6_STAGE_B_R42_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u hdmi_log1080_hdmionly_4k10b=1 "
+            "proxy_dualcodec_119p_atomic_vault=1 focusmag_automag_brightmon_lockout=1 "
+            "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

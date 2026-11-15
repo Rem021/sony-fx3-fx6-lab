@@ -202,3 +202,20 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-rp2040-fixture --clean-room --json
 ```
 
+## Phase 66 — `init2` SD-Card Sentinel Escape Shell, CXD90057 Watchdog Boot-Loop Breaker & `p1` FAT12/FAT16 Chain Integrity Verifier
+
+- **[`init2_escape_and_watchdog_simulator.py`](fx3_recovery/init2_escape_and_watchdog_simulator.py)**：提供面向 FX3 (`0x91030080`) Stage-B 恢复链路的三重确定性安全与文件一致性校验：
+  - **零硬件 SD/CFexpress 哨兵 Fail-Open 逃生沙箱（`render_init2_escape_wrapper_script` / `run_init2_escape_drill` / `run_all_init2_escape_drills`）**：在 `tempfile.TemporaryDirectory` 隔离沙箱内实际执行纯 POSIX `/bin/sh` Stage-B `init2` 守卫脚本，在任何 `cpio` 解包或 `mount --bind` 发生**之前**验证 4 条 fail-open 逃生机制：
+    1. Slot A / Slot B 外置存储卡哨兵文件（`FX3_SAFE_STOCK.FLG` / `DISABLE_STAGE_B.TXT`）→ 零 bind-mount、零 eMMC 写入直接回退原厂 FX3 `v7.02` 启动（`Tier-0` 现场零线缆免拆救援）。
+    2. 物理按键组合逃生（`REC+MENU` / `SHUTTER` 启动 GPIO 锁存）→ 跳过 Stage-B 覆盖直接进入原厂 `v7.02`。
+    3. Stage-B 载荷 SHA-256 / CPIO `070701` 魔数不一致或截断 → fail-closed 拒绝加载并 fail-open 回退原厂启动。
+    4. `procam_app` 崩溃循环断路器（易失 `/tmp/stage_b_crash.cnt` 在 `15s` 窗口内 `>= 3` 次非零退出）→ 自动卸载易失 `tmpfs` bind-mount 并 `exec` 原厂 FX3 `procam_app`，`0` eMMC 写入。
+  - **CXD90057 硬件看门狗 (`WDT`) 与 `Tier-0..Tier-2` 状态机校验器（`simulate_cxd90057_watchdog_scenario` / `run_cxd90057_watchdog_suite`）**：按 `timeout_ms=10000`、`kick_interval_ms=2000` 建模 Stage-B `H1` 正常运行、UI Presenter 挂死、内核 `oops` (`panic_on_oops`)、干净重启（`H1 -> H2` 易失 RAM 清空）及 `Tier-1/2` Multi-Port `p1` 实验指针回滚，证明 `0` 持久 eMMC 变更时仅靠 `WDT` 复位即可还原 `H0 == H2` 原厂启动。
+  - **纯 Python `p1` FAT12/FAT16 簇链与 `8.3` 原子目录项交换审计器（`audit_p1_fat_filesystem` / `simulate_atomic_83_dir_swap`）**：兼容 [`fx3_recovery/fat.py`](fx3_recovery/fat.py)（`FatP1`），校验 BPB 几何、`FAT1 == FAT2` 镜像一致性、零簇链环路（Floyd 判环 + 访问集合）、零交叉链接簇、零孤立已分配簇、合法 `8.3`/LFN 校验和，并在纯内存中执行 `INIT2.SH` ↔ `INIT2BAK.SH` 32 字节目录项指针原子交换与逐字节逆向回滚（`physical_writes == 0`、`persistent_emmc_writes_authorized == False`、`persistent_write_release == False`）。
+  - **CLI 与双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-init2-escape [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_init2_escape_and_watchdog_simulator.py`](tests/test_init2_escape_and_watchdog_simulator.py) 新增 **34 项双模式单元测试**，在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 100% 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-init2-escape --clean-room --json
+```
+

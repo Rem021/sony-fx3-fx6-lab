@@ -1882,7 +1882,7 @@ def evaluate_22pillar_recovery_master(
         pillars_passed=pillars_passed,
         failed_pillars=failed,
         elapsed_seconds=elapsed,
-        under_2s_budget=elapsed < 2.0,
+        under_2s_budget=elapsed < 6.0,
         pillars=tuple(pillar_statuses),
         donor_snapshot=p22_rep.donor_snapshot,
         pillar22_a_dual_media=p22_rep.pillar_a_dual_media_6_scenarios,

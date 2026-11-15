@@ -58,7 +58,7 @@ jobs:
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make test
 
-      - name: Run Phase 17..110 Stage-B, Firmware-Lab (20 Auditors) & 18-Stage Co-Emulation CLI checks
+      - name: Run Phase 17..130 Stage-B, Firmware-Lab (24+ Auditors) & 21+ Stage Co-Emulation CLI checks
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-peripheral-ux > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-ap-cp-imaging > /dev/null
@@ -68,19 +68,22 @@ jobs:
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-firmware-lab > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-coemulation > /dev/null
 
-      - name: Run Phase 59..110 Safety Preflights (20/24/32-Gate), 10-Pillar Recovery, Post-Trial & Milestone 90/110 Master Gates
+      - name: Run Phase 59..130 Safety Preflights (20/24/32/40-Gate), 10/13-Pillar Recovery, Post-Trial & Milestone 90/110/130 Master Gates
         run: |
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-20-gates > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-24-gates > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-32-gates > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-40-gates > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-rp2040-fixture > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-init2-escape > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-tier0-backup > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-antirollback-guard > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-10pillar-recovery > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-13pillar-recovery > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-post-trial-audit > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-milestone-90 > /dev/null
           FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-milestone-110 > /dev/null
+          FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON="$(command -v python3)" make verify-milestone-130 > /dev/null
 
       - name: Run Stage-A & Stage-B H0->H1->H2 zero-mutation lifecycle drills
         run: |

@@ -28,6 +28,7 @@ from .exfat_media_integrity_guard import (
 from .hdmi_aoc_5v_cfexpress_and_36gate_guard import evaluate_36gate_preflight
 from .intake_occlusion_tripod_and_26gate_guard import evaluate_26gate_preflight
 from .master_16gate_preflight import DEFAULT_REPO_ROOT, evaluate_16_master_safety_gates
+from .monsoon_mishoe_cagetwist_and_40gate_guard import evaluate_40gate_preflight
 from .phantom48v_gimbal_and_22gate_guard import evaluate_22gate_preflight
 from .pl_cantilever_dummybatt_and_32gate_guard import evaluate_32gate_preflight
 from .preflight import audit_tier0_worker_syscall_trace, evaluate_12_safety_gates, verify_tier0_backup_manifest
@@ -374,6 +375,25 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G38 gates can be rehearsed offline",
     )
     p_38.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 21. verify-40-gates
+    p_40 = sub.add_parser(
+        "verify-40-gates",
+        help="Run Milestone Phase 125 40-Gate Master Safety Preflight Engine (G01..G40)",
+    )
+    p_40.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_40.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_40.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G40 gates can be rehearsed offline",
+    )
+    p_40.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -740,6 +760,27 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_38_gates_verified if args.dry_run_simulated_backup else report.offline_35_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-40-gates":
+        report = evaluate_40gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/40 "
+                f"g39_to_g40_all_passed={report.g39_to_g40_all_passed} "
+                f"all_40_gates_verified={report.all_40_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_40_gates_verified if args.dry_run_simulated_backup else report.offline_37_gates_verified
         return 0 if ok else 1
 
     return 2

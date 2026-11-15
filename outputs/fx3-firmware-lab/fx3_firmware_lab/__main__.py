@@ -18,6 +18,10 @@ from .audio_tc_hdmi_sdi_routing_auditor import (
     analyze_audio_tc_hdmi_sdi_routing,
     audio_tc_hdmi_sdi_routing_report_to_dict,
 )
+from .c2pa_lens_shading_and_mc_fleet_auditor import (
+    analyze_c2pa_lens_shading_and_mc_fleet,
+    c2pa_lens_shading_and_mc_fleet_report_to_dict,
+)
 from .cube_lut_and_rtmd_verifier import (
     analyze_cube_lut_and_rtmd,
     cube_lut_and_rtmd_report_to_dict,
@@ -83,7 +87,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all nineteen clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all twenty clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -133,6 +137,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     lut3d_sdi_hdmi = lut3d_cube_tetrahedral_and_sdi_hdmi_report_to_dict(
         analyze_lut3d_cube_tetrahedral_and_sdi_hdmi(clean_room=clean_room)
     )
+    c2pa_shading_mc = c2pa_lens_shading_and_mc_fleet_report_to_dict(
+        analyze_c2pa_lens_shading_and_mc_fleet(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -154,6 +161,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and gyroflow_anamorphic_ibis.get("all_checks_passed")
         and interval_cache_ftp.get("all_checks_passed")
         and lut3d_sdi_hdmi.get("all_checks_passed")
+        and c2pa_shading_mc.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -180,17 +188,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "metadata_gyro_catalyst_and_anamorphic_audit": gyroflow_anamorphic_ibis,
         "interval_cache_and_ftp_audit": interval_cache_ftp,
         "lut3d_cube_tetrahedral_and_sdi_hdmi_audit": lut3d_sdi_hdmi,
+        "c2pa_lens_shading_and_mc_fleet_audit": c2pa_shading_mc,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, and User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, and C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 19 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 20 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -306,6 +315,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_lut3d.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_lut3d.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_c2pa = sub.add_parser(
+        "audit-c2pa-shading-mc",
+        help="Run Phase 105 C2PA 2.1 / cnflasha Key-Vault Firewall, E-Mount Lens Shading/CA/Distortion + Unchipped Identity Fail-Safe, Monitor & Control Wired PTP-IP 4-Cam Fleet (P12), and Factory Shading/Defect-Pixel Preservation audit",
+    )
+    p_c2pa.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_c2pa.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -377,6 +393,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-lut3d-sdi-hdmi":
         payload = lut3d_cube_tetrahedral_and_sdi_hdmi_report_to_dict(
             analyze_lut3d_cube_tetrahedral_and_sdi_hdmi(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-c2pa-shading-mc":
+        payload = c2pa_lens_shading_and_mc_fleet_report_to_dict(
+            analyze_c2pa_lens_shading_and_mc_fleet(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

@@ -553,7 +553,24 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --with-phase155 --clean-room --json
 ```
 
+## Phase 160 — 真机主线 Part 9（Pillar 21 / `21/21` 终局闭环）：5 级防变砖恢复升级阶梯、`CXD90057` (`Mira`) Multi-USB `1.8V UART` EL3 (`0xfe020000`) 冷启动防护与官方 `BODYDATA.DAT` (`\x89UFU`) 原厂回刷核验器
 
+- **[`realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py`](fx3_recovery/realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py)**：面向真实物理 `Sony ILME-FX3`（`Ver. 7.02`、Model ID `0x91030080`、SoC `CXD90057` *Mira* + `CXD90058` *Cetus*）收口全部 5 级防变砖恢复升级架构与 `BODYDATA.DAT` / `EL3` 只读安全护栏，完成 **21/21 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`；供体严格通过 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退）：
+  - **供体有界只读核验（`inspect_phase160_5tier_donors_readonly`）**：只读验证 6 项 FX3 `7.02` 本地供体（`loader_nor.bin` `101,888 B` 含 AArch64 `VBAR_EL3`、`p1` `/sbin/init` `1,438 B`、`7.02 p3` `/sbin/init` `735 B`、`Backup.bin` `2,229,740 B` `BK4\x00` + `0xAAAAAAAA` + `ILME-FX3`、有界 4 KiB 头部 `cpapp-b.bin` `15,980,568 B`，以及有界 `<= 64 KiB` 首尾扫描官方 `fx3-7.02-BODYDATA.DAT` `811,876,768 B` `\x89UFU\r\n\x1a\n` `DATV=1` / `PROV=1` / `UDID=10` 含 `054C:0DA1` / `FDAT` `1024 B` 对齐 / `DEND`），全套运行 `< 0.05 s`，JSON 输出零原始专有固件字节。
+  - **支柱 A — 官方 Sony `BODYDATA.DAT` (`\x89UFU\r\n\x1a\n` `Ver. 7.02`) 原厂 `p1` 回刷前置核验（`8/8`）**：
+    - 解析 `DATV` / `PROV` / `UDID` / `FDAT` / `DEND` TLV 封装，核验 `FDAT` `1024 B` 帧（`<HH` 长度与求和校验、`0x8000` 终止帧 + `272 B` IV/RSA-2048 尾签），强制唯一放行 `ILME-FX3` (`0x91030080`)（硬拒绝跨机身 `ILME-FX30` `0x910300a0`、`ILCE-7SM3` `0x91030040`、`ILCE-7M4` `0x91030070`、`ILME-FX6`、`ILME-FX3A`），并强制执行更新前 `p15:/usr` `.orig` `16/16` 净卸载检查、电量 `>= 51%`、同区 `NTSC/PAL` 及防回滚代际检查。
+  - **支柱 B — `CXD90057` (`Mira`) 15 针 Multi/Micro-USB `1.8V UART` EL3 (`0xfe020000`) 冷启动防护审计（`6/6`）**：
+    - 审计 15 针 Multi/Micro-USB 引脚定义（`Pin 2 GND`、`Pin 7 XRESET_REQ`、`Pin 8 UART_TX`、`Pin 9 UART_RX` `1.8V CMOS`、`Pin 10 AD_JACK_IN`），强制 `1.65V..1.98V` 电平安全窗口（拦截 `3.3V`/`5.0V` 烧毁风险），强制 `Pin 10 AD_JACK_IN` 与 `VMC-BNCM1`（`680 kOhm` LTC）/ `LANC`（`100 kOhm`）互斥，校验 `0xfe020000..0xfe060000` EL3 SRAM 窗口，并硬锁定 `el3_payload_transmit_authorized = False`（仅作脱机焊接前只读架构审计）。
+  - **支柱 C — 确定性 5 级防变砖硬件恢复升级阶梯引擎（`8/8`）**：
+    - 按最低影响严格分级决策：`Tier-1`（断电拔卡 / `EH1` `47 us` Stage-A 旁路 -> 原厂系统，零写入）-> `Tier-2`（`p15:/usr` `.orig` 原子回滚，经 `EH2` / `16/16` `SHA256(H0)==SHA256(H3)` + `054C:0DA1 -> 054C:0336` 净卸载）-> `Tier-3`（官方 `BODYDATA.DAT` `\x89UFU` 原厂 `p1` 回刷，遇未清理 `p15` 强制重定向至 `Tier-2`）-> `Tier-4`（`CXD90057` EL3 `0xfe020000` 冷启动只读诊断护栏）-> `Tier-5`（同机身 `CID` 绑定 `pnflasha*` 原始密文 + `loader_nor.bin` `/dev/mtd0ro` 离线 `8-bit` ISP 与 SPI NOR 最后手段仓库，硬锁定 `isp_write_authorized = False` / `spi_nor_write_authorized = False`）。
+  - **CLI 与 `21/21` 恢复总检终局集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-realhw-5tier-el3-ufu [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase160`（全开启时汇总为 **21/21** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase155` `20/20` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 160 公开符号；[`tests/test_realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py`](tests/test_realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py) 提供 **48 项**双模式快速单元测试。
 
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-realhw-5tier-el3-ufu --clean-room --json
 
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --with-phase155 --with-phase160 --clean-room --json
+```
 

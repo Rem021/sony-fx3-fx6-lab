@@ -690,8 +690,37 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
 ```
 
+## Phase 121：Stage 21 USB-C UVC 1.5 / UAC 2.0 推流协商、P12 安全有线 SRT / RTMPS 直播、CRSDK PTP / PTP-IP 属性转换与刷写防误触防火墙、及 G37/G38 20V USB-PD 诱骗 / 15 针 Multi-Terminal / 1.8V UART HIL
 
+[`usb_uvc_uac_srt_crsdk_usbpd_emulator.py`](usb_uvc_uac_srt_crsdk_usbpd_emulator.py) 作为 **Stage 21** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase121_uvc_srt_crsdk_usbpd_hil=True`，可通过 `--skip-phase121` 向后兼容跳过；全板 21 阶段协同仿真在本地只读供体模式下保持 `~1.16s < 1.8s`、洁净室模式下 `~0.28s < 0.7s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`emmc_flash_mutation_bytes == 0`**、**`wf12_00342260_hits == 0`**、**`cxd90057_pad_damage_events == 0`**、**`uvc_osd_burn_in_frames == 0`**、**`srt_dropped_gops == 0`**、**`uart_tx_bytes == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成五大闭环：
 
+1. **严格只读（`os.O_RDONLY`）UVC / Streaming / PTP / USB-LAN / USB-BusPower 供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 12 份紧凑构件（`string_english_g.uxc`、FX6 `string_english.uxc`、`string_english_2.uxc`、`libInfraVericLiveStreaming.so`、`libInfraPtpControl.so` x2、`libptp.so`、`libNetServiceEther.so`、`cdc_ncm.ko`、`rndis_host.ko`、`libUsbBusPower.so`、`libBusPower.so`）的 SHA-256 与 36+ 条关键符号/字节标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — USB-C `UVC 1.5`（`4K30p MJPEG`、`1080p60p YUY2/MJPEG`）& `UAC 2.0`（`48kHz` 16-bit 2ch PCM `1.536 Mbps`）SuperSpeed `5 Gbps` vs High-Speed `480 Mbps` 协商器**：
+   - 合成并 CRC-32 校验 44 字节 `UVC 1.5` (`0x0150`) + `UAC 2.0` (`0x0200`) 描述符束；当接入 USB 2.0 线缆（`480 Mbps` 线速 / `320 Mbps` 净荷上限）时自动将 `1080p60p YUY2`（`1992.192 Mbps`）降档至 `1080p60p MJPEG`（`76.536 Mbps < 480 Mbps`），确保等时/批量净荷永不越界，并保持外发 UVC 干净画面零 OSD 烧录（`uvc_osd_burn_in_frames == 0`），同时在未允许降档或 S&Q / HDMI RAW16 互斥时失败关闭拦截。
+3. **Pillar B — `P12` 射频静默有线 `USB-LAN`（`CDC-NCM / RNDIS`）`SRT`（`Caller/Listener`、`PBKEYLEN` `AES-128 / AES-256`、`20..1000 ms` ARQ 抗 `8%` 丢包零 GOP 丢失）& `RTMPS` TLS 1.3 直播推流**：
+   - 强制锁定有线网卡（`CDC_NCM_RTL8153` / `CDC_NCM_AX88179` / `USB_RNDIS_WIRED`），在触发任何 WF-12 锁死前拦截全部 Wi-Fi / P2P / BT-PAN / 蜂窝传输（`wf12_00342260_hits == 0`）；验证 `SRT` 在 `8%` 模拟丢包下跨越 `10` 个 GOP 实现 **0 丢帧/0 丢 GOP**，并验证 `RTMPS TLS 1.3` + Root-CA 校验与明文 `RTMP` 拦截。
+4. **Pillar C — 索尼 `CRSDK` `PTP / PTP-IP`（`0x054C`）厂商属性转换器 & 破坏性固件刷写 Opcode 防火墙**：
+   - 在 `USB_PTP`（`512 B` bulk 对齐）与 `WIRED_PTPIP_15740` 上精确映射 `0xD2xx` Cinema Line 属性（`Cine EI` `0xD243`、`Base ISO 800/12800` `0xD244`、`User 3D-LUT` `0xD253`、`Shutter Angle` `0xD20D`、`Rec` `0xD215`），并在 `ILME-FX3` 上将 `P4` 电子可变 ND（`0xD25A`）安全钳位至 `Clear (0)`（`p4_nd_motor_faults == 0`）。
+   - 在混合 Stage-B 模式下对所有破坏性 `0x9280..0x928F` / `0x100C` / `0x100D` / `0x9805` / `0x92F0..0x92F2` OTA/Flash 写入指令及 `\\x89UFU` / `UDTRFIRM` / `BODYDATA.DAT` 载荷执行硬拒绝（`emmc_flash_mutation_bytes == 0`）。
+5. **Pillar D — `G37` & `G38` 硬件在环（`20V` D-Tap 转 USB-C 诱骗线 OVP 撬棒 & `15 针 Multi-Terminal` / `1.8V` 被动 RX UART HIL）**：
+   - `G37`：对比合法 `9V/3A`（`27W`）USB-PD PDO 契约与未协商 `20V` D-Tap 诱骗线浪涌，验证 VBUS OVP 撬棒在 **`18.2 us < 35 us`** 内钳位隔离（PMIC 峰值 `8.92V < 9.6V`），并验证 `D-Tap + USB-PD` 双电源隔离器将跨源反灌电流抑制至 `0.0 mA`（`cxd90057_pad_damage_events == 0`）。
+   - `G38`：对 `15-pin Multi-Terminal` 注入 `> 5.0 Vpp`（`6.2 Vpp`）LTC 时码时触发 `3.30V <= 3.35V` 保护钳位；对 `3.3V / 5.0V` UART 过驱及主动 TX 注入执行硬拦截，强制 `1.8V` 被动仅收模式 **`tx_bytes == 0`** 且 **`cxd90057_pad_damage_events == 0`**。
 
+### Phase 121 CLI 运行与测试命令
 
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 21 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/usb_uvc_uac_srt_crsdk_usbpd_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/usb_uvc_uac_srt_crsdk_usbpd_emulator.py --self-test --json
 
+# 2. 全板 21 阶段（Stage 1..21）统一校验（本地 ~1.16s < 1.8s，洁净室 ~0.28s < 0.7s，支持 --skip-phase121）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 121 40 项单测 & 全量 684 项单测（双模式）
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_usb_uvc_uac_srt_crsdk_usbpd_emulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_usb_uvc_uac_srt_crsdk_usbpd_emulator.py -v
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+```

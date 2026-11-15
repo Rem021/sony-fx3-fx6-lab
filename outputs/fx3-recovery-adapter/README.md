@@ -756,3 +756,22 @@ PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery veri
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-31pillar-recovery --force-clean-room --json
 ```
+
+## Phase 220 — 真机主线 Part 20（Pillar 32 / `32/32` 统一恢复总检）：`NTSC/PAL` 数据库留存隔离、`Gamma Display Assist` × `Display LUT` 恢复对等与 `Pixel Mapping` 自动重启 `cnflasha` 只读金库总检（`verify-32pillar-recovery` / `verify-ntscpal-pixelmap-vault`）
+
+- **[`realhw_32pillar_ntscpal_pixelmap_vault_verifier.py`](fx3_recovery/realhw_32pillar_ntscpal_pixelmap_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 32** 并将全套恢复总检正式收口至 **`32/32`（`VERIFIED_32OF32_PILLAR_RECOVERY_MASTER`）**（`< 3.0s` 并发运行，保持 `verify-22/24/26/27/28/29/30/31pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so` 与 `libInfraMediaConfig.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 32A — `[NTSC/PAL Selector]` 复位非对称性、帧率/`DF-NDF` 制式互斥、双卡槽 `M4ROOT`/`PRIVATE/AVCHD` 媒体库隔离与 `[Gamma Display Assist]` × `[Display LUT]` 对等金库（`6/6`）**：
+    - `P32A1`..`P32A6`：审计 `[Camera Settings Reset]` 保留 `[Setup]` 下 `[NTSC/PAL Selector]` 而仅完整 `[Initialize]` 恢复出厂区域制式的复位非对称性，以及偏离出厂区域制式时开机横幅（`"Running on NTSC."` / `"Running on PAL."`）一致性；强制 NTSC（`23.98p` NTSC 独占、`24.00p`、`29.97p`、`59.94p`、`119.88p` + `DF`/`NDF` `[TC Format]`）与 PAL（`25p`、`50p`、`100p`；无 `23.98p` 且 `DF`/`NDF` 锁定不可用）制式边界；跨 **Slot 1 & Slot 2** 校验 `/M4ROOT/MEDIAPRO.XML` 与 `/PRIVATE/AVCHD/BDMV/INDEX.BDM` 媒体数据库区域隔离，阻断未完成冷备份即通过 `Backup.bin` 恢复或跨制式换卡触发破坏性重新注册；同时审计 4 态 `[Gamma Disp. Assist Typ.]`（`Auto`、`S-Log3->709(800%)`、`HLG(BT.2020)`、`HLG(709)`）、`[Log Shooting]`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`）激活时强制锁定 `[Gamma Display Assist = Off]` 并完全交由 `[Display LUT]` 接管、仅作用于机身 LCD/取景器而不注入外接 HDMI 的作用域边界，以及 `Backup.bin` 恢复前后状态对等（`16/16` Tier-0 `H0 == H3`）。
+  - **支柱 32B — 手动 `[Pixel Mapping]` 自动重启（`H1 -> H2` 易失 `/tmp` Stage-B 覆盖层清零回归原厂 `FX3 Ver. 7.02` `H0 == H2`）、低电量门禁、`[Auto Pixel Mapping]` 关机暗场快门安全与 `cnflasha` 传感器坏点表只读金库（`6/6`）**：
+    - `P32B1`..`P32B6`：强制手动 `[Pixel Mapping]`（`>= 20%` 且无低电告警）与 Tier-0 冷备份（`>= 51%` NP-FZ100 底线）低电量硬门禁、校准期间整机操作闭锁及校准完成后的强制自动重启，验证重启将 `/tmp` 易失 Stage-B 覆盖层（`H1`）彻底清零并回归原厂 `FX3 Ver. 7.02`（`H0 == H2`）；审计 `[Auto Pixel Mapping = On]`（即便在 `[Silent Mode = On]` 下周期性关机机械快门暗场动作声属正常校准，阻断关机瞬间拔电池或误判硬件故障；设为 `[Off]` 时校验 `<= 3` 天手动校准周期）；并硬锁定 `cnflasha`（`/dev/cnflasha`、`cnflasha12/13`、`nvs`、`adj`）`IMX510` 传感器坏点补偿表严格只读（`cnflasha_userspace_write_blocked == True`，`physical_device_writes == 0`）。
+  - **统一 `32/32` 恢复总检聚合器与 CLI（`evaluate_realhw_32pillar_recovery_master` / `verify-32pillar-recovery` / `verify-ntscpal-pixelmap-vault`）**：
+    - 并发调用 `evaluate_realhw_31pillar_recovery_master`（`Pillars 1..31`）+ **Pillar 32**（`run_pillar32_standalone_suite`），汇总产出 **`32/32`**（`VERIFIED_32OF32_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_32pillar_ntscpal_pixelmap_vault_verifier.py`](tests/test_realhw_32pillar_ntscpal_pixelmap_vault_verifier.py) 提供 **56 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-ntscpal-pixelmap-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-32pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-32pillar-recovery --force-clean-room --json
+```

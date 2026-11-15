@@ -489,4 +489,38 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 96：Stage 15 间隔录制（延时摄影电子快门 XAVC 封包与 6 档日落 AE 平滑）、Picture Cache（DDR 预录环形缓冲仲裁）、有线 USB-LAN FTPS（P12 射频零唤醒）与 Sigma 风扇堵转 / 水下壳体真空 HIL
+
+[`interval_cache_ftp_fan_emulator.py`](interval_cache_ftp_fan_emulator.py) 作为 **Stage 15** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase96` 向后兼容跳过；全板 15 阶段协同仿真在本地只读供体模式下保持 `1.28s < 1.5s`、洁净室模式下 `0.41s < 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`wf12_00342260_hits == 0`**、**`emmc_partition_mutations == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成五大闭环：
+
+1. **严格只读（`os.O_RDONLY`）间隔/预录/FTPS/USB-LAN/风扇供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`libmpr.so`、`cachecontrol.ko`、`libInfraFtpClient.so` x2、`libNetServiceEther.so` x2、`cdc_ncm.ko`、`libWlanResource.so`、`libfan.so` x2）的 SHA-256 与关键符号标记（`intervalRec`、`PreRecStart`、`InfraFtpClient_Init`、`TLS_AES_256_GCM_SHA384`、`jobReqResumeFtpTransfer`、`FT_ERR_PASV_NOT_SUPPORT`、`netserviceether_init`、`fan_infra_init`、`g_bkup_dev_temp_bkid_list` 等）；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Interval Recording（延时摄影）电子快门 XAVC 封包器与 6 档日落 AE 平滑器**：
+   - 建模 Cinema Line 间隔录制（间隔 `1..60s`、张数 `1..9999`），强制锁定电子快门（`mechanical_curtain_actuations == 0`，消除 10,000 次机械帘幕磨损），覆盖 `High` / `Mid` / `Low` / `Lock` 四档阻尼指数 AE 平滑曲线，完成单 MXF/MP4 封包及内存 `NonRealTimeMeta`（`*M01.XML`）`<IntervalRecording>` 标签往返校验。
+3. **FX6 Picture Cache（Pre-Rec）循环 DDR 环形缓冲仲裁器（FX3 2048 MiB DRAM）**：
+   - 建模 `2s..16s` GOP 对齐预触发环形缓冲，覆盖 `XAVC-I 4K60`（`600 Mbps` 自动钳位至 `5.0s` / `357.628 MiB <= 384 MiB`）、`XAVC-I 4K24`（`240 Mbps` `10s` 全量 / `16s` 钳位至 `13.0s`）、`XAVC-L 4K30`、`XAVC-I FHD60` 与 `XAVC-L FHD60`，确保 `appFw`/`GPE0`/内核预留 `>= 1664 MiB`（`oom_events == 0`）、REC 触发零丢 GOP 刷写至 CFexpress Slot A/B，并在 `S&Q` / `HDMI RAW16` / `Interval Rec` 激活时自动安全挂起。
+4. **有线 USB-LAN（`CDC-NCM` / `RTL8153`）被动 FTPS（TLS 1.3 + `REST` 断点续传）与 `P12` / eMMC 防火墙**：
+   - 验证 `PROXY_ONLY` 与 `ORIGINAL_AND_PROXY` 队列在链路闪断注入后通过 `REST <byte_offset>` 续传并达成端到端 SHA-256 一致；同时强制 `P12` Wi-Fi/BT 射频静默（`00342260` `WF-12` 命中 `== 0`）并 100% 拦截指向内部 eMMC `p1..p15`（`/dev/mmcblk0*`、`/dev/nflasha*`、`bk4://`、`..` 路径穿越）的读写请求。
+5. **Sigma 离心风扇霍尔测速堵转 / 侧面排气遮挡（`< 5 mm`）与水下摄影壳体真空泄漏 HIL**：
+   - 注入风扇转子堵转（`PWM >= 25%` 且 `RPM == 0`）、侧面排风间隙 `< 5 mm`、`> 1.5 mbar/10min` 真空压降及进水告警，验证立即触发零损失活跃剪辑刷新（`.RSV` 无损封口、`VolumeDirty == 0`）与安全关机，且内部 eMMC 零损坏（`emmc_corruptions == 0`）。
+
+### Phase 96 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 15 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/interval_cache_ftp_fan_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/interval_cache_ftp_fan_emulator.py --self-test --json
+
+# 2. 全板 15 阶段（Stage 1..15）统一校验（本地 1.28s < 1.5s，洁净室 0.41s < 0.5s，支持 --skip-phase96）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 96 36 项单测 & 全量 460 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_interval_cache_ftp_fan_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_interval_cache_ftp_fan_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 

@@ -60,6 +60,7 @@ import dualslot_proxy_ups_salvage_emulator as p71  # noqa: E402
 import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import gyroflow_rtmd_anamorphic_emulator as p91  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
+import interval_cache_ftp_fan_emulator as p96  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
@@ -117,6 +118,7 @@ class CoEmulationConfig:
     include_phase82_camset_lpcm_tcub: bool = True
     include_phase87_playback_shotmark_dewpoint: bool = True
     include_phase91_gyroflow_rtmd_anamorphic: bool = True
+    include_phase96_interval_cache_ftp_fan: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1047,6 +1049,45 @@ def run_stage14_gyroflow_rtmd_anamorphic(
     }
 
 
+def run_stage15_interval_cache_ftp_fan(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 15 (Phase 96): Interval Rec, Picture Cache 384MiB DDR Ring, USB-LAN FTPS & Fan/Housing HIL."""
+    config.validate()
+    rep = p96.run_phase96_interval_cache_ftp_fan_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage15_phase96_interval_cache_ftp_fan",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "emmc_partition_mutations": red["emmc_partition_mutations"],
+        "donor_audit": rep["donor_audit"],
+        "interval_recording_timelapse": rep["interval_recording_timelapse"],
+        "picture_cache_ddr_ring": rep["picture_cache_ddr_ring"],
+        "wired_usblan_ftps_p12": rep["wired_usblan_ftps_p12"],
+        "sigma_fan_housing_hil": rep["sigma_fan_housing_hil"],
+        "phase96_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1057,7 +1098,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 14-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 15-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1099,6 +1140,11 @@ def run_fx3_vm_coemulation_suite(
     stage14: Optional[Dict[str, object]] = (
         run_stage14_gyroflow_rtmd_anamorphic(cfg, env=env)
         if cfg.include_phase91_gyroflow_rtmd_anamorphic
+        else None
+    )
+    stage15: Optional[Dict[str, object]] = (
+        run_stage15_interval_cache_ftp_fan(cfg, env=env)
+        if cfg.include_phase96_interval_cache_ftp_fan
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1233,6 +1279,23 @@ def run_fx3_vm_coemulation_suite(
         and stage14["stock_cp_fault_count"] == 0
         and (not stage14["persistent_emmc_writes_authorized"])
     )
+    stage15_ok = True if stage15 is None else (
+        bool(stage15["all_checks_passed"])
+        and stage15["nop_count"] == 0
+        and stage15["guest_code_modification_bytes"] == 0
+        and stage15["cp_mutation_bytes"] == 0
+        and stage15["wbi_mutation_bytes"] == 0
+        and stage15["calibration_mutation_bytes"] == 0
+        and stage15["nvram_persistent_writes"] == 0
+        and stage15["bk4_persistent_nvram_writes"] == 0
+        and stage15["physical_device_writes"] == 0
+        and stage15["null_gpio_derefs"] == 0
+        and stage15["mailbox_stalls"] == 0
+        and stage15["stock_cp_fault_count"] == 0
+        and stage15["wf12_00342260_hits"] == 0
+        and stage15["emmc_partition_mutations"] == 0
+        and (not stage15["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1250,6 +1313,7 @@ def run_fx3_vm_coemulation_suite(
         and stage12_ok
         and stage13_ok
         and stage14_ok
+        and stage15_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1277,6 +1341,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase82_camset_lpcm_tcub": cfg.include_phase82_camset_lpcm_tcub,
             "include_phase87_playback_shotmark_dewpoint": cfg.include_phase87_playback_shotmark_dewpoint,
             "include_phase91_gyroflow_rtmd_anamorphic": cfg.include_phase91_gyroflow_rtmd_anamorphic,
+            "include_phase96_interval_cache_ftp_fan": cfg.include_phase96_interval_cache_ftp_fan,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1323,6 +1388,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage13_phase87_playback_shotmark_dewpoint"] = stage13
     if stage14 is not None:
         core_payload["stage14_phase91_gyroflow_rtmd_anamorphic"] = stage14
+    if stage15 is not None:
+        core_payload["stage15_phase96_interval_cache_ftp_fan"] = stage15
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1334,7 +1401,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1394,6 +1461,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase91",
         action="store_true",
         help="Skip optional Stage 14 (Phase 91 Gyroflow 2000Hz IMU RTMD 0xE4xx, Anamorphic IBIS & IMX510 RS HIL)",
+    )
+    parser.add_argument(
+        "--skip-phase96",
+        action="store_true",
+        help="Skip optional Stage 15 (Phase 96 Interval Rec, Picture Cache 384MiB DDR Ring, USB-LAN FTPS & Fan/Housing HIL)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -1472,6 +1544,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase82_camset_lpcm_tcub=not args.skip_phase82,
         include_phase87_playback_shotmark_dewpoint=not args.skip_phase87,
         include_phase91_gyroflow_rtmd_anamorphic=not args.skip_phase91,
+        include_phase96_interval_cache_ftp_fan=not args.skip_phase96,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1495,6 +1568,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s12 = rep.get("stage12_phase82_camset_lpcm_tcub")
         s13 = rep.get("stage13_phase87_playback_shotmark_dewpoint")
         s14 = rep.get("stage14_phase91_gyroflow_rtmd_anamorphic")
+        s15 = rep.get("stage15_phase96_interval_cache_ftp_fan")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1562,6 +1636,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s14, dict)
             else ""
         )
+        s15_str = (
+            f" | ivl_cache_ftp_fan={s15['source_mode']}(eshutter_mech=0,"
+            f"cache={s15['picture_cache_ddr_ring']['xavc_i_4k60_16s_clamped']['allocated_pool_mib']}MiB/0drop,"
+            f"ftps=TLS1.3+REST/wf12={s15['wf12_00342260_hits']},fan_rsv=120/120)"
+            if isinstance(s15, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1570,7 +1651,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

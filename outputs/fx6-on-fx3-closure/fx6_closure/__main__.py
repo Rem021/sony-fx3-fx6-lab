@@ -2322,6 +2322,223 @@ def _cmd_preflight_pixelmap_ntscpal_powersave_and_autotemp(
     return 0 if ok else 1
 
 
+def _cmd_preflight_imagedb_touch_shoeaudio_and_lockop(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    recover_image_db_requested: bool,
+    recover_image_db_slot: int,
+    battery_soc_pct: float,
+    low_battery_warning: bool,
+    slot1_contains_tier0_dump: bool,
+    slot1_tier0_sha256_verified: bool,
+    slot1_wp_locked: bool,
+    monitor_flip_direction: str,
+    reset_action: str,
+    expect_playback_inverted_hflip: bool,
+    af_transition_speed: int,
+    af_subj_shift_sensitivity: int,
+    touch_operation: str,
+    touch_sensitivity: str,
+    swipe_up: str,
+    touch_func_in_shooting: str,
+    unattended_tier0_dump_active: bool,
+    emphasized_rec_display: str,
+    grid_line_display: str,
+    grid_line_type: str,
+    rec_media_dur_hdmi_output: str,
+    hdmi_raw_output: bool,
+    hdmi_info_display: str,
+    indoor_bench_environment: bool,
+    monitor_brightness_mode: str,
+    monitor_brightness_level: int,
+    display_quality: str,
+    bluetooth_rmt_ctrl: str,
+    bluetooth_function: str,
+    airplane_mode: str,
+    expect_ir_remote_usable: bool,
+    display_from_my_menu: str,
+    shoe_audio_set: str,
+    audio_recording: str,
+    sq_mode_enabled: bool,
+    body_35mm_mic_plugged: bool,
+    xlr_h1_attached: bool,
+    xlr_h1_mode_switch: str,
+    xlr_h1_low_cut_switch: str,
+    wind_noise_reduct: str,
+    expect_wind_reduct_ext_mic: bool,
+    indoor_calm_bench_audio: bool,
+    saveload_operation: str,
+    saveload_target: str,
+    camset_slot_index: int,
+    camset_model_code: str,
+    camset_contains_excluded: bool,
+    lock_operation_parts: str,
+    active_key_chord: str,
+    lock_chord_hold_seconds: float,
+    destructive_format_chord: bool,
+    power_source: str,
+    usb_power_supply: str,
+    usb_power_terminal: str,
+    usb_lun_setting: str,
+    np_fz100_battery_inserted: bool,
+    dc_c1_coupler_inserted: bool,
+    battery_removed_under_usb_power: bool,
+    exposure_step: str,
+    shutter_mode: str,
+    shutter_angle_deg: float,
+    expect_exp_step_alters_angle: bool,
+    audio_out_timing: str,
+    silent_mode_enabled: bool,
+    audio_signals_mode: str,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_card_insert_readiness_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+    )
+    from .realhw_imagedb_touch_shoeaudio_and_lockop_verifier import (
+        GO_NO_GO_IMAGEDB_TOUCH_SHOEAUDIO_LOCKOP_VERIFIED,
+        evaluate_realhw_imagedb_touch_shoeaudio_and_lockop_readiness,
+        render_phase248_markdown,
+        verify_phase248_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = evaluate_realhw_imagedb_touch_shoeaudio_and_lockop_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        recover_image_db_requested=recover_image_db_requested,
+        recover_image_db_target_slot=recover_image_db_slot,
+        battery_soc_pct=battery_soc_pct,
+        low_battery_warning_active=low_battery_warning,
+        slot1_contains_tier0_dump=slot1_contains_tier0_dump,
+        slot1_tier0_sha256_verified_off_camera=slot1_tier0_sha256_verified,
+        slot1_wp_locked=slot1_wp_locked,
+        monitor_flip_direction=monitor_flip_direction,
+        reset_action=reset_action,
+        expect_playback_inverted_under_horizontal_flip=expect_playback_inverted_hflip,
+        af_transition_speed=af_transition_speed,
+        af_subj_shift_sensitivity=af_subj_shift_sensitivity,
+        touch_operation=touch_operation,
+        touch_sensitivity=touch_sensitivity,
+        swipe_up=swipe_up,
+        touch_func_in_shooting=touch_func_in_shooting,
+        unattended_tier0_dump_active=unattended_tier0_dump_active,
+        emphasized_rec_display=emphasized_rec_display,
+        grid_line_display=grid_line_display,
+        grid_line_type=grid_line_type,
+        rec_media_dur_hdmi_output=rec_media_dur_hdmi_output,
+        hdmi_raw_output=hdmi_raw_output,
+        hdmi_info_display=hdmi_info_display,
+        indoor_bench_environment=indoor_bench_environment,
+        monitor_brightness_mode=monitor_brightness_mode,
+        monitor_brightness_manual_level=monitor_brightness_level,
+        display_quality=display_quality,
+        bluetooth_rmt_ctrl=bluetooth_rmt_ctrl,
+        bluetooth_function=bluetooth_function,
+        airplane_mode=airplane_mode,
+        expect_ir_remote_usable=expect_ir_remote_usable,
+        display_from_my_menu=display_from_my_menu,
+        shoe_audio_set=shoe_audio_set,
+        audio_recording=audio_recording,
+        sq_mode_enabled=sq_mode_enabled,
+        body_35mm_mic_plugged=body_35mm_mic_plugged,
+        xlr_h1_attached=xlr_h1_attached,
+        xlr_h1_mode_switch=xlr_h1_mode_switch,
+        xlr_h1_low_cut_switch=xlr_h1_low_cut_switch,
+        wind_noise_reduct=wind_noise_reduct,
+        expect_wind_noise_reduct_on_external_mic=expect_wind_reduct_ext_mic,
+        indoor_calm_bench_audio=indoor_calm_bench_audio,
+        saveload_operation=saveload_operation,
+        saveload_target=saveload_target,
+        camset_slot_index=camset_slot_index,
+        camset_model_code=camset_model_code,
+        camset_payload_contains_excluded_items=camset_contains_excluded,
+        lock_operation_parts=lock_operation_parts,
+        active_key_chord=active_key_chord,
+        lock_chord_hold_seconds=lock_chord_hold_seconds,
+        destructive_slot_full_format_chord_invoked=destructive_format_chord,
+        power_source=power_source,
+        usb_power_supply=usb_power_supply,
+        usb_power_terminal=usb_power_terminal,
+        usb_lun_setting=usb_lun_setting,
+        np_fz100_battery_inserted=np_fz100_battery_inserted,
+        dc_c1_coupler_inserted=dc_c1_coupler_inserted,
+        battery_removed_under_usb_power=battery_removed_under_usb_power,
+        exposure_step=exposure_step,
+        shutter_mode=shutter_mode,
+        shutter_angle_deg=shutter_angle_deg,
+        expect_exposure_step_alters_shutter_angle=expect_exp_step_alters_angle,
+        audio_out_timing=audio_out_timing,
+        silent_mode_enabled=silent_mode_enabled,
+        audio_signals_mode=audio_signals_mode,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase248_markdown(rep), encoding="utf-8")
+    v_res = verify_phase248_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_IMAGEDB_TOUCH_SHOEAUDIO_LOCKOP_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
@@ -2375,6 +2592,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-221", "Verify Grand Milestone Phase 221 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=78-Gate + >=31 Recovery + >=44 Auditors + >=38 VM + Triple Bench Preflights Ph186/Ph204/Ph216 + FX3 7.02 QEMU R28..R42, realhw_milestone221_master_gate_v1)"),
         ("preflight-pixelmap-ntscpal-powersave-and-autotemp", "Run Phase 227 physical bench & pre-shoot media readiness verifier (Pixel Mapping cnflasha O_RDONLY/reboot & NTSC/PAL reset persistence + Gamma Assist vs Display LUT, File Settings 37-char/SDHC/ShotMark MP4-only/TC Regenerate Slot-1 & Coupled Body+XLR-H1 REC Lamp, and Power Save 9-condition bypass/Auto Power OFF Temp. tripod/SteadyShot Active & CIZ locks)"),
         ("verify-milestone-233", "Verify Grand Milestone Phase 233 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=90-Gate + >=38 Recovery + >=45 Auditors + >=44 VM + Quad Bench Preflights Ph186/Ph204/Ph216/Ph227 + FX3 7.02 QEMU R28..R47+, realhw_milestone233_master_gate_v1)"),
+        ("preflight-imagedb-touch-shoeaudio-and-lockop", "Run Phase 248 5th physical bench & pre-shoot media/audio/vault readiness verifier (Recover Image DB battery & Slot-1 Tier-0 vault guard + Monitor Flip playback non-inversion, Touch Operation 4-item guard & Off(HDMI Only)/RAW clean-feed + indoor Sunny Weather/Display Quality=Standard conservation, Shoe Audio 48kHz/24bit 4ch 3-lockout + Wind Noise Reduct. built-in-only + Save/Load C3 exclusions & Slot-1 firewall, and Lock Operation Parts MENU+Fn 5s chord + USB Power NP-FZ100 + Exposure step vs Shutter Angle)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -2395,10 +2613,85 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-imagedb-touch-shoeaudio-and-lockop":
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 248 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--recover-image-db", dest="recover_image_db_requested", action="store_true", help="Request [Recover Image DB] repair execution check")
+            p.add_argument("--recover-image-db-slot", type=int, default=2, help="Target slot for [Recover Image DB]: 1 or 2")
+            p.add_argument("--battery-soc", dest="battery_soc_pct", type=float, default=88.0, help="NP-FZ100 battery SOC percentage (>=20.0% required for [Recover Image DB])")
+            p.add_argument("--low-battery-warning", action="store_true", help="Flag low-battery warning active (blocks [Recover Image DB])")
+            p.add_argument("--no-slot1-tier0-dump", dest="slot1_contains_tier0_dump", action="store_false", help="Indicate Slot 1 does NOT hold a Tier-0 forensic dump")
+            p.add_argument("--slot1-tier0-unverified", dest="slot1_tier0_sha256_verified", action="store_false", help="Indicate Slot 1 Tier-0 SHA-256 has NOT been verified off-camera")
+            p.add_argument("--slot1-wp-unlocked", dest="slot1_wp_locked", action="store_false", help="Indicate Slot 1 SDXC WP physical switch is unlocked")
+            p.add_argument("--monitor-flip-direction", default="AUTO", help="[Monitor Flip Direction]: AUTO, HORIZONTAL_FLIP, VERTICAL_FLIP, OFF")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, RESET_NETWORK_SET, INITIALIZE")
+            p.add_argument("--expect-playback-inverted-hflip", action="store_true", help="Flag invalid expectation of inverted playback display under [Horizontal Flip]")
+            p.add_argument("--af-transition-speed", type=int, default=5, help="[AF Transition Speed] 1..7")
+            p.add_argument("--af-subj-shift-sensitivity", type=int, default=5, help="[AF Subj. Shift Sensitivity] 1..5")
+            p.add_argument("--touch-operation", default="OFF", help="[Touch Operation]: OFF, ON_PLAYBACK_ONLY, ON")
+            p.add_argument("--touch-sensitivity", default="STANDARD", help="[Touch Sensitivity]: STANDARD or SENSITIVE")
+            p.add_argument("--swipe-up", default="OPEN_THE_FN_MENU", help="[Swipe Up]: OPEN_THE_FN_MENU or OFF")
+            p.add_argument("--touch-func-in-shooting", default="OFF", help="[Touch Func. in Shooting]: OFF, TOUCH_TRACKING, TOUCH_FOCUS")
+            p.add_argument("--no-unattended-tier0-dump", dest="unattended_tier0_dump_active", action="store_false", help="Indicate unattended Tier-0 dump is inactive")
+            p.add_argument("--emphasized-rec-display", default="ON", help="[Emphasized REC Display]: ON or OFF")
+            p.add_argument("--grid-line-display", default="OFF", help="[Grid Line Display]: OFF or ON")
+            p.add_argument("--grid-line-type", default="RULE_OF_3RDS_GRID", help="[Grid Line Type]: RULE_OF_3RDS_GRID, SQUARE_GRID, DIAG_PLUS_SQUARE_GRID")
+            p.add_argument("--rec-media-dur-hdmi", dest="rec_media_dur_hdmi_output", default="ON", help="[Rec. Media dur HDMI Output]: ON or OFF_HDMI_ONLY")
+            p.add_argument("--hdmi-raw-output", action="store_true", help="Enable HDMI RAW output (forces [HDMI Info. Display]=OFF)")
+            p.add_argument("--hdmi-info-display", default="OFF", help="[HDMI Info. Display]: OFF or ON")
+            p.add_argument("--outdoor-environment", dest="indoor_bench_environment", action="store_false", help="Indicate outdoor daylight rather than indoor bench")
+            p.add_argument("--monitor-brightness-mode", default="MANUAL", help="[Monitor Brightness]: MANUAL or SUNNY_WEATHER")
+            p.add_argument("--monitor-brightness-level", type=int, default=0, help="[Monitor Brightness] manual level -2..+2")
+            p.add_argument("--display-quality", default="STANDARD", help="[Display Quality]: STANDARD or HIGH")
+            p.add_argument("--bluetooth-rmt-ctrl", default="OFF", help="[Bluetooth Rmt Ctrl]: OFF or ON")
+            p.add_argument("--bluetooth-function", default="OFF", help="[Bluetooth Function]: OFF or ON")
+            p.add_argument("--airplane-mode", default="ON", help="[Airplane Mode]: ON or OFF")
+            p.add_argument("--expect-ir-remote-usable", action="store_true", help="Flag expectation that IR remote works while [Bluetooth Rmt Ctrl]=ON")
+            p.add_argument("--display-from-my-menu", default="OFF", help="[Display From My Menu]: OFF or ON")
+            p.add_argument("--shoe-audio-set", default="48KHZ_24BIT_4CH", help="[Shoe Audio Set.]: 48KHZ_16BIT_2CH, 48KHZ_24BIT_2CH, 48KHZ_24BIT_4CH")
+            p.add_argument("--audio-recording", default="ON", help="[Audio Recording]: ON or OFF")
+            p.add_argument("--sq-enabled", dest="sq_mode_enabled", action="store_true", help="Enable S&Q Motion mode (disables audio & locks out Shoe Audio / Audio Out Timing)")
+            p.add_argument("--body-35mm-mic-plugged", action="store_true", help="Indicate body 3.5mm MIC plug is inserted (locks out digital Shoe Audio)")
+            p.add_argument("--no-xlr-h1", dest="xlr_h1_attached", action="store_false", help="Indicate XLR-H1 handle is detached")
+            p.add_argument("--xlr-h1-mode-switch", default="DIGITAL", help="XLR-H1 [DIGITAL/ANALOG] switch: DIGITAL or ANALOG")
+            p.add_argument("--xlr-h1-low-cut-switch", default="OFF", help="XLR-H1 hardware [LOW CUT] switch: OFF, 100HZ, 300HZ")
+            p.add_argument("--wind-noise-reduct", default="OFF", help="[Wind Noise Reduct.]: OFF or ON (built-in mic only)")
+            p.add_argument("--expect-wind-reduct-ext-mic", action="store_true", help="Flag invalid expectation of [Wind Noise Reduct.] with external mic")
+            p.add_argument("--outdoor-windy-audio", dest="indoor_calm_bench_audio", action="store_false", help="Indicate outdoor windy conditions rather than calm indoor bench")
+            p.add_argument("--saveload-operation", default="NONE", help="[Save/Load Settings] action: NONE, LOAD, SAVE")
+            p.add_argument("--saveload-target", default="SLOT_2", help="[Save/Load Settings] target: SLOT_1, SLOT_2, CLOUD_PRIVATE, CLOUD_SHARE")
+            p.add_argument("--camset-slot-index", type=int, default=1, help="CAMSET slot index 1..10")
+            p.add_argument("--camset-model-code", default="ILME-FX3", help="CAMSET model identifier (must be ILME-FX3)")
+            p.add_argument("--camset-contains-excluded", action="store_true", help="Simulate excluded secrets/calibration inside CAMSET payload")
+            p.add_argument("--lock-operation-parts", default="ALL", help="[Lock Operation Parts]: OFF, MULTI_SELECTOR_ONLY, DIAL_PLUS_WHEEL, ALL")
+            p.add_argument("--active-key-chord", default="MENU_PLUS_FN_5S", help="Key chord: NONE, FN_HOLD_TOGGLE, MENU_PLUS_FN_5S, MENU_PLUS_DELETE_2S")
+            p.add_argument("--lock-chord-hold-seconds", type=float, default=5.0, help="Hold duration in seconds (>=5.0s for MENU+Fn full-body lock)")
+            p.add_argument("--destructive-format-chord", action="store_true", help="Simulate destructive MENU+Delete 2s Slot Full Format chord (hard-blocked)")
+            p.add_argument("--power-source", default="USB_PD_BODY", help="Power source: INTERNAL_NP_FZ100, USB_PD_BODY, DC_C1_COUPLER")
+            p.add_argument("--usb-power-supply", default="ON", help="[USB Power Supply]: ON or OFF")
+            p.add_argument("--usb-power-terminal", default="USB_TYPE_C", help="USB power terminal: USB_TYPE_C, MULTI_MICRO_USB, NONE")
+            p.add_argument("--usb-lun-setting", default="MULTI", help="[USB LUN Setting]: MULTI or SINGLE")
+            p.add_argument("--no-np-fz100-inserted", dest="np_fz100_battery_inserted", action="store_false", help="Simulate missing NP-FZ100 battery pack (blocks power-on / USB PD)")
+            p.add_argument("--dc-c1-coupler-inserted", action="store_true", help="Indicate DC-C1 coupler is seated in battery bay")
+            p.add_argument("--battery-removed-under-usb-power", action="store_true", help="Simulate removing NP-FZ100 under USB wall power (immediate power-off)")
+            p.add_argument("--exposure-step", default="0.3EV", help="[Exposure step]: 0.3EV or 0.5EV")
+            p.add_argument("--shutter-mode", default="SHUTTER_ANGLE", help="[Shutter Mode]: SHUTTER_ANGLE or SHUTTER_SPEED")
+            p.add_argument("--shutter-angle-deg", type=float, default=180.0, help="[Shutter Angle] in degrees from constant cine table (5.6..360.0)")
+            p.add_argument("--expect-exp-step-alters-angle", action="store_true", help="Flag invalid expectation that [Exposure step] alters [Shutter Angle]")
+            p.add_argument("--audio-out-timing", default="LIVE", help="[Audio Out Timing]: LIVE or LIP_SYNC")
+            p.add_argument("--silent-mode", dest="silent_mode_enabled", action="store_true", help="Enable [Silent Mode] (hard-locks [Audio signals]=OFF)")
+            p.add_argument("--audio-signals", dest="audio_signals_mode", default="ON", help="[Audio signals]: ON, OFF_SHUTTER_ONLY, OFF")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-pixelmap-ntscpal-powersave-and-autotemp":
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 227 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -3060,6 +3353,87 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-imagedb-touch-shoeaudio-and-lockop":
+        return _cmd_preflight_imagedb_touch_shoeaudio_and_lockop(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.recover_image_db_requested,
+            args.recover_image_db_slot,
+            args.battery_soc_pct,
+            args.low_battery_warning,
+            args.slot1_contains_tier0_dump,
+            args.slot1_tier0_sha256_verified,
+            args.slot1_wp_locked,
+            args.monitor_flip_direction,
+            args.reset_action,
+            args.expect_playback_inverted_hflip,
+            args.af_transition_speed,
+            args.af_subj_shift_sensitivity,
+            args.touch_operation,
+            args.touch_sensitivity,
+            args.swipe_up,
+            args.touch_func_in_shooting,
+            args.unattended_tier0_dump_active,
+            args.emphasized_rec_display,
+            args.grid_line_display,
+            args.grid_line_type,
+            args.rec_media_dur_hdmi_output,
+            args.hdmi_raw_output,
+            args.hdmi_info_display,
+            args.indoor_bench_environment,
+            args.monitor_brightness_mode,
+            args.monitor_brightness_level,
+            args.display_quality,
+            args.bluetooth_rmt_ctrl,
+            args.bluetooth_function,
+            args.airplane_mode,
+            args.expect_ir_remote_usable,
+            args.display_from_my_menu,
+            args.shoe_audio_set,
+            args.audio_recording,
+            args.sq_mode_enabled,
+            args.body_35mm_mic_plugged,
+            args.xlr_h1_attached,
+            args.xlr_h1_mode_switch,
+            args.xlr_h1_low_cut_switch,
+            args.wind_noise_reduct,
+            args.expect_wind_reduct_ext_mic,
+            args.indoor_calm_bench_audio,
+            args.saveload_operation,
+            args.saveload_target,
+            args.camset_slot_index,
+            args.camset_model_code,
+            args.camset_contains_excluded,
+            args.lock_operation_parts,
+            args.active_key_chord,
+            args.lock_chord_hold_seconds,
+            args.destructive_format_chord,
+            args.power_source,
+            args.usb_power_supply,
+            args.usb_power_terminal,
+            args.usb_lun_setting,
+            args.np_fz100_battery_inserted,
+            args.dc_c1_coupler_inserted,
+            args.battery_removed_under_usb_power,
+            args.exposure_step,
+            args.shutter_mode,
+            args.shutter_angle_deg,
+            args.expect_exp_step_alters_angle,
+            args.audio_out_timing,
+            args.silent_mode_enabled,
+            args.audio_signals_mode,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
         )
     return 2
 

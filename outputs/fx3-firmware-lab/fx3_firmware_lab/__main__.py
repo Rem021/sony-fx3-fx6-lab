@@ -102,6 +102,10 @@ from .realhw_cxd90057_cxd90058_sabin_codec_auditor import (
     analyze_realhw_cxd90057_cxd90058_sabin_codec,
     realhw_cxd90057_cxd90058_sabin_codec_report_to_dict,
 )
+from .realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta_auditor import (
+    analyze_realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta,
+    realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta_report_to_dict,
+)
 from .realhw_wifi_bt_usb_uvc_network_bridge_auditor import (
     analyze_realhw_wifi_bt_usb_uvc_network_bridge,
     realhw_wifi_bt_usb_uvc_network_bridge_report_to_dict,
@@ -143,7 +147,7 @@ from .xavc_hevc_intra_aces_idt_and_fz100_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all thirty-four clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all thirty-five clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -238,6 +242,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     realhw_cxd90057_cxd90058_sabin = realhw_cxd90057_cxd90058_sabin_codec_report_to_dict(
         analyze_realhw_cxd90057_cxd90058_sabin_codec(clean_room=clean_room)
     )
+    realhw_c2pa_tc_gyro = realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta_report_to_dict(
+        analyze_realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -274,6 +281,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and realhw_imx510_color.get("all_checks_passed")
         and realhw_cfexpress_sdxc_ufu.get("all_checks_passed")
         and realhw_cxd90057_cxd90058_sabin.get("all_checks_passed")
+        and realhw_c2pa_tc_gyro.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -315,17 +323,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "realhw_imx510_cmos_dualbase_iso_lut_color_pipeline_audit": realhw_imx510_color,
         "realhw_cfexpress_sdxc_exfat_rsv_ufu_coexistence_audit": realhw_cfexpress_sdxc_ufu,
         "realhw_cxd90057_cxd90058_sabin_codec_audit": realhw_cxd90057_cxd90058_sabin,
+        "realhw_c2pa_cert_vmcbncm1_tc_gyro_meta_audit": realhw_c2pa_tc_gyro,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18 + PTPv2 + TSL UMD v5.0 Tally, Virtual Production LED-Volume Brompton/Megapixel ECS Solver + Wired FreeD D1 LiveLink + P12-Safe Art-Net 4 / sACN Shutter-Sync, BIONZ XR XAVC HS/XAVC S-I + ACES 1.3/2.0 S-Log3/S-Gamut3.Cine IDT + NP-FZ100 InfoLITHIUM C-Pin, Real-Hardware U2 cpapp-b.bin CP RTOS / Route-1 vs Route-2 + U3 Backup.bin 819->840 / 0xfa0080, Phase 140 Real-Hardware libMpr / osal_uipc / DMM MAIN Card-Recording & Parameter-Binding ABI Bridge, Phase 146 Real-Hardware Stage-B Peripheral Bridge, Phase 149 Real-Hardware ILME-FX3 Controls/Keymap, Cooling Fan PWM/Thermal Override, 3x Tally LEDs & NP-FZ100/USB-PD Power Bridge, Phase 152 Real-Hardware Wi-Fi 802.11ac, BLE Creators' App vs FX6 M&C, USB Type-C MSC 054C:0DA1/MTP/UVC & Wired USB-LAN Gigabit FTP Bridge, Phase 156 Real-Hardware IMX510 CMOS Sensor Cal, Dual-Base ISO 800/12800 HCG/LCG & S-Log3/.cube MLUT Color Pipeline, Phase 159 Real-Hardware Dual-Slot CFexpress Type A / SDXC UHS-II Media Bridge, .RSV Clip Salvage & Official Sony BODYDATA.DAT (\\x89UFU) Coexistence Guard, and Phase 164 Real-Hardware CXD90057 (Mira) + CXD90058 (Cetus) Dual-BIONZ-XR Inter-Chip IPC, sabin 32-bit SA-DSP Microcode & XAVC-I / HEVC Hardware Codec Boundary auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp, USB-C UVC 1.5/UAC 2.0/Wired P12-Safe SRT-RTMPS/CRSDK PTP Flash-Opcode Firewall, XAVC MXF OP1a vs MP4 ISO-BMFF Essence/UMID/RDD-18 + PTPv2 + TSL UMD v5.0 Tally, Virtual Production LED-Volume Brompton/Megapixel ECS Solver + Wired FreeD D1 LiveLink + P12-Safe Art-Net 4 / sACN Shutter-Sync, BIONZ XR XAVC HS/XAVC S-I + ACES 1.3/2.0 S-Log3/S-Gamut3.Cine IDT + NP-FZ100 InfoLITHIUM C-Pin, Real-Hardware U2 cpapp-b.bin CP RTOS / Route-1 vs Route-2 + U3 Backup.bin 819->840 / 0xfa0080, Phase 140 Real-Hardware libMpr / osal_uipc / DMM MAIN Card-Recording & Parameter-Binding ABI Bridge, Phase 146 Real-Hardware Stage-B Peripheral Bridge, Phase 149 Real-Hardware ILME-FX3 Controls/Keymap, Cooling Fan PWM/Thermal Override, 3x Tally LEDs & NP-FZ100/USB-PD Power Bridge, Phase 152 Real-Hardware Wi-Fi 802.11ac, BLE Creators' App vs FX6 M&C, USB Type-C MSC 054C:0DA1/MTP/UVC & Wired USB-LAN Gigabit FTP Bridge, Phase 156 Real-Hardware IMX510 CMOS Sensor Cal, Dual-Base ISO 800/12800 HCG/LCG & S-Log3/.cube MLUT Color Pipeline, Phase 159 Real-Hardware Dual-Slot CFexpress Type A / SDXC UHS-II Media Bridge, .RSV Clip Salvage & Official Sony BODYDATA.DAT (\\x89UFU) Coexistence Guard, Phase 164 Real-Hardware CXD90057 (Mira) + CXD90058 (Cetus) Dual-BIONZ-XR Inter-Chip IPC, sabin 32-bit SA-DSP Microcode & XAVC-I / HEVC Hardware Codec Boundary, and Phase 169 Real-Hardware p12:/cert/RQ_LIC.DAT C2PA Lock, VMC-BNCM1 EXT-LK SMPTE-12M TC & NonRealTimeMeta.xml IMX510 Gyro/Lens Provenance auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 34 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 35 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -546,6 +555,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_rhsabin.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_rhsabin.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_rhc2pa = sub.add_parser(
+        "audit-realhw-c2pa-tc-gyro-meta",
+        help="Run Phase 169 Real-Hardware p12:/cert/RQ_LIC.DAT C2PA Authenticity License Lock, VMC-BNCM1 EXT-LK SMPTE-12M TC & /dev/rtc0 User-Bit Bridge, and NonRealTimeMeta.xml IMX510 Gyro/Lens Catalyst/Resolve Provenance auditor",
+    )
+    p_rhc2pa.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_rhc2pa.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -677,6 +693,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-realhw-cxd90057-cxd90058-sabin":
         payload = realhw_cxd90057_cxd90058_sabin_codec_report_to_dict(
             analyze_realhw_cxd90057_cxd90058_sabin_codec(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-realhw-c2pa-tc-gyro-meta":
+        payload = realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta_report_to_dict(
+            analyze_realhw_c2pa_cert_vmcbncm1_tc_and_gyro_meta(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

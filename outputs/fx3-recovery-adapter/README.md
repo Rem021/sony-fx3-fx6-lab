@@ -462,5 +462,29 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --clean-room --json
 ```
 
+## Phase 139 — 真机主线 Part 5：主机端 `AdjustControl (0x40)` 流式冷备份客户端、`p6`（`25 MiB`）滑窗回拉与 Fake-IOKit 端到端回归（17 支柱恢复总检）
+
+- **[`realhw_adjustcontrol_streaming_backup_client.py`](fx3_recovery/realhw_adjustcontrol_streaming_backup_client.py)**：严格衔接 Stage-288 `§6` 与 `2026-11-03 §5.2` 冷备份清单，面向真实 `ILME-FX3`（`7.02`，`0x91030080` / `054C:0336`）提供三大净室协议与双路径全机冷备份支柱并接入 **17 支柱**恢复总检门禁（硬锁定 `LIVE_USB_IOKIT_TRANSMIT_ENABLED = False`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`PHYSICAL_USB_BYTES_TRANSMITTED = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_adjustcontrol_donors_readonly`）**：严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验 Stage-288 `jiritsu_wire.py`、`fake_jiritsu_camera.py`、`libJit_test.so`（`PT_LOAD 0x1000`）与 FX3 `libJiritsu.so`（`225,200 B`，`PT_LOAD 0x10000`）、`partinf.conf`（`p6 = 25 MiB`、`p3 = 75 MiB`、`p15 = 500 MiB`）及 `pformat_config.txt`，JSON 输出零原始专有固件字节。
+  - **支柱 A — `ADJUSTCONTROL_0X40_WIRE_TRANSPORT_AND_PREFLIGHT_ABORT`（`7/7`）**：
+    - 精确实现 Stage-288 净室线帧（`SET_FILE_PATH`: `b"\x00" + path + b"\x00"`；`SET_FILE2`: `b"\x00\xff\x00" + payload`；`GET_FILE2`: `b"\x00\xff\x00"`），硬拒绝 selector `2`，严禁 `MODE`/`MOUNT`/`FORMAT`/`START`/`DEBUG`/`FIRMUP` 及 `edisx`/`uc_mkfs` 与 `/tmp/jiritsu/` 外路径穿越。
+    - 强制会话前 `/tmp/jbusy` 探针（`GET_FILE2` 必须返回 `0x11` `ENOENT`），遇到 `/tmp/jbusy` 存在、`0x10000011`、`0x10000201`、`0x10000000`、`0x10000004`、`0x1000000F` 或 USB 超时时**立即中止，绝不盲目重发第二次 `SET_FILE2`**（`set_file2_retry_count == 0`）。
+  - **支柱 B — `DUAL_PATH_SD_STREAM_AND_P6_SLIDING_WINDOW_COLD_BACKUP`（`6/6`）**：
+    - **Path 1（SD/CFexpress ExFAT 直接流式转储）**：将全部 16 项关键资产（`Sector 0` + Tier-0 `p2`/`p6`/`p12`/`p18`/SPI NOR `ddrtraining.dat @ 0x3e210fc` + `loader_nor.bin` + Tier-1 `p1(含dat2/dat3)`/`p3`/`p7`/`p8` + Tier-2 `p5`/`p13`/`p15`/`p23`/`p30`）流式写入 `/mnt/sd/FX3_COLD_BACKUP/` 与 `MANIFEST.SHA256`，仅通过 `GET_FILE2` 回传紧凑 `528 B` `FX3RCPT1` 签名哈希回执（`< 1 KiB` `p6` 占用）。
+    - **Path 2（`p6` 受限 `<= 4 MiB` 滑窗 USB 分片回拉）**：无可用 SD 卡时以 `<= 4 MiB` 滑窗分片拉取任意大分区（如 `75 MiB` `p3` 19 片，`peak_p6_bytes <= 4.2 MiB << 25 MiB` `nflasha6` 配额），逐片校验 `[8B "FX3CHK1\0" + u64 offset + u32 length + u32 crc32]`，核实 `libJit.so` 与临时分片均已解链（`p6_residual_files == 0`），并证明重组全量 SHA-256 与源分区逐字节一致。
+  - **支柱 C — `FAKE_IOKIT_USB_CAMERA_REGRESSION_AND_PASSIVE_LOCK`（`5/5`）**：
+    - 有状态 `FakeIOKitAdjustControlCamera` 建模 Sony `054C:0336` `AdjustControl (0x40)` 端点、`25 MiB` `p6` 配额（`0x1000000F`）、`/tmp/jbusy` 锁定、ELF `DT_HASH (1,1,0,0)` + `PT_LOAD 0x10000`（64 KiB 页对齐）校验及会话后残留文件审计，并硬锁定 `live_usb_iokit_transmit_enabled = False` 与 `persistent_emmc_writes_authorized = False`。
+  - **CLI 与 17 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-adjustcontrol-backup-client [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase139`（构成 **17/17** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase134`/`--with-phase138` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 139 公开符号；[`tests/test_realhw_adjustcontrol_streaming_backup_client.py`](tests/test_realhw_adjustcontrol_streaming_backup_client.py) 提供 **46 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-adjustcontrol-backup-client --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --clean-room --json
+```
+
+
 
 

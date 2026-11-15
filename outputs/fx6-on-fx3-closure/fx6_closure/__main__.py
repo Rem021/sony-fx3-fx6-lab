@@ -2025,10 +2025,232 @@ def _cmd_verify_milestone_221(
     return 0 if ok else 1
 
 
+def _cmd_preflight_pixelmap_ntscpal_powersave_and_autotemp(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    auto_pixel_mapping: str,
+    days_since_pixel_mapping: int,
+    manual_pixel_mapping: bool,
+    battery_soc_pct: float,
+    tier0_dump_active: bool,
+    unguarded_calibration: bool,
+    ntsc_pal_selector: str,
+    regional_default_system: str,
+    rec_fps: float,
+    tc_format: str,
+    reset_action: str,
+    log_shooting_mode: str,
+    gamma_display_assist: str,
+    gamma_disp_assist_type: str,
+    display_lut: str,
+    expect_gamma_assist_hdmi: bool,
+    file_name_format: str,
+    file_number_mode: str,
+    title_name: str,
+    cam_id: str,
+    reel_number: int,
+    slot1_media_type: str,
+    slot2_media_type: str,
+    custom_folder_requested: bool,
+    clip_container_format: str,
+    shot_mark1_count: int,
+    shot_mark2_count: int,
+    image_jump_setting: str,
+    shoot_mode: str,
+    simult_recording: bool,
+    tc_make: str,
+    tc_run: str,
+    tc_regen_slot: int,
+    external_tc_jam_was_active: bool,
+    vmc_bncm1_ext_lk_required: bool,
+    rec_lamp_mode: str,
+    xlr_h1_attached: bool,
+    silent_mode: bool,
+    audio_signals: str,
+    power_save_start_time: str,
+    power_source: str,
+    usb_power_supply_active: Optional[bool],
+    slideshow_active: bool,
+    ftp_transfer_active: bool,
+    movie_recording_active: bool,
+    computer_connection_active: bool,
+    hdmi_tv_connection_active: bool,
+    ir_remote_ctrl_on: bool,
+    bluetooth_rmt_ctrl_on: bool,
+    streaming_or_cloud_active: bool,
+    p3_75mib_cold_dump_active: bool,
+    auto_power_off_temp: str,
+    tripod_mounted: bool,
+    handheld_active: bool,
+    fan_control_mode: str,
+    body_temp_c: float,
+    steadyshot_mode: str,
+    steadyshot_focal_mm: int,
+    sq_enabled: bool,
+    sq_fps: float,
+    hdmi_raw_output: bool,
+    zoom_mode: str,
+    zoom_scale: float,
+    video_resolution_class: str,
+    still_file_format: str,
+    ciz_focus_area_center_locked: bool,
+    ciz_metering_mode: str,
+    ciz_face_eye_disabled: bool,
+    ciz_tracking_disabled: bool,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_pixelmap_ntscpal_powersave_and_autotemp_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_PIXELMAP_NTSCPAL_POWERSAVE_AUTOTEMP_VERIFIED,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+        evaluate_realhw_pixelmap_ntscpal_powersave_and_autotemp_readiness,
+        render_phase227_markdown,
+        verify_phase227_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = evaluate_realhw_pixelmap_ntscpal_powersave_and_autotemp_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        auto_pixel_mapping=auto_pixel_mapping,
+        days_since_manual_pixel_mapping=days_since_pixel_mapping,
+        manual_pixel_mapping_requested=manual_pixel_mapping,
+        battery_soc_pct=battery_soc_pct,
+        tier0_dump_active=tier0_dump_active,
+        unguarded_calibration_attempt=unguarded_calibration,
+        ntsc_pal_selector=ntsc_pal_selector,
+        regional_default_system=regional_default_system,
+        rec_frame_rate_fps=rec_fps,
+        tc_format=tc_format,
+        reset_action=reset_action,
+        log_shooting_mode=log_shooting_mode,
+        gamma_display_assist=gamma_display_assist,
+        gamma_disp_assist_type=gamma_disp_assist_type,
+        display_lut=display_lut,
+        expect_gamma_assist_on_external_hdmi=expect_gamma_assist_hdmi,
+        file_name_format=file_name_format,
+        file_number_mode=file_number_mode,
+        title_name=title_name,
+        cam_id=cam_id,
+        reel_number=reel_number,
+        slot1_media_type=slot1_media_type,
+        slot2_media_type=slot2_media_type,
+        custom_folder_name_requested=custom_folder_requested,
+        clip_container_format=clip_container_format,
+        shot_mark1_count=shot_mark1_count,
+        shot_mark2_count=shot_mark2_count,
+        image_jump_setting=image_jump_setting,
+        shoot_mode=shoot_mode,
+        simult_recording_enabled=simult_recording,
+        tc_make=tc_make,
+        tc_run=tc_run,
+        tc_regenerate_reference_slot=tc_regen_slot,
+        external_tc_jam_was_active=external_tc_jam_was_active,
+        vmc_bncm1_ext_lk_required=vmc_bncm1_ext_lk_required,
+        rec_lamp_mode=rec_lamp_mode,
+        xlr_h1_attached=xlr_h1_attached,
+        silent_mode_enabled=silent_mode,
+        audio_signals_mode=audio_signals,
+        power_save_start_time=power_save_start_time,
+        power_source=power_source,
+        usb_power_supply_active=usb_power_supply_active,
+        slideshow_playback_active=slideshow_active,
+        ftp_transfer_active=ftp_transfer_active,
+        movie_recording_active=movie_recording_active,
+        computer_connection_active=computer_connection_active,
+        hdmi_tv_connection_active=hdmi_tv_connection_active,
+        ir_remote_ctrl_on=ir_remote_ctrl_on,
+        bluetooth_rmt_ctrl_on=bluetooth_rmt_ctrl_on,
+        streaming_or_cloud_active=streaming_or_cloud_active,
+        p3_75mib_cold_dump_active=p3_75mib_cold_dump_active,
+        auto_power_off_temp=auto_power_off_temp,
+        tripod_mounted=tripod_mounted,
+        handheld_operation_active=handheld_active,
+        fan_control_mode=fan_control_mode,
+        body_temp_c=body_temp_c,
+        steadyshot_mode=steadyshot_mode,
+        steadyshot_manual_focal_mm=steadyshot_focal_mm,
+        sq_mode_enabled=sq_enabled,
+        sq_frame_rate_fps=sq_fps,
+        hdmi_raw_output=hdmi_raw_output,
+        zoom_mode=zoom_mode,
+        zoom_scale=zoom_scale,
+        video_resolution_class=video_resolution_class,
+        still_file_format=still_file_format,
+        ciz_focus_area_center_locked=ciz_focus_area_center_locked,
+        ciz_metering_mode=ciz_metering_mode,
+        ciz_face_eye_priority_disabled=ciz_face_eye_disabled,
+        ciz_realtime_tracking_disabled=ciz_tracking_disabled,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase227_markdown(rep), encoding="utf-8")
+    v_res = verify_phase227_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_PIXELMAP_NTSCPAL_POWERSAVE_AUTOTEMP_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 221/209/193/175/147 Real-Hardware Master Gates, Phase 216 Physical Shoot & Monitoring Readiness Preflight, Phase 204 Operator Pre-Bench Power/Cable/Fan/Slot-1 Verifier, Phase 186 Card-Insert Preflight, Phase 154 Bench Preflight & Passive USB Classifier, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 221/209/193/175/147 Real-Hardware Master Gates, Phase 227 Pre-Shoot PixelMap/NTSC-PAL/PowerSave/AutoTemp Readiness Verifier, Phase 216 Physical Shoot & Monitoring Readiness Preflight, Phase 204 Operator Pre-Bench Power/Cable/Fan/Slot-1 Verifier, Phase 186 Card-Insert Preflight, Phase 154 Bench Preflight & Passive USB Classifier, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -2076,6 +2298,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-209", "Verify Grand Milestone Phase 209 Unified 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Pre-Bench Master Gate (>=72-Gate + >=28 Recovery + >=42 Auditors + >=36 VM + preflight-card-insert/preflight-bench-cable-fan-slot1 + FX3 7.02 QEMU R28..R40, realhw_milestone209_master_gate_v1)"),
         ("preflight-hdmi-proxy-desqueeze-and-simult", "Run Phase 216 real-hardware pre-shoot bench & media readiness verifier (De-Squeeze 1.6x=1.65x & M&C Focus Map <150fps, HDMI Log 1080p vs Off(HDMI Only) 4K & Blank LCD, Dual-Slot Simult + Px Proxy Coupled Vault, File Settings/SDHC/ShotMark/TC Slot-1, and Coupled REC Lamp/Shockless WB/Tier-0 gate)"),
         ("verify-milestone-221", "Verify Grand Milestone Phase 221 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=78-Gate + >=31 Recovery + >=44 Auditors + >=38 VM + Triple Bench Preflights Ph186/Ph204/Ph216 + FX3 7.02 QEMU R28..R42, realhw_milestone221_master_gate_v1)"),
+        ("preflight-pixelmap-ntscpal-powersave-and-autotemp", "Run Phase 227 physical bench & pre-shoot media readiness verifier (Pixel Mapping cnflasha O_RDONLY/reboot & NTSC/PAL reset persistence + Gamma Assist vs Display LUT, File Settings 37-char/SDHC/ShotMark MP4-only/TC Regenerate Slot-1 & Coupled Body+XLR-H1 REC Lamp, and Power Save 9-condition bypass/Auto Power OFF Temp. tripod/SteadyShot Active & CIZ locks)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -2096,10 +2319,89 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-pixelmap-ntscpal-powersave-and-autotemp":
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 227 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--auto-pixel-mapping", default="ON", help="[Auto Pixel Mapping]: ON or OFF")
+            p.add_argument("--days-since-pixel-mapping", type=int, default=0, help="Days since manual [Pixel Mapping] when [Auto Pixel Mapping]=[Off] (<=3 days)")
+            p.add_argument("--manual-pixel-mapping", action="store_true", help="Request manual [Pixel Mapping] execution check")
+            p.add_argument("--battery-soc", dest="battery_soc_pct", type=float, default=88.0, help="NP-FZ100 battery SOC percentage (>=20.0% required for [Pixel Mapping])")
+            p.add_argument("--tier0-dump-active", action="store_true", help="Indicate active Tier-0 cold dump (blocks [Pixel Mapping])")
+            p.add_argument("--unguarded-calibration", action="store_true", help="Flag unguarded cnflasha calibration write attempt (blocked by O_RDONLY firewall)")
+            p.add_argument("--ntsc-pal-selector", default="NTSC", help="[NTSC/PAL Selector]: NTSC or PAL")
+            p.add_argument("--regional-default-system", default="NTSC", help="Regional factory video system restored only by [Initialize]: NTSC or PAL")
+            p.add_argument("--rec-fps", type=float, default=23.98, help="Recording frame rate (e.g. 23.98/29.97/59.94/119.88 NTSC or 25/50/100 PAL)")
+            p.add_argument("--tc-format", default="NDF", help="[TC Format]: DF/NDF on NTSC or UNAVAILABLE/PAL_FIXED_25FPS on PAL")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, INITIALIZE")
+            p.add_argument("--log-shooting-mode", default="CINE_EI", help="[Log Shooting]: OFF, ON, CINE_EI, CINE_EI_QUICK, FLEXIBLE_ISO")
+            p.add_argument("--gamma-display-assist", default="OFF", help="[Gamma Display Assist]: OFF or ON (locked OFF when Log Shooting is active)")
+            p.add_argument("--gamma-disp-assist-type", default="AUTO", help="[Gamma Disp. Assist Typ.]: AUTO, S_LOG3_TO_709_800PCT, HLG_BT2020, HLG_709")
+            p.add_argument("--display-lut", default="ON", help="[Display LUT]: ON or OFF")
+            p.add_argument("--expect-gamma-assist-hdmi", action="store_true", help="Flag invalid expectation of [Gamma Display Assist] on external HDMI")
+            p.add_argument("--file-name-format", default="CAM_ID_PLUS_REEL", help="[File Name Format]: STANDARD, CAM_ID_PLUS_REEL, TITLE, DATE_PLUS_TITLE, TITLE_PLUS_DATE")
+            p.add_argument("--file-number-mode", default="SERIES", help="[File Number]: SERIES or RESET")
+            p.add_argument("--title-name", default="FX3_BENCH_P227", help="[Title Name Settings] <= 37 ASCII chars")
+            p.add_argument("--cam-id", default="A", help="[Cam ID] single uppercase letter A..Z")
+            p.add_argument("--reel-number", type=int, default=1, help="[Reel#] 1..999")
+            p.add_argument("--slot1-media-type", default="CFEXPRESS_A", help="Slot-1 media type: CFEXPRESS_A, SDXC, SDHC, NONE")
+            p.add_argument("--slot2-media-type", default="CFEXPRESS_A", help="Slot-2 media type: CFEXPRESS_A, SDXC, SDHC, NONE")
+            p.add_argument("--custom-folder-requested", action="store_true", help="Request custom movie folder name (blocked on SDHC)")
+            p.add_argument("--clip-container-format", default="XAVC_S_I_4K", help="Clip container format for Shot Mark1/2 check (MP4/XAVC only)")
+            p.add_argument("--shot-mark1-count", type=int, default=1, help="Shot Mark1 count (>=0)")
+            p.add_argument("--shot-mark2-count", type=int, default=1, help="Shot Mark2 count (>=0)")
+            p.add_argument("--image-jump-setting", default="SHOT_MARK_ONLY", help="[Image Jump Setting] playback filter mode")
+            p.add_argument("--shoot-mode", default="MOVIE", help="[Shoot Mode]: MOVIE, S_AND_Q, PHOTO")
+            p.add_argument("--no-simult-recording", dest="simult_recording", action="store_false", help="Disable Dual-Slot Simult. Recording")
+            p.add_argument("--tc-make", default="PRESET", help="[Time Code Make]: PRESET or REGENERATE")
+            p.add_argument("--tc-run", default="FREE_RUN", help="[Time Code Run]: FREE_RUN or REC_RUN")
+            p.add_argument("--tc-regen-slot", type=int, default=1, help="Reference slot for [Time Code Make]=[Regenerate] (must be Slot 1)")
+            p.add_argument("--external-tc-jam-was-active", action="store_true", help="Indicate prior external VMC-BNCM1 EXT-LK jam was active")
+            p.add_argument("--vmc-bncm1-ext-lk-required", action="store_true", help="Require external VMC-BNCM1 EXT-LK lock (Movie + Preset + Free Run)")
+            p.add_argument("--rec-lamp-mode", default="ONLY_FRONT_OFF", help="[REC Lamp]: ALL_ON, ONLY_FRONT_OFF, OFF, ALL_OFF")
+            p.add_argument("--no-xlr-h1", dest="xlr_h1_attached", action="store_false", help="Indicate XLR-H1 top handle is detached")
+            p.add_argument("--silent-mode", action="store_true", help="Enable [Silent Mode] (requires [Audio signals]=OFF)")
+            p.add_argument("--audio-signals", default="ON", help="[Audio signals]: ON, OFF_SHUTTER_ONLY, OFF")
+            p.add_argument("--power-save-start-time", default="OFF", help="[Power Save Start Time]: OFF, 30_MIN, 5_MIN, 2_MIN, 1_MIN, 10_SEC")
+            p.add_argument("--power-source", default="INTERNAL_NP_FZ100", help="Power source: INTERNAL_NP_FZ100, USB_PD_BODY, DC_C1_COUPLER")
+            p.add_argument("--usb-power-supply-active", dest="usb_power_supply_active", action="store_true", default=None, help="Bypass Condition #1: USB Power Supply active")
+            p.add_argument("--slideshow-active", action="store_true", help="Bypass Condition #2: Slideshow Playback active")
+            p.add_argument("--ftp-transfer-active", action="store_true", help="Bypass Condition #3: FTP Transfer active")
+            p.add_argument("--movie-recording-active", action="store_true", help="Bypass Condition #4: Movie Recording active")
+            p.add_argument("--computer-connection-active", action="store_true", help="Bypass Condition #5: Computer USB Connection active")
+            p.add_argument("--hdmi-tv-connection-active", action="store_true", help="Bypass Condition #6: TV/HDMI Connection active")
+            p.add_argument("--ir-remote-ctrl-on", action="store_true", help="Bypass Condition #7: [IR Remote Ctrl]=[On]")
+            p.add_argument("--bluetooth-rmt-ctrl-on", action="store_true", help="Bypass Condition #8: [Bluetooth Rmt Ctrl]=[On]")
+            p.add_argument("--streaming-or-cloud-active", action="store_true", help="Bypass Condition #9: Streaming / Creators' Cloud Upload active")
+            p.add_argument("--no-p3-cold-dump", dest="p3_75mib_cold_dump_active", action="store_false", help="Indicate 75 MiB p3 Tier-0 cold dump is inactive")
+            p.add_argument("--auto-power-off-temp", default="HIGH", help="[Auto Power OFF Temp.]: HIGH or STANDARD")
+            p.add_argument("--no-tripod-mounted", dest="tripod_mounted", action="store_false", help="Indicate camera is NOT tripod-mounted")
+            p.add_argument("--handheld-active", action="store_true", help="Indicate handheld shooting is active (blocked under Auto Power OFF Temp.=HIGH)")
+            p.add_argument("--fan-mode", dest="fan_control_mode", default="AUTO", help="[Fan Control]: AUTO, MINIMUM, OFF_IN_REC, ALWAYS_OFF")
+            p.add_argument("--body-temp-c", type=float, default=29.5, help="Camera body temperature in Celsius (< 45.0C)")
+            p.add_argument("--steadyshot-mode", default="STANDARD", help="Movie [SteadyShot]: OFF, STANDARD, ACTIVE")
+            p.add_argument("--steadyshot-focal-mm", type=int, default=35, help="Manual SteadyShot focal length in mm (8..1000)")
+            p.add_argument("--sq-enabled", action="store_true", help="Enable S&Q mode")
+            p.add_argument("--sq-fps", type=float, default=60.0, help="S&Q frame rate")
+            p.add_argument("--hdmi-raw-output", action="store_true", help="Enable HDMI RAW Output (disables SteadyShot Active)")
+            p.add_argument("--zoom-mode", default="OPTICAL_ONLY", help="Zoom mode: OPTICAL_ONLY, CLEAR_IMAGE_ZOOM, DIGITAL_ZOOM")
+            p.add_argument("--zoom-scale", type=float, default=1.0, help="Zoom scale factor (1.0 optical; <=1.5x 4K CIZ; <=2.0x HD CIZ; <=4.0x Digital)")
+            p.add_argument("--video-resolution-class", default="4K", help="Video resolution class: 4K or HD")
+            p.add_argument("--still-file-format", default="NONE", help="Still file format: NONE, JPEG, HEIF, RAW, ARW")
+            p.add_argument("--ciz-focus-area-unlocked", dest="ciz_focus_area_center_locked", action="store_false", help="Simulate Focus Area not center-locked under CIZ")
+            p.add_argument("--ciz-metering-mode", default="MULTI", help="Metering mode under CIZ (must be MULTI)")
+            p.add_argument("--ciz-face-eye-enabled", dest="ciz_face_eye_disabled", action="store_false", help="Simulate Face/Eye Priority still enabled under CIZ")
+            p.add_argument("--ciz-tracking-enabled", dest="ciz_tracking_disabled", action="store_false", help="Simulate Real-time Tracking still enabled under CIZ")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-hdmi-proxy-desqueeze-and-simult":
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 216 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -2587,6 +2889,91 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-pixelmap-ntscpal-powersave-and-autotemp":
+        return _cmd_preflight_pixelmap_ntscpal_powersave_and_autotemp(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.auto_pixel_mapping,
+            args.days_since_pixel_mapping,
+            args.manual_pixel_mapping,
+            args.battery_soc_pct,
+            args.tier0_dump_active,
+            args.unguarded_calibration,
+            args.ntsc_pal_selector,
+            args.regional_default_system,
+            args.rec_fps,
+            args.tc_format,
+            args.reset_action,
+            args.log_shooting_mode,
+            args.gamma_display_assist,
+            args.gamma_disp_assist_type,
+            args.display_lut,
+            args.expect_gamma_assist_hdmi,
+            args.file_name_format,
+            args.file_number_mode,
+            args.title_name,
+            args.cam_id,
+            args.reel_number,
+            args.slot1_media_type,
+            args.slot2_media_type,
+            args.custom_folder_requested,
+            args.clip_container_format,
+            args.shot_mark1_count,
+            args.shot_mark2_count,
+            args.image_jump_setting,
+            args.shoot_mode,
+            args.simult_recording,
+            args.tc_make,
+            args.tc_run,
+            args.tc_regen_slot,
+            args.external_tc_jam_was_active,
+            args.vmc_bncm1_ext_lk_required,
+            args.rec_lamp_mode,
+            args.xlr_h1_attached,
+            args.silent_mode,
+            args.audio_signals,
+            args.power_save_start_time,
+            args.power_source,
+            args.usb_power_supply_active,
+            args.slideshow_active,
+            args.ftp_transfer_active,
+            args.movie_recording_active,
+            args.computer_connection_active,
+            args.hdmi_tv_connection_active,
+            args.ir_remote_ctrl_on,
+            args.bluetooth_rmt_ctrl_on,
+            args.streaming_or_cloud_active,
+            args.p3_75mib_cold_dump_active,
+            args.auto_power_off_temp,
+            args.tripod_mounted,
+            args.handheld_active,
+            args.fan_control_mode,
+            args.body_temp_c,
+            args.steadyshot_mode,
+            args.steadyshot_focal_mm,
+            args.sq_enabled,
+            args.sq_fps,
+            args.hdmi_raw_output,
+            args.zoom_mode,
+            args.zoom_scale,
+            args.video_resolution_class,
+            args.still_file_format,
+            args.ciz_focus_area_center_locked,
+            args.ciz_metering_mode,
+            args.ciz_face_eye_disabled,
+            args.ciz_tracking_disabled,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
         )
     return 2
 

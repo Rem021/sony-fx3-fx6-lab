@@ -16,6 +16,7 @@ from .boot_contracts import (
     verify_sector0_partition_table,
 )
 from .brick_classifier import classify_brick_state, generate_failsafe_init2_overlay_hook
+from .dewpoint_tec_usbc_and_24gate_guard import evaluate_24gate_preflight
 from .exfat_media_integrity_guard import (
     MEDIA_TYPE_SDXC,
     SLOT_A,
@@ -215,6 +216,25 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_22.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
+    # 13. verify-24-gates
+    p_24 = sub.add_parser(
+        "verify-24-gates",
+        help="Run Phase 84 24-Gate Master Safety Preflight Engine (G01..G24)",
+    )
+    p_24.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_24.add_argument("--clean-room", action="store_true", help="Force clean-room donorless mode")
+    p_24.add_argument(
+        "--dry-run-simulated-backup",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G24 gates can be rehearsed offline",
+    )
+    p_24.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "evaluate-preflight":
@@ -412,6 +432,27 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
             )
         ok = report.all_22_gates_verified if args.dry_run_simulated_backup else report.offline_19_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-24-gates":
+        report = evaluate_24gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.clean_room else None,
+            dry_run_simulated_backup=bool(args.dry_run_simulated_backup),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/24 "
+                f"g23_to_g24_all_passed={report.g23_to_g24_all_passed} "
+                f"all_24_gates_verified={report.all_24_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}\n"
+            )
+        ok = report.all_24_gates_verified if args.dry_run_simulated_backup else report.offline_21_gates_verified
         return 0 if ok else 1
 
     return 2

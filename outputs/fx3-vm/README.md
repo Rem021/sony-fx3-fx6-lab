@@ -795,3 +795,40 @@ PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
 ```
 
+## Phase 141：Stage 24 全板端到端真机预刷写生命周期 & 四态双启动 HIL 仿真器
+
+[`realhw_preflash_dualboot_lifecycle_emulator.py`](realhw_preflash_dualboot_lifecycle_emulator.py) 作为 **Stage 24** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase141_realhw_preflash_dualboot_hil=True`，可通过 `--skip-phase141` 向后兼容跳过；全板 24 阶段协同仿真在本地只读供体模式下保持 `~1.51s < 1.8s`、洁净室模式下 `~0.53s < 0.7s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_mutation_bytes == 0`**、**`cp_mutation_bytes == 0`**、**`calibration_mutation_bytes == 0`**、**`wf12_00342260_hits == 0`**、**`sector0_mutation_bytes == 0`**、**`physical_device_writes == 0`** 与 **`rsv_orphan_count == 0`** 的前提下完成五大闭环：
+
+1. **严格只读（`os.O_RDONLY` + `mmap.ACCESS_READ`）9 份 FX3 `v7.02` / FX6 `v6.01` 供体审计 + 洁净室回退（`< 0.15s`）**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 `partinf.conf`、`pformat_config.txt`、`LdrBkupList.txt`、`libJiritsu.so`、`appFw.so` 与 `cpapp-b.bin` 共 9 份供体的 SHA-256 与 28+ 条关键符号/标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `JIRITSU_SETFILE2_COLD_BACKUP_AND_SPACC_TOPOLOGY`**：
+   - 建模完整 FX3 eMMC UDA（`Sector 0` `"8246"` `"2.00"` 30 项零重叠分区表 + `pnflasha1..30` + `crypt-emmc.ko` `cnflasha3/7/8/12/15/23/30` 透明 AES-XTS 边界 + `16 MiB` Octal-SPI NOR `infomisc.dat`/`loader_nor.bin`/`ddrtraining.dat @ 0x3e210fc`），并执行 Stage-288 入口自解链 `SET_FILE2` Tier-0/1/2 冷备份（`p6_peak_bytes < 4.5 MiB < 25 MiB`、`p6_residual_files == 0`、`100%` SHA-256 清单双次校验，拦截 `/tmp/jbusy`、`selector=0x02` 与 `CRC32` 篡改）。
+3. **Pillar B — `CNFLASHA15_CIPHER_SAFE_INSTALL_AND_POWERCUT_ROLLBACK`**：
+   - 仿真 A7C-II 风格文件级 Stage-B wrapper 经 `/dev/nflasha15`（`/dev/cnflasha15` SPACC 加密块设备）原子安装并重挂 `ro`；证明直接对 `/dev/pnflasha15` 明文写入被硬拦截（`SPACC_CIPHERTEXT_CORRUPTION_BLOCKED`）；注入写入中途断电拔电池，验证 `.orig` 日志恢复 `100%` 原厂 `im.elf` SHA-256 与 `ro` 只读状态。
+4. **Pillar C — `FOUR_STATE_DUALBOOT_AND_NATIVE_REC_CLOSED_LOOP`**：
+   - **路径 1（拔出 SD 卡物理逃生舱）**：直接启动 `100%` 原厂 FX3 `7.02`（`0` 个 Stage-B 挂钩，原生拍摄完整保留）。
+   - **路径 2（插入合法签名 SD 清单）**：激活 Strategy-A（`/dev/nflasha20 -> /dev/nflasha30` + `tmpfs /etc/opelog`，`0` 字节 Sector-0 修改），启动 FX6 `6.01` `appFw.so` + `libMpr.so` ABI shim 驱动原厂 FX3 `cpapp-b.bin` 完成 XAVC S-I（`.MP4`）录制与封口（`rsv_orphan_count == 0`）。
+   - **路径 3（插入篡改 SD 清单）**：在 `< 50 ms`（实测 `8.2 ms`）内 fail-closed 回退至原厂 FX3 `7.02`。
+   - **路径 4（紧急 `p1` 单次救援启动）**：强制校验 `p1/p3` 互斥写入保护、`cfg.uart=1`（`460800 8N1`）与第 1 行 `rm -f /setting/updater/mode* && sync`，从冷备份恢复 `/usr` 并干净重启回原厂 `p3`。
+5. **Pillar D — `HARDWARE_SAFETY_REDLINES_AND_ZERO_MUTATION_PROOF`**：
+   - 硬锁定 `persistent_emmc_writes_authorized = False`、`spi_nor_mutation_bytes == 0`、`cp_mutation_bytes == 0`、`calibration_mutation_bytes == 0`、`wf12_00342260_hits == 0` 并阻断一切越界解锁请求。
+
+### Phase 141 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 24 自检（< 0.15s）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_preflash_dualboot_lifecycle_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_preflash_dualboot_lifecycle_emulator.py --self-test --json
+
+# 2. 全板 24 阶段（Stage 1..24）统一校验（本地 ~1.51s < 1.8s，洁净室 ~0.53s < 0.7s，支持 --skip-phase141）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 141 44 项单测 & 全量 808 项单测（双模式）
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_preflash_dualboot_lifecycle_emulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_preflash_dualboot_lifecycle_emulator.py -v
+PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+

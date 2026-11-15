@@ -68,6 +68,7 @@ import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
 import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
+import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 import tc_genlock_lens_paint_emulator as p67  # noqa: E402
 import touch_af_ciz_assignable_emulator as p78  # noqa: E402
@@ -135,6 +136,7 @@ class CoEmulationConfig:
     include_phase121_uvc_srt_crsdk_usbpd_hil: bool = True
     include_phase127_mxf_ptpv2_tally_monsoon_hil: bool = True
     include_phase132_vp_ledwall_freed_artnet_hil: bool = True
+    include_phase141_realhw_preflash_dualboot_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1441,6 +1443,56 @@ def run_stage23_vp_ledwall_freed_artnet_hil(
     }
 
 
+def run_stage24_realhw_preflash_dualboot_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 24 (Phase 141): Real-Hardware Pre-Flash Lifecycle & 4-State Dual-Boot HIL Simulator."""
+    config.validate()
+    rep = p141.run_phase141_realhw_preflash_dualboot_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage24_realhw_preflash_dualboot_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "sector0_mutation_bytes": red["sector0_mutation_bytes"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_jiritsu_setfile2_cold_backup_and_spacc_topology": rep[
+            "pillar_a_jiritsu_setfile2_cold_backup_and_spacc_topology"
+        ],
+        "pillar_b_cnflasha15_cipher_safe_install_and_powercut_rollback": rep[
+            "pillar_b_cnflasha15_cipher_safe_install_and_powercut_rollback"
+        ],
+        "pillar_c_four_state_dualboot_and_native_rec_closed_loop": rep[
+            "pillar_c_four_state_dualboot_and_native_rec_closed_loop"
+        ],
+        "pillar_d_hardware_safety_redlines_and_zero_mutation_proof": rep[
+            "pillar_d_hardware_safety_redlines_and_zero_mutation_proof"
+        ],
+        "phase141_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1451,7 +1503,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 23-stage (Phase 33..132) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 24-stage (Phase 33..141) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1538,6 +1590,11 @@ def run_fx3_vm_coemulation_suite(
     stage23: Optional[Dict[str, object]] = (
         run_stage23_vp_ledwall_freed_artnet_hil(cfg, env=env)
         if cfg.include_phase132_vp_ledwall_freed_artnet_hil
+        else None
+    )
+    stage24: Optional[Dict[str, object]] = (
+        run_stage24_realhw_preflash_dualboot_hil(cfg, env=env)
+        if cfg.include_phase141_realhw_preflash_dualboot_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1853,6 +1910,26 @@ def run_fx3_vm_coemulation_suite(
         and stage23["ibis_coil_thermal_runaway_events"] == 0
         and (not stage23["persistent_emmc_writes_authorized"])
     )
+    stage24_ok = True if stage24 is None else (
+        bool(stage24["all_checks_passed"])
+        and stage24["nop_count"] == 0
+        and stage24["guest_code_modification_bytes"] == 0
+        and stage24["cp_mutation_bytes"] == 0
+        and stage24["wbi_mutation_bytes"] == 0
+        and stage24["calibration_mutation_bytes"] == 0
+        and stage24["nvram_persistent_writes"] == 0
+        and stage24["bk4_persistent_nvram_writes"] == 0
+        and stage24["physical_device_writes"] == 0
+        and stage24["spi_nor_mutation_bytes"] == 0
+        and stage24["emmc_mutation_bytes"] == 0
+        and stage24["sector0_mutation_bytes"] == 0
+        and stage24["null_gpio_derefs"] == 0
+        and stage24["mailbox_stalls"] == 0
+        and stage24["stock_cp_fault_count"] == 0
+        and stage24["wf12_00342260_hits"] == 0
+        and stage24["rsv_orphan_count"] == 0
+        and (not stage24["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1879,6 +1956,7 @@ def run_fx3_vm_coemulation_suite(
         and stage21_ok
         and stage22_ok
         and stage23_ok
+        and stage24_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1915,6 +1993,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase121_uvc_srt_crsdk_usbpd_hil": cfg.include_phase121_uvc_srt_crsdk_usbpd_hil,
             "include_phase127_mxf_ptpv2_tally_monsoon_hil": cfg.include_phase127_mxf_ptpv2_tally_monsoon_hil,
             "include_phase132_vp_ledwall_freed_artnet_hil": cfg.include_phase132_vp_ledwall_freed_artnet_hil,
+            "include_phase141_realhw_preflash_dualboot_hil": cfg.include_phase141_realhw_preflash_dualboot_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1979,6 +2058,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage22_mxf_ptpv2_tally_monsoon_hil"] = stage22
     if stage23 is not None:
         core_payload["stage23_vp_ledwall_freed_artnet_hil"] = stage23
+    if stage24 is not None:
+        core_payload["stage24_realhw_preflash_dualboot_hil"] = stage24
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1990,7 +2071,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -2097,6 +2178,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 23 (Phase 132 VP LED-Wall ECS Solver, FreeD 0xD1 LiveLink, Art-Net 4/sACN Sync & G41/G42 Genlock/IBIS HIL)",
     )
     parser.add_argument(
+        "--skip-phase141",
+        action="store_true",
+        help="Skip optional Stage 24 (Phase 141 Real-Hardware Pre-Flash Lifecycle & 4-State Dual-Boot HIL Simulator)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -2182,6 +2268,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase121_uvc_srt_crsdk_usbpd_hil=not args.skip_phase121,
         include_phase127_mxf_ptpv2_tally_monsoon_hil=not args.skip_phase127,
         include_phase132_vp_ledwall_freed_artnet_hil=not args.skip_phase132,
+        include_phase141_realhw_preflash_dualboot_hil=not args.skip_phase141,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -2214,6 +2301,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s21 = rep.get("stage21_uvc_srt_crsdk_usbpd_hil")
         s22 = rep.get("stage22_mxf_ptpv2_tally_monsoon_hil")
         s23 = rep.get("stage23_vp_ledwall_freed_artnet_hil")
+        s24 = rep.get("stage24_realhw_preflash_dualboot_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -2355,6 +2443,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s23, dict)
             else ""
         )
+        s24_str = (
+            f" | realhw_preflash_dualboot={s24['source_mode']}(p6_res={s24['pillar_a_jiritsu_setfile2_cold_backup_and_spacc_topology']['setfile2_tier012_cold_backup']['p6_residual_files']},"
+            f"cn15_orig={s24['pillar_b_cnflasha15_cipher_safe_install_and_powercut_rollback']['midwrite_battery_pull_orig_recovery']['stock_im_elf_restored_100pct']},"
+            f"tamper_fc={s24['pillar_c_four_state_dualboot_and_native_rec_closed_loop']['path3_tampered_manifest_fail_closed']['fail_closed_latency_ms']}ms,"
+            f"rsv={s24['rsv_orphan_count']},emmc_auth={s24['persistent_emmc_writes_authorized']})"
+            if isinstance(s24, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -2363,7 +2459,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

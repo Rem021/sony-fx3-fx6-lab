@@ -32,6 +32,7 @@ from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_instal
 from .realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier import run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite
 from .realhw_service_usb_session_and_libjit_elf_hardener import run_realhw_service_usb_and_libjit_hardener_suite
 from .realhw_uart_460800_post_triage_and_isp_guard import run_realhw_uart_460800_post_triage_and_isp_suite
+from .realhw_wbi_powerloss_and_100cycle_transition_verifier import run_wbi_powerloss_and_100cycle_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .secureboot_chain_and_partition_align_verifier import run_secureboot_chain_and_partition_align_suite
@@ -185,6 +186,10 @@ def main():
     p166_master.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p166_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p166_master.add_argument('--out', help='optional exclusive new output directory for 22pillar-recovery-master-report.json')
+    p176_wbi = sub.add_parser('verify-wbi-powerloss-recovery', help='Phase 176 Pillar 23 p5:/wbi (WBI2/hibdrv.ko) contamination firewall, battery-pull recovery & 100-cycle H0==H3 verifier')
+    p176_wbi.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p176_wbi.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p176_wbi.add_argument('--out', help='optional exclusive new output directory for wbi-powerloss-100cycle-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -884,6 +889,38 @@ def main():
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
                     f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
                     f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-wbi-powerloss-recovery':
+            report = run_wbi_powerloss_and_100cycle_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'wbi-powerloss-100cycle-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_23a={report.pillar_23a_wbi_firewall.scenarios_passed}/{report.pillar_23a_wbi_firewall.scenarios_total} "
+                    f"pillar_23b={report.pillar_23b_powerloss_100cycle.scenarios_passed}/{report.pillar_23b_powerloss_100cycle.scenarios_total} "
+                    f"cycles={report.pillar_23b_powerloss_100cycle.cycles_passed}/{report.pillar_23b_powerloss_100cycle.cycles_executed} "
+                    f"emmc_bit_drift_count={report.pillar_23b_powerloss_100cycle.emmc_bit_drift_count} "
+                    f"h0_equals_h3={report.pillar_23b_powerloss_100cycle.h0_equals_h3} "
+                    f"wbi_persistent_writes={report.wbi_persistent_writes} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1s_budget={report.under_1s_budget} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
                     f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"physical_device_writes={report.physical_device_writes}"

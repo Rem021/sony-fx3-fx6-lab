@@ -592,4 +592,20 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-sa
   /usr/bin/python3 -B -m fx3_recovery verify-22pillar-recovery --clean-room --json
 ```
 
+## Phase 176 — 真机主线 Part 11（Pillar 23）：`p5:/wbi`（`WBI2` / `hibdrv.ko`）跨模式污染防火墙、断电/掉电恢复与 100 次循环 `H0 -> H1 -> H2 -> H3` 不变性校验器
+
+- **[`realhw_wbi_powerloss_and_100cycle_transition_verifier.py`](fx3_recovery/realhw_wbi_powerloss_and_100cycle_transition_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`Linux 4.9.337-scel+`，`CXD90057`）落地两大关键真机可靠性护栏，硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`WBI_PERSISTENT_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 只读检查本地 FX3 `7.02` 供体（`nflasha5.img` `209,112,512 B` `1399` 节区、`partinf.conf`、`mount.conf`、`kemco.txt`、`p7-rootfs/sbin/{init,init2,initrc/setup_nflash}`、`vmlinux.bin`、`fx3-7.02-BODYDATA.DAT` `\x89UFU` 有界 4 KiB 头部）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退（`< 1.0s`）：
+  - **支柱 23A — `p5:/wbi`（`WBI2` / `hibdrv.ko`）跨模式休眠快照污染防火墙（`8/8`）**：
+    - `WBI_S1`..`WBI_S8`：强制 Stage-A（SD 卡插入）执行冷启动入口（`WBI_RESUME_BYPASS=1` + `noresume hibdrv.resume=0`，`wbi_resume_attempted == False`），在 Stage-B 期间同时对 `/dev/nflasha5` 与 `/dev/pnflasha5` 锁定 `BLKROSET=1`（`hibdrv.ko` 任何写入请求均 fail-closed 返回 `-EROFS` / `errno=30`，`wbi_persistent_writes == 0`），验证 `EH1` 拔卡（`< 50 us`）原厂 `p5:/wbi` SHA-256 与 `H0` 逐比特一致、损坏/过期 `WBI2` 魔数优雅回退冷启动、`/mnt/sd/BODYDATA.DAT`（`\x89UFU`）在 `< 100 us` 内同时绕过 Stage-B 与 `WBI2` 休眠恢复、拦截/静默屏蔽 `/sys/power/state` `disk` / `PM_SUSPEND_DISK`、校验 `p2/p5/p12/p18` 只读不变性，以及双介质 `FX3RCPT1` 收据对 `p5:/wbi` 基线 SHA-256 的前置绑定。
+  - **支柱 23B — `NP-FZ100` 突发拔电池 / `6.3V` 掉电恢复与 100 次循环 `H0 -> H1 -> H2 -> H3` 确定性状态机（`8/8` + `100/100` 循环）**：
+    - `PWR_S1`..`PWR_S8`：在 100 次确定性循环中混合正常原厂启动（`H0`）、Stage-A -> Stage-B（`H1`/`H2`）、Big-6 菜单界面突发拔 `NP-FZ100` 电池（`tmpfs` `/tmp` 与 `/etc/opelog` 蒸发，只读 eMMC 零日志损坏）、录制中 `6.3V` 掉电 / `EncWfiStop`（`.RSV` 隔离至外置 ExFAT 存储卡以便 `.MXF` 挽救）、`EH1` 拔卡 `47 us` 原厂重启、`EH2` `DISP+MENU+SHUTTER` 安全冷启动、`EH3` `libJit.so` 1 字节 CRC32 篡改 `< 1 ms` 原厂回退、`BODYDATA.DAT` UFU 共存与 `H2 -> H3` 净卸载，证明 `16/16` 关键表面 **0-bit eMMC 漂移**且 `H0 == H3` 逐比特一致；[`tests/test_realhw_wbi_powerloss_and_100cycle_transition.py`](tests/test_realhw_wbi_powerloss_and_100cycle_transition.py) 提供双模式快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-wbi-powerloss-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-wbi-powerloss-recovery --force-clean-room --json
+```
+
+
 

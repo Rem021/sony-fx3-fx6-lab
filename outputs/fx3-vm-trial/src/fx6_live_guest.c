@@ -95,6 +95,20 @@
  *              bit5=c2pa_spoof_blocked, bits6..13=blocked_violation_count,
  *              bits14..21=fleet_sync_packets_div10, bit31=valid)
  *     mb[55] = 0x4d43464c ('MCFL') Phase 109 M&C 4-Cam Fleet / HDMI->12G-SDI RP188 / E-Mount-PL / C2PA magic tag
+ *     mb[56] = phase116_hlg_colorimetry (bits0..2=hlg_profile(0=OFF,1=HLG1,2=HLG2,3=HLG3,4=FX6_LIVE,5=FX6_NAT),
+ *              bits3..4=color_gamut(0=BT709,1=BT2020,2=SGamut3Cine), bits5..8=detail_level+7(0..14),
+ *              bits9..10=knee_mode(0=Auto,1=87,2=95,3=100), bits11..12=cta_eotf(0=SDR,3=HLG),
+ *              bit13=cta_infoframe_valid, bits14..21=cta_checksum, bits22..29=peak_nits_div10,
+ *              bit30=bt2020_in_bt709_blocked, bit31=valid)
+ *     mb[57] = phase116_display_assist (bits0..2=assist_req(0=OFF,1=AUTO,2=SLOG3->709,3=HLG->709_2020,4=HLG->709_709),
+ *              bits3..5=assist_resolved, bit6=evf_lcd_assist_active, bit7=clean_hdmi_sdi_unassisted(1),
+ *              bit8=xavc_internal_unassisted(1), bits9..15=blocked_leak_cnt, bits16..23=vf_nit_div10,
+ *              bits24..30=waveform_peak_ire, bit31=valid)
+ *     mb[58] = phase116_raw_breathing (bits0..1=ext_raw_mode(0=OFF,1=PRORES_RAW_16_12L,2=BRAW_16_12L),
+ *              bit2=raw_base12800, bits3..10=raw_kelvin_div100, bit11=raw_lens_meta, bit12=raw_tc_trig,
+ *              bit13=breathing_req, bit14=breathing_eff, bit15=bypass_pl, bit16=bypass_raw,
+ *              bits17..24=breathing_crop_x100(100..108), bits25..30=raw_fps_idx, bit31=valid)
+ *     mb[59] = 0x484c4741 ('HLGA') Phase 116 HLG BT.2100 / Display Assist / ProRes RAW / Breathing Comp magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1084,6 +1098,9 @@ static uint32_t g_live_p102_lut_ftps       = 0x80001900u; /* valid=1, contrast=1
 static uint32_t g_live_p109_fleet_sdi      = 0x98194888u; /* valid=1, tc=1, p12=1, cs=0xca, avi_ok=1, sdi=1, cams=1, role=Solo */
 static uint32_t g_live_p109_mount_shading  = 0x83301e10u; /* valid=1, focal=24mm, pins=12, kg=0.7, gain=1.32x, E-12Pin */
 static uint32_t g_live_p109_c2pa_prov      = 0x80000014u; /* valid=1, ro_zero_touch=1, clean_room=1 */
+static uint32_t g_live_p116_hlg_colorimetry = 0x829a60e0u; /* valid=1, 100nit, cs=0x69, cta_ok=1, eotf=0, detail=0(7), BT709, HLG=OFF */
+static uint32_t g_live_p116_display_assist  = 0xa90a0180u; /* valid=1, ire=41, vf_nit=100, xavc_unassist=1, clean_hdmi=1, assist=OFF */
+static uint32_t g_live_p116_raw_breathing   = 0x80c809c0u; /* valid=1, crop=1.00x(100), lens_meta=1, 5600K(56), ext_raw=OFF */
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -3490,6 +3507,230 @@ static void fx6_render_phase109_mcfleet_sdi_c2pa_overlay(uint64_t appfw, uint32_
     }
 }
 
+static void fx6_render_phase116_hlg_raw_breathing_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p116_hlg_colorimetry & 0x80000000u) ||
+        !(g_live_p116_display_assist & 0x80000000u) ||
+        !(g_live_p116_raw_breathing & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_hlg_lbl[6] = { "OFF", "HLG1", "HLG2", "HLG3", "HLG-LV", "HLG-NT" };
+    static const char * const k_gamut_lbl[4] = { "709", "2020", "SG3C", "709" };
+    static const uint32_t k_knee_pct[6] = { 100u, 87u, 95u, 100u, 96u, 100u };
+    static const char * const k_ast_lbl[5] = { "OFF", "AUTO", "SL3->709", "HLG->2020", "HLG->709" };
+    static const char * const k_raw_lbl[3] = { "OFF", "PRORES", "BRAW" };
+
+    uint32_t hlg_idx         = g_live_p116_hlg_colorimetry & 0x07u;
+    if (hlg_idx > 5u) hlg_idx = 0u;
+    uint32_t gamut_idx       = (g_live_p116_hlg_colorimetry >> 3) & 0x03u;
+    uint32_t detail_enc      = (g_live_p116_hlg_colorimetry >> 5) & 0x0fu;
+    if (detail_enc > 14u) detail_enc = 7u;
+    int detail_lvl           = (int)detail_enc - 7;
+    uint32_t cta_eotf        = (g_live_p116_hlg_colorimetry >> 11) & 0x03u;
+    uint32_t cta_ok          = (g_live_p116_hlg_colorimetry >> 13) & 0x01u;
+    uint32_t cta_cs          = (g_live_p116_hlg_colorimetry >> 14) & 0xffu;
+    uint32_t peak_nits       = ((g_live_p116_hlg_colorimetry >> 22) & 0xffu) * 10u;
+    if (peak_nits < 100u) peak_nits = 100u;
+    uint32_t bt2020_blk      = (g_live_p116_hlg_colorimetry >> 30) & 0x01u;
+
+    uint32_t ast_req         = g_live_p116_display_assist & 0x07u;
+    if (ast_req > 4u) ast_req = 0u;
+    uint32_t ast_res         = (g_live_p116_display_assist >> 3) & 0x07u;
+    if (ast_res > 4u) ast_res = 0u;
+    uint32_t evf_ast_on      = (g_live_p116_display_assist >> 6) & 0x01u;
+    uint32_t clean_hdmi_ok   = (g_live_p116_display_assist >> 7) & 0x01u;
+    uint32_t leak_cnt        = (g_live_p116_display_assist >> 9) & 0x7fu;
+    uint32_t peak_ire        = (g_live_p116_display_assist >> 24) & 0x7fu;
+    if (peak_ire > 109u) peak_ire = 109u;
+
+    uint32_t ext_raw_idx     = g_live_p116_raw_breathing & 0x03u;
+    if (ext_raw_idx > 2u) ext_raw_idx = 0u;
+    uint32_t raw_b12800      = (g_live_p116_raw_breathing >> 2) & 0x01u;
+    uint32_t raw_kelvin      = ((g_live_p116_raw_breathing >> 3) & 0xffu) * 100u;
+    if (raw_kelvin < 2000u) raw_kelvin = 5600u;
+    uint32_t raw_lens_meta   = (g_live_p116_raw_breathing >> 11) & 0x01u;
+    uint32_t breath_req      = (g_live_p116_raw_breathing >> 13) & 0x01u;
+    uint32_t breath_eff      = (g_live_p116_raw_breathing >> 14) & 0x01u;
+    uint32_t byp_pl          = (g_live_p116_raw_breathing >> 15) & 0x01u;
+    uint32_t byp_raw         = (g_live_p116_raw_breathing >> 16) & 0x01u;
+    uint32_t crop_x100       = (g_live_p116_raw_breathing >> 17) & 0xffu;
+    if (crop_x100 < 100u || crop_x100 > 108u) crop_x100 = 100u;
+    if (!breath_eff) crop_x100 = 100u;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (hlg_idx > 0u || gamut_idx > 0u || ast_req > 0u || ext_raw_idx > 0u ||
+                       breath_req > 0u || bt2020_blk || leak_cnt > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int bx = 322;
+    const int bw = 304;
+    int cur_y = 138;
+
+    /* 1. HLG1/2/3 BT.2100/STD-B67 & CTA-861.3 (0x87) HDR InfoFrame + Peak Nit Bar */
+    {
+        uint32_t hbg = bt2020_blk ? 0xFF7F1D1Du : (hlg_idx > 0u ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t hbd = bt2020_blk ? 0xFFEF4444u : (hlg_idx > 0u ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 26, hbg);
+        fx6_osd_border_rect(bx, cur_y, bw, 26, hbd);
+
+        /* 6-step HLG OETF curve mini-bars on left */
+        for (int s = 0; s < 6; s++) {
+            int max_h = (hlg_idx == 1u) ? 13 : ((hlg_idx == 2u) ? 15 : (hlg_idx >= 3u ? 18 : 9));
+            int bh_step = 3 + ((s * (max_h - 3)) / 5);
+            uint32_t scol = (hlg_idx > 0u) ? 0xFF34D399u : 0xFF64748Bu;
+            fx6_osd_fill_rect(bx + 6 + s * 4, cur_y + 21 - bh_step, 3, bh_step, scol);
+        }
+
+        char hlbl[60];
+        unsigned hp = 0u;
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), "[");
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), k_hlg_lbl[hlg_idx]);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), " ");
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), k_gamut_lbl[gamut_idx]);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), " ");
+        hp = fx6_append_uint(hlbl, hp, sizeof(hlbl), peak_nits);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), "n 87:E");
+        hp = fx6_append_uint(hlbl, hp, sizeof(hlbl), cta_eotf);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), cta_ok ? " CS:" : " ERR:");
+        hp = fx6_append_hex2(hlbl, hp, sizeof(hlbl), cta_cs);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), "]");
+        (void)hp;
+        fx6_render_string_text_styled(appfw, bx + 32, cur_y + 3, bw - 38, 20, hlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 30;
+    }
+
+    /* 2. Gamma Display Assist VF/LCD vs Clean HDMI/SDI Isolation Badge */
+    {
+        uint32_t abg = (leak_cnt > 0u) ? 0xFF78350Fu : (evf_ast_on ? 0xFF1E1B4Bu : 0xFF0F172Au);
+        uint32_t abd = (leak_cnt > 0u) ? 0xFFF59E0Bu : (evf_ast_on ? 0xFFA78BFAu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 24, abg);
+        fx6_osd_border_rect(bx, cur_y, bw, 24, abd);
+
+        /* Dual indicator: VF/LCD Assist (purple/amber) + Clean HDMI/SDI lock (emerald) */
+        fx6_osd_fill_rect(bx + 6, cur_y + 5, 8, 14, evf_ast_on ? 0xFFC084FCu : 0xFF334155u);
+        fx6_osd_fill_rect(bx + 16, cur_y + 5, 8, 14, clean_hdmi_ok ? 0xFF10B981u : 0xFFEF4444u);
+
+        char albl[60];
+        unsigned ap = 0u;
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), "[AST:");
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), k_ast_lbl[ast_res]);
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), " CLN-OUT:");
+        ap = fx6_append_uint(albl, ap, sizeof(albl), clean_hdmi_ok);
+        if (leak_cnt > 0u) {
+            ap = fx6_append_cstr(albl, ap, sizeof(albl), " BLK:");
+            ap = fx6_append_uint(albl, ap, sizeof(albl), leak_cnt);
+        }
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), "]");
+        (void)ap;
+        fx6_render_string_text_styled(appfw, bx + 28, cur_y + 2, bw - 34, 20, albl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 3. External HDMI ProRes RAW / BRAW 16-Bit -> 12-Bit Log Metadata Badge */
+    {
+        uint32_t rbg = (ext_raw_idx == 1u) ? 0xFF083344u : ((ext_raw_idx == 2u) ? 0xFF3B0764u : 0xFF0F172Au);
+        uint32_t rbd = (ext_raw_idx == 1u) ? 0xFF22D3EEu : ((ext_raw_idx == 2u) ? 0xFFE879F9u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 24, rbg);
+        fx6_osd_border_rect(bx, cur_y, bw, 24, rbd);
+
+        char rlbl[60];
+        unsigned rp = 0u;
+        rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), "[RAW:");
+        rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), k_raw_lbl[ext_raw_idx]);
+        if (ext_raw_idx > 0u) {
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), " 16->12L B");
+            rp = fx6_append_uint(rlbl, rp, sizeof(rlbl), raw_b12800 ? 12800u : 800u);
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), " ");
+            rp = fx6_append_uint(rlbl, rp, sizeof(rlbl), raw_kelvin);
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), raw_lens_meta ? "K E]" : "K PL]");
+        } else {
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), " (XAVC-INT)]");
+        }
+        (void)rp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 2, bw - 12, 20, rlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 4. Focus Breathing Compensation (1.00x..1.08x E-Mount vs PL/RAW 1.00x Bypass) */
+    {
+        uint32_t fbg = (byp_pl || byp_raw) ? 0xFF78350Fu : (breath_eff ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t fbd = (byp_pl || byp_raw) ? 0xFFF59E0Bu : (breath_eff ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 24, fbg);
+        fx6_osd_border_rect(bx, cur_y, bw, 24, fbd);
+
+        int bar_x = bx + 6, bar_y = cur_y + 18, bar_w = 48;
+        fx6_osd_fill_rect(bar_x, bar_y, bar_w, 3, 0xFF1E293Bu);
+        uint32_t crop_delta = (crop_x100 > 100u) ? (crop_x100 - 100u) : 0u;
+        int fill_w = (int)((crop_delta * (uint32_t)bar_w) / 8u);
+        if (fill_w > bar_w) fill_w = bar_w;
+        if (fill_w > 0) {
+            fx6_osd_fill_rect(bar_x, bar_y, fill_w, 3, 0xFF34D399u);
+        }
+
+        char flbl[60];
+        unsigned fp = 0u;
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "[FBC:");
+        if (byp_pl) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "BYP-PL ");
+        } else if (byp_raw) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "BYP-RAW ");
+        } else if (breath_eff) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "AUTO ");
+        } else {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "OFF ");
+        }
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), crop_x100 / 100u);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), ".");
+        fp = fx6_append_2d(flbl, fp, sizeof(flbl), crop_x100 % 100u);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "x]");
+        (void)fp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 1, bw - 12, 18, flbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 5. Live HLG Waveform / IRE & Nit Knee Scale Strip */
+    {
+        fx6_osd_fill_rect(bx, cur_y, bw, 22, 0xFF090D16u);
+        fx6_osd_border_rect(bx, cur_y, bw, 22, hlg_idx > 0u ? 0xFF22D3EEu : 0xFF334155u);
+        int gx = bx + 6, gw = 64;
+        fx6_osd_fill_rect(gx, cur_y + 15, gw, 3, 0xFF1E293Bu);
+        int ire_w = (int)((peak_ire * (uint32_t)gw) / 109u);
+        if (ire_w > gw) ire_w = gw;
+        if (ire_w > 0) {
+            fx6_osd_fill_rect(gx, cur_y + 15, ire_w, 3, hlg_idx > 0u ? 0xFF22D3EEu : 0xFF94A3B8u);
+        }
+        int knee_x = gx + (int)((k_knee_pct[hlg_idx] * (uint32_t)gw) / 109u);
+        if (knee_x >= gx + gw) knee_x = gx + gw - 1;
+        fx6_osd_fill_rect(knee_x, cur_y + 4, 2, 14, 0xFFF59E0Bu);
+
+        char wlbl[60];
+        unsigned wp = 0u;
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "[KN:");
+        wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), k_knee_pct[hlg_idx]);
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "% DET:");
+        if (detail_lvl >= 0) {
+            wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "+");
+            wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), (uint32_t)detail_lvl);
+        } else {
+            wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "-");
+            wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), (uint32_t)(-detail_lvl));
+        }
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), " IRE:");
+        wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), peak_ire);
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "%]");
+        (void)wp;
+        fx6_render_string_text_styled(appfw, bx + 76, cur_y + 1, bw - 82, 18, wlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -3541,6 +3782,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p109_fleet_sdi) * 1099511628211ULL;
     h = (h ^ g_live_p109_mount_shading) * 1099511628211ULL;
     h = (h ^ g_live_p109_c2pa_prov) * 1099511628211ULL;
+    h = (h ^ g_live_p116_hlg_colorimetry) * 1099511628211ULL;
+    h = (h ^ g_live_p116_display_assist) * 1099511628211ULL;
+    h = (h ^ g_live_p116_raw_breathing) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -3733,6 +3977,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase95_gyroflow_anamorphic_tone_overlay(appfw, page);
     fx6_render_phase102_cache_interval_lut_ftps_overlay(appfw, page);
     fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
+    fx6_render_phase116_hlg_raw_breathing_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -3989,6 +4234,10 @@ void fx6_force_update(void) {
         mb[53] = 0x83301e10u;/* phase109_mount_shading: valid=1, focal=24mm, pins=12, kg=0.7, gain=1.32x, E-12Pin */
         mb[54] = 0x80000014u;/* phase109_c2pa_provenance: valid=1, ro_zero_touch=1, clean_room=1 */
         mb[55] = 0x4d43464cu;/* 'MCFL' */
+        mb[56] = 0x829a60e0u;/* phase116_hlg_colorimetry: valid=1, 100n, cs=0x69, cta_ok=1, eotf=0, detail=0(7), BT709, HLG=OFF */
+        mb[57] = 0xa90a0180u;/* phase116_display_assist: valid=1, ire=41, vf_nit=100, xavc_unassist=1, clean_hdmi=1, assist=OFF */
+        mb[58] = 0x80c809c0u;/* phase116_raw_breathing: valid=1, crop=1.00x(100), lens_meta=1, 5600K(56), ext_raw=OFF */
+        mb[59] = 0x484c4741u;/* 'HLGA' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -4015,6 +4264,9 @@ void fx6_force_update(void) {
     g_live_p109_fleet_sdi = 0x98194888u;
     g_live_p109_mount_shading = 0x83301e10u;
     g_live_p109_c2pa_prov = 0x80000014u;
+    g_live_p116_hlg_colorimetry = 0x829a60e0u;
+    g_live_p116_display_assist = 0xa90a0180u;
+    g_live_p116_raw_breathing = 0x80c809c0u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -4030,10 +4282,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x p116=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi, g_live_p116_hlg_colorimetry);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -4108,14 +4360,26 @@ void fx6_force_update(void) {
                 }
                 g_live_p109_c2pa_prov     = (mb[54] & ~(1u << 3)) | (1u << 2) | (1u << 4); /* Enforce zero-touch RO & no HW attestation forgery */
             }
+            if ((mb[56] & 0x80000000u) && (mb[57] & 0x80000000u) && (mb[58] & 0x80000000u) && mb[59] == 0x484c4741u) {
+                g_live_p116_hlg_colorimetry = mb[56];
+                /* Hard-enforce clean_hdmi_sdi_unassisted (bit7) & xavc_internal_unassisted (bit8) */
+                g_live_p116_display_assist  = mb[57] | (1u << 7) | (1u << 8);
+                g_live_p116_raw_breathing   = mb[58];
+                /* Enforce 1.00x Focus Breathing bypass when Manual PL unchipped or HDMI RAW is active */
+                if ((g_live_p109_mount_shading & 1u) || (g_live_p116_raw_breathing & 0x03u) || (((g_live_p64_flags >> 14) & 0x03u) == 2u)) {
+                    uint32_t pl_byp = (g_live_p109_mount_shading & 1u) ? (1u << 15) : 0u;
+                    uint32_t raw_byp = ((g_live_p116_raw_breathing & 0x03u) || (((g_live_p64_flags >> 14) & 0x03u) == 2u)) ? (1u << 16) : 0u;
+                    g_live_p116_raw_breathing = (g_live_p116_raw_breathing & ~((1u << 14) | (0xffu << 17))) | pl_byp | raw_byp | (100u << 17);
+                }
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x HLGA=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov, g_live_p116_hlg_colorimetry, g_live_p116_display_assist, g_live_p116_raw_breathing);
         }
     }
 }

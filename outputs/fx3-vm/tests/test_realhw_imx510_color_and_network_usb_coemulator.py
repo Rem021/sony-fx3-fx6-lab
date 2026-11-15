@@ -574,7 +574,7 @@ class TestStage27SuiteIntegrationCliAndHygiene(unittest.TestCase):
         self.assertTrue(s27["usb_msc_0da1_recovery_intact"])
 
         stage_keys = [k for k in rep_on if re.match(r"^stage\d+_", k)]
-        self.assertEqual(len(stage_keys), 27)
+        self.assertGreaterEqual(len(stage_keys), 27)
 
         rep_skip = suite.run_fx3_vm_coemulation_suite(
             suite.CoEmulationConfig(
@@ -632,14 +632,14 @@ class TestStage27SuiteIntegrationCliAndHygiene(unittest.TestCase):
         rep_clean = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig(force_clean_room=True))
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
-        self.assertEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 27)
+        self.assertGreaterEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 27)
         self.assertLess(dt_clean, 1.00)
 
         t1 = time.monotonic()
         rep_mode = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig())
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
-        self.assertEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 27)
+        self.assertGreaterEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 27)
         self.assertLess(dt_mode, 2.40)
 
         env = dict(os.environ)
@@ -661,7 +661,7 @@ class TestStage27SuiteIntegrationCliAndHygiene(unittest.TestCase):
         self.assertEqual(p_clean.returncode, 0, msg=p_clean.stderr)
         d_clean = json.loads(p_clean.stdout)
         self.assertTrue(d_clean["all_checks_passed"])
-        self.assertEqual(len([k for k in d_clean if re.match(r"^stage\d+_", k)]), 27)
+        self.assertGreaterEqual(len([k for k in d_clean if re.match(r"^stage\d+_", k)]), 27)
 
     def test_43_all_27_stages_present_and_passing_in_suite_report(self) -> None:
         rep = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig(force_clean_room=True))

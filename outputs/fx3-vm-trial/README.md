@@ -36,6 +36,10 @@
   - **机内 `GPE0`（`0x41e001000`）曝光与构图辅助叠加（`GET/POST /api/assist_tools`）**：无堆分配复用 `mb[27]` 位段（bits `12..24`，100% 保留 Phase 40 位 `0..11` 与 Phase 19/23/30/49 契约），在客体 `fx6_live_guest.c`（`fx6_render_phase56_assist_overlays`）直接将半透明电影遮幅/角标线（`2.39:1` / `1.85:1` / `17:9` / `9:16` / `CenterCross`）、45° 对角线斑马纹（`70%` / `94%_SLog3` / `100%`）、边缘峰值（`Red` / `Yellow` / `White`）与底部 Cinema Line 状态徽标写入 `0x41e001000` 物理显存，并支持变形镜头反挤压（`1.0x` / `1.33x` / `2.0x`）Web CSS 实时视口预览开关及 `fx6_on_fx3_camset_v1` `CAMSET` 导出/向后兼容导入。
   - **实时 `GPE0` 物理显存亮度波形图与 RGB 直方图遥测（`GET /api/scope_stats`）**：编译态 C 快速核与纯 Python 逐位等价计算 `1024x540x4` 显存的 **32 列 IRE 亮度波形（`min`/`avg`/`max` `0..109%` IRE）**、**16 阶 R/G/B/Luma 直方图**、非零像素占比与高亮/琥珀像素计数（离线测试无 QEMU 时自动无缝回退至 PNG/合成参考帧），在 Web 控制台实时绘制 **`📊 Waveform / IRE Scope`** 双示波器面板。详情见 [Phase 56 报告](../../reports/2026-11-14-phase56-vm-trial-cinema-scopes-markers/README.md)。
 
+- **Phase 64 — Cinema Line 双原生 Cine EI、快门角度 / ECS 消闪、S&Q（1–240fps）、REC Tally 与有线 I/O 控制台（2026-11-14）**：
+  - **主机 REST API（`GET/POST /api/cine_exposure` & `/api/status`）**：完整实现 `Base 800`（`200..3200 EI`）与 `Base 12800`（`3200..51200 EI`）各 13 档 EI 及 14.0 档动态宽容度分配（`+6/-8` 基准）；支持 **Shutter Angle**（`5.6°..360.0°`）、**Shutter Speed**（`1/24..1/8000`）与 **ECS LED 墙抗闪烁微调**（`23.98..7900.0 Hz`，如 `100.2 Hz`）；支持 **S&Q `1–240fps`** 变速比率计算（如 `120 / 23.98 -> 5.00x Slow`）及真机一致的 `audio_rec_muted_by_sq` 自动静音契约；支持 `STBY`/`REC` 时间码推进与 4 种 Tally 灯光模式（`on` / `front_only` / `rear_only` / `off` 隐蔽模式）；支持 `usblan_ptpip`（`CDC-NCM + PTP-IP 15740`）与 `hdmi_raw16`（`4264x2408 16-bit Linear RAW + MLUT`）有线 I/O，并严格执行 `P4 ND=Clear` 硬件缺失锁与 `P12` Wi-Fi/BT RF-OFF 飞行模式隔离。
+  - **客体 `GPE0`（`0x41e001000`）原生 Cinema Line HUD 叠加（`fx6_live_guest.c`）**：通过扩展控制邮箱 `mb[28..31]` 与 `CINE_EXP` 协议，在客体无堆分配渲染 `REC / STBY + 前后 Tally 指示灯 + TC`、`EI (Base +over/-under)`、快门/ECS 徽标、`S&Q fps (ratio) [CH1-4 MUTE]` 与 `[HDMI RAW16 4.2K]` / `[LAN PTP-IP P12-SAFE]` 徽章。已在隔离端口 `--port 18775` 完成实机 QEMU 像素差异与 `CAMSET`（`/api/camset_export` & `/api/camset_import`）往返验证（`23,926` 像素真实变化，`0` 崩溃，端口 `8768` 零干扰）。详情见 [Phase 64 报告](../../reports/2026-11-14-phase64-vm-trial-cineei-shutter-sq-tally/README.md)。
+
 技术报告与逆向记录见 [2026-11-07 FX6 UXEngine 初始化与 Big6 菜单渲染报告](../../reports/2026-11-07-fx6-uxengine-init-assist/README.md) 及 [EVIDENCE-255-MENU.md](../../reports/2026-11-07-fx6-uxengine-init-assist/EVIDENCE-255-MENU.md)。
 
 ---
@@ -84,9 +88,9 @@ python3 -B ~/AI-Workspace/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/ru
 
 ---
 
-## 离线自动化单元测试（`tests/test_vm_trial.py`）
+## 离线自动化单元测试（`tests/test_vm_trial.py` & `tests/test_phase64_cine_exposure_deck.py`）
 
-无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 / Phase 49 / Phase 56 端口隔离、多语言 `.uxc` 发现、11 分类 128 页双语菜单搜索直跳（`/api/menu_catalog` & `/api/jump_page`）、`EN/ZH/JA` `GPE0` 像素差自检（`/api/verify_multilang_diff`）、HTTP 客户端断连零堆栈加固（`HardenedThreadingHTTPServer`）、`.cube` 防崩清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁、Cinema Line 监看辅助叠加（`/api/assist_tools`）与实时 `GPE0` 亮度波形/直方图遥测（`/api/scope_stats`）（共 **103 项**测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
+无需启动任何 QEMU 进程，也无需自备专有固件二进制，即可离线验证编译态 C 扫描线打包器（`fx6_pack_scanlines` 与纯 Python 参考实现逐位一致性）、RGBA PNG 编码与 IEEE CRC-32/IDAT 解压、SVR4 `cpio newc`（`070701`）确定性构建与 `mode/uid/gid` 保持、`src/fx6_live_guest.c` 内存/符号缓存/`DISP`/多语言银行切换回归检查、`outputs/fx3-vm` 补丁与重定位溯源，以及 Phase 23 / Phase 30 / Phase 40 / Phase 49 / Phase 56 / Phase 64 端口隔离、多语言 `.uxc` 发现、11 分类 128 页双语菜单搜索直跳（`/api/menu_catalog` & `/api/jump_page`）、`EN/ZH/JA` `GPE0` 像素差自检（`/api/verify_multilang_diff`）、HTTP 客户端断连零堆栈加固（`HardenedThreadingHTTPServer`）、`.cube` 防崩清洗、`XLR-H1` 4-Ch 音频回退、`P4` ND-Clear 锁、Cinema Line 监看辅助叠加（`/api/assist_tools`）、实时 `GPE0` 亮度波形/直方图遥测（`/api/scope_stats`）与 Cinema Line Cine EI / Shutter-ECS / S&Q 1–240fps / REC Tally / 有线 I/O（`/api/cine_exposure` & `/api/camset_export` / `/api/camset_import`）（共 **129 项**测试，已接入顶层 `make test`，支持正常与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式）：
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm-trial /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm-trial/tests -p "test_*.py" -v

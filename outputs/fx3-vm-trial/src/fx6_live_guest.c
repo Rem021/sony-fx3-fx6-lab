@@ -28,6 +28,12 @@
  *              bit8=bk4_locked, bit9=phase40_valid, bits12..14=aspect_marker,
  *              bits16..17=zebra_mode, bits18..19=peaking_mode, bits20..21=desqueeze,
  *              bit24=phase56_valid)
+ *     mb[28] = phase64_flags (bit0=base12800, bits1..4=ei_step(0..12), bits5..6=shutter_mode,
+ *              bit7=sq_enabled, bits8..10=base_fps_idx, bit11=rec_on, bits12..13=tally_mode,
+ *              bits14..15=wired_io_mode, bit16=p4_nd_absent, bit17=p12_rf_off, bit31=valid)
+ *     mb[29] = phase64_shutter_sq (bits0..19=shutter_val, bits20..27=sq_fps(1..240))
+ *     mb[30] = phase64_tc_frames (live TC frame counter when REC)
+ *     mb[31] = 0x43494e45 ('CINE') Phase 64 CINE_EXP magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -996,6 +1002,9 @@ static uint32_t g_live_lut_meta = 0u;
 static char     g_live_lut_name[28];
 static uint32_t g_live_audio_packed = 0x30303030u; /* -12 dB default on ch1..ch4 */
 static uint32_t g_live_p40_flags = 0x303u;       /* attached=1, +48V=1, rtmd=0, bk4=1, valid=1 */
+static uint32_t g_live_p64_flags = 0x8003000cu;  /* valid=1, p12=1, p4_nd_absent=1, base800, ei_step=6, angle, stby, tally=on */
+static uint32_t g_live_p64_shutter_sq = (24u << 20) | 1800u; /* sq_fps=24, angle=180.0 deg */
+static uint32_t g_live_p64_tc = 0u;
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -2173,6 +2182,231 @@ static void fx6_render_phase56_assist_overlays(uint64_t appfw, uint32_t page) {
                                   0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
 }
 
+static unsigned fx6_append_uint(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    char tmp[16];
+    int n = 0;
+    if (val == 0u) {
+        if (pos + 1u < cap) dst[pos++] = '0';
+        dst[pos] = 0;
+        return pos;
+    }
+    while (val > 0u && n < 15) {
+        tmp[n++] = (char)('0' + (val % 10u));
+        val /= 10u;
+    }
+    while (n > 0 && pos + 1u < cap) {
+        dst[pos++] = tmp[--n];
+    }
+    dst[pos] = 0;
+    return pos;
+}
+
+static unsigned fx6_append_2d(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    if (pos + 2u >= cap) return pos;
+    uint32_t v = val % 100u;
+    dst[pos++] = (char)('0' + (v / 10u));
+    dst[pos++] = (char)('0' + (v % 10u));
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase64_cine_exposure_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p64_flags & 0x80000000u)) return;
+
+    static const uint32_t k_ei_800[13] = {
+        200u, 250u, 320u, 400u, 500u, 640u, 800u, 1000u, 1250u, 1600u, 2000u, 2500u, 3200u
+    };
+    static const uint32_t k_ei_12800[13] = {
+        3200u, 4000u, 5000u, 6400u, 8000u, 10000u, 12800u, 16000u, 20000u, 25600u, 32000u, 40000u, 51200u
+    };
+    static const uint32_t k_base_fps_x100[6] = { 2398u, 2400u, 2500u, 2997u, 5000u, 5994u };
+    static const char * const k_base_fps_lbl[6] = { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p" };
+
+    uint32_t base_high    = g_live_p64_flags & 1u;
+    uint32_t ei_step      = (g_live_p64_flags >> 1) & 0x0fu;
+    if (ei_step > 12u) ei_step = 6u;
+    uint32_t shutter_mode = (g_live_p64_flags >> 5) & 0x03u;
+    uint32_t sq_on        = (g_live_p64_flags >> 7) & 1u;
+    uint32_t base_fps_idx = (g_live_p64_flags >> 8) & 0x07u;
+    if (base_fps_idx > 5u) base_fps_idx = 0u;
+    uint32_t rec_on       = (g_live_p64_flags >> 11) & 1u;
+    uint32_t tally_mode   = (g_live_p64_flags >> 12) & 0x03u;
+    uint32_t wired_io     = (g_live_p64_flags >> 14) & 0x03u;
+
+    uint32_t shutter_val  = g_live_p64_shutter_sq & 0xfffffu;
+    uint32_t sq_fps       = (g_live_p64_shutter_sq >> 20) & 0xffu;
+    if (sq_fps < 1u || sq_fps > 240u) sq_fps = 24u;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+
+    if (!is_shooting_page) {
+        if (!rec_on && !sq_on && wired_io == 0u) return;
+        int bx = 736, by = 10, bw = 276, bh = 26;
+        uint32_t bg = rec_on ? 0xFF7F1D1Du : 0xFF0F172Au;
+        uint32_t bd = rec_on ? 0xFFEF4444u : (sq_on ? 0xFFF59E0Bu : 0xFF22D3EEu);
+        fx6_osd_fill_rect(bx, by, bw, bh, bg);
+        fx6_osd_border_rect(bx, by, bw, bh, bd);
+        uint32_t dot_c = rec_on ? ((tally_mode == 3u) ? 0xFF4B5563u : 0xFFFF2D20u) : 0xFF10B981u;
+        fx6_osd_fill_rect(bx + 6, by + 7, 12, 12, dot_c);
+        char mini_lbl[48];
+        unsigned mp = 0u;
+        mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), rec_on ? "REC " : "STBY ");
+        if (sq_on) {
+            mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), "S&Q");
+            mp = fx6_append_uint(mini_lbl, mp, sizeof(mini_lbl), sq_fps);
+            mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), " ");
+        }
+        if (wired_io == 1u) mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), "PTP-IP");
+        else if (wired_io == 2u) mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), "RAW16");
+        (void)mp;
+        fx6_render_string_text_styled(appfw, bx + 22, by + 2, bw - 26, 22, mini_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        return;
+    }
+
+    int bx = 12;
+    int by = (p <= 3u) ? 478 : 10;
+    int bw = 1000;
+    int bh = 26;
+
+    fx6_osd_fill_rect(bx, by, bw, bh, 0xFF0A0F1Au);
+    fx6_osd_border_rect(bx, by, bw, bh, rec_on ? 0xFFEF4444u : 0xFF334155u);
+
+    /* Pill 1: REC / STBY + Tally Lamp Indicator + Live TC */
+    int p1x = bx + 4, p1w = 172;
+    uint32_t p1_bg = rec_on ? 0xFF7F1D1Du : 0xFF064E3Bu;
+    uint32_t p1_bd = rec_on ? 0xFFEF4444u : 0xFF10B981u;
+    fx6_osd_fill_rect(p1x, by + 2, p1w, bh - 4, p1_bg);
+    fx6_osd_border_rect(p1x, by + 2, p1w, bh - 4, p1_bd);
+
+    uint32_t front_lit = (rec_on && (tally_mode == 0u || tally_mode == 1u)) ? 1u : 0u;
+    uint32_t rear_lit  = (rec_on && (tally_mode == 0u || tally_mode == 2u)) ? 1u : 0u;
+    fx6_osd_fill_rect(p1x + 5, by + 6, 6, 14, front_lit ? 0xFFFF2D20u : (rec_on ? 0xFF374151u : 0xFF10B981u));
+    fx6_osd_fill_rect(p1x + 13, by + 6, 6, 14, rear_lit ? 0xFFFF6B4Au : (rec_on ? 0xFF374151u : 0xFF059669u));
+
+    char rec_lbl[36];
+    unsigned rp = 0u;
+    if (rec_on) {
+        uint32_t f_rate = (base_fps_idx == 2u || base_fps_idx == 4u) ? 25u : 24u;
+        uint32_t tc = g_live_p64_tc;
+        uint32_t ff = tc % f_rate;
+        uint32_t tot_s = tc / f_rate;
+        uint32_t ss = tot_s % 60u;
+        uint32_t mm = (tot_s / 60u) % 60u;
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), "REC ");
+        rp = fx6_append_2d(rec_lbl, rp, sizeof(rec_lbl), mm);
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), ":");
+        rp = fx6_append_2d(rec_lbl, rp, sizeof(rec_lbl), ss);
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), ":");
+        rp = fx6_append_2d(rec_lbl, rp, sizeof(rec_lbl), ff);
+        if (tally_mode == 3u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " STL");
+    } else {
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), "STBY");
+        if (tally_mode == 3u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " [T-OFF]");
+        else if (tally_mode == 1u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " [F-TLY]");
+        else if (tally_mode == 2u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " [R-TLY]");
+    }
+    (void)rp;
+    fx6_render_string_text_styled(appfw, p1x + 22, by + 2, p1w - 24, 22, rec_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 2: Cine EI + Base ISO + Dynamic Latitude (+over/-under stops) */
+    int p2x = p1x + p1w + 4, p2w = 236;
+    fx6_osd_fill_rect(p2x, by + 2, p2w, bh - 4, 0xFF111827u);
+    fx6_osd_border_rect(p2x, by + 2, p2w, bh - 4, base_high ? 0xFFF59E0Bu : 0xFF38BDF8u);
+
+    uint32_t ei_val = base_high ? k_ei_12800[ei_step] : k_ei_800[ei_step];
+    int step_delta = (int)ei_step - 6;
+    int over_x10 = 60 + (step_delta * 10 + (step_delta >= 0 ? 1 : -1)) / 3;
+    int under_x10 = 140 - over_x10;
+    char ei_lbl[44];
+    unsigned ep = 0u;
+    ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), ei_val);
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), "EI (B");
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), base_high ? "12800 +" : "800 +");
+    ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(over_x10 / 10));
+    if ((over_x10 % 10) != 0) {
+        ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), ".");
+        ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(over_x10 % 10));
+    }
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), "/-");
+    ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(under_x10 / 10));
+    if ((under_x10 % 10) != 0) {
+        ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), ".");
+        ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(under_x10 % 10));
+    }
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), ")");
+    (void)ep;
+    fx6_render_string_text_styled(appfw, p2x + 5, by + 2, p2w - 8, 22, ei_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 3: Shutter Angle / Speed / ECS LED Anti-Flicker */
+    int p3x = p2x + p2w + 4, p3w = 142;
+    fx6_osd_fill_rect(p3x, by + 2, p3w, bh - 4, (shutter_mode == 2u) ? 0xFF1E1B4Bu : 0xFF111827u);
+    fx6_osd_border_rect(p3x, by + 2, p3w, bh - 4, (shutter_mode == 2u) ? 0xFFF59E0Bu : 0xFF475569u);
+    char sh_lbl[32];
+    unsigned sp = 0u;
+    if (shutter_mode == 1u) {
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "1/");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), shutter_val ? shutter_val : 48u);
+    } else if (shutter_mode == 2u) {
+        uint32_t hz_i = shutter_val / 100u;
+        uint32_t hz_f = (shutter_val % 100u) / 10u;
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "ECS ");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), hz_i);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), ".");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), hz_f);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "Hz");
+    } else {
+        uint32_t deg_i = shutter_val / 10u;
+        uint32_t deg_f = shutter_val % 10u;
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), deg_i);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), ".");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), deg_f);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "\xc2\xb0");
+    }
+    (void)sp;
+    fx6_render_string_text_styled(appfw, p3x + 6, by + 2, p3w - 10, 22, sh_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 4: S&Q (1-240fps) + Audio Mute Indicator / P4 ND=Clear Lock */
+    int p4x = p3x + p3w + 4, p4w = 248;
+    fx6_osd_fill_rect(p4x, by + 2, p4w, bh - 4, sq_on ? 0xFF78350Fu : 0xFF111827u);
+    fx6_osd_border_rect(p4x, by + 2, p4w, bh - 4, sq_on ? 0xFFF59E0Bu : 0xFF475569u);
+    char sq_lbl[48];
+    unsigned qp = 0u;
+    if (sq_on) {
+        uint32_t b_x100 = k_base_fps_x100[base_fps_idx];
+        uint32_t ratio_x10 = (sq_fps * 1000u + (b_x100 / 2u)) / b_x100;
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), "S&Q ");
+        qp = fx6_append_uint(sq_lbl, qp, sizeof(sq_lbl), sq_fps);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), "fps (");
+        qp = fx6_append_uint(sq_lbl, qp, sizeof(sq_lbl), ratio_x10 / 10u);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), ".");
+        qp = fx6_append_uint(sq_lbl, qp, sizeof(sq_lbl), ratio_x10 % 10u);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), "x) [CH1-4 MUTE]");
+    } else {
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), k_base_fps_lbl[base_fps_idx]);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), " NORM [P4:ND-CLR]");
+    }
+    (void)qp;
+    fx6_render_string_text_styled(appfw, p4x + 5, by + 2, p4w - 8, 22, sq_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 5: Wired I/O Mode + P12 Airplane-Mode RF-OFF Safety */
+    int p5x = p4x + p4w + 4, p5w = (bx + bw - 4) - p5x;
+    uint32_t p5_bg = (wired_io == 2u) ? 0xFF4C1D95u : ((wired_io == 1u) ? 0xFF0E7490u : 0xFF111827u);
+    uint32_t p5_bd = (wired_io == 2u) ? 0xFFA78BFAu : ((wired_io == 1u) ? 0xFF22D3EEu : 0xFF475569u);
+    fx6_osd_fill_rect(p5x, by + 2, p5w, bh - 4, p5_bg);
+    fx6_osd_border_rect(p5x, by + 2, p5w, bh - 4, p5_bd);
+    const char *io_lbl = (wired_io == 2u)
+        ? "[HDMI RAW16 4.2K]"
+        : ((wired_io == 1u) ? "[LAN PTP-IP P12-SAFE]" : "I/O:OFF [P12 RF-OFF]");
+    fx6_render_string_text_styled(appfw, p5x + 5, by + 2, p5w - 8, 22, io_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -2203,6 +2437,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_lut_meta) * 1099511628211ULL;
     h = (h ^ g_live_audio_packed) * 1099511628211ULL;
     h = (h ^ g_live_p40_flags) * 1099511628211ULL;
+    h = (h ^ g_live_p64_flags) * 1099511628211ULL;
+    h = (h ^ g_live_p64_shutter_sq) * 1099511628211ULL;
+    h = (h ^ g_live_p64_tc) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -2388,6 +2625,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     }
     fx6_render_phase40_hud_strip(appfw, page, cell_vals);
     fx6_render_phase56_assist_overlays(appfw, page);
+    fx6_render_phase64_cine_exposure_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -2616,11 +2854,18 @@ void fx6_force_update(void) {
         mb[19] = 0u;         /* lut_tint_meta */
         mb[26] = 0x30303030u;/* audio_db_packed (-12 dB ch1..ch4) */
         mb[27] = 0x303u;     /* phase40_flags: attached=1, +48V=1, bk4=1, valid=1 */
+        mb[28] = 0x8003000cu;/* phase64_flags: valid=1, p12=1, p4_nd_absent=1, base800, ei_step=6, angle, stby, tally=on */
+        mb[29] = (24u << 20) | 1800u; /* sq_fps=24, shutter_angle=180.0 deg */
+        mb[30] = 0u;         /* phase64_tc_frames */
+        mb[31] = 0x43494e45u;/* 'CINE' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
     g_live_audio_packed = 0x30303030u;
     g_live_p40_flags = 0x303u;
+    g_live_p64_flags = 0x8003000cu;
+    g_live_p64_shutter_sq = (24u << 20) | 1800u;
+    g_live_p64_tc = 0u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -2636,10 +2881,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -2675,14 +2920,19 @@ void fx6_force_update(void) {
                 g_live_audio_packed = mb[26];
                 g_live_p40_flags    = mb[27] | 0x100u; /* P12 BK4 Airplane-Mode Shadow Locked */
             }
+            if (mb[28] & 0x80000000u) {
+                g_live_p64_flags      = mb[28] | 0x00030000u; /* Enforce P4 ND absent & P12 RF-OFF */
+                g_live_p64_shutter_sq = mb[29];
+                g_live_p64_tc         = mb[30];
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc);
         }
     }
 }

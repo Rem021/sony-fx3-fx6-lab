@@ -2458,6 +2458,7 @@ def build_nrtm_xml_sidecar(
     *,
     active_user_lut: dict[str, Any] | None = None,
     shotmark_and_iris: dict[str, Any] | None = None,
+    gyroflow_anamorphic: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2531,6 +2532,21 @@ def build_nrtm_xml_sidecar(
         },
     )
 
+    if gyroflow_anamorphic:
+        sq_factor = float(gyroflow_anamorphic.get("squeeze_factor", 1.0))
+        lenses_el = ET.SubElement(root, _q("Lenses"))
+        ET.SubElement(
+            lenses_el,
+            _q("Lens"),
+            {
+                "modelName": "E-Mount Anamorphic" if sq_factor > 1.0 else "FE 35mm F1.4 GM",
+                "anamorphicSqueezeFactor": f"{sq_factor:.2f}",
+                "desqueezeDisplay": str(gyroflow_anamorphic.get("squeeze_display", f"{sq_factor:.2f}x")),
+                "desqueezedAspectRatio": str(gyroflow_anamorphic.get("desqueezed_aspect_ratio", "1.78:1")),
+                "irisFstop": str(shotmark_and_iris.get("iris_display", "F2.8")) if shotmark_and_iris else "F2.8",
+            },
+        )
+
     acq = ET.SubElement(root, _q("AcquisitionRecord"))
 
     cam_grp = ET.SubElement(acq, _q("Group"), {"name": "CameraUnitMetadataSet"})
@@ -2590,6 +2606,33 @@ def build_nrtm_xml_sidecar(
             _q("Item"),
             {"name": "Smpte12mUserBits", "value": str(shotmark_and_iris.get("user_bits_effective", "A0:01:00:01"))},
         )
+
+    if gyroflow_anamorphic:
+        gyro_grp = ET.SubElement(acq, _q("Group"), {"name": "AnamorphicGyroflowRtmd"})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "AnamorphicSqueezeFactor", "value": f"{float(gyroflow_anamorphic['squeeze_factor']):.2f}"})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "IbisRequestedMode", "value": str(gyroflow_anamorphic["ibis_mode"])})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "IbisEffectiveMode", "value": str(gyroflow_anamorphic["effective_ibis_mode"])})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "IbisArbitrated", "value": str(bool(gyroflow_anamorphic["ibis_arbitrated"])).lower()})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "IbisHorizontalYawGain", "value": f"{float(gyroflow_anamorphic['horizontal_yaw_gain']):.4f}"})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "IbisVerticalPitchGain", "value": f"{float(gyroflow_anamorphic['vertical_pitch_gain']):.4f}"})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "IbisCenterLock0x0400", "value": str(bool(gyroflow_anamorphic["center_lock_0x0400"])).lower()})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "ImuSampleRateHz", "value": str(int(gyroflow_anamorphic["imu_rate_hz"]))})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "ImuSamplesPerFrame", "value": f"{float(gyroflow_anamorphic['imu_samples_per_frame']):.1f}"})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "Imx510ReadoutSkewMs", "value": f"{float(gyroflow_anamorphic['rolling_shutter_skew_ms']):.1f}"})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "GyroflowRtmdStatus", "value": str(gyroflow_anamorphic["rtmd_status"])})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "GyroflowRtmdReady", "value": str(bool(gyroflow_anamorphic["gyroflow_ready"])).lower()})
+        ET.SubElement(gyro_grp, _q("Item"), {"name": "TouchAfInverseDesqueezeScale", "value": f"{float(gyroflow_anamorphic['touch_af_inverse_desqueeze_scale']):.4f}"})
+
+        aud_grp = ET.SubElement(acq, _q("Group"), {"name": "AudioReferenceAndLimiter"})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "ReferenceToneEnabled", "value": str(bool(gyroflow_anamorphic["ref_tone_enabled"])).lower()})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "ReferenceToneEffectiveActive", "value": str(bool(gyroflow_anamorphic["ref_tone_effective_active"])).lower()})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "ReferenceToneInhibitedByRec", "value": str(bool(gyroflow_anamorphic["ref_tone_inhibited_by_rec"])).lower()})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "ReferenceToneFreqHz", "value": str(int(gyroflow_anamorphic["ref_tone_freq_hz"]))})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "ReferenceToneLevelDbfs", "value": f"{float(gyroflow_anamorphic['ref_tone_level_dbfs']):.1f}"})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "SmpteColorBarsEffective", "value": str(bool(gyroflow_anamorphic["color_bars_effective_active"])).lower()})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "PeakLimiterEnabled", "value": str(bool(gyroflow_anamorphic["limiter_enabled"])).lower()})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "PeakLimiterCeilingDbfs", "value": f"{float(gyroflow_anamorphic['limiter_ceiling_dbfs']):.1f}"})
+        ET.SubElement(aud_grp, _q("Item"), {"name": "PeakLimiterEngaging", "value": str(bool(gyroflow_anamorphic["limiter_engaging"])).lower()})
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -2778,6 +2821,26 @@ def compute_imx510_pdaf_cell(touch_x: int, touch_y: int) -> dict[str, int]:
     return {"pdaf_col": col, "pdaf_row": row, "pdaf_index": idx}
 
 
+def _parse_desqueeze_factor_from_str(desqueeze: str | float | None) -> float:
+    if isinstance(desqueeze, (int, float)) and not isinstance(desqueeze, bool):
+        val = float(desqueeze)
+        return val if val > 1.0 else 1.0
+    s = str(desqueeze or "1.0x").strip().lower().rstrip("x")
+    try:
+        val = float(s)
+        if math.isfinite(val) and val >= 1.0:
+            return val
+    except ValueError:
+        pass
+    return 1.0
+
+
+def inverse_desqueeze_touch_x(desqueezed_x: int | float, squeeze_factor: float) -> int:
+    """Map an on-screen de-squeezed X coordinate back into [0..959] 16:9 sensor space."""
+    sq = max(1.0, float(squeeze_factor))
+    return max(TOUCH_X_MIN, min(TOUCH_X_MAX, int(round(float(desqueezed_x) / sq))))
+
+
 def compute_active_sensor_rect(aspect_marker: str = "Off", desqueeze: str = "1.0x") -> dict[str, Any]:
     """Compute active 960x540 sensor image bounds accounting for aspect-guide mattes and anamorphic desqueeze."""
     x_min, x_max = TOUCH_X_MIN, TOUCH_X_MAX
@@ -2796,10 +2859,16 @@ def compute_active_sensor_rect(aspect_marker: str = "Off", desqueeze: str = "1.0
         x_min = max(x_min, 341)
         x_max = min(x_max, 618)
 
-    if dsq in ("1.3x", "1.33x"):
+    if dsq in ("1.3x", "1.30x", "1.33x"):
         y_min = max(y_min, 68)
         y_max = min(y_max, 471)
-    elif dsq == "2.0x":
+    elif dsq in ("1.5x", "1.50x"):
+        y_min = max(y_min, 90)
+        y_max = min(y_max, 449)
+    elif dsq in ("1.8x", "1.80x"):
+        y_min = max(y_min, 120)
+        y_max = min(y_max, 419)
+    elif dsq in ("2.0x", "2.00x"):
         y_min = max(y_min, 135)
         y_max = min(y_max, 404)
 
@@ -2818,6 +2887,7 @@ def compute_touch_focus_ciz_derived(
     *,
     aspect_marker: str = "Off",
     desqueeze: str = "1.0x",
+    squeeze_factor: float | None = None,
     zebra_mode: str = "Off",
     base_look: str = "S-Cinetone",
     wired_io_mode: str = "off",
@@ -2825,7 +2895,7 @@ def compute_touch_focus_ciz_derived(
     sq_fps: int = 24,
     letterbox_ignored: bool = False,
 ) -> dict[str, Any]:
-    """Compute Phase 81 PDAF cell, Focus Mag ROI, S-Log3 False Color / Zebra warning, and CIZ exclusion coupling."""
+    """Compute Phase 81 PDAF cell, Focus Mag ROI, S-Log3 False Color / Zebra warning, CIZ & Phase 95 inverse desqueeze sync."""
     touch_af_mode = str(state.get("touch_af_mode", "off"))
     touch_x = max(TOUCH_X_MIN, min(TOUCH_X_MAX, int(state.get("touch_x", 480))))
     touch_y = max(TOUCH_Y_MIN, min(TOUCH_Y_MAX, int(state.get("touch_y", 270))))
@@ -2834,6 +2904,12 @@ def compute_touch_focus_ciz_derived(
     ciz_res_mode = str(state.get("ciz_res_mode", "4K"))
     ciz_scale = round(max(CIZ_SCALE_MIN, min(CIZ_SCALE_MAX, float(state.get("ciz_scale", 1.00)))), 2)
     zoom_rocker_speed = max(ZOOM_ROCKER_SPEED_MIN, min(ZOOM_ROCKER_SPEED_MAX, int(state.get("zoom_rocker_speed", 4))))
+
+    eff_sq_factor = float(squeeze_factor) if (squeeze_factor is not None and float(squeeze_factor) >= 1.0) else _parse_desqueeze_factor_from_str(desqueeze)
+    desqueezed_width = int(round(960.0 * eff_sq_factor))
+    desqueezed_touch_x = int(round(float(touch_x) * eff_sq_factor))
+    touch_af_inverse_desqueeze_scale = round(1.0 / eff_sq_factor, 4)
+    touch_af_desqueeze_synced = bool(eff_sq_factor > 1.0)
 
     pdaf = compute_imx510_pdaf_cell(touch_x, touch_y)
     active_rect = compute_active_sensor_rect(aspect_marker=aspect_marker, desqueeze=desqueeze)
@@ -2882,6 +2958,11 @@ def compute_touch_focus_ciz_derived(
         "touch_af_mode": touch_af_mode,
         "touch_x": touch_x,
         "touch_y": touch_y,
+        "squeeze_factor": eff_sq_factor,
+        "desqueezed_width": desqueezed_width,
+        "desqueezed_touch_x": desqueezed_touch_x,
+        "touch_af_inverse_desqueeze_scale": touch_af_inverse_desqueeze_scale,
+        "touch_af_desqueeze_synced": touch_af_desqueeze_synced,
         "pdaf_col": pdaf["pdaf_col"],
         "pdaf_row": pdaf["pdaf_row"],
         "pdaf_index": pdaf["pdaf_index"],
@@ -2929,8 +3010,9 @@ def validate_touch_focus_ciz_patch(
     *,
     aspect_marker: str = "Off",
     desqueeze: str = "1.0x",
+    squeeze_factor: float | None = None,
 ) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
-    """Validate and normalize Phase 81 Touch-AF, Focus Mag, False Color & CIZ updates."""
+    """Validate and normalize Phase 81 Touch-AF, Focus Mag, False Color & CIZ updates (with Phase 95 inverse desqueeze X)."""
     if not isinstance(body, dict):
         return (
             False,
@@ -2945,6 +3027,9 @@ def validate_touch_focus_ciz_patch(
     cur = dict(TOUCH_FOCUS_CIZ_DEFAULTS)
     if current_state:
         cur.update(current_state)
+
+    eff_sq = float(squeeze_factor) if (squeeze_factor is not None and float(squeeze_factor) >= 1.0) else _parse_desqueeze_factor_from_str(desqueeze)
+    max_desq_x = max(TOUCH_X_MAX, int(round(960.0 * eff_sq)) - 1)
 
     updates: dict[str, Any] = {}
     if body.get("reset") is True:
@@ -2969,20 +3054,47 @@ def validate_touch_focus_ciz_patch(
             )
         updates["touch_af_mode"] = af_norm
 
+    coord_space = str(body.get("coordinate_space") or "sensor").strip().lower()
+    if coord_space not in ("sensor", "desqueezed"):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "invalid_coordinate_space",
+                "message": f"Unsupported coordinate_space: {body.get('coordinate_space')!r} (expected 'sensor' or 'desqueezed')",
+            },
+        )
+
     touch_coord_sent = False
-    if "touch_x" in body and body["touch_x"] is not None:
+    if "desqueezed_touch_x" in body and body["desqueezed_touch_x"] is not None:
+        dtx = _parse_strict_int(body["desqueezed_touch_x"])
+        if dtx is None or dtx < TOUCH_X_MIN or dtx > max_desq_x:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_desqueezed_touch_x",
+                    "message": f"desqueezed_touch_x must be an integer in [{TOUCH_X_MIN}, {max_desq_x}], got {body['desqueezed_touch_x']!r}",
+                },
+            )
+        updates["touch_x"] = inverse_desqueeze_touch_x(dtx, eff_sq)
+        touch_coord_sent = True
+    elif "touch_x" in body and body["touch_x"] is not None:
         tx = _parse_strict_int(body["touch_x"])
-        if tx is None or tx < TOUCH_X_MIN or tx > TOUCH_X_MAX:
+        x_lim = max_desq_x if coord_space == "desqueezed" else TOUCH_X_MAX
+        if tx is None or tx < TOUCH_X_MIN or tx > x_lim:
             return (
                 False,
                 {},
                 {
                     "ok": False,
                     "error": "invalid_touch_x",
-                    "message": f"touch_x must be an integer in [{TOUCH_X_MIN}, {TOUCH_X_MAX}], got {body['touch_x']!r}",
+                    "message": f"touch_x must be an integer in [{TOUCH_X_MIN}, {x_lim}], got {body['touch_x']!r}",
                 },
             )
-        updates["touch_x"] = tx
+        updates["touch_x"] = inverse_desqueeze_touch_x(tx, eff_sq) if coord_space == "desqueezed" else tx
         touch_coord_sent = True
 
     if "touch_y" in body and body["touch_y"] is not None:
@@ -3096,7 +3208,8 @@ def validate_touch_focus_ciz_patch(
     if touch_coord_sent and body.get("reset") is not True:
         cand_x = int(updates.get("touch_x", cur.get("touch_x", 480)))
         cand_y = int(updates.get("touch_y", cur.get("touch_y", 270)))
-        rect = compute_active_sensor_rect(aspect_marker=aspect_marker, desqueeze=desqueeze)
+        eff_dsq_label = f"{eff_sq:.2f}x" if squeeze_factor is not None else desqueeze
+        rect = compute_active_sensor_rect(aspect_marker=aspect_marker, desqueeze=eff_dsq_label)
         if cand_x < rect["x_min"] or cand_x > rect["x_max"] or cand_y < rect["y_min"] or cand_y > rect["y_max"]:
             letterbox_ignored = True
             updates.pop("touch_x", None)
@@ -3872,6 +3985,404 @@ def sanitize_fx6_fleet_camset_payload(
             _record(k, orig, "CONTAINED_DISABLED")
 
     return clean, sanitized_fields, details
+
+
+# ---------------- Phase 95: Anamorphic IBIS Arbitrator, Gyroflow 2000Hz RTMD & 1kHz Ref Tone / Limiter ----------------
+ANAMORPHIC_SQUEEZE_FACTORS: tuple[float, ...] = (1.0, 1.3, 1.33, 1.5, 1.8, 2.0)
+_SQUEEZE_FACTOR_ALIASES: dict[str, float] = {
+    "1": 1.0,
+    "1.0": 1.0,
+    "1.0x": 1.0,
+    "1.00x": 1.0,
+    "off": 1.0,
+    "spherical": 1.0,
+    "1.3": 1.3,
+    "1.30": 1.3,
+    "1.3x": 1.3,
+    "1.30x": 1.3,
+    "1.33": 1.33,
+    "1.33x": 1.33,
+    "1.5": 1.5,
+    "1.50": 1.5,
+    "1.5x": 1.5,
+    "1.50x": 1.5,
+    "1.8": 1.8,
+    "1.80": 1.8,
+    "1.8x": 1.8,
+    "1.80x": 1.8,
+    "2": 2.0,
+    "2.0": 2.0,
+    "2.0x": 2.0,
+    "2.00x": 2.0,
+}
+
+IBIS_ARBITRATOR_MODES: tuple[str, ...] = (
+    "Off",
+    "Standard",
+    "Active",
+    "Anamorphic_Asymmetric",
+    "Center_Lock_Gyroflow",
+)
+_IBIS_ARBITRATOR_ALIASES: dict[str, str] = {
+    "off": "Off",
+    "disabled": "Off",
+    "standard": "Standard",
+    "std": "Standard",
+    "active": "Active",
+    "act": "Active",
+    "active_5axis": "Active",
+    "anamorphic_asymmetric": "Anamorphic_Asymmetric",
+    "anamorphic": "Anamorphic_Asymmetric",
+    "asymmetric": "Anamorphic_Asymmetric",
+    "asym": "Anamorphic_Asymmetric",
+    "center_lock_gyroflow": "Center_Lock_Gyroflow",
+    "center_lock": "Center_Lock_Gyroflow",
+    "center-lock": "Center_Lock_Gyroflow",
+    "gyroflow": "Center_Lock_Gyroflow",
+    "0x0400": "Center_Lock_Gyroflow",
+    "off_center_locked": "Center_Lock_Gyroflow",
+}
+ANAMORPHIC_FALLBACK_MODES: tuple[str, ...] = (
+    "Anamorphic_Asymmetric",
+    "Center_Lock_Gyroflow",
+)
+
+GYRO_IMU_HZ: int = 2000
+IMX510_SKEW_FF_4K_MS: float = 8.7
+IMX510_SKEW_4K120_MS: float = 4.3
+REF_TONE_FREQ_HZ: int = 1000
+REF_TONE_LEVEL_DBFS: float = -20.0
+LIMITER_CEILING_DBFS: float = -3.0
+
+GYROFLOW_ANAMORPHIC_DEFAULTS: dict[str, Any] = {
+    "squeeze_factor": 1.0,
+    "ibis_mode": "Standard",
+    "anamorphic_fallback_mode": "Anamorphic_Asymmetric",
+    "ref_tone_enabled": False,
+    "color_bars_enabled": False,
+    "limiter_enabled": False,
+}
+
+GYROFLOW_ANAMORPHIC_SPECS: dict[str, Any] = {
+    "squeeze_factors": list(ANAMORPHIC_SQUEEZE_FACTORS),
+    "ibis_modes": list(IBIS_ARBITRATOR_MODES),
+    "anamorphic_fallback_modes": list(ANAMORPHIC_FALLBACK_MODES),
+    "imu_rate_hz": GYRO_IMU_HZ,
+    "imu_axes": 6,
+    "rolling_shutter_skew_ff_4k_ms": IMX510_SKEW_FF_4K_MS,
+    "rolling_shutter_skew_4k120_ms": IMX510_SKEW_4K120_MS,
+    "ref_tone_freq_hz": REF_TONE_FREQ_HZ,
+    "ref_tone_level_dbfs": REF_TONE_LEVEL_DBFS,
+    "limiter_ceiling_dbfs": LIMITER_CEILING_DBFS,
+    "audio_bit_depth": 24,
+    "audio_channels": 4,
+    "center_lock_code": "0x0400",
+    "mailbox_magic": "0x4759524F",
+    "mailbox_slots": "mb[44..47]",
+    "supported_langs": ["en", "zh-CN", "zh-TW", "ja"],
+}
+
+
+def normalize_squeeze_factor(val: Any) -> float | None:
+    """Strictly normalize supported anamorphic squeeze factors (1.0, 1.3, 1.33, 1.5, 1.8, 2.0)."""
+    if isinstance(val, bool) or val is None:
+        return None
+    if isinstance(val, (int, float)):
+        fval = float(val)
+        if not math.isfinite(fval):
+            return None
+        for cand in ANAMORPHIC_SQUEEZE_FACTORS:
+            if abs(fval - cand) < 1e-6:
+                return cand
+        return None
+    if isinstance(val, str):
+        return _SQUEEZE_FACTOR_ALIASES.get(val.strip().lower())
+    return None
+
+
+def squeeze_factor_to_assist_desqueeze(squeeze_factor: float) -> str:
+    """Map Phase 95 squeeze factor to Phase 56/81 ASSIST_TOOLS_SPECS['desqueeze'] choices ('1.0x', '1.33x', '2.0x')."""
+    if squeeze_factor <= 1.05:
+        return "1.0x"
+    if squeeze_factor <= 1.55:
+        return "1.33x"
+    return "2.0x"
+
+
+def compute_gyroflow_anamorphic_derived(
+    state: dict[str, Any],
+    *,
+    base_fps: float = 23.98,
+    sq_enabled: bool = False,
+    sq_fps: int = 24,
+    rec_state: str = "STBY",
+    touch_x: int = 480,
+    touch_y: int = 270,
+    audio_ch_db: list[int] | tuple[int, ...] = (-12, -12, -18, -18),
+) -> dict[str, Any]:
+    """Compute Phase 95 Anamorphic IBIS Arbitrator, Gyroflow 2000Hz RTMD telemetry, & 1kHz -20dBFS Tone / Limiter."""
+    sq = normalize_squeeze_factor(state.get("squeeze_factor", 1.0))
+    if sq is None:
+        sq = 1.0
+    req_ibis = str(state.get("ibis_mode", "Standard"))
+    if req_ibis not in IBIS_ARBITRATOR_MODES:
+        req_ibis = "Standard"
+    fallback_mode = str(state.get("anamorphic_fallback_mode", "Anamorphic_Asymmetric"))
+    if fallback_mode not in ANAMORPHIC_FALLBACK_MODES:
+        fallback_mode = "Anamorphic_Asymmetric"
+
+    ibis_arbitrated = bool(sq > 1.0 and req_ibis == "Active")
+    effective_ibis_mode = fallback_mode if ibis_arbitrated else req_ibis
+    center_lock_0x0400 = bool(effective_ibis_mode == "Center_Lock_Gyroflow")
+    anamorphic_edge_wobble_prevented = bool(sq > 1.0 and effective_ibis_mode != "Active")
+
+    if effective_ibis_mode in ("Off", "Center_Lock_Gyroflow"):
+        horizontal_yaw_gain = 0.0
+        vertical_pitch_gain = 0.0
+    elif effective_ibis_mode == "Anamorphic_Asymmetric":
+        horizontal_yaw_gain = round(1.0 / sq, 4)
+        vertical_pitch_gain = 1.0
+    else:
+        horizontal_yaw_gain = 1.0
+        vertical_pitch_gain = 1.0
+
+    if ibis_arbitrated:
+        if fallback_mode == "Center_Lock_Gyroflow":
+            arbitration_reason = (
+                f"Spherical Active IBIS clamped to 0x0400 Center-Lock for {sq:.2f}x anamorphic Gyroflow post-stab "
+                f"({sq:.2f}x 变形镜头下已将球面 Active 防抖自动仲裁为 0x0400 中心锁定以供 Gyroflow 后期增稳)"
+            )
+        else:
+            arbitration_reason = (
+                f"Spherical Active IBIS arbitrated to Anamorphic_Asymmetric (yaw_gain={horizontal_yaw_gain:.4f}) for {sq:.2f}x lens "
+                f"({sq:.2f}x 变形镜头下已将 Active 防抖自动仲裁为水平偏航增益={horizontal_yaw_gain:.4f}，消除边缘果冻晃动)"
+            )
+    else:
+        arbitration_reason = None
+
+    eff_fps = float(sq_fps) if bool(sq_enabled) else float(base_fps)
+    eff_fps = max(1.0, eff_fps)
+    imu_samples_per_frame = round(float(GYRO_IMU_HZ) / eff_fps, 1)
+    rolling_shutter_skew_ms = IMX510_SKEW_4K120_MS if eff_fps >= 100.0 else IMX510_SKEW_FF_4K_MS
+    rtmd_suspended_by_sq = bool(sq_enabled)
+    gyroflow_ready = not rtmd_suspended_by_sq
+    if rtmd_suspended_by_sq:
+        rtmd_status = "RTMD_SUSPENDED_BY_SQ"
+        rtmd_suspension_reason = (
+            f"2000Hz Gyro RTMD suspended while S&Q VFR ({int(sq_fps)}fps) is active (Sony FX3/FX6 hardware behavior) "
+            f"(S&Q 变速帧率 {int(sq_fps)}fps 激活时 2000Hz 陀螺仪 RTMD 自动暂停记录)"
+        )
+    elif center_lock_0x0400:
+        rtmd_status = "RTMD_CENTER_LOCKED"
+        rtmd_suspension_reason = None
+    else:
+        rtmd_status = "RTMD_READY"
+        rtmd_suspension_reason = None
+
+    # Touch-AF X coordinate synchronization with Phase 81
+    clamped_tx = max(TOUCH_X_MIN, min(TOUCH_X_MAX, int(touch_x)))
+    clamped_ty = max(TOUCH_Y_MIN, min(TOUCH_Y_MAX, int(touch_y)))
+    desqueezed_width = int(round(960.0 * sq))
+    desqueezed_touch_x = int(round(float(clamped_tx) * sq))
+    touch_af_inverse_desqueeze_scale = round(1.0 / sq, 4)
+    touch_af_desqueeze_synced = bool(sq > 1.0)
+
+    # Audio 1kHz -20.0 dBFS Reference Tone & -3.0 dBFS Soft-Knee Limiter
+    rec_on = str(rec_state or "STBY").upper() == "REC"
+    ref_tone_enabled = bool(state.get("ref_tone_enabled", False))
+    color_bars_enabled = bool(state.get("color_bars_enabled", False))
+    limiter_enabled = bool(state.get("limiter_enabled", False))
+
+    ref_tone_inhibited_by_rec = bool(ref_tone_enabled and rec_on)
+    ref_tone_effective_active = bool(ref_tone_enabled and not rec_on)
+    color_bars_inhibited_by_rec = bool(color_bars_enabled and rec_on)
+    color_bars_effective_active = bool(color_bars_enabled and not rec_on)
+
+    raw_ch = [int(audio_ch_db[i]) if i < len(audio_ch_db) else -12 for i in range(4)]
+    effective_ch_db: list[float] = []
+    clamped_flags: list[bool] = []
+    ch_clamped_mask = 0
+    for idx, lvl in enumerate(raw_ch):
+        if limiter_enabled and float(lvl) > LIMITER_CEILING_DBFS:
+            # Soft-knee limiter compresses above -3.0 dBFS ceiling toward -3.0 dBFS
+            effective_ch_db.append(LIMITER_CEILING_DBFS)
+            clamped_flags.append(True)
+            ch_clamped_mask |= (1 << idx)
+        else:
+            effective_ch_db.append(float(lvl))
+            clamped_flags.append(False)
+    limiter_engaging = any(clamped_flags)
+
+    desqueezed_ratio_num = round((16.0 / 9.0) * sq, 2)
+    desqueezed_aspect_ratio = f"{desqueezed_ratio_num:.2f}:1"
+    squeeze_display = f"{sq:.2f}x" if abs(sq - 1.33) < 1e-4 else f"{sq:.2f}x"
+
+    return {
+        "squeeze_factor": sq,
+        "squeeze_display": squeeze_display,
+        "assist_desqueeze_mapped": squeeze_factor_to_assist_desqueeze(sq),
+        "desqueezed_aspect_ratio": desqueezed_aspect_ratio,
+        "ibis_mode": req_ibis,
+        "anamorphic_fallback_mode": fallback_mode,
+        "effective_ibis_mode": effective_ibis_mode,
+        "ibis_arbitrated": ibis_arbitrated,
+        "arbitration_reason": arbitration_reason,
+        "center_lock_0x0400": center_lock_0x0400,
+        "anamorphic_edge_wobble_prevented": anamorphic_edge_wobble_prevented,
+        "horizontal_yaw_gain": horizontal_yaw_gain,
+        "vertical_pitch_gain": vertical_pitch_gain,
+        "touch_x": clamped_tx,
+        "touch_y": clamped_ty,
+        "desqueezed_width": desqueezed_width,
+        "desqueezed_touch_x": desqueezed_touch_x,
+        "touch_af_inverse_desqueeze_scale": touch_af_inverse_desqueeze_scale,
+        "touch_af_desqueeze_synced": touch_af_desqueeze_synced,
+        "imu_rate_hz": GYRO_IMU_HZ,
+        "effective_fps": round(eff_fps, 2),
+        "imu_samples_per_frame": imu_samples_per_frame,
+        "rolling_shutter_skew_ms": rolling_shutter_skew_ms,
+        "rtmd_status": rtmd_status,
+        "rtmd_suspended_by_sq": rtmd_suspended_by_sq,
+        "rtmd_suspension_reason": rtmd_suspension_reason,
+        "gyroflow_ready": gyroflow_ready,
+        "rec_state": "REC" if rec_on else "STBY",
+        "ref_tone_enabled": ref_tone_enabled,
+        "ref_tone_effective_active": ref_tone_effective_active,
+        "ref_tone_inhibited_by_rec": ref_tone_inhibited_by_rec,
+        "ref_tone_freq_hz": REF_TONE_FREQ_HZ,
+        "ref_tone_level_dbfs": REF_TONE_LEVEL_DBFS,
+        "color_bars_enabled": color_bars_enabled,
+        "color_bars_effective_active": color_bars_effective_active,
+        "color_bars_inhibited_by_rec": color_bars_inhibited_by_rec,
+        "limiter_enabled": limiter_enabled,
+        "limiter_ceiling_dbfs": LIMITER_CEILING_DBFS,
+        "limiter_engaging": limiter_engaging,
+        "ch_clamped_mask": ch_clamped_mask,
+        "ch_clamped": clamped_flags,
+        "raw_ch_db": raw_ch,
+        "effective_ch_db": effective_ch_db,
+        "audio_bit_depth": 24,
+        "audio_channels": 4,
+    }
+
+
+def format_gyroflow_anamorphic_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 95 GYRO_ANA host<->guest protocol string."""
+    return (
+        f"GYRO_ANA sq={state['squeeze_factor']:.2f}x ibis={state['ibis_mode']}->{state['effective_ibis_mode']} "
+        f"yaw={state['horizontal_yaw_gain']:.2f} ctr={1 if state['center_lock_0x0400'] else 0} "
+        f"imu={state['imu_samples_per_frame']:.1f}/f skew={state['rolling_shutter_skew_ms']:.1f}ms "
+        f"rtmd={state['rtmd_status']} tone={1 if state['ref_tone_effective_active'] else 0}"
+        f"(inhib={1 if state['ref_tone_inhibited_by_rec'] else 0}) "
+        f"bars={1 if state['color_bars_effective_active'] else 0} "
+        f"lim={1 if state['limiter_enabled'] else 0}(eng={1 if state['limiter_engaging'] else 0})"
+    )
+
+
+def validate_gyroflow_anamorphic_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 95 Anamorphic IBIS, Gyroflow RTMD & Audio Tone/Limiter updates."""
+    if not isinstance(body, dict):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "invalid_gyroflow_anamorphic",
+                "message": "gyroflow_anamorphic payload must be a JSON object",
+            },
+        )
+
+    cur = dict(GYROFLOW_ANAMORPHIC_DEFAULTS)
+    if current_state:
+        cur.update(current_state)
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(GYROFLOW_ANAMORPHIC_DEFAULTS)
+
+    if "squeeze_factor" in body and body["squeeze_factor"] is not None:
+        sq = normalize_squeeze_factor(body["squeeze_factor"])
+        if sq is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_squeeze_factor",
+                    "message": f"Unsupported squeeze_factor: {body['squeeze_factor']!r}",
+                    "allowed": list(ANAMORPHIC_SQUEEZE_FACTORS),
+                },
+            )
+        updates["squeeze_factor"] = sq
+
+    if "ibis_mode" in body and body["ibis_mode"] is not None:
+        raw_ibis = body["ibis_mode"]
+        if isinstance(raw_ibis, bool) or not isinstance(raw_ibis, str):
+            return False, {}, {"ok": False, "error": "invalid_ibis_mode", "message": f"Invalid ibis_mode: {raw_ibis!r}"}
+        ibis_norm = _IBIS_ARBITRATOR_ALIASES.get(raw_ibis.strip().lower())
+        if ibis_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ibis_mode",
+                    "message": f"Unsupported ibis_mode: {raw_ibis!r}",
+                    "allowed": list(IBIS_ARBITRATOR_MODES),
+                },
+            )
+        updates["ibis_mode"] = ibis_norm
+
+    if "anamorphic_fallback_mode" in body and body["anamorphic_fallback_mode"] is not None:
+        raw_fb = body["anamorphic_fallback_mode"]
+        if isinstance(raw_fb, bool) or not isinstance(raw_fb, str):
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_anamorphic_fallback_mode",
+                    "message": f"Invalid anamorphic_fallback_mode: {raw_fb!r}",
+                },
+            )
+        fb_norm = _IBIS_ARBITRATOR_ALIASES.get(raw_fb.strip().lower())
+        if fb_norm not in ANAMORPHIC_FALLBACK_MODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_anamorphic_fallback_mode",
+                    "message": f"Unsupported anamorphic_fallback_mode: {raw_fb!r}",
+                    "allowed": list(ANAMORPHIC_FALLBACK_MODES),
+                },
+            )
+        updates["anamorphic_fallback_mode"] = fb_norm
+
+    for bool_key in ("ref_tone_enabled", "color_bars_enabled", "limiter_enabled"):
+        if bool_key in body and body[bool_key] is not None:
+            raw_b = body[bool_key]
+            if isinstance(raw_b, bool):
+                updates[bool_key] = raw_b
+            elif isinstance(raw_b, int) and raw_b in (0, 1):
+                updates[bool_key] = bool(raw_b)
+            elif isinstance(raw_b, str) and raw_b.strip().lower() in ("true", "1", "on", "yes", "false", "0", "off", "no"):
+                updates[bool_key] = raw_b.strip().lower() in ("true", "1", "on", "yes")
+            else:
+                return (
+                    False,
+                    {},
+                    {
+                        "ok": False,
+                        "error": f"invalid_{bool_key}",
+                        "message": f"{bool_key} must be a boolean, got {raw_b!r}",
+                    },
+                )
+
+    return True, updates, None
 
 
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
@@ -4695,6 +5206,20 @@ class FX6LiveGpe0Session:
             "push_auto_iris_active": self.push_auto_iris_active,
             "last_scene_ev": self.last_scene_ev,
         }))
+        self.squeeze_factor = 1.0
+        self.ibis_mode = "Standard"
+        self.anamorphic_fallback_mode = "Anamorphic_Asymmetric"
+        self.ref_tone_enabled = False
+        self.color_bars_enabled = False
+        self.limiter_enabled = False
+        self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(compute_gyroflow_anamorphic_derived({
+            "squeeze_factor": self.squeeze_factor,
+            "ibis_mode": self.ibis_mode,
+            "anamorphic_fallback_mode": self.anamorphic_fallback_mode,
+            "ref_tone_enabled": self.ref_tone_enabled,
+            "color_bars_enabled": self.color_bars_enabled,
+            "limiter_enabled": self.limiter_enabled,
+        }))
         self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
@@ -4857,6 +5382,12 @@ class FX6LiveGpe0Session:
             self.user_bits_hex = "auto_camid_reel"
             self.push_auto_iris_active = False
             self.last_scene_ev = 12.0
+            self.squeeze_factor = 1.0
+            self.ibis_mode = "Standard"
+            self.anamorphic_fallback_mode = "Anamorphic_Asymmetric"
+            self.ref_tone_enabled = False
+            self.color_bars_enabled = False
+            self.limiter_enabled = False
             self.last_scope_stats = None
             self.user_lut_slots = self._default_user_lut_slots()
             self.last_toast = ""
@@ -5328,8 +5859,90 @@ class FX6LiveGpe0Session:
         mb43 = 0x534D524B  # 'SMRK'
         return struct.pack("<4I", mb40, mb41, mb42, mb43)
 
+    def _pack_phase95_mailbox_bytes(self) -> bytes:
+        """Pack Phase 95 guest control mailbox mb[44..47] (16 bytes) matching fx6_live_guest.c."""
+        ga = self.get_gyroflow_anamorphic()
+        sq = float(ga["squeeze_factor"])
+        try:
+            sq_idx = ANAMORPHIC_SQUEEZE_FACTORS.index(sq)
+        except ValueError:
+            sq_idx = 0
+        eff_ibis_idx = (
+            IBIS_ARBITRATOR_MODES.index(ga["effective_ibis_mode"])
+            if ga["effective_ibis_mode"] in IBIS_ARBITRATOR_MODES
+            else 1
+        )
+        req_ibis_idx = (
+            IBIS_ARBITRATOR_MODES.index(ga["ibis_mode"])
+            if ga["ibis_mode"] in IBIS_ARBITRATOR_MODES
+            else 1
+        )
+        arb_bit = 1 if ga["ibis_arbitrated"] else 0
+        ctr_bit = 1 if ga["center_lock_0x0400"] else 0
+        yaw_pct = max(0, min(100, int(round(float(ga["horizontal_yaw_gain"]) * 100.0))))
+        tx = max(0, min(959, int(ga["touch_x"])))
+        tx_sync_bit = 1 if ga["touch_af_desqueeze_synced"] else 0
+        wobble_bit = 1 if ga["anamorphic_edge_wobble_prevented"] else 0
+
+        mb44 = (
+            (sq_idx & 0x7)
+            | ((eff_ibis_idx & 0x7) << 3)
+            | ((req_ibis_idx & 0x7) << 6)
+            | ((arb_bit & 0x1) << 9)
+            | ((ctr_bit & 0x1) << 10)
+            | ((yaw_pct & 0xFF) << 11)
+            | ((tx & 0x3FF) << 19)
+            | ((tx_sync_bit & 0x1) << 29)
+            | ((wobble_bit & 0x1) << 30)
+            | (1 << 31)  # phase95_valid
+        )
+
+        imu_x10 = max(1, min(4095, int(round(float(ga["imu_samples_per_frame"]) * 10.0))))
+        skew_x10 = max(1, min(255, int(round(float(ga["rolling_shutter_skew_ms"]) * 10.0))))
+        rtmd_map = {"RTMD_READY": 0, "RTMD_CENTER_LOCKED": 1, "RTMD_SUSPENDED_BY_SQ": 2}
+        rtmd_st_idx = rtmd_map.get(str(ga["rtmd_status"]), 0)
+        susp_sq_bit = 1 if ga["rtmd_suspended_by_sq"] else 0
+        gyro_ready_bit = 1 if ga["gyroflow_ready"] else 0
+        fb_ctr_bit = 1 if ga["anamorphic_fallback_mode"] == "Center_Lock_Gyroflow" else 0
+        sq_x50 = max(50, min(127, int(round(sq * 50.0))))
+
+        mb45 = (
+            (imu_x10 & 0xFFF)
+            | ((skew_x10 & 0xFF) << 12)
+            | ((rtmd_st_idx & 0x3) << 20)
+            | ((susp_sq_bit & 0x1) << 22)
+            | ((gyro_ready_bit & 0x1) << 23)
+            | ((fb_ctr_bit & 0x1) << 24)
+            | ((sq_x50 & 0x7F) << 25)
+        )
+
+        tone_req = 1 if ga["ref_tone_enabled"] else 0
+        tone_eff = 1 if ga["ref_tone_effective_active"] else 0
+        tone_inhib = 1 if ga["ref_tone_inhibited_by_rec"] else 0
+        bars_eff = 1 if ga["color_bars_effective_active"] else 0
+        lim_en = 1 if ga["limiter_enabled"] else 0
+        lim_eng = 1 if ga["limiter_engaging"] else 0
+        ch_mask = int(ga["ch_clamped_mask"]) & 0xF
+        ceil_x10 = 30
+        ref_lvl_abs = 20
+
+        mb46 = (
+            (tone_req & 0x1)
+            | ((tone_eff & 0x1) << 1)
+            | ((tone_inhib & 0x1) << 2)
+            | ((bars_eff & 0x1) << 3)
+            | ((lim_en & 0x1) << 4)
+            | ((lim_eng & 0x1) << 5)
+            | ((ch_mask & 0xF) << 6)
+            | ((ceil_x10 & 0xFF) << 10)
+            | ((ref_lvl_abs & 0xFF) << 18)
+            | (1 << 31)  # phase95_tone_valid
+        )
+        mb47 = 0x4759524F  # 'GYRO'
+        return struct.pack("<4I", mb44, mb45, mb46, mb47)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..43] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..47] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
@@ -5337,6 +5950,7 @@ class FX6LiveGpe0Session:
             + self._pack_phase73_mailbox_bytes()
             + self._pack_phase81_mailbox_bytes()
             + self._pack_phase88_mailbox_bytes()
+            + self._pack_phase95_mailbox_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -5788,6 +6402,13 @@ class FX6LiveGpe0Session:
             if parsed_rtmd is not None:
                 self.rtmd_0xe304_ibis_lock = parsed_rtmd
                 self.ibis_idx = RTMD_0XE304_MODES.index(parsed_rtmd)
+                rtmd_to_p95 = {
+                    "ACTIVE_5AXIS": "Active",
+                    "OFF_CENTER_LOCKED": "Center_Lock_Gyroflow",
+                    "STANDARD": "Standard",
+                }
+                self.ibis_mode = rtmd_to_p95.get(parsed_rtmd, self.ibis_mode)
+            self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
 
             if not self.xlr_handle_attached:
                 self.last_toast = "P11 0x91db059b: XLR-H1 detached -> CH1/2 auto-fallback to Internal Stereo Mic"
@@ -5947,6 +6568,7 @@ class FX6LiveGpe0Session:
                             self.sq_enabled = False
                         self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
                         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+                        self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
                     elif key == "ei":
                         ei_map = [
                             ("800", 800),
@@ -6010,6 +6632,13 @@ class FX6LiveGpe0Session:
                 elif key == "ibis":
                     self.ibis_idx = new_idx
                     self.rtmd_0xe304_ibis_lock = RTMD_0XE304_MODES[new_idx % len(RTMD_0XE304_MODES)]
+                    rtmd_to_p95 = {
+                        "ACTIVE_5AXIS": "Active",
+                        "OFF_CENTER_LOCKED": "Center_Lock_Gyroflow",
+                        "STANDARD": "Standard",
+                    }
+                    self.ibis_mode = rtmd_to_p95.get(self.rtmd_0xe304_ibis_lock, self.ibis_mode)
+                    self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
                     self.last_toast = f"{spec['label']}: {presets[new_idx]} (RTMD 0xE304={self.rtmd_0xe304_ibis_lock})"
                 else:
                     if not self.xlr_handle_attached:
@@ -6151,8 +6780,10 @@ class FX6LiveGpe0Session:
                 self.peaking_mode = updates["peaking_mode"]
             if "desqueeze" in updates:
                 self.desqueeze = updates["desqueeze"]
+                self.squeeze_factor = _parse_desqueeze_factor_from_str(self.desqueeze)
             self.last_letterbox_ignored = False
             self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+            self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
             self.last_toast = (
                 f"Assist Tools: Marker={self.aspect_marker}, Zebra={self.zebra_mode}, "
                 f"Peaking={self.peaking_mode}, Desqueeze={self.desqueeze}"
@@ -6267,6 +6898,7 @@ class FX6LiveGpe0Session:
         self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+        self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -6441,8 +7073,15 @@ class FX6LiveGpe0Session:
             ce = self.get_cine_exposure()
             cm = self.get_color_and_media()
             smi = self.get_shotmark_and_iris()
+            ga = self.get_gyroflow_anamorphic()
             active_user = self._active_user_lut_for_color()
-        xml_text = build_nrtm_xml_sidecar(ce, cm, active_user_lut=active_user, shotmark_and_iris=smi)
+        xml_text = build_nrtm_xml_sidecar(
+            ce,
+            cm,
+            active_user_lut=active_user,
+            shotmark_and_iris=smi,
+            gyroflow_anamorphic=ga,
+        )
         return {
             "ok": True,
             "filename": cm["sidecar_xml_name"],
@@ -6457,6 +7096,7 @@ class FX6LiveGpe0Session:
             "color_and_media": cm,
             "cine_exposure": ce,
             "shotmark_and_iris": smi,
+            "gyroflow_anamorphic": ga,
         }
 
     def get_touch_focus_ciz(self) -> dict[str, Any]:
@@ -6473,6 +7113,7 @@ class FX6LiveGpe0Session:
             },
             aspect_marker=self.aspect_marker,
             desqueeze=self.desqueeze,
+            squeeze_factor=self.squeeze_factor,
             zebra_mode=self.zebra_mode,
             base_look=self.base_look,
             wired_io_mode=self.wired_io_mode,
@@ -6502,6 +7143,7 @@ class FX6LiveGpe0Session:
             self.zoom_rocker_speed = int(updates["zoom_rocker_speed"])
         self.last_letterbox_ignored = bool(updates.get("_letterbox_ignored", False))
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+        self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
 
     def set_touch_focus_ciz(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -6520,6 +7162,7 @@ class FX6LiveGpe0Session:
                 current_state=cur,
                 aspect_marker=self.aspect_marker,
                 desqueeze=self.desqueeze,
+                squeeze_factor=self.squeeze_factor,
             )
             if not ok:
                 return err or {"ok": False, "error": "invalid_touch_focus_ciz"}
@@ -6654,6 +7297,131 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def get_gyroflow_anamorphic(self) -> dict[str, Any]:
+        state = compute_gyroflow_anamorphic_derived(
+            {
+                "squeeze_factor": self.squeeze_factor,
+                "ibis_mode": self.ibis_mode,
+                "anamorphic_fallback_mode": self.anamorphic_fallback_mode,
+                "ref_tone_enabled": self.ref_tone_enabled,
+                "color_bars_enabled": self.color_bars_enabled,
+                "limiter_enabled": self.limiter_enabled,
+            },
+            base_fps=self.base_fps,
+            sq_enabled=self.sq_enabled,
+            sq_fps=self.sq_fps,
+            rec_state=self.rec_state,
+            touch_x=self.touch_x,
+            touch_y=self.touch_y,
+            audio_ch_db=self.audio_ch_db,
+        )
+        state["gyroflow_anamorphic_cmd"] = format_gyroflow_anamorphic_command(state)
+        return state
+
+    def _apply_gyroflow_anamorphic_updates_locked(self, updates: dict[str, Any]) -> None:
+        if "squeeze_factor" in updates:
+            self.squeeze_factor = float(updates["squeeze_factor"])
+            self.desqueeze = squeeze_factor_to_assist_desqueeze(self.squeeze_factor)
+        if "ibis_mode" in updates:
+            self.ibis_mode = str(updates["ibis_mode"])
+        if "anamorphic_fallback_mode" in updates:
+            self.anamorphic_fallback_mode = str(updates["anamorphic_fallback_mode"])
+        if "ref_tone_enabled" in updates:
+            self.ref_tone_enabled = bool(updates["ref_tone_enabled"])
+        if "color_bars_enabled" in updates:
+            self.color_bars_enabled = bool(updates["color_bars_enabled"])
+        if "limiter_enabled" in updates:
+            self.limiter_enabled = bool(updates["limiter_enabled"])
+
+        ga = self.get_gyroflow_anamorphic()
+        if any(k in updates for k in ("ibis_mode", "squeeze_factor", "anamorphic_fallback_mode", "reset")):
+            eff_ibis = ga["effective_ibis_mode"]
+            if eff_ibis in ("Off", "Center_Lock_Gyroflow"):
+                self.rtmd_0xe304_ibis_lock = "OFF_CENTER_LOCKED"
+                self.ibis_idx = RTMD_0XE304_MODES.index("OFF_CENTER_LOCKED")
+            elif eff_ibis in ("Standard", "Anamorphic_Asymmetric"):
+                self.rtmd_0xe304_ibis_lock = "STANDARD"
+                self.ibis_idx = RTMD_0XE304_MODES.index("STANDARD")
+            else:
+                self.rtmd_0xe304_ibis_lock = "ACTIVE_5AXIS"
+                self.ibis_idx = RTMD_0XE304_MODES.index("ACTIVE_5AXIS")
+
+        self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+        self.last_gyroflow_anamorphic_cmd = ga["gyroflow_anamorphic_cmd"]
+
+    def set_gyroflow_anamorphic(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "squeeze_factor": self.squeeze_factor,
+                "ibis_mode": self.ibis_mode,
+                "anamorphic_fallback_mode": self.anamorphic_fallback_mode,
+                "ref_tone_enabled": self.ref_tone_enabled,
+                "color_bars_enabled": self.color_bars_enabled,
+                "limiter_enabled": self.limiter_enabled,
+            }
+            ok, updates, err = validate_gyroflow_anamorphic_patch(body, current_state=cur)
+            if not ok:
+                return err or {"ok": False, "error": "invalid_gyroflow_anamorphic"}
+
+            # Optional synchronized Touch-AF coordinate update inside /api/gyroflow_anamorphic
+            tfc_updates: dict[str, Any] = {}
+            if isinstance(body, dict) and any(
+                k in body and body[k] is not None for k in ("desqueezed_touch_x", "touch_x", "touch_y")
+            ):
+                next_sq = float(updates.get("squeeze_factor", self.squeeze_factor))
+                next_dsq = squeeze_factor_to_assist_desqueeze(next_sq)
+                tfc_payload = {
+                    k: body[k]
+                    for k in ("desqueezed_touch_x", "touch_x", "touch_y", "coordinate_space", "touch_af_mode")
+                    if k in body and body[k] is not None
+                }
+                cur_tfc = {
+                    "touch_af_mode": self.touch_af_mode,
+                    "touch_x": self.touch_x,
+                    "touch_y": self.touch_y,
+                    "focus_mag": self.focus_mag,
+                    "false_color_mode": self.false_color_mode,
+                    "ciz_scale": self.ciz_scale,
+                    "ciz_res_mode": self.ciz_res_mode,
+                    "zoom_rocker_speed": self.zoom_rocker_speed,
+                }
+                ok_tfc, tfc_updates, err_tfc = validate_touch_focus_ciz_patch(
+                    tfc_payload,
+                    current_state=cur_tfc,
+                    aspect_marker=self.aspect_marker,
+                    desqueeze=next_dsq,
+                    squeeze_factor=next_sq,
+                )
+                if not ok_tfc:
+                    return err_tfc or {"ok": False, "error": "invalid_touch_focus_ciz"}
+
+            self._apply_gyroflow_anamorphic_updates_locked(updates)
+            if tfc_updates:
+                self._apply_touch_focus_ciz_updates_locked(tfc_updates)
+            ga = self.get_gyroflow_anamorphic()
+            tone_tag = (
+                "TONE:INHIB(REC)"
+                if ga["ref_tone_inhibited_by_rec"]
+                else ("TONE:1kHz@-20dB" if ga["ref_tone_effective_active"] else "TONE:OFF")
+            )
+            self.last_toast = (
+                f"Phase95: DSQ {ga['squeeze_display']} | IBIS={ga['effective_ibis_mode']}"
+                f"(yaw={ga['horizontal_yaw_gain']:.2f}) | GYRO={ga['imu_samples_per_frame']:.1f}/f "
+                f"{ga['rolling_shutter_skew_ms']:.1f}ms [{ga['rtmd_status']}] | {tone_tag} | "
+                f"LIM={'ON' if ga['limiter_enabled'] else 'OFF'}"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "gyroflow_anamorphic": ga,
+                "gyroflow_anamorphic_cmd": ga["gyroflow_anamorphic_cmd"],
+                "touch_focus_ciz": self.get_touch_focus_ciz(),
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
     def get_scope_stats(self, refresh: bool = False) -> dict[str, Any]:
         if self.is_running() and self.live_ready and not self.crashed and (refresh or len(self.last_raw_gpe0) < GPE0_BYTES):
             self._capture_live_gpe0_with_raw()
@@ -6699,6 +7467,7 @@ class FX6LiveGpe0Session:
             "color_and_media": self.get_color_and_media(),
             "touch_focus_ciz": self.get_touch_focus_ciz(),
             "shotmark_and_iris": self.get_shotmark_and_iris(),
+            "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -6945,11 +7714,27 @@ class FX6LiveGpe0Session:
             if not ok_cm:
                 return err_cm or {"ok": False, "error": "invalid_color_and_media"}
 
+        ga_raw = payload.get("gyroflow_anamorphic")
+        new_ga_updates: dict[str, Any] = {}
+        if ga_raw is not None:
+            cur_ga = {
+                "squeeze_factor": self.squeeze_factor,
+                "ibis_mode": self.ibis_mode,
+                "anamorphic_fallback_mode": self.anamorphic_fallback_mode,
+                "ref_tone_enabled": self.ref_tone_enabled,
+                "color_bars_enabled": self.color_bars_enabled,
+                "limiter_enabled": self.limiter_enabled,
+            }
+            ok_ga, new_ga_updates, err_ga = validate_gyroflow_anamorphic_patch(ga_raw, current_state=cur_ga)
+            if not ok_ga:
+                return err_ga or {"ok": False, "error": "invalid_gyroflow_anamorphic"}
+
         tfc_raw = payload.get("touch_focus_ciz")
         new_tfc_updates: dict[str, Any] = {}
         if tfc_raw is not None:
             eff_aspect = new_assist_updates.get("aspect_marker", self.aspect_marker)
             eff_desqueeze = new_assist_updates.get("desqueeze", self.desqueeze)
+            eff_sq_f = new_ga_updates.get("squeeze_factor", self.squeeze_factor)
             cur_tfc = {
                 "touch_af_mode": self.touch_af_mode,
                 "touch_x": self.touch_x,
@@ -6965,6 +7750,7 @@ class FX6LiveGpe0Session:
                 current_state=cur_tfc,
                 aspect_marker=eff_aspect,
                 desqueeze=eff_desqueeze,
+                squeeze_factor=eff_sq_f,
             )
             if not ok_tfc:
                 return err_tfc or {"ok": False, "error": "invalid_touch_focus_ciz"}
@@ -7083,6 +7869,7 @@ class FX6LiveGpe0Session:
                 self.peaking_mode = new_assist_updates["peaking_mode"]
             if "desqueeze" in new_assist_updates:
                 self.desqueeze = new_assist_updates["desqueeze"]
+                self.squeeze_factor = _parse_desqueeze_factor_from_str(self.desqueeze)
 
             for idx, val in new_ch_db.items():
                 self.audio_ch_db[idx] = val
@@ -7108,6 +7895,8 @@ class FX6LiveGpe0Session:
 
             self.p12_bk4_airplane_mode_locked = True  # P12 BK4 Airplane-Mode shadow lock always enforced!
             self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+            if new_ga_updates:
+                self._apply_gyroflow_anamorphic_updates_locked(new_ga_updates)
             if new_tfc_updates:
                 self._apply_touch_focus_ciz_updates_locked(new_tfc_updates)
             else:
@@ -7116,6 +7905,7 @@ class FX6LiveGpe0Session:
                 self._apply_shotmark_and_iris_updates_locked(new_smi_updates)
             else:
                 self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+            self.last_gyroflow_anamorphic_cmd = format_gyroflow_anamorphic_command(self.get_gyroflow_anamorphic())
 
             if p4_rejected:
                 self.last_toast = (
@@ -7158,6 +7948,7 @@ class FX6LiveGpe0Session:
                 "color_and_media": self.get_color_and_media(),
                 "touch_focus_ciz": self.get_touch_focus_ciz(),
                 "shotmark_and_iris": self.get_shotmark_and_iris(),
+                "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -7844,6 +8635,7 @@ class FX6LiveGpe0Session:
             "color_and_media": self.get_color_and_media(),
             "touch_focus_ciz": self.get_touch_focus_ciz(),
             "shotmark_and_iris": self.get_shotmark_and_iris(),
+            "gyroflow_anamorphic": self.get_gyroflow_anamorphic(),
             "serial_tail": serial_tail,
         }
 
@@ -8643,6 +9435,88 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p88-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">SMRK_IRIS ...</div>
     </div>
 
+    <div class="card" id="phase95-gyroflow-anamorphic-card" style="margin-top:14px;border-color:#06b6d4;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p95-card-title" style="margin:0;">Phase 95 · 变形镜头 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基准音与 -3dB 限幅器</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p95-lang-en" onclick="setP95Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p95-lang-zh-CN" onclick="setP95Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#22d3ee;">简体中文</button>
+          <button id="p95-lang-zh-TW" onclick="setP95Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p95-lang-ja" onclick="setP95Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p95-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p95-arbitration-banner" style="display:none;background:#083344;border:1px solid #22d3ee;color:#cffafe;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+      <div id="p95-sq-warn-banner" style="display:none;background:#450a0a;border:1px solid #f87171;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#0891b2;">
+          <div class="cparam-head"><span id="p95-lbl-anamorphic">Anamorphic &amp; IBIS Arbitrator</span><span id="p95-sq-readout" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">1.00x · Standard</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p95-squeeze-select" onchange="setGyroflowAnamorphic({squeeze_factor: Number(this.value)})" style="width:36%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="1.0">1.00x</option>
+              <option value="1.3">1.30x</option>
+              <option value="1.33">1.33x</option>
+              <option value="1.5">1.50x</option>
+              <option value="1.8">1.80x</option>
+              <option value="2.0">2.00x</option>
+            </select>
+            <select id="p95-ibis-select" onchange="setGyroflowAnamorphic({ibis_mode: this.value})" style="width:64%;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="Off">Off</option>
+              <option value="Standard">Standard (5-Axis)</option>
+              <option value="Active">Active (Auto-Arbitrated &gt;1.0x)</option>
+              <option value="Anamorphic_Asymmetric">Anamorphic Asymmetric (1/Sq Yaw)</option>
+              <option value="Center_Lock_Gyroflow">Center-Lock 0x0400 (Gyroflow)</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:4px;align-items:center;margin-bottom:5px;">
+            <span id="p95-lbl-fallback" style="font-size:10px;color:#94a3b8;">Fallback:</span>
+            <select id="p95-fallback-select" onchange="setGyroflowAnamorphic({anamorphic_fallback_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:3px;font-size:10.5px;">
+              <option value="Anamorphic_Asymmetric">Anamorphic_Asymmetric</option>
+              <option value="Center_Lock_Gyroflow">Center_Lock_Gyroflow (0x0400)</option>
+            </select>
+          </div>
+          <div id="p95-yaw-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">Yaw Gain: 1.0000 | Pitch: 1.0000 | Center-Lock: OFF</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#0e7490;">
+          <div class="cparam-head"><span id="p95-lbl-gyro">Gyroflow 2000Hz RTMD &amp; Skew</span><span id="p95-rtmd-badge" style="color:#10b981;font-family:'SF Mono',Menlo,monospace;">RTMD_READY</span></div>
+          <div id="p95-imu-readout" style="font-size:10.5px;color:#e2e8f0;font-family:'SF Mono',Menlo,monospace;margin-bottom:4px;">2000 Hz · 83.4 samples/frame @ 23.98p</div>
+          <div id="p95-skew-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;margin-bottom:6px;">IMX510 Skew: 8.7ms | Wobble Safe: false</div>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <input id="p95-dsq-touchx-input" type="number" min="0" max="1919" value="480" title="Desqueezed Touch X" style="width:74px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p95-btn-sync-af" onclick="applyPhase95DesqueezedTouch()" style="flex:1;padding:3px 6px;font-size:10.5px;border-color:#22d3ee;">Sync Touch-AF X</button>
+          </div>
+          <div id="p95-touchaf-sync-readout" style="margin-top:4px;font-size:9.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">Touch-AF: sensor=480 (dsq=480, scale=1.0000)</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#6d28d9;">
+          <div class="cparam-head"><span id="p95-lbl-tone">1kHz -20dBFS Tone &amp; SMPTE Bars</span><span id="p95-tone-badge" style="color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">OFF</span></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+            <button id="p95-btn-tone-toggle" onclick="togglePhase95RefTone()" style="padding:4px 8px;font-size:11px;border-color:#a78bfa;color:#ddd6fe;">1kHz -20dBFS: OFF</button>
+            <button id="p95-btn-bars-toggle" onclick="togglePhase95ColorBars()" style="padding:4px 8px;font-size:11px;border-color:#38bdf8;color:#bae6fd;">SMPTE Bars: OFF</button>
+          </div>
+          <div id="p95-tone-status-readout" style="font-size:10px;color:#cbd5e1;font-family:'SF Mono',Menlo,monospace;">STBY Ready · Auto-inhibited on REC tally</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#15803d;">
+          <div class="cparam-head"><span id="p95-lbl-limiter">4-Ch 24-bit -3.0dBFS Peak Limiter</span><span id="p95-lim-badge" style="color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">OFF</span></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+            <button id="p95-btn-lim-toggle" onclick="togglePhase95Limiter()" style="padding:4px 8px;font-size:11px;border-color:#10b981;color:#a7f3d0;">Limiter -3.0dBFS: OFF</button>
+            <button id="p95-btn-reset" onclick="setGyroflowAnamorphic({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P95</button>
+          </div>
+          <div id="p95-lim-ch-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">Eff Ch: -12/-12/-18/-18 dB | Clamped: 0/4</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p95-preset-2x-asym" onclick="setGyroflowAnamorphic({squeeze_factor:2.0,ibis_mode:'Active',anamorphic_fallback_mode:'Anamorphic_Asymmetric'})" style="border-color:#22d3ee;color:#a5f3fc;">2.0x Active -> Anamorphic_Asymmetric (50% Yaw)</button>
+        <button id="p95-preset-18x-ctrlock" onclick="setGyroflowAnamorphic({squeeze_factor:1.8,ibis_mode:'Active',anamorphic_fallback_mode:'Center_Lock_Gyroflow'})" style="border-color:#f59e0b;color:#fde68a;">1.8x Active -> 0x0400 Center-Lock (Gyroflow)</button>
+        <button id="p95-preset-tone-bars" onclick="setGyroflowAnamorphic({ref_tone_enabled:true,color_bars_enabled:true,limiter_enabled:true})" style="border-color:#a78bfa;color:#ddd6fe;">Calibrate: 1kHz -20dBFS + Bars + Limiter</button>
+      </div>
+      <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
+    </div>
+
     <div class="card" style="margin-top:14px;">
       <h3>Cinema Line 实时参数调节面板 (/api/cinema_param · Big-6 + HUD + P4/P11 硬件契约)</h3>
       <div id="param-toast" class="param-toast"></div>
@@ -9114,7 +9988,9 @@ async function updateUI(st, forceImg) {
   if (pkSel && at.peaking_mode && document.activeElement !== pkSel) pkSel.value = at.peaking_mode;
   const dsqSel = document.getElementById('assist-desqueeze-select');
   if (dsqSel && at.desqueeze && document.activeElement !== dsqSel) dsqSel.value = at.desqueeze;
-  applyDesqueezePreview(at.desqueeze || '1.0x');
+  const ga = st.gyroflow_anamorphic || null;
+  const previewSq = (ga && ga.squeeze_display) || at.desqueeze || '1.0x';
+  applyDesqueezePreview(previewSq);
 
   if (st.cine_exposure) {
     syncCineExposureUI(st.cine_exposure);
@@ -9127,6 +10003,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.shotmark_and_iris) {
     syncShotmarkIrisUI(st.shotmark_and_iris);
+  }
+  if (st.gyroflow_anamorphic) {
+    syncGyroflowAnamorphicUI(st.gyroflow_anamorphic);
   }
 
   if (forceImg || st.live_ready) {
@@ -9648,27 +10527,30 @@ function applyDesqueezePreview(desq) {
   const wrap = document.getElementById('screen-wrap');
   const img = document.getElementById('gpe0-img');
   const btn = document.getElementById('btn-desqueeze-preview');
+  const label = desq || '1.0x';
   if (btn) {
     btn.textContent = desqueezePreviewEnabled
-      ? `Anamorphic CSS Preview: ON (${desq})`
-      : `Anamorphic CSS Preview: OFF (${desq})`;
+      ? `Anamorphic CSS Preview: ON (${label})`
+      : `Anamorphic CSS Preview: OFF (${label})`;
   }
   if (!wrap || !img) return;
-  if (!desqueezePreviewEnabled || desq === '1.0x') {
+  const num = parseFloat(String(label).replace('x', '')) || 1.0;
+  if (!desqueezePreviewEnabled || num <= 1.01) {
     wrap.style.aspectRatio = '1024 / 540';
     img.style.objectFit = 'fill';
-  } else if (desq === '1.33x') {
-    wrap.style.aspectRatio = '1362 / 540';
-    img.style.objectFit = 'fill';
-  } else if (desq === '2.0x') {
-    wrap.style.aspectRatio = '2048 / 540';
+  } else {
+    const w = Math.round(1024 * num);
+    wrap.style.aspectRatio = `${w} / 540`;
     img.style.objectFit = 'fill';
   }
 }
 
 function toggleDesqueezePreview() {
   desqueezePreviewEnabled = !desqueezePreviewEnabled;
-  const cur = (currentStatus && currentStatus.assist_tools && currentStatus.assist_tools.desqueeze) || '1.0x';
+  const cur =
+    (currentStatus && currentStatus.gyroflow_anamorphic && currentStatus.gyroflow_anamorphic.squeeze_display) ||
+    (currentStatus && currentStatus.assist_tools && currentStatus.assist_tools.desqueeze) ||
+    '1.0x';
   applyDesqueezePreview(cur);
 }
 
@@ -10363,6 +11245,266 @@ async function importFx6FleetCamsetPreset() {
   }
 }
 
+let p95Lang = 'zh-CN';
+const P95_I18N = {
+  'en': {
+    title: 'Phase 95 · Anamorphic IBIS Arbitrator / Gyroflow 2000Hz RTMD / 1kHz -20dBFS Tone & -3dB Limiter',
+    anamorphic: 'Anamorphic & IBIS Arbitrator',
+    fallback: 'Fallback:',
+    gyro: 'Gyroflow 2000Hz RTMD & Skew',
+    syncAf: 'Sync Touch-AF X',
+    tone: '1kHz -20dBFS Tone & SMPTE Bars',
+    limiter: '4-Ch 24-bit -3.0dBFS Peak Limiter',
+    reset: 'Reset P95',
+    preset2x: '2.0x Active -> Anamorphic_Asymmetric (50% Yaw)',
+    preset18x: '1.8x Active -> 0x0400 Center-Lock (Gyroflow)',
+    presetTone: 'Calibrate: 1kHz -20dBFS + Bars + Limiter'
+  },
+  'zh-CN': {
+    title: 'Phase 95 · 变形镜头 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基准音与 -3dB 限幅器',
+    anamorphic: '变形反挤压 & IBIS 仲裁器',
+    fallback: '仲裁回退:',
+    gyro: 'Gyroflow 2000Hz 陀螺仪 & 卷帘果冻',
+    syncAf: '反挤压触控对焦 X',
+    tone: '1kHz -20dBFS 测试音与彩条',
+    limiter: '4路 24-bit -3.0dBFS 软拐点限幅器',
+    reset: '重置 P95',
+    preset2x: '2.0x Active -> 变形非对称水平减半',
+    preset18x: '1.8x Active -> 0x0400 居中锁定 (Gyroflow)',
+    presetTone: '校准: 1kHz -20dBFS + SMPTE 彩条 + 限幅'
+  },
+  'zh-TW': {
+    title: 'Phase 95 · 變形鏡頭 IBIS 仲裁 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基準音與 -3dB 限幅器',
+    anamorphic: '變形反擠壓 & IBIS 仲裁器',
+    fallback: '仲裁回退:',
+    gyro: 'Gyroflow 2000Hz 陀螺儀 & 捲簾果凍',
+    syncAf: '反擠壓觸控對焦 X',
+    tone: '1kHz -20dBFS 測試音與彩條',
+    limiter: '4路 24-bit -3.0dBFS 軟拐點限幅器',
+    reset: '重置 P95',
+    preset2x: '2.0x Active -> 變形非對稱水平減半',
+    preset18x: '1.8x Active -> 0x0400 置中鎖定 (Gyroflow)',
+    presetTone: '校準: 1kHz -20dBFS + SMPTE 彩條 + 限幅'
+  },
+  'ja': {
+    title: 'Phase 95 · アナモルフィック IBIS 調停 / Gyroflow 2000Hz RTMD / 1kHz -20dBFS 基準音・-3dB リミッター',
+    anamorphic: 'アナモルフィック & IBIS 調停',
+    fallback: '調停先:',
+    gyro: 'Gyroflow 2000Hz IMU & ローリング歪み',
+    syncAf: '逆スクイーズ Touch-AF X',
+    tone: '1kHz -20dBFS テストトーン & カラーバー',
+    limiter: '4ch 24-bit -3.0dBFS リミッター',
+    reset: 'P95 リセット',
+    preset2x: '2.0x Active -> 非対称水平ゲイン (50% Yaw)',
+    preset18x: '1.8x Active -> 0x0400 センターロック (Gyroflow)',
+    presetTone: '校正: 1kHz -20dBFS + カラーバー + リミッター'
+  }
+};
+
+function setP95Lang(lang) {
+  if (!P95_I18N[lang]) return;
+  p95Lang = lang;
+  const d = P95_I18N[lang];
+  const map = {
+    'p95-card-title': d.title,
+    'p95-lbl-anamorphic': d.anamorphic,
+    'p95-lbl-fallback': d.fallback,
+    'p95-lbl-gyro': d.gyro,
+    'p95-btn-sync-af': d.syncAf,
+    'p95-lbl-tone': d.tone,
+    'p95-lbl-limiter': d.limiter,
+    'p95-btn-reset': d.reset,
+    'p95-preset-2x-asym': d.preset2x,
+    'p95-preset-18x-ctrlock': d.preset18x,
+    'p95-preset-tone-bars': d.presetTone
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map[id];
+  });
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((code) => {
+    const b = document.getElementById('p95-lang-' + code);
+    if (b) b.style.borderColor = (code === lang) ? '#22d3ee' : '#374151';
+  });
+}
+
+function syncGyroflowAnamorphicUI(ga) {
+  if (!ga) return;
+  const sqSel = document.getElementById('p95-squeeze-select');
+  const sqVal = Number(ga.squeeze_factor || 1.0);
+  const sqOpt = Math.abs(sqVal - 1.33) < 0.005 ? '1.33' : sqVal.toFixed(1);
+  if (sqSel && document.activeElement !== sqSel) sqSel.value = sqOpt;
+
+  const ibisSel = document.getElementById('p95-ibis-select');
+  if (ibisSel && ga.ibis_mode && document.activeElement !== ibisSel) ibisSel.value = ga.ibis_mode;
+
+  const fbSel = document.getElementById('p95-fallback-select');
+  if (fbSel && ga.anamorphic_fallback_mode && document.activeElement !== fbSel) {
+    fbSel.value = ga.anamorphic_fallback_mode;
+  }
+
+  const sqRo = document.getElementById('p95-sq-readout');
+  if (sqRo) {
+    sqRo.textContent = `${ga.squeeze_display || '1.00x'} · ${ga.effective_ibis_mode || 'Standard'}`;
+  }
+  const yawRo = document.getElementById('p95-yaw-readout');
+  if (yawRo) {
+    yawRo.textContent =
+      `Yaw Gain: ${Number(ga.horizontal_yaw_gain || 1.0).toFixed(4)} | ` +
+      `Pitch: ${Number(ga.vertical_pitch_gain || 1.0).toFixed(4)} | ` +
+      `Center-Lock: ${ga.center_lock_0x0400 ? '0x0400 ON' : 'OFF'}`;
+  }
+
+  const arbBanner = document.getElementById('p95-arbitration-banner');
+  if (arbBanner) {
+    if (ga.ibis_arbitrated) {
+      arbBanner.style.display = 'block';
+      arbBanner.textContent =
+        `[Anamorphic IBIS Arbitrator] ${ga.arbitration_reason || 'Active IBIS arbitrated to prevent edge wobble'} ` +
+        `(yaw=${Number(ga.horizontal_yaw_gain || 1.0).toFixed(4)})`;
+    } else {
+      arbBanner.style.display = 'none';
+    }
+  }
+
+  const sqWarn = document.getElementById('p95-sq-warn-banner');
+  if (sqWarn) {
+    if (ga.rtmd_suspended_by_sq || ga.ref_tone_inhibited_by_rec) {
+      sqWarn.style.display = 'block';
+      const parts = [];
+      if (ga.rtmd_suspended_by_sq) parts.push('S&Q VFR active: RTMD_SUSPENDED_BY_SQ (Gyroflow metadata paused)');
+      if (ga.ref_tone_inhibited_by_rec) parts.push('REC tally active: 1kHz -20dBFS Reference Tone auto-inhibited');
+      sqWarn.textContent = parts.join(' | ');
+    } else {
+      sqWarn.style.display = 'none';
+    }
+  }
+
+  const rtmdBadge = document.getElementById('p95-rtmd-badge');
+  if (rtmdBadge) {
+    rtmdBadge.textContent = ga.rtmd_status || 'RTMD_READY';
+    rtmdBadge.style.color = ga.rtmd_suspended_by_sq ? '#f87171' : '#10b981';
+  }
+  const imuRo = document.getElementById('p95-imu-readout');
+  if (imuRo) {
+    imuRo.textContent =
+      `${ga.imu_rate_hz || 2000} Hz · ${Number(ga.imu_samples_per_frame || 83.4).toFixed(1)} samples/frame @ ${Number(ga.effective_fps || 23.98).toFixed(2)}p`;
+  }
+  const skewRo = document.getElementById('p95-skew-readout');
+  if (skewRo) {
+    skewRo.textContent =
+      `IMX510 Skew: ${Number(ga.rolling_shutter_skew_ms || 8.7).toFixed(1)}ms | ` +
+      `Wobble Safe: ${ga.anamorphic_edge_wobble_prevented ? 'true' : 'false'}`;
+  }
+  const afRo = document.getElementById('p95-touchaf-sync-readout');
+  if (afRo) {
+    afRo.textContent =
+      `Touch-AF: sensor=${ga.touch_x ?? 480} ` +
+      `(dsq=${ga.desqueezed_touch_x ?? 480}, scale=${Number(ga.touch_af_inverse_desqueeze_scale || 1.0).toFixed(4)})`;
+  }
+
+  const toneBadge = document.getElementById('p95-tone-badge');
+  if (toneBadge) {
+    if (ga.ref_tone_inhibited_by_rec) {
+      toneBadge.textContent = 'INHIBITED (REC)';
+      toneBadge.style.color = '#f87171';
+    } else if (ga.ref_tone_effective_active || ga.color_bars_effective_active) {
+      toneBadge.textContent =
+        `${ga.ref_tone_effective_active ? '1kHz -20dBFS' : 'TONE:OFF'}${ga.color_bars_effective_active ? ' + BARS' : ''}`;
+      toneBadge.style.color = '#a78bfa';
+    } else {
+      toneBadge.textContent = 'OFF';
+      toneBadge.style.color = '#94a3b8';
+    }
+  }
+  const btnTone = document.getElementById('p95-btn-tone-toggle');
+  if (btnTone) {
+    btnTone.textContent = ga.ref_tone_inhibited_by_rec
+      ? '1kHz -20dBFS: INHIBITED (REC)'
+      : `1kHz -20dBFS: ${ga.ref_tone_enabled ? 'ON' : 'OFF'}`;
+  }
+  const btnBars = document.getElementById('p95-btn-bars-toggle');
+  if (btnBars) {
+    btnBars.textContent = `SMPTE Bars: ${ga.color_bars_enabled ? 'ON' : 'OFF'}`;
+  }
+  const toneRo = document.getElementById('p95-tone-status-readout');
+  if (toneRo) {
+    toneRo.textContent = ga.ref_tone_inhibited_by_rec
+      ? 'REC Tally Active · Test tone suppressed to protect live take'
+      : (ga.ref_tone_effective_active
+          ? 'Active: 1000 Hz @ -20.0 dBFS injected on Ch1-4 (STBY)'
+          : 'STBY Ready · Auto-inhibited on REC tally');
+  }
+
+  const limBadge = document.getElementById('p95-lim-badge');
+  if (limBadge) {
+    limBadge.textContent = ga.limiter_enabled ? (ga.limiter_engaging ? '-3.0dBFS CLAMP' : '-3.0dBFS ON') : 'OFF';
+    limBadge.style.color = ga.limiter_engaging ? '#f59e0b' : (ga.limiter_enabled ? '#10b981' : '#94a3b8');
+  }
+  const btnLim = document.getElementById('p95-btn-lim-toggle');
+  if (btnLim) {
+    btnLim.textContent = `Limiter -3.0dBFS: ${ga.limiter_enabled ? 'ON' : 'OFF'}`;
+  }
+  const limRo = document.getElementById('p95-lim-ch-readout');
+  if (limRo) {
+    const chs = Array.isArray(ga.effective_ch_db) ? ga.effective_ch_db.join('/') : '-12/-12/-18/-18';
+    const clampCnt = Array.isArray(ga.ch_clamped) ? ga.ch_clamped.filter(Boolean).length : 0;
+    limRo.textContent = `Eff Ch: ${chs} dB | Clamped: ${clampCnt}/4`;
+  }
+
+  const cmdEl = document.getElementById('p95-cmd-readout');
+  if (cmdEl) cmdEl.textContent = ga.gyroflow_anamorphic_cmd || 'GYRO_ANA ...';
+}
+
+async function setGyroflowAnamorphic(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p95-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/gyroflow_anamorphic', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Invalid gyroflow_anamorphic parameter';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase95DesqueezedTouch() {
+  const dx = Number((document.getElementById('p95-dsq-touchx-input') || {}).value || 480);
+  setGyroflowAnamorphic({desqueezed_touch_x: dx, coordinate_space: 'desqueezed', touch_af_mode: 'touch_tracking'});
+}
+
+function togglePhase95RefTone() {
+  const cur = !!(currentStatus && currentStatus.gyroflow_anamorphic && currentStatus.gyroflow_anamorphic.ref_tone_enabled);
+  setGyroflowAnamorphic({ref_tone_enabled: !cur});
+}
+
+function togglePhase95ColorBars() {
+  const cur = !!(currentStatus && currentStatus.gyroflow_anamorphic && currentStatus.gyroflow_anamorphic.color_bars_enabled);
+  setGyroflowAnamorphic({color_bars_enabled: !cur});
+}
+
+function togglePhase95Limiter() {
+  const cur = !!(currentStatus && currentStatus.gyroflow_anamorphic && currentStatus.gyroflow_anamorphic.limiter_enabled);
+  setGyroflowAnamorphic({limiter_enabled: !cur});
+}
+
+setP95Lang('zh-CN');
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -10551,6 +11693,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/gyroflow_anamorphic":
+                    self._send_json({
+                        "ok": True,
+                        "gyroflow_anamorphic": session.get_gyroflow_anamorphic(),
+                        "specs": GYROFLOW_ANAMORPHIC_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -10600,6 +11750,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/assist_tools",
                     "/api/touch_focus_ciz",
                     "/api/shotmark_and_iris",
+                    "/api/gyroflow_anamorphic",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -10699,6 +11850,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/shotmark_and_iris":
                     res = session.set_shotmark_and_iris(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/gyroflow_anamorphic":
+                    res = session.set_gyroflow_anamorphic(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

@@ -56,6 +56,18 @@
  *              bits24..30=target_ire(41), bit31=valid)
  *     mb[42] = phase88_user_bits (SMPTE 12M 32-bit User-Bits e.g. 0xA0010001)
  *     mb[43] = 0x534d524b ('SMRK') Phase 88 ShotMark / Push Auto Iris / Safety Audio magic tag
+ *     mb[44] = phase95_anamorphic_ibis (bits0..2=squeeze_idx(0..5), bits3..5=eff_ibis_idx(0..4),
+ *              bits6..8=req_ibis_idx(0..4), bit9=ibis_arbitrated, bit10=center_lock_0x0400,
+ *              bits11..18=yaw_gain_pct(0..100), bits19..28=synced_touch_x(0..959),
+ *              bit29=desqueeze_touch_synced, bit30=edge_wobble_prevented, bit31=valid)
+ *     mb[45] = phase95_gyro_rtmd (bits0..11=imu_samples_x10, bits12..19=skew_ms_x10,
+ *              bits20..21=rtmd_status_idx(0=READY,1=CTR_LOCK,2=SUSP_SQ), bit22=rtmd_suspended_by_sq,
+ *              bit23=gyroflow_ready, bit24=fallback_center_lock, bits25..31=squeeze_x50)
+ *     mb[46] = phase95_tone_limiter (bit0=ref_tone_req, bit1=ref_tone_eff, bit2=ref_tone_inhibited,
+ *              bit3=color_bars_eff, bit4=limiter_en, bit5=limiter_engaging,
+ *              bits6..9=ch_clamped_mask, bits10..17=lim_thresh_x10(30), bits18..25=tone_dbfs(20),
+ *              bit31=valid)
+ *     mb[47] = 0x4759524f ('GYRO') Phase 95 Anamorphic IBIS / Gyroflow 2000Hz RTMD / 1kHz Tone magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1036,6 +1048,9 @@ static uint32_t g_live_p81_ciz_flags = 0x80000004u;   /* valid=1, rocker_speed=4
 static uint32_t g_live_p88_shotmark = 0u;             /* total=0, m1=0, m2=0, last_type=0, last_frame=0 */
 static uint32_t g_live_p88_iris_audio = 0xa9040118u;  /* valid=1, target_ire=41, pad=0, push=0, ae=0EV, multi, F2.8 */
 static uint32_t g_live_p88_user_bits = 0xa0010001u;   /* SMPTE 12M User-Bits A0:01:00:01 */
+static uint32_t g_live_p95_anamorphic_ibis = 0x8f032048u; /* valid=1, touch_x=480, yaw=100%, eff=Std, req=Std */
+static uint32_t g_live_p95_gyro_rtmd = 0x64857342u;       /* sq=1.0(50), ready=1, skew=8.7ms(87), imu=83.4(834) */
+static uint32_t g_live_p95_tone_limiter = 0x80507800u;    /* valid=1, tone=-20dBFS, lim=-3.0dBFS */
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -2912,6 +2927,164 @@ static void fx6_render_phase88_shotmark_iris_overlay(uint64_t appfw, uint32_t pa
     }
 }
 
+static void fx6_render_phase95_gyroflow_anamorphic_tone_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p95_anamorphic_ibis & 0x80000000u)) return;
+
+    static const char * const k_sq_lbl[6] = {
+        "1.00x", "1.30x", "1.33x", "1.50x", "1.80x", "2.00x"
+    };
+    static const char * const k_ibis_lbl[5] = {
+        "OFF", "STD", "ACT", "ASYM", "0x0400"
+    };
+
+    uint32_t sq_idx         = g_live_p95_anamorphic_ibis & 0x07u;
+    if (sq_idx > 5u) sq_idx = 0u;
+    uint32_t eff_ibis_idx   = (g_live_p95_anamorphic_ibis >> 3) & 0x07u;
+    if (eff_ibis_idx > 4u) eff_ibis_idx = 1u;
+    uint32_t ibis_arb       = (g_live_p95_anamorphic_ibis >> 9) & 0x01u;
+    uint32_t center_lock    = (g_live_p95_anamorphic_ibis >> 10) & 0x01u;
+    uint32_t yaw_gain_pct   = (g_live_p95_anamorphic_ibis >> 11) & 0xffu;
+    if (yaw_gain_pct > 100u) yaw_gain_pct = 100u;
+
+    uint32_t imu_x10        = g_live_p95_gyro_rtmd & 0xfffu;
+    if (imu_x10 == 0u) imu_x10 = 834u;
+    uint32_t skew_x10       = (g_live_p95_gyro_rtmd >> 12) & 0xffu;
+    if (skew_x10 == 0u) skew_x10 = 87u;
+    uint32_t rtmd_st_idx    = (g_live_p95_gyro_rtmd >> 20) & 0x03u;
+    uint32_t rtmd_susp_sq   = (g_live_p95_gyro_rtmd >> 22) & 0x01u;
+
+    uint32_t tone_req       = g_live_p95_tone_limiter & 0x01u;
+    uint32_t tone_eff       = (g_live_p95_tone_limiter >> 1) & 0x01u;
+    uint32_t tone_inhib     = (g_live_p95_tone_limiter >> 2) & 0x01u;
+    uint32_t bars_eff       = (g_live_p95_tone_limiter >> 3) & 0x01u;
+    uint32_t lim_en         = (g_live_p95_tone_limiter >> 4) & 0x01u;
+    uint32_t lim_eng        = (g_live_p95_tone_limiter >> 5) & 0x01u;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+    int non_default = (sq_idx > 0u || ibis_arb || center_lock || eff_ibis_idx >= 3u ||
+                       rtmd_susp_sq || tone_req || bars_eff || lim_en);
+    if (!is_shooting_page && !non_default) {
+        return;
+    }
+
+    /* 1. Anamorphic De-Squeeze Guide Frame (when squeeze > 1.0x) */
+    if (sq_idx > 0u) {
+        int gx0 = 20, gx1 = 1003;
+        int gy0 = (sq_idx >= 4u) ? 72 : 52;
+        int gy1 = (sq_idx >= 4u) ? 418 : 438;
+        uint32_t gcol = center_lock ? 0xF59E0Bu : 0x22D3EEu;
+        fx6_osd_blend_rect(gx0, gy0, gx1 - gx0 + 1, 2, gcol, 212u);
+        fx6_osd_blend_rect(gx0, gy1 - 1, gx1 - gx0 + 1, 2, gcol, 212u);
+        fx6_draw_corner_ticks(gx0, gy0, gx1, gy1, 20, 3, gcol, 240u);
+    }
+
+    /* 2. Pill 1 (Center-Top y=48): Anamorphic De-Squeeze + IBIS Arbitrator / Yaw-Gain */
+    int ax = 322, ay = 48, aw = 304, ah = 24;
+    uint32_t abg = center_lock ? 0xFF422006u : (ibis_arb ? 0xFF0E7490u : 0xFF0F172Au);
+    uint32_t abd = center_lock ? 0xFFF59E0Bu : (sq_idx > 0u ? 0xFF22D3EEu : 0xFF38BDF8u);
+    fx6_osd_fill_rect(ax, ay, aw, ah, abg);
+    fx6_osd_border_rect(ax, ay, aw, ah, abd);
+
+    /* Proportional horizontal yaw-gain micro-bar inside Pill 1 */
+    int bar_x = ax + 6, bar_y = ay + 18, bar_w = 48;
+    fx6_osd_fill_rect(bar_x, bar_y, bar_w, 3, 0xFF1E293Bu);
+    int fill_w = (int)((yaw_gain_pct * (uint32_t)bar_w) / 100u);
+    if (fill_w < 2 && yaw_gain_pct > 0u) fill_w = 2;
+    if (fill_w > bar_w) fill_w = bar_w;
+    if (fill_w > 0) {
+        fx6_osd_fill_rect(bar_x, bar_y, fill_w, 3, center_lock ? 0xFFF59E0Bu : 0xFF22D3EEu);
+    }
+
+    char ibis_lbl[56];
+    unsigned ip = 0u;
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "[DSQ ");
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), k_sq_lbl[sq_idx]);
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), " IBIS:");
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), k_ibis_lbl[eff_ibis_idx]);
+    if (center_lock) {
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), " CTR-LCK");
+    } else {
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), " YAW=");
+        ip = fx6_append_uint(ibis_lbl, ip, sizeof(ibis_lbl), yaw_gain_pct);
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "%");
+    }
+    if (ibis_arb) {
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "*");
+    }
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "]");
+    (void)ip;
+    fx6_render_string_text_styled(appfw, ax + 6, ay + 1, aw - 12, 18, ibis_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* 3. Pill 2 (Center y=76): Gyroflow 2000Hz RTMD Readiness & IMX510 Skew */
+    int gx = 322, gy = 76, gw = 304, gh = 24;
+    uint32_t gbg = rtmd_susp_sq ? 0xFF7F1D1Du : (rtmd_st_idx == 1u ? 0xFF064E3Bu : 0xFF0B192Cu);
+    uint32_t gbd = rtmd_susp_sq ? 0xFFEF4444u : (rtmd_st_idx == 1u ? 0xFF10B981u : 0xFF22D3EEu);
+    fx6_osd_fill_rect(gx, gy, gw, gh, gbg);
+    fx6_osd_border_rect(gx, gy, gw, gh, gbd);
+
+    char gyro_lbl[56];
+    unsigned gp = 0u;
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "[GYRO ");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), imu_x10 / 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), ".");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), imu_x10 % 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "/");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), skew_x10 / 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), ".");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), skew_x10 % 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "ms ");
+    if (rtmd_susp_sq) {
+        gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "SUSP_BY_SQ]");
+    } else if (rtmd_st_idx == 1u) {
+        gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "CTR_LOCKED]");
+    } else {
+        gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "RTMD_READY]");
+    }
+    (void)gp;
+    fx6_render_string_text_styled(appfw, gx + 6, gy + 2, gw - 12, 20, gyro_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* 4. Pill 3 (Center y=104): 1kHz -20dBFS Reference Tone / SMPTE Color Bars & 4-Ch Limiter */
+    if (tone_req || bars_eff || lim_en) {
+        int tx = 322, ty = 104, tw = 304, th = 24;
+        uint32_t tbg = tone_inhib ? 0xFF451A03u : ((tone_eff || bars_eff) ? 0xFF1E1B4Bu : 0xFF064E3Bu);
+        uint32_t tbd = tone_inhib ? 0xFFF59E0Bu : (lim_eng ? 0xFFEF4444u : (tone_eff ? 0xFFA78BFAu : 0xFF10B981u));
+        fx6_osd_fill_rect(tx, ty, tw, th, tbg);
+        fx6_osd_border_rect(tx, ty, tw, th, tbd);
+
+        if (bars_eff) {
+            static const uint32_t k_bars[7] = {
+                0xFFE5E7EBu, 0xFFFACC15u, 0xFF22D3EEu, 0xFF22C55Eu, 0xFFD946EFu, 0xFFEF4444u, 0xFF2563EBu
+            };
+            for (int b = 0; b < 7; b++) {
+                fx6_osd_fill_rect(tx + 244 + b * 8, ty + 4, 8, 16, k_bars[b]);
+            }
+        }
+
+        char tone_lbl[56];
+        unsigned tp = 0u;
+        if (tone_inhib) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[1kHz INHIBITED:REC");
+        } else if (tone_eff) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[1kHz -20dBFS TONE");
+        } else if (bars_eff) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[SMPTE BARS");
+        } else {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[AUDIO");
+        }
+        if (lim_en) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), lim_eng ? " LIM:-3dB!" : " LIM:-3dB");
+        }
+        tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "]");
+        (void)tp;
+        int lbl_w = bars_eff ? (tw - 68) : (tw - 12);
+        fx6_render_string_text_styled(appfw, tx + 6, ty + 2, lbl_w, 20, tone_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -2954,6 +3127,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p88_shotmark) * 1099511628211ULL;
     h = (h ^ g_live_p88_iris_audio) * 1099511628211ULL;
     h = (h ^ g_live_p88_user_bits) * 1099511628211ULL;
+    h = (h ^ g_live_p95_anamorphic_ibis) * 1099511628211ULL;
+    h = (h ^ g_live_p95_gyro_rtmd) * 1099511628211ULL;
+    h = (h ^ g_live_p95_tone_limiter) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -3143,6 +3319,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
     fx6_render_phase81_touchaf_falsecolor_ciz_overlay(appfw, page);
     fx6_render_phase88_shotmark_iris_overlay(appfw, page);
+    fx6_render_phase95_gyroflow_anamorphic_tone_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -3356,7 +3533,7 @@ void fx6_force_update(void) {
 
     uint32_t cell_vals[6] = { 0, 0, 0, 0, 0, 0 };
     if (mb) {
-        for (int i = 0; i < 44; i++) mb[i] = 0;
+        for (int i = 0; i < 48; i++) mb[i] = 0;
         mb[0] = 0x4658364cu; /* 'FX6L' */
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
@@ -3387,6 +3564,10 @@ void fx6_force_update(void) {
         mb[41] = 0xa9040118u;/* phase88_iris_audio: valid=1, ire=41, pad=0, push=0, ae=0, multi, F2.8 */
         mb[42] = 0xa0010001u;/* phase88_user_bits: A0:01:00:01 */
         mb[43] = 0x534d524bu;/* 'SMRK' */
+        mb[44] = 0x8f032048u;/* phase95_anamorphic_ibis: valid=1, touch_x=480, yaw=100%, eff=Std, req=Std */
+        mb[45] = 0x64857342u;/* phase95_gyro_rtmd: sq=1.0(50), ready=1, skew=8.7ms(87), imu=83.4(834) */
+        mb[46] = 0x80507800u;/* phase95_tone_limiter: valid=1, tone=-20dBFS, lim=-3.0dBFS */
+        mb[47] = 0x4759524fu;/* 'GYRO' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -3404,6 +3585,9 @@ void fx6_force_update(void) {
     g_live_p88_shotmark = 0u;
     g_live_p88_iris_audio = 0xa9040118u;
     g_live_p88_user_bits = 0xa0010001u;
+    g_live_p95_anamorphic_ibis = 0x8f032048u;
+    g_live_p95_gyro_rtmd = 0x64857342u;
+    g_live_p95_tone_limiter = 0x80507800u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -3419,10 +3603,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -3478,14 +3662,19 @@ void fx6_force_update(void) {
                 g_live_p88_iris_audio = mb[41];
                 g_live_p88_user_bits  = mb[42];
             }
+            if ((mb[44] & 0x80000000u) && (mb[46] & 0x80000000u) && mb[47] == 0x4759524fu) {
+                g_live_p95_anamorphic_ibis = mb[44];
+                g_live_p95_gyro_rtmd       = mb[45];
+                g_live_p95_tone_limiter    = mb[46];
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter);
         }
     }
 }

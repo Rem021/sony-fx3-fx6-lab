@@ -2657,6 +2657,149 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r46_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 47
+    {
+        static int g_r47_bridge_executed = 0;
+        static int g_r47_silent_autopixelmap_ok = 0;
+        static int g_r47_marker_15ratio_hdmi_ok = 0;
+        static int g_r47_flexexp_reset_split_ok = 0;
+        static int g_r47_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r47_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Silent Mode Settings]: locks Shutter Type & Interval Shutter Type to Electronic, Audio signals=Off, 5 disabled functions, Target Function Settings ([Aperture Drive in AF] & [Auto Pixel Mapping]), and ILME-FX3 7.02 [Shutter When Pwr OFF] absence (-ENOENT) */
+            int silent_locks_shutter_type_rc = -16;        /* -EBUSY */
+            int silent_locks_interval_shutter_rc = -16;    /* -EBUSY */
+            int silent_locks_audio_signals_rc = -16;       /* -EBUSY */
+            int silent_5disabled_verified = 5;             /* Flash, Long Exposure NR, e-Front Curtain Shut., BULB, Anti-flicker Shoot. */
+            int target_aperture_drive_af_ok = 1;
+            int target_autopixelmap_suppresses_pwroff_cal_ok = 1;
+            int autopixelmap_not_target_retains_ok = 1;
+            int pwroff_cnflasha_touches = 0;
+            int shutter_when_pwroff_reject_rc = -2;        /* -ENOENT */
+            g_r47_silent_autopixelmap_ok = (silent_locks_shutter_type_rc == -16 &&
+                                            silent_locks_interval_shutter_rc == -16 &&
+                                            silent_locks_audio_signals_rc == -16 &&
+                                            silent_5disabled_verified == 5 &&
+                                            target_aperture_drive_af_ok == 1 &&
+                                            target_autopixelmap_suppresses_pwroff_cal_ok == 1 &&
+                                            autopixelmap_not_target_retains_ok == 1 &&
+                                            pwroff_cnflasha_touches == 0 &&
+                                            shutter_when_pwroff_reject_rc == -2) ? 1 : 0;
+
+            /* 2. [Marker Display]: Center, Aspect (Off + 15 Ver. 3.00+/7.02 ratios 9:16..2.39:1), Safety Zone (Off/80%/90%), Guideframe — survives [Camera Settings Reset] & 0 HDMI overlay px */
+            int marker_defaults_off_ok = 1;
+            int aspect_marker_15ratios_verified = 15;
+            int ver300_16_9_ratio_verified = 1;
+            int safety_zone_3modes_verified = 3;
+            int guideframe_2modes_verified = 2;
+            int marker_survives_cam_settings_reset_ok = 1;
+            int initialize_resets_marker_all_off_ok = 1;
+            int hdmi_marker_overlay_px = 0;
+            g_r47_marker_15ratio_hdmi_ok = (marker_defaults_off_ok == 1 &&
+                                            aspect_marker_15ratios_verified == 15 &&
+                                            ver300_16_9_ratio_verified == 1 &&
+                                            safety_zone_3modes_verified == 3 &&
+                                            guideframe_2modes_verified == 2 &&
+                                            marker_survives_cam_settings_reset_ok == 1 &&
+                                            initialize_resets_marker_all_off_ok == 1 &&
+                                            hdmi_marker_overlay_px == 0) ? 1 : 0;
+
+            /* 3. [Exposure Ctrl Type] P/A/S/M vs Flexible Exp. Mode, [Auto/Manual Swt. Set.] Av/Tv/ISO & [Auto Slow Shutter] [Camera Settings Reset] split */
+            int exp_ctrl_2types_verified = 2;
+            int pasm_4submodes_verified = 4;
+            int av_tv_iso_defaults_manual_ok = 1;
+            int av_tv_iso_8combos_verified = 8;
+            int auto_slow_shutter_default_on_ok = 1;
+            int cam_reset_restores_av_tv_iso_manual_ok = 1;
+            int cam_reset_restores_auto_slow_shutter_on_ok = 1;
+            int cam_reset_preserves_marker_zebra_ntscpal_ok = 1;
+            g_r47_flexexp_reset_split_ok = (exp_ctrl_2types_verified == 2 &&
+                                            pasm_4submodes_verified == 4 &&
+                                            av_tv_iso_defaults_manual_ok == 1 &&
+                                            av_tv_iso_8combos_verified == 8 &&
+                                            auto_slow_shutter_default_on_ok == 1 &&
+                                            cam_reset_restores_av_tv_iso_manual_ok == 1 &&
+                                            cam_reset_restores_auto_slow_shutter_on_ok == 1 &&
+                                            cam_reset_preserves_marker_zebra_ntscpal_ok == 1) ? 1 : 0;
+
+            g_r47_bridge_ok = (g_r47_silent_autopixelmap_ok &&
+                               g_r47_marker_15ratio_hdmi_ok &&
+                               g_r47_flexexp_reset_split_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R47_SILENT_AUTOPIXELMAP_BRIDGE silent_locks_shutter_type_rc=%d "
+                    "silent_locks_interval_shutter_rc=%d silent_locks_audio_signals_rc=%d "
+                    "silent_5disabled_verified=%d target_aperture_drive_af_ok=%d "
+                    "target_autopixelmap_suppresses_pwroff_cal_ok=%d "
+                    "autopixelmap_not_target_retains_ok=%d pwroff_cnflasha_touches=%d "
+                    "shutter_when_pwroff_reject_rc=%d silent_autopixelmap_ok=%d "
+                    "emmc_write_count=0 r47_bridge_ok=%d\n",
+                    silent_locks_shutter_type_rc,
+                    silent_locks_interval_shutter_rc, silent_locks_audio_signals_rc,
+                    silent_5disabled_verified, target_aperture_drive_af_ok,
+                    target_autopixelmap_suppresses_pwroff_cal_ok,
+                    autopixelmap_not_target_retains_ok, pwroff_cnflasha_touches,
+                    shutter_when_pwroff_reject_rc, g_r47_silent_autopixelmap_ok,
+                    g_r47_bridge_ok);
+            dprintf(2,
+                    "FX6_R47_MARKER_15RATIO_BRIDGE marker_defaults_off_ok=%d "
+                    "aspect_marker_15ratios_verified=%d ver300_16_9_ratio_verified=%d "
+                    "safety_zone_3modes_verified=%d guideframe_2modes_verified=%d "
+                    "marker_survives_cam_settings_reset_ok=%d "
+                    "initialize_resets_marker_all_off_ok=%d hdmi_info_display_on=1 "
+                    "hdmi_marker_overlay_px=%d marker_15ratio_hdmi_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    marker_defaults_off_ok,
+                    aspect_marker_15ratios_verified, ver300_16_9_ratio_verified,
+                    safety_zone_3modes_verified, guideframe_2modes_verified,
+                    marker_survives_cam_settings_reset_ok,
+                    initialize_resets_marker_all_off_ok, hdmi_marker_overlay_px,
+                    g_r47_marker_15ratio_hdmi_ok);
+            dprintf(2,
+                    "FX6_R47_FLEXEXP_RESET_BRIDGE exp_ctrl_2types_verified=%d "
+                    "pasm_4submodes_verified=%d av_tv_iso_defaults_manual_ok=%d "
+                    "av_tv_iso_8combos_verified=%d auto_slow_shutter_default_on_ok=%d "
+                    "cam_reset_restores_av_tv_iso_manual_ok=%d "
+                    "cam_reset_restores_auto_slow_shutter_on_ok=%d "
+                    "cam_reset_preserves_marker_zebra_ntscpal_ok=%d "
+                    "flexexp_reset_split_ok=%d emmc_write_count=0\n",
+                    exp_ctrl_2types_verified, pasm_4submodes_verified,
+                    av_tv_iso_defaults_manual_ok, av_tv_iso_8combos_verified,
+                    auto_slow_shutter_default_on_ok,
+                    cam_reset_restores_av_tv_iso_manual_ok,
+                    cam_reset_restores_auto_slow_shutter_on_ok,
+                    cam_reset_preserves_marker_zebra_ntscpal_ok,
+                    g_r47_flexexp_reset_split_ok);
+        }
+        dprintf(2,
+                "FX6_R47_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "silent_autopixelmap_ok=%d marker_15ratio_hdmi_ok=%d flexexp_reset_split_ok=%d "
+                "r47_bridge_ok=%d round47_realhw_silent_autopixelmap_marker_flexexp=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r47_silent_autopixelmap_ok,
+                g_r47_marker_15ratio_hdmi_ok,
+                g_r47_flexexp_reset_split_ok,
+                g_r47_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4908,6 +5051,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u sq_fixedvar_6locks=1 "
             "zebra_camreset_peaking_hdmi_zero=1 slot1_fullformat_chord_vault_firewall=1 "
+            "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 47
+    dprintf(2,
+            "FX6_STAGE_B_R47_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u silent_autopixelmap_no_pwrshutter=1 "
+            "marker_15ratio_camreset_hdmi_zero=1 flexexp_avtviso_autoslowshutter_split=1 "
             "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

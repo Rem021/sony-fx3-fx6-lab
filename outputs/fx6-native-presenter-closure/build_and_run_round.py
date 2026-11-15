@@ -1348,6 +1348,7 @@ def build_stage_a_overlay(
     enable_r44: bool = False,
     enable_r45: bool = False,
     enable_r46: bool = False,
+    enable_r47: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1366,6 +1367,7 @@ def build_stage_a_overlay(
     r44_mode: str = "pixelmap_reboot_cnflasha_big6",
     r45_mode: str = "steadyshot_active_cutoffs_big6",
     r46_mode: str = "sq_fixedvar_6locks_big6",
+    r47_mode: str = "silent_autopixelmap_5locks_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1673,7 +1675,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r45_mode: {r45_mode}")
     if enable_r46 and r46_mode not in ("sq_fixedvar_6locks_big6", "zebra_persist_peaking_hdmi_isolation", "slot1_fullformat_chord_vault_h0_h3"):
         raise ValueError(f"Unsupported r46_mode: {r46_mode}")
-    if enable_r46 and r46_mode in ("zebra_persist_peaking_hdmi_isolation", "slot1_fullformat_chord_vault_h0_h3"):
+    if enable_r47 and r47_mode not in ("silent_autopixelmap_5locks_big6", "marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"):
+        raise ValueError(f"Unsupported r47_mode: {r47_mode}")
+    if enable_r47 and r47_mode in ("marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r47_mode == "marker_15ratio_persist_hdmi_isolation":
+            r47_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r47-marker-15ratio-hdmi > /dev/console 2>&1\n"
+                "fx6_r47_mk_rc=$?\n"
+                "echo FX6_R47_MARKER_15RATIO_HDMI_RC=$fx6_r47_mk_rc\n"
+                "echo FX6_R47_MARKER_15RATIO_HDMI_EXIT rc=$fx6_r47_mk_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r47_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r47-flexexp-reset-split > /dev/console 2>&1\n"
+                "fx6_r47_fe_rc=$?\n"
+                "echo FX6_R47_FLEXEXP_RESET_SPLIT_RC=$fx6_r47_fe_rc\n"
+                "echo FX6_R47_FLEXEXP_RESET_SPLIT_EXIT rc=$fx6_r47_fe_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r47_early_hook, 1)
+    elif enable_r46 and r46_mode in ("zebra_persist_peaking_hdmi_isolation", "slot1_fullformat_chord_vault_h0_h3"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2973,6 +3002,95 @@ def build_stage_a_overlay(
             "slot1_format_writes": 0,
             "p2_setting_writes": 0,
         }
+    r47_meta: Optional[Dict[str, Any]] = None
+    if enable_r47:
+        additions["etc/fx6_stage_r47"] = (
+            (
+                f"stage_r47=1\nr47_mode={r47_mode}\n"
+                f"silent_autopixelmap_no_pwrshutter=1\nmarker_15ratio_camreset_hdmi_zero=1\n"
+                f"flexexp_avtviso_autoslowshutter_split=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r47_meta = {
+            "r47_mode": r47_mode,
+            "silent_mode_locks": {
+                "Shutter Type": "Electronic Shutter",
+                "Shutter Type in Interval": "Electronic Shutter",
+                "Audio signals": "Off",
+            },
+            "silent_locks_reject_rc": -16,
+            "silent_5_disabled_functions": [
+                "Flash",
+                "Long Exposure NR",
+                "e-Front Curtain Shut.",
+                "BULB",
+                "Anti-flicker Shoot.",
+            ],
+            "silent_disabled_reject_rc": -95,
+            "target_function_settings": [
+                "Aperture Drive in AF",
+                "Auto Pixel Mapping",
+            ],
+            "autopixelmap_targeted_suppresses_pwroff_cal": True,
+            "autopixelmap_not_target_retains_setting": True,
+            "pwroff_cnflasha_touches": 0,
+            "fx3_sensor_items_present": [
+                "Sensor Cleaning",
+                "Auto Pixel Mapping",
+                "Pixel Mapping",
+            ],
+            "fx3_absent_menu_item": "Shutter When Pwr OFF",
+            "shutter_when_pwroff_reject_rc": -2,
+            "marker_display_subitems": [
+                "Marker Display",
+                "Center Marker",
+                "Aspect Marker",
+                "Safety Zone",
+                "Guideframe",
+            ],
+            "aspect_marker_15_ratios": [
+                "9:16",
+                "4:5",
+                "1:1",
+                "4:3",
+                "13:9",
+                "14:9",
+                "15:9",
+                "16:9",
+                "17:9",
+                "1.66:1",
+                "1.85:1",
+                "1.91:1",
+                "2:1",
+                "2.35:1",
+                "2.39:1",
+            ],
+            "ver300_added_aspect_ratio": "16:9",
+            "safety_zone_modes": ["Off", "80%", "90%"],
+            "guideframe_modes": ["Off", "On"],
+            "marker_survives_camera_settings_reset": True,
+            "marker_reset_only_by_initialize": True,
+            "hdmi_marker_overlay_pixels": 0,
+            "exposure_ctrl_types": ["P/A/S/M Mode", "Flexible Exp. Mode"],
+            "pasm_submodes": [
+                "Program Auto",
+                "Aperture Priority",
+                "Shutter Priority",
+                "Manual Exposure",
+            ],
+            "auto_manual_swt_set_channels": [
+                "Av Auto/Manual Switch",
+                "Tv Auto/Manual Switch",
+                "ISO Auto/Manual Set",
+            ],
+            "auto_manual_swt_set_default": "Manual",
+            "auto_slow_shutter_default": "On",
+            "camera_settings_reset_restores_av_tv_iso_manual": True,
+            "camera_settings_reset_restores_auto_slow_shutter_on": True,
+            "camera_settings_reset_preserves_marker_zebra_ntscpal": True,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3012,6 +3130,7 @@ def build_stage_a_overlay(
         "r44_enabled": enable_r44,
         "r45_enabled": enable_r45,
         "r46_enabled": enable_r46,
+        "r47_enabled": enable_r47,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3079,6 +3198,8 @@ def build_stage_a_overlay(
         stage_a_meta["r45"] = r45_meta
     if r46_meta is not None:
         stage_a_meta["r46"] = r46_meta
+    if r47_meta is not None:
+        stage_a_meta["r47"] = r47_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3414,6 +3535,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R44_",
         "FX6_R45_",
         "FX6_R46_",
+        "FX6_R47_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -3619,6 +3741,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r46_bridge: Optional[Dict[str, Any]] = None
     r46_zebra_peaking_hdmi_rc: Optional[int] = None
     r46_fullformat_chord_vault_rc: Optional[int] = None
+    last_r47_silent_autopixelmap_init: Optional[Dict[str, Any]] = None
+    last_r47_silent_autopixelmap_bridge: Optional[Dict[str, Any]] = None
+    last_r47_marker_15ratio_bridge: Optional[Dict[str, Any]] = None
+    last_r47_flexexp_reset_bridge: Optional[Dict[str, Any]] = None
+    last_r47_marker_15ratio_hdmi: Optional[Dict[str, Any]] = None
+    last_r47_flexexp_reset_split: Optional[Dict[str, Any]] = None
+    last_r47_lang: Optional[Dict[str, Any]] = None
+    last_r47_bridge: Optional[Dict[str, Any]] = None
+    r47_marker_15ratio_hdmi_rc: Optional[int] = None
+    r47_flexexp_reset_split_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -4080,6 +4212,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R46_FULLFORMAT_CHORD_VAULT_RC"), int):
                 r46_fullformat_chord_vault_rc = kv["FX6_R46_FULLFORMAT_CHORD_VAULT_RC"]
+        elif "FX6_R47_SILENT_AUTOPIXELMAP_INIT " in line:
+            last_r47_silent_autopixelmap_init = _parse_kv_ints(line.split("FX6_R47_SILENT_AUTOPIXELMAP_INIT ", 1)[1])
+        elif "FX6_R47_SILENT_AUTOPIXELMAP_BRIDGE " in line:
+            last_r47_silent_autopixelmap_bridge = _parse_kv_ints(line.split("FX6_R47_SILENT_AUTOPIXELMAP_BRIDGE ", 1)[1])
+        elif "FX6_R47_MARKER_15RATIO_BRIDGE " in line:
+            last_r47_marker_15ratio_bridge = _parse_kv_ints(line.split("FX6_R47_MARKER_15RATIO_BRIDGE ", 1)[1])
+        elif "FX6_R47_FLEXEXP_RESET_BRIDGE " in line:
+            last_r47_flexexp_reset_bridge = _parse_kv_ints(line.split("FX6_R47_FLEXEXP_RESET_BRIDGE ", 1)[1])
+        elif "FX6_R47_MARKER_15RATIO_HDMI " in line:
+            last_r47_marker_15ratio_hdmi = _parse_kv_ints(line.split("FX6_R47_MARKER_15RATIO_HDMI ", 1)[1])
+        elif "FX6_R47_FLEXEXP_RESET_SPLIT " in line:
+            last_r47_flexexp_reset_split = _parse_kv_ints(line.split("FX6_R47_FLEXEXP_RESET_SPLIT ", 1)[1])
+        elif "FX6_R47_LANG_TELEMETRY " in line:
+            last_r47_lang = _parse_kv_ints(line.split("FX6_R47_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R47_BRIDGE " in line:
+            last_r47_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R47_BRIDGE ", 1)[1])
+        elif "FX6_R47_MARKER_15RATIO_HDMI_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R47_MARKER_15RATIO_HDMI_RC"), int):
+                r47_marker_15ratio_hdmi_rc = kv["FX6_R47_MARKER_15RATIO_HDMI_RC"]
+        elif "FX6_R47_FLEXEXP_RESET_SPLIT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R47_FLEXEXP_RESET_SPLIT_RC"), int):
+                r47_flexexp_reset_split_rc = kv["FX6_R47_FLEXEXP_RESET_SPLIT_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -4581,6 +4737,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r46_bridge or {},
         }
 
+    r47_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r47_silent_autopixelmap_init,
+            last_r47_silent_autopixelmap_bridge,
+            last_r47_marker_15ratio_bridge,
+            last_r47_flexexp_reset_bridge,
+            last_r47_marker_15ratio_hdmi,
+            last_r47_flexexp_reset_split,
+            last_r47_lang,
+            last_r47_bridge,
+        )
+    ):
+        r47_telemetry = {
+            "marker_15ratio_hdmi_rc": r47_marker_15ratio_hdmi_rc,
+            "flexexp_reset_split_rc": r47_flexexp_reset_split_rc,
+            "silent_autopixelmap_init": last_r47_silent_autopixelmap_init or {},
+            "silent_autopixelmap_bridge": last_r47_silent_autopixelmap_bridge or {},
+            "marker_15ratio_bridge": last_r47_marker_15ratio_bridge or {},
+            "flexexp_reset_bridge": last_r47_flexexp_reset_bridge or {},
+            "marker_15ratio_hdmi": last_r47_marker_15ratio_hdmi or {},
+            "flexexp_reset_split": last_r47_flexexp_reset_split or {},
+            "lang_telemetry": last_r47_lang or {},
+            "stage_b_bridge": last_r47_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -4624,6 +4807,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r44_telemetry": r44_telemetry,
         "r45_telemetry": r45_telemetry,
         "r46_telemetry": r46_telemetry,
+        "r47_telemetry": r47_telemetry,
     }
 
 
@@ -4647,7 +4831,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 46:
+    if args.round >= 47:
+        tmp_prefix = "fx6-r47"
+    elif args.round >= 46:
         tmp_prefix = "fx6-r46"
     elif args.round >= 45:
         tmp_prefix = "fx6-r45"
@@ -4771,8 +4957,12 @@ def run_once(args: argparse.Namespace) -> int:
         r44_mode = getattr(args, "r44_mode", "pixelmap_reboot_cnflasha_big6")
         r45_mode = getattr(args, "r45_mode", "steadyshot_active_cutoffs_big6")
         r46_mode = getattr(args, "r46_mode", "sq_fixedvar_6locks_big6")
+        r47_mode = getattr(args, "r47_mode", "silent_autopixelmap_5locks_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47Wave33RealHwSilentAutoPixelMapNoPwrShutterMarker15RatioHdmiFlexExp+r47_mode={r47_mode}+lang={lang})"
+                if args.round >= 47
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone46Wave32RealHwSqFixedVar6LocksZebraPeakingHdmiFullFormatVault+r46_mode={r46_mode}+lang={lang})"
                 if args.round >= 46
                 else (
@@ -4921,6 +5111,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -4983,6 +5174,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r45_mode=r45_mode,
                 enable_r46=(args.round >= 46),
                 r46_mode=r46_mode,
+                enable_r47=(args.round >= 47),
+                r47_mode=r47_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -5131,6 +5324,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R45_POWERSAVE_AUTOTEMP_EXIT" in txt
                     or "FX6_R46_ZEBRA_PEAKING_HDMI_EXIT" in txt
                     or "FX6_R46_FULLFORMAT_CHORD_VAULT_EXIT" in txt
+                    or "FX6_R47_MARKER_15RATIO_HDMI_EXIT" in txt
+                    or "FX6_R47_FLEXEXP_RESET_SPLIT_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -5181,6 +5376,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R45_POWERSAVE_AUTOTEMP_EXIT" in serial_text
             or "FX6_R46_ZEBRA_PEAKING_HDMI_EXIT" in serial_text
             or "FX6_R46_FULLFORMAT_CHORD_VAULT_EXIT" in serial_text
+            or "FX6_R47_MARKER_15RATIO_HDMI_EXIT" in serial_text
+            or "FX6_R47_FLEXEXP_RESET_SPLIT_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -5250,6 +5447,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r44_mode": r44_mode if args.round >= 44 else None,
             "r45_mode": r45_mode if args.round >= 45 else None,
             "r46_mode": r46_mode if args.round >= 46 else None,
+            "r47_mode": r47_mode if args.round >= 47 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -5303,6 +5501,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r44_telemetry": milestones.get("r44_telemetry") if args.round >= 44 else None,
             "r45_telemetry": milestones.get("r45_telemetry") if args.round >= 45 else None,
             "r46_telemetry": milestones.get("r46_telemetry") if args.round >= 46 else None,
+            "r47_telemetry": milestones.get("r47_telemetry") if args.round >= 47 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -5352,7 +5551,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -5373,6 +5572,7 @@ def main() -> int:
     ap.add_argument("--r44-mode", type=str, choices=["pixelmap_reboot_cnflasha_big6", "ntscpal_dfn_camreset_persist", "gammaassist_displaylut_h0_h3"], default="pixelmap_reboot_cnflasha_big6")
     ap.add_argument("--r45-mode", type=str, choices=["steadyshot_active_cutoffs_big6", "ciz_4locks_hfr_raw_cutoffs", "powersave_9cond_autotemp_h0_h3"], default="steadyshot_active_cutoffs_big6")
     ap.add_argument("--r46-mode", type=str, choices=["sq_fixedvar_6locks_big6", "zebra_persist_peaking_hdmi_isolation", "slot1_fullformat_chord_vault_h0_h3"], default="sq_fixedvar_6locks_big6")
+    ap.add_argument("--r47-mode", type=str, choices=["silent_autopixelmap_5locks_big6", "marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"], default="silent_autopixelmap_5locks_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

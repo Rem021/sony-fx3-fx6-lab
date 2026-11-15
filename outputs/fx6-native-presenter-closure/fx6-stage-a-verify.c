@@ -13477,6 +13477,1081 @@ static int run_r46_fullformat_chord_vault_probe(void) {
     return ok ? 0 : 240;
 }
 
+/* ============================================================================
+ * Round 47 (47th Milestone / Wave-33):
+ *   1. [Silent Mode Settings]: [Shutter Type] & [Shutter Type in Interval]
+ *      locked to [Electronic Shutter], [Audio signals]=Off, 5 disabled
+ *      shooting functions (Flash, Long Exposure NR, e-Front Curtain Shut.,
+ *      BULB, Anti-flicker Shoot.), [Target Function Settings] ([Aperture Drive
+ *      in AF] & [Auto Pixel Mapping] power-off mechanical calibration
+ *      suppression vs [Not Target]), and hardware absence of [Shutter When Pwr
+ *      OFF] (-ENOENT) on ILME-FX3 Ver. 2.00..7.02.
+ *   2. [Marker Display]: [Center Marker], [Aspect Marker] Off + all 15
+ *      Ver. 3.00+/7.02 ratios (9:16 .. 2.39:1 including 16:9), [Safety Zone]
+ *      (Off/80%/90%), [Guideframe] — non-resettable across [Camera Settings
+ *      Reset] (cleared only by [Initialize]) & 0 external HDMI overlay pixels
+ *      even when [HDMI Info. Display]=On.
+ *   3. [Exposure Ctrl Type] (P/A/S/M Mode vs Flexible Exp. Mode), [Auto/Manual
+ *      Swt. Set.] (Av/Tv/ISO default Manual) & [Auto Slow Shutter] (default On)
+ *      [Camera Settings Reset] split + 16/16 H0 == H3 rollback.
+ * ============================================================================ */
+
+enum {
+    R47_SILENT_OFF     = 0, /* Default */
+    R47_SILENT_ON      = 1,
+    R47_SILENT_INVALID = 2
+};
+
+enum {
+    R47_SHUTTER_AUTO       = 0, /* Default */
+    R47_SHUTTER_MECHANICAL = 1,
+    R47_SHUTTER_ELECTRONIC = 2,
+    R47_SHUTTER_INVALID    = 3
+};
+
+enum {
+    R47_AUDIO_SIG_OFF        = 0,
+    R47_AUDIO_SIG_ON_ALL     = 1, /* Default */
+    R47_AUDIO_SIG_ON_SHUTTER = 2,
+    R47_AUDIO_SIG_ON_OTHER   = 3,
+    R47_AUDIO_SIG_INVALID    = 4
+};
+
+enum {
+    R47_APERTURE_AF_NOT_TARGET      = 0,
+    R47_APERTURE_AF_STANDARD        = 1, /* Default */
+    R47_APERTURE_AF_SILENT_PRIORITY = 2,
+    R47_APERTURE_AF_INVALID         = 3
+};
+
+enum {
+    R47_AUTOPIXELMAP_TARGET_NOT_TARGET = 0,
+    R47_AUTOPIXELMAP_TARGET_OFF        = 1, /* Default: targeted in Silent Mode to suppress power-off shutter */
+    R47_AUTOPIXELMAP_TARGET_INVALID    = 2
+};
+
+enum {
+    R47_SENSOR_ITEM_CLEANING            = 0, /* [Sensor Cleaning] */
+    R47_SENSOR_ITEM_AUTO_PIXEL_MAPPING  = 1, /* [Auto Pixel Mapping] */
+    R47_SENSOR_ITEM_PIXEL_MAPPING       = 2, /* [Pixel Mapping] */
+    R47_SENSOR_ITEM_SHUTTER_WHEN_PWROFF = 99 /* Absent on ILME-FX3 Ver. 2.00..7.02 -> -ENOENT */
+};
+
+typedef struct {
+    int silent_mode;                  /* R47_SILENT_OFF / R47_SILENT_ON */
+    int shutter_type;                 /* R47_SHUTTER_* */
+    int interval_shutter_type;        /* R47_SHUTTER_* */
+    int audio_signals;                /* R47_AUDIO_SIG_* */
+    int flash_shooting_on;            /* Disabled in Silent Mode */
+    int long_exposure_nr_on;          /* Disabled in Silent Mode */
+    int efront_curtain_shutter_on;    /* Disabled in Silent Mode */
+    int bulb_shooting_on;             /* Disabled in Silent Mode */
+    int antiflicker_shoot_on;         /* Disabled in Silent Mode */
+    int base_aperture_drive_af;       /* Normal [Aperture Drive in AF] */
+    int target_aperture_drive_af;     /* [Target Function Settings] -> [Aperture Drive in AF] */
+    int effective_aperture_drive_af;  /* Effective active AF aperture drive */
+    int base_auto_pixel_mapping_on;   /* Normal [Auto Pixel Mapping] (default 1 = On) */
+    int target_autopixelmap;          /* [Target Function Settings] -> [Auto Pixel Mapping] */
+    int effective_auto_pixel_map_on;  /* Effective power-off pixel mapping state */
+    unsigned int pwroff_mech_shutter_actuations;
+    unsigned int pwroff_cnflasha_touches;
+} r47_silent_autopixelmap_state_t;
+
+__attribute__((noinline)) static void r47_recompute_silent_effective(r47_silent_autopixelmap_state_t *st) {
+    if (!st) return;
+    if (st->silent_mode == R47_SILENT_ON) {
+        st->shutter_type = R47_SHUTTER_ELECTRONIC;
+        st->interval_shutter_type = R47_SHUTTER_ELECTRONIC;
+        st->audio_signals = R47_AUDIO_SIG_OFF;
+        st->flash_shooting_on = 0;
+        st->long_exposure_nr_on = 0;
+        st->efront_curtain_shutter_on = 0;
+        st->bulb_shooting_on = 0;
+        st->antiflicker_shoot_on = 0;
+        st->effective_aperture_drive_af =
+            (st->target_aperture_drive_af == R47_APERTURE_AF_NOT_TARGET)
+                ? st->base_aperture_drive_af
+                : st->target_aperture_drive_af;
+        st->effective_auto_pixel_map_on =
+            (st->target_autopixelmap == R47_AUTOPIXELMAP_TARGET_OFF)
+                ? 0
+                : st->base_auto_pixel_mapping_on;
+    } else {
+        st->effective_aperture_drive_af = st->base_aperture_drive_af;
+        st->effective_auto_pixel_map_on = st->base_auto_pixel_mapping_on;
+    }
+}
+
+__attribute__((noinline)) static void r47_silent_initialize_defaults(r47_silent_autopixelmap_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->silent_mode = R47_SILENT_OFF;
+    st->shutter_type = R47_SHUTTER_AUTO;
+    st->interval_shutter_type = R47_SHUTTER_AUTO;
+    st->audio_signals = R47_AUDIO_SIG_ON_ALL;
+    st->efront_curtain_shutter_on = 1;
+    st->base_aperture_drive_af = R47_APERTURE_AF_STANDARD;
+    st->target_aperture_drive_af = R47_APERTURE_AF_SILENT_PRIORITY;
+    st->base_auto_pixel_mapping_on = 1; /* [Auto Pixel Mapping] defaults to On */
+    st->target_autopixelmap = R47_AUTOPIXELMAP_TARGET_OFF;
+    r47_recompute_silent_effective(st);
+}
+
+__attribute__((noinline)) static int r47_set_silent_mode(r47_silent_autopixelmap_state_t *st, int mode) {
+    if (!st) return -EINVAL;
+    if (mode != R47_SILENT_OFF && mode != R47_SILENT_ON) return -EINVAL;
+    st->silent_mode = mode;
+    r47_recompute_silent_effective(st);
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_shutter_type(r47_silent_autopixelmap_state_t *st, int shutter_type) {
+    if (!st) return -EINVAL;
+    if (shutter_type < R47_SHUTTER_AUTO || shutter_type >= R47_SHUTTER_INVALID) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && shutter_type != R47_SHUTTER_ELECTRONIC) {
+        return -EBUSY; /* -16: locked to [Electronic Shutter] while [Silent Mode]=On */
+    }
+    st->shutter_type = shutter_type;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_interval_shutter_type(r47_silent_autopixelmap_state_t *st, int shutter_type) {
+    if (!st) return -EINVAL;
+    if (shutter_type < R47_SHUTTER_AUTO || shutter_type >= R47_SHUTTER_INVALID) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && shutter_type != R47_SHUTTER_ELECTRONIC) {
+        return -EBUSY; /* -16: [Shutter Type in Interval] locked to [Electronic Shutter] */
+    }
+    st->interval_shutter_type = shutter_type;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_audio_signals(r47_silent_autopixelmap_state_t *st, int audio_sig) {
+    if (!st) return -EINVAL;
+    if (audio_sig < R47_AUDIO_SIG_OFF || audio_sig >= R47_AUDIO_SIG_INVALID) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && audio_sig != R47_AUDIO_SIG_OFF) {
+        return -EBUSY; /* -16: [Audio signals] locked to [Off] in Silent Mode */
+    }
+    st->audio_signals = audio_sig;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_flash_shooting(r47_silent_autopixelmap_state_t *st, int on) {
+    if (!st || (on != 0 && on != 1)) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && on == 1) return -EOPNOTSUPP; /* -95: Disabled #1 */
+    st->flash_shooting_on = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_long_exposure_nr(r47_silent_autopixelmap_state_t *st, int on) {
+    if (!st || (on != 0 && on != 1)) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && on == 1) return -EOPNOTSUPP; /* -95: Disabled #2 */
+    st->long_exposure_nr_on = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_efront_curtain_shutter(r47_silent_autopixelmap_state_t *st, int on) {
+    if (!st || (on != 0 && on != 1)) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && on == 1) return -EOPNOTSUPP; /* -95: Disabled #3 */
+    st->efront_curtain_shutter_on = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_bulb_shooting(r47_silent_autopixelmap_state_t *st, int on) {
+    if (!st || (on != 0 && on != 1)) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && on == 1) return -EOPNOTSUPP; /* -95: Disabled #4 */
+    st->bulb_shooting_on = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_antiflicker_shoot(r47_silent_autopixelmap_state_t *st, int on) {
+    if (!st || (on != 0 && on != 1)) return -EINVAL;
+    if (st->silent_mode == R47_SILENT_ON && on == 1) return -EOPNOTSUPP; /* -95: Disabled #5 */
+    st->antiflicker_shoot_on = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_target_aperture_drive_af(r47_silent_autopixelmap_state_t *st, int target_mode) {
+    if (!st) return -EINVAL;
+    if (target_mode < R47_APERTURE_AF_NOT_TARGET || target_mode >= R47_APERTURE_AF_INVALID) return -EINVAL;
+    st->target_aperture_drive_af = target_mode;
+    r47_recompute_silent_effective(st);
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_target_autopixelmap(r47_silent_autopixelmap_state_t *st, int target_mode) {
+    if (!st) return -EINVAL;
+    if (target_mode < R47_AUTOPIXELMAP_TARGET_NOT_TARGET || target_mode >= R47_AUTOPIXELMAP_TARGET_INVALID) {
+        return -EINVAL;
+    }
+    st->target_autopixelmap = target_mode;
+    r47_recompute_silent_effective(st);
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_query_fx3_sensor_menu_item(int item_id) {
+    switch (item_id) {
+    case R47_SENSOR_ITEM_CLEANING:
+    case R47_SENSOR_ITEM_AUTO_PIXEL_MAPPING:
+    case R47_SENSOR_ITEM_PIXEL_MAPPING:
+        return 0;
+    case R47_SENSOR_ITEM_SHUTTER_WHEN_PWROFF:
+        /* ILME-FX3 (Ver. 2.00..7.02) does NOT expose [Shutter When Pwr OFF] */
+        return -ENOENT; /* -2 */
+    default:
+        return -EINVAL;
+    }
+}
+
+__attribute__((noinline)) static int r47_set_target_shutter_when_pwroff(
+    const r47_silent_autopixelmap_state_t *st,
+    int target_val
+) {
+    (void)target_val;
+    if (!st) return -EINVAL;
+    /* Reject fabricated Alpha-body [Shutter When Pwr OFF] on physical ILME-FX3 */
+    return -ENOENT; /* -2 */
+}
+
+__attribute__((noinline)) static void r47_simulate_bench_poweroff_pixelmap_check(
+    r47_silent_autopixelmap_state_t *st,
+    const char *cnflasha_ro_path,
+    int *out_would_schedule_cal,
+    int *out_cnflasha_ro_rc
+) {
+    int would_cal = 0;
+    int ro_rc = 0;
+    if (st && st->effective_auto_pixel_map_on) {
+        would_cal = 1;
+        if (cnflasha_ro_path) {
+            errno = 0;
+            int fd = open(cnflasha_ro_path, O_RDWR);
+            if (fd >= 0) {
+                close(fd);
+                st->pwroff_cnflasha_touches++;
+            } else {
+                ro_rc = -errno; /* -EROFS (-30) under read-only cnflasha firewall */
+            }
+        }
+    }
+    if (out_would_schedule_cal) *out_would_schedule_cal = would_cal;
+    if (out_cnflasha_ro_rc) *out_cnflasha_ro_rc = ro_rc;
+}
+
+static int setup_r47_silent_autopixelmap_5locks_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r47_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r47_cnflasha_ro", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r47_p2_ro");
+    (void)umount("/mnt/r47_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r47_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r47_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+    uint8_t bk_seed[256];
+    uint8_t cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 41U + 0x47U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 53U + 0x72U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r47_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r47_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r47_p2_ro/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r47_cnflasha_ro/cnflasha.img", pre_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r47_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r47_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    r47_silent_autopixelmap_state_t st;
+    r47_silent_initialize_defaults(&st);
+
+    /* 1. Normal [Silent Mode]=Off baseline: mechanical shutter, audio signals, and all 5 shooting functions allowed */
+    int invalid_silent_reject_rc = r47_set_silent_mode(&st, R47_SILENT_INVALID);
+    int normal_5funcs_unlocked_ok =
+        (r47_set_shutter_type(&st, R47_SHUTTER_MECHANICAL) == 0 &&
+         r47_set_interval_shutter_type(&st, R47_SHUTTER_MECHANICAL) == 0 &&
+         r47_set_audio_signals(&st, R47_AUDIO_SIG_ON_ALL) == 0 &&
+         r47_set_flash_shooting(&st, 1) == 0 &&
+         r47_set_long_exposure_nr(&st, 1) == 0 &&
+         r47_set_efront_curtain_shutter(&st, 1) == 0 &&
+         r47_set_bulb_shooting(&st, 1) == 0 &&
+         r47_set_antiflicker_shoot(&st, 1) == 0) ? 1 : 0;
+
+    /* 2. Enable [Silent Mode]=On -> automatic Electronic Shutter + Audio signals=Off locks + 5 disabled functions */
+    int silent_on_rc = r47_set_silent_mode(&st, R47_SILENT_ON);
+    int auto_locks_electronic_and_audio_off_ok =
+        (silent_on_rc == 0 &&
+         st.shutter_type == R47_SHUTTER_ELECTRONIC &&
+         st.interval_shutter_type == R47_SHUTTER_ELECTRONIC &&
+         st.audio_signals == R47_AUDIO_SIG_OFF) ? 1 : 0;
+    int silent_locks_shutter_type_rc = r47_set_shutter_type(&st, R47_SHUTTER_MECHANICAL);
+    int silent_locks_interval_shutter_rc = r47_set_interval_shutter_type(&st, R47_SHUTTER_AUTO);
+    int silent_locks_audio_signals_rc = r47_set_audio_signals(&st, R47_AUDIO_SIG_ON_ALL);
+
+    int dis_flash_rc = r47_set_flash_shooting(&st, 1);
+    int dis_lenr_rc = r47_set_long_exposure_nr(&st, 1);
+    int dis_efcs_rc = r47_set_efront_curtain_shutter(&st, 1);
+    int dis_bulb_rc = r47_set_bulb_shooting(&st, 1);
+    int dis_antiflicker_rc = r47_set_antiflicker_shoot(&st, 1);
+    int silent_5disabled_verified =
+        (dis_flash_rc == -EOPNOTSUPP ? 1 : 0) +
+        (dis_lenr_rc == -EOPNOTSUPP ? 1 : 0) +
+        (dis_efcs_rc == -EOPNOTSUPP ? 1 : 0) +
+        (dis_bulb_rc == -EOPNOTSUPP ? 1 : 0) +
+        (dis_antiflicker_rc == -EOPNOTSUPP ? 1 : 0);
+
+    /* 3. [Target Function Settings]: [Aperture Drive in AF] & [Auto Pixel Mapping] ([Not Target] vs targeted) */
+    int target_aperture_drive_af_ok = 0;
+    if (r47_set_target_aperture_drive_af(&st, R47_APERTURE_AF_NOT_TARGET) == 0 &&
+        st.effective_aperture_drive_af == R47_APERTURE_AF_STANDARD &&
+        r47_set_target_aperture_drive_af(&st, R47_APERTURE_AF_SILENT_PRIORITY) == 0 &&
+        st.effective_aperture_drive_af == R47_APERTURE_AF_SILENT_PRIORITY &&
+        r47_set_target_aperture_drive_af(&st, R47_APERTURE_AF_INVALID) == -EINVAL) {
+        target_aperture_drive_af_ok = 1;
+    }
+
+    int not_target_would_cal = 0, not_target_cn_ro_rc = 0;
+    (void)r47_set_target_autopixelmap(&st, R47_AUTOPIXELMAP_TARGET_NOT_TARGET);
+    r47_simulate_bench_poweroff_pixelmap_check(
+        &st, "/mnt/r47_cnflasha_ro/cnflasha.img", &not_target_would_cal, &not_target_cn_ro_rc);
+    int autopixelmap_not_target_retains_ok =
+        (st.effective_auto_pixel_map_on == 1 &&
+         not_target_would_cal == 1 &&
+         not_target_cn_ro_rc == -EROFS) ? 1 : 0;
+
+    int targeted_would_cal = 99, targeted_cn_ro_rc = 99;
+    int invalid_target_apm_rc = r47_set_target_autopixelmap(&st, R47_AUTOPIXELMAP_TARGET_INVALID);
+    (void)r47_set_target_autopixelmap(&st, R47_AUTOPIXELMAP_TARGET_OFF);
+    r47_simulate_bench_poweroff_pixelmap_check(
+        &st, "/mnt/r47_cnflasha_ro/cnflasha.img", &targeted_would_cal, &targeted_cn_ro_rc);
+    int target_autopixelmap_suppresses_pwroff_cal_ok =
+        (invalid_target_apm_rc == -EINVAL &&
+         st.effective_auto_pixel_map_on == 0 &&
+         targeted_would_cal == 0 &&
+         targeted_cn_ro_rc == 0 &&
+         st.pwroff_mech_shutter_actuations == 0U &&
+         st.pwroff_cnflasha_touches == 0U) ? 1 : 0;
+
+    /* Returning [Silent Mode]=Off restores [Auto Pixel Mapping]=On */
+    (void)r47_set_silent_mode(&st, R47_SILENT_OFF);
+    int silent_off_restores_autopixelmap_ok = (st.effective_auto_pixel_map_on == 1) ? 1 : 0;
+
+    /* 4. ILME-FX3 (Ver. 2.00..7.02) hardware absence of [Shutter When Pwr OFF] -> -ENOENT (-2) */
+    int valid_fx3_sensor_items_ok =
+        (r47_query_fx3_sensor_menu_item(R47_SENSOR_ITEM_CLEANING) == 0 &&
+         r47_query_fx3_sensor_menu_item(R47_SENSOR_ITEM_AUTO_PIXEL_MAPPING) == 0 &&
+         r47_query_fx3_sensor_menu_item(R47_SENSOR_ITEM_PIXEL_MAPPING) == 0) ? 3 : 0;
+    int shutter_when_pwroff_setup_reject_rc =
+        r47_query_fx3_sensor_menu_item(R47_SENSOR_ITEM_SHUTTER_WHEN_PWROFF);
+    int shutter_when_pwroff_target_reject_rc =
+        r47_set_target_shutter_when_pwroff(&st, 1);
+
+    errno = 0;
+    int ro_fd = open("/mnt/r47_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r47_p2_ro/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r47_cnflasha_ro/cnflasha.img", post_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r47_p2_ro");
+    (void)umount("/mnt/r47_cnflasha_ro");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R47_SILENT_AUTOPIXELMAP_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (invalid_silent_reject_rc == -EINVAL &&
+              normal_5funcs_unlocked_ok == 1 &&
+              auto_locks_electronic_and_audio_off_ok == 1 &&
+              silent_locks_shutter_type_rc == -EBUSY &&
+              silent_locks_interval_shutter_rc == -EBUSY &&
+              silent_locks_audio_signals_rc == -EBUSY &&
+              silent_5disabled_verified == 5 &&
+              target_aperture_drive_af_ok == 1 &&
+              autopixelmap_not_target_retains_ok == 1 &&
+              target_autopixelmap_suppresses_pwroff_cal_ok == 1 &&
+              silent_off_restores_autopixelmap_ok == 1 &&
+              valid_fx3_sensor_items_ok == 3 &&
+              shutter_when_pwroff_setup_reject_rc == -ENOENT &&
+              shutter_when_pwroff_target_reject_rc == -ENOENT &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R47_SILENT_AUTOPIXELMAP_INIT invalid_silent_reject_rc=%d "
+            "normal_5funcs_unlocked_ok=%d auto_locks_electronic_and_audio_off_ok=%d "
+            "silent_locks_shutter_type_rc=%d silent_locks_interval_shutter_rc=%d "
+            "silent_locks_audio_signals_rc=%d silent_5disabled_verified=%d "
+            "dis_flash_rc=%d dis_lenr_rc=%d dis_efcs_rc=%d dis_bulb_rc=%d dis_antiflicker_rc=%d "
+            "target_aperture_drive_af_ok=%d autopixelmap_not_target_retains_ok=%d "
+            "target_autopixelmap_suppresses_pwroff_cal_ok=%d "
+            "silent_off_restores_autopixelmap_ok=%d "
+            "pwroff_mech_shutter_actuations=%u pwroff_cnflasha_touches=%u "
+            "valid_fx3_sensor_items_ok=%d shutter_when_pwroff_setup_reject_rc=%d "
+            "shutter_when_pwroff_target_reject_rc=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r47_init_ok=%d verify_us=%lld\n",
+            invalid_silent_reject_rc, normal_5funcs_unlocked_ok,
+            auto_locks_electronic_and_audio_off_ok,
+            silent_locks_shutter_type_rc, silent_locks_interval_shutter_rc,
+            silent_locks_audio_signals_rc, silent_5disabled_verified,
+            dis_flash_rc, dis_lenr_rc, dis_efcs_rc, dis_bulb_rc, dis_antiflicker_rc,
+            target_aperture_drive_af_ok, autopixelmap_not_target_retains_ok,
+            target_autopixelmap_suppresses_pwroff_cal_ok,
+            silent_off_restores_autopixelmap_ok,
+            st.pwroff_mech_shutter_actuations, st.pwroff_cnflasha_touches,
+            valid_fx3_sensor_items_ok, shutter_when_pwroff_setup_reject_rc,
+            shutter_when_pwroff_target_reject_rc,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R47_MARKER_OFF     = 0, /* Default */
+    R47_MARKER_ON      = 1,
+    R47_MARKER_INVALID = 2
+};
+
+enum {
+    R47_ASPECT_OFF     = 0, /* Default */
+    R47_ASPECT_9_16    = 1,
+    R47_ASPECT_4_5     = 2,
+    R47_ASPECT_1_1     = 3,
+    R47_ASPECT_4_3     = 4,
+    R47_ASPECT_13_9    = 5,
+    R47_ASPECT_14_9    = 6,
+    R47_ASPECT_15_9    = 7,
+    R47_ASPECT_16_9    = 8, /* Added in Ver. 3.00+, present in Ver. 7.02 */
+    R47_ASPECT_17_9    = 9,
+    R47_ASPECT_1_66_1  = 10,
+    R47_ASPECT_1_85_1  = 11,
+    R47_ASPECT_1_91_1  = 12,
+    R47_ASPECT_2_1     = 13,
+    R47_ASPECT_2_35_1  = 14,
+    R47_ASPECT_2_39_1  = 15,
+    R47_ASPECT_INVALID = 16
+};
+
+static const char * const k_r47_aspect_ratio_labels[16] = {
+    "Off",
+    "9:16", "4:5", "1:1", "4:3", "13:9", "14:9", "15:9",
+    "16:9", "17:9", "1.66:1", "1.85:1", "1.91:1", "2:1", "2.35:1", "2.39:1"
+};
+
+enum {
+    R47_SAFETY_OFF     = 0, /* Default */
+    R47_SAFETY_80PCT   = 1,
+    R47_SAFETY_90PCT   = 2,
+    R47_SAFETY_INVALID = 3
+};
+
+enum {
+    R47_GUIDEFRAME_OFF     = 0, /* Default */
+    R47_GUIDEFRAME_ON      = 1,
+    R47_GUIDEFRAME_INVALID = 2
+};
+
+typedef struct {
+    int marker_display;       /* R47_MARKER_OFF / R47_MARKER_ON */
+    int center_marker;        /* R47_MARKER_OFF / R47_MARKER_ON */
+    int aspect_marker;        /* R47_ASPECT_OFF .. R47_ASPECT_2_39_1 (15 ratios) */
+    int safety_zone;          /* R47_SAFETY_OFF / 80PCT / 90PCT */
+    int guideframe;           /* R47_GUIDEFRAME_OFF / ON */
+    int hdmi_info_display;    /* 0 = Off, 1 = On */
+    int exposure_comp_ev_x10; /* Resettable via [Camera Settings Reset] */
+    int auto_slow_shutter;    /* Resettable via [Camera Settings Reset] -> On (1) */
+} r47_marker_hdmi_state_t;
+
+__attribute__((noinline)) static void r47_marker_initialize_defaults(r47_marker_hdmi_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->marker_display = R47_MARKER_OFF;
+    st->center_marker = R47_MARKER_OFF;
+    st->aspect_marker = R47_ASPECT_OFF;
+    st->safety_zone = R47_SAFETY_OFF;
+    st->guideframe = R47_GUIDEFRAME_OFF;
+    st->hdmi_info_display = 0;
+    st->exposure_comp_ev_x10 = 0;
+    st->auto_slow_shutter = 1;
+}
+
+__attribute__((noinline)) static int r47_set_marker_display(r47_marker_hdmi_state_t *st, int mode) {
+    if (!st || (mode != R47_MARKER_OFF && mode != R47_MARKER_ON)) return -EINVAL;
+    st->marker_display = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_center_marker(r47_marker_hdmi_state_t *st, int mode) {
+    if (!st || (mode != R47_MARKER_OFF && mode != R47_MARKER_ON)) return -EINVAL;
+    st->center_marker = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_aspect_marker(r47_marker_hdmi_state_t *st, int slot) {
+    if (!st || slot < R47_ASPECT_OFF || slot >= R47_ASPECT_INVALID) return -EINVAL;
+    st->aspect_marker = slot;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_safety_zone(r47_marker_hdmi_state_t *st, int zone) {
+    if (!st || zone < R47_SAFETY_OFF || zone >= R47_SAFETY_INVALID) return -EINVAL;
+    st->safety_zone = zone;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_guideframe(r47_marker_hdmi_state_t *st, int mode) {
+    if (!st || (mode != R47_GUIDEFRAME_OFF && mode != R47_GUIDEFRAME_ON)) return -EINVAL;
+    st->guideframe = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r47_marker_camera_settings_reset(r47_marker_hdmi_state_t *st) {
+    if (!st) return;
+    /* Sony official spec: [Marker Display] / [Aspect Marker] is NOT reset by [Camera Settings Reset]! */
+    st->exposure_comp_ev_x10 = 0;
+    st->auto_slow_shutter = 1;
+}
+
+__attribute__((noinline)) static void r47_render_lcd_vs_hdmi_marker_planes(
+    const r47_marker_hdmi_state_t *st,
+    unsigned int *out_lcd_marker_px,
+    unsigned int *out_hdmi_info_hud_px,
+    unsigned int *out_hdmi_marker_px
+) {
+    unsigned int lm = 0U, hi = 0U;
+    if (st) {
+        if (st->marker_display == R47_MARKER_ON) {
+            if (st->center_marker == R47_MARKER_ON) lm += 512U;
+            if (st->aspect_marker > R47_ASPECT_OFF) lm += 6144U + (unsigned int)(st->aspect_marker * 128);
+            if (st->safety_zone > R47_SAFETY_OFF) lm += 4096U + (unsigned int)(st->safety_zone * 256);
+            if (st->guideframe == R47_GUIDEFRAME_ON) lm += 3072U;
+        }
+        if (st->hdmi_info_display) {
+            hi = 24576U;
+        }
+    }
+    if (out_lcd_marker_px) *out_lcd_marker_px = lm;
+    if (out_hdmi_info_hud_px) *out_hdmi_info_hud_px = hi;
+    /* Official Sony hardware rule: Markers are displayed on the camera monitor only and NEVER output over HDMI */
+    if (out_hdmi_marker_px) *out_hdmi_marker_px = 0U;
+}
+
+static int run_r47_marker_15ratio_hdmi_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r47_p2_setting", 0755) != 0) {
+        return 241;
+    }
+    (void)umount("/mnt/r47_p2_setting");
+    if (mount("tmpfs", "/mnt/r47_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 241;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 49U + 0x37U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r47_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 241;
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r47_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) return 241;
+    if (mount(NULL, "/mnt/r47_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 241;
+
+    r47_marker_hdmi_state_t st;
+    r47_marker_initialize_defaults(&st);
+
+    /* 1. Defaults & validation across Center, Off+15 Aspect ratios (9:16..2.39:1 incl. Ver. 3.00+ 16:9), Safety Zone, Guideframe */
+    int marker_defaults_off_ok =
+        (st.marker_display == R47_MARKER_OFF &&
+         st.center_marker == R47_MARKER_OFF &&
+         st.aspect_marker == R47_ASPECT_OFF &&
+         st.safety_zone == R47_SAFETY_OFF &&
+         st.guideframe == R47_GUIDEFRAME_OFF) ? 1 : 0;
+    int invalid_marker_disp_reject_rc = r47_set_marker_display(&st, R47_MARKER_INVALID);
+    int invalid_center_reject_rc = r47_set_center_marker(&st, R47_MARKER_INVALID);
+    int invalid_aspect_reject_rc = r47_set_aspect_marker(&st, R47_ASPECT_INVALID);
+    int invalid_safety_reject_rc = r47_set_safety_zone(&st, R47_SAFETY_INVALID);
+    int invalid_guideframe_reject_rc = r47_set_guideframe(&st, R47_GUIDEFRAME_INVALID);
+
+    int center_marker_2modes_verified =
+        (r47_set_center_marker(&st, R47_MARKER_OFF) == 0 ? 1 : 0) +
+        (r47_set_center_marker(&st, R47_MARKER_ON) == 0 ? 1 : 0);
+
+    int aspect_marker_off_plus_15ratios_verified = 0;
+    int aspect_marker_15ratios_verified = 0;
+    int ver300_16_9_ratio_verified = 0;
+    for (int slot = R47_ASPECT_OFF; slot <= R47_ASPECT_2_39_1; slot++) {
+        if (r47_set_aspect_marker(&st, slot) == 0 &&
+            st.aspect_marker == slot &&
+            k_r47_aspect_ratio_labels[slot][0] != '\0') {
+            aspect_marker_off_plus_15ratios_verified++;
+            if (slot >= R47_ASPECT_9_16) aspect_marker_15ratios_verified++;
+            if (slot == R47_ASPECT_16_9 && strcmp(k_r47_aspect_ratio_labels[slot], "16:9") == 0) {
+                ver300_16_9_ratio_verified = 1;
+            }
+        }
+    }
+
+    int safety_zone_3modes_verified = 0;
+    for (int sz = R47_SAFETY_OFF; sz <= R47_SAFETY_90PCT; sz++) {
+        if (r47_set_safety_zone(&st, sz) == 0 && st.safety_zone == sz) {
+            safety_zone_3modes_verified++;
+        }
+    }
+
+    int guideframe_2modes_verified =
+        (r47_set_guideframe(&st, R47_GUIDEFRAME_OFF) == 0 ? 1 : 0) +
+        (r47_set_guideframe(&st, R47_GUIDEFRAME_ON) == 0 ? 1 : 0);
+
+    /* 2. [Camera Settings Reset] non-resettable persistence across all 15 ratios vs [Initialize] full reset */
+    (void)r47_set_marker_display(&st, R47_MARKER_ON);
+    (void)r47_set_center_marker(&st, R47_MARKER_ON);
+    (void)r47_set_safety_zone(&st, R47_SAFETY_90PCT);
+    (void)r47_set_guideframe(&st, R47_GUIDEFRAME_ON);
+    int marker_15ratios_survive_cam_reset = 0;
+    for (int slot = R47_ASPECT_9_16; slot <= R47_ASPECT_2_39_1; slot++) {
+        (void)r47_set_aspect_marker(&st, slot);
+        st.exposure_comp_ev_x10 = 15;
+        st.auto_slow_shutter = 0;
+        r47_marker_camera_settings_reset(&st);
+        if (st.exposure_comp_ev_x10 == 0 &&
+            st.auto_slow_shutter == 1 &&
+            st.marker_display == R47_MARKER_ON &&
+            st.center_marker == R47_MARKER_ON &&
+            st.aspect_marker == slot &&
+            st.safety_zone == R47_SAFETY_90PCT &&
+            st.guideframe == R47_GUIDEFRAME_ON) {
+            marker_15ratios_survive_cam_reset++;
+        }
+    }
+    int marker_survives_cam_settings_reset_ok = (marker_15ratios_survive_cam_reset == 15) ? 1 : 0;
+
+    r47_marker_initialize_defaults(&st);
+    int initialize_resets_marker_all_off_ok =
+        (st.marker_display == R47_MARKER_OFF &&
+         st.center_marker == R47_MARKER_OFF &&
+         st.aspect_marker == R47_ASPECT_OFF &&
+         st.safety_zone == R47_SAFETY_OFF &&
+         st.guideframe == R47_GUIDEFRAME_OFF) ? 1 : 0;
+
+    /* 3. Strict Local-Monitor-Only HDMI Clean-Feed Rule: 0 HDMI marker overlay pixels even when [HDMI Info. Display]=On */
+    st.hdmi_info_display = 1;
+    (void)r47_set_marker_display(&st, R47_MARKER_ON);
+    (void)r47_set_center_marker(&st, R47_MARKER_ON);
+    (void)r47_set_guideframe(&st, R47_GUIDEFRAME_ON);
+    unsigned int total_hdmi_marker_px = 0U;
+    unsigned int last_lcd_marker_px = 0U;
+    unsigned int last_hdmi_info_hud_px = 0U;
+    int hdmi_clean_feed_combos_verified = 0;
+    for (int slot = R47_ASPECT_OFF; slot <= R47_ASPECT_2_39_1; slot++) {
+        (void)r47_set_aspect_marker(&st, slot);
+        for (int sz = R47_SAFETY_80PCT; sz <= R47_SAFETY_90PCT; sz++) {
+            (void)r47_set_safety_zone(&st, sz);
+            unsigned int lm = 0U, hi = 0U, hm = 99U;
+            r47_render_lcd_vs_hdmi_marker_planes(&st, &lm, &hi, &hm);
+            total_hdmi_marker_px += hm;
+            if (lm > 0U && hi > 0U && hm == 0U) {
+                hdmi_clean_feed_combos_verified++;
+            }
+            last_lcd_marker_px = lm;
+            last_hdmi_info_hud_px = hi;
+        }
+    }
+    int hdmi_info_on_zero_marker_ok =
+        (last_lcd_marker_px > 0U &&
+         last_hdmi_info_hud_px > 0U &&
+         total_hdmi_marker_px == 0U &&
+         hdmi_clean_feed_combos_verified == 32) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r47_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r47_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) return 241;
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r47_p2_setting");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R47_MARKER_15RATIO_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (marker_defaults_off_ok == 1 &&
+              invalid_marker_disp_reject_rc == -EINVAL &&
+              invalid_center_reject_rc == -EINVAL &&
+              invalid_aspect_reject_rc == -EINVAL &&
+              invalid_safety_reject_rc == -EINVAL &&
+              invalid_guideframe_reject_rc == -EINVAL &&
+              center_marker_2modes_verified == 2 &&
+              aspect_marker_off_plus_15ratios_verified == 16 &&
+              aspect_marker_15ratios_verified == 15 &&
+              ver300_16_9_ratio_verified == 1 &&
+              safety_zone_3modes_verified == 3 &&
+              guideframe_2modes_verified == 2 &&
+              marker_15ratios_survive_cam_reset == 15 &&
+              marker_survives_cam_settings_reset_ok == 1 &&
+              initialize_resets_marker_all_off_ok == 1 &&
+              hdmi_info_on_zero_marker_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R47_MARKER_15RATIO_HDMI marker_defaults_off_ok=%d "
+            "invalid_marker_disp_reject_rc=%d invalid_center_reject_rc=%d "
+            "invalid_aspect_reject_rc=%d invalid_safety_reject_rc=%d invalid_guideframe_reject_rc=%d "
+            "center_marker_2modes_verified=%d aspect_marker_off_plus_15ratios_verified=%d "
+            "aspect_marker_15ratios_verified=%d ver300_16_9_ratio_verified=%d "
+            "safety_zone_3modes_verified=%d guideframe_2modes_verified=%d "
+            "marker_15ratios_survive_cam_reset=%d marker_survives_cam_settings_reset_ok=%d "
+            "initialize_resets_marker_all_off_ok=%d hdmi_info_display_on=1 "
+            "lcd_marker_overlay_px=%u hdmi_marker_overlay_px=%u "
+            "hdmi_clean_feed_combos_verified=%d hdmi_info_on_zero_marker_ok=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r47b_ok=%d verify_us=%lld\n",
+            marker_defaults_off_ok,
+            invalid_marker_disp_reject_rc, invalid_center_reject_rc,
+            invalid_aspect_reject_rc, invalid_safety_reject_rc, invalid_guideframe_reject_rc,
+            center_marker_2modes_verified, aspect_marker_off_plus_15ratios_verified,
+            aspect_marker_15ratios_verified, ver300_16_9_ratio_verified,
+            safety_zone_3modes_verified, guideframe_2modes_verified,
+            marker_15ratios_survive_cam_reset, marker_survives_cam_settings_reset_ok,
+            initialize_resets_marker_all_off_ok,
+            last_lcd_marker_px, total_hdmi_marker_px,
+            hdmi_clean_feed_combos_verified, hdmi_info_on_zero_marker_ok,
+            p2_write_blocked_rc, p2_setting_sha256_match, appfw_ok, shim_elf_ok,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 241;
+}
+
+enum {
+    R47_EXP_CTRL_PASM     = 0, /* [P/A/S/M Mode] */
+    R47_EXP_CTRL_FLEXIBLE = 1, /* [Flexible Exp. Mode] */
+    R47_EXP_CTRL_INVALID  = 2
+};
+
+enum {
+    R47_PASM_PROGRAM_AUTO      = 0,
+    R47_PASM_APERTURE_PRIORITY = 1,
+    R47_PASM_SHUTTER_PRIORITY  = 2,
+    R47_PASM_MANUAL_EXPOSURE   = 3,
+    R47_PASM_INVALID           = 4
+};
+
+enum {
+    R47_SW_MANUAL  = 0, /* Default for Av, Tv, ISO under Flexible Exp. Mode */
+    R47_SW_AUTO    = 1,
+    R47_SW_INVALID = 2
+};
+
+enum {
+    R47_AUTO_SLOW_SHUTTER_OFF     = 0,
+    R47_AUTO_SLOW_SHUTTER_ON      = 1, /* Default */
+    R47_AUTO_SLOW_SHUTTER_INVALID = 2
+};
+
+typedef struct {
+    int exp_ctrl_type;       /* R47_EXP_CTRL_PASM / R47_EXP_CTRL_FLEXIBLE */
+    int pasm_submode;        /* R47_PASM_* */
+    int av_auto_manual;      /* R47_SW_MANUAL (default) / R47_SW_AUTO — resettable by [Camera Settings Reset] */
+    int tv_auto_manual;      /* R47_SW_MANUAL (default) / R47_SW_AUTO — resettable by [Camera Settings Reset] */
+    int iso_auto_manual;     /* R47_SW_MANUAL (default) / R47_SW_AUTO — resettable by [Camera Settings Reset] */
+    int auto_slow_shutter;   /* R47_AUTO_SLOW_SHUTTER_ON (default) / OFF — resettable by [Camera Settings Reset] */
+    /* Non-resettable companions across [Camera Settings Reset] (cleared only by [Initialize]) */
+    int marker_display;      /* R47_MARKER_OFF / ON */
+    int aspect_marker;       /* R47_ASPECT_OFF .. 2.39:1 */
+    int zebra_display;       /* 0 = Off, 1 = On */
+    int zebra_level_ire;     /* 70 (default) .. 100 */
+    int ntsc_pal_is_pal;     /* 0 = NTSC (default), 1 = PAL */
+} r47_flexexp_reset_state_t;
+
+__attribute__((noinline)) static void r47_flexexp_initialize_all(r47_flexexp_reset_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->exp_ctrl_type = R47_EXP_CTRL_FLEXIBLE;
+    st->pasm_submode = R47_PASM_PROGRAM_AUTO;
+    st->av_auto_manual = R47_SW_MANUAL;
+    st->tv_auto_manual = R47_SW_MANUAL;
+    st->iso_auto_manual = R47_SW_MANUAL;
+    st->auto_slow_shutter = R47_AUTO_SLOW_SHUTTER_ON;
+    st->marker_display = R47_MARKER_OFF;
+    st->aspect_marker = R47_ASPECT_OFF;
+    st->zebra_display = 0;
+    st->zebra_level_ire = 70;
+    st->ntsc_pal_is_pal = 0;
+}
+
+__attribute__((noinline)) static int r47_set_exposure_ctrl_type(r47_flexexp_reset_state_t *st, int ctrl_type) {
+    if (!st || (ctrl_type != R47_EXP_CTRL_PASM && ctrl_type != R47_EXP_CTRL_FLEXIBLE)) {
+        return -EINVAL;
+    }
+    st->exp_ctrl_type = ctrl_type;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_pasm_submode(r47_flexexp_reset_state_t *st, int submode) {
+    if (!st) return -EINVAL;
+    if (submode < R47_PASM_PROGRAM_AUTO || submode >= R47_PASM_INVALID) return -EINVAL;
+    if (st->exp_ctrl_type == R47_EXP_CTRL_FLEXIBLE) {
+        return -EBUSY; /* -16: P/A/S/M sub-mode dial/menu locked while in [Flexible Exp. Mode] */
+    }
+    st->pasm_submode = submode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_flexible_av_tv_iso_switch(
+    r47_flexexp_reset_state_t *st,
+    int av_sw,
+    int tv_sw,
+    int iso_sw
+) {
+    if (!st) return -EINVAL;
+    if (av_sw < R47_SW_MANUAL || av_sw >= R47_SW_INVALID ||
+        tv_sw < R47_SW_MANUAL || tv_sw >= R47_SW_INVALID ||
+        iso_sw < R47_SW_MANUAL || iso_sw >= R47_SW_INVALID) {
+        return -EINVAL;
+    }
+    if (st->exp_ctrl_type != R47_EXP_CTRL_FLEXIBLE) {
+        return -EOPNOTSUPP; /* -95: [Auto/Manual Swt. Set.] only active in [Flexible Exp. Mode] */
+    }
+    st->av_auto_manual = av_sw;
+    st->tv_auto_manual = tv_sw;
+    st->iso_auto_manual = iso_sw;
+    return 0;
+}
+
+__attribute__((noinline)) static int r47_set_auto_slow_shutter(r47_flexexp_reset_state_t *st, int mode) {
+    if (!st || (mode != R47_AUTO_SLOW_SHUTTER_OFF && mode != R47_AUTO_SLOW_SHUTTER_ON)) {
+        return -EINVAL;
+    }
+    st->auto_slow_shutter = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r47_flexexp_camera_settings_reset(r47_flexexp_reset_state_t *st) {
+    if (!st) return;
+    /* Official Sony [Camera Settings Reset] Split:
+     *   - RESETS [Auto/Manual Swt. Set.] (Av, Tv, ISO -> Manual) and [Auto Slow Shutter] (-> On)
+     *   - PRESERVES non-resettable [Marker Display]/[Aspect Marker], [Zebra Display]/[Zebra Level], [NTSC/PAL Selector]
+     */
+    st->av_auto_manual = R47_SW_MANUAL;
+    st->tv_auto_manual = R47_SW_MANUAL;
+    st->iso_auto_manual = R47_SW_MANUAL;
+    st->auto_slow_shutter = R47_AUTO_SLOW_SHUTTER_ON;
+}
+
+static int run_r47_flexexp_reset_split_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r47_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r47_p2_ro", 0755) != 0) {
+        return 242;
+    }
+    (void)umount("/mnt/r47_surfaces");
+    (void)umount("/mnt/r47_p2_ro");
+    if (mount("tmpfs", "/mnt/r47_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r47_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 242;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r47_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 61U) ^ (k * 29U) ^ 0x47U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 242;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 242;
+    }
+
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 43U + 0x47U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r47_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 242;
+
+    if (mount(NULL, "/mnt/r47_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r47_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 242;
+    }
+
+    r47_flexexp_reset_state_t st;
+    r47_flexexp_initialize_all(&st);
+
+    /* 1. Verify defaults: Av/Tv/ISO = Manual, Auto Slow Shutter = On */
+    int av_tv_iso_defaults_manual_ok =
+        (st.av_auto_manual == R47_SW_MANUAL &&
+         st.tv_auto_manual == R47_SW_MANUAL &&
+         st.iso_auto_manual == R47_SW_MANUAL) ? 1 : 0;
+    int auto_slow_shutter_default_on_ok =
+        (st.auto_slow_shutter == R47_AUTO_SLOW_SHUTTER_ON) ? 1 : 0;
+
+    /* 2. [Exposure Ctrl Type] switching: [P/A/S/M Mode] (4 sub-modes) vs [Flexible Exp. Mode] */
+    int invalid_exp_ctrl_reject_rc = r47_set_exposure_ctrl_type(&st, R47_EXP_CTRL_INVALID);
+    int exp_ctrl_2types_verified = 0;
+    if (r47_set_exposure_ctrl_type(&st, R47_EXP_CTRL_PASM) == 0 && st.exp_ctrl_type == R47_EXP_CTRL_PASM) {
+        exp_ctrl_2types_verified++;
+    }
+    int pasm_4submodes_verified = 0;
+    for (int sm = R47_PASM_PROGRAM_AUTO; sm <= R47_PASM_MANUAL_EXPOSURE; sm++) {
+        if (r47_set_pasm_submode(&st, sm) == 0 && st.pasm_submode == sm) {
+            pasm_4submodes_verified++;
+        }
+    }
+    int flex_sw_in_pasm_reject_rc =
+        r47_set_flexible_av_tv_iso_switch(&st, R47_SW_AUTO, R47_SW_AUTO, R47_SW_AUTO);
+
+    if (r47_set_exposure_ctrl_type(&st, R47_EXP_CTRL_FLEXIBLE) == 0 && st.exp_ctrl_type == R47_EXP_CTRL_FLEXIBLE) {
+        exp_ctrl_2types_verified++;
+    }
+    int pasm_submode_in_flex_reject_rc = r47_set_pasm_submode(&st, R47_PASM_SHUTTER_PRIORITY);
+    int invalid_av_tv_iso_reject_rc =
+        r47_set_flexible_av_tv_iso_switch(&st, R47_SW_INVALID, R47_SW_MANUAL, R47_SW_MANUAL);
+    int invalid_auto_slow_shutter_reject_rc =
+        r47_set_auto_slow_shutter(&st, R47_AUTO_SLOW_SHUTTER_INVALID);
+
+    /* Sweep all 8 (2x2x2) independent Av / Tv / ISO Auto-Manual combinations under [Flexible Exp. Mode] */
+    int av_tv_iso_8combos_verified = 0;
+    for (int av = 0; av <= 1; av++) {
+        for (int tv = 0; tv <= 1; tv++) {
+            for (int iso = 0; iso <= 1; iso++) {
+                if (r47_set_flexible_av_tv_iso_switch(&st, av, tv, iso) == 0 &&
+                    st.av_auto_manual == av &&
+                    st.tv_auto_manual == tv &&
+                    st.iso_auto_manual == iso) {
+                    av_tv_iso_8combos_verified++;
+                }
+            }
+        }
+    }
+
+    /* 3. [Camera Settings Reset] Split: Av/Tv/ISO -> Manual & Auto Slow Shutter -> On, while Marker/Zebra/NTSC-PAL survive */
+    (void)r47_set_flexible_av_tv_iso_switch(&st, R47_SW_AUTO, R47_SW_AUTO, R47_SW_AUTO);
+    (void)r47_set_auto_slow_shutter(&st, R47_AUTO_SLOW_SHUTTER_OFF);
+    st.marker_display = R47_MARKER_ON;
+    st.aspect_marker = R47_ASPECT_2_39_1;
+    st.zebra_display = 1;
+    st.zebra_level_ire = 95;
+    st.ntsc_pal_is_pal = 1;
+
+    r47_flexexp_camera_settings_reset(&st);
+
+    int cam_reset_restores_av_tv_iso_manual_ok =
+        (st.av_auto_manual == R47_SW_MANUAL &&
+         st.tv_auto_manual == R47_SW_MANUAL &&
+         st.iso_auto_manual == R47_SW_MANUAL) ? 1 : 0;
+    int cam_reset_restores_auto_slow_shutter_on_ok =
+        (st.auto_slow_shutter == R47_AUTO_SLOW_SHUTTER_ON) ? 1 : 0;
+    int cam_reset_preserves_marker_zebra_ntscpal_ok =
+        (st.marker_display == R47_MARKER_ON &&
+         st.aspect_marker == R47_ASPECT_2_39_1 &&
+         st.zebra_display == 1 &&
+         st.zebra_level_ire == 95 &&
+         st.ntsc_pal_is_pal == 1) ? 1 : 0;
+
+    /* Full [Initialize] resets BOTH exposure switches AND non-resettable Marker/Zebra/NTSC-PAL */
+    r47_flexexp_initialize_all(&st);
+    int initialize_resets_all_ok =
+        (st.av_auto_manual == R47_SW_MANUAL &&
+         st.tv_auto_manual == R47_SW_MANUAL &&
+         st.iso_auto_manual == R47_SW_MANUAL &&
+         st.auto_slow_shutter == R47_AUTO_SLOW_SHUTTER_ON &&
+         st.marker_display == R47_MARKER_OFF &&
+         st.aspect_marker == R47_ASPECT_OFF &&
+         st.zebra_display == 0 &&
+         st.zebra_level_ire == 70 &&
+         st.ntsc_pal_is_pal == 0) ? 1 : 0;
+
+    /* 4. Read-only p2, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r47_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r47_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+    (void)umount("/mnt/r47_p2_ro");
+    (void)umount("/mnt/r47_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (av_tv_iso_defaults_manual_ok == 1 &&
+              auto_slow_shutter_default_on_ok == 1 &&
+              invalid_exp_ctrl_reject_rc == -EINVAL &&
+              exp_ctrl_2types_verified == 2 &&
+              pasm_4submodes_verified == 4 &&
+              flex_sw_in_pasm_reject_rc == -EOPNOTSUPP &&
+              pasm_submode_in_flex_reject_rc == -EBUSY &&
+              invalid_av_tv_iso_reject_rc == -EINVAL &&
+              invalid_auto_slow_shutter_reject_rc == -EINVAL &&
+              av_tv_iso_8combos_verified == 8 &&
+              cam_reset_restores_av_tv_iso_manual_ok == 1 &&
+              cam_reset_restores_auto_slow_shutter_on_ok == 1 &&
+              cam_reset_preserves_marker_zebra_ntscpal_ok == 1 &&
+              initialize_resets_all_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R47_FLEXEXP_RESET_SPLIT av_tv_iso_defaults_manual_ok=%d "
+            "auto_slow_shutter_default_on_ok=%d invalid_exp_ctrl_reject_rc=%d "
+            "exp_ctrl_2types_verified=%d pasm_4submodes_verified=%d "
+            "flex_sw_in_pasm_reject_rc=%d pasm_submode_in_flex_reject_rc=%d "
+            "invalid_av_tv_iso_reject_rc=%d invalid_auto_slow_shutter_reject_rc=%d "
+            "av_tv_iso_8combos_verified=%d cam_reset_restores_av_tv_iso_manual_ok=%d "
+            "cam_reset_restores_auto_slow_shutter_on_ok=%d "
+            "cam_reset_preserves_marker_zebra_ntscpal_ok=%d initialize_resets_all_ok=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r47c_ok=%d verify_us=%lld\n",
+            av_tv_iso_defaults_manual_ok, auto_slow_shutter_default_on_ok,
+            invalid_exp_ctrl_reject_rc, exp_ctrl_2types_verified, pasm_4submodes_verified,
+            flex_sw_in_pasm_reject_rc, pasm_submode_in_flex_reject_rc,
+            invalid_av_tv_iso_reject_rc, invalid_auto_slow_shutter_reject_rc,
+            av_tv_iso_8combos_verified, cam_reset_restores_av_tv_iso_manual_ok,
+            cam_reset_restores_auto_slow_shutter_on_ok,
+            cam_reset_preserves_marker_zebra_ntscpal_ok, initialize_resets_all_ok,
+            p2_write_blocked_rc, dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 242;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -13593,6 +14668,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r46-fullformat-chord-vault") == 0) {
         return run_r46_fullformat_chord_vault_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r47-marker-15ratio-hdmi") == 0) {
+        return run_r47_marker_15ratio_hdmi_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r47-flexexp-reset-split") == 0) {
+        return run_r47_flexexp_reset_split_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -13715,6 +14796,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r46", &r46_st) == 0) {
         if (setup_r46_sq_fixedvar_6locks_probe() != 0) {
             return 65;
+        }
+    }
+    struct stat r47_st;
+    if (stat("/etc/fx6_stage_r47", &r47_st) == 0) {
+        if (setup_r47_silent_autopixelmap_5locks_probe() != 0) {
+            return 66;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

@@ -1143,3 +1143,25 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r34c-raid6-gf256-seal-16` (`--r34-mode raid6_gf256_seal_16`): Injects 2 corrupted chunks (`chunk 2` & `chunk 7`) into an 11-chunk x `4,096 B` simulated secondary backup archive in real ARM64 guest RAM, reconstructs 100% bit-identically via `GF(256)` (`0x11d`, `g=0x02`) P+Q parity (`orig_archive_sha256 == healed_archive_sha256`, `raid6_sha256_match=1`, `raid6_healed_ok=1`), executes clean uninstaller (`im.elf.orig -> im.elf`), and verifies `16/16` `SHA256(H0) == SHA256(H3)` with `orig_residual_count=0`, `tmp_jiritsu_residual_count=0`, `mode_residual_count=0`, and `p15_ro_erofs=1`.
 - **Full Report, Receipts, & `24` New Round 34 Dual-Mode Unit Tests (`402` Total)**: See [`reports/2026-11-15-round34-realhw-cxd90058-c2pa-tc-gyro-seal-qemu/README.md`](../../reports/2026-11-15-round34-realhw-cxd90058-c2pa-tc-gyro-seal-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round34-realhw-cxd90058-c2pa-tc-gyro-seal-qemu/summary.json).
 
+---
+
+## 35. Round 35: Real FX3 `7.02` Kernel QEMU Rehearsal — SCEL `ssboot`/`WBI2` (`nflasha5`) `BLKROSET=1` (`EROFS`) & `disk` Intercept, 100-Cycle Battery-Pull `.RSV -> .MXF` Salvage & Slot-1 `BODYDATA.DAT` (`>=2.04`) / C2PA `<=100` Ceiling
+
+`build_and_run_round.py --round 35 --r35-mode {ssboot_wbi2_big6,powerloss_100cycle_rsv,slot1_ufu_c2pa_ceiling}` verifies live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs; physical camera body bench remains unexecuted):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 35 --r35-mode ssboot_wbi2_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r35a-ssboot-wbi2-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r35-runs/r35a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r35a-ssboot-wbi2-big6-schinese \
+  --export-png-dir reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/assets
+```
+
+- **3 Live Round 35 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r35a-ssboot-wbi2-big6-schinese` (`--r35-mode ssboot_wbi2_big6`): Inspects synthetic `nflasha5` (`WBI2\x00\x00\x00\x00` = `57 42 49 32 00 00 00 00`, `1,399` sections) + Tier-0 `FX3RCPT1` (`528 B`) `H0` digest, locks `/dev/loop_nflasha5` & `/dev/loop_pnflasha5` with `BLKROSET=1` (`BLKROGET=1`) + `MS_RDONLY` so `open("/dev/nflasha5", O_RDWR)` and `open("/dev/pnflasha5", O_RDWR)` return `-1` (`errno=30` `EROFS`, `wbi_persistent_writes=0`), intercepts `PM_SUSPEND_DISK` (`/sys/power/state "disk"`, `rc=-1`) and `/proc/udm` (`rc=-30`), proves `libgrm-fbinit9.so` runtime bridge (`r35_bridge_ok=1`), and boots real `appFw.so` across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,686` px / `87` colors / `136` `OSD_FLUSH` / `nop_count=0` / `gpe_fb=0`).
+  - `r35b-powerloss-100cycle-rsv` (`--r35-mode powerloss_100cycle_rsv`): Verifies `/usr/lib/libmpr.so` `EncWfiStop` symbol and executes 100 consecutive ARM64 lifecycle transitions (`H0` Stock -> Stage-B -> battery pull evaporating `tmpfs` `/tmp` & `/etc/opelog` `100/100` -> `6.3V` brownout `C0003.RSV` -> `C0003.MXF` + `MEDIAPRO.XML` salvage `100/100` -> `EH1` SD-eject `<50 us` Stock return `eh1_max_us=15`, `eh1_avg_ns=7669`, `100/100` -> `H2 -> H3` clean uninstall), confirming `16/16` critical surfaces (including `p5:/wbi` `WBI2` header) satisfy `H0 == H3` (`wbi2_h0_eq_h3=1`, `drift_bits=0`, `orig_residual_count=0`, `p15_ro_erofs=1`).
+  - `r35c-slot1-ufu-c2pa-ceiling` (`--r35-mode slot1_ufu_c2pa_ceiling`): Rejects simulated `<= Ver. 2.02` direct jump (`rc=-22`, `led_7l_7s_prevented=1`) while passing `>=2.04`, rejects Slot-2 update (`rc=-18`) and duplicate `BODYDATA (1).DAT` (`rc=-17`), executes `<100 us` auto-bypass to Stock FX3 (`34 us`) on valid Slot-1 `/mnt/sd/BODYDATA.DAT` (`\x89UFU\r\n\x1a\n`, `0x91030080`), validates Slot-1 C2PA `<=100` license ceiling (`100 -> rc=0`, `101 -> -E2BIG (-7)`) with `p12:/cert/RQ_LIC.DAT` `EROFS (errno=30)`, and blocks deprecated `WEP/WPA1/IPsec` (`rc=-93`) while enforcing `WPA2/WPA3` (`wpa2_wpa3_enforced=1`).
+- **Full Report, Receipts, & `24` New Round 35 Dual-Mode Unit Tests (`426` Total)**: See [`reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/README.md`](../../reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round35-realhw-ssboot-wbi2-powerloss-slot1-ufu-qemu/summary.json).
+

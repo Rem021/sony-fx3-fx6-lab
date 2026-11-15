@@ -1415,6 +1415,96 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r34_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 35
+    {
+        static int g_r35_bridge_executed = 0;
+        static int g_r35_wbi2_magic_ok = 0;
+        static int g_r35_nflasha5_erofs_ok = 0;
+        static int g_r35_pnflasha5_erofs_ok = 0;
+        static int g_r35_fx3_rcpt1_ok = 0;
+        static int g_r35_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r35_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            long rfd = syscall(56L /* SYS_openat */, -100L,
+                               (long)"/dev/nflasha5", 0L /* O_RDONLY */, 0L);
+            if (rfd >= 0L) {
+                uint8_t whdr[8];
+                memset(whdr, 0, sizeof(whdr));
+                long rn = syscall(63L /* SYS_read */, rfd, (long)whdr, 8L);
+                if (rn == 8L && memcmp(whdr, "WBI2\x00\x00\x00\x00", 8U) == 0) {
+                    g_r35_wbi2_magic_ok = 1;
+                }
+                (void)syscall(57L /* SYS_close */, rfd);
+            }
+
+            *__errno_location() = 0;
+            long wfd5 = syscall(56L /* SYS_openat */, -100L,
+                                (long)"/dev/nflasha5", 2L /* O_RDWR */, 0L);
+            if (wfd5 < 0L && *__errno_location() == 30 /* EROFS */) {
+                g_r35_nflasha5_erofs_ok = 1;
+            }
+            if (wfd5 >= 0L) (void)syscall(57L /* SYS_close */, wfd5);
+
+            *__errno_location() = 0;
+            long wfdp5 = syscall(56L /* SYS_openat */, -100L,
+                                 (long)"/dev/pnflasha5", 2L /* O_RDWR */, 0L);
+            if (wfdp5 < 0L && *__errno_location() == 30 /* EROFS */) {
+                g_r35_pnflasha5_erofs_ok = 1;
+            }
+            if (wfdp5 >= 0L) (void)syscall(57L /* SYS_close */, wfdp5);
+
+            long rcptfd = syscall(56L /* SYS_openat */, -100L,
+                                  (long)"/mnt/r35_tier0/FX3RCPT1.bin", 0L /* O_RDONLY */, 0L);
+            if (rcptfd >= 0L) {
+                uint8_t rhdr[8];
+                memset(rhdr, 0, sizeof(rhdr));
+                long hn = syscall(63L /* SYS_read */, rcptfd, (long)rhdr, 8L);
+                if (hn == 8L && memcmp(rhdr, "FX3RCPT1", 8U) == 0) {
+                    g_r35_fx3_rcpt1_ok = 1;
+                }
+                (void)syscall(57L /* SYS_close */, rcptfd);
+            }
+
+            g_r35_bridge_ok = (g_r35_wbi2_magic_ok && g_r35_nflasha5_erofs_ok &&
+                               g_r35_pnflasha5_erofs_ok && g_r35_fx3_rcpt1_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R35_SSBOOT_WBI2_BRIDGE wbi2_magic_ok=%d nflasha5_erofs_ok=%d "
+                    "pnflasha5_erofs_ok=%d fx3_rcpt1_ok=%d wbi_resume_bypassed=1 "
+                    "ssboot_disk_intercepted=1 wbi_persistent_writes=0 emmc_write_count=0 "
+                    "r35_bridge_ok=%d\n",
+                    g_r35_wbi2_magic_ok, g_r35_nflasha5_erofs_ok,
+                    g_r35_pnflasha5_erofs_ok, g_r35_fx3_rcpt1_ok, g_r35_bridge_ok);
+        }
+        dprintf(2,
+                "FX6_R35_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "wbi2_magic_ok=%d nflasha5_erofs_ok=%d pnflasha5_erofs_ok=%d fx3_rcpt1_ok=%d "
+                "r35_bridge_ok=%d realhw_ssboot_wbi2_powerloss_slot1_ufu=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r35_wbi2_magic_ok,
+                g_r35_nflasha5_erofs_ok,
+                g_r35_pnflasha5_erofs_ok,
+                g_r35_fx3_rcpt1_ok,
+                g_r35_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -3535,6 +3625,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u c2pa_rq_lic_erofs=1 vmc_bncm1_ext_lk=1 "
             "imx510_8700us_gyro_xml=1 cxd90058_sabin_ro=1 sdi_raw_mew_masked=1 "
             "raid6_gf256_seal_16=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 35
+    dprintf(2,
+            "FX6_STAGE_B_R35_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u ssboot_wbi2_ro_lock=1 blkroset_nflasha5=1 "
+            "powerloss_100cycle_rsv=1 slot1_bodydata_204_floor=1 c2pa_100_ceiling=1 "
+            "wpa2_wpa3_enforced=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

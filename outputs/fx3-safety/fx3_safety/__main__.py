@@ -77,6 +77,11 @@ from .realhw_ssboot_wbi2_slot1_ufu_and_60gate_guard import (
     evaluate_g59_ssboot_wbi2_guard,
     evaluate_g60_slot1_ufu_c2pa_guard,
 )
+from .realhw_emount_info3d_hdmi_braw_and_62gate_guard import (
+    evaluate_62gate_preflight,
+    evaluate_g61_emount_breathing_guard,
+    evaluate_g62_hdmi_raw_guard,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -902,6 +907,73 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G60 gates can be rehearsed offline",
     )
     p_60.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 50. verify-g61-emount-breathing-guard
+    p_g61 = sub.add_parser(
+        "verify-g61-emount-breathing-guard",
+        help="Run Phase 181 Gate G61 (MIRA_CETUS2 E-Mount info7/info8/info3D, 0x02cf0232 Breathing, Focus Map RO & p18:/lens/LENSFILE.BIN Guard)",
+    )
+    p_g61.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g61.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g61.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 51. verify-g62-hdmi-raw-guard
+    p_g62 = sub.add_parser(
+        "verify-g62-hdmi-raw-guard",
+        help="Run Phase 181 Gate G62 (Type-A HDMI 4264x2408 16-bit RAW .braw / ProRes RAW vs 12G-SDI MMIO Mask Guard)",
+    )
+    p_g62.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g62.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g62.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 52. verify-62-gates
+    p_62 = sub.add_parser(
+        "verify-62-gates",
+        help="Run Phase 181 62-Gate Master Safety Preflight Engine (G01..G62)",
+    )
+    p_62.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_62.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_62.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G62 gates can be rehearsed offline",
+    )
+    p_62.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -1863,6 +1935,69 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_60_gates_verified if args.dry_run_simulated else report.offline_57_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g61-emount-breathing-guard":
+        verdict, res = evaluate_g61_emount_breathing_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.emount_breathing_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} platform={guard['platform_name']} "
+                f"lens_id={guard['lens_id_hex']}(first_party={guard['is_sony_first_party_lens']}) "
+                f"bkid={guard['bkid_breathing_hex']} mc_ver={guard['monitor_control_version']} "
+                f"p18_blkroset={guard['p18_blkroset']} lens_writes={guard['lens_partition_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g62-hdmi-raw-guard":
+        verdict, res = evaluate_g62_hdmi_raw_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.hdmi_raw_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} hdmi={guard['hdmi_raw_width']}x{guard['hdmi_raw_height']}@{guard['hdmi_raw_fps']}fps/{guard['hdmi_raw_bit_depth']}b "
+                f"braw_fw={guard['braw_video_assist_fw']} atomos_fw={guard['atomos_fw_version']} "
+                f"sdi_mmio_probes={guard['sdi_mmio_probes_emitted']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-62-gates":
+        report = evaluate_62gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/62 "
+                f"g61_to_g62_all_passed={report.g61_to_g62_all_passed} "
+                f"all_62_gates_verified={report.all_62_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_62_gates_verified if args.dry_run_simulated else report.offline_59_gates_verified
         return 0 if ok else 1
 
     return 2

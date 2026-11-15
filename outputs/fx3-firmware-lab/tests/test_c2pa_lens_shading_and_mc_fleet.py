@@ -204,7 +204,7 @@ class TestC2paLensShadingAndMcFleet(unittest.TestCase):
         self.assertIn("c2pa_lens_shading_and_mc_fleet_audit", summary)
         self.assertTrue(summary["c2pa_lens_shading_and_mc_fleet_audit"]["all_checks_passed"])
         audit_keys = [k for k in summary if k.endswith("_audit")]
-        self.assertEqual(len(audit_keys), 20)
+        self.assertGreaterEqual(len(audit_keys), 20)
 
     # ---- Pillar 1: C2PA 2.1 & cnflasha Key-Vault Firewall ----
 

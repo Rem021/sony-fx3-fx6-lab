@@ -61,6 +61,7 @@ import dualslot_proxy_ups_salvage_emulator as p71  # noqa: E402
 import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import gyroflow_rtmd_anamorphic_emulator as p91  # noqa: E402
 import hdr_hlg_assist_fiz_gimbal_emulator as p112  # noqa: E402
+import hdmi_raw_prores_breathing_mishoe_aoc_emulator as p117  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
 import interval_cache_ftp_fan_emulator as p96  # noqa: E402
 import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
@@ -127,6 +128,7 @@ class CoEmulationConfig:
     include_phase103_emi_exfat_endurance: bool = True
     include_phase107_c2pa_shading_mcfleet_ovp: bool = True
     include_phase112_hdr_hlg_fiz_gimbal: bool = True
+    include_phase117_proresraw_breathing_mishoe_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1260,6 +1262,48 @@ def run_stage19_hdr_hlg_fiz_gimbal(
     }
 
 
+def run_stage20_proresraw_breathing_mishoe_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 20 (Phase 117): ProRes RAW/BRAW Handshake, Focus Breathing vs PL/RAW Bypass, MI-Shoe 48kHz PLL & G35/G36 HIL."""
+    config.validate()
+    rep = p117.run_phase117_proresraw_breathing_mishoe_aoc_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage20_proresraw_breathing_mishoe_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "raw_lut_burn_in_frames": red["raw_lut_burn_in_frames"],
+        "pl_breathing_stale_crop_frames": red["pl_breathing_stale_crop_frames"],
+        "audio_pop_click_frames": red["audio_pop_click_frames"],
+        "sy1129_hdmi_fuse_damage_events": red["sy1129_hdmi_fuse_damage_events"],
+        "cfexpress_fat_corruption_events": red["cfexpress_fat_corruption_events"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_hdmi_raw_prores_braw": rep["pillar_a_hdmi_raw_prores_braw"],
+        "pillar_b_focus_breathing_arbitrator": rep["pillar_b_focus_breathing_arbitrator"],
+        "pillar_c_mishoe_i2s_pll_lock": rep["pillar_c_mishoe_i2s_pll_lock"],
+        "pillar_d_g35_g36_aoc_cfexpress_hil": rep["pillar_d_g35_g36_aoc_cfexpress_hil"],
+        "phase117_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1270,7 +1314,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 19-stage (Phase 33..112) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 20-stage (Phase 33..117) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1337,6 +1381,11 @@ def run_fx3_vm_coemulation_suite(
     stage19: Optional[Dict[str, object]] = (
         run_stage19_hdr_hlg_fiz_gimbal(cfg, env=env)
         if cfg.include_phase112_hdr_hlg_fiz_gimbal
+        else None
+    )
+    stage20: Optional[Dict[str, object]] = (
+        run_stage20_proresraw_breathing_mishoe_hil(cfg, env=env)
+        if cfg.include_phase117_proresraw_breathing_mishoe_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1567,6 +1616,26 @@ def run_fx3_vm_coemulation_suite(
         and stage19["duct_salt_haze_ingestion_damage_events"] == 0
         and (not stage19["persistent_emmc_writes_authorized"])
     )
+    stage20_ok = True if stage20 is None else (
+        bool(stage20["all_checks_passed"])
+        and stage20["nop_count"] == 0
+        and stage20["guest_code_modification_bytes"] == 0
+        and stage20["cp_mutation_bytes"] == 0
+        and stage20["wbi_mutation_bytes"] == 0
+        and stage20["calibration_mutation_bytes"] == 0
+        and stage20["nvram_persistent_writes"] == 0
+        and stage20["bk4_persistent_nvram_writes"] == 0
+        and stage20["physical_device_writes"] == 0
+        and stage20["null_gpio_derefs"] == 0
+        and stage20["mailbox_stalls"] == 0
+        and stage20["stock_cp_fault_count"] == 0
+        and stage20["raw_lut_burn_in_frames"] == 0
+        and stage20["pl_breathing_stale_crop_frames"] == 0
+        and stage20["audio_pop_click_frames"] == 0
+        and stage20["sy1129_hdmi_fuse_damage_events"] == 0
+        and stage20["cfexpress_fat_corruption_events"] == 0
+        and (not stage20["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1589,6 +1658,7 @@ def run_fx3_vm_coemulation_suite(
         and stage17_ok
         and stage18_ok
         and stage19_ok
+        and stage20_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1621,6 +1691,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase103_emi_exfat_endurance": cfg.include_phase103_emi_exfat_endurance,
             "include_phase107_c2pa_shading_mcfleet_ovp": cfg.include_phase107_c2pa_shading_mcfleet_ovp,
             "include_phase112_hdr_hlg_fiz_gimbal": cfg.include_phase112_hdr_hlg_fiz_gimbal,
+            "include_phase117_proresraw_breathing_mishoe_hil": cfg.include_phase117_proresraw_breathing_mishoe_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1677,6 +1748,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage18_phase107_c2pa_shading_mcfleet_ovp"] = stage18
     if stage19 is not None:
         core_payload["stage19_phase112_hdr_hlg_fiz_gimbal"] = stage19
+    if stage20 is not None:
+        core_payload["stage20_proresraw_breathing_mishoe_hil"] = stage20
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1688,7 +1761,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1775,6 +1848,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 19 (Phase 112 BT.2100/ARIB STD-B67 HLG, CTA-861.3 0x87 InfoFrame, Gamma Display Assist & G33/G34 HIL)",
     )
     parser.add_argument(
+        "--skip-phase117",
+        action="store_true",
+        help="Skip optional Stage 20 (Phase 117 ProRes RAW/BRAW Handshake, Focus Breathing vs PL/RAW Bypass, MI-Shoe 48kHz PLL & G35/G36 HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -1856,6 +1934,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase103_emi_exfat_endurance=not args.skip_phase103,
         include_phase107_c2pa_shading_mcfleet_ovp=not args.skip_phase107,
         include_phase112_hdr_hlg_fiz_gimbal=not args.skip_phase112,
+        include_phase117_proresraw_breathing_mishoe_hil=not args.skip_phase117,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1884,6 +1963,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s17 = rep.get("stage17_phase103_emi_exfat_endurance")
         s18 = rep.get("stage18_phase107_c2pa_shading_mcfleet_ovp")
         s19 = rep.get("stage19_phase112_hdr_hlg_fiz_gimbal")
+        s20 = rep.get("stage20_proresraw_breathing_mishoe_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1989,6 +2069,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s19, dict)
             else ""
         )
+        s20_str = (
+            f" | prores_breath_mi_g35_g36={s20['source_mode']}(raw_burn={s20['raw_lut_burn_in_frames']},"
+            f"pl_bypass={s20['pillar_b_focus_breathing_arbitrator']['pl_unchipped_identity_bypass']['bypass_latency_ms']}ms/stale={s20['pl_breathing_stale_crop_frames']},"
+            f"pll_12h={s20['pillar_c_mishoe_i2s_pll_lock']['xlr_h1_5994p_12h']['drift_samples_per_hour']}sph/pop={s20['audio_pop_click_frames']},"
+            f"g35_bf={s20['pillar_d_g35_g36_aoc_cfexpress_hil']['g35_aoc_hdmi_5v_hil']['reverse_backfeed_gt5v35_isolated']['isolation_latency_us']}us/fuse_dmg={s20['sy1129_hdmi_fuse_damage_events']},"
+            f"g36_fat_corr={s20['cfexpress_fat_corruption_events']})"
+            if isinstance(s20, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1997,7 +2086,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

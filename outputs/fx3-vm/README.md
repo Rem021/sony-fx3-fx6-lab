@@ -654,6 +654,43 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 117：Stage 20 外接 Atomos/Blackmagic ProRes RAW / BRAW 16→12-Bit Log 元数据握手、E 卡口 12 针呼吸补偿 FOV 裁剪 vs PL/RAW 旁路、MI-Shoe I2S 48kHz 主时钟 PLL 锁定、及 G35/G36 AOC HDMI +5V / CFexpress NVMe 热限与开盖急救 HIL
+
+[`hdmi_raw_prores_breathing_mishoe_aoc_emulator.py`](hdmi_raw_prores_breathing_mishoe_aoc_emulator.py) 作为 **Stage 20** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase117_proresraw_breathing_mishoe_hil=True`，可通过 `--skip-phase117` 向后兼容跳过；全板 20 阶段协同仿真在本地只读供体模式下保持 `~1.17s < 1.8s`、洁净室模式下 `~0.29s < 0.7s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`raw_lut_burn_in_frames == 0`**、**`pl_breathing_stale_crop_frames == 0`**、**`audio_pop_click_frames == 0`**、**`sy1129_hdmi_fuse_damage_events == 0`**、**`cfexpress_fat_corruption_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成四大闭环：
+
+1. **严格只读（`os.O_RDONLY`）FX3/FX6 RAW / 镜头 / 热靴 / 媒体供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`string_english.uxc`、`string_english_g.uxc`、FX6 `string_english.uxc`、`string_english_2.uxc`、`libInfraLensCommunicator.so`、`libInfraHotshoe.so`、`libInfraAdjMedia.so`、`libInfraMediaConfig.so`、`libInfraMediaDetect.so`、`libInfraMediaCommon.so`）的 SHA-256 与关键符号/字符串标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — 外接 HDMI 16-Bit 线性 → 12-Bit Log（`Atomos Ninja ProRes RAW` / `Blackmagic Video Assist BRAW`）握手与零烧录纯净流**：
+   - 实现 `$C^1$` 平滑暗部趾部 16→12-bit Log 压扩器（`15.0 stops >= 14.5 stops` 动态范围、`2048 ADU` OB 钳位往返 `0` 漂移、`[0..512]` 暗部单调单射）、31 字节 CTA-861 Vendor-Specific InfoFrame（`type=0x81`，模 256 校验和为 `0`）与 56 字节 `SONYRAW1` 元数据包（`Base ISO 800 / 12800`、`Kelvin/Tint`、焦距/T-stop、`S-Gamut3.Cine` Q13 矩阵与 CRC-32）。
+   - 验证本地 `GPE0` Display Assist LUT 仅作用于机内监看渲染，外发 HDMI RAW 流保持 **0 帧 LUT/OSD 烧录污染**（`raw_lut_burn_in_frames == 0`），并对非 Log 拍摄、校验和破坏及烧录泄漏故障执行失败关闭拦截。
+3. **Pillar B — E 卡口 12 针 `Focus Breathing Compensation` 动态 FOV 裁剪（`1.00x..1.08x`）vs 无触点 PL / HDMI RAW `< 0.5 ms` 恒等旁路**：
+   - 建模 6 支索尼 E 卡口 12 针镜头随对焦距离 `u_mm` 连续平滑插值的呼吸补偿视场缩放曲线（`1.00x..1.08x`）；当切换无触点 PL 转接环、启用 HDMI RAW 输出或 S&Q 120p 高帧率时，在 **`0.18–0.22 ms < 0.5 ms`**（`< 1` 帧）内确定性旁路复位至 **`1.000x`** 恒等映射（`pl_breathing_stale_crop_frames == 0`），并失败关闭拦截强行裁剪或陈旧系数残留。
+4. **Pillar C — `MI-Shoe` 4 通道 24-Bit / `48 kHz` `I2S` 数字音频（`XLR-H1` / 无线数字接收器）主时钟 Fractional-N PLL 锁定与热拔零爆音回退**：
+   - 在 `23.976p..59.94p`（含 `29.97p` `(1602,1601,1602,1601,1602)` 与 `59.94p` `(801,801,801,801,800)` 5 帧 NTSC 步进）12 小时（`43,200 s`）连续运行下实现与 `CXD90057` 视频时钟的 **Fractional-N PLL 零漂移锁定（`0.0 < 0.20` 采样/小时）**。
+   - 仿真拍摄中热拔 MI-Shoe：通过 `P11` Smart Handle 队列（`0x91db059b -> 0x88000002`）触发零过零斜坡切换至内部晶振保持（`INTERNAL_CRYSTAL_HOLDOVER`），保证 **`audio_pop_click_frames == 0`** 与 `ivshmem_tx_leaks == 0`。
+5. **Pillar D — `G35` & `G36` 硬件在环（AOC HDMI Pin-18 `+5V` 与 CFexpress Type-A NVMe 热限 / VPG 写底线 / 卡仓门紧急 FAT 日志 HIL）**：
+   - `G35`：`AOC` 有源光缆 HDMI Pin-18 `+5V` 请求 `> 55 mA`（`125 mA`）时负载开关即时钳位至 `55.0 mA`，外部供电反灌 `> 5.35V`（`5.85V`）时在 **`16.4 us < 40 us`** 内切断隔离，保持 **`sy1129_hdmi_fuse_damage_events == 0`**。
+   - `G36`：`CFexpress Type-A` 温度 `> 82°C`（`84.5°C`）触发 NVMe `PS1_THROTTLED` 热限预警；校验 `4K120p XAVC S-I 600 Mbps`（`93.75 MB/s` 写入底线）要求 `VPG200/VPG400` 认证卡并拦截 `V30`/低速卡；并在缓存刷盘期间打开卡仓门时于 `2.8 ms` 内提交紧急 exFAT 日志，确保 **`exfat_volume_dirty_bit == 0`** 与 **`cfexpress_fat_corruption_events == 0`**。
+
+### Phase 117 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 20 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/hdmi_raw_prores_breathing_mishoe_aoc_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/hdmi_raw_prores_breathing_mishoe_aoc_emulator.py --self-test --json
+
+# 2. 全板 20 阶段（Stage 1..20）统一校验（本地 ~1.17s < 1.8s，洁净室 ~0.29s < 0.7s，支持 --skip-phase117）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 117 40 项单测 & 全量 644 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_hdmi_raw_prores_breathing_mishoe_aoc_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_hdmi_raw_prores_breathing_mishoe_aoc_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests
+```
+
+
 
 
 

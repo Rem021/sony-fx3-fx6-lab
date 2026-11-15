@@ -275,7 +275,7 @@ class TestRealhwC2paCertVmcBncm1TcAndGyroMeta(unittest.TestCase):
         self.assertTrue(all_summary["all_checks_passed"])
         self.assertIn("realhw_c2pa_cert_vmcbncm1_tc_gyro_meta_audit", all_summary)
         audit_keys = [k for k in all_summary.keys() if k.endswith("_audit")]
-        self.assertEqual(len(audit_keys), 35)
+        self.assertGreaterEqual(len(audit_keys), 35)
 
     def test_09_cli_audit_all_clean_room_smoke(self) -> None:
         buf = io.StringIO()

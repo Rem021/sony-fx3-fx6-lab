@@ -928,4 +928,24 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-40pillar-recovery --force-clean-room --json
 ```
 
+## Phase 247 — 真机主线 Part 29（Pillar 41 / `41/41` 统一恢复总检）：`Display Quality` `Standard`/`High` 跨双复位留存与 `NP-FZ100` 台架节能钳制、`Bluetooth Rmt Ctrl` 红外遥控互斥锁与 `Reset Network Set.` 三向复位分流及 `My Menu Setting` 6 操作持久化 + `CAMSET01.DAT` 无损往返金库（`verify-41pillar-recovery` / `verify-display-quality-bt-rmt-mymenu-vault`）
+
+- **[`realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py`](fx3_recovery/realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`）落地 **Pillar 41** 并将全套恢复总检正式推进至 **`41/41`（`VERIFIED_41OF41_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37/38/39/40pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`libInfraBluetooth.so`（校验 `_ZN14InfraBluetoothC1Ev`、`_ZN14InfraBluetooth12start_threadEv`、`_ZN14InfraBluetooth11register_cbEv`）、`libInfraAirplaneMode.so`（校验 `_Z23AirplaneModeTraceRecordhhtj`、`_Z28AirplaneModeTraceRecordErrorhhtj`）与 `FX6 6.01` `appFw.so`、`libInfraSircs.so`（校验 `_ZN10InfraSircs4InitEv`、`_ZN10InfraSircs11GetInstanceEv`、`_ZN10InfraSircs15SetSircsOffTimeEi`）共 11 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 41A — `[Display Quality]`（`Standard`/`High`）跨双复位留存与 `NP-FZ100` 台架省电钳制 + `[Bluetooth Rmt Ctrl]` 红外遥控互斥锁、零射频抑制与三向复位分流（`6/6`）**：
+    - `P41A1`..`P41A6`：精确建模 `MENU` -> `Setup` -> `[Monitor]` -> `[Display Quality]`（默认 `Standard` / `High`，开启 `[High]` 会显著增加 `NP-FZ100` 电池功耗）**同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**、仅在完整 `[Initialize]` 下归位为 `Standard`，并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 确定性恢复；在机内 `NP-FZ100` 电池驱动的 Tier-0 `pnflasha`/`cnflasha` 冷转储台架期间，强制将 `[Display Quality]` 钳制为 `[Standard]` 且配合 `[Monitor Brightness] = [Manual](0)`（`tier0_battery_high_display_violations == 0`）；同时建模 `MENU` -> `Network` -> `[Bluetooth]` -> `[Bluetooth Rmt Ctrl]`（默认 `Off` / `On`）的三项硬件规则：① 依赖 `[Bluetooth Function] = On` 且 `[Airplane Mode] = Off`（在零射频台架 `[Airplane Mode] = On` 下硬抑制发射、`passive_tx_bytes_emitted == 0`）；② 当 `[Bluetooth Rmt Ctrl] = [On]` 时，硬件**强制互斥锁定红外遥控器（`SIRCS` 不可用，`bt_rmt_ir_lockout_violations == 0`）**；③ 严格执行三向复位分流——**跨越 `[Camera Settings Reset]` 留存，但在 `[Reset Network Set.]` 与 `[Initialize]` 下均复位至 `[Off]`**（严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **支柱 41B — `[My Menu Setting]` / `[Display From My Menu]` 6 操作状态机持久化、双复位留存与 Slot-1 `CAMSET01.DAT` `O_RDONLY` 无损往返金库（`6/6`）**：
+    - `P41B1`..`P41B6`：精确建模 `MENU` -> `My Menu` -> `[My Menu Setting]` 全部 6 项子操作（`Add Item`、`Sort Item`、`Delete Item`、`Delete Page`、`Delete All` 及 `[Display From My Menu]` 默认 `Off` 打开最近页签 vs `On` 优先打开 `My Menu`，上限 `5` 页 × 每页 `6` 项 = `30` 项）；验证已注册的 `My Menu` 条目与 `[Display From My Menu]` **同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**，仅通过 `[Delete All]` / `[Delete Page]` 或完整 `[Initialize]` 清空归零；验证经 `O_RDONLY` + SDXC 物理 `WP` 锁保护的 Slot 1 `CAMSET01.DAT` `[Load]` 可无损往返恢复全部 `My Menu` 页面与 `[Display From My Menu]` 状态，且 100% 阻断跨机型 `ILME-FX6` 导入及对 Slot 1 Tier-0 金库扇区的任何 `[Save]` 覆写或可变挂载（`slot1_mymenu_vault_mutation_bytes == 0`，`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `41/41` 恢复总检聚合器与 CLI（`evaluate_realhw_41pillar_recovery_master` / `verify-41pillar-recovery` / `verify-display-quality-bt-rmt-mymenu-vault`）**：
+    - 并发调用 `evaluate_realhw_40pillar_recovery_master`（`Pillars 1..40`）+ **Pillar 41**（`run_pillar41_standalone_suite`），汇总产出 **`41/41`**（`VERIFIED_41OF41_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py`](tests/test_realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 4s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-display-quality-bt-rmt-mymenu-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-41pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-41pillar-recovery --force-clean-room --json
+```
+
+
 

@@ -240,6 +240,31 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
 ```
 
+### 2.7 Milestone Phase 110 — 32-Gate Safety, 10-Pillar Recovery, 20+ Firmware Auditors, 18-Stage VM & Complete `10/10` Status + `11/11` Full-Menu Real-Kernel Closures
+
+All Milestone Phase 110 gates execute in **both Local Donor (`os.O_RDONLY`) and Donorless Clean-Room (`FX3_FX6_FORCE_CLEAN_ROOM=1`) modes**, maintaining `2,980` Local Donor / `2,922` Clean-Room passing tests across all 7 suites while locking `persistent_emmc_writes_authorized = False`, `hardware_live_attachment_authorized = False`, `otp_fuse_touches = 0`, and `passive_tx_bytes_emitted = 0`:
+
+```sh
+# 1. Unified 6-Pillar Milestone Phase 110 Master Gate (< 2.5s in BOTH modes)
+make verify-milestone-110
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-110
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-110 --json
+
+# 2. 32-Gate Master Preflight (G01..G32 incl. G25..G32 Fan Intake, Tripod, IMX510 Curtain/Subzero, Wireless EMI/6h+ exFAT, PL Cantilever & V-Mount Dummy Battery OVP)
+make verify-32-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-32-gates
+
+# 3. 10-Pillar Recovery Master Suite (OTP/RPMB + GF(256) + init2 + Passive RX-Only UART S0..S6 + GPT/RPMB + Ramdisk/eMMC Pre-EOL + FDT bootargs/ARM64 Image)
+make verify-10pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-10pillar-recovery
+
+# 4. 20+ Unified Firmware-Lab Auditors, 18-Stage VM Co-Emulation & Phase 110 Fast Gate Suite
+make verify-firmware-lab
+make verify-coemulation
+make verify-milestone-90
+```
+
 ---
 
 ## 3. Automated BYOF Manifest Auditor (`make verify-byof`)
@@ -489,6 +514,31 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx6-on-fx3-clo
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+```
+
+### 2.7 Milestone Phase 110 — 32 门禁安全、10 支柱救砖、20+ 固件审计、18 阶段共仿真与 10/10 状态页 + 11/11 全菜单真内核闭环
+
+全部 Milestone Phase 110 门禁均原生支持 **本地 BYOF Donor (`os.O_RDONLY`) 模式** 与 **无供体洁净室 CI 模式 (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**，在全仓 `7` 大套件保持 **`2,980` 本地供体 / `2,922` 洁净室** 全绿通过的同时，硬锁 `persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`otp_fuse_touches = 0` 与 `passive_tx_bytes_emitted = 0`：
+
+```sh
+# 1. Milestone Phase 110 六柱一体化总闸（双模式均 < 2.5s）
+make verify-milestone-110
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-110
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-110 --json
+
+# 2. 32 门禁主安全预检（G01..G32，含 G25..G32 风扇进气、三脚架、IMX510 快门帘/低温、无线 EMI/6h+ exFAT、PL 悬臂力矩与假电池 OVP 拦截）
+make verify-32-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-32-gates
+
+# 3. 10 支柱救砖恢复主套件（OTP/RPMB + GF(256) + init2 + 被动只收串口 S0..S6 + GPT/RPMB + Ramdisk/eMMC Pre-EOL + FDT bootargs/ARM64 Image）
+make verify-10pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-10pillar-recovery
+
+# 4. 20+ 固件实验室审计器、18 阶段 VM 协同仿真与 Phase 90 兼容基线总闸
+make verify-firmware-lab
+make verify-coemulation
+make verify-milestone-90
 ```
 
 ---

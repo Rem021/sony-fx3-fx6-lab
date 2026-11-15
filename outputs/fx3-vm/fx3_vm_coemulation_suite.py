@@ -53,6 +53,7 @@ FX3_VM_DIR = Path(__file__).resolve().parent
 if str(FX3_VM_DIR) not in sys.path:
     sys.path.insert(0, str(FX3_VM_DIR))
 
+import c2pa_shading_mcfleet_ovp_emulator as p107  # noqa: E402
 import camset_lpcm_tcub_emulator as p82  # noqa: E402
 import cxd90057_dtb_and_mhlx_emulator as p41  # noqa: E402
 import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
@@ -123,6 +124,7 @@ class CoEmulationConfig:
     include_phase96_interval_cache_ftp_fan: bool = True
     include_phase99_lut3d_subzero_sdi: bool = True
     include_phase103_emi_exfat_endurance: bool = True
+    include_phase107_c2pa_shading_mcfleet_ovp: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1172,6 +1174,49 @@ def run_stage17_emi_exfat_endurance(
     }
 
 
+def run_stage18_c2pa_shading_mcfleet_ovp(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 18 (Phase 107): C2PA 2.1 cnflasha Firewall, E-Mount/PL Shading Arbitrator, 4-Cam MC Fleet & G31/G32 OVP HIL."""
+    config.validate()
+    rep = p107.run_phase107_c2pa_shading_mcfleet_ovp_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage18_phase107_c2pa_shading_mcfleet_ovp",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "private_key_reads": red["private_key_reads"],
+        "private_key_exports": red["private_key_exports"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "cxd90057_pmic_damage_events": red["cxd90057_pmic_damage_events"],
+        "emount_flange_damage_events": red["emount_flange_damage_events"],
+        "donor_audit": rep["donor_audit"],
+        "c2pa_cnflasha_firewall": rep["c2pa_cnflasha_firewall"],
+        "emount_shading_pl_arbitrator": rep["emount_shading_pl_arbitrator"],
+        "mc_4cam_wired_fleet_sync": rep["mc_4cam_wired_fleet_sync"],
+        "g31_g32_ovp_cantilever_hil": rep["g31_g32_ovp_cantilever_hil"],
+        "phase107_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1182,7 +1227,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 17-stage (Phase 33..103) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 18-stage (Phase 33..107) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1239,6 +1284,11 @@ def run_fx3_vm_coemulation_suite(
     stage17: Optional[Dict[str, object]] = (
         run_stage17_emi_exfat_endurance(cfg, env=env)
         if cfg.include_phase103_emi_exfat_endurance
+        else None
+    )
+    stage18: Optional[Dict[str, object]] = (
+        run_stage18_c2pa_shading_mcfleet_ovp(cfg, env=env)
+        if cfg.include_phase107_c2pa_shading_mcfleet_ovp
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -1428,6 +1478,27 @@ def run_fx3_vm_coemulation_suite(
         and stage17["dropped_video_frames"] == 0
         and (not stage17["persistent_emmc_writes_authorized"])
     )
+    stage18_ok = True if stage18 is None else (
+        bool(stage18["all_checks_passed"])
+        and stage18["nop_count"] == 0
+        and stage18["guest_code_modification_bytes"] == 0
+        and stage18["cp_mutation_bytes"] == 0
+        and stage18["wbi_mutation_bytes"] == 0
+        and stage18["calibration_mutation_bytes"] == 0
+        and stage18["nvram_persistent_writes"] == 0
+        and stage18["bk4_persistent_nvram_writes"] == 0
+        and stage18["physical_device_writes"] == 0
+        and stage18["null_gpio_derefs"] == 0
+        and stage18["mailbox_stalls"] == 0
+        and stage18["stock_cp_fault_count"] == 0
+        and stage18["cnflasha_mutation_bytes"] == 0
+        and stage18["private_key_reads"] == 0
+        and stage18["private_key_exports"] == 0
+        and stage18["wf12_00342260_hits"] == 0
+        and stage18["cxd90057_pmic_damage_events"] == 0
+        and stage18["emount_flange_damage_events"] == 0
+        and (not stage18["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1448,6 +1519,7 @@ def run_fx3_vm_coemulation_suite(
         and stage15_ok
         and stage16_ok
         and stage17_ok
+        and stage18_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1478,6 +1550,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase96_interval_cache_ftp_fan": cfg.include_phase96_interval_cache_ftp_fan,
             "include_phase99_lut3d_subzero_sdi": cfg.include_phase99_lut3d_subzero_sdi,
             "include_phase103_emi_exfat_endurance": cfg.include_phase103_emi_exfat_endurance,
+            "include_phase107_c2pa_shading_mcfleet_ovp": cfg.include_phase107_c2pa_shading_mcfleet_ovp,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1530,6 +1603,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage16_phase99_lut3d_subzero_sdi"] = stage16
     if stage17 is not None:
         core_payload["stage17_phase103_emi_exfat_endurance"] = stage17
+    if stage18 is not None:
+        core_payload["stage18_phase107_c2pa_shading_mcfleet_ovp"] = stage18
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1541,7 +1616,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1616,6 +1691,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase103",
         action="store_true",
         help="Skip optional Stage 17 (Phase 103 Wireless TX EMI/ESD/LTC, 12h exFAT/SMART & Zero-eMMC-Churn Endurance HIL)",
+    )
+    parser.add_argument(
+        "--skip-phase107",
+        action="store_true",
+        help="Skip optional Stage 18 (Phase 107 C2PA 2.1 cnflasha Firewall, E-Mount/PL Shading Arbitrator, 4-Cam MC Fleet & G31/G32 OVP HIL)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -1697,6 +1777,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase96_interval_cache_ftp_fan=not args.skip_phase96,
         include_phase99_lut3d_subzero_sdi=not args.skip_phase99,
         include_phase103_emi_exfat_endurance=not args.skip_phase103,
+        include_phase107_c2pa_shading_mcfleet_ovp=not args.skip_phase107,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1723,6 +1804,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s15 = rep.get("stage15_phase96_interval_cache_ftp_fan")
         s16 = rep.get("stage16_phase99_lut3d_subzero_sdi")
         s17 = rep.get("stage17_phase103_emi_exfat_endurance")
+        s18 = rep.get("stage18_phase107_c2pa_shading_mcfleet_ovp")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1813,6 +1895,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s17, dict)
             else ""
         )
+        s18_str = (
+            f" | c2pa_shad_mc_ovp={s18['source_mode']}(cnfl_mut={s18['cnflasha_mutation_bytes']}/priv_rd={s18['private_key_reads']},"
+            f"pl_id=1.0x/0.42ms,mc4=skew{s18['mc_4cam_wired_fleet_sync']['fleet_4cam_gigabit_p12_ok']['gang_rec_start_skew_ms']}ms/wf12={s18['wf12_00342260_hits']},"
+            f"ovp26v={s18['g31_g32_ovp_cantilever_hil']['g32_26v_ovp_crowbar_tripped']['ovp_isolation_latency_us']}us/pmic_dmg={s18['cxd90057_pmic_damage_events']})"
+            if isinstance(s18, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1821,7 +1910,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

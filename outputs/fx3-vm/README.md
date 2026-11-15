@@ -588,6 +588,39 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 107：Stage 18 C2PA 2.1 `cnflasha` 密钥库零触碰防火墙、E 卡口 12 针镜头暗角/色差 vs 无触点 PL 身份仲裁器、Monitor & Control 4 机位有线 USB-LAN 机队同步、及 G31/G32 假电池 OVP 撬棒 HIL
+
+[`c2pa_shading_mcfleet_ovp_emulator.py`](c2pa_shading_mcfleet_ovp_emulator.py) 作为 **Stage 18** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase107_c2pa_shading_mcfleet_ovp=True`，可通过 `--skip-phase107` 向后兼容跳过；全板 18 阶段协同仿真在本地只读供体模式下保持 `< 1.7s`、洁净室模式下 `< 0.6s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`cnflasha_mutation_bytes == 0`**、**`private_key_reads == 0`**、**`private_key_exports == 0`**、**`wf12_00342260_hits == 0`**、**`cxd90057_pmic_damage_events == 0`**、**`emount_flange_damage_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成四大闭环：
+
+1. **严格只读（`os.O_RDONLY`）证书/SPAcc/E 卡口/有线以太网/USB-PD 供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`libCertificateManager.so` x2、`libInfraCertificate.so`、`libspaccdev.so`、`libInfraLensCommunicator.so` x2、`libNetServiceEther.so` x2、`cdc_ncm.ko`、`libBusPower.so`）的 SHA-256 与关键导出/符号标记（`CertificateManager`、`spaccdev`、`LensCommunicator`、`netserviceether_init`、`NseMiscSetEtherRemoteAccess`、`cdc_ncm`、`BusPower` 等）；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **C2PA 2.1 / `cnflasha` 密钥库只读隔离沙箱与防伪造门控**：
+   - 仿真 Stage-B 剪辑封口时的 `cnflasha` / `RPMB` 密钥库零触碰防火墙：100% 阻断私钥读取/导出（`BLOCKED_C2PA_PRIVATE_KEY_ACCESS`，`private_key_reads == 0`、`private_key_exports == 0`）、阻断对 `cnflasha*`/`RPMB`/`SPAcc`/`RQ_LIC.DAT` 的写入与读写挂载（`BLOCKED_CNFLASHA_RPMB_KEYVAULT_MUTATION`，`cnflasha_mutation_bytes == 0`）、阻断跨机身 FX6/伪造证书欺骗（`BLOCKED_CROSS_BODY_CERT_SPOOFING`）与硬件背书伪造（`BLOCKED_C2PA_PROVENANCE_FORGERY`），并在内存 `NonRealTimeMeta` 中诚实标注 `CLEAN_ROOM_RESEARCH_UNATTESTED`（`<HardwareAttestationClaimed>false</HardwareAttestationClaimed>`）。
+3. **E 卡口 12 针镜头暗角/色差/畸变多项式 vs 无触点手动 PL/变形镜头热插拔仲裁器**：
+   - 建模从电子触点索尼 FE 24-70mm F2.8 GM II（`SEL2470GM2`，12 针 UART 激活 -> 应用 `cos^4` 径向暗角 `1.305891x @ r=0.85`、横向色差 `R/B`、Brown-Conrady 畸变与呼吸补偿多项式）实时热插拔至无电子触点手动 PL-to-E 变形定焦（`ATLAS_ORION_40MM_2X_PL_UNCHIPPED`，0 触点）：在 **`0.42 ms < 16.6833 ms`（`< 1 帧`）** 内瞬间复位全部暗角/色差/畸变/呼吸表至 **`1.0x` 恒等表**，实现 **`0` 帧陈旧 GM 系数泄漏**，并对 12 针 UART EEPROM 校验和损坏与陈旧系数滞留故障均执行失败关闭拦截。
+4. **Sony Monitor & Control 4 机位有线千兆 USB-LAN（`CDC-NCM` / `RTL8153`）机队同步 + `P12` 射频围栏**：
+   - 建模 4 机位有线以太网机队（`A-Cam` FX6 主控 + `B/C/D-Cam` FX6-on-FX3）通过 `CDC_NCM_RTL8153`（`1000 Mbps`、`PTP-IP 15740`）并发流式传输 `FALSE_COLOR` / `WAVEFORM` / `FOCUS_MAP` 遥测并执行亚毫秒级 **Gang REC 启停（`0.204 ms` 启停偏斜 / `<= 64 us` PTP 时钟偏斜）**，同时保持 `P12` `BK4\0` Wi-Fi/BT 射频 100% 静默（`0` `WF-12` `00342260` 命中），并阻断未受支持的 `RNDIS`/百兆网卡及射频越界。
+5. **G31/G32 非稳压 16.8V/26.0V 假电池 OVP 撬棒与无支撑 PL 悬臂过载 HIL**：
+   - 注入 `16.8V`（`G31`）与 `26.0V`（`G32`）非稳压假电池浪涌，验证启动前 OVP 撬棒隔离延迟 **`21.59 us` / `12.85 us < 50.0 us`**、PMIC 瞬态峰值钳位至 `<= 8.825V < 9.6V`（`cxd90057_pmic_damage_events == 0`）；同时对无支撑 `> 1.8 N*m`（`2.6 N*m`）PL 重型悬臂负载立即触发卡口应力互锁并闭锁 IBIS 线圈上电（`emount_flange_damage_events == 0`），而介入 15mm 导管支撑将等效法兰力矩降至 `0.728 N*m <= 1.8 N*m` 后安全放行。
+
+### Phase 107 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 18 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/c2pa_shading_mcfleet_ovp_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/c2pa_shading_mcfleet_ovp_emulator.py --self-test --json
+
+# 2. 全板 18 阶段（Stage 1..18）统一校验（本地 < 1.7s，洁净室 < 0.6s，支持 --skip-phase107）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 107 36 项单测 & 全量 568 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_c2pa_shading_mcfleet_ovp_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_c2pa_shading_mcfleet_ovp_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
 
 
 

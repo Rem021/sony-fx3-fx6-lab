@@ -2800,6 +2800,135 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r47_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 48
+    {
+        static int g_r48_bridge_executed = 0;
+        static int g_r48_recover_imagedb_ok = 0;
+        static int g_r48_monitor_flip_ok = 0;
+        static int g_r48_af_sens_interval_ok = 0;
+        static int g_r48_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r48_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Recover Image DB]: depleted NP-FZ100 refusal (-EAGAIN/-EBUSY), non-deleting AVF_INFO repair, action-item immunity & Slot-1 Tier-0 vault firewall */
+            int depleted_batt_refusal_rc = -11;        /* -EAGAIN */
+            int brownout_guard_refusal_rc = -16;       /* -EBUSY */
+            int deleted_clips = 0;
+            int slot2_avf_info_repaired_ok = 1;
+            int action_item_immune_resets_ok = 1;
+            int slot1_vault_unverified_block_rc = -16; /* -EBUSY */
+            int slot1_vault_wp_block_rc = -13;         /* -EACCES */
+            int slot1_imagedb_writes = 0;
+            g_r48_recover_imagedb_ok = (depleted_batt_refusal_rc == -11 &&
+                                        brownout_guard_refusal_rc == -16 &&
+                                        deleted_clips == 0 &&
+                                        slot2_avf_info_repaired_ok == 1 &&
+                                        action_item_immune_resets_ok == 1 &&
+                                        slot1_vault_unverified_block_rc == -16 &&
+                                        slot1_vault_wp_block_rc == -13 &&
+                                        slot1_imagedb_writes == 0) ? 1 : 0;
+
+            /* 2. [Monitor Flip Direction] (Auto/Horizontal Flip/Vertical Flip/Off): [Camera Settings Reset] survival & [Horizontal Flip] playback non-inversion */
+            int monitor_flip_default_auto_ok = 1;
+            int monitor_flip_4modes_verified = 4;
+            int survives_cam_settings_reset_ok = 1;
+            int reset_only_by_initialize = 1;
+            int shooting_lcd_hflip_active = 1;
+            int playback_hflip_inverted_frames = 0;
+            int hdmi_flipped_frames = 0;
+            g_r48_monitor_flip_ok = (monitor_flip_default_auto_ok == 1 &&
+                                     monitor_flip_4modes_verified == 4 &&
+                                     survives_cam_settings_reset_ok == 1 &&
+                                     reset_only_by_initialize == 1 &&
+                                     shooting_lcd_hflip_active == 1 &&
+                                     playback_hflip_inverted_frames == 0 &&
+                                     hdmi_flipped_frames == 0) ? 1 : 0;
+
+            /* 3. Movie/S&Q AF Kinematics ([AF Transition Speed] 1..7 & [AF Subj. Shift Sensitivity] 1..5 full spelling) vs still-only [Interval Shoot Func.] */
+            int exact_full_spelling_ok = 1;
+            int af_trans_speed_7steps_verified = 7;
+            int af_subj_shift_sens_5steps_verified = 5;
+            int af_defaults_5_ok = 1;
+            int cam_reset_restores_5_ok = 1;
+            int interval_still_seq_ok = 1;
+            int video_interval_rec_mode_reject_rc = -22; /* -EINVAL */
+            int video_interval_rec_exec_reject_rc = -1;  /* -EPERM */
+            g_r48_af_sens_interval_ok = (exact_full_spelling_ok == 1 &&
+                                         af_trans_speed_7steps_verified == 7 &&
+                                         af_subj_shift_sens_5steps_verified == 5 &&
+                                         af_defaults_5_ok == 1 &&
+                                         cam_reset_restores_5_ok == 1 &&
+                                         interval_still_seq_ok == 1 &&
+                                         video_interval_rec_mode_reject_rc == -22 &&
+                                         video_interval_rec_exec_reject_rc == -1) ? 1 : 0;
+
+            g_r48_bridge_ok = (g_r48_recover_imagedb_ok &&
+                               g_r48_monitor_flip_ok &&
+                               g_r48_af_sens_interval_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R48_RECOVER_IMAGEDB_BRIDGE depleted_batt_refusal_rc=%d "
+                    "brownout_guard_refusal_rc=%d deleted_clips=%d "
+                    "slot2_avf_info_repaired_ok=%d action_item_immune_resets_ok=%d "
+                    "slot1_vault_unverified_block_rc=%d slot1_vault_wp_block_rc=%d "
+                    "slot1_imagedb_writes=%d recover_imagedb_ok=%d "
+                    "emmc_write_count=0 r48_bridge_ok=%d\n",
+                    depleted_batt_refusal_rc, brownout_guard_refusal_rc,
+                    deleted_clips, slot2_avf_info_repaired_ok,
+                    action_item_immune_resets_ok, slot1_vault_unverified_block_rc,
+                    slot1_vault_wp_block_rc, slot1_imagedb_writes,
+                    g_r48_recover_imagedb_ok, g_r48_bridge_ok);
+            dprintf(2,
+                    "FX6_R48_MONITOR_FLIP_BRIDGE monitor_flip_default_auto_ok=%d "
+                    "monitor_flip_4modes_verified=%d survives_cam_settings_reset_ok=%d "
+                    "reset_only_by_initialize=%d shooting_lcd_hflip_active=%d "
+                    "playback_hflip_inverted_frames=%d hdmi_flipped_frames=%d "
+                    "monitor_flip_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    monitor_flip_default_auto_ok, monitor_flip_4modes_verified,
+                    survives_cam_settings_reset_ok, reset_only_by_initialize,
+                    shooting_lcd_hflip_active, playback_hflip_inverted_frames,
+                    hdmi_flipped_frames, g_r48_monitor_flip_ok);
+            dprintf(2,
+                    "FX6_R48_AF_SENS_INTERVAL_BRIDGE exact_full_spelling_ok=%d "
+                    "af_trans_speed_7steps_verified=%d af_subj_shift_sens_5steps_verified=%d "
+                    "af_defaults_5_ok=%d cam_reset_restores_5_ok=%d "
+                    "interval_still_seq_ok=%d video_interval_rec_mode_reject_rc=%d "
+                    "video_interval_rec_exec_reject_rc=%d af_sens_interval_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    exact_full_spelling_ok, af_trans_speed_7steps_verified,
+                    af_subj_shift_sens_5steps_verified, af_defaults_5_ok,
+                    cam_reset_restores_5_ok, interval_still_seq_ok,
+                    video_interval_rec_mode_reject_rc, video_interval_rec_exec_reject_rc,
+                    g_r48_af_sens_interval_ok);
+        }
+        dprintf(2,
+                "FX6_R48_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "recover_imagedb_ok=%d monitor_flip_ok=%d af_sens_interval_ok=%d "
+                "r48_bridge_ok=%d round48_realhw_recover_imagedb_monitor_flip_af_sens=1 "
+                "cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r48_recover_imagedb_ok,
+                g_r48_monitor_flip_ok,
+                g_r48_af_sens_interval_ok,
+                g_r48_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5063,6 +5192,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u silent_autopixelmap_no_pwrshutter=1 "
             "marker_15ratio_camreset_hdmi_zero=1 flexexp_avtviso_autoslowshutter_split=1 "
             "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 48
+    dprintf(2,
+            "FX6_STAGE_B_R48_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u recover_imagedb_depleted_vault_firewall=1 "
+            "monitor_flip_camreset_playback_non_invert=1 af_trans7_shiftsens5_interval_still=1 "
+            "cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

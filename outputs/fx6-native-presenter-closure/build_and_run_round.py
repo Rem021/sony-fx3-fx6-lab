@@ -1349,6 +1349,7 @@ def build_stage_a_overlay(
     enable_r45: bool = False,
     enable_r46: bool = False,
     enable_r47: bool = False,
+    enable_r48: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1368,6 +1369,7 @@ def build_stage_a_overlay(
     r45_mode: str = "steadyshot_active_cutoffs_big6",
     r46_mode: str = "sq_fixedvar_6locks_big6",
     r47_mode: str = "silent_autopixelmap_5locks_big6",
+    r48_mode: str = "monitor_flip_playback_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1677,7 +1679,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r46_mode: {r46_mode}")
     if enable_r47 and r47_mode not in ("silent_autopixelmap_5locks_big6", "marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"):
         raise ValueError(f"Unsupported r47_mode: {r47_mode}")
-    if enable_r47 and r47_mode in ("marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"):
+    if enable_r48 and r48_mode not in ("recover_imagedb_battery_vault", "monitor_flip_playback_big6", "af_sens_interval_still_h0_h3"):
+        raise ValueError(f"Unsupported r48_mode: {r48_mode}")
+    if enable_r48 and r48_mode in ("recover_imagedb_battery_vault", "af_sens_interval_still_h0_h3"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r48_mode == "recover_imagedb_battery_vault":
+            r48_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r48-recover-imagedb-vault > /dev/console 2>&1\n"
+                "fx6_r48_ri_rc=$?\n"
+                "echo FX6_R48_RECOVER_IMAGEDB_VAULT_RC=$fx6_r48_ri_rc\n"
+                "echo FX6_R48_RECOVER_IMAGEDB_VAULT_EXIT rc=$fx6_r48_ri_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r48_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r48-af-sens-interval-h0-h3 > /dev/console 2>&1\n"
+                "fx6_r48_af_rc=$?\n"
+                "echo FX6_R48_AF_SENS_INTERVAL_RC=$fx6_r48_af_rc\n"
+                "echo FX6_R48_AF_SENS_INTERVAL_EXIT rc=$fx6_r48_af_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r48_early_hook, 1)
+    elif enable_r47 and r47_mode in ("marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3091,6 +3120,65 @@ def build_stage_a_overlay(
             "camera_settings_reset_preserves_marker_zebra_ntscpal": True,
             "p2_setting_writes": 0,
         }
+    r48_meta: Optional[Dict[str, Any]] = None
+    if enable_r48:
+        additions["etc/fx6_stage_r48"] = (
+            (
+                f"stage_r48=1\nr48_mode={r48_mode}\n"
+                f"recover_imagedb_battery_vault=1\nmonitor_flip_camreset_playback_non_invert=1\n"
+                f"af_trans7_shiftsens5_interval_still=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r48_meta = {
+            "r48_mode": r48_mode,
+            "recover_imagedb_menu_item": "Recover Image DB",
+            "recover_imagedb_target_slots": ["Slot 1", "Slot 2"],
+            "depleted_battery_refusal_rc": -11,
+            "brownout_guard_refusal_rc": -16,
+            "depleted_pre_touch_writes": 0,
+            "avf_info_repair_non_deleting": True,
+            "deleted_clips": 0,
+            "action_item_immune_camera_settings_reset": True,
+            "action_item_immune_initialize": True,
+            "slot1_vault_unverified_block_rc": -16,
+            "slot1_vault_wp_block_rc": -13,
+            "slot1_kernel_ro_block_rc": -30,
+            "slot1_imagedb_writes": 0,
+            "monitor_flip_menu_item": "Monitor Flip Direction",
+            "monitor_flip_4_modes": [
+                "Auto",
+                "Horizontal Flip",
+                "Vertical Flip",
+                "Off",
+            ],
+            "monitor_flip_default": "Auto",
+            "monitor_flip_survives_camera_settings_reset": True,
+            "monitor_flip_reset_only_by_initialize": True,
+            "shooting_lcd_hflip_mirrors_horizontally": True,
+            "playback_hflip_inverted_frames": 0,
+            "hdmi_clean_feed_flipped_frames": 0,
+            "af_transition_speed_menu_item": "AF Transition Speed",
+            "af_transition_speed_steps": [1, 2, 3, 4, 5, 6, 7],
+            "af_transition_speed_default": 5,
+            "af_subj_shift_sens_exact_menu_item": "AF Subj. Shift Sensitivity",
+            "af_subj_shift_sens_rejected_abbrev": "AF Subj. Shift Sens.",
+            "af_subj_shift_sens_steps": [1, 2, 3, 4, 5],
+            "af_subj_shift_sens_default": 5,
+            "af_kinematics_scope": ["Movie", "S&Q Motion"],
+            "af_kinematics_still_reject_rc": -95,
+            "camera_settings_reset_restores_af_5_5": True,
+            "interval_shoot_func_menu_item": "Interval Shoot Func.",
+            "interval_shoot_scope": "Still Image Only",
+            "interval_start_time_sec_range": [1, 5999],
+            "interval_shoot_interval_sec_range": [1, 60],
+            "interval_num_shots_range": [1, 9999],
+            "video_interval_rec_mode_reject_rc": -22,
+            "video_interval_rec_exec_reject_rc": -1,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3131,6 +3219,7 @@ def build_stage_a_overlay(
         "r45_enabled": enable_r45,
         "r46_enabled": enable_r46,
         "r47_enabled": enable_r47,
+        "r48_enabled": enable_r48,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3200,6 +3289,8 @@ def build_stage_a_overlay(
         stage_a_meta["r46"] = r46_meta
     if r47_meta is not None:
         stage_a_meta["r47"] = r47_meta
+    if r48_meta is not None:
+        stage_a_meta["r48"] = r48_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3536,6 +3627,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R45_",
         "FX6_R46_",
         "FX6_R47_",
+        "FX6_R48_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -3751,6 +3843,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r47_bridge: Optional[Dict[str, Any]] = None
     r47_marker_15ratio_hdmi_rc: Optional[int] = None
     r47_flexexp_reset_split_rc: Optional[int] = None
+    last_r48_monitor_flip_init: Optional[Dict[str, Any]] = None
+    last_r48_recover_imagedb_bridge: Optional[Dict[str, Any]] = None
+    last_r48_monitor_flip_bridge: Optional[Dict[str, Any]] = None
+    last_r48_af_sens_interval_bridge: Optional[Dict[str, Any]] = None
+    last_r48_recover_imagedb_vault: Optional[Dict[str, Any]] = None
+    last_r48_af_sens_interval: Optional[Dict[str, Any]] = None
+    last_r48_lang: Optional[Dict[str, Any]] = None
+    last_r48_bridge: Optional[Dict[str, Any]] = None
+    r48_recover_imagedb_vault_rc: Optional[int] = None
+    r48_af_sens_interval_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -4236,6 +4338,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R47_FLEXEXP_RESET_SPLIT_RC"), int):
                 r47_flexexp_reset_split_rc = kv["FX6_R47_FLEXEXP_RESET_SPLIT_RC"]
+        elif "FX6_R48_MONITOR_FLIP_INIT " in line:
+            last_r48_monitor_flip_init = _parse_kv_ints(line.split("FX6_R48_MONITOR_FLIP_INIT ", 1)[1])
+        elif "FX6_R48_RECOVER_IMAGEDB_BRIDGE " in line:
+            last_r48_recover_imagedb_bridge = _parse_kv_ints(line.split("FX6_R48_RECOVER_IMAGEDB_BRIDGE ", 1)[1])
+        elif "FX6_R48_MONITOR_FLIP_BRIDGE " in line:
+            last_r48_monitor_flip_bridge = _parse_kv_ints(line.split("FX6_R48_MONITOR_FLIP_BRIDGE ", 1)[1])
+        elif "FX6_R48_AF_SENS_INTERVAL_BRIDGE " in line:
+            last_r48_af_sens_interval_bridge = _parse_kv_ints(line.split("FX6_R48_AF_SENS_INTERVAL_BRIDGE ", 1)[1])
+        elif "FX6_R48_RECOVER_IMAGEDB_VAULT " in line:
+            last_r48_recover_imagedb_vault = _parse_kv_ints(line.split("FX6_R48_RECOVER_IMAGEDB_VAULT ", 1)[1])
+        elif "FX6_R48_AF_SENS_INTERVAL " in line:
+            last_r48_af_sens_interval = _parse_kv_ints(line.split("FX6_R48_AF_SENS_INTERVAL ", 1)[1])
+        elif "FX6_R48_LANG_TELEMETRY " in line:
+            last_r48_lang = _parse_kv_ints(line.split("FX6_R48_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R48_BRIDGE " in line:
+            last_r48_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R48_BRIDGE ", 1)[1])
+        elif "FX6_R48_RECOVER_IMAGEDB_VAULT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R48_RECOVER_IMAGEDB_VAULT_RC"), int):
+                r48_recover_imagedb_vault_rc = kv["FX6_R48_RECOVER_IMAGEDB_VAULT_RC"]
+        elif "FX6_R48_AF_SENS_INTERVAL_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R48_AF_SENS_INTERVAL_RC"), int):
+                r48_af_sens_interval_rc = kv["FX6_R48_AF_SENS_INTERVAL_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -4764,6 +4890,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r47_bridge or {},
         }
 
+    r48_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r48_monitor_flip_init,
+            last_r48_recover_imagedb_bridge,
+            last_r48_monitor_flip_bridge,
+            last_r48_af_sens_interval_bridge,
+            last_r48_recover_imagedb_vault,
+            last_r48_af_sens_interval,
+            last_r48_lang,
+            last_r48_bridge,
+        )
+    ):
+        r48_telemetry = {
+            "recover_imagedb_vault_rc": r48_recover_imagedb_vault_rc,
+            "af_sens_interval_rc": r48_af_sens_interval_rc,
+            "monitor_flip_init": last_r48_monitor_flip_init or {},
+            "recover_imagedb_bridge": last_r48_recover_imagedb_bridge or {},
+            "monitor_flip_bridge": last_r48_monitor_flip_bridge or {},
+            "af_sens_interval_bridge": last_r48_af_sens_interval_bridge or {},
+            "recover_imagedb_vault": last_r48_recover_imagedb_vault or {},
+            "af_sens_interval": last_r48_af_sens_interval or {},
+            "lang_telemetry": last_r48_lang or {},
+            "stage_b_bridge": last_r48_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -4808,6 +4961,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r45_telemetry": r45_telemetry,
         "r46_telemetry": r46_telemetry,
         "r47_telemetry": r47_telemetry,
+        "r48_telemetry": r48_telemetry,
     }
 
 
@@ -4903,6 +5057,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r13"
     elif args.round >= 12:
         tmp_prefix = "fx6-r12"
+    if args.round >= 48:
+        tmp_prefix = "fx6-r48"
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -4958,8 +5114,12 @@ def run_once(args: argparse.Namespace) -> int:
         r45_mode = getattr(args, "r45_mode", "steadyshot_active_cutoffs_big6")
         r46_mode = getattr(args, "r46_mode", "sq_fixedvar_6locks_big6")
         r47_mode = getattr(args, "r47_mode", "silent_autopixelmap_5locks_big6")
+        r48_mode = getattr(args, "r48_mode", "monitor_flip_playback_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone48Wave34RealHwRecoverImageDbMonitorFlipAfSensInterval+r48_mode={r48_mode}+lang={lang})"
+                if args.round >= 48
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone47Wave33RealHwSilentAutoPixelMapNoPwrShutterMarker15RatioHdmiFlexExp+r47_mode={r47_mode}+lang={lang})"
                 if args.round >= 47
                 else (
@@ -5112,6 +5272,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -5176,6 +5337,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r46_mode=r46_mode,
                 enable_r47=(args.round >= 47),
                 r47_mode=r47_mode,
+                enable_r48=(args.round >= 48),
+                r48_mode=r48_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -5326,6 +5489,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R46_FULLFORMAT_CHORD_VAULT_EXIT" in txt
                     or "FX6_R47_MARKER_15RATIO_HDMI_EXIT" in txt
                     or "FX6_R47_FLEXEXP_RESET_SPLIT_EXIT" in txt
+                    or "FX6_R48_RECOVER_IMAGEDB_VAULT_EXIT" in txt
+                    or "FX6_R48_AF_SENS_INTERVAL_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -5378,6 +5543,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R46_FULLFORMAT_CHORD_VAULT_EXIT" in serial_text
             or "FX6_R47_MARKER_15RATIO_HDMI_EXIT" in serial_text
             or "FX6_R47_FLEXEXP_RESET_SPLIT_EXIT" in serial_text
+            or "FX6_R48_RECOVER_IMAGEDB_VAULT_EXIT" in serial_text
+            or "FX6_R48_AF_SENS_INTERVAL_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -5448,6 +5615,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r45_mode": r45_mode if args.round >= 45 else None,
             "r46_mode": r46_mode if args.round >= 46 else None,
             "r47_mode": r47_mode if args.round >= 47 else None,
+            "r48_mode": r48_mode if args.round >= 48 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -5502,6 +5670,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r45_telemetry": milestones.get("r45_telemetry") if args.round >= 45 else None,
             "r46_telemetry": milestones.get("r46_telemetry") if args.round >= 46 else None,
             "r47_telemetry": milestones.get("r47_telemetry") if args.round >= 47 else None,
+            "r48_telemetry": milestones.get("r48_telemetry") if args.round >= 48 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -5551,7 +5720,8 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], required=True)
+    # r47_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -5573,6 +5743,7 @@ def main() -> int:
     ap.add_argument("--r45-mode", type=str, choices=["steadyshot_active_cutoffs_big6", "ciz_4locks_hfr_raw_cutoffs", "powersave_9cond_autotemp_h0_h3"], default="steadyshot_active_cutoffs_big6")
     ap.add_argument("--r46-mode", type=str, choices=["sq_fixedvar_6locks_big6", "zebra_persist_peaking_hdmi_isolation", "slot1_fullformat_chord_vault_h0_h3"], default="sq_fixedvar_6locks_big6")
     ap.add_argument("--r47-mode", type=str, choices=["silent_autopixelmap_5locks_big6", "marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"], default="silent_autopixelmap_5locks_big6")
+    ap.add_argument("--r48-mode", type=str, choices=["recover_imagedb_battery_vault", "monitor_flip_playback_big6", "af_sens_interval_still_h0_h3"], default="monitor_flip_playback_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

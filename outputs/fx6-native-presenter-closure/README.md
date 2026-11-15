@@ -932,3 +932,31 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
     - Status Check Tab 8 Media (`sid=0x36`) across (`r25c EN`, `r25d JA`, `r17c ZH-CN`, `r25e ZH-TW`): `6/6` pairs strictly `> 0` (`7,091 .. 16,734` px).
   - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
 - **Full Report, Receipts, & `213` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/README.md`](../../reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round25-fx6-on-fx3-tcmedia-4lang-dualsurface-closure/summary.json).
+
+---
+
+## 26. Round 26: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) Technical & Status Check Tab 6 Assignable Button Dual-Surface Closure (`3-Layer Technical Menu sid=0x11` & `Status Check Tab 6 Assignable Button sid=0x34` -> `12/12` Multilingual Deltas)
+
+`build_and_run_round.py --round 26 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) Technical & Assignable Button Dual-Surface Closure** across both **3-Layer Technical Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`, `8x DOWN + 2x RIGHT`)** and **Status Check Tab 6 Assignable Button (`sid=0x34`, `47procam_touch_status_assignable_button_presenter`, `0x7052 + 5x DOWN`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R26_VERIFY_PASS`, `FX6_STAGE_B_R26_BRIDGE`, and `FX6_R26_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 26 --lang english --initial-setting-done 1 --run-id r26a-menu-3layer-technical-english --duration 92 \
+  --run-dir <SCRATCH_ROOT>/fx6-r26-runs/r26a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r26a-menu-3layer-technical-english \
+  --export-png-dir reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets
+```
+
+- **6 Live Round 26 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P11` `XLR-H1`, `P12` `WF-12` Immune)**:
+  - `r26a-menu-3layer-technical-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `8x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `231` colors / `585` `0xffffaa00` amber px, `13,841` icon blits, `10,092` glyph blits, `91` `LDEC103` ioctls).
+  - `r26b-menu-3layer-technical-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `8x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `235` colors / `471` `0xffffaa00` amber px, `13,709` icon blits, `10,088` glyph blits, `92` `LDEC103` ioctls).
+  - `r26c-menu-3layer-technical-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `8x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `244` colors / `471` `0xffffaa00` amber px, `13,260` icon blits, `9,843` glyph blits, `91` `LDEC103` ioctls).
+  - `r26d-status-tab6-assignable-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `5x 0x0030` -> `47procam_touch_status_assignable_button_presenter` (`sid=0x34`, `437,403` px / `80` colors / `324` `0xffffaa00` amber px, `9,239` icon blits, `22,961` glyph blits, `62` `LDEC103` ioctls).
+  - `r26e-status-tab6-assignable-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `0x7052` + `5x 0x0030` -> `47procam_touch_status_assignable_button_presenter` (`sid=0x34`, `437,403` px / `80` colors / `278` `0xffffaa00` amber px, `9,406` icon blits, `22,841` glyph blits, `61` `LDEC103` ioctls).
+  - `r26f-status-tab6-assignable-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `5x 0x0030` -> `47procam_touch_status_assignable_button_presenter` (`sid=0x34`, `437,883` px / `80` colors / `278` `0xffffaa00` amber px, `9,502` icon blits, `22,922` glyph blits, `60` `LDEC103` ioctls).
+  - **Complete `12/12` Technical & Tab 6 Assignable Button Multilingual Pairwise Matrix**:
+    - 3-Layer Technical Menu (`sid=0x11`) across (`r26a EN`, `r26b JA`, `r19c ZH-CN`, `r26c ZH-TW`): `6/6` pairs strictly `> 0` (`6,351 .. 11,296` px).
+    - Status Check Tab 6 Assignable Button (`sid=0x34`) across (`r26d EN`, `r26e JA`, `r17a ZH-CN`, `r26f ZH-TW`): `6/6` pairs strictly `> 0` (`29,750 .. 53,424` px).
+  - **Complete `8/8` Dual-Surface Matrix**: `8/8` cells satisfy `13/13` Stage-B SHA-256, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`.
+- **Full Report, Receipts, & `228` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/README.md`](../../reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/summary.json).

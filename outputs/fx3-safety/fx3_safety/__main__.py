@@ -87,6 +87,11 @@ from .realhw_fx3a_firewall_xlrh1_mishoe_and_64gate_guard import (
     evaluate_g63_fx3a_branch_firewall,
     evaluate_g64_xlrh1_mishoe_guard,
 )
+from .realhw_nouvc_dcc1_pd_lut_path_and_66gate_guard import (
+    evaluate_66gate_preflight,
+    evaluate_g65_nouvc_dcc1_pd_guard,
+    evaluate_g66_lut_path_cineei_bt_guard,
+)
 from .rig_groundloop_lensrail_and_20gate_guard import evaluate_20gate_preflight
 from .saltspray_haze_followfocus_and_34gate_guard import evaluate_34gate_preflight
 from .sensor_curtain_subzero_and_28gate_guard import evaluate_28gate_preflight
@@ -1046,6 +1051,73 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G64 gates can be rehearsed offline",
     )
     p_64.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 56. verify-g65-nouvc-dcc1-pd
+    p_g65 = sub.add_parser(
+        "verify-g65-nouvc-dcc1-pd",
+        help="Verify Gate G65: ILME-FX3 No-UVC USB Gadget Firewall & USB-PD / DC-C1 Electrical Interlock",
+    )
+    p_g65.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g65.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g65.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 57. verify-g66-lut-path-cineei-bt
+    p_g66 = sub.add_parser(
+        "verify-g66-lut-path-cineei-bt",
+        help="Verify Gate G66: Dual-Media .cube User LUT Path-Asymmetry, Cine EI 800/12800 & RMT-P1BT BT/IR Guard",
+    )
+    p_g66.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g66.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g66.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 58. verify-66-gates
+    p_66 = sub.add_parser(
+        "verify-66-gates",
+        help="Run Phase 191 66-Gate Master Safety Preflight Engine (G01..G66)",
+    )
+    p_66.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_66.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_66.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G66 gates can be rehearsed offline",
+    )
+    p_66.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -2135,6 +2207,74 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_64_gates_verified if args.dry_run_simulated else report.offline_61_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g65-nouvc-dcc1-pd":
+        verdict, res = evaluate_g65_nouvc_dcc1_pd_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.nouvc_dcc1_pd_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} body={guard['body_model_name']}({guard['body_model_id_hex']}) "
+                f"usb_mode={guard['usb_connection_mode']} uvc_blocked={guard['uvc_gadget_blocked']} "
+                f"stream={guard['streaming_transport']}@{guard['streaming_bitrate_mbps']:.1f}Mbps "
+                f"power={guard['power_source']} np_fz100={guard['np_fz100_inserted']} "
+                f"batt={guard['battery_pct']}% pd_w={guard['usb_pd_watts']:.0f}W "
+                f"5a={guard['emarked_5a_cable']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g66-lut-path-cineei-bt":
+        verdict, res = evaluate_g66_lut_path_cineei_bt_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.lut_path_cineei_bt_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} cube={guard['lut_3d_size']}pt "
+                f"slot={guard['lut_slot_index']}/{guard['registered_lut_count']} "
+                f"media={guard['media_type']}:{guard['lut_directory']} "
+                f"cine_ei={guard['cine_ei_base_iso']}->{guard['cine_ei_index']} "
+                f"bt_rmt={guard['bluetooth_rmt_ctrl_enabled']}(ir_off={guard['ir_remote_receiver_disabled']}, "
+                f"gps={guard['smartphone_gps_location_link_active']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-66-gates":
+        report = evaluate_66gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/66 "
+                f"g65_to_g66_all_passed={report.g65_to_g66_all_passed} "
+                f"all_66_gates_verified={report.all_66_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_66_gates_verified if args.dry_run_simulated else report.offline_63_gates_verified
         return 0 if ok else 1
 
     return 2

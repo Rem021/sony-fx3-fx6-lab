@@ -73,6 +73,7 @@ import realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator as p172  # noqa: E402
 import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
 import realhw_cxd90058_sabin_codec_and_seal_coemulator as p167  # noqa: E402
 import realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator as p182  # noqa: E402
+import realhw_fan_pwm_shutter_angle_lut_split_coemulator as p200  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
 import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
@@ -157,6 +158,7 @@ class CoEmulationConfig:
     include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil: bool = True
     include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil: bool = True
     include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil: bool = True
+    include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -2058,6 +2060,64 @@ def run_stage34_realhw_nouvc_dcc1_lut_path_cineei_hil(
     }
 
 
+def run_stage35_realhw_fan_pwm_shutter_angle_lut_split_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 35 (Phase 200, 35/35 Milestone): Real-Hardware ILME-FX3 4-Mode Fan PWM, Independent Shutter Speed/Angle & 6.01 vs 7.02 p2:/setting User LUT Split HIL."""
+    config.validate()
+    rep = p200.run_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage35_realhw_fan_pwm_shutter_angle_lut_split_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "p2_setting_mutation_bytes": red["p2_setting_mutation_bytes"],
+        "thermal_runaway_events": red["thermal_runaway_events"],
+        "lut_color_solver_corruption_events": red[
+            "lut_color_solver_corruption_events"
+        ],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_fx3_fan_pwm_and_backup_guard_hil": rep[
+            "pillar_a_fx3_fan_pwm_and_backup_guard_hil"
+        ],
+        "pillar_b_independent_shutter_speed_angle_hil": rep[
+            "pillar_b_independent_shutter_speed_angle_hil"
+        ],
+        "pillar_c_d_lut_601_vs_702_split_firewall_and_redlines": rep[
+            "pillar_c_d_lut_601_vs_702_split_firewall_and_redlines"
+        ],
+        "phase200_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -2068,7 +2128,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 34-stage (Phase 33..194) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 35-stage (Phase 33..200, 35/35 Milestone) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -2210,6 +2270,11 @@ def run_fx3_vm_coemulation_suite(
     stage34: Optional[Dict[str, object]] = (
         run_stage34_realhw_nouvc_dcc1_lut_path_cineei_hil(cfg, env=env)
         if cfg.include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil
+        else None
+    )
+    stage35: Optional[Dict[str, object]] = (
+        run_stage35_realhw_fan_pwm_shutter_angle_lut_split_hil(cfg, env=env)
+        if cfg.include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -2823,6 +2888,35 @@ def run_fx3_vm_coemulation_suite(
         and stage34["appfw_crashes"] == 0
         and stage34["raw_firmware_bytes_leaked"] == 0
     )
+    stage35_ok = True if stage35 is None else (
+        bool(stage35["all_checks_passed"])
+        and stage35["nop_count"] == 0
+        and stage35["guest_code_modification_bytes"] == 0
+        and stage35["cp_mutation_bytes"] == 0
+        and stage35["wbi_mutation_bytes"] == 0
+        and stage35["calibration_mutation_bytes"] == 0
+        and stage35["nvram_persistent_writes"] == 0
+        and stage35["bk4_persistent_nvram_writes"] == 0
+        and stage35["physical_device_writes"] == 0
+        and (not stage35["persistent_emmc_writes_authorized"])
+        and stage35["emmc_nflasha_write_count"] == 0
+        and stage35["emmc_mutation_bytes"] == 0
+        and (not stage35["spi_nor_write_authorized"])
+        and stage35["spi_nor_mutation_bytes"] == 0
+        and (not stage35["el3_payload_transmit_authorized"])
+        and stage35["physical_usb_packets_emitted"] == 0
+        and stage35["otp_fuse_touches"] == 0
+        and stage35["rpmb_counter_increments"] == 0
+        and stage35["p2_setting_mutation_bytes"] == 0
+        and stage35["thermal_runaway_events"] == 0
+        and stage35["lut_color_solver_corruption_events"] == 0
+        and stage35["null_gpio_derefs"] == 0
+        and stage35["mailbox_stalls"] == 0
+        and stage35["stock_cp_fault_count"] == 0
+        and stage35["wf12_00342260_hits"] == 0
+        and stage35["appfw_crashes"] == 0
+        and stage35["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -2860,6 +2954,7 @@ def run_fx3_vm_coemulation_suite(
         and stage32_ok
         and stage33_ok
         and stage34_ok
+        and stage35_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -2907,6 +3002,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil": cfg.include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil,
             "include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil": cfg.include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil,
             "include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil": cfg.include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil,
+            "include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil": cfg.include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -2993,6 +3089,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil"] = stage33
     if stage34 is not None:
         core_payload["stage34_realhw_nouvc_dcc1_lut_path_cineei_hil"] = stage34
+    if stage35 is not None:
+        core_payload["stage35_realhw_fan_pwm_shutter_angle_lut_split_hil"] = stage35
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -3004,7 +3102,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -3166,6 +3264,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 34 (Phase 194 Real-Hardware ILME-FX3 No-UVC USB Gadget Firewall, USB-PD vs DC-C1, LUT Path-Asymmetry & RMT-P1BT HIL)",
     )
     parser.add_argument(
+        "--skip-phase200",
+        action="store_true",
+        help="Skip optional Stage 35 (Phase 200 Real-Hardware ILME-FX3 4-Mode Fan PWM, Independent Shutter Speed/Angle & 6.01 vs 7.02 LUT Split HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -3262,6 +3365,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil=not args.skip_phase182,
         include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil=not args.skip_phase188,
         include_phase194_realhw_nouvc_dcc1_lut_path_cineei_hil=not args.skip_phase194,
+        include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil=not args.skip_phase200,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -3305,6 +3409,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s32 = rep.get("stage32_realhw_emount_info3d_breathing_hdmi_4264_raw_hil")
         s33 = rep.get("stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil")
         s34 = rep.get("stage34_realhw_nouvc_dcc1_lut_path_cineei_hil")
+        s35 = rep.get("stage35_realhw_fan_pwm_shutter_angle_lut_split_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -3562,6 +3667,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s34, dict)
             else ""
         )
+        s35_str = (
+            f" | realhw_fan_pwm_shutter_angle_lut_split_hil={s35['source_mode']}("
+            f"stby_pwm={s35['pillar_a_fx3_fan_pwm_and_backup_guard_hil']['off_in_rec_standby_100pwm']['pwm_duty_percent']}%,"
+            f"hfr_clamp={s35['pillar_b_independent_shutter_speed_angle_hil']['hfr_11988p_64f_clamped_to_360']['effective_angle_deg']}deg,"
+            f"p2_erofs={s35['pillar_c_d_lut_601_vs_702_split_firewall_and_redlines']['stage_b_direct_p2_setting_blocked_erofs']['errno_code']},"
+            f"h0_h3={s35['pillar_c_d_lut_601_vs_702_split_firewall_and_redlines']['h0_equals_h3_slots_verified']}/16,"
+            f"emmc_wr={s35['emmc_nflasha_write_count']})"
+            if isinstance(s35, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -3570,7 +3685,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

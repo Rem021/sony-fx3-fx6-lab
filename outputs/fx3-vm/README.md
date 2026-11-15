@@ -1216,3 +1216,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 207：Stage 37（`37/37` 里程碑）真实硬件主线 — `ILME-FX3` `[De-Squeeze Display]`（`1.6x=1.65x` 4 项锁定 & HDMI RAW 旁路）、外置 `M&C Focus Map`（`>=150fps` 截止）与 `[Simult. + Auto Switch]` / `[Shockless WB]` HIL 协同仿真器
+
+[`realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator.py`](realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator.py) 作为 **Stage 37（`37/37` 里程碑）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase207_realhw_desqueeze_165x_focusmap_simult_shocklesswb_hil=True`，可通过 `--skip-phase207` 跳过；全板 37 阶段协同仿真在本地只读供体模式下 `< 2.1s`、洁净室模式下 `< 1.0s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`physical_usb_packets_emitted == 0`、`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`desqueeze_baked_into_raw_or_xavc_frames == 0`、`inbody_fx3_focus_map_overlay_frames == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.10s` + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraLensCommunicator.so`（`14,544 B` 零差异 ABI）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraPtpControl.so`（`165,320 B`）、`string_english_f.uxc`（`373,820 B`：证实 `De-Squeeze Display` / `1.3x` / `2.0x` / `1.5x` / `1.6x` / `Manual Focus` / `Focus Mode` / `Focus Area` / `SteadyShot` / `Face Priority in Multi Metering` / `RAW Output` / `Off(HDMI Only)` / `HDMI Info. Display` / `Log Shooting` / `Focus Map` / `Simult. Recording` / `Auto Switch Media` / `Shockless WB` / `C.Temp./Filter`）与 `string_english.uxc`（`118,208 B`），并对 `appFw.so`（含 `1.65` CinemaScope 缩放常数）、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `[De-Squeeze Display]`（`Off / 1.3x / 2.0x / 1.5x / 1.6x=1.65x`）4 项锁定与 5 态 HDMI RAW / 纯净 HDMI 旁路 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Display Option] -> [De-Squeeze Display]`（`[1.6x]` 按索尼官方规范施加精确 **`1.65x`** 水平拉伸至 `2.39:1` CinemaScope），开启非 `Off` 档位时强制锁定 4 项相机参数（`[Focus Mode]=Manual Focus`、`[Focus Area]=Wide`、`[SteadyShot]=Off`、`[Face Priority in Multi Metering]=Off`，越权修改返回 `EOPNOTSUPP` `95`），并在 `[RAW Output]=On`、`[Off(HDMI Only)]`（联动 `[HDMI Info. Display]=Off`）、`[Log Shooting]=Off`、`[Remote Shooting]` 与静态照片模式下自动抑制反挤压显示（`desqueeze_baked_into_raw_or_xavc_frames == 0`）。
+3. **Pillar B — 仅限外置 `Monitor & Control` 的 `[Focus Map]`（FX3 机内零菜单）与 `>=150fps` 截止 HIL**：
+   - 以 `EOPNOTSUPP`（`95`）硬拒绝机内 FX3 `[Focus Map]` 菜单开关与 Stage-B 本地 EVF/LCD 叠加层注入；在原厂 E-Mount PDAF 镜头（`((id >> 14) == 3) && ((id & 0x0FFF) != 0x0FFF)`）与实时拍摄状态下，`< 150fps`（含 FX3 允许的 **`1..6fps` S&Q 低帧率**，区别于 FX6 `<=6fps` 封锁，以及 `24p..120fps`）向外置 `M&C` 推流 PDAF 深度图，并对 **`>= 150fps`**（`150 / 200 / 240fps`）、转接环/非 PDAF 手动镜、UVC 推流与机内回放执行硬拦截。
+4. **Pillar C & D — 双卡 `[Simult. Recording]` + `[Auto Switch Media]`（`Ver. 2.0+` 单卡续录 vs `Off` 严格双备份停机）、`[Shockless WB]` 与硬安全红线**：
+   - 协同仿真 `[Simult. Recording]` 下 `[Auto Switch Media]=On` 单卡录满后无缝单卡续录及换入空卡恢复双卡同录（对比 `Off` 严格双卡备份一致性停机，全程 `0` 丢帧、`0` 孤立 `.RSV`）；仿真 `[Shockless WB]`（`Off / 1 / 2 / 3`）全帧率（`1..240fps`）预设切换平滑渐变，以及手动旋转 `[C.Temp./Filter]` 色温开尔文值与 `A–B / G–M` 微调网格时的 **`0` 帧即时旁路**；并 fail-closed 锁死全部 8 项物理写入/发射/叠加红线。
+
+### Phase 207 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 37（37/37 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator.py --self-test --json
+
+# 2. 全板 37 阶段（Stage 1..37, 37/37 里程碑）统一校验（支持 --skip-phase207）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 207 48 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_desqueeze_165x_focusmap_simult_shocklesswb_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

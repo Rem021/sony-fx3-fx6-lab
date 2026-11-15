@@ -59,6 +59,7 @@ import dual_ap_cp_ivshmem_bridge as p24  # noqa: E402
 import dualslot_proxy_ups_salvage_emulator as p71  # noqa: E402
 import fx3_vm_hil_fault_harness as p53  # noqa: E402
 import imx510_xavc_cfexpress_pipeline_emulator as p45  # noqa: E402
+import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import soft_gpe_and_bt_rom_emulator as p29  # noqa: E402
 import tc_genlock_lens_paint_emulator as p67  # noqa: E402
@@ -113,6 +114,7 @@ class CoEmulationConfig:
     include_phase71_dualslot_ups_salvage: bool = True
     include_phase78_touchaf_ciz_assignable: bool = True
     include_phase82_camset_lpcm_tcub: bool = True
+    include_phase87_playback_shotmark_dewpoint: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -967,6 +969,46 @@ def run_stage12_camset_lpcm_tcub(
     }
 
 
+def run_stage13_playback_shotmark_dewpoint(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 13 (Phase 87): Playback/ShotMark, Cine EI Push Auto Iris & Dew-Point/PMIC 5V HIL."""
+    config.validate()
+    rep = p87.run_phase87_playback_shotmark_dewpoint_audit(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage13_phase87_playback_shotmark_dewpoint",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "internal_emmc_format_blocked": red["internal_emmc_format_blocked"],
+        "internal_emmc_writes": red["internal_emmc_writes"],
+        "p1_emmc_mutations": red["p1_emmc_mutations"],
+        "c2pa_license_untouched": red["c2pa_license_untouched"],
+        "p4_nd_motor_faults": red["p4_nd_motor_faults"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "donor_audit": rep["donor_audit"],
+        "playback_shotmark_emmc_guard": rep["playback_shotmark_emmc_guard"],
+        "cine_ei_push_auto_iris": rep["cine_ei_push_auto_iris"],
+        "dewpoint_pmic_5v_hil": rep["dewpoint_pmic_5v_hil"],
+        "phase87_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -977,7 +1019,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 12-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 13-stage (Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1010,6 +1052,11 @@ def run_fx3_vm_coemulation_suite(
     )
     stage12: Optional[Dict[str, object]] = (
         run_stage12_camset_lpcm_tcub(cfg, env=env) if cfg.include_phase82_camset_lpcm_tcub else None
+    )
+    stage13: Optional[Dict[str, object]] = (
+        run_stage13_playback_shotmark_dewpoint(cfg, env=env)
+        if cfg.include_phase87_playback_shotmark_dewpoint
+        else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
 
@@ -1109,6 +1156,25 @@ def run_fx3_vm_coemulation_suite(
         and stage12["uart_boot_contention_events"] == 0
         and (not stage12["persistent_emmc_writes_authorized"])
     )
+    stage13_ok = True if stage13 is None else (
+        bool(stage13["all_checks_passed"])
+        and stage13["nop_count"] == 0
+        and stage13["guest_code_modification_bytes"] == 0
+        and stage13["cp_mutation_bytes"] == 0
+        and stage13["wbi_mutation_bytes"] == 0
+        and stage13["calibration_mutation_bytes"] == 0
+        and stage13["nvram_persistent_writes"] == 0
+        and stage13["bk4_persistent_nvram_writes"] == 0
+        and stage13["physical_device_writes"] == 0
+        and stage13["null_gpio_derefs"] == 0
+        and stage13["mailbox_stalls"] == 0
+        and stage13["p1_emmc_mutations"] == 0
+        and stage13["internal_emmc_writes"] == 0
+        and stage13["p4_nd_motor_faults"] == 0
+        and bool(stage13["internal_emmc_format_blocked"])
+        and bool(stage13["c2pa_license_untouched"])
+        and (not stage13["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -1124,6 +1190,7 @@ def run_fx3_vm_coemulation_suite(
         and stage10_ok
         and stage11_ok
         and stage12_ok
+        and stage13_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -1149,6 +1216,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase71_dualslot_ups_salvage": cfg.include_phase71_dualslot_ups_salvage,
             "include_phase78_touchaf_ciz_assignable": cfg.include_phase78_touchaf_ciz_assignable,
             "include_phase82_camset_lpcm_tcub": cfg.include_phase82_camset_lpcm_tcub,
+            "include_phase87_playback_shotmark_dewpoint": cfg.include_phase87_playback_shotmark_dewpoint,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -1191,6 +1259,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage11_phase78_touchaf_ciz_assignable"] = stage11
     if stage12 is not None:
         core_payload["stage12_phase82_camset_lpcm_tcub"] = stage12
+    if stage13 is not None:
+        core_payload["stage13_phase87_playback_shotmark_dewpoint"] = stage13
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -1202,7 +1272,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -1252,6 +1322,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "--skip-phase82",
         action="store_true",
         help="Skip optional Stage 12 (Phase 82 Cross-Body CAMSET Sanitizer, 4ch 24-bit/48kHz LPCM & SMPTE 12M User-Bits)",
+    )
+    parser.add_argument(
+        "--skip-phase87",
+        action="store_true",
+        help="Skip optional Stage 13 (Phase 87 Playback/ShotMark, Push Auto Iris & Dew-Point/PMIC 5V HIL)",
     )
     parser.add_argument(
         "--bt-mode",
@@ -1328,6 +1403,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase71_dualslot_ups_salvage=not args.skip_phase71,
         include_phase78_touchaf_ciz_assignable=not args.skip_phase78,
         include_phase82_camset_lpcm_tcub=not args.skip_phase82,
+        include_phase87_playback_shotmark_dewpoint=not args.skip_phase87,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -1349,6 +1425,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s10 = rep.get("stage10_phase71_dualslot_ups_salvage")
         s11 = rep.get("stage11_phase78_touchaf_ciz_assignable")
         s12 = rep.get("stage12_phase82_camset_lpcm_tcub")
+        s13 = rep.get("stage13_phase87_playback_shotmark_dewpoint")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -1403,6 +1480,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s12, dict)
             else ""
         )
+        s13_str = (
+            f" | pb_iris_hil={s13['source_mode']}(marks={s13['playback_shotmark_emmc_guard']['shotmarks_punched_total']},"
+            f"p1_blk=1,iris=41.0%IRE/nd_flt={s13['p4_nd_motor_faults']},dp=27.14C/shed=1)"
+            if isinstance(s13, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -1411,7 +1494,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

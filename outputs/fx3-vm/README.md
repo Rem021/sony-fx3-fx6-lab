@@ -424,5 +424,35 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 87：Stage 13 回放/缩略图梭车、`ShotMark1/2` `<EssenceMark>` 同步、`Cine EI` `Push Auto Iris` 与露点/PMIC 5V HIL
 
+[`playback_shotmark_dewpoint_emulator.py`](playback_shotmark_dewpoint_emulator.py) 作为 **Stage 13** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase87` 向后兼容跳过；全板 13 阶段协同仿真在本地只读供体模式下保持 `1.18s < 1.5s`、洁净室模式下 `0.36s < 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`p1_emmc_mutations == 0`**、**`persistent_emmc_writes_authorized == False`**、**`internal_emmc_format_blocked == True`** 与 **`p4_nd_motor_faults == 0`** 的前提下完成三大闭环：
+
+1. **严格只读（`os.O_RDONLY`）回放/媒体/光圈/风扇/总线供电供体审计 + 洁净室回退**：
+   - 检查 FX3 `libInfraCCPFStatic.so`、`libInfraMediaConfig.so`、`libInfraMediaMount.so`、`libInfraLensCommunicator.so`、`libfan.so`、`libBusPower.so`、`libUsbBusPower.so` 与 FX6 `libInfraLanc.so`、`libfan.so`、`libUsbBusPower.so` 共 10 份精简构件（合计 `505,144 B`）的 SHA-256 与关键导出标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **缩略图 / 回放梭车（`1x, 2x, 5x, 15x` 正反向）、`ShotMark1/2` `<EssenceMark>` XML 同步与内部 eMMC `p1` 媒体隔离**：
+   - 在 `Slot A / Slot B` 剪辑（`A001C001..A001C008`）间建模 `SHOOTING_LIVE_VIEW` ↔ `THUMBNAIL_INDEX` ↔ `PLAYBACK_SHUTTLE` 状态切换与 `1x/2x/5x/15x` 正反向梭车，在录制与回放梭车期间实时打点 `ShotMark1`（`OK`）和 `ShotMark2`（`KEEP`），并将帧精确 `<EssenceMark>` 节点 100% 往返同步至内存 `NonRealTimeMeta`（`*M01.XML`）伴随文件。
+   - 验证针对受保护剪辑（`ClipProtected=True`）的 `Delete Clip` 与针对内部 `/dev/mmcblk0p1`（`p1` eMMC）的 `Format Media` 请求均 **100% 失败关闭拦截**（`internal_emmc_format_blocked == True`、`persistent_emmc_writes_authorized == False`、`p1_emmc_mutations == 0`）。
+3. **`Cine EI` `Push Auto Iris`（`1/8` 档光圈伺服收敛至 `41.0% IRE` `S-Log3` 中灰 / `< 94.0% IRE` 高光保护）且零 `P4` ND 故障**：
+   - 在 `Cine EI`（`Base 800`、`180.0°` 快门角锁定）面对 `+3.5 EV` 场景照度跃升时，通过 `MHLX` 镜头伺服包（`0x0220 -> 0x8220`）以 `1/8` 档（`0.125 EV`）步进平滑收缩 E 卡口光圈（`T1.4 -> T4.8`，`28` 步），使 `18%` 灰卡精准收敛至 **`41.02% IRE` `S-Log3`**（高光测光模式下高光峰值 `< 94.0% IRE`，`92.31% IRE`），全程 **`0` 次 `P4` 可变 ND 电机调用与故障**（`p4_nd_motor_faults == 0`）。
+4. **环境露点（外置 `TEC` 结露陷阱）与 PMIC `5V` 附件电流预算 HIL 协同仿真**：
+   - 建模热带片场湿热环境（`31°C / 80% RH`，Magnus-Tetens `T_dp = 27.14°C`）与附件热插拔组合（`XLR-H1 +48V` `360 mA` + 有源光纤 HDMI `160 mA` + 总线供电 USB-C LAN `420 mA` = `940 mA > 900 mA`），证明低于露点的外置 `TEC` 制冷（`11.0°C < T_dp`）和超额 `5V` 负载均触发即时 HIL 告警与零电源轨故障卸载（`pmic_rail_faults == 0`），而机内 `libfan.so` 风冷（`39.5°C`）与外接供电 USB-PD Hub（`520 mA`）100% 绿灯畅行。
+
+### Phase 87 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 13 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/playback_shotmark_dewpoint_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/playback_shotmark_dewpoint_emulator.py --self-test --json
+
+# 2. 全板 13 阶段（Stage 1..13）统一校验（本地 1.18s < 1.5s，洁净室 0.36s < 0.5s，支持 --skip-phase87）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 87 36 项单测 & 全量 388 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_playback_shotmark_dewpoint_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_playback_shotmark_dewpoint_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
 

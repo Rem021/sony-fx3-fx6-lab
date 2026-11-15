@@ -34,6 +34,12 @@
  *     mb[29] = phase64_shutter_sq (bits0..19=shutter_val, bits20..27=sq_fps(1..240))
  *     mb[30] = phase64_tc_frames (live TC frame counter when REC)
  *     mb[31] = 0x43494e45 ('CINE') Phase 64 CINE_EXP magic tag
+ *     mb[32] = phase73_wb_look (bits0..2=wb_mode, bits3..16=kelvin, bits17..24=tint+99,
+ *              bits25..26=shockless_wb, bits27..29=base_look, bit30=fx3_wb_soft_mapped, bit31=valid)
+ *     mb[33] = phase73_media_clip (bits0..4=cam_id, bits5..14=reel_num, bits15..16=cam_pos,
+ *              bits17..26=clip_seq, bits27..28=dual_slot_mode, bits29..30=proxy_mode, bit31=proxy_eff)
+ *     mb[34] = phase73_flags2 (bit0=proxy_auto_suspended_by_sq, bits1..3=user_lut_slot_1to4)
+ *     mb[35] = 0x57424c4d ('WBLM') Phase 73 WB_MEDIA magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1005,6 +1011,9 @@ static uint32_t g_live_p40_flags = 0x303u;       /* attached=1, +48V=1, rtmd=0, 
 static uint32_t g_live_p64_flags = 0x8003000cu;  /* valid=1, p12=1, p4_nd_absent=1, base800, ei_step=6, angle, stby, tally=on */
 static uint32_t g_live_p64_shutter_sq = (24u << 20) | 1800u; /* sq_fps=24, angle=180.0 deg */
 static uint32_t g_live_p64_tc = 0u;
+static uint32_t g_live_p73_wb_look = 0xc0c6af02u; /* valid=1, soft_map=1, S-Cinetone, SL=off, tint=0(99), 5600K, preset_5600k */
+static uint32_t g_live_p73_media_clip = 0xa0020020u; /* proxy_eff=1, 16M, simul, clip=1, pos=C, reel=1, cam=A */
+static uint32_t g_live_p73_flags2 = 0u;
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -2407,6 +2416,152 @@ static void fx6_render_phase64_cine_exposure_overlay(uint64_t appfw, uint32_t pa
                                   0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
 }
 
+static unsigned fx6_append_3d(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    if (pos + 3u >= cap) return pos;
+    uint32_t v = val % 1000u;
+    dst[pos++] = (char)('0' + (v / 100u));
+    dst[pos++] = (char)('0' + ((v / 10u) % 10u));
+    dst[pos++] = (char)('0' + (v % 10u));
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase73_wb_look_dualslot_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p73_wb_look & 0x80000000u)) return;
+
+    static const char * const k_look_lbl[7] = {
+        "S-Cinetone", "S-Log3.Cine", "S-Log3", "ITU709", "709(800%)", "HLG Live", "User 3D LUT"
+    };
+    static const char * const k_slot_lbl[4] = {
+        "[A+B SIMUL] ", "[A->B RELAY] ", "[A|B SORT] ", "[SLOT-A] "
+    };
+    static const char k_pos_ch[4] = { 'C', 'L', 'R', 'C' };
+
+    uint32_t wb_mode_idx  = g_live_p73_wb_look & 0x07u;
+    uint32_t kelvin       = (g_live_p73_wb_look >> 3) & 0x3fffu;
+    if (kelvin < 2000u || kelvin > 15000u) kelvin = 5600u;
+    int tint_gm           = (int)((g_live_p73_wb_look >> 17) & 0xffu) - 99;
+    if (tint_gm < -99) tint_gm = -99;
+    if (tint_gm > 99) tint_gm = 99;
+    uint32_t shockless    = (g_live_p73_wb_look >> 25) & 0x03u;
+    uint32_t look_idx     = (g_live_p73_wb_look >> 27) & 0x07u;
+    if (look_idx > 6u) look_idx = 0u;
+
+    uint32_t cam_id_idx   = g_live_p73_media_clip & 0x1fu;
+    if (cam_id_idx > 25u) cam_id_idx = 0u;
+    uint32_t reel_num     = (g_live_p73_media_clip >> 5) & 0x3ffu;
+    if (reel_num < 1u || reel_num > 999u) reel_num = 1u;
+    uint32_t cam_pos_idx  = (g_live_p73_media_clip >> 15) & 0x03u;
+    uint32_t clip_seq     = (g_live_p73_media_clip >> 17) & 0x3ffu;
+    if (clip_seq < 1u || clip_seq > 999u) clip_seq = 1u;
+    uint32_t dual_slot    = (g_live_p73_media_clip >> 27) & 0x03u;
+    uint32_t proxy_mode   = (g_live_p73_media_clip >> 29) & 0x03u;
+    uint32_t proxy_eff    = (g_live_p73_media_clip >> 31) & 1u;
+    uint32_t sq_susp      = ((g_live_p73_flags2 & 1u) || ((g_live_p64_flags >> 7) & 1u)) ? 1u : 0u;
+    uint32_t lut_slot     = (g_live_p73_flags2 >> 1) & 0x07u;
+
+    char wb_lbl[64];
+    unsigned wp = 0u;
+    wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), kelvin);
+    wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "K");
+    if (tint_gm < 0) {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "-");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), (uint32_t)(-tint_gm));
+    } else {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "+");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), (uint32_t)tint_gm);
+    }
+    wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " ");
+    if (look_idx == 6u && g_live_lut_name[0]) {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "Usr");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), lut_slot ? lut_slot : 1u);
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), ":");
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), g_live_lut_name);
+    } else {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), k_look_lbl[look_idx]);
+    }
+    if (wb_mode_idx == 3u) wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [MEM-A]");
+    else if (wb_mode_idx == 4u) wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [MEM-B]");
+    else if (wb_mode_idx == 5u) {
+        if (shockless > 0u) {
+            wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [ATW:S");
+            wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), shockless);
+            wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "]");
+        } else {
+            wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [ATW]");
+        }
+    } else if (shockless > 0u) {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [SL:");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), shockless);
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "]");
+    }
+    (void)wp;
+
+    char clip_lbl[64];
+    unsigned cp = 0u;
+    cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), k_slot_lbl[dual_slot]);
+    if (cp + 1u < sizeof(clip_lbl)) {
+        clip_lbl[cp++] = (char)('A' + cam_id_idx);
+        clip_lbl[cp] = 0;
+    }
+    cp = fx6_append_3d(clip_lbl, cp, sizeof(clip_lbl), reel_num);
+    if (cp + 1u < sizeof(clip_lbl)) {
+        clip_lbl[cp++] = k_pos_ch[cam_pos_idx & 3u];
+        clip_lbl[cp] = 0;
+    }
+    cp = fx6_append_3d(clip_lbl, cp, sizeof(clip_lbl), clip_seq);
+    if (sq_susp) {
+        cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), " PRX:OFF(S&Q)");
+    } else if (proxy_eff && proxy_mode > 0u) {
+        cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), " PRX");
+    } else {
+        cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), " PRX:OFF");
+    }
+    (void)cp;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+    if (!is_shooting_page) {
+        if (g_live_p73_wb_look == 0xc0c6af02u && g_live_p73_media_clip == 0xa0020020u && !sq_susp) {
+            return;
+        }
+        int bx = 12, by = 10, bw = 460, bh = 26;
+        fx6_osd_fill_rect(bx, by, bw, bh, 0xFF0F172Au);
+        fx6_osd_border_rect(bx, by, bw, bh, 0xFF38BDF8u);
+        fx6_render_string_text_styled(appfw, bx + 6, by + 2, bw - 12, 22, wb_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        return;
+    }
+
+    uint32_t p56_active = ((g_live_p40_flags >> 12) & 0x3ffu);
+    int by = 508;
+    if (p56_active) {
+        by = (p <= 3u) ? 448 : 478;
+    }
+    int bh = 26;
+
+    /* Pill A: White Balance (Kelvin + Tint + Shockless) + Base Look */
+    int pax = 12, paw = 476;
+    uint32_t wb_bg = (look_idx == 1u || look_idx == 2u) ? 0xFF1E1B4Bu : ((look_idx == 6u) ? 0xFF134E4Au : 0xFF0F172Au);
+    uint32_t wb_bd = (wb_mode_idx == 5u) ? 0xFFF59E0Bu : ((look_idx == 1u || look_idx == 2u) ? 0xFF818CF8u : 0xFF38BDF8u);
+    fx6_osd_fill_rect(pax, by, paw, bh, wb_bg);
+    fx6_osd_border_rect(pax, by, paw, bh, wb_bd);
+    uint32_t kelvin_dot = (kelvin <= 3600u) ? 0xFFF59E0Bu : ((kelvin >= 6000u) ? 0xFF60A5FAu : 0xFFF8FAFCu);
+    fx6_osd_fill_rect(pax + 6, by + 7, 10, 12, kelvin_dot);
+    fx6_render_string_text_styled(appfw, pax + 22, by + 2, paw - 28, 22, wb_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill B: Dual-Slot Mode + Cinema Line Clip ID + Proxy Status */
+    int pbx = 496, pbw = 516;
+    uint32_t med_bg = sq_susp ? 0xFF451A03u : ((dual_slot == 1u) ? 0xFF0C4A6Eu : 0xFF0F172Au);
+    uint32_t med_bd = sq_susp ? 0xFFF59E0Bu : (proxy_eff ? 0xFF10B981u : 0xFF64748Bu);
+    fx6_osd_fill_rect(pbx, by, pbw, bh, med_bg);
+    fx6_osd_border_rect(pbx, by, pbw, bh, med_bd);
+    fx6_osd_fill_rect(pbx + 6, by + 7, 10, 12, proxy_eff ? 0xFF10B981u : (sq_susp ? 0xFFF59E0Bu : 0xFF475569u));
+    fx6_render_string_text_styled(appfw, pbx + 22, by + 2, pbw - 28, 22, clip_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -2440,6 +2595,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p64_flags) * 1099511628211ULL;
     h = (h ^ g_live_p64_shutter_sq) * 1099511628211ULL;
     h = (h ^ g_live_p64_tc) * 1099511628211ULL;
+    h = (h ^ g_live_p73_wb_look) * 1099511628211ULL;
+    h = (h ^ g_live_p73_media_clip) * 1099511628211ULL;
+    h = (h ^ g_live_p73_flags2) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -2626,6 +2784,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase40_hud_strip(appfw, page, cell_vals);
     fx6_render_phase56_assist_overlays(appfw, page);
     fx6_render_phase64_cine_exposure_overlay(appfw, page);
+    fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -2839,7 +2998,7 @@ void fx6_force_update(void) {
 
     uint32_t cell_vals[6] = { 0, 0, 0, 0, 0, 0 };
     if (mb) {
-        for (int i = 0; i < 32; i++) mb[i] = 0;
+        for (int i = 0; i < 36; i++) mb[i] = 0;
         mb[0] = 0x4658364cu; /* 'FX6L' */
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
@@ -2858,6 +3017,10 @@ void fx6_force_update(void) {
         mb[29] = (24u << 20) | 1800u; /* sq_fps=24, shutter_angle=180.0 deg */
         mb[30] = 0u;         /* phase64_tc_frames */
         mb[31] = 0x43494e45u;/* 'CINE' */
+        mb[32] = 0xc0c6af02u;/* phase73_wb_look: valid=1, soft_map=1, S-Cinetone, SL=off, tint=0(99), 5600K, preset_5600k */
+        mb[33] = 0xa0020020u;/* phase73_media_clip: proxy_eff=1, 16M, simul, clip=1, pos=C, reel=1, cam=A */
+        mb[34] = 0u;         /* phase73_flags2 */
+        mb[35] = 0x57424c4du;/* 'WBLM' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -2866,6 +3029,9 @@ void fx6_force_update(void) {
     g_live_p64_flags = 0x8003000cu;
     g_live_p64_shutter_sq = (24u << 20) | 1800u;
     g_live_p64_tc = 0u;
+    g_live_p73_wb_look = 0xc0c6af02u;
+    g_live_p73_media_clip = 0xa0020020u;
+    g_live_p73_flags2 = 0u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -2881,10 +3047,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -2925,14 +3091,19 @@ void fx6_force_update(void) {
                 g_live_p64_shutter_sq = mb[29];
                 g_live_p64_tc         = mb[30];
             }
+            if ((mb[32] & 0x80000000u) && mb[35] == 0x57424c4du) {
+                g_live_p73_wb_look    = mb[32] | 0x40000000u; /* FX3 WB switch soft-mapped */
+                g_live_p73_media_clip = mb[33];
+                g_live_p73_flags2     = mb[34];
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2);
         }
     }
 }

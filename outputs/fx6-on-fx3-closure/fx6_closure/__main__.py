@@ -1319,10 +1319,75 @@ def _cmd_verify_milestone_147(
     return 0 if ok else 1
 
 
+def _cmd_preflight_realhw_bench(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    clean_room: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    usb_snapshot: Optional[Path],
+    probe_host_usb: bool,
+    sd_dir: Optional[Path],
+    sd_free_bytes: Optional[int],
+    sd_receipt: Optional[Path],
+    vault_receipt: Optional[Path],
+    camera_cid_sha256: Optional[str],
+    simulate_ready_bench: bool,
+) -> int:
+    from .realhw_bench_preflight_and_usb_classifier import (
+        render_phase154_markdown,
+        run_realhw_bench_preflight,
+        verify_phase154_report,
+    )
+
+    rep = run_realhw_bench_preflight(
+        usb_snapshot_path=usb_snapshot,
+        probe_host_usb=probe_host_usb,
+        sd_dir=sd_dir,
+        sd_free_bytes_override=sd_free_bytes,
+        sd_receipt_path=sd_receipt,
+        vault_receipt_path=vault_receipt,
+        expected_camera_cid_sha256=camera_cid_sha256,
+        simulate_ready_bench=simulate_ready_bench,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase154_markdown(rep), encoding="utf-8")
+    v_res = verify_phase154_report(rep.to_dict())
+    ok = rep.bench_go and v_res.valid
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        summary = (
+            f"verdict={rep.verdict} "
+            f"status={rep.status} "
+            f"mode={rep.verification_mode} "
+            f"bench_go={rep.bench_go} "
+            f"usb_state={rep.usb_classification.usb_state} "
+            f"usb_pkts={rep.usb_packets_emitted} "
+            f"iokit_handles={rep.iokit_handles_opened} "
+            f"sd_ok={rep.sd_staging_audit.passed} "
+            f"locks_13={rep.sd_staging_audit.stage_b_13_locks_verified}/13 "
+            f"rcpt_ok={rep.dual_copy_receipt_audit.passed} "
+            f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+            f"report_sha256={rep.report_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 147 Real-Hardware Bench Readiness, Phase 130, Phase 110 & Phase 90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 154 Real-Hardware Bench Preflight & Passive USB Classifier, Phase 147 Real-Hardware Bench Readiness, Phase 130, Phase 110 & Phase 90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -1362,6 +1427,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-realhw-jiritsu-tier0", "Verify Phase 136 Stage-288 libJiritsu.so SET_FILE2 P0 hardening, U4/U5/U6 disassembly closures & Tier-0 cold-backup stop-gate"),
         ("verify-sd-stageb-bundle-uninstaller", "Verify Phase 143 BYOF SD-Card Stage-B bundle builder, im.elf escape-hatch launcher & H0==H3 16-surface atomic uninstaller"),
         ("verify-milestone-147", "Verify Milestone Phase 147 6-Pillar Real-Hardware Bench Readiness Master Gate (44-Gate + >=17 Recovery + >=28 Auditors + >=24 VM + Ph136/143 U4/U5/U6/H0==H3 + FX3 7.02 QEMU R28/R29, realhw_milestone147_master_gate_v1)"),
+        ("preflight-realhw-bench", "Run Phase 154 100% passive zero-USB-packet physical bench preflight, ioreg USB mode classifier, SD staging verifier & dual-copy FX3RCPT1 Go/No-Go receipt generator"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -1374,15 +1440,24 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-realhw-bench":
+            p.add_argument("--usb-snapshot", type=Path, default=None, help="Path to passive ioreg -p IOUSB -l -w 0 text or XML plist snapshot")
+            p.add_argument("--probe-host-usb", action="store_true", help="Run read-only macOS ioreg subprocess capture (zero IOKit handles or USB packets)")
+            p.add_argument("--sd-dir", type=Path, default=None, help="Candidate ExFAT SD card staging root directory to audit O_RDONLY")
+            p.add_argument("--sd-free-bytes", type=int, default=None, help="Optional deterministic free-space override (bytes) for SD staging audit")
+            p.add_argument("--sd-receipt", type=Path, default=None, help="Path to SD ExFAT 528-byte FX3RCPT1 cold-backup receipt")
+            p.add_argument("--vault-receipt", type=Path, default=None, help="Path to Mac Host Vault 528-byte FX3RCPT1 cold-backup receipt")
+            p.add_argument("--camera-cid-sha256", default=None, help="Optional expected 64-hex lowercase camera eMMC CID SHA-256")
+            p.add_argument("--simulate-ready-bench", action="store_true", help="Synthesize ephemeral offline READY bench fixtures (MSC 054C:0DA1 + Stage-B SD + dual FX3RCPT1) in TemporaryDirectory")
         if cmd_name == "audit-stage-b-post-trial":
             p.add_argument("--h0-bundle-dir", type=Path, default=None, help="Optional archived Phase H0 pre-trial Tier-0 capture directory")
             p.add_argument("--h2-bundle-dir", type=Path, default=None, help="Optional Phase H2 post-power-cycle Tier-0 readback directory")
@@ -1598,6 +1673,23 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-realhw-bench":
+        return _cmd_preflight_realhw_bench(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.clean_room,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.usb_snapshot,
+            args.probe_host_usb,
+            args.sd_dir,
+            args.sd_free_bytes,
+            args.sd_receipt,
+            args.vault_receipt,
+            args.camera_cid_sha256,
+            args.simulate_ready_bench,
         )
     return 2
 

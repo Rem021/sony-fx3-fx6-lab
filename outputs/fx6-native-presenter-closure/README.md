@@ -769,3 +769,31 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `C(11,2) = 55` Pairwise Matrix**: All `55/55` pairs across `User` (`r19a`), `Shooting` (`r11d`), `Project` (`r18a`), `Paint/Look` (`r13c`), `TC/Media` (`r18b`), `Monitoring` (`r15c`), `Audio` (`r17d`), `Thumbnail` (`r19b`), `Technical` (`r19c`), `Network` (`r18c`), and `Maintenance` (`r18d`) are strictly `> 0` (`1,552 .. 177,650` px).
 - **Full Report, Receipts, & `125` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/README.md`](../../reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/README.md) and [`summary.json`](../../reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/summary.json).
 
+---
+
+## 20. Round 20: Real FX3 `7.02` Kernel 4-Language (`EN` / `JA` / `ZH-CN` / `ZH-TW`) Network Surface Closure & Complete `WF-12` (`00342260`) `P12` Immunity Matrix
+
+`build_and_run_round.py --round 20 --lang {english,japanese,tchinese}` completes the **4-language (`english` / `japanese` / `schinese` / `tchinese`) Network Surface Closure** and **`2 x 4 = 8`-cell `WF-12` (`00342260`) `P12` Immunity Matrix** across both **3-Layer Network Menu (`sid=0x11`, `31procam_menu_layer_3rd_presenter`)** and **Status Check Tab 9 Network (`sid=0x37`, `37procam_touch_status_network_presenter`)** on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R20_VERIFY_PASS`, `FX6_STAGE_B_R20_BRIDGE`, and `FX6_R20_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 20 --lang english --initial-setting-done 1 --run-id r20a-menu-3layer-network-english --duration 92 \
+  --run-dir /private/tmp/fx6-r20-runs/r20a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r20a-menu-3layer-network-english \
+  --export-png-dir reports/2026-11-14-round20-fx6-on-fx3-network-4lang-wf12-closure/assets
+```
+
+- **5 Live Round 20 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P12` `WF-12` `00342260` Immune)**:
+  - `r20a-menu-3layer-network-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `9x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `237` colors, `15,201` icon blits, `10,783` glyph blits, `95` `LDEC103` ioctls).
+  - `r20b-menu-3layer-network-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `9x 0x0030` + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `250` colors, `15,185` icon blits, `10,876` glyph blits, `94` `LDEC103` ioctls).
+  - `r20c-status-tab9-network-english`: English (`english`, `bk4=0x00`, `0x2b2f`, `font=0`, `str=4`) `0x7052` + `8x 0x0030` -> `37procam_touch_status_network_presenter` (`sid=0x37`, `437,403` px / `92` colors / `324` `0xffffaa00` amber px, `9,170` icon blits, `16,854` glyph blits, `66` `LDEC103` ioctls).
+  - `r20d-status-tab9-network-japanese`: Japanese (`japanese`, `bk4=0x01`, `0x2b30`, `font=1`, `str=12`) `0x7052` + `8x 0x0030` -> `37procam_touch_status_network_presenter` (`sid=0x37`, `437,403` px / `92` colors / `273` `0xffffaa00` amber px, `9,266` icon blits, `18,047` glyph blits, `71` `LDEC103` ioctls).
+  - `r20e-status-tab9-network-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `0x2b44`, `font=27`, `str=22`) `0x7052` + `8x 0x0030` -> `37procam_touch_status_network_presenter` (`sid=0x37`, `437,883` px / `92` colors / `273` `0xffffaa00` amber px, `9,219` icon blits, `17,389` glyph blits, `70` `LDEC103` ioctls).
+  - **Complete `12/12` Network Multilingual Pairwise Matrix**:
+    - 3-Layer Network Menu (`sid=0x11`) across (`r20a EN`, `r20b JA`, `r18c ZH-CN`, `r19e ZH-TW`): `6/6` pairs strictly `> 0` (`19,652 .. 24,770` px).
+    - Status Check Tab 9 Network (`sid=0x37`) across (`r20c EN`, `r20d JA`, `r17e ZH-CN`, `r20e ZH-TW`): `6/6` pairs strictly `> 0` (`11,066 .. 20,970` px).
+  - **Complete `8/8` `WF-12` (`00342260`) `P12` Immunity Matrix**: `8/8` cells satisfy `p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`, `nop_count=0`, `crashes=0`, `gpe_fb=0`, `13/13` Stage-B SHA-256.
+- **Full Report, Receipts, & `140+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round20-fx6-on-fx3-network-4lang-wf12-closure/README.md`](../../reports/2026-11-14-round20-fx6-on-fx3-network-4lang-wf12-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round20-fx6-on-fx3-network-4lang-wf12-closure/summary.json).
+
+

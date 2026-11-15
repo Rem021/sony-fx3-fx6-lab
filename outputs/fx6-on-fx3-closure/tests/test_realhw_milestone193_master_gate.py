@@ -1241,8 +1241,6 @@ class TestRealHwMilestone193MasterGate(unittest.TestCase):
             "otp=0",
             "rpmb=0",
             "passive_tx=0",
-            "auditors=40/40",
-            "vm_stages=33/33",
             "h0_eq_h3=16/16",
             "p154_go=True",
             "p186_off=BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT",
@@ -1256,6 +1254,16 @@ class TestRealHwMilestone193MasterGate(unittest.TestCase):
             "leaked=0",
         ):
             self.assertIn(token, line)
+        aud_m = re.search(r"auditors=(\d+)/(\d+)", line)
+        self.assertIsNotNone(aud_m, line)
+        assert aud_m is not None
+        self.assertGreaterEqual(int(aud_m.group(1)), 40)
+        self.assertEqual(aud_m.group(1), aud_m.group(2))
+        vm_m = re.search(r"vm_stages=(\d+)/(\d+)", line)
+        self.assertIsNotNone(vm_m, line)
+        assert vm_m is not None
+        self.assertGreaterEqual(int(vm_m.group(1)), 33)
+        self.assertEqual(vm_m.group(1), vm_m.group(2))
 
     def test_46_live_fault_p2_26pillar_fails_closed(self) -> None:
         rep = build_realhw_milestone193_master_gate_report(

@@ -2025,6 +2025,81 @@ def _cmd_verify_milestone_221(
     return 0 if ok else 1
 
 
+def _cmd_verify_milestone_233(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+) -> int:
+    from .realhw_milestone233_master_gate import (
+        evaluate_realhw_milestone233_master_gate,
+        render_milestone233_markdown,
+        verify_realhw_milestone233_master_gate,
+    )
+
+    rep = evaluate_realhw_milestone233_master_gate(
+        repo_root=repo_root,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        force_clean_room=True if force_clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_milestone233_markdown(rep), encoding="utf-8")
+    v_res = verify_realhw_milestone233_master_gate(rep.to_dict())
+    ok = rep.all_pillars_milestone_ready and v_res.valid
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"status={'OK' if ok else 'FAILED'} "
+                f"schema={rep.schema} "
+                f"mode={rep.verification_mode} "
+                f"pillars={rep.passed_pillar_count}/{rep.pillar_count} "
+                f"gate90={rep.gate90_offline_verified}/{rep.gate90_simulated_verified} "
+                f"recovery={rep.recovery_pillars_passed}/{rep.recovery_pillar_count} "
+                f"cnflasha_ro={rep.cnflasha_userspace_write_blocked} "
+                f"otp={rep.otp_fuse_touches} "
+                f"rpmb={rep.rpmb_counter_increments} "
+                f"passive_tx={rep.passive_tx_bytes_emitted} "
+                f"auditors={rep.auditors_passed}/{rep.auditors_total} "
+                f"vm_stages={rep.vm_stages_passed}/{rep.vm_stages_total} "
+                f"p186_off={rep.p186_offline_go_no_go} "
+                f"p186_sim={rep.p186_sim_go_no_go} "
+                f"p204_off={rep.p204_offline_go_no_go} "
+                f"p204_sim={rep.p204_sim_go_no_go} "
+                f"p216_off={rep.p216_offline_go_no_go} "
+                f"p216_sim={rep.p216_sim_go_no_go} "
+                f"p227_off={rep.p227_offline_go_no_go} "
+                f"p227_sim={rep.p227_sim_go_no_go} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/16 "
+                f"e_nd_tx={rep.e_nd_actuator_tx_count} "
+                f"qemu={rep.qemu_rounds_verified}/{rep.qemu_rounds_total}({rep.qemu_runs_verified}/{rep.qemu_runs_total}) "
+                f"pngs={rep.qemu_png_receipts_verified}/{rep.qemu_png_receipts_total}(max={rep.qemu_png_max_bytes}B) "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_tx={rep.usb_packets_transmitted} "
+                f"leaked={rep.raw_firmware_bytes_leaked} "
+                f"milestone233_sha256={rep.milestone233_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 1
+
+
 def _cmd_preflight_pixelmap_ntscpal_powersave_and_autotemp(
     fx6_lib_dir: Path,
     fx3_modules_dir: Path,
@@ -2299,6 +2374,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("preflight-hdmi-proxy-desqueeze-and-simult", "Run Phase 216 real-hardware pre-shoot bench & media readiness verifier (De-Squeeze 1.6x=1.65x & M&C Focus Map <150fps, HDMI Log 1080p vs Off(HDMI Only) 4K & Blank LCD, Dual-Slot Simult + Px Proxy Coupled Vault, File Settings/SDHC/ShotMark/TC Slot-1, and Coupled REC Lamp/Shockless WB/Tier-0 gate)"),
         ("verify-milestone-221", "Verify Grand Milestone Phase 221 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=78-Gate + >=31 Recovery + >=44 Auditors + >=38 VM + Triple Bench Preflights Ph186/Ph204/Ph216 + FX3 7.02 QEMU R28..R42, realhw_milestone221_master_gate_v1)"),
         ("preflight-pixelmap-ntscpal-powersave-and-autotemp", "Run Phase 227 physical bench & pre-shoot media readiness verifier (Pixel Mapping cnflasha O_RDONLY/reboot & NTSC/PAL reset persistence + Gamma Assist vs Display LUT, File Settings 37-char/SDHC/ShotMark MP4-only/TC Regenerate Slot-1 & Coupled Body+XLR-H1 REC Lamp, and Power Save 9-condition bypass/Auto Power OFF Temp. tripod/SteadyShot Active & CIZ locks)"),
+        ("verify-milestone-233", "Verify Grand Milestone Phase 233 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=90-Gate + >=38 Recovery + >=45 Auditors + >=44 VM + Quad Bench Preflights Ph186/Ph204/Ph216/Ph227 + FX3 7.02 QEMU R28..R47+, realhw_milestone233_master_gate_v1)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -2309,19 +2385,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "verify-milestone-175", "verify-milestone-193", "verify-milestone-209", "verify-milestone-221"):
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "verify-milestone-175", "verify-milestone-193", "verify-milestone-209", "verify-milestone-221", "verify-milestone-233"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
         if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
-        if cmd_name in ("verify-milestone-193", "verify-milestone-209", "verify-milestone-221"):
+        if cmd_name in ("verify-milestone-193", "verify-milestone-209", "verify-milestone-221", "verify-milestone-233"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Milestone master report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
         if cmd_name == "preflight-pixelmap-ntscpal-powersave-and-autotemp":
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 227 preflight report")
@@ -2974,6 +3050,16 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.body_fw,
             args.body_serial,
             args.emmc_cid,
+        )
+    if args.cmd == "verify-milestone-233":
+        return _cmd_verify_milestone_233(
+            args.repo_root,
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.json,
+            args.markdown_out,
+            args.output,
         )
     return 2
 

@@ -49,6 +49,13 @@
  *              bit5=ciz_clamped_by_exclusion, bit6=ciz_clamped_by_res_limit,
  *              bit7=slog3_zebra100_clip_warning, bit8=letterbox_ignored, bit31=valid)
  *     mb[39] = 0x54414643 ('TAFC') Phase 81 Touch-AF / False-Color / CIZ magic tag
+ *     mb[40] = phase88_shotmark (bits0..6=total_count(0..64), bits7..13=m1_count,
+ *              bits14..20=m2_count, bits21..22=last_type(0=none,1=M1,2=M2), bits23..31=last_frame_low)
+ *     mb[41] = phase88_iris_audio (bits0..11=iris_x100(140..2200), bits12..13=metering(0=multi,1=center,2=spot,3=highlight),
+ *              bits14..21=ae_shift_enc((ev+2.0)*8), bit22=ch34_pad_20db, bit23=push_auto_iris_active,
+ *              bits24..30=target_ire(41), bit31=valid)
+ *     mb[42] = phase88_user_bits (SMPTE 12M 32-bit User-Bits e.g. 0xA0010001)
+ *     mb[43] = 0x534d524b ('SMRK') Phase 88 ShotMark / Push Auto Iris / Safety Audio magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1026,6 +1033,9 @@ static uint32_t g_live_p73_flags2 = 0u;
 static uint32_t g_live_p81_touch_af = 0x4e50e780u;    /* af=off, x=480, y=270, pdaf_idx=313 */
 static uint32_t g_live_p81_pdaf_mag_fc = 0x64648250u; /* col=16, row=9, mag=1x, fc=off, clean_hdmi=1, eff_ciz=100, req_ciz=100 */
 static uint32_t g_live_p81_ciz_flags = 0x80000004u;   /* valid=1, rocker_speed=4 */
+static uint32_t g_live_p88_shotmark = 0u;             /* total=0, m1=0, m2=0, last_type=0, last_frame=0 */
+static uint32_t g_live_p88_iris_audio = 0xa9040118u;  /* valid=1, target_ire=41, pad=0, push=0, ae=0EV, multi, F2.8 */
+static uint32_t g_live_p88_user_bits = 0xa0010001u;   /* SMPTE 12M User-Bits A0:01:00:01 */
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -2782,6 +2792,126 @@ static void fx6_render_phase81_touchaf_falsecolor_ciz_overlay(uint64_t appfw, ui
     }
 }
 
+static unsigned fx6_append_hex8(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    static const char k_hex[16] = "0123456789ABCDEF";
+    if (pos + 11u >= cap) return pos;
+    for (int sh = 28; sh >= 0; sh -= 4) {
+        dst[pos++] = k_hex[(val >> (unsigned)sh) & 0x0fu];
+        if (sh == 24 || sh == 16 || sh == 8) {
+            dst[pos++] = ':';
+        }
+    }
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase88_shotmark_iris_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p88_iris_audio & 0x80000000u)) return;
+
+    uint32_t sm_total   = g_live_p88_shotmark & 0x7fu;
+    uint32_t sm1_cnt    = (g_live_p88_shotmark >> 7) & 0x7fu;
+    uint32_t sm2_cnt    = (g_live_p88_shotmark >> 14) & 0x7fu;
+    uint32_t last_type  = (g_live_p88_shotmark >> 21) & 0x03u;
+    uint32_t last_frame = (g_live_p88_shotmark >> 23) & 0x1ffu;
+
+    uint32_t iris_x100   = g_live_p88_iris_audio & 0xfffu;
+    if (iris_x100 < 140u || iris_x100 > 2200u) iris_x100 = 280u;
+    uint32_t meter       = (g_live_p88_iris_audio >> 12) & 0x03u;
+    uint32_t ch34_pad20  = (g_live_p88_iris_audio >> 22) & 0x01u;
+    uint32_t push_active = (g_live_p88_iris_audio >> 23) & 0x01u;
+    uint32_t target_ire  = (g_live_p88_iris_audio >> 24) & 0x7fu;
+    if (target_ire == 0u || target_ire > 109u) target_ire = 41u;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+    int non_default = (sm_total > 0u || ch34_pad20 || push_active || iris_x100 != 280u ||
+                       meter != 0u || g_live_p88_user_bits != 0xa0010001u);
+    if (!is_shooting_page && !non_default) {
+        return;
+    }
+
+    static const char * const k_meter_lbl[4] = { "MULTI", "CENTER", "SPOT", "HI-LIGHT" };
+
+    /* Pill 1 (Top-Right below Phase 40 strip): [F2.8 AUTO-IRIS 41%IRE MULTI/HI-LIGHT] */
+    int ix = 636, iy = 48, iw = 312, ih = 24;
+    uint32_t ibg = push_active ? 0xFF064E3Bu : ((meter == 3u) ? 0xFF422006u : 0xFF0F172Au);
+    uint32_t ibd = push_active ? 0xFF22C55Eu : ((meter == 3u) ? 0xFFF59E0Bu : 0xFF38BDF8u);
+    fx6_osd_fill_rect(ix, iy, iw, ih, ibg);
+    fx6_osd_border_rect(ix, iy, iw, ih, ibd);
+
+    char iris_lbl[56];
+    unsigned ip = 0u;
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), "[F");
+    ip = fx6_append_uint(iris_lbl, ip, sizeof(iris_lbl), iris_x100 / 100u);
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), ".");
+    if ((iris_x100 % 10u) == 0u) {
+        ip = fx6_append_uint(iris_lbl, ip, sizeof(iris_lbl), (iris_x100 % 100u) / 10u);
+    } else {
+        ip = fx6_append_2d(iris_lbl, ip, sizeof(iris_lbl), iris_x100 % 100u);
+    }
+    if (push_active) {
+        ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), " AUTO-IRIS ");
+    } else {
+        ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), " ");
+    }
+    ip = fx6_append_uint(iris_lbl, ip, sizeof(iris_lbl), target_ire);
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), "%IRE ");
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), k_meter_lbl[meter & 3u]);
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), "]");
+    (void)ip;
+    fx6_render_string_text_styled(appfw, ix + 6, iy + 2, iw - 12, 20, iris_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    int next_y = iy + 28;
+
+    /* Pill 2: Gold [*M1 / *M2] ShotMark Counter & Latest Mark Pill */
+    if (sm_total > 0u) {
+        int sx = 636, sy = next_y, sw = 312, sh = 24;
+        fx6_osd_fill_rect(sx, sy, sw, sh, 0xFF451A03u);
+        fx6_osd_border_rect(sx, sy, sw, sh, 0xFFFBBF24u);
+        /* Crisp gold star/diamond mark emblem */
+        fx6_osd_fill_rect(sx + 6, sy + 7, 10, 10, 0xFFFBBF24u);
+        fx6_osd_fill_rect(sx + 9, sy + 4, 4, 16, 0xFFFDE047u);
+        fx6_osd_fill_rect(sx + 3, sy + 10, 16, 4, 0xFFFDE047u);
+
+        char sm_lbl[56];
+        unsigned sp = 0u;
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), "[M1:");
+        sp = fx6_append_uint(sm_lbl, sp, sizeof(sm_lbl), sm1_cnt);
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), " / M2:");
+        sp = fx6_append_uint(sm_lbl, sp, sizeof(sm_lbl), sm2_cnt);
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), "] ");
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), (last_type == 2u) ? "KEEP@" : "OK@");
+        sp = fx6_append_uint(sm_lbl, sp, sizeof(sm_lbl), last_frame);
+        (void)sp;
+        fx6_render_string_text_styled(appfw, sx + 22, sy + 2, sw - 28, 20, sm_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        next_y += 28;
+    }
+
+    /* Pill 3: [CH3/4 -20dB SAFE] + SMPTE 12M User-Bits Pill */
+    if (ch34_pad20 || g_live_p88_user_bits != 0xa0010001u) {
+        int ax = 636, ay = next_y, aw = 312, ah = 24;
+        fx6_osd_fill_rect(ax, ay, aw, ah, ch34_pad20 ? 0xFF064E3Bu : 0xFF0F172Au);
+        fx6_osd_border_rect(ax, ay, aw, ah, ch34_pad20 ? 0xFF10B981u : 0xFF38BDF8u);
+
+        char au_lbl[56];
+        unsigned ap = 0u;
+        if (ch34_pad20) {
+            ap = fx6_append_cstr(au_lbl, ap, sizeof(au_lbl), "[CH3/4 -20dB SAFE] UB ");
+        } else {
+            ap = fx6_append_cstr(au_lbl, ap, sizeof(au_lbl), "[UB ");
+        }
+        ap = fx6_append_hex8(au_lbl, ap, sizeof(au_lbl), g_live_p88_user_bits);
+        if (!ch34_pad20) {
+            ap = fx6_append_cstr(au_lbl, ap, sizeof(au_lbl), "]");
+        }
+        (void)ap;
+        fx6_render_string_text_styled(appfw, ax + 6, ay + 2, aw - 12, 20, au_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -2821,6 +2951,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p81_touch_af) * 1099511628211ULL;
     h = (h ^ g_live_p81_pdaf_mag_fc) * 1099511628211ULL;
     h = (h ^ g_live_p81_ciz_flags) * 1099511628211ULL;
+    h = (h ^ g_live_p88_shotmark) * 1099511628211ULL;
+    h = (h ^ g_live_p88_iris_audio) * 1099511628211ULL;
+    h = (h ^ g_live_p88_user_bits) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -3009,6 +3142,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase64_cine_exposure_overlay(appfw, page);
     fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
     fx6_render_phase81_touchaf_falsecolor_ciz_overlay(appfw, page);
+    fx6_render_phase88_shotmark_iris_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -3222,7 +3356,7 @@ void fx6_force_update(void) {
 
     uint32_t cell_vals[6] = { 0, 0, 0, 0, 0, 0 };
     if (mb) {
-        for (int i = 0; i < 40; i++) mb[i] = 0;
+        for (int i = 0; i < 44; i++) mb[i] = 0;
         mb[0] = 0x4658364cu; /* 'FX6L' */
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
@@ -3249,6 +3383,10 @@ void fx6_force_update(void) {
         mb[37] = 0x64648250u;/* phase81_pdaf_mag_fc: (16,9), mag=1x, fc=off, hdmi=1x, eff=100, req=100 */
         mb[38] = 0x80000004u;/* phase81_ciz_flags: valid=1, spd=4 */
         mb[39] = 0x54414643u;/* 'TAFC' */
+        mb[40] = 0u;         /* phase88_shotmark */
+        mb[41] = 0xa9040118u;/* phase88_iris_audio: valid=1, ire=41, pad=0, push=0, ae=0, multi, F2.8 */
+        mb[42] = 0xa0010001u;/* phase88_user_bits: A0:01:00:01 */
+        mb[43] = 0x534d524bu;/* 'SMRK' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -3263,6 +3401,9 @@ void fx6_force_update(void) {
     g_live_p81_touch_af = 0x4e50e780u;
     g_live_p81_pdaf_mag_fc = 0x64648250u;
     g_live_p81_ciz_flags = 0x80000004u;
+    g_live_p88_shotmark = 0u;
+    g_live_p88_iris_audio = 0xa9040118u;
+    g_live_p88_user_bits = 0xa0010001u;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -3278,10 +3419,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -3332,14 +3473,19 @@ void fx6_force_update(void) {
                 g_live_p81_pdaf_mag_fc = mb[37] | 0x8000u; /* clean_hdmi_unmagnified = 1 */
                 g_live_p81_ciz_flags   = mb[38];
             }
+            if ((mb[41] & 0x80000000u) && mb[43] == 0x534d524bu) {
+                g_live_p88_shotmark   = mb[40];
+                g_live_p88_iris_audio = mb[41];
+                g_live_p88_user_bits  = mb[42];
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits);
         }
     }
 }

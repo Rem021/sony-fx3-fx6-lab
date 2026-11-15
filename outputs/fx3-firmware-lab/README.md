@@ -68,11 +68,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar 2 — `T/W` Zoom Lever Rocker (`8-Step` Variable Speed) & `Clear Image Zoom` (`CIZ`) Mutual-Exclusion Matrix**: Verifies `Optical Zoom Only` (`1.00x`, full 627-pt PDAF), `Clear Image Zoom` (`1.00x..1.50x` in `DCI 4K`/`QFHD` and `1.00x..2.00x` in `FHD` with By-Pixel Super Resolution + PDAF/Face/Eye tracking retained), `Digital Zoom` (`up to 4.00x`), and deterministic mutual-exclusion clamps (`HDMI RAW16` or `S&Q 120/240fps` cleanly clamping `CIZ` back to `1.00x` `OPTICAL_ZOOM_ONLY` with `icx1295_crashed == False` and `libcamera_crashed == False`).
    - **Pillar 3 — Touch Tracking AF (`Touch Focus` / `Touch Tracking` / `Touch Shutter=Disabled in Cine`) & `Focus Magnifier` (`4.0x` Crop + Anamorphic Desqueeze Coordinate Transform)**: Verifies `960x540` `GPE0` capacitive touch `(x, y)` -> normalized `[0.0..1.0]` `IMX510` 627-point (`33x19`) PDAF phase-window transforms across `1.0x`, `1.3x`, `1.5x`, `1.6x`, and `2.0x` anamorphic desqueeze inverse-X (`u_sensor = 0.5 + (u_view - 0.5) / D`) plus `4.0x` Focus Magnifier crop composition.
    - **Pillar 4 — Custom `Big6` Home Screen (`6`-Slot Layout) & `Fn` Menu (`12`-Slot Layout) Volatile `BK4` Shadow Proof**: Verifies FX3 v7.00+ `S&Q Mode Settings = Fixed/Variable` Big6 availability, `Home (Lower Left)` `APERTURE` vs `ND_FILTER` gating, and `/tmp` / `ram://` `CAMSET` JSON shadow roundtrips while hard-blocking `/dev/nflasha*`/`/dev/cnflasha*`/`bk4://persistent` writes (`bk4_persistent_nvram_writes == 0`, `persistent_emmc_writes_authorized == False`).
+15. [`fx3_firmware_lab/falsecolor_lpcm_tc_ub_auditor.py`](fx3_firmware_lab/falsecolor_lpcm_tc_ub_auditor.py)
+   - **Pillar 1 — Sony Cinema Line `S-Log3` / `S-Cinetone` / `Rec.709` False Color & EL-Zone Stop-Band IRE Verifier**: Audits `appFw.so`, `cpapp-b.bin`, `global.xdb`, and `.uxc` string packs strictly `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback) for exposure monitoring (`Zebra 1` `70%`/`52%`/`41%`, `Zebra 2` `94%`/`100%+`, Histogram, Waveform, False Color) and verifies Sony `S-Log3` transfer landmarks: Black Floor `3.5% IRE` (`code 95`), `18%` Middle Grey (`0.0 EV`) = **`41.0% IRE`** (`40.6%..41.4%` GREEN band, `code 420`), `+1.0 EV` skin (`~52% IRE` PINK band), `90%` White Card (`~61% IRE`), and `+6.0 EV` Sensor Saturation Clip = **`94.0% IRE`** (`code 963` full / `887` legal — proving why setting `Zebra = 100%` on `S-Log3` misses sensor clipping!), contrasted against `S-Cinetone` (`41% IRE` grey / **`109% IRE`** super-white) and `Rec.709` (`100% IRE`).
+   - **Pillar 2 — 4-Ch `24-bit / 48 kHz` Uncompressed LPCM Headroom, Digital Limiter & Wind-Filter DSP Verifier**: Audits FX6 `v6.01` & FX3 `v7.02` `appFw.so`, `cpapp-b.bin`, `libInfraHotshoe.so`, and `AVBB_SCN_START_AUDIO.so` across `XLR-H1` MI-Shoe 4-ch (`4,608,000 bps`) vs Internal Body Stereo Mic (`2,304,000 bps`) fallback, SMPTE `RP 155` (`-20.0 dBFS = +4 dBu = 0 VU`, `+24 dBu` clip) vs EBU `R68` (`-18.0 dBFS = 0 dBu`, `+18 dBu` clip), `1 kHz` `-20.0 dBFS` `int24` little-endian 3B PCM synthesis/roundtrip, `-3.0 dBFS` soft-knee digital peak limiter (`< -0.1 dBFS` brickwall ceiling, `0` `int24` wrap-around overflows), and `CH1..CH4` Wind-Filter HPF masks.
+   - **Pillar 3 — SMPTE 12M Timecode `User Bits` (`BG1..BG8` 32-bit BCD/Hex) & HDMI/Multi-Port TC Direction Guard**: Verifies 8-nibble (`XX:XX:XX:XX`) SMPTE 12M Binary Group packing/unpacking across `FIX_HEX`, `DATE_YYMMDD`, `CLK_TIME`, `FRAME_RATE`, and Cinema `CAM_ID_REEL` (`A0:01:00:01`), plus FX3 Multi-Port (`VMC-BNCM1` `TC_IN` only) vs `HDMI Type-A` (`TC_OUT` only) directional arbitration (`0` bus contention, Phase 38 `uart_boot` Pins 7/8/9 safety guard).
+   - **Pillar 4 — Zero Calibration / Zero eMMC Mutation Proof**: Proves `calibration_mutation_bytes == 0` and `persistent_emmc_writes_authorized == False`, hard-blocking `/dev/cnflasha*`, `/dev/nflasha*`, and `p2:/Backup.bin` while permitting volatile `/tmp`/`ram://` overlays.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 14 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 15 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -96,8 +101,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-proxy-clipname --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-assignable-ciz --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-assignable-ciz --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-falsecolor-lpcm-ub --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-falsecolor-lpcm-ub --clean-room --json
 
-# Run all 337 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 369 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

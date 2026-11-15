@@ -643,4 +643,23 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-airgap-sd-bundle --force-clean-room --json
 ```
 
+## Phase 190 — 真机主线 Part 14（Pillar 26 / `26/26` 统一恢复总检）：`ILME-FX3` vs `ILME-FX3A` 跨分支恢复防火墙、`CAMSET` 设置隔离与 `XLR-H1` MI 热靴音频卫生护栏
+
+- **[`realhw_26pillar_master_recovery_verifier.py`](fx3_recovery/realhw_26pillar_master_recovery_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`1.44M` LCD + NFC + IR）落地 **Pillar 26** 并提供统一 **26/26 恢复总检聚合器**（`< 2.0s` 并发运行，保留 [`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py) / `verify-22pillar-recovery` 与 [`realhw_24pillar_master_recovery_verifier.py`](fx3_recovery/realhw_24pillar_master_recovery_verifier.py) / `verify-24pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 与 `libInfraHotshoe.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退：
+  - **支柱 26A — `ILME-FX3`（`Ver. 7.02`，`1.44M` LCD + NFC + IR）vs `ILME-FX3A`（`Ver. 2.02`，`2.36M` XGA LCD，无 NFC/IR）跨分支恢复与 `CAMSET` 防火墙（`6/6`）**：
+    - `P26A1`..`P26A6`：`< 50 us` 预检验证机身硬件特征（`1.44M` LCD + NFC + IR），双向拦截 `ILME-FX3`（`0x91030080`）与 `ILME-FX3A`（`Ver. 1.xx/2.xx`）、`ILME-FX30`（`0x91030084`）、`ILME-FX6`（`0x91020080`）之间的 `BODYDATA.DAT` 恢复包及显示垫片混用，拦截跨分支 `CAMSET01.DAT`..`CAMSET10.DAT` SD 卡设置导入，并验证原厂 `p2:/setting/Backup.bin`（`BK4\x00`，`H0 == H3`，`BLKROSET=1`）。
+  - **支柱 26B — `XLR-H1` MI 热靴 `48kHz/24bit 4ch` 恢复后与 UFU 升级后音频卫生护栏（`6/6`）**：
+    - `P26B1`..`P26B6`：强制零手柄独立固件写入（索尼从未发布独立 `XLR-H1` 固件包），校验冷启动恢复期机身 `3.5mm` 麦克风插孔物理抢占安全（`[MI Shoe Audio Set.]` 物理切断与灰显保护）、`S&Q` 静音一致性及 Stage-A->Stage-B `+48V` 幻象供电无毛刺，审计 `BODYDATA.DAT` 官方升级后 `48kHz/16bit 2ch` 默认重置行为，并确保 Stage-B 零污染 `p2:/setting/Backup.bin`（`stage_b_backup_bin_writes == 0`、`H0 == H3`）。
+  - **统一 `26/26` 恢复总检聚合器与 CLI（`evaluate_26pillar_recovery_master` / `verify-26pillar-recovery` / `verify-fx3a-branch-recovery-firewall`）**：
+    - 并发调度 `evaluate_24pillar_recovery_master`（`Pillars 1..24`）+ **Pillar 25**（`run_airgap_sd_bundle_manifest_suite`）+ **Pillar 26**（`run_pillar26_standalone_suite`），汇总产出 **`26/26`**（`VERIFIED_26OF26_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_26pillar_master_recovery_verifier.py`](tests/test_realhw_26pillar_master_recovery_verifier.py) 提供 **50 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-fx3a-branch-recovery-firewall --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-26pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-26pillar-recovery --force-clean-room --json
+```
+
 

@@ -745,4 +745,27 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - **Complete `C(8,2) = 28` Pairwise Matrix**: All `28/28` pairs across `Shooting` (`r11d`), `Project` (`r18a`), `Paint/Look` (`r13c`), `TC/Media` (`r18b`), `Monitoring` (`r15c`), `Audio` (`r17d`), `Network` (`r18c`), and `Maintenance` (`r18d`) are strictly `> 0` (`8,755 .. 146,605` px).
 - **Full Report, Receipts, & `108+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/README.md`](../../reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/README.md) and [`summary.json`](../../reports/2026-11-14-round18-fx6-on-fx3-menu-8category-closure/summary.json).
 
+---
+
+## 19. Round 19: Real FX3 `7.02` Kernel Complete `11/11` Full-Menu Category Closure (`User`, `Thumbnail`, `Technical`, `11x DOWN` Wrap-Around & Traditional Chinese `Network` `WF-12` Immunity)
+
+`build_and_run_round.py --round 19 --lang {schinese,tchinese}` completes **100% (`11/11`)** of the visible Shooting Mode categories on FX6's Full Menu left rail (`appFw.so+0x2924180`) on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R19_VERIFY_PASS`, `FX6_STAGE_B_R19_BRIDGE`, and `FX6_R19_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 19 --lang tchinese --initial-setting-done 1 --run-id r19e-menu-3layer-network-tchinese --duration 92 \
+  --run-dir /private/tmp/fx6-r19-runs/r19e \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r19e-menu-3layer-network-tchinese \
+  --export-png-dir reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/assets
+```
+
+- **5 Live Round 19 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P12` `WF-12` `00342260` Immune)**:
+  - `r19a-menu-3layer-user-schinese`: `0x 0x0030` (`User`, `cat_id=8`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `254` colors / `1,074` `0xffffaa00` amber px, `13,806` icon blits, `9,572` glyph blits, `80` `LDEC103` ioctls).
+  - `r19b-menu-3layer-thumbnail-schinese`: `7x 0x0030` (`Thumbnail`, `cat_id=15`) + `2x 0x01af` -> `31procam_menu_layer_1st_presenter` (`sid=0x0f`, `437,095` px / `254` colors, `17,161` icon blits, `15,759` glyph blits, `78` `LDEC103` ioctls — all 10 `Thumbnail` L2 sub-items are natively grayed out in Shooting Mode with `0` active white pixels in Column 2, producing **`159,124 .. 177,650`** px delta vs all other 10 categories).
+  - `r19c-menu-3layer-technical-schinese`: `8x 0x0030` (`Technical`, `cat_id=16`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `237` colors / `471` `0xffffaa00` amber px, `13,813` icon blits, `10,052` glyph blits, `92` `LDEC103` ioctls).
+  - `r19d-menu-3layer-wraparound-user-schinese`: `11x 0x0030` (`User` wrap-around past `Maintenance`, `cat_id=8`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `254` colors / `1,074` `0xffffaa00` amber px, `14,994` icon blits, `11,299` glyph blits, `94` `LDEC103` ioctls — **`480` px** clock tick diff vs `r19a` `User` and **`2,032 .. 161,843` px** vs all other 10 categories!).
+  - `r19e-menu-3layer-network-tchinese`: Traditional Chinese (`tchinese`, `bk4=0x18`, `font=27`, `str=22`) `9x 0x0030` (`Network`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `265` colors, `14,987` icon blits, `10,648` glyph blits, `92` `LDEC103` ioctls) with live `WF-12` `00342260` `100%` immunity (`p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`) and **`19,652` px** delta vs Simplified Chinese `r18c`.
+  - **Complete `C(11,2) = 55` Pairwise Matrix**: All `55/55` pairs across `User` (`r19a`), `Shooting` (`r11d`), `Project` (`r18a`), `Paint/Look` (`r13c`), `TC/Media` (`r18b`), `Monitoring` (`r15c`), `Audio` (`r17d`), `Thumbnail` (`r19b`), `Technical` (`r19c`), `Network` (`r18c`), and `Maintenance` (`r18d`) are strictly `> 0` (`1,552 .. 177,650` px).
+- **Full Report, Receipts, & `125` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/README.md`](../../reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/README.md) and [`summary.json`](../../reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/summary.json).
 

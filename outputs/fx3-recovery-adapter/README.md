@@ -814,4 +814,24 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-34pillar-recovery --force-clean-room --json
 ```
 
+## Phase 231 — 真机主线 Part 23（里程碑 Pillar 35 / `35/35` 统一恢复总检）：`Silent Mode` `Auto Pixel Mapping` 台架关机防火墙、`Shutter When Pwr OFF` 硬件缺席拦截与 `Marker` / `Flexible Exp.` 复位分流金库（`verify-35pillar-recovery` / `verify-silent-autopixelmap-marker-vault`）
+
+- **[`realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py`](fx3_recovery/realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **`35/35` 里程碑 Pillar 35** 并将全套恢复总检正式推进至 **`35/35`（`VERIFIED_35OF35_PILLAR_RECOVERY_MASTER`）**（`< 3.6s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libInfraMediaConfig.so` 与 `CameraOnDemandSaver.so`（校验 `cam_ondemand_saver_init`、`cam_ondemand_saver_thread`、`cam_ondemand_saver_exit`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 35A — `[Silent Mode]` `[Auto Pixel Mapping]` 台架关机暗场校准防火墙、5 项拍摄功能锁止与 `ILME-FX3` `[Shutter When Pwr OFF]` 硬件缺席拦截（`6/6`）**：
+    - `P35A1`..`P35A6`：将 `[Silent Mode] = [On]` 配合 `[Target Function Settings]` 将 `[Auto Pixel Mapping]` 设为 `[Target]` 建模为确定性、非侵入式软件台架关机防火墙，防止在 Tier-0 备份/恢复关机周期中意外触发断电机械快门暗场像素映射校准（`0` 次 `cnflasha` 触碰），同时验证非台架关机场景下 `[Not Target]` 完整保留常规 `[Auto Pixel Mapping]` 与 `[Aperture Drive in AF]` 设定；强制审计 `[Silent Mode] = [On]` 自动锁死 `[Shutter Type]` / `[Shutter Type in Interval] = [Electronic Shutter]`、`[Audio signals] = [Off]` 及 5 项禁用功能（闪光灯拍摄、`[Long Exposure NR]`、`[e-Front Curtain Shut.]`、`BULB`、`[Anti-flicker Shoot.]`）；全面拦截并拒绝物理 `ILME-FX3`（`Ver. 2.00..7.02`）根本不存在的 `[Shutter When Pwr OFF]` 伪造菜单断言（真机仅存在 `[Sensor Cleaning]`、`[Auto Pixel Mapping]` 与 `[Pixel Mapping]`）。
+  - **支柱 35B — `[Marker Display]` 15 比例非复位金库、本地 LCD 独占 HDMI 零标记抑制与 `[Flexible Exp. Mode]`（`Av`/`Tv`/`ISO`）+ `[Auto Slow Shutter]` 复位分流（`6/6`）**：
+    - `P35B1`..`P35B6`：校验 `[Marker Display]`（`Center Marker`、`Aspect Marker` `Off` + 15 项 `Ver. 3.00+/7.02` 画幅比例、`Safety Zone` `Off/80%/90%`、`Guideframe`）在 `[Camera Settings Reset]` 后完整存留、仅在完整 `[Initialize]` 下清零为 `Off`，且即便 `[HDMI Info. Display] = [On]` 仍严格仅在机身本地监视器显示、向 HDMI 泄漏 `0` 层标记叠加；验证 `[Flexible Exp. Mode]` 下 `[Auto/Manual Swt. Set.]`（`Av`/`Tv`/`ISO` -> `Manual`）与 `[Auto Slow Shutter]`（`-> On`）在 `[Camera Settings Reset]` 下干净复位为默认值，或经 Slot-1 `CAMSET01.DAT` 金库无漂移恢复（`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `35/35` 里程碑恢复总检聚合器与 CLI（`evaluate_realhw_35pillar_recovery_master` / `verify-35pillar-recovery` / `verify-silent-autopixelmap-marker-vault`）**：
+    - 并发调用 `evaluate_realhw_34pillar_recovery_master`（`Pillars 1..34`）+ **Pillar 35**（`run_pillar35_standalone_suite`），汇总产出 **`35/35`**（`VERIFIED_35OF35_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py`](tests/test_realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py) 提供 **64 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-silent-autopixelmap-marker-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-35pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-35pillar-recovery --force-clean-room --json
+```
+
+
 

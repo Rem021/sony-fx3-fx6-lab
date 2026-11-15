@@ -511,6 +511,27 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --clean-room --json
 ```
 
+## Phase 151 — 真机主线 Part 7（Pillar 19 / `19/19`）：`/dev/pnflasha*` 原始 ISP 密文 + `/dev/cnflasha*` SPACC 逻辑层 + `/dev/mtd*ro` SPI NOR + `Sector 0` 30 分区双层 Tier-0 冷备份仓库校验器
+
+- **[`realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py`](fx3_recovery/realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py)**：面向真实物理 `ILME-FX3`（`7.02`、`CXD90057`、`Linux 4.9.337-scel+`）提供两大只读与防混刷隔离支柱并接入 **19 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`PHYSICAL_DEVICE_WRITES = 0`、`MTD_RW_OPENS_OR_ERASE_IOCTLS = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露回退）：
+  - **供体只读核验（`inspect_tier0_dual_layer_donors_readonly`）**：只读验证 11 项 FX3 `7.02` 本地供体（`partinf.conf` `3,999 B`、`mount.conf` `1,248 B`、`setup_nflash` `375 B` 含 `rename_nflasha()`、`insmod_drv1` `152 B` 含 `crypt-emmc.ko` / `emmc.ko`、`nor_loader_writer.sh` `9,106 B`、`pformat_config.txt` `1,274 B`、`loader_nor.bin` `101,888 B`、`libsencore.so` `377,328 B`、`im.elf` `40,920 B`、有界 4K 头部 `cpapp-b.bin` `15,980,568 B` 与 `nflasha15.img` `479,846,400 B` `ext2 0xEF53`），JSON 输出零原始专有固件字节。
+  - **支柱 A — 16 表面双层 Tier-0 冷备份清单、30 分区 `Sector 0` LBA 几何与跨域还原防火墙（`8/8`）**：
+    - 建模全部 16 个强制表面（`Sector 0`、`p1`、`p2`、`p3`、`p5`、`p6`、`p7`、`p8`、`p12`、`p13`、`p15`、`p18`、`p23`、`p30`、`SPI NOR /dev/mtd0ro`、`eMMC EXT_CSD`），逐一标注 `layer_domain`（`RAW_PNFLASHA_ISP` / `SPACC_CNFLASHA_LOGICAL` / `SPI_NOR_MTDRO` / `EMMC_REG_METADATA`）、FX3 `"8246"/"2.00"` 30 分区 `Sector 0` LBA 起始/扇区数与魔数/熵特征（`ext2 0xEF53`、`SquashFS hsqs`、`BK4\0`、`VX8900`、SPACC 密文熵 `>= 7.9 bits/byte`），并检测 FX6 邻区 LBA 偏移。
+    - 8 场景跨域防火墙：硬拦截 `SPACC_CNFLASHA_LOGICAL` 镜像配对 `RAW_PNFLASHA_ISP` 目标（及反向错配）、拦截跨机身 `body_serial / cid_sha256` 的 `pnflasha*` 还原（每台相机 SPACC OTP 密钥唯一）、拦截非 `ro` `/dev/mtd*` 路径或 `MEMERASE`/`MEMWRITEOOB` ioctl，并结合双副本（`SD ExFAT` + `Mac Host Vault`）与 GF(256) `P+Q` 纠删码完成位腐败自愈与不可修复拒绝。
+  - **支柱 B — `/dev/mtd*ro` SPI NOR 与 `p12/p13/p18/p23/p30` 单机身出厂校准完整性门禁（`6/6`）**：
+    - 核验 `/proc/mtd` -> `/dev/mtd0ro..mtdNro` 只读转储纪律（`IPL / BLoader / BL31` 启动包络、`64 KiB` / `4 KiB` 擦除块对齐、零 `O_WRONLY`/`O_RDWR` 与零 `MEMERASE`），并锁定单机身 `p12/p13`（`ID/NVS`）、`p18`（`/lens` `VX8900`）与 `p23/p30`（`Backup.bin` `BK4\0`）双副本 SHA-256 锁与写授权双锁（`persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`）。
+  - **CLI 与 19 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-tier0-dual-layer-vault [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase151`（全开启时汇总为 **19/19** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase144` `18/18` 向后兼容），[`tests/test_realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py`](tests/test_realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py) 提供 **46 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-tier0-dual-layer-vault --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --clean-room --json
+```
+```
+
 
 
 

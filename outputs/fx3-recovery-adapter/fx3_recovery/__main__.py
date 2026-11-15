@@ -24,6 +24,7 @@ from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_s
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
+from .realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier import run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite
 from .realhw_service_usb_session_and_libjit_elf_hardener import run_realhw_service_usb_and_libjit_hardener_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
@@ -114,6 +115,7 @@ def main():
     master.add_argument('--with-phase138', action='store_true', help='also run Phase 138 Pillar 16 reversible ext2 /dev/nflasha15 atomic Stage-B installer, hash-rollback & p1/p3 mutual-exclusion rescue verifier')
     master.add_argument('--with-phase139', action='store_true', help='also run Phase 139 Pillar 17 host-side AdjustControl (0x40) streaming cold-backup client, p6 25 MiB sliding-window pull & Fake-IOKit verifier')
     master.add_argument('--with-phase144', action='store_true', help='also run Phase 144 Pillar 18 MSC->SERVICE exclusive session, op=0xFF zero-mount RAM canary & Stage-288 s4 hardened ARM64 libJit.so verifier')
+    master.add_argument('--with-phase151', action='store_true', help='also run Phase 151 Pillar 19 /dev/pnflasha* raw ISP + /dev/cnflasha* logical + /dev/mtd*ro SPI NOR dual-layer Tier-0 vault verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -158,6 +160,10 @@ def main():
     svc_jit.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     svc_jit.add_argument('--json', action='store_true', help='emit full structured JSON report')
     svc_jit.add_argument('--out', help='optional exclusive new output directory for service-usb-libjit-report.json')
+    t0_vault = sub.add_parser('verify-tier0-dual-layer-vault', help='Phase 151 Pillar 19 /dev/pnflasha* raw ISP + /dev/cnflasha* logical + /dev/mtd*ro SPI NOR + Sector 0 30-partition Tier-0 vault verifier')
+    t0_vault.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    t0_vault.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    t0_vault.add_argument('--out', help='optional exclusive new output directory for tier0-dual-layer-vault-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -415,6 +421,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p144_report.all_passed else 0)
                 overall_ok = overall_ok and p144_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase151:
+                p151_report = run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase151_pillar19_tier0_dual_layer_vault'] = p151_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p151_report.all_passed else 0)
+                overall_ok = overall_ok and p151_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -432,6 +447,7 @@ def main():
                     or args.with_phase138
                     or args.with_phase139
                     or args.with_phase144
+                    or args.with_phase151
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -714,6 +730,31 @@ def main():
                     f"live_usb_iokit_transmit_enabled={report.live_usb_iokit_transmit_enabled} "
                     f"usb_tx_packets_emitted={report.usb_tx_packets_emitted} "
                     f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-tier0-dual-layer-vault':
+            report = run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'tier0-dual-layer-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"surfaces={report.pillar_a_vault_manifest_report.surface_count}/16 "
+                    f"pillar_a_scenarios={report.pillar_a_firewall_8_scenarios.scenarios_passed}/{report.pillar_a_firewall_8_scenarios.scenarios_total} "
+                    f"pillar_b_scenarios={report.pillar_b_gate_6_scenarios.scenarios_passed}/{report.pillar_b_gate_6_scenarios.scenarios_total} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"mtd_rw_opens_or_erase_ioctls={report.mtd_rw_opens_or_erase_ioctls} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"
                 )

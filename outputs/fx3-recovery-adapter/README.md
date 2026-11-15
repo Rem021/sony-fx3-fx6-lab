@@ -700,6 +700,26 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-28pillar-recovery --force-clean-room --json
 ```
 
+## Phase 208 — 真机主线 Part 17（Pillar 29 / `29/29` 统一恢复总检）：仅限 Slot-1 `CAMSET01..10.DAT` 双介质路径分裂金库、`BIG6` 零物理 e-ND 总线护栏、双卡 `[Simult. + Auto Switch = Off]` 严格冗余与 `VMC-BNCM1` / `1.65x` 净冷回退（`verify-29pillar-recovery`）
+
+- **[`realhw_29pillar_camset_slot1_simult_vault_verifier.py`](fx3_recovery/realhw_29pillar_camset_slot1_simult_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 29** 并提供统一 **29/29 恢复总检聚合器**（`< 2.5s` 并发运行，保留 `verify-22pillar-recovery`、`verify-24pillar-recovery`、`verify-26pillar-recovery`、`verify-27pillar-recovery` 与 `verify-28pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02`、`cpapp-b.bin`、`appFw.so`、`Backup.bin`、`libInfraMediaConfig.so` 与 `libBackupManager.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 29A — 仅限 Slot-1 `CAMSET01..10.DAT` 双介质金库隔离与 `BIG6` 零物理 e-ND 总线保护（`6/6`）**：
+    - `P29A1`..`P29A6`：强制仅允许 **Slot 1** 读写 `<= 10` 个 `CAMSET01.DAT..CAMSET10.DAT` 档案（硬拦截 `Slot 2`、`> 10` 档案、`MR` 调出相机设置模式，并排除 `WB Custom 1/2/3`、`FTP`、流媒体、IP/证书与日期时间等机器绑定项）；严格区分 **SDXC**（`/PRIVATE/SONY/SETTING/FX3/CAMSET/`）与 **CFexpress Type A**（`/SONY/SETTING/FX3/CAMSET/`）根目录非对称拓扑；拦截 `FX3` vs `FX3A` vs `FX6` 跨机型 `.DAT` 混入，强制 Stage-B 将 `FX6` 配置沙箱化至易失 `/tmp/fx6_camset_overlay`（`tmpfs`）；同时强制 `BIG6`（`Home`）左下角 `[Aperture / ND Filter]` 在 FX3 `CP` 总线上保持零物理 e-ND 执行器驱动帧（`e_nd_actuator_tx_count == 0`）。
+  - **支柱 29B — 双卡 `[Simult. Recording]` + `[Auto Switch Media = Off]` 严格金库冗余、`VMC-BNCM1` 仅机身 `TC IN` 门禁与 `[De-Squeeze]` `1.65x` 净冷回退（`6/6`）**：
+    - `P29B1`..`P29B6`：在双卡冷备/严格冗余录制下强制 `[Auto Switch Media] = Off`，防止 `Ver. 2.0+` 单卡写满后静默降级为单卡续录；硬阻断 `VMC-BNCM1` 误插 `XLR-H1` 手柄 Micro-USB 口及在机身 Multi/Micro USB 口反向发射 BNC `TC OUT`（`EOPNOTSUPP`，时间码输出严格路由至 Type-A HDMI）；验证 `[De-Squeeze Display]`（`1.6x == 1.65` 倍水平拉伸 + `MF / Wide / SteadyShot Off / Face Priority Off` 四项硬件强锁 + HDMI RAW 抑制）、无内置菜单的外置 `M&C Focus Map`（`>= 150fps` 截止）及 `[Shockless WB]`（`[C.Temp./Filter]` K 值与 `A–B / G–M` 即时旁路）在冷启动回到原厂 `7.02` 后保持 `p2:/setting` `16/16 H0 == H3`。
+  - **统一 `29/29` 恢复总检聚合器与 CLI（`evaluate_29pillar_recovery_master` / `verify-29pillar-recovery` / `verify-camset-simult-vault`）**：
+    - 并发调度 `evaluate_28pillar_recovery_master`（`Pillars 1..28`）+ **Pillar 29**（`run_pillar29_standalone_suite`），汇总产出 **`29/29`**（`VERIFIED_29OF29_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_29pillar_camset_slot1_simult_vault_verifier.py`](tests/test_realhw_29pillar_camset_slot1_simult_vault_verifier.py) 提供 **52 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-camset-simult-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-29pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-29pillar-recovery --force-clean-room --json
+```
+
+
 
 
 

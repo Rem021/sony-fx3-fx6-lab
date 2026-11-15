@@ -42,6 +42,10 @@ from .realhw_28pillar_fan_pwm_shutter_lut_split_verifier import (
     run_pillar28_standalone_suite,
     verify_28pillar_recovery_suite,
 )
+from .realhw_29pillar_camset_slot1_simult_vault_verifier import (
+    run_pillar29_standalone_suite,
+    verify_29pillar_recovery_suite,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -243,6 +247,14 @@ def main():
     p198_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p198_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p198_master.add_argument('--out', help='optional exclusive new output directory for 28pillar-recovery-master-report.json')
+    p208_p29 = sub.add_parser('verify-camset-simult-vault', help='Phase 208 Pillar 29 Slot-1 CAMSET dual-media vault, BIG6 zero e-ND guard, Simult + Auto Switch Off, VMC-BNCM1 body TC IN & De-Squeeze 1.65x verifier')
+    p208_p29.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p208_p29.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p208_p29.add_argument('--out', help='optional exclusive new output directory for pillar29-camset-simult-vault-report.json')
+    p208_master = sub.add_parser('verify-29pillar-recovery', help='Phase 208 unified 29/29 real-hardware recovery master aggregator (Pillars 1..28 + Pillar 29)')
+    p208_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p208_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p208_master.add_argument('--out', help='optional exclusive new output directory for 29pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1237,6 +1249,66 @@ def main():
                     f"pillar28_a={report.pillar28_a_fan_pwm_interlock.scenarios_passed}/{report.pillar28_a_fan_pwm_interlock.scenarios_total} "
                     f"pillar28_b={report.pillar28_b_lut_split_shutter_vault.scenarios_passed}/{report.pillar28_b_lut_split_shutter_vault.scenarios_total} "
                     f"master_28pillar_sha256={report.master_28pillar_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-camset-simult-vault':
+            report = run_pillar29_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar29-camset-simult-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_29a={report.pillar_29a_camset_big6_vault.scenarios_passed}/{report.pillar_29a_camset_big6_vault.scenarios_total} "
+                    f"pillar_29b={report.pillar_29b_simult_tcin_desqueeze_vault.scenarios_passed}/{report.pillar_29b_simult_tcin_desqueeze_vault.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-29pillar-recovery':
+            report = verify_29pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'29pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_2_5s={report.nominal_under_2_5s} "
+                    f"pillar29_a={report.pillar29_a_camset_big6_vault.scenarios_passed}/{report.pillar29_a_camset_big6_vault.scenarios_total} "
+                    f"pillar29_b={report.pillar29_b_simult_tcin_desqueeze_vault.scenarios_passed}/{report.pillar29_b_simult_tcin_desqueeze_vault.scenarios_total} "
+                    f"master_29pillar_sha256={report.master_29pillar_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

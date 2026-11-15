@@ -607,5 +607,22 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-wbi-powerloss-recovery --force-clean-room --json
 ```
 
+## Phase 180 — 真机主线 Part 12（Pillar 24 / `24/24` 统一恢复总检）：Slot-1 `BODYDATA.DAT`（`>= 2.04`）回刷就绪度、`WPA2/WPA3` + HDMI-BRAW / `.cube` LUT 回退卫生与 `verify-24pillar-recovery`
 
+- **[`realhw_24pillar_master_recovery_verifier.py`](fx3_recovery/realhw_24pillar_master_recovery_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`CXD90057` *Mira*）落地 **Pillar 24** 并提供统一 **24/24 恢复总检聚合器**（`< 1.8s` 并发运行，保留 [`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py) / `verify-22pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退：
+  - **支柱 24A — 官方 Slot-1 `BODYDATA.DAT`（`811,876,768 B`，`\x89UFU\r\n\x1a\n`）卸载后原厂回刷就绪度门禁（`6/6`）**：
+    - `P24A1`..`P24A6`：核验干净卸载（`H2 -> H3`）后机身固件满足 `>= Ver. 2.04` 底线（硬阻断 `<= Ver. 2.02` 防止硬件 `7 long + 7 short` LED 闪灯错误）、仅允许 **Slot-1 ExFAT 根目录** `/BODYDATA.DAT`（拦截 Slot-2、子目录及 `BODYDATA (1).DAT` / `BODYDATA_OLD.DAT` 重命名副本）、`p1` 更新武装标志清零（`0`）、`p15:/usr` `.orig`（`H0 == H3`）与 `p5:/wbi` `WBI2\x00\x00\x00\x00`（`H0 == H3`）恢复、`NP-FZ100` 电量底线（`>= 3 格 / >= 7.20V`），以及 `p12:/cert/RQ_LIC.DAT` C2PA 许可证上限（`<= 100`）与 `RO` 只读完整性。
+  - **支柱 24B — 挥发网络（仅 `WPA2/WPA3`）与 HDMI-BRAW / `.cube` 3D LUT 回退卫生（`6/6`）**：
+    - `P24B1`..`P24B6`：强制仅放行 `WPA2` / `WPA3` / `Access Authentication`（硬拒 `WEP`、`WPA1`、旧版 `IPsec`），证明 Stage-B `tmpfs` Wi-Fi 凭据、`.cube` 3D LUT 暂存文件与 HDMI BRAW 运行态在 `EH1` 拔卡或 `H2 -> H3` 干净卸载后 **零泄露** 至原厂 `p2:/setting/Backup.bin`（`BK4\x00`，`H0 == H3`）或 `p30:/usr/data/lut`（`H0 == H3`），且任何写解锁请求均 fail-closed 拦截。
+  - **统一 `24/24` 恢复总检聚合器与 CLI（`evaluate_24pillar_recovery_master` / `verify-24pillar-recovery` / `verify-slot1-ufu-reflash-readiness`）**：
+    - 并发调度 `Pillars 1..22`（`evaluate_22pillar_recovery_master`）+ **Pillar 23**（`run_wbi_powerloss_and_100cycle_suite`）+ **Pillar 24**（`run_pillar24_standalone_suite`），汇总产出 **`24/24`**（`VERIFIED_24OF24_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_24pillar_master_recovery_verifier.py`](tests/test_realhw_24pillar_master_recovery_verifier.py) 提供 **50 项**双模式快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-slot1-ufu-reflash-readiness --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-24pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-24pillar-recovery --force-clean-room --json
+```
 

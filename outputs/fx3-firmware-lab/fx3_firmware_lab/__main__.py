@@ -26,6 +26,10 @@ from .emount_af_breathing_and_ibis_auditor import (
     analyze_emount_af_breathing_and_ibis,
     emount_af_breathing_and_ibis_report_to_dict,
 )
+from .falsecolor_lpcm_tc_ub_auditor import (
+    analyze_falsecolor_lpcm_tc_ub,
+    falsecolor_lpcm_tc_ub_report_to_dict,
+)
 from .global_xdb_and_menu_tree_auditor import (
     analyze_global_xdb_and_menu_tree,
     global_xdb_and_menu_tree_report_to_dict,
@@ -63,7 +67,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all fourteen clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all fifteen clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -98,6 +102,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     assignable_zoom_ciz_fn = assignable_zoom_ciz_and_fn_report_to_dict(
         analyze_assignable_zoom_ciz_and_fn(clean_room=clean_room)
     )
+    falsecolor_lpcm_tc_ub = falsecolor_lpcm_tc_ub_report_to_dict(
+        analyze_falsecolor_lpcm_tc_ub(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -114,6 +121,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and wb_color_look.get("all_checks_passed")
         and proxy_clipname_sidecar.get("all_checks_passed")
         and assignable_zoom_ciz_fn.get("all_checks_passed")
+        and falsecolor_lpcm_tc_ub.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -135,17 +143,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "wb_color_matrix_and_look_audit": wb_color_look,
         "proxy_clipname_and_sidecar_audit": proxy_clipname_sidecar,
         "assignable_zoom_ciz_and_fn_audit": assignable_zoom_ciz_fn,
+        "falsecolor_lpcm_tc_ub_audit": falsecolor_lpcm_tc_ub,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, and Assignable/CIZ/Touch-AF/Big6+Fn auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, and False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 14 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 15 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -225,6 +234,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_ac.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_ac.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_fc = sub.add_parser(
+        "audit-falsecolor-lpcm-ub",
+        help="Run Phase 80 False Color / EL-Zone S-Log3 Exposure Mapping, 4-Ch 24-bit 48kHz LPCM Headroom & Limiter DSP, and SMPTE 12M User-Bits + TC Direction audit",
+    )
+    p_fc.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_fc.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -276,6 +292,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-assignable-ciz":
         payload = assignable_zoom_ciz_and_fn_report_to_dict(
             analyze_assignable_zoom_ciz_and_fn(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-falsecolor-lpcm-ub":
+        payload = falsecolor_lpcm_tc_ub_report_to_dict(
+            analyze_falsecolor_lpcm_tc_ub(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

@@ -26,6 +26,7 @@ from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_stre
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
 from .realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier import run_realhw_pnflasha_cnflasha_mtdro_tier0_vault_suite
 from .realhw_service_usb_session_and_libjit_elf_hardener import run_realhw_service_usb_and_libjit_hardener_suite
+from .realhw_uart_460800_post_triage_and_isp_guard import run_realhw_uart_460800_post_triage_and_isp_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .secureboot_chain_and_partition_align_verifier import run_secureboot_chain_and_partition_align_suite
@@ -116,6 +117,7 @@ def main():
     master.add_argument('--with-phase139', action='store_true', help='also run Phase 139 Pillar 17 host-side AdjustControl (0x40) streaming cold-backup client, p6 25 MiB sliding-window pull & Fake-IOKit verifier')
     master.add_argument('--with-phase144', action='store_true', help='also run Phase 144 Pillar 18 MSC->SERVICE exclusive session, op=0xFF zero-mount RAM canary & Stage-288 s4 hardened ARM64 libJit.so verifier')
     master.add_argument('--with-phase151', action='store_true', help='also run Phase 151 Pillar 19 /dev/pnflasha* raw ISP + /dev/cnflasha* logical + /dev/mtd*ro SPI NOR dual-layer Tier-0 vault verifier')
+    master.add_argument('--with-phase155', action='store_true', help='also run Phase 155 Pillar 20 real-hardware CXD90057 1.8V ttyAMA0 460800n8 boot-stage triage, multi-USB firewall & last-resort ISP checklist verifier (20/20 milestone)')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -164,6 +166,10 @@ def main():
     t0_vault.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     t0_vault.add_argument('--json', action='store_true', help='emit full structured JSON report')
     t0_vault.add_argument('--out', help='optional exclusive new output directory for tier0-dual-layer-vault-report.json')
+    u460800 = sub.add_parser('verify-uart-460800-isp-triage', help='Phase 155 Pillar 20 real-hardware CXD90057 1.8V ttyAMA0 460800n8 boot-stage triage, multi-USB firewall & last-resort ISP checklist verifier')
+    u460800.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    u460800.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    u460800.add_argument('--out', help='optional exclusive new output directory for uart-460800-isp-triage-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -430,6 +436,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p151_report.all_passed else 0)
                 overall_ok = overall_ok and p151_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase155:
+                p155_report = run_realhw_uart_460800_post_triage_and_isp_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase155_pillar20_uart_460800_isp_triage'] = p155_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p155_report.all_passed else 0)
+                overall_ok = overall_ok and p155_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -448,6 +463,7 @@ def main():
                     or args.with_phase139
                     or args.with_phase144
                     or args.with_phase151
+                    or args.with_phase155
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -754,6 +770,31 @@ def main():
                     f"mtd_rw_opens_or_erase_ioctls={report.mtd_rw_opens_or_erase_ioctls} "
                     f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked} "
                     f"physical_device_writes={report.physical_device_writes} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-uart-460800-isp-triage':
+            report = run_realhw_uart_460800_post_triage_and_isp_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'uart-460800-isp-triage-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_a_triage={report.pillar_a_triage_8_scenarios.scenarios_passed}/{report.pillar_a_triage_8_scenarios.scenarios_total} "
+                    f"pillar_b_firewall={report.pillar_b_firewall_6_scenarios.scenarios_passed}/{report.pillar_b_firewall_6_scenarios.scenarios_total} "
+                    f"pillar_c_isp={report.pillar_c_isp_6_scenarios.scenarios_passed}/{report.pillar_c_isp_6_scenarios.scenarios_total} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"

@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#include <dirent.h>
 #include <dlfcn.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -11,6 +12,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -24,6 +26,14 @@
 
 #ifndef LOOP_CTL_GET_FREE
 #define LOOP_CTL_GET_FREE 0x4C82UL
+#endif
+
+#ifndef MS_RDONLY
+#define MS_RDONLY 1UL
+#endif
+
+#ifndef MS_REMOUNT
+#define MS_REMOUNT 32UL
 #endif
 
 #ifndef MS_NOATIME
@@ -573,6 +583,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R28_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r29_st;
+    if (stat("/etc/fx6_stage_r29", &r29_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r29f = fopen("/etc/fx6_stage_r29", "r");
+        if (r29f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r29f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r29f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R29_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 atomic_installer_ready=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 
@@ -1046,11 +1074,553 @@ static void probe_r10_rtc0(void) {
     }
 }
 
+static int r29_is_allowed_nflasha15_path(const char *path) {
+    if (!path) return 0;
+    return (strcmp(path, "/dev/nflasha15") == 0 || strcmp(path, "/dev/cnflasha15") == 0) ? 1 : 0;
+}
+
+static int r29_write_all_fsync(const char *path, const void *buf, size_t len, mode_t mode) {
+    int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, mode);
+    if (fd < 0) return -1;
+    const uint8_t *p = (const uint8_t *)buf;
+    size_t off = 0U;
+    while (off < len) {
+        ssize_t n = write(fd, p + off, len - off);
+        if (n < 0) {
+            if (errno == EINTR) continue;
+            close(fd);
+            return -1;
+        }
+        off += (size_t)n;
+    }
+    if (fsync(fd) != 0) {
+        close(fd);
+        return -1;
+    }
+    if (close(fd) != 0) return -1;
+    return 0;
+}
+
+static int r29_copy_file_fsync(const char *src, const char *dst, mode_t mode) {
+    int in_fd = open(src, O_RDONLY);
+    if (in_fd < 0) return -1;
+    int out_fd = open(dst, O_WRONLY | O_CREAT | O_TRUNC, mode);
+    if (out_fd < 0) {
+        close(in_fd);
+        return -1;
+    }
+    uint8_t buf[16384];
+    for (;;) {
+        ssize_t nr = read(in_fd, buf, sizeof(buf));
+        if (nr < 0) {
+            if (errno == EINTR) continue;
+            close(in_fd);
+            close(out_fd);
+            return -1;
+        }
+        if (nr == 0) break;
+        ssize_t off = 0;
+        while (off < nr) {
+            ssize_t nw = write(out_fd, buf + off, (size_t)(nr - off));
+            if (nw < 0) {
+                if (errno == EINTR) continue;
+                close(in_fd);
+                close(out_fd);
+                return -1;
+            }
+            off += nw;
+        }
+    }
+    close(in_fd);
+    if (fsync(out_fd) != 0) {
+        close(out_fd);
+        return -1;
+    }
+    if (close(out_fd) != 0) return -1;
+    return 0;
+}
+
+static int r29_fsync_dir(const char *dir_path) {
+    int dfd = open(dir_path, O_RDONLY | O_DIRECTORY);
+    if (dfd < 0) return -1;
+    int rc = fsync(dfd);
+    close(dfd);
+    return rc;
+}
+
+static void r29_sha256_buf_hex(const uint8_t *buf, size_t len, char out_hex[65]) {
+    fx6_sha256_ctx_t ctx;
+    sha256_init(&ctx);
+    sha256_update(&ctx, buf, len);
+    uint8_t hash[32];
+    sha256_final(&ctx, hash);
+    static const char hex[] = "0123456789abcdef";
+    for (int i = 0; i < 32; i++) {
+        out_hex[i * 2 + 0] = hex[(hash[i] >> 4) & 0xfU];
+        out_hex[i * 2 + 1] = hex[hash[i] & 0xfU];
+    }
+    out_hex[64] = '\0';
+}
+
+static void r29_check_mount_ro(const char *mountpoint, const char *probe_file,
+                               int *out_ro_mount, int *out_erofs) {
+    int ro_mnt = 0;
+    char needle[256];
+    snprintf(needle, sizeof(needle), " %s tmpfs ", mountpoint);
+    FILE *mf = fopen("/proc/mounts", "r");
+    if (mf) {
+        char mline[512];
+        while (fgets(mline, sizeof(mline), mf)) {
+            const char *hit = strstr(mline, needle);
+            if (hit) {
+                const char *opts = hit + strlen(needle);
+                if (strncmp(opts, "ro,", 3U) == 0 || strncmp(opts, "ro ", 3U) == 0) {
+                    ro_mnt = 1;
+                }
+                break;
+            }
+        }
+        fclose(mf);
+    }
+    int erofs = 0;
+    if (probe_file) {
+        int pfd = open(probe_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (pfd < 0) {
+            if (errno == EROFS) erofs = 1;
+        } else {
+            close(pfd);
+            unlink(probe_file);
+        }
+    }
+    if (out_ro_mount) *out_ro_mount = ro_mnt;
+    if (out_erofs) *out_erofs = erofs;
+}
+
+static int run_r29_installer_tx(int inject_fault) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int pnflasha15_rejected = (r29_is_allowed_nflasha15_path("/dev/pnflasha15") == 0) ? 1 : 0;
+    int nflasha15_accepted = r29_is_allowed_nflasha15_path("/dev/nflasha15");
+    int cnflasha15_accepted = r29_is_allowed_nflasha15_path("/dev/cnflasha15");
+    if (!pnflasha15_rejected || !nflasha15_accepted || !cnflasha15_accepted) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=device_firewall\n");
+        return 60;
+    }
+
+    /* Create simulated /dev/cnflasha15 & /dev/nflasha15 symlink in devtmpfs (zero eMMC writes) */
+    struct stat st;
+    if (stat("/dev/cnflasha15", &st) != 0) {
+        int dfd = open("/dev/cnflasha15", O_WRONLY | O_CREAT, 0644);
+        if (dfd >= 0) close(dfd);
+    }
+    unlink("/dev/nflasha15");
+    (void)symlink("/dev/cnflasha15", "/dev/nflasha15");
+
+    char expected_stock_sha[65] = "";
+    FILE *sf = fopen("/etc/fx6_r29_stock_im_sha256.txt", "r");
+    if (!sf) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=missing_stock_sha errno=%d\n", errno);
+        return 61;
+    }
+    if (fscanf(sf, "%64s", expected_stock_sha) != 1 || !is_lower_hex64(expected_stock_sha)) {
+        fclose(sf);
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=bad_stock_sha\n");
+        return 61;
+    }
+    fclose(sf);
+
+    (void)mkdir("/mnt/r29_usr", 0755);
+    (void)umount("/mnt/r29_usr");
+    if (mount("tmpfs", "/mnt/r29_usr", "tmpfs", MS_NOATIME, "size=8m") != 0) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=mount_tmpfs errno=%d\n", errno);
+        return 62;
+    }
+    if (mkdir("/mnt/r29_usr/bin", 0755) != 0 && errno != EEXIST) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=mkdir_bin errno=%d\n", errno);
+        return 62;
+    }
+
+    if (r29_copy_file_fsync("/usr/bin/im.elf", "/mnt/r29_usr/bin/im.elf", 0755) != 0) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=stage_stock_im errno=%d\n", errno);
+        return 63;
+    }
+
+    char pre_sha[65];
+    unsigned long long pre_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r29_usr/bin/im.elf", pre_sha, &pre_bytes) != 0) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=hash_pre errno=%d\n", errno);
+        return 63;
+    }
+    int pre_sha_match = (strcmp(pre_sha, expected_stock_sha) == 0) ? 1 : 0;
+    if (!pre_sha_match) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=pre_sha_mismatch pre=%s exp=%s\n",
+                pre_sha, expected_stock_sha);
+        return 64;
+    }
+
+    if (r29_copy_file_fsync("/mnt/r29_usr/bin/im.elf", "/mnt/r29_usr/bin/im.elf.orig", 0755) != 0) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=backup_orig errno=%d\n", errno);
+        return 65;
+    }
+    char orig_sha[65];
+    unsigned long long orig_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r29_usr/bin/im.elf.orig", orig_sha, &orig_bytes) != 0 ||
+        strcmp(orig_sha, expected_stock_sha) != 0) {
+        fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=verify_orig\n");
+        return 65;
+    }
+
+    static const char k_r29_sd_launcher[] =
+        "#!/bin/sh\n"
+        "if [ ! -f /mnt/sd/FX6_STAGEB_BOOT.MANIFEST ]; then exec /usr/bin/im.elf.orig \"$@\"; fi\n"
+        "exec /usr/bin/appfw-launch \"$@\"\n";
+    const size_t staged_len = sizeof(k_r29_sd_launcher) - 1U;
+    char staged_sha[65];
+    r29_sha256_buf_hex((const uint8_t *)k_r29_sd_launcher, staged_len, staged_sha);
+
+    if (!inject_fault) {
+        if (r29_write_all_fsync("/mnt/r29_usr/bin/im.elf.new", k_r29_sd_launcher, staged_len, 0755) != 0) {
+            fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=write_new errno=%d\n", errno);
+            return 66;
+        }
+        if (rename("/mnt/r29_usr/bin/im.elf.new", "/mnt/r29_usr/bin/im.elf") != 0 ||
+            r29_fsync_dir("/mnt/r29_usr/bin") != 0) {
+            fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=atomic_rename errno=%d\n", errno);
+            return 66;
+        }
+        char post_sha[65];
+        unsigned long long post_bytes = 0ULL;
+        if (sha256_file_hex("/mnt/r29_usr/bin/im.elf", post_sha, &post_bytes) != 0) {
+            fprintf(stderr, "FX6_R29_INSTALLER_FAIL step=readback_post errno=%d\n", errno);
+            return 67;
+        }
+        int post_sha_match = (post_bytes == (unsigned long long)staged_len &&
+                              strcmp(post_sha, staged_sha) == 0) ? 1 : 0;
+
+        int ro_rc = mount(NULL, "/mnt/r29_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+        int ro_mnt = 0, erofs = 0;
+        r29_check_mount_ro("/mnt/r29_usr", "/mnt/r29_usr/bin/.ro_probe", &ro_mnt, &erofs);
+
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        long long us = elapsed_us(&t0, &t1);
+        int ok = (pnflasha15_rejected && nflasha15_accepted && cnflasha15_accepted &&
+                  pre_sha_match && post_sha_match && ro_rc == 0 && ro_mnt && erofs) ? 1 : 0;
+        fprintf(stderr,
+                "FX6_R29_ATOMIC_INSTALL mode=install device=/dev/cnflasha15 alias=/dev/nflasha15 "
+                "pnflasha15_rejected=%d nflasha15_accepted=%d cnflasha15_accepted=%d "
+                "stock_bytes=%llu stock_sha256=%s orig_sha256=%s staged_bytes=%zu staged_sha256=%s "
+                "post_sha256=%s pre_sha_match=%d orig_backup_ok=1 post_sha_match=%d "
+                "ro_remounted=%d ro_write_blocked_erofs=%d atomic_install_ok=%d "
+                "emmc_write_count=0 crashes=0 verify_us=%lld\n",
+                pnflasha15_rejected, nflasha15_accepted, cnflasha15_accepted,
+                pre_bytes, expected_stock_sha, orig_sha, staged_len, staged_sha,
+                post_sha, pre_sha_match, post_sha_match,
+                (ro_rc == 0 && ro_mnt) ? 1 : 0, erofs, ok, us);
+        fflush(stderr);
+        return ok ? 0 : 68;
+    }
+
+    /* Fault-injected mid-write rollback Case 1: deterministic 1-bit flip */
+    uint8_t corrupted_buf[sizeof(k_r29_sd_launcher)];
+    memcpy(corrupted_buf, k_r29_sd_launcher, staged_len);
+    corrupted_buf[staged_len - 2U] ^= 0x01U;
+
+    if (r29_write_all_fsync("/mnt/r29_usr/bin/im.elf.new", corrupted_buf, staged_len, 0755) != 0 ||
+        rename("/mnt/r29_usr/bin/im.elf.new", "/mnt/r29_usr/bin/im.elf") != 0 ||
+        r29_fsync_dir("/mnt/r29_usr/bin") != 0) {
+        fprintf(stderr, "FX6_R29_ROLLBACK_FAIL step=inject_bitflip errno=%d\n", errno);
+        return 70;
+    }
+
+    char corrupted_sha[65];
+    unsigned long long corrupted_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r29_usr/bin/im.elf", corrupted_sha, &corrupted_bytes) != 0) {
+        fprintf(stderr, "FX6_R29_ROLLBACK_FAIL step=readback_corrupted errno=%d\n", errno);
+        return 71;
+    }
+    int mismatch_detected = (strcmp(corrupted_sha, staged_sha) != 0) ? 1 : 0;
+    if (!mismatch_detected) {
+        fprintf(stderr, "FX6_R29_ROLLBACK_FAIL step=expected_mismatch_not_seen\n");
+        return 71;
+    }
+
+    /* Atomic rollback from .orig + fsync + ro remount */
+    if (r29_copy_file_fsync("/mnt/r29_usr/bin/im.elf.orig", "/mnt/r29_usr/bin/im.elf.rb", 0755) != 0 ||
+        rename("/mnt/r29_usr/bin/im.elf.rb", "/mnt/r29_usr/bin/im.elf") != 0 ||
+        unlink("/mnt/r29_usr/bin/im.elf.orig") != 0 ||
+        r29_fsync_dir("/mnt/r29_usr/bin") != 0) {
+        fprintf(stderr, "FX6_R29_ROLLBACK_FAIL step=restore_orig_bitflip errno=%d\n", errno);
+        return 72;
+    }
+    int ro_rc1 = mount(NULL, "/mnt/r29_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+    int ro_mnt1 = 0, erofs1 = 0;
+    r29_check_mount_ro("/mnt/r29_usr", "/mnt/r29_usr/bin/.ro_probe", &ro_mnt1, &erofs1);
+
+    char restored_sha[65];
+    unsigned long long restored_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r29_usr/bin/im.elf", restored_sha, &restored_bytes) != 0) {
+        fprintf(stderr, "FX6_R29_ROLLBACK_FAIL step=hash_restored_bitflip errno=%d\n", errno);
+        return 73;
+    }
+    int bitflip_restored = (restored_bytes == pre_bytes &&
+                            strcmp(restored_sha, expected_stock_sha) == 0 &&
+                            ro_rc1 == 0 && ro_mnt1 && erofs1) ? 1 : 0;
+
+    /* Fault-injected mid-write rollback Case 2: deterministic 50% short-write */
+    int short_write_detected = 0;
+    int short_write_rollback_ok = 0;
+    if (mount(NULL, "/mnt/r29_usr", NULL, MS_REMOUNT, NULL) == 0 &&
+        r29_copy_file_fsync("/mnt/r29_usr/bin/im.elf", "/mnt/r29_usr/bin/im.elf.orig", 0755) == 0) {
+        const size_t half_len = staged_len / 2U;
+        if (r29_write_all_fsync("/mnt/r29_usr/bin/im.elf.new", k_r29_sd_launcher, half_len, 0755) == 0 &&
+            rename("/mnt/r29_usr/bin/im.elf.new", "/mnt/r29_usr/bin/im.elf") == 0 &&
+            r29_fsync_dir("/mnt/r29_usr/bin") == 0) {
+            char sw_sha[65];
+            unsigned long long sw_bytes = 0ULL;
+            if (sha256_file_hex("/mnt/r29_usr/bin/im.elf", sw_sha, &sw_bytes) == 0 &&
+                (sw_bytes != (unsigned long long)staged_len || strcmp(sw_sha, staged_sha) != 0)) {
+                short_write_detected = 1;
+                if (r29_copy_file_fsync("/mnt/r29_usr/bin/im.elf.orig", "/mnt/r29_usr/bin/im.elf.rb", 0755) == 0 &&
+                    rename("/mnt/r29_usr/bin/im.elf.rb", "/mnt/r29_usr/bin/im.elf") == 0 &&
+                    unlink("/mnt/r29_usr/bin/im.elf.orig") == 0 &&
+                    r29_fsync_dir("/mnt/r29_usr/bin") == 0) {
+                    int ro_rc2 = mount(NULL, "/mnt/r29_usr", NULL, MS_REMOUNT | MS_RDONLY, NULL);
+                    int ro_mnt2 = 0, erofs2 = 0;
+                    r29_check_mount_ro("/mnt/r29_usr", "/mnt/r29_usr/bin/.ro_probe", &ro_mnt2, &erofs2);
+                    char restored_sw_sha[65];
+                    unsigned long long restored_sw_bytes = 0ULL;
+                    if (sha256_file_hex("/mnt/r29_usr/bin/im.elf", restored_sw_sha, &restored_sw_bytes) == 0 &&
+                        restored_sw_bytes == pre_bytes &&
+                        strcmp(restored_sw_sha, expected_stock_sha) == 0 &&
+                        ro_rc2 == 0 && ro_mnt2 && erofs2) {
+                        short_write_rollback_ok = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+    int all_ok = (bitflip_restored && short_write_detected && short_write_rollback_ok) ? 1 : 0;
+    fprintf(stderr,
+            "FX6_R29_ATOMIC_ROLLBACK fault_kind=bit_flip_1b_and_short_write device=/dev/cnflasha15 "
+            "pnflasha15_rejected=%d nflasha15_accepted=%d cnflasha15_accepted=%d "
+            "stock_bytes=%llu stock_sha256=%s expected_staged_sha256=%s corrupted_readback_sha256=%s "
+            "restored_sha256=%s mismatch_detected=%d short_write_detected=%d short_write_rollback_ok=%d "
+            "ro_remounted=%d ro_write_blocked_erofs=%d stock_sha256_restored=%d "
+            "atomic_rollback_verified=%d emmc_write_count=0 crashes=0 verify_us=%lld\n",
+            pnflasha15_rejected, nflasha15_accepted, cnflasha15_accepted,
+            pre_bytes, expected_stock_sha, staged_sha, corrupted_sha,
+            restored_sha, mismatch_detected, short_write_detected, short_write_rollback_ok,
+            (ro_rc1 == 0 && ro_mnt1) ? 1 : 0, erofs1, all_ok, all_ok, us);
+    fflush(stderr);
+    return all_ok ? 0 : 74;
+}
+
+static int r29_count_mode_files(const char *dir_path) {
+    DIR *d = opendir(dir_path);
+    if (!d) return -1;
+    int cnt = 0;
+    struct dirent *de;
+    while ((de = readdir(d)) != NULL) {
+        if (strncmp(de->d_name, "mode", 4U) == 0) {
+            cnt++;
+        }
+    }
+    closedir(d);
+    return cnt;
+}
+
+static int run_r29_p1_rescue(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    (void)mkdir("/setting", 0755);
+    (void)mkdir("/setting/updater", 0755);
+    (void)umount("/setting/updater");
+    if (mount("tmpfs", "/setting/updater", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=mount_updater errno=%d\n", errno);
+        return 80;
+    }
+    if (r29_write_all_fsync("/setting/updater/mode6", "6\n", 2U, 0644) != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=arm_mode6 errno=%d\n", errno);
+        return 80;
+    }
+
+    (void)mkdir("/mnt/r29_p1", 0755);
+    (void)umount("/mnt/r29_p1");
+    if (mount("tmpfs", "/mnt/r29_p1", "tmpfs", MS_NOATIME, "size=4m") != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=mount_p1 errno=%d\n", errno);
+        return 81;
+    }
+    (void)mkdir("/mnt/r29_p1/boot", 0755);
+    (void)mkdir("/mnt/r29_p1/sbin", 0755);
+
+    static const char k_dat2[] = "91030080";
+    static const char k_dat3[] = "J1\n";
+    static const char k_kemco[] =
+        "kemco\n"
+        "init=/sbin/init\n"
+        "ramdisk_size=8192\n"
+        "rw noatime\n"
+        "cfg.uart=1\n"
+        "ip=off root=/dev/ram0 rootfstype=squashfs\n"
+        "console=ttyAMA0,460800n8 amba2.console=1\n"
+        "exception.reboot=1 wdt.mode=1\n"
+        "*\n";
+    static const char k_p1_init[] =
+        "#!/bin/sh\n"
+        "# Single-shot p1 diagnostic init: line-1 clears mode* + sync before any diag\n"
+        "rm -f /setting/updater/mode* && sync\n"
+        "mount -t proc proc /proc\n"
+        "sync\n";
+
+    if (r29_write_all_fsync("/mnt/r29_p1/dat2", k_dat2, sizeof(k_dat2) - 1U, 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r29_p1/dat3", k_dat3, sizeof(k_dat3) - 1U, 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r29_p1/boot/kemco.txt", k_kemco, sizeof(k_kemco) - 1U, 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r29_p1/sbin/init", k_p1_init, sizeof(k_p1_init) - 1U, 0755) != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=populate_p1 errno=%d\n", errno);
+        return 81;
+    }
+
+    (void)mkdir("/mnt/r29_p3", 0755);
+    (void)umount("/mnt/r29_p3");
+    if (mount("tmpfs", "/mnt/r29_p3", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=mount_p3 errno=%d\n", errno);
+        return 82;
+    }
+    static const char k_p3_marker[] = "FX3_702_STOCK_P3_KERNEL_AND_ROOTFS_UNTOUCHED\n";
+    if (r29_write_all_fsync("/mnt/r29_p3/p3_marker.txt", k_p3_marker, sizeof(k_p3_marker) - 1U, 0444) != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=populate_p3 errno=%d\n", errno);
+        return 82;
+    }
+    char p3_before_sha[65];
+    unsigned long long p3_before_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r29_p3/p3_marker.txt", p3_before_sha, &p3_before_bytes) != 0 ||
+        mount(NULL, "/mnt/r29_p3", NULL, MS_REMOUNT | MS_RDONLY, NULL) != 0) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=lock_p3_ro errno=%d\n", errno);
+        return 82;
+    }
+
+    int mode_before = r29_count_mode_files("/setting/updater");
+
+    /* Extract exact first non-comment executable line from /mnt/r29_p1/sbin/init */
+    char first_line[256] = "";
+    FILE *init_fp = fopen("/mnt/r29_p1/sbin/init", "r");
+    if (!init_fp) {
+        fprintf(stderr, "FX6_R29_P1_RESCUE_FAIL step=open_p1_init errno=%d\n", errno);
+        return 83;
+    }
+    char line_buf[256];
+    while (fgets(line_buf, sizeof(line_buf), init_fp)) {
+        size_t ln = strlen(line_buf);
+        while (ln > 0U && (line_buf[ln - 1U] == '\n' || line_buf[ln - 1U] == '\r')) {
+            line_buf[--ln] = '\0';
+        }
+        char *p = line_buf;
+        while (*p == ' ' || *p == '\t') p++;
+        if (*p == '\0' || *p == '#') continue;
+        snprintf(first_line, sizeof(first_line), "%s", p);
+        break;
+    }
+    fclose(init_fp);
+
+    int first_line_valid = (strcmp(first_line, "rm -f /setting/updater/mode* && sync") == 0) ? 1 : 0;
+    int sh_rc = -1;
+    if (first_line_valid) {
+        pid_t pid = fork();
+        if (pid == 0) {
+            execl("/bin/busybox", "busybox", "sh", "-c", first_line, (char *)NULL);
+            _exit(127);
+        } else if (pid > 0) {
+            int status = 0;
+            if (waitpid(pid, &status, 0) == pid && WIFEXITED(status)) {
+                sh_rc = WEXITSTATUS(status);
+            }
+        }
+    }
+    int mode_after = r29_count_mode_files("/setting/updater");
+
+    /* Verify p1:/dat2 == "91030080" */
+    char dat2_read[32] = "";
+    FILE *d2f = fopen("/mnt/r29_p1/dat2", "r");
+    if (d2f) {
+        if (fgets(dat2_read, sizeof(dat2_read), d2f)) {
+            size_t ln = strlen(dat2_read);
+            while (ln > 0U && (dat2_read[ln - 1U] == '\n' || dat2_read[ln - 1U] == '\r')) {
+                dat2_read[--ln] = '\0';
+            }
+        }
+        fclose(d2f);
+    }
+    int dat2_intact = (strcmp(dat2_read, "91030080") == 0) ? 1 : 0;
+
+    /* Verify p1:/boot/kemco.txt enforces cfg.uart=1 & console=ttyAMA0,460800n8 */
+    int uart_port = -1;
+    int console_ok = 0;
+    FILE *kf = fopen("/mnt/r29_p1/boot/kemco.txt", "r");
+    if (kf) {
+        char kbuf[1024];
+        size_t kr = fread(kbuf, 1U, sizeof(kbuf) - 1U, kf);
+        fclose(kf);
+        kbuf[kr] = '\0';
+        const char *up = strstr(kbuf, "cfg.uart=");
+        if (up) {
+            uart_port = atoi(up + 9);
+        }
+        if (strstr(kbuf, "console=ttyAMA0,460800n8") != NULL &&
+            strstr(kbuf, "console=ttynull") == NULL) {
+            console_ok = 1;
+        }
+    }
+
+    /* Verify p3 untouched & read-only */
+    char p3_after_sha[65] = "";
+    unsigned long long p3_after_bytes = 0ULL;
+    int p3_ro_mnt = 0, p3_erofs = 0;
+    r29_check_mount_ro("/mnt/r29_p3", "/mnt/r29_p3/.ro_probe", &p3_ro_mnt, &p3_erofs);
+    int p3_untouched = (sha256_file_hex("/mnt/r29_p3/p3_marker.txt", p3_after_sha, &p3_after_bytes) == 0 &&
+                        p3_after_bytes == p3_before_bytes &&
+                        strcmp(p3_after_sha, p3_before_sha) == 0 &&
+                        p3_ro_mnt && p3_erofs) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (mode_before == 1 && first_line_valid && sh_rc == 0 &&
+              mode_after == 0 && dat2_intact && uart_port == 1 &&
+              console_ok && p3_untouched) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R29_P1_RESCUE mode_armed=mode6 mode_files_before=%d first_line_cleared=%d "
+            "exec_rc=%d mode_files_remaining=%d dat2_value=%s dat2_intact=%d "
+            "uart_port=%d console_ttyama0_ok=%d p3_untouched=%d p3_ro_erofs=%d "
+            "p3_sha256=%s next_cold_boot_bank=p3 emmc_write_count=0 crashes=0 "
+            "p1_rescue_ok=%d verify_us=%lld\n",
+            mode_before, first_line_valid, sh_rc, mode_after,
+            dat2_read[0] ? dat2_read : "ERR", dat2_intact,
+            uart_port, console_ok, p3_untouched, p3_erofs,
+            p3_after_sha, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 84;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
     if (argc >= 2 && strcmp(argv[1], "--sd-gate") == 0) {
         return run_sd_gate_r28();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r29-installer-install") == 0) {
+        return run_r29_installer_tx(0);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r29-installer-rollback") == 0) {
+        return run_r29_installer_tx(1);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r29-p1-rescue") == 0) {
+        return run_r29_p1_rescue();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {

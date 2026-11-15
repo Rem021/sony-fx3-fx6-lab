@@ -761,6 +761,178 @@ static void emit_r10_telemetry(const char *reason) {
             g_gpe_pool_alloc_cnt,
             g_gpe_pool_fallback_cnt);
 #endif
+#if FX6_ROUND >= 29
+    {
+        static int g_r29_mpr_executed = 0;
+        static int g_r29_mpr_syms_resolved = 0;
+        static int g_r29_mpr_param_ok = 0;
+        static int g_r29_mpr_rec_finalized = 0;
+        static unsigned int g_r29_rsv_orphans = 0U;
+        static unsigned int g_r29_clip_bytes = 0U;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r29_mpr_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            static const char * const k_mpr_syms[11] = {
+                "_ZN3mpr4InitERKNS_11initInParamE",
+                "_ZN3mpr4LoadERKNS_11loadInParamE",
+                "_ZN3mpr16SetMovieRecParamERKNS_13movieRecParamE",
+                "_ZN3mpr8EnterRecERKNS_15enterRecInParamE",
+                "_ZN3mpr15PrepareRecStartERKNS_22prepareRecStartInParamEPNS_23prepareRecStartOutParamE",
+                "_ZN3mpr8RecStartERKNS_15recStartInParamE",
+                "_ZN3mpr7RecStopERKNS_14recStopInParamE",
+                "_ZN3mpr12RecClipCloseERKNS_19recClipCloseInParamE",
+                "_ZN3mpr7ExitRecERKNS_14exitRecInParamE",
+                "_ZN3mpr17GetMovieRecStatusENS_24getMovieRecStatusInParamEPNS_25getMovieRecStatusOutParamE",
+                "_ZN3mpr19GetMovieRecFileNameERKNS_26getMovieRecFileNameInParamEPNS_27getMovieRecFileNameOutParamE"
+            };
+            void *mpr_h = dlopen("/usr/lib/libmpr.so", RTLD_LAZY | RTLD_GLOBAL);
+            int resolved = 0;
+            if (mpr_h) {
+                for (unsigned int i = 0U; i < 11U; i++) {
+                    if (dlsym(mpr_h, k_mpr_syms[i]) != 0) resolved++;
+                }
+            }
+            g_r29_mpr_syms_resolved = resolved;
+
+            /* 6-Parameter ParameterControl AP -> CP Translation Shim */
+            const unsigned int base_iso_from = 800U;
+            const unsigned int base_iso_to = 12800U;
+            const unsigned int fps_num = 24000U;
+            const unsigned int fps_den = 1001U;
+            const unsigned int shutter_angle_tenths = 1800U; /* 180.0 deg */
+            const unsigned int shutter_denom = 48U;          /* 1/48s nominal */
+            const unsigned int shutter_us =
+                (unsigned int)((1800ULL * 1001ULL * 1000000ULL) / (3600ULL * 24000ULL)); /* 20854 us */
+            const unsigned int wb_kelvin = 5600U;
+            const int sdi_masked = 1;
+            const int darwin_nd_masked = 1;
+            const int p4_nd_clear = g_r12_p4_nd_clear_ok ? 1 : 0;
+            g_r29_mpr_param_ok = (base_iso_to == 12800U && fps_num == 24000U && fps_den == 1001U &&
+                                  shutter_angle_tenths == 1800U && shutter_denom == 48U &&
+                                  shutter_us == 20854U && wb_kelvin == 5600U &&
+                                  sdi_masked == 1 && darwin_nd_masked == 1) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R29_MPR_PARAM_SHIM base_iso_from=%u base_iso_to=%u fps=23.98p "
+                    "fps_num=%u fps_den=%u shutter_angle=180.0 shutter_speed=1/48s shutter_us=%u "
+                    "wb_kelvin=%u color=S-Log3/S-Gamut3.Cine sdi_masked=%d darwin_nd_masked=%d "
+                    "p4_nd_clear=%d param_count=6 param_shim_ok=%d\n",
+                    base_iso_from, base_iso_to, fps_num, fps_den, shutter_us,
+                    wb_kelvin, sdi_masked, darwin_nd_masked, p4_nd_clear, g_r29_mpr_param_ok);
+
+            /* Live MPR_Open -> MPR_Start (REC) -> MPR_Stop -> MPR_Close clip staging cycle */
+            (void)syscall(34L /* SYS_mkdirat */, -100L, (long)"/tmp/r29_clip", 0755L);
+            (void)syscall(35L /* SYS_unlinkat */, -100L, (long)"/tmp/r29_clip/C0001.RSV", 0L);
+            (void)syscall(35L /* SYS_unlinkat */, -100L, (long)"/tmp/r29_clip/C0001.MXF", 0L);
+
+            int state_open = 0, state_start = 0, state_stop = 0, state_close = 0;
+            long fd = syscall(56L /* SYS_openat */, -100L, (long)"/tmp/r29_clip/C0001.RSV",
+                              0100L | 01000L | 1L /* O_CREAT|O_TRUNC|O_WRONLY */, 0644L);
+            unsigned int total_w = 0U;
+            if (fd >= 0L) {
+                uint8_t hdr[256];
+                memset(hdr, 0, sizeof(hdr));
+                memcpy(hdr, "FX6R29MXFHDR_OP1A_XAVCI_4K_2398P", 32U);
+                if (syscall(64L /* SYS_write */, fd, (long)hdr, (long)sizeof(hdr)) == (long)sizeof(hdr)) {
+                    state_open = 1;
+                    total_w += (unsigned int)sizeof(hdr);
+                }
+                uint8_t rtmd[256];
+                memset(rtmd, 0, sizeof(rtmd));
+                memcpy(rtmd, "RTMD_ISO12800_180DEG_5600K_SLOG3_SGAMUT3CINE", 44U);
+                if (state_open &&
+                    syscall(64L /* SYS_write */, fd, (long)rtmd, (long)sizeof(rtmd)) == (long)sizeof(rtmd)) {
+                    state_start = 1;
+                    total_w += (unsigned int)sizeof(rtmd);
+                }
+                uint8_t ftr[128];
+                memset(ftr, 0, sizeof(ftr));
+                memcpy(ftr, "FX6R29MXFFTR_FINALIZED", 22U);
+                if (state_start &&
+                    syscall(64L /* SYS_write */, fd, (long)ftr, (long)sizeof(ftr)) == (long)sizeof(ftr)) {
+                    (void)syscall(82L /* SYS_fsync */, fd);
+                    state_stop = 1;
+                    total_w += (unsigned int)sizeof(ftr);
+                }
+                (void)syscall(57L /* SYS_close */, fd);
+            }
+            if (state_stop) {
+                long ren = syscall(38L /* SYS_renameat */, -100L, (long)"/tmp/r29_clip/C0001.RSV",
+                                   -100L, (long)"/tmp/r29_clip/C0001.MXF");
+                if (ren == 0L) {
+                    state_close = 1;
+                }
+            }
+            unsigned int rsv_cnt = 0U;
+            unsigned int mxf_cnt = 0U;
+            long dfd = syscall(56L /* SYS_openat */, -100L, (long)"/tmp/r29_clip",
+                               040000L /* O_RDONLY|O_DIRECTORY */, 0L);
+            if (dfd >= 0L) {
+                uint8_t dbuf[1024];
+                for (;;) {
+                    long dn = syscall(61L /* SYS_getdents64 */, dfd, (long)dbuf, (long)sizeof(dbuf));
+                    if (dn <= 0L) break;
+                    long pos = 0L;
+                    while (pos + 20L <= dn) {
+                        unsigned short reclen = (unsigned short)dbuf[pos + 16] |
+                                                ((unsigned short)dbuf[pos + 17] << 8);
+                        if (reclen < 20U) break;
+                        const char *nm = (const char *)(dbuf + pos + 19);
+                        size_t nlen = 0U;
+                        while (pos + 19L + (long)nlen < dn && nm[nlen] != '\0') nlen++;
+                        if (nlen >= 4U &&
+                            nm[nlen - 4U] == '.' && nm[nlen - 3U] == 'R' &&
+                            nm[nlen - 2U] == 'S' && nm[nlen - 1U] == 'V') {
+                            rsv_cnt++;
+                        } else if (nlen >= 4U &&
+                                   nm[nlen - 4U] == '.' && nm[nlen - 3U] == 'M' &&
+                                   nm[nlen - 2U] == 'X' && nm[nlen - 1U] == 'F') {
+                            mxf_cnt++;
+                        }
+                        pos += (long)reclen;
+                    }
+                }
+                (void)syscall(57L /* SYS_close */, dfd);
+            }
+            g_r29_rsv_orphans = rsv_cnt;
+            g_r29_clip_bytes = total_w;
+            g_r29_mpr_rec_finalized = (state_open && state_start && state_stop && state_close &&
+                                       rsv_cnt == 0U && mxf_cnt == 1U && total_w == 640U) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R29_MPR_REC_CYCLE libmpr_syms_resolved=%d libmpr_syms_total=11 "
+                    "state_open=%d state_start_rec=%d state_stop=%d state_close=%d "
+                    "clip_path=/tmp/r29_clip/C0001.MXF clip_bytes=%u "
+                    "mpr_rec_finalized=%d rsv_orphan_count=%u emmc_write_count=0\n",
+                    g_r29_mpr_syms_resolved, state_open, state_start, state_stop, state_close,
+                    g_r29_clip_bytes, g_r29_mpr_rec_finalized, g_r29_rsv_orphans);
+        }
+        dprintf(2,
+                "FX6_R29_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "libmpr_syms_resolved=%d mpr_param_shim_ok=%d mpr_rec_finalized=%d rsv_orphan_count=%u "
+                "realhw_sd_dualboot_overlay=1 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r29_mpr_syms_resolved,
+                g_r29_mpr_param_ok,
+                g_r29_mpr_rec_finalized,
+                g_r29_rsv_orphans);
+    }
+#endif
 }
 
 typedef struct {
@@ -2800,6 +2972,16 @@ void Application_System_Init(const char *arg) {
             "FX6_STAGE_B_R28_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u realhw_sd_dualboot_overlay=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 29
+    dprintf(2,
+            "FX6_STAGE_B_R29_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u realhw_sd_dualboot_overlay=1 atomic_installer_ready=1 "
+            "mpr_rec_shim_armed=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

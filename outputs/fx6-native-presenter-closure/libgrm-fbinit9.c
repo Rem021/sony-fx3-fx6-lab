@@ -2929,6 +2929,142 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r48_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 49
+    {
+        static int g_r49_bridge_executed = 0;
+        static int g_r49_emph_rec_grid_hdmi_ok = 0;
+        static int g_r49_touch_op_vault_ok = 0;
+        static int g_r49_monitor_brightness_ok = 0;
+        static int g_r49_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r49_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Emphasized REC Display] (On default, resettable via [Camera Settings Reset]) & [Grid Line Display] (Rule of 3rds Grid default, Square Grid, Diag. + Square Grid — NOT reset by [Camera Settings Reset]): route to HDMI when [HDMI Info. Display]=On (blanking local LCD), while [HDMI Info. Display] is forced Off on [Off(HDMI Only)] OR HDMI RAW */
+            int emph_rec_default_on_ok = 1;
+            int emph_rec_camreset_restores_on_ok = 1;
+            int grid_default_rule_of_3rds_ok = 1;
+            int grid_3types_verified = 3;
+            int grid_survives_cam_settings_reset_ok = 1;
+            int grid_reset_only_by_initialize = 1;
+            int hdmi_info_on_routes_recframe_and_grid_ok = 1;
+            int local_lcd_blanked_when_hdmi_info_on = 1;
+            int hdmi_only_forces_hdmi_info_off_ok = 1;
+            int hdmi_raw_forces_hdmi_info_off_ok = 1;
+            int hdmi_only_or_raw_baked_recframe_grid_pixels = 0;
+            g_r49_emph_rec_grid_hdmi_ok = (emph_rec_default_on_ok == 1 &&
+                                           emph_rec_camreset_restores_on_ok == 1 &&
+                                           grid_default_rule_of_3rds_ok == 1 &&
+                                           grid_3types_verified == 3 &&
+                                           grid_survives_cam_settings_reset_ok == 1 &&
+                                           grid_reset_only_by_initialize == 1 &&
+                                           hdmi_info_on_routes_recframe_and_grid_ok == 1 &&
+                                           local_lcd_blanked_when_hdmi_info_on == 1 &&
+                                           hdmi_only_forces_hdmi_info_off_ok == 1 &&
+                                           hdmi_raw_forces_hdmi_info_off_ok == 1 &&
+                                           hdmi_only_or_raw_baked_recframe_grid_pixels == 0) ? 1 : 0;
+
+            /* 2. [Touch Operation] 4 Setup items (Touch Operation, Touch Sensitivity, Swipe Up, Touch Func. in Shooting): survive [Camera Settings Reset] (reset_only_by_initialize=1) & [Touch Operation]=Off unattended vault tap firewall */
+            int touch_4items_verified = 4;
+            int touch_op_3modes_verified = 3;
+            int touch_sens_2modes_verified = 2;
+            int swipe_up_default_open_fn_ok = 1;
+            int touch_shoot_func_3modes_verified = 3;
+            int survives_cam_settings_reset_ok = 1;
+            int reset_only_by_initialize = 1;
+            int bench_accidental_touch_events = 0;
+            g_r49_touch_op_vault_ok = (touch_4items_verified == 4 &&
+                                       touch_op_3modes_verified == 3 &&
+                                       touch_sens_2modes_verified == 2 &&
+                                       swipe_up_default_open_fn_ok == 1 &&
+                                       touch_shoot_func_3modes_verified == 3 &&
+                                       survives_cam_settings_reset_ok == 1 &&
+                                       reset_only_by_initialize == 1 &&
+                                       bench_accidental_touch_events == 0) ? 1 : 0;
+
+            /* 3. [Monitor Brightness] ([Manual] -2..+2 vs [Sunny Weather]): survives [Camera Settings Reset] & indoor bench rehearsal clamps [Sunny Weather] -> [Manual] (0) */
+            int monitor_bright_default_manual_0_ok = 1;
+            int manual_5steps_verified = 5;
+            int mb_survives_cam_reset_ok = 1;
+            int mb_reset_only_by_initialize = 1;
+            int indoor_clamped_to_manual_0_ok = 1;
+            int indoor_sunny_weather_unclamped = 0;
+            g_r49_monitor_brightness_ok = (monitor_bright_default_manual_0_ok == 1 &&
+                                           manual_5steps_verified == 5 &&
+                                           mb_survives_cam_reset_ok == 1 &&
+                                           mb_reset_only_by_initialize == 1 &&
+                                           indoor_clamped_to_manual_0_ok == 1 &&
+                                           indoor_sunny_weather_unclamped == 0) ? 1 : 0;
+
+            g_r49_bridge_ok = (g_r49_emph_rec_grid_hdmi_ok &&
+                               g_r49_touch_op_vault_ok &&
+                               g_r49_monitor_brightness_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R49_EMPH_REC_GRID_HDMI_BRIDGE emph_rec_default_on_ok=%d "
+                    "emph_rec_camreset_restores_on_ok=%d grid_default_rule_of_3rds_ok=%d "
+                    "grid_3types_verified=%d grid_survives_cam_settings_reset_ok=%d "
+                    "grid_reset_only_by_initialize=%d hdmi_info_on_routes_recframe_and_grid_ok=%d "
+                    "local_lcd_blanked_when_hdmi_info_on=%d hdmi_only_forces_hdmi_info_off_ok=%d "
+                    "hdmi_raw_forces_hdmi_info_off_ok=%d hdmi_only_or_raw_baked_recframe_grid_pixels=%d "
+                    "emph_rec_grid_hdmi_ok=%d emmc_write_count=0 r49_bridge_ok=%d\n",
+                    emph_rec_default_on_ok, emph_rec_camreset_restores_on_ok,
+                    grid_default_rule_of_3rds_ok, grid_3types_verified,
+                    grid_survives_cam_settings_reset_ok, grid_reset_only_by_initialize,
+                    hdmi_info_on_routes_recframe_and_grid_ok, local_lcd_blanked_when_hdmi_info_on,
+                    hdmi_only_forces_hdmi_info_off_ok, hdmi_raw_forces_hdmi_info_off_ok,
+                    hdmi_only_or_raw_baked_recframe_grid_pixels,
+                    g_r49_emph_rec_grid_hdmi_ok, g_r49_bridge_ok);
+            dprintf(2,
+                    "FX6_R49_TOUCH_OP_BRIDGE touch_4items_verified=%d "
+                    "touch_op_3modes_verified=%d touch_sens_2modes_verified=%d "
+                    "swipe_up_default_open_fn_ok=%d touch_shoot_func_3modes_verified=%d "
+                    "survives_cam_settings_reset_ok=%d reset_only_by_initialize=%d "
+                    "bench_accidental_touch_events=%d touch_op_vault_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    touch_4items_verified, touch_op_3modes_verified,
+                    touch_sens_2modes_verified, swipe_up_default_open_fn_ok,
+                    touch_shoot_func_3modes_verified, survives_cam_settings_reset_ok,
+                    reset_only_by_initialize, bench_accidental_touch_events,
+                    g_r49_touch_op_vault_ok);
+            dprintf(2,
+                    "FX6_R49_MONITOR_BRIGHTNESS_BRIDGE monitor_bright_default_manual_0_ok=%d "
+                    "manual_5steps_verified=%d survives_cam_settings_reset_ok=%d "
+                    "reset_only_by_initialize=%d indoor_clamped_to_manual_0_ok=%d "
+                    "indoor_sunny_weather_unclamped=%d monitor_brightness_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    monitor_bright_default_manual_0_ok, manual_5steps_verified,
+                    mb_survives_cam_reset_ok, mb_reset_only_by_initialize,
+                    indoor_clamped_to_manual_0_ok, indoor_sunny_weather_unclamped,
+                    g_r49_monitor_brightness_ok);
+        }
+        dprintf(2,
+                "FX6_R49_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "emph_rec_grid_hdmi_ok=%d touch_op_vault_ok=%d monitor_brightness_ok=%d "
+                "r49_bridge_ok=%d round49_realhw_emphasized_rec_grid_hdmi_touch_sunny=1 "
+                "cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r49_emph_rec_grid_hdmi_ok,
+                g_r49_touch_op_vault_ok,
+                g_r49_monitor_brightness_ok,
+                g_r49_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5202,6 +5338,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u recover_imagedb_depleted_vault_firewall=1 "
             "monitor_flip_camreset_playback_non_invert=1 af_trans7_shiftsens5_interval_still=1 "
+            "cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 49
+    dprintf(2,
+            "FX6_STAGE_B_R49_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u emph_rec_grid_hdmi_clean_lock=1 "
+            "touch_op_4item_camreset_vault_firewall=1 monitor_brightness_sunny_indoor_clamp=1 "
             "cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

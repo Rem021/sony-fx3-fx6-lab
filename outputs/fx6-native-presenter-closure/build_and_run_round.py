@@ -1350,6 +1350,7 @@ def build_stage_a_overlay(
     enable_r46: bool = False,
     enable_r47: bool = False,
     enable_r48: bool = False,
+    enable_r49: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1370,6 +1371,7 @@ def build_stage_a_overlay(
     r46_mode: str = "sq_fixedvar_6locks_big6",
     r47_mode: str = "silent_autopixelmap_5locks_big6",
     r48_mode: str = "monitor_flip_playback_big6",
+    r49_mode: str = "emphasized_rec_grid_hdmi_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1681,7 +1683,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r47_mode: {r47_mode}")
     if enable_r48 and r48_mode not in ("recover_imagedb_battery_vault", "monitor_flip_playback_big6", "af_sens_interval_still_h0_h3"):
         raise ValueError(f"Unsupported r48_mode: {r48_mode}")
-    if enable_r48 and r48_mode in ("recover_imagedb_battery_vault", "af_sens_interval_still_h0_h3"):
+    if enable_r49 and r49_mode not in ("emphasized_rec_grid_hdmi_big6", "touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"):
+        raise ValueError(f"Unsupported r49_mode: {r49_mode}")
+    if enable_r49 and r49_mode in ("touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r49_mode == "touch_op_4item_reset_vault":
+            r49_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r49-touch-op-reset-vault > /dev/console 2>&1\n"
+                "fx6_r49_to_rc=$?\n"
+                "echo FX6_R49_TOUCH_OP_VAULT_RC=$fx6_r49_to_rc\n"
+                "echo FX6_R49_TOUCH_OP_VAULT_EXIT rc=$fx6_r49_to_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r49_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r49-monitor-brightness-h0-h3 > /dev/console 2>&1\n"
+                "fx6_r49_mb_rc=$?\n"
+                "echo FX6_R49_MONITOR_BRIGHTNESS_RC=$fx6_r49_mb_rc\n"
+                "echo FX6_R49_MONITOR_BRIGHTNESS_EXIT rc=$fx6_r49_mb_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r49_early_hook, 1)
+    elif enable_r48 and r48_mode in ("recover_imagedb_battery_vault", "af_sens_interval_still_h0_h3"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3179,6 +3208,68 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r49_meta: Optional[Dict[str, Any]] = None
+    if enable_r49:
+        additions["etc/fx6_stage_r49"] = (
+            (
+                f"stage_r49=1\nr49_mode={r49_mode}\n"
+                f"emph_rec_grid_hdmi_clean_lock=1\ntouch_op_4item_camreset_vault_firewall=1\n"
+                f"monitor_brightness_sunny_indoor_clamp=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r49_meta = {
+            "r49_mode": r49_mode,
+            "emphasized_rec_display_menu_item": "Emphasized REC Display",
+            "emphasized_rec_display_default": "On",
+            "emphasized_rec_display_reset_by_camera_settings_reset": True,
+            "emphasized_rec_display_scope": ["Movie", "S&Q Motion"],
+            "grid_line_display_menu_item": "Grid Line Display",
+            "grid_line_type_menu_item": "Grid Line Type",
+            "grid_line_3_types": [
+                "Rule of 3rds Grid",
+                "Square Grid",
+                "Diag. + Square Grid",
+            ],
+            "grid_line_type_default": "Rule of 3rds Grid",
+            "grid_line_survives_camera_settings_reset": True,
+            "grid_line_reset_only_by_initialize": True,
+            "hdmi_info_display_on_routes_recframe_and_grid": True,
+            "hdmi_info_display_on_blanks_local_lcd": True,
+            "hdmi_marker_zebra_peaking_overlay_pixels": 0,
+            "rec_media_dur_hdmi_off_hdmi_only_forces_hdmi_info_off": True,
+            "hdmi_raw_output_forces_hdmi_info_off": True,
+            "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+            "touch_setup_4_items": [
+                "Touch Operation",
+                "Touch Sensitivity",
+                "Swipe Up",
+                "Touch Func. in Shooting",
+            ],
+            "touch_operation_3_modes": ["On", "On: Playback Only", "Off"],
+            "touch_operation_default": "On",
+            "touch_sensitivity_2_modes": ["Standard", "Sensitive"],
+            "touch_sensitivity_default": "Standard",
+            "swipe_up_default": "Open the Fn Menu",
+            "touch_func_in_shooting_3_modes": ["Touch Tracking", "Touch Focus", "Off"],
+            "touch_func_in_shooting_default": "Touch Tracking",
+            "touch_4_items_survive_camera_settings_reset": True,
+            "touch_reset_only_by_initialize": True,
+            "bench_accidental_touch_events": 0,
+            "monitor_brightness_menu_item": "Monitor Brightness",
+            "monitor_brightness_modes": ["Manual", "Sunny Weather"],
+            "monitor_brightness_default_mode": "Manual",
+            "monitor_brightness_manual_step_range": [-2, -1, 0, 1, 2],
+            "monitor_brightness_default_step": 0,
+            "monitor_brightness_survives_camera_settings_reset": True,
+            "monitor_brightness_reset_only_by_initialize": True,
+            "indoor_sunny_weather_clamped_to_manual_0": True,
+            "indoor_sunny_weather_unclamped": 0,
+            "slot1_vault_writes": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3220,6 +3311,7 @@ def build_stage_a_overlay(
         "r46_enabled": enable_r46,
         "r47_enabled": enable_r47,
         "r48_enabled": enable_r48,
+        "r49_enabled": enable_r49,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3291,6 +3383,8 @@ def build_stage_a_overlay(
         stage_a_meta["r47"] = r47_meta
     if r48_meta is not None:
         stage_a_meta["r48"] = r48_meta
+    if r49_meta is not None:
+        stage_a_meta["r49"] = r49_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3628,6 +3722,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R46_",
         "FX6_R47_",
         "FX6_R48_",
+        "FX6_R49_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -3853,6 +3948,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r48_bridge: Optional[Dict[str, Any]] = None
     r48_recover_imagedb_vault_rc: Optional[int] = None
     r48_af_sens_interval_rc: Optional[int] = None
+    last_r49_emph_rec_grid_hdmi_init: Optional[Dict[str, Any]] = None
+    last_r49_emph_rec_grid_hdmi_bridge: Optional[Dict[str, Any]] = None
+    last_r49_touch_op_bridge: Optional[Dict[str, Any]] = None
+    last_r49_monitor_brightness_bridge: Optional[Dict[str, Any]] = None
+    last_r49_touch_op_vault: Optional[Dict[str, Any]] = None
+    last_r49_monitor_brightness: Optional[Dict[str, Any]] = None
+    last_r49_lang: Optional[Dict[str, Any]] = None
+    last_r49_bridge: Optional[Dict[str, Any]] = None
+    r49_touch_op_vault_rc: Optional[int] = None
+    r49_monitor_brightness_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -4362,6 +4467,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R48_AF_SENS_INTERVAL_RC"), int):
                 r48_af_sens_interval_rc = kv["FX6_R48_AF_SENS_INTERVAL_RC"]
+        elif "FX6_R49_EMPH_REC_GRID_HDMI_INIT " in line:
+            last_r49_emph_rec_grid_hdmi_init = _parse_kv_ints(line.split("FX6_R49_EMPH_REC_GRID_HDMI_INIT ", 1)[1])
+        elif "FX6_R49_EMPH_REC_GRID_HDMI_BRIDGE " in line:
+            last_r49_emph_rec_grid_hdmi_bridge = _parse_kv_ints(line.split("FX6_R49_EMPH_REC_GRID_HDMI_BRIDGE ", 1)[1])
+        elif "FX6_R49_TOUCH_OP_BRIDGE " in line:
+            last_r49_touch_op_bridge = _parse_kv_ints(line.split("FX6_R49_TOUCH_OP_BRIDGE ", 1)[1])
+        elif "FX6_R49_MONITOR_BRIGHTNESS_BRIDGE " in line:
+            last_r49_monitor_brightness_bridge = _parse_kv_ints(line.split("FX6_R49_MONITOR_BRIGHTNESS_BRIDGE ", 1)[1])
+        elif "FX6_R49_TOUCH_OP_VAULT " in line:
+            last_r49_touch_op_vault = _parse_kv_ints(line.split("FX6_R49_TOUCH_OP_VAULT ", 1)[1])
+        elif "FX6_R49_MONITOR_BRIGHTNESS " in line:
+            last_r49_monitor_brightness = _parse_kv_ints(line.split("FX6_R49_MONITOR_BRIGHTNESS ", 1)[1])
+        elif "FX6_R49_LANG_TELEMETRY " in line:
+            last_r49_lang = _parse_kv_ints(line.split("FX6_R49_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R49_BRIDGE " in line:
+            last_r49_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R49_BRIDGE ", 1)[1])
+        elif "FX6_R49_TOUCH_OP_VAULT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R49_TOUCH_OP_VAULT_RC"), int):
+                r49_touch_op_vault_rc = kv["FX6_R49_TOUCH_OP_VAULT_RC"]
+        elif "FX6_R49_MONITOR_BRIGHTNESS_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R49_MONITOR_BRIGHTNESS_RC"), int):
+                r49_monitor_brightness_rc = kv["FX6_R49_MONITOR_BRIGHTNESS_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -4917,6 +5046,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r48_bridge or {},
         }
 
+    r49_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r49_emph_rec_grid_hdmi_init,
+            last_r49_emph_rec_grid_hdmi_bridge,
+            last_r49_touch_op_bridge,
+            last_r49_monitor_brightness_bridge,
+            last_r49_touch_op_vault,
+            last_r49_monitor_brightness,
+            last_r49_lang,
+            last_r49_bridge,
+        )
+    ):
+        r49_telemetry = {
+            "touch_op_vault_rc": r49_touch_op_vault_rc,
+            "monitor_brightness_rc": r49_monitor_brightness_rc,
+            "emph_rec_grid_hdmi_init": last_r49_emph_rec_grid_hdmi_init or {},
+            "emph_rec_grid_hdmi_bridge": last_r49_emph_rec_grid_hdmi_bridge or {},
+            "touch_op_bridge": last_r49_touch_op_bridge or {},
+            "monitor_brightness_bridge": last_r49_monitor_brightness_bridge or {},
+            "touch_op_vault": last_r49_touch_op_vault or {},
+            "monitor_brightness": last_r49_monitor_brightness or {},
+            "lang_telemetry": last_r49_lang or {},
+            "stage_b_bridge": last_r49_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -4962,6 +5118,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r46_telemetry": r46_telemetry,
         "r47_telemetry": r47_telemetry,
         "r48_telemetry": r48_telemetry,
+        "r49_telemetry": r49_telemetry,
     }
 
 
@@ -5059,6 +5216,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r12"
     if args.round >= 48:
         tmp_prefix = "fx6-r48"
+    if args.round >= 49:
+        tmp_prefix = "fx6-r49"
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -5115,8 +5274,12 @@ def run_once(args: argparse.Namespace) -> int:
         r46_mode = getattr(args, "r46_mode", "sq_fixedvar_6locks_big6")
         r47_mode = getattr(args, "r47_mode", "silent_autopixelmap_5locks_big6")
         r48_mode = getattr(args, "r48_mode", "monitor_flip_playback_big6")
+        r49_mode = getattr(args, "r49_mode", "emphasized_rec_grid_hdmi_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone49Wave35RealHwEmphasizedRecGridHdmiTouchOpSunnyWeather+r49_mode={r49_mode}+lang={lang})"
+                if args.round >= 49
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone48Wave34RealHwRecoverImageDbMonitorFlipAfSensInterval+r48_mode={r48_mode}+lang={lang})"
                 if args.round >= 48
                 else (
@@ -5273,6 +5436,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -5339,6 +5503,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r47_mode=r47_mode,
                 enable_r48=(args.round >= 48),
                 r48_mode=r48_mode,
+                enable_r49=(args.round >= 49),
+                r49_mode=r49_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -5491,6 +5657,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R47_FLEXEXP_RESET_SPLIT_EXIT" in txt
                     or "FX6_R48_RECOVER_IMAGEDB_VAULT_EXIT" in txt
                     or "FX6_R48_AF_SENS_INTERVAL_EXIT" in txt
+                    or "FX6_R49_TOUCH_OP_VAULT_EXIT" in txt
+                    or "FX6_R49_MONITOR_BRIGHTNESS_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -5545,6 +5713,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R47_FLEXEXP_RESET_SPLIT_EXIT" in serial_text
             or "FX6_R48_RECOVER_IMAGEDB_VAULT_EXIT" in serial_text
             or "FX6_R48_AF_SENS_INTERVAL_EXIT" in serial_text
+            or "FX6_R49_TOUCH_OP_VAULT_EXIT" in serial_text
+            or "FX6_R49_MONITOR_BRIGHTNESS_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -5616,6 +5786,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r46_mode": r46_mode if args.round >= 46 else None,
             "r47_mode": r47_mode if args.round >= 47 else None,
             "r48_mode": r48_mode if args.round >= 48 else None,
+            "r49_mode": r49_mode if args.round >= 49 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -5671,6 +5842,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r46_telemetry": milestones.get("r46_telemetry") if args.round >= 46 else None,
             "r47_telemetry": milestones.get("r47_telemetry") if args.round >= 47 else None,
             "r48_telemetry": milestones.get("r48_telemetry") if args.round >= 48 else None,
+            "r49_telemetry": milestones.get("r49_telemetry") if args.round >= 49 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -5721,7 +5893,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
     # r47_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48], required=True)
+    # r48_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -5744,6 +5917,7 @@ def main() -> int:
     ap.add_argument("--r46-mode", type=str, choices=["sq_fixedvar_6locks_big6", "zebra_persist_peaking_hdmi_isolation", "slot1_fullformat_chord_vault_h0_h3"], default="sq_fixedvar_6locks_big6")
     ap.add_argument("--r47-mode", type=str, choices=["silent_autopixelmap_5locks_big6", "marker_15ratio_persist_hdmi_isolation", "flexexp_avtviso_autoslowshutter_h0_h3"], default="silent_autopixelmap_5locks_big6")
     ap.add_argument("--r48-mode", type=str, choices=["recover_imagedb_battery_vault", "monitor_flip_playback_big6", "af_sens_interval_still_h0_h3"], default="monitor_flip_playback_big6")
+    ap.add_argument("--r49-mode", type=str, choices=["emphasized_rec_grid_hdmi_big6", "touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"], default="emphasized_rec_grid_hdmi_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

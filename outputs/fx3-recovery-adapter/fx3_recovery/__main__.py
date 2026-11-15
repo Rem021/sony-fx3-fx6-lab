@@ -9,6 +9,7 @@ from .worker import assemble_worker_windows
 from .elflink import build_worker
 from . import boot_worker as B
 from .ab_bank_and_interrupted_ota_verifier import run_ab_bank_and_interrupted_ota_suite
+from .bootrom_usb_and_emmc_bootpart_verifier import run_bootrom_usb_and_emmc_bootpart_suite
 from .emmc_dump_forensic_verifier import (
     VALID_ROLES,
     report_to_dict,
@@ -102,6 +103,7 @@ def main():
     master.add_argument('--with-phase106', action='store_true', help='also run Phase 106 Pillar 10 FDT /chosen/bootargs firewall & ARM64 kernel verifier')
     master.add_argument('--with-phase113', action='store_true', help='also run Phase 113 Pillar 11 CXD90057 Dual-Bank A/B & Interrupted BODYDATA.DAT/USB-OTA forensic triage verifier')
     master.add_argument('--with-phase119', action='store_true', help='also run Phase 119 Pillar 12 SquashFS 4.0 hsqs & Sony Warp-Boot hibdrv WBI2 triage verifier')
+    master.add_argument('--with-phase124', action='store_true', help='also run Phase 124 Pillar 13 CXD90057 Mask-BootROM USB cold-plug & JEDEC eMMC BOOT0/BOOT1 triage verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -122,6 +124,10 @@ def main():
     sq_wbi.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     sq_wbi.add_argument('--json', action='store_true', help='emit full structured JSON report')
     sq_wbi.add_argument('--out', help='optional exclusive new output directory for squashfs-wbi-triage-report.json')
+    br_bp = sub.add_parser('verify-bootrom-bootpart', help='Phase 124 CXD90057 Mask-BootROM USB cold-plug RAM-load sandbox & JEDEC eMMC BOOT0/BOOT1 EXT_CSD verifier')
+    br_bp.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    br_bp.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    br_bp.add_argument('--out', help='optional exclusive new output directory for bootrom-bootpart-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -325,6 +331,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p119_report.all_passed else 0)
                 overall_ok = overall_ok and p119_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase124:
+                p124_report = run_bootrom_usb_and_emmc_bootpart_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase124_pillar13_bootrom_usb_emmc_bootpart'] = p124_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p124_report.all_passed else 0)
+                overall_ok = overall_ok and p124_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -336,6 +351,7 @@ def main():
                     or args.with_phase106
                     or args.with_phase113
                     or args.with_phase119
+                    or args.with_phase124
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -467,6 +483,30 @@ def main():
                     f"squashfs_compressions={len(report.squashfs_compression_reports)} "
                     f"wbi_scenarios={report.wbi_6_scenario_suite.scenarios_passed}/{report.wbi_6_scenario_suite.scenarios_total} "
                     f"wbi_partition_writes={report.wbi_partition_writes} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-bootrom-bootpart':
+            report = run_bootrom_usb_and_emmc_bootpart_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'bootrom-bootpart-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"bootpart_scenarios={report.emmc_bootpart_6_scenario_suite.scenarios_passed}/{report.emmc_bootpart_6_scenario_suite.scenarios_total} "
+                    f"bootrom_scenarios={report.bootrom_usb_5_scenario_suite.scenarios_passed}/{report.bootrom_usb_5_scenario_suite.scenarios_total} "
+                    f"emmc_persistent_program_commands={report.emmc_persistent_program_commands} "
                     f"suite_sha256={report.suite_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

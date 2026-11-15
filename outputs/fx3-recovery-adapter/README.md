@@ -219,3 +219,17 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-init2-escape --clean-room --json
 ```
 
+## Phase 72 — Tier-0 Backup `GF(256)` Parity Bit-Rot Healer, Short-Read/Blank-Flash Detector & Cross-Body Anti-Transplant Lock
+
+- **[`tier0_backup_parity_and_manifest_guard.py`](fx3_recovery/tier0_backup_parity_and_manifest_guard.py)**：面向 FX3（`0x91030080`）`Tier-0` 宿主机离线备份包提供三大防损毁与防跨机移植门禁：
+  - **11 分区 `Tier-0` 截断、空读（全 `0x00`/全 `0xFF`）与 A/B 槽位对称性校验（`validate_tier0_partition` / `validate_tier0_backup_bundle`）**：校验 `nbl_a`、`nbl_b`、`uboot_a`、`uboot_b`、`boot_a`、`boot_b`、`p1_vfat`、`bk4_nvram`、`wbi2_hibdrv`、`cnflasha_spacc`、`c2pa_rq_lic` 全 11 个关键分区的 `dd` 短读/头声明越界截断（`TRUNCATED_PARTITION_DUMP`）、未初始化/擦除总线读出（`ALL_ZERO_BLANK_READ` / `ALL_FF_ERASED_FLASH_READ` / `DEGENERATE_BYTE_ENTROPY`）、无 Sony 私钥依赖的结构化魔数（`ELF`/`FDT`/`uImage`/`ANDROID!`/`ARM64`、`FAT12/16 0x55AA`、`BK4\0`、`WBI2` XOR、`cnflasha` 高熵、`RQLC`/`C2PA`/`jumb`），以及 `(nbl_a, nbl_b)` / `(uboot_a, uboot_b)` / `(boot_a, boot_b)` A/B 对称性（`AB_SLOT_ASYMMETRY_DETECTED`）。
+  - **纯 Python `GF(2^8)`（`0x11d` 本原多项式）双校验（`P + Q` RAID-6）位翻转自愈引擎（`encode_gf256_pq_parity` / `heal_gf256_pq_shards` / `heal_tier0_backup_bundle`）**：基于 `exp`/`log`/`inv` 与 `bytes.translate` 查表实现 `P = XOR(D_i)`、`Q = XOR(g^i * D_i)` 条带编码、单分区静默位翻转纯伴随式定位（`S1 / S0 == g^x`）以及任意 1～2 个分区擦除/静默位翻转的 100% 逐比特无损自愈（`reconstructed_sha256 == original_sha256`）；当同时丢失或损坏 `>= 3` 个分片时严格 fail-closed（`UNRECOVERABLE_QUORUM_LOSS`）。
+  - **单机身硬件身份锁 / 跨机身防移植防火墙（`compute_body_identity_binding_sha256` / `build_tier0_backup_manifest` / `verify_cross_body_anti_transplant`）**：将每份 `tier0_backup_manifest_v1` 密码学绑定至由 `(camera_model, body_serial_hash, cnflasha_calibration_sha256, c2pa_rq_lic_sha256)` 派生的 `body_identity_binding_sha256`，强拦截将 `Body-A` 校准/C2PA 许可（`cnflasha` / `RQ_LIC.DAT`）误配至 `Body-B` 的操作（`CROSS_BODY_TRANSPLANT_FORBIDDEN`），硬锁定 `persistent_emmc_writes_authorized = False`、`persistent_write_release = False`、`physical_device_writes = 0`。
+  - **CLI 与 32 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-tier0-backup [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_tier0_backup_parity_and_manifest_guard.py`](tests/test_tier0_backup_parity_and_manifest_guard.py) 在本地供体（`os.O_RDONLY` 验证 `2.05/nflasha1` 与 `nflasha5.img`）及 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 100% 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-tier0-backup --clean-room --json
+```
+
+

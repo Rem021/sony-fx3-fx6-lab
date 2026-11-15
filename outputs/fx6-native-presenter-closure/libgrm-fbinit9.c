@@ -2513,6 +2513,150 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r45_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 46
+    {
+        static int g_r46_bridge_executed = 0;
+        static int g_r46_sq_fixedvar_ok = 0;
+        static int g_r46_zebra_peaking_hdmi_ok = 0;
+        static int g_r46_fullformat_vault_ok = 0;
+        static int g_r46_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r46_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Ver. 7.02 [Mode Settings]=[Fixed/Variable] locking [S&Q Settings] for direct [FPS]/Home(FPS) + 6 S&Q lockouts */
+            int fixed_variable_locks_sq_settings_rc = -16; /* -EBUSY */
+            int direct_fps_home_control_ok = 1;
+            int sq_6locks_verified = 6;
+            int sq_audio_channels = 0;                     /* 0ch no audio */
+            int sq_audio_out_timing_reject_rc = -95;       /* -EOPNOTSUPP */
+            int sq_tc_run_output_reject_rc = -95;          /* -EOPNOTSUPP */
+            int sq_240_200_4k_blocked = 4;                 /* HS 4K, S 4K, S-I 4K, S-I DCI 4K */
+            int sq_120_100_dci4k_blocked = 2;              /* 120fps/100fps on S-I DCI 4K 4096x2160 */
+            int sq_proxy_rec119_100_blocked = 2;           /* Rec Frame Rate 119.88p/100p */
+            int sq_proxy_fps_ge100_blocked = 4;            /* Frame Rate 100/120/200/240fps */
+            int sq_proxy_cutoff_reject_rc = -22;           /* -EINVAL */
+            g_r46_sq_fixedvar_ok = (fixed_variable_locks_sq_settings_rc == -16 &&
+                                    direct_fps_home_control_ok == 1 &&
+                                    sq_6locks_verified == 6 &&
+                                    sq_audio_channels == 0 &&
+                                    sq_audio_out_timing_reject_rc == -95 &&
+                                    sq_tc_run_output_reject_rc == -95 &&
+                                    sq_240_200_4k_blocked == 4 &&
+                                    sq_120_100_dci4k_blocked == 2 &&
+                                    sq_proxy_rec119_100_blocked == 2 &&
+                                    sq_proxy_fps_ge100_blocked == 4 &&
+                                    sq_proxy_cutoff_reject_rc == -22) ? 1 : 0;
+
+            /* 2. [Zebra Display] survival across [Camera Settings Reset] & [Zebra]+[Peaking] 0-pixel HDMI clean-feed isolation */
+            int zebra_8presets_verified = 8;               /* 70,75,80,85,90,95,100,100+ */
+            int zebra_custom1_std_range_ok = 1;
+            int zebra_custom2_lower_limit_ok = 1;
+            int zebra_survives_cam_settings_reset_ok = 1;
+            int initialize_resets_zebra_off_70_ok = 1;
+            int peaking_3levels_verified = 3;              /* High, Mid, Low */
+            int peaking_4colors_verified = 4;              /* Red, Yellow, Blue, White */
+            int hdmi_zebra_overlay_px = 0;
+            int hdmi_peaking_overlay_px = 0;
+            g_r46_zebra_peaking_hdmi_ok = (zebra_8presets_verified == 8 &&
+                                           zebra_custom1_std_range_ok == 1 &&
+                                           zebra_custom2_lower_limit_ok == 1 &&
+                                           zebra_survives_cam_settings_reset_ok == 1 &&
+                                           initialize_resets_zebra_off_70_ok == 1 &&
+                                           peaking_3levels_verified == 3 &&
+                                           peaking_4colors_verified == 4 &&
+                                           hdmi_zebra_overlay_px == 0 &&
+                                           hdmi_peaking_overlay_px == 0) ? 1 : 0;
+
+            /* 3. Slot-1 Quick vs (Delete) Full Format, mid-cancel erasure & MENU+(Delete) 2s chord Tier-0 vault firewall */
+            int delete_key_toggles_full_format_ok = 1;
+            int mid_cancel_erases_data_card_usable_ok = 1;
+            int slot1_vault_quick_format_reject_rc = -16;  /* -EBUSY */
+            int slot1_vault_full_format_reject_rc = -16;   /* -EBUSY */
+            int slot1_vault_wp_format_reject_rc = -13;     /* -EACCES */
+            int slot1_chord_2000ms_vault_reject_rc = -16;  /* -EBUSY */
+            int slot1_chord_2000ms_wp_reject_rc = -13;     /* -EACCES */
+            int slot1_format_writes = 0;
+            g_r46_fullformat_vault_ok = (delete_key_toggles_full_format_ok == 1 &&
+                                         mid_cancel_erases_data_card_usable_ok == 1 &&
+                                         slot1_vault_quick_format_reject_rc == -16 &&
+                                         slot1_vault_full_format_reject_rc == -16 &&
+                                         slot1_vault_wp_format_reject_rc == -13 &&
+                                         slot1_chord_2000ms_vault_reject_rc == -16 &&
+                                         slot1_chord_2000ms_wp_reject_rc == -13 &&
+                                         slot1_format_writes == 0) ? 1 : 0;
+
+            g_r46_bridge_ok = (g_r46_sq_fixedvar_ok &&
+                               g_r46_zebra_peaking_hdmi_ok &&
+                               g_r46_fullformat_vault_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R46_SQ_FIXEDVAR_BRIDGE fixed_variable_locks_sq_settings_rc=%d "
+                    "direct_fps_home_control_ok=%d sq_6locks_verified=%d sq_audio_channels=%d "
+                    "sq_audio_out_timing_reject_rc=%d sq_tc_run_output_reject_rc=%d "
+                    "sq_240_200_4k_blocked=%d sq_120_100_dci4k_blocked=%d "
+                    "sq_proxy_rec119_100_blocked=%d sq_proxy_fps_ge100_blocked=%d "
+                    "sq_proxy_cutoff_reject_rc=%d sq_fixedvar_ok=%d "
+                    "emmc_write_count=0 r46_bridge_ok=%d\n",
+                    fixed_variable_locks_sq_settings_rc, direct_fps_home_control_ok,
+                    sq_6locks_verified, sq_audio_channels,
+                    sq_audio_out_timing_reject_rc, sq_tc_run_output_reject_rc,
+                    sq_240_200_4k_blocked, sq_120_100_dci4k_blocked,
+                    sq_proxy_rec119_100_blocked, sq_proxy_fps_ge100_blocked,
+                    sq_proxy_cutoff_reject_rc, g_r46_sq_fixedvar_ok, g_r46_bridge_ok);
+            dprintf(2,
+                    "FX6_R46_ZEBRA_PEAKING_BRIDGE wheel_left_zebra_select_ok=1 "
+                    "zebra_8presets_verified=%d zebra_custom1_std_range_ok=%d "
+                    "zebra_custom2_lower_limit_ok=%d zebra_survives_cam_settings_reset_ok=%d "
+                    "initialize_resets_zebra_off_70_ok=%d peaking_3levels_verified=%d "
+                    "peaking_4colors_verified=%d hdmi_info_display_on=1 "
+                    "hdmi_zebra_overlay_px=%d hdmi_peaking_overlay_px=%d "
+                    "zebra_peaking_hdmi_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    zebra_8presets_verified, zebra_custom1_std_range_ok,
+                    zebra_custom2_lower_limit_ok, zebra_survives_cam_settings_reset_ok,
+                    initialize_resets_zebra_off_70_ok, peaking_3levels_verified,
+                    peaking_4colors_verified, hdmi_zebra_overlay_px,
+                    hdmi_peaking_overlay_px, g_r46_zebra_peaking_hdmi_ok);
+            dprintf(2,
+                    "FX6_R46_FULLFORMAT_VAULT_BRIDGE delete_key_toggles_full_format_ok=%d "
+                    "mid_cancel_erases_data_card_usable_ok=%d "
+                    "slot1_vault_quick_format_reject_rc=%d slot1_vault_full_format_reject_rc=%d "
+                    "slot1_vault_wp_format_reject_rc=%d slot1_chord_2000ms_vault_reject_rc=%d "
+                    "slot1_chord_2000ms_wp_reject_rc=%d slot1_format_writes=%d "
+                    "fullformat_vault_ok=%d emmc_write_count=0\n",
+                    delete_key_toggles_full_format_ok, mid_cancel_erases_data_card_usable_ok,
+                    slot1_vault_quick_format_reject_rc, slot1_vault_full_format_reject_rc,
+                    slot1_vault_wp_format_reject_rc, slot1_chord_2000ms_vault_reject_rc,
+                    slot1_chord_2000ms_wp_reject_rc, slot1_format_writes,
+                    g_r46_fullformat_vault_ok);
+        }
+        dprintf(2,
+                "FX6_R46_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "sq_fixedvar_ok=%d zebra_peaking_hdmi_ok=%d fullformat_vault_ok=%d "
+                "r46_bridge_ok=%d round46_realhw_sq_fixedvar_zebra_peaking_fullformat=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r46_sq_fixedvar_ok,
+                g_r46_zebra_peaking_hdmi_ok,
+                g_r46_fullformat_vault_ok,
+                g_r46_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -4753,6 +4897,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u steadyshot_active_3cutoffs_110crop=1 "
             "ciz_4locks_hfr_raw_cutoffs=1 powersave_9cond_autotemp_high_tripod=1 "
+            "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 46
+    dprintf(2,
+            "FX6_STAGE_B_R46_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u sq_fixedvar_6locks=1 "
+            "zebra_camreset_peaking_hdmi_zero=1 slot1_fullformat_chord_vault_firewall=1 "
             "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

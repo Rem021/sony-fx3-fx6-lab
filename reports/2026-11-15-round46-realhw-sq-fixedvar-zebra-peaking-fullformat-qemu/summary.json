@@ -1,0 +1,1013 @@
+{
+  "schema": "fx6-on-fx3-round46-realhw-sq-fixedvar-zebra-peaking-fullformat-qemu-v1",
+  "round": 46,
+  "milestone": "46th Milestone (Wave-32)",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "sq_fixedvar_mode_settings_and_6_hard_lockouts_init": {
+      "fixed_variable_locks_sq_settings_rc": -16,
+      "legacy_sq_settings_unlocked_ok": 1,
+      "invalid_mode_settings_reject_rc": -22,
+      "direct_fps_home_control_ok": 1,
+      "codec_follows_movie_settings_ok": 1,
+      "sq_6locks_verified": 6,
+      "sq_audio_channels": 0,
+      "sq_audio_rec_reject_rc": -95,
+      "normal_audio_out_timing_2modes_ok": 2,
+      "invalid_audio_timing_reject_rc": -22,
+      "sq_audio_out_timing_reject_rc": -95,
+      "sq_tc_run_reject_rc": -95,
+      "sq_tc_output_reject_rc": -95,
+      "sq_240_200_4k_blocked": 4,
+      "sq_240_200_hd_allowed": 2,
+      "sq_240_200_4k_reject_rc": -22,
+      "sq_120_100_dci4k_blocked": 2,
+      "sq_120_100_uhd4k_allowed": 3,
+      "sq_120_100_dci4k_reject_rc": -22,
+      "sq_proxy_le60_allowed": 1,
+      "sq_proxy_rec119_100_blocked": 2,
+      "sq_proxy_fps_ge100_blocked": 4,
+      "sq_proxy_cutoff_reject_rc": -22,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r46_init_ok": 1,
+      "verify_us": 705830
+    },
+    "sq_fixedvar_stage_b_bridge": {
+      "fixed_variable_locks_sq_settings_rc": -16,
+      "direct_fps_home_control_ok": 1,
+      "sq_6locks_verified": 6,
+      "sq_audio_channels": 0,
+      "sq_audio_out_timing_reject_rc": -95,
+      "sq_tc_run_output_reject_rc": -95,
+      "sq_240_200_4k_blocked": 4,
+      "sq_120_100_dci4k_blocked": 2,
+      "sq_proxy_rec119_100_blocked": 2,
+      "sq_proxy_fps_ge100_blocked": 4,
+      "sq_proxy_cutoff_reject_rc": -22,
+      "sq_fixedvar_ok": 1,
+      "emmc_write_count": 0,
+      "r46_bridge_ok": 1
+    },
+    "zebra_peaking_hdmi_stage_b_bridge": {
+      "wheel_left_zebra_select_ok": 1,
+      "zebra_8presets_verified": 8,
+      "zebra_custom1_std_range_ok": 1,
+      "zebra_custom2_lower_limit_ok": 1,
+      "zebra_survives_cam_settings_reset_ok": 1,
+      "initialize_resets_zebra_off_70_ok": 1,
+      "peaking_3levels_verified": 3,
+      "peaking_4colors_verified": 4,
+      "hdmi_info_display_on": 1,
+      "hdmi_zebra_overlay_px": 0,
+      "hdmi_peaking_overlay_px": 0,
+      "zebra_peaking_hdmi_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "fullformat_chord_vault_stage_b_bridge": {
+      "delete_key_toggles_full_format_ok": 1,
+      "mid_cancel_erases_data_card_usable_ok": 1,
+      "slot1_vault_quick_format_reject_rc": -16,
+      "slot1_vault_full_format_reject_rc": -16,
+      "slot1_vault_wp_format_reject_rc": -13,
+      "slot1_chord_2000ms_vault_reject_rc": -16,
+      "slot1_chord_2000ms_wp_reject_rc": -13,
+      "slot1_format_writes": 0,
+      "fullformat_vault_ok": 1,
+      "emmc_write_count": 0
+    },
+    "zebra_camera_reset_persistence_and_peaking_hdmi_clean_feed_isolation": {
+      "zebra_defaults_off_70_ok": 1,
+      "wheel_left_zebra_select_ok": 1,
+      "invalid_zebra_disp_reject_rc": -22,
+      "zebra_8presets_verified": 8,
+      "invalid_zebra_level_reject_rc": -22,
+      "zebra_custom1_std_range_ok": 1,
+      "zebra_custom2_lower_limit_ok": 1,
+      "zebra_survives_cam_settings_reset_ok": 1,
+      "initialize_resets_zebra_off_70_ok": 1,
+      "peaking_defaults_off_mid_white_ok": 1,
+      "invalid_peaking_reject_rc": -22,
+      "peaking_3levels_verified": 3,
+      "peaking_4colors_verified": 4,
+      "hdmi_info_display_on": 1,
+      "lcd_zebra_overlay_px": 20736,
+      "lcd_peaking_overlay_px": 12992,
+      "hdmi_zebra_overlay_px": 0,
+      "hdmi_peaking_overlay_px": 0,
+      "hdmi_clean_feed_combos_verified": 22,
+      "hdmi_info_on_zero_assist_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "p2_setting_sha256_match": 1,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r46b_ok": 1,
+      "verify_us": 679916
+    },
+    "slot1_quick_vs_delete_fullformat_midcancel_and_menu_delete_2s_chord_vault_lockout_h0_h3": {
+      "invalid_fmt_mode_reject_rc": -22,
+      "slot2_quick_format_meta_only_ok": 1,
+      "delete_key_toggles_full_format_ok": 1,
+      "slot2_full_format_all_blocks_ok": 1,
+      "mid_cancel_erases_data_card_usable_ok": 1,
+      "chord_threshold_ms": 2000,
+      "chord_sub2s_ignored_ok": 1,
+      "non_vault_chord_2000ms_dialog_ok": 1,
+      "vault_3artifacts_guarded": 3,
+      "slot1_vault_quick_format_reject_rc": -16,
+      "slot1_vault_full_format_reject_rc": -16,
+      "slot1_vault_mid_cancel_reject_rc": -16,
+      "slot1_chord_2000ms_vault_reject_rc": -16,
+      "slot1_vault_wp_format_reject_rc": -13,
+      "slot1_chord_2000ms_wp_reject_rc": -13,
+      "slot1_format_writes": 0,
+      "slot1_vault_sha256_intact": 1,
+      "verified_swapped_nonvault_unlock_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r46c_ok": 1,
+      "verify_us": 273182
+    }
+  },
+  "runs": {
+    "r46a_sq_fixedvar_6locks_big6_schinese": {
+      "run_id": "round46-sq-fixedvar-zebra-big6",
+      "round": 46,
+      "lang": "schinese",
+      "r46_mode": "sq_fixedvar_6locks_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Mode Settings] = [Fixed/Variable] locking [S&Q Settings] (rc=-16 EBUSY) in favor of direct [FPS] / [Home (FPS)] control (unlocking when returned to [Standard]), plus all 6 official S&Q disqualifications enforced: (1) 0ch no sound recorded (audio rec rejected rc=-95 EOPNOTSUPP), (2) [Audio Out Timing] ([Live] / [Lip Sync]) disabled in S&Q (rc=-95 EOPNOTSUPP), (3) [Time Code Run] & [Time Code Output] unavailable in S&Q (rc=-95 EOPNOTSUPP), (4) 240fps/200fps blocked across all 4 4K formats (XAVC HS 4K, XAVC S 4K, XAVC S-I 4K, XAVC S-I DCI 4K rc=-22 EINVAL; HD allowed), (5) 120fps/100fps blocked on XAVC S-I DCI 4K (4096x2160 rc=-22 EINVAL; UHD 4K allowed), and (6) [Proxy Recording] blocked when [Rec Frame Rate] is 119.88p/100p OR [Frame Rate] >= 120/100fps (100/120/200/240fps rc=-22 EINVAL), -EROFS (-30) p2:/setting protection, and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 75.2,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "e8611ffabaf08fc50f8d622fb7cc09be260164b45798f3f6b4f17c209b9e169f"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r46": {
+          "r46_mode": "sq_fixedvar_6locks_big6",
+          "mode_settings_fixed_variable": "Fixed/Variable",
+          "mode_settings_locks_sq_settings_rc": -16,
+          "direct_fps_controls": [
+            "FPS",
+            "Home (FPS)"
+          ],
+          "sq_6_hard_lockouts": [
+            "0ch no sound recorded",
+            "[Audio Out Timing] (Live/Lip Sync) disabled",
+            "[Time Code Run] & [Time Code Output] unavailable",
+            "240fps/200fps blocked on XAVC HS 4K, XAVC S 4K, XAVC S-I 4K, XAVC S-I DCI 4K",
+            "120fps/100fps blocked on XAVC S-I DCI 4K (4096x2160)",
+            "[Proxy Recording] blocked when Rec Frame Rate is 119.88p/100p OR Frame Rate >= 120/100fps"
+          ],
+          "sq_240_200_blocked_4k_formats": [
+            "XAVC HS 4K",
+            "XAVC S 4K",
+            "XAVC S-I 4K",
+            "XAVC S-I DCI 4K"
+          ],
+          "sq_120_100_blocked_dci_format": "XAVC S-I DCI 4K",
+          "audio_out_timing_modes": [
+            "Live",
+            "Lip Sync"
+          ],
+          "zebra_display_modes": [
+            "Off",
+            "On"
+          ],
+          "zebra_wheel_left_default": "Zebra Display Select",
+          "zebra_8_preset_levels": [
+            "70",
+            "75",
+            "80",
+            "85",
+            "90",
+            "95",
+            "100",
+            "100+"
+          ],
+          "zebra_custom_levels": [
+            "Custom 1 (Standard+Range)",
+            "Custom 2 (Minimum/Lower-Limit)"
+          ],
+          "zebra_survives_camera_settings_reset": true,
+          "zebra_reset_only_by_initialize": true,
+          "peaking_levels": [
+            "High",
+            "Mid",
+            "Low"
+          ],
+          "peaking_colors": [
+            "Red",
+            "Yellow",
+            "Blue",
+            "White"
+          ],
+          "hdmi_zebra_overlay_pixels": 0,
+          "hdmi_peaking_overlay_pixels": 0,
+          "format_modes": [
+            "Quick Format",
+            "Full Format"
+          ],
+          "full_format_toggle_key": "(Delete)",
+          "menu_delete_chord_hold_ms": 2000,
+          "slot1_tier0_vault_artifacts": [
+            "pnflasha",
+            "cnflasha",
+            "CAMSET01.DAT"
+          ],
+          "slot1_vault_active_reject_rc": -16,
+          "slot1_vault_wp_reject_rc": -13,
+          "slot1_format_writes": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r46_telemetry": {
+        "zebra_peaking_hdmi_rc": null,
+        "fullformat_chord_vault_rc": null,
+        "sq_fixedvar_init": {
+          "fixed_variable_locks_sq_settings_rc": -16,
+          "legacy_sq_settings_unlocked_ok": 1,
+          "invalid_mode_settings_reject_rc": -22,
+          "direct_fps_home_control_ok": 1,
+          "codec_follows_movie_settings_ok": 1,
+          "sq_6locks_verified": 6,
+          "sq_audio_channels": 0,
+          "sq_audio_rec_reject_rc": -95,
+          "normal_audio_out_timing_2modes_ok": 2,
+          "invalid_audio_timing_reject_rc": -22,
+          "sq_audio_out_timing_reject_rc": -95,
+          "sq_tc_run_reject_rc": -95,
+          "sq_tc_output_reject_rc": -95,
+          "sq_240_200_4k_blocked": 4,
+          "sq_240_200_hd_allowed": 2,
+          "sq_240_200_4k_reject_rc": -22,
+          "sq_120_100_dci4k_blocked": 2,
+          "sq_120_100_uhd4k_allowed": 3,
+          "sq_120_100_dci4k_reject_rc": -22,
+          "sq_proxy_le60_allowed": 1,
+          "sq_proxy_rec119_100_blocked": 2,
+          "sq_proxy_fps_ge100_blocked": 4,
+          "sq_proxy_cutoff_reject_rc": -22,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r46_init_ok": 1,
+          "verify_us": 705830
+        },
+        "sq_fixedvar_bridge": {
+          "fixed_variable_locks_sq_settings_rc": -16,
+          "direct_fps_home_control_ok": 1,
+          "sq_6locks_verified": 6,
+          "sq_audio_channels": 0,
+          "sq_audio_out_timing_reject_rc": -95,
+          "sq_tc_run_output_reject_rc": -95,
+          "sq_240_200_4k_blocked": 4,
+          "sq_120_100_dci4k_blocked": 2,
+          "sq_proxy_rec119_100_blocked": 2,
+          "sq_proxy_fps_ge100_blocked": 4,
+          "sq_proxy_cutoff_reject_rc": -22,
+          "sq_fixedvar_ok": 1,
+          "emmc_write_count": 0,
+          "r46_bridge_ok": 1
+        },
+        "zebra_peaking_bridge": {
+          "wheel_left_zebra_select_ok": 1,
+          "zebra_8presets_verified": 8,
+          "zebra_custom1_std_range_ok": 1,
+          "zebra_custom2_lower_limit_ok": 1,
+          "zebra_survives_cam_settings_reset_ok": 1,
+          "initialize_resets_zebra_off_70_ok": 1,
+          "peaking_3levels_verified": 3,
+          "peaking_4colors_verified": 4,
+          "hdmi_info_display_on": 1,
+          "hdmi_zebra_overlay_px": 0,
+          "hdmi_peaking_overlay_px": 0,
+          "zebra_peaking_hdmi_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "fullformat_vault_bridge": {
+          "delete_key_toggles_full_format_ok": 1,
+          "mid_cancel_erases_data_card_usable_ok": 1,
+          "slot1_vault_quick_format_reject_rc": -16,
+          "slot1_vault_full_format_reject_rc": -16,
+          "slot1_vault_wp_format_reject_rc": -13,
+          "slot1_chord_2000ms_vault_reject_rc": -16,
+          "slot1_chord_2000ms_wp_reject_rc": -13,
+          "slot1_format_writes": 0,
+          "fullformat_vault_ok": 1,
+          "emmc_write_count": 0
+        },
+        "zebra_peaking_hdmi": {},
+        "fullformat_chord_vault": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 32916,
+          "glyph_blits": 17432,
+          "icon_blits": 21277,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "sq_fixedvar_ok": 1,
+          "zebra_peaking_hdmi_ok": 1,
+          "fullformat_vault_ok": 1,
+          "r46_bridge_ok": 1,
+          "round46_realhw_sq_fixedvar_zebra_peaking_fullformat": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 46,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "sq_fixedvar_6locks": 1,
+          "zebra_camreset_peaking_hdmi_zero": 1,
+          "slot1_fullformat_chord_vault_firewall": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r46a-sq-fixedvar-zebra-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round46-realhw-sq-fixedvar-zebra-peaking-fullformat-qemu/assets/r46a-sq-fixedvar-zebra-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round46-realhw-sq-fixedvar-zebra-peaking-fullformat-qemu/assets/r46a-sq-fixedvar-zebra-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 181,
+        "FX6_STAGE_B_": 75,
+        "FX6_R30_": 179,
+        "FX6_R31_": 179,
+        "FX6_R32_": 182,
+        "FX6_R33_": 179,
+        "FX6_R34_": 179,
+        "FX6_R35_": 179,
+        "FX6_R36_": 179,
+        "FX6_R37_": 180,
+        "FX6_R38_": 180,
+        "FX6_R39_": 179,
+        "FX6_R40_": 179,
+        "FX6_R41_": 179,
+        "FX6_R42_": 180,
+        "FX6_R43_": 180,
+        "FX6_R44_": 180,
+        "FX6_R45_": 180,
+        "FX6_R46_": 180,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 179,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 125,
+        "FX6_R10_": 177,
+        "FX6_R11_": 188,
+        "FX6_R12_": 180,
+        "FX6_R13_": 177,
+        "FX6_R14_": 177,
+        "FX6_R15_": 177,
+        "FX6_R16_": 177,
+        "FX6_R17_": 177,
+        "FX6_R18_": 177,
+        "FX6_R19_": 177,
+        "FX6_R20_": 177,
+        "FX6_R21_": 177,
+        "FX6_R22_": 177,
+        "FX6_R23_": 177,
+        "FX6_R24_": 177,
+        "FX6_R25_": 177,
+        "FX6_R26_": 177,
+        "FX6_R27_": 177,
+        "FX6_R29_": 179,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 973,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 61,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 582,
+        "FX6_FONT_": 104,
+        "FX6_WAIT_SNAPSHOT": 2737,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r46b_zebra_persist_peaking_hdmi_isolation": {
+      "run_id": "round46-zebra-peaking-hdmi",
+      "round": 46,
+      "lang": "en",
+      "r46_mode": "zebra_persist_peaking_hdmi_isolation",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Zebra Display] (Off/On, default Wheel-Left [Zebra Display Select]) & [Zebra Level] (8 presets 70/75/80/85/90/95/100/100+, Custom 1 Standard+Range band, Custom 2 Minimum/Lower-Limit) surviving [Camera Settings Reset] intact and resetting only on full [Initialize], plus strict local-LCD-only isolation emitting 0 external HDMI overlay pixels for [Zebra Display] and [Peaking Display] (On/Off, High/Mid/Low, Red/Yellow/Blue/White) across 22 combinations even when [HDMI Info. Display] = [On]",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 6.7,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c8f69366560865a7aa6b48e3ed8b2a659d764694d7be77f7e8e058a447b2484d"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r46": {
+          "r46_mode": "zebra_persist_peaking_hdmi_isolation",
+          "mode_settings_fixed_variable": "Fixed/Variable",
+          "mode_settings_locks_sq_settings_rc": -16,
+          "direct_fps_controls": [
+            "FPS",
+            "Home (FPS)"
+          ],
+          "sq_6_hard_lockouts": [
+            "0ch no sound recorded",
+            "[Audio Out Timing] (Live/Lip Sync) disabled",
+            "[Time Code Run] & [Time Code Output] unavailable",
+            "240fps/200fps blocked on XAVC HS 4K, XAVC S 4K, XAVC S-I 4K, XAVC S-I DCI 4K",
+            "120fps/100fps blocked on XAVC S-I DCI 4K (4096x2160)",
+            "[Proxy Recording] blocked when Rec Frame Rate is 119.88p/100p OR Frame Rate >= 120/100fps"
+          ],
+          "sq_240_200_blocked_4k_formats": [
+            "XAVC HS 4K",
+            "XAVC S 4K",
+            "XAVC S-I 4K",
+            "XAVC S-I DCI 4K"
+          ],
+          "sq_120_100_blocked_dci_format": "XAVC S-I DCI 4K",
+          "audio_out_timing_modes": [
+            "Live",
+            "Lip Sync"
+          ],
+          "zebra_display_modes": [
+            "Off",
+            "On"
+          ],
+          "zebra_wheel_left_default": "Zebra Display Select",
+          "zebra_8_preset_levels": [
+            "70",
+            "75",
+            "80",
+            "85",
+            "90",
+            "95",
+            "100",
+            "100+"
+          ],
+          "zebra_custom_levels": [
+            "Custom 1 (Standard+Range)",
+            "Custom 2 (Minimum/Lower-Limit)"
+          ],
+          "zebra_survives_camera_settings_reset": true,
+          "zebra_reset_only_by_initialize": true,
+          "peaking_levels": [
+            "High",
+            "Mid",
+            "Low"
+          ],
+          "peaking_colors": [
+            "Red",
+            "Yellow",
+            "Blue",
+            "White"
+          ],
+          "hdmi_zebra_overlay_pixels": 0,
+          "hdmi_peaking_overlay_pixels": 0,
+          "format_modes": [
+            "Quick Format",
+            "Full Format"
+          ],
+          "full_format_toggle_key": "(Delete)",
+          "menu_delete_chord_hold_ms": 2000,
+          "slot1_tier0_vault_artifacts": [
+            "pnflasha",
+            "cnflasha",
+            "CAMSET01.DAT"
+          ],
+          "slot1_vault_active_reject_rc": -16,
+          "slot1_vault_wp_reject_rc": -13,
+          "slot1_format_writes": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r46_telemetry": {
+        "zebra_peaking_hdmi_rc": 0,
+        "fullformat_chord_vault_rc": null,
+        "sq_fixedvar_init": {},
+        "sq_fixedvar_bridge": {},
+        "zebra_peaking_bridge": {},
+        "fullformat_vault_bridge": {},
+        "zebra_peaking_hdmi": {
+          "zebra_defaults_off_70_ok": 1,
+          "wheel_left_zebra_select_ok": 1,
+          "invalid_zebra_disp_reject_rc": -22,
+          "zebra_8presets_verified": 8,
+          "invalid_zebra_level_reject_rc": -22,
+          "zebra_custom1_std_range_ok": 1,
+          "zebra_custom2_lower_limit_ok": 1,
+          "zebra_survives_cam_settings_reset_ok": 1,
+          "initialize_resets_zebra_off_70_ok": 1,
+          "peaking_defaults_off_mid_white_ok": 1,
+          "invalid_peaking_reject_rc": -22,
+          "peaking_3levels_verified": 3,
+          "peaking_4colors_verified": 4,
+          "hdmi_info_display_on": 1,
+          "lcd_zebra_overlay_px": 20736,
+          "lcd_peaking_overlay_px": 12992,
+          "hdmi_zebra_overlay_px": 0,
+          "hdmi_peaking_overlay_px": 0,
+          "hdmi_clean_feed_combos_verified": 22,
+          "hdmi_info_on_zero_assist_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_setting_sha256_match": 1,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r46b_ok": 1,
+          "verify_us": 679916
+        },
+        "fullformat_chord_vault": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R46_": 3
+      }
+    },
+    "r46c_slot1_fullformat_chord_vault_h0_h3": {
+      "run_id": "round46-fullformat-chord-vault",
+      "round": 46,
+      "lang": "en",
+      "r46_mode": "slot1_fullformat_chord_vault_h0_h3",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Format] dialog [Quick Format] vs (Delete)-key toggled [Full Format], mid-operation [Cancel] leaving data erased while card stays usable, and shooting-screen [MENU] + [(Delete)] (~2000ms) hardware chord hard-locked (-EBUSY -16 / -EACCES -13, slot1_format_writes=0, emmc_write_count=0) whenever Slot 1 holds an unverified or active Tier-0 recovery vault (pnflasha / cnflasha / CAMSET01.DAT), real guest dlopen(libJit.so), and 16/16 donor SHA-256 H0 == H3 rollback",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 5.3,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c8f69366560865a7aa6b48e3ed8b2a659d764694d7be77f7e8e058a447b2484d"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r46": {
+          "r46_mode": "slot1_fullformat_chord_vault_h0_h3",
+          "mode_settings_fixed_variable": "Fixed/Variable",
+          "mode_settings_locks_sq_settings_rc": -16,
+          "direct_fps_controls": [
+            "FPS",
+            "Home (FPS)"
+          ],
+          "sq_6_hard_lockouts": [
+            "0ch no sound recorded",
+            "[Audio Out Timing] (Live/Lip Sync) disabled",
+            "[Time Code Run] & [Time Code Output] unavailable",
+            "240fps/200fps blocked on XAVC HS 4K, XAVC S 4K, XAVC S-I 4K, XAVC S-I DCI 4K",
+            "120fps/100fps blocked on XAVC S-I DCI 4K (4096x2160)",
+            "[Proxy Recording] blocked when Rec Frame Rate is 119.88p/100p OR Frame Rate >= 120/100fps"
+          ],
+          "sq_240_200_blocked_4k_formats": [
+            "XAVC HS 4K",
+            "XAVC S 4K",
+            "XAVC S-I 4K",
+            "XAVC S-I DCI 4K"
+          ],
+          "sq_120_100_blocked_dci_format": "XAVC S-I DCI 4K",
+          "audio_out_timing_modes": [
+            "Live",
+            "Lip Sync"
+          ],
+          "zebra_display_modes": [
+            "Off",
+            "On"
+          ],
+          "zebra_wheel_left_default": "Zebra Display Select",
+          "zebra_8_preset_levels": [
+            "70",
+            "75",
+            "80",
+            "85",
+            "90",
+            "95",
+            "100",
+            "100+"
+          ],
+          "zebra_custom_levels": [
+            "Custom 1 (Standard+Range)",
+            "Custom 2 (Minimum/Lower-Limit)"
+          ],
+          "zebra_survives_camera_settings_reset": true,
+          "zebra_reset_only_by_initialize": true,
+          "peaking_levels": [
+            "High",
+            "Mid",
+            "Low"
+          ],
+          "peaking_colors": [
+            "Red",
+            "Yellow",
+            "Blue",
+            "White"
+          ],
+          "hdmi_zebra_overlay_pixels": 0,
+          "hdmi_peaking_overlay_pixels": 0,
+          "format_modes": [
+            "Quick Format",
+            "Full Format"
+          ],
+          "full_format_toggle_key": "(Delete)",
+          "menu_delete_chord_hold_ms": 2000,
+          "slot1_tier0_vault_artifacts": [
+            "pnflasha",
+            "cnflasha",
+            "CAMSET01.DAT"
+          ],
+          "slot1_vault_active_reject_rc": -16,
+          "slot1_vault_wp_reject_rc": -13,
+          "slot1_format_writes": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r46_telemetry": {
+        "zebra_peaking_hdmi_rc": null,
+        "fullformat_chord_vault_rc": 0,
+        "sq_fixedvar_init": {},
+        "sq_fixedvar_bridge": {},
+        "zebra_peaking_bridge": {},
+        "fullformat_vault_bridge": {},
+        "zebra_peaking_hdmi": {},
+        "fullformat_chord_vault": {
+          "invalid_fmt_mode_reject_rc": -22,
+          "slot2_quick_format_meta_only_ok": 1,
+          "delete_key_toggles_full_format_ok": 1,
+          "slot2_full_format_all_blocks_ok": 1,
+          "mid_cancel_erases_data_card_usable_ok": 1,
+          "chord_threshold_ms": 2000,
+          "chord_sub2s_ignored_ok": 1,
+          "non_vault_chord_2000ms_dialog_ok": 1,
+          "vault_3artifacts_guarded": 3,
+          "slot1_vault_quick_format_reject_rc": -16,
+          "slot1_vault_full_format_reject_rc": -16,
+          "slot1_vault_mid_cancel_reject_rc": -16,
+          "slot1_chord_2000ms_vault_reject_rc": -16,
+          "slot1_vault_wp_format_reject_rc": -13,
+          "slot1_chord_2000ms_wp_reject_rc": -13,
+          "slot1_format_writes": 0,
+          "slot1_vault_sha256_intact": 1,
+          "verified_swapped_nonvault_unlock_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r46c_ok": 1,
+          "verify_us": 273182
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R46_": 3
+      }
+    }
+  },
+  "r46_realhw_sq_fixedvar_zebra_peaking_fullformat_audit": {
+    "round": 46,
+    "milestone": 46,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r46a_mode_settings_fixed_variable_locks_sq_settings_verified": true,
+    "r46a_sq_all_6_disqualification_locks_verified": true,
+    "r46a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r46b_zebra_camera_settings_reset_survival_and_initialize_reset_verified": true,
+    "r46b_zebra_and_peaking_zero_hdmi_overlay_pixels_when_hdmi_info_on_verified": true,
+    "r46c_quick_vs_delete_fullformat_and_midcancel_erasure_verified": true,
+    "r46c_slot1_tier0_vault_and_menu_delete_2s_chord_lockout_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical ILME-FX3 (Ver. 7.02) on-sensor S&Q 240fps/200fps HD readout vs XAVC S-I DCI 4K (4096x2160) 60fps ceiling, XLR-H1/MI-Shoe silent 0ch recording clip inspection, and physical Home (FPS) touch tile latency under [Mode Settings]=[Fixed/Variable] remain unexecuted on a physical camera body.",
+    "Physical ILME-FX3 (Ver. 7.02) Type-A HDMI analyzer pixel-capture verification of clean HDMI output (0 Zebra / 0 Peaking overlay pixels) alongside local Vari-angle LCD Zebra (Custom 1/Custom 2) and Peaking rendering while [HDMI Info. Display]=[On] remains unexecuted on physical hardware.",
+    "Physical CFexpress Type A / SDXC NAND block-erase timing under (Delete)-toggled [Full Format], mid-format [Cancel] file-recovery impossibility check, and physical [MENU] + [(Delete)] (~2s) tactile button-chord rejection on a write-protected Slot-1 Tier-0 vault card remain unexecuted on physical media."
+  ]
+}

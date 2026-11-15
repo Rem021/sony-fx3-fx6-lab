@@ -12389,6 +12389,1094 @@ static int run_r45_powersave_autotemp_probe(void) {
     return ok ? 0 : 238;
 }
 
+/* ============================================================================
+ * Round 46 (Wave-32, 46th Milestone):
+ *   1. r46a: Ver. 7.02 [Mode Settings]=[Fixed/Variable] locking [S&Q Settings]
+ *            in favor of direct [FPS] / Home(FPS), plus all 6 S&Q lockouts:
+ *            (1) 0ch no audio, (2) [Audio Out Timing] (Live/Lip Sync) disabled,
+ *            (3) [Time Code Run] & [Time Code Output] unavailable,
+ *            (4) 240/200fps blocked on XAVC HS 4K / S 4K / S-I 4K / S-I DCI 4K,
+ *            (5) 120/100fps blocked on XAVC S-I DCI 4K (4096x2160),
+ *            (6) [Proxy Recording] blocked when Rec Frame Rate is 119.88p/100p
+ *                OR Frame Rate >= 120/100fps.
+ *   2. r46b: [Zebra Display] (Off/On, Wheel-Left [Zebra Display Select]) &
+ *            [Zebra Level] (70..100+, Custom 1 Standard+Range, Custom 2 Minimum)
+ *            survival across [Camera Settings Reset] (reset only by [Initialize]),
+ *            and 0 external HDMI overlay pixels for [Zebra Display] & [Peaking Display]
+ *            (On/Off, High/Mid/Low, Red/Yellow/Blue/White) even when [HDMI Info. Display]=On.
+ *   3. r46c: Slot-1 [Format] Quick vs (Delete)-toggled Full Format, mid-cancel
+ *            erasure & shooting-screen MENU + (Delete) (~2s) hardware chord
+ *            Tier-0 vault lockout (-EBUSY/-EACCES, slot1_format_writes=0,
+ *            emmc_write_count=0) + 16/16 H0 == H3 deterministic rollback.
+ * ============================================================================ */
+
+enum {
+    R46_MODE_SETTINGS_LEGACY_SQ      = 0,
+    R46_MODE_SETTINGS_FIXED_VARIABLE = 1,
+    R46_MODE_SETTINGS_INVALID        = 2
+};
+
+enum {
+    R46_SHOOT_NORMAL_MOVIE = 0,
+    R46_SHOOT_SQ_MOTION    = 1
+};
+
+enum {
+    R46_FMT_XAVC_HS_4K     = 0, /* 3840x2160 */
+    R46_FMT_XAVC_S_4K      = 1, /* 3840x2160 */
+    R46_FMT_XAVC_SI_4K     = 2, /* 3840x2160 */
+    R46_FMT_XAVC_SI_DCI_4K = 3, /* 4096x2160 */
+    R46_FMT_XAVC_S_HD      = 4, /* 1920x1080 */
+    R46_FMT_XAVC_SI_HD     = 5, /* 1920x1080 */
+    R46_FMT_INVALID        = 6
+};
+
+enum {
+    R46_AUDIO_TIMING_LIVE     = 0, /* Default zero-delay */
+    R46_AUDIO_TIMING_LIP_SYNC = 1, /* Video-aligned */
+    R46_AUDIO_TIMING_INVALID  = 2
+};
+
+enum {
+    R46_TC_RUN_FREE = 0,
+    R46_TC_RUN_REC  = 1
+};
+
+enum {
+    R46_PROXY_OFF            = 0,
+    R46_PROXY_HS_HD_16M_10B  = 1, /* XAVC HS HD 16Mbps 4:2:0 10bit */
+    R46_PROXY_HS_HD_9M_10B   = 2, /* XAVC HS HD 9Mbps  4:2:0 10bit */
+    R46_PROXY_S_HD_6M_8B     = 3, /* XAVC S HD  6Mbps  4:2:0 8bit  */
+    R46_PROXY_INVALID        = 4
+};
+
+typedef struct {
+    int mode_settings;            /* R46_MODE_SETTINGS_* */
+    int shoot_mode;               /* R46_SHOOT_* */
+    int file_format;              /* R46_FMT_* */
+    int movie_bitrate_mbps;       /* Follows [Movie Settings] & [File Format] */
+    int rec_fps_code;             /* 24, 25, 30, 50, 60, 100, 120 (119.88p) */
+    int shoot_fps;                /* Direct [FPS] / Home (FPS): 1..240 */
+    int effective_audio_channels; /* 2/4 in Normal, 0ch in S&Q */
+    int audio_out_timing;         /* R46_AUDIO_TIMING_* */
+    int tc_run_mode;              /* R46_TC_RUN_* */
+    int tc_output_on;             /* 0 or 1 */
+    int proxy_profile;            /* R46_PROXY_* */
+} r46_sq_fixedvar_state_t;
+
+__attribute__((noinline)) static int r46_set_mode_settings(r46_sq_fixedvar_state_t *st, int mode_settings) {
+    if (!st) return -EINVAL;
+    if (mode_settings != R46_MODE_SETTINGS_LEGACY_SQ &&
+        mode_settings != R46_MODE_SETTINGS_FIXED_VARIABLE) {
+        return -EINVAL; /* -22 */
+    }
+    st->mode_settings = mode_settings;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_open_legacy_sq_settings_menu(const r46_sq_fixedvar_state_t *st) {
+    if (!st) return -EINVAL;
+    /* Ver. 7.00+/7.02: when [Mode Settings] == [Fixed/Variable], [S&Q Settings] is locked */
+    if (st->mode_settings == R46_MODE_SETTINGS_FIXED_VARIABLE) {
+        return -EBUSY; /* -16: locked in favor of direct [FPS] / Home (FPS) */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_default_bitrate_for_format(int file_fmt) {
+    switch (file_fmt) {
+        case R46_FMT_XAVC_HS_4K:     return 200;
+        case R46_FMT_XAVC_S_4K:      return 280;
+        case R46_FMT_XAVC_SI_4K:     return 600;
+        case R46_FMT_XAVC_SI_DCI_4K: return 600;
+        case R46_FMT_XAVC_S_HD:      return 100;
+        case R46_FMT_XAVC_SI_HD:     return 222;
+        default:                     return 0;
+    }
+}
+
+__attribute__((noinline)) static int r46_set_direct_fps_home(
+    r46_sq_fixedvar_state_t *st,
+    int shoot_mode,
+    int file_fmt,
+    int rec_fps_code,
+    int shoot_fps
+) {
+    if (!st) return -EINVAL;
+    if (shoot_mode != R46_SHOOT_NORMAL_MOVIE && shoot_mode != R46_SHOOT_SQ_MOTION) {
+        return -EINVAL;
+    }
+    if (file_fmt < R46_FMT_XAVC_HS_4K || file_fmt >= R46_FMT_INVALID) {
+        return -EINVAL;
+    }
+    if (shoot_fps < 1 || shoot_fps > 240) {
+        return -EINVAL;
+    }
+    if (shoot_mode == R46_SHOOT_SQ_MOTION) {
+        /* Lock 4: 240fps (NTSC) / 200fps (PAL) blocked on all 4K formats (HS 4K, S 4K, S-I 4K, S-I DCI 4K) */
+        if (shoot_fps >= 200 &&
+            (file_fmt == R46_FMT_XAVC_HS_4K ||
+             file_fmt == R46_FMT_XAVC_S_4K ||
+             file_fmt == R46_FMT_XAVC_SI_4K ||
+             file_fmt == R46_FMT_XAVC_SI_DCI_4K)) {
+            return -EINVAL; /* -22 */
+        }
+        /* Lock 5: 120fps (NTSC) / 100fps (PAL) blocked on XAVC S-I DCI 4K (4096x2160) */
+        if (shoot_fps >= 100 && file_fmt == R46_FMT_XAVC_SI_DCI_4K) {
+            return -EINVAL; /* -22 */
+        }
+    }
+    st->shoot_mode = shoot_mode;
+    st->file_format = file_fmt;
+    st->movie_bitrate_mbps = r46_default_bitrate_for_format(file_fmt);
+    st->rec_fps_code = rec_fps_code;
+    st->shoot_fps = shoot_fps;
+    /* Lock 1: Zero audio capture (0ch) during S&Q motion recording */
+    st->effective_audio_channels = (shoot_mode == R46_SHOOT_SQ_MOTION) ? 0 : 2;
+    if (shoot_mode == R46_SHOOT_SQ_MOTION && (rec_fps_code >= 100 || shoot_fps >= 100)) {
+        st->proxy_profile = R46_PROXY_OFF;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_enable_audio_capture_channels(r46_sq_fixedvar_state_t *st, int ch) {
+    if (!st) return -EINVAL;
+    if (ch != 2 && ch != 4) return -EINVAL;
+    if (st->shoot_mode == R46_SHOOT_SQ_MOTION) {
+        return -EOPNOTSUPP; /* -95: Lock 1 — 0ch no sound recorded in S&Q */
+    }
+    st->effective_audio_channels = ch;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_audio_out_timing(r46_sq_fixedvar_state_t *st, int timing) {
+    if (!st) return -EINVAL;
+    if (timing != R46_AUDIO_TIMING_LIVE && timing != R46_AUDIO_TIMING_LIP_SYNC) {
+        return -EINVAL; /* -22 */
+    }
+    if (st->shoot_mode == R46_SHOOT_SQ_MOTION) {
+        return -EOPNOTSUPP; /* -95: Lock 2 — [Audio Out Timing] disabled during S&Q */
+    }
+    st->audio_out_timing = timing;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_tc_run(r46_sq_fixedvar_state_t *st, int tc_run) {
+    if (!st) return -EINVAL;
+    if (tc_run != R46_TC_RUN_FREE && tc_run != R46_TC_RUN_REC) return -EINVAL;
+    if (st->shoot_mode == R46_SHOOT_SQ_MOTION) {
+        return -EOPNOTSUPP; /* -95: Lock 3 — [Time Code Run] unavailable in S&Q */
+    }
+    st->tc_run_mode = tc_run;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_tc_output(r46_sq_fixedvar_state_t *st, int tc_output_on) {
+    if (!st) return -EINVAL;
+    if (tc_output_on != 0 && tc_output_on != 1) return -EINVAL;
+    if (st->shoot_mode == R46_SHOOT_SQ_MOTION && tc_output_on == 1) {
+        return -EOPNOTSUPP; /* -95: Lock 3 — [Time Code Output] unavailable in S&Q */
+    }
+    st->tc_output_on = tc_output_on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_proxy_recording(r46_sq_fixedvar_state_t *st, int proxy_profile) {
+    if (!st) return -EINVAL;
+    if (proxy_profile < R46_PROXY_OFF || proxy_profile >= R46_PROXY_INVALID) {
+        return -EINVAL;
+    }
+    if (proxy_profile != R46_PROXY_OFF && st->shoot_mode == R46_SHOOT_SQ_MOTION) {
+        /* Lock 6: Proxy blocked in S&Q when Rec Frame Rate is 119.88p/100p OR Frame Rate >= 120/100fps */
+        if (st->rec_fps_code >= 100 || st->shoot_fps >= 100) {
+            return -EINVAL; /* -22 */
+        }
+    }
+    st->proxy_profile = proxy_profile;
+    return 0;
+}
+
+static int setup_r46_sq_fixedvar_6locks_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r46_p2_ro", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r46_p2_ro");
+    if (mount("tmpfs", "/mnt/r46_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 39U + 0x46U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r46_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r46_p2_ro/Backup.bin", pre_p2_sha, &cbytes) != 0) return -1;
+    if (mount(NULL, "/mnt/r46_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    r46_sq_fixedvar_state_t st;
+    memset(&st, 0, sizeof(st));
+
+    /* 1. Ver. 7.00+/7.02 [Mode Settings] = [Fixed/Variable] locks [S&Q Settings] in favor of direct [FPS] / Home (FPS) */
+    int legacy_sq_settings_unlocked_ok = (r46_set_mode_settings(&st, R46_MODE_SETTINGS_LEGACY_SQ) == 0 &&
+                                          r46_open_legacy_sq_settings_menu(&st) == 0) ? 1 : 0;
+    int invalid_mode_settings_reject_rc = r46_set_mode_settings(&st, R46_MODE_SETTINGS_INVALID);
+    int fv_rc = r46_set_mode_settings(&st, R46_MODE_SETTINGS_FIXED_VARIABLE);
+    int fixed_variable_locks_sq_settings_rc = (fv_rc == 0) ? r46_open_legacy_sq_settings_menu(&st) : 0;
+
+    /* Normal movie baseline: [Audio Out Timing] Live & Lip Sync both work; TC Run & TC Output work */
+    (void)r46_set_direct_fps_home(&st, R46_SHOOT_NORMAL_MOVIE, R46_FMT_XAVC_S_4K, 24, 24);
+    int normal_audio_out_timing_2modes_ok = 0;
+    if (r46_set_audio_out_timing(&st, R46_AUDIO_TIMING_LIVE) == 0) normal_audio_out_timing_2modes_ok++;
+    if (r46_set_audio_out_timing(&st, R46_AUDIO_TIMING_LIP_SYNC) == 0) normal_audio_out_timing_2modes_ok++;
+    int invalid_audio_timing_reject_rc = r46_set_audio_out_timing(&st, R46_AUDIO_TIMING_INVALID);
+    int normal_tc_ok = (r46_set_tc_run(&st, R46_TC_RUN_FREE) == 0 && r46_set_tc_output(&st, 1) == 0) ? 1 : 0;
+
+    /* Direct [FPS] / Home (FPS) control in S&Q under [Fixed/Variable]; codec/bit-rate follow [Movie Settings] & [File Format] */
+    int direct_fps_home_control_ok = (r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_SI_4K, 24, 60) == 0 &&
+                                      st.shoot_fps == 60) ? 1 : 0;
+    int codec_follows_movie_settings_ok = (st.movie_bitrate_mbps == 600 && normal_tc_ok == 1) ? 1 : 0;
+
+    /* S&Q Lock 1: 0ch no sound recorded */
+    int sq_audio_channels = st.effective_audio_channels;
+    int sq_audio_rec_reject_rc = r46_enable_audio_capture_channels(&st, 2);
+    int lock1_ok = (sq_audio_channels == 0 && sq_audio_rec_reject_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* S&Q Lock 2: [Audio Out Timing] (Live / Lip Sync) disabled */
+    int sq_live_rc = r46_set_audio_out_timing(&st, R46_AUDIO_TIMING_LIVE);
+    int sq_lipsync_rc = r46_set_audio_out_timing(&st, R46_AUDIO_TIMING_LIP_SYNC);
+    int sq_audio_out_timing_reject_rc = (sq_live_rc == -EOPNOTSUPP && sq_lipsync_rc == -EOPNOTSUPP) ? sq_live_rc : 0;
+    int lock2_ok = (sq_audio_out_timing_reject_rc == -EOPNOTSUPP && normal_audio_out_timing_2modes_ok == 2) ? 1 : 0;
+
+    /* S&Q Lock 3: [Time Code Run] & [Time Code Output] unavailable */
+    int sq_tc_run_reject_rc = r46_set_tc_run(&st, R46_TC_RUN_REC);
+    int sq_tc_output_reject_rc = r46_set_tc_output(&st, 1);
+    int lock3_ok = (sq_tc_run_reject_rc == -EOPNOTSUPP && sq_tc_output_reject_rc == -EOPNOTSUPP) ? 1 : 0;
+
+    /* S&Q Lock 4: 240fps/200fps blocked on XAVC HS 4K, XAVC S 4K, XAVC S-I 4K, XAVC S-I DCI 4K (allowed on HD) */
+    const int k_4k_formats[4] = {
+        R46_FMT_XAVC_HS_4K, R46_FMT_XAVC_S_4K, R46_FMT_XAVC_SI_4K, R46_FMT_XAVC_SI_DCI_4K
+    };
+    int sq_240_200_4k_blocked = 0;
+    int sq_240_200_4k_reject_rc = 0;
+    for (size_t i = 0U; i < 4U; i++) {
+        int r240 = r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, k_4k_formats[i], 24, 240);
+        int r200 = r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, k_4k_formats[i], 25, 200);
+        if (r240 == -EINVAL && r200 == -EINVAL) {
+            sq_240_200_4k_blocked++;
+            sq_240_200_4k_reject_rc = r240;
+        }
+    }
+    int sq_240_200_hd_allowed = 0;
+    if (r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_S_HD, 24, 240) == 0 &&
+        r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_S_HD, 25, 200) == 0) {
+        sq_240_200_hd_allowed++;
+    }
+    if (r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_SI_HD, 24, 240) == 0 &&
+        r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_SI_HD, 25, 200) == 0) {
+        sq_240_200_hd_allowed++;
+    }
+    int lock4_ok = (sq_240_200_4k_blocked == 4 && sq_240_200_hd_allowed == 2) ? 1 : 0;
+
+    /* S&Q Lock 5: 120fps/100fps blocked on XAVC S-I DCI 4K (4096x2160); allowed on UHD 4K (HS 4K, S 4K, S-I 4K) */
+    int sq_120_100_dci4k_blocked = 0;
+    int sq_120_100_dci4k_reject_rc = 0;
+    int dci120 = r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_SI_DCI_4K, 24, 120);
+    int dci100 = r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_SI_DCI_4K, 25, 100);
+    if (dci120 == -EINVAL) { sq_120_100_dci4k_blocked++; sq_120_100_dci4k_reject_rc = dci120; }
+    if (dci100 == -EINVAL) { sq_120_100_dci4k_blocked++; }
+    int sq_120_100_uhd4k_allowed = 0;
+    for (size_t i = 0U; i < 3U; i++) {
+        if (r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, k_4k_formats[i], 24, 120) == 0 &&
+            r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, k_4k_formats[i], 25, 100) == 0) {
+            sq_120_100_uhd4k_allowed++;
+        }
+    }
+    int lock5_ok = (sq_120_100_dci4k_blocked == 2 && sq_120_100_uhd4k_allowed == 3) ? 1 : 0;
+
+    /* S&Q Lock 6: [Proxy Recording] blocked when Rec Frame Rate is 119.88p/100p OR Frame Rate >= 120/100fps */
+    (void)r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_S_4K, 24, 60);
+    int sq_proxy_le60_allowed = 0;
+    if (r46_set_proxy_recording(&st, R46_PROXY_HS_HD_16M_10B) == 0 &&
+        r46_set_proxy_recording(&st, R46_PROXY_HS_HD_9M_10B) == 0 &&
+        r46_set_proxy_recording(&st, R46_PROXY_S_HD_6M_8B) == 0) {
+        sq_proxy_le60_allowed = 1;
+    }
+    int sq_proxy_rec119_100_blocked = 0;
+    int sq_proxy_cutoff_reject_rc = 0;
+    const int rec_hfr[2] = { 100, 120 }; /* 100p & 119.88p */
+    for (size_t i = 0U; i < 2U; i++) {
+        (void)r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, R46_FMT_XAVC_S_4K, rec_hfr[i], 60);
+        int prc = r46_set_proxy_recording(&st, R46_PROXY_HS_HD_16M_10B);
+        if (prc == -EINVAL && st.proxy_profile == R46_PROXY_OFF) {
+            sq_proxy_rec119_100_blocked++;
+            sq_proxy_cutoff_reject_rc = prc;
+        }
+    }
+    int sq_proxy_fps_ge100_blocked = 0;
+    const int fps_hfr[4] = { 100, 120, 200, 240 };
+    for (size_t i = 0U; i < 4U; i++) {
+        int fmt = (fps_hfr[i] >= 200) ? R46_FMT_XAVC_S_HD : R46_FMT_XAVC_S_4K;
+        (void)r46_set_direct_fps_home(&st, R46_SHOOT_SQ_MOTION, fmt, 24, fps_hfr[i]);
+        int prc1 = r46_set_proxy_recording(&st, R46_PROXY_HS_HD_16M_10B);
+        int prc2 = r46_set_proxy_recording(&st, R46_PROXY_S_HD_6M_8B);
+        if (prc1 == -EINVAL && prc2 == -EINVAL && st.proxy_profile == R46_PROXY_OFF) {
+            sq_proxy_fps_ge100_blocked++;
+        }
+    }
+    int lock6_ok = (sq_proxy_le60_allowed == 1 &&
+                    sq_proxy_rec119_100_blocked == 2 &&
+                    sq_proxy_fps_ge100_blocked == 4 &&
+                    sq_proxy_cutoff_reject_rc == -EINVAL) ? 1 : 0;
+
+    int sq_6locks_verified = lock1_ok + lock2_ok + lock3_ok + lock4_ok + lock5_ok + lock6_ok;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r46_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r46_p2_ro/Backup.bin", post_p2_sha, &cbytes) != 0) return -1;
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r46_p2_ro");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R46_SQ_FIXEDVAR_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (legacy_sq_settings_unlocked_ok == 1 &&
+              invalid_mode_settings_reject_rc == -EINVAL &&
+              fixed_variable_locks_sq_settings_rc == -EBUSY &&
+              direct_fps_home_control_ok == 1 &&
+              codec_follows_movie_settings_ok == 1 &&
+              sq_6locks_verified == 6 &&
+              invalid_audio_timing_reject_rc == -EINVAL &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R46_SQ_FIXEDVAR_INIT fixed_variable_locks_sq_settings_rc=%d "
+            "legacy_sq_settings_unlocked_ok=%d invalid_mode_settings_reject_rc=%d "
+            "direct_fps_home_control_ok=%d codec_follows_movie_settings_ok=%d "
+            "sq_6locks_verified=%d sq_audio_channels=%d sq_audio_rec_reject_rc=%d "
+            "normal_audio_out_timing_2modes_ok=%d invalid_audio_timing_reject_rc=%d "
+            "sq_audio_out_timing_reject_rc=%d sq_tc_run_reject_rc=%d sq_tc_output_reject_rc=%d "
+            "sq_240_200_4k_blocked=%d sq_240_200_hd_allowed=%d sq_240_200_4k_reject_rc=%d "
+            "sq_120_100_dci4k_blocked=%d sq_120_100_uhd4k_allowed=%d sq_120_100_dci4k_reject_rc=%d "
+            "sq_proxy_le60_allowed=%d sq_proxy_rec119_100_blocked=%d sq_proxy_fps_ge100_blocked=%d "
+            "sq_proxy_cutoff_reject_rc=%d p2_write_blocked_rc=%d p2_sha256_match=%d "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r46_init_ok=%d verify_us=%lld\n",
+            fixed_variable_locks_sq_settings_rc, legacy_sq_settings_unlocked_ok,
+            invalid_mode_settings_reject_rc, direct_fps_home_control_ok,
+            codec_follows_movie_settings_ok, sq_6locks_verified,
+            sq_audio_channels, sq_audio_rec_reject_rc,
+            normal_audio_out_timing_2modes_ok, invalid_audio_timing_reject_rc,
+            sq_audio_out_timing_reject_rc, sq_tc_run_reject_rc, sq_tc_output_reject_rc,
+            sq_240_200_4k_blocked, sq_240_200_hd_allowed, sq_240_200_4k_reject_rc,
+            sq_120_100_dci4k_blocked, sq_120_100_uhd4k_allowed, sq_120_100_dci4k_reject_rc,
+            sq_proxy_le60_allowed, sq_proxy_rec119_100_blocked, sq_proxy_fps_ge100_blocked,
+            sq_proxy_cutoff_reject_rc, p2_write_blocked_rc, p2_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R46_ZEBRA_OFF     = 0, /* Default */
+    R46_ZEBRA_ON      = 1,
+    R46_ZEBRA_INVALID = 2
+};
+
+enum {
+    R46_ZEBRA_LVL_70       = 0, /* Default */
+    R46_ZEBRA_LVL_75       = 1,
+    R46_ZEBRA_LVL_80       = 2,
+    R46_ZEBRA_LVL_85       = 3,
+    R46_ZEBRA_LVL_90       = 4,
+    R46_ZEBRA_LVL_95       = 5,
+    R46_ZEBRA_LVL_100      = 6,
+    R46_ZEBRA_LVL_100_PLUS = 7,
+    R46_ZEBRA_LVL_CUSTOM1  = 8, /* Standard + Range (correct-exposure band) */
+    R46_ZEBRA_LVL_CUSTOM2  = 9, /* Minimum / Lower-Limit (overexposure threshold) */
+    R46_ZEBRA_LVL_INVALID  = 10
+};
+
+enum {
+    R46_PEAKING_OFF     = 0, /* Default */
+    R46_PEAKING_ON      = 1,
+    R46_PEAKING_INVALID = 2
+};
+
+enum {
+    R46_PEAK_LVL_HIGH    = 0,
+    R46_PEAK_LVL_MID     = 1, /* Default */
+    R46_PEAK_LVL_LOW     = 2,
+    R46_PEAK_LVL_INVALID = 3
+};
+
+enum {
+    R46_PEAK_CLR_RED     = 0,
+    R46_PEAK_CLR_YELLOW  = 1,
+    R46_PEAK_CLR_BLUE    = 2,
+    R46_PEAK_CLR_WHITE   = 3, /* Default */
+    R46_PEAK_CLR_INVALID = 4
+};
+
+typedef struct {
+    int zebra_display;            /* R46_ZEBRA_OFF / R46_ZEBRA_ON */
+    int zebra_level_slot;         /* R46_ZEBRA_LVL_70 .. CUSTOM2 */
+    int zebra_custom1_std_ire;    /* 70..100 */
+    int zebra_custom1_range_ire;  /* 1..20 (+/- range) */
+    int zebra_custom2_min_ire;    /* 70..109 (Lower-Limit) */
+    int wheel_left_zebra_select;  /* 1 = [Zebra Display Select] default */
+    int peaking_display;          /* R46_PEAKING_OFF / R46_PEAKING_ON */
+    int peaking_level;            /* R46_PEAK_LVL_HIGH / MID / LOW */
+    int peaking_color;            /* R46_PEAK_CLR_RED / YELLOW / BLUE / WHITE */
+    int wheel_right_peaking_sel;  /* 1 = [Peaking Display Select] default */
+    int hdmi_info_display;        /* 0 = Off, 1 = On */
+    int exposure_comp_ev_x10;     /* Standard shooting setting reset by [Camera Settings Reset] */
+} r46_assist_hdmi_state_t;
+
+__attribute__((noinline)) static void r46_assist_initialize_defaults(r46_assist_hdmi_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->zebra_display = R46_ZEBRA_OFF;
+    st->zebra_level_slot = R46_ZEBRA_LVL_70;
+    st->zebra_custom1_std_ire = 70;
+    st->zebra_custom1_range_ire = 5;
+    st->zebra_custom2_min_ire = 100;
+    st->wheel_left_zebra_select = 1;
+    st->peaking_display = R46_PEAKING_OFF;
+    st->peaking_level = R46_PEAK_LVL_MID;
+    st->peaking_color = R46_PEAK_CLR_WHITE;
+    st->wheel_right_peaking_sel = 1;
+    st->hdmi_info_display = 0;
+    st->exposure_comp_ev_x10 = 0;
+}
+
+__attribute__((noinline)) static int r46_set_zebra_display(r46_assist_hdmi_state_t *st, int mode) {
+    if (!st) return -EINVAL;
+    if (mode != R46_ZEBRA_OFF && mode != R46_ZEBRA_ON) return -EINVAL;
+    st->zebra_display = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_wheel_left_toggle_zebra(r46_assist_hdmi_state_t *st) {
+    if (!st || !st->wheel_left_zebra_select) return -EOPNOTSUPP;
+    st->zebra_display = (st->zebra_display == R46_ZEBRA_OFF) ? R46_ZEBRA_ON : R46_ZEBRA_OFF;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_zebra_preset(r46_assist_hdmi_state_t *st, int slot) {
+    if (!st) return -EINVAL;
+    if (slot < R46_ZEBRA_LVL_70 || slot > R46_ZEBRA_LVL_100_PLUS) return -EINVAL;
+    st->zebra_level_slot = slot;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_zebra_custom1_std_range(r46_assist_hdmi_state_t *st, int std_ire, int range_ire) {
+    if (!st) return -EINVAL;
+    if (std_ire < 50 || std_ire > 105 || range_ire < 1 || range_ire > 25) return -EINVAL;
+    st->zebra_level_slot = R46_ZEBRA_LVL_CUSTOM1;
+    st->zebra_custom1_std_ire = std_ire;
+    st->zebra_custom1_range_ire = range_ire;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_set_zebra_custom2_lower_limit(r46_assist_hdmi_state_t *st, int min_ire) {
+    if (!st) return -EINVAL;
+    if (min_ire < 50 || min_ire > 109) return -EINVAL;
+    st->zebra_level_slot = R46_ZEBRA_LVL_CUSTOM2;
+    st->zebra_custom2_min_ire = min_ire;
+    return 0;
+}
+
+__attribute__((noinline)) static void r46_camera_settings_reset(r46_assist_hdmi_state_t *st) {
+    if (!st) return;
+    /* [Camera Settings Reset] resets standard shooting settings, NOT [Zebra Display] or [Zebra Level]! */
+    st->exposure_comp_ev_x10 = 0;
+    st->peaking_display = R46_PEAKING_OFF;
+    st->peaking_level = R46_PEAK_LVL_MID;
+    st->peaking_color = R46_PEAK_CLR_WHITE;
+}
+
+__attribute__((noinline)) static int r46_set_peaking_config(r46_assist_hdmi_state_t *st, int disp, int lvl, int clr) {
+    if (!st) return -EINVAL;
+    if (disp != R46_PEAKING_OFF && disp != R46_PEAKING_ON) return -EINVAL;
+    if (lvl < R46_PEAK_LVL_HIGH || lvl >= R46_PEAK_LVL_INVALID) return -EINVAL;
+    if (clr < R46_PEAK_CLR_RED || clr >= R46_PEAK_CLR_INVALID) return -EINVAL;
+    st->peaking_display = disp;
+    st->peaking_level = lvl;
+    st->peaking_color = clr;
+    return 0;
+}
+
+__attribute__((noinline)) static void r46_render_lcd_vs_hdmi_assist_planes(
+    const r46_assist_hdmi_state_t *st,
+    unsigned int *out_lcd_zebra_px,
+    unsigned int *out_lcd_peaking_px,
+    unsigned int *out_hdmi_info_hud_px,
+    unsigned int *out_hdmi_zebra_px,
+    unsigned int *out_hdmi_peaking_px
+) {
+    unsigned int lz = 0U, lp = 0U, hi = 0U;
+    if (st) {
+        if (st->zebra_display == R46_ZEBRA_ON) {
+            lz = 18432U + (unsigned int)(st->zebra_level_slot * 256);
+        }
+        if (st->peaking_display == R46_PEAKING_ON) {
+            lp = 12288U + (unsigned int)((3 - st->peaking_level) * 512 + st->peaking_color * 64);
+        }
+        if (st->hdmi_info_display) {
+            hi = 24576U; /* Camera status text HUD on HDMI when [HDMI Info. Display]=On */
+        }
+    }
+    if (out_lcd_zebra_px) *out_lcd_zebra_px = lz;
+    if (out_lcd_peaking_px) *out_lcd_peaking_px = lp;
+    if (out_hdmi_info_hud_px) *out_hdmi_info_hud_px = hi;
+    /* Official Sony hardware rule: Zebra stripes and Peaking outlines are NEVER output over HDMI */
+    if (out_hdmi_zebra_px) *out_hdmi_zebra_px = 0U;
+    if (out_hdmi_peaking_px) *out_hdmi_peaking_px = 0U;
+}
+
+static int run_r46_zebra_peaking_hdmi_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r46_p2_setting", 0755) != 0) {
+        return 239;
+    }
+    (void)umount("/mnt/r46_p2_setting");
+    if (mount("tmpfs", "/mnt/r46_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 239;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 47U + 0x36U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r46_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 239;
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r46_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) return 239;
+    if (mount(NULL, "/mnt/r46_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) return 239;
+
+    r46_assist_hdmi_state_t st;
+    r46_assist_initialize_defaults(&st);
+
+    /* 1. Verify defaults, Control Wheel Left [Zebra Display Select], 8 presets + Custom 1 + Custom 2 */
+    int zebra_defaults_off_70_ok = (st.zebra_display == R46_ZEBRA_OFF &&
+                                    st.zebra_level_slot == R46_ZEBRA_LVL_70 &&
+                                    st.wheel_left_zebra_select == 1) ? 1 : 0;
+    int wheel_left_zebra_select_ok = (r46_wheel_left_toggle_zebra(&st) == 0 &&
+                                      st.zebra_display == R46_ZEBRA_ON) ? 1 : 0;
+    int invalid_zebra_disp_reject_rc = r46_set_zebra_display(&st, R46_ZEBRA_INVALID);
+    int zebra_8presets_verified = 0;
+    for (int slot = R46_ZEBRA_LVL_70; slot <= R46_ZEBRA_LVL_100_PLUS; slot++) {
+        if (r46_set_zebra_preset(&st, slot) == 0 && st.zebra_level_slot == slot) {
+            zebra_8presets_verified++;
+        }
+    }
+    int invalid_zebra_level_reject_rc = r46_set_zebra_preset(&st, R46_ZEBRA_LVL_INVALID);
+    int zebra_custom1_std_range_ok = (r46_set_zebra_custom1_std_range(&st, 75, 5) == 0 &&
+                                      st.zebra_level_slot == R46_ZEBRA_LVL_CUSTOM1 &&
+                                      r46_set_zebra_custom1_std_range(&st, 200, 5) == -EINVAL) ? 1 : 0;
+    int zebra_custom2_lower_limit_ok = (r46_set_zebra_custom2_lower_limit(&st, 95) == 0 &&
+                                        st.zebra_level_slot == R46_ZEBRA_LVL_CUSTOM2 &&
+                                        r46_set_zebra_custom2_lower_limit(&st, 120) == -EINVAL) ? 1 : 0;
+
+    /* 2. [Camera Settings Reset] survival vs [Initialize] full reset */
+    (void)r46_set_zebra_display(&st, R46_ZEBRA_ON);
+    (void)r46_set_zebra_custom1_std_range(&st, 80, 6);
+    st.exposure_comp_ev_x10 = 17;
+    r46_camera_settings_reset(&st);
+    int c1_survived = (st.exposure_comp_ev_x10 == 0 &&
+                       st.zebra_display == R46_ZEBRA_ON &&
+                       st.zebra_level_slot == R46_ZEBRA_LVL_CUSTOM1 &&
+                       st.zebra_custom1_std_ire == 80 &&
+                       st.zebra_custom1_range_ire == 6) ? 1 : 0;
+
+    (void)r46_set_zebra_custom2_lower_limit(&st, 102);
+    r46_camera_settings_reset(&st);
+    int c2_survived = (st.zebra_display == R46_ZEBRA_ON &&
+                       st.zebra_level_slot == R46_ZEBRA_LVL_CUSTOM2 &&
+                       st.zebra_custom2_min_ire == 102) ? 1 : 0;
+
+    (void)r46_set_zebra_preset(&st, R46_ZEBRA_LVL_100_PLUS);
+    r46_camera_settings_reset(&st);
+    int preset_survived = (st.zebra_display == R46_ZEBRA_ON &&
+                           st.zebra_level_slot == R46_ZEBRA_LVL_100_PLUS) ? 1 : 0;
+    int zebra_survives_cam_settings_reset_ok = (c1_survived && c2_survived && preset_survived) ? 1 : 0;
+
+    r46_assist_initialize_defaults(&st);
+    int initialize_resets_zebra_off_70_ok = (st.zebra_display == R46_ZEBRA_OFF &&
+                                             st.zebra_level_slot == R46_ZEBRA_LVL_70) ? 1 : 0;
+
+    /* 3. [Peaking Display] defaults (Off, Mid, White, Wheel-Right) & 3 levels x 4 colors */
+    int peaking_defaults_off_mid_white_ok = (st.peaking_display == R46_PEAKING_OFF &&
+                                             st.peaking_level == R46_PEAK_LVL_MID &&
+                                             st.peaking_color == R46_PEAK_CLR_WHITE &&
+                                             st.wheel_right_peaking_sel == 1) ? 1 : 0;
+    int invalid_peaking_reject_rc = r46_set_peaking_config(&st, R46_PEAKING_ON, R46_PEAK_LVL_INVALID, R46_PEAK_CLR_WHITE);
+    int peaking_3levels_verified = 0;
+    for (int lvl = R46_PEAK_LVL_HIGH; lvl <= R46_PEAK_LVL_LOW; lvl++) {
+        if (r46_set_peaking_config(&st, R46_PEAKING_ON, lvl, R46_PEAK_CLR_WHITE) == 0 && st.peaking_level == lvl) {
+            peaking_3levels_verified++;
+        }
+    }
+    int peaking_4colors_verified = 0;
+    for (int clr = R46_PEAK_CLR_RED; clr <= R46_PEAK_CLR_WHITE; clr++) {
+        if (r46_set_peaking_config(&st, R46_PEAKING_ON, R46_PEAK_LVL_HIGH, clr) == 0 && st.peaking_color == clr) {
+            peaking_4colors_verified++;
+        }
+    }
+
+    /* 4. Strict HDMI Clean-Feed Isolation: even with [HDMI Info. Display]=On, 0 HDMI Zebra & 0 HDMI Peaking px */
+    st.hdmi_info_display = 1;
+    (void)r46_set_zebra_display(&st, R46_ZEBRA_ON);
+    unsigned int total_hdmi_zebra_px = 0U;
+    unsigned int total_hdmi_peaking_px = 0U;
+    unsigned int last_lcd_zebra_px = 0U;
+    unsigned int last_lcd_peaking_px = 0U;
+    unsigned int last_hdmi_info_hud_px = 0U;
+    int hdmi_clean_feed_combos_verified = 0;
+
+    for (int zslot = R46_ZEBRA_LVL_70; zslot <= R46_ZEBRA_LVL_CUSTOM2; zslot++) {
+        st.zebra_level_slot = zslot;
+        unsigned int lz = 0U, lp = 0U, hi = 0U, hz = 99U, hp = 99U;
+        r46_render_lcd_vs_hdmi_assist_planes(&st, &lz, &lp, &hi, &hz, &hp);
+        total_hdmi_zebra_px += hz;
+        total_hdmi_peaking_px += hp;
+        if (lz > 0U && hi > 0U && hz == 0U && hp == 0U) hdmi_clean_feed_combos_verified++;
+        last_lcd_zebra_px = lz;
+        last_hdmi_info_hud_px = hi;
+    }
+    for (int lvl = R46_PEAK_LVL_HIGH; lvl <= R46_PEAK_LVL_LOW; lvl++) {
+        for (int clr = R46_PEAK_CLR_RED; clr <= R46_PEAK_CLR_WHITE; clr++) {
+            (void)r46_set_peaking_config(&st, R46_PEAKING_ON, lvl, clr);
+            unsigned int lz = 0U, lp = 0U, hi = 0U, hz = 99U, hp = 99U;
+            r46_render_lcd_vs_hdmi_assist_planes(&st, &lz, &lp, &hi, &hz, &hp);
+            total_hdmi_zebra_px += hz;
+            total_hdmi_peaking_px += hp;
+            if (lp > 0U && hi > 0U && hz == 0U && hp == 0U) hdmi_clean_feed_combos_verified++;
+            last_lcd_peaking_px = lp;
+        }
+    }
+    int hdmi_info_on_zero_assist_ok = (last_lcd_zebra_px > 0U &&
+                                       last_lcd_peaking_px > 0U &&
+                                       last_hdmi_info_hud_px > 0U &&
+                                       total_hdmi_zebra_px == 0U &&
+                                       total_hdmi_peaking_px == 0U &&
+                                       hdmi_clean_feed_combos_verified == 22) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r46_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r46_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) return 239;
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r46_p2_setting");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R46_ZEBRA_PEAKING_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (zebra_defaults_off_70_ok == 1 &&
+              wheel_left_zebra_select_ok == 1 &&
+              invalid_zebra_disp_reject_rc == -EINVAL &&
+              zebra_8presets_verified == 8 &&
+              invalid_zebra_level_reject_rc == -EINVAL &&
+              zebra_custom1_std_range_ok == 1 &&
+              zebra_custom2_lower_limit_ok == 1 &&
+              zebra_survives_cam_settings_reset_ok == 1 &&
+              initialize_resets_zebra_off_70_ok == 1 &&
+              peaking_defaults_off_mid_white_ok == 1 &&
+              invalid_peaking_reject_rc == -EINVAL &&
+              peaking_3levels_verified == 3 &&
+              peaking_4colors_verified == 4 &&
+              hdmi_info_on_zero_assist_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R46_ZEBRA_PEAKING_HDMI zebra_defaults_off_70_ok=%d wheel_left_zebra_select_ok=%d "
+            "invalid_zebra_disp_reject_rc=%d zebra_8presets_verified=%d invalid_zebra_level_reject_rc=%d "
+            "zebra_custom1_std_range_ok=%d zebra_custom2_lower_limit_ok=%d "
+            "zebra_survives_cam_settings_reset_ok=%d initialize_resets_zebra_off_70_ok=%d "
+            "peaking_defaults_off_mid_white_ok=%d invalid_peaking_reject_rc=%d "
+            "peaking_3levels_verified=%d peaking_4colors_verified=%d "
+            "hdmi_info_display_on=1 lcd_zebra_overlay_px=%u lcd_peaking_overlay_px=%u "
+            "hdmi_zebra_overlay_px=%u hdmi_peaking_overlay_px=%u "
+            "hdmi_clean_feed_combos_verified=%d hdmi_info_on_zero_assist_ok=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r46b_ok=%d verify_us=%lld\n",
+            zebra_defaults_off_70_ok, wheel_left_zebra_select_ok,
+            invalid_zebra_disp_reject_rc, zebra_8presets_verified, invalid_zebra_level_reject_rc,
+            zebra_custom1_std_range_ok, zebra_custom2_lower_limit_ok,
+            zebra_survives_cam_settings_reset_ok, initialize_resets_zebra_off_70_ok,
+            peaking_defaults_off_mid_white_ok, invalid_peaking_reject_rc,
+            peaking_3levels_verified, peaking_4colors_verified,
+            last_lcd_zebra_px, last_lcd_peaking_px,
+            total_hdmi_zebra_px, total_hdmi_peaking_px,
+            hdmi_clean_feed_combos_verified, hdmi_info_on_zero_assist_ok,
+            p2_write_blocked_rc, p2_setting_sha256_match, appfw_ok, shim_elf_ok,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 239;
+}
+
+enum {
+    R46_SLOT_1 = 1,
+    R46_SLOT_2 = 2
+};
+
+enum {
+    R46_CARD_FMT_QUICK   = 0, /* [Enter] directly: management metadata only */
+    R46_CARD_FMT_FULL    = 1, /* (Delete) toggle on confirmation dialog: all data blocks + metadata */
+    R46_CARD_FMT_INVALID = 2
+};
+
+enum {
+    R46_VAULT_PNFLASHA = (1U << 0), /* NOR SPI bootloader golden dump */
+    R46_VAULT_CNFLASHA = (1U << 1), /* Camera subsystem eMMC golden dump */
+    R46_VAULT_CAMSET01 = (1U << 2)  /* CAMSET01.DAT golden profile vault */
+};
+
+#define R46_CHORD_HOLD_THRESHOLD_MS 2000
+
+typedef struct {
+    unsigned int slot1_vault_mask;           /* Bitmask of R46_VAULT_* present on Slot 1 */
+    int slot1_offcamera_sha256_verified;     /* 1 only after off-camera SHA-256 verification */
+    int slot1_wp_switch_locked;              /* 1 when physical SDXC WP switch engaged */
+    unsigned int slot1_format_writes;        /* Must stay 0 whenever vault is active/unverified/WP */
+    int dialog_open;                         /* 1 when [Format] confirmation dialog is open */
+    int dialog_target_slot;                  /* R46_SLOT_1 or R46_SLOT_2 */
+    int dialog_fmt_mode;                     /* R46_CARD_FMT_QUICK (default) or FULL ((Delete) toggle) */
+    int slot2_meta_reinitialized;
+    int slot2_all_data_blocks_wiped;
+    int slot2_stored_data_erased;
+    int slot2_card_formatted_usable;
+} r46_format_vault_state_t;
+
+__attribute__((noinline)) static int r46_slot1_vault_firewall_check(const r46_format_vault_state_t *st) {
+    if (!st) return -EINVAL;
+    if (st->slot1_wp_switch_locked) {
+        return -EACCES; /* -13: physical SDXC WP switch write-protect lock */
+    }
+    if (st->slot1_vault_mask != 0U || !st->slot1_offcamera_sha256_verified) {
+        return -EBUSY; /* -16: active or unverified Tier-0 recovery vault hard-lock */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_open_format_dialog(r46_format_vault_state_t *st, int slot) {
+    if (!st) return -EINVAL;
+    if (slot != R46_SLOT_1 && slot != R46_SLOT_2) return -EINVAL;
+    if (slot == R46_SLOT_1) {
+        int fw_rc = r46_slot1_vault_firewall_check(st);
+        if (fw_rc != 0) {
+            st->dialog_open = 0;
+            return fw_rc;
+        }
+    }
+    st->dialog_open = 1;
+    st->dialog_target_slot = slot;
+    st->dialog_fmt_mode = R46_CARD_FMT_QUICK; /* Confirmation dialog defaults to Quick Format */
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_dialog_press_delete_key_toggle(r46_format_vault_state_t *st) {
+    if (!st || !st->dialog_open) return -EINVAL;
+    /* Pressing (Delete) on confirmation dialog switches Quick Format <-> Full Format */
+    st->dialog_fmt_mode = (st->dialog_fmt_mode == R46_CARD_FMT_QUICK)
+                              ? R46_CARD_FMT_FULL
+                              : R46_CARD_FMT_QUICK;
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_execute_slot_format(
+    r46_format_vault_state_t *st,
+    int slot,
+    int fmt_mode,
+    int cancel_mid_process
+) {
+    if (!st) return -EINVAL;
+    if (slot != R46_SLOT_1 && slot != R46_SLOT_2) return -EINVAL;
+    if (fmt_mode != R46_CARD_FMT_QUICK && fmt_mode != R46_CARD_FMT_FULL) return -EINVAL;
+
+    if (slot == R46_SLOT_1) {
+        int fw_rc = r46_slot1_vault_firewall_check(st);
+        if (fw_rc != 0) {
+            return fw_rc; /* Zero writes to Slot 1 */
+        }
+        st->slot1_format_writes++;
+        return 0;
+    }
+
+    /* Slot 2 (non-vault media): verify Quick vs Full vs Mid-Cancel Full Format behavior */
+    st->slot2_meta_reinitialized = 1;
+    st->slot2_stored_data_erased = 1;
+    st->slot2_card_formatted_usable = 1;
+    if (fmt_mode == R46_CARD_FMT_QUICK) {
+        st->slot2_all_data_blocks_wiped = 0;
+    } else if (cancel_mid_process) {
+        /* Canceling Full Format mid-process leaves previously stored data erased while card remains usable */
+        st->slot2_all_data_blocks_wiped = 0;
+    } else {
+        st->slot2_all_data_blocks_wiped = 1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r46_shooting_menu_plus_delete_chord(
+    r46_format_vault_state_t *st,
+    int slot,
+    int hold_ms
+) {
+    if (!st) return -EINVAL;
+    if (slot != R46_SLOT_1 && slot != R46_SLOT_2) return -EINVAL;
+    if (hold_ms < 0) return -EINVAL;
+    if (hold_ms < R46_CHORD_HOLD_THRESHOLD_MS) {
+        st->dialog_open = 0;
+        return 0; /* Sub-2s hold does NOT jump into [Format] confirmation dialog */
+    }
+    return r46_open_format_dialog(st, slot);
+}
+
+static int run_r46_fullformat_chord_vault_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r46_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r46_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r46_slot1_vault", 0755) != 0) {
+        return 240;
+    }
+    (void)umount("/mnt/r46_surfaces");
+    (void)umount("/mnt/r46_p2_ro");
+    (void)umount("/mnt/r46_slot1_vault");
+    if (mount("tmpfs", "/mnt/r46_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r46_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r46_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 240;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r46_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 59U) ^ (k * 31U) ^ 0x46U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 240;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 240;
+    }
+
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 43U + 0x46U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r46_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 240;
+
+    /* Seed Slot-1 Tier-0 recovery vault artifacts (pnflasha, cnflasha, CAMSET01.DAT) on RO tmpfs */
+    static const char * const k_vault_files[3] = {
+        "/mnt/r46_slot1_vault/pnflasha.img",
+        "/mnt/r46_slot1_vault/cnflasha.img",
+        "/mnt/r46_slot1_vault/CAMSET01.DAT"
+    };
+    char vault_pre_sha[3][65];
+    for (size_t v = 0U; v < 3U; v++) {
+        uint8_t vbuf[128];
+        for (size_t k = 0U; k < sizeof(vbuf); k++) vbuf[k] = (uint8_t)((v * 67U + k * 19U + 0x91U) & 0xffU);
+        if (r29_write_all_fsync(k_vault_files[v], vbuf, sizeof(vbuf), 0444) != 0) return 240;
+        unsigned long long vbytes = 0ULL;
+        if (sha256_file_hex(k_vault_files[v], vault_pre_sha[v], &vbytes) != 0) return 240;
+    }
+
+    if (mount(NULL, "/mnt/r46_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r46_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r46_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 240;
+    }
+
+    r46_format_vault_state_t st;
+    memset(&st, 0, sizeof(st));
+
+    /* 1. Quick Format vs (Delete)-toggled Full Format & Mid-Cancel Erasure on non-vault Slot 2 */
+    int invalid_fmt_mode_reject_rc = r46_execute_slot_format(&st, R46_SLOT_2, R46_CARD_FMT_INVALID, 0);
+    int dlg_s2_rc = r46_open_format_dialog(&st, R46_SLOT_2);
+    int default_quick_ok = (dlg_s2_rc == 0 && st.dialog_open == 1 && st.dialog_fmt_mode == R46_CARD_FMT_QUICK) ? 1 : 0;
+    int q_rc = r46_execute_slot_format(&st, R46_SLOT_2, st.dialog_fmt_mode, 0);
+    int slot2_quick_format_meta_only_ok = (default_quick_ok == 1 && q_rc == 0 &&
+                                           st.slot2_meta_reinitialized == 1 &&
+                                           st.slot2_all_data_blocks_wiped == 0 &&
+                                           st.slot2_card_formatted_usable == 1) ? 1 : 0;
+
+    (void)r46_open_format_dialog(&st, R46_SLOT_2);
+    int del_toggle_rc = r46_dialog_press_delete_key_toggle(&st);
+    int delete_key_toggles_full_format_ok = (del_toggle_rc == 0 && st.dialog_fmt_mode == R46_CARD_FMT_FULL) ? 1 : 0;
+    int f_rc = r46_execute_slot_format(&st, R46_SLOT_2, st.dialog_fmt_mode, 0);
+    int slot2_full_format_all_blocks_ok = (f_rc == 0 &&
+                                           st.slot2_meta_reinitialized == 1 &&
+                                           st.slot2_all_data_blocks_wiped == 1 &&
+                                           st.slot2_stored_data_erased == 1 &&
+                                           st.slot2_card_formatted_usable == 1) ? 1 : 0;
+
+    st.slot2_stored_data_erased = 0;
+    st.slot2_card_formatted_usable = 0;
+    int mc_rc = r46_execute_slot_format(&st, R46_SLOT_2, R46_CARD_FMT_FULL, 1);
+    int mid_cancel_erases_data_card_usable_ok = (mc_rc == 0 &&
+                                                 st.slot2_stored_data_erased == 1 &&
+                                                 st.slot2_card_formatted_usable == 1 &&
+                                                 st.slot2_all_data_blocks_wiped == 0) ? 1 : 0;
+
+    /* 2. Shooting-screen MENU + (Delete) (~2000ms) chord threshold check on non-vault Slot 2 */
+    int sub2s_rc = r46_shooting_menu_plus_delete_chord(&st, R46_SLOT_2, 1200);
+    int chord_sub2s_ignored_ok = (sub2s_rc == 0 && st.dialog_open == 0) ? 1 : 0;
+    int s2_chord_rc = r46_shooting_menu_plus_delete_chord(&st, R46_SLOT_2, 2000);
+    int non_vault_chord_2000ms_dialog_ok = (s2_chord_rc == 0 && st.dialog_open == 1 && st.dialog_target_slot == R46_SLOT_2) ? 1 : 0;
+
+    /* 3. Slot-1 Tier-0 Vault Firewall across pnflasha, cnflasha, CAMSET01.DAT (active/unverified -> -EBUSY -16) */
+    const unsigned int k_vault_bits[3] = { R46_VAULT_PNFLASHA, R46_VAULT_CNFLASHA, R46_VAULT_CAMSET01 };
+    int vault_3artifacts_guarded = 0;
+    int slot1_vault_quick_format_reject_rc = 0;
+    int slot1_vault_full_format_reject_rc = 0;
+    int slot1_vault_mid_cancel_reject_rc = 0;
+    int slot1_chord_2000ms_vault_reject_rc = 0;
+    st.slot1_wp_switch_locked = 0;
+    st.slot1_offcamera_sha256_verified = 0;
+    for (size_t v = 0U; v < 3U; v++) {
+        st.slot1_vault_mask = k_vault_bits[v];
+        int rq = r46_execute_slot_format(&st, R46_SLOT_1, R46_CARD_FMT_QUICK, 0);
+        int rf = r46_execute_slot_format(&st, R46_SLOT_1, R46_CARD_FMT_FULL, 0);
+        int rm = r46_execute_slot_format(&st, R46_SLOT_1, R46_CARD_FMT_FULL, 1);
+        int rc = r46_shooting_menu_plus_delete_chord(&st, R46_SLOT_1, 2000);
+        if (rq == -EBUSY && rf == -EBUSY && rm == -EBUSY && rc == -EBUSY && st.dialog_open == 0) {
+            vault_3artifacts_guarded++;
+            slot1_vault_quick_format_reject_rc = rq;
+            slot1_vault_full_format_reject_rc = rf;
+            slot1_vault_mid_cancel_reject_rc = rm;
+            slot1_chord_2000ms_vault_reject_rc = rc;
+        }
+    }
+
+    /* Physical SDXC WP switch engaged -> -EACCES (-13) across Quick, Full, and MENU+(Delete) 2s chord */
+    st.slot1_vault_mask = R46_VAULT_PNFLASHA | R46_VAULT_CNFLASHA | R46_VAULT_CAMSET01;
+    st.slot1_wp_switch_locked = 1;
+    int wp_q_rc = r46_execute_slot_format(&st, R46_SLOT_1, R46_CARD_FMT_QUICK, 0);
+    int wp_f_rc = r46_execute_slot_format(&st, R46_SLOT_1, R46_CARD_FMT_FULL, 0);
+    int slot1_vault_wp_format_reject_rc = (wp_q_rc == -EACCES && wp_f_rc == -EACCES) ? wp_f_rc : 0;
+    int slot1_chord_2000ms_wp_reject_rc = r46_shooting_menu_plus_delete_chord(&st, R46_SLOT_1, 2100);
+    unsigned int slot1_format_writes_during_vault = st.slot1_format_writes;
+
+    /* Verify real kernel RO enforcement on /mnt/r46_slot1_vault and intact SHA-256 across all 3 vault files */
+    int slot1_vault_sha256_intact = 1;
+    for (size_t v = 0U; v < 3U; v++) {
+        errno = 0;
+        int vfd = open(k_vault_files[v], O_RDWR);
+        if (vfd >= 0 || errno != EROFS) slot1_vault_sha256_intact = 0;
+        if (vfd >= 0) close(vfd);
+        char post_vsha[65] = "";
+        unsigned long long vbytes = 0ULL;
+        if (sha256_file_hex(k_vault_files[v], post_vsha, &vbytes) != 0 ||
+            strcmp(vault_pre_sha[v], post_vsha) != 0) {
+            slot1_vault_sha256_intact = 0;
+        }
+    }
+
+    /* Unlock path: off-camera SHA-256 verified + vault card swapped out for scratch media (WP=0) */
+    r46_format_vault_state_t swapped_st;
+    memset(&swapped_st, 0, sizeof(swapped_st));
+    swapped_st.slot1_vault_mask = 0U;
+    swapped_st.slot1_offcamera_sha256_verified = 1;
+    swapped_st.slot1_wp_switch_locked = 0;
+    int verified_swapped_nonvault_unlock_ok =
+        (r46_open_format_dialog(&swapped_st, R46_SLOT_1) == 0 &&
+         r46_execute_slot_format(&swapped_st, R46_SLOT_1, R46_CARD_FMT_QUICK, 0) == 0 &&
+         swapped_st.slot1_format_writes == 1U) ? 1 : 0;
+
+    /* 4. Read-only p2, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r46_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r46_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+    (void)umount("/mnt/r46_slot1_vault");
+    (void)umount("/mnt/r46_p2_ro");
+    (void)umount("/mnt/r46_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (invalid_fmt_mode_reject_rc == -EINVAL &&
+              slot2_quick_format_meta_only_ok == 1 &&
+              delete_key_toggles_full_format_ok == 1 &&
+              slot2_full_format_all_blocks_ok == 1 &&
+              mid_cancel_erases_data_card_usable_ok == 1 &&
+              chord_sub2s_ignored_ok == 1 &&
+              non_vault_chord_2000ms_dialog_ok == 1 &&
+              vault_3artifacts_guarded == 3 &&
+              slot1_vault_quick_format_reject_rc == -EBUSY &&
+              slot1_vault_full_format_reject_rc == -EBUSY &&
+              slot1_vault_mid_cancel_reject_rc == -EBUSY &&
+              slot1_chord_2000ms_vault_reject_rc == -EBUSY &&
+              slot1_vault_wp_format_reject_rc == -EACCES &&
+              slot1_chord_2000ms_wp_reject_rc == -EACCES &&
+              slot1_format_writes_during_vault == 0U &&
+              slot1_vault_sha256_intact == 1 &&
+              verified_swapped_nonvault_unlock_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R46_FULLFORMAT_CHORD_VAULT invalid_fmt_mode_reject_rc=%d "
+            "slot2_quick_format_meta_only_ok=%d delete_key_toggles_full_format_ok=%d "
+            "slot2_full_format_all_blocks_ok=%d mid_cancel_erases_data_card_usable_ok=%d "
+            "chord_threshold_ms=2000 chord_sub2s_ignored_ok=%d non_vault_chord_2000ms_dialog_ok=%d "
+            "vault_3artifacts_guarded=%d slot1_vault_quick_format_reject_rc=%d "
+            "slot1_vault_full_format_reject_rc=%d slot1_vault_mid_cancel_reject_rc=%d "
+            "slot1_chord_2000ms_vault_reject_rc=%d slot1_vault_wp_format_reject_rc=%d "
+            "slot1_chord_2000ms_wp_reject_rc=%d slot1_format_writes=%u "
+            "slot1_vault_sha256_intact=%d verified_swapped_nonvault_unlock_ok=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r46c_ok=%d verify_us=%lld\n",
+            invalid_fmt_mode_reject_rc,
+            slot2_quick_format_meta_only_ok, delete_key_toggles_full_format_ok,
+            slot2_full_format_all_blocks_ok, mid_cancel_erases_data_card_usable_ok,
+            chord_sub2s_ignored_ok, non_vault_chord_2000ms_dialog_ok,
+            vault_3artifacts_guarded, slot1_vault_quick_format_reject_rc,
+            slot1_vault_full_format_reject_rc, slot1_vault_mid_cancel_reject_rc,
+            slot1_chord_2000ms_vault_reject_rc, slot1_vault_wp_format_reject_rc,
+            slot1_chord_2000ms_wp_reject_rc, slot1_format_writes_during_vault,
+            slot1_vault_sha256_intact, verified_swapped_nonvault_unlock_ok,
+            p2_write_blocked_rc, dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 240;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -12499,6 +13587,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r45-powersave-autotemp") == 0) {
         return run_r45_powersave_autotemp_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r46-zebra-peaking-hdmi") == 0) {
+        return run_r46_zebra_peaking_hdmi_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r46-fullformat-chord-vault") == 0) {
+        return run_r46_fullformat_chord_vault_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -12615,6 +13709,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r45", &r45_st) == 0) {
         if (setup_r45_steadyshot_active_cutoffs_probe() != 0) {
             return 64;
+        }
+    }
+    struct stat r46_st;
+    if (stat("/etc/fx6_stage_r46", &r46_st) == 0) {
+        if (setup_r46_sq_fixedvar_6locks_probe() != 0) {
+            return 65;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

@@ -999,10 +999,32 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-72-gates [--force-clean-room] [--dry-run-simulated] [--json]
 ```
 
+---
 
+## 37. Phase 206 Real-Hardware Main Track Part 24: `ILME-FX3` (`Ver. 7.02`) `[De-Squeeze Display]` (`1.6x=1.65x` 4-Locks / HDMI RAW Bypass) & External `M&C Focus Map` (`>=150fps` Cutoff) Guard (`Gate G73`), `[Simult. + Auto Switch]` Parity & `[Shockless WB]` Immediate-Bypass Guard (`Gate G74`), and 74-Gate Master Preflight (`realhw_desqueeze_focusmap_simult_shocklesswb_and_74gate_guard.py`)
 
+`realhw_desqueeze_focusmap_simult_shocklesswb_and_74gate_guard.py` (`fx3-realhw-desqueeze-focusmap-simult-shocklesswb-74gate-preflight-v1`) composes `realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py` (`G01..G72`, keeping `verify-58-gates` through `verify-72-gates` 100% intact) with two Wave-27 real-hardware safety gates **`G73`** and **`G74`** into the **74-Gate Master Safety Preflight (`G01..G74` / `run_74_gate_preflight` / `evaluate_74gate_preflight`)**, keeping `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `PERSISTENT_WRITE_RELEASE = False`, `PHYSICAL_FLASH_AUTO_EXEC_AUTHORIZED = False`, `HUMAN_HARDWARE_ATTACH_TOKEN = False`, `overall_ready_for_hardware_attach = False`, `physical_usb_packets_emitted = 0`, and `raw_firmware_bytes_leaked = 0` hard-locked:
 
+1. **`ILME-FX3` (`Ver. 7.02`) `[De-Squeeze Display]` (`Off / 1.3x / 2.0x / 1.5x / 1.6x=1.65x`) 4-Setting Lock & External-Only `M&C Focus Map` (`>=150fps` Cutoff) Guard (`verify_fx3_desqueeze_4locks_and_external_focusmap_guard`, Gate `G73`)**:
+   - Inspects FX3 `7.02` `cpapp-b.bin` (`15,980,568 B`), `libSaveLoadSettings.so` (`18,760 B`), `FX3-CX95900_ALLLANG-Backup.bin` (`2,229,740 B`), and FX6 `6.01` `CX95898_NTSC.bin` (`2,253,333 B`) strictly via `os.open(..., os.O_RDONLY)` with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` clean-room fallback and zero raw Sony firmware bytes in JSON output.
+   - Enforces:
+     1. Exact `[De-Squeeze Display]` horizontal stretch mapping (`Off -> 1.0x`, `1.3x -> 1.3x`, `2.0x -> 2.0x`, and `Ver. 7.00+` `1.5x -> 1.5x` & `1.6x -> 1.65x` CinemaScope `2.39:1` horizontal restoration -> `BLOCKED_G73_DESQUEEZE_MENU_OR_FACTOR_MISMATCH`);
+     2. Exact 4-setting lock whenever `[De-Squeeze Display] != Off` (`[Focus Mode] = Manual Focus`, `[Focus Area] = Wide`, `[SteadyShot] = Off`, `[Face Priority in Multi Metering] = Off` -> `BLOCKED_G73_DESQUEEZE_4_LOCK_VIOLATION`);
+     3. Automatic de-squeeze suppression to `1.0x` unscaled monitoring under `[RAW Output] = On`, `[Rec. Media dur HDMI Output] = Off(HDMI Only)` (forcing `[HDMI Info. Display] = Off`), `[Log Shooting] = Off`, `[Remote Shooting]`, or `Still` mode, with zero recorded-essence or `4264x2408` linear HDMI RAW pixel stretch (`BLOCKED_G73_DESQUEEZE_SUPPRESSION_OR_ESSENCE_MUTATION`);
+     4. Hard fail-closed rejection of non-existent in-body `ILME-FX3` `[Focus Map]` menu items or Stage-B local LCD/HDMI Focus Map overlays (`BLOCKED_G73_IN_BODY_FX3_FOCUS_MAP_FORBIDDEN`), plus external `Monitor & Control` (`M&C`) PDAF `Focus Map` cutoffs (`>= 150 fps`, non-PDAF / mount-adapter / missing lens, or camera Playback -> `BLOCKED_G73_EXTERNAL_FOCUS_MAP_CUTOFF_VIOLATION`).
+2. **Dual-Slot `[Simult. Recording]` + `[Auto Switch Media]` (`Ver. 2.00+` Single-Card Fallback vs `Off` Strict Dual-Vault Parity) & `[Shockless WB]` Immediate-Bypass Guard (`verify_simult_autoswitch_parity_and_shockless_wb_guard`, Gate `G74`)**:
+   - Enforces:
+     1. `[Auto Switch Media] = Off` whenever strict dual-card cold-vault / redundant parity is required, preventing `Ver. 2.00+` `[Simult. Recording]` + `[Auto Switch Media] = On` from silently degrading to single-card recording when one slot fills (`BLOCKED_G74_STRICT_DUAL_VAULT_REQUIRES_SIMULT_AUTOSWITCH_OFF`, `BLOCKED_G74_DUAL_SLOT_PARITY_DEGRADED_SINGLE_CARD`, `BLOCKED_G74_AUTOSWITCH_FIRMWARE_OR_STATE_MISMATCH`);
+     2. `[Shockless WB]` (`Off / 1 / 2 / 3`) validation across full `1..240 fps` (`23.98p..120p` and `S&Q` up to `240fps` -> `BLOCKED_G74_SHOCKLESS_WB_SETTING_OR_FPS_INVALID`), with immediate `0`-frame smoothing bypass on `[C.Temp./Filter]` Kelvin (`2500K..9900K`) edits and `A-B / G-M` fine-tuning grid shifts (`BLOCKED_G74_SHOCKLESS_WB_KELVIN_GRID_BYPASS_VIOLATION`).
+3. **74-Gate Master Preflight (`run_74_gate_preflight` / `evaluate_74gate_preflight`) & Phase 206 CLI Subcommands**:
+   - **Offline default mode**: `71/74` gates pass (`G01..G09`, `G13..G74` pass; physical Tier-0 `G10..G12` remain `FAIL_OFFLINE_HARDWARE_NOT_ATTACHED` $\rightarrow$ `overall_ready_for_hardware_attach = False`).
+   - **`--dry-run-simulated` rehearsal mode**: `74/74` simulation gates pass (`dry_run_rehearsal_only = True`) while `human_hardware_attach_token = False`, `overall_ready_for_hardware_attach = False`, `el3_payload_transmit_authorized = False`, `spi_nor_write_authorized = False`, `persistent_emmc_writes_authorized = False`, `persistent_write_release = False`, `physical_usb_packets_emitted = 0`, and `raw_firmware_bytes_leaked = 0` remain hard-locked.
 
-
-
-
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-g73-desqueeze-focusmap [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-g74-simult-autoswitch-shocklesswb [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-74-gates [--force-clean-room] [--dry-run-simulated] [--json]
+```

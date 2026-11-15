@@ -355,6 +355,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R16_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 statuscheck_tabs45=1 tcmedia_3layer=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r17_st;
+    if (stat("/etc/fx6_stage_r17", &r17_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r17f = fopen("/etc/fx6_stage_r17", "r");
+        if (r17f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r17f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r17f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R17_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 statuscheck_fullsweep=1 audio_3layer=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 

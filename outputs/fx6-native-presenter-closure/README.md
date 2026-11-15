@@ -696,3 +696,29 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r16c-menu-3layer-tcmedia-tchinese`: `tchinese` (`0x02cf019c=0x18`, `switchBank(ns=4/1/2 = 27/22/22)`) `FX3_MENU` (`1300ms`) + `4x 0x0030` (`TC/Media`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,095` px / `250` colors / `2,440` `0xffffaa00` amber px, `14,622` icon blits, `13,499` glyph blits, `84` `LDEC103` `cmd=1` ioctls, **`35,765` px diff vs `r13b` `Shooting`** & **`19,082` px diff vs `r15c` `Monitoring`**).
   - `r16d-menu-3layer-monitoring-japanese`: `japanese` (`0x02cf019c=0x01`, `switchBank(ns=4/1/2 = 1/12/12)`) `FX3_MENU` (`1300ms`) + `5x 0x0030` (`Monitoring`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `220` colors / `209` `0xffffaa00` amber px, `14,785` icon blits, `10,817` glyph blits, `83` `LDEC103` `cmd=1` ioctls, **`24,616` px diff vs `r12d` `Shooting`**, **`8,114` px diff vs `r15c` `Monitoring`**, & **`20,779` px diff vs `r16c` `TC/Media`**).
 - **Full Report, Receipts, & `82+` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/README.md`](../../reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/README.md) and [`summary.json`](../../reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/summary.json).
+
+---
+
+## 17. Round 17: Real FX3 `7.02` Kernel Complete `Status Check` Tabs 6–10 Sweep (`Assignable` / `Battery` / `Media` / `Network P12` / `File Transfer` + Wrap-Around) & `Audio` 3-Layer Menu Closure
+
+`build_and_run_round.py --round 17 --lang {en,english,schinese,tchinese,japanese}` completes the **entire 10-tab `Status Check` ring carousel** (`Main 0x2f -> Camera 0x30 -> Audio 0x31 -> Project 0x32 -> Monitoring 0x33 -> Assignable Button 0x34 -> Battery 0x35 -> Media 0x36 -> Network 0x37 -> File Transfer 0x39 -> Wrap 0x2f`) and the Simplified Chinese **`Audio` 3-Layer Menu** (`sid=0x11`, `6x DOWN` -> `2x RIGHT`) on the real unmodified FX3 `7.02` kernel (`Linux version 4.9.337-scel+`, `nop_count = 0`, `13/13` Stage-B `Verify-Before-Mount` SHA-256, `FX6_STAGE_B_R17_VERIFY_PASS`, `FX6_STAGE_B_R17_BRIDGE`, and `FX6_R17_LANG_TELEMETRY`):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 17 --lang schinese --initial-setting-done 1 --run-id r17e-status-tab9-network-schinese --duration 100 \
+  --run-dir /private/tmp/fx6-r17-runs/r17e \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:1500,0x0030:120:1500,0x0030:120:1500,0x0030:120:1500,0x0030:120:1500,0x0030:120:1500,0x0030:120:1500,0x0030:120:5500" \
+  --key-settle-ms 1500 --export-png-stem r17e-status-tab9-network-schinese \
+  --export-png-dir reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/assets
+```
+
+- **7 Live Round 17 QEMU Captures (`nop_count=0`, `crashes=0`, `161` TIDs, `gpe_fb=0`, `P4` ND-Clear, `P12` `WF-12` `00342260` Immune)**:
+  - `r17a-status-tab6-schinese`: `5x 0x0030` -> `47procam_touch_status_assignable_button_presenter` (`sid=0x34`, `437,403` px / `80` colors / `278` `0xffffaa00` amber px, `9,336` icon blits, `23,313` glyph blits, `60` `LDEC103` ioctls).
+  - `r17b-status-tab7-schinese`: `6x 0x0030` -> `37procam_touch_status_battery_presenter` (`sid=0x35`, `437,883` px / `80` colors / `249` `0xffffaa00` amber px, `9,866` icon blits, `17,990` glyph blits, `62` `LDEC103` ioctls).
+  - `r17c-status-tab8-schinese`: `7x 0x0030` -> `35procam_touch_status_media_presenter` (`sid=0x36`, `437,403` px / `92` colors / `288` `0xffffaa00` amber px, `11,686` icon blits, `16,063` glyph blits, `68` `LDEC103` ioctls).
+  - `r17d-menu-3layer-audio-schinese`: `FX3_MENU` (`1300ms`) + `6x 0x0030` (`Audio`) + `2x 0x01af` -> `31procam_menu_layer_3rd_presenter` (`sid=0x11`, `437,575` px / `265` colors / `5,639` `0xffffaa00` amber px, `15,172` icon blits, `16,336` glyph blits, `90` `LDEC103` ioctls — **`146,605` vs `r11d` `Shooting`**, **`57,384` vs `r13c` `Paint/Look`**, **`42,677` vs `r15c` `Monitoring`**, proving all `C(4,2)=6` category pairs strictly `> 0`!).
+  - `r17e-status-tab9-network-schinese`: `8x 0x0030` -> `37procam_touch_status_network_presenter` (`sid=0x37`, `437,883` px / `92` colors / `273` `0xffffaa00` amber px, `9,254` icon blits, `17,407` glyph blits, `70` `LDEC103` ioctls) with live `WF-12` `00342260` `100%` immunity (`p12_wlan=1`, `wf12_00342260_immune=1`, `airplane_bk4_hits=0`).
+  - `r17f-status-tab10-filetransfer-schinese`: `9x 0x0030` -> `43procam_touch_status_file_transfer_presenter` (`sid=0x39`, `437,403` px / `80` colors / `332` `0xffffaa00` amber px, `9,369` icon blits, `16,850` glyph blits, `70` `LDEC103` ioctls — proving all `C(10,2)=45` `Status Check` tab pairs strictly `> 0`: `39,489..130,085` px!).
+  - `r17g-status-wraparound-tab1-schinese`: `10x 0x0030` -> exact carousel wrap-around back to `34procam_touch_status_main_presenter` (`sid=0x2f`, `437,883` px / `85` colors / `237` `0xffffaa00` amber px, `8,400` icon blits, `14,029` glyph blits, `70` `LDEC103` ioctls).
+- **Full Report, Receipts, & `95` Dual-Mode Unit Tests**: See [`reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/README.md`](../../reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/README.md) and [`summary.json`](../../reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/summary.json).
+

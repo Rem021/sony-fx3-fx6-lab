@@ -17,6 +17,7 @@ Sony FX6 Authentic In-Guest Native GPE0 Menu Runner (Port 8768)
 from __future__ import annotations
 
 import argparse
+import copy
 import errno
 import hashlib
 import io
@@ -2456,6 +2457,7 @@ def build_nrtm_xml_sidecar(
     color_and_media: dict[str, Any],
     *,
     active_user_lut: dict[str, Any] | None = None,
+    shotmark_and_iris: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2464,10 +2466,13 @@ def build_nrtm_xml_sidecar(
     def _q(tag: str) -> str:
         return f"{{{NRTM_NAMESPACE_V220}}}{tag}"
 
+    shotmarks_list = list(shotmark_and_iris.get("shotmarks", [])) if shotmark_and_iris else []
+    max_mark_frame = max((int(m.get("frame", 0)) + 1 for m in shotmarks_list), default=0)
+
     clip_id = str(color_and_media.get("clip_id", "A001C001"))
     umid_ref = f"060A2B340101010501010D4313000000{clip_id}{DEFAULT_CLIP_DATE_YYMMDD}FX"
     creation_ts = "2026-11-14T16:00:00-08:00"
-    duration_frames = max(240, int(cine_exposure.get("rec_tc_frames", 0)))
+    duration_frames = max(240, int(cine_exposure.get("rec_tc_frames", 0)), max_mark_frame)
 
     base_fps = float(cine_exposure.get("base_fps", 23.98))
     eff_fps = float(cine_exposure.get("effective_fps", base_fps))
@@ -2560,6 +2565,10 @@ def build_nrtm_xml_sidecar(
             "value": f"{color_and_media['proxy_mode']}:effective={str(bool(color_and_media['proxy_effective_active'])).lower()}",
         },
     )
+    if shotmark_and_iris:
+        ET.SubElement(cam_grp, _q("Item"), {"name": "IrisFstop", "value": str(shotmark_and_iris.get("iris_display", "F2.8"))})
+        ET.SubElement(cam_grp, _q("Item"), {"name": "AutoIrisMeteringMode", "value": str(shotmark_and_iris.get("metering_mode", "multi"))})
+        ET.SubElement(cam_grp, _q("Item"), {"name": "Ch34SafetyPadDb", "value": str(shotmark_and_iris.get("ch34_safety_pad_db", 0))})
 
     mon_grp = ET.SubElement(acq, _q("Group"), {"name": "MonitoringDescriptions"})
     ET.SubElement(mon_grp, _q("Item"), {"name": "MonitoringBaseCurve", "value": gamma_eq})
@@ -2575,6 +2584,12 @@ def build_nrtm_xml_sidecar(
     ET.SubElement(media_grp, _q("Item"), {"name": "MainClipName", "value": str(color_and_media["main_clip_name"])})
     ET.SubElement(media_grp, _q("Item"), {"name": "ProxyClipName", "value": str(color_and_media["proxy_clip_name"])})
     ET.SubElement(media_grp, _q("Item"), {"name": "SidecarFileName", "value": str(color_and_media["sidecar_xml_name"])})
+    if shotmark_and_iris:
+        ET.SubElement(
+            media_grp,
+            _q("Item"),
+            {"name": "Smpte12mUserBits", "value": str(shotmark_and_iris.get("user_bits_effective", "A0:01:00:01"))},
+        )
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -2584,6 +2599,36 @@ def build_nrtm_xml_sidecar(
     ET.SubElement(prov_grp, _q("Item"), {"name": "PersistentEmmcWritesAuthorized", "value": "false"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "C2PASpoofAttempted", "value": "false"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "RqLicPreserved", "value": "true"})
+
+    if shotmarks_list:
+        klv_table = ET.SubElement(root, _q("KlvPacketTable"))
+        for mark in shotmarks_list:
+            m_type = str(mark.get("type", "ShotMark1"))
+            em_name = f"_{m_type}"
+            frame_str = str(int(mark.get("frame", 0)))
+            tc_str = str(mark.get("tc", "00:00:00:00"))
+            lbl_str = str(mark.get("label", "OK" if m_type == "ShotMark1" else "KEEP"))
+            pkt = ET.SubElement(
+                klv_table,
+                _q("KlvPacket"),
+                {
+                    "key": "060E2B34010101010104020100000000",
+                    "frameCount": "1",
+                    "status": "spot",
+                    "start": frame_str,
+                    "length": "1",
+                },
+            )
+            ET.SubElement(
+                pkt,
+                _q("EssenceMark"),
+                {
+                    "name": em_name,
+                    "start": frame_str,
+                    "tc": tc_str,
+                    "value": lbl_str,
+                },
+            )
 
     ET.indent(root, space="  ")
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode") + "\n"
@@ -3061,6 +3106,772 @@ def validate_touch_focus_ciz_patch(
     updates["_letterbox_ignored"] = letterbox_ignored
 
     return True, updates, None
+
+
+SHOTMARK_MAX_PER_CLIP: int = 64
+SHOTMARK_TYPES: tuple[str, ...] = ("ShotMark1", "ShotMark2")
+SHOTMARK_DEFAULT_LABELS: dict[str, str] = {"ShotMark1": "OK", "ShotMark2": "KEEP"}
+IRIS_FSTOP_MIN: float = 1.4
+IRIS_FSTOP_MAX: float = 22.0
+AE_SHIFT_EV_MIN: float = -2.0
+AE_SHIFT_EV_MAX: float = 2.0
+METERING_MODES: tuple[str, ...] = ("multi", "center", "spot", "highlight")
+SCENE_EV_MIN: float = 0.0
+SCENE_EV_MAX: float = 18.0
+SCENE_EV_DEFAULT: float = 12.0
+CH34_SAFETY_PAD_ALLOWED: tuple[int, ...] = (0, -20)
+
+_EMOUNT_CANON_STOPS: dict[int, float] = {
+    8: 1.4,
+    16: 2.0,
+    24: 2.8,
+    32: 4.0,
+    40: 5.6,
+    48: 8.0,
+    56: 11.0,
+    64: 16.0,
+    72: 22.0,
+}
+EMOUNT_1_8_STOP_TABLE: tuple[float, ...] = tuple(
+    _EMOUNT_CANON_STOPS.get(k, round(2.0 ** (k / 16.0), 2)) for k in range(8, 73)
+)
+
+SHOTMARK_IRIS_DEFAULTS: dict[str, Any] = {
+    "shotmarks": [],
+    "iris_fstop": 2.8,
+    "ae_shift_ev": 0.0,
+    "metering_mode": "multi",
+    "ch34_safety_pad_db": 0,
+    "user_bits_hex": "auto_camid_reel",
+    "push_auto_iris_active": False,
+    "last_scene_ev": SCENE_EV_DEFAULT,
+}
+
+SHOTMARK_IRIS_SPECS: dict[str, Any] = {
+    "shotmark_types": list(SHOTMARK_TYPES),
+    "shotmark_default_labels": dict(SHOTMARK_DEFAULT_LABELS),
+    "shotmark_max_per_clip": SHOTMARK_MAX_PER_CLIP,
+    "iris_fstop_range": [IRIS_FSTOP_MIN, IRIS_FSTOP_MAX],
+    "iris_1_8_stop_table": list(EMOUNT_1_8_STOP_TABLE),
+    "ae_shift_ev_range": [AE_SHIFT_EV_MIN, AE_SHIFT_EV_MAX],
+    "metering_modes": list(METERING_MODES),
+    "scene_ev_range": [SCENE_EV_MIN, SCENE_EV_MAX],
+    "scene_ev_default": SCENE_EV_DEFAULT,
+    "target_ire": 41.0,
+    "highlight_ceiling_ire": 94.0,
+    "slog3_highlight_ceiling_ire": 94.0,
+    "ch34_safety_pad_allowed": list(CH34_SAFETY_PAD_ALLOWED),
+    "audio_bit_depth": 24,
+    "audio_channels": 4,
+    "user_bits_auto_token": "auto_camid_reel",
+}
+
+_SHOTMARK_TYPE_ALIASES: dict[str, str] = {
+    "shotmark1": "ShotMark1",
+    "_shotmark1": "ShotMark1",
+    "m1": "ShotMark1",
+    "1": "ShotMark1",
+    "ok": "ShotMark1",
+    "shotmark2": "ShotMark2",
+    "_shotmark2": "ShotMark2",
+    "m2": "ShotMark2",
+    "2": "ShotMark2",
+    "keep": "ShotMark2",
+}
+
+_METERING_MODE_ALIASES: dict[str, str] = {
+    "multi": "multi",
+    "multi-segment": "multi",
+    "center": "center",
+    "center-weighted": "center",
+    "spot": "spot",
+    "highlight": "highlight",
+    "highlight-weighted": "highlight",
+    "hi-light": "highlight",
+}
+
+_SHOTMARK_ACTIONS: tuple[str, ...] = (
+    "add_shotmark1",
+    "add_shotmark2",
+    "clear_shotmarks",
+    "push_auto_iris",
+)
+
+
+def format_smpte_tc_from_frames(frame: int, base_fps: float = 23.98) -> str:
+    """Format non-negative frame index as deterministic SMPTE HH:MM:SS:FF."""
+    f_rate = 25 if float(base_fps) in (25.0, 50.0) else 24
+    tot = max(0, int(frame))
+    ff = tot % f_rate
+    tot_s = tot // f_rate
+    ss = tot_s % 60
+    mm = (tot_s // 60) % 60
+    hh = (tot_s // 3600) % 24
+    return f"{hh:02d}:{mm:02d}:{ss:02d}:{ff:02d}"
+
+
+def format_auto_user_bits(cam_id: str = "A", reel_num: int = 1, clip_seq: int = 1) -> str:
+    """Auto-format SMPTE 12M User-Bits (e.g. A0:01:00:01) from Phase 73 cam_id, reel_num & clip_seq."""
+    cid = str(cam_id or "A").strip().upper()[:1] or "A"
+    cam_nib = cid if cid in "ABCDEF" else f"{(ord(cid) - ord('A')) % 16:X}"
+    reel = max(1, min(999, int(reel_num)))
+    cseq = max(1, min(999, int(clip_seq)))
+    b0 = f"{cam_nib}{(reel // 100) % 10}"
+    b1 = f"{reel % 100:02d}"
+    b2 = f"{(cseq // 100) % 100:02d}"
+    b3 = f"{cseq % 100:02d}"
+    return f"{b0}:{b1}:{b2}:{b3}"
+
+
+def parse_user_bits_hex(raw: Any) -> str | None:
+    """Validate and normalize SMPTE 12M User-Bits ('auto_camid_reel' or 'AA:BB:CC:DD')."""
+    if isinstance(raw, bool) or not isinstance(raw, str):
+        return None
+    s = raw.strip()
+    if s.lower() == "auto_camid_reel":
+        return "auto_camid_reel"
+    cleaned = s.replace(":", "").replace("-", "").replace(" ", "").upper()
+    if len(cleaned) != 8 or any(ch not in "0123456789ABCDEF" for ch in cleaned):
+        return None
+    return f"{cleaned[0:2]}:{cleaned[2:4]}:{cleaned[4:6]}:{cleaned[6:8]}"
+
+
+def user_bits_to_uint32(ub_str: str) -> int:
+    """Convert normalized 'AA:BB:CC:DD' SMPTE 12M User-Bits string to uint32."""
+    cleaned = str(ub_str or "A0:01:00:01").replace(":", "").strip().upper()
+    if len(cleaned) != 8 or any(ch not in "0123456789ABCDEF" for ch in cleaned):
+        return 0xA0010001
+    return int(cleaned, 16)
+
+
+def slog3_reflectance_to_ire(reflectance: float) -> float:
+    """Convert scene linear reflectance R (18% middle grey = 0.18) to Sony S-Log3 IRE (0..109%)."""
+    r = max(0.0, float(reflectance))
+    if r >= 0.01125:
+        code10 = 420.0 + math.log10((r + 0.01) / 0.19) * 261.5
+    else:
+        code10 = 95.0 + (r * (171.2102946929 - 95.0)) / 0.01125
+    ire = 41.0 + (code10 - 420.0) / 8.80
+    return round(max(0.0, min(109.0, ire)), 2)
+
+
+def _nearest_1_8_stop_index(iris_fstop: float) -> int:
+    """Return 0..64 index in EMOUNT_1_8_STOP_TABLE closest to iris_fstop."""
+    val = max(IRIS_FSTOP_MIN, min(IRIS_FSTOP_MAX, float(iris_fstop)))
+    best_idx = 0
+    best_diff = abs(EMOUNT_1_8_STOP_TABLE[0] - val)
+    for idx, cand in enumerate(EMOUNT_1_8_STOP_TABLE):
+        d = abs(cand - val)
+        if d < best_diff:
+            best_diff = d
+            best_idx = idx
+    return best_idx
+
+
+def _format_iris_display(iris_fstop: float) -> str:
+    val = round(float(iris_fstop), 2)
+    if abs(val * 10.0 - round(val * 10.0)) < 1e-6:
+        return f"F{val:.1f}"
+    return f"F{val:.2f}"
+
+
+def _effective_shutter_seconds(
+    *,
+    shutter_mode: str = "angle",
+    shutter_angle_deg: float = 180.0,
+    shutter_speed_denom: int = 48,
+    ecs_freq_hz: float = 60.0,
+    effective_fps: float = 23.98,
+) -> float:
+    if shutter_mode == "speed":
+        return 1.0 / max(1.0, float(shutter_speed_denom))
+    if shutter_mode == "ecs":
+        return 1.0 / max(1.0, float(ecs_freq_hz))
+    fps = max(1.0, float(effective_fps))
+    ang = max(1.0, float(shutter_angle_deg))
+    return (ang / 360.0) / fps
+
+
+def compute_push_auto_iris(
+    scene_ev: float,
+    *,
+    ei_index: int = 800,
+    shutter_mode: str = "angle",
+    shutter_angle_deg: float = 180.0,
+    shutter_speed_denom: int = 48,
+    ecs_freq_hz: float = 60.0,
+    effective_fps: float = 23.98,
+    ae_shift_ev: float = 0.0,
+    metering_mode: str = "multi",
+) -> dict[str, Any]:
+    """Compute E-Mount 1/8-stop iris_fstop landing 18% grey at 41.0% IRE (or protecting <94% IRE highlights)."""
+    t_sec = _effective_shutter_seconds(
+        shutter_mode=shutter_mode,
+        shutter_angle_deg=shutter_angle_deg,
+        shutter_speed_denom=shutter_speed_denom,
+        ecs_freq_hz=ecs_freq_hz,
+        effective_fps=effective_fps,
+    )
+    tv = math.log2(1.0 / max(1e-6, t_sec))
+    sv = math.log2(max(100.0, float(ei_index)) / 800.0)
+    highlight_bias_ev = 1.0 if metering_mode == "highlight" else 0.0
+    desired_av = float(scene_ev) + sv - tv - float(ae_shift_ev) + highlight_bias_ev
+
+    raw_k = int(round(desired_av * 8.0))
+    clamped_k = max(8, min(72, raw_k))
+    iris_clamped = (raw_k < 8) or (raw_k > 72)
+    iris_fstop = EMOUNT_1_8_STOP_TABLE[clamped_k - 8]
+    actual_av = clamped_k / 8.0
+
+    ev_delta = (float(scene_ev) + sv - tv) - actual_av
+    grey_ire = slog3_reflectance_to_ire(0.18 * (2.0 ** ev_delta))
+    hl_ire = slog3_reflectance_to_ire(0.18 * (2.0 ** (ev_delta + 6.5)))
+
+    return {
+        "iris_fstop": iris_fstop,
+        "iris_1_8_stop_index": clamped_k - 8,
+        "iris_clamped": iris_clamped,
+        "target_ire": 41.0,
+        "highlight_ceiling_ire": 94.0,
+        "estimated_grey_ire": grey_ire,
+        "estimated_highlight_ire": hl_ire,
+        "p4_nd_motor_faults": 0,
+    }
+
+
+def compute_shotmark_and_iris_derived(
+    state: dict[str, Any],
+    *,
+    cam_id: str = "A",
+    reel_num: int = 1,
+    clip_seq: int = 1,
+    ei_index: int = 800,
+    shutter_mode: str = "angle",
+    shutter_angle_deg: float = 180.0,
+    shutter_speed_denom: int = 48,
+    ecs_freq_hz: float = 60.0,
+    effective_fps: float = 23.98,
+    audio_ch_db: Sequence[int] = (-12, -12, -18, -18),
+) -> dict[str, Any]:
+    """Compute derived Phase 88 ShotMark1/2, Push Auto Iris, 24-bit Safety Audio & SMPTE 12M User-Bits state."""
+    marks = [dict(m) for m in state.get("shotmarks", [])][:SHOTMARK_MAX_PER_CLIP]
+    sm1_count = sum(1 for m in marks if m.get("type") == "ShotMark1")
+    sm2_count = sum(1 for m in marks if m.get("type") == "ShotMark2")
+    latest = dict(marks[-1]) if marks else None
+
+    iris_fstop = round(max(IRIS_FSTOP_MIN, min(IRIS_FSTOP_MAX, float(state.get("iris_fstop", 2.8)))), 2)
+    ae_shift_ev = round(max(AE_SHIFT_EV_MIN, min(AE_SHIFT_EV_MAX, float(state.get("ae_shift_ev", 0.0)))), 2)
+    metering_mode = str(state.get("metering_mode", "multi"))
+    if metering_mode not in METERING_MODES:
+        metering_mode = "multi"
+    ch34_pad = int(state.get("ch34_safety_pad_db", 0))
+    if ch34_pad not in CH34_SAFETY_PAD_ALLOWED:
+        ch34_pad = 0
+    push_active = bool(state.get("push_auto_iris_active", False))
+    last_scene_ev = round(max(SCENE_EV_MIN, min(SCENE_EV_MAX, float(state.get("last_scene_ev", SCENE_EV_DEFAULT)))), 2)
+
+    ub_raw = str(state.get("user_bits_hex", "auto_camid_reel"))
+    if ub_raw == "auto_camid_reel":
+        ub_mode = "auto_camid_reel"
+        ub_eff = format_auto_user_bits(cam_id=cam_id, reel_num=reel_num, clip_seq=clip_seq)
+    else:
+        ub_mode = "manual"
+        parsed_ub = parse_user_bits_hex(ub_raw)
+        ub_eff = parsed_ub if (parsed_ub and parsed_ub != "auto_camid_reel") else format_auto_user_bits(
+            cam_id=cam_id, reel_num=reel_num, clip_seq=clip_seq
+        )
+
+    stop_idx = _nearest_1_8_stop_index(iris_fstop)
+    actual_av = (stop_idx + 8) / 8.0
+    t_sec = _effective_shutter_seconds(
+        shutter_mode=shutter_mode,
+        shutter_angle_deg=shutter_angle_deg,
+        shutter_speed_denom=shutter_speed_denom,
+        ecs_freq_hz=ecs_freq_hz,
+        effective_fps=effective_fps,
+    )
+    tv = math.log2(1.0 / max(1e-6, t_sec))
+    sv = math.log2(max(100.0, float(ei_index)) / 800.0)
+    ev_delta = (last_scene_ev + sv - tv) - actual_av
+    est_grey_ire = slog3_reflectance_to_ire(0.18 * (2.0 ** ev_delta))
+    est_hl_ire = slog3_reflectance_to_ire(0.18 * (2.0 ** (ev_delta + 6.5)))
+
+    ch3_base = int(audio_ch_db[2]) if len(audio_ch_db) >= 3 else -18
+    ch4_base = int(audio_ch_db[3]) if len(audio_ch_db) >= 4 else -18
+
+    return {
+        "shotmarks": marks,
+        "shotmark_count": len(marks),
+        "shotmark1_count": sm1_count,
+        "shotmark2_count": sm2_count,
+        "latest_shotmark": latest,
+        "shotmark_max_per_clip": SHOTMARK_MAX_PER_CLIP,
+        "iris_fstop": iris_fstop,
+        "iris_display": _format_iris_display(iris_fstop),
+        "iris_1_8_stop_index": stop_idx,
+        "ae_shift_ev": ae_shift_ev,
+        "metering_mode": metering_mode,
+        "push_auto_iris_active": push_active,
+        "last_scene_ev": last_scene_ev,
+        "target_ire": 41.0,
+        "highlight_ceiling_ire": 94.0,
+        "estimated_grey_ire": est_grey_ire,
+        "estimated_highlight_ire": est_hl_ire,
+        "p4_nd_motor_faults": 0,
+        "p4_nd_preset": "Clear",
+        "ch34_safety_pad_db": ch34_pad,
+        "audio_bit_depth": 24,
+        "audio_channels": 4,
+        "ch3_effective_db": max(-60, ch3_base + ch34_pad),
+        "ch4_effective_db": max(-60, ch4_base + ch34_pad),
+        "user_bits_hex": ub_raw,
+        "user_bits_mode": ub_mode,
+        "user_bits_effective": ub_eff,
+    }
+
+
+def format_shotmark_iris_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 88 SMRK_IRIS host<->guest protocol string."""
+    return (
+        f"SMRK_IRIS m1={state['shotmark1_count']} m2={state['shotmark2_count']} "
+        f"iris={state['iris_display']}({state['metering_mode']},ae={state['ae_shift_ev']:+.2f}EV) "
+        f"ire={state['target_ire']:.1f} pad={state['ch34_safety_pad_db']}dB "
+        f"ub={state['user_bits_effective']} p4_nd_faults=0"
+    )
+
+
+def _normalize_shotmark_entry(
+    raw: Any,
+    *,
+    base_fps: float = 23.98,
+    default_frame: int = 0,
+) -> tuple[bool, dict[str, Any] | None, dict[str, Any] | None]:
+    if not isinstance(raw, dict):
+        return False, None, {"ok": False, "error": "invalid_shotmarks", "message": "Each shotmark entry must be a JSON object"}
+
+    raw_type = raw.get("type")
+    if isinstance(raw_type, bool) or not isinstance(raw_type, str):
+        return False, None, {"ok": False, "error": "invalid_shotmark_type", "message": f"Invalid shotmark type: {raw_type!r}"}
+    m_type = _SHOTMARK_TYPE_ALIASES.get(raw_type.strip().lower())
+    if m_type is None:
+        return (
+            False,
+            None,
+            {
+                "ok": False,
+                "error": "invalid_shotmark_type",
+                "message": f"Unsupported shotmark type: {raw_type!r}",
+                "allowed": list(SHOTMARK_TYPES),
+            },
+        )
+
+    if "frame" in raw and raw["frame"] is not None:
+        frame_val = _parse_strict_int(raw["frame"])
+        if frame_val is None or frame_val < 0:
+            return (
+                False,
+                None,
+                {"ok": False, "error": "invalid_shotmark_frame", "message": f"frame must be non-negative int, got {raw['frame']!r}"},
+            )
+    else:
+        frame_val = max(0, int(default_frame))
+
+    if "tc" in raw and raw["tc"] is not None:
+        raw_tc = raw["tc"]
+        if isinstance(raw_tc, bool) or not isinstance(raw_tc, str) or not re.fullmatch(r"\d{2}:\d{2}:\d{2}:\d{2}", raw_tc.strip()):
+            return (
+                False,
+                None,
+                {"ok": False, "error": "invalid_shotmark_tc", "message": f"tc must match HH:MM:SS:FF, got {raw_tc!r}"},
+            )
+        tc_val = raw_tc.strip()
+    else:
+        tc_val = format_smpte_tc_from_frames(frame_val, base_fps=base_fps)
+
+    default_lbl = SHOTMARK_DEFAULT_LABELS[m_type]
+    if "label" in raw and raw["label"] is not None:
+        if isinstance(raw["label"], bool) or not isinstance(raw["label"], str):
+            return False, None, {"ok": False, "error": "invalid_shotmark_label", "message": "label must be a string"}
+        lbl_val = raw["label"].strip()[:32] or default_lbl
+    else:
+        lbl_val = default_lbl
+
+    return True, {"type": m_type, "frame": frame_val, "tc": tc_val, "label": lbl_val}, None
+
+
+def _dedup_and_cap_shotmarks(entries: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: set[tuple[str, int]] = set()
+    out: list[dict[str, Any]] = []
+    for item in entries:
+        key = (str(item["type"]), int(item["frame"]))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(dict(item))
+        if len(out) >= SHOTMARK_MAX_PER_CLIP:
+            break
+    return out
+
+
+def validate_shotmark_and_iris_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+    *,
+    rec_tc_frames: int = 0,
+    ei_index: int = 800,
+    shutter_mode: str = "angle",
+    shutter_angle_deg: float = 180.0,
+    shutter_speed_denom: int = 48,
+    ecs_freq_hz: float = 60.0,
+    effective_fps: float = 23.98,
+    base_fps: float = 23.98,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 88 ShotMark1/2, Push Auto Iris, Safety Pad & SMPTE 12M User-Bits updates."""
+    if not isinstance(body, dict):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "invalid_shotmark_and_iris",
+                "message": "shotmark_and_iris payload must be a JSON object",
+            },
+        )
+
+    cur = {
+        **SHOTMARK_IRIS_DEFAULTS,
+        "shotmarks": [],
+    }
+    if current_state:
+        cur.update(current_state)
+        cur["shotmarks"] = [dict(m) for m in current_state.get("shotmarks", [])]
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update({**SHOTMARK_IRIS_DEFAULTS, "shotmarks": []})
+        cur.update({**SHOTMARK_IRIS_DEFAULTS, "shotmarks": []})
+
+    if "iris_fstop" in body and body["iris_fstop"] is not None:
+        raw_iris = body["iris_fstop"]
+        if isinstance(raw_iris, bool):
+            return False, {}, {"ok": False, "error": "invalid_iris_fstop", "message": "iris_fstop cannot be bool"}
+        try:
+            f_iris = float(raw_iris)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_iris_fstop", "message": f"Invalid iris_fstop: {raw_iris!r}"}
+        if not math.isfinite(f_iris) or f_iris < IRIS_FSTOP_MIN - 1e-9 or f_iris > IRIS_FSTOP_MAX + 1e-9:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_iris_fstop",
+                    "message": f"iris_fstop must be in [{IRIS_FSTOP_MIN}, {IRIS_FSTOP_MAX}], got {raw_iris!r}",
+                },
+            )
+        updates["iris_fstop"] = round(max(IRIS_FSTOP_MIN, min(IRIS_FSTOP_MAX, f_iris)), 2)
+
+    if "ae_shift_ev" in body and body["ae_shift_ev"] is not None:
+        raw_ae = body["ae_shift_ev"]
+        if isinstance(raw_ae, bool):
+            return False, {}, {"ok": False, "error": "invalid_ae_shift_ev", "message": "ae_shift_ev cannot be bool"}
+        try:
+            f_ae = float(raw_ae)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_ae_shift_ev", "message": f"Invalid ae_shift_ev: {raw_ae!r}"}
+        if not math.isfinite(f_ae) or f_ae < AE_SHIFT_EV_MIN - 1e-9 or f_ae > AE_SHIFT_EV_MAX + 1e-9:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ae_shift_ev",
+                    "message": f"ae_shift_ev must be in [{AE_SHIFT_EV_MIN}, {AE_SHIFT_EV_MAX}], got {raw_ae!r}",
+                },
+            )
+        updates["ae_shift_ev"] = round(max(AE_SHIFT_EV_MIN, min(AE_SHIFT_EV_MAX, f_ae)), 2)
+
+    if "metering_mode" in body and body["metering_mode"] is not None:
+        raw_m = body["metering_mode"]
+        if isinstance(raw_m, bool) or not isinstance(raw_m, str):
+            return False, {}, {"ok": False, "error": "invalid_metering_mode", "message": f"Invalid metering_mode: {raw_m!r}"}
+        m_norm = _METERING_MODE_ALIASES.get(raw_m.strip().lower())
+        if m_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_metering_mode",
+                    "message": f"Unsupported metering_mode: {raw_m!r}",
+                    "allowed": list(METERING_MODES),
+                },
+            )
+        updates["metering_mode"] = m_norm
+
+    if "ch34_safety_pad_db" in body and body["ch34_safety_pad_db"] is not None:
+        pad_val = _parse_strict_int(body["ch34_safety_pad_db"])
+        if pad_val is None or pad_val not in CH34_SAFETY_PAD_ALLOWED:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_ch34_safety_pad_db",
+                    "message": f"ch34_safety_pad_db must be 0 or -20, got {body['ch34_safety_pad_db']!r}",
+                    "allowed": list(CH34_SAFETY_PAD_ALLOWED),
+                },
+            )
+        updates["ch34_safety_pad_db"] = pad_val
+
+    if "user_bits_hex" in body and body["user_bits_hex"] is not None:
+        ub_norm = parse_user_bits_hex(body["user_bits_hex"])
+        if ub_norm is None:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_user_bits_hex",
+                    "message": f"user_bits_hex must be 'auto_camid_reel' or 'AA:BB:CC:DD', got {body['user_bits_hex']!r}",
+                },
+            )
+        updates["user_bits_hex"] = ub_norm
+
+    if "push_auto_iris_active" in body and body["push_auto_iris_active"] is not None:
+        if not isinstance(body["push_auto_iris_active"], bool):
+            return False, {}, {"ok": False, "error": "invalid_push_auto_iris_active", "message": "push_auto_iris_active must be bool"}
+        updates["push_auto_iris_active"] = body["push_auto_iris_active"]
+
+    if "last_scene_ev" in body and body["last_scene_ev"] is not None:
+        raw_sev = body["last_scene_ev"]
+        if isinstance(raw_sev, bool):
+            return False, {}, {"ok": False, "error": "invalid_scene_ev", "message": "last_scene_ev cannot be bool"}
+        try:
+            f_sev = float(raw_sev)
+        except (TypeError, ValueError):
+            return False, {}, {"ok": False, "error": "invalid_scene_ev", "message": f"Invalid last_scene_ev: {raw_sev!r}"}
+        if not math.isfinite(f_sev) or f_sev < SCENE_EV_MIN - 1e-9 or f_sev > SCENE_EV_MAX + 1e-9:
+            return False, {}, {"ok": False, "error": "invalid_scene_ev", "message": f"scene_ev must be in [0.0, 18.0], got {raw_sev!r}"}
+        updates["last_scene_ev"] = round(f_sev, 2)
+
+    marks_working = [dict(m) for m in cur.get("shotmarks", [])]
+    marks_dirty = body.get("reset") is True
+
+    if "shotmarks" in body and body["shotmarks"] is not None:
+        raw_list = body["shotmarks"]
+        if not isinstance(raw_list, list):
+            return False, {}, {"ok": False, "error": "invalid_shotmarks", "message": "shotmarks must be a JSON array"}
+        parsed_list: list[dict[str, Any]] = []
+        for entry in raw_list:
+            ok_m, norm_m, err_m = _normalize_shotmark_entry(entry, base_fps=base_fps, default_frame=rec_tc_frames)
+            if not ok_m or norm_m is None:
+                return False, {}, err_m or {"ok": False, "error": "invalid_shotmarks"}
+            parsed_list.append(norm_m)
+        marks_working = _dedup_and_cap_shotmarks(parsed_list)
+        marks_dirty = True
+
+    if "action" in body and body["action"] is not None:
+        raw_act = body["action"]
+        if isinstance(raw_act, bool) or not isinstance(raw_act, str):
+            return False, {}, {"ok": False, "error": "invalid_action", "message": f"Invalid action: {raw_act!r}"}
+        act = raw_act.strip().lower()
+        if act not in _SHOTMARK_ACTIONS:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "invalid_action",
+                    "message": f"Unsupported action: {raw_act!r}",
+                    "allowed": list(_SHOTMARK_ACTIONS),
+                },
+            )
+        if act == "clear_shotmarks":
+            marks_working = []
+            marks_dirty = True
+        elif act in ("add_shotmark1", "add_shotmark2"):
+            m_type = "ShotMark1" if act == "add_shotmark1" else "ShotMark2"
+            add_entry = {
+                "type": m_type,
+                "frame": body.get("frame", rec_tc_frames),
+                "tc": body.get("tc"),
+                "label": body.get("label"),
+            }
+            ok_m, norm_m, err_m = _normalize_shotmark_entry(add_entry, base_fps=base_fps, default_frame=rec_tc_frames)
+            if not ok_m or norm_m is None:
+                return False, {}, err_m or {"ok": False, "error": "invalid_shotmark"}
+            marks_working = _dedup_and_cap_shotmarks([*marks_working, norm_m])
+            marks_dirty = True
+        elif act == "push_auto_iris":
+            if "scene_ev" in body and body["scene_ev"] is not None:
+                raw_ev = body["scene_ev"]
+                if isinstance(raw_ev, bool):
+                    return False, {}, {"ok": False, "error": "invalid_scene_ev", "message": "scene_ev cannot be bool"}
+                try:
+                    scene_ev = float(raw_ev)
+                except (TypeError, ValueError):
+                    return False, {}, {"ok": False, "error": "invalid_scene_ev", "message": f"Invalid scene_ev: {raw_ev!r}"}
+                if not math.isfinite(scene_ev) or scene_ev < SCENE_EV_MIN - 1e-9 or scene_ev > SCENE_EV_MAX + 1e-9:
+                    return (
+                        False,
+                        {},
+                        {
+                            "ok": False,
+                            "error": "invalid_scene_ev",
+                            "message": f"scene_ev must be in [{SCENE_EV_MIN}, {SCENE_EV_MAX}], got {raw_ev!r}",
+                        },
+                    )
+            else:
+                scene_ev = SCENE_EV_DEFAULT
+
+            eff_ae = float(updates.get("ae_shift_ev", cur.get("ae_shift_ev", 0.0)))
+            eff_meter = str(updates.get("metering_mode", cur.get("metering_mode", "multi")))
+            iris_res = compute_push_auto_iris(
+                scene_ev,
+                ei_index=ei_index,
+                shutter_mode=shutter_mode,
+                shutter_angle_deg=shutter_angle_deg,
+                shutter_speed_denom=shutter_speed_denom,
+                ecs_freq_hz=ecs_freq_hz,
+                effective_fps=effective_fps,
+                ae_shift_ev=eff_ae,
+                metering_mode=eff_meter,
+            )
+            if "iris_fstop" not in updates:
+                updates["iris_fstop"] = iris_res["iris_fstop"]
+            updates["push_auto_iris_active"] = True
+            updates["last_scene_ev"] = round(scene_ev, 2)
+
+    if marks_dirty:
+        updates["shotmarks"] = marks_working
+
+    return True, updates, None
+
+
+FX6_ONLY_CAMSET_KEYS: tuple[str, ...] = (
+    "fx6_nd_preset",
+    "sdi_12g_out",
+    "sdi_out",
+    "wifi_ap_enabled",
+    "vf_peaking",
+    "vf_zebra",
+    "vf_markers",
+    "timecode_bnc_in",
+    "genlock_in",
+    "grip_zoom_rocker",
+    "nd_auto_mode",
+    "multi_interface_shoe_fx6",
+)
+
+
+def detect_fx6_fleet_camset(payload: dict[str, Any]) -> bool:
+    """Return True if CAMSET payload originates from A-Cam ILME-FX6 or requests fleet sanitization."""
+    if payload.get("sanitize_fx6_fleet") is True:
+        return True
+    if str(payload.get("source_model", "")).strip().upper() == "ILME-FX6":
+        return True
+    for k in FX6_ONLY_CAMSET_KEYS:
+        if k in payload:
+            return True
+    ce = payload.get("cine_exposure")
+    if isinstance(ce, dict):
+        for k in FX6_ONLY_CAMSET_KEYS:
+            if k in ce:
+                return True
+    cp = payload.get("cinema_params")
+    if isinstance(cp, dict):
+        for k in FX6_ONLY_CAMSET_KEYS:
+            if k in cp:
+                return True
+    return False
+
+
+def sanitize_fx6_fleet_camset_payload(
+    payload: dict[str, Any],
+) -> tuple[dict[str, Any], list[str], dict[str, dict[str, Any]]]:
+    """Scrub/clamp A-Cam ILME-FX6 hardware-only keys cleanly for B-Cam ILME-FX3."""
+    clean = copy.deepcopy(payload)
+    sanitized_fields: list[str] = []
+    details: dict[str, dict[str, Any]] = {}
+
+    def _record(field: str, orig: Any, clamped: Any) -> None:
+        if field not in sanitized_fields:
+            sanitized_fields.append(field)
+        details[field] = {"original": orig, "clamped_to": clamped}
+
+    # 1. FX6 internal electronic VND -> Clear (P4 hardware absent on FX3)
+    for k in ("fx6_nd_preset", "nd_auto_mode", "nd_preset", "nd", "nd_filter", "variable_nd"):
+        if k in clean and clean[k] is not None:
+            orig = clean.pop(k)
+            if str(orig).strip().lower() not in ("", "clear", "clear [fx3 p4 locked]", "off", "0", "false"):
+                _record(k, orig, "Clear")
+            elif k in ("fx6_nd_preset", "nd_auto_mode"):
+                _record(k, orig, "Clear")
+
+    cparams = clean.get("cinema_params")
+    if isinstance(cparams, dict):
+        for k in ("fx6_nd_preset", "nd_auto_mode", "sdi_12g_out", "sdi_out"):
+            if k in cparams:
+                orig = cparams.pop(k)
+                _record(k, orig, "Clear" if "nd" in k else "CONTAINED_DISABLED")
+        if "nd" in cparams and str(cparams["nd"]).strip().lower() not in ("", "clear", "clear [fx3 p4 locked]"):
+            _record("cinema_params.nd", cparams["nd"], "Clear [FX3 P4 Locked]")
+            cparams["nd"] = "Clear [FX3 P4 Locked]"
+
+    ce = clean.get("cine_exposure")
+    if isinstance(ce, dict):
+        for k in ("fx6_nd_preset", "nd_auto_mode"):
+            if k in ce:
+                _record(k, ce.pop(k), "Clear")
+        if "nd_preset" in ce and str(ce["nd_preset"]).strip().lower() not in ("", "clear"):
+            _record("nd_preset", ce["nd_preset"], "Clear")
+            ce["nd_preset"] = "Clear"
+
+    # 2. FX6 12G-SDI out -> CONTAINED_DISABLED (no SDI BNC on FX3)
+    for container, prefix in ((clean, ""), (ce, "cine_exposure.") if isinstance(ce, dict) else (None, "")):
+        if not isinstance(container, dict):
+            continue
+        for k in ("sdi_12g_out", "sdi_out"):
+            if k in container:
+                orig = container.pop(k)
+                _record(k if not prefix else k, orig, "CONTAINED_DISABLED")
+
+    # 3. FX6 Wi-Fi AP / RF flags -> P12 BK4 Airplane-Mode locked (wifi_bt_rf_disabled=True)
+    for k in ("wifi_ap_enabled", "wifi_enabled", "bt_enabled"):
+        if k in clean:
+            orig = clean.pop(k)
+            if orig is not False:
+                _record(k, orig, False)
+    if clean.get("wifi_bt_rf_disabled") is False:
+        _record("wifi_bt_rf_disabled", False, True)
+        clean["wifi_bt_rf_disabled"] = True
+    if clean.get("p12_bk4_airplane_mode_locked") is False:
+        _record("p12_bk4_airplane_mode_locked", False, True)
+        clean["p12_bk4_airplane_mode_locked"] = True
+    if isinstance(ce, dict):
+        for k in ("wifi_ap_enabled", "wifi_enabled", "bt_enabled"):
+            if k in ce:
+                orig = ce.pop(k)
+                if orig is not False:
+                    _record(k, orig, False)
+        if ce.get("wifi_bt_rf_disabled") is False:
+            _record("wifi_bt_rf_disabled", False, True)
+            ce["wifi_bt_rf_disabled"] = True
+
+    # 4. FX6 smart EVF / BNC / handle rocker keys -> safely contained/scrubbed
+    for k in ("vf_peaking", "vf_zebra", "vf_markers", "timecode_bnc_in", "genlock_in", "grip_zoom_rocker", "multi_interface_shoe_fx6"):
+        if k in clean:
+            orig = clean.pop(k)
+            _record(k, orig, "CONTAINED_DISABLED")
+        if isinstance(ce, dict) and k in ce:
+            orig = ce.pop(k)
+            _record(k, orig, "CONTAINED_DISABLED")
+        if isinstance(cparams, dict) and k in cparams:
+            orig = cparams.pop(k)
+            _record(k, orig, "CONTAINED_DISABLED")
+
+    return clean, sanitized_fields, details
 
 
 CINEMA_PARAM_SPECS: dict[str, dict[str, Any]] = {
@@ -3866,6 +4677,24 @@ class FX6LiveGpe0Session:
             "ciz_res_mode": self.ciz_res_mode,
             "zoom_rocker_speed": self.zoom_rocker_speed,
         }))
+        self.shotmarks: list[dict[str, Any]] = []
+        self.iris_fstop = 2.8
+        self.ae_shift_ev = 0.0
+        self.metering_mode = "multi"
+        self.ch34_safety_pad_db = 0
+        self.user_bits_hex = "auto_camid_reel"
+        self.push_auto_iris_active = False
+        self.last_scene_ev = 12.0
+        self.last_shotmark_iris_cmd = format_shotmark_iris_command(compute_shotmark_and_iris_derived({
+            "shotmarks": self.shotmarks,
+            "iris_fstop": self.iris_fstop,
+            "ae_shift_ev": self.ae_shift_ev,
+            "metering_mode": self.metering_mode,
+            "ch34_safety_pad_db": self.ch34_safety_pad_db,
+            "user_bits_hex": self.user_bits_hex,
+            "push_auto_iris_active": self.push_auto_iris_active,
+            "last_scene_ev": self.last_scene_ev,
+        }))
         self.last_scope_stats: dict[str, Any] | None = None
         self.user_lut_slots: dict[str, dict[str, Any]] = self._default_user_lut_slots()
         self.last_toast = ""
@@ -4020,6 +4849,14 @@ class FX6LiveGpe0Session:
             self.ciz_res_mode = "4K"
             self.zoom_rocker_speed = 4
             self.last_letterbox_ignored = False
+            self.shotmarks = []
+            self.iris_fstop = 2.8
+            self.ae_shift_ev = 0.0
+            self.metering_mode = "multi"
+            self.ch34_safety_pad_db = 0
+            self.user_bits_hex = "auto_camid_reel"
+            self.push_auto_iris_active = False
+            self.last_scene_ev = 12.0
             self.last_scope_stats = None
             self.user_lut_slots = self._default_user_lut_slots()
             self.last_toast = ""
@@ -4450,14 +5287,56 @@ class FX6LiveGpe0Session:
         mb39 = 0x54414643  # 'TAFC'
         return struct.pack("<4I", mb36, mb37, mb38, mb39)
 
+    def _pack_phase88_mailbox_bytes(self) -> bytes:
+        """Pack Phase 88 guest control mailbox mb[40..43] (16 bytes) matching fx6_live_guest.c."""
+        smi = self.get_shotmark_and_iris()
+        sm_total = max(0, min(64, int(smi["shotmark_count"])))
+        sm1_cnt = max(0, min(64, int(smi["shotmark1_count"])))
+        sm2_cnt = max(0, min(64, int(smi["shotmark2_count"])))
+        latest = smi.get("latest_shotmark")
+        if isinstance(latest, dict):
+            last_type = 1 if latest.get("type") == "ShotMark1" else (2 if latest.get("type") == "ShotMark2" else 0)
+            last_frame_low = int(latest.get("frame", 0)) & 0x1FF
+        else:
+            last_type = 0
+            last_frame_low = 0
+
+        mb40 = (
+            (sm_total & 0x7F)
+            | ((sm1_cnt & 0x7F) << 7)
+            | ((sm2_cnt & 0x7F) << 14)
+            | ((last_type & 0x3) << 21)
+            | ((last_frame_low & 0x1FF) << 23)
+        )
+        iris_x100 = max(140, min(2200, int(round(float(smi["iris_fstop"]) * 100.0))))
+        meter_idx = METERING_MODES.index(smi["metering_mode"]) if smi["metering_mode"] in METERING_MODES else 0
+        ae_enc = max(0, min(32, int(round((float(smi["ae_shift_ev"]) + 2.0) * 8.0))))
+        pad_bit = 1 if int(smi["ch34_safety_pad_db"]) == -20 else 0
+        push_bit = 1 if smi["push_auto_iris_active"] else 0
+        target_ire_int = max(1, min(109, int(round(float(smi["target_ire"])))))
+
+        mb41 = (
+            (iris_x100 & 0xFFF)
+            | ((meter_idx & 0x3) << 12)
+            | ((ae_enc & 0xFF) << 14)
+            | ((pad_bit & 0x1) << 22)
+            | ((push_bit & 0x1) << 23)
+            | ((target_ire_int & 0x7F) << 24)
+            | (1 << 31)  # phase88_valid
+        )
+        mb42 = user_bits_to_uint32(smi["user_bits_effective"])
+        mb43 = 0x534D524B  # 'SMRK'
+        return struct.pack("<4I", mb40, mb41, mb42, mb43)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..39] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..43] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
             self._pack_full_mailbox_bytes()
             + self._pack_phase73_mailbox_bytes()
             + self._pack_phase81_mailbox_bytes()
+            + self._pack_phase88_mailbox_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -5387,6 +6266,7 @@ class FX6LiveGpe0Session:
         self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
         self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+        self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -5513,6 +6393,7 @@ class FX6LiveGpe0Session:
 
         self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
         self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+        self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
 
     def set_color_and_media(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -5559,8 +6440,9 @@ class FX6LiveGpe0Session:
         with self.cmd_lock:
             ce = self.get_cine_exposure()
             cm = self.get_color_and_media()
+            smi = self.get_shotmark_and_iris()
             active_user = self._active_user_lut_for_color()
-        xml_text = build_nrtm_xml_sidecar(ce, cm, active_user_lut=active_user)
+        xml_text = build_nrtm_xml_sidecar(ce, cm, active_user_lut=active_user, shotmark_and_iris=smi)
         return {
             "ok": True,
             "filename": cm["sidecar_xml_name"],
@@ -5574,6 +6456,7 @@ class FX6LiveGpe0Session:
             "xml": xml_text,
             "color_and_media": cm,
             "cine_exposure": ce,
+            "shotmark_and_iris": smi,
         }
 
     def get_touch_focus_ciz(self) -> dict[str, Any]:
@@ -5678,6 +6561,99 @@ class FX6LiveGpe0Session:
                 "status": self.get_status(),
             }
 
+    def get_shotmark_and_iris(self) -> dict[str, Any]:
+        eff_fps = float(self.sq_fps) if self.sq_enabled else float(self.base_fps)
+        state = compute_shotmark_and_iris_derived(
+            {
+                "shotmarks": self.shotmarks,
+                "iris_fstop": self.iris_fstop,
+                "ae_shift_ev": self.ae_shift_ev,
+                "metering_mode": self.metering_mode,
+                "ch34_safety_pad_db": self.ch34_safety_pad_db,
+                "user_bits_hex": self.user_bits_hex,
+                "push_auto_iris_active": self.push_auto_iris_active,
+                "last_scene_ev": self.last_scene_ev,
+            },
+            cam_id=self.cam_id,
+            reel_num=self.reel_num,
+            clip_seq=self.clip_seq,
+            ei_index=self.ei_index,
+            shutter_mode=self.shutter_mode,
+            shutter_angle_deg=self.shutter_angle_deg,
+            shutter_speed_denom=self.shutter_speed_denom,
+            ecs_freq_hz=self.ecs_freq_hz,
+            effective_fps=eff_fps,
+            audio_ch_db=self.audio_ch_db,
+        )
+        state["shotmark_iris_cmd"] = format_shotmark_iris_command(state)
+        return state
+
+    def _apply_shotmark_and_iris_updates_locked(self, updates: dict[str, Any]) -> None:
+        if "shotmarks" in updates:
+            self.shotmarks = [dict(m) for m in updates["shotmarks"]]
+        if "iris_fstop" in updates:
+            self.iris_fstop = float(updates["iris_fstop"])
+        if "ae_shift_ev" in updates:
+            self.ae_shift_ev = float(updates["ae_shift_ev"])
+        if "metering_mode" in updates:
+            self.metering_mode = str(updates["metering_mode"])
+        if "ch34_safety_pad_db" in updates:
+            self.ch34_safety_pad_db = int(updates["ch34_safety_pad_db"])
+        if "user_bits_hex" in updates:
+            self.user_bits_hex = str(updates["user_bits_hex"])
+        if "push_auto_iris_active" in updates:
+            self.push_auto_iris_active = bool(updates["push_auto_iris_active"])
+        if "last_scene_ev" in updates:
+            self.last_scene_ev = float(updates["last_scene_ev"])
+        self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
+
+    def set_shotmark_and_iris(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            eff_fps = float(self.sq_fps) if self.sq_enabled else float(self.base_fps)
+            cur = {
+                "shotmarks": self.shotmarks,
+                "iris_fstop": self.iris_fstop,
+                "ae_shift_ev": self.ae_shift_ev,
+                "metering_mode": self.metering_mode,
+                "ch34_safety_pad_db": self.ch34_safety_pad_db,
+                "user_bits_hex": self.user_bits_hex,
+                "push_auto_iris_active": self.push_auto_iris_active,
+                "last_scene_ev": self.last_scene_ev,
+            }
+            ok, updates, err = validate_shotmark_and_iris_patch(
+                body,
+                current_state=cur,
+                rec_tc_frames=self.rec_tc_frames,
+                ei_index=self.ei_index,
+                shutter_mode=self.shutter_mode,
+                shutter_angle_deg=self.shutter_angle_deg,
+                shutter_speed_denom=self.shutter_speed_denom,
+                ecs_freq_hz=self.ecs_freq_hz,
+                effective_fps=eff_fps,
+                base_fps=self.base_fps,
+            )
+            if not ok:
+                return err or {"ok": False, "error": "invalid_shotmark_and_iris"}
+
+            self._apply_shotmark_and_iris_updates_locked(updates)
+            smi = self.get_shotmark_and_iris()
+            self.last_toast = (
+                f"ShotMark&Iris: M1={smi['shotmark1_count']} M2={smi['shotmark2_count']} | "
+                f"{smi['iris_display']} ({smi['metering_mode']}, AE={smi['ae_shift_ev']:+.2f}EV) | "
+                f"41%IRE | CH3/4={smi['ch34_safety_pad_db']}dB | UB={smi['user_bits_effective']}"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "shotmark_and_iris": smi,
+                "shotmark_iris_cmd": smi["shotmark_iris_cmd"],
+                "p4_nd_motor_faults": 0,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
     def get_scope_stats(self, refresh: bool = False) -> dict[str, Any]:
         if self.is_running() and self.live_ready and not self.crashed and (refresh or len(self.last_raw_gpe0) < GPE0_BYTES):
             self._capture_live_gpe0_with_raw()
@@ -5722,6 +6698,7 @@ class FX6LiveGpe0Session:
             "cine_exposure": self.get_cine_exposure(),
             "color_and_media": self.get_color_and_media(),
             "touch_focus_ciz": self.get_touch_focus_ciz(),
+            "shotmark_and_iris": self.get_shotmark_and_iris(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -5736,15 +6713,29 @@ class FX6LiveGpe0Session:
         }
 
     def import_camset_preset(self, payload: Any) -> dict[str, Any]:
-        """Validate & apply `fx6_on_fx3_camset_v1` while enforcing P4 ND=Clear & P12 BK4 Airplane-Mode locks."""
+        """Validate & apply `fx6_on_fx3_camset_v1` (or sanitized A-Cam `ILME-FX6` fleet preset) while enforcing P4 & P12."""
         if not isinstance(payload, dict):
             return {"ok": False, "error": "invalid_camset_payload", "message": "CAMSET payload must be a JSON object"}
-        if payload.get("schema") != "fx6_on_fx3_camset_v1":
-            return {
-                "ok": False,
-                "error": "invalid_camset_schema",
-                "message": f"Expected schema 'fx6_on_fx3_camset_v1', got {payload.get('schema')!r}",
-            }
+
+        is_fx6_fleet = detect_fx6_fleet_camset(payload)
+        raw_schema = payload.get("schema")
+        if is_fx6_fleet:
+            if raw_schema is not None and raw_schema not in ("fx6_on_fx3_camset_v1", "ilme_fx6_camset_v1", "fx6_camset_v1"):
+                return {
+                    "ok": False,
+                    "error": "invalid_camset_schema",
+                    "message": f"Expected schema 'fx6_on_fx3_camset_v1' or 'ilme_fx6_camset_v1', got {raw_schema!r}",
+                }
+            payload, sanitized_fx6_fields, sanitized_fx6_details = sanitize_fx6_fleet_camset_payload(payload)
+        else:
+            if raw_schema != "fx6_on_fx3_camset_v1":
+                return {
+                    "ok": False,
+                    "error": "invalid_camset_schema",
+                    "message": f"Expected schema 'fx6_on_fx3_camset_v1', got {raw_schema!r}",
+                }
+            sanitized_fx6_fields = []
+            sanitized_fx6_details = {}
 
         cparams = payload.get("cinema_params")
         if cparams is None:
@@ -5978,7 +6969,47 @@ class FX6LiveGpe0Session:
             if not ok_tfc:
                 return err_tfc or {"ok": False, "error": "invalid_touch_focus_ciz"}
 
-        p12_clamped = (payload.get("p12_bk4_airplane_mode_locked") is False) or ce_p12_tamper
+        smi_raw = payload.get("shotmark_and_iris")
+        new_smi_updates: dict[str, Any] = {}
+        if smi_raw is not None:
+            eff_ei = int(new_cine_updates.get("ei_index", self.ei_index))
+            eff_sm = str(new_cine_updates.get("shutter_mode", self.shutter_mode))
+            eff_ang = float(new_cine_updates.get("shutter_angle_deg", self.shutter_angle_deg))
+            eff_den = int(new_cine_updates.get("shutter_speed_denom", self.shutter_speed_denom))
+            eff_ecs = float(new_cine_updates.get("ecs_freq_hz", self.ecs_freq_hz))
+            eff_sq = bool(new_cine_updates.get("sq_enabled", self.sq_enabled))
+            eff_bfps = float(new_cine_updates.get("base_fps", self.base_fps))
+            eff_sfps = int(new_cine_updates.get("sq_fps", self.sq_fps))
+            cur_smi = {
+                "shotmarks": self.shotmarks,
+                "iris_fstop": self.iris_fstop,
+                "ae_shift_ev": self.ae_shift_ev,
+                "metering_mode": self.metering_mode,
+                "ch34_safety_pad_db": self.ch34_safety_pad_db,
+                "user_bits_hex": self.user_bits_hex,
+                "push_auto_iris_active": self.push_auto_iris_active,
+                "last_scene_ev": self.last_scene_ev,
+            }
+            ok_smi, new_smi_updates, err_smi = validate_shotmark_and_iris_patch(
+                smi_raw,
+                current_state=cur_smi,
+                rec_tc_frames=ce_tc_frames if ce_tc_frames is not None else self.rec_tc_frames,
+                ei_index=eff_ei,
+                shutter_mode=eff_sm,
+                shutter_angle_deg=eff_ang,
+                shutter_speed_denom=eff_den,
+                ecs_freq_hz=eff_ecs,
+                effective_fps=float(eff_sfps) if eff_sq else eff_bfps,
+                base_fps=eff_bfps,
+            )
+            if not ok_smi:
+                return err_smi or {"ok": False, "error": "invalid_shotmark_and_iris"}
+
+        p12_clamped = (
+            (payload.get("p12_bk4_airplane_mode_locked") is False)
+            or ce_p12_tamper
+            or any(k in sanitized_fx6_fields for k in ("wifi_ap_enabled", "wifi_enabled", "bt_enabled", "wifi_bt_rf_disabled", "p12_bk4_airplane_mode_locked"))
+        )
 
         with self.cmd_lock:
             if new_cine_updates:
@@ -6081,11 +7112,20 @@ class FX6LiveGpe0Session:
                 self._apply_touch_focus_ciz_updates_locked(new_tfc_updates)
             else:
                 self.last_touch_af_ciz_cmd = format_touch_focus_ciz_command(self.get_touch_focus_ciz())
+            if new_smi_updates:
+                self._apply_shotmark_and_iris_updates_locked(new_smi_updates)
+            else:
+                self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
 
             if p4_rejected:
                 self.last_toast = (
                     f"P4 ND=Clear Lock Enforced: rejected ND={nd_tamper_val!r} in CAMSET "
                     f"(p4_nd_reject_count={self.p4_nd_reject_count})"
+                )
+            elif is_fx6_fleet:
+                self.last_toast = (
+                    f"FX6->FX3 Fleet CAMSET Sanitized ({len(sanitized_fx6_fields)} fields clamped: "
+                    f"ND=Clear, SDI=CONTAINED_DISABLED, RF=OFF)"
                 )
             elif p12_clamped:
                 self.last_toast = "CAMSET Imported (P12 BK4 Airplane-Mode shadow lock preserved)"
@@ -6096,6 +7136,13 @@ class FX6LiveGpe0Session:
             return {
                 "ok": True,
                 "schema": "fx6_on_fx3_camset_v1",
+                "fx6_fleet_sanitized": is_fx6_fleet,
+                "sanitized_fx6_fields": sanitized_fx6_fields,
+                "sanitized_fx6_details": sanitized_fx6_details,
+                "nd_preset": "Clear",
+                "sdi_out": "CONTAINED_DISABLED",
+                "wifi_bt_rf_disabled": True,
+                "p4_nd_motor_faults": 0,
                 "p4_nd_rejected": p4_rejected,
                 "p4_nd_clamped": p4_rejected,
                 "p4_nd_hardware_absent": True,
@@ -6110,6 +7157,7 @@ class FX6LiveGpe0Session:
                 "cine_exposure": self.get_cine_exposure(),
                 "color_and_media": self.get_color_and_media(),
                 "touch_focus_ciz": self.get_touch_focus_ciz(),
+                "shotmark_and_iris": self.get_shotmark_and_iris(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -6795,6 +7843,7 @@ class FX6LiveGpe0Session:
             "cine_exposure": self.get_cine_exposure(),
             "color_and_media": self.get_color_and_media(),
             "touch_focus_ciz": self.get_touch_focus_ciz(),
+            "shotmark_and_iris": self.get_shotmark_and_iris(),
             "serial_tail": serial_tail,
         }
 
@@ -7541,6 +8590,59 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p81-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#86efac;font-family:'SF Mono',Menlo,monospace;">TOUCH_CIZ ...</div>
     </div>
 
+    <div class="card" id="phase88-shotmark-iris-card" style="margin-top:14px;border-color:#f59e0b;">
+      <h3>场记打点 ShotMark1/2 / 一键自动光圈 41%IRE / FX6->FX3 多机位配置克隆 (ShotMark, Push Auto Iris &amp; Fleet CAMSET)</h3>
+      <div id="p88-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#b45309;">
+          <div class="cparam-head"><span>ShotMark1/2 · 场记打点</span><span id="p88-sm-count-readout" style="color:#fbbf24;font-family:'SF Mono',Menlo,monospace;">M1:0 / M2:0</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <button onclick="setShotmarkAndIris({action:'add_shotmark1'})" style="border-color:#fbbf24;color:#fde68a;padding:4px 8px;font-size:11px;">★ ShotMark1 (OK)</button>
+            <button onclick="setShotmarkAndIris({action:'add_shotmark2'})" style="border-color:#38bdf8;color:#bae6fd;padding:4px 8px;font-size:11px;">★ ShotMark2 (KEEP)</button>
+            <button onclick="setShotmarkAndIris({action:'clear_shotmarks'})" style="padding:4px 8px;font-size:11px;">Clear</button>
+          </div>
+          <div id="p88-sm-latest-readout" style="font-size:10px;color:#cbd5e1;font-family:'SF Mono',Menlo,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">EssenceMark: none (0/64)</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#15803d;">
+          <div class="cparam-head"><span>Push Auto Iris · 1/8-Stop</span><span id="p88-iris-readout" style="color:#4ade80;font-family:'SF Mono',Menlo,monospace;">F2.8 · 41.0%IRE</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <select id="p88-metering-select" onchange="setShotmarkAndIris({metering_mode:this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;">
+              <option value="multi">Multi (41% Grey)</option>
+              <option value="center">Center</option>
+              <option value="spot">Spot</option>
+              <option value="highlight">Highlight (&lt;94% IRE)</option>
+            </select>
+            <input id="p88-ev-input" type="number" min="0" max="18" step="0.5" value="12.0" title="Scene EV [0..18]" style="width:54px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;" />
+            <button onclick="applyPhase88PushAutoIris()" style="border-color:#22c55e;color:#bbf7d0;padding:4px 7px;font-size:11px;">Push</button>
+          </div>
+          <div id="p88-ire-est-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">Est Grey: 41.0% | HL: 89.2% | ND Faults: 0</div>
+        </div>
+
+        <div class="cparam-box">
+          <div class="cparam-head"><span>4-Ch 24-bit Pad &amp; SMPTE User-Bits</span><span id="p88-pad-readout" style="color:#22d3ee;font-family:'SF Mono',Menlo,monospace;">0 dB</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;">
+            <button onclick="setShotmarkAndIris({ch34_safety_pad_db:0})" style="padding:4px 7px;font-size:11px;">CH3/4 0dB</button>
+            <button onclick="setShotmarkAndIris({ch34_safety_pad_db:-20})" style="border-color:#10b981;color:#a7f3d0;padding:4px 7px;font-size:11px;">CH3/4 -20dB SAFE</button>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <input id="p88-ub-input" type="text" value="auto_camid_reel" placeholder="auto_camid_reel or AA:BB:CC:DD" style="flex:1;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:4px;font-size:11px;font-family:'SF Mono',Menlo,monospace;" />
+            <button onclick="applyPhase88UserBits()" style="padding:4px 7px;font-size:11px;">UB</button>
+          </div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#0284c7;">
+          <div class="cparam-head"><span>FX6->FX3 Fleet CAMSET &amp; XML</span><span id="p88-fleet-badge" style="color:#38bdf8;font-family:'SF Mono',Menlo,monospace;">Ready</span></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+            <button onclick="importFx6FleetCamsetPreset()" style="border-color:#38bdf8;color:#bae6fd;padding:4px 8px;font-size:11px;">FX6->FX3 Sanitize Clone</button>
+            <a href="/api/xml_sidecar" target="_blank" style="display:inline-block;padding:4px 8px;font-size:11px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;text-decoration:none;">Download M01.XML</a>
+          </div>
+          <div id="p88-ub-readout" style="font-size:10px;color:#94a3b8;font-family:'SF Mono',Menlo,monospace;">UB: A0:01:00:01 (auto_camid_reel)</div>
+        </div>
+      </div>
+      <div id="p88-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">SMRK_IRIS ...</div>
+    </div>
+
     <div class="card" style="margin-top:14px;">
       <h3>Cinema Line 实时参数调节面板 (/api/cinema_param · Big-6 + HUD + P4/P11 硬件契约)</h3>
       <div id="param-toast" class="param-toast"></div>
@@ -7713,6 +8815,7 @@ HTML_UI = """<!DOCTYPE html>
           <button onclick="exportCamset()">Export CAMSET JSON</button>
           <button onclick="importCamset()">Import CAMSET JSON</button>
           <button onclick="testCamsetP4Tamper()" style="border-color:#f59e0b;color:#fde68a;">Test P4 ND Tamper Lock</button>
+          <button onclick="importFx6FleetCamsetPreset()" style="border-color:#38bdf8;color:#bae6fd;">Import FX6 Fleet Preset</button>
           <span id="camset-lock-badge" style="font-size:11px;color:#fde68a;font-family:'SF Mono',Menlo,monospace;">P4 rejects=0 | BK4=LOCKED</span>
         </div>
         <textarea id="camset-json-box" rows="2" placeholder="Exported fx6_on_fx3_camset_v1 JSON appears here..." style="width:100%;background:#07090c;color:#a7f3d0;border:1px solid #283548;border-radius:6px;padding:5px;font-family:'SF Mono',Menlo,monospace;font-size:10.5px;"></textarea>
@@ -8021,6 +9124,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.touch_focus_ciz) {
     syncTouchFocusCizUI(st.touch_focus_ciz);
+  }
+  if (st.shotmark_and_iris) {
+    syncShotmarkIrisUI(st.shotmark_and_iris);
   }
 
   if (forceImg || st.live_ready) {
@@ -9127,6 +10233,136 @@ function applyPhase81CizScale() {
   setTouchFocusCiz({ciz_scale: sc, ciz_res_mode: res, zoom_rocker_speed: spd});
 }
 
+function syncShotmarkIrisUI(smi) {
+  if (!smi) return;
+  const smCntEl = document.getElementById('p88-sm-count-readout');
+  if (smCntEl) smCntEl.textContent = `M1:${smi.shotmark1_count || 0} / M2:${smi.shotmark2_count || 0}`;
+  const smLatEl = document.getElementById('p88-sm-latest-readout');
+  if (smLatEl) {
+    if (smi.latest_shotmark) {
+      const lm = smi.latest_shotmark;
+      smLatEl.textContent = `EssenceMark: ${lm.type} (${lm.label}) @ f=${lm.frame} [${lm.tc}] (${smi.shotmark_count}/${smi.shotmark_max_per_clip})`;
+    } else {
+      smLatEl.textContent = `EssenceMark: none (0/${smi.shotmark_max_per_clip || 64})`;
+    }
+  }
+  const irisEl = document.getElementById('p88-iris-readout');
+  if (irisEl) {
+    irisEl.textContent = `${smi.iris_display || 'F2.8'} · ${Number(smi.target_ire || 41.0).toFixed(1)}%IRE`;
+  }
+  const meterSel = document.getElementById('p88-metering-select');
+  if (meterSel && smi.metering_mode && document.activeElement !== meterSel) {
+    meterSel.value = smi.metering_mode;
+  }
+  const evIn = document.getElementById('p88-ev-input');
+  if (evIn && smi.last_scene_ev !== undefined && document.activeElement !== evIn) {
+    evIn.value = Number(smi.last_scene_ev).toFixed(1);
+  }
+  const ireEstEl = document.getElementById('p88-ire-est-readout');
+  if (ireEstEl) {
+    ireEstEl.textContent = `Est Grey: ${Number(smi.estimated_grey_ire || 41.0).toFixed(1)}% | HL: ${Number(smi.estimated_highlight_ire || 89.0).toFixed(1)}% | ND Faults: ${smi.p4_nd_motor_faults || 0}`;
+  }
+  const padEl = document.getElementById('p88-pad-readout');
+  if (padEl) {
+    padEl.textContent = smi.ch34_safety_pad_db === -20 ? '-20 dB SAFE' : '0 dB';
+  }
+  const ubIn = document.getElementById('p88-ub-input');
+  if (ubIn && smi.user_bits_hex && document.activeElement !== ubIn) {
+    ubIn.value = smi.user_bits_hex;
+  }
+  const ubReadEl = document.getElementById('p88-ub-readout');
+  if (ubReadEl) {
+    ubReadEl.textContent = `UB: ${smi.user_bits_effective || 'A0:01:00:01'} (${smi.user_bits_mode || 'auto_camid_reel'})`;
+  }
+  const cmdEl = document.getElementById('p88-cmd-readout');
+  if (cmdEl) cmdEl.textContent = smi.shotmark_iris_cmd || 'SMRK_IRIS ...';
+}
+
+async function setShotmarkAndIris(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p88-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/shotmark_and_iris', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Invalid shotmark_and_iris parameter';
+      }
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase88PushAutoIris() {
+  const ev = Number((document.getElementById('p88-ev-input') || {}).value || 12.0);
+  const meter = (document.getElementById('p88-metering-select') || {}).value || 'multi';
+  setShotmarkAndIris({action: 'push_auto_iris', scene_ev: ev, metering_mode: meter});
+}
+
+function applyPhase88UserBits() {
+  const ub = ((document.getElementById('p88-ub-input') || {}).value || 'auto_camid_reel').trim();
+  setShotmarkAndIris({user_bits_hex: ub || 'auto_camid_reel'});
+}
+
+async function importFx6FleetCamsetPreset() {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const badge = document.getElementById('p88-fleet-badge');
+  toast.style.display = 'block';
+  try {
+    const box = document.getElementById('camset-json-box');
+    let payload = null;
+    if (box && box.value.trim()) {
+      try {
+        const parsed = JSON.parse(box.value);
+        if (parsed && (parsed.source_model === 'ILME-FX6' || parsed.sanitize_fx6_fleet === true || 'fx6_nd_preset' in parsed || 'sdi_12g_out' in parsed)) {
+          payload = parsed;
+        }
+      } catch (_e) {}
+    }
+    if (!payload) {
+      payload = {
+        schema: 'ilme_fx6_camset_v1',
+        source_model: 'ILME-FX6',
+        sanitize_fx6_fleet: true,
+        fx6_nd_preset: '1/16',
+        sdi_12g_out: 'On',
+        wifi_ap_enabled: true,
+        vf_peaking: 'On',
+        cinema_params: { fps: '23.98p', ei: '800 EI (800 Base)', shutter: '180.0°', nd: '1/16', wb: '5600K' }
+      };
+      if (box) box.value = JSON.stringify(payload, null, 2);
+    }
+    const r = await fetch('/api/camset_import', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    if (badge) {
+      badge.textContent = data.ok ? `Clamped ${(data.sanitized_fx6_fields || []).length} FX6 keys` : (data.error || 'Error');
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -9307,6 +10543,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/shotmark_and_iris":
+                    self._send_json({
+                        "ok": True,
+                        "shotmark_and_iris": session.get_shotmark_and_iris(),
+                        "specs": SHOTMARK_IRIS_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -9355,6 +10599,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/verify_multilang_diff",
                     "/api/assist_tools",
                     "/api/touch_focus_ciz",
+                    "/api/shotmark_and_iris",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -9450,6 +10695,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/touch_focus_ciz":
                     res = session.set_touch_focus_ciz(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/shotmark_and_iris":
+                    res = session.set_shotmark_and_iris(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

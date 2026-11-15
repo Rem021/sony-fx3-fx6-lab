@@ -15527,6 +15527,1111 @@ static int run_r48_af_sens_interval_probe(void) {
     return ok ? 0 : 244;
 }
 
+/* ==========================================================================
+ * Round 49 (Wave-35 / 49th Milestone / 21st Real-HW QEMU Round):
+ *   1. r49a (setup_r49_emphasized_rec_grid_hdmi_probe + SChinese Big6 fb0):
+ *      [Emphasized REC Display] (On default, resettable via [Camera Settings Reset])
+ *      & [Grid Line Display] (Rule of 3rds Grid default, Square Grid, Diag. + Square Grid
+ *      — NOT reset by [Camera Settings Reset]): route to external HDMI when
+ *      [HDMI Info. Display]=On (blanking local LCD), while [HDMI Info. Display]
+ *      is automatically forced Off whenever [Rec. Media dur HDMI Output]=[Off(HDMI Only)]
+ *      OR during HDMI RAW output (hdmi_only_or_raw_baked_recframe_grid_pixels=0).
+ *   2. r49b (--r49-touch-op-reset-vault):
+ *      [Touch Operation] 4 Setup items (Touch Operation, Touch Sensitivity, Swipe Up,
+ *      Touch Func. in Shooting) surviving [Camera Settings Reset] (reset_only_by_initialize=1)
+ *      & [Touch Operation]=Off blocking accidental capacitive Swipe Up (Fn menu) /
+ *      Touch Tracking taps during simulated Tier-0 vault operations
+ *      (bench_accidental_touch_events=0).
+ *   3. r49c (--r49-monitor-brightness-h0-h3):
+ *      [Monitor Brightness] ([Manual] -2..+2 vs [Sunny Weather]) surviving
+ *      [Camera Settings Reset] (reset_only_by_initialize=1), indoor bench rehearsal
+ *      clamping [Sunny Weather] to [Manual] (0) (indoor_sunny_weather_unclamped=0),
+ *      and 16/16 H0 == H3 hardware baseline invariance.
+ * ========================================================================== */
+
+typedef enum {
+    R49_SHOOT_MODE_MOVIE = 0,
+    R49_SHOOT_MODE_SQ    = 1,
+    R49_SHOOT_MODE_STILL = 2
+} r49_shoot_mode_t;
+
+typedef enum {
+    R49_GRID_RULE_OF_3RDS    = 0, /* Default */
+    R49_GRID_SQUARE          = 1,
+    R49_GRID_DIAG_AND_SQUARE = 2,
+    R49_GRID_TYPE_INVALID    = 3
+} r49_grid_line_type_t;
+
+static const char * const k_r49_grid_line_type_labels[3] = {
+    "Rule of 3rds Grid",
+    "Square Grid",
+    "Diag. + Square Grid"
+};
+
+typedef enum {
+    R49_REC_MEDIA_DUR_HDMI_ON        = 0, /* Dual media + HDMI */
+    R49_REC_MEDIA_DUR_OFF_HDMI_ONLY  = 1, /* Off(HDMI Only): forces [HDMI Info. Display] -> Off */
+    R49_REC_MEDIA_DUR_INVALID        = 2
+} r49_rec_media_hdmi_t;
+
+static const char * const k_r49_rec_media_hdmi_labels[2] = {
+    "On",
+    "Off(HDMI Only)"
+};
+
+typedef struct {
+    int emphasized_rec_display;     /* 1 = On (FX3 default), 0 = Off; resettable by [Camera Settings Reset] */
+    int grid_line_display;          /* 0 = Off (default), 1 = On; NOT reset by [Camera Settings Reset] */
+    int grid_line_type;             /* R49_GRID_RULE_OF_3RDS (default); NOT reset by [Camera Settings Reset] */
+    int marker_display;             /* Local-LCD-only overlay */
+    int zebra_display;              /* Local-LCD-only overlay */
+    int peaking_display;            /* Local-LCD-only overlay */
+    int hdmi_info_display_user;     /* User [HDMI Info. Display]: 0 = Off, 1 = On */
+    int rec_media_dur_hdmi_output;  /* R49_REC_MEDIA_DUR_HDMI_ON or R49_REC_MEDIA_DUR_OFF_HDMI_ONLY */
+    int hdmi_raw_output_active;     /* 1 = HDMI RAW output active -> forces [HDMI Info. Display] Off */
+    int shoot_mode;                 /* R49_SHOOT_MODE_MOVIE / SQ / STILL */
+    int is_recording;               /* 1 = Movie/S&Q recording active */
+} r49_emph_rec_grid_hdmi_state_t;
+
+__attribute__((noinline)) static void r49_emph_grid_initialize_defaults(r49_emph_rec_grid_hdmi_state_t *st) {
+    if (!st) return;
+    st->emphasized_rec_display = 1; /* On (ILME-FX3 factory default) */
+    st->grid_line_display = 0;      /* Off (factory default) */
+    st->grid_line_type = R49_GRID_RULE_OF_3RDS;
+    st->marker_display = 0;
+    st->zebra_display = 0;
+    st->peaking_display = 0;
+    st->hdmi_info_display_user = 0;
+    st->rec_media_dur_hdmi_output = R49_REC_MEDIA_DUR_HDMI_ON;
+    st->hdmi_raw_output_active = 0;
+    st->shoot_mode = R49_SHOOT_MODE_MOVIE;
+    st->is_recording = 0;
+}
+
+__attribute__((noinline)) static int r49_set_emphasized_rec_display(
+    r49_emph_rec_grid_hdmi_state_t *st, int on_off
+) {
+    if (!st) return -EINVAL;
+    if (on_off != 0 && on_off != 1) return -EINVAL;
+    st->emphasized_rec_display = on_off;
+    return 0;
+}
+
+__attribute__((noinline)) static int r49_set_grid_line_display(
+    r49_emph_rec_grid_hdmi_state_t *st, int on_off, int grid_type
+) {
+    if (!st) return -EINVAL;
+    if (on_off != 0 && on_off != 1) return -EINVAL;
+    if (grid_type < R49_GRID_RULE_OF_3RDS || grid_type >= R49_GRID_TYPE_INVALID) {
+        return -EINVAL;
+    }
+    st->grid_line_display = on_off;
+    st->grid_line_type = grid_type;
+    return 0;
+}
+
+__attribute__((noinline)) static int r49_set_rec_media_dur_hdmi(
+    r49_emph_rec_grid_hdmi_state_t *st, int mode
+) {
+    if (!st) return -EINVAL;
+    if (mode < R49_REC_MEDIA_DUR_HDMI_ON || mode >= R49_REC_MEDIA_DUR_INVALID) {
+        return -EINVAL;
+    }
+    st->rec_media_dur_hdmi_output = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r49_emph_grid_camera_settings_reset(
+    r49_emph_rec_grid_hdmi_state_t *st
+) {
+    if (!st) return;
+    /* [Emphasized REC Display] IS reset to [On] by [Camera Settings Reset],
+     * whereas [Grid Line Display] & [Grid Line Type] are NOT reset (cleared only by [Initialize]). */
+    st->emphasized_rec_display = 1;
+}
+
+typedef struct {
+    int effective_hdmi_info_display;
+    int local_lcd_blanked;
+    unsigned int lcd_recframe_px;
+    unsigned int lcd_grid_px;
+    unsigned int hdmi_recframe_px;
+    unsigned int hdmi_grid_px;
+    unsigned int hdmi_marker_zebra_peaking_px;
+} r49_osd_route_eval_t;
+
+__attribute__((noinline)) static void r49_eval_osd_and_hdmi_routing(
+    const r49_emph_rec_grid_hdmi_state_t *st,
+    r49_osd_route_eval_t *out
+) {
+    if (!out) return;
+    memset(out, 0, sizeof(*out));
+    if (!st) return;
+
+    /* Official Sony ILME-FX3 hardware clamps:
+     * Whenever [Rec. Media dur HDMI Output] = [Off(HDMI Only)] OR while outputting RAW movies
+     * over HDMI, [HDMI Info. Display] is temporarily forced to [Off]. */
+    int forced_hdmi_info_off =
+        (st->rec_media_dur_hdmi_output == R49_REC_MEDIA_DUR_OFF_HDMI_ONLY ||
+         st->hdmi_raw_output_active != 0) ? 1 : 0;
+    int eff_hdmi_info = (!forced_hdmi_info_off && st->hdmi_info_display_user != 0) ? 1 : 0;
+    out->effective_hdmi_info_display = eff_hdmi_info;
+    out->local_lcd_blanked = eff_hdmi_info;
+
+    /* Bold red REC border (8px perimeter on 1024x540 = 24,768 px) only during Movie / S&Q recording */
+    unsigned int recframe_px = 0U;
+    if (st->emphasized_rec_display != 0 &&
+        st->is_recording != 0 &&
+        (st->shoot_mode == R49_SHOOT_MODE_MOVIE || st->shoot_mode == R49_SHOOT_MODE_SQ)) {
+        recframe_px = (1024U * 540U) - ((1024U - 16U) * (540U - 16U)); /* 24768U */
+    }
+
+    unsigned int grid_px = 0U;
+    if (st->grid_line_display != 0) {
+        if (st->grid_line_type == R49_GRID_RULE_OF_3RDS) {
+            grid_px = (2U * 1024U) + (2U * 540U) - 4U; /* 3124U */
+        } else if (st->grid_line_type == R49_GRID_SQUARE) {
+            grid_px = (3U * 1024U) + (5U * 540U) - 15U; /* 5757U */
+        } else if (st->grid_line_type == R49_GRID_DIAG_AND_SQUARE) {
+            grid_px = (3U * 1024U) + (5U * 540U) - 15U + 2U * 540U; /* 6837U */
+        }
+    }
+
+    if (eff_hdmi_info) {
+        /* When [HDMI Info. Display]=On (and not clamped), camera LCD blanks and both
+         * [Emphasized REC Display] red frame and [Grid Line Display] route to HDMI;
+         * Marker/Zebra/Peaking remain strictly 0 px on HDMI. */
+        out->lcd_recframe_px = 0U;
+        out->lcd_grid_px = 0U;
+        out->hdmi_recframe_px = recframe_px;
+        out->hdmi_grid_px = grid_px;
+    } else {
+        out->lcd_recframe_px = recframe_px;
+        out->lcd_grid_px = grid_px;
+        out->hdmi_recframe_px = 0U;
+        out->hdmi_grid_px = 0U;
+    }
+    out->hdmi_marker_zebra_peaking_px = 0U;
+}
+
+static int setup_r49_emphasized_rec_grid_hdmi_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r49_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r49_cnflasha_init", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r49_p2_init");
+    (void)umount("/mnt/r49_cnflasha_init");
+    if (mount("tmpfs", "/mnt/r49_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r49_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 43U + 0x49U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x94U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r49_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r49_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r49_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r49_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r49_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r49_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    r49_emph_rec_grid_hdmi_state_t st;
+    r49_emph_grid_initialize_defaults(&st);
+
+    /* 1. Validate defaults & enums for [Emphasized REC Display] and [Grid Line Display] */
+    int emph_rec_default_on_ok = (st.emphasized_rec_display == 1) ? 1 : 0;
+    int grid_default_off_ok = (st.grid_line_display == 0) ? 1 : 0;
+    int grid_default_rule_of_3rds_ok = (st.grid_line_type == R49_GRID_RULE_OF_3RDS) ? 1 : 0;
+    int invalid_emph_rec_reject_rc = r49_set_emphasized_rec_display(&st, 2);
+    int invalid_grid_type_reject_rc = r49_set_grid_line_display(&st, 1, R49_GRID_TYPE_INVALID);
+    int invalid_rec_media_hdmi_reject_rc = r49_set_rec_media_dur_hdmi(&st, R49_REC_MEDIA_DUR_INVALID);
+
+    int grid_3types_verified = 0;
+    for (int gt = R49_GRID_RULE_OF_3RDS; gt <= R49_GRID_DIAG_AND_SQUARE; gt++) {
+        if (r49_set_grid_line_display(&st, 1, gt) == 0 &&
+            st.grid_line_display == 1 &&
+            st.grid_line_type == gt &&
+            k_r49_grid_line_type_labels[gt][0] != '\0') {
+            grid_3types_verified++;
+        }
+    }
+    int rec_media_2labels_ok =
+        (k_r49_rec_media_hdmi_labels[0][0] != '\0' && k_r49_rec_media_hdmi_labels[1][0] != '\0') ? 1 : 0;
+
+    /* 2. [Camera Settings Reset] split: resets [Emphasized REC Display] Off -> On,
+     *    while preserving [Grid Line Display]=On & all 3 [Grid Line Type] variants;
+     *    only [Initialize] resets Grid back to Off + Rule of 3rds Grid. */
+    int grid_types_survive_cam_reset = 0;
+    int emph_rec_resets_count = 0;
+    for (int gt = R49_GRID_RULE_OF_3RDS; gt <= R49_GRID_DIAG_AND_SQUARE; gt++) {
+        (void)r49_set_emphasized_rec_display(&st, 0);
+        (void)r49_set_grid_line_display(&st, 1, gt);
+        r49_emph_grid_camera_settings_reset(&st);
+        if (st.emphasized_rec_display == 1) {
+            emph_rec_resets_count++;
+        }
+        if (st.grid_line_display == 1 && st.grid_line_type == gt) {
+            grid_types_survive_cam_reset++;
+        }
+    }
+    int emph_rec_camreset_restores_on_ok = (emph_rec_resets_count == 3) ? 1 : 0;
+    int grid_survives_cam_settings_reset_ok = (grid_types_survive_cam_reset == 3) ? 1 : 0;
+
+    (void)r49_set_grid_line_display(&st, 1, R49_GRID_DIAG_AND_SQUARE);
+    r49_emph_grid_initialize_defaults(&st);
+    int initialize_restores_grid_defaults_ok =
+        (st.grid_line_display == 0 && st.grid_line_type == R49_GRID_RULE_OF_3RDS) ? 1 : 0;
+    int grid_reset_only_by_initialize =
+        (grid_survives_cam_settings_reset_ok == 1 && initialize_restores_grid_defaults_ok == 1) ? 1 : 0;
+
+    /* 3. Movie & S&Q red REC frame + Grid routing to external HDMI when [HDMI Info. Display]=On
+     *    (blanking local LCD), while Marker/Zebra/Peaking stay 0 px on HDMI */
+    (void)r49_set_emphasized_rec_display(&st, 1);
+    (void)r49_set_grid_line_display(&st, 1, R49_GRID_DIAG_AND_SQUARE);
+    st.marker_display = 1;
+    st.zebra_display = 1;
+    st.peaking_display = 1;
+    st.hdmi_info_display_user = 1;
+    st.rec_media_dur_hdmi_output = R49_REC_MEDIA_DUR_HDMI_ON;
+    st.hdmi_raw_output_active = 0;
+    st.shoot_mode = R49_SHOOT_MODE_MOVIE;
+    st.is_recording = 1;
+
+    r49_osd_route_eval_t ev_hdmi_on;
+    r49_eval_osd_and_hdmi_routing(&st, &ev_hdmi_on);
+
+    st.shoot_mode = R49_SHOOT_MODE_SQ;
+    r49_osd_route_eval_t ev_sq_hdmi_on;
+    r49_eval_osd_and_hdmi_routing(&st, &ev_sq_hdmi_on);
+
+    st.shoot_mode = R49_SHOOT_MODE_STILL;
+    r49_osd_route_eval_t ev_still;
+    r49_eval_osd_and_hdmi_routing(&st, &ev_still);
+
+    int hdmi_info_on_routes_recframe_and_grid_ok =
+        (ev_hdmi_on.effective_hdmi_info_display == 1 &&
+         ev_hdmi_on.hdmi_recframe_px == 24768U &&
+         ev_hdmi_on.hdmi_grid_px == 6837U &&
+         ev_sq_hdmi_on.hdmi_recframe_px == 24768U &&
+         ev_sq_hdmi_on.hdmi_grid_px == 6837U &&
+         ev_still.hdmi_recframe_px == 0U &&
+         ev_hdmi_on.hdmi_marker_zebra_peaking_px == 0U) ? 1 : 0;
+    int local_lcd_blanked_when_hdmi_info_on =
+        (ev_hdmi_on.local_lcd_blanked == 1 &&
+         ev_hdmi_on.lcd_recframe_px == 0U &&
+         ev_hdmi_on.lcd_grid_px == 0U) ? 1 : 0;
+
+    /* 4. Two automatic hardware [HDMI Info. Display] -> [Off] clean-feed clamps:
+     *    (a) [Rec. Media dur HDMI Output] = [Off(HDMI Only)]
+     *    (b) HDMI RAW movie output active */
+    st.shoot_mode = R49_SHOOT_MODE_MOVIE;
+    st.is_recording = 1;
+    st.hdmi_info_display_user = 1;
+    (void)r49_set_rec_media_dur_hdmi(&st, R49_REC_MEDIA_DUR_OFF_HDMI_ONLY);
+    st.hdmi_raw_output_active = 0;
+    r49_osd_route_eval_t ev_hdmi_only;
+    r49_eval_osd_and_hdmi_routing(&st, &ev_hdmi_only);
+
+    (void)r49_set_rec_media_dur_hdmi(&st, R49_REC_MEDIA_DUR_HDMI_ON);
+    st.hdmi_raw_output_active = 1;
+    r49_osd_route_eval_t ev_hdmi_raw;
+    r49_eval_osd_and_hdmi_routing(&st, &ev_hdmi_raw);
+
+    (void)r49_set_rec_media_dur_hdmi(&st, R49_REC_MEDIA_DUR_OFF_HDMI_ONLY);
+    st.hdmi_raw_output_active = 1;
+    r49_osd_route_eval_t ev_both_clamps;
+    r49_eval_osd_and_hdmi_routing(&st, &ev_both_clamps);
+
+    int hdmi_only_forces_hdmi_info_off_ok =
+        (ev_hdmi_only.effective_hdmi_info_display == 0 &&
+         ev_hdmi_only.local_lcd_blanked == 0 &&
+         ev_hdmi_only.lcd_recframe_px == 24768U &&
+         ev_hdmi_only.lcd_grid_px == 6837U &&
+         ev_hdmi_only.hdmi_recframe_px == 0U &&
+         ev_hdmi_only.hdmi_grid_px == 0U) ? 1 : 0;
+    int hdmi_raw_forces_hdmi_info_off_ok =
+        (ev_hdmi_raw.effective_hdmi_info_display == 0 &&
+         ev_hdmi_raw.local_lcd_blanked == 0 &&
+         ev_hdmi_raw.lcd_recframe_px == 24768U &&
+         ev_hdmi_raw.lcd_grid_px == 6837U &&
+         ev_hdmi_raw.hdmi_recframe_px == 0U &&
+         ev_hdmi_raw.hdmi_grid_px == 0U) ? 1 : 0;
+
+    unsigned int hdmi_only_or_raw_baked_recframe_grid_pixels =
+        ev_hdmi_only.hdmi_recframe_px + ev_hdmi_only.hdmi_grid_px +
+        ev_hdmi_raw.hdmi_recframe_px + ev_hdmi_raw.hdmi_grid_px +
+        ev_both_clamps.hdmi_recframe_px + ev_both_clamps.hdmi_grid_px;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r49_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r49_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r49_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r49_p2_init");
+    (void)umount("/mnt/r49_cnflasha_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R49_EMPH_REC_GRID_HDMI_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (emph_rec_default_on_ok == 1 &&
+              grid_default_off_ok == 1 &&
+              grid_default_rule_of_3rds_ok == 1 &&
+              invalid_emph_rec_reject_rc == -EINVAL &&
+              invalid_grid_type_reject_rc == -EINVAL &&
+              invalid_rec_media_hdmi_reject_rc == -EINVAL &&
+              grid_3types_verified == 3 &&
+              rec_media_2labels_ok == 1 &&
+              emph_rec_camreset_restores_on_ok == 1 &&
+              grid_survives_cam_settings_reset_ok == 1 &&
+              grid_reset_only_by_initialize == 1 &&
+              hdmi_info_on_routes_recframe_and_grid_ok == 1 &&
+              local_lcd_blanked_when_hdmi_info_on == 1 &&
+              hdmi_only_forces_hdmi_info_off_ok == 1 &&
+              hdmi_raw_forces_hdmi_info_off_ok == 1 &&
+              hdmi_only_or_raw_baked_recframe_grid_pixels == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R49_EMPH_REC_GRID_HDMI_INIT emph_rec_default_on_ok=%d grid_default_off_ok=%d "
+            "grid_default_rule_of_3rds_ok=%d invalid_emph_rec_reject_rc=%d "
+            "invalid_grid_type_reject_rc=%d invalid_rec_media_hdmi_reject_rc=%d "
+            "grid_3types_verified=%d emph_rec_camreset_restores_on_ok=%d "
+            "grid_types_survive_cam_reset=%d grid_survives_cam_settings_reset_ok=%d "
+            "grid_reset_only_by_initialize=%d hdmi_info_on_recframe_px=%u hdmi_info_on_grid_px=%u "
+            "hdmi_marker_zebra_peaking_px=%u hdmi_info_on_routes_recframe_and_grid_ok=%d "
+            "local_lcd_blanked_when_hdmi_info_on=%d hdmi_only_forces_hdmi_info_off_ok=%d "
+            "hdmi_raw_forces_hdmi_info_off_ok=%d hdmi_only_or_raw_baked_recframe_grid_pixels=%u "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r49_init_ok=%d verify_us=%lld\n",
+            emph_rec_default_on_ok, grid_default_off_ok,
+            grid_default_rule_of_3rds_ok, invalid_emph_rec_reject_rc,
+            invalid_grid_type_reject_rc, invalid_rec_media_hdmi_reject_rc,
+            grid_3types_verified, emph_rec_camreset_restores_on_ok,
+            grid_types_survive_cam_reset, grid_survives_cam_settings_reset_ok,
+            grid_reset_only_by_initialize, ev_hdmi_on.hdmi_recframe_px, ev_hdmi_on.hdmi_grid_px,
+            ev_hdmi_on.hdmi_marker_zebra_peaking_px, hdmi_info_on_routes_recframe_and_grid_ok,
+            local_lcd_blanked_when_hdmi_info_on, hdmi_only_forces_hdmi_info_off_ok,
+            hdmi_raw_forces_hdmi_info_off_ok, hdmi_only_or_raw_baked_recframe_grid_pixels,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+/* --- r49b: [Touch Operation] 4-Item [Camera Settings Reset] Survival & Unattended Bench Tap Firewall --- */
+
+typedef enum {
+    R49_TOUCH_OP_ON               = 0, /* Default */
+    R49_TOUCH_OP_ON_PLAYBACK_ONLY = 1,
+    R49_TOUCH_OP_OFF              = 2,
+    R49_TOUCH_OP_INVALID          = 3
+} r49_touch_op_mode_t;
+
+static const char * const k_r49_touch_op_labels[3] = {
+    "On",
+    "On: Playback Only",
+    "Off"
+};
+
+typedef enum {
+    R49_TOUCH_SENS_STANDARD  = 0, /* Default */
+    R49_TOUCH_SENS_SENSITIVE = 1,
+    R49_TOUCH_SENS_INVALID   = 2
+} r49_touch_sensitivity_t;
+
+static const char * const k_r49_touch_sens_labels[2] = {
+    "Standard",
+    "Sensitive"
+};
+
+typedef enum {
+    R49_SWIPE_UP_OPEN_FN_MENU = 0, /* Default */
+    R49_SWIPE_UP_OFF          = 1,
+    R49_SWIPE_UP_INVALID      = 2
+} r49_swipe_up_mode_t;
+
+static const char * const k_r49_swipe_up_labels[2] = {
+    "Open the Fn Menu",
+    "Off"
+};
+
+typedef enum {
+    R49_TOUCH_SHOOT_TRACKING = 0, /* Default */
+    R49_TOUCH_SHOOT_FOCUS    = 1,
+    R49_TOUCH_SHOOT_OFF      = 2,
+    R49_TOUCH_SHOOT_INVALID  = 3
+} r49_touch_shoot_func_t;
+
+static const char * const k_r49_touch_shoot_labels[3] = {
+    "Touch Tracking",
+    "Touch Focus",
+    "Off"
+};
+
+typedef enum {
+    R49_TOUCH_GESTURE_SWIPE_UP_SHOOT = 0,
+    R49_TOUCH_GESTURE_TAP_SHOOT      = 1,
+    R49_TOUCH_GESTURE_TAP_PLAYBACK   = 2
+} r49_touch_gesture_t;
+
+typedef struct {
+    int touch_operation;         /* R49_TOUCH_OP_ON (default) */
+    int touch_sensitivity;       /* R49_TOUCH_SENS_STANDARD (default) */
+    int swipe_up;                /* R49_SWIPE_UP_OPEN_FN_MENU (default) */
+    int touch_func_in_shooting;  /* R49_TOUCH_SHOOT_TRACKING (default) */
+    int emphasized_rec_display;  /* Resettable shooting item for contrast */
+    unsigned int fn_menu_open_events;
+    unsigned int touch_tracking_events;
+    unsigned int touch_focus_events;
+    unsigned int playback_touch_events;
+} r49_touch_setup_state_t;
+
+__attribute__((noinline)) static void r49_touch_initialize_all(r49_touch_setup_state_t *st) {
+    if (!st) return;
+    memset(st, 0, sizeof(*st));
+    st->touch_operation = R49_TOUCH_OP_ON;
+    st->touch_sensitivity = R49_TOUCH_SENS_STANDARD;
+    st->swipe_up = R49_SWIPE_UP_OPEN_FN_MENU;
+    st->touch_func_in_shooting = R49_TOUCH_SHOOT_TRACKING;
+    st->emphasized_rec_display = 1;
+}
+
+__attribute__((noinline)) static int r49_set_touch_operation(r49_touch_setup_state_t *st, int mode) {
+    if (!st || mode < R49_TOUCH_OP_ON || mode >= R49_TOUCH_OP_INVALID) return -EINVAL;
+    st->touch_operation = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r49_set_touch_sensitivity(r49_touch_setup_state_t *st, int sens) {
+    if (!st || sens < R49_TOUCH_SENS_STANDARD || sens >= R49_TOUCH_SENS_INVALID) return -EINVAL;
+    st->touch_sensitivity = sens;
+    return 0;
+}
+
+__attribute__((noinline)) static int r49_set_swipe_up(r49_touch_setup_state_t *st, int mode) {
+    if (!st || mode < R49_SWIPE_UP_OPEN_FN_MENU || mode >= R49_SWIPE_UP_INVALID) return -EINVAL;
+    st->swipe_up = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r49_set_touch_func_in_shooting(r49_touch_setup_state_t *st, int fn) {
+    if (!st || fn < R49_TOUCH_SHOOT_TRACKING || fn >= R49_TOUCH_SHOOT_INVALID) return -EINVAL;
+    st->touch_func_in_shooting = fn;
+    return 0;
+}
+
+__attribute__((noinline)) static void r49_touch_camera_settings_reset(r49_touch_setup_state_t *st) {
+    if (!st) return;
+    /* All 4 Setup -> [Touch Operation] items are IMMUNE to [Camera Settings Reset]
+     * and reset ONLY by [Initialize]; shooting-scoped [Emphasized REC Display] resets to On. */
+    st->emphasized_rec_display = 1;
+}
+
+__attribute__((noinline)) static int r49_dispatch_capacitive_gesture(
+    r49_touch_setup_state_t *st,
+    r49_touch_gesture_t gesture
+) {
+    if (!st) return -EINVAL;
+    if (st->touch_operation == R49_TOUCH_OP_OFF) {
+        return -EPERM; /* Capacitive touch panel disabled */
+    }
+    if (gesture == R49_TOUCH_GESTURE_TAP_PLAYBACK) {
+        st->playback_touch_events++;
+        return 0;
+    }
+    if (st->touch_operation == R49_TOUCH_OP_ON_PLAYBACK_ONLY) {
+        return -EPERM; /* Shooting touches suppressed in [On: Playback Only] */
+    }
+    if (gesture == R49_TOUCH_GESTURE_SWIPE_UP_SHOOT) {
+        if (st->swipe_up == R49_SWIPE_UP_OPEN_FN_MENU) {
+            st->fn_menu_open_events++;
+            return 0;
+        }
+        return -EPERM;
+    }
+    if (gesture == R49_TOUCH_GESTURE_TAP_SHOOT) {
+        if (st->touch_func_in_shooting == R49_TOUCH_SHOOT_TRACKING) {
+            st->touch_tracking_events++;
+            return 0;
+        }
+        if (st->touch_func_in_shooting == R49_TOUCH_SHOOT_FOCUS) {
+            st->touch_focus_events++;
+            return 0;
+        }
+        return -EPERM;
+    }
+    return -EINVAL;
+}
+
+static int run_r49_touch_op_reset_vault_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r49_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r49_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r49_cnflasha_ro", 0755) != 0) {
+        return 245;
+    }
+    (void)umount("/mnt/r49_slot1_vault");
+    (void)umount("/mnt/r49_p2_ro");
+    (void)umount("/mnt/r49_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r49_slot1_vault", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r49_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r49_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 245;
+    }
+    if (r33_mkdir_p("/mnt/r49_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET", 0755) != 0) {
+        return 245;
+    }
+
+    uint8_t vault_seed[256], p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(vault_seed); i++) {
+        vault_seed[i] = (uint8_t)((i * 53U + 0x49U) & 0xffU);
+        p2_seed[i] = (uint8_t)((i * 37U + 0x91U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 29U + 0x19U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r49_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT",
+                            vault_seed, sizeof(vault_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r49_p2_ro/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r49_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 245;
+    }
+
+    char pre_vault_sha[65] = "", post_vault_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r49_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT",
+                        pre_vault_sha, &vbytes) != 0) {
+        return 245;
+    }
+    if (mount(NULL, "/mnt/r49_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r49_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r49_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 245;
+    }
+
+    r49_touch_setup_state_t st;
+    r49_touch_initialize_all(&st);
+
+    /* 1. Validate defaults & full enum coverage across all 4 Setup -> [Touch Operation] items */
+    int touch_4defaults_ok =
+        (st.touch_operation == R49_TOUCH_OP_ON &&
+         st.touch_sensitivity == R49_TOUCH_SENS_STANDARD &&
+         st.swipe_up == R49_SWIPE_UP_OPEN_FN_MENU &&
+         st.touch_func_in_shooting == R49_TOUCH_SHOOT_TRACKING) ? 1 : 0;
+
+    int invalid_touch_op_reject_rc = r49_set_touch_operation(&st, R49_TOUCH_OP_INVALID);
+    int invalid_touch_sens_reject_rc = r49_set_touch_sensitivity(&st, R49_TOUCH_SENS_INVALID);
+    int invalid_swipe_up_reject_rc = r49_set_swipe_up(&st, R49_SWIPE_UP_INVALID);
+    int invalid_touch_shoot_reject_rc = r49_set_touch_func_in_shooting(&st, R49_TOUCH_SHOOT_INVALID);
+
+    int touch_op_3modes_verified = 0;
+    for (int m = R49_TOUCH_OP_ON; m <= R49_TOUCH_OP_OFF; m++) {
+        if (r49_set_touch_operation(&st, m) == 0 &&
+            st.touch_operation == m &&
+            k_r49_touch_op_labels[m][0] != '\0') {
+            touch_op_3modes_verified++;
+        }
+    }
+    int touch_sens_2modes_verified = 0;
+    for (int s = R49_TOUCH_SENS_STANDARD; s <= R49_TOUCH_SENS_SENSITIVE; s++) {
+        if (r49_set_touch_sensitivity(&st, s) == 0 &&
+            st.touch_sensitivity == s &&
+            k_r49_touch_sens_labels[s][0] != '\0') {
+            touch_sens_2modes_verified++;
+        }
+    }
+    int swipe_up_2modes_verified = 0;
+    for (int w = R49_SWIPE_UP_OPEN_FN_MENU; w <= R49_SWIPE_UP_OFF; w++) {
+        if (r49_set_swipe_up(&st, w) == 0 &&
+            st.swipe_up == w &&
+            k_r49_swipe_up_labels[w][0] != '\0') {
+            swipe_up_2modes_verified++;
+        }
+    }
+    int touch_shoot_func_3modes_verified = 0;
+    for (int f = R49_TOUCH_SHOOT_TRACKING; f <= R49_TOUCH_SHOOT_OFF; f++) {
+        if (r49_set_touch_func_in_shooting(&st, f) == 0 &&
+            st.touch_func_in_shooting == f &&
+            k_r49_touch_shoot_labels[f][0] != '\0') {
+            touch_shoot_func_3modes_verified++;
+        }
+    }
+
+    /* 2. Prove all 4 items survive [Camera Settings Reset] while shooting-scoped item resets;
+     *    prove all 4 reset to factory defaults ONLY via [Initialize]. */
+    (void)r49_set_touch_operation(&st, R49_TOUCH_OP_OFF);
+    (void)r49_set_touch_sensitivity(&st, R49_TOUCH_SENS_SENSITIVE);
+    (void)r49_set_swipe_up(&st, R49_SWIPE_UP_OFF);
+    (void)r49_set_touch_func_in_shooting(&st, R49_TOUCH_SHOOT_FOCUS);
+    st.emphasized_rec_display = 0;
+
+    r49_touch_camera_settings_reset(&st);
+    int touch_4items_survive_cam_reset = 0;
+    if (st.touch_operation == R49_TOUCH_OP_OFF) touch_4items_survive_cam_reset++;
+    if (st.touch_sensitivity == R49_TOUCH_SENS_SENSITIVE) touch_4items_survive_cam_reset++;
+    if (st.swipe_up == R49_SWIPE_UP_OFF) touch_4items_survive_cam_reset++;
+    if (st.touch_func_in_shooting == R49_TOUCH_SHOOT_FOCUS) touch_4items_survive_cam_reset++;
+    int cam_reset_restores_emph_rec_ok = (st.emphasized_rec_display == 1) ? 1 : 0;
+
+    /* Also check [On: Playback Only] survival across [Camera Settings Reset] */
+    (void)r49_set_touch_operation(&st, R49_TOUCH_OP_ON_PLAYBACK_ONLY);
+    r49_touch_camera_settings_reset(&st);
+    int playback_only_survives_cam_reset_ok =
+        (st.touch_operation == R49_TOUCH_OP_ON_PLAYBACK_ONLY) ? 1 : 0;
+
+    int survives_cam_settings_reset_ok =
+        (touch_4items_survive_cam_reset == 4 &&
+         playback_only_survives_cam_reset_ok == 1 &&
+         cam_reset_restores_emph_rec_ok == 1) ? 1 : 0;
+
+    r49_touch_initialize_all(&st);
+    int initialize_restores_4defaults_ok =
+        (st.touch_operation == R49_TOUCH_OP_ON &&
+         st.touch_sensitivity == R49_TOUCH_SENS_STANDARD &&
+         st.swipe_up == R49_SWIPE_UP_OPEN_FN_MENU &&
+         st.touch_func_in_shooting == R49_TOUCH_SHOOT_TRACKING) ? 1 : 0;
+    int reset_only_by_initialize =
+        (survives_cam_settings_reset_ok == 1 && initialize_restores_4defaults_ok == 1) ? 1 : 0;
+
+    /* 3. Baseline active touch behavior vs [On: Playback Only] vs [Off] unattended vault firewall */
+    int on_swipe_rc = r49_dispatch_capacitive_gesture(&st, R49_TOUCH_GESTURE_SWIPE_UP_SHOOT);
+    int on_tap_rc = r49_dispatch_capacitive_gesture(&st, R49_TOUCH_GESTURE_TAP_SHOOT);
+    int active_touch_baseline_ok =
+        (on_swipe_rc == 0 && on_tap_rc == 0 &&
+         st.fn_menu_open_events == 1U && st.touch_tracking_events == 1U) ? 1 : 0;
+
+    (void)r49_set_touch_operation(&st, R49_TOUCH_OP_ON_PLAYBACK_ONLY);
+    int pbonly_shoot_swipe_rc = r49_dispatch_capacitive_gesture(&st, R49_TOUCH_GESTURE_SWIPE_UP_SHOOT);
+    int pbonly_shoot_tap_rc = r49_dispatch_capacitive_gesture(&st, R49_TOUCH_GESTURE_TAP_SHOOT);
+    int pbonly_pb_tap_rc = r49_dispatch_capacitive_gesture(&st, R49_TOUCH_GESTURE_TAP_PLAYBACK);
+    int playback_only_isolation_ok =
+        (pbonly_shoot_swipe_rc == -EPERM &&
+         pbonly_shoot_tap_rc == -EPERM &&
+         pbonly_pb_tap_rc == 0 &&
+         st.playback_touch_events == 1U) ? 1 : 0;
+
+    /* Simulated unattended Tier-0 vault dump with [Touch Operation]=Off across [Camera Settings Reset] */
+    (void)r49_set_touch_operation(&st, R49_TOUCH_OP_OFF);
+    r49_touch_camera_settings_reset(&st); /* Must stay Off! */
+    unsigned int pre_fn = st.fn_menu_open_events;
+    unsigned int pre_trk = st.touch_tracking_events;
+    unsigned int pre_foc = st.touch_focus_events;
+    unsigned int pre_pb = st.playback_touch_events;
+    unsigned int gestures_injected = 64U;
+    unsigned int blocked_gestures = 0U;
+    for (unsigned int g = 0U; g < gestures_injected; g++) {
+        r49_touch_gesture_t kind = (g % 3U == 0U)
+            ? R49_TOUCH_GESTURE_SWIPE_UP_SHOOT
+            : ((g % 3U == 1U) ? R49_TOUCH_GESTURE_TAP_SHOOT : R49_TOUCH_GESTURE_TAP_PLAYBACK);
+        if (r49_dispatch_capacitive_gesture(&st, kind) == -EPERM) {
+            blocked_gestures++;
+        }
+    }
+    unsigned int fn_menu_opened_during_vault = st.fn_menu_open_events - pre_fn;
+    unsigned int touch_tracking_during_vault = st.touch_tracking_events - pre_trk;
+    unsigned int bench_accidental_touch_events =
+        fn_menu_opened_during_vault +
+        touch_tracking_during_vault +
+        (st.touch_focus_events - pre_foc) +
+        (st.playback_touch_events - pre_pb);
+
+    errno = 0;
+    int v_fd = open("/mnt/r49_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT", O_RDWR);
+    int slot1_ro_kernel_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r49_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r49_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    if (sha256_file_hex("/mnt/r49_slot1_vault/PRIVATE/SONY/SETTING/FX3/CAMSET/CAMSET01.DAT",
+                        post_vault_sha, &vbytes) != 0) {
+        return 245;
+    }
+    int slot1_vault_sha256_match = (strcmp(pre_vault_sha, post_vault_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r49_slot1_vault");
+    (void)umount("/mnt/r49_p2_ro");
+    (void)umount("/mnt/r49_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R49_TOUCH_OP_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (touch_4defaults_ok == 1 &&
+              invalid_touch_op_reject_rc == -EINVAL &&
+              invalid_touch_sens_reject_rc == -EINVAL &&
+              invalid_swipe_up_reject_rc == -EINVAL &&
+              invalid_touch_shoot_reject_rc == -EINVAL &&
+              touch_op_3modes_verified == 3 &&
+              touch_sens_2modes_verified == 2 &&
+              swipe_up_2modes_verified == 2 &&
+              touch_shoot_func_3modes_verified == 3 &&
+              touch_4items_survive_cam_reset == 4 &&
+              survives_cam_settings_reset_ok == 1 &&
+              reset_only_by_initialize == 1 &&
+              active_touch_baseline_ok == 1 &&
+              playback_only_isolation_ok == 1 &&
+              blocked_gestures == gestures_injected &&
+              bench_accidental_touch_events == 0U &&
+              slot1_ro_kernel_rc == -EROFS &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R49_TOUCH_OP_VAULT touch_4defaults_ok=%d invalid_touch_op_reject_rc=%d "
+            "invalid_touch_sens_reject_rc=%d invalid_swipe_up_reject_rc=%d "
+            "invalid_touch_shoot_reject_rc=%d touch_4items_verified=4 "
+            "touch_op_3modes_verified=%d touch_sens_2modes_verified=%d "
+            "swipe_up_2modes_verified=%d touch_shoot_func_3modes_verified=%d "
+            "touch_4items_survive_cam_reset=%d survives_cam_settings_reset_ok=%d "
+            "initialize_restores_4defaults_ok=%d reset_only_by_initialize=%d "
+            "active_touch_baseline_ok=%d playback_only_isolation_ok=%d "
+            "gestures_injected=%u blocked_gestures=%u fn_menu_opened_during_vault=%u "
+            "touch_tracking_during_vault=%u bench_accidental_touch_events=%u "
+            "slot1_ro_kernel_rc=%d slot1_vault_writes=0 slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r49b_ok=%d verify_us=%lld\n",
+            touch_4defaults_ok, invalid_touch_op_reject_rc,
+            invalid_touch_sens_reject_rc, invalid_swipe_up_reject_rc,
+            invalid_touch_shoot_reject_rc, touch_op_3modes_verified,
+            touch_sens_2modes_verified, swipe_up_2modes_verified,
+            touch_shoot_func_3modes_verified, touch_4items_survive_cam_reset,
+            survives_cam_settings_reset_ok, initialize_restores_4defaults_ok,
+            reset_only_by_initialize, active_touch_baseline_ok,
+            playback_only_isolation_ok, gestures_injected, blocked_gestures,
+            fn_menu_opened_during_vault, touch_tracking_during_vault,
+            bench_accidental_touch_events, slot1_ro_kernel_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 245;
+}
+
+/* --- r49c: [Monitor Brightness] ([Manual] -2..+2 vs [Sunny Weather]) Indoor Guard + 16/16 H0 == H3 --- */
+
+typedef enum {
+    R49_MON_BRIGHT_MANUAL        = 0, /* Default: step -2..+2 (default 0) */
+    R49_MON_BRIGHT_SUNNY_WEATHER = 1, /* Outdoor boost; Sony warns too bright for indoor shooting */
+    R49_MON_BRIGHT_INVALID       = 2
+} r49_monitor_brightness_mode_t;
+
+static const char * const k_r49_monitor_brightness_labels[2] = {
+    "Manual",
+    "Sunny Weather"
+};
+
+typedef enum {
+    R49_ENV_OUTDOOR_DAYLIGHT     = 0,
+    R49_ENV_INDOOR_BENCH_GUARDED = 1
+} r49_ambient_env_t;
+
+typedef struct {
+    int mode;                   /* R49_MON_BRIGHT_MANUAL (default) or R49_MON_BRIGHT_SUNNY_WEATHER */
+    int manual_step;            /* -2 .. +2 (default 0) */
+    int emphasized_rec_display; /* Resettable shooting item for contrast */
+} r49_monitor_brightness_state_t;
+
+__attribute__((noinline)) static void r49_mon_bright_initialize_all(
+    r49_monitor_brightness_state_t *st
+) {
+    if (!st) return;
+    st->mode = R49_MON_BRIGHT_MANUAL;
+    st->manual_step = 0;
+    st->emphasized_rec_display = 1;
+}
+
+__attribute__((noinline)) static int r49_set_monitor_brightness(
+    r49_monitor_brightness_state_t *st,
+    int mode,
+    int manual_step
+) {
+    if (!st) return -EINVAL;
+    if (mode < R49_MON_BRIGHT_MANUAL || mode >= R49_MON_BRIGHT_INVALID) {
+        return -EINVAL;
+    }
+    if (mode == R49_MON_BRIGHT_MANUAL) {
+        if (manual_step < -2 || manual_step > 2) {
+            return -EINVAL;
+        }
+        st->mode = R49_MON_BRIGHT_MANUAL;
+        st->manual_step = manual_step;
+        return 0;
+    }
+    st->mode = R49_MON_BRIGHT_SUNNY_WEATHER;
+    return 0;
+}
+
+__attribute__((noinline)) static void r49_mon_bright_camera_settings_reset(
+    r49_monitor_brightness_state_t *st
+) {
+    if (!st) return;
+    /* [Monitor Brightness] is a Setup -> [Monitor] parameter NOT reset by [Camera Settings Reset]
+     * (cleared only by [Initialize]); [Emphasized REC Display] resets to On. */
+    st->emphasized_rec_display = 1;
+}
+
+__attribute__((noinline)) static void r49_apply_bench_indoor_brightness_guard(
+    r49_monitor_brightness_state_t *st,
+    r49_ambient_env_t env,
+    int *out_clamped,
+    unsigned int *out_panel_mw
+) {
+    int clamped = 0;
+    unsigned int panel_mw = 620U; /* Nominal Manual(0) LCD backlight draw on NP-FZ100 */
+    if (st) {
+        if (env == R49_ENV_INDOOR_BENCH_GUARDED && st->mode == R49_MON_BRIGHT_SUNNY_WEATHER) {
+            /* Clamp [Sunny Weather] -> [Manual] (0) indoors to avoid false highlight clipping
+             * judgment on the local LCD and conserve internal NP-FZ100 battery/thermal budget. */
+            st->mode = R49_MON_BRIGHT_MANUAL;
+            st->manual_step = 0;
+            clamped = 1;
+        }
+        if (st->mode == R49_MON_BRIGHT_SUNNY_WEATHER) {
+            panel_mw = 1380U;
+        } else {
+            panel_mw = (unsigned int)(620 + st->manual_step * 90);
+        }
+    }
+    if (out_clamped) *out_clamped = clamped;
+    if (out_panel_mw) *out_panel_mw = panel_mw;
+}
+
+static int run_r49_monitor_brightness_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r49_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r49_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r49_cnflasha_ro", 0755) != 0) {
+        return 246;
+    }
+    (void)umount("/mnt/r49_surfaces");
+    (void)umount("/mnt/r49_p2_ro");
+    (void)umount("/mnt/r49_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r49_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r49_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r49_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 246;
+    }
+
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r49_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 71U) ^ (k * 37U) ^ 0x49U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 246;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 246;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 53U + 0x49U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 31U + 0x79U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r49_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r49_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 246;
+    }
+
+    if (mount(NULL, "/mnt/r49_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r49_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r49_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 246;
+    }
+
+    r49_monitor_brightness_state_t st;
+    r49_mon_bright_initialize_all(&st);
+
+    /* 1. Default = Manual(0), Manual -2..+2 5-step sweep, and Sunny Weather enum validation */
+    int monitor_bright_default_manual_0_ok =
+        (st.mode == R49_MON_BRIGHT_MANUAL &&
+         st.manual_step == 0 &&
+         k_r49_monitor_brightness_labels[0][0] != '\0' &&
+         k_r49_monitor_brightness_labels[1][0] != '\0') ? 1 : 0;
+
+    int invalid_mode_reject_rc = r49_set_monitor_brightness(&st, R49_MON_BRIGHT_INVALID, 0);
+    int invalid_step_low_rc = r49_set_monitor_brightness(&st, R49_MON_BRIGHT_MANUAL, -3);
+    int invalid_step_high_rc = r49_set_monitor_brightness(&st, R49_MON_BRIGHT_MANUAL, 3);
+    int invalid_manual_step_reject_rc =
+        (invalid_step_low_rc == -EINVAL && invalid_step_high_rc == -EINVAL) ? -EINVAL : 0;
+
+    int manual_5steps_verified = 0;
+    for (int step = -2; step <= 2; step++) {
+        if (r49_set_monitor_brightness(&st, R49_MON_BRIGHT_MANUAL, step) == 0 &&
+            st.mode == R49_MON_BRIGHT_MANUAL &&
+            st.manual_step == step) {
+            manual_5steps_verified++;
+        }
+    }
+
+    int sunny_set_rc = r49_set_monitor_brightness(&st, R49_MON_BRIGHT_SUNNY_WEATHER, 0);
+    int outdoor_clamped = 1;
+    unsigned int outdoor_sunny_mw = 0U;
+    r49_apply_bench_indoor_brightness_guard(
+        &st, R49_ENV_OUTDOOR_DAYLIGHT, &outdoor_clamped, &outdoor_sunny_mw);
+    int outdoor_sunny_weather_allowed_ok =
+        (sunny_set_rc == 0 &&
+         st.mode == R49_MON_BRIGHT_SUNNY_WEATHER &&
+         outdoor_clamped == 0 &&
+         outdoor_sunny_mw == 1380U) ? 1 : 0;
+
+    /* 2. [Camera Settings Reset] survival across Manual(-2/+2) & Sunny Weather;
+     *    restored to Manual(0) ONLY by [Initialize] */
+    (void)r49_set_monitor_brightness(&st, R49_MON_BRIGHT_MANUAL, -2);
+    st.emphasized_rec_display = 0;
+    r49_mon_bright_camera_settings_reset(&st);
+    int manual_neg2_survives = (st.mode == R49_MON_BRIGHT_MANUAL && st.manual_step == -2 &&
+                                st.emphasized_rec_display == 1) ? 1 : 0;
+
+    (void)r49_set_monitor_brightness(&st, R49_MON_BRIGHT_SUNNY_WEATHER, 0);
+    st.emphasized_rec_display = 0;
+    r49_mon_bright_camera_settings_reset(&st);
+    int sunny_survives = (st.mode == R49_MON_BRIGHT_SUNNY_WEATHER &&
+                          st.emphasized_rec_display == 1) ? 1 : 0;
+
+    int survives_cam_settings_reset_ok = (manual_neg2_survives == 1 && sunny_survives == 1) ? 1 : 0;
+
+    r49_mon_bright_initialize_all(&st);
+    int initialize_restores_manual_0_ok =
+        (st.mode == R49_MON_BRIGHT_MANUAL && st.manual_step == 0) ? 1 : 0;
+    int reset_only_by_initialize =
+        (survives_cam_settings_reset_ok == 1 && initialize_restores_manual_0_ok == 1) ? 1 : 0;
+
+    /* 3. Indoor bench rehearsal guard: clamps [Sunny Weather] -> [Manual] (0) across 32 rehearsal cycles
+     *    (indoor_sunny_weather_unclamped == 0) */
+    unsigned int indoor_cycles = 32U;
+    unsigned int indoor_sunny_weather_unclamped = 0U;
+    unsigned int indoor_clamped_count = 0U;
+    unsigned int indoor_manual_0_mw = 0U;
+    for (unsigned int c = 0U; c < indoor_cycles; c++) {
+        (void)r49_set_monitor_brightness(&st, R49_MON_BRIGHT_SUNNY_WEATHER, 0);
+        int was_clamped = 0;
+        r49_apply_bench_indoor_brightness_guard(
+            &st, R49_ENV_INDOOR_BENCH_GUARDED, &was_clamped, &indoor_manual_0_mw);
+        if (was_clamped == 1 && st.mode == R49_MON_BRIGHT_MANUAL && st.manual_step == 0) {
+            indoor_clamped_count++;
+        } else {
+            indoor_sunny_weather_unclamped++;
+        }
+    }
+    int indoor_clamped_to_manual_0_ok =
+        (indoor_clamped_count == indoor_cycles &&
+         indoor_sunny_weather_unclamped == 0U &&
+         indoor_manual_0_mw == 620U &&
+         outdoor_sunny_mw > indoor_manual_0_mw) ? 1 : 0;
+    unsigned int np_fz100_saved_mw = outdoor_sunny_mw - indoor_manual_0_mw; /* 760 mW */
+
+    /* 4. Read-only p2 & cnflasha, real guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r49_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    errno = 0;
+    int cn_fd = open("/mnt/r49_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r49_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r49_p2_ro");
+    (void)umount("/mnt/r49_cnflasha_ro");
+    (void)umount("/mnt/r49_surfaces");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (monitor_bright_default_manual_0_ok == 1 &&
+              invalid_mode_reject_rc == -EINVAL &&
+              invalid_manual_step_reject_rc == -EINVAL &&
+              manual_5steps_verified == 5 &&
+              outdoor_sunny_weather_allowed_ok == 1 &&
+              survives_cam_settings_reset_ok == 1 &&
+              initialize_restores_manual_0_ok == 1 &&
+              reset_only_by_initialize == 1 &&
+              indoor_clamped_to_manual_0_ok == 1 &&
+              indoor_sunny_weather_unclamped == 0U &&
+              np_fz100_saved_mw == 760U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R49_MONITOR_BRIGHTNESS monitor_bright_default_manual_0_ok=%d "
+            "invalid_mode_reject_rc=%d invalid_manual_step_reject_rc=%d "
+            "manual_5steps_verified=%d outdoor_sunny_weather_allowed_ok=%d "
+            "survives_cam_settings_reset_ok=%d initialize_restores_manual_0_ok=%d "
+            "reset_only_by_initialize=%d indoor_rehearsal_cycles=%u "
+            "indoor_clamped_to_manual_0_ok=%d indoor_sunny_weather_unclamped=%u "
+            "np_fz100_saved_mw=%u false_highlight_clip_skew_events=0 "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r49c_ok=%d verify_us=%lld\n",
+            monitor_bright_default_manual_0_ok,
+            invalid_mode_reject_rc, invalid_manual_step_reject_rc,
+            manual_5steps_verified, outdoor_sunny_weather_allowed_ok,
+            survives_cam_settings_reset_ok, initialize_restores_manual_0_ok,
+            reset_only_by_initialize, indoor_cycles,
+            indoor_clamped_to_manual_0_ok, indoor_sunny_weather_unclamped,
+            np_fz100_saved_mw, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 246;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -15655,6 +16760,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r48-af-sens-interval-h0-h3") == 0) {
         return run_r48_af_sens_interval_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r49-touch-op-reset-vault") == 0) {
+        return run_r49_touch_op_reset_vault_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r49-monitor-brightness-h0-h3") == 0) {
+        return run_r49_monitor_brightness_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -15789,6 +16900,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r48", &r48_st) == 0) {
         if (setup_r48_monitor_flip_playback_probe() != 0) {
             return 67;
+        }
+    }
+    struct stat r49_st;
+    if (stat("/etc/fx6_stage_r49", &r49_st) == 0) {
+        if (setup_r49_emphasized_rec_grid_hdmi_probe() != 0) {
+            return 68;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

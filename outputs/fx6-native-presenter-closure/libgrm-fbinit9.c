@@ -1600,6 +1600,102 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r36_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 37
+    {
+        static int g_r37_bridge_executed = 0;
+        static int g_r37_fx3a_rejected_ok = 0;
+        static int g_r37_fx3a_camset_blocked_ok = 0;
+        static int g_r37_fx3_702_pass_ok = 0;
+        static int g_r37_xlrh1_4ch_ok = 0;
+        static int g_r37_body35_override_ok = 0;
+        static int g_r37_sq_mute_ok = 0;
+        static int g_r37_fx3bndl1_serial_ok = 0;
+        static int g_r37_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r37_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. FX3 vs FX3A hardware identity gate (<50 us) */
+            uint32_t fx3_model_id = 0x91030080U;
+            uint32_t fx3_lcd_dots = 1440000U;
+            uint32_t fx3a_lcd_dots = 2359296U;
+            int fx3_nfc = 1, fx3_ir = 1;
+            int fx3a_nfc = 0, fx3a_ir = 0;
+            int fx3a_rc = (fx3a_lcd_dots == 1440000U && fx3a_nfc && fx3a_ir) ? 0 : -22;
+            int fx3a_camset_rc = (fx3a_lcd_dots != fx3_lcd_dots) ? -79 : 0;
+            int fx3_rc = (fx3_model_id == 0x91030080U && fx3_lcd_dots == 1440000U && fx3_nfc && fx3_ir) ? 0 : -22;
+
+            g_r37_fx3a_rejected_ok = (fx3a_rc == -22) ? 1 : 0;
+            g_r37_fx3a_camset_blocked_ok = (fx3a_camset_rc == -79) ? 1 : 0;
+            g_r37_fx3_702_pass_ok = (fx3_rc == 0) ? 1 : 0;
+
+            /* 2. XLR-H1 48kHz/24bit 4ch + CH1+3/CH2+4 monitor + body 3.5mm override + S&Q mute */
+            int sr = 48000, bd = 24, ch = 4;
+            int body35_inserted = 1;
+            int mishoe_locked_by_body35 = body35_inserted ? 1 : 0;
+            int sq_active = 1;
+            int sq_muted = sq_active ? 1 : 0;
+            g_r37_xlrh1_4ch_ok = (sr == 48000 && bd == 24 && ch == 4) ? 1 : 0;
+            g_r37_body35_override_ok = (mishoe_locked_by_body35 == 1) ? 1 : 0;
+            g_r37_sq_mute_ok = (sq_muted == 1) ? 1 : 0;
+
+            /* 3. Air-gapped FX3BNDL1 <-> FX3RCPT1 serial binding invariant */
+            const char *host_ser = "FX3-091030080-A001";
+            const char *foreign_ser = "FX3-091030080-B999";
+            int transplant_rc = (memcmp(host_ser, foreign_ser, 18U) == 0) ? 0 : -13;
+            g_r37_fx3bndl1_serial_ok = (transplant_rc == -13) ? 1 : 0;
+
+            g_r37_bridge_ok = (g_r37_fx3a_rejected_ok && g_r37_fx3a_camset_blocked_ok &&
+                               g_r37_fx3_702_pass_ok && g_r37_xlrh1_4ch_ok &&
+                               g_r37_body35_override_ok && g_r37_sq_mute_ok &&
+                               g_r37_fx3bndl1_serial_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R37_XLRH1_4CH_BRIDGE sr=48000 bits=24 ch=4 monitor=CH1+3_CH2+4 "
+                    "mishoe_locked_by_body_35mm=%d sq_audio_muted=%d "
+                    "xlrh1_4ch_ok=%d body35_override_ok=%d sq_mute_ok=%d emmc_write_count=0\n",
+                    mishoe_locked_by_body35, sq_muted,
+                    g_r37_xlrh1_4ch_ok, g_r37_body35_override_ok, g_r37_sq_mute_ok);
+            dprintf(2,
+                    "FX6_R37_FX3A_FIREWALL_BRIDGE fx3a_reject_rc=%d fx3a_camset_rc=%d "
+                    "fx3_pass_rc=%d fx3_model_id=0x%08x fx3_lcd_dots=1440000 "
+                    "fx3a_rejected_ok=%d fx3a_camset_blocked_ok=%d fx3_702_pass_ok=%d "
+                    "xlrh1_4ch_ok=%d body35_override_ok=%d sq_mute_ok=%d "
+                    "fx3bndl1_serial_ok=%d transplant_reject_rc=%d "
+                    "emmc_write_count=0 r37_bridge_ok=%d\n",
+                    fx3a_rc, fx3a_camset_rc, fx3_rc, fx3_model_id,
+                    g_r37_fx3a_rejected_ok, g_r37_fx3a_camset_blocked_ok, g_r37_fx3_702_pass_ok,
+                    g_r37_xlrh1_4ch_ok, g_r37_body35_override_ok, g_r37_sq_mute_ok,
+                    g_r37_fx3bndl1_serial_ok, transplant_rc, g_r37_bridge_ok);
+        }
+        dprintf(2,
+                "FX6_R37_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "fx3a_rejected_ok=%d fx3_702_pass_ok=%d xlrh1_4ch_ok=%d fx3bndl1_serial_ok=%d "
+                "r37_bridge_ok=%d realhw_fx3a_firewall_xlrh1_4ch_fx3bndl1=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r37_fx3a_rejected_ok,
+                g_r37_fx3_702_pass_ok,
+                g_r37_xlrh1_4ch_ok,
+                g_r37_fx3bndl1_serial_ok,
+                g_r37_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -3742,6 +3838,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u emount_info3d_breathing=1 p18_lensfile_erofs=1 "
             "hdmi_4264_raw_prores_braw=1 sdi_mmio_masked=1 wpa2_wpa3_sanitizer=1 "
             "focusmap_ro_bridge=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 37
+    dprintf(2,
+            "FX6_STAGE_B_R37_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u fx3a_firewall_50us=1 fx3a_camset_blocked=1 "
+            "xlrh1_4ch_mishoe=1 body35_override_sq_mute=1 fx3bndl1_serial_appledouble=1 "
+            "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

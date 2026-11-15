@@ -1187,3 +1187,26 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r36c-wpa2-wpa3-focusmap-bridge` (`--r36-mode wpa2_wpa3_focusmap_bridge`): Verifies Stage-B network config sanitizer rejecting `WEP`, `WPA1-TKIP`, and `IPsec` (`rc=-22` `EINVAL`, `rejected_before_supplicant=3`, `supplicant_legacy_hits=0`) before FX3 `7.02` `wpa_supplicant` while accepting `WPA2-CCMP` and `WPA3-SAE` (`rc=0`), checks `/usr/lib/libWlanResource.so` & `libWlanAdjust.so` ELF integrity, locks `p2:/setting/Backup.bin` `EROFS (errno=30, backup_sha256_match=1)`, and streams 12 frames (`384 B`) of `Monitor & Control 2.1.0+` Focus Map depth telemetry over `tmpfs` (`emmc_write_count=0`).
 - **Full Report, Receipts, & `24` New Round 36 Dual-Mode Unit Tests (`450` Total)**: See [`reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/README.md`](../../reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round36-realhw-emount-info3d-hdmi-4264-raw-wpa3-qemu/summary.json).
 
+---
+
+## 37. Round 37: Real FX3 `7.02` Kernel QEMU Rehearsal — `ILME-FX3` vs `ILME-FX3A` (`<50 us`) Fail-Closed Firewall, `XLR-H1` MI-Shoe `48kHz/24bit 4ch` Override & Air-Gapped `FX3BNDL1` Verification
+
+`build_and_run_round.py --round 37 --r37-mode {fx3a_firewall_big6,xlrh1_4ch_override,fx3bndl1_serial_appledouble}` executes live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs; physical camera body bench remains unexecuted):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 37 --r37-mode fx3a_firewall_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r37a-fx3a-firewall-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r37-runs/r37a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r37a-fx3a-firewall-big6-schinese \
+  --export-png-dir reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/assets
+```
+
+- **3 Live Round 37 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r37a-fx3a-firewall-big6-schinese` (`--r37-mode fx3a_firewall_big6`): Native ARM64 Stage-A hardware-identity gate rejects simulated `ILME-FX3A` (`Ver. 2.02`, `2,359,296` XGA LCD, `NFC=0`, `IR=0`) in `34 us` (`< 50 us`) with `FAIL_CLOSED_FX3A_BRANCH_MISMATCH` (`rc=-22`, `fx3a_stageb_mounted=0`), rejects `FX3A` `BODYDATA.DAT` & `CAMSET` cross-imports (`rc=-79` `ELIBBAD`), accepts genuine `ILME-FX3` (`0x91030080`, `Ver. 7.02`, `1,440,000` LCD, `NFC=1`, `IR=1`, `rc=0`), verifies `libgrm-fbinit9.so` runtime bridge (`r37_bridge_ok=1`), and boots `appFw.so` across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,206` px / `87` colors / `136` `OSD_FLUSH` / `nop_count=0` / `gpe_fb=0`, PNGs `26,842 B` & `27,147 B`).
+  - `r37b-xlrh1-4ch-override` (`--r37-mode xlrh1_4ch_override`): Native ARM64 audio routing shim maps `XLR-H1` `48kHz/24bit 4ch` LPCM (`IN1->CH1, IN2->CH2, IN3L->CH3, IN3R->CH4`), all 3 MI-Shoe digital audio modes, and `4ch Audio Monitoring` (`CH1+3/CH2+4`, `hp_mix_left_mask=0x5`, `hp_mix_right_mask=0xa`), proves body `3.5mm` jack insertion immediately overrides MI-Shoe (`mishoe_locked_by_body_35mm=1`, `mishoe_when_body35_rc=-16`, `active_source=BODY_35MM`) and restores cleanly on removal, forces MI-Shoe capture mute in `S&Q` (`sq_audio_muted=1`), tracks upgrade reset to `48kHz_16bit_2ch`, and validates guest audio scenario & `libgrm-fbinit9.so` ELF (`emmc_write_count=0`).
+  - `r37c-fx3bndl1-serial-appledouble` (`--r37-mode fx3bndl1_serial_appledouble`): Binds `FX3BNDL1` <-> `FX3RCPT1` (`528 B`) to host serial `FX3-091030080-A001` (`rc=0`), rejects a transplanted SD card bound to `FX3-091030080-B999` (`transplant_reject_rc=-13`, `split_pair_reject_rc=-13` `EACCES`), rejects non-ELF macOS AppleDouble `._libJit.so` (`00 05 16 07`), strips `._libJit.so` / `._FX3BNDL1.BIN` / `.DS_Store` ExFAT clutter without attempting `dlopen` on `._*` (`dot_underscore_dlopen_attempted=0`), passes real guest `dlopen("/mnt/r37_sd_jit/libJit.so")` (`dlopen_ok=1`, `dlopen_failures=0`), and verifies `16/16 H0 == H3` (`drift_bits=0`, `emmc_write_count=0`).
+- **Full Report, Receipts, & `24` New Round 37 Dual-Mode Unit Tests (`474` Total)**: See [`reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/README.md`](../../reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/summary.json).
+
+

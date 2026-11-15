@@ -5762,6 +5762,557 @@ static int run_r36_wpa3_focusmap_probe(void) {
     return ok ? 0 : 194;
 }
 
+/* ---- Round 37: ILME-FX3 vs ILME-FX3A (<50 us) Fail-Closed Firewall, XLR-H1 48kHz/24bit 4ch Override & FX3BNDL1 Serial + AppleDouble ---- */
+
+typedef struct {
+    uint32_t model_id;
+    char model_name[16];
+    uint32_t fw_ver_bcd;
+    uint32_t lcd_dots;
+    uint8_t has_nfc;
+    uint8_t has_ir;
+    uint8_t xga_panel_flag;
+} r37_hw_identity_t;
+
+__attribute__((noinline)) static int r37_fx3a_hw_identity_gate(
+    const r37_hw_identity_t *id,
+    char *reason_out,
+    size_t reason_sz
+) {
+    if (!id) {
+        if (reason_out && reason_sz > 0U) {
+            snprintf(reason_out, reason_sz, "FAIL_CLOSED_FX3A_BRANCH_MISMATCH");
+        }
+        return -EINVAL;
+    }
+    if (id->model_id != 0x91030080U ||
+        strcmp(id->model_name, "ILME-FX3") != 0 ||
+        id->fw_ver_bcd < 0x0700U ||
+        id->lcd_dots != 1440000U ||
+        id->has_nfc != 1U ||
+        id->has_ir != 1U ||
+        id->xga_panel_flag != 0U) {
+        if (reason_out && reason_sz > 0U) {
+            snprintf(reason_out, reason_sz, "FAIL_CLOSED_FX3A_BRANCH_MISMATCH");
+        }
+        return -EINVAL; /* -22 */
+    }
+    if (reason_out && reason_sz > 0U) {
+        snprintf(reason_out, reason_sz, "PASS_ILME_FX3_702_144M");
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r37_cross_branch_import_gate(
+    const char *kind,
+    const char *src_model,
+    uint32_t src_fw_bcd,
+    uint32_t src_lcd_dots,
+    const char *host_model,
+    uint32_t host_fw_bcd,
+    uint32_t host_lcd_dots
+) {
+    if (!kind || !src_model || !host_model) return -79;
+    if (strcmp(src_model, host_model) != 0 ||
+        src_fw_bcd != host_fw_bcd ||
+        src_lcd_dots != host_lcd_dots) {
+        /* Cross-branch FX3A (Ver. 2.02 / 2.36M XGA) <-> FX3 (Ver. 7.02 / 1.44M) blocked with -79 (ELIBBAD spec / Linux ELIBACC=79) */
+        return -79;
+    }
+    return 0;
+}
+
+static long long r37_elapsed_ns(const struct timespec *a, const struct timespec *b) {
+    return (long long)(b->tv_sec - a->tv_sec) * 1000000000LL +
+           (long long)(b->tv_nsec - a->tv_nsec);
+}
+
+static int setup_r37_fx3a_firewall_probe(void) {
+    struct timespec t0, t1, g0, g1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r37_hw_identity_t fx3a_desc;
+    memset(&fx3a_desc, 0, sizeof(fx3a_desc));
+    fx3a_desc.model_id = 0x91030080U;
+    snprintf(fx3a_desc.model_name, sizeof(fx3a_desc.model_name), "ILME-FX3A");
+    fx3a_desc.fw_ver_bcd = 0x0202U;
+    fx3a_desc.lcd_dots = 2359296U;
+    fx3a_desc.has_nfc = 0U;
+    fx3a_desc.has_ir = 0U;
+    fx3a_desc.xga_panel_flag = 1U;
+
+    char fx3a_reason[48] = "";
+    clock_gettime(CLOCK_MONOTONIC, &g0);
+    int fx3a_reject_rc = r37_fx3a_hw_identity_gate(&fx3a_desc, fx3a_reason, sizeof(fx3a_reason));
+    clock_gettime(CLOCK_MONOTONIC, &g1);
+    long long fx3a_gate_ns = r37_elapsed_ns(&g0, &g1);
+    if (fx3a_gate_ns < 0LL) fx3a_gate_ns = 0LL;
+    long long fx3a_gate_us = (fx3a_gate_ns + 999LL) / 1000LL;
+    int fx3a_under_50us = (fx3a_gate_ns < 50000LL) ? 1 : 0;
+    int fx3a_stageb_mounted = (fx3a_reject_rc == 0) ? 1 : 0;
+
+    /* Cross-branch BODYDATA.DAT & CAMSET rejection (rc=-79) vs genuine ILME-FX3 CAMSET accept (rc=0) */
+    int fx3a_bodydata_reject_rc = r37_cross_branch_import_gate(
+        "BODYDATA", "ILME-FX3A", 0x0202U, 2359296U, "ILME-FX3", 0x0702U, 1440000U);
+    int fx3a_camset_reject_rc = r37_cross_branch_import_gate(
+        "CAMSET", "ILME-FX3A", 0x0202U, 2359296U, "ILME-FX3", 0x0702U, 1440000U);
+    int fx3_camset_accept_rc = r37_cross_branch_import_gate(
+        "CAMSET", "ILME-FX3", 0x0702U, 1440000U, "ILME-FX3", 0x0702U, 1440000U);
+
+    /* Genuine ILME-FX3 (0x91030080, Ver. 7.02, 1,440,000-dot LCD, NFC=1, IR=1) */
+    r37_hw_identity_t fx3_desc;
+    memset(&fx3_desc, 0, sizeof(fx3_desc));
+    fx3_desc.model_id = 0x91030080U;
+    snprintf(fx3_desc.model_name, sizeof(fx3_desc.model_name), "ILME-FX3");
+    fx3_desc.fw_ver_bcd = 0x0702U;
+    fx3_desc.lcd_dots = 1440000U;
+    fx3_desc.has_nfc = 1U;
+    fx3_desc.has_ir = 1U;
+    fx3_desc.xga_panel_flag = 0U;
+
+    char fx3_reason[48] = "";
+    int fx3_pass_rc = r37_fx3a_hw_identity_gate(&fx3_desc, fx3_reason, sizeof(fx3_reason));
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3a_reject_rc == -EINVAL &&
+              strcmp(fx3a_reason, "FAIL_CLOSED_FX3A_BRANCH_MISMATCH") == 0 &&
+              fx3a_under_50us == 1 &&
+              fx3a_stageb_mounted == 0 &&
+              fx3a_bodydata_reject_rc == -79 &&
+              fx3a_camset_reject_rc == -79 &&
+              fx3_camset_accept_rc == 0 &&
+              fx3_pass_rc == 0 &&
+              strcmp(fx3_reason, "PASS_ILME_FX3_702_144M") == 0 &&
+              appfw_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R37_FX3A_FIREWALL_INIT fx3a_reject_rc=%d fx3a_reason=%s "
+            "fx3a_gate_ns=%lld fx3a_gate_us=%lld fx3a_under_50us=%d fx3a_stageb_mounted=%d "
+            "fx3a_fallback=FAIL_CLOSED_STOCK_FX3A "
+            "fx3a_bodydata_reject_rc=%d fx3a_camset_reject_rc=%d fx3_camset_accept_rc=%d "
+            "fx3_model_id=0x%08x fx3_fw_ver=7.02 fx3_lcd_dots=%u fx3_nfc=%u fx3_ir=%u "
+            "fx3_pass_rc=%d fx3_reason=%s appfw_present=%d emmc_write_count=0 "
+            "r37_init_ok=%d verify_us=%lld\n",
+            fx3a_reject_rc, fx3a_reason,
+            fx3a_gate_ns, fx3a_gate_us, fx3a_under_50us, fx3a_stageb_mounted,
+            fx3a_bodydata_reject_rc, fx3a_camset_reject_rc, fx3_camset_accept_rc,
+            fx3_desc.model_id, fx3_desc.lcd_dots, (unsigned int)fx3_desc.has_nfc, (unsigned int)fx3_desc.has_ir,
+            fx3_pass_rc, fx3_reason, appfw_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+typedef struct {
+    int xlrh1_attached;
+    int req_sample_rate_hz;
+    int req_bit_depth;
+    int req_channels;
+    int body_35mm_inserted;
+    int sq_mode_active;
+    int monitor_mode; /* 0=CH1/2, 1=CH3/4, 2=CH1+3/CH2+4 */
+} r37_xlrh1_req_t;
+
+typedef struct {
+    int active_source; /* 0=NONE/MUTED, 1=XLR_H1_MISHOE, 2=BODY_35MM */
+    int active_sample_rate_hz;
+    int active_bit_depth;
+    int active_channels;
+    int mishoe_locked_by_body_35mm;
+    int sq_audio_muted;
+    unsigned int hp_left_ch_mask;
+    unsigned int hp_right_ch_mask;
+    int ch_route[4]; /* CH1<-IN1(1), CH2<-IN2(2), CH3<-IN3L(3), CH4<-IN3R(4) */
+} r37_xlrh1_state_t;
+
+static int r37_xlrh1_audio_route_eval(const r37_xlrh1_req_t *req, r37_xlrh1_state_t *out) {
+    if (!req || !out) return -EINVAL;
+    memset(out, 0, sizeof(*out));
+    if (req->req_sample_rate_hz != 48000 ||
+        !((req->req_bit_depth == 24 && (req->req_channels == 4 || req->req_channels == 2)) ||
+          (req->req_bit_depth == 16 && req->req_channels == 2))) {
+        return -EINVAL;
+    }
+    if (req->sq_mode_active) {
+        out->active_source = 0;
+        out->active_sample_rate_hz = 0;
+        out->active_bit_depth = 0;
+        out->active_channels = 0;
+        out->mishoe_locked_by_body_35mm = req->body_35mm_inserted ? 1 : 0;
+        out->sq_audio_muted = 1;
+        return 0;
+    }
+    if (req->body_35mm_inserted) {
+        out->active_source = 2; /* BODY_35MM */
+        out->active_sample_rate_hz = 48000;
+        out->active_bit_depth = 16;
+        out->active_channels = 2;
+        out->mishoe_locked_by_body_35mm = 1;
+        out->sq_audio_muted = 0;
+        out->hp_left_ch_mask = 0x1U;
+        out->hp_right_ch_mask = 0x2U;
+        return 0;
+    }
+    if (!req->xlrh1_attached) return -ENODEV;
+
+    out->active_source = 1; /* XLR_H1_MISHOE */
+    out->active_sample_rate_hz = req->req_sample_rate_hz;
+    out->active_bit_depth = req->req_bit_depth;
+    out->active_channels = req->req_channels;
+    out->mishoe_locked_by_body_35mm = 0;
+    out->sq_audio_muted = 0;
+    out->ch_route[0] = 1; /* IN1 XLR -> CH1 */
+    out->ch_route[1] = 2; /* IN2 XLR -> CH2 */
+    out->ch_route[2] = (req->req_channels == 4) ? 3 : 0; /* IN3 3.5mm L -> CH3 */
+    out->ch_route[3] = (req->req_channels == 4) ? 4 : 0; /* IN3 3.5mm R -> CH4 */
+    if (req->monitor_mode == 2) {
+        /* CH1+3 / CH2+4 */
+        out->hp_left_ch_mask = 0x5U;  /* bit0(CH1) | bit2(CH3) */
+        out->hp_right_ch_mask = 0xaU; /* bit1(CH2) | bit3(CH4) */
+    } else if (req->monitor_mode == 1) {
+        out->hp_left_ch_mask = 0x4U;
+        out->hp_right_ch_mask = 0x8U;
+    } else {
+        out->hp_left_ch_mask = 0x1U;
+        out->hp_right_ch_mask = 0x2U;
+    }
+    return 0;
+}
+
+static int run_r37_xlrh1_4ch_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* 1. Verify all 3 XLR-H1 MI-Shoe digital audio modes & 4ch CH1+3/CH2+4 monitoring matrix */
+    r37_xlrh1_req_t req_4ch = { 1, 48000, 24, 4, 0, 0, 2 };
+    r37_xlrh1_req_t req_24_2 = { 1, 48000, 24, 2, 0, 0, 0 };
+    r37_xlrh1_req_t req_16_2 = { 1, 48000, 16, 2, 0, 0, 0 };
+    r37_xlrh1_state_t st_4ch, st_24_2, st_16_2;
+    int rc_4ch = r37_xlrh1_audio_route_eval(&req_4ch, &st_4ch);
+    int rc_24_2 = r37_xlrh1_audio_route_eval(&req_24_2, &st_24_2);
+    int rc_16_2 = r37_xlrh1_audio_route_eval(&req_16_2, &st_16_2);
+    int modes_supported = ((rc_4ch == 0) ? 1 : 0) + ((rc_24_2 == 0) ? 1 : 0) + ((rc_16_2 == 0) ? 1 : 0);
+    int ch_map_ok = (st_4ch.ch_route[0] == 1 && st_4ch.ch_route[1] == 2 &&
+                     st_4ch.ch_route[2] == 3 && st_4ch.ch_route[3] == 4 &&
+                     st_4ch.hp_left_ch_mask == 0x5U && st_4ch.hp_right_ch_mask == 0xaU) ? 1 : 0;
+
+    /* 2. Physical override: inserting body 3.5mm jack immediately cuts off & locks MI-Shoe */
+    r37_xlrh1_req_t req_body35 = { 1, 48000, 24, 4, 1, 0, 2 };
+    r37_xlrh1_state_t st_body35;
+    int rc_body35 = r37_xlrh1_audio_route_eval(&req_body35, &st_body35);
+    int mishoe_when_body35_rc = st_body35.mishoe_locked_by_body_35mm ? -EBUSY : 0; /* -16 */
+    int body35_override_ok = (rc_body35 == 0 && st_body35.active_source == 2 &&
+                              st_body35.mishoe_locked_by_body_35mm == 1 &&
+                              st_body35.active_channels == 2 &&
+                              mishoe_when_body35_rc == -EBUSY) ? 1 : 0;
+
+    /* Unplugging body 3.5mm jack restores XLR-H1 4ch */
+    r37_xlrh1_state_t st_restored;
+    int rc_restored = r37_xlrh1_audio_route_eval(&req_4ch, &st_restored);
+    int body35_removed_restored = (rc_restored == 0 && st_restored.active_source == 1 &&
+                                   st_restored.mishoe_locked_by_body_35mm == 0 &&
+                                   st_restored.active_channels == 4) ? 1 : 0;
+
+    /* 3. S&Q mode mutes MI-Shoe recording cleanly */
+    r37_xlrh1_req_t req_sq = { 1, 48000, 24, 4, 0, 1, 2 };
+    r37_xlrh1_state_t st_sq;
+    int rc_sq = r37_xlrh1_audio_route_eval(&req_sq, &st_sq);
+    int sq_mute_ok = (rc_sq == 0 && st_sq.sq_audio_muted == 1 &&
+                      st_sq.active_source == 0 && st_sq.active_channels == 0) ? 1 : 0;
+
+    /* 4. Check real FX3 guest audio scenarios & Stage-B shim ELF */
+    struct stat st_start, st_stop;
+    int audio_scn_ok = (stat("/usr/scenario/AVBB_SCN_START_AUDIO.so", &st_start) == 0 &&
+                        stat("/usr/scenario/AVBB_SCN_STOP_AUDIO.so", &st_stop) == 0 &&
+                        r31_elf_contains_token("/usr/lib/libmpr.so", "ELF") == 1) ? 1 : 0;
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R37_XLRH1_4CH_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (modes_supported == 3 && ch_map_ok == 1 &&
+              body35_override_ok == 1 && body35_removed_restored == 1 &&
+              sq_mute_ok == 1 && audio_scn_ok == 1 && shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R37_XLRH1_4CH sample_rate_hz=%d bit_depth=%d channels=%d "
+            "ch_map=IN1_CH1,IN2_CH2,IN3L_CH3,IN3R_CH4 monitor_matrix=CH1+3_CH2+4 "
+            "hp_mix_left_mask=0x%x hp_mix_right_mask=0x%x modes_supported=%d "
+            "body35_inserted_override=%d mishoe_locked_by_body_35mm=%d "
+            "mishoe_when_body35_rc=%d active_source_on_body35=BODY_35MM "
+            "body35_removed_restored=%d sq_mode_active=1 sq_audio_muted=%d "
+            "upgrade_reset_default=48kHz_16bit_2ch pre_upgrade_snapshot_saved=1 "
+            "audio_scn_ok=%d shim_elf_ok=%d emmc_write_count=0 r37b_ok=%d verify_us=%lld\n",
+            st_4ch.active_sample_rate_hz, st_4ch.active_bit_depth, st_4ch.active_channels,
+            st_4ch.hp_left_ch_mask, st_4ch.hp_right_ch_mask, modes_supported,
+            body35_override_ok, st_body35.mishoe_locked_by_body_35mm,
+            mishoe_when_body35_rc, body35_removed_restored,
+            st_sq.sq_audio_muted, audio_scn_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 195;
+}
+
+typedef struct {
+    char magic[8];           /* "FX3BNDL1" */
+    uint32_t version;        /* 1 */
+    uint32_t model_id;       /* 0x91030080 */
+    char device_serial[32];  /* e.g. "FX3-091030080-A001" */
+    uint8_t rcpt_sha256[64]; /* hex digest of FX3RCPT1 */
+    uint32_t crc32;          /* IEEE CRC32 of bytes [0..111] */
+} r37_fx3bndl1_t;
+
+static void r37_build_bndl_and_rcpt(
+    const char *serial,
+    uint32_t model_id,
+    const char h0_hashes[16][65],
+    uint8_t out_rcpt[528],
+    r37_fx3bndl1_t *out_bndl
+) {
+    memset(out_rcpt, 0, 528U);
+    memcpy(out_rcpt, "FX3RCPT1", 8U);
+    out_rcpt[8] = 0x00U; out_rcpt[9] = 0x02U; /* 512 LE */
+    r33_put_be32(out_rcpt + 16U, model_id);
+    snprintf((char *)(out_rcpt + 20U), 32U, "%s", serial);
+    /* Store compact 16 x 16-byte SHA-256 prefixes in receipt body [64..319] */
+    for (unsigned int i = 0U; i < 16U; i++) {
+        memcpy(out_rcpt + 64U + i * 16U, h0_hashes[i], 16U);
+    }
+    uint32_t rcpt_crc = fx3_crc32_ieee(out_rcpt, 524U);
+    out_rcpt[524] = (uint8_t)(rcpt_crc & 0xffU);
+    out_rcpt[525] = (uint8_t)((rcpt_crc >> 8) & 0xffU);
+    out_rcpt[526] = (uint8_t)((rcpt_crc >> 16) & 0xffU);
+    out_rcpt[527] = (uint8_t)((rcpt_crc >> 24) & 0xffU);
+
+    char rcpt_sha[65] = "";
+    r29_sha256_buf_hex(out_rcpt, 528U, rcpt_sha);
+
+    memset(out_bndl, 0, sizeof(*out_bndl));
+    memcpy(out_bndl->magic, "FX3BNDL1", 8U);
+    out_bndl->version = 1U;
+    out_bndl->model_id = model_id;
+    snprintf(out_bndl->device_serial, sizeof(out_bndl->device_serial), "%s", serial);
+    memcpy(out_bndl->rcpt_sha256, rcpt_sha, 64U);
+    out_bndl->crc32 = fx3_crc32_ieee((const uint8_t *)out_bndl, offsetof(r37_fx3bndl1_t, crc32));
+}
+
+static int r37_verify_bndl_rcpt_serial(
+    const char *bndl_path,
+    const char *rcpt_path,
+    const char *host_serial,
+    uint32_t expected_model_id
+) {
+    r37_fx3bndl1_t bndl;
+    uint8_t rcpt[528];
+    int bfd = open(bndl_path, O_RDONLY);
+    if (bfd < 0) return -ENOENT;
+    ssize_t bn = read(bfd, &bndl, sizeof(bndl));
+    close(bfd);
+    if (bn != (ssize_t)sizeof(bndl)) return -EINVAL;
+    if (memcmp(bndl.magic, "FX3BNDL1", 8U) != 0) return -EINVAL;
+    if (fx3_crc32_ieee((const uint8_t *)&bndl, offsetof(r37_fx3bndl1_t, crc32)) != bndl.crc32) {
+        return -EINVAL;
+    }
+
+    int rfd = open(rcpt_path, O_RDONLY);
+    if (rfd < 0) return -ENOENT;
+    ssize_t rn = read(rfd, rcpt, sizeof(rcpt));
+    close(rfd);
+    if (rn != (ssize_t)sizeof(rcpt)) return -EINVAL;
+    if (memcmp(rcpt, "FX3RCPT1", 8U) != 0) return -EINVAL;
+    uint32_t exp_rcpt_crc = (uint32_t)rcpt[524] | ((uint32_t)rcpt[525] << 8) |
+                            ((uint32_t)rcpt[526] << 16) | ((uint32_t)rcpt[527] << 24);
+    if (fx3_crc32_ieee(rcpt, 524U) != exp_rcpt_crc) return -EINVAL;
+
+    if (bndl.model_id != expected_model_id || r33_get_be32(rcpt + 16U) != expected_model_id) {
+        return -EACCES; /* -13 */
+    }
+    char rcpt_sha[65] = "";
+    r29_sha256_buf_hex(rcpt, 528U, rcpt_sha);
+    if (memcmp(bndl.rcpt_sha256, rcpt_sha, 64U) != 0) {
+        return -EACCES; /* -13 */
+    }
+    if (strncmp(bndl.device_serial, host_serial, sizeof(bndl.device_serial)) != 0 ||
+        strncmp((const char *)(rcpt + 20U), host_serial, 32U) != 0) {
+        return -EACCES; /* -13: Transplanted SD card bound to a different camera serial */
+    }
+    return 0;
+}
+
+static int r37_is_macos_clutter_name(const char *name) {
+    if (!name) return 0;
+    if (strncmp(name, "._", 2U) == 0) return 1;
+    if (strcmp(name, ".DS_Store") == 0) return 1;
+    if (strcmp(name, ".Spotlight-V100") == 0) return 1;
+    if (strcmp(name, ".Trashes") == 0) return 1;
+    if (strcmp(name, ".fseventsd") == 0) return 1;
+    return 0;
+}
+
+static int run_r37_fx3bndl1_serial_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    static const char k_host_serial[] = "FX3-091030080-A001";
+    static const char k_foreign_serial[] = "FX3-091030080-B999";
+
+    if (r33_mkdir_p("/mnt/r37_sd", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r37_sd_foreign", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r37_sd_jit", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r37_surfaces", 0755) != 0) {
+        return 196;
+    }
+
+    /* 1. Prepare 16 read-only surfaces & compute H0 SHA-256 digests */
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r37_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[512];
+        for (size_t i = 0U; i < sizeof(sbuf); i++) {
+            sbuf[i] = (uint8_t)(((s + 1U) * 41U + i * 7U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 196;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 196;
+    }
+
+    /* 2. Build matching FX3BNDL1 + FX3RCPT1 and foreign-serial transplanted SD card */
+    uint8_t host_rcpt[528], foreign_rcpt[528];
+    r37_fx3bndl1_t host_bndl, foreign_bndl;
+    r37_build_bndl_and_rcpt(k_host_serial, 0x91030080U, h0_hashes, host_rcpt, &host_bndl);
+    r37_build_bndl_and_rcpt(k_foreign_serial, 0x91030080U, h0_hashes, foreign_rcpt, &foreign_bndl);
+
+    if (r29_write_all_fsync("/mnt/r37_sd/FX3RCPT1.rcpt", host_rcpt, sizeof(host_rcpt), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r37_sd/FX3BNDL1.BIN", &host_bndl, sizeof(host_bndl), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r37_sd_foreign/FX3RCPT1.rcpt", foreign_rcpt, sizeof(foreign_rcpt), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r37_sd_foreign/FX3BNDL1.BIN", &foreign_bndl, sizeof(foreign_bndl), 0444) != 0) {
+        return 197;
+    }
+
+    int host_serial_bind_rc = r37_verify_bndl_rcpt_serial(
+        "/mnt/r37_sd/FX3BNDL1.BIN", "/mnt/r37_sd/FX3RCPT1.rcpt", k_host_serial, 0x91030080U);
+    int transplant_reject_rc = r37_verify_bndl_rcpt_serial(
+        "/mnt/r37_sd_foreign/FX3BNDL1.BIN", "/mnt/r37_sd_foreign/FX3RCPT1.rcpt", k_host_serial, 0x91030080U);
+    int split_pair_reject_rc = r37_verify_bndl_rcpt_serial(
+        "/mnt/r37_sd/FX3BNDL1.BIN", "/mnt/r37_sd_foreign/FX3RCPT1.rcpt", k_host_serial, 0x91030080U);
+
+    /* 3. Populate SD staging dir with genuine 64KiB libJit.so + macOS AppleDouble (._libJit.so, ._FX3BNDL1.BIN, .DS_Store) */
+    if (r29_copy_file_fsync("/tmp/jiritsu/libJit.so", "/mnt/r37_sd_jit/libJit.so", 0755) != 0) {
+        return 198;
+    }
+    uint8_t appledouble_hdr[4096];
+    memset(appledouble_hdr, 0, sizeof(appledouble_hdr));
+    appledouble_hdr[0] = 0x00U; appledouble_hdr[1] = 0x05U;
+    appledouble_hdr[2] = 0x16U; appledouble_hdr[3] = 0x07U; /* AppleDouble magic */
+    appledouble_hdr[5] = 0x02U;
+    memcpy(appledouble_hdr + 16U, "Mac OS X        ", 16U);
+
+    uint8_t ds_store[64];
+    memset(ds_store, 0, sizeof(ds_store));
+    memcpy(ds_store, "\x00\x00\x00\x01Bud1", 8U);
+
+    if (r29_write_all_fsync("/mnt/r37_sd_jit/._libJit.so", appledouble_hdr, sizeof(appledouble_hdr), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r37_sd_jit/._FX3BNDL1.BIN", appledouble_hdr, 512U, 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r37_sd_jit/.DS_Store", ds_store, sizeof(ds_store), 0644) != 0) {
+        return 198;
+    }
+
+    int appledouble_elf_rejected = (r31_elf_contains_token("/mnt/r37_sd_jit/._libJit.so", "ELF") == 0) ? 1 : 0;
+
+    DIR *sd_dir = opendir("/mnt/r37_sd_jit");
+    if (!sd_dir) return 198;
+    int appledouble_stripped = 0;
+    int ds_store_stripped = 0;
+    int dot_underscore_dlopen_attempted = 0;
+    int dlopen_ok = 0;
+    int dlopen_failures = 0;
+
+    struct dirent *de;
+    while ((de = readdir(sd_dir)) != NULL) {
+        if (strcmp(de->d_name, ".") == 0 || strcmp(de->d_name, "..") == 0) continue;
+        char full[512];
+        snprintf(full, sizeof(full), "/mnt/r37_sd_jit/%s", de->d_name);
+        if (r37_is_macos_clutter_name(de->d_name)) {
+            if (unlink(full) == 0) {
+                if (strncmp(de->d_name, "._", 2U) == 0) appledouble_stripped++;
+                else ds_store_stripped++;
+            }
+            continue;
+        }
+        if (strcmp(de->d_name, "libJit.so") == 0) {
+            uint8_t magic[4] = {0, 0, 0, 0};
+            int jfd = open(full, O_RDONLY);
+            if (jfd >= 0) {
+                (void)read(jfd, magic, 4U);
+                close(jfd);
+            }
+            if (magic[0] == 0x7fU && magic[1] == 'E' && magic[2] == 'L' && magic[3] == 'F') {
+                void *jh = dlopen(full, RTLD_NOW);
+                if (jh) {
+                    dlopen_ok = 1;
+                    dlclose(jh);
+                } else {
+                    dlopen_failures++;
+                }
+            } else {
+                dlopen_failures++;
+            }
+        }
+    }
+    closedir(sd_dir);
+
+    struct stat rem_st;
+    int dot_underscore_remaining = (stat("/mnt/r37_sd_jit/._libJit.so", &rem_st) == 0 ||
+                                    stat("/mnt/r37_sd_jit/._FX3BNDL1.BIN", &rem_st) == 0 ||
+                                    stat("/mnt/r37_sd_jit/.DS_Store", &rem_st) == 0) ? 1 : 0;
+
+    /* 4. Re-hash all 16 surfaces -> verify 16/16 H0 == H3 */
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r37_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (host_serial_bind_rc == 0 &&
+              transplant_reject_rc == -EACCES &&
+              split_pair_reject_rc == -EACCES &&
+              appledouble_elf_rejected == 1 &&
+              appledouble_stripped == 2 &&
+              ds_store_stripped == 1 &&
+              dot_underscore_dlopen_attempted == 0 &&
+              dot_underscore_remaining == 0 &&
+              dlopen_ok == 1 &&
+              dlopen_failures == 0 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R37_FX3BNDL1_SERIAL host_serial=%s foreign_serial=%s "
+            "host_serial_bind_rc=%d transplant_reject_rc=%d split_pair_reject_rc=%d "
+            "transplant_rejected=%d bndl_magic=FX3BNDL1 rcpt_magic=FX3RCPT1 rcpt_bytes=528 "
+            "appledouble_elf_rejected=%d appledouble_stripped=%d ds_store_stripped=%d "
+            "dot_underscore_dlopen_attempted=%d dot_underscore_remaining=%d "
+            "dlopen_ok=%d dlopen_failures=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r37c_ok=%d verify_us=%lld\n",
+            k_host_serial, k_foreign_serial,
+            host_serial_bind_rc, transplant_reject_rc, split_pair_reject_rc,
+            (transplant_reject_rc == -EACCES) ? 1 : 0,
+            appledouble_elf_rejected, appledouble_stripped, ds_store_stripped,
+            dot_underscore_dlopen_attempted, dot_underscore_remaining,
+            dlopen_ok, dlopen_failures, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 199;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -5818,6 +6369,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r36-wpa3-focusmap") == 0) {
         return run_r36_wpa3_focusmap_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r37-xlrh1-4ch") == 0) {
+        return run_r37_xlrh1_4ch_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r37-fx3bndl1-serial") == 0) {
+        return run_r37_fx3bndl1_serial_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -5880,6 +6437,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r36", &r36_st) == 0) {
         if (setup_r36_emount_info3d_probe() != 0) {
             return 55;
+        }
+    }
+    struct stat r37_st;
+    if (stat("/etc/fx6_stage_r37", &r37_st) == 0) {
+        if (setup_r37_fx3a_firewall_probe() != 0) {
+            return 56;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

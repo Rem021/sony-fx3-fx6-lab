@@ -77,6 +77,11 @@ from .realhw_hdmi_log1080_proxy_focusmag_brightmon_and_76gate_guard import (
     evaluate_g75_hdmi_log1080_hdmionly_guard,
     evaluate_g76_proxy_focusmag_brightmon_guard,
 )
+from .realhw_filesettings_shotmark_tcregen_reclamp_and_78gate_guard import (
+    evaluate_78gate_preflight,
+    evaluate_g77_filesettings_shotmark_guard,
+    evaluate_g78_tcregen_reclamp_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1537,6 +1542,90 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G76 gates can be rehearsed offline",
     )
     p_76.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 74. verify-g77-filesettings-shotmark
+    p_g77 = sub.add_parser(
+        "verify-g77-filesettings-shotmark",
+        help="Verify Gate G77: [File Settings] 5-Mode / 37-Char Title / SDHC Lock & [Shot Mark] XML / Transfer Filter Guard",
+    )
+    p_g77.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g77.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g77.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g77.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 75. verify-g78-tcregen-reclamp
+    p_g78 = sub.add_parser(
+        "verify-g78-tcregen-reclamp",
+        help="Verify Gate G78: [TC/UB] [Regenerate] Slot-1 Master / VMC-BNCM1 EXT-LK Release & [REC Lamp] Coupled Tally Guard",
+    )
+    p_g78.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g78.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g78.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g78.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 76. verify-78-gates
+    p_78 = sub.add_parser(
+        "verify-78-gates",
+        help="Run Phase 214 Unified 78-Gate Master Safety Preflight Engine (G01..G78)",
+    )
+    p_78.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_78.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_78.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G78 gates can be rehearsed offline",
+    )
+    p_78.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -3099,6 +3188,84 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_76_gates_verified if args.dry_run_simulated else report.offline_73_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g77-filesettings-shotmark":
+        verdict, res = evaluate_g77_filesettings_shotmark_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.filesettings_shotmark_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} fmt={guard['effective_file_name_format']} "
+                f"sdhc_lock={guard['sdhc_standard_lock_active']} "
+                f"fnum={guard['canonical_file_number_mode']}->#{guard['modeled_next_clip_number']:04d} "
+                f"title_len={guard['title_name_length']} "
+                f"jump={guard['canonical_image_jump_setting']}({guard['image_jump_matched']}) "
+                f"xfer={guard['canonical_transfer_target_movie']}({guard['transfer_filter_eligible']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g78-tcregen-reclamp":
+        verdict, res = evaluate_g78_tcregen_reclamp_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.tcregen_reclamp_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} tc_make={guard['canonical_time_code_make']}->"
+                f"{guard['effective_time_code_run']}(src={guard['regenerate_reference_slot']}) "
+                f"ext_lk={guard['modeled_ext_lk_active']} "
+                f"rec_lamp={guard['canonical_rec_lamp_mode']}("
+                f"F={guard['front_tally_led_on']},R={guard['rear_tally_led_on']},"
+                f"Top={guard['top_rec_button_led_on']}) "
+                f"silent={guard['silent_mode_on']}(audio_sig={guard['effective_audio_signals_on']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-78-gates":
+        report = evaluate_78gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/78 "
+                f"g77_to_g78_all_passed={report.g77_to_g78_all_passed} "
+                f"all_78_gates_verified={report.all_78_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_78_gates_verified if args.dry_run_simulated else report.offline_75_gates_verified
         return 0 if ok else 1
 
     return 2

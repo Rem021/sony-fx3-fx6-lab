@@ -391,4 +391,38 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 82：Stage 12 跨机身 `CAMSET` 清洗、4 通道 `24-bit/48 kHz` LPCM（`-20 dB` 安全轨 + 限幅器）与 SMPTE 12M `User-Bits` 多机位再生器
+
+[`camset_lpcm_tcub_emulator.py`](camset_lpcm_tcub_emulator.py) 作为 **Stage 12** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase82` 向后兼容跳过；全板 12 阶段协同仿真在本地只读供体模式下保持 `< 1.4s`、洁净室模式下 `< 0.5s`），在严格保持 **`cp_mutation_bytes == 0`**、**`bk4_persistent_nvram_writes == 0`**、**`uart_boot_contention_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成三大机队闭环：
+
+1. **严格只读（`os.O_RDONLY`）`CAMSET`/音频/时间码供体审计 + 洁净室回退**：
+   - 检查 FX3 `libBackupManager.so`、`libInfraExtBackupCommunicator.so`、`libbackup.so`、`libWlanResource.so`、`string_english_g.uxc` 与 FX6 `libInfraSetupFile.so`、`libbackup.so`、`libInfraMultiIF.so`、`libInfraHotshoe.so`、`string_english.uxc` 共 10 份精简构件（合计 `750,680 B`）的 SHA-256 与关键符号标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **跨机身 `CAMSET` A-Cam FX6 -> B-Cam FX3 机队配置清洗器与易失内存影子加载器**：
+   - 导入 A-Cam `ILME-FX6` 配置文件（`Cine EI 800`、`S-Gamut3.Cine/S-Log3`、`User1.cube`、`23.98p 180.0°`、`5600K`，含 FX6 专属 `ND 1/16`、`12G-SDI`、`VF Zebra`、`Wi-Fi AP=On`）至运行 Stage-B 的 B-Cam `ILME-FX3` 易失内存影子（`ram://tmp/camset_bcam_fx3_shadow.json`）。
+   - 100% 保留共享 Cinema Line 成像参数，同时确定性钳位/屏蔽缺失硬件与射频禁区字段（`nd_preset -> "Clear"`、`sdi_out -> "CONTAINED_DISABLED"`、`vf_zebra -> LCD 重定向`、`wlan_ap -> False` 强制 `P12` 飞行模式影子 `0x019e0012=00` / `0x01a20002=00`、`bk4_persistent_nvram_writes == 0`），并拦截任何针对 `/dev/nflasha*` / `bk4://persistent` 的非易失写入企图。
+3. **4 通道 `24-bit / 48 kHz` LPCM（`XLR-H1` CH1/CH2 + `-20 dB` 安全轨 CH3/CH4）与砖墙峰值限幅器**：
+   - 建模逐样本 `int24`（`[-8388608, +8388607]`）`S24_3LE`（`5,760 B`）及 QEMU `virtio-sound` `S32_LE`（`7,680 B`）`480` 帧 / `10 ms` 周期：`CH1/CH2` 走 `XLR-H1` 主轨（叠加 Phase 77 `+48V` 幻象供电传感器防烧毁防火墙），`CH3/CH4` 录制 `-20.0 dB` 备份安全轨；验证 `+12 dBFS` 瞬态过载下 `-0.5 dBFS` 砖墙限幅器启动且 **`0` 次 `int24` 溢出回卷**（`CH3/CH4` 零削波）。
+   - 验证 `XLR-H1` 热拔出时通过 `P11` 隔离（`0` IVSHMEM 泄漏）秒级回落至 `INTERNAL_STEREO_FALLBACK`（`+48V` 泄放至 `0.25 V`），以及 `S&Q` 升格（`120fps`/`240fps`）时自动全通道静音（`nonzero_samples == 0`）。
+4. **SMPTE 12M `User-Bits`（`BG1..BG8`）机队标签与 `TC IN`（`Multi-Port`）-> `TC OUT`（`HDMI`）再生器**：
+   - 将 `CamID=B`、`Reel=002`、`MasterCam=A` 与锁定标记打包进 80-bit `0x3FFD` LTC 帧的 32-bit `BG1..BG8` 二进制组（`42 00 24 13`），通过 `VMC-BNCM1` `EXT-LK` 与 A-Cam 零帧偏移（`0f`）锁相，强制执行 Phase 38 `uart_boot` `1.8V` 电气隔离防火墙（`0` 争用事件），并干净再生下游 `HDMI TC OUT`（含时间码 + `User-Bits`）。
+
+### Phase 82 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 12 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/camset_lpcm_tcub_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/camset_lpcm_tcub_emulator.py --self-test --json
+
+# 2. 全板 12 阶段（Stage 1..12）统一校验（本地 1.21s < 1.4s，洁净室 0.36s < 0.5s，支持 --skip-phase82）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 82 36 项单测 & 全量 352 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_camset_lpcm_tcub_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_camset_lpcm_tcub_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 

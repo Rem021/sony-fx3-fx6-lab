@@ -54,11 +54,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar B — True Cinema Shutter Angle (`5.6°..360.0°`, `180.0°` default) & Extended Clear Scan (`ECS` Hz)**: Verifies exact exposure-time math (`t_exp = (angle / 360.0) / fps`) across `23.976..240 fps`, all 19 canonical Sony shutter-angle steps + `2F..64F` slow shutter, `libmpr.so` MXF RTMD shutter writers, and `ECS` fine frequency steps (`t_exp = 1 / ecs_hz`) locked to LED virtual-production walls / mains frequencies.
    - **Pillar C — Slow & Quick Motion (`S&Q` `1..120fps` in `4K DCI/QFHD` & `1..240fps` in `FHD`) + Proxy / Audio-Mute & CFexpress Coupling**: Verifies exact resolution/fps envelopes, automatic audio disable in off-speed `S&Q` (`rec_fps != sensor_fps`), HFR (`200/240fps`) proxy gating, and CFexpress Type A (`VPG200/400`) vs SDXC `V90/V60/V30` sustained write bitrate enforcement.
    - **Pillar D — Front / Rear / Top Cinema Tally Lamps (`Technical -> Tally`)**: Maps FX6 `Front Tally Lamp`, `Rear Tally Lamp`, `Tally Lamp Brightness`, and `Rec Tally Blink` onto FX3's physical Front + Top/Rear REC Tally LEDs (`REC_LAMP_ALL_LIGHTS_UP`, `REC_LAMP_ONLY_FRONT_OFF`, `REC_LAMP_LIGHT_UP_ONLY_ONE`, `REC_LAMP_ALL_LIGHTS_OUT`, CP `MSG_ID_INFRABB_SYS_SET_CA_TALLY`) with `0` missing-GPIO faults for FX6-only Green/Yellow broadcast tally controls.
+12. [`fx3_firmware_lab/wb_color_matrix_and_look_auditor.py`](fx3_firmware_lab/wb_color_matrix_and_look_auditor.py)
+   - **Pillar A — White Balance Control & `WHT BAL` Switch Soft-Mapping**: Audits `Preset` (`3200K`/`4300K`/`5600K`), `Memory A/B` (`2000K..15000K` in `100K`/`50K` steps + `CC MG/GR` tint `-99..+99`), `ATW`, and `Shockless WB` (`Off/1/2/3` Mired slew-rate damping), while proving FX3 lacks FX6's physical `WHT BAL` (`B/A/PRST`) slide switch and cleanly soft-maps all positions onto Assignable Buttons + `Fn`/Big6 (`missing_gpio_faults == 0`).
+   - **Pillar B — Base Look & Gamma/Gamut Matrix**: Verifies `S-Cinetone`, `S-Log3 / S-Gamut3.Cine`, `S-Log3 / S-Gamut3`, `ITU709`, `709(800%)`, `HLG Live`, `HLG Natural`, and `User 3D LUT (MLUT)` routing parity across FX6 `v6.01` and FX3 `v7.02`.
+   - **Pillar C — Paint Menu `3x3` Color Matrix (`R-G..B-G`), Multi-Matrix, Knee & Black Gamma**: Enforces exact `3x3` linear matrix row-sum white-point preservation (`sum(row) == 1.0`, `det(M) > 0.05`) so neutral grey `[1, 1, 1]` never tint-shifts under off-diagonal Paint Matrix tweaks, alongside Knee Point (`75.0%..109.0%`), Knee Slope, Black Level, and Black Gamma bounds.
+   - **Pillar D — Factory Color/WB Calibration & `cnflasha` Zero-Mutation Proof**: Proves factory per-sensor `IMX510` WB gain / shading / defect-pixel calibration in `cnflasha` / Stock-CP remains 100% read-only (`calibration_mutation_bytes == 0`, `cp_mutation_bytes == 0`, `persistent_emmc_writes_authorized == False`).
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 11 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 12 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -76,8 +81,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-emount-af --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-shutter-tally
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-shutter-tally --clean-room
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wb-color-look --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-wb-color-look --clean-room --json
 
-# Run all 241 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 271 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

@@ -48,10 +48,14 @@ from .wbi_hibdrv_and_elf_abi_differ import (
     analyze_wbi_hibdrv_and_elf_abi,
     wbi_hibdrv_and_elf_abi_report_to_dict,
 )
+from .wb_color_matrix_and_look_auditor import (
+    analyze_wb_color_matrix_and_look,
+    wb_color_matrix_and_look_report_to_dict,
+)
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all eleven clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all twelve clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -77,6 +81,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     shutter_ecs_sq_tally = shutter_ecs_sq_and_tally_report_to_dict(
         analyze_shutter_ecs_sq_and_tally(clean_room=clean_room)
     )
+    wb_color_look = wb_color_matrix_and_look_report_to_dict(
+        analyze_wb_color_matrix_and_look(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -90,6 +97,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and audio_tc_hdmi.get("all_checks_passed")
         and emount_af_ibis.get("all_checks_passed")
         and shutter_ecs_sq_tally.get("all_checks_passed")
+        and wb_color_look.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -108,17 +116,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "audio_tc_hdmi_sdi_routing_audit": audio_tc_hdmi,
         "emount_af_breathing_and_ibis_audit": emount_af_ibis,
         "shutter_ecs_sq_and_tally_audit": shutter_ecs_sq_tally,
+        "wb_color_matrix_and_look_audit": wb_color_look,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, and Shutter Angle/ECS/S&Q/Tally/Curtain auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, and WB/Base Look/Paint Matrix/Calibration auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 11 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 12 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -177,6 +186,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     )
     p_st.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
 
+    p_wb = sub.add_parser(
+        "audit-wb-color-look",
+        help="Run Phase 65 White Balance (Shockless WB/ATW/WHT BAL soft-map), Base Look, Paint 3x3 Color Matrix, and cnflasha Calibration audit",
+    )
+    p_wb.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_wb.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -216,6 +232,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-shutter-tally":
         payload = shutter_ecs_sq_and_tally_report_to_dict(
             analyze_shutter_ecs_sq_and_tally(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-wb-color-look":
+        payload = wb_color_matrix_and_look_report_to_dict(
+            analyze_wb_color_matrix_and_look(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

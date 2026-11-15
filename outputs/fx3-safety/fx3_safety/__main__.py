@@ -107,6 +107,11 @@ from .realhw_recover_imagedb_monitor_flip_af_sens_and_88gate_guard import (
     evaluate_g87_recover_imagedb_battery_and_tier0_vault_guard,
     evaluate_g88_monitor_flip_af_sens_and_interval_guard,
 )
+from .realhw_emphasized_rec_grid_hdmi_touch_sunny_and_90gate_guard import (
+    evaluate_90gate_preflight,
+    evaluate_g89_emphasized_rec_and_grid_hdmi_guard,
+    evaluate_g90_touch_op_reset_and_sunny_weather_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2071,6 +2076,90 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G88 gates can be rehearsed offline",
     )
     p_88.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 92. verify-g89-emphasized-rec-grid-hdmi
+    p_g89 = sub.add_parser(
+        "verify-g89-emphasized-rec-grid-hdmi",
+        help="Verify Gate G89: [Emphasized REC Display] & [Grid Line] HDMI Info Routing vs Forced [Off(HDMI Only)] / RAW Clean-Feed Suppression Guard",
+    )
+    p_g89.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g89.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g89.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g89.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 93. verify-g90-touch-op-sunny-weather
+    p_g90 = sub.add_parser(
+        "verify-g90-touch-op-sunny-weather",
+        help="Verify Gate G90: [Touch Operation] 4-Item [Camera Settings Reset] Survival + Bench Accidental-Tap Lock & [Monitor Brightness] Sunny Weather Indoor Guard",
+    )
+    p_g90.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g90.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g90.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g90.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 94. verify-90-gates
+    p_90 = sub.add_parser(
+        "verify-90-gates",
+        help="Run Phase 237 (90/90 Milestone) Unified 90-Gate Master Safety Preflight Engine (G01..G90)",
+    )
+    p_90.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_90.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_90.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G90 gates can be rehearsed offline",
+    )
+    p_90.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -4102,6 +4191,102 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_88_gates_verified if args.dry_run_simulated else report.offline_85_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g89-emphasized-rec-grid-hdmi":
+        verdict, res = evaluate_g89_emphasized_rec_and_grid_hdmi_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.emphasized_rec_grid_hdmi_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} emp_rec={guard['effective_post_reset_emphasized_rec_display']} "
+                f"grid={guard['effective_post_reset_grid_line_display']}/"
+                f"{guard['effective_post_reset_grid_line_type']}(rst={guard['reset_action']}, "
+                f"survived={guard['grid_line_survived_camera_settings_reset']}) "
+                f"hdmi_info={guard['configured_hdmi_info_display']}->{guard['effective_hdmi_info_display']}"
+                f"(clamp={guard['hdmi_clean_feed_clamp_active']},baked_px={guard['hdmi_baked_overlay_pixels']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g90-touch-op-sunny-weather":
+        verdict, res = evaluate_g90_touch_op_reset_and_sunny_weather_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.touch_op_sunny_weather_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} touch_op={guard['effective_post_reset_touch_operation']}"
+                f"(sens={guard['effective_post_reset_touch_sensitivity']},"
+                f"swipe={guard['effective_post_reset_swipe_up']},"
+                f"func={guard['effective_post_reset_touch_func_in_shooting']},"
+                f"rst={guard['reset_action']},"
+                f"bench_locked={guard['shooting_capacitive_touch_locked']}) "
+                f"brightness={guard['effective_post_reset_monitor_brightness_mode']}"
+                f"({guard['effective_post_reset_manual_brightness_level']},"
+                f"sunny_blocked={guard['sunny_weather_indoor_blocked']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-90-gates":
+        report = evaluate_90gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/90 "
+                f"g89_to_g90_all_passed={report.g89_to_g90_all_passed} "
+                f"all_90_gates_verified={report.all_90_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_90_gates_verified if args.dry_run_simulated else report.offline_87_gates_verified
         return 0 if ok else 1
 
     return 2

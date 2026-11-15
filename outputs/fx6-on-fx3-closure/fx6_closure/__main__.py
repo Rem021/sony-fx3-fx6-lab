@@ -1599,10 +1599,139 @@ def _cmd_preflight_card_insert(
     return 0 if ok else 1
 
 
+def _cmd_preflight_bench_cable_fan_slot1(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_ready_bench: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    power_source: str,
+    battery_soc: float,
+    battery_voltage: float,
+    dc_c1_watts: float,
+    dc_c1_cable_amps: float,
+    dc_c1_emarked_5a: bool,
+    usb_mode: str,
+    expect_usb_streaming_uvc: bool,
+    vmc_bncm1_attached: bool,
+    vmc_bncm1_port: str,
+    vmc_bncm1_direction: str,
+    uart_1v8_attached: bool,
+    fan_mode: str,
+    auto_power_off_temp: str,
+    body_temp_c: float,
+    big6_lower_left: str,
+    slot1_media_type: str,
+    lut_dir_path: Optional[str],
+    camset_dir_path: Optional[str],
+    slot1_dir: Optional[Path],
+    camset_slot: int,
+    exposure_mode: str,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_bench_cable_fan_and_slot1_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_READONLY_BENCH_PREFLIGHT_VERIFIED,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+        render_phase204_markdown,
+        run_bench_cable_fan_and_slot1_preflight,
+        verify_phase204_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = run_bench_cable_fan_and_slot1_preflight(
+        simulate_ready_bench=simulate_ready_bench,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        power_source=power_source,
+        np_fz100_soc_pct=battery_soc,
+        np_fz100_voltage_v=battery_voltage,
+        dc_c1_pd_watts=dc_c1_watts,
+        dc_c1_cable_amps=dc_c1_cable_amps,
+        dc_c1_emarked_5a=dc_c1_emarked_5a,
+        usb_connection_mode=usb_mode,
+        expect_usb_streaming_uvc=expect_usb_streaming_uvc,
+        vmc_bncm1_attached=vmc_bncm1_attached,
+        vmc_bncm1_port=vmc_bncm1_port,
+        vmc_bncm1_direction=vmc_bncm1_direction,
+        uart_rx_1v8_attached=uart_1v8_attached,
+        fan_mode=fan_mode,
+        auto_power_off_temp=auto_power_off_temp,
+        body_temp_c=body_temp_c,
+        big6_home_lower_left=big6_lower_left,
+        slot1_media_type=slot1_media_type,
+        lut_dir_path=lut_dir_path,
+        camset_dir_path=camset_dir_path,
+        slot1_dir=slot1_dir,
+        camset_target_slot=camset_slot,
+        camera_exposure_mode=exposure_mode,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase204_markdown(rep), encoding="utf-8")
+    v_res = verify_phase204_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        GO_NO_GO_READONLY_BENCH_PREFLIGHT_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_ready={rep.simulate_ready_bench} "
+                f"groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"e_nd_tx={rep.e_nd_actuator_tx_count} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.physical_usb_packets_emitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 154 Real-Hardware Bench Preflight & Passive USB Classifier, Phase 147 Real-Hardware Bench Readiness, Phase 130, Phase 110 & Phase 90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 204 Operator Pre-Bench Power/Cable/Fan/Slot-1 Verifier, Phase 193/175/147 Real-Hardware Master Gates, Phase 186 Card-Insert Preflight, Phase 154 Bench Preflight & Passive USB Classifier, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -1646,6 +1775,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-175", "Verify Milestone Phase 175 Grand Unified 6-Pillar Real-Hardware Final Pre-Bench Master Gate (58-Gate + >=22 Recovery + >=36 Auditors + >=30 VM + Ph136/143/154 + FX3 7.02 QEMU R28..R34, realhw_milestone175_master_gate_v1)"),
         ("preflight-card-insert", "Run Phase 186 host-side final card-insert preflight (Slot-1/2 ExFAT geometry & hygiene, dual-media FX3RCPT1 binding, NP-FZ100/thermal/cable interlock, and EH1..EH3 + H0..H3 dry-run)"),
         ("verify-milestone-193", "Verify Grand Milestone Phase 193 Unified 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Pre-Bench Master Gate (66-Gate + >=26 Recovery + >=40 Auditors + >=33 VM + Ph136/143/154/186 + FX3 7.02 QEMU R28..R37, realhw_milestone193_master_gate_v1)"),
+        ("preflight-bench-cable-fan-slot1", "Run Phase 204 real-hardware operator pre-bench power/cable (DC-C1 / NP-FZ100 / VMC-BNCM1), 4-mode fan thermal (Always Off block) & Slot-1 CAMSET/.cube vault readiness verifier"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -1666,10 +1796,42 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-bench-cable-fan-slot1":
+            p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 204 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-ready-bench", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--power-source", default="USB_PD_BODY", help="Bench power mode: USB_PD_BODY or DC_C1_COUPLER")
+            p.add_argument("--battery-soc", type=float, default=88.0, help="NP-FZ100 battery state-of-charge percentage (>= 51.0% for USB_PD_BODY)")
+            p.add_argument("--battery-voltage", type=float, default=8.00, help="NP-FZ100 battery voltage in Volts (7.20V..8.50V)")
+            p.add_argument("--dc-c1-watts", type=float, default=65.0, help="DC-C1 USB-PD adapter rated wattage (>= 65.0W)")
+            p.add_argument("--dc-c1-cable-amps", type=float, default=5.0, help="DC-C1 USB-C cable current rating in Amps (>= 5.0A)")
+            p.add_argument("--no-dc-c1-emarked-5a", dest="dc_c1_emarked_5a", action="store_false", help="Indicate USB-C cable lacks 5A e-Marker")
+            p.add_argument("--usb-mode", default="MASS_STORAGE", help="Camera USB connection mode (rejects USB_STREAMING/UVC on ILME-FX3)")
+            p.add_argument("--expect-usb-streaming-uvc", action="store_true", help="Test/flag UVC [USB Streaming] expectation (rejected on ILME-FX3 0x91030080)")
+            p.add_argument("--vmc-bncm1-attached", action="store_true", help="Indicate VMC-BNCM1 (A-5051-506-A) BNC timecode cable is attached")
+            p.add_argument("--vmc-bncm1-port", default="DISCONNECTED", help="Port where VMC-BNCM1 is connected (BODY_MULTI_MICRO_USB or DISCONNECTED)")
+            p.add_argument("--vmc-bncm1-direction", default="NONE", help="BNC timecode direction (TC_IN or NONE; reverse TC_OUT rejected)")
+            p.add_argument("--uart-1v8-attached", action="store_true", help="Indicate 1.8V passive UART RX triage is attached on Multi-USB Pins 8/9/10")
+            p.add_argument("--fan-mode", default="Auto", help="FX3 4-mode [Fan Control]: Auto, Minimum, Off in Rec, Always Off")
+            p.add_argument("--auto-power-off-temp", default="High", help="FX3 [Auto Power OFF Temp.]: Standard or High")
+            p.add_argument("--body-temp-c", type=float, default=29.5, help="Camera body start temperature in Celsius (< 45.0C)")
+            p.add_argument("--big6-lower-left", default="Aperture", help="BIG6 [Home (Lower Left)] setting: Aperture or ND Filter")
+            p.add_argument("--slot1-media-type", default="SDXC", help="Slot-1 media type: SDXC or CFEXPRESS_A")
+            p.add_argument("--lut-dir-path", default=None, help="Optional Slot-1 .cube LUT directory path to validate")
+            p.add_argument("--camset-dir-path", default=None, help="Optional Slot-1 CAMSET .DAT directory path to validate")
+            p.add_argument("--slot1-dir", type=Path, default=None, help="Optional Slot-1 directory to scan O_RDONLY for symlinks/._*/BODYDATA.DAT")
+            p.add_argument("--camset-slot", type=int, default=1, help="Target CAMSET slot number (must be 1)")
+            p.add_argument("--exposure-mode", default="Flexible Exposure", help="Current camera exposure mode (CAMSET disabled in MR mode)")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-card-insert":
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 186 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -1971,6 +2133,44 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-bench-cable-fan-slot1":
+        return _cmd_preflight_bench_cable_fan_slot1(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_ready_bench,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.power_source,
+            args.battery_soc,
+            args.battery_voltage,
+            args.dc_c1_watts,
+            args.dc_c1_cable_amps,
+            args.dc_c1_emarked_5a,
+            args.usb_mode,
+            args.expect_usb_streaming_uvc,
+            args.vmc_bncm1_attached,
+            args.vmc_bncm1_port,
+            args.vmc_bncm1_direction,
+            args.uart_1v8_attached,
+            args.fan_mode,
+            args.auto_power_off_temp,
+            args.body_temp_c,
+            args.big6_lower_left,
+            args.slot1_media_type,
+            args.lut_dir_path,
+            args.camset_dir_path,
+            args.slot1_dir,
+            args.camset_slot,
+            args.exposure_mode,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
         )
     return 2
 

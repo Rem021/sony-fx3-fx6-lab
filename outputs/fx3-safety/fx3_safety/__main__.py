@@ -82,6 +82,11 @@ from .realhw_emount_info3d_hdmi_braw_and_62gate_guard import (
     evaluate_g61_emount_breathing_guard,
     evaluate_g62_hdmi_raw_guard,
 )
+from .realhw_fan_pwm_shutter_angle_lut_split_and_70gate_guard import (
+    evaluate_70gate_preflight,
+    evaluate_g69_fan_pwm_thermal_guard,
+    evaluate_g70_lut_split_shutter_angle_guard,
+)
 from .realhw_fx3a_firewall_xlrh1_mishoe_and_64gate_guard import (
     evaluate_64gate_preflight,
     evaluate_g63_fx3a_branch_firewall,
@@ -1190,6 +1195,87 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G68 gates can be rehearsed offline",
     )
     p_68.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 62. verify-g69-fan-pwm-thermal
+    p_g69 = sub.add_parser(
+        "verify-g69-fan-pwm-thermal",
+        help="Verify Gate G69: ILME-FX3 Exact 4-Mode [Fan Control] (Off in Rec Standby MAX PWM / Always Off Pre-Backup Block) & Thermal Guard",
+    )
+    p_g69.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g69.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g69.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g69.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 63. verify-g70-lut-601-702-shutter-angle
+    p_g70 = sub.add_parser(
+        "verify-g70-lut-601-702-shutter-angle",
+        help="Verify Gate G70: FX6 Ver. 6.01 vs Stock FX3 Ver. 7.00/7.02 p2:/setting User LUT Binary Split Firewall & Shutter Speed/Angle Guard",
+    )
+    p_g70.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g70.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g70.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g70.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 64. verify-70-gates
+    p_70 = sub.add_parser(
+        "verify-70-gates",
+        help="Run Phase 199 70-Gate Master Safety Preflight Engine (G01..G70)",
+    )
+    p_70.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_70.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_70.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G70 gates can be rehearsed offline",
+    )
+    p_70.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -2415,6 +2501,82 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_68_gates_verified if args.dry_run_simulated else report.offline_65_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g69-fan-pwm-thermal":
+        verdict, res = evaluate_g69_fan_pwm_thermal_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.fan_pwm_thermal_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} body={guard['body_model_name']}({guard['body_model_id_hex']}) "
+                f"fw={guard['firmware_version']} fan={guard['canonical_fan_mode']} "
+                f"pwm={guard['observed_pwm_duty_pct']}% "
+                f"off_in_rec_rec={guard['off_in_rec_recording_normal_pwm_pct']}% "
+                f"off_in_rec_stby={guard['off_in_rec_standby_pwm_pct']}% "
+                f"apo_temp={guard['auto_power_off_temp']} "
+                f"cxd90057={guard['cxd90057_temp_c']:.1f}C cxd90058={guard['cxd90058_temp_c']:.1f}C "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g70-lut-601-702-shutter-angle":
+        verdict, res = evaluate_g70_lut_split_shutter_angle_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.lut_split_shutter_angle_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} lut_split={guard['donor_stageb_fw_version']}->{guard['host_stock_fx3_fw_version']} "
+                f"slot={guard['lut_slot_name']} overlay={guard['volatile_lut_overlay_redirected']} "
+                f"h0_eq_h3={guard['h0_equals_h3_p2_setting']} "
+                f"shutter={guard['shutter_mode']} angle={guard['shutter_angle_deg']}deg/{guard['shutter_frames_count']}F "
+                f"fps={guard['rec_frame_rate']} step={guard['exposure_step_ev']}EV "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-70-gates":
+        report = evaluate_70gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/70 "
+                f"g69_to_g70_all_passed={report.g69_to_g70_all_passed} "
+                f"all_70_gates_verified={report.all_70_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_70_gates_verified if args.dry_run_simulated else report.offline_67_gates_verified
         return 0 if ok else 1
 
     return 2

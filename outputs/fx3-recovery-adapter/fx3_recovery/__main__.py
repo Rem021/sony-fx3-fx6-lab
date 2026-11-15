@@ -34,6 +34,10 @@ from .realhw_26pillar_master_recovery_verifier import (
     run_pillar26_standalone_suite,
     verify_26pillar_recovery_suite,
 )
+from .realhw_27pillar_dcc1_pd_lut_vault_verifier import (
+    run_pillar27_standalone_suite,
+    verify_27pillar_recovery_suite,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -219,6 +223,14 @@ def main():
     p190_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p190_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p190_master.add_argument('--out', help='optional exclusive new output directory for 26pillar-recovery-master-report.json')
+    p195_p27 = sub.add_parser('verify-dcc1-pd-lut-vault', help='Phase 195 Pillar 27 NP-FZ100 & DC-C1 (>=65W/5A) brownout interlock + dual-media .cube LUT p2:/setting vault verifier')
+    p195_p27.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p195_p27.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p195_p27.add_argument('--out', help='optional exclusive new output directory for pillar27-dcc1-pd-lut-vault-report.json')
+    p195_master = sub.add_parser('verify-27pillar-recovery', help='Phase 195 unified 27/27 real-hardware recovery master aggregator (Pillars 1..26 + Pillar 27)')
+    p195_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p195_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p195_master.add_argument('--out', help='optional exclusive new output directory for 27pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1093,6 +1105,66 @@ def main():
                     f"pillar26_a={report.pillar26_a_fx3a_firewall.scenarios_passed}/{report.pillar26_a_fx3a_firewall.scenarios_total} "
                     f"pillar26_b={report.pillar26_b_xlrh1_hygiene.scenarios_passed}/{report.pillar26_b_xlrh1_hygiene.scenarios_total} "
                     f"master_26pillar_sha256={report.master_26pillar_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-dcc1-pd-lut-vault':
+            report = run_pillar27_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar27-dcc1-pd-lut-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_27a={report.pillar_27a_dcc1_pd_interlock.scenarios_passed}/{report.pillar_27a_dcc1_pd_interlock.scenarios_total} "
+                    f"pillar_27b={report.pillar_27b_cube_lut_vault.scenarios_passed}/{report.pillar_27b_cube_lut_vault.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-27pillar-recovery':
+            report = verify_27pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'27pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_2_2s={report.nominal_under_2_2s} "
+                    f"pillar27_a={report.pillar27_a_dcc1_pd_interlock.scenarios_passed}/{report.pillar27_a_dcc1_pd_interlock.scenarios_total} "
+                    f"pillar27_b={report.pillar27_b_cube_lut_vault.scenarios_passed}/{report.pillar27_b_cube_lut_vault.scenarios_total} "
+                    f"master_27pillar_sha256={report.master_27pillar_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

@@ -662,4 +662,24 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-26pillar-recovery --force-clean-room --json
 ```
 
+## Phase 195 — 真机主线 Part 15（Pillar 27 / `27/27` 统一恢复总检）：`DC-C1`（`>=65W / 5A`）与 `NP-FZ100` 欠压互锁、双介质 `.cube` User LUT `p2:/setting` 金库隔离与 `verify-27pillar-recovery`
+
+- **[`realhw_27pillar_dcc1_pd_lut_vault_verifier.py`](fx3_recovery/realhw_27pillar_dcc1_pd_lut_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 27** 并提供统一 **27/27 恢复总检聚合器**（`< 2.2s` 并发运行，保留 [`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py) / `verify-22pillar-recovery`、[`realhw_24pillar_master_recovery_verifier.py`](fx3_recovery/realhw_24pillar_master_recovery_verifier.py) / `verify-24pillar-recovery` 与 [`realhw_26pillar_master_recovery_verifier.py`](fx3_recovery/realhw_26pillar_master_recovery_verifier.py) / `verify-26pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 与 `libUsbBusPower.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退：
+  - **支柱 27A — `NP-FZ100`（`>=51%` / `>=3 格`）与 `DC-C1`（`>=65W + 5A` e-Marked 线缆）冷备份与 UFU 欠压互锁（`6/6`）**：
+    - `P27A1`..`P27A6`：进入冷备份 `AdjustControl (0x40)` / UFU `BODYDATA.DAT` 阶段前硬校验电源拓扑——机身 USB-C PD 必须装配物理 `NP-FZ100` 电池（`>= 51%` / `>= 3 格` / `>= 7.20V`），硬阻断 Micro-USB 供电企图，并强制 `DC-C1` 假电池耦合器满足 `>= 65W` PD + `5A` e-Marked 线缆且无供电故障闪烁指示；证明若 Stage-B 中途 `DC-C1` 突然断电，易失性 `tmpfs` 覆盖层干净蒸发且 `16/16` Tier-0 关键表面保持零 eMMC 损伤（`H0 == H3`）。
+  - **支柱 27B — 双介质 `.cube` User LUT（`User1..User16`）易失覆盖层 vs 原厂 `p2:/setting` 金库保全（`6/6`）**：
+    - `P27B1`..`P27B6`：校验 `SDXC`（`/Private/Sony/PRO/LUT/`）与 `CFexpress Type A`（`/Sony/PRO/LUT/`）双介质非对称 LUT 目录路径及 `17pt/33pt`（`<= 63B` ASCII 文件名）`.cube` 规范，强制 Stage-B 期间所有暂存仅驻留易失 `/tmp/fx6_lut_overlay`（`tmpfs`），`0` 次写入 `p2:/setting`；证明重启回原厂 FX3 `7.02` 后 `p2:/setting/Backup.bin` 保持 `BLKROSET=1` 且 `User1..User16` 全部 `16` 个注册槽位与 `AE Level Offset`（`0.0..+2.0 EV`、`1/3 EV` 步进）`100%` 逐比特一致（`H0 == H3`）。
+  - **统一 `27/27` 恢复总检聚合器与 CLI（`evaluate_27pillar_recovery_master` / `verify-27pillar-recovery` / `verify-dcc1-pd-lut-vault`）**：
+    - 并发调度 `evaluate_26pillar_recovery_master`（`Pillars 1..26`）+ **Pillar 27**（`run_pillar27_standalone_suite`），汇总产出 **`27/27`**（`VERIFIED_27OF27_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_27pillar_dcc1_pd_lut_vault_verifier.py`](tests/test_realhw_27pillar_dcc1_pd_lut_vault_verifier.py) 提供 **50 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-dcc1-pd-lut-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-27pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-27pillar-recovery --force-clean-room --json
+```
+
+
 

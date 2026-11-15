@@ -14,6 +14,7 @@ from .emmc_dump_forensic_verifier import (
     run_clean_room_forensic_suite,
     verify_emmc_dump_file,
 )
+from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
 from .unbrick_ladder_and_capsule_verifier import run_unbrick_ladder_and_capsule_suite
 
@@ -72,6 +73,10 @@ def main():
     fixture.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     fixture.add_argument('--json', action='store_true', help='emit full structured JSON report')
     fixture.add_argument('--out', help='optional exclusive new output directory for rp2040-fixture-report.json')
+    init2esc = sub.add_parser('verify-init2-escape', help='Phase 66 init2 SD-card sentinel escape shell, CXD90057 WDT & p1 FAT12/FAT16 verifier')
+    init2esc.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    init2esc.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    init2esc.add_argument('--out', help='optional exclusive new output directory for init2-escape-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -161,6 +166,26 @@ def main():
                     f"all_passed={report.all_passed} board={report.board} "
                     f"camera_connected={report.camera_connected} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-init2-escape':
+            report = run_init2_escape_and_watchdog_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'init2-escape-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"escape_drills={report.escape_sandbox_suite.drills_passed}/{report.escape_sandbox_suite.drills_total} "
+                    f"wdt_scenarios={report.watchdog_suite.scenarios_passed}/{report.watchdog_suite.scenarios_total} "
+                    f"physical_writes={report.physical_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
                 )
             return 0 if report.all_passed else 2
         else:

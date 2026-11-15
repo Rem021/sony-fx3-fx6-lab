@@ -745,10 +745,94 @@ def _cmd_verify_stage_b_candidate(
     return 0 if ok else 1
 
 
+def _cmd_audit_stage_b_post_trial(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    clean_room: bool,
+    json_output: bool,
+    output_path: Optional[Path],
+    h0_bundle_dir: Optional[Path] = None,
+    h2_bundle_dir: Optional[Path] = None,
+) -> int:
+    from .stage_b_post_trial_auditor import (
+        run_stage_b_post_trial_forensic_audit,
+        verify_stage_b_post_trial_report,
+        verify_stage_b_post_trial_zero_persistence,
+    )
+
+    if (h0_bundle_dir is None) ^ (h2_bundle_dir is None):
+        sys.stderr.write("Both --h0-bundle-dir and --h2-bundle-dir must be specified together\n")
+        return 2
+
+    if h0_bundle_dir is not None and h2_bundle_dir is not None:
+        rec = verify_stage_b_post_trial_zero_persistence(
+            h0_bundle_dir,
+            h2_bundle_dir,
+            synthetic_clean_room=True if clean_room else None,
+        )
+        rendered = rec.to_deterministic_json(indent=2)
+        if output_path is not None:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(rendered, encoding="utf-8")
+        ok = rec.all_checks_passed and rec.zero_persistence_verified
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"status={'OK' if ok else 'FAILED'} "
+                f"schema={rec.schema} "
+                f"mode={rec.verification_mode} "
+                f"classification={rec.classification} "
+                f"matched={rec.matched_item_count}/{rec.audited_item_count} "
+                f"mutated_bytes={rec.persistent_bytes_mutated} "
+                f"wbi_mut={rec.wbi_mutation_bytes} "
+                f"cp_mut={rec.cp_mutation_bytes} "
+                f"cal_mut={rec.calibration_mutation_bytes} "
+                f"c2pa_untouched={rec.c2pa_keystore_untouched} "
+                f"exfat_clean={rec.p1_exfat_audit.exfat_media_clean} "
+                f"peak_soc_c={rec.serial_thermal_post_mortem.peak_soc_c:.1f} "
+                f"receipt_sha256={rec.receipt_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        return 0 if ok else 1
+
+    rep = run_stage_b_post_trial_forensic_audit(
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    v_res = verify_stage_b_post_trial_report(rep.to_dict())
+    ok = rep.all_checks_passed and rep.all_10_scenarios_passed and v_res.valid
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        nom = rep.nominal_receipt
+        summary = (
+            f"status={'OK' if ok else 'FAILED'} "
+            f"schema={rep.schema} "
+            f"mode={rep.verification_mode} "
+            f"scenarios={rep.passed_scenario_count}/{rep.scenario_count} "
+            f"items={nom.matched_item_count}/{nom.audited_item_count} "
+            f"wbi_mut={rep.wbi_mutation_bytes} "
+            f"cp_mut={rep.cp_mutation_bytes} "
+            f"cal_mut={rep.calibration_mutation_bytes} "
+            f"c2pa_untouched={nom.c2pa_keystore_untouched} "
+            f"exfat_clean={nom.p1_exfat_audit.exfat_media_clean} "
+            f"peak_soc_c={nom.serial_thermal_post_mortem.peak_soc_c:.1f} "
+            f"report_sha256={rep.report_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 52 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure & Unified Stage-B End-to-End Candidate Integrator CLI",
+        description="FX6-on-FX3 Phase 62 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator & Stage-B Post-Trial Forensic Auditor CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -778,6 +862,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("run-stage-b-lifecycle-drill", "Execute Phase 35 complete Stage-B (P1..P12+Fan) 10-scenario H0 -> H1 -> H2 lifecycle, serial_fault_detector_v2 & cryptographic zero-drift verification"),
         ("verify-stage-b-ram-overlay", "Build deterministic Phase 48 Stage-B (P1..P12+Fan, 13/13) CPIO newc RAM-overlay v2 with BK4 language/Airplane shadow and run 9-scenario init2 sandbox drill"),
         ("verify-stage-b-candidate", "Compose and verify Phase 52 Unified Stage-B End-to-End Candidate Dossier (stage_b_integrated_dossier_v1) across Phase 35..50 pillars"),
+        ("audit-stage-b-post-trial", "Run Phase 62 Stage-B H0-vs-H2 Post-Trial Zero-Persistence Forensic Differ & 10-Scenario Anomaly Classifier (stage_b_post_trial_forensic_audit_v1)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name != "verify-post-trial":
@@ -790,12 +875,16 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
         if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
+        if cmd_name == "audit-stage-b-post-trial":
+            p.add_argument("--h0-bundle-dir", type=Path, default=None, help="Optional archived Phase H0 pre-trial Tier-0 capture directory")
+            p.add_argument("--h2-bundle-dir", type=Path, default=None, help="Optional Phase H2 post-power-cycle Tier-0 readback directory")
         if cmd_name in ("build-readiness-packet", "build-stage-b-readiness-packet"):
             p.add_argument("--tier0-bundle-dir", type=Path, default=None, help="Optional path to physical FX3 Tier-0 capture directory")
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write deterministic readiness packet")
@@ -909,6 +998,16 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.lang,
             args.json,
             args.output,
+        )
+    if args.cmd == "audit-stage-b-post-trial":
+        return _cmd_audit_stage_b_post_trial(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.clean_room,
+            args.json,
+            args.output,
+            args.h0_bundle_dir,
+            args.h2_bundle_dir,
         )
     return 2
 

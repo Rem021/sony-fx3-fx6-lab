@@ -26,6 +26,10 @@ from .realhw_22pillar_master_recovery_verifier import (
     run_pillar22_standalone_suite,
     verify_22pillar_recovery_suite,
 )
+from .realhw_24pillar_master_recovery_verifier import (
+    run_pillar24_standalone_suite,
+    verify_24pillar_recovery_suite,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
@@ -190,6 +194,14 @@ def main():
     p176_wbi.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p176_wbi.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p176_wbi.add_argument('--out', help='optional exclusive new output directory for wbi-powerloss-100cycle-report.json')
+    p180_slot1 = sub.add_parser('verify-slot1-ufu-reflash-readiness', help='Phase 180 Pillar 24 standalone Slot-1 BODYDATA.DAT (>=2.04 floor) stock-reflash readiness & WPA2/WPA3 HDMI-BRAW/LUT rollback hygiene verifier')
+    p180_slot1.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p180_slot1.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p180_slot1.add_argument('--out', help='optional exclusive new output directory for pillar24-slot1-ufu-hygiene-report.json')
+    p180_master = sub.add_parser('verify-24pillar-recovery', help='Phase 180 unified 24/24 real-hardware recovery master aggregator (Pillars 1..22 + Pillar 23 + Pillar 24)')
+    p180_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p180_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p180_master.add_argument('--out', help='optional exclusive new output directory for 24pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -924,6 +936,66 @@ def main():
                     f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"physical_device_writes={report.physical_device_writes}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-slot1-ufu-reflash-readiness':
+            report = run_pillar24_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar24-slot1-ufu-hygiene-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_24a={report.pillar_24a_slot1_ufu_readiness.scenarios_passed}/{report.pillar_24a_slot1_ufu_readiness.scenarios_total} "
+                    f"pillar_24b={report.pillar_24b_rollback_hygiene.scenarios_passed}/{report.pillar_24b_rollback_hygiene.scenarios_total} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-24pillar-recovery':
+            report = verify_24pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'24pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_8s_budget={report.under_1_8s_budget} "
+                    f"nominal_under_1_8s={report.nominal_under_1_8s} "
+                    f"pillar24_a={report.pillar24_a_slot1_ufu_readiness.scenarios_passed}/{report.pillar24_a_slot1_ufu_readiness.scenarios_total} "
+                    f"pillar24_b={report.pillar24_b_rollback_hygiene.scenarios_passed}/{report.pillar24_b_rollback_hygiene.scenarios_total} "
+                    f"master_24pillar_sha256={report.master_24pillar_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
                 )
             return 0 if report.all_passed else 2
         else:

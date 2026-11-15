@@ -8,6 +8,7 @@ from .capture import capture_local, verify_capture
 from .worker import assemble_worker_windows
 from .elflink import build_worker
 from . import boot_worker as B
+from .ab_bank_and_interrupted_ota_verifier import run_ab_bank_and_interrupted_ota_suite
 from .emmc_dump_forensic_verifier import (
     VALID_ROLES,
     report_to_dict,
@@ -98,6 +99,7 @@ def main():
     master.add_argument('--with-phase94', action='store_true', help='also run Phase 94 Pillar 8 GPT/RPMB/SD-rescue verifier')
     master.add_argument('--with-phase101', action='store_true', help='also run Phase 101 Pillar 9 init2 cpio firewall, EXT_CSD health & tmpfs isolation verifier')
     master.add_argument('--with-phase106', action='store_true', help='also run Phase 106 Pillar 10 FDT /chosen/bootargs firewall & ARM64 kernel verifier')
+    master.add_argument('--with-phase113', action='store_true', help='also run Phase 113 Pillar 11 CXD90057 Dual-Bank A/B & Interrupted BODYDATA.DAT/USB-OTA forensic triage verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -110,6 +112,10 @@ def main():
     fdt_kern.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     fdt_kern.add_argument('--json', action='store_true', help='emit full structured JSON report')
     fdt_kern.add_argument('--out', help='optional exclusive new output directory for fdt-bootargs-kernel-report.json')
+    ab_ota = sub.add_parser('verify-ab-bank-triage', help='Phase 113 CXD90057 Dual-Bank A/B consistency & interrupted BODYDATA.DAT/USB-OTA forensic triage verifier')
+    ab_ota.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    ab_ota.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    ab_ota.add_argument('--out', help='optional exclusive new output directory for ab-bank-ota-triage-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -295,12 +301,21 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p106_report.all_passed else 0)
                 overall_ok = overall_ok and p106_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase113:
+                p113_report = run_ab_bank_and_interrupted_ota_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase113_pillar11_ab_bank_interrupted_ota'] = p113_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p113_report.all_passed else 0)
+                overall_ok = overall_ok and p113_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
                 print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
             else:
-                has_opt_in = args.with_phase94 or args.with_phase101 or args.with_phase106
+                has_opt_in = args.with_phase94 or args.with_phase101 or args.with_phase106 or args.with_phase113
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
                 print(
@@ -383,6 +398,30 @@ def main():
                     f"kernel_magic={report.fx3_kernel_valid_report.magic_hex} "
                     f"kernel_release={report.fx3_kernel_valid_report.kernel_release} "
                     f"stage_b_boot_gate_ready={report.stage_b_boot_gate_ready} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-ab-bank-triage':
+            report = run_ab_bank_and_interrupted_ota_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'ab-bank-ota-triage-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"ota_scenarios={report.ota_6_scenario_suite.scenarios_passed}/{report.ota_6_scenario_suite.scenarios_total} "
+                    f"stage_b_u5_zero_brick_verified={report.ota_6_scenario_suite.stage_b_u5_zero_brick_verified} "
+                    f"split_deadlock_rejected={not report.dual_bank_split_deadlock_report.passed} "
                     f"suite_sha256={report.suite_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

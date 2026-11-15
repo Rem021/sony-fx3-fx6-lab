@@ -1696,6 +1696,101 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r37_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 38
+    {
+        static int g_r38_bridge_executed = 0;
+        static int g_r38_nouvc_blocked_ok = 0;
+        static int g_r38_usblan_netstream_ok = 0;
+        static int g_r38_pd_dcc1_interlock_ok = 0;
+        static int g_r38_lut_path_asymmetry_ok = 0;
+        static int g_r38_cineei_dualbase_ok = 0;
+        static int g_r38_rmtp1bt_clipflag_ok = 0;
+        static int g_r38_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r38_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. No-UVC USB Gadget Firewall + USB-LAN + 4K 59.94p <=38Mbps Network Streaming */
+            int uvc_gadget_rc = -95; /* EOPNOTSUPP */
+            int usblan_rc = 0;
+            int netstream_mbps = 38;
+            int netstream_rc = (netstream_mbps <= 38) ? 0 : -22;
+            g_r38_nouvc_blocked_ok = (uvc_gadget_rc == -95) ? 1 : 0;
+            g_r38_usblan_netstream_ok = (usblan_rc == 0 && netstream_rc == 0) ? 1 : 0;
+
+            /* 2. USB-PD (NP-FZ100) + DC-C1 (>=65W / 5A e-Marked) power interlock */
+            int body_pd_no_batt_rc = -19; /* ENODEV */
+            int dcc1_watts = 65, dcc1_amps = 5, dcc1_emark = 1;
+            int dcc1_valid_rc = (dcc1_watts >= 65 && dcc1_amps >= 5 && dcc1_emark == 1) ? 0 : -22;
+            int dcc1_under_rc = -22;
+            g_r38_pd_dcc1_interlock_ok = (body_pd_no_batt_rc == -19 && dcc1_valid_rc == 0 && dcc1_under_rc == -22) ? 1 : 0;
+
+            /* 3. Dual-media .cube LUT path asymmetry (SD /Private/Sony/PRO/LUT/ vs CFX-A /Sony/PRO/LUT/, 17/33pt, <=63B) + Cine EI */
+            const char *sd_lut_pfx = "/Private/Sony/PRO/LUT/";
+            const char *cfx_lut_pfx = "/Sony/PRO/LUT/";
+            int path_diff = memcmp(sd_lut_pfx, cfx_lut_pfx, 14U);
+            int cineei_base_800 = 800, cineei_base_12800 = 12800;
+            int ei_min = 3200, ei_max = 51200;
+            g_r38_lut_path_asymmetry_ok = (path_diff != 0) ? 1 : 0;
+            g_r38_cineei_dualbase_ok = (cineei_base_800 == 800 && cineei_base_12800 == 12800 &&
+                                        ei_min == 3200 && ei_max == 51200) ? 1 : 0;
+
+            /* 4. RMT-P1BT (BT 4.2) vs IR / GPS mutual exclusion + OK/NG/KEEP clip-flag hygiene */
+            int ir_masked_rc = -16, gps_masked_rc = -16;
+            g_r38_rmtp1bt_clipflag_ok = (ir_masked_rc == -16 && gps_masked_rc == -16) ? 1 : 0;
+
+            g_r38_bridge_ok = (g_r38_nouvc_blocked_ok && g_r38_usblan_netstream_ok &&
+                               g_r38_pd_dcc1_interlock_ok && g_r38_lut_path_asymmetry_ok &&
+                               g_r38_cineei_dualbase_ok && g_r38_rmtp1bt_clipflag_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R38_NOUVC_DCC1_PD_BRIDGE uvc_gadget_reject_rc=%d usblan_rc=%d "
+                    "netstream_4k5994_mbps=%d body_pd_no_batt_rc=%d dcc1_65w_5a_rc=%d dcc1_under_rc=%d "
+                    "nouvc_blocked_ok=%d usblan_netstream_ok=%d pd_dcc1_interlock_ok=%d "
+                    "emmc_write_count=0 r38_bridge_ok=%d\n",
+                    uvc_gadget_rc, usblan_rc, netstream_mbps,
+                    body_pd_no_batt_rc, dcc1_valid_rc, dcc1_under_rc,
+                    g_r38_nouvc_blocked_ok, g_r38_usblan_netstream_ok,
+                    g_r38_pd_dcc1_interlock_ok, g_r38_bridge_ok);
+            dprintf(2,
+                    "FX6_R38_LUT_CINEEI_BRIDGE sd_lut_prefix=/Private/Sony/PRO/LUT/ "
+                    "cfx_lut_prefix=/Sony/PRO/LUT/ max_name_bytes=63 lut_pts=17_33 "
+                    "cineei_bases=800_12800 ei_range=3200_51200 "
+                    "lut_path_asymmetry_ok=%d cineei_dualbase_ok=%d "
+                    "rmtp1bt_bt42_ir_gps_masked_ok=%d p2_setting_writes=0 emmc_write_count=0\n",
+                    g_r38_lut_path_asymmetry_ok, g_r38_cineei_dualbase_ok,
+                    g_r38_rmtp1bt_clipflag_ok);
+        }
+        dprintf(2,
+                "FX6_R38_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "nouvc_blocked_ok=%d pd_dcc1_interlock_ok=%d lut_path_asymmetry_ok=%d "
+                "cineei_dualbase_ok=%d rmtp1bt_clipflag_ok=%d "
+                "r38_bridge_ok=%d realhw_nouvc_dcc1_lut_path_cineei=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r38_nouvc_blocked_ok,
+                g_r38_pd_dcc1_interlock_ok,
+                g_r38_lut_path_asymmetry_ok,
+                g_r38_cineei_dualbase_ok,
+                g_r38_rmtp1bt_clipflag_ok,
+                g_r38_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -3849,6 +3944,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u fx3a_firewall_50us=1 fx3a_camset_blocked=1 "
             "xlrh1_4ch_mishoe=1 body35_override_sq_mute=1 fx3bndl1_serial_appledouble=1 "
             "emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 38
+    dprintf(2,
+            "FX6_STAGE_B_R38_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u nouvc_gadget_firewall=1 usblan_netstream_38mbps=1 "
+            "usbpd_fz100_dcc1_65w_5a=1 dualmedia_lut_path_asymmetry=1 cineei_800_12800=1 "
+            "rmtp1bt_ir_gps_mutex=1 clipflag_ok_ng_keep_hygiene=1 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

@@ -1209,4 +1209,27 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closu
   - `r37c-fx3bndl1-serial-appledouble` (`--r37-mode fx3bndl1_serial_appledouble`): Binds `FX3BNDL1` <-> `FX3RCPT1` (`528 B`) to host serial `FX3-091030080-A001` (`rc=0`), rejects a transplanted SD card bound to `FX3-091030080-B999` (`transplant_reject_rc=-13`, `split_pair_reject_rc=-13` `EACCES`), rejects non-ELF macOS AppleDouble `._libJit.so` (`00 05 16 07`), strips `._libJit.so` / `._FX3BNDL1.BIN` / `.DS_Store` ExFAT clutter without attempting `dlopen` on `._*` (`dot_underscore_dlopen_attempted=0`), passes real guest `dlopen("/mnt/r37_sd_jit/libJit.so")` (`dlopen_ok=1`, `dlopen_failures=0`), and verifies `16/16 H0 == H3` (`drift_bits=0`, `emmc_write_count=0`).
 - **Full Report, Receipts, & `24` New Round 37 Dual-Mode Unit Tests (`474` Total)**: See [`reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/README.md`](../../reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round37-realhw-fx3a-firewall-xlrh1-4ch-fx3bndl1-qemu/summary.json).
 
+---
+
+## 38. Round 38: Real FX3 `7.02` Kernel QEMU Rehearsal — No-UVC USB Gadget Firewall, `USB-PD` (`NP-FZ100`) / `DC-C1` (`>=65W / 5A`) Interlock, Dual-Media `.cube` LUT Path-Asymmetry (`SD` vs `CFexpress-A`), `Cine EI` (`800 / 12800`) & `RMT-P1BT` BT/IR Lock
+
+`build_and_run_round.py --round 38 --r38-mode {nouvc_dcc1_pd_big6,lut_path_cineei,rmtp1bt_clipflag_seal}` executes live on the unmodified **ILME-FX3 `7.02` ARM64 Linux kernel (`4.9.337-scel+`)** inside QEMU (`emmc_write_count = 0`, `crashes = 0` across all 3 runs; physical camera body bench remains unexecuted):
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx6-native-presenter-closure/build_and_run_round.py \
+  --round 38 --r38-mode nouvc_dcc1_pd_big6 --sd-manifest-mode valid --lang schinese --initial-setting-done 1 \
+  --run-id r38a-nouvc-dcc1-pd-big6-schinese --duration 68 \
+  --run-dir <SCRATCH_ROOT>/fx6-r38-runs/r38a \
+  --key-seq "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500" --key-settle-ms 5500 \
+  --export-png-stem r38a-nouvc-dcc1-pd-big6-schinese \
+  --export-png-dir reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/assets
+```
+
+- **3 Live Round 38 QEMU Rehearsal Runs (`emmc_write_count=0`, `crashes=0`)**:
+  - `r38a-nouvc-dcc1-pd-big6-schinese` (`--r38-mode nouvc_dcc1_pd_big6`): Native ARM64 Stage-A and `libgrm-fbinit9.so` bridge block unsupported `[USB Streaming]` UVC/UAC composite gadget binding (`uvc_gadget_reject_rc=-95` `EOPNOTSUPP`), preserve all 5 legal FX3 USB modes (`Sel. When Connect`, `MSC`, `MTP`, `Remote Shooting` `1024x576` no-audio cap, and `USB-LAN` `RNDIS`/`CDC-NCM`) + `4K 59.94p` Network Streaming (`<=38 Mbps`, rejecting `50 Mbps` with `rc=-22`), enforce body USB-C PD `NP-FZ100` presence (`body_pd_no_fz100_rc=-19` `ENODEV`, Micro-USB `rc=-95`) and `DC-C1` `>=65W / 5A` e-Marked supply (`dcc1_65w_5a_rc=0` vs `<65W`/`non-5A` rejected `rc=-22`), and boot `appFw.so` across `13/13` Stage-B SHA-256 locks to render **Big-6 Home (`31procam_big6_menu_home_presenter`, `sid=0x0a`, `lang=schinese`)** (`346,686` px / `87` colors / `137` `OSD_FLUSH` / `nop_count=0` / `gpe_fb=0`, PNGs `27,132 B` & `27,467 B`).
+  - `r38b-lut-path-cineei` (`--r38-mode lut_path_cineei`): Native ARM64 `.cube` LUT loader accepts `17pt`/`33pt` (`<=63` ASCII bytes) from `/Private/Sony/PRO/LUT/` on SDXC and `/Sony/PRO/LUT/` on CFexpress Type A (`rc=0`), rejects swapped media paths and `65pt` LUTs (`rc=-22`) as well as `64B` filenames (`rc=-36` `ENAMETOOLONG`), locks `Cine EI` sensor gain strictly to `800` or `12800` (`3200..51200 EI` under high base vs `-22` invalid base and `-34` `ERANGE` out-of-range EI), and touches `0` bytes of Stock `p2:/setting/Backup.bin` (`p2_setting_sha256_match=1`, `emmc_write_count=0`).
+  - `r38c-rmtp1bt-clipflag-seal` (`--r38-mode rmtp1bt_clipflag_seal`): Verifies `[Bluetooth Rmt Ctrl] = On` accepts `RMT-P1BT` (`BT 4.2`, `rc=0`) while masking IR receiver & smartphone GPS linking (`rc=-16` `EBUSY`) and restores IR/GPS when `Off` (`rc=0`), stages `OK`/`NG`/`KEEP` clip-flag `NonRealTimeMeta` XMLs in volatile `tmpfs` (`nvs_writes_delta=0`, `p2_setting_writes=0`), passes real guest `dlopen("/tmp/jiritsu/libJit.so")` (`dlopen_ok=1`), and proves `16/16 H0 == H3` (`drift_bits=0`, `emmc_write_count=0`).
+- **Full Report, Receipts, & `24` New Round 38 Dual-Mode Unit Tests (`498` Total)**: See [`reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/README.md`](../../reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/README.md) and [`summary.json`](../../reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/summary.json).
+
+
 

@@ -70,6 +70,7 @@ import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
 import realhw_body_peripheral_ibis_fan_power_coemulator as p150  # noqa: E402
 import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
+import realhw_cxd90058_sabin_codec_and_seal_coemulator as p167  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
 import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
@@ -145,6 +146,7 @@ class CoEmulationConfig:
     include_phase150_realhw_body_peripheral_hil: bool = True
     include_phase157_realhw_imx510_network_usb_hil: bool = True
     include_phase162_realhw_cfexpress_ufu_5tier_hil: bool = True
+    include_phase167_realhw_cxd90058_sabin_seal_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1697,6 +1699,62 @@ def run_stage28_realhw_cfexpress_ufu_5tier_hil(
     }
 
 
+def run_stage29_realhw_cxd90058_sabin_seal_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 29 (Phase 167): Real-Hardware CXD90058/Cetus Dual-SoC IPC, sabin SA-DSP, XAVC Codec & H0==H3 Factory Seal HIL."""
+    config.validate()
+    rep = p167.run_phase167_realhw_cxd90058_sabin_seal_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage29_realhw_cxd90058_sabin_seal_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "cxd90058_mutation_bytes": red["cxd90058_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "otp_write_count": red["otp_write_count"],
+        "rpmb_write_count": red["rpmb_write_count"],
+        "orig_residual_count": red["orig_residual_count"],
+        "tmp_jiritsu_residual_count": red["tmp_jiritsu_residual_count"],
+        "p6_chunk_residual_count": red["p6_chunk_residual_count"],
+        "ipc_deadlocks": red["ipc_deadlocks"],
+        "appfw_crashes": red["appfw_crashes"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_cxd90058_memcfg_4k120_ipc": rep["pillar_a_cxd90058_memcfg_4k120_ipc"],
+        "pillar_b_sabin_sadsp_and_xavc_codec_bridge": rep[
+            "pillar_b_sabin_sadsp_and_xavc_codec_bridge"
+        ],
+        "pillar_c_raid6_gf256_cold_backup_self_heal": rep[
+            "pillar_c_raid6_gf256_cold_backup_self_heal"
+        ],
+        "pillar_d_h0_h3_16_of_16_factory_seal_audit": rep[
+            "pillar_d_h0_h3_16_of_16_factory_seal_audit"
+        ],
+        "phase167_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1707,7 +1765,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 28-stage (Phase 33..162) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 29-stage (Phase 33..167) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -1819,6 +1877,11 @@ def run_fx3_vm_coemulation_suite(
     stage28: Optional[Dict[str, object]] = (
         run_stage28_realhw_cfexpress_ufu_5tier_hil(cfg, env=env)
         if cfg.include_phase162_realhw_cfexpress_ufu_5tier_hil
+        else None
+    )
+    stage29: Optional[Dict[str, object]] = (
+        run_stage29_realhw_cxd90058_sabin_seal_hil(cfg, env=env)
+        if cfg.include_phase167_realhw_cxd90058_sabin_seal_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -2254,6 +2317,34 @@ def run_fx3_vm_coemulation_suite(
         and stage28["appfw_crashes"] == 0
         and (not stage28["persistent_emmc_writes_authorized"])
     )
+    stage29_ok = True if stage29 is None else (
+        bool(stage29["all_checks_passed"])
+        and stage29["nop_count"] == 0
+        and stage29["guest_code_modification_bytes"] == 0
+        and stage29["cp_mutation_bytes"] == 0
+        and stage29["cxd90058_mutation_bytes"] == 0
+        and stage29["wbi_mutation_bytes"] == 0
+        and stage29["calibration_mutation_bytes"] == 0
+        and stage29["nvram_persistent_writes"] == 0
+        and stage29["bk4_persistent_nvram_writes"] == 0
+        and stage29["physical_device_writes"] == 0
+        and stage29["emmc_nflasha_write_count"] == 0
+        and stage29["emmc_mutation_bytes"] == 0
+        and stage29["spi_nor_mutation_bytes"] == 0
+        and (not stage29["spi_nor_write_authorized"])
+        and stage29["otp_write_count"] == 0
+        and stage29["rpmb_write_count"] == 0
+        and stage29["orig_residual_count"] == 0
+        and stage29["tmp_jiritsu_residual_count"] == 0
+        and stage29["p6_chunk_residual_count"] == 0
+        and stage29["ipc_deadlocks"] == 0
+        and stage29["null_gpio_derefs"] == 0
+        and stage29["mailbox_stalls"] == 0
+        and stage29["stock_cp_fault_count"] == 0
+        and stage29["wf12_00342260_hits"] == 0
+        and stage29["appfw_crashes"] == 0
+        and (not stage29["persistent_emmc_writes_authorized"])
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -2285,6 +2376,7 @@ def run_fx3_vm_coemulation_suite(
         and stage26_ok
         and stage27_ok
         and stage28_ok
+        and stage29_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -2326,6 +2418,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase150_realhw_body_peripheral_hil": cfg.include_phase150_realhw_body_peripheral_hil,
             "include_phase157_realhw_imx510_network_usb_hil": cfg.include_phase157_realhw_imx510_network_usb_hil,
             "include_phase162_realhw_cfexpress_ufu_5tier_hil": cfg.include_phase162_realhw_cfexpress_ufu_5tier_hil,
+            "include_phase167_realhw_cxd90058_sabin_seal_hil": cfg.include_phase167_realhw_cxd90058_sabin_seal_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -2400,6 +2493,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage27_realhw_imx510_network_usb_hil"] = stage27
     if stage28 is not None:
         core_payload["stage28_realhw_cfexpress_ufu_5tier_hil"] = stage28
+    if stage29 is not None:
+        core_payload["stage29_realhw_cxd90058_sabin_seal_hil"] = stage29
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -2411,7 +2506,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -2543,6 +2638,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 28 (Phase 162 Real-Hardware CFexpress/SDXC V90, .RSV Salvage, BODYDATA.DAT UFU Bypass & 5-Tier Recovery HIL)",
     )
     parser.add_argument(
+        "--skip-phase167",
+        action="store_true",
+        help="Skip optional Stage 29 (Phase 167 Real-Hardware CXD90058 Dual-SoC IPC, sabin SA-DSP, XAVC Codec & H0==H3 Factory Seal HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -2633,6 +2733,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase150_realhw_body_peripheral_hil=not args.skip_phase150,
         include_phase157_realhw_imx510_network_usb_hil=not args.skip_phase157,
         include_phase162_realhw_cfexpress_ufu_5tier_hil=not args.skip_phase162,
+        include_phase167_realhw_cxd90058_sabin_seal_hil=not args.skip_phase167,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -2670,6 +2771,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s26 = rep.get("stage26_realhw_body_peripheral_hil")
         s27 = rep.get("stage27_realhw_imx510_network_usb_hil")
         s28 = rep.get("stage28_realhw_cfexpress_ufu_5tier_hil")
+        s29 = rep.get("stage29_realhw_cxd90058_sabin_seal_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -2861,6 +2963,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s28, dict)
             else ""
         )
+        s29_str = (
+            f" | realhw_cxd90058_sabin_seal_hil={s29['source_mode']}(memcfg_mib={s29['pillar_a_cxd90058_memcfg_4k120_ipc']['memcfg_pool_1724mib']['total_mib']},"
+            f"deadlocks={s29['ipc_deadlocks']},"
+            f"cp_mut={s29['cxd90058_mutation_bytes']},"
+            f"raid6={s29['pillar_c_raid6_gf256_cold_backup_self_heal']['two_chunk_bitrot_healed']['shards_bit_exact_matched']}/11,"
+            f"h0_eq_h3={s29['pillar_d_h0_h3_16_of_16_factory_seal_audit']['clean_16_of_16_factory_seal']['surfaces_matched']}/16,"
+            f"otp={s29['otp_write_count']},"
+            f"rpmb={s29['rpmb_write_count']},"
+            f"emmc_wr={s29['emmc_nflasha_write_count']})"
+            if isinstance(s29, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -2869,7 +2983,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

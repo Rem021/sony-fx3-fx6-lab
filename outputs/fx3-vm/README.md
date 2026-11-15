@@ -963,6 +963,40 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 167：Stage 29（`29/29`）真机 `CXD90057`（`Mira`）+ `CXD90058`（`Cetus`）双 BIONZ-XR SoC 间 IPC、`sabin` SA-DSP、`XAVC-I / HEVC` 编解码与 `H0 == H3` 出厂封签 HIL 协同仿真器
+
+[`realhw_cxd90058_sabin_codec_and_seal_coemulator.py`](realhw_cxd90058_sabin_codec_and_seal_coemulator.py) 作为 **Stage 29（29/29 阶段完成）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase167_realhw_cxd90058_sabin_seal_hil=True`，可通过 `--skip-phase167` 跳过；全板 29 阶段协同仿真在本地只读供体模式下 `< 2.6s`、洁净室模式下 `< 1.2s`），在严格保持 **`p8_cp_mutation_forbidden == True`**、**`cxd90058_mutation_bytes == 0`**、**`cp_mutation_bytes == 0`**、**`otp_write_count == 0`**、**`rpmb_write_count == 0`**、**`emmc_nflasha_write_count == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成五大闭环：
+
+1. **双模只读供体审计（`os.O_RDONLY` + `mmap.ACCESS_READ`）+ 洁净室合成回退**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 **10 份核心真机供体**：`cpapp-b.bin`（`15,980,568 B` vs `17,952,816 B`，ARM32 入口字 `0x00108000` 加载基址与 `TOPPERS`/`DmmWrapper`/`memcfg`/`/usr/sabin/aed_dic1.bin`/`bed_dic1.bin`；FX6 独有 `Mew`/`MoniFpga_StartStopSDI`/`Darwin` 在 FX3 中不存在）、`libmpr.so`（`3,517,008 B` / `3,541` 导出 vs `28,921,824 B` / `4,271` 导出）、`libsencore.so`（`377,328 B` vs `401,952 B`，同为 `355` 导出/`130` 导入）、`im.elf`（`40,920 B` 零差异 ABI `11` 导出/`85` 导入）与 `Backup.bin`（`BK4\x00`，`819` vs `840` 子系统及 `\sabin\idt_cam.bin`/`tomco` 标记）；`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线，JSON 零原始固件字节泄漏。
+2. **Pillar A — `CXD90057`（*Mira*）<-> `CXD90058`（*Cetus*）双 SoC 互联与 `1,724.00 MiB` `memcfg=` 共享池协同仿真**：
+   - 校验 4 段非重叠 non-cacheable `memcfg=` 池（`1,807,745,024 B` = `1,724.00 MiB`）并在持续 `4K 120p 10-bit 4:2:2`（`240` 帧 / `480` UIPC 往返包）负载下证明 `ipc_deadlocks == 0`、`mailbox_stalls == 0`、`cxd90058_mutation_bytes == 0`、`cp_mutation_bytes == 0`，同时对门铃停滞故障与针对 `/dev/nflasha8/cpapp-b.bin` 等 Stock CP 目标的写请求执行 fail-closed 拦截。
+3. **Pillar B — `sabin` 32 位 SA-DSP 微码与 `XAVC-I (MXF)` / `XAVC S-I` / `XAVC HS (HEVC)` 硬件编码桥接**：
+   - 验证 `sabin` 32 位 SA-DSP 窗口（`0x809139000..0x809178FFF`，`0x40000 B`）严格位于 `memcfg=` 池内且与 `cpImg` 零重叠；模拟 FX6 `appFw.so` 录制预设驱动 FX3 原厂 `libmpr.so` 硬件编码器（`XAVC-I MXF 4K 59.94p/23.976p`、`XAVC S-I MP4 4K 119.88p`、`XAVC HS HEVC 4K 59.94p/119.88p`），并对 FX6 独占 `16-bit SDI RAW`（`mew.bin` FPGA）执行 fail-closed 拦截且 `appfw_crashes == 0`。
+4. **Pillar C — 双介质 Tier-0 冷备份 RAID-6 `GF(256)`（`0x11D`）Bit-Rot 内存自愈演练**：
+   - 在纯 Python `GF(2^8)` P+Q RAID-6 校验下模拟次级备份介质 2 块分片（如 `boot_b` + `cnflasha_spacc` 及边缘对 `nbl_a` + `c2pa_rq_lic`）同时损坏，证明未修复前阻断 Stage-A 暂存、修复后 RAM 内 `11/11` 分片 `100%` 比特精确重建，并对 `>= 3` 分片丢失执行 fail-closed 拒绝。
+5. **Pillar D — 端到端 `H0 -> H1 -> H2 -> H3` `16/16` 出厂封签与零残留质保审计**：
+   - 校验全部 `16` 个存储面（`sector0, p1, p2, p3, p5, p6, p7, p8, p12, p15, p18, p23, p30, spi_nor, otp, rpmb`）满足 `SHA256(H0) == SHA256(H3)`，零 `.orig`、零 `/tmp/jiritsu`、零 `p6` 分片残留、`OTP == 0`、`RPMB == 0` 且 `persistent_emmc_writes_authorized == False`，并对任何残留/熔丝/写请求执行 fail-closed 拦截。
+
+### Phase 167 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 29 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_cxd90058_sabin_codec_and_seal_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_cxd90058_sabin_codec_and_seal_coemulator.py --self-test --json
+
+# 2. 全板 29 阶段（Stage 1..29）统一校验（本地 < 2.6s，洁净室 < 1.2s，支持 --skip-phase167）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 167 46 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_cxd90058_sabin_codec_and_seal_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_cxd90058_sabin_codec_and_seal_coemulator.py -v
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

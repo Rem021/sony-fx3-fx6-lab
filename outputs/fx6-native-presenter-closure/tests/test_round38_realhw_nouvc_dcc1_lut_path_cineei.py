@@ -277,7 +277,7 @@ class TestRound38RealHwNoUvcDcc1LutPathCineEi(unittest.TestCase):
             "FX6_R38_LUT_CINEEI_EXIT",
             "FX6_R38_RMTP1BT_CLIPFLAG_EXIT",
             '"r38_telemetry"',
-            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43]",
+            "choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]",
         ):
             self.assertIn(token, runner_src)
 

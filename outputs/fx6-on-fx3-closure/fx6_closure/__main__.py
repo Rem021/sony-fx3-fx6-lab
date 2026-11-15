@@ -829,10 +829,63 @@ def _cmd_audit_stage_b_post_trial(
     return 0 if ok else 1
 
 
+def _cmd_rehearse_stage_b_closed_loop(
+    repo_root: Path,
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    clean_room: bool,
+    lang: str,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+) -> int:
+    from .stage_b_rehearsal_orchestrator import (
+        render_stage_b_rehearsal_markdown,
+        run_stage_b_closed_loop_rehearsal,
+        verify_stage_b_rehearsal_certificate,
+    )
+
+    rep = run_stage_b_closed_loop_rehearsal(
+        repo_root=repo_root,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        lang=lang,
+        synthetic_clean_room=True if clean_room else None,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_stage_b_rehearsal_markdown(rep), encoding="utf-8")
+    v_res = verify_stage_b_rehearsal_certificate(rep.to_dict())
+    ok = rep.rehearsal_passed and v_res.valid
+    if json_output:
+        sys.stdout.write(rendered)
+    else:
+        summary = (
+            f"status={'OK' if ok else 'FAILED'} "
+            f"schema={rep.schema_version} "
+            f"mode={rep.verification_mode} "
+            f"lang={rep.selected_lang} "
+            f"stages={rep.passed_stage_count}/{rep.stage_count} "
+            f"h0_surfaces={rep.h0_surface_count} "
+            f"h2_drifted={rep.h2_drifted_surface_count} "
+            f"4lang_pairs={rep.round13_4lang_pairs_verified}/6 "
+            f"tamper_drills={rep.negative_tamper_drills_passed}/10 "
+            f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+            f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+            f"rehearsal_digest_sha256={rep.rehearsal_digest_sha256[:16]}...\n"
+        )
+        sys.stdout.write(summary)
+    return 0 if ok else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 62 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator & Stage-B Post-Trial Forensic Auditor CLI",
+        description="FX6-on-FX3 Phase 68 Compatibility Closure, U1-U5 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor & Stage-B R0..R6 Closed-Loop Rehearsal CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -863,6 +916,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-stage-b-ram-overlay", "Build deterministic Phase 48 Stage-B (P1..P12+Fan, 13/13) CPIO newc RAM-overlay v2 with BK4 language/Airplane shadow and run 9-scenario init2 sandbox drill"),
         ("verify-stage-b-candidate", "Compose and verify Phase 52 Unified Stage-B End-to-End Candidate Dossier (stage_b_integrated_dossier_v1) across Phase 35..50 pillars"),
         ("audit-stage-b-post-trial", "Run Phase 62 Stage-B H0-vs-H2 Post-Trial Zero-Persistence Forensic Differ & 10-Scenario Anomaly Classifier (stage_b_post_trial_forensic_audit_v1)"),
+        ("rehearse-stage-b-closed-loop", "Execute Phase 68 7-stage zero-write Stage-B R0..R6 closed-loop hardware rehearsal (stage_b_closed_loop_rehearsal_v1)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name != "verify-post-trial":
@@ -873,15 +927,17 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--fx6-bin-dir", type=Path, default=DEFAULT_FX6_DONOR_BIN_DIR)
         if cmd_name in ("dry-run-candidate", "run-rollback-drill"):
             p.add_argument("--vfat-mode", default="8m_ram", choices=["8m_ram", "16m_log", "44.5m_log", "44.5m_fat32"])
-        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate"):
+        if cmd_name in ("dry-run-candidate", "verify-p1-recovery-bridge", "build-readiness-packet", "build-stage-b-readiness-packet", "run-stage-b-lifecycle-drill", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop"):
             p.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
-        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial"):
+        if cmd_name in ("verify-peripheral-ux", "verify-ap-cp-imaging", "verify-stage-b-p10", "verify-uipc-cp-shim", "verify-wireless-guard", "verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop"):
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write audit report")
             p.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic offline verification mode")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
+        if cmd_name == "rehearse-stage-b-closed-loop":
+            p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write R0..R6 certificate")
         if cmd_name == "audit-stage-b-post-trial":
             p.add_argument("--h0-bundle-dir", type=Path, default=None, help="Optional archived Phase H0 pre-trial Tier-0 capture directory")
             p.add_argument("--h2-bundle-dir", type=Path, default=None, help="Optional Phase H2 post-power-cycle Tier-0 readback directory")
@@ -1008,6 +1064,17 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.output,
             args.h0_bundle_dir,
             args.h2_bundle_dir,
+        )
+    if args.cmd == "rehearse-stage-b-closed-loop":
+        return _cmd_rehearse_stage_b_closed_loop(
+            args.repo_root,
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.clean_room,
+            args.lang,
+            args.json,
+            args.markdown_out,
+            args.output,
         )
     return 2
 

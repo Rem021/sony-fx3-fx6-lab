@@ -996,6 +996,40 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 172：Stage 30（`30/30` 里程碑）真机 `p12:/cert/RQ_LIC.DAT` C2PA 锁、`VMC-BNCM1`（`EXT-LK`）SMPTE 时间码、`IMX510` 6 轴陀螺仪 `NonRealTimeMeta.xml` 与 10 步 Pre-Bench Go/No-Go HIL 协同仿真器
+
+[`realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py`](realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py) 作为 **Stage 30（`30/30` 里程碑阶段完成）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase172_realhw_c2pa_tc_gyro_prebench_hil=True`，可通过 `--skip-phase172` 跳过；全板 30 阶段协同仿真在本地只读供体模式下 `< 2.7s`、洁净室模式下 `< 1.3s`），在严格保持 **`p8_cp_mutation_forbidden == True`**、**`c2pa_cert_mutation_bytes == 0`**、**`p2_mutation_bytes == 0`**、**`p18_mutation_bytes == 0`**、**`cp_mutation_bytes == 0`**、**`otp_write_count == 0`**、**`rpmb_write_count == 0`**、**`emmc_nflasha_write_count == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成五大闭环：
+
+1. **双模只读供体审计（`os.open(..., os.O_RDONLY)` + 缓冲 `os.read`）+ 洁净室合成回退**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 **10 份核心真机供体**：`cpapp-b.bin`（`15,980,568 B` vs `17,952,816 B`，ARM32 入口字 `0x00108000` 加载基址及 `IMX510`/`C_ImagerCtrl_IMX510`/`LTC`/`Gyro Data`/`OTP`；`ILME-FX3` 与 `MTG_ULOCK_START_SLAVE` 仅存在于 FX3，FX6 中为 `0` 命中）、`libmpr.so`（`3,517,008 B` / `3,541` 导出 vs `28,921,824 B` / `4,271` 导出，均含 `NonRealTimeMeta`/`LtcChangeTable`/`Gyroscope`/`SetMovieRecParam`，而 FX3 v7.02 独有的 C2PA 标记 `InfraC2PA`/`c2pa.created`/`sony.created`/`jumdSSIG`/`sigcert.p12` 在 FX6 v6.01 中不存在）、`libsencore.so`（`377,328 B` vs `401,952 B`，同为 `355` 导出/`130` 导入及 `C_GYRO_GAIN`/`MONITOR_GET_TEST_OUT_BNC_STATUS`/`GENLOCK`）、`im.elf`（`40,920 B` 零差异 ABI `11` 导出/`85` 导入及 `/dev/nflasha12`/`/cert`/`/dev/nflasha15`）与 `Backup.bin`（`BK4\x00`，`819` vs `840` 子系统及 `90057`/`psd.bin`/`defdet.bin`/`lensfile.bin`/`tomco`）；`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线，JSON 零原始固件字节泄漏。
+2. **Pillar A — `p12:/cert/RQ_LIC.DAT` 单机 C2PA 许可证 `MS_RDONLY` 不可变性与防伪防火墙**：
+   - 协同仿真 Stage-B 启动、电影录制与干净卸载全流程，验证 `p12:/cert` 强制 `MS_RDONLY` 挂载、`c2pa_cert_mutation_bytes == 0`、`H0 == H1 == H2 == H3` SHA-256 不变性，并对跨机身克隆与跨型号（`ILME-FX6` / `ILME-FX30` / `ILCE-7SM3`）C2PA 签名或密钥导出请求执行 fail-closed 拦截。
+3. **Pillar B — `VMC-BNCM1`（`AD_JACK_IN` Pin 10 -> `EXT-LK`）SMPTE-12M LTC-IN（`0.5V–4.5V p-p`）、User-Bits 与 Multi-USB UART 争用互锁**：
+   - 协同仿真外置 LTC 跨 `23.98 / 24 / 25 / 29.97 / 59.94` fps 锁相（SMPTE-12M `0x3FFD` 同步字与 User-Bits 无损透传），对 `> 5.0V p-p` 过压或错误 ID 电阻执行 fail-closed 拒绝，对 FX6 专属 BNC `TC-OUT` 驱动进行干净屏蔽（`tc_direction == "IN"`），并对 Multi-USB `1.8V UART` 引脚争用冲突触发零损伤硬互锁（`uart_contention_damage_events == 0`、`over_voltage_damage_events == 0`）。
+4. **Pillar C — `IMX510`（`8.7 ms` 读出）+ 6 轴 IMU 陀螺仪 + `p18:/lens` `NonRealTimeMeta.xml` Catalyst/Resolve 增稳管线**：
+   - 模拟录制内嵌 6 轴 `2000 Hz` 陀螺仪采样与 `p18:/lens` 焦距元数据的 `XAVC S-I`（MP4）与 `XAVC-I`（MXF）片段，生成并 XML 往返解析 Sony `NonRealTimeMeta.xml`（`ver.2.20`），在不触碰 `p2` 与 `p18`（`p2_mutation_bytes == 0`、`p18_mutation_bytes == 0`）的前提下证明 100% Catalyst Browse 与 DaVinci Resolve Schema 合规，并对陀螺仪 CRC 故障、时间戳回退或读出延迟漂移执行 fail-closed 阻断。
+5. **Pillar D — 完整 10 步 Pre-Bench 操作员 Go/No-Go 干跑生命周期**：
+   - 协同仿真 10 步实操预演闭环：被动 USB 挂载检查 -> `054C:0DA1 -> 054C:0336` `op=0xFF` 金丝雀探针 -> 双介质 16 存储面 Tier-0 备份（`H0`）-> `p12`/`p18` `MS_RDONLY` 锁定 -> `/dev/cnflasha15` `.orig` 暂存（`H1`）-> 双启动 + `EXT-LK` 锁相 -> Big-6 实拍 + `NonRealTimeMeta.xml`（`H2`）-> `.RSV` 恢复与 C2PA 防火墙核查 -> 干净卸载 `.orig` -> `16/16 H0 == H3` 出厂零残留封签（`persistent_emmc_writes_authorized == False`、`emmc_nflasha_write_count == 0`）。
+
+### Phase 172 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 30 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py --self-test --json
+
+# 2. 全板 30 阶段（Stage 1..30 里程碑）统一校验（本地 < 2.7s，洁净室 < 1.3s，支持 --skip-phase172）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 172 46 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py -v
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

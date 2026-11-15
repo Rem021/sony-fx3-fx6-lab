@@ -46,6 +46,10 @@ from .hdr_hlg_bt2100_and_display_assist_auditor import (
     analyze_hdr_hlg_bt2100_and_display_assist,
     hdr_hlg_bt2100_and_display_assist_report_to_dict,
 )
+from .hdmi_raw_prores_breathing_and_mishoe_clock_auditor import (
+    analyze_hdmi_raw_prores_breathing_and_mishoe_clock,
+    hdmi_raw_prores_breathing_and_mishoe_clock_report_to_dict,
+)
 from .interval_cache_and_ftp_auditor import (
     analyze_interval_cache_and_ftp,
     interval_cache_and_ftp_report_to_dict,
@@ -91,7 +95,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all twenty-one clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all twenty-two clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -147,6 +151,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     hdr_hlg_assist = hdr_hlg_bt2100_and_display_assist_report_to_dict(
         analyze_hdr_hlg_bt2100_and_display_assist(clean_room=clean_room)
     )
+    proresraw_breathing_mishoe = hdmi_raw_prores_breathing_and_mishoe_clock_report_to_dict(
+        analyze_hdmi_raw_prores_breathing_and_mishoe_clock(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -170,6 +177,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and lut3d_sdi_hdmi.get("all_checks_passed")
         and c2pa_shading_mc.get("all_checks_passed")
         and hdr_hlg_assist.get("all_checks_passed")
+        and proresraw_breathing_mishoe.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -198,17 +206,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "lut3d_cube_tetrahedral_and_sdi_hdmi_audit": lut3d_sdi_hdmi,
         "c2pa_lens_shading_and_mc_fleet_audit": c2pa_shading_mc,
         "hdr_hlg_bt2100_and_display_assist_audit": hdr_hlg_assist,
+        "hdmi_raw_prores_breathing_and_mishoe_clock_audit": proresraw_breathing_mishoe,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, and ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87 auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, Assignable/CIZ/Touch-AF/Big6+Fn, False Color/EL-Zone S-Log3/LPCM DSP/SMPTE UB, Playback/Thumbnail/ShotMark EssenceMark XML/Push Auto Iris AE Shift, Gyroflow/Catalyst RTMD/Anamorphic 5-Axis IBIS/IMX510 Rolling-Shutter, Interval Rec/Picture Cache DDR/Wired USB-LAN FTP P12, User 3D LUT Tetrahedral/AVI InfoFrame/HDMI->12G-SDI REC-Trigger, C2PA 2.1/cnflasha Key-Vault/E-Mount Shading-CA-Distortion/Monitor & Control Wired PTP-IP Fleet, ITU-R BT.2100 ARIB STD-B67 HLG/Gamma Display Assist/CTA-861.3 HDR InfoFrame 0x87, and HDMI RAW 16->12 Log ProRes RAW/BRAW/Focus Breathing FOV Guard/MI-Shoe 48kHz PLL Drift/OB-Clamp auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 21 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 22 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
     p_all.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
@@ -338,6 +347,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_hlg.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_hlg.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_prbm = sub.add_parser(
+        "audit-proresraw-breathing-mishoe",
+        help="Run Phase 114 HDMI 16-bit Linear->12-bit Log RAW ProRes RAW/BRAW Handshake, Focus-Breathing Dynamic FOV Crop vs RAW/120p Guard, MI-Shoe 48kHz I2S PLL 6h Drift Firewall, and Factory OB-Clamp Preservation audit",
+    )
+    p_prbm.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_prbm.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -417,6 +433,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-hdr-hlg-assist":
         payload = hdr_hlg_bt2100_and_display_assist_report_to_dict(
             analyze_hdr_hlg_bt2100_and_display_assist(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-proresraw-breathing-mishoe":
+        payload = hdmi_raw_prores_breathing_and_mishoe_clock_report_to_dict(
+            analyze_hdmi_raw_prores_breathing_and_mishoe_clock(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

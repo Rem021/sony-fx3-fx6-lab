@@ -1154,3 +1154,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unit
 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
+
+## Phase 200：Stage 35（`35/35` 里程碑）真实硬件主线 — `ILME-FX3` 4 态 `[Fan Control]`（`Off in Rec` 待机 `100% MAX PWM` / `Always Off` 冷备前置门控）、独立 `[Shutter Mode]`（`Speed/Angle` `5.6°..64F` vs `360°` 钳位）与 `6.01` vs `7.02` `p2:/setting` User LUT 二进制格式分叉防火墙 HIL 协同仿真器
+
+[`realhw_fan_pwm_shutter_angle_lut_split_coemulator.py`](realhw_fan_pwm_shutter_angle_lut_split_coemulator.py) 作为 **Stage 35（`35/35` 里程碑）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase200_realhw_fan_pwm_shutter_angle_lut_split_hil=True`，可通过 `--skip-phase200` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`physical_usb_packets_emitted == 0`**、**`otp_fuse_touches == 0`**、**`rpmb_counter_increments == 0`**、**`p2_setting_mutation_bytes == 0`**、**`thermal_runaway_events == 0`**、**`lut_color_solver_corruption_events == 0`** 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.10s` + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libfan.so`（FX3 `27,280 B` / FX6 `31,176 B`）、`libbackup.so`（`14,232 B`）、`libBackupManager.so`（`10,272 B`）、`im.elf`（`40,920 B`：`/dev/nflasha2` -> `/setting`）、`string_english_f.uxc`（`373,820 B`：证实 `Fan Control` / `Off in Rec` / `Always Off` / `Minimum` / `Auto Power OFF Temp.` / `Shutter Mode` / `Angle` / `Speed` / `Exposure step` `0.3EV` & `0.5EV` / `User1..User16` 存在且 **`Auto1`/`Auto2` 命中数为 `0`**），并对 `appFw.so`、`cpapp-b.bin` 与 `libmpr.so` 执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `ILME-FX3`（`0x91030080`）精确 4 态 `[Fan Control]`（拒绝 `Auto1/Auto2`）& 热控/冷备前置门控 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Setup Option] -> [Fan Control]` 精确 4 态 PWM 控制器（`Auto`、`Minimum`、`Off in Rec`、`Always Off`），对不存在的 `Auto1` / `Auto2` 请求立即返回 `EINVAL` (`22`)；在 `Off in Rec` 下待机/非录制驱动 **`100% MAX PWM`** 主动排热、正常录制降至 **`0% PWM`** 静音，并在结温触及安全上限（`[Auto Power OFF Temp.] = Standard: 68°C` / `High: 78°C`）时触发 **`100% PWM`** 紧急热保护覆盖；当处于 `Always Off`（或非 `Auto`）时硬拦截 `AdjustControl (0x40)` 75 MiB `p3` 冷备/双启入口，直至切回 `[Fan Control] = Auto`。
+3. **Pillar B — 独立 `[Shutter Mode]`（`Speed` vs `Angle`）AP-CP 备份槽位与帧率钳位 HIL**：
+   - 协同仿真 `Backup.bin` 独立的 `[Speed]`（`0x01240010`）与 `[Angle]`（`0x01240014`）槽位存储（跨 `BIG6` / `Movie` / `S&Q` 切换互不覆盖，且快门角对 `0.3EV / 0.5EV` `[Exposure step]` 完全免疫），在 `<= 59.94p` 允许 `5.6°..64F`（`23,040°`）多帧累加，在 `119.88p / 100p` 高帧率与 `S&Q` 下严格钳位至 `5.6°..360°`。
+4. **Pillar C & D — `FX6 Ver. 6.01` vs `Stock FX3 Ver. 7.00/7.02` `p2:/setting` `User1..User16` LUT 二进制格式分叉防火墙与硬安全红线**：
+   - 拦截 Stage-B `FX6 Ver. 6.01`（`<=6.01` 旧版槽位格式 `SONY_USER_LUT_SLOT_V1_LE601`）向原厂 `FX3 7.02`（`>=7.00` 优化格式 `SONY_USER_LUT_SLOT_V2_GE700`）`p2:/setting` 的直接写入（返回 `EROFS` `30`），将 `User1..User16` 全部 16 个槽位严格重定向至易失性内存目录 `/tmp/fx6_lut_overlay`，阻断未重注册的 `6.01` 槽位在 `7.02` 下直接加载，确保 `16/16 H0 == H3`（`p2_setting_mutation_bytes == 0`），并 fail-closed 锁死全部 9 项硬件安全红线。
+
+### Phase 200 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 35（35/35 里程碑）自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_fan_pwm_shutter_angle_lut_split_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_fan_pwm_shutter_angle_lut_split_coemulator.py --self-test --json
+
+# 2. 全板 35 阶段（Stage 1..35, 35/35 里程碑）统一校验（支持 --skip-phase200）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 200 48 项双模单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_fan_pwm_shutter_angle_lut_split_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_fan_pwm_shutter_angle_lut_split_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

@@ -852,3 +852,23 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-36pillar-recovery --force-clean-room --json
 ```
 
+## Phase 238 — 真机主线 Part 25（Pillar 37 / `37/37` 统一恢复总检）：`Touch Operation` 4 项跨复位留存与台架防误触锁、`Emphasized REC` / `Grid Line` HDMI 净信号自动钳制与 `Sunny Weather` 室内电池/热护栏（`verify-37pillar-recovery` / `verify-touch-recframe-hdmi-sunny-vault`）
+
+- **[`realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py`](fx3_recovery/realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 37** 并将全套恢复总检正式推进至 **`37/37`（`VERIFIED_37OF37_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`（校验 `SaveLoadSettingsIf`、`Backup_read`、`Backup_write`）与 `libgpe.so`（校验 `gpe_blog_error`、`_ZNK5mpgpe5Gperm4InitEv`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 37A — `[Touch Operation]` 4 项跨 `[Camera Settings Reset]` 留存、Tier-0 `75 MiB` `p3` 无人值守台架电容屏防误触锁与 `[Monitor Brightness]`（`[Manual]` `-2..+2` vs `[Sunny Weather]`）室内 `NP-FZ100` 电池/热护栏（`6/6`）**：
+    - `P37A1`..`P37A6`：精确建模 `MENU` -> `Setup` -> `[Touch Operation]` 全部 4 项设定（`[Touch Operation]` `On`/`On: Playback Only`/`Off`、`[Touch Sensitivity]` `Standard`/`Sensitive`、`[Swipe Up]` `Open the Fn Menu`/`Off`、`[Touch Func. in Shooting]` `Touch Tracking`/`Touch Focus`/`Off`）对 `[Camera Settings Reset]` 免疫留存、仅在完整 `[Initialize]` 下归位为原厂默认；强制在无人值守 Tier-0 `75 MiB` `p3` 冷转储期间锁定 `[Touch Operation] = Off`（或 `On: Playback Only`），阻断意外电容触碰呼出 `Fn` 菜单或触发 `Touch Tracking` / `Touch Focus`（`0` 次误触发）；同时建模 `MENU` -> `Setup` -> `[Monitor]` -> `[Monitor Brightness]`（`Manual` `-2..+2` 默认 `0` vs `Sunny Weather`）跨 `[Camera Settings Reset]` 留存，并将室内 `NP-FZ100` 台架演练硬锁至 `[Manual]`（`0`），杜绝室内高光裁切误判与 LCD 背光额外发热/耗电。
+  - **支柱 37B — `[Emphasized REC Display]` 与 `[Grid Line Display]` 复位分流、HDMI 监看路由 vs `[Off(HDMI Only)]` / `RAW` 净信号强制钳制与 Slot-1 `CAMSET01.DAT` 恢复（`6/6`）**：
+    - `P37B1`..`P37B6`：校验 `ILME-FX3` `[Emphasized REC Display]`（默认 `On`，可经 `[Camera Settings Reset]` 复位）与 `[Grid Line Display]`（默认 `Off`，含 `Rule of 3rds Grid` / `Square Grid` / `Diag. + Square Grid` 三种类型，**不受** `[Camera Settings Reset]` 复位、仅在 `[Initialize]` 下归位）的复位不对称；验证 `[HDMI Info. Display] = On`（非 RAW 且启用机内录卡）时自动熄灭机身本地 LCD 并将红框/网格线路由至外接监看器（同时严保本地专属 `Marker`/`Zebra`/`Peaking` 零层泄漏至 HDMI），而在 `[Rec. Media dur HDMI Output] = Off(HDMI Only)` 或 HDMI `RAW` 视频输出激活时由硬件强制钳制 `[HDMI Info. Display] -> Off`（外录 HDMI 母带烘焙 `0` 层红框与网格线，机身 LCD 保持点亮），以及经 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` 确定性恢复与 `16/16` Tier-0 `H0 == H3` 不变性。
+  - **统一 `37/37` 恢复总检聚合器与 CLI（`evaluate_realhw_37pillar_recovery_master` / `verify-37pillar-recovery` / `verify-touch-recframe-hdmi-sunny-vault`）**：
+    - 并发调用 `evaluate_realhw_36pillar_recovery_master`（`Pillars 1..36`）+ **Pillar 37**（`run_pillar37_standalone_suite`），汇总产出 **`37/37`**（`VERIFIED_37OF37_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py`](tests/test_realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py) 提供 **64 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-touch-recframe-hdmi-sunny-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-37pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-37pillar-recovery --force-clean-room --json
+```
+
+

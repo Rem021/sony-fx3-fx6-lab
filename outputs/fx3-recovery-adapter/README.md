@@ -354,3 +354,24 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --clean-room --json
 ```
 
+## Phase 119 — SquashFS 4.0（`hsqs` `0x73717368`）分区超级块与表边界校验器、Sony Warp-Boot `hibdrv`（`WBI2` 休眠快照）过期恢复中毒分诊及易失 `noresume` RAM 启动旁路验证器与 12 支柱总检
+
+- **[`squashfs_and_hibdrv_wbi_verifier.py`](fx3_recovery/squashfs_and_hibdrv_wbi_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057` Linux `4.9.337-scel+`）提供两大只读取证与防变砖支柱并接入 12 支柱总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`WBI_PARTITION_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_squashfs_and_wbi_donors_readonly`）**：只读核验 FX3 `2.05/nflasha1` `/boot/initrd.img` SquashFS 4.0（`9,097,216 B`）、FX3 `udtrbody.squashfs`（`1,253,376 B`）、FX6 `updater.img`（`1,253,376 B`）、有界 512B+节表 `O_RDONLY` 读取 FX3 `nflasha5.img`（`1399` 节 `WBI2`）与 FX6 `nflasha5`（`1197` 节 `WBI2`），以及 FX3/FX6 `vmlinux.bin` 内核 `UTS_VERSION` 与 `WBI:invalid param`/`hibernate` 符号锚点。
+  - **支柱 A — SquashFS 4.0（`hsqs` 小端魔数 `0x73717368`）超级块与表边界校验器（`verify_squashfs_partition_bytes` / `build_synthetic_squashfs_superblock`）**：
+    - 纯 Python 解析 96 字节 `<5I6H8Q` 超级块，校验 `s_magic == 0x73717368`（fail-closed 拦截大端 `sqsh` `0x68737173` 与全 `0x00`/全 `0xFF` 擦除态）、`s_major == 4, s_minor == 0`、`block_size` 2 的幂（`4 KiB..1 MiB` 且 `block_size == 1 << block_log`）、`compression_id` ∈ `{1:GZIP, 2:LZMA, 3:LZO, 4:XZ, 5:LZ4, 6:ZSTD}`、`no_ids >= 1`、`96 < bytes_used <= partition_size`、严格单调表边界（`inode_table_start < directory_table_start <= fragment <= export <= id <= xattr <= bytes_used`）与 `root_inode` 偏移合法性，离线捕获截断 `rootfs`/`app` 刷写引发的 `/sbin/init2` `SIGBUS` 与 `VFS: Unable to mount root fs` 循环崩溃。
+  - **支柱 B — Sony `Warp-Boot` / `hibdrv`（`WBI2`）过期恢复中毒分诊与易失 `noresume` RAM 旁路验证器（`parse_wbi2_header_and_table` / `triage_wbi_hibdrv_snapshot` / `verify_ephemeral_noresume_bootargs_bypass` / `audit_wbi_partition_write_attempt` / `run_wbi_hibdrv_6_scenario_triage`）**：
+    - 建模 88B/512B `WBI2` 休眠头与 64B 节表（`0x0f0f0f0f` 元数据 XOR 校验和、4K 页对齐、`resume_vector` 覆盖与重叠区间检测），精准识别三大中毒风险：`WBI_SNAPSHOT_TRUNCATED_OR_CRC_MISMATCH`、`WBI_KERNEL_ABI_FINGERPRINT_MISMATCH` 与 `WBI_EPHEMERAL_NORESUME_REQUIRED`。
+    - 验证修复动作严格使用 RAM-only `bootargs`（`noresume` / `hibdrv.resume=0`，`ro rootwait` 挂载 eMMC 根文件系统且禁 `rw`/`mtdparts`/`nowatchdog`），并通过 `audit_wbi_partition_write_attempt` 对 `/dev/nflasha5`/`mmcblk0p5` 持久擦写实现 100% fail-closed 拦截（`wbi_partition_writes == 0`）。
+  - **支柱 C — CLI 与 12 支柱总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-squashfs-wbi-triage [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119`（构成 **12/12** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 119 公开符号；[`tests/test_squashfs_and_hibdrv_wbi_verifier.py`](tests/test_squashfs_and_hibdrv_wbi_verifier.py) 提供 40 项快速双模式单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-squashfs-wbi-triage --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --clean-room --json
+```
+
+

@@ -22,6 +22,7 @@ from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_s
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
+from .squashfs_and_hibdrv_wbi_verifier import run_squashfs_and_hibdrv_wbi_suite
 from .tier0_backup_parity_and_manifest_guard import run_tier0_backup_parity_suite
 from .unbrick_ladder_and_capsule_verifier import run_unbrick_ladder_and_capsule_suite
 
@@ -100,6 +101,7 @@ def main():
     master.add_argument('--with-phase101', action='store_true', help='also run Phase 101 Pillar 9 init2 cpio firewall, EXT_CSD health & tmpfs isolation verifier')
     master.add_argument('--with-phase106', action='store_true', help='also run Phase 106 Pillar 10 FDT /chosen/bootargs firewall & ARM64 kernel verifier')
     master.add_argument('--with-phase113', action='store_true', help='also run Phase 113 Pillar 11 CXD90057 Dual-Bank A/B & Interrupted BODYDATA.DAT/USB-OTA forensic triage verifier')
+    master.add_argument('--with-phase119', action='store_true', help='also run Phase 119 Pillar 12 SquashFS 4.0 hsqs & Sony Warp-Boot hibdrv WBI2 triage verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -116,6 +118,10 @@ def main():
     ab_ota.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     ab_ota.add_argument('--json', action='store_true', help='emit full structured JSON report')
     ab_ota.add_argument('--out', help='optional exclusive new output directory for ab-bank-ota-triage-report.json')
+    sq_wbi = sub.add_parser('verify-squashfs-wbi-triage', help='Phase 119 SquashFS 4.0 superblock/table-bounds & Sony Warp-Boot hibdrv WBI2 stale-resume/noresume triage verifier')
+    sq_wbi.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    sq_wbi.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    sq_wbi.add_argument('--out', help='optional exclusive new output directory for squashfs-wbi-triage-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -310,12 +316,27 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p113_report.all_passed else 0)
                 overall_ok = overall_ok and p113_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase119:
+                p119_report = run_squashfs_and_hibdrv_wbi_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase119_pillar12_squashfs_wbi_hibdrv'] = p119_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p119_report.all_passed else 0)
+                overall_ok = overall_ok and p119_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
                 print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
             else:
-                has_opt_in = args.with_phase94 or args.with_phase101 or args.with_phase106 or args.with_phase113
+                has_opt_in = (
+                    args.with_phase94
+                    or args.with_phase101
+                    or args.with_phase106
+                    or args.with_phase113
+                    or args.with_phase119
+                )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
                 print(
@@ -422,6 +443,30 @@ def main():
                     f"ota_scenarios={report.ota_6_scenario_suite.scenarios_passed}/{report.ota_6_scenario_suite.scenarios_total} "
                     f"stage_b_u5_zero_brick_verified={report.ota_6_scenario_suite.stage_b_u5_zero_brick_verified} "
                     f"split_deadlock_rejected={not report.dual_bank_split_deadlock_report.passed} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-squashfs-wbi-triage':
+            report = run_squashfs_and_hibdrv_wbi_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'squashfs-wbi-triage-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"squashfs_compressions={len(report.squashfs_compression_reports)} "
+                    f"wbi_scenarios={report.wbi_6_scenario_suite.scenarios_passed}/{report.wbi_6_scenario_suite.scenarios_total} "
+                    f"wbi_partition_writes={report.wbi_partition_writes} "
                     f"suite_sha256={report.suite_sha256[:16]} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "

@@ -2462,6 +2462,7 @@ def build_nrtm_xml_sidecar(
     interval_cache_lut_ftp: dict[str, Any] | None = None,
     mc_fleet_sdi_c2pa: dict[str, Any] | None = None,
     hdr_hlg_raw_breathing: dict[str, Any] | None = None,
+    uvc_srt_crsdk_ptp: dict[str, Any] | None = None,
 ) -> str:
     """Build deterministic Sony NonRealTimeMeta v2.20 (*M01.XML) reflecting live FX6-on-FX3 RAM state."""
     ET.register_namespace("", NRTM_NAMESPACE_V220)
@@ -2729,6 +2730,28 @@ def build_nrtm_xml_sidecar(
         ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingCompEffective", "value": str(bool(hdr_hlg_raw_breathing["breathing_effective_active"])).lower()})
         ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingCropFactor", "value": f"{float(hdr_hlg_raw_breathing['breathing_crop_factor']):.2f}x"})
         ET.SubElement(p116_grp, _q("Item"), {"name": "FocusBreathingBypassReason", "value": str(hdr_hlg_raw_breathing["breathing_bypass_reason"])})
+
+    if uvc_srt_crsdk_ptp:
+        p123_grp = ET.SubElement(acq, _q("Group"), {"name": "UvcSrtRtmpsAndCrsdkPtpFirewall"})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "UvcRequestedMode", "value": str(uvc_srt_crsdk_ptp["uvc_mode"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "UvcEffectiveMode", "value": str(uvc_srt_crsdk_ptp["effective_uvc_mode"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "UsbLinkSpeed", "value": str(uvc_srt_crsdk_ptp["usb_link_speed"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "UvcUsb2StepdownActive", "value": str(bool(uvc_srt_crsdk_ptp["uvc_usb2_stepdown_active"])).lower()})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "UacAudioSpec", "value": str(uvc_srt_crsdk_ptp["uac_audio_spec"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "UvcCleanFeedNoOsd", "value": "true"})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "SrtMode", "value": str(uvc_srt_crsdk_ptp["srt_mode"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "SrtPbKeyLen", "value": str(uvc_srt_crsdk_ptp["srt_pbkeylen"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "SrtArqLatencyMs", "value": str(int(uvc_srt_crsdk_ptp["srt_latency_ms"]))})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "RtmpsMode", "value": str(uvc_srt_crsdk_ptp["rtmps_mode"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "StreamTransport", "value": str(uvc_srt_crsdk_ptp["stream_transport"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "P12WlanOff", "value": "true"})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "Wf12Calls", "value": "0"})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "CrsdkPtpMode", "value": str(uvc_srt_crsdk_ptp["crsdk_ptp_mode"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "CrsdkUsbVid", "value": str(uvc_srt_crsdk_ptp["crsdk_usb_vid"])})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "PtpFlashOpcodesBlocked", "value": "true"})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "EmmcMutationBytes", "value": "0"})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "BlockedFlashOpcodeCount", "value": str(int(uvc_srt_crsdk_ptp["blocked_flash_opcode_count"]))})
+        ET.SubElement(p123_grp, _q("Item"), {"name": "P4NdClearEnforced", "value": "true"})
 
     prov_grp = ET.SubElement(acq, _q("Group"), {"name": "StageBProvenance"})
     ET.SubElement(prov_grp, _q("Item"), {"name": "BaseISO", "value": str(cine_ei_base)})
@@ -7027,6 +7050,545 @@ def validate_hdr_hlg_raw_breathing_patch(
     return True, updates, None
 
 
+# ---------------------------------------------------------------------------
+# Phase 123: Live USB-C UVC 1.5 / UAC 2.0 Streaming, Wired P12-Safe SRT /
+# RTMPS TLS 1.3 Streaming (AES-128/256, ARQ), & CRSDK PTP / PTP-IP (0x054C)
+# Remote Control + Destructive Flash-Opcode Firewall ('UVCS' mb[60..63])
+# ---------------------------------------------------------------------------
+
+UVC_STREAM_MODES: tuple[str, ...] = (
+    "OFF",
+    "UVC_4K30P_MJPEG_5G",
+    "UVC_1080P60P_YUY2_5G",
+    "UVC_720P30P_MJPEG_USB2_FALLBACK",
+)
+_UVC_MODE_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(UVC_STREAM_MODES)}
+_UVC_MODE_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "uvc_4k30p_mjpeg_5g": "UVC_4K30P_MJPEG_5G",
+    "4k30p": "UVC_4K30P_MJPEG_5G",
+    "4k30": "UVC_4K30P_MJPEG_5G",
+    "4k_mjpeg": "UVC_4K30P_MJPEG_5G",
+    "uvc_1080p60p_yuy2_5g": "UVC_1080P60P_YUY2_5G",
+    "1080p60": "UVC_1080P60P_YUY2_5G",
+    "1080p60p": "UVC_1080P60P_YUY2_5G",
+    "fhd60_yuy2": "UVC_1080P60P_YUY2_5G",
+    "uvc_720p30p_mjpeg_usb2_fallback": "UVC_720P30P_MJPEG_USB2_FALLBACK",
+    "720p30": "UVC_720P30P_MJPEG_USB2_FALLBACK",
+    "usb2_fallback": "UVC_720P30P_MJPEG_USB2_FALLBACK",
+}
+UVC_MODE_SPECS: dict[str, dict[str, Any]] = {
+    "OFF": {"resolution": "0x0", "fps": 0, "codec": "NONE", "bitrate_mbps": 0, "min_usb_speed": "USB2_480M"},
+    "UVC_4K30P_MJPEG_5G": {"resolution": "3840x2160", "fps": 30, "codec": "MJPEG", "bitrate_mbps": 250, "min_usb_speed": "USB3_5G"},
+    "UVC_1080P60P_YUY2_5G": {"resolution": "1920x1080", "fps": 60, "codec": "YUY2", "bitrate_mbps": 400, "min_usb_speed": "USB3_5G"},
+    "UVC_720P30P_MJPEG_USB2_FALLBACK": {"resolution": "1280x720", "fps": 30, "codec": "MJPEG", "bitrate_mbps": 35, "min_usb_speed": "USB2_480M"},
+}
+
+USB_LINK_SPEEDS: tuple[str, ...] = ("USB3_5G", "USB2_480M")
+_USB_LINK_ALIASES: dict[str, str] = {
+    "usb3_5g": "USB3_5G",
+    "usb3": "USB3_5G",
+    "5g": "USB3_5G",
+    "5gbps": "USB3_5G",
+    "superspeed": "USB3_5G",
+    "usb2_480m": "USB2_480M",
+    "usb2": "USB2_480M",
+    "480m": "USB2_480M",
+    "480mbps": "USB2_480M",
+    "highspeed": "USB2_480M",
+    "non_superspeed": "USB2_480M",
+}
+
+SRT_MODES: tuple[str, ...] = ("OFF", "SRT_CALLER", "SRT_LISTENER")
+_SRT_MODE_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(SRT_MODES)}
+_SRT_MODE_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "srt_caller": "SRT_CALLER",
+    "caller": "SRT_CALLER",
+    "srt_listener": "SRT_LISTENER",
+    "listener": "SRT_LISTENER",
+}
+
+SRT_PBKEYLEN_MODES: tuple[str, ...] = ("NONE", "AES-128", "AES-256")
+_SRT_PBKEY_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(SRT_PBKEYLEN_MODES)}
+_SRT_PBKEY_ALIASES: dict[str, str] = {
+    "none": "NONE",
+    "0": "NONE",
+    "aes-128": "AES-128",
+    "aes128": "AES-128",
+    "16": "AES-128",
+    "aes-256": "AES-256",
+    "aes256": "AES-256",
+    "32": "AES-256",
+}
+SRT_PBKEYLEN_BYTES: dict[str, int] = {"NONE": 0, "AES-128": 16, "AES-256": 32}
+SRT_LATENCY_MIN_MS = 20
+SRT_LATENCY_MAX_MS = 1000
+
+RTMPS_MODES: tuple[str, ...] = ("OFF", "RTMPS_TLS13")
+_RTMPS_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "rtmps_tls13": "RTMPS_TLS13",
+    "rtmps": "RTMPS_TLS13",
+    "tls13": "RTMPS_TLS13",
+    "tls1.3": "RTMPS_TLS13",
+}
+
+CRSDK_PTP_MODES: tuple[str, ...] = ("OFF", "USB_PTP", "WIRED_PTPIP")
+_CRSDK_PTP_TO_IDX: dict[str, int] = {m: i for i, m in enumerate(CRSDK_PTP_MODES)}
+_CRSDK_PTP_ALIASES: dict[str, str] = {
+    "off": "OFF",
+    "none": "OFF",
+    "usb_ptp": "USB_PTP",
+    "usb": "USB_PTP",
+    "ptp": "USB_PTP",
+    "wired_ptpip": "WIRED_PTPIP",
+    "ptpip": "WIRED_PTPIP",
+    "ptp-ip": "WIRED_PTPIP",
+}
+
+CRSDK_USB_VID = "0x054C"
+CRSDK_PTPIP_TCP_PORT = 15740
+PTP_FLASH_OPCODE_MIN = 0x9280
+PTP_FLASH_OPCODE_MAX = 0x92FF
+CRSDK_SAFE_D2XX_OPCODES: dict[int, str] = {
+    0xD20D: "ShutterSpeed_Angle",
+    0xD210: "ExposureIndex_BaseISO",
+    0xD21C: "WhiteBalance_ColorTemp",
+    0xD220: "BaseLook_UserLut",
+    0xD224: "ND_Filter_P4_Clamp",
+    0xD2C1: "AF_TouchFocus_XY",
+    0xD2C4: "RecTrigger_StartStop",
+}
+
+UVC_SRT_CRSDK_PTP_DEFAULTS: dict[str, Any] = {
+    "uvc_mode": "OFF",
+    "usb_link_speed": "USB3_5G",
+    "uac_audio_enabled": True,
+    "srt_mode": "OFF",
+    "srt_pbkeylen": "AES-256",
+    "srt_latency_ms": 120,
+    "rtmps_mode": "OFF",
+    "stream_bitrate_mbps": 12,
+    "crsdk_ptp_mode": "OFF",
+}
+
+UVC_SRT_CRSDK_PTP_SPECS: dict[str, Any] = {
+    "uvc_modes": list(UVC_STREAM_MODES),
+    "uvc_mode_specs": UVC_MODE_SPECS,
+    "usb_link_speeds": list(USB_LINK_SPEEDS),
+    "uac_audio_spec": "48kHz_16bit_2ch_PCM",
+    "uvc_clean_feed_enforced": True,
+    "srt_modes": list(SRT_MODES),
+    "srt_pbkeylen_modes": list(SRT_PBKEYLEN_MODES),
+    "srt_latency_range_ms": [SRT_LATENCY_MIN_MS, SRT_LATENCY_MAX_MS],
+    "rtmps_modes": list(RTMPS_MODES),
+    "stream_bitrate_range_mbps": [1, 50],
+    "stream_transport": "CDC_NCM_WIRED_ETHERNET",
+    "p12_wlan_off_enforced": True,
+    "crsdk_ptp_modes": list(CRSDK_PTP_MODES),
+    "crsdk_usb_vid": CRSDK_USB_VID,
+    "crsdk_ptpip_tcp_port": CRSDK_PTPIP_TCP_PORT,
+    "crsdk_safe_d2xx_opcodes": {f"0x{k:04X}": v for k, v in CRSDK_SAFE_D2XX_OPCODES.items()},
+    "ptp_flash_firewall_range": ["0x9280", "0x92FF"],
+    "mailbox_magic": "0x55564353",
+    "mailbox_slots": "mb[60..63]",
+    "supported_langs": ["en", "zh-CN", "zh-TW", "ja"],
+}
+
+
+def _parse_ptp_opcode(raw_val: Any) -> int | None:
+    if isinstance(raw_val, bool):
+        return None
+    if isinstance(raw_val, int):
+        return raw_val if 0 <= raw_val <= 0xFFFF else None
+    if isinstance(raw_val, str):
+        s = raw_val.strip().lower()
+        if not s:
+            return None
+        try:
+            v = int(s, 16) if s.startswith("0x") else int(s, 10)
+            return v if 0 <= v <= 0xFFFF else None
+        except ValueError:
+            return None
+    return None
+
+
+def compute_uvc_srt_crsdk_ptp_derived(
+    state: dict[str, Any],
+    *,
+    cine_ei_base: str = "800",
+    ei_index: int = 800,
+    base_look: str = "S-Cinetone",
+    nd_preset: str = "Clear [FX3 P4 Locked]",
+    last_safe_opcode: int = 0xD210,
+    safe_cmd_count: int = 0,
+    flash_blocked_count: int = 0,
+    last_blocked_opcode: str | None = None,
+    p12_blocked_count: int = 0,
+    uvc_osd_blocked_count: int = 0,
+    crsdk_nd_clamp_count: int = 0,
+    wf12_00342260_hits: int = 0,
+) -> dict[str, Any]:
+    """Compute Phase 123 UVC 1.5/UAC 2.0, Wired SRT/RTMPS, & CRSDK PTP Firewall derived state."""
+    uvc_mode = str(state.get("uvc_mode", "OFF"))
+    if uvc_mode not in UVC_STREAM_MODES:
+        uvc_mode = "OFF"
+    usb_link_speed = str(state.get("usb_link_speed", "USB3_5G"))
+    if usb_link_speed not in USB_LINK_SPEEDS:
+        usb_link_speed = "USB3_5G"
+    uac_audio_enabled = bool(state.get("uac_audio_enabled", True))
+
+    if usb_link_speed == "USB2_480M" and uvc_mode in ("UVC_4K30P_MJPEG_5G", "UVC_1080P60P_YUY2_5G"):
+        effective_uvc_mode = "UVC_720P30P_MJPEG_USB2_FALLBACK"
+        uvc_usb2_stepdown_active = True
+        uvc_stepdown_reason = "NON_SUPERSPEED_USB2_480MBPS_STEPDOWN"
+    else:
+        effective_uvc_mode = uvc_mode
+        uvc_usb2_stepdown_active = False
+        uvc_stepdown_reason = "NONE"
+
+    uvc_spec = UVC_MODE_SPECS[effective_uvc_mode]
+
+    srt_mode = str(state.get("srt_mode", "OFF"))
+    if srt_mode not in SRT_MODES:
+        srt_mode = "OFF"
+    srt_pbkeylen = str(state.get("srt_pbkeylen", "AES-256"))
+    if srt_pbkeylen not in SRT_PBKEYLEN_MODES:
+        srt_pbkeylen = "AES-256"
+    srt_latency_ms = max(SRT_LATENCY_MIN_MS, min(SRT_LATENCY_MAX_MS, int(state.get("srt_latency_ms", 120))))
+    rtmps_mode = str(state.get("rtmps_mode", "OFF"))
+    if rtmps_mode not in RTMPS_MODES:
+        rtmps_mode = "OFF"
+    stream_bitrate_mbps = max(1, min(50, int(state.get("stream_bitrate_mbps", 12))))
+
+    crsdk_ptp_mode = str(state.get("crsdk_ptp_mode", "OFF"))
+    if crsdk_ptp_mode not in CRSDK_PTP_MODES:
+        crsdk_ptp_mode = "OFF"
+
+    safe_op_i = int(last_safe_opcode) if int(last_safe_opcode) in CRSDK_SAFE_D2XX_OPCODES else 0xD210
+
+    return {
+        "uvc_mode": uvc_mode,
+        "effective_uvc_mode": effective_uvc_mode,
+        "usb_link_speed": usb_link_speed,
+        "uvc_usb2_stepdown_active": uvc_usb2_stepdown_active,
+        "uvc_stepdown_reason": uvc_stepdown_reason,
+        "uvc_resolution": uvc_spec["resolution"],
+        "uvc_fps": int(uvc_spec["fps"]),
+        "uvc_codec": uvc_spec["codec"],
+        "uvc_bitrate_mbps": int(uvc_spec["bitrate_mbps"]),
+        "uac_audio_enabled": uac_audio_enabled,
+        "uac_audio_spec": "48kHz_16bit_2ch_PCM" if uac_audio_enabled else "OFF",
+        "uac_sample_rate_hz": 48000 if uac_audio_enabled else 0,
+        "uac_bit_depth": 16 if uac_audio_enabled else 0,
+        "uac_channels": 2 if uac_audio_enabled else 0,
+        "uvc_clean_feed_no_osd": True,
+        "uvc_osd_burnin_px": 0,
+        "uvc_osd_blocked_count": int(uvc_osd_blocked_count),
+        "srt_mode": srt_mode,
+        "srt_pbkeylen": srt_pbkeylen,
+        "srt_pbkeylen_bytes": SRT_PBKEYLEN_BYTES[srt_pbkeylen],
+        "srt_latency_ms": srt_latency_ms,
+        "srt_arq_enabled": srt_mode != "OFF",
+        "rtmps_mode": rtmps_mode,
+        "rtmps_tls_version": "TLS_1_3" if rtmps_mode != "OFF" else "NONE",
+        "stream_bitrate_mbps": stream_bitrate_mbps,
+        "stream_transport": "CDC_NCM_WIRED_ETHERNET",
+        "p12_wlan_off": True,
+        "wf12_00342260_hits": int(wf12_00342260_hits),
+        "p12_blocked_count": int(p12_blocked_count),
+        "crsdk_ptp_mode": crsdk_ptp_mode,
+        "crsdk_usb_vid": CRSDK_USB_VID,
+        "crsdk_ptpip_tcp_port": CRSDK_PTPIP_TCP_PORT,
+        "crsdk_last_safe_opcode": f"0x{safe_op_i:04X}",
+        "crsdk_last_safe_prop": CRSDK_SAFE_D2XX_OPCODES[safe_op_i],
+        "crsdk_safe_cmd_count": int(safe_cmd_count),
+        "crsdk_cine_ei_base": str(cine_ei_base),
+        "crsdk_ei_index": int(ei_index),
+        "crsdk_base_look": str(base_look),
+        "crsdk_nd_preset": str(nd_preset),
+        "p4_nd_clear_enforced": True,
+        "crsdk_nd_clamp_count": int(crsdk_nd_clamp_count),
+        "ptp_flash_opcodes_blocked": True,
+        "emmc_mutation_bytes": 0,
+        "blocked_flash_opcode_count": int(flash_blocked_count),
+        "last_blocked_flash_opcode": last_blocked_opcode,
+        "persistent_emmc_writes_authorized": False,
+    }
+
+
+def format_uvc_srt_crsdk_ptp_command(state: dict[str, Any]) -> str:
+    """Format deterministic Phase 123 UVCS host<->guest protocol telemetry line."""
+    return (
+        f"UVCS uvc={state['effective_uvc_mode']}({state['usb_link_speed']},step={int(state['uvc_usb2_stepdown_active'])},uac={state['uac_audio_spec']},cln=1) "
+        f"srt={state['srt_mode']}({state['srt_pbkeylen']},arq={state['srt_latency_ms']}ms) "
+        f"rtmps={state['rtmps_mode']}@{state['stream_bitrate_mbps']}M(p12_wlan_off=1,wf12={state['wf12_00342260_hits']}) "
+        f"ptp={state['crsdk_ptp_mode']}({state['crsdk_usb_vid']},{state['crsdk_last_safe_opcode']},flash_blk=1,emmc=0,blk={state['blocked_flash_opcode_count']})"
+    )
+
+
+def validate_uvc_srt_crsdk_ptp_patch(
+    body: Any,
+    current_state: dict[str, Any] | None = None,
+) -> tuple[bool, dict[str, Any], dict[str, Any] | None]:
+    """Validate and normalize Phase 123 UVC/UAC, Wired SRT/RTMPS & CRSDK PTP Firewall updates fail-closed."""
+    if not isinstance(body, dict):
+        return False, {}, {"ok": False, "error": "invalid_uvc_srt_crsdk_ptp", "message": "Payload must be a JSON object"}
+
+    updates: dict[str, Any] = {}
+    if body.get("reset") is True:
+        updates.update(UVC_SRT_CRSDK_PTP_DEFAULTS)
+
+    # 1. Fail-closed P12 Wi-Fi/BT RF-OFF guard
+    iface = str(body.get("stream_interface") or body.get("network_interface") or "").strip().lower()
+    if (
+        body.get("use_wifi") is True
+        or body.get("enable_wlan") is True
+        or body.get("enable_wifi") is True
+        or body.get("enable_bt") is True
+        or body.get("p12_wlan_off") is False
+        or iface in ("wifi", "wlan", "wlan0", "bt", "bluetooth", "ap", "sta")
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "p12_wlan_off_enforced",
+                "message": "P12 Airplane-Mode Shadow Lock enforced: Wi-Fi/BT disabled (wf12_00342260_hits=0); use wired CDC-NCM only",
+                "p12_wlan_off": True,
+                "wf12_00342260_hits": 0,
+            },
+        )
+
+    # 2. Fail-closed UVC Clean Feed without OSD burn-in guard
+    if (
+        body.get("uvc_bake_osd") is True
+        or body.get("bake_osd_into_uvc") is True
+        or body.get("uvc_clean_feed_no_osd") is False
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "uvc_osd_burnin_blocked",
+                "message": "UVC 1.5 output is locked to clean feed without OSD burn-in",
+                "uvc_clean_feed_no_osd": True,
+                "uvc_osd_burnin_px": 0,
+            },
+        )
+
+    # 3. Fail-closed Destructive PTP Flash-Opcode Firewall (0x9280..0x92FF & firmware flash tokens)
+    raw_op = body.get("ptp_opcode", body.get("crsdk_opcode"))
+    parsed_op: int | None = None
+    if raw_op is not None and str(raw_op).strip() != "":
+        parsed_op = _parse_ptp_opcode(raw_op)
+        if parsed_op is None:
+            return False, {}, {"ok": False, "error": "invalid_ptp_opcode", "message": f"Invalid PTP opcode: {raw_op!r}"}
+        if (PTP_FLASH_OPCODE_MIN <= parsed_op <= PTP_FLASH_OPCODE_MAX) or (0x9201 <= parsed_op <= 0x920F):
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "ptp_flash_opcode_blocked",
+                    "blocked_opcode": f"0x{parsed_op:04X}",
+                    "message": f"Destructive CRSDK PTP flash opcode 0x{parsed_op:04X} (0x9280..0x92FF) blocked by hardware firewall",
+                    "ptp_flash_opcodes_blocked": True,
+                    "emmc_mutation_bytes": 0,
+                },
+            )
+        if parsed_op not in CRSDK_SAFE_D2XX_OPCODES:
+            return (
+                False,
+                {},
+                {
+                    "ok": False,
+                    "error": "unsupported_ptp_opcode",
+                    "opcode": f"0x{parsed_op:04X}",
+                    "message": f"PTP opcode 0x{parsed_op:04X} not in safe 0xD2xx allowlist",
+                    "allowed_opcodes": [f"0x{k:04X}" for k in CRSDK_SAFE_D2XX_OPCODES],
+                },
+            )
+        updates["crsdk_safe_opcode"] = parsed_op
+
+    action_str = str(body.get("crsdk_action") or "").strip().lower()
+    if (
+        body.get("firmware_flash") is True
+        or body.get("emmc_write") is True
+        or body.get("nvram_tamper") is True
+        or any(tok in action_str for tok in ("flash", "firmware", "ufu", "emmc", "nvram", "erase", "format_nand"))
+    ):
+        return (
+            False,
+            {},
+            {
+                "ok": False,
+                "error": "ptp_flash_opcode_blocked",
+                "blocked_opcode": "0x9280",
+                "message": "Destructive firmware/eMMC flash operation blocked by CRSDK PTP firewall",
+                "ptp_flash_opcodes_blocked": True,
+                "emmc_mutation_bytes": 0,
+            },
+        )
+
+    # 4. UVC 1.5 / USB Link Speed / UAC 2.0
+    if "uvc_mode" in body and body["uvc_mode"] is not None:
+        raw_uvc = body["uvc_mode"]
+        if not isinstance(raw_uvc, str):
+            return False, {}, {"ok": False, "error": "invalid_uvc_mode", "message": f"Invalid uvc_mode: {raw_uvc!r}"}
+        uvc_norm = _UVC_MODE_ALIASES.get(raw_uvc.strip().lower())
+        if uvc_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_uvc_mode", "message": f"Unsupported uvc_mode: {raw_uvc!r}", "allowed": list(UVC_STREAM_MODES)},
+            )
+        updates["uvc_mode"] = uvc_norm
+
+    if "usb_link_speed" in body and body["usb_link_speed"] is not None:
+        raw_usb = body["usb_link_speed"]
+        if not isinstance(raw_usb, str):
+            return False, {}, {"ok": False, "error": "invalid_usb_link_speed", "message": f"Invalid usb_link_speed: {raw_usb!r}"}
+        usb_norm = _USB_LINK_ALIASES.get(raw_usb.strip().lower())
+        if usb_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_usb_link_speed", "message": f"Unsupported usb_link_speed: {raw_usb!r}", "allowed": list(USB_LINK_SPEEDS)},
+            )
+        updates["usb_link_speed"] = usb_norm
+
+    if "uac_audio_enabled" in body and body["uac_audio_enabled"] is not None:
+        if not isinstance(body["uac_audio_enabled"], bool):
+            return False, {}, {"ok": False, "error": "invalid_uac_audio_enabled", "message": "uac_audio_enabled must be bool"}
+        updates["uac_audio_enabled"] = body["uac_audio_enabled"]
+
+    # 5. Wired CDC-NCM SRT & RTMPS TLS 1.3
+    if "srt_mode" in body and body["srt_mode"] is not None:
+        raw_srt = body["srt_mode"]
+        if not isinstance(raw_srt, str):
+            return False, {}, {"ok": False, "error": "invalid_srt_mode", "message": f"Invalid srt_mode: {raw_srt!r}"}
+        srt_norm = _SRT_MODE_ALIASES.get(raw_srt.strip().lower())
+        if srt_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_srt_mode", "message": f"Unsupported srt_mode: {raw_srt!r}", "allowed": list(SRT_MODES)},
+            )
+        updates["srt_mode"] = srt_norm
+
+    if "srt_pbkeylen" in body and body["srt_pbkeylen"] is not None:
+        raw_pk = body["srt_pbkeylen"]
+        if not isinstance(raw_pk, str):
+            return False, {}, {"ok": False, "error": "invalid_srt_pbkeylen", "message": f"Invalid srt_pbkeylen: {raw_pk!r}"}
+        pk_norm = _SRT_PBKEY_ALIASES.get(raw_pk.strip().lower())
+        if pk_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_srt_pbkeylen", "message": f"Unsupported srt_pbkeylen: {raw_pk!r}", "allowed": list(SRT_PBKEYLEN_MODES)},
+            )
+        updates["srt_pbkeylen"] = pk_norm
+
+    if "srt_latency_ms" in body and body["srt_latency_ms"] is not None:
+        raw_lat = body["srt_latency_ms"]
+        if isinstance(raw_lat, bool) or not isinstance(raw_lat, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_srt_latency_ms", "message": f"Invalid srt_latency_ms: {raw_lat!r}"}
+        try:
+            f_lat = float(raw_lat)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_srt_latency_ms", "message": f"Invalid srt_latency_ms: {raw_lat!r}"}
+        if not math.isfinite(f_lat) or f_lat != float(int(f_lat)) or int(f_lat) < SRT_LATENCY_MIN_MS or int(f_lat) > SRT_LATENCY_MAX_MS:
+            return False, {}, {"ok": False, "error": "invalid_srt_latency_ms", "message": "srt_latency_ms must be integer in [20, 1000]"}
+        updates["srt_latency_ms"] = int(f_lat)
+
+    if "rtmps_mode" in body and body["rtmps_mode"] is not None:
+        raw_rtmps = body["rtmps_mode"]
+        if not isinstance(raw_rtmps, str):
+            return False, {}, {"ok": False, "error": "invalid_rtmps_mode", "message": f"Invalid rtmps_mode: {raw_rtmps!r}"}
+        if raw_rtmps.strip().lower() in ("rtmp", "rtmp_plain", "rtmp://"):
+            return False, {}, {"ok": False, "error": "rtmps_tls13_required", "message": "Plain RTMP rejected; RTMPS TLS 1.3 required"}
+        rtmps_norm = _RTMPS_ALIASES.get(raw_rtmps.strip().lower())
+        if rtmps_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_rtmps_mode", "message": f"Unsupported rtmps_mode: {raw_rtmps!r}", "allowed": list(RTMPS_MODES)},
+            )
+        if body.get("use_tls") is False and rtmps_norm != "OFF":
+            return False, {}, {"ok": False, "error": "rtmps_tls13_required", "message": "RTMPS requires TLS 1.3"}
+        updates["rtmps_mode"] = rtmps_norm
+
+    if "stream_bitrate_mbps" in body and body["stream_bitrate_mbps"] is not None:
+        raw_br = body["stream_bitrate_mbps"]
+        if isinstance(raw_br, bool) or not isinstance(raw_br, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_stream_bitrate_mbps", "message": f"Invalid stream_bitrate_mbps: {raw_br!r}"}
+        try:
+            f_br = float(raw_br)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_stream_bitrate_mbps", "message": f"Invalid stream_bitrate_mbps: {raw_br!r}"}
+        if not math.isfinite(f_br) or f_br != float(int(f_br)) or int(f_br) < 1 or int(f_br) > 50:
+            return False, {}, {"ok": False, "error": "invalid_stream_bitrate_mbps", "message": "stream_bitrate_mbps must be integer in [1, 50]"}
+        updates["stream_bitrate_mbps"] = int(f_br)
+
+    # 6. CRSDK PTP / PTP-IP Mode + Safe 0xD2xx parameters
+    if "crsdk_ptp_mode" in body and body["crsdk_ptp_mode"] is not None:
+        raw_ptp = body["crsdk_ptp_mode"]
+        if not isinstance(raw_ptp, str):
+            return False, {}, {"ok": False, "error": "invalid_crsdk_ptp_mode", "message": f"Invalid crsdk_ptp_mode: {raw_ptp!r}"}
+        ptp_norm = _CRSDK_PTP_ALIASES.get(raw_ptp.strip().lower())
+        if ptp_norm is None:
+            return (
+                False,
+                {},
+                {"ok": False, "error": "invalid_crsdk_ptp_mode", "message": f"Unsupported crsdk_ptp_mode: {raw_ptp!r}", "allowed": list(CRSDK_PTP_MODES)},
+            )
+        updates["crsdk_ptp_mode"] = ptp_norm
+
+    if "crsdk_cine_ei_base" in body and body["crsdk_cine_ei_base"] is not None:
+        raw_base = str(body["crsdk_cine_ei_base"]).strip()
+        if raw_base not in ("800", "12800"):
+            return False, {}, {"ok": False, "error": "invalid_crsdk_cine_ei_base", "message": "crsdk_cine_ei_base must be '800' or '12800'"}
+        updates["crsdk_cine_ei_base"] = raw_base
+        updates.setdefault("crsdk_safe_opcode", 0xD210)
+
+    if "crsdk_ei_index" in body and body["crsdk_ei_index"] is not None:
+        raw_ei = body["crsdk_ei_index"]
+        if isinstance(raw_ei, bool) or not isinstance(raw_ei, (int, float, str)):
+            return False, {}, {"ok": False, "error": "invalid_crsdk_ei_index", "message": f"Invalid crsdk_ei_index: {raw_ei!r}"}
+        try:
+            ei_i = int(raw_ei)
+        except ValueError:
+            return False, {}, {"ok": False, "error": "invalid_crsdk_ei_index", "message": f"Invalid crsdk_ei_index: {raw_ei!r}"}
+        if ei_i not in CINE_EI_STEPS["800"] and ei_i not in CINE_EI_STEPS["12800"]:
+            return False, {}, {"ok": False, "error": "invalid_crsdk_ei_index", "message": f"Unsupported EI index: {ei_i}"}
+        updates["crsdk_ei_index"] = ei_i
+        updates.setdefault("crsdk_safe_opcode", 0xD210)
+
+    if "crsdk_base_look" in body and body["crsdk_base_look"] is not None:
+        raw_look = str(body["crsdk_base_look"]).strip()
+        matched_look = next((k for k in BASE_LOOK_NLE_TAGS if k.lower() == raw_look.lower()), None)
+        if matched_look is None:
+            return False, {}, {"ok": False, "error": "invalid_crsdk_base_look", "message": f"Unsupported base_look: {raw_look!r}"}
+        updates["crsdk_base_look"] = matched_look
+        updates.setdefault("crsdk_safe_opcode", 0xD220)
+
+    if "crsdk_nd_preset" in body and body["crsdk_nd_preset"] is not None:
+        raw_nd = str(body["crsdk_nd_preset"]).strip()
+        is_clear = raw_nd.lower() in ("clear", "clear [fx3 p4 locked]", "0", "none", "")
+        updates["crsdk_nd_preset"] = "Clear [FX3 P4 Locked]"
+        updates["crsdk_nd_clamped"] = not is_clear
+        updates.setdefault("crsdk_safe_opcode", 0xD224)
+
+    return True, updates, None
+
+
 def _png_chunk(tag: bytes, data: bytes) -> bytes:
     return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
 
@@ -7517,6 +8079,37 @@ class FX6LiveGpe0Session:
                     "display_assist_mode": self.display_assist_mode,
                     "ext_raw_mode": self.ext_raw_mode,
                     "breathing_comp_mode": self.breathing_comp_mode,
+                }
+            )
+        )
+        self.uvc_mode = "OFF"
+        self.usb_link_speed = "USB3_5G"
+        self.uac_audio_enabled = True
+        self.srt_mode = "OFF"
+        self.srt_pbkeylen = "AES-256"
+        self.srt_latency_ms = 120
+        self.rtmps_mode = "OFF"
+        self.stream_bitrate_mbps = 12
+        self.crsdk_ptp_mode = "OFF"
+        self.p123_last_safe_opcode = 0xD210
+        self.p123_safe_cmd_count = 0
+        self.p123_flash_blocked_count = 0
+        self.p123_last_blocked_opcode: str | None = None
+        self.p123_p12_blocked_count = 0
+        self.p123_uvc_osd_blocked_count = 0
+        self.p123_crsdk_nd_clamp_count = 0
+        self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(
+            compute_uvc_srt_crsdk_ptp_derived(
+                {
+                    "uvc_mode": self.uvc_mode,
+                    "usb_link_speed": self.usb_link_speed,
+                    "uac_audio_enabled": self.uac_audio_enabled,
+                    "srt_mode": self.srt_mode,
+                    "srt_pbkeylen": self.srt_pbkeylen,
+                    "srt_latency_ms": self.srt_latency_ms,
+                    "rtmps_mode": self.rtmps_mode,
+                    "stream_bitrate_mbps": self.stream_bitrate_mbps,
+                    "crsdk_ptp_mode": self.crsdk_ptp_mode,
                 }
             )
         )
@@ -8461,8 +9054,84 @@ class FX6LiveGpe0Session:
         mb59 = 0x484C4741  # 'HLGA'
         return struct.pack("<4I", mb56, mb57, mb58, mb59)
 
+    def _pack_phase123_mailbox_bytes(self) -> bytes:
+        """Pack Phase 123 guest control mailbox mb[60..63] (16 bytes) matching fx6_live_guest.c."""
+        p123 = self.get_uvc_srt_crsdk_ptp()
+        uvc_req_idx = _UVC_MODE_TO_IDX.get(str(p123["uvc_mode"]), 0)
+        uvc_eff_idx = _UVC_MODE_TO_IDX.get(str(p123["effective_uvc_mode"]), 0)
+        usb2_non_ss = 1 if p123["usb_link_speed"] == "USB2_480M" else 0
+        uvc_step = 1 if p123["uvc_usb2_stepdown_active"] else 0
+        uac_en = 1 if p123["uac_audio_enabled"] else 0
+        uvc_clean = 1 if p123["uvc_clean_feed_no_osd"] else 0
+        uvc_fps = max(0, min(63, int(p123["uvc_fps"])))
+        uvc_mbps = max(0, min(1023, int(p123["uvc_bitrate_mbps"])))
+        uac_ch = max(0, min(15, int(p123["uac_channels"])))
+        uvc_osd_blk = 1 if int(p123["uvc_osd_blocked_count"]) > 0 else 0
+
+        mb60 = (
+            (uvc_req_idx & 0x3)
+            | ((uvc_eff_idx & 0x3) << 2)
+            | ((usb2_non_ss & 0x1) << 4)
+            | ((uvc_step & 0x1) << 5)
+            | ((uac_en & 0x1) << 6)
+            | ((uvc_clean & 0x1) << 7)
+            | ((uvc_fps & 0x3F) << 8)
+            | ((uvc_mbps & 0x3FF) << 14)
+            | ((uac_ch & 0xF) << 24)
+            | ((uvc_osd_blk & 0x1) << 28)
+            | (1 << 31)
+        )
+
+        srt_idx = _SRT_MODE_TO_IDX.get(str(p123["srt_mode"]), 0)
+        pk_idx = _SRT_PBKEY_TO_IDX.get(str(p123["srt_pbkeylen"]), 2)
+        srt_lat = max(20, min(1000, int(p123["srt_latency_ms"])))
+        rtmps_on = 1 if p123["rtmps_mode"] != "OFF" else 0
+        stream_mbps = max(1, min(50, int(p123["stream_bitrate_mbps"])))
+        p12_wlan_off = 1 if p123["p12_wlan_off"] else 0
+        cdc_ncm_ok = 1
+        p12_blk_cnt = max(0, min(127, int(p123["p12_blocked_count"])))
+        arq_en = 1 if p123["srt_arq_enabled"] else 0
+
+        mb61 = (
+            (srt_idx & 0x3)
+            | ((pk_idx & 0x3) << 2)
+            | ((srt_lat & 0x3FF) << 4)
+            | ((rtmps_on & 0x1) << 14)
+            | ((stream_mbps & 0x3F) << 15)
+            | ((p12_wlan_off & 0x1) << 21)
+            | ((cdc_ncm_ok & 0x1) << 22)
+            | ((p12_blk_cnt & 0x7F) << 23)
+            | ((arq_en & 0x1) << 30)
+            | (1 << 31)
+        )
+
+        ptp_idx = _CRSDK_PTP_TO_IDX.get(str(p123["crsdk_ptp_mode"]), 0)
+        flash_blk = 1 if p123["ptp_flash_opcodes_blocked"] else 0
+        emmc_zero = 1 if int(p123["emmc_mutation_bytes"]) == 0 else 0
+        p12_ptp = 1 if p123["p12_wlan_off"] else 0
+        p4_nd_clr = 1 if p123["p4_nd_clear_enforced"] else 0
+        last_d2_low = int(self.p123_last_safe_opcode) & 0xFF
+        blk_flash_cnt = max(0, min(127, int(p123["blocked_flash_opcode_count"])))
+        safe_cmd_cnt = max(0, min(127, int(p123["crsdk_safe_cmd_count"])))
+        action_kind = 5 if blk_flash_cnt > 0 else (4 if int(p123["crsdk_nd_clamp_count"]) > 0 else 0)
+
+        mb62 = (
+            (ptp_idx & 0x3)
+            | ((flash_blk & 0x1) << 2)
+            | ((emmc_zero & 0x1) << 3)
+            | ((p12_ptp & 0x1) << 4)
+            | ((p4_nd_clr & 0x1) << 5)
+            | ((last_d2_low & 0xFF) << 6)
+            | ((blk_flash_cnt & 0x7F) << 14)
+            | ((safe_cmd_cnt & 0x7F) << 21)
+            | ((action_kind & 0x7) << 28)
+            | (1 << 31)
+        )
+        mb63 = 0x55564353  # 'UVCS'
+        return struct.pack("<4I", mb60, mb61, mb62, mb63)
+
     def _write_ctrl_mailbox(self) -> bool:
-        """Write mb[0..59] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
+        """Write mb[0..63] to guest physical 0x41e000e00 via serialized QEMU GDB stub and always resume VCPUs."""
         if not self.is_running() or not self.gdb_sock.exists() or not self.live_ready or self.crashed:
             return False
         raw = (
@@ -8474,6 +9143,7 @@ class FX6LiveGpe0Session:
             + self._pack_phase102_mailbox_bytes()
             + self._pack_phase109_mailbox_bytes()
             + self._pack_phase116_mailbox_bytes()
+            + self._pack_phase123_mailbox_bytes()
         )
         with self.gdb_lock:
             for _ in range(2):
@@ -9109,6 +9779,7 @@ class FX6LiveGpe0Session:
                             self.cine_ei_base, self.ei_index = ei_map[new_idx]
                             self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
                             self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+                            self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
                     elif key == "shutter":
                         shutter_map = [
                             ("angle", 180.0, None),
@@ -9145,6 +9816,7 @@ class FX6LiveGpe0Session:
                             self.last_interval_cache_lut_ftp_cmd = format_interval_cache_lut_ftp_command(self.get_interval_cache_lut_ftp())
                             self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
                             self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+                            self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
                     elif key == "wb":
                         wb_cell_map = [
                             ("preset_5600k", 5600),
@@ -9473,6 +10145,7 @@ class FX6LiveGpe0Session:
         elif "wired_io_mode" in updates and str(updates["wired_io_mode"]).lower() == "hdmi_raw16" and self.ext_raw_mode == "OFF":
             self.ext_raw_mode = "Atomos_ProRes_RAW_16_12L"
         self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+        self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
 
     def set_cine_exposure(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -9602,6 +10275,7 @@ class FX6LiveGpe0Session:
         self.last_shotmark_iris_cmd = format_shotmark_iris_command(self.get_shotmark_and_iris())
         self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
         self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+        self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
 
     def set_color_and_media(self, body: Any) -> dict[str, Any]:
         with self.cmd_lock:
@@ -9653,6 +10327,7 @@ class FX6LiveGpe0Session:
             ic = self.get_interval_cache_lut_ftp()
             p109 = self.get_mc_fleet_sdi_c2pa()
             p116 = self.get_hdr_hlg_raw_breathing()
+            p123 = self.get_uvc_srt_crsdk_ptp()
             active_user = self._active_user_lut_for_color()
         xml_text = build_nrtm_xml_sidecar(
             ce,
@@ -9663,6 +10338,7 @@ class FX6LiveGpe0Session:
             interval_cache_lut_ftp=ic,
             mc_fleet_sdi_c2pa=p109,
             hdr_hlg_raw_breathing=p116,
+            uvc_srt_crsdk_ptp=p123,
         )
         return {
             "ok": True,
@@ -9682,6 +10358,7 @@ class FX6LiveGpe0Session:
             "interval_cache_lut_ftp": ic,
             "mc_fleet_sdi_c2pa": p109,
             "hdr_hlg_raw_breathing": p116,
+            "uvc_srt_crsdk_ptp": p123,
         }
 
     def get_mc_fleet_sdi_c2pa(self) -> dict[str, Any]:
@@ -9936,6 +10613,197 @@ class FX6LiveGpe0Session:
                 "clean_hdmi_sdi_unassisted": True,
                 "xavc_internal_unassisted": True,
                 "external_output_assist_leak_px": 0,
+                "toast": self.last_toast,
+                "wrote_mailbox": wrote,
+                "guest_synced": synced,
+                "status": self.get_status(),
+            }
+
+    def get_uvc_srt_crsdk_ptp(self) -> dict[str, Any]:
+        state = compute_uvc_srt_crsdk_ptp_derived(
+            {
+                "uvc_mode": self.uvc_mode,
+                "usb_link_speed": self.usb_link_speed,
+                "uac_audio_enabled": self.uac_audio_enabled,
+                "srt_mode": self.srt_mode,
+                "srt_pbkeylen": self.srt_pbkeylen,
+                "srt_latency_ms": self.srt_latency_ms,
+                "rtmps_mode": self.rtmps_mode,
+                "stream_bitrate_mbps": self.stream_bitrate_mbps,
+                "crsdk_ptp_mode": self.crsdk_ptp_mode,
+            },
+            cine_ei_base=self.cine_ei_base,
+            ei_index=self.ei_index,
+            base_look=self.base_look,
+            nd_preset="Clear [FX3 P4 Locked]",
+            last_safe_opcode=self.p123_last_safe_opcode,
+            safe_cmd_count=self.p123_safe_cmd_count,
+            flash_blocked_count=self.p123_flash_blocked_count,
+            last_blocked_opcode=self.p123_last_blocked_opcode,
+            p12_blocked_count=self.p123_p12_blocked_count,
+            uvc_osd_blocked_count=self.p123_uvc_osd_blocked_count,
+            crsdk_nd_clamp_count=self.p123_crsdk_nd_clamp_count,
+            wf12_00342260_hits=self.wf12_00342260_hits,
+        )
+        state["uvc_srt_crsdk_ptp_cmd"] = format_uvc_srt_crsdk_ptp_command(state)
+        return state
+
+    def _apply_uvc_srt_crsdk_ptp_updates_locked(
+        self,
+        updates: dict[str, Any],
+        *,
+        is_reset: bool = False,
+    ) -> None:
+        if is_reset:
+            self.p123_last_safe_opcode = 0xD210
+            self.p123_safe_cmd_count = 0
+            self.p123_flash_blocked_count = 0
+            self.p123_last_blocked_opcode = None
+            self.p123_p12_blocked_count = 0
+            self.p123_uvc_osd_blocked_count = 0
+            self.p123_crsdk_nd_clamp_count = 0
+        if "uvc_mode" in updates:
+            self.uvc_mode = str(updates["uvc_mode"])
+        if "usb_link_speed" in updates:
+            self.usb_link_speed = str(updates["usb_link_speed"])
+        if "uac_audio_enabled" in updates:
+            self.uac_audio_enabled = bool(updates["uac_audio_enabled"])
+        if "srt_mode" in updates:
+            self.srt_mode = str(updates["srt_mode"])
+        if "srt_pbkeylen" in updates:
+            self.srt_pbkeylen = str(updates["srt_pbkeylen"])
+        if "srt_latency_ms" in updates:
+            self.srt_latency_ms = int(updates["srt_latency_ms"])
+        if "rtmps_mode" in updates:
+            self.rtmps_mode = str(updates["rtmps_mode"])
+        if "stream_bitrate_mbps" in updates:
+            self.stream_bitrate_mbps = int(updates["stream_bitrate_mbps"])
+        if "crsdk_ptp_mode" in updates:
+            self.crsdk_ptp_mode = str(updates["crsdk_ptp_mode"])
+
+        if "crsdk_cine_ei_base" in updates:
+            self.cine_ei_base = str(updates["crsdk_cine_ei_base"])
+            if "crsdk_ei_index" not in updates:
+                self.ei_index = int(self.cine_ei_base)
+        if "crsdk_ei_index" in updates:
+            self.ei_index = int(updates["crsdk_ei_index"])
+            if "crsdk_cine_ei_base" not in updates:
+                self.cine_ei_base = "12800" if self.ei_index in CINE_EI_STEPS["12800"] and self.ei_index not in CINE_EI_STEPS["800"] else (
+                    "12800" if self.ei_index >= 6400 and self.cine_ei_base == "12800" else ("12800" if self.ei_index >= 12800 else "800")
+                )
+        if "crsdk_cine_ei_base" in updates or "crsdk_ei_index" in updates:
+            ei_cell_map = {
+                ("800", 800): 0,
+                ("800", 400): 1,
+                ("800", 1600): 2,
+                ("12800", 12800): 3,
+                ("12800", 6400): 4,
+                ("12800", 25600): 5,
+            }
+            if (self.cine_ei_base, self.ei_index) in ei_cell_map:
+                self.cell_vals[1] = ei_cell_map[(self.cine_ei_base, self.ei_index)]
+            elif self.cine_ei_base == "12800":
+                self.cell_vals[1] = 3
+            else:
+                self.cell_vals[1] = 0
+
+        if "crsdk_base_look" in updates:
+            self.base_look = str(updates["crsdk_base_look"])
+            if self.base_look == "User 3D LUT":
+                if (self.cell_vals[4] % 8) < 4:
+                    self.cell_vals[4] = 4
+            elif self.base_look in BASE_LOOK_NLE_TAGS:
+                self.cell_vals[4] = int(BASE_LOOK_NLE_TAGS[self.base_look]["cell_lut_idx"])
+
+        if updates.get("crsdk_nd_clamped"):
+            self.p123_crsdk_nd_clamp_count += 1
+            self.p4_lock_attempts += 1
+        self.cell_vals[3] = 0  # P4 ND=Clear Hardware Lock always enforced!
+
+        if "crsdk_safe_opcode" in updates:
+            self.p123_last_safe_opcode = int(updates["crsdk_safe_opcode"])
+            self.p123_safe_cmd_count += 1
+
+        self.wf12_00342260_hits = 0
+        self.p12_bk4_airplane_mode_locked = True
+        self.last_cine_exp_cmd = format_cine_exp_command(self.get_cine_exposure())
+        self.last_wb_media_cmd = format_wb_media_command(self.get_color_and_media())
+        self.last_mc_fleet_sdi_c2pa_cmd = format_mc_fleet_sdi_c2pa_command(self.get_mc_fleet_sdi_c2pa())
+        self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(self.get_hdr_hlg_raw_breathing())
+        self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+
+    def set_uvc_srt_crsdk_ptp(self, body: Any) -> dict[str, Any]:
+        with self.cmd_lock:
+            cur = {
+                "uvc_mode": self.uvc_mode,
+                "usb_link_speed": self.usb_link_speed,
+                "uac_audio_enabled": self.uac_audio_enabled,
+                "srt_mode": self.srt_mode,
+                "srt_pbkeylen": self.srt_pbkeylen,
+                "srt_latency_ms": self.srt_latency_ms,
+                "rtmps_mode": self.rtmps_mode,
+                "stream_bitrate_mbps": self.stream_bitrate_mbps,
+                "crsdk_ptp_mode": self.crsdk_ptp_mode,
+            }
+            ok, updates, err = validate_uvc_srt_crsdk_ptp_patch(body, current_state=cur)
+            if not ok:
+                err_code = (err or {}).get("error")
+                if err_code == "ptp_flash_opcode_blocked":
+                    self.p123_flash_blocked_count += 1
+                    self.p123_last_blocked_opcode = str(err.get("blocked_opcode", "0x9280"))
+                    self.last_toast = str(err.get("message", "Destructive PTP flash opcode blocked"))
+                    self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+                    self._sync_mailbox_and_capture()
+                    err["blocked_flash_opcode_count"] = self.p123_flash_blocked_count
+                    err["last_blocked_flash_opcode"] = self.p123_last_blocked_opcode
+                    err["ptp_flash_opcodes_blocked"] = True
+                    err["emmc_mutation_bytes"] = 0
+                    err["uvc_srt_crsdk_ptp"] = self.get_uvc_srt_crsdk_ptp()
+                    err["status"] = self.get_status()
+                elif err_code == "p12_wlan_off_enforced":
+                    self.p123_p12_blocked_count += 1
+                    self.last_toast = str(err.get("message", "P12 Airplane-Mode Wi-Fi-OFF enforced"))
+                    self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+                    self._sync_mailbox_and_capture()
+                    err["p12_blocked_count"] = self.p123_p12_blocked_count
+                    err["p12_wlan_off"] = True
+                    err["wf12_00342260_hits"] = 0
+                    err["uvc_srt_crsdk_ptp"] = self.get_uvc_srt_crsdk_ptp()
+                    err["status"] = self.get_status()
+                elif err_code == "uvc_osd_burnin_blocked":
+                    self.p123_uvc_osd_blocked_count += 1
+                    self.last_toast = str(err.get("message", "UVC clean feed without OSD burn-in enforced"))
+                    self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(self.get_uvc_srt_crsdk_ptp())
+                    self._sync_mailbox_and_capture()
+                    err["uvc_osd_blocked_count"] = self.p123_uvc_osd_blocked_count
+                    err["uvc_clean_feed_no_osd"] = True
+                    err["uvc_osd_burnin_px"] = 0
+                    err["uvc_srt_crsdk_ptp"] = self.get_uvc_srt_crsdk_ptp()
+                    err["status"] = self.get_status()
+                return err or {"ok": False, "error": "invalid_uvc_srt_crsdk_ptp"}
+
+            is_reset = isinstance(body, dict) and body.get("reset") is True
+            self._apply_uvc_srt_crsdk_ptp_updates_locked(updates, is_reset=is_reset)
+            p123 = self.get_uvc_srt_crsdk_ptp()
+            self.last_toast = (
+                f"Phase123: UVC={p123['effective_uvc_mode']}({p123['usb_link_speed']},Clean=1) | "
+                f"SRT={p123['srt_mode']}({p123['srt_pbkeylen']},{p123['srt_latency_ms']}ms) | "
+                f"RTMPS={p123['rtmps_mode']}@{p123['stream_bitrate_mbps']}M(P12=1) | "
+                f"CRSDK={p123['crsdk_ptp_mode']}({p123['crsdk_last_safe_opcode']},FlashBlk=1)"
+            )
+            wrote, synced = self._sync_mailbox_and_capture()
+            return {
+                "ok": True,
+                "uvc_srt_crsdk_ptp": p123,
+                "uvc_srt_crsdk_ptp_cmd": p123["uvc_srt_crsdk_ptp_cmd"],
+                "p12_wlan_off": True,
+                "wf12_00342260_hits": 0,
+                "ptp_flash_opcodes_blocked": True,
+                "emmc_mutation_bytes": 0,
+                "uvc_clean_feed_no_osd": True,
+                "uvc_osd_burnin_px": 0,
+                "p4_nd_clear_enforced": True,
+                "crsdk_nd_clamped": bool(updates.get("crsdk_nd_clamped", False)),
                 "toast": self.last_toast,
                 "wrote_mailbox": wrote,
                 "guest_synced": synced,
@@ -10506,6 +11374,7 @@ class FX6LiveGpe0Session:
             "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
             "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
             "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
+            "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
             "rtmd_0xe304_ibis_lock": self.rtmd_0xe304_ibis_lock,
             "p12_bk4_airplane_mode_locked": True,
             "active_user_lut": cp.get("active_user_lut"),
@@ -10990,6 +11859,46 @@ class FX6LiveGpe0Session:
             if not ok_p116:
                 return err_p116 or {"ok": False, "error": "invalid_hdr_hlg_raw_breathing"}
 
+        p123_raw = payload.get("uvc_srt_crsdk_ptp")
+        new_p123_updates: dict[str, Any] = {}
+        if p123_raw is not None:
+            if not isinstance(p123_raw, dict):
+                return {"ok": False, "error": "invalid_uvc_srt_crsdk_ptp", "message": "uvc_srt_crsdk_ptp must be a JSON object"}
+            if p123_raw.get("emmc_mutation_bytes") not in (None, 0) or p123_raw.get("persistent_emmc_writes_authorized") is True:
+                return {
+                    "ok": False,
+                    "error": "ptp_flash_opcode_blocked",
+                    "blocked_opcode": "0x9280",
+                    "message": "Destructive eMMC/flash mutation forbidden in CAMSET import",
+                    "ptp_flash_opcodes_blocked": True,
+                    "emmc_mutation_bytes": 0,
+                }
+            if p123_raw.get("uvc_osd_burnin_px") not in (None, 0):
+                return {
+                    "ok": False,
+                    "error": "uvc_osd_burnin_blocked",
+                    "message": "UVC OSD burn-in forbidden in CAMSET import",
+                    "uvc_clean_feed_no_osd": True,
+                    "uvc_osd_burnin_px": 0,
+                }
+            cur_p123 = {
+                "uvc_mode": self.uvc_mode,
+                "usb_link_speed": self.usb_link_speed,
+                "uac_audio_enabled": self.uac_audio_enabled,
+                "srt_mode": self.srt_mode,
+                "srt_pbkeylen": self.srt_pbkeylen,
+                "srt_latency_ms": self.srt_latency_ms,
+                "rtmps_mode": self.rtmps_mode,
+                "stream_bitrate_mbps": self.stream_bitrate_mbps,
+                "crsdk_ptp_mode": self.crsdk_ptp_mode,
+            }
+            ok_p123, new_p123_updates, err_p123 = validate_uvc_srt_crsdk_ptp_patch(
+                p123_raw,
+                current_state=cur_p123,
+            )
+            if not ok_p123:
+                return err_p123 or {"ok": False, "error": "invalid_uvc_srt_crsdk_ptp"}
+
         p12_clamped = (
             (payload.get("p12_bk4_airplane_mode_locked") is False)
             or ce_p12_tamper
@@ -11170,6 +12079,19 @@ class FX6LiveGpe0Session:
                 self.last_hdr_hlg_raw_breathing_cmd = format_hdr_hlg_raw_breathing_command(
                     self.get_hdr_hlg_raw_breathing()
                 )
+            if p123_raw is not None:
+                if "crsdk_last_safe_opcode" in p123_raw and "ptp_opcode" not in p123_raw and "crsdk_opcode" not in p123_raw:
+                    saved_op = _parse_ptp_opcode(p123_raw.get("crsdk_last_safe_opcode"))
+                    if saved_op is not None and saved_op in CRSDK_SAFE_D2XX_OPCODES:
+                        new_p123_updates["crsdk_safe_opcode"] = saved_op
+                self._apply_uvc_srt_crsdk_ptp_updates_locked(
+                    new_p123_updates,
+                    is_reset=bool(p123_raw.get("reset") is True),
+                )
+            else:
+                self.last_uvc_srt_crsdk_ptp_cmd = format_uvc_srt_crsdk_ptp_command(
+                    self.get_uvc_srt_crsdk_ptp()
+                )
 
             if p4_rejected:
                 self.last_toast = (
@@ -11216,6 +12138,7 @@ class FX6LiveGpe0Session:
                 "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
                 "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
                 "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
+                "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
                 "cinema_params": self.get_cinema_params(),
                 "stage_b_telemetry": self.get_stage_b_telemetry(),
                 "status": self.get_status(),
@@ -11906,6 +12829,7 @@ class FX6LiveGpe0Session:
             "interval_cache_lut_ftp": self.get_interval_cache_lut_ftp(),
             "mc_fleet_sdi_c2pa": self.get_mc_fleet_sdi_c2pa(),
             "hdr_hlg_raw_breathing": self.get_hdr_hlg_raw_breathing(),
+            "uvc_srt_crsdk_ptp": self.get_uvc_srt_crsdk_ptp(),
             "serial_tail": serial_tail,
         }
 
@@ -12787,6 +13711,105 @@ HTML_UI = """<!DOCTYPE html>
       <div id="p95-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#67e8f9;font-family:'SF Mono',Menlo,monospace;">GYRO_ANA ...</div>
     </div>
 
+    <div class="card" id="phase123-uvc-srt-crsdk-ptp-card" style="margin-top:14px;border-color:#10b981;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <h3 id="p123-card-title" style="margin:0;">Phase 123 · USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙</h3>
+        <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+          <button id="p123-lang-en" onclick="setP123Lang('en')" style="padding:3px 7px;font-size:10.5px;">EN</button>
+          <button id="p123-lang-zh-CN" onclick="setP123Lang('zh-CN')" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">简体中文</button>
+          <button id="p123-lang-zh-TW" onclick="setP123Lang('zh-TW')" style="padding:3px 7px;font-size:10.5px;">繁體中文</button>
+          <button id="p123-lang-ja" onclick="setP123Lang('ja')" style="padding:3px 7px;font-size:10.5px;">日本語</button>
+        </div>
+      </div>
+      <div id="p123-error-banner" style="display:none;background:#450a0a;border:1px solid #ef4444;color:#fecaca;border-radius:6px;padding:6px 10px;font-size:11.5px;margin-bottom:8px;"></div>
+      <div id="p123-warn-banner" style="display:none;background:#78350f;border:1px solid #f59e0b;color:#fde68a;border-radius:6px;padding:6px 10px;font-size:11px;margin-bottom:8px;"></div>
+
+      <div class="cinema-grid">
+        <div class="cparam-box" style="border-color:#22d3ee;">
+          <div class="cparam-head"><span id="p123-lbl-uvc">USB-C UVC 1.5 / UAC 2.0 Clean Feed</span><span id="p123-uvc-badge" style="color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">OFF · CLEAN=1</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p123-uvc-select" onchange="setPhase123State({uvc_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF</option>
+              <option value="UVC_4K30P_MJPEG_5G">UVC 4K30p MJPEG (5Gbps)</option>
+              <option value="UVC_1080P60P_YUY2_5G">UVC 1080p60 YUY2 (5Gbps)</option>
+              <option value="UVC_720P30P_MJPEG_USB2_FALLBACK">UVC 720p30 MJPEG (USB2)</option>
+            </select>
+            <select id="p123-usb-speed-select" onchange="setPhase123State({usb_link_speed: this.value})" style="width:94px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="USB3_5G">USB3 5G</option>
+              <option value="USB2_480M">USB2 480M</option>
+            </select>
+            <button id="p123-btn-test-osd-leak" onclick="setPhase123State({uvc_bake_osd: true})" style="padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test OSD Block</button>
+          </div>
+          <div id="p123-uvc-readout" style="font-size:10px;color:#a5f3fc;font-family:'SF Mono',Menlo,monospace;">UAC 48kHz 16-bit 2ch PCM | CleanFeed=1 OSD=0px</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#10b981;">
+          <div class="cparam-head"><span id="p123-lbl-srt">Wired CDC-NCM SRT / RTMPS TLS 1.3 (P12)</span><span id="p123-srt-badge" style="color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">OFF · P12 WLAN=OFF</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p123-srt-select" onchange="setPhase123State({srt_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">SRT OFF</option>
+              <option value="SRT_CALLER">SRT Caller (ARQ)</option>
+              <option value="SRT_LISTENER">SRT Listener (ARQ)</option>
+            </select>
+            <select id="p123-pbkey-select" onchange="setPhase123State({srt_pbkeylen: this.value})" style="width:84px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="AES-256">AES-256</option>
+              <option value="AES-128">AES-128</option>
+              <option value="NONE">NONE</option>
+            </select>
+            <input id="p123-latency-input" type="number" step="10" min="20" max="1000" value="120" title="SRT ARQ Latency (ms)" style="width:58px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <select id="p123-rtmps-select" onchange="setPhase123State({rtmps_mode: this.value})" style="width:98px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">RTMPS OFF</option>
+              <option value="RTMPS_TLS13">RTMPS TLS1.3</option>
+            </select>
+            <input id="p123-bitrate-input" type="number" step="1" min="1" max="50" value="12" title="Bitrate (Mbps)" style="width:48px;background:#07090c;color:#f8fafc;border:1px solid #374151;border-radius:6px;padding:3px 5px;font-size:10.5px;" />
+            <button id="p123-btn-apply-srt" onclick="applyPhase123SrtParams()" style="padding:3px 7px;font-size:10.5px;border-color:#10b981;">Apply</button>
+            <button id="p123-btn-test-wifi" onclick="setPhase123State({use_wifi: true})" style="padding:3px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Test P12 Wi-Fi</button>
+          </div>
+          <div id="p123-srt-readout" style="font-size:10px;color:#a7f3d0;font-family:'SF Mono',Menlo,monospace;">CDC-NCM Wired | P12 WLAN=OFF wf12=0 | 12Mbps</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#3b82f6;">
+          <div class="cparam-head"><span id="p123-lbl-ptp">CRSDK PTP / PTP-IP (0x054C) Remote</span><span id="p123-ptp-badge" style="color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">OFF · 0xD210</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <select id="p123-ptp-select" onchange="setPhase123State({crsdk_ptp_mode: this.value})" style="flex:1;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="OFF">OFF</option>
+              <option value="USB_PTP">USB PTP (0x054C)</option>
+              <option value="WIRED_PTPIP">Wired PTP-IP (15740)</option>
+            </select>
+            <select id="p123-d2xx-select" style="width:128px;background:#172030;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:4px;font-size:10.5px;">
+              <option value="0xD210">0xD210 Base/EI</option>
+              <option value="0xD20D">0xD20D Shutter</option>
+              <option value="0xD21C">0xD21C WB/K</option>
+              <option value="0xD220">0xD220 Look/LUT</option>
+              <option value="0xD224">0xD224 P4 ND-Clear</option>
+              <option value="0xD2C1">0xD2C1 Touch AF</option>
+              <option value="0xD2C4">0xD2C4 REC Trig</option>
+            </select>
+            <button id="p123-btn-send-d2xx" onclick="sendPhase123SafeOpcode()" style="padding:3px 7px;font-size:10.5px;border-color:#3b82f6;color:#bfdbfe;">Run 0xD2xx</button>
+            <button id="p123-btn-test-nd-clamp" onclick="setPhase123State({ptp_opcode:'0xD224',crsdk_nd_preset:'1/16'})" style="padding:3px 7px;font-size:10.5px;border-color:#f59e0b;color:#fde68a;">Test P4 ND</button>
+          </div>
+          <div id="p123-ptp-readout" style="font-size:10px;color:#bfdbfe;font-family:'SF Mono',Menlo,monospace;">VID 0x054C | Base800 EI800 | Look=S-Cinetone | P4 ND=Clear</div>
+        </div>
+
+        <div class="cparam-box" style="border-color:#ef4444;">
+          <div class="cparam-head"><span id="p123-lbl-fw">PTP Flash-Opcode Firewall (0x9280..)</span><span id="p123-fw-badge" style="color:#fca5a5;font-family:'SF Mono',Menlo,monospace;">ARMED · eMMC=0B</span></div>
+          <div style="display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap;">
+            <button id="p123-btn-test-flash-9280" onclick="setPhase123State({ptp_opcode:'0x9280'})" style="flex:1;padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block 0x9280 Flash</button>
+            <button id="p123-btn-test-flash-9285" onclick="setPhase123State({ptp_opcode:'0x9285',crsdk_action:'firmware_flash'})" style="flex:1;padding:4px 7px;font-size:10.5px;border-color:#ef4444;color:#fecaca;">Block 0x9285 UFU</button>
+          </div>
+          <div id="p123-fw-readout" style="font-size:10px;color:#fecaca;font-family:'SF Mono',Menlo,monospace;">Firewall=ON | eMMC_Mutation=0B | Blocked=0</div>
+        </div>
+      </div>
+
+      <div class="pill-row">
+        <button id="p123-preset-uvc4k-srt-ptpip" onclick="setPhase123State({uvc_mode:'UVC_4K30P_MJPEG_5G',usb_link_speed:'USB3_5G',srt_mode:'SRT_CALLER',srt_pbkeylen:'AES-256',srt_latency_ms:120,crsdk_ptp_mode:'WIRED_PTPIP'})" style="border-color:#10b981;color:#a7f3d0;">UVC 4K30p + SRT Caller AES-256 + PTP-IP</button>
+        <button id="p123-preset-usb2-fallback" onclick="setPhase123State({uvc_mode:'UVC_4K30P_MJPEG_5G',usb_link_speed:'USB2_480M',rtmps_mode:'RTMPS_TLS13',stream_bitrate_mbps:18})" style="border-color:#f59e0b;color:#fde68a;">USB2 480M Stepdown (720p30) + RTMPS TLS1.3</button>
+        <button id="p123-preset-ptp-ei12800" onclick="setPhase123State({crsdk_ptp_mode:'USB_PTP',ptp_opcode:'0xD210',crsdk_cine_ei_base:'12800',crsdk_ei_index:12800,crsdk_base_look:'S-Log3 / S-Gamut3.Cine'})" style="border-color:#3b82f6;color:#bfdbfe;">CRSDK 0xD210 EI 12800 + S-Log3</button>
+        <button id="p123-btn-reset" onclick="setPhase123State({reset:true})" style="padding:4px 8px;font-size:11px;">Reset P123</button>
+      </div>
+      <div id="p123-cmd-readout" style="margin-top:6px;font-size:10.5px;color:#6ee7b7;font-family:'SF Mono',Menlo,monospace;">UVCS ...</div>
+    </div>
+
     <div class="card" id="phase116-hlg-raw-breathing-card" style="margin-top:14px;border-color:#f59e0b;">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
         <h3 id="p116-card-title" style="margin:0;">Phase 116 · HLG1/HLG2/HLG3 BT.2100 &amp; CTA-861.3 (0x87) / Display Assist 洁净隔离 / ProRes RAW &amp; BRAW / 呼吸效应补偿</h3>
@@ -13558,6 +14581,9 @@ async function updateUI(st, forceImg) {
   }
   if (st.hdr_hlg_raw_breathing) {
     syncPhase116HlgRawBreathingUI(st.hdr_hlg_raw_breathing);
+  }
+  if (st.uvc_srt_crsdk_ptp) {
+    syncPhase123UvcSrtCrsdkPtpUI(st.uvc_srt_crsdk_ptp);
   }
 
   if (forceImg || st.live_ready) {
@@ -15767,10 +16793,235 @@ function applyPhase116Detail() {
   setPhase116State({detail_level: det});
 }
 
+const P123_I18N = {
+  en: {
+    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 Clean Stream · P12 Wired SRT/RTMPS · CRSDK PTP Remote & Flash Firewall',
+    uvc: 'USB-C UVC 1.5 / UAC 2.0 Clean Feed',
+    srt: 'Wired CDC-NCM SRT / RTMPS TLS 1.3 (P12)',
+    ptp: 'CRSDK PTP / PTP-IP (0x054C) Remote',
+    fw: 'PTP Flash-Opcode Firewall (0x9280..)',
+    testOsd: 'Test OSD Block',
+    applySrt: 'Apply',
+    testWifi: 'Test P12 Wi-Fi',
+    sendD2xx: 'Run 0xD2xx',
+    testNd: 'Test P4 ND',
+    test9280: 'Block 0x9280 Flash',
+    test9285: 'Block 0x9285 UFU',
+    presetUvc4k: 'UVC 4K30p + SRT Caller AES-256 + PTP-IP',
+    presetUsb2: 'USB2 480M Stepdown (720p30) + RTMPS TLS1.3',
+    presetPtpEi: 'CRSDK 0xD210 EI 12800 + S-Log3',
+    reset: 'Reset P123'
+  },
+  'zh-CN': {
+    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 洁净推流 · P12 有线 SRT/RTMPS · CRSDK PTP 遥控与刷写防火墙',
+    uvc: 'USB-C UVC 1.5 / UAC 2.0 洁净输出',
+    srt: '有线 CDC-NCM SRT / RTMPS TLS 1.3 (P12 关 Wi-Fi)',
+    ptp: 'Sony CRSDK PTP / PTP-IP (0x054C) 遥控',
+    fw: 'PTP 固件刷写销毁指令防火墙 (0x9280..)',
+    testOsd: '测试 OSD 防烧录',
+    applySrt: '应用',
+    testWifi: '测试 P12 Wi-Fi 拦截',
+    sendD2xx: '执行 0xD2xx',
+    testNd: '测试 P4 ND 钳位',
+    test9280: '拦截 0x9280 刷写',
+    test9285: '拦截 0x9285 UFU',
+    presetUvc4k: 'UVC 4K30p + SRT Caller AES-256 + PTP-IP',
+    presetUsb2: 'USB2 480M 自动降档 (720p30) + RTMPS TLS1.3',
+    presetPtpEi: 'CRSDK 0xD210 EI 12800 + S-Log3',
+    reset: '重置 P123'
+  },
+  'zh-TW': {
+    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 潔淨串流 · P12 有線 SRT/RTMPS · CRSDK PTP 遙控與刷寫防火牆',
+    uvc: 'USB-C UVC 1.5 / UAC 2.0 潔淨輸出',
+    srt: '有線 CDC-NCM SRT / RTMPS TLS 1.3 (P12 關 Wi-Fi)',
+    ptp: 'Sony CRSDK PTP / PTP-IP (0x054C) 遙控',
+    fw: 'PTP 韌體刷寫銷毀指令防火牆 (0x9280..)',
+    testOsd: '測試 OSD 防燒錄',
+    applySrt: '套用',
+    testWifi: '測試 P12 Wi-Fi 攔截',
+    sendD2xx: '執行 0xD2xx',
+    testNd: '測試 P4 ND 鉗位',
+    test9280: '攔截 0x9280 刷寫',
+    test9285: '攔截 0x9285 UFU',
+    presetUvc4k: 'UVC 4K30p + SRT Caller AES-256 + PTP-IP',
+    presetUsb2: 'USB2 480M 自動降階 (720p30) + RTMPS TLS1.3',
+    presetPtpEi: 'CRSDK 0xD210 EI 12800 + S-Log3',
+    reset: '重設 P123'
+  },
+  ja: {
+    title: 'Phase 123 · USB-C UVC 1.5 / UAC 2.0 クリーン配信 · P12 有線 SRT/RTMPS · CRSDK PTP 制御＆書換FW',
+    uvc: 'USB-C UVC 1.5 / UAC 2.0 クリーン出力',
+    srt: '有線 CDC-NCM SRT / RTMPS TLS 1.3 (P12 Wi-Fi OFF)',
+    ptp: 'Sony CRSDK PTP / PTP-IP (0x054C) 遠隔制御',
+    fw: 'PTP フラッシュ破壊命令ファイアウォール (0x9280..)',
+    testOsd: 'OSD 焼込遮断テスト',
+    applySrt: '適用',
+    testWifi: 'P12 Wi-Fi 遮断テスト',
+    sendD2xx: '0xD2xx 実行',
+    testNd: 'P4 ND クランプ試験',
+    test9280: '0x9280 書換を遮断',
+    test9285: '0x9285 UFU を遮断',
+    presetUvc4k: 'UVC 4K30p + SRT Caller AES-256 + PTP-IP',
+    presetUsb2: 'USB2 480M 自動降格 (720p30) + RTMPS TLS1.3',
+    presetPtpEi: 'CRSDK 0xD210 EI 12800 + S-Log3',
+    reset: 'P123 リセット'
+  }
+};
+
+function setP123Lang(lang) {
+  const d = P123_I18N[lang] || P123_I18N['en'];
+  const map = {
+    'p123-card-title': d.title,
+    'p123-lbl-uvc': d.uvc,
+    'p123-lbl-srt': d.srt,
+    'p123-lbl-ptp': d.ptp,
+    'p123-lbl-fw': d.fw,
+    'p123-btn-test-osd-leak': d.testOsd,
+    'p123-btn-apply-srt': d.applySrt,
+    'p123-btn-test-wifi': d.testWifi,
+    'p123-btn-send-d2xx': d.sendD2xx,
+    'p123-btn-test-nd-clamp': d.testNd,
+    'p123-btn-test-flash-9280': d.test9280,
+    'p123-btn-test-flash-9285': d.test9285,
+    'p123-preset-uvc4k-srt-ptpip': d.presetUvc4k,
+    'p123-preset-usb2-fallback': d.presetUsb2,
+    'p123-preset-ptp-ei12800': d.presetPtpEi,
+    'p123-btn-reset': d.reset
+  };
+  Object.keys(map).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map[id];
+  });
+  ['en', 'zh-CN', 'zh-TW', 'ja'].forEach((code) => {
+    const b = document.getElementById('p123-lang-' + code);
+    if (b) b.style.borderColor = (code === lang) ? '#10b981' : '#374151';
+  });
+}
+
+function syncPhase123UvcSrtCrsdkPtpUI(p123) {
+  if (!p123) return;
+  const uvcSel = document.getElementById('p123-uvc-select');
+  if (uvcSel && p123.uvc_mode && document.activeElement !== uvcSel) uvcSel.value = p123.uvc_mode;
+  const spdSel = document.getElementById('p123-usb-speed-select');
+  if (spdSel && p123.usb_link_speed && document.activeElement !== spdSel) spdSel.value = p123.usb_link_speed;
+  const uvcBadge = document.getElementById('p123-uvc-badge');
+  if (uvcBadge) {
+    uvcBadge.textContent = `${p123.effective_uvc_mode || 'OFF'} · CLEAN=${p123.uvc_clean_feed_no_osd ? 1 : 0}`;
+  }
+  const uvcRo = document.getElementById('p123-uvc-readout');
+  if (uvcRo) {
+    uvcRo.textContent =
+      `${p123.uvc_resolution || '0x0'}@${p123.uvc_fps ?? 0} ${p123.uvc_codec || 'NONE'} (${p123.usb_link_speed}) | ` +
+      `UAC=${p123.uac_audio_spec} | Clean=${p123.uvc_clean_feed_no_osd ? 1 : 0} OSD=${p123.uvc_osd_burnin_px ?? 0}px Blk=${p123.uvc_osd_blocked_count ?? 0}`;
+  }
+
+  const srtSel = document.getElementById('p123-srt-select');
+  if (srtSel && p123.srt_mode && document.activeElement !== srtSel) srtSel.value = p123.srt_mode;
+  const pkSel = document.getElementById('p123-pbkey-select');
+  if (pkSel && p123.srt_pbkeylen && document.activeElement !== pkSel) pkSel.value = p123.srt_pbkeylen;
+  const latIn = document.getElementById('p123-latency-input');
+  if (latIn && p123.srt_latency_ms !== undefined && document.activeElement !== latIn) latIn.value = String(p123.srt_latency_ms);
+  const rtmpsSel = document.getElementById('p123-rtmps-select');
+  if (rtmpsSel && p123.rtmps_mode && document.activeElement !== rtmpsSel) rtmpsSel.value = p123.rtmps_mode;
+  const brIn = document.getElementById('p123-bitrate-input');
+  if (brIn && p123.stream_bitrate_mbps !== undefined && document.activeElement !== brIn) brIn.value = String(p123.stream_bitrate_mbps);
+  const srtBadge = document.getElementById('p123-srt-badge');
+  if (srtBadge) {
+    srtBadge.textContent = `${p123.srt_mode}/${p123.rtmps_mode} · P12=${p123.p12_wlan_off ? 1 : 0}`;
+  }
+  const srtRo = document.getElementById('p123-srt-readout');
+  if (srtRo) {
+    srtRo.textContent =
+      `CDC-NCM Wired | ${p123.srt_pbkeylen} ARQ=${p123.srt_latency_ms}ms ${p123.stream_bitrate_mbps}Mbps | ` +
+      `P12_WLAN_OFF=${p123.p12_wlan_off ? 1 : 0} wf12=${p123.wf12_00342260_hits ?? 0} Blk=${p123.p12_blocked_count ?? 0}`;
+  }
+
+  const ptpSel = document.getElementById('p123-ptp-select');
+  if (ptpSel && p123.crsdk_ptp_mode && document.activeElement !== ptpSel) ptpSel.value = p123.crsdk_ptp_mode;
+  const ptpBadge = document.getElementById('p123-ptp-badge');
+  if (ptpBadge) {
+    ptpBadge.textContent = `${p123.crsdk_ptp_mode} · ${p123.crsdk_last_safe_opcode || '0xD210'}`;
+  }
+  const ptpRo = document.getElementById('p123-ptp-readout');
+  if (ptpRo) {
+    ptpRo.textContent =
+      `VID ${p123.crsdk_usb_vid} (${p123.crsdk_last_safe_prop}) | Base${p123.crsdk_cine_ei_base} EI${p123.crsdk_ei_index} | ` +
+      `Look=${p123.crsdk_base_look} | ND=Clear (Clamp=${p123.crsdk_nd_clamp_count ?? 0})`;
+  }
+
+  const fwBadge = document.getElementById('p123-fw-badge');
+  if (fwBadge) {
+    fwBadge.textContent = `ARMED · eMMC=${p123.emmc_mutation_bytes ?? 0}B · Blk=${p123.blocked_flash_opcode_count ?? 0}`;
+  }
+  const fwRo = document.getElementById('p123-fw-readout');
+  if (fwRo) {
+    fwRo.textContent =
+      `Firewall=${p123.ptp_flash_opcodes_blocked ? 'ON' : 'OFF'} | eMMC_Mutation=${p123.emmc_mutation_bytes ?? 0}B | ` +
+      `Blocked=${p123.blocked_flash_opcode_count ?? 0} Last=${p123.last_blocked_flash_opcode || 'NONE'}`;
+  }
+
+  const warnEl = document.getElementById('p123-warn-banner');
+  if (warnEl) {
+    if (p123.uvc_usb2_stepdown_active) {
+      warnEl.style.display = 'block';
+      warnEl.textContent = `USB 2.0 (480 Mbps) non-SuperSpeed cable detected: auto-stepped down ${p123.uvc_mode} -> ${p123.effective_uvc_mode} (1280x720@30p MJPEG).`;
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
+
+  const cmdEl = document.getElementById('p123-cmd-readout');
+  if (cmdEl) cmdEl.textContent = p123.uvc_srt_crsdk_ptp_cmd || 'UVCS ...';
+}
+
+async function setPhase123State(patch) {
+  if (busy) return;
+  busy = true;
+  const toast = document.getElementById('render-toast');
+  const errEl = document.getElementById('p123-error-banner');
+  toast.style.display = 'block';
+  try {
+    const r = await fetch('/api/uvc_srt_crsdk_ptp', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(patch || {})
+    });
+    const data = await r.json();
+    if (!data.ok) {
+      if (errEl) {
+        errEl.style.display = 'block';
+        errEl.textContent = data.message || data.error || 'Blocked / Invalid Phase 123 parameter';
+      }
+      if (data.uvc_srt_crsdk_ptp) syncPhase123UvcSrtCrsdkPtpUI(data.uvc_srt_crsdk_ptp);
+    } else if (errEl) {
+      errEl.style.display = 'none';
+    }
+    if (data.status) await updateUI(data.status, true);
+  } finally {
+    toast.style.display = 'none';
+    busy = false;
+  }
+}
+
+function applyPhase123SrtParams() {
+  const lat = Number((document.getElementById('p123-latency-input') || {}).value || 120);
+  const br = Number((document.getElementById('p123-bitrate-input') || {}).value || 12);
+  setPhase123State({srt_latency_ms: lat, stream_bitrate_mbps: br});
+}
+
+function sendPhase123SafeOpcode() {
+  const op = (document.getElementById('p123-d2xx-select') || {}).value || '0xD210';
+  const curMode = (document.getElementById('p123-ptp-select') || {}).value || 'OFF';
+  const patch = {ptp_opcode: op};
+  if (curMode === 'OFF') patch.crsdk_ptp_mode = 'USB_PTP';
+  setPhase123State(patch);
+}
+
 setP95Lang('zh-CN');
 setP102Lang('zh-CN');
 setP109Lang('zh-CN');
 setP116Lang('zh-CN');
+setP123Lang('zh-CN');
 loadPages128();
 loadMenuCatalog();
 setInterval(pollStatus, 1500);
@@ -15991,6 +17242,14 @@ def make_handler(session: FX6LiveGpe0Session):
                         "last_toast": session.last_toast,
                     })
                     return
+                if path == "/api/uvc_srt_crsdk_ptp":
+                    self._send_json({
+                        "ok": True,
+                        "uvc_srt_crsdk_ptp": session.get_uvc_srt_crsdk_ptp(),
+                        "specs": UVC_SRT_CRSDK_PTP_SPECS,
+                        "last_toast": session.last_toast,
+                    })
+                    return
                 if path == "/api/scope_stats":
                     refresh = qs.get("refresh", ["0"])[0].strip().lower() in ("1", "true", "yes")
                     self._send_json(session.get_scope_stats(refresh=refresh))
@@ -16045,6 +17304,7 @@ def make_handler(session: FX6LiveGpe0Session):
                     "/api/interval_cache_lut_ftp",
                     "/api/mc_fleet_sdi_c2pa",
                     "/api/hdr_hlg_raw_breathing",
+                    "/api/uvc_srt_crsdk_ptp",
                 ):
                     self._send_json(
                         {"ok": False, "error": "invalid_json", "message": "Malformed JSON request body"},
@@ -16160,6 +17420,10 @@ def make_handler(session: FX6LiveGpe0Session):
                     return
                 if path == "/api/hdr_hlg_raw_breathing":
                     res = session.set_hdr_hlg_raw_breathing(body)
+                    self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
+                    return
+                if path == "/api/uvc_srt_crsdk_ptp":
+                    res = session.set_uvc_srt_crsdk_ptp(body)
                     self._send_json(res, status=HTTPStatus.OK if res.get("ok") else HTTPStatus.BAD_REQUEST)
                     return
                 if path == "/api/jump_page":

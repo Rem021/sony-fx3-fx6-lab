@@ -109,6 +109,19 @@
  *              bit13=breathing_req, bit14=breathing_eff, bit15=bypass_pl, bit16=bypass_raw,
  *              bits17..24=breathing_crop_x100(100..108), bits25..30=raw_fps_idx, bit31=valid)
  *     mb[59] = 0x484c4741 ('HLGA') Phase 116 HLG BT.2100 / Display Assist / ProRes RAW / Breathing Comp magic tag
+ *     mb[60] = phase123_uvc_uac (bits0..1=uvc_req(0=OFF,1=4K30_5G,2=1080P60_5G,3=720P30_USB2),
+ *              bits2..3=uvc_eff, bit4=usb2_non_ss(480Mbps), bit5=uvc_stepdown_active,
+ *              bit6=uac_48k_16b_2ch_en, bit7=uvc_clean_feed_no_osd(1), bits8..13=uvc_fps,
+ *              bits14..23=uvc_bitrate_mbps, bits24..27=uac_ch_cnt, bit28=uvc_osd_leak_blocked, bit31=valid)
+ *     mb[61] = phase123_srt_rtmps (bits0..1=srt_mode(0=OFF,1=CALLER,2=LISTENER),
+ *              bits2..3=srt_pbkeylen(0=NONE,1=AES-128,2=AES-256), bits4..13=srt_latency_ms(20..1000),
+ *              bit14=rtmps_tls13_on, bits15..20=stream_bitrate_mbps(1..50), bit21=p12_wlan_off(1),
+ *              bit22=cdc_ncm_wired_ok(1), bits23..29=p12_blocked_cnt, bit30=arq_enabled, bit31=valid)
+ *     mb[62] = phase123_crsdk_ptp (bits0..1=crsdk_mode(0=OFF,1=USB_PTP,2=WIRED_PTPIP),
+ *              bit2=ptp_flash_opcodes_blocked(1), bit3=emmc_mutation_zero(1), bit4=p12_wlan_off(1),
+ *              bit5=p4_nd_clear_clamped, bits6..13=last_d2xx_low, bits14..20=blocked_flash_cnt,
+ *              bits21..27=safe_cmd_cnt, bits28..30=last_action_kind, bit31=valid)
+ *     mb[63] = 0x55564353 ('UVCS') Phase 123 UVC 1.5/UAC 2.0 / Wired SRT-RTMPS / CRSDK PTP Firewall magic tag
  */
 #include "fx6_static_assist.h"
 
@@ -1101,6 +1114,9 @@ static uint32_t g_live_p109_c2pa_prov      = 0x80000014u; /* valid=1, ro_zero_to
 static uint32_t g_live_p116_hlg_colorimetry = 0x829a60e0u; /* valid=1, 100nit, cs=0x69, cta_ok=1, eotf=0, detail=0(7), BT709, HLG=OFF */
 static uint32_t g_live_p116_display_assist  = 0xa90a0180u; /* valid=1, ire=41, vf_nit=100, xavc_unassist=1, clean_hdmi=1, assist=OFF */
 static uint32_t g_live_p116_raw_breathing   = 0x80c809c0u; /* valid=1, crop=1.00x(100), lens_meta=1, 5600K(56), ext_raw=OFF */
+static uint32_t g_live_p123_uvc_uac         = 0x820000c0u; /* valid=1, uac_ch=2, clean_feed=1, uac=1, uvc=OFF */
+static uint32_t g_live_p123_srt_rtmps       = 0x80660788u; /* valid=1, wired=1, p12_wlan_off=1, 12Mbps, 120ms, AES-256, srt=OFF */
+static uint32_t g_live_p123_crsdk_ptp       = 0x8000043cu; /* valid=1, d2xx=0x10, nd_clr=1, p12=1, emmc0=1, blk=1, ptp=OFF */
 static char     g_lut_disp_buf[40];
 static char     g_lut_hud_buf[24];
 
@@ -3731,6 +3747,185 @@ static void fx6_render_phase116_hlg_raw_breathing_overlay(uint64_t appfw, uint32
     }
 }
 
+static void fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p123_uvc_uac & 0x80000000u) ||
+        !(g_live_p123_srt_rtmps & 0x80000000u) ||
+        !(g_live_p123_crsdk_ptp & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_uvc_lbl[4]   = { "OFF", "4K30-MJPEG", "1080P60-YUY2", "720P30-USB2" };
+    static const char * const k_srt_lbl[3]   = { "OFF", "CALLER", "LISTENER" };
+    static const char * const k_key_lbl[4]   = { "NONE", "AES128", "AES256", "NONE" };
+    static const char * const k_ptp_lbl[4]   = { "OFF", "USB-PTP", "PTP-IP", "OFF" };
+
+    uint32_t uvc_req         = g_live_p123_uvc_uac & 0x03u;
+    uint32_t uvc_eff         = (g_live_p123_uvc_uac >> 2) & 0x03u;
+    uint32_t usb2_non_ss     = (g_live_p123_uvc_uac >> 4) & 0x01u;
+    uint32_t uvc_stepdown    = (g_live_p123_uvc_uac >> 5) & 0x01u;
+    uint32_t uac_en          = (g_live_p123_uvc_uac >> 6) & 0x01u;
+    uint32_t uvc_clean_feed  = (g_live_p123_uvc_uac >> 7) & 0x01u;
+    uint32_t uvc_mbps        = (g_live_p123_uvc_uac >> 14) & 0x3ffu;
+    uint32_t uvc_osd_blk     = (g_live_p123_uvc_uac >> 28) & 0x01u;
+
+    uint32_t srt_mode        = g_live_p123_srt_rtmps & 0x03u;
+    if (srt_mode > 2u) srt_mode = 0u;
+    uint32_t srt_pbkey       = (g_live_p123_srt_rtmps >> 2) & 0x03u;
+    uint32_t srt_lat_ms      = (g_live_p123_srt_rtmps >> 4) & 0x3ffu;
+    if (srt_lat_ms < 20u) srt_lat_ms = 20u;
+    uint32_t rtmps_on        = (g_live_p123_srt_rtmps >> 14) & 0x01u;
+    uint32_t stream_mbps     = (g_live_p123_srt_rtmps >> 15) & 0x3fu;
+    uint32_t p12_wlan_off    = (g_live_p123_srt_rtmps >> 21) & 0x01u;
+    uint32_t p12_blk_cnt     = (g_live_p123_srt_rtmps >> 23) & 0x7fu;
+
+    uint32_t crsdk_mode      = g_live_p123_crsdk_ptp & 0x03u;
+    uint32_t flash_blk_en    = (g_live_p123_crsdk_ptp >> 2) & 0x01u;
+    uint32_t emmc_zero       = (g_live_p123_crsdk_ptp >> 3) & 0x01u;
+    uint32_t p4_nd_clamped   = (g_live_p123_crsdk_ptp >> 5) & 0x01u;
+    uint32_t last_d2_low     = (g_live_p123_crsdk_ptp >> 6) & 0xffu;
+    uint32_t flash_blk_cnt   = (g_live_p123_crsdk_ptp >> 14) & 0x7fu;
+    uint32_t safe_cmd_cnt    = (g_live_p123_crsdk_ptp >> 21) & 0x7fu;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (uvc_req > 0u || uvc_eff > 0u || usb2_non_ss || uvc_osd_blk ||
+                       srt_mode > 0u || rtmps_on || p12_blk_cnt > 0u ||
+                       crsdk_mode > 0u || flash_blk_cnt > 0u || safe_cmd_cnt > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int row1_y = 288;
+    const int row2_y = 320;
+
+    /* 1. Left Badge (x=18..342): USB-C UVC 1.5 / UAC 2.0 + USB2 480M Step-Down + Clean Feed */
+    {
+        int bx = 18, bw = 324, bh = 28;
+        uint32_t bg = uvc_osd_blk ? 0xFF7F1D1Du : (uvc_stepdown ? 0xFF78350Fu : (uvc_eff > 0u ? 0xFF064E3Bu : 0xFF0F172Au));
+        uint32_t bd = uvc_osd_blk ? 0xFFEF4444u : (uvc_stepdown ? 0xFFF59E0Bu : (uvc_eff > 0u ? 0xFF10B981u : 0xFF475569u));
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        /* UVC bandwidth bar + clean-feed LED */
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, 0xFF1E293Bu);
+        int bw_fill = (int)((uvc_mbps * 56u) / 400u);
+        if (bw_fill > 56) bw_fill = 56;
+        if (bw_fill > 0) fx6_osd_fill_rect(bx + 6, row1_y + 21, bw_fill, 3, uvc_stepdown ? 0xFFF59E0Bu : 0xFF34D399u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, uvc_clean_feed ? 0xFF10B981u : 0xFFEF4444u);
+
+        char ulbl[60];
+        unsigned up = 0u;
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "[UVC:");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), k_uvc_lbl[uvc_eff]);
+        if (uvc_stepdown) {
+            up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " 480M");
+        } else if (uvc_eff > 0u) {
+            up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " 5G");
+        }
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), uac_en ? " UAC48k" : " UAC0");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), uvc_clean_feed ? " CLN]" : " ERR]");
+        (void)up;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, ulbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 2. Center Badge (x=350..674): Wired CDC-NCM SRT (AES-128/256, ARQ) & RTMPS TLS 1.3 + P12 */
+    {
+        int bx = 350, bw = 324, bh = 28;
+        uint32_t bg = (p12_blk_cnt > 0u) ? 0xFF78350Fu : ((srt_mode > 0u || rtmps_on) ? 0xFF083344u : 0xFF0F172Au);
+        uint32_t bd = (p12_blk_cnt > 0u) ? 0xFFF59E0Bu : ((srt_mode > 0u || rtmps_on) ? 0xFF22D3EEu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        /* P12 Wi-Fi-OFF lock LED + Stream bitrate meter */
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, p12_wlan_off ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, 0xFF1E293Bu);
+        int sb_fill = (int)((stream_mbps * 56u) / 50u);
+        if (sb_fill > 56) sb_fill = 56;
+        if (sb_fill > 0 && (srt_mode > 0u || rtmps_on)) {
+            fx6_osd_fill_rect(bx + 6, row1_y + 21, sb_fill, 3, 0xFF22D3EEu);
+        }
+
+        char slbl[60];
+        unsigned sp = 0u;
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "[SRT:");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), k_srt_lbl[srt_mode]);
+        if (srt_mode > 0u) {
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "/");
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), k_key_lbl[srt_pbkey]);
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), " ");
+            sp = fx6_append_uint(slbl, sp, sizeof(slbl), srt_lat_ms);
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "ms");
+        }
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), rtmps_on ? " TLS1.3" : "");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), p12_wlan_off ? " P12]" : " RF!]");
+        (void)sp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, slbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 3. Right Badge (x=682..1006): CRSDK PTP/PTP-IP 0x054C + 0x9280.. Destructive Flash-Opcode Firewall */
+    {
+        int bx = 682, bw = 324, bh = 28;
+        uint32_t bg = (flash_blk_cnt > 0u) ? 0xFF7F1D1Du : (crsdk_mode > 0u ? 0xFF1E1B4Bu : 0xFF0F172Au);
+        uint32_t bd = (flash_blk_cnt > 0u) ? 0xFFEF4444u : (crsdk_mode > 0u ? 0xFFA78BFAu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        /* Firewall Shield LED (emerald=active & eMMC=0) + ND clamp indicator */
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, (flash_blk_en && emmc_zero) ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, (flash_blk_cnt > 0u) ? 0xFFEF4444u : 0xFFA78BFAu);
+
+        char clbl[60];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "[PTP:");
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), k_ptp_lbl[crsdk_mode]);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), " D2");
+        cp = fx6_append_hex2(clbl, cp, sizeof(clbl), last_d2_low);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), " 9280:BLK=");
+        cp = fx6_append_uint(clbl, cp, sizeof(clbl), flash_blk_cnt);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), p4_nd_clamped ? " ND:CLR]" : "]");
+        (void)cp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, clbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 4. Full-Width Row 2 Firewall & Telemetry Strip (x=18..1006, y=320..344) */
+    {
+        int sx = 18, sw = 988, sh = 24;
+        uint32_t sbg = (flash_blk_cnt > 0u || p12_blk_cnt > 0u || uvc_osd_blk) ? 0xFF451A03u : 0xFF090D16u;
+        uint32_t sbd = (flash_blk_cnt > 0u) ? 0xFFEF4444u : 0xFF38BDF8u;
+        fx6_osd_fill_rect(sx, row2_y, sw, sh, sbg);
+        fx6_osd_border_rect(sx, row2_y, sw, sh, sbd);
+
+        /* Status LED array on left */
+        fx6_osd_fill_rect(sx + 6, row2_y + 5, 10, 14, uvc_clean_feed ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 20, row2_y + 5, 10, 14, p12_wlan_off ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 34, row2_y + 5, 10, 14, (flash_blk_en && emmc_zero) ? 0xFFA78BFAu : 0xFFEF4444u);
+
+        char flbl[96];
+        unsigned fp = 0u;
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "[UVCS FW: UVC_CLN=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), uvc_clean_feed);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " P12_WLAN_OFF=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), p12_wlan_off);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " WF12=0 PTP_FLASH_BLK=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), flash_blk_en);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " EMMC_WR=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), emmc_zero ? 0u : 1u);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " BLK_9280=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), flash_blk_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " SAFE_D2=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), safe_cmd_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " P12_BLK=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), p12_blk_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "]");
+        (void)fp;
+        fx6_render_string_text_styled(appfw, sx + 50, row2_y + 2, sw - 58, 20, flbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
 /* ---------------- Frame Cache (32 slots in guest RAM) -------------------- */
 #define CACHE_SLOTS 32
 typedef struct {
@@ -3785,6 +3980,9 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ g_live_p116_hlg_colorimetry) * 1099511628211ULL;
     h = (h ^ g_live_p116_display_assist) * 1099511628211ULL;
     h = (h ^ g_live_p116_raw_breathing) * 1099511628211ULL;
+    h = (h ^ g_live_p123_uvc_uac) * 1099511628211ULL;
+    h = (h ^ g_live_p123_srt_rtmps) * 1099511628211ULL;
+    h = (h ^ g_live_p123_crsdk_ptp) * 1099511628211ULL;
     for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
         h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
     }
@@ -3978,6 +4176,7 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
     fx6_render_phase102_cache_interval_lut_ftps_overlay(appfw, page);
     fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
     fx6_render_phase116_hlg_raw_breathing_overlay(appfw, page);
+    fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(appfw, page);
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -4238,6 +4437,10 @@ void fx6_force_update(void) {
         mb[57] = 0xa90a0180u;/* phase116_display_assist: valid=1, ire=41, vf_nit=100, xavc_unassist=1, clean_hdmi=1, assist=OFF */
         mb[58] = 0x80c809c0u;/* phase116_raw_breathing: valid=1, crop=1.00x(100), lens_meta=1, 5600K(56), ext_raw=OFF */
         mb[59] = 0x484c4741u;/* 'HLGA' */
+        mb[60] = 0x820000c0u;/* phase123_uvc_uac: valid=1, uac_ch=2, clean_feed=1, uac=1, uvc=OFF */
+        mb[61] = 0x80660788u;/* phase123_srt_rtmps: valid=1, wired=1, p12_wlan_off=1, 12Mbps, 120ms, AES-256, srt=OFF */
+        mb[62] = 0x8000043cu;/* phase123_crsdk_ptp: valid=1, d2xx=0x10, nd_clr=1, p12=1, emmc0=1, blk=1, ptp=OFF */
+        mb[63] = 0x55564353u;/* 'UVCS' */
     }
     g_live_lut_meta = 0u;
     g_live_lut_name[0] = 0;
@@ -4267,6 +4470,9 @@ void fx6_force_update(void) {
     g_live_p116_hlg_colorimetry = 0x829a60e0u;
     g_live_p116_display_assist = 0xa90a0180u;
     g_live_p116_raw_breathing = 0x80c809c0u;
+    g_live_p123_uvc_uac = 0x820000c0u;
+    g_live_p123_srt_rtmps = 0x80660788u;
+    g_live_p123_crsdk_ptp = 0x8000043cu;
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
@@ -4282,10 +4488,10 @@ void fx6_force_update(void) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x p116=0x%08x\n",
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x p116=0x%08x p123=0x%08x\n",
             mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi, g_live_p116_hlg_colorimetry);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi, g_live_p116_hlg_colorimetry, g_live_p123_uvc_uac);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -4372,14 +4578,29 @@ void fx6_force_update(void) {
                     g_live_p116_raw_breathing = (g_live_p116_raw_breathing & ~((1u << 14) | (0xffu << 17))) | pl_byp | raw_byp | (100u << 17);
                 }
             }
+            if ((mb[60] & 0x80000000u) && (mb[61] & 0x80000000u) && (mb[62] & 0x80000000u) && mb[63] == 0x55564353u) {
+                uint32_t uvc_w = mb[60];
+                uint32_t uvc_req = uvc_w & 0x03u;
+                uint32_t usb2_non_ss = (uvc_w >> 4) & 0x01u;
+                if (usb2_non_ss && (uvc_req == 1u || uvc_req == 2u)) {
+                    /* Automatic USB 2.0 480 Mbps step-down to 720p30 MJPEG */
+                    uvc_w = (uvc_w & ~((0x03u << 2) | (0x3fu << 8) | (0x3ffu << 14))) | (3u << 2) | (1u << 5) | (30u << 8) | (35u << 14);
+                }
+                /* Hard-enforce UVC clean feed without OSD burn-in (bit7 = 1) */
+                g_live_p123_uvc_uac = uvc_w | (1u << 7);
+                /* Hard-enforce P12 Wi-Fi-OFF (bit21 = 1) & wired CDC-NCM (bit22 = 1) */
+                g_live_p123_srt_rtmps = mb[61] | (1u << 21) | (1u << 22);
+                /* Hard-enforce Destructive PTP Flash-Opcode Firewall (bit2), eMMC 0-mutation (bit3), P12 Wi-Fi-OFF (bit4) */
+                g_live_p123_crsdk_ptp = mb[62] | (1u << 2) | (1u << 3) | (1u << 4);
+            }
             fx6_apply_lang(lang);
 
             fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x HLGA=0x%08x:0x%08x:0x%08x\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov, g_live_p116_hlg_colorimetry, g_live_p116_display_assist, g_live_p116_raw_breathing);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x HLGA=0x%08x:0x%08x:0x%08x UVCS=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov, g_live_p116_hlg_colorimetry, g_live_p116_display_assist, g_live_p116_raw_breathing, g_live_p123_uvc_uac, g_live_p123_srt_rtmps, g_live_p123_crsdk_ptp);
         }
     }
 }

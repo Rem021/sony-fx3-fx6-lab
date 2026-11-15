@@ -97,6 +97,11 @@ from .realhw_sq_fixedvar_zebra_peaking_fullformat_and_84gate_guard import (
     evaluate_g83_sq_fixedvar_zebra_peaking_hdmi_guard,
     evaluate_g84_zebra_reset_and_fullformat_chord_vault_guard,
 )
+from .realhw_silent_autopixelmap_marker_flexexp_and_86gate_guard import (
+    evaluate_86gate_preflight,
+    evaluate_g85_silent_autopixelmap_no_pwrshutter_guard,
+    evaluate_g86_marker_hdmi_and_flexexp_reset_split_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1893,6 +1898,90 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G84 gates can be rehearsed offline",
     )
     p_84.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 86. verify-g85-silent-autopixelmap-no-pwrshutter
+    p_g85 = sub.add_parser(
+        "verify-g85-silent-autopixelmap-no-pwrshutter",
+        help="Verify Gate G85: [Silent Mode Settings] [Auto Pixel Mapping] Suppression Target, 5-Function Lockout & Hardware [Shutter When Pwr OFF] Absence Guard",
+    )
+    p_g85.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g85.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g85.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g85.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 87. verify-g86-marker-hdmi-flexexp-reset
+    p_g86 = sub.add_parser(
+        "verify-g86-marker-hdmi-flexexp-reset",
+        help="Verify Gate G86: [Marker Display] 15-Ratio Non-Resettable Persistence, Local-LCD-Only HDMI Isolation & [Flexible Exp. Mode] Reset Split Guard",
+    )
+    p_g86.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g86.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g86.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g86.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 88. verify-86-gates
+    p_86 = sub.add_parser(
+        "verify-86-gates",
+        help="Run Phase 230 Unified 86-Gate Master Safety Preflight Engine (G01..G86)",
+    )
+    p_86.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_86.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_86.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G86 gates can be rehearsed offline",
+    )
+    p_86.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -3767,6 +3856,84 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_84_gates_verified if args.dry_run_simulated else report.offline_81_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g85-silent-autopixelmap-no-pwrshutter":
+        verdict, res = evaluate_g85_silent_autopixelmap_no_pwrshutter_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.silent_autopixelmap_no_pwrshutter_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} silent={guard['silent_mode']}"
+                f"(shutter={guard['effective_shutter_type']},audio={guard['effective_audio_signals']},"
+                f"5locks={guard['all_5_functions_disabled_in_silent']}) "
+                f"target_apm={guard['target_auto_pixel_mapping']}"
+                f"(suppressed={guard['bench_shutdown_autopixelmap_suppressed']}) "
+                f"no_pwr_shutter={guard['shutter_when_pwr_off_absent_verified']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g86-marker-hdmi-flexexp-reset":
+        verdict, res = evaluate_g86_marker_hdmi_and_flexexp_reset_split_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+        else:
+            guard = res.marker_hdmi_flexexp_reset_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} marker={guard['effective_post_reset_marker_display']}/"
+                f"{guard['effective_post_reset_aspect_marker']}(ratios={guard['aspect_marker_15_ratio_count']},"
+                f"hdmi_marker={guard['hdmi_marker_overlay_rendered']},rst={guard['reset_action']},"
+                f"survived={guard['marker_survived_camera_settings_reset']}) "
+                f"flex_exp={guard['exposure_ctrl_type']}(Av={guard['effective_post_reset_flex_av_mode']},"
+                f"Tv={guard['effective_post_reset_flex_tv_mode']},ISO={guard['effective_post_reset_flex_iso_mode']},"
+                f"AutoSlow={guard['effective_post_reset_auto_slow_shutter']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-86-gates":
+        report = evaluate_86gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/86 "
+                f"g85_to_g86_all_passed={report.g85_to_g86_all_passed} "
+                f"all_86_gates_verified={report.all_86_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_86_gates_verified if args.dry_run_simulated else report.offline_83_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -91,6 +91,11 @@ from .realhw_38pillar_shoe_audio_wind_saveload_vault_verifier import (
     verify_38pillar_recovery_suite,
     verify_shoe_audio_wind_and_saveload_vault,
 )
+from .realhw_39pillar_framing_usbpower_lun_antiflicker_vault_verifier import (
+    run_pillar39_standalone_suite,
+    verify_39pillar_recovery_suite,
+    verify_framing_usbpower_lun_and_antiflicker_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -372,6 +377,14 @@ def main():
     p240_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p240_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p240_master.add_argument('--out', help='optional exclusive new output directory for 38pillar-recovery-master-report.json')
+    p243_p39 = sub.add_parser('verify-framing-usbpower-lun-antiflicker-vault', help='Phase 243 Pillar 39 Framing Settings asymmetric Full/Crop recovery & HDMI RAW crop guard + Anti-flicker Shoot. mechanical-still-only / no-Var. Shutter lock + USB Power Supply mandatory NP-FZ100 / USB Type-C exclusivity & USB LUN Multi/Single Setup persistence verifier')
+    p243_p39.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p243_p39.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p243_p39.add_argument('--out', help='optional exclusive new output directory for pillar39-framing-usbpower-lun-antiflicker-vault-report.json')
+    p243_master = sub.add_parser('verify-39pillar-recovery', help='Phase 243 unified 39/39 real-hardware recovery master aggregator (Pillars 1..38 + Pillar 39)')
+    p243_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p243_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p243_master.add_argument('--out', help='optional exclusive new output directory for 39pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -1984,6 +1997,75 @@ def main():
                     f"excluded_secret_or_cal_leak_count={report.excluded_secret_or_cal_leak_count} "
                     f"slot1_unverified_camset_save_mutations={report.slot1_unverified_camset_save_mutations} "
                     f"master_38pillar_sha256={report.master_38pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-framing-usbpower-lun-antiflicker-vault':
+            report = run_pillar39_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar39-framing-usbpower-lun-antiflicker-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_39a={report.pillar_39a_framing_antiflicker_vault.scenarios_passed}/{report.pillar_39a_framing_antiflicker_vault.scenarios_total} "
+                    f"pillar_39b={report.pillar_39b_usb_power_lun_vault.scenarios_passed}/{report.pillar_39b_usb_power_lun_vault.scenarios_total} "
+                    f"fx3_has_var_shutter={report.fx3_has_var_shutter} "
+                    f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-39pillar-recovery':
+            report = verify_39pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'39pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar39_a={report.pillar39_a_framing_antiflicker_vault.scenarios_passed}/{report.pillar39_a_framing_antiflicker_vault.scenarios_total} "
+                    f"pillar39_b={report.pillar39_b_usb_power_lun_vault.scenarios_passed}/{report.pillar39_b_usb_power_lun_vault.scenarios_total} "
+                    f"fx3_has_var_shutter={report.fx3_has_var_shutter} "
+                    f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_39pillar_sha256={report.master_39pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

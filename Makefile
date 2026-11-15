@@ -3,7 +3,7 @@ PYTHON ?= /usr/bin/python3
 PYFLAGS := -B
 CLOSURE_PYTHONPATH := outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure
 
-.PHONY: all test test-json dry-run readiness-packet lifecycle-drill stage-b-lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-stage-b-p10 verify-uipc-cp-shim verify-wireless-guard verify-firmware-lab verify-coemulation verify-byof verify-20-gates verify-24-gates verify-32-gates verify-40-gates verify-44-gates verify-48-gates verify-50-gates verify-52-gates verify-54-gates verify-56-gates verify-58-gates verify-rp2040-fixture verify-init2-escape verify-tier0-backup verify-antirollback-guard verify-10pillar-recovery verify-13pillar-recovery verify-17pillar-recovery verify-22pillar-recovery verify-post-trial-audit verify-milestone-90 verify-milestone-110 verify-milestone-130 verify-sd-stageb-bundle verify-milestone-147 preflight-realhw-bench verify-milestone-175 verify-fast
+.PHONY: all test test-json dry-run readiness-packet lifecycle-drill stage-b-lifecycle-drill clean-audit verify-storage-ram-budget verify-p1-recovery-bridge verify-stage-a-orchestrator verify-kmod-userland-abi verify-peripheral-ux verify-ap-cp-imaging verify-stage-b-p10 verify-uipc-cp-shim verify-wireless-guard verify-firmware-lab verify-coemulation verify-byof verify-20-gates verify-24-gates verify-32-gates verify-40-gates verify-44-gates verify-48-gates verify-50-gates verify-52-gates verify-54-gates verify-56-gates verify-58-gates verify-rp2040-fixture verify-init2-escape verify-tier0-backup verify-antirollback-guard verify-10pillar-recovery verify-13pillar-recovery verify-17pillar-recovery verify-22pillar-recovery verify-post-trial-audit verify-milestone-90 verify-milestone-110 verify-milestone-130 verify-sd-stageb-bundle verify-milestone-147 preflight-realhw-bench verify-milestone-175 verify-milestone-193 verify-fast
 
 all: test
 
@@ -142,7 +142,11 @@ preflight-realhw-bench:
 verify-milestone-175:
 	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-milestone-175
 
-verify-fast: verify-byof verify-40-gates verify-44-gates verify-58-gates verify-13pillar-recovery verify-17pillar-recovery verify-22pillar-recovery verify-firmware-lab verify-coemulation verify-milestone-130 verify-milestone-147 verify-milestone-175
+verify-milestone-193:
+	PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-milestone-193
+	FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" $(PYTHON) $(PYFLAGS) -m fx6_closure verify-milestone-193 --force-clean-room
+
+verify-fast: verify-byof verify-40-gates verify-44-gates verify-58-gates verify-13pillar-recovery verify-17pillar-recovery verify-22pillar-recovery verify-firmware-lab verify-coemulation verify-milestone-130 verify-milestone-147 verify-milestone-175 verify-milestone-193
 
 clean-audit:
 	PYTHONDONTWRITEBYTECODE=1 $(PYTHON) $(PYFLAGS) scripts/run_all_lab_tests.py --clean-only

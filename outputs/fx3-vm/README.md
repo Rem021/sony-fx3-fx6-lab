@@ -930,6 +930,39 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 162：Stage 28（`28/28`）真机双槽 `CFexpress Type A / SDXC V90` 热切换、`.RSV` 掉电抢救、官方 `BODYDATA.DAT`（`\x89UFU`）`<100 µs` 自动旁路与五级不可变砖恢复 HIL 协同仿真器
+
+[`realhw_cfexpress_ufu_and_5tier_recovery_coemulator.py`](realhw_cfexpress_ufu_and_5tier_recovery_coemulator.py) 作为 **Stage 28（28/28 阶段完成）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase162_realhw_cfexpress_ufu_5tier_hil=True`，可通过 `--skip-phase162` 跳过；全板 28 阶段协同仿真在本地只读供体模式下 `< 2.5s`、洁净室模式下 `< 1.1s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`emmc_nflasha_write_count == 0`**、**`cp_mutation_bytes == 0`**、**`user_media_clips_intact == True`** 与 **`rsv_orphan_count == 0`** 的前提下完成五大闭环：
+
+1. **双模只读供体审计（`os.O_RDONLY` + `mmap.ACCESS_READ`）+ 有限字节 `BODYDATA.DAT`（`<= 4 KiB`）检查 + 洁净室回退**：
+   - 检查 FX3 `7.02` 与 FX6 `6.01` 的 **12 份核心真机供体**（`libmpr.so` `3,517,008 B` / `3,541` 导出 vs `28,921,824 B` / `4,271` 导出、`libsencore.so` `377,328 B` vs `401,952 B` 同为 `355` 导出/`130` 导入、`im.elf` `40,920 B` 零差异 ABI `11` 导出/`85` 导入、`loader_nor.bin` `101,888 B` vs `92,448 B`、`cpapp-b.bin` `15,980,568 B` vs `17,952,816 B`、`Backup.bin` `BK4\x00` `819` vs `840` 子系统）以及可选本地 `BODYDATA.DAT`（`811,876,768 B` FX3 `7.02` & `847,081,840 B` FX6 `6.01`）的 **`<= 4096 B` 严格有界读取**（验证 `\x89UFU\r\n\x1a\n`、`DATV=1`、`PROV=1`、`UDID` `054c:0da1` vs `054c:0d21` 与 `FDAT` 偏移）；`FX3_FX6_FORCE_CLEAN_ROOM=1` 时确定性切换 `CLEAN_ROOM_SYNTHETIC` 基线，JSON 零原始固件字节泄漏。
+2. **Pillar A — 双槽混合 `CFexpress Type A (NVMe)` + `SDXC UHS-II (V90/V60/V30)` 码率门控、接力切换与卡门 Hall/GPIO 安全冲刷**：
+   - 验证 `XAVC S-I 4K 120p 600 Mbps` 在 `CFexpress Type A` 与 `SDXC V90`（`720 Mbps`）准入而拒绝 `V30`（`SPEED_CLASS_REJECTED_SDXC_UHS_I_V30`，`appfw_crashes == 0`），仿真 `Slot A -> Slot B` 零丢帧接力切换，并在卡门写入中打开时由 Hall/GPIO 中断触发 `MPR` FIFO 归零冲刷（`mpr_fifo_residual_bytes == 0`、`exfat_volume_dirty == 0`），跨双启动切换保持 `PRIVATE/M4ROOT` 与 `XDROOT` 用户素材 `100%` 完整。
+3. **Pillar B — 突发拔电池 `.RSV` 短片抢救（`Recover Image DB` / `.RSV -> .MP4/.MXF`）**：
+   - 仿真录制中途断电遗留 `C0001.RSV` 与挂起索引，重启后通过 ExFAT `.RSV` 安全重组还原 `C0001.MP4` / `C0001.MXF` 与 `MEDIAPRO.XML`（`rsv_orphan_count == 0`、`emmc_nflasha_write_count == 0`），并对损坏 `.RSV` 执行 fail-closed 拦截。
+4. **Pillar C — 官方索尼 `BODYDATA.DAT`（`\x89UFU\r\n\x1a\n`）共存、`<100 µs` Stage-A 自动旁路与跨机型（`FX30/A7S3/FX6`）拦截**：
+   - 证明插卡存在 `/BODYDATA.DAT` 时 Stage-A 在 **`38.5 µs < 100 µs`** 自动旁路 Stage-B 进入 `100%` 原厂 FX3 `7.02` 用户态；在 `p15:/usr` `.orig` 干净卸载未完成（`H0 != H3`）前硬阻断启动 `p1` 升级器；对非 `0x91030080`（`ILME-FX30` `0x91030090` / `ILCE-7SM3` `0x91030070` / `ILME-FX6` `0x91030060`）执行 fail-closed 拦截。
+5. **Pillar D — 五级不可变砖硬件恢复升级演练（`Tier-1 SD 47 µs` -> `Tier-2 p15 .orig` -> `Tier-3 同型 UFU` -> `Tier-4 Multi-USB 1.8V UART EL3 只读` -> `Tier-5 CID 匹配 ISP`）**：
+   - 逐级注入故障并验证确定性恢复闭环，同时硬锁 **`el3_payload_transmit_authorized == False`**、**`spi_nor_write_authorized == False`**、**`persistent_emmc_writes_authorized == False`**、**`emmc_nflasha_write_count == 0`** 与 `passive_tx_bytes_emitted == 0`。
+
+### Phase 162 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 28 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_cfexpress_ufu_and_5tier_recovery_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_cfexpress_ufu_and_5tier_recovery_coemulator.py --self-test --json
+
+# 2. 全板 28 阶段（Stage 1..28）统一校验（本地 < 2.5s，洁净室 < 1.1s，支持 --skip-phase162）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 162 46 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_cfexpress_ufu_and_5tier_recovery_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_cfexpress_ufu_and_5tier_recovery_coemulator.py -v
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
 
 
 

@@ -73,6 +73,7 @@ import realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator as p172  # noqa: E402
 import realhw_cfexpress_ufu_and_5tier_recovery_coemulator as p162  # noqa: E402
 import realhw_cxd90058_sabin_codec_and_seal_coemulator as p167  # noqa: E402
 import realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator as p182  # noqa: E402
+import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
 import realhw_imx510_color_and_network_usb_coemulator as p157  # noqa: E402
 import realhw_mpr_dmm_recording_coemulator as p145  # noqa: E402
 import realhw_preflash_dualboot_lifecycle_emulator as p141  # noqa: E402
@@ -153,6 +154,7 @@ class CoEmulationConfig:
     include_phase172_realhw_c2pa_tc_gyro_prebench_hil: bool = True
     include_phase178_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil: bool = True
     include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil: bool = True
+    include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -1941,6 +1943,61 @@ def run_stage32_realhw_emount_info3d_breathing_hdmi_4264_raw_hil(
     }
 
 
+def run_stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 33 (Phase 188): Real-Hardware ILME-FX3 vs ILME-FX3A Branch Firewall & XLR-H1 MI-Shoe 48kHz/24bit 4ch HIL."""
+    config.validate()
+    rep = p188.run_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil",
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "physical_usb_packets_emitted": red["physical_usb_packets_emitted"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "fx6_ribbon_mmio_faults": red["fx6_ribbon_mmio_faults"],
+        "audio_pop_click_events": red["audio_pop_click_events"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_fx3a_branch_firewall_hil": rep[
+            "pillar_a_fx3a_branch_firewall_hil"
+        ],
+        "pillar_b_xlrh1_mishoe_4ch_override_hil": rep[
+            "pillar_b_xlrh1_mishoe_4ch_override_hil"
+        ],
+        "pillar_c_d_fx3bndl1_hygiene_and_redlines": rep[
+            "pillar_c_d_fx3bndl1_hygiene_and_redlines"
+        ],
+        "phase188_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -1951,7 +2008,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 32-stage (Phase 33..182) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 33-stage (Phase 33..188) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -2083,6 +2140,11 @@ def run_fx3_vm_coemulation_suite(
     stage32: Optional[Dict[str, object]] = (
         run_stage32_realhw_emount_info3d_breathing_hdmi_4264_raw_hil(cfg, env=env)
         if cfg.include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil
+        else None
+    )
+    stage33: Optional[Dict[str, object]] = (
+        run_stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil(cfg, env=env)
+        if cfg.include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil
         else None
     )
     topo = p24.build_dual_qemu_ivshmem_topology_spec()
@@ -2639,6 +2701,34 @@ def run_fx3_vm_coemulation_suite(
         and stage32["appfw_crashes"] == 0
         and stage32["raw_firmware_bytes_leaked"] == 0
     )
+    stage33_ok = True if stage33 is None else (
+        bool(stage33["all_checks_passed"])
+        and stage33["nop_count"] == 0
+        and stage33["guest_code_modification_bytes"] == 0
+        and stage33["cp_mutation_bytes"] == 0
+        and stage33["wbi_mutation_bytes"] == 0
+        and stage33["calibration_mutation_bytes"] == 0
+        and stage33["nvram_persistent_writes"] == 0
+        and stage33["bk4_persistent_nvram_writes"] == 0
+        and stage33["physical_device_writes"] == 0
+        and (not stage33["persistent_emmc_writes_authorized"])
+        and stage33["emmc_nflasha_write_count"] == 0
+        and stage33["emmc_mutation_bytes"] == 0
+        and (not stage33["spi_nor_write_authorized"])
+        and stage33["spi_nor_mutation_bytes"] == 0
+        and (not stage33["el3_payload_transmit_authorized"])
+        and stage33["physical_usb_packets_emitted"] == 0
+        and stage33["otp_fuse_touches"] == 0
+        and stage33["rpmb_counter_increments"] == 0
+        and stage33["fx6_ribbon_mmio_faults"] == 0
+        and stage33["audio_pop_click_events"] == 0
+        and stage33["null_gpio_derefs"] == 0
+        and stage33["mailbox_stalls"] == 0
+        and stage33["stock_cp_fault_count"] == 0
+        and stage33["wf12_00342260_hits"] == 0
+        and stage33["appfw_crashes"] == 0
+        and stage33["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -2674,6 +2764,7 @@ def run_fx3_vm_coemulation_suite(
         and stage30_ok
         and stage31_ok
         and stage32_ok
+        and stage33_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -2719,6 +2810,7 @@ def run_fx3_vm_coemulation_suite(
             "include_phase172_realhw_c2pa_tc_gyro_prebench_hil": cfg.include_phase172_realhw_c2pa_tc_gyro_prebench_hil,
             "include_phase178_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil": cfg.include_phase178_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil,
             "include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil": cfg.include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil,
+            "include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil": cfg.include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil,
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -2801,6 +2893,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage31_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil"] = stage31
     if stage32 is not None:
         core_payload["stage32_realhw_emount_info3d_breathing_hdmi_4264_raw_hil"] = stage32
+    if stage33 is not None:
+        core_payload["stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil"] = stage33
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -2812,7 +2906,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -2964,6 +3058,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 32 (Phase 182 Real-Hardware MIRA_CETUS2 E-Mount info7/8/3D Breathing & HDMI 4264x2408 RAW HIL)",
     )
     parser.add_argument(
+        "--skip-phase188",
+        action="store_true",
+        help="Skip optional Stage 33 (Phase 188 Real-Hardware ILME-FX3 vs ILME-FX3A Branch Firewall & XLR-H1 MI-Shoe 48kHz/24bit 4ch HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -3058,6 +3157,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase172_realhw_c2pa_tc_gyro_prebench_hil=not args.skip_phase172,
         include_phase178_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil=not args.skip_phase178,
         include_phase182_realhw_emount_info3d_breathing_hdmi_4264_raw_hil=not args.skip_phase182,
+        include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil=not args.skip_phase188,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -3099,6 +3199,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s30 = rep.get("stage30_realhw_c2pa_tc_gyro_prebench_hil")
         s31 = rep.get("stage31_realhw_ssboot_wbi2_powerloss_slot1_ufu_hil")
         s32 = rep.get("stage32_realhw_emount_info3d_breathing_hdmi_4264_raw_hil")
+        s33 = rep.get("stage33_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -3333,6 +3434,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s32, dict)
             else ""
         )
+        s33_str = (
+            f" | realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil={s33['source_mode']}("
+            f"fx3a_bypass={s33['pillar_a_fx3a_branch_firewall_hil']['fx3a_202_stock_bypass_lt50us']['bypass_latency_us']}us,"
+            f"xlrh1={s33['pillar_b_xlrh1_mishoe_4ch_override_hil']['xlrh1_48k_24b_4ch_mix_all_ok']['sample_rate_hz']}Hz/"
+            f"{s33['pillar_b_xlrh1_mishoe_4ch_override_hil']['xlrh1_48k_24b_4ch_mix_all_ok']['bit_depth']}bit/"
+            f"{s33['pillar_b_xlrh1_mishoe_4ch_override_hil']['xlrh1_48k_24b_4ch_mix_all_ok']['active_channels']}ch,"
+            f"rib_flt={s33['fx6_ribbon_mmio_faults']},"
+            f"emmc_wr={s33['emmc_nflasha_write_count']})"
+            if isinstance(s33, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -3341,7 +3453,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

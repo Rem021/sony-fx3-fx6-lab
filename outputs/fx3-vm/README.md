@@ -1093,11 +1093,33 @@ PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 188：Stage 33（`33/33`）真实硬件主线 — `ILME-FX3` vs `ILME-FX3A`（`2.36M` XGA / 无 NFC-IR）分支防火墙 & `XLR-H1` MI 热靴 `48kHz/24bit 4ch` 覆盖 HIL 协同仿真器
 
+[`realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py`](realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py) 作为 **Stage 33（`33/33`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase188_realhw_fx3a_firewall_and_xlrh1_4ch_mishoe_hil=True`，可通过 `--skip-phase188` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`spi_nor_write_authorized == False`**、**`el3_payload_transmit_authorized == False`**、**`physical_usb_packets_emitted == 0`**、**`otp_fuse_touches == 0`**、**`rpmb_counter_increments == 0`**、**`fx6_ribbon_mmio_faults == 0`** 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
 
+1. **高速双模只读供体审计（`os.O_RDONLY` 有界读取 `< 0.10s` + 进程级缓存 + 洁净室合成回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **12 份真实供体**：`libInfraNfc.so`（`52,280 B` / `56,376 B`：`InfraNfc` / `InfraNfcSenser` / `InfraNfcSpiThread`）、`libInfraHotshoe.so`（`47,808 B`：`InfraHotshoe` / `SetAdcLevel`）、`libInfraSircs.so`（`27,072 B`：`InfraSircs` / `AsyncUipcRcvThread`）、`string_english_f.uxc`（`373,820 B`：`Shoe Audio Set.`、`48kHz`、`24bit`、`4ch`、`CH1+3/CH2+4`、`IR Remote Ctrl`、`One-touch(NFC)`）与 `string_english.uxc`（`118,208 B`），并对 `cpapp-b.bin`（`ILME-FX3`、`XLR`、`SIRCS`）、`appFw.so`（`AUDIO_MONITORING_CH_MIX_ALL`、`No41_NFC`、`CAMSET`、`VAL_hotshoe_xlr_mic_`、`SIRCS_2SEC_EVENT_STATE_OFF`）及 `BODYDATA.DAT`（`\x89UFU\r\n\x1a\n`、`DATV`、`PROV`、`UDID`）执行 `<= 4096 B` 有界窗口只读检查；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Pillar A — `ILME-FX3`（`Ver. 7.02`，`1.44M` LCD + NFC + IR）vs `ILME-FX3A`（`Ver. 2.02`，`2.36M` XGA LCD / 无 NFC-IR）Stage-A Fail-Closed 分支防火墙 HIL**：
+   - 协同仿真 Stage-A 硬件探针（`model_id` `0x91030080` vs `0x9103008A` / `0x91030030`、LCD 点时钟 `1,440,000` vs `2,359,296`、NFC/IR 设备树存在性、`7.02` vs `2.02` 固件分支）：仅原版 `ILME-FX3` 准入 Stage-B；若插入 `ILME-FX3A` 或 `ILME-FX30`，`< 50 us` Fail-Closed 旁路回退原厂 Stock（不加载显示垫片、`0` 写入），并拦截跨型号 `BODYDATA.DAT` 与 `CAMSET` 导入。
+3. **Pillar B — `XLR-H1` 多接口（MI）数字热靴 `48kHz/24bit 4ch` vs 机身 `3.5mm` 物理抢占 HIL**：
+   - 协同仿真 `XLR-H1`（`HANDLE AUDIO = ON`，`IN1/IN2` XLR -> `CH1/CH2`，`IN3` 3.5mm 立体声 -> `CH3/CH4`，支持 `48kHz/24bit 4ch` / `24bit 2ch` / `16bit 2ch`，耳机 `4ch Audio Monitoring` 矩阵 `CH1/2`、`CH3/4`、`CH1+3/CH2+4`）；证明机身 `3.5mm` 插入立即抢占 MI 热靴并锁定灰显 `[MI Shoe Audio Set.]`、`S&Q` 升格零爆音静音、官方大版本 `BODYDATA.DAT` 升级重置 `[MI Shoe Audio Set.]` 为 `48kHz/16bit 2ch` 陷阱防护，以及 `CH1..CH4` Big-6 电平表映射且零 FX6 专用排线故障（`fx6_ribbon_mmio_faults == 0`）。
+4. **Pillar C & D — 气隙 `FX3BNDL1` 打包卫生 & 硬安全红线不变式**：
+   - 强制校验 `FX3BNDL1` 气隙 SD 卡包仅面向 `ILME-FX3` `7.02`（严禁跨机型残留、路径穿越或原生固件泄露）；所有禁止物理写入与发射探针（eMMC 持久写、SPI-NOR 写、EL3 载荷发射、物理 USB 发包、OTP 熔丝、RPMB 递增、FX6 排线 MMIO）均 fail-closed 拦截。
 
+### Phase 188 CLI 运行与测试命令
 
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 33 自检
+/usr/bin/python3 -B outputs/fx3-vm/realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py --self-test --json
 
+# 2. 全板 33 阶段（Stage 1..33）统一校验（支持 --skip-phase188）
+/usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
 
-
-
+# 3. 单独运行 Phase 188 48 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py
+PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```

@@ -22,6 +22,7 @@ from .firmware_updata_and_antirollback_guard import run_antirollback_and_byof_gu
 from .gpt_rpmb_and_rescue_bundle_verifier import run_gpt_rpmb_and_rescue_bundle_suite
 from .init2_escape_and_watchdog_simulator import run_init2_escape_and_watchdog_suite
 from .ramdisk_overlay_and_emmc_health_verifier import run_ramdisk_overlay_and_emmc_health_suite
+from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_ext2_installer_and_p1_rescue_verifier import run_realhw_ext2_installer_and_p1_rescue_suite
 from .recovery_master_suite_and_uart_decoder import run_recovery_master_suite
 from .rp2040_multiport_fixture_selftest import run_rp2040_multiport_fixture_selftest
@@ -110,6 +111,7 @@ def main():
     master.add_argument('--with-phase126', action='store_true', help='also run Phase 126 Pillar 14 factory calibration nvs/cnflasha/adj, IMX510 defect-pixel & 5-axis IBIS verifier')
     master.add_argument('--with-phase134', action='store_true', help='also run Phase 134 Pillar 15 CXD90057 secure-boot chain envelope & nflasha1..20 4KiB/512KiB partition-align verifier')
     master.add_argument('--with-phase138', action='store_true', help='also run Phase 138 Pillar 16 reversible ext2 /dev/nflasha15 atomic Stage-B installer, hash-rollback & p1/p3 mutual-exclusion rescue verifier')
+    master.add_argument('--with-phase139', action='store_true', help='also run Phase 139 Pillar 17 host-side AdjustControl (0x40) streaming cold-backup client, p6 25 MiB sliding-window pull & Fake-IOKit verifier')
     gpt_rpmb = sub.add_parser('verify-gpt-rpmb-bundle', help='Phase 94 CXD90057 GPT CRC32 healer, RPMB replay guard & offline SD-rescue bundle verifier')
     gpt_rpmb.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     gpt_rpmb.add_argument('--json', action='store_true', help='emit full structured JSON report')
@@ -146,6 +148,10 @@ def main():
     rh_ext2.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
     rh_ext2.add_argument('--json', action='store_true', help='emit full structured JSON report')
     rh_ext2.add_argument('--out', help='optional exclusive new output directory for realhw-ext2-installer-p1-rescue-report.json')
+    adj_bak = sub.add_parser('verify-adjustcontrol-backup-client', help='Phase 139 host-side AdjustControl (0x40) streaming cold-backup client, p6 25 MiB sliding-window pull & Fake-IOKit verifier')
+    adj_bak.add_argument('--clean-room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    adj_bak.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    adj_bak.add_argument('--out', help='optional exclusive new output directory for adjustcontrol-streaming-backup-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -385,6 +391,15 @@ def main():
                 result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p138_report.all_passed else 0)
                 overall_ok = overall_ok and p138_report.all_passed
                 result['all_passed'] = overall_ok
+            if args.with_phase139:
+                p139_report = run_adjustcontrol_streaming_backup_suite(
+                    force_clean_room=True if args.clean_room else None,
+                )
+                result['phase139_pillar17_adjustcontrol_streaming_backup'] = p139_report.to_dict()
+                result['pillar_count'] = result.get('pillar_count', report.pillar_count) + 1
+                result['pillars_passed'] = result.get('pillars_passed', report.pillars_passed) + (1 if p139_report.all_passed else 0)
+                overall_ok = overall_ok and p139_report.all_passed
+                result['all_passed'] = overall_ok
             if args.out:
                 new_directory(args.out, {'recovery-master-report.json': encode(result)})
             if args.json:
@@ -400,6 +415,7 @@ def main():
                     or args.with_phase126
                     or args.with_phase134
                     or args.with_phase138
+                    or args.with_phase139
                 )
                 pillar_num = result['pillars_passed'] if has_opt_in else report.pillars_passed
                 pillar_den = result['pillar_count'] if has_opt_in else report.pillar_count
@@ -633,6 +649,30 @@ def main():
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"otp_fuse_writes={report.otp_fuse_writes} "
                     f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"persistent_write_release={report.persistent_write_release}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-adjustcontrol-backup-client':
+            report = run_adjustcontrol_streaming_backup_suite(
+                force_clean_room=True if args.clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'adjustcontrol-streaming-backup-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"wire_preflight_scenarios={report.pillar_a_wire_and_preflight_7_scenarios.scenarios_passed}/{report.pillar_a_wire_and_preflight_7_scenarios.scenarios_total} "
+                    f"dual_path_backup_scenarios={report.pillar_b_dual_path_backup_6_scenarios.scenarios_passed}/{report.pillar_b_dual_path_backup_6_scenarios.scenarios_total} "
+                    f"fake_iokit_scenarios={report.pillar_c_fake_iokit_regression_5_scenarios.scenarios_passed}/{report.pillar_c_fake_iokit_regression_5_scenarios.scenarios_total} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"live_usb_iokit_transmit_enabled={report.live_usb_iokit_transmit_enabled} "
+                    f"physical_usb_bytes_transmitted={report.physical_usb_bytes_transmitted} "
                     f"physical_device_writes={report.physical_device_writes} "
                     f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
                     f"persistent_write_release={report.persistent_write_release}"

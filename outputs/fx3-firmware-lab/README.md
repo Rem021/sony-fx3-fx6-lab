@@ -133,11 +133,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar 2 — Route-1 vs Route-2 Real-Hardware Architecture & Brick-Hazard Proof**: Audits `nor_loader_writer.sh` (`bksb.elf`, `ud_nor_pformat.elf`, `ud_cp_firmup.elf` LEDs `0x51/0x52/0x53/0x92`), `us_spi_firmup.sh` (`mew.bin` LED `0x68`), `us_darwin_firm.sh` (`darwin_core.bin` LED `0x63`), and `pformat_config.txt`, proving Route-1 (Stock FX3 `loader_nor.bin` + `p3` Kernel + `p8/cpapp-b.bin` + `p2:/Backup.bin` + Reversible `/usr` Stage-B Overlay) preserves 100% native `IMX510` ISP/IBIS/AF/XAVC while hard-blocking Route-2 brick vectors.
    - **Pillar 3 — Unknown `U3` (`Backup.bin` `819 -> 840` & `0x00fa0080` Bank 0/1 Boot Descriptors & Per-Body Calibration)**: Verifies dual `BK4\x00` records, O(1) `0x00fa0080` Bank 0 (`0x400001000..0x408ffffff` identical AP slots `0..4`) & Bank 1 (`0x800100000..0x809a35dff`, exact `+0x14000`/`+0xE0000` DDR shifts, `p8:\cpImg.dat` vs `p3:\cmrbnb.bin`, non-overlapping DDR intervals), `LdrBkupList.txt` (65 loader keys), `big_backup.conf`, and `ud_keep_backup.elf -r` (`BK_PROTECT_ADJ_RST_USER_FIRMUP`).
    - **Pillar 4 — Volatile RAM Staging & Zero `eMMC` / `SPI NOR` Write Authorization**: Proves `persistent_emmc_writes_authorized == False`, `spi_nor_write_authorized == False`, `emmc_mutation_bytes == 0`, `spi_nor_mutation_bytes == 0`, `calibration_mutation_bytes == 0`, and zero raw proprietary byte slices in JSON output.
+28. [`fx3_firmware_lab/realhw_mpr_dmm_rec_pipeline_bridge_auditor.py`](fx3_firmware_lab/realhw_mpr_dmm_rec_pipeline_bridge_auditor.py)
+   - **Pillar 1 — `LIBMPR_EXPORT_AND_OPEN_START_CLOSE_ABI_DIFF`**: Fast ELF64 `.dynsym`/`.dynstr`/`.dynamic` inspection (`os.O_RDONLY` + `mmap.ACCESS_READ`, `< 0.06s` total) across FX3 v7.02 and FX6 v6.01 `libmpr.so` (`3,102` shared exports; `74` pass-through vs `15` `LD_PRELOAD`-shim-required imports in FX6 `appFw.so`), `libInfraAvbbc.so` (`ParameterControl`), `libosal_uipc.so`, and `im.elf`, while blocking direct dereference of divergent MPR structs (`g_videoParamComb` `312 B` vs `480 B`, `s_movieRecInfo` `3,144 B` vs `5,248 B`).
+   - **Pillar 2 — `DMM_CFG_NODE_TOPOLOGY_AND_UNSUPPORTED_SINK_MASK`**: Decodes FX3 (`66,796 B`, `603` units, `290` rules) and FX6 (`59,364 B`, `556` units, `259` rules) AP `DmmCfg.bin` (`548` shared, `55` FX3-only, `8` FX6-only), verifies all `20` target `MAIN` unit IDs (`1` extent each; `<= 8` extents in `0xa8` stack reply; modes `21/25/31/32`), and enforces fail-safe masking/stubbing of FX6-only hardware sinks (`12G_SDI_SERIALIZER`, `RAW_OVER_SDI`, `DARWIN_VARIABLE_ND`).
+   - **Pillar 3 — `MENU_EVENT_TO_CP_PARAMETER_BINDING_CONTRACT`**: Verifies deterministic `FX6 Menu Event -> ParameterControl -> Stock FX3 CP` translation across Base ISO (`800` / `12800`), Frame Rate / S&Q (`1..240 fps`), Shutter Angle->Speed (`180 deg @ 24p -> 1/48s`, zero mechanical shutter actuations), White Balance (`2000K..15000K` + Tint `-99..+99`), Color/Look (`S-Log3 / S-Gamut3.Cine`, `S-Cinetone`, `.cube` MLUT), and Dual-Slot `CFexpress Type A` / `SDXC` REC Start/Stop, while blocking unsupported `5K Open Gate` / `X-OCN` / unmasked FX6 hardware modes.
+   - **Pillar 4 — `UIPC_QUEUE_GUARD_AND_RECORD_LOCK_SAFETY`**: Verifies `osal_uipc.ko` fixed-area bounds (`GetFixedArea(0..4)` `0x8e00`, `+0x28` virtual vs `+0x08` physical pointer domain, `osal_valloc_msg_wait` `align64(align4(L)+24+4+40)`, `384 B` async cap, `op 0..16`, `ptr+15 <= limit`), `CallbackFromAvbbc` 48 B copy before `osal_free_msg`, `s_movieRWlock` pairing on `s_movieRecStatus` (`136 B`), `ExecEncClose` `s_recordCounter` gating (preventing `.RSV` unfinalized clips), and `persistent_emmc_writes_authorized == False`.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 27 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 28 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -187,6 +192,8 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-xavc-aces-fz100 --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-cp-backup --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-cp-backup --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-mpr-dmm-bridge --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-realhw-mpr-dmm-bridge --clean-room --json
 
 # Run all unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v

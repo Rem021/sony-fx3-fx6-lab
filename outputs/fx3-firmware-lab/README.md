@@ -83,11 +83,16 @@ Core clean-room firmware container auditor, `PRODUCT_MODEL_ALCIN_UUD` (FX3 v7.02
    - **Pillar 2 — Anamorphic (`1.3x / 1.33x / 1.5x / 1.8x / 2.0x`) 5-Axis IBIS Asymmetric Gain Containment**: Proves FX6 `De-Squeeze` (`1.3x` / `2.0x`) is monitoring-only on rigid `IMX510` CMOS (`has_physical_ibis == False`), whereas on FX3's physical 5-axis IBIS stage, applying spherical focal length `f` over-drives horizontal yaw by $S\times$ (`100.0%` error at `2.0x`), enforcing safe `Anamorphic SteadyShot` asymmetric gain (`f_x = f / S, f_y = f`) OR automatic `IBIS = Off (0x0400 Center-Lock) + 2000 Hz Gyro RTMD` for manual anamorphic lenses.
    - **Pillar 3 — `IMX510` Rolling-Shutter Line-Readout Timing Matrix**: Audits `MetaConverterImpl::ConvertReadoutDuration` and `NormalImageControl_EffectivePixelReadoutTime` readout metadata (`8.70 ms` full-width `4K 24..60p`, `4.35 ms` `S&Q 4K 120p`, `2.20 ms` `FHD 240p`) and detects skew-shear mismatches (`8700 us` stamped on `4K120` -> `vertical_shear_risk == True`).
    - **Pillar 4 — Stock-CP IMU Factory Bias/Orthogonality Calibration Immutability**: Proves factory gyro bias, orthogonality, and thermal-drift LUTs in `cnflasha` / Stock-CP remain 100% untouched (`imu_calibration_mutation_bytes == 0`, `cp_mutation_bytes == 0`, `persistent_emmc_writes_authorized == False`).
+18. [`fx3_firmware_lab/interval_cache_and_ftp_auditor.py`](fx3_firmware_lab/interval_cache_and_ftp_auditor.py)
+   - **Pillar 1 — Interval Recording (Time-Lapse `1s..60s`) & Electronic-Shutter Wear Firewall**: Audits FX3 `v7.02` & FX6 `v6.01` `appFw.so`, `cpapp-b.bin`, `libmpr.so`, `global.xdb`, and `.uxc` string packs strictly via `os.O_RDONLY` + `mmap.ACCESS_READ` (with deterministic Clean-Room fallback), enforcing mandatory `Electronic Shutter` (`mech_shutter_actuations == 0`), validating `1..60s` interval and `1..9999` shot limits, modeling `AE Tracking Sensitivity` (`LOW / MID / HIGH / LOCK`) step-damping across day-to-night ramps, and gating `SINGLE_CLIP_FRAME_PACK` (FX6 `Interval Rec`) vs `STILL_SEQUENCE` (`Interval Shoot Func.`, `in_camera_movie_assembly == False` on FX3).
+   - **Pillar 2 — Picture Cache (Pre-Rec Circular DDR Ring-Buffer) Budget on FX3 `2048 MiB` DRAM**: Models exact ring-buffer MiB demand (`(bitrate_mbps / 8.0) * cache_sec`) against FX3 AP DRAM headroom (`384.0 MiB` ring budget after reserving `384 MiB` kernel/DMA + `640 MiB` `appFw`/`libmpr`/`ux` + `384 MiB` `GPE0`/codec + `256 MiB` OOM guard), proving `XAVC-I 4K60` (`600 Mbps = 75 MiB/s`) clamps safely to **`5.0 s`** (`375.0 MiB`, rejecting `>5s` OOM exhaustion) while `XAVC-I 4K24` clamps to `12.0 s` and `XAVC-L 4K30/FHD60` support full `16.0 s`, and enforcing auto-disable under `S&Q`, `HDMI RAW16`, `Interval Rec`, `Simul`, and `Proxy` modes.
+   - **Pillar 3 — Wired USB-LAN FTP/FTPS (`TLS 1.2/1.3`, `PASV`, `REST`) & `P12` `00342260` RF-Off / Path-Traversal Firewall**: Probes `libInfraFtpClient.so`, `libNetServiceEther.so`, `appFw.so`, and `.uxc` packs (`os.O_RDONLY`) to enforce wired `CDC-NCM / RTL8153` transport with `100%` Wi-Fi & BT RF isolation under `P12` (`Airplane Mode = On`, `0` `HCI` TX packets, `0` `WF-12 00342260` fatal dialogs), strict `FTPES` (`TLS 1.2/1.3`, root CA verified, passive `PASV`, byte-verified `REST` offset resume, `OK_AND_KEEP` Clip Flag filtering), and hard blocking of internal eMMC `p1..p15` (`CWD`/`RETR` confined to `/mnt/sd`, `/mnt/cfexpress_a|b`, `/mnt/slot_a|b`).
+   - **Pillar 4 — Calibration/eMMC Zero-Mutation Proof & `NonRealTimeMeta v2.20` Tag Parity**: Proves `calibration_mutation_bytes == 0`, `emmc_mutation_bytes == 0`, and `persistent_emmc_writes_authorized == False` (blocking `p2:/Backup.bin`, `p2:/psd.bin`, `/dev/nflasha*`, `/dev/cnflasha*`), plus pure-Python `NonRealTimeMeta v2.20` XML parity for interval and picture-cache tags.
 
 ## Usage & Tests
 
 ```sh
-# Emit deterministic JSON across all 17 auditors (Local Donor or Clean-Room)
+# Emit deterministic JSON across all 18 auditors (Local Donor or Clean-Room)
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-all --clean-room
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-multilang --clean-room
@@ -117,8 +122,10 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-playback-shotmark-ae --clean-room --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-gyroflow-anamorphic --json
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-gyroflow-anamorphic --clean-room --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-interval-cache-ftp --json
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m fx3_firmware_lab audit-interval-cache-ftp --clean-room --json
 
-# Run all 437 unit tests in Local Donor mode and forced Clean-Room mode
+# Run all 475 unit tests in Local Donor mode and forced Clean-Room mode
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-firmware-lab /usr/bin/python3 -B -m unittest discover -s outputs/fx3-firmware-lab/tests -p "test_*.py" -v
 ```

@@ -1,0 +1,42 @@
+# Phase 201（Task H221）真机安全护栏报告：`ILME-FX3`（`Ver. 7.02`）`BIG6` `[Home (Lower Left)]` 零物理 e-ND 执行器与 Slot-1 `CAMSET` 双介质防火墙（`G71`）、`VMC-BNCM1` 机身专属 `TC IN` 与 `XLR-H1` 手柄 Micro-USB / 数字 HDMI `TC OUT` 护栏（`G72`）及 72 门总控预检（`verify-72-gates`）
+
+## 1. 结论先行（实测闭环）
+
+基于已合入的 **Phase 199（`verify-70-gates`）** 与 **Wave-26 全球索尼真机情报**（[Wave-26 README.md](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/reports/2026-11-15-global-sony-wave26-big6-home-aperture-nd-camset-slot1-path-vmcbncm1-tcin-only-intel/README.md)），已在 [`outputs/fx3-safety/`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/README.md) 完成 **Gate `G71`**、**Gate `G72`** 与 **72 门总控安全预检（`evaluate_72gate_preflight` / `verify-72-gates`）** 的端到端实现与双模回归验证：
+
+- **向后兼容 100% 保持**：`verify-58-gates`、`verify-60-gates`、`verify-62-gates`、`verify-64-gates`、`verify-66-gates`、`verify-68-gates` 与 `verify-70-gates` 全部无损通过。
+- **离线与彩排双态锁定**：默认离线态 `69/72` 通过（`G10..G12` 物理 Tier-0 冷备收据门保持 `FAIL_OFFLINE_HARDWARE_NOT_ATTACHED`，返回 `VERIFIED_69_OF_72_AWAITING_PHYSICAL_TIER0`）；`--dry-run-simulated` 彩排态 `72/72` 通过（`VERIFIED_ALL_72_GATES_DRY_RUN_SIMULATED_BACKUP`）。
+- **物理红线硬锁死**：全程硬锁 `overall_ready_for_hardware_attach = False`、`agent_auto_flash_blocked = True`、`persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`、`el3_payload_transmit_authorized = False`、`physical_usb_packets_emitted = 0`、`raw_firmware_bytes_leaked = 0`。
+
+---
+
+## 2. 核心实现与工程模块（6 个受控文件）
+
+1. **新增 [`realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py)**：
+   - **只读 Donor 契约审计（[`audit_phase201_donor_contracts`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py#L807-L926)）**：严格以 `os.open(..., os.O_RDONLY)` 校验 FX3 `7.02` `cpapp-b.bin`（`15,980,568 B`）、`libSaveLoadSettings.so`（`29,576 B`）、`libUsbControl.so`（`134,888 B`）、`FX3-CX95900_ALLLANG-Backup.bin`（`2,229,740 B`）及 FX6 `6.01` `CX95898_NTSC.bin`（`2,253,333 B`）的精确字节数、SHA-256 与符号标记，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 无损脱敏回退，零原始固件字节外泄。
+   - **Gate `G71` — `ILME-FX3`（`Ver. 7.02`）`BIG6` 零物理 e-ND 执行器防火墙与 Slot-1 `CAMSET01..10.DAT` 双介质隔离（[`evaluate_g71_big6_noend_camset_slot1_guard`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py#L1907-L1982)）**：
+     - 严格校验 `Ver. >= 7.00` 下 `[Mode Settings] = [Fixed/Variable]`、6 宫格 `BIG6` 顶栏状态区及 `MENU -> Setup -> [Dial Customize] -> [Home (Lower Left)]` 的双枚举契约（默认 `Aperture` 或仅记录曝光参考元数据的虚拟 `ND Filter`），强制 `e_nd_actuator_tx_count == 0` 并阻断 Stage-B `FX6` 向 `ILME-FX3` CP 发送 `1/4..1/128` 物理可变电子 ND 电机命令（`BLOCKED_G71_BIG6_END_ACTUATOR_TX_FORBIDDEN` / `BLOCKED_G71_BIG6_HOME_TOPOLOGY_OR_MODE_INVALID`）。
+     - 强制 `Save/Load Settings` 仅限 **Slot 1**（拒绝 `Slot 2` 并在 `MR` 调出拍摄设置模式下强制置灰禁入，`BLOCKED_G71_CAMSET_SLOT2_OR_MR_MODE_FORBIDDEN`）、单卡最多 `10` 个 `CAMSET01.DAT .. CAMSET10.DAT` 且剥离机内绑定项（`BLOCKED_G71_CAMSET_FILE_OR_COUNT_CEILING_EXCEEDED`）、SD（`/PRIVATE/SONY/SETTING/FX3/CAMSET/`）与 CFexpress Type A（`/SONY/SETTING/FX3/CAMSET/`）双介质根目录严格分流（`BLOCKED_G71_CAMSET_MEDIA_ROOT_PATH_MISMATCH`）、拒绝 `ILME-FX3` / `ILME-FX3A` / `ILME-FX6` 跨机型 `.DAT` 头互导（`BLOCKED_G71_CAMSET_CROSS_MODEL_HEADER_REJECTED`），并将 Stage-B 配置读写沙箱化至 `/tmp/fx6_camset_overlay` 且锁定 `H0 == H3` 零漂移（`BLOCKED_G71_STAGEB_CAMSET_OVERLAY_OR_H0_H3_DRIFT`）。
+   - **Gate `G72` — `VMC-BNCM1`（`A-5051-506-A`）机身专属单向 `TC IN`（`EXT-LK`）、`XLR-H1` 手柄 Micro-USB 禁入与数字 HDMI 唯一 `TC OUT` 护栏（[`evaluate_g72_vmcbncm1_tcin_hdmi_tcout_guard`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py#L1985-L2060)）**：
+     - 严格拦截将 `VMC-BNCM1`（`0.2m` BNC-to-Multi 转接线）插入 `XLR-H1` 顶部音频手柄侧面 Micro-USB 维修/固件口的错误接法（`BLOCKED_G72_XLRH1_HANDLE_MICRO_USB_VMCBNCM1_FORBIDDEN`），锁定仅允许机身侧面 `Multi/Micro USB` 端口接入。
+     - 阻断在 `Multi/Micro USB` 上反向驱动模拟 LTC / BNC `TC OUT`，并要求 Stage-B 将 `FX6` BNC `TC OUT` 接口以 `EOPNOTSUPP` 屏蔽（`BLOCKED_G72_MULTI_USB_REVERSE_BNC_TCOUT_FORBIDDEN`）；校验 `[Movie]` + `[Time Code Make] = [Preset]` + `[Time Code Run] = [Free Run]` + 连续同步 `>= 10.0s` 方可达成 `EXT-LK`，一旦进入 `S&Q` 或更改 `TC Make / Run / Preset` 自动释放外锁（`BLOCKED_G72_TCIN_PREREQ_OR_EXT_LK_RELEASED`）。
+     - 限定 `ILME-FX3` 的 `TC OUT` 仅允许通过机身数字 Type-A HDMI（`MENU -> Setup -> [External Output] -> [HDMI Output Settings] -> [Time Code Output] = [On]`）输出，并在 `S&Q` 模式下自动关闭/拦截开启请求（`BLOCKED_G72_TCOUT_NON_HDMI_OR_SQ_VIOLATION`）。
+   - **72 门总控预检（[`evaluate_72gate_preflight`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard.py#L2068-L2415)）**：无损串联 `evaluate_70gate_preflight`（`G01..G70`）+ `G71` + `G72`。
+2. **更新 [`outputs/fx3-safety/fx3_safety/__init__.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/__init__.py)**：完整导出 `G71`、`G72`、`Master72GateReport`、`evaluate_72gate_preflight`、`run_72_gate_preflight`、`evaluate_72_master_safety_gates` 及 Phase 201 全部校验器与违规状态码。
+3. **更新 [`outputs/fx3-safety/fx3_safety/__main__.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/fx3_safety/__main__.py)**：接入 `verify-g71-big6-noend-camset-slot1`、`verify-g72-vmcbncm1-tcin-hdmi-tcout` 与 `verify-72-gates`（支持 `--force-clean-room`、`--dry-run-simulated` 与 `--json`）。
+4. **更新 [`outputs/fx3-safety/README.md`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/README.md)**：补充 Section 3.3 导出索引与 Section 36 Phase 201 架构与 CLI 文档。
+5. **新增 [`test_phase201_big6_noend_camset_slot1_vmcbncm1_72gate_guard.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h221-phase201-safety-72gates-big6-noend-camset-slot1-vmcbncm1/outputs/fx3-safety/tests/test_phase201_big6_noend_camset_slot1_vmcbncm1_72gate_guard.py)**：共 **58 项**双模单元测试，含 `< 6.0s` 单次 72 门调用延迟硬门禁断言与 `58..70` 门全链路向后兼容断言。
+
+---
+
+## 3. 实测验证结果（全部使用 `/usr/bin/python3 -B`）
+
+| 验证命令 | 模式 | 实测结果 |
+| --- | --- | --- |
+| `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m fx3_safety verify-72-gates --json \| head -n 35` | Local Donor `O_RDONLY` | `69/72`（`VERIFIED_69_OF_72_AWAITING_PHYSICAL_TIER0`，红线全锁死） |
+| `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m fx3_safety verify-72-gates --dry-run-simulated` | Dry-Run Rehearsal | `72/72`（`VERIFIED_ALL_72_GATES_DRY_RUN_SIMULATED_BACKUP`，`overall_ready_for_hardware_attach=False`） |
+| `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest outputs/fx3-safety/tests/test_phase201_big6_noend_camset_slot1_vmcbncm1_72gate_guard.py` | Normal Mode | **58 tests PASS**（`7.11s`，单次 72 门调用 `< 6.0s`） |
+| `FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest outputs/fx3-safety/tests/test_phase201_big6_noend_camset_slot1_vmcbncm1_72gate_guard.py` | Clean-Room Mode | **58 tests PASS**（`5.27s < 6.0s`） |
+| `PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -p "test_*.py"` | Full `fx3-safety` Normal | **1,451 tests PASS**（`77.48s`） |
+| `FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-safety /usr/bin/python3 -B -m unittest discover -s outputs/fx3-safety/tests -p "test_*.py"` | Full `fx3-safety` Clean-Room | **1,451 tests PASS (`skipped=1`)**（`52.63s`） |
+| `/usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only` | 全仓 Clean-Room 卫生与总回归 | **ALL GREEN (`0.04s`)**（零 `.pyc` / `__pycache__` 污染） |

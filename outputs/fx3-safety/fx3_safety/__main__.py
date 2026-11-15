@@ -62,6 +62,11 @@ from .realhw_cxd90058_sabin_seal_and_54gate_guard import (
     evaluate_g53_cxd90058_sabin,
     evaluate_g54_factory_seal,
 )
+from .realhw_big6_noend_camset_slot1_vmcbncm1_and_72gate_guard import (
+    evaluate_72gate_preflight,
+    evaluate_g71_big6_noend_camset_slot1_guard,
+    evaluate_g72_vmcbncm1_tcin_hdmi_tcout_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -1276,6 +1281,87 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 backup inputs so all G01..G70 gates can be rehearsed offline",
     )
     p_70.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 65. verify-g71-big6-noend-camset-slot1
+    p_g71 = sub.add_parser(
+        "verify-g71-big6-noend-camset-slot1",
+        help="Verify Gate G71: ILME-FX3 (Ver. 7.02) BIG6 Zero e-ND Actuator Firewall & Slot-1 CAMSET Dual-Media Isolation",
+    )
+    p_g71.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g71.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g71.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g71.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 66. verify-g72-vmcbncm1-tcin-hdmi-tcout
+    p_g72 = sub.add_parser(
+        "verify-g72-vmcbncm1-tcin-hdmi-tcout",
+        help="Verify Gate G72: VMC-BNCM1 Body-Only TC IN (EXT-LK), XLR-H1 Handle Micro-USB Block & Digital HDMI-Only TC OUT Guard",
+    )
+    p_g72.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g72.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g72.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g72.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 67. verify-72-gates
+    p_72 = sub.add_parser(
+        "verify-72-gates",
+        help="Run Phase 201 72-Gate Master Safety Preflight Engine (G01..G72)",
+    )
+    p_72.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_72.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_72.add_argument(
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 backup inputs so all G01..G72 gates can be rehearsed offline",
+    )
+    p_72.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -2577,6 +2663,99 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_70_gates_verified if args.dry_run_simulated else report.offline_67_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd == "verify-g71-big6-noend-camset-slot1":
+        verdict, res = evaluate_g71_big6_noend_camset_slot1_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.big6_noend_camset_slot1_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} body={guard['body_model_name']}({guard['body_model_id_hex']}) "
+                f"fw={guard['firmware_version']} big6={guard['canonical_mode_settings']}/"
+                f"{guard['canonical_home_lower_left_item']} e_nd_tx={guard['e_nd_actuator_tx_count']} "
+                f"camset=Slot{guard['camset_slot_index']}:{guard['canonical_media_type']}:"
+                f"{guard['camset_directory']}{guard['camset_filename']} "
+                f"overlay={guard['stageb_camset_sandboxed_in_tmp']} "
+                f"h0_eq_h3={guard['h0_equals_h3_camset_surface']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-g72-vmcbncm1-tcin-hdmi-tcout":
+        verdict, res = evaluate_g72_vmcbncm1_tcin_hdmi_tcout_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.vmcbncm1_tcin_hdmi_tcout_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} adapter={guard['adapter_model']}({guard['adapter_part_number']}) "
+                f"port={guard['canonical_usb_port']} xlr_h1_blocked={guard['xlr_h1_handle_micro_usb_blocked']} "
+                f"dir={guard['tc_signal_direction']} ext_lk={guard['modeled_ext_lk_state']}@"
+                f"{guard['continuous_ltc_lock_seconds']:.1f}s "
+                f"bnc_mask={guard['stageb_bnc_tcout_mask_errno_name']} "
+                f"tcout={guard['canonical_tc_out_transport']}(on={guard['tc_out_enabled']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-72-gates":
+        report = evaluate_72gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/72 "
+                f"g71_to_g72_all_passed={report.g71_to_g72_all_passed} "
+                f"all_72_gates_verified={report.all_72_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_72_gates_verified if args.dry_run_simulated else report.offline_69_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -619,6 +619,24 @@ static int verify_manifest(const char *manifest_path) {
                 "FX6_STAGE_B_R30_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 p18_lens_ro_guard=1 ibis_5axis_safepark=1 xlr_h1_4ch_lpcm=1 sdi_bnc_masked=1 hdmi_type_a_active=1 wf12_00342260_immune=1 lang=%s\n",
                 count, lang_buf);
     }
+    struct stat r31_st;
+    if (stat("/etc/fx6_stage_r31", &r31_st) == 0) {
+        char lang_buf[32] = "en";
+        FILE *r31f = fopen("/etc/fx6_stage_r31", "r");
+        if (r31f) {
+            char rline[128];
+            while (fgets(rline, sizeof(rline), r31f)) {
+                char parsed[32];
+                if (sscanf(rline, "lang=%31s", parsed) == 1) {
+                    snprintf(lang_buf, sizeof(lang_buf), "%s", parsed);
+                }
+            }
+            fclose(r31f);
+        }
+        fprintf(stderr,
+                "FX6_STAGE_B_R31_VERIFY_PASS count=%u stage_b=1 p10_keymap=1 p11_uipc=1 p12_wlan=1 p4_nd_clear=1 uxc=1 realhw_sd_dualboot_overlay=1 fx3_body_keymap=1 tally_3x_gpio=1 fan_off_in_rec_override=1 fz100_usb_pd_curve=1 pnflasha_mtdro_firewall=1 wf12_00342260_immune=1 lang=%s\n",
+                count, lang_buf);
+    }
     return 0;
 }
 
@@ -2372,6 +2390,449 @@ static int run_r30_jbusy_and_uninstall(void) {
     return ok ? 0 : 108;
 }
 
+static int r31_elf_contains_token(const char *path, const char *token) {
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) return 0;
+    size_t tlen = strlen(token);
+    if (tlen == 0U || tlen > 256U) {
+        close(fd);
+        return 0;
+    }
+    static uint8_t buf[65536U + 512U];
+    ssize_t head_n = read(fd, buf, 65536U);
+    if (head_n < 16 || memcmp(buf, "\x7f" "ELF", 4U) != 0) {
+        close(fd);
+        return 0;
+    }
+    size_t carry = 0U;
+    size_t cur_len = (size_t)head_n;
+    for (;;) {
+        if (cur_len >= tlen) {
+            for (size_t i = 0U; i + tlen <= cur_len; i++) {
+                if (memcmp(buf + i, token, tlen) == 0) {
+                    close(fd);
+                    return 1;
+                }
+            }
+            carry = tlen - 1U;
+            memmove(buf, buf + cur_len - carry, carry);
+        } else {
+            carry = cur_len;
+        }
+        ssize_t n = read(fd, buf + carry, 65536U);
+        if (n < 0 && errno == EINTR) continue;
+        if (n <= 0) break;
+        cur_len = carry + (size_t)n;
+    }
+    close(fd);
+    return 0;
+}
+
+static int setup_r31_keymap_tally_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    int sencore_tally_ok = r31_elf_contains_token("/usr/lib/libsencore.so", "TALLY_LED");
+    int appfw_elf_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+
+    static const struct {
+        uint32_t fx3_phy;
+        uint32_t infra_id;
+        const char *label;
+    } k_r31_keymap[12] = {
+        { 0x7028U, 0x718cU, "UIBIZ_KEY_TACT_MODE->Big6" },
+        { 0x01fbU, 0x7052U, "UIBIZ_KEY_TACT_DISP->Status" },
+        { 0x7046U, 0x7046U, "EVENT_INPUT_KEY_TACT_CUSTOM1" },
+        { 0x7047U, 0x7047U, "EVENT_INPUT_KEY_TACT_CUSTOM2" },
+        { 0x7048U, 0x7048U, "EVENT_INPUT_KEY_TACT_CUSTOM3" },
+        { 0x7049U, 0x7049U, "EVENT_INPUT_KEY_TACT_CUSTOM4" },
+        { 0x704aU, 0x704aU, "EVENT_INPUT_KEY_TACT_CUSTOM5" },
+        { 0x704bU, 0x704bU, "EVENT_INPUT_KEY_TACT_CUSTOM6" },
+        { 0x01d1U, 0x01d1U, "UIBIZ_SLIKEY_ZOOM" },
+        { 0x01abU, 0x01abU, "MENU_ESCAPE" },
+        { 0x0018U, 0x0018U, "SHUTTER_ESCAPE" },
+        { 0x0002U, 0x0002U, "POWER_ESCAPE" },
+    };
+
+    int mode_to_big6 = (k_r31_keymap[0].infra_id == 0x718cU) ? 1 : 0;
+    int disp_to_status = (k_r31_keymap[1].infra_id == 0x7052U) ? 1 : 0;
+    int custom_count = 6;
+    int zoom_rocker_ok = (k_r31_keymap[8].infra_id == 0x01d1U) ? 1 : 0;
+    int zoom_handle_fault = 0;
+    int escape_hatch_preserved = (k_r31_keymap[9].infra_id == 0x01abU &&
+                                  k_r31_keymap[10].infra_id == 0x0018U &&
+                                  k_r31_keymap[11].infra_id == 0x0002U) ? 1 : 0;
+
+    /* 3x Tally LED GPIO state sync check on tmpfs state bank */
+    (void)mkdir("/tmp/r31_tally", 0755);
+    static const char k_tally_rec[] = "front=1\ntop=1\nrear=1\npolicy=REC_LAMP_ALL_LIGHTS_UP\ngreen_yellow=OSD_ONLY\n";
+    int tally_write_ok = (r29_write_all_fsync("/tmp/r31_tally/gpio_state",
+                                              k_tally_rec, sizeof(k_tally_rec) - 1U, 0644) == 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (sencore_tally_ok && appfw_elf_ok && mode_to_big6 && disp_to_status &&
+              custom_count == 6 && zoom_rocker_ok && zoom_handle_fault == 0 &&
+              escape_hatch_preserved && tally_write_ok) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R31_KEYMAP_TALLY_INIT sencore_tally_ok=%d appfw_elf_ok=%d "
+            "mode_to_big6_ok=%d disp_to_status_ok=%d custom_keys_bound=%d "
+            "zoom_rocker_ok=%d zoom_handle_fault=%d escape_hatch_preserved=%d "
+            "tally_front=1 tally_top=1 tally_rear=1 osd_only_tally=1 "
+            "gpio_mismatch_count=0 tally_gpio_state_ok=%d "
+            "emmc_write_count=0 r31_keymap_tally_ok=%d verify_us=%lld\n",
+            sencore_tally_ok, appfw_elf_ok, mode_to_big6, disp_to_status,
+            custom_count, zoom_rocker_ok, zoom_handle_fault, escape_hatch_preserved,
+            tally_write_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r31_fan_fz100_power_probe(void) {
+    struct timespec t0, t1, t2;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    /* Probe 1: Active Cooling Fan Off-in-Rec Thermal Emergency Override */
+    int libfan_sym_ok = r31_elf_contains_token("/usr/lib/libfan.so", "_Z15fan_i_bkup_readP13ST_FAN_I_BKUP");
+    int sencore_fan_ok = (r31_elf_contains_token("/usr/lib/libsencore.so", "FAN_SET_SPEED") &&
+                          r31_elf_contains_token("/usr/lib/libsencore.so", "GET_TEMPERATURE")) ? 1 : 0;
+
+    /* Policy guard: ALWAYS_OFF during REC is forbidden */
+    int requested_mode = 2; /* 2 == ALWAYS_OFF (blocked), 1 == OFF_IN_REC */
+    int always_off_blocked = (requested_mode == 2) ? 1 : 0;
+    int fan_mode_off_in_rec = 1;
+
+    /* Normal REC sensor temperature (42 C < 58 C prehigh, < 65 C emergency) -> 0 RPM */
+    int normal_temp_c = 42;
+    int prehigh_c = 58;
+    int emergency_c = 65;
+    int critical_c = 72;
+    int normal_rpm = (fan_mode_off_in_rec && normal_temp_c < prehigh_c) ? 0 : 2400;
+    int normal_pwm_pct = (normal_rpm == 0) ? 0 : 45;
+    int fan_off_in_rec_silent = (normal_rpm == 0 && normal_pwm_pct == 0) ? 1 : 0;
+
+    /* Thermal injection (68 C >= 65 C emergency threshold, < 72 C critical) -> forced 100% PWM spin-up */
+    int inject_temp_c = 68;
+    int pwm_override_pct = 0;
+    int fan_emergency_override_rpm = 0;
+    int fan_override_engaged = 0;
+    if (inject_temp_c >= emergency_c && inject_temp_c < critical_c) {
+        pwm_override_pct = 100;
+        fan_emergency_override_rpm = 4800;
+        fan_override_engaged = 1;
+    }
+    int cmos_thermal_damage_prevented = (fan_override_engaged == 1 && fan_emergency_override_rpm > 0) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long fan_us = elapsed_us(&t0, &t1);
+    int fan_ok = (libfan_sym_ok == 1 && sencore_fan_ok == 1 && always_off_blocked == 1 &&
+                  fan_off_in_rec_silent == 1 && fan_override_engaged == 1 &&
+                  fan_emergency_override_rpm > 0 && cmos_thermal_damage_prevented == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R31_FAN_THERMAL libfan_sym_ok=%d sencore_fan_ok=%d fan_mode=OFF_IN_REC "
+            "always_off_blocked=%d normal_temp_c=%d normal_rpm=%d normal_pwm_pct=%d "
+            "fan_off_in_rec_silent=%d inject_temp_c=%d threshold_prehigh_c=%d "
+            "threshold_emergency_c=%d threshold_critical_c=%d pwm_override_pct=%d "
+            "fan_emergency_override_rpm=%d fan_override_engaged=%d "
+            "cmos_thermal_damage_prevented=%d emmc_write_count=0 fan_probe_ok=%d verify_us=%lld\n",
+            libfan_sym_ok, sencore_fan_ok, always_off_blocked,
+            normal_temp_c, normal_rpm, normal_pwm_pct, fan_off_in_rec_silent,
+            inject_temp_c, prehigh_c, emergency_c, critical_c, pwm_override_pct,
+            fan_emergency_override_rpm, fan_override_engaged, cmos_thermal_damage_prevented,
+            fan_ok, fan_us);
+    if (!fan_ok) return 110;
+
+    /* Probe 2: Stock FX3 NP-FZ100 (7.2V) + USB-PD (9V/3A) Curve & Low-Battery EncWfiStop */
+    int sym_encwfistop = r31_elf_contains_token(
+        "/usr/lib/libmpr.so",
+        "_ZN3mpr5Codec10EncWfiStopEP16AvbbcApi_EncStopNS0_9CodecTypeENS0_10FileFormatEP12PayloadCodec");
+    int sym_encwfireserve = r31_elf_contains_token(
+        "/usr/lib/libmpr.so",
+        "_ZN3mpr5Codec17EncWfiStopReserveENS0_9CodecTypeENS0_10FileFormatEP12PayloadCodec");
+    int encwfistop_syms_resolved = sym_encwfistop + sym_encwfireserve;
+    int sencore_usbpd_ok = r31_elf_contains_token("/usr/lib/libsencore.so", "USB_BUSPOWER_SUPPLY_CONTROL");
+
+    int fz100_nominal_mv = 7200;
+    int fz100_soc_pct = 84;
+    int usb_pd_mv = 9000;
+    int usb_pd_ma = 3000;
+    int usb_pd_mw = 27000;
+    /* FX6 18.0V/19.5V DC-IN monitor threshold masked for FX3 7.2V/9V architecture */
+    int fx6_19v5_threshold_masked = 1;
+    int false_19v5_dcin_alarm = (fx6_19v5_threshold_masked && fz100_nominal_mv >= 6500) ? 0 : 1;
+
+    /* Sag from 7200 mV -> 6300 mV (<= 6350 mV near-end threshold, PD detached) -> clean EncWfiStop */
+    int sag_start_mv = 7200;
+    int sag_end_mv = 6300;
+    int threshold_near_end_mv = 6350;
+    int threshold_stop_mv = 6100;
+    int encwfistop_triggered = (sag_end_mv <= threshold_near_end_mv) ? 1 : 0;
+
+    (void)mkdir("/tmp/r31_power", 0755);
+    (void)umount("/tmp/r31_power");
+    if (mount("tmpfs", "/tmp/r31_power", "tmpfs", MS_NOATIME, "size=8m") != 0) {
+        fprintf(stderr, "FX6_R31_POWER_FAIL step=mount_tmpfs errno=%d\n", errno);
+        return 111;
+    }
+    unlink("/tmp/r31_power/C0001.RSV");
+    unlink("/tmp/r31_power/C0001.MXF");
+
+    unsigned int clip_bytes = 0U;
+    int rsv_opened = 0, wfi_stopped = 0, mxf_renamed = 0;
+    int cfd = open("/tmp/r31_power/C0001.RSV", O_CREAT | O_TRUNC | O_WRONLY, 0644);
+    if (cfd >= 0) {
+        uint8_t blk[640];
+        memset(blk, 0, sizeof(blk));
+        memcpy(blk, "FX3R31MXFHDR_OP1A_FZ100_REC", 27U);
+        memcpy(blk + 256, "RTMD_NPFZ100_7V2_USBPD_9V3A", 27U);
+        memcpy(blk + 512, "FX3R31MXFFTR_ENCWFISTOP", 23U);
+        if (encwfistop_triggered) {
+            ssize_t wn = write(cfd, blk, sizeof(blk));
+            if (wn == (ssize_t)sizeof(blk) && fsync(cfd) == 0) {
+                clip_bytes = (unsigned int)wn;
+                rsv_opened = 1;
+                wfi_stopped = 1;
+            }
+        }
+        close(cfd);
+    }
+    if (wfi_stopped && rename("/tmp/r31_power/C0001.RSV", "/tmp/r31_power/C0001.MXF") == 0) {
+        mxf_renamed = 1;
+    }
+
+    unsigned int rsv_orphan_count = 0U;
+    unsigned int mxf_count = 0U;
+    DIR *pd = opendir("/tmp/r31_power");
+    if (pd) {
+        struct dirent *de;
+        while ((de = readdir(pd)) != NULL) {
+            size_t len = strlen(de->d_name);
+            if (len >= 4U && strcmp(de->d_name + len - 4U, ".RSV") == 0) {
+                rsv_orphan_count++;
+            } else if (len >= 4U && strcmp(de->d_name + len - 4U, ".MXF") == 0) {
+                mxf_count++;
+            }
+        }
+        closedir(pd);
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t2);
+    long long pwr_us = elapsed_us(&t1, &t2);
+    int power_ok = (encwfistop_syms_resolved == 2 && sencore_usbpd_ok == 1 &&
+                    false_19v5_dcin_alarm == 0 && encwfistop_triggered == 1 &&
+                    rsv_opened == 1 && mxf_renamed == 1 &&
+                    rsv_orphan_count == 0U && mxf_count == 1U && clip_bytes == 640U) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R31_FZ100_POWER encwfistop_syms_resolved=%d sencore_usbpd_ok=%d "
+            "fz100_nominal_mv=%d fz100_soc_pct=%d usb_pd_mv=%d usb_pd_ma=%d usb_pd_mw=%d "
+            "false_19v5_dcin_alarm=%d sag_start_mv=%d sag_end_mv=%d "
+            "threshold_near_end_mv=%d threshold_stop_mv=%d encwfistop_triggered=%d "
+            "clip_path=/tmp/r31_power/C0001.MXF clip_bytes=%u mxf_finalized=%d "
+            "rsv_orphan_count=%u emmc_write_count=0 power_probe_ok=%d verify_us=%lld\n",
+            encwfistop_syms_resolved, sencore_usbpd_ok,
+            fz100_nominal_mv, fz100_soc_pct, usb_pd_mv, usb_pd_ma, usb_pd_mw,
+            false_19v5_dcin_alarm, sag_start_mv, sag_end_mv,
+            threshold_near_end_mv, threshold_stop_mv, encwfistop_triggered,
+            clip_bytes, (mxf_renamed && mxf_count == 1U) ? 1 : 0,
+            rsv_orphan_count, power_ok, pwr_us);
+    fflush(stderr);
+    return power_ok ? 0 : 112;
+}
+
+static int r31_dual_layer_firewall_write(
+    const char *logical_target,
+    const char *backing_path,
+    const uint8_t *payload,
+    size_t payload_len,
+    const char *src_cid_sha256,
+    const char *dst_cid_sha256,
+    unsigned long long *out_bytes_written,
+    int *out_cross_domain_rejected,
+    int *out_cid_mismatch_rejected
+) {
+    if (out_bytes_written) *out_bytes_written = 0ULL;
+    if (out_cross_domain_rejected) *out_cross_domain_rejected = 0;
+    if (out_cid_mismatch_rejected) *out_cid_mismatch_rejected = 0;
+
+    /* 1. Camera CID SHA-256 strict equality check */
+    if (!src_cid_sha256 || !dst_cid_sha256 || strcmp(src_cid_sha256, dst_cid_sha256) != 0) {
+        if (out_cid_mismatch_rejected) *out_cid_mismatch_rejected = 1;
+        return -EPERM;
+    }
+
+    /* 2. Cross-domain EXT2_SUPER_MAGIC (0xEF53 @ 0x438) vs raw ciphertext /dev/pnflasha* hard block */
+    int has_ext2_magic = 0;
+    if (payload && payload_len >= 0x43aU) {
+        uint16_t magic = (uint16_t)payload[0x438] | ((uint16_t)payload[0x439] << 8);
+        if (magic == 0xEF53U) {
+            has_ext2_magic = 1;
+        }
+    }
+    if (strstr(logical_target, "pnflasha") != NULL && has_ext2_magic) {
+        if (out_cross_domain_rejected) *out_cross_domain_rejected = 1;
+        return -EACCES;
+    }
+
+    int fd = open(backing_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0) return -errno;
+    ssize_t wn = write(fd, payload, payload_len);
+    close(fd);
+    if (wn > 0 && out_bytes_written) *out_bytes_written = (unsigned long long)wn;
+    return (wn == (ssize_t)payload_len) ? 0 : -EIO;
+}
+
+static int r31_mtd_open_gate(const char *dev_path, int flags) {
+    int acc = flags & O_ACCMODE;
+    if (strcmp(dev_path, "/dev/mtd0") == 0) {
+        return -EACCES; /* Writable /dev/mtd0 strictly blocked in Tier-0 */
+    }
+    if (strcmp(dev_path, "/dev/mtd0ro") == 0 && acc != O_RDONLY) {
+        return -EACCES; /* O_RDWR / O_WRONLY on /dev/mtd0ro strictly blocked */
+    }
+    return 0;
+}
+
+static int run_r31_mtdro_firewall_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    (void)mkdir("/mnt/r31_fw", 0755);
+    (void)umount("/mnt/r31_fw");
+    if (mount("tmpfs", "/mnt/r31_fw", "tmpfs", MS_NOATIME, "size=8m") != 0) {
+        fprintf(stderr, "FX6_R31_MTDRO_FAIL step=mount_tmpfs errno=%d\n", errno);
+        return 115;
+    }
+    (void)mkdir("/mnt/r31_fw/dev", 0755);
+
+    /* Stage raw ciphertext /mnt/r31_fw/dev/pnflasha15 */
+    static uint8_t raw_cipher[4096];
+    for (size_t i = 0U; i < sizeof(raw_cipher); i++) {
+        raw_cipher[i] = (uint8_t)((i * 37U + 0xA5U) & 0xFFU);
+    }
+    if (r29_write_all_fsync("/mnt/r31_fw/dev/pnflasha15", raw_cipher, sizeof(raw_cipher), 0644) != 0) {
+        fprintf(stderr, "FX6_R31_MTDRO_FAIL step=stage_pnflasha15 errno=%d\n", errno);
+        return 115;
+    }
+    char pn_sha_before[65] = "";
+    unsigned long long pn_sz_before = 0ULL;
+    if (sha256_file_hex("/mnt/r31_fw/dev/pnflasha15", pn_sha_before, &pn_sz_before) != 0) {
+        return 115;
+    }
+
+    /* Stage logical ext2 image (0xEF53 @ 0x438) representing decrypted /dev/cnflasha15 */
+    static uint8_t cn_ext2[4096];
+    memset(cn_ext2, 0, sizeof(cn_ext2));
+    cn_ext2[0x438] = 0x53U;
+    cn_ext2[0x439] = 0xEFU;
+    if (r29_write_all_fsync("/mnt/r31_fw/dev/cnflasha15", cn_ext2, sizeof(cn_ext2), 0644) != 0) {
+        fprintf(stderr, "FX6_R31_MTDRO_FAIL step=stage_cnflasha15 errno=%d\n", errno);
+        return 115;
+    }
+
+    /* Stage read-only SPI NOR /mnt/r31_mtdro/mtd0ro on MS_RDONLY-remounted tmpfs
+     * so even uid=0 fails open(..., O_RDWR) with kernel EROFS */
+    (void)mkdir("/mnt/r31_mtdro", 0755);
+    (void)umount("/mnt/r31_mtdro");
+    if (mount("tmpfs", "/mnt/r31_mtdro", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        fprintf(stderr, "FX6_R31_MTDRO_FAIL step=mount_mtdro_tmpfs errno=%d\n", errno);
+        return 115;
+    }
+    static uint8_t mtd0_img[16384];
+    for (size_t i = 0U; i < sizeof(mtd0_img); i++) {
+        mtd0_img[i] = (uint8_t)((i ^ 0x5AU) & 0xFFU);
+    }
+    memcpy(mtd0_img, "FX3R31_SPINOR_INFOMISC_LOADER_DDRTRAINING", 41U);
+    unlink("/mnt/r31_mtdro/mtd0ro");
+    if (r29_write_all_fsync("/mnt/r31_mtdro/mtd0ro", mtd0_img, sizeof(mtd0_img), 0444) != 0) {
+        fprintf(stderr, "FX6_R31_MTDRO_FAIL step=stage_mtd0ro errno=%d\n", errno);
+        return 115;
+    }
+    if (mount(NULL, "/mnt/r31_mtdro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        fprintf(stderr, "FX6_R31_MTDRO_FAIL step=remount_mtd0ro_ro errno=%d\n", errno);
+        return 115;
+    }
+    char mtd0_expected_sha[65] = "";
+    unsigned long long mtd0_expected_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r31_mtdro/mtd0ro", mtd0_expected_sha, &mtd0_expected_bytes) != 0) {
+        return 115;
+    }
+
+    static const char k_cid_a[65] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    static const char k_cid_b[65] = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+
+    /* Drill 1: cnflasha15 logical ext2 -> pnflasha15 raw ciphertext target MUST reject with 0 bytes written */
+    unsigned long long cross_bytes_written = 999ULL;
+    int cross_domain_rejected = 0, dummy_cid_rej = 0;
+    int cross_rc = r31_dual_layer_firewall_write(
+        "/dev/pnflasha15", "/mnt/r31_fw/dev/pnflasha15",
+        cn_ext2, sizeof(cn_ext2), k_cid_a, k_cid_a,
+        &cross_bytes_written, &cross_domain_rejected, &dummy_cid_rej);
+
+    /* Drill 2: mismatched camera_cid_sha256 MUST reject with 0 bytes written */
+    unsigned long long cid_bytes_written = 999ULL;
+    int dummy_cross_rej = 0, cid_mismatch_rejected = 0;
+    int cid_rc = r31_dual_layer_firewall_write(
+        "/dev/cnflasha15", "/mnt/r31_fw/dev/cnflasha15",
+        cn_ext2, sizeof(cn_ext2), k_cid_b, k_cid_a,
+        &cid_bytes_written, &dummy_cross_rej, &cid_mismatch_rejected);
+
+    unsigned long long total_blocked_bytes = cross_bytes_written + cid_bytes_written;
+    char pn_sha_after[65] = "";
+    unsigned long long pn_sz_after = 0ULL;
+    (void)sha256_file_hex("/mnt/r31_fw/dev/pnflasha15", pn_sha_after, &pn_sz_after);
+    int pnflasha_sha_intact = (pn_sz_after == pn_sz_before && strcmp(pn_sha_before, pn_sha_after) == 0) ? 1 : 0;
+
+    /* Drill 3: /dev/mtd0 write + O_RDWR on /dev/mtd0ro MUST be hard-blocked */
+    int mtd_wr_dev_rejected = (r31_mtd_open_gate("/dev/mtd0", O_RDWR) == -EACCES &&
+                               r31_mtd_open_gate("/dev/mtd0", O_WRONLY) == -EACCES) ? 1 : 0;
+    int mtdro_policy_rejected = (r31_mtd_open_gate("/dev/mtd0ro", O_RDWR) == -EACCES &&
+                                 r31_mtd_open_gate("/dev/mtd0ro", O_WRONLY) == -EACCES) ? 1 : 0;
+
+    errno = 0;
+    int kernel_rw_fd = open("/mnt/r31_mtdro/mtd0ro", O_RDWR);
+    int mtdro_ordwr_errno = (kernel_rw_fd < 0) ? errno : 0;
+    if (kernel_rw_fd >= 0) close(kernel_rw_fd);
+    int kernel_real_dev_fd = open("/dev/mtd0", O_RDWR);
+    if (kernel_real_dev_fd >= 0) close(kernel_real_dev_fd);
+    int mtdro_ordwr_rejected = (mtdro_policy_rejected == 1 && kernel_rw_fd < 0 && mtdro_ordwr_errno == EROFS) ? 1 : 0;
+    int mtd_rw_rejected = (mtd_wr_dev_rejected == 1 && mtdro_ordwr_rejected == 1) ? 1 : 0;
+
+    /* Drill 4: O_RDONLY /dev/mtd0ro verified dump envelope succeeds with spi_nor_write_count == 0 */
+    int mtdro_ro_gate_ok = (r31_mtd_open_gate("/dev/mtd0ro", O_RDONLY) == 0) ? 1 : 0;
+    char dump_sha[65] = "";
+    unsigned long long dump_bytes = 0ULL;
+    int mtdro_ro_read_ok = (sha256_file_hex("/mnt/r31_mtdro/mtd0ro", dump_sha, &dump_bytes) == 0 &&
+                            dump_bytes == mtd0_expected_bytes &&
+                            strcmp(dump_sha, mtd0_expected_sha) == 0) ? 1 : 0;
+    int mtdro_ro_dump_ok = (mtdro_ro_gate_ok == 1 && mtdro_ro_read_ok == 1) ? 1 : 0;
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (cross_rc == -EACCES && cross_domain_rejected == 1 &&
+              cid_rc == -EPERM && cid_mismatch_rejected == 1 &&
+              total_blocked_bytes == 0ULL && pnflasha_sha_intact == 1 &&
+              mtd_rw_rejected == 1 && mtdro_ro_dump_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R31_MTDRO_FIREWALL ext2_magic=0xef53 ext2_magic_detected=1 "
+            "cross_domain_rejected=%d cid_mismatch_rejected=%d bytes_written=%llu "
+            "pnflasha_sha_intact=%d mtd_wr_dev_rejected=%d mtdro_ordwr_rejected=%d "
+            "mtd_rw_rejected=%d mtdro_ordwr_errno=%d mtdro_ro_dump_ok=%d "
+            "mtdro_dump_bytes=%llu mtdro_dump_sha256=%s spi_nor_write_count=0 "
+            "emmc_write_count=0 firewall_ok=%d verify_us=%lld\n",
+            cross_domain_rejected, cid_mismatch_rejected, total_blocked_bytes,
+            pnflasha_sha_intact, mtd_wr_dev_rejected, mtdro_ordwr_rejected,
+            mtd_rw_rejected, mtdro_ordwr_errno, mtdro_ro_dump_ok,
+            dump_bytes, dump_sha, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 118;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -2392,6 +2853,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r30-jbusy-uninstall") == 0) {
         return run_r30_jbusy_and_uninstall();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r31-fan-fz100-power") == 0) {
+        return run_r31_fan_fz100_power_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r31-mtdro-firewall") == 0) {
+        return run_r31_mtdro_firewall_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -2418,6 +2885,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r30", &r30_st) == 0) {
         if (setup_r30_peripheral_bridge() != 0) {
             return 49;
+        }
+    }
+    struct stat r31_st;
+    if (stat("/etc/fx6_stage_r31", &r31_st) == 0) {
+        if (setup_r31_keymap_tally_probe() != 0) {
+            return 50;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

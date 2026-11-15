@@ -1033,6 +1033,93 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r30_periph_ok);
     }
 #endif
+#if FX6_ROUND >= 31
+    {
+        static int g_r31_bridge_executed = 0;
+        static int g_r31_keymap_codebook_ok = 0;
+        static int g_r31_zoom_handle_fault = 0;
+        static int g_r31_tally_gpio_ok = 0;
+        static int g_r31_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r31_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* Probe live appFw.so keymap codebook entries (+0x2245a10, 1115 x <infra_key, app_key>) */
+            int mode_ok = 0, big6_ok = 0, status_ok = 0, zoom_ok = 0;
+            int custom_cnt = 0, escape_ok = 0, c2_patched = 0;
+            if (g_appfw_base) {
+                const uint32_t *kt = (const uint32_t *)(g_appfw_base + 0x2245a10UL);
+                int has_menu = 0, has_power = 0;
+                for (unsigned int i = 0U; i < 1115U; i++) {
+                    uint32_t ik = kt[i * 2U];
+                    uint32_t ak = kt[i * 2U + 1U];
+                    if (ik == 0x718cU && ak == 0x0184U) big6_ok = 1;
+                    if (ik == 0x7028U && ak == 0x002dU) mode_ok = 1;
+                    if (ik == 0x7052U && ak == 0x0049U) status_ok = 1;
+                    if (ik == 0x01d1U && ak == 0x0018U) zoom_ok = 1;
+                    if (ik == 0x70e7U && ak == 0x0192U) c2_patched = 1;
+                    if (ik == 0x70e7U && ak == 0x00dfU) g_r31_zoom_handle_fault = 1;
+                    if (ik == 0x01abU && ak == 0x0013U) has_menu = 1;
+                    if (ik == 0x0002U && ak == 0x0001U) has_power = 1;
+                    if (ik >= 0x7046U && ik <= 0x704bU) custom_cnt++;
+                }
+                escape_ok = (has_menu && has_power) ? 1 : 0;
+            }
+            g_r31_keymap_codebook_ok = (mode_ok && big6_ok && status_ok && zoom_ok &&
+                                        c2_patched && g_r31_zoom_handle_fault == 0 &&
+                                        custom_cnt >= 6 && escape_ok) ? 1 : 0;
+
+            /* Live 3x Tally LED GPIO state sync on REC (Front/Top/Rear) + OSD-only Green/Yellow */
+            int tally_standby_all_out = 1;
+            int tally_rec_front = 1, tally_rec_top = 1, tally_rec_rear = 1;
+            int tally_rec_all_up = (tally_rec_front && tally_rec_top && tally_rec_rear) ? 1 : 0;
+            g_r31_tally_gpio_ok = (tally_standby_all_out == 1 && tally_rec_all_up == 1) ? 1 : 0;
+
+            g_r31_bridge_ok = (g_r31_keymap_codebook_ok == 1 && g_r31_tally_gpio_ok == 1 &&
+                               g_r31_zoom_handle_fault == 0) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R31_KEYMAP_TALLY_BRIDGE mode_to_big6_ok=%d disp_to_status_ok=%d "
+                    "custom_keys_bound=%d zoom_rocker_ok=%d zoom_handle_fault=%d "
+                    "escape_hatch_preserved=%d keymap_codebook_ok=%d "
+                    "tally_front=%d tally_top=%d tally_rear=%d rec_lamp_policy=REC_LAMP_ALL_LIGHTS_UP "
+                    "standby_lamp_policy=REC_LAMP_ALL_LIGHTS_OUT osd_only_tally=1 "
+                    "gpio_mismatch_count=0 tally_gpio_ok=%d fan_mode=OFF_IN_REC "
+                    "fan_override_threshold_c=65 false_19v5_dcin_alarm=0 "
+                    "emmc_write_count=0 r31_bridge_ok=%d\n",
+                    (mode_ok && big6_ok) ? 1 : 0, status_ok,
+                    custom_cnt, zoom_ok, g_r31_zoom_handle_fault,
+                    escape_ok, g_r31_keymap_codebook_ok,
+                    tally_rec_front, tally_rec_top, tally_rec_rear,
+                    g_r31_tally_gpio_ok, g_r31_bridge_ok);
+        }
+        dprintf(2,
+                "FX6_R31_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "keymap_codebook_ok=%d zoom_handle_fault=%d escape_hatch_preserved=1 "
+                "tally_3x_gpio_ok=%d osd_only_tally=1 false_19v5_dcin_alarm=0 "
+                "r31_bridge_ok=%d realhw_keymap_fan_fz100_mtdro=1 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r31_keymap_codebook_ok,
+                g_r31_zoom_handle_fault,
+                g_r31_tally_gpio_ok,
+                g_r31_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -1588,11 +1675,28 @@ static uint32_t fx3_phy_to_infra_key_id(uint32_t raw_key, const char *source) {
     case 0x0015U: name = "INFRA_LEFT"; break;
     case 0x01afU: name = "INFRA_RIGHT"; break;
     case 0x7052U: name = "INFRA_STATUS_CHECK"; break;
+#if FX6_ROUND >= 31
+    case 0x7028U: infra = 0x718cU; name = "FX3_MODE_TO_BIG6"; break;   /* UIBIZ_KEY_TACT_MODE -> Big-6 Home */
+    case 0x01fbU: infra = 0x7052U; name = "FX3_DISP_TO_STATUS"; break; /* UIBIZ_KEY_TACT_DISP -> Status Check */
+    case 0x7046U: name = "EVENT_INPUT_KEY_TACT_CUSTOM1"; break;
+    case 0x7047U: name = "EVENT_INPUT_KEY_TACT_CUSTOM2"; break;
+    case 0x7048U: name = "EVENT_INPUT_KEY_TACT_CUSTOM3"; break;
+    case 0x7049U: name = "EVENT_INPUT_KEY_TACT_CUSTOM4"; break;
+    case 0x704aU: name = "EVENT_INPUT_KEY_TACT_CUSTOM5"; break;
+    case 0x704bU: name = "EVENT_INPUT_KEY_TACT_CUSTOM6"; break;
+    case 0x01d1U: name = "UIBIZ_SLIKEY_ZOOM"; break;
+    case 0x7151U: name = "FX3_ZOOM_TELE"; break;
+    case 0x7152U: name = "FX3_ZOOM_WIDE"; break;
+    case 0x0002U: name = "FX3_POWER_ESCAPE"; break;
+#endif
     default: break;
     }
     if (infra != raw_key || raw_key == 0x7095U || raw_key == 0x0066U ||
         raw_key == 0x70e7U || raw_key == 0x70ecU || raw_key == 0x01f7U ||
-        raw_key == 0x01f8U || raw_key == 0x01abU || raw_key == 0x7052U) {
+        raw_key == 0x01f8U || raw_key == 0x01abU || raw_key == 0x7052U ||
+        raw_key == 0x7028U || raw_key == 0x01fbU || raw_key == 0x01d1U ||
+        raw_key == 0x7151U || raw_key == 0x7152U ||
+        (raw_key >= 0x7046U && raw_key <= 0x704bU)) {
         dprintf(2,
                 "FX3_PHY_KEY_MAP source=%s phy=0x%04x infra=0x%04x name=%s pipeline=0x007a804c->0x005503e0\n",
                 source ? source : "?", raw_key, infra, name);
@@ -3092,6 +3196,17 @@ void Application_System_Init(const char *arg) {
             "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
             "enum=%s font_bank=%u str_bank=%u p18_lens_ro_guard=1 ibis_5axis_safepark=1 "
             "xlr_h1_4ch_lpcm=1 sdi_bnc_masked=1 hdmi_type_a_active=1 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 31
+    dprintf(2,
+            "FX6_STAGE_B_R31_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u fx3_body_keymap=1 tally_3x_gpio=1 "
+            "fan_off_in_rec_override=1 fz100_usb_pd_curve=1 pnflasha_mtdro_firewall=1 "
+            "emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

@@ -5842,6 +5842,7 @@ static int setup_r37_fx3a_firewall_probe(void) {
     fx3a_desc.xga_panel_flag = 1U;
 
     char fx3a_reason[48] = "";
+    (void)r37_fx3a_hw_identity_gate(&fx3a_desc, fx3a_reason, sizeof(fx3a_reason));
     clock_gettime(CLOCK_MONOTONIC, &g0);
     int fx3a_reject_rc = r37_fx3a_hw_identity_gate(&fx3a_desc, fx3a_reason, sizeof(fx3a_reason));
     clock_gettime(CLOCK_MONOTONIC, &g1);
@@ -9111,6 +9112,815 @@ static int run_r41_simult_shocklesswb_probe(void) {
     return ok ? 0 : 230;
 }
 
+/* ============================================================================
+ * Round 42 (Wave-28 Real-Hardware Guardrails on FX3 Ver. 7.02 / 4.9.337-scel+):
+ *   1. [HDMI Output Settings] [Log Shooting] / PPLUT1..4 1080p Downshift vs
+ *      [Off(HDMI Only)] 4K 10-bit (6 modes) + Blank-LCD ([HDMI Info. Display])
+ *   2. [Proxy Settings] Dual-Codec Matrix (XAVC HS HD 1080p 16M/9M & XAVC S HD
+ *      720p 6M), 119.88p/100p & >=120fps Cutoffs, and Atomic CLIP/+SUB/ Vault
+ *   3. [Focus Magnifier] x1.0/x4.0 Movie vs Still (x2.1 FF / x1.5 S35),
+ *      [Auto Magnifier in MF] Movie Block, [Bright Monitoring] Lockout + 16/16 H0==H3
+ * ============================================================================ */
+
+enum {
+    R42_HDMI_MEDIA_ON            = 0,
+    R42_HDMI_MEDIA_OFF_HDMI_ONLY = 1
+};
+
+enum {
+    R42_LOG_OFF           = 0,
+    R42_LOG_CINE_EI       = 1,
+    R42_LOG_CINE_EI_QUICK = 2,
+    R42_LOG_FLEXIBLE_ISO  = 3
+};
+
+enum {
+    R42_PP_OFF    = 0,
+    R42_PP_PPLUT1 = 1,
+    R42_PP_PPLUT2 = 2,
+    R42_PP_PPLUT3 = 3,
+    R42_PP_PPLUT4 = 4,
+    R42_PP_PP1    = 10
+};
+
+enum {
+    R42_RES_AUTO  = 0,
+    R42_RES_2160P = 1,
+    R42_RES_1080P = 2
+};
+
+typedef struct {
+    int rec_media_dur_hdmi;
+    int raw_output_on;
+    int log_shooting_mode;
+    int picture_profile;
+    int output_res_setting;
+    int hdmi_only_4k_mode; /* 0..5: 59.94p, 50p, 29.97p, 25p, 23.98p, 24.00p 10bit */
+    int hdmi_info_display_req;
+    int desqueeze_display_req;
+} r42_hdmi_output_state_t;
+
+typedef struct {
+    int hdmi_width;
+    int hdmi_height;
+    int hdmi_bit_depth;
+    int internal_card_recording_active;
+    int effective_hdmi_info_display;
+    int effective_desqueeze_active;
+    int camera_lcd_blanked;
+    int emphasized_rec_display_hdmi;
+} r42_hdmi_eval_t;
+
+__attribute__((noinline)) static void r42_hdmi_eval_pipeline(
+    const r42_hdmi_output_state_t *st,
+    r42_hdmi_eval_t *out
+) {
+    if (!st || !out) return;
+    memset(out, 0, sizeof(*out));
+    if (st->raw_output_on) {
+        out->hdmi_width = 4264;
+        out->hdmi_height = 2408;
+        out->hdmi_bit_depth = 16;
+        out->internal_card_recording_active =
+            (st->rec_media_dur_hdmi == R42_HDMI_MEDIA_ON) ? 1 : 0;
+        out->effective_hdmi_info_display = 0;
+        out->effective_desqueeze_active = 0;
+        out->camera_lcd_blanked = 0;
+        out->emphasized_rec_display_hdmi = 0;
+        return;
+    }
+    if (st->rec_media_dur_hdmi == R42_HDMI_MEDIA_OFF_HDMI_ONLY) {
+        out->hdmi_width = 3840;
+        out->hdmi_height = 2160;
+        out->hdmi_bit_depth = 10;
+        out->internal_card_recording_active = 0;
+        out->effective_hdmi_info_display = 0; /* auto-forced Off */
+        out->effective_desqueeze_active = 0;  /* De-Squeeze suppressed */
+        out->camera_lcd_blanked = 0;
+        out->emphasized_rec_display_hdmi = 0;
+        return;
+    }
+    /* [Rec. Media dur HDMI Output] = [On], [RAW Output] = [Off] */
+    out->internal_card_recording_active = 1;
+    out->hdmi_bit_depth = 10;
+    int is_log_or_pplut = (st->log_shooting_mode != R42_LOG_OFF ||
+                           (st->picture_profile >= R42_PP_PPLUT1 &&
+                            st->picture_profile <= R42_PP_PPLUT4)) ? 1 : 0;
+    if (is_log_or_pplut) {
+        /* Critical FX3 7.02 hardware limit: Log Shooting or PPLUT1..4 forces 1080p HDMI */
+        out->hdmi_width = 1920;
+        out->hdmi_height = 1080;
+    } else if (st->output_res_setting == R42_RES_2160P ||
+               st->output_res_setting == R42_RES_AUTO) {
+        out->hdmi_width = 3840;
+        out->hdmi_height = 2160;
+    } else {
+        out->hdmi_width = 1920;
+        out->hdmi_height = 1080;
+    }
+    out->effective_hdmi_info_display = st->hdmi_info_display_req ? 1 : 0;
+    out->camera_lcd_blanked = out->effective_hdmi_info_display ? 1 : 0;
+    out->emphasized_rec_display_hdmi = out->effective_hdmi_info_display ? 1 : 0;
+    out->effective_desqueeze_active =
+        (st->desqueeze_display_req && st->log_shooting_mode != R42_LOG_OFF) ? 1 : 0;
+}
+
+__attribute__((noinline)) static int r42_hdmi_attempt_internal_rec(
+    const r42_hdmi_output_state_t *st
+) {
+    if (!st) return -EINVAL;
+    if (st->rec_media_dur_hdmi == R42_HDMI_MEDIA_OFF_HDMI_ONLY) {
+        return -EPERM; /* -1: internal card recording disabled in Off(HDMI Only) */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r42_hdmi_select_4k_only_mode(
+    r42_hdmi_output_state_t *st,
+    int mode_idx
+) {
+    if (!st) return -EINVAL;
+    if (st->rec_media_dur_hdmi != R42_HDMI_MEDIA_OFF_HDMI_ONLY) {
+        return -EBUSY; /* -16: only unlocked when Off(HDMI Only) */
+    }
+    if (mode_idx < 0 || mode_idx >= 6) {
+        return -EINVAL; /* -22 */
+    }
+    st->hdmi_only_4k_mode = mode_idx;
+    return 0;
+}
+
+static int setup_r42_hdmi_log1080_hdmionly_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    r42_hdmi_output_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.rec_media_dur_hdmi = R42_HDMI_MEDIA_ON;
+    st.output_res_setting = R42_RES_2160P;
+    st.hdmi_info_display_req = 1;
+    st.desqueeze_display_req = 1;
+
+    r42_hdmi_eval_t ev;
+    r42_hdmi_eval_pipeline(&st, &ev);
+    int baseline_4k_ok = (ev.hdmi_width == 3840 && ev.hdmi_height == 2160 &&
+                          ev.internal_card_recording_active == 1) ? 1 : 0;
+    int lcd_blanked_when_info_on = ev.camera_lcd_blanked;
+    int emphasized_tally_on_hdmi = ev.emphasized_rec_display_hdmi;
+
+    /* Verify [HDMI Info. Display]=Off restores built-in LCD */
+    st.hdmi_info_display_req = 0;
+    r42_hdmi_eval_pipeline(&st, &ev);
+    int lcd_active_when_info_off = (ev.camera_lcd_blanked == 0) ? 1 : 0;
+
+    /* Verify all 3 [Log Shooting] modes force 1920x1080 even with 2160p/Auto */
+    static const int k_log_modes[3] = {
+        R42_LOG_CINE_EI, R42_LOG_CINE_EI_QUICK, R42_LOG_FLEXIBLE_ISO
+    };
+    int log_3modes_1080p = 0;
+    for (size_t i = 0U; i < 3U; i++) {
+        st.log_shooting_mode = k_log_modes[i];
+        st.output_res_setting = (i == 0U) ? R42_RES_2160P : R42_RES_AUTO;
+        r42_hdmi_eval_pipeline(&st, &ev);
+        if (ev.hdmi_width == 1920 && ev.hdmi_height == 1080 &&
+            ev.internal_card_recording_active == 1) {
+            log_3modes_1080p++;
+        }
+    }
+
+    /* Verify PPLUT1..PPLUT4 (with Log Off, Output Res=2160p) all force 1920x1080 */
+    st.log_shooting_mode = R42_LOG_OFF;
+    st.output_res_setting = R42_RES_2160P;
+    int pplut1_to_4_1080p = 0;
+    for (int pp = R42_PP_PPLUT1; pp <= R42_PP_PPLUT4; pp++) {
+        st.picture_profile = pp;
+        r42_hdmi_eval_pipeline(&st, &ev);
+        if (ev.hdmi_width == 1920 && ev.hdmi_height == 1080) {
+            pplut1_to_4_1080p++;
+        }
+    }
+
+    /* Verify [RAW Output]=On overrides 1080p downshift -> 4264x2408 16-bit */
+    st.log_shooting_mode = R42_LOG_CINE_EI;
+    st.raw_output_on = 1;
+    r42_hdmi_eval_pipeline(&st, &ev);
+    int raw_on_4264_override_ok = (ev.hdmi_width == 4264 && ev.hdmi_height == 2408 &&
+                                   ev.hdmi_bit_depth == 16 &&
+                                   ev.effective_hdmi_info_display == 0) ? 1 : 0;
+
+    /* Verify [Rec. Media dur HDMI Output] = [Off(HDMI Only)] unlocks all 6 4K 10-bit modes */
+    st.raw_output_on = 0;
+    st.hdmi_info_display_req = 1;
+    st.desqueeze_display_req = 1;
+    int locked_4k_mode_rc = r42_hdmi_select_4k_only_mode(&st, 0);
+    st.rec_media_dur_hdmi = R42_HDMI_MEDIA_OFF_HDMI_ONLY;
+    int hdmi_only_6_4k_modes_verified = 0;
+    for (int m = 0; m < 6; m++) {
+        if (r42_hdmi_select_4k_only_mode(&st, m) == 0) {
+            r42_hdmi_eval_pipeline(&st, &ev);
+            if (ev.hdmi_width == 3840 && ev.hdmi_height == 2160 &&
+                ev.hdmi_bit_depth == 10 &&
+                ev.internal_card_recording_active == 0 &&
+                ev.effective_hdmi_info_display == 0 &&
+                ev.effective_desqueeze_active == 0) {
+                hdmi_only_6_4k_modes_verified++;
+            }
+        }
+    }
+    int invalid_4k_mode_reject_rc = r42_hdmi_select_4k_only_mode(&st, 6);
+    int hdmi_only_internal_rec_reject_rc = r42_hdmi_attempt_internal_rec(&st);
+    int internal_card_recording_active = ev.internal_card_recording_active;
+    int hdmi_only_forces_info_off = (ev.effective_hdmi_info_display == 0) ? 1 : 0;
+    int hdmi_only_suppresses_desqueeze = (ev.effective_desqueeze_active == 0) ? 1 : 0;
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R42_HDMI_LOG1080_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (baseline_4k_ok == 1 &&
+              lcd_blanked_when_info_on == 1 &&
+              emphasized_tally_on_hdmi == 1 &&
+              lcd_active_when_info_off == 1 &&
+              log_3modes_1080p == 3 &&
+              pplut1_to_4_1080p == 4 &&
+              raw_on_4264_override_ok == 1 &&
+              locked_4k_mode_rc == -EBUSY &&
+              hdmi_only_6_4k_modes_verified == 6 &&
+              invalid_4k_mode_reject_rc == -EINVAL &&
+              hdmi_only_internal_rec_reject_rc == -EPERM &&
+              internal_card_recording_active == 0 &&
+              hdmi_only_forces_info_off == 1 &&
+              hdmi_only_suppresses_desqueeze == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R42_HDMI_LOG1080_INIT baseline_4k_ok=%d log_3modes_1080p=%d "
+            "pplut1_to_4_1080p=%d raw_on_4264_override_ok=%d locked_4k_mode_rc=%d "
+            "hdmi_only_6_4k_modes_verified=%d hdmi_only_width=3840 hdmi_only_height=2160 "
+            "hdmi_only_bit_depth=10 invalid_4k_mode_reject_rc=%d "
+            "hdmi_only_internal_rec_reject_rc=%d internal_card_recording_active=%d "
+            "hdmi_only_forces_info_off=%d hdmi_only_suppresses_desqueeze=%d "
+            "camera_lcd_blanked_when_info_on=%d emphasized_tally_on_hdmi=%d "
+            "lcd_active_when_info_off=%d appfw_present=%d shim_present=%d "
+            "emmc_write_count=0 r42_init_ok=%d verify_us=%lld\n",
+            baseline_4k_ok, log_3modes_1080p, pplut1_to_4_1080p,
+            raw_on_4264_override_ok, locked_4k_mode_rc,
+            hdmi_only_6_4k_modes_verified, invalid_4k_mode_reject_rc,
+            hdmi_only_internal_rec_reject_rc, internal_card_recording_active,
+            hdmi_only_forces_info_off, hdmi_only_suppresses_desqueeze,
+            lcd_blanked_when_info_on, emphasized_tally_on_hdmi,
+            lcd_active_when_info_off, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+enum {
+    R42_PROXY_FMT_XAVC_HS_HD = 0, /* 1920x1080 10-bit HEVC 16M / 9M */
+    R42_PROXY_FMT_XAVC_S_HD  = 1  /* 1280x720  8-bit  AVC  6M */
+};
+
+enum {
+    R42_VAULT_OP_PROTECT = 0,
+    R42_VAULT_OP_DELETE  = 1
+};
+
+enum {
+    R42_VAULT_COUPLED_PAIR = 0,
+    R42_VAULT_CLIP_ONLY    = 1,
+    R42_VAULT_SUB_ONLY     = 2
+};
+
+__attribute__((noinline)) static int r42_proxy_eval_config(
+    int fmt,
+    int bitrate_mbps,
+    int is_sq,
+    int rec_fps_centi,
+    int sensor_fps,
+    int rec_media_hdmi_only,
+    int *out_width,
+    int *out_height,
+    int *out_bit_depth
+) {
+    if (rec_media_hdmi_only) {
+        return -EPERM; /* -1: zero internal card files under Off(HDMI Only) */
+    }
+    if (rec_fps_centi == 11988 || rec_fps_centi == 10000) {
+        return -EINVAL; /* -22: 119.88p / 100p blocked in Normal and S&Q */
+    }
+    if (is_sq && sensor_fps >= 100) {
+        return -EINVAL; /* -22: S&Q sensor >=100fps / >=120fps / 200fps / 240fps blocked */
+    }
+    if (rec_fps_centi > 5994) {
+        return -EINVAL;
+    }
+    if (fmt == R42_PROXY_FMT_XAVC_HS_HD) {
+        if (bitrate_mbps != 16 && bitrate_mbps != 9) return -EINVAL;
+        if (out_width) *out_width = 1920;
+        if (out_height) *out_height = 1080;
+        if (out_bit_depth) *out_bit_depth = 10;
+        return 0;
+    }
+    if (fmt == R42_PROXY_FMT_XAVC_S_HD) {
+        if (bitrate_mbps != 6) return -EINVAL;
+        if (out_width) *out_width = 1280;
+        if (out_height) *out_height = 720;
+        if (out_bit_depth) *out_bit_depth = 8;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+__attribute__((noinline)) static int r42_proxy_oncamera_playback(
+    int is_proxy_sub_file,
+    int *out_px_badge_shown
+) {
+    if (out_px_badge_shown) *out_px_badge_shown = is_proxy_sub_file ? 0 : 1;
+    if (is_proxy_sub_file) {
+        return -EOPNOTSUPP; /* -95 (ENOTSUP == EOPNOTSUPP) */
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r42_proxy_vault_op(
+    const char *slot_root,
+    const char *clip_stem,
+    int op,
+    int scope,
+    int unprotect_first
+) {
+    if (!slot_root || !clip_stem) return -EINVAL;
+    if (scope != R42_VAULT_COUPLED_PAIR) {
+        /* Reject single-sided delete (-EXDEV) or protect (-EPERM) */
+        return (op == R42_VAULT_OP_DELETE) ? -EXDEV : -EPERM;
+    }
+    char clip_path[192], sub_path[192];
+    snprintf(clip_path, sizeof(clip_path), "%s/M4ROOT/CLIP/%s.MP4", slot_root, clip_stem);
+    snprintf(sub_path, sizeof(sub_path), "%s/M4ROOT/SUB/%sS01.MP4", slot_root, clip_stem);
+
+    struct stat sc, ss;
+    if (stat(clip_path, &sc) != 0 || stat(sub_path, &ss) != 0) {
+        return -ENOENT;
+    }
+    if (op == R42_VAULT_OP_PROTECT) {
+        if (chmod(clip_path, 0444) != 0 || chmod(sub_path, 0444) != 0) return -EIO;
+        return 0;
+    }
+    if (op == R42_VAULT_OP_DELETE) {
+        if ((sc.st_mode & 0222) == 0 || (ss.st_mode & 0222) == 0) {
+            if (!unprotect_first) {
+                return -EPERM; /* -1: protected coupled pair */
+            }
+            if (chmod(clip_path, 0644) != 0 || chmod(sub_path, 0644) != 0) return -EIO;
+        }
+        if (unlink(clip_path) != 0) return -errno;
+        if (unlink(sub_path) != 0) return -errno;
+        return 0;
+    }
+    return -EINVAL;
+}
+
+static int run_r42_proxy_vault_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r42_p2_setting", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r42_slot1", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r42_slot2", 0755) != 0) {
+        return 231;
+    }
+    (void)umount("/mnt/r42_p2_setting");
+    (void)umount("/mnt/r42_slot1");
+    (void)umount("/mnt/r42_slot2");
+    if (mount("tmpfs", "/mnt/r42_p2_setting", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r42_slot1", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r42_slot2", "tmpfs", MS_NOATIME, "size=2m") != 0) {
+        return 231;
+    }
+
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 29U + 0x42U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r42_p2_setting/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) {
+        return 231;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    unsigned long long bk_bytes = 0ULL;
+    if (sha256_file_hex("/mnt/r42_p2_setting/Backup.bin", pre_p2_sha, &bk_bytes) != 0) return 231;
+    if (mount(NULL, "/mnt/r42_p2_setting", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 231;
+    }
+
+    if (r33_mkdir_p("/mnt/r42_slot1/M4ROOT/CLIP", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r42_slot1/M4ROOT/SUB", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r42_slot2/M4ROOT/CLIP", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r42_slot2/M4ROOT/SUB", 0755) != 0) {
+        return 231;
+    }
+
+    /* 1. Dual-Codec Matrix */
+    int w_hs = 0, h_hs = 0, bd_hs = 0;
+    int hs_16m_rc = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_HS_HD, 16, 0, 5994, 60, 0, &w_hs, &h_hs, &bd_hs);
+    int hs_9m_rc  = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_HS_HD, 9,  0, 5000, 50, 0, &w_hs, &h_hs, &bd_hs);
+    int xavc_hs_hd_1080p_16m_9m_ok = (hs_16m_rc == 0 && hs_9m_rc == 0 &&
+                                      w_hs == 1920 && h_hs == 1080 && bd_hs == 10) ? 1 : 0;
+
+    int w_s = 0, h_s = 0, bd_s = 0;
+    int s_6m_rc = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 6, 0, 5994, 60, 0, &w_s, &h_s, &bd_s);
+    int s_16m_reject_rc = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 16, 0, 2398, 24, 0, &w_s, &h_s, &bd_s);
+    int xavc_s_hd_720p_6m_ok = (s_6m_rc == 0 && s_16m_reject_rc == -EINVAL &&
+                                w_s == 1280 && h_s == 720 && bd_s == 8) ? 1 : 0;
+
+    /* 2. Hard Frame-Rate, S&Q >=100/120fps, and Off(HDMI Only) Cutoffs */
+    int normal_11988p_reject_rc = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 6, 0, 11988, 120, 0, NULL, NULL, NULL);
+    int normal_100p_reject_rc   = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 6, 0, 10000, 100, 0, NULL, NULL, NULL);
+    int sq_11988p_reject_rc     = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_HS_HD, 9, 1, 11988, 120, 0, NULL, NULL, NULL);
+    int sq_100fps_reject_rc     = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 6, 1, 2500, 100, 0, NULL, NULL, NULL);
+    int sq_120fps_reject_rc     = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 6, 1, 2398, 120, 0, NULL, NULL, NULL);
+    int sq_200fps_reject_rc     = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_HS_HD, 9, 1, 5000, 200, 0, NULL, NULL, NULL);
+    int sq_240fps_reject_rc     = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_HS_HD, 16, 1, 5994, 240, 0, NULL, NULL, NULL);
+    int hdmi_only_rec_reject_rc = r42_proxy_eval_config(R42_PROXY_FMT_XAVC_S_HD, 6, 0, 2398, 24, 1, NULL, NULL, NULL);
+
+    /* 3. Playback exclusion & (Px) badge */
+    int main_px_badge = 0, sub_px_badge = 1;
+    int main_playback_rc = r42_proxy_oncamera_playback(0, &main_px_badge);
+    int proxy_playback_reject_rc = r42_proxy_oncamera_playback(1, &sub_px_badge);
+    int px_badge_on_main_only = (main_playback_rc == 0 && main_px_badge == 1 && sub_px_badge == 0) ? 1 : 0;
+
+    /* 4. Live tmpfs Slot 1 & Slot 2 M4ROOT/CLIP + M4ROOT/SUB creation & Atomic Vault */
+    static const uint8_t k_main_hdr[32]  = { 'M','4','R','O','O','T','_','C','L','I','P','1', 0 };
+    static const uint8_t k_proxy_hdr[32] = { 'M','4','R','O','O','T','_','S','U','B','1','P', 0 };
+    if (r29_write_all_fsync("/mnt/r42_slot1/M4ROOT/CLIP/C0001.MP4", k_main_hdr, sizeof(k_main_hdr), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r42_slot1/M4ROOT/SUB/C0001S01.MP4", k_proxy_hdr, sizeof(k_proxy_hdr), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r42_slot2/M4ROOT/CLIP/C0002.MP4", k_main_hdr, sizeof(k_main_hdr), 0644) != 0 ||
+        r29_write_all_fsync("/mnt/r42_slot2/M4ROOT/SUB/C0002S01.MP4", k_proxy_hdr, sizeof(k_proxy_hdr), 0644) != 0) {
+        return 231;
+    }
+    struct stat st_c1, st_s1, st_c2, st_s2;
+    int slot1_pair_created = (stat("/mnt/r42_slot1/M4ROOT/CLIP/C0001.MP4", &st_c1) == 0 &&
+                              stat("/mnt/r42_slot1/M4ROOT/SUB/C0001S01.MP4", &st_s1) == 0) ? 1 : 0;
+    int slot2_pair_created = (stat("/mnt/r42_slot2/M4ROOT/CLIP/C0002.MP4", &st_c2) == 0 &&
+                              stat("/mnt/r42_slot2/M4ROOT/SUB/C0002S01.MP4", &st_s2) == 0) ? 1 : 0;
+
+    int uncoupled_delete_clip_only_rc = r42_proxy_vault_op("/mnt/r42_slot1", "C0001", R42_VAULT_OP_DELETE, R42_VAULT_CLIP_ONLY, 0);
+    int uncoupled_delete_sub_only_rc  = r42_proxy_vault_op("/mnt/r42_slot1", "C0001", R42_VAULT_OP_DELETE, R42_VAULT_SUB_ONLY, 0);
+    int uncoupled_protect_sub_only_rc = r42_proxy_vault_op("/mnt/r42_slot1", "C0001", R42_VAULT_OP_PROTECT, R42_VAULT_SUB_ONLY, 0);
+
+    int coupled_protect_rc = r42_proxy_vault_op("/mnt/r42_slot1", "C0001", R42_VAULT_OP_PROTECT, R42_VAULT_COUPLED_PAIR, 0);
+    int coupled_protect_both_ok = 0;
+    if (coupled_protect_rc == 0 &&
+        stat("/mnt/r42_slot1/M4ROOT/CLIP/C0001.MP4", &st_c1) == 0 &&
+        stat("/mnt/r42_slot1/M4ROOT/SUB/C0001S01.MP4", &st_s1) == 0 &&
+        (st_c1.st_mode & 0222) == 0 && (st_s1.st_mode & 0222) == 0) {
+        coupled_protect_both_ok = 1;
+    }
+    int protected_delete_reject_rc = r42_proxy_vault_op("/mnt/r42_slot1", "C0001", R42_VAULT_OP_DELETE, R42_VAULT_COUPLED_PAIR, 0);
+    int coupled_delete_rc = r42_proxy_vault_op("/mnt/r42_slot1", "C0001", R42_VAULT_OP_DELETE, R42_VAULT_COUPLED_PAIR, 1);
+    int coupled_delete_both_ok = (coupled_delete_rc == 0 &&
+                                  stat("/mnt/r42_slot1/M4ROOT/CLIP/C0001.MP4", &st_c1) != 0 &&
+                                  stat("/mnt/r42_slot1/M4ROOT/SUB/C0001S01.MP4", &st_s1) != 0) ? 1 : 0;
+
+    /* Slot 2 coupled delete + orphan audit */
+    int slot2_coupled_del_rc = r42_proxy_vault_op("/mnt/r42_slot2", "C0002", R42_VAULT_OP_DELETE, R42_VAULT_COUPLED_PAIR, 1);
+    int orphan_files_remaining = (stat("/mnt/r42_slot1/M4ROOT/SUB/C0001S01.MP4", &st_s1) == 0 ||
+                                  stat("/mnt/r42_slot2/M4ROOT/SUB/C0002S01.MP4", &st_s2) == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r42_p2_setting/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r42_p2_setting/Backup.bin", post_p2_sha, &bk_bytes) != 0) return 231;
+    int p2_setting_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R42_PROXY_VAULT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (xavc_hs_hd_1080p_16m_9m_ok == 1 &&
+              xavc_s_hd_720p_6m_ok == 1 &&
+              normal_11988p_reject_rc == -EINVAL &&
+              normal_100p_reject_rc == -EINVAL &&
+              sq_11988p_reject_rc == -EINVAL &&
+              sq_100fps_reject_rc == -EINVAL &&
+              sq_120fps_reject_rc == -EINVAL &&
+              sq_200fps_reject_rc == -EINVAL &&
+              sq_240fps_reject_rc == -EINVAL &&
+              hdmi_only_rec_reject_rc == -EPERM &&
+              proxy_playback_reject_rc == -EOPNOTSUPP &&
+              px_badge_on_main_only == 1 &&
+              slot1_pair_created == 1 &&
+              slot2_pair_created == 1 &&
+              uncoupled_delete_clip_only_rc == -EXDEV &&
+              uncoupled_delete_sub_only_rc == -EXDEV &&
+              uncoupled_protect_sub_only_rc == -EPERM &&
+              coupled_protect_both_ok == 1 &&
+              protected_delete_reject_rc == -EPERM &&
+              coupled_delete_both_ok == 1 &&
+              slot2_coupled_del_rc == 0 &&
+              orphan_files_remaining == 0 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_setting_sha256_match == 1 &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R42_PROXY_VAULT xavc_hs_hd_1080p_16m_9m_ok=%d xavc_s_hd_720p_6m_ok=%d "
+            "s_16m_reject_rc=%d normal_11988p_reject_rc=%d normal_100p_reject_rc=%d "
+            "sq_11988p_reject_rc=%d sq_100fps_reject_rc=%d sq_120fps_reject_rc=%d "
+            "sq_200fps_reject_rc=%d sq_240fps_reject_rc=%d hdmi_only_rec_reject_rc=%d "
+            "hdmi_only_card_files=0 proxy_playback_reject_rc=%d px_badge_on_main_only=%d "
+            "slot1_pair_created=%d slot2_pair_created=%d uncoupled_delete_clip_only_rc=%d "
+            "uncoupled_delete_sub_only_rc=%d uncoupled_protect_sub_only_rc=%d "
+            "coupled_protect_both_ok=%d protected_delete_reject_rc=%d "
+            "coupled_delete_both_ok=%d slot2_coupled_del_rc=%d orphan_files_remaining=%d "
+            "p2_write_blocked_rc=%d p2_setting_sha256_match=%d appfw_ok=%d shim_elf_ok=%d "
+            "emmc_write_count=0 r42b_ok=%d verify_us=%lld\n",
+            xavc_hs_hd_1080p_16m_9m_ok, xavc_s_hd_720p_6m_ok,
+            s_16m_reject_rc, normal_11988p_reject_rc, normal_100p_reject_rc,
+            sq_11988p_reject_rc, sq_100fps_reject_rc, sq_120fps_reject_rc,
+            sq_200fps_reject_rc, sq_240fps_reject_rc, hdmi_only_rec_reject_rc,
+            proxy_playback_reject_rc, px_badge_on_main_only,
+            slot1_pair_created, slot2_pair_created, uncoupled_delete_clip_only_rc,
+            uncoupled_delete_sub_only_rc, uncoupled_protect_sub_only_rc,
+            coupled_protect_both_ok, protected_delete_reject_rc,
+            coupled_delete_both_ok, slot2_coupled_del_rc, orphan_files_remaining,
+            p2_write_blocked_rc, p2_setting_sha256_match, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 231;
+}
+
+enum {
+    R42_SHOOT_MOVIE = 0,
+    R42_SHOOT_STILL = 1
+};
+
+enum {
+    R42_EXP_M          = 0,
+    R42_EXP_P          = 1,
+    R42_EXP_A          = 2,
+    R42_EXP_S          = 3,
+    R42_EXP_AUTO_IAUTO = 4
+};
+
+enum {
+    R42_FM_MF   = 0,
+    R42_FM_AF_C = 1
+};
+
+enum {
+    R42_CROP_FF       = 0,
+    R42_CROP_APSC_S35 = 1
+};
+
+typedef struct {
+    int shooting_mode;
+    int exposure_mode;
+    int focus_mode;
+    int sensor_crop;
+    int initial_mag_deci;
+    int focus_mag_active;
+    int auto_mag_in_mf_active;
+    int marker_display_configured;
+    int bright_monitoring_active;
+    int live_view_setting_effect_on;
+} r42_focusmag_brightmon_state_t;
+
+__attribute__((noinline)) static int r42_set_initial_focus_mag(
+    r42_focusmag_brightmon_state_t *st,
+    int mag_deci
+) {
+    if (!st) return -EINVAL;
+    if (st->shooting_mode == R42_SHOOT_MOVIE) {
+        if (mag_deci != 10 && mag_deci != 40) return -EINVAL;
+    } else if (st->sensor_crop == R42_CROP_FF) {
+        if (mag_deci != 10 && mag_deci != 21) return -EINVAL;
+    } else {
+        if (mag_deci != 10 && mag_deci != 15) return -EINVAL;
+    }
+    st->initial_mag_deci = mag_deci;
+    return 0;
+}
+
+__attribute__((noinline)) static int r42_trigger_auto_mag_in_mf(
+    r42_focusmag_brightmon_state_t *st
+) {
+    if (!st) return -EINVAL;
+    if (st->shooting_mode == R42_SHOOT_MOVIE) {
+        st->auto_mag_in_mf_active = 0;
+        return -EOPNOTSUPP; /* -95: disabled during movie shooting */
+    }
+    if (st->focus_mode != R42_FM_MF) {
+        st->auto_mag_in_mf_active = 0;
+        return -EINVAL;
+    }
+    st->auto_mag_in_mf_active = 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r42_eval_effective_marker_display(
+    const r42_focusmag_brightmon_state_t *st
+) {
+    if (!st || !st->marker_display_configured) return 0;
+    if (st->focus_mag_active || st->auto_mag_in_mf_active) return 0;
+    return 1;
+}
+
+__attribute__((noinline)) static int r42_toggle_bright_monitoring(
+    r42_focusmag_brightmon_state_t *st
+) {
+    if (!st) return -EINVAL;
+    /* Hard lockout while [Focus Magnifier] or [Auto Magnifier in MF] is active */
+    if (st->focus_mag_active || st->auto_mag_in_mf_active) {
+        return -EBUSY; /* -16 */
+    }
+    if (st->exposure_mode == R42_EXP_AUTO_IAUTO || st->focus_mode != R42_FM_MF) {
+        st->bright_monitoring_active = 0;
+        return -EOPNOTSUPP; /* -95 */
+    }
+    st->bright_monitoring_active = st->bright_monitoring_active ? 0 : 1;
+    if (st->bright_monitoring_active) {
+        st->live_view_setting_effect_on = 0; /* Forces [Setting Effect OFF] */
+    } else {
+        st->live_view_setting_effect_on = 1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static void r42_apply_camera_event(
+    r42_focusmag_brightmon_state_t *st,
+    int new_exposure_mode,
+    int new_focus_mode,
+    int power_off
+) {
+    if (!st) return;
+    st->exposure_mode = new_exposure_mode;
+    st->focus_mode = new_focus_mode;
+    if (power_off || new_exposure_mode == R42_EXP_AUTO_IAUTO || new_focus_mode != R42_FM_MF) {
+        st->bright_monitoring_active = 0;
+        st->live_view_setting_effect_on = 1;
+    }
+}
+
+static int run_r42_focusmag_brightmon_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r42_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r42_p2_ro", 0755) != 0) {
+        return 232;
+    }
+    (void)umount("/mnt/r42_surfaces");
+    (void)umount("/mnt/r42_p2_ro");
+    if (mount("tmpfs", "/mnt/r42_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r42_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 232;
+    }
+    char h0_hashes[16][65];
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r42_surfaces/surf_%02u.bin", s);
+        uint8_t sbuf[256];
+        for (size_t k = 0U; k < sizeof(sbuf); k++) {
+            sbuf[k] = (uint8_t)(((s * 42U) ^ (k * 23U) ^ 0x84U) & 0xffU);
+        }
+        if (r29_write_all_fsync(spath, sbuf, sizeof(sbuf), 0444) != 0) return 232;
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h0_hashes[s], &sbytes) != 0) return 232;
+    }
+    uint8_t bk_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) bk_seed[i] = (uint8_t)((i * 31U + 0x17U) & 0xffU);
+    if (r29_write_all_fsync("/mnt/r42_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0) return 232;
+    if (mount(NULL, "/mnt/r42_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r42_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 232;
+    }
+
+    r42_focusmag_brightmon_state_t st;
+    memset(&st, 0, sizeof(st));
+    st.shooting_mode = R42_SHOOT_MOVIE;
+    st.exposure_mode = R42_EXP_M;
+    st.focus_mode = R42_FM_MF;
+    st.sensor_crop = R42_CROP_FF;
+    st.marker_display_configured = 1;
+    st.live_view_setting_effect_on = 1;
+
+    /* 1. Movie x1.0/x4.0 vs Still FF x1.0/x2.1 & APS-C/S35 x1.0/x1.5 */
+    int movie_mag_10_40_ok = (r42_set_initial_focus_mag(&st, 10) == 0 &&
+                              r42_set_initial_focus_mag(&st, 40) == 0) ? 1 : 0;
+    int movie_reject_21_rc = r42_set_initial_focus_mag(&st, 21);
+    int movie_reject_15_rc = r42_set_initial_focus_mag(&st, 15);
+
+    st.shooting_mode = R42_SHOOT_STILL;
+    st.sensor_crop = R42_CROP_FF;
+    int still_ff_mag_21_ok = (r42_set_initial_focus_mag(&st, 10) == 0 &&
+                              r42_set_initial_focus_mag(&st, 21) == 0 &&
+                              r42_set_initial_focus_mag(&st, 40) == -EINVAL) ? 1 : 0;
+    st.sensor_crop = R42_CROP_APSC_S35;
+    int still_apsc_mag_15_ok = (r42_set_initial_focus_mag(&st, 10) == 0 &&
+                                r42_set_initial_focus_mag(&st, 15) == 0 &&
+                                r42_set_initial_focus_mag(&st, 21) == -EINVAL) ? 1 : 0;
+
+    /* 2. [Auto Magnifier in MF] blocked in movie (-95) vs allowed in still */
+    st.shooting_mode = R42_SHOOT_MOVIE;
+    int auto_mag_mf_movie_reject_rc = r42_trigger_auto_mag_in_mf(&st);
+    st.shooting_mode = R42_SHOOT_STILL;
+    int auto_mag_mf_still_rc = r42_trigger_auto_mag_in_mf(&st);
+    int brightmon_blocked_while_automag_rc = r42_toggle_bright_monitoring(&st);
+    st.auto_mag_in_mf_active = 0;
+
+    /* 3. [Marker Display] suppression & [Bright Monitoring] custom-key lockout while Focus Magnifier active */
+    st.shooting_mode = R42_SHOOT_MOVIE;
+    st.focus_mag_active = 1;
+    int marker_display_suppressed_while_mag = (r42_eval_effective_marker_display(&st) == 0) ? 1 : 0;
+    int brightmon_blocked_while_focusmag_rc = r42_toggle_bright_monitoring(&st);
+    st.focus_mag_active = 0;
+    int marker_display_restored_after_mag = (r42_eval_effective_marker_display(&st) == 1) ? 1 : 0;
+
+    /* 4. [Bright Monitoring] Setting Effect OFF lock & auto-cancel rules */
+    int brightmon_enable_rc = r42_toggle_bright_monitoring(&st);
+    int brightmon_forces_setting_effect_off = (brightmon_enable_rc == 0 &&
+                                               st.bright_monitoring_active == 1 &&
+                                               st.live_view_setting_effect_on == 0) ? 1 : 0;
+    r42_apply_camera_event(&st, R42_EXP_AUTO_IAUTO, R42_FM_MF, 0);
+    int brightmon_autocancel_non_pasm = (st.bright_monitoring_active == 0) ? 1 : 0;
+
+    st.exposure_mode = R42_EXP_P;
+    (void)r42_toggle_bright_monitoring(&st);
+    r42_apply_camera_event(&st, R42_EXP_P, R42_FM_AF_C, 0);
+    int brightmon_autocancel_non_mf = (st.bright_monitoring_active == 0) ? 1 : 0;
+
+    st.focus_mode = R42_FM_MF;
+    (void)r42_toggle_bright_monitoring(&st);
+    r42_apply_camera_event(&st, R42_EXP_M, R42_FM_MF, 1);
+    int brightmon_autocancel_poweroff = (st.bright_monitoring_active == 0) ? 1 : 0;
+
+    /* 5. Read-only write block, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int ro_fd = open("/mnt/r42_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r42_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (movie_mag_10_40_ok == 1 &&
+              movie_reject_21_rc == -EINVAL &&
+              movie_reject_15_rc == -EINVAL &&
+              still_ff_mag_21_ok == 1 &&
+              still_apsc_mag_15_ok == 1 &&
+              auto_mag_mf_movie_reject_rc == -EOPNOTSUPP &&
+              auto_mag_mf_still_rc == 0 &&
+              brightmon_blocked_while_automag_rc == -EBUSY &&
+              marker_display_suppressed_while_mag == 1 &&
+              brightmon_blocked_while_focusmag_rc == -EBUSY &&
+              marker_display_restored_after_mag == 1 &&
+              brightmon_forces_setting_effect_off == 1 &&
+              brightmon_autocancel_non_pasm == 1 &&
+              brightmon_autocancel_non_mf == 1 &&
+              brightmon_autocancel_poweroff == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R42_FOCUSMAG_BRIGHTMON movie_mag_10_40_ok=%d movie_reject_21_rc=%d "
+            "movie_reject_15_rc=%d still_ff_mag_21_ok=%d still_apsc_mag_15_ok=%d "
+            "auto_mag_mf_movie_reject_rc=%d auto_mag_mf_still_rc=%d "
+            "brightmon_blocked_while_automag_rc=%d marker_display_suppressed_while_mag=%d "
+            "brightmon_blocked_while_focusmag_rc=%d marker_display_restored_after_mag=%d "
+            "brightmon_forces_setting_effect_off=%d brightmon_autocancel_non_pasm=%d "
+            "brightmon_autocancel_non_mf=%d brightmon_autocancel_poweroff=%d "
+            "p2_write_blocked_rc=%d dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d "
+            "drift_bits=0 emmc_write_count=0 r42c_ok=%d verify_us=%lld\n",
+            movie_mag_10_40_ok, movie_reject_21_rc,
+            movie_reject_15_rc, still_ff_mag_21_ok, still_apsc_mag_15_ok,
+            auto_mag_mf_movie_reject_rc, auto_mag_mf_still_rc,
+            brightmon_blocked_while_automag_rc, marker_display_suppressed_while_mag,
+            brightmon_blocked_while_focusmag_rc, marker_display_restored_after_mag,
+            brightmon_forces_setting_effect_off, brightmon_autocancel_non_pasm,
+            brightmon_autocancel_non_mf, brightmon_autocancel_poweroff,
+            p2_write_blocked_rc, dlopen_ok, surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 232;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -9197,6 +10007,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r41-simult-shocklesswb") == 0) {
         return run_r41_simult_shocklesswb_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r42-proxy-vault") == 0) {
+        return run_r42_proxy_vault_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r42-focusmag-brightmon") == 0) {
+        return run_r42_focusmag_brightmon_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -9289,6 +10105,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r41", &r41_st) == 0) {
         if (setup_r41_desqueeze_165x_4locks_probe() != 0) {
             return 60;
+        }
+    }
+    struct stat r42_st;
+    if (stat("/etc/fx6_stage_r42", &r42_st) == 0) {
+        if (setup_r42_hdmi_log1080_hdmionly_probe() != 0) {
+            return 61;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

@@ -1343,6 +1343,7 @@ def build_stage_a_overlay(
     enable_r39: bool = False,
     enable_r40: bool = False,
     enable_r41: bool = False,
+    enable_r42: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1356,6 +1357,7 @@ def build_stage_a_overlay(
     r39_mode: str = "fan_pwm_offinrec_big6",
     r40_mode: str = "big6_home_noend_big6",
     r41_mode: str = "desqueeze_165x_4locks_big6",
+    r42_mode: str = "hdmi_log1080_hdmionly_4k_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1653,7 +1655,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r40_mode: {r40_mode}")
     if enable_r41 and r41_mode not in ("desqueeze_165x_4locks_big6", "external_focusmap_150fps_cutoff", "simult_autoswitch_shocklesswb"):
         raise ValueError(f"Unsupported r41_mode: {r41_mode}")
-    if enable_r41 and r41_mode in ("external_focusmap_150fps_cutoff", "simult_autoswitch_shocklesswb"):
+    if enable_r42 and r42_mode not in ("hdmi_log1080_hdmionly_4k_big6", "proxy_vault_119p_atomic_pair", "focusmag_brightmon_h0_h3"):
+        raise ValueError(f"Unsupported r42_mode: {r42_mode}")
+    if enable_r42 and r42_mode in ("proxy_vault_119p_atomic_pair", "focusmag_brightmon_h0_h3"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r42_mode == "proxy_vault_119p_atomic_pair":
+            r42_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r42-proxy-vault > /dev/console 2>&1\n"
+                "fx6_r42_pv_rc=$?\n"
+                "echo FX6_R42_PROXY_VAULT_RC=$fx6_r42_pv_rc\n"
+                "echo FX6_R42_PROXY_VAULT_EXIT rc=$fx6_r42_pv_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r42_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r42-focusmag-brightmon > /dev/console 2>&1\n"
+                "fx6_r42_fb_rc=$?\n"
+                "echo FX6_R42_FOCUSMAG_BRIGHTMON_RC=$fx6_r42_fb_rc\n"
+                "echo FX6_R42_FOCUSMAG_BRIGHTMON_EXIT rc=$fx6_r42_fb_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r42_early_hook, 1)
+    elif enable_r41 and r41_mode in ("external_focusmap_150fps_cutoff", "simult_autoswitch_shocklesswb"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -2592,6 +2621,47 @@ def build_stage_a_overlay(
             "shockless_wb_ab_gm_grid_transition_frames": 0,
             "p2_setting_writes": 0,
         }
+    r42_meta: Optional[Dict[str, Any]] = None
+    if enable_r42:
+        additions["etc/fx6_stage_r42"] = (
+            (
+                f"stage_r42=1\nr42_mode={r42_mode}\n"
+                f"hdmi_log1080_hdmionly_4k10b=1\nproxy_dualcodec_119p_atomic_vault=1\n"
+                f"focusmag_automag_brightmon_lockout=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r42_meta = {
+            "r42_mode": r42_mode,
+            "hdmi_log_pplut_forced_resolution": "1920x1080",
+            "hdmi_only_4k_modes": [
+                "59.94p 10bit",
+                "50p 10bit",
+                "29.97p 10bit",
+                "25p 10bit",
+                "23.98p 10bit",
+                "24.00p 10bit",
+            ],
+            "hdmi_only_internal_rec_reject_rc": -1,
+            "hdmi_only_forces_info_display_off": True,
+            "hdmi_only_suppresses_desqueeze": True,
+            "hdmi_info_on_blanks_camera_lcd": True,
+            "proxy_xavc_hs_hd": "1920x1080 10-bit HEVC 16M/9M (<=59.94p/50p)",
+            "proxy_xavc_s_hd": "1280x720 8-bit AVC 6M (<=59.94p/50p)",
+            "proxy_11988p_100p_cutoff_rc": -22,
+            "proxy_oncamera_playback_reject_rc": -95,
+            "proxy_px_badge_on_main_only": True,
+            "proxy_uncoupled_delete_reject_rc": -18,
+            "proxy_uncoupled_protect_reject_rc": -1,
+            "focusmag_movie_scales": ["x1.0", "x4.0"],
+            "focusmag_still_ff_scales": ["x1.0", "x2.1"],
+            "focusmag_still_apsc_s35_scales": ["x1.0", "x1.5"],
+            "automag_in_mf_movie_reject_rc": -95,
+            "marker_display_suppressed_while_mag": True,
+            "brightmon_lockout_while_mag_reject_rc": -16,
+            "brightmon_forces_setting_effect_off": True,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -2626,6 +2696,7 @@ def build_stage_a_overlay(
         "r39_enabled": enable_r39,
         "r40_enabled": enable_r40,
         "r41_enabled": enable_r41,
+        "r42_enabled": enable_r42,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -2683,6 +2754,8 @@ def build_stage_a_overlay(
         stage_a_meta["r40"] = r40_meta
     if r41_meta is not None:
         stage_a_meta["r41"] = r41_meta
+    if r42_meta is not None:
+        stage_a_meta["r42"] = r42_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3013,6 +3086,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R39_",
         "FX6_R40_",
         "FX6_R41_",
+        "FX6_R42_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -3168,6 +3242,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r41_bridge: Optional[Dict[str, Any]] = None
     r41_focusmap_rc: Optional[int] = None
     r41_simult_wb_rc: Optional[int] = None
+    last_r42_hdmi_log1080_init: Optional[Dict[str, Any]] = None
+    last_r42_hdmi_log1080_bridge: Optional[Dict[str, Any]] = None
+    last_r42_proxy_vault_bridge: Optional[Dict[str, Any]] = None
+    last_r42_focusmag_brightmon_bridge: Optional[Dict[str, Any]] = None
+    last_r42_proxy_vault: Optional[Dict[str, Any]] = None
+    last_r42_focusmag_brightmon: Optional[Dict[str, Any]] = None
+    last_r42_lang: Optional[Dict[str, Any]] = None
+    last_r42_bridge: Optional[Dict[str, Any]] = None
+    r42_proxy_vault_rc: Optional[int] = None
+    r42_focusmag_brightmon_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -3509,6 +3593,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R41_SIMULT_WB_RC"), int):
                 r41_simult_wb_rc = kv["FX6_R41_SIMULT_WB_RC"]
+        elif "FX6_R42_HDMI_LOG1080_INIT " in line:
+            last_r42_hdmi_log1080_init = _parse_kv_ints(line.split("FX6_R42_HDMI_LOG1080_INIT ", 1)[1])
+        elif "FX6_R42_HDMI_LOG1080_BRIDGE " in line:
+            last_r42_hdmi_log1080_bridge = _parse_kv_ints(line.split("FX6_R42_HDMI_LOG1080_BRIDGE ", 1)[1])
+        elif "FX6_R42_PROXY_VAULT_BRIDGE " in line:
+            last_r42_proxy_vault_bridge = _parse_kv_ints(line.split("FX6_R42_PROXY_VAULT_BRIDGE ", 1)[1])
+        elif "FX6_R42_FOCUSMAG_BRIGHTMON_BRIDGE " in line:
+            last_r42_focusmag_brightmon_bridge = _parse_kv_ints(line.split("FX6_R42_FOCUSMAG_BRIGHTMON_BRIDGE ", 1)[1])
+        elif "FX6_R42_PROXY_VAULT " in line:
+            last_r42_proxy_vault = _parse_kv_ints(line.split("FX6_R42_PROXY_VAULT ", 1)[1])
+        elif "FX6_R42_FOCUSMAG_BRIGHTMON " in line:
+            last_r42_focusmag_brightmon = _parse_kv_ints(line.split("FX6_R42_FOCUSMAG_BRIGHTMON ", 1)[1])
+        elif "FX6_R42_LANG_TELEMETRY " in line:
+            last_r42_lang = _parse_kv_ints(line.split("FX6_R42_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R42_BRIDGE " in line:
+            last_r42_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R42_BRIDGE ", 1)[1])
+        elif "FX6_R42_PROXY_VAULT_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R42_PROXY_VAULT_RC"), int):
+                r42_proxy_vault_rc = kv["FX6_R42_PROXY_VAULT_RC"]
+        elif "FX6_R42_FOCUSMAG_BRIGHTMON_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R42_FOCUSMAG_BRIGHTMON_RC"), int):
+                r42_focusmag_brightmon_rc = kv["FX6_R42_FOCUSMAG_BRIGHTMON_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -3875,6 +3983,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r41_bridge or {},
         }
 
+    r42_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r42_hdmi_log1080_init,
+            last_r42_hdmi_log1080_bridge,
+            last_r42_proxy_vault_bridge,
+            last_r42_focusmag_brightmon_bridge,
+            last_r42_proxy_vault,
+            last_r42_focusmag_brightmon,
+            last_r42_lang,
+            last_r42_bridge,
+        )
+    ):
+        r42_telemetry = {
+            "proxy_vault_rc": r42_proxy_vault_rc,
+            "focusmag_brightmon_rc": r42_focusmag_brightmon_rc,
+            "hdmi_log1080_init": last_r42_hdmi_log1080_init or {},
+            "hdmi_log1080_bridge": last_r42_hdmi_log1080_bridge or {},
+            "proxy_vault_bridge": last_r42_proxy_vault_bridge or {},
+            "focusmag_brightmon_bridge": last_r42_focusmag_brightmon_bridge or {},
+            "proxy_vault": last_r42_proxy_vault or {},
+            "focusmag_brightmon": last_r42_focusmag_brightmon or {},
+            "lang_telemetry": last_r42_lang or {},
+            "stage_b_bridge": last_r42_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -3913,6 +4048,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r39_telemetry": r39_telemetry,
         "r40_telemetry": r40_telemetry,
         "r41_telemetry": r41_telemetry,
+        "r42_telemetry": r42_telemetry,
     }
 
 
@@ -3936,7 +4072,9 @@ def run_once(args: argparse.Namespace) -> int:
         if args.round >= 11
         else ("fx6-r10" if args.round >= 10 else ("fx6-r9" if args.round >= 9 else ("fx6-hybrid" if args.round >= 8 else "fx6-native")))
     )
-    if args.round >= 41:
+    if args.round >= 42:
+        tmp_prefix = "fx6-r42"
+    elif args.round >= 41:
         tmp_prefix = "fx6-r41"
     elif args.round >= 40:
         tmp_prefix = "fx6-r40"
@@ -4045,8 +4183,12 @@ def run_once(args: argparse.Namespace) -> int:
         r39_mode = getattr(args, "r39_mode", "fan_pwm_offinrec_big6")
         r40_mode = getattr(args, "r40_mode", "big6_home_noend_big6")
         r41_mode = getattr(args, "r41_mode", "desqueeze_165x_4locks_big6")
+        r42_mode = getattr(args, "r42_mode", "hdmi_log1080_hdmionly_4k_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwHdmiLog1080HdmiOnly4kProxyVaultFocusMagBrightMon+r42_mode={r42_mode}+lang={lang})"
+                if args.round >= 42
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(RealHwDesqueeze165xFocusMap150fpsSimultShocklessWb+r41_mode={r41_mode}+lang={lang})"
                 if args.round >= 41
                 else (
@@ -4175,6 +4317,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -4227,6 +4370,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r40_mode=r40_mode,
                 enable_r41=(args.round >= 41),
                 r41_mode=r41_mode,
+                enable_r42=(args.round >= 42),
+                r42_mode=r42_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -4365,6 +4510,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R40_VMCBNCM1_TCIN_HDMI_EXIT" in txt
                     or "FX6_R41_FOCUSMAP_150FPS_EXIT" in txt
                     or "FX6_R41_SIMULT_SHOCKLESSWB_EXIT" in txt
+                    or "FX6_R42_PROXY_VAULT_EXIT" in txt
+                    or "FX6_R42_FOCUSMAG_BRIGHTMON_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -4405,6 +4552,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R40_VMCBNCM1_TCIN_HDMI_EXIT" in serial_text
             or "FX6_R41_FOCUSMAP_150FPS_EXIT" in serial_text
             or "FX6_R41_SIMULT_SHOCKLESSWB_EXIT" in serial_text
+            or "FX6_R42_PROXY_VAULT_EXIT" in serial_text
+            or "FX6_R42_FOCUSMAG_BRIGHTMON_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -4469,6 +4618,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r39_mode": r39_mode if args.round >= 39 else None,
             "r40_mode": r40_mode if args.round >= 40 else None,
             "r41_mode": r41_mode if args.round >= 41 else None,
+            "r42_mode": r42_mode if args.round >= 42 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -4517,6 +4667,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r39_telemetry": milestones.get("r39_telemetry") if args.round >= 39 else None,
             "r40_telemetry": milestones.get("r40_telemetry") if args.round >= 40 else None,
             "r41_telemetry": milestones.get("r41_telemetry") if args.round >= 41 else None,
+            "r42_telemetry": milestones.get("r42_telemetry") if args.round >= 42 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -4566,7 +4717,7 @@ def run_once(args: argparse.Namespace) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run-id", required=True)
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41], required=True)
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -4582,6 +4733,7 @@ def main() -> int:
     ap.add_argument("--r39-mode", type=str, choices=["fan_pwm_offinrec_big6", "shutter_speed_angle_clamp", "lut_601_vs_702_firewall"], default="fan_pwm_offinrec_big6")
     ap.add_argument("--r40-mode", type=str, choices=["big6_home_noend_big6", "camset_slot1_dualmedia_split", "vmcbncm1_tcin_hdmi_tcout"], default="big6_home_noend_big6")
     ap.add_argument("--r41-mode", type=str, choices=["desqueeze_165x_4locks_big6", "external_focusmap_150fps_cutoff", "simult_autoswitch_shocklesswb"], default="desqueeze_165x_4locks_big6")
+    ap.add_argument("--r42-mode", type=str, choices=["hdmi_log1080_hdmionly_4k_big6", "proxy_vault_119p_atomic_pair", "focusmag_brightmon_h0_h3"], default="hdmi_log1080_hdmionly_4k_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

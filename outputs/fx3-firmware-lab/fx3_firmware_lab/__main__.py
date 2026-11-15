@@ -10,6 +10,10 @@ import argparse
 import json
 from typing import Dict, Optional, Sequence
 
+from .assignable_zoom_ciz_and_fn_auditor import (
+    analyze_assignable_zoom_ciz_and_fn,
+    assignable_zoom_ciz_and_fn_report_to_dict,
+)
 from .audio_tc_hdmi_sdi_routing_auditor import (
     analyze_audio_tc_hdmi_sdi_routing,
     audio_tc_hdmi_sdi_routing_report_to_dict,
@@ -59,7 +63,7 @@ from .wb_color_matrix_and_look_auditor import (
 
 
 def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
-    """Run all thirteen clean-room auditors and return a deterministic JSON-serializable summary."""
+    """Run all fourteen clean-room auditors and return a deterministic JSON-serializable summary."""
     ufu = audit_ufu_suite()
     haita = haita_report_to_dict(analyze_haita_and_bk4_features(clean_room=clean_room))
     uxc = uxc_report_to_dict(inspect_uxc_and_ldec(clean_room=clean_room))
@@ -91,6 +95,9 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
     proxy_clipname_sidecar = proxy_clipname_and_sidecar_report_to_dict(
         analyze_proxy_clipname_and_sidecar(clean_room=clean_room)
     )
+    assignable_zoom_ciz_fn = assignable_zoom_ciz_and_fn_report_to_dict(
+        analyze_assignable_zoom_ciz_and_fn(clean_room=clean_room)
+    )
 
     all_passed = bool(
         ufu.get("all_checks_passed")
@@ -106,6 +113,7 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         and shutter_ecs_sq_tally.get("all_checks_passed")
         and wb_color_look.get("all_checks_passed")
         and proxy_clipname_sidecar.get("all_checks_passed")
+        and assignable_zoom_ciz_fn.get("all_checks_passed")
     )
     return {
         "schema_version": "1.0.0",
@@ -126,17 +134,18 @@ def run_audit_all(*, clean_room: bool = False) -> Dict[str, object]:
         "shutter_ecs_sq_and_tally_audit": shutter_ecs_sq_tally,
         "wb_color_matrix_and_look_audit": wb_color_look,
         "proxy_clipname_and_sidecar_audit": proxy_clipname_sidecar,
+        "assignable_zoom_ciz_and_fn_audit": assignable_zoom_ciz_fn,
     }
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python3 -m fx3_firmware_lab",
-        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, and Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML auditor.",
+        description="Clean-room Sony FX3/FX6 UFU container, HAITA/BK4 feature, .uxc/LDEC/CJK font, IMX510/XAVC codec, .cube 3D LUT / RTMD, WBI2/hibdrv/ELF64 ABI, global.xdb/128-page menu, 4-ch audio/TC/HDMI-SDI, E-Mount PZ/PDAF/Breathing/IBIS, Shutter Angle/ECS/S&Q/Tally/Curtain, WB/Base Look/Paint Matrix/Calibration, Dual-Slot Proxy/CamID-Reel/NonRealTimeMeta XML, and Assignable/CIZ/Touch-AF/Big6+Fn auditor.",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_all = sub.add_parser("audit-all", help="Run all 13 firmware lab auditors and emit JSON")
+    p_all = sub.add_parser("audit-all", help="Run all 14 firmware lab auditors and emit JSON")
     p_all.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode without local donors")
 
     sub.add_parser("audit-ufu", help="Run keyless UFU/FDAT/UDTRFIRM & SDM2 structural audit")
@@ -209,6 +218,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p_pc.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
     p_pc.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
 
+    p_ac = sub.add_parser(
+        "audit-assignable-ciz",
+        help="Run Phase 75 Assignable Buttons (FX6 1..11 -> FX3), T/W 8-Step & Clear Image Zoom (CIZ), Touch AF + Anamorphic Desqueeze, and Big6/Fn Volatile BK4 Shadow audit",
+    )
+    p_ac.add_argument("--clean-room", action="store_true", help="Force synthetic clean-room mode")
+    p_ac.add_argument("--json", action="store_true", help="Emit deterministic JSON (default behavior)")
+
     args = parser.parse_args(argv)
 
     if args.command == "audit-all":
@@ -256,6 +272,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "audit-proxy-clipname":
         payload = proxy_clipname_and_sidecar_report_to_dict(
             analyze_proxy_clipname_and_sidecar(clean_room=bool(args.clean_room))
+        )
+    elif args.command == "audit-assignable-ciz":
+        payload = assignable_zoom_ciz_and_fn_report_to_dict(
+            analyze_assignable_zoom_ciz_and_fn(clean_room=bool(args.clean_room))
         )
     else:
         parser.error(f"Unknown command: {args.command}")

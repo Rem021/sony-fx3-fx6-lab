@@ -621,6 +621,40 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
 ```
 
+## Phase 112：Stage 19 ITU-R BT.2100 / ARIB STD-B67 HLG（HLG1/2/3 & BT.2020）管线、CTA-861.3 HDMI HDR `0x87` InfoFrame 合成器、Gamma Display Assist EVF/LCD 零泄漏隔离、与 G33/G34 烟油/盐雾/无线跟焦/云台 CoG HIL
+
+[`hdr_hlg_assist_fiz_gimbal_emulator.py`](hdr_hlg_assist_fiz_gimbal_emulator.py) 作为 **Stage 19** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase112_hdr_hlg_fiz_gimbal=True`，可通过 `--skip-phase112` 向后兼容跳过；全板 19 阶段协同仿真在本地只读供体模式下保持 `~1.35s < 1.8s`、洁净室模式下 `~0.48s < 0.65s`），在严格保持 **`cp_mutation_bytes == 0`**、**`wbi_mutation_bytes == 0`**、**`nvram_persistent_writes == 0`**、**`physical_device_writes == 0`**、**`display_assist_burn_in_frames == 0`**、**`xavc_clean_feed_leakage_events == 0`**、**`fiz_gear_strip_events == 0`**、**`ibis_coil_saturation_events == 0`**、**`duct_salt_haze_ingestion_damage_events == 0`** 与 **`persistent_emmc_writes_authorized == False`** 的前提下完成四大闭环：
+
+1. **严格只读（`os.O_RDONLY`）HLG / Gamma Assist / HDMI / 风扇 / 镜头供体审计 + 洁净室回退**：
+   - 检查 FX3 `v7.02` 与 FX6 `v6.01` 共 10 份紧凑构件（`string_english_f.uxc`、`string_english_g.uxc`、`string_english.uxc`、`string_english_2.uxc`、`dataflowInfraFramework.so`、`libGetLog.so`、`libInfraCCPFStatic.so`、`libfan.so` x2、`libInfraLensCommunicator.so`）的 SHA-256 与关键字节标记；在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺失时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **ARIB STD-B67 HLG1/HLG2/HLG3 & `BT.2020 <-> BT.709` 色域矩阵管线**：
+   - 实现 `HLG1`（87% 拐点 -> 10-bit 合法峰值 `826`）、`HLG2`（95% 拐点 -> `896`）、`HLG3`（100% 拐点 -> `940`）与 FX6 `HLG_LIVE` / `HLG_NATURAL` 精确分段 OETF/EOTF，验证 CIE-1931 `BT.2020 <-> BT.709` 3x3 线性色域矩阵可逆性（`D65` 白点行和为 `1.0`，逆矩阵残差 `< 1e-12`）与全覆盖 10-bit 代码值往返 **0 LSB 误差**，并对 `BT.2020`-in-`BT.709` 容器标签错配执行失败关闭拦截（`BLOCKED_MISMATCHED_BT2020_IN_BT709_CONTAINER`）。
+3. **CTA-861.3 HDMI HDR `0x87` InfoFrame 合成校验 + EVF/LCD Gamma Display Assist 零泄漏隔离**：
+   - 合成并反向解析验证标准 30 字节 CTA-861.3 动态范围与母版 InfoFrame（`type=0x87`、`version=0x01`、`length=26`、模 256 校验和 `(0x100 - sum) & 0xFF == 0`、`EOTF=0x03` HLG BT.2100 对比 `EOTF=0x00` SDR），并将错误校验和/长度/保留 EOTF 帧失败关闭拦截。
+   - 建模 `GPE0` EVF/LCD Gamma Display Assist（`S-Log3->709(800%)` 与 `HLG(BT.2020)->709`），证明 Assist LUT 仅作用域隔离在本地监看渲染路径，**0 帧烧录泄漏**进入机内 XAVC 录制流或 Clean-HDMI 输出（`display_assist_burn_in_frames == 0`、`xavc_clean_feed_leakage_events == 0`）。
+4. **G33/G34 盐雾/烟油风道 & 无线跟焦硬止点/云台变焦 CoG 振荡 HIL**：
+   - 注入未防护沿海盐雾、高浓度丙二醇烟油（`> 25 mg/m^3` 且累计 `> 45 min` 未吹扫）与细碱尘进气事件，验证系统自动发布优雅的 `GPE0` 风道保护告警（`18%` / `950 RPM` 保护节流、**0 WDT 复位**、**0 硬件损伤**）。
+   - 注入未校准 `> 2.5 N*m`（`3.2 N*m`）无线 FIZ 硬止点撞击与 `22 mm` 伸缩变焦云台重心漂移（`64.2 Hz` 共振，落入 `40..90 Hz` 区间），验证 `0.85 ms` 瞬时 FIZ 扭矩软限幅钳位（`1.15 N*m < 1.2 N*m`、**0 扫齿**）与 Stock-CP `0x0400` IBIS 音圈防饱和中心阻尼保护（`210.0 mA <= 450.0 mA`、**0 饱和事件**、`cp_mutation_bytes == 0`）。
+
+### Phase 112 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Stage 19 自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/hdr_hlg_assist_fiz_gimbal_emulator.py --self-test --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/hdr_hlg_assist_fiz_gimbal_emulator.py --self-test --json
+
+# 2. 全板 19 阶段（Stage 1..19）统一校验（本地 ~1.35s < 1.8s，洁净室 ~0.48s < 0.65s，支持 --skip-phase112）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 112 36 项单测 & 全量 604 项单测（双模式）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_hdr_hlg_assist_fiz_gimbal_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_hdr_hlg_assist_fiz_gimbal_emulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+PYTHONDONTWRITEBYTECODE=1 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p "test_*.py"
+```
+
+
 
 
 

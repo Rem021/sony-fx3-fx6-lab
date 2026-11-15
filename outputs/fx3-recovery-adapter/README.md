@@ -289,3 +289,25 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --clean-room --json
 ```
 
+## Phase 101 — `CXD90057` `init2` SVR4 `newc` `cpio` RAM-Disk Overlay Path/Symlink/Device-Node Firewall, JEDEC eMMC 5.1 `EXT_CSD [267..269]` Pre-EOL & Life-Time Health Auditor & 9-Pillar Master Suite Integration
+
+- **[`ramdisk_overlay_and_emmc_health_verifier.py`](fx3_recovery/ramdisk_overlay_and_emmc_health_verifier.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）与 FX6（`CXD90057`）Stage-B 易失 RAM/SD 叠加启动提供三大只读安全门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **支柱 1 — SVR4 Portable `'070701'` `newc` `cpio` RAM-Disk 叠加结构与安全防火墙（`build_cpio_newc` / `parse_cpio_newc` / `audit_cpio_ramdisk_overlay` / `build_synthetic_stage_b_cpio_overlay`）**：
+    - 纯 Python 实现 SVR4 `'070701'` `newc` `cpio` 解析与校验器（110 字节 ASCII hex 头、4 字节 `(110 + namesize)` 文件名对齐、4 字节载荷对齐、`TRAILER!!!` 哨兵且 `filesize == 0` 校验、`mode`/`rdev`/`uid`/`gid`/`filesize` 校验）。
+    - 对 `../` 路径穿越、绝对路径、规范化重复路径、逃逸至 `/dev/mmcblk0*`/`/dev/nflasha*` 或根目录之外的符号链接、任何 `S_IFBLK` 原始块设备节点、未授权 `S_IFCHR` 字符设备节点（含 `rdevmajor == 179/252` 及 `rdevmajor == 1, rdevminor in (1, 2)` 原始内存别名）、白名单外 `S_ISUID`/`S_ISGID` 二进制及截断归档实现 100% fail-closed 拦截。
+  - **支柱 2 — JEDEC eMMC 5.1 `EXT_CSD [267..269]` Pre-EOL 与寿命评估只读健康审计器（`build_synthetic_emmc_ext_csd` / `audit_emmc_ext_csd_health`）**：
+    - 解析 512 字节 `EXT_CSD` 寄存器：`PRE_EOL_INFO [267]`（`0x01` Normal、`0x02` Warning 80% 保留块消耗、`0x03` Urgent 90% 消耗）、`DEVICE_LIFE_TIME_EST_TYP_A [268]`（SLC）与 `TYP_B [269]`（MLC，`0x01..0x0A = 0%..100%`，`0x0B` 超出最大估计寿命），以及 `PARTITION_CONFIG [179]`（`BOOT_ACK = 1`、`BOOT_PARTITION_ENABLE = 1`、`PARTITION_ACCESS = 0` 出厂 `0x48` 校验，确保启动分区指针未被改写）。
+    - 在任何 Stage-B 演练前，一旦检测到 `PRE_EOL_INFO >= 0x02`、`LIFE_TIME >= 0x09`（>80% 磨损）或启动分区指针偏离出厂配置，立即 fail-closed 阻断演练并强制要求先做只读 Tier-0 全量备份留存（`tier0_preservation_mandatory = True`）。
+  - **支柱 3 — RAM-Only `tmpfs` / `overlayfs` `upperdir` 隔离证明（`build_synthetic_safe_stage_b_mount_table` / `audit_ramdisk_overlay_mount_table`）**：
+    - 解析 Linux `/proc/mounts` / `fstab` 挂载表，通过最长挂载点前缀匹配证明所有 `overlay`/`overlayfs` 的 `upperdir` 与 `workdir` 均严格驻留于易失 `tmpfs`（RAM）且互不重叠，同时证明所有 `/dev/mmcblk0*`、`/dev/nflasha*` 与 `/dev/cnflasha*` 条目均处于未挂载或 `ro,noatime` 只读状态，零 `rw` 块设备挂载。
+  - **CLI 与 36 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-ramdisk-emmc-health [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase101`（Pillar 9，与 `--with-phase94` 组合构成 9/9 支柱总检，同时保持既有默认 `7/7` 行为完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部公开符号；[`tests/test_ramdisk_overlay_and_emmc_health_verifier.py`](tests/test_ramdisk_overlay_and_emmc_health_verifier.py) 包含 **36 项双模式快速单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-ramdisk-emmc-health --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --clean-room --json
+```
+
+

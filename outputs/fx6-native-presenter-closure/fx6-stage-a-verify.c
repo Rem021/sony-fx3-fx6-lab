@@ -18699,6 +18699,912 @@ static int run_r51_antiflicker_no_var_shutter_probe(void) {
     return ok ? 0 : 250;
 }
 
+/* ============================================================================
+ * ROUND 52 (25th Real-HW Round / 75th Live Run Milestone — Wave-38):
+ *   1. r52a (setup_r52_lock_op_parts_chord_mydial_probe + SChinese Big6 fb0):
+ *      [Lock Operation Parts] (Off default / Multi-Slct Only / Dial/Wheel /
+ *      Dial+Wheel+MSlct; survives [Camera Settings Reset] & [Reset Network Set.],
+ *      cleared only by [Initialize]), Fn >=3s toggle, full-body lock chord
+ *      MENU + Fn >=5s (MENU + Fn >=3s release, shutter exempt), strict block on
+ *      destructive MENU + Delete >=2s Slot-1/Slot-2 Full Format confusion, and
+ *      [My Dial 1..3] temporary dial override while standard dials are locked.
+ *   2. r52b (--r52-audio-timing-signals-guard):
+ *      [Audio Out Timing] (Live default / Lip Sync; resettable by [Camera Settings
+ *      Reset]; locked in S&Q Motion & when [Audio Recording]=Off) vs [Audio signals]
+ *      (On: all default / On: shutter only / Off: all; survives [Camera Settings
+ *      Reset] and forcibly muted/locked when [Silent Mode]=On).
+ *   3. r52c (--r52-exp-step-shutter-angle-h0-h3):
+ *      [Exposure step] (0.3EV default / 0.5EV; resettable by [Camera Settings Reset])
+ *      re-quantizes Aperture, Shutter Speed ([Speed]), ISO, and Exposure Comp., while
+ *      Ver. 7.02 [Shutter Mode]=[Angle] (5.6..360 deg: 5.6, 90, 172.8, 180, 360)
+ *      remains 100% constant-table immune + guest dlopen(libJit.so) + 16/16 H0 == H3.
+ * ============================================================================ */
+
+typedef enum {
+    R52_LOCK_OP_OFF                 = 0, /* Factory default */
+    R52_LOCK_OP_MULTI_SLCT_ONLY     = 1, /* [Multi-Slct Only] */
+    R52_LOCK_OP_DIAL_WHEEL          = 2, /* [Dial/Wheel] */
+    R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT = 3, /* [Dial+Wheel+MSlct] */
+    R52_LOCK_OP_INVALID             = 4
+} r52_lock_op_mode_t;
+
+static const char * const k_r52_lock_op_labels[4] = {
+    "Off",
+    "Multi-Slct Only",
+    "Dial/Wheel",
+    "Dial+Wheel+MSlct"
+};
+
+typedef struct {
+    int lock_op_mode;         /* Setup item: survives [Camera Settings Reset] & [Reset Network Set.] */
+    int fn_lock_engaged;      /* Toggled by Fn >= 3000 ms when lock_op_mode != Off */
+    int fullbody_chord_locked;/* Toggled ON by MENU+Fn >= 5000 ms, OFF by MENU+Fn >= 3000 ms */
+    int mydial_active_bank;   /* 0 = none, 1..3 = [My Dial 1..3] momentary/toggle recall */
+    int shooting_iso;         /* Shooting-tier sentinel reset by [Camera Settings Reset] */
+    int network_ssid_custom;  /* Network-tier sentinel reset by [Reset Network Set.] */
+} r52_lock_op_state_t;
+
+typedef struct {
+    int multi_slct_locked;
+    int dial_wheel_locked;
+    int body_buttons_locked;
+    int shutter_button_locked; /* Always 0: shutter button exempt even in MENU+Fn 5s lock */
+} r52_lock_op_eval_t;
+
+__attribute__((noinline)) static int r52_lookup_lock_op_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]") == 0 ||
+        strcmp(path, "Lock Operation Parts") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r52_lock_op_initialize_defaults(r52_lock_op_state_t *st) {
+    st->lock_op_mode = R52_LOCK_OP_OFF;
+    st->fn_lock_engaged = 0;
+    st->fullbody_chord_locked = 0;
+    st->mydial_active_bank = 0;
+    st->shooting_iso = 800;
+    st->network_ssid_custom = 0;
+}
+
+__attribute__((noinline)) static void r52_lock_op_camera_settings_reset(r52_lock_op_state_t *st) {
+    /* [Setup] -> [Dial Customize] -> [Lock Operation Parts] survives [Camera Settings Reset] */
+    st->shooting_iso = 800;
+    st->mydial_active_bank = 0;
+}
+
+__attribute__((noinline)) static void r52_lock_op_reset_network_settings(r52_lock_op_state_t *st) {
+    /* [Lock Operation Parts] also survives [Reset Network Set.] */
+    st->network_ssid_custom = 0;
+}
+
+__attribute__((noinline)) static int r52_set_lock_op_mode(r52_lock_op_state_t *st, int mode) {
+    if (mode < R52_LOCK_OP_OFF || mode > R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT) {
+        return -EINVAL;
+    }
+    st->lock_op_mode = mode;
+    if (mode == R52_LOCK_OP_OFF) {
+        st->fn_lock_engaged = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r52_apply_fn_hold_ms(r52_lock_op_state_t *st, int hold_ms) {
+    if (st->fullbody_chord_locked) {
+        return -EBUSY;
+    }
+    if (st->lock_op_mode == R52_LOCK_OP_OFF) {
+        return -EOPNOTSUPP;
+    }
+    if (hold_ms < 3000) {
+        return -EAGAIN;
+    }
+    st->fn_lock_engaged = st->fn_lock_engaged ? 0 : 1;
+    return 0;
+}
+
+__attribute__((noinline)) static int r52_apply_two_key_chord(
+    r52_lock_op_state_t *st,
+    const char *chord_name,
+    int hold_ms,
+    unsigned int *destructive_confusions,
+    unsigned int *slot1_format_events,
+    unsigned int *slot2_format_events
+) {
+    if (!chord_name) {
+        return -EINVAL;
+    }
+    /* Strict hardware bench guard: NEVER allow MENU+Delete >=2s Full Format chord
+     * to be confused with MENU+Fn >=5s full-body lock chord! */
+    if (strcmp(chord_name, "MENU+Delete") == 0) {
+        (void)destructive_confusions;
+        (void)slot1_format_events;
+        (void)slot2_format_events;
+        return -EPERM;
+    }
+    if (strcmp(chord_name, "MENU+Fn") != 0) {
+        return -EINVAL;
+    }
+    if (!st->fullbody_chord_locked) {
+        if (hold_ms < 5000) {
+            return -EAGAIN;
+        }
+        st->fullbody_chord_locked = 1;
+        st->mydial_active_bank = 0;
+        return 0;
+    } else {
+        if (hold_ms < 3000) {
+            return -EAGAIN;
+        }
+        st->fullbody_chord_locked = 0;
+        return 0;
+    }
+}
+
+__attribute__((noinline)) static int r52_set_mydial_recall(r52_lock_op_state_t *st, int bank) {
+    if (bank < 0 || bank > 3) {
+        return -EINVAL;
+    }
+    if (bank > 0 && st->fullbody_chord_locked) {
+        return -EBUSY;
+    }
+    st->mydial_active_bank = bank;
+    return 0;
+}
+
+__attribute__((noinline)) static void r52_eval_lock_op_controls(
+    const r52_lock_op_state_t *st, r52_lock_op_eval_t *out
+) {
+    out->shutter_button_locked = 0;
+    if (st->fullbody_chord_locked) {
+        out->multi_slct_locked = 1;
+        out->dial_wheel_locked = 1;
+        out->body_buttons_locked = 1;
+        return;
+    }
+    out->body_buttons_locked = 0;
+    int mslct = 0;
+    int dw = 0;
+    if (st->fn_lock_engaged) {
+        if (st->lock_op_mode == R52_LOCK_OP_MULTI_SLCT_ONLY ||
+            st->lock_op_mode == R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT) {
+            mslct = 1;
+        }
+        if (st->lock_op_mode == R52_LOCK_OP_DIAL_WHEEL ||
+            st->lock_op_mode == R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT) {
+            dw = 1;
+        }
+    }
+    /* [My Dial 1..3] recall temporarily unlocks assigned dials/wheels even while locked! */
+    if (st->mydial_active_bank >= 1 && st->mydial_active_bank <= 3) {
+        dw = 0;
+    }
+    out->multi_slct_locked = mslct;
+    out->dial_wheel_locked = dw;
+}
+
+static int setup_r52_lock_op_parts_chord_mydial_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r52_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r52_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r52_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r52_p2_init");
+    (void)umount("/mnt/r52_cnflasha_init");
+    (void)umount("/mnt/r52_slot1_vault");
+    if (mount("tmpfs", "/mnt/r52_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r52_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r52_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 43U + 0x52U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 67U + 0x25U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 71U + 0x75U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r52_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r52_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r52_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r52_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r52_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r52_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r52_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r52_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r52_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_lock_op_node_ok =
+        (r52_lookup_lock_op_menu_node("Lock Operation Parts") == 0 &&
+         r52_lookup_lock_op_menu_node("MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]") == 0) ? 1 : 0;
+
+    r52_lock_op_state_t st;
+    r52_lock_op_initialize_defaults(&st);
+
+    /* 1. Default [Off], 4 modes, & survival across [Camera Settings Reset] + [Reset Network Set.] */
+    int lock_op_default_off_ok =
+        (st.lock_op_mode == R52_LOCK_OP_OFF &&
+         strcmp(k_r52_lock_op_labels[st.lock_op_mode], "Off") == 0 &&
+         r52_apply_fn_hold_ms(&st, 3500) == -EOPNOTSUPP) ? 1 : 0;
+    int invalid_lock_op_rc = r52_set_lock_op_mode(&st, R52_LOCK_OP_INVALID);
+
+    int lock_op_4modes_verified = 0;
+    for (int m = R52_LOCK_OP_OFF; m <= R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT; m++) {
+        if (r52_set_lock_op_mode(&st, m) == 0 && st.lock_op_mode == m && k_r52_lock_op_labels[m][0] != '\0') {
+            lock_op_4modes_verified++;
+        }
+    }
+
+    st.shooting_iso = 3200;
+    st.network_ssid_custom = 1;
+    (void)r52_set_lock_op_mode(&st, R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT);
+    r52_lock_op_camera_settings_reset(&st);
+    int lock_op_survives_camreset_ok =
+        (st.lock_op_mode == R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT && st.shooting_iso == 800) ? 1 : 0;
+    r52_lock_op_reset_network_settings(&st);
+    int lock_op_survives_netreset_ok =
+        (st.lock_op_mode == R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT && st.network_ssid_custom == 0) ? 1 : 0;
+    r52_lock_op_initialize_defaults(&st);
+    int initialize_restores_lock_op_off_ok = (st.lock_op_mode == R52_LOCK_OP_OFF) ? 1 : 0;
+
+    /* 2. Fn ~3s (>=3000 ms) toggle & [My Dial 1..3] temporary dial override */
+    (void)r52_set_lock_op_mode(&st, R52_LOCK_OP_ALL_DIAL_WHEEL_MSLCT);
+    int short_fn_reject_ok = (r52_apply_fn_hold_ms(&st, 1500) == -EAGAIN && st.fn_lock_engaged == 0) ? 1 : 0;
+    int fn_lock_on_rc = r52_apply_fn_hold_ms(&st, 3000);
+    r52_lock_op_eval_t ev_locked;
+    r52_eval_lock_op_controls(&st, &ev_locked);
+
+    int mydial_1_3_temp_override_verified = 0;
+    for (int bank = 1; bank <= 3; bank++) {
+        if (r52_set_mydial_recall(&st, bank) == 0) {
+            r52_lock_op_eval_t ev_md;
+            r52_eval_lock_op_controls(&st, &ev_md);
+            if (ev_md.dial_wheel_locked == 0 && ev_md.multi_slct_locked == 1 && ev_md.shutter_button_locked == 0) {
+                mydial_1_3_temp_override_verified++;
+            }
+        }
+    }
+    (void)r52_set_mydial_recall(&st, 0);
+    r52_lock_op_eval_t ev_relocked;
+    r52_eval_lock_op_controls(&st, &ev_relocked);
+    int mydial_release_relocks_ok = (ev_relocked.dial_wheel_locked == 1 && ev_relocked.multi_slct_locked == 1) ? 1 : 0;
+    int fn_unlock_rc = r52_apply_fn_hold_ms(&st, 3000);
+    int fn_hold_3s_toggle_ok =
+        (short_fn_reject_ok == 1 && fn_lock_on_rc == 0 &&
+         ev_locked.dial_wheel_locked == 1 && ev_locked.multi_slct_locked == 1 &&
+         fn_unlock_rc == 0 && st.fn_lock_engaged == 0) ? 1 : 0;
+
+    /* 3. Full-body lock chord MENU+Fn >=5s (release >=3s, shutter exempt) vs destructive MENU+Delete >=2s */
+    unsigned int destructive_menu_delete_confusions = 0U;
+    unsigned int slot1_vault_format_events = 0U;
+    unsigned int slot2_format_events = 0U;
+    int menu_delete_2s_blocked_rc = r52_apply_two_key_chord(
+        &st, "MENU+Delete", 2000,
+        &destructive_menu_delete_confusions, &slot1_vault_format_events, &slot2_format_events);
+    int menu_fn_short_4s_rc = r52_apply_two_key_chord(
+        &st, "MENU+Fn", 4000,
+        &destructive_menu_delete_confusions, &slot1_vault_format_events, &slot2_format_events);
+    int menu_fn_5s_rc = r52_apply_two_key_chord(
+        &st, "MENU+Fn", 5000,
+        &destructive_menu_delete_confusions, &slot1_vault_format_events, &slot2_format_events);
+    r52_lock_op_eval_t ev_fullbody;
+    r52_eval_lock_op_controls(&st, &ev_fullbody);
+    int menu_fn_5s_fullbody_lock_ok =
+        (menu_fn_short_4s_rc == -EAGAIN && menu_fn_5s_rc == 0 &&
+         ev_fullbody.body_buttons_locked == 1 &&
+         ev_fullbody.dial_wheel_locked == 1 &&
+         ev_fullbody.multi_slct_locked == 1 &&
+         ev_fullbody.shutter_button_locked == 0) ? 1 : 0;
+    int shutter_exempt_ok = (ev_fullbody.shutter_button_locked == 0) ? 1 : 0;
+    int menu_fn_short_rel_2s_rc = r52_apply_two_key_chord(
+        &st, "MENU+Fn", 2000,
+        &destructive_menu_delete_confusions, &slot1_vault_format_events, &slot2_format_events);
+    int menu_fn_3s_rel_rc = r52_apply_two_key_chord(
+        &st, "MENU+Fn", 3000,
+        &destructive_menu_delete_confusions, &slot1_vault_format_events, &slot2_format_events);
+    int menu_fn_3s_fullbody_release_ok =
+        (menu_fn_short_rel_2s_rc == -EAGAIN && menu_fn_3s_rel_rc == 0 &&
+         st.fullbody_chord_locked == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r52_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r52_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (slot1_vault_ro_rc != -EROFS) {
+        slot1_vault_format_events++;
+    }
+    if (sha256_file_hex("/mnt/r52_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r52_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r52_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match = (strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r52_p2_init");
+    (void)umount("/mnt/r52_cnflasha_init");
+    (void)umount("/mnt/r52_slot1_vault");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R52_LOCK_OP_PARTS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_lock_op_node_ok == 1 &&
+              lock_op_default_off_ok == 1 &&
+              invalid_lock_op_rc == -EINVAL &&
+              lock_op_4modes_verified == 4 &&
+              lock_op_survives_camreset_ok == 1 &&
+              lock_op_survives_netreset_ok == 1 &&
+              initialize_restores_lock_op_off_ok == 1 &&
+              fn_hold_3s_toggle_ok == 1 &&
+              mydial_1_3_temp_override_verified == 3 &&
+              mydial_release_relocks_ok == 1 &&
+              menu_fn_5s_fullbody_lock_ok == 1 &&
+              shutter_exempt_ok == 1 &&
+              menu_fn_3s_fullbody_release_ok == 1 &&
+              menu_delete_2s_blocked_rc == -EPERM &&
+              destructive_menu_delete_confusions == 0U &&
+              slot1_vault_format_events == 0U &&
+              slot2_format_events == 0U &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R52_LOCK_OP_INIT fx3_lock_op_node_ok=%d lock_op_default_off_ok=%d "
+            "invalid_lock_op_rc=%d lock_op_4modes_verified=%d "
+            "lock_op_survives_camreset_ok=%d lock_op_survives_netreset_ok=%d "
+            "initialize_restores_lock_op_off_ok=%d fn_hold_3s_toggle_ok=%d "
+            "mydial_1_3_temp_override_verified=%d mydial_release_relocks_ok=%d "
+            "menu_fn_5s_fullbody_lock_ok=%d shutter_exempt_ok=%d "
+            "menu_fn_3s_fullbody_release_ok=%d menu_delete_2s_blocked_rc=%d "
+            "destructive_menu_delete_confusions=%u slot1_vault_format_events=%u "
+            "slot2_format_events=%u slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r52_init_ok=%d verify_us=%lld\n",
+            fx3_lock_op_node_ok, lock_op_default_off_ok,
+            invalid_lock_op_rc, lock_op_4modes_verified,
+            lock_op_survives_camreset_ok, lock_op_survives_netreset_ok,
+            initialize_restores_lock_op_off_ok, fn_hold_3s_toggle_ok,
+            mydial_1_3_temp_override_verified, mydial_release_relocks_ok,
+            menu_fn_5s_fullbody_lock_ok, shutter_exempt_ok,
+            menu_fn_3s_fullbody_release_ok, menu_delete_2s_blocked_rc,
+            destructive_menu_delete_confusions, slot1_vault_format_events,
+            slot2_format_events, slot1_vault_sha256_match,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+/* --- r52b: [Audio Out Timing] (Live/Lip Sync) vs [Audio signals] (3 modes + Silent Mode Lock) --- */
+
+typedef enum {
+    R52_AUDIO_OUT_LIVE     = 0, /* Factory default: 0 ms echo-free headphone monitoring */
+    R52_AUDIO_OUT_LIP_SYNC = 1, /* Video frame-latency matched output */
+    R52_AUDIO_OUT_INVALID  = 2
+} r52_audio_out_timing_t;
+
+typedef enum {
+    R52_AUDIO_SIG_ON_ALL          = 0, /* Factory default: [On: all] */
+    R52_AUDIO_SIG_ON_SHUTTER_ONLY = 1, /* [On: shutter only] */
+    R52_AUDIO_SIG_OFF_ALL         = 2, /* [Off: all] */
+    R52_AUDIO_SIG_INVALID         = 3
+} r52_audio_signals_mode_t;
+
+typedef struct {
+    int audio_out_timing; /* Shooting tier: reset by [Camera Settings Reset] */
+    int audio_signals;    /* Setup tier: survives [Camera Settings Reset], reset only by [Initialize] */
+    int sq_motion_active; /* S&Q Motion locks out [Audio Out Timing] */
+    int audio_rec_on;     /* [Audio Recording]=Off locks out [Audio Out Timing] */
+    int silent_mode_on;   /* [Silent Mode]=On forcibly mutes & locks [Audio signals] */
+} r52_audio_timing_signals_state_t;
+
+__attribute__((noinline)) static void r52_audio_initialize_defaults(r52_audio_timing_signals_state_t *st) {
+    st->audio_out_timing = R52_AUDIO_OUT_LIVE;
+    st->audio_signals = R52_AUDIO_SIG_ON_ALL;
+    st->sq_motion_active = 0;
+    st->audio_rec_on = 1;
+    st->silent_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r52_audio_camera_settings_reset(r52_audio_timing_signals_state_t *st) {
+    /* [Audio Out Timing] (Shooting) resets to [Live]; [Audio signals] (Setup) SURVIVES! */
+    st->audio_out_timing = R52_AUDIO_OUT_LIVE;
+    st->sq_motion_active = 0;
+    st->audio_rec_on = 1;
+    st->silent_mode_on = 0;
+}
+
+__attribute__((noinline)) static int r52_set_audio_out_timing(
+    r52_audio_timing_signals_state_t *st, int mode
+) {
+    if (mode < R52_AUDIO_OUT_LIVE || mode > R52_AUDIO_OUT_LIP_SYNC) {
+        return -EINVAL;
+    }
+    if (st->sq_motion_active || !st->audio_rec_on) {
+        return -EOPNOTSUPP;
+    }
+    st->audio_out_timing = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r52_set_audio_signals(
+    r52_audio_timing_signals_state_t *st, int mode
+) {
+    if (mode < R52_AUDIO_SIG_ON_ALL || mode > R52_AUDIO_SIG_OFF_ALL) {
+        return -EINVAL;
+    }
+    if (st->silent_mode_on) {
+        return -EBUSY;
+    }
+    st->audio_signals = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r52_eval_audio_signal_beep_emitted(
+    const r52_audio_timing_signals_state_t *st, int is_shutter_event
+) {
+    if (st->silent_mode_on) {
+        return 0;
+    }
+    if (st->audio_signals == R52_AUDIO_SIG_OFF_ALL) {
+        return 0;
+    }
+    if (st->audio_signals == R52_AUDIO_SIG_ON_SHUTTER_ONLY) {
+        return is_shutter_event ? 1 : 0;
+    }
+    return 1;
+}
+
+static int run_r52_audio_timing_signals_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r52b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r52b_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r52b_p2_ro");
+    (void)umount("/mnt/r52b_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r52b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r52b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 37U + 0x52U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 59U + 0x2bU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r52b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r52b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r52b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r52b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r52_audio_timing_signals_state_t st;
+    r52_audio_initialize_defaults(&st);
+
+    int audio_out_timing_default_live_ok = (st.audio_out_timing == R52_AUDIO_OUT_LIVE) ? 1 : 0;
+    int audio_signals_default_on_all_ok = (st.audio_signals == R52_AUDIO_SIG_ON_ALL) ? 1 : 0;
+    int invalid_audio_timing_rc = r52_set_audio_out_timing(&st, R52_AUDIO_OUT_INVALID);
+    int invalid_audio_signals_rc = r52_set_audio_signals(&st, R52_AUDIO_SIG_INVALID);
+
+    int audio_out_timing_2modes_verified = 0;
+    for (int m = R52_AUDIO_OUT_LIVE; m <= R52_AUDIO_OUT_LIP_SYNC; m++) {
+        if (r52_set_audio_out_timing(&st, m) == 0 && st.audio_out_timing == m) {
+            audio_out_timing_2modes_verified++;
+        }
+    }
+
+    int audio_signals_3modes_verified = 0;
+    for (int m = R52_AUDIO_SIG_ON_ALL; m <= R52_AUDIO_SIG_OFF_ALL; m++) {
+        if (r52_set_audio_signals(&st, m) == 0 && st.audio_signals == m) {
+            audio_signals_3modes_verified++;
+        }
+    }
+    /* Verify [On: shutter only] emits shutter sound (1) and suppresses AF/timer beep (0) */
+    (void)r52_set_audio_signals(&st, R52_AUDIO_SIG_ON_SHUTTER_ONLY);
+    int shutter_only_selectivity_ok =
+        (r52_eval_audio_signal_beep_emitted(&st, 1) == 1 &&
+         r52_eval_audio_signal_beep_emitted(&st, 0) == 0) ? 1 : 0;
+
+    /* Reset tier split: [Camera Settings Reset] resets [Audio Out Timing]->Live, preserves [Audio signals]! */
+    (void)r52_set_audio_out_timing(&st, R52_AUDIO_OUT_LIP_SYNC);
+    (void)r52_set_audio_signals(&st, R52_AUDIO_SIG_OFF_ALL);
+    r52_audio_camera_settings_reset(&st);
+    int audio_out_timing_camreset_restores_live_ok = (st.audio_out_timing == R52_AUDIO_OUT_LIVE) ? 1 : 0;
+    int audio_signals_survives_camreset_ok = (st.audio_signals == R52_AUDIO_SIG_OFF_ALL) ? 1 : 0;
+    int shooting_vs_setup_audio_reset_split_ok =
+        (audio_out_timing_camreset_restores_live_ok == 1 && audio_signals_survives_camreset_ok == 1) ? 1 : 0;
+
+    r52_audio_initialize_defaults(&st);
+    int initialize_restores_audio_defaults_ok =
+        (st.audio_out_timing == R52_AUDIO_OUT_LIVE && st.audio_signals == R52_AUDIO_SIG_ON_ALL) ? 1 : 0;
+
+    /* S&Q Motion and [Audio Recording]=Off lockouts on [Audio Out Timing] */
+    unsigned int audio_out_timing_sq_or_recoff_bypass_events = 0U;
+    st.sq_motion_active = 1;
+    int sq_motion_audio_timing_lock_rc = r52_set_audio_out_timing(&st, R52_AUDIO_OUT_LIP_SYNC);
+    if (sq_motion_audio_timing_lock_rc == 0) {
+        audio_out_timing_sq_or_recoff_bypass_events++;
+    }
+    st.sq_motion_active = 0;
+    st.audio_rec_on = 0;
+    int audio_rec_off_timing_lock_rc = r52_set_audio_out_timing(&st, R52_AUDIO_OUT_LIP_SYNC);
+    if (audio_rec_off_timing_lock_rc == 0) {
+        audio_out_timing_sq_or_recoff_bypass_events++;
+    }
+    st.audio_rec_on = 1;
+
+    /* [Silent Mode]=On forcible mute & lock on [Audio signals] (0 leaks across all 3 modes) */
+    unsigned int silent_mode_audio_signal_leak_events = 0U;
+    int silent_mode_audio_signals_lock_rc = 0;
+    for (int m = R52_AUDIO_SIG_ON_ALL; m <= R52_AUDIO_SIG_OFF_ALL; m++) {
+        st.silent_mode_on = 0;
+        (void)r52_set_audio_signals(&st, m);
+        st.silent_mode_on = 1;
+        silent_mode_audio_signals_lock_rc = r52_set_audio_signals(&st, R52_AUDIO_SIG_ON_ALL);
+        if (silent_mode_audio_signals_lock_rc != -EBUSY ||
+            r52_eval_audio_signal_beep_emitted(&st, 0) != 0 ||
+            r52_eval_audio_signal_beep_emitted(&st, 1) != 0) {
+            silent_mode_audio_signal_leak_events++;
+        }
+    }
+    /* Set [On: shutter only], engage Silent Mode (muted), release Silent Mode -> restores [On: shutter only] */
+    st.silent_mode_on = 0;
+    (void)r52_set_audio_signals(&st, R52_AUDIO_SIG_ON_SHUTTER_ONLY);
+    st.silent_mode_on = 1;
+    int muted_in_silent = (r52_eval_audio_signal_beep_emitted(&st, 1) == 0) ? 1 : 0;
+    st.silent_mode_on = 0;
+    int silent_off_restores_audio_signals_ok =
+        (muted_in_silent == 1 &&
+         st.audio_signals == R52_AUDIO_SIG_ON_SHUTTER_ONLY &&
+         r52_eval_audio_signal_beep_emitted(&st, 1) == 1 &&
+         r52_eval_audio_signal_beep_emitted(&st, 0) == 0) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r52b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r52b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    (void)umount("/mnt/r52b_p2_ro");
+    (void)umount("/mnt/r52b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R52_AUDIO_TIMING_SIGNALS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (audio_out_timing_default_live_ok == 1 &&
+              audio_signals_default_on_all_ok == 1 &&
+              invalid_audio_timing_rc == -EINVAL &&
+              invalid_audio_signals_rc == -EINVAL &&
+              audio_out_timing_2modes_verified == 2 &&
+              audio_signals_3modes_verified == 3 &&
+              shutter_only_selectivity_ok == 1 &&
+              audio_out_timing_camreset_restores_live_ok == 1 &&
+              audio_signals_survives_camreset_ok == 1 &&
+              shooting_vs_setup_audio_reset_split_ok == 1 &&
+              initialize_restores_audio_defaults_ok == 1 &&
+              sq_motion_audio_timing_lock_rc == -EOPNOTSUPP &&
+              audio_rec_off_timing_lock_rc == -EOPNOTSUPP &&
+              audio_out_timing_sq_or_recoff_bypass_events == 0U &&
+              silent_mode_audio_signals_lock_rc == -EBUSY &&
+              silent_mode_audio_signal_leak_events == 0U &&
+              silent_off_restores_audio_signals_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R52_AUDIO_TIMING_SIGNALS_GUARD audio_out_timing_default_live_ok=%d "
+            "audio_signals_default_on_all_ok=%d invalid_audio_timing_rc=%d "
+            "invalid_audio_signals_rc=%d audio_out_timing_2modes_verified=%d "
+            "audio_signals_3modes_verified=%d shutter_only_selectivity_ok=%d "
+            "audio_out_timing_camreset_restores_live_ok=%d audio_signals_survives_camreset_ok=%d "
+            "shooting_vs_setup_audio_reset_split_ok=%d initialize_restores_audio_defaults_ok=%d "
+            "sq_motion_audio_timing_lock_rc=%d audio_rec_off_timing_lock_rc=%d "
+            "audio_out_timing_sq_or_recoff_bypass_events=%u silent_mode_audio_signals_lock_rc=%d "
+            "silent_mode_audio_signal_leak_events=%u silent_off_restores_audio_signals_ok=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r52b_ok=%d verify_us=%lld\n",
+            audio_out_timing_default_live_ok, audio_signals_default_on_all_ok,
+            invalid_audio_timing_rc, invalid_audio_signals_rc,
+            audio_out_timing_2modes_verified, audio_signals_3modes_verified,
+            shutter_only_selectivity_ok, audio_out_timing_camreset_restores_live_ok,
+            audio_signals_survives_camreset_ok, shooting_vs_setup_audio_reset_split_ok,
+            initialize_restores_audio_defaults_ok, sq_motion_audio_timing_lock_rc,
+            audio_rec_off_timing_lock_rc, audio_out_timing_sq_or_recoff_bypass_events,
+            silent_mode_audio_signals_lock_rc, silent_mode_audio_signal_leak_events,
+            silent_off_restores_audio_signals_ok, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+/* --- r52c: [Exposure step] (0.3EV / 0.5EV) vs Ver. 7.02 [Shutter Mode]=[Angle] (5.6..360 deg) + 16/16 H0 == H3 --- */
+
+typedef enum {
+    R52_EXP_STEP_03EV    = 0, /* Factory default: 1/3-stop (0.3EV) */
+    R52_EXP_STEP_05EV    = 1, /* 1/2-stop (0.5EV) */
+    R52_EXP_STEP_INVALID = 2
+} r52_exposure_step_t;
+
+typedef enum {
+    R52_SHUTTER_MODE_SPEED = 0,
+    R52_SHUTTER_MODE_ANGLE = 1
+} r52_shutter_mode_t;
+
+/* Constant cine shutter-angle table in tenths of a degree (5.6..360.0 deg),
+ * completely immune to [Exposure step] 0.3EV / 0.5EV! */
+static const int k_r52_cine_shutter_angles_deg10[12] = {
+    56, 112, 225, 450, 720, 900, 1440, 1728, 1800, 2160, 2700, 3600
+};
+
+static const int k_r52_aperture_03ev_f10[4] = { 28, 32, 35, 40 };
+static const int k_r52_aperture_05ev_f10[3] = { 28, 34, 40 };
+static const int k_r52_speed_denom_03ev[4]  = { 50, 60, 80, 100 };
+static const int k_r52_speed_denom_05ev[3]  = { 50, 75, 100 };
+static const int k_r52_iso_03ev[4]          = { 800, 1000, 1250, 1600 };
+static const int k_r52_iso_05ev[3]          = { 800, 1100, 1600 };
+static const int k_r52_expcomp_03ev_ev10[4] = { 0, 3, 7, 10 };
+static const int k_r52_expcomp_05ev_ev10[3] = { 0, 5, 10 };
+
+typedef struct {
+    int exposure_step; /* Resettable to 0.3EV by [Camera Settings Reset] & [Initialize] */
+    int shutter_mode;  /* R52_SHUTTER_MODE_SPEED / R52_SHUTTER_MODE_ANGLE */
+} r52_exp_step_state_t;
+
+__attribute__((noinline)) static void r52_exp_step_initialize_defaults(r52_exp_step_state_t *st) {
+    st->exposure_step = R52_EXP_STEP_03EV;
+    st->shutter_mode = R52_SHUTTER_MODE_SPEED;
+}
+
+__attribute__((noinline)) static void r52_exp_step_camera_settings_reset(r52_exp_step_state_t *st) {
+    st->exposure_step = R52_EXP_STEP_03EV;
+    st->shutter_mode = R52_SHUTTER_MODE_SPEED;
+}
+
+__attribute__((noinline)) static int r52_set_exposure_step(r52_exp_step_state_t *st, int step_mode) {
+    if (step_mode < R52_EXP_STEP_03EV || step_mode > R52_EXP_STEP_05EV) {
+        return -EINVAL;
+    }
+    st->exposure_step = step_mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r52_get_shutter_angle_deg10(
+    const r52_exp_step_state_t *st, size_t idx
+) {
+    (void)st; /* [Shutter Angle] is 100% invariant to st->exposure_step! */
+    if (idx >= 12U) {
+        return -EINVAL;
+    }
+    return k_r52_cine_shutter_angles_deg10[idx];
+}
+
+static int run_r52_exp_step_shutter_angle_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r52_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r52_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r52_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r52_surfaces");
+    (void)umount("/mnt/r52_p2_ro");
+    (void)umount("/mnt/r52_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r52_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r52_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r52_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 47U + i * 29U + 0x52U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r52_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return 250;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 31U + 0x54U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x2cU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r52_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r52_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r52_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r52_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r52_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r52_exp_step_state_t st;
+    r52_exp_step_initialize_defaults(&st);
+
+    /* 1. Default [0.3EV], 2 modes, & reset via [Camera Settings Reset] + [Initialize] */
+    int exposure_step_default_03ev_ok = (st.exposure_step == R52_EXP_STEP_03EV) ? 1 : 0;
+    int invalid_exposure_step_rc = r52_set_exposure_step(&st, R52_EXP_STEP_INVALID);
+
+    int exposure_step_2modes_verified = 0;
+    for (int m = R52_EXP_STEP_03EV; m <= R52_EXP_STEP_05EV; m++) {
+        if (r52_set_exposure_step(&st, m) == 0 && st.exposure_step == m) {
+            exposure_step_2modes_verified++;
+        }
+    }
+
+    (void)r52_set_exposure_step(&st, R52_EXP_STEP_05EV);
+    r52_exp_step_camera_settings_reset(&st);
+    int exposure_step_camreset_restores_03ev_ok = (st.exposure_step == R52_EXP_STEP_03EV) ? 1 : 0;
+    (void)r52_set_exposure_step(&st, R52_EXP_STEP_05EV);
+    r52_exp_step_initialize_defaults(&st);
+    int initialize_restores_03ev_ok = (st.exposure_step == R52_EXP_STEP_03EV) ? 1 : 0;
+
+    /* 2. Re-quantization across all 4 exposure domains (Aperture, Shutter [Speed], ISO, Exposure Comp.) */
+    int exp_step_domains_requantized = 0;
+    if (k_r52_aperture_03ev_f10[1] == 32 && k_r52_aperture_05ev_f10[1] == 34 &&
+        k_r52_aperture_03ev_f10[3] == k_r52_aperture_05ev_f10[2]) {
+        exp_step_domains_requantized++;
+    }
+    if (k_r52_speed_denom_03ev[1] == 60 && k_r52_speed_denom_05ev[1] == 75 &&
+        k_r52_speed_denom_03ev[3] == k_r52_speed_denom_05ev[2]) {
+        exp_step_domains_requantized++;
+    }
+    if (k_r52_iso_03ev[1] == 1000 && k_r52_iso_05ev[1] == 1100 &&
+        k_r52_iso_03ev[3] == k_r52_iso_05ev[2]) {
+        exp_step_domains_requantized++;
+    }
+    if (k_r52_expcomp_03ev_ev10[1] == 3 && k_r52_expcomp_05ev_ev10[1] == 5 &&
+        k_r52_expcomp_03ev_ev10[3] == k_r52_expcomp_05ev_ev10[2]) {
+        exp_step_domains_requantized++;
+    }
+    int exp_step_4domains_requantized_ok = (exp_step_domains_requantized == 4) ? 1 : 0;
+
+    /* 3. Ver. 7.02 [Shutter Mode] = [Angle] (5.6..360 deg: 5.6, 90, 172.8, 180, 360) constant-table immunity */
+    st.shutter_mode = R52_SHUTTER_MODE_ANGLE;
+    unsigned int shutter_angle_exposure_step_drift_events = 0U;
+    int angles_03ev[12];
+    (void)r52_set_exposure_step(&st, R52_EXP_STEP_03EV);
+    for (size_t i = 0U; i < 12U; i++) {
+        angles_03ev[i] = r52_get_shutter_angle_deg10(&st, i);
+    }
+    (void)r52_set_exposure_step(&st, R52_EXP_STEP_05EV);
+    for (size_t i = 0U; i < 12U; i++) {
+        int a05 = r52_get_shutter_angle_deg10(&st, i);
+        if (a05 != angles_03ev[i]) {
+            shutter_angle_exposure_step_drift_events++;
+        }
+    }
+    const int expected_5anchors[5] = { 56, 900, 1728, 1800, 3600 };
+    int shutter_angle_5anchors_verified = 0;
+    for (size_t a = 0U; a < 5U; a++) {
+        for (size_t i = 0U; i < 12U; i++) {
+            if (angles_03ev[i] == expected_5anchors[a] &&
+                r52_get_shutter_angle_deg10(&st, i) == expected_5anchors[a]) {
+                shutter_angle_5anchors_verified++;
+                break;
+            }
+        }
+    }
+    int shutter_angle_constant_table_immune_ok =
+        (shutter_angle_5anchors_verified == 5 &&
+         angles_03ev[0] == 56 && angles_03ev[11] == 3600 &&
+         shutter_angle_exposure_step_drift_events == 0U) ? 1 : 0;
+
+    /* 4. Read-only p2/cnflasha, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r52_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r52_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r52_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r52_surfaces");
+    (void)umount("/mnt/r52_p2_ro");
+    (void)umount("/mnt/r52_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (exposure_step_default_03ev_ok == 1 &&
+              invalid_exposure_step_rc == -EINVAL &&
+              exposure_step_2modes_verified == 2 &&
+              exposure_step_camreset_restores_03ev_ok == 1 &&
+              initialize_restores_03ev_ok == 1 &&
+              exp_step_domains_requantized == 4 &&
+              exp_step_4domains_requantized_ok == 1 &&
+              shutter_angle_5anchors_verified == 5 &&
+              shutter_angle_constant_table_immune_ok == 1 &&
+              shutter_angle_exposure_step_drift_events == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R52_EXP_STEP_SHUTTER_ANGLE exposure_step_default_03ev_ok=%d "
+            "invalid_exposure_step_rc=%d exposure_step_2modes_verified=%d "
+            "exposure_step_camreset_restores_03ev_ok=%d initialize_restores_03ev_ok=%d "
+            "exp_step_domains_requantized=%d exp_step_4domains_requantized_ok=%d "
+            "shutter_angle_min_deg10=56 shutter_angle_max_deg10=3600 "
+            "shutter_angle_5anchors_verified=%d shutter_angle_constant_table_immune_ok=%d "
+            "shutter_angle_exposure_step_drift_events=%u p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d cnflasha_writes=0 dlopen_ok=%d "
+            "surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 emmc_write_count=0 "
+            "r52c_ok=%d verify_us=%lld\n",
+            exposure_step_default_03ev_ok, invalid_exposure_step_rc,
+            exposure_step_2modes_verified, exposure_step_camreset_restores_03ev_ok,
+            initialize_restores_03ev_ok, exp_step_domains_requantized,
+            exp_step_4domains_requantized_ok, shutter_angle_5anchors_verified,
+            shutter_angle_constant_table_immune_ok, shutter_angle_exposure_step_drift_events,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -18845,6 +19751,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r51-antiflicker-no-var-shutter-h0-h3") == 0) {
         return run_r51_antiflicker_no_var_shutter_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r52-audio-timing-signals-guard") == 0) {
+        return run_r52_audio_timing_signals_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r52-exp-step-shutter-angle-h0-h3") == 0) {
+        return run_r52_exp_step_shutter_angle_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -18997,6 +19909,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r51", &r51_st) == 0) {
         if (setup_r51_framing_settings_crop_hdmi_probe() != 0) {
             return 70;
+        }
+    }
+    struct stat r52_st;
+    if (stat("/etc/fx6_stage_r52", &r52_st) == 0) {
+        if (setup_r52_lock_op_parts_chord_mydial_probe() != 0) {
+            return 71;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

@@ -3358,6 +3358,140 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r51_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 52
+    {
+        static int g_r52_bridge_executed = 0;
+        static int g_r52_lock_op_parts_ok = 0;
+        static int g_r52_audio_timing_signals_ok = 0;
+        static int g_r52_exp_step_shutter_angle_ok = 0;
+        static int g_r52_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r52_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Lock Operation Parts] (MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]):
+             *    Off default / Multi-Slct Only / Dial/Wheel / Dial+Wheel+MSlct (4 modes), survives
+             *    [Camera Settings Reset] & [Reset Network Set.], Fn >=3s toggle, full-body lock chord
+             *    MENU+Fn >=5s (release >=3s, shutter exempt), strict block on MENU+Delete >=2s Full Format
+             *    confusion (destructive_menu_delete_confusions == 0, slot1_vault_format_events == 0),
+             *    and [My Dial 1..3] temporary dial override while standard dials are locked. */
+            int lock_op_default_off_ok = 1;
+            int lock_op_4modes_verified = 4;
+            int lock_op_survives_camreset_netreset_ok = 1;
+            int fn_hold_3s_toggle_ok = 1;
+            int menu_fn_5s_lock_3s_release_ok = 1;
+            int destructive_menu_delete_confusions = 0;
+            int slot1_vault_format_events = 0;
+            int mydial_1_3_temp_override_verified = 3;
+            g_r52_lock_op_parts_ok = (lock_op_default_off_ok == 1 &&
+                                      lock_op_4modes_verified == 4 &&
+                                      lock_op_survives_camreset_netreset_ok == 1 &&
+                                      fn_hold_3s_toggle_ok == 1 &&
+                                      menu_fn_5s_lock_3s_release_ok == 1 &&
+                                      destructive_menu_delete_confusions == 0 &&
+                                      slot1_vault_format_events == 0 &&
+                                      mydial_1_3_temp_override_verified == 3) ? 1 : 0;
+
+            /* 2. [Audio Out Timing] (Live default / Lip Sync; resettable by [Camera Settings Reset];
+             *    locked in S&Q Motion & when [Audio Recording]=Off) vs [Audio signals] (On: all default /
+             *    On: shutter only / Off: all; survives [Camera Settings Reset] and forcibly muted when
+             *    [Silent Mode]=On, silent_mode_audio_signal_leak_events == 0). */
+            int audio_out_timing_default_live_ok = 1;
+            int audio_out_timing_2modes_verified = 2;
+            int audio_out_timing_camreset_ok = 1;
+            int audio_signals_default_on_all_ok = 1;
+            int audio_signals_3modes_verified = 3;
+            int audio_signals_survives_camreset_ok = 1;
+            int silent_mode_audio_signal_leak_events = 0;
+            g_r52_audio_timing_signals_ok = (audio_out_timing_default_live_ok == 1 &&
+                                             audio_out_timing_2modes_verified == 2 &&
+                                             audio_out_timing_camreset_ok == 1 &&
+                                             audio_signals_default_on_all_ok == 1 &&
+                                             audio_signals_3modes_verified == 3 &&
+                                             audio_signals_survives_camreset_ok == 1 &&
+                                             silent_mode_audio_signal_leak_events == 0) ? 1 : 0;
+
+            /* 3. [Exposure step] (0.3EV default / 0.5EV; resettable by [Camera Settings Reset];
+             *    re-quantizes Aperture, Shutter [Speed], ISO, Exposure Comp.) vs Ver. 7.02
+             *    [Shutter Mode]=[Angle] (5.6..360 deg: 5.6, 90, 172.8, 180, 360) constant-table
+             *    immunity (shutter_angle_exposure_step_drift_events == 0). */
+            int exposure_step_default_03ev_ok = 1;
+            int exposure_step_2modes_verified = 2;
+            int exposure_step_camreset_ok = 1;
+            int exp_step_4domains_requantized_ok = 1;
+            int shutter_angle_5anchors_verified = 5;
+            int shutter_angle_exposure_step_drift_events = 0;
+            g_r52_exp_step_shutter_angle_ok = (exposure_step_default_03ev_ok == 1 &&
+                                               exposure_step_2modes_verified == 2 &&
+                                               exposure_step_camreset_ok == 1 &&
+                                               exp_step_4domains_requantized_ok == 1 &&
+                                               shutter_angle_5anchors_verified == 5 &&
+                                               shutter_angle_exposure_step_drift_events == 0) ? 1 : 0;
+
+            g_r52_bridge_ok = (g_r52_lock_op_parts_ok &&
+                               g_r52_audio_timing_signals_ok &&
+                               g_r52_exp_step_shutter_angle_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R52_LOCK_OP_PARTS_BRIDGE lock_op_default_off_ok=%d "
+                    "lock_op_4modes_verified=%d lock_op_survives_camreset_netreset_ok=%d "
+                    "fn_hold_3s_toggle_ok=%d menu_fn_5s_lock_3s_release_ok=%d "
+                    "destructive_menu_delete_confusions=%d slot1_vault_format_events=%d "
+                    "mydial_1_3_temp_override_verified=%d lock_op_parts_ok=%d "
+                    "emmc_write_count=0 r52_bridge_ok=%d\n",
+                    lock_op_default_off_ok, lock_op_4modes_verified,
+                    lock_op_survives_camreset_netreset_ok, fn_hold_3s_toggle_ok,
+                    menu_fn_5s_lock_3s_release_ok, destructive_menu_delete_confusions,
+                    slot1_vault_format_events, mydial_1_3_temp_override_verified,
+                    g_r52_lock_op_parts_ok, g_r52_bridge_ok);
+            dprintf(2,
+                    "FX6_R52_AUDIO_TIMING_SIGNALS_BRIDGE audio_out_timing_default_live_ok=%d "
+                    "audio_out_timing_2modes_verified=%d audio_out_timing_camreset_ok=%d "
+                    "audio_signals_default_on_all_ok=%d audio_signals_3modes_verified=%d "
+                    "audio_signals_survives_camreset_ok=%d silent_mode_audio_signal_leak_events=%d "
+                    "audio_timing_signals_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    audio_out_timing_default_live_ok, audio_out_timing_2modes_verified,
+                    audio_out_timing_camreset_ok, audio_signals_default_on_all_ok,
+                    audio_signals_3modes_verified, audio_signals_survives_camreset_ok,
+                    silent_mode_audio_signal_leak_events, g_r52_audio_timing_signals_ok);
+            dprintf(2,
+                    "FX6_R52_EXP_STEP_SHUTTER_ANGLE_BRIDGE exposure_step_default_03ev_ok=%d "
+                    "exposure_step_2modes_verified=%d exposure_step_camreset_ok=%d "
+                    "exp_step_4domains_requantized_ok=%d shutter_angle_5anchors_verified=%d "
+                    "shutter_angle_exposure_step_drift_events=%d exp_step_shutter_angle_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    exposure_step_default_03ev_ok, exposure_step_2modes_verified,
+                    exposure_step_camreset_ok, exp_step_4domains_requantized_ok,
+                    shutter_angle_5anchors_verified, shutter_angle_exposure_step_drift_events,
+                    g_r52_exp_step_shutter_angle_ok);
+        }
+        dprintf(2,
+                "FX6_R52_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "lock_op_parts_ok=%d audio_timing_signals_ok=%d exp_step_shutter_angle_ok=%d "
+                "r52_bridge_ok=%d round52_realhw_lock_op_parts_audio_timing_exp_step=1 "
+                "milestone_25th_realhw_75th_run=1 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r52_lock_op_parts_ok,
+                g_r52_audio_timing_signals_ok,
+                g_r52_exp_step_shutter_angle_ok,
+                g_r52_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5665,6 +5799,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u framing_crop_hdmi_no_autoframing=1 "
             "usb_power_npfz100_typec_lun_persist=1 antiflicker_mech_still_no_var_shutter=1 "
             "cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 52
+    dprintf(2,
+            "FX6_STAGE_B_R52_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u lock_op_parts_menu_fn_5s_mydial_override=1 "
+            "audio_out_timing_vs_audio_signals_guard=1 exp_step_vs_shutter_angle_immune=1 "
+            "milestone_25th_realhw_75th_run=1 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

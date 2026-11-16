@@ -1448,5 +1448,32 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-106-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 54. Phase 268 (Task H302, Wave-44): `ILME-FX3` (`Ver. 7.02`) Movie `[File Settings]` (`Cam ID + Reel#` & `37`-Char `Title Name` + Fixed `PRIVATE/M4ROOT/CLIP`) vs Still `[File/Folder Settings]` (`3`-Char `DSC` Prefix & `Slot-1` Vault Guard) (`Gate G107`), `[Gamma Display Assist]` `[Log Shooting]` Lockout vs `[Display LUT]` / `[Select LUT]`, `[Auto Review]` `Off` Default & `6`-Item `[TC/UB]` Persistence Guard (`Gate G108`), and Unified 108-Gate Master Preflight (`realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py`)
+
+`realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py` (`realhw_file_settings_gamma_assist_tcub_and_108gate_guard_v1`) delegates `G01..G106` directly to `evaluate_106gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-106-gates`) and adds Wave-44 real-hardware safety gates **`G107`** and **`G108`** into the unified **`108`-Gate Master Safety Preflight (`G01..G108` / `run_108_gate_preflight` / `evaluate_108gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) Movie `[File Settings]` (`Cam ID + Reel#` & `37`-Char `Title Name` + Fixed `PRIVATE/M4ROOT/CLIP`) vs Still `[File/Folder Settings]` (`3`-Char `DSC` Prefix & `Slot-1` Recovery Vault Guard) (`verify_movie_file_settings_still_dsc_and_slot1_vault_guard`, Gate `G107`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libgpe.so`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin`, `libInfraDial.so`, and `CX95898_NTSC.bin` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` synthetic fallback.
+   - Enforces `MENU -> Shooting -> [File] -> [File Settings]` (`[File Number]` `Series` default / `Reset` + `[Series Counter Reset]`, `[File Name Format]` `Standard` default, `Cam ID + Reel#` with `Camera ID` `A..Z`, `Reel Number` `001..999`, `Camera Position` `C`/`L`/`R`, `Title`, `Date + Title`, `Title + Date` on `Ver. 3.00+`, `[Title Name Settings]` `"C"` default `<= 37` printable ASCII chars, and fixed movie clip folder topology `PRIVATE/M4ROOT/CLIP` rejecting custom movie folder paths) alongside `MENU -> Shooting -> [File] -> [File/Folder Settings]` (`[File Number]` `Series` default / `Reset`, `[Set File Name]` `"DSC"` default exact `3` chars `A-Z`/`0-9`/`_` rejecting `_` at index `0`, `[Folder Name]` `Standard Form` `NNN+5chars` default / `Date Form` `NNN+YMMDD`).
+   - Enforces non-resettable survival across `[Camera Settings Reset]` (restored only by `[Initialize]`) and hard-blocks `[Forced File Number Reset]` / `[Create New Folder]` on `Slot 1` whenever `Slot 1` holds the read-only `CAMSET`/`BODYDATA.DAT` recovery vault (`slot1_vault_folder_mutation_events == 0` across all `360` matrix states).
+2. **`ILME-FX3` (`Ver. 7.02`) `[Gamma Display Assist]` `[Log Shooting]` Lockout & Clean External HDMI vs `[Display LUT]` / `[Select LUT]`, `[Auto Review]` `Off` Cinema Default & `6`-Item `[TC/UB]` Non-Resettable Persistence Guard (`verify_gamma_disp_assist_log_lockout_auto_review_and_tcub_guard`, Gate `G108`)**:
+   - Enforces `MENU -> Setup -> [Display Option] -> [Gamma Display Assist]` (`Off` default / `On`) & `[Gamma Disp. Assist Typ.]` (`Auto` default, `S-Log3->709(800%)`, `HLG(BT.2020)`, `HLG(709)`), hard-locking `[Gamma Display Assist]` to `Off` whenever `[Log Shooting]` (`Cine EI`, `Cine EI Quick`, `Flexible ISO`) `!= Off` (monitoring governed instead by `[Display LUT]` `On` default / `Off` and `[Select LUT]` `S-Log3`, `s709`, `709(800%)`, `User1..User16`) and enforcing camera-LCD-only scope (`hdmi_gamma_assist_leak_frames == 0` across all `128` matrix states).
+   - Enforces `MENU -> Setup -> [Display Option] -> [Auto Review]` (`Off` cinema default / `2 Sec` / `5 Sec` / `10 Sec`, Still-only with `0` movie interruptions) and all `6` `MENU -> Shooting -> [TC/UB]` parameters (`Time Code Preset` `00:00:00.00`, `User Bit Preset` `00 00 00 00`, `Time Code Format` `DF`/`NDF` with `24.00p` & PAL `25p`/`50p` forced `NDF`, `Time Code Run` `Rec Run` default / `Free Run`, `Time Code Make` `Preset` default / `Regenerate`, `User Bit Time Rec` `Off` default / `On`) plus `[TC/UB Disp. Setting]` (`TC` default / `U-Bit`), verifying survival across `[Camera Settings Reset]` (reset only via `[Initialize]`).
+3. **Unified `108`-Gate Master Preflight (`evaluate_108gate_preflight` / `verify-108-gates`)**:
+   - **Offline default mode**: `105/108` gates pass (`VERIFIED_105_OF_108_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `108/108` simulation gates pass (`VERIFIED_ALL_108_GATES_DRY_RUN_SIMULATED_BACKUP`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-file-settings-dsc-slot1-vault-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-gamma-disp-assist-auto-review-tcub-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-108-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
+
 
 

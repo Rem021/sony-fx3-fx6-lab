@@ -1598,3 +1598,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 257：Stage 49（`49/49` 里程碑）真实硬件主线 — Wave-39 `[Display Quality]` `Standard`/`High` 省电工作台护栏与 `[Setup]` 跨重置持久化、`[Bluetooth Rmt Ctrl]` 红外 `SIRCS` 互斥锁与 3 向 `Reset Network Set.` 分流、以及 `[My Menu Setting]` / `[Display From My Menu]` 6 操作持久化与 Slot-1 `CAMSET01.DAT` `O_RDONLY` 保险箱往返 HIL 协同仿真器
+
+[`realhw_display_quality_bt_rmt_mymenu_coemulator.py`](realhw_display_quality_bt_rmt_mymenu_coemulator.py) 作为 **Phase 257 Stage 49（`49/49` 里程碑，Schema `realhw_display_quality_bt_rmt_mymenu_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase257_realhw_display_quality_bt_rmt_mymenu_hil=True` / `include_stage49=True`，支持显式 `--include-stage49` 以及通过 `--skip-phase257` / `--skip-stage49` / `--no-include-stage49` 跳过；本地只读供体 49 阶段全板协同仿真 `< 3.0s`、洁净室模式 `< 1.0s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`tier0_battery_high_display_violations == 0`、`passive_tx_bytes_emitted == 0`、`bt_rmt_ir_lockout_violations == 0`、`slot1_mymenu_vault_mutation_bytes == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **15 份真实供体**：`string_english_f.uxc`（`373,820 B`：证实 `Display Quality` / `Standard` / `High` / `Monitor` / `Brightness` / `Manual` / `Battery` / `Bluetooth Rmt Ctrl` / `Bluetooth Function` / `Airplane Mode` / `IR Remote` / `My Menu` / `Display From My Menu` / `Add Item` / `Sort Item` / `Delete Item` / `Delete Page` / `Delete All` / `Save/Load Settings` / `Camera Settings Reset` / `Reset Network Set.` / `Initialize`）、`libInfraAdjMedia.so`、`libIMDB.so`、`libUsbBusPower.so`、`libInfraMscServer.so`、`libInfraMediaConfig.so` 及 FX6 `string_english.uxc`，并对 `appFw.so`（`DISPLAY` / `MONITOR` / `BLUETOOTH` / `CAMSET` / `SIRCS` / `MYMENU`）、`cpapp-b.bin`（`Display` / `Monitor` / `Remote` / `SIRCS`）、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 49A — `[Display Quality]` `Standard`/`High` 省电工作台护栏与 `[Setup]` 持久化 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Monitor] -> [Display Quality]`（`Standard` 出厂默认 / `High`）：验证其跨 **`[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整存活**，仅由 **`[Initialize]`** 复位至 `Standard`；精确建模 `[High]` 加速 `NP-FZ100`（`16.4 Wh`）实时取景功耗，并在机内电池 Tier-0 `pnflasha`/`cnflasha` 只读镜像转储工作台上自动钳位为 `[Display Quality] = Standard` + `[Monitor Brightness] = Manual(0)`（强行绕过返回 `EACCES = 13`，`tier0_battery_high_display_violations == 0`）。
+3. **Sub-Model 49B — `[Bluetooth Rmt Ctrl]` 红外 `SIRCS` 互斥锁与 3 向 `Reset Network Set.` 分流 HIL**：
+   - 协同仿真 `MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]`（`Off` 默认 / `On`）：强制校验 `[Bluetooth Function] = On` + `[Airplane Mode] = Off` 射频前置条件（在零射频 `Airplane Mode = On` 工作台上自动抑制，`passive_tx_bytes_emitted == 0`）；当 `[Bluetooth Rmt Ctrl] = On` 时严格互斥封锁红外遥控器（`SIRCS`，强行注入返回 `EBUSY = 16`，`bt_rmt_ir_lockout_violations == 0`）；并验证 3 向重置分流：**跨 `[Camera Settings Reset]` 存活**，但由 **`[Reset Network Set.]` 与 `[Initialize]` 双双复位至 `Off`**（复位后恢复 `[Setup]` 下存活的红外 `SIRCS` 响应）。
+4. **Sub-Model 49C & Redlines — `[My Menu Setting]` / `[Display From My Menu]` 6 操作持久化与 `CAMSET01.DAT` 往返 HIL**：
+   - 协同仿真 `MENU -> My Menu -> [My Menu Setting]` 的全部 6 项子操作（`Add Item`、`Sort Item`、`Delete Item`、`Delete Page`、`Delete All`，支持最高 `6 页 x 6 项 = 36 项` 容量与第 37 项 `ENOSPC = 28` 拦截，以及 `[Display From My Menu]` `Off` 默认 / `On` 菜单首屏落地路由）；验证跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 双重持久化（仅 `[Initialize]` 清空复位），支持 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 完整还原 `My Menu` 与 `[Display From My Menu]`，同时拦截任何向 Slot-1 Tier-0 保险箱写入 `CAMSET01.DAT` 的行为（`EROFS = 30`，`slot1_mymenu_vault_mutation_bytes == 0`），并锁死全部 14 项硬件安全红线探针。
+
+### Phase 257 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 257 Stage 49（49/49 里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_display_quality_bt_rmt_mymenu_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_display_quality_bt_rmt_mymenu_coemulator.py --self-test --json
+
+# 2. 全板 49 阶段（Stage 1..49, 49/49 里程碑）统一校验（支持 --include-stage49 与 --skip-phase257）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage49 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 257 双模 66 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_display_quality_bt_rmt_mymenu_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_display_quality_bt_rmt_mymenu_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

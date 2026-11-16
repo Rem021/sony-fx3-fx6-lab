@@ -1,0 +1,58 @@
+# Phase 268 安全护栏报告（Task H302）：Safety Gates `G107` / `G108` 与统一 `verify-108-gates` 预检引擎（`outputs/fx3-safety/`，Wave-44）
+
+## 1. 核心结论（Conclusion-First）
+
+1. **已完成 Wave-44 官方 `ILME-FX3 Ver. 7.02`（Help Guide `ilc/2210`）安全门禁 `G107`、`G108` 与统一 `108` 门主预检引擎（`G01..G108`）闭环交付**：
+   - 新增模块 [`realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py)（Schema `realhw_file_settings_gamma_assist_tcub_and_108gate_guard_v1` `v1.0.0`），将 `G01..G106` 直接委托给 [`evaluate_106gate_preflight()`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_release_wo_card_audio_meter_copyright_and_106gate_guard.py#L1989-L2218)（`100%` 保留 `G1..G106` 与 `evaluate_102gate_preflight`..`evaluate_106gate_preflight` 向后兼容），同步更新 [`__init__.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/__init__.py)（零遮蔽导出全部 `162` 个 Phase 268 专属符号及子模块）、[`__main__.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/__main__.py)（注册 `verify-file-settings-dsc-slot1-vault-guard` / `verify-g107-file-settings-vault`、`verify-gamma-disp-assist-auto-review-tcub-guard` / `verify-g108-gamma-assist-tcub` 与 `verify-108-gates`）及 [`outputs/fx3-safety/README.md`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/README.md)。
+2. **双模式 72 项单测（均 `< 4.0s`）、Milestone 254 / 233 / 221 与 BYOF 卫生审计 100% 通过（实测事实）**：
+   - 新增 [`test_phase268_file_settings_gamma_assist_tcub_108gate_guard.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/tests/test_phase268_file_settings_gamma_assist_tcub_108gate_guard.py) 共 **72 项**双模式单元测试（要求 `>= 68` 项且 `< 4.0s`），在 `LOCAL_DONOR_O_RDONLY`（`3.546s`）、`FX3_CLEAN_ROOM_TEST=1`（`1.315s`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1`（`1.389s`）下全部 `OK` 通过；
+   - CLI `verify-108-gates`：默认离线模式通过 **`105/108`**（`VERIFIED_105_OF_108_AWAITING_PHYSICAL_TIER0`，3 道物理台架 Tier-0 收据门禁 `G10..G12` fail-closed 待命），`--simulate-bench-dry-run` 预演模式在 `LOCAL_DONOR_O_RDONLY` 与 `--force-clean-room` 下均通过 **`108/108`**（`VERIFIED_ALL_108_GATES_DRY_RUN_SIMULATED_BACKUP`，`all_108_gates_verified=True`）；
+   - 跨模块里程碑与仓库卫生检查：`make verify-milestone-254`、`make verify-milestone-233` 与 `make verify-milestone-221` 双模均为 `status=OK`，`PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only` 实测 `ALL GREEN in 0.05s`（零 `.pyc`、零专有固件字节泄露）。
+3. **硬件安全红线硬锁不变（实测事实）**：
+   - `overall_ready_for_hardware_attach = False`、`hardware_live_attachment_authorized = False`、`persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`、`el3_payload_transmit_authorized = False`、`usb_packets_transmitted = 0`、`raw_firmware_bytes_leaked = 0`。
+
+---
+
+## 2. Gate `G107` 与 Gate `G108` 技术建模要点（Wave-44 规范映射）
+
+### 2.1 有界 `< 0.10s` `O_RDONLY` 本地 Donor 校验与双环境变量 Clean-Room 兜底
+- [`audit_phase268_donor_contracts()`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py#L859-L999) 严格通过 `os.open(..., os.O_RDONLY)` 只读校验 6 个本地固件工件（`cpapp-b.bin`、FX3 `libgpe.so`、FX3 `libSaveLoadSettings.so`、FX3 `FX3-CX95900_ALLLANG-Backup.bin`、FX6 `libInfraDial.so` 与 FX6 `CX95898_NTSC.bin`），`raw_firmware_bytes_leaked == 0`，并同时响应 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 切换为确定性 `CLEAN_ROOM_SYNTHETIC` 等价校验。
+
+### 2.2 Gate `G107`：`GATE_G107_MOVIE_FILE_SETTINGS_CAMID_REEL_37CHAR_STILL_DSC_AND_SLOT1_FOLDER_VAULT_GUARD`
+- **视频 `[File Settings]`（`Cam ID + Reel#` 电影场记命名、`<= 37` 字符标题与固定 `PRIVATE/M4ROOT/CLIP` 拓扑）vs 静态照片 `[File/Folder Settings]`（`3` 字符 `DSC` 前缀与 `Slot-1` 恢复保险库防火墙）**：
+  - [`compute_file_settings_and_slot1_vault_matrix()`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py#L1008-L1065) 与 [`verify_movie_file_settings_still_dsc_and_slot1_vault_guard()`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py#L1217-L1483) 穷举验证全部 `360` 组状态：锁定 `MENU -> Shooting -> [File] -> [File Settings]`（`[File Number]` `Series` 默认 / `Reset` + `[Series Counter Reset]`，`[File Name Format]` `Standard` 默认、`Cam ID + Reel#` 含 `Camera ID` `A..Z`、`Reel Number` `001..999`、`Camera Position` `C`/`L`/`R`、`Title`、`Date + Title`、`Title + Date`，`[Title Name Settings]` `"C"` 默认且 `<= 37` 个可打印 ASCII 字符，以及不可自定义的固定视频目录 `PRIVATE/M4ROOT/CLIP`）与 `MENU -> Shooting -> [File] -> [File/Folder Settings]`（`[File Number]` `Series` 默认 / `Reset`，`[Set File Name]` `"DSC"` 默认且精确 `3` 字符 `A-Z`/`0-9`/`_`、严禁首位为 `_`，`[Folder Name]` `Standard Form` `NNN+5chars` 默认 / `Date Form` `NNN+YMMDD`）。
+  - 验证上述全部 9 项配置跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 留存（仅由 `[Initialize]` 恢复默认），并在 `Slot 1` 装载只读 `CAMSET`/`BODYDATA.DAT` 恢复保险库时硬阻断 `[Forced File Number Reset]` 与 `[Create New Folder]`（`slot1_vault_folder_mutation_events == 0`）。
+
+### 2.3 Gate `G108`：`GATE_G108_GAMMA_DISP_ASSIST_LOG_LOCKOUT_DISPLAY_LUT_AUTO_REVIEW_AND_TCUB_GUARD`
+- **`[Gamma Display Assist]` 的 `[Log Shooting]` 硬锁定与纯机身 LCD 作用域 vs `[Display LUT]` / `[Select LUT]` `User1..User16`、`[Auto Review]` `Off` 默认及 `6` 项 `[TC/UB]` 跨复位留存护栏**：
+  - [`compute_gamma_disp_assist_vs_log_shooting_matrix()`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py#L1557-L1606) 与 [`verify_gamma_disp_assist_log_lockout_auto_review_and_tcub_guard()`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py#L1739-L2027) 穷举验证全部 `128` 组状态：当 `[Log Shooting]`（`Cine EI`、`Cine EI Quick`、`Flexible ISO`）`!= Off` 时，`[Gamma Display Assist]` 硬件强制锁死为 `Off`（改由 `[Display LUT]` `On` 默认 / `Off` 与 `[Select LUT]` `S-Log3`、`s709`、`709(800%)`、`User1..User16` 管辖），且 `[Gamma Display Assist]` 仅作用于机身 LCD 屏幕、绝不污染外部 TV/HDMI 输出（`hdmi_gamma_assist_leak_frames == 0`）。
+  - 验证 `[Auto Review]`（`ILME-FX3` 电影机默认 `Off` / `2 Sec` / `5 Sec` / `10 Sec`，纯静态照片作用域 `movie_auto_review_interrupt_events == 0`）以及 `MENU -> Shooting -> [TC/UB]` 精确 6 项参数（`Time Code Preset` `00:00:00.00`、`User Bit Preset` `00 00 00 00`、`Time Code Format` `DF`/`NDF` 且 `24.00p` 与 PAL `25p`/`50p` 强制 `NDF`、`Time Code Run` `Rec Run` 默认 / `Free Run`、`Time Code Make` `Preset` 默认 / `Regenerate`、`User Bit Time Rec` `Off` 默认 / `On`）与 `[TC/UB Disp. Setting]`（`TC` 默认 / `U-Bit`）全部跨 `[Camera Settings Reset]` 留存，仅由 `[Initialize]` 复位。
+
+---
+
+## 3. 实测验证矩阵（Measured Facts vs Inferences）
+
+- **实测事实（Measured Facts）**：下表全部命令均在本工作树实测执行并以返回码 `0` 通过。
+- **工程推断（Engineering Inference）**：物理真机 Tier-0 收据门禁 `G10..G12` 在离线默认模式下按设计保持 fail-closed 待命（`105/108`），唯有人工台架提供真机离线只读 SHA-256 收据后方可在非模拟模式下闭合最后 3 门，且所有硬件自动烧录与 eMMC 持久写红线始终硬锁为 `False`。
+
+| 验证项 | 执行命令 | 实测结果 |
+| :--- | :--- | :--- |
+| Phase 268 双模式定向单测（72 项 $\times$ 3） | `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter /usr/bin/python3 -B -m unittest outputs/fx3-safety/tests/test_phase268_file_settings_gamma_assist_tcub_108gate_guard.py`（及 `FX3_CLEAN_ROOM_TEST=1` / `FX3_FX6_FORCE_CLEAN_ROOM=1`） | `72/72 OK`（Donor `3.546s`）+ `72/72 OK`（`FX3_CLEAN_ROOM_TEST=1` `1.315s`）+ `72/72 OK`（`FX3_FX6_FORCE_CLEAN_ROOM=1` `1.389s`），均 `< 4.0s` |
+| Phase 266 前序 106 门回归单测 | `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter /usr/bin/python3 -B -m unittest outputs/fx3-safety/tests/test_phase266_release_wo_card_audio_meter_copyright_106gate_guard.py` | `70/70 OK`（`3.376s`） |
+| CLI `verify-108-gates`（离线默认） | `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_safety verify-108-gates` | `verified=105/108`（`VERIFIED_105_OF_108_AWAITING_PHYSICAL_TIER0`，`rc=0`） |
+| CLI `verify-108-gates --simulate-bench-dry-run` | `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_safety verify-108-gates --simulate-bench-dry-run`（及 `--force-clean-room`） | `verified=108/108`（`VERIFIED_ALL_108_GATES_DRY_RUN_SIMULATED_BACKUP`，`all_108_gates_verified=True`，`rc=0`） |
+| Milestone 254 双模式门禁回归 | `PYTHONDONTWRITEBYTECODE=1 make verify-milestone-254` | `LOCAL_DONOR_O_RDONLY`（`4c73cd4ce749e35b...`）+ `CLEAN_ROOM_SYNTHETIC`（`89878edd0595f372...`）`status=OK` |
+| Milestone 233 双模式门禁回归 | `PYTHONDONTWRITEBYTECODE=1 make verify-milestone-233` | `LOCAL_DONOR_O_RDONLY`（`c9d0d53ec4c61686...`）+ `CLEAN_ROOM_SYNTHETIC`（`d3c92d5e39dcfffc...`）`status=OK` |
+| Milestone 221 双模式门禁回归 | `PYTHONDONTWRITEBYTECODE=1 make verify-milestone-221` | `LOCAL_DONOR_O_RDONLY`（`4b37bbd24afea746...`）+ `CLEAN_ROOM_SYNTHETIC`（`36a69b1c04ec4906...`）`status=OK` |
+| 仓库 BYOF 与字节码卫生检查 | `PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only` | `ALL GREEN in 0.05s`（零 `.pyc`、零固件字节泄露） |
+
+---
+
+## 4. 严格归属文件清单（6 Owned Files）
+
+1. [`outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/realhw_file_settings_gamma_assist_tcub_and_108gate_guard.py)
+2. [`outputs/fx3-safety/fx3_safety/__init__.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/__init__.py)
+3. [`outputs/fx3-safety/fx3_safety/__main__.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/fx3_safety/__main__.py)
+4. [`outputs/fx3-safety/README.md`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/README.md)
+5. [`outputs/fx3-safety/tests/test_phase268_file_settings_gamma_assist_tcub_108gate_guard.py`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/outputs/fx3-safety/tests/test_phase268_file_settings_gamma_assist_tcub_108gate_guard.py)
+6. [`reports/2026-11-15-phase268-safety-108gates-file-settings-gamma-assist-tcub/README.md`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h302-phase268-safety-108gates-file-settings-gamma-assist-tcub/reports/2026-11-15-phase268-safety-108gates-file-settings-gamma-assist-tcub/README.md)

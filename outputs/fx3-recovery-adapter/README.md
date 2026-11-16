@@ -966,6 +966,26 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-42pillar-recovery --force-clean-room --json
 ```
 
+## Phase 255 — 真机主线 Part 31（Pillar 43 / `43/43` 统一恢复总检）：`Auto Slow Shutter` 6 条件禁能与 `Shutter Angle` 严格互斥、`HDMI Output Settings` `REC Control` <- `Time Code Output` 门控与 `4ch Audio Output` 路由 + `Breathing Comp.` 边界金库（`verify-43pillar-recovery` / `verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault`）
+
+- **[`realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py`](fx3_recovery/realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-41）落地 **Pillar 43** 并将全套恢复总检正式推进至 **`43/43`（`VERIFIED_43OF43_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..42pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`、`libInfraLensCommunicator.so`（校验 `LensCommunicator`、`_Z23LensCommunicator_CreatePN3MWF5ErrCdE`）、`libInfraMediaConfig.so`（校验 `InfraMediaConfig`、`_ZN16InfraMediaConfig10SaveBackupEt`）与 `FX6 6.01` `appFw.so`、`libInfraHotshoe.so`（校验 `InfraHotshoe`、`_ZN12InfraHotshoe15ResourceToInfraEi`）共 12 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 43A — `[Auto Slow Shutter]` 6 条件硬件禁能、`Ver. 7.02` `[Shutter Mode] = [Angle]` 严格互斥与 `[Breathing Comp.]` 电影/镜头/RAW/240p 边界（`6/6`）**：
+    - `P43A1`..`P43A6`：精确建模 `MENU` -> `Exposure/Color` -> `[Exposure]` -> `[Auto Slow Shutter]`（默认 `On` / `Off`，受 `[Camera Settings Reset]` 与 `[Initialize]` 归位为 `On`、跨越 `[Reset Network Set.]` 留存），强制校验全部 **6 项索尼官方不生效/禁能硬件条件**（`auto_slow_shutter_lockout_bypass_events == 0`）：① `S&Q` 慢快动作、② 快门优先（`S`）、③ 手动曝光（`M`）、④ `[ISO]` 非 `[ISO AUTO]`（固定手动 ISO）、⑤ `[Flexible Exp. Mode]` 手动快门速度、⑥ `[Log Shooting]` = `Cine EI Quick` 或 `Cine EI`；同时从硬件状态空间证明 `Ver. 6.00+` / `Ver. 7.02` **`[Shutter Mode] = [Angle]`**（仅在 `S`/`M`/`Flexible Exp. Mode` 手动快门下接管曝光时间）与 `[Auto Slow Shutter]` **100% 严格互斥、零交叠**（`auto_slow_shutter_angle_overlap_events == 0`）；建模 `MENU` -> `Shooting` -> `[Image Quality/Rec]` -> `[Lens Compensation]` -> `[Breathing Comp.]`（默认 `Off` / `On`，受 `[Camera Settings Reset]` 归位），强制校验仅限视频（不作用于照片）、需兼容呼吸补偿的索尼 E 卡口镜头并施加轻微视角裁切，且在 `4264x2408` `RAW Output` 与 `S&Q` `239.76p`/`200p` 下严格锁定（`breathing_comp_raw_or_240p_bypass_events == 0`）。
+  - **支柱 43B — `[HDMI Output Settings]`（`[REC Control]` <- `[Time Code Output]` 前置门控、`[4ch Audio Output]` 声道映射与 `[Rec. Media dur HDMI Output]` 护栏金库）（`6/6`）**：
+    - `P43B1`..`P43B6`：精确建模 `MENU` -> `Setup` -> `[External Output]` -> `[HDMI Output Settings]` **同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**、仅由 `[Initialize]` 清零归位；强制执行 `[REC Control]`（默认 `Off` / `On`）必须以 **`[Time Code Output] = [On]`** 为硬件前置条件（`hdmi_rec_ctrl_without_tc_violations == 0`）；建模 `[4ch Audio Output]`（默认 `CH1/CH2` -> `Ch1=L / Ch2=R` vs 启用 4 声道 MI 热靴音频时 `CH3/CH4` -> `Ch3=L / Ch4=R`）；强制校验 `[Rec. Media dur HDMI Output] = [Off]` 在 HDMI 输出期间同步抑制机内 Slot-1/Slot-2 主片与 `[Proxy Recording]` 代理写入以保护 Slot-1 Tier-0 恢复金库介质（`slot1_hdmi_rec_vault_mutation_bytes == 0`）、`O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 无损往返恢复，以及 `16/16` Tier-0 `Backup.bin` `H0 == H3` 不变性。
+  - **统一 `43/43` 恢复总检聚合器与 CLI（`evaluate_realhw_43pillar_recovery_master` / `verify-43pillar-recovery` / `verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault`）**：
+    - 并发调用 `evaluate_realhw_42pillar_recovery_master`（`Pillars 1..42`）+ **Pillar 43**（`run_pillar43_standalone_suite`），汇总产出 **`43/43`**（`VERIFIED_43OF43_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py`](tests/test_realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 3.5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-43pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-43pillar-recovery --force-clean-room --json
+```
+
+
 
 
 

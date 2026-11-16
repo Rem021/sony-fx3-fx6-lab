@@ -111,6 +111,11 @@ from .realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier i
     verify_42pillar_recovery_suite,
     verify_diff_set_still_mv_custom_key_and_remain_shoot_vault,
 )
+from .realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier import (
+    run_pillar43_standalone_suite,
+    verify_43pillar_recovery_suite,
+    verify_auto_slow_shutter_hdmi_reccontrol_and_breathing_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -424,6 +429,14 @@ def main():
     p251_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p251_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p251_master.add_argument('--out', help='optional exclusive new output directory for 42pillar-recovery-master-report.json')
+    p255_p43 = sub.add_parser('verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault', help='Phase 255 Pillar 43 Auto Slow Shutter 6-condition lockout & Shutter Angle disjointness + HDMI Output Settings REC Control <- Time Code Output gate & 4ch Audio Output + Breathing Comp. vault verifier')
+    p255_p43.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p255_p43.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p255_p43.add_argument('--out', help='optional exclusive new output directory for pillar43-auto-slow-shutter-hdmi-reccontrol-breathing-vault-report.json')
+    p255_master = sub.add_parser('verify-43pillar-recovery', help='Phase 255 unified 43/43 real-hardware recovery master aggregator (Pillars 1..42 + Pillar 43)')
+    p255_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p255_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p255_master.add_argument('--out', help='optional exclusive new output directory for 43pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -2333,6 +2346,93 @@ def main():
                     f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_42pillar_sha256={report.master_42pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault':
+            report = run_pillar43_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar43-auto-slow-shutter-hdmi-reccontrol-breathing-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_43a={report.pillar_43a_auto_slow_shutter_breathing_vault.scenarios_passed}/{report.pillar_43a_auto_slow_shutter_breathing_vault.scenarios_total} "
+                    f"pillar_43b={report.pillar_43b_hdmi_reccontrol_4chaudio_vault.scenarios_passed}/{report.pillar_43b_hdmi_reccontrol_4chaudio_vault.scenarios_total} "
+                    f"auto_slow_shutter_lockout_bypass_events={report.auto_slow_shutter_lockout_bypass_events} "
+                    f"auto_slow_shutter_angle_overlap_events={report.auto_slow_shutter_angle_overlap_events} "
+                    f"breathing_comp_raw_or_240p_bypass_events={report.breathing_comp_raw_or_240p_bypass_events} "
+                    f"hdmi_rec_ctrl_without_tc_violations={report.hdmi_rec_ctrl_without_tc_violations} "
+                    f"slot1_hdmi_rec_vault_mutation_bytes={report.slot1_hdmi_rec_vault_mutation_bytes} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-43pillar-recovery':
+            report = verify_43pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'43pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar43_a={report.pillar43_a_auto_slow_shutter_breathing_vault.scenarios_passed}/{report.pillar43_a_auto_slow_shutter_breathing_vault.scenarios_total} "
+                    f"pillar43_b={report.pillar43_b_hdmi_reccontrol_4chaudio_vault.scenarios_passed}/{report.pillar43_b_hdmi_reccontrol_4chaudio_vault.scenarios_total} "
+                    f"auto_slow_shutter_lockout_bypass_events={report.auto_slow_shutter_lockout_bypass_events} "
+                    f"auto_slow_shutter_angle_overlap_events={report.auto_slow_shutter_angle_overlap_events} "
+                    f"breathing_comp_raw_or_240p_bypass_events={report.breathing_comp_raw_or_240p_bypass_events} "
+                    f"hdmi_rec_ctrl_without_tc_violations={report.hdmi_rec_ctrl_without_tc_violations} "
+                    f"slot1_hdmi_rec_vault_mutation_bytes={report.slot1_hdmi_rec_vault_mutation_bytes} "
+                    f"diff_set_transition_corruption_events={report.diff_set_transition_corruption_events} "
+                    f"shutter_angle_common_bleed_events={report.shutter_angle_common_bleed_events} "
+                    f"slot1_custom_key_vault_mutation_bytes={report.slot1_custom_key_vault_mutation_bytes} "
+                    f"fx3_has_builtin_evf={report.fx3_has_builtin_evf} "
+                    f"evf_finder_monitor_spoof_events={report.evf_finder_monitor_spoof_events} "
+                    f"tier0_battery_high_display_violations={report.tier0_battery_high_display_violations} "
+                    f"bt_rmt_ir_lockout_violations={report.bt_rmt_ir_lockout_violations} "
+                    f"slot1_mymenu_vault_mutation_bytes={report.slot1_mymenu_vault_mutation_bytes} "
+                    f"destructive_menu_delete_confusions={report.destructive_menu_delete_confusions} "
+                    f"shutter_angle_exposure_step_drift_events={report.shutter_angle_exposure_step_drift_events} "
+                    f"fx3_has_var_shutter={report.fx3_has_var_shutter} "
+                    f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_43pillar_sha256={report.master_43pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

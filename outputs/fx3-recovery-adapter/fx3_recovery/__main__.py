@@ -121,6 +121,12 @@ from .realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier import (
     verify_44pillar_recovery_suite,
     verify_apsc_s35_face_eye_af_and_version_vault,
 )
+from .realhw_45pillar_release_wo_card_lens_audio_meter_copyright_vault_verifier import (
+    P265_ENV_CLEAN_ROOM_TEST,
+    run_pillar45_standalone_suite,
+    verify_45pillar_recovery_suite,
+    verify_release_wo_card_lens_audio_meter_and_copyright_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -450,6 +456,14 @@ def main():
     p260_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p260_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p260_master.add_argument('--out', help='optional exclusive new output directory for 44pillar-recovery-master-report.json')
+    p265_p45 = sub.add_parser('verify-release-wo-card-lens-audio-meter-copyright-vault', help='Phase 265 (Grand Milestone 45/45) Pillar 45 Release w/o Card & Release w/o Lens, Ver. 7.02 5-item Audio Recording vs DISP audio meter, and Copyright Info 46-char EXIF hygiene vault verifier')
+    p265_p45.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p265_p45.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p265_p45.add_argument('--out', help='optional exclusive new output directory for pillar45-release-wo-card-lens-audio-meter-copyright-vault-report.json')
+    p265_master = sub.add_parser('verify-45pillar-recovery', help='Phase 265 (Grand Milestone 45/45) unified 45/45 real-hardware recovery master aggregator (Pillars 1..44 + Pillar 45)')
+    p265_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p265_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p265_master.add_argument('--out', help='optional exclusive new output directory for 45pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -2540,6 +2554,109 @@ def main():
                     f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_44pillar_sha256={report.master_44pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-release-wo-card-lens-audio-meter-copyright-vault':
+            report = run_pillar45_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar45-release-wo-card-lens-audio-meter-copyright-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_45a={report.pillar_45a_release_wo_card_lens_audio_meter_vault.scenarios_passed}/{report.pillar_45a_release_wo_card_lens_audio_meter_vault.scenarios_total} "
+                    f"pillar_45b={report.pillar_45b_copyright_info_46char_exif_vault.scenarios_passed}/{report.pillar_45b_copyright_info_46char_exif_vault.scenarios_total} "
+                    f"fx3_has_builtin_end_filter={report.fx3_has_builtin_end_filter} "
+                    f"e_nd_actuator_tx_count={report.e_nd_actuator_tx_count} "
+                    f"cardless_unrecorded_production_violations={report.cardless_unrecorded_production_violations} "
+                    f"legacy_v1_audio_level_menu_spoof_events={report.legacy_v1_audio_level_menu_spoof_events} "
+                    f"photographer_copyright_pii_leaked_bytes={report.photographer_copyright_pii_leaked_bytes} "
+                    f"copyright_char_overflow_or_movie_mutation_events={report.copyright_char_overflow_or_movie_mutation_events} "
+                    f"slot1_copyright_vault_mutation_bytes={report.slot1_copyright_vault_mutation_bytes} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-45pillar-recovery':
+            report = verify_45pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'45pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_2s_fast_cli_budget={report.under_2s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar45_a={report.pillar45_a_release_wo_card_lens_audio_meter_vault.scenarios_passed}/{report.pillar45_a_release_wo_card_lens_audio_meter_vault.scenarios_total} "
+                    f"pillar45_b={report.pillar45_b_copyright_info_46char_exif_vault.scenarios_passed}/{report.pillar45_b_copyright_info_46char_exif_vault.scenarios_total} "
+                    f"fx3_has_builtin_end_filter={report.fx3_has_builtin_end_filter} "
+                    f"e_nd_actuator_tx_count={report.e_nd_actuator_tx_count} "
+                    f"cardless_unrecorded_production_violations={report.cardless_unrecorded_production_violations} "
+                    f"legacy_v1_audio_level_menu_spoof_events={report.legacy_v1_audio_level_menu_spoof_events} "
+                    f"photographer_copyright_pii_leaked_bytes={report.photographer_copyright_pii_leaked_bytes} "
+                    f"copyright_char_overflow_or_movie_mutation_events={report.copyright_char_overflow_or_movie_mutation_events} "
+                    f"slot1_copyright_vault_mutation_bytes={report.slot1_copyright_vault_mutation_bytes} "
+                    f"apsc_s35_4k_or_raw_bypass_events={report.apsc_s35_4k_or_raw_bypass_events} "
+                    f"ai_unit_subject_recog_spoof_events={report.ai_unit_subject_recog_spoof_events} "
+                    f"hdmi_clean_feed_eye_frame_baked_pixels={report.hdmi_clean_feed_eye_frame_baked_pixels} "
+                    f"version_dialog_flash_writes={report.version_dialog_flash_writes} "
+                    f"bodydata_flash_attempts_blocked={report.bodydata_flash_attempts_blocked} "
+                    f"slot1_bodydata_vault_mutation_bytes={report.slot1_bodydata_vault_mutation_bytes} "
+                    f"auto_slow_shutter_lockout_bypass_events={report.auto_slow_shutter_lockout_bypass_events} "
+                    f"auto_slow_shutter_angle_overlap_events={report.auto_slow_shutter_angle_overlap_events} "
+                    f"breathing_comp_raw_or_240p_bypass_events={report.breathing_comp_raw_or_240p_bypass_events} "
+                    f"hdmi_rec_ctrl_without_tc_violations={report.hdmi_rec_ctrl_without_tc_violations} "
+                    f"slot1_hdmi_rec_vault_mutation_bytes={report.slot1_hdmi_rec_vault_mutation_bytes} "
+                    f"diff_set_transition_corruption_events={report.diff_set_transition_corruption_events} "
+                    f"shutter_angle_common_bleed_events={report.shutter_angle_common_bleed_events} "
+                    f"slot1_custom_key_vault_mutation_bytes={report.slot1_custom_key_vault_mutation_bytes} "
+                    f"fx3_has_builtin_evf={report.fx3_has_builtin_evf} "
+                    f"evf_finder_monitor_spoof_events={report.evf_finder_monitor_spoof_events} "
+                    f"tier0_battery_high_display_violations={report.tier0_battery_high_display_violations} "
+                    f"bt_rmt_ir_lockout_violations={report.bt_rmt_ir_lockout_violations} "
+                    f"slot1_mymenu_vault_mutation_bytes={report.slot1_mymenu_vault_mutation_bytes} "
+                    f"destructive_menu_delete_confusions={report.destructive_menu_delete_confusions} "
+                    f"shutter_angle_exposure_step_drift_events={report.shutter_angle_exposure_step_drift_events} "
+                    f"fx3_has_var_shutter={report.fx3_has_var_shutter} "
+                    f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_45pillar_sha256={report.master_45pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

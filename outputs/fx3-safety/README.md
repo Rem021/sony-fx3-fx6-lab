@@ -1370,3 +1370,30 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-100-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
+
+---
+
+## 51. Phase 259 (Wave-41): `ILME-FX3` (`Ver. 7.02`) `[Auto Slow Shutter]` 6-Condition Lockout, `[Shutter Mode] = [Angle]` Disjointness & `[Breathing Comp.]` Guard (`Gate G101`), `[HDMI Output Settings]` `REC Control` <- `Time Code Output` Gate, `4ch Audio Output` & `Rec. Media dur HDMI Output` Vault Guard (`Gate G102`), and Unified 102-Gate Master Preflight (`realhw_auto_slow_shutter_hdmi_reccontrol_breathing_and_102gate_guard.py`)
+
+`realhw_auto_slow_shutter_hdmi_reccontrol_breathing_and_102gate_guard.py` (`realhw_auto_slow_shutter_hdmi_reccontrol_breathing_and_102gate_guard_v1`) delegates `G01..G100` directly to `evaluate_100gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-100-gates`) and adds Wave-41 real-hardware safety gates **`G101`** and **`G102`** into the unified **`102`-Gate Master Safety Preflight (`G01..G102` / `run_102_gate_preflight` / `evaluate_102gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[Auto Slow Shutter]` 6-Condition Non-Function Lockout, `[Shutter Mode] = [Angle]` Disjointness & `[Breathing Comp.]` Guard (`verify_auto_slow_shutter_and_breathing_comp_guard`, Gate `G101`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libgpe.so`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin`, `libInfraDial.so`, and `CX95898_NTSC.bin` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` synthetic fallback.
+   - Enforces `MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter]` (`On` factory default / `Off`, resettable by `[Camera Settings Reset]` and `[Initialize]`, unaffected by `[Reset Network Set.]`) across all `6` official Sony hardware non-function lockouts (`S&Q`, `Shutter Priority`, `Manual Exposure`, `[ISO] != [ISO AUTO]`, `[Exposure Ctrl Type] = [Flexible Exp. Mode]` with manual shutter, and `[Log Shooting] = [Cine EI Quick]` / `[Cine EI]`; `auto_slow_shutter_lockout_bypass_events == 0`), and exhaustively proves strict `320`-state hardware disjointness with `Ver. 7.02` `[Shutter Mode] = [Angle]` (`auto_slow_shutter_angle_overlap_events == 0`).
+   - Enforces `MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.]` (`Off` factory default / `On`, resettable by `[Camera Settings Reset]`, movie-only compliant Sony E-mount FOV crop, locked out during `4264x2408` `RAW Output` and `S&Q` `239.76p`/`200p`; `breathing_comp_raw_or_240p_bypass_events == 0`).
+2. **`ILME-FX3` (`Ver. 7.02`) `[HDMI Output Settings]` Non-Resettable `[Setup]` Survival, `[REC Control]` <- `[Time Code Output]` Prerequisite, `[4ch Audio Output]` Routing & `[Rec. Media dur HDMI Output]` Vault Guard (`verify_hdmi_reccontrol_tcout_4chaudio_and_vault_guard`, Gate `G102`)**:
+   - Enforces `MENU -> Setup -> [External Output] -> [HDMI Output Settings]` survival across **both `[Camera Settings Reset]` and `[Reset Network Set.]`** (cleared **only** by `[Initialize]`).
+   - Enforces `[REC Control]` (`Off` default / `On`) mandatory prerequisite `[Time Code Output] = [On]` (`hdmi_rec_ctrl_without_tc_violations == 0`), `[4ch Audio Output]` channel routing (`CH1/CH2` default -> `CH1=L/CH2=R` vs `CH3/CH4` -> `CH3=L/CH4=R` when 4-channel MI-shoe audio is active), and `[Rec. Media dur HDMI Output] = [Off]` inhibition of internal Slot-1/Slot-2 clip and `[Proxy Recording]` writes (`slot1_hdmi_rec_vault_mutation_bytes == 0`).
+3. **Unified `102`-Gate Master Preflight (`evaluate_102gate_preflight` / `verify-102-gates`)**:
+   - **Offline default mode**: `99/102` gates pass (`VERIFIED_99_OF_102_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `102/102` simulation gates pass (`VERIFIED_ALL_102_GATES_DRY_RUN_SIMULATED_BACKUP`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-auto-slow-shutter-breathing-comp-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-hdmi-reccontrol-tcout-4chaudio-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-102-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+

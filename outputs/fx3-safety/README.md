@@ -1397,3 +1397,30 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-102-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 52. Phase 263 (Wave-42): `ILME-FX3` (`Ver. 7.02`) `[APS-C S35 Shooting]` `12.1MP` Sensor `4K` Movie Lockout & `[Face/Eye AF]` Clean-HDMI Isolation Guard (`Gate G103`), `[Version]` Read-Only Inspection, Zero-RF Badge Suppression & Hard-Blocked `BODYDATA.DAT` Flash Guard (`Gate G104`), and Unified 104-Gate Master Preflight (`realhw_apsc_s35_face_eye_af_version_and_104gate_guard.py`)
+
+`realhw_apsc_s35_face_eye_af_version_and_104gate_guard.py` (`realhw_apsc_s35_face_eye_af_version_and_104gate_guard_v1`) delegates `G01..G102` directly to `evaluate_102gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-102-gates`) and adds Wave-42 real-hardware safety gates **`G103`** and **`G104`** into the unified **`104`-Gate Master Safety Preflight (`G01..G104` / `run_104_gate_preflight` / `evaluate_104gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[APS-C S35 Shooting]` `12.1MP` `4K` Movie Lockout & `[Face/Eye AF]` Clean-HDMI Isolation Guard (`verify_apsc_s35_and_face_eye_af_guard`, Gate `G103`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libgpe.so`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin`, `libInfraDial.so`, and `CX95898_NTSC.bin` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` synthetic fallback.
+   - Enforces `MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting]` (`Auto` default / `On` ~`1.5x` Super 35mm / `Off` 35mm full-frame, resettable by `[Camera Settings Reset]`): on `ILME-FX3` (`ilc/2210`, `12.1MP` sensor), `4K` movie formats (`XAVC HS 4K`, `XAVC S 4K`, `XAVC S-I 4K`) and `4264x2408` `HDMI RAW Output` strictly force `[APS-C S35 Shooting]` to `[Off]` across all `60` movie states so Super 35mm movie capture operates **only** in `HD` (`XAVC S HD` / `XAVC S-I HD`; `apsc_s35_4k_or_raw_bypass_events == 0`).
+   - Enforces `MENU -> Focus -> [Face/Eye AF]` BIONZ XR hierarchy (rejecting dedicated AI-unit `[Subject Recog in AF]`, `ai_unit_subject_recog_spoof_events == 0`: `[Face/Eye Prior. in AF]`, `[Face/Eye Subject]` `Human`/`Animal`/`Bird`, `[Right/Left Eye Select]`, `[Face/Eye Frame Disp.]` clean-HDMI isolation `hdmi_clean_feed_eye_frame_baked_pixels == 0`, and `[Face Memory]` surviving `[Camera Settings Reset]`).
+2. **`ILME-FX3` (`Ver. 7.02`) `[Version]` Read-Only Inspection, Zero-RF Update Badge Suppression & Hard-Blocked `BODYDATA.DAT` Flash Guard (`verify_version_readonly_and_bodydata_flash_block_guard`, Gate `G104`)**:
+   - Enforces `MENU -> Setup -> [Setup Option] -> [Version]` read-only Body (`Ver. 7.02`), E-mount Lens, and Mount Adaptor version inspection with zero flash partition writes (`version_dialog_flash_writes == 0`).
+   - Enforces `Ver. 6.00+`/`7.02` update notification badge suppression on our zero-RF `Airplane Mode = On` bench (`passive_tx_bytes_emitted == 0`), and hard-blocks all automated Slot-1 `BODYDATA.DAT` firmware flash execution (`persistent_emmc_writes_authorized == False`, `bodydata_flash_attempts_blocked >= 1`, `slot1_bodydata_vault_mutation_bytes == 0`).
+3. **Unified `104`-Gate Master Preflight (`evaluate_104gate_preflight` / `verify-104-gates`)**:
+   - **Offline default mode**: `101/104` gates pass (`VERIFIED_101_OF_104_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `104/104` simulation gates pass (`VERIFIED_ALL_104_GATES_DRY_RUN_SIMULATED_BACKUP`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-apsc-s35-face-eye-af-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-version-readonly-bodydata-flash-block-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-104-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
+

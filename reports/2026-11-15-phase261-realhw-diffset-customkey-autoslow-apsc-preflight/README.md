@@ -1,0 +1,43 @@
+# Phase 261 实机拍摄前第 6 级物理台架准备度预检器报告（`preflight-diffset-customkey-autoslow-and-apsc` / Waves 40–43）
+
+## 1. 核心结论（Conclusion-First）
+
+1. **Waves 40–43 四大 `ILME-FX3 Ver. 7.02`（`ilc/2210`）物理台架检查组（`Check Group A..D`）全部闭环**：在 `outputs/fx6-on-fx3-closure/` 中新增第 6 级宿主侧只读物理台架预检器 [`realhw_diffset_customkey_autoslow_and_apsc_verifier.py`](../../outputs/fx6-on-fx3-closure/fx6_closure/realhw_diffset_customkey_autoslow_and_apsc_verifier.py)（Schema `realhw_diffset_customkey_autoslow_and_apsc_verifier_v1`，版本 `261.0.0`，CLI 子命令 `preflight-diffset-customkey-autoslow-and-apsc`），将操作员实拍前预检链路推进至 `preflight-card-insert`（Ph186）→ `preflight-bench-cable-fan-slot1`（Ph204）→ `preflight-hdmi-proxy-desqueeze-and-simult`（Ph216）→ `preflight-pixelmap-ntscpal-powersave-and-autotemp`（Ph227）→ `preflight-imagedb-touch-shoeaudio-and-lockop`（Ph248）→ `preflight-diffset-customkey-autoslow-and-apsc`（Ph261），导出符号全部采用无阴影 `P261_*` 前缀。
+2. **双模式 64 项单元测试 `< 0.15s` 与三大里程碑门禁 100% 通过**：新增 [`test_realhw_diffset_customkey_autoslow_and_apsc_verifier.py`](../../outputs/fx6-on-fx3-closure/tests/test_realhw_diffset_customkey_autoslow_and_apsc_verifier.py) 共 **64** 项双模式确定性单测，在本地有界只读 donor 模式（`LOCAL_DONOR_O_RDONLY`）与无固件洁净室合成模式（`FX3_FX6_FORCE_CLEAN_ROOM=1` / `CLEAN_ROOM_SYNTHETIC`）下耗时仅 **`0.125s`**（`< 1.0s` 预算，且有界 `O_RDONLY` 头部校验 `< 0.15s`）；`make verify-milestone-254`、`make verify-milestone-233`、`make verify-milestone-221` 双模式 `6/6` 支柱与 `/usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only` 全绿。
+3. **离线默认阻断与硬件安全红线 100% 锁死**：离线无回执时严格返回 `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT`（CLI 退出码 `2`），`--simulate-bench-dry-run` 模拟演练返回 `DRY_RUN_SIMULATED_PASS_NOT_PHYSICAL_AUTH`（CLI 退出码 `0`，`16/16 H0 == H3`），任意边界违规闭锁返回 `BLOCKED_DIFFSET_CUSTOMKEY_AUTOSLOW_APSC_CHECK_FAILURE`（CLI 退出码 `2`）；无条件锁死 `overall_ready_for_hardware_attach = False`、`hardware_live_attachment_authorized = False`、`persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`、`el3_payload_transmit_authorized = False`、`usb_packets_transmitted = 0`、`raw_firmware_bytes_leaked = 0` 与 `e_nd_uart_bytes_transmitted = 0`。
+
+---
+
+## 2. 四大物理台架与官方帮助指南（`ilc/2210`）检查组（`Check Group A .. D`）
+
+| 检查组 ID | 预检域（Waves 40–43） | 关键校验规则、边界与报错码 |
+| :--- | :--- | :--- |
+| **`GROUP_A_DIFF_SET_8ITEMS_SHUTTER_ANGLE_CUSTOM_KEY_AND_EVFLESS`** | `[Different Set for Still/Mv]` 8 项非对称切换、`[Shutter Angle]` 独立覆盖、`[Custom Key/Dial Set.]` Slot-1 防火墙与无 EVF 拓扑（Wave 40） | ① 校验精确 8 项（`Aperture`、`Shutter Speed`、`ISO`、`Exposure Comp.`、`Metering Mode`、`White Balance`、`Picture Profile`、`Focus Mode`）、`[Camera Settings Reset]` 保留、`Common -> Separate`（除 `Custom White Balance` 仅静态保留外全部复制）与 `Separate -> Common`（除 `Aperture`、`Shutter Speed`、`Custom White Balance` 保留静态值外恢复出厂默认）非对称切换，以及 `Ver. 7.02` 影片 `[Shutter Mode] = [Angle]` 下即使未勾选 `Shutter Speed` 仍与静态快门完全独立（`P261_GA_ERR_DIFF_SET_8ITEMS_TRANSITION_OR_SHUTTER_ANGLE_OVERRIDE`）；<br>② 校验 `[Custom Key/Dial Set.]` 三域（`Still`/`Movie`/`Playback`）后拨盘默认 `ISO/EI` 自适应与 Slot-1 `CAMSET01.DAT` `O_RDONLY` 物理 `WP` 防火墙（`slot1_custom_key_vault_mutation_bytes == 0`，`P261_GA_ERR_CUSTOM_KEY_3DOMAIN_ISO_EI_OR_SLOT1_VAULT_FIREWALL`）；<br>③ 校验 `[Remain Shoot Display]` 仅限静态连拍缓存且 `ILME-FX3`（`ilc/2210`）无内置 EVF / 无 `[Finder/Monitor]`（`fx3_has_builtin_evf == False`，`P261_GA_ERR_REMAIN_SHOOT_STILL_BUFFER_OR_EVFLESS_TOPOLOGY`）。 |
+| **`GROUP_B_AUTO_SLOW_SHUTTER_6LOCKS_HDMI_REC_CTRL_TC_AND_BREATHING`** | `[Auto Slow Shutter]` 6 重锁定与 `[Shutter Angle]` 互斥、`[HDMI Output Settings]` `REC Control <- TC Output` 前置门与 `[Breathing Comp.]`（Wave 41） | ① 校验 `[Auto Slow Shutter]` 精确 **6 项硬件失效/锁定条件**（`S&Q`、`Shutter Priority`、`Manual Exposure`、非 `ISO AUTO` 固定 ISO、`Flexible Exp. Mode` 手动快门、`Cine EI Quick`/`Cine EI`）及与 `[Shutter Angle]` 严格硬件互斥（`auto_slow_shutter_angle_overlap_events == 0`，`P261_GB_ERR_AUTO_SLOW_SHUTTER_6LOCKS_OR_SHUTTER_ANGLE_OVERLAP`）；<br>② 强制 `[HDMI Output Settings] -> [REC Control] = [On]` 必须以 `[Time Code Output] = [On]` 为硬件前置条件（`hdmi_rec_ctrl_without_tc_violations == 0`），校验 `[4ch Audio Output]`（`CH1/CH2` vs `CH3/CH4` 四声道 MI 热靴激活）及 `[Rec. Media dur HDMI Output]` 对 Slot-1 Tier-0 金库卡的防误写保护（`P261_GB_ERR_HDMI_REC_CTRL_TC_PREREQ_4CH_OR_MEDIA_VAULT_GUARD`）；<br>③ 强制 `[Breathing Comp.]` 仅限影片、兼容 E 卡口镜头且在 `4264x2408` `HDMI RAW` 或 `S&Q 240p/200p` 下锁定禁用（`P261_GB_ERR_BREATHING_COMP_MOVIE_ONLY_LENS_RAW_OR_240P_LOCKOUT`）。 |
+| **`GROUP_C_APSC_S35_12MP_4K_LOCKOUT_FACE_EYE_AF_AND_VERSION_RO`** | `[APS-C S35 Shooting]` `12.1MP` `4K`/`RAW` 锁定、`[Face/Eye AF]` 洁净 HDMI 隔离与 `[Version]` 只读防护（Wave 42） | ① 校验 `ILME-FX3` `12.1 MP` 全画幅传感器在所有 `4K` 影片（`XAVC HS 4K` / `XAVC S 4K` / `XAVC S-I 4K`）及 `4264x2408` `HDMI RAW` 下强制锁定 `[APS-C S35 Shooting] = [Off]`，Super 35mm 影片裁切**仅允许在 `HD`（`XAVC S HD` / `XAVC S-I HD`）**下开启（`apsc_s35_4k_or_raw_bypass_events == 0`，`P261_GC_ERR_APSC_S35_12MP_4K_OR_HDMI_RAW_LOCKOUT`）；<br>② 校验 `ilc/2210` BIONZ XR 4 项 `[Face/Eye AF]` 菜单（`Face/Eye Prior. in AF`、`Face/Eye Subject`、`Right/Left Eye Select`、`Face/Eye Frame Disp.`，拒绝误用独立 AI 芯片机型的 `Subject Recog in AF`）、`[Face Memory]` 重置保留，以及 `[HDMI Info. Display] = [Off]` / `HDMI RAW` 零像素叠加（`hdmi_clean_feed_eye_frame_baked_pixels == 0`，`P261_GC_ERR_FACE_EYE_AF_MENU_OR_CLEAN_HDMI_FRAME_ISOLATION`）；<br>③ 校验 `[Version]` 纯只读查询（`Airplane Mode = On` 抑制升级红点，`passive_tx_bytes_emitted == 0`）并硬阻断 Slot-1 `BODYDATA.DAT` 自动刷写（`P261_GC_ERR_VERSION_READONLY_OR_HARD_BLOCKED_BODYDATA_FLASH`）。 |
+| **`GROUP_D_RELEASE_WO_CARD_LENS_V702_AUDIO_5ITEM_COPYRIGHT_AND_TIER0`** | `[Release w/o Card/Lens]` 零 `E-ND` 台架、`Ver. 7.02` `[Audio Recording]` 5 项菜单、`[Copyright Info]` `<=46` 字符隐私护栏与 Tier-0 双盘回执（Wave 43） | ① 校验 `[Release w/o Card]` 仅放行无卡静态快门而影片机内录制仍强制要求插卡，以及单机身/机械 PL 转接环台架 `[Release w/o Lens] = [Enable]` 零 `E-ND` 串口流量（`e_nd_uart_bytes_transmitted == 0`，`P261_GD_ERR_RELEASE_WO_CARD_STILL_MOVIE_GATE_OR_WO_LENS_END_ZERO`）；<br>② 校验 `Ver. 2.00+`/`7.02` `[Audio Recording]` 精确 5 项菜单及音频电平表并入 `DISP (Screen Disp) Set`（拦截旧版 `Ver. 1.x` 独立 `[Audio Level Display]` 伪造与 `S&Q` 电平表误期待，`legacy_v1_audio_level_menu_spoof_events == 0`，`P261_GD_ERR_V702_AUDIO_5ITEM_MENU_OR_DISP_METER_SPLIT`）；<br>③ 校验 `[Copyright Info]` 洁净台架 `Write Copyright Info = Off`、`<= 46` ASCII 字符、仅静态 EXIF 写入及零操作员 PII 泄露（`photographer_copyright_pii_leaked_bytes == 0`，`P261_GD_ERR_COPYRIGHT_INFO_46CHAR_STILL_EXIF_OR_PII_HYGIENE`），以及 `16/16 H0 == H3` 与异构双盘 `528 B FX3RCPT1` Tier-0 回执门控。 |
+
+---
+
+## 3. 确定性输出摘要与实测验证记录
+
+### 3.1 四态确定性报告 SHA-256 指纹
+| 验证模式（`verification_mode`） | 模拟开关（`simulate_bench_dry_run`） | Go/No-Go 裁决（`go_no_go`） | CLI 退出码 | 确定性 `report_sha256` |
+| :--- | :---: | :--- | :---: | :--- |
+| `LOCAL_DONOR_O_RDONLY` | `False` | `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT` | `2` | `4ad3fa739424167457f36779c68593c24fac89c72708f80b952679842a01f0fa` |
+| `LOCAL_DONOR_O_RDONLY` | `True` | `DRY_RUN_SIMULATED_PASS_NOT_PHYSICAL_AUTH` | `0` | `8f5c4e6bce28826d988aebcb4a53372765fc2d927408c1fb1acb60e8ff62cb4a` |
+| `CLEAN_ROOM_SYNTHETIC` | `False` | `BLOCKED_AWAITING_PHYSICAL_TIER0_RECEIPT` | `2` | `80362cf3eb2779535044931e771c096b9c95c2a777e567a0dcfdd8052039b252` |
+| `CLEAN_ROOM_SYNTHETIC` | `True` | `DRY_RUN_SIMULATED_PASS_NOT_PHYSICAL_AUTH` | `0` | `d478bbce289028dd5a2bf3d4cc896b3f37fd22175edc0656b04a2bae0bd6f440` |
+
+### 3.2 严格归属的 6 个交付文件
+1. [`outputs/fx6-on-fx3-closure/fx6_closure/realhw_diffset_customkey_autoslow_and_apsc_verifier.py`](../../outputs/fx6-on-fx3-closure/fx6_closure/realhw_diffset_customkey_autoslow_and_apsc_verifier.py)（新增 Phase 261 第 6 级物理台架准备度预检器主模块）
+2. [`outputs/fx6-on-fx3-closure/fx6_closure/__init__.py`](../../outputs/fx6-on-fx3-closure/fx6_closure/__init__.py)（无阴影导出 Phase 261 全部 `P261_*` 公共常量、数据类与校验函数）
+3. [`outputs/fx6-on-fx3-closure/fx6_closure/__main__.py`](../../outputs/fx6-on-fx3-closure/fx6_closure/__main__.py)（接入 `preflight-diffset-customkey-autoslow-and-apsc` CLI 子命令）
+4. [`outputs/fx6-on-fx3-closure/README.md`](../../outputs/fx6-on-fx3-closure/README.md)（补充模块结构说明与 CLI `# 44` 验证命令）
+5. [`outputs/fx6-on-fx3-closure/tests/test_realhw_diffset_customkey_autoslow_and_apsc_verifier.py`](../../outputs/fx6-on-fx3-closure/tests/test_realhw_diffset_customkey_autoslow_and_apsc_verifier.py)（新增 **64** 项双模式单测）
+6. [`reports/2026-11-15-phase261-realhw-diffset-customkey-autoslow-apsc-preflight/README.md`](./README.md)（本实测报告）
+
+### 3.3 实测门禁与洁净回执
+- **Phase 261 双模式单元测试**：`LOCAL_DONOR_O_RDONLY` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下 **64/64 全部通过**（`0.125s < 1.0s`），`raw_firmware_bytes_leaked = 0`，`e_nd_uart_bytes_transmitted = 0`。
+- **里程碑门禁**：`make verify-milestone-254`（`abf2db79b50d61e1...` / `74f458df9f09c21c...`）、`make verify-milestone-233`（`cdfcacd0f67fe124...` / `0fb6f58edd5ead0e...`）、`make verify-milestone-221`（`a0eeb27208af4630...` / `26b17b2c5a766c0f...`）双模式 **`status=OK`（6/6 支柱全绿）**。
+- **全库洁净校验**：`/usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only` **100% 洁净通过**（零 `.pyc`、零未跟踪二进制产物、严格仅改动授权的 6 个文件）。

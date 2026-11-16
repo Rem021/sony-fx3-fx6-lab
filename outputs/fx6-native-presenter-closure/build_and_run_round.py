@@ -1352,6 +1352,7 @@ def build_stage_a_overlay(
     enable_r48: bool = False,
     enable_r49: bool = False,
     enable_r50: bool = False,
+    enable_r51: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1374,6 +1375,7 @@ def build_stage_a_overlay(
     r48_mode: str = "monitor_flip_playback_big6",
     r49_mode: str = "emphasized_rec_grid_hdmi_big6",
     r50_mode: str = "shoe_audio_4ch_osd_big6",
+    r51_mode: str = "framing_settings_crop_hdmi_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1689,7 +1691,34 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r49_mode: {r49_mode}")
     if enable_r50 and r50_mode not in ("shoe_audio_4ch_osd_big6", "wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"):
         raise ValueError(f"Unsupported r50_mode: {r50_mode}")
-    if enable_r50 and r50_mode in ("wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"):
+    if enable_r51 and r51_mode not in ("framing_settings_crop_hdmi_big6", "usb_power_npfz100_and_usb_lun_guard", "antiflicker_mech_still_no_var_shutter_guard"):
+        raise ValueError(f"Unsupported r51_mode: {r51_mode}")
+    if enable_r51 and r51_mode in ("usb_power_npfz100_and_usb_lun_guard", "antiflicker_mech_still_no_var_shutter_guard"):
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        if r51_mode == "usb_power_npfz100_and_usb_lun_guard":
+            r51_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r51-usb-power-lun-guard > /dev/console 2>&1\n"
+                "fx6_r51_up_rc=$?\n"
+                "echo FX6_R51_USB_POWER_LUN_RC=$fx6_r51_up_rc\n"
+                "echo FX6_R51_USB_POWER_LUN_EXIT rc=$fx6_r51_up_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        else:
+            r51_early_hook = (
+                "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r51-antiflicker-no-var-shutter-h0-h3 > /dev/console 2>&1\n"
+                "fx6_r51_af_rc=$?\n"
+                "echo FX6_R51_ANTIFLICKER_NO_VAR_RC=$fx6_r51_af_rc\n"
+                "echo FX6_R51_ANTIFLICKER_NO_VAR_EXIT rc=$fx6_r51_af_rc emmc_write_count=0\n"
+                "/bin/busybox sync 2>/dev/null\n"
+                "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+                "while true; do /bin/busybox sleep 1; done\n"
+            )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r51_early_hook, 1)
+    elif enable_r50 and r50_mode in ("wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3360,6 +3389,59 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r51_meta: Optional[Dict[str, Any]] = None
+    if enable_r51:
+        additions["etc/fx6_stage_r51"] = (
+            (
+                f"stage_r51=1\nr51_mode={r51_mode}\n"
+                f"framing_crop_hdmi_no_autoframing=1\nusb_power_npfz100_typec_lun_persist=1\n"
+                f"antiflicker_mech_still_no_var_shutter=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r51_meta = {
+            "r51_mode": r51_mode,
+            "framing_settings_menu_path": "MENU -> Shooting -> [Image Stabilization] -> [Framing Stabilizer] -> [Framing Settings]",
+            "framing_settings_not_zve1_autoframing": True,
+            "zve1_autoframing_conflation_events": 0,
+            "framing_default": "Off",
+            "recording_streaming_default": "Full",
+            "hdmi_default": "Crop",
+            "framing_4_routing_combinations": [
+                "Full/Full",
+                "Full/Crop",
+                "Crop/Full",
+                "Crop/Crop",
+            ],
+            "framing_reset_by_camera_settings_reset": True,
+            "hdmi_raw_output_locks_framing": True,
+            "framing_raw_conflict_events": 0,
+            "usb_power_supply_menu_item": "USB Power Supply",
+            "usb_power_supply_modes": ["On", "Off"],
+            "usb_power_supply_default": "On",
+            "usb_power_requires_inserted_np_fz100_or_dcc1": True,
+            "unbuffered_battery_pull_events": 0,
+            "usb_power_exclusive_usb_type_c": True,
+            "multi_micro_usb_power_bypass_events": 0,
+            "usb_lun_setting_menu_item": "USB LUN Setting",
+            "usb_lun_setting_modes": ["Multi", "Single"],
+            "usb_lun_setting_default": "Multi",
+            "usb_setup_survives_camera_settings_reset": True,
+            "usb_setup_reset_only_by_initialize": True,
+            "antiflicker_shoot_menu_item": "Anti-flicker Shoot.",
+            "antiflicker_shoot_modes": ["Off", "On"],
+            "antiflicker_shoot_default": "Off",
+            "antiflicker_shoot_reset_by_camera_settings_reset": True,
+            "antiflicker_flicker_hz": [100, 120],
+            "antiflicker_mechanical_shutter_still_only": True,
+            "antiflicker_movie_or_eshutter_bypass_events": 0,
+            "fx3_has_var_shutter": 0,
+            "false_var_shutter_events": 0,
+            "physical_usb_packets_emitted": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3403,6 +3485,7 @@ def build_stage_a_overlay(
         "r48_enabled": enable_r48,
         "r49_enabled": enable_r49,
         "r50_enabled": enable_r50,
+        "r51_enabled": enable_r51,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3478,6 +3561,8 @@ def build_stage_a_overlay(
         stage_a_meta["r49"] = r49_meta
     if r50_meta is not None:
         stage_a_meta["r50"] = r50_meta
+    if r51_meta is not None:
+        stage_a_meta["r51"] = r51_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3817,6 +3902,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R48_",
         "FX6_R49_",
         "FX6_R50_",
+        "FX6_R51_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4062,6 +4148,16 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r50_bridge: Optional[Dict[str, Any]] = None
     r50_wind_noise_guard_rc: Optional[int] = None
     r50_saveload_c3_vault_rc: Optional[int] = None
+    last_r51_framing_init: Optional[Dict[str, Any]] = None
+    last_r51_framing_bridge: Optional[Dict[str, Any]] = None
+    last_r51_usb_power_lun_bridge: Optional[Dict[str, Any]] = None
+    last_r51_antiflicker_bridge: Optional[Dict[str, Any]] = None
+    last_r51_usb_power_lun_guard: Optional[Dict[str, Any]] = None
+    last_r51_antiflicker_no_var: Optional[Dict[str, Any]] = None
+    last_r51_lang: Optional[Dict[str, Any]] = None
+    last_r51_bridge: Optional[Dict[str, Any]] = None
+    r51_usb_power_lun_rc: Optional[int] = None
+    r51_antiflicker_no_var_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -4619,6 +4715,30 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R50_SAVELOAD_C3_VAULT_RC"), int):
                 r50_saveload_c3_vault_rc = kv["FX6_R50_SAVELOAD_C3_VAULT_RC"]
+        elif "FX6_R51_FRAMING_INIT " in line:
+            last_r51_framing_init = _parse_kv_ints(line.split("FX6_R51_FRAMING_INIT ", 1)[1])
+        elif "FX6_R51_FRAMING_BRIDGE " in line:
+            last_r51_framing_bridge = _parse_kv_ints(line.split("FX6_R51_FRAMING_BRIDGE ", 1)[1])
+        elif "FX6_R51_USB_POWER_LUN_BRIDGE " in line:
+            last_r51_usb_power_lun_bridge = _parse_kv_ints(line.split("FX6_R51_USB_POWER_LUN_BRIDGE ", 1)[1])
+        elif "FX6_R51_ANTIFLICKER_BRIDGE " in line:
+            last_r51_antiflicker_bridge = _parse_kv_ints(line.split("FX6_R51_ANTIFLICKER_BRIDGE ", 1)[1])
+        elif "FX6_R51_USB_POWER_LUN_GUARD " in line:
+            last_r51_usb_power_lun_guard = _parse_kv_ints(line.split("FX6_R51_USB_POWER_LUN_GUARD ", 1)[1])
+        elif "FX6_R51_ANTIFLICKER_NO_VAR " in line:
+            last_r51_antiflicker_no_var = _parse_kv_ints(line.split("FX6_R51_ANTIFLICKER_NO_VAR ", 1)[1])
+        elif "FX6_R51_LANG_TELEMETRY " in line:
+            last_r51_lang = _parse_kv_ints(line.split("FX6_R51_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R51_BRIDGE " in line:
+            last_r51_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R51_BRIDGE ", 1)[1])
+        elif "FX6_R51_USB_POWER_LUN_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R51_USB_POWER_LUN_RC"), int):
+                r51_usb_power_lun_rc = kv["FX6_R51_USB_POWER_LUN_RC"]
+        elif "FX6_R51_ANTIFLICKER_NO_VAR_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R51_ANTIFLICKER_NO_VAR_RC"), int):
+                r51_antiflicker_no_var_rc = kv["FX6_R51_ANTIFLICKER_NO_VAR_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -5228,6 +5348,33 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r50_bridge or {},
         }
 
+    r51_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r51_framing_init,
+            last_r51_framing_bridge,
+            last_r51_usb_power_lun_bridge,
+            last_r51_antiflicker_bridge,
+            last_r51_usb_power_lun_guard,
+            last_r51_antiflicker_no_var,
+            last_r51_lang,
+            last_r51_bridge,
+        )
+    ):
+        r51_telemetry = {
+            "usb_power_lun_rc": r51_usb_power_lun_rc,
+            "antiflicker_no_var_rc": r51_antiflicker_no_var_rc,
+            "framing_init": last_r51_framing_init or {},
+            "framing_bridge": last_r51_framing_bridge or {},
+            "usb_power_lun_bridge": last_r51_usb_power_lun_bridge or {},
+            "antiflicker_bridge": last_r51_antiflicker_bridge or {},
+            "usb_power_lun_guard": last_r51_usb_power_lun_guard or {},
+            "antiflicker_no_var": last_r51_antiflicker_no_var or {},
+            "lang_telemetry": last_r51_lang or {},
+            "stage_b_bridge": last_r51_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -5275,6 +5422,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r48_telemetry": r48_telemetry,
         "r49_telemetry": r49_telemetry,
         "r50_telemetry": r50_telemetry,
+        "r51_telemetry": r51_telemetry,
     }
 
 
@@ -5376,6 +5524,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r49"
     if args.round >= 50:
         tmp_prefix = "fx6-r50"
+    if args.round >= 51:
+        tmp_prefix = "fx6-r51"
     tmp_build = pathlib.Path(f"/private/tmp/{tmp_prefix}-build-{owner_pid}-{run_id}")
     tmp_cpio = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}.cpio")
     qmp_sock = pathlib.Path(f"/private/tmp/{tmp_prefix}-{owner_pid}-{run_id}-qmp.sock")
@@ -5434,8 +5584,12 @@ def run_once(args: argparse.Namespace) -> int:
         r48_mode = getattr(args, "r48_mode", "monitor_flip_playback_big6")
         r49_mode = getattr(args, "r49_mode", "emphasized_rec_grid_hdmi_big6")
         r50_mode = getattr(args, "r50_mode", "shoe_audio_4ch_osd_big6")
+        r51_mode = getattr(args, "r51_mode", "framing_settings_crop_hdmi_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Wave37RealHwFramingCropHdmiUsbPowerNpFz100LunAntiFlickerNoVarShutter+r51_mode={r51_mode}+lang={lang})"
+                if args.round >= 51
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone50Wave36RealHwShoeAudio4chWindNoiseBuiltinOnlySaveLoadC3Vault+r50_mode={r50_mode}+lang={lang})"
                 if args.round >= 50
                 else (
@@ -5600,6 +5754,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -5670,6 +5825,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r49_mode=r49_mode,
                 enable_r50=(args.round >= 50),
                 r50_mode=r50_mode,
+                enable_r51=(args.round >= 51),
+                r51_mode=r51_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -5826,6 +5983,8 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R49_MONITOR_BRIGHTNESS_EXIT" in txt
                     or "FX6_R50_WIND_NOISE_GUARD_EXIT" in txt
                     or "FX6_R50_SAVELOAD_C3_VAULT_EXIT" in txt
+                    or "FX6_R51_USB_POWER_LUN_EXIT" in txt
+                    or "FX6_R51_ANTIFLICKER_NO_VAR_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -5884,6 +6043,8 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R49_MONITOR_BRIGHTNESS_EXIT" in serial_text
             or "FX6_R50_WIND_NOISE_GUARD_EXIT" in serial_text
             or "FX6_R50_SAVELOAD_C3_VAULT_EXIT" in serial_text
+            or "FX6_R51_USB_POWER_LUN_EXIT" in serial_text
+            or "FX6_R51_ANTIFLICKER_NO_VAR_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -5957,6 +6118,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r48_mode": r48_mode if args.round >= 48 else None,
             "r49_mode": r49_mode if args.round >= 49 else None,
             "r50_mode": r50_mode if args.round >= 50 else None,
+            "r51_mode": r51_mode if args.round >= 51 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -6014,6 +6176,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r48_telemetry": milestones.get("r48_telemetry") if args.round >= 48 else None,
             "r49_telemetry": milestones.get("r49_telemetry") if args.round >= 49 else None,
             "r50_telemetry": milestones.get("r50_telemetry") if args.round >= 50 else None,
+            "r51_telemetry": milestones.get("r51_telemetry") if args.round >= 51 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -6066,7 +6229,8 @@ def main() -> int:
     # r47_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47]
     # r48_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
     # r49_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50], required=True)
+    # r50_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -6091,6 +6255,7 @@ def main() -> int:
     ap.add_argument("--r48-mode", type=str, choices=["recover_imagedb_battery_vault", "monitor_flip_playback_big6", "af_sens_interval_still_h0_h3"], default="monitor_flip_playback_big6")
     ap.add_argument("--r49-mode", type=str, choices=["emphasized_rec_grid_hdmi_big6", "touch_op_4item_reset_vault", "monitor_brightness_sunny_h0_h3"], default="emphasized_rec_grid_hdmi_big6")
     ap.add_argument("--r50-mode", type=str, choices=["shoe_audio_4ch_osd_big6", "wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"], default="shoe_audio_4ch_osd_big6")
+    ap.add_argument("--r51-mode", type=str, choices=["framing_settings_crop_hdmi_big6", "usb_power_npfz100_and_usb_lun_guard", "antiflicker_mech_still_no_var_shutter_guard"], default="framing_settings_crop_hdmi_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

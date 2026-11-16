@@ -1423,4 +1423,30 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-104-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 53. Phase 266 (Task H300 Milestone, Wave-43): `ILME-FX3` (`Ver. 7.02`) `[Release w/o Card]` & `[Release w/o Lens]` Scope + `Ver. 7.02` 5-Item `[Audio Recording]` vs `[DISP (Screen Disp) Set]` Audio Meter Guard (`Gate G105`), `[Copyright Info]` `46`-Char Still EXIF & Clean-Room Bench PII Hygiene Guard (`Gate G106`), and Unified 106-Gate Master Preflight (`realhw_release_wo_card_audio_meter_copyright_and_106gate_guard.py`)
+
+`realhw_release_wo_card_audio_meter_copyright_and_106gate_guard.py` (`realhw_release_wo_card_audio_meter_copyright_and_106gate_guard_v1`) delegates `G01..G104` directly to `evaluate_104gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-104-gates`) and adds Wave-43 real-hardware safety gates **`G105`** and **`G106`** into the unified **`106`-Gate Master Safety Preflight (`G01..G106` / `run_106_gate_preflight` / `evaluate_106gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[Release w/o Card]` Still-Only vs Movie Internal Media Gate, `[Release w/o Lens]` Zero-`E-ND` / Zero-E-Mount-UART Guard & `Ver. 7.02` 5-Item `[Audio Recording]` vs `DISP` Audio Meter Guard (`verify_release_wo_card_lens_and_v702_audio_disp_guard`, Gate `G105`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libgpe.so`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin`, `libInfraDial.so`, and `CX95898_NTSC.bin` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` synthetic fallback.
+   - Enforces `MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Card]` (`Enable` default / `Disable`, Still-only scope vs Movie internal media gate across all `96` scope states; production posture requires `[Disable]` anti-unrecorded-shoot protection while cardless diagnostic bench `[Enable]` emits `0` media sector writes and internal Movie/`S&Q` recording stays strictly blocked when both slots are empty while external HDMI capture remains governed by `[Rec. Media dur HDMI Output]`).
+   - Enforces `MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Lens]` (`Enable` default / `Disable`, Still + Movie + `S&Q` scope with `e_nd_actuator_tx_count == 0` and `0` E-mount lens UART bytes on body-only/PL-mount bench), plus `Ver. 2.00+`/`7.02` (`ilc/2210`) exact `5`-item `[Audio Recording]` menu (`Audio Recording`, `Audio Rec Level` `0..31`, `Audio Out Timing`, `Wind Noise Reduct.`, `Shoe Audio Set.`) rejecting `Ver. 1.x` (`ilc/2035`) standalone `[Audio Level Display]` (`legacy_v1_audio_level_menu_spoof_events == 0`) and verifying `2ch`/`4ch` audio meter visibility (suppressed during `S&Q`) under `MENU -> Setup -> [Operation Customize] -> [DISP (Screen Disp) Set]`.
+2. **`ILME-FX3` (`Ver. 7.02`) `[Copyright Info]` `46`-Char Printable ASCII Bounds, Still-EXIF-Only Scope, Reset Survival & Clean-Room Bench PII Hygiene Guard (`verify_copyright_info_46char_still_exif_and_pii_hygiene_guard`, Gate `G106`)**:
+   - Enforces `MENU -> Shooting -> [File] -> [Copyright Info]` (`Write Copyright Info` `Off` default / `On`, `Set Photographer` `<= 46` printable ASCII chars, `Set Copyright` `<= 46` printable ASCII chars, read-only `Disp. Copyright Info`), Still-JPEG/HEIF/ARW EXIF-only scope (`0x013B` Artist / `0x8298` Copyright, never mutating XAVC/RAW movie streams or `Slot-1` recovery vault), `[Camera Settings Reset]` string survival vs `[Initialize]` wipe, `[Save/Load Settings]` exclusion, and clean-room bench PII hygiene (`Write Copyright Info = Off` default on bench, `photographer_copyright_pii_leaked_bytes == 0`).
+3. **Unified `106`-Gate Master Preflight (`evaluate_106gate_preflight` / `verify-106-gates`)**:
+   - **Offline default mode**: `103/106` gates pass (`VERIFIED_103_OF_106_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `106/106` simulation gates pass (`VERIFIED_ALL_106_GATES_DRY_RUN_SIMULATED_BACKUP`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-release-wo-card-lens-audio-disp-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-copyright-info-46char-exif-hygiene-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-106-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
+
 

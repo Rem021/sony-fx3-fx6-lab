@@ -147,6 +147,11 @@ from .realhw_apsc_s35_face_eye_af_version_and_104gate_guard import (
     evaluate_g103_apsc_s35_and_face_eye_af_guard,
     evaluate_g104_version_readonly_and_bodydata_flash_block_guard,
 )
+from .realhw_release_wo_card_audio_meter_copyright_and_106gate_guard import (
+    evaluate_106gate_preflight,
+    evaluate_g105_release_wo_card_lens_and_v702_audio_disp_guard,
+    evaluate_g106_copyright_info_46char_still_exif_and_pii_hygiene_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2797,6 +2802,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G104 gates can be rehearsed offline",
     )
     p_104.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 116. verify-release-wo-card-lens-audio-disp-guard
+    p_g105 = sub.add_parser(
+        "verify-release-wo-card-lens-audio-disp-guard",
+        aliases=["verify-g105-release-wo-card-audio-disp"],
+        help="Verify Gate G105: [Release w/o Card] & [Release w/o Lens] Scope + Ver. 7.02 5-Item [Audio Recording] vs DISP Audio Meter Guard",
+    )
+    p_g105.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g105.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g105.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g105.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 117. verify-copyright-info-46char-exif-hygiene-guard
+    p_g106 = sub.add_parser(
+        "verify-copyright-info-46char-exif-hygiene-guard",
+        aliases=["verify-g106-copyright-info-hygiene"],
+        help="Verify Gate G106: [Copyright Info] 46-Char Still EXIF Bounds, Reset Survival & Clean-Room Bench PII Hygiene Guard",
+    )
+    p_g106.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g106.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g106.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g106.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 118. verify-106-gates
+    p_106 = sub.add_parser(
+        "verify-106-gates",
+        help="Run Phase 266 Unified 106-Gate Master Safety Preflight Engine (G01..G106)",
+    )
+    p_106.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_106.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_106.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G106 gates can be rehearsed offline",
+    )
+    p_106.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -5606,6 +5697,111 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_104_gates_verified if args.dry_run_simulated else report.offline_101_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-release-wo-card-lens-audio-disp-guard",
+        "verify-g105-release-wo-card-audio-disp",
+    ):
+        verdict, res = evaluate_g105_release_wo_card_lens_and_v702_audio_disp_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.release_audio_disp_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} rel_wo_card={guard['effective_post_reset_release_wo_card']}"
+                f"(cardless={guard['cardless_bench_active']},"
+                f"mv_bypass={guard['movie_cardless_internal_rec_bypass_events']}) "
+                f"rel_wo_lens={guard['effective_post_reset_release_wo_lens']}"
+                f"(e_nd_tx={guard['e_nd_actuator_tx_count']},"
+                f"lens_uart={guard['emount_lens_uart_tx_bytes']}) "
+                f"audio_5items={guard['v702_audio_menu_exact_5_items_verified']}"
+                f"(v1_spoof={guard['legacy_v1_audio_level_menu_spoof_events']},"
+                f"disp_meter={guard['effective_audio_meter_channels']}ch) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-copyright-info-46char-exif-hygiene-guard",
+        "verify-g106-copyright-info-hygiene",
+    ):
+        verdict, res = (
+            evaluate_g106_copyright_info_46char_still_exif_and_pii_hygiene_guard(
+                repo_root=args.repo_root,
+                force_clean_room=True if args.force_clean_room else None,
+            )
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.copyright_info_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} write_copyright={guard['effective_post_reset_write_copyright_info']}"
+                f"(max_chars={guard['copyright_max_chars']},"
+                f"pii_leaked={guard['photographer_copyright_pii_leaked_bytes']}) "
+                f"container={guard['target_container']}"
+                f"(still_exif={guard['still_exif_tags_written']},"
+                f"mv_mut={guard['movie_or_raw_exif_mutation_bytes']},"
+                f"slot1_mut={guard['slot1_recovery_vault_mutation_bytes']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-106-gates":
+        report = evaluate_106gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/106 "
+                f"g105_to_g106_all_passed={report.g105_to_g106_all_passed} "
+                f"all_106_gates_verified={report.all_106_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_106_gates_verified if args.dry_run_simulated else report.offline_103_gates_verified
         return 0 if ok else 1
 
     return 2

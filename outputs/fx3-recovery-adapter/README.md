@@ -985,6 +985,25 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
   /usr/bin/python3 -B -m fx3_recovery verify-43pillar-recovery --force-clean-room --json
 ```
 
+## Phase 260（第 260 阶段里程碑）— 真机主线 Part 32（Pillar 44 / `44/44` 统一恢复总检）：`APS-C S35 Shooting` `12.1MP` `4K` 视频硬锁定、`Face/Eye AF` 左右眼选择与纯净 HDMI 隔离 + `Version` 只读巡检 vs `BODYDATA.DAT` 刷写硬阻断金库（`verify-44pillar-recovery` / `verify-apsc-s35-face-eye-af-version-vault`）
+
+- **[`realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py`](fx3_recovery/realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-42）落地 **Phase 260（`260th` Phase Milestone）Pillar 44** 并将全套恢复总检正式推进至 **`44/44`（`VERIFIED_44OF44_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..43pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`、`libInfraLensCommunicator.so`、`libInfraGetVersion.so`（校验 `InfraGetVersion`、`InfraGetVersionLens`、`GetVersion_init`）、`libInfraAirplaneMode.so`（校验 `infra_airplane_mode_init`、`_ZN3MWF6InhMgr15UpdateInhFactorEv`）、`libupdatermedia.so`（校验 `udtr_get_media_path`、`UDTR_MEDIA`）与 `FX6 6.01` `appFw.so` 共 13 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 44A — `[APS-C S35 Shooting]` `12.1MP` 传感器 `4K` 视频与 `4264x2408` `HDMI RAW` 硬锁定 + `[Face/Eye AF]` 左右眼选择、纯净 HDMI 隔离与 `[Face Memory]` 留存（`6/6`）**：
+    - `P44A1`..`P44A6`：精确建模 `MENU` -> `Shooting` -> `[Image Quality/Rec]` -> `[APS-C S35 Shooting]`（默认 `Auto` / `On` ~`1.5x` Super 35mm / `Off` 35mm 全画幅，受 `[Camera Settings Reset]` 与 `[Initialize]` 归位为 `Auto`、跨越 `[Reset Network Set.]` 留存），强制执行 `ILME-FX3`（`12.1MP` 全画幅传感器：`4240x2832` 静态 / `3840x2160` 1:1 `4K` 读出）硬件边界——在录制 **`4K` 视频（`XAVC HS 4K`、`XAVC S 4K`、`XAVC S-I 4K`）或 `4264x2408` `HDMI RAW Output`** 时禁用并强制锁定为 **`[Off]`**，Super 35mm 视频采集**仅限 `HD`（`XAVC S HD` / `XAVC S-I HD`）**（`apsc_s35_4k_or_raw_bypass_events == 0`，严格区分 `ILME-FX3` 与原生 S35 `ILME-FX30` 及超采样 `ILCE-7RM5`/`ILCE-7M4`）；建模 `MENU` -> `Focus` -> `[Face/Eye AF]`（拒绝伪造独立 AI 芯片机型的 `[Subject Recog in AF]`，`ai_unit_subject_recog_spoof_events == 0`：`[Face/Eye Prior. in AF]`、`[Face/Eye Subject]` `Human`/`Animal`/`Ver. 3.00+ Bird`、`[Right/Left Eye Select]` + `[Switch Right/Left Eye]` 自定义键切换、`[Face/Eye Frame Disp.]`），强制证明 `[HDMI Info. Display] = [Off]` 纯净 HDMI 与 `HDMI RAW Output` 零像素烧录对焦框（`hdmi_clean_feed_eye_frame_baked_pixels == 0`），以及已注册 `[Face Memory]` 人脸库跨越 `[Camera Settings Reset]` 完整留存（仅由显式删除或 `[Initialize]` 清空）。
+  - **支柱 44B — `[Version]` 只读机身/镜头/转接环版本巡检、零射频红点更新提示抑制与 Slot-1 `BODYDATA.DAT` 刷写硬阻断金库（`6/6`）**：
+    - `P44B1`..`P44B6`：精确建模 `MENU` -> `Setup` -> `[Setup Option]` -> `[Version]` 以严格 `O_RDONLY` 模式巡检 `ILME-FX3` Body（`Ver. 7.02`）、E 卡口镜头与卡口转接环固件版本，全流程零分区写入（`version_dialog_flash_writes == 0`）且固件版本跨越 `[Camera Settings Reset]`、`[Reset Network Set.]` 与 `[Initialize]` 恒定不变；强制验证零射频 `Airplane Mode = On` 台架下抑制 `Ver. 6.00+` / `7.02` 红色固件更新提示角标且零被动射频发包（`passive_tx_bytes_emitted == 0`）；对一切自动化 Slot-1 `BODYDATA.DAT` 固件刷写请求实施无条件硬阻断（`persistent_emmc_writes_authorized == False`、`bodydata_flash_attempts_blocked >= 1`、`slot1_bodydata_vault_mutation_bytes == 0`，并校验人工物理台架前置门槛 `NP-FZ100 >= 3 格 / >= 51%` 与原厂签名 `ILME-FX3` 镜像边界），同时验证 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 无损往返与 `16/16` Tier-0 `Backup.bin` `H0 == H3` 不变性。
+  - **统一 `44/44` 恢复总检聚合器与 CLI（`evaluate_realhw_44pillar_recovery_master` / `verify-44pillar-recovery` / `verify-apsc-s35-face-eye-af-version-vault`）**：
+    - 并发调用 `evaluate_realhw_43pillar_recovery_master`（`Pillars 1..43`）+ **Pillar 44**（`run_pillar44_standalone_suite`），汇总产出 **`44/44`**（`VERIFIED_44OF44_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py`](tests/test_realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 3.5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-apsc-s35-face-eye-af-version-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-44pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-44pillar-recovery --force-clean-room --json
+```
+
 
 
 

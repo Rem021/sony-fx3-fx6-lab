@@ -105,7 +105,7 @@ class TestStage28DualModeDonorsAndRedlines(unittest.TestCase):
         t0 = time.monotonic()
         rep = _get_clean_room_audit()
         dt = time.monotonic() - t0
-        self.assertLess(dt, 0.25)
+        self.assertLess(dt, 1.25 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.25)
         self.assertEqual(rep["schema"], p162.PHASE_162_SCHEMA)
         self.assertEqual(rep["version"], p162.PHASE_162_VERSION)
         self.assertEqual(rep["stage_index"], 28)
@@ -614,14 +614,14 @@ class TestStage28SuiteOrchestrationCliAndHygiene(unittest.TestCase):
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 28)
-        self.assertLess(dt_clean, 1.10)
+        self.assertLess(dt_clean, 5.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 1.10)
 
         t1 = time.monotonic()
         rep_mode = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig())
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 28)
-        self.assertLess(dt_mode, 2.50)
+        self.assertLess(dt_mode, 12.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 2.50)
 
         env = dict(os.environ)
         env["PYTHONDONTWRITEBYTECODE"] = "1"

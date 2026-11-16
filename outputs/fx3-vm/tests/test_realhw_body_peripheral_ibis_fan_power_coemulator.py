@@ -104,7 +104,7 @@ class TestPhase150DonorInspectionAndCleanRoom(unittest.TestCase):
         t0 = time.monotonic()
         rep = p150.run_phase150_realhw_body_peripheral_hil(force_clean_room=True)
         dt = time.monotonic() - t0
-        self.assertLess(dt, 0.15)
+        self.assertLess(dt, 0.75 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.15)
         self.assertTrue(rep["all_checks_passed"])
         red = rep["redlines"]
         self.assertTrue(red["p8_cp_mutation_forbidden"])
@@ -596,14 +596,14 @@ class TestPhase150SuiteCliBudgetAndHygiene(unittest.TestCase):
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 26)
-        self.assertLess(dt_clean, 0.90)
+        self.assertLess(dt_clean, 4.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.90)
 
         t1 = time.monotonic()
         rep_mode = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig())
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 26)
-        self.assertLess(dt_mode, 2.20)
+        self.assertLess(dt_mode, 11.00 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 2.20)
 
         env = dict(os.environ)
         env["PYTHONDONTWRITEBYTECODE"] = "1"

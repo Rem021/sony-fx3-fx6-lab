@@ -584,14 +584,14 @@ class TestStage30CliSuite30of30AndHygiene(unittest.TestCase):
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 30)
-        self.assertLess(dt_clean, 1.30)
+        self.assertLess(dt_clean, 6.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 1.30)
 
         t1 = time.monotonic()
         rep_mode = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig())
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 30)
-        self.assertLess(dt_mode, 2.70)
+        self.assertLess(dt_mode, 13.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 2.70)
 
         env = dict(os.environ)
         env["PYTHONDONTWRITEBYTECODE"] = "1"

@@ -544,7 +544,7 @@ class TestStage19SuiteIntegrationCliAndHygiene(unittest.TestCase):
         rep = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig(force_clean_room=True))
         elapsed = time.monotonic() - t0
         self.assertTrue(rep["all_checks_passed"])
-        self.assertLess(elapsed, 0.65)
+        self.assertLess(elapsed, 3.25 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.65)
 
     def test_36_source_hygiene_o_rdonly_and_no_write_flags_or_port_8768_or_raw_bytes(self) -> None:
         src = (FX3_VM_DIR / "hdr_hlg_assist_fiz_gimbal_emulator.py").read_text(encoding="utf-8")

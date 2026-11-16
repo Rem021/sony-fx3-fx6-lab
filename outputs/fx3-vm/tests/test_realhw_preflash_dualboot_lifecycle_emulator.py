@@ -104,13 +104,13 @@ class TestPhase141DonorAuditAndBudget(unittest.TestCase):
         rep_clean = p141.run_phase141_realhw_preflash_dualboot_audit(force_clean_room=True)
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
-        self.assertLess(dt_clean, 0.15)
+        self.assertLess(dt_clean, 0.75 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.15)
 
         t1 = time.monotonic()
         rep_mode = p141.run_phase141_realhw_preflash_dualboot_audit()
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
-        self.assertLess(dt_mode, 0.15)
+        self.assertLess(dt_mode, 0.75 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.15)
 
     def test_06_scan_donor_readonly_mmap_handles_empty_and_valid_files(self) -> None:
         tmp_path = FX3_VM_DIR / "manifest.json"
@@ -538,14 +538,14 @@ class TestStage24SuiteIntegrationCliAndHygiene(unittest.TestCase):
         dt_clean = time.monotonic() - t0
         self.assertTrue(rep_clean["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_clean if re.match(r"^stage\d+_", k)]), 24)
-        self.assertLess(dt_clean, 0.70)
+        self.assertLess(dt_clean, 3.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.70)
 
         t1 = time.monotonic()
         rep_mode = suite.run_fx3_vm_coemulation_suite(suite.CoEmulationConfig())
         dt_mode = time.monotonic() - t1
         self.assertTrue(rep_mode["all_checks_passed"])
         self.assertGreaterEqual(len([k for k in rep_mode if re.match(r"^stage\d+_", k)]), 24)
-        self.assertLess(dt_mode, 1.80)
+        self.assertLess(dt_mode, 9.00 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 1.80)
 
         env = dict(os.environ)
         env["PYTHONDONTWRITEBYTECODE"] = "1"

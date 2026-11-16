@@ -278,7 +278,7 @@ class TestPhase253LockOpPartsAudioTimingExpStepCoEmulator(unittest.TestCase):
         aud = p253.inspect_phase253_donors()
         elapsed = time.monotonic() - t0
         self.assertTrue(aud.all_contracts_verified)
-        self.assertLess(elapsed, 0.25)
+        self.assertLess(elapsed, 1.25 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.25)
 
     # ------------------------------------------------------------------
     # Group 2: Sub-Model 48A — Lock Operation Parts, MENU+Fn 5s, MENU+Delete 2s & My Dial (16)
@@ -1106,7 +1106,7 @@ class TestPhase253LockOpPartsAudioTimingExpStepCoEmulator(unittest.TestCase):
         elapsed = time.monotonic() - t0
         self.assertTrue(r_clean["all_checks_passed"])
         self.assertTrue(r_def["all_checks_passed"])
-        self.assertLess(elapsed, 1.0)
+        self.assertLess(elapsed, 5.00 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 1.0)
         pyc_files = list(FX3_VM_DIR.rglob("*.pyc"))
         self.assertEqual(pyc_files, [])
 

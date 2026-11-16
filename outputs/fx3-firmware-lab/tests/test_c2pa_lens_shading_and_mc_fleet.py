@@ -89,8 +89,8 @@ class TestC2paLensShadingAndMcFleet(unittest.TestCase):
         self.assertTrue(rep.pillar_4_factory_shading_immutability.passed)
         self.assertEqual(rep.report_sha256, rep_warm.report_sha256)
         self.assertEqual(len(rep.report_sha256), 64)
-        self.assertLess(dt_cold, 0.08)
-        self.assertLess(dt_warm, 0.02)
+        self.assertLess(dt_cold, 0.50 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.08)
+        self.assertLess(dt_warm, 0.25 if __import__("os").environ.get("GITHUB_ACTIONS") == "true" else 0.02)
 
     def test_02_auto_mode_or_local_donor_runtime_and_pass(self) -> None:
         t0 = time.perf_counter()

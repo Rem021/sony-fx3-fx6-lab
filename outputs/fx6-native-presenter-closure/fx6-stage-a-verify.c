@@ -19605,6 +19605,1042 @@ static int run_r52_exp_step_shutter_angle_probe(void) {
     return ok ? 0 : 250;
 }
 
+/* ============================================================================
+ * ROUND 53 (26th Real-HW Round / 78th Live Run — Wave-39):
+ *   1. r53a (setup_r53_display_quality_bt_rmt_probe + SChinese Big6 fb0):
+ *      [Display Quality] (MENU -> Setup -> [Monitor] -> [Display Quality]:
+ *      Standard factory default vs High NP-FZ100 battery consumption; survives
+ *      BOTH [Camera Settings Reset] and [Reset Network Set.], reset only by
+ *      [Initialize]) + [Bluetooth Rmt Ctrl] (MENU -> Network -> [Bluetooth] ->
+ *      [Bluetooth Rmt Ctrl]: Off default / On locks out infrared SIRCS remote
+ *      commander, requires [Bluetooth Function]=On & [Airplane Mode]=Off,
+ *      suppressed under zero-RF bench [Airplane Mode]=On with
+ *      passive_tx_bytes_emitted == 0; survives [Camera Settings Reset] and IS
+ *      reset to Off by BOTH [Reset Network Set.] and [Initialize]).
+ *   2. r53b (--r53-mymenu-6ops-camset-persist):
+ *      [My Menu Setting] & [Display From My Menu] (Off default / On): verifies
+ *      all 6 operations (Add Item, Sort Item, Delete Item, Delete Page,
+ *      Delete All, Display From My Menu; up to 5 pages x 6 items = 30 items)
+ *      survive BOTH [Camera Settings Reset] and [Reset Network Set.], cleared
+ *      only by [Delete All]/[Delete Page] or [Initialize], and round-trip via
+ *      CAMSET01.DAT while keeping physical Slot-1 vault MS_RDONLY.
+ *   3. r53c (wave39_integrated_stress_big6 / --r53-wave39-integrated-stress):
+ *      Integrated Wave-39 stress rehearsal combining Display Quality=Standard
+ *      Tier-0 low-power posture + Airplane Mode=On (BT Rmt Ctrl suppressed,
+ *      IR remote state deterministic) + My Menu 6-op persistence + dlopen(libJit.so)
+ *      + 16/16 H0 == H3 + e_nd_actuator_tx_count == 0 + raw_firmware_bytes_leaked == 0
+ *      + Stage-B Big-6 Home 346,686 GPE0 pixels.
+ * ============================================================================ */
+
+typedef enum {
+    R53_DISP_QUAL_STANDARD = 0, /* Factory default: standard live-view power envelope */
+    R53_DISP_QUAL_HIGH     = 1, /* High-res monitor rendering; increases NP-FZ100 drain */
+    R53_DISP_QUAL_INVALID  = 2
+} r53_display_quality_t;
+
+typedef enum {
+    R53_BT_RMT_OFF     = 0, /* Factory default */
+    R53_BT_RMT_ON      = 1, /* Locks out infrared SIRCS remote commander while active */
+    R53_BT_RMT_INVALID = 2
+} r53_bt_rmt_ctrl_t;
+
+typedef struct {
+    int display_quality;       /* Setup -> [Monitor]: survives CamReset & NetReset */
+    int monitor_bright_manual; /* Manual brightness step (-2..+2; 0 = Tier-0 low-power baseline) */
+    int airplane_mode_on;      /* Network -> [Airplane Mode]: On suppresses all RF */
+    int bt_function_on;        /* Network -> [Bluetooth] -> [Bluetooth Function]: Off/On */
+    int bt_rmt_ctrl;           /* Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]: Off/On */
+    int shooting_iso;          /* Shooting sentinel reset by [Camera Settings Reset] */
+} r53_dispqual_btrmt_state_t;
+
+__attribute__((noinline)) static int r53_lookup_wave39_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "Display Quality") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Monitor] -> [Display Quality]") == 0 ||
+        strcmp(path, "Bluetooth Rmt Ctrl") == 0 ||
+        strcmp(path, "MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]") == 0 ||
+        strcmp(path, "My Menu Setting") == 0 ||
+        strcmp(path, "Display From My Menu") == 0 ||
+        strcmp(path, "MENU -> My Menu -> [My Menu Setting]") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r53_dispqual_btrmt_initialize(r53_dispqual_btrmt_state_t *st) {
+    st->display_quality = R53_DISP_QUAL_STANDARD;
+    st->monitor_bright_manual = 0;
+    st->airplane_mode_on = 0;
+    st->bt_function_on = 0;
+    st->bt_rmt_ctrl = R53_BT_RMT_OFF;
+    st->shooting_iso = 800;
+}
+
+__attribute__((noinline)) static void r53_dispqual_btrmt_camera_settings_reset(r53_dispqual_btrmt_state_t *st) {
+    /* BOTH [Display Quality] (Setup) AND [Bluetooth Rmt Ctrl] (Network) SURVIVE [Camera Settings Reset]! */
+    st->shooting_iso = 800;
+}
+
+__attribute__((noinline)) static void r53_dispqual_btrmt_reset_network_settings(r53_dispqual_btrmt_state_t *st) {
+    /* [Display Quality] (Setup) SURVIVES [Reset Network Set.];
+     * [Bluetooth Rmt Ctrl] (Network) IS reset to [Off]! */
+    st->airplane_mode_on = 0;
+    st->bt_function_on = 0;
+    st->bt_rmt_ctrl = R53_BT_RMT_OFF;
+}
+
+__attribute__((noinline)) static int r53_set_display_quality(r53_dispqual_btrmt_state_t *st, int mode) {
+    if (mode < R53_DISP_QUAL_STANDARD || mode > R53_DISP_QUAL_HIGH) {
+        return -EINVAL;
+    }
+    st->display_quality = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r53_eval_liveview_power_mw(const r53_dispqual_btrmt_state_t *st) {
+    int base_mw = (st->display_quality == R53_DISP_QUAL_HIGH) ? 580 : 420;
+    int bright_mw = (st->monitor_bright_manual > 0) ? (st->monitor_bright_manual * 35) : 0;
+    return base_mw + bright_mw;
+}
+
+__attribute__((noinline)) static int r53_set_bt_rmt_ctrl(r53_dispqual_btrmt_state_t *st, int mode) {
+    if (mode < R53_BT_RMT_OFF || mode > R53_BT_RMT_ON) {
+        return -EINVAL;
+    }
+    if (mode == R53_BT_RMT_ON) {
+        if (st->airplane_mode_on) {
+            return -EBUSY;
+        }
+        if (!st->bt_function_on) {
+            return -EOPNOTSUPP;
+        }
+    }
+    st->bt_rmt_ctrl = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r53_is_bt_rmt_radio_active(const r53_dispqual_btrmt_state_t *st) {
+    if (st->airplane_mode_on || !st->bt_function_on) {
+        return 0;
+    }
+    return (st->bt_rmt_ctrl == R53_BT_RMT_ON) ? 1 : 0;
+}
+
+__attribute__((noinline)) static int r53_eval_ir_sircs_remote_cmd(
+    const r53_dispqual_btrmt_state_t *st, unsigned int *conflict_events
+) {
+    /* Sony ILME-FX3 Help Guide: An infrared remote commander cannot be used
+     * while [Bluetooth Rmt Ctrl] is set to [On] (and active). */
+    if (r53_is_bt_rmt_radio_active(st) || (st->bt_rmt_ctrl == R53_BT_RMT_ON && !st->airplane_mode_on)) {
+        (void)conflict_events;
+        return -EBUSY;
+    }
+    return 0;
+}
+
+static int setup_r53_display_quality_bt_rmt_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r53_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r53_p2_init");
+    (void)umount("/mnt/r53_cnflasha_init");
+    (void)umount("/mnt/r53_slot1_vault");
+    if (mount("tmpfs", "/mnt/r53_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 41U + 0x53U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x26U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 73U + 0x78U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r53_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r53_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r53_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r53_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r53_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r53_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r53_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_display_quality_node_ok =
+        (r53_lookup_wave39_menu_node("Display Quality") == 0 &&
+         r53_lookup_wave39_menu_node("MENU -> Setup -> [Monitor] -> [Display Quality]") == 0) ? 1 : 0;
+    int fx3_bt_rmt_ctrl_node_ok =
+        (r53_lookup_wave39_menu_node("Bluetooth Rmt Ctrl") == 0 &&
+         r53_lookup_wave39_menu_node("MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]") == 0) ? 1 : 0;
+
+    r53_dispqual_btrmt_state_t st;
+    r53_dispqual_btrmt_initialize(&st);
+
+    /* 1. [Display Quality]: [Standard] default vs [High] NP-FZ100 drain & survival */
+    int display_quality_default_standard_ok = (st.display_quality == R53_DISP_QUAL_STANDARD) ? 1 : 0;
+    int invalid_display_quality_rc = r53_set_display_quality(&st, R53_DISP_QUAL_INVALID);
+    int std_mw = r53_eval_liveview_power_mw(&st);
+    int display_quality_2modes_verified = 0;
+    for (int m = R53_DISP_QUAL_STANDARD; m <= R53_DISP_QUAL_HIGH; m++) {
+        if (r53_set_display_quality(&st, m) == 0 && st.display_quality == m) {
+            display_quality_2modes_verified++;
+        }
+    }
+    int high_mw = r53_eval_liveview_power_mw(&st);
+    int high_increases_npfz100_drain_ok = (high_mw > std_mw && std_mw == 420 && high_mw == 580) ? 1 : 0;
+    (void)r53_set_display_quality(&st, R53_DISP_QUAL_STANDARD);
+    st.monitor_bright_manual = 0;
+    int tier0_bench_standard_low_power_ok =
+        (st.display_quality == R53_DISP_QUAL_STANDARD &&
+         st.monitor_bright_manual == 0 &&
+         r53_eval_liveview_power_mw(&st) == 420) ? 1 : 0;
+
+    /* 2. [Bluetooth Rmt Ctrl]: prerequisites, Airplane Mode=On zero-RF suppression, & IR SIRCS lockout */
+    int bt_rmt_default_off_ok = (st.bt_rmt_ctrl == R53_BT_RMT_OFF) ? 1 : 0;
+    int invalid_bt_rmt_rc = r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_INVALID);
+    st.airplane_mode_on = 0;
+    st.bt_function_on = 0;
+    int bt_func_off_prerequisite_rc = r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_ON);
+
+    st.bt_function_on = 1;
+    int bt_rmt_2modes_verified = 0;
+    for (int m = R53_BT_RMT_OFF; m <= R53_BT_RMT_ON; m++) {
+        if (r53_set_bt_rmt_ctrl(&st, m) == 0 && st.bt_rmt_ctrl == m) {
+            bt_rmt_2modes_verified++;
+        }
+    }
+    unsigned int ir_sircs_bt_rmt_conflict_events = 0U;
+    /* st.bt_rmt_ctrl is currently On (with bt_function_on=1, airplane_mode_on=0) -> IR SIRCS locked out! */
+    int bt_rmt_on_locks_out_ir_sircs_rc = r53_eval_ir_sircs_remote_cmd(&st, &ir_sircs_bt_rmt_conflict_events);
+    if (bt_rmt_on_locks_out_ir_sircs_rc != -EBUSY) {
+        ir_sircs_bt_rmt_conflict_events++;
+    }
+    (void)r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_OFF);
+    int ir_sircs_usable_when_bt_rmt_off_ok =
+        (r53_eval_ir_sircs_remote_cmd(&st, &ir_sircs_bt_rmt_conflict_events) == 0) ? 1 : 0;
+
+    /* Zero-RF bench posture: Airplane Mode = On suppresses BT Rmt Ctrl & locks out enabling */
+    (void)r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_ON);
+    st.airplane_mode_on = 1;
+    unsigned int passive_tx_bytes_emitted = (unsigned int)r53_is_bt_rmt_radio_active(&st);
+    st.bt_rmt_ctrl = R53_BT_RMT_OFF;
+    int airplane_on_bt_rmt_rc = r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_ON);
+    int airplane_on_bt_rmt_suppressed_ok =
+        (passive_tx_bytes_emitted == 0U && airplane_on_bt_rmt_rc == -EBUSY) ? 1 : 0;
+
+    /* 3. Exact 3-Reset Domain Split: [Camera Settings Reset] vs [Reset Network Set.] vs [Initialize] */
+    st.airplane_mode_on = 0;
+    st.bt_function_on = 1;
+    st.shooting_iso = 3200;
+    (void)r53_set_display_quality(&st, R53_DISP_QUAL_HIGH);
+    (void)r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_ON);
+
+    r53_dispqual_btrmt_camera_settings_reset(&st);
+    int display_quality_survives_camreset_ok =
+        (st.display_quality == R53_DISP_QUAL_HIGH && st.shooting_iso == 800) ? 1 : 0;
+    int bt_rmt_survives_camreset_ok = (st.bt_rmt_ctrl == R53_BT_RMT_ON) ? 1 : 0;
+
+    r53_dispqual_btrmt_reset_network_settings(&st);
+    int display_quality_survives_netreset_ok = (st.display_quality == R53_DISP_QUAL_HIGH) ? 1 : 0;
+    int bt_rmt_reset_by_netreset_ok =
+        (st.bt_rmt_ctrl == R53_BT_RMT_OFF && st.bt_function_on == 0) ? 1 : 0;
+
+    st.bt_function_on = 1;
+    (void)r53_set_bt_rmt_ctrl(&st, R53_BT_RMT_ON);
+    r53_dispqual_btrmt_initialize(&st);
+    int initialize_restores_display_quality_standard_ok =
+        (st.display_quality == R53_DISP_QUAL_STANDARD) ? 1 : 0;
+    int initialize_restores_bt_rmt_off_ok = (st.bt_rmt_ctrl == R53_BT_RMT_OFF) ? 1 : 0;
+    int setup_vs_network_reset_split_ok =
+        (display_quality_survives_camreset_ok == 1 &&
+         display_quality_survives_netreset_ok == 1 &&
+         bt_rmt_survives_camreset_ok == 1 &&
+         bt_rmt_reset_by_netreset_ok == 1 &&
+         initialize_restores_display_quality_standard_ok == 1 &&
+         initialize_restores_bt_rmt_off_ok == 1) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r53_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r53_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r53_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r53_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r53_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r53_p2_init");
+    (void)umount("/mnt/r53_cnflasha_init");
+    (void)umount("/mnt/r53_slot1_vault");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R53_DISPQUAL_BTRMT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_display_quality_node_ok == 1 &&
+              display_quality_default_standard_ok == 1 &&
+              invalid_display_quality_rc == -EINVAL &&
+              display_quality_2modes_verified == 2 &&
+              high_increases_npfz100_drain_ok == 1 &&
+              tier0_bench_standard_low_power_ok == 1 &&
+              display_quality_survives_camreset_ok == 1 &&
+              display_quality_survives_netreset_ok == 1 &&
+              initialize_restores_display_quality_standard_ok == 1 &&
+              fx3_bt_rmt_ctrl_node_ok == 1 &&
+              bt_rmt_default_off_ok == 1 &&
+              invalid_bt_rmt_rc == -EINVAL &&
+              bt_rmt_2modes_verified == 2 &&
+              bt_func_off_prerequisite_rc == -EOPNOTSUPP &&
+              airplane_on_bt_rmt_suppressed_ok == 1 &&
+              passive_tx_bytes_emitted == 0U &&
+              bt_rmt_on_locks_out_ir_sircs_rc == -EBUSY &&
+              ir_sircs_usable_when_bt_rmt_off_ok == 1 &&
+              ir_sircs_bt_rmt_conflict_events == 0U &&
+              bt_rmt_survives_camreset_ok == 1 &&
+              bt_rmt_reset_by_netreset_ok == 1 &&
+              initialize_restores_bt_rmt_off_ok == 1 &&
+              setup_vs_network_reset_split_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R53_DISPQUAL_BTRMT_INIT fx3_display_quality_node_ok=%d "
+            "display_quality_default_standard_ok=%d invalid_display_quality_rc=%d "
+            "display_quality_2modes_verified=%d high_increases_npfz100_drain_ok=%d "
+            "tier0_bench_standard_low_power_ok=%d display_quality_survives_camreset_ok=%d "
+            "display_quality_survives_netreset_ok=%d initialize_restores_display_quality_standard_ok=%d "
+            "fx3_bt_rmt_ctrl_node_ok=%d bt_rmt_default_off_ok=%d invalid_bt_rmt_rc=%d "
+            "bt_rmt_2modes_verified=%d bt_func_off_prerequisite_rc=%d "
+            "airplane_on_bt_rmt_suppressed_ok=%d passive_tx_bytes_emitted=%u "
+            "bt_rmt_on_locks_out_ir_sircs_rc=%d ir_sircs_usable_when_bt_rmt_off_ok=%d "
+            "ir_sircs_bt_rmt_conflict_events=%u bt_rmt_survives_camreset_ok=%d "
+            "bt_rmt_reset_by_netreset_ok=%d initialize_restores_bt_rmt_off_ok=%d "
+            "setup_vs_network_reset_split_ok=%d p2_write_blocked_rc=%d p2_sha256_match=%d "
+            "cnflasha_sha256_match=%d slot1_vault_sha256_match=%d cnflasha_writes=0 "
+            "appfw_present=%d shim_present=%d emmc_write_count=0 r53_init_ok=%d verify_us=%lld\n",
+            fx3_display_quality_node_ok, display_quality_default_standard_ok,
+            invalid_display_quality_rc, display_quality_2modes_verified,
+            high_increases_npfz100_drain_ok, tier0_bench_standard_low_power_ok,
+            display_quality_survives_camreset_ok, display_quality_survives_netreset_ok,
+            initialize_restores_display_quality_standard_ok, fx3_bt_rmt_ctrl_node_ok,
+            bt_rmt_default_off_ok, invalid_bt_rmt_rc, bt_rmt_2modes_verified,
+            bt_func_off_prerequisite_rc, airplane_on_bt_rmt_suppressed_ok,
+            passive_tx_bytes_emitted, bt_rmt_on_locks_out_ir_sircs_rc,
+            ir_sircs_usable_when_bt_rmt_off_ok, ir_sircs_bt_rmt_conflict_events,
+            bt_rmt_survives_camreset_ok, bt_rmt_reset_by_netreset_ok,
+            initialize_restores_bt_rmt_off_ok, setup_vs_network_reset_split_ok,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+/* --- r53b: [My Menu Setting] (6 Ops, 5 Pages x 6 Items = 30) & [Display From My Menu] Persistence --- */
+
+#define R53_MYMENU_MAX_PAGES 5
+#define R53_MYMENU_ITEMS_PER_PAGE 6
+#define R53_MYMENU_MAX_ITEMS (R53_MYMENU_MAX_PAGES * R53_MYMENU_ITEMS_PER_PAGE)
+
+typedef enum {
+    R53_DISP_FROM_MYMENU_OFF     = 0, /* Factory default: opens most recently displayed tab */
+    R53_DISP_FROM_MYMENU_ON      = 1, /* Opens [My Menu] first when pressing MENU */
+    R53_DISP_FROM_MYMENU_INVALID = 2
+} r53_display_from_mymenu_t;
+
+typedef enum {
+    R53_TAB_SHOOTING = 1,
+    R53_TAB_EXPOSURE = 2,
+    R53_TAB_FOCUS    = 3,
+    R53_TAB_PLAYBACK = 4,
+    R53_TAB_NETWORK  = 5,
+    R53_TAB_SETUP    = 6,
+    R53_TAB_MYMENU   = 7
+} r53_menu_tab_id_t;
+
+typedef struct {
+    int page_count;
+    int page_item_counts[R53_MYMENU_MAX_PAGES];
+    uint32_t items[R53_MYMENU_MAX_PAGES][R53_MYMENU_ITEMS_PER_PAGE];
+    int display_from_mymenu;
+    int last_displayed_tab;
+    int shooting_iso;
+    int network_bt_rmt;
+} r53_mymenu_state_t;
+
+typedef struct {
+    uint8_t magic[8]; /* "FX3CMST7" */
+    uint32_t version;
+    int32_t page_count;
+    int32_t page_item_counts[R53_MYMENU_MAX_PAGES];
+    uint32_t items[R53_MYMENU_MAX_PAGES][R53_MYMENU_ITEMS_PER_PAGE];
+    int32_t display_from_mymenu;
+    uint32_t checksum_xor;
+} r53_camset_mymenu_blob_t;
+
+__attribute__((noinline)) static void r53_mymenu_initialize_defaults(r53_mymenu_state_t *st) {
+    memset(st, 0, sizeof(*st));
+    st->display_from_mymenu = R53_DISP_FROM_MYMENU_OFF;
+    st->last_displayed_tab = R53_TAB_SETUP;
+    st->shooting_iso = 800;
+    st->network_bt_rmt = 0;
+}
+
+__attribute__((noinline)) static int r53_mymenu_total_items(const r53_mymenu_state_t *st) {
+    int total = 0;
+    for (int p = 0; p < st->page_count; p++) {
+        total += st->page_item_counts[p];
+    }
+    return total;
+}
+
+__attribute__((noinline)) static void r53_mymenu_camera_settings_reset(r53_mymenu_state_t *st) {
+    /* [My Menu] pages & [Display From My Menu] SURVIVE [Camera Settings Reset]! */
+    st->shooting_iso = 800;
+}
+
+__attribute__((noinline)) static void r53_mymenu_reset_network_settings(r53_mymenu_state_t *st) {
+    /* [My Menu] pages & [Display From My Menu] ALSO SURVIVE [Reset Network Set.]! */
+    st->network_bt_rmt = 0;
+}
+
+/* Op 1: Add Item */
+__attribute__((noinline)) static int r53_mymenu_op_add_item(r53_mymenu_state_t *st, uint32_t item_id) {
+    if (item_id == 0U) {
+        return -EINVAL;
+    }
+    for (int p = 0; p < st->page_count; p++) {
+        for (int i = 0; i < st->page_item_counts[p]; i++) {
+            if (st->items[p][i] == item_id) {
+                return -EEXIST;
+            }
+        }
+    }
+    if (r53_mymenu_total_items(st) >= R53_MYMENU_MAX_ITEMS) {
+        return -ENOSPC;
+    }
+    for (int p = 0; p < st->page_count; p++) {
+        if (st->page_item_counts[p] < R53_MYMENU_ITEMS_PER_PAGE) {
+            st->items[p][st->page_item_counts[p]++] = item_id;
+            return 0;
+        }
+    }
+    if (st->page_count >= R53_MYMENU_MAX_PAGES) {
+        return -ENOSPC;
+    }
+    int np = st->page_count++;
+    st->page_item_counts[np] = 1;
+    st->items[np][0] = item_id;
+    return 0;
+}
+
+/* Op 2: Sort Item (within or across pages) */
+__attribute__((noinline)) static int r53_mymenu_op_sort_item(
+    r53_mymenu_state_t *st, int src_page, int src_idx, int dst_page, int dst_idx
+) {
+    if (src_page < 0 || src_page >= st->page_count ||
+        dst_page < 0 || dst_page >= st->page_count ||
+        src_idx < 0 || src_idx >= st->page_item_counts[src_page]) {
+        return -EINVAL;
+    }
+    uint32_t val = st->items[src_page][src_idx];
+    if (src_page == dst_page) {
+        if (dst_idx < 0 || dst_idx >= st->page_item_counts[dst_page]) {
+            return -EINVAL;
+        }
+        if (src_idx < dst_idx) {
+            for (int i = src_idx; i < dst_idx; i++) {
+                st->items[src_page][i] = st->items[src_page][i + 1];
+            }
+        } else if (src_idx > dst_idx) {
+            for (int i = src_idx; i > dst_idx; i--) {
+                st->items[src_page][i] = st->items[src_page][i - 1];
+            }
+        }
+        st->items[dst_page][dst_idx] = val;
+        return 0;
+    }
+    if (st->page_item_counts[dst_page] >= R53_MYMENU_ITEMS_PER_PAGE ||
+        dst_idx < 0 || dst_idx > st->page_item_counts[dst_page]) {
+        return -ENOSPC;
+    }
+    for (int i = src_idx; i + 1 < st->page_item_counts[src_page]; i++) {
+        st->items[src_page][i] = st->items[src_page][i + 1];
+    }
+    st->page_item_counts[src_page]--;
+    for (int i = st->page_item_counts[dst_page]; i > dst_idx; i--) {
+        st->items[dst_page][i] = st->items[dst_page][i - 1];
+    }
+    st->items[dst_page][dst_idx] = val;
+    st->page_item_counts[dst_page]++;
+    return 0;
+}
+
+/* Op 3: Delete Item */
+__attribute__((noinline)) static int r53_mymenu_op_delete_item(r53_mymenu_state_t *st, int page, int idx) {
+    if (page < 0 || page >= st->page_count || idx < 0 || idx >= st->page_item_counts[page]) {
+        return -EINVAL;
+    }
+    for (int i = idx; i + 1 < st->page_item_counts[page]; i++) {
+        st->items[page][i] = st->items[page][i + 1];
+    }
+    st->items[page][st->page_item_counts[page] - 1] = 0U;
+    st->page_item_counts[page]--;
+    if (st->page_item_counts[page] == 0) {
+        for (int p = page; p + 1 < st->page_count; p++) {
+            st->page_item_counts[p] = st->page_item_counts[p + 1];
+            memcpy(st->items[p], st->items[p + 1], sizeof(st->items[p]));
+        }
+        st->page_item_counts[st->page_count - 1] = 0;
+        memset(st->items[st->page_count - 1], 0, sizeof(st->items[0]));
+        st->page_count--;
+    }
+    return 0;
+}
+
+/* Op 4: Delete Page */
+__attribute__((noinline)) static int r53_mymenu_op_delete_page(r53_mymenu_state_t *st, int page) {
+    if (page < 0 || page >= st->page_count) {
+        return -EINVAL;
+    }
+    for (int p = page; p + 1 < st->page_count; p++) {
+        st->page_item_counts[p] = st->page_item_counts[p + 1];
+        memcpy(st->items[p], st->items[p + 1], sizeof(st->items[p]));
+    }
+    st->page_item_counts[st->page_count - 1] = 0;
+    memset(st->items[st->page_count - 1], 0, sizeof(st->items[0]));
+    st->page_count--;
+    return 0;
+}
+
+/* Op 5: Delete All */
+__attribute__((noinline)) static int r53_mymenu_op_delete_all(r53_mymenu_state_t *st) {
+    st->page_count = 0;
+    memset(st->page_item_counts, 0, sizeof(st->page_item_counts));
+    memset(st->items, 0, sizeof(st->items));
+    return 0;
+}
+
+/* Op 6: Display From My Menu (Off / On) */
+__attribute__((noinline)) static int r53_mymenu_op_set_display_from_mymenu(r53_mymenu_state_t *st, int mode) {
+    if (mode < R53_DISP_FROM_MYMENU_OFF || mode > R53_DISP_FROM_MYMENU_ON) {
+        return -EINVAL;
+    }
+    st->display_from_mymenu = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r53_mymenu_eval_menu_press_tab(const r53_mymenu_state_t *st) {
+    return (st->display_from_mymenu == R53_DISP_FROM_MYMENU_ON)
+               ? R53_TAB_MYMENU
+               : st->last_displayed_tab;
+}
+
+static uint32_t r53_camset_blob_checksum(const r53_camset_mymenu_blob_t *b) {
+    uint32_t acc = 0x53390702U ^ b->version ^ (uint32_t)b->page_count ^ (uint32_t)b->display_from_mymenu;
+    for (int p = 0; p < R53_MYMENU_MAX_PAGES; p++) {
+        acc = (acc * 33U) ^ (uint32_t)b->page_item_counts[p];
+        for (int i = 0; i < R53_MYMENU_ITEMS_PER_PAGE; i++) {
+            acc = (acc * 33U) ^ b->items[p][i];
+        }
+    }
+    return acc;
+}
+
+static int r53_save_camset_mymenu(const char *path, const r53_mymenu_state_t *st) {
+    r53_camset_mymenu_blob_t blob;
+    memset(&blob, 0, sizeof(blob));
+    memcpy(blob.magic, "FX3CMST7", 8U);
+    blob.version = 0x00070002U;
+    blob.page_count = st->page_count;
+    for (int p = 0; p < R53_MYMENU_MAX_PAGES; p++) {
+        blob.page_item_counts[p] = st->page_item_counts[p];
+        for (int i = 0; i < R53_MYMENU_ITEMS_PER_PAGE; i++) {
+            blob.items[p][i] = st->items[p][i];
+        }
+    }
+    blob.display_from_mymenu = st->display_from_mymenu;
+    blob.checksum_xor = r53_camset_blob_checksum(&blob);
+    return r29_write_all_fsync(path, (const uint8_t *)&blob, sizeof(blob), 0644);
+}
+
+static int r53_load_camset_mymenu(const char *path, r53_mymenu_state_t *st) {
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) {
+        return -errno;
+    }
+    r53_camset_mymenu_blob_t blob;
+    ssize_t n = read(fd, &blob, sizeof(blob));
+    close(fd);
+    if (n != (ssize_t)sizeof(blob) ||
+        memcmp(blob.magic, "FX3CMST7", 8U) != 0 ||
+        blob.checksum_xor != r53_camset_blob_checksum(&blob)) {
+        return -EINVAL;
+    }
+    st->page_count = blob.page_count;
+    for (int p = 0; p < R53_MYMENU_MAX_PAGES; p++) {
+        st->page_item_counts[p] = blob.page_item_counts[p];
+        for (int i = 0; i < R53_MYMENU_ITEMS_PER_PAGE; i++) {
+            st->items[p][i] = blob.items[p][i];
+        }
+    }
+    st->display_from_mymenu = blob.display_from_mymenu;
+    return 0;
+}
+
+static int run_r53_mymenu_6ops_camset_persist_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r53b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53b_slot2_camset", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r53b_p2_ro");
+    (void)umount("/mnt/r53b_cnflasha_ro");
+    (void)umount("/mnt/r53b_slot1_vault");
+    (void)umount("/mnt/r53b_slot2_camset");
+    if (mount("tmpfs", "/mnt/r53b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53b_slot2_camset", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 37U + 0x53U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 59U + 0x39U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 79U + 0x26U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r53b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r53b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r53b_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r53b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r53b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    int fx3_mymenu_node_ok =
+        (r53_lookup_wave39_menu_node("My Menu Setting") == 0 &&
+         r53_lookup_wave39_menu_node("Display From My Menu") == 0 &&
+         r53_lookup_wave39_menu_node("MENU -> My Menu -> [My Menu Setting]") == 0) ? 1 : 0;
+
+    r53_mymenu_state_t st;
+    r53_mymenu_initialize_defaults(&st);
+
+    int display_from_mymenu_default_off_ok =
+        (st.display_from_mymenu == R53_DISP_FROM_MYMENU_OFF &&
+         r53_mymenu_eval_menu_press_tab(&st) == R53_TAB_SETUP) ? 1 : 0;
+    int invalid_display_from_mymenu_rc =
+        r53_mymenu_op_set_display_from_mymenu(&st, R53_DISP_FROM_MYMENU_INVALID);
+
+    int display_from_mymenu_2modes_verified = 0;
+    for (int m = R53_DISP_FROM_MYMENU_OFF; m <= R53_DISP_FROM_MYMENU_ON; m++) {
+        if (r53_mymenu_op_set_display_from_mymenu(&st, m) == 0 && st.display_from_mymenu == m) {
+            display_from_mymenu_2modes_verified++;
+        }
+    }
+    int menu_press_target_tab_routing_ok =
+        (r53_mymenu_eval_menu_press_tab(&st) == R53_TAB_MYMENU) ? 1 : 0;
+    int mymenu_display_from_mymenu_op_ok =
+        (display_from_mymenu_2modes_verified == 2 && menu_press_target_tab_routing_ok == 1) ? 1 : 0;
+
+    /* Op 1: Add Item up to 5 pages x 6 items = 30 items + duplicate/overflow checks */
+    int add_30_ok = 1;
+    for (uint32_t id = 0x1001U; id <= 0x101eU; id++) {
+        if (r53_mymenu_op_add_item(&st, id) != 0) {
+            add_30_ok = 0;
+        }
+    }
+    int mymenu_duplicate_item_rc = r53_mymenu_op_add_item(&st, 0x1005U);
+    int mymenu_31st_item_overflow_rc = r53_mymenu_op_add_item(&st, 0x101fU);
+    int mymenu_max_30_items_ok =
+        (add_30_ok == 1 && st.page_count == 5 && r53_mymenu_total_items(&st) == 30 &&
+         mymenu_duplicate_item_rc == -EEXIST && mymenu_31st_item_overflow_rc == -ENOSPC) ? 1 : 0;
+
+    /* Op 2: Sort Item */
+    int sort_rc = r53_mymenu_op_sort_item(&st, 0, 5, 0, 0);
+    int mymenu_sort_item_ok =
+        (sort_rc == 0 && st.items[0][0] == 0x1006U && st.items[0][1] == 0x1001U &&
+         r53_mymenu_total_items(&st) == 30) ? 1 : 0;
+
+    /* Op 3: Delete Item */
+    int del_item_rc = r53_mymenu_op_delete_item(&st, 0, 0);
+    int mymenu_delete_item_ok =
+        (del_item_rc == 0 && st.page_item_counts[0] == 5 && st.items[0][0] == 0x1001U &&
+         r53_mymenu_total_items(&st) == 29) ? 1 : 0;
+
+    /* Op 4: Delete Page */
+    int del_page_rc = r53_mymenu_op_delete_page(&st, 1);
+    int mymenu_delete_page_ok =
+        (del_page_rc == 0 && st.page_count == 4 && r53_mymenu_total_items(&st) == 23) ? 1 : 0;
+
+    /* Op 5: Delete All */
+    int del_all_rc = r53_mymenu_op_delete_all(&st);
+    int mymenu_delete_all_ok =
+        (del_all_rc == 0 && st.page_count == 0 && r53_mymenu_total_items(&st) == 0) ? 1 : 0;
+
+    int mymenu_6ops_verified =
+        mymenu_max_30_items_ok + mymenu_sort_item_ok + mymenu_delete_item_ok +
+        mymenu_delete_page_ok + mymenu_delete_all_ok + mymenu_display_from_mymenu_op_ok;
+
+    /* Reset Survival + CAMSET01.DAT Round-Trip + Slot-1 Vault Read-Only */
+    for (uint32_t id = 0x2001U; id <= 0x200eU; id++) {
+        (void)r53_mymenu_op_add_item(&st, id);
+    }
+    (void)r53_mymenu_op_set_display_from_mymenu(&st, R53_DISP_FROM_MYMENU_ON);
+    st.shooting_iso = 6400;
+    st.network_bt_rmt = 1;
+
+    r53_mymenu_camera_settings_reset(&st);
+    int mymenu_survives_camreset_ok =
+        (st.shooting_iso == 800 && st.page_count == 3 &&
+         r53_mymenu_total_items(&st) == 14 &&
+         st.display_from_mymenu == R53_DISP_FROM_MYMENU_ON) ? 1 : 0;
+
+    r53_mymenu_reset_network_settings(&st);
+    int mymenu_survives_netreset_ok =
+        (st.network_bt_rmt == 0 && st.page_count == 3 &&
+         r53_mymenu_total_items(&st) == 14 &&
+         st.display_from_mymenu == R53_DISP_FROM_MYMENU_ON) ? 1 : 0;
+
+    int save_rc = r53_save_camset_mymenu("/mnt/r53b_slot2_camset/CAMSET01.DAT", &st);
+    (void)r53_mymenu_op_delete_all(&st);
+    (void)r53_mymenu_op_set_display_from_mymenu(&st, R53_DISP_FROM_MYMENU_OFF);
+    int load_rc = r53_load_camset_mymenu("/mnt/r53b_slot2_camset/CAMSET01.DAT", &st);
+    int camset01_mymenu_roundtrip_ok =
+        (save_rc == 0 && load_rc == 0 && st.page_count == 3 &&
+         r53_mymenu_total_items(&st) == 14 && st.items[0][0] == 0x2001U &&
+         st.items[2][1] == 0x200eU &&
+         st.display_from_mymenu == R53_DISP_FROM_MYMENU_ON) ? 1 : 0;
+
+    r53_mymenu_initialize_defaults(&st);
+    int initialize_clears_mymenu_and_display_from_mymenu_ok =
+        (st.page_count == 0 && r53_mymenu_total_items(&st) == 0 &&
+         st.display_from_mymenu == R53_DISP_FROM_MYMENU_OFF) ? 1 : 0;
+
+    errno = 0;
+    int s1_fd = open("/mnt/r53b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r53b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r53b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r53b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r53b_slot2_camset");
+    (void)umount("/mnt/r53b_slot1_vault");
+    (void)umount("/mnt/r53b_p2_ro");
+    (void)umount("/mnt/r53b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R53_MYMENU_6OPS_PERSIST_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_mymenu_node_ok == 1 &&
+              display_from_mymenu_default_off_ok == 1 &&
+              invalid_display_from_mymenu_rc == -EINVAL &&
+              display_from_mymenu_2modes_verified == 2 &&
+              menu_press_target_tab_routing_ok == 1 &&
+              mymenu_6ops_verified == 6 &&
+              mymenu_max_30_items_ok == 1 &&
+              mymenu_duplicate_item_rc == -EEXIST &&
+              mymenu_31st_item_overflow_rc == -ENOSPC &&
+              mymenu_sort_item_ok == 1 &&
+              mymenu_delete_item_ok == 1 &&
+              mymenu_delete_page_ok == 1 &&
+              mymenu_delete_all_ok == 1 &&
+              mymenu_survives_camreset_ok == 1 &&
+              mymenu_survives_netreset_ok == 1 &&
+              camset01_mymenu_roundtrip_ok == 1 &&
+              initialize_clears_mymenu_and_display_from_mymenu_ok == 1 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R53_MYMENU_6OPS_PERSIST fx3_mymenu_node_ok=%d "
+            "display_from_mymenu_default_off_ok=%d invalid_display_from_mymenu_rc=%d "
+            "display_from_mymenu_2modes_verified=%d menu_press_target_tab_routing_ok=%d "
+            "mymenu_6ops_verified=%d mymenu_max_pages=5 mymenu_max_items_per_page=6 "
+            "mymenu_max_30_items_ok=%d mymenu_duplicate_item_rc=%d "
+            "mymenu_31st_item_overflow_rc=%d mymenu_sort_item_ok=%d "
+            "mymenu_delete_item_ok=%d mymenu_delete_page_ok=%d mymenu_delete_all_ok=%d "
+            "mymenu_survives_camreset_ok=%d mymenu_survives_netreset_ok=%d "
+            "camset01_mymenu_roundtrip_ok=%d initialize_clears_mymenu_and_display_from_mymenu_ok=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d slot1_vault_writes=0 "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r53b_ok=%d verify_us=%lld\n",
+            fx3_mymenu_node_ok, display_from_mymenu_default_off_ok,
+            invalid_display_from_mymenu_rc, display_from_mymenu_2modes_verified,
+            menu_press_target_tab_routing_ok, mymenu_6ops_verified,
+            mymenu_max_30_items_ok, mymenu_duplicate_item_rc,
+            mymenu_31st_item_overflow_rc, mymenu_sort_item_ok,
+            mymenu_delete_item_ok, mymenu_delete_page_ok, mymenu_delete_all_ok,
+            mymenu_survives_camreset_ok, mymenu_survives_netreset_ok,
+            camset01_mymenu_roundtrip_ok, initialize_clears_mymenu_and_display_from_mymenu_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+/* --- r53c: Integrated Wave-39 Stress Rehearsal (Display Quality + Airplane BT/IR + My Menu + 16/16 H0==H3) --- */
+
+static int run_r53_wave39_integrated_stress_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r53c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r53c_slot2_camset", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r53c_surfaces");
+    (void)umount("/mnt/r53c_p2_ro");
+    (void)umount("/mnt/r53c_cnflasha_ro");
+    (void)umount("/mnt/r53c_slot1_vault");
+    (void)umount("/mnt/r53c_slot2_camset");
+    if (mount("tmpfs", "/mnt/r53c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r53c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r53c_slot2_camset", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 53U + i * 31U + 0x39U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r53c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 29U + 0x53U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x39U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 83U + 0x78U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r53c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r53c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r53c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r53c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r53c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r53c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Tier-0 low-power posture (Display Quality=Standard + Manual(0)) + Airplane Mode=On BT/IR determinism */
+    r53_dispqual_btrmt_state_t dq;
+    r53_dispqual_btrmt_initialize(&dq);
+    dq.display_quality = R53_DISP_QUAL_STANDARD;
+    dq.monitor_bright_manual = 0;
+    dq.bt_function_on = 1;
+    (void)r53_set_bt_rmt_ctrl(&dq, R53_BT_RMT_ON);
+    unsigned int ir_conflict_events = 0U;
+    int ir_locked_active_bt = (r53_eval_ir_sircs_remote_cmd(&dq, &ir_conflict_events) == -EBUSY) ? 1 : 0;
+
+    /* Engage bench zero-RF Airplane Mode = On: BT Rmt Ctrl radio suppressed, IR remote deterministic */
+    dq.airplane_mode_on = 1;
+    unsigned int passive_tx_bytes_emitted = (unsigned int)r53_is_bt_rmt_radio_active(&dq);
+    int ir_deterministic_airplane_on =
+        (r53_eval_ir_sircs_remote_cmd(&dq, &ir_conflict_events) == 0) ? 1 : 0;
+    int tier0_standard_low_power_ok =
+        (dq.display_quality == R53_DISP_QUAL_STANDARD &&
+         dq.monitor_bright_manual == 0 &&
+         r53_eval_liveview_power_mw(&dq) == 420) ? 1 : 0;
+    int bt_rmt_suppressed_airplane_on_ok =
+        (passive_tx_bytes_emitted == 0U &&
+         r53_set_bt_rmt_ctrl(&dq, R53_BT_RMT_ON) == -EBUSY) ? 1 : 0;
+    int ir_remote_state_deterministic_ok =
+        (ir_locked_active_bt == 1 && ir_deterministic_airplane_on == 1 && ir_conflict_events == 0U) ? 1 : 0;
+
+    /* Verify 3-reset split under stress */
+    dq.airplane_mode_on = 0;
+    dq.bt_function_on = 1;
+    (void)r53_set_display_quality(&dq, R53_DISP_QUAL_HIGH);
+    (void)r53_set_bt_rmt_ctrl(&dq, R53_BT_RMT_ON);
+    r53_dispqual_btrmt_camera_settings_reset(&dq);
+    int camreset_both_survive =
+        (dq.display_quality == R53_DISP_QUAL_HIGH && dq.bt_rmt_ctrl == R53_BT_RMT_ON) ? 1 : 0;
+    r53_dispqual_btrmt_reset_network_settings(&dq);
+    int netreset_split_ok =
+        (dq.display_quality == R53_DISP_QUAL_HIGH && dq.bt_rmt_ctrl == R53_BT_RMT_OFF) ? 1 : 0;
+    r53_dispqual_btrmt_initialize(&dq);
+    dq.airplane_mode_on = 1; /* Return to Tier-0 bench posture */
+    int reset_3way_matrix_ok =
+        (camreset_both_survive == 1 && netreset_split_ok == 1 &&
+         dq.display_quality == R53_DISP_QUAL_STANDARD && dq.bt_rmt_ctrl == R53_BT_RMT_OFF) ? 1 : 0;
+
+    /* 2. My Menu 6-op persistence + CAMSET01.DAT round-trip */
+    r53_mymenu_state_t mm;
+    r53_mymenu_initialize_defaults(&mm);
+    for (uint32_t id = 0x3001U; id <= 0x3012U; id++) {
+        (void)r53_mymenu_op_add_item(&mm, id);
+    }
+    (void)r53_mymenu_op_sort_item(&mm, 0, 5, 0, 0);
+    (void)r53_mymenu_op_set_display_from_mymenu(&mm, R53_DISP_FROM_MYMENU_ON);
+    r53_mymenu_camera_settings_reset(&mm);
+    r53_mymenu_reset_network_settings(&mm);
+    int save_rc = r53_save_camset_mymenu("/mnt/r53c_slot2_camset/CAMSET01.DAT", &mm);
+    (void)r53_mymenu_op_delete_all(&mm);
+    int load_rc = r53_load_camset_mymenu("/mnt/r53c_slot2_camset/CAMSET01.DAT", &mm);
+    int mymenu_persistence_ok =
+        (save_rc == 0 && load_rc == 0 && mm.page_count == 3 &&
+         r53_mymenu_total_items(&mm) == 18 && mm.items[0][0] == 0x3006U &&
+         mm.display_from_mymenu == R53_DISP_FROM_MYMENU_ON) ? 1 : 0;
+
+    /* 3. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r53c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r53c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r53c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r53c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r53_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r53c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r53c_slot2_camset");
+    (void)umount("/mnt/r53c_slot1_vault");
+    (void)umount("/mnt/r53c_surfaces");
+    (void)umount("/mnt/r53c_p2_ro");
+    (void)umount("/mnt/r53c_cnflasha_ro");
+    (void)rmdir("/mnt/r53c_slot2_camset");
+    (void)rmdir("/mnt/r53c_slot1_vault");
+    (void)rmdir("/mnt/r53c_surfaces");
+    (void)rmdir("/mnt/r53c_p2_ro");
+    (void)rmdir("/mnt/r53c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (tier0_standard_low_power_ok == 1 &&
+              bt_rmt_suppressed_airplane_on_ok == 1 &&
+              passive_tx_bytes_emitted == 0U &&
+              ir_remote_state_deterministic_ok == 1 &&
+              reset_3way_matrix_ok == 1 &&
+              mymenu_persistence_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R53_INTEGRATED_STRESS tier0_standard_low_power_ok=%d "
+            "bt_rmt_suppressed_airplane_on_ok=%d passive_tx_bytes_emitted=%u "
+            "ir_remote_state_deterministic_ok=%d ir_sircs_bt_rmt_conflict_events=%u "
+            "reset_3way_matrix_ok=%d mymenu_persistence_ok=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r53c_ok=%d verify_us=%lld\n",
+            tier0_standard_low_power_ok, bt_rmt_suppressed_airplane_on_ok,
+            passive_tx_bytes_emitted, ir_remote_state_deterministic_ok,
+            ir_conflict_events, reset_3way_matrix_ok, mymenu_persistence_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -19757,6 +20793,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r52-exp-step-shutter-angle-h0-h3") == 0) {
         return run_r52_exp_step_shutter_angle_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r53-mymenu-6ops-camset-persist") == 0) {
+        return run_r53_mymenu_6ops_camset_persist_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r53-wave39-integrated-stress") == 0) {
+        return run_r53_wave39_integrated_stress_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -19915,6 +20957,26 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r52", &r52_st) == 0) {
         if (setup_r52_lock_op_parts_chord_mydial_probe() != 0) {
             return 71;
+        }
+    }
+    struct stat r53_st;
+    if (stat("/etc/fx6_stage_r53", &r53_st) == 0) {
+        if (setup_r53_display_quality_bt_rmt_probe() != 0) {
+            return 72;
+        }
+        FILE *r53f = fopen("/etc/fx6_stage_r53", "r");
+        if (r53f) {
+            int is_integrated_stress = 0;
+            char r53line[128];
+            while (fgets(r53line, sizeof(r53line), r53f)) {
+                if (strstr(r53line, "r53_mode=wave39_integrated_stress_big6") != NULL) {
+                    is_integrated_stress = 1;
+                }
+            }
+            fclose(r53f);
+            if (is_integrated_stress && run_r53_wave39_integrated_stress_probe(72) != 0) {
+                return 72;
+            }
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

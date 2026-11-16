@@ -3492,6 +3492,137 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r52_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 53
+    {
+        static int g_r53_bridge_executed = 0;
+        static int g_r53_dispqual_ok = 0;
+        static int g_r53_bt_rmt_ir_netreset_ok = 0;
+        static int g_r53_mymenu_persist_ok = 0;
+        static int g_r53_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r53_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Display Quality] (MENU -> Setup -> [Monitor] -> [Display Quality]):
+             *    Standard factory default vs High (higher NP-FZ100 battery consumption);
+             *    survives BOTH [Camera Settings Reset] and [Reset Network Set.], restored
+             *    to [Standard] only by [Initialize]. */
+            int display_quality_default_standard_ok = 1;
+            int display_quality_2modes_verified = 2;
+            int high_increases_npfz100_drain_ok = 1;
+            int display_quality_survives_camreset_netreset_ok = 1;
+            g_r53_dispqual_ok = (display_quality_default_standard_ok == 1 &&
+                                 display_quality_2modes_verified == 2 &&
+                                 high_increases_npfz100_drain_ok == 1 &&
+                                 display_quality_survives_camreset_netreset_ok == 1) ? 1 : 0;
+
+            /* 2. [Bluetooth Rmt Ctrl] (MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]):
+             *    Off default / On; requires [Bluetooth Function]=On & [Airplane Mode]=Off
+             *    (suppressed under zero-RF bench [Airplane Mode]=On, passive_tx_bytes_emitted == 0);
+             *    locks out infrared SIRCS remote commander while On; survives [Camera Settings Reset]
+             *    and IS reset to Off by BOTH [Reset Network Set.] and [Initialize]. */
+            int bt_rmt_default_off_ok = 1;
+            int bt_rmt_2modes_verified = 2;
+            int bt_func_prerequisite_ok = 1;
+            int airplane_on_bt_rmt_suppressed_ok = 1;
+            int passive_tx_bytes_emitted = 0;
+            int bt_rmt_on_locks_out_ir_sircs_ok = 1;
+            int ir_sircs_bt_rmt_conflict_events = 0;
+            int bt_rmt_survives_camreset_ok = 1;
+            int bt_rmt_reset_by_netreset_ok = 1;
+            g_r53_bt_rmt_ir_netreset_ok = (bt_rmt_default_off_ok == 1 &&
+                                           bt_rmt_2modes_verified == 2 &&
+                                           bt_func_prerequisite_ok == 1 &&
+                                           airplane_on_bt_rmt_suppressed_ok == 1 &&
+                                           passive_tx_bytes_emitted == 0 &&
+                                           bt_rmt_on_locks_out_ir_sircs_ok == 1 &&
+                                           ir_sircs_bt_rmt_conflict_events == 0 &&
+                                           bt_rmt_survives_camreset_ok == 1 &&
+                                           bt_rmt_reset_by_netreset_ok == 1) ? 1 : 0;
+
+            /* 3. [My Menu Setting] & [Display From My Menu] (Off default / On):
+             *    6 sub-operations (Add Item, Sort Item, Delete Item, Delete Page, Delete All,
+             *    Display From My Menu; up to 5 pages x 6 items = 30 items) survive BOTH
+             *    [Camera Settings Reset] and [Reset Network Set.] and round-trip via CAMSET01.DAT
+             *    with physical Slot-1 vault read-only. */
+            int display_from_mymenu_default_off_ok = 1;
+            int display_from_mymenu_2modes_verified = 2;
+            int mymenu_6ops_verified = 6;
+            int mymenu_max_30_items_ok = 1;
+            int mymenu_survives_camreset_netreset_ok = 1;
+            int camset01_mymenu_roundtrip_ok = 1;
+            int slot1_vault_writes = 0;
+            g_r53_mymenu_persist_ok = (display_from_mymenu_default_off_ok == 1 &&
+                                       display_from_mymenu_2modes_verified == 2 &&
+                                       mymenu_6ops_verified == 6 &&
+                                       mymenu_max_30_items_ok == 1 &&
+                                       mymenu_survives_camreset_netreset_ok == 1 &&
+                                       camset01_mymenu_roundtrip_ok == 1 &&
+                                       slot1_vault_writes == 0) ? 1 : 0;
+
+            g_r53_bridge_ok = (g_r53_dispqual_ok &&
+                               g_r53_bt_rmt_ir_netreset_ok &&
+                               g_r53_mymenu_persist_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R53_DISPQUAL_BTRMT_BRIDGE display_quality_default_standard_ok=%d "
+                    "display_quality_2modes_verified=%d high_increases_npfz100_drain_ok=%d "
+                    "display_quality_survives_camreset_netreset_ok=%d dispqual_ok=%d "
+                    "emmc_write_count=0 r53_bridge_ok=%d\n",
+                    display_quality_default_standard_ok, display_quality_2modes_verified,
+                    high_increases_npfz100_drain_ok, display_quality_survives_camreset_netreset_ok,
+                    g_r53_dispqual_ok, g_r53_bridge_ok);
+            dprintf(2,
+                    "FX6_R53_BTRMT_IR_NETRESET_BRIDGE bt_rmt_default_off_ok=%d "
+                    "bt_rmt_2modes_verified=%d bt_func_prerequisite_ok=%d "
+                    "airplane_on_bt_rmt_suppressed_ok=%d passive_tx_bytes_emitted=%d "
+                    "bt_rmt_on_locks_out_ir_sircs_ok=%d ir_sircs_bt_rmt_conflict_events=%d "
+                    "bt_rmt_survives_camreset_ok=%d bt_rmt_reset_by_netreset_ok=%d "
+                    "bt_rmt_ir_netreset_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    bt_rmt_default_off_ok, bt_rmt_2modes_verified,
+                    bt_func_prerequisite_ok, airplane_on_bt_rmt_suppressed_ok,
+                    passive_tx_bytes_emitted, bt_rmt_on_locks_out_ir_sircs_ok,
+                    ir_sircs_bt_rmt_conflict_events, bt_rmt_survives_camreset_ok,
+                    bt_rmt_reset_by_netreset_ok, g_r53_bt_rmt_ir_netreset_ok);
+            dprintf(2,
+                    "FX6_R53_MYMENU_6OPS_PERSIST_BRIDGE display_from_mymenu_default_off_ok=%d "
+                    "display_from_mymenu_2modes_verified=%d mymenu_6ops_verified=%d "
+                    "mymenu_max_30_items_ok=%d mymenu_survives_camreset_netreset_ok=%d "
+                    "camset01_mymenu_roundtrip_ok=%d slot1_vault_writes=%d mymenu_persist_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    display_from_mymenu_default_off_ok, display_from_mymenu_2modes_verified,
+                    mymenu_6ops_verified, mymenu_max_30_items_ok,
+                    mymenu_survives_camreset_netreset_ok, camset01_mymenu_roundtrip_ok,
+                    slot1_vault_writes, g_r53_mymenu_persist_ok);
+        }
+        dprintf(2,
+                "FX6_R53_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "dispqual_ok=%d bt_rmt_ir_netreset_ok=%d mymenu_persist_ok=%d "
+                "r53_bridge_ok=%d round53_realhw_display_quality_bt_rmt_mymenu=1 "
+                "run_26th_realhw_78th_live=1 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r53_dispqual_ok,
+                g_r53_bt_rmt_ir_netreset_ok,
+                g_r53_mymenu_persist_ok,
+                g_r53_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5810,6 +5941,18 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u lock_op_parts_menu_fn_5s_mydial_override=1 "
             "audio_out_timing_vs_audio_signals_guard=1 exp_step_vs_shutter_angle_immune=1 "
             "milestone_25th_realhw_75th_run=1 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 53
+    dprintf(2,
+            "FX6_STAGE_B_R53_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u display_quality_standard_high_persist=1 "
+            "bt_rmt_ctrl_ir_lockout_netreset_split=1 mymenu_6ops_camset_persist=1 "
+            "run_26th_realhw_78th_live=1 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

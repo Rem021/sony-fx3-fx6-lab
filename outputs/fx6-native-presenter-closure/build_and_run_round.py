@@ -1354,6 +1354,7 @@ def build_stage_a_overlay(
     enable_r50: bool = False,
     enable_r51: bool = False,
     enable_r52: bool = False,
+    enable_r53: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1378,6 +1379,7 @@ def build_stage_a_overlay(
     r50_mode: str = "shoe_audio_4ch_osd_big6",
     r51_mode: str = "framing_settings_crop_hdmi_big6",
     r52_mode: str = "lock_op_parts_chord_mydial_big6",
+    r53_mode: str = "display_quality_bt_rmt_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1697,7 +1699,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r51_mode: {r51_mode}")
     if enable_r52 and r52_mode not in ("lock_op_parts_chord_mydial_big6", "audio_out_timing_vs_audio_signals_guard", "exposure_step_vs_shutter_angle_guard"):
         raise ValueError(f"Unsupported r52_mode: {r52_mode}")
-    if enable_r52 and r52_mode in ("audio_out_timing_vs_audio_signals_guard", "exposure_step_vs_shutter_angle_guard"):
+    if enable_r53 and r53_mode not in ("display_quality_bt_rmt_big6", "mymenu_6ops_camset_persist_guard", "wave39_integrated_stress_big6"):
+        raise ValueError(f"Unsupported r53_mode: {r53_mode}")
+    if enable_r53 and r53_mode == "mymenu_6ops_camset_persist_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r53_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r53-mymenu-6ops-camset-persist > /dev/console 2>&1\n"
+            "fx6_r53_mm_rc=$?\n"
+            "echo FX6_R53_MYMENU_6OPS_RC=$fx6_r53_mm_rc\n"
+            "echo FX6_R53_MYMENU_6OPS_EXIT rc=$fx6_r53_mm_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r53_early_hook, 1)
+    elif enable_r52 and r52_mode in ("audio_out_timing_vs_audio_signals_guard", "exposure_step_vs_shutter_angle_guard"):
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3530,6 +3548,62 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r53_meta: Optional[Dict[str, Any]] = None
+    if enable_r53:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r53_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r53"] = (
+            (
+                f"stage_r53=1\nr53_mode={r53_mode}\n"
+                f"display_quality_standard_high_persist=1\nbt_rmt_ctrl_ir_lockout_netreset_split=1\n"
+                f"mymenu_6ops_camset_persist=1\nrun_26th_realhw_78th_live=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r53_meta = {
+            "r53_mode": r53_mode,
+            "display_quality_menu_path": "MENU -> Setup -> [Monitor] -> [Display Quality]",
+            "display_quality_modes": ["Standard", "High"],
+            "display_quality_default": "Standard",
+            "display_quality_high_increases_npfz100_battery_consumption": True,
+            "display_quality_survives_camera_settings_reset": True,
+            "display_quality_survives_reset_network_settings": True,
+            "display_quality_reset_only_by_initialize": True,
+            "bt_rmt_ctrl_menu_path": "MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]",
+            "bt_rmt_ctrl_modes": ["Off", "On"],
+            "bt_rmt_ctrl_default": "Off",
+            "bt_rmt_ctrl_requires_bt_function_on": True,
+            "bt_rmt_ctrl_requires_airplane_mode_off": True,
+            "bt_rmt_ctrl_suppressed_under_bench_airplane_mode_on": True,
+            "passive_tx_bytes_emitted": 0,
+            "bt_rmt_ctrl_on_locks_out_ir_sircs_remote": True,
+            "bt_rmt_ctrl_survives_camera_settings_reset": True,
+            "bt_rmt_ctrl_reset_by_reset_network_settings": True,
+            "bt_rmt_ctrl_reset_by_initialize": True,
+            "my_menu_setting_menu_path": "MENU -> My Menu -> [My Menu Setting]",
+            "my_menu_6_operations": [
+                "Add Item",
+                "Sort Item",
+                "Delete Item",
+                "Delete Page",
+                "Delete All",
+                "Display From My Menu",
+            ],
+            "display_from_my_menu_modes": ["Off", "On"],
+            "display_from_my_menu_default": "Off",
+            "my_menu_max_pages": 5,
+            "my_menu_max_items_per_page": 6,
+            "my_menu_max_total_items": 30,
+            "my_menu_survives_camera_settings_reset": True,
+            "my_menu_survives_reset_network_settings": True,
+            "my_menu_camset01_roundtrip_verified": True,
+            "slot1_vault_read_only": True,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3575,6 +3649,7 @@ def build_stage_a_overlay(
         "r50_enabled": enable_r50,
         "r51_enabled": enable_r51,
         "r52_enabled": enable_r52,
+        "r53_enabled": enable_r53,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3654,6 +3729,8 @@ def build_stage_a_overlay(
         stage_a_meta["r51"] = r51_meta
     if r52_meta is not None:
         stage_a_meta["r52"] = r52_meta
+    if r53_meta is not None:
+        stage_a_meta["r53"] = r53_meta
     return replacements, additions, stage_a_meta
 
 
@@ -3995,6 +4072,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R50_",
         "FX6_R51_",
         "FX6_R52_",
+        "FX6_R53_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4260,6 +4338,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r52_bridge: Optional[Dict[str, Any]] = None
     r52_audio_timing_signals_rc: Optional[int] = None
     r52_exp_step_shutter_angle_rc: Optional[int] = None
+    last_r53_dispqual_btrmt_init: Optional[Dict[str, Any]] = None
+    last_r53_dispqual_btrmt_bridge: Optional[Dict[str, Any]] = None
+    last_r53_btrmt_ir_netreset_bridge: Optional[Dict[str, Any]] = None
+    last_r53_mymenu_persist_bridge: Optional[Dict[str, Any]] = None
+    last_r53_mymenu_6ops_persist: Optional[Dict[str, Any]] = None
+    last_r53_integrated_stress: Optional[Dict[str, Any]] = None
+    last_r53_lang: Optional[Dict[str, Any]] = None
+    last_r53_bridge: Optional[Dict[str, Any]] = None
+    r53_mymenu_6ops_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -4865,6 +4952,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R52_EXP_STEP_SHUTTER_ANGLE_RC"), int):
                 r52_exp_step_shutter_angle_rc = kv["FX6_R52_EXP_STEP_SHUTTER_ANGLE_RC"]
+        elif "FX6_R53_DISPQUAL_BTRMT_INIT " in line:
+            last_r53_dispqual_btrmt_init = _parse_kv_ints(line.split("FX6_R53_DISPQUAL_BTRMT_INIT ", 1)[1])
+        elif "FX6_R53_DISPQUAL_BTRMT_BRIDGE " in line:
+            last_r53_dispqual_btrmt_bridge = _parse_kv_ints(line.split("FX6_R53_DISPQUAL_BTRMT_BRIDGE ", 1)[1])
+        elif "FX6_R53_BTRMT_IR_NETRESET_BRIDGE " in line:
+            last_r53_btrmt_ir_netreset_bridge = _parse_kv_ints(line.split("FX6_R53_BTRMT_IR_NETRESET_BRIDGE ", 1)[1])
+        elif "FX6_R53_MYMENU_6OPS_PERSIST_BRIDGE " in line:
+            last_r53_mymenu_persist_bridge = _parse_kv_ints(line.split("FX6_R53_MYMENU_6OPS_PERSIST_BRIDGE ", 1)[1])
+        elif "FX6_R53_MYMENU_6OPS_PERSIST " in line:
+            last_r53_mymenu_6ops_persist = _parse_kv_ints(line.split("FX6_R53_MYMENU_6OPS_PERSIST ", 1)[1])
+        elif "FX6_R53_INTEGRATED_STRESS " in line:
+            last_r53_integrated_stress = _parse_kv_ints(line.split("FX6_R53_INTEGRATED_STRESS ", 1)[1])
+        elif "FX6_R53_LANG_TELEMETRY " in line:
+            last_r53_lang = _parse_kv_ints(line.split("FX6_R53_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R53_BRIDGE " in line:
+            last_r53_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R53_BRIDGE ", 1)[1])
+        elif "FX6_R53_MYMENU_6OPS_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R53_MYMENU_6OPS_RC"), int):
+                r53_mymenu_6ops_rc = kv["FX6_R53_MYMENU_6OPS_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -5528,6 +5635,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r52_bridge or {},
         }
 
+    r53_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r53_dispqual_btrmt_init,
+            last_r53_dispqual_btrmt_bridge,
+            last_r53_btrmt_ir_netreset_bridge,
+            last_r53_mymenu_persist_bridge,
+            last_r53_mymenu_6ops_persist,
+            last_r53_integrated_stress,
+            last_r53_lang,
+            last_r53_bridge,
+        )
+    ):
+        r53_telemetry = {
+            "mymenu_6ops_rc": r53_mymenu_6ops_rc,
+            "dispqual_btrmt_init": last_r53_dispqual_btrmt_init or {},
+            "dispqual_btrmt_bridge": last_r53_dispqual_btrmt_bridge or {},
+            "btrmt_ir_netreset_bridge": last_r53_btrmt_ir_netreset_bridge or {},
+            "mymenu_persist_bridge": last_r53_mymenu_persist_bridge or {},
+            "mymenu_6ops_persist": last_r53_mymenu_6ops_persist or {},
+            "integrated_stress": last_r53_integrated_stress or {},
+            "lang_telemetry": last_r53_lang or {},
+            "stage_b_bridge": last_r53_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -5577,6 +5710,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r50_telemetry": r50_telemetry,
         "r51_telemetry": r51_telemetry,
         "r52_telemetry": r52_telemetry,
+        "r53_telemetry": r53_telemetry,
     }
 
 
@@ -5682,6 +5816,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r51"
     if args.round >= 52:
         tmp_prefix = "fx6-r52"
+    if args.round >= 53:
+        tmp_prefix = "fx6-r53"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -5744,8 +5880,12 @@ def run_once(args: argparse.Namespace) -> int:
         r50_mode = getattr(args, "r50_mode", "shoe_audio_4ch_osd_big6")
         r51_mode = getattr(args, "r51_mode", "framing_settings_crop_hdmi_big6")
         r52_mode = getattr(args, "r52_mode", "lock_op_parts_chord_mydial_big6")
+        r53_mode = getattr(args, "r53_mode", "display_quality_bt_rmt_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone26thRealHw78thRunWave39DisplayQualityBtRmtCtrlIrLockoutNetResetMyMenu6OpsPersist+r53_mode={r53_mode}+lang={lang})"
+                if args.round >= 53
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone25thRealHw75thRunWave38LockOpPartsMenuFn5sMyDialAudioTimingSignalsExpStepShutterAngle+r52_mode={r52_mode}+lang={lang})"
                 if args.round >= 52
                 else (
@@ -5918,6 +6058,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -5992,6 +6133,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r51_mode=r51_mode,
                 enable_r52=(args.round >= 52),
                 r52_mode=r52_mode,
+                enable_r53=(args.round >= 53),
+                r53_mode=r53_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -6152,6 +6295,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R51_ANTIFLICKER_NO_VAR_EXIT" in txt
                     or "FX6_R52_AUDIO_TIMING_SIGNALS_EXIT" in txt
                     or "FX6_R52_EXP_STEP_SHUTTER_ANGLE_EXIT" in txt
+                    or "FX6_R53_MYMENU_6OPS_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -6214,6 +6358,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R51_ANTIFLICKER_NO_VAR_EXIT" in serial_text
             or "FX6_R52_AUDIO_TIMING_SIGNALS_EXIT" in serial_text
             or "FX6_R52_EXP_STEP_SHUTTER_ANGLE_EXIT" in serial_text
+            or "FX6_R53_MYMENU_6OPS_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -6289,6 +6434,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r50_mode": r50_mode if args.round >= 50 else None,
             "r51_mode": r51_mode if args.round >= 51 else None,
             "r52_mode": r52_mode if args.round >= 52 else None,
+            "r53_mode": r53_mode if args.round >= 53 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -6348,6 +6494,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r50_telemetry": milestones.get("r50_telemetry") if args.round >= 50 else None,
             "r51_telemetry": milestones.get("r51_telemetry") if args.round >= 51 else None,
             "r52_telemetry": milestones.get("r52_telemetry") if args.round >= 52 else None,
+            "r53_telemetry": milestones.get("r53_telemetry") if args.round >= 53 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -6402,7 +6549,8 @@ def main() -> int:
     # r49_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
     # r50_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
     # r51_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52], required=True)
+    # r52_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -6429,6 +6577,7 @@ def main() -> int:
     ap.add_argument("--r50-mode", type=str, choices=["shoe_audio_4ch_osd_big6", "wind_noise_builtin_only_guard", "saveload_camset_c3_vault_h0_h3"], default="shoe_audio_4ch_osd_big6")
     ap.add_argument("--r51-mode", type=str, choices=["framing_settings_crop_hdmi_big6", "usb_power_npfz100_and_usb_lun_guard", "antiflicker_mech_still_no_var_shutter_guard"], default="framing_settings_crop_hdmi_big6")
     ap.add_argument("--r52-mode", type=str, choices=["lock_op_parts_chord_mydial_big6", "audio_out_timing_vs_audio_signals_guard", "exposure_step_vs_shutter_angle_guard"], default="lock_op_parts_chord_mydial_big6")
+    ap.add_argument("--r53-mode", type=str, choices=["display_quality_bt_rmt_big6", "mymenu_6ops_camset_persist_guard", "wave39_integrated_stress_big6"], default="display_quality_bt_rmt_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

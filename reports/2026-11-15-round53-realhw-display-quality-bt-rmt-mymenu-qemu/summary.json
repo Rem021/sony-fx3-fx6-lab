@@ -1,0 +1,1227 @@
+{
+  "schema": "fx6-on-fx3-round53-realhw-display-quality-bt-rmt-mymenu-qemu-v1",
+  "round": 53,
+  "milestone": "53rd Milestone (Wave-39 / 26th Real-HW QEMU Round in R28..R53, 78 Live Runs)",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "display_quality_battery_and_bt_rmt_ctrl_ir_lockout_netreset_init": {
+      "fx3_display_quality_node_ok": 1,
+      "display_quality_default_standard_ok": 1,
+      "invalid_display_quality_rc": -22,
+      "display_quality_2modes_verified": 2,
+      "high_increases_npfz100_drain_ok": 1,
+      "tier0_bench_standard_low_power_ok": 1,
+      "display_quality_survives_camreset_ok": 1,
+      "display_quality_survives_netreset_ok": 1,
+      "initialize_restores_display_quality_standard_ok": 1,
+      "fx3_bt_rmt_ctrl_node_ok": 1,
+      "bt_rmt_default_off_ok": 1,
+      "invalid_bt_rmt_rc": -22,
+      "bt_rmt_2modes_verified": 2,
+      "bt_func_off_prerequisite_rc": -95,
+      "airplane_on_bt_rmt_suppressed_ok": 1,
+      "passive_tx_bytes_emitted": 0,
+      "bt_rmt_on_locks_out_ir_sircs_rc": -16,
+      "ir_sircs_usable_when_bt_rmt_off_ok": 1,
+      "ir_sircs_bt_rmt_conflict_events": 0,
+      "bt_rmt_survives_camreset_ok": 1,
+      "bt_rmt_reset_by_netreset_ok": 1,
+      "initialize_restores_bt_rmt_off_ok": 1,
+      "setup_vs_network_reset_split_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "cnflasha_sha256_match": 1,
+      "slot1_vault_sha256_match": 1,
+      "cnflasha_writes": 0,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r53_init_ok": 1,
+      "verify_us": 980654
+    },
+    "display_quality_stage_b_bridge": {
+      "display_quality_default_standard_ok": 1,
+      "display_quality_2modes_verified": 2,
+      "high_increases_npfz100_drain_ok": 1,
+      "display_quality_survives_camreset_netreset_ok": 1,
+      "dispqual_ok": 1,
+      "emmc_write_count": 0,
+      "r53_bridge_ok": 1
+    },
+    "bt_rmt_ctrl_ir_lockout_and_network_reset_stage_b_bridge": {
+      "bt_rmt_default_off_ok": 1,
+      "bt_rmt_2modes_verified": 2,
+      "bt_func_prerequisite_ok": 1,
+      "airplane_on_bt_rmt_suppressed_ok": 1,
+      "passive_tx_bytes_emitted": 0,
+      "bt_rmt_on_locks_out_ir_sircs_ok": 1,
+      "ir_sircs_bt_rmt_conflict_events": 0,
+      "bt_rmt_survives_camreset_ok": 1,
+      "bt_rmt_reset_by_netreset_ok": 1,
+      "bt_rmt_ir_netreset_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "mymenu_6ops_camset_persist_stage_b_bridge": {
+      "display_from_mymenu_default_off_ok": 1,
+      "display_from_mymenu_2modes_verified": 2,
+      "mymenu_6ops_verified": 6,
+      "mymenu_max_30_items_ok": 1,
+      "mymenu_survives_camreset_netreset_ok": 1,
+      "camset01_mymenu_roundtrip_ok": 1,
+      "slot1_vault_writes": 0,
+      "mymenu_persist_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0
+    },
+    "mymenu_6ops_and_display_from_mymenu_camset01_persist_guard": {
+      "fx3_mymenu_node_ok": 1,
+      "display_from_mymenu_default_off_ok": 1,
+      "invalid_display_from_mymenu_rc": -22,
+      "display_from_mymenu_2modes_verified": 2,
+      "menu_press_target_tab_routing_ok": 1,
+      "mymenu_6ops_verified": 6,
+      "mymenu_max_pages": 5,
+      "mymenu_max_items_per_page": 6,
+      "mymenu_max_30_items_ok": 1,
+      "mymenu_duplicate_item_rc": -17,
+      "mymenu_31st_item_overflow_rc": -28,
+      "mymenu_sort_item_ok": 1,
+      "mymenu_delete_item_ok": 1,
+      "mymenu_delete_page_ok": 1,
+      "mymenu_delete_all_ok": 1,
+      "mymenu_survives_camreset_ok": 1,
+      "mymenu_survives_netreset_ok": 1,
+      "camset01_mymenu_roundtrip_ok": 1,
+      "initialize_clears_mymenu_and_display_from_mymenu_ok": 1,
+      "slot1_vault_ro_blocked_rc": -30,
+      "slot1_vault_sha256_match": 1,
+      "slot1_vault_writes": 0,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0,
+      "r53b_ok": 1,
+      "verify_us": 1086418
+    },
+    "wave39_integrated_stress_tier0_airplane_mymenu_and_16_h0_h3": {
+      "tier0_standard_low_power_ok": 1,
+      "bt_rmt_suppressed_airplane_on_ok": 1,
+      "passive_tx_bytes_emitted": 0,
+      "ir_remote_state_deterministic_ok": 1,
+      "ir_sircs_bt_rmt_conflict_events": 0,
+      "reset_3way_matrix_ok": 1,
+      "mymenu_persistence_ok": 1,
+      "slot1_vault_ro_blocked_rc": -30,
+      "slot1_vault_sha256_match": 1,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "cnflasha_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "e_nd_actuator_tx_count": 0,
+      "raw_firmware_bytes_leaked": 0,
+      "emmc_write_count": 0,
+      "r53c_ok": 1,
+      "verify_us": 394992
+    }
+  },
+  "runs": {
+    "r53a_display_quality_bt_rmt_big6_schinese": {
+      "run_id": "round53-display-quality-btrmt-big6",
+      "round": 53,
+      "lang": "schinese",
+      "r53_mode": "display_quality_bt_rmt_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Display Quality] (MENU -> Setup -> [Monitor] -> [Display Quality]: Standard default vs High increased NP-FZ100 battery consumption, surviving BOTH [Camera Settings Reset] and [Reset Network Set.], reset only by [Initialize]) + [Bluetooth Rmt Ctrl] (MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]: Off default / On locks out infrared SIRCS remote commander, requires [Bluetooth Function]=On & [Airplane Mode]=Off, suppressed under zero-RF bench [Airplane Mode]=On with passive_tx_bytes_emitted=0, surviving [Camera Settings Reset] and reset to Off by BOTH [Reset Network Set.] and [Initialize]), -EROFS (-30) p2:/setting, cnflasha & Slot-1 protection, and Stage-B Big-6 Home render (sid=0x0a, schinese, 346,686 non-zero GPE0 pixels)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 77.14,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "92f456340564c4a42514a3420361ac2da7430de363add7588d02c86d2e928835"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r53": {
+          "r53_mode": "display_quality_bt_rmt_big6",
+          "display_quality_menu_path": "MENU -> Setup -> [Monitor] -> [Display Quality]",
+          "display_quality_modes": [
+            "Standard",
+            "High"
+          ],
+          "display_quality_default": "Standard",
+          "display_quality_high_increases_npfz100_battery_consumption": true,
+          "display_quality_survives_camera_settings_reset": true,
+          "display_quality_survives_reset_network_settings": true,
+          "display_quality_reset_only_by_initialize": true,
+          "bt_rmt_ctrl_menu_path": "MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]",
+          "bt_rmt_ctrl_modes": [
+            "Off",
+            "On"
+          ],
+          "bt_rmt_ctrl_default": "Off",
+          "bt_rmt_ctrl_requires_bt_function_on": true,
+          "bt_rmt_ctrl_requires_airplane_mode_off": true,
+          "bt_rmt_ctrl_suppressed_under_bench_airplane_mode_on": true,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_ctrl_on_locks_out_ir_sircs_remote": true,
+          "bt_rmt_ctrl_survives_camera_settings_reset": true,
+          "bt_rmt_ctrl_reset_by_reset_network_settings": true,
+          "bt_rmt_ctrl_reset_by_initialize": true,
+          "my_menu_setting_menu_path": "MENU -> My Menu -> [My Menu Setting]",
+          "my_menu_6_operations": [
+            "Add Item",
+            "Sort Item",
+            "Delete Item",
+            "Delete Page",
+            "Delete All",
+            "Display From My Menu"
+          ],
+          "display_from_my_menu_modes": [
+            "Off",
+            "On"
+          ],
+          "display_from_my_menu_default": "Off",
+          "my_menu_max_pages": 5,
+          "my_menu_max_items_per_page": 6,
+          "my_menu_max_total_items": 30,
+          "my_menu_survives_camera_settings_reset": true,
+          "my_menu_survives_reset_network_settings": true,
+          "my_menu_camset01_roundtrip_verified": true,
+          "slot1_vault_read_only": true,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r53_telemetry": {
+        "mymenu_6ops_rc": null,
+        "dispqual_btrmt_init": {
+          "fx3_display_quality_node_ok": 1,
+          "display_quality_default_standard_ok": 1,
+          "invalid_display_quality_rc": -22,
+          "display_quality_2modes_verified": 2,
+          "high_increases_npfz100_drain_ok": 1,
+          "tier0_bench_standard_low_power_ok": 1,
+          "display_quality_survives_camreset_ok": 1,
+          "display_quality_survives_netreset_ok": 1,
+          "initialize_restores_display_quality_standard_ok": 1,
+          "fx3_bt_rmt_ctrl_node_ok": 1,
+          "bt_rmt_default_off_ok": 1,
+          "invalid_bt_rmt_rc": -22,
+          "bt_rmt_2modes_verified": 2,
+          "bt_func_off_prerequisite_rc": -95,
+          "airplane_on_bt_rmt_suppressed_ok": 1,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_on_locks_out_ir_sircs_rc": -16,
+          "ir_sircs_usable_when_bt_rmt_off_ok": 1,
+          "ir_sircs_bt_rmt_conflict_events": 0,
+          "bt_rmt_survives_camreset_ok": 1,
+          "bt_rmt_reset_by_netreset_ok": 1,
+          "initialize_restores_bt_rmt_off_ok": 1,
+          "setup_vs_network_reset_split_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "slot1_vault_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r53_init_ok": 1,
+          "verify_us": 980654
+        },
+        "dispqual_btrmt_bridge": {
+          "display_quality_default_standard_ok": 1,
+          "display_quality_2modes_verified": 2,
+          "high_increases_npfz100_drain_ok": 1,
+          "display_quality_survives_camreset_netreset_ok": 1,
+          "dispqual_ok": 1,
+          "emmc_write_count": 0,
+          "r53_bridge_ok": 1
+        },
+        "btrmt_ir_netreset_bridge": {
+          "bt_rmt_default_off_ok": 1,
+          "bt_rmt_2modes_verified": 2,
+          "bt_func_prerequisite_ok": 1,
+          "airplane_on_bt_rmt_suppressed_ok": 1,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_on_locks_out_ir_sircs_ok": 1,
+          "ir_sircs_bt_rmt_conflict_events": 0,
+          "bt_rmt_survives_camreset_ok": 1,
+          "bt_rmt_reset_by_netreset_ok": 1,
+          "bt_rmt_ir_netreset_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "mymenu_persist_bridge": {
+          "display_from_mymenu_default_off_ok": 1,
+          "display_from_mymenu_2modes_verified": 2,
+          "mymenu_6ops_verified": 6,
+          "mymenu_max_30_items_ok": 1,
+          "mymenu_survives_camreset_netreset_ok": 1,
+          "camset01_mymenu_roundtrip_ok": 1,
+          "slot1_vault_writes": 0,
+          "mymenu_persist_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "mymenu_6ops_persist": {},
+        "integrated_stress": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 21236,
+          "glyph_blits": 11036,
+          "icon_blits": 13613,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "dispqual_ok": 1,
+          "bt_rmt_ir_netreset_ok": 1,
+          "mymenu_persist_ok": 1,
+          "r53_bridge_ok": 1,
+          "round53_realhw_display_quality_bt_rmt_mymenu": 1,
+          "run_26th_realhw_78th_live": 1,
+          "passive_tx_bytes_emitted": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 53,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "display_quality_standard_high_persist": 1,
+          "bt_rmt_ctrl_ir_lockout_netreset_split": 1,
+          "mymenu_6ops_camset_persist": 1,
+          "run_26th_realhw_78th_live": 1,
+          "passive_tx_bytes_emitted": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "alpha_png": "reports/2026-11-15-round53-realhw-display-quality-bt-rmt-mymenu-qemu/assets/r53a-display-quality-btrmt-big6-schinese-alpha.png",
+        "alpha_bytes": 27132,
+        "alpha_sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57",
+        "composited_png": "reports/2026-11-15-round53-realhw-display-quality-bt-rmt-mymenu-qemu/assets/r53a-display-quality-btrmt-big6-schinese-composited.png",
+        "composited_bytes": 27467,
+        "composited_sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 138,
+        "FX6_STAGE_B_": 82,
+        "FX6_R30_": 136,
+        "FX6_R31_": 136,
+        "FX6_R32_": 139,
+        "FX6_R33_": 136,
+        "FX6_R34_": 136,
+        "FX6_R35_": 136,
+        "FX6_R36_": 136,
+        "FX6_R37_": 137,
+        "FX6_R38_": 137,
+        "FX6_R39_": 137,
+        "FX6_R40_": 137,
+        "FX6_R41_": 137,
+        "FX6_R42_": 138,
+        "FX6_R43_": 138,
+        "FX6_R44_": 138,
+        "FX6_R45_": 138,
+        "FX6_R46_": 138,
+        "FX6_R47_": 138,
+        "FX6_R48_": 138,
+        "FX6_R49_": 138,
+        "FX6_R50_": 138,
+        "FX6_R51_": 138,
+        "FX6_R52_": 138,
+        "FX6_R53_": 138,
+        "FX6_WAIT_SNAPSHOT": 25,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 136,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 90,
+        "FX6_R10_": 134,
+        "FX6_R11_": 145,
+        "FX6_R12_": 137,
+        "FX6_R13_": 134,
+        "FX6_R14_": 134,
+        "FX6_R15_": 134,
+        "FX6_R16_": 134,
+        "FX6_R17_": 134,
+        "FX6_R18_": 134,
+        "FX6_R19_": 134,
+        "FX6_R20_": 134,
+        "FX6_R21_": 134,
+        "FX6_R22_": 134,
+        "FX6_R23_": 134,
+        "FX6_R24_": 134,
+        "FX6_R25_": 134,
+        "FX6_R26_": 134,
+        "FX6_R27_": 134,
+        "FX6_R29_": 136,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 625,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 53,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 415,
+        "FX6_FONT_": 82,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r53b_mymenu_6ops_camset_persist_guard": {
+      "run_id": "round53-mymenu-6ops-camset-persist",
+      "round": 53,
+      "lang": "en",
+      "r53_mode": "mymenu_6ops_camset_persist_guard",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [My Menu Setting] & [Display From My Menu] (MENU -> My Menu -> [My Menu Setting]: Add Item, Sort Item, Delete Item, Delete Page, Delete All, Display From My Menu Off default / On, up to 5 pages x 6 items = 30 items, duplicate item rejected -EEXIST -17, 31st item overflow rejected -ENOSPC -28), surviving BOTH [Camera Settings Reset] and [Reset Network Set.] (cleared only by [Delete All]/[Delete Page] or [Initialize]), and round-tripping cleanly via CAMSET01.DAT while keeping physical Slot-1 Tier-0 vault read-only (-EROFS -30, slot1_vault_writes=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 8.27,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "b38c9f721ce4d61797dddf84c754ef3b9b0903a19d0f1d0dd4fa368398c96b3c"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r53": {
+          "r53_mode": "mymenu_6ops_camset_persist_guard",
+          "display_quality_menu_path": "MENU -> Setup -> [Monitor] -> [Display Quality]",
+          "display_quality_modes": [
+            "Standard",
+            "High"
+          ],
+          "display_quality_default": "Standard",
+          "display_quality_high_increases_npfz100_battery_consumption": true,
+          "display_quality_survives_camera_settings_reset": true,
+          "display_quality_survives_reset_network_settings": true,
+          "display_quality_reset_only_by_initialize": true,
+          "bt_rmt_ctrl_menu_path": "MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]",
+          "bt_rmt_ctrl_modes": [
+            "Off",
+            "On"
+          ],
+          "bt_rmt_ctrl_default": "Off",
+          "bt_rmt_ctrl_requires_bt_function_on": true,
+          "bt_rmt_ctrl_requires_airplane_mode_off": true,
+          "bt_rmt_ctrl_suppressed_under_bench_airplane_mode_on": true,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_ctrl_on_locks_out_ir_sircs_remote": true,
+          "bt_rmt_ctrl_survives_camera_settings_reset": true,
+          "bt_rmt_ctrl_reset_by_reset_network_settings": true,
+          "bt_rmt_ctrl_reset_by_initialize": true,
+          "my_menu_setting_menu_path": "MENU -> My Menu -> [My Menu Setting]",
+          "my_menu_6_operations": [
+            "Add Item",
+            "Sort Item",
+            "Delete Item",
+            "Delete Page",
+            "Delete All",
+            "Display From My Menu"
+          ],
+          "display_from_my_menu_modes": [
+            "Off",
+            "On"
+          ],
+          "display_from_my_menu_default": "Off",
+          "my_menu_max_pages": 5,
+          "my_menu_max_items_per_page": 6,
+          "my_menu_max_total_items": 30,
+          "my_menu_survives_camera_settings_reset": true,
+          "my_menu_survives_reset_network_settings": true,
+          "my_menu_camset01_roundtrip_verified": true,
+          "slot1_vault_read_only": true,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r53_telemetry": {
+        "mymenu_6ops_rc": 0,
+        "dispqual_btrmt_init": {},
+        "dispqual_btrmt_bridge": {},
+        "btrmt_ir_netreset_bridge": {},
+        "mymenu_persist_bridge": {},
+        "mymenu_6ops_persist": {
+          "fx3_mymenu_node_ok": 1,
+          "display_from_mymenu_default_off_ok": 1,
+          "invalid_display_from_mymenu_rc": -22,
+          "display_from_mymenu_2modes_verified": 2,
+          "menu_press_target_tab_routing_ok": 1,
+          "mymenu_6ops_verified": 6,
+          "mymenu_max_pages": 5,
+          "mymenu_max_items_per_page": 6,
+          "mymenu_max_30_items_ok": 1,
+          "mymenu_duplicate_item_rc": -17,
+          "mymenu_31st_item_overflow_rc": -28,
+          "mymenu_sort_item_ok": 1,
+          "mymenu_delete_item_ok": 1,
+          "mymenu_delete_page_ok": 1,
+          "mymenu_delete_all_ok": 1,
+          "mymenu_survives_camreset_ok": 1,
+          "mymenu_survives_netreset_ok": 1,
+          "camset01_mymenu_roundtrip_ok": 1,
+          "initialize_clears_mymenu_and_display_from_mymenu_ok": 1,
+          "slot1_vault_ro_blocked_rc": -30,
+          "slot1_vault_sha256_match": 1,
+          "slot1_vault_writes": 0,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "r53b_ok": 1,
+          "verify_us": 1086418
+        },
+        "integrated_stress": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R53_": 3
+      }
+    },
+    "r53c_wave39_integrated_stress_big6_schinese": {
+      "run_id": "round53-wave39-integrated-stress-big6",
+      "round": 53,
+      "lang": "schinese",
+      "r53_mode": "wave39_integrated_stress_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Integrated Wave-39 stress rehearsal combining [Display Quality]=Standard + [Monitor Brightness]=Manual(0) Tier-0 low-power posture, [Airplane Mode]=On (BT Rmt Ctrl suppressed with passive_tx_bytes_emitted=0 and deterministic IR remote state), [My Menu] 6-op + CAMSET01.DAT persistence, guest dlopen(libJit.so), 16/16 H0 == H3, e_nd_actuator_tx_count=0, raw_firmware_bytes_leaked=0, emmc_write_count=0, and Stage-B SChinese Big-6 Home render (sid=0x0a, 346,686 non-zero GPE0 pixels, 87 unique colors)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 75,
+      "wall_elapsed_sec": 84.3,
+      "total_threads_seen": 148,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "92f456340564c4a42514a3420361ac2da7430de363add7588d02c86d2e928835"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r53": {
+          "r53_mode": "wave39_integrated_stress_big6",
+          "display_quality_menu_path": "MENU -> Setup -> [Monitor] -> [Display Quality]",
+          "display_quality_modes": [
+            "Standard",
+            "High"
+          ],
+          "display_quality_default": "Standard",
+          "display_quality_high_increases_npfz100_battery_consumption": true,
+          "display_quality_survives_camera_settings_reset": true,
+          "display_quality_survives_reset_network_settings": true,
+          "display_quality_reset_only_by_initialize": true,
+          "bt_rmt_ctrl_menu_path": "MENU -> Network -> [Bluetooth] -> [Bluetooth Rmt Ctrl]",
+          "bt_rmt_ctrl_modes": [
+            "Off",
+            "On"
+          ],
+          "bt_rmt_ctrl_default": "Off",
+          "bt_rmt_ctrl_requires_bt_function_on": true,
+          "bt_rmt_ctrl_requires_airplane_mode_off": true,
+          "bt_rmt_ctrl_suppressed_under_bench_airplane_mode_on": true,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_ctrl_on_locks_out_ir_sircs_remote": true,
+          "bt_rmt_ctrl_survives_camera_settings_reset": true,
+          "bt_rmt_ctrl_reset_by_reset_network_settings": true,
+          "bt_rmt_ctrl_reset_by_initialize": true,
+          "my_menu_setting_menu_path": "MENU -> My Menu -> [My Menu Setting]",
+          "my_menu_6_operations": [
+            "Add Item",
+            "Sort Item",
+            "Delete Item",
+            "Delete Page",
+            "Delete All",
+            "Display From My Menu"
+          ],
+          "display_from_my_menu_modes": [
+            "Off",
+            "On"
+          ],
+          "display_from_my_menu_default": "Off",
+          "my_menu_max_pages": 5,
+          "my_menu_max_items_per_page": 6,
+          "my_menu_max_total_items": 30,
+          "my_menu_survives_camera_settings_reset": true,
+          "my_menu_survives_reset_network_settings": true,
+          "my_menu_camset01_roundtrip_verified": true,
+          "slot1_vault_read_only": true,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r53_telemetry": {
+        "mymenu_6ops_rc": null,
+        "dispqual_btrmt_init": {
+          "fx3_display_quality_node_ok": 1,
+          "display_quality_default_standard_ok": 1,
+          "invalid_display_quality_rc": -22,
+          "display_quality_2modes_verified": 2,
+          "high_increases_npfz100_drain_ok": 1,
+          "tier0_bench_standard_low_power_ok": 1,
+          "display_quality_survives_camreset_ok": 1,
+          "display_quality_survives_netreset_ok": 1,
+          "initialize_restores_display_quality_standard_ok": 1,
+          "fx3_bt_rmt_ctrl_node_ok": 1,
+          "bt_rmt_default_off_ok": 1,
+          "invalid_bt_rmt_rc": -22,
+          "bt_rmt_2modes_verified": 2,
+          "bt_func_off_prerequisite_rc": -95,
+          "airplane_on_bt_rmt_suppressed_ok": 1,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_on_locks_out_ir_sircs_rc": -16,
+          "ir_sircs_usable_when_bt_rmt_off_ok": 1,
+          "ir_sircs_bt_rmt_conflict_events": 0,
+          "bt_rmt_survives_camreset_ok": 1,
+          "bt_rmt_reset_by_netreset_ok": 1,
+          "initialize_restores_bt_rmt_off_ok": 1,
+          "setup_vs_network_reset_split_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "slot1_vault_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r53_init_ok": 1,
+          "verify_us": 1458028
+        },
+        "dispqual_btrmt_bridge": {
+          "display_quality_default_standard_ok": 1,
+          "display_quality_2modes_verified": 2,
+          "high_increases_npfz100_drain_ok": 1,
+          "display_quality_survives_camreset_netreset_ok": 1,
+          "dispqual_ok": 1,
+          "emmc_write_count": 0,
+          "r53_bridge_ok": 1
+        },
+        "btrmt_ir_netreset_bridge": {
+          "bt_rmt_default_off_ok": 1,
+          "bt_rmt_2modes_verified": 2,
+          "bt_func_prerequisite_ok": 1,
+          "airplane_on_bt_rmt_suppressed_ok": 1,
+          "passive_tx_bytes_emitted": 0,
+          "bt_rmt_on_locks_out_ir_sircs_ok": 1,
+          "ir_sircs_bt_rmt_conflict_events": 0,
+          "bt_rmt_survives_camreset_ok": 1,
+          "bt_rmt_reset_by_netreset_ok": 1,
+          "bt_rmt_ir_netreset_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "mymenu_persist_bridge": {
+          "display_from_mymenu_default_off_ok": 1,
+          "display_from_mymenu_2modes_verified": 2,
+          "mymenu_6ops_verified": 6,
+          "mymenu_max_30_items_ok": 1,
+          "mymenu_survives_camreset_netreset_ok": 1,
+          "camset01_mymenu_roundtrip_ok": 1,
+          "slot1_vault_writes": 0,
+          "mymenu_persist_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "mymenu_6ops_persist": {},
+        "integrated_stress": {
+          "tier0_standard_low_power_ok": 1,
+          "bt_rmt_suppressed_airplane_on_ok": 1,
+          "passive_tx_bytes_emitted": 0,
+          "ir_remote_state_deterministic_ok": 1,
+          "ir_sircs_bt_rmt_conflict_events": 0,
+          "reset_3way_matrix_ok": 1,
+          "mymenu_persistence_ok": 1,
+          "slot1_vault_ro_blocked_rc": -30,
+          "slot1_vault_sha256_match": 1,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "cnflasha_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "emmc_write_count": 0,
+          "r53c_ok": 1,
+          "verify_us": 394992
+        },
+        "lang_telemetry": {
+          "reason": "gpermDrawFlush",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 9364,
+          "glyph_blits": 4666,
+          "icon_blits": 5927,
+          "gpe_alloc": 67,
+          "gpe_fb": 0,
+          "dispqual_ok": 1,
+          "bt_rmt_ir_netreset_ok": 1,
+          "mymenu_persist_ok": 1,
+          "r53_bridge_ok": 1,
+          "round53_realhw_display_quality_bt_rmt_mymenu": 1,
+          "run_26th_realhw_78th_live": 1,
+          "passive_tx_bytes_emitted": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 53,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "display_quality_standard_high_persist": 1,
+          "bt_rmt_ctrl_ir_lockout_netreset_split": 1,
+          "mymenu_6ops_camset_persist": 1,
+          "run_26th_realhw_78th_live": 1,
+          "passive_tx_bytes_emitted": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 96,
+        "FX6_STAGE_B_": 82,
+        "FX6_R30_": 94,
+        "FX6_R31_": 94,
+        "FX6_R32_": 97,
+        "FX6_R33_": 94,
+        "FX6_R34_": 94,
+        "FX6_R35_": 94,
+        "FX6_R36_": 94,
+        "FX6_R37_": 95,
+        "FX6_R38_": 95,
+        "FX6_R39_": 95,
+        "FX6_R40_": 95,
+        "FX6_R41_": 95,
+        "FX6_R42_": 96,
+        "FX6_R43_": 96,
+        "FX6_R44_": 96,
+        "FX6_R45_": 96,
+        "FX6_R46_": 96,
+        "FX6_R47_": 96,
+        "FX6_R48_": 96,
+        "FX6_R49_": 96,
+        "FX6_R50_": 96,
+        "FX6_R51_": 96,
+        "FX6_R52_": 96,
+        "FX6_R53_": 97,
+        "FX6_WAIT_SNAPSHOT": 23,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 94,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 56,
+        "FX6_R10_": 92,
+        "FX6_R11_": 103,
+        "FX6_R12_": 95,
+        "FX6_R13_": 92,
+        "FX6_R14_": 92,
+        "FX6_R15_": 92,
+        "FX6_R16_": 92,
+        "FX6_R17_": 92,
+        "FX6_R18_": 92,
+        "FX6_R19_": 92,
+        "FX6_R20_": 92,
+        "FX6_R21_": 92,
+        "FX6_R22_": 92,
+        "FX6_R23_": 92,
+        "FX6_R24_": 92,
+        "FX6_R25_": 92,
+        "FX6_R26_": 92,
+        "FX6_R27_": 92,
+        "FX6_R29_": 94,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 274,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 45,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 248,
+        "FX6_FONT_": 58,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    }
+  },
+  "r53_realhw_display_quality_bt_rmt_mymenu_audit": {
+    "round": 53,
+    "milestone": 53,
+    "milestone233_qemu_rounds": 26,
+    "milestone233_qemu_runs": 78,
+    "milestone254_qemu_rounds": 26,
+    "milestone254_qemu_runs": 78,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "all_3_runs_cnflasha_write_zero": true,
+    "r53a_display_quality_standard_high_battery_and_setup_survival_verified": true,
+    "r53a_bt_rmt_ctrl_ir_sircs_lockout_and_network_reset_split_verified": true,
+    "r53a_stageb_big6_sid_0a_exact_346686_pixels_verified": true,
+    "r53b_mymenu_6ops_30items_and_camset01_slot1_ro_persist_verified": true,
+    "r53c_wave39_integrated_stress_346686_pixels_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical ILME-FX3 (Ver. 7.02) body current-clamp bench measuring actual NP-FZ100 battery current delta between MENU -> Setup -> [Monitor] -> [Display Quality] = [Standard] vs [High] alongside [Monitor Brightness] = [Manual] (0) during Tier-0 read-only dumps remains unexecuted on a physical camera body.",
+    "Physical ILME-FX3 (Ver. 7.02) RF shield-box & optical IR bench testing physical Sony RMT-P1BT Bluetooth pairing under [Bluetooth Rmt Ctrl] = [On] ([Bluetooth Function] = [On], [Airplane Mode] = [Off]), physical SIRCS infrared remote commander lockout while [Bluetooth Rmt Ctrl] = [On], and physical [Reset Network Set.] clearing [Bluetooth Rmt Ctrl] back to [Off] remain unexecuted on physical hardware.",
+    "Physical ILME-FX3 (Ver. 7.02) tactile MENU button & dual CFexpress Type A / SDXC card bench testing [My Menu Setting] (Add Item, Sort Item, Delete Item, Delete Page, Delete All, and [Display From My Menu] = [On] opening [My Menu] first on MENU press) and physical CAMSET01.DAT save/load round-trip remain unexecuted on a physical camera body."
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "fx3-wave3-global-intel-matrix-v1",
+  "generated_at": "2026-11-14",
+  "lane": "Hydrogen-34 (Phase 42)",
+  "safety_invariants": {
+    "persistent_emmc_writes_authorized": false,
+    "allow_boot_partition_targeting": false,
+    "read_only_donor_access": true,
+    "zero_efuse_rpmb_counter_burn": true
+  },
+  "pillars": [
+    {
+      "id": "pillar_1_tfa_wbi2_pmca",
+      "title": "Sony BIONZ XR ARM Trusted Firmware (BL2/BL31/OP-TEE), WBI2/hibdrv & fwtool/PMCA",
+      "findings": [
+        {
+          "topic": "CXD90057 BootROM & Fastboot SRAM",
+          "source": "DavidBuchanan314/ILCE-7M4-RE",
+          "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+          "technical_facts": "48 KiB BootROM at 0xFFFF0000..0xFFFFBFFF; watchdog >= 0xFFFFC000; SRAM fastboot loader 0x92028000 / 0xFE020000 (18D1:4EE0); Multi-Port 48000 baud open-drain UART; SDM2 AES-XTS-256 encryption.",
+          "disclosure_gap": "Proprietary Sony BL2/BL31/OP-TEE binaries remain without complete public disassembly; no unauthenticated SW cold-boot RoT bypass published.",
+          "lab_alignment": "Phase 42 verifies WBI2, p1, p2, p8 dumps strictly O_RDONLY and relies on volatile tmpfs RAM-overlay execution leaving nflasha1..nflasha8 untouched."
+        },
+        {
+          "topic": "Standard TF-A Boot Architecture (BL1 -> BL2 -> BL31 -> OP-TEE BL32 -> Linux)",
+          "source": "NXP UG10155 & TI TF-A Documentation",
+          "url": "https://www.nxp.com/docs/en/user-guide/UG10155.pdf",
+          "technical_facts": "Defines EL3 BL31 Secure Monitor and OP-TEE BL32 Secure OS boundary separating Normal World Linux from crypto/RPMB key storage.",
+          "lab_alignment": "Boot-Chain Immutability Firewall blocks targeting of BOOT0, BOOT1, RPMB, loader_nor, and nflasha1..nflasha8."
+        },
+        {
+          "topic": "WBI2 / hibdrv Hibernation Snapshot vs Cold Boot",
+          "source": "Erlla/sony-a7m4-custom-firmware & fail0verflow Lineo Warp!! hibdrv analysis",
+          "url": "https://github.com/Erlla/sony-a7m4-custom-firmware/blob/main/IMPLEMENTATION.md",
+          "technical_facts": "88B WBI2 header (<4sI10Q), 64B section descriptors (<8Q) protected by 0x0F0F0F0F XOR metadata checksum; community installers overwrite WBI2 -> wbi2/WBI3 in nflasha5 to force cold boot.",
+          "lab_alignment": "verify_p5_wbi2_dump() validates header, XOR descriptors, and resume vector coverage while detecting invalidated wbi2/WBI3 headers without modifying nflasha5."
+        },
+        {
+          "topic": "fwtool.py / pmca-re-reloaded / Senser v2",
+          "source": "masterflai/pmca-re-reloaded v1.12.1 & ma1co/fwtool.py #54",
+          "url": "https://github.com/masterflai/pmca-re-reloaded",
+          "technical_facts": "macOS IOUSBHost 0xe00002be (kIOReturnExclusiveAccess) mitigation and Senser v2 RSA challenge enforcement on ILCE-7M5 / newer bodies.",
+          "lab_alignment": "Implemented in fx3_recovery/macos_usb_transport_guard.py (fail-closed rejection of Senser v2 and destructive Jiritsu commands)."
+        }
+      ]
+    },
+    {
+      "id": "pillar_2_emmc_isp_uart",
+      "title": "eMMC ISP Forensics, EXT_CSD PART_CONFIG 0xB3, CMD42 Hazards & Multi-Port 48000 UART",
+      "findings": [
+        {
+          "topic": "JEDEC JESD84-B51 EXT_CSD PART_CONFIG (0xB3)",
+          "source": "JEDEC JESD84-B51 Standard",
+          "url": "https://www.jedec.org/standards-documents/docs/jesd84-b51",
+          "technical_facts": "EXT_CSD[179]: bit6 BOOT_ACK, bits[5:3] BOOT_PARTITION_ENABLE (0=disabled brick risk, 1=BOOT0, 2=BOOT1, 7=UDA), bits[2:0] PARTITION_ACCESS (0=UDA, 1=BOOT0, 2=BOOT1, 3=RPMB); EXT_CSD[267..269] EOL/wear.",
+          "lab_alignment": "verify_ext_csd_dump() flags disabled boot enable, reserved bit7, un-reset PARTITION_ACCESS, and NAND pre-EOL wear warnings."
+        },
+        {
+          "topic": "CMD42 Fault-Assisted Access Restoration",
+          "source": "Hugget, Souvignet, Heckmann, Naccache — FSI: Digital Investigation 57:302109 (June 2026)",
+          "url": "https://www.sciencedirect.com/science/article/pii/S2666281726000496",
+          "technical_facts": "Timing side-channels failed under tested conditions while voltage fault injection bypassed CMD42 password verification on 5/10 tested eMMC devices; CMD42 Forced Erase destroys UDA.",
+          "lab_alignment": "audit_boot_chain_immutability() strictly prohibits cmd42_lock, cmd42_set_pwd, and cmd42_force_erase operations."
+        },
+        {
+          "topic": "Stuck-Bus SPI/SDMMC ISP Read Anomaly Detection & Two-Pass Hashing",
+          "source": "DFIR Flash / eMMC ISP Best Practices + Oberli DEF CON 27",
+          "url": "https://github.com/tomeravishur/emmc-tools",
+          "technical_facts": "Floating DAT0 pull-ups produce >=16 contiguous 0xFF pages; shorted power/ground produces all-0x00 or constant fills; bus noise causes bit-flips across reads.",
+          "lab_alignment": "analyze_bus_and_entropy() + read_two_pass_sha256_readonly() enforce O_RDONLY | O_NOFOLLOW | O_NONBLOCK two-pass SHA-256 and Shannon entropy floors."
+        },
+        {
+          "topic": "Multi-Port 48000 Baud Open-Drain UART",
+          "source": "ILCE-7M4-RE Hardware Bring-Up",
+          "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+          "technical_facts": "Multi-Port UART initializes at 48000 baud open-drain; RP2040-Zero -DOPEN_DRAIN avoids standard Raspberry Pi Pico GP29 VSYS/3 divider hazard before Fastboot 18D1:4EE0.",
+          "lab_alignment": "Documented as mandatory bench wiring constraint for read-only UART telemetry capture."
+        }
+      ]
+    },
+    {
+      "id": "pillar_3_qemu_rehosting",
+      "title": "QEMU ARM64 + ARM32 Camera Firmware Co-Emulation Comparison",
+      "comparisons": [
+        {
+          "project": "Magic Lantern qemu-eos (v4.2.1)",
+          "url": "https://github.com/reticulatedpines/qemu-eos",
+          "architecture": "Canon DIGIC ARMv5TE..AArch64 with -icount & DrySh",
+          "gap_vs_our_lab": "Single-vendor monolithic MMIO patches; our lab decouples AArch64 AP and unmodified ARMv7-R cpapp-b.bin cleanly via ivshmem."
+        },
+        {
+          "project": "OpenIPC/qemu-bench (QEMU 10.2.0)",
+          "url": "https://github.com/OpenIPC/qemu-bench",
+          "architecture": "Table-driven 11 SoC families (ARM32/ARM64 IP cameras)",
+          "gap_vs_our_lab": "Good multi-SoC table inspiration, but single-OS focus without dual-core RTOS CP co-emulation or ramfb OSD."
+        },
+        {
+          "project": "Avatar2 / HALucinator",
+          "url": "https://github.com/avatartwo/avatar2",
+          "architecture": "QMPProtocol + Python peripheral forwarding + HIL",
+          "gap_vs_our_lab": "Our Phase 24/29/33 native shared-memory ivshmem avoids Python MMIO forwarding latency while preparing for QMP HIL."
+        },
+        {
+          "project": "Sony Camera QEMU Forks (a7c2-qemu / zve10-qemu)",
+          "url": "https://github.com/chocotan/a7c2-qemu",
+          "architecture": "ramfb + software GPE + sony-lz77.c + virtual-rom-v1",
+          "gap_vs_our_lab": "Phases 29 and 33 already subsume ramfb + virtual-rom-v1 BT H4 and extend to Phase 24 dual-CPU CP RTOS co-emulation."
+        },
+        {
+          "project": "Our Lab Phases 24 / 29 / 33 (+ Parallel Phase 41 PCIe/DTB)",
+          "url": "outputs/fx3-vm/",
+          "architecture": "fx3-vm Dual-AP+CP ivshmem (22 tests) + Soft GPE/BT (25 tests) + Unified Suite (71 tests total)",
+          "gap_vs_our_lab": "Phase 41 branch (codex/h33-phase41-qemu-pcie-bar-mailbox-dtb) remains parallel/unmerged; Phase 42 Tier-4 forensic verifier gates all dumps entering VM & H0 workflows."
+        }
+      ]
+    }
+  ],
+  "phase42_deliverables": {
+    "module": "outputs/fx3-recovery-adapter/fx3_recovery/emmc_dump_forensic_verifier.py",
+    "cli_command": "verify-emmc-forensics",
+    "tests_file": "outputs/fx3-recovery-adapter/tests/test_emmc_dump_forensic_verifier.py",
+    "test_count": 28,
+    "donor_mode_runtime_seconds": 2.01,
+    "clean_room_mode_runtime_seconds": 0.32,
+    "verified_fx3_donors_readonly": [
+      "2.05/nflasha1 (VFAT FAT12 p1)",
+      "nflasha8.img (FAT12 reserved=32 cpapp-b.bin + tomco.txt)",
+      "nflasha5.img (WBI2 1399 sections)"
+    ]
+  }
+}

@@ -1,0 +1,820 @@
+{
+  "schema": "fx6-on-fx3-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu-v1",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "nouvc_usb_gadget_firewall_init": {
+      "uvc_gadget_reject_rc": -95,
+      "uvc_reason": "NO_UVC_FX3_702_HARDWARE_ABSENT",
+      "usb_allowed_modes": 5,
+      "msc_rc": 0,
+      "mtp_rc": 0,
+      "remote_shooting_rc": 0,
+      "remote_webcam_cap": "1024x576_no_audio",
+      "usblan_rndis_ncm_rc": 0,
+      "netstream_4k5994_38mbps_rc": 0,
+      "netstream_over38_reject_rc": -22,
+      "body_pd_with_fz100_rc": 0,
+      "body_pd_no_fz100_rc": -19,
+      "micro_usb_power_rc": -95,
+      "dcc1_65w_5a_rc": 0,
+      "dcc1_under65w_reject_rc": -22,
+      "dcc1_non5a_reject_rc": -22,
+      "appfw_present": 1,
+      "wlan_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r38_init_ok": 1,
+      "verify_us": 604952
+    },
+    "nouvc_dcc1_pd_stage_b_bridge": {
+      "uvc_gadget_reject_rc": -95,
+      "usblan_rc": 0,
+      "netstream_4k5994_mbps": 38,
+      "body_pd_no_batt_rc": -19,
+      "dcc1_65w_5a_rc": 0,
+      "dcc1_under_rc": -22,
+      "nouvc_blocked_ok": 1,
+      "usblan_netstream_ok": 1,
+      "pd_dcc1_interlock_ok": 1,
+      "emmc_write_count": 0,
+      "r38_bridge_ok": 1
+    },
+    "dual_media_cube_lut_path_asymmetry_and_cine_ei": {
+      "sd_prefix": "/Private/Sony/PRO/LUT/",
+      "cfx_prefix": "/Sony/PRO/LUT/",
+      "sd_17pt_accept_rc": 0,
+      "sd_33pt_accept_rc": 0,
+      "cfx_33pt_accept_rc": 0,
+      "sd_swapped_cfx_path_reject_rc": -22,
+      "cfx_swapped_sd_path_reject_rc": -22,
+      "lut_63b_name_accept_rc": 0,
+      "lut_64b_name_reject_rc": -36,
+      "lut_65pt_reject_rc": -22,
+      "max_user_lut_slots": 16,
+      "ae_offset_range": "0EV_+2EV",
+      "base_800_accept_rc": 0,
+      "base_12800_3200ei_rc": 0,
+      "base_12800_12800ei_rc": 0,
+      "base_12800_51200ei_rc": 0,
+      "invalid_base_1600_reject_rc": -22,
+      "ei_1600_under_12800_reject_rc": -34,
+      "ei_64000_over_12800_reject_rc": -34,
+      "sensor_gain_locked_dual_base": 1,
+      "p2_setting_bytes_touched": 0,
+      "p2_setting_sha256_match": 1,
+      "p2_write_blocked_rc": -30,
+      "appfw_cineei_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r38b_ok": 1,
+      "verify_us": 741931
+    },
+    "rmtp1bt_bt_ir_mutex_and_clipflag_hygiene": {
+      "bt_spec": "4.2",
+      "rmtp1bt_bt42_cmd_rc": 0,
+      "ir_when_bt_on_rc": -16,
+      "gps_when_bt_on_rc": -16,
+      "bt_when_off_rc": -19,
+      "ir_when_bt_off_rc": 0,
+      "gps_when_bt_off_rc": 0,
+      "ir_gps_masked_when_bt_on": 1,
+      "ir_gps_restored_when_bt_off": 1,
+      "clip_flags_staged": 3,
+      "cloud_filter_ok_keep_count": 2,
+      "nvs_writes_delta": 0,
+      "p2_setting_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r38c_ok": 1,
+      "verify_us": 3804
+    }
+  },
+  "runs": {
+    "r38a_nouvc_dcc1_pd_big6_schinese": {
+      "run_id": "r38a-nouvc-dcc1-pd-big6-schinese",
+      "round": 38,
+      "lang": "schinese",
+      "r38_mode": "nouvc_dcc1_pd_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Stage-A/Stage-B No-UVC USB Gadget Firewall (blocks unsupported [USB Streaming] UVC/UAC rc=-95 EOPNOTSUPP while preserving Sel.When Connect/MSC/MTP/Remote Shooting/USB-LAN RNDIS/CDC-NCM and 4K 59.94p <=38 Mbps Network Streaming), USB-PD (NP-FZ100 required rc=-19 ENODEV when absent; Micro-USB blocked rc=-95) + DC-C1 (>=65W / 5A e-Marked required; <65W & non-5A rejected rc=-22), and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 72.34,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "b82748d48e18f2f305ef7511d6bcaa5d425dae86bbfcf76ba056e197a9aab8da"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r38": {
+          "r38_mode": "nouvc_dcc1_pd_big6",
+          "uvc_gadget_reject_rc": -95,
+          "allowed_usb_modes": [
+            "Sel. When Connect",
+            "MSC",
+            "MTP",
+            "Remote Shooting",
+            "USB-LAN"
+          ],
+          "netstream_max_4k5994_mbps": 38,
+          "body_pd_requires_fz100": true,
+          "body_pd_no_fz100_rc": -19,
+          "dcc1_min_watts": 65,
+          "dcc1_min_amps": 5,
+          "dcc1_requires_emarker": true,
+          "sd_lut_prefix": "/Private/Sony/PRO/LUT/",
+          "cfx_lut_prefix": "/Sony/PRO/LUT/",
+          "lut_points_supported": [
+            17,
+            33
+          ],
+          "lut_max_filename_bytes": 63,
+          "cineei_base_isos": [
+            800,
+            12800
+          ],
+          "cineei_highbase_ei_range": [
+            3200,
+            51200
+          ],
+          "rmtp1bt_bt_spec": "4.2",
+          "rmtp1bt_masks_ir_and_gps": true,
+          "clip_flags_supported": [
+            "OK",
+            "NG",
+            "KEEP"
+          ],
+          "p2_setting_writes": 0
+        }
+      },
+      "r38_telemetry": {
+        "lut_cineei_rc": null,
+        "rmtp1bt_rc": null,
+        "nouvc_dcc1_pd_init": {
+          "uvc_gadget_reject_rc": -95,
+          "uvc_reason": "NO_UVC_FX3_702_HARDWARE_ABSENT",
+          "usb_allowed_modes": 5,
+          "msc_rc": 0,
+          "mtp_rc": 0,
+          "remote_shooting_rc": 0,
+          "remote_webcam_cap": "1024x576_no_audio",
+          "usblan_rndis_ncm_rc": 0,
+          "netstream_4k5994_38mbps_rc": 0,
+          "netstream_over38_reject_rc": -22,
+          "body_pd_with_fz100_rc": 0,
+          "body_pd_no_fz100_rc": -19,
+          "micro_usb_power_rc": -95,
+          "dcc1_65w_5a_rc": 0,
+          "dcc1_under65w_reject_rc": -22,
+          "dcc1_non5a_reject_rc": -22,
+          "appfw_present": 1,
+          "wlan_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r38_init_ok": 1,
+          "verify_us": 604952
+        },
+        "nouvc_dcc1_pd_bridge": {
+          "uvc_gadget_reject_rc": -95,
+          "usblan_rc": 0,
+          "netstream_4k5994_mbps": 38,
+          "body_pd_no_batt_rc": -19,
+          "dcc1_65w_5a_rc": 0,
+          "dcc1_under_rc": -22,
+          "nouvc_blocked_ok": 1,
+          "usblan_netstream_ok": 1,
+          "pd_dcc1_interlock_ok": 1,
+          "emmc_write_count": 0,
+          "r38_bridge_ok": 1
+        },
+        "lut_cineei_bridge": {
+          "sd_lut_prefix": "/Private/Sony/PRO/LUT/",
+          "cfx_lut_prefix": "/Sony/PRO/LUT/",
+          "max_name_bytes": 63,
+          "lut_pts": "17_33",
+          "cineei_bases": "800_12800",
+          "ei_range": "3200_51200",
+          "lut_path_asymmetry_ok": 1,
+          "cineei_dualbase_ok": 1,
+          "rmtp1bt_bt42_ir_gps_masked_ok": 1,
+          "p2_setting_writes": 0,
+          "emmc_write_count": 0
+        },
+        "lut_path_cineei": {},
+        "rmtp1bt_clipflag": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34848,
+          "glyph_blits": 17788,
+          "icon_blits": 23340,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "nouvc_blocked_ok": 1,
+          "pd_dcc1_interlock_ok": 1,
+          "lut_path_asymmetry_ok": 1,
+          "cineei_dualbase_ok": 1,
+          "rmtp1bt_clipflag_ok": 1,
+          "r38_bridge_ok": 1,
+          "realhw_nouvc_dcc1_lut_path_cineei": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 38,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "nouvc_gadget_firewall": 1,
+          "usblan_netstream_38mbps": 1,
+          "usbpd_fz100_dcc1_65w_5a": 1,
+          "dualmedia_lut_path_asymmetry": 1,
+          "cineei_800_12800": 1,
+          "rmtp1bt_ir_gps_mutex": 1,
+          "clipflag_ok_ng_keep_hygiene": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r38a-nouvc-dcc1-pd-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 207566,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/assets/r38a-nouvc-dcc1-pd-big6-schinese-alpha.png",
+          "bytes": 27132,
+          "sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round38-realhw-nouvc-dcc1-lut-path-cineei-qemu/assets/r38a-nouvc-dcc1-pd-big6-schinese-composited.png",
+          "bytes": 27467,
+          "sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 198,
+        "FX6_STAGE_B_": 67,
+        "FX6_R30_": 196,
+        "FX6_R31_": 196,
+        "FX6_R32_": 199,
+        "FX6_R33_": 196,
+        "FX6_R34_": 196,
+        "FX6_R35_": 196,
+        "FX6_R36_": 196,
+        "FX6_R37_": 197,
+        "FX6_R38_": 197,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 196,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 137,
+        "FX6_R10_": 194,
+        "FX6_R11_": 205,
+        "FX6_R12_": 197,
+        "FX6_R13_": 194,
+        "FX6_R14_": 194,
+        "FX6_R15_": 194,
+        "FX6_R16_": 194,
+        "FX6_R17_": 194,
+        "FX6_R18_": 194,
+        "FX6_R19_": 194,
+        "FX6_R20_": 194,
+        "FX6_R21_": 194,
+        "FX6_R22_": 194,
+        "FX6_R23_": 194,
+        "FX6_R24_": 194,
+        "FX6_R25_": 194,
+        "FX6_R26_": 194,
+        "FX6_R27_": 194,
+        "FX6_R29_": 196,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 1093,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 66,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 608,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2753,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r38b_lut_path_cineei": {
+      "run_id": "r38b-lut-path-cineei",
+      "round": 38,
+      "lang": "en",
+      "r38_mode": "lut_path_cineei",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Dual-Media .cube User LUT Path-Asymmetry (SDXC /Private/Sony/PRO/LUT/ vs CFexpress-A /Sony/PRO/LUT/ 17pt/33pt <=63 ASCII bytes accepted; swapped paths & 65pt rejected rc=-22; 64B filename rejected rc=-36 ENAMETOOLONG), Cine EI dual-base sensor gain lock (800 / 12800 only, 3200..51200 EI under Base 12800, 1600 base rejected rc=-22, out-of-range EI rejected rc=-34), and Stock p2:/setting Backup.bin zero-write invariant (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 6.54,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c15efe0114853240d12afaeea25e45cb959dbd4c19ce1434002a70c7778870f4"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r38": {
+          "r38_mode": "lut_path_cineei",
+          "uvc_gadget_reject_rc": -95,
+          "allowed_usb_modes": [
+            "Sel. When Connect",
+            "MSC",
+            "MTP",
+            "Remote Shooting",
+            "USB-LAN"
+          ],
+          "netstream_max_4k5994_mbps": 38,
+          "body_pd_requires_fz100": true,
+          "body_pd_no_fz100_rc": -19,
+          "dcc1_min_watts": 65,
+          "dcc1_min_amps": 5,
+          "dcc1_requires_emarker": true,
+          "sd_lut_prefix": "/Private/Sony/PRO/LUT/",
+          "cfx_lut_prefix": "/Sony/PRO/LUT/",
+          "lut_points_supported": [
+            17,
+            33
+          ],
+          "lut_max_filename_bytes": 63,
+          "cineei_base_isos": [
+            800,
+            12800
+          ],
+          "cineei_highbase_ei_range": [
+            3200,
+            51200
+          ],
+          "rmtp1bt_bt_spec": "4.2",
+          "rmtp1bt_masks_ir_and_gps": true,
+          "clip_flags_supported": [
+            "OK",
+            "NG",
+            "KEEP"
+          ],
+          "p2_setting_writes": 0
+        }
+      },
+      "r38_telemetry": {
+        "lut_cineei_rc": 0,
+        "rmtp1bt_rc": null,
+        "nouvc_dcc1_pd_init": {},
+        "nouvc_dcc1_pd_bridge": {},
+        "lut_cineei_bridge": {},
+        "lut_path_cineei": {
+          "sd_prefix": "/Private/Sony/PRO/LUT/",
+          "cfx_prefix": "/Sony/PRO/LUT/",
+          "sd_17pt_accept_rc": 0,
+          "sd_33pt_accept_rc": 0,
+          "cfx_33pt_accept_rc": 0,
+          "sd_swapped_cfx_path_reject_rc": -22,
+          "cfx_swapped_sd_path_reject_rc": -22,
+          "lut_63b_name_accept_rc": 0,
+          "lut_64b_name_reject_rc": -36,
+          "lut_65pt_reject_rc": -22,
+          "max_user_lut_slots": 16,
+          "ae_offset_range": "0EV_+2EV",
+          "base_800_accept_rc": 0,
+          "base_12800_3200ei_rc": 0,
+          "base_12800_12800ei_rc": 0,
+          "base_12800_51200ei_rc": 0,
+          "invalid_base_1600_reject_rc": -22,
+          "ei_1600_under_12800_reject_rc": -34,
+          "ei_64000_over_12800_reject_rc": -34,
+          "sensor_gain_locked_dual_base": 1,
+          "p2_setting_bytes_touched": 0,
+          "p2_setting_sha256_match": 1,
+          "p2_write_blocked_rc": -30,
+          "appfw_cineei_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r38b_ok": 1,
+          "verify_us": 741931
+        },
+        "rmtp1bt_clipflag": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R38_": 3
+      }
+    },
+    "r38c_rmtp1bt_clipflag_seal": {
+      "run_id": "r38c-rmtp1bt-clipflag-seal",
+      "round": 38,
+      "lang": "en",
+      "r38_mode": "rmtp1bt_clipflag_seal",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 RMT-P1BT (Bluetooth 4.2) [Bluetooth Rmt Ctrl] = On mutual-exclusion masking IR receiver & smartphone GPS linking (rc=-16 EBUSY when On; cleanly restored rc=0 when Off), Creators' Cloud OK/NG/KEEP clip-flag metadata volatile tmpfs staging (nvs_writes_delta=0, p2_setting_writes=0), guest dlopen, and 16/16 H0 == H3 restoration (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 4.85,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c15efe0114853240d12afaeea25e45cb959dbd4c19ce1434002a70c7778870f4"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r38": {
+          "r38_mode": "rmtp1bt_clipflag_seal",
+          "uvc_gadget_reject_rc": -95,
+          "allowed_usb_modes": [
+            "Sel. When Connect",
+            "MSC",
+            "MTP",
+            "Remote Shooting",
+            "USB-LAN"
+          ],
+          "netstream_max_4k5994_mbps": 38,
+          "body_pd_requires_fz100": true,
+          "body_pd_no_fz100_rc": -19,
+          "dcc1_min_watts": 65,
+          "dcc1_min_amps": 5,
+          "dcc1_requires_emarker": true,
+          "sd_lut_prefix": "/Private/Sony/PRO/LUT/",
+          "cfx_lut_prefix": "/Sony/PRO/LUT/",
+          "lut_points_supported": [
+            17,
+            33
+          ],
+          "lut_max_filename_bytes": 63,
+          "cineei_base_isos": [
+            800,
+            12800
+          ],
+          "cineei_highbase_ei_range": [
+            3200,
+            51200
+          ],
+          "rmtp1bt_bt_spec": "4.2",
+          "rmtp1bt_masks_ir_and_gps": true,
+          "clip_flags_supported": [
+            "OK",
+            "NG",
+            "KEEP"
+          ],
+          "p2_setting_writes": 0
+        }
+      },
+      "r38_telemetry": {
+        "lut_cineei_rc": null,
+        "rmtp1bt_rc": 0,
+        "nouvc_dcc1_pd_init": {},
+        "nouvc_dcc1_pd_bridge": {},
+        "lut_cineei_bridge": {},
+        "lut_path_cineei": {},
+        "rmtp1bt_clipflag": {
+          "bt_spec": "4.2",
+          "rmtp1bt_bt42_cmd_rc": 0,
+          "ir_when_bt_on_rc": -16,
+          "gps_when_bt_on_rc": -16,
+          "bt_when_off_rc": -19,
+          "ir_when_bt_off_rc": 0,
+          "gps_when_bt_off_rc": 0,
+          "ir_gps_masked_when_bt_on": 1,
+          "ir_gps_restored_when_bt_off": 1,
+          "clip_flags_staged": 3,
+          "cloud_filter_ok_keep_count": 2,
+          "nvs_writes_delta": 0,
+          "p2_setting_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r38c_ok": 1,
+          "verify_us": 3804
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R38_": 3
+      }
+    }
+  },
+  "r38_realhw_nouvc_dcc1_lut_path_cineei_audit": {
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r38a_nouvc_gadget_blocked_rc_minus_95_and_usblan_netstream_38mbps_verified": true,
+    "r38a_usbpd_fz100_and_dcc1_65w_5a_interlock_verified": true,
+    "r38a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r38b_dual_media_cube_path_asymmetry_17_33pt_63b_verified": true,
+    "r38b_cineei_dual_base_800_12800_and_p2_zero_writes_verified": true,
+    "r38c_rmtp1bt_bt42_masks_ir_gps_and_restores_on_off_verified": true,
+    "r38c_creators_cloud_clipflag_zero_nvs_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 (Ver. 7.02) connected via USB-C to a host PC confirming absence of UVC video class enumeration alongside active RNDIS/CDC-NCM USB-LAN and 4K 59.94p (<=38 Mbps) RTMP/SRT network streaming.",
+    "Physical Sony DC-C1 DC Coupler powered by >=65W USB-PD supply + 5A e-Marked USB-C cable vs under-wattage (<65W / 3A) supply warning blink behavior, and physical body USB-C PD battery-removal cutoff with NP-FZ100 absent.",
+    "Physical SDXC (/Private/Sony/PRO/LUT/) and CFexpress Type A (/Sony/PRO/LUT/) dual-slot .cube 17pt/33pt LUT insertion, Cine EI 800/12800 base switching (3200..51200 EI), and paired Sony RMT-P1BT Bluetooth remote IR/GPS exclusion plus Creators' Cloud OK/NG/KEEP transfer on camera."
+  ]
+}

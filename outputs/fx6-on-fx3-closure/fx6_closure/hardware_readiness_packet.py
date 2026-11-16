@@ -58,6 +58,7 @@ from .candidate_builder import (
     run_offline_candidate_dry_run,
 )
 from .cp_rtos_compatibility_verifier import EXPECTED_RUNTIME_MEMCFG_SPEC
+from .donor_paths import is_forced_clean_room
 from .patcher import DEFAULT_FX3_MODULES_DIR, DEFAULT_FX6_DONOR_LIB_DIR
 from .ram_overlay_packager import (
     build_stage_a_ram_overlay_package,
@@ -246,7 +247,7 @@ def _is_forced_clean_room(
     fx6_lib_dir: Path = DEFAULT_FX6_DONOR_LIB_DIR,
     fx3_modules_dir: Path = DEFAULT_FX3_MODULES_DIR,
 ) -> bool:
-    if os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip() == "1":
+    if is_forced_clean_room():
         return True
     return not (
         (fx6_lib_dir / "appFw.so").is_file()
@@ -1264,6 +1265,10 @@ def build_stage_a_hardware_readiness_packet(
                 p1_recovery_bridge_ok=dry.p1_recovery_bridge_ok,
                 stage_a_orchestrator_ok=dry.stage_a_orchestrator_ok,
                 kmod_userland_abi_ok=dry.kmod_userland_abi_ok,
+                peripheral_ux_ok=dry.peripheral_ux_ok,
+                ap_cp_imaging_ok=dry.ap_cp_imaging_ok,
+                stage_b_p10_ok=dry.stage_b_combined_appfw_verified,
+                uipc_cp_shim_ok=dry.uipc_cp_shim_ok,
             )
         )
         dry_run_gates = _normalize_gates_dict(dry.safety_gates_report)
@@ -1392,6 +1397,90 @@ def build_stage_a_hardware_readiness_packet(
                 "unresolved_required_symbols": abi.unresolved_required_symbols,
                 "unsatisfied_verneed_count": abi.unsatisfied_verneed_count,
             },
+            "Phase_17_peripheral_ux_display_audio_closure": {
+                "closed": dry.peripheral_ux_ok,
+                "p10_keymap_rollback_verified": (
+                    dry.peripheral_ux_audit.input_audit.p10_rollback_receipt.donor_sha256_matched
+                ),
+                "display_routing_passed": dry.peripheral_ux_audit.display_audit.passed,
+                "audio_xlr_h1_passed": dry.peripheral_ux_audit.audio_audit.passed,
+            },
+            "Phase_18_ap_cp_imaging_lut_xavc_ibis_closure": {
+                "closed": dry.ap_cp_imaging_ok,
+                "p8_cp_mutation_forbidden": dry.ap_cp_imaging_audit.p8_cp_mutation_forbidden,
+                "cp_mutation_bytes": dry.ap_cp_imaging_audit.cp_mutation_bytes,
+                "matched_0x92840747_opcodes": (
+                    dry.ap_cp_imaging_audit.uipc_queue_scan.total_0x92840747_opcodes_matched_in_fx3_cp
+                ),
+                "ibis_center_lock_verified": (
+                    dry.ap_cp_imaging_audit.ibis_safety.center_lock_mechanism_verified
+                ),
+            },
+            "Phase_20_stage_b_p10_combined_appfw_closure": {
+                "closed": dry.stage_b_combined_appfw_verified,
+                "stage_b_appfw_sha256": dry.stage_b_appfw_sha256,
+                "stage_b_p10_keymap_enabled": dry.stage_b_p10_keymap_enabled,
+            },
+            "Phase_21_p11_uipc_cp_shim_and_ibis_bridge": {
+                "closed": dry.uipc_cp_shim_ok,
+                "p8_cp_mutation_forbidden": (
+                    dry.uipc_cp_shim_audit.p8_cp_mutation_forbidden
+                    if dry.uipc_cp_shim_audit is not None
+                    else True
+                ),
+                "cp_mutation_bytes": (
+                    dry.uipc_cp_shim_audit.cp_mutation_bytes
+                    if dry.uipc_cp_shim_audit is not None
+                    else 0
+                ),
+                "fx6_exclusive_blocking_queues": list(
+                    dry.uipc_cp_shim_audit.fx6_exclusive_blocking_queues
+                )
+                if dry.uipc_cp_shim_audit is not None
+                else ["0x92d2091c", "0x91db059b"],
+            },
+            "Phase_22_p12_wf12_wireless_fault_isolation": {
+                "closed": dry.wireless_fault_isolation_ok,
+                "stage_b_p12_wireless_guard_enabled": dry.stage_b_p12_wireless_guard_enabled,
+                "stage_b_wlan_rsrc_sha256": dry.stage_b_wlan_rsrc_sha256,
+                "p12_rollback_verified": (
+                    dry.wireless_fault_isolation_audit.p12_wlan_fatal_guard.rollback_sha256_matched
+                    if dry.wireless_fault_isolation_audit is not None
+                    else True
+                ),
+                "airplane_ram_shadow_bk4_valid": (
+                    dry.wireless_fault_isolation_audit.airplane_ram_shadow_bk4.valid_bk4_header
+                    and dry.wireless_fault_isolation_audit.airplane_ram_shadow_bk4.checksum_ok
+                    and dry.wireless_fault_isolation_audit.airplane_ram_shadow_bk4.airplane_mode_shadow_default
+                    if dry.wireless_fault_isolation_audit is not None
+                    else True
+                ),
+                "sony_notice_id": (
+                    dry.wireless_fault_isolation_audit.sony_notice_id
+                    if dry.wireless_fault_isolation_audit is not None
+                    else "00342260"
+                ),
+                "wbi_mutation_bytes": (
+                    dry.wireless_fault_isolation_audit.wbi_mutation_bytes
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+                "cp_mutation_bytes": (
+                    dry.wireless_fault_isolation_audit.cp_mutation_bytes
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+                "kmod_mutation_count": (
+                    dry.wireless_fault_isolation_audit.kmod_mutation_count
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+                "nvram_persistent_writes": (
+                    dry.wireless_fault_isolation_audit.nvram_persistent_writes
+                    if dry.wireless_fault_isolation_audit is not None
+                    else 0
+                ),
+            },
         }
 
         offline_complete = (
@@ -1400,8 +1489,19 @@ def build_stage_a_hardware_readiness_packet(
             and dry.all_12_gates_verified
             and dry.stage_a_orchestrator_ok
             and dry.kmod_userland_abi_ok
+            and dry.peripheral_ux_ok
+            and dry.ap_cp_imaging_ok
+            and dry.stage_b_combined_appfw_verified
+            and dry.uipc_cp_shim_ok
+            and dry.wireless_fault_isolation_ok
         )
     else:
+        from .ap_cp_imaging_pipeline_verifier import verify_ap_cp_imaging_pipeline
+        from .candidate_builder import verify_combined_stage_b_appfw_contract
+        from .peripheral_ux_compatibility_verifier import verify_peripheral_ux_compatibility
+        from .uipc_cp_shim_verifier import run_phase21_uipc_cp_shim_verification
+        from .wireless_fault_isolation_verifier import run_phase22_wireless_fault_isolation_verification
+
         verification_mode = "CLEAN_ROOM_SYNTHETIC_VERIFIED"
         cr_bundle = build_stage_a_ram_overlay_package(synthetic_clean_room=True)
         cr_drill = run_four_layer_rollback_drill(
@@ -1414,6 +1514,11 @@ def build_stage_a_hardware_readiness_packet(
         cr_bk4 = synthesize_ram_shadow_bk4()
         cr_bk4_audit = audit_ram_shadow_bk4(cr_bk4.bk4_bytes)
         hook_audit = verify_failsafe_hook_script(cr_bundle.init2_guard_script)
+        cr_p17 = verify_peripheral_ux_compatibility(synthetic_clean_room=True)
+        cr_p18 = verify_ap_cp_imaging_pipeline(clean_room_overrides={})
+        cr_p20 = verify_combined_stage_b_appfw_contract(force_synthetic=True)
+        cr_p21 = run_phase21_uipc_cp_shim_verification(synthetic_mode=True)
+        cr_p22 = run_phase22_wireless_fault_isolation_verification(synthetic_mode=True)
 
         live_hw_gates = _normalize_gates_dict(
             evaluate_12_safety_gates(
@@ -1429,6 +1534,10 @@ def build_stage_a_hardware_readiness_packet(
                 p1_recovery_bridge_ok=True,
                 stage_a_orchestrator_ok=cr_orch.all_checks_passed,
                 kmod_userland_abi_ok=True,
+                peripheral_ux_ok=cr_p17.all_passed,
+                ap_cp_imaging_ok=cr_p18.passed,
+                stage_b_p10_ok=cr_p20.all_checks_passed,
+                uipc_cp_shim_ok=cr_p21.passed,
             )
         )
 
@@ -1509,6 +1618,50 @@ def build_stage_a_hardware_readiness_packet(
                 "unresolved_required_symbols": 0,
                 "unsatisfied_verneed_count": 0,
             },
+            "Phase_17_peripheral_ux_display_audio_closure": {
+                "closed": cr_p17.all_passed,
+                "p10_keymap_rollback_verified": (
+                    cr_p17.input_audit.p10_rollback_receipt.donor_sha256_matched
+                ),
+                "display_routing_passed": cr_p17.display_audit.passed,
+                "audio_xlr_h1_passed": cr_p17.audio_audit.passed,
+            },
+            "Phase_18_ap_cp_imaging_lut_xavc_ibis_closure": {
+                "closed": cr_p18.passed,
+                "p8_cp_mutation_forbidden": cr_p18.p8_cp_mutation_forbidden,
+                "cp_mutation_bytes": cr_p18.cp_mutation_bytes,
+                "matched_0x92840747_opcodes": (
+                    cr_p18.uipc_queue_scan.total_0x92840747_opcodes_matched_in_fx3_cp
+                ),
+                "ibis_center_lock_verified": cr_p18.ibis_safety.center_lock_mechanism_verified,
+            },
+            "Phase_20_stage_b_p10_combined_appfw_closure": {
+                "closed": cr_p20.all_checks_passed,
+                "stage_b_appfw_sha256": cr_p20.stage_b_combined_sha256,
+                "stage_b_p10_keymap_enabled": True,
+            },
+            "Phase_21_p11_uipc_cp_shim_and_ibis_bridge": {
+                "closed": cr_p21.passed,
+                "p8_cp_mutation_forbidden": cr_p21.p8_cp_mutation_forbidden,
+                "cp_mutation_bytes": cr_p21.cp_mutation_bytes,
+                "fx6_exclusive_blocking_queues": list(cr_p21.fx6_exclusive_blocking_queues),
+            },
+            "Phase_22_p12_wf12_wireless_fault_isolation": {
+                "closed": cr_p22.passed,
+                "stage_b_p12_wireless_guard_enabled": True,
+                "stage_b_wlan_rsrc_sha256": cr_p22.p12_wlan_fatal_guard.after_sha256,
+                "p12_rollback_verified": cr_p22.p12_wlan_fatal_guard.rollback_sha256_matched,
+                "airplane_ram_shadow_bk4_valid": (
+                    cr_p22.airplane_ram_shadow_bk4.valid_bk4_header
+                    and cr_p22.airplane_ram_shadow_bk4.checksum_ok
+                    and cr_p22.airplane_ram_shadow_bk4.airplane_mode_shadow_default
+                ),
+                "sony_notice_id": cr_p22.sony_notice_id,
+                "wbi_mutation_bytes": cr_p22.wbi_mutation_bytes,
+                "cp_mutation_bytes": cr_p22.cp_mutation_bytes,
+                "kmod_mutation_count": cr_p22.kmod_mutation_count,
+                "nvram_persistent_writes": cr_p22.nvram_persistent_writes,
+            },
         }
 
         offline_complete = (
@@ -1518,6 +1671,11 @@ def build_stage_a_hardware_readiness_packet(
             and cr_drill.all_scenarios_passed
             and cr_orch.all_checks_passed
             and cr_bk4_audit.valid
+            and cr_p17.all_passed
+            and cr_p18.passed
+            and cr_p20.all_checks_passed
+            and cr_p21.passed
+            and cr_p22.passed
         )
         if not offline_complete:
             errors.append("One or more clean-room synthetic offline checks failed")

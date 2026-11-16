@@ -1,0 +1,603 @@
+{
+  "schema_version": "2.0.0",
+  "report_id": "2026-11-14-global-sony-ptp-mishoe-rtmd-spacc-intel",
+  "wave": 2,
+  "task_id": "task_e1c5925f78aa",
+  "researcher_role": "Hydrogen-26",
+  "research_cutoff_date": "2026-11-14",
+  "predecessor_wave1_report": "reports/2026-11-14-global-sony-firmware-vm-unbrick-intel/README.md",
+  "target_baseline": {
+    "donor_camera": "ILME-FX6 v6.01",
+    "host_camera": "ILME-FX3 v7.02",
+    "host_product_class": "PRODUCT_MODEL_ALCIN_UUD",
+    "ap_soc": "CXD90057 (4x Cortex-A35 ARM64, Linux 4.9.337-scel+)",
+    "cp_soc": "CXD90058 (Cetus Cortex-R5 RTOS, cpapp-b.bin @ 0x00108000)",
+    "cp_mutation_bytes": 0
+  },
+  "clean_room_compliance": {
+    "proprietary_keys_included": false,
+    "proprietary_binaries_included": false,
+    "raw_binary_bytes_repr_included": false,
+    "public_sources_only": true,
+    "local_cross_checks_readonly": true
+  },
+  "pillar_1_crsdk_ptp2_ble": {
+    "crsdk_timeline": [
+      {
+        "version": "v1.06.00",
+        "release_month": "2022-10",
+        "cinema_line_milestones": [
+          "Baseline support for ILME-FX3 (v2.00+ Cine EI / User LUT) and ILME-FX6 (v3.00+)"
+        ]
+      },
+      {
+        "version": "v1.11.00",
+        "release_month": "2023-11",
+        "cinema_line_milestones": [
+          "Added BURANO, ILX-LR1, PXW-Z200; unified USB-C / Wired LAN / Wi-Fi remote session model"
+        ]
+      },
+      {
+        "version": "v1.13.00",
+        "release_month": "2024-10",
+        "cinema_line_milestones": [
+          "Updated FX3/FX6 Function Lists aligned with FX3 v6.00 Shutter Angle (2024-09)"
+        ]
+      },
+      {
+        "version": "v2.00.00",
+        "release_month": "2025-06",
+        "cinema_line_milestones": [
+          "Added ILME-FX3A, ILME-FX2, FR7 v3.00+, BRC-AM7",
+          "Added UploadCustomGridLineFile and remote media deletion",
+          "Target ABI for goudvuur/sonshell Linux C++17 CLI"
+        ]
+      },
+      {
+        "version": "v2.01.00",
+        "release_month": "2026-02",
+        "cinema_line_milestones": [
+          "2026 Alpha / Cinema Line property and streaming extensions"
+        ]
+      },
+      {
+        "version": "v2.02.00",
+        "release_month": "2026-06",
+        "cinema_line_milestones": [
+          "Latest public CrSDK v2 release as of 2026-11-14"
+        ]
+      }
+    ],
+    "crsdk_cinema_apis_and_properties": {
+      "lut_upload_api": "SCRSDK::ImportLUTFile(deviceHandle, fileName, baseLookNumber) [requires media card inserted]",
+      "settings_transfer_apis": [
+        "SCRSDK::UploadSettingFile",
+        "SCRSDK::DownloadSettingFile"
+      ],
+      "key_device_properties": {
+        "log_shooting": [
+          "CrDeviceProperty_LogShootingMode",
+          "CrDeviceProperty_LogShootingModeColorGamut",
+          "CrDeviceProperty_ExposureIndex",
+          "CrDeviceProperty_GainBaseIsoSensitivity",
+          "CrDeviceProperty_GainBaseSensitivity"
+        ],
+        "lut_monitoring": [
+          "CrDeviceProperty_BaseLookValue",
+          "CrDeviceProperty_MonitorLUTSetting",
+          "CrDeviceProperty_EmbedLUTFile"
+        ],
+        "shutter_angle": [
+          "CrDeviceProperty_ShutterSetting",
+          "CrDeviceProperty_ShutterMode",
+          "CrDeviceProperty_ShutterAngle (millidegrees, e.g. 180000 = 0x2BF20 = 180.0 deg)"
+        ]
+      },
+      "lab_lut_dma_contract": {
+        "cp_method": "mpr::SetLutData",
+        "header_bytes": 164,
+        "cube_33x33x33_dma_size": "0x6a1b9 (434617 B) / P11 107812 B & 215622 B",
+        "dma_threshold": "0xbb80 (48000 B)"
+      }
+    },
+    "ptp_vendor_extension_0x00000011": {
+      "source": "gphoto/libgphoto2 (camlibs/ptp2/ptp.h, ptp.c, library.c)",
+      "protocol_versions": {
+        "SONY_PROTOCOL_2_00": "0xc8",
+        "SONY_PROTOCOL_3_00": "0x12c",
+        "known_regression": "libgphoto2#676 (A7R V capture breaks on 3_00; fallback to 0xc8 restores capture)"
+      },
+      "opcodes": [
+        {
+          "opcode": "0x9201",
+          "name": "PTP_OC_SONY_SDIO_Connect",
+          "behavior": "3-step handshake: (1,0,0) -> (2,0,0) -> (3,0,0) returning 8B handshake data"
+        },
+        {
+          "opcode": "0x9202",
+          "name": "PTP_OC_SONY_SDIO_GetExtDeviceInfo",
+          "behavior": "Negotiates protocol version (0xc8 or 0x12c) and returns supported property descriptor list"
+        },
+        {
+          "opcode": "0x9203",
+          "name": "PTP_OC_SONY_GetDevicePropdesc",
+          "behavior": "Queries single vendor property descriptor; leogenot OPEN_GATE.md confirmed 0 hits for 5016x3344"
+        },
+        {
+          "opcode": "0x9204",
+          "name": "PTP_OC_SONY_GetDevicePropertyValue",
+          "behavior": "Reads single Sony extended property value"
+        },
+        {
+          "opcode": "0x9205",
+          "name": "PTP_OC_SONY_SDIO_SetExtDevicePropValue",
+          "behavior": "Sets Sony extended property value via Data Phase"
+        },
+        {
+          "opcode": "0x9206",
+          "name": "PTP_OC_SONY_GetControlDeviceDesc",
+          "behavior": "Retrieves control/button descriptor table"
+        },
+        {
+          "opcode": "0x9207",
+          "name": "PTP_OC_SONY_SDIO_ControlDevice",
+          "behavior": "Dispatches virtual button press/release commands"
+        },
+        {
+          "opcode": "0x9209",
+          "name": "PTP_OC_SONY_SDIO_GetAllExtDevicePropInfo",
+          "behavior": "Bulk-polls all extended property descriptors and values"
+        },
+        {
+          "opcode": "0x920a..0x920f",
+          "name": "Advertised Sony Unknown PTP_OC range",
+          "behavior": "Advertised by modern Sony bodies; collides numerically with Nikon opcodes in ptp.h so VendorExt 0x00000011 guard is mandatory"
+        },
+        {
+          "opcode": "0x9210..0x922f",
+          "name": "Extended session/transfer opcodes",
+          "behavior": "0x9210 OpenSession, 0x9211 GetPartialLargeObject, 0x9212 SetContentsTransferMode, 0x9215 GetDisplayStringList, 0x9223 GetLensInformation, 0x922f OperationsResultsSupported"
+        }
+      ]
+    },
+    "ble_remote_rmt_p1bt": {
+      "sources": [
+        "coral/freemote",
+        "Staacks/alpharemote",
+        "furble"
+      ],
+      "ble_advertising": {
+        "company_id_le": "0x2D 0x01 (0x012D Sony)",
+        "device_type": "0x03 0x00 (Camera)",
+        "protocol_byte": "0x64",
+        "pairing_flags": {
+          "open": "0x22 0xEF 0x00",
+          "closed": "0x22 0xAF 0x00"
+        }
+      },
+      "gatt": {
+        "service_uuid": "8000FF00-FF00-FFFF-FFFF-FFFFFFFFFFFF",
+        "write_char_uuid": "0000FF01-0000-1000-8000-00805F9B34FB",
+        "notify_char_uuid": "0000FF02-0000-1000-8000-00805F9B34FB"
+      },
+      "commands": {
+        "shutter_half_down": "0x01 0x07",
+        "shutter_full_down": "0x01 0x09",
+        "shutter_half_up": "0x01 0x06",
+        "shutter_full_up": "0x01 0x08",
+        "record_down_up": [
+          "0x01 0x0E",
+          "0x01 0x0F"
+        ],
+        "af_on_down_up": [
+          "0x01 0x14",
+          "0x01 0x15"
+        ],
+        "c1_down_up": [
+          "0x01 0x20",
+          "0x01 0x21"
+        ],
+        "zoom_step": "0x02 0x44..0x47",
+        "focus_step": "0x02 0x6A..0x6D"
+      },
+      "notifications": {
+        "focus_status": "0x02 0x3F 0x00|0x20",
+        "shutter_status": "0x02 0xA0 0x00|0x20",
+        "recording_status": "0x02 0xD5 0x00|0x20"
+      },
+      "fx3_vs_fx6_architecture_delta": "FX3 supports BLE RMT-P1BT over /dev/ttyAMA3 BSA (protected by Phase 22 P12 WF-12 fault isolation and Phase 29 virtual-rom-v1 H4 emulator); FX6 omits BLE RMT-P1BT and uses 2.5mm LANC + Smart Handle (0x91db059b)."
+    }
+  },
+  "pillar_2_mi_shoe_and_timecode": {
+    "mi_shoe_24_contact_pinout": {
+      "geometry": "21 front edge contacts (1..21) + 3 ISO 518 contacts (22 ISO_SHOE_X, 23/24 ISO_SHOE_FG); front view order 23, 1..21, 24",
+      "contacts": [
+        {
+          "pins": "1, 2, 3",
+          "signal": "ID3, ID2, ID1",
+          "electrical": "Camera 100kOhm pull-up to LOGIC_VDD (2.8V-3.15V) + ADC; accessory 6-bin ladder (0/22k/56k/150k/470k/open)"
+        },
+        {
+          "pins": "4",
+          "signal": "MIC_GND",
+          "electrical": "Analog audio ground reference"
+        },
+        {
+          "pins": "5, 6",
+          "signal": "MIC_L, MIC_R / GVIF_SDATA_N, GVIF_SDATA_P",
+          "electrical": "Analog stereo mic or 2019+ digital MI audio / GVIF differential pair (exact digital wire clock/frame spec only partially documented publicly per mungewell/pico-timecode#7)"
+        },
+        {
+          "pins": "7, 15",
+          "signal": "REG_GND",
+          "electrical": "Logic and regulated ground"
+        },
+        {
+          "pins": "8..12",
+          "signal": "GPS_DATA / WLAN_SDIO",
+          "electrical": "Accessory UART / SDIO bus"
+        },
+        {
+          "pins": "13",
+          "signal": "LOGIC_VDD",
+          "electrical": "Switched 3.15V (2.8V on older bodies) logic supply"
+        },
+        {
+          "pins": "14, 16",
+          "signal": "MIC_C / AUDIO_L, AUDIO_R",
+          "electrical": "Center / legacy audio lines"
+        },
+        {
+          "pins": "17",
+          "signal": "UNREG",
+          "electrical": "Fused 1.6A unreg battery bus (6.1V-8.4V), powers XLR-H1/K3M 48V phantom boost"
+        },
+        {
+          "pins": "18, 19, 20",
+          "signal": "F3, F2, F1# / EXT_EVF_SCK, SI, SO",
+          "electrical": "TTL flash sync / bidirectional SPI bus"
+        },
+        {
+          "pins": "21",
+          "signal": "PGND",
+          "electrical": "Power ground return for UNREG"
+        },
+        {
+          "pins": "22, 23, 24",
+          "signal": "ISO_SHOE_X, ISO_SHOE_FG",
+          "electrical": "ISO 518 X-sync contact and chassis frame ground"
+        }
+      ],
+      "digital_audio_formats": [
+        "PCM 48kHz / 16-bit 2ch",
+        "PCM 48kHz / 24-bit 2ch",
+        "PCM 48kHz / 24-bit 4ch (XLR-H1 / XLR-K3M)"
+      ],
+      "lab_alignment": {
+        "phase_17_event": "EVENT_INPUT_INP_HOTSHOE_DIGMIC_F48B24C4_F96B24C2_ON",
+        "phase_17_enum": "VAL_connect_shoe_mic_CONNECT_SHOE_MIC_DIGITAL_XLR",
+        "phase_17_symbol": "libInfraHotshoe.so::WaitRecvCompMsgFromHotshoeRsrc @ 0x5d90 (returns 0x8000 on E_TMO=-50)",
+        "phase_21_smart_handle_queue": "0x91db059b (P11 sends detached Smart Handle ACK 0x81000001/0x88000002 -> Round 10 xlr_h1_preserved=1)"
+      }
+    },
+    "timecode_fx3_multiport_vs_fx6_bnc": {
+      "fx3_multiport_ltc": {
+        "firmware_since": "FX3 v2.00+",
+        "connector": "15-pin Sony Multi / Micro USB terminal via VMC-BNCM1 (A-5051-506-A) or Tentacle C24 / Deity C23",
+        "community_pinout": {
+          "pin_3": "+ve LTC audio timecode input",
+          "pin_2": "GND / -ve LTC",
+          "pin_6_to_pin_2": "680 kOhm detection resistor (distinct from 100 kOhm LANC)"
+        },
+        "mode_requirement": "Movie mode + TC/UB Preset & Free Run + exact frame rate match -> EXT-LK lock (~10s)",
+        "bootrom_shared_shell_hazard": "Same 15-pin Multi-Port carries RP2040-Zero BootROM unbrick signals on Pin 7 (RX), Pin 8 (TX), Pin 9 (XReset), Pin 2 (GND); physical adapters must never be cross-wired or combined."
+      },
+      "fx6_bnc_tc": {
+        "connector": "Dedicated bidirectional BNC TC IN/OUT",
+        "lab_cp_opcodes": "0x0400/0x0402/0x0404/0x0152 on 0x92840747 (Phase 12/18 P6)",
+        "lab_rtc_shim": "0x92d2091c (/dev/rtc0 -> 44B udate -> [0x03, 0x00] in Phase 21 P11)"
+      }
+    }
+  },
+  "pillar_3_rtmd_smpte_rdd18_and_ibis": {
+    "source": "AdrianEddy/telemetry-parser (src/sony/mod.rs, mxf.rs, rtmd_tags.rs) & Gyroflow",
+    "containers": {
+      "mp4_rtmd": {
+        "codecs": "XAVC S / XAVC S-I / XAVC HS (FX3 & FX6 libXavcMp4)",
+        "frame_header_detection": "data[0..2] == [0x00, 0x1C] -> skip 0x1C (28B) header to Big-Endian KLV (2B tag + 2B len)",
+        "untrunc_signature": "00 1c 01 00 ... f0 01 00 10"
+      },
+      "mxf_st436_anc": {
+        "codecs": "XAVC-I / XAVC-L (FX6-only libXavcMxf)",
+        "universal_label": "060e2b34 01020101 0d010301 17010201",
+        "st291_ids": "DID=0x43, SDID=0x05"
+      }
+    },
+    "tag_dictionary": [
+      {
+        "range": "0x3210, 0x3219, 0x321A",
+        "group": "Colorimetry / Gamma / Primaries",
+        "notes": "0x01010605 = S-Gamut3.Cine / S-Log3; 0x01010705 = S-Cinetone"
+      },
+      {
+        "range": "0x8000..0x800B",
+        "group": "LensUnitMetadata",
+        "notes": "IrisFStop (0x8000), FocusPositionFromImagePlane f16 (0x8001), LensZoom35mm/Actual (0x8007/08), IrisTStop (0x800A); relayed by libInfraLensCommunicator.so (0B ELF diff)"
+      },
+      {
+        "range": "0x8100..0x8118",
+        "group": "CameraUnitMetadata",
+        "notes": "NDFilter (0x8103 FX6-only), SensorSize (0x8104/05), FrameRate (0x8106), ShutterAngle (0x8108 = i32 / 60.0 deg), ShutterSpeed (0x8109), ISO (0x810B), ASC_CDL (0x8117), ColorMatrix (0x8118)"
+      },
+      {
+        "range": "0x8500..0x851D",
+        "group": "GPS",
+        "notes": "Lat/Lon/Alt/UTC/Status"
+      },
+      {
+        "range": "0xE300..0xE304",
+        "group": "ImagerControl & CaptureTimestamp",
+        "notes": "0xE300 ImageStabilizerEnabled (bool), 0xE301 ISO, 0xE304 BCD CaptureTimestamp"
+      },
+      {
+        "range": "0xE400..0xE40F, 0xE450",
+        "group": "GroupId::IBIS",
+        "notes": "0xE400 ImagerPos [nm], 0xE405 SensorSizePixels, 0xE406/07 PixelPitch [nm], 0xE40B..0E FirstFrameTimestamp/Exposure/FrameReadoutTime, 0xE40F IBISTimeOffset (16B entries), 0xE450 IBISRollAngle (10B entries); FX3 has 5-axis IBIS while FX6 lacks IBIS"
+      },
+      {
+        "range": "0xE410..0xE416",
+        "group": "GroupId::LensOSS",
+        "notes": "0xE416 LensOSSTimeOffset (t, x, y, z) — sole optical stabilization source on FX6; fused with IBIS on FX3"
+      },
+      {
+        "range": "0xE420..0xE42F",
+        "group": "GroupId::MeshCorrection",
+        "notes": "9x9 distortion/vignetting correction mesh"
+      },
+      {
+        "range": "0xE430..0xE43E",
+        "group": "GroupId::Gyroscope",
+        "notes": "0xE43A orientation (XYZ=0x420 -> Gyroflow swap X/Y & negate Z), 0xE43B GyroData (pitch, roll, yaw), 0xE43D/E zero-rate offset"
+      },
+      {
+        "range": "0xE440..0xE44E",
+        "group": "GroupId::Accelerometer",
+        "notes": "0xE44B AccelData, 0xE44D/E zero-rate offset"
+      },
+      {
+        "range": "0xE500..0xE539",
+        "group": "GroupId::LensBreathing",
+        "notes": "Breathing compensation focus-plane zoom/mesh"
+      },
+      {
+        "range": "0xF010, 0xF020",
+        "group": "UnknownGroup(0xf000)",
+        "notes": "Large vendor extension payloads safely skipped/preserved by telemetry-parser"
+      }
+    ],
+    "ibis_center_lock_alignment": {
+      "phase_18_cp_sequence": "LiroSeq: Restore. (p2:/Backup.bin + p2:/psd.bin + p6:Jiritsu) -> HallPIDOUT_0/GyroPIDOUT_0/FusionOUT_0/AllPIDOUT_0/PWMOUT_0 + FWCP-isRetract",
+      "phase_21_shim": "P11 developing_mode_FHD (0x0362 -> 0x10c1) + Off/Standard/Active IBIS bridge -> floating_sensor_hazard=False"
+    }
+  },
+  "pillar_4_cxd90057_spacc_nor_and_qemu": {
+    "hardware_memory_and_crypto": {
+      "source": "DavidBuchanan314/ILCE-7M4-RE & Sony-ILCE-7M4-Linux (platform.h, fastboot/src/cetus.c)",
+      "spacc_mmio": "0xf7fc0000",
+      "bootrom_range": "0xffff0000..0xffffbfff (scrambling key pad 0xffffb800..0xffffbc00; >= 0xffffc000 triggers hardware WDT reset)",
+      "esram_range": "0xfe000000..0xfeffffff (uart_boot payload @ 0xfe020000; loader_nor.bin @ 0xfe049000; DDR training entry 0xFE080000)",
+      "scu_mmio": "0xf1388000",
+      "emmc_sdm2_mmio": "0xf10d6000..0xf10e0fff",
+      "spi_0_4_mmio": "0xf1017000..0xf101bfff",
+      "emmc_crypto": "SDM2 magic b\"8246\" v\"2.00\", AES-XTS-256 LBA-tweaked (/dev/cnflasha* for type=5 & flag&1), no static eMMC partition signature check",
+      "cetus_cp_nor": "64 MiB CP NOR accessible via AP->SPI 3-command Cetus ROM monitor (reset/peek/poke/exec/dumpnor); stock boot via spicom.elf / ud_spicom_boot.elf"
+    }
+  },
+  "phase_19_to_32_cross_reference_matrix": [
+    {
+      "phase": "Phase 17",
+      "deliverables": [
+        "outputs/fx6-on-fx3-closure/fx6_closure/peripheral_ux_compatibility_verifier.py",
+        "reports/2026-11-14-phase17-fx3-input-display-audio-audit/README.md"
+      ],
+      "external_wave2_link": "MI-Shoe 24-pin ID1..3 + XLR-H1 48kHz/24b 4ch PCM (libInfraHotshoe.so @ 0x5d90)"
+    },
+    {
+      "phase": "Phase 18",
+      "deliverables": [
+        "outputs/fx6-on-fx3-closure/fx6_closure/ap_cp_imaging_pipeline_verifier.py",
+        "reports/2026-11-14-phase18-ap-cp-imaging-ibis-audit/README.md"
+      ],
+      "external_wave2_link": "CrSDK ImportLUTFile/33^3 LUT DMA + RTMD 0xE400..0xE40F 5-axis IBIS center-lock + libInfraLensCommunicator.so (0B diff)"
+    },
+    {
+      "phase": "Phase 19",
+      "deliverables": [
+        "outputs/fx3-vm-trial/src/libgrm-fbinit25-542.c",
+        "outputs/fx3-vm-trial/src/fx6_live_guest.c",
+        "outputs/fx3-vm-trial/src/fx6_next_stage_assist_log.c",
+        "reports/2026-11-14-phase19-live-icon-rendering/README.md"
+      ],
+      "external_wave2_link": "Real FX3 7.02 fx3_ldec_soft103_v1.ko + 9.25 MiB FX6_GPE_POOL_PHYS_BASE (0x410524000) surpassing a7c2-qemu gpe-raster.c"
+    },
+    {
+      "phase": "Phase 20",
+      "deliverables": [
+        "outputs/fx6-on-fx3-closure/fx6_closure/patcher.py",
+        "outputs/fx6-on-fx3-closure/fx6_closure/candidate_builder.py",
+        "reports/2026-11-14-phase20-p10-stage-b-integration/README.md"
+      ],
+      "external_wave2_link": "Stage-B P1+P4+P8+P10 (41B across 10 disjoint sites, 21-key map) avoiding leogenot Backup.bin PRODUCT_MODEL brick hazard"
+    },
+    {
+      "phase": "Phase 21",
+      "deliverables": [
+        "outputs/fx6-on-fx3-closure/fx6_closure/uipc_cp_shim_verifier.py",
+        "reports/2026-11-14-phase21-uipc-cp-shim-closure/README.md"
+      ],
+      "external_wave2_link": "P11 0x92d2091c (/dev/rtc0) + 0x91db059b (XLR-H1 preserved) + 0x0362->0x10c1 + RTMD IBIS/LUT contract"
+    },
+    {
+      "phase": "Phase 22",
+      "deliverables": [
+        "outputs/fx6-on-fx3-closure/fx6_closure/wireless_fault_isolation_verifier.py",
+        "reports/2026-11-14-phase22-wf12-wireless-fault-isolation/README.md"
+      ],
+      "external_wave2_link": "P12 libWlanResource.so::_Z16handleFatalErrorv (0x70d4, 7B) + BT isolation mitigating Notice 00342260 & securing freemote 8000FF00"
+    },
+    {
+      "phase": "Phase 23",
+      "deliverables": [
+        "outputs/fx3-vm-trial/run_fx6_menu_trial.py",
+        "reports/2026-11-14-phase23-128page-multilang-fx3deck/README.md"
+      ],
+      "external_wave2_link": "128-page / 170-cmd zero-crash sweep with live EN/ZH .uxc + /api/fx3_button deck aligned with sonshell/CrSDK button model"
+    },
+    {
+      "phase": "Phase 24",
+      "deliverables": [
+        "outputs/fx3-vm/dual_ap_cp_ivshmem_bridge.py",
+        "reports/2026-11-14-phase24-dual-ap-cp-ivshmem-bridge/README.md"
+      ],
+      "external_wave2_link": "Dual-ISA Unicorn (ARM64 AP ivshmem-doorbell 0x1000_0000 <-> ARM THUMB Stock-CP cpapp-b.bin ivshmem-flat 0x6780_0000), 259 0x92840747 hits, 0B CP mutation"
+    },
+    {
+      "phase": "Phase 25",
+      "deliverables": [
+        "outputs/fx3-recovery-adapter/fx3_recovery/p1_symbol_autolocator.py",
+        "outputs/fx3-safety/fx3_safety/runtime_antibrick_guards.py",
+        "outputs/fx3-safety/fx3_safety/brick_classifier.py",
+        "reports/2026-11-14-phase25-v702-p1-autolocator-antibrick/README.md"
+      ],
+      "external_wave2_link": "Version-independent p1 autolocator + pmca-re-reloaded BusyBox dd / nflasha10 / CAMSET / a7c2-service-preload ld.so.preload guards + 13S/6L+9S"
+    },
+    {
+      "phase": "Phase 26",
+      "deliverables": [
+        "outputs/fx3-firmware-lab/fx3_firmware_lab/ufu_container_auditor.py",
+        "outputs/fx3-firmware-lab/fx3_firmware_lab/haita_bk4_feature_analyzer.py",
+        "outputs/fx3-firmware-lab/fx3_firmware_lab/uxc_ldec_inspector.py",
+        "reports/2026-11-14-fx3-firmware-lab-ufu-haita-uxc/README.md"
+      ],
+      "external_wave2_link": "Zero-key UFU/FDAT/UDTRFIRM/SDM2 auditor + ALCIN_UUD vs CHAPLIN HAITA matrix aligned with OlliV/fx30_fw & leogenot"
+    },
+    {
+      "phase": "Phase 27",
+      "deliverables": [
+        "outputs/fx3-firmware-lab/fx3_firmware_lab/uxc_multilang_and_font_verifier.py",
+        "reports/2026-11-14-phase27-uxc-multilang-cjk-font-audit/README.md"
+      ],
+      "external_wave2_link": "62 FX6 .uxc (29 langs) vs 121 FX3 .uxc (34 langs) namespace isolation + .ltt cmap + 1610/1610 LDEC full-sprite verification"
+    },
+    {
+      "phase": "Phase 28",
+      "deliverables": [
+        "outputs/fx3-safety/fx3_safety/h0_hardware_rehearsal.py",
+        "outputs/fx3-safety/fx3_safety/preflight.py",
+        "docs/STAGE-A-HARDWARE-RUNBOOK.md",
+        "reports/2026-11-14-phase28-h0-hardware-rehearsal/README.md"
+      ],
+      "external_wave2_link": "6-stage Pre-H0 deterministic rehearsal (S1..S6) + Gate G12 integrating Multi-Port, IOUSBHost, and antibrick checks"
+    },
+    {
+      "phase": "Phase 29",
+      "deliverables": [
+        "outputs/fx3-vm/soft_gpe_and_bt_rom_emulator.py",
+        "reports/2026-11-14-phase29-soft-gpe-bt-rom-emulator/README.md"
+      ],
+      "external_wave2_link": "Soft-GPE (GRM_gpermFillrect/Rectblit, HOSDAP02, ramfb 9-patch) + virtual-rom-v1 /dev/ttyAMA3 H4 BT UART 4-mode fault model"
+    },
+    {
+      "phase": "Phase 30",
+      "deliverables": [
+        "outputs/fx3-safety/fx3_safety/multiport_bootrom_unbrick.py",
+        "outputs/fx3-recovery-adapter/fx3_recovery/macos_usb_transport_guard.py",
+        "reports/2026-11-14-fx3-multiport-bootrom-macos26-usb/README.md"
+      ],
+      "external_wave2_link": "ILCE-7M4-RE RP2040-Zero -DOPEN_DRAIN & <0xFFFFC000 WDT guard + pmca-re-reloaded v1.12.1 macOS 26+ 0xe00002be / IOUSBHost / Senser v2"
+    },
+    {
+      "phase": "Phase 31",
+      "deliverables": [
+        "outputs/fx3-firmware-lab/fx3_firmware_lab/sensor_codec_compatibility_analyzer.py",
+        "reports/2026-11-14-phase31-imx510-xavc-codec-matrix/README.md"
+      ],
+      "external_wave2_link": "IMX510 shared CP drivers, 0 hits 5016x3344/X_OCN (confirming OPEN_GATE.md), libXavcMxf ST 436 vs libXavcMp4 rtmd container split"
+    },
+    {
+      "phase": "Phase 32",
+      "deliverables": [
+        "outputs/fx3-safety/fx3_safety/serial_fault_detector_v2.py",
+        "reports/2026-11-14-phase32-serial-fault-wdt-detector-v2/README.md"
+      ],
+      "external_wave2_link": "Fail-closed 4.9.337-scel+ panic/MISSSO/ZZFUTEX & TIMER-IP 220s/90s WDT verifier auditing Round 10 r10a..r10d"
+    },
+    {
+      "phase": "Rounds 9 & 10",
+      "deliverables": [
+        "outputs/fx6-native-presenter-closure/README.md",
+        "reports/2026-11-14-round9-fx6-on-fx3-p10-presenter/README.md",
+        "reports/2026-11-14-round10-fx6-on-fx3-full-icon-presenter/README.md"
+      ],
+      "external_wave2_link": "Real FX3 7.02 kernel + Stage-B 12/12 Verify-Before-Mount + SRM3KYE5 physical keys + FX6_GPE_POOL + XLR-H1 preserved (xlr_h1_preserved=1)"
+    }
+  ],
+  "primary_sources": [
+    {
+      "name": "Sony Official Camera Remote SDK Portal",
+      "url": "https://support.d-imaging.sony.co.jp/app/sdk/"
+    },
+    {
+      "name": "gphoto/libgphoto2",
+      "url": "https://github.com/gphoto/libgphoto2"
+    },
+    {
+      "name": "goudvuur/sonshell",
+      "url": "https://github.com/goudvuur/sonshell"
+    },
+    {
+      "name": "coral/freemote",
+      "url": "https://github.com/coral/freemote"
+    },
+    {
+      "name": "AdrianEddy/telemetry-parser",
+      "url": "https://github.com/AdrianEddy/telemetry-parser"
+    },
+    {
+      "name": "gyroflow/gyroflow",
+      "url": "https://github.com/gyroflow/gyroflow"
+    },
+    {
+      "name": "mungewell/pico-timecode",
+      "url": "https://github.com/mungewell/pico-timecode"
+    },
+    {
+      "name": "DavidBuchanan314/ILCE-7M4-RE",
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE"
+    },
+    {
+      "name": "DavidBuchanan314/Sony-ILCE-7M4-Linux",
+      "url": "https://github.com/DavidBuchanan314/Sony-ILCE-7M4-Linux"
+    },
+    {
+      "name": "leogenot/sony-a7iv-feature-research",
+      "url": "https://github.com/leogenot/sony-a7iv-feature-research"
+    },
+    {
+      "name": "OlliV/fx30_fw",
+      "url": "https://github.com/OlliV/fx30_fw"
+    },
+    {
+      "name": "masterflai/pmca-re-reloaded",
+      "url": "https://github.com/masterflai/pmca-re-reloaded"
+    },
+    {
+      "name": "cokeenet/zve10-qemu",
+      "url": "https://github.com/cokeenet/zve10-qemu"
+    },
+    {
+      "name": "chocotan/a7c2-qemu",
+      "url": "https://github.com/chocotan/a7c2-qemu"
+    }
+  ]
+}

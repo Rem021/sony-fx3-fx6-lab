@@ -14,7 +14,7 @@ HERE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(HERE))
 from fx3_recovery import capture as C
 from fx3_recovery import engine as E
-from fx3_recovery.files import ROOT, allocate_test_run_dir, check_volume, is_clean_room_or_donor_unavailable, new_directory, read_file, encode
+from fx3_recovery.files import ROOT, allocate_test_run_dir, check_volume, is_clean_room_or_donor_unavailable, new_directory, read_file, encode, resolve_donor_path
 
 RUN = allocate_test_run_dir('work/sony-firmware-20261024/stage186-fx3-bounded-capture-engine/runs', 'capture-tests', __name__, sys.argv)
 
@@ -59,7 +59,7 @@ class FaultSource(C.RegularFileSource):
 class CaptureTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        reference = ROOT/'work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1'
+        reference = resolve_donor_path('fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1', require_file=True)
         if is_clean_room_or_donor_unavailable([reference]):
             raise unittest.SkipTest('Clean-room mode or external FX3 2.05 donor image absent')
         check_volume(); RUN.mkdir(mode=0o700)

@@ -1,0 +1,4927 @@
+{
+  "schema": "fx6-on-fx3-round26-technical-tab6-4lang-dualsurface-closure-v1",
+  "date": "2026-11-14",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "languages": {
+    "tchinese": {
+      "language_enum": "0x2b44",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x18",
+      "uxc_banks": {
+        "font": 27,
+        "ns1_string": 22,
+        "ns2_string": 22
+      },
+      "assets": [
+        "/usr/share/app/string_traditionalchinese.uxc",
+        "/usr/share/app/string_traditionalchinese_2.uxc",
+        "/usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    },
+    "japanese": {
+      "language_enum": "0x2b30",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x01",
+      "uxc_banks": {
+        "font": 1,
+        "ns1_string": 12,
+        "ns2_string": 12
+      },
+      "assets": [
+        "/usr/share/app/string_japanese.uxc",
+        "/usr/share/app/string_japanese_2.uxc",
+        "/usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    },
+    "schinese": {
+      "language_enum": "0x2b45",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x19",
+      "uxc_banks": {
+        "font": 23,
+        "ns1_string": 19,
+        "ns2_string": 19
+      },
+      "assets": [
+        "/usr/share/app/string_simplifiedchinese.uxc",
+        "/usr/share/app/string_simplifiedchinese_2.uxc",
+        "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    },
+    "en": {
+      "language_enum": "0x2b2f",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x00",
+      "uxc_banks": {
+        "font": 0,
+        "ns1_string": 4,
+        "ns2_string": 4
+      },
+      "assets": [
+        "/usr/share/app/string_english.uxc",
+        "/usr/share/app/string_english_2.uxc",
+        "/usr/share/app/UniversOTS-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    }
+  },
+  "p4_nd_clear_sites": {
+    "nd_mode": "0x2111358 -> 0xd503201f",
+    "nd_val": "0x21113f0 -> 0x1400001b"
+  },
+  "p12_wlan_source": "outputs/fx6-on-fx3-closure/fx6_closure/wireless_fault_isolation_verifier.py",
+  "p10_keymap_source": "outputs/fx6-on-fx3-closure/fx6_closure/peripheral_ux_compatibility_verifier.py",
+  "p11_uipc_source": "outputs/fx6-on-fx3-closure/fx6_closure/uipc_cp_shim_verifier.py",
+  "uxc_asset": "/usr/share/app/image_00_169.uxc",
+  "gpe_phys_pool": "0x410524000..0x410e64000",
+  "fx3_phy_to_infra_pipeline": "0x007a804c -> 0x005503e0",
+  "runs": {
+    "r26a_menu_3layer_technical_english": {
+      "run_id": "r26a-menu-3layer-technical-english",
+      "round": 26,
+      "lang": "english",
+      "surface": "technical_3layer_menu",
+      "surface_label": "3-Layer Technical Menu",
+      "target_presenter": "31procam_menu_layer_3rd_presenter",
+      "target_controller": "32procam_menu_layer_3rd_controller",
+      "target_sid": "0x11",
+      "rail_down_steps": 8,
+      "cat_id": 16,
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 92,
+      "wall_elapsed_sec": 95.86,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 91,
+      "amber_0xffffaa00_pixels": 585,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "r17_enabled": true,
+        "r18_enabled": true,
+        "r19_enabled": true,
+        "r20_enabled": true,
+        "r21_enabled": true,
+        "r22_enabled": true,
+        "r23_enabled": true,
+        "r24_enabled": true,
+        "r25_enabled": true,
+        "r26_enabled": true,
+        "lang": "english",
+        "verify_bin_bytes": 77696,
+        "verify_bin_sha256": "142e06972214ff3d4b33521e457eaeafa76dea181fc71f126655bdd93c227698",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "e3b67d0977597176874949270ae835f11cb9dd0640a255cc00d297f73bb32a5b"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_english": {
+            "guest_path": "/usr/share/app/string_english.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118208,
+            "sha256": "5e88dd707cb46a2998fe4e55c800da6ce7a8538fd32705856aa9004af739c739",
+            "magic": "uxc_07"
+          },
+          "string_english_2": {
+            "guest_path": "/usr/share/app/string_english_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118676,
+            "sha256": "3f11f9200f576575347658afcc8317cb0b4a4220a92ac50e985a44a835d23fe2",
+            "magic": "uxc_07"
+          },
+          "font_univers_ltt": {
+            "guest_path": "/usr/share/app/UniversOTS-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 611416,
+            "sha256": "eea4d814854d2cefc18e5631c82138b2b69824687cd31002b7df34eae025dd0d",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_UNIVERS",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r17_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "statuscheck_fullsweep": 1,
+        "audio_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r18_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "menu_8cat_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r19_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "menu_11cat_fullsweep": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r20_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "network_4lang_wf12_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r21_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "audio_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r22_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "paintlook_camtab2_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r23_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "monitoring_tab5_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r24_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "project_tab4_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r25_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "tcmedia_tab8_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r26_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17625,
+        "glyph_blits": 10092,
+        "icon_blits": 13841,
+        "gpe_alloc": 213,
+        "gpe_fb": 0,
+        "technical_tab6_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "english",
+        "lang_code": 0,
+        "launcher_bytes": 104112,
+        "launcher_sha256": "6e6ed9c2f3115ff9d57d983539bde6086aeb6cc80a3983f980d0d9300859de8d",
+        "shim_bytes": 147680,
+        "shim_sha256": "e3b67d0977597176874949270ae835f11cb9dd0640a255cc00d297f73bb32a5b",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0011",
+            "hold_ms": 1300,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437575,
+        "unique_colors": 231,
+        "sha256": "985480cb0bcbcf9cc6665d7ec028c92786204614d02d3611d8ba14d9e9fe0c6c",
+        "top_colors": [
+          {
+            "argb": "0xcc1b1b1b",
+            "pixels": 331203
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115385
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 23137
+          },
+          {
+            "argb": "0xffee9922",
+            "pixels": 14345
+          },
+          {
+            "argb": "0xffeeaa22",
+            "pixels": 12239
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 9610
+          },
+          {
+            "argb": "0xffff9922",
+            "pixels": 7745
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 4765
+          },
+          {
+            "argb": "0xffeeaa33",
+            "pixels": 3990
+          },
+          {
+            "argb": "0xf43b3b3b",
+            "pixels": 3706
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 2852
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 2637
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 1958
+          },
+          {
+            "argb": "0xffee8822",
+            "pixels": 1941
+          },
+          {
+            "argb": "0xffffaa22",
+            "pixels": 1287
+          },
+          {
+            "argb": "0xffee8811",
+            "pixels": 1198
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r26a-menu-3layer-technical-english",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 454960,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26a-menu-3layer-technical-english-alpha.png",
+          "bytes": 31081,
+          "sha256": "6c70efef68891e68fbb6ce475382eb95e6c0401efcb062b4e726ebb1a0a86be0"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26a-menu-3layer-technical-english-composited.png",
+          "bytes": 31171,
+          "sha256": "a34e92280241641ca898f1ebaa5c4a9fd844ae9621b25b264d15651cb97867af"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 44,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 213,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 130,
+        "FX6_R10_": 211,
+        "FX6_R11_": 222,
+        "FX6_R12_": 214,
+        "FX6_R13_": 211,
+        "FX6_R14_": 211,
+        "FX6_R15_": 211,
+        "FX6_R16_": 211,
+        "FX6_R17_": 211,
+        "FX6_R18_": 211,
+        "FX6_R19_": 211,
+        "FX6_R20_": 211,
+        "FX6_R21_": 211,
+        "FX6_R22_": 211,
+        "FX6_R23_": 211,
+        "FX6_R24_": 211,
+        "FX6_R25_": 211,
+        "FX6_R26_": 211,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 374,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1017,
+        "FX6_SCREEN_MGR_STATE": 23,
+        "FX6_PRESENTER_SLOT": 161,
+        "FX6_APPFW_MEDIA_SLOTS": 23,
+        "FX6_UX_SCREEN_TREE": 207,
+        "FX6_TRIGGER_PUMP_": 90,
+        "FX6_KEY_INJECT": 35,
+        "FX6_BACKUP_WRITE": 51,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 484,
+        "FX6_FONT_": 74,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2761
+      }
+    },
+    "r26b_menu_3layer_technical_japanese": {
+      "run_id": "r26b-menu-3layer-technical-japanese",
+      "round": 26,
+      "lang": "japanese",
+      "surface": "technical_3layer_menu",
+      "surface_label": "3-Layer Technical Menu",
+      "target_presenter": "31procam_menu_layer_3rd_presenter",
+      "target_controller": "32procam_menu_layer_3rd_controller",
+      "target_sid": "0x11",
+      "rail_down_steps": 8,
+      "cat_id": 16,
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 92,
+      "wall_elapsed_sec": 95.89,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 92,
+      "amber_0xffffaa00_pixels": 471,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "r17_enabled": true,
+        "r18_enabled": true,
+        "r19_enabled": true,
+        "r20_enabled": true,
+        "r21_enabled": true,
+        "r22_enabled": true,
+        "r23_enabled": true,
+        "r24_enabled": true,
+        "r25_enabled": true,
+        "r26_enabled": true,
+        "lang": "japanese",
+        "verify_bin_bytes": 77696,
+        "verify_bin_sha256": "142e06972214ff3d4b33521e457eaeafa76dea181fc71f126655bdd93c227698",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "6eb7409525227a6b8c16648d7db5a596bd3e424d409af66aa704f46e1d9ec61b"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_japanese": {
+            "guest_path": "/usr/share/app/string_japanese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 141692,
+            "sha256": "9b47630ebe8e011a9d0bdb7a2fda06574f5187222b92d60bf6887042fe186d35",
+            "magic": "uxc_07"
+          },
+          "string_japanese_2": {
+            "guest_path": "/usr/share/app/string_japanese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 144720,
+            "sha256": "98315732d7e29078a98dc32c077a799f8831d8bb3d96ec26ca2110ed8e36aa26",
+            "magic": "uxc_07"
+          },
+          "font_japanese_ltt": {
+            "guest_path": "/usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 851496,
+            "sha256": "dda0a2400add24d829d958adf338899c80b20adc122cf2946d8f0c99f8b0fed3",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_JAPANESE",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r17_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "statuscheck_fullsweep": 1,
+        "audio_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r18_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "menu_8cat_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r19_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "menu_11cat_fullsweep": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r20_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "network_4lang_wf12_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r21_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "audio_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r22_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "paintlook_camtab2_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r23_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "monitoring_tab5_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r24_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "project_tab4_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r25_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "tcmedia_tab8_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r26_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17337,
+        "glyph_blits": 10088,
+        "icon_blits": 13709,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "technical_tab6_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "japanese",
+        "lang_code": 1,
+        "launcher_bytes": 104112,
+        "launcher_sha256": "6e6ed9c2f3115ff9d57d983539bde6086aeb6cc80a3983f980d0d9300859de8d",
+        "shim_bytes": 147680,
+        "shim_sha256": "6eb7409525227a6b8c16648d7db5a596bd3e424d409af66aa704f46e1d9ec61b",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0011",
+            "hold_ms": 1300,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437095,
+        "unique_colors": 235,
+        "sha256": "26ed067a42067b5cd36d753f4ffbf9a3097de64ad646dfaa8ff7569e5a59ad51",
+        "top_colors": [
+          {
+            "argb": "0xcc1b1b1b",
+            "pixels": 331105
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115865
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 23494
+          },
+          {
+            "argb": "0xffee9922",
+            "pixels": 14523
+          },
+          {
+            "argb": "0xffeeaa22",
+            "pixels": 12172
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 9731
+          },
+          {
+            "argb": "0xffff9922",
+            "pixels": 7766
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 4765
+          },
+          {
+            "argb": "0xffeeaa33",
+            "pixels": 3958
+          },
+          {
+            "argb": "0xf43b3b3b",
+            "pixels": 3706
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 2722
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 2130
+          },
+          {
+            "argb": "0xffee8822",
+            "pixels": 1942
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 1848
+          },
+          {
+            "argb": "0xffffaa22",
+            "pixels": 1321
+          },
+          {
+            "argb": "0xffee8811",
+            "pixels": 1200
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r26b-menu-3layer-technical-japanese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 455506,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26b-menu-3layer-technical-japanese-alpha.png",
+          "bytes": 30813,
+          "sha256": "6ce45204520ac59a77ec788aa7894ff76c3eb31bdb4bdee322baf70fc6a8b633"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26b-menu-3layer-technical-japanese-composited.png",
+          "bytes": 30910,
+          "sha256": "23e99a8a76361efd0009858c879412eb7d3f81948f3944755d8b9deea6464cb9"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 44,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 214,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 130,
+        "FX6_R10_": 212,
+        "FX6_R11_": 223,
+        "FX6_R12_": 215,
+        "FX6_R13_": 212,
+        "FX6_R14_": 212,
+        "FX6_R15_": 212,
+        "FX6_R16_": 212,
+        "FX6_R17_": 212,
+        "FX6_R18_": 212,
+        "FX6_R19_": 212,
+        "FX6_R20_": 212,
+        "FX6_R21_": 212,
+        "FX6_R22_": 212,
+        "FX6_R23_": 212,
+        "FX6_R24_": 212,
+        "FX6_R25_": 212,
+        "FX6_R26_": 212,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 374,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1017,
+        "FX6_SCREEN_MGR_STATE": 23,
+        "FX6_PRESENTER_SLOT": 161,
+        "FX6_APPFW_MEDIA_SLOTS": 23,
+        "FX6_UX_SCREEN_TREE": 207,
+        "FX6_TRIGGER_PUMP_": 91,
+        "FX6_KEY_INJECT": 35,
+        "FX6_BACKUP_WRITE": 51,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 484,
+        "FX6_FONT_": 74,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2751
+      }
+    },
+    "r26c_menu_3layer_technical_tchinese": {
+      "run_id": "r26c-menu-3layer-technical-tchinese",
+      "round": 26,
+      "lang": "tchinese",
+      "surface": "technical_3layer_menu",
+      "surface_label": "3-Layer Technical Menu",
+      "target_presenter": "31procam_menu_layer_3rd_presenter",
+      "target_controller": "32procam_menu_layer_3rd_controller",
+      "target_sid": "0x11",
+      "rail_down_steps": 8,
+      "cat_id": 16,
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:600,0x0030:120:900,0x01af:120:2500,0x01af:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 92,
+      "wall_elapsed_sec": 96.09,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 91,
+      "amber_0xffffaa00_pixels": 471,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "r17_enabled": true,
+        "r18_enabled": true,
+        "r19_enabled": true,
+        "r20_enabled": true,
+        "r21_enabled": true,
+        "r22_enabled": true,
+        "r23_enabled": true,
+        "r24_enabled": true,
+        "r25_enabled": true,
+        "r26_enabled": true,
+        "lang": "tchinese",
+        "verify_bin_bytes": 77696,
+        "verify_bin_sha256": "142e06972214ff3d4b33521e457eaeafa76dea181fc71f126655bdd93c227698",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "a97bdd8f0b256f990f0b4e702977e32cb04395daacaf81621fca011d9c40ff28"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_traditionalchinese": {
+            "guest_path": "/usr/share/app/string_traditionalchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 119168,
+            "sha256": "8c34b415ce4d19fd40ca22d00c4543c64eb4741b96250de13b93ec473b25b18b",
+            "magic": "uxc_07"
+          },
+          "string_traditionalchinese_2": {
+            "guest_path": "/usr/share/app/string_traditionalchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 121824,
+            "sha256": "07fa20ae03457465a8c4922f479d6cfe1280980a70ac43797081e87654680c6d",
+            "magic": "uxc_07"
+          },
+          "font_big5hkscs_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 1552252,
+            "sha256": "3cf4238d210dbd472fd207969eec9660eedd335905137b38566e04a8c8e04448",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_T_CHINESE",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r17_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "statuscheck_fullsweep": 1,
+        "audio_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r18_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "menu_8cat_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r19_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "menu_11cat_fullsweep": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r20_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "network_4lang_wf12_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r21_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "audio_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r22_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "paintlook_camtab2_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r23_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "monitoring_tab5_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r24_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "project_tab4_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r25_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "tcmedia_tab8_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r26_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 17082,
+        "glyph_blits": 9843,
+        "icon_blits": 13260,
+        "gpe_alloc": 214,
+        "gpe_fb": 0,
+        "technical_tab6_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "tchinese",
+        "lang_code": 2,
+        "launcher_bytes": 104112,
+        "launcher_sha256": "6e6ed9c2f3115ff9d57d983539bde6086aeb6cc80a3983f980d0d9300859de8d",
+        "shim_bytes": 147696,
+        "shim_sha256": "a97bdd8f0b256f990f0b4e702977e32cb04395daacaf81621fca011d9c40ff28",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0011",
+            "hold_ms": 1300,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 600
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437575,
+        "unique_colors": 244,
+        "sha256": "51c2f780e3522160b1b0d728d809aeb45644bb2219e038e1d5aa567bfbd4b85e",
+        "top_colors": [
+          {
+            "argb": "0xcc1b1b1b",
+            "pixels": 330534
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115385
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 23136
+          },
+          {
+            "argb": "0xffee9922",
+            "pixels": 14485
+          },
+          {
+            "argb": "0xffeeaa22",
+            "pixels": 12184
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 9869
+          },
+          {
+            "argb": "0xffff9922",
+            "pixels": 7724
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 4765
+          },
+          {
+            "argb": "0xffeeaa33",
+            "pixels": 3972
+          },
+          {
+            "argb": "0xf43b3b3b",
+            "pixels": 3706
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 2791
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 2413
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 2238
+          },
+          {
+            "argb": "0xffee8822",
+            "pixels": 1933
+          },
+          {
+            "argb": "0xffffaa22",
+            "pixels": 1320
+          },
+          {
+            "argb": "0xffee8811",
+            "pixels": 1193
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r26c-menu-3layer-technical-tchinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 454794,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26c-menu-3layer-technical-tchinese-alpha.png",
+          "bytes": 31641,
+          "sha256": "3f68bc6a51c5ba9b9dd8e88697057aaee3102e2ceee5b3aececa972d5d3a156e"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26c-menu-3layer-technical-tchinese-composited.png",
+          "bytes": 31730,
+          "sha256": "45166be7450096ce7cf1e8016c1b62047c0ee3a8045c776fe5fdc6efdc08a828"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 44,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 211,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 128,
+        "FX6_R10_": 209,
+        "FX6_R11_": 220,
+        "FX6_R12_": 212,
+        "FX6_R13_": 209,
+        "FX6_R14_": 209,
+        "FX6_R15_": 209,
+        "FX6_R16_": 209,
+        "FX6_R17_": 209,
+        "FX6_R18_": 209,
+        "FX6_R19_": 209,
+        "FX6_R20_": 209,
+        "FX6_R21_": 209,
+        "FX6_R22_": 209,
+        "FX6_R23_": 209,
+        "FX6_R24_": 209,
+        "FX6_R25_": 209,
+        "FX6_R26_": 209,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 374,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 997,
+        "FX6_SCREEN_MGR_STATE": 23,
+        "FX6_PRESENTER_SLOT": 161,
+        "FX6_APPFW_MEDIA_SLOTS": 23,
+        "FX6_UX_SCREEN_TREE": 207,
+        "FX6_TRIGGER_PUMP_": 90,
+        "FX6_KEY_INJECT": 35,
+        "FX6_BACKUP_WRITE": 51,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 476,
+        "FX6_FONT_": 74,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2762
+      }
+    },
+    "r26d_status_tab6_assignable_english": {
+      "run_id": "r26d-status-tab6-assignable-english",
+      "round": 26,
+      "lang": "english",
+      "surface": "status_check_tab6_assignable_button",
+      "surface_label": "Status Check Tab 6 Assignable Button",
+      "target_presenter": "47procam_touch_status_assignable_button_presenter",
+      "target_controller": "48procam_touch_status_assignable_button_controller",
+      "target_sid": "0x34",
+      "rail_down_steps": 5,
+      "cat_id": null,
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:1800,0x0030:120:1800,0x0030:120:1800,0x0030:120:1800,0x0030:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 96,
+      "wall_elapsed_sec": 100.16,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 62,
+      "amber_0xffffaa00_pixels": 324,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "r17_enabled": true,
+        "r18_enabled": true,
+        "r19_enabled": true,
+        "r20_enabled": true,
+        "r21_enabled": true,
+        "r22_enabled": true,
+        "r23_enabled": true,
+        "r24_enabled": true,
+        "r25_enabled": true,
+        "r26_enabled": true,
+        "lang": "english",
+        "verify_bin_bytes": 77696,
+        "verify_bin_sha256": "142e06972214ff3d4b33521e457eaeafa76dea181fc71f126655bdd93c227698",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "2ef2d4d8a3753541fc2cd455eed5ecf9d217d1a1122a33de57e3f87f0a3674e7"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_english": {
+            "guest_path": "/usr/share/app/string_english.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118208,
+            "sha256": "5e88dd707cb46a2998fe4e55c800da6ce7a8538fd32705856aa9004af739c739",
+            "magic": "uxc_07"
+          },
+          "string_english_2": {
+            "guest_path": "/usr/share/app/string_english_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118676,
+            "sha256": "3f11f9200f576575347658afcc8317cb0b4a4220a92ac50e985a44a835d23fe2",
+            "magic": "uxc_07"
+          },
+          "font_univers_ltt": {
+            "guest_path": "/usr/share/app/UniversOTS-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 611416,
+            "sha256": "eea4d814854d2cefc18e5631c82138b2b69824687cd31002b7df34eae025dd0d",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_UNIVERS",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r17_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "statuscheck_fullsweep": 1,
+        "audio_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r18_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "menu_8cat_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r19_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "menu_11cat_fullsweep": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r20_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "network_4lang_wf12_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r21_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "audio_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r22_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "paintlook_camtab2_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r23_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "monitoring_tab5_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r24_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "project_tab4_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r25_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "tcmedia_tab8_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r26_telemetry": {
+        "reason": "pump",
+        "lang": "english",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33450,
+        "glyph_blits": 22961,
+        "icon_blits": 9239,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "technical_tab6_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "english",
+        "lang_code": 0,
+        "launcher_bytes": 104112,
+        "launcher_sha256": "6e6ed9c2f3115ff9d57d983539bde6086aeb6cc80a3983f980d0d9300859de8d",
+        "shim_bytes": 147680,
+        "shim_sha256": "2ef2d4d8a3753541fc2cd455eed5ecf9d217d1a1122a33de57e3f87f0a3674e7",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x7052",
+            "hold_ms": 120,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437403,
+        "unique_colors": 80,
+        "sha256": "e008682d32c26f59b185535f5f9eb88100ffaffda96304de40175e3489136fa9",
+        "top_colors": [
+          {
+            "argb": "0xdf0e0e0e",
+            "pixels": 392026
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115557
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 12233
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 11903
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 4637
+          },
+          {
+            "argb": "0xe53a3a3a",
+            "pixels": 1118
+          },
+          {
+            "argb": "0xe7494949",
+            "pixels": 911
+          },
+          {
+            "argb": "0xf8c0c0c0",
+            "pixels": 909
+          },
+          {
+            "argb": "0xfcdedede",
+            "pixels": 848
+          },
+          {
+            "argb": "0xe11c1c1c",
+            "pixels": 830
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 802
+          },
+          {
+            "argb": "0xef848484",
+            "pixels": 740
+          },
+          {
+            "argb": "0xfc9e9e9e",
+            "pixels": 689
+          },
+          {
+            "argb": "0xeb676767",
+            "pixels": 654
+          },
+          {
+            "argb": "0xfacfcfcf",
+            "pixels": 653
+          },
+          {
+            "argb": "0xed767676",
+            "pixels": 605
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r26d-status-tab6-assignable-english",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 522677,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26d-status-tab6-assignable-english-alpha.png",
+          "bytes": 29821,
+          "sha256": "e9c34033870daa6021b247d856497ef4e1ef8e4834dbcfd90ea5f2b1f5203566"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26d-status-tab6-assignable-english-composited.png",
+          "bytes": 29817,
+          "sha256": "92cef6e99f5633cdb7d3ee9736f35018129abbbd2e6cbc93446ec80f27074022"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 44,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 210,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 122,
+        "FX6_R10_": 208,
+        "FX6_R11_": 219,
+        "FX6_R12_": 211,
+        "FX6_R13_": 208,
+        "FX6_R14_": 208,
+        "FX6_R15_": 208,
+        "FX6_R16_": 208,
+        "FX6_R17_": 208,
+        "FX6_R18_": 208,
+        "FX6_R19_": 208,
+        "FX6_R20_": 208,
+        "FX6_R21_": 208,
+        "FX6_R22_": 208,
+        "FX6_R23_": 208,
+        "FX6_R24_": 208,
+        "FX6_R25_": 208,
+        "FX6_R26_": 208,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 942,
+        "FX6_SCREEN_MGR_STATE": 18,
+        "FX6_PRESENTER_SLOT": 126,
+        "FX6_APPFW_MEDIA_SLOTS": 18,
+        "FX6_UX_SCREEN_TREE": 162,
+        "FX6_TRIGGER_PUMP_": 95,
+        "FX6_KEY_INJECT": 25,
+        "FX6_BACKUP_WRITE": 59,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 584,
+        "FX6_FONT_": 106,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2749
+      }
+    },
+    "r26e_status_tab6_assignable_japanese": {
+      "run_id": "r26e-status-tab6-assignable-japanese",
+      "round": 26,
+      "lang": "japanese",
+      "surface": "status_check_tab6_assignable_button",
+      "surface_label": "Status Check Tab 6 Assignable Button",
+      "target_presenter": "47procam_touch_status_assignable_button_presenter",
+      "target_controller": "48procam_touch_status_assignable_button_controller",
+      "target_sid": "0x34",
+      "rail_down_steps": 5,
+      "cat_id": null,
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:1800,0x0030:120:1800,0x0030:120:1800,0x0030:120:1800,0x0030:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 96,
+      "wall_elapsed_sec": 99.51,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 61,
+      "amber_0xffffaa00_pixels": 278,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "r17_enabled": true,
+        "r18_enabled": true,
+        "r19_enabled": true,
+        "r20_enabled": true,
+        "r21_enabled": true,
+        "r22_enabled": true,
+        "r23_enabled": true,
+        "r24_enabled": true,
+        "r25_enabled": true,
+        "r26_enabled": true,
+        "lang": "japanese",
+        "verify_bin_bytes": 77696,
+        "verify_bin_sha256": "142e06972214ff3d4b33521e457eaeafa76dea181fc71f126655bdd93c227698",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "cc65c91575545ae4682224762c6b1301b739e002c7e13373bab4d56d673e592c"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_japanese": {
+            "guest_path": "/usr/share/app/string_japanese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 141692,
+            "sha256": "9b47630ebe8e011a9d0bdb7a2fda06574f5187222b92d60bf6887042fe186d35",
+            "magic": "uxc_07"
+          },
+          "string_japanese_2": {
+            "guest_path": "/usr/share/app/string_japanese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 144720,
+            "sha256": "98315732d7e29078a98dc32c077a799f8831d8bb3d96ec26ca2110ed8e36aa26",
+            "magic": "uxc_07"
+          },
+          "font_japanese_ltt": {
+            "guest_path": "/usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 851496,
+            "sha256": "dda0a2400add24d829d958adf338899c80b20adc122cf2946d8f0c99f8b0fed3",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_JAPANESE",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r17_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "statuscheck_fullsweep": 1,
+        "audio_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r18_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "menu_8cat_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r19_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "menu_11cat_fullsweep": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r20_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "network_4lang_wf12_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r21_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "audio_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r22_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "paintlook_camtab2_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r23_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "monitoring_tab5_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r24_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "project_tab4_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r25_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "tcmedia_tab8_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r26_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33231,
+        "glyph_blits": 22841,
+        "icon_blits": 9406,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "technical_tab6_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "japanese",
+        "lang_code": 1,
+        "launcher_bytes": 104112,
+        "launcher_sha256": "6e6ed9c2f3115ff9d57d983539bde6086aeb6cc80a3983f980d0d9300859de8d",
+        "shim_bytes": 147680,
+        "shim_sha256": "cc65c91575545ae4682224762c6b1301b739e002c7e13373bab4d56d673e592c",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x7052",
+            "hold_ms": 120,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437403,
+        "unique_colors": 80,
+        "sha256": "46aacb83336e76c795af0f5f9d01fdb6e40d375dbba7fb87dc566a3e64086f8e",
+        "top_colors": [
+          {
+            "argb": "0xdf0e0e0e",
+            "pixels": 390866
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115557
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 11903
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11833
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 4899
+          },
+          {
+            "argb": "0xe32b2b2b",
+            "pixels": 1281
+          },
+          {
+            "argb": "0xfcdedede",
+            "pixels": 1025
+          },
+          {
+            "argb": "0xef848484",
+            "pixels": 984
+          },
+          {
+            "argb": "0xe7494949",
+            "pixels": 959
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 802
+          },
+          {
+            "argb": "0xeb676767",
+            "pixels": 749
+          },
+          {
+            "argb": "0xf4a2a2a2",
+            "pixels": 722
+          },
+          {
+            "argb": "0xe11c1c1c",
+            "pixels": 631
+          },
+          {
+            "argb": "0xf8c0c0c0",
+            "pixels": 612
+          },
+          {
+            "argb": "0xe53a3a3a",
+            "pixels": 594
+          },
+          {
+            "argb": "0xfc9e9e9e",
+            "pixels": 582
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r26e-status-tab6-assignable-japanese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 522861,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26e-status-tab6-assignable-japanese-alpha.png",
+          "bytes": 34202,
+          "sha256": "0407906cb5f4b1a870506edb89d7a211df82eec939504ef275dc2b1a224c1606"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26e-status-tab6-assignable-japanese-composited.png",
+          "bytes": 34216,
+          "sha256": "a6de5a965393bf0d4afda105c9e6dd6d86bb75c562ad5c893cd2f9f1f1fd98e6"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 44,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 212,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 123,
+        "FX6_R10_": 210,
+        "FX6_R11_": 221,
+        "FX6_R12_": 213,
+        "FX6_R13_": 210,
+        "FX6_R14_": 210,
+        "FX6_R15_": 210,
+        "FX6_R16_": 210,
+        "FX6_R17_": 210,
+        "FX6_R18_": 210,
+        "FX6_R19_": 210,
+        "FX6_R20_": 210,
+        "FX6_R21_": 210,
+        "FX6_R22_": 210,
+        "FX6_R23_": 210,
+        "FX6_R24_": 210,
+        "FX6_R25_": 210,
+        "FX6_R26_": 210,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 948,
+        "FX6_SCREEN_MGR_STATE": 18,
+        "FX6_PRESENTER_SLOT": 126,
+        "FX6_APPFW_MEDIA_SLOTS": 18,
+        "FX6_UX_SCREEN_TREE": 162,
+        "FX6_TRIGGER_PUMP_": 96,
+        "FX6_KEY_INJECT": 25,
+        "FX6_BACKUP_WRITE": 59,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 587,
+        "FX6_FONT_": 106,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2753
+      }
+    },
+    "r26f_status_tab6_assignable_tchinese": {
+      "run_id": "r26f-status-tab6-assignable-tchinese",
+      "round": 26,
+      "lang": "tchinese",
+      "surface": "status_check_tab6_assignable_button",
+      "surface_label": "Status Check Tab 6 Assignable Button",
+      "target_presenter": "47procam_touch_status_assignable_button_presenter",
+      "target_controller": "48procam_touch_status_assignable_button_controller",
+      "target_sid": "0x34",
+      "rail_down_steps": 5,
+      "cat_id": null,
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:1800,0x0030:120:1800,0x0030:120:1800,0x0030:120:1800,0x0030:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 96,
+      "wall_elapsed_sec": 99.59,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 60,
+      "amber_0xffffaa00_pixels": 278,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "r17_enabled": true,
+        "r18_enabled": true,
+        "r19_enabled": true,
+        "r20_enabled": true,
+        "r21_enabled": true,
+        "r22_enabled": true,
+        "r23_enabled": true,
+        "r24_enabled": true,
+        "r25_enabled": true,
+        "r26_enabled": true,
+        "lang": "tchinese",
+        "verify_bin_bytes": 77696,
+        "verify_bin_sha256": "142e06972214ff3d4b33521e457eaeafa76dea181fc71f126655bdd93c227698",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "7a0ea848726d9270376c549d45e3b3af6b22f87f8ca9d458f761e97c1aa54ff6"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_traditionalchinese": {
+            "guest_path": "/usr/share/app/string_traditionalchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 119168,
+            "sha256": "8c34b415ce4d19fd40ca22d00c4543c64eb4741b96250de13b93ec473b25b18b",
+            "magic": "uxc_07"
+          },
+          "string_traditionalchinese_2": {
+            "guest_path": "/usr/share/app/string_traditionalchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 121824,
+            "sha256": "07fa20ae03457465a8c4922f479d6cfe1280980a70ac43797081e87654680c6d",
+            "magic": "uxc_07"
+          },
+          "font_big5hkscs_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 1552252,
+            "sha256": "3cf4238d210dbd472fd207969eec9660eedd335905137b38566e04a8c8e04448",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_T_CHINESE",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r17_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "statuscheck_fullsweep": 1,
+        "audio_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r18_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "menu_8cat_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r19_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "menu_11cat_fullsweep": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r20_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "network_4lang_wf12_closure": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r21_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "audio_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r22_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "paintlook_camtab2_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r23_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "monitoring_tab5_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r24_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "project_tab4_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r25_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "tcmedia_tab8_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r26_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "font_create": 33546,
+        "glyph_blits": 22922,
+        "icon_blits": 9502,
+        "gpe_alloc": 202,
+        "gpe_fb": 0,
+        "technical_tab6_4lang_dualsurface": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "tchinese",
+        "lang_code": 2,
+        "launcher_bytes": 104112,
+        "launcher_sha256": "6e6ed9c2f3115ff9d57d983539bde6086aeb6cc80a3983f980d0d9300859de8d",
+        "shim_bytes": 147696,
+        "shim_sha256": "7a0ea848726d9270376c549d45e3b3af6b22f87f8ca9d458f761e97c1aa54ff6",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x7052",
+            "hold_ms": 120,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 1800
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437883,
+        "unique_colors": 80,
+        "sha256": "013fa23128eddc6ce5034b2acafffceecc2ac602dd1024091d188d5edb9a8947",
+        "top_colors": [
+          {
+            "argb": "0xdf0e0e0e",
+            "pixels": 384617
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115077
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 13436
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 11903
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 4719
+          },
+          {
+            "argb": "0xef848484",
+            "pixels": 1353
+          },
+          {
+            "argb": "0xf4a2a2a2",
+            "pixels": 1154
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 1114
+          },
+          {
+            "argb": "0xfcdedede",
+            "pixels": 1111
+          },
+          {
+            "argb": "0xe53a3a3a",
+            "pixels": 1087
+          },
+          {
+            "argb": "0xeb676767",
+            "pixels": 1059
+          },
+          {
+            "argb": "0xfacfcfcf",
+            "pixels": 1019
+          },
+          {
+            "argb": "0xed767676",
+            "pixels": 1002
+          },
+          {
+            "argb": "0xe11c1c1c",
+            "pixels": 963
+          },
+          {
+            "argb": "0xe32b2b2b",
+            "pixels": 957
+          },
+          {
+            "argb": "0xe7494949",
+            "pixels": 948
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r26f-status-tab6-assignable-tchinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 521116,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26f-status-tab6-assignable-tchinese-alpha.png",
+          "bytes": 38137,
+          "sha256": "39e0e274f16f350c43412a67979086bf58f1ab8eb846019b558b6d686eb82936"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26f-status-tab6-assignable-tchinese-composited.png",
+          "bytes": 38166,
+          "sha256": "937ba98316d93208d910edea98ae6596f7fc48feca0a6eb72037f2561c19a610"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 44,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 212,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 123,
+        "FX6_R10_": 210,
+        "FX6_R11_": 221,
+        "FX6_R12_": 213,
+        "FX6_R13_": 210,
+        "FX6_R14_": 210,
+        "FX6_R15_": 210,
+        "FX6_R16_": 210,
+        "FX6_R17_": 210,
+        "FX6_R18_": 210,
+        "FX6_R19_": 210,
+        "FX6_R20_": 210,
+        "FX6_R21_": 210,
+        "FX6_R22_": 210,
+        "FX6_R23_": 210,
+        "FX6_R24_": 210,
+        "FX6_R25_": 210,
+        "FX6_R26_": 210,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 956,
+        "FX6_SCREEN_MGR_STATE": 18,
+        "FX6_PRESENTER_SLOT": 126,
+        "FX6_APPFW_MEDIA_SLOTS": 18,
+        "FX6_UX_SCREEN_TREE": 162,
+        "FX6_TRIGGER_PUMP_": 96,
+        "FX6_KEY_INJECT": 25,
+        "FX6_BACKUP_WRITE": 59,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 592,
+        "FX6_FONT_": 106,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2760
+      }
+    }
+  },
+  "r26_technical_tab6_4lang_dualsurface_audit": {
+    "audit_id": "r26-technical-tab6-4lang-dualsurface-12pair-closure",
+    "total_surfaces": 2,
+    "total_languages": 4,
+    "total_matrix_cells": 8,
+    "total_multilingual_pairs": 12,
+    "all_8_cells_stage_b_green": true,
+    "all_12_technical_tab6_pairs_strictly_positive": true,
+    "technical_3layer_menu_4lang_pairwise": {
+      "language_count": 4,
+      "pair_count": 6,
+      "all_6_pairs_strictly_positive": true,
+      "min_diff_pixels": 6351,
+      "max_diff_pixels": 11296,
+      "languages": [
+        {
+          "lang": "english",
+          "run_id": "r26a",
+          "stem": "r26a-menu-3layer-technical-english",
+          "png_alpha": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26a-menu-3layer-technical-english-alpha.png"
+        },
+        {
+          "lang": "japanese",
+          "run_id": "r26b",
+          "stem": "r26b-menu-3layer-technical-japanese",
+          "png_alpha": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26b-menu-3layer-technical-japanese-alpha.png"
+        },
+        {
+          "lang": "schinese",
+          "run_id": "r19c",
+          "stem": "r19c-menu-3layer-technical-schinese",
+          "png_alpha": "reports/2026-11-14-round19-fx6-on-fx3-menu-11cat-fullsweep/assets/r19c-menu-3layer-technical-schinese-alpha.png"
+        },
+        {
+          "lang": "tchinese",
+          "run_id": "r26c",
+          "stem": "r26c-menu-3layer-technical-tchinese",
+          "png_alpha": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26c-menu-3layer-technical-tchinese-alpha.png"
+        }
+      ],
+      "pairs": {
+        "english_vs_japanese": {
+          "run_a": "r26a",
+          "run_b": "r26b",
+          "lang_a": "english",
+          "lang_b": "japanese",
+          "diff_pixels": 10765,
+          "strictly_positive": true
+        },
+        "english_vs_schinese": {
+          "run_a": "r26a",
+          "run_b": "r19c",
+          "lang_a": "english",
+          "lang_b": "schinese",
+          "diff_pixels": 11296,
+          "strictly_positive": true
+        },
+        "english_vs_tchinese": {
+          "run_a": "r26a",
+          "run_b": "r26c",
+          "lang_a": "english",
+          "lang_b": "tchinese",
+          "diff_pixels": 11218,
+          "strictly_positive": true
+        },
+        "japanese_vs_schinese": {
+          "run_a": "r26b",
+          "run_b": "r19c",
+          "lang_a": "japanese",
+          "lang_b": "schinese",
+          "diff_pixels": 8593,
+          "strictly_positive": true
+        },
+        "japanese_vs_tchinese": {
+          "run_a": "r26b",
+          "run_b": "r26c",
+          "lang_a": "japanese",
+          "lang_b": "tchinese",
+          "diff_pixels": 9429,
+          "strictly_positive": true
+        },
+        "schinese_vs_tchinese": {
+          "run_a": "r19c",
+          "run_b": "r26c",
+          "lang_a": "schinese",
+          "lang_b": "tchinese",
+          "diff_pixels": 6351,
+          "strictly_positive": true
+        }
+      }
+    },
+    "status_tab6_assignable_4lang_pairwise": {
+      "language_count": 4,
+      "pair_count": 6,
+      "all_6_pairs_strictly_positive": true,
+      "min_diff_pixels": 29750,
+      "max_diff_pixels": 53424,
+      "languages": [
+        {
+          "lang": "english",
+          "run_id": "r26d",
+          "stem": "r26d-status-tab6-assignable-english",
+          "png_alpha": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26d-status-tab6-assignable-english-alpha.png"
+        },
+        {
+          "lang": "japanese",
+          "run_id": "r26e",
+          "stem": "r26e-status-tab6-assignable-japanese",
+          "png_alpha": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26e-status-tab6-assignable-japanese-alpha.png"
+        },
+        {
+          "lang": "schinese",
+          "run_id": "r17a",
+          "stem": "r17a-status-tab6-schinese",
+          "png_alpha": "reports/2026-11-14-round17-fx6-on-fx3-status-fullsweep-audio/assets/r17a-status-tab6-schinese-alpha.png"
+        },
+        {
+          "lang": "tchinese",
+          "run_id": "r26f",
+          "stem": "r26f-status-tab6-assignable-tchinese",
+          "png_alpha": "reports/2026-11-14-round26-fx6-on-fx3-technical-assignable-4lang-closure/assets/r26f-status-tab6-assignable-tchinese-alpha.png"
+        }
+      ],
+      "pairs": {
+        "english_vs_japanese": {
+          "run_a": "r26d",
+          "run_b": "r26e",
+          "lang_a": "english",
+          "lang_b": "japanese",
+          "diff_pixels": 47676,
+          "strictly_positive": true
+        },
+        "english_vs_schinese": {
+          "run_a": "r26d",
+          "run_b": "r17a",
+          "lang_a": "english",
+          "lang_b": "schinese",
+          "diff_pixels": 50981,
+          "strictly_positive": true
+        },
+        "english_vs_tchinese": {
+          "run_a": "r26d",
+          "run_b": "r26f",
+          "lang_a": "english",
+          "lang_b": "tchinese",
+          "diff_pixels": 53424,
+          "strictly_positive": true
+        },
+        "japanese_vs_schinese": {
+          "run_a": "r26e",
+          "run_b": "r17a",
+          "lang_a": "japanese",
+          "lang_b": "schinese",
+          "diff_pixels": 48143,
+          "strictly_positive": true
+        },
+        "japanese_vs_tchinese": {
+          "run_a": "r26e",
+          "run_b": "r26f",
+          "lang_a": "japanese",
+          "lang_b": "tchinese",
+          "diff_pixels": 50919,
+          "strictly_positive": true
+        },
+        "schinese_vs_tchinese": {
+          "run_a": "r17a",
+          "run_b": "r26f",
+          "lang_a": "schinese",
+          "lang_b": "tchinese",
+          "diff_pixels": 29750,
+          "strictly_positive": true
+        }
+      }
+    },
+    "cross_surface_technical_vs_tab6": {
+      "english": {
+        "run_a": "r26a",
+        "run_b": "r26d",
+        "diff_pixels": 435812,
+        "strictly_positive": true
+      },
+      "japanese": {
+        "run_a": "r26b",
+        "run_b": "r26e",
+        "diff_pixels": 435332,
+        "strictly_positive": true
+      },
+      "schinese": {
+        "run_a": "r19c",
+        "run_b": "r17a",
+        "diff_pixels": 435325,
+        "strictly_positive": true
+      },
+      "tchinese": {
+        "run_a": "r26c",
+        "run_b": "r26f",
+        "diff_pixels": 435325,
+        "strictly_positive": true
+      }
+    },
+    "technical_tab6_8cell_matrix": [
+      {
+        "surface": "technical_3layer_menu",
+        "target_sid": "0x11",
+        "target_presenter": "31procam_menu_layer_3rd_presenter",
+        "lang": "english",
+        "run_id": "r26a",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "technical_3layer_menu",
+        "target_sid": "0x11",
+        "target_presenter": "31procam_menu_layer_3rd_presenter",
+        "lang": "japanese",
+        "run_id": "r26b",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "technical_3layer_menu",
+        "target_sid": "0x11",
+        "target_presenter": "31procam_menu_layer_3rd_presenter",
+        "lang": "schinese",
+        "run_id": "r19c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "technical_3layer_menu",
+        "target_sid": "0x11",
+        "target_presenter": "31procam_menu_layer_3rd_presenter",
+        "lang": "tchinese",
+        "run_id": "r26c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "status_check_tab6_assignable_button",
+        "target_sid": "0x34",
+        "target_presenter": "47procam_touch_status_assignable_button_presenter",
+        "lang": "english",
+        "run_id": "r26d",
+        "bk4_lang_val": "0x00",
+        "lang_enum": "0x2b2f_LANGUAGE_ENGLISH",
+        "font_bank": 0,
+        "str_bank": 4,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "status_check_tab6_assignable_button",
+        "target_sid": "0x34",
+        "target_presenter": "47procam_touch_status_assignable_button_presenter",
+        "lang": "japanese",
+        "run_id": "r26e",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "status_check_tab6_assignable_button",
+        "target_sid": "0x34",
+        "target_presenter": "47procam_touch_status_assignable_button_presenter",
+        "lang": "schinese",
+        "run_id": "r17a",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      },
+      {
+        "surface": "status_check_tab6_assignable_button",
+        "target_sid": "0x34",
+        "target_presenter": "47procam_touch_status_assignable_button_presenter",
+        "lang": "tchinese",
+        "run_id": "r26f",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "p12_wlan": 1,
+        "wf12_00342260_immune": 1,
+        "airplane_bk4_hits": 0,
+        "nop_count": 0,
+        "crashes": 0,
+        "gpe_fb": 0,
+        "stage_b_manifest_count": 13
+      }
+    ]
+  }
+}

@@ -497,6 +497,13 @@ def evaluate_12_safety_gates(
     p1_recovery_bridge_ok: Optional[bool] = None,
     stage_a_orchestrator_ok: Optional[bool] = None,
     kmod_userland_abi_ok: Optional[bool] = None,
+    peripheral_ux_ok: Optional[bool] = None,
+    ap_cp_imaging_ok: Optional[bool] = None,
+    stage_b_p10_ok: Optional[bool] = None,
+    uipc_cp_shim_ok: Optional[bool] = None,
+    wireless_fault_isolation_ok: Optional[bool] = None,
+    runtime_antibrick_ok: Optional[bool] = None,
+    multiport_tier3_harness_ok: Optional[bool] = None,
 ) -> Dict[str, object]:
     """Evaluate all 12 Pre-Flash & Recovery Safety Gates against repository and candidate evidence."""
     repo_root = repo_root.resolve()
@@ -648,6 +655,13 @@ def evaluate_12_safety_gates(
         and (p1_recovery_bridge_ok is not False)
         and (stage_a_orchestrator_ok is not False)
         and (kmod_userland_abi_ok is not False)
+        and (peripheral_ux_ok is not False)
+        and (ap_cp_imaging_ok is not False)
+        and (stage_b_p10_ok is not False)
+        and (uipc_cp_shim_ok is not False)
+        and (wireless_fault_isolation_ok is not False)
+        and (runtime_antibrick_ok is not False)
+        and (multiport_tier3_harness_ok is not False)
     ):
         g12_status = "VERIFIED_OFFLINE_CANDIDATE_DRY_RUN"
     elif backup_mount_tolerance_ok is False:
@@ -666,6 +680,20 @@ def evaluate_12_safety_gates(
         g12_status = "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE"
     elif kmod_userland_abi_ok is False:
         g12_status = "BLOCKED_BY_KMOD_USERLAND_ABI_REDLINE"
+    elif peripheral_ux_ok is False:
+        g12_status = "BLOCKED_BY_PERIPHERAL_UX_OR_AUDIO_REDLINE"
+    elif ap_cp_imaging_ok is False:
+        g12_status = "BLOCKED_BY_AP_CP_IMAGING_OR_IBIS_REDLINE"
+    elif stage_b_p10_ok is False:
+        g12_status = "BLOCKED_BY_STAGE_B_P10_KEYMAP_REDLINE"
+    elif uipc_cp_shim_ok is False:
+        g12_status = "BLOCKED_BY_UIPC_CP_SHIM_REDLINE"
+    elif wireless_fault_isolation_ok is False:
+        g12_status = "BLOCKED_BY_WIRELESS_FAULT_ISOLATION_REDLINE"
+    elif runtime_antibrick_ok is False:
+        g12_status = "BLOCKED_BY_RUNTIME_ANTIBRICK_REDLINE"
+    elif multiport_tier3_harness_ok is False:
+        g12_status = "BLOCKED_BY_MULTIPORT_TIER3_HARNESS_REDLINE"
     else:
         g12_status = "BLOCKED_BY_SAFETY_REDLINE"
 
@@ -728,7 +756,7 @@ def evaluate_12_safety_gates(
         {
             "gate_id": "G12_persistent_flash_write_authorization",
             "status": g12_status,
-            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup), U4/RAM-shadow BK4, U5/U3 boot-selector & 0xfa0080 bank maps, cxd90057.dtb / .ko vermagic+CRC, 30-partition zero-repartition / p15 / DDR+tmpfs RAM-overlay budget, U2 CP RTOS (cpapp-b.bin / tomco.txt stock-CP redline), Phase 11 p1 recovery <-> Tier-0 bridge, Phase 12 nflasha3-initrd / WBI (p5) hibernation redline & atomic Stage-A boot orchestrator, and Phase 14 Stage-A insmod_drv1/drv2 .ko matrix, /dev/* device-node & ELF64 DT_NEEDED/DYNSYM/VERNEED linkage closure contracts are verified.",
+            "evidence": "Hard safety lock: persistent flash writes and cross-model partition flashing remain strictly prohibited until G10 (Tier-0 full backup), U4/RAM-shadow BK4, U5/U3 boot-selector & 0xfa0080 bank maps, cxd90057.dtb / .ko vermagic+CRC, 30-partition zero-repartition / p15 / DDR+tmpfs RAM-overlay budget, U2 CP RTOS (cpapp-b.bin / tomco.txt stock-CP redline), Phase 11 p1 recovery <-> Tier-0 bridge, Phase 12 nflasha3-initrd / WBI (p5) hibernation redline & atomic Stage-A boot orchestrator, Phase 14 Stage-A insmod_drv1/drv2 .ko matrix, /dev/* device-node & ELF64 DT_NEEDED/DYNSYM/VERNEED linkage closure, Phase 17 P10 keymap / touch / LCD-HDMI / XLR-H1 audio peripheral closure, Phase 18 AP<->Stock-CP UIPC / 3D LUT / XAVC / 5-axis IBIS center-lock contracts, WF-12 wireless fault isolation, 2026 runtime anti-brick guards (ld.so.preload / dd truncation / nflasha10 0x10000009 / CAMSET PRODUCT_MODEL), and Multi-Port Tier-3 RP2040-Zero -DOPEN_DRAIN harness closure are verified.",
         },
     ]
 
@@ -747,6 +775,13 @@ def evaluate_12_safety_gates(
         "p1_recovery_bridge_ok": p1_recovery_bridge_ok,
         "stage_a_orchestrator_ok": stage_a_orchestrator_ok,
         "kmod_userland_abi_ok": kmod_userland_abi_ok,
+        "peripheral_ux_ok": peripheral_ux_ok,
+        "ap_cp_imaging_ok": ap_cp_imaging_ok,
+        "stage_b_p10_ok": stage_b_p10_ok,
+        "uipc_cp_shim_ok": uipc_cp_shim_ok,
+        "wireless_fault_isolation_ok": wireless_fault_isolation_ok,
+        "runtime_antibrick_ok": runtime_antibrick_ok,
+        "multiport_tier3_harness_ok": multiport_tier3_harness_ok,
         "summary": {
             "total_gates": len(gates),
             "verified_gates": verified_count,

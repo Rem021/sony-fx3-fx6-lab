@@ -15,24 +15,35 @@ import json
 import mmap
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
+import tempfile
 
 HERE = Path(__file__).resolve().parent
 SRC_DIR = HERE / "src"
-def _resolve_default_zig(here: Path) -> Path:
+def resolve_default_zig() -> Path:
+    rel = Path("work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig")
     env_zig = os.environ.get("FX6_ZIG", "").strip()
+    candidates = []
     if env_zig:
-        return Path(env_zig)
-    rel = "work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig"
-    for base in (here.parents[3], Path.home() / "AI-Workspace/AI/Projects/Mac", Path("/Volumes/KAFU2T/AI/Projects/Mac")):
-        cand = base / rel
+        candidates.append(Path(env_zig))
+    candidates.extend([
+        Path.home() / "AI-Workspace/AI/Projects/Mac" / rel,
+        Path.home() / "AI-Workspace/AI/Projects/Mac/outputs/sony-fx3-fx6-lab" / rel,
+        HERE.parents[1] / rel,
+        Path("/Volumes/KAFU2T/AI/Projects/Mac") / rel,
+    ])
+    for cand in candidates:
         if cand.is_file():
             return cand
-    return Path("/Volumes/KAFU2T/AI/Projects/Mac") / rel
+    which_zig = shutil.which("zig")
+    if which_zig:
+        return Path(which_zig)
+    return candidates[0]
 
 
-DEFAULT_ZIG = _resolve_default_zig(HERE)
+DEFAULT_ZIG = resolve_default_zig()
 SO_OUT = HERE / "libgrm-fbinit25-live700.so"
 CPIO_PATH = HERE / "guest-hybrid-fx6kernel-capid-grmreal-live700.cpio"
 MANIFEST_PATH = HERE / "vm-candidate-gpecap25-live700.json"
@@ -103,7 +114,7 @@ def scan_newc_cpio(buf: mmap.mmap | bytes) -> list[dict]:
 def compile_shim(zig: Path, out_so: Path) -> dict:
     if not zig.is_file():
         raise FileNotFoundError(f"Zig toolchain not found at {zig}")
-    cache_root = Path("/private/tmp/fx6-live700-zig-cache")
+    cache_root = Path(tempfile.gettempdir()) / "fx6-live700-zig-cache"
     (cache_root / "local").mkdir(parents=True, exist_ok=True)
     (cache_root / "global").mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()

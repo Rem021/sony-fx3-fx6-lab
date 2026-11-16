@@ -1,0 +1,2773 @@
+{
+  "schema": "fx6-on-fx3-round16-status-tabs45-tcmedia-v1",
+  "date": "2026-11-14",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "languages": {
+    "tchinese": {
+      "language_enum": "0x2b44",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x18",
+      "uxc_banks": {
+        "font": 27,
+        "ns1_string": 22,
+        "ns2_string": 22
+      },
+      "assets": [
+        "/usr/share/app/string_traditionalchinese.uxc",
+        "/usr/share/app/string_traditionalchinese_2.uxc",
+        "/usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    },
+    "japanese": {
+      "language_enum": "0x2b30",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x01",
+      "uxc_banks": {
+        "font": 1,
+        "ns1_string": 12,
+        "ns2_string": 12
+      },
+      "assets": [
+        "/usr/share/app/string_japanese.uxc",
+        "/usr/share/app/string_japanese_2.uxc",
+        "/usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    },
+    "schinese": {
+      "language_enum": "0x2b45",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x19",
+      "uxc_banks": {
+        "font": 23,
+        "ns1_string": 19,
+        "ns2_string": 19
+      },
+      "assets": [
+        "/usr/share/app/string_simplifiedchinese.uxc",
+        "/usr/share/app/string_simplifiedchinese_2.uxc",
+        "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    },
+    "en": {
+      "language_enum": "0x2b2f",
+      "bk4_language_id": "0x02cf019c",
+      "bk4_language_val": "0x00",
+      "uxc_banks": {
+        "font": 0,
+        "ns1_string": 4,
+        "ns2_string": 4
+      },
+      "assets": [
+        "/usr/share/app/string_english.uxc",
+        "/usr/share/app/string_english_2.uxc",
+        "/usr/share/app/UniversOTS-SJ_wIcon.ltt",
+        "/usr/share/app/fontlist.dat"
+      ]
+    }
+  },
+  "p4_nd_clear_sites": {
+    "nd_mode": "0x2111358 -> 0xd503201f",
+    "nd_val": "0x21113f0 -> 0x1400001b"
+  },
+  "p12_wlan_source": "outputs/fx6-on-fx3-closure/fx6_closure/wireless_fault_isolation_verifier.py",
+  "p10_keymap_source": "outputs/fx6-on-fx3-closure/fx6_closure/peripheral_ux_compatibility_verifier.py",
+  "p11_uipc_source": "outputs/fx6-on-fx3-closure/fx6_closure/uipc_cp_shim_verifier.py",
+  "uxc_asset": "/usr/share/app/image_00_169.uxc",
+  "gpe_phys_pool": "0x410524000..0x410e64000",
+  "fx3_phy_to_infra_pipeline": "0x007a804c -> 0x005503e0",
+  "status_check_multitab_contract": {
+    "entry_infra_key": "0x7052",
+    "step_next_infra_key": "0x0030",
+    "step_prev_infra_key": "0x0003",
+    "index_jump_infra_key": "0x0015",
+    "scroll_toggle_gate_addr": "appFw.so+0xfe6444",
+    "ring_table_addr": "appFw.so+0x2384f80",
+    "ring_advance_fn": "appFw.so+0xcbdfd4 -> appFw.so+0xcadb58",
+    "tabs_verified": [
+      {
+        "tab_index": 1,
+        "sid": "0x2f",
+        "presenter": "34procam_touch_status_main_presenter",
+        "controller": "35procam_touch_status_main_controller",
+        "evidence_runs": [
+          "r13a-status-check-schinese",
+          "r14a-status-check-japanese"
+        ]
+      },
+      {
+        "tab_index": 2,
+        "sid": "0x30",
+        "presenter": "36procam_touch_status_camera_presenter",
+        "controller": "37procam_touch_status_camera_controller",
+        "evidence_runs": [
+          "r15a-status-tab2-schinese",
+          "r15d-status-tab2-japanese"
+        ]
+      },
+      {
+        "tab_index": 3,
+        "sid": "0x31",
+        "presenter": "35procam_touch_status_audio_presenter",
+        "controller": "36procam_touch_status_audio_controller",
+        "evidence_runs": [
+          "r15b-status-tab3-schinese"
+        ]
+      },
+      {
+        "tab_index": 4,
+        "sid": "0x32",
+        "presenter": "37procam_touch_status_project_presenter",
+        "controller": "38procam_touch_status_project_controller",
+        "evidence_runs": [
+          "r16a-status-tab4-schinese"
+        ]
+      },
+      {
+        "tab_index": 5,
+        "sid": "0x33",
+        "presenter": "40procam_touch_status_monitoring_presenter",
+        "controller": "41procam_touch_status_monitoring_controller",
+        "evidence_runs": [
+          "r16b-status-tab5-schinese"
+        ]
+      }
+    ]
+  },
+  "runs": {
+    "r16a_status_tab4_schinese": {
+      "run_id": "r16a-status-tab4-schinese",
+      "round": 16,
+      "lang": "schinese",
+      "target_presenter": "37procam_touch_status_project_presenter",
+      "target_controller": "38procam_touch_status_project_controller",
+      "target_sid": "0x32",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:2500,0x0030:120:2500,0x0030:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 88,
+      "wall_elapsed_sec": 92.03,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 51,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "lang": "schinese",
+        "verify_bin_bytes": 66872,
+        "verify_bin_sha256": "c7352a7f4b4a0e499288022c81006159125433523e75a384f11ccf39ba89c3a2",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "103f2f6540f811d7eca0ed5fb3af6a45b72c2cc4aa9ea193539abdd37b4f5358"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "schinese_assets": {
+          "string_simplifiedchinese": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118644,
+            "sha256": "ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f",
+            "magic": "uxc_07"
+          },
+          "string_simplifiedchinese_2": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 122084,
+            "sha256": "058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3",
+            "magic": "uxc_07"
+          },
+          "font_gb18030_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 2054740,
+            "sha256": "3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_S_CHINESE",
+            "has_font_s_chinese": true
+          }
+        },
+        "lang_assets": {
+          "string_simplifiedchinese": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118644,
+            "sha256": "ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f",
+            "magic": "uxc_07"
+          },
+          "string_simplifiedchinese_2": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 122084,
+            "sha256": "058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3",
+            "magic": "uxc_07"
+          },
+          "font_gb18030_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 2054740,
+            "sha256": "3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_S_CHINESE",
+            "has_font_s_chinese": true
+          }
+        }
+      },
+      "r10_telemetry": {
+        "icon_blitter": {
+          "reason": "pump",
+          "icon_blits": 8361,
+          "glyph_blits": 15447,
+          "total_blits": 23808,
+          "fmt1_rgba4444": 8361,
+          "fmt2_rgba8888": 0,
+          "fmt3_argb4444": 0,
+          "fmt4_a8": 15447,
+          "gpe_pool_alloc": 157,
+          "gpe_pool_free": 0,
+          "gpe_pool_fallback": 0,
+          "gpe_pool_cur": 1371648,
+          "gpe_pool_peak": 1371648,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "p11_uipc": {
+          "reason": "pump",
+          "rtc_0x92d2091c": 0,
+          "rtc0_ok": 0,
+          "rtc0_year": 0,
+          "handle_0x91db059b": 1,
+          "bb_0x92840747": 128,
+          "lut_0165": 0,
+          "lut_0166": 1,
+          "dev_0169_0416": 4,
+          "p5_032d": 1,
+          "cine_ei_mode": 0,
+          "cine_ei_ready": 1,
+          "lut_dma_ready": 1,
+          "xlr_h1_preserved": 1
+        }
+      },
+      "r11_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "font_create": 28814,
+        "glyph_blits": 15447,
+        "icon_blits": 8361,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r12_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "font_create": 28814,
+        "glyph_blits": 15447,
+        "icon_blits": 8361,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r13_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28814,
+        "glyph_blits": 15447,
+        "icon_blits": 8361,
+        "gpe_alloc": 157,
+        "gpe_fb": 0,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28814,
+        "glyph_blits": 15447,
+        "icon_blits": 8361,
+        "gpe_alloc": 157,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r15_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28814,
+        "glyph_blits": 15447,
+        "icon_blits": 8361,
+        "gpe_alloc": 157,
+        "gpe_fb": 0,
+        "statuscheck_multitab": 1,
+        "monitoring_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r16_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28814,
+        "glyph_blits": 15447,
+        "icon_blits": 8361,
+        "gpe_alloc": 157,
+        "gpe_fb": 0,
+        "statuscheck_tabs45": 1,
+        "tcmedia_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "schinese",
+        "lang_code": 3,
+        "launcher_bytes": 104136,
+        "launcher_sha256": "abf4364164a2f74924bc94c37e1a1ab600758e6d9a61f5d060247c8c523cf72f",
+        "shim_bytes": 136744,
+        "shim_sha256": "103f2f6540f811d7eca0ed5fb3af6a45b72c2cc4aa9ea193539abdd37b4f5358",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x7052",
+            "hold_ms": 120,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437403,
+        "unique_colors": 85,
+        "sha256": "2bfe4f071139520681eecec560381a62a198bfeb09f6f300496bb67c46538429",
+        "top_colors": [
+          {
+            "argb": "0xdf0e0e0e",
+            "pixels": 376109
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115557
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 18073
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 10799
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 7198
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 6685
+          },
+          {
+            "argb": "0xf4757575",
+            "pixels": 966
+          },
+          {
+            "argb": "0xef606060",
+            "pixels": 902
+          },
+          {
+            "argb": "0xfc9e9e9e",
+            "pixels": 901
+          },
+          {
+            "argb": "0xfa949494",
+            "pixels": 885
+          },
+          {
+            "argb": "0xed565656",
+            "pixels": 846
+          },
+          {
+            "argb": "0xe52d2d2d",
+            "pixels": 843
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 802
+          },
+          {
+            "argb": "0xeb4c4c4c",
+            "pixels": 768
+          },
+          {
+            "argb": "0xe3222222",
+            "pixels": 766
+          },
+          {
+            "argb": "0xe9424242",
+            "pixels": 758
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 270,
+      "png_exports": {
+        "stem": "r16a-status-tab4-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 508774,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16a-status-tab4-schinese-alpha.png",
+          "bytes": 31056,
+          "sha256": "8684d18cccd38ae6bee4609fe7501c14db4f93315a77519bf72e918ab60f1b9f"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16a-status-tab4-schinese-composited.png",
+          "bytes": 31049,
+          "sha256": "b869f3d8eca9f6de72c9e6433af976df00c7fe06e1097732bd7e7151a4758e1a"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 28,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 182,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 101,
+        "FX6_R10_": 180,
+        "FX6_R11_": 191,
+        "FX6_R12_": 183,
+        "FX6_R13_": 180,
+        "FX6_R14_": 180,
+        "FX6_R15_": 180,
+        "FX6_R16_": 180,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 722,
+        "FX6_SCREEN_MGR_STATE": 16,
+        "FX6_PRESENTER_SLOT": 112,
+        "FX6_APPFW_MEDIA_SLOTS": 16,
+        "FX6_UX_SCREEN_TREE": 144,
+        "FX6_TRIGGER_PUMP_": 88,
+        "FX6_KEY_INJECT": 21,
+        "FX6_BACKUP_WRITE": 55,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 593,
+        "FX6_FONT_": 96,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2761
+      },
+      "pixel_diff_vs_r13a_tab1_schinese": 63255,
+      "pixel_diff_vs_r15a_tab2_schinese": 60513,
+      "pixel_diff_vs_r15b_tab3_schinese": 128493
+    },
+    "r16b_status_tab5_schinese": {
+      "run_id": "r16b-status-tab5-schinese",
+      "round": 16,
+      "lang": "schinese",
+      "target_presenter": "40procam_touch_status_monitoring_presenter",
+      "target_controller": "41procam_touch_status_monitoring_controller",
+      "target_sid": "0x33",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x7052:120:4500,0x0030:120:2500,0x0030:120:2500,0x0030:120:2500,0x0030:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 92,
+      "wall_elapsed_sec": 95.62,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 59,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "lang": "schinese",
+        "verify_bin_bytes": 66872,
+        "verify_bin_sha256": "c7352a7f4b4a0e499288022c81006159125433523e75a384f11ccf39ba89c3a2",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "67f5eb96f5a245adc61de38508a447c6c4ac8b9d8fb9bd08f4a2bd6eda5cf4e3"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "schinese_assets": {
+          "string_simplifiedchinese": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118644,
+            "sha256": "ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f",
+            "magic": "uxc_07"
+          },
+          "string_simplifiedchinese_2": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 122084,
+            "sha256": "058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3",
+            "magic": "uxc_07"
+          },
+          "font_gb18030_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 2054740,
+            "sha256": "3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_S_CHINESE",
+            "has_font_s_chinese": true
+          }
+        },
+        "lang_assets": {
+          "string_simplifiedchinese": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 118644,
+            "sha256": "ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f",
+            "magic": "uxc_07"
+          },
+          "string_simplifiedchinese_2": {
+            "guest_path": "/usr/share/app/string_simplifiedchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 122084,
+            "sha256": "058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3",
+            "magic": "uxc_07"
+          },
+          "font_gb18030_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 2054740,
+            "sha256": "3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_S_CHINESE",
+            "has_font_s_chinese": true
+          }
+        }
+      },
+      "r10_telemetry": {
+        "icon_blitter": {
+          "reason": "pump",
+          "icon_blits": 8598,
+          "glyph_blits": 14969,
+          "total_blits": 23567,
+          "fmt1_rgba4444": 8598,
+          "fmt2_rgba8888": 0,
+          "fmt3_argb4444": 0,
+          "fmt4_a8": 14969,
+          "gpe_pool_alloc": 178,
+          "gpe_pool_free": 0,
+          "gpe_pool_fallback": 0,
+          "gpe_pool_cur": 1450496,
+          "gpe_pool_peak": 1450496,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "p11_uipc": {
+          "reason": "pump",
+          "rtc_0x92d2091c": 0,
+          "rtc0_ok": 0,
+          "rtc0_year": 0,
+          "handle_0x91db059b": 1,
+          "bb_0x92840747": 128,
+          "lut_0165": 0,
+          "lut_0166": 1,
+          "dev_0169_0416": 4,
+          "p5_032d": 1,
+          "cine_ei_mode": 0,
+          "cine_ei_ready": 1,
+          "lut_dma_ready": 1,
+          "xlr_h1_preserved": 1
+        }
+      },
+      "r11_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "font_create": 28297,
+        "glyph_blits": 14969,
+        "icon_blits": 8598,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r12_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "font_create": 28297,
+        "glyph_blits": 14969,
+        "icon_blits": 8598,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r13_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28297,
+        "glyph_blits": 14969,
+        "icon_blits": 8598,
+        "gpe_alloc": 178,
+        "gpe_fb": 0,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28297,
+        "glyph_blits": 14969,
+        "icon_blits": 8598,
+        "gpe_alloc": 178,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r15_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28297,
+        "glyph_blits": 14969,
+        "icon_blits": 8598,
+        "gpe_alloc": 178,
+        "gpe_fb": 0,
+        "statuscheck_multitab": 1,
+        "monitoring_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r16_telemetry": {
+        "reason": "pump",
+        "lang": "schinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x19",
+        "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+        "font_bank": 23,
+        "str_bank": 19,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 28297,
+        "glyph_blits": 14969,
+        "icon_blits": 8598,
+        "gpe_alloc": 178,
+        "gpe_fb": 0,
+        "statuscheck_tabs45": 1,
+        "tcmedia_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "schinese",
+        "lang_code": 3,
+        "launcher_bytes": 104136,
+        "launcher_sha256": "abf4364164a2f74924bc94c37e1a1ab600758e6d9a61f5d060247c8c523cf72f",
+        "shim_bytes": 136744,
+        "shim_sha256": "67f5eb96f5a245adc61de38508a447c6c4ac8b9d8fb9bd08f4a2bd6eda5cf4e3",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x7052",
+            "hold_ms": 120,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437883,
+        "unique_colors": 106,
+        "sha256": "31fd3a14e933af9a30d1e117501a092eb5c32ed892384639c5de0016976e3f07",
+        "top_colors": [
+          {
+            "argb": "0xdf0e0e0e",
+            "pixels": 395003
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115077
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 12303
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 8673
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 3469
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 2772
+          },
+          {
+            "argb": "0xef7e7e7e",
+            "pixels": 1548
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 1372
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 1114
+          },
+          {
+            "argb": "0xfc9e9e9e",
+            "pixels": 400
+          },
+          {
+            "argb": "0xe32b2b2b",
+            "pixels": 399
+          },
+          {
+            "argb": "0xe11c1c1c",
+            "pixels": 350
+          },
+          {
+            "argb": "0xe53a3a3a",
+            "pixels": 345
+          },
+          {
+            "argb": "0xf67f7f7f",
+            "pixels": 319
+          },
+          {
+            "argb": "0xe1181818",
+            "pixels": 317
+          },
+          {
+            "argb": "0xe3222222",
+            "pixels": 288
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 266,
+      "png_exports": {
+        "stem": "r16b-status-tab5-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 522671,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16b-status-tab5-schinese-alpha.png",
+          "bytes": 26174,
+          "sha256": "3a01f835445861fddfa5f3f1f3f2c18788626b6d965312eb9883d4a9842d14ff"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16b-status-tab5-schinese-composited.png",
+          "bytes": 26031,
+          "sha256": "e0087c1f095544e4bb9992df22e7d7f6db09ec59993621a5fc3edea62947f826"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 28,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 188,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 103,
+        "FX6_R10_": 186,
+        "FX6_R11_": 197,
+        "FX6_R12_": 189,
+        "FX6_R13_": 186,
+        "FX6_R14_": 186,
+        "FX6_R15_": 186,
+        "FX6_R16_": 186,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 749,
+        "FX6_SCREEN_MGR_STATE": 17,
+        "FX6_PRESENTER_SLOT": 119,
+        "FX6_APPFW_MEDIA_SLOTS": 17,
+        "FX6_UX_SCREEN_TREE": 153,
+        "FX6_TRIGGER_PUMP_": 92,
+        "FX6_KEY_INJECT": 23,
+        "FX6_BACKUP_WRITE": 57,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 553,
+        "FX6_FONT_": 96,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2762
+      },
+      "pixel_diff_vs_r13a_tab1_schinese": 87492,
+      "pixel_diff_vs_r15a_tab2_schinese": 80436,
+      "pixel_diff_vs_r15b_tab3_schinese": 91456,
+      "pixel_diff_vs_r16a_tab4_schinese": 87504
+    },
+    "r16c_menu_3layer_tcmedia_tchinese": {
+      "run_id": "r16c-menu-3layer-tcmedia-tchinese",
+      "round": 16,
+      "lang": "tchinese",
+      "target_presenter": "31procam_menu_layer_3rd_presenter",
+      "target_controller": "32procam_menu_layer_3rd_controller",
+      "target_sid": "0x11",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:700,0x0030:120:700,0x0030:120:700,0x0030:120:900,0x01af:120:2500,0x01af:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 86,
+      "wall_elapsed_sec": 89.81,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 84,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "lang": "tchinese",
+        "verify_bin_bytes": 66872,
+        "verify_bin_sha256": "c7352a7f4b4a0e499288022c81006159125433523e75a384f11ccf39ba89c3a2",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "5047d21740a56a6b23862766984421f394c95ee94fb37947b6da7180bd1891c2"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_traditionalchinese": {
+            "guest_path": "/usr/share/app/string_traditionalchinese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 119168,
+            "sha256": "8c34b415ce4d19fd40ca22d00c4543c64eb4741b96250de13b93ec473b25b18b",
+            "magic": "uxc_07"
+          },
+          "string_traditionalchinese_2": {
+            "guest_path": "/usr/share/app/string_traditionalchinese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 121824,
+            "sha256": "07fa20ae03457465a8c4922f479d6cfe1280980a70ac43797081e87654680c6d",
+            "magic": "uxc_07"
+          },
+          "font_big5hkscs_ltt": {
+            "guest_path": "/usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 1552252,
+            "sha256": "3cf4238d210dbd472fd207969eec9660eedd335905137b38566e04a8c8e04448",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_T_CHINESE",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r10_telemetry": {
+        "icon_blitter": {
+          "reason": "pump",
+          "icon_blits": 14622,
+          "glyph_blits": 13499,
+          "total_blits": 28121,
+          "fmt1_rgba4444": 14622,
+          "fmt2_rgba8888": 0,
+          "fmt3_argb4444": 0,
+          "fmt4_a8": 13499,
+          "gpe_pool_alloc": 181,
+          "gpe_pool_free": 0,
+          "gpe_pool_fallback": 0,
+          "gpe_pool_cur": 1820160,
+          "gpe_pool_peak": 1820160,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "p11_uipc": {
+          "reason": "pump",
+          "rtc_0x92d2091c": 0,
+          "rtc0_ok": 0,
+          "rtc0_year": 0,
+          "handle_0x91db059b": 1,
+          "bb_0x92840747": 128,
+          "lut_0165": 0,
+          "lut_0166": 1,
+          "dev_0169_0416": 4,
+          "p5_032d": 1,
+          "cine_ei_mode": 0,
+          "cine_ei_ready": 1,
+          "lut_dma_ready": 1,
+          "xlr_h1_preserved": 1
+        }
+      },
+      "r11_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "font_create": 21422,
+        "glyph_blits": 13499,
+        "icon_blits": 14622,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r12_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "font_create": 21422,
+        "glyph_blits": 13499,
+        "icon_blits": 14622,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r13_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 21422,
+        "glyph_blits": 13499,
+        "icon_blits": 14622,
+        "gpe_alloc": 181,
+        "gpe_fb": 0,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 21422,
+        "glyph_blits": 13499,
+        "icon_blits": 14622,
+        "gpe_alloc": 181,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r15_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 21422,
+        "glyph_blits": 13499,
+        "icon_blits": 14622,
+        "gpe_alloc": 181,
+        "gpe_fb": 0,
+        "statuscheck_multitab": 1,
+        "monitoring_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r16_telemetry": {
+        "reason": "pump",
+        "lang": "tchinese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x18",
+        "lang_enum": "0x2b44_LANGUAGE_CHINESE_TRADITIONAL",
+        "font_bank": 27,
+        "str_bank": 22,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 21422,
+        "glyph_blits": 13499,
+        "icon_blits": 14622,
+        "gpe_alloc": 181,
+        "gpe_fb": 0,
+        "statuscheck_tabs45": 1,
+        "tcmedia_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "tchinese",
+        "lang_code": 2,
+        "launcher_bytes": 104136,
+        "launcher_sha256": "abf4364164a2f74924bc94c37e1a1ab600758e6d9a61f5d060247c8c523cf72f",
+        "shim_bytes": 137008,
+        "shim_sha256": "5047d21740a56a6b23862766984421f394c95ee94fb37947b6da7180bd1891c2",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0011",
+            "hold_ms": 1300,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437095,
+        "unique_colors": 250,
+        "sha256": "204f9749c91f5f580ed8a10b058d081a9d5578a7698812e8d3bf59dee9b0aadb",
+        "top_colors": [
+          {
+            "argb": "0xcc1b1b1b",
+            "pixels": 322081
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115865
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 22875
+          },
+          {
+            "argb": "0xffee9922",
+            "pixels": 14223
+          },
+          {
+            "argb": "0xffeeaa22",
+            "pixels": 12031
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 9114
+          },
+          {
+            "argb": "0xffff9922",
+            "pixels": 7650
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 4765
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 4440
+          },
+          {
+            "argb": "0xffeeaa33",
+            "pixels": 3933
+          },
+          {
+            "argb": "0xf43b3b3b",
+            "pixels": 3706
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 2897
+          },
+          {
+            "argb": "0xffffaa00",
+            "pixels": 2440
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 2421
+          },
+          {
+            "argb": "0xffee8822",
+            "pixels": 1931
+          },
+          {
+            "argb": "0xffffaa22",
+            "pixels": 1284
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 2440,
+      "png_exports": {
+        "stem": "r16c-menu-3layer-tcmedia-tchinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 450945,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16c-menu-3layer-tcmedia-tchinese-alpha.png",
+          "bytes": 37777,
+          "sha256": "b83e734755732e49f82790ead4cffc704a30e4a023031a6c148c6a257e482884"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16c-menu-3layer-tcmedia-tchinese-composited.png",
+          "bytes": 37661,
+          "sha256": "de7d159c01cc740ff10bedb196c7b32bdc77e0325a2761fb9c5f15ce1d80d2f4"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 24,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 213,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 133,
+        "FX6_R10_": 211,
+        "FX6_R11_": 222,
+        "FX6_R12_": 214,
+        "FX6_R13_": 211,
+        "FX6_R14_": 211,
+        "FX6_R15_": 211,
+        "FX6_R16_": 211,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 374,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1052,
+        "FX6_SCREEN_MGR_STATE": 19,
+        "FX6_PRESENTER_SLOT": 133,
+        "FX6_APPFW_MEDIA_SLOTS": 19,
+        "FX6_UX_SCREEN_TREE": 171,
+        "FX6_TRIGGER_PUMP_": 87,
+        "FX6_KEY_INJECT": 27,
+        "FX6_BACKUP_WRITE": 51,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 527,
+        "FX6_FONT_": 82,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2763
+      },
+      "pixel_diff_vs_r13b_shooting_tchinese": 35765,
+      "pixel_diff_vs_r15c_monitoring_schinese": 19082
+    },
+    "r16d_menu_3layer_monitoring_japanese": {
+      "run_id": "r16d-menu-3layer-monitoring-japanese",
+      "round": 16,
+      "lang": "japanese",
+      "target_presenter": "31procam_menu_layer_3rd_presenter",
+      "target_controller": "32procam_menu_layer_3rd_controller",
+      "target_sid": "0x11",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x0013:120:2500,0x0024:120:2500,0x0011:1300:4500,0x0030:120:700,0x0030:120:700,0x0030:120:700,0x0030:120:700,0x0030:120:900,0x01af:120:2500,0x01af:120:5500",
+      "key_settle_ms": 1500,
+      "duration_budget_sec": 88,
+      "wall_elapsed_sec": 91.87,
+      "total_threads_seen": 161,
+      "nop_count": 0,
+      "crashes": 0,
+      "ldec103_ioctl_count": 83,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "stage_b": {
+        "stage": "B",
+        "r10_enabled": true,
+        "p12_enabled": true,
+        "r12_enabled": true,
+        "r13_enabled": true,
+        "r14_enabled": true,
+        "r15_enabled": true,
+        "r16_enabled": true,
+        "lang": "japanese",
+        "verify_bin_bytes": 66872,
+        "verify_bin_sha256": "c7352a7f4b4a0e499288022c81006159125433523e75a384f11ccf39ba89c3a2",
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "16eeef9115ccf35b0339f6c2cca6566e2909cc17c49aa7e0e21ce72c27193c98"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "patches": {
+          "P1_libInfraSetupFile": {
+            "library": "libInfraSetupFile.so",
+            "before_sha256": "b489c64adef153d42e465f0fb26d2d3a971cde122a6bcf7ec5e056e30400c357",
+            "after_sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_setupfile_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaCommon": {
+            "library": "libInfraMediaCommon.so",
+            "before_sha256": "acbabff1ac3595a39f73a24f1384e0c132f69e19bf7a1ca42c9e2621cf5fbedd",
+            "after_sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediacommon_nflasha20_to_30"
+            ]
+          },
+          "P1_libInfraMediaConfig": {
+            "library": "libInfraMediaConfig.so",
+            "before_sha256": "9709656102d582bd0d91d7a612abb076873d533b1e0e2ed042c6b2611d56c1c3",
+            "after_sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0",
+            "changed_bytes": 1,
+            "sites": [
+              "P1_mediaconfig_nflasha20_to_30"
+            ]
+          },
+          "P3_libInfraAppRemoteBoard": {
+            "library": "libInfraAppRemoteBoard.so",
+            "before_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6",
+            "after_sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572",
+            "changed_bytes": 16,
+            "sites": [
+              "P3_remoteboard_execRcvMsg",
+              "P3_remoteboard_MainThread"
+            ]
+          },
+          "Fan_libfan": {
+            "library": "libfan.so",
+            "before_sha256": "d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850",
+            "after_sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8",
+            "changed_bytes": 8,
+            "sites": [
+              "Fan_libfan_bkup_is_valid_true"
+            ]
+          },
+          "P1_P4_P8_P10_appFw_combined": {
+            "library": "appFw.so",
+            "before_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+            "after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4",
+            "changed_bytes": 41,
+            "sites": [
+              "P4_appfw_set_nd_filter_mode_clear",
+              "P4_appfw_set_nd_filter_value_clear",
+              "P8_appfw_async_log_wait_nonblocking",
+              "P1_appfw_nflasha20_to_30",
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ]
+          },
+          "P10_FX3_TO_FX6_KEYMAP_ADAPTER": {
+            "library": "appFw.so",
+            "changed_bytes": 24,
+            "sites": [
+              "p10_fn_to_home",
+              "p10_c1_to_kuru_pon",
+              "p10_c2_to_menu_cancel",
+              "p10_c3_to_disp_sel",
+              "p10_play_to_thumbnail",
+              "p10_delete_to_user"
+            ],
+            "combined_appfw_after_sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          "P9_upm_ko": {
+            "library": "upm.ko",
+            "source": "work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/upm.ko",
+            "before_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+            "after_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+            "changed_bytes": 4,
+            "sites": [
+              "P9_upm_sensor_callback_null_guard"
+            ]
+          },
+          "P12_libWlanResource_fatal_guard": {
+            "library": "libWlanResource.so",
+            "before_sha256": "eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88",
+            "after_sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995",
+            "changed_bytes": 8,
+            "sites": [
+              "P12_wlan_resource_handleFatalError_nonblocking"
+            ]
+          }
+        },
+        "p2_vfat": {
+          "mode": "8m_ram",
+          "fat_type": "FAT16",
+          "bytes": 8388608,
+          "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4",
+          "precreated_dirs": [
+            "/OPE",
+            "/OPE/00",
+            "/OPE/01"
+          ]
+        },
+        "ram_shadow_bk4": {
+          "bytes": 20588,
+          "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41",
+          "flash_write_allowed": false,
+          "active_byte8_selector": 0,
+          "synthesized_key_count": 199
+        },
+        "image_00_169_uxc": {
+          "guest_path": "/usr/share/app/image_00_169.uxc",
+          "source": "donor_o_rdonly",
+          "bytes": 3941000,
+          "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148",
+          "magic": "uxd_07"
+        },
+        "lang_assets": {
+          "string_japanese": {
+            "guest_path": "/usr/share/app/string_japanese.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 141692,
+            "sha256": "9b47630ebe8e011a9d0bdb7a2fda06574f5187222b92d60bf6887042fe186d35",
+            "magic": "uxc_07"
+          },
+          "string_japanese_2": {
+            "guest_path": "/usr/share/app/string_japanese_2.uxc",
+            "source": "donor_o_rdonly",
+            "bytes": 144720,
+            "sha256": "98315732d7e29078a98dc32c077a799f8831d8bb3d96ec26ca2110ed8e36aa26",
+            "magic": "uxc_07"
+          },
+          "font_japanese_ltt": {
+            "guest_path": "/usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+            "source": "donor_o_rdonly",
+            "bytes": 851496,
+            "sha256": "dda0a2400add24d829d958adf338899c80b20adc122cf2946d8f0c99f8b0fed3",
+            "magic": "LTT"
+          },
+          "fontlist_dat": {
+            "guest_path": "/usr/share/app/fontlist.dat",
+            "source": "cpio_preloaded",
+            "bytes": 322,
+            "sha256": "015dd421e654e64043feb9dee800015d6885d8ad1f713e6f7c54dcdf5c0d896f",
+            "fontlist_key": "FONT_JAPANESE",
+            "has_font_s_chinese": false
+          }
+        }
+      },
+      "r10_telemetry": {
+        "icon_blitter": {
+          "reason": "pump",
+          "icon_blits": 14785,
+          "glyph_blits": 10817,
+          "total_blits": 25602,
+          "fmt1_rgba4444": 14785,
+          "fmt2_rgba8888": 0,
+          "fmt3_argb4444": 0,
+          "fmt4_a8": 10817,
+          "gpe_pool_alloc": 182,
+          "gpe_pool_free": 0,
+          "gpe_pool_fallback": 0,
+          "gpe_pool_cur": 1974272,
+          "gpe_pool_peak": 1974272,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "p11_uipc": {
+          "reason": "pump",
+          "rtc_0x92d2091c": 0,
+          "rtc0_ok": 0,
+          "rtc0_year": 0,
+          "handle_0x91db059b": 1,
+          "bb_0x92840747": 128,
+          "lut_0165": 0,
+          "lut_0166": 1,
+          "dev_0169_0416": 4,
+          "p5_032d": 1,
+          "cine_ei_mode": 0,
+          "cine_ei_ready": 1,
+          "lut_dma_ready": 1,
+          "xlr_h1_preserved": 1
+        }
+      },
+      "r11_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "font_create": 18860,
+        "glyph_blits": 10817,
+        "icon_blits": 14785,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r12_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "font_create": 18860,
+        "glyph_blits": 10817,
+        "icon_blits": 14785,
+        "p12_wlan": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r13_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 18860,
+        "glyph_blits": 10817,
+        "icon_blits": 14785,
+        "gpe_alloc": 182,
+        "gpe_fb": 0,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r14_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 18860,
+        "glyph_blits": 10817,
+        "icon_blits": 14785,
+        "gpe_alloc": 182,
+        "gpe_fb": 0,
+        "statuscheck_matrix": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r15_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 18860,
+        "glyph_blits": 10817,
+        "icon_blits": 14785,
+        "gpe_alloc": 182,
+        "gpe_fb": 0,
+        "statuscheck_multitab": 1,
+        "monitoring_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "r16_telemetry": {
+        "reason": "pump",
+        "lang": "japanese",
+        "bk4_lang_id": "0x02cf019c",
+        "bk4_lang_val": "0x01",
+        "lang_enum": "0x2b30_LANGUAGE_JAPANESE",
+        "font_bank": 1,
+        "str_bank": 12,
+        "lang_bk4_hits": 3,
+        "airplane_bk4_hits": 0,
+        "p4_nd_clear": 1,
+        "p10_keymap": 1,
+        "p11_xlr_h1": 1,
+        "p12_wlan": 1,
+        "font_create": 18860,
+        "glyph_blits": 10817,
+        "icon_blits": 14785,
+        "gpe_alloc": 182,
+        "gpe_fb": 0,
+        "statuscheck_tabs45": 1,
+        "tcmedia_3layer": 1,
+        "subst_color": 0,
+        "subst_image": 0
+      },
+      "build": {
+        "lang": "japanese",
+        "lang_code": 1,
+        "launcher_bytes": 104136,
+        "launcher_sha256": "abf4364164a2f74924bc94c37e1a1ab600758e6d9a61f5d060247c8c523cf72f",
+        "shim_bytes": 137000,
+        "shim_sha256": "16eeef9115ccf35b0339f6c2cca6566e2909cc17c49aa7e0e21ce72c27193c98",
+        "key_steps": [
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 1400
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 800
+          },
+          {
+            "key": "0x01ac",
+            "hold_ms": 120,
+            "gap_ms": 4800
+          },
+          {
+            "key": "0x0013",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0024",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x0011",
+            "hold_ms": 1300,
+            "gap_ms": 4500
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 700
+          },
+          {
+            "key": "0x0030",
+            "hold_ms": 120,
+            "gap_ms": 900
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 2500
+          },
+          {
+            "key": "0x01af",
+            "hold_ms": 120,
+            "gap_ms": 5500
+          }
+        ]
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 437575,
+        "unique_colors": 220,
+        "sha256": "0e6eff96ea81fecdba36e2570027e9711a6bab88576e1559555f71b050af1436",
+        "top_colors": [
+          {
+            "argb": "0xcc1b1b1b",
+            "pixels": 331567
+          },
+          {
+            "argb": "0x00000000",
+            "pixels": 115385
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 22917
+          },
+          {
+            "argb": "0xffee9922",
+            "pixels": 14797
+          },
+          {
+            "argb": "0xffeeaa22",
+            "pixels": 12403
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 9593
+          },
+          {
+            "argb": "0xffff9922",
+            "pixels": 7875
+          },
+          {
+            "argb": "0xff111111",
+            "pixels": 4756
+          },
+          {
+            "argb": "0xffeeaa33",
+            "pixels": 4013
+          },
+          {
+            "argb": "0xf43b3b3b",
+            "pixels": 3706
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 2984
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 2064
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 1960
+          },
+          {
+            "argb": "0xffee8822",
+            "pixels": 1946
+          },
+          {
+            "argb": "0xffffaa22",
+            "pixels": 1348
+          },
+          {
+            "argb": "0xffee8811",
+            "pixels": 1202
+          }
+        ]
+      },
+      "amber_0xffffaa00_pixels": 209,
+      "png_exports": {
+        "stem": "r16d-menu-3layer-monitoring-japanese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 455334,
+        "alpha_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16d-menu-3layer-monitoring-japanese-alpha.png",
+          "bytes": 30229,
+          "sha256": "aed9f290da162c4598e9e80f6afe5033f5e6b283851efd1406604135f1db86f9"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16d-menu-3layer-monitoring-japanese-composited.png",
+          "bytes": 30353,
+          "sha256": "0e83055d06a448bd6eb79a9960ec711130cdf8c1c1272d7fb194fe9f5c4f2b28"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 21,
+        "FX6_STAGE_B_": 24,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 215,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 133,
+        "FX6_R10_": 213,
+        "FX6_R11_": 224,
+        "FX6_R12_": 216,
+        "FX6_R13_": 213,
+        "FX6_R14_": 213,
+        "FX6_R15_": 213,
+        "FX6_R16_": 213,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 374,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1054,
+        "FX6_SCREEN_MGR_STATE": 20,
+        "FX6_PRESENTER_SLOT": 140,
+        "FX6_APPFW_MEDIA_SLOTS": 20,
+        "FX6_UX_SCREEN_TREE": 180,
+        "FX6_TRIGGER_PUMP_": 89,
+        "FX6_KEY_INJECT": 29,
+        "FX6_BACKUP_WRITE": 51,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 502,
+        "FX6_FONT_": 76,
+        "FX3_PHY_KEY_MAP": 3,
+        "FX6_WAIT_SNAPSHOT": 2759
+      },
+      "pixel_diff_vs_r12d_shooting_japanese": 24616,
+      "pixel_diff_vs_r15c_monitoring_schinese": 8114,
+      "pixel_diff_vs_r16c_tcmedia_tchinese": 20779
+    }
+  },
+  "r16_status5_and_tcmedia_audit": {
+    "status_check_5tab_pairwise_schinese": {
+      "tab1_vs_tab2": {
+        "png_a": "reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/assets/r13a-status-check-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15a-status-tab2-schinese-alpha.png",
+        "sid_a": "0x2f",
+        "sid_b": "0x30",
+        "diff_pixels": 69094,
+        "strictly_positive": true
+      },
+      "tab1_vs_tab3": {
+        "png_a": "reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/assets/r13a-status-check-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15b-status-tab3-schinese-alpha.png",
+        "sid_a": "0x2f",
+        "sid_b": "0x31",
+        "diff_pixels": 130085,
+        "strictly_positive": true
+      },
+      "tab1_vs_tab4": {
+        "png_a": "reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/assets/r13a-status-check-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16a-status-tab4-schinese-alpha.png",
+        "sid_a": "0x2f",
+        "sid_b": "0x32",
+        "diff_pixels": 63255,
+        "strictly_positive": true
+      },
+      "tab1_vs_tab5": {
+        "png_a": "reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/assets/r13a-status-check-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16b-status-tab5-schinese-alpha.png",
+        "sid_a": "0x2f",
+        "sid_b": "0x33",
+        "diff_pixels": 87492,
+        "strictly_positive": true
+      },
+      "tab2_vs_tab3": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15a-status-tab2-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15b-status-tab3-schinese-alpha.png",
+        "sid_a": "0x30",
+        "sid_b": "0x31",
+        "diff_pixels": 125103,
+        "strictly_positive": true
+      },
+      "tab2_vs_tab4": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15a-status-tab2-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16a-status-tab4-schinese-alpha.png",
+        "sid_a": "0x30",
+        "sid_b": "0x32",
+        "diff_pixels": 60513,
+        "strictly_positive": true
+      },
+      "tab2_vs_tab5": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15a-status-tab2-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16b-status-tab5-schinese-alpha.png",
+        "sid_a": "0x30",
+        "sid_b": "0x33",
+        "diff_pixels": 80436,
+        "strictly_positive": true
+      },
+      "tab3_vs_tab4": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15b-status-tab3-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16a-status-tab4-schinese-alpha.png",
+        "sid_a": "0x31",
+        "sid_b": "0x32",
+        "diff_pixels": 128493,
+        "strictly_positive": true
+      },
+      "tab3_vs_tab5": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15b-status-tab3-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16b-status-tab5-schinese-alpha.png",
+        "sid_a": "0x31",
+        "sid_b": "0x33",
+        "diff_pixels": 91456,
+        "strictly_positive": true
+      },
+      "tab4_vs_tab5": {
+        "png_a": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16a-status-tab4-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16b-status-tab5-schinese-alpha.png",
+        "sid_a": "0x32",
+        "sid_b": "0x33",
+        "diff_pixels": 87504,
+        "strictly_positive": true
+      },
+      "pair_count": 10,
+      "all_10_tab_pairs_strictly_positive": true
+    },
+    "menu_3layer_tcmedia_tchinese": {
+      "tcmedia_vs_shooting_r13b": {
+        "png_a": "reports/2026-11-14-round13-fx6-on-fx3-status-4lang-closure/assets/r13b-menu-3layer-tchinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16c-menu-3layer-tcmedia-tchinese-alpha.png",
+        "diff_pixels": 35765,
+        "strictly_positive": true
+      },
+      "tcmedia_vs_monitoring_r15c": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15c-menu-3layer-monitoring-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16c-menu-3layer-tcmedia-tchinese-alpha.png",
+        "diff_pixels": 19082,
+        "strictly_positive": true
+      },
+      "all_tchinese_deltas_strictly_positive": true
+    },
+    "menu_3layer_monitoring_japanese": {
+      "monitoring_vs_shooting_r12d": {
+        "png_a": "reports/2026-11-14-round12-fx6-on-fx3-cjk-ja-p110-presenter/assets/r12d-c2-menu-3layer-japanese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16d-menu-3layer-monitoring-japanese-alpha.png",
+        "diff_pixels": 24616,
+        "strictly_positive": true
+      },
+      "monitoring_japanese_vs_schinese_r15c": {
+        "png_a": "reports/2026-11-14-round15-fx6-on-fx3-multitab-status-monitoring/assets/r15c-menu-3layer-monitoring-schinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16d-menu-3layer-monitoring-japanese-alpha.png",
+        "diff_pixels": 8114,
+        "strictly_positive": true
+      },
+      "monitoring_japanese_vs_tcmedia_tchinese_r16c": {
+        "png_a": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16c-menu-3layer-tcmedia-tchinese-alpha.png",
+        "png_b": "reports/2026-11-14-round16-fx6-on-fx3-status-tabs45-tcmedia/assets/r16d-menu-3layer-monitoring-japanese-alpha.png",
+        "diff_pixels": 20779,
+        "strictly_positive": true
+      },
+      "all_japanese_deltas_strictly_positive": true
+    }
+  }
+}

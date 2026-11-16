@@ -22,13 +22,16 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Sequence, Tuple
 
+from .donor_paths import ensure_unicorn_site_on_sys_path
 from .elf_verify import parse_elf64_relocatable_aarch64, section_offset_to_file_offset
 
-from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable, resolve_mac_work_dir as _resolve_mac_work_dir
-
-_ensure_unicorn_importable()
-import unicorn as U
-from unicorn import arm64_const as A
+try:
+    import unicorn as U
+    from unicorn import arm64_const as A
+except ImportError:
+    ensure_unicorn_site_on_sys_path()
+    import unicorn as U
+    from unicorn import arm64_const as A
 
 
 ND_MODE_FUNC_VMA = 0x2111358

@@ -32,7 +32,7 @@
 无需安装新Python依赖。在当前工作区运行：
 
 ```sh
-cd /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter
+cd outputs/fx3-recovery-adapter
 python3 -B -m fx3_recovery --help
 python3 -B -m fx3_recovery inspect \
   --input ../../work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1 \
@@ -137,3 +137,891 @@ python3 -B -m fx3_recovery build-boot-worker \
 未知或混合状态会保留并拒绝自动回退；本地重建原件不证明断电后机身能接收它。也没有把standalone sen的USB存活当作独立文件服务：目前GET／SET仍依赖im里的Jiritsu消费者。
 
 [源码与参考说明](NOTICE.md) · [实现](fx3_recovery/engine.py) · [测试](tests/test_adapter.py) · [本轮证据](../../work/sony-firmware-20261024/stage185-fx3-offline-recovery-adapter/README.md)
+
+## 新增安全传输防护、自动符号定位与包导出 (`fx3_recovery.__init__`)
+
+- **[`macos_usb_transport_guard.py`](fx3_recovery/macos_usb_transport_guard.py)**：实现 macOS 26+ `IOUSBHost` `0xe00002be`（`kIOReturnExclusiveAccess`）独占冲突退避状态机（MSC `054C:0DA1` `>= 350 ms` 静默等待 + 指数退避 `50/100/200/400/800 ms` + `IOUSBHost` 接管）、Vendor Control `(0x43, 1, 0x37FF, 0xD7AA)`、USB STALL 非重传保护、Senser v1（FX3 `0x91030080` 7 轮校验 -> `054C:0336`）与 Senser v2（RSA 挑战 fail-closed 拒止）分类，以及硬锁定的只读 Jiritsu (`0x40 / 0x1001`) 防火墙（`ALLOW_PERSISTENT_JIRITSU_WRITES = False`、`ALLOW_DESTRUCTIVE_JIRITSU_COMMANDS = False`）。
+- **[`p1_symbol_autolocator.py`](fx3_recovery/p1_symbol_autolocator.py)**：提供面向 FX3 Ver. 7.02 `p1` 更新库（`libsdfileinputupdaterapi.so` 与 `libupdatercorecommon.so`）的偏移无关 4 位点自动重定位（`autolocate_4_sites`）、合成偏移镜像闭环校验（`run_autolocated_p1_roundtrip`）、逐字节回滚恢复（`rollback_autolocated_patches`）与可选 Unicorn AArch64 仿真校验（`verify_sites_in_unicorn`），强制保持 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False` 与只读供体访问。
+- **[`emmc_dump_forensic_verifier.py`](fx3_recovery/emmc_dump_forensic_verifier.py)**（Phase 42 Tier-4 只读 eMMC 转储取证审计器）：在任何硬件恢复或 Phase `H0` 演练采信本地转储之前，严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 双次 SHA-256 一致性读取与校验 eMMC 分区镜像与 `EXT_CSD`：
+  - **总线卡死 / 截断 / 熵坍缩检测（`analyze_bus_and_entropy`）**：拦截全 `0x00`/全 `0xFF`/单字节恒定填充、`>=16` 页连续 `0xFF` 上拉卡死、非 512B 对齐或长度截断读出，以及 `p1`/AES-XTS-256 `cnflasha` 的全局与 64 KiB 滑窗香农熵坍缩。
+  - **Sony 分区魔数与几何校验（`verify_sector0_dump` / `verify_p1_vfat_dump` / `verify_p2_bk4_nvram_dump` / `verify_p5_wbi2_dump` / `verify_p8_cp_rtos_dump` / `verify_ext_csd_dump`）**：核验 Sector 0 `'8246' '2.00'` 30 项分区表及 FX6 `p18@0x312000` 偏移告警、`p1` FAT12 BPB、`p2` `'BK4\0'` 校验和与 `PRODUCT_MODEL = 0x91030080`（`ALCIN_UUD`）FX3 不可变约束、`p5` `'WBI2'` 88B 休眠头与 `0x0f0f0f0f` 节描述符 XOR 校验、失效魔数 `wbi2`/`WBI3` 识别、`p8` (`nflasha8`) FAT12 (`reserved=32`) `/cpapp-b.bin` ARMv7-R 复位向量与 `[TOMCO]` 标记，以及 `EXT_CSD[179]`（`PART_CONFIG` `0xB3`）启动使能与磨耗指标。
+  - **引导链不可变防火墙（`audit_boot_chain_immutability`）**：硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False` 与 `ALLOW_BOOT_PARTITION_TARGETING = False`，拒绝任何针对 `BOOT0`、`BOOT1`、`RPMB`、`nflashaB0/B1`、`nflasha1..nflasha8`、`sector0`、`loader_nor` 或 `CMD42` 写/擦/锁操作的清单。
+- **包级导出（[`fx3_recovery/__init__.py`](fx3_recovery/__init__.py)）**：直接导出 `macos_usb_transport_guard`、`p1_symbol_autolocator`、`emmc_dump_forensic_verifier` 及其核心类与函数，支持 `fx3_safety.h0_hardware_rehearsal` 自动集成。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-emmc-forensics --clean-room
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety:outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -v
+```
+
+## Phase 47 — Unified Tier-0..Tier-4 Unbrick Escalation Ladder Simulator & `p1` VFAT Atomic Rollback Capsule Verifier
+
+- **[`unbrick_ladder_and_capsule_verifier.py`](fx3_recovery/unbrick_ladder_and_capsule_verifier.py)**：将 `outputs/fx3-recovery-adapter/` 内全部五大恢复支柱（[`capture.py`](fx3_recovery/capture.py)、[`boot_worker.py`](fx3_recovery/boot_worker.py)、[`macos_usb_transport_guard.py`](fx3_recovery/macos_usb_transport_guard.py)、[`p1_symbol_autolocator.py`](fx3_recovery/p1_symbol_autolocator.py)、[`emmc_dump_forensic_verifier.py`](fx3_recovery/emmc_dump_forensic_verifier.py)）统一至确定性 Tier-0..Tier-4 救砖升级状态机与 `p1` VFAT 原子回滚胶囊校验器：
+  - **12 场景 Tier-0..Tier-4 确定性升级梯（`run_12_scenario_escalation_matrix`）**：按“精确诊断 -> 最小权限恢复层选择 -> 恢复后验真（含零持久写入不变量）”覆盖以下 12 种故障模式：
+    1. `S01_CLEAN_STAGE_AB_REBOOT`（`TIER_0`）：Stage-A/B 零持久 RAM 卸载断电重启，即时恢复原厂 FX3 `v7.02` 启动（`emmc_write_bytes = 0`）。
+    2. `S02_P1_VFAT_BOOT_COUNTER_LATCH`（`TIER_0`）：`p1` VFAT Stage-A/B 启动计数器（`boot_attempts >= 1`）一次性故障保护锁存，无需拆卸 SD 卡即自动回退原厂启动。
+    3. `S03_WF12_00342260_WIRELESS_HANG`（`TIER_0`）：`00342260` `WF-12`（`6L+9S` LED）无线致命挂死防御与恢复——由 `P12` `0x70d4` + `BK4` Airplane 影子项阻断；未打补丁试验遇到时需 `>= 60s` 冷断电清除。
+    4. `S04_0X100D_EARLY_INIT_APPFW_ABORT`（`TIER_0`）：`0x100D`（`13S` LED）早期 `init`/`appFw` 中止 -> `TIER_0` 一次性 hook 跳过并恢复原厂 FX3 启动。
+    5. `S05_MACOS26_IOUSBHOST_PIPE_STALL_H0`（`TIER_1`）：macOS 26 `IOUSBHost` `0xe00002be` USB MSC 管道阻塞 -> 调度 `MacOSUSBTransportSession` 静默等待（`>= 350 ms`）与指数退避干净重试，零破坏性重传。
+    6. `S06_SHIFTED_VMA_V702_P1_AUTOLOCATE`（`TIER_2`）：VMA 偏移的 FX3 `v7.02` `p1` 更新库 -> 硬编码 v2.00 偏移 fail-closed 拒绝，通过 `autolocate_4_sites` 4 位点 AArch64 `ADRP/BL` 签名定位并验证逐字节回滚（`rollback_byte_exact = True`）。
+    7. `S07_CORRUPTED_H0_EMMC_STUCK_BUS`（`TIER_4`）：受损/截断的 `H0` eMMC 备份读出（全 `0x00`/全 `0xFF` 总线卡死与长度截断）-> 被 `analyze_bus_and_entropy` / `verify_emmc_dump_bytes` 预检拦截，强阻断 `H1` 进入（`h1_entry_blocked = True`）。
+    8. `S08_VMC_BNCM1_LTC_CABLE_TIER3_UART`（`TIER_3`）：Multi-Port `VMC-BNCM1` LTC 线缆未拔出时尝试 `Tier-3` `RP2040-Zero` `-DOPEN_DRAIN` `48000` 波特 `uart_boot` -> fail-closed 阻断，直至拔除 LTC 适配器并通过 `1.8V/3.3V` 开漏治具校验。
+    9. `S09_DESTRUCTIVE_FASTBOOT_FIREWALL`（`TIER_3`）：破坏性 Fastboot 指令（`fastboot erase` / `flash boot0` / `oem format`）-> 被 BootROM 指令防火墙与 `audit_boot_chain_immutability` 阻断（`persistent_emmc_writes_authorized = False`）。
+    10. `S10_LD_SO_PRELOAD_BUSYBOX_DEADLOCK`（`TIER_2`）：`/etc/ld.so.preload` 动态 BusyBox 死锁注入尝试 -> 打包前即被静态 ELF / `LD_PRELOAD` 作用域限定 `appFw` 启动器契约拒绝。
+    11. `S11_CROSS_BODY_FX6_WBI2_INJECTION`（`TIER_2`）：跨机身 `FX6 WBI2` 休眠快照注入尝试 -> fail-closed 拒绝，保证 `wbi_mutation_bytes == 0`。
+    12. `S12_THERMAL_OR_USBPD_BROWNOUT_ABORT`（`TIER_0`）：`H0` 采集中发生 `>= 90.0°C` 过温或 USB-PD `< 7.80V` VBUS 欠压 -> 优雅中止与零分区改写（`partition_mutation_count = 0`）。
+  - **`p1` VFAT 原子回滚胶囊与双遍 SHA-256 校验器（`build_p1_vfat_rollback_capsule` / `verify_p1_vfat_capsule` / `audit_capsule_fsync_order`）**：构建并校验支持 `FAT12` 与 `FAT16` 的 `p1` 故障保护 hook 胶囊，覆盖 `8.3` 与 LFN 长文件名条目、FAT1/FAT2 镜像一致性、簇链环路/交叉检测、`tempfile` `O_CREAT|O_EXCL|O_NOFOLLOW` 暂存 -> `fsync_tmp_file` -> 首遍 `O_RDONLY` SHA-256 -> 原子替换 -> `fsync_parent_dir` -> 二遍 `O_RDONLY` SHA-256 序列，`boot_attempts >= 1` 一次性锁存及确定性 `capsule_sha256`（FAT12 `663503a2...` / FAT16 `7da7b1dc...`），硬锁定 `persistent_emmc_writes_authorized = False`。
+  - **CLI 与双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-unbrick-ladder [--clean-room] [--json] [--out ...]`，并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部公开符号；[`tests/test_unbrick_ladder_and_capsule.py`](tests/test_unbrick_ladder_and_capsule.py) 包含 30 项快速测试（`< 0.6s`），同时在本地供体模式（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下通过，保留全部 137 项既有测试绿色通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-unbrick-ladder --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -v
+```
+
+## Phase 59 — Camera-Disconnected `RP2040-Zero` `-DOPEN_DRAIN` `1.8V` Multi-Port Bench Fixture Self-Test & `48000`-Baud PIO Verifier
+
+- **[`rp2040_multiport_fixture_selftest.py`](fx3_recovery/rp2040_multiport_fixture_selftest.py)**：在将自制 Tier-3 Sony 15-pin Multi-Port 救砖线插入物理 FX3 机身**之前**，提供离机台架（`camera_connected == False`）全自动电气安全与协议自检：
+  - **15 针 Sony Multi-Port 万用表预检防火墙（`audit_ohmmeter_isolation` / `verify_open_drain_1v8_swing` / `verify_multiport_id_keying`）**：
+    - 强制断开相机与 `VMC-BNCM1` LTC 线缆，校验 `VBUS (5.0V)` / `3.3V` 供电轨与 `UART_TX (Pin 8)` / `UART_RX (Pin 7)` / `ID (Pin 6)` / `XRESET (Pin 9)` 之间以及线间隔离电阻 `>= 1 MΩ`、`Pin 2` GND 连续性 `<= 2.0 Ω`，并阻断标准 Raspberry Pi Pico（`GP29` `VSYS/3` 分压下拉缺陷）。
+    - 校验开漏 `1.8V` 上拉摆幅（`V_idle ∈ [1.71V, 1.89V]`、`V_low <= 0.35V`），任何 `> 1.98V` 或 `3.3V` 推挽输出立即触发 `FAIL_OVERVOLTAGE_HAZARD`。
+    - 校验 Multi-Port `Pin 6 (ID)` 电阻键控矩阵：`BOOTROM_UART_BOOT`、`CONSOLE_READONLY`（禁止拉低 `XReset` 与主动 TX 驱动），以及对 `VMC_BNCM1_LTC_ADAPTER`（`680 kΩ`）和 `LANC_REMOTE`（`100 kΩ`）冲突的 fail-closed 阻断。
+  - **`RP2040-Zero` (`125 MHz` / `133 MHz` `clk_sys`) PIO 分频、开漏指令与 CMake 构建标志审计（`compute_pio_uart_clkdiv` / `audit_pio_open_drain_program` / `audit_cmake_open_drain_flags`）**：
+    - 精确核验 RP2040 16.8 小数分频器（`div = clk_sys / (8 * baud)`），证明 `48000` baud（`20.833 µs/bit`）与 `115200` baud（`8.681 µs/bit`）波特率误差均 `<= 0.05%`（拒绝整数截断导致的超差）。
+    - 审计 PIO 汇编程序仅通过 `pindirs` 方向切换实现开漏驱动（`pins_init_level == 0`，严禁 `out pins` / `set pins, 1` 推挽拉高），并强制审计 CMake `-DOPEN_DRAIN=1` 编译定义。
+  - **TX<->RX 8x 过采样台架回环与只读 BootROM 握手仿真（`simulate_uart_loopback_and_handshake`）**：
+    - 逐位验证起始位、8 数据位、奇偶校验/停止位、起始位毛刺（glitch）拦截、帧错误（framing error）拦截，以及只读 `UB` CRC32 BootROM 握手与 `0xFFFF0000` 读回显（`persistent_emmc_writes_authorized = False` 硬件锁死）。
+  - **CLI 与双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-rp2040-fixture [--clean-room] [--json] [--out ...]`，并在 [`tests/test_rp2040_multiport_fixture_selftest.py`](tests/test_rp2040_multiport_fixture_selftest.py) 新增 **30 项快速单元测试**（`< 0.2s`），在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 100% 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-rp2040-fixture --clean-room --json
+```
+
+## Phase 66 — `init2` SD-Card Sentinel Escape Shell, CXD90057 Watchdog Boot-Loop Breaker & `p1` FAT12/FAT16 Chain Integrity Verifier
+
+- **[`init2_escape_and_watchdog_simulator.py`](fx3_recovery/init2_escape_and_watchdog_simulator.py)**：提供面向 FX3 (`0x91030080`) Stage-B 恢复链路的三重确定性安全与文件一致性校验：
+  - **零硬件 SD/CFexpress 哨兵 Fail-Open 逃生沙箱（`render_init2_escape_wrapper_script` / `run_init2_escape_drill` / `run_all_init2_escape_drills`）**：在 `tempfile.TemporaryDirectory` 隔离沙箱内实际执行纯 POSIX `/bin/sh` Stage-B `init2` 守卫脚本，在任何 `cpio` 解包或 `mount --bind` 发生**之前**验证 4 条 fail-open 逃生机制：
+    1. Slot A / Slot B 外置存储卡哨兵文件（`FX3_SAFE_STOCK.FLG` / `DISABLE_STAGE_B.TXT`）→ 零 bind-mount、零 eMMC 写入直接回退原厂 FX3 `v7.02` 启动（`Tier-0` 现场零线缆免拆救援）。
+    2. 物理按键组合逃生（`REC+MENU` / `SHUTTER` 启动 GPIO 锁存）→ 跳过 Stage-B 覆盖直接进入原厂 `v7.02`。
+    3. Stage-B 载荷 SHA-256 / CPIO `070701` 魔数不一致或截断 → fail-closed 拒绝加载并 fail-open 回退原厂启动。
+    4. `procam_app` 崩溃循环断路器（易失 `/tmp/stage_b_crash.cnt` 在 `15s` 窗口内 `>= 3` 次非零退出）→ 自动卸载易失 `tmpfs` bind-mount 并 `exec` 原厂 FX3 `procam_app`，`0` eMMC 写入。
+  - **CXD90057 硬件看门狗 (`WDT`) 与 `Tier-0..Tier-2` 状态机校验器（`simulate_cxd90057_watchdog_scenario` / `run_cxd90057_watchdog_suite`）**：按 `timeout_ms=10000`、`kick_interval_ms=2000` 建模 Stage-B `H1` 正常运行、UI Presenter 挂死、内核 `oops` (`panic_on_oops`)、干净重启（`H1 -> H2` 易失 RAM 清空）及 `Tier-1/2` Multi-Port `p1` 实验指针回滚，证明 `0` 持久 eMMC 变更时仅靠 `WDT` 复位即可还原 `H0 == H2` 原厂启动。
+  - **纯 Python `p1` FAT12/FAT16 簇链与 `8.3` 原子目录项交换审计器（`audit_p1_fat_filesystem` / `simulate_atomic_83_dir_swap`）**：兼容 [`fx3_recovery/fat.py`](fx3_recovery/fat.py)（`FatP1`），校验 BPB 几何、`FAT1 == FAT2` 镜像一致性、零簇链环路（Floyd 判环 + 访问集合）、零交叉链接簇、零孤立已分配簇、合法 `8.3`/LFN 校验和，并在纯内存中执行 `INIT2.SH` ↔ `INIT2BAK.SH` 32 字节目录项指针原子交换与逐字节逆向回滚（`physical_writes == 0`、`persistent_emmc_writes_authorized == False`、`persistent_write_release == False`）。
+  - **CLI 与双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-init2-escape [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_init2_escape_and_watchdog_simulator.py`](tests/test_init2_escape_and_watchdog_simulator.py) 新增 **34 项双模式单元测试**，在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 100% 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-init2-escape --clean-room --json
+```
+
+## Phase 72 — Tier-0 Backup `GF(256)` Parity Bit-Rot Healer, Short-Read/Blank-Flash Detector & Cross-Body Anti-Transplant Lock
+
+- **[`tier0_backup_parity_and_manifest_guard.py`](fx3_recovery/tier0_backup_parity_and_manifest_guard.py)**：面向 FX3（`0x91030080`）`Tier-0` 宿主机离线备份包提供三大防损毁与防跨机移植门禁：
+  - **11 分区 `Tier-0` 截断、空读（全 `0x00`/全 `0xFF`）与 A/B 槽位对称性校验（`validate_tier0_partition` / `validate_tier0_backup_bundle`）**：校验 `nbl_a`、`nbl_b`、`uboot_a`、`uboot_b`、`boot_a`、`boot_b`、`p1_vfat`、`bk4_nvram`、`wbi2_hibdrv`、`cnflasha_spacc`、`c2pa_rq_lic` 全 11 个关键分区的 `dd` 短读/头声明越界截断（`TRUNCATED_PARTITION_DUMP`）、未初始化/擦除总线读出（`ALL_ZERO_BLANK_READ` / `ALL_FF_ERASED_FLASH_READ` / `DEGENERATE_BYTE_ENTROPY`）、无 Sony 私钥依赖的结构化魔数（`ELF`/`FDT`/`uImage`/`ANDROID!`/`ARM64`、`FAT12/16 0x55AA`、`BK4\0`、`WBI2` XOR、`cnflasha` 高熵、`RQLC`/`C2PA`/`jumb`），以及 `(nbl_a, nbl_b)` / `(uboot_a, uboot_b)` / `(boot_a, boot_b)` A/B 对称性（`AB_SLOT_ASYMMETRY_DETECTED`）。
+  - **纯 Python `GF(2^8)`（`0x11d` 本原多项式）双校验（`P + Q` RAID-6）位翻转自愈引擎（`encode_gf256_pq_parity` / `heal_gf256_pq_shards` / `heal_tier0_backup_bundle`）**：基于 `exp`/`log`/`inv` 与 `bytes.translate` 查表实现 `P = XOR(D_i)`、`Q = XOR(g^i * D_i)` 条带编码、单分区静默位翻转纯伴随式定位（`S1 / S0 == g^x`）以及任意 1～2 个分区擦除/静默位翻转的 100% 逐比特无损自愈（`reconstructed_sha256 == original_sha256`）；当同时丢失或损坏 `>= 3` 个分片时严格 fail-closed（`UNRECOVERABLE_QUORUM_LOSS`）。
+  - **单机身硬件身份锁 / 跨机身防移植防火墙（`compute_body_identity_binding_sha256` / `build_tier0_backup_manifest` / `verify_cross_body_anti_transplant`）**：将每份 `tier0_backup_manifest_v1` 密码学绑定至由 `(camera_model, body_serial_hash, cnflasha_calibration_sha256, c2pa_rq_lic_sha256)` 派生的 `body_identity_binding_sha256`，强拦截将 `Body-A` 校准/C2PA 许可（`cnflasha` / `RQ_LIC.DAT`）误配至 `Body-B` 的操作（`CROSS_BODY_TRANSPLANT_FORBIDDEN`），硬锁定 `persistent_emmc_writes_authorized = False`、`persistent_write_release = False`、`physical_device_writes = 0`。
+  - **CLI 与 32 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-tier0-backup [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_tier0_backup_parity_and_manifest_guard.py`](tests/test_tier0_backup_parity_and_manifest_guard.py) 在本地供体（`os.O_RDONLY` 验证 `2.05/nflasha1` 与 `nflasha5.img`）及 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 100% 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-tier0-backup --clean-room --json
+```
+
+## Phase 79 — `CXD90057` OTP/RPMB Anti-Rollback Monotonic Epoch Verifier, Bootloader Downgrade Brick Firewall & BYOF Donor Compatibility Matrix
+
+- **[`firmware_updata_and_antirollback_guard.py`](fx3_recovery/firmware_updata_and_antirollback_guard.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）与 FX6（`0x91040086` / `CHAPLIN`）提供三大离线只读防变砖防火墙与零密钥 BYOF 供体审计：
+  - **`CXD90057` 安全启动 OTP 熔丝与 eMMC `RPMB` 单调防回滚防火墙（`evaluate_bootchain_transition` / `evaluate_stage_b_volatile_ram_overlay`）**：
+    - 建模 `BootROM -> nbl_a/b -> tz/optee -> uboot_a/b -> kernel boot_a/b` 启动链单调纪元锁，显式阻断向已被 Sony `v7.00`/`v7.02` 拉高 OTP/`RPMB` 计数器的 FX3 机身回刷旧版 `nbl`/`tz`/`uboot`/`boot`/`firmware.updata`（`v1.01..v6.00`）导致的不可逆安全启动变砖（`BLOCKED_ANTIROLLBACK_EPOCH_DOWNGRADE`）。
+    - 显式阻断向 FX3 机身跨机型刷入 FX6 `nbl`/`tz`/`uboot`/`WBI2`/`cpapp-b.bin` 导致的 TrustZone 密钥阶梯与分区表变砖（`BLOCKED_CROSS_SKU_BOOTCHAIN_BRICK`）。
+    - 结构化证明 Stage-B 易失 RAM 覆盖架构（FX3 `v7.02` 原厂引导链 + FX3 `v7.02` `4.9.337-scel+` 内核 + FX3 `v7.02` 原厂 CP + FX6 `v6.01` 用户态 `/tmp` 绑定挂载）严格满足 `otp_fuse_touches == 0`、`rpmb_counter_increments == 0` 与 `antirollback_brick_risk == "ZERO_USERSPACE_RAM_ONLY"`。
+  - **零密钥 BYOF 供体版本与结构兼容性矩阵（`classify_byof_version_pair` / `build_byof_compatibility_matrix` / `validate_byof_donor_tree`）**：
+    - 严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 有界读取本地供体（内核 `4.9.337-scel+` 横幅、`GLIBC_2.17` / `CXXABI_1.3..1.3.10` ELF64 ABI、`WBI2` 节计数 `1399` vs `1197`、`libInfra*` / `cxd90057.dtb` 标记——零专有密钥），并在 `FX3_FX6_FORCE_CLEAN_ROOM=1` 下切换确定性净室合成夹具。
+    - 覆盖 `(FX3 v7.00/v7.01/v7.02) <-> (FX6 v5.02/v6.00/v6.01)` 全矩阵：`FX3 v7.02 + FX6 v6.01 -> TIER_A_GOLD_VERIFIED`，`v7.00/v7.01` 或 `v6.00 -> TIER_B_CONDITIONALLY_COMPATIBLE`（需重定位），缺失 Big6 的 `v5.02` 与 ABI 不匹配组合 -> 明确拒绝并给出可执行修复建议。
+    - 在 Stage-B `cpio` 打包前拦截损坏或不完整的用户解包目录（`MISSING_REQUIRED_DONOR_MEMBER`、`WRONG_ISA_OR_ENDIANNESS`、`TRUNCATED_ELF_LOAD_SEGMENT`、`KERNEL_VERSION_MISMATCH`、`WBI2_SECTION_COUNT_MISMATCH`）。
+  - **eMMC `EXT_CSD` 永久写保护熔丝陷阱防火墙（`audit_ext_csd_write_protect` / `audit_mmc_wp_command_or_write`）**：
+    - 审计 `EXT_CSD[173]` `B_PERM_WP_EN`（`0x04`）与 `EXT_CSD[171]` `US_PERM_WP_EN`（`0x04`）一次性 OTP 永久写保护位，并拦截任何企图触发永久写保护的 `mmc-utils` 命令或清单（`BLOCKED_PERMANENT_EMMC_WP_FUSE_TRAP`）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`PHYSICAL_DEVICE_WRITES = 0`。
+  - **CLI 与 34 项双模快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-antirollback-guard [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_firmware_updata_and_antirollback_guard.py`](tests/test_firmware_updata_and_antirollback_guard.py) 在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均 `< 0.05s` 通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-antirollback-guard --clean-room --json
+```
+
+## Phase 86 — Passive `1.8V` RX-Only `CXD90057` UART Boot-Stage Decoder (`S0..S6`) & Unified `fx3_recovery` 7-Pillar Master Self-Audit
+
+- **[`recovery_master_suite_and_uart_decoder.py`](fx3_recovery/recovery_master_suite_and_uart_decoder.py)**：面向 FX3（`0x91030080`）提供纯离线只读被动串口启动阶段状态机与全包 7 支柱统一自检门禁：
+  - **被动 `1.8V` RX-Only 串口安全防火墙与 `S0..S6` 10 签名故障分诊（`audit_passive_rx_tap_safety` / `parse_cxd90057_boot_stages` / `decode_uart_boot_log` / `run_uart_boot_decoder_10_scenario_suite`）**：
+    - 强制执行 **RX-Only 被动监听安全约束**（`tx_line_connected == False` 或 `open_drain_tx_idle_1v8 == True`、`passive_tx_bytes_emitted == 0`、`io_voltage_v ∈ [1.65V, 1.98V]`），防止正常启动监控期间误触发 `CXD90057` BootROM `uart_boot`，并对任何主动 TX 注入、推挽 TX 连线、LTC 线冲突或 `3.3V` 过压/帧噪突发 fail-closed 拦截。
+    - 解析 `S0_BOOTROM_ENTRY -> S1_NBL_OPTEE_TRUSTZONE -> S2_UBOOT_BOOT_AB -> S3_LINUX_4_9_337_SCEL -> S4_INIT2_SENTINEL_CHECK -> S5_STAGE_B_TMPFS_MOUNT -> S6_ICX1295_BIG6_READY` 全部 7 个确定性启动阶段，并精确分诊 10 类启动/运行态结局与零 eMMC 写入最小恢复动作（`HEALTHY_STAGE_B_LIVE`、`CLEAN_SD_SENTINEL_STOCK_ESCAPE`、`CLEAN_HASH_FAILOPEN_STOCK_BOOT`、`NO_EMMC_FLASH_NEEDED`、`TIER0_CRASH_BREAKER_RECOVERED`、`TIER0_COLD_REBOOT_WIPES_TMPFS`、`NEVER_CROSS_FLASH_FX6_WBI2`、`TIER1_SD_SENTINEL_OR_P1_83_ROLLBACK`、`CRITICAL_DO_NOT_DOWNGRADE_BOOTCHAIN`、`DISCONNECT_CABLE_CHECK_1V8_OPEN_DRAIN`）。
+  - **统一 `fx3_recovery` 7 支柱主自检套件（`run_recovery_master_suite`）**：
+    - 在 `< 1.0s` 内并发核验并聚合全部 7 大恢复支柱（支持 `LOCAL_DONOR_O_RDONLY` 与 `CLEAN_ROOM_SYNTHETIC` 双模式）：`macos_usb_transport_guard`、`rp2040_multiport_fixture_selftest`（`camera_connected == False`）、`init2_escape_and_watchdog_simulator`（`7/7` 逃生 + `5/5` WDT）、`tier0_backup_parity_and_manifest_guard`（`GF(256)` P+Q 自愈 + 跨机防移植锁）、`firmware_updata_and_antirollback_guard`（`otp_fuse_touches == 0`、`rpmb_counter_increments == 0`、`EXT_CSD` 永久写保护阻断）、`unbrick_ladder_and_capsule_verifier`（`12/12` 阶梯 + VFAT 胶囊）以及被动 `S0..S6` 10 场景串口解码器（`passive_tx_bytes_emitted == 0`）。
+    - 输出确定性 `recovery_master_sha256`，并硬锁定 `persistent_emmc_writes_authorized = False` 与 `persistent_write_release = False`。
+  - **CLI 与 34 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-all-recovery [--clean-room] [--json] [--out ...]` 并导出全部公开符号；[`tests/test_recovery_master_suite_and_uart_decoder.py`](tests/test_recovery_master_suite_and_uart_decoder.py) 在本地供体（`os.O_RDONLY`）与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双模式下均在 `< 0.5s` 内通过。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --clean-room --json
+```
+
+## Phase 94 — `CXD90057` eMMC Primary/Backup GPT & Sony Sub-Partition Header Healer, RPMB HMAC-SHA256 Monotonic Write-Counter Replay Guard & Offline SD-Rescue Bundle Verifier
+
+- **[`gpt_rpmb_and_rescue_bundle_verifier.py`](fx3_recovery/gpt_rpmb_and_rescue_bundle_verifier.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）`CXD90057` eMMC 恢复链路提供三大只读 RAM-only 防变砖支柱（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`RPMB_WRITES_EMITTED = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 净室回退）：
+  - **支柱 1 — Primary/Backup GPT（LBA 1 vs Last LBA）IEEE 802.3 CRC32 与 15 分区几何重建器（`build_gpt_pair_bytes` / `verify_gpt_copy` / `heal_gpt_pair_ram_only`）**：
+    - 建模 `CXD90057` FX3 15 分区布局（`p1` FAT boot、`p2..p15` kernel/rootfs/app/calibration/userdata/`cnflasha`，`FX3_LENS_CAL_START_LBA = 0x0031C000`），覆盖 92 字节 `EFI PART` 头 CRC32 与 128 项分区表数组 CRC32、4 KiB（8-LBA）边界对齐及 Sony Sector 0（`'8246' '2.00'`）交叉验证。
+    - 证明在纯 RAM 中确定性重建损坏的 Primary GPT <- Backup GPT（以及 Backup GPT <- Primary GPT），并对重叠 LBA 区间（`ERR_GPT_PARTITION_OVERLAP`）、非 4 KiB 对齐（`ERR_GPT_MISALIGNED_4K`）、双副本同毁（`ERR_GPT_BOTH_COPIES_CORRUPTED`）及跨机型 FX6 分区几何移植（`ERR_CROSS_SKU_FX6_GPT_TRANSPLANT`，`0x00312000`）严格 fail-closed 拦截。
+  - **支柱 2 — eMMC RPMB（JEDEC eMMC 5.1 512 字节帧）HMAC-SHA256 单调写计数器与防重放沙箱（`build_rpmb_frame` / `parse_rpmb_frame` / `RpmbSandboxController` / `prove_stage_b_zero_rpmb_writes`）**：
+    - 仅使用公开合成测试密钥（`SYNTHETIC_RPMB_TEST_KEY`，绝不嵌入任何专有密钥）建模 512 字节 RPMB 帧（196B 填充 + 32B MAC + 284B 载荷、16B nonce、4B 大端 `write_counter`、2B `address`/`block_count`/`result`/`req_resp`）。
+    - 证明 fail-closed 拒绝旧写计数器重放（`RPMB_RESULT_COUNTER_FAILURE = 0x0003`）、nonce 不匹配（`ERR_RPMB_NONCE_MISMATCH`）、MAC 伪造（`RPMB_RESULT_AUTH_FAILURE = 0x0002`）及接近 `0xFFFFFFFF` 耗尽拦截（`RPMB_RESULT_COUNTER_EXPIRED = 0x0080`），同时证明 Stage-B RAM/SD 覆盖启动需 **0 次**物理 RPMB 写入（`rpmb_writes_emitted == 0`）。
+  - **支柱 3 — 离线气隙 SD-Rescue 急救包清单与双人复核验证器（`build_synthetic_sd_rescue_bundle` / `verify_sd_rescue_bundle`）**：
+    - 在允许任何 Stage-B 演练前，核验 `FX3_SAFE_STOCK.FLG` 哨兵、`p1..p15` 全量 SHA-256 清单（拦截缺失/截断/全空读出）、基于 [`tier0_backup_parity_and_manifest_guard.py`](fx3_recovery/tier0_backup_parity_and_manifest_guard.py) 的 `GF(256)` P+Q RAID-6 校验分片与单分片擦除自愈演练、机身序列号绑定（`build_body_hardware_identity`）以及不同双操作员独立摘要复核（`TwoManAttestation`）。
+  - **CLI 与 36 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-gpt-rpmb-bundle [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94`（Pillar 8），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部公开符号；[`tests/test_gpt_rpmb_and_rescue_bundle_verifier.py`](tests/test_gpt_rpmb_and_rescue_bundle_verifier.py) 包含 **36 项双模式快速单元测试**（`< 0.4s`）。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-gpt-rpmb-bundle --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --clean-room --json
+```
+
+## Phase 101 — `CXD90057` `init2` SVR4 `newc` `cpio` RAM-Disk Overlay Path/Symlink/Device-Node Firewall, JEDEC eMMC 5.1 `EXT_CSD [267..269]` Pre-EOL & Life-Time Health Auditor & 9-Pillar Master Suite Integration
+
+- **[`ramdisk_overlay_and_emmc_health_verifier.py`](fx3_recovery/ramdisk_overlay_and_emmc_health_verifier.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）与 FX6（`CXD90057`）Stage-B 易失 RAM/SD 叠加启动提供三大只读安全门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **支柱 1 — SVR4 Portable `'070701'` `newc` `cpio` RAM-Disk 叠加结构与安全防火墙（`build_cpio_newc` / `parse_cpio_newc` / `audit_cpio_ramdisk_overlay` / `build_synthetic_stage_b_cpio_overlay`）**：
+    - 纯 Python 实现 SVR4 `'070701'` `newc` `cpio` 解析与校验器（110 字节 ASCII hex 头、4 字节 `(110 + namesize)` 文件名对齐、4 字节载荷对齐、`TRAILER!!!` 哨兵且 `filesize == 0` 校验、`mode`/`rdev`/`uid`/`gid`/`filesize` 校验）。
+    - 对 `../` 路径穿越、绝对路径、规范化重复路径、逃逸至 `/dev/mmcblk0*`/`/dev/nflasha*` 或根目录之外的符号链接、任何 `S_IFBLK` 原始块设备节点、未授权 `S_IFCHR` 字符设备节点（含 `rdevmajor == 179/252` 及 `rdevmajor == 1, rdevminor in (1, 2)` 原始内存别名）、白名单外 `S_ISUID`/`S_ISGID` 二进制及截断归档实现 100% fail-closed 拦截。
+  - **支柱 2 — JEDEC eMMC 5.1 `EXT_CSD [267..269]` Pre-EOL 与寿命评估只读健康审计器（`build_synthetic_emmc_ext_csd` / `audit_emmc_ext_csd_health`）**：
+    - 解析 512 字节 `EXT_CSD` 寄存器：`PRE_EOL_INFO [267]`（`0x01` Normal、`0x02` Warning 80% 保留块消耗、`0x03` Urgent 90% 消耗）、`DEVICE_LIFE_TIME_EST_TYP_A [268]`（SLC）与 `TYP_B [269]`（MLC，`0x01..0x0A = 0%..100%`，`0x0B` 超出最大估计寿命），以及 `PARTITION_CONFIG [179]`（`BOOT_ACK = 1`、`BOOT_PARTITION_ENABLE = 1`、`PARTITION_ACCESS = 0` 出厂 `0x48` 校验，确保启动分区指针未被改写）。
+    - 在任何 Stage-B 演练前，一旦检测到 `PRE_EOL_INFO >= 0x02`、`LIFE_TIME >= 0x09`（>80% 磨损）或启动分区指针偏离出厂配置，立即 fail-closed 阻断演练并强制要求先做只读 Tier-0 全量备份留存（`tier0_preservation_mandatory = True`）。
+  - **支柱 3 — RAM-Only `tmpfs` / `overlayfs` `upperdir` 隔离证明（`build_synthetic_safe_stage_b_mount_table` / `audit_ramdisk_overlay_mount_table`）**：
+    - 解析 Linux `/proc/mounts` / `fstab` 挂载表，通过最长挂载点前缀匹配证明所有 `overlay`/`overlayfs` 的 `upperdir` 与 `workdir` 均严格驻留于易失 `tmpfs`（RAM）且互不重叠，同时证明所有 `/dev/mmcblk0*`、`/dev/nflasha*` 与 `/dev/cnflasha*` 条目均处于未挂载或 `ro,noatime` 只读状态，零 `rw` 块设备挂载。
+  - **CLI 与 36 项双模式快速单元测试**：在 [`fx3_recovery/__main__.py`](fx3_recovery/__main__.py) 注册 `verify-ramdisk-emmc-health [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase101`（Pillar 9，与 `--with-phase94` 组合构成 9/9 支柱总检，同时保持既有默认 `7/7` 行为完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部公开符号；[`tests/test_ramdisk_overlay_and_emmc_health_verifier.py`](tests/test_ramdisk_overlay_and_emmc_health_verifier.py) 包含 **36 项双模式快速单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-ramdisk-emmc-health --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --clean-room --json
+```
+
+## Phase 106 — `CXD90057` Flattened Device-Tree (`FDT 0xd00dfeed` v17) `/chosen/bootargs` 只读 Rootfs 与 Init 路径防火墙、ARM64 内核 `Image`（`0x644d5241`）魔数校验器及 10 支柱总检集成
+
+- **[`fdt_bootargs_and_kernel_verifier.py`](fx3_recovery/fdt_bootargs_and_kernel_verifier.py)**：面向 FX3（`0x91030080` / `ALCIN_UUD`）`CXD90057` Stage-B 恢复门禁提供三大只读 RAM-only 安全验证支柱（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室合成回退）：
+  - **支柱 1 — 纯 Python IEEE 1275 / Devicetree v17（`0xd00dfeed`）二进制解析器与 `/chosen/bootargs` 防火墙（`build_synthetic_fdt_blob` / `parse_fdt_blob` / `audit_fdt_chosen_bootargs`）**：
+    - 解析 40 字节大端 `fdt_header`、8 字节对齐且 `(0, 0)` 终结的 `mem_rsvmap`、`FDT_BEGIN_NODE (1)` / `FDT_END_NODE (2)` / `FDT_PROP (3)` / `FDT_NOP (4)` / `FDT_END (9)` 令牌流，严格校验 `off_dt_struct` / `off_dt_strings` 边界、重叠区域、`nameoff` 字符串越界、零填充对齐与非闭节点（测试夹具均在纯内存中合成，绝不提交 `.dtb` 二进制文件）。
+    - 审计 `/chosen/bootargs` 与 `/chosen/linux,initrd-start..end`（4B/8B 边界校验）：
+      * 对 `/dev/mmcblk0p*` / `/dev/nflasha*` / `/dev/cnflasha*` eMMC rootfs 传入 `rw`、缺少 `ro` 或缺少 `rootwait` 时 fail-closed 拦截；
+      * 当 `init=` / `rdinit=` 指向白名单（`/sbin/init`、`/init`、`/sbin/init2` 及 Stage-B 易失 RAM 包装器）之外路径时 fail-closed 拦截；
+      * 拦截任何企图重分区的 `mtdparts=` / `blkdevparts=` / `mmcparts=` 参数，并严禁 `nowatchdog` 等关闭 `CXD90057` 硬件看门狗的启动参数。
+  - **支柱 2 — ARM64 Linux 内核 `Image`（`0x644d5241` `'ARM\x64'` @ `0x38`）头部与跨机型防火墙（`build_synthetic_arm64_kernel_image` / `audit_arm64_kernel_image`）**：
+    - 解析 64 字节 ARM64 `Image` 头部（`code0`、`code1`、`text_offset = 0x80000`、`image_size = 0x6af000`、`flags = 0xa` LE + 4K 页 + 2MB 对齐、`magic == 0x644d5241`），核验真机 FX3 `vmlinux.bin`（`6,610,952` 字节，`4.9.337-scel+`，`dic-build-scm-u20-028`）并 fail-closed 拒绝 FX6 跨机型内核移植（`dic-build-scm-u24-002` / `Sony CE Linux 14.0.2.0`）、大端/非 4K 页标志或截断镜像。
+  - **支柱 3 — CLI 与 10 支柱总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-fdt-bootargs [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106`（构成 **10/10** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 106 公开符号（采用 `FDT_MAGIC_U32` 与 `ARM64_IMAGE_MAGIC_U32` 避免覆盖既有 `tier0` bytes 常量）；[`tests/test_fdt_bootargs_and_kernel_verifier.py`](tests/test_fdt_bootargs_and_kernel_verifier.py) 提供 **36 项快速双模式单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-fdt-bootargs --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --clean-room --json
+```
+
+## Phase 113 — `CXD90057` / `CXD90058` 双槽 A/B 一致性校验、官方 `BODYDATA.DAT` / USB-OTA 断电半刷取证分诊与 11 支柱总检
+
+- **[`ab_bank_and_interrupted_ota_verifier.py`](fx3_recovery/ab_bank_and_interrupted_ota_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，AP `CXD90057` + CP `CXD90058`）提供三大只读 RAM-only 恢复安全验证支柱（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_ab_bank_and_ota_donors_readonly`）**：只读核验 FX3 `2.05/nflasha1` SquashFS（`/usr/bin/sdfileinput.elf` `BODYDATA.DAT`、`/usr/bin/UdtrMain.sh` `/setting/updater/uincomp` / `mode*`、`/usr/bin/common.src` `ERROR_UINCOMP=54`、`/usr/kmod/usb_buspwr.ko` `BATTERY_STATE_EXIST`）、`udtrbody.squashfs`（`/bin/nor_loader_writer.sh` `cpapp-b.bin` / `loader_nor.bin` / `MIS.bin`）、FX3 与 FX6 `cpapp-b.bin`（`15,980,568` vs `17,952,816` 字节，严禁跨机型刷写）及 `fx3-7.02-BODYDATA.DAT` 有界 `4096 B` UFU 头部（`\x89UFU\r\n\x1a\n`）。
+  - **支柱 1 — `CXD90057` / `CXD90058` 双槽 A/B（Bank-A / Bank-B）AP+CP 同步 Epoch 与半写入检测器（`classify_bank_slot_health` / `audit_dual_bank_ap_cp_consistency`）**：
+    - 精确建模 4 类双槽健康状态：`ACTIVE_VERIFIED`、`PENDING_TRIAL`、`TORN_PARTIAL_WRITE`、`ROLLBACK_FENCED`。
+    - 在纯 RAM 中完成 AP 与 CP 双槽 CRC/写入字节数/Epoch 审计，fail-closed 拦截 AP 启动 Bank-B `7.02` 而 CP 滞留在半写入 Bank-A `2.05` / 坏 CRC 所导致的 AP<->CP IPC 协议死锁（琥珀/红灯闪烁变砖）、跨 SKU 移植与未配置完整回退槽的 `PENDING_TRIAL`。
+  - **支柱 2 — 官方 `BODYDATA.DAT` / Creators'-App OTA 断电半刷取证分诊与预检门禁（`audit_official_ota_preflight` / `triage_interrupted_ota_brick` / `run_interrupted_ota_6_scenario_triage`）**：
+    - 强制校验 Sony 官方升级 `>= 51%` 电量门禁（`SONY_FW_UPDATE_MIN_BATTERY_PCT = 51`）、`0x91030080` 机型与 `NTSC`/`PAL` 同区校验、UFU 魔数与传输介质稳定性。
+    - 精确分诊 6 类真实相机维修/升级场景（`U1_BATTERY_PULLED_DURING_CP_FLASH`、`U2_SD_CARD_READ_CRC_MID_UPDATA`、`U3_USB_CABLE_YANKED_LEGACY_UPDATER`、`U4_CROSS_REGION_NTSC_PAL_MISMATCH`、`U5_STAGE_B_CLEAN_SD_EJECT_ZERO_BRICK`、`U6_INTACT_DUAL_BANK_HEALTHY`），并映射到最小无损恢复动作（SD `FX3_SAFE_STOCK.FLG` 秒级回退 vs 被动 `1.8V` UART 诊断 vs Tier-0 只读转储）。
+    - 显式证明 `U5` Stage-B 易失 RAM/SD 用户态叠加即使突发拔电池/退卡也具有**零闪存中断变砖面**（`emmc_bank_transitions == 0`、`updata_flags_touched == False`、`flash_interruption_brick_surface == False`）。
+  - **支柱 3 — CLI 与 11 支柱总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-ab-bank-triage [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113`（构成 **11/11** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 113 公开符号；[`tests/test_ab_bank_and_interrupted_ota_verifier.py`](tests/test_ab_bank_and_interrupted_ota_verifier.py) 提供快速双模式单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-ab-bank-triage --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --clean-room --json
+```
+
+## Phase 119 — SquashFS 4.0（`hsqs` `0x73717368`）分区超级块与表边界校验器、Sony Warp-Boot `hibdrv`（`WBI2` 休眠快照）过期恢复中毒分诊及易失 `noresume` RAM 启动旁路验证器与 12 支柱总检
+
+- **[`squashfs_and_hibdrv_wbi_verifier.py`](fx3_recovery/squashfs_and_hibdrv_wbi_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057` Linux `4.9.337-scel+`）提供两大只读取证与防变砖支柱并接入 12 支柱总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`WBI_PARTITION_WRITES = 0`，本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_squashfs_and_wbi_donors_readonly`）**：只读核验 FX3 `2.05/nflasha1` `/boot/initrd.img` SquashFS 4.0（`9,097,216 B`）、FX3 `udtrbody.squashfs`（`1,253,376 B`）、FX6 `updater.img`（`1,253,376 B`）、有界 512B+节表 `O_RDONLY` 读取 FX3 `nflasha5.img`（`1399` 节 `WBI2`）与 FX6 `nflasha5`（`1197` 节 `WBI2`），以及 FX3/FX6 `vmlinux.bin` 内核 `UTS_VERSION` 与 `WBI:invalid param`/`hibernate` 符号锚点。
+  - **支柱 A — SquashFS 4.0（`hsqs` 小端魔数 `0x73717368`）超级块与表边界校验器（`verify_squashfs_partition_bytes` / `build_synthetic_squashfs_superblock`）**：
+    - 纯 Python 解析 96 字节 `<5I6H8Q` 超级块，校验 `s_magic == 0x73717368`（fail-closed 拦截大端 `sqsh` `0x68737173` 与全 `0x00`/全 `0xFF` 擦除态）、`s_major == 4, s_minor == 0`、`block_size` 2 的幂（`4 KiB..1 MiB` 且 `block_size == 1 << block_log`）、`compression_id` ∈ `{1:GZIP, 2:LZMA, 3:LZO, 4:XZ, 5:LZ4, 6:ZSTD}`、`no_ids >= 1`、`96 < bytes_used <= partition_size`、严格单调表边界（`inode_table_start < directory_table_start <= fragment <= export <= id <= xattr <= bytes_used`）与 `root_inode` 偏移合法性，离线捕获截断 `rootfs`/`app` 刷写引发的 `/sbin/init2` `SIGBUS` 与 `VFS: Unable to mount root fs` 循环崩溃。
+  - **支柱 B — Sony `Warp-Boot` / `hibdrv`（`WBI2`）过期恢复中毒分诊与易失 `noresume` RAM 旁路验证器（`parse_wbi2_header_and_table` / `triage_wbi_hibdrv_snapshot` / `verify_ephemeral_noresume_bootargs_bypass` / `audit_wbi_partition_write_attempt` / `run_wbi_hibdrv_6_scenario_triage`）**：
+    - 建模 88B/512B `WBI2` 休眠头与 64B 节表（`0x0f0f0f0f` 元数据 XOR 校验和、4K 页对齐、`resume_vector` 覆盖与重叠区间检测），精准识别三大中毒风险：`WBI_SNAPSHOT_TRUNCATED_OR_CRC_MISMATCH`、`WBI_KERNEL_ABI_FINGERPRINT_MISMATCH` 与 `WBI_EPHEMERAL_NORESUME_REQUIRED`。
+    - 验证修复动作严格使用 RAM-only `bootargs`（`noresume` / `hibdrv.resume=0`，`ro rootwait` 挂载 eMMC 根文件系统且禁 `rw`/`mtdparts`/`nowatchdog`），并通过 `audit_wbi_partition_write_attempt` 对 `/dev/nflasha5`/`mmcblk0p5` 持久擦写实现 100% fail-closed 拦截（`wbi_partition_writes == 0`）。
+  - **支柱 C — CLI 与 12 支柱总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-squashfs-wbi-triage [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119`（构成 **12/12** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 119 公开符号；[`tests/test_squashfs_and_hibdrv_wbi_verifier.py`](tests/test_squashfs_and_hibdrv_wbi_verifier.py) 提供 40 项快速双模式单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-squashfs-wbi-triage --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --clean-room --json
+```
+
+## Phase 124 — `CXD90057` Mask-BootROM USB 冷插拔枚举校验器、JEDEC eMMC `BOOT0/BOOT1` 硬件引导分区（`EXT_CSD[179]`/`[177]`/`[173]`）防损坏分诊与 13 支柱恢复总检
+
+- **[`bootrom_usb_and_emmc_bootpart_verifier.py`](fx3_recovery/bootrom_usb_and_emmc_bootpart_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057`）提供两大只读与 RAM-only 防变砖恢复支柱并接入 **13 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`EMMC_PERSISTENT_PROGRAM_COMMANDS = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_bootrom_and_bootpart_donors_readonly`）**：严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查本地 FX3 `v7.02`（`loader_nor.bin` `101,888 B` SRAM `0xFE049000`、`pformat_config.txt` `awake_memaddr=0xFE040800`、`loader_nor.tar`、`partinf.conf`）与 FX6 `v6.01`（`loader_nor.tar` 内含 `92,448 B` `loader_nor.bin`、`partinf.conf`），验证跨机型 `SBL`/分区配置严格隔离且零原始固件字节输出。
+  - **支柱 A — JEDEC `eMMC 5.1` `BOOT0 / BOOT1` 硬件引导分区与 `EXT_CSD` 配置分诊（`parse_ext_csd_boot_config` / `audit_boot_wp_script_or_profile` / `triage_emmc_boot_partitions_and_ext_csd` / `run_emmc_bootpart_6_scenario_triage`）**：
+    - 建模 `CXD90057` 一级引导程序（`SBL`/`ipl`/`loader`）驻留的 `4 MiB` `BOOT0` 与冗余 `4 MiB` `BOOT1` 硬件分区，核验 `EXT_CSD[179]`（`PART_CONFIG`）、`EXT_CSD[177]`（`BOOT_BUS_CONDITIONS`）、`EXT_CSD[173]`（`BOOT_WP`）与 `EXT_CSD[226]`（`BOOT_SIZE_MULT == 32`）。
+    - fail-closed 检出四大致命风险：`BOOT_PART_DISABLED_DEAD_BOOT_TRAP`（`BOOT_PARTITION_ENABLE == 0x0` 或 `0x7` UDA 误配）、`BOOT0_CORRUPTED_FAILOVER_TO_BOOT1_AVAILABLE`（主 `BOOT0` SHA-256/头损坏而冗余 `BOOT1` 完好）、`BLOCKED_PERMANENT_BOOT_WP_FUSE_HAZARD`（任何配置/脚本试图置位不可逆永久写保护 `EXT_CSD[173]` `B_PERM_WP_EN` `bit 2` 或 `bit 6`）、以及 `PARTITION_ACCESS_NONZERO_LEAK`（`PART_CONFIG[2:0]` 读取后未归 `0x0` 导致用户区失活），并在 `BOOT0/BOOT1` 双毁时升级分诊至 Mask-BootROM 救援。
+  - **支柱 B — `CXD90057` Mask-BootROM USB 冷插拔枚举与 `RAM_LOAD_ONLY` 沙盒校验（`verify_bootrom_usb_coldplug_and_ram_sandbox` / `run_bootrom_usb_5_scenario_sandbox`）**：
+    - 建模 `CXD90057` Mask-BootROM 回退枚举（`USB VID 0x054C` PID `0x0C90`/`0x0336`/`0x0DA1` 冷插拔描述符与 Bulk IN/OUT 端点握手），强制校验任何恢复载荷暂存仅允许面向 CXD90057 SRAM（`0xFE040000..0xFE100000`）/DRAM（`0x40000000..0xC0000000`）原地执行（`RAM_LOAD_ONLY`），对跨机型 FX6 载荷、非 Sony VID 与任何持久 `eMMC/NOR/OTP` 刷写指令（`emmc_program`/`flash_boot0`/`mmc_write`/`cmd42`/`burn_otp`）实现 100% 阻断（`emmc_persistent_program_commands == 0`）。
+  - **支柱 C — CLI 与 13 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-bootrom-bootpart [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124`（构成 **13/13** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 124 公开符号；[`tests/test_bootrom_usb_and_emmc_bootpart_verifier.py`](tests/test_bootrom_usb_and_emmc_bootpart_verifier.py) 提供 **40 项快速双模单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-bootrom-bootpart --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --clean-room --json
+```
+
+## Phase 126 — 单机身出厂校准（`nvs` / `cnflasha` / `adj`）三副本校验与跨机身投毒防火墙、`IMX510` 坏点/双原生 ISO 列 ADC 与 5 轴 `IBIS` 霍尔零点/陀螺仪温漂表校验器，及 14 支柱恢复总检
+
+- **[`factory_cal_ibis_defectpixel_and_nvs_verifier.py`](fx3_recovery/factory_cal_ibis_defectpixel_and_nvs_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057` / `CXD90058`）提供两大只读防变砖/防校准中毒支柱并接入 **14 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`FACTORY_CAL_MUTATION_BYTES = 0`、`PRIVATE_KEY_BYTES_READ = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_factory_cal_and_sensor_donors_readonly`）**：严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查本地 FX3 `v7.02`（`libbackup.so` `14,232 B`、`backup.ko` `144,976 B`、`appFw.so` `79,015,712 B`、按需 `cpapp-b.bin` `15,980,568 B`）与 FX6 `v6.01`（`libbackup.so` `14,232 B`、`appFw.so` `50,520,424 B`、按需 `cpapp-b.bin` `17,952,816 B`）校准/备份/传感器/`IBIS` 符号锚点，验证跨机型摘要严格隔离且零原始固件字节/私钥输出。
+  - **支柱 A — 单机身出厂校准分区（`nvs` / `adj` / `cnflasha`）三副本 SHA-256 仲裁与跨机身移植防火墙（`verify_factory_cal_triple_parity_and_firewall` / `audit_cnflasha_key_vault_operation` / `run_factory_cal_6_scenario_firewall`）**：
+    - `BLOCKED_CROSS_SERIAL_FACTORY_CAL_TRANSPLANT`：恢复清单 `body_serial_hash` / `board_uid_hash` 或机型 SKU 与目标相机 Tier-0 身份不匹配时 fail-closed 拦截跨机身移植；
+    - `BLOCKED_MISSING_TIER0_FACTORY_CAL_TRIPLE_PARITY`：`nvs` / `adj` / `cnflasha` 任一分区独立一致 SHA-256 副本少于 2/3 时拒绝；
+    - `BLOCKED_CNFLASHA_KEY_VAULT_WRITE_OR_EXTRACTION`：严格拦截任何修改 `cnflasha` 或读取原始非对称私钥材质的请求（`private_key_bytes_read == 0`、`factory_cal_mutation_bytes == 0`，`6/6` 场景绿色通过）。
+  - **支柱 B — `IMX510` 坏点表（`Base ISO 800 / 12800` 双增益列 ADC）与 5 轴 `IBIS` 霍尔/陀螺仪温漂表校验器（`verify_imx510_and_ibis_cal_tables` / `run_sensor_ibis_cal_6_scenario_suite`）**：
+    - 校验 `4264 x 2408` 有效像素阵列内严格行主序单调坏点坐标、有界双增益 `ISO 800 / 12800` 暗电流与列 FPN 偏置（`±32 LSB`）、完整 5 轴 `IBIS`（`pitch` / `yaw` / `roll` / `x` / `y`）霍尔零点中心与限位、`-10°C..+60°C` 覆盖及有限边界内的 `IMU` 陀螺仪温漂多项式与 `CRC32` 篡改校验（`6/6` 场景绿色通过）。
+  - **支柱 C — CLI 与 14 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-factory-cal-guard [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126`（构成 **14/14** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 126 公开符号；[`tests/test_factory_cal_ibis_defectpixel_and_nvs_verifier.py`](tests/test_factory_cal_ibis_defectpixel_and_nvs_verifier.py) 提供 **40 项快速双模单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-factory-cal-guard --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --clean-room --json
+```
+
+## Phase 134 — `CXD90057` `IPL / BLoader / ATF BL31 / Kernel` 安全启动信任链信封校验器、`nflasha1..nflasha20` `4 KiB / 512 KiB` 擦除组分区边界重叠防火墙，及 15 支柱恢复总检
+
+- **[`secureboot_chain_and_partition_align_verifier.py`](fx3_recovery/secureboot_chain_and_partition_align_verifier.py)**：面向 `ILME-FX3`（`0x91030080` / `ALCIN_UUD`，`CXD90057`）提供两大只读防变砖/防跨界擦写支柱并接入 **15 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`SPACC_KEY_READS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_secureboot_and_partalign_donors_readonly`）**：严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 检查本地 FX3 `v7.02`（`loader_nor.bin` `101,888 B`、`partinf.conf` `3,999 B` `LensData @ 0x0031C000`、`vmlinux.bin` `6,610,952 B`）与 FX6 `v6.01`（`loader_nor.tar` 内含 `92,448 B` `loader_nor.bin`、`partinf.conf` `3,990 B` `LensData @ 0x00312000`、`vmlinux.bin` `6,610,952 B`）引导/分区/`SPAcc`/`eFuse`/`OTP` 符号锚点与跨机型边界差异，零原始固件字节或硬件私钥输出。
+  - **支柱 A — `CXD90057` `IPL -> BLoader -> ARM Trusted Firmware (BL31) -> Kernel` 安全启动信封与跨机型签名失配防火墙（`verify_cxd90057_secureboot_envelope` / `audit_otp_efuse_and_spacc_operation` / `run_secureboot_envelope_6_scenario_firewall`）**：
+    - `BLOCKED_UNSIGNED_OR_PATCHED_BOOT_STAGE_ON_LOCKED_SOC`：当面向锁定 SoC 的 eMMC 引导时，任何引导阶段（`IPL` / `BLoader` / `BL31` / `Kernel`）出现摘要篡改、缺失原厂签名信封、分区容量溢出或防回滚代次降级即 fail-closed 拦截（而 Stage-B `QEMU` / 内核后用户态 bind-mount 易失覆盖不修改任何已签名引导阶段，正常放行）；
+    - `BLOCKED_CROSS_SKU_FX6_BOOTLOADER_ON_FX3_SOC`：拦截混入 FX6 引导加载器或 `PMIC` 初始化镜像；
+    - `BLOCKED_OTP_EFUSE_OR_SPACC_KEYSLOT_ACCESS`：拦截任何 `eFuse/OTP` 烧断或 `SPAcc` 密钥槽转储请求（`otp_fuse_writes == 0`、`spacc_key_reads == 0`，`6/6` 场景绿色通过）。
+  - **支柱 B — `nflasha1..nflasha20` `eMMC` `512 B` LBA / `4 KiB` 页 / `512 KiB` 擦除组边界与邻分区串写防火墙（`LbaIntervalTree` / `find_partition_lba_overlaps` / `verify_partition_map_and_flash_ops` / `run_partition_align_6_scenario_firewall`）**：
+    - 通过增强区间树确定性校验分区映射（`erase_group_lba_multiple = 1024` 扇区 = `512 KiB`）与恢复操作：
+      - `PARTITION_LBA_OVERLAP_DETECTED`：检测任意两分区之间的 LBA 重叠；
+      - `UNALIGNED_ERASE_GROUP_BLEED_HAZARD`：拦截非 `512 KiB` 擦除组对齐（如 `dd seek=1` 差一偏移）或越过 `partition_sector_count` 串写邻近 `nvs`/`cnflasha` 校准分区；
+      - `PROTECTED_PARTITION_WRITE_ATTEMPT_BLOCKED`：拦截对 `BOOT0`、`BOOT1`、`RPMB`、`nvs`、`adj`、`cnflasha` 的写入/擦除请求（`6/6` 场景绿色通过）。
+  - **支柱 C — CLI 与 15 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-secureboot-partalign [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134`（构成 **15/15** 支柱总检，同时保持无标志默认 `7/7` 完全兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 134 公开符号；[`tests/test_secureboot_chain_and_partition_align_verifier.py`](tests/test_secureboot_chain_and_partition_align_verifier.py) 提供 **42 项快速双模单元测试**。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-secureboot-partalign --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --clean-room --json
+```
+
+## Phase 138 — 真机主线 Part 4：可逆 A7C-II 风格 `/dev/nflasha15`（`ext2` `/usr`）文件级原子安装预演、哈希回滚引擎与 `p1` 一次性救援校验器（16 支柱恢复总检）
+
+- **[`realhw_ext2_installer_and_p1_rescue_verifier.py`](fx3_recovery/realhw_ext2_installer_and_p1_rescue_verifier.py)**：面向物理 `ILME-FX3`（`7.02`，`0x91030080` / `ALCIN_UUD`）真机刷入就绪审计提供三大纯内存、只读供体验证支柱并接入 **16 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`ALLOW_BOOT_PARTITION_TARGETING = False`、`ALLOW_DESTRUCTIVE_FASTBOOT = False`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_realhw_ext2_and_p1_donors_readonly`）**：严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验 FX3 `7.02` 与 FX6 `6.01` `partinf.conf`、`mount.conf`、`kemco.txt`（`FX3 cfg.uart=1` vs `FX6 cfg.uart=9`）、`nflasha1/boot/loadaddr.txt`、`nflasha15` 有界 `4 KiB` ext2 超级块（FX3 `479,846,400 B` 镜像与 `500 MiB` 槽位 `>= 32 MiB` 余量）及 `im.elf`，零原始固件字节输出。
+  - **支柱 A — `EXT2_NFLASHA15_ATOMIC_INSTALLER_AND_ROLLBACK`（`parse_ext2_superblock_bytes` / `audit_crypto_block_device_path` / `validate_sd_escape_hatch_wrapper` / `simulate_atomic_ext2_install_and_rollback` / `run_ext2_atomic_installer_6_scenario_suite`）**：
+    - 校验 `/dev/nflasha15` `ext2` 超级块（`s_magic == 0xEF53`、`>= 32 MiB` 余量、空闲 inode 检查），强制 `type=5, flag=1` 加密分区经由 `/dev/nflashaN` / `/dev/cnflashaN` 透明加密路由并**硬阻断** `/dev/pnflasha3/8/15/23` 原始明文写入风险（`BLOCKED_RAW_PNFLASHA_PLAINTEXT_HAZARD`）。
+    - 强制 SD 卡逃生门哨兵脚本（`if [ ! -f /mnt/sd/FX6_STAGEB_BOOT.MANIFEST ]; then exec /usr/bin/im.elf.orig "$@"; fi`），并在纯内存交易中完整模拟 `remount rw -> 校验原厂 SHA-256 -> 保存 .orig 备份 -> 写入包装器 -> 全量回读 SHA-256 校验 -> 注入 bit-flip / short-write 时自动从 .orig 100% 逐字节回滚 -> remount ro`（`6/6` 场景全绿）。
+  - **支柱 B — `P1_P3_MUTUAL_EXCLUSION_AND_ONESHOT_RESCUE_INITRD`（`audit_p1_p3_mutual_exclusion` / `audit_p1_oneshot_rescue_proposal` / `run_p1_rescue_and_mutual_exclusion_6_scenario_suite`）**：
+    - 强制执行 **p1/p3 黄金互斥律**（严禁在同一事务中同时修改 `p1` `23.94 MiB` 与 `p3` `75 MiB`，确保至少一个可引导分区始终完好）。
+    - 核验 `p1:/dat2 == "91030080"` 与 `p1:/dat3` 原封保留、`p1:/boot/loadaddr.txt` 合法、`p1:/boot/kemco.txt` 强制 `cfg.uart=1` & `console=ttyAMA0,460800n8`（硬阻断 FX6 `cfg.uart=9` 串口黑屏），以及 `/sbin/init` 首条可执行语句必须为 `rm -f /setting/updater/mode* && sync`（`6/6` 场景全绿）。
+  - **支柱 C — `TIER0_PRECONDITION_AND_HARDWARE_WRITE_LOCK`（`verify_tier0_backup_precondition` / `run_tier0_precondition_and_lock_4_scenario_suite`）**：
+    - 强制要求具备已回读 SHA-256 验证的完整 Tier-0 备份回执（`sector0`、`p1`、`p2`、`p6`、`p12`、`p18`、SPI NOR `ddrtraining.dat`）后才允许演练就绪通过，同时硬锁定 `persistent_emmc_writes_authorized = False`（`4/4` 场景全绿）。
+  - **CLI 与 16 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-realhw-ext2-installer [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase138`（构成 **16/16** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase134` `15/15` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 138 公开符号；[`tests/test_realhw_ext2_installer_and_p1_rescue_verifier.py`](tests/test_realhw_ext2_installer_and_p1_rescue_verifier.py) 提供 **44 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-realhw-ext2-installer --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --clean-room --json
+```
+
+## Phase 139 — 真机主线 Part 5：主机端 `AdjustControl (0x40)` 流式冷备份客户端、`p6`（`25 MiB`）滑窗回拉与 Fake-IOKit 端到端回归（17 支柱恢复总检）
+
+- **[`realhw_adjustcontrol_streaming_backup_client.py`](fx3_recovery/realhw_adjustcontrol_streaming_backup_client.py)**：严格衔接 Stage-288 `§6` 与 `2026-11-03 §5.2` 冷备份清单，面向真实 `ILME-FX3`（`7.02`，`0x91030080` / `054C:0336`）提供三大净室协议与双路径全机冷备份支柱并接入 **17 支柱**恢复总检门禁（硬锁定 `LIVE_USB_IOKIT_TRANSMIT_ENABLED = False`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`PHYSICAL_USB_BYTES_TRANSMITTED = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退）：
+  - **供体只读核验（`inspect_adjustcontrol_donors_readonly`）**：严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验 Stage-288 `jiritsu_wire.py`、`fake_jiritsu_camera.py`、`libJit_test.so`（`PT_LOAD 0x1000`）与 FX3 `libJiritsu.so`（`225,200 B`，`PT_LOAD 0x10000`）、`partinf.conf`（`p6 = 25 MiB`、`p3 = 75 MiB`、`p15 = 500 MiB`）及 `pformat_config.txt`，JSON 输出零原始专有固件字节。
+  - **支柱 A — `ADJUSTCONTROL_0X40_WIRE_TRANSPORT_AND_PREFLIGHT_ABORT`（`7/7`）**：
+    - 精确实现 Stage-288 净室线帧（`SET_FILE_PATH`: `b"\x00" + path + b"\x00"`；`SET_FILE2`: `b"\x00\xff\x00" + payload`；`GET_FILE2`: `b"\x00\xff\x00"`），硬拒绝 selector `2`，严禁 `MODE`/`MOUNT`/`FORMAT`/`START`/`DEBUG`/`FIRMUP` 及 `edisx`/`uc_mkfs` 与 `/tmp/jiritsu/` 外路径穿越。
+    - 强制会话前 `/tmp/jbusy` 探针（`GET_FILE2` 必须返回 `0x11` `ENOENT`），遇到 `/tmp/jbusy` 存在、`0x10000011`、`0x10000201`、`0x10000000`、`0x10000004`、`0x1000000F` 或 USB 超时时**立即中止，绝不盲目重发第二次 `SET_FILE2`**（`set_file2_retry_count == 0`）。
+  - **支柱 B — `DUAL_PATH_SD_STREAM_AND_P6_SLIDING_WINDOW_COLD_BACKUP`（`6/6`）**：
+    - **Path 1（SD/CFexpress ExFAT 直接流式转储）**：将全部 16 项关键资产（`Sector 0` + Tier-0 `p2`/`p6`/`p12`/`p18`/SPI NOR `ddrtraining.dat @ 0x3e210fc` + `loader_nor.bin` + Tier-1 `p1(含dat2/dat3)`/`p3`/`p7`/`p8` + Tier-2 `p5`/`p13`/`p15`/`p23`/`p30`）流式写入 `/mnt/sd/FX3_COLD_BACKUP/` 与 `MANIFEST.SHA256`，仅通过 `GET_FILE2` 回传紧凑 `528 B` `FX3RCPT1` 签名哈希回执（`< 1 KiB` `p6` 占用）。
+    - **Path 2（`p6` 受限 `<= 4 MiB` 滑窗 USB 分片回拉）**：无可用 SD 卡时以 `<= 4 MiB` 滑窗分片拉取任意大分区（如 `75 MiB` `p3` 19 片，`peak_p6_bytes <= 4.2 MiB << 25 MiB` `nflasha6` 配额），逐片校验 `[8B "FX3CHK1\0" + u64 offset + u32 length + u32 crc32]`，核实 `libJit.so` 与临时分片均已解链（`p6_residual_files == 0`），并证明重组全量 SHA-256 与源分区逐字节一致。
+  - **支柱 C — `FAKE_IOKIT_USB_CAMERA_REGRESSION_AND_PASSIVE_LOCK`（`5/5`）**：
+    - 有状态 `FakeIOKitAdjustControlCamera` 建模 Sony `054C:0336` `AdjustControl (0x40)` 端点、`25 MiB` `p6` 配额（`0x1000000F`）、`/tmp/jbusy` 锁定、ELF `DT_HASH (1,1,0,0)` + `PT_LOAD 0x10000`（64 KiB 页对齐）校验及会话后残留文件审计，并硬锁定 `live_usb_iokit_transmit_enabled = False` 与 `persistent_emmc_writes_authorized = False`。
+  - **CLI 与 17 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-adjustcontrol-backup-client [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase139`（构成 **17/17** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase134`/`--with-phase138` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 139 公开符号；[`tests/test_realhw_adjustcontrol_streaming_backup_client.py`](tests/test_realhw_adjustcontrol_streaming_backup_client.py) 提供 **46 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-adjustcontrol-backup-client --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --clean-room --json
+```
+
+## Phase 144 — 真机主线 Part 6：`MSC (054C:0DA1) -> SERVICE (054C:0336)` 独占会话、`op=0xFF` 零挂载 RAM 金丝雀与 Stage-288 §4 (1..6) 加固 ARM64 `libJit.so` 门禁（18 支柱恢复总检）
+
+- **[`realhw_service_usb_session_and_libjit_elf_hardener.py`](fx3_recovery/realhw_service_usb_session_and_libjit_elf_hardener.py)**：严格收口 Stage-285 / Stage-286 / Stage-288 真机主线剩余主机端协议与 ARM64 `libJit.so` ELF64 安全门禁，并接入 **18 支柱**恢复总检门禁（硬锁定 `LIVE_USB_IOKIT_TRANSMIT_ENABLED = False`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`USB_TX_PACKETS_EMITTED = 0`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PHYSICAL_DEVICE_WRITES = 0`；供体严格以 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露回退）：
+  - **供体只读核验（`inspect_service_usb_and_libjit_donors_readonly`）**：只读验证 FX3 `7.02` `libJiritsu.so`（`225,200 B`、`PT_LOAD 0x10000`、5 个 `adj_cmd_*`/`cmd_high_capacity_*` 符号）、`libsencore.so`（`377,328 B`、`PT_LOAD 0x10000`、`AdjustControlFunc`/`Inconcurrent::resource_t::lock`/`TransactionStart` 符号）以及可选 Stage-288 `libJit_test.so`（`8,345 B`、`PT_LOAD 0x1000`），并明确标注未加固 `libJit_test.so` 触发的 §4 预加固拒绝项。
+  - **支柱 A — `STAGE285_286_SERVICE_USB_AND_OP_FF_RAM_CANARY`（`8/8`）**：
+    - 完整建模并校验 9 步会话契约：`MSC (054C:0DA1)` 7 轮握手 -> 同物理端口 `SERVICE (054C:0336)` `USBDeviceOpenSeize` 单航道独占（`SenserThread` `Inconcurrent::resource_t::lock` @ `0xdd00`）-> 7 轮认证到达 Level 2/3（`*0x6aee0`，放行 `flags & 0xe000 == 0x4000`、于 `0xfe48` 拒绝 Level 1）-> `ProductInfoFunc`（`pFunc=0x0010` `read0`：12B 请求 + 12B `version=3, res=1` 响应 + 88B 体）。
+    - **强制 Branch-A `op=0xFF` 零挂载 RAM 金丝雀前置门槛**：在放行任何 `op=0x00`（`/dev/nflasha6` `/tmp/jiritsu`）指令之前，强制通过 `SET_FILE2 / GET_FILE2 op=0xFF`（`slot <= 0x11`、`size <= 5 MiB` @ `*0x46bd8`、零 `sys_mount`、零 `dlopen`）含 `0x124` 内联/DMM 分界与 `Phase 1 (TransactionStart) -> Phase 4 (DoExecute) -> Phase 16 (dmm_free)` 往返校验；硬拒绝 `slot > 0x11`、`size > 5 MiB`、并发重叠 `seq`，以及缺失 `STOP (0336:7) -> release (0336:8) -> 054C:0DA1 return (0da1:9)` 收尾序列；附带被动 `ioreg` XML/文本 USB 拓扑干跑解析器（零 IOKit 建连、零 USB 发包）。
+  - **支柱 B — `STAGE288_SEC4_HARDENED_ARM64_LIBJIT_ELF_GATE`（`8/8`）**：
+    - 净室构造最小 ARM64 `ET_DYN`（`e_machine = 183`、`< 16 KiB`）探针生成器与静态反汇编/Unicorn 行为验证器，强制全部 6 项 Stage-288 §4 P0 安全规则：
+      1. `§4.1` 构造器首条系统调用自删 `unlinkat(AT_FDCWD=-100, "/tmp/jiritsu/libJit.so", 0)`（`mov x8, #35; svc #0`）；
+      2. `§4.2` 先以 `O_RDONLY | O_CLOEXEC` 打开源设备并核验 `read == 512` 后再打开输出，杜绝 `0 B` 截断歧义；
+      3. `§4.3` 输出紧凑 `528 B` 帧（`8B "FX3S0OK\x00"` + `<II(512, crc32_ieee)` + `512 B` Sector 0 `"8246"` / `"2.00"`、`n_partitions == 30`、`p1 == (0x80, 0xbf80)`）；
+      4. `§4.4` 检查 `/dev/nflasha`（`newfstatat` `S_ISBLK`）并带 `/proc/partitions` / `/dev/nflasha1` 回退探测与 `16 B` `b"FX3S0ERR" + <ii(stage, errno)` 错误回执；
+      5. `§4.6` `PT_LOAD` `p_align = 0x10000`（64 KiB）无重叠 `R|E` 与 `R|W`（无 `W+X`），且 `DT_SYMTAB`、`DT_STRTAB`、`DT_HASH`（`nbucket>=1, nchain>=1`）、`DT_INIT` 严格位于文件与 `PT_LOAD` 边界内（拦截旧 `0x2100 > 0x2099` 越界缺陷）；
+      6. 静态系统调用与危险令牌防火墙（拦截 `/dev/nflasha*` / `/dev/cnflasha*` / `/dev/pnflasha*` / `/dev/mtd*` / `/setting` 上的 `O_WRONLY`/`O_RDWR`、块/MTD 上 `write`/`pwrite64`/`ioctl`/`mount`，以及 `edisx` / `uc_mkfs` / `nor_loader_writer`）。
+  - **CLI 与 18 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-service-usb-libjit [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase144`（全开启时汇总为 **18/18** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase139` `17/17` 向后兼容），[`tests/test_realhw_service_usb_session_and_libjit_elf_hardener.py`](tests/test_realhw_service_usb_session_and_libjit_elf_hardener.py) 提供 **46 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-service-usb-libjit --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --clean-room --json
+```
+
+## Phase 151 — 真机主线 Part 7（Pillar 19 / `19/19`）：`/dev/pnflasha*` 原始 ISP 密文 + `/dev/cnflasha*` SPACC 逻辑层 + `/dev/mtd*ro` SPI NOR + `Sector 0` 30 分区双层 Tier-0 冷备份仓库校验器
+
+- **[`realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py`](fx3_recovery/realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py)**：面向真实物理 `ILME-FX3`（`7.02`、`CXD90057`、`Linux 4.9.337-scel+`）提供两大只读与防混刷隔离支柱并接入 **19 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`PHYSICAL_DEVICE_WRITES = 0`、`MTD_RW_OPENS_OR_ERASE_IOCTLS = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`；本地供体严格经 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 只读检查，并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露回退）：
+  - **供体只读核验（`inspect_tier0_dual_layer_donors_readonly`）**：只读验证 11 项 FX3 `7.02` 本地供体（`partinf.conf` `3,999 B`、`mount.conf` `1,248 B`、`setup_nflash` `375 B` 含 `rename_nflasha()`、`insmod_drv1` `152 B` 含 `crypt-emmc.ko` / `emmc.ko`、`nor_loader_writer.sh` `9,106 B`、`pformat_config.txt` `1,274 B`、`loader_nor.bin` `101,888 B`、`libsencore.so` `377,328 B`、`im.elf` `40,920 B`、有界 4K 头部 `cpapp-b.bin` `15,980,568 B` 与 `nflasha15.img` `479,846,400 B` `ext2 0xEF53`），JSON 输出零原始专有固件字节。
+  - **支柱 A — 16 表面双层 Tier-0 冷备份清单、30 分区 `Sector 0` LBA 几何与跨域还原防火墙（`8/8`）**：
+    - 建模全部 16 个强制表面（`Sector 0`、`p1`、`p2`、`p3`、`p5`、`p6`、`p7`、`p8`、`p12`、`p13`、`p15`、`p18`、`p23`、`p30`、`SPI NOR /dev/mtd0ro`、`eMMC EXT_CSD`），逐一标注 `layer_domain`（`RAW_PNFLASHA_ISP` / `SPACC_CNFLASHA_LOGICAL` / `SPI_NOR_MTDRO` / `EMMC_REG_METADATA`）、FX3 `"8246"/"2.00"` 30 分区 `Sector 0` LBA 起始/扇区数与魔数/熵特征（`ext2 0xEF53`、`SquashFS hsqs`、`BK4\0`、`VX8900`、SPACC 密文熵 `>= 7.9 bits/byte`），并检测 FX6 邻区 LBA 偏移。
+    - 8 场景跨域防火墙：硬拦截 `SPACC_CNFLASHA_LOGICAL` 镜像配对 `RAW_PNFLASHA_ISP` 目标（及反向错配）、拦截跨机身 `body_serial / cid_sha256` 的 `pnflasha*` 还原（每台相机 SPACC OTP 密钥唯一）、拦截非 `ro` `/dev/mtd*` 路径或 `MEMERASE`/`MEMWRITEOOB` ioctl，并结合双副本（`SD ExFAT` + `Mac Host Vault`）与 GF(256) `P+Q` 纠删码完成位腐败自愈与不可修复拒绝。
+  - **支柱 B — `/dev/mtd*ro` SPI NOR 与 `p12/p13/p18/p23/p30` 单机身出厂校准完整性门禁（`6/6`）**：
+    - 核验 `/proc/mtd` -> `/dev/mtd0ro..mtdNro` 只读转储纪律（`IPL / BLoader / BL31` 启动包络、`64 KiB` / `4 KiB` 擦除块对齐、零 `O_WRONLY`/`O_RDWR` 与零 `MEMERASE`），并锁定单机身 `p12/p13`（`ID/NVS`）、`p18`（`/lens` `VX8900`）与 `p23/p30`（`Backup.bin` `BK4\0`）双副本 SHA-256 锁与写授权双锁（`persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`）。
+  - **CLI 与 19 支柱恢复总检集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-tier0-dual-layer-vault [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase151`（全开启时汇总为 **19/19** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase144` `18/18` 向后兼容），[`tests/test_realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py`](tests/test_realhw_pnflasha_cnflasha_mtdro_tier0_vault_verifier.py) 提供 **46 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-tier0-dual-layer-vault --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --clean-room --json
+```
+
+## Phase 155 — 真机主线 Part 8（Pillar 20 / `20/20` 里程碑）：`CXD90057` `1.8V ttyAMA0 460800n8` 被动启动阶段分诊、多 USB `1.8V` 电气防火墙与最后手段硬件 ISP 检查单校验器
+
+- **[`realhw_uart_460800_post_triage_and_isp_guard.py`](fx3_recovery/realhw_uart_460800_post_triage_and_isp_guard.py)**：闭合真实物理 `Sony ILME-FX3`（`7.02`，`p1:/boot/kemco.txt` `cfg.uart=1 console=ttyAMA0,460800n8`）的被动只读串口诊断与最后手段硬件 ISP 应急核验链路，完成 **20/20 支柱**恢复总检里程碑（硬锁定 `PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`；供体严格通过 `os.O_RDONLY | O_NOFOLLOW | O_NONBLOCK` 核验，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退）：
+  - **供体只读核验（`inspect_uart_460800_and_isp_donors_readonly`）**：只读验证 5 项 FX3 `7.02` 本地供体（`kemco.txt` `1,736 B`、`tomco.txt` `710 B`、`init` `735 B`、`libsencore.so` `377,328 B` 及有界 4 KiB 头部 `cpapp-b.bin` `15,980,568 B`），并校验 `p1:/boot/kemco.txt` 诊断模式（`cfg.uart=1` + `console=ttyAMA0,460800n8`，硬拒 FX6 `cfg.uart=9` 与 `console=ttynull`），JSON 输出零原始专有固件字节。
+  - **支柱 A — 被动 `1.8V` 只接收 `460800 8N1` 六阶段启动分诊引擎（`8/8`）**：
+    - 跨全 6 个启动阶段（`STAGE_0_BOOTROM_SPI_NOR_IPL` -> `STAGE_1_BLOADER_BL31_ATF` -> `STAGE_2_LINUX_4_9_337_SCEL_KERNEL` -> `STAGE_3_SPACC_CNFLASHA15_EXT2_USR` -> `STAGE_4_IM_ELF_SD_ESCAPE_WRAPPER` -> `STAGE_5_STAGEB_APPFW_BIG6_READY`）解析真实/捕获 `ttyAMA0` 启动日志并验证单调递增与时序。
+    - 将任意卡死/Panic/EROFS/清单不匹配精准映射至最低影响确定性恢复动作：`EJECT_SD_47US_BYPASS`、`CREATE_STOP_STAGEB_FLAG`、`HOLD_MENU_SHUTTER_POWER`、`P1_LINE1_MODE_CLEAR` 或 `TIER0_VAULT_RESTORE`；遇到乱码/空日志 fail-closed 拒绝盲写。
+  - **支柱 B — `1.8V` 逻辑电平与多 USB `VMC-BNCM1` 竞争防火墙（`6/6`）**：
+    - 硬拦截 `3.3V` / `5.0V` 串口适配器（致命 `CXD90057` `1.8V` IO 引脚过压烧毁）与欠压探头（`< 1.65V`），强制物理 TX 引脚悬空只接收（`passive_tx_bytes_emitted == 0`），拦截非 `460800 8N1` 波特率/帧格式、H0 期间同时挂载 `VMC-BNCM1`（`680 kOhm` LTC 适配器）/ `LANC`（`100 kOhm`）及多 USB 并发主机竞争。
+  - **支柱 C — 最后手段脱机硬件 ISP（`1.8V VCCQ` eMMC + `1.8V` SPI-NOR）应急校验清单（`6/6`）**：
+    - 在任何理论台架修复前核验 `1.8V VCCQ` eMMC 与 `1.8V` SPI-NOR 供电轨、SoC `RESET_N` 拉低隔离 + 主电池/USB 断开、飞线长度 `<= 10.0 cm`、`EXT_CSD[179]`（`BOOT_PARTITION_ENABLE`、`BOOT_ACK`、`PARTITION_ACCESS == 0`）、`EXT_CSD[177]`（`BOOT_BUS_CONDITIONS`）、`EXT_CSD[162]`（`RST_n_FUNCTION`，永久阻断 OTP 写入），以及单机身 `CID` 绑定的 `pnflasha*` + `/dev/mtd0ro` 双遍 SHA-256 仓库配对（硬锁定 `persistent_emmc_writes_authorized = False`、`spi_nor_write_authorized = False`）。
+  - **CLI 与 `20/20` 恢复总检里程碑（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-uart-460800-isp-triage [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase155`（全开启时汇总为 **20/20** 支柱总检里程碑，同时保持无标志默认 `7/7` 与 `--with-phase151` `19/19` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 155 公开符号；[`tests/test_realhw_uart_460800_post_triage_and_isp_guard.py`](tests/test_realhw_uart_460800_post_triage_and_isp_guard.py) 提供 **48 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-uart-460800-isp-triage --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --with-phase155 --clean-room --json
+```
+
+## Phase 160 — 真机主线 Part 9（Pillar 21 / `21/21` 终局闭环）：5 级防变砖恢复升级阶梯、`CXD90057` (`Mira`) Multi-USB `1.8V UART` EL3 (`0xfe020000`) 冷启动防护与官方 `BODYDATA.DAT` (`\x89UFU`) 原厂回刷核验器
+
+- **[`realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py`](fx3_recovery/realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py)**：面向真实物理 `Sony ILME-FX3`（`Ver. 7.02`、Model ID `0x91030080`、SoC `CXD90057` *Mira* + `CXD90058` *Cetus*）收口全部 5 级防变砖恢复升级架构与 `BODYDATA.DAT` / `EL3` 只读安全护栏，完成 **21/21 支柱**恢复总检门禁（硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`OTP_FUSE_TOUCHES = 0`、`OTP_FUSE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`；供体严格通过 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 只读检查，支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退）：
+  - **供体有界只读核验（`inspect_phase160_5tier_donors_readonly`）**：只读验证 6 项 FX3 `7.02` 本地供体（`loader_nor.bin` `101,888 B` 含 AArch64 `VBAR_EL3`、`p1` `/sbin/init` `1,438 B`、`7.02 p3` `/sbin/init` `735 B`、`Backup.bin` `2,229,740 B` `BK4\x00` + `0xAAAAAAAA` + `ILME-FX3`、有界 4 KiB 头部 `cpapp-b.bin` `15,980,568 B`，以及有界 `<= 64 KiB` 首尾扫描官方 `fx3-7.02-BODYDATA.DAT` `811,876,768 B` `\x89UFU\r\n\x1a\n` `DATV=1` / `PROV=1` / `UDID=10` 含 `054C:0DA1` / `FDAT` `1024 B` 对齐 / `DEND`），全套运行 `< 0.05 s`，JSON 输出零原始专有固件字节。
+  - **支柱 A — 官方 Sony `BODYDATA.DAT` (`\x89UFU\r\n\x1a\n` `Ver. 7.02`) 原厂 `p1` 回刷前置核验（`8/8`）**：
+    - 解析 `DATV` / `PROV` / `UDID` / `FDAT` / `DEND` TLV 封装，核验 `FDAT` `1024 B` 帧（`<HH` 长度与求和校验、`0x8000` 终止帧 + `272 B` IV/RSA-2048 尾签），强制唯一放行 `ILME-FX3` (`0x91030080`)（硬拒绝跨机身 `ILME-FX30` `0x910300a0`、`ILCE-7SM3` `0x91030040`、`ILCE-7M4` `0x91030070`、`ILME-FX6`、`ILME-FX3A`），并强制执行更新前 `p15:/usr` `.orig` `16/16` 净卸载检查、电量 `>= 51%`、同区 `NTSC/PAL` 及防回滚代际检查。
+  - **支柱 B — `CXD90057` (`Mira`) 15 针 Multi/Micro-USB `1.8V UART` EL3 (`0xfe020000`) 冷启动防护审计（`6/6`）**：
+    - 审计 15 针 Multi/Micro-USB 引脚定义（`Pin 2 GND`、`Pin 7 XRESET_REQ`、`Pin 8 UART_TX`、`Pin 9 UART_RX` `1.8V CMOS`、`Pin 10 AD_JACK_IN`），强制 `1.65V..1.98V` 电平安全窗口（拦截 `3.3V`/`5.0V` 烧毁风险），强制 `Pin 10 AD_JACK_IN` 与 `VMC-BNCM1`（`680 kOhm` LTC）/ `LANC`（`100 kOhm`）互斥，校验 `0xfe020000..0xfe060000` EL3 SRAM 窗口，并硬锁定 `el3_payload_transmit_authorized = False`（仅作脱机焊接前只读架构审计）。
+  - **支柱 C — 确定性 5 级防变砖硬件恢复升级阶梯引擎（`8/8`）**：
+    - 按最低影响严格分级决策：`Tier-1`（断电拔卡 / `EH1` `47 us` Stage-A 旁路 -> 原厂系统，零写入）-> `Tier-2`（`p15:/usr` `.orig` 原子回滚，经 `EH2` / `16/16` `SHA256(H0)==SHA256(H3)` + `054C:0DA1 -> 054C:0336` 净卸载）-> `Tier-3`（官方 `BODYDATA.DAT` `\x89UFU` 原厂 `p1` 回刷，遇未清理 `p15` 强制重定向至 `Tier-2`）-> `Tier-4`（`CXD90057` EL3 `0xfe020000` 冷启动只读诊断护栏）-> `Tier-5`（同机身 `CID` 绑定 `pnflasha*` 原始密文 + `loader_nor.bin` `/dev/mtd0ro` 离线 `8-bit` ISP 与 SPI NOR 最后手段仓库，硬锁定 `isp_write_authorized = False` / `spi_nor_write_authorized = False`）。
+  - **CLI 与 `21/21` 恢复总检终局集成（[`fx3_recovery/__main__.py`](fx3_recovery/__main__.py)）**：
+    - 注册 `verify-realhw-5tier-el3-ufu [--clean-room] [--json] [--out ...]` 与 `verify-all-recovery ... --with-phase160`（全开启时汇总为 **21/21** 支柱总检，同时保持无标志默认 `7/7` 与 `--with-phase155` `20/20` 向后兼容），并在 [`fx3_recovery/__init__.py`](fx3_recovery/__init__.py) 导出全部 Phase 160 公开符号；[`tests/test_realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py`](tests/test_realhw_bootrom_el3_and_ufu_stock_reflash_verifier.py) 提供 **48 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-realhw-5tier-el3-ufu --clean-room --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-all-recovery --with-phase94 --with-phase101 --with-phase106 --with-phase113 --with-phase119 --with-phase124 --with-phase126 --with-phase134 --with-phase138 --with-phase139 --with-phase144 --with-phase151 --with-phase155 --with-phase160 --clean-room --json
+```
+
+## Phase 166 — 真机主线 Part 10（Pillar 22 / `22/22` 统一恢复总检）：双介质独立 Tier-0 冷备份 Bit-Rot 校验、`GF(256)` 恢复预演与 `verify-22pillar-recovery`
+
+- **[`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py)**：面向 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`CXD90057`）补齐操作员冷备份存储持久性门禁并落地 **22/22 支柱**统一实时恢复总检 CLI（`< 2.0s`），硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`PERSISTENT_WRITE_RELEASE = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 只读检查本地 `7.02` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露回退：
+  - **支柱 22A — 双介质独立 Tier-0 16 表面冷备份与 `528 B FX3RCPT1` 门禁（`verify_dual_media_cold_backup_vault` / `6/6`）**：
+    - 强制要求同一机身的 16 表面 Tier-0 冷备份（`FX3RCPT1` 528 B CRC32 收据 + `pnflasha*`/`cnflasha*`/`mtd0ro`/`ext_csd` + `p2:/setting/{psd.bin,defdet.bin,Backup.bin}` + `p18:/lens/LENSFILE.BIN`）必须同时存在于**两个物理独立存储介质**（`media_a_device_id != media_b_device_id` 且 `hardware_uuid`、`mount_point` 不同，如主机 NVMe + 外置 SSD/SDXC）且 SHA-256 清单完全一致后，才允许进入 Stage-A 暂存准备（`stage_a_staging_permitted`）。
+  - **支柱 22B — RAID-6 `GF(256)`（`0x11d`）静默 Bit-Rot 清洗与 `16/16` RAM 恢复前预演（`encode_16_surface_gf256_archive` / `scrub_and_rehearse_dual_media_bitrot_recovery` / `6/6`）**：
+    - 模拟最多 2 块（1 块纯代数 `GF(256)` 伴随式定位或 2 块 `P+Q` 双校验）静默 bit-rot 损坏并完成无损重建与 `16/16` 内存魔数/域隔离/SHA-256 恢复前预演；`>= 3` 块超法定人数损坏、跨域混淆或写解锁请求 100% fail-closed 拦截（`physical_device_writes == 0`）。
+  - **统一 `22/22` 总检聚合器与 CLI（`evaluate_22pillar_recovery_master` / `verify_22pillar_recovery_suite` / `verify-22pillar-recovery`）**：
+    - 并发评估并聚合 Pillars `1..22`（含 Pillars 18、19、20、21、22），在 `< 2.0s` 内输出摘要或 `--json` / `--out`，同时在 `verify-all-recovery` 中注册 `--with-phase166`（保持无标志默认 `7/7` 与 `--with-phase160` `21/21` 完全向后兼容）；[`tests/test_realhw_22pillar_master_recovery_verifier.py`](tests/test_realhw_22pillar_master_recovery_verifier.py) 提供 **50 项**双模式快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-22pillar-recovery
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter:outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_recovery verify-22pillar-recovery --clean-room --json
+```
+
+## Phase 176 — 真机主线 Part 11（Pillar 23）：`p5:/wbi`（`WBI2` / `hibdrv.ko`）跨模式污染防火墙、断电/掉电恢复与 100 次循环 `H0 -> H1 -> H2 -> H3` 不变性校验器
+
+- **[`realhw_wbi_powerloss_and_100cycle_transition_verifier.py`](fx3_recovery/realhw_wbi_powerloss_and_100cycle_transition_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`Linux 4.9.337-scel+`，`CXD90057`）落地两大关键真机可靠性护栏，硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`WBI_PERSISTENT_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 只读检查本地 FX3 `7.02` 供体（`nflasha5.img` `209,112,512 B` `1399` 节区、`partinf.conf`、`mount.conf`、`kemco.txt`、`p7-rootfs/sbin/{init,init2,initrc/setup_nflash}`、`vmlinux.bin`、`fx3-7.02-BODYDATA.DAT` `\x89UFU` 有界 4 KiB 头部）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退（`< 1.0s`）：
+  - **支柱 23A — `p5:/wbi`（`WBI2` / `hibdrv.ko`）跨模式休眠快照污染防火墙（`8/8`）**：
+    - `WBI_S1`..`WBI_S8`：强制 Stage-A（SD 卡插入）执行冷启动入口（`WBI_RESUME_BYPASS=1` + `noresume hibdrv.resume=0`，`wbi_resume_attempted == False`），在 Stage-B 期间同时对 `/dev/nflasha5` 与 `/dev/pnflasha5` 锁定 `BLKROSET=1`（`hibdrv.ko` 任何写入请求均 fail-closed 返回 `-EROFS` / `errno=30`，`wbi_persistent_writes == 0`），验证 `EH1` 拔卡（`< 50 us`）原厂 `p5:/wbi` SHA-256 与 `H0` 逐比特一致、损坏/过期 `WBI2` 魔数优雅回退冷启动、`/mnt/sd/BODYDATA.DAT`（`\x89UFU`）在 `< 100 us` 内同时绕过 Stage-B 与 `WBI2` 休眠恢复、拦截/静默屏蔽 `/sys/power/state` `disk` / `PM_SUSPEND_DISK`、校验 `p2/p5/p12/p18` 只读不变性，以及双介质 `FX3RCPT1` 收据对 `p5:/wbi` 基线 SHA-256 的前置绑定。
+  - **支柱 23B — `NP-FZ100` 突发拔电池 / `6.3V` 掉电恢复与 100 次循环 `H0 -> H1 -> H2 -> H3` 确定性状态机（`8/8` + `100/100` 循环）**：
+    - `PWR_S1`..`PWR_S8`：在 100 次确定性循环中混合正常原厂启动（`H0`）、Stage-A -> Stage-B（`H1`/`H2`）、Big-6 菜单界面突发拔 `NP-FZ100` 电池（`tmpfs` `/tmp` 与 `/etc/opelog` 蒸发，只读 eMMC 零日志损坏）、录制中 `6.3V` 掉电 / `EncWfiStop`（`.RSV` 隔离至外置 ExFAT 存储卡以便 `.MXF` 挽救）、`EH1` 拔卡 `47 us` 原厂重启、`EH2` `DISP+MENU+SHUTTER` 安全冷启动、`EH3` `libJit.so` 1 字节 CRC32 篡改 `< 1 ms` 原厂回退、`BODYDATA.DAT` UFU 共存与 `H2 -> H3` 净卸载，证明 `16/16` 关键表面 **0-bit eMMC 漂移**且 `H0 == H3` 逐比特一致；[`tests/test_realhw_wbi_powerloss_and_100cycle_transition.py`](tests/test_realhw_wbi_powerloss_and_100cycle_transition.py) 提供双模式快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-wbi-powerloss-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-wbi-powerloss-recovery --force-clean-room --json
+```
+
+## Phase 180 — 真机主线 Part 12（Pillar 24 / `24/24` 统一恢复总检）：Slot-1 `BODYDATA.DAT`（`>= 2.04`）回刷就绪度、`WPA2/WPA3` + HDMI-BRAW / `.cube` LUT 回退卫生与 `verify-24pillar-recovery`
+
+- **[`realhw_24pillar_master_recovery_verifier.py`](fx3_recovery/realhw_24pillar_master_recovery_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`CXD90057` *Mira*）落地 **Pillar 24** 并提供统一 **24/24 恢复总检聚合器**（`< 1.8s` 并发运行，保留 [`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py) / `verify-22pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退：
+  - **支柱 24A — 官方 Slot-1 `BODYDATA.DAT`（`811,876,768 B`，`\x89UFU\r\n\x1a\n`）卸载后原厂回刷就绪度门禁（`6/6`）**：
+    - `P24A1`..`P24A6`：核验干净卸载（`H2 -> H3`）后机身固件满足 `>= Ver. 2.04` 底线（硬阻断 `<= Ver. 2.02` 防止硬件 `7 long + 7 short` LED 闪灯错误）、仅允许 **Slot-1 ExFAT 根目录** `/BODYDATA.DAT`（拦截 Slot-2、子目录及 `BODYDATA (1).DAT` / `BODYDATA_OLD.DAT` 重命名副本）、`p1` 更新武装标志清零（`0`）、`p15:/usr` `.orig`（`H0 == H3`）与 `p5:/wbi` `WBI2\x00\x00\x00\x00`（`H0 == H3`）恢复、`NP-FZ100` 电量底线（`>= 3 格 / >= 7.20V`），以及 `p12:/cert/RQ_LIC.DAT` C2PA 许可证上限（`<= 100`）与 `RO` 只读完整性。
+  - **支柱 24B — 挥发网络（仅 `WPA2/WPA3`）与 HDMI-BRAW / `.cube` 3D LUT 回退卫生（`6/6`）**：
+    - `P24B1`..`P24B6`：强制仅放行 `WPA2` / `WPA3` / `Access Authentication`（硬拒 `WEP`、`WPA1`、旧版 `IPsec`），证明 Stage-B `tmpfs` Wi-Fi 凭据、`.cube` 3D LUT 暂存文件与 HDMI BRAW 运行态在 `EH1` 拔卡或 `H2 -> H3` 干净卸载后 **零泄露** 至原厂 `p2:/setting/Backup.bin`（`BK4\x00`，`H0 == H3`）或 `p30:/usr/data/lut`（`H0 == H3`），且任何写解锁请求均 fail-closed 拦截。
+  - **统一 `24/24` 恢复总检聚合器与 CLI（`evaluate_24pillar_recovery_master` / `verify-24pillar-recovery` / `verify-slot1-ufu-reflash-readiness`）**：
+    - 并发调度 `Pillars 1..22`（`evaluate_22pillar_recovery_master`）+ **Pillar 23**（`run_wbi_powerloss_and_100cycle_suite`）+ **Pillar 24**（`run_pillar24_standalone_suite`），汇总产出 **`24/24`**（`VERIFIED_24OF24_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_24pillar_master_recovery_verifier.py`](tests/test_realhw_24pillar_master_recovery_verifier.py) 提供 **50 项**双模式快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-slot1-ufu-reflash-readiness --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-24pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-24pillar-recovery --force-clean-room --json
+```
+
+## Phase 184 — 真机主线 Part 13（Pillar 25）：气隙实验台 SD/CFexpress BYOF 清单（`FX3BNDL1`）、双介质 `FX3RCPT1` 绑定与零联网卫生护栏
+
+- **[`realhw_airgap_sd_bundle_manifest_verifier.py`](fx3_recovery/realhw_airgap_sd_bundle_manifest_verifier.py)**：面向 `Sony ILME-FX3`（`Ver. 7.02`，Model ID `0x91030080`）在物理插卡前提供完全离线的气隙实验台 SD/CFexpress 暂存包校验，并保持 `verify-22pillar-recovery` 与 `verify-24pillar-recovery` 100% 向后兼容；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`、`AIRGAP_SOCKETS_OPENED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 确定性净室回退：
+  - **支柱 25A — 单机绑定 `FX3RCPT1` 与 `FX3BNDL1`（HMAC-SHA256 + CRC32）交叉验签（`8/8`）**：
+    - `P25A1`..`P25A8`：将卡内 `FX3BNDL1` 清单绑定至目标物理机身双介质 `FX3RCPT1`（`528 B`）冷备份回执（`serial_hash`、`model_id == 0x91030080`、`body_fw == "7.02"`、5 项核心 Tier-0 `H0` 摘要 `p2`/`p5`/`p12`/`p15`/`p18`、`st_dev_primary != st_dev_secondary`），fail-closed 拦截跨机插卡错配（`CAMERA_SERIAL_RECEIPT_MISMATCH`）、非 FX3 机型（`0x91030084` FX30 / `0x91020080` FX6）、`< 7.02` 机身固件、单介质未复核回执以及 CRC32/HMAC 篡改。
+  - **支柱 25B — macOS/Linux ExFAT 卫生、AppleDouble（`._*`）清洗、AArch64 ELF64 Shim 与 `BODYDATA.DAT` 互斥防火墙（`8/8`）**：
+    - `P25B1`..`P25B8`：拦截 `.DS_Store`、`.Spotlight-V100`、`.fseventsd`、`.Trashes`、`.TemporaryItems` 与 `._*` AppleDouble 残留并支持仅限系统临时目录的 dry-run 清洗（`scrub_exfat_staging_tree_tempdir_dry_run`），校验 `FX6_STAGEB/` 下 `fx6-stage-a-verify`、`libJit.so`（`<= 64 KiB`）与 `libgrm-fbinit9.so` 的 ELF64 `EM_AARCH64`（`e_machine == 183`）头与精确 SHA-256，硬阻断卡根 `BODYDATA.DAT` / `BODYDATA (1).DAT`（`\x89UFU`）与活跃 `p1` 触发器共存及任何网络套接字打开（`airgap_sockets_opened == 0`）。
+  - **CLI 与双模式快速单元测试（[`tests/test_realhw_airgap_sd_bundle_manifest_verifier.py`](tests/test_realhw_airgap_sd_bundle_manifest_verifier.py) / **50 项**）**：
+    - 注册 `verify-airgap-sd-bundle [--force-clean-room] [--json] [--out ...]` 并导出完整 Phase 184 Pillar 25 公开符号。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-airgap-sd-bundle --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-airgap-sd-bundle --force-clean-room --json
+```
+
+## Phase 190 — 真机主线 Part 14（Pillar 26 / `26/26` 统一恢复总检）：`ILME-FX3` vs `ILME-FX3A` 跨分支恢复防火墙、`CAMSET` 设置隔离与 `XLR-H1` MI 热靴音频卫生护栏
+
+- **[`realhw_26pillar_master_recovery_verifier.py`](fx3_recovery/realhw_26pillar_master_recovery_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`1.44M` LCD + NFC + IR）落地 **Pillar 26** 并提供统一 **26/26 恢复总检聚合器**（`< 2.0s` 并发运行，保留 [`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py) / `verify-22pillar-recovery` 与 [`realhw_24pillar_master_recovery_verifier.py`](fx3_recovery/realhw_24pillar_master_recovery_verifier.py) / `verify-24pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 与 `libInfraHotshoe.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退：
+  - **支柱 26A — `ILME-FX3`（`Ver. 7.02`，`1.44M` LCD + NFC + IR）vs `ILME-FX3A`（`Ver. 2.02`，`2.36M` XGA LCD，无 NFC/IR）跨分支恢复与 `CAMSET` 防火墙（`6/6`）**：
+    - `P26A1`..`P26A6`：`< 50 us` 预检验证机身硬件特征（`1.44M` LCD + NFC + IR），双向拦截 `ILME-FX3`（`0x91030080`）与 `ILME-FX3A`（`Ver. 1.xx/2.xx`）、`ILME-FX30`（`0x91030084`）、`ILME-FX6`（`0x91020080`）之间的 `BODYDATA.DAT` 恢复包及显示垫片混用，拦截跨分支 `CAMSET01.DAT`..`CAMSET10.DAT` SD 卡设置导入，并验证原厂 `p2:/setting/Backup.bin`（`BK4\x00`，`H0 == H3`，`BLKROSET=1`）。
+  - **支柱 26B — `XLR-H1` MI 热靴 `48kHz/24bit 4ch` 恢复后与 UFU 升级后音频卫生护栏（`6/6`）**：
+    - `P26B1`..`P26B6`：强制零手柄独立固件写入（索尼从未发布独立 `XLR-H1` 固件包），校验冷启动恢复期机身 `3.5mm` 麦克风插孔物理抢占安全（`[MI Shoe Audio Set.]` 物理切断与灰显保护）、`S&Q` 静音一致性及 Stage-A->Stage-B `+48V` 幻象供电无毛刺，审计 `BODYDATA.DAT` 官方升级后 `48kHz/16bit 2ch` 默认重置行为，并确保 Stage-B 零污染 `p2:/setting/Backup.bin`（`stage_b_backup_bin_writes == 0`、`H0 == H3`）。
+  - **统一 `26/26` 恢复总检聚合器与 CLI（`evaluate_26pillar_recovery_master` / `verify-26pillar-recovery` / `verify-fx3a-branch-recovery-firewall`）**：
+    - 并发调度 `evaluate_24pillar_recovery_master`（`Pillars 1..24`）+ **Pillar 25**（`run_airgap_sd_bundle_manifest_suite`）+ **Pillar 26**（`run_pillar26_standalone_suite`），汇总产出 **`26/26`**（`VERIFIED_26OF26_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_26pillar_master_recovery_verifier.py`](tests/test_realhw_26pillar_master_recovery_verifier.py) 提供 **50 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-fx3a-branch-recovery-firewall --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-26pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-26pillar-recovery --force-clean-room --json
+```
+
+## Phase 195 — 真机主线 Part 15（Pillar 27 / `27/27` 统一恢复总检）：`DC-C1`（`>=65W / 5A`）与 `NP-FZ100` 欠压互锁、双介质 `.cube` User LUT `p2:/setting` 金库隔离与 `verify-27pillar-recovery`
+
+- **[`realhw_27pillar_dcc1_pd_lut_vault_verifier.py`](fx3_recovery/realhw_27pillar_dcc1_pd_lut_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 27** 并提供统一 **27/27 恢复总检聚合器**（`< 2.2s` 并发运行，保留 [`realhw_22pillar_master_recovery_verifier.py`](fx3_recovery/realhw_22pillar_master_recovery_verifier.py) / `verify-22pillar-recovery`、[`realhw_24pillar_master_recovery_verifier.py`](fx3_recovery/realhw_24pillar_master_recovery_verifier.py) / `verify-24pillar-recovery` 与 [`realhw_26pillar_master_recovery_verifier.py`](fx3_recovery/realhw_26pillar_master_recovery_verifier.py) / `verify-26pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `7.02` 与 `libUsbBusPower.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 零专有字节泄露确定性回退：
+  - **支柱 27A — `NP-FZ100`（`>=51%` / `>=3 格`）与 `DC-C1`（`>=65W + 5A` e-Marked 线缆）冷备份与 UFU 欠压互锁（`6/6`）**：
+    - `P27A1`..`P27A6`：进入冷备份 `AdjustControl (0x40)` / UFU `BODYDATA.DAT` 阶段前硬校验电源拓扑——机身 USB-C PD 必须装配物理 `NP-FZ100` 电池（`>= 51%` / `>= 3 格` / `>= 7.20V`），硬阻断 Micro-USB 供电企图，并强制 `DC-C1` 假电池耦合器满足 `>= 65W` PD + `5A` e-Marked 线缆且无供电故障闪烁指示；证明若 Stage-B 中途 `DC-C1` 突然断电，易失性 `tmpfs` 覆盖层干净蒸发且 `16/16` Tier-0 关键表面保持零 eMMC 损伤（`H0 == H3`）。
+  - **支柱 27B — 双介质 `.cube` User LUT（`User1..User16`）易失覆盖层 vs 原厂 `p2:/setting` 金库保全（`6/6`）**：
+    - `P27B1`..`P27B6`：校验 `SDXC`（`/Private/Sony/PRO/LUT/`）与 `CFexpress Type A`（`/Sony/PRO/LUT/`）双介质非对称 LUT 目录路径及 `17pt/33pt`（`<= 63B` ASCII 文件名）`.cube` 规范，强制 Stage-B 期间所有暂存仅驻留易失 `/tmp/fx6_lut_overlay`（`tmpfs`），`0` 次写入 `p2:/setting`；证明重启回原厂 FX3 `7.02` 后 `p2:/setting/Backup.bin` 保持 `BLKROSET=1` 且 `User1..User16` 全部 `16` 个注册槽位与 `AE Level Offset`（`0.0..+2.0 EV`、`1/3 EV` 步进）`100%` 逐比特一致（`H0 == H3`）。
+  - **统一 `27/27` 恢复总检聚合器与 CLI（`evaluate_27pillar_recovery_master` / `verify-27pillar-recovery` / `verify-dcc1-pd-lut-vault`）**：
+    - 并发调度 `evaluate_26pillar_recovery_master`（`Pillars 1..26`）+ **Pillar 27**（`run_pillar27_standalone_suite`），汇总产出 **`27/27`**（`VERIFIED_27OF27_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_27pillar_dcc1_pd_lut_vault_verifier.py`](tests/test_realhw_27pillar_dcc1_pd_lut_vault_verifier.py) 提供 **50 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-dcc1-pd-lut-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-27pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-27pillar-recovery --force-clean-room --json
+```
+
+## Phase 198 — 真机主线 Part 16（Pillar 28 / `28/28` 统一恢复总检）：`[Fan Control] = Always Off -> Auto` 备份前温控覆盖互锁、`Backup.bin` 快门 `Speed/Angle` 独立槽位与 `Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` User LUT 代际防污染总检（`verify-28pillar-recovery`）
+
+- **[`realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py`](fx3_recovery/realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 28** 并提供统一 **28/28 恢复总检聚合器**（`< 2.4s` 并发运行，保留 `verify-22pillar-recovery`、`verify-24pillar-recovery`、`verify-26pillar-recovery` 与 `verify-27pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02`、`FX6 6.01`、`Backup.bin`、`libfan.so` 与 `libbackup.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 28A — `ILME-FX3` 精确四态 `[Fan Control]`（`Auto`、`Minimum`、`Off in Rec`、`Always Off`，硬拒 `Auto1/Auto2`）与冷备份前温控覆盖互锁（`6/6`）**：
+    - `P28A1`..`P28A6`：若原厂 FX3 `[Fan Control]` 停留在 `Always Off`（或非 `Auto`），在进入 `AdjustControl (0x40)` 75 MiB `p3` 冷备份或高负载 Stage-B 前硬阻断直至关切为 `Auto`（严格识别 `[Auto Power OFF Temp.] = Standard / High`）；建模 `Off in Rec` 待机 `MAX PWM (100%)` vs 录制 `0% PWM` 及 `>= 82°C` 紧急热保护满速覆盖，并 fail-closed 拦截不存在的 `Auto1`/`Auto2` 伪枚举。
+  - **支柱 28B — `Ver. 6.01` vs `Ver. 7.00/7.02` `p2:/setting` `User1..User16` LUT 二进制代际分裂防污染金库与 `Backup.bin` `[Speed]`/`[Angle]` 独立槽位完整性（`6/6`）**：
+    - `P28B1`..`P28B6`：阻断供体 `FX6 Ver. 6.01`（`<= 6.01` 旧版 LUT 槽位序列化格式）污染宿主 `Stock FX3 Ver. 7.02`（`7.00+` 优化后 LUT 序列化格式）的 `p2:/setting` `User1..User16` 槽位，强制 Stage-B 严格重定向至易失 `/tmp/fx6_lut_overlay`（`tmpfs`）；校验 `Backup.bin` 中 `[Speed]` 与 `[Angle]` 独立键槽存储（与 `[Exposure step]` `0.3EV / 0.5EV` 解耦）、常规 `5.6°..64F` vs `119.88p / 100p` & `S&Q` `5.6°..360°` 量程边界，以及冷重启回原厂 `7.02` 后 `16/16 H0 == H3`。
+  - **统一 `28/28` 恢复总检聚合器与 CLI（`evaluate_28pillar_recovery_master` / `verify-28pillar-recovery` / `verify-fan-pwm-lut-split-vault`）**：
+    - 并发调度 `evaluate_27pillar_recovery_master`（`Pillars 1..27`）+ **Pillar 28**（`run_pillar28_standalone_suite`），汇总产出 **`28/28`**（`VERIFIED_28OF28_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py`](tests/test_realhw_28pillar_fan_pwm_shutter_lut_split_verifier.py) 提供 **52 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-fan-pwm-lut-split-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-28pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-28pillar-recovery --force-clean-room --json
+```
+
+## Phase 208 — 真机主线 Part 17（Pillar 29 / `29/29` 统一恢复总检）：仅限 Slot-1 `CAMSET01..10.DAT` 双介质路径分裂金库、`BIG6` 零物理 e-ND 总线护栏、双卡 `[Simult. + Auto Switch = Off]` 严格冗余与 `VMC-BNCM1` / `1.65x` 净冷回退（`verify-29pillar-recovery`）
+
+- **[`realhw_29pillar_camset_slot1_simult_vault_verifier.py`](fx3_recovery/realhw_29pillar_camset_slot1_simult_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 29** 并提供统一 **29/29 恢复总检聚合器**（`< 2.5s` 并发运行，保留 `verify-22pillar-recovery`、`verify-24pillar-recovery`、`verify-26pillar-recovery`、`verify-27pillar-recovery` 与 `verify-28pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02`、`cpapp-b.bin`、`appFw.so`、`Backup.bin`、`libInfraMediaConfig.so` 与 `libBackupManager.so` 供体并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 29A — 仅限 Slot-1 `CAMSET01..10.DAT` 双介质金库隔离与 `BIG6` 零物理 e-ND 总线保护（`6/6`）**：
+    - `P29A1`..`P29A6`：强制仅允许 **Slot 1** 读写 `<= 10` 个 `CAMSET01.DAT..CAMSET10.DAT` 档案（硬拦截 `Slot 2`、`> 10` 档案、`MR` 调出相机设置模式，并排除 `WB Custom 1/2/3`、`FTP`、流媒体、IP/证书与日期时间等机器绑定项）；严格区分 **SDXC**（`/PRIVATE/SONY/SETTING/FX3/CAMSET/`）与 **CFexpress Type A**（`/SONY/SETTING/FX3/CAMSET/`）根目录非对称拓扑；拦截 `FX3` vs `FX3A` vs `FX6` 跨机型 `.DAT` 混入，强制 Stage-B 将 `FX6` 配置沙箱化至易失 `/tmp/fx6_camset_overlay`（`tmpfs`）；同时强制 `BIG6`（`Home`）左下角 `[Aperture / ND Filter]` 在 FX3 `CP` 总线上保持零物理 e-ND 执行器驱动帧（`e_nd_actuator_tx_count == 0`）。
+  - **支柱 29B — 双卡 `[Simult. Recording]` + `[Auto Switch Media = Off]` 严格金库冗余、`VMC-BNCM1` 仅机身 `TC IN` 门禁与 `[De-Squeeze]` `1.65x` 净冷回退（`6/6`）**：
+    - `P29B1`..`P29B6`：在双卡冷备/严格冗余录制下强制 `[Auto Switch Media] = Off`，防止 `Ver. 2.0+` 单卡写满后静默降级为单卡续录；硬阻断 `VMC-BNCM1` 误插 `XLR-H1` 手柄 Micro-USB 口及在机身 Multi/Micro USB 口反向发射 BNC `TC OUT`（`EOPNOTSUPP`，时间码输出严格路由至 Type-A HDMI）；验证 `[De-Squeeze Display]`（`1.6x == 1.65` 倍水平拉伸 + `MF / Wide / SteadyShot Off / Face Priority Off` 四项硬件强锁 + HDMI RAW 抑制）、无内置菜单的外置 `M&C Focus Map`（`>= 150fps` 截止）及 `[Shockless WB]`（`[C.Temp./Filter]` K 值与 `A–B / G–M` 即时旁路）在冷启动回到原厂 `7.02` 后保持 `p2:/setting` `16/16 H0 == H3`。
+  - **统一 `29/29` 恢复总检聚合器与 CLI（`evaluate_29pillar_recovery_master` / `verify-29pillar-recovery` / `verify-camset-simult-vault`）**：
+    - 并发调度 `evaluate_28pillar_recovery_master`（`Pillars 1..28`）+ **Pillar 29**（`run_pillar29_standalone_suite`），汇总产出 **`29/29`**（`VERIFIED_29OF29_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_29pillar_camset_slot1_simult_vault_verifier.py`](tests/test_realhw_29pillar_camset_slot1_simult_vault_verifier.py) 提供 **52 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-camset-simult-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-29pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-29pillar-recovery --force-clean-room --json
+```
+
+## Phase 212 — 真机主线 Part 18（Pillar 30 / `30/30` 里程碑恢复总检）：`Px` 主片+代理双槽原子联动金库与 `[Off(HDMI Only)]` 零内录卡互锁（`verify-30pillar-recovery` / `verify-proxy-coupled-hdmi-vault`）
+
+- **[`realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py`](fx3_recovery/realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 30** 并将全套恢复总检正式收口至 **`30/30` 里程碑（`VERIFIED_30OF30_PILLAR_RECOVERY_MASTER`）**（`< 2.6s` 并发运行，保持 `verify-22/24/26/27/28/29pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libInfraMediaConfig.so`、`libBackupManager.so` 与 `libbackup.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 30A — `M4ROOT/CLIP/` 与 `M4ROOT/SUB/` `(Px)` 原子联动金库（`6/6`）**：
+    - `P30A1`..`P30A6`：跨 **Slot 1 & Slot 2** 审计 `M4ROOT/CLIP/`（`XAVC HS` / `XAVC S` / `XAVC S-I` `.MP4` + `.XML` 伴生元数据）与 `M4ROOT/SUB/`（`*S03.MP4`：`XAVC HS HD` `1920x1080` 10-bit `16M`/`9M` HEVC 或 `XAVC S HD` `1280x720` 8-bit `6M` AVC）原子联动一致性；强制机内 Delete / Protect 对 `CLIP/` 与 `SUB/` 双侧原子生效，fail-closed 拦截孤立 `SUB/`、带 `(Px)` 位但缺 `SUB/`、保护只读属性不一致与单侧操作请求；同时强制 `119.88p`/`100p` Normal 及 `>=120fps`/`100fps` S&Q 代理生成硬截断，严禁机内代理直接回放假设。
+  - **支柱 30B — `[Off(HDMI Only)]` 零内录卡互锁、HDMI Log `1080p` 降档与 `FocusMag × BrightMon` 互斥（`6/6`）**：
+    - `P30B1`..`P30B6`：阻断将 `[Rec. Media dur HDMI Output] = [Off(HDMI Only)]`（`[4K Output Set.(HDMI Only)]` `59.94p..24.00p 10bit`）误判为 Slot 1 / Slot 2 已开启内录的重大风险；校验 `[On]` 且关闭 HDMI RAW 输出时 `Log Shooting`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`）或 `PPLUT1..4` 强制 HDMI `1080p` 降档、`[HDMI Info. Display]` 黑屏/自动抑制逻辑，以及 `Focus Magnifier`（`x1.0`/`x4.0`）与 `Bright Monitoring`（`Setting Effect OFF` + `P/A/S/M + MF` 硬锁）双向互斥互锁；证明 Stage-B 易失 `tmpfs` 覆盖层与 `Backup.bin` / `16/16` Tier-0 表面干净复位（`H0 == H3`）。
+  - **统一 `30/30` 里程碑恢复总检聚合器与 CLI（`evaluate_realhw_30pillar_recovery_master` / `verify-30pillar-recovery` / `verify-proxy-coupled-hdmi-vault`）**：
+    - 并发调度 `evaluate_29pillar_recovery_master`（`Pillars 1..29`）+ **Pillar 30**（`run_pillar30_standalone_suite`），汇总产出 **`30/30`**（`VERIFIED_30OF30_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py`](tests/test_realhw_30pillar_proxy_coupled_hdmi_only_vault_verifier.py) 提供 **52 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-proxy-coupled-hdmi-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-30pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-30pillar-recovery --force-clean-room --json
+```
+
+## Phase 215 — 真机主线 Part 19（Pillar 31 / `31/31` 统一恢复总检）：`File Settings`（37 字符 / SDHC 强锁）+ `Shot Mark1/2` `*M01.XML` 伴生金库与 `TC Regenerate` Slot-1 连续性总检（`verify-31pillar-recovery` / `verify-filesettings-shotmark-tcregen-vault`）
+
+- **[`realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py`](fx3_recovery/realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 31** 并将全套恢复总检推进至 **`31/31`（`VERIFIED_31OF31_PILLAR_RECOVERY_MASTER`）**（`< 2.8s` 并发运行，保持 `verify-22/24/26/27/28/29/30pillar-recovery` 100% 向后兼容）；硬锁定 `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libInfraMediaConfig.so`、`libInfraMediaCommon.so` 与 `libInfraMediaMount.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 31A — `[File Settings]`（5 态格式 / `<=37` ASCII 标题 / SDHC `<=32GB` FAT32 强锁）与 `Shot Mark1/2` `*M01.XML` 伴生金库（`6/6`）**：
+    - `P31A1`..`P31A6`：跨 **Slot 1 & Slot 2** 审计 `[File Number]`（`Series` / `Reset` + `Series Counter Reset`）、5 态 `[File Name Format]`（`Standard`、`Cam ID + Reel#`、`Title`、`Date + Title`、`Title + Date`）、`[Title Name Settings]`（`1..37` 位受限 ASCII 字符且仅对新录片段生效，禁止回溯改名假设）及 **SDHC `<=32GB` FAT32** 插入时强制锁定 `[Standard]` 与禁止自定义文件夹规则；拦截 `Backup.bin` 恢复或回滚后序列号 / 卷号（`Reel#`）与现有 `/M4ROOT/CLIP/` 素材发生冲突；同时审计 `/M4ROOT/CLIP/*M01.XML` 非实时元数据伴生完整性，阻断破坏 `[Image Jump Setting]`（`Shot Mark Only` / `Shot Mark1/2 Only`）或 FTP `[Only Shot Mark Mov.]` 批量抢救传输的孤立/损坏 XML。
+  - **支柱 31B — `[TC/UB]` `[Regenerate]` Slot-1 独占主时间码连续性、`VMC-BNCM1` `EXT-LK` 掉锁告警、S&Q 锁止与耦合 `REC Lamp`（`6/6`）**：
+    - `P31B1`..`P31B6`：校验 `[Time Code Make] = [Regenerate]` 强制切换至 `[Rec Run]` 步进，并在 `[Simult. Recording]` 下严格从 **Slot 1** 读取上一条片段末尾时间码顺延 `+1` 帧；拦截恢复 `Backup.bin` 切换 `Time Code Make != Preset` 或 `Time Code Run != Free Run` 时未确认重同步的 `VMC-BNCM1` `EXT-LK` 外部锁定释放风险；阻断 `S&Q` 模式下 `[Time Code Run]` 覆盖与 HDMI `[Time Code Output = On]`；并校验后部与顶部 `REC` 按键灯硬件同步耦合（`All On` / `Only Front Off` / `All Off`）、`[Silent Mode = On] -> [Audio signals = Off]` 硬锁及 Tier-0 `16/16 H0 == H3`。
+  - **统一 `31/31` 恢复总检聚合器与 CLI（`evaluate_realhw_31pillar_recovery_master` / `verify-31pillar-recovery` / `verify-filesettings-shotmark-tcregen-vault`）**：
+    - 并发调用 `evaluate_realhw_30pillar_recovery_master`（`Pillars 1..30`）+ **Pillar 31**（`run_pillar31_standalone_suite`），汇总产出 **`31/31`**（`VERIFIED_31OF31_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py`](tests/test_realhw_31pillar_filesettings_shotmark_tcregen_vault_verifier.py) 提供 **54 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-filesettings-shotmark-tcregen-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-31pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-31pillar-recovery --force-clean-room --json
+```
+
+## Phase 220 — 真机主线 Part 20（Pillar 32 / `32/32` 统一恢复总检）：`NTSC/PAL` 数据库留存隔离、`Gamma Display Assist` × `Display LUT` 恢复对等与 `Pixel Mapping` 自动重启 `cnflasha` 只读金库总检（`verify-32pillar-recovery` / `verify-ntscpal-pixelmap-vault`）
+
+- **[`realhw_32pillar_ntscpal_pixelmap_vault_verifier.py`](fx3_recovery/realhw_32pillar_ntscpal_pixelmap_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 32** 并将全套恢复总检正式收口至 **`32/32`（`VERIFIED_32OF32_PILLAR_RECOVERY_MASTER`）**（`< 3.0s` 并发运行，保持 `verify-22/24/26/27/28/29/30/31pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so` 与 `libInfraMediaConfig.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 32A — `[NTSC/PAL Selector]` 复位非对称性、帧率/`DF-NDF` 制式互斥、双卡槽 `M4ROOT`/`PRIVATE/AVCHD` 媒体库隔离与 `[Gamma Display Assist]` × `[Display LUT]` 对等金库（`6/6`）**：
+    - `P32A1`..`P32A6`：审计 `[Camera Settings Reset]` 保留 `[Setup]` 下 `[NTSC/PAL Selector]` 而仅完整 `[Initialize]` 恢复出厂区域制式的复位非对称性，以及偏离出厂区域制式时开机横幅（`"Running on NTSC."` / `"Running on PAL."`）一致性；强制 NTSC（`23.98p` NTSC 独占、`24.00p`、`29.97p`、`59.94p`、`119.88p` + `DF`/`NDF` `[TC Format]`）与 PAL（`25p`、`50p`、`100p`；无 `23.98p` 且 `DF`/`NDF` 锁定不可用）制式边界；跨 **Slot 1 & Slot 2** 校验 `/M4ROOT/MEDIAPRO.XML` 与 `/PRIVATE/AVCHD/BDMV/INDEX.BDM` 媒体数据库区域隔离，阻断未完成冷备份即通过 `Backup.bin` 恢复或跨制式换卡触发破坏性重新注册；同时审计 4 态 `[Gamma Disp. Assist Typ.]`（`Auto`、`S-Log3->709(800%)`、`HLG(BT.2020)`、`HLG(709)`）、`[Log Shooting]`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`）激活时强制锁定 `[Gamma Display Assist = Off]` 并完全交由 `[Display LUT]` 接管、仅作用于机身 LCD/取景器而不注入外接 HDMI 的作用域边界，以及 `Backup.bin` 恢复前后状态对等（`16/16` Tier-0 `H0 == H3`）。
+  - **支柱 32B — 手动 `[Pixel Mapping]` 自动重启（`H1 -> H2` 易失 `/tmp` Stage-B 覆盖层清零回归原厂 `FX3 Ver. 7.02` `H0 == H2`）、低电量门禁、`[Auto Pixel Mapping]` 关机暗场快门安全与 `cnflasha` 传感器坏点表只读金库（`6/6`）**：
+    - `P32B1`..`P32B6`：强制手动 `[Pixel Mapping]`（`>= 20%` 且无低电告警）与 Tier-0 冷备份（`>= 51%` NP-FZ100 底线）低电量硬门禁、校准期间整机操作闭锁及校准完成后的强制自动重启，验证重启将 `/tmp` 易失 Stage-B 覆盖层（`H1`）彻底清零并回归原厂 `FX3 Ver. 7.02`（`H0 == H2`）；审计 `[Auto Pixel Mapping = On]`（即便在 `[Silent Mode = On]` 下周期性关机机械快门暗场动作声属正常校准，阻断关机瞬间拔电池或误判硬件故障；设为 `[Off]` 时校验 `<= 3` 天手动校准周期）；并硬锁定 `cnflasha`（`/dev/cnflasha`、`cnflasha12/13`、`nvs`、`adj`）`IMX510` 传感器坏点补偿表严格只读（`cnflasha_userspace_write_blocked == True`，`physical_device_writes == 0`）。
+  - **统一 `32/32` 恢复总检聚合器与 CLI（`evaluate_realhw_32pillar_recovery_master` / `verify-32pillar-recovery` / `verify-ntscpal-pixelmap-vault`）**：
+    - 并发调用 `evaluate_realhw_31pillar_recovery_master`（`Pillars 1..31`）+ **Pillar 32**（`run_pillar32_standalone_suite`），汇总产出 **`32/32`**（`VERIFIED_32OF32_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_32pillar_ntscpal_pixelmap_vault_verifier.py`](tests/test_realhw_32pillar_ntscpal_pixelmap_vault_verifier.py) 提供 **56 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-ntscpal-pixelmap-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-32pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-32pillar-recovery --force-clean-room --json
+```
+
+## Phase 225 — 真机主线 Part 21（Pillar 33 / `33/33` 统一恢复总检）：`Power Save Start Time` 9 条件气隙防休眠互锁、`Auto Power OFF Temp.` 脚架热安全金库与 `SteadyShot Active` / `Clear Image Zoom` 档案一致性总检（`verify-33pillar-recovery` / `verify-powersave-9cond-temp-vault`）
+
+- **[`realhw_33pillar_powersave_9cond_temp_vault_verifier.py`](fx3_recovery/realhw_33pillar_powersave_9cond_temp_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 33** 并将全套恢复总检正式收口至 **`33/33`（`VERIFIED_33OF33_PILLAR_RECOVERY_MASTER`）**（`< 3.2s` 并发运行，保持 `verify-22/24/26/27/28/29/30/31/32pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so` 与 `libInfraMediaConfig.so` 供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 33A — `[Power Save Start Time]` 9 条件自动解除矩阵、气隙 `NP-FZ100` `75 MiB` `p3` 冷备份防休眠互锁与 `[Auto Power OFF Temp.]` + `[Fan Control]` 备份前冷却热金库（`6/6`）**：
+    - `P33A1`..`P33A6`：全量审计官方 9 项自动解除待机休眠条件（USB 供电、幻灯片播放、FTP 传输、动态影像录制、连接电脑、HDMI/TV 连接、`[IR Remote Ctrl] = [On]`、`[Bluetooth Rmt Ctrl] = [On]`、流媒体 / Creators' Cloud 上传）；在纯气隙机内 `NP-FZ100` 电池（`>= 51%` 底线）执行 Tier-0 `75 MiB` `p3` 冷转储或 `CAMSET` 恢复且 9 项解除条件均未激活时，强制 `[Power Save Start Time]` 设为 `30 Min` 或 `Off`（拦截默认 `5 Min`、`2 Min`、`1 Min`、`10 Sec` 防中途休眠中断）；审计 `[Auto Power OFF Temp.]`（`Standard` 默认 vs `High` 强制三脚架固定防低温烫伤），并在冷转储 / `CAMSET` 恢复前强制将 `[Fan Control] = [Always Off]` 预冷切换至 `[Auto]`（`< 85.0°C` SoC 上限）。
+  - **支柱 33B — `[SteadyShot]`（`Active` 三重禁入截断）与 `[Clear Image Zoom]`（四重自动锁定）`Backup.bin` / `CAMSET01..10.DAT` 档案一致性金库（`6/6`）**：
+    - `P33B1`..`P33B6`：强制拦截 `[SteadyShot] = [Active]`（`~1.1x` 视角裁切）在 `119.88p`/`100p`、S&Q `>=100fps`/`120fps` 与外接 HDMI `[RAW Output = On]` 下的非法组合；拦截 `[Clear Image Zoom]` / `[Digital Zoom]` 在静态 `RAW`、`119.88p`/`100p` 与 S&Q `100/120/200/240fps` 下的禁用状态，并审计超出光学变焦范围时的 4 项自动锁定（`[Focus Area]` 禁用并锁定中心优先、`[Metering Mode]` 锁定 `Multi`、`[Face/Eye Prior. in AF]` 及多重测光人脸优先禁用、实时追踪禁用）；校验 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` 与 `Backup.bin`（`BK4\x00`）恢复前后参数对等（`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `33/33` 恢复总检聚合器与 CLI（`evaluate_realhw_33pillar_recovery_master` / `verify-33pillar-recovery` / `verify-powersave-9cond-temp-vault`）**：
+    - 并发调用 `evaluate_realhw_32pillar_recovery_master`（`Pillars 1..32`）+ **Pillar 33**（`run_pillar33_standalone_suite`），汇总产出 **`33/33`**（`VERIFIED_33OF33_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_33pillar_powersave_9cond_temp_vault_verifier.py`](tests/test_realhw_33pillar_powersave_9cond_temp_vault_verifier.py) 提供 **58 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-powersave-9cond-temp-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-33pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-33pillar-recovery --force-clean-room --json
+```
+
+## Phase 229 — 真机主线 Part 22（Pillar 34 / `34/34` 统一恢复总检）：`Zebra` 跨复位留存、`(Delete)` `Full Format` & `MENU+Delete` 2s 组合键 Slot-1 金库防火墙与 `S&Q` 状态恢复总检（`verify-34pillar-recovery` / `verify-zebra-fullformat-chord-vault`）
+
+- **[`realhw_34pillar_zebra_fullformat_chord_vault_verifier.py`](fx3_recovery/realhw_34pillar_zebra_fullformat_chord_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 34** 并将全套恢复总检正式收口至 **`34/34`（`VERIFIED_34OF34_PILLAR_RECOVERY_MASTER`）**（`< 3.4s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libInfraMediaConfig.so` 与 `libInfraMediaCommon.so`（校验 `GetFormatProgress`、`mmcdIoctlFormat`、`msdFormat`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 34A — Slot-1 Tier-0 金库防格式化防火墙（`Quick Format`、`(Delete)` 切换 `Full Format`、中途 `Cancel` 已擦除风险与拍摄界面 `MENU + (Delete)` 约 2s 硬件组合键）（`6/6`）**：
+    - `P34A1`..`P34A6`：当 **Slot 1** 存有活跃或未完成离线校验的 Tier-0 恢复金库（`pnflasha` / `cnflasha` / `CAMSET01.DAT`）时，全面建模并阻断 4 类高危擦除向量：① 默认 `[Quick Format]` 文件系统管理区擦除；② 格式化对话框内按 `(Delete)` 键切换触发的 `[Full Format]` 全盘数据块彻底物理擦除（不可通过数据恢复软件找回）；③ `[Full Format]` 执行中途按下 `[Cancel]` 虽使存储卡保持可用但已将先前扇区永久擦除的残损风险；④ 拍摄画面长按 `MENU + (Delete)` 约 `2s` 直接唤起 `[Format]` 的盲按组合键误触；强制要求完成离机 `SHA-256` 校验回执 + 拨下 SDXC 物理 `LOCK/WP` 写保护开关 + 取出/替换金库卡后方可格式化，并对仍处于物理 WP 锁定的 SDXC 卡执行硬件拒写拦截。
+  - **支柱 34B — `[Zebra Display]` / `[Zebra Level]` 跨 `[Camera Settings Reset]` 非对称留存、LCD 独占监看隔离（`0` HDMI 辅助泄漏）与 `Ver. 7.02` `[Mode Settings]`（`Fixed/Variable` vs `S&Q`）状态恢复（`6/6`）**：
+    - `P34B1`..`P34B6`：校验 `[Zebra Display]`（`Off`/`On`）与 `[Zebra Level]`（`70..100+`、`Custom 1` `Std ± Range`、`Custom 2` `Lower Limit`）在 `[Camera Settings Reset]` 后完整保留、仅在完整 `[Initialize]` 下归零至 `Off` / `70`；强制校验 `[Zebra]` 条纹与 `[Peaking]` 峰值轮廓（`High`/`Mid`/`Low`、`Red`/`Yellow`/`Blue`/`White`）严格仅在机身本地 LCD（`fb0` OSD）渲染、绝不泄漏至外接 HDMI 输出（`0` 辅助像素泄漏，即便 `[HDMI Info. Display] = [On]`）；审计 `Ver. 7.00+/7.02` `[Mode Settings] = [Fixed/Variable]` 对旧版 `[S&Q Settings]` 的锁定关系及 `S&Q` 全部 6 项硬件录制锁止（`0ch` 无音频、`[Audio Out Timing]` 禁用、`[Time Code Run]`/`[Time Code Output]` 禁用、`240/200fps` 禁 4K、`120/100fps` 禁 `XAVC S-I DCI 4K`、`119.88p/100p` 或 `>=100fps` 禁 `[Proxy Recording]`），并验证退出 `S&Q` 与恢复 `CAMSET01..10.DAT` / `Backup.bin` 后 `[Mode Settings]`、`[Audio Out Timing]`（`Live`/`Lip Sync`）、`[Time Code Run]`/`[Time Code Output]` 与 `[Proxy Recording]` 的无漂移恢复及 Tier-0 `16/16 H0 == H3`。
+  - **统一 `34/34` 恢复总检聚合器与 CLI（`evaluate_realhw_34pillar_recovery_master` / `verify-34pillar-recovery` / `verify-zebra-fullformat-chord-vault`）**：
+    - 并发调用 `evaluate_realhw_33pillar_recovery_master`（`Pillars 1..33`）+ **Pillar 34**（`run_pillar34_standalone_suite`），汇总产出 **`34/34`**（`VERIFIED_34OF34_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_34pillar_zebra_fullformat_chord_vault_verifier.py`](tests/test_realhw_34pillar_zebra_fullformat_chord_vault_verifier.py) 提供 **60 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-zebra-fullformat-chord-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-34pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-34pillar-recovery --force-clean-room --json
+```
+
+## Phase 231 — 真机主线 Part 23（里程碑 Pillar 35 / `35/35` 统一恢复总检）：`Silent Mode` `Auto Pixel Mapping` 台架关机防火墙、`Shutter When Pwr OFF` 硬件缺席拦截与 `Marker` / `Flexible Exp.` 复位分流金库（`verify-35pillar-recovery` / `verify-silent-autopixelmap-marker-vault`）
+
+- **[`realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py`](fx3_recovery/realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **`35/35` 里程碑 Pillar 35** 并将全套恢复总检正式推进至 **`35/35`（`VERIFIED_35OF35_PILLAR_RECOVERY_MASTER`）**（`< 3.6s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libInfraMediaConfig.so` 与 `CameraOnDemandSaver.so`（校验 `cam_ondemand_saver_init`、`cam_ondemand_saver_thread`、`cam_ondemand_saver_exit`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 35A — `[Silent Mode]` `[Auto Pixel Mapping]` 台架关机暗场校准防火墙、5 项拍摄功能锁止与 `ILME-FX3` `[Shutter When Pwr OFF]` 硬件缺席拦截（`6/6`）**：
+    - `P35A1`..`P35A6`：将 `[Silent Mode] = [On]` 配合 `[Target Function Settings]` 将 `[Auto Pixel Mapping]` 设为 `[Target]` 建模为确定性、非侵入式软件台架关机防火墙，防止在 Tier-0 备份/恢复关机周期中意外触发断电机械快门暗场像素映射校准（`0` 次 `cnflasha` 触碰），同时验证非台架关机场景下 `[Not Target]` 完整保留常规 `[Auto Pixel Mapping]` 与 `[Aperture Drive in AF]` 设定；强制审计 `[Silent Mode] = [On]` 自动锁死 `[Shutter Type]` / `[Shutter Type in Interval] = [Electronic Shutter]`、`[Audio signals] = [Off]` 及 5 项禁用功能（闪光灯拍摄、`[Long Exposure NR]`、`[e-Front Curtain Shut.]`、`BULB`、`[Anti-flicker Shoot.]`）；全面拦截并拒绝物理 `ILME-FX3`（`Ver. 2.00..7.02`）根本不存在的 `[Shutter When Pwr OFF]` 伪造菜单断言（真机仅存在 `[Sensor Cleaning]`、`[Auto Pixel Mapping]` 与 `[Pixel Mapping]`）。
+  - **支柱 35B — `[Marker Display]` 15 比例非复位金库、本地 LCD 独占 HDMI 零标记抑制与 `[Flexible Exp. Mode]`（`Av`/`Tv`/`ISO`）+ `[Auto Slow Shutter]` 复位分流（`6/6`）**：
+    - `P35B1`..`P35B6`：校验 `[Marker Display]`（`Center Marker`、`Aspect Marker` `Off` + 15 项 `Ver. 3.00+/7.02` 画幅比例、`Safety Zone` `Off/80%/90%`、`Guideframe`）在 `[Camera Settings Reset]` 后完整存留、仅在完整 `[Initialize]` 下清零为 `Off`，且即便 `[HDMI Info. Display] = [On]` 仍严格仅在机身本地监视器显示、向 HDMI 泄漏 `0` 层标记叠加；验证 `[Flexible Exp. Mode]` 下 `[Auto/Manual Swt. Set.]`（`Av`/`Tv`/`ISO` -> `Manual`）与 `[Auto Slow Shutter]`（`-> On`）在 `[Camera Settings Reset]` 下干净复位为默认值，或经 Slot-1 `CAMSET01.DAT` 金库无漂移恢复（`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `35/35` 里程碑恢复总检聚合器与 CLI（`evaluate_realhw_35pillar_recovery_master` / `verify-35pillar-recovery` / `verify-silent-autopixelmap-marker-vault`）**：
+    - 并发调用 `evaluate_realhw_34pillar_recovery_master`（`Pillars 1..34`）+ **Pillar 35**（`run_pillar35_standalone_suite`），汇总产出 **`35/35`**（`VERIFIED_35OF35_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py`](tests/test_realhw_35pillar_silent_autopixelmap_marker_vault_verifier.py) 提供 **64 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-silent-autopixelmap-marker-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-35pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-35pillar-recovery --force-clean-room --json
+```
+
+## Phase 234 — 真机主线 Part 24（Pillar 36 / `36/36` 统一恢复总检）：`Recover Image DB` 亏电拒执与 Slot-1 Tier-0 金库防篡改防火墙、`Monitor Flip Direction` 跨复位留存 / 回放不翻转与 `AF` 运动学 + `Interval Shoot Func.` 状态恢复金库（`verify-36pillar-recovery` / `verify-recover-imagedb-monitor-flip-vault`）
+
+- **[`realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py`](fx3_recovery/realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 36** 并将全套恢复总检正式推进至 **`36/36`（`VERIFIED_36OF36_PILLAR_RECOVERY_MASTER`）**（`< 3.8s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libInfraMediaConfig.so` 与 `libIMDB.so`（校验 `IMDB_find_entry`、`IMDB_get_entries`、`InfraDatabase_Init`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 36A — `[Recover Image DB]` 极端亏电硬件拒执、零删片 `AVF_INFO` 修复与 Slot-1 Tier-0 金库防写入防火墙（`6/6`）**：
+    - `P36A1`..`P36A6`：精确建模 `MENU` -> `Shooting` -> `[Media]` -> `[Recover Image DB]` 在不删除任何已录制视频片段或静态照片的前提下修复 `AVF_INFO` / 媒体管理数据库不一致（消除 `"Image DataBase File error"` 告警与虚假 `"0"` 可拍张数显示）；强制拦截极端亏电 `NP-FZ100` 电池包（`battery_extremely_depleted` 或 `< 10%` / `< 6.60V`）下的执行请求以防中途断电导致 FAT/exFAT 元数据二次损坏；验证 `[Recover Image DB]` 按需动作项对 `[Camera Settings Reset]` 与 `[Initialize]` 双重免疫；并在 **Slot 1** 存有未完成离机 `SHA-256` 校验或处于物理 `WP/LOCK` 保护的 Tier-0 冷转储金库（`pnflasha` / `cnflasha` / `CAMSET01.DAT`）时，100% 阻断 `[Recover Image DB]` 对 Slot 1 文件系统元数据的任何写入。
+  - **支柱 36B — `[Monitor Flip Direction]` 跨复位留存与回放零镜像反转、`Movie/S&Q` 对焦运动学（`[AF Subj. Shift Sensitivity]` / `[AF Transition Speed]`）与仅限静态照片的 `[Interval Shoot Func.]` 状态恢复（`6/6`）**：
+    - `P36B1`..`P36B6`：校验 `[Monitor Flip Direction]`（`Auto` 默认、`Horizontal Flip`、`Vertical Flip`、`Off`）在 `[Camera Settings Reset]` 后完整保留、仅在完整 `[Initialize]` 下归位为 `Auto`，且即使设为 `[Horizontal Flip]` 时**回放模式绝不翻转监视器画面与时间码/文件名文字**；校验精确全称菜单项 `[AF Subj. Shift Sensitivity]`（`1(Locked on)..5(Responsive)`，默认 `5(Responsive)`，硬拦截缩写 `AF Subj. Shift Sens.`）与 `[AF Transition Speed]`（`1(Slow)..7(Fast)`，默认 `5`）在 `[Camera Settings Reset]` 下干净复位或经 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` 无漂移恢复；强制校验 `ILME-FX3` `[Interval Shoot Func.]`（拍摄开始时间 `1s..99m59s`、拍摄间隔 `1s..60s`）严格仅限静态照片序列连拍（需外部后期合成延时视频），阻断将其误判为 FX6 机内视频抽帧 `Interval Rec`（`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `36/36` 恢复总检聚合器与 CLI（`evaluate_realhw_36pillar_recovery_master` / `verify-36pillar-recovery` / `verify-recover-imagedb-monitor-flip-vault`）**：
+    - 并发调用 `evaluate_realhw_35pillar_recovery_master`（`Pillars 1..35`）+ **Pillar 36**（`run_pillar36_standalone_suite`），汇总产出 **`36/36`**（`VERIFIED_36OF36_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py`](tests/test_realhw_36pillar_recover_imagedb_monitor_flip_vault_verifier.py) 提供 **64 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-recover-imagedb-monitor-flip-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-36pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-36pillar-recovery --force-clean-room --json
+```
+
+## Phase 238 — 真机主线 Part 25（Pillar 37 / `37/37` 统一恢复总检）：`Touch Operation` 4 项跨复位留存与台架防误触锁、`Emphasized REC` / `Grid Line` HDMI 净信号自动钳制与 `Sunny Weather` 室内电池/热护栏（`verify-37pillar-recovery` / `verify-touch-recframe-hdmi-sunny-vault`）
+
+- **[`realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py`](fx3_recovery/realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 37** 并将全套恢复总检正式推进至 **`37/37`（`VERIFIED_37OF37_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`（校验 `SaveLoadSettingsIf`、`Backup_read`、`Backup_write`）与 `libgpe.so`（校验 `gpe_blog_error`、`_ZNK5mpgpe5Gperm4InitEv`）7 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室回退：
+  - **支柱 37A — `[Touch Operation]` 4 项跨 `[Camera Settings Reset]` 留存、Tier-0 `75 MiB` `p3` 无人值守台架电容屏防误触锁与 `[Monitor Brightness]`（`[Manual]` `-2..+2` vs `[Sunny Weather]`）室内 `NP-FZ100` 电池/热护栏（`6/6`）**：
+    - `P37A1`..`P37A6`：精确建模 `MENU` -> `Setup` -> `[Touch Operation]` 全部 4 项设定（`[Touch Operation]` `On`/`On: Playback Only`/`Off`、`[Touch Sensitivity]` `Standard`/`Sensitive`、`[Swipe Up]` `Open the Fn Menu`/`Off`、`[Touch Func. in Shooting]` `Touch Tracking`/`Touch Focus`/`Off`）对 `[Camera Settings Reset]` 免疫留存、仅在完整 `[Initialize]` 下归位为原厂默认；强制在无人值守 Tier-0 `75 MiB` `p3` 冷转储期间锁定 `[Touch Operation] = Off`（或 `On: Playback Only`），阻断意外电容触碰呼出 `Fn` 菜单或触发 `Touch Tracking` / `Touch Focus`（`0` 次误触发）；同时建模 `MENU` -> `Setup` -> `[Monitor]` -> `[Monitor Brightness]`（`Manual` `-2..+2` 默认 `0` vs `Sunny Weather`）跨 `[Camera Settings Reset]` 留存，并将室内 `NP-FZ100` 台架演练硬锁至 `[Manual]`（`0`），杜绝室内高光裁切误判与 LCD 背光额外发热/耗电。
+  - **支柱 37B — `[Emphasized REC Display]` 与 `[Grid Line Display]` 复位分流、HDMI 监看路由 vs `[Off(HDMI Only)]` / `RAW` 净信号强制钳制与 Slot-1 `CAMSET01.DAT` 恢复（`6/6`）**：
+    - `P37B1`..`P37B6`：校验 `ILME-FX3` `[Emphasized REC Display]`（默认 `On`，可经 `[Camera Settings Reset]` 复位）与 `[Grid Line Display]`（默认 `Off`，含 `Rule of 3rds Grid` / `Square Grid` / `Diag. + Square Grid` 三种类型，**不受** `[Camera Settings Reset]` 复位、仅在 `[Initialize]` 下归位）的复位不对称；验证 `[HDMI Info. Display] = On`（非 RAW 且启用机内录卡）时自动熄灭机身本地 LCD 并将红框/网格线路由至外接监看器（同时严保本地专属 `Marker`/`Zebra`/`Peaking` 零层泄漏至 HDMI），而在 `[Rec. Media dur HDMI Output] = Off(HDMI Only)` 或 HDMI `RAW` 视频输出激活时由硬件强制钳制 `[HDMI Info. Display] -> Off`（外录 HDMI 母带烘焙 `0` 层红框与网格线，机身 LCD 保持点亮），以及经 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` 确定性恢复与 `16/16` Tier-0 `H0 == H3` 不变性。
+  - **统一 `37/37` 恢复总检聚合器与 CLI（`evaluate_realhw_37pillar_recovery_master` / `verify-37pillar-recovery` / `verify-touch-recframe-hdmi-sunny-vault`）**：
+    - 并发调用 `evaluate_realhw_36pillar_recovery_master`（`Pillars 1..36`）+ **Pillar 37**（`run_pillar37_standalone_suite`），汇总产出 **`37/37`**（`VERIFIED_37OF37_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py`](tests/test_realhw_37pillar_touch_recframe_hdmi_sunny_vault_verifier.py) 提供 **64 项**双模快速单元测试。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-touch-recframe-hdmi-sunny-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-37pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-37pillar-recovery --force-clean-room --json
+```
+
+## Phase 240 — 真机主线 Part 26（Pillar 38 / `38/38` 统一恢复总检）：`Shoe Audio Set.` `24bit 4ch` 三重锁止与四轨电平表联动、`Wind Noise Reduct.` 内置麦独占护栏与 `Save/Load Settings` `C3 Portal` 隐私/校准排除防火墙 + Slot-1 金库写锁（`verify-38pillar-recovery` / `verify-shoe-audio-wind-saveload-vault`）
+
+- **[`realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py`](fx3_recovery/realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`）落地 **Pillar 38** 并将全套恢复总检正式推进至 **`38/38`（`VERIFIED_38OF38_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`（校验 `SaveLoadSettingsIf`、`requestToRead`、`requestToCheck`、`requestToWrite`）与 `FX6 6.01` `appFw.so`、`libInfraHotshoe.so`（校验 `_ZN12InfraHotshoe9GetShoeIdEj`、`_ZN12InfraHotshoe13QueryShoeIdOnEij`、`_ZN12InfraHotshoe11SetAdcLevelEiPj`）8 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室合成回退：
+  - **支柱 38A — `[Shoe Audio Set.]`（`48kHz/16bit 2ch` 默认 / `24bit 2ch` / `24bit 4ch`）恢复、三重硬件锁止、`CH1..CH4` 四轨电平表联动与 `[Wind Noise Reduct.]` 仅限内置麦复位 `[Off]` 基线（`6/6`）**：
+    - `P38A1`..`P38A6`：精确建模 `MENU` -> `Shooting` -> `[Audio Recording]` -> `[Shoe Audio Set.]` 与 `[Wind Noise Reduct.]` 在 `[Camera Settings Reset]`（及 `[Initialize]`）下分别归位至 `48kHz/16bit 2ch` 与 `Off`，并可经 Slot-1 `CAMSET01.DAT`..`CAMSET10.DAT` `[Load]` 确定性恢复；强制校验 `[Shoe Audio Set.]` 三重硬件锁止：① `[Audio Recording] = Off` 或 `S&Q Motion` 静音锁止（`0ch`、无电平表）；② 机身 `3.5mm` `MIC` 插孔接入模拟外麦时抢占覆盖内置麦与 MI 热靴，强制回落 `2ch 16bit` 模拟采集并禁用数字 `24bit/4ch`；③ `XLR-H1` 手柄物理拨杆置于 `[ANALOG]`（或接入模拟 MI 热靴麦）时绕过数字 I2S 并回落 `2ch 16bit`；同时验证 `XLR-H1`/`ECM-M1` 数字 `48kHz/24bit 4ch` 模式下 `[Audio Level Display] = On` 自动扩展为 `CH1..CH4` 四轨电平表；强制审计 `[Wind Noise Reduct.]` 仅作用于机身内置立体声麦克风（接入 `3.5mm` 外麦或 MI 热靴 `XLR-H1` 时完全不生效，外接手柄改由物理 `[LOW CUT]` `Off`/`100Hz`/`300Hz` 控制），并将室内台架恢复演练硬锁为 `[Off]` 以杜绝正常低频音频被高通衰减。
+  - **支柱 38B — `[Save/Load Settings]`（`CAMSET01..10.DAT` & `C3 Portal` `Cloud(Private)` / `Cloud(Share)`）同机型锁、Sony 官方排除隐私/校准项防火墙与 Slot-1 Tier-0 金库写锁（`6/6`）**：
+    - `P38B1`..`P38B6`：精确建模 `MENU` -> `Setup` -> `[Reset/Save Settings]` -> `[Save/Load Settings]` 在本地存储卡 `Media`（`/PRIVATE/SONY/PRO/CAMERA/ILME-FX3` 下 `CAMSET01.DAT..CAMSET10.DAT` 单卡上限 `10` 份、严格锁定 `ILME-FX3` 同机型并硬拦截跨机型 `ILME-FX6` `.DAT` 导入）与 `Ver. 4.00+` `Creators' Cloud` / `C3 Portal`（`Cloud(Private)` / `Cloud(Share)`，在气隙 Tier-0 冷转储激活时硬阻断云同步）上的读写边界；强制执行 Sony 官方帮助指南 **8 类排除项防火墙**，确保 `[Save]` 与 `[Load]` 绝不导出或覆写 `[IPTC Information]`、`[Copyright Info]`、`[Custom White Balance]`（`Custom 1..3`）、`[Face Memory]` 人脸生物特征及全部网络凭据（`FTP`、`RTMP/SRT` 推流密钥、`Wi-Fi` SSID/密码、静态 IP/TLS 证书，`excluded_secret_or_cal_leak_count == 0`）；同时强制执行 **Slot-1 Tier-0 金库写锁**：从 Slot 1 执行 `[Load]` 严格 `O_RDONLY` 安全，而任何针对未完成离线 `SHA-256` 校验、处于物理 `WP/LOCK` 保护或存有基线 `pnflasha`/`cnflasha`/`CAMSET01.DAT` 的 Slot 1 金库卡发起的 `[Save]` 覆写均被 100% 阻断（`slot1_unverified_camset_save_mutations == 0`，临时配置 `[Save]` 仅允许落入 Slot 2 或已完成离线哈希验讫的专用测试卡，且严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **统一 `38/38` 恢复总检聚合器与 CLI（`evaluate_realhw_38pillar_recovery_master` / `verify-38pillar-recovery` / `verify-shoe-audio-wind-saveload-vault`）**：
+    - 并发调用 `evaluate_realhw_37pillar_recovery_master`（`Pillars 1..37`）+ **Pillar 38**（`run_pillar38_standalone_suite`），汇总产出 **`38/38`**（`VERIFIED_38OF38_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py`](tests/test_realhw_38pillar_shoe_audio_wind_saveload_vault_verifier.py) 提供 **66 项**双模快速单元测试（`< 5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-shoe-audio-wind-saveload-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-38pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-38pillar-recovery --force-clean-room --json
+```
+
+## Phase 243 — 真机主线 Part 27（Pillar 39 / `39/39` 统一恢复总检）：`Framing Settings` 非对称 `Full`/`Crop` 恢复与 HDMI `RAW` 裁切互斥、`Anti-flicker Shoot.` 仅机械快门静态照片 / 无 `Var. Shutter` 守恒与 `USB Power Supply` 强制 `NP-FZ100` 在位 + `USB Type-C` 独占 & `USB LUN Setting` `Multi`/`Single` 跨复位留存（`verify-39pillar-recovery` / `verify-framing-usbpower-lun-antiflicker-vault`）
+
+- **[`realhw_39pillar_framing_usbpower_lun_antiflicker_vault_verifier.py`](fx3_recovery/realhw_39pillar_framing_usbpower_lun_antiflicker_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`）落地 **Pillar 39** 并将全套恢复总检正式推进至 **`39/39`（`VERIFIED_39OF39_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37/38pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libUsbBusPower.so`（校验 `UsbBusPower_Init`、`_ZN11UsbBusPower11GetInstanceEv`、`_ZN11UsbBusPower18SetWatchSWForceOFFEv`）、`libUsbControl.so`（校验 `_ZN15UsbControlDebug9BlogWriteEhhtj`、`_ZN9UsbAdjCmdC1Ev`）与 `FX6 6.01` `appFw.so` 共 9 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 洁净室合成回退：
+  - **支柱 39A — `[Framing Settings]` 非对称 `Full`/`Crop` 恢复、HDMI `RAW` 裁切互斥、`ILME-FX3`（`ilc/2210`）vs `ZV-E1` 命名锁与 `[Anti-flicker Shoot.]` 仅机械快门静态照片 / 无 `[Var. Shutter]` 守恒（`6/6`）**：
+    - `P39A1`..`P39A6`：精确建模 `MENU` -> `Shooting` -> `[Framing Settings]` 三子项（`[Framing]` 默认 `Off` / `On`、`[Recording/Streaming]` 默认 `Full` / `Crop`、`[HDMI]` 默认 `Crop` / `Full`）在 `[Camera Settings Reset]`（及 `[Initialize]`）下干净复位为 `Off`/`Full`/`Crop` 并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 无漂移恢复；强制校验默认非对称双路输出（机内全幅录制 `Full` + 外接 HDMI 构图裁切 `Crop`），100% 阻断 HDMI `RAW` 输出与开启裁切的 `[Framing] = On` 非法并存，并严格区分 `ILME-FX3`（`ilc/2210`，搭配 *Monitor & Control*）的 `[Framing Settings]` 与消费级 `ZV-E1`（`ilc/2310`）的 `[Autoframing Settings]`；同时建模 `MENU` -> `Shooting` -> `[Shutter/Silent]` -> `[Anti-flicker Shoot.]`（默认 `Off` / `On`，受 `[Camera Settings Reset]` 复位）严格仅对 `100 Hz` / `120 Hz` 人工光源下的**机械快门静态照片**生效（在 `Movie` / `S&Q Motion` 视频模式及 `[Silent Mode] = On` / `Electronic Shutter` 下完全不生效），并硬锁定原厂 `ILME-FX3`（`ilc/2210` 直至 `Ver. 7.02`）不存在 `[Var. Shutter]`（`fx3_has_var_shutter == False`，100% 拦截误套用 `FX30` `ilc/2220` `[Var. Shutter]` 或 `FX6` `ECS` 菜单节点的伪造断言，严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **支柱 39B — `[USB Power Supply]` 强制 `NP-FZ100` 在位 + `USB Type-C` 供电独占、`[USB LUN Setting]` `Multi`/`Single` 跨 `[Camera Settings Reset]` 留存与离线 `WP` 读卡器 Tier-0 校验金库（`6/6`）**：
+    - `P39B1`..`P39B6`：精确建模 `MENU` -> `Setup` -> `[USB]` 全部 3 项设定（`[USB Connection Mode] = Sel. When Connect`、`[USB LUN Setting] = Multi`、`[USB Power Supply] = On`）**在 `[Camera Settings Reset]` 后完整留存**、仅在完整 `[Initialize]` 下复位为出厂默认；强制执行 `[USB Power Supply]` 两大硬件供电互锁：① 电池仓未插入 `NP-FZ100` 电池包（或 `DC-C1` 假电池耦合器）或电池极度亏电（`< 10%`）时无法仅靠 USB 开机供电，且严禁在 USB-PD 供电中途拔出 `NP-FZ100` 触发无缓冲瞬断掉电（`unbuffered_battery_pull_events == 0`）；② 机身 `Multi/Micro USB` 端口在物理电路上绝不支持外部供电或机内充电（仅 `USB Type-C` 独占支持）；同时强制审计 `[USB LUN Setting]` 在 `Multi`（同时挂载 Slot 1 + Slot 2 双盘符 `2 LUN`）与 `Single`（仅暴露主槽 Slot 1 `1 LUN`、隐藏 Slot 2）下的槽位可见性语义，并硬锁定离线气隙读卡器（启用 SDXC 物理 `WP/LOCK` 写保护开关）完成 Tier-0 `SHA-256` 核验（严禁主机 USB 实时在线挂载，`physical_usb_packets_emitted == 0`、`hardware_live_attachment_authorized == False`）。
+  - **统一 `39/39` 恢复总检聚合器与 CLI（`evaluate_realhw_39pillar_recovery_master` / `verify-39pillar-recovery` / `verify-framing-usbpower-lun-antiflicker-vault`）**：
+    - 并发调用 `evaluate_realhw_38pillar_recovery_master`（`Pillars 1..38`）+ **Pillar 39**（`run_pillar39_standalone_suite`），汇总产出 **`39/39`**（`VERIFIED_39OF39_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_39pillar_framing_usbpower_lun_antiflicker_vault_verifier.py`](tests/test_realhw_39pillar_framing_usbpower_lun_antiflicker_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 4s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-framing-usbpower-lun-antiflicker-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-39pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-39pillar-recovery --force-clean-room --json
+```
+
+## Phase 245 — 真机主线 Part 28（里程碑 Pillar 40 / `40/40` 统一恢复总检）：`Lock Operation Parts` 跨复位留存与 `MENU + Fn` 5s 整机物理防误触锁（严防 `MENU + Delete` 2s 格式化混淆）、`My Dial` 临时解锁、`Audio Out Timing` vs `Audio signals` 复位分流及 `Exposure step` vs `Shutter Angle` 恒定角度表免疫金库（`verify-40pillar-recovery` / `verify-lock-op-parts-audio-timing-exp-step-vault`）
+
+- **[`realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py`](fx3_recovery/realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`）落地 **`40/40` 里程碑 Pillar 40** 并将全套恢复总检正式推进至 **`40/40`（`VERIFIED_40OF40_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37/38/39pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so` 与 `FX6 6.01` `appFw.so`、`libInfraDial.so`（校验 `_ZN9InfraDial4InitEv`、`_ZN9InfraDial10set4KeyInhEb`、`_ZN10InfraInput12SetKeyInhExtEibi`）、`libInfraInput.so`（校验 `_ZN14InfraInputBase14KeyConfigAllocEi`、`_ZN14InfraInputBase13KeyConfigFreeEv`、`_ZN14InfraInputBase7SuspendEv`）共 10 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 40A — `[Lock Operation Parts]` 跨 `[Camera Settings Reset]` 留存、`Fn` 长按提示、`MENU + Fn` 5s 整机物理键锁（严防 `MENU + Delete` 2s 全盘格式化混淆）与 `My Dial` 临时解锁台架金库（`6/6`）**：
+    - `P40A1`..`P40A6`：精确建模 `MENU` -> `Setup` -> `[Dial Customize]` -> `[Lock Operation Parts]` 四态（默认 `Off`、`Multi-Selector Only` / `Multi-Slct Only`、`Dial + Wheel`、`All`）作为 `[Setup]` 项**在 `[Camera Settings Reset]` 后完整留存**、仅在完整 `[Initialize]` 下归位为 `Off`，并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 确定性恢复；强制校验三大物理按键与覆盖规则：① 长按 `Fn` 触发目标范围锁定并弹出 `"Locked."`（`Off` 时长按 `Fn` 不锁定任何控件）；② 同时按住 **`MENU + Fn` 满 `5` 秒**锁定/解锁**除快门按钮外的全部机身按键、拨盘与控制拨轮**，为无人值守 Tier-0 `pnflasha`/`cnflasha` 冷转储提供物理防误触锁，并 **100% 阻断将其与破坏性 `MENU + Delete` `2` 秒卡槽全盘格式化组合键混淆**（`destructive_menu_delete_confusions == 0`）；③ 即便拨盘/控制拨轮已被 `[Lock Operation Parts]` 锁定，按住 **`My Dial`** 期间仍临时解锁已分配拨盘并在松开后立即恢复锁定（严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **支柱 40B — `[Audio Out Timing]`（`Live`/`Lip Sync`）vs `[Audio signals]` 复位非对称留存、`S&Q` / `Silent Mode` 硬件锁止与 `[Exposure step]`（`0.3EV`/`0.5EV`）vs `[Shutter Angle]` 恒定电影快门角度表免疫恢复（`6/6`）**：
+    - `P40B1`..`P40B6`：精确建模 `MENU` -> `Shooting` -> `[Audio Recording]` -> `[Audio Out Timing]`（默认 `Live` 零延迟监听 vs `Lip Sync` 音画同步延迟，受 `[Camera Settings Reset]` 复位为 `Live`，并在 `S&Q Motion` 慢快动作或 `[Audio Recording] = Off` 时硬件锁止不可用）与 `MENU` -> `Setup` -> `[Sound Option]` -> `[Audio signals]`（默认 `On` / `Off`，**跨 `[Camera Settings Reset]` 完整留存**、仅由 `[Initialize]` 复位，但在 **`[Silent Mode] = On` 时被硬件强制锁死为 `Off`**）之间的复位与锁止边界；同时建模 `MENU` -> `Exposure/Color` -> `[Exposure Comp.]` -> `[Exposure step]`（默认 `0.3EV` / `0.5EV`，受 `[Camera Settings Reset]` 复位）仅调节 `[Shutter Speed]`、光圈（`Aperture`）与曝光补偿（`Exposure Comp.`）步进，而 **`Ver. 6.00+`..`7.02` `[Shutter Mode] = [Shutter Angle]` 下的 `[Shutter Angle]` 对 `[Exposure step]` 100% 免疫、严格保持恒定电影快门角度表**（`5.6°`..`360°`，`shutter_angle_exposure_step_drift_events == 0`），并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 无损恢复。
+  - **统一 `40/40` 里程碑恢复总检聚合器与 CLI（`evaluate_realhw_40pillar_recovery_master` / `verify-40pillar-recovery` / `verify-lock-op-parts-audio-timing-exp-step-vault`）**：
+    - 并发调用 `evaluate_realhw_39pillar_recovery_master`（`Pillars 1..39`）+ **Pillar 40**（`run_pillar40_standalone_suite`），汇总产出 **`40/40`**（`VERIFIED_40OF40_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py`](tests/test_realhw_40pillar_lock_op_parts_audio_timing_exp_step_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 4s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-lock-op-parts-audio-timing-exp-step-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-40pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-40pillar-recovery --force-clean-room --json
+```
+
+## Phase 247 — 真机主线 Part 29（Pillar 41 / `41/41` 统一恢复总检）：`Display Quality` `Standard`/`High` 跨双复位留存与 `NP-FZ100` 台架节能钳制、`Bluetooth Rmt Ctrl` 红外遥控互斥锁与 `Reset Network Set.` 三向复位分流及 `My Menu Setting` 6 操作持久化 + `CAMSET01.DAT` 无损往返金库（`verify-41pillar-recovery` / `verify-display-quality-bt-rmt-mymenu-vault`）
+
+- **[`realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py`](fx3_recovery/realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`）落地 **Pillar 41** 并将全套恢复总检正式推进至 **`41/41`（`VERIFIED_41OF41_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22/24/26/27/28/29/30/31/32/33/34/35/36/37/38/39/40pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`libInfraBluetooth.so`（校验 `_ZN14InfraBluetoothC1Ev`、`_ZN14InfraBluetooth12start_threadEv`、`_ZN14InfraBluetooth11register_cbEv`）、`libInfraAirplaneMode.so`（校验 `_Z23AirplaneModeTraceRecordhhtj`、`_Z28AirplaneModeTraceRecordErrorhhtj`）与 `FX6 6.01` `appFw.so`、`libInfraSircs.so`（校验 `_ZN10InfraSircs4InitEv`、`_ZN10InfraSircs11GetInstanceEv`、`_ZN10InfraSircs15SetSircsOffTimeEi`）共 11 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 41A — `[Display Quality]`（`Standard`/`High`）跨双复位留存与 `NP-FZ100` 台架省电钳制 + `[Bluetooth Rmt Ctrl]` 红外遥控互斥锁、零射频抑制与三向复位分流（`6/6`）**：
+    - `P41A1`..`P41A6`：精确建模 `MENU` -> `Setup` -> `[Monitor]` -> `[Display Quality]`（默认 `Standard` / `High`，开启 `[High]` 会显著增加 `NP-FZ100` 电池功耗）**同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**、仅在完整 `[Initialize]` 下归位为 `Standard`，并支持经 Slot-1 `CAMSET01.DAT` `[Load]` 确定性恢复；在机内 `NP-FZ100` 电池驱动的 Tier-0 `pnflasha`/`cnflasha` 冷转储台架期间，强制将 `[Display Quality]` 钳制为 `[Standard]` 且配合 `[Monitor Brightness] = [Manual](0)`（`tier0_battery_high_display_violations == 0`）；同时建模 `MENU` -> `Network` -> `[Bluetooth]` -> `[Bluetooth Rmt Ctrl]`（默认 `Off` / `On`）的三项硬件规则：① 依赖 `[Bluetooth Function] = On` 且 `[Airplane Mode] = Off`（在零射频台架 `[Airplane Mode] = On` 下硬抑制发射、`passive_tx_bytes_emitted == 0`）；② 当 `[Bluetooth Rmt Ctrl] = [On]` 时，硬件**强制互斥锁定红外遥控器（`SIRCS` 不可用，`bt_rmt_ir_lockout_violations == 0`）**；③ 严格执行三向复位分流——**跨越 `[Camera Settings Reset]` 留存，但在 `[Reset Network Set.]` 与 `[Initialize]` 下均复位至 `[Off]`**（严守 `16/16` Tier-0 `H0 == H3` 不变性）。
+  - **支柱 41B — `[My Menu Setting]` / `[Display From My Menu]` 6 操作状态机持久化、双复位留存与 Slot-1 `CAMSET01.DAT` `O_RDONLY` 无损往返金库（`6/6`）**：
+    - `P41B1`..`P41B6`：精确建模 `MENU` -> `My Menu` -> `[My Menu Setting]` 全部 6 项子操作（`Add Item`、`Sort Item`、`Delete Item`、`Delete Page`、`Delete All` 及 `[Display From My Menu]` 默认 `Off` 打开最近页签 vs `On` 优先打开 `My Menu`，上限 `5` 页 × 每页 `6` 项 = `30` 项）；验证已注册的 `My Menu` 条目与 `[Display From My Menu]` **同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**，仅通过 `[Delete All]` / `[Delete Page]` 或完整 `[Initialize]` 清空归零；验证经 `O_RDONLY` + SDXC 物理 `WP` 锁保护的 Slot 1 `CAMSET01.DAT` `[Load]` 可无损往返恢复全部 `My Menu` 页面与 `[Display From My Menu]` 状态，且 100% 阻断跨机型 `ILME-FX6` 导入及对 Slot 1 Tier-0 金库扇区的任何 `[Save]` 覆写或可变挂载（`slot1_mymenu_vault_mutation_bytes == 0`，`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `41/41` 恢复总检聚合器与 CLI（`evaluate_realhw_41pillar_recovery_master` / `verify-41pillar-recovery` / `verify-display-quality-bt-rmt-mymenu-vault`）**：
+    - 并发调用 `evaluate_realhw_40pillar_recovery_master`（`Pillars 1..40`）+ **Pillar 41**（`run_pillar41_standalone_suite`），汇总产出 **`41/41`**（`VERIFIED_41OF41_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py`](tests/test_realhw_41pillar_display_quality_bt_rmt_mymenu_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 4s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-display-quality-bt-rmt-mymenu-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-41pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-41pillar-recovery --force-clean-room --json
+```
+
+## Phase 251 — 真机主线 Part 30（Pillar 42 / `42/42` 统一恢复总检）：`Different Set for Still/Mv` 8 项非对称状态跃迁与 `Shutter Angle` 独立解耦、`Custom Key/Dial Set.` 三域键位 / `ISO/EI` 持久化及 `Remain Shoot Display` 连拍缓存边界 + 无 EVF 监视拓扑金库（`verify-42pillar-recovery` / `verify-diff-set-still-mv-custom-key-remain-shoot-vault`）
+
+- **[`realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py`](fx3_recovery/realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-40）落地 **Pillar 42** 并将全套恢复总检正式推进至 **`42/42`（`VERIFIED_42OF42_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..41pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`（校验 `CameraOnDemandSaver`、`_ZN18CAM_ONDEMAND_SAVER17OsalHandleWrapperC1Ejji`）与 `FX6 6.01` `appFw.so`、`libInfraDial.so`（校验 `InfraDial`、`InfraDialEventDataRecord`、`INFRA_DIAL_UIPC_SETDIALEVENTINTERVAL`）、`libInfraInput.so`（校验 `InfraInput`、`ApiGetKeySta`、`ApiSetKeyInh`）共 11 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 42A — `[Different Set for Still/Mv]` 8 项非对称跃迁、跨双复位留存与 `Ver. 7.02` `[Shutter Mode] = [Angle]` 独立解耦（`6/6`）**：
+    - `P42A1`..`P42A6`：精确建模 `MENU` -> `Setup` -> `[Operation Customize]` -> `[Different Set for Still/Mv]` 全部 8 项可勾选参数（`Aperture`、`Shutter Speed`、`ISO`、`Exposure Comp.`、`Metering Mode`、`White Balance`、`Picture Profile`、`Focus Mode`），校验勾选集**同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**、仅在 `[Initialize]` 下归位为未勾选出厂默认（并支持经 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 恢复）；严格校验两项索尼非对称硬件状态跃迁规则（`diff_set_transition_corruption_events == 0`）：① **Common -> Separate**：当前值同时复制到照片与视频寄存器，**唯独 `Custom White Balance` 仅作用于照片拍摄、不复制到视频**；② **Separate -> Common**：各参数回归初始出厂默认，**唯独 `Aperture`、`Shutter Speed` 与 `Custom White Balance` 保留照片端设定值**；同时强制执行 `Ver. 6.00+` / `Ver. 7.02` **`[Shutter Mode] = [Angle]`** 硬件规则——当视频快门设为 `[Angle]`（快门角度）时，即便 `Shutter Speed` 在 `[Different Set for Still/Mv]` 中未勾选（设为通用 Common），照片快门速度与视频快门角度仍作为独立寄存器运行、绝不串写（`shutter_angle_common_bleed_events == 0`）。
+  - **支柱 42B — `[Custom Key/Dial Set.]` 三域键位 / `ISO/EI` 自适应持久化与 `[Remain Shoot Display]` 连拍缓存边界 + 无 EVF 拓扑金库（`6/6`）**：
+    - `P42B1`..`P42B6`：精确建模 `MENU` -> `Setup` -> `[Operation Customize]` -> `[Custom Key/Dial Set.]`（照片/视频/回放三域独立键位、`Custom Button 1..6` + 多功能选择器 + 镜头对焦保持按钮，以及电影机线出厂三拨轮默认：`Front dial = Aperture`、`Rear dial = ISO/EI` 在 `Flexible ISO` 与 `Cine EI` / `Cine EI Quick` 间自动切换 `ISO` 与 `Exposure Index (EI)`、`Control Wheel = Shutter Speed`、`[Follow Custom]` 视频继承照片键位、`[My Dial 1..3]` 与 `[Recall Custom hold 1..3]`）跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存，以及经 `O_RDONLY` + SDXC `WP` 物理锁保护的 Slot-1 `CAMSET01.DAT` `[Load]` 无损往返恢复（`slot1_custom_key_vault_mutation_bytes == 0`）；同时建模 `MENU` -> `Setup` -> `[Display Option]` -> `[Remain Shoot Display]`（默认 `Not Displayed` / `Always Display` / `Shoot-Only Display`）仅面向**照片连拍缓存余量**（绝不混淆视频存储卡剩余录制时长）、跨越双复位留存，并强制锚定 `ILME-FX3`（`ilc/2210`）无内置 EVF 与无 `[Finder/Monitor]` 眼控切换的纯翻转屏监视拓扑（`fx3_has_builtin_evf == False`、`evf_finder_monitor_spoof_events == 0`、`16/16` Tier-0 `H0 == H3`）。
+  - **统一 `42/42` 恢复总检聚合器与 CLI（`evaluate_realhw_42pillar_recovery_master` / `verify-42pillar-recovery` / `verify-diff-set-still-mv-custom-key-remain-shoot-vault`）**：
+    - 并发调用 `evaluate_realhw_41pillar_recovery_master`（`Pillars 1..41`）+ **Pillar 42**（`run_pillar42_standalone_suite`），汇总产出 **`42/42`**（`VERIFIED_42OF42_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py`](tests/test_realhw_42pillar_diff_set_still_mv_custom_key_remain_shoot_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 3.5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-diff-set-still-mv-custom-key-remain-shoot-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-42pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-42pillar-recovery --force-clean-room --json
+```
+
+## Phase 255 — 真机主线 Part 31（Pillar 43 / `43/43` 统一恢复总检）：`Auto Slow Shutter` 6 条件禁能与 `Shutter Angle` 严格互斥、`HDMI Output Settings` `REC Control` <- `Time Code Output` 门控与 `4ch Audio Output` 路由 + `Breathing Comp.` 边界金库（`verify-43pillar-recovery` / `verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault`）
+
+- **[`realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py`](fx3_recovery/realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-41）落地 **Pillar 43** 并将全套恢复总检正式推进至 **`43/43`（`VERIFIED_43OF43_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..42pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`、`libInfraLensCommunicator.so`（校验 `LensCommunicator`、`_Z23LensCommunicator_CreatePN3MWF5ErrCdE`）、`libInfraMediaConfig.so`（校验 `InfraMediaConfig`、`_ZN16InfraMediaConfig10SaveBackupEt`）与 `FX6 6.01` `appFw.so`、`libInfraHotshoe.so`（校验 `InfraHotshoe`、`_ZN12InfraHotshoe15ResourceToInfraEi`）共 12 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 43A — `[Auto Slow Shutter]` 6 条件硬件禁能、`Ver. 7.02` `[Shutter Mode] = [Angle]` 严格互斥与 `[Breathing Comp.]` 电影/镜头/RAW/240p 边界（`6/6`）**：
+    - `P43A1`..`P43A6`：精确建模 `MENU` -> `Exposure/Color` -> `[Exposure]` -> `[Auto Slow Shutter]`（默认 `On` / `Off`，受 `[Camera Settings Reset]` 与 `[Initialize]` 归位为 `On`、跨越 `[Reset Network Set.]` 留存），强制校验全部 **6 项索尼官方不生效/禁能硬件条件**（`auto_slow_shutter_lockout_bypass_events == 0`）：① `S&Q` 慢快动作、② 快门优先（`S`）、③ 手动曝光（`M`）、④ `[ISO]` 非 `[ISO AUTO]`（固定手动 ISO）、⑤ `[Flexible Exp. Mode]` 手动快门速度、⑥ `[Log Shooting]` = `Cine EI Quick` 或 `Cine EI`；同时从硬件状态空间证明 `Ver. 6.00+` / `Ver. 7.02` **`[Shutter Mode] = [Angle]`**（仅在 `S`/`M`/`Flexible Exp. Mode` 手动快门下接管曝光时间）与 `[Auto Slow Shutter]` **100% 严格互斥、零交叠**（`auto_slow_shutter_angle_overlap_events == 0`）；建模 `MENU` -> `Shooting` -> `[Image Quality/Rec]` -> `[Lens Compensation]` -> `[Breathing Comp.]`（默认 `Off` / `On`，受 `[Camera Settings Reset]` 归位），强制校验仅限视频（不作用于照片）、需兼容呼吸补偿的索尼 E 卡口镜头并施加轻微视角裁切，且在 `4264x2408` `RAW Output` 与 `S&Q` `239.76p`/`200p` 下严格锁定（`breathing_comp_raw_or_240p_bypass_events == 0`）。
+  - **支柱 43B — `[HDMI Output Settings]`（`[REC Control]` <- `[Time Code Output]` 前置门控、`[4ch Audio Output]` 声道映射与 `[Rec. Media dur HDMI Output]` 护栏金库）（`6/6`）**：
+    - `P43B1`..`P43B6`：精确建模 `MENU` -> `Setup` -> `[External Output]` -> `[HDMI Output Settings]` **同时跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存**、仅由 `[Initialize]` 清零归位；强制执行 `[REC Control]`（默认 `Off` / `On`）必须以 **`[Time Code Output] = [On]`** 为硬件前置条件（`hdmi_rec_ctrl_without_tc_violations == 0`）；建模 `[4ch Audio Output]`（默认 `CH1/CH2` -> `Ch1=L / Ch2=R` vs 启用 4 声道 MI 热靴音频时 `CH3/CH4` -> `Ch3=L / Ch4=R`）；强制校验 `[Rec. Media dur HDMI Output] = [Off]` 在 HDMI 输出期间同步抑制机内 Slot-1/Slot-2 主片与 `[Proxy Recording]` 代理写入以保护 Slot-1 Tier-0 恢复金库介质（`slot1_hdmi_rec_vault_mutation_bytes == 0`）、`O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 无损往返恢复，以及 `16/16` Tier-0 `Backup.bin` `H0 == H3` 不变性。
+  - **统一 `43/43` 恢复总检聚合器与 CLI（`evaluate_realhw_43pillar_recovery_master` / `verify-43pillar-recovery` / `verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault`）**：
+    - 并发调用 `evaluate_realhw_42pillar_recovery_master`（`Pillars 1..42`）+ **Pillar 43**（`run_pillar43_standalone_suite`），汇总产出 **`43/43`**（`VERIFIED_43OF43_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py`](tests/test_realhw_43pillar_auto_slow_shutter_hdmi_reccontrol_breathing_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 3.5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-auto-slow-shutter-hdmi-reccontrol-breathing-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-43pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-43pillar-recovery --force-clean-room --json
+```
+
+## Phase 260（第 260 阶段里程碑）— 真机主线 Part 32（Pillar 44 / `44/44` 统一恢复总检）：`APS-C S35 Shooting` `12.1MP` `4K` 视频硬锁定、`Face/Eye AF` 左右眼选择与纯净 HDMI 隔离 + `Version` 只读巡检 vs `BODYDATA.DAT` 刷写硬阻断金库（`verify-44pillar-recovery` / `verify-apsc-s35-face-eye-af-version-vault`）
+
+- **[`realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py`](fx3_recovery/realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-42）落地 **Phase 260（`260th` Phase Milestone）Pillar 44** 并将全套恢复总检正式推进至 **`44/44`（`VERIFIED_44OF44_PILLAR_RECOVERY_MASTER`）**（`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..43pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`、`libInfraLensCommunicator.so`、`libInfraGetVersion.so`（校验 `InfraGetVersion`、`InfraGetVersionLens`、`GetVersion_init`）、`libInfraAirplaneMode.so`（校验 `infra_airplane_mode_init`、`_ZN3MWF6InhMgr15UpdateInhFactorEv`）、`libupdatermedia.so`（校验 `udtr_get_media_path`、`UDTR_MEDIA`）与 `FX6 6.01` `appFw.so` 共 13 项供体（`< 0.15s`）并支持 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动洁净室合成回退：
+  - **支柱 44A — `[APS-C S35 Shooting]` `12.1MP` 传感器 `4K` 视频与 `4264x2408` `HDMI RAW` 硬锁定 + `[Face/Eye AF]` 左右眼选择、纯净 HDMI 隔离与 `[Face Memory]` 留存（`6/6`）**：
+    - `P44A1`..`P44A6`：精确建模 `MENU` -> `Shooting` -> `[Image Quality/Rec]` -> `[APS-C S35 Shooting]`（默认 `Auto` / `On` ~`1.5x` Super 35mm / `Off` 35mm 全画幅，受 `[Camera Settings Reset]` 与 `[Initialize]` 归位为 `Auto`、跨越 `[Reset Network Set.]` 留存），强制执行 `ILME-FX3`（`12.1MP` 全画幅传感器：`4240x2832` 静态 / `3840x2160` 1:1 `4K` 读出）硬件边界——在录制 **`4K` 视频（`XAVC HS 4K`、`XAVC S 4K`、`XAVC S-I 4K`）或 `4264x2408` `HDMI RAW Output`** 时禁用并强制锁定为 **`[Off]`**，Super 35mm 视频采集**仅限 `HD`（`XAVC S HD` / `XAVC S-I HD`）**（`apsc_s35_4k_or_raw_bypass_events == 0`，严格区分 `ILME-FX3` 与原生 S35 `ILME-FX30` 及超采样 `ILCE-7RM5`/`ILCE-7M4`）；建模 `MENU` -> `Focus` -> `[Face/Eye AF]`（拒绝伪造独立 AI 芯片机型的 `[Subject Recog in AF]`，`ai_unit_subject_recog_spoof_events == 0`：`[Face/Eye Prior. in AF]`、`[Face/Eye Subject]` `Human`/`Animal`/`Ver. 3.00+ Bird`、`[Right/Left Eye Select]` + `[Switch Right/Left Eye]` 自定义键切换、`[Face/Eye Frame Disp.]`），强制证明 `[HDMI Info. Display] = [Off]` 纯净 HDMI 与 `HDMI RAW Output` 零像素烧录对焦框（`hdmi_clean_feed_eye_frame_baked_pixels == 0`），以及已注册 `[Face Memory]` 人脸库跨越 `[Camera Settings Reset]` 完整留存（仅由显式删除或 `[Initialize]` 清空）。
+  - **支柱 44B — `[Version]` 只读机身/镜头/转接环版本巡检、零射频红点更新提示抑制与 Slot-1 `BODYDATA.DAT` 刷写硬阻断金库（`6/6`）**：
+    - `P44B1`..`P44B6`：精确建模 `MENU` -> `Setup` -> `[Setup Option]` -> `[Version]` 以严格 `O_RDONLY` 模式巡检 `ILME-FX3` Body（`Ver. 7.02`）、E 卡口镜头与卡口转接环固件版本，全流程零分区写入（`version_dialog_flash_writes == 0`）且固件版本跨越 `[Camera Settings Reset]`、`[Reset Network Set.]` 与 `[Initialize]` 恒定不变；强制验证零射频 `Airplane Mode = On` 台架下抑制 `Ver. 6.00+` / `7.02` 红色固件更新提示角标且零被动射频发包（`passive_tx_bytes_emitted == 0`）；对一切自动化 Slot-1 `BODYDATA.DAT` 固件刷写请求实施无条件硬阻断（`persistent_emmc_writes_authorized == False`、`bodydata_flash_attempts_blocked >= 1`、`slot1_bodydata_vault_mutation_bytes == 0`，并校验人工物理台架前置门槛 `NP-FZ100 >= 3 格 / >= 51%` 与原厂签名 `ILME-FX3` 镜像边界），同时验证 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 无损往返与 `16/16` Tier-0 `Backup.bin` `H0 == H3` 不变性。
+  - **统一 `44/44` 恢复总检聚合器与 CLI（`evaluate_realhw_44pillar_recovery_master` / `verify-44pillar-recovery` / `verify-apsc-s35-face-eye-af-version-vault`）**：
+    - 并发调用 `evaluate_realhw_43pillar_recovery_master`（`Pillars 1..43`）+ **Pillar 44**（`run_pillar44_standalone_suite`），汇总产出 **`44/44`**（`VERIFIED_44OF44_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py`](tests/test_realhw_44pillar_apsc_s35_face_eye_af_version_vault_verifier.py) 提供 **68 项**双模快速单元测试（`< 3.5s`）。
+
+```sh
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-apsc-s35-face-eye-af-version-vault --json
+
+PYTHONPATH=outputs/fx3-recovery-adapter /usr/bin/python3 -B -m fx3_recovery verify-44pillar-recovery --json
+
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-44pillar-recovery --force-clean-room --json
+```
+
+## Phase 265（`45/45` 大里程碑）— 真机主线 Part 33（Pillar 45 / `45/45` 统一恢复总检）：`Release w/o Card` & `Release w/o Lens` 台架/实拍双姿态护栏、`Ver. 7.02` 5 项 `Audio Recording` vs `DISP` 音频电平表 + `Copyright Info` 46 字符静态 EXIF 隔离与洁净室 PII 清零金库（`verify-45pillar-recovery` / `verify-release-wo-card-lens-audio-meter-copyright-vault`）
+
+- **[`realhw_45pillar_release_wo_card_lens_audio_meter_copyright_vault_verifier.py`](fx3_recovery/realhw_45pillar_release_wo_card_lens_audio_meter_copyright_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-43）落地 **Phase 265（Grand Milestone `45/45`）Pillar 45** 并将全套恢复总检正式推进至 **`45/45`（`VERIFIED_45OF45_PILLAR_RECOVERY_MASTER`）**（`< 1.8s` 进程内预算、`< 4.0s` 标称、`< 6.0s` 并发硬上限，保持 `verify-22..44pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` `BODYDATA.DAT`、`appFw.so`、`Backup.bin`、`libbackup.so`、`libBackupManager.so`、`libSaveLoadSettings.so`、`libgpe.so`、`CameraOnDemandSaver.so`、`libInfraLensCommunicator.so`、`libInfraMediaConfig.so`、`libInfraMediaDetect.so`（校验 `InfraMediaDetect`、`_ZN16InfraMediaDetect10GetVersionEv`）、`libInfraMetaSupplier.so`（校验 `InfraMetaSupplier_Init`、`_ZN20InfraMetaSupplier_If4InitEv`）、`libInfraIPTC.so`（校验 `_ZTV9InfraIPTC`、`_ZN9InfraIPTC10ThreadStopEv`）与 `FX6 6.01` `appFw.so`、`libInfraHotshoe.so` 共 15 项供体（`< 0.15s`），并同时支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 45A — `[Release w/o Card]` 仅静态快门作用域 vs 视频内录介质门控、`[Release w/o Lens]` 无内置电子 ND / 零镜头 UART 裸机台架与 `Ver. 7.02` 5 项 `[Audio Recording]` vs `DISP` 音频电平表（`6/6`）**：
+    - `P45A1`..`P45A6`：精确建模 `MENU` -> `Shooting` -> `[Shutter/Silent]` -> `[Release w/o Card]`（出厂默认 `Enable` / `Disable`）与 `[Release w/o Lens]`（出厂默认 `Enable` / `Disable`）跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存、仅由 `[Initialize]` 复位为 `Enable`（并支持 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 无损恢复）；在 `768` 组合笛卡尔状态空间下实证 **`[Release w/o Card]` 仅控制无卡静态快门释放**——视频（`Movie`）与慢快动作（`S&Q`）机内录制始终强制要求已插入存储卡且受 `[Rec. Media dur HDMI Output]` 门控，同时强制区分无卡只读诊断台架（`CARDLESS_DIAGNOSTIC_BENCH`）与正式实拍防漏录姿态（`PRODUCTION_SHOOT` 强制 `[Release w/o Card] = [Disable]`，`cardless_unrecorded_production_violations == 0`）；实证 `[Release w/o Lens]` 同时覆盖 `Still` + `Movie` + `S&Q`，且在裸机机身盖 / 纯机械 PL 转接环 / 望远镜台架上严格锁定无内置电子 ND 与零 E 卡口镜头串口发包（`fx3_has_builtin_end_filter == False`、`e_nd_actuator_tx_count == 0`、`emount_lens_uart_tx_bytes == 0`）；同时强制锚定 `Ver. 2.00+` / `Ver. 7.02`（`ilc/2210`）精确 5 项 `[Audio Recording]` 菜单（`Audio Recording`、`Audio Rec Level` `0..31`、`Audio Out Timing` `Live`/`Lip Sync`、`Wind Noise Reduct.`、`Shoe Audio Set.`），拒绝伪造 `Ver. 1.x`（`ilc/2035`）已移除的独立 `[Audio Level Display]` 菜单项（`legacy_v1_audio_level_menu_spoof_events == 0`），证明屏幕音频电平表（`2ch` 或 MI 数字热靴 `4ch`，`S&Q` 下自动消隐）统一由 `MENU` -> `Setup` -> `[Operation Customize]` -> `[DISP (Screen Disp) Set]` 控制。
+  - **支柱 45B — `[Copyright Info]` `<= 46` 字符可打印 ASCII 边界、仅静态 JPEG/HEIF EXIF 作用域、`[Camera Settings Reset]` 留存 vs `[Initialize]` 清空与洁净室 PII 零泄漏金库（`6/6`）**：
+    - `P45B1`..`P45B6`：精确建模 `MENU` -> `Shooting` -> `[File]` -> `[Copyright Info]` 全部 4 项子菜单（`Write Copyright Info` 默认 `Off`/`On`、`Set Photographer`、`Set Copyright`、`Disp. Copyright Info` `O_RDONLY` 零闪存写入预览），强制执行 `<= 46` 字符可打印 ASCII（`0x20..0x7E`）边界并拦截 `>= 47` 字符溢出、控制字符与非 ASCII 注入；强制验证 `[Copyright Info]` **仅写入静态照片（`JPEG` / `HEIF` / `RAW+JPEG` / `RAW+HEIF`）EXIF 元数据**，绝不篡改任何 `XAVC HS/S/S-I` 或 `4264x2408` `HDMI RAW` 视频流（`movie_xavc_or_raw_copyright_mutated == False`、`copyright_char_overflow_or_movie_mutation_events == 0`）；验证 `[Camera Settings Reset]` 将 `[Write Copyright Info]` 复位为 `[Off]` 但完整保留已登记摄影师/版权字符串，而 `[Initialize]` 同时彻底清空两项字符串；强制执行 `CAMSET01..10.DAT` 版权排除防火墙、Slot-1 Tier-0 金库写保护锁（`slot1_copyright_vault_mutation_bytes == 0`、`16/16` Tier-0 `Backup.bin` `H0 == H3`）以及洁净室测试操作员 PII 零残留（`photographer_copyright_pii_leaked_bytes == 0`）。
+  - **统一 `45/45` 恢复总检聚合器与 CLI（`evaluate_realhw_45pillar_recovery_master` / `verify-45pillar-recovery` / `verify-release-wo-card-lens-audio-meter-copyright-vault`）**：
+    - 并发调用 `evaluate_realhw_44pillar_recovery_master`（`Pillars 1..44`）+ **Pillar 45**（`run_pillar45_standalone_suite`），汇总产出 **`45/45`**（`VERIFIED_45OF45_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_45pillar_release_wo_card_lens_audio_meter_copyright_vault_verifier.py`](tests/test_realhw_45pillar_release_wo_card_lens_audio_meter_copyright_vault_verifier.py) 提供 **70 项**双模快速单元测试（实测 `1.94s`–`2.31s` < `4.0s`）。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-release-wo-card-lens-audio-meter-copyright-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-45pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-45pillar-recovery --clean-room --json
+```
+

@@ -38,6 +38,9 @@ def classify_brick_state(
     updater_mode_armed: bool = False,
     oneshot_overlay_used: bool = False,
     has_full_body_backup: bool = False,
+    diagnostic_code: Optional[int] = None,
+    error_code: Optional[int] = None,
+    ld_so_preload_deadlock: bool = False,
 ) -> BrickDiagnosis:
     """Classify an FX3 failure / brick state and return the exact recovery protocol.
 
@@ -50,6 +53,10 @@ def classify_brick_state(
         - "red_5L_6S" or "red_5_blinks" (5 Long + 6/7 Short: BODYDATA.DAT read/version/model mismatch)
         - "red_7L_7S" or "red_7_blinks" (7 Long + 7 Short: Interrupted update recovery loop in p1/loader)
         - "red_6L" (6 Long Blinks: Sub-component / WF-12 Wi-Fi or CP NOR post-write verification fault)
+        - "red_6L_9S" / "red_6L+9S" / "6L+9S" (WF-12 Wi-Fi/BT or CP NOR fault per Sony 00342260)
+        - "red_13S" / "red_13_blinks" / "13S" / "0x100D" (Multi-port BootROM 48000-baud UART framing error)
+        - "0x10000009" / "nflasha10_full" (12 MiB shared nflasha10 VFAT full-disk write lockout)
+        - "ld_so_preload_deadlock" (/etc/ld.so.preload dynamic busybox init deadlock)
         - "no_led_dead" (Octal-SPI NOR / PMIC / PoP hardware fault)
     usb_vid_pid:
         One of:
@@ -62,15 +69,157 @@ def classify_brick_state(
         One of: "normal_ui", "update_progress_or_error", "black", "boot_logo_freeze"
     corrupted_regions:
         Optional list of affected storage regions, e.g. ["p5_wbi"], ["p15_usr"], ["p10_preload"],
-        ["p7_rootfs"], ["p3_system"], ["p2_backup"], ["p1_updater"], ["sector0"], ["spi_nor"]
+        ["p10_vfat_full"], ["ld_so_preload"], ["p7_rootfs"], ["p3_system"], ["p2_backup"],
+        ["p1_updater"], ["sector0"], ["spi_nor"]
     updater_mode_armed:
         True if p2:/setting/updater/mode (+ mode5/mode6) was armed before the fault.
     oneshot_overlay_used:
         True if modifications were applied via Layer-1/2 bind-mount + clear-before-exec token.
     has_full_body_backup:
         True if a verified same-body backup (Sector 0, p1, p2, p6, p18, NOR ddrtraining.dat) exists.
+    diagnostic_code:
+        Optional BootROM / diagnostic numeric code (e.g. 0x100D, 0x10000009).
+    error_code:
+        Optional OS/VFAT/updater numeric error code (e.g. 0x10000009, 0x100D).
+    ld_so_preload_deadlock:
+        True when /etc/ld.so.preload caused dynamic /bin/busybox & /sbin/init boot deadlock.
     """
     regions = set(corrupted_regions or [])
+
+    # -3. Check for 13S (0x100D Multi-port BootROM 48000-baud UART framing error)
+    if (
+        diagnostic_code == 0x100D
+        or error_code == 0x100D
+        or led_symptom in ("red_13S", "red_13_blinks", "13S", "0x100D")
+    ):
+        return BrickDiagnosis(
+            level="LEVEL_3_MULTIPORT_BOOTROM_UART_FRAMING_ERROR_0x100D",
+            severity="HIGH",
+            title="Level 3 Multi-Port BootROM UART Framing Error (13 Short Blinks / 0x100D)",
+            root_cause_summary=(
+                "CXD90057 48 KiB BootROM signaled diagnostic code 0x100D (13 short blinks): 48,000-baud GPIO "
+                "UART framing, CRC, or voltage-level error on the 15-pin Sony Multi-Terminal. Most commonly caused "
+                "by a standard Raspberry Pi Pico (GP29 VSYS/3 divider pulling down Multi Pin 8 Cam UART TX), "
+                "push-pull 3.3V drive, swapped RX/TX, or missing open-drain High-Z (`-DOPEN_DRAIN`)."
+            ),
+            software_usb_or_sd_recoverable=False,
+            disassembly_free_uart_bootrom_recoverable=True,
+            hardware_programmer_required=False,
+            active_boot_chain_status="CXD90057 48 KiB BootROM UART Recovery Handshake Halted (0x100D)",
+            primary_recovery_steps=[
+                "1. Power off camera immediately, disconnect battery and Multi-Terminal harness.",
+                "2. Verify hardware is an approved RP2040-Zero (NEVER standard Raspberry Pi Pico due to GP29 VSYS/3 pull-down) compiled with `-DOPEN_DRAIN` at 1.8V open-drain High-Z.",
+                "3. Verify Multi-Terminal Back Row wiring: GP27 (MULTI_RST)->Pin 9 (XReset), GP28 (MULTI_TX)->Pin 7 (Cam UART RX), GP29 (MULTI_RX)<-Pin 8 (Cam UART TX), GND->Pin 2.",
+                "4. Re-attempt 48,000-baud `uart_boot` handshake -> load signed `fastboot.bin` to SRAM (`0x92028000`) or open payload to eSRAM (`0xFE020000`) -> confirm 115,200-baud `[mira] fastboot ready` and USB-C `18D1:4EE0`.",
+                "5. Perform strictly read-only Tier-3 diagnostics first (`getvar:version`, `oem dumpbrom`, `oem partition`, `oem cetus dumpnor`).",
+            ],
+            fallback_recovery_steps=[
+                "Validate harness & frame CRC offline via `fx3_safety.multiport_bootrom_unbrick.validate_rp2040_multiport_harness()` before reconnecting hardware."
+            ],
+            critical_warnings=[
+                "NEVER read >= 0xFFFFC000 (triggers CXD90057 hardware watchdog reset trap).",
+                "NEVER drive Multi-Terminal pins with push-pull 3.3V GPIO or standard Raspberry Pi Pico.",
+            ],
+        )
+
+    # -2. Check for 6L+9S (WF-12 Wi-Fi/BT or CP NOR subcomponent fault per Sony 00342260)
+    if led_symptom in ("red_6L_9S", "red_6L+9S", "6L+9S", "wf12_fault"):
+        return BrickDiagnosis(
+            level="LEVEL_4_WF12_OR_CP_SUBCOMPONENT_6L9S_FAULT",
+            severity="CRITICAL_HARDWARE",
+            title="Level 4 Subcomponent Fault (6L+9S — WF-12 Wi-Fi/BT or CP NOR per Sony 00342260)",
+            root_cause_summary=(
+                "6 Long + 9 Short blinks (or System Error 5-10s reboot loop per Sony Notice 00342260) indicate "
+                "WF-12 Wi-Fi/Bluetooth BGA/IC communication fault or CXD90058 Cetus CP NOR (cpapp-b.bin) "
+                "subcomponent verification failure during boot/update."
+            ),
+            software_usb_or_sd_recoverable=False,
+            disassembly_free_uart_bootrom_recoverable=True,
+            hardware_programmer_required=False,
+            active_boot_chain_status="AP/Updater Halted on WF-12 Wireless Self-Test or CP NOR Subcomponent Check",
+            primary_recovery_steps=[
+                "1. Remove NP-FZ100 battery and discharge PMIC rails for 60 seconds; if UI briefly boots (v3.00-v5.00), immediately enable Airplane Mode to bypass wireless init.",
+                "2. Test official FX3 v7.02 `BODYDATA.DAT` in SD Slot 1 (v7.02 converts WF-12 faults into dismissible 'Wi-Fi/Bluetooth unit has malfunctioned' degraded mode rather than fatal reboot loop).",
+                "3. If stuck in 6L+9S updater loop: use disassembly-free FX3 Multi-Port `RP2040-Zero` (`-DOPEN_DRAIN`, 48,000 baud) Tier-3 rescue -> `18D1:4EE0` Fastboot.",
+                "4. Run read-only `oem cetus dumpnor` and `oem partition` to distinguish CP NOR corruption from physical `WF-12` BGA solder/IC failure on `SY-1114`.",
+            ],
+            fallback_recovery_steps=[
+                "In Stage-A/B software stacks, ensure `libInfraAppRemoteBoard.so` / `InfraPericon` / `SeqQueueNetwork` use non-blocking timeout degraded mode so WF-12 absence never triggers WDT reset.",
+                "If WF-12 IC/BGA on SY-1114 is physically dead, board-level WF-12 reball/replacement or Sony SY-1114 service replacement is required.",
+            ],
+            critical_warnings=[
+                "NEVER flash a foreign CP NOR / `SY-1114` SPI NOR dump without preserving this board's own `ddrtraining.dat` (0x03e210fc) and `MIS.bin`.",
+            ],
+        )
+
+    # -1. Check for 0x10000009 (nflasha10 12 MiB VFAT full-disk write lockout)
+    if (
+        error_code == 0x10000009
+        or diagnostic_code == 0x10000009
+        or led_symptom in ("0x10000009", "nflasha10_full")
+        or any(r in regions for r in ("p10_vfat_full", "nflasha10_full", "nflasha10_0x10000009"))
+    ):
+        sw_ok = usb_vid_pid in ("054C:0336", "054C:0DA1", "18D1:4EE0") or updater_mode_armed
+        return BrickDiagnosis(
+            level="LEVEL_2_NFLASHA10_VFAT_EXHAUSTION_0x10000009",
+            severity="HIGH",
+            title="Level 2 Shared nflasha10 (12 MiB VFAT) Exhaustion Lockout (0x10000009)",
+            root_cause_summary=(
+                "Error 0x10000009 indicates the shared 12 MiB `/setting` VFAT partition (`nflasha10`, shared across "
+                "`/tmp`, `/etc`, `/var`) reached zero available clusters, locking out all camera setting, updater "
+                "mode flag, and service writes simultaneously."
+            ),
+            software_usb_or_sd_recoverable=sw_ok,
+            disassembly_free_uart_bootrom_recoverable=True,
+            hardware_programmer_required=False,
+            active_boot_chain_status="nflasha10 12 MiB VFAT Full -> Write APIs Failing with 0x10000009",
+            primary_recovery_steps=[
+                "1. Halt all payload/log writes immediately; never attempt in-place `dd of=<file>` without verified `conv=notrunc` (Sony BusyBox truncation hazard).",
+                "2. If USB Service (`054C:0336`) or shell is alive: prune transient logs/staging artifacts on `nflasha10` to restore >= 2 MiB free-space headroom.",
+                "3. Enforce atomic tmpfs staging + verified SHA-256 readback + 5-slot `pmca-re-reloaded` rollback manifest before any write.",
+                "4. If full-disk lockout prevents boot or service entry: connect FX3 Multi-Port `RP2040-Zero` (`-DOPEN_DRAIN`, 48,000 baud) Tier-3 rescue -> `18D1:4EE0` Fastboot to inspect `nflasha10` and arm `p2:/setting/updater/mode`.",
+            ],
+            fallback_recovery_steps=[
+                "Validate future `nflasha10` writes with `fx3_safety.runtime_antibrick_guards.audit_nflasha10_vfat_budget()` (>= 2 MiB headroom)."
+            ],
+            critical_warnings=[
+                "Remember `/tmp`, `/etc`, and `/var` share the same 12 MiB `nflasha10` VFAT space; large logs or tmp artifacts lock out `/setting` writes.",
+            ],
+        )
+
+    # -0.5. Check for explicit ld.so.preload dynamic busybox init deadlock
+    if (
+        ld_so_preload_deadlock
+        or "ld_so_preload" in regions
+        or led_symptom == "ld_so_preload_deadlock"
+    ) and "p3_system" not in regions:
+        return BrickDiagnosis(
+            level="LEVEL_2_LD_SO_PRELOAD_BUSYBOX_DEADLOCK",
+            severity="CRITICAL_HARDWARE",
+            title="Level 2 `/etc/ld.so.preload` Dynamic BusyBox Init Deadlock",
+            root_cause_summary=(
+                "`/bin/busybox` and `/bin/sh` on CXD90057 are dynamically linked; writing a broken or mismatched "
+                "`.so` path into persistent `/etc/ld.so.preload` causes `/sbin/init` and every shell/Jiritsu process "
+                "to crash before USB Service (`054C:0336`) or updater recovery can start."
+            ),
+            software_usb_or_sd_recoverable=(usb_vid_pid == "18D1:4EE0"),
+            disassembly_free_uart_bootrom_recoverable=True,
+            hardware_programmer_required=False,
+            active_boot_chain_status="Kernel Boots -> Dynamic /bin/busybox & /sbin/init Crash on /etc/ld.so.preload",
+            primary_recovery_steps=[
+                "1. Do NOT rely on `Jiritsu` (`054C:0336`); `im.elf` and `/bin/sh` cannot launch while `/etc/ld.so.preload` is poisoned.",
+                "2. Disassembly-Free Tier-3 Rescue: connect FX3 Multi-Port `RP2040-Zero` (`-DOPEN_DRAIN`, 48,000 baud) to Multi Pin 7/8/9/2 -> inject `fastboot.bin` (`0x92028000`) -> USB-C `18D1:4EE0`.",
+                "3. Over Fastboot (`18D1:4EE0`): overwrite `/etc/ld.so.preload` with whitespace (`0x20`) or arm plaintext `p2:/setting/updater/mode` + `mode6` (`nflasha2`, LBA `0xC000`) to enter `p1` SD recovery.",
+                "4. Replace persistent `/etc/ld.so.preload` with RAM-only `LD_LIBRARY_PATH` / `tmpfs` `mount --bind` guarded by `/tmp/mod_arm_once` Clear-Before-Exec.",
+            ],
+            fallback_recovery_steps=[
+                "If Multi-Port bridge is unavailable, use `SY-1114` eMMC ISP pads to arm `p2:/updater/mode`."
+            ],
+            critical_warnings=[
+                "NEVER write `/etc/ld.so.preload` on persistent VFAT/ext partitions on BIONZ XR cameras.",
+                "Always guard RAM-only `LD_LIBRARY_PATH` or `mount --bind` with `rm -f /tmp/mod_arm_once && busybox sync` BEFORE execution.",
+            ],
+        )
 
     # 0. Check if 5L+6S or 7L+7S SD Update Recovery Loop is active (when SPI NOR & Sector 0 are NOT explicitly destroyed)
     if led_symptom in ("red_5L_6S", "red_7L_7S") and "spi_nor" not in regions and "sector0" not in regions:

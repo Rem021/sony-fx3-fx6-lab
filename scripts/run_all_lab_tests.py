@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Unified Cross-Suite Lab Verification Runner & Clean-Room Binary/Bytecode Hygiene Auditor.
 
-Orchestrates and times all five repository verification suites plus BYOF manifest and
+Orchestrates and times all seven repository verification suites plus BYOF manifest and
 tracked-tree clean-room hygiene checks with `PYTHONDONTWRITEBYTECODE=1` (`-B`):
-1. `[1/5] outputs/fx3-recovery-adapter/tests` (Track 4)
-2. `[2/5] outputs/fx3-safety/tests` (Safety Gates & Tier-0 Syscall Auditor)
-3. `[3/5] outputs/fx6-on-fx3-closure/tests` (Track 3 `P1..P9+Fan` & `U1..U5` Stage-A Closure)
-4. `[4/5] outputs/fx3-vm-trial/tests` (Track 1A `fx3-vm-trial` & Track 2 `fx3-vm` offline verification)
-5. `[5/5] outputs/fx6-native-presenter-closure/tests` (Track 1B Native-Faithful Cold-Boot & Big6 Closure)
-6. Bilingual `docs/BYOF-REPRODUCTION.md` SHA-256 manifest audit (`scripts/verify_byof_manifest.py`)
-7. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
+1. `[1/7] outputs/fx3-recovery-adapter/tests` (Track 4 & Tier-3/Tier-4 Recovery Guards)
+2. `[2/7] outputs/fx3-safety/tests` (Safety Gates, H0 Rehearsal, Serial Fault WDT & CrSDK/LTC/SPACC Guards)
+3. `[3/7] outputs/fx6-on-fx3-closure/tests` (Track 3 `P1..P12+Fan`, `U1..U5` & Stage-A/Stage-B Lifecycle Closure)
+4. `[4/7] outputs/fx3-vm-trial/tests` (Track 1A `fx3-vm-trial` 128-Page Multilingual & Cinema Line Console)
+5. `[5/7] outputs/fx6-native-presenter-closure/tests` (Track 1B Native-Faithful Cold-Boot & Big6 Closure)
+6. `[6/7] outputs/fx3-vm/tests` (Track 2 Dual-ISA AP<->CP IVSHMEM, Soft-GPE/ramfb & virtual-rom-v1 BT Co-Emulation)
+7. `[7/7] outputs/fx3-firmware-lab/tests` (Clean-Room UFU, HAITA/BK4, 62-.uxc/CJK, IMX510/XAVC & .cube 3D LUT/RTMD Lab)
+8. Bilingual `docs/BYOF-REPRODUCTION.md` SHA-256 manifest audit (`scripts/verify_byof_manifest.py`)
+9. Tracked-tree clean-room binary/bytecode hygiene check (`git status --porcelain -uall`
    verifying zero untracked `.so` / `.elf` / `.ko` / `.cpio` / `.bin` / `.vfat` / `.pyc`
    artifacts, plus direct filesystem sweep of strict source-only directories).
 
@@ -51,6 +53,8 @@ STRICT_ZERO_ARTIFACT_DIRS: Tuple[str, ...] = (
     "outputs/fx3-safety",
     "outputs/fx6-on-fx3-closure",
     "outputs/fx6-native-presenter-closure",
+    "outputs/fx3-vm",
+    "outputs/fx3-firmware-lab",
 )
 
 
@@ -79,7 +83,11 @@ LAB_SUITES: Tuple[LabSuiteSpec, ...] = (
         suite_id="fx6_on_fx3_closure",
         display_name="outputs/fx6-on-fx3-closure/tests",
         test_dir_rel="outputs/fx6-on-fx3-closure/tests",
-        pythonpath_Entries=("outputs/fx3-safety", "outputs/fx6-on-fx3-closure"),
+        pythonpath_Entries=(
+            "outputs/fx3-safety",
+            "outputs/fx3-recovery-adapter",
+            "outputs/fx6-on-fx3-closure",
+        ),
     ),
     LabSuiteSpec(
         suite_id="fx3_vm_trial",
@@ -92,6 +100,18 @@ LAB_SUITES: Tuple[LabSuiteSpec, ...] = (
         display_name="outputs/fx6-native-presenter-closure/tests",
         test_dir_rel="outputs/fx6-native-presenter-closure/tests",
         pythonpath_Entries=("outputs/fx6-native-presenter-closure",),
+    ),
+    LabSuiteSpec(
+        suite_id="fx3_vm",
+        display_name="outputs/fx3-vm/tests",
+        test_dir_rel="outputs/fx3-vm/tests",
+        pythonpath_Entries=("outputs/fx3-vm",),
+    ),
+    LabSuiteSpec(
+        suite_id="fx3_firmware_lab",
+        display_name="outputs/fx3-firmware-lab/tests",
+        test_dir_rel="outputs/fx3-firmware-lab/tests",
+        pythonpath_Entries=("outputs/fx3-firmware-lab",),
     ),
 )
 

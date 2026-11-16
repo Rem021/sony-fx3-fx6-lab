@@ -3,24 +3,33 @@
 
 Parses and audits `docs/BYOF-REPRODUCTION.md` (both `# English Guide` and `# 简体中文指南`):
 1. Schema & Syntax Verification:
-   - Every table row in §1.1 (FX3), §1.2 (FX6), and §1.3 (Phase 2 Binary Adaptation Donors)
+   - Every table row in §1.1 (FX3), §1.2 (FX6), §1.3 (Phase 2 Binary Adaptation Donors),
+     and §1.4 (Phase 19–35 Stage-B Outputs, Wireless P12, Peripheral/Codec & `.uxc`/Font Donors)
      carries a non-empty component path, a positive integer byte size, and a strict 64-hex
      lowercase SHA-256 digest.
 2. Bilingual EN <-> ZH-CN Table Parity & Conflict Detection:
    - Zero duplicate conflicting digests within either language section.
-   - Exact 1:1 `(subsection, component_path) -> (size_bytes, sha256)` parity across EN and ZH.
+   - Exact 1:1 `(subsection, component_path) -> (size_bytes, sha256)` parity across EN and ZH
+     for both Stage-A (§1.1–1.3) and Stage-B / Phase 19–35 (§1.4).
 3. Cross-Package Code Constant Synchronization:
-   - Cross-checks documented sizes and SHA-256 digests against pinned constants in
-     `fx6_closure` (`patcher`, `p1_recovery_bridge_verifier`, `boot_selector_and_bank_verifier`,
+   - Cross-checks Stage-A (§1.1–1.3) documented sizes and SHA-256 digests against pinned constants
+     in `fx6_closure` (`patcher`, `p1_recovery_bridge_verifier`, `boot_selector_and_bank_verifier`,
      `storage_and_ram_budget_verifier`, `backup_mount_tolerance_verifier`,
-     `cp_rtos_compatibility_verifier`, `kernel_dtb_compatibility_verifier`),
-     `fx3_recovery.profiles`, `outputs/fx3-safety/readiness-20261025-msc.json`, and
+     `cp_rtos_compatibility_verifier`, `kernel_dtb_compatibility_verifier`,
+     `kmod_and_userland_abi_verifier`, `stage_a_boot_orchestrator`), `fx3_recovery.profiles`, and
      `outputs/fx3-vm-trial/vm-candidate-gpecap25-live700.json`.
-4. Dual-Mode Donor Verification:
-   - When canonical BYOF donor files are present under `/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027`,
-     streams and verifies live byte sizes and SHA-256 digests (`LOCAL_DONOR_VERIFIED`).
-   - When run in a clean Git clone without proprietary Sony firmware (or `--simulate-clean-clone`),
-     cleanly reports `CLEAN_ROOM_SCHEMA_VERIFIED` with exit code `0`.
+   - Cross-checks Stage-B / Phase 19–35 (§1.4) documented sizes and SHA-256 digests against
+     `fx6_closure.patcher` (`FX6_APPFW_STAGE_A_SHA256`, `FX6_APPFW_P10_ONLY_SHA256`,
+     `FX6_APPFW_STAGE_B_SHA256`, `FX6_WLAN_RSRC_P12_SHA256`),
+     `fx6_closure.wireless_fault_isolation_verifier`, `fx6_closure.peripheral_ux_compatibility_verifier`,
+     `outputs/fx3-safety/readiness-20261025-msc.json`, and
+     `outputs/fx6-native-presenter-closure/static-contracts-summary.json`.
+4. Dual-Mode Donor Verification (`O_RDONLY`):
+   - When canonical BYOF donor files are present (resolved dynamically via `fx6_closure.donor_paths`),
+     streams and verifies live byte sizes and SHA-256 digests via `os.O_RDONLY` plus deterministic
+     in-memory `fx6_closure.patcher` Stage-A/B output digests (`LOCAL_DONOR_VERIFIED`).
+   - When run in a clean Git clone without proprietary Sony firmware (or `--simulate-clean-clone`
+     or `FX3_FX6_FORCE_CLEAN_ROOM=1`), cleanly reports `CLEAN_ROOM_SCHEMA_VERIFIED` with exit code `0`.
 
 Usage:
     PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py [--json] [--simulate-clean-clone]
@@ -44,26 +53,25 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+for _rel_pkg in ("outputs/fx3-safety", "outputs/fx6-on-fx3-closure", "outputs/fx3-recovery-adapter"):
+    _pkg_path = str((REPO_ROOT / _rel_pkg).resolve())
+    if _pkg_path not in sys.path:
+        sys.path.insert(0, _pkg_path)
+
+from fx6_closure.donor_paths import (
+    is_forced_clean_room,
+    resolve_color_port_work_dir,
+    resolve_fx3_vm_work_root,
+)
+
 DEFAULT_DOC_PATH = REPO_ROOT / "docs" / "BYOF-REPRODUCTION.md"
-def _resolve_default_donor_root(repo_root: Path) -> Path:
-    env_dir = os.environ.get("FX3_FX6_MAC_WORK_DIR", "").strip()
-    if env_dir:
-        return Path(env_dir) / "fx3-color-port-20261027"
-    for cand in (
-        repo_root.parents[1] / "work/fx3-color-port-20261027",
-        Path.home() / "AI-Workspace/AI/Projects/Mac/work/fx3-color-port-20261027",
-        Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027"),
-    ):
-        if cand.is_dir():
-            return cand
-    return Path("/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027")
-
-
-DEFAULT_DONOR_ROOT = _resolve_default_donor_root(REPO_ROOT)
+DEFAULT_DONOR_ROOT = resolve_color_port_work_dir(repo_root=REPO_ROOT)
 
 HEX64_RE = re.compile(r"^[0-9a-f]{64}$")
+STAGE_A_SUBSECTIONS: Tuple[str, ...] = ("1.1", "1.2", "1.3")
+STAGE_B_SUBSECTIONS: Tuple[str, ...] = ("1.4",)
 
-# Canonical donor file mapping relative to DEFAULT_DONOR_ROOT (zero `stage*` paths ever referenced).
+# Canonical Stage-A donor file mapping relative to DEFAULT_DONOR_ROOT (zero `stage*` paths ever referenced).
 # Keys are `(subsection_id, normalized_component_label)`.
 CANONICAL_DONOR_RELPATHS: Dict[Tuple[str, str], str] = {
     # Section 1.1: FX3 Ver. 7.02 & 2.04/2.05 Recovery Engine
@@ -125,6 +133,50 @@ CANONICAL_DONOR_RELPATHS: Dict[Tuple[str, str], str] = {
     ("1.3", "usr/kmod/upm.ko (FX3 7.02)"): "body-state-20261029/original-members/upm.ko",
 }
 
+# Section 1.4: Phase 19–35 FX6 donors relative to DEFAULT_DONOR_ROOT (`fx3-color-port-20261027`).
+STAGE_B_FX6_DONOR_RELPATHS: Dict[Tuple[str, str], str] = {
+    ("1.4", "usr/lib/libWlanResource.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libWlanResource.so",
+    ("1.4", "usr/lib/libWlanControlCommon.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libWlanControlCommon.so",
+    ("1.4", "usr/lib/libInfraBluetooth.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraBluetooth.so",
+    ("1.4", "usr/lib/libInfraBluetoothCore.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraBluetoothCore.so",
+    ("1.4", "usr/lib/libResourceBluetooth.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libResourceBluetooth.so",
+    ("1.4", "usr/lib/libbt-vendor.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libbt-vendor.so",
+    ("1.4", "usr/lib/libInfraNetInitializer.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraNetInitializer.so",
+    ("1.4", "usr/lib/libInfraInput.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraInput.so",
+    ("1.4", "usr/lib/libInfraTp.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraTp.so",
+    ("1.4", "usr/lib/libInfraHotshoe.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraHotshoe.so",
+    ("1.4", "usr/lib/libgpe.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libgpe.so",
+    ("1.4", "usr/scenario/AVBB_SCN_START_PANELEVF.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/scenario/AVBB_SCN_START_PANELEVF.so",
+    ("1.4", "usr/scenario/AVBB_SCN_START_AUDIO.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/scenario/AVBB_SCN_START_AUDIO.so",
+    ("1.4", "usr/lib/libosal_uipc.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libosal_uipc.so",
+    ("1.4", "usr/lib/liblibra.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/liblibra.so",
+    ("1.4", "usr/lib/libux_core.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libux_core.so",
+    ("1.4", "usr/lib/libmpr.so (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so",
+    ("1.4", "usr/share/app/image_00_169.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/image_00_169.uxc",
+    ("1.4", "usr/share/app/string_english.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_english.uxc",
+    ("1.4", "usr/share/app/string_english_2.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_english_2.uxc",
+    ("1.4", "usr/share/app/string_simplifiedchinese.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_simplifiedchinese.uxc",
+    ("1.4", "usr/share/app/string_simplifiedchinese_2.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_simplifiedchinese_2.uxc",
+    ("1.4", "usr/share/app/string_traditionalchinese_2.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_traditionalchinese_2.uxc",
+    ("1.4", "usr/share/app/string_japanese_2.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/string_japanese_2.uxc",
+    ("1.4", "usr/share/app/color_cmn.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/color_cmn.uxc",
+    ("1.4", "usr/share/app/lang_cmn.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/lang_cmn.uxc",
+    ("1.4", "usr/share/app/style_cmn.uxc (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/style_cmn.uxc",
+    ("1.4", "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+    ("1.4", "usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt",
+    ("1.4", "usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt",
+    ("1.4", "usr/share/app/UniversOTS-SJ_wIcon.ltt (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/UniversOTS-SJ_wIcon.ltt",
+    ("1.4", "usr/share/app/MYingHeiC-KSX1001-SJ_wIcon.ltt (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/MYingHeiC-KSX1001-SJ_wIcon.ltt",
+    ("1.4", "usr/share/app/Sony_DI_Icons.ttf (FX6 6.01)"): "FX6-donor-assessment-20261103/team/donor/nflasha15-files/share/app/Sony_DI_Icons.ttf",
+}
+
+# Section 1.4: Cross-body FX3 7.02 donors relative to `resolve_fx3_vm_work_root()` (`fx3-vm-20261101`).
+STAGE_B_FX3_DONOR_RELPATHS: Dict[Tuple[str, str], str] = {
+    ("1.4", "usr/lib/appFw.so (FX3 7.02)"): "fx3-audit/original-members/nflasha15/lib/appFw.so",
+    ("1.4", "usr/lib/libmpr.so (FX3 7.02)"): "menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so",
+    ("1.4", "usr/share/app/string_english.uxc (FX3 7.02)"): "menu-repair-01/original-uipc/ap-projection/regular-files/usr/share/app/string_english.uxc",
+}
+
 REQUIRED_ENTRY_KEYS: Tuple[Tuple[str, str], ...] = (
     ("1.1", "nflasha3/vmlinux.bin"),
     ("1.1", "nflasha8/tomco.txt"),
@@ -163,6 +215,15 @@ REQUIRED_ENTRY_KEYS: Tuple[Tuple[str, str], ...] = (
     ("1.3", "usr/kmod/upm.ko (FX3 7.02)"),
 )
 
+STAGE_B_REQUIRED_ENTRY_KEYS: Tuple[Tuple[str, str], ...] = (
+    ("1.4", "usr/lib/appFw.so (Stage-A P1+P4+P8 adapted)"),
+    ("1.4", "usr/lib/appFw.so (Stage-B P10-only adapted)"),
+    ("1.4", "usr/lib/appFw.so (Stage-B P1+P4+P8+P10 adapted)"),
+    ("1.4", "usr/lib/libWlanResource.so (Stage-B P12 adapted)"),
+    *tuple(sorted(STAGE_B_FX6_DONOR_RELPATHS.keys())),
+    *tuple(sorted(STAGE_B_FX3_DONOR_RELPATHS.keys())),
+)
+
 
 @dataclass(frozen=True)
 class ByofManifestRow:
@@ -190,6 +251,18 @@ class ByofVerificationReport:
     zero_stage_reference_ok: bool
     elapsed_seconds: float
     errors: Tuple[str, ...]
+    stage_b_en_entry_count: int = 0
+    stage_b_zh_entry_count: int = 0
+    stage_b_en_zh_parity_ok: bool = False
+    stage_b_constants_verified: int = 0
+    stage_b_constants_ok: bool = False
+    stage_b_live_donor_files_verified: int = 0
+    stage_b_live_donor_unique_blobs_hashed: int = 0
+    stage_b_outputs_verified: int = 0
+
+    @property
+    def passed(self) -> bool:
+        return self.all_checks_passed
 
 
 def _strip_ticks(cell: str) -> str:
@@ -197,10 +270,24 @@ def _strip_ticks(cell: str) -> str:
     return re.sub(r"\s+", " ", cleaned).strip()
 
 
+def _read_bytes_rdonly(path: Path) -> bytes:
+    fd = os.open(os.fspath(path), os.O_RDONLY)
+    try:
+        with os.fdopen(fd, "rb") as fh:
+            return fh.read()
+    except BaseException:
+        try:
+            os.close(fd)
+        except OSError:
+            pass
+        raise
+
+
 def _stream_sha256_and_size(path: Path) -> Tuple[int, str]:
     h = hashlib.sha256()
     total = 0
-    with path.open("rb") as fh:
+    fd = os.open(os.fspath(path), os.O_RDONLY)
+    with os.fdopen(fd, "rb") as fh:
         while True:
             chunk = fh.read(8 * 1024 * 1024)
             if not chunk:
@@ -244,7 +331,7 @@ def parse_byof_markdown(
                 current_sub = None
             continue
 
-        sub_m = re.match(r"^###\s+(1\.[123])\b", stripped)
+        sub_m = re.match(r"^###\s+(1\.[1234])\b", stripped)
         if sub_m:
             current_sub = sub_m.group(1)
             continue
@@ -547,6 +634,160 @@ def _load_expected_code_constants(repo_root: Path) -> Tuple[Dict[Tuple[str, str]
     return expected, errors
 
 
+def _load_expected_stage_b_constants(
+    repo_root: Path,
+) -> Tuple[Dict[Tuple[str, str], Tuple[Optional[int], str, str]], List[str]]:
+    """Collect pinned Stage-B & Phase 17–35 `(size_bytes, sha256, provenance)` constants for §1.4."""
+    errors: List[str] = []
+    for rel in ("outputs/fx3-safety", "outputs/fx6-on-fx3-closure", "outputs/fx3-recovery-adapter"):
+        candidate = str((repo_root / rel).resolve())
+        if candidate not in sys.path:
+            sys.path.insert(0, candidate)
+
+    from fx6_closure import (
+        patcher,
+        peripheral_ux_compatibility_verifier,
+        wireless_fault_isolation_verifier,
+    )
+
+    expected: Dict[Tuple[str, str], Tuple[Optional[int], str, str]] = {}
+
+    # 1. Stage-A / Stage-B adapted appFw.so & P12 libWlanResource.so outputs (`fx6_closure.patcher`)
+    expected[("1.4", "usr/lib/appFw.so (Stage-A P1+P4+P8 adapted)")] = (
+        patcher.P1_P4_P8_APPFW_COMBINED_SPEC.expected_size,
+        patcher.FX6_APPFW_STAGE_A_SHA256,
+        "fx6_closure.patcher.FX6_APPFW_STAGE_A_SHA256",
+    )
+    expected[("1.4", "usr/lib/appFw.so (Stage-B P10-only adapted)")] = (
+        patcher.P10_KEYMAP_PATCH_SPEC.expected_size,
+        patcher.FX6_APPFW_P10_ONLY_SHA256,
+        "fx6_closure.patcher.FX6_APPFW_P10_ONLY_SHA256",
+    )
+    expected[("1.4", "usr/lib/appFw.so (Stage-B P1+P4+P8+P10 adapted)")] = (
+        patcher.P1_P4_P8_P10_APPFW_COMBINED_SPEC.expected_size,
+        patcher.FX6_APPFW_STAGE_B_SHA256,
+        "fx6_closure.patcher.FX6_APPFW_STAGE_B_SHA256",
+    )
+    expected[("1.4", "usr/lib/libWlanResource.so (Stage-B P12 adapted)")] = (
+        patcher.P12_WLAN_FATAL_GUARD_SPEC.expected_size,
+        patcher.FX6_WLAN_RSRC_P12_SHA256,
+        "fx6_closure.patcher.FX6_WLAN_RSRC_P12_SHA256",
+    )
+
+    # 2. Phase 22/26 Wireless / Bluetooth / Network donors (`wireless_fault_isolation_verifier`)
+    wireless_constants = (
+        (
+            "usr/lib/libWlanResource.so (FX6 6.01)",
+            patcher.P12_WLAN_FATAL_GUARD_SPEC.expected_size,
+            wireless_fault_isolation_verifier.FX6_WLAN_RSRC_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_WLAN_RSRC_SHA256",
+        ),
+        (
+            "usr/lib/libWlanControlCommon.so (FX6 6.01)",
+            None,
+            wireless_fault_isolation_verifier.FX6_WLAN_CTRL_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_WLAN_CTRL_SHA256",
+        ),
+        (
+            "usr/lib/libInfraBluetooth.so (FX6 6.01)",
+            None,
+            wireless_fault_isolation_verifier.FX6_BT_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_BT_SHA256",
+        ),
+        (
+            "usr/lib/libInfraBluetoothCore.so (FX6 6.01)",
+            None,
+            wireless_fault_isolation_verifier.FX6_BT_CORE_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_BT_CORE_SHA256",
+        ),
+        (
+            "usr/lib/libResourceBluetooth.so (FX6 6.01)",
+            None,
+            wireless_fault_isolation_verifier.FX6_RSRC_BT_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_RSRC_BT_SHA256",
+        ),
+        (
+            "usr/lib/libbt-vendor.so (FX6 6.01)",
+            None,
+            wireless_fault_isolation_verifier.FX6_BT_VENDOR_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_BT_VENDOR_SHA256",
+        ),
+        (
+            "usr/lib/libInfraNetInitializer.so (FX6 6.01)",
+            None,
+            wireless_fault_isolation_verifier.FX6_NET_INIT_SHA256,
+            "fx6_closure.wireless_fault_isolation_verifier.FX6_NET_INIT_SHA256",
+        ),
+    )
+    for doc_lbl, sz, sha, prov in wireless_constants:
+        expected[("1.4", doc_lbl)] = (sz, sha, prov)
+
+    # 3. Phase 17/19 peripheral UX, display routing, and audio donors (`peripheral_ux_compatibility_verifier`)
+    p17_doc_map = {
+        "libInfraInput.so": "usr/lib/libInfraInput.so (FX6 6.01)",
+        "libInfraTp.so": "usr/lib/libInfraTp.so (FX6 6.01)",
+        "libInfraHotshoe.so": "usr/lib/libInfraHotshoe.so (FX6 6.01)",
+        "libgpe.so": "usr/lib/libgpe.so (FX6 6.01)",
+        "AVBB_SCN_START_PANELEVF.so": "usr/scenario/AVBB_SCN_START_PANELEVF.so (FX6 6.01)",
+        "AVBB_SCN_START_AUDIO.so": "usr/scenario/AVBB_SCN_START_AUDIO.so (FX6 6.01)",
+    }
+    for art_name, doc_lbl in p17_doc_map.items():
+        if art_name not in peripheral_ux_compatibility_verifier.PINNED_FX6_ARTIFACTS:
+            errors.append(
+                f"Missing `{art_name}` in fx6_closure.peripheral_ux_compatibility_verifier.PINNED_FX6_ARTIFACTS"
+            )
+            continue
+        sz, sha = peripheral_ux_compatibility_verifier.PINNED_FX6_ARTIFACTS[art_name]
+        expected[("1.4", doc_lbl)] = (
+            int(sz),
+            str(sha),
+            f"fx6_closure.peripheral_ux_compatibility_verifier.PINNED_FX6_ARTIFACTS[{art_name}]",
+        )
+
+    # 4. Tracked FX3 reference inventory JSON (`outputs/fx3-safety/readiness-20261025-msc.json`)
+    safety_inv_path = repo_root / "outputs" / "fx3-safety" / "readiness-20261025-msc.json"
+    if safety_inv_path.is_file():
+        safety_inv = json.loads(safety_inv_path.read_text(encoding="utf-8"))
+        stock_by_name = {
+            item.get("name"): item
+            for item in safety_inv.get("stock_files", [])
+            if isinstance(item, dict) and item.get("name")
+        }
+        for name, doc_lbl in (
+            ("appFw.so", "usr/lib/appFw.so (FX3 7.02)"),
+            ("libmpr.so", "usr/lib/libmpr.so (FX3 7.02)"),
+        ):
+            entry = stock_by_name.get(name)
+            if isinstance(entry, dict) and "expected_bytes" in entry and "expected_sha256" in entry:
+                expected[("1.4", doc_lbl)] = (
+                    int(entry["expected_bytes"]),
+                    str(entry["expected_sha256"]),
+                    f"outputs/fx3-safety/readiness-20261025-msc.json:stock_files[{name}]",
+                )
+
+    # 5. Tracked FX6 native presenter static contracts (`outputs/fx6-native-presenter-closure/static-contracts-summary.json`)
+    presenter_contracts_path = (
+        repo_root / "outputs" / "fx6-native-presenter-closure" / "static-contracts-summary.json"
+    )
+    if presenter_contracts_path.is_file():
+        presenter_json = json.loads(presenter_contracts_path.read_text(encoding="utf-8"))
+        digests = presenter_json.get("digests", {})
+        if isinstance(digests, dict):
+            for json_key, doc_lbl in (
+                ("lib/libosal_uipc.so", "usr/lib/libosal_uipc.so (FX6 6.01)"),
+                ("lib/libmpr.so", "usr/lib/libmpr.so (FX6 6.01)"),
+            ):
+                entry = digests.get(json_key)
+                if isinstance(entry, dict) and "size_bytes" in entry and "sha256" in entry:
+                    expected[("1.4", doc_lbl)] = (
+                        int(entry["size_bytes"]),
+                        str(entry["sha256"]),
+                        f"outputs/fx6-native-presenter-closure/static-contracts-summary.json:digests[{json_key}]",
+                    )
+
+    return expected, errors
+
+
 def verify_byof_manifest(
     doc_path: Path = DEFAULT_DOC_PATH,
     *,
@@ -587,10 +828,15 @@ def verify_byof_manifest(
             f"Forbidden `stage*` work-folder reference(s) in {doc_path.name}: {sorted(set(stage_refs))}"
         )
 
-    for (_sub, _lbl), rel_str in CANONICAL_DONOR_RELPATHS.items():
-        if re.search(r"\bstage\d*", rel_str, flags=re.IGNORECASE):
-            zero_stage_ok = False
-            errors.append(f"Forbidden `stage*` path in CANONICAL_DONOR_RELPATHS: {rel_str}")
+    for map_name, rel_dict in (
+        ("CANONICAL_DONOR_RELPATHS", CANONICAL_DONOR_RELPATHS),
+        ("STAGE_B_FX6_DONOR_RELPATHS", STAGE_B_FX6_DONOR_RELPATHS),
+        ("STAGE_B_FX3_DONOR_RELPATHS", STAGE_B_FX3_DONOR_RELPATHS),
+    ):
+        for (_sub, _lbl), rel_str in rel_dict.items():
+            if re.search(r"\bstage\d*", rel_str, flags=re.IGNORECASE):
+                zero_stage_ok = False
+                errors.append(f"Forbidden `stage*` path in {map_name}: {rel_str}")
 
     parsed_rows, parse_errs = parse_byof_markdown(markdown_text)
     errors.extend(parse_errs)
@@ -616,92 +862,138 @@ def verify_byof_manifest(
         else:
             target[key] = row
 
-    if len(en_map) == 0 or len(zh_map) == 0:
+    stage_a_en_map = {k: v for k, v in en_map.items() if k[0] in STAGE_A_SUBSECTIONS}
+    stage_a_zh_map = {k: v for k, v in zh_map.items() if k[0] in STAGE_A_SUBSECTIONS}
+    stage_b_en_map = {k: v for k, v in en_map.items() if k[0] in STAGE_B_SUBSECTIONS}
+    stage_b_zh_map = {k: v for k, v in zh_map.items() if k[0] in STAGE_B_SUBSECTIONS}
+
+    if len(stage_a_en_map) == 0 or len(stage_a_zh_map) == 0:
         errors.append(
-            f"Expected non-empty EN and ZH digest tables (got en={len(en_map)}, zh={len(zh_map)})"
+            f"Expected non-empty Stage-A EN and ZH digest tables (got en={len(stage_a_en_map)}, zh={len(stage_a_zh_map)})"
+        )
+    if len(stage_b_en_map) == 0 or len(stage_b_zh_map) == 0:
+        errors.append(
+            f"Expected non-empty Stage-B §1.4 EN and ZH digest tables (got en={len(stage_b_en_map)}, zh={len(stage_b_zh_map)})"
         )
 
-    # Check EN <-> ZH exact 1:1 parity
-    parity_errors: List[str] = []
-    only_en = sorted(set(en_map) - set(zh_map))
-    only_zh = sorted(set(zh_map) - set(en_map))
-    for sub, comp in only_en:
-        parity_errors.append(f"Entry present in EN §{sub} `{comp}` but missing from ZH table")
-    for sub, comp in only_zh:
-        parity_errors.append(f"Entry present in ZH §{sub} `{comp}` but missing from EN table")
+    def _check_parity(
+        lhs: Dict[Tuple[str, str], ByofManifestRow],
+        rhs: Dict[Tuple[str, str], ByofManifestRow],
+    ) -> List[str]:
+        p_errs: List[str] = []
+        for sub, comp in sorted(set(lhs) - set(rhs)):
+            p_errs.append(f"Entry present in EN §{sub} `{comp}` but missing from ZH table")
+        for sub, comp in sorted(set(rhs) - set(lhs)):
+            p_errs.append(f"Entry present in ZH §{sub} `{comp}` but missing from EN table")
+        for key in sorted(set(lhs) & set(rhs)):
+            en_r = lhs[key]
+            zh_r = rhs[key]
+            if en_r.size_bytes != zh_r.size_bytes or en_r.sha256 != zh_r.sha256:
+                p_errs.append(
+                    f"EN/ZH mismatch on §{key[0]} `{key[1]}`: "
+                    f"EN=({en_r.size_bytes}, {en_r.sha256}) vs ZH=({zh_r.size_bytes}, {zh_r.sha256})"
+                )
+        return p_errs
 
-    for key in sorted(set(en_map) & set(zh_map)):
-        en_r = en_map[key]
-        zh_r = zh_map[key]
-        if en_r.size_bytes != zh_r.size_bytes or en_r.sha256 != zh_r.sha256:
-            parity_errors.append(
-                f"EN/ZH mismatch on §{key[0]} `{key[1]}`: "
-                f"EN=({en_r.size_bytes}, {en_r.sha256}) vs ZH=({zh_r.size_bytes}, {zh_r.sha256})"
-            )
+    stage_a_parity_errors = _check_parity(stage_a_en_map, stage_a_zh_map)
+    stage_b_parity_errors = _check_parity(stage_b_en_map, stage_b_zh_map)
+    errors.extend(stage_a_parity_errors)
+    errors.extend(stage_b_parity_errors)
 
-    en_zh_parity_ok = len(parity_errors) == 0 and len(en_map) > 0
-    errors.extend(parity_errors)
+    stage_a_parity_ok = len(stage_a_parity_errors) == 0 and len(stage_a_en_map) > 0
+    stage_b_parity_ok = len(stage_b_parity_errors) == 0 and len(stage_b_en_map) > 0
+    en_zh_parity_ok = stage_a_parity_ok and stage_b_parity_ok
 
-    # Check required Phase 11/12/14 deliverables coverage
+    # Check required Stage-A (§1.1–1.3) and Stage-B (§1.4) deliverables coverage
     for req_key in REQUIRED_ENTRY_KEYS:
         if req_key not in en_map:
             errors.append(f"Missing required BYOF manifest entry §{req_key[0]} `{req_key[1]}`")
+    for req_key in STAGE_B_REQUIRED_ENTRY_KEYS:
+        if req_key not in en_map:
+            errors.append(f"Missing required Stage-B §{req_key[0]} BYOF manifest entry `{req_key[1]}`")
 
     # Cross-check against pinned code constants in `fx6_closure` / `fx3_recovery`
-    expected_constants, const_load_errs = _load_expected_code_constants(repo_root)
-    errors.extend(const_load_errs)
-    const_mismatch_count = 0
-    for key, (exp_size, exp_sha, provenance) in sorted(expected_constants.items()):
-        if key not in en_map:
-            const_mismatch_count += 1
-            errors.append(
-                f"Code constant `{provenance}` expects §{key[0]} `{key[1]}`, which is absent from {doc_path.name}"
-            )
-            continue
-        row = en_map[key]
-        if row.sha256 != exp_sha:
-            const_mismatch_count += 1
-            errors.append(
-                f"SHA-256 drift on §{key[0]} `{key[1]}` vs `{provenance}`: "
-                f"doc={row.sha256} code={exp_sha}"
-            )
-        if exp_size is not None and row.size_bytes != exp_size:
-            const_mismatch_count += 1
-            errors.append(
-                f"Size drift on §{key[0]} `{key[1]}` vs `{provenance}`: "
-                f"doc={row.size_bytes} code={exp_size}"
-            )
+    expected_stage_a_constants, const_a_load_errs = _load_expected_code_constants(repo_root)
+    expected_stage_b_constants, const_b_load_errs = _load_expected_stage_b_constants(repo_root)
+    errors.extend(const_a_load_errs)
+    errors.extend(const_b_load_errs)
 
-    code_constants_ok = len(const_load_errs) == 0 and const_mismatch_count == 0
+    def _verify_constants_map(
+        expected_map: Dict[Tuple[str, str], Tuple[Optional[int], str, str]],
+    ) -> int:
+        mismatches = 0
+        for key, (exp_size, exp_sha, provenance) in sorted(expected_map.items()):
+            if key not in en_map:
+                mismatches += 1
+                errors.append(
+                    f"Code constant `{provenance}` expects §{key[0]} `{key[1]}`, which is absent from {doc_path.name}"
+                )
+                continue
+            row = en_map[key]
+            if row.sha256 != exp_sha:
+                mismatches += 1
+                errors.append(
+                    f"SHA-256 drift on §{key[0]} `{key[1]}` vs `{provenance}`: "
+                    f"doc={row.sha256} code={exp_sha}"
+                )
+            if exp_size is not None and row.size_bytes != exp_size:
+                mismatches += 1
+                errors.append(
+                    f"Size drift on §{key[0]} `{key[1]}` vs `{provenance}`: "
+                    f"doc={row.size_bytes} code={exp_size}"
+                )
+        return mismatches
+
+    stage_a_const_mismatches = _verify_constants_map(expected_stage_a_constants)
+    stage_b_const_mismatches = _verify_constants_map(expected_stage_b_constants)
+
+    stage_a_constants_ok = len(const_a_load_errs) == 0 and stage_a_const_mismatches == 0
+    stage_b_constants_ok = len(const_b_load_errs) == 0 and stage_b_const_mismatches == 0
+    code_constants_ok = stage_a_constants_ok and stage_b_constants_ok
 
     # Live donor file verification when canonical donor directory exists (unless clean-room mode is forced)
-    env_force_clean_room = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM", "").strip().lower() in (
-        "1",
-        "true",
-        "yes",
-    )
+    env_force_clean_room = is_forced_clean_room()
     force_clean = simulate_clean_clone or schema_only or env_force_clean_room
-    effective_donor_root = None if force_clean else donor_root
-    donor_present = bool(effective_donor_root is not None and effective_donor_root.is_dir())
-    live_verified = 0
-    digest_cache: Dict[Path, Tuple[int, str]] = {}
+    if force_clean:
+        effective_donor_root = None
+        fx3_vm_root = None
+    elif donor_root is DEFAULT_DONOR_ROOT:
+        effective_donor_root = resolve_color_port_work_dir(repo_root=repo_root)
+        fx3_vm_root = resolve_fx3_vm_work_root(repo_root=repo_root)
+    else:
+        effective_donor_root = donor_root
+        fx3_vm_root = donor_root.parent / "fx3-vm-20261101" if donor_root is not None else None
 
-    if donor_present:
-        assert effective_donor_root is not None
-        for key, rel_str in sorted(CANONICAL_DONOR_RELPATHS.items()):
+    donor_present = bool(effective_donor_root is not None and effective_donor_root.is_dir())
+    fx3_vm_present = bool(fx3_vm_root is not None and fx3_vm_root.is_dir())
+
+    live_verified = 0
+    stage_a_digest_cache: Dict[Path, Tuple[int, str]] = {}
+    stage_b_live_verified = 0
+    stage_b_digest_cache: Dict[Path, Tuple[int, str]] = {}
+    stage_b_outputs_verified = 0
+    expected_stage_b_live_total = len(STAGE_B_FX6_DONOR_RELPATHS) + len(STAGE_B_FX3_DONOR_RELPATHS)
+
+    def _verify_live_relpath_group(
+        base_dir: Path,
+        rel_map: Dict[Tuple[str, str], str],
+        cache: Dict[Path, Tuple[int, str]],
+    ) -> int:
+        verified_count = 0
+        for key, rel_str in sorted(rel_map.items()):
             if key not in en_map:
                 continue
             row = en_map[key]
-            donor_file = effective_donor_root / rel_str
+            donor_file = base_dir / rel_str
             if not donor_file.is_file() or donor_file.is_symlink():
                 errors.append(
                     f"Missing or symlinked canonical donor file for §{key[0]} `{key[1]}`: {donor_file}"
                 )
                 continue
             resolved = donor_file.resolve()
-            if resolved not in digest_cache:
-                digest_cache[resolved] = _stream_sha256_and_size(resolved)
-            live_size, live_sha = digest_cache[resolved]
+            if resolved not in cache:
+                cache[resolved] = _stream_sha256_and_size(resolved)
+            live_size, live_sha = cache[resolved]
             if live_size != row.size_bytes:
                 errors.append(
                     f"Live donor size mismatch on §{key[0]} `{key[1]}` ({donor_file}): "
@@ -714,7 +1006,87 @@ def verify_byof_manifest(
                     f"live={live_sha} doc={row.sha256}"
                 )
                 continue
-            live_verified += 1
+            verified_count += 1
+        return verified_count
+
+    if donor_present:
+        assert effective_donor_root is not None
+        live_verified = _verify_live_relpath_group(
+            effective_donor_root, CANONICAL_DONOR_RELPATHS, stage_a_digest_cache
+        )
+        stage_b_live_verified = _verify_live_relpath_group(
+            effective_donor_root, STAGE_B_FX6_DONOR_RELPATHS, stage_b_digest_cache
+        )
+
+        if fx3_vm_present:
+            assert fx3_vm_root is not None
+            stage_b_live_verified += _verify_live_relpath_group(
+                fx3_vm_root, STAGE_B_FX3_DONOR_RELPATHS, stage_b_digest_cache
+            )
+        else:
+            errors.append(
+                f"Missing canonical FX3 cross-body donor root for §1.4 verification: {fx3_vm_root}"
+            )
+
+        # Deterministic in-memory Stage-A / Stage-B output verification via `fx6_closure.patcher`
+        from fx6_closure import patcher
+
+        output_specs = (
+            (
+                ("1.4", "usr/lib/appFw.so (Stage-A P1+P4+P8 adapted)"),
+                effective_donor_root / CANONICAL_DONOR_RELPATHS[("1.3", "usr/lib/appFw.so (FX6 6.01)")],
+                patcher.P1_P4_P8_APPFW_COMBINED_SPEC,
+            ),
+            (
+                ("1.4", "usr/lib/appFw.so (Stage-B P10-only adapted)"),
+                effective_donor_root / CANONICAL_DONOR_RELPATHS[("1.3", "usr/lib/appFw.so (FX6 6.01)")],
+                patcher.P10_KEYMAP_PATCH_SPEC,
+            ),
+            (
+                ("1.4", "usr/lib/appFw.so (Stage-B P1+P4+P8+P10 adapted)"),
+                effective_donor_root / CANONICAL_DONOR_RELPATHS[("1.3", "usr/lib/appFw.so (FX6 6.01)")],
+                patcher.P1_P4_P8_P10_APPFW_COMBINED_SPEC,
+            ),
+            (
+                ("1.4", "usr/lib/libWlanResource.so (Stage-B P12 adapted)"),
+                effective_donor_root / STAGE_B_FX6_DONOR_RELPATHS[("1.4", "usr/lib/libWlanResource.so (FX6 6.01)")],
+                patcher.P12_WLAN_FATAL_GUARD_SPEC,
+            ),
+        )
+        raw_buffer_cache: Dict[Path, bytes] = {}
+        for out_key, donor_src, spec in output_specs:
+            if out_key not in en_map:
+                continue
+            row = en_map[out_key]
+            if not donor_src.is_file() or donor_src.is_symlink():
+                errors.append(f"Missing or symlinked source binary for Stage-A/B build `{out_key[1]}`: {donor_src}")
+                continue
+            resolved_src = donor_src.resolve()
+            if resolved_src not in raw_buffer_cache:
+                raw_buffer_cache[resolved_src] = _read_bytes_rdonly(resolved_src)
+            try:
+                patched_bytes, receipt = patcher.apply_patch_spec(
+                    raw_buffer_cache[resolved_src],
+                    spec,
+                    verify_donor_sha256=True,
+                )
+            except Exception as exc:
+                errors.append(f"Stage-A/B in-memory build failed for `{out_key[1]}`: {exc}")
+                continue
+            if len(patched_bytes) != row.size_bytes:
+                errors.append(
+                    f"Stage-A/B output size mismatch on §{out_key[0]} `{out_key[1]}`: "
+                    f"built={len(patched_bytes)} doc={row.size_bytes}"
+                )
+                continue
+            if receipt.after_sha256 != row.sha256:
+                errors.append(
+                    f"Stage-A/B output SHA-256 mismatch on §{out_key[0]} `{out_key[1]}`: "
+                    f"built={receipt.after_sha256} doc={row.sha256}"
+                )
+                continue
+            stage_b_outputs_verified += 1
+        raw_buffer_cache.clear()
 
         mode = "LOCAL_DONOR_VERIFIED"
     else:
@@ -722,27 +1094,44 @@ def verify_byof_manifest(
 
     all_ok = (
         len(errors) == 0
-        and en_zh_parity_ok
-        and code_constants_ok
+        and stage_a_parity_ok
+        and stage_b_parity_ok
+        and stage_a_constants_ok
+        and stage_b_constants_ok
         and zero_stage_ok
-        and (not donor_present or live_verified == len(CANONICAL_DONOR_RELPATHS))
+        and (
+            not donor_present
+            or (
+                live_verified == len(CANONICAL_DONOR_RELPATHS)
+                and stage_b_live_verified == expected_stage_b_live_total
+                and stage_b_outputs_verified == 4
+            )
+        )
     )
 
     return ByofVerificationReport(
         verification_mode=mode if all_ok else f"FAILED_{mode}",
         all_checks_passed=all_ok,
         doc_path=str(doc_path),
-        en_entry_count=len(en_map),
-        zh_entry_count=len(zh_map),
+        en_entry_count=len(stage_a_en_map),
+        zh_entry_count=len(stage_a_zh_map),
         en_zh_parity_ok=en_zh_parity_ok,
-        code_constants_checked=len(expected_constants),
+        code_constants_checked=len(expected_stage_a_constants),
         code_constants_ok=code_constants_ok,
         donor_root_present=donor_present,
         live_donor_files_verified=live_verified,
-        live_donor_unique_blobs_hashed=len(digest_cache),
+        live_donor_unique_blobs_hashed=len(stage_a_digest_cache),
         zero_stage_reference_ok=zero_stage_ok,
         elapsed_seconds=round(time.monotonic() - t0, 4),
         errors=tuple(errors),
+        stage_b_en_entry_count=len(stage_b_en_map),
+        stage_b_zh_entry_count=len(stage_b_zh_map),
+        stage_b_en_zh_parity_ok=stage_b_parity_ok,
+        stage_b_constants_verified=len(expected_stage_b_constants),
+        stage_b_constants_ok=stage_b_constants_ok,
+        stage_b_live_donor_files_verified=stage_b_live_verified,
+        stage_b_live_donor_unique_blobs_hashed=len(stage_b_digest_cache),
+        stage_b_outputs_verified=stage_b_outputs_verified,
     )
 
 
@@ -797,7 +1186,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"en={rep.en_entry_count} zh={rep.zh_entry_count} "
             f"parity_ok={rep.en_zh_parity_ok} "
             f"code_constants={rep.code_constants_checked} ({'OK' if rep.code_constants_ok else 'FAIL'}) "
-            f"live_donors={rep.live_donor_files_verified} ({rep.live_donor_unique_blobs_hashed} blobs) "
+            f"live_donors={rep.live_donor_files_verified} ({rep.live_donor_unique_blobs_hashed} blobs) | "
+            f"stage_b(en={rep.stage_b_en_entry_count} zh={rep.stage_b_zh_entry_count} "
+            f"parity_ok={rep.stage_b_en_zh_parity_ok} "
+            f"constants={rep.stage_b_constants_verified} ({'OK' if rep.stage_b_constants_ok else 'FAIL'}) "
+            f"live_donors={rep.stage_b_live_donor_files_verified} outputs={rep.stage_b_outputs_verified}) "
             f"in {rep.elapsed_seconds:.2f}s\n"
         )
         for err in rep.errors:

@@ -1,0 +1,48 @@
+# Phase 239（VM Stage 44 `44/44` 里程碑）：真机 `ILME-FX3` `Ver. 2.00..7.02` `[Recover Image DB]` 低电量拒写与非删除 `AVF_INFO` 修复 + Slot-1 Tier-0 保险库只读防火墙、`[Monitor Flip Direction]` 跨复位存活与 `[Horizontal Flip]` 回放永不倒置 + `[AF Transition Speed]` / `[AF Subj. Shift Sensitivity]` 完整拼写对静照 `[Interval Shoot Func.]` HIL 协同仿真报告
+
+## 1. 结论先行
+
+已在独立工作树 `outputs/fx3-vm/` 闭环完成 **Task H266 — Phase 239（VM Stage 44 `44/44` 里程碑，Wave-34）** 真实硬件主线协同仿真器开发、全板 44 阶段编排接入、Milestone 221 主门禁兼容验证与双模全量回归验证：
+
+- **交付物清单（严格受控 5 文件所有权边界）**：
+  1. 新增 Stage 44 核心协同仿真模块（Schema `realhw_recover_imagedb_monitor_flip_af_sens_coemulator_v1`）：[realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py)
+  2. 更新 44 阶段全板编排器（注册 `stage44_realhw_recover_imagedb_monitor_flip_af_sens_hil`、`--include-stage44`、`--skip-stage44` / `--skip-phase239` 与 `stage44_ok`，推进 VM HIL 里程碑至 `44/44`）：[fx3_vm_coemulation_suite.py](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/fx3_vm_coemulation_suite.py)
+  3. 更新虚拟机模块文档（Stage 44 `44/44` 里程碑章节与 CLI 指南）：[outputs/fx3-vm/README.md](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/README.md)
+  4. 新增 60 项双模单元测试套件（满足 `>= 55` 要求，覆盖 `LOCAL_DONOR_O_RDONLY` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1`、源码 `os.O_RDONLY`/端口卫生断言与字节码零残留检查）：[test_realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/tests/test_realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py)
+  5. 本里程碑工程与验收报告（对齐官方 `ILME-FX3 Ver. 2.00..7.02` 与 `ILME-FX6 Ver. 6.01` 实测基线 [Wave-34 Real-Hardware Intel README.md](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/reports/2026-11-15-global-sony-wave34-recover-imagedb-battery-vault-monitor-flip-playback-af-shift-sens-interval-intel/README.md)）。
+
+## 2. 核心子模型（`Sub-Model 44A–44C` + 硬安全红线）实现与实测证据
+
+### 2.1 双模高速 `os.O_RDONLY` 14 供体有界审计（实测冷启动 `2.40 ms < 0.1s`）与零字节泄露回退
+- [`inspect_phase239_donors`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L510-L657) 严格通过 `os.open(..., os.O_RDONLY)` 核验 14 份 FX3 `7.02` 与 FX6 `6.01` 真实供体（对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 采用 `<= 4096 B` 4 KiB 对齐定点 `lseek` 窗口读取并带进程级签名缓存，实测冷启动仅 **`0.00240s`**、热缓存 **`0.00026s`**）：
+  - 实证紧凑供体 `libIMDB.so`（`71,536 B`：`IMDB_find_entry`、`IMDB_get_entries`、`IMDB_find_target_bit`）、`libSaveLoadSettings.so`（`18,760 B`：`Backup_get_datasize`、`Backup_read`、`infra_saveLoadSettings_init`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`）、`libInfraLensCommunicator.so`（`14,544 B`）、FX3 `string_english_f.uxc`（`373,820 B`：`Recover Image DB`、`Slot 1`、`Slot 2`、`Monitor Flip Direction`、`Horizontal Flip`、`AF Transition Speed`、`AF Subj. Shift Sensitivity`、`1(Locked on)`、`5(Responsive)`、`Interval Shoot Func.`、`Shooting Start Time`、`Shooting Interval`、`Number of Shots`、`Playback`、`HDMI Info. Display`、`Camera Settings Reset`、`Initialize`）以及 FX6 `string_english.uxc`（`118,208 B`：`AF Transition Speed`、`AF Subj. Shift Sens.`）。
+  - `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线，`raw_firmware_bytes_leaked == 0`。
+
+### 2.2 Sub-Model 44A — `[Recover Image DB]` 低电量拒写、非删除 `AVF_INFO` 修复与 Slot-1 Tier-0 保险库只读防火墙 HIL
+- [`probe_recover_imagedb_battery_and_vault_hil`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L665-L796) 与 [`evaluate_pillar_a_recover_imagedb_battery_and_vault_hil`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L799-L905) 精确建模 `MENU -> Shooting -> [Media] -> [Recover Image DB]`：
+  - **极度亏电硬件拒写**：当 `battery_state == "extremely_depleted"`、`battery_soc_pct < 10` 或 `battery_mv < 6400` 时，硬件在任何 FAT/exFAT 元数据扇区写入之前即以 `EAGAIN = 11` 拒绝执行（`hardware_refused_before_fat_exfat_write == True`、`card_metadata_sector_writes == 0`）。
+  - **非删除 `AVF_INFO` 数据库重建**：在电量充足时修复 `AVF_INFO/AVIN0001.INP`、`AVF_INFO/AVIN0001.BNP`、`AVF_INFO/PRV00001.BIN` 与 `M4ROOT/MEDIAPRO.XML`（消除 `"Image DataBase File error"` 或可拍张数误报 `"0"`），**绝不删除任何已录视频或照片**（`deleted_clip_or_still_count == 0`、`clips_after == clips_before`、`stills_after == stills_before`；尝试借机删除媒体返回 `EOPNOTSUPP = 95`），且作为即时动作项对 `[Camera Settings Reset]` 与 `[Initialize]` 完全免疫。
+  - **Slot-1 Tier-0 保险库只读防火墙**：当 Slot 1 驻留 Tier-0 取证备份卡（`pnflasha`、`cnflasha`、`CAMSET01.DAT`、`FX3RCPT1.BIN`）时，SDXC 物理 `WP` 锁止返回 `EROFS = 30`，未完成离机 SHA-256 核验或保险库卡仍在位未退役返回 `EBUSY = 16`（`tier0_slot1_unverified_imagedb_mutation_events == 0`、`slot1_metadata_sector_writes == 0`）；同时允许 Slot 2 工作卡在充足电量下正常修复。
+
+### 2.3 Sub-Model 44B — `[Monitor Flip Direction]` 跨 `[Camera Settings Reset]` 存活与 `[Horizontal Flip]` 回放永不倒置 HIL
+- [`probe_monitor_flip_reset_and_playback_hil`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L913-L1035) 协同仿真 `MENU -> Setup -> [Monitor] -> [Monitor Flip Direction]`（默认 `Auto`、`Horizontal Flip`、`Vertical Flip`、`Off`）：
+  - **跨复位存活生命周期**：全部 4 档设定在 `[Camera Settings Reset]` 后原样保留（`reset_only_by_initialize == True`），仅全机 `[Initialize]` 将其恢复回出厂默认 `Auto`。
+  - **回放非倒置与外接 HDMI 净流隔离**：开启 `[Horizontal Flip]` 时仅对实时取景（`live_shooting`）下的本地 LCD 预览做水平镜像，**回放显示方向永不水平翻转**（`playback_display_horizontally_inverted == False`、`playback_horizontal_flip_inversion_events == 0`；强行翻转回放返回 `EOPNOTSUPP = 95`），且外接 HDMI 净流无论 `[HDMI Info. Display]` 为 `On` 或 `Off` 均保持未翻转（`external_hdmi_clean_feed_flipped == False`）。
+
+### 2.4 Sub-Model 44C & Redlines — 视频/S&Q 对焦运动学（完整拼写 `[AF Subj. Shift Sensitivity]`）对静照 `[Interval Shoot Func.]` + 安全红线 HIL
+- [`probe_af_kinematics_and_interval_shoot_hil`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L1107-L1294) 与 [`simulate_monitor_flip_vs_af_kinematics_reset_lifecycle`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L1297-L1343) 建模：
+  - **完整拼写与档位校验**：严格要求 `ILME-FX3` 完整菜单拼写 `"AF Subj. Shift Sensitivity"`（`1(Locked on)`..`5(Responsive)`，默认 `5(Responsive)`；拒绝 `"AF Subj. Shift Sens."` 等缩写幻觉返回 `EINVAL = 22`）与 `"AF Transition Speed"`（`1(Slow)`..`7(Fast)`，默认 `5`），限定视频与 S&Q 作用域（静照模式强开返回 `EOPNOTSUPP = 95`）。
+  - **非对称 `[Camera Settings Reset]` 分流验证**：执行 `[Camera Settings Reset]` 时，`[AF Transition Speed]` 与 `[AF Subj. Shift Sensitivity]` 干净复位回 `5` 与 `5(Responsive)`，而同机 `[Monitor Flip Direction]` 完整存活（`monitor_flip_survived_while_af_kinematics_reset_verified == True`、`monitor_flip_or_af_kinematics_drift_events == 0`），并支持从 Slot 1 `CAMSET01..10.DAT` 零 NVRAM 写入（`bk4_persistent_nvram_writes == 0`）恢复。
+  - **静照专用 `[Interval Shoot Func.]` 边界隔离**：建模 `Shooting Start Time`（`1s..99m59s` = `1..5999s`）、`Shooting Interval`（`1s..60s`）与 `Number of Shots`（`1..9999`），严格限定为静照序列采集（后期经 `Imaging Edge Desktop (Viewer)` 合成），拦截任何 FX6 机内 MXF/MP4 视频 `Interval Rec` 混淆（返回 `EOPNOTSUPP = 95`）。
+- [`probe_hard_safety_redline`](file:///Users/kafu/AI-Workspace/AI/Orca/Worktrees/sony-fx3-fx6-lab/fx3-main-lane/h266-phase239-vm-stage44-recover-imagedb-monitor-flip-af-sens-hil/outputs/fx3-vm/realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py#L1346-L1425) fail-closed 锁死全部 10 项硬件红线（`persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`overall_ready_for_hardware_attach = False`、`isp_write_authorized = False`、`spi_nor_write_authorized = False`、`el3_payload_transmit_authorized = False`、`cnflasha_userspace_write_blocked = True`、`cnflasha_mutation_bytes = 0`、`physical_device_writes = 0`、`raw_firmware_bytes_leaked = 0`）。
+
+## 3. 实测验证摘要（全部使用 `PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B`）
+
+| 验证项 | 模式 | 结果与实测指标 |
+|---|---|---|
+| Stage 44 独立自检 CLI（`44/44` 里程碑） | `LOCAL_DONOR_O_RDONLY` / `CLEAN_ROOM_SYNTHETIC` | `PASS`（14 供体冷读取 **`2.40 ms < 0.1s`**；`digest=f3c743d2b97c` / `76360f30fae8`） |
+| `fx3_vm_coemulation_suite.py`（Stage `1..44`，含 `--include-stage44`） | 本地只读供体 / 洁净室合成 | `PASS`（`44/44` 里程碑全阶段通过，进程内本地 **`1.889s`**、洁净室 **`0.458s`**；`digest=110fad817da1` / `13a20200e1c9`） |
+| `make verify-milestone-221` 主门禁 | 本地只读供体 + `FX3_FX6_FORCE_CLEAN_ROOM=1` | `status=OK`（`pillars=6/6`、**`vm_stages=44/44`**、**`leaked=0`**；`sha256=38daad90adae22ce...` / `c99398fec0b12854...`） |
+| Stage 44 专项双模单测（60 项） | 默认 + `FX3_FX6_FORCE_CLEAN_ROOM=1` | **`60/60 OK`**（`2.545s`） |
+| `outputs/fx3-vm/tests` 全量单测发现 | 默认 + `FX3_FX6_FORCE_CLEAN_ROOM=1` | **`1795/1795 OK`**（本地 `124.291s` / 洁净室 `116.697s`，洁净室按预期 `skipped=3`） |
+| `scripts/run_all_lab_tests.py --clean-only` | 全仓洁净室与字节码门禁 | **`ALL GREEN`**（`0.05s`，零 `.pyc` 残留） |

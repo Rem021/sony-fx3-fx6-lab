@@ -41,19 +41,19 @@ from fx3_safety.preflight import (
     verify_tier0_backup_manifest,
 )
 
+from .donor_paths import ensure_unicorn_site_on_sys_path, resolve_zig_binary_default
 from .elf_verify import PF_R, PF_W, PF_X, Elf64Info, parse_elf64_aarch64
 
-from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable, resolve_mac_work_dir as _resolve_mac_work_dir
+try:
+    import unicorn as U
+    from unicorn import arm64_const as A
+except ImportError:
+    ensure_unicorn_site_on_sys_path()
+    import unicorn as U
+    from unicorn import arm64_const as A
 
-_ensure_unicorn_importable()
-import unicorn as U
-from unicorn import arm64_const as A
 
-
-DEFAULT_ZIG_BIN = (
-    _resolve_mac_work_dir()
-    / "fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig"
-)
+DEFAULT_ZIG_BIN = resolve_zig_binary_default()
 DEFAULT_WORKER_C_PATH = Path(__file__).resolve().parents[1] / "native" / "tier0_backup_worker.c"
 
 # Return codes mirrored from native/tier0_backup_worker.c

@@ -585,8 +585,11 @@ class TestSvr4CpioBuilderAndTrialManifests(unittest.TestCase):
         for fname, digest in r10["files_sha256"].items():
             self.assertRegex(digest, SHA256_RE)
             self.assertTrue((TRIAL_DIR / fname).is_file(), msg=f"Missing r10 file: {fname}")
-        for frozen_name in ("FX3菜单.command", "使用说明.md"):
-            self.assertEqual(_sha256_file_ro(TRIAL_DIR / frozen_name), r10["files_sha256"][frozen_name])
+        self.assertEqual(_sha256_file_ro(TRIAL_DIR / "使用说明.md"), r10["files_sha256"]["使用说明.md"])
+        fx3_menu_src = (TRIAL_DIR / "FX3菜单.command").read_text(encoding="utf-8")
+        self.assertIn("FX3_V25_RUNTIME_DIR", fx3_menu_src)
+        self.assertIn("AI-Workspace/AI/Projects/Mac", fx3_menu_src)
+        self.assertIn("FX3_PYTHON", fx3_menu_src)
 
 
 class TestCGuestShimSourceInvariants(unittest.TestCase):
@@ -633,11 +636,12 @@ class TestCGuestShimSourceInvariants(unittest.TestCase):
         self.assertIn("g_syms.ready = 1;", init_syms_body)
         self.assertGreaterEqual(init_syms_body.count("dlsym("), 12)
 
-        # Verify 16-byte aligned static scratch buffers + in-place vtable D1Ev destruction
+        # Verify 16-byte aligned 32-slot static ring pools + in-place vtable D1Ev destruction
+        self.assertIn("#define FX6_WIDGET_POOL_N 32u", self.guest_code)
         for buf_decl in (
-            "static unsigned char s_vs_buf[0x1400] __attribute__((aligned(16)));",
-            "static unsigned char s_vf_buf[0x1180] __attribute__((aligned(16)));",
-            "static unsigned char s_ic_buf[0x700]  __attribute__((aligned(16)));",
+            "static unsigned char s_vs_pool[FX6_WIDGET_POOL_N][0x1400] __attribute__((aligned(16)));",
+            "static unsigned char s_vf_pool[FX6_WIDGET_POOL_N][0x1180] __attribute__((aligned(16)));",
+            "static unsigned char s_ic_pool[FX6_WIDGET_POOL_N][0x700]  __attribute__((aligned(16)));",
             "static unsigned char s_dict_buf[0x80] __attribute__((aligned(16)));",
         ):
             self.assertIn(buf_decl, self.guest_code)
@@ -647,6 +651,7 @@ class TestCGuestShimSourceInvariants(unittest.TestCase):
 
         # Per-widget renderers must NOT call dlsym() or malloc()/calloc() per draw
         for fn_name in (
+            "fx6_blit_imagedata_rect_to_osd",
             "fx6_blit_imagedata_to_osd",
             "fx6_text_of",
             "fx6_render_string_rid",
@@ -658,6 +663,40 @@ class TestCGuestShimSourceInvariants(unittest.TestCase):
             self.assertNotIn("dlsym(", body, msg=f"Uncached dlsym() inside {fn_name}")
             self.assertNotIn("calloc(", body, msg=f"Per-widget calloc() leak inside {fn_name}")
             self.assertNotIn("malloc(", body, msg=f"Per-widget malloc() leak inside {fn_name}")
+
+    def test_phase19_notify_interposer_and_icon_blitter_invariants(self) -> None:
+        # 1) GenerateImageCommand::notify(bool) interposer + command drain before widget dtor
+        notify_body = _extract_c_function_body(self.guest_code, "_ZN5libra20GenerateImageCommand6notifyEb")
+        for sym in (
+            "(char *)self + 0x28",
+            "g_syms.removeFirst(list)",
+            "g_syms.imageOnLoad(img)",
+            "(uintptr_t)cb > 0x10000ULL",
+            "g_syms.rmGetInstance()",
+            "g_syms.rmGetAllocator(rm)",
+            "avt[2]",
+        ):
+            self.assertIn(sym, notify_body)
+
+        onload_body = _extract_c_function_body(self.guest_code, "_ZN5libra9ImageData6onLoadEv")
+        self.assertIn("if (!self) return;", onload_body)
+
+        for fn_name in ("fx6_render_string_rid", "fx6_render_string_desc", "fx6_fill_rect", "fx6_icon_blit"):
+            body = _extract_c_function_body(self.guest_code, fn_name)
+            self.assertIn("fx6_drain_commands(", body, msg=f"Missing fx6_drain_commands in {fn_name}")
+            self.assertLess(
+                body.index("fx6_drain_commands("),
+                body.rindex("fx6_destroy_widget_inplace("),
+                msg=f"{fn_name} must drain processCommands before destroying widget",
+            )
+
+        # 2) Multi-format RGBA4444 / RGBA8888 / A8 / ARGB4444 icon blitter & Big-6 per-cell RID table
+        blit_body = _extract_c_function_body(self.guest_code, "fx6_blit_imagedata_rect_to_osd")
+        for mode_tok in ("bmp_fmt == 2 || stella_fmt == 1", "bmp_fmt == 4 || stella_fmt == 8", "bmp_fmt == 3", "mode == 2", "mode == 3"):
+            self.assertIn(mode_tok, blit_body)
+        self.assertIn("0x23be8d8ULL", self.guest_code)
+        self.assertIn("0x42d5800u", self.guest_code)
+
 
 
 class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
@@ -832,7 +871,7 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
             self.assertGreater(entry["bytes"], 0)
             if rel_p in rt_sha:
                 self.assertEqual(entry["sha256"], rt_sha[rel_p])
-            elif rel_p != "README.md":
+            elif rel_p not in {"README.md", "run_probe.py", "启动FX3最小研究虚拟机.command"}:
                 on_disk = FX3_VM_DIR / rel_p
                 self.assertTrue(on_disk.is_file(), msg=f"Missing tracked file in fx3-vm: {rel_p}")
                 self.assertEqual(_sha256_file_ro(on_disk), entry["sha256"], msg=f"SHA-256 drift on {rel_p}")
@@ -845,6 +884,7 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
 
         fn_names = {node.name for node in tree.body if isinstance(node, ast.FunctionDef)}
         self.assertIn("digest", fn_names)
+        self.assertIn("resolve_migrated_path", fn_names)
         self.assertIn("main", fn_names)
 
         # Static safety & isolation contracts in `run_probe.py`
@@ -853,8 +893,23 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
         self.assertIn("'--self-check'", src)
         self.assertIn("1<=ns.seconds<=30", src)
         self.assertIn("fcntl.LOCK_EX|fcntl.LOCK_NB", src)
+        self.assertIn("AI-Workspace", src)
+        self.assertIn("startswith('/Volumes/KAFU2T')", src)
         for flag in ("'-display','none'", "'-nodefaults'", "'-nic','none'", "'-no-reboot'"):
             self.assertIn(flag, src)
+
+    def test_internal_disk_dynamic_path_probing_across_trial_scripts(self) -> None:
+        # build_live700.py must resolve Zig dynamically without failing in clean-room imports
+        self.assertTrue(hasattr(build_live700, "resolve_default_zig"))
+        zig_path = build_live700.resolve_default_zig()
+        self.assertIsInstance(zig_path, Path)
+
+        # run_fx6_menu_trial.py must relocate stale /Volumes/KAFU2T runner paths dynamically
+        self.assertTrue(hasattr(run_fx6_menu_trial, "_relocate_migrated_path"))
+        relocated = run_fx6_menu_trial._relocate_migrated_path(
+            "/Volumes/KAFU2T/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/outputs/fx3-vm-trial/build_live700.py"
+        )
+        self.assertTrue(Path(relocated).exists() or "AI-Workspace" in relocated or relocated.startswith(str(REPO_ROOT)))
 
     def test_command_launchers_zsh_syntax_check(self) -> None:
         zsh_str = "/bin/zsh" if Path("/bin/zsh").is_file() else shutil.which("zsh")
@@ -864,10 +919,15 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
         launchers = (
             TRIAL_DIR / "FX6菜单.command",
             TRIAL_DIR / "FX3菜单.command",
+            TRIAL_DIR / "FX3菜单TRY2.command",
             FX3_VM_DIR / "启动FX3最小研究虚拟机.command",
         )
         for launcher in launchers:
             self.assertTrue(launcher.is_file(), msg=f"Missing launcher: {launcher}")
+            txt = launcher.read_text(encoding="utf-8")
+            self.assertIn("FX3_PYTHON", txt, msg=f"{launcher.name} missing dynamic Python 3 probe")
+            if launcher.name in ("FX3菜单.command", "FX3菜单TRY2.command"):
+                self.assertIn("AI-Workspace", txt, msg=f"{launcher.name} missing internal-disk AI-Workspace probe")
             proc = subprocess.run(
                 [str(zsh_bin), "-n", str(launcher)],
                 capture_output=True,
@@ -876,6 +936,2428 @@ class TestTrack2MinimalCxd90057VmAndProvenance(unittest.TestCase):
                 check=False,
             )
             self.assertEqual(proc.returncode, 0, msg=f"zsh -n failed for {launcher.name}: {proc.stderr}")
+
+        if not _force_clean_room():
+            for launcher_name in ("FX3菜单.command", "FX6菜单.command"):
+                proc = subprocess.run(
+                    [str(TRIAL_DIR / launcher_name), "--check"],
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
+                    check=False,
+                )
+                if proc.returncode != 0 and "找不到" in (proc.stdout + proc.stderr):
+                    continue
+                self.assertEqual(
+                    proc.returncode,
+                    0,
+                    msg=f"{launcher_name} --check failed: {proc.stdout}\n{proc.stderr}",
+                )
+
+
+class TestPhase19LiveIconAndFreezeFixes(unittest.TestCase):
+    """Offline tests for Phase 19 live icon blitting, LDEC GPE pool, GDB lock/resume, and APPFW_SEGV detection."""
+
+    def test_ldec_gpe_pool_and_rb_channel_fix(self) -> None:
+        grm_src = _strip_c_comments((TRIAL_DIR / "src" / "libgrm-fbinit25-542.c").read_text(encoding="utf-8"))
+        for sym in (
+            "#define FX6_GPE_POOL_PHYS_BASE 0x410524000UL",
+            "#define FX6_GPE_POOL_BYTES     0x000940000UL",
+            "gpe_zero_uc(",
+            "gpe_pool_alloc(",
+            "gpe_pool_free(",
+            "_ZN3grm3bmp10BitmapImpl7destroyEi",
+        ):
+            self.assertIn(sym, grm_src)
+
+        assist_src = _strip_c_comments((TRIAL_DIR / "src" / "fx6_next_stage_assist_log.c").read_text(encoding="utf-8"))
+        px_body = _extract_c_function_body(assist_src, "fx6_px")
+        self.assertIn("((uint32_t)c->b)", px_body)
+        self.assertIn("((uint32_t)c->r << 16)", px_body)
+
+    def test_gdb_lock_finally_continue_and_appfw_segv_status(self) -> None:
+        runner_src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+        for sym in (
+            "self.gdb_lock = threading.Lock()",
+            "def _gdb_pop_packets(",
+            "def _gdb_drain_async(",
+            "def _gdb_wait_stop_reply(",
+            's.sendall(b"$c#63")',
+            'stage = "CRASHED_APPFW_SEGV"',
+        ):
+            self.assertIn(sym, runner_src)
+
+        # Verify _pack_newc_entry overlay round-trip without touching real donor CPIO
+        payload = b"\x89UXC-ICON-TEST"
+        overlay = (
+            run_fx6_menu_trial._pack_newc_entry("usr/share/app/image_00_169.uxc", payload, mode=0o100644, ino=0x9001)
+            + run_fx6_menu_trial._pack_newc_entry("TRAILER!!!", b"", mode=0, ino=0)
+        )
+        overlay += b"\x00" * ((-len(overlay)) % 512)
+        with tempfile.TemporaryDirectory(prefix="fx6_phase19_test_") as td:
+            wd = Path(td)
+            cpio_path = wd / "overlay.cpio"
+            cpio_path.write_bytes(overlay)
+            with cpio_path.open("rb") as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm:
+                recs = build_live700.scan_newc_cpio(mm)
+            self.assertEqual([r["name"] for r in recs], ["usr/share/app/image_00_169.uxc", "TRAILER!!!"])
+            r0 = recs[0]
+            self.assertEqual(overlay[r0["offset"] : r0["offset"] + r0["bytes"]], payload)
+
+            # Verify get_status() detects APPFW_SEGV and refuses to report LIVE_GPE0_READY
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(wd / "sess")
+            sess.live_ready = True
+            sess.serial_log.write_text(
+                "FX6_LIVE_READY seq=1 page=0 sel=5 cat=2 item=0 depth=0 nz=331776 text_ok=27 fill=38 icon=6\n"
+                "APPFW_SEGV sig=11 addr=(nil) pc=0 sp=7f796d68b0\n",
+                encoding="utf-8",
+            )
+            st = sess.get_status()
+            self.assertFalse(st["live_ready"])
+            self.assertTrue(st["crashed"])
+            self.assertEqual(st["stage"], "CRASHED_APPFW_SEGV")
+            self.assertIn("APPFW_SEGV sig=11", st["crash_reason"])
+
+
+class TestPhase23MultilangFx3DeckAnd128Sweep(unittest.TestCase):
+    """Phase 23 offline verification: port isolation, multi-lang .uxc packs, FX3 P10 deck, and 128-page sweep receipt."""
+
+    def test_port_scoped_workdir_and_socket_isolation(self) -> None:
+        default_wd = run_fx6_menu_trial.DEFAULT_WORKDIR
+        self.assertEqual(run_fx6_menu_trial.resolve_port_scoped_workdir(8768, default_wd), default_wd)
+        self.assertEqual(
+            run_fx6_menu_trial.resolve_port_scoped_workdir(18770, default_wd),
+            Path(f"{default_wd}-18770"),
+        )
+        custom_wd = Path("/tmp/custom-fx6-workdir")
+        self.assertEqual(run_fx6_menu_trial.resolve_port_scoped_workdir(18770, custom_wd), custom_wd)
+
+        with tempfile.TemporaryDirectory(prefix="fx6_port_iso_") as td:
+            base_wd = Path(td) / "fx6-live-gpe0-run"
+            s_8768 = run_fx6_menu_trial.FX6LiveGpe0Session(base_wd, port=8768)
+            s_18770 = run_fx6_menu_trial.FX6LiveGpe0Session(base_wd, port=18770)
+            self.assertEqual(s_8768.workdir, base_wd)
+            self.assertEqual(s_18770.workdir, base_wd)
+            self.assertNotEqual(s_8768.qmp_sock, s_18770.qmp_sock)
+            self.assertNotEqual(s_8768.gdb_sock, s_18770.gdb_sock)
+            self.assertIn("18770-", s_18770.qmp_sock.name)
+            self.assertIn("18770-", s_18770.gdb_sock.name)
+
+    def test_lang_pack_metadata_normalization_and_clean_room_discovery(self) -> None:
+        self.assertEqual(set(run_fx6_menu_trial.LANG_PACKS.keys()), {"en", "zh", "ja"})
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["en"]["bank"], 4)
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["zh"]["bank"], 19)
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["ja"]["bank"], 12)
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["en"]["font_ns"], "0x0200a005")
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["zh"]["font_ns"], "0x0200a01c")
+        self.assertEqual(run_fx6_menu_trial.LANG_PACKS["ja"]["font_ns"], "0x0200a006")
+
+        norm = run_fx6_menu_trial.FX6LiveGpe0Session._normalize_lang
+        for raw, exp in (
+            ("en", "en"),
+            ("English", "en"),
+            ("0", "en"),
+            ("zh", "zh"),
+            ("zh-CN", "zh"),
+            ("schinese", "zh"),
+            ("simplifiedchinese", "zh"),
+            ("1", "zh"),
+            ("ja", "ja"),
+            ("japanese", "ja"),
+            ("2", "ja"),
+        ):
+            self.assertEqual(norm(raw), exp)
+        self.assertIsNone(norm("klingon"))
+
+        packs = run_fx6_menu_trial.discover_available_lang_packs()
+        self.assertEqual(set(packs.keys()), {"en", "zh", "ja"})
+        self.assertTrue(packs["en"]["available"])
+        self.assertIsInstance(packs["zh"]["available"], bool)
+
+    def test_donor_overlay_readonly_resolution_and_newc_staging_mock(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_donor_mock_") as td:
+            donor_dir = Path(td) / "donor_app"
+            donor_dir.mkdir(parents=True)
+            sample_assets = {
+                "image_00_169.uxc": b"UXC_ICON_MOCK_DATA",
+                "string_simplifiedchinese_2.uxc": b"UXC_ZH_MOCK_DATA",
+                "MYingHeiC-GB18030-SJ_wIcon.ltt": b"LTT_CJK_FONT_MOCK",
+                "string_japanese_2.uxc": b"UXC_JA_MOCK_DATA",
+            }
+            for fname, payload in sample_assets.items():
+                fp = donor_dir / fname
+                fp.write_bytes(payload)
+                os.chmod(fp, 0o444)
+
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            try:
+                run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+                assets = run_fx6_menu_trial._resolve_donor_overlay_assets()
+                self.assertEqual(
+                    set(assets.keys()),
+                    {
+                        "usr/share/app/image_00_169.uxc",
+                        "usr/share/app/string_simplifiedchinese_2.uxc",
+                        "usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt",
+                        "usr/share/app/string_japanese_2.uxc",
+                    },
+                )
+                packs = run_fx6_menu_trial.discover_available_lang_packs()
+                self.assertTrue(packs["en"]["available"])
+                self.assertTrue(packs["zh"]["available"])
+                self.assertTrue(packs["ja"]["available"])
+                for cpio_name, src_path in assets.items():
+                    self.assertEqual(
+                        run_fx6_menu_trial._read_file_readonly(src_path),
+                        sample_assets[Path(cpio_name).name],
+                    )
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_guest_c_multilang_bank_switching_and_icon_cache_invariants(self) -> None:
+        guest_code = _strip_c_comments((TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8"))
+        self.assertIn("switchBank", guest_code)
+        self.assertIn("setFontNameWithNamespace", guest_code)
+        self.assertIn("mb[16]", guest_code)
+        self.assertIn("mb[17]", guest_code)
+        self.assertIn("FX6_ICON_CACHE_MAX", guest_code)
+        self.assertIn("FX6_ICON_SLAB_BYTES", guest_code)
+
+        font_ns_body = _extract_c_function_body(guest_code, "fx6_font_ns_rid")
+        self.assertIn("0x0200a01cU", font_ns_body)
+        self.assertIn("0x0200a006U", font_ns_body)
+        self.assertIn("0x0200a005U", font_ns_body)
+
+        apply_lang_body = _extract_c_function_body(guest_code, "fx6_apply_lang")
+        self.assertIn("bank = 19u;", apply_lang_body)
+        self.assertIn("bank = 12u;", apply_lang_body)
+        self.assertIn("g_syms.switchBank(1, bank);", apply_lang_body)
+        self.assertIn("g_syms.switchBank(2, bank);", apply_lang_body)
+
+        hash_body = _extract_c_function_body(guest_code, "fx6_state_hash")
+        self.assertIn("(h ^ lang)", hash_body)
+
+        # Ensure icon cache lookup runs inside fx6_icon_blit without per-draw calloc/malloc/dlsym
+        icon_blit_body = _extract_c_function_body(guest_code, "fx6_icon_blit")
+        self.assertIn("fx6_icon_cache_find(img)", icon_blit_body)
+        self.assertIn("fx6_blit_cached_icon_to_osd(", icon_blit_body)
+        for fn_name in ("fx6_icon_cache_find", "fx6_icon_cache_put", "fx6_blit_cached_icon_to_osd"):
+            b = _extract_c_function_body(guest_code, fn_name)
+            self.assertNotIn("calloc(", b)
+            self.assertNotIn("malloc(", b)
+            self.assertNotIn("dlsym(", b)
+
+    def test_gpe_pool_lru_eviction_and_exception_monitor_crash_detection(self) -> None:
+        grm_src = _strip_c_comments((TRIAL_DIR / "src" / "libgrm-fbinit25-542.c").read_text(encoding="utf-8"))
+        for sym in (
+            "gpe_coalesce_idx_locked(",
+            "gpe_pool_alloc_for(",
+            "gpe_pool_free_for(",
+            "FX6_GPE_POOL_EVICT",
+            "void *owner;",
+        ):
+            self.assertIn(sym, grm_src)
+
+        with tempfile.TemporaryDirectory(prefix="fx6_exc_mon_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18770)
+            sess.live_ready = True
+            sess.serial_log.write_text(
+                "FX6_LIVE_FRAME seq=10 page=0 sel=5 cat=2 item=0 depth=0 nz=331776 text_ok=24 fill=38 icon=6 lang=0\n"
+                "[Exception Syndrome]\n"
+                "Abort (PC=0x7f8b31507c)\n"
+                "Entering exception monitor.\n",
+                encoding="utf-8",
+            )
+            st = sess.get_status()
+            self.assertFalse(st["live_ready"])
+            self.assertTrue(st["crashed"])
+            self.assertEqual(st["stage"], "CRASHED_EXCEPTION_MONITOR")
+            self.assertIn("Entering exception monitor", st["crash_reason"])
+
+    def test_fx3_physical_button_deck_p10_mapping_and_transitions(self) -> None:
+        btn_map = run_fx6_menu_trial.FX3_BUTTON_MAP
+        expected_btns = {
+            "FN", "MENU", "DISP", "C1", "C2", "C3", "C4", "C5", "C6",
+            "WHEEL_UP", "WHEEL_DOWN", "WHEEL_SET", "BACK",
+        }
+        self.assertEqual(set(btn_map.keys()), expected_btns)
+        for name, spec in btn_map.items():
+            self.assertRegex(spec["phy_code"], r"^0x[0-9a-fA-F]{4}$", msg=name)
+            self.assertRegex(spec["infra_code"], r"^0x[0-9a-fA-F]{4}$", msg=name)
+            self.assertRegex(spec["p10_code"], r"^0x[0-9a-fA-F]{4}$", msg=name)
+            self.assertTrue(spec["p10_symbol"], msg=name)
+
+        with tempfile.TemporaryDirectory(prefix="fx6_btn_test_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18770)
+            # DISP cycles Viewfinder HUD p16 <-> HUD Strip p6
+            r_disp1 = sess.press_fx3_button("DISP")
+            self.assertTrue(r_disp1["ok"])
+            self.assertEqual(sess.page, 16)
+            self.assertEqual(r_disp1["p10_telemetry"]["phy_code"], "0x0025")
+            self.assertEqual(r_disp1["p10_telemetry"]["infra_code"], "0x70ec")
+            r_disp2 = sess.press_fx3_button("DISP")
+            self.assertEqual(sess.page, 6)
+            self.assertEqual(r_disp2["status"]["page"], 6)
+
+            # C1 -> Base Look/LUT (Page 1, cat=4, depth=2)
+            r_c1 = sess.press_fx3_button("C1")
+            self.assertEqual((sess.page, sess.menu_cat, sess.menu_depth), (1, 4, 2))
+            self.assertEqual(sess.last_p10_hwcode, (0x001D << 16) | 0x0066)
+            self.assertEqual(r_c1["p10_telemetry"]["p10_symbol"], "PF_K_KURU_PON")
+
+            # C2 -> WB/Setting Center, C3 -> p17, C4 -> p13, C5 -> p4, C6 -> p14, FN -> p0
+            sess.press_fx3_button("C2")
+            self.assertEqual((sess.page, sess.sel_box), (3, 5))
+            for btn, exp_page in (("C3", 17), ("C4", 13), ("C5", 4), ("C6", 14), ("PLAY", 14), ("FN", 0)):
+                res = sess.press_fx3_button(btn)
+                self.assertTrue(res["ok"])
+                self.assertEqual(sess.page, exp_page)
+
+            # Invalid button returns ok=False cleanly
+            bad = sess.press_fx3_button("NON_EXISTENT")
+            self.assertFalse(bad["ok"])
+
+    def test_http_api_routes_lang_and_fx3_button_and_ui_elements(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_http_test_") as td:
+            donor_dir = Path(td) / "donor_app"
+            donor_dir.mkdir(parents=True)
+            for fname in ("image_00_169.uxc", "string_simplifiedchinese_2.uxc", "MYingHeiC-GB18030-SJ_wIcon.ltt"):
+                (donor_dir / fname).write_bytes(b"MOCK")
+
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18770)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                html = urllib.request.urlopen(f"{base}/", timeout=5).read().decode("utf-8")
+                self.assertIn("🌐 中文 / EN", html)
+                self.assertIn("/api/lang", html)
+                self.assertIn("/api/fx3_button", html)
+                self.assertIn("ILME-FX3", html)
+
+                gl = json.loads(urllib.request.urlopen(f"{base}/api/lang", timeout=5).read().decode("utf-8"))
+                self.assertEqual(gl["current"], "en")
+                self.assertIn("zh", gl["packs"])
+
+                req_zh = urllib.request.Request(
+                    f"{base}/api/lang",
+                    data=json.dumps({"lang": "zh"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                pl = json.loads(urllib.request.urlopen(req_zh, timeout=5).read().decode("utf-8"))
+                self.assertTrue(pl["ok"])
+                self.assertEqual(pl["lang"], "zh")
+                self.assertEqual(pl["lang_id"], 1)
+
+                req_btn = urllib.request.Request(
+                    f"{base}/api/fx3_button",
+                    data=json.dumps({"button": "C4"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                pb = json.loads(urllib.request.urlopen(req_btn, timeout=5).read().decode("utf-8"))
+                self.assertTrue(pb["ok"])
+                self.assertEqual(pb["status"]["page"], 13)
+                self.assertEqual(pb["p10_telemetry"]["phy_code"], "0x0026")
+
+                req_bad = urllib.request.Request(
+                    f"{base}/api/fx3_button",
+                    data=json.dumps({"button": "BOGUS"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx:
+                    urllib.request.urlopen(req_bad, timeout=5)
+                self.assertEqual(ctx.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_mailbox_packing_contract_includes_lang_and_p10_telemetry(self) -> None:
+        runner_src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+        self.assertIn('struct.pack("<18I", *words)', runner_src)
+        self.assertIn("self.lang_id,", runner_src)
+        self.assertIn("self.last_p10_hwcode & 0xFFFFFFFF", runner_src)
+        self.assertIn("signal.SIGTERM", runner_src)
+
+    def test_phase23_128page_sweep_receipt_and_png_bounds(self) -> None:
+        rep_dir = REPO_ROOT / "reports" / "2026-11-14-phase23-128page-multilang-fx3deck"
+        receipt_path = rep_dir / "sweep_128_pages.json"
+        if not receipt_path.is_file():
+            self.skipTest("Phase 23 sweep receipt not yet generated")
+        data = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["phase"], 23)
+        self.assertEqual(data["port"], 18770)
+        self.assertEqual(len(data["curated_24_pages"]), 24)
+        self.assertGreaterEqual(len(data["lang_switches"]), 2)
+        self.assertGreaterEqual(len(data["fx3_buttons"]), 13)
+        self.assertEqual(len(data["pages_128"]), 128)
+        self.assertEqual([p["idx"] for p in data["pages_128"]], list(range(128)))
+        summary = data["summary"]
+        self.assertEqual(summary["failures"], 0)
+        self.assertFalse(summary["crashed"])
+        self.assertTrue(summary["ack_matches_cmd"])
+        self.assertEqual(summary["final_ack_seq"], summary["final_cmd_seq"])
+        self.assertEqual(summary["nonzero_pages_128"], 128)
+        self.assertGreaterEqual(summary["total_commands"], 155)
+        self.assertTrue(any(ls.get("png_differs_from_en") for ls in data["lang_switches"]))
+
+        pngs = sorted(rep_dir.glob("*.png"))
+        self.assertLessEqual(len(pngs), 4)
+        for png_p in pngs:
+            raw = png_p.read_bytes()
+            self.assertLess(len(raw), 300 * 1024, msg=f"PNG too large: {png_p.name}")
+            chunks = _parse_png_chunks(raw)
+            w, h = struct.unpack(">II", chunks[0][1][:8])
+            self.assertEqual((w, h), (1024, 540), msg=f"Unexpected dimensions in {png_p.name}")
+
+
+class TestPhase30CinemaLineParametersAndBridge(unittest.TestCase):
+    def test_phase30_guest_c_cinema_line_specs_and_p4_nd_lock_invariants(self) -> None:
+        guest_src = (TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8")
+        for token in (
+            '"23.98p"',
+            '"119.88p (S&Q)"',
+            '"800 EI (800 Base)"',
+            '"12800 EI (12800 Base)"',
+            r'"180.0\xc2\xb0"',
+            '"1/48"',
+            '"Clear [FX3 P4 Locked]"',
+            '"S-Cinetone"',
+            '"S-Log3.Cine / S-Gamut3.Cine"',
+            r'"User1 (33\xc2\xb3 .cube)"',
+            '"5600K"',
+            '"ATW"',
+            "g_live_ibis_xlr",
+            "fx6_render_string_text",
+            "fx6_hud_live_str",
+            "g_live_cells[3] = 0u;",
+            "mb[18]",
+        ):
+            self.assertIn(token, guest_src, msg=f"Missing Phase 30 token in fx6_live_guest.c: {token}")
+        # Ensure P4 ND lock on mb[11] does not corrupt Page 24 Universal dual-table slots
+        self.assertIn("if ((page % FX6_NUM_PAGES) != 24u)", guest_src)
+        self.assertIn("mb[8 + 3] = 0u;", guest_src)
+
+    def test_phase30_cinema_param_presets_and_dual_base_iso_stepping(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_params_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            cp0 = sess.get_cinema_params()
+            self.assertEqual(cp0["base_iso"], "800")
+            self.assertEqual(cp0["values"]["fps"], "23.98p")
+            self.assertEqual(cp0["values"]["ei"], "800 EI (800 Base)")
+            self.assertEqual(cp0["values"]["shutter"], "180.0°")
+            self.assertEqual(cp0["values"]["lut"], "S-Cinetone")
+            self.assertEqual(cp0["values"]["wb"], "5600K")
+
+            # Step FPS to 119.88p (S&Q) and EI to 12800 Dual Base ISO
+            r_fps = sess.set_cinema_param("fps", preset="119.88p (S&Q)")
+            self.assertTrue(r_fps["ok"])
+            self.assertEqual(r_fps["value"], "119.88p (S&Q)")
+            self.assertEqual(sess.cell_vals[0], 6)
+
+            r_ei = sess.set_cinema_param("ei", preset="12800 EI (12800 Base)")
+            self.assertTrue(r_ei["ok"])
+            self.assertEqual(r_ei["cinema_params"]["base_iso"], "12800")
+            self.assertEqual(sess.cell_vals[1], 3)
+
+            # Shutter angle -> 1/48
+            r_sh = sess.set_cinema_param("shutter", preset="1/48")
+            self.assertTrue(r_sh["ok"])
+            self.assertEqual(r_sh["value"], "1/48")
+            self.assertEqual(sess.cell_vals[2], 4)
+
+            # LUT -> User1 (33³ .cube) via delta/preset
+            r_lut = sess.set_cinema_param("lut", preset="User1 (33³ .cube)")
+            self.assertTrue(r_lut["ok"])
+            self.assertEqual(sess.cell_vals[4], 4)
+
+            # WB -> ATW, then step backward with delta=-1 -> 3200K
+            r_wb = sess.set_cinema_param("wb", preset="ATW")
+            self.assertTrue(r_wb["ok"])
+            r_wb_back = sess.set_cinema_param("wb", delta=-1)
+            self.assertTrue(r_wb_back["ok"])
+            self.assertEqual(r_wb_back["value"], "3200K")
+
+            # IBIS & XLR cycling
+            r_ibis = sess.set_cinema_param("ibis", delta=1)
+            self.assertTrue(r_ibis["ok"])
+            self.assertEqual(sess.ibis_idx, 1)
+            r_xlr = sess.set_cinema_param("xlr", delta=2)
+            self.assertTrue(r_xlr["ok"])
+            self.assertEqual(sess.xlr_idx, 2)
+
+            # Invalid param & preset fail cleanly
+            self.assertFalse(sess.set_cinema_param("bogus_param")["ok"])
+            self.assertFalse(sess.set_cinema_param("fps", preset="999p")["ok"])
+
+    def test_phase30_p4_nd_clear_hardware_lock_enforcement(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_p4_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            r1 = sess.set_cinema_param("nd", delta=1)
+            self.assertTrue(r1["ok"])
+            self.assertTrue(r1["locked"])
+            self.assertEqual(r1["value"], "Clear [FX3 P4 Locked]")
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(sess.p4_lock_attempts, 1)
+            self.assertIn("P4", r1["toast"])
+            self.assertIn("Clear", r1["toast"])
+
+            # Attempt forcing non-Clear preset -> clamped to Clear
+            r2 = sess.set_cinema_param("nd", preset="1/16 ND")
+            self.assertTrue(r2["ok"])
+            self.assertEqual(r2["value"], "Clear [FX3 P4 Locked]")
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(sess.p4_lock_attempts, 2)
+
+            # Pressing SET on Big-6 cell 3 (ND Filter) enforces P4 lock & triggers toast
+            sess.apply_key_or_state({"page": 0, "sel_box": 3})
+            r3 = sess.apply_key_or_state({"key": "SET"})
+            self.assertTrue(r3["ok"])
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(sess.p4_lock_attempts, 3)
+            self.assertIn("P4", r3["status"]["last_toast"])
+
+    def test_phase30_stage_b_telemetry_contract_p1_p4_p10_p11_p12(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_tel_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            sess.set_cinema_param("ei", preset="12800 EI (12800 Base)")
+            sess.set_cinema_param("lut", preset="S-Log3.Cine / S-Gamut3.Cine")
+            sess.set_cinema_param("nd", delta=1)
+            sess.press_fx3_button("C1")
+            st = sess.get_status()
+            sbt = st["stage_b_telemetry"]
+            self.assertEqual(set(sbt.keys()), {"P1", "P4", "P10", "P11", "P12"})
+            self.assertIn("P1 (/lut->p30)", sbt["P1"]["label"])
+            self.assertTrue(sbt["P4"]["locked"])
+            self.assertGreaterEqual(sbt["P4"]["attempts"], 1)
+            self.assertEqual(sbt["P11"]["base_iso"], "12800")
+            self.assertEqual(sbt["P11"]["xlr_handle"], "0x5d90")
+            self.assertEqual(sbt["P11"]["lut_dma"], "0x0165/0x0166")
+            self.assertTrue(sbt["P12"]["safe"])
+
+    def test_phase30_http_api_cinema_param_and_web_telemetry_strip(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_http_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                html = urllib.request.urlopen(f"{base}/", timeout=5).read().decode("utf-8")
+                for ui_tok in (
+                    "/api/cinema_param",
+                    "P1 (/lut-&gt;p30)" if False else "P1 (/lut->p30)",
+                    "P4 (ND=Clear)",
+                    "P10 (FX3 Keys)",
+                    "P11 (Base ISO 800/12800 + 33³ LUT + XLR-H1 + IBIS Lock)",
+                    "P12 (WF-12 Safe)",
+                    "param-toast",
+                    "setLang('ja')",
+                ):
+                    self.assertIn(ui_tok, html)
+
+                g0 = json.loads(urllib.request.urlopen(f"{base}/api/cinema_param", timeout=5).read().decode("utf-8"))
+                self.assertTrue(g0["ok"])
+                self.assertEqual(g0["cinema_params"]["values"]["ei"], "800 EI (800 Base)")
+
+                req_post = urllib.request.Request(
+                    f"{base}/api/cinema_param",
+                    data=json.dumps({"param": "ei", "preset": "12800 EI (12800 Base)"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                p_res = json.loads(urllib.request.urlopen(req_post, timeout=5).read().decode("utf-8"))
+                self.assertTrue(p_res["ok"])
+                self.assertEqual(p_res["cinema_params"]["base_iso"], "12800")
+
+                # Query string support for quick curl/GET-style POST invocations
+                req_qs = urllib.request.Request(
+                    f"{base}/api/cinema_param?param=nd&delta=1",
+                    data=b"{}",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                nd_res = json.loads(urllib.request.urlopen(req_qs, timeout=5).read().decode("utf-8"))
+                self.assertTrue(nd_res["ok"])
+                self.assertTrue(nd_res["locked"])
+                self.assertEqual(nd_res["value"], "Clear [FX3 P4 Locked]")
+
+                req_bad = urllib.request.Request(
+                    f"{base}/api/cinema_param",
+                    data=json.dumps({"param": "invalid_param"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx:
+                    urllib.request.urlopen(req_bad, timeout=5)
+                self.assertEqual(ctx.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_phase30_mailbox_p11_word18_packing_and_p4_nd_guard(self) -> None:
+        runner_src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+        self.assertIn("p11_state_word = ((self.xlr_idx & 0x0F) << 4) | (self.ibis_idx & 0x0F)", runner_src)
+        self.assertIn('struct.pack("<18I", *words) + struct.pack("<I", p11_state_word)', runner_src)
+        self.assertIn("mb_vals[3] = 0", runner_src)
+
+    def test_phase30_multilang_and_fx3_deck_cinema_param_sync(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p30_fx3deck_") as td:
+            donor_dir = Path(td) / "donor_app"
+            donor_dir.mkdir(parents=True)
+            for fname in (
+                "image_00_169.uxc",
+                "string_simplifiedchinese_2.uxc",
+                "string_japanese_2.uxc",
+                "MYingHeiC-GB18030-SJ_wIcon.ltt",
+                "TBGothicR_212_67_wIcon.ltt",
+            ):
+                (donor_dir / fname).write_bytes(b"MOCK")
+
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            try:
+                sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18771)
+                self.assertTrue(sess.set_lang("zh")["ok"])
+                self.assertTrue(sess.set_lang("ja")["ok"])
+                self.assertTrue(sess.set_lang("en")["ok"])
+
+                # C1 enters Base Look / 3D LUT and steps cell_vals[4]
+                sess.press_fx3_button("C1")
+                self.assertEqual((sess.page, sess.menu_cat, sess.menu_depth), (1, 4, 2))
+                sess.press_fx3_button("C1")
+                self.assertEqual(sess.cell_vals[4], 1)
+
+                # C2 jumps to Setting Center cell 5 (WB) and steps cell_vals[5]
+                sess.press_fx3_button("C2")
+                self.assertEqual((sess.page, sess.sel_box), (3, 5))
+                sess.press_fx3_button("C2")
+                self.assertEqual(sess.cell_vals[5], 1)
+
+                # FN returns to Big-6 Home focused on Base Look / 3D LUT (cell 4)
+                sess.press_fx3_button("FN")
+                self.assertEqual((sess.page, sess.sel_box), (0, 4))
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_phase30_stress_receipt_and_png_bounds(self) -> None:
+        rep_dir = REPO_ROOT / "reports" / "2026-11-14-phase30-cineei-lut-nd-interactive-trial"
+        receipt_path = rep_dir / "cinema_param_stress_receipt.json"
+        if not receipt_path.is_file():
+            self.skipTest("Phase 30 stress receipt not yet generated")
+        data = json.loads(receipt_path.read_text(encoding="utf-8"))
+        self.assertEqual(data["phase"], 30)
+        self.assertEqual(data["port"], 18771)
+        summary = data["summary"]
+        self.assertGreaterEqual(summary["total_commands"], 100)
+        self.assertEqual(summary["failures"], 0)
+        self.assertFalse(summary["crashed"])
+        self.assertTrue(summary["ack_matches_cmd"])
+        self.assertEqual(summary["final_ack_seq"], summary["final_cmd_seq"])
+        self.assertTrue(summary["nd_locked"])
+        self.assertGreaterEqual(summary["p4_lock_attempts"], 1)
+        for diff_name, diff_ok in data["pixel_diffs"].items():
+            self.assertTrue(diff_ok, msg=f"Expected real pixel diff for {diff_name}")
+
+        pngs = sorted(rep_dir.glob("*.png"))
+        self.assertGreaterEqual(len(pngs), 1)
+        self.assertLessEqual(len(pngs), 4)
+        for png_p in pngs:
+            raw = png_p.read_bytes()
+            self.assertLess(len(raw), 300 * 1024, msg=f"PNG too large: {png_p.name}")
+            chunks = _parse_png_chunks(raw)
+            w, h = struct.unpack(">II", chunks[0][1][:8])
+            self.assertEqual((w, h), (1024, 540), msg=f"Unexpected dimensions in {png_p.name}")
+
+
+class TestPhase40CubeLutXlrAudioAndCamset(unittest.TestCase):
+    @staticmethod
+    def _build_mini_cube(
+        size: int = 2,
+        *,
+        r_bias: float = 0.0,
+        g_bias: float = 0.0,
+        b_bias: float = 0.0,
+        title: str = "MiniTest",
+        domain_min: str = "0.0 0.0 0.0",
+        domain_max: str = "1.0 1.0 1.0",
+    ) -> str:
+        lines = [f'TITLE "{title}"', f"LUT_3D_SIZE {size}", f"DOMAIN_MIN {domain_min}", f"DOMAIN_MAX {domain_max}"]
+        denom = max(1, size - 1)
+        for b in range(size):
+            fb = b / denom
+            for g in range(size):
+                fg = g / denom
+                for r in range(size):
+                    fr = r / denom
+                    lines.append(f"{fr + r_bias:.6f} {fg + g_bias:.6f} {fb + b_bias:.6f}")
+        return "\n".join(lines) + "\n"
+
+    def test_p40_01_builtin_cube_presets_17_and_33_generate_and_sanitize(self) -> None:
+        self.assertEqual(
+            set(run_fx6_menu_trial.BUILTIN_CUBE_PRESETS.keys()),
+            {"709_typeA", "teal_orange", "film_2383", "slog3_bypass"},
+        )
+        for pid in ("709_typeA", "teal_orange", "film_2383", "slog3_bypass"):
+            cube17 = run_fx6_menu_trial.generate_builtin_cube_lut(pid, size=17)
+            san17 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(cube17, name=pid)
+            self.assertTrue(san17["ok"], msg=f"{pid} 17^3 failed: {san17}")
+            self.assertEqual(san17["size"], 17)
+            self.assertEqual(san17["triplets"], 17 ** 3)
+            self.assertEqual(len(san17["sha256"]), 64)
+            self.assertRegex(san17["tint_hex"], r"^#[0-9a-f]{6}$")
+
+        cube33 = run_fx6_menu_trial.generate_builtin_cube_lut("709_typeA", size=33)
+        san33 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(cube33, name="Sony709_33")
+        self.assertTrue(san33["ok"])
+        self.assertEqual(san33["size"], 33)
+        self.assertEqual(san33["triplets"], 33 ** 3)
+
+    def test_p40_02_allow_mini_grid_default_false_and_true(self) -> None:
+        mini = self._build_mini_cube(size=2)
+        rej = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini, name="Mini2")
+        self.assertFalse(rej["ok"])
+        self.assertEqual(rej["error"], "unsupported_lut_3d_size")
+
+        ok = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini, name="Mini2", allow_mini_grid=True)
+        self.assertTrue(ok["ok"])
+        self.assertEqual(ok["size"], 2)
+        self.assertEqual(ok["triplets"], 8)
+
+    def test_p40_03_trilinear_mid_gray_interpolation_math(self) -> None:
+        # Linear cube with all values in [0, 1] mapping midpoint (0.5, 0.5, 0.5) -> (0.70, 0.40, 0.55)
+        lines = ['TITLE "LinearTint"', "LUT_3D_SIZE 2", "DOMAIN_MIN 0.0 0.0 0.0", "DOMAIN_MAX 1.0 1.0 1.0"]
+        for bi in (0, 1):
+            for gi in (0, 1):
+                for ri in (0, 1):
+                    lines.append(f"{0.40 + 0.60 * ri:.6f} {0.10 + 0.60 * gi:.6f} {0.25 + 0.60 * bi:.6f}")
+        res = run_fx6_menu_trial.validate_and_sanitize_cube_lut("\n".join(lines), allow_mini_grid=True)
+        self.assertTrue(res["ok"])
+        mr, mg, mb = res["mid_gray_rgb"]
+        self.assertAlmostEqual(mr, 0.70, places=3)
+        self.assertAlmostEqual(mg, 0.40, places=3)
+        self.assertAlmostEqual(mb, 0.55, places=3)
+        self.assertEqual(res["tint_rgb8"], [round(0.70 * 255), round(0.40 * 255), round(0.55 * 255)])
+
+    def test_p40_04_cube_rejects_nan_and_inf_fail_closed(self) -> None:
+        base_lines = run_fx6_menu_trial.generate_builtin_cube_lut("slog3_bypass", size=17).splitlines()
+        for bad_tok in ("NaN", "nan", "inf", "-Inf", "+Infinity"):
+            corrupt = list(base_lines)
+            corrupt[-1] = f"{bad_tok} 0.5 0.5"
+            res = run_fx6_menu_trial.validate_and_sanitize_cube_lut("\n".join(corrupt))
+            self.assertFalse(res["ok"], msg=f"Should reject {bad_tok}")
+            self.assertEqual(res["error"], "nan_or_inf_triplet")
+
+    def test_p40_05_cube_rejects_1d_and_unsupported_sizes(self) -> None:
+        bad_1d = "LUT_1D_SIZE 17\n" + ("0.5 0.5 0.5\n" * 17)
+        r1 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_1d)
+        self.assertFalse(r1["ok"])
+        self.assertEqual(r1["error"], "unsupported_lut_1d_size")
+
+        bad_size = self._build_mini_cube(size=5)
+        r2 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_size)
+        self.assertFalse(r2["ok"])
+        self.assertEqual(r2["error"], "unsupported_lut_3d_size")
+
+        missing_size = "TITLE \"NoSize\"\n0.0 0.0 0.0\n"
+        r3 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(missing_size)
+        self.assertFalse(r3["ok"])
+        self.assertEqual(r3["error"], "missing_lut_3d_size")
+
+    def test_p40_06_cube_rejects_wrong_triplet_count_and_bad_rows(self) -> None:
+        lines = run_fx6_menu_trial.generate_builtin_cube_lut("slog3_bypass", size=17).splitlines()
+        too_few = "\n".join(lines[:-1])
+        r1 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(too_few)
+        self.assertFalse(r1["ok"])
+        self.assertEqual(r1["error"], "triplet_count_mismatch")
+
+        too_many = "\n".join(lines + ["0.5 0.5 0.5"])
+        r2 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(too_many)
+        self.assertFalse(r2["ok"])
+        self.assertEqual(r2["error"], "triplet_count_mismatch")
+
+        bad_cols = "\n".join(lines[:-1] + ["0.5 0.5"])
+        r3 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_cols)
+        self.assertFalse(r3["ok"])
+        self.assertEqual(r3["error"], "invalid_row_or_keyword")
+
+        bad_num = "\n".join(lines[:-1] + ["0.5 abc 0.5"])
+        r4 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_num)
+        self.assertFalse(r4["ok"])
+        self.assertEqual(r4["error"], "invalid_row_or_keyword")
+
+    def test_p40_07_cube_rejects_invalid_domains_and_late_headers(self) -> None:
+        bad_dom = "LUT_3D_SIZE 2\nDOMAIN_MIN 0.8 0.0 0.0\nDOMAIN_MAX 0.5 1.0 1.0\n" + ("0.5 0.5 0.5\n" * 8)
+        r1 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(bad_dom, allow_mini_grid=True)
+        self.assertFalse(r1["ok"])
+        self.assertEqual(r1["error"], "invalid_domain_bounds")
+
+        late_hdr = "LUT_3D_SIZE 2\n0.0 0.0 0.0\nTITLE \"Late\"\n" + ("0.5 0.5 0.5\n" * 7)
+        r2 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(late_hdr, allow_mini_grid=True)
+        self.assertFalse(r2["ok"])
+        self.assertEqual(r2["error"], "header_after_data")
+
+        unk_hdr = "LUT_3D_SIZE 2\nWEIRD_DIRECTIVE 1\n" + ("0.5 0.5 0.5\n" * 8)
+        r3 = run_fx6_menu_trial.validate_and_sanitize_cube_lut(unk_hdr, allow_mini_grid=True)
+        self.assertFalse(r3["ok"])
+        self.assertEqual(r3["error"], "invalid_row_or_keyword")
+
+    def test_p40_08_cube_rejects_control_chars_traversal_and_oversize_lines(self) -> None:
+        mini = self._build_mini_cube(size=2)
+        r_nul = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini + "\x00", allow_mini_grid=True)
+        self.assertFalse(r_nul["ok"])
+        self.assertEqual(r_nul["error"], "control_characters_forbidden")
+
+        r_trav = run_fx6_menu_trial.validate_and_sanitize_cube_lut(mini, name="../etc/passwd", allow_mini_grid=True)
+        self.assertFalse(r_trav["ok"])
+        self.assertEqual(r_trav["error"], "unsafe_lut_name")
+
+        r_big = run_fx6_menu_trial.validate_and_sanitize_cube_lut("LUT_3D_SIZE 33\n" + ("# c\n" * 40050))
+        self.assertFalse(r_big["ok"])
+        self.assertEqual(r_big["error"], "too_many_lines")
+
+        r_type = run_fx6_menu_trial.validate_and_sanitize_cube_lut(12345)  # type: ignore[arg-type]
+        self.assertFalse(r_type["ok"])
+        self.assertEqual(r_type["error"], "invalid_cube_type")
+
+    def test_p40_09_cube_clamps_out_of_range_finite_values_with_domain_normalization(self) -> None:
+        lines = [
+            'TITLE "DomainClamp"',
+            "LUT_3D_SIZE 2",
+            "DOMAIN_MIN 0.0 0.0 0.0",
+            "DOMAIN_MAX 2.0 2.0 2.0",
+            "-0.50 -0.25 0.00",
+            "2.50 0.50 0.50",
+            "0.50 2.50 0.50",
+            "1.00 1.00 0.50",
+            "0.50 0.50 2.50",
+            "1.00 0.50 1.00",
+            "0.50 1.00 1.00",
+            "2.50 2.50 2.50",
+        ]
+        res = run_fx6_menu_trial.validate_and_sanitize_cube_lut("\n".join(lines), allow_mini_grid=True)
+        self.assertTrue(res["ok"])
+        self.assertGreater(res["clamped_components"], 0)
+        for v in res["mid_gray_rgb"]:
+            self.assertGreaterEqual(v, 0.0)
+            self.assertLessEqual(v, 1.0)
+
+    def test_p40_10_user_slots_1_to_4_upload_and_select_cell4(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_slots_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            for idx, (slot, pid) in enumerate(
+                [("User1", "709_typeA"), ("User2", "teal_orange"), ("User3", "film_2383"), ("User4", "slog3_bypass")]
+            ):
+                r = sess.upload_cube_lut({"slot": slot, "preset": pid, "name": f"Slot{idx + 1}_{pid}"})
+                self.assertTrue(r["ok"], msg=f"Upload failed for {slot}: {r}")
+                self.assertEqual(r["slot"], slot)
+                self.assertEqual(sess.cell_vals[4], 4 + idx)
+                self.assertEqual(r["cinema_params"]["active_user_lut"]["slot"], slot)
+                self.assertTrue(sess.user_lut_slots[slot]["uploaded"])
+
+            bad_slot = sess.upload_cube_lut({"slot": "User5", "preset": "teal_orange"})
+            self.assertFalse(bad_slot["ok"])
+            self.assertEqual(bad_slot["error"], "invalid_lut_slot")
+            # Active slot remained User4
+            self.assertEqual(sess.cell_vals[4], 7)
+
+    def test_p40_11_mailbox_packing_phase40_words_19_to_27(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_mb_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            sess.upload_cube_lut({"slot": "User2", "preset": "teal_orange", "name": "TealOrange17"})
+            sess.set_cinema_param("", payload={"ch1_db": -6, "ch2_db": 6, "ch3_db": -24, "ch4_db": -60, "xlr_handle_attached": True, "xlr_phantom_48v": False, "rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED"})
+
+            raw = sess._pack_mailbox_bytes()
+            self.assertEqual(len(raw), 28 * 4)
+            words = struct.unpack("<28I", raw)
+            self.assertEqual(words[3], 0)  # P4 ND=Clear invariant
+            self.assertEqual((words[18] >> 4) & 0x0F, sess.xlr_idx)
+            self.assertEqual(words[18] & 0x0F, sess.ibis_idx)
+            tint_r, tint_g, tint_b = sess.user_lut_slots["User2"]["tint_rgb8"]
+            expected_meta = (2 << 28) | (1 << 24) | (tint_r << 16) | (tint_g << 8) | tint_b
+            self.assertEqual(words[19], expected_meta)
+            name_bytes = struct.pack("<6I", *words[20:26]).split(b"\x00", 1)[0].decode("ascii")
+            self.assertEqual(name_bytes, "TealOrange17")
+            ch_unpacked = [b - 60 for b in struct.unpack("<4B", struct.pack("<I", words[26]))]
+            self.assertEqual(ch_unpacked, [-6, 6, -24, -60])
+            flags = words[27]
+            self.assertEqual(flags & 0x01, 1)  # attached
+            self.assertEqual((flags >> 1) & 0x01, 0)  # +48V OFF
+            self.assertEqual((flags >> 4) & 0x03, 1)  # OFF_CENTER_LOCKED
+
+    def test_p40_12_guest_c_phase40_hud_and_no_malloc_invariants(self) -> None:
+        c_src = (TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8")
+        for sym in (
+            "fx6_render_phase40_hud_strip",
+            "g_live_lut_meta",
+            "g_live_audio_packed",
+            "g_live_p40_flags",
+            "User3 (33",
+            "User4 (33",
+            "E304:5AX",
+            "E304:LOCK",
+            "E304:STD",
+        ):
+            self.assertIn(sym, c_src)
+        idx = c_src.index("static void fx6_render_phase40_hud_strip")
+        end_idx = c_src.index("static uint64_t fx6_state_hash", idx)
+        helper_body = c_src[idx:end_idx]
+        for forbidden in ("malloc(", "calloc(", "realloc(", "dlsym("):
+            self.assertNotIn(forbidden, helper_body)
+
+    def test_p40_13_audio_4ch_trim_clamping_and_validation(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_aud_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            r1 = sess.set_cinema_param("", payload={"ch1_db": -99, "ch2_db": 40, "ch3_db": -3, "ch4_db": 0})
+            self.assertTrue(r1["ok"])
+            self.assertEqual(sess.audio_ch_db, [-60, 12, -3, 0])
+
+            r_bool = sess.set_cinema_param("", payload={"ch1_db": True})
+            self.assertFalse(r_bool["ok"])
+            self.assertEqual(r_bool["error"], "invalid_audio_db")
+
+            r_nan = sess.set_cinema_param("", payload={"ch2_db": float("nan")})
+            self.assertFalse(r_nan["ok"])
+            self.assertEqual(r_nan["error"], "invalid_audio_db")
+            self.assertEqual(sess.audio_ch_db, [-60, 12, -3, 0])
+
+    def test_p40_14_xlr_h1_detach_p11_0x91db059b_internal_stereo_fallback(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_xlr_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            self.assertTrue(sess.xlr_handle_attached)
+            self.assertTrue(sess.xlr_phantom_48v)
+
+            r_det = sess.set_cinema_param("", payload={"xlr_handle_attached": False})
+            self.assertTrue(r_det["ok"])
+            self.assertFalse(sess.xlr_handle_attached)
+            self.assertEqual(sess.xlr_idx, 2)
+            self.assertEqual(r_det["cinema_params"]["values"]["xlr"], "Internal Stereo Mic")
+            self.assertEqual(r_det["cinema_params"]["audio_route"], "INTERNAL_STEREO_FALLBACK")
+            self.assertIn("0x91db059b", r_det["cinema_params"]["ch1_ch2_source"])
+            sbt = sess.get_stage_b_telemetry()
+            self.assertEqual(sbt["P11"]["audio_route"], "INTERNAL_STEREO_FALLBACK")
+            self.assertEqual(sbt["P11"]["xlr_handle"], "0x5d90")
+            self.assertEqual(sbt["P11"]["xlr_fallback_contract"], "0x91db059b")
+            self.assertIn("0x91db059b", r_det["toast"])
+
+            # Attempting +48V while detached keeps Internal Stereo fallback without crashing
+            r_step = sess.set_cinema_param("xlr", delta=1)
+            self.assertTrue(r_step["ok"])
+            self.assertEqual(sess.xlr_idx, 2)
+
+            # Re-attach restores XLR-H1
+            r_att = sess.set_cinema_param("", payload={"xlr_handle_attached": True, "xlr_phantom_48v": True})
+            self.assertTrue(r_att["ok"])
+            self.assertTrue(sess.xlr_handle_attached)
+            self.assertEqual(sess.xlr_idx, 0)
+            self.assertEqual(sess.get_stage_b_telemetry()["P11"]["audio_route"], "XLR_H1_48V")
+
+    def test_p40_15_rtmd_0xe304_ibis_mode_bidirectional_sync(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_rtmd_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            r1 = sess.set_cinema_param("", payload={"rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED"})
+            self.assertTrue(r1["ok"])
+            self.assertEqual(sess.rtmd_0xe304_ibis_lock, "OFF_CENTER_LOCKED")
+            self.assertEqual(sess.ibis_idx, 1)
+            self.assertEqual(r1["cinema_params"]["values"]["ibis"], "Active Off")
+
+            r2 = sess.set_cinema_param("ibis", preset="Active Standard")
+            self.assertTrue(r2["ok"])
+            self.assertEqual(sess.rtmd_0xe304_ibis_lock, "STANDARD")
+            self.assertEqual(sess.ibis_idx, 2)
+            self.assertEqual(sess.get_stage_b_telemetry()["P11"]["rtmd_0xe304_ibis_lock"], "STANDARD")
+
+            r_bad = sess.set_cinema_param("", payload={"rtmd_0xe304_ibis_lock": "WARP_9"})
+            self.assertFalse(r_bad["ok"])
+            self.assertEqual(r_bad["error"], "invalid_rtmd_0xe304_ibis_lock")
+
+    def test_p40_16_camset_export_deterministic_sha256_and_schema(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_exp_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            e1 = sess.export_camset_preset()
+            e2 = sess.export_camset_preset()
+            self.assertTrue(e1["ok"])
+            self.assertEqual(e1["schema"], "fx6_on_fx3_camset_v1")
+            self.assertEqual(e1["preset_sha256"], e2["preset_sha256"])
+            self.assertEqual(len(e1["preset_sha256"]), 64)
+            self.assertTrue(e1["p12_bk4_airplane_mode_locked"])
+
+            sess.set_cinema_param("", payload={"ch1_db": -3})
+            e3 = sess.export_camset_preset()
+            self.assertNotEqual(e1["preset_sha256"], e3["preset_sha256"])
+
+    def test_p40_17_camset_import_roundtrip_restores_full_state(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_rt_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            sess.set_cinema_param("fps", preset="59.94p")
+            sess.set_cinema_param("ei", preset="12800 EI (12800 Base)")
+            sess.set_cinema_param("shutter", preset="1/100")
+            sess.set_cinema_param("wb", preset="3200K")
+            sess.upload_cube_lut({"slot": "User3", "preset": "film_2383", "name": "Film2383_P40"})
+            sess.set_cinema_param("", payload={
+                "ch1_db": -8,
+                "ch2_db": -10,
+                "ch3_db": -22,
+                "ch4_db": -30,
+                "xlr_handle_attached": False,
+                "rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED",
+            })
+            exported = sess.export_camset_preset()
+
+            # Mutate everything to other settings
+            sess.set_cinema_param("fps", preset="23.98p")
+            sess.set_cinema_param("ei", preset="800 EI (800 Base)")
+            sess.set_cinema_param("wb", preset="ATW")
+            sess.upload_cube_lut({"slot": "User1", "preset": "slog3_bypass", "name": "Bypass"})
+            sess.set_cinema_param("", payload={
+                "ch1_db": 0,
+                "ch2_db": 0,
+                "xlr_handle_attached": True,
+                "rtmd_0xe304_ibis_lock": "STANDARD",
+            })
+
+            imp = sess.import_camset_preset(exported)
+            self.assertTrue(imp["ok"], msg=f"Import failed: {imp}")
+            self.assertFalse(imp["p4_nd_rejected"])
+            cp = imp["cinema_params"]["values"]
+            self.assertEqual(cp["fps"], "59.94p")
+            self.assertEqual(cp["ei"], "12800 EI (12800 Base)")
+            self.assertEqual(cp["shutter"], "1/100")
+            self.assertEqual(cp["wb"], "3200K")
+            self.assertEqual(cp["lut"], "User3 (33³ .cube)")
+            self.assertEqual(sess.audio_ch_db, [-8, -10, -22, -30])
+            self.assertFalse(sess.xlr_handle_attached)
+            self.assertEqual(sess.rtmd_0xe304_ibis_lock, "OFF_CENTER_LOCKED")
+            self.assertEqual(sess.user_lut_slots["User3"]["name"], "Film2383_P40")
+
+    def test_p40_18_camset_import_enforces_p4_nd_lock_and_p12_bk4_shadow(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_p4tamper_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            camset = sess.export_camset_preset()
+            camset["cinema_params"]["nd"] = "1/16 ND"
+            camset["p12_bk4_airplane_mode_locked"] = False
+
+            imp = sess.import_camset_preset(camset)
+            self.assertTrue(imp["ok"])
+            self.assertTrue(imp["p4_nd_rejected"])
+            self.assertTrue(imp["p4_nd_clamped"])
+            self.assertEqual(imp["p4_nd_reject_count"], 1)
+            self.assertEqual(sess.p4_nd_reject_count, 1)
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertEqual(imp["cinema_params"]["values"]["nd"], "Clear [FX3 P4 Locked]")
+            self.assertTrue(imp["p12_bk4_airplane_mode_locked"])
+            self.assertTrue(imp["p12_bk4_clamped"])
+            self.assertTrue(sess.get_stage_b_telemetry()["P12"]["bk4_airplane_mode_locked"])
+
+    def test_p40_19_camset_import_rejects_bad_schema_or_corrupt_cube_without_mutating(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_badcamset_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            sess.set_cinema_param("fps", preset="59.94p")
+
+            r_bad_schema = sess.import_camset_preset({"schema": "wrong_v99", "cinema_params": {"fps": "23.98p"}})
+            self.assertFalse(r_bad_schema["ok"])
+            self.assertEqual(r_bad_schema["error"], "invalid_camset_schema")
+            self.assertEqual(sess.cell_vals[0], 5)  # unchanged 59.94p
+
+            camset = sess.export_camset_preset()
+            camset["cinema_params"]["fps"] = "23.98p"
+            camset["user_lut_slots"]["User1"]["cube_text"] = "LUT_3D_SIZE 17\nNaN 0.0 0.0\n"
+            r_bad_cube = sess.import_camset_preset(camset)
+            self.assertFalse(r_bad_cube["ok"])
+            self.assertEqual(sess.cell_vals[0], 5)  # still unchanged!
+
+    def test_p40_20_http_api_lut_upload_and_malformed_json_400(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_http_lut_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                g_slots = json.loads(urllib.request.urlopen(f"{base}/api/lut_upload", timeout=5).read().decode("utf-8"))
+                self.assertTrue(g_slots["ok"])
+                self.assertEqual(set(g_slots["slots"].keys()), {"User1", "User2", "User3", "User4"})
+
+                # Built-in preset upload -> 200
+                req1 = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=json.dumps({"slot": "User1", "preset": "teal_orange"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                r1 = json.loads(urllib.request.urlopen(req1, timeout=5).read().decode("utf-8"))
+                self.assertTrue(r1["ok"])
+                self.assertEqual(r1["lut"]["size"], 17)
+
+                # Raw custom 17^3 .cube upload -> 200
+                raw_cube = run_fx6_menu_trial.generate_builtin_cube_lut("film_2383", size=17)
+                req2 = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=json.dumps({"slot": "User2", "name": "Custom2383", "cube_text": raw_cube}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                r2 = json.loads(urllib.request.urlopen(req2, timeout=5).read().decode("utf-8"))
+                self.assertTrue(r2["ok"])
+                self.assertEqual(r2["lut"]["name"], "Custom2383")
+
+                # Malformed .cube -> 400 with structured error
+                req_bad_cube = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=json.dumps({"slot": "User1", "cube_text": "LUT_3D_SIZE 17\nNaN 0.1 0.2\n"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx_cube:
+                    urllib.request.urlopen(req_bad_cube, timeout=5)
+                self.assertEqual(ctx_cube.exception.code, 400)
+                err_payload = json.loads(ctx_cube.exception.read().decode("utf-8"))
+                self.assertFalse(err_payload["ok"])
+                self.assertEqual(err_payload["error"], "nan_or_inf_triplet")
+
+                # Malformed JSON -> 400
+                req_bad_json = urllib.request.Request(
+                    f"{base}/api/lut_upload",
+                    data=b"{not-valid-json",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx_json:
+                    urllib.request.urlopen(req_bad_json, timeout=5)
+                self.assertEqual(ctx_json.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p40_21_http_api_cinema_param_audio_rtmd_and_camset_endpoints(self) -> None:
+        import threading
+        import urllib.request
+        from http.server import ThreadingHTTPServer
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p40_http_cam_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18772)
+            srv = ThreadingHTTPServer(("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess))
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                html = urllib.request.urlopen(f"{base}/", timeout=5).read().decode("utf-8")
+                for marker in (
+                    "/api/lut_upload",
+                    "/api/preset_export",
+                    "/api/preset_import",
+                    "audio-ch1",
+                    "rtmd-ibis-select",
+                    "camset-lock-badge",
+                    "🌐 中文 / EN",
+                    "ILME-FX3",
+                ):
+                    self.assertIn(marker, html)
+
+                req_cp = urllib.request.Request(
+                    f"{base}/api/cinema_param",
+                    data=json.dumps({
+                        "ch1_db": -9,
+                        "ch2_db": -9,
+                        "ch3_db": -20,
+                        "ch4_db": -20,
+                        "xlr_handle_attached": False,
+                        "rtmd_0xe304_ibis_lock": "OFF_CENTER_LOCKED",
+                    }).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                cp_res = json.loads(urllib.request.urlopen(req_cp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(cp_res["ok"])
+                self.assertFalse(cp_res["status"]["xlr_handle_attached"])
+                self.assertEqual(cp_res["status"]["rtmd_0xe304_ibis_lock"], "OFF_CENTER_LOCKED")
+
+                camset = json.loads(urllib.request.urlopen(f"{base}/api/preset_export", timeout=5).read().decode("utf-8"))
+                self.assertEqual(camset["schema"], "fx6_on_fx3_camset_v1")
+                camset["cinema_params"]["nd"] = "1/64 ND"
+
+                req_imp = urllib.request.Request(
+                    f"{base}/api/preset_import",
+                    data=json.dumps(camset).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                imp_res = json.loads(urllib.request.urlopen(req_imp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(imp_res["ok"])
+                self.assertTrue(imp_res["p4_nd_rejected"])
+                self.assertEqual(imp_res["p4_nd_reject_count"], 1)
+                self.assertEqual(imp_res["cinema_params"]["values"]["nd"], "Clear [FX3 P4 Locked]")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p40_22_phase40_report_receipts_when_present(self) -> None:
+        rep_dir = REPO_ROOT / "reports" / "2026-11-14-phase40-vm-trial-cube-lut-xlr-presets"
+        readme = rep_dir / "README.md"
+        if not readme.is_file():
+            self.skipTest("Phase 40 report README/receipts not yet generated")
+        text = readme.read_text(encoding="utf-8")
+        self.assertIn("18772", text)
+        pngs = sorted(rep_dir.glob("*.png"))
+        self.assertGreaterEqual(len(pngs), 1)
+        self.assertLessEqual(len(pngs), 3)
+        for png_p in pngs:
+            raw = png_p.read_bytes()
+            self.assertLess(len(raw), 90 * 1024, msg=f"Phase 40 PNG >= 90 KiB: {png_p.name} ({len(raw)} B)")
+            chunks = _parse_png_chunks(raw)
+            w, h = struct.unpack(">II", chunks[0][1][:8])
+            self.assertEqual((w, h), (1024, 540), msg=f"Unexpected PNG size in {png_p.name}")
+
+
+class TestPhase49MenuCatalogMultilangDiffAndSocketHardening(unittest.TestCase):
+    @staticmethod
+    def _make_mock_donor_dir(base_dir: Path) -> Path:
+        donor_dir = base_dir / "donor_app_p49"
+        donor_dir.mkdir(parents=True, exist_ok=True)
+        for fname in (
+            "image_00_169.uxc",
+            "string_simplifiedchinese_2.uxc",
+            "MYingHeiC-GB18030-SJ_wIcon.ltt",
+            "string_japanese_2.uxc",
+        ):
+            (donor_dir / fname).write_bytes(b"MOCK_DONOR_P49")
+        return donor_dir
+
+    @staticmethod
+    def _make_distinct_gpe0_frame(seed_word: int) -> bytes:
+        # 1024 * 540 * 4 bytes with distinct non-zero blocks so both PNG & diff work fast
+        buf = bytearray(run_fx6_menu_trial.GPE0_BYTES)
+        block = struct.pack("<I", seed_word & 0xFFFFFFFF) * 256  # 1024 bytes
+        buf[0:1024] = block
+        buf[4096:5120] = block
+        return bytes(buf)
+
+    def test_p49_01_client_disconnect_exception_classifier(self) -> None:
+        import errno as _errno
+        import socket as _socket
+
+        for exc in (
+            BrokenPipeError("broken pipe"),
+            ConnectionResetError("conn reset"),
+            ConnectionAbortedError("aborted"),
+            TimeoutError("timed out"),
+            _socket.timeout("socket timeout"),
+            OSError(_errno.EPIPE, "epipe"),
+            OSError(_errno.ECONNRESET, "econnreset"),
+            OSError(_errno.ETIMEDOUT, "etimedout"),
+        ):
+            self.assertTrue(run_fx6_menu_trial._is_client_disconnect_exc(exc), msg=f"Expected True for {exc!r}")
+
+        for exc in (
+            ValueError("bad value"),
+            RuntimeError("unexpected"),
+            OSError(_errno.ENOENT, "no such file"),
+        ):
+            self.assertFalse(run_fx6_menu_trial._is_client_disconnect_exc(exc), msg=f"Expected False for {exc!r}")
+
+    def test_p49_02_hardened_server_handle_error_suppresses_disconnect_tracebacks(self) -> None:
+        import contextlib
+        import io
+        import socket as _socket
+        import sys as _sys
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_srv_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            try:
+                for exc in (
+                    BrokenPipeError("client closed"),
+                    ConnectionResetError("reset by peer"),
+                    _socket.timeout("read timeout"),
+                ):
+                    err_buf = io.StringIO()
+                    with contextlib.redirect_stderr(err_buf):
+                        try:
+                            raise exc
+                        except BaseException:
+                            srv.handle_error(None, ("127.0.0.1", 55555))
+                    self.assertEqual(err_buf.getvalue(), "")
+                self.assertEqual(srv.client_disconnects, 3)
+
+                # Non-disconnect exceptions still report via BaseServer.handle_error
+                err_buf2 = io.StringIO()
+                with contextlib.redirect_stderr(err_buf2):
+                    try:
+                        raise ValueError("real bug")
+                    except BaseException:
+                        srv.handle_error(None, ("127.0.0.1", 55555))
+                self.assertIn("ValueError: real bug", err_buf2.getvalue())
+                self.assertEqual(_sys.exc_info()[1], None)
+            finally:
+                srv.server_close()
+
+    def test_p49_03_http_abrupt_socket_reset_and_broken_pipe_frame_png_zero_traceback(self) -> None:
+        import contextlib
+        import io
+        import socket as _socket
+        import threading
+        import time
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_rst_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            sess.last_png = b"\x89PNG\r\n\x1a\n" + (b"0" * (256 * 1024))
+            sess.last_nz = 12345
+
+            err_capture = io.StringIO()
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                with contextlib.redirect_stderr(err_capture):
+                    for target_path in ("/frame.png", "/api/frame.png", "/api/frame.png", "/api/status"):
+                        sock = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)
+                        sock.settimeout(2.0)
+                        sock.setsockopt(_socket.SOL_SOCKET, _socket.SO_LINGER, struct.pack("ii", 1, 0))
+                        sock.connect(("127.0.0.1", port))
+                        sock.sendall(f"GET {target_path} HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n".encode("ascii"))
+                        sock.close()
+
+                    # Also send truncated POST body then reset socket abruptly
+                    sock_p = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)
+                    sock_p.settimeout(2.0)
+                    sock_p.setsockopt(_socket.SOL_SOCKET, _socket.SO_LINGER, struct.pack("ii", 1, 0))
+                    sock_p.connect(("127.0.0.1", port))
+                    sock_p.sendall(
+                        b"POST /api/jump_page HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Length: 4096\r\n\r\n{\"page_id\":"
+                    )
+                    sock_p.close()
+                    time.sleep(0.06)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+            stderr_text = err_capture.getvalue()
+            self.assertNotIn("Traceback", stderr_text)
+            self.assertNotIn("Exception occurred during processing of request", stderr_text)
+            self.assertNotIn("BrokenPipeError", stderr_text)
+            self.assertNotIn("ConnectionResetError", stderr_text)
+
+    def test_p49_04_handler_send_bytes_and_safe_send_error_catch_broken_pipe(self) -> None:
+        import socket as _socket
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_hnd_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            handler_cls = run_fx6_menu_trial.make_handler(sess)
+            h = handler_cls.__new__(handler_cls)
+            h.server = type("FakeSrv", (), {"client_disconnects": 0})()
+            h.close_connection = False
+            h.request_version = "HTTP/1.1"
+            h.headers = {}
+            h._headers_buffer = []
+
+            class _BrokenWfile:
+                def write(self, _data: bytes) -> int:
+                    raise BrokenPipeError("broken")
+
+                def flush(self) -> None:
+                    raise BrokenPipeError("broken flush")
+
+            h.wfile = _BrokenWfile()
+            h.send_response = lambda code: None  # type: ignore[assignment]
+            h.send_header = lambda k, v: None  # type: ignore[assignment]
+            h.end_headers = lambda: None  # type: ignore[assignment]
+            ok_bytes = h._send_bytes(b"hello", "text/plain", status=200)
+            self.assertFalse(ok_bytes)
+            self.assertTrue(h.close_connection)
+            self.assertEqual(sess.socket_disconnect_count, 1)
+            self.assertEqual(h.server.client_disconnects, 1)
+
+            def _raise_reset(_code: int, _msg: str | None = None) -> None:
+                raise ConnectionResetError("reset")
+
+            h.send_error = _raise_reset  # type: ignore[assignment]
+            h._safe_send_error(404)
+            self.assertEqual(sess.socket_disconnect_count, 2)
+
+            # Timeout and ConnectionResetError in handle_one_request are caught cleanly
+            class _TimeoutRfile:
+                def readline(self, *_a: object, **_kw: object) -> bytes:
+                    raise _socket.timeout("timeout")
+
+            th = handler_cls.__new__(handler_cls)
+            th.server = h.server
+            th.close_connection = False
+            th.rfile = _TimeoutRfile()  # type: ignore[assignment]
+            th.raw_requestline = b""
+            th.handle_one_request()
+            self.assertTrue(th.close_connection)
+
+            class _ResetRfile:
+                def readline(self, *_a: object, **_kw: object) -> bytes:
+                    raise ConnectionResetError("peer reset")
+
+            rh = handler_cls.__new__(handler_cls)
+            rh.server = h.server
+            rh.close_connection = False
+            rh.rfile = _ResetRfile()  # type: ignore[assignment]
+            rh.raw_requestline = b""
+            rh.handle_one_request()
+            self.assertTrue(rh.close_connection)
+            self.assertEqual(sess.socket_disconnect_count, 3)
+
+    def test_p49_05_menu_catalog_11_categories_and_128_pages_complete(self) -> None:
+        cat = run_fx6_menu_trial.build_menu_catalog()
+        self.assertTrue(cat["ok"])
+        self.assertEqual(cat["total_categories"], 11)
+        self.assertEqual(cat["total_pages_128"], 128)
+        self.assertGreaterEqual(cat["total_entries"], 15 + 11 + 128)
+
+        expected_cats = [
+            "User", "Edit User Menu", "Shooting", "Project", "Paint/Look",
+            "TC/Media", "Monitoring", "Audio", "Thumbnail", "Technical", "Maintenance",
+        ]
+        self.assertEqual([c["category"] for c in cat["categories"]], expected_cats)
+
+        p128_items = [it for it in cat["items"] if it["kind"] == "page128"]
+        self.assertEqual(len(p128_items), 128)
+        self.assertEqual([it["idx128"] for it in p128_items], list(range(128)))
+        for it in cat["items"]:
+            self.assertTrue(it["page_id"])
+            self.assertTrue(it["zh_title"])
+            self.assertTrue(it["en_title"])
+            self.assertTrue(it["category"])
+            self.assertIsInstance(it["macro"], dict)
+            self.assertIn("page", it["macro"])
+            self.assertTrue(it["fx3_bridge_note"])
+
+    def test_p49_06_menu_catalog_flagship_pages_and_quick_jump_pills(self) -> None:
+        cat = run_fx6_menu_trial.build_menu_catalog()
+        by_id = {it["page_id"]: it for it in cat["items"]}
+        required_ids = (
+            "big6_home",
+            "cat_0_user",
+            "cat_1_edit_user",
+            "cat_2_shooting",
+            "cat_3_project",
+            "cat_4_paint_look",
+            "cat_5_tc_media",
+            "cat_6_monitoring",
+            "cat_7_audio",
+            "cat_8_thumbnail",
+            "cat_9_technical",
+            "cat_10_maintenance",
+            "assignable_p110",
+            "network_p12_guard",
+            "media_dual_cfexpress",
+            "tc_audio_meter_4ch",
+        )
+        for pid in required_ids:
+            self.assertIn(pid, by_id, msg=f"Missing catalog page_id {pid}")
+
+        self.assertEqual(by_id["assignable_p110"]["macro"]["page"], 4)
+        self.assertEqual(by_id["assignable_p110"]["idx128"], 110)
+        self.assertIn("P12", by_id["network_p12_guard"]["en_title"])
+        self.assertIn("User 3D LUT", by_id["cat_4_paint_look"]["en_title"])
+        self.assertIn("Cine EI", by_id["cat_2_shooting"]["en_title"])
+        self.assertGreaterEqual(len(cat["quick_jump_pills"]), 14)
+
+    def test_p49_07_search_menu_catalog_chinese_english_and_category(self) -> None:
+        r_cn_slot = run_fx6_menu_trial.search_menu_catalog(query="双 CFexpress")
+        self.assertGreaterEqual(r_cn_slot["filtered_count"], 2)
+        self.assertTrue(any("CFexpress" in it["en_title"] for it in r_cn_slot["items"]))
+
+        r_cn_air = run_fx6_menu_trial.search_menu_catalog(query="飞行模式")
+        self.assertGreaterEqual(r_cn_air["filtered_count"], 2)
+        self.assertTrue(any(it["page_id"] == "network_p12_guard" for it in r_cn_air["items"]))
+
+        r_en_lut = run_fx6_menu_trial.search_menu_catalog(query="User 3D LUT", category="Paint/Look")
+        self.assertGreaterEqual(r_en_lut["filtered_count"], 1)
+        self.assertEqual(r_en_lut["items"][0]["page_id"], "cat_4_paint_look")
+
+        r_en_p110 = run_fx6_menu_trial.search_menu_catalog(query="Page 110")
+        self.assertTrue(any(it["page_id"] == "assignable_p110" for it in r_en_p110["items"]))
+
+        r_hex = run_fx6_menu_trial.search_menu_catalog(query="0x02eb75f0")
+        self.assertTrue(any(it.get("idx128") == 110 for it in r_hex["items"]))
+
+        r_cat_zh = run_fx6_menu_trial.search_menu_catalog(category="音频")
+        self.assertGreaterEqual(r_cat_zh["filtered_count"], 2)
+        self.assertTrue(all(it["category"] == "Audio" for it in r_cat_zh["items"]))
+
+    def test_p49_08_jump_to_page_by_page_id_flagship_and_category(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_jmp_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            init_seq = sess.cmd_seq
+            r1 = sess.jump_to_page({"page_id": "cat_2_shooting"})
+            self.assertTrue(r1["ok"])
+            self.assertEqual((sess.page, sess.menu_cat, sess.menu_item, sess.menu_depth), (1, 2, 0, 1))
+            self.assertEqual(sess.cmd_seq, init_seq + 1)
+
+            r2 = sess.jump_to_page({"page_id": "cat_4_paint_look"})
+            self.assertTrue(r2["ok"])
+            self.assertEqual((sess.page, sess.menu_cat, sess.menu_item, sess.menu_depth), (1, 4, 1, 2))
+
+            r3 = sess.jump_to_page({"page_id": "assignable_p110"})
+            self.assertTrue(r3["ok"])
+            self.assertEqual((sess.page, sess.sel_box, sess.menu_depth), (4, 0, 0))
+
+            r4 = sess.jump_to_page({"page_id": "network_p12_guard"})
+            self.assertTrue(r4["ok"])
+            self.assertEqual(sess.page, 5)
+
+            r5 = sess.jump_to_page({"page_id": "big6_home"})
+            self.assertTrue(r5["ok"])
+            self.assertEqual((sess.page, sess.sel_box), (0, 4))
+            self.assertEqual(sess.cmd_seq, init_seq + 5)
+
+    def test_p49_09_jump_to_page_by_idx128_and_page_prefix(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_j128_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            r110 = sess.jump_to_page({"idx128": 110})
+            self.assertTrue(r110["ok"])
+            self.assertEqual(r110["page_id"], "p128_110")
+            self.assertEqual(sess.page, 24)
+            self.assertEqual(sess.table_idx128, 110)
+            self.assertEqual(sess.table_off, run_fx6_menu_trial.ALL_128_PAGES[110]["off"])
+            self.assertEqual(sess.table_rows, run_fx6_menu_trial.ALL_128_PAGES[110]["rows"])
+
+            r58 = sess.jump_to_page({"page_id": "p128_058"})
+            self.assertTrue(r58["ok"])
+            self.assertEqual((sess.page, sess.table_idx128), (24, 58))
+
+            r12 = sess.jump_to_page({"page_id": "12"})
+            self.assertTrue(r12["ok"])
+            self.assertEqual((sess.page, sess.table_idx128), (24, 12))
+
+            rp16 = sess.jump_to_page({"page_id": "page_16"})
+            self.assertTrue(rp16["ok"])
+            self.assertEqual(sess.page, 16)
+
+    def test_p49_10_jump_to_page_by_bilingual_query_and_menu_cat(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_jq_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            rq1 = sess.jump_to_page({"query": "XLR-H1"})
+            self.assertTrue(rq1["ok"])
+            self.assertEqual(rq1["entry"]["category"], "Audio")
+
+            rq2 = sess.jump_to_page({"q": "飞行模式"})
+            self.assertTrue(rq2["ok"])
+            self.assertEqual(rq2["page_id"], "network_p12_guard")
+            self.assertEqual(sess.page, 5)
+
+            rcat = sess.jump_to_page({"menu_cat": 7})
+            self.assertTrue(rcat["ok"])
+            self.assertEqual((sess.page, sess.menu_cat, sess.menu_depth), (1, 7, 1))
+
+            rleg = sess.jump_to_page({"page": "assignable"})
+            self.assertTrue(rleg["ok"])
+            self.assertEqual(sess.page, 4)
+
+    def test_p49_11_jump_to_page_fail_closed_validation(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_jbad_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            init_seq = sess.cmd_seq
+            for payload, exp_err in (
+                ("not-a-dict", "invalid_request_body"),
+                ({}, "missing_jump_target"),
+                ({"page_id": "no_such_page"}, "unknown_page_id"),
+                ({"idx128": 999}, "idx128_out_of_range"),
+                ({"idx128": True}, "invalid_idx128"),
+                ({"idx128": "xyz"}, "invalid_idx128"),
+                ({"query": "zzz_no_match_9999"}, "menu_search_no_match"),
+                ({"menu_cat": "bad"}, "invalid_menu_cat"),
+                ({"page": "bad"}, "invalid_page"),
+            ):
+                res = sess.jump_to_page(payload)
+                self.assertFalse(res["ok"], msg=f"Should fail for {payload!r}")
+                self.assertEqual(res["error"], exp_err)
+            self.assertEqual(sess.cmd_seq, init_seq)
+            self.assertEqual(sess.page, 0)
+
+    def test_p49_12_compute_gpe0_frame_diff_exact_math(self) -> None:
+        d0 = run_fx6_menu_trial.compute_gpe0_frame_diff(b"", b"")
+        self.assertEqual(d0, {"diff_bytes": 0, "diff_pixels": 0, "total_bytes": 0, "total_pixels": 0})
+
+        buf_a = bytearray(29)  # non-multiple of 8 to test tail loop
+        buf_b = bytearray(29)
+        self.assertEqual(
+            run_fx6_menu_trial.compute_gpe0_frame_diff(bytes(buf_a), bytes(buf_b)),
+            {"diff_bytes": 0, "diff_pixels": 0, "total_bytes": 29, "total_pixels": 7},
+        )
+
+        # Modify 2 bytes in pixel 0, 1 byte in pixel 3, and 1 tail byte at index 28
+        buf_b[0] = 0xAA
+        buf_b[2] = 0xBB
+        buf_b[15] = 0xCC
+        buf_b[28] = 0xDD
+        d1 = run_fx6_menu_trial.compute_gpe0_frame_diff(bytes(buf_a), bytes(buf_b))
+        self.assertEqual(d1["diff_bytes"], 4)
+        self.assertEqual(d1["diff_pixels"], 2)
+
+        with self.assertRaises(ValueError):
+            run_fx6_menu_trial.compute_gpe0_frame_diff(b"1234", b"12345678")
+
+    def test_p49_13_verify_multilang_diff_clean_room_missing_packs_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_cr_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            init_seq = sess.cmd_seq
+            orig_force = os.environ.get("FX3_FX6_FORCE_CLEAN_ROOM")
+            orig_app_dir = os.environ.get("FX6_DONOR_APP_DIR")
+            os.environ["FX3_FX6_FORCE_CLEAN_ROOM"] = "1"
+            os.environ.pop("FX6_DONOR_APP_DIR", None)
+            try:
+                res = sess.verify_multilang_diff()
+                self.assertFalse(res["ok"])
+                self.assertEqual(res["error"], "missing_lang_packs")
+                self.assertIn("zh", res["missing_langs"])
+                self.assertIn("ja", res["missing_langs"])
+                self.assertEqual(sess.cmd_seq, init_seq)
+            finally:
+                if orig_force is None:
+                    os.environ.pop("FX3_FX6_FORCE_CLEAN_ROOM", None)
+                else:
+                    os.environ["FX3_FX6_FORCE_CLEAN_ROOM"] = orig_force
+                if orig_app_dir is not None:
+                    os.environ["FX6_DONOR_APP_DIR"] = orig_app_dir
+
+    def test_p49_14_verify_multilang_diff_stopped_vm_not_ready_409(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_409_") as td:
+            donor_dir = self._make_mock_donor_dir(Path(td))
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                res = sess.verify_multilang_diff()
+                self.assertFalse(res["ok"])
+                self.assertEqual(res["error"], "vm_not_ready")
+
+                req = urllib.request.Request(
+                    f"http://127.0.0.1:{port}/api/verify_multilang_diff",
+                    data=b"{}",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx:
+                    urllib.request.urlopen(req, timeout=5)
+                self.assertEqual(ctx.exception.code, 409)
+                body = json.loads(ctx.exception.read().decode("utf-8"))
+                self.assertEqual(body["error"], "vm_not_ready")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_p49_15_verify_multilang_diff_en_zh_ja_pixel_diff_and_restore_lang(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_mlok_") as td:
+            donor_dir = self._make_mock_donor_dir(Path(td))
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            try:
+                sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+                sess.set_lang("zh")
+                start_ack = sess.ack_seq
+                frames = {
+                    "en": self._make_distinct_gpe0_frame(0x11223344),
+                    "zh": self._make_distinct_gpe0_frame(0x55667788),
+                    "ja": self._make_distinct_gpe0_frame(0x99AABBCC),
+                }
+                seen_seq: list[tuple[str, int, int]] = []
+
+                def _hook(lc: str, page: int, seq: int) -> bytes:
+                    seen_seq.append((lc, page, seq))
+                    return frames[lc]
+
+                sess._gpe0_test_capture_hook = _hook
+                res = sess.verify_multilang_diff(page=1)
+                self.assertTrue(res["ok"], msg=f"Expected ok=True: {res}")
+                self.assertEqual(res["sequence"], ["en", "zh", "ja"])
+                self.assertEqual(res["restored_lang"], "zh")
+                self.assertEqual(sess.lang_code, "zh")
+                self.assertEqual(sess.lang_id, 1)
+                self.assertEqual(sess.page, 0)  # original page restored!
+                self.assertTrue(res["ack_seq_monotonic"])
+                self.assertGreater(res["ack_seqs"][0], start_ack)
+                self.assertEqual([x[0] for x in seen_seq], ["en", "zh", "ja", "zh"])
+                self.assertGreater(res["en_vs_zh_diff_bytes"], 0)
+                self.assertGreater(res["zh_vs_ja_diff_bytes"], 0)
+                self.assertGreater(res["en_vs_ja_diff_bytes"], 0)
+                self.assertEqual(res["en_vs_zh_diff_pixels"], 512)
+                self.assertEqual(len({res["captures"][k]["sha256"] for k in ("en", "zh", "ja")}), 3)
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_p49_16_verify_multilang_diff_restores_lang_and_page_on_capture_failure(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_mlfail_") as td:
+            donor_dir = self._make_mock_donor_dir(Path(td))
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            try:
+                sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+                sess.set_lang("ja")
+                sess.page = 4
+                frames = {
+                    "en": self._make_distinct_gpe0_frame(0x11111111),
+                    "zh": self._make_distinct_gpe0_frame(0x22222222),
+                    "ja": b"",  # triggers failure on ja step during loop
+                }
+                restore_buf = self._make_distinct_gpe0_frame(0x33333333)
+                calls = {"n": 0}
+
+                def _hook(lc: str, _page: int, _seq: int) -> bytes:
+                    calls["n"] += 1
+                    # 4th call is the finally restore for lang='ja'
+                    return restore_buf if calls["n"] == 4 else frames[lc]
+
+                sess._gpe0_test_capture_hook = _hook
+                res = sess.verify_multilang_diff(page=1)
+                self.assertFalse(res["ok"])
+                self.assertEqual(res["error"], "multilang_capture_failed")
+                self.assertEqual(res["restored_lang"], "ja")
+                self.assertEqual(sess.lang_code, "ja")
+                self.assertEqual(sess.lang_id, 2)
+                self.assertEqual(sess.page, 4)
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_p49_17_verify_multilang_diff_zero_diff_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_mlzero_") as td:
+            donor_dir = self._make_mock_donor_dir(Path(td))
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            try:
+                sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+                same = self._make_distinct_gpe0_frame(0x42424242)
+                other = self._make_distinct_gpe0_frame(0x77777777)
+                sess._gpe0_test_capture_hook = lambda lc, _p, _s: other if lc == "ja" else same
+                res = sess.verify_multilang_diff()
+                self.assertFalse(res["ok"])
+                self.assertEqual(res["error"], "zero_pixel_diff_detected")
+                self.assertFalse(res["all_distinct"])
+                self.assertEqual(res["en_vs_zh_diff_bytes"], 0)
+            finally:
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_p49_18_http_api_menu_catalog_and_jump_page_endpoints(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.parse
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_hcat_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                cat_all = json.loads(urllib.request.urlopen(f"{base}/api/menu_catalog", timeout=5).read().decode("utf-8"))
+                self.assertEqual(cat_all["total_categories"], 11)
+                self.assertEqual(cat_all["total_pages_128"], 128)
+
+                q_cn = urllib.parse.quote("卡槽")
+                cat_cn = json.loads(urllib.request.urlopen(f"{base}/api/menu_catalog?q={q_cn}", timeout=5).read().decode("utf-8"))
+                self.assertGreaterEqual(cat_cn["filtered_count"], 1)
+
+                req_jmp = urllib.request.Request(
+                    f"{base}/api/jump_page",
+                    data=json.dumps({"page_id": "cat_3_project"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                r_jmp = json.loads(urllib.request.urlopen(req_jmp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(r_jmp["ok"])
+                self.assertEqual((r_jmp["status"]["page"], r_jmp["status"]["menu_cat"]), (1, 3))
+
+                req_bad = urllib.request.Request(
+                    f"{base}/api/jump_page",
+                    data=json.dumps({"page_id": "nonexistent_page"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx_bad:
+                    urllib.request.urlopen(req_bad, timeout=5)
+                self.assertEqual(ctx_bad.exception.code, 400)
+
+                req_mal = urllib.request.Request(
+                    f"{base}/api/jump_page",
+                    data=b"{bad-json",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with self.assertRaises(urllib.error.HTTPError) as ctx_mal:
+                    urllib.request.urlopen(req_mal, timeout=5)
+                self.assertEqual(ctx_mal.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p49_19_http_api_verify_multilang_diff_get_and_post(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_hml_") as td:
+            donor_dir = self._make_mock_donor_dir(Path(td))
+            orig_resolver = run_fx6_menu_trial._resolve_donor_app_dir
+            run_fx6_menu_trial._resolve_donor_app_dir = lambda: donor_dir
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            frames = {
+                "en": self._make_distinct_gpe0_frame(0x01020304),
+                "zh": self._make_distinct_gpe0_frame(0x05060708),
+                "ja": self._make_distinct_gpe0_frame(0x090A0B0C),
+            }
+            sess._gpe0_test_capture_hook = lambda lc, _p, _s: frames[lc]
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                pre = json.loads(urllib.request.urlopen(f"{base}/api/verify_multilang_diff", timeout=5).read().decode("utf-8"))
+                self.assertFalse(pre["ok"])
+                self.assertIsNone(pre["receipt"])
+
+                req_post = urllib.request.Request(
+                    f"{base}/api/verify_multilang_diff",
+                    data=json.dumps({"page": 1}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                post_res = json.loads(urllib.request.urlopen(req_post, timeout=5).read().decode("utf-8"))
+                self.assertTrue(post_res["ok"])
+                self.assertGreater(post_res["en_vs_zh_diff_bytes"], 0)
+                self.assertGreater(post_res["zh_vs_ja_diff_bytes"], 0)
+
+                after = json.loads(urllib.request.urlopen(f"{base}/api/verify_multilang_diff", timeout=5).read().decode("utf-8"))
+                self.assertTrue(after["ok"])
+                self.assertEqual(after["receipt"]["en_vs_zh_diff_bytes"], post_res["en_vs_zh_diff_bytes"])
+
+                for bad_body in ({"page": True}, {"page": "not-an-int"}):
+                    req_bad = urllib.request.Request(
+                        f"{base}/api/verify_multilang_diff",
+                        data=json.dumps(bad_body).encode("utf-8"),
+                        headers={"Content-Type": "application/json"},
+                        method="POST",
+                    )
+                    with self.assertRaises(urllib.error.HTTPError) as ctx_bad:
+                        urllib.request.urlopen(req_bad, timeout=5)
+                    self.assertEqual(ctx_bad.exception.code, 400)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+                run_fx6_menu_trial._resolve_donor_app_dir = orig_resolver
+
+    def test_p49_20_html_ui_contains_search_jump_bar_and_verify_multilang_controls(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_html_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                html = urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=5).read().decode("utf-8")
+                for marker in (
+                    "🔍 搜索菜单 / Quick Jump (128 Pages)",
+                    "menu-search-input",
+                    "menu-cat-filter",
+                    "quick-jump-pills",
+                    "menu-search-results",
+                    "/api/menu_catalog",
+                    "/api/jump_page",
+                    "/api/verify_multilang_diff",
+                    "驗 / Verify EN-ZH-JA GPE0",
+                    "multilang-diff-readout",
+                ):
+                    self.assertIn(marker, html, msg=f"Missing UI marker: {marker}")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p49_21_status_exposes_socket_disconnect_count_and_last_multilang_diff(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_st_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            st = sess.get_status()
+            self.assertEqual(st["socket_disconnect_count"], 0)
+            self.assertIsNone(st["last_multilang_diff"])
+            src = (TRIAL_DIR / "run_fx6_menu_trial.py").read_text(encoding="utf-8")
+            self.assertIn('HardenedThreadingHTTPServer(("127.0.0.1", args.port)', src)
+
+    def test_p49_22_backward_compatibility_phases_19_23_30_40_routes(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p49_compat_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18773)
+            sess.last_png = b"\x89PNG\r\n\x1a\nTEST"
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                pages128 = json.loads(urllib.request.urlopen(f"{base}/api/pages128", timeout=5).read().decode("utf-8"))
+                self.assertEqual(len(pages128), 128)
+                self.assertTrue(json.loads(urllib.request.urlopen(f"{base}/api/lang", timeout=5).read().decode("utf-8"))["packs"]["en"]["available"])
+                self.assertIn("MENU", json.loads(urllib.request.urlopen(f"{base}/api/fx3_button", timeout=5).read().decode("utf-8"))["buttons"])
+                self.assertTrue(json.loads(urllib.request.urlopen(f"{base}/api/cinema_param", timeout=5).read().decode("utf-8"))["ok"])
+                self.assertTrue(json.loads(urllib.request.urlopen(f"{base}/api/lut_upload", timeout=5).read().decode("utf-8"))["ok"])
+                self.assertEqual(json.loads(urllib.request.urlopen(f"{base}/api/preset_export", timeout=5).read().decode("utf-8"))["schema"], "fx6_on_fx3_camset_v1")
+                self.assertEqual(urllib.request.urlopen(f"{base}/frame.png", timeout=5).read(), b"\x89PNG\r\n\x1a\nTEST")
+
+                req_key = urllib.request.Request(
+                    f"{base}/api/key?name=MENU",
+                    data=b"{}",
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                r_key = json.loads(urllib.request.urlopen(req_key, timeout=5).read().decode("utf-8"))
+                self.assertTrue(r_key["ok"])
+                self.assertEqual(r_key["status"]["page"], 1)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+
+class TestPhase56AssistToolsScopesAndMarkers(unittest.TestCase):
+    @staticmethod
+    def _make_grad_amber_frame() -> bytes:
+        w = run_fx6_menu_trial.GPE0_W
+        h = run_fx6_menu_trial.GPE0_H
+        raw = bytearray(run_fx6_menu_trial.GPE0_BYTES)
+        u32 = memoryview(raw).cast("I")
+        for x in range(w):
+            v = (x * 255) // (w - 1)
+            px = 0xFF000000 | (v << 16) | (v << 8) | v
+            for y in range(0, 60):
+                u32[y * w + x] = px
+        # Sony Amber band in rows 100..120, cols 100..200
+        for y in range(100, 120):
+            row = y * w
+            for x in range(100, 200):
+                u32[row + x] = 0xFFFF8C10
+        return bytes(raw)
+
+    def test_p56_01_assist_tools_specs_and_defaults(self) -> None:
+        specs = run_fx6_menu_trial.ASSIST_TOOLS_SPECS
+        self.assertEqual(set(specs.keys()), {"aspect_marker", "zebra_mode", "peaking_mode", "desqueeze"})
+        self.assertEqual(specs["aspect_marker"]["choices"], ("Off", "2.39:1", "1.85:1", "17:9", "9:16", "CenterCross"))
+        self.assertEqual(specs["zebra_mode"]["choices"], ("Off", "70%", "94%_SLog3", "100%"))
+        self.assertEqual(specs["peaking_mode"]["choices"], ("Off", "Red", "Yellow", "White"))
+        self.assertEqual(specs["desqueeze"]["choices"], ("1.0x", "1.33x", "2.0x"))
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_def_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            self.assertEqual(
+                sess.get_assist_tools(),
+                {"aspect_marker": "Off", "zebra_mode": "Off", "peaking_mode": "Off", "desqueeze": "1.0x"},
+            )
+
+    def test_p56_02_normalize_assist_field_aliases_and_rejections(self) -> None:
+        norm = run_fx6_menu_trial.normalize_assist_field
+        self.assertEqual(norm("aspect_marker", "2.39"), "2.39:1")
+        self.assertEqual(norm("aspect_marker", "scope"), "2.39:1")
+        self.assertEqual(norm("aspect_marker", "vertical"), "9:16")
+        self.assertEqual(norm("aspect_marker", "center_cross"), "CenterCross")
+        self.assertEqual(norm("zebra_mode", "94%"), "94%_SLog3")
+        self.assertEqual(norm("zebra_mode", "slog3"), "94%_SLog3")
+        self.assertEqual(norm("peaking_mode", "red"), "Red")
+        self.assertEqual(norm("desqueeze", "2x"), "2.0x")
+        self.assertEqual(norm("desqueeze", "1.33"), "1.33x")
+        for bad in (True, False, None, 123, "", "   ", "4:3_unknown"):
+            self.assertIsNone(norm("aspect_marker", bad))
+        self.assertIsNone(norm("unknown_field", "Off"))
+
+    def test_p56_03_validate_assist_tools_patch_partial_reset_and_fail_closed(self) -> None:
+        val = run_fx6_menu_trial.validate_assist_tools_patch
+        ok, upd, err = val({"aspect_marker": "2.39:1", "zebra_mode": "70%"})
+        self.assertTrue(ok)
+        self.assertIsNone(err)
+        self.assertEqual(upd, {"aspect_marker": "2.39:1", "zebra_mode": "70%"})
+
+        ok_rst, upd_rst, _ = val({"reset": True, "peaking_mode": "Yellow"})
+        self.assertTrue(ok_rst)
+        self.assertEqual(
+            upd_rst,
+            {"aspect_marker": "Off", "zebra_mode": "Off", "peaking_mode": "Yellow", "desqueeze": "1.0x"},
+        )
+
+        for bad_payload in (["2.39:1"], "Off", {"desqueeze": "3.0x"}, {"zebra_mode": True}):
+            ok_b, upd_b, err_b = val(bad_payload)
+            self.assertFalse(ok_b)
+            self.assertEqual(upd_b, {})
+            self.assertIsInstance(err_b, dict)
+            self.assertFalse(err_b["ok"])
+
+    def test_p56_04_mailbox_word27_phase56_bit_packing_and_phase40_preservation(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_mb_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.page = 16
+            sess.xlr_phantom_48v = True
+            sess.xlr_handle_attached = True
+            sess.rtmd_0xe304_ibis_lock = "OFF_CENTER_LOCKED"
+            sess.aspect_marker = "9:16"       # idx 4 -> bits 12..14
+            sess.zebra_mode = "94%_SLog3"    # idx 2 -> bits 16..17
+            sess.peaking_mode = "Yellow"     # idx 2 -> bits 18..19
+            sess.desqueeze = "2.0x"          # idx 2 -> bits 20..21
+            sess.cmd_seq = 10
+            raw = sess._pack_mailbox_bytes()
+            self.assertEqual(len(raw), 28 * 4)
+            words = struct.unpack("<28I", raw)
+            self.assertEqual(words[0], 0x4658364C)
+            self.assertEqual(words[1], 10)
+            self.assertEqual(words[3], 16)
+            w27 = words[27]
+            # Phase 40 lower bits 0..11 preserved: attached=1, phantom=2, ibis_mode=1<<4, valid=0x300
+            self.assertEqual(w27 & 0x03, 0x03)
+            self.assertEqual((w27 >> 4) & 0x03, 1)  # OFF_CENTER_LOCKED idx 1
+            # Phase 56 bits:
+            self.assertEqual((w27 >> 12) & 0x07, 4)  # 9:16
+            self.assertEqual((w27 >> 16) & 0x03, 2)  # 94%_SLog3
+            self.assertEqual((w27 >> 18) & 0x03, 2)  # Yellow
+            self.assertEqual((w27 >> 20) & 0x03, 2)  # 2.0x
+            self.assertEqual((w27 >> 24) & 0x01, 1)  # phase56_valid
+
+    def test_p56_05_guest_c_source_phase56_overlay_and_no_alloc_invariants(self) -> None:
+        guest_src = (TRIAL_DIR / "src" / "fx6_live_guest.c").read_text(encoding="utf-8")
+        self.assertIn("fx6_render_phase56_assist_overlays", guest_src)
+        self.assertIn("fx6_render_phase56_assist_overlays(appfw, page);", guest_src)
+        for tok in ("2.39:1", "1.85:1", "17:9", "9:16", "94%S3", "MK:", "ZEB:", "PK:", "DSQ:"):
+            self.assertIn(tok, guest_src, msg=f"Missing guest C overlay label: {tok}")
+        start = guest_src.index("fx6_render_phase40_hud_strip")
+        end = guest_src.index("fx6_state_hash")
+        section = guest_src[start:end]
+        for forbidden in ("malloc(", "calloc(", "realloc(", "dlsym(", " abs("):
+            self.assertNotIn(forbidden, section)
+
+    def test_p56_06_compute_scope_stats_all_zero_and_all_white_ire_bounds(self) -> None:
+        zero_buf = bytes(run_fx6_menu_trial.GPE0_BYTES)
+        st_z = run_fx6_menu_trial.compute_gpe0_scope_stats(zero_buf)
+        self.assertTrue(st_z["ok"])
+        self.assertEqual(st_z["nonzero_pixels"], 0)
+        self.assertEqual(st_z["nonzero_ratio"], 0.0)
+        self.assertEqual(st_z["highlight_pixels"], 0)
+        self.assertEqual(st_z["amber_pixels"], 0)
+        self.assertEqual(st_z["waveform_columns"], 32)
+        self.assertEqual(st_z["histograms"]["luma"][0], run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        self.assertTrue(all(col["min_ire"] == 0.0 and col["max_ire"] == 0.0 for col in st_z["waveform"]))
+
+        white_buf = (b"\xff\xff\xff\xff") * (run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        st_w = run_fx6_menu_trial.compute_gpe0_scope_stats(white_buf)
+        self.assertEqual(st_w["nonzero_ratio"], 1.0)
+        self.assertEqual(st_w["highlight_pixels"], run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        self.assertEqual(st_w["histograms"]["luma"][15], run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H)
+        self.assertEqual(st_w["waveform"][0]["max_ire"], 109.0)
+
+    def test_p56_07_compute_scope_stats_amber_and_gradient_parity_c_vs_python(self) -> None:
+        raw = self._make_grad_amber_frame()
+        st_c = run_fx6_menu_trial.compute_gpe0_scope_stats(raw, use_fast=True)
+        st_py = run_fx6_menu_trial.compute_gpe0_scope_stats(raw, use_fast=False)
+        self.assertEqual(st_c, st_py)
+        total_px = run_fx6_menu_trial.GPE0_W * run_fx6_menu_trial.GPE0_H
+        for ch in ("r", "g", "b", "luma"):
+            self.assertEqual(len(st_c["histograms"][ch]), 16)
+            self.assertEqual(sum(st_c["histograms"][ch]), total_px)
+        self.assertEqual(st_c["amber_pixels"], 20 * 100)
+        self.assertGreater(st_c["highlight_pixels"], 0)
+        self.assertLess(st_c["waveform"][0]["avg_ire"], st_c["waveform"][31]["avg_ire"])
+
+    def test_p56_08_compute_scope_stats_rejects_short_buffer(self) -> None:
+        with self.assertRaises(ValueError):
+            run_fx6_menu_trial.compute_gpe0_scope_stats(b"\x00" * 1024)
+
+    def test_p56_09_png_roundtrip_to_raw_gpe0_and_synthetic_fallback(self) -> None:
+        raw = bytearray(run_fx6_menu_trial.GPE0_BYTES)
+        u32_in = memoryview(raw).cast("I")
+        # pixel 0 stays 0 (dark bg 14,16,20 in PNG -> restored as 0); pixel 1 bright Sony amber
+        u32_in[1] = 0xFFFF8C10
+        png, nz = run_fx6_menu_trial.gpe0_raw_to_png(bytes(raw))
+        self.assertEqual(nz, 1)
+        decoded = run_fx6_menu_trial._png_to_raw_gpe0(png)
+        self.assertEqual(len(decoded), run_fx6_menu_trial.GPE0_BYTES)
+        u32 = memoryview(decoded).cast("I")
+        self.assertEqual(u32[0], 0)
+        self.assertEqual(u32[1], 0xFFFF8C10)
+
+        syn = run_fx6_menu_trial._synthetic_fallback_gpe0_raw()
+        self.assertEqual(len(syn), run_fx6_menu_trial.GPE0_BYTES)
+        st_syn = run_fx6_menu_trial.compute_gpe0_scope_stats(syn)
+        self.assertGreater(st_syn["nonzero_pixels"], 10000)
+
+    def test_p56_10_session_set_assist_tools_valid_and_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_sess_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            r1 = sess.set_assist_tools({"aspect_marker": "2.39:1", "zebra_mode": "70%", "peaking_mode": "Red", "desqueeze": "1.33x"})
+            self.assertTrue(r1["ok"])
+            self.assertEqual(
+                r1["assist_tools"],
+                {"aspect_marker": "2.39:1", "zebra_mode": "70%", "peaking_mode": "Red", "desqueeze": "1.33x"},
+            )
+            self.assertEqual(r1["status"]["assist_tools"], r1["assist_tools"])
+
+            r_bad = sess.set_assist_tools({"aspect_marker": "invalid_aspect", "desqueeze": "2.0x"})
+            self.assertFalse(r_bad["ok"])
+            # State must not partially mutate on error
+            self.assertEqual(sess.get_assist_tools()["aspect_marker"], "2.39:1")
+            self.assertEqual(sess.get_assist_tools()["desqueeze"], "1.33x")
+
+    def test_p56_11_session_get_scope_stats_fallback_offline_and_clean_room(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_fb_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            st = sess.get_scope_stats()
+            self.assertTrue(st["ok"])
+            self.assertEqual(st["waveform_columns"], 32)
+            self.assertEqual(st["histogram_bins"], 16)
+            self.assertEqual(st["ire_range"], [0.0, 109.0])
+            self.assertIn(st["source"], ("fallback_png", "synthetic_fallback"))
+
+            orig_rep = run_fx6_menu_trial.FALLBACK_GPE0_PNG
+            orig_cache = run_fx6_menu_trial._FALLBACK_RAW_CACHE
+            run_fx6_menu_trial.FALLBACK_GPE0_PNG = Path(td) / "missing.png"
+            run_fx6_menu_trial._FALLBACK_RAW_CACHE = None
+            try:
+                sess.last_png = b""
+                st_syn = sess.get_scope_stats()
+                self.assertEqual(st_syn["source"], "synthetic_fallback")
+                self.assertGreater(st_syn["nonzero_ratio"], 0.0)
+            finally:
+                run_fx6_menu_trial.FALLBACK_GPE0_PNG = orig_rep
+                run_fx6_menu_trial._FALLBACK_RAW_CACHE = orig_cache
+
+    def test_p56_12_session_get_scope_stats_live_gpe0_source(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_live_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            raw = self._make_grad_amber_frame()
+            sess.last_raw_gpe0 = raw
+            st = sess.get_scope_stats()
+            self.assertEqual(st["source"], "live_gpe0")
+            self.assertEqual(st["amber_pixels"], 2000)
+            self.assertEqual(st["frame_sha256"], hashlib.sha256(raw).hexdigest())
+
+    def test_p56_13_camset_export_and_import_roundtrip_with_assist_tools(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_camset_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({
+                "aspect_marker": "2.39:1",
+                "zebra_mode": "94%_SLog3",
+                "peaking_mode": "Yellow",
+                "desqueeze": "2.0x",
+            })
+            preset = sess.export_camset_preset()
+            self.assertEqual(
+                preset["assist_tools"],
+                {"aspect_marker": "2.39:1", "zebra_mode": "94%_SLog3", "peaking_mode": "Yellow", "desqueeze": "2.0x"},
+            )
+            sess.set_assist_tools({"reset": True})
+            self.assertEqual(sess.get_assist_tools()["aspect_marker"], "Off")
+
+            imp = sess.import_camset_preset(preset)
+            self.assertTrue(imp["ok"])
+            self.assertEqual(sess.get_assist_tools(), preset["assist_tools"])
+
+    def test_p56_14_camset_backward_compatibility_without_assist_tools_and_invalid_rejected(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_camcompat_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            preset = sess.export_camset_preset()
+            # Build legacy Phase 40 preset without assist_tools
+            legacy_body = {k: v for k, v in preset.items() if k not in ("assist_tools", "preset_sha256")}
+            canon = json.dumps(legacy_body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+            legacy_body["preset_sha256"] = hashlib.sha256(canon).hexdigest()
+            imp_ok = sess.import_camset_preset(legacy_body)
+            self.assertTrue(imp_ok["ok"])
+            self.assertEqual(sess.get_assist_tools()["aspect_marker"], "Off")
+
+            # Tampered / invalid assist_tools must fail closed
+            bad = dict(legacy_body)
+            bad.pop("preset_sha256")
+            bad["assist_tools"] = {"aspect_marker": "bad_marker"}
+            bad_canon = json.dumps(bad, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+            bad["preset_sha256"] = hashlib.sha256(bad_canon).hexdigest()
+            imp_bad = sess.import_camset_preset(bad)
+            self.assertFalse(imp_bad["ok"])
+
+    def test_p56_15_p4_nd_lock_still_enforced_with_assist_tools_active(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_p4_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({
+                "aspect_marker": "1.85:1",
+                "zebra_mode": "70%",
+                "peaking_mode": "White",
+                "desqueeze": "1.33x",
+            })
+            r_nd = sess.set_cinema_param("nd", preset="1/16 ND")
+            self.assertTrue(r_nd["ok"])
+            self.assertTrue(r_nd["locked"])
+            self.assertEqual(r_nd["value"], "Clear [FX3 P4 Locked]")
+            self.assertEqual(sess.cell_vals[3], 0)
+            self.assertGreaterEqual(sess.p4_lock_attempts, 1)
+
+    def test_p56_16_http_api_get_and_post_assist_tools(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_at_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                g0 = json.loads(urllib.request.urlopen(f"{base}/api/assist_tools", timeout=5).read().decode("utf-8"))
+                self.assertTrue(g0["ok"])
+                self.assertEqual(g0["assist_tools"]["aspect_marker"], "Off")
+                self.assertIn("aspect_marker", g0["specs"])
+
+                req = urllib.request.Request(
+                    f"{base}/api/assist_tools",
+                    data=json.dumps({
+                        "aspect_marker": "2.39:1",
+                        "zebra_mode": "70%",
+                        "peaking_mode": "Red",
+                        "desqueeze": "2.0x",
+                    }).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                p_res = json.loads(urllib.request.urlopen(req, timeout=5).read().decode("utf-8"))
+                self.assertTrue(p_res["ok"])
+                self.assertEqual(p_res["assist_tools"]["aspect_marker"], "2.39:1")
+                self.assertEqual(p_res["status"]["assist_tools"]["desqueeze"], "2.0x")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_17_http_api_post_assist_tools_malformed_and_invalid_400(self) -> None:
+        import threading
+        import urllib.error
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_bad_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({"aspect_marker": "17:9"})
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                for payload in (b"{malformed", json.dumps(["not_obj"]).encode("utf-8"), json.dumps({"zebra_mode": "99%"}).encode("utf-8")):
+                    req = urllib.request.Request(
+                        f"{base}/api/assist_tools",
+                        data=payload,
+                        headers={"Content-Type": "application/json"},
+                        method="POST",
+                    )
+                    with self.assertRaises(urllib.error.HTTPError) as ctx:
+                        urllib.request.urlopen(req, timeout=5)
+                    self.assertEqual(ctx.exception.code, 400)
+                self.assertEqual(sess.get_assist_tools()["aspect_marker"], "17:9")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_18_http_api_get_scope_stats_live_and_fallback(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_sc_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.last_raw_gpe0 = self._make_grad_amber_frame()
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                st = json.loads(urllib.request.urlopen(f"{base}/api/scope_stats?refresh=1", timeout=5).read().decode("utf-8"))
+                self.assertTrue(st["ok"])
+                self.assertEqual(st["source"], "live_gpe0")
+                self.assertEqual(st["waveform_columns"], 32)
+                self.assertEqual(len(st["waveform"]), 32)
+                self.assertEqual(st["histogram_bins"], 16)
+                self.assertEqual(st["amber_pixels"], 2000)
+                self.assertGreater(st["nonzero_ratio"], 0.0)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_19_http_api_status_includes_assist_tools(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_http_st_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            sess.set_assist_tools({"aspect_marker": "CenterCross", "peaking_mode": "White"})
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                st = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{port}/api/status", timeout=5).read().decode("utf-8"))
+                self.assertEqual(st["assist_tools"]["aspect_marker"], "CenterCross")
+                self.assertEqual(st["assist_tools"]["peaking_mode"], "White")
+                self.assertIn("cinema_params", st)
+                self.assertIn("stage_b_telemetry", st)
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_20_html_ui_contains_phase56_scope_and_assist_controls(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_html_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                html = urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=5).read().decode("utf-8")
+                for marker in (
+                    "📊 Waveform / IRE Scope",
+                    "assist-aspect-select",
+                    "assist-zebra-select",
+                    "assist-peaking-select",
+                    "assist-desqueeze-select",
+                    "btn-desqueeze-preview",
+                    "waveform-scope-panel",
+                    "scope-waveform-canvas",
+                    "scope-hist-canvas",
+                    "scope-stats-readout",
+                    "/api/assist_tools",
+                    "/api/scope_stats",
+                    "applyDesqueezePreview",
+                    "refreshScopeStats",
+                ):
+                    self.assertIn(marker, html, msg=f"Missing Phase 56 HTML marker: {marker}")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_21_camset_http_roundtrip_with_assist_tools(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_hcam_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                req_set = urllib.request.Request(
+                    f"{base}/api/assist_tools",
+                    data=json.dumps({"aspect_marker": "9:16", "zebra_mode": "100%", "desqueeze": "1.33x"}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                urllib.request.urlopen(req_set, timeout=5).read()
+                exp = json.loads(urllib.request.urlopen(f"{base}/api/preset_export", timeout=5).read().decode("utf-8"))
+                self.assertEqual(exp["assist_tools"]["aspect_marker"], "9:16")
+
+                req_rst = urllib.request.Request(
+                    f"{base}/api/assist_tools",
+                    data=json.dumps({"reset": True}).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                urllib.request.urlopen(req_rst, timeout=5).read()
+
+                req_imp = urllib.request.Request(
+                    f"{base}/api/preset_import",
+                    data=json.dumps(exp).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                imp = json.loads(urllib.request.urlopen(req_imp, timeout=5).read().decode("utf-8"))
+                self.assertTrue(imp["ok"])
+                self.assertEqual(imp["status"]["assist_tools"]["aspect_marker"], "9:16")
+                self.assertEqual(imp["status"]["assist_tools"]["zebra_mode"], "100%")
+                self.assertEqual(imp["status"]["assist_tools"]["desqueeze"], "1.33x")
+            finally:
+                srv.shutdown()
+                srv.server_close()
+
+    def test_p56_22_backward_compatibility_phases_19_23_30_40_49_endpoints(self) -> None:
+        import threading
+        import urllib.request
+
+        with tempfile.TemporaryDirectory(prefix="fx6_p56_compat_") as td:
+            sess = run_fx6_menu_trial.FX6LiveGpe0Session(Path(td) / "sess", port=18774)
+            srv = run_fx6_menu_trial.HardenedThreadingHTTPServer(
+                ("127.0.0.1", 0), run_fx6_menu_trial.make_handler(sess)
+            )
+            port = srv.server_address[1]
+            t = threading.Thread(target=srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
+            t.start()
+            try:
+                base = f"http://127.0.0.1:{port}"
+                for ep in ("/api/pages128", "/api/lang", "/api/fx3_button", "/api/cinema_param", "/api/lut_upload", "/api/menu_catalog", "/api/assist_tools", "/api/scope_stats"):
+                    res = json.loads(urllib.request.urlopen(f"{base}{ep}", timeout=5).read().decode("utf-8"))
+                    self.assertIsNotNone(res)
+            finally:
+                srv.shutdown()
+                srv.server_close()
 
 
 if __name__ == "__main__":

@@ -86,6 +86,53 @@ All 7 donor binaries modified purely in RAM / temporary directories by `outputs/
 | `usr/lib/libfan.so` (FX6 6.01) | `31,176` | `d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850` | `Fan` `ufan_read_ic_type` return FX3 fan controller ID `1` (`MOV W0, #1; RET`) |
 | `usr/kmod/upm.ko` (FX3 7.02) | `453,896` | `ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e` | `P9` `sub28` `CBZ X1` null-callback guard (`0x5A28`/`0x5A2C` + `.eh_frame` cave `0x32930`) |
 
+### 1.4 Phase 19–35 Stage-B Outputs, Wireless (`P12`), Peripheral/Codec & `.uxc`/Font Donors
+
+Covers all **4** deterministic Stage-A/B adapted outputs (`fx6_closure.patcher` in-memory `apply_patch_spec` builds) plus **36** Phase 17–35 live FX6/FX3 donors (wireless/BT/network, peripheral/UIPC/presentation/codec, cross-body FX3 `appFw.so`/`libmpr.so`/`string_english.uxc`, `.uxc` UI/locale packs, and Monotype `.ltt`/`.ttf` icon fonts):
+
+| Component / Path | Size (Bytes) | SHA-256 Digest | Role & Description |
+| :--- | ---: | :--- | :--- |
+| `usr/lib/appFw.so (Stage-A P1+P4+P8 adapted)` | `50,520,424` | `95f46b6c1e3738b3f89ef2c4a3cae4160455114cb35cf0542ab71f117436d9f0` | Stage-A `P1+P4+P8` deterministic `appFw.so` build (`FX6_APPFW_STAGE_A_SHA256`) |
+| `usr/lib/appFw.so (Stage-B P10-only adapted)` | `50,520,424` | `07a5405830becb169df4adc7d51eb19f53febe94e36b72de83e2bcad7081b84b` | Isolated `P10` 24 B physical keymap build (`FX6_APPFW_P10_ONLY_SHA256`) |
+| `usr/lib/appFw.so (Stage-B P1+P4+P8+P10 adapted)` | `50,520,424` | `e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4` | Full Stage-B combined `P1+P4+P8+P10` `appFw.so` build (`FX6_APPFW_STAGE_B_SHA256`) |
+| `usr/lib/libWlanResource.so (Stage-B P12 adapted)` | `56,464` | `47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995` | Stage-B `P12` `_Z16handleFatalErrorv` non-blocking guard build (`FX6_WLAN_RSRC_P12_SHA256`) |
+| `usr/lib/libWlanResource.so (FX6 6.01)` | `56,464` | `eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88` | FX6 `WF-12` Wi-Fi resource manager donor (`P12` input; `0x70d4` fatal-loop target) |
+| `usr/lib/libWlanControlCommon.so (FX6 6.01)` | `18,528` | `4dccfa865720f662c2f02c741bce609bbe132280ab537eae990d913450f2f2c9` | FX6 `WF-12` SDIO/PCIe port & WLAN driver loader (`Phase 22/26`) |
+| `usr/lib/libInfraBluetooth.so (FX6 6.01)` | `154,840` | `3b3c1a411f3e157c6d6f7db6ae4dbbb0fc29920561eb3743b7c7723f974cc788` | FX6 Bluetooth service manager (`Init` Airplane-Mode `cbz w0` gate) |
+| `usr/lib/libInfraBluetoothCore.so (FX6 6.01)` | `267,576` | `84a9bf33d26914a42c46ffc34381041d56006b3fdf76a2f475d954b602292694` | FX6 Bluetooth QCA BSA UART/HAL bridge (`0x0bb9` fallback) |
+| `usr/lib/libResourceBluetooth.so (FX6 6.01)` | `14,464` | `2be9da99a2d45980449ac04814950896058b375c0a565f99bc5eb3fc92a0a16c` | FX6 Bluetooth resource allocator (`ResourceBluetooth_init` `cbz w0` gate) |
+| `usr/lib/libbt-vendor.so (FX6 6.01)` | `47,968` | `3c9a48fedd5bbc829d3d166feac090d3d5df3f347d9599f864722f885bdbf8bb` | FX6 Bluetooth HCI vendor HAL (`/dev/ttyAMA3`) |
+| `usr/lib/libInfraNetInitializer.so (FX6 6.01)` | `18,792` | `9628f8d97434734742078347d99c1c0a6c00fec43534d1b608f6ca6899c0fc5d` | FX6 network initializer (`SeqQueueNetwork` non-blocking drain) |
+| `usr/lib/libInfraInput.so (FX6 6.01)` | `93,448` | `1851e2dc8515d2240b9ecaffd58591207336c5f061b1af0d3585d7b082a41f02` | FX6 physical input/dial UIPC client (`Phase 17` peripheral UX) |
+| `usr/lib/libInfraTp.so (FX6 6.01)` | `47,776` | `ea1c123412fc048d93bd7492bdcc59a7fab0d472c895b73a60d463d5fafe8652` | FX6 capacitive touch panel UIPC client (`SetTpSize` `0x55b8`) |
+| `usr/lib/libInfraHotshoe.so (FX6 6.01)` | `47,808` | `0bf55367c0345341d776180e45ec640dce978c1cf9a0935354f20421ca2204f6` | FX6 MI Smart Handle / digital audio UIPC client (`0x5d90` timeout) |
+| `usr/lib/libgpe.so (FX6 6.01)` | `106,520` | `4541f6e22d7c598c3eacedee553015fb12dc35d5068e1f76cddc07dd82cfd79d` | FX6 Graphics Processing Engine display routing library (`GpeInit`) |
+| `usr/scenario/AVBB_SCN_START_PANELEVF.so (FX6 6.01)` | `275,968` | `36d98e83611f3e26c7db4d84a7e045fceafc370470744352598db62f54b09b2b` | FX6 panel/EVF startup scenario (`_Z12GetOutputSelhPh` @ `0x173c`) |
+| `usr/scenario/AVBB_SCN_START_AUDIO.so (FX6 6.01)` | `70,096` | `96252cad4c9c13575a6c071be9f9fe72853382af7a4133bac7257e056f71420a` | FX6 digital/analog audio startup scenario (`XLR-H1` / handle audio) |
+| `usr/lib/libosal_uipc.so (FX6 6.01)` | `43,752` | `fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a` | FX6 OSAL Userland IPC library (`P11` AP<->CP shim & Presenter) |
+| `usr/lib/liblibra.so (FX6 6.01)` | `290,992` | `3dffc66daede059cbbdde30d3106185cb3f634cc0309dff69d5a63758ceb5d90` | FX6 `.uxc` resource & localization engine (`sys_getNamespaceID`) |
+| `usr/lib/libux_core.so (FX6 6.01)` | `232,960` | `c72d52b41e09d547dd4129fb2af271e2ac52b62dee2d8f27a362ce6dcc35003d` | FX6 UI core toolkit (`Lz77Decoder` & widget renderer) |
+| `usr/lib/libmpr.so (FX6 6.01)` | `28,921,824` | `814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e` | FX6 Media Processing Engine (`IMX510` / `XAVC` / sensor-codec parity) |
+| `usr/lib/appFw.so (FX3 7.02)` | `79,015,712` | `545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f` | FX3 `ALCIN_UUD` reference `appFw.so` (cross-body `BKID`, `UIPC`, `IMX510` baseline) |
+| `usr/lib/libmpr.so (FX3 7.02)` | `3,517,008` | `9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c` | FX3 `ALCIN_UUD` reference `libmpr.so` (`G01` & codec comparison baseline) |
+| `usr/share/app/string_english.uxc (FX3 7.02)` | `165,740` | `204328c311f099208e6c43acdcef034bef98ce72daa40569611a61673b27817e` | FX3 English `.uxc` string pack (`ns=1` cross-body diff baseline) |
+| `usr/share/app/image_00_169.uxc (FX6 6.01)` | `3,941,000` | `f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148` | FX6 1,610-sprite LDEC/LZ77 `16:9` OSD image pack (`ns=0`) |
+| `usr/share/app/string_english.uxc (FX6 6.01)` | `118,208` | `5e88dd707cb46a2998fe4e55c800da6ce7a8538fd32705856aa9004af739c739` | FX6 English namespace-1 string pack (`ns=1`, `5,044` strings) |
+| `usr/share/app/string_english_2.uxc (FX6 6.01)` | `118,676` | `3f11f9200f576575347658afcc8317cb0b4a4220a92ac50e985a44a835d23fe2` | FX6 English namespace-2 string pack (`ns=2`, `5,915` strings) |
+| `usr/share/app/string_simplifiedchinese.uxc (FX6 6.01)` | `118,644` | `ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f` | FX6 Simplified Chinese `ns=1` string pack (`100%` UTF-8 & `STRID` parity) |
+| `usr/share/app/string_simplifiedchinese_2.uxc (FX6 6.01)` | `122,084` | `058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3` | FX6 Simplified Chinese `ns=2` (`string_schinese_2`) pack (`5,915` strings) |
+| `usr/share/app/string_traditionalchinese_2.uxc (FX6 6.01)` | `121,824` | `07fa20ae03457465a8c4922f479d6cfe1280980a70ac43797081e87654680c6d` | FX6 Traditional Chinese `ns=2` string pack (`5,915` strings) |
+| `usr/share/app/string_japanese_2.uxc (FX6 6.01)` | `144,720` | `98315732d7e29078a98dc32c077a799f8831d8bb3d96ec26ca2110ed8e36aa26` | FX6 Japanese `ns=2` string pack (`5,915` strings) |
+| `usr/share/app/color_cmn.uxc (FX6 6.01)` | `288` | `ea2e508f9ba567655dd36be6245ada221e595e83f8343b733f3894109f9dd230` | FX6 common palette resource pack (`ns=6`) |
+| `usr/share/app/lang_cmn.uxc (FX6 6.01)` | `1,048` | `ad547c47444e134bcf3622b84344d82273d4c5d04fd3775a7cf6fb58f5db63c5` | FX6 common 29-language selector table (`ns=5`) |
+| `usr/share/app/style_cmn.uxc (FX6 6.01)` | `1,980` | `b22501655d3d933fdf5a8f6aed6de0aa944b691f4ecb9625c64111e7483ba2c1` | FX6 common UI typography & layout style pack (`ns=3`) |
+| `usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt (FX6 6.01)` | `2,054,740` | `3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1` | Monotype Simplified Chinese `GB18030` + Sony icon linked font |
+| `usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt (FX6 6.01)` | `1,552,252` | `3cf4238d210dbd472fd207969eec9660eedd335905137b38566e04a8c8e04448` | Monotype Traditional Chinese `Big5-HKSCS` + Sony icon linked font |
+| `usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt (FX6 6.01)` | `851,496` | `dda0a2400add24d829d958adf338899c80b20adc122cf2946d8f0c99f8b0fed3` | Monotype Japanese Heisei Kaku Gothic + Sony icon linked font |
+| `usr/share/app/UniversOTS-SJ_wIcon.ltt (FX6 6.01)` | `611,416` | `eea4d814854d2cefc18e5631c82138b2b69824687cd31002b7df34eae025dd0d` | Monotype Latin/European Univers OTS + Sony icon linked font |
+| `usr/share/app/MYingHeiC-KSX1001-SJ_wIcon.ltt (FX6 6.01)` | `924,104` | `96a5e21ce562965d0d6c96c711f1a9d7c5e65cee32b80c2dbd793d8b1e440351` | Monotype Korean `KS X 1001` + Sony icon linked font |
+| `usr/share/app/Sony_DI_Icons.ttf (FX6 6.01)` | `629,604` | `058c1b07eb768638f984b1d6219cf2375ef771f86aba9d553743a029541a62be` | Sony Digital Imaging PUA (`U+E000..U+F8FF`) vector icon TrueType font |
+
 ---
 
 ## 2. Clean-Room Build & Reproduction Workflows
@@ -139,6 +186,111 @@ All 7 donor binaries modified purely in RAM / temporary directories by `outputs/
     /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -p "test_*.py"
   ```
 
+### 2.5 Track 5 & Stage-B — Phase 19–35 (`P10` Keymap, `P11` UIPC-CP, `P12` Wireless, `.uxc`/CJK Font & Sensor/Codec) Audits
+
+- Reproduces Stage-B combined `P1+P4+P8+P10` (`appFw.so` `e2bc2619...`) and `P12` (`libWlanResource.so` `47fec188...`) adaptations purely in RAM, plus hardware-free `.uxc`/LDEC sprite decoding (`1,610` sprites), 62-pack multi-language & Monotype `.ltt`/`.ttf` `cmap` glyph sweeps, and `IMX510` / `XAVC` sensor-codec parity audits (`O_RDONLY` on local donors or `FX3_FX6_FORCE_CLEAN_ROOM=1`):
+  ```sh
+  make verify-peripheral-ux
+  make verify-ap-cp-imaging
+  make verify-stage-b-p10
+  make verify-uipc-cp-shim
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure" \
+    /usr/bin/python3 -B -m fx6_closure verify-wireless-guard
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-firmware-lab" \
+    /usr/bin/python3 -B -m fx3_firmware_lab audit-all
+  ```
+
+### 2.6 Phase 83 Stage-B Capstone — 22-Gate Safety, OTP/RPMB Anti-Rollback, 11-Stage VM, 14+ Firmware Auditors, Round 15 Multi-Tab UI & Live `8768` Console
+
+Every Capstone suite supports both **Local BYOF Donor (`os.O_RDONLY`) mode** and **Donorless Clean-Room mode (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**, with persistent eMMC writes, OTP fuse touches, and RPMB counter increments hard-locked to zero (`persistent_emmc_writes_authorized = False`, `hardware_live_attachment_authorized = False`, `otp_fuse_touches = 0`, `rpmb_counter_increments = 0`):
+
+```sh
+# Unified Environment (prepend FX3_FX6_FORCE_CLEAN_ROOM=1 for donorless clean-room CI mode)
+export PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure"
+
+# 1. Unified Stage-B Capstone 22-Gate + OTP/RPMB + 11-Stage VM + Round 15 CLI Certificate (< 3.5s)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --json
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --clean-room --markdown-out /tmp/stage_b_capstone_22gate.md
+
+# 2. 22-Gate Master Preflight (G01..G22 incl. G21 XLR-H1 +48V Firewall & G22 Gimbal/Laser/Shutter Guard)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "import fx3_safety.phantom48v_gimbal_and_22gate_guard as g; r = g.evaluate_22gate_preflight(dry_run_simulated_backup=True); print(r.schema, r.summary['verified_gates'], r.g21_to_g22_all_passed)"
+
+# 3. OTP / RPMB Anti-Rollback, Cross-SKU & EXT_CSD Permanent Write-Protect Firewall
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "from fx3_recovery.firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite; r = run_antirollback_and_byof_guard_suite(); print(r.schema, r.all_passed, r.otp_fuse_touches, r.rpmb_counter_increments)"
+
+# 4. GF(256) P+Q Tier-0 Self-Healer, Anti-Transplant Lock & SD FX3_SAFE_STOCK.FLG Escape
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.tier0_gf256_selfheal_and_manifest_guard
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.init2_escape_watchdog_fat_verifier
+
+# 5. 11-Stage Heterogeneous VM Co-Emulation Suite (Stages 1..11 incl. Touch-AF / CIZ / Assignable)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py
+
+# 6. 14+ Firmware-Lab Auditors & Round 15 Real-Kernel Multi-Tab Closure
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_firmware_lab audit-all
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx6-on-fx3-closure/tests/test_phase83_stage_b_capstone_22gate_verifier.py
+
+# 7. Browser Interactive Menu Emulator Console (HTTP port 8768, read-only local trial)
+# Check readiness on http://127.0.0.1:8768/ or launch when not already running:
+# curl -s http://127.0.0.1:8768/ | head -n 5
+# /usr/bin/python3 -B outputs/fx3-vm-trial/run_fx6_menu_trial.py --port 8768
+
+# Run full repository clean-only suite + dual-mode BYOF manifest audit:
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+```
+
+### 2.7 Milestone Phase 110 — 32-Gate Safety, 10-Pillar Recovery, 20+ Firmware Auditors, 18-Stage VM & Complete `10/10` Status + `11/11` Full-Menu Real-Kernel Closures
+
+All Milestone Phase 110 gates execute in **both Local Donor (`os.O_RDONLY`) and Donorless Clean-Room (`FX3_FX6_FORCE_CLEAN_ROOM=1`) modes**, maintaining `2,980` Local Donor / `2,922` Clean-Room passing tests across all 7 suites while locking `persistent_emmc_writes_authorized = False`, `hardware_live_attachment_authorized = False`, `otp_fuse_touches = 0`, and `passive_tx_bytes_emitted = 0`:
+
+```sh
+# 1. Unified 6-Pillar Milestone Phase 110 Master Gate (< 2.5s in BOTH modes)
+make verify-milestone-110
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-110
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-110 --json
+
+# 2. 32-Gate Master Preflight (G01..G32 incl. G25..G32 Fan Intake, Tripod, IMX510 Curtain/Subzero, Wireless EMI/6h+ exFAT, PL Cantilever & V-Mount Dummy Battery OVP)
+make verify-32-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-32-gates
+
+# 3. 10-Pillar Recovery Master Suite (OTP/RPMB + GF(256) + init2 + Passive RX-Only UART S0..S6 + GPT/RPMB + Ramdisk/eMMC Pre-EOL + FDT bootargs/ARM64 Image)
+make verify-10pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-10pillar-recovery
+
+# 4. 20+ Unified Firmware-Lab Auditors, 18-Stage VM Co-Emulation & Phase 110 Fast Gate Suite
+make verify-firmware-lab
+make verify-coemulation
+make verify-milestone-90
+```
+
+### 2.8 Milestone Phase 130 — 40-Gate Safety, 13+ Pillar Recovery, 24+ Firmware Auditors, 21-Stage VM, Real-Kernel Multilingual Closures (`Rounds 14/17/19/20..24`) & Live Port `8768` Console (`Phases 109/116/123`)
+
+All Milestone Phase 130 gates execute in **both Local Donor (`os.O_RDONLY`) and Donorless Clean-Room (`FX3_FX6_FORCE_CLEAN_ROOM=1`) modes** in `< 2.5s`, scaling the repository to **`3,743` Local Donor / `3,685` Clean-Room passing tests across all 7 suites** while locking `persistent_emmc_writes_authorized = False`, `hardware_live_attachment_authorized = False`, `otp_fuse_touches = 0`, `rpmb_counter_increments = 0`, and `passive_tx_bytes_emitted = 0`:
+
+```sh
+# 1. Unified 6-Pillar Milestone Phase 130 Master Gate (< 2.5s in BOTH modes)
+make verify-milestone-130
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-130
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-130 --json
+
+# 2. 40-Gate Master Safety Preflight (G01..G40 incl. G33..G40 Salt-Spray/FIZ CoG, HDMI AOC +5V/CFexpress Flush, USB-PD 20V Decoy/Multi-Terminal, Wet MI-Shoe & XLR-H1 Whip Shear/Cage-Twist FFD)
+make verify-40-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-40-gates
+
+# 3. 13-Pillar Recovery Master Suite (Pillars 1..10 + Ph113 A/B Bank & Interrupted OTA + Ph119 SquashFS/hibdrv WBI2 + Ph124 Mask-BootROM USB & JEDEC eMMC BOOT0/BOOT1)
+make verify-13pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-13pillar-recovery
+
+# 4. 24+ Unified Firmware-Lab Auditors, 21-Stage VM Co-Emulation, Fast Composite Gates & Full 7-Suite Audit
+make verify-firmware-lab
+make verify-coemulation
+make verify-fast
+make test
+```
+
 ---
 
 ## 3. Automated BYOF Manifest Auditor (`make verify-byof`)
@@ -147,8 +299,9 @@ Run [`scripts/verify_byof_manifest.py`](../scripts/verify_byof_manifest.py) via 
 ```sh
 make verify-byof
 ```
-- **In a clean Git clone (without proprietary Sony firmware)**: Validates every `(path, size_bytes, sha256)` entry across both English and Simplified Chinese tables, checks 100% EN/ZH digest & size parity, cross-checks digests against pinned constants in `fx6_closure`, `fx3_safety`, and `fx3_recovery`, and exits `0` with `CLEAN_ROOM_SCHEMA_VERIFIED`.
-- **When local BYOF donor files are present**: Streams and verifies live byte sizes and SHA-256 digests on disk, exiting `0` with `LOCAL_DONOR_VERIFIED` (or failing closed with exit code `1` on any mismatch).
+- **In a clean Git clone (without proprietary Sony firmware)**: Validates every `(path, size_bytes, sha256)` entry across both English and Simplified Chinese tables (`57` Stage-A `§1.1–1.3` + `40` Stage-B/Phase 19–35 `§1.4` entries), checks 100% EN/ZH digest & size parity, cross-checks digests against pinned constants in `fx6_closure`, `fx3_safety`, and `fx3_recovery`, and exits `0` with `CLEAN_ROOM_SCHEMA_VERIFIED`.
+- **When local BYOF donor files are present**: Streams and verifies live byte sizes and SHA-256 digests on disk (`O_RDONLY`, `54` Stage-A + `36` Stage-B donors) plus `4` deterministic in-memory Stage-A/B adapted outputs (`appFw.so` & `libWlanResource.so`), exiting `0` with `LOCAL_DONOR_VERIFIED` (or failing closed with exit code `1` on any mismatch).
+- **Dynamic donor root resolution**: Resolves `work/` trees in priority order: explicit environment overrides (`FX3_FX6_MAC_WORK_ROOT`, `FX3_FX6_MAIN_LAB_WORK_ROOT`, `FX3_FX6_MAC_ROOT`), the current worktree `work/` (when target binaries exist), internal SSD defaults (`~/AI-Workspace/AI/Projects/Mac/{outputs/sony-fx3-fx6-lab/work,work}`), and legacy external volume fallback. Set `FX3_FX6_FORCE_CLEAN_ROOM=1` to strictly force donorless CI isolation.
 
 ---
 ---
@@ -235,6 +388,53 @@ make verify-byof
 | `usr/lib/libfan.so` (FX6 6.01) | `31,176` | `d4f01ff36a2d3d45c236cdb546816d585eed4aa9ce1ca68fdb03174151ea4850` | `Fan` `ufan_read_ic_type` 返回 FX3 风扇控制器类型 `1`（`MOV W0, #1; RET`） |
 | `usr/kmod/upm.ko` (FX3 7.02) | `453,896` | `ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e` | `P9` `sub28` `CBZ X1` 空回调防护（`0x5A28`/`0x5A2C` + `.eh_frame` 代码洞穴 `0x32930`） |
 
+### 1.4 Phase 19–35 Stage-B 适配产物、无线 (`P12`)、外设/编解码与 `.uxc`/字库 Donor 清单
+
+覆盖全部 **4** 项确定性 Stage-A/B 适配输出（`fx6_closure.patcher` 纯内存 `apply_patch_spec` 构建）与 **36** 项 Phase 17–35 本地 FX6/FX3 Donor（无线/蓝牙/网络、外设/UIPC/呈现/编解码、跨机型 FX3 `appFw.so`/`libmpr.so`/`string_english.uxc`、`.uxc` 多语言资源包与 Monotype `.ltt`/`.ttf` 图标字库）：
+
+| 组件 / 路径 | 大小 (字节) | SHA-256 摘要 | 角色与说明 |
+| :--- | ---: | :--- | :--- |
+| `usr/lib/appFw.so (Stage-A P1+P4+P8 adapted)` | `50,520,424` | `95f46b6c1e3738b3f89ef2c4a3cae4160455114cb35cf0542ab71f117436d9f0` | Stage-A `P1+P4+P8` 确定性 `appFw.so` 构建产物（`FX6_APPFW_STAGE_A_SHA256`） |
+| `usr/lib/appFw.so (Stage-B P10-only adapted)` | `50,520,424` | `07a5405830becb169df4adc7d51eb19f53febe94e36b72de83e2bcad7081b84b` | 独立 `P10` 24 B 物理按键映射 `appFw.so` 构建产物（`FX6_APPFW_P10_ONLY_SHA256`） |
+| `usr/lib/appFw.so (Stage-B P1+P4+P8+P10 adapted)` | `50,520,424` | `e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4` | Stage-B 全量组合 `P1+P4+P8+P10` `appFw.so` 构建产物（`FX6_APPFW_STAGE_B_SHA256`） |
+| `usr/lib/libWlanResource.so (Stage-B P12 adapted)` | `56,464` | `47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995` | Stage-B `P12` `_Z16handleFatalErrorv` 非阻塞防护产物（`FX6_WLAN_RSRC_P12_SHA256`） |
+| `usr/lib/libWlanResource.so (FX6 6.01)` | `56,464` | `eb7785e025d11eefced79de3a918034960422ee75dc09b0fead69646f7e8bd88` | FX6 `WF-12` Wi-Fi 资源管理 Donor（`P12` 输入；`0x70d4` 死循环靶点） |
+| `usr/lib/libWlanControlCommon.so (FX6 6.01)` | `18,528` | `4dccfa865720f662c2f02c741bce609bbe132280ab537eae990d913450f2f2c9` | FX6 `WF-12` SDIO/PCIe 端口与 WLAN 驱动加载器（`Phase 22/26`） |
+| `usr/lib/libInfraBluetooth.so (FX6 6.01)` | `154,840` | `3b3c1a411f3e157c6d6f7db6ae4dbbb0fc29920561eb3743b7c7723f974cc788` | FX6 蓝牙服务管理库（`Init` 飞行模式 `cbz w0` 早退门控） |
+| `usr/lib/libInfraBluetoothCore.so (FX6 6.01)` | `267,576` | `84a9bf33d26914a42c46ffc34381041d56006b3fdf76a2f475d954b602292694` | FX6 蓝牙 QCA BSA UART/HAL 桥接库（`0x0bb9` 降级回退） |
+| `usr/lib/libResourceBluetooth.so (FX6 6.01)` | `14,464` | `2be9da99a2d45980449ac04814950896058b375c0a565f99bc5eb3fc92a0a16c` | FX6 蓝牙资源分配器（`ResourceBluetooth_init` `cbz w0` 门控） |
+| `usr/lib/libbt-vendor.so (FX6 6.01)` | `47,968` | `3c9a48fedd5bbc829d3d166feac090d3d5df3f347d9599f864722f885bdbf8bb` | FX6 蓝牙 HCI 厂商 HAL 库（`/dev/ttyAMA3`） |
+| `usr/lib/libInfraNetInitializer.so (FX6 6.01)` | `18,792` | `9628f8d97434734742078347d99c1c0a6c00fec43534d1b608f6ca6899c0fc5d` | FX6 网络初始化器（`SeqQueueNetwork` 有界非阻塞排空） |
+| `usr/lib/libInfraInput.so (FX6 6.01)` | `93,448` | `1851e2dc8515d2240b9ecaffd58591207336c5f061b1af0d3585d7b082a41f02` | FX6 物理按键与拨盘 UIPC 客户端库（`Phase 17` 外设 UX） |
+| `usr/lib/libInfraTp.so (FX6 6.01)` | `47,776` | `ea1c123412fc048d93bd7492bdcc59a7fab0d472c895b73a60d463d5fafe8652` | FX6 电容触控屏 UIPC 客户端库（`SetTpSize` `0x55b8`） |
+| `usr/lib/libInfraHotshoe.so (FX6 6.01)` | `47,808` | `0bf55367c0345341d776180e45ec640dce978c1cf9a0935354f20421ca2204f6` | FX6 MI 热靴手柄与数字音频 UIPC 客户端库（`0x5d90` 超时回退） |
+| `usr/lib/libgpe.so (FX6 6.01)` | `106,520` | `4541f6e22d7c598c3eacedee553015fb12dc35d5068e1f76cddc07dd82cfd79d` | FX6 图形处理引擎显示路由库（`GpeInit`） |
+| `usr/scenario/AVBB_SCN_START_PANELEVF.so (FX6 6.01)` | `275,968` | `36d98e83611f3e26c7db4d84a7e045fceafc370470744352598db62f54b09b2b` | FX6 面板/EVF 启动场景插件（`_Z12GetOutputSelhPh` @ `0x173c`） |
+| `usr/scenario/AVBB_SCN_START_AUDIO.so (FX6 6.01)` | `70,096` | `96252cad4c9c13575a6c071be9f9fe72853382af7a4133bac7257e056f71420a` | FX6 数字/模拟音频启动场景插件（`XLR-H1` / 手柄音频） |
+| `usr/lib/libosal_uipc.so (FX6 6.01)` | `43,752` | `fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a` | FX6 OSAL 用户态 IPC 核心库（`P11` AP<->CP 垫片与 Presenter） |
+| `usr/lib/liblibra.so (FX6 6.01)` | `290,992` | `3dffc66daede059cbbdde30d3106185cb3f634cc0309dff69d5a63758ceb5d90` | FX6 `.uxc` 资源与本地化管理引擎（`sys_getNamespaceID`） |
+| `usr/lib/libux_core.so (FX6 6.01)` | `232,960` | `c72d52b41e09d547dd4129fb2af271e2ac52b62dee2d8f27a362ce6dcc35003d` | FX6 UI 核心工具库（`Lz77Decoder` 与控件渲染） |
+| `usr/lib/libmpr.so (FX6 6.01)` | `28,921,824` | `814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e` | FX6 媒体处理引擎（`IMX510` / `XAVC` / 传感器与编解码基线） |
+| `usr/lib/appFw.so (FX3 7.02)` | `79,015,712` | `545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f` | FX3 `ALCIN_UUD` 参考 `appFw.so`（跨机身 `BKID`、`UIPC`、`IMX510` 基线） |
+| `usr/lib/libmpr.so (FX3 7.02)` | `3,517,008` | `9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c` | FX3 `ALCIN_UUD` 参考 `libmpr.so`（`G01` 与编解码对比基线） |
+| `usr/share/app/string_english.uxc (FX3 7.02)` | `165,740` | `204328c311f099208e6c43acdcef034bef98ce72daa40569611a61673b27817e` | FX3 英文 `.uxc` 字符串资源包（`ns=1` 跨机身差异基线） |
+| `usr/share/app/image_00_169.uxc (FX6 6.01)` | `3,941,000` | `f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148` | FX6 1,610 枚 LDEC/LZ77 精灵图 `16:9` OSD 图像包（`ns=0`） |
+| `usr/share/app/string_english.uxc (FX6 6.01)` | `118,208` | `5e88dd707cb46a2998fe4e55c800da6ce7a8538fd32705856aa9004af739c739` | FX6 英文命名空间 1 字符串包（`ns=1`，`5,044` 条词条） |
+| `usr/share/app/string_english_2.uxc (FX6 6.01)` | `118,676` | `3f11f9200f576575347658afcc8317cb0b4a4220a92ac50e985a44a835d23fe2` | FX6 英文命名空间 2 字符串包（`ns=2`，`5,915` 条词条） |
+| `usr/share/app/string_simplifiedchinese.uxc (FX6 6.01)` | `118,644` | `ba060e859156bfaefcc4177bfa6e9c5bea112258b15ce815a5ba683d033e688f` | FX6 简体中文 `ns=1` 字符串包（`100%` UTF-8 与 `STRID` 槽位对齐） |
+| `usr/share/app/string_simplifiedchinese_2.uxc (FX6 6.01)` | `122,084` | `058c09066cd7cd4eb5d68fa4228255fa7d2ad195a4088f145ac647e3577e58a3` | FX6 简体中文 `ns=2`（`string_schinese_2`）字符串包（`5,915` 条词条） |
+| `usr/share/app/string_traditionalchinese_2.uxc (FX6 6.01)` | `121,824` | `07fa20ae03457465a8c4922f479d6cfe1280980a70ac43797081e87654680c6d` | FX6 繁体中文 `ns=2` 字符串包（`5,915` 条词条） |
+| `usr/share/app/string_japanese_2.uxc (FX6 6.01)` | `144,720` | `98315732d7e29078a98dc32c077a799f8831d8bb3d96ec26ca2110ed8e36aa26` | FX6 日文 `ns=2` 字符串包（`5,915` 条词条） |
+| `usr/share/app/color_cmn.uxc (FX6 6.01)` | `288` | `ea2e508f9ba567655dd36be6245ada221e595e83f8343b733f3894109f9dd230` | FX6 公共调色板资源包（`ns=6`） |
+| `usr/share/app/lang_cmn.uxc (FX6 6.01)` | `1,048` | `ad547c47444e134bcf3622b84344d82273d4c5d04fd3775a7cf6fb58f5db63c5` | FX6 公共 29 语种索引表（`ns=5`） |
+| `usr/share/app/style_cmn.uxc (FX6 6.01)` | `1,980` | `b22501655d3d933fdf5a8f6aed6de0aa944b691f4ecb9625c64111e7483ba2c1` | FX6 公共排版与 UI 样式资源包（`ns=3`） |
+| `usr/share/app/MYingHeiC-GB18030-SJ_wIcon.ltt (FX6 6.01)` | `2,054,740` | `3ed0c7dda3f1aebf8334532ba35e945ed6bfd58f25c3aa3fa0cd31aa67cc55d1` | Monotype 简体中文 `GB18030` 嵌合 Sony 图标链接字库 |
+| `usr/share/app/MYingHeiC-Big5HKSCS-SJ_wIcon.ltt (FX6 6.01)` | `1,552,252` | `3cf4238d210dbd472fd207969eec9660eedd335905137b38566e04a8c8e04448` | Monotype 繁体中文 `Big5-HKSCS` 嵌合 Sony 图标链接字库 |
+| `usr/share/app/HeiseiKakuGothW5-SJ_wIcon.ltt (FX6 6.01)` | `851,496` | `dda0a2400add24d829d958adf338899c80b20adc122cf2946d8f0c99f8b0fed3` | Monotype 日文平成角黑嵌合 Sony 图标链接字库 |
+| `usr/share/app/UniversOTS-SJ_wIcon.ltt (FX6 6.01)` | `611,416` | `eea4d814854d2cefc18e5631c82138b2b69824687cd31002b7df34eae025dd0d` | Monotype 拉丁/欧洲 Univers OTS 嵌合 Sony 图标链接字库 |
+| `usr/share/app/MYingHeiC-KSX1001-SJ_wIcon.ltt (FX6 6.01)` | `924,104` | `96a5e21ce562965d0d6c96c711f1a9d7c5e65cee32b80c2dbd793d8b1e440351` | Monotype 韩文 `KS X 1001` 嵌合 Sony 图标链接字库 |
+| `usr/share/app/Sony_DI_Icons.ttf (FX6 6.01)` | `629,604` | `058c1b07eb768638f984b1d6219cf2375ef771f86aba9d553743a029541a62be` | Sony 数字影像私用区 (`U+E000..U+F8FF`) 矢量图标 TrueType 字库 |
+
 ---
 
 ## 2. 净室构建与全轨道复现工作流
@@ -288,6 +488,111 @@ make verify-byof
     /usr/bin/python3 -B -m unittest discover -s outputs/fx3-recovery-adapter/tests -p "test_*.py"
   ```
 
+### 2.5 Track 5 与 Stage-B — Phase 19–35（`P10` 按键、`P11` UIPC-CP、`P12` 无线、`.uxc`/CJK 字库与传感器编解码）审计
+
+- 在纯内存中复现 Stage-B 组合补丁 `P1+P4+P8+P10`（`appFw.so` `e2bc2619...`）与 `P12`（`libWlanResource.so` `47fec188...`），并运行无硬件 `.uxc`/LDEC 精灵图解码（`1,610` 枚精灵）、62 包多语言与 Monotype `.ltt`/`.ttf` `cmap` 字形覆盖扫描，以及 `IMX510` / `XAVC` 传感器编解码对等审计（本地 Donor 严格只读 `O_RDONLY`，或 `FX3_FX6_FORCE_CLEAN_ROOM=1`）：
+  ```sh
+  make verify-peripheral-ux
+  make verify-ap-cp-imaging
+  make verify-stage-b-p10
+  make verify-uipc-cp-shim
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx6-on-fx3-closure" \
+    /usr/bin/python3 -B -m fx6_closure verify-wireless-guard
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-firmware-lab" \
+    /usr/bin/python3 -B -m fx3_firmware_lab audit-all
+  ```
+
+### 2.6 Phase 83 Stage-B 终局闭环 — 22-Gate 安全门禁、OTP/RPMB 防回滚、11 阶段共仿真、14+ 固件审计与 Round 15 多标签真核验证 + `8768` 交互台
+
+本节 7 大验证套件均原生支持 **本地 BYOF Donor (`os.O_RDONLY`) 模式** 与 **无供体净室 CI 模式 (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**，且强制锁死零持久写入、零 OTP 熔丝触碰与零 RPMB 计数递增（`persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`otp_fuse_touches = 0`、`rpmb_counter_increments = 0`）：
+
+```sh
+# 统一环境变量（无供体净室 CI 模式下请在命令前添加 FX3_FX6_FORCE_CLEAN_ROOM=1）
+export PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure"
+
+# 1. Stage-B 终局 22-Gate + OTP/RPMB + 11 阶段 VM + Round 15 统一签章验证 CLI (< 3.5s)
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --json
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx6_closure verify-stage-b-capstone --clean-room --markdown-out /tmp/stage_b_capstone_22gate.md
+
+# 2. 22-Gate 主预检（G01..G22，含 G21 XLR-H1 +48V 防烧毁防火墙与 G22 稳定器/跟焦器/激光/快门保护）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "import fx3_safety.phantom48v_gimbal_and_22gate_guard as g; r = g.evaluate_22gate_preflight(dry_run_simulated_backup=True); print(r.schema, r.summary['verified_gates'], r.g21_to_g22_all_passed)"
+
+# 3. OTP / RPMB 防回滚、跨机身防火墙与 EXT_CSD 永久写保护熔丝拦截
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -c "from fx3_recovery.firmware_updata_and_antirollback_guard import run_antirollback_and_byof_guard_suite; r = run_antirollback_and_byof_guard_suite(); print(r.schema, r.all_passed, r.otp_fuse_touches, r.rpmb_counter_increments)"
+
+# 4. GF(256) P+Q Tier-0 自愈、防跨机移植锁与 SD 卡 FX3_SAFE_STOCK.FLG 一秒回退逃生
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.tier0_gf256_selfheal_and_manifest_guard
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_recovery.init2_escape_watchdog_fat_verifier
+
+# 5. 11 阶段异构硬件共仿真全集（Stage 1..11，含 Touch-AF / CIZ / 可自定义键）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py
+
+# 6. 14+ 固件实验室审计器与 Round 15 真核多标签 UI 闭环单测
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m fx3_firmware_lab audit-all
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx6-on-fx3-closure/tests/test_phase83_stage_b_capstone_22gate_verifier.py
+
+# 7. 浏览器交互式菜单仿真控制台（HTTP 8768 端口，只读本地试用）
+# 可先探测 http://127.0.0.1:8768/ 是否已在运行，未启动时再按需运行：
+# curl -s http://127.0.0.1:8768/ | head -n 5
+# /usr/bin/python3 -B outputs/fx3-vm-trial/run_fx6_menu_trial.py --port 8768
+
+# 全仓净室回归测试与双模 BYOF 清单审计：
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/run_all_lab_tests.py --clean-only
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B scripts/verify_byof_manifest.py
+```
+
+### 2.7 Milestone Phase 110 — 32 门禁安全、10 支柱救砖、20+ 固件审计、18 阶段共仿真与 10/10 状态页 + 11/11 全菜单真内核闭环
+
+全部 Milestone Phase 110 门禁均原生支持 **本地 BYOF Donor (`os.O_RDONLY`) 模式** 与 **无供体洁净室 CI 模式 (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**，在全仓 `7` 大套件保持 **`2,980` 本地供体 / `2,922` 洁净室** 全绿通过的同时，硬锁 `persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`otp_fuse_touches = 0` 与 `passive_tx_bytes_emitted = 0`：
+
+```sh
+# 1. Milestone Phase 110 六柱一体化总闸（双模式均 < 2.5s）
+make verify-milestone-110
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-110
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-110 --json
+
+# 2. 32 门禁主安全预检（G01..G32，含 G25..G32 风扇进气、三脚架、IMX510 快门帘/低温、无线 EMI/6h+ exFAT、PL 悬臂力矩与假电池 OVP 拦截）
+make verify-32-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-32-gates
+
+# 3. 10 支柱救砖恢复主套件（OTP/RPMB + GF(256) + init2 + 被动只收串口 S0..S6 + GPT/RPMB + Ramdisk/eMMC Pre-EOL + FDT bootargs/ARM64 Image）
+make verify-10pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-10pillar-recovery
+
+# 4. 20+ 固件实验室审计器、18 阶段 VM 协同仿真与 Phase 90 兼容基线总闸
+make verify-firmware-lab
+make verify-coemulation
+make verify-milestone-90
+```
+
+### 2.8 Milestone Phase 130 — 40 门禁安全、13+ 支柱救砖、24+ 固件审计、21 阶段共仿真、真内核多语言全闭环（`Rounds 14/17/19/20..24`）与 `8768` 交互台（`Phases 109/116/123`）
+
+全部 Milestone Phase 130 门禁均原生支持 **本地 BYOF Donor (`os.O_RDONLY`) 模式** 与 **无供体洁净室 CI 模式 (`FX3_FX6_FORCE_CLEAN_ROOM=1`)**（`< 2.5s`），全仓 `7` 大套件扩展至 **`3,743` 本地供体 / `3,685` 洁净室** 全绿通过，并硬锁 `persistent_emmc_writes_authorized = False`、`hardware_live_attachment_authorized = False`、`otp_fuse_touches = 0`、`rpmb_counter_increments = 0` 与 `passive_tx_bytes_emitted = 0`：
+
+```sh
+# 1. Milestone Phase 130 六柱一体化总闸（双模式均 < 2.5s）
+make verify-milestone-130
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-milestone-130
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="outputs/fx3-safety:outputs/fx3-recovery-adapter:outputs/fx3-firmware-lab:outputs/fx3-vm:outputs/fx6-on-fx3-closure" \
+  /usr/bin/python3 -B -m fx6_closure verify-milestone-130 --json
+
+# 2. 40 门禁主安全预检（G01..G40，含 G33..G40 盐雾/无线跟焦 CoG、HDMI AOC +5V/CFexpress 刷写、USB-PD 20V 诱骗/多端接口、湿润热靴与 XLR-H1 甩力/兔笼形变）
+make verify-40-gates
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-40-gates
+
+# 3. 13 支柱救砖恢复主套件（支柱 1..10 + Ph113 A/B 分区断电 OTA + Ph119 SquashFS/hibdrv WBI2 + Ph124 Mask-BootROM USB 与 eMMC BOOT0/BOOT1）
+make verify-13pillar-recovery
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-13pillar-recovery
+
+# 4. 24+ 固件实验室审计器、21 阶段 VM 协同仿真、快速组合总闸与全量 7 套件验收
+make verify-firmware-lab
+make verify-coemulation
+make verify-fast
+make test
+```
+
 ---
 
 ## 3. 自动化 BYOF 指纹清单审计 (`make verify-byof`)
@@ -296,5 +601,6 @@ make verify-byof
 ```sh
 make verify-byof
 ```
-- **净室克隆模式（无索尼原厂固件）**：解析中英文双语表格中的全部 `(path, size_bytes, sha256)` 条目，校验 64 位小写十六进制 SHA-256 语法、中英文表格 100% 对齐无冲突，并与 `fx6_closure`、`fx3_safety`、`fx3_recovery` 代码内固定常量交叉核对，输出 `CLEAN_ROOM_SCHEMA_VERIFIED` 并以状态码 `0` 退出。
-- **本地 BYOF 固件就位模式**：对本地 Donor 固件逐流计算真实字节数与 SHA-256 摘要，全部匹配时输出 `LOCAL_DONOR_VERIFIED`（状态码 `0`）；任何不一致均阻断并以非零状态码退出。
+- **净室克隆模式（无索尼原厂固件）**：解析中英文双语表格中的全部 `(path, size_bytes, sha256)` 条目（`§1.1–1.3` Stage-A `57` 项 + `§1.4` Stage-B/Phase 19–35 `40` 项），校验 64 位小写十六进制 SHA-256 语法、中英文表格 100% 对齐无冲突，并与 `fx6_closure`、`fx3_safety`、`fx3_recovery` 代码内固定常量交叉核对，输出 `CLEAN_ROOM_SCHEMA_VERIFIED` 并以状态码 `0` 退出。
+- **本地 BYOF 固件就位模式**：对本地 Donor 固件通过 `O_RDONLY` 逐流计算真实字节数与 SHA-256 摘要（`54` 项 Stage-A + `36` 项 Stage-B Donor），同时在纯内存中校验 `4` 项确定性 Stage-A/B 适配输出（`appFw.so` 与 `libWlanResource.so`），全部匹配时输出 `LOCAL_DONOR_VERIFIED`（状态码 `0`）；任何不一致均阻断并以非零状态码退出。
+- **动态 Donor 路径解析优先级**：按顺序探测 `work/` 根目录：显式环境变量覆盖（`FX3_FX6_MAC_WORK_ROOT`、`FX3_FX6_MAIN_LAB_WORK_ROOT`、`FX3_FX6_MAC_ROOT`）、当前工作树自身 `work/`（仅当目标文件存在时命中）、内盘 SSD 默认路径（`~/AI-Workspace/AI/Projects/Mac/{outputs/sony-fx3-fx6-lab/work,work}`）及旧外置盘回退。设置 `FX3_FX6_FORCE_CLEAN_ROOM=1` 可严格强制无供体洁净室隔离。

@@ -1,0 +1,801 @@
+{
+  "schema": "fx6-on-fx3-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu-v1",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "fan_pwm_4mode_offinrec_and_prebackup_interlock_init": {
+      "fan_valid_modes": 4,
+      "auto_rc": 0,
+      "minimum_rc": 0,
+      "off_in_rec_rc": 0,
+      "always_off_rc": 0,
+      "auto1_reject_rc": -22,
+      "auto2_reject_rc": -22,
+      "off_in_rec_standby_pwm": 100,
+      "off_in_rec_rec_normal_pwm": 0,
+      "off_in_rec_rec_thermal_override_pwm": 100,
+      "off_in_rec_thermal_override": 1,
+      "minimum_pwm": 25,
+      "auto_power_off_temp_std_rc": 0,
+      "auto_power_off_temp_high_rc": 0,
+      "backup_while_always_off_rc": -16,
+      "backup_after_force_auto_rc": 0,
+      "forced_fan_mode": "Auto",
+      "libfan_present": 1,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r39_init_ok": 1,
+      "verify_us": 589323
+    },
+    "fan_pwm_offinrec_stage_b_bridge": {
+      "fan_modes_count": 4,
+      "auto1_reject_rc": -22,
+      "auto2_reject_rc": -22,
+      "off_in_rec_standby_pwm": 100,
+      "off_in_rec_rec_pwm": 0,
+      "thermal_override_pwm": 100,
+      "always_off_backup_block_rc": -16,
+      "forced_auto_backup_rc": 0,
+      "fan_4mode_ok": 1,
+      "off_in_rec_max_pwm_ok": 1,
+      "pre_backup_interlock_ok": 1,
+      "emmc_write_count": 0,
+      "r39_bridge_ok": 1
+    },
+    "independent_shutter_speed_angle_and_fps_clamp": {
+      "shutter_modes": "Speed_Angle",
+      "independent_slot_persistence": 1,
+      "speed_slot_preserved": "1_125",
+      "angle_slot_preserved_deci": 1728,
+      "mode_toggles_tested": 32,
+      "cross_clobber_events": 0,
+      "exposure_step_drift_deci_deg": 0,
+      "speed_preserved_post_clamp": 1,
+      "normal_5_6deg_accept_rc": 0,
+      "normal_24p_64f_accept_rc": 0,
+      "normal_5994p_64f_accept_rc": 0,
+      "under_5_6deg_reject_rc": -34,
+      "over_64f_reject_rc": -34,
+      "clamped_11988p_deci_deg": 3600,
+      "hfr_11988p_360deg_accept_rc": 0,
+      "hfr_11988p_64f_reject_rc": -34,
+      "hfr_11988p_720deg_reject_rc": -34,
+      "hfr_100p_360deg_accept_rc": 0,
+      "hfr_100p_64f_reject_rc": -34,
+      "clamped_sq_deci_deg": 3600,
+      "sq_5_6deg_accept_rc": 0,
+      "sq_360deg_accept_rc": 0,
+      "sq_64f_reject_rc": -34,
+      "p2_write_blocked_rc": -30,
+      "p2_setting_sha256_match": 1,
+      "appfw_shutter_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r39b_ok": 1,
+      "verify_us": 584398
+    },
+    "lut_601_vs_702_p2_setting_binary_slot_firewall": {
+      "donor_lut_schema": "0x0601",
+      "stock_lut_schema": "0x0700",
+      "p2_lut_direct_write_rc": -30,
+      "p2_lut_slots_blocked": 16,
+      "p2_backup_write_rc": -30,
+      "lut_abi_mismatch_reject_rc": -80,
+      "overlay_dir": "/tmp/fx6_lut_overlay",
+      "overlay_slots_registered": 16,
+      "overlay_601_readback_ok": 16,
+      "overlay_post_reboot_residual": 0,
+      "stock_702_headers_intact": 16,
+      "backup_h0_eq_h3": 1,
+      "p2_setting_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r39c_ok": 1,
+      "verify_us": 5051
+    }
+  },
+  "runs": {
+    "r39a_fan_pwm_offinrec_big6_schinese": {
+      "run_id": "r39a-fan-pwm-offinrec-big6-schinese",
+      "round": 39,
+      "lang": "schinese",
+      "r39_mode": "fan_pwm_offinrec_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 4-mode [Fan Control] PWM state machine (Auto, Minimum, Off in Rec, Always Off; rejecting FX30-style Auto1/Auto2 rc=-22 EINVAL), Off in Rec standby 100% MAX PWM pre-cooling vs 0% normal recording (with >=65 C thermal override to 100% MAX PWM), Pre-Backup Always Off interlock (blocks cold backup rc=-16 EBUSY until forced to Auto rc=0), and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 72.38,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "a452440c5cf81243cc8587c0a87382ddd8d9e2f1c135769efc0fe3b8f692a5de"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r39": {
+          "r39_mode": "fan_pwm_offinrec_big6",
+          "fan_allowed_modes": [
+            "Auto",
+            "Minimum",
+            "Off in Rec",
+            "Always Off"
+          ],
+          "fan_invalid_auto1_auto2_reject_rc": -22,
+          "off_in_rec_standby_pwm_pct": 100,
+          "off_in_rec_normal_rec_pwm_pct": 0,
+          "always_off_backup_blocked_rc": -16,
+          "auto_power_off_temp_modes": [
+            "Standard",
+            "High"
+          ],
+          "shutter_modes": [
+            "Speed",
+            "Angle"
+          ],
+          "shutter_angle_normal_range": "5.6deg..64F",
+          "shutter_angle_120p_100p_sq_range": "5.6deg..360deg",
+          "shutter_slots_independent": true,
+          "exposure_step_drift_ev": 0.0,
+          "lut_donor_stage_b_format": "FX6_6.01_LEGACY_SLOT_V1",
+          "lut_stock_host_format": "FX3_7.00_7.02_OPTIMIZED_SLOT_V2",
+          "lut_p2_direct_write_blocked_rc": -30,
+          "lut_stage_b_overlay_dir": "/tmp/fx6_lut_overlay",
+          "lut_user_slot_count": 16,
+          "p2_setting_writes": 0
+        }
+      },
+      "r39_telemetry": {
+        "shutter_rc": null,
+        "lut_split_rc": null,
+        "fan_pwm_init": {
+          "fan_valid_modes": 4,
+          "auto_rc": 0,
+          "minimum_rc": 0,
+          "off_in_rec_rc": 0,
+          "always_off_rc": 0,
+          "auto1_reject_rc": -22,
+          "auto2_reject_rc": -22,
+          "off_in_rec_standby_pwm": 100,
+          "off_in_rec_rec_normal_pwm": 0,
+          "off_in_rec_rec_thermal_override_pwm": 100,
+          "off_in_rec_thermal_override": 1,
+          "minimum_pwm": 25,
+          "auto_power_off_temp_std_rc": 0,
+          "auto_power_off_temp_high_rc": 0,
+          "backup_while_always_off_rc": -16,
+          "backup_after_force_auto_rc": 0,
+          "forced_fan_mode": "Auto",
+          "libfan_present": 1,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r39_init_ok": 1,
+          "verify_us": 589323
+        },
+        "fan_pwm_bridge": {
+          "fan_modes_count": 4,
+          "auto1_reject_rc": -22,
+          "auto2_reject_rc": -22,
+          "off_in_rec_standby_pwm": 100,
+          "off_in_rec_rec_pwm": 0,
+          "thermal_override_pwm": 100,
+          "always_off_backup_block_rc": -16,
+          "forced_auto_backup_rc": 0,
+          "fan_4mode_ok": 1,
+          "off_in_rec_max_pwm_ok": 1,
+          "pre_backup_interlock_ok": 1,
+          "emmc_write_count": 0,
+          "r39_bridge_ok": 1
+        },
+        "shutter_lut_bridge": {
+          "shutter_modes": "Speed_Angle",
+          "normal_angle_range": "5.6deg_64F",
+          "hfr_sq_angle_range": "5.6deg_360deg",
+          "independent_slots_ok": 1,
+          "exposure_step_drift_zero": 1,
+          "lut_601_p2_block_rc": -30,
+          "lut_overlay_dir": "/tmp/fx6_lut_overlay",
+          "lut_slot_firewall_ok": 1,
+          "p2_setting_writes": 0,
+          "emmc_write_count": 0
+        },
+        "shutter_speed_angle": {},
+        "lut_601_702_firewall": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34424,
+          "glyph_blits": 17278,
+          "icon_blits": 22939,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "fan_4mode_ok": 1,
+          "off_in_rec_max_pwm_ok": 1,
+          "pre_backup_interlock_ok": 1,
+          "shutter_independent_ok": 1,
+          "lut_slot_firewall_ok": 1,
+          "r39_bridge_ok": 1,
+          "realhw_fan_pwm_shutter_angle_lut_split": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 39,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "fan_4mode_no_auto1_auto2": 1,
+          "off_in_rec_standby_max_pwm": 1,
+          "always_off_backup_interlock": 1,
+          "shutter_speed_angle_independent": 1,
+          "lut_601_vs_702_slot_firewall": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r39a-fan-pwm-offinrec-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu/assets/r39a-fan-pwm-offinrec-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round39-realhw-fan-pwm-shutter-angle-lut-split-qemu/assets/r39a-fan-pwm-offinrec-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 195,
+        "FX6_STAGE_B_": 68,
+        "FX6_R30_": 193,
+        "FX6_R31_": 193,
+        "FX6_R32_": 196,
+        "FX6_R33_": 193,
+        "FX6_R34_": 193,
+        "FX6_R35_": 193,
+        "FX6_R36_": 193,
+        "FX6_R37_": 194,
+        "FX6_R38_": 194,
+        "FX6_R39_": 194,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 193,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 135,
+        "FX6_R10_": 191,
+        "FX6_R11_": 202,
+        "FX6_R12_": 194,
+        "FX6_R13_": 191,
+        "FX6_R14_": 191,
+        "FX6_R15_": 191,
+        "FX6_R16_": 191,
+        "FX6_R17_": 191,
+        "FX6_R18_": 191,
+        "FX6_R19_": 191,
+        "FX6_R20_": 191,
+        "FX6_R21_": 191,
+        "FX6_R22_": 191,
+        "FX6_R23_": 191,
+        "FX6_R24_": 191,
+        "FX6_R25_": 191,
+        "FX6_R26_": 191,
+        "FX6_R27_": 191,
+        "FX6_R29_": 193,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 1084,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 65,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 596,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2750,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r39b_shutter_speed_angle_clamp": {
+      "run_id": "r39b-shutter-speed-angle-clamp",
+      "round": 39,
+      "lang": "en",
+      "r39_mode": "shutter_speed_angle_clamp",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 independent [Shutter Mode] (Speed vs Angle) backing-slot persistence across 32 mode toggles & 0.3EV/0.5EV exposure-step changes (cross_clobber_events=0, exposure_step_drift_deci_deg=0), normal <=59.94p 5.6deg..64F acceptance, and 119.88p/100p HFR + S&Q clamping/rejection to 5.6deg..360deg (rejecting 64F/720deg rc=-34 ERANGE) with Stock p2:/setting zero-write invariant (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 5.47,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c93b8684791fd362642572ecc50dd924790b66718b653737ff65ff77c818cfe7"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r39": {
+          "r39_mode": "shutter_speed_angle_clamp",
+          "fan_allowed_modes": [
+            "Auto",
+            "Minimum",
+            "Off in Rec",
+            "Always Off"
+          ],
+          "fan_invalid_auto1_auto2_reject_rc": -22,
+          "off_in_rec_standby_pwm_pct": 100,
+          "off_in_rec_normal_rec_pwm_pct": 0,
+          "always_off_backup_blocked_rc": -16,
+          "auto_power_off_temp_modes": [
+            "Standard",
+            "High"
+          ],
+          "shutter_modes": [
+            "Speed",
+            "Angle"
+          ],
+          "shutter_angle_normal_range": "5.6deg..64F",
+          "shutter_angle_120p_100p_sq_range": "5.6deg..360deg",
+          "shutter_slots_independent": true,
+          "exposure_step_drift_ev": 0.0,
+          "lut_donor_stage_b_format": "FX6_6.01_LEGACY_SLOT_V1",
+          "lut_stock_host_format": "FX3_7.00_7.02_OPTIMIZED_SLOT_V2",
+          "lut_p2_direct_write_blocked_rc": -30,
+          "lut_stage_b_overlay_dir": "/tmp/fx6_lut_overlay",
+          "lut_user_slot_count": 16,
+          "p2_setting_writes": 0
+        }
+      },
+      "r39_telemetry": {
+        "shutter_rc": 0,
+        "lut_split_rc": null,
+        "fan_pwm_init": {},
+        "fan_pwm_bridge": {},
+        "shutter_lut_bridge": {},
+        "shutter_speed_angle": {
+          "shutter_modes": "Speed_Angle",
+          "independent_slot_persistence": 1,
+          "speed_slot_preserved": "1_125",
+          "angle_slot_preserved_deci": 1728,
+          "mode_toggles_tested": 32,
+          "cross_clobber_events": 0,
+          "exposure_step_drift_deci_deg": 0,
+          "speed_preserved_post_clamp": 1,
+          "normal_5_6deg_accept_rc": 0,
+          "normal_24p_64f_accept_rc": 0,
+          "normal_5994p_64f_accept_rc": 0,
+          "under_5_6deg_reject_rc": -34,
+          "over_64f_reject_rc": -34,
+          "clamped_11988p_deci_deg": 3600,
+          "hfr_11988p_360deg_accept_rc": 0,
+          "hfr_11988p_64f_reject_rc": -34,
+          "hfr_11988p_720deg_reject_rc": -34,
+          "hfr_100p_360deg_accept_rc": 0,
+          "hfr_100p_64f_reject_rc": -34,
+          "clamped_sq_deci_deg": 3600,
+          "sq_5_6deg_accept_rc": 0,
+          "sq_360deg_accept_rc": 0,
+          "sq_64f_reject_rc": -34,
+          "p2_write_blocked_rc": -30,
+          "p2_setting_sha256_match": 1,
+          "appfw_shutter_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r39b_ok": 1,
+          "verify_us": 584398
+        },
+        "lut_601_702_firewall": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R39_": 3
+      }
+    },
+    "r39c_lut_601_vs_702_firewall": {
+      "run_id": "r39c-lut-601-vs-702-firewall",
+      "round": 39,
+      "lang": "en",
+      "r39_mode": "lut_601_vs_702_firewall",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 FX6 Ver. 6.01 (0x0601 legacy slot) vs Stock FX3 Ver. 7.00/7.02 (0x0700 optimized slot) p2:/setting User1..User16 LUT binary format firewall (blocks direct p2:/setting write rc=-30 EROFS across 16/16 slots and rejects cross-schema ABI write rc=-80 ELIBBAD, redirects Stage-B User1..User16 LUT registration into volatile /tmp/fx6_lut_overlay, preserves 16/16 Stock 7.02 LUT headers untouched, passes guest dlopen, and proves 16/16 H0 == H3 across cold-boot return with emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 30,
+      "wall_elapsed_sec": 4.89,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c93b8684791fd362642572ecc50dd924790b66718b653737ff65ff77c818cfe7"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r39": {
+          "r39_mode": "lut_601_vs_702_firewall",
+          "fan_allowed_modes": [
+            "Auto",
+            "Minimum",
+            "Off in Rec",
+            "Always Off"
+          ],
+          "fan_invalid_auto1_auto2_reject_rc": -22,
+          "off_in_rec_standby_pwm_pct": 100,
+          "off_in_rec_normal_rec_pwm_pct": 0,
+          "always_off_backup_blocked_rc": -16,
+          "auto_power_off_temp_modes": [
+            "Standard",
+            "High"
+          ],
+          "shutter_modes": [
+            "Speed",
+            "Angle"
+          ],
+          "shutter_angle_normal_range": "5.6deg..64F",
+          "shutter_angle_120p_100p_sq_range": "5.6deg..360deg",
+          "shutter_slots_independent": true,
+          "exposure_step_drift_ev": 0.0,
+          "lut_donor_stage_b_format": "FX6_6.01_LEGACY_SLOT_V1",
+          "lut_stock_host_format": "FX3_7.00_7.02_OPTIMIZED_SLOT_V2",
+          "lut_p2_direct_write_blocked_rc": -30,
+          "lut_stage_b_overlay_dir": "/tmp/fx6_lut_overlay",
+          "lut_user_slot_count": 16,
+          "p2_setting_writes": 0
+        }
+      },
+      "r39_telemetry": {
+        "shutter_rc": null,
+        "lut_split_rc": 0,
+        "fan_pwm_init": {},
+        "fan_pwm_bridge": {},
+        "shutter_lut_bridge": {},
+        "shutter_speed_angle": {},
+        "lut_601_702_firewall": {
+          "donor_lut_schema": "0x0601",
+          "stock_lut_schema": "0x0700",
+          "p2_lut_direct_write_rc": -30,
+          "p2_lut_slots_blocked": 16,
+          "p2_backup_write_rc": -30,
+          "lut_abi_mismatch_reject_rc": -80,
+          "overlay_dir": "/tmp/fx6_lut_overlay",
+          "overlay_slots_registered": 16,
+          "overlay_601_readback_ok": 16,
+          "overlay_post_reboot_residual": 0,
+          "stock_702_headers_intact": 16,
+          "backup_h0_eq_h3": 1,
+          "p2_setting_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r39c_ok": 1,
+          "verify_us": 5051
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R39_": 3
+      }
+    }
+  },
+  "r39_realhw_fan_pwm_shutter_angle_lut_split_audit": {
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r39a_fan_4mode_rejects_auto1_auto2_and_offinrec_standby_max_pwm_verified": true,
+    "r39a_pre_backup_always_off_blocked_until_forced_auto_verified": true,
+    "r39a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r39b_independent_shutter_speed_angle_zero_clobber_zero_drift_verified": true,
+    "r39b_shutter_angle_64f_normal_vs_360deg_11988p_100p_sq_clamp_verified": true,
+    "r39c_lut_601_vs_702_p2_erofs_firewall_and_tmp_overlay_16slots_verified": true,
+    "r39c_stock_702_lut_headers_intact_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 (Ver. 7.02) internal blower acoustic/tachometer bench measuring 100% MAX PWM standby pre-cooling vs 0 RPM recording silence under [Fan Control] = Off in Rec, emergency thermal spin-up under real CMOS heating, and physical thermal behavior during Tier-0 backup with Fan Control forced to Auto.",
+    "Physical Sony ILME-FX3 (Ver. 7.02) menu/dial toggling between [Shutter Mode] = Speed and Angle across 23.98p/59.94p (5.6 deg .. 64F) vs 119.88p/100p and S&Q (5.6 deg .. 360 deg) confirming live IMX510 exposure integration timing on optical test chart.",
+    "Physical Sony ILME-FX3 upgraded across Ver. 6.00 -> 7.00 -> 7.02 verifying Stock p2:/setting User1..User16 3D LUT slot survival across SD-triggered Stage-B dual-boot entry and SD-ejected cold-boot return to Stock FX3."
+  ]
+}

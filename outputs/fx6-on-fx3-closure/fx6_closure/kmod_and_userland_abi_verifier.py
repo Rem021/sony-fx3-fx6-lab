@@ -70,6 +70,7 @@ from .backup_mount_tolerance_verifier import (
     DEFAULT_COLOR_PORT_WORK_DIR,
     DEFAULT_FX6_TEAM_DIR,
 )
+from .donor_paths import rebase_legacy_work_path, resolve_fx3_vm_work_root
 from .kernel_dtb_compatibility_verifier import (
     EXPECTED_HOST_VERMAGIC,
     PINNED_FX3_HOST_KO_SHA256,
@@ -88,9 +89,7 @@ DEFAULT_FX6_DONOR_ROOT = DEFAULT_FX6_TEAM_DIR / "donor"
 DEFAULT_FX6_P3_INITRD_DIR = DEFAULT_FX6_DONOR_ROOT / "nested-files" / "nflasha3-initrd"
 DEFAULT_FX6_P15_FILES_DIR = DEFAULT_FX6_DONOR_ROOT / "nflasha15-files"
 
-from ._donor_paths import resolve_mac_work_dir as _resolve_mac_work_dir
-_MAC_WORK_DIR = _resolve_mac_work_dir()
-DEFAULT_FX3_VM_WORK_ROOT = _MAC_WORK_DIR / "fx3-vm-20261101"
+DEFAULT_FX3_VM_WORK_ROOT = resolve_fx3_vm_work_root()
 DEFAULT_FX3_ORIGINAL_SCRIPTS_DIR = (
     DEFAULT_FX3_VM_WORK_ROOT / "menu-repair-01" / "original-uipc" / "original-scripts"
 )
@@ -1628,16 +1627,22 @@ def audit_elf64_symbol_and_verneed_closure(
             for guest_path, soname_key in runtime_pairs:
                 rec = logical.get(guest_path, {})
                 pay_str = rec.get("payload_file") if isinstance(rec, dict) else None
-                pay_path: Optional[Path] = None
-                if pay_str:
-                    cand = Path(pay_str)
-                    if not cand.is_file() and pay_str.startswith("/Volumes/KAFU2T/AI/Projects/Mac/work/"):
-                        remapped = _MAC_WORK_DIR / pay_str[len("/Volumes/KAFU2T/AI/Projects/Mac/work/") :]
-                        if remapped.is_file():
-                            cand = remapped
-                    pay_path = cand
                 fx6_prov = provider_index.get(soname_key)
-                if pay_path is None or not pay_path.is_file() or fx6_prov is None:
+                pay_path: Optional[Path] = None
+                if isinstance(pay_str, str) and pay_str:
+                    raw_cand = Path(pay_str)
+                    if raw_cand.is_file():
+                        pay_path = raw_cand
+                    elif "/ap-projection/" in pay_str:
+                        rel_ap = pay_str.split("/ap-projection/", 1)[1].lstrip("/")
+                        anchored = fx3_ap_projection_dir.parent / rel_ap
+                        if anchored.is_file():
+                            pay_path = anchored
+                    if pay_path is None:
+                        rebased = rebase_legacy_work_path(pay_str)
+                        if rebased.is_file():
+                            pay_path = rebased
+                if pay_path is None or fx6_prov is None:
                     fx3_abi_parity_ok = False
                     errors.append(f"Missing FX3 runtime payload for ABI parity check: {guest_path}")
                     continue

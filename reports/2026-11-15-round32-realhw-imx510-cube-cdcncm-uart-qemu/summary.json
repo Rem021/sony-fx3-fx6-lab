@@ -1,0 +1,867 @@
+{
+  "schema": "fx6-on-fx3-round32-realhw-imx510-cube-cdcncm-uart-qemu-v1",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "imx510_dual_base_and_p2_erofs_and_cube_mlut": {
+      "sensor": "IMX510",
+      "imx510_lcg_iso": 800,
+      "imx510_hcg_iso": 12800,
+      "imx510_readout_us": 8700,
+      "imx510_dual_base_ok": 1,
+      "sencore_dlopen_ok": 1,
+      "sencore_dlsym_ok": 1,
+      "psd_erofs": 1,
+      "psd_errno": 30,
+      "defdet_erofs": 1,
+      "defdet_errno": 30,
+      "sensor_cal_sha256_before": "4c2c1b59048422076f4db269ad022849581783c3aa8975eaf4460522f20678b0",
+      "sensor_cal_sha256_after": "4c2c1b59048422076f4db269ad022849581783c3aa8975eaf4460522f20678b0",
+      "sensor_cal_sha256_match": 1,
+      "mlut_lut_size": 17,
+      "mlut_entries": 4913,
+      "mlut_slot0_loaded": 1,
+      "mlut_slot0_bytes": 58972,
+      "mlut_slot0_sha256": "d3d4bd3f0a46a60e0ca29d81c6ccf4f765ebd807c8f2b12e61e2e08b33c0ce54",
+      "mlut_baked_into_master": 0,
+      "slog3_xavc_master_clean": 1,
+      "bad_cube_nan_detected": 1,
+      "bad_cube_rejected": 1,
+      "slot0_untouched_on_bad_cube": 1,
+      "emmc_write_count": 0,
+      "r32_bridge_ok": 1
+    },
+    "zero_diff_libs_cdcncm_and_054c_0da1_recovery": {
+      "dlopen_libs_ok": 4,
+      "dlsym_resolved": 8,
+      "zero_diff_libs_ok": 1,
+      "rf_nvs_erofs_ok": 1,
+      "rf_nvs_writes": 0,
+      "rf_nvs_p12_errno": 30,
+      "rf_nvs_p13_errno": 30,
+      "bt_ttyama3_masked": 1,
+      "bt_wait_ms": 0,
+      "bt_probe_us": 23,
+      "usb_cdcncm_link_mbps": 1000,
+      "usb_ptp_ip_port": 15740,
+      "usb_cdcncm_tested": 1,
+      "usb_vid": "0x054c",
+      "usb_msc_pid": "0x0da1",
+      "usb_service_pid": "0x0336",
+      "usb_0da1_intact": 1,
+      "usb_0336_preserved": 1,
+      "emmc_write_count": 0,
+      "r32b_ok": 1,
+      "verify_us": 15002
+    },
+    "ttyama0_1v8_6stage_and_vmc_bncm1_guard": {
+      "kernel_release_ok": 1,
+      "cmdline_ttyama0_ok": 1,
+      "uart_device": "/dev/ttyAMA0",
+      "uart_baud": 460800,
+      "uart_framing": "8N1",
+      "uart_logic_mv": 1800,
+      "uart_max_safe_mv": 1950,
+      "checkpoints_passed": 6,
+      "uart_nominal_ok": 1,
+      "vmc_bncm1_contention_aborted": 1,
+      "vmc_bncm1_abort_rc": -16,
+      "uart_overvoltage_injected_mv": 3300,
+      "uart_overvoltage_aborted": 1,
+      "uart_overvoltage_abort_rc": -34,
+      "emmc_write_count": 0,
+      "r32c_ok": 1,
+      "verify_us": 1536,
+      "checkpoints": [
+        {
+          "stage": 1,
+          "name": "IPL_BL2",
+          "baud": 460800,
+          "framing": "8N1",
+          "logic_mv": 1800
+        },
+        {
+          "stage": 2,
+          "name": "KERNEL_4_9_337_SCEL",
+          "release": "4.9.337-scel+",
+          "baud": 460800,
+          "framing": "8N1",
+          "logic_mv": 1800
+        },
+        {
+          "stage": 3,
+          "name": "SETUP_NFLASH",
+          "devtmpfs_rc": 0,
+          "baud": 460800,
+          "framing": "8N1",
+          "logic_mv": 1800
+        },
+        {
+          "stage": 4,
+          "name": "STAGE_A_47US_DLOPEN",
+          "trigger_us": 47,
+          "baud": 460800,
+          "framing": "8N1",
+          "logic_mv": 1800
+        },
+        {
+          "stage": 5,
+          "name": "STRATEGY_A_MOUNT",
+          "ro_guards": 1,
+          "baud": 460800,
+          "framing": "8N1",
+          "logic_mv": 1800
+        },
+        {
+          "stage": 6,
+          "name": "STAGE_B_APPFW_BIG6",
+          "sid": "0x0a",
+          "baud": 460800,
+          "framing": "8N1",
+          "logic_mv": 1800
+        }
+      ]
+    }
+  },
+  "runs": {
+    "r32a_imx510_cube_big6_schinese": {
+      "run_id": "r32a-imx510-cube-big6-schinese",
+      "round": 32,
+      "lang": "schinese",
+      "r32_mode": "imx510_cube_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 p2:/setting (psd.bin & defdet.bin) MS_RDONLY EROFS lock + IMX510 ISO 800 LCG <-> 12800 HCG libsencore.so bridge + 17x17x17 .cube 3D MLUT non-double-bake + NaN .cube fail-closed rejection + Stage-B Big-6 Home render",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 72.32,
+      "total_threads_seen": 160,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "fa3f44856641b686d50adb3ae084e2d1a8372e669185df50c44b82e107470d32"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r32": {
+          "r32_mode": "imx510_cube_big6",
+          "sensor": "IMX510",
+          "dual_base_iso_lcg": 800,
+          "dual_base_iso_hcg": 12800,
+          "p2_setting_ro_files": [
+            "p2:/setting/psd.bin",
+            "p2:/setting/defdet.bin"
+          ],
+          "cube_lut_size": 17,
+          "cube_sd_dir": "/mnt/sd/PRIVATE/SONY/PRO/LUT/",
+          "mlut_volatile_slot0": "/tmp/mlut_slot0.bin",
+          "mlut_baked_into_master": 0,
+          "zero_diff_libs": [
+            "/usr/lib/libInfraMscServer.so",
+            "/usr/lib/libUsbControl.so",
+            "/usr/lib/libWlanAdjust.so",
+            "/usr/lib/libWlanResource.so"
+          ],
+          "usb_msc_vid_pid": "054C:0DA1",
+          "usb_service_vid_pid": "054C:0336",
+          "uart_device": "/dev/ttyAMA0",
+          "uart_baud_framing": "460800 8N1",
+          "uart_logic_mv": 1800,
+          "uart_max_safe_mv": 1950,
+          "vmc_bncm1_contention_guard": 1
+        }
+      },
+      "r32_telemetry": {
+        "cdcncm_rc": null,
+        "uart_rc": null,
+        "imx510_cube_init": {
+          "psd_erofs": 1,
+          "psd_errno": 30,
+          "defdet_erofs": 1,
+          "defdet_errno": 30,
+          "sensor_cal_sha256_before": "4c2c1b59048422076f4db269ad022849581783c3aa8975eaf4460522f20678b0",
+          "sensor_cal_sha256_after": "4c2c1b59048422076f4db269ad022849581783c3aa8975eaf4460522f20678b0",
+          "sensor_cal_sha256_match": 1,
+          "mlut_lut_size": 17,
+          "mlut_entries": 4913,
+          "mlut_slot0_loaded": 1,
+          "mlut_slot0_bytes": 58972,
+          "mlut_slot0_sha256": "d3d4bd3f0a46a60e0ca29d81c6ccf4f765ebd807c8f2b12e61e2e08b33c0ce54",
+          "mlut_baked_into_master": 0,
+          "bad_cube_nan_detected": 1,
+          "bad_cube_rejected": 1,
+          "slot0_untouched_on_bad_cube": 1,
+          "sencore_elf_ok": 1,
+          "appfw_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r32_init_ok": 1,
+          "verify_us": 793999
+        },
+        "imx510_cube_bridge": {
+          "sensor": "IMX510",
+          "imx510_lcg_iso": 800,
+          "imx510_hcg_iso": 12800,
+          "imx510_readout_us": 8700,
+          "imx510_dual_base_ok": 1,
+          "sencore_dlopen_ok": 1,
+          "sencore_dlsym_ok": 1,
+          "p2_psd_erofs": 1,
+          "p2_defdet_erofs": 1,
+          "sensor_cal_erofs_ok": 1,
+          "mlut_slot0_active": 1,
+          "mlut_lut_size": 17,
+          "mlut_baked_into_master": 0,
+          "slog3_xavc_master_clean": 1,
+          "emmc_write_count": 0,
+          "r32_bridge_ok": 1
+        },
+        "cdcncm_usb_0da1": {},
+        "uart_6stage": {},
+        "uart_checkpoints": [
+          {
+            "stage": 4,
+            "name": "STAGE_A_47US_DLOPEN",
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 5,
+            "name": "STRATEGY_A_MOUNT",
+            "ro_guards": 1,
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 6,
+            "name": "STAGE_B_APPFW_BIG6",
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800,
+            "sid": "0x0a",
+            "emmc_write_count": 0
+          }
+        ],
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34154,
+          "glyph_blits": 17586,
+          "icon_blits": 22457,
+          "gpe_alloc": 67,
+          "gpe_fb": 0,
+          "imx510_dual_base_ok": 1,
+          "p2_psd_erofs": 1,
+          "p2_defdet_erofs": 1,
+          "mlut_slot0_active": 1,
+          "mlut_baked_into_master": 0,
+          "r32_bridge_ok": 1,
+          "realhw_imx510_cube_cdcncm_uart": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 32,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "imx510_dual_base": 1,
+          "p2_psd_defdet_erofs": 1,
+          "cube_3d_mlut_non_bake": 1,
+          "zero_diff_libs_dlopen": 1,
+          "cdcncm_0da1_intact": 1,
+          "ttyama0_6stage_1v8": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r32a-imx510-cube-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round32-realhw-imx510-cube-cdcncm-uart-qemu/assets/r32a-imx510-cube-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round32-realhw-imx510-cube-cdcncm-uart-qemu/assets/r32a-imx510-cube-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 194,
+        "FX6_STAGE_B_": 58,
+        "FX6_R30_": 192,
+        "FX6_R31_": 192,
+        "FX6_R32_": 195,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 1,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 192,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 132,
+        "FX6_R10_": 190,
+        "FX6_R11_": 201,
+        "FX6_R12_": 193,
+        "FX6_R13_": 190,
+        "FX6_R14_": 190,
+        "FX6_R15_": 190,
+        "FX6_R16_": 190,
+        "FX6_R17_": 190,
+        "FX6_R18_": 190,
+        "FX6_R19_": 190,
+        "FX6_R20_": 190,
+        "FX6_R21_": 190,
+        "FX6_R22_": 190,
+        "FX6_R23_": 190,
+        "FX6_R24_": 190,
+        "FX6_R25_": 190,
+        "FX6_R26_": 190,
+        "FX6_R27_": 190,
+        "FX6_R29_": 192,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1049,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 67,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 598,
+        "FX6_FONT_": 108,
+        "FX3_PHY_KEY_MAP": 1,
+        "FX6_WAIT_SNAPSHOT": 2756
+      },
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_controller": "32procam_big6_menu_home_controller",
+      "target_sid": "0x0a",
+      "key_seq": "0x01ac:120:1400,0x0030:120:800,0x01ac:120:4800,0x7028:120:5500",
+      "key_settle_ms": 5500,
+      "nop_count": 0,
+      "osd_flush_count": 132,
+      "amber_0xffffaa00_pixels": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0,
+        "emmc_write_count": 0
+      }
+    },
+    "r32b_cdcncm_usb_0da1": {
+      "run_id": "r32b-cdcncm-usb-0da1",
+      "round": 32,
+      "lang": "en",
+      "r32_mode": "cdcncm_usb_0da1",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 guest ARM64 dlopen/dlsym on 4 zero-diff shared libraries (libInfraMscServer.so, libUsbControl.so, libWlanAdjust.so, libWlanResource.so) + p12/p13 RF NVS MS_RDONLY EROFS lock + zero /dev/ttyAMA3 BLE hang + CDC-NCM -> Mass Storage (054C:0DA1) return",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 25,
+      "wall_elapsed_sec": 5.31,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "bc03c0edddd3bf5977ccb8aa6f7cf6a9b670e0357c26ec86b89d1c6be3fdec96"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r32": {
+          "r32_mode": "cdcncm_usb_0da1",
+          "sensor": "IMX510",
+          "dual_base_iso_lcg": 800,
+          "dual_base_iso_hcg": 12800,
+          "p2_setting_ro_files": [
+            "p2:/setting/psd.bin",
+            "p2:/setting/defdet.bin"
+          ],
+          "cube_lut_size": 17,
+          "cube_sd_dir": "/mnt/sd/PRIVATE/SONY/PRO/LUT/",
+          "mlut_volatile_slot0": "/tmp/mlut_slot0.bin",
+          "mlut_baked_into_master": 0,
+          "zero_diff_libs": [
+            "/usr/lib/libInfraMscServer.so",
+            "/usr/lib/libUsbControl.so",
+            "/usr/lib/libWlanAdjust.so",
+            "/usr/lib/libWlanResource.so"
+          ],
+          "usb_msc_vid_pid": "054C:0DA1",
+          "usb_service_vid_pid": "054C:0336",
+          "uart_device": "/dev/ttyAMA0",
+          "uart_baud_framing": "460800 8N1",
+          "uart_logic_mv": 1800,
+          "uart_max_safe_mv": 1950,
+          "vmc_bncm1_contention_guard": 1
+        }
+      },
+      "r32_telemetry": {
+        "cdcncm_rc": 0,
+        "uart_rc": null,
+        "imx510_cube_init": {},
+        "imx510_cube_bridge": {},
+        "cdcncm_usb_0da1": {
+          "dlopen_libs_ok": 4,
+          "dlsym_resolved": 8,
+          "zero_diff_libs_ok": 1,
+          "rf_nvs_erofs_ok": 1,
+          "rf_nvs_writes": 0,
+          "rf_nvs_p12_errno": 30,
+          "rf_nvs_p13_errno": 30,
+          "bt_ttyama3_masked": 1,
+          "bt_wait_ms": 0,
+          "bt_probe_us": 23,
+          "usb_cdcncm_link_mbps": 1000,
+          "usb_ptp_ip_port": 15740,
+          "usb_cdcncm_tested": 1,
+          "usb_vid": "0x054c",
+          "usb_msc_pid": "0x0da1",
+          "usb_service_pid": "0x0336",
+          "usb_0da1_intact": 1,
+          "usb_0336_preserved": 1,
+          "emmc_write_count": 0,
+          "r32b_ok": 1,
+          "verify_us": 15002
+        },
+        "uart_6stage": {},
+        "uart_checkpoints": [],
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R32_": 3
+      }
+    },
+    "r32c_uart_6stage_triage": {
+      "run_id": "r32c-uart-6stage-triage",
+      "round": 32,
+      "lang": "en",
+      "r32_mode": "uart_6stage_triage",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 1.8V ttyAMA0 (460800 8N1) 6-stage boot telemetry (IPL/BL2 -> Kernel 4.9.337-scel+ -> setup_nflash -> Stage-A 47us/dlopen -> Strategy-A mount -> Stage-B appFw Big-6) + fail-closed Multi-USB VMC-BNCM1 pin contention & >1.95V UART over-voltage aborts",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 25,
+      "wall_elapsed_sec": 4.87,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "bc03c0edddd3bf5977ccb8aa6f7cf6a9b670e0357c26ec86b89d1c6be3fdec96"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r32": {
+          "r32_mode": "uart_6stage_triage",
+          "sensor": "IMX510",
+          "dual_base_iso_lcg": 800,
+          "dual_base_iso_hcg": 12800,
+          "p2_setting_ro_files": [
+            "p2:/setting/psd.bin",
+            "p2:/setting/defdet.bin"
+          ],
+          "cube_lut_size": 17,
+          "cube_sd_dir": "/mnt/sd/PRIVATE/SONY/PRO/LUT/",
+          "mlut_volatile_slot0": "/tmp/mlut_slot0.bin",
+          "mlut_baked_into_master": 0,
+          "zero_diff_libs": [
+            "/usr/lib/libInfraMscServer.so",
+            "/usr/lib/libUsbControl.so",
+            "/usr/lib/libWlanAdjust.so",
+            "/usr/lib/libWlanResource.so"
+          ],
+          "usb_msc_vid_pid": "054C:0DA1",
+          "usb_service_vid_pid": "054C:0336",
+          "uart_device": "/dev/ttyAMA0",
+          "uart_baud_framing": "460800 8N1",
+          "uart_logic_mv": 1800,
+          "uart_max_safe_mv": 1950,
+          "vmc_bncm1_contention_guard": 1
+        }
+      },
+      "r32_telemetry": {
+        "cdcncm_rc": null,
+        "uart_rc": 0,
+        "imx510_cube_init": {},
+        "imx510_cube_bridge": {},
+        "cdcncm_usb_0da1": {},
+        "uart_6stage": {
+          "kernel_release_ok": 1,
+          "cmdline_ttyama0_ok": 1,
+          "uart_device": "/dev/ttyAMA0",
+          "uart_baud": 460800,
+          "uart_framing": "8N1",
+          "uart_logic_mv": 1800,
+          "uart_max_safe_mv": 1950,
+          "checkpoints_passed": 6,
+          "uart_nominal_ok": 1,
+          "vmc_bncm1_contention_aborted": 1,
+          "vmc_bncm1_abort_rc": -16,
+          "uart_overvoltage_injected_mv": 3300,
+          "uart_overvoltage_aborted": 1,
+          "uart_overvoltage_abort_rc": -34,
+          "emmc_write_count": 0,
+          "r32c_ok": 1,
+          "verify_us": 1536
+        },
+        "uart_checkpoints": [
+          {
+            "stage": 1,
+            "name": "IPL_BL2",
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 2,
+            "name": "KERNEL_4_9_337_SCEL",
+            "release": "4.9.337-scel+",
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 3,
+            "name": "SETUP_NFLASH",
+            "devtmpfs_rc": 0,
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 4,
+            "name": "STAGE_A_47US_DLOPEN",
+            "trigger_us": 47,
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 5,
+            "name": "STRATEGY_A_MOUNT",
+            "ro_guards": 1,
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          },
+          {
+            "stage": 6,
+            "name": "STAGE_B_APPFW_BIG6",
+            "sid": "0x0a",
+            "baud": 460800,
+            "framing": "8N1",
+            "logic_mv": 1800
+          }
+        ],
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R32_": 9
+      }
+    }
+  },
+  "r32_realhw_imx510_cube_cdcncm_uart_audit": {
+    "audit_id": "r32-realhw-imx510-p2erofs-cube-cdcncm-0da1-uart-6stage-3run-closure",
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r32a_p2_psd_defdet_erofs_verified": true,
+    "r32a_imx510_dual_base_800_12800_verified": true,
+    "r32a_cube_3d_mlut_non_bake_and_nan_reject_verified": true,
+    "r32a_stageb_big6_13_of_13_verified": true,
+    "r32b_zero_diff_4libs_dlopen_dlsym_verified": true,
+    "r32b_rf_nvs_erofs_and_zero_ttyama3_hang_verified": true,
+    "r32b_cdcncm_to_054c_0da1_recovery_verified": true,
+    "r32c_ttyama0_1v8_6stage_telemetry_verified": true,
+    "r32c_vmc_bncm1_contention_and_overvoltage_abort_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 camera body sensor readout verification at ISO 800 / ISO 12800 Dual-Base Cine EI with live IMX510 CMOS imaging.",
+    "Physical USB-C CDC-NCM gigabit adapter (RTL8153/AX88179) hot-plug, Monitor & Control TCP/15740 connection, and hardware Mass Storage 054C:0DA1 fallback on physical camera hardware.",
+    "Physical 1.8V FTDI/CP2102 UART probe attached to Multi-USB Pins 7/8/9 on camera motherboard at 460800 8N1."
+  ]
+}

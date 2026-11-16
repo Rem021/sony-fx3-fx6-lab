@@ -1,0 +1,1005 @@
+{
+  "schema": "fx6-on-fx3-round49-realhw-emphasized-rec-grid-hdmi-touch-sunny-qemu-v1",
+  "round": 49,
+  "milestone": "49th Milestone (Wave-35 / 21st Real-HW QEMU Round, 63 Live Runs)",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "emphasized_rec_display_and_grid_line_display_hdmi_routing_vs_hdmi_only_raw_clean_feed_init": {
+      "emph_rec_default_on_ok": 1,
+      "grid_default_off_ok": 1,
+      "grid_default_rule_of_3rds_ok": 1,
+      "invalid_emph_rec_reject_rc": -22,
+      "invalid_grid_type_reject_rc": -22,
+      "invalid_rec_media_hdmi_reject_rc": -22,
+      "grid_3types_verified": 3,
+      "emph_rec_camreset_restores_on_ok": 1,
+      "grid_types_survive_cam_reset": 3,
+      "grid_survives_cam_settings_reset_ok": 1,
+      "grid_reset_only_by_initialize": 1,
+      "hdmi_info_on_recframe_px": 24768,
+      "hdmi_info_on_grid_px": 6837,
+      "hdmi_marker_zebra_peaking_px": 0,
+      "hdmi_info_on_routes_recframe_and_grid_ok": 1,
+      "local_lcd_blanked_when_hdmi_info_on": 1,
+      "hdmi_only_forces_hdmi_info_off_ok": 1,
+      "hdmi_raw_forces_hdmi_info_off_ok": 1,
+      "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "cnflasha_sha256_match": 1,
+      "cnflasha_writes": 0,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r49_init_ok": 1,
+      "verify_us": 840568
+    },
+    "emphasized_rec_and_grid_hdmi_stage_b_bridge": {
+      "emph_rec_default_on_ok": 1,
+      "emph_rec_camreset_restores_on_ok": 1,
+      "grid_default_rule_of_3rds_ok": 1,
+      "grid_3types_verified": 3,
+      "grid_survives_cam_settings_reset_ok": 1,
+      "grid_reset_only_by_initialize": 1,
+      "hdmi_info_on_routes_recframe_and_grid_ok": 1,
+      "local_lcd_blanked_when_hdmi_info_on": 1,
+      "hdmi_only_forces_hdmi_info_off_ok": 1,
+      "hdmi_raw_forces_hdmi_info_off_ok": 1,
+      "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+      "emph_rec_grid_hdmi_ok": 1,
+      "emmc_write_count": 0,
+      "r49_bridge_ok": 1
+    },
+    "touch_operation_stage_b_bridge": {
+      "touch_4items_verified": 4,
+      "touch_op_3modes_verified": 3,
+      "touch_sens_2modes_verified": 2,
+      "swipe_up_default_open_fn_ok": 1,
+      "touch_shoot_func_3modes_verified": 3,
+      "survives_cam_settings_reset_ok": 1,
+      "reset_only_by_initialize": 1,
+      "bench_accidental_touch_events": 0,
+      "touch_op_vault_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "monitor_brightness_stage_b_bridge": {
+      "monitor_bright_default_manual_0_ok": 1,
+      "manual_5steps_verified": 5,
+      "survives_cam_settings_reset_ok": 1,
+      "reset_only_by_initialize": 1,
+      "indoor_clamped_to_manual_0_ok": 1,
+      "indoor_sunny_weather_unclamped": 0,
+      "monitor_brightness_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0
+    },
+    "touch_operation_4item_cam_settings_reset_survival_and_unattended_bench_tap_firewall": {
+      "touch_4defaults_ok": 1,
+      "invalid_touch_op_reject_rc": -22,
+      "invalid_touch_sens_reject_rc": -22,
+      "invalid_swipe_up_reject_rc": -22,
+      "invalid_touch_shoot_reject_rc": -22,
+      "touch_4items_verified": 4,
+      "touch_op_3modes_verified": 3,
+      "touch_sens_2modes_verified": 2,
+      "swipe_up_2modes_verified": 2,
+      "touch_shoot_func_3modes_verified": 3,
+      "touch_4items_survive_cam_reset": 4,
+      "survives_cam_settings_reset_ok": 1,
+      "initialize_restores_4defaults_ok": 1,
+      "reset_only_by_initialize": 1,
+      "active_touch_baseline_ok": 1,
+      "playback_only_isolation_ok": 1,
+      "gestures_injected": 64,
+      "blocked_gestures": 64,
+      "fn_menu_opened_during_vault": 0,
+      "touch_tracking_during_vault": 0,
+      "bench_accidental_touch_events": 0,
+      "slot1_ro_kernel_rc": -30,
+      "slot1_vault_writes": 0,
+      "slot1_vault_sha256_match": 1,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0,
+      "r49b_ok": 1,
+      "verify_us": 928565
+    },
+    "monitor_brightness_manual_5step_vs_sunny_weather_indoor_clamp_and_16_h0_h3": {
+      "monitor_bright_default_manual_0_ok": 1,
+      "invalid_mode_reject_rc": -22,
+      "invalid_manual_step_reject_rc": -22,
+      "manual_5steps_verified": 5,
+      "outdoor_sunny_weather_allowed_ok": 1,
+      "survives_cam_settings_reset_ok": 1,
+      "initialize_restores_manual_0_ok": 1,
+      "reset_only_by_initialize": 1,
+      "indoor_rehearsal_cycles": 32,
+      "indoor_clamped_to_manual_0_ok": 1,
+      "indoor_sunny_weather_unclamped": 0,
+      "np_fz100_saved_mw": 760,
+      "false_highlight_clip_skew_events": 0,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "cnflasha_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r49c_ok": 1,
+      "verify_us": 176398
+    }
+  },
+  "runs": {
+    "r49a_emphasized_rec_grid_hdmi_big6_schinese": {
+      "run_id": "round49-emphasized-rec-grid-hdmi-big6",
+      "round": 49,
+      "lang": "schinese",
+      "r49_mode": "emphasized_rec_grid_hdmi_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Emphasized REC Display] (default [On], resettable via [Camera Settings Reset] to [On]) & [Grid Line Display] (default [Rule of 3rds Grid], [Square Grid], [Diag. + Square Grid], [Off] \u2014 NOT reset by [Camera Settings Reset], reset_only_by_initialize=1): routing both REC red frame & grid overlay to external HDMI while blanking local LCD when [HDMI Info. Display]=On, vs hardware auto-forcing [HDMI Info. Display]=Off under [Rec. Media dur HDMI Output]=[Off(HDMI Only)] and HDMI RAW output (hdmi_only_or_raw_baked_recframe_grid_pixels=0); -EROFS (-30) p2:/setting & cnflasha protection; and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 75.93,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "e43ba38b9cd54419be8080ed235ab11a8983a1fdf75e34c1091d8abc4e4760c1"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r49": {
+          "r49_mode": "emphasized_rec_grid_hdmi_big6",
+          "emphasized_rec_display_menu_item": "Emphasized REC Display",
+          "emphasized_rec_display_default": "On",
+          "emphasized_rec_display_reset_by_camera_settings_reset": true,
+          "emphasized_rec_display_scope": [
+            "Movie",
+            "S&Q Motion"
+          ],
+          "grid_line_display_menu_item": "Grid Line Display",
+          "grid_line_type_menu_item": "Grid Line Type",
+          "grid_line_3_types": [
+            "Rule of 3rds Grid",
+            "Square Grid",
+            "Diag. + Square Grid"
+          ],
+          "grid_line_type_default": "Rule of 3rds Grid",
+          "grid_line_survives_camera_settings_reset": true,
+          "grid_line_reset_only_by_initialize": true,
+          "hdmi_info_display_on_routes_recframe_and_grid": true,
+          "hdmi_info_display_on_blanks_local_lcd": true,
+          "hdmi_marker_zebra_peaking_overlay_pixels": 0,
+          "rec_media_dur_hdmi_off_hdmi_only_forces_hdmi_info_off": true,
+          "hdmi_raw_output_forces_hdmi_info_off": true,
+          "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+          "touch_setup_4_items": [
+            "Touch Operation",
+            "Touch Sensitivity",
+            "Swipe Up",
+            "Touch Func. in Shooting"
+          ],
+          "touch_operation_3_modes": [
+            "On",
+            "On: Playback Only",
+            "Off"
+          ],
+          "touch_operation_default": "On",
+          "touch_sensitivity_2_modes": [
+            "Standard",
+            "Sensitive"
+          ],
+          "touch_sensitivity_default": "Standard",
+          "swipe_up_default": "Open the Fn Menu",
+          "touch_func_in_shooting_3_modes": [
+            "Touch Tracking",
+            "Touch Focus",
+            "Off"
+          ],
+          "touch_func_in_shooting_default": "Touch Tracking",
+          "touch_4_items_survive_camera_settings_reset": true,
+          "touch_reset_only_by_initialize": true,
+          "bench_accidental_touch_events": 0,
+          "monitor_brightness_menu_item": "Monitor Brightness",
+          "monitor_brightness_modes": [
+            "Manual",
+            "Sunny Weather"
+          ],
+          "monitor_brightness_default_mode": "Manual",
+          "monitor_brightness_manual_step_range": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "monitor_brightness_default_step": 0,
+          "monitor_brightness_survives_camera_settings_reset": true,
+          "monitor_brightness_reset_only_by_initialize": true,
+          "indoor_sunny_weather_clamped_to_manual_0": true,
+          "indoor_sunny_weather_unclamped": 0,
+          "slot1_vault_writes": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r49_telemetry": {
+        "touch_op_vault_rc": null,
+        "monitor_brightness_rc": null,
+        "emph_rec_grid_hdmi_init": {
+          "emph_rec_default_on_ok": 1,
+          "grid_default_off_ok": 1,
+          "grid_default_rule_of_3rds_ok": 1,
+          "invalid_emph_rec_reject_rc": -22,
+          "invalid_grid_type_reject_rc": -22,
+          "invalid_rec_media_hdmi_reject_rc": -22,
+          "grid_3types_verified": 3,
+          "emph_rec_camreset_restores_on_ok": 1,
+          "grid_types_survive_cam_reset": 3,
+          "grid_survives_cam_settings_reset_ok": 1,
+          "grid_reset_only_by_initialize": 1,
+          "hdmi_info_on_recframe_px": 24768,
+          "hdmi_info_on_grid_px": 6837,
+          "hdmi_marker_zebra_peaking_px": 0,
+          "hdmi_info_on_routes_recframe_and_grid_ok": 1,
+          "local_lcd_blanked_when_hdmi_info_on": 1,
+          "hdmi_only_forces_hdmi_info_off_ok": 1,
+          "hdmi_raw_forces_hdmi_info_off_ok": 1,
+          "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r49_init_ok": 1,
+          "verify_us": 840568
+        },
+        "emph_rec_grid_hdmi_bridge": {
+          "emph_rec_default_on_ok": 1,
+          "emph_rec_camreset_restores_on_ok": 1,
+          "grid_default_rule_of_3rds_ok": 1,
+          "grid_3types_verified": 3,
+          "grid_survives_cam_settings_reset_ok": 1,
+          "grid_reset_only_by_initialize": 1,
+          "hdmi_info_on_routes_recframe_and_grid_ok": 1,
+          "local_lcd_blanked_when_hdmi_info_on": 1,
+          "hdmi_only_forces_hdmi_info_off_ok": 1,
+          "hdmi_raw_forces_hdmi_info_off_ok": 1,
+          "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+          "emph_rec_grid_hdmi_ok": 1,
+          "emmc_write_count": 0,
+          "r49_bridge_ok": 1
+        },
+        "touch_op_bridge": {
+          "touch_4items_verified": 4,
+          "touch_op_3modes_verified": 3,
+          "touch_sens_2modes_verified": 2,
+          "swipe_up_default_open_fn_ok": 1,
+          "touch_shoot_func_3modes_verified": 3,
+          "survives_cam_settings_reset_ok": 1,
+          "reset_only_by_initialize": 1,
+          "bench_accidental_touch_events": 0,
+          "touch_op_vault_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "monitor_brightness_bridge": {
+          "monitor_bright_default_manual_0_ok": 1,
+          "manual_5steps_verified": 5,
+          "survives_cam_settings_reset_ok": 1,
+          "reset_only_by_initialize": 1,
+          "indoor_clamped_to_manual_0_ok": 1,
+          "indoor_sunny_weather_unclamped": 0,
+          "monitor_brightness_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "touch_op_vault": {},
+        "monitor_brightness": {},
+        "lang_telemetry": {
+          "reason": "gpermDrawFlush",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 29494,
+          "glyph_blits": 15616,
+          "icon_blits": 19054,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "emph_rec_grid_hdmi_ok": 1,
+          "touch_op_vault_ok": 1,
+          "monitor_brightness_ok": 1,
+          "r49_bridge_ok": 1,
+          "round49_realhw_emphasized_rec_grid_hdmi_touch_sunny": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 49,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "emph_rec_grid_hdmi_clean_lock": 1,
+          "touch_op_4item_camreset_vault_firewall": 1,
+          "monitor_brightness_sunny_indoor_clamp": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r49a-emphasized-rec-grid-hdmi-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round49-realhw-emphasized-rec-grid-hdmi-touch-sunny-qemu/assets/r49a-emphasized-rec-grid-hdmi-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round49-realhw-emphasized-rec-grid-hdmi-touch-sunny-qemu/assets/r49a-emphasized-rec-grid-hdmi-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 167,
+        "FX6_STAGE_B_": 78,
+        "FX6_R30_": 165,
+        "FX6_R31_": 165,
+        "FX6_R32_": 168,
+        "FX6_R33_": 165,
+        "FX6_R34_": 165,
+        "FX6_R35_": 165,
+        "FX6_R36_": 165,
+        "FX6_R37_": 166,
+        "FX6_R38_": 166,
+        "FX6_R39_": 166,
+        "FX6_R40_": 166,
+        "FX6_R41_": 166,
+        "FX6_R42_": 167,
+        "FX6_R43_": 167,
+        "FX6_R44_": 167,
+        "FX6_R45_": 167,
+        "FX6_R46_": 167,
+        "FX6_R47_": 167,
+        "FX6_R48_": 167,
+        "FX6_R49_": 167,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 165,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 115,
+        "FX6_R10_": 163,
+        "FX6_R11_": 174,
+        "FX6_R12_": 166,
+        "FX6_R13_": 163,
+        "FX6_R14_": 163,
+        "FX6_R15_": 163,
+        "FX6_R16_": 163,
+        "FX6_R17_": 163,
+        "FX6_R18_": 163,
+        "FX6_R19_": 163,
+        "FX6_R20_": 163,
+        "FX6_R21_": 163,
+        "FX6_R22_": 163,
+        "FX6_R23_": 163,
+        "FX6_R24_": 163,
+        "FX6_R25_": 163,
+        "FX6_R26_": 163,
+        "FX6_R27_": 163,
+        "FX6_R29_": 165,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 872,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 57,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 537,
+        "FX6_WAIT_SNAPSHOT": 2673,
+        "FX6_FONT_": 98,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r49b_touch_op_4item_reset_vault": {
+      "run_id": "round49-touch-op-4item-reset-vault",
+      "round": 49,
+      "lang": "en",
+      "r49_mode": "touch_op_4item_reset_vault",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Setup -> [Touch Operation] 4-item persistence ([Touch Operation] default [On] / [On: Playback Only] / [Off], [Touch Sensitivity] [Standard] / [Sensitive], [Swipe Up] [Open the Fn Menu] / [Off], [Touch Func. in Shooting] [Touch Tracking] / [Touch Focus] / [Off]) surviving [Camera Settings Reset] intact (touch_4items_survive_cam_reset=4, reset_only_by_initialize=1, restored only by [Initialize]), plus [Touch Operation]=Off capacitive bench firewall blocking 64/64 accidental Swipe Up (Fn menu) & Touch Tracking gestures during simulated Tier-0 vault operations (bench_accidental_touch_events=0, slot1_vault_sha256_match=1, emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 7.42,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c9f86f99d15feb3f175482e300e4c393d654f3de7b4fa9f6ac1ec6ec46c92316"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r49": {
+          "r49_mode": "touch_op_4item_reset_vault",
+          "emphasized_rec_display_menu_item": "Emphasized REC Display",
+          "emphasized_rec_display_default": "On",
+          "emphasized_rec_display_reset_by_camera_settings_reset": true,
+          "emphasized_rec_display_scope": [
+            "Movie",
+            "S&Q Motion"
+          ],
+          "grid_line_display_menu_item": "Grid Line Display",
+          "grid_line_type_menu_item": "Grid Line Type",
+          "grid_line_3_types": [
+            "Rule of 3rds Grid",
+            "Square Grid",
+            "Diag. + Square Grid"
+          ],
+          "grid_line_type_default": "Rule of 3rds Grid",
+          "grid_line_survives_camera_settings_reset": true,
+          "grid_line_reset_only_by_initialize": true,
+          "hdmi_info_display_on_routes_recframe_and_grid": true,
+          "hdmi_info_display_on_blanks_local_lcd": true,
+          "hdmi_marker_zebra_peaking_overlay_pixels": 0,
+          "rec_media_dur_hdmi_off_hdmi_only_forces_hdmi_info_off": true,
+          "hdmi_raw_output_forces_hdmi_info_off": true,
+          "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+          "touch_setup_4_items": [
+            "Touch Operation",
+            "Touch Sensitivity",
+            "Swipe Up",
+            "Touch Func. in Shooting"
+          ],
+          "touch_operation_3_modes": [
+            "On",
+            "On: Playback Only",
+            "Off"
+          ],
+          "touch_operation_default": "On",
+          "touch_sensitivity_2_modes": [
+            "Standard",
+            "Sensitive"
+          ],
+          "touch_sensitivity_default": "Standard",
+          "swipe_up_default": "Open the Fn Menu",
+          "touch_func_in_shooting_3_modes": [
+            "Touch Tracking",
+            "Touch Focus",
+            "Off"
+          ],
+          "touch_func_in_shooting_default": "Touch Tracking",
+          "touch_4_items_survive_camera_settings_reset": true,
+          "touch_reset_only_by_initialize": true,
+          "bench_accidental_touch_events": 0,
+          "monitor_brightness_menu_item": "Monitor Brightness",
+          "monitor_brightness_modes": [
+            "Manual",
+            "Sunny Weather"
+          ],
+          "monitor_brightness_default_mode": "Manual",
+          "monitor_brightness_manual_step_range": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "monitor_brightness_default_step": 0,
+          "monitor_brightness_survives_camera_settings_reset": true,
+          "monitor_brightness_reset_only_by_initialize": true,
+          "indoor_sunny_weather_clamped_to_manual_0": true,
+          "indoor_sunny_weather_unclamped": 0,
+          "slot1_vault_writes": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r49_telemetry": {
+        "touch_op_vault_rc": 0,
+        "monitor_brightness_rc": null,
+        "emph_rec_grid_hdmi_init": {},
+        "emph_rec_grid_hdmi_bridge": {},
+        "touch_op_bridge": {},
+        "monitor_brightness_bridge": {},
+        "touch_op_vault": {
+          "touch_4defaults_ok": 1,
+          "invalid_touch_op_reject_rc": -22,
+          "invalid_touch_sens_reject_rc": -22,
+          "invalid_swipe_up_reject_rc": -22,
+          "invalid_touch_shoot_reject_rc": -22,
+          "touch_4items_verified": 4,
+          "touch_op_3modes_verified": 3,
+          "touch_sens_2modes_verified": 2,
+          "swipe_up_2modes_verified": 2,
+          "touch_shoot_func_3modes_verified": 3,
+          "touch_4items_survive_cam_reset": 4,
+          "survives_cam_settings_reset_ok": 1,
+          "initialize_restores_4defaults_ok": 1,
+          "reset_only_by_initialize": 1,
+          "active_touch_baseline_ok": 1,
+          "playback_only_isolation_ok": 1,
+          "gestures_injected": 64,
+          "blocked_gestures": 64,
+          "fn_menu_opened_during_vault": 0,
+          "touch_tracking_during_vault": 0,
+          "bench_accidental_touch_events": 0,
+          "slot1_ro_kernel_rc": -30,
+          "slot1_vault_writes": 0,
+          "slot1_vault_sha256_match": 1,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "r49b_ok": 1,
+          "verify_us": 928565
+        },
+        "monitor_brightness": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R49_": 3
+      }
+    },
+    "r49c_monitor_brightness_sunny_h0_h3": {
+      "run_id": "round49-monitor-brightness-sunny-h0-h3",
+      "round": 49,
+      "lang": "en",
+      "r49_mode": "monitor_brightness_sunny_h0_h3",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Setup -> [Monitor Brightness] ([Manual] 5-step -2..+2 default 0 vs [Sunny Weather]; rejecting Auto/Ambient sensor mode on FX3 with -EINVAL -22): persistence across [Camera Settings Reset] (reset_only_by_initialize=1, restored to [Manual] 0 only on [Initialize]); indoor bench rehearsal guard clamping [Sunny Weather] back to [Manual] (0) to eliminate indoor over-brightness exposure misjudgment & 760 mW NP-FZ100 backlight drain (indoor_sunny_weather_unclamped=0, indoor_clamped_to_manual_0_ok=1); real guest dlopen(libJit.so); and 16/16 donor SHA-256 H0 == H3 rollback (drift_bits=0, cnflasha_writes=0, emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 5.96,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c9f86f99d15feb3f175482e300e4c393d654f3de7b4fa9f6ac1ec6ec46c92316"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r49": {
+          "r49_mode": "monitor_brightness_sunny_h0_h3",
+          "emphasized_rec_display_menu_item": "Emphasized REC Display",
+          "emphasized_rec_display_default": "On",
+          "emphasized_rec_display_reset_by_camera_settings_reset": true,
+          "emphasized_rec_display_scope": [
+            "Movie",
+            "S&Q Motion"
+          ],
+          "grid_line_display_menu_item": "Grid Line Display",
+          "grid_line_type_menu_item": "Grid Line Type",
+          "grid_line_3_types": [
+            "Rule of 3rds Grid",
+            "Square Grid",
+            "Diag. + Square Grid"
+          ],
+          "grid_line_type_default": "Rule of 3rds Grid",
+          "grid_line_survives_camera_settings_reset": true,
+          "grid_line_reset_only_by_initialize": true,
+          "hdmi_info_display_on_routes_recframe_and_grid": true,
+          "hdmi_info_display_on_blanks_local_lcd": true,
+          "hdmi_marker_zebra_peaking_overlay_pixels": 0,
+          "rec_media_dur_hdmi_off_hdmi_only_forces_hdmi_info_off": true,
+          "hdmi_raw_output_forces_hdmi_info_off": true,
+          "hdmi_only_or_raw_baked_recframe_grid_pixels": 0,
+          "touch_setup_4_items": [
+            "Touch Operation",
+            "Touch Sensitivity",
+            "Swipe Up",
+            "Touch Func. in Shooting"
+          ],
+          "touch_operation_3_modes": [
+            "On",
+            "On: Playback Only",
+            "Off"
+          ],
+          "touch_operation_default": "On",
+          "touch_sensitivity_2_modes": [
+            "Standard",
+            "Sensitive"
+          ],
+          "touch_sensitivity_default": "Standard",
+          "swipe_up_default": "Open the Fn Menu",
+          "touch_func_in_shooting_3_modes": [
+            "Touch Tracking",
+            "Touch Focus",
+            "Off"
+          ],
+          "touch_func_in_shooting_default": "Touch Tracking",
+          "touch_4_items_survive_camera_settings_reset": true,
+          "touch_reset_only_by_initialize": true,
+          "bench_accidental_touch_events": 0,
+          "monitor_brightness_menu_item": "Monitor Brightness",
+          "monitor_brightness_modes": [
+            "Manual",
+            "Sunny Weather"
+          ],
+          "monitor_brightness_default_mode": "Manual",
+          "monitor_brightness_manual_step_range": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "monitor_brightness_default_step": 0,
+          "monitor_brightness_survives_camera_settings_reset": true,
+          "monitor_brightness_reset_only_by_initialize": true,
+          "indoor_sunny_weather_clamped_to_manual_0": true,
+          "indoor_sunny_weather_unclamped": 0,
+          "slot1_vault_writes": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r49_telemetry": {
+        "touch_op_vault_rc": null,
+        "monitor_brightness_rc": 0,
+        "emph_rec_grid_hdmi_init": {},
+        "emph_rec_grid_hdmi_bridge": {},
+        "touch_op_bridge": {},
+        "monitor_brightness_bridge": {},
+        "touch_op_vault": {},
+        "monitor_brightness": {
+          "monitor_bright_default_manual_0_ok": 1,
+          "invalid_mode_reject_rc": -22,
+          "invalid_manual_step_reject_rc": -22,
+          "manual_5steps_verified": 5,
+          "outdoor_sunny_weather_allowed_ok": 1,
+          "survives_cam_settings_reset_ok": 1,
+          "initialize_restores_manual_0_ok": 1,
+          "reset_only_by_initialize": 1,
+          "indoor_rehearsal_cycles": 32,
+          "indoor_clamped_to_manual_0_ok": 1,
+          "indoor_sunny_weather_unclamped": 0,
+          "np_fz100_saved_mw": 760,
+          "false_highlight_clip_skew_events": 0,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "cnflasha_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r49c_ok": 1,
+          "verify_us": 176398
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R49_": 3
+      }
+    }
+  },
+  "r49_realhw_emphasized_rec_grid_hdmi_touch_sunny_audit": {
+    "round": 49,
+    "milestone": 49,
+    "realhw_qemu_round_ordinal": 21,
+    "cumulative_realhw_qemu_runs": 63,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "all_3_runs_cnflasha_write_zero": true,
+    "r49a_emphasized_rec_and_grid_hdmi_info_routing_and_clean_feed_lock_verified": true,
+    "r49a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r49b_touch_operation_4item_camreset_survival_and_bench_tap_firewall_verified": true,
+    "r49c_monitor_brightness_camreset_survival_and_indoor_sunny_weather_clamp_verified": true,
+    "r49c_dlopen_libjit_and_16_h0_eq_h3_rollback_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical ILME-FX3 (Ver. 7.02) Type-A HDMI analyzer capture verifying [Emphasized REC Display] red border & [Grid Line Display] overlay routing under [HDMI Info. Display]=On vs hardware forced clean-feed under [Rec. Media dur HDMI Output]=[Off(HDMI Only)] and external Atomos HDMI RAW output remain unexecuted on a physical camera body.",
+    "Physical ILME-FX3 (Ver. 7.02) capacitive LCD panel verification of all 4 Setup -> [Touch Operation] items surviving [Camera Settings Reset] and physical [Touch Operation]=Off blocking accidental Swipe Up Fn-menu / Touch Tracking taps on a bench remain unexecuted on physical hardware.",
+    "Physical ILME-FX3 (Ver. 7.02) LCD luminance meter & NP-FZ100 current-draw measurement comparing [Monitor Brightness]=[Manual] (-2..+2) vs [Sunny Weather] across [Camera Settings Reset] and [Initialize] remain unexecuted on a physical camera body."
+  ]
+}

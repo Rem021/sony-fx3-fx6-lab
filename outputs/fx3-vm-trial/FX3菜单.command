@@ -1,39 +1,54 @@
 #!/bin/zsh
-# Local FX3 menu launcher (supports internal SSD & legacy KAFU2T); TRY2 launcher retained separately.
+# Local FX3 menu launcher; the original TRY2 launcher is retained separately.
 set -euo pipefail
-export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 if (( $# > 1 )) || { (( $# == 1 )) && [[ "$1" != --check ]]; }; then
   print -u2 '仅支持双击启动，或 --check 检查入口。'
   exit 2
 fi
 script_dir="${0:A:h}"
-rel_runtime='work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r10-independent-diagnostics'
+repo_root="${script_dir:h:h}"
+rel_runtime="work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r10-independent-diagnostics"
 runtime=""
-for base_mac in "${script_dir:h:h:h:h}" "$HOME/AI-Workspace/AI/Projects/Mac"; do
-  if [[ -d "$base_mac/$rel_runtime" ]]; then
-    runtime="$base_mac/$rel_runtime"
+for cand_rt in \
+  "${FX3_V25_RUNTIME_DIR:-}" \
+  "$HOME/AI-Workspace/AI/Projects/Mac/$rel_runtime" \
+  "$HOME/AI-Workspace/AI/Projects/Mac/outputs/sony-fx3-fx6-lab/$rel_runtime" \
+  "$repo_root/$rel_runtime" \
+  "/Volumes/KAFU2T/AI/Projects/Mac/$rel_runtime"; do
+  if [[ -n "$cand_rt" && -f "$cand_rt/run_trial_v25_diag_r3.py" ]]; then
+    runtime="$cand_rt"
     break
   fi
 done
 if [[ -z "$runtime" ]]; then
+  print -u2 'FX3 运行目录缺失（已探测内盘 AI-Workspace 与回退路径）；未启动模拟器。'
+  exit 2
+fi
+if [[ "$runtime" == /Volumes/KAFU2T/* ]]; then
   volume_uuid="$(/usr/sbin/diskutil info -plist /Volumes/KAFU2T 2>/dev/null | /usr/bin/plutil -extract VolumeUUID raw -o - - 2>/dev/null)" || {
-    print -u2 '本地 work 目录不存在且 KAFU2T 未挂载；未启动模拟器。'
+    print -u2 'KAFU2T 未挂载或无法识别；未启动模拟器。'
     exit 2
   }
   if [[ "$volume_uuid" != F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B ]]; then
     print -u2 '外盘身份不符；未启动模拟器。'
     exit 2
   fi
-  runtime="/Volumes/KAFU2T/AI/Projects/Mac/$rel_runtime"
 fi
 python_bin=""
-for cand_py in "$HOME/.local/bin/python3" "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3" "/opt/homebrew/bin/python3" "$(command -v python3 2>/dev/null || true)"; do
+for cand_py in \
+  "${FX3_PYTHON:-}" \
+  "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3" \
+  "$HOME/.local/bin/python3" \
+  "/opt/homebrew/bin/python3" \
+  "/usr/local/bin/python3" \
+  "$(command -v python3 2>/dev/null || true)" \
+  "/usr/bin/python3"; do
   if [[ -n "$cand_py" && -x "$cand_py" ]]; then
     python_bin="$cand_py"
     break
   fi
 done
-if [[ ! -f "$runtime/run_trial_v25_diag_r3.py" || ! -x "$python_bin" ]]; then
+if [[ ! -f "$runtime/run_trial_v25_diag_r3.py" || -z "$python_bin" || ! -x "$python_bin" ]]; then
   print -u2 'FX3 入口文件或 Python 3 缺失；未启动模拟器。'
   exit 2
 fi

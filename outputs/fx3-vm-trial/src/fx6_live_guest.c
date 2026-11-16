@@ -15,9 +15,124 @@
  *     mb[5] = menu_cat (0..10 for the 11 Three-Layer Menu categories)
  *     mb[6] = menu_item (0..N-1 item index in right column)
  *     mb[7] = menu_depth (0=left category column, 1=right item list, 2=3rd-layer / subpage variant)
- *     mb[8..13] = cell_val[0..5] (Big6 value indices, or off1/cnt1/off2/cnt2 on Page 24)
+ *     mb[8..13] = cell_val[0..5] (FPS, EI/BaseISO, Shutter, ND[P4-Locked], LUT, WB; or Page 24 table specs)
  *     mb[14] = rec_fmt_idx (0..4 Rec Format option index)
  *     mb[15] = stats ((text_ok << 24) | (nonzero_pixels & 0x00ffffff))
+ *     mb[16] = lang_id (0=English/bank4, 1=Simplified Chinese/bank19, 2=Japanese/bank12)
+ *     mb[17] = fx3_p10_hwcode telemetry ((phy_code << 16) | infra_code)
+ *     mb[18] = cinema_p11_state ((xlr_idx << 4) | ibis_idx) for P11 XLR-H1 & 5-axis IBIS lock
+ *     mb[19] = lut_tint_meta ((user_slot_1to4 << 28) | (valid << 24) | (r << 16) | (g << 8) | b)
+ *     mb[20..25] = active User LUT short name (24 bytes NUL-terminated)
+ *     mb[26] = audio_db_packed (4x uint8_t (db + 60) for ch1..ch4 in [-60..+12])
+ *     mb[27] = phase40+phase56_flags (bit0=xlr_attached, bit1=+48V, bits4..5=rtmd_ibis,
+ *              bit8=bk4_locked, bit9=phase40_valid, bits12..14=aspect_marker,
+ *              bits16..17=zebra_mode, bits18..19=peaking_mode, bits20..21=desqueeze,
+ *              bit24=phase56_valid)
+ *     mb[28] = phase64_flags (bit0=base12800, bits1..4=ei_step(0..12), bits5..6=shutter_mode,
+ *              bit7=sq_enabled, bits8..10=base_fps_idx, bit11=rec_on, bits12..13=tally_mode,
+ *              bits14..15=wired_io_mode, bit16=p4_nd_absent, bit17=p12_rf_off, bit31=valid)
+ *     mb[29] = phase64_shutter_sq (bits0..19=shutter_val, bits20..27=sq_fps(1..240))
+ *     mb[30] = phase64_tc_frames (live TC frame counter when REC)
+ *     mb[31] = 0x43494e45 ('CINE') Phase 64 CINE_EXP magic tag
+ *     mb[32] = phase73_wb_look (bits0..2=wb_mode, bits3..16=kelvin, bits17..24=tint+99,
+ *              bits25..26=shockless_wb, bits27..29=base_look, bit30=fx3_wb_soft_mapped, bit31=valid)
+ *     mb[33] = phase73_media_clip (bits0..4=cam_id, bits5..14=reel_num, bits15..16=cam_pos,
+ *              bits17..26=clip_seq, bits27..28=dual_slot_mode, bits29..30=proxy_mode, bit31=proxy_eff)
+ *     mb[34] = phase73_flags2 (bit0=proxy_auto_suspended_by_sq, bits1..3=user_lut_slot_1to4)
+ *     mb[35] = 0x57424c4d ('WBLM') Phase 73 WB_MEDIA magic tag
+ *     mb[36] = phase81_touch_af (bits0..1=touch_af_mode(0=off,1=focus,2=tracking),
+ *              bits2..11=touch_x(0..959), bits12..21=touch_y(0..539), bits22..31=pdaf_index(0..626))
+ *     mb[37] = phase81_pdaf_mag_fc (bits0..5=pdaf_col(0..32), bits6..10=pdaf_row(0..18),
+ *              bits11..12=focus_mag(0=1x,1=2x,2=4x), bits13..14=false_color(0=off,1=slog3_ire,2=el_zone),
+ *              bit15=clean_hdmi_unmagnified, bits16..23=eff_ciz_x100(100..200), bits24..31=req_ciz_x100(100..200))
+ *     mb[38] = phase81_ciz_flags (bits0..3=rocker_speed(1..8), bit4=ciz_res_fhd,
+ *              bit5=ciz_clamped_by_exclusion, bit6=ciz_clamped_by_res_limit,
+ *              bit7=slog3_zebra100_clip_warning, bit8=letterbox_ignored, bit31=valid)
+ *     mb[39] = 0x54414643 ('TAFC') Phase 81 Touch-AF / False-Color / CIZ magic tag
+ *     mb[40] = phase88_shotmark (bits0..6=total_count(0..64), bits7..13=m1_count,
+ *              bits14..20=m2_count, bits21..22=last_type(0=none,1=M1,2=M2), bits23..31=last_frame_low)
+ *     mb[41] = phase88_iris_audio (bits0..11=iris_x100(140..2200), bits12..13=metering(0=multi,1=center,2=spot,3=highlight),
+ *              bits14..21=ae_shift_enc((ev+2.0)*8), bit22=ch34_pad_20db, bit23=push_auto_iris_active,
+ *              bits24..30=target_ire(41), bit31=valid)
+ *     mb[42] = phase88_user_bits (SMPTE 12M 32-bit User-Bits e.g. 0xA0010001)
+ *     mb[43] = 0x534d524b ('SMRK') Phase 88 ShotMark / Push Auto Iris / Safety Audio magic tag
+ *     mb[44] = phase95_anamorphic_ibis (bits0..2=squeeze_idx(0..5), bits3..5=eff_ibis_idx(0..4),
+ *              bits6..8=req_ibis_idx(0..4), bit9=ibis_arbitrated, bit10=center_lock_0x0400,
+ *              bits11..18=yaw_gain_pct(0..100), bits19..28=synced_touch_x(0..959),
+ *              bit29=desqueeze_touch_synced, bit30=edge_wobble_prevented, bit31=valid)
+ *     mb[45] = phase95_gyro_rtmd (bits0..11=imu_samples_x10, bits12..19=skew_ms_x10,
+ *              bits20..21=rtmd_status_idx(0=READY,1=CTR_LOCK,2=SUSP_SQ), bit22=rtmd_suspended_by_sq,
+ *              bit23=gyroflow_ready, bit24=fallback_center_lock, bits25..31=squeeze_x50)
+ *     mb[46] = phase95_tone_limiter (bit0=ref_tone_req, bit1=ref_tone_eff, bit2=ref_tone_inhibited,
+ *              bit3=color_bars_eff, bit4=limiter_en, bit5=limiter_engaging,
+ *              bits6..9=ch_clamped_mask, bits10..17=lim_thresh_x10(30), bits18..25=tone_dbfs(20),
+ *              bit31=valid)
+ *     mb[47] = 0x4759524f ('GYRO') Phase 95 Anamorphic IBIS / Gyroflow 2000Hz RTMD / 1kHz Tone magic tag
+ *     mb[48] = phase102_cache_interval (bits0..4=cache_eff_sec(0..16), bits5..9=cache_req_sec(0..16),
+ *              bits10..18=cache_ddr_mib(0..384), bit19=cache_active, bit20=cache_suspended,
+ *              bit21=cache_clamped_384, bit22=interval_en, bits23..28=interval_sec(1..60),
+ *              bits29..30=ae_tracking_idx(0=High,1=Mid,2=Low,3=Lock), bit31=valid)
+ *     mb[49] = phase102_interval_shots_ftp (bits0..13=shots_taken(0..9999),
+ *              bits14..27=target_shots(1..9999), bits28..29=ftps_mode_idx(0=Off,1=Proxy_Only,2=Original_And_Proxy),
+ *              bit30=ftps_p12_safe, bit31=elec_shutter_enforced)
+ *     mb[50] = phase102_lut_ftps_queue (bits0..2=lut_slot_1to4(0..4), bit3=lut_resampled_33,
+ *              bits4..5=lut_src_grid_idx(0=none,1=17,2=33,3=65), bits6..13=lut_contrast_x100(25..250),
+ *              bits14..21=ftps_queued_count(0..255), bits22..29=ftps_completed_count(0..255),
+ *              bit30=ftps_blocked_traversal, bit31=valid)
+ *     mb[51] = 0x49434c46 ('ICLF') Phase 102 Picture Cache / Interval Rec / .cube 33^3 / FTPS magic tag
+ *     mb[52] = phase109_fleet_sdi (bits0..2=fleet_role(0=Solo,1=A_Master,2=B,3=C,4=D),
+ *              bits3..5=fleet_cams_online(1..4), bit6=gang_rec_active, bit7=sdi_bridge_active,
+ *              bits8..9=sdi_bridge_idx(0=BMD_12G,1=Teradek,2=Atomos,3=Off), bit10=rp188_rec_bit,
+ *              bit11=avi_range_safe, bit12=avi_quant_idx(0=LIMITED,1=FULL), bits13..20=avi_checksum,
+ *              bits21..26=ptp_skew_div2(0..63), bit27=p12_rf_off_enforced, bit28=hdmi_tc_output_on,
+ *              bit31=valid)
+ *     mb[53] = phase109_mount_shading (bit0=mount_pl_unchipped(0=E_12Pin,1=Manual_PL),
+ *              bit1=shading_identity_1x, bits2..9=shading_corner_gain_x100(100..255),
+ *              bits10..15=lens_kg_x10(1..63), bit16=g31_lws_warning, bit17=rod_support_15mm_lws,
+ *              bits18..21=electronic_pins(12|0), bits22..28=focal_mm_div2, bit31=valid)
+ *     mb[54] = phase109_c2pa_provenance (bits0..1=c2pa_vault_idx(0=CNFLASHA_RDONLY_ZERO_TOUCH,1=BLOCKED),
+ *              bit2=clean_room_research, bit3=hw_attest_claimed(0), bit4=cnflasha_ro_zero_touch(1),
+ *              bit5=c2pa_spoof_blocked, bits6..13=blocked_violation_count,
+ *              bits14..21=fleet_sync_packets_div10, bit31=valid)
+ *     mb[55] = 0x4d43464c ('MCFL') Phase 109 M&C 4-Cam Fleet / HDMI->12G-SDI RP188 / E-Mount-PL / C2PA magic tag
+ *     mb[56] = phase116_hlg_colorimetry (bits0..2=hlg_profile(0=OFF,1=HLG1,2=HLG2,3=HLG3,4=FX6_LIVE,5=FX6_NAT),
+ *              bits3..4=color_gamut(0=BT709,1=BT2020,2=SGamut3Cine), bits5..8=detail_level+7(0..14),
+ *              bits9..10=knee_mode(0=Auto,1=87,2=95,3=100), bits11..12=cta_eotf(0=SDR,3=HLG),
+ *              bit13=cta_infoframe_valid, bits14..21=cta_checksum, bits22..29=peak_nits_div10,
+ *              bit30=bt2020_in_bt709_blocked, bit31=valid)
+ *     mb[57] = phase116_display_assist (bits0..2=assist_req(0=OFF,1=AUTO,2=SLOG3->709,3=HLG->709_2020,4=HLG->709_709),
+ *              bits3..5=assist_resolved, bit6=evf_lcd_assist_active, bit7=clean_hdmi_sdi_unassisted(1),
+ *              bit8=xavc_internal_unassisted(1), bits9..15=blocked_leak_cnt, bits16..23=vf_nit_div10,
+ *              bits24..30=waveform_peak_ire, bit31=valid)
+ *     mb[58] = phase116_raw_breathing (bits0..1=ext_raw_mode(0=OFF,1=PRORES_RAW_16_12L,2=BRAW_16_12L),
+ *              bit2=raw_base12800, bits3..10=raw_kelvin_div100, bit11=raw_lens_meta, bit12=raw_tc_trig,
+ *              bit13=breathing_req, bit14=breathing_eff, bit15=bypass_pl, bit16=bypass_raw,
+ *              bits17..24=breathing_crop_x100(100..108), bits25..30=raw_fps_idx, bit31=valid)
+ *     mb[59] = 0x484c4741 ('HLGA') Phase 116 HLG BT.2100 / Display Assist / ProRes RAW / Breathing Comp magic tag
+ *     mb[60] = phase123_uvc_uac (bits0..1=uvc_req(0=OFF,1=4K30_5G,2=1080P60_5G,3=720P30_USB2),
+ *              bits2..3=uvc_eff, bit4=usb2_non_ss(480Mbps), bit5=uvc_stepdown_active,
+ *              bit6=uac_48k_16b_2ch_en, bit7=uvc_clean_feed_no_osd(1), bits8..13=uvc_fps,
+ *              bits14..23=uvc_bitrate_mbps, bits24..27=uac_ch_cnt, bit28=uvc_osd_leak_blocked, bit31=valid)
+ *     mb[61] = phase123_srt_rtmps (bits0..1=srt_mode(0=OFF,1=CALLER,2=LISTENER),
+ *              bits2..3=srt_pbkeylen(0=NONE,1=AES-128,2=AES-256), bits4..13=srt_latency_ms(20..1000),
+ *              bit14=rtmps_tls13_on, bits15..20=stream_bitrate_mbps(1..50), bit21=p12_wlan_off(1),
+ *              bit22=cdc_ncm_wired_ok(1), bits23..29=p12_blocked_cnt, bit30=arq_enabled, bit31=valid)
+ *     mb[62] = phase123_crsdk_ptp (bits0..1=crsdk_mode(0=OFF,1=USB_PTP,2=WIRED_PTPIP),
+ *              bit2=ptp_flash_opcodes_blocked(1), bit3=emmc_mutation_zero(1), bit4=p12_wlan_off(1),
+ *              bit5=p4_nd_clear_clamped, bits6..13=last_d2xx_low, bits14..20=blocked_flash_cnt,
+ *              bits21..27=safe_cmd_cnt, bits28..30=last_action_kind, bit31=valid)
+ *     mb[63] = 0x55564353 ('UVCS') Phase 123 UVC 1.5/UAC 2.0 / Wired SRT-RTMPS / CRSDK PTP Firewall magic tag
+ *     mb[64] = phase129_mxf_bridge (bits0..1=container_mode(0=MP4_ISOBMFF_RTMD,1=MXF_OP1A_RDD09_WRAP,2=DUAL_MP4_PLUS_MXF_SIDECAR),
+ *              bits2..9=umid_digest8, bits10..13=gamma_idx, bits14..23=ei_div100, bit24=zero_essence_loss(1),
+ *              bit25=emmc_mutation_zero(1), bit26=rdd18_klv_valid(1), bit27=mxf_blk_flag, bits28..30=mxf_blk_cnt, bit31=valid)
+ *     mb[65] = phase129_ptpv2_ltc (bits0..1=sync_mode(0=OFF,1=PTPV2_SLAVE_WIRED,2=LTC_MULTITERMINAL_FALLBACK),
+ *              bit2=servo_locked, bit3=ltc_holdover_active, bit4=p12_wlan_off(1), bit5=wf12_zero(1), bit6=cdc_ncm_wired(1),
+ *              bits7..18=offset_ns(0..4095), bits19..24=holdover_slip_mframes(0..63), bits25..30=p12_blk_cnt, bit31=valid)
+ *     mb[66] = phase129_tsl_tally_umd (bits0..1=tally_state(0=OFF,1=PVW_GREEN,2=PGM_RED,3=PGM_PLUS_PVW),
+ *              bit2=stealth_led_mute, bit3=osd_tally_indicator, bit4=p12_wlan_off(1), bit5=tcp_dle_stx,
+ *              bit6=fx6_green_gpio_zero_fault(1), bits7..9=cam_slot_0to7(CAM1..CAM8), bits10..30=3x7bit UMD tag, bit31=valid)
+ *     mb[67] = 0x4d584654 ('MXFT') Phase 129 XAVC MXF/MP4 RDD-18/UMID / ST 2059-2 PTPv2-LTC / TSL UMD v5.0 Tally magic tag
+ *     mb[68..71] = 16-byte NUL-terminated dynamic 16-char TSL UMD camera nameplate (UTF-8/ASCII)
  */
 #include "fx6_static_assist.h"
 
@@ -60,16 +175,76 @@ typedef struct {
     void (*setRectPos)(void *, unsigned short, const void *);
     void (*renderRect)(void *, const void *, const void *, float, float);
     void (*dict_ctor)(void *);
+    void *(*removeFirst)(void *);
+    void (*imageOnLoad)(void *);
+    void *(*rmGetInstance)(void);
+    void *(*rmGetAllocator)(void *);
+    void *imageElemOnLoadedCb;
+    unsigned short (*imgGetWidth)(const void *);
+    unsigned short (*imgGetHeight)(const void *);
+    unsigned short (*imgGetLeft)(const void *);
+    unsigned short (*imgGetTop)(const void *);
+    int (*imgGetPixelFormat)(const void *);
+    void (*setToDecodeImmediately)(void *, int);
+    void (*setImageCallback)(void *, void *, void *, int);
+    int (*getImageSize)(unsigned int, unsigned short *, unsigned short *);
+    int (*setFontNameWithNamespace)(unsigned short);
+    int (*switchBank)(unsigned short, unsigned char);
 } fx6_syms_t;
 
 static fx6_syms_t g_syms;
+static uint32_t g_cur_lang;
 
-/* Static aligned scratch buffers reused across single-threaded UI renders (tid 222) */
-static unsigned char s_vs_buf[0x1400] __attribute__((aligned(16)));
-static unsigned char s_vf_buf[0x1180] __attribute__((aligned(16)));
-static unsigned char s_ic_buf[0x700]  __attribute__((aligned(16)));
+static uint32_t fx6_font_ns_rid(void) {
+    switch (g_cur_lang) {
+    case 1u: return 0x0200a01cU; /* FONT_S_CHINESE */
+    case 2u: return 0x0200a006U; /* FONT_JAPANESE */
+    default: return 0x0200a005U; /* FONT_UNIVERS */
+    }
+}
+
+/* 32-slot aligned widget ring pools prevent tid=220/async commands from racing zeroed buffers */
+#define FX6_WIDGET_POOL_N 32u
+static unsigned char s_vs_pool[FX6_WIDGET_POOL_N][0x1400] __attribute__((aligned(16)));
+static unsigned char s_vf_pool[FX6_WIDGET_POOL_N][0x1180] __attribute__((aligned(16)));
+static unsigned char s_ic_pool[FX6_WIDGET_POOL_N][0x700]  __attribute__((aligned(16)));
+static unsigned int s_vs_next, s_vf_next, s_ic_next;
 static unsigned char s_dict_buf[0x80] __attribute__((aligned(16)));
 static int s_dict_ready;
+
+typedef struct {
+    int done;
+    int blitted;
+    int dst_x;
+    int dst_y;
+    int dst_w;
+    int dst_h;
+    uint32_t tint_rgb;
+    uint32_t img_rid;
+} fx6_icon_ctx_t;
+
+static fx6_icon_ctx_t s_icon_ctx[FX6_WIDGET_POOL_N];
+static uint32_t s_bad_icon_rids[64];
+static unsigned int s_bad_icon_next;
+
+#define FX6_ICON_CACHE_MAX 512u
+#define FX6_ICON_SLAB_BYTES (16u * 1024u * 1024u)
+typedef struct {
+    uint32_t rid;
+    uint16_t sw;
+    uint16_t sh;
+    uint32_t *pixels;
+} fx6_icon_cache_entry_t;
+
+static fx6_icon_cache_entry_t s_icon_cache[FX6_ICON_CACHE_MAX];
+static unsigned int s_icon_cache_n;
+static uint8_t *g_icon_slab;
+static unsigned long g_icon_slab_used;
+
+static int fx6_valid_ptr(const void *p) {
+    uintptr_t u = (uintptr_t)p;
+    return (u >= 0x10000ULL) && ((u >> 48) == 0ULL) && ((u & 3ULL) == 0ULL);
+}
 
 static void fx6_init_syms(void) {
     if (g_syms.ready) return;
@@ -99,7 +274,60 @@ static void fx6_init_syms(void) {
         dlsym((void *)-1, "_ZN2ux6gfxeng6Sprite10renderRectERKNS_4core7Vector2ERKNS1_8RectDataEff");
     g_syms.dict_ctor = (void (*)(void *))
         dlsym((void *)-1, "_ZN5libra10DictionaryC1Ev");
+    g_syms.removeFirst = (void *(*)(void *))
+        dlsym((void *)-1, "_ZN6stella10LinearList11removeFirstEv");
+    g_syms.imageOnLoad = (void (*)(void *))
+        dlsym((void *)-1, "_ZN5libra9ImageData6onLoadEv");
+    g_syms.rmGetInstance = (void *(*)(void))
+        dlsym((void *)-1, "_ZN5libra15ResourceManager11getInstanceEv");
+    g_syms.rmGetAllocator = (void *(*)(void *))
+        dlsym((void *)-1, "_ZN5libra15ResourceManager12getAllocatorEv");
+    g_syms.imageElemOnLoadedCb =
+        dlsym((void *)-1, "_ZN2ux6gfxeng16ImageElementBase21onLoadedImageCallbackEPvPN5libra9ImageDataE");
+    g_syms.imgGetWidth = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData8getWidthEv");
+    g_syms.imgGetHeight = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData9getHeightEv");
+    g_syms.imgGetLeft = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData7getLeftEv");
+    g_syms.imgGetTop = (unsigned short (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData6getTopEv");
+    g_syms.imgGetPixelFormat = (int (*)(const void *))
+        dlsym((void *)-1, "_ZNK5libra9ImageData14getPixelFormatEv");
+    g_syms.setToDecodeImmediately = (void (*)(void *, int))
+        dlsym((void *)-1, "_ZN2ux6gfxeng16ImageElementBase22setToDecodeImmediatelyEb");
+    g_syms.setImageCallback = (void (*)(void *, void *, void *, int))
+        dlsym((void *)-1, "_ZN2ux6gfxeng16ImageElementBase16setImageCallbackEPFvPviRKN5libra9ImageDataEES2_i");
+    g_syms.getImageSize = (int (*)(unsigned int, unsigned short *, unsigned short *))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager12getImageSizeEjRtS2_");
+    g_syms.setFontNameWithNamespace = (int (*)(unsigned short))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager28sys_setFontNameWithNamespaceEt");
+    g_syms.switchBank = (int (*)(unsigned short, unsigned char))
+        dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager10switchBankEth");
+    __sync_synchronize();
     g_syms.ready = 1;
+}
+
+static void fx6_apply_lang(uint32_t lang) {
+    if (lang > 2u) lang = 0u;
+    if (lang == g_cur_lang) return;
+    unsigned char bank = 4u;
+    if (lang == 1u) bank = 19u;
+    else if (lang == 2u) bank = 12u;
+    if (g_syms.switchBank) {
+        g_syms.switchBank(1, bank);
+        g_syms.switchBank(2, bank);
+    }
+    g_cur_lang = lang;
+    dprintf(2, "FX6_LIVE_LANG lang=%u bank=%u font_ns=0x%08x\n",
+            lang, (unsigned)bank, fx6_font_ns_rid());
+}
+
+static void fx6_drain_commands(int max_iters) {
+    if (!g_syms.processCommands) return;
+    for (int k = 0; k < max_iters; k++) {
+        if (g_syms.processCommands(0) <= 0) break;
+    }
 }
 
 /* Complete-object destructor (Itanium C++ ABI vtable slot 0 = D1Ev, does NOT free memory) */
@@ -108,6 +336,53 @@ static inline void fx6_destroy_widget_inplace(void *obj) {
     void **vt = *(void ***)obj;
     if (vt && vt[0]) {
         ((void (*)(void *))vt[0])(obj);
+    }
+}
+
+/* Guard PLT call from libra::GenerateImageCommand::notify(bool) when an unloaded
+ * icon/glyph yields Listener::m_imageData == NULL (prevents str xzr,[0,#8] SIGSEGV). */
+void _ZN5libra9ImageData6onLoadEv(void *self) {
+    if (!self) return;
+    *(uint64_t *)((char *)self + 0x8) = 0;
+}
+
+/* Interpose libra::GenerateImageCommand::notify(bool) directly (tail-called via PLT
+ * from settle(bool) at liblibra.so + 0x2a2e8). Prevents blr x2 with x2==0 or x1==0
+ * when ImageData::detach() or widget teardown races async command settlement. */
+void _ZN5libra20GenerateImageCommand6notifyEb(void *self, int ok) {
+    (void)ok;
+    if (!fx6_valid_ptr(self)) return;
+    fx6_init_syms();
+    if (!g_syms.removeFirst) return;
+    void *list = (char *)self + 0x28;
+    for (int guard = 0; guard < 1024; guard++) {
+        void *node = g_syms.removeFirst(list);
+        if (!node) break;
+        if (!fx6_valid_ptr(node)) break;
+        void *arg = *(void **)((char *)node + 0x08);
+        void *cb  = *(void **)((char *)node + 0x10);
+        void *img = *(void **)((char *)node + 0x18);
+        if (img && fx6_valid_ptr(img) && g_syms.imageOnLoad) {
+            g_syms.imageOnLoad(img);
+        }
+        if (cb != 0 && img != 0 && (uintptr_t)cb > 0x10000ULL &&
+            fx6_valid_ptr(cb) && fx6_valid_ptr(img) &&
+            (!arg || fx6_valid_ptr(arg)) &&
+            !(g_syms.imageElemOnLoadedCb && cb == g_syms.imageElemOnLoadedCb && !arg)) {
+            ((void (*)(void *, void *))cb)(arg, img);
+        }
+        if (g_syms.rmGetInstance && g_syms.rmGetAllocator) {
+            void *rm = g_syms.rmGetInstance();
+            if (fx6_valid_ptr(rm)) {
+                void *alloc = g_syms.rmGetAllocator(rm);
+                if (fx6_valid_ptr(alloc)) {
+                    void **avt = *(void ***)alloc;
+                    if (fx6_valid_ptr(avt) && avt[2] && fx6_valid_ptr(avt[2])) {
+                        ((void (*)(void *, void *))avt[2])(alloc, node);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -131,42 +406,132 @@ static int strstr_(const char *h, const char *n) {
     return 0;
 }
 
-/* ---------------- native text image -> OSD ------------------------------- */
-static int fx6_blit_imagedata_to_osd(void *image, uint32_t *osd, int dst_x, int dst_y) {
+/* ---------------- native text & icon ImageData -> OSD -------------------- */
+static int fx6_blit_imagedata_rect_to_osd(void *image, uint32_t *osd,
+                                          int dst_x, int dst_y, int dst_w, int dst_h,
+                                          uint32_t tint_rgb) {
     if (!image || !osd) return 0;
     fx6_init_syms();
     if (!g_syms.sys_getImageData) return 0;
     uint8_t *raw = (uint8_t *)g_syms.sys_getImageData(image);
-    if (!raw) return 0;
-    int w = *(uint16_t *)(raw + 0x00);
-    int h = *(uint16_t *)(raw + 0x02);
+    if (!raw || !fx6_valid_ptr(raw)) return 0;
+    int raw_w = (int)(*(uint16_t *)(raw + 0x00));
+    int raw_h = (int)(*(uint16_t *)(raw + 0x02));
     int pitch_px = (int)(*(uint32_t *)(raw + 0x04));
+    int stella_fmt = *(int *)(raw + 0x0c);
     void *bmp = *(void **)(raw + 0x18);
-    if (!bmp || w <= 0 || h <= 0 || pitch_px <= 0) return 0;
+    if (!bmp || !fx6_valid_ptr(bmp) || raw_w <= 0 || raw_h <= 0) return 0;
     const uint8_t *bits = *(const uint8_t **)((uint8_t *)bmp + 0x10);
-    if (!bits) return 0;
-    if (w > 1024) w = 1024;
-    int stride = pitch_px * 4;
+    if (!bits || !fx6_valid_ptr(bits)) return 0;
+
+    const uint8_t *info = *(const uint8_t **)((uint8_t *)bmp + 0x08);
+    int bw = raw_w, bh = raw_h, stride_px = pitch_px, bmp_fmt = 0;
+    if (fx6_valid_ptr(info)) {
+        int iw = (int)(*(const short *)(info + 0x08));
+        int ih = (int)(*(const short *)(info + 0x0a));
+        int aw = (int)(*(const short *)(info + 0x18));
+        if (iw > 0) bw = iw;
+        if (ih > 0) bh = ih;
+        if (aw > 0) stride_px = aw;
+        bmp_fmt = *(const int *)(info + 0x1c);
+    }
+    if (stride_px <= 0) stride_px = bw;
+
+    if (stella_fmt == 0 && g_syms.imgGetPixelFormat) {
+        stella_fmt = g_syms.imgGetPixelFormat(image);
+    }
+    /* Map stella_fmt / BMP_PixelFormat:
+     *   mode 1: RGBA4444 (stella=7 or bmp_fmt=1, 2 Bpp)
+     *   mode 2: RGBA8888 (stella=1 or bmp_fmt=2, 4 Bpp, bytes [R,G,B,A])
+     *   mode 3: A8 tint  (stella=8 or bmp_fmt=4, 1 Bpp)
+     *   mode 4: ARGB4444 (bmp_fmt=3, 2 Bpp)
+     */
+    int mode = 1, bpp = 2;
+    if (bmp_fmt == 2 || stella_fmt == 1) {
+        mode = 2; bpp = 4;
+    } else if (bmp_fmt == 4 || stella_fmt == 8) {
+        mode = 3; bpp = 1;
+    } else if (bmp_fmt == 3) {
+        mode = 4; bpp = 2;
+    } else {
+        mode = 1; bpp = 2;
+    }
+
+    int sx0 = g_syms.imgGetLeft ? (int)g_syms.imgGetLeft(image) : 0;
+    int sy0 = g_syms.imgGetTop ? (int)g_syms.imgGetTop(image) : 0;
+    int sw = g_syms.imgGetWidth ? (int)g_syms.imgGetWidth(image) : raw_w;
+    int sh = g_syms.imgGetHeight ? (int)g_syms.imgGetHeight(image) : raw_h;
+    if (sw <= 0 || sh <= 0) { sx0 = 0; sy0 = 0; sw = raw_w; sh = raw_h; }
+    if (sx0 < 0) sx0 = 0;
+    if (sy0 < 0) sy0 = 0;
+    if (sx0 >= bw || sy0 >= bh) return 0;
+    if (sx0 + sw > bw) sw = bw - sx0;
+    if (sy0 + sh > bh) sh = bh - sy0;
+    if (sw <= 0 || sh <= 0) return 0;
+
+    int out_w = (dst_w > 0) ? dst_w : sw;
+    int out_h = (dst_h > 0) ? dst_h : sh;
+    if (out_w > 1024) out_w = 1024;
+    if (out_h > 540) out_h = 540;
+
+    int stride_bytes = stride_px * bpp;
+    uint32_t tr = (tint_rgb >> 16) & 0xffu;
+    uint32_t tg = (tint_rgb >> 8)  & 0xffu;
+    uint32_t tb = tint_rgb & 0xffu;
     int copied = 0;
-    for (int y = 0; y < h; y++) {
+
+    for (int y = 0; y < out_h; y++) {
         int dy = dst_y + y;
         if (dy < 0 || dy >= 540) continue;
-        const uint16_t *srow = (const uint16_t *)(bits + (unsigned long)y * (unsigned long)stride);
+        int sy = sy0 + (y * sh) / out_h;
+        if (sy < 0 || sy >= bh) continue;
+        const uint8_t *srow = bits + (unsigned long)sy * (unsigned long)stride_bytes;
         uint32_t *drow = osd + (unsigned long)dy * 1024UL;
-        for (int x = 0; x < w; x++) {
+        for (int x = 0; x < out_w; x++) {
             int dx = dst_x + x;
             if (dx < 0 || dx >= 1024) continue;
-            uint16_t pv = srow[x];
-            uint32_t a = (pv & 0xf) * 17u;
-            if (a == 0) continue;
-            uint32_t r = ((pv >> 12) & 0xf) * 17u;
-            uint32_t g = ((pv >>  8) & 0xf) * 17u;
-            uint32_t b = ((pv >>  4) & 0xf) * 17u;
-            drow[dx] = (a << 24) | (r << 16) | (g << 8) | b;
+            int sx = sx0 + (x * sw) / out_w;
+            if (sx < 0 || sx >= bw) continue;
+            uint32_t sr = 0, sg = 0, sb = 0, sa = 0;
+            if (mode == 2) {
+                const uint8_t *px4 = srow + (unsigned long)sx * 4UL;
+                sr = px4[0]; sg = px4[1]; sb = px4[2]; sa = px4[3];
+            } else if (mode == 3) {
+                sa = srow[sx]; sr = tr; sg = tg; sb = tb;
+            } else if (mode == 4) {
+                uint16_t pv = ((const uint16_t *)srow)[sx];
+                sa = ((pv >> 12) & 0xfu) * 17u;
+                sr = ((pv >>  8) & 0xfu) * 17u;
+                sg = ((pv >>  4) & 0xfu) * 17u;
+                sb = (pv & 0xfu) * 17u;
+            } else {
+                uint16_t pv = ((const uint16_t *)srow)[sx];
+                sr = ((pv >> 12) & 0xfu) * 17u;
+                sg = ((pv >>  8) & 0xfu) * 17u;
+                sb = ((pv >>  4) & 0xfu) * 17u;
+                sa = (pv & 0xfu) * 17u;
+            }
+            if (sa == 0) continue;
+            if (sa >= 255u) {
+                drow[dx] = 0xFF000000u | (sr << 16) | (sg << 8) | sb;
+            } else {
+                uint32_t dst = drow[dx];
+                uint32_t dr = dst ? ((dst >> 16) & 0xffu) : 14u;
+                uint32_t dg = dst ? ((dst >> 8)  & 0xffu) : 16u;
+                uint32_t db = dst ? (dst & 0xffu)         : 20u;
+                uint32_t or_c = (sr * sa + dr * (255u - sa)) / 255u;
+                uint32_t og_c = (sg * sa + dg * (255u - sa)) / 255u;
+                uint32_t ob_c = (sb * sa + db * (255u - sa)) / 255u;
+                drow[dx] = 0xFF000000u | (or_c << 16) | (og_c << 8) | ob_c;
+            }
             copied++;
         }
     }
     return copied;
+}
+
+static int fx6_blit_imagedata_to_osd(void *image, uint32_t *osd, int dst_x, int dst_y) {
+    return fx6_blit_imagedata_rect_to_osd(image, osd, dst_x, dst_y, 0, 0, 0xFFFFFFu);
 }
 
 static void fx6_text_image_cb(void *ts, void *image, void *ud) {
@@ -178,6 +543,196 @@ static void fx6_text_image_cb(void *ts, void *image, void *ud) {
     }
     int n = fx6_blit_imagedata_to_osd(image, g_osd, dx, dy);
     if (n) g_text_ok++;
+}
+
+static const fx6_icon_cache_entry_t *fx6_icon_cache_find(uint32_t rid) {
+    for (unsigned int i = 0; i < s_icon_cache_n; i++) {
+        if (s_icon_cache[i].rid == rid && s_icon_cache[i].pixels) {
+            return &s_icon_cache[i];
+        }
+    }
+    return 0;
+}
+
+static void fx6_icon_cache_put(uint32_t rid, void *image) {
+    if (!rid || !image || !g_icon_slab || s_icon_cache_n >= FX6_ICON_CACHE_MAX) return;
+    if (fx6_icon_cache_find(rid)) return;
+    if (!g_syms.sys_getImageData) return;
+    uint8_t *raw = (uint8_t *)g_syms.sys_getImageData(image);
+    if (!raw || !fx6_valid_ptr(raw)) return;
+    int raw_w = (int)(*(uint16_t *)(raw + 0x00));
+    int raw_h = (int)(*(uint16_t *)(raw + 0x02));
+    int pitch_px = (int)(*(uint32_t *)(raw + 0x04));
+    int stella_fmt = *(int *)(raw + 0x0c);
+    void *bmp = *(void **)(raw + 0x18);
+    if (!bmp || !fx6_valid_ptr(bmp) || raw_w <= 0 || raw_h <= 0) return;
+    const uint8_t *bits = *(const uint8_t **)((uint8_t *)bmp + 0x10);
+    if (!bits || !fx6_valid_ptr(bits)) return;
+    const uint8_t *info = *(const uint8_t **)((uint8_t *)bmp + 0x08);
+    int bw = raw_w, bh = raw_h, stride_px = pitch_px, bmp_fmt = 0;
+    if (fx6_valid_ptr(info)) {
+        int iw = (int)(*(const short *)(info + 0x08));
+        int ih = (int)(*(const short *)(info + 0x0a));
+        int aw = (int)(*(const short *)(info + 0x18));
+        if (iw > 0) bw = iw;
+        if (ih > 0) bh = ih;
+        if (aw > 0) stride_px = aw;
+        bmp_fmt = *(const int *)(info + 0x1c);
+    }
+    if (stride_px <= 0) stride_px = bw;
+    if (stella_fmt == 0 && g_syms.imgGetPixelFormat) stella_fmt = g_syms.imgGetPixelFormat(image);
+    int mode = 1, bpp = 2;
+    if (bmp_fmt == 2 || stella_fmt == 1) { mode = 2; bpp = 4; }
+    else if (bmp_fmt == 4 || stella_fmt == 8) { mode = 3; bpp = 1; }
+    else if (bmp_fmt == 3) { mode = 4; bpp = 2; }
+    int sx0 = g_syms.imgGetLeft ? (int)g_syms.imgGetLeft(image) : 0;
+    int sy0 = g_syms.imgGetTop ? (int)g_syms.imgGetTop(image) : 0;
+    int sw = g_syms.imgGetWidth ? (int)g_syms.imgGetWidth(image) : raw_w;
+    int sh = g_syms.imgGetHeight ? (int)g_syms.imgGetHeight(image) : raw_h;
+    if (sw <= 0 || sh <= 0) { sx0 = 0; sy0 = 0; sw = raw_w; sh = raw_h; }
+    if (sx0 < 0) sx0 = 0;
+    if (sy0 < 0) sy0 = 0;
+    if (sx0 >= bw || sy0 >= bh) return;
+    if (sx0 + sw > bw) sw = bw - sx0;
+    if (sy0 + sh > bh) sh = bh - sy0;
+    if (sw <= 0 || sh <= 0 || sw > 1024 || sh > 540) return;
+
+    unsigned long need = (unsigned long)sw * (unsigned long)sh * 4UL;
+    if (g_icon_slab_used + need > FX6_ICON_SLAB_BYTES) return;
+    uint32_t *dst = (uint32_t *)(g_icon_slab + g_icon_slab_used);
+    int stride_bytes = stride_px * bpp;
+    for (int y = 0; y < sh; y++) {
+        const uint8_t *srow = bits + (unsigned long)(sy0 + y) * (unsigned long)stride_bytes;
+        uint32_t *drow = dst + (unsigned long)y * (unsigned long)sw;
+        for (int x = 0; x < sw; x++) {
+            int sx = sx0 + x;
+            uint32_t sr = 0, sg = 0, sb = 0, sa = 0;
+            if (mode == 2) {
+                const uint8_t *px4 = srow + (unsigned long)sx * 4UL;
+                sr = px4[0]; sg = px4[1]; sb = px4[2]; sa = px4[3];
+            } else if (mode == 3) {
+                sa = srow[sx]; sr = 0xffu; sg = 0xffu; sb = 0xffu;
+            } else if (mode == 4) {
+                uint16_t pv = ((const uint16_t *)srow)[sx];
+                sa = ((pv >> 12) & 0xfu) * 17u;
+                sr = ((pv >>  8) & 0xfu) * 17u;
+                sg = ((pv >>  4) & 0xfu) * 17u;
+                sb = (pv & 0xfu) * 17u;
+            } else {
+                uint16_t pv = ((const uint16_t *)srow)[sx];
+                sr = ((pv >> 12) & 0xfu) * 17u;
+                sg = ((pv >>  8) & 0xfu) * 17u;
+                sb = ((pv >>  4) & 0xfu) * 17u;
+                sa = (pv & 0xfu) * 17u;
+            }
+            drow[x] = (sa << 24) | (sr << 16) | (sg << 8) | sb;
+        }
+    }
+    fx6_icon_cache_entry_t *e = &s_icon_cache[s_icon_cache_n++];
+    e->rid = rid;
+    e->sw = (uint16_t)sw;
+    e->sh = (uint16_t)sh;
+    e->pixels = dst;
+    g_icon_slab_used += (need + 15UL) & ~15UL;
+}
+
+static int fx6_blit_cached_icon_to_osd(const fx6_icon_cache_entry_t *e, uint32_t *osd,
+                                       int dst_x, int dst_y, int dst_w, int dst_h) {
+    if (!e || !e->pixels || !osd || e->sw == 0 || e->sh == 0) return 0;
+    int sw = (int)e->sw, sh = (int)e->sh;
+    int draw_x = dst_x, draw_y = dst_y;
+    int draw_w = dst_w, draw_h = dst_h;
+    if (dst_w > 0 && dst_h > 0) {
+        if (sw <= dst_w && sh <= dst_h) {
+            draw_w = sw;
+            draw_h = sh;
+        } else {
+            if (sw * dst_h >= sh * dst_w) {
+                draw_w = dst_w;
+                draw_h = (sh * dst_w) / sw;
+            } else {
+                draw_h = dst_h;
+                draw_w = (sw * dst_h) / sh;
+            }
+            if (draw_w < 1) draw_w = 1;
+            if (draw_h < 1) draw_h = 1;
+        }
+        draw_x = dst_x + (dst_w - draw_w) / 2;
+        draw_y = dst_y + (dst_h - draw_h) / 2;
+    } else {
+        draw_w = sw;
+        draw_h = sh;
+    }
+    if (draw_w > 1024) draw_w = 1024;
+    if (draw_h > 540) draw_h = 540;
+    int copied = 0;
+    for (int y = 0; y < draw_h; y++) {
+        int dy = draw_y + y;
+        if (dy < 0 || dy >= 540) continue;
+        int sy = (y * sh) / draw_h;
+        const uint32_t *srow = e->pixels + (unsigned long)sy * (unsigned long)sw;
+        uint32_t *drow = osd + (unsigned long)dy * 1024UL;
+        for (int x = 0; x < draw_w; x++) {
+            int dx = draw_x + x;
+            if (dx < 0 || dx >= 1024) continue;
+            int sx = (x * sw) / draw_w;
+            uint32_t sp = srow[sx];
+            uint32_t sa = (sp >> 24) & 0xffu;
+            if (sa == 0) continue;
+            uint32_t sr = (sp >> 16) & 0xffu;
+            uint32_t sg = (sp >> 8) & 0xffu;
+            uint32_t sb = sp & 0xffu;
+            if (sa >= 255u) {
+                drow[dx] = 0xFF000000u | (sr << 16) | (sg << 8) | sb;
+            } else {
+                uint32_t dst = drow[dx];
+                uint32_t dr = dst ? ((dst >> 16) & 0xffu) : 14u;
+                uint32_t dg = dst ? ((dst >> 8)  & 0xffu) : 16u;
+                uint32_t db = dst ? (dst & 0xffu)         : 20u;
+                uint32_t or_c = (sr * sa + dr * (255u - sa)) / 255u;
+                uint32_t og_c = (sg * sa + dg * (255u - sa)) / 255u;
+                uint32_t ob_c = (sb * sa + db * (255u - sa)) / 255u;
+                drow[dx] = 0xFF000000u | (or_c << 16) | (og_c << 8) | ob_c;
+            }
+            copied++;
+        }
+    }
+    return copied;
+}
+
+static void fx6_icon_image_cb(void *ud, int arg, void *image) {
+    (void)arg;
+    fx6_icon_ctx_t *ctx = (fx6_icon_ctx_t *)ud;
+    if (!ctx || !fx6_valid_ptr(ctx)) return;
+    if (!image || !fx6_valid_ptr(image)) {
+        ctx->done = 1;
+        return;
+    }
+    int sw = g_syms.imgGetWidth ? (int)g_syms.imgGetWidth(image) : 0;
+    int sh = g_syms.imgGetHeight ? (int)g_syms.imgGetHeight(image) : 0;
+    int draw_x = ctx->dst_x, draw_y = ctx->dst_y;
+    int draw_w = ctx->dst_w, draw_h = ctx->dst_h;
+    if (sw > 0 && sh > 0 && ctx->dst_w > 0 && ctx->dst_h > 0) {
+        if (sw <= ctx->dst_w && sh <= ctx->dst_h) {
+            draw_w = sw;
+            draw_h = sh;
+        } else {
+            if (sw * ctx->dst_h >= sh * ctx->dst_w) {
+                draw_w = ctx->dst_w;
+                draw_h = (sh * ctx->dst_w) / sw;
+            } else {
+                draw_h = ctx->dst_h;
+                draw_w = (sw * ctx->dst_h) / sh;
+            }
+            if (draw_w < 1) draw_w = 1;
+            if (draw_h < 1) draw_h = 1;
+        }
+        draw_x = ctx->dst_x + (ctx->dst_w - draw_w) / 2;
+        draw_y = ctx->dst_y + (ctx->dst_h - draw_h) / 2;
+    }
+    fx6_icon_cache_put(ctx->img_rid, image);
+    ctx->blitted = fx6_blit_imagedata_rect_to_osd(image, g_osd, draw_x, draw_y, draw_w, draw_h, ctx->tint_rgb);
+    ctx->done = 1;
 }
 
 /* ---------------- resources ---------------------------------------------- */
@@ -222,7 +777,8 @@ static int fx6_text_of(uint32_t rid, char *out, unsigned outsz) {
         while (s[n] && n + 1 < outsz) { out[n] = s[n]; n++; }
         out[n] = 0;
     }
-    if (g_syms.string_dtor) g_syms.string_dtor(buf);
+    /* Note: ResourceManager::getText binds an arena-less view into mmapped string_english_2.uxc;
+     * calling _ZN5libra6StringD1Ev dereferences null arena+0x8 (SIGSEGV in liblibra.so). */
     return n > 0;
 }
 
@@ -235,13 +791,85 @@ static uint32_t fx6_pick(uint32_t a, uint32_t b, const char *want, const char *w
 }
 
 /* ---------------- native widgets ----------------------------------------- */
+#define VS_ROW_BASE    0x220u
+#define VS_ROW_STRIDE  0x5cu
+#define VS_ROW_TYPE    (-4)
+#define VS_ROW_VALUE   0x54u
+#define VS_ROW_COUNT   0x610u
+#define VS_TYPE_STRING 1u
+#define VS_TYPE_VALUE  2u
+
+static void fx6_render_string_text_styled(uint64_t appfw, int x, int y, int w, int h,
+                                          const char *text, uint32_t font, uint32_t font2,
+                                          uint32_t layout, uint32_t d30, uint32_t d34) {
+    if (!text || !text[0]) return;
+    if (w < 8 || h < 4) return;
+    fx6_init_syms();
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
+    char param[0x40];
+    memset(param, 0, sizeof(param));
+    ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
+
+    *(int32_t *)((char *)vs + 0x1e8) = x;
+    *(int32_t *)((char *)vs + 0x1ec) = y;
+    *(int32_t *)((char *)vs + 0x1f0) = w;
+    *(int32_t *)((char *)vs + 0x1f4) = h;
+    *(uint32_t *)((char *)vs + 0x200) = 0xffffffffU;
+    *(uint8_t *)((char *)vs + 0x1fc) = 1;
+    *(uint32_t *)((char *)vs + 0x208) = font ? font : 0x0200600fU;
+    *(uint32_t *)((char *)vs + 0x20c) = font2 ? font2 : 0x0200600eU;
+    *(uint32_t *)((char *)vs + 0x210) = layout ? layout : 0x0200a029U;
+    *(uint32_t *)((char *)vs + 0xa14) = 0x0200600bU;
+    *(int *)((char *)vs + 0x214) = 0;
+    if (d30) *(uint32_t *)((char *)vs + 0x218) = d30;
+    *(uint32_t *)((char *)vs + 0x21c) = d34 ? d34 : (uint32_t)VS_TYPE_STRING;
+    *(uint32_t *)((char *)vs + 0xa30) = fx6_font_ns_rid();
+    *(uint32_t *)((char *)vs + 0xa34) = 0xffffffffU;
+
+    char *row0 = (char *)vs + VS_ROW_BASE;
+    *(int *)(row0 + VS_ROW_TYPE) = (int)VS_TYPE_STRING;
+    unsigned n = 0;
+    while (text[n] && n < 83u) {
+        row0[n] = text[n];
+        n++;
+    }
+    row0[n] = 0;
+    *(int *)((char *)vs + VS_ROW_COUNT) = 1;
+
+    void *ts = (char *)vs + 0xe40;
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
+    *(unsigned short *)((char *)ts + 0xa8) |= 0x0008;
+
+    void **vt = *(void ***)vs;
+    if (vt && vt[0x158 / 8]) {
+        ((void (*)(void *))vt[0x158 / 8])(vs);
+        *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
+        if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
+        fx6_drain_commands(16);
+        g_text_n++;
+    }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
+    fx6_destroy_widget_inplace(vs);
+}
+
+static void fx6_render_string_text(uint64_t appfw, int x, int y, int w, int h,
+                                   const char *text, const char *tag_name) {
+    (void)tag_name;
+    fx6_render_string_text_styled(appfw, x, y, w, h, text,
+                                  0x0200600fU, 0x0200600eU, 0x0200a029U, 0u, 1u);
+}
+
 static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
                                   uint32_t text_resid, const char *tag_name) {
     if (!text_resid || text_resid == 0xffffffffU) return;
     if (w < 8 || h < 4) return;
     fx6_init_syms();
-    void *vs = (void *)s_vs_buf;
-    memset(vs, 0, sizeof(s_vs_buf));
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
@@ -259,7 +887,7 @@ static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
     *(int *)((char *)vs + 0x214) = 0;
     *(int *)((char *)vs + 0x21c) = 1;
     *(int *)((char *)vs + 0x610) = 0;
-    *(uint32_t *)((char *)vs + 0xa30) = 0x0200a005U;
+    *(uint32_t *)((char *)vs + 0xa30) = fx6_font_ns_rid();
 
     void *ts = (char *)vs + 0xe40;
     if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
@@ -270,9 +898,11 @@ static void fx6_render_string_rid(uint64_t appfw, int x, int y, int w, int h,
         ((void (*)(void *))vt[0x158 / 8])(vs);
         *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
         if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
-        if (g_syms.processCommands) g_syms.processCommands(0);
+        fx6_drain_commands(16);
         g_text_n++;
     }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(vs);
     (void)tag_name;
 }
@@ -290,8 +920,9 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
     if (w < 8 || h < 8) return 0;
 
     fx6_init_syms();
-    void *vs = (void *)s_vs_buf;
-    memset(vs, 0, sizeof(s_vs_buf));
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
@@ -310,7 +941,7 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
     if (d30) *(uint32_t *)((char *)vs + 0x218) = d30;
     *(uint32_t *)((char *)vs + 0x21c) = d34 ? d34 : 1U;
     *(int *)((char *)vs + 0x610) = 0;
-    *(uint32_t *)((char *)vs + 0xa30) = 0x0200a005U;
+    *(uint32_t *)((char *)vs + 0xa30) = fx6_font_ns_rid();
 
     void *ts = (char *)vs + 0xe40;
     if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, (void *)fx6_text_image_cb, vs);
@@ -322,10 +953,12 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
         ((void (*)(void *))vt[0x158 / 8])(vs);
         *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
         if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
-        if (g_syms.processCommands) g_syms.processCommands(0);
+        fx6_drain_commands(16);
         g_text_n++;
         rendered = 1;
     }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(vs);
     return rendered;
 }
@@ -333,8 +966,9 @@ static int fx6_render_string_desc(uint64_t appfw, uint8_t *p) {
 static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t color_resid) {
     if (w < 1 || h < 1) return;
     fx6_init_syms();
-    void *vf = (void *)s_vf_buf;
-    memset(vf, 0, sizeof(s_vf_buf));
+    unsigned int slot = s_vf_next++ % FX6_WIDGET_POOL_N;
+    void *vf = (void *)s_vf_pool[slot];
+    memset(vf, 0, sizeof(s_vf_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc27698ULL))(vf, param);
@@ -351,7 +985,7 @@ static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t c
         if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(vf);
         if (vt[0x158 / 8]) {
             ((void (*)(void *))vt[0x158 / 8])(vf);
-            if (g_syms.processCommands) g_syms.processCommands(0);
+            fx6_drain_commands(8);
             char *spr = (char *)vf + 0x210;
             char *rects = *(char **)(spr + 0xd0);
             if (rects) {
@@ -363,6 +997,7 @@ static void fx6_fill_rect(uint64_t appfw, int x, int y, int w, int h, uint32_t c
             g_fill_n++;
         }
     }
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(vf);
 }
 
@@ -370,8 +1005,35 @@ static void fx6_icon_blit(uint64_t appfw, int x, int y, int w, int h, uint32_t i
     if (w < 1 || h < 1) return;
     if (!img || img == 0xffffffffU) return;
     fx6_init_syms();
-    void *ic = (void *)s_ic_buf;
-    memset(ic, 0, sizeof(s_ic_buf));
+    for (int i = 0; i < 64; i++) {
+        if (s_bad_icon_rids[i] == img) return;
+    }
+    const fx6_icon_cache_entry_t *cached = fx6_icon_cache_find(img);
+    if (cached) {
+        if (fx6_blit_cached_icon_to_osd(cached, g_osd, x, y, w, h) > 0) g_icon_n++;
+        return;
+    }
+    if (g_syms.getImageSize) {
+        unsigned short iw = 0, ih = 0;
+        if (!g_syms.getImageSize(img, &iw, &ih) || iw == 0 || ih == 0) {
+            s_bad_icon_rids[s_bad_icon_next++ % 64u] = img;
+            return;
+        }
+    }
+
+    unsigned int slot = s_ic_next++ % FX6_WIDGET_POOL_N;
+    void *ic = (void *)s_ic_pool[slot];
+    fx6_icon_ctx_t *ctx = &s_icon_ctx[slot];
+    memset(ic, 0, sizeof(s_ic_pool[0]));
+    ctx->done = 0;
+    ctx->blitted = 0;
+    ctx->dst_x = x;
+    ctx->dst_y = y;
+    ctx->dst_w = w;
+    ctx->dst_h = h;
+    ctx->tint_rgb = 0xFFFFFFu;
+    ctx->img_rid = img;
+
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc2c188ULL))(ic, param);
@@ -386,16 +1048,25 @@ static void fx6_icon_blit(uint64_t appfw, int x, int y, int w, int h, uint32_t i
     *(uint8_t *)((char *)ic + 0x21d) = 0xff;
     *(uint8_t *)((char *)ic + 0x21e) = 0xff;
     *(uint8_t *)((char *)ic + 0x21f) = 0xff;
-    *(uint16_t *)((char *)ic + 0x204) = w;
-    *(uint16_t *)((char *)ic + 0x206) = h;
+    *(uint16_t *)((char *)ic + 0x204) = (uint16_t)w;
+    *(uint16_t *)((char *)ic + 0x206) = (uint16_t)h;
 
+    void *spr = (char *)ic + 0x550;
     void **vt = *(void ***)ic;
     if (vt) {
         if (vt[0x148 / 8]) ((void (*)(void *))vt[0x148 / 8])(ic);
+        if (g_syms.setToDecodeImmediately) g_syms.setToDecodeImmediately(spr, 1);
+        if (g_syms.setImageCallback) g_syms.setImageCallback(spr, (void *)fx6_icon_image_cb, ctx, 0);
         if (vt[0x158 / 8]) ((void (*)(void *))vt[0x158 / 8])(ic);
-        if (g_syms.processCommands) g_syms.processCommands(0);
-        g_icon_n++;
+        for (int t = 0; t < 80 && !ctx->done; t++) {
+            fx6_drain_commands(16);
+            if (ctx->done) break;
+            usleep(500);
+        }
+        if (ctx->blitted > 0) g_icon_n++;
     }
+    if (g_syms.setImageCallback) g_syms.setImageCallback(spr, 0, 0, 0);
+    fx6_drain_commands(8);
     fx6_destroy_widget_inplace(ic);
 }
 
@@ -422,30 +1093,212 @@ static int fx6_tag_kind(uint64_t appfw, void *proto) {
 /* ---------------- Big-6 Cells & Menu Tables ------------------------------ */
 typedef struct {
     uint32_t title_rid;
-    uint32_t val_rids[7];
+    uint32_t glyph_idx;
     int n_vals;
 } fx6_cell_spec_t;
 
+static uint32_t g_live_lut_meta = 0u;
+static char     g_live_lut_name[28];
+static uint32_t g_live_audio_packed = 0x30303030u; /* -12 dB default on ch1..ch4 */
+static uint32_t g_live_p40_flags = 0x303u;       /* attached=1, +48V=1, rtmd=0, bk4=1, valid=1 */
+static uint32_t g_live_p64_flags = 0x8003000cu;  /* valid=1, p12=1, p4_nd_absent=1, base800, ei_step=6, angle, stby, tally=on */
+static uint32_t g_live_p64_shutter_sq = (24u << 20) | 1800u; /* sq_fps=24, angle=180.0 deg */
+static uint32_t g_live_p64_tc = 0u;
+static uint32_t g_live_p73_wb_look = 0xc0c6af02u; /* valid=1, soft_map=1, S-Cinetone, SL=off, tint=0(99), 5600K, preset_5600k */
+static uint32_t g_live_p73_media_clip = 0xa0020020u; /* proxy_eff=1, 16M, simul, clip=1, pos=C, reel=1, cam=A */
+static uint32_t g_live_p73_flags2 = 0u;
+static uint32_t g_live_p81_touch_af = 0x4e50e780u;    /* af=off, x=480, y=270, pdaf_idx=313 */
+static uint32_t g_live_p81_pdaf_mag_fc = 0x64648250u; /* col=16, row=9, mag=1x, fc=off, clean_hdmi=1, eff_ciz=100, req_ciz=100 */
+static uint32_t g_live_p81_ciz_flags = 0x80000004u;   /* valid=1, rocker_speed=4 */
+static uint32_t g_live_p88_shotmark = 0u;             /* total=0, m1=0, m2=0, last_type=0, last_frame=0 */
+static uint32_t g_live_p88_iris_audio = 0xa9040118u;  /* valid=1, target_ire=41, pad=0, push=0, ae=0EV, multi, F2.8 */
+static uint32_t g_live_p88_user_bits = 0xa0010001u;   /* SMPTE 12M User-Bits A0:01:00:01 */
+static uint32_t g_live_p95_anamorphic_ibis = 0x8f032048u; /* valid=1, touch_x=480, yaw=100%, eff=Std, req=Std */
+static uint32_t g_live_p95_gyro_rtmd = 0x64857342u;       /* sq=1.0(50), ready=1, skew=8.7ms(87), imu=83.4(834) */
+static uint32_t g_live_p95_tone_limiter = 0x80507800u;    /* valid=1, tone=-20dBFS, lim=-3.0dBFS */
+static uint32_t g_live_p102_cache_interval = 0xa2800000u; /* valid=1, ae=Mid(1), intvl=5s, cache=0s */
+static uint32_t g_live_p102_interval_ftp   = 0xc01e0000u; /* eshut=1, p12_safe=1, ftps=Off, target=120, shots=0 */
+static uint32_t g_live_p102_lut_ftps       = 0x80001900u; /* valid=1, contrast=1.00(100), slot=0 */
+static uint32_t g_live_p109_fleet_sdi      = 0x98194888u; /* valid=1, tc=1, p12=1, cs=0xca, avi_ok=1, sdi=1, cams=1, role=Solo */
+static uint32_t g_live_p109_mount_shading  = 0x83301e10u; /* valid=1, focal=24mm, pins=12, kg=0.7, gain=1.32x, E-12Pin */
+static uint32_t g_live_p109_c2pa_prov      = 0x80000014u; /* valid=1, ro_zero_touch=1, clean_room=1 */
+static uint32_t g_live_p116_hlg_colorimetry = 0x829a60e0u; /* valid=1, 100nit, cs=0x69, cta_ok=1, eotf=0, detail=0(7), BT709, HLG=OFF */
+static uint32_t g_live_p116_display_assist  = 0xa90a0180u; /* valid=1, ire=41, vf_nit=100, xavc_unassist=1, clean_hdmi=1, assist=OFF */
+static uint32_t g_live_p116_raw_breathing   = 0x80c809c0u; /* valid=1, crop=1.00x(100), lens_meta=1, 5600K(56), ext_raw=OFF */
+static uint32_t g_live_p123_uvc_uac         = 0x820000c0u; /* valid=1, uac_ch=2, clean_feed=1, uac=1, uvc=OFF */
+static uint32_t g_live_p123_srt_rtmps       = 0x80660788u; /* valid=1, wired=1, p12_wlan_off=1, 12Mbps, 120ms, AES-256, srt=OFF */
+static uint32_t g_live_p123_crsdk_ptp       = 0x8000043cu; /* valid=1, d2xx=0x10, nd_clr=1, p12=1, emmc0=1, blk=1, ptp=OFF */
+static uint32_t g_live_p129_mxf_bridge    = 0x870203c4u; /* valid=1, klv=1, emmc0=1, loss0=1, ei=800, gamma=s-cinetone, umid=0xf1, mode=MP4_RTMD */
+static uint32_t g_live_p129_ptpv2_ltc     = 0x80000070u; /* valid=1, cdc_ncm=1, wf12_0=1, p12_wlan_off=1, sync=OFF */
+static uint32_t g_live_p129_tsl_tally_umd = 0xb3b11858u; /* valid=1, tag=FX3, cam=CAM1, green_ok=1, p12=1, osd=1, tally=OFF */
+static char     g_live_p129_umd_name[20]  = "FX3-CAM1-STUDIO";
+static char     g_lut_disp_buf[40];
+static char     g_lut_hud_buf[24];
+
+static void fx6_osd_fill_rect(int x, int y, int w, int h, uint32_t argb) {
+    if (!g_osd || w <= 0 || h <= 0) return;
+    int x0 = (x < 0) ? 0 : x;
+    int y0 = (y < 0) ? 0 : y;
+    int x1 = x + w;
+    int y1 = y + h;
+    if (x1 > FX6_W) x1 = FX6_W;
+    if (y1 > FX6_H) y1 = FX6_H;
+    for (int py = y0; py < y1; py++) {
+        uint32_t *row = g_osd + (unsigned long)py * (unsigned long)FX6_W;
+        for (int px = x0; px < x1; px++) {
+            row[px] = argb;
+        }
+    }
+}
+
+static void fx6_osd_border_rect(int x, int y, int w, int h, uint32_t argb) {
+    if (w < 2 || h < 2) return;
+    fx6_osd_fill_rect(x, y, w, 1, argb);
+    fx6_osd_fill_rect(x, y + h - 1, w, 1, argb);
+    fx6_osd_fill_rect(x, y, 1, h, argb);
+    fx6_osd_fill_rect(x + w - 1, y, 1, h, argb);
+}
+
+static void fx6_unpack_lut_name(const volatile uint32_t *mb, char *out, unsigned max_len) {
+    if (!out || max_len == 0u) return;
+    out[0] = 0;
+    if (!mb) return;
+    unsigned pos = 0u;
+    for (unsigned w = 0u; w < 6u && pos + 1u < max_len; w++) {
+        uint32_t word = mb[20u + w];
+        for (unsigned b = 0u; b < 4u && pos + 1u < max_len; b++) {
+            unsigned char ch = (unsigned char)((word >> (b * 8u)) & 0xffu);
+            if (ch == 0u) {
+                out[pos] = 0;
+                return;
+            }
+            out[pos++] = (ch >= 0x20u && ch <= 0x7eu) ? (char)ch : '?';
+        }
+    }
+    out[pos] = 0;
+}
+
+static void fx6_unpack_umd_name(const volatile uint32_t *mb, uint32_t mb66, char *out, unsigned max_len) {
+    if (!out || max_len == 0u) return;
+    out[0] = 0;
+    if (mb && mb[68u] != 0u) {
+        unsigned pos = 0u;
+        for (unsigned w = 0u; w < 4u && pos + 1u < max_len; w++) {
+            uint32_t word = mb[68u + w];
+            for (unsigned b = 0u; b < 4u && pos + 1u < max_len; b++) {
+                unsigned char ch = (unsigned char)((word >> (b * 8u)) & 0xffu);
+                if (ch == 0u) {
+                    out[pos] = 0;
+                    return;
+                }
+                out[pos++] = (ch >= 0x20u && ch != 0x7fu) ? (char)ch : '?';
+            }
+        }
+        out[pos] = 0;
+        if (pos > 0u) return;
+    }
+    uint32_t cam_slot = (mb66 >> 7) & 0x07u;
+    if (max_len >= 5u) {
+        out[0] = 'C';
+        out[1] = 'A';
+        out[2] = 'M';
+        out[3] = (char)('1' + cam_slot);
+        out[4] = 0;
+    }
+}
+
 static const fx6_cell_spec_t g_cell_specs[6] = {
     /* 0: FPS */
-    { 0x02005082u, { 0x020030ceu, 0x020050a7u, 0x0200532du, 0, 0, 0, 0 }, 3 },
-    /* 1: Shutter */
-    { 0x020050e8u, { 0x02002fe1u, 0x020030ceu, 0x02002009u, 0, 0, 0, 0 }, 3 },
-    /* 2: ISO/Gain */
-    { 0x02004c32u, { 0x02005459u, 0x02002063u, 0x020023c2u, 0, 0, 0, 0 }, 3 },
-    /* 3: ND Filter */
-    { 0x02004288u, { 0x020054fdu, 0x02002090u, 0x020023bdu, 0, 0, 0, 0 }, 3 },
-    /* 4: White Bal. */
-    { 0x02005689u, { 0x02002934u, 0x02005281u, 0x02002008u, 0, 0, 0, 0 }, 3 },
-    /* 5: Base Look */
-    { 0x020023f8u, { 0x02002464u, 0x02002460u, 0x020021a0u, 0x0200219eu, 0x020023f1u, 0x020023f5u, 0x020023edu }, 7 },
+    { 0x02005082u, 0u, 7 },
+    /* 1: EI / Base ISO */
+    { 0x02004c32u, 2u, 6 },
+    /* 2: Shutter Angle / Speed */
+    { 0x020050e8u, 1u, 7 },
+    /* 3: ND Filter (P4 Hardware-Locked on non-ND FX3 sensor body) */
+    { 0x02004288u, 3u, 1 },
+    /* 4: Base Look / 3D LUT */
+    { 0x020023f8u, 5u, 8 },
+    /* 5: White Balance */
+    { 0x02005689u, 4u, 6 },
 };
 
-static uint32_t fx6_cell_val_rid(int cell_idx, const uint32_t *cell_vals) {
-    if (cell_idx < 0 || cell_idx >= 6) return 0x02002464u;
+static const char * const g_cell_val_strs[6][8] = {
+    /* 0: FPS */
+    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p (S&Q)", 0 },
+    /* 1: EI / Base ISO (Dual Base ISO 800 / 12800) */
+    { "800 EI (800 Base)", "400 EI (800 Base)", "1600 EI (800 Base)",
+      "12800 EI (12800 Base)", "6400 EI (12800 Base)", "25600 EI (12800 Base)", 0, 0 },
+    /* 2: Shutter Angle / Speed (BK4 0x02cf1702 / 0x02cf1704) */
+    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100", 0 },
+    /* 3: ND Filter (P4 Hardware Contract) */
+    { "Clear [FX3 P4 Locked]", 0, 0, 0, 0, 0, 0, 0 },
+    /* 4: Base Look / 3D LUT (P1 /dev/nflasha30 + P11 0x0165/0x0166) */
+    { "S-Cinetone", "S-Log3.Cine / S-Gamut3.Cine", "s709",
+      "R709 (800%)", "User1 (33\xc2\xb3 .cube)", "User2 (33\xc2\xb3 .cube)",
+      "User3 (33\xc2\xb3 .cube)", "User4 (33\xc2\xb3 .cube)" },
+    /* 5: White Balance */
+    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0, 0 },
+};
+
+static const char * const g_cell_hud_strs[6][8] = {
+    /* 0: FPS (narrow HUD) */
+    { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p", "119.88p", 0 },
+    /* 1: EI (narrow HUD) */
+    { "800 EI", "400 EI", "1600 EI", "12800EI", "6400 EI", "25600EI", 0, 0 },
+    /* 2: Shutter */
+    { "180.0\xc2\xb0", "90.0\xc2\xb0", "45.0\xc2\xb0", "360.0\xc2\xb0", "1/48", "1/50", "1/100", 0 },
+    /* 3: ND Filter */
+    { "Clear[P4]", 0, 0, 0, 0, 0, 0, 0 },
+    /* 4: LUT (medium HUD) */
+    { "S-Cinetone", "S-Log3.Cine", "s709", "R709 800%",
+      "User1 .cube", "User2 .cube", "User3 .cube", "User4 .cube" },
+    /* 5: WB */
+    { "5600K", "4300K", "3200K", "ATW", "Mem A", "Mem B", 0, 0 },
+};
+
+static const char *fx6_cell_val_str(int cell_idx, const uint32_t *cell_vals) {
+    if (cell_idx < 0 || cell_idx >= 6) return "S-Cinetone";
+    if (cell_idx == 3) return g_cell_val_strs[3][0];
     int n = g_cell_specs[cell_idx].n_vals;
-    uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0;
-    return g_cell_specs[cell_idx].val_rids[idx];
+    uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0u;
+    if (cell_idx == 4 && idx >= 4u && g_live_lut_name[0]) {
+        unsigned slot_num = idx - 3u;
+        g_lut_disp_buf[0] = 'U';
+        g_lut_disp_buf[1] = 's';
+        g_lut_disp_buf[2] = 'r';
+        g_lut_disp_buf[3] = (char)('0' + slot_num);
+        g_lut_disp_buf[4] = ':';
+        g_lut_disp_buf[5] = ' ';
+        unsigned p = 6u;
+        for (unsigned i = 0u; g_live_lut_name[i] && p + 1u < sizeof(g_lut_disp_buf); i++) {
+            g_lut_disp_buf[p++] = g_live_lut_name[i];
+        }
+        g_lut_disp_buf[p] = 0;
+        return g_lut_disp_buf;
+    }
+    const char *s = g_cell_val_strs[cell_idx][idx];
+    return s ? s : g_cell_val_strs[cell_idx][0];
+}
+
+static const char *fx6_cell_hud_str(int cell_idx, const uint32_t *cell_vals) {
+    if (cell_idx < 0 || cell_idx >= 6) return "S-Cinetone";
+    if (cell_idx == 3) return g_cell_hud_strs[3][0];
+    int n = g_cell_specs[cell_idx].n_vals;
+    uint32_t idx = cell_vals ? (cell_vals[cell_idx] % (uint32_t)n) : 0u;
+    if (cell_idx == 4 && idx >= 4u && g_live_lut_name[0]) {
+        unsigned slot_num = idx - 3u;
+        g_lut_hud_buf[0] = 'U';
+        g_lut_hud_buf[1] = (char)('0' + slot_num);
+        g_lut_hud_buf[2] = ':';
+        unsigned p = 3u;
+        for (unsigned i = 0u; g_live_lut_name[i] && p + 1u < 16u; i++) {
+            g_lut_hud_buf[p++] = g_live_lut_name[i];
+        }
+        g_lut_hud_buf[p] = 0;
+        return g_lut_hud_buf;
+    }
+    const char *s = g_cell_hud_strs[cell_idx][idx];
+    return s ? s : g_cell_hud_strs[cell_idx][0];
 }
 
 /* Page 0: Big-6 Home (TABLE 0x2e9e210, 98 rows) */
@@ -491,9 +1344,9 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         }
         if (kind == 1) {
             if (resid && resid != 0xffffffffU) {
-                /* If this is the center Base Look string (0x02002464), let it reflect cell_vals[5] */
+                /* Center Base Look / 3D LUT string reflects cell_vals[4] */
                 if (resid == 0x02002464u && cell_vals) {
-                    fx6_render_string_rid(appfw, x, y, w, h, fx6_cell_val_rid(5, cell_vals), "center-look");
+                    fx6_render_string_text(appfw, x, y, w, h, fx6_cell_val_str(4, cell_vals), "center-look");
                 } else {
                     fx6_render_string_desc(appfw, p);
                 }
@@ -515,12 +1368,12 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         }
     }
 
-    uint32_t glyph = *(uint32_t *)(uintptr_t)(appfw + 0x23be8e0ULL);
     uint32_t active_cell = sel_box % 6u;
     for (int c = 0; c < n_cells; c++) {
         uint8_t *p = cell_rows[c];
         uint16_t x = *(uint16_t *)(p + 0x3c), y = *(uint16_t *)(p + 0x3e);
         uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
+        uint32_t glyph = *(uint32_t *)(uintptr_t)(appfw + 0x23be8d8ULL + (uint64_t)g_cell_specs[c].glyph_idx * 8ULL);
         fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
         if (proccmd) proccmd(0);
         fx6_border(appfw, x, y, w, h, ((uint32_t)c == active_cell) ? 0x0200c011u : 0x0200c00eu);
@@ -530,8 +1383,13 @@ static void render_page_big6_home(uint64_t appfw, uint32_t sel_box, const uint32
         int th = (h * 38) / 100;
         if (th < 18) th = 18;
         fx6_render_string_rid(appfw, x + 36, y + 6, w - 42, th, g_cell_specs[c].title_rid, "cell-title");
-        fx6_render_string_rid(appfw, x + 8, y + 6 + th, w - 16, h - th - 10,
-                              fx6_cell_val_rid(c, cell_vals), "cell-value");
+        fx6_render_string_text(appfw, x + 8, y + 6 + th, w - 16, h - th - 10,
+                               fx6_cell_val_str(c, cell_vals), "cell-value");
+        if (c == 4 && ((g_live_lut_meta & 0x01000000u) || (cell_vals && (cell_vals[4] % 8u) >= 4u))) {
+            uint32_t sw_rgb = (g_live_lut_meta & 0x01000000u) ? (g_live_lut_meta & 0x00ffffffu) : 0x808080u;
+            fx6_osd_fill_rect((int)x + (int)w - 28, (int)y + 8, 20, 20, 0xFF000000u | sw_rgb);
+            fx6_osd_border_rect((int)x + (int)w - 28, (int)y + 8, 20, 20, 0xFFE5E7EBu);
+        }
         if (proccmd) proccmd(0);
     }
 }
@@ -693,7 +1551,7 @@ static void render_page_setting_main(uint64_t appfw, uint32_t sel_box, const uin
     const uint32_t *items = fx6_get_cat_items(active_cat, &n_items);
     fx6_render_string_rid(appfw, 519,  95, 305, 32, g_cats[active_cat], "main-string");
     fx6_render_string_rid(appfw, 534, 158, 290, 32, items[0], "setting-item");
-    fx6_render_string_rid(appfw, 534, 193, 290, 32, fx6_cell_val_rid(5, cell_vals), "setting-value");
+    fx6_render_string_text(appfw, 534, 193, 290, 32, fx6_cell_val_str(4, cell_vals), "setting-value");
     {
         uint32_t set = fx6_pick(0x020023dau, 0x020047a4u, "Set", "button label");
         static const int bx[4] = {654, 398, 654, 398}, by[4] = {425, 425, 80, 80};
@@ -723,7 +1581,7 @@ static void render_page_setting_center(uint64_t appfw, uint32_t sel_box, const u
         int c = i - 11;
         fx6_border(appfw, x, y, w, h, ((uint32_t)c == active_cell) ? 0x0200c011u : 0x0200c00eu);
         fx6_render_string_rid(appfw, x + 8, y + 6, w - 16, 30, g_cell_specs[c].title_rid, "cell-title");
-        fx6_render_string_rid(appfw, x + 8, y + 40, w - 16, h - 46, fx6_cell_val_rid(c, cell_vals), "cell-value");
+        fx6_render_string_text(appfw, x + 8, y + 40, w - 16, h - 46, fx6_cell_val_str(c, cell_vals), "cell-value");
     }
     {
         uint8_t *t = base + 4 * FX6_DESC_STRIDE; /* No7_CENTER_TITLE */
@@ -733,7 +1591,7 @@ static void render_page_setting_center(uint64_t appfw, uint32_t sel_box, const u
         uint16_t vx = *(uint16_t *)(v + 0x3c), vy = *(uint16_t *)(v + 0x3e);
         uint16_t vw = *(uint16_t *)(v + 0x40), vh = *(uint16_t *)(v + 0x42);
         fx6_render_string_rid(appfw, tx, ty, tw, th, g_cell_specs[active_cell].title_rid, "centre-title");
-        fx6_render_string_rid(appfw, vx, vy, vw, vh, fx6_cell_val_rid((int)active_cell, cell_vals), "centre-value");
+        fx6_render_string_text(appfw, vx, vy, vw, vh, fx6_cell_val_str((int)active_cell, cell_vals), "centre-value");
     }
 }
 
@@ -783,12 +1641,90 @@ static void render_page_assignable(uint64_t appfw, uint32_t sel_box) {
 }
 
 /* HUD slot bindings for HUD Strip / Network / Clip / Status pages */
-#define VS_ROW_BASE   0x220u
-#define VS_ROW_STRIDE 0x5cu
-#define VS_ROW_TYPE   (-4)
-#define VS_ROW_VALUE  0x54u
-#define VS_ROW_COUNT  0x610u
-#define VS_TYPE_VALUE 2u
+static uint32_t g_live_cells[6] = { 0u, 0u, 0u, 0u, 0u, 0u };
+static uint32_t g_live_ibis_xlr = 0u;
+
+static const char * const g_ibis_hud_strs[3] = { "IBIS:Lock", "IBIS:Off", "IBIS:Std" };
+static const char * const g_xlr_hud_strs[3]  = { "XLR:+48V",  "XLR:Line", "IntMic" };
+static const char * const g_lut_short_strs[8] = { "S-Cine", "SLog3", "s709", "R709", "Usr1", "Usr2", "Usr3", "Usr4" };
+
+static const char *fx6_hud_live_str(const char *name) {
+    if (!name) return 0;
+    uint32_t ibis_idx = g_live_ibis_xlr & 0x0fu;
+    uint32_t xlr_idx  = (g_live_ibis_xlr >> 4) & 0x0fu;
+    if (ibis_idx >= 3u) ibis_idx = 0u;
+    if (xlr_idx >= 3u) xlr_idx = 0u;
+    if ((g_live_p40_flags & 0x200u) && !(g_live_p40_flags & 1u)) {
+        xlr_idx = 2u; /* P11 0x91db059b Internal Stereo Mic fallback */
+    }
+
+    /* FPS */
+    if (!strcmp_(name, "No2048_sandq_frame_rate") ||
+        !strcmp_(name, "No21_sandq_frame_rate") ||
+        !strcmp_(name, "No1022_sandq_frame_rate_value") ||
+        !strcmp_(name, "No1093_sandq_frame_rate_value") ||
+        !strcmp_(name, "No7_frame_rate") ||
+        !strcmp_(name, "No34_video_fps") ||
+        !strcmp_(name, "No422_SQ_FRAME_RATE")) {
+        return fx6_cell_hud_str(0, g_live_cells);
+    }
+    /* EI / Base ISO */
+    if (!strcmp_(name, "No30_gain_value") ||
+        !strcmp_(name, "No2061_gain_value") ||
+        !strcmp_(name, "No1023_gain_value")) {
+        return fx6_cell_hud_str(1, g_live_cells);
+    }
+    if (!strcmp_(name, "No13_base_iso") ||
+        !strcmp_(name, "No1010_base_iso") ||
+        !strcmp_(name, "No2004_base_iso")) {
+        return ((g_live_cells[1] % 6u) >= 3u) ? "12800B" : "800B";
+    }
+    /* Shutter */
+    if (!strcmp_(name, "No18_shutter_value") ||
+        !strcmp_(name, "No1015_shutter_value") ||
+        !strcmp_(name, "No2059_shutter_value")) {
+        return fx6_cell_hud_str(2, g_live_cells);
+    }
+    /* P4 ND-Clear Lock (suppress redundant adjacent ND label so Clear[P4] never overlaps) */
+    if (!strcmp_(name, "No58_nd_filter_mode_nd_filter_clear") ||
+        !strcmp_(name, "No1050_nd_filter_mode_nd_filter_clear") ||
+        !strcmp_(name, "No2054_nd_filter_mode_nd_filter_clear")) {
+        return "";
+    }
+    if (!strcmp_(name, "No60_nd_filter_value_nd_transmittance") ||
+        !strcmp_(name, "No1052_nd_filter_value_nd_transmittance") ||
+        !strcmp_(name, "No2055_nd_filter_value_nd_transmittance")) {
+        return "Clear[P4]";
+    }
+    /* Base Look / 3D LUT */
+    if (!strcmp_(name, "No1066_base_look") ||
+        !strcmp_(name, "No50_monitor_lut")) {
+        return fx6_cell_val_str(4, g_live_cells);
+    }
+    if (!strcmp_(name, "No2090_gamma_display_assist") ||
+        !strcmp_(name, "No9_baselook") ||
+        !strcmp_(name, "No2009_look_name")) {
+        return fx6_cell_hud_str(4, g_live_cells);
+    }
+    if (!strcmp_(name, "No2031_output_lut2_type") ||
+        !strcmp_(name, "No2029_output_lut1_type")) {
+        return g_lut_short_strs[g_live_cells[4] % 8u];
+    }
+    /* White Balance */
+    if (!strcmp_(name, "No55_white_balance_value") ||
+        !strcmp_(name, "No1047_white_balance_value") ||
+        !strcmp_(name, "No2063_white_balance_value")) {
+        return fx6_cell_hud_str(5, g_live_cells);
+    }
+    /* P11 5-axis IBIS Center-Lock & XLR-H1 Audio Status */
+    if (!strcmp_(name, "No2040_steady_shot_focal_length")) {
+        return g_ibis_hud_strs[ibis_idx];
+    }
+    if (!strcmp_(name, "No2041_steady_shot_focal_length_unit")) {
+        return g_xlr_hud_strs[xlr_idx];
+    }
+    return 0;
+}
 
 /* Guard against any NULL Dictionary* passed to libra::Dictionary::addRow */
 void _ZN5libra10Dictionary6addRowERKNS_6StringERKNS_7VariantE(void *self, const void *k, const void *v) {
@@ -923,6 +1859,16 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     uint16_t w = *(uint16_t *)(p + 0x40), h = *(uint16_t *)(p + 0x42);
     if (w < 8 || h < 4) return;
 
+    const char *live_s = fx6_hud_live_str(name);
+    if (live_s) {
+        if (live_s[0]) {
+            fx6_render_string_text_styled(appfw, x, y, w, h, live_s,
+                                          font, font2, layout, d30, d34);
+        }
+        (void)tag;
+        return;
+    }
+
     const hud_bind_t *b = fx6_hud_for(name);
     if (!b && (!d18 || d18 == 0xffffffffU)) return;
     if (!b) {
@@ -931,8 +1877,9 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     }
 
     fx6_init_syms();
-    void *vs = (void *)s_vs_buf;
-    memset(vs, 0, sizeof(s_vs_buf));
+    unsigned int slot = s_vs_next++ % FX6_WIDGET_POOL_N;
+    void *vs = (void *)s_vs_pool[slot];
+    memset(vs, 0, sizeof(s_vs_pool[0]));
     char param[0x40];
     memset(param, 0, sizeof(param));
     ((void (*)(void *, void *))(uintptr_t)(appfw + 0xc3af98ULL))(vs, param);
@@ -948,7 +1895,7 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
     *(int *)((char *)vs + 0x214) = 0;
     if (d30) *(uint32_t *)((char *)vs + 0x218) = d30;
     *(uint32_t *)((char *)vs + 0x21c) = d34 ? d34 : 1U;
-    *(uint32_t *)((char *)vs + 0xa30) = 0x0200a005U;
+    *(uint32_t *)((char *)vs + 0xa30) = fx6_font_ns_rid();
 
     if (b) {
         if (b->mode == 0) {
@@ -973,9 +1920,11 @@ static void fx6_render_row(uint64_t appfw, uint8_t *p, const char *tag) {
         ((void (*)(void *))vt[0x158 / 8])(vs);
         *(unsigned short *)((char *)ts + 0xa8) |= 0x0006;
         if (g_syms.drawTextImpl) g_syms.drawTextImpl(ts);
-        if (g_syms.processCommands) g_syms.processCommands(0);
+        fx6_drain_commands(16);
         g_text_n++;
     }
+    if (g_syms.setImageLoadCallback) g_syms.setImageLoadCallback(ts, 0, 0);
+    fx6_drain_commands(8);
     /* Detach shared static Dictionary before running ~view_string() so it is never operator-deleted */
     *(void **)((char *)vs + 0x1030) = 0;
     fx6_destroy_widget_inplace(vs);
@@ -1037,10 +1986,21 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
             fx6_fill_rect(appfw, x, y, (w * slider_num) / 10, h, 0x0200c013u);
         } else if (tag == 0x42d5930u && w >= 30 && h >= 60) {
             fx6_fill_rect(appfw, x, y, w, h, 0x0200c008u);
+            uint32_t attached = (g_live_p40_flags & 0x200u) ? (g_live_p40_flags & 1u) : 1u;
             for (int ch = 0; ch < 4; ch++) {
                 int bx = x + 8 + ch * 16;
-                int bh = (h * (3 + ((ch + (int)sel_box) % 2))) / 5;
-                fx6_fill_rect(appfw, bx, y + h - bh - 4, 10, bh, 0x0200c013u);
+                uint32_t raw_v = (g_live_audio_packed >> (ch * 8)) & 0xffu;
+                if (raw_v > 72u) raw_v = 72u;
+                if (!attached && ch >= 2) {
+                    int bh = 4;
+                    fx6_osd_fill_rect(bx, y + h - bh - 4, 10, bh, 0xFF374151u);
+                } else {
+                    int max_bh = (h > 10) ? (h - 10) : 10;
+                    int bh = 4 + (max_bh * (int)raw_v) / 72;
+                    if (bh > h - 6) bh = h - 6;
+                    uint32_t bar_col = (raw_v >= 60u) ? 0xFFEF4444u : ((raw_v >= 54u) ? 0xFFF59E0Bu : 0xFF10B981u);
+                    fx6_osd_fill_rect(bx, y + h - bh - 4, 10, bh, bar_col);
+                }
             }
         } else if (tag == 0x42d5850u && w >= 40 && h >= 24) {
             fx6_fill_rect(appfw, x, y, w, h - 2, (btn_idx == active_btn && sel_box > 0) ? 0x0200c00eu : 0x0200c008u);
@@ -1069,11 +2029,2137 @@ static void page_table(uint64_t appfw, uint32_t off, int count, const char *labe
         if (tag == 0x42d57f0u || tag == 0x42d59a0u || tag == 0x42d58d0u ||
             tag == 0x42d5850u || tag == 0x42d5840u || tag == 0x42d5960u) {
             fx6_render_row(appfw, p, label);
-        } else if (tag == 0x42d5a50u && !(w >= 140 && h >= 32)) {
+        } else if ((tag == 0x42d5a50u && !(w >= 140 && h >= 32)) || tag == 0x42d5800u) {
             uint32_t c = *(uint32_t *)(p + 0x18);
             if (c && c != 0xffffffffU)
                 fx6_icon_blit(appfw, x, y, w, h, c);
         }
+    }
+}
+
+static unsigned fx6_append_cstr(char *dst, unsigned pos, unsigned cap, const char *s) {
+    if (!dst || !s) return pos;
+    for (unsigned i = 0u; s[i] && pos + 1u < cap; i++) {
+        dst[pos++] = s[i];
+    }
+    dst[pos] = 0;
+    return pos;
+}
+
+static unsigned fx6_append_db(char *dst, unsigned pos, unsigned cap, int db) {
+    if (pos + 4u >= cap) return pos;
+    if (db < 0) {
+        dst[pos++] = '-';
+        db = -db;
+    } else {
+        dst[pos++] = '+';
+    }
+    if (db >= 10) dst[pos++] = (char)('0' + (db / 10));
+    dst[pos++] = (char)('0' + (db % 10));
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase40_hud_strip(uint64_t appfw, uint32_t page, const uint32_t *cell_vals) {
+    if (!g_osd || (g_live_p40_flags & 0x40000000u)) return;
+    uint32_t p = page % 25u;
+    int bx = 0, by = 0, bw = 768, bh = 34;
+    if (p <= 3u) {
+        bx = 236; by = 10;
+    } else if (p == 6u || p == 16u || p == 17u) {
+        bx = 152; by = 382;
+    } else {
+        return;
+    }
+
+    uint32_t attached  = (g_live_p40_flags & 0x200u) ? (g_live_p40_flags & 1u) : 1u;
+    uint32_t phantom   = (g_live_p40_flags & 0x200u) ? ((g_live_p40_flags >> 1) & 1u) : 1u;
+    uint32_t rtmd_mode = (g_live_p40_flags & 0x200u) ? ((g_live_p40_flags >> 4) & 3u) : (g_live_ibis_xlr & 0x0fu);
+    if (rtmd_mode > 2u) rtmd_mode = 0u;
+
+    fx6_osd_fill_rect(bx, by, bw, bh, 0xFF101622u);
+    fx6_osd_border_rect(bx, by, bw, bh, attached ? 0xFF22D3EEu : 0xFFF59E0Bu);
+
+    uint32_t sw_rgb = (g_live_lut_meta & 0x01000000u) ? (g_live_lut_meta & 0x00ffffffu) : 0x808080u;
+    fx6_osd_fill_rect(bx + 6, by + 6, 22, 22, 0xFF000000u | sw_rgb);
+    fx6_osd_border_rect(bx + 6, by + 6, 22, 22, 0xFFE5E7EBu);
+
+    char lut_lbl[36];
+    const char *lut_s = fx6_cell_hud_str(4, cell_vals);
+    fx6_append_cstr(lut_lbl, 0u, sizeof(lut_lbl), lut_s);
+    fx6_render_string_text_styled(appfw, bx + 34, by + 5, 198, 24, lut_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* 4-Ch VU Bars right next to LUT label */
+    int vx0 = bx + 238;
+    for (int ch = 0; ch < 4; ch++) {
+        int vx = vx0 + ch * 11;
+        fx6_osd_fill_rect(vx, by + 6, 8, 22, 0xFF1F2937u);
+        uint32_t raw_v = (g_live_audio_packed >> (ch * 8)) & 0xffu;
+        if (raw_v > 72u) raw_v = 72u;
+        if (!attached && ch >= 2) {
+            fx6_osd_fill_rect(vx, by + 25, 8, 3, 0xFF4B5563u);
+        } else {
+            int vh = 3 + (19 * (int)raw_v) / 72;
+            uint32_t col = (raw_v >= 60u) ? 0xFFEF4444u : ((raw_v >= 54u) ? 0xFFF59E0Bu : 0xFF10B981u);
+            fx6_osd_fill_rect(vx, by + 28 - vh, 8, vh, col);
+        }
+    }
+
+    int ch1_db = (int)(g_live_audio_packed & 0xffu) - 60;
+    int ch2_db = (int)((g_live_audio_packed >> 8) & 0xffu) - 60;
+    if (ch1_db > 12) ch1_db = 12;
+    if (ch2_db > 12) ch2_db = 12;
+
+    char info_lbl[64];
+    unsigned pos = 0u;
+    if (!attached) {
+        pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "INT-ST ");
+    } else if (phantom) {
+        pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "XLR+48V ");
+    } else {
+        pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "XLR-LN ");
+    }
+    pos = fx6_append_db(info_lbl, pos, sizeof(info_lbl), ch1_db);
+    pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), "/");
+    pos = fx6_append_db(info_lbl, pos, sizeof(info_lbl), ch2_db);
+    if (rtmd_mode == 0u) pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " E304:5AX");
+    else if (rtmd_mode == 1u) pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " E304:LOCK");
+    else pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " E304:STD");
+    pos = fx6_append_cstr(info_lbl, pos, sizeof(info_lbl), " BK4:LOCK");
+    (void)pos;
+
+    fx6_render_string_text_styled(appfw, bx + 290, by + 5, 470, 24, info_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
+static void fx6_osd_blend_px(int x, int y, uint32_t rgb, uint32_t alpha_256) {
+    if (!g_osd || x < 0 || x >= FX6_W || y < 0 || y >= FX6_H) return;
+    unsigned long idx = (unsigned long)y * (unsigned long)FX6_W + (unsigned long)x;
+    uint32_t dst = g_osd[idx];
+    uint32_t dr = dst ? ((dst >> 16) & 0xffu) : 14u;
+    uint32_t dg = dst ? ((dst >> 8) & 0xffu) : 16u;
+    uint32_t db = dst ? (dst & 0xffu) : 20u;
+    uint32_t sr = (rgb >> 16) & 0xffu;
+    uint32_t sg = (rgb >> 8) & 0xffu;
+    uint32_t sb = rgb & 0xffu;
+    uint32_t inv = 256u - alpha_256;
+    uint32_t rr = (dr * inv + sr * alpha_256) >> 8;
+    uint32_t rg = (dg * inv + sg * alpha_256) >> 8;
+    uint32_t rb = (db * inv + sb * alpha_256) >> 8;
+    g_osd[idx] = 0xFF000000u | (rr << 16) | (rg << 8) | rb;
+}
+
+static void fx6_osd_blend_rect(int x, int y, int w, int h, uint32_t rgb, uint32_t alpha_256) {
+    if (!g_osd || w <= 0 || h <= 0) return;
+    int x0 = (x < 0) ? 0 : x;
+    int y0 = (y < 0) ? 0 : y;
+    int x1 = x + w;
+    int y1 = y + h;
+    if (x1 > FX6_W) x1 = FX6_W;
+    if (y1 > FX6_H) y1 = FX6_H;
+    for (int py = y0; py < y1; py++) {
+        for (int px = x0; px < x1; px++) {
+            fx6_osd_blend_px(px, py, rgb, alpha_256);
+        }
+    }
+}
+
+static void fx6_draw_corner_ticks(int x0, int y0, int x1, int y1, int tick_len, int thick, uint32_t rgb, uint32_t alpha_256) {
+    fx6_osd_blend_rect(x0, y0, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x0, y0, thick, tick_len, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - tick_len + 1, y0, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - thick + 1, y0, thick, tick_len, rgb, alpha_256);
+    fx6_osd_blend_rect(x0, y1 - thick + 1, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x0, y1 - tick_len + 1, thick, tick_len, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - tick_len + 1, y1 - thick + 1, tick_len, thick, rgb, alpha_256);
+    fx6_osd_blend_rect(x1 - thick + 1, y1 - tick_len + 1, thick, tick_len, rgb, alpha_256);
+}
+
+static void fx6_render_phase56_assist_overlays(uint64_t appfw, uint32_t page) {
+    (void)page;
+    if (!g_osd) return;
+    uint32_t aspect_idx    = (g_live_p40_flags >> 12) & 0x07u;
+    uint32_t zebra_idx     = (g_live_p40_flags >> 16) & 0x03u;
+    uint32_t peaking_idx   = (g_live_p40_flags >> 18) & 0x03u;
+    uint32_t desqueeze_idx = (g_live_p40_flags >> 20) & 0x03u;
+    if (aspect_idx == 0u && zebra_idx == 0u && peaking_idx == 0u && desqueeze_idx == 0u) {
+        return;
+    }
+
+    /* Flush all queued appFw/TextRM commands before pixel-level Peaking & Zebra passes */
+    if (g_syms.processCommands) g_syms.processCommands(0);
+
+    /* 1. Focus Peaking pass (real luma gradient edge detection on g_osd) */
+    if (peaking_idx > 0u) {
+        uint32_t peak_rgb = 0xEF4444u;
+        if (peaking_idx == 2u) peak_rgb = 0xFACC15u;
+        else if (peaking_idx == 3u) peak_rgb = 0xF8FAFCu;
+        uint8_t prev_luma[FX6_W];
+        for (int x = 0; x < FX6_W; x++) {
+            uint32_t v = g_osd[x];
+            if (!v) {
+                prev_luma[x] = 0u;
+            } else {
+                uint32_t r = (v >> 16) & 0xffu, g = (v >> 8) & 0xffu, b = v & 0xffu;
+                prev_luma[x] = (uint8_t)((54u * r + 183u * g + 19u * b) >> 8);
+            }
+        }
+        for (int y = 1; y < FX6_H; y++) {
+            uint32_t *row = g_osd + (unsigned long)y * (unsigned long)FX6_W;
+            int left_luma = (int)prev_luma[0];
+            for (int x = 1; x < FX6_W; x++) {
+                uint32_t v = row[x];
+                int cur_luma = 0;
+                if (v) {
+                    int r = (int)((v >> 16) & 0xffu);
+                    int g = (int)((v >> 8) & 0xffu);
+                    int b = (int)(v & 0xffu);
+                    cur_luma = (54 * r + 183 * g + 19 * b) >> 8;
+                }
+                int up_luma = (int)prev_luma[x];
+                int dv = (cur_luma >= up_luma) ? (cur_luma - up_luma) : (up_luma - cur_luma);
+                int dh = (cur_luma >= left_luma) ? (cur_luma - left_luma) : (left_luma - cur_luma);
+                prev_luma[x] = (uint8_t)cur_luma;
+                left_luma = cur_luma;
+                if (dv + dh >= 96) {
+                    fx6_osd_blend_px(x, y, peak_rgb, 192u);
+                }
+            }
+        }
+    }
+
+    /* 2. Cinema Line Zebra Overlay (45-deg diagonal stripes over highlight thresholds) */
+    if (zebra_idx > 0u) {
+        int luma_thresh = 178; /* 70% */
+        if (zebra_idx == 2u) luma_thresh = 220;      /* 94%_SLog3 */
+        else if (zebra_idx == 3u) luma_thresh = 242; /* 100% */
+        for (int y = 0; y < FX6_H; y++) {
+            uint32_t *row = g_osd + (unsigned long)y * (unsigned long)FX6_W;
+            for (int x = 0; x < FX6_W; x++) {
+                uint32_t v = row[x];
+                if (!v) continue;
+                int r = (int)((v >> 16) & 0xffu);
+                int g = (int)((v >> 8) & 0xffu);
+                int b = (int)(v & 0xffu);
+                int luma = (54 * r + 183 * g + 19 * b) >> 8;
+                if (luma >= luma_thresh) {
+                    if (((x + y) & 7) < 3) {
+                        fx6_osd_blend_px(x, y, 0xF59E0Bu, 176u);
+                    } else {
+                        fx6_osd_blend_px(x, y, 0x111827u, 112u);
+                    }
+                }
+            }
+        }
+    }
+
+    /* 3. Aspect Ratio Frame Guides (semi-transparent mattes + crisp lines + corner ticks) */
+    if (aspect_idx == 1u) {
+        /* 2.39:1 CinemaScope */
+        fx6_osd_blend_rect(0, 0, FX6_W, 56, 0x000000u, 96u);
+        fx6_osd_blend_rect(0, 484, FX6_W, FX6_H - 484, 0x000000u, 96u);
+        fx6_osd_blend_rect(12, 56, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(12, 482, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_draw_corner_ticks(12, 56, 1011, 483, 24, 3, 0x22D3EEu, 244u);
+    } else if (aspect_idx == 2u) {
+        /* 1.85:1 Flat Theatrical */
+        fx6_osd_blend_rect(0, 0, 12, FX6_H, 0x000000u, 96u);
+        fx6_osd_blend_rect(1012, 0, 12, FX6_H, 0x000000u, 96u);
+        fx6_osd_blend_rect(12, 4, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(12, 534, 1000, 2, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(12, 4, 2, 532, 0xE0F2FEu, 224u);
+        fx6_osd_blend_rect(1010, 4, 2, 532, 0xE0F2FEu, 224u);
+        fx6_draw_corner_ticks(12, 4, 1011, 535, 24, 3, 0x22D3EEu, 244u);
+    } else if (aspect_idx == 3u) {
+        /* 17:9 DCI 4K + 90% Safe Action Corner Ticks */
+        fx6_osd_blend_rect(8, 4, 1008, 2, 0x38BDF8u, 224u);
+        fx6_osd_blend_rect(8, 534, 1008, 2, 0x38BDF8u, 224u);
+        fx6_osd_blend_rect(8, 4, 2, 532, 0x38BDF8u, 224u);
+        fx6_osd_blend_rect(1014, 4, 2, 532, 0x38BDF8u, 224u);
+        fx6_draw_corner_ticks(52, 27, 971, 512, 22, 2, 0xA7F3D0u, 216u);
+    } else if (aspect_idx == 4u) {
+        /* 9:16 Vertical Crop */
+        fx6_osd_blend_rect(0, 0, 364, FX6_H, 0x000000u, 88u);
+        fx6_osd_blend_rect(660, 0, FX6_W - 660, FX6_H, 0x000000u, 88u);
+        fx6_osd_blend_rect(364, 8, 296, 2, 0xFDE047u, 232u);
+        fx6_osd_blend_rect(364, 530, 296, 2, 0xFDE047u, 232u);
+        fx6_osd_blend_rect(364, 8, 2, 524, 0xFDE047u, 232u);
+        fx6_osd_blend_rect(658, 8, 2, 524, 0xFDE047u, 232u);
+        fx6_draw_corner_ticks(364, 8, 659, 531, 22, 3, 0x22D3EEu, 244u);
+    } else if (aspect_idx == 5u) {
+        /* CenterCross + Rule-of-Thirds Ticks */
+        fx6_osd_blend_rect(484, 269, 22, 2, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(518, 269, 22, 2, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(511, 242, 2, 22, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(511, 276, 2, 22, 0x22D3EEu, 240u);
+        fx6_osd_blend_rect(510, 268, 4, 4, 0xF59E0Bu, 240u);
+        fx6_draw_corner_ticks(341, 180, 682, 360, 14, 2, 0xE0F2FEu, 176u);
+    }
+
+    /* 4. Cinema Line Assist Tools HUD Badge Strip (bottom-center, crystal clear) */
+    int hx = 220, hy = 508, hw = 584, hh = 26;
+    fx6_osd_fill_rect(hx, hy, hw, hh, 0xFF0B1220u);
+    fx6_osd_border_rect(hx, hy, hw, hh, 0xFF22D3EEu);
+    if (zebra_idx > 0u) {
+        for (int zy = 0; zy < 16; zy++) {
+            for (int zx = 0; zx < 18; zx++) {
+                uint32_t zc = (((zx + zy) & 5) < 3) ? 0xFFF59E0Bu : 0xFF1F2937u;
+                g_osd[(unsigned long)(hy + 5 + zy) * (unsigned long)FX6_W + (unsigned long)(hx + 6 + zx)] = zc;
+            }
+        }
+    } else {
+        fx6_osd_fill_rect(hx + 6, hy + 5, 18, 16, 0xFF1E293Bu);
+    }
+    if (peaking_idx > 0u) {
+        uint32_t pc = (peaking_idx == 2u) ? 0xFFFACC15u : ((peaking_idx == 3u) ? 0xFFF8FAFCu : 0xFFEF4444u);
+        fx6_osd_fill_rect(hx + 28, hy + 5, 10, 16, pc);
+    } else {
+        fx6_osd_fill_rect(hx + 28, hy + 5, 10, 16, 0xFF1E293Bu);
+    }
+
+    static const char * const k_aspect_lbl[6] = { "Off", "2.39:1", "1.85:1", "17:9", "9:16", "Cross" };
+    static const char * const k_zebra_lbl[4]  = { "Off", "70%", "94%S3", "100%" };
+    static const char * const k_peak_lbl[4]   = { "Off", "Red", "Yel", "Wht" };
+    static const char * const k_desq_lbl[4]   = { "1.0x", "1.33x", "2.0x", "1.0x" };
+
+    char assist_lbl[80];
+    unsigned pos = 0u;
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "MK:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_aspect_lbl[aspect_idx < 6u ? aspect_idx : 0u]);
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "  ZEB:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_zebra_lbl[zebra_idx & 3u]);
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "  PK:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_peak_lbl[peaking_idx & 3u]);
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), "  DSQ:");
+    pos = fx6_append_cstr(assist_lbl, pos, sizeof(assist_lbl), k_desq_lbl[desqueeze_idx & 3u]);
+    (void)pos;
+
+    fx6_render_string_text_styled(appfw, hx + 44, hy + 2, hw - 52, 22, assist_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
+static unsigned fx6_append_uint(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    char tmp[16];
+    int n = 0;
+    if (val == 0u) {
+        if (pos + 1u < cap) dst[pos++] = '0';
+        dst[pos] = 0;
+        return pos;
+    }
+    while (val > 0u && n < 15) {
+        tmp[n++] = (char)('0' + (val % 10u));
+        val /= 10u;
+    }
+    while (n > 0 && pos + 1u < cap) {
+        dst[pos++] = tmp[--n];
+    }
+    dst[pos] = 0;
+    return pos;
+}
+
+static unsigned fx6_append_2d(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    if (pos + 2u >= cap) return pos;
+    uint32_t v = val % 100u;
+    dst[pos++] = (char)('0' + (v / 10u));
+    dst[pos++] = (char)('0' + (v % 10u));
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase64_cine_exposure_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p64_flags & 0x80000000u)) return;
+
+    static const uint32_t k_ei_800[13] = {
+        200u, 250u, 320u, 400u, 500u, 640u, 800u, 1000u, 1250u, 1600u, 2000u, 2500u, 3200u
+    };
+    static const uint32_t k_ei_12800[13] = {
+        3200u, 4000u, 5000u, 6400u, 8000u, 10000u, 12800u, 16000u, 20000u, 25600u, 32000u, 40000u, 51200u
+    };
+    static const uint32_t k_base_fps_x100[6] = { 2398u, 2400u, 2500u, 2997u, 5000u, 5994u };
+    static const char * const k_base_fps_lbl[6] = { "23.98p", "24.00p", "25.00p", "29.97p", "50.00p", "59.94p" };
+
+    uint32_t base_high    = g_live_p64_flags & 1u;
+    uint32_t ei_step      = (g_live_p64_flags >> 1) & 0x0fu;
+    if (ei_step > 12u) ei_step = 6u;
+    uint32_t shutter_mode = (g_live_p64_flags >> 5) & 0x03u;
+    uint32_t sq_on        = (g_live_p64_flags >> 7) & 1u;
+    uint32_t base_fps_idx = (g_live_p64_flags >> 8) & 0x07u;
+    if (base_fps_idx > 5u) base_fps_idx = 0u;
+    uint32_t rec_on       = (g_live_p64_flags >> 11) & 1u;
+    uint32_t tally_mode   = (g_live_p64_flags >> 12) & 0x03u;
+    uint32_t wired_io     = (g_live_p64_flags >> 14) & 0x03u;
+
+    uint32_t shutter_val  = g_live_p64_shutter_sq & 0xfffffu;
+    uint32_t sq_fps       = (g_live_p64_shutter_sq >> 20) & 0xffu;
+    if (sq_fps < 1u || sq_fps > 240u) sq_fps = 24u;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+
+    if (!is_shooting_page) {
+        if (!rec_on && !sq_on && wired_io == 0u) return;
+        int bx = 736, by = 10, bw = 276, bh = 26;
+        uint32_t bg = rec_on ? 0xFF7F1D1Du : 0xFF0F172Au;
+        uint32_t bd = rec_on ? 0xFFEF4444u : (sq_on ? 0xFFF59E0Bu : 0xFF22D3EEu);
+        fx6_osd_fill_rect(bx, by, bw, bh, bg);
+        fx6_osd_border_rect(bx, by, bw, bh, bd);
+        uint32_t dot_c = rec_on ? ((tally_mode == 3u) ? 0xFF4B5563u : 0xFFFF2D20u) : 0xFF10B981u;
+        fx6_osd_fill_rect(bx + 6, by + 7, 12, 12, dot_c);
+        char mini_lbl[48];
+        unsigned mp = 0u;
+        mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), rec_on ? "REC " : "STBY ");
+        if (sq_on) {
+            mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), "S&Q");
+            mp = fx6_append_uint(mini_lbl, mp, sizeof(mini_lbl), sq_fps);
+            mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), " ");
+        }
+        if (wired_io == 1u) mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), "PTP-IP");
+        else if (wired_io == 2u) mp = fx6_append_cstr(mini_lbl, mp, sizeof(mini_lbl), "RAW16");
+        (void)mp;
+        fx6_render_string_text_styled(appfw, bx + 22, by + 2, bw - 26, 22, mini_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        return;
+    }
+
+    int bx = 12;
+    int by = (p <= 3u) ? 478 : 10;
+    int bw = 1000;
+    int bh = 26;
+
+    fx6_osd_fill_rect(bx, by, bw, bh, 0xFF0A0F1Au);
+    fx6_osd_border_rect(bx, by, bw, bh, rec_on ? 0xFFEF4444u : 0xFF334155u);
+
+    /* Pill 1: REC / STBY + Tally Lamp Indicator + Live TC */
+    int p1x = bx + 4, p1w = 172;
+    uint32_t p1_bg = rec_on ? 0xFF7F1D1Du : 0xFF064E3Bu;
+    uint32_t p1_bd = rec_on ? 0xFFEF4444u : 0xFF10B981u;
+    fx6_osd_fill_rect(p1x, by + 2, p1w, bh - 4, p1_bg);
+    fx6_osd_border_rect(p1x, by + 2, p1w, bh - 4, p1_bd);
+
+    uint32_t front_lit = (rec_on && (tally_mode == 0u || tally_mode == 1u)) ? 1u : 0u;
+    uint32_t rear_lit  = (rec_on && (tally_mode == 0u || tally_mode == 2u)) ? 1u : 0u;
+    fx6_osd_fill_rect(p1x + 5, by + 6, 6, 14, front_lit ? 0xFFFF2D20u : (rec_on ? 0xFF374151u : 0xFF10B981u));
+    fx6_osd_fill_rect(p1x + 13, by + 6, 6, 14, rear_lit ? 0xFFFF6B4Au : (rec_on ? 0xFF374151u : 0xFF059669u));
+
+    char rec_lbl[36];
+    unsigned rp = 0u;
+    if (rec_on) {
+        uint32_t f_rate = (base_fps_idx == 2u || base_fps_idx == 4u) ? 25u : 24u;
+        uint32_t tc = g_live_p64_tc;
+        uint32_t ff = tc % f_rate;
+        uint32_t tot_s = tc / f_rate;
+        uint32_t ss = tot_s % 60u;
+        uint32_t mm = (tot_s / 60u) % 60u;
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), "REC ");
+        rp = fx6_append_2d(rec_lbl, rp, sizeof(rec_lbl), mm);
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), ":");
+        rp = fx6_append_2d(rec_lbl, rp, sizeof(rec_lbl), ss);
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), ":");
+        rp = fx6_append_2d(rec_lbl, rp, sizeof(rec_lbl), ff);
+        if (tally_mode == 3u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " STL");
+    } else {
+        rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), "STBY");
+        if (tally_mode == 3u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " [T-OFF]");
+        else if (tally_mode == 1u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " [F-TLY]");
+        else if (tally_mode == 2u) rp = fx6_append_cstr(rec_lbl, rp, sizeof(rec_lbl), " [R-TLY]");
+    }
+    (void)rp;
+    fx6_render_string_text_styled(appfw, p1x + 22, by + 2, p1w - 24, 22, rec_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 2: Cine EI + Base ISO + Dynamic Latitude (+over/-under stops) */
+    int p2x = p1x + p1w + 4, p2w = 236;
+    fx6_osd_fill_rect(p2x, by + 2, p2w, bh - 4, 0xFF111827u);
+    fx6_osd_border_rect(p2x, by + 2, p2w, bh - 4, base_high ? 0xFFF59E0Bu : 0xFF38BDF8u);
+
+    uint32_t ei_val = base_high ? k_ei_12800[ei_step] : k_ei_800[ei_step];
+    int step_delta = (int)ei_step - 6;
+    int over_x10 = 60 + (step_delta * 10 + (step_delta >= 0 ? 1 : -1)) / 3;
+    int under_x10 = 140 - over_x10;
+    char ei_lbl[44];
+    unsigned ep = 0u;
+    ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), ei_val);
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), "EI (B");
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), base_high ? "12800 +" : "800 +");
+    ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(over_x10 / 10));
+    if ((over_x10 % 10) != 0) {
+        ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), ".");
+        ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(over_x10 % 10));
+    }
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), "/-");
+    ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(under_x10 / 10));
+    if ((under_x10 % 10) != 0) {
+        ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), ".");
+        ep = fx6_append_uint(ei_lbl, ep, sizeof(ei_lbl), (uint32_t)(under_x10 % 10));
+    }
+    ep = fx6_append_cstr(ei_lbl, ep, sizeof(ei_lbl), ")");
+    (void)ep;
+    fx6_render_string_text_styled(appfw, p2x + 5, by + 2, p2w - 8, 22, ei_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 3: Shutter Angle / Speed / ECS LED Anti-Flicker */
+    int p3x = p2x + p2w + 4, p3w = 142;
+    fx6_osd_fill_rect(p3x, by + 2, p3w, bh - 4, (shutter_mode == 2u) ? 0xFF1E1B4Bu : 0xFF111827u);
+    fx6_osd_border_rect(p3x, by + 2, p3w, bh - 4, (shutter_mode == 2u) ? 0xFFF59E0Bu : 0xFF475569u);
+    char sh_lbl[32];
+    unsigned sp = 0u;
+    if (shutter_mode == 1u) {
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "1/");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), shutter_val ? shutter_val : 48u);
+    } else if (shutter_mode == 2u) {
+        uint32_t hz_i = shutter_val / 100u;
+        uint32_t hz_f = (shutter_val % 100u) / 10u;
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "ECS ");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), hz_i);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), ".");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), hz_f);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "Hz");
+    } else {
+        uint32_t deg_i = shutter_val / 10u;
+        uint32_t deg_f = shutter_val % 10u;
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), deg_i);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), ".");
+        sp = fx6_append_uint(sh_lbl, sp, sizeof(sh_lbl), deg_f);
+        sp = fx6_append_cstr(sh_lbl, sp, sizeof(sh_lbl), "\xc2\xb0");
+    }
+    (void)sp;
+    fx6_render_string_text_styled(appfw, p3x + 6, by + 2, p3w - 10, 22, sh_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 4: S&Q (1-240fps) + Audio Mute Indicator / P4 ND=Clear Lock */
+    int p4x = p3x + p3w + 4, p4w = 248;
+    fx6_osd_fill_rect(p4x, by + 2, p4w, bh - 4, sq_on ? 0xFF78350Fu : 0xFF111827u);
+    fx6_osd_border_rect(p4x, by + 2, p4w, bh - 4, sq_on ? 0xFFF59E0Bu : 0xFF475569u);
+    char sq_lbl[48];
+    unsigned qp = 0u;
+    if (sq_on) {
+        uint32_t b_x100 = k_base_fps_x100[base_fps_idx];
+        uint32_t ratio_x10 = (sq_fps * 1000u + (b_x100 / 2u)) / b_x100;
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), "S&Q ");
+        qp = fx6_append_uint(sq_lbl, qp, sizeof(sq_lbl), sq_fps);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), "fps (");
+        qp = fx6_append_uint(sq_lbl, qp, sizeof(sq_lbl), ratio_x10 / 10u);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), ".");
+        qp = fx6_append_uint(sq_lbl, qp, sizeof(sq_lbl), ratio_x10 % 10u);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), "x) [CH1-4 MUTE]");
+    } else {
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), k_base_fps_lbl[base_fps_idx]);
+        qp = fx6_append_cstr(sq_lbl, qp, sizeof(sq_lbl), " NORM [P4:ND-CLR]");
+    }
+    (void)qp;
+    fx6_render_string_text_styled(appfw, p4x + 5, by + 2, p4w - 8, 22, sq_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill 5: Wired I/O Mode + P12 Airplane-Mode RF-OFF Safety */
+    int p5x = p4x + p4w + 4, p5w = (bx + bw - 4) - p5x;
+    uint32_t p5_bg = (wired_io == 2u) ? 0xFF4C1D95u : ((wired_io == 1u) ? 0xFF0E7490u : 0xFF111827u);
+    uint32_t p5_bd = (wired_io == 2u) ? 0xFFA78BFAu : ((wired_io == 1u) ? 0xFF22D3EEu : 0xFF475569u);
+    fx6_osd_fill_rect(p5x, by + 2, p5w, bh - 4, p5_bg);
+    fx6_osd_border_rect(p5x, by + 2, p5w, bh - 4, p5_bd);
+    const char *io_lbl = (wired_io == 2u)
+        ? "[HDMI RAW16 4.2K]"
+        : ((wired_io == 1u) ? "[LAN PTP-IP P12-SAFE]" : "I/O:OFF [P12 RF-OFF]");
+    fx6_render_string_text_styled(appfw, p5x + 5, by + 2, p5w - 8, 22, io_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
+static unsigned fx6_append_3d(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    if (pos + 3u >= cap) return pos;
+    uint32_t v = val % 1000u;
+    dst[pos++] = (char)('0' + (v / 100u));
+    dst[pos++] = (char)('0' + ((v / 10u) % 10u));
+    dst[pos++] = (char)('0' + (v % 10u));
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase73_wb_look_dualslot_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p73_wb_look & 0x80000000u)) return;
+
+    static const char * const k_look_lbl[7] = {
+        "S-Cinetone", "S-Log3.Cine", "S-Log3", "ITU709", "709(800%)", "HLG Live", "User 3D LUT"
+    };
+    static const char * const k_slot_lbl[4] = {
+        "[A+B SIMUL] ", "[A->B RELAY] ", "[A|B SORT] ", "[SLOT-A] "
+    };
+    static const char k_pos_ch[4] = { 'C', 'L', 'R', 'C' };
+
+    uint32_t wb_mode_idx  = g_live_p73_wb_look & 0x07u;
+    uint32_t kelvin       = (g_live_p73_wb_look >> 3) & 0x3fffu;
+    if (kelvin < 2000u || kelvin > 15000u) kelvin = 5600u;
+    int tint_gm           = (int)((g_live_p73_wb_look >> 17) & 0xffu) - 99;
+    if (tint_gm < -99) tint_gm = -99;
+    if (tint_gm > 99) tint_gm = 99;
+    uint32_t shockless    = (g_live_p73_wb_look >> 25) & 0x03u;
+    uint32_t look_idx     = (g_live_p73_wb_look >> 27) & 0x07u;
+    if (look_idx > 6u) look_idx = 0u;
+
+    uint32_t cam_id_idx   = g_live_p73_media_clip & 0x1fu;
+    if (cam_id_idx > 25u) cam_id_idx = 0u;
+    uint32_t reel_num     = (g_live_p73_media_clip >> 5) & 0x3ffu;
+    if (reel_num < 1u || reel_num > 999u) reel_num = 1u;
+    uint32_t cam_pos_idx  = (g_live_p73_media_clip >> 15) & 0x03u;
+    uint32_t clip_seq     = (g_live_p73_media_clip >> 17) & 0x3ffu;
+    if (clip_seq < 1u || clip_seq > 999u) clip_seq = 1u;
+    uint32_t dual_slot    = (g_live_p73_media_clip >> 27) & 0x03u;
+    uint32_t proxy_mode   = (g_live_p73_media_clip >> 29) & 0x03u;
+    uint32_t proxy_eff    = (g_live_p73_media_clip >> 31) & 1u;
+    uint32_t sq_susp      = ((g_live_p73_flags2 & 1u) || ((g_live_p64_flags >> 7) & 1u)) ? 1u : 0u;
+    uint32_t lut_slot     = (g_live_p73_flags2 >> 1) & 0x07u;
+
+    char wb_lbl[64];
+    unsigned wp = 0u;
+    wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), kelvin);
+    wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "K");
+    if (tint_gm < 0) {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "-");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), (uint32_t)(-tint_gm));
+    } else {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "+");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), (uint32_t)tint_gm);
+    }
+    wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " ");
+    if (look_idx == 6u && g_live_lut_name[0]) {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "Usr");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), lut_slot ? lut_slot : 1u);
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), ":");
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), g_live_lut_name);
+    } else {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), k_look_lbl[look_idx]);
+    }
+    if (wb_mode_idx == 3u) wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [MEM-A]");
+    else if (wb_mode_idx == 4u) wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [MEM-B]");
+    else if (wb_mode_idx == 5u) {
+        if (shockless > 0u) {
+            wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [ATW:S");
+            wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), shockless);
+            wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "]");
+        } else {
+            wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [ATW]");
+        }
+    } else if (shockless > 0u) {
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), " [SL:");
+        wp = fx6_append_uint(wb_lbl, wp, sizeof(wb_lbl), shockless);
+        wp = fx6_append_cstr(wb_lbl, wp, sizeof(wb_lbl), "]");
+    }
+    (void)wp;
+
+    char clip_lbl[64];
+    unsigned cp = 0u;
+    cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), k_slot_lbl[dual_slot]);
+    if (cp + 1u < sizeof(clip_lbl)) {
+        clip_lbl[cp++] = (char)('A' + cam_id_idx);
+        clip_lbl[cp] = 0;
+    }
+    cp = fx6_append_3d(clip_lbl, cp, sizeof(clip_lbl), reel_num);
+    if (cp + 1u < sizeof(clip_lbl)) {
+        clip_lbl[cp++] = k_pos_ch[cam_pos_idx & 3u];
+        clip_lbl[cp] = 0;
+    }
+    cp = fx6_append_3d(clip_lbl, cp, sizeof(clip_lbl), clip_seq);
+    if (sq_susp) {
+        cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), " PRX:OFF(S&Q)");
+    } else if (proxy_eff && proxy_mode > 0u) {
+        cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), " PRX");
+    } else {
+        cp = fx6_append_cstr(clip_lbl, cp, sizeof(clip_lbl), " PRX:OFF");
+    }
+    (void)cp;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+    if (!is_shooting_page) {
+        if (g_live_p73_wb_look == 0xc0c6af02u && g_live_p73_media_clip == 0xa0020020u && !sq_susp) {
+            return;
+        }
+        int bx = 12, by = 10, bw = 460, bh = 26;
+        fx6_osd_fill_rect(bx, by, bw, bh, 0xFF0F172Au);
+        fx6_osd_border_rect(bx, by, bw, bh, 0xFF38BDF8u);
+        fx6_render_string_text_styled(appfw, bx + 6, by + 2, bw - 12, 22, wb_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        return;
+    }
+
+    uint32_t p56_active = ((g_live_p40_flags >> 12) & 0x3ffu);
+    int by = 508;
+    if (p56_active) {
+        by = (p <= 3u) ? 448 : 478;
+    }
+    int bh = 26;
+
+    /* Pill A: White Balance (Kelvin + Tint + Shockless) + Base Look */
+    int pax = 12, paw = 476;
+    uint32_t wb_bg = (look_idx == 1u || look_idx == 2u) ? 0xFF1E1B4Bu : ((look_idx == 6u) ? 0xFF134E4Au : 0xFF0F172Au);
+    uint32_t wb_bd = (wb_mode_idx == 5u) ? 0xFFF59E0Bu : ((look_idx == 1u || look_idx == 2u) ? 0xFF818CF8u : 0xFF38BDF8u);
+    fx6_osd_fill_rect(pax, by, paw, bh, wb_bg);
+    fx6_osd_border_rect(pax, by, paw, bh, wb_bd);
+    uint32_t kelvin_dot = (kelvin <= 3600u) ? 0xFFF59E0Bu : ((kelvin >= 6000u) ? 0xFF60A5FAu : 0xFFF8FAFCu);
+    fx6_osd_fill_rect(pax + 6, by + 7, 10, 12, kelvin_dot);
+    fx6_render_string_text_styled(appfw, pax + 22, by + 2, paw - 28, 22, wb_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* Pill B: Dual-Slot Mode + Cinema Line Clip ID + Proxy Status */
+    int pbx = 496, pbw = 516;
+    uint32_t med_bg = sq_susp ? 0xFF451A03u : ((dual_slot == 1u) ? 0xFF0C4A6Eu : 0xFF0F172Au);
+    uint32_t med_bd = sq_susp ? 0xFFF59E0Bu : (proxy_eff ? 0xFF10B981u : 0xFF64748Bu);
+    fx6_osd_fill_rect(pbx, by, pbw, bh, med_bg);
+    fx6_osd_border_rect(pbx, by, pbw, bh, med_bd);
+    fx6_osd_fill_rect(pbx + 6, by + 7, 10, 12, proxy_eff ? 0xFF10B981u : (sq_susp ? 0xFFF59E0Bu : 0xFF475569u));
+    fx6_render_string_text_styled(appfw, pbx + 22, by + 2, pbw - 28, 22, clip_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+}
+
+static void fx6_render_phase81_touchaf_falsecolor_ciz_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p81_ciz_flags & 0x80000000u)) return;
+
+    uint32_t af_mode    = g_live_p81_touch_af & 0x03u;
+    uint32_t touch_x    = (g_live_p81_touch_af >> 2) & 0x3ffu;
+    uint32_t touch_y    = (g_live_p81_touch_af >> 12) & 0x3ffu;
+    uint32_t pdaf_idx   = (g_live_p81_touch_af >> 22) & 0x3ffu;
+    if (touch_x > 959u) touch_x = 959u;
+    if (touch_y > 539u) touch_y = 539u;
+    if (pdaf_idx > 626u) pdaf_idx = 626u;
+
+    uint32_t pdaf_col   = g_live_p81_pdaf_mag_fc & 0x3fu;
+    uint32_t pdaf_row   = (g_live_p81_pdaf_mag_fc >> 6) & 0x1fu;
+    uint32_t mag_idx    = (g_live_p81_pdaf_mag_fc >> 11) & 0x03u;
+    uint32_t fc_mode    = (g_live_p81_pdaf_mag_fc >> 13) & 0x03u;
+    uint32_t clean_hdmi = (g_live_p81_pdaf_mag_fc >> 15) & 0x01u;
+    uint32_t eff_ciz    = (g_live_p81_pdaf_mag_fc >> 16) & 0xffu;
+    if (pdaf_col > 32u) pdaf_col = 32u;
+    if (pdaf_row > 18u) pdaf_row = 18u;
+    if (eff_ciz < 100u || eff_ciz > 200u) eff_ciz = 100u;
+
+    uint32_t spd         = g_live_p81_ciz_flags & 0x0fu;
+    uint32_t ciz_excl    = (g_live_p81_ciz_flags >> 5) & 0x01u;
+    uint32_t zeb100_warn = (g_live_p81_ciz_flags >> 7) & 0x01u;
+    if (spd < 1u || spd > 8u) spd = 4u;
+
+    if (af_mode == 0u && mag_idx == 0u && fc_mode == 0u && eff_ciz <= 100u && !ciz_excl && !zeb100_warn) {
+        return;
+    }
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+
+    /* 1. S-Log3 False Color / EL-Zone pixel colorization + Right-side IRE/EV Legend Bar */
+    if (fc_mode > 0u) {
+        if (g_syms.processCommands) g_syms.processCommands(0);
+        int fc_y0 = 46;
+        int fc_y1 = is_shooting_page ? 444 : 504;
+        int fc_x0 = 16;
+        int fc_x1 = 950;
+        for (int y = fc_y0; y < fc_y1; y++) {
+            uint32_t *row = g_osd + (unsigned long)y * (unsigned long)FX6_W;
+            for (int x = fc_x0; x < fc_x1; x++) {
+                uint32_t v = row[x];
+                if (!v) continue;
+                uint32_t r = (v >> 16) & 0xffu;
+                uint32_t g = (v >> 8) & 0xffu;
+                uint32_t b = v & 0xffu;
+                uint32_t luma = (54u * r + 183u * g + 19u * b) >> 8;
+                uint32_t ire_x10 = (luma * 1090u) / 255u;
+                uint32_t fc_rgb = 0x2563EBu;
+                if (fc_mode == 1u) {
+                    /* Sony S-Log3 IRE bands: 3.5% purple, 41% green, 52% pink, 94% red */
+                    if (ire_x10 <= 35u)       fc_rgb = 0x7E22CEu;
+                    else if (ire_x10 <= 200u) fc_rgb = 0x2563EBu;
+                    else if (ire_x10 <= 380u) fc_rgb = 0x06B6D4u;
+                    else if (ire_x10 <= 440u) fc_rgb = 0x22C55Eu;
+                    else if (ire_x10 <= 560u) fc_rgb = 0xF472B6u;
+                    else if (ire_x10 <= 780u) fc_rgb = 0xFACC15u;
+                    else if (ire_x10 < 940u)  fc_rgb = 0xF97316u;
+                    else                      fc_rgb = 0xEF4444u;
+                } else {
+                    /* EL-Zone Stop-Based bands */
+                    if (ire_x10 <= 80u)       fc_rgb = 0x6D28D9u;
+                    else if (ire_x10 <= 260u) fc_rgb = 0x0284C7u;
+                    else if (ire_x10 <= 450u) fc_rgb = 0x16A34Au;
+                    else if (ire_x10 <= 580u) fc_rgb = 0xEC4899u;
+                    else if (ire_x10 < 900u)  fc_rgb = 0xF59E0Bu;
+                    else                      fc_rgb = 0xDC2626u;
+                }
+                fx6_osd_blend_px(x, y, fc_rgb, 148u);
+            }
+        }
+
+        /* Right-side IRE / EV Legend Bar */
+        int lx = 956, ly = 68, lw = 60, lh = 354;
+        fx6_osd_fill_rect(lx, ly, lw, lh, 0xFF0A0F1Au);
+        fx6_osd_border_rect(lx, ly, lw, lh, (fc_mode == 1u) ? 0xFFA855F7u : 0xFFEC4899u);
+        fx6_render_string_text_styled(appfw, lx + 4, ly + 4, lw - 8, 20,
+                                      (fc_mode == 1u) ? "S3 IRE" : "EL-ZN",
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        static const uint32_t k_fc_cols[7] = {
+            0xFFEF4444u, 0xFFFACC15u, 0xFFF472B6u, 0xFF22C55Eu, 0xFF06B6D4u, 0xFF2563EBu, 0xFF7E22CEu
+        };
+        static const char * const k_s3_lbls[7] = {
+            "94%", "70%", "52%", "41%", "25%", "10%", "3.5"
+        };
+        static const char * const k_el_lbls[7] = {
+            "+5EV", "+3EV", "+1EV", " 0EV", "-2EV", "-3EV", "-5EV"
+        };
+        for (int b = 0; b < 7; b++) {
+            int by = ly + 30 + b * 45;
+            fx6_osd_fill_rect(lx + 5, by, 14, 38, k_fc_cols[b]);
+            fx6_osd_border_rect(lx + 5, by, 14, 38, 0xFFE5E7EBu);
+            fx6_render_string_text_styled(appfw, lx + 21, by + 8, lw - 24, 22,
+                                          (fc_mode == 1u) ? k_s3_lbls[b] : k_el_lbls[b],
+                                          0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        }
+    }
+
+    /* 2. Focus Magnifier Orange Corner Border + [MAG x4.0] Badge (HDMI Clean Feed 1.0x) */
+    int badge_y = 48;
+    if (mag_idx > 0u) {
+        fx6_draw_corner_ticks(16, 48, 948, 440, 34, 4, 0xF97316u, 248u);
+        fx6_osd_border_rect(16, 48, 933, 393, 0xFFF97316u);
+        int mx = 22, my = badge_y, mw = 212, mh = 26;
+        fx6_osd_fill_rect(mx, my, mw, mh, 0xFF7C2D12u);
+        fx6_osd_border_rect(mx, my, mw, mh, 0xFFF97316u);
+        const char *mag_lbl = (mag_idx >= 2u)
+            ? (clean_hdmi ? "[MAG x4.0] HDMI:1x" : "[MAG x4.0]")
+            : (clean_hdmi ? "[MAG x2.0] HDMI:1x" : "[MAG x2.0]");
+        fx6_render_string_text_styled(appfw, mx + 6, my + 2, mw - 12, 22, mag_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        badge_y += 30;
+    }
+
+    /* 3. Clear Image Zoom [CIZ 1.40x] Zoom Bar Badge (or Exclusion Clamp Badge) */
+    if (eff_ciz > 100u || ciz_excl) {
+        int cx = 22, cy = badge_y, cw = 220, ch = 26;
+        uint32_t c_bg = ciz_excl ? 0xFF78350Fu : 0xFF0E7490u;
+        uint32_t c_bd = ciz_excl ? 0xFFF59E0Bu : 0xFF22D3EEu;
+        fx6_osd_fill_rect(cx, cy, cw, ch, c_bg);
+        fx6_osd_border_rect(cx, cy, cw, ch, c_bd);
+
+        /* Proportional CIZ bar 1.00x .. 2.00x */
+        int bar_x = cx + 6, bar_y = cy + 19, bar_w = cw - 12;
+        fx6_osd_fill_rect(bar_x, bar_y, bar_w, 4, 0xFF0F172Au);
+        int fill_w = (int)(((eff_ciz - 100u) * (uint32_t)bar_w) / 100u);
+        if (fill_w < 4) fill_w = 4;
+        if (fill_w > bar_w) fill_w = bar_w;
+        fx6_osd_fill_rect(bar_x, bar_y, fill_w, 4, ciz_excl ? 0xFFF59E0Bu : 0xFF67E8F9u);
+
+        char ciz_lbl[40];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), "[CIZ ");
+        cp = fx6_append_uint(ciz_lbl, cp, sizeof(ciz_lbl), eff_ciz / 100u);
+        cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), ".");
+        cp = fx6_append_2d(ciz_lbl, cp, sizeof(ciz_lbl), eff_ciz % 100u);
+        cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), "x]");
+        if (ciz_excl) {
+            cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), " EXCL");
+        } else {
+            cp = fx6_append_cstr(ciz_lbl, cp, sizeof(ciz_lbl), " S");
+            cp = fx6_append_uint(ciz_lbl, cp, sizeof(ciz_lbl), spd);
+        }
+        (void)cp;
+        fx6_render_string_text_styled(appfw, cx + 6, cy + 1, cw - 12, 18, ciz_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        badge_y += 30;
+    }
+
+    /* 4. S-Log3 + Zebra 100% Clip Warning Badge */
+    if (zeb100_warn) {
+        int wx = 22, wy = badge_y, ww = 290, wh = 24;
+        fx6_osd_fill_rect(wx, wy, ww, wh, 0xFF7F1D1Du);
+        fx6_osd_border_rect(wx, wy, ww, wh, 0xFFEF4444u);
+        fx6_render_string_text_styled(appfw, wx + 6, wy + 2, ww - 12, 20,
+                                      "WARN: S-Log3 ZEB100% CLIP@94%",
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 5. Touch Tracking AF Double-Frame Reticle + PDAF Cell Badge */
+    if (af_mode > 0u) {
+        int rx = (int)((touch_x * 1024u) / 960u);
+        int ry = (int)touch_y;
+        if (rx < 44) rx = 44;
+        if (rx > 940) rx = 940;
+        if (ry < 44) ry = 44;
+        if (ry > 438) ry = 438;
+
+        int rw = 36, rh = 28;
+        int rw2 = 26, rh2 = 20;
+        uint32_t ret_rgb  = (af_mode == 2u) ? 0x22C55Eu : 0xF8FAFCu;
+        uint32_t ret_in   = (af_mode == 2u) ? 0x86EFACu : 0xCBD5E1u;
+        uint32_t ret_argb = 0xFF000000u | ret_rgb;
+
+        /* Outer bracket corners */
+        fx6_draw_corner_ticks(rx - rw, ry - rh, rx + rw, ry + rh, 14, 3, ret_rgb, 252u);
+        /* Inner tracking double-frame corners */
+        fx6_draw_corner_ticks(rx - rw2, ry - rh2, rx + rw2, ry + rh2, 10, 2, ret_in, 240u);
+        /* Crisp center crosshairs */
+        fx6_osd_fill_rect(rx - 6, ry, 13, 2, ret_argb);
+        fx6_osd_fill_rect(rx, ry - 6, 2, 13, ret_argb);
+
+        /* PDAF 33x19 Cell Badge right below (or above) reticle */
+        int bx = rx - 82;
+        if (bx < 16) bx = 16;
+        if (bx + 166 > 952) bx = 952 - 166;
+        int by = (ry + rh + 30 <= 444) ? (ry + rh + 4) : (ry - rh - 26);
+        int bw = 166, bh = 22;
+        fx6_osd_fill_rect(bx, by, bw, bh, (af_mode == 2u) ? 0xFF052E16u : 0xFF0F172Au);
+        fx6_osd_border_rect(bx, by, bw, bh, ret_argb);
+
+        char af_lbl[40];
+        unsigned ap = 0u;
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), (af_mode == 2u) ? "TRK #" : "AF #");
+        ap = fx6_append_uint(af_lbl, ap, sizeof(af_lbl), pdaf_idx);
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), " (");
+        ap = fx6_append_uint(af_lbl, ap, sizeof(af_lbl), pdaf_col);
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), ",");
+        ap = fx6_append_uint(af_lbl, ap, sizeof(af_lbl), pdaf_row);
+        ap = fx6_append_cstr(af_lbl, ap, sizeof(af_lbl), ")");
+        (void)ap;
+        fx6_render_string_text_styled(appfw, bx + 5, by + 1, bw - 10, 20, af_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static unsigned fx6_append_hex8(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    static const char k_hex[16] = "0123456789ABCDEF";
+    if (pos + 11u >= cap) return pos;
+    for (int sh = 28; sh >= 0; sh -= 4) {
+        dst[pos++] = k_hex[(val >> (unsigned)sh) & 0x0fu];
+        if (sh == 24 || sh == 16 || sh == 8) {
+            dst[pos++] = ':';
+        }
+    }
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase88_shotmark_iris_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p88_iris_audio & 0x80000000u)) return;
+
+    uint32_t sm_total   = g_live_p88_shotmark & 0x7fu;
+    uint32_t sm1_cnt    = (g_live_p88_shotmark >> 7) & 0x7fu;
+    uint32_t sm2_cnt    = (g_live_p88_shotmark >> 14) & 0x7fu;
+    uint32_t last_type  = (g_live_p88_shotmark >> 21) & 0x03u;
+    uint32_t last_frame = (g_live_p88_shotmark >> 23) & 0x1ffu;
+
+    uint32_t iris_x100   = g_live_p88_iris_audio & 0xfffu;
+    if (iris_x100 < 140u || iris_x100 > 2200u) iris_x100 = 280u;
+    uint32_t meter       = (g_live_p88_iris_audio >> 12) & 0x03u;
+    uint32_t ch34_pad20  = (g_live_p88_iris_audio >> 22) & 0x01u;
+    uint32_t push_active = (g_live_p88_iris_audio >> 23) & 0x01u;
+    uint32_t target_ire  = (g_live_p88_iris_audio >> 24) & 0x7fu;
+    if (target_ire == 0u || target_ire > 109u) target_ire = 41u;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+    int non_default = (sm_total > 0u || ch34_pad20 || push_active || iris_x100 != 280u ||
+                       meter != 0u || g_live_p88_user_bits != 0xa0010001u);
+    if (!is_shooting_page && !non_default) {
+        return;
+    }
+
+    static const char * const k_meter_lbl[4] = { "MULTI", "CENTER", "SPOT", "HI-LIGHT" };
+
+    /* Pill 1 (Top-Right below Phase 40 strip): [F2.8 AUTO-IRIS 41%IRE MULTI/HI-LIGHT] */
+    int ix = 636, iy = 48, iw = 312, ih = 24;
+    uint32_t ibg = push_active ? 0xFF064E3Bu : ((meter == 3u) ? 0xFF422006u : 0xFF0F172Au);
+    uint32_t ibd = push_active ? 0xFF22C55Eu : ((meter == 3u) ? 0xFFF59E0Bu : 0xFF38BDF8u);
+    fx6_osd_fill_rect(ix, iy, iw, ih, ibg);
+    fx6_osd_border_rect(ix, iy, iw, ih, ibd);
+
+    char iris_lbl[56];
+    unsigned ip = 0u;
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), "[F");
+    ip = fx6_append_uint(iris_lbl, ip, sizeof(iris_lbl), iris_x100 / 100u);
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), ".");
+    if ((iris_x100 % 10u) == 0u) {
+        ip = fx6_append_uint(iris_lbl, ip, sizeof(iris_lbl), (iris_x100 % 100u) / 10u);
+    } else {
+        ip = fx6_append_2d(iris_lbl, ip, sizeof(iris_lbl), iris_x100 % 100u);
+    }
+    if (push_active) {
+        ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), " AUTO-IRIS ");
+    } else {
+        ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), " ");
+    }
+    ip = fx6_append_uint(iris_lbl, ip, sizeof(iris_lbl), target_ire);
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), "%IRE ");
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), k_meter_lbl[meter & 3u]);
+    ip = fx6_append_cstr(iris_lbl, ip, sizeof(iris_lbl), "]");
+    (void)ip;
+    fx6_render_string_text_styled(appfw, ix + 6, iy + 2, iw - 12, 20, iris_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    int next_y = iy + 28;
+
+    /* Pill 2: Gold [*M1 / *M2] ShotMark Counter & Latest Mark Pill */
+    if (sm_total > 0u) {
+        int sx = 636, sy = next_y, sw = 312, sh = 24;
+        fx6_osd_fill_rect(sx, sy, sw, sh, 0xFF451A03u);
+        fx6_osd_border_rect(sx, sy, sw, sh, 0xFFFBBF24u);
+        /* Crisp gold star/diamond mark emblem */
+        fx6_osd_fill_rect(sx + 6, sy + 7, 10, 10, 0xFFFBBF24u);
+        fx6_osd_fill_rect(sx + 9, sy + 4, 4, 16, 0xFFFDE047u);
+        fx6_osd_fill_rect(sx + 3, sy + 10, 16, 4, 0xFFFDE047u);
+
+        char sm_lbl[56];
+        unsigned sp = 0u;
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), "[M1:");
+        sp = fx6_append_uint(sm_lbl, sp, sizeof(sm_lbl), sm1_cnt);
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), " / M2:");
+        sp = fx6_append_uint(sm_lbl, sp, sizeof(sm_lbl), sm2_cnt);
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), "] ");
+        sp = fx6_append_cstr(sm_lbl, sp, sizeof(sm_lbl), (last_type == 2u) ? "KEEP@" : "OK@");
+        sp = fx6_append_uint(sm_lbl, sp, sizeof(sm_lbl), last_frame);
+        (void)sp;
+        fx6_render_string_text_styled(appfw, sx + 22, sy + 2, sw - 28, 20, sm_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        next_y += 28;
+    }
+
+    /* Pill 3: [CH3/4 -20dB SAFE] + SMPTE 12M User-Bits Pill */
+    if (ch34_pad20 || g_live_p88_user_bits != 0xa0010001u) {
+        int ax = 636, ay = next_y, aw = 312, ah = 24;
+        fx6_osd_fill_rect(ax, ay, aw, ah, ch34_pad20 ? 0xFF064E3Bu : 0xFF0F172Au);
+        fx6_osd_border_rect(ax, ay, aw, ah, ch34_pad20 ? 0xFF10B981u : 0xFF38BDF8u);
+
+        char au_lbl[56];
+        unsigned ap = 0u;
+        if (ch34_pad20) {
+            ap = fx6_append_cstr(au_lbl, ap, sizeof(au_lbl), "[CH3/4 -20dB SAFE] UB ");
+        } else {
+            ap = fx6_append_cstr(au_lbl, ap, sizeof(au_lbl), "[UB ");
+        }
+        ap = fx6_append_hex8(au_lbl, ap, sizeof(au_lbl), g_live_p88_user_bits);
+        if (!ch34_pad20) {
+            ap = fx6_append_cstr(au_lbl, ap, sizeof(au_lbl), "]");
+        }
+        (void)ap;
+        fx6_render_string_text_styled(appfw, ax + 6, ay + 2, aw - 12, 20, au_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static void fx6_render_phase95_gyroflow_anamorphic_tone_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p95_anamorphic_ibis & 0x80000000u)) return;
+
+    static const char * const k_sq_lbl[6] = {
+        "1.00x", "1.30x", "1.33x", "1.50x", "1.80x", "2.00x"
+    };
+    static const char * const k_ibis_lbl[5] = {
+        "OFF", "STD", "ACT", "ASYM", "0x0400"
+    };
+
+    uint32_t sq_idx         = g_live_p95_anamorphic_ibis & 0x07u;
+    if (sq_idx > 5u) sq_idx = 0u;
+    uint32_t eff_ibis_idx   = (g_live_p95_anamorphic_ibis >> 3) & 0x07u;
+    if (eff_ibis_idx > 4u) eff_ibis_idx = 1u;
+    uint32_t ibis_arb       = (g_live_p95_anamorphic_ibis >> 9) & 0x01u;
+    uint32_t center_lock    = (g_live_p95_anamorphic_ibis >> 10) & 0x01u;
+    uint32_t yaw_gain_pct   = (g_live_p95_anamorphic_ibis >> 11) & 0xffu;
+    if (yaw_gain_pct > 100u) yaw_gain_pct = 100u;
+
+    uint32_t imu_x10        = g_live_p95_gyro_rtmd & 0xfffu;
+    if (imu_x10 == 0u) imu_x10 = 834u;
+    uint32_t skew_x10       = (g_live_p95_gyro_rtmd >> 12) & 0xffu;
+    if (skew_x10 == 0u) skew_x10 = 87u;
+    uint32_t rtmd_st_idx    = (g_live_p95_gyro_rtmd >> 20) & 0x03u;
+    uint32_t rtmd_susp_sq   = (g_live_p95_gyro_rtmd >> 22) & 0x01u;
+
+    uint32_t tone_req       = g_live_p95_tone_limiter & 0x01u;
+    uint32_t tone_eff       = (g_live_p95_tone_limiter >> 1) & 0x01u;
+    uint32_t tone_inhib     = (g_live_p95_tone_limiter >> 2) & 0x01u;
+    uint32_t bars_eff       = (g_live_p95_tone_limiter >> 3) & 0x01u;
+    uint32_t lim_en         = (g_live_p95_tone_limiter >> 4) & 0x01u;
+    uint32_t lim_eng        = (g_live_p95_tone_limiter >> 5) & 0x01u;
+
+    uint32_t p = page % 25u;
+    int is_shooting_page = (p <= 3u || p == 6u || p == 16u || p == 17u);
+    int non_default = (sq_idx > 0u || ibis_arb || center_lock || eff_ibis_idx >= 3u ||
+                       rtmd_susp_sq || tone_req || bars_eff || lim_en);
+    if (!is_shooting_page && !non_default) {
+        return;
+    }
+
+    /* 1. Anamorphic De-Squeeze Guide Frame (when squeeze > 1.0x) */
+    if (sq_idx > 0u) {
+        int gx0 = 20, gx1 = 1003;
+        int gy0 = (sq_idx >= 4u) ? 72 : 52;
+        int gy1 = (sq_idx >= 4u) ? 418 : 438;
+        uint32_t gcol = center_lock ? 0xF59E0Bu : 0x22D3EEu;
+        fx6_osd_blend_rect(gx0, gy0, gx1 - gx0 + 1, 2, gcol, 212u);
+        fx6_osd_blend_rect(gx0, gy1 - 1, gx1 - gx0 + 1, 2, gcol, 212u);
+        fx6_draw_corner_ticks(gx0, gy0, gx1, gy1, 20, 3, gcol, 240u);
+    }
+
+    /* 2. Pill 1 (Center-Top y=48): Anamorphic De-Squeeze + IBIS Arbitrator / Yaw-Gain */
+    int ax = 322, ay = 48, aw = 304, ah = 24;
+    uint32_t abg = center_lock ? 0xFF422006u : (ibis_arb ? 0xFF0E7490u : 0xFF0F172Au);
+    uint32_t abd = center_lock ? 0xFFF59E0Bu : (sq_idx > 0u ? 0xFF22D3EEu : 0xFF38BDF8u);
+    fx6_osd_fill_rect(ax, ay, aw, ah, abg);
+    fx6_osd_border_rect(ax, ay, aw, ah, abd);
+
+    /* Proportional horizontal yaw-gain micro-bar inside Pill 1 */
+    int bar_x = ax + 6, bar_y = ay + 18, bar_w = 48;
+    fx6_osd_fill_rect(bar_x, bar_y, bar_w, 3, 0xFF1E293Bu);
+    int fill_w = (int)((yaw_gain_pct * (uint32_t)bar_w) / 100u);
+    if (fill_w < 2 && yaw_gain_pct > 0u) fill_w = 2;
+    if (fill_w > bar_w) fill_w = bar_w;
+    if (fill_w > 0) {
+        fx6_osd_fill_rect(bar_x, bar_y, fill_w, 3, center_lock ? 0xFFF59E0Bu : 0xFF22D3EEu);
+    }
+
+    char ibis_lbl[56];
+    unsigned ip = 0u;
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "[DSQ ");
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), k_sq_lbl[sq_idx]);
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), " IBIS:");
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), k_ibis_lbl[eff_ibis_idx]);
+    if (center_lock) {
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), " CTR-LCK");
+    } else {
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), " YAW=");
+        ip = fx6_append_uint(ibis_lbl, ip, sizeof(ibis_lbl), yaw_gain_pct);
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "%");
+    }
+    if (ibis_arb) {
+        ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "*");
+    }
+    ip = fx6_append_cstr(ibis_lbl, ip, sizeof(ibis_lbl), "]");
+    (void)ip;
+    fx6_render_string_text_styled(appfw, ax + 6, ay + 1, aw - 12, 18, ibis_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* 3. Pill 2 (Center y=76): Gyroflow 2000Hz RTMD Readiness & IMX510 Skew */
+    int gx = 322, gy = 76, gw = 304, gh = 24;
+    uint32_t gbg = rtmd_susp_sq ? 0xFF7F1D1Du : (rtmd_st_idx == 1u ? 0xFF064E3Bu : 0xFF0B192Cu);
+    uint32_t gbd = rtmd_susp_sq ? 0xFFEF4444u : (rtmd_st_idx == 1u ? 0xFF10B981u : 0xFF22D3EEu);
+    fx6_osd_fill_rect(gx, gy, gw, gh, gbg);
+    fx6_osd_border_rect(gx, gy, gw, gh, gbd);
+
+    char gyro_lbl[56];
+    unsigned gp = 0u;
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "[GYRO ");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), imu_x10 / 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), ".");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), imu_x10 % 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "/");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), skew_x10 / 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), ".");
+    gp = fx6_append_uint(gyro_lbl, gp, sizeof(gyro_lbl), skew_x10 % 10u);
+    gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "ms ");
+    if (rtmd_susp_sq) {
+        gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "SUSP_BY_SQ]");
+    } else if (rtmd_st_idx == 1u) {
+        gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "CTR_LOCKED]");
+    } else {
+        gp = fx6_append_cstr(gyro_lbl, gp, sizeof(gyro_lbl), "RTMD_READY]");
+    }
+    (void)gp;
+    fx6_render_string_text_styled(appfw, gx + 6, gy + 2, gw - 12, 20, gyro_lbl,
+                                  0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+
+    /* 4. Pill 3 (Center y=104): 1kHz -20dBFS Reference Tone / SMPTE Color Bars & 4-Ch Limiter */
+    if (tone_req || bars_eff || lim_en) {
+        int tx = 322, ty = 104, tw = 304, th = 24;
+        uint32_t tbg = tone_inhib ? 0xFF451A03u : ((tone_eff || bars_eff) ? 0xFF1E1B4Bu : 0xFF064E3Bu);
+        uint32_t tbd = tone_inhib ? 0xFFF59E0Bu : (lim_eng ? 0xFFEF4444u : (tone_eff ? 0xFFA78BFAu : 0xFF10B981u));
+        fx6_osd_fill_rect(tx, ty, tw, th, tbg);
+        fx6_osd_border_rect(tx, ty, tw, th, tbd);
+
+        if (bars_eff) {
+            static const uint32_t k_bars[7] = {
+                0xFFE5E7EBu, 0xFFFACC15u, 0xFF22D3EEu, 0xFF22C55Eu, 0xFFD946EFu, 0xFFEF4444u, 0xFF2563EBu
+            };
+            for (int b = 0; b < 7; b++) {
+                fx6_osd_fill_rect(tx + 244 + b * 8, ty + 4, 8, 16, k_bars[b]);
+            }
+        }
+
+        char tone_lbl[56];
+        unsigned tp = 0u;
+        if (tone_inhib) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[1kHz INHIBITED:REC");
+        } else if (tone_eff) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[1kHz -20dBFS TONE");
+        } else if (bars_eff) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[SMPTE BARS");
+        } else {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "[AUDIO");
+        }
+        if (lim_en) {
+            tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), lim_eng ? " LIM:-3dB!" : " LIM:-3dB");
+        }
+        tp = fx6_append_cstr(tone_lbl, tp, sizeof(tone_lbl), "]");
+        (void)tp;
+        int lbl_w = bars_eff ? (tw - 68) : (tw - 12);
+        fx6_render_string_text_styled(appfw, tx + 6, ty + 2, lbl_w, 20, tone_lbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static void fx6_render_phase102_cache_interval_lut_ftps_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p102_cache_interval & 0x80000000u) || !(g_live_p102_lut_ftps & 0x80000000u)) return;
+
+    static const char * const k_ae_lbl[4] = {"High", "Mid", "Low", "Lock"};
+    static const char * const k_grid_lbl[4] = {"", "17", "33", "65"};
+    static const char * const k_ftps_lbl[3] = {"OFF", "PRX", "ORIG+PRX"};
+
+    uint32_t cache_eff_sec   = g_live_p102_cache_interval & 0x1fu;
+    uint32_t cache_req_sec   = (g_live_p102_cache_interval >> 5) & 0x1fu;
+    uint32_t cache_ddr_mib   = (g_live_p102_cache_interval >> 10) & 0x1ffu;
+    if (cache_ddr_mib > 384u) cache_ddr_mib = 384u;
+    uint32_t cache_active    = (g_live_p102_cache_interval >> 19) & 0x01u;
+    uint32_t cache_susp      = (g_live_p102_cache_interval >> 20) & 0x01u;
+    uint32_t cache_clamped   = (g_live_p102_cache_interval >> 21) & 0x01u;
+    uint32_t interval_en     = (g_live_p102_cache_interval >> 22) & 0x01u;
+    uint32_t interval_sec    = (g_live_p102_cache_interval >> 23) & 0x3fu;
+    if (interval_sec < 1u || interval_sec > 60u) interval_sec = 5u;
+    uint32_t ae_idx          = (g_live_p102_cache_interval >> 29) & 0x03u;
+
+    uint32_t shots_taken     = g_live_p102_interval_ftp & 0x3fffu;
+    uint32_t target_shots    = (g_live_p102_interval_ftp >> 14) & 0x3fffu;
+    if (target_shots < 1u || target_shots > 9999u) target_shots = 120u;
+    if (shots_taken > 9999u) shots_taken = 9999u;
+    uint32_t ftps_mode_idx   = (g_live_p102_interval_ftp >> 28) & 0x03u;
+    if (ftps_mode_idx > 2u) ftps_mode_idx = 0u;
+    uint32_t ftps_p12_safe   = (g_live_p102_interval_ftp >> 30) & 0x01u;
+    uint32_t eshut_enforced  = (g_live_p102_interval_ftp >> 31) & 0x01u;
+
+    uint32_t lut_slot        = g_live_p102_lut_ftps & 0x07u;
+    uint32_t lut_resamp33    = (g_live_p102_lut_ftps >> 3) & 0x01u;
+    uint32_t lut_src_idx     = (g_live_p102_lut_ftps >> 4) & 0x03u;
+    uint32_t lut_contrast    = (g_live_p102_lut_ftps >> 6) & 0xffu;
+    uint32_t ftps_q_cnt      = (g_live_p102_lut_ftps >> 14) & 0xffu;
+    uint32_t ftps_done_cnt   = (g_live_p102_lut_ftps >> 22) & 0xffu;
+    uint32_t ftps_trav_blk   = (g_live_p102_lut_ftps >> 30) & 0x01u;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int show_cache = (cache_req_sec > 0u || cache_eff_sec > 0u || cache_susp);
+    int show_intvl = (interval_en || shots_taken > 0u);
+    int show_lut   = (lut_slot > 0u || lut_resamp33 || (g_live_lut_meta & 0x01000000u) != 0u);
+    int show_ftps  = (ftps_mode_idx > 0u || ftps_q_cnt > 0u || ftps_done_cnt > 0u || ftps_trav_blk || is_hud_page);
+    if (!show_cache && !show_intvl && !show_lut && !show_ftps) {
+        return;
+    }
+
+    int cur_y = 138;
+    const int bx = 18;
+    const int bw = 294;
+    const int bh = 24;
+
+    /* 1. Picture Cache Ring Seconds / DDR MiB Badge (clamped <= 384 MiB on 2048 MiB DRAM) */
+    if (show_cache) {
+        uint32_t cbg = cache_susp ? 0xFF7F1D1Du : (cache_clamped ? 0xFF78350Fu : 0xFF064E3Bu);
+        uint32_t cbd = cache_susp ? 0xFFEF4444u : (cache_clamped ? 0xFFF59E0Bu : 0xFF10B981u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, cbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, cbd);
+
+        int bar_x = bx + 6, bar_y = cur_y + 18, bar_w = 56;
+        fx6_osd_fill_rect(bar_x, bar_y, bar_w, 3, 0xFF0F172Au);
+        int fill_w = (int)((cache_ddr_mib * (uint32_t)bar_w) / 384u);
+        if (fill_w < 2 && cache_ddr_mib > 0u) fill_w = 2;
+        if (fill_w > bar_w) fill_w = bar_w;
+        if (fill_w > 0) {
+            fx6_osd_fill_rect(bar_x, bar_y, fill_w, 3, cache_clamped ? 0xFFF59E0Bu : 0xFF34D399u);
+        }
+
+        char clbl[56];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "[CACHE ");
+        if (cache_susp) {
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "SUSP ");
+        } else {
+            cp = fx6_append_uint(clbl, cp, sizeof(clbl), cache_eff_sec);
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "s ");
+        }
+        cp = fx6_append_uint(clbl, cp, sizeof(clbl), cache_ddr_mib);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "/384M");
+        if (cache_clamped && cache_active) {
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), " CLMP");
+        }
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "]");
+        (void)cp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 1, bw - 12, 18, clbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 2. Interval Recording Shot Counter & Electronic-Shutter Protection Badge */
+    if (show_intvl) {
+        uint32_t ibg = interval_en ? 0xFF1E1B4Bu : 0xFF1E293Bu;
+        uint32_t ibd = interval_en ? 0xFFA78BFAu : 0xFF64748Bu;
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, ibg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, ibd);
+
+        int bar_x = bx + 6, bar_y = cur_y + 18, bar_w = 56;
+        fx6_osd_fill_rect(bar_x, bar_y, bar_w, 3, 0xFF0F172Au);
+        int fill_w = (int)((shots_taken * (uint32_t)bar_w) / target_shots);
+        if (fill_w < 2 && shots_taken > 0u) fill_w = 2;
+        if (fill_w > bar_w) fill_w = bar_w;
+        if (fill_w > 0) {
+            fx6_osd_fill_rect(bar_x, bar_y, fill_w, 3, 0xFFC4B5FDu);
+        }
+
+        char ilbl[56];
+        unsigned ip = 0u;
+        ip = fx6_append_cstr(ilbl, ip, sizeof(ilbl), "[INTVL ");
+        ip = fx6_append_uint(ilbl, ip, sizeof(ilbl), shots_taken);
+        ip = fx6_append_cstr(ilbl, ip, sizeof(ilbl), "/");
+        ip = fx6_append_uint(ilbl, ip, sizeof(ilbl), target_shots);
+        ip = fx6_append_cstr(ilbl, ip, sizeof(ilbl), " ");
+        ip = fx6_append_uint(ilbl, ip, sizeof(ilbl), interval_sec);
+        ip = fx6_append_cstr(ilbl, ip, sizeof(ilbl), eshut_enforced ? "s E-SH AE:" : "s AE:");
+        ip = fx6_append_cstr(ilbl, ip, sizeof(ilbl), k_ae_lbl[ae_idx]);
+        ip = fx6_append_cstr(ilbl, ip, sizeof(ilbl), "]");
+        (void)ip;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 1, bw - 12, 18, ilbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 3. Active User .cube 3D-LUT Slot / Title / 33^3 Tetrahedral & Live Tint Swatch */
+    if (show_lut) {
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, 0xFF0B192Cu);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, 0xFF38BDF8u);
+
+        uint32_t tr = (g_live_lut_meta >> 16) & 0xffu;
+        uint32_t tg = (g_live_lut_meta >> 8) & 0xffu;
+        uint32_t tb = g_live_lut_meta & 0xffu;
+        if ((g_live_lut_meta & 0x01000000u) == 0u) {
+            tr = 128u; tg = 128u; tb = 128u;
+        }
+        uint32_t swatch = 0xFF000000u | (tr << 16) | (tg << 8) | tb;
+        fx6_osd_fill_rect(bx + bw - 20, cur_y + 4, 14, 16, swatch);
+        fx6_osd_border_rect(bx + bw - 20, cur_y + 4, 14, 16, 0xFFE2E8F0u);
+
+        char llbl[56];
+        unsigned lp = 0u;
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "[LUT U");
+        lp = fx6_append_uint(llbl, lp, sizeof(llbl), lut_slot > 0u ? lut_slot : 1u);
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), ":");
+        if (g_live_lut_name[0]) {
+            for (int i = 0; i < 11 && g_live_lut_name[i] && lp + 12u < sizeof(llbl); i++) {
+                llbl[lp++] = g_live_lut_name[i];
+            }
+        } else {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "User");
+        }
+        if (lut_src_idx > 0u && lut_src_idx <= 3u) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " ");
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), k_grid_lbl[lut_src_idx]);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "->33^3");
+        } else if (lut_resamp33) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " 33^3");
+        }
+        if (lut_contrast > 0u) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " C");
+            lp = fx6_append_uint(llbl, lp, sizeof(llbl), lut_contrast);
+        }
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "]");
+        llbl[lp] = 0;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 2, bw - 28, 20, llbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 4. Wired USB-LAN FTPS P12-Safe Background Queue Badge */
+    if (show_ftps) {
+        uint32_t fbg = ftps_trav_blk ? 0xFF7F1D1Du : (ftps_mode_idx > 0u ? 0xFF083344u : 0xFF0F172Au);
+        uint32_t fbd = ftps_trav_blk ? 0xFFEF4444u : (ftps_mode_idx > 0u ? 0xFF22D3EEu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, fbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, fbd);
+
+        char flbl[56];
+        unsigned fp = 0u;
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "[FTPS:");
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), k_ftps_lbl[ftps_mode_idx]);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " Q:");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), ftps_q_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "/");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), ftps_done_cnt);
+        if (ftps_trav_blk) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " eMMC-BLK!");
+        } else {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), ftps_p12_safe ? " P12-LAN" : " P12!");
+        }
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "]");
+        (void)fp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 2, bw - 12, 20, flbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static unsigned fx6_append_hex2(char *dst, unsigned pos, unsigned cap, uint32_t val) {
+    static const char k_hex2[16] = "0123456789ABCDEF";
+    if (pos + 2u >= cap) return pos;
+    dst[pos++] = k_hex2[(val >> 4) & 0x0fu];
+    dst[pos++] = k_hex2[val & 0x0fu];
+    dst[pos] = 0;
+    return pos;
+}
+
+static void fx6_render_phase109_mcfleet_sdi_c2pa_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p109_fleet_sdi & 0x80000000u) ||
+        !(g_live_p109_mount_shading & 0x80000000u) ||
+        !(g_live_p109_c2pa_prov & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_role_lbl[5] = { "SOLO", "A-MST", "B-FLW", "C-FLW", "D-FLW" };
+    static const char * const k_sdi_lbl[4]  = { "BMD", "TDK", "ATM", "OFF" };
+
+    uint32_t fleet_role_idx  = g_live_p109_fleet_sdi & 0x07u;
+    if (fleet_role_idx > 4u) fleet_role_idx = 0u;
+    uint32_t fleet_cams      = (g_live_p109_fleet_sdi >> 3) & 0x07u;
+    if (fleet_cams < 1u || fleet_cams > 4u) fleet_cams = 1u;
+    uint32_t gang_rec        = (g_live_p109_fleet_sdi >> 6) & 0x01u;
+    uint32_t sdi_active      = (g_live_p109_fleet_sdi >> 7) & 0x01u;
+    uint32_t sdi_idx         = (g_live_p109_fleet_sdi >> 8) & 0x03u;
+    uint32_t rp188_rec       = (g_live_p109_fleet_sdi >> 10) & 0x01u;
+    uint32_t avi_safe        = (g_live_p109_fleet_sdi >> 11) & 0x01u;
+    uint32_t avi_cs          = (g_live_p109_fleet_sdi >> 13) & 0xffu;
+    uint32_t p12_rf_off      = (g_live_p109_fleet_sdi >> 27) & 0x01u;
+
+    uint32_t mount_pl        = g_live_p109_mount_shading & 0x01u;
+    uint32_t shd_ident       = (g_live_p109_mount_shading >> 1) & 0x01u;
+    uint32_t shd_gain_x100   = (g_live_p109_mount_shading >> 2) & 0xffu;
+    if (shd_gain_x100 < 100u) shd_gain_x100 = 100u;
+    uint32_t lens_kg_x10     = (g_live_p109_mount_shading >> 10) & 0x3fu;
+    if (lens_kg_x10 == 0u) lens_kg_x10 = 7u;
+    uint32_t g31_lws_warn    = (g_live_p109_mount_shading >> 16) & 0x01u;
+    uint32_t rod_lws         = (g_live_p109_mount_shading >> 17) & 0x01u;
+    uint32_t e_pins          = mount_pl ? 0u : ((g_live_p109_mount_shading >> 18) & 0x0fu);
+
+    uint32_t c2pa_ro_zt      = (g_live_p109_c2pa_prov >> 4) & 0x01u;
+    uint32_t c2pa_spoof_blk  = (g_live_p109_c2pa_prov >> 5) & 0x01u;
+    uint32_t c2pa_blk_cnt    = (g_live_p109_c2pa_prov >> 6) & 0xffu;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (fleet_role_idx > 0u || fleet_cams > 1u || gang_rec || !avi_safe ||
+                       rp188_rec || mount_pl || g31_lws_warn || c2pa_spoof_blk || c2pa_blk_cnt > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int bx = 636;
+    const int bw = 312;
+    const int bh = 24;
+    int cur_y = 138;
+
+    /* 1. Sony Monitor & Control 4-Cam Wired Gigabit USB-LAN Fleet Badge (A/B/C/D) */
+    {
+        uint32_t fbg = gang_rec ? 0xFF7F1D1Du : (fleet_cams > 1u ? 0xFF083344u : 0xFF0F172Au);
+        uint32_t fbd = gang_rec ? 0xFFEF4444u : (fleet_cams > 1u ? 0xFF22D3EEu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, fbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, fbd);
+
+        /* 4 Camera Status Nodes A..D */
+        for (uint32_t c = 0u; c < 4u; c++) {
+            int nx = bx + 6 + (int)c * 12;
+            int ny = cur_y + 5;
+            uint32_t online = (c < fleet_cams) ? 1u : 0u;
+            uint32_t is_self = (fleet_role_idx > 0u && (fleet_role_idx - 1u) == c) ||
+                               (fleet_role_idx == 0u && c == 0u);
+            uint32_t ncol = !online ? 0xFF1E293Bu : (gang_rec ? 0xFFEF4444u : (is_self ? 0xFFFACC15u : 0xFF10B981u));
+            fx6_osd_fill_rect(nx, ny, 9, 14, ncol);
+            fx6_osd_border_rect(nx, ny, 9, 14, is_self ? 0xFFF8FAFCu : 0xFF334155u);
+        }
+
+        char mlbl[56];
+        unsigned mp = 0u;
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), "[M&C ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), k_role_lbl[fleet_role_idx]);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " ");
+        mp = fx6_append_uint(mlbl, mp, sizeof(mlbl), fleet_cams);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), "/4 ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), gang_rec ? "GANG-REC " : "PTP-LAN ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), p12_rf_off ? "P12]" : "RF!]");
+        (void)mp;
+        fx6_render_string_text_styled(appfw, bx + 58, cur_y + 2, bw - 64, 20, mlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 2. HDMI->12G-SDI AVI InfoFrame & SMPTE RP 188 REC-Trigger Indicator */
+    {
+        uint32_t sbg = !avi_safe ? 0xFF7F1D1Du : (rp188_rec ? 0xFF064E3Bu : 0xFF0B192Cu);
+        uint32_t sbd = !avi_safe ? 0xFFEF4444u : (rp188_rec ? 0xFF10B981u : 0xFF38BDF8u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, sbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, sbd);
+        fx6_osd_fill_rect(bx + 6, cur_y + 6, 10, 12, rp188_rec ? 0xFFFF2D20u : (sdi_active ? 0xFF22D3EEu : 0xFF475569u));
+
+        char slbl[56];
+        unsigned sp = 0u;
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "[SDI:");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), sdi_active ? k_sdi_lbl[sdi_idx & 3u] : "OFF");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), " RP188:");
+        sp = fx6_append_uint(slbl, sp, sizeof(slbl), rp188_rec);
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), avi_safe ? " AVI:OK CS:" : " AVI:BLK! CS:");
+        sp = fx6_append_hex2(slbl, sp, sizeof(slbl), avi_cs);
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "]");
+        (void)sp;
+        fx6_render_string_text_styled(appfw, bx + 20, cur_y + 2, bw - 26, 20, slbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 3. E-Mount 12-Pin vs Manual-PL Shading Hot-Swap & G31 15mm LWS Status */
+    {
+        uint32_t lbg = g31_lws_warn ? 0xFF78350Fu : (mount_pl ? 0xFF1E1B4Bu : 0xFF0F172Au);
+        uint32_t lbd = g31_lws_warn ? 0xFFF59E0Bu : (mount_pl ? 0xFFA78BFAu : 0xFF38BDF8u);
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, lbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, lbd);
+
+        char llbl[56];
+        unsigned lp = 0u;
+        if (mount_pl) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "[PL-0PIN SHD:1.00x");
+            if (shd_ident) lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "-ID ");
+            else lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " ");
+        } else {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "[E-");
+            lp = fx6_append_uint(llbl, lp, sizeof(llbl), e_pins);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "P SHD:");
+            lp = fx6_append_uint(llbl, lp, sizeof(llbl), shd_gain_x100 / 100u);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), ".");
+            lp = fx6_append_2d(llbl, lp, sizeof(llbl), shd_gain_x100 % 100u);
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "x ");
+        }
+        lp = fx6_append_uint(llbl, lp, sizeof(llbl), lens_kg_x10 / 10u);
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), ".");
+        lp = fx6_append_uint(llbl, lp, sizeof(llbl), lens_kg_x10 % 10u);
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "kg");
+        if (g31_lws_warn) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " G31:LWS!");
+        } else if (rod_lws) {
+            lp = fx6_append_cstr(llbl, lp, sizeof(llbl), " LWS:OK");
+        }
+        lp = fx6_append_cstr(llbl, lp, sizeof(llbl), "]");
+        (void)lp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 2, bw - 12, 20, llbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 4. C2PA 2.1 cnflasha Zero-Touch Research Provenance Shield */
+    {
+        uint32_t cbg = c2pa_spoof_blk ? 0xFF7F1D1Du : 0xFF064E3Bu;
+        uint32_t cbd = c2pa_spoof_blk ? 0xFFEF4444u : 0xFF10B981u;
+        fx6_osd_fill_rect(bx, cur_y, bw, bh, cbg);
+        fx6_osd_border_rect(bx, cur_y, bw, bh, cbd);
+        /* Shield icon */
+        fx6_osd_fill_rect(bx + 6, cur_y + 5, 10, 14, c2pa_spoof_blk ? 0xFFFCA5A5u : 0xFF34D399u);
+        fx6_osd_fill_rect(bx + 8, cur_y + 7, 6, 10, cbg);
+
+        char clbl[56];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "[C2PA:");
+        if (c2pa_spoof_blk || c2pa_blk_cnt > 0u) {
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "RO-SHIELD BLK:");
+            cp = fx6_append_uint(clbl, cp, sizeof(clbl), c2pa_blk_cnt);
+        } else {
+            cp = fx6_append_cstr(clbl, cp, sizeof(clbl), c2pa_ro_zt ? "RO-ZERO-TOUCH KR=0 CW=0" : "LOCKED");
+        }
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "]");
+        (void)cp;
+        fx6_render_string_text_styled(appfw, bx + 20, cur_y + 2, bw - 26, 20, clbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static void fx6_render_phase116_hlg_raw_breathing_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p116_hlg_colorimetry & 0x80000000u) ||
+        !(g_live_p116_display_assist & 0x80000000u) ||
+        !(g_live_p116_raw_breathing & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_hlg_lbl[6] = { "OFF", "HLG1", "HLG2", "HLG3", "HLG-LV", "HLG-NT" };
+    static const char * const k_gamut_lbl[4] = { "709", "2020", "SG3C", "709" };
+    static const uint32_t k_knee_pct[6] = { 100u, 87u, 95u, 100u, 96u, 100u };
+    static const char * const k_ast_lbl[5] = { "OFF", "AUTO", "SL3->709", "HLG->2020", "HLG->709" };
+    static const char * const k_raw_lbl[3] = { "OFF", "PRORES", "BRAW" };
+
+    uint32_t hlg_idx         = g_live_p116_hlg_colorimetry & 0x07u;
+    if (hlg_idx > 5u) hlg_idx = 0u;
+    uint32_t gamut_idx       = (g_live_p116_hlg_colorimetry >> 3) & 0x03u;
+    uint32_t detail_enc      = (g_live_p116_hlg_colorimetry >> 5) & 0x0fu;
+    if (detail_enc > 14u) detail_enc = 7u;
+    int detail_lvl           = (int)detail_enc - 7;
+    uint32_t cta_eotf        = (g_live_p116_hlg_colorimetry >> 11) & 0x03u;
+    uint32_t cta_ok          = (g_live_p116_hlg_colorimetry >> 13) & 0x01u;
+    uint32_t cta_cs          = (g_live_p116_hlg_colorimetry >> 14) & 0xffu;
+    uint32_t peak_nits       = ((g_live_p116_hlg_colorimetry >> 22) & 0xffu) * 10u;
+    if (peak_nits < 100u) peak_nits = 100u;
+    uint32_t bt2020_blk      = (g_live_p116_hlg_colorimetry >> 30) & 0x01u;
+
+    uint32_t ast_req         = g_live_p116_display_assist & 0x07u;
+    if (ast_req > 4u) ast_req = 0u;
+    uint32_t ast_res         = (g_live_p116_display_assist >> 3) & 0x07u;
+    if (ast_res > 4u) ast_res = 0u;
+    uint32_t evf_ast_on      = (g_live_p116_display_assist >> 6) & 0x01u;
+    uint32_t clean_hdmi_ok   = (g_live_p116_display_assist >> 7) & 0x01u;
+    uint32_t leak_cnt        = (g_live_p116_display_assist >> 9) & 0x7fu;
+    uint32_t peak_ire        = (g_live_p116_display_assist >> 24) & 0x7fu;
+    if (peak_ire > 109u) peak_ire = 109u;
+
+    uint32_t ext_raw_idx     = g_live_p116_raw_breathing & 0x03u;
+    if (ext_raw_idx > 2u) ext_raw_idx = 0u;
+    uint32_t raw_b12800      = (g_live_p116_raw_breathing >> 2) & 0x01u;
+    uint32_t raw_kelvin      = ((g_live_p116_raw_breathing >> 3) & 0xffu) * 100u;
+    if (raw_kelvin < 2000u) raw_kelvin = 5600u;
+    uint32_t raw_lens_meta   = (g_live_p116_raw_breathing >> 11) & 0x01u;
+    uint32_t breath_req      = (g_live_p116_raw_breathing >> 13) & 0x01u;
+    uint32_t breath_eff      = (g_live_p116_raw_breathing >> 14) & 0x01u;
+    uint32_t byp_pl          = (g_live_p116_raw_breathing >> 15) & 0x01u;
+    uint32_t byp_raw         = (g_live_p116_raw_breathing >> 16) & 0x01u;
+    uint32_t crop_x100       = (g_live_p116_raw_breathing >> 17) & 0xffu;
+    if (crop_x100 < 100u || crop_x100 > 108u) crop_x100 = 100u;
+    if (!breath_eff) crop_x100 = 100u;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (hlg_idx > 0u || gamut_idx > 0u || ast_req > 0u || ext_raw_idx > 0u ||
+                       breath_req > 0u || bt2020_blk || leak_cnt > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int bx = 322;
+    const int bw = 304;
+    int cur_y = 138;
+
+    /* 1. HLG1/2/3 BT.2100/STD-B67 & CTA-861.3 (0x87) HDR InfoFrame + Peak Nit Bar */
+    {
+        uint32_t hbg = bt2020_blk ? 0xFF7F1D1Du : (hlg_idx > 0u ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t hbd = bt2020_blk ? 0xFFEF4444u : (hlg_idx > 0u ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 26, hbg);
+        fx6_osd_border_rect(bx, cur_y, bw, 26, hbd);
+
+        /* 6-step HLG OETF curve mini-bars on left */
+        for (int s = 0; s < 6; s++) {
+            int max_h = (hlg_idx == 1u) ? 13 : ((hlg_idx == 2u) ? 15 : (hlg_idx >= 3u ? 18 : 9));
+            int bh_step = 3 + ((s * (max_h - 3)) / 5);
+            uint32_t scol = (hlg_idx > 0u) ? 0xFF34D399u : 0xFF64748Bu;
+            fx6_osd_fill_rect(bx + 6 + s * 4, cur_y + 21 - bh_step, 3, bh_step, scol);
+        }
+
+        char hlbl[60];
+        unsigned hp = 0u;
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), "[");
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), k_hlg_lbl[hlg_idx]);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), " ");
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), k_gamut_lbl[gamut_idx]);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), " ");
+        hp = fx6_append_uint(hlbl, hp, sizeof(hlbl), peak_nits);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), "n 87:E");
+        hp = fx6_append_uint(hlbl, hp, sizeof(hlbl), cta_eotf);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), cta_ok ? " CS:" : " ERR:");
+        hp = fx6_append_hex2(hlbl, hp, sizeof(hlbl), cta_cs);
+        hp = fx6_append_cstr(hlbl, hp, sizeof(hlbl), "]");
+        (void)hp;
+        fx6_render_string_text_styled(appfw, bx + 32, cur_y + 3, bw - 38, 20, hlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 30;
+    }
+
+    /* 2. Gamma Display Assist VF/LCD vs Clean HDMI/SDI Isolation Badge */
+    {
+        uint32_t abg = (leak_cnt > 0u) ? 0xFF78350Fu : (evf_ast_on ? 0xFF1E1B4Bu : 0xFF0F172Au);
+        uint32_t abd = (leak_cnt > 0u) ? 0xFFF59E0Bu : (evf_ast_on ? 0xFFA78BFAu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 24, abg);
+        fx6_osd_border_rect(bx, cur_y, bw, 24, abd);
+
+        /* Dual indicator: VF/LCD Assist (purple/amber) + Clean HDMI/SDI lock (emerald) */
+        fx6_osd_fill_rect(bx + 6, cur_y + 5, 8, 14, evf_ast_on ? 0xFFC084FCu : 0xFF334155u);
+        fx6_osd_fill_rect(bx + 16, cur_y + 5, 8, 14, clean_hdmi_ok ? 0xFF10B981u : 0xFFEF4444u);
+
+        char albl[60];
+        unsigned ap = 0u;
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), "[AST:");
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), k_ast_lbl[ast_res]);
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), " CLN-OUT:");
+        ap = fx6_append_uint(albl, ap, sizeof(albl), clean_hdmi_ok);
+        if (leak_cnt > 0u) {
+            ap = fx6_append_cstr(albl, ap, sizeof(albl), " BLK:");
+            ap = fx6_append_uint(albl, ap, sizeof(albl), leak_cnt);
+        }
+        ap = fx6_append_cstr(albl, ap, sizeof(albl), "]");
+        (void)ap;
+        fx6_render_string_text_styled(appfw, bx + 28, cur_y + 2, bw - 34, 20, albl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 3. External HDMI ProRes RAW / BRAW 16-Bit -> 12-Bit Log Metadata Badge */
+    {
+        uint32_t rbg = (ext_raw_idx == 1u) ? 0xFF083344u : ((ext_raw_idx == 2u) ? 0xFF3B0764u : 0xFF0F172Au);
+        uint32_t rbd = (ext_raw_idx == 1u) ? 0xFF22D3EEu : ((ext_raw_idx == 2u) ? 0xFFE879F9u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 24, rbg);
+        fx6_osd_border_rect(bx, cur_y, bw, 24, rbd);
+
+        char rlbl[60];
+        unsigned rp = 0u;
+        rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), "[RAW:");
+        rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), k_raw_lbl[ext_raw_idx]);
+        if (ext_raw_idx > 0u) {
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), " 16->12L B");
+            rp = fx6_append_uint(rlbl, rp, sizeof(rlbl), raw_b12800 ? 12800u : 800u);
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), " ");
+            rp = fx6_append_uint(rlbl, rp, sizeof(rlbl), raw_kelvin);
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), raw_lens_meta ? "K E]" : "K PL]");
+        } else {
+            rp = fx6_append_cstr(rlbl, rp, sizeof(rlbl), " (XAVC-INT)]");
+        }
+        (void)rp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 2, bw - 12, 20, rlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 4. Focus Breathing Compensation (1.00x..1.08x E-Mount vs PL/RAW 1.00x Bypass) */
+    {
+        uint32_t fbg = (byp_pl || byp_raw) ? 0xFF78350Fu : (breath_eff ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t fbd = (byp_pl || byp_raw) ? 0xFFF59E0Bu : (breath_eff ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, cur_y, bw, 24, fbg);
+        fx6_osd_border_rect(bx, cur_y, bw, 24, fbd);
+
+        int bar_x = bx + 6, bar_y = cur_y + 18, bar_w = 48;
+        fx6_osd_fill_rect(bar_x, bar_y, bar_w, 3, 0xFF1E293Bu);
+        uint32_t crop_delta = (crop_x100 > 100u) ? (crop_x100 - 100u) : 0u;
+        int fill_w = (int)((crop_delta * (uint32_t)bar_w) / 8u);
+        if (fill_w > bar_w) fill_w = bar_w;
+        if (fill_w > 0) {
+            fx6_osd_fill_rect(bar_x, bar_y, fill_w, 3, 0xFF34D399u);
+        }
+
+        char flbl[60];
+        unsigned fp = 0u;
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "[FBC:");
+        if (byp_pl) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "BYP-PL ");
+        } else if (byp_raw) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "BYP-RAW ");
+        } else if (breath_eff) {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "AUTO ");
+        } else {
+            fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "OFF ");
+        }
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), crop_x100 / 100u);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), ".");
+        fp = fx6_append_2d(flbl, fp, sizeof(flbl), crop_x100 % 100u);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "x]");
+        (void)fp;
+        fx6_render_string_text_styled(appfw, bx + 6, cur_y + 1, bw - 12, 18, flbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+        cur_y += 28;
+    }
+
+    /* 5. Live HLG Waveform / IRE & Nit Knee Scale Strip */
+    {
+        fx6_osd_fill_rect(bx, cur_y, bw, 22, 0xFF090D16u);
+        fx6_osd_border_rect(bx, cur_y, bw, 22, hlg_idx > 0u ? 0xFF22D3EEu : 0xFF334155u);
+        int gx = bx + 6, gw = 64;
+        fx6_osd_fill_rect(gx, cur_y + 15, gw, 3, 0xFF1E293Bu);
+        int ire_w = (int)((peak_ire * (uint32_t)gw) / 109u);
+        if (ire_w > gw) ire_w = gw;
+        if (ire_w > 0) {
+            fx6_osd_fill_rect(gx, cur_y + 15, ire_w, 3, hlg_idx > 0u ? 0xFF22D3EEu : 0xFF94A3B8u);
+        }
+        int knee_x = gx + (int)((k_knee_pct[hlg_idx] * (uint32_t)gw) / 109u);
+        if (knee_x >= gx + gw) knee_x = gx + gw - 1;
+        fx6_osd_fill_rect(knee_x, cur_y + 4, 2, 14, 0xFFF59E0Bu);
+
+        char wlbl[60];
+        unsigned wp = 0u;
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "[KN:");
+        wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), k_knee_pct[hlg_idx]);
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "% DET:");
+        if (detail_lvl >= 0) {
+            wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "+");
+            wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), (uint32_t)detail_lvl);
+        } else {
+            wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "-");
+            wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), (uint32_t)(-detail_lvl));
+        }
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), " IRE:");
+        wp = fx6_append_uint(wlbl, wp, sizeof(wlbl), peak_ire);
+        wp = fx6_append_cstr(wlbl, wp, sizeof(wlbl), "%]");
+        (void)wp;
+        fx6_render_string_text_styled(appfw, bx + 76, cur_y + 1, bw - 82, 18, wlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static void fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p123_uvc_uac & 0x80000000u) ||
+        !(g_live_p123_srt_rtmps & 0x80000000u) ||
+        !(g_live_p123_crsdk_ptp & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_uvc_lbl[4]   = { "OFF", "4K30-MJPEG", "1080P60-YUY2", "720P30-USB2" };
+    static const char * const k_srt_lbl[3]   = { "OFF", "CALLER", "LISTENER" };
+    static const char * const k_key_lbl[4]   = { "NONE", "AES128", "AES256", "NONE" };
+    static const char * const k_ptp_lbl[4]   = { "OFF", "USB-PTP", "PTP-IP", "OFF" };
+
+    uint32_t uvc_req         = g_live_p123_uvc_uac & 0x03u;
+    uint32_t uvc_eff         = (g_live_p123_uvc_uac >> 2) & 0x03u;
+    uint32_t usb2_non_ss     = (g_live_p123_uvc_uac >> 4) & 0x01u;
+    uint32_t uvc_stepdown    = (g_live_p123_uvc_uac >> 5) & 0x01u;
+    uint32_t uac_en          = (g_live_p123_uvc_uac >> 6) & 0x01u;
+    uint32_t uvc_clean_feed  = (g_live_p123_uvc_uac >> 7) & 0x01u;
+    uint32_t uvc_mbps        = (g_live_p123_uvc_uac >> 14) & 0x3ffu;
+    uint32_t uvc_osd_blk     = (g_live_p123_uvc_uac >> 28) & 0x01u;
+
+    uint32_t srt_mode        = g_live_p123_srt_rtmps & 0x03u;
+    if (srt_mode > 2u) srt_mode = 0u;
+    uint32_t srt_pbkey       = (g_live_p123_srt_rtmps >> 2) & 0x03u;
+    uint32_t srt_lat_ms      = (g_live_p123_srt_rtmps >> 4) & 0x3ffu;
+    if (srt_lat_ms < 20u) srt_lat_ms = 20u;
+    uint32_t rtmps_on        = (g_live_p123_srt_rtmps >> 14) & 0x01u;
+    uint32_t stream_mbps     = (g_live_p123_srt_rtmps >> 15) & 0x3fu;
+    uint32_t p12_wlan_off    = (g_live_p123_srt_rtmps >> 21) & 0x01u;
+    uint32_t p12_blk_cnt     = (g_live_p123_srt_rtmps >> 23) & 0x7fu;
+
+    uint32_t crsdk_mode      = g_live_p123_crsdk_ptp & 0x03u;
+    uint32_t flash_blk_en    = (g_live_p123_crsdk_ptp >> 2) & 0x01u;
+    uint32_t emmc_zero       = (g_live_p123_crsdk_ptp >> 3) & 0x01u;
+    uint32_t p4_nd_clamped   = (g_live_p123_crsdk_ptp >> 5) & 0x01u;
+    uint32_t last_d2_low     = (g_live_p123_crsdk_ptp >> 6) & 0xffu;
+    uint32_t flash_blk_cnt   = (g_live_p123_crsdk_ptp >> 14) & 0x7fu;
+    uint32_t safe_cmd_cnt    = (g_live_p123_crsdk_ptp >> 21) & 0x7fu;
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (uvc_req > 0u || uvc_eff > 0u || usb2_non_ss || uvc_osd_blk ||
+                       srt_mode > 0u || rtmps_on || p12_blk_cnt > 0u ||
+                       crsdk_mode > 0u || flash_blk_cnt > 0u || safe_cmd_cnt > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int row1_y = 288;
+    const int row2_y = 320;
+
+    /* 1. Left Badge (x=18..342): USB-C UVC 1.5 / UAC 2.0 + USB2 480M Step-Down + Clean Feed */
+    {
+        int bx = 18, bw = 324, bh = 28;
+        uint32_t bg = uvc_osd_blk ? 0xFF7F1D1Du : (uvc_stepdown ? 0xFF78350Fu : (uvc_eff > 0u ? 0xFF064E3Bu : 0xFF0F172Au));
+        uint32_t bd = uvc_osd_blk ? 0xFFEF4444u : (uvc_stepdown ? 0xFFF59E0Bu : (uvc_eff > 0u ? 0xFF10B981u : 0xFF475569u));
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        /* UVC bandwidth bar + clean-feed LED */
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, 0xFF1E293Bu);
+        int bw_fill = (int)((uvc_mbps * 56u) / 400u);
+        if (bw_fill > 56) bw_fill = 56;
+        if (bw_fill > 0) fx6_osd_fill_rect(bx + 6, row1_y + 21, bw_fill, 3, uvc_stepdown ? 0xFFF59E0Bu : 0xFF34D399u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, uvc_clean_feed ? 0xFF10B981u : 0xFFEF4444u);
+
+        char ulbl[60];
+        unsigned up = 0u;
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "[UVC:");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), k_uvc_lbl[uvc_eff]);
+        if (uvc_stepdown) {
+            up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " 480M");
+        } else if (uvc_eff > 0u) {
+            up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " 5G");
+        }
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), uac_en ? " UAC48k" : " UAC0");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), uvc_clean_feed ? " CLN]" : " ERR]");
+        (void)up;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, ulbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 2. Center Badge (x=350..674): Wired CDC-NCM SRT (AES-128/256, ARQ) & RTMPS TLS 1.3 + P12 */
+    {
+        int bx = 350, bw = 324, bh = 28;
+        uint32_t bg = (p12_blk_cnt > 0u) ? 0xFF78350Fu : ((srt_mode > 0u || rtmps_on) ? 0xFF083344u : 0xFF0F172Au);
+        uint32_t bd = (p12_blk_cnt > 0u) ? 0xFFF59E0Bu : ((srt_mode > 0u || rtmps_on) ? 0xFF22D3EEu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        /* P12 Wi-Fi-OFF lock LED + Stream bitrate meter */
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, p12_wlan_off ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, 0xFF1E293Bu);
+        int sb_fill = (int)((stream_mbps * 56u) / 50u);
+        if (sb_fill > 56) sb_fill = 56;
+        if (sb_fill > 0 && (srt_mode > 0u || rtmps_on)) {
+            fx6_osd_fill_rect(bx + 6, row1_y + 21, sb_fill, 3, 0xFF22D3EEu);
+        }
+
+        char slbl[60];
+        unsigned sp = 0u;
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "[SRT:");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), k_srt_lbl[srt_mode]);
+        if (srt_mode > 0u) {
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "/");
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), k_key_lbl[srt_pbkey]);
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), " ");
+            sp = fx6_append_uint(slbl, sp, sizeof(slbl), srt_lat_ms);
+            sp = fx6_append_cstr(slbl, sp, sizeof(slbl), "ms");
+        }
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), rtmps_on ? " TLS1.3" : "");
+        sp = fx6_append_cstr(slbl, sp, sizeof(slbl), p12_wlan_off ? " P12]" : " RF!]");
+        (void)sp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, slbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 3. Right Badge (x=682..1006): CRSDK PTP/PTP-IP 0x054C + 0x9280.. Destructive Flash-Opcode Firewall */
+    {
+        int bx = 682, bw = 324, bh = 28;
+        uint32_t bg = (flash_blk_cnt > 0u) ? 0xFF7F1D1Du : (crsdk_mode > 0u ? 0xFF1E1B4Bu : 0xFF0F172Au);
+        uint32_t bd = (flash_blk_cnt > 0u) ? 0xFFEF4444u : (crsdk_mode > 0u ? 0xFFA78BFAu : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        /* Firewall Shield LED (emerald=active & eMMC=0) + ND clamp indicator */
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, (flash_blk_en && emmc_zero) ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, (flash_blk_cnt > 0u) ? 0xFFEF4444u : 0xFFA78BFAu);
+
+        char clbl[60];
+        unsigned cp = 0u;
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), "[PTP:");
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), k_ptp_lbl[crsdk_mode]);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), " D2");
+        cp = fx6_append_hex2(clbl, cp, sizeof(clbl), last_d2_low);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), " 9280:BLK=");
+        cp = fx6_append_uint(clbl, cp, sizeof(clbl), flash_blk_cnt);
+        cp = fx6_append_cstr(clbl, cp, sizeof(clbl), p4_nd_clamped ? " ND:CLR]" : "]");
+        (void)cp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, clbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 4. Full-Width Row 2 Firewall & Telemetry Strip (x=18..1006, y=320..344) */
+    {
+        int sx = 18, sw = 988, sh = 24;
+        uint32_t sbg = (flash_blk_cnt > 0u || p12_blk_cnt > 0u || uvc_osd_blk) ? 0xFF451A03u : 0xFF090D16u;
+        uint32_t sbd = (flash_blk_cnt > 0u) ? 0xFFEF4444u : 0xFF38BDF8u;
+        fx6_osd_fill_rect(sx, row2_y, sw, sh, sbg);
+        fx6_osd_border_rect(sx, row2_y, sw, sh, sbd);
+
+        /* Status LED array on left */
+        fx6_osd_fill_rect(sx + 6, row2_y + 5, 10, 14, uvc_clean_feed ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 20, row2_y + 5, 10, 14, p12_wlan_off ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 34, row2_y + 5, 10, 14, (flash_blk_en && emmc_zero) ? 0xFFA78BFAu : 0xFFEF4444u);
+
+        char flbl[96];
+        unsigned fp = 0u;
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "[UVCS FW: UVC_CLN=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), uvc_clean_feed);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " P12_WLAN_OFF=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), p12_wlan_off);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " WF12=0 PTP_FLASH_BLK=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), flash_blk_en);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " EMMC_WR=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), emmc_zero ? 0u : 1u);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " BLK_9280=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), flash_blk_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " SAFE_D2=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), safe_cmd_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), " P12_BLK=");
+        fp = fx6_append_uint(flbl, fp, sizeof(flbl), p12_blk_cnt);
+        fp = fx6_append_cstr(flbl, fp, sizeof(flbl), "]");
+        (void)fp;
+        fx6_render_string_text_styled(appfw, sx + 50, row2_y + 2, sw - 58, 20, flbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+}
+
+static void fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay(uint64_t appfw, uint32_t page) {
+    if (!g_osd || !(g_live_p129_mxf_bridge & 0x80000000u) ||
+        !(g_live_p129_ptpv2_ltc & 0x80000000u) ||
+        !(g_live_p129_tsl_tally_umd & 0x80000000u)) {
+        return;
+    }
+
+    static const char * const k_mxf_lbl[4]   = { "MP4-RTMD", "OP1A-RDD09", "DUAL-MXF", "MP4-RTMD" };
+    static const char * const k_gamma_lbl[6] = { "CINE", "SL3C", "SL3", "709", "HLG", "CINE" };
+    static const char * const k_sync_lbl[4]  = { "OFF", "PTP2", "LTC-HO", "OFF" };
+    static const char * const k_tly_lbl[4]   = { "OFF", "PVW", "PGM", "PGM+PVW" };
+
+    uint32_t container_idx   = g_live_p129_mxf_bridge & 0x03u;
+    if (container_idx > 2u) container_idx = 0u;
+    uint32_t umid_digest8    = (g_live_p129_mxf_bridge >> 2) & 0xffu;
+    uint32_t gamma_idx       = (g_live_p129_mxf_bridge >> 10) & 0x0fu;
+    if (gamma_idx > 4u) gamma_idx = 0u;
+    uint32_t ei_val          = ((g_live_p129_mxf_bridge >> 14) & 0x3ffu) * 100u;
+    if (ei_val < 200u) ei_val = 800u;
+    uint32_t zero_loss       = (g_live_p129_mxf_bridge >> 24) & 0x01u;
+    uint32_t emmc_zero       = (g_live_p129_mxf_bridge >> 25) & 0x01u;
+    uint32_t klv_valid       = (g_live_p129_mxf_bridge >> 26) & 0x01u;
+    uint32_t mxf_blk_cnt     = (g_live_p129_mxf_bridge >> 28) & 0x07u;
+
+    uint32_t sync_mode       = g_live_p129_ptpv2_ltc & 0x03u;
+    if (sync_mode > 2u) sync_mode = 0u;
+    uint32_t servo_locked    = (g_live_p129_ptpv2_ltc >> 2) & 0x01u;
+    uint32_t ltc_holdover    = (g_live_p129_ptpv2_ltc >> 3) & 0x01u;
+    uint32_t p12_wlan_off    = (g_live_p129_ptpv2_ltc >> 4) & 0x01u;
+    uint32_t wf12_zero       = (g_live_p129_ptpv2_ltc >> 5) & 0x01u;
+    uint32_t offset_ns       = (g_live_p129_ptpv2_ltc >> 7) & 0xfffu;
+    uint32_t slip_mf         = (g_live_p129_ptpv2_ltc >> 19) & 0x3fu;
+    uint32_t p12_blk_cnt     = (g_live_p129_ptpv2_ltc >> 25) & 0x3fu;
+
+    uint32_t tally_state     = g_live_p129_tsl_tally_umd & 0x03u;
+    uint32_t stealth_mute    = (g_live_p129_tsl_tally_umd >> 2) & 0x01u;
+    uint32_t osd_tally_on    = (g_live_p129_tsl_tally_umd >> 3) & 0x01u;
+    uint32_t tcp_dle_stx     = (g_live_p129_tsl_tally_umd >> 5) & 0x01u;
+    uint32_t green_gpio_ok   = (g_live_p129_tsl_tally_umd >> 6) & 0x01u;
+    uint32_t cam_slot        = (g_live_p129_tsl_tally_umd >> 7) & 0x07u;
+
+    /* 1. Studio Broadcast TSL UMD v5.0 Perimeter Tally Frame Border (ARGB8888) */
+    if (tally_state > 0u && osd_tally_on) {
+        uint32_t outer_c = (tally_state == 1u) ? 0xFF10B981u : 0xFFEF4444u;
+        uint32_t inner_c = (tally_state == 1u) ? 0xFF047857u : ((tally_state == 3u) ? 0xFF10B981u : 0xFFB91C1Cu);
+        /* 4px outer border around full 1024x540 frame */
+        fx6_osd_fill_rect(0, 0, FX6_W, 4, outer_c);
+        fx6_osd_fill_rect(0, FX6_H - 4, FX6_W, 4, outer_c);
+        fx6_osd_fill_rect(0, 0, 4, FX6_H, outer_c);
+        fx6_osd_fill_rect(FX6_W - 4, 0, 4, FX6_H, outer_c);
+        /* 3px inner accent border */
+        fx6_osd_fill_rect(4, 4, FX6_W - 8, 3, inner_c);
+        fx6_osd_fill_rect(4, FX6_H - 7, FX6_W - 8, 3, inner_c);
+        fx6_osd_fill_rect(4, 4, 3, FX6_H - 8, inner_c);
+        fx6_osd_fill_rect(FX6_W - 7, 4, 3, FX6_H - 8, inner_c);
+    }
+
+    uint32_t p = page % 25u;
+    int is_hud_page = (p == 6u || p == 16u || p == 17u);
+    int non_default = (container_idx > 0u || mxf_blk_cnt > 0u ||
+                       sync_mode > 0u || ltc_holdover || p12_blk_cnt > 0u ||
+                       tally_state > 0u || stealth_mute || tcp_dle_stx || cam_slot > 0u);
+    if (!is_hud_page && !non_default) {
+        return;
+    }
+
+    const int row1_y = 350;
+    const int row2_y = 382;
+
+    /* 2. Left Badge (x=18..342): XAVC MXF OP1a <-> MP4 RDD-18/UMID Container Bridge */
+    {
+        int bx = 18, bw = 324, bh = 28;
+        uint32_t bg = mxf_blk_cnt ? 0xFF7F1D1Du : (container_idx > 0u ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t bd = mxf_blk_cnt ? 0xFFEF4444u : (container_idx > 0u ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, (zero_loss && emmc_zero && klv_valid) ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, container_idx > 0u ? 0xFF34D399u : 0xFF38BDF8u);
+
+        char mlbl[64];
+        unsigned mp = 0u;
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), "[MXF:");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), k_mxf_lbl[container_idx]);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " U:");
+        mp = fx6_append_hex2(mlbl, mp, sizeof(mlbl), umid_digest8);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " ");
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), k_gamma_lbl[gamma_idx]);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), " EI");
+        mp = fx6_append_uint(mlbl, mp, sizeof(mlbl), ei_val);
+        mp = fx6_append_cstr(mlbl, mp, sizeof(mlbl), zero_loss ? " L0]" : " L!]");
+        (void)mp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, mlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 3. Center Badge (x=350..674): SMPTE ST 2059-2 PTPv2 vs LTC Frame-Phase Servo + P12 */
+    {
+        int bx = 350, bw = 324, bh = 28;
+        uint32_t bg = p12_blk_cnt ? 0xFF78350Fu : (ltc_holdover ? 0xFF451A03u : (servo_locked ? 0xFF083344u : 0xFF0F172Au));
+        uint32_t bd = p12_blk_cnt ? 0xFFF59E0Bu : (ltc_holdover ? 0xFFF59E0Bu : (servo_locked ? 0xFF22D3EEu : 0xFF475569u));
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 8, 12, (p12_wlan_off && wf12_zero) ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, 0xFF1E293Bu);
+        if (sync_mode > 0u) {
+            int bar_w = servo_locked ? (ltc_holdover ? 38 : 54) : 14;
+            fx6_osd_fill_rect(bx + 6, row1_y + 21, bar_w, 3, ltc_holdover ? 0xFFF59E0Bu : 0xFF22D3EEu);
+        }
+
+        char plbl[64];
+        unsigned pp = 0u;
+        pp = fx6_append_cstr(plbl, pp, sizeof(plbl), "[");
+        pp = fx6_append_cstr(plbl, pp, sizeof(plbl), k_sync_lbl[sync_mode]);
+        if (sync_mode == 1u) {
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), servo_locked ? ":LOCK " : ":UNLOCK ");
+            pp = fx6_append_uint(plbl, pp, sizeof(plbl), offset_ns);
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), "ns");
+        } else if (sync_mode == 2u) {
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), ":0.");
+            pp = fx6_append_2d(plbl, pp, sizeof(plbl), slip_mf);
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), "f SLIP");
+        } else {
+            pp = fx6_append_cstr(plbl, pp, sizeof(plbl), ":IDLE");
+        }
+        pp = fx6_append_cstr(plbl, pp, sizeof(plbl), p12_wlan_off ? " P12]" : " RF!]");
+        (void)pp;
+        fx6_render_string_text_styled(appfw, bx + 18, row1_y + 2, bw - 24, 18, plbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 4. Right Badge (x=682..1006): TSL UMD v5.0 Studio Tally + 16-Char Camera Nameplate */
+    {
+        int bx = 682, bw = 324, bh = 28;
+        uint32_t bg = (tally_state >= 2u) ? 0xFF7F1D1Du : (tally_state == 1u ? 0xFF064E3Bu : 0xFF0F172Au);
+        uint32_t bd = (tally_state >= 2u) ? 0xFFEF4444u : (tally_state == 1u ? 0xFF10B981u : 0xFF475569u);
+        fx6_osd_fill_rect(bx, row1_y, bw, bh, bg);
+        fx6_osd_border_rect(bx, row1_y, bw, bh, bd);
+
+        uint32_t led_c = 0xFF475569u;
+        if (tally_state == 1u) led_c = 0xFF10B981u;
+        else if (tally_state == 2u) led_c = 0xFFEF4444u;
+        else if (tally_state == 3u) led_c = 0xFFF59E0Bu;
+        fx6_osd_fill_rect(bx + 6, row1_y + 5, 10, 12, stealth_mute ? 0xFF334155u : led_c);
+        fx6_osd_fill_rect(bx + 6, row1_y + 21, 56, 3, led_c);
+
+        char tlbl[64];
+        unsigned tp = 0u;
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), "[TSL CAM");
+        tp = fx6_append_uint(tlbl, tp, sizeof(tlbl), cam_slot + 1u);
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), " ");
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), k_tly_lbl[tally_state]);
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), ": ");
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), g_live_p129_umd_name);
+        tp = fx6_append_cstr(tlbl, tp, sizeof(tlbl), "]");
+        (void)tp;
+        fx6_render_string_text_styled(appfw, bx + 20, row1_y + 2, bw - 26, 18, tlbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
+    }
+
+    /* 5. Full-Width Row 2 Dynamic 16-Char UMD & MXFT Guard Strip (x=18..1006, y=382..406) */
+    {
+        int sx = 18, sw = 988, sh = 24;
+        uint32_t sbg = (tally_state >= 2u) ? 0xFF450A0Au : (tally_state == 1u ? 0xFF052E16u : 0xFF090D16u);
+        uint32_t sbd = (tally_state >= 2u) ? 0xFFEF4444u : (tally_state == 1u ? 0xFF10B981u : 0xFF38BDF8u);
+        fx6_osd_fill_rect(sx, row2_y, sw, sh, sbg);
+        fx6_osd_border_rect(sx, row2_y, sw, sh, sbd);
+
+        fx6_osd_fill_rect(sx + 6, row2_y + 5, 10, 14, (zero_loss && emmc_zero) ? 0xFF10B981u : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 20, row2_y + 5, 10, 14, (p12_wlan_off && wf12_zero) ? 0xFF22D3EEu : 0xFFEF4444u);
+        fx6_osd_fill_rect(sx + 34, row2_y + 5, 10, 14, green_gpio_ok ? 0xFFA78BFAu : 0xFFEF4444u);
+
+        char ulbl[112];
+        unsigned up = 0u;
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "[UMD:\"");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), g_live_p129_umd_name);
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "\" TSL5:");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), tcp_dle_stx ? "TCP" : "UDP");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), stealth_mute ? " STL_MUTE=1" : " LED=ACT");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), osd_tally_on ? " OSD=1" : " OSD=0");
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " P12_WLAN_OFF=");
+        up = fx6_append_uint(ulbl, up, sizeof(ulbl), p12_wlan_off);
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), " EMMC=0B MXF_LOSS=0 SPVC_BLK=");
+        up = fx6_append_uint(ulbl, up, sizeof(ulbl), mxf_blk_cnt);
+        up = fx6_append_cstr(ulbl, up, sizeof(ulbl), "]");
+        (void)up;
+        fx6_render_string_text_styled(appfw, sx + 50, row2_y + 2, sw - 58, 20, ulbl,
+                                      0x0200600bu, 0x0200600bu, 0x0200a029u, 0u, 1u);
     }
 }
 
@@ -1093,7 +4179,8 @@ static int g_cache_next = 0;
 
 static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_cat,
                                uint32_t menu_item, uint32_t menu_depth,
-                               const uint32_t *cell_vals, uint32_t rec_fmt_idx) {
+                               const uint32_t *cell_vals, uint32_t rec_fmt_idx, uint32_t lang,
+                               uint32_t ibis_xlr) {
     uint64_t h = 1469598103934665603ULL;
     h = (h ^ page) * 1099511628211ULL;
     h = (h ^ sel_box) * 1099511628211ULL;
@@ -1101,6 +4188,47 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
     h = (h ^ menu_item) * 1099511628211ULL;
     h = (h ^ menu_depth) * 1099511628211ULL;
     h = (h ^ rec_fmt_idx) * 1099511628211ULL;
+    h = (h ^ lang) * 1099511628211ULL;
+    h = (h ^ ibis_xlr) * 1099511628211ULL;
+    h = (h ^ g_live_lut_meta) * 1099511628211ULL;
+    h = (h ^ g_live_audio_packed) * 1099511628211ULL;
+    h = (h ^ g_live_p40_flags) * 1099511628211ULL;
+    h = (h ^ g_live_p64_flags) * 1099511628211ULL;
+    h = (h ^ g_live_p64_shutter_sq) * 1099511628211ULL;
+    h = (h ^ g_live_p64_tc) * 1099511628211ULL;
+    h = (h ^ g_live_p73_wb_look) * 1099511628211ULL;
+    h = (h ^ g_live_p73_media_clip) * 1099511628211ULL;
+    h = (h ^ g_live_p73_flags2) * 1099511628211ULL;
+    h = (h ^ g_live_p81_touch_af) * 1099511628211ULL;
+    h = (h ^ g_live_p81_pdaf_mag_fc) * 1099511628211ULL;
+    h = (h ^ g_live_p81_ciz_flags) * 1099511628211ULL;
+    h = (h ^ g_live_p88_shotmark) * 1099511628211ULL;
+    h = (h ^ g_live_p88_iris_audio) * 1099511628211ULL;
+    h = (h ^ g_live_p88_user_bits) * 1099511628211ULL;
+    h = (h ^ g_live_p95_anamorphic_ibis) * 1099511628211ULL;
+    h = (h ^ g_live_p95_gyro_rtmd) * 1099511628211ULL;
+    h = (h ^ g_live_p95_tone_limiter) * 1099511628211ULL;
+    h = (h ^ g_live_p102_cache_interval) * 1099511628211ULL;
+    h = (h ^ g_live_p102_interval_ftp) * 1099511628211ULL;
+    h = (h ^ g_live_p102_lut_ftps) * 1099511628211ULL;
+    h = (h ^ g_live_p109_fleet_sdi) * 1099511628211ULL;
+    h = (h ^ g_live_p109_mount_shading) * 1099511628211ULL;
+    h = (h ^ g_live_p109_c2pa_prov) * 1099511628211ULL;
+    h = (h ^ g_live_p116_hlg_colorimetry) * 1099511628211ULL;
+    h = (h ^ g_live_p116_display_assist) * 1099511628211ULL;
+    h = (h ^ g_live_p116_raw_breathing) * 1099511628211ULL;
+    h = (h ^ g_live_p123_uvc_uac) * 1099511628211ULL;
+    h = (h ^ g_live_p123_srt_rtmps) * 1099511628211ULL;
+    h = (h ^ g_live_p123_crsdk_ptp) * 1099511628211ULL;
+    h = (h ^ g_live_p129_mxf_bridge) * 1099511628211ULL;
+    h = (h ^ g_live_p129_ptpv2_ltc) * 1099511628211ULL;
+    h = (h ^ g_live_p129_tsl_tally_umd) * 1099511628211ULL;
+    for (int i = 0; i < 16 && g_live_p129_umd_name[i]; i++) {
+        h = (h ^ (uint64_t)(unsigned char)g_live_p129_umd_name[i]) * 1099511628211ULL;
+    }
+    for (int i = 0; i < 24 && g_live_lut_name[i]; i++) {
+        h = (h ^ (uint64_t)(unsigned char)g_live_lut_name[i]) * 1099511628211ULL;
+    }
     for (int i = 0; i < 6; i++) {
         h = (h ^ cell_vals[i]) * 1099511628211ULL;
     }
@@ -1111,9 +4239,13 @@ static uint64_t fx6_state_hash(uint32_t page, uint32_t sel_box, uint32_t menu_ca
 
 static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
                                 uint32_t menu_cat, uint32_t menu_item, uint32_t menu_depth,
-                                const uint32_t *cell_vals, uint32_t rec_fmt_idx) {
+                                const uint32_t *cell_vals, uint32_t rec_fmt_idx, uint32_t lang,
+                                uint32_t ibis_xlr) {
     fx6_init_syms();
-    uint64_t h = fx6_state_hash(page, sel_box, menu_cat, menu_item, menu_depth, cell_vals, rec_fmt_idx);
+    for (int i = 0; i < 6; i++) g_live_cells[i] = cell_vals ? cell_vals[i] : 0u;
+    g_live_cells[3] = 0u; /* P4 ND-Clear Hardware Lock */
+    g_live_ibis_xlr = ibis_xlr;
+    uint64_t h = fx6_state_hash(page, sel_box, menu_cat, menu_item, menu_depth, g_live_cells, rec_fmt_idx, lang, ibis_xlr);
 
     for (int i = 0; i < CACHE_SLOTS; i++) {
         if (g_cache[i].valid && g_cache[i].hash == h && g_cache[i].pixels) {
@@ -1277,6 +4409,20 @@ static void fx6_render_dispatch(uint64_t appfw, uint32_t page, uint32_t sel_box,
         }
         break;
     }
+    if (!(g_live_p40_flags & 0x40000000u)) {
+        fx6_render_phase40_hud_strip(appfw, page, cell_vals);
+        fx6_render_phase56_assist_overlays(appfw, page);
+        fx6_render_phase64_cine_exposure_overlay(appfw, page);
+        fx6_render_phase73_wb_look_dualslot_overlay(appfw, page);
+        fx6_render_phase81_touchaf_falsecolor_ciz_overlay(appfw, page);
+        fx6_render_phase88_shotmark_iris_overlay(appfw, page);
+        fx6_render_phase95_gyroflow_anamorphic_tone_overlay(appfw, page);
+        fx6_render_phase102_cache_interval_lut_ftps_overlay(appfw, page);
+        fx6_render_phase109_mcfleet_sdi_c2pa_overlay(appfw, page);
+        fx6_render_phase116_hlg_raw_breathing_overlay(appfw, page);
+        fx6_render_phase123_uvc_srt_crsdk_ptp_overlay(appfw, page);
+        fx6_render_phase129_mxf_ptpv2_tsl_tally_overlay(appfw, page);
+    }
     if (g_syms.processCommands) g_syms.processCommands(0);
 
     /* Store into cache slot */
@@ -1377,7 +4523,12 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
     case 5: /* SET */
         if (page == 0u || page == 3u) {
             uint32_t c = sel_box % 6u;
-            mb[8 + c] = (mb[8 + c] + 1u) % (uint32_t)g_cell_specs[c].n_vals;
+            if (c == 3u) {
+                /* P4 Hardware Contract: FX3 body has no physical ND wheel -> lock to Clear */
+                mb[8 + 3] = 0u;
+            } else {
+                mb[8 + c] = (mb[8 + c] + 1u) % (uint32_t)g_cell_specs[c].n_vals;
+            }
         } else if (page == 1u) {
             if (menu_depth == 0u) {
                 menu_depth = 1u;
@@ -1392,7 +4543,7 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
                     menu_depth = 2u;
                     menu_item = 0u;
                 } else if (menu_cat == 4u && menu_item >= 1u && menu_item <= 6u) {
-                    mb[8 + 5] = menu_item - 1u;
+                    mb[8 + 4] = (menu_item - 1u) % 6u;
                 } else {
                     menu_depth = 2u;
                     menu_item = 0u;
@@ -1401,7 +4552,7 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
                 if (menu_cat == 3u) {
                     mb[14] = menu_item % 5u;
                 } else {
-                    mb[8 + 5] = menu_item % 7u;
+                    mb[8 + 4] = menu_item % 6u;
                 }
                 menu_depth = 1u;
             }
@@ -1428,7 +4579,7 @@ static void fx6_apply_key(uint32_t key, volatile uint32_t *mb) {
         break;
     case 9: /* DISP: cycle through curated FX6 UI pages 0..23 cleanly (skipping 24=Universal unless explicitly set) */
         page = (page + 1u) % 24u;
-        sel_box = (page == 0u) ? 5u : 0u;
+        sel_box = (page == 0u) ? 4u : 0u;
         break;
     default:
         break;
@@ -1456,17 +4607,17 @@ void fx6_force_update(void) {
     fx6_gds_install(fb);
     int (*setcwd)(const char *) = (int (*)(const char *))dlsym((void *)-1, "_ZN2ux4core6Kernel23sys_setCurrentDirectoryEPKc");
     int (*setdb)(const char *) = (int (*)(const char *))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager11setDatabaseEPKc");
-    int (*setns)(unsigned short) = (int (*)(unsigned short))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager28sys_setFontNameWithNamespaceEt");
-    int (*swbank)(unsigned short, unsigned char) = (int (*)(unsigned short, unsigned char))dlsym((void *)-1, "_ZN2ux6resmgr15ResourceManager10switchBankEth");
     if (setcwd) setcwd("/usr/share/app/");
     if (setdb) dprintf(2, "FX6_LIVE setdb=%d\n", setdb("global.xdb"));
-    if (setns) dprintf(2, "FX6_LIVE setns=%d\n", setns(5));
-    if (swbank) { swbank(0, 0); swbank(1, 4); swbank(2, 4); }
+    if (g_syms.setFontNameWithNamespace) dprintf(2, "FX6_LIVE setns=%d\n", g_syms.setFontNameWithNamespace(5));
+    g_cur_lang = 0u;
+    if (g_syms.switchBank) { g_syms.switchBank(0, 0); g_syms.switchBank(1, 4); g_syms.switchBank(2, 4); }
 
     /* Large arenas so repeated interactive page renders never exhaust memory */
     fx6_add_arena(0, 0x200000U, 0x4000000U);
     fx6_add_arena(1, 0x100000U, 0x2000000U);
     fx6_add_arena(2, 0x100000U, 0x1000000U);
+    if (!g_icon_slab) g_icon_slab = (uint8_t *)calloc(1, FX6_ICON_SLAB_BYTES);
     fx6_load_fonts();
     fx6_model_ready(g_appfw);
     fx6_engine_gate_auto();
@@ -1485,35 +4636,120 @@ void fx6_force_update(void) {
 
     uint32_t cell_vals[6] = { 0, 0, 0, 0, 0, 0 };
     if (mb) {
-        for (int i = 0; i < 16; i++) mb[i] = 0;
+        for (int i = 0; i < 48; i++) mb[i] = 0;
         mb[0] = 0x4658364cu; /* 'FX6L' */
         mb[1] = 1u;          /* cmd_seq */
         mb[2] = 0u;          /* ack_seq */
         mb[3] = 0u;          /* page 0: Big-6 Home */
-        mb[4] = 5u;          /* sel_box: Base Look highlighted */
+        mb[4] = 4u;          /* sel_box: Base Look / 3D LUT highlighted */
         mb[5] = 2u;          /* menu_cat: Shooting */
         mb[6] = 0u;          /* menu_item */
         mb[7] = 0u;          /* menu_depth */
+        mb[16] = 0u;         /* lang_id: 0=EN */
+        mb[17] = 0u;         /* fx3_p10_hwcode telemetry */
+        mb[18] = 0u;         /* cinema_p11_state (ibis_idx=0, xlr_idx=0) */
+        mb[19] = 0u;         /* lut_tint_meta */
+        mb[26] = 0x30303030u;/* audio_db_packed (-12 dB ch1..ch4) */
+        mb[27] = 0x303u;     /* phase40_flags: attached=1, +48V=1, bk4=1, valid=1 */
+        mb[28] = 0x8003000cu;/* phase64_flags: valid=1, p12=1, p4_nd_absent=1, base800, ei_step=6, angle, stby, tally=on */
+        mb[29] = (24u << 20) | 1800u; /* sq_fps=24, shutter_angle=180.0 deg */
+        mb[30] = 0u;         /* phase64_tc_frames */
+        mb[31] = 0x43494e45u;/* 'CINE' */
+        mb[32] = 0xc0c6af02u;/* phase73_wb_look: valid=1, soft_map=1, S-Cinetone, SL=off, tint=0(99), 5600K, preset_5600k */
+        mb[33] = 0xa0020020u;/* phase73_media_clip: proxy_eff=1, 16M, simul, clip=1, pos=C, reel=1, cam=A */
+        mb[34] = 0u;         /* phase73_flags2 */
+        mb[35] = 0x57424c4du;/* 'WBLM' */
+        mb[36] = 0x4e50e780u;/* phase81_touch_af: off, (480,270), pdaf=313 */
+        mb[37] = 0x64648250u;/* phase81_pdaf_mag_fc: (16,9), mag=1x, fc=off, hdmi=1x, eff=100, req=100 */
+        mb[38] = 0x80000004u;/* phase81_ciz_flags: valid=1, spd=4 */
+        mb[39] = 0x54414643u;/* 'TAFC' */
+        mb[40] = 0u;         /* phase88_shotmark */
+        mb[41] = 0xa9040118u;/* phase88_iris_audio: valid=1, ire=41, pad=0, push=0, ae=0, multi, F2.8 */
+        mb[42] = 0xa0010001u;/* phase88_user_bits: A0:01:00:01 */
+        mb[43] = 0x534d524bu;/* 'SMRK' */
+        mb[44] = 0x8f032048u;/* phase95_anamorphic_ibis: valid=1, touch_x=480, yaw=100%, eff=Std, req=Std */
+        mb[45] = 0x64857342u;/* phase95_gyro_rtmd: sq=1.0(50), ready=1, skew=8.7ms(87), imu=83.4(834) */
+        mb[46] = 0x80507800u;/* phase95_tone_limiter: valid=1, tone=-20dBFS, lim=-3.0dBFS */
+        mb[47] = 0x4759524fu;/* 'GYRO' */
+        mb[48] = 0xa2800000u;/* phase102_cache_interval: valid=1, ae=Mid(1), intvl=5s, cache=0s */
+        mb[49] = 0xc01e0000u;/* phase102_interval_shots_ftp: eshut=1, p12_safe=1, ftps=Off, target=120, shots=0 */
+        mb[50] = 0x80001900u;/* phase102_lut_ftps_queue: valid=1, contrast=100, slot=0 */
+        mb[51] = 0x49434c46u;/* 'ICLF' */
+        mb[52] = 0x9814c888u;/* phase109_fleet_sdi: valid=1, tc=1, p12=1, cs=0xa6, avi_ok=1, sdi=1, cams=1, role=Solo */
+        mb[53] = 0x83301e10u;/* phase109_mount_shading: valid=1, focal=24mm, pins=12, kg=0.7, gain=1.32x, E-12Pin */
+        mb[54] = 0x80000014u;/* phase109_c2pa_provenance: valid=1, ro_zero_touch=1, clean_room=1 */
+        mb[55] = 0x4d43464cu;/* 'MCFL' */
+        mb[56] = 0x829a60e0u;/* phase116_hlg_colorimetry: valid=1, 100n, cs=0x69, cta_ok=1, eotf=0, detail=0(7), BT709, HLG=OFF */
+        mb[57] = 0xa90a0180u;/* phase116_display_assist: valid=1, ire=41, vf_nit=100, xavc_unassist=1, clean_hdmi=1, assist=OFF */
+        mb[58] = 0x80c809c0u;/* phase116_raw_breathing: valid=1, crop=1.00x(100), lens_meta=1, 5600K(56), ext_raw=OFF */
+        mb[59] = 0x484c4741u;/* 'HLGA' */
+        mb[60] = 0x820000c0u;/* phase123_uvc_uac: valid=1, uac_ch=2, clean_feed=1, uac=1, uvc=OFF */
+        mb[61] = 0x80660788u;/* phase123_srt_rtmps: valid=1, wired=1, p12_wlan_off=1, 12Mbps, 120ms, AES-256, srt=OFF */
+        mb[62] = 0x8000043cu;/* phase123_crsdk_ptp: valid=1, d2xx=0x10, nd_clr=1, p12=1, emmc0=1, blk=1, ptp=OFF */
+        mb[63] = 0x55564353u;/* 'UVCS' */
+        mb[64] = 0x870203c4u;/* phase129_mxf_bridge: valid=1, klv=1, emmc0=1, loss0=1, ei=800, umid=0xf1, mode=MP4_RTMD */
+        mb[65] = 0x80000070u;/* phase129_ptpv2_ltc: valid=1, cdc_ncm=1, wf12_0=1, p12_wlan_off=1, sync=OFF */
+        mb[66] = 0xb3b11858u;/* phase129_tsl_tally_umd: valid=1, tag=FX3, cam=CAM1, green_ok=1, p12=1, osd=1, tally=OFF */
+        mb[67] = 0x4d584654u;/* 'MXFT' */
+        mb[68] = 0x2d335846u;/* "FX3-" */
+        mb[69] = 0x314d4143u;/* "CAM1" */
+        mb[70] = 0x5554532du;/* "-STU" */
+        mb[71] = 0x004f4944u;/* "DIO\0" */
     }
+    g_live_lut_meta = 0u;
+    g_live_lut_name[0] = 0;
+    g_live_audio_packed = 0x30303030u;
+    g_live_p40_flags = 0x303u;
+    g_live_p64_flags = 0x8003000cu;
+    g_live_p64_shutter_sq = (24u << 20) | 1800u;
+    g_live_p64_tc = 0u;
+    g_live_p73_wb_look = 0xc0c6af02u;
+    g_live_p73_media_clip = 0xa0020020u;
+    g_live_p73_flags2 = 0u;
+    g_live_p81_touch_af = 0x4e50e780u;
+    g_live_p81_pdaf_mag_fc = 0x64648250u;
+    g_live_p81_ciz_flags = 0x80000004u;
+    g_live_p88_shotmark = 0u;
+    g_live_p88_iris_audio = 0xa9040118u;
+    g_live_p88_user_bits = 0xa0010001u;
+    g_live_p95_anamorphic_ibis = 0x8f032048u;
+    g_live_p95_gyro_rtmd = 0x64857342u;
+    g_live_p95_tone_limiter = 0x80507800u;
+    g_live_p102_cache_interval = 0xa2800000u;
+    g_live_p102_interval_ftp = 0xc01e0000u;
+    g_live_p102_lut_ftps = 0x80001900u;
+    g_live_p109_fleet_sdi = 0x98194888u;
+    g_live_p109_mount_shading = 0x83301e10u;
+    g_live_p109_c2pa_prov = 0x80000014u;
+    g_live_p116_hlg_colorimetry = 0x829a60e0u;
+    g_live_p116_display_assist = 0xa90a0180u;
+    g_live_p116_raw_breathing = 0x80c809c0u;
+    g_live_p123_uvc_uac = 0x820000c0u;
+    g_live_p123_srt_rtmps = 0x80660788u;
+    g_live_p123_crsdk_ptp = 0x8000043cu;
+    g_live_p129_mxf_bridge = 0x870203c4u;
+    g_live_p129_ptpv2_ltc = 0x80000070u;
+    g_live_p129_tsl_tally_umd = 0xb3b11858u;
+    fx6_unpack_umd_name(mb, g_live_p129_tsl_tally_umd, g_live_p129_umd_name, sizeof(g_live_p129_umd_name));
 
     /* Pre-warm Page 1 (Three-Layer Menu) and Page 6 (HUD Strip) into guest RAM cache
      * so clicking MENU or DISP in the browser is instantaneous (<25ms)! */
-    fx6_render_dispatch(g_appfw, 1u, 5u, 2u, 0u, 0u, cell_vals, 0u);
-    fx6_render_dispatch(g_appfw, 6u, 5u, 2u, 0u, 0u, cell_vals, 0u);
+    fx6_render_dispatch(g_appfw, 1u, 4u, 2u, 0u, 0u, cell_vals, 0u, g_cur_lang, 0u);
+    fx6_render_dispatch(g_appfw, 6u, 4u, 2u, 0u, 0u, cell_vals, 0u, g_cur_lang, 0u);
 
     /* Render initial Big-6 Home page */
-    fx6_render_dispatch(g_appfw, mb ? mb[3] : 0u, mb ? mb[4] : 5u,
+    fx6_render_dispatch(g_appfw, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
                         mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-                        cell_vals, mb ? mb[14] : 0u);
+                        cell_vals, mb ? mb[14] : 0u, g_cur_lang, mb ? mb[18] : 0u);
     uint32_t nz = fx6_count_nonzero(g_osd);
     if (mb) {
         mb[15] = ((uint32_t)g_text_ok << 24) | (nz & 0x00ffffffu);
         mb[2]  = mb[1];
     }
-    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d\n",
-            mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 5u,
+    dprintf(2, "FX6_LIVE_READY seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u p64=0x%08x p73=0x%08x p81=0x%08x p88=0x%08x p95=0x%08x p102=0x%08x p109=0x%08x p116=0x%08x p123=0x%08x p129=0x%08x\n",
+            mb ? mb[2] : 1u, mb ? mb[3] : 0u, mb ? mb[4] : 4u,
             mb ? mb[5] : 2u, mb ? mb[6] : 0u, mb ? mb[7] : 0u,
-            nz, g_text_ok, g_fill_n, g_icon_n);
+            nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, g_live_p64_flags, g_live_p73_wb_look, g_live_p81_ciz_flags, g_live_p88_iris_audio, g_live_p95_anamorphic_ibis, g_live_p102_cache_interval, g_live_p109_fleet_sdi, g_live_p116_hlg_colorimetry, g_live_p123_uvc_uac, g_live_p129_mxf_bridge);
     fx6_scan_osd();
 
     /* Persistent interactive loop on tid 222 (owns ux::core TLS) */
@@ -1529,21 +4765,139 @@ void fx6_force_update(void) {
             }
         }
         if (mb && mb[0] == 0x4658364cu && mb[1] != mb[2]) {
-            uint32_t req_seq = mb[1];
-            uint32_t page    = mb[3];
-            uint32_t sel_box = mb[4];
-            uint32_t cat     = mb[5];
-            uint32_t item    = mb[6];
-            uint32_t depth   = mb[7];
-            uint32_t rec_fmt = mb[14];
+            uint32_t req_seq  = mb[1];
+            uint32_t page     = mb[3];
+            uint32_t sel_box  = mb[4];
+            uint32_t cat      = mb[5];
+            uint32_t item     = mb[6];
+            uint32_t depth    = mb[7];
+            uint32_t rec_fmt  = mb[14];
+            uint32_t lang     = mb[16];
+            uint32_t ibis_xlr = mb[18];
             for (int i = 0; i < 6; i++) cell_vals[i] = mb[8 + i];
+            if ((page % FX6_NUM_PAGES) != 24u) {
+                cell_vals[3] = 0u; /* P4 ND-Clear Lock */
+                mb[8 + 3] = 0u;
+            }
+            if (mb[27] & 0x200u) {
+                g_live_lut_meta     = mb[19];
+                fx6_unpack_lut_name(mb, g_live_lut_name, sizeof(g_live_lut_name));
+                g_live_audio_packed = mb[26];
+                g_live_p40_flags    = mb[27] | 0x100u; /* P12 BK4 Airplane-Mode Shadow Locked */
+            }
+            if (mb[28] & 0x80000000u) {
+                g_live_p64_flags      = mb[28] | 0x00030000u; /* Enforce P4 ND absent & P12 RF-OFF */
+                g_live_p64_shutter_sq = mb[29];
+                g_live_p64_tc         = mb[30];
+            } else if (mb[31] == 0x43494e45u) {
+                g_live_p64_flags      = mb[28] & ~0x80000000u;
+            }
+            if ((mb[32] & 0x80000000u) && mb[35] == 0x57424c4du) {
+                g_live_p73_wb_look    = mb[32] | 0x40000000u; /* FX3 WB switch soft-mapped */
+                g_live_p73_media_clip = mb[33];
+                g_live_p73_flags2     = mb[34];
+            } else if (mb[35] == 0x57424c4du) {
+                g_live_p73_wb_look    = mb[32] & ~0x80000000u;
+            }
+            if ((mb[38] & 0x80000000u) && mb[39] == 0x54414643u) {
+                g_live_p81_touch_af    = mb[36];
+                g_live_p81_pdaf_mag_fc = mb[37] | 0x8000u; /* clean_hdmi_unmagnified = 1 */
+                g_live_p81_ciz_flags   = mb[38];
+            } else if (mb[39] == 0x54414643u) {
+                g_live_p81_ciz_flags   = mb[38] & ~0x80000000u;
+            }
+            if ((mb[41] & 0x80000000u) && mb[43] == 0x534d524bu) {
+                g_live_p88_shotmark   = mb[40];
+                g_live_p88_iris_audio = mb[41];
+                g_live_p88_user_bits  = mb[42];
+            } else if (mb[43] == 0x534d524bu) {
+                g_live_p88_iris_audio = mb[41] & ~0x80000000u;
+            }
+            if ((mb[44] & 0x80000000u) && (mb[46] & 0x80000000u) && mb[47] == 0x4759524fu) {
+                g_live_p95_anamorphic_ibis = mb[44];
+                g_live_p95_gyro_rtmd       = mb[45];
+                g_live_p95_tone_limiter    = mb[46];
+            } else if (mb[47] == 0x4759524fu) {
+                g_live_p95_anamorphic_ibis = mb[44] & ~0x80000000u;
+                g_live_p95_tone_limiter    = mb[46] & ~0x80000000u;
+            }
+            if ((mb[48] & 0x80000000u) && (mb[50] & 0x80000000u) && mb[51] == 0x49434c46u) {
+                g_live_p102_cache_interval = mb[48];
+                g_live_p102_interval_ftp   = mb[49] | 0xc0000000u; /* Enforce P12-safe & E-Shutter */
+                g_live_p102_lut_ftps       = mb[50];
+            } else if (mb[51] == 0x49434c46u) {
+                g_live_p102_cache_interval = mb[48] & ~0x80000000u;
+                g_live_p102_lut_ftps       = mb[50] & ~0x80000000u;
+            }
+            if ((mb[52] & 0x80000000u) && (mb[53] & 0x80000000u) && (mb[54] & 0x80000000u) && mb[55] == 0x4d43464cu) {
+                g_live_p109_fleet_sdi     = mb[52] | 0x08000000u; /* Enforce P12 RF-OFF */
+                g_live_p109_mount_shading = mb[53];
+                if (g_live_p109_mount_shading & 1u) {
+                    /* Manual PL unchipped: enforce 1.00x identity shading & 0 pins */
+                    g_live_p109_mount_shading = (g_live_p109_mount_shading & ~((0xffu << 2) | (0xfu << 18))) | (1u << 1) | (100u << 2);
+                }
+                g_live_p109_c2pa_prov     = (mb[54] & ~(1u << 3)) | (1u << 2) | (1u << 4); /* Enforce zero-touch RO & no HW attestation forgery */
+            } else if (mb[55] == 0x4d43464cu) {
+                g_live_p109_fleet_sdi     = mb[52] & ~0x80000000u;
+                g_live_p109_mount_shading = mb[53] & ~0x80000000u;
+                g_live_p109_c2pa_prov     = mb[54] & ~0x80000000u;
+            }
+            if ((mb[56] & 0x80000000u) && (mb[57] & 0x80000000u) && (mb[58] & 0x80000000u) && mb[59] == 0x484c4741u) {
+                g_live_p116_hlg_colorimetry = mb[56];
+                /* Hard-enforce clean_hdmi_sdi_unassisted (bit7) & xavc_internal_unassisted (bit8) */
+                g_live_p116_display_assist  = mb[57] | (1u << 7) | (1u << 8);
+                g_live_p116_raw_breathing   = mb[58];
+                /* Enforce 1.00x Focus Breathing bypass when Manual PL unchipped or HDMI RAW is active */
+                if ((g_live_p109_mount_shading & 1u) || (g_live_p116_raw_breathing & 0x03u) || (((g_live_p64_flags >> 14) & 0x03u) == 2u)) {
+                    uint32_t pl_byp = (g_live_p109_mount_shading & 1u) ? (1u << 15) : 0u;
+                    uint32_t raw_byp = ((g_live_p116_raw_breathing & 0x03u) || (((g_live_p64_flags >> 14) & 0x03u) == 2u)) ? (1u << 16) : 0u;
+                    g_live_p116_raw_breathing = (g_live_p116_raw_breathing & ~((1u << 14) | (0xffu << 17))) | pl_byp | raw_byp | (100u << 17);
+                }
+            } else if (mb[59] == 0x484c4741u) {
+                g_live_p116_hlg_colorimetry = mb[56] & ~0x80000000u;
+                g_live_p116_display_assist  = mb[57] & ~0x80000000u;
+                g_live_p116_raw_breathing   = mb[58] & ~0x80000000u;
+            }
+            if ((mb[60] & 0x80000000u) && (mb[61] & 0x80000000u) && (mb[62] & 0x80000000u) && mb[63] == 0x55564353u) {
+                uint32_t uvc_w = mb[60];
+                uint32_t uvc_req = uvc_w & 0x03u;
+                uint32_t usb2_non_ss = (uvc_w >> 4) & 0x01u;
+                if (usb2_non_ss && (uvc_req == 1u || uvc_req == 2u)) {
+                    /* Automatic USB 2.0 480 Mbps step-down to 720p30 MJPEG */
+                    uvc_w = (uvc_w & ~((0x03u << 2) | (0x3fu << 8) | (0x3ffu << 14))) | (3u << 2) | (1u << 5) | (30u << 8) | (35u << 14);
+                }
+                /* Hard-enforce UVC clean feed without OSD burn-in (bit7 = 1) */
+                g_live_p123_uvc_uac = uvc_w | (1u << 7);
+                /* Hard-enforce P12 Wi-Fi-OFF (bit21 = 1) & wired CDC-NCM (bit22 = 1) */
+                g_live_p123_srt_rtmps = mb[61] | (1u << 21) | (1u << 22);
+                /* Hard-enforce Destructive PTP Flash-Opcode Firewall (bit2), eMMC 0-mutation (bit3), P12 Wi-Fi-OFF (bit4) */
+                g_live_p123_crsdk_ptp = mb[62] | (1u << 2) | (1u << 3) | (1u << 4);
+            } else if (mb[63] == 0x55564353u) {
+                g_live_p123_uvc_uac   = mb[60] & ~0x80000000u;
+                g_live_p123_srt_rtmps = mb[61] & ~0x80000000u;
+                g_live_p123_crsdk_ptp = mb[62] & ~0x80000000u;
+            }
+            if ((mb[64] & 0x80000000u) && (mb[65] & 0x80000000u) && (mb[66] & 0x80000000u) && mb[67] == 0x4d584654u) {
+                /* Hard-enforce 0 essence re-encode loss (bit24), eMMC 0-mutation (bit25), RDD-18 KLV valid (bit26) */
+                g_live_p129_mxf_bridge    = mb[64] | (1u << 24) | (1u << 25) | (1u << 26);
+                /* Hard-enforce P12 Wi-Fi-OFF (bit4), wf12=0 (bit5), wired CDC-NCM (bit6) */
+                g_live_p129_ptpv2_ltc     = mb[65] | (1u << 4) | (1u << 5) | (1u << 6);
+                /* Hard-enforce P12 Wi-Fi-OFF (bit4) & FX6 green GPIO zero-fault (bit6) */
+                g_live_p129_tsl_tally_umd = mb[66] | (1u << 4) | (1u << 6);
+                fx6_unpack_umd_name(mb, g_live_p129_tsl_tally_umd, g_live_p129_umd_name, sizeof(g_live_p129_umd_name));
+            } else if (mb[67] == 0x4d584654u) {
+                g_live_p129_mxf_bridge    = mb[64] & ~0x80000000u;
+                g_live_p129_ptpv2_ltc     = mb[65] & ~0x80000000u;
+                g_live_p129_tsl_tally_umd = mb[66] & ~0x80000000u;
+            }
+            fx6_apply_lang(lang);
 
-            fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt);
+            fx6_render_dispatch(g_appfw, page, sel_box, cat, item, depth, cell_vals, rec_fmt, g_cur_lang, ibis_xlr);
             uint32_t cur_nz = fx6_count_nonzero(g_osd);
             mb[15] = ((uint32_t)g_text_ok << 24) | (cur_nz & 0x00ffffffu);
             mb[2]  = req_seq;
-            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d\n",
-                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n);
+            dprintf(2, "FX6_LIVE_FRAME seq=%u page=%u sel=%u cat=%u item=%u depth=%u nz=%u text_ok=%d fill=%d icon=%d lang=%u ibis_xlr=%u lut_meta=0x%08x p40=0x%08x CINE_EXP=0x%08x:0x%08x:%u WB_MEDIA=0x%08x:0x%08x:0x%08x TAFC=0x%08x:0x%08x:0x%08x SMRK=0x%08x:0x%08x:0x%08x GYRO=0x%08x:0x%08x:0x%08x ICLF=0x%08x:0x%08x:0x%08x MCFL=0x%08x:0x%08x:0x%08x HLGA=0x%08x:0x%08x:0x%08x UVCS=0x%08x:0x%08x:0x%08x MXFT=0x%08x:0x%08x:0x%08x\n",
+                    req_seq, page, sel_box, cat, item, depth, cur_nz, g_text_ok, g_fill_n, g_icon_n, g_cur_lang, ibis_xlr, g_live_lut_meta, g_live_p40_flags, g_live_p64_flags, g_live_p64_shutter_sq, g_live_p64_tc, g_live_p73_wb_look, g_live_p73_media_clip, g_live_p73_flags2, g_live_p81_touch_af, g_live_p81_pdaf_mag_fc, g_live_p81_ciz_flags, g_live_p88_shotmark, g_live_p88_iris_audio, g_live_p88_user_bits, g_live_p95_anamorphic_ibis, g_live_p95_gyro_rtmd, g_live_p95_tone_limiter, g_live_p102_cache_interval, g_live_p102_interval_ftp, g_live_p102_lut_ftps, g_live_p109_fleet_sdi, g_live_p109_mount_shading, g_live_p109_c2pa_prov, g_live_p116_hlg_colorimetry, g_live_p116_display_assist, g_live_p116_raw_breathing, g_live_p123_uvc_uac, g_live_p123_srt_rtmps, g_live_p123_crsdk_ptp, g_live_p129_mxf_bridge, g_live_p129_ptpv2_ltc, g_live_p129_tsl_tally_umd);
         }
     }
 }

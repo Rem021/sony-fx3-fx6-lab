@@ -3,19 +3,38 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import pathlib
 import struct
 import subprocess
 import sys
 from typing import Any, Dict, List
 
-_REPO = pathlib.Path(__file__).resolve().parents[2]
-_MAC_WORK = next(
-    (c for c in (_REPO.parents[1] / "work", pathlib.Path.home() / "AI-Workspace/AI/Projects/Mac/work", pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac/work")) if c.is_dir()),
-    pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac/work"),
+def _resolve_internal_or_fallback(rel_path: str, env_var: str | None = None) -> pathlib.Path:
+    if env_var and os.environ.get(env_var, "").strip():
+        return pathlib.Path(os.environ[env_var].strip())
+    home_mac = pathlib.Path.home() / "AI-Workspace" / "AI" / "Projects" / "Mac"
+    candidates = [
+        pathlib.Path(__file__).resolve().parents[2] / rel_path,
+        home_mac / rel_path,
+        home_mac / "outputs" / "sony-fx3-fx6-lab" / rel_path,
+        pathlib.Path("/Volumes/KAFU2T/AI/Projects/Mac") / rel_path,
+    ]
+    for cand in candidates:
+        if cand.exists():
+            return cand
+    return home_mac / rel_path
+
+
+DONOR_ROOT = _resolve_internal_or_fallback(
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files",
+    "FX6_DONOR_ROOT",
 )
-DONOR_ROOT = _MAC_WORK / "fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files"
-DONOR_BK4_NTSC = _MAC_WORK / "fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin"
+
+DONOR_BK4_NTSC = _resolve_internal_or_fallback(
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/tree/0110_backup/SYSIPSX-DSLR/CHAPLIN/CX95898_NTSC.bin",
+    "FX6_DONOR_BK4_NTSC",
+)
 
 TARGET_BINARIES = [
     "bin/im.elf",

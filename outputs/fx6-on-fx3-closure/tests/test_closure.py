@@ -240,6 +240,7 @@ from fx6_closure.patcher import (
     DEFAULT_FX3_MODULES_DIR,
     DEFAULT_FX6_DONOR_LIB_DIR,
     FAN_LIBFAN_SPEC,
+    FX6_WLAN_RSRC_P12_SHA256,
     P1_AND_P4_APPFW_COMBINED_SPEC,
     P1_P4_P8_APPFW_COMBINED_SPEC,
     P3_LIB_INFRA_APP_REMOTE_BOARD_SPEC,
@@ -689,32 +690,46 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertTrue(rep_ok.stage_a_orchestrator_audit.all_checks_passed)
         self.assertTrue(rep_ok.stage_a_orchestrator_audit.wbi_p5_write_and_hibernation_forbidden)
         self.assertEqual(rep_ok.stage_a_orchestrator_audit.wbi_mutation_bytes, 0)
+        self.assertTrue(rep_ok.kmod_userland_abi_ok)
+        self.assertTrue(rep_ok.peripheral_ux_ok)
+        self.assertTrue(rep_ok.peripheral_ux_audit.all_passed)
+        self.assertTrue(rep_ok.ap_cp_imaging_ok)
+        self.assertTrue(rep_ok.ap_cp_imaging_audit.passed)
+        self.assertTrue(rep_ok.stage_b_combined_appfw_verified)
+        self.assertTrue(rep_ok.uipc_cp_shim_ok)
+        assert rep_ok.uipc_cp_shim_audit is not None
+        self.assertTrue(rep_ok.uipc_cp_shim_audit.passed)
+        self.assertTrue(rep_ok.stage_b_p12_wireless_guard_enabled)
+        self.assertEqual(rep_ok.stage_b_wlan_rsrc_sha256, FX6_WLAN_RSRC_P12_SHA256)
+        self.assertTrue(rep_ok.wireless_fault_isolation_ok)
+        assert rep_ok.wireless_fault_isolation_audit is not None
+        self.assertTrue(rep_ok.wireless_fault_isolation_audit.passed)
         self.assertFalse(rep_ok.safety_gates_report["persistent_write_release"])
 
-        drill_base = rep_ok.rollback_drill
-        feat_base = rep_ok.feature_routing_audit
-        bmt_base = rep_ok.backup_mount_tolerance_audit
-        bsb_base = rep_ok.boot_selector_and_bank_audit
-        kdtb_base = rep_ok.kernel_dtb_audit
-        sram_base = rep_ok.storage_and_ram_budget_audit
-        cp_base = rep_ok.cp_rtos_audit
-        p1_bridge_base = rep_ok.p1_recovery_bridge_audit
-        stage_a_orch_base = rep_ok.stage_a_orchestrator_audit
-
-        # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
         tier0_base = run_tier0_worker_in_unicorn(compiled_worker=self.compiled_worker)
-        rep_missing = run_offline_candidate_dry_run(
+        base_precomputed = dict(
             compiled_worker=self.compiled_worker,
             precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            precomputed_rollback_drill=rep_ok.rollback_drill,
+            precomputed_feature_routing=rep_ok.feature_routing_audit,
+            precomputed_backup_mount_tolerance=rep_ok.backup_mount_tolerance_audit,
+            precomputed_boot_selector_and_banks=rep_ok.boot_selector_and_bank_audit,
+            precomputed_kernel_dtb=rep_ok.kernel_dtb_audit,
+            precomputed_storage_and_ram_budget=rep_ok.storage_and_ram_budget_audit,
+            precomputed_cp_rtos=rep_ok.cp_rtos_audit,
+            precomputed_p1_recovery_bridge=rep_ok.p1_recovery_bridge_audit,
+            precomputed_stage_a_orchestrator=rep_ok.stage_a_orchestrator_audit,
+            precomputed_kmod_userland_abi=rep_ok.kmod_userland_abi_audit,
+            precomputed_peripheral_ux=rep_ok.peripheral_ux_audit,
+            precomputed_ap_cp_imaging=rep_ok.ap_cp_imaging_audit,
+            precomputed_stage_b_appfw=rep_ok.stage_b_p10_summary,
+            precomputed_uipc_cp_shim=rep_ok.uipc_cp_shim_audit,
+            precomputed_wireless_fault_isolation=rep_ok.wireless_fault_isolation_audit,
+        )
+
+        # 2. Missing Tier-0 item -> immediately blocks G10, G11, and G12
+        rep_missing = run_offline_candidate_dry_run(
+            **base_precomputed,
             missing_manifest_item="p12_cert",
         )
         self.assertFalse(rep_missing.candidate_ready)
@@ -725,17 +740,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
         # 3. Injected source write-flag syscall -> blocks G10, G11, and G12
         rep_bad_sc = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             inject_write_flag_syscall=True,
         )
         self.assertFalse(rep_bad_sc.candidate_ready)
@@ -743,17 +748,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
         # 4. Tampered fail-safe init2 hook -> blocks G11 and G12
         rep_bad_hook = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             tamper_failsafe_hook=True,
         )
         self.assertFalse(rep_bad_hook.candidate_ready)
@@ -762,35 +757,15 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
 
         # 5. Corrupted 8 MiB opelog.vfat -> blocks G12 candidate release
         rep_bad_vfat = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_opelog_vfat=True,
         )
         self.assertFalse(rep_bad_vfat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_vfat.blocked_gate_ids)
 
-        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, CP RTOS, P1 Bridge, or Stage-A Orchestrator -> blocks G12
+        # 6. Corrupted P5/P6 UIPC, P7 Backup Sync100 bridge, Stage-A CPIO, 5-Feature Routing, U4/BK4, U5/U3, DTB/.ko, Storage/RAM Budget, CP RTOS, P1 Bridge, Stage-A Orchestrator, Kmod ABI, Phase 17, or Phase 18 -> blocks G12
         rep_bad_uipc = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_p5_p6_uipc=True,
         )
         self.assertFalse(rep_bad_uipc.candidate_ready)
@@ -798,17 +773,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_uipc.blocked_gate_ids)
 
         rep_bad_p7 = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_p7_backup_bridge=True,
         )
         self.assertFalse(rep_bad_p7.candidate_ready)
@@ -816,17 +781,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p7.blocked_gate_ids)
 
         rep_bad_cpio = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_stage_a_cpio=True,
         )
         self.assertFalse(rep_bad_cpio.candidate_ready)
@@ -834,34 +789,14 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_cpio.blocked_gate_ids)
 
         rep_bad_feat = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_feature_routing=True,
         )
         self.assertFalse(rep_bad_feat.candidate_ready)
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_feat.blocked_gate_ids)
 
         rep_bad_bmt = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_backup_mount_tolerance=True,
         )
         self.assertFalse(rep_bad_bmt.candidate_ready)
@@ -869,17 +804,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bmt.blocked_gate_ids)
 
         rep_bad_bsb = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_boot_selector_and_banks=True,
         )
         self.assertFalse(rep_bad_bsb.candidate_ready)
@@ -887,17 +812,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertIn("G12_persistent_flash_write_authorization", rep_bad_bsb.blocked_gate_ids)
 
         rep_bad_kdtb = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_kernel_dtb=True,
         )
         self.assertFalse(rep_bad_kdtb.candidate_ready)
@@ -911,17 +826,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_kdtb["status"], "BLOCKED_BY_KERNEL_OR_DTB_REDLINE")
 
         rep_bad_sram = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_storage_and_ram_budget=True,
         )
         self.assertFalse(rep_bad_sram.candidate_ready)
@@ -935,17 +840,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_sram["status"], "BLOCKED_BY_STORAGE_OR_RAM_BUDGET_REDLINE")
 
         rep_bad_cp = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_cp_rtos=True,
         )
         self.assertFalse(rep_bad_cp.candidate_ready)
@@ -959,17 +854,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_cp["status"], "BLOCKED_BY_CP_RTOS_REDLINE")
 
         rep_bad_p1_bridge = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_p1_recovery_bridge=True,
         )
         self.assertFalse(rep_bad_p1_bridge.candidate_ready)
@@ -983,17 +868,7 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
         self.assertEqual(g12_p1b["status"], "BLOCKED_BY_P1_RECOVERY_BRIDGE_REDLINE")
 
         rep_bad_stage_a_orch = run_offline_candidate_dry_run(
-            compiled_worker=self.compiled_worker,
-            precomputed_tier0_result=tier0_base,
-            precomputed_rollback_drill=drill_base,
-            precomputed_feature_routing=feat_base,
-            precomputed_backup_mount_tolerance=bmt_base,
-            precomputed_boot_selector_and_banks=bsb_base,
-            precomputed_kernel_dtb=kdtb_base,
-            precomputed_storage_and_ram_budget=sram_base,
-            precomputed_cp_rtos=cp_base,
-            precomputed_p1_recovery_bridge=p1_bridge_base,
-            precomputed_stage_a_orchestrator=stage_a_orch_base,
+            **base_precomputed,
             corrupt_stage_a_orchestrator=True,
         )
         self.assertFalse(rep_bad_stage_a_orch.candidate_ready)
@@ -1005,6 +880,118 @@ class TestTier0ReadOnlyBackupWorkerAndCandidateDryRun(unittest.TestCase):
             if g["gate_id"] == "G12_persistent_flash_write_authorization"
         ][0]
         self.assertEqual(g12_orch["status"], "BLOCKED_BY_STAGE_A_ORCHESTRATOR_OR_WBI_REDLINE")
+
+        rep_bad_p17 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_peripheral_ux=True,
+        )
+        self.assertFalse(rep_bad_p17.candidate_ready)
+        self.assertFalse(rep_bad_p17.peripheral_ux_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p17.blocked_gate_ids)
+        g12_p17 = [
+            g
+            for g in rep_bad_p17.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p17["status"], "BLOCKED_BY_PERIPHERAL_UX_OR_AUDIO_REDLINE")
+
+        rep_bad_p18 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_ap_cp_imaging=True,
+        )
+        self.assertFalse(rep_bad_p18.candidate_ready)
+        self.assertFalse(rep_bad_p18.ap_cp_imaging_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p18.blocked_gate_ids)
+        g12_p18 = [
+            g
+            for g in rep_bad_p18.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p18["status"], "BLOCKED_BY_AP_CP_IMAGING_OR_IBIS_REDLINE")
+
+        rep_bad_p20 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_stage_b_p10=True,
+        )
+        self.assertFalse(rep_bad_p20.candidate_ready)
+        self.assertFalse(rep_bad_p20.stage_b_combined_appfw_verified)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p20.blocked_gate_ids)
+        g12_p20 = [
+            g
+            for g in rep_bad_p20.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p20["status"], "BLOCKED_BY_STAGE_B_P10_KEYMAP_REDLINE")
+
+        rep_bad_p21 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_uipc_cp_shim=True,
+        )
+        self.assertFalse(rep_bad_p21.candidate_ready)
+        self.assertFalse(rep_bad_p21.uipc_cp_shim_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p21.blocked_gate_ids)
+        g12_p21 = [
+            g
+            for g in rep_bad_p21.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p21["status"], "BLOCKED_BY_UIPC_CP_SHIM_REDLINE")
+
+        rep_bad_p12 = run_offline_candidate_dry_run(
+            **base_precomputed,
+            corrupt_wireless_guard=True,
+        )
+        self.assertFalse(rep_bad_p12.candidate_ready)
+        self.assertFalse(rep_bad_p12.wireless_fault_isolation_ok)
+        self.assertIn("G12_persistent_flash_write_authorization", rep_bad_p12.blocked_gate_ids)
+        g12_p12 = [
+            g
+            for g in rep_bad_p12.safety_gates_report["gates"]
+            if g["gate_id"] == "G12_persistent_flash_write_authorization"
+        ][0]
+        self.assertEqual(g12_p12["status"], "BLOCKED_BY_SAFETY_REDLINE")
+
+    def test_cli_verify_peripheral_ux_and_ap_cp_imaging_clean_room_subcommands(self) -> None:
+        buf17 = io.StringIO()
+        with redirect_stdout(buf17):
+            rc17 = cli_main(["verify-peripheral-ux", "--clean-room"])
+        self.assertEqual(rc17, 0)
+        p17 = json.loads(buf17.getvalue())
+        self.assertTrue(p17["all_passed"])
+
+        buf18 = io.StringIO()
+        with redirect_stdout(buf18):
+            rc18 = cli_main(["verify-ap-cp-imaging", "--clean-room"])
+        self.assertEqual(rc18, 0)
+        p18 = json.loads(buf18.getvalue())
+        self.assertTrue(p18["passed"])
+        self.assertEqual(p18["cp_mutation_bytes"], 0)
+
+        buf20 = io.StringIO()
+        with redirect_stdout(buf20):
+            rc20 = cli_main(["verify-stage-b-p10", "--clean-room"])
+        self.assertEqual(rc20, 0)
+        p20 = json.loads(buf20.getvalue())
+        self.assertTrue(p20["all_checks_passed"])
+
+        buf21 = io.StringIO()
+        with redirect_stdout(buf21):
+            rc21 = cli_main(["verify-uipc-cp-shim", "--clean-room"])
+        self.assertEqual(rc21, 0)
+        p21 = json.loads(buf21.getvalue())
+        self.assertTrue(p21["passed"])
+        self.assertEqual(p21["cp_mutation_bytes"], 0)
+
+        buf22 = io.StringIO()
+        with redirect_stdout(buf22):
+            rc22 = cli_main(["verify-wireless-guard", "--clean-room"])
+        self.assertEqual(rc22, 0)
+        p22 = json.loads(buf22.getvalue())
+        self.assertTrue(p22["passed"])
+        self.assertEqual(p22["cp_mutation_bytes"], 0)
+        self.assertEqual(p22["wbi_mutation_bytes"], 0)
+        self.assertEqual(p22["nvram_persistent_writes"], 0)
+        self.assertEqual(p22["sony_notice_id"], "00342260")
 
     @unittest.skipIf(_is_clean_room_or_donor_missing(), _CLEAN_ROOM_SKIP_REASON)
     def test_cli_verify_donors_and_rollback_drill_subcommands(self) -> None:
@@ -3632,6 +3619,274 @@ class TestPhase16StageAPostTrialAuditorAndLifecycleDrill(unittest.TestCase):
             self.assertEqual(disk_payload["drill_sha256"], d1.drill_sha256)
             self.assertTrue(disk_payload["all_checks_passed"])
             self.assertFalse(disk_payload["persistent_emmc_writes_authorized"])
+
+
+class TestDonorPathResolver(unittest.TestCase):
+    """Offline unit tests for `fx6_closure.donor_paths` dynamic SSD/env/clean-room resolution."""
+
+    @staticmethod
+    def _touch(path: Path, data: bytes = b"stub") -> Path:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        return path
+
+    def test_env_overrides_mac_root_and_lab_priority(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = root / "worktree"
+            mac_root = root / "custom_mac"
+            explicit_work = root / "explicit_work"
+            explicit_lab_work = root / "explicit_lab_work"
+
+            # Populate custom_mac/{work, outputs/sony-fx3-fx6-lab/work}
+            self._touch(
+                mac_root
+                / "work"
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self._touch(
+                mac_root
+                / "outputs"
+                / "sony-fx3-fx6-lab"
+                / "work"
+                / "fx6-backup-contract-fix-20261107"
+                / "contract-evidence.json"
+            )
+
+            # 1. FX3_FX6_MAC_ROOT resolves both donor work and main-lab work
+            env_mac = {"FX3_FX6_MAC_ROOT": str(mac_root)}
+            self.assertEqual(
+                dp.resolve_color_port_work_dir(repo_root=repo, env=env_mac, home=root / "nohome"),
+                mac_root / "work" / "fx3-color-port-20261027",
+            )
+            self.assertEqual(
+                dp.resolve_lab_work_file(
+                    "fx6-backup-contract-fix-20261107/contract-evidence.json",
+                    repo_root=repo,
+                    env=env_mac,
+                    home=root / "nohome",
+                ),
+                mac_root
+                / "outputs"
+                / "sony-fx3-fx6-lab"
+                / "work"
+                / "fx6-backup-contract-fix-20261107"
+                / "contract-evidence.json",
+            )
+
+            # 2. FX3_FX6_MAC_WORK_ROOT and FX3_FX6_MAIN_LAB_WORK_ROOT override FX3_FX6_MAC_ROOT
+            self._touch(
+                explicit_work
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self._touch(
+                explicit_lab_work
+                / "fx6-backup-contract-fix-20261107"
+                / "contract-evidence.json"
+            )
+            env_both = {
+                "FX3_FX6_MAC_ROOT": str(mac_root),
+                "FX3_FX6_MAC_WORK_ROOT": str(explicit_work),
+                "FX3_FX6_MAIN_LAB_WORK_ROOT": str(explicit_lab_work),
+            }
+            self.assertEqual(
+                dp.resolve_fx6_donor_lib_dir(repo_root=repo, env=env_both, home=root / "nohome"),
+                explicit_work
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib",
+            )
+            self.assertEqual(
+                dp.resolve_lab_work_file(
+                    "fx6-backup-contract-fix-20261107/contract-evidence.json",
+                    repo_root=repo,
+                    env=env_both,
+                    home=root / "nohome",
+                ),
+                explicit_lab_work / "fx6-backup-contract-fix-20261107" / "contract-evidence.json",
+            )
+
+    def test_force_clean_room_strictly_isolates_donors_even_with_env_overrides(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = root / "worktree"
+            mac_work = root / "mac_work"
+            self._touch(
+                mac_work
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self._touch(
+                mac_work
+                / "fx3-vm-20261101"
+                / "menu-repair-01"
+                / "original-uipc"
+                / "original-modules"
+                / "upm.ko"
+            )
+            zig_bin = self._touch(
+                mac_work
+                / "fx3-vm-20261101"
+                / "menu-repair-01"
+                / "runtime"
+                / "toolchains"
+                / "zig-aarch64-macos-0.17.0"
+                / "zig"
+            )
+
+            for flag in ("1", "true", "YES"):
+                env_cr = {
+                    "FX3_FX6_FORCE_CLEAN_ROOM": flag,
+                    "FX3_FX6_MAC_WORK_ROOT": str(mac_work),
+                    "FX3_FX6_MAIN_LAB_WORK_ROOT": str(mac_work),
+                    "FX3_FX6_MAC_ROOT": str(root),
+                }
+                self.assertTrue(dp.is_forced_clean_room(env_cr))
+                self.assertEqual(dp.iter_work_roots(repo_root=repo, env=env_cr, home=root), ())
+                cp_dir = dp.resolve_color_port_work_dir(repo_root=repo, env=env_cr, home=root)
+                self.assertIn(dp.CLEAN_ROOM_SENTINEL_DIRNAME, str(cp_dir))
+                self.assertFalse(cp_dir.exists())
+                self.assertFalse(dp.resolve_fx6_donor_lib_dir(repo_root=repo, env=env_cr, home=root).exists())
+                self.assertFalse(dp.resolve_fx3_modules_dir(repo_root=repo, env=env_cr, home=root).exists())
+                self.assertFalse(dp.resolve_fx3_seed_bk4_path(repo_root=repo, env=env_cr, home=root).exists())
+                # Host toolchain resolver stays available in clean-room CI mode
+                self.assertEqual(
+                    dp.resolve_zig_binary_default(repo_root=repo, env=env_cr, home=root),
+                    zig_bin,
+                )
+
+    def test_worktree_priority_skips_incomplete_dir_and_falls_back_through_home_and_legacy(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = root / "worktree"
+            fake_home = root / "home"
+            home_mac = fake_home / "AI-Workspace" / "AI" / "Projects" / "Mac"
+
+            # Incomplete tracked directory in worktree (no appFw.so) must NOT shadow home/internal SSD
+            (repo / "work" / "fx3-color-port-20261027" / "FX6-donor-assessment-20261103").mkdir(
+                parents=True, exist_ok=True
+            )
+            self._touch(
+                home_mac
+                / "work"
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self.assertEqual(
+                dp.resolve_color_port_work_dir(repo_root=repo, env={}, home=fake_home),
+                home_mac / "work" / "fx3-color-port-20261027",
+            )
+
+            # Once worktree's own work/ contains the target sentinel, worktree wins (priority 2)
+            self._touch(
+                repo
+                / "work"
+                / "fx3-color-port-20261027"
+                / "FX6-donor-assessment-20261103"
+                / "team"
+                / "donor"
+                / "nflasha15-files"
+                / "lib"
+                / "appFw.so"
+            )
+            self.assertEqual(
+                dp.resolve_color_port_work_dir(repo_root=repo, env={}, home=fake_home),
+                repo / "work" / "fx3-color-port-20261027",
+            )
+
+            # Verify full fallback order including Path.home() and legacy /Volumes/KAFU2T
+            roots = dp.iter_work_roots(repo_root=repo, env={}, home=fake_home, include_legacy=True)
+            self.assertEqual(
+                roots,
+                (
+                    repo / "work",
+                    home_mac / "outputs" / "sony-fx3-fx6-lab" / "work",
+                    home_mac / "work",
+                    dp.LEGACY_MAC_ROOT / "outputs" / "sony-fx3-fx6-lab" / "work",
+                    dp.LEGACY_MAC_ROOT / "work",
+                ),
+            )
+
+    def test_unicorn_site_packages_env_override(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            site_dir = Path(tmp) / "site-packages"
+            self._touch(site_dir / "unicorn" / "__init__.py", b"# stub\n")
+            found = dp.resolve_unicorn_site_packages(env={"FX3_FX6_UNICORN_SITE": str(site_dir)})
+            self.assertEqual(found, site_dir)
+
+    def test_rebase_legacy_work_path_and_clean_room_isolation(self) -> None:
+        from fx6_closure import donor_paths as dp
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            fake_home = root / "home"
+            live_file = self._touch(
+                fake_home
+                / "AI-Workspace"
+                / "AI"
+                / "Projects"
+                / "Mac"
+                / "work"
+                / "fx3-vm-20261101"
+                / "menu-repair-01"
+                / "original-uipc"
+                / "ap-projection"
+                / "regular-files"
+                / "lib"
+                / "libc-2.25.so"
+            )
+            legacy_str = (
+                "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/"
+                "menu-repair-01/original-uipc/ap-projection/regular-files/lib/libc-2.25.so"
+            )
+            rebased = dp.rebase_legacy_work_path(
+                legacy_str,
+                repo_root=root / "worktree",
+                env={},
+                home=fake_home,
+            )
+            self.assertEqual(rebased, live_file)
+            isolated = dp.rebase_legacy_work_path(
+                legacy_str,
+                repo_root=root / "worktree",
+                env={"FX3_FX6_FORCE_CLEAN_ROOM": "1"},
+                home=fake_home,
+            )
+            self.assertIn(dp.CLEAN_ROOM_SENTINEL_DIRNAME, str(isolated))
+            self.assertFalse(isolated.exists())
 
 
 if __name__ == "__main__":

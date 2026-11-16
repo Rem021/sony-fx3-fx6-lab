@@ -1,0 +1,996 @@
+{
+  "schema": "fx6-on-fx3-round48-realhw-recover-imagedb-monitor-flip-af-sens-qemu-v1",
+  "round": 48,
+  "milestone": "48th Milestone (Wave-34 / 20th Real-HW QEMU Round, 60 Live Runs)",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "recover_imagedb_depleted_battery_refusal_avf_info_repair_and_slot1_vault_firewall": {
+      "invalid_slot_reject_rc": -22,
+      "invalid_batt_reject_rc": -22,
+      "depleted_batt_refusal_rc": -11,
+      "brownout_guard_refusal_rc": -16,
+      "depleted_pre_touch_writes": 0,
+      "depleted_zero_metadata_touch_ok": 1,
+      "slot2_avf_info_repaired_ok": 1,
+      "false_zero_recordable_cleared_ok": 1,
+      "deleted_clips": 0,
+      "slot2_clips_3of3_sha256_intact": 1,
+      "action_item_immune_cam_reset": 1,
+      "action_item_immune_initialize": 1,
+      "slot1_vault_unverified_block_rc": -16,
+      "slot1_vault_wp_block_rc": -13,
+      "slot1_ro_kernel_rc": -30,
+      "slot1_imagedb_writes": 0,
+      "slot1_vault_sha256_match": 1,
+      "p2_write_blocked_rc": -30,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0,
+      "r48a_ok": 1,
+      "verify_us": 823604
+    },
+    "monitor_flip_direction_camreset_survival_and_playback_non_inversion_init": {
+      "monitor_flip_default_auto_ok": 1,
+      "invalid_flip_reject_rc": -22,
+      "monitor_flip_4modes_verified": 4,
+      "flip_modes_survive_cam_reset": 3,
+      "survives_cam_settings_reset_ok": 1,
+      "reset_only_by_initialize": 1,
+      "initialize_restores_auto_ok": 1,
+      "shooting_lcd_hflip_active": 1,
+      "shooting_lcd_mirror_px_verified": 1024,
+      "playback_frames_swept": 64,
+      "playback_hflip_inverted_frames": 0,
+      "playback_non_inversion_ok": 1,
+      "hdmi_flipped_frames": 0,
+      "hdmi_clean_unflipped_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "cnflasha_sha256_match": 1,
+      "cnflasha_writes": 0,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r48_init_ok": 1,
+      "verify_us": 722954
+    },
+    "recover_imagedb_stage_b_bridge": {
+      "depleted_batt_refusal_rc": -11,
+      "brownout_guard_refusal_rc": -16,
+      "deleted_clips": 0,
+      "slot2_avf_info_repaired_ok": 1,
+      "action_item_immune_resets_ok": 1,
+      "slot1_vault_unverified_block_rc": -16,
+      "slot1_vault_wp_block_rc": -13,
+      "slot1_imagedb_writes": 0,
+      "recover_imagedb_ok": 1,
+      "emmc_write_count": 0,
+      "r48_bridge_ok": 1
+    },
+    "monitor_flip_stage_b_bridge": {
+      "monitor_flip_default_auto_ok": 1,
+      "monitor_flip_4modes_verified": 4,
+      "survives_cam_settings_reset_ok": 1,
+      "reset_only_by_initialize": 1,
+      "shooting_lcd_hflip_active": 1,
+      "playback_hflip_inverted_frames": 0,
+      "hdmi_flipped_frames": 0,
+      "monitor_flip_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "af_sens_interval_stage_b_bridge": {
+      "exact_full_spelling_ok": 1,
+      "af_trans_speed_7steps_verified": 7,
+      "af_subj_shift_sens_5steps_verified": 5,
+      "af_defaults_5_ok": 1,
+      "cam_reset_restores_5_ok": 1,
+      "interval_still_seq_ok": 1,
+      "video_interval_rec_mode_reject_rc": -22,
+      "video_interval_rec_exec_reject_rc": -1,
+      "af_sens_interval_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0
+    },
+    "af_transition_speed_7step_af_subj_shift_sensitivity_5step_vs_still_interval_shoot_h0_h3": {
+      "af_trans_default_5_ok": 1,
+      "af_sens_default_5_ok": 1,
+      "exact_full_spelling_ok": 1,
+      "abbrev_sens_alias_reject_rc": -22,
+      "invalid_af_trans_reject_rc": -22,
+      "invalid_af_sens_reject_rc": -22,
+      "af_trans_speed_7steps_verified": 7,
+      "af_subj_shift_sens_5steps_verified": 5,
+      "af_kinematics_movie_sq_ok": 1,
+      "af_kinematics_still_reject_rc": -95,
+      "cam_reset_restores_af_trans_5_ok": 1,
+      "cam_reset_restores_af_sens_5_ok": 1,
+      "cam_reset_preserves_monitor_flip_ok": 1,
+      "initialize_resets_all_ok": 1,
+      "interval_still_seq_ok": 1,
+      "invalid_interval_param_reject_rc": -22,
+      "video_interval_rec_mode_reject_rc": -22,
+      "video_interval_rec_exec_reject_rc": -1,
+      "in_camera_timelapse_movie_mux": 0,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "cnflasha_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r48c_ok": 1,
+      "verify_us": 194617
+    }
+  },
+  "runs": {
+    "r48a_recover_imagedb_battery_vault": {
+      "run_id": "round48-recover-imagedb-vault",
+      "round": 48,
+      "lang": "en",
+      "r48_mode": "recover_imagedb_battery_vault",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Recover Image DB]: simulated extremely_depleted NP-FZ100 battery refusal (-EAGAIN -11) and brownout guard (-EBUSY -16) before any FAT/exFAT metadata touch (depleted_pre_touch_writes=0); non-deleting AVF_INFO (AVF00001.INP/.BNP + MEDIAPRO.XML) index repair on Slot 2 scratch clearing false zero-recordable capacity while preserving 3/3 XAVC S/S-I clips byte-for-byte (deleted_clips=0); action-item immunity across [Camera Settings Reset] & [Initialize]; and Slot-1 Tier-0 forensic card write firewall (-EBUSY -16 unverified, -EACCES -13 WP, -EROFS -30 kernel O_RDWR, slot1_imagedb_writes=0, emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 6.5,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c81533316e98103dbe295977cc31b92dcd4a39b456d0e3aed8aa650cff90beef"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r48": {
+          "r48_mode": "recover_imagedb_battery_vault",
+          "recover_imagedb_menu_item": "Recover Image DB",
+          "recover_imagedb_target_slots": [
+            "Slot 1",
+            "Slot 2"
+          ],
+          "depleted_battery_refusal_rc": -11,
+          "brownout_guard_refusal_rc": -16,
+          "depleted_pre_touch_writes": 0,
+          "avf_info_repair_non_deleting": true,
+          "deleted_clips": 0,
+          "action_item_immune_camera_settings_reset": true,
+          "action_item_immune_initialize": true,
+          "slot1_vault_unverified_block_rc": -16,
+          "slot1_vault_wp_block_rc": -13,
+          "slot1_kernel_ro_block_rc": -30,
+          "slot1_imagedb_writes": 0,
+          "monitor_flip_menu_item": "Monitor Flip Direction",
+          "monitor_flip_4_modes": [
+            "Auto",
+            "Horizontal Flip",
+            "Vertical Flip",
+            "Off"
+          ],
+          "monitor_flip_default": "Auto",
+          "monitor_flip_survives_camera_settings_reset": true,
+          "monitor_flip_reset_only_by_initialize": true,
+          "shooting_lcd_hflip_mirrors_horizontally": true,
+          "playback_hflip_inverted_frames": 0,
+          "hdmi_clean_feed_flipped_frames": 0,
+          "af_transition_speed_menu_item": "AF Transition Speed",
+          "af_transition_speed_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "af_transition_speed_default": 5,
+          "af_subj_shift_sens_exact_menu_item": "AF Subj. Shift Sensitivity",
+          "af_subj_shift_sens_rejected_abbrev": "AF Subj. Shift Sens.",
+          "af_subj_shift_sens_steps": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "af_subj_shift_sens_default": 5,
+          "af_kinematics_scope": [
+            "Movie",
+            "S&Q Motion"
+          ],
+          "af_kinematics_still_reject_rc": -95,
+          "camera_settings_reset_restores_af_5_5": true,
+          "interval_shoot_func_menu_item": "Interval Shoot Func.",
+          "interval_shoot_scope": "Still Image Only",
+          "interval_start_time_sec_range": [
+            1,
+            5999
+          ],
+          "interval_shoot_interval_sec_range": [
+            1,
+            60
+          ],
+          "interval_num_shots_range": [
+            1,
+            9999
+          ],
+          "video_interval_rec_mode_reject_rc": -22,
+          "video_interval_rec_exec_reject_rc": -1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r48_telemetry": {
+        "recover_imagedb_vault_rc": 0,
+        "af_sens_interval_rc": null,
+        "monitor_flip_init": {},
+        "recover_imagedb_bridge": {},
+        "monitor_flip_bridge": {},
+        "af_sens_interval_bridge": {},
+        "recover_imagedb_vault": {
+          "invalid_slot_reject_rc": -22,
+          "invalid_batt_reject_rc": -22,
+          "depleted_batt_refusal_rc": -11,
+          "brownout_guard_refusal_rc": -16,
+          "depleted_pre_touch_writes": 0,
+          "depleted_zero_metadata_touch_ok": 1,
+          "slot2_avf_info_repaired_ok": 1,
+          "false_zero_recordable_cleared_ok": 1,
+          "deleted_clips": 0,
+          "slot2_clips_3of3_sha256_intact": 1,
+          "action_item_immune_cam_reset": 1,
+          "action_item_immune_initialize": 1,
+          "slot1_vault_unverified_block_rc": -16,
+          "slot1_vault_wp_block_rc": -13,
+          "slot1_ro_kernel_rc": -30,
+          "slot1_imagedb_writes": 0,
+          "slot1_vault_sha256_match": 1,
+          "p2_write_blocked_rc": -30,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "r48a_ok": 1,
+          "verify_us": 823604
+        },
+        "af_sens_interval": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R48_": 3
+      }
+    },
+    "r48b_monitor_flip_playback_big6_schinese": {
+      "run_id": "round48-monitor-flip-playback-big6",
+      "round": 48,
+      "lang": "schinese",
+      "r48_mode": "monitor_flip_playback_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Monitor Flip Direction] ([Auto] default, [Horizontal Flip], [Vertical Flip], [Off]): persistence across [Camera Settings Reset] (reset_only_by_initialize=1, restored to [Auto] only on full [Initialize]); 1024px horizontal mirroring on local shooting LCD when [Horizontal Flip] is active while playback display direction is NEVER inverted across 64 swept playback frames (playback_hflip_inverted_frames=0) and external HDMI clean feed stays unflipped (hdmi_flipped_frames=0); -EROFS (-30) p2:/setting & cnflasha protection; and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 75.39,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "ee873aa5e963570caf37045c3aca0cfec52cda9077550bba91544f0a261a1464"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r48": {
+          "r48_mode": "monitor_flip_playback_big6",
+          "recover_imagedb_menu_item": "Recover Image DB",
+          "recover_imagedb_target_slots": [
+            "Slot 1",
+            "Slot 2"
+          ],
+          "depleted_battery_refusal_rc": -11,
+          "brownout_guard_refusal_rc": -16,
+          "depleted_pre_touch_writes": 0,
+          "avf_info_repair_non_deleting": true,
+          "deleted_clips": 0,
+          "action_item_immune_camera_settings_reset": true,
+          "action_item_immune_initialize": true,
+          "slot1_vault_unverified_block_rc": -16,
+          "slot1_vault_wp_block_rc": -13,
+          "slot1_kernel_ro_block_rc": -30,
+          "slot1_imagedb_writes": 0,
+          "monitor_flip_menu_item": "Monitor Flip Direction",
+          "monitor_flip_4_modes": [
+            "Auto",
+            "Horizontal Flip",
+            "Vertical Flip",
+            "Off"
+          ],
+          "monitor_flip_default": "Auto",
+          "monitor_flip_survives_camera_settings_reset": true,
+          "monitor_flip_reset_only_by_initialize": true,
+          "shooting_lcd_hflip_mirrors_horizontally": true,
+          "playback_hflip_inverted_frames": 0,
+          "hdmi_clean_feed_flipped_frames": 0,
+          "af_transition_speed_menu_item": "AF Transition Speed",
+          "af_transition_speed_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "af_transition_speed_default": 5,
+          "af_subj_shift_sens_exact_menu_item": "AF Subj. Shift Sensitivity",
+          "af_subj_shift_sens_rejected_abbrev": "AF Subj. Shift Sens.",
+          "af_subj_shift_sens_steps": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "af_subj_shift_sens_default": 5,
+          "af_kinematics_scope": [
+            "Movie",
+            "S&Q Motion"
+          ],
+          "af_kinematics_still_reject_rc": -95,
+          "camera_settings_reset_restores_af_5_5": true,
+          "interval_shoot_func_menu_item": "Interval Shoot Func.",
+          "interval_shoot_scope": "Still Image Only",
+          "interval_start_time_sec_range": [
+            1,
+            5999
+          ],
+          "interval_shoot_interval_sec_range": [
+            1,
+            60
+          ],
+          "interval_num_shots_range": [
+            1,
+            9999
+          ],
+          "video_interval_rec_mode_reject_rc": -22,
+          "video_interval_rec_exec_reject_rc": -1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r48_telemetry": {
+        "recover_imagedb_vault_rc": null,
+        "af_sens_interval_rc": null,
+        "monitor_flip_init": {
+          "monitor_flip_default_auto_ok": 1,
+          "invalid_flip_reject_rc": -22,
+          "monitor_flip_4modes_verified": 4,
+          "flip_modes_survive_cam_reset": 3,
+          "survives_cam_settings_reset_ok": 1,
+          "reset_only_by_initialize": 1,
+          "initialize_restores_auto_ok": 1,
+          "shooting_lcd_hflip_active": 1,
+          "shooting_lcd_mirror_px_verified": 1024,
+          "playback_frames_swept": 64,
+          "playback_hflip_inverted_frames": 0,
+          "playback_non_inversion_ok": 1,
+          "hdmi_flipped_frames": 0,
+          "hdmi_clean_unflipped_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r48_init_ok": 1,
+          "verify_us": 722954
+        },
+        "recover_imagedb_bridge": {
+          "depleted_batt_refusal_rc": -11,
+          "brownout_guard_refusal_rc": -16,
+          "deleted_clips": 0,
+          "slot2_avf_info_repaired_ok": 1,
+          "action_item_immune_resets_ok": 1,
+          "slot1_vault_unverified_block_rc": -16,
+          "slot1_vault_wp_block_rc": -13,
+          "slot1_imagedb_writes": 0,
+          "recover_imagedb_ok": 1,
+          "emmc_write_count": 0,
+          "r48_bridge_ok": 1
+        },
+        "monitor_flip_bridge": {
+          "monitor_flip_default_auto_ok": 1,
+          "monitor_flip_4modes_verified": 4,
+          "survives_cam_settings_reset_ok": 1,
+          "reset_only_by_initialize": 1,
+          "shooting_lcd_hflip_active": 1,
+          "playback_hflip_inverted_frames": 0,
+          "hdmi_flipped_frames": 0,
+          "monitor_flip_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "af_sens_interval_bridge": {
+          "exact_full_spelling_ok": 1,
+          "af_trans_speed_7steps_verified": 7,
+          "af_subj_shift_sens_5steps_verified": 5,
+          "af_defaults_5_ok": 1,
+          "cam_reset_restores_5_ok": 1,
+          "interval_still_seq_ok": 1,
+          "video_interval_rec_mode_reject_rc": -22,
+          "video_interval_rec_exec_reject_rc": -1,
+          "af_sens_interval_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "recover_imagedb_vault": {},
+        "af_sens_interval": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34840,
+          "glyph_blits": 18407,
+          "icon_blits": 22534,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "recover_imagedb_ok": 1,
+          "monitor_flip_ok": 1,
+          "af_sens_interval_ok": 1,
+          "r48_bridge_ok": 1,
+          "round48_realhw_recover_imagedb_monitor_flip_af_sens": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 48,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "recover_imagedb_depleted_vault_firewall": 1,
+          "monitor_flip_camreset_playback_non_invert": 1,
+          "af_trans7_shiftsens5_interval_still": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r48b-monitor-flip-playback-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 207566,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round48-realhw-recover-imagedb-monitor-flip-af-sens-qemu/assets/r48b-monitor-flip-playback-big6-schinese-alpha.png",
+          "bytes": 27132,
+          "sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round48-realhw-recover-imagedb-monitor-flip-af-sens-qemu/assets/r48b-monitor-flip-playback-big6-schinese-composited.png",
+          "bytes": 27467,
+          "sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 186,
+        "FX6_STAGE_B_": 77,
+        "FX6_R30_": 184,
+        "FX6_R31_": 184,
+        "FX6_R32_": 187,
+        "FX6_R33_": 184,
+        "FX6_R34_": 184,
+        "FX6_R35_": 184,
+        "FX6_R36_": 184,
+        "FX6_R37_": 185,
+        "FX6_R38_": 185,
+        "FX6_R39_": 185,
+        "FX6_R40_": 185,
+        "FX6_R41_": 185,
+        "FX6_R42_": 186,
+        "FX6_R43_": 186,
+        "FX6_R44_": 186,
+        "FX6_R45_": 186,
+        "FX6_R46_": 186,
+        "FX6_R47_": 186,
+        "FX6_R48_": 186,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 184,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 130,
+        "FX6_R10_": 182,
+        "FX6_R11_": 193,
+        "FX6_R12_": 185,
+        "FX6_R13_": 182,
+        "FX6_R14_": 182,
+        "FX6_R15_": 182,
+        "FX6_R16_": 182,
+        "FX6_R17_": 182,
+        "FX6_R18_": 182,
+        "FX6_R19_": 182,
+        "FX6_R20_": 182,
+        "FX6_R21_": 182,
+        "FX6_R22_": 182,
+        "FX6_R23_": 182,
+        "FX6_R24_": 182,
+        "FX6_R25_": 182,
+        "FX6_R26_": 182,
+        "FX6_R27_": 182,
+        "FX6_R29_": 184,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1039,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 61,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 608,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2749,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r48c_af_sens_interval_still_h0_h3": {
+      "run_id": "round48-af-sens-interval-h0-h3",
+      "round": 48,
+      "lang": "en",
+      "r48_mode": "af_sens_interval_still_h0_h3",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Movie/S&Q AF Kinematics ([AF Transition Speed] 1..7 default 5 & exact full-spelling [AF Subj. Shift Sensitivity] 1..5 default 5 rejecting Cinema Line abbreviated alias 'AF Subj. Shift Sens.' with -EINVAL -22; Movie/S&Q scope rejecting Still mode with -EOPNOTSUPP -95; resetting back to 5 under [Camera Settings Reset] while preserving [Monitor Flip Direction]) vs still-image-only [Interval Shoot Func.] (1..5999s start, 1..60s interval, 1..9999 shots; rejecting video Interval Rec with -EINVAL -22 / -EPERM -1), real guest dlopen(libJit.so), and 16/16 donor SHA-256 H0 == H3 rollback",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 5.67,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c81533316e98103dbe295977cc31b92dcd4a39b456d0e3aed8aa650cff90beef"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r48": {
+          "r48_mode": "af_sens_interval_still_h0_h3",
+          "recover_imagedb_menu_item": "Recover Image DB",
+          "recover_imagedb_target_slots": [
+            "Slot 1",
+            "Slot 2"
+          ],
+          "depleted_battery_refusal_rc": -11,
+          "brownout_guard_refusal_rc": -16,
+          "depleted_pre_touch_writes": 0,
+          "avf_info_repair_non_deleting": true,
+          "deleted_clips": 0,
+          "action_item_immune_camera_settings_reset": true,
+          "action_item_immune_initialize": true,
+          "slot1_vault_unverified_block_rc": -16,
+          "slot1_vault_wp_block_rc": -13,
+          "slot1_kernel_ro_block_rc": -30,
+          "slot1_imagedb_writes": 0,
+          "monitor_flip_menu_item": "Monitor Flip Direction",
+          "monitor_flip_4_modes": [
+            "Auto",
+            "Horizontal Flip",
+            "Vertical Flip",
+            "Off"
+          ],
+          "monitor_flip_default": "Auto",
+          "monitor_flip_survives_camera_settings_reset": true,
+          "monitor_flip_reset_only_by_initialize": true,
+          "shooting_lcd_hflip_mirrors_horizontally": true,
+          "playback_hflip_inverted_frames": 0,
+          "hdmi_clean_feed_flipped_frames": 0,
+          "af_transition_speed_menu_item": "AF Transition Speed",
+          "af_transition_speed_steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "af_transition_speed_default": 5,
+          "af_subj_shift_sens_exact_menu_item": "AF Subj. Shift Sensitivity",
+          "af_subj_shift_sens_rejected_abbrev": "AF Subj. Shift Sens.",
+          "af_subj_shift_sens_steps": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "af_subj_shift_sens_default": 5,
+          "af_kinematics_scope": [
+            "Movie",
+            "S&Q Motion"
+          ],
+          "af_kinematics_still_reject_rc": -95,
+          "camera_settings_reset_restores_af_5_5": true,
+          "interval_shoot_func_menu_item": "Interval Shoot Func.",
+          "interval_shoot_scope": "Still Image Only",
+          "interval_start_time_sec_range": [
+            1,
+            5999
+          ],
+          "interval_shoot_interval_sec_range": [
+            1,
+            60
+          ],
+          "interval_num_shots_range": [
+            1,
+            9999
+          ],
+          "video_interval_rec_mode_reject_rc": -22,
+          "video_interval_rec_exec_reject_rc": -1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r48_telemetry": {
+        "recover_imagedb_vault_rc": null,
+        "af_sens_interval_rc": 0,
+        "monitor_flip_init": {},
+        "recover_imagedb_bridge": {},
+        "monitor_flip_bridge": {},
+        "af_sens_interval_bridge": {},
+        "recover_imagedb_vault": {},
+        "af_sens_interval": {
+          "af_trans_default_5_ok": 1,
+          "af_sens_default_5_ok": 1,
+          "exact_full_spelling_ok": 1,
+          "abbrev_sens_alias_reject_rc": -22,
+          "invalid_af_trans_reject_rc": -22,
+          "invalid_af_sens_reject_rc": -22,
+          "af_trans_speed_7steps_verified": 7,
+          "af_subj_shift_sens_5steps_verified": 5,
+          "af_kinematics_movie_sq_ok": 1,
+          "af_kinematics_still_reject_rc": -95,
+          "cam_reset_restores_af_trans_5_ok": 1,
+          "cam_reset_restores_af_sens_5_ok": 1,
+          "cam_reset_preserves_monitor_flip_ok": 1,
+          "initialize_resets_all_ok": 1,
+          "interval_still_seq_ok": 1,
+          "invalid_interval_param_reject_rc": -22,
+          "video_interval_rec_mode_reject_rc": -22,
+          "video_interval_rec_exec_reject_rc": -1,
+          "in_camera_timelapse_movie_mux": 0,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "cnflasha_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r48c_ok": 1,
+          "verify_us": 194617
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R48_": 3
+      }
+    }
+  },
+  "r48_realhw_recover_imagedb_monitor_flip_af_sens_audit": {
+    "round": 48,
+    "milestone": 48,
+    "realhw_qemu_round_ordinal": 20,
+    "cumulative_realhw_qemu_runs": 60,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "all_3_runs_cnflasha_write_zero": true,
+    "r48a_recover_imagedb_depleted_battery_refusal_and_non_deleting_avf_info_repair_verified": true,
+    "r48a_recover_imagedb_action_immunity_and_slot1_vault_zero_writes_verified": true,
+    "r48b_monitor_flip_direction_camreset_survival_and_playback_non_inversion_verified": true,
+    "r48b_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r48c_af_transition_speed_7step_and_af_subj_shift_sensitivity_5step_full_spelling_verified": true,
+    "r48c_still_only_interval_shoot_func_and_16_h0_eq_h3_rollback_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical ILME-FX3 (Ver. 7.02) execution of [Recover Image DB] on physical CFexpress Type A / SDXC media under low NP-FZ100 battery threshold refusal and post-repair XAVC S/S-I playback verification remain unexecuted on a physical camera body.",
+    "Physical ILME-FX3 (Ver. 7.02) Vari-angle LCD hinge articulation with [Monitor Flip Direction]=[Horizontal Flip] verifying local shooting mirror vs un-inverted playback orientation and external Type-A HDMI clean-feed capture across [Camera Settings Reset] remain unexecuted on physical hardware.",
+    "Physical ILME-FX3 (Ver. 7.02) E-Mount lens rack-focus velocity measurement across [AF Transition Speed] 1..7 and [AF Subj. Shift Sensitivity] 1..5 in Movie/S&Q modes alongside physical Still-mode [Interval Shoot Func.] frame capture remain unexecuted on a physical camera body."
+  ]
+}

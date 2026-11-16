@@ -2,43 +2,57 @@
 
 **用 QEMU、浏览器菜单工具和离线校验研究索尼 FX3 / FX6 固件。**
 
-面向相机固件研究者。模拟器与离线结果不代表真机验收，真实 FX3 跨机型刷写仍为 **BLOCKED / NO-GO**。
+面向相机固件研究者。模拟器与离线结果不代表真机验收，真实 FX3 跨机型持久化刷写仍为硬锁禁止状态（**`BLOCKED / NO-GO`**）。
 
-[项目首页](README.md) · [English](README.en.md) · **[固件准备](docs/BYOF-REPRODUCTION.md)** · [运行与校验](#四快速开始与验收命令)
+[项目首页](README.md) · [English](README.en.md) · **[固件准备](docs/BYOF-REPRODUCTION.md)** · **[真机台架部署档案](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)** · [运行与校验](#四快速开始与验收命令)
+
+[![无供体净室CI](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml/badge.svg)](./.github/workflows/clean-room-ci.yml)
+[![自动化测试](https://img.shields.io/badge/Automated_Tests-12,101_本地_%7C_12,043_洁净室_(7_Suites)-brightgreen?style=flat)](#四快速开始与验收命令)
+[![Milestone 264](https://img.shields.io/badge/Master_Gate-Milestone_264_%7C_Phases_1..268_%7C_Rounds_1..53-1a7f37?style=flat)](#一全实验室工程里程碑phases-1268--rounds-153--waves-145)
+[![开源协议](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
+
+**`sony-fx3-fx6-lab`** 是面向 **Sony Cinema Line ILME-FX3（`Ver. 7.02`，机型 ID `0x91030080`，`ALCIN_UUD`）** 与 **ILME-FX6（`Ver. 6.01`，机型 ID `0x91040086`，`CHAPLIN`）** 数字电影摄影机的净室系统工程、多架构 QEMU 协同仿真、跨机型硬件兼容性验证与真机防变砖安全研究开源仓库。两款机型均搭载 **Sony CXD90057（`AArch64` CE Linux `4.9.337-scel+`）** 主处理器与 **CXD90058（`ARMv7-R` TOPPERS-FMP 1.4.0 `cpapp-b.bin @ 0x00108000`）** 协处理器。
+
+> [!CAUTION]
+> **硬件写入硬锁状态（`persistent_emmc_writes_authorized = False` / 严禁持久化刷写真机）**  
+> 实验室严格保持持久化刷机与实机连接硬锁关闭（**`NO-GO`**）：`persistent_emmc_writes_authorized = False`、`persistent_write_release = False`、`hardware_live_attachment_authorized = False`、`edisx_repartition_forbidden = True`（`sector0_mutation_bytes = 0`）、`p8_cp_mutation_forbidden = True`（`cp_mutation_bytes = 0`）、`wbi_p5_write_and_hibernation_forbidden = True`（`wbi_mutation_bytes = 0`）、`calibration_mutation_bytes = 0`、`otp_fuse_touches = 0`、`rpmb_counter_increments = 0`、`emmc_flash_mutation_bytes = 0` 与 `passive_tx_bytes_emitted = 0`。所有 Stage-A / Stage-B 覆盖层仅驻留在易失性 Linux DDR（`tmpfs`）中，全部供体读取严格使用 `os.O_RDONLY`，支持无连接线 `< 1 秒` `FX3_SAFE_STOCK.FLG` SD 哨兵逃生，断电重启即可瞬间 100% 恢复原厂 Sony ILME-FX3 `Ver. 7.02`。
 
 > [!IMPORTANT]
-> **净室开源合规边界（BYOF：自备官方固件复现）**
-> 本仓库 **包含 0 字节索尼专有闭源二进制文件**（不含 `BODYDATA.DAT`、`vmlinux.bin`、`appFw.so`、`cpapp-b.bin`、`nflasha*` 分区镜像或 `.cpio` 根文件系统镜像）。仓库内全部 Python 离线校验器、无依赖 AArch64 C/汇编工作器、Unicorn 指令级仿真套件、QEMU 设备补丁、Web 交互前端与 SHA-256 验收回执均为独立净室编写，并通过 `.github/workflows/clean-room-ci.yml` 在 `ubuntu-latest` + `macos-latest` 无供体环境下自动门禁验证。如需在本地复现虚拟机交互体验，请参照 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)**（由 `make verify-byof` 自动守护指纹一致性）自备对应 SHA-256 指纹的官方固件。
+> **净室开源合规边界（BYOF：自备官方固件复现）**  
+> 本仓库 **包含 0 字节索尼专有闭源二进制文件**（不含 `BODYDATA.DAT`、`vmlinux.bin`、`appFw.so`、`cpapp-b.bin`、`nflasha*` 分区镜像或 `.cpio` 根文件系统镜像）且 **包含 0 字节厂商 AES/RSA 私钥**。全部 7 套测试集（**`12,043` 项无供体洁净室测试** / **`12,101` 项本地供体测试**）与 `Grand Milestone Phase 264 六柱总闸`（`make verify-milestone-264`）、`108 门禁`（`verify-108-gates`）、`45 支柱离线救砖`（`verify-45pillar-recovery`）、`52 阶段虚拟相机 HIL 协同仿真` 及 `45 项无密钥固件审计器` 均支持无供体净室 CI（`FX3_FX6_FORCE_CLEAN_ROOM=1 make test`），由 [`.github/workflows/clean-room-ci.yml`](./.github/workflows/clean-room-ci.yml) 在 `ubuntu-latest` + `macos-latest` 自动门禁校验。本地复现虚拟机交互体验请参阅 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)**（由 `make verify-byof` 自动守护 `57+57` 指纹与 `46` 项源码常量一致性）。
 
 ---
 
-## 一、核心工程里程碑（截至 2026-11-12）
+## 一、全实验室工程里程碑（`Phases 1–268` · `Rounds 1–53` · `Waves 1–45`）
 
-### 主线 1A —— FX6 128 页 Guest `GPE0` 实时互动 UI 与 `fx3-vm-trial` 管线加速
-- **100% 全量 128 页原生描述符物理帧缓冲渲染**：在 QEMU ARM64 Guest 内通过 FX6 Ver. 6.01（`ILME-FX6V`）原生 `appFw.so` + `libuxengine.so` + `TextRM` 将全部 **128 张页面描述符表**（`0x02e90fb0..0x02eba7b8`，共 `2,249` 行控件）真实渲染进物理帧缓冲 `0x41e001000`（`GPE0`，`1024×540` RGBA32），全程 **`segv = 0`**（详见 [EVIDENCE-751-812-FULL-128-PAGES.md](reports/2026-11-08-fx6-native-text-gpe0/EVIDENCE-751-812-FULL-128-PAGES.md)）。
-- **零内存泄漏 Guest 驱动、22.1 倍 C 扫描线打包器与 16 项离线单测**：重构 [`outputs/fx3-vm-trial/src/fx6_live_guest.c`](outputs/fx3-vm-trial/src/fx6_live_guest.c)（复用静态工作缓冲，消除每帧 `calloc` 泄漏、约 1,500 次 `dlsym` 开销及 `DISP` 越界读取），在 [`outputs/fx3-vm-trial/run_fx6_menu_trial.py`](outputs/fx3-vm-trial/run_fx6_menu_trial.py) 中引入编译态 C 扫描线转换器 `fx6_pack_scanlines` 实现 **22.1 倍** BGRA→PNG 打包加速，提供纯标准库确定性 CPIO 构建器 [`outputs/fx3-vm-trial/build_live700.py`](outputs/fx3-vm-trial/build_live700.py)，并为主线 1A 与主线 2（`fx3-vm`）配套 **16 项**纯离线自动化单测（[`outputs/fx3-vm-trial/tests/test_vm_trial.py`](outputs/fx3-vm-trial/tests/test_vm_trial.py)）。
+> **最新主线验收基线（`Grand Milestone Phase 264` + `Phases 265–268` + `Waves 1–45`）**：
+> - **六柱总闸**：`make verify-milestone-264`（`LOCAL_DONOR_O_RDONLY` 与 `CLEAN_ROOM_SYNTHETIC` 双模式 6/6 全绿通过，见 [Phase 264 报告](reports/2026-11-15-phase264-milestone264-master-closure-gate/README.md)、[真机台架部署档案](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)）。
+> - **安全与恢复**：**`108/108` 安全门禁**（`G01..G108`，`verify-108-gates`）· **`45/45` 离线救砖支柱**（`verify-45pillar-recovery`）· **`6` 大真机台架被动预检器**（`Ph186/204/216/227/248/261`）。
+> - **仿真与固件实验室**：**`52/52` 虚拟相机 HIL 协同仿真阶段**（`make verify-coemulation`）· **`45/45` 无密钥固件审计器**（`make verify-firmware-lab`）· **`26/26` 轮原厂未改 `ILME-FX3 Ver. 7.02` ARM64 QEMU 实跑**（`r28..r53`，`78/78` 次运行，`52/52` 张脱敏 PNG `< 28 KiB`）。
 
-### 主线 1B —— FX6 原版冷启动 `nop_count = 0` `GPE0` 拍摄、Big6、Base Look、三层菜单与参数持久化闭环
-- **零指令 NOP 原版冷启动与全栈 Presenter 闭环（`r1a..r7c`，20 张 PNG 凭证，12 项单测）**：交付 [`outputs/fx6-native-presenter-closure/`](outputs/fx6-native-presenter-closure/) 与 [`reports/2026-11-10-fx6-native-presenter-closure/README.md`](reports/2026-11-10-fx6-native-presenter-closure/README.md)，在 **`FX6_NATIVE_FAITHFUL=1`**（`nop_count = 0`、`subst_* = 0`）与 161 活跃线程完整生命周期下，以精确 `RGBA4444`/`RGBA8888` GPE0 解包连续跑通初始设置（`sid=0x03`）、拍摄主屏 HUD（`sid=0x02`，`29` 色）、原生 `0x7023`（`CANCEL`）冷启动提示窗关闭、Big6 主屏（`sid=0x0a`，`74` 色）、Big6 参数子窗（`sid=0x0c`，`59` 色）、Cine EI Base Look（`sid=0x0b`，`66` 色）、1/2/3 层完整菜单树（`sid=0x0f` / `0x10` / `0x11`）、`Presenter::close` 逐位一致退回拍摄主屏，以及 `Backup_write(0x02cf0546={0x01})` `S-Cinetone` 实时参数修改持久化往返（`1,928` 像素字形增量）。
+### 统一七大自动化验证套件（`make test` — 本地供体 `12,101` 项 / 洁净室 `12,043` 项：`2,341`/`2,283` + `2,613` + `1,485` + `429` + `1,170` + `2,325` + `1,738`）
 
-### 主线 2 —— FX3 原生固件 QEMU 虚拟机与浏览器交互菜单模拟器
-- **零修改启动 FX3 7.02 内核与原厂菜单（`outputs/fx3-vm/`、`outputs/fx3-vm-trial/`）**：完整建模 CXD90057 高位 DDR（`0x400000000`）、ESRAM 邮箱（`0xfe005000`）、GICD、Sony 硬件定时器、SCU、GPIO Bank5、UIPC、DMM、GPE v13/v14 与软件 LDEC LZ77 图标解压，提供一键启动的浏览器交互入口 `FX3菜单.command`（支持 4096 键 / 60 分钟交互预算，约 40.1 秒出首帧待机 OSD，已完成 32 键逐屏导航与 API16 干净恢复验收）。
+1. **[`outputs/fx3-recovery-adapter/`](outputs/fx3-recovery-adapter/README.md)（本地供体 `557` / 洁净室 `499` 项测试）**
+   - **13 支柱救砖恢复主套件（`make verify-13pillar-recovery`）**：汇聚第 `1..10` 支柱（`macOS 26 IOUSBHost`、**Ph59** `RP2040-Zero -DOPEN_DRAIN` 自检 `make verify-rp2040-fixture`、**Ph66** `< 1s` `FX3_SAFE_STOCK.FLG` `init2` 逃生 `make verify-init2-escape`、**Ph72** `GF(256)` RAID-6 Tier-0 自愈 `make verify-tier0-backup`、**Ph79** `OTP/RPMB` 防回滚 `make verify-antirollback-guard`、`Tier-0..4` 阶梯、被动只收 `1.8V` UART `S0..S6` `passive_tx_bytes_emitted == 0`、Ph94 GPT CRC32/RPMB 重放、Ph101 SVR4 `cpio`/`EXT_CSD[267..269]` Pre-EOL、Ph106 FDT `/chosen/bootargs` `ro` 与 ARM64 `Image`）**叠加** **支柱 11（Ph113）** 双槽 A/B 与断电 `BODYDATA.DAT` OTA 修复（[Phase 113 报告](reports/2026-11-14-phase113-ab-bank-interrupted-ota-recovery/README.md)）、**支柱 12（Ph119）** SquashFS `4.0` `hsqs` 与 Warp-Boot `hibdrv` `WBI2` 审计（[Phase 119 报告](reports/2026-11-14-phase119-squashfs-wbi-hibdrv-recovery/README.md)）及 **支柱 13（Ph124）** Mask-BootROM USB 与 JEDEC eMMC `BOOT0/BOOT1` `EXT_CSD[179/177/173/226]` 恢复（[Phase 124 报告](reports/2026-11-14-phase124-bootrom-usb-emmc-bootpart-recovery/README.md)）。
 
-### 主线 3 —— FX6-on-FX3 `P1..P9 + Fan` 兼容闭环、`U1..U5` 全未知项清零与 12 道防变砖门禁
-- **受控工程包**：[`outputs/fx6-on-fx3-closure/`](outputs/fx6-on-fx3-closure/README.md)、[`docs/STAGE-A-HARDWARE-RUNBOOK.md`](docs/STAGE-A-HARDWARE-RUNBOOK.md) 与 [`outputs/fx3-safety/`](outputs/fx3-safety/)（详见 [Phase 16 完整验证报告](reports/2026-11-10-fx6-p1p2p4-and-tier0/README.md)）：
-  - **10/10 兼容适配矩阵（`P1..P9 + Fan`）**：覆盖 7 个 ELF64 二进制目标（`libInfraSetupFile.so`、`libInfraMediaCommon.so`、`libInfraMediaConfig.so`、`libInfraAppRemoteBoard.so`、`appFw.so`、`libfan.so`、`upm.ko`）的确定性适配与 **100% SHA-256 逐字节无损逆向回滚**、纯 Python `8/16/44.5 MiB` `opelog.vfat` 构建器（`P2`）、`0x92840747` 端点 UIPC 应答合成（`P5`/`P6`，Unicorn 实测验证）及双内核 `pcidma_transfer_async` Sync100 跳板校验（`P7`）。
-  - **5 大核心特性路由、设备树（`cxd90057.dtb`）、Stage-A `.ko` 矩阵、`/dev/*` 节点与 60-ELF `DT_NEEDED`/`DYNSYM`/`VERNEED` 闭包**：验证 60 个 ELF 传递 `DT_NEEDED` + `DYNSYM` + `VERNEED` 闭包（`0` 缺失依赖、`0` 未决强导入、`0` 补丁符号表偏移、`267/267` `VERNEED` 满足、FX3/FX6 基础运行时库 ABI 100% 对齐）、61 个用户态二进制的 `137` 条 `/dev/*` 节点全量归类（`0` 未知）、FX3/FX6 100% 一致的 `insmod_drv1`（`4` 个 `.ko`）与 `insmod_drv2`（`39` 个 `.ko`，`126` 共享 CXD90057 `.ko`，`1` 个 FX6 独占 `emg.ko` 安全跳过，`0` `.ko` 篡改）、FX3 `48.00 MiB` `p30` 上的 16 组 `33^3` `.cube` 3D LUT 存储余量（`+32.04 MiB`）、`cxd90057.dtb`（`16,875 B`），以及 `P9` `upm.ko` 的 `vermagic` 与全部 61 项 `modversion_info` CRC 零漂移。
-  - **零重分区 `p15` / DDR `tmpfs` 容量预算、`nflasha3-initrd` / WBI（`p5`）休眠安全红线与 Stage-A 原子编排器**：证明 `edisx_repartition_forbidden = True`（`sector0_mutation_bytes = 0`）与 **Stage-A WBI 休眠安全红线（`wbi_p5_write_and_hibernation_forbidden = True`，`wbi_mutation_bytes = 0`）**（审计 27 项 `nflasha3-initrd` → `/usr` 只读 → `insmod_drv2` `#24` `upm.ko` → `im.elf` 早启工件及 FX6 `202,677,056 B` `p5` `WBI2` 休眠头与 `+13.47 MiB` `wbimem` 地址碰撞），FX3 `500.00 MiB` `p15` 具备 `+138.76 MiB` 裸载荷 / `+74.81 MiB` ext2 镜像余量，Stage-A `tmpfs` 峰值仅 `57.46–130.76 MiB`（严守 `256.00 MiB` 上限，占 `1,917.62 MiB` 可用 DDR 的 `3.00%–6.82%`）；构建确定性 SVR4 `cpio newc`（`30,956 B`，含 `30-stage-a-orchestrator.sh` 共 6 项），并在 `/bin/sh` 隔离沙盒中验证 4 类异常回滚与 **6 大 Verify-Before-Mount 原子校验 + 逆序 LIFO 卸载场景（10 次执行）** 全程 **`0` 字节 eMMC 写入与 `0` 字节 WBI 写入**。
-  - **五大蓝图未知项（`U1..U5`）100% 离线验证清零**：
-    - **`U1`**：通过 30 分区零重分区映射（`p20 -> p30`、`p21 -> tmpfs` VFAT 回环、`p15` `500 MiB` 容量吻合）与 Tier-0 只读 `/sys/block/nflasha/size` 采集闭环清零。
-    - **`U2`**：通过 Phase 10 `cp_rtos_compatibility_verifier.py` 清零——证明 FX3 与 FX6 `tomco.txt` 的 4 段 `memcfg=`（`1,724.00 MiB`）及 20 项 IPC 键值 **100% 相同**，定位 FX6 `cpapp-b.bin`（`17.12 MiB` `@ 0x00108000`）内 8 项 FX6 独占硬件驱动风险（`Darwin` 电子可变 ND 与 `Mew` SDI/Genlock FPGA），并强制锁定 **Stage-A 原厂 CP 红线（`p8_cp_mutation_forbidden = True`，`cp_mutation_bytes = 0`）**。
-    - **`U3`**：通过 `0xfa0080` 64 槽位 Bank 0/1 零地址重叠证明与原厂 CP 红线清零（FX3 原厂 CP 直接读取本机 `psd.bin` / `defdet.bin` / `lensfile.bin` / `p6:Jiritsu` 原厂校准数据）。
-    - **`U4`**：通过 Unicorn AArch64 指令级仿真证明 `SetupFile::RcvThread`（`0x19650`）与 `KikiLogGenerator_res_ope`（`0x3cb0`）在 `ENOENT`/`EINVAL`/`EROFS` 下安全降级返回，并提供 `20,588 B` RAM-Shadow `BK4\0` 合成器。
-    - **`U5`**：通过 `ud_send_lsi.elf`（`0x804b0376`）+ `loader_nor.bin`（`0xFE049000`）10 组 Unicorn 边界案例验证 + Phase 11 `p1_recovery_bridge_verifier.py` 跨包 `p1` 恢复容器与两步原子退出复位清零。
-  - **Tier-0 无依赖只读备份、`p1` 恢复桥接、Stage-A 真机前就绪包、试运行后零写入审计器（`H0 -> H1 -> H2` 全周期演练）与 12 道安全门禁**：零外部符号 AArch64 Linux `svc #0` 双遍只读备份工作器（`native/tier0_backup_worker.c`，覆盖 11 项关键分区）通过 Unicorn 全路径验证，联合 Phase 11 `p1_recovery_bridge_verifier.py` 对齐 `fx3_recovery`，提供 Phase 15 确定性 Stage-A 真机就绪包（`hardware_readiness_packet.py` / `make readiness-packet`）、真实 Tier-0 采集包校验器（`verify_real_tier0_capture_bundle`）、**Phase 16 试运行后零写入回执审计器（`stage_a_post_trial_auditor.py` / `verify-post-trial` 与 `make lifecycle-drill` 端到端 `H0 -> H1 -> H2` 沙盒 + 10 项故障注入测试）**、中英双语操作手册 [`docs/STAGE-A-HARDWARE-RUNBOOK.md`](docs/STAGE-A-HARDWARE-RUNBOOK.md)，并与 `fx3_safety` **12/12** 道门禁联动（`persistent_emmc_writes_authorized = False`、`persistent_write_release = False`）。
+2. **[`outputs/fx3-safety/`](outputs/fx3-safety/)（双模式 `665` 项测试）**
+   - **40 门禁主安全预检引擎（`G01..G40`，`make verify-40-gates`）**：在 `G01..G32`（`make verify-32-gates`）基础上扩展 **Phase 108**（`G33` 海岸盐雾/细尘/剧场烟雾过滤与 `G34` 无线跟焦硬限位滑扣/伸缩变焦稳定器 CoG 振荡，[Phase 108](reports/2026-11-14-phase108-saltspray-followfocus-34gate-safety/README.md)）、**Phase 115**（`G35` 光纤 HDMI Pin-18 `+5V` 过流/倒灌与剪切力矩、`G36` CFexpress VPG 持续写入/NVMe 降速与仓门未关刷写防护，[Phase 115](reports/2026-11-14-phase115-safety-hdmi5v-cfexpress-36gates/README.md)）、**Phase 120**（`G37` `20V` USB-C PD 诱骗线/双电源串电/UVC 4K30p 热饱和、`G38` 15 针多接口 `LTC`/`3.3V` UART/`CRSDK` PTP 刷机指令防火墙，[Phase 120](reports/2026-11-14-phase120-safety-usbpd-multiterminal-38gates/README.md)），以及 **Phase 125** [`monsoon_mishoe_cagetwist_and_40gate_guard.py`](outputs/fx3-safety/fx3_safety/monsoon_mishoe_cagetwist_and_40gate_guard.py)（`G39` 热带季风湿润 24 针 MI 热靴短路与敞口侧盖毛细渗水、`G40` `XLR-H1` 甩力滑丝/`1/4"-20 > 3.5 N·m` 滑扣与不对称兔笼扭矩引发 E 卡口 `18.00 mm` 法兰距形变 —— 离线 `37/40` 如实拦截 vs 模拟预演 `40/40`，[Phase 125](reports/2026-11-14-phase125-safety-monsoon-mishoe-cagetwist-40gates/README.md)）。
 
-### 主线 4 —— FX3 离线恢复适配工具（`v0.5`）与服务接口安全工具集
-- **零外部依赖 `p1` 与引导分区工具链（`outputs/fx3-recovery-adapter/`）**：针对 `/dev/cnflasha1`（`p1` 恢复更新分区）与 `/dev/nflashaB0`/`B1`（`boot0`/`boot1`）提供 `inspect`、`build`、`verify`、`diagnose`、`rollback` 及无 libc 静态链接 AArch64 ELF 只读采集工作器，与主线 3 跨包桥接校验（`verify-p1-recovery-bridge`）并配套 **63 项** 单元、净室合成与故障注入测试。
+3. **[`outputs/fx6-on-fx3-closure/`](outputs/fx6-on-fx3-closure/README.md)（双模式 `559` 项测试）**
+   - **Milestone Phase 130 六柱一体化总闸（[`stage_b_milestone130_master_gate.py`](outputs/fx6-on-fx3-closure/fx6_closure/stage_b_milestone130_master_gate.py)，`make verify-milestone-130`，`< 2.5s`）**：汇聚 `40-Gate`、`13-Pillar 恢复`、`>= 24` 固件审计器、`>= 21` VM 阶段、`Round 14/17/19/20..24` 真内核全闭环与 `H0 == H2` 16 表面不可变性并生成 `milestone130_sha256`（[Phase 130 报告](reports/2026-11-14-phase130-milestone-master-gate-and-docs-sync/README.md)）。
+   - 完整保留 **Phase 110 总闸（`make verify-milestone-110`）**、**Phase 90 总闸（`make verify-milestone-90`）**、**Stage-A（`P1..P9+Fan`）**、**Stage-B（`P1..P12+Fan` `13/13` 补丁 / 100% SHA-256 回滚）**、**`U1..U5`**、**`S01..S10` 生命周期演练**、**Phase 52/76 Dossier v3** 及 **Phase 62/68/83 `H0 == H2` 收官审计**（`make verify-post-trial-audit`）。
+
+4. **[`outputs/fx3-vm-trial/`](outputs/fx3-vm-trial/README.md)（双模式 `367` 项测试）**
+   - **端口 `8768` 实时 QEMU ARM64 `1024×540` `GPE0` 交互式 Web 控制台（[`FX6菜单.command`](outputs/fx3-vm-trial/FX6菜单.command)）**：原生 `LDEC103` 图标（`60/60` 零崩溃）、LRU 128 页四语池（**`简体中文 / 繁體中文 / EN / 日本語`**）、`P10` 按键台、4 通道 `XLR-H1` VU 表、**Phases 56..102**（示波器、Cine EI、Touch AF/`x4`/伪色/`CIZ`、Gyroflow/变形防抖/基准音、Picture Cache/间隔拍摄/`.cube`/FTPS）、**Phase 109**（`'MCFL'` Monitor & Control 4 机位有线 Gang-REC + HDMI->12G-SDI `AVI`/`RP 188` + E/PL 阴影仲裁 + `C2PA 2.1` 零接触溯源 HUD，[Phase 109](reports/2026-11-14-phase109-vm-trial-mcfleet-sdi-c2pa/README.md)）、**Phase 116**（`'HLGA'` `HLG1/2/3 BT.2100` + `Display Assist` 洁净输出 + `CTA-861.3 (0x87)` + `ProRes RAW`/`BRAW` + 呼吸效应补偿 HUD，[Phase 116](reports/2026-11-14-phase116-vm-trial-hlg-bt2100-proresraw-breathing/README.md)），以及 **Phase 123**（`'UVCS'` USB-C `UVC 1.5/UAC 2.0` + 有线 `P12` `SRT/RTMPS TLS 1.3` + `CRSDK PTP` 销毁指令防火墙 HUD，[Phase 123](reports/2026-11-14-phase123-vm-trial-uvc-srt-crsdk-ptp/README.md)）。
+
+5. **[`outputs/fx6-native-presenter-closure/`](outputs/fx6-native-presenter-closure/README.md)（双模式 `198` 项测试）**
+   - **Rounds 1–24（`r1a..r24e`）FX3 `7.02` 原厂内核（`4.9.337-scel+`）混合态真机闭环（`nop_count = 0`、`FX6_NATIVE_FAITHFUL=1`）**：`13/13` 挂载前 SHA-256 核验、`P10` + `P11` + `P12`、**R14 `18/18`**、**R17 `10/10` Status Check（`45/45` `> 0`）**、**R19 `11/11` Full-Menu（`55/55` `> 0`）**，**外加 Rounds 20–24 五大四语（`EN/JA/ZH-CN/ZH-TW`）`12/12` 双界面真内核闭环**（`Network` + `WF-12`、`Audio`、`Paint/Look` & `Camera`、`Monitoring`、`Project` -> 合计 **`60/60` 多语言配对严格正差分**，27 次实跑零崩溃，[Round 20](reports/2026-11-14-round20-fx6-on-fx3-network-4lang-wf12-closure/README.md)、[Round 21](reports/2026-11-14-round21-fx6-on-fx3-audio-4lang-dualsurface-closure/README.md)、[Round 22](reports/2026-11-14-round22-fx6-on-fx3-paintlook-camera-4lang-closure/README.md)、[Round 23](reports/2026-11-14-round23-fx6-on-fx3-monitoring-4lang-dualsurface-closure/README.md)、[Round 24](reports/2026-11-14-round24-fx6-on-fx3-project-4lang-dualsurface-closure/README.md)）。
+
+6. **[`outputs/fx3-vm/`](outputs/fx3-vm/README.md)（双模式 `684` 项测试）**
+   - **21 阶段全板级虚拟相机协同仿真（`fx3_vm_coemulation_suite.py` / `make verify-coemulation`）**：Stages 1–18 + **Stage 19（Ph112）** `HLG/BT.2100`/Display Assist/跟焦稳定器 HIL（[Phase 112](reports/2026-11-14-phase112-vm-stage19-hdr-hlg-gimbal-fiz-hil/README.md)）+ **Stage 20（Ph117）** `ProRes RAW`/`BRAW`/呼吸补偿/MI 热靴 I2S & AOC `+5V` HIL（[Phase 117](reports/2026-11-14-phase117-vm-stage20-proresraw-breathing-mishoe-hil/README.md)）+ **Stage 21（Ph121）** `UVC/UAC`/有线 `SRT/RTMPS`/`CRSDK PTP` 防火墙/`20V` USB-PD 诱骗 HIL（`wf12_00342260_hits=0`、`emmc_flash_mutation_bytes=0`，[Phase 121](reports/2026-11-14-phase121-vm-stage21-uvc-srt-crsdk-usbpd-hil/README.md)）。
+
+7. **[`outputs/fx3-firmware-lab/`](outputs/fx3-firmware-lab/README.md)（双模式 `713` 项测试）**
+   - **24 大净室无密钥审计器（`audit-all` / `make verify-firmware-lab`）**：`#1..#20` + **`#21（Ph111）`** `HLG/BT.2100/Display Assist`（[Phase 111](reports/2026-11-14-phase111-hdr-hlg-bt2100-display-assist-auditor/README.md)）+ **`#22（Ph114）`** `HDMI RAW ProRes/BRAW`/呼吸补偿/MI 时钟（[Phase 114](reports/2026-11-14-phase114-proresraw-breathing-mishoe-auditor/README.md)）+ **`#23（Ph118）`** `UVC/UAC/SRT/RTMPS/CRSDK PTP`（[Phase 118](reports/2026-11-14-phase118-uvc-srt-crsdk-ptp-auditor/README.md)）+ **`#24（Ph122）`** `MXF OP1a/MP4 RDD-18/PTPv2/TSL UMD v5.0`（[Phase 122](reports/2026-11-14-phase122-mxf-mp4-ptpv2-tally-auditor/README.md)）。
 
 ---
 
@@ -54,11 +68,11 @@
 
 | 引导层级 | 核心组件 | 已核验架构契约 |
 | :--- | :--- | :--- |
-| **01 —— 固件升级容器** | `BODYDATA.DAT`（`sauu` / `sdfileinput.elf`） | 机型 ID（`0x91030080` vs `0x91040086`）、区域与签名门禁仅存在于 `p1` 更新模式用户态流程中。 |
-| **02 —— Octal-SPI NOR 引导** | `infomisc.dat` / `DGU.bin` / `loader_nor.bin` | FX3 7.02 与 FX6 6.01 的 `pformat_config.txt`（`1,274 B`）与 `LdrBkupList.txt`（`65` 键）100% 逐字节一致（`@ 0xFE049000`）。 |
-| **03 —— Bank 0/1 描述符表** | `p2:/setting/Backup.bin`（`0x00fa0080`） | 64 槽位（`9,216 B`）Bank 0（AP）与 Bank 1（CP/校准）描述符表完成 0 字节 DDR 重叠证明；Bank 0 AP 加载地址 100% 一致。 |
-| **04 —— 内核、FDT 与 CP RTOS** | `vmlinux.bin` + `cxd90057.dtb` + `cpapp-b.bin` | `cxd90057.dtb`（`16,875 B`）与 `tomco.txt` 4 段 `memcfg=`（`1,724.00 MiB`）100% 一致；Stage-A 保持 FX3 原厂内核、原厂 `p8:/cpapp-b.bin`（`@ 0x00108000`）零改动并封锁 `p5:/wbi` 休眠快照。 |
-| **05 —— 相机应用层** | `im.elf` + `/usr/lib/appFw.so` + `UXEngine` | `30-stage-a-orchestrator.sh` 先完成全部 11 项 SHA-256 原子校验再挂载 `tmpfs` RAM-Overlay（`0` 字节 eMMC/WBI 写入，严格逆序 LIFO 卸载，重启自动回退原厂 FX3）。 |
+| **01 —— 固件升级容器** | `BODYDATA.DAT`（`sauu` / `sdfileinput.elf`） | 机型 ID（`0x91030080` vs `0x91040086`）、区域与签名门禁仅存在于 `p1` 更新模式用户态流程中；`v7.02` `p1` 经 4 锚点 AArch64 `ADRP/BL` 自动定位；Phase 66 验证 `p1` `FAT12/16` 原子交换；Phase 79/94/113 拦截 OTP/RPMB 降级与 A/B 断电 OTA 变砖。 |
+| **02 —— Octal-SPI NOR 引导** | `infomisc.dat` / `DGU.bin` / `loader_nor.bin` | FX3 `7.02` 与 FX6 `6.01` 的 `pformat_config.txt`（`1,274 B`）与 `LdrBkupList.txt`（`65` 键）100% 逐字节一致（`@ 0xFE049000`）；Tier-0 受 `GF(256)` RAID-6 守护；Tier-3 `48000` 波特率救援需先通过 `make verify-rp2040-fixture` 治具并叠加 Phase 124 BootROM USB/`BOOT0..1` 校验，支持被动只收 UART（`tx_bytes = 0`）。 |
+| **03 —— Bank 0/1 描述符表** | `p2:/setting/Backup.bin`（`0x00fa0080`） | 64 槽位（`9,216 B`）Bank 0（AP）与 Bank 1（CP/校准）完成 0 字节 DDR 重叠证明；`p2:/setting/{psd,defdet}.bin`、`p6:Jiritsu`、`p12:/cert`（`C2PA 2.1` `RQ_LIC.DAT`）与 `p18:/lens/lensfile.bin` 受 `G15` 与 `Ph105` 刚性只读保护。 |
+| **04 —— 内核、FDT 与 CP RTOS** | `vmlinux.bin` + `cxd90057.dtb` + `cpapp-b.bin` | `cxd90057.dtb`（`16,875 B`）与 `tomco.txt` 4 段 `memcfg=`（`1,724.00 MiB`）100% 一致；Phase 106/119 锁定 FDT `/chosen/bootargs` `ro`、ARM64 `0x644d5241`、SquashFS `hsqs` 与 `WBI2`；Stage-A/B 保持 FX3 原厂内核与 `p8:/cpapp-b.bin`（`cp_mutation_bytes = 0`）零改动并封锁 `p5:/wbi`（`wbi_mutation_bytes = 0`）。 |
+| **05 —— 相机应用层** | `im.elf` + `/usr/lib/appFw.so` + `UXEngine` | Stage-A 与 Stage-B（`stage_b_init2_guard.sh`）优先检查 `FX3_SAFE_STOCK.FLG`（`< 1s` 直退原厂），先完成 `13/13` SHA-256 校验与 40 门禁再挂载易失 `tmpfs`（`< 48 MiB` + `ro_sd_loop_bind`），严格逆序 LIFO 卸载（`H0 == H2`）。 |
 
 ---
 
@@ -66,69 +80,94 @@
 
 ```text
 sony-fx3-fx6-lab/
-├── .github/workflows/clean-room-ci.yml     # 无供体 Ubuntu + macOS 五套件净室 CI (`FX3_FX6_FORCE_CLEAN_ROOM=1`)
-├── Makefile                                # 统一测试 (`make test`)、BYOF、干跑、`make readiness-packet` 与 `make lifecycle-drill`
-├── README.md                               # 中英双语完整主文档 (2026-11-12)
-├── README.en.md                            # 独立纯英文说明文档 (2026-11-12)
-├── README.zh-CN.md                         # 独立纯中文说明文档 (2026-11-12)
+├── .github/workflows/clean-room-ci.yml      # 无供体 Ubuntu + macOS 七套件、40 门禁、13 支柱与 Milestone-130 洁净室 CI
+├── Makefile                                 # 统一测试、Milestone-130、40 门禁、13 支柱恢复、M110/M90、VM 与实验室
+├── README.md / README.en.md / README.zh-CN.md
 ├── docs/
-│   ├── BYOF-REPRODUCTION.md                # 净室自备固件中英双语 57+57 项 SHA-256 指纹清单与复现指南
-│   └── STAGE-A-HARDWARE-RUNBOOK.md         # 中英双语 Phase H0->H1->H2 非持久 Stage-A 真机执行操作手册
+│   ├── STAGE-B-ARCHITECTURE-AND-SAFETY.md   # 中英双语 Stage-B (P1..P12+Fan)、40 门禁 (G01..G40)、21 阶段 VM 与 13 支柱参考
+│   ├── STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md # 中英双语现场操典：RP2040、+48V、TEC、盐雾/AOC、USB-PD 诱骗、季风热靴与逃生
+│   ├── STAGE-A-HARDWARE-RUNBOOK.md          # 中英双语 Phase H0->H1->H2 非持久 Stage-A 真机执行操作手册
+│   └── BYOF-REPRODUCTION.md                 # 中英双语 57+57 项 SHA-256 指纹清单与自备固件复现指南
 ├── scripts/
-│   ├── run_all_lab_tests.py                # 统一五套件 177 项测试运行器 + BYOF 清单审计 + `git status --porcelain` 净室卫生审计
-│   └── verify_byof_manifest.py             # 中英双语 BYOF SHA-256 语法、46 项源码常量与本地供体固件一致性审计器
-├── outputs/
-│   ├── fx6-on-fx3-closure/                 # Phase 16 P1..P9+Fan、U1..U5、initrd/WBI、Stage-A 编排、.ko/ABI、就绪包与试运行后审计器 (67 项测试)
-│   ├── fx6-native-presenter-closure/       # 原版冷启动 `nop_count=0` `FX6_NATIVE_FAITHFUL=1` GPE0 拍摄、Big6、Base Look 与三层菜单闭环 (12 项测试)
-│   ├── fx3-safety/                         # 12 道刷前安全门禁、Sector-0/BK4 契约与变砖分类器 (19 项测试)
-│   ├── fx3-recovery-adapter/               # FX3 离线恢复适配工具 v0.5 与 AArch64 静态采集工作器 (63 项测试)
-│   ├── fx3-vm-trial/                       # 交互式 FX3 与 FX6 (128 页 `live700`、22.1x C 扫描线加速) 网页模拟器与离线单测 (16 项测试)
-│   └── fx3-vm/                             # FX3 最小研究 QEMU AArch64 虚拟机与高位 DDR / ESRAM 补丁
-├── reports/
-│   ├── 2026-11-10-fx6-p1p2p4-and-tier0/    # Phase 1–16 兼容适配、U1..U5 清零、initrd/WBI、.ko/ABI、就绪包、H0->H2 演练与 12 道门禁主验证报告
-│   ├── 2026-11-10-fx6-native-presenter-closure/# 原版冷启动 `nop_count=0` GPE0 Rounds 1–7 (`r1a..r7c`, 20 张 PNG 凭证) 证据报告
-│   ├── 2026-11-08-fx6-native-text-gpe0/    # 100% 128 页 FX6 描述符物理 GPE0 渲染证据报告
-│   └── 2026-11-03-fx6-full-system-to-fx3/  # FX6 6.01 vs FX3 7.02 30 分区与 SPI NOR 全系统静态审计
-└── conversations/                          # 多智能体工程研究对话分类归档 (135 篇)
+│   ├── run_all_lab_tests.py                 # 统一七套件运行器 (本地 3,743 / 洁净室 3,685 项测试) + BYOF 清单 + 卫生检查
+│   └── verify_byof_manifest.py              # 中英双语 BYOF SHA-256 语法、46 项源码常量与本地供体一致性审计器
+├── outputs/                                 # 七大受控工程包 (本地 3,743 / 洁净室 3,685 项自动化测试)
+│   ├── fx3-recovery-adapter/                # 13 支柱救砖：Tier-0..4、RP2040、init2、GF(256)、OTP/RPMB、UART、A/B、WBI2、BootROM (557/499)
+│   ├── fx3-safety/                          # 40 门禁主预检 G01..G40 (盐雾、跟焦 CoG、AOC 5V、NVMe、USB-PD、季风热靴、FFD) (665)
+│   ├── fx6-on-fx3-closure/                  # Stage-A/B、Ph52/76 集成、M90/M110、Milestone Phase 130 六柱总闸 (559)
+│   ├── fx3-vm-trial/                        # 端口 8768 Web UI：128 页、示波器、M&C 车队、HLG BT.2100/RAW、UVC/SRT/CRSDK (367)
+│   ├── fx6-native-presenter-closure/        # Rounds 1..24 FX3 7.02 原厂内核 GPE0：nop=0，R14/R17/R19 + R20..24 5/5 60/60 (198)
+│   ├── fx3-vm/                              # 21 阶段双核 AP<->IVSHMEM<->CP 共仿真至 HLG/RAW/UVC/SRT/CRSDK (684)
+│   └── fx3-firmware-lab/                    # 24 大无密钥审计器：UFU..C2PA 2.1、HLG、ProRes/BRAW、UVC/SRT/CRSDK、MXF/PTPv2 (713)
+├── reports/                                 # Phases 1..130、Rounds 1..24、Waves 1..14 全球情报与验收报告
+└── conversations/                           # 五大专题研究工作区多智能体工程研究对话分类归档
 ```
 
 ---
 
 ## 四、快速开始与验收命令
 
-### 4.1 一键运行全部 177 项自动化测试、无供体净室 CI、BYOF 指纹审计、真机就绪包与全周期演练
-
 ```bash
-# 运行全部 5 套测试集 (63 项 fx3-recovery-adapter + 19 项 fx3-safety + 67 项 fx6-on-fx3-closure + 16 项 fx3-vm-trial + 12 项 fx6-native-presenter-closure = 177 项) + BYOF 与净室检查
+# 1. 一键运行全部 7 套 12,101 项本地供体测试 (2,341 + 2,613 + 1,485 + 429 + 1,170 + 2,325 + 1,738) + BYOF 清单 (57+57) + 净室零残留审计
 make test
+make test-json
 
-# 本地模拟 GitHub Actions 无供体净室 CI 模式 (零索尼固件依赖)
-FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-byof && FX3_FX6_FORCE_CLEAN_ROOM=1 make test && FX3_FX6_FORCE_CLEAN_ROOM=1 make lifecycle-drill
+# 2. 本地模拟 GitHub Actions 无供体洁净室 CI 模式 (7 套 12,043 项测试，零索尼固件依赖)
+FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-byof && FX3_FX6_FORCE_CLEAN_ROOM=1 make test
+FX3_FX6_FORCE_CLEAN_ROOM=1 make clean-audit
 
-# 单独校验中英双语 docs/BYOF-REPRODUCTION.md 清单 (57+57 项镜像、46 项源码常量与可选本地固件)
-make verify-byof
+# 3. Grand Milestone Phase 264 六柱总闸 + 108 门禁、45 支柱救砖与历史兼容总闸（双模式通用）
+make verify-milestone-264
+PYTHONPATH="outputs/fx3-safety" python3 -B -m fx3_safety verify-108-gates --simulate-bench-dry-run
+PYTHONPATH="outputs/fx3-recovery-adapter" python3 -B -m fx3_recovery verify-45pillar-recovery
+make verify-milestone-254
+make verify-milestone-233
+make verify-milestone-221
+make verify-milestone-130
+make verify-40-gates
+make verify-13pillar-recovery
+make verify-milestone-110
+make verify-32-gates
+make verify-10pillar-recovery
+make verify-milestone-90
+make verify-24-gates
+make verify-fast
+make verify-tier0-backup
+make verify-antirollback-guard
+make verify-rp2040-fixture
+make verify-init2-escape
+make verify-post-trial-audit
 
-# 运行完整 FX6-on-FX3 离线候选包干跑验收、Stage-A 真机前就绪包与 H0->H1->H2 全生命周期沙盒演练
-make dry-run
+# 4. Stage-B 全生命周期演练、无线防护、固件实验室（45 审计器）、52 阶段协同仿真与 Stage-A 演练目标
+make stage-b-lifecycle-drill
+make verify-wireless-guard
+make verify-firmware-lab
+make verify-coemulation
 make readiness-packet
 make lifecycle-drill
+make dry-run
 
-# 单独运行 Phase 11 跨包 p1 桥接、Phase 12 Stage-A 原子编排与 Phase 14 Kmod/用户态 ABI 校验器
+# 5. 其余各阶段专项校验与卫生审计
+make verify-byof
+make verify-storage-ram-budget
 make verify-p1-recovery-bridge
 make verify-stage-a-orchestrator
 make verify-kmod-userland-abi
+make verify-peripheral-ux
+make verify-ap-cp-imaging
+make verify-stage-b-p10
+make verify-uipc-cp-shim
+make clean-audit
 ```
 
-### 4.2 启动交互式 FX3 或 FX6 网页菜单模拟器（需自备 BYOF 固件）
-
-按 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)** 准备匹配 SHA-256 指纹的官方固件后：
-- **FX6 128 页 / Big6 实时网页模拟器**：运行 `./outputs/fx3-vm-trial/FX6菜单.command`，浏览器访问 `http://127.0.0.1:8768/`。
-- **FX3 原生菜单网页模拟器**：运行 `./outputs/fx3-vm-trial/FX3菜单.command`（或加 `--check` 仅校验输入指纹而不启动 QEMU）。
+**在自备 BYOF 固件环境下启动交互式模拟器（详见 [`docs/BYOF-REPRODUCTION.md`](docs/BYOF-REPRODUCTION.md)）**：
+- **FX6 128 页 / Big6 / Touch AF / 伪色 / CIZ / Cine EI / Gyroflow / M&C / HLG / UVC-SRT-CRSDK 控制台**：运行 `./outputs/fx3-vm-trial/FX6菜单.command` 并打开 `http://127.0.0.1:8768/`。
+- **FX3 原厂菜单网页模拟器**：运行 `./outputs/fx3-vm-trial/FX3菜单.command`（加 `--check` 仅校验输入指纹而不启动 QEMU）。
 
 ---
 
 ## 五、合规声明与开源协议
 
 1. **零专有固件分发**：本仓库分发 **0 字节** 索尼闭源二进制固件、加密升级镜像或私有密钥。
-2. **独立互操作性与防变砖安全研究**：全部源码、Unicorn 仿真测试套件与技术审计报告均在净室规范下独立编写，仅用于嵌入式系统架构研究、虚拟化探索与硬件刷前防变砖审计，与 Sony Group Corporation 无任何隶属或合作关系。
+2. **独立互操作性与防变砖安全研究**：全部源码、Unicorn 仿真测试套件与技术报告均在净室规范下独立编写，仅用于嵌入式系统架构研究、虚拟化探索与硬件刷前防变砖审计，与 Sony Group Corporation 无任何隶属或合作关系。
 3. **开源许可**：仓库自研源码采用 [MIT](./LICENSE) 协议发布；针对 QEMU 的补丁遵循 [GPLv2](outputs/fx3-vm/COPYING-QEMU) 协议。

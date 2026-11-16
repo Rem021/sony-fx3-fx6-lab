@@ -1,0 +1,891 @@
+{
+  "schema": "fx6-on-fx3-round41-realhw-desqueeze-165x-focusmap-simult-shocklesswb-qemu-v1",
+  "round": 41,
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "realhw_mechanisms_verified": {
+    "desqueeze_display_5ratio_165x_4hardlocks_and_hdmi_raw_bypass_init": {
+      "ratios_verified": 5,
+      "off_centi": 100,
+      "r13x_centi": 130,
+      "r20x_centi": 200,
+      "r15x_centi": 150,
+      "r16x_actual_centi": 165,
+      "cinemascope_aspect": "2.39:1",
+      "invalid_ratio_reject_rc": -22,
+      "focus_mode_locked_mf": 1,
+      "focus_area_locked_wide": 1,
+      "steadyshot_locked_off": 1,
+      "face_priority_metering_locked_off": 1,
+      "af_mut_reject_rc": -16,
+      "area_mut_reject_rc": -16,
+      "ibis_mut_reject_rc": -16,
+      "face_mut_reject_rc": -16,
+      "hard_locks_enforced": 4,
+      "unlocked_when_off_ok": 1,
+      "raw_output_on_suppressed": 1,
+      "hdmi_only_suppressed": 1,
+      "hdmi_only_forces_info_off": 1,
+      "log_shooting_off_suppressed": 1,
+      "remote_shooting_suppressed": 1,
+      "photo_mode_suppressed": 1,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r41_init_ok": 1,
+      "verify_us": 575584
+    },
+    "desqueeze_display_stage_b_bridge": {
+      "ratios_supported": 5,
+      "ratio_1_6x_centi": 165,
+      "cinemascope_target": "2.39:1",
+      "hard_locks_enforced": 4,
+      "focus_mode_lock": "MF",
+      "focus_area_lock": "Wide",
+      "steadyshot_lock": "Off",
+      "face_priority_metering_lock": "Off",
+      "raw_output_suppress": 1,
+      "hdmi_only_forces_info_off": 1,
+      "log_off_suppress": 1,
+      "remote_shooting_suppress": 1,
+      "desqueeze_state_ok": 1,
+      "emmc_write_count": 0,
+      "r41_bridge_ok": 1
+    },
+    "external_only_mc_focus_map_150fps_cutoff_and_fx3_sub6fps_allowance": {
+      "body_model": "ILME-FX3",
+      "fw_ver": "7.02",
+      "external_app": "Monitor_and_Control",
+      "inbody_menu_toggle_reject_rc": -95,
+      "stageb_local_overlay_guard_rc": -95,
+      "local_lcd_overlay_draws": 0,
+      "fps_1_sq_rc": 0,
+      "fx3_1fps_allowed": 1,
+      "fps_6_sq_rc": 0,
+      "fx3_6fps_allowed": 1,
+      "fx6_ref_6fps_reject_rc": -22,
+      "fps_24_rc": 0,
+      "fps_60_rc": 0,
+      "fps_120_rc": 0,
+      "fps_149_boundary_rc": 0,
+      "sub_150fps_stream_active": 1,
+      "fps_150_cutoff_rc": -22,
+      "sq_200fps_reject_rc": -22,
+      "sq_240fps_reject_rc": -22,
+      "sq_200fps_stream_active": 0,
+      "sq_240fps_stream_active": 0,
+      "mount_adapter_reject_rc": -19,
+      "non_pdaf_lens_reject_rc": -19,
+      "no_lens_reject_rc": -19,
+      "playback_reject_rc": -16,
+      "p2_write_blocked_rc": -30,
+      "p2_setting_sha256_match": 1,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "emmc_write_count": 0,
+      "r41b_ok": 1,
+      "verify_us": 589696
+    },
+    "dual_slot_simult_autoswitch_continuation_and_shockless_wb_kelvin_grid_bypass": {
+      "dual_initial_mask": 3,
+      "autoswitch_on_slot1_full_rc": 0,
+      "single_slot_cont_active": 1,
+      "cont_slot_mask": 2,
+      "cont_dropped_frames": 0,
+      "card_swap_dual_resume_rc": 0,
+      "resumed_slot_mask": 3,
+      "dual_slot_resumed": 1,
+      "both_slots_full_rc": -28,
+      "autoswitch_off_slot1_full_rc": -28,
+      "autoswitch_off_halted": 1,
+      "autoswitch_off_slot_mask": 0,
+      "fps_sweep_verified": 6,
+      "preset_24p_1_frames": 12,
+      "preset_24p_2_frames": 24,
+      "preset_24p_3_frames": 48,
+      "preset_240fps_3_frames": 480,
+      "invalid_shockless_mode_rc": -22,
+      "ctemp_kelvin_transition_frames": 0,
+      "ctemp_kelvin_immediate_bypass": 1,
+      "ab_gm_grid_transition_frames": 0,
+      "ab_gm_grid_immediate_bypass": 1,
+      "p2_write_blocked_rc": -30,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r41c_ok": 1,
+      "verify_us": 4466
+    }
+  },
+  "runs": {
+    "r41a_desqueeze_165x_4locks_big6_schinese": {
+      "run_id": "r41a-desqueeze-165x-big6-schinese",
+      "round": 41,
+      "lang": "schinese",
+      "r41_mode": "desqueeze_165x_4locks_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [De-Squeeze Display] 5-ratio state machine (Off/1.3x/2.0x/1.5x/1.6x=1.65x horizontal CinemaScope 2.39:1), 4 hard-locked camera settings when non-Off ([Focus Mode]=MF, [Focus Area]=Wide, [SteadyShot]=Off, [Face Priority in Multi Metering]=Off), automatic display de-squeeze suppression on [RAW Output]=On, [Rec. Media dur HDMI Output]=Off(HDMI Only) (forcing [HDMI Info. Display]=Off), [Log Shooting]=Off, [Remote Shooting], and Photo mode, and Stage-B Big-6 Home render (sid=0x0a, schinese)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 68,
+      "wall_elapsed_sec": 73.13,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "cfbc74d9f184c2660bd73435df7d14e39cdc331e489ef77bcddbd5f207f726a1"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r41": {
+          "r41_mode": "desqueeze_165x_4locks_big6",
+          "desqueeze_ratios": [
+            "Off",
+            "1.3x",
+            "2.0x",
+            "1.5x",
+            "1.6x"
+          ],
+          "desqueeze_1_6x_actual_factor": 1.65,
+          "desqueeze_1_6x_target_aspect": "2.39:1",
+          "desqueeze_hard_locked_settings": [
+            "Focus Mode=MF",
+            "Focus Area=Wide",
+            "SteadyShot=Off",
+            "Face Priority in Multi Metering=Off"
+          ],
+          "desqueeze_suppress_conditions": [
+            "RAW Output=On",
+            "Rec. Media dur HDMI Output=Off(HDMI Only)",
+            "Log Shooting=Off",
+            "Remote Shooting",
+            "Photo Mode"
+          ],
+          "hdmi_only_forces_info_display_off": true,
+          "inbody_focusmap_menu_present": false,
+          "inbody_focusmap_reject_rc": -95,
+          "external_focusmap_app": "Monitor & Control",
+          "external_focusmap_cutoff_fps": 150,
+          "fx3_focusmap_low_fps_1_to_6_allowed": true,
+          "focusmap_adapter_nonpdaf_reject_rc": -19,
+          "focusmap_playback_reject_rc": -16,
+          "simult_autoswitch_on_single_card_continuation": true,
+          "simult_autoswitch_off_strict_parity_halt_rc": -28,
+          "shockless_wb_modes": [
+            "Off",
+            "1 (Fast)",
+            "2",
+            "3 (Slow)"
+          ],
+          "shockless_wb_max_fps": 240,
+          "shockless_wb_ctemp_kelvin_transition_frames": 0,
+          "shockless_wb_ab_gm_grid_transition_frames": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r41_telemetry": {
+        "focusmap_rc": null,
+        "simult_wb_rc": null,
+        "desqueeze_165x_init": {
+          "ratios_verified": 5,
+          "off_centi": 100,
+          "r13x_centi": 130,
+          "r20x_centi": 200,
+          "r15x_centi": 150,
+          "r16x_actual_centi": 165,
+          "cinemascope_aspect": "2.39:1",
+          "invalid_ratio_reject_rc": -22,
+          "focus_mode_locked_mf": 1,
+          "focus_area_locked_wide": 1,
+          "steadyshot_locked_off": 1,
+          "face_priority_metering_locked_off": 1,
+          "af_mut_reject_rc": -16,
+          "area_mut_reject_rc": -16,
+          "ibis_mut_reject_rc": -16,
+          "face_mut_reject_rc": -16,
+          "hard_locks_enforced": 4,
+          "unlocked_when_off_ok": 1,
+          "raw_output_on_suppressed": 1,
+          "hdmi_only_suppressed": 1,
+          "hdmi_only_forces_info_off": 1,
+          "log_shooting_off_suppressed": 1,
+          "remote_shooting_suppressed": 1,
+          "photo_mode_suppressed": 1,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r41_init_ok": 1,
+          "verify_us": 575584
+        },
+        "desqueeze_bridge": {
+          "ratios_supported": 5,
+          "ratio_1_6x_centi": 165,
+          "cinemascope_target": "2.39:1",
+          "hard_locks_enforced": 4,
+          "focus_mode_lock": "MF",
+          "focus_area_lock": "Wide",
+          "steadyshot_lock": "Off",
+          "face_priority_metering_lock": "Off",
+          "raw_output_suppress": 1,
+          "hdmi_only_forces_info_off": 1,
+          "log_off_suppress": 1,
+          "remote_shooting_suppress": 1,
+          "desqueeze_state_ok": 1,
+          "emmc_write_count": 0,
+          "r41_bridge_ok": 1
+        },
+        "focusmap_simult_wb_bridge": {
+          "inbody_focusmap_reject_rc": -95,
+          "external_mc_only": 1,
+          "focusmap_cutoff_fps": 150,
+          "sq_200_240_reject_rc": -22,
+          "fx3_low_fps_1_to_6_allowed": 1,
+          "adapter_nonpdaf_reject_rc": -19,
+          "playback_reject_rc": -16,
+          "simult_autoswitch_on_single_cont": 1,
+          "simult_autoswitch_off_halt_rc": -28,
+          "shockless_wb_fps_max": 240,
+          "ctemp_kelvin_grid_transition_frames": 0,
+          "focusmap_mc_ok": 1,
+          "simult_autoswitch_ok": 1,
+          "shockless_wb_ok": 1,
+          "p2_setting_writes": 0,
+          "emmc_write_count": 0
+        },
+        "external_focusmap_150fps": {},
+        "simult_shocklesswb": {},
+        "lang_telemetry": {
+          "reason": "pump",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 34236,
+          "glyph_blits": 17459,
+          "icon_blits": 22866,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "desqueeze_state_ok": 1,
+          "focusmap_mc_ok": 1,
+          "simult_autoswitch_ok": 1,
+          "shockless_wb_ok": 1,
+          "r41_bridge_ok": 1,
+          "round41_realhw_desqueeze_focusmap_simult_shocklesswb": 1,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 41,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "desqueeze_165x_4locks": 1,
+          "external_mc_focusmap_150fps": 1,
+          "simult_autoswitch_single_cont": 1,
+          "shockless_wb_kelvin_grid_bypass": 1,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "stem": "r41a-desqueeze-165x-big6-schinese",
+        "backdrop_rgb": "#161a20",
+        "transparent_pixels": 208034,
+        "alpha_png": {
+          "path": "reports/2026-11-15-round41-realhw-desqueeze-165x-focusmap-simult-shocklesswb-qemu/assets/r41a-desqueeze-165x-big6-schinese-alpha.png",
+          "bytes": 26842,
+          "sha256": "2b7b3d2ce9dacac1cb81aa1bc63c87dc5c6d903bf67e1d939013cf9ad8907f09"
+        },
+        "composited_png": {
+          "path": "reports/2026-11-15-round41-realhw-desqueeze-165x-focusmap-simult-shocklesswb-qemu/assets/r41a-desqueeze-165x-big6-schinese-composited.png",
+          "bytes": 27147,
+          "sha256": "30f8bf048368039da678b2840366732372470042bf1001be9a849ad47c4e5034"
+        }
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 193,
+        "FX6_STAGE_B_": 70,
+        "FX6_R30_": 191,
+        "FX6_R31_": 191,
+        "FX6_R32_": 194,
+        "FX6_R33_": 191,
+        "FX6_R34_": 191,
+        "FX6_R35_": 191,
+        "FX6_R36_": 191,
+        "FX6_R37_": 192,
+        "FX6_R38_": 192,
+        "FX6_R39_": 192,
+        "FX6_R40_": 192,
+        "FX6_R41_": 192,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 192,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 135,
+        "FX6_R10_": 190,
+        "FX6_R11_": 201,
+        "FX6_R12_": 193,
+        "FX6_R13_": 190,
+        "FX6_R14_": 190,
+        "FX6_R15_": 190,
+        "FX6_R16_": 190,
+        "FX6_R17_": 190,
+        "FX6_R18_": 190,
+        "FX6_R19_": 190,
+        "FX6_R20_": 189,
+        "FX6_R21_": 189,
+        "FX6_R22_": 189,
+        "FX6_R23_": 189,
+        "FX6_R24_": 189,
+        "FX6_R25_": 189,
+        "FX6_R26_": 189,
+        "FX6_R27_": 189,
+        "FX6_R29_": 191,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 1069,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 64,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 598,
+        "FX6_FONT_": 108,
+        "FX6_WAIT_SNAPSHOT": 2748,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r41b_external_focusmap_150fps_cutoff": {
+      "run_id": "r41b-external-focusmap-150fps",
+      "round": 41,
+      "lang": "en",
+      "r41_mode": "external_focusmap_150fps_cutoff",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 external-only Monitor & Control [Focus Map] PDAF depth-map streaming: in-body FX3 menu/local overlay rejection (rc=-95 EOPNOTSUPP, local_lcd_overlay_draws=0), sub-150fps active streaming including 1fps and 6fps S&Q (allowed on FX3 unlike FX6 <=6fps block rc=-22), >=150fps S&Q cutoff (150/200/240fps rc=-22 EINVAL), mount-adapter/non-PDAF/no-lens block (rc=-19 ENODEV), and clip playback block (rc=-16 EBUSY, emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 6.76,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c26ada5a5a3a380f591e4ade9d16880c5f51afdaf25c9a086315b7e55eaf6f3f"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r41": {
+          "r41_mode": "external_focusmap_150fps_cutoff",
+          "desqueeze_ratios": [
+            "Off",
+            "1.3x",
+            "2.0x",
+            "1.5x",
+            "1.6x"
+          ],
+          "desqueeze_1_6x_actual_factor": 1.65,
+          "desqueeze_1_6x_target_aspect": "2.39:1",
+          "desqueeze_hard_locked_settings": [
+            "Focus Mode=MF",
+            "Focus Area=Wide",
+            "SteadyShot=Off",
+            "Face Priority in Multi Metering=Off"
+          ],
+          "desqueeze_suppress_conditions": [
+            "RAW Output=On",
+            "Rec. Media dur HDMI Output=Off(HDMI Only)",
+            "Log Shooting=Off",
+            "Remote Shooting",
+            "Photo Mode"
+          ],
+          "hdmi_only_forces_info_display_off": true,
+          "inbody_focusmap_menu_present": false,
+          "inbody_focusmap_reject_rc": -95,
+          "external_focusmap_app": "Monitor & Control",
+          "external_focusmap_cutoff_fps": 150,
+          "fx3_focusmap_low_fps_1_to_6_allowed": true,
+          "focusmap_adapter_nonpdaf_reject_rc": -19,
+          "focusmap_playback_reject_rc": -16,
+          "simult_autoswitch_on_single_card_continuation": true,
+          "simult_autoswitch_off_strict_parity_halt_rc": -28,
+          "shockless_wb_modes": [
+            "Off",
+            "1 (Fast)",
+            "2",
+            "3 (Slow)"
+          ],
+          "shockless_wb_max_fps": 240,
+          "shockless_wb_ctemp_kelvin_transition_frames": 0,
+          "shockless_wb_ab_gm_grid_transition_frames": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r41_telemetry": {
+        "focusmap_rc": 0,
+        "simult_wb_rc": null,
+        "desqueeze_165x_init": {},
+        "desqueeze_bridge": {},
+        "focusmap_simult_wb_bridge": {},
+        "external_focusmap_150fps": {
+          "body_model": "ILME-FX3",
+          "fw_ver": "7.02",
+          "external_app": "Monitor_and_Control",
+          "inbody_menu_toggle_reject_rc": -95,
+          "stageb_local_overlay_guard_rc": -95,
+          "local_lcd_overlay_draws": 0,
+          "fps_1_sq_rc": 0,
+          "fx3_1fps_allowed": 1,
+          "fps_6_sq_rc": 0,
+          "fx3_6fps_allowed": 1,
+          "fx6_ref_6fps_reject_rc": -22,
+          "fps_24_rc": 0,
+          "fps_60_rc": 0,
+          "fps_120_rc": 0,
+          "fps_149_boundary_rc": 0,
+          "sub_150fps_stream_active": 1,
+          "fps_150_cutoff_rc": -22,
+          "sq_200fps_reject_rc": -22,
+          "sq_240fps_reject_rc": -22,
+          "sq_200fps_stream_active": 0,
+          "sq_240fps_stream_active": 0,
+          "mount_adapter_reject_rc": -19,
+          "non_pdaf_lens_reject_rc": -19,
+          "no_lens_reject_rc": -19,
+          "playback_reject_rc": -16,
+          "p2_write_blocked_rc": -30,
+          "p2_setting_sha256_match": 1,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "emmc_write_count": 0,
+          "r41b_ok": 1,
+          "verify_us": 589696
+        },
+        "simult_shocklesswb": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R41_": 3
+      }
+    },
+    "r41c_simult_autoswitch_shocklesswb": {
+      "run_id": "r41c-simult-shocklesswb",
+      "round": 41,
+      "lang": "en",
+      "r41_mode": "simult_autoswitch_shocklesswb",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Dual-Slot [Simult. Recording] + [Auto Switch Media] (Ver. 2.0+ single-card continuation on Slot 2 when Slot 1 fills + seamless dual-slot resume upon card swap vs Auto Switch Media=Off halt rc=-28 ENOSPC for strict dual-copy redundancy), [Shockless WB] (Off/1/2/3) preset transition scaling across 24p..240fps vs 0-frame immediate bypass on [C.Temp./Filter] Kelvin edits and A-B/G-M fine-grid shifts, guest dlopen, and 16/16 H0 == H3 seal (emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 5.07,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "c26ada5a5a3a380f591e4ade9d16880c5f51afdaf25c9a086315b7e55eaf6f3f"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r41": {
+          "r41_mode": "simult_autoswitch_shocklesswb",
+          "desqueeze_ratios": [
+            "Off",
+            "1.3x",
+            "2.0x",
+            "1.5x",
+            "1.6x"
+          ],
+          "desqueeze_1_6x_actual_factor": 1.65,
+          "desqueeze_1_6x_target_aspect": "2.39:1",
+          "desqueeze_hard_locked_settings": [
+            "Focus Mode=MF",
+            "Focus Area=Wide",
+            "SteadyShot=Off",
+            "Face Priority in Multi Metering=Off"
+          ],
+          "desqueeze_suppress_conditions": [
+            "RAW Output=On",
+            "Rec. Media dur HDMI Output=Off(HDMI Only)",
+            "Log Shooting=Off",
+            "Remote Shooting",
+            "Photo Mode"
+          ],
+          "hdmi_only_forces_info_display_off": true,
+          "inbody_focusmap_menu_present": false,
+          "inbody_focusmap_reject_rc": -95,
+          "external_focusmap_app": "Monitor & Control",
+          "external_focusmap_cutoff_fps": 150,
+          "fx3_focusmap_low_fps_1_to_6_allowed": true,
+          "focusmap_adapter_nonpdaf_reject_rc": -19,
+          "focusmap_playback_reject_rc": -16,
+          "simult_autoswitch_on_single_card_continuation": true,
+          "simult_autoswitch_off_strict_parity_halt_rc": -28,
+          "shockless_wb_modes": [
+            "Off",
+            "1 (Fast)",
+            "2",
+            "3 (Slow)"
+          ],
+          "shockless_wb_max_fps": 240,
+          "shockless_wb_ctemp_kelvin_transition_frames": 0,
+          "shockless_wb_ab_gm_grid_transition_frames": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r41_telemetry": {
+        "focusmap_rc": null,
+        "simult_wb_rc": 0,
+        "desqueeze_165x_init": {},
+        "desqueeze_bridge": {},
+        "focusmap_simult_wb_bridge": {},
+        "external_focusmap_150fps": {},
+        "simult_shocklesswb": {
+          "dual_initial_mask": 3,
+          "autoswitch_on_slot1_full_rc": 0,
+          "single_slot_cont_active": 1,
+          "cont_slot_mask": 2,
+          "cont_dropped_frames": 0,
+          "card_swap_dual_resume_rc": 0,
+          "resumed_slot_mask": 3,
+          "dual_slot_resumed": 1,
+          "both_slots_full_rc": -28,
+          "autoswitch_off_slot1_full_rc": -28,
+          "autoswitch_off_halted": 1,
+          "autoswitch_off_slot_mask": 0,
+          "fps_sweep_verified": 6,
+          "preset_24p_1_frames": 12,
+          "preset_24p_2_frames": 24,
+          "preset_24p_3_frames": 48,
+          "preset_240fps_3_frames": 480,
+          "invalid_shockless_mode_rc": -22,
+          "ctemp_kelvin_transition_frames": 0,
+          "ctemp_kelvin_immediate_bypass": 1,
+          "ab_gm_grid_transition_frames": 0,
+          "ab_gm_grid_immediate_bypass": 1,
+          "p2_write_blocked_rc": -30,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r41c_ok": 1,
+          "verify_us": 4466
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "png_exports": null,
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R41_": 3
+      }
+    }
+  },
+  "r41_realhw_desqueeze_focusmap_simult_shocklesswb_audit": {
+    "round": 41,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "r41a_desqueeze_5ratios_165x_and_4hardlocks_verified": true,
+    "r41a_hdmi_raw_clean_hdmi_log_remote_suppression_verified": true,
+    "r41a_stageb_big6_sid_0a_over_340k_pixels_verified": true,
+    "r41b_inbody_focusmap_rejected_and_sub150fps_1fps_6fps_verified": true,
+    "r41b_150fps_200_240fps_cutoff_and_adapter_playback_blocks_verified": true,
+    "r41c_simult_autoswitch_continuation_and_cardswap_resume_verified": true,
+    "r41c_shockless_wb_preset_vs_kelvin_grid_0frame_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical Sony ILME-FX3 (Ver. 7.02) body mounted with 1.3x/1.5x/1.6x/2.0x anamorphic cinema lenses switching [Shooting] -> [Shooting Display] -> [De-Squeeze Display] (1.6x = 1.65x horizontal CinemaScope 2.39:1), verifying the 4 greyed-out camera setting locks and automatic display suppression on [RAW Output]=On / [Off(HDMI Only)].",
+    "Physical Sony ILME-FX3 (Ver. 7.02) paired over Wi-Fi/USB with Sony Monitor & Control (Ver. 2.1.0+) verifying live PDAF Focus Map streaming at 1fps/6fps/24p/60p/120p and cutoff at 200fps/240fps S&Q or mount-adapter lenses.",
+    "Physical Sony ILME-FX3 (Ver. 7.02) dual-slot SDXC / CFexpress Type A cards running [Simult. Recording] + [Auto Switch Media]=On/Off card-full continuation, hot card-swap dual-slot resume, and live dual-illuminant [Shockless WB] preset vs 0-frame [C.Temp./Filter] Kelvin / A-B G-M shifts."
+  ]
+}

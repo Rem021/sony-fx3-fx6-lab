@@ -31,11 +31,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from ._donor_paths import ensure_unicorn_importable as _ensure_unicorn_importable, resolve_mac_work_dir as _resolve_mac_work_dir
+from .donor_paths import ensure_unicorn_site_on_sys_path
 
-_ensure_unicorn_importable()
-import unicorn as U
-from unicorn import arm64_const as A
+try:
+    import unicorn as U
+    from unicorn import arm64_const as A
+except ImportError:
+    ensure_unicorn_site_on_sys_path()
+    import unicorn as U
+    from unicorn import arm64_const as A
 
 
 UIPC_BB_TARGET_QUEUE = 0x92840747

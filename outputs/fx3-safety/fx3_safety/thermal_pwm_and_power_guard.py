@@ -1479,7 +1479,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--cfexpress-a-c", type=float, default=49.0, help="CFexpress Slot A temperature (C)")
     parser.add_argument("--cfexpress-b-c", type=float, default=47.0, help="CFexpress Slot B temperature (C)")
     parser.add_argument("--batt-mv", type=int, default=8050, help="NP-FZ100 raw millivolts")
-    parser.add_argument("--soc-pct", type=int, default=88, help="InfoLITHIUM state-of-charge (%)")
+    parser.add_argument("--soc-pct", type=int, default=88, help="InfoLITHIUM state-of-charge (%%)")
     parser.add_argument("--usbpd-vbus-mv", type=int, default=8850, help="Measured USB-PD VBUS (mV)")
     args = parser.parse_args(list(argv) if argv is not None else None)
 

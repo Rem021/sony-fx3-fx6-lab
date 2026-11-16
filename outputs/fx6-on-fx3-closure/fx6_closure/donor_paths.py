@@ -16,6 +16,7 @@ enforced and external local Sony donor trees are never admitted.
 
 from __future__ import annotations
 
+import glob
 import os
 import site
 import sys
@@ -25,7 +26,9 @@ from typing import List, Mapping, Optional, Tuple
 
 ENV_FORCE_CLEAN_ROOM = "FX3_FX6_FORCE_CLEAN_ROOM"
 ENV_MAC_ROOT = "FX3_FX6_MAC_ROOT"
+ENV_MAC_PROJECT_ROOT = "FX3_FX6_MAC_PROJECT_ROOT"
 ENV_MAC_WORK_ROOT = "FX3_FX6_MAC_WORK_ROOT"
+ENV_MAC_WORK_DIR = "FX3_FX6_MAC_WORK_DIR"
 ENV_MAIN_LAB_WORK_ROOT = "FX3_FX6_MAIN_LAB_WORK_ROOT"
 ENV_UNICORN_SITE = "FX3_FX6_UNICORN_SITE"
 
@@ -94,9 +97,15 @@ def iter_work_roots(
     candidates: List[Path] = []
 
     # 1. Explicit environment variable overrides
-    env_mac_work = source.get(ENV_MAC_WORK_ROOT, "").strip()
+    env_mac_work = (
+        source.get(ENV_MAC_WORK_ROOT, "").strip()
+        or source.get(ENV_MAC_WORK_DIR, "").strip()
+    )
     env_main_lab_work = source.get(ENV_MAIN_LAB_WORK_ROOT, "").strip()
-    env_mac_root = source.get(ENV_MAC_ROOT, "").strip()
+    env_mac_root = (
+        source.get(ENV_MAC_ROOT, "").strip()
+        or source.get(ENV_MAC_PROJECT_ROOT, "").strip()
+    )
 
     if prefer_main_lab:
         if env_main_lab_work:
@@ -393,6 +402,14 @@ def resolve_unicorn_site_packages(
 
     py_ver = f"python{sys.version_info.major}.{sys.version_info.minor}"
     candidates.append(Path(sys.prefix) / "lib" / py_ver / "site-packages")
+    for pattern in (
+        str(Path.home() / "Library/Python/*/lib/python/site-packages"),
+        str(Path.home() / ".local/share/uv/**/site-packages"),
+        "/opt/homebrew/lib/python*/site-packages",
+        "/Library/Frameworks/Python.framework/Versions/*/lib/python*/site-packages",
+    ):
+        for matched in sorted(glob.glob(pattern, recursive="**" in pattern)):
+            candidates.append(Path(matched))
 
     for cand in _dedupe_paths(candidates):
         if cand.is_dir() and (

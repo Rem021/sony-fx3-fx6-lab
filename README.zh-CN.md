@@ -1,17 +1,15 @@
-# 索尼 FX3 与 FX6 系统移植、QEMU 虚拟机与净室兼容性研究实验室 (`sony-fx3-fx6-lab`)
+# Sony FX3 / FX6 Lab · 中文研究文档
 
-[![English](https://img.shields.io/badge/Language-English-0969da?style=flat)](./README.en.md)
-[![双语总览](https://img.shields.io/badge/主文档-README.md_(中英双语)-1a7f37?style=flat)](./README.md)
-[![Stage-B 架构与安全](https://img.shields.io/badge/Stage--B_架构与安全-40门禁_%7C_docs%2FSTAGE--B-8957e5?style=flat)](./docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md)
-[![操作手册与救砖SOP](https://img.shields.io/badge/操作手册与救砖-13支柱_%7C_中英双语-d97706?style=flat)](./docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)
-[![宿主机平台](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
-[![目标芯片](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)_%2B_CXD90058_(ARMv7--R)-orange?style=flat)](#)
-[![自动化测试](https://img.shields.io/badge/Automated_Tests-3,743_本地_%7C_3,685_洁净室_(7_Suites)-brightgreen?style=flat)](#四快速开始与验收命令)
-[![无供体净室CI](https://img.shields.io/badge/Clean--Room_CI-Ubuntu_%2B_macOS_(0_Donors)-0969da?style=flat)](./.github/workflows/clean-room-ci.yml)
-[![FX6 原厂核实时 GPE0](https://img.shields.io/badge/FX6_GPE0-nop__count%3D0_r1a..r24e_(18%2F18%2B45%2F45%2B55%2F55%2B60%2F60)-success?style=flat)](#统一七大自动化验证套件make-test--本地供体-3743-项--洁净室-3685-项)
-[![开源协议](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](#五合规声明与开源协议)
+**用 QEMU、浏览器菜单工具和离线校验研究索尼 FX3 / FX6 固件。**
 
-> **语言切换 / 深度参考**：[**👉 Switch to Standalone English Documentation (`README.en.md`)**](./README.en.md) · [**中英双语总览主文档 (`README.md`)**](./README.md) · [**Stage-B 全实验室架构与 40 门禁安全规范 (`docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md`)**](./docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md) · [**双语现场操作 SOP 与救砖手册 (`docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md`)**](./docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)
+面向相机固件研究者。模拟器与离线结果不代表真机验收，真实 FX3 跨机型持久化刷写仍为硬锁禁止状态（**`BLOCKED / NO-GO`**）。
+
+[项目首页](README.md) · [English](README.en.md) · **[固件准备](docs/BYOF-REPRODUCTION.md)** · **[真机台架部署档案](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)** · [运行与校验](#四快速开始与验收命令)
+
+[![无供体净室CI](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml/badge.svg)](./.github/workflows/clean-room-ci.yml)
+[![自动化测试](https://img.shields.io/badge/Automated_Tests-12,101_本地_%7C_12,043_洁净室_(7_Suites)-brightgreen?style=flat)](#四快速开始与验收命令)
+[![Milestone 264](https://img.shields.io/badge/Master_Gate-Milestone_264_%7C_Phases_1..268_%7C_Rounds_1..53-1a7f37?style=flat)](#一全实验室工程里程碑phases-1268--rounds-153--waves-145)
+[![开源协议](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
 
 **`sony-fx3-fx6-lab`** 是面向 **Sony Cinema Line ILME-FX3（`Ver. 7.02`，机型 ID `0x91030080`，`ALCIN_UUD`）** 与 **ILME-FX6（`Ver. 6.01`，机型 ID `0x91040086`，`CHAPLIN`）** 数字电影摄影机的净室系统工程、多架构 QEMU 协同仿真、跨机型硬件兼容性验证与真机防变砖安全研究开源仓库。两款机型均搭载 **Sony CXD90057（`AArch64` CE Linux `4.9.337-scel+`）** 主处理器与 **CXD90058（`ARMv7-R` TOPPERS-FMP 1.4.0 `cpapp-b.bin @ 0x00108000`）** 协处理器。
 
@@ -21,13 +19,18 @@
 
 > [!IMPORTANT]
 > **净室开源合规边界（BYOF：自备官方固件复现）**  
-> 本仓库 **包含 0 字节索尼专有闭源二进制文件**（不含 `BODYDATA.DAT`、`vmlinux.bin`、`appFw.so`、`cpapp-b.bin`、`nflasha*` 分区镜像或 `.cpio` 根文件系统镜像）且 **包含 0 字节厂商 AES/RSA 私钥**。全部 7 套测试集（`3,685` 项洁净室测试）与 `Milestone Phase 130 总闸`、`40-Gate`、`13-Pillar 恢复`、`Milestone Phase 110`、`32-Gate`、`Milestone Phase 90`、`24-Gate`、`RP2040`、`init2`、`Tier-0 GF(256)`、`OTP/RPMB 防回滚`、`Post-Trial` 门禁 CLI 均支持无供体净室 CI（`FX3_FX6_FORCE_CLEAN_ROOM=1 make test`），由 [`.github/workflows/clean-room-ci.yml`](./.github/workflows/clean-room-ci.yml) 在 `ubuntu-latest` + `macos-latest` 自动门禁校验。本地复现虚拟机交互体验请参阅 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)**（由 `make verify-byof` 自动守护 `57+57` 指纹与 `46` 项源码常量一致性）。
+> 本仓库 **包含 0 字节索尼专有闭源二进制文件**（不含 `BODYDATA.DAT`、`vmlinux.bin`、`appFw.so`、`cpapp-b.bin`、`nflasha*` 分区镜像或 `.cpio` 根文件系统镜像）且 **包含 0 字节厂商 AES/RSA 私钥**。全部 7 套测试集（**`12,043` 项无供体洁净室测试** / **`12,101` 项本地供体测试**）与 `Grand Milestone Phase 264 六柱总闸`（`make verify-milestone-264`）、`108 门禁`（`verify-108-gates`）、`45 支柱离线救砖`（`verify-45pillar-recovery`）、`52 阶段虚拟相机 HIL 协同仿真` 及 `45 项无密钥固件审计器` 均支持无供体净室 CI（`FX3_FX6_FORCE_CLEAN_ROOM=1 make test`），由 [`.github/workflows/clean-room-ci.yml`](./.github/workflows/clean-room-ci.yml) 在 `ubuntu-latest` + `macos-latest` 自动门禁校验。本地复现虚拟机交互体验请参阅 **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)**（由 `make verify-byof` 自动守护 `57+57` 指纹与 `46` 项源码常量一致性）。
 
 ---
 
-## 一、全实验室工程里程碑（`Phases 1–130` · `Rounds 1–24` · `Waves 1–14`）
+## 一、全实验室工程里程碑（`Phases 1–268` · `Rounds 1–53` · `Waves 1–45`）
 
-### 统一七大自动化验证套件（`make test` — 本地供体 `3,743` 项 / 洁净室 `3,685` 项）
+> **最新主线验收基线（`Grand Milestone Phase 264` + `Phases 265–268` + `Waves 1–45`）**：
+> - **六柱总闸**：`make verify-milestone-264`（`LOCAL_DONOR_O_RDONLY` 与 `CLEAN_ROOM_SYNTHETIC` 双模式 6/6 全绿通过，见 [Phase 264 报告](reports/2026-11-15-phase264-milestone264-master-closure-gate/README.md)、[真机台架部署档案](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)）。
+> - **安全与恢复**：**`108/108` 安全门禁**（`G01..G108`，`verify-108-gates`）· **`45/45` 离线救砖支柱**（`verify-45pillar-recovery`）· **`6` 大真机台架被动预检器**（`Ph186/204/216/227/248/261`）。
+> - **仿真与固件实验室**：**`52/52` 虚拟相机 HIL 协同仿真阶段**（`make verify-coemulation`）· **`45/45` 无密钥固件审计器**（`make verify-firmware-lab`）· **`26/26` 轮原厂未改 `ILME-FX3 Ver. 7.02` ARM64 QEMU 实跑**（`r28..r53`，`78/78` 次运行，`52/52` 张脱敏 PNG `< 28 KiB`）。
+
+### 统一七大自动化验证套件（`make test` — 本地供体 `12,101` 项 / 洁净室 `12,043` 项：`2,341`/`2,283` + `2,613` + `1,485` + `429` + `1,170` + `2,325` + `1,738`）
 
 1. **[`outputs/fx3-recovery-adapter/`](outputs/fx3-recovery-adapter/README.md)（本地供体 `557` / 洁净室 `499` 项测试）**
    - **13 支柱救砖恢复主套件（`make verify-13pillar-recovery`）**：汇聚第 `1..10` 支柱（`macOS 26 IOUSBHost`、**Ph59** `RP2040-Zero -DOPEN_DRAIN` 自检 `make verify-rp2040-fixture`、**Ph66** `< 1s` `FX3_SAFE_STOCK.FLG` `init2` 逃生 `make verify-init2-escape`、**Ph72** `GF(256)` RAID-6 Tier-0 自愈 `make verify-tier0-backup`、**Ph79** `OTP/RPMB` 防回滚 `make verify-antirollback-guard`、`Tier-0..4` 阶梯、被动只收 `1.8V` UART `S0..S6` `passive_tx_bytes_emitted == 0`、Ph94 GPT CRC32/RPMB 重放、Ph101 SVR4 `cpio`/`EXT_CSD[267..269]` Pre-EOL、Ph106 FDT `/chosen/bootargs` `ro` 与 ARM64 `Image`）**叠加** **支柱 11（Ph113）** 双槽 A/B 与断电 `BODYDATA.DAT` OTA 修复（[Phase 113 报告](reports/2026-11-14-phase113-ab-bank-interrupted-ota-recovery/README.md)）、**支柱 12（Ph119）** SquashFS `4.0` `hsqs` 与 Warp-Boot `hibdrv` `WBI2` 审计（[Phase 119 报告](reports/2026-11-14-phase119-squashfs-wbi-hibdrv-recovery/README.md)）及 **支柱 13（Ph124）** Mask-BootROM USB 与 JEDEC eMMC `BOOT0/BOOT1` `EXT_CSD[179/177/173/226]` 恢复（[Phase 124 报告](reports/2026-11-14-phase124-bootrom-usb-emmc-bootpart-recovery/README.md)）。
@@ -105,15 +108,21 @@ sony-fx3-fx6-lab/
 ## 四、快速开始与验收命令
 
 ```bash
-# 1. 一键运行全部 7 套 3,743 项本地供体测试 (557 + 665 + 559 + 367 + 198 + 684 + 713) + BYOF 清单 (57+57) + 净室零残留审计
+# 1. 一键运行全部 7 套 12,101 项本地供体测试 (2,341 + 2,613 + 1,485 + 429 + 1,170 + 2,325 + 1,738) + BYOF 清单 (57+57) + 净室零残留审计
 make test
 make test-json
 
-# 2. 本地模拟 GitHub Actions 无供体洁净室 CI 模式 (7 套 3,685 项测试，零索尼固件依赖)
+# 2. 本地模拟 GitHub Actions 无供体洁净室 CI 模式 (7 套 12,043 项测试，零索尼固件依赖)
 FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-byof && FX3_FX6_FORCE_CLEAN_ROOM=1 make test
 FX3_FX6_FORCE_CLEAN_ROOM=1 make clean-audit
 
-# 3. Milestone Phase 130 六柱总闸 (<2.5s) + 40 门禁、13 支柱救砖与历史兼容总闸（双模式通用）
+# 3. Grand Milestone Phase 264 六柱总闸 + 108 门禁、45 支柱救砖与历史兼容总闸（双模式通用）
+make verify-milestone-264
+PYTHONPATH="outputs/fx3-safety" python3 -B -m fx3_safety verify-108-gates --simulate-bench-dry-run
+PYTHONPATH="outputs/fx3-recovery-adapter" python3 -B -m fx3_recovery verify-45pillar-recovery
+make verify-milestone-254
+make verify-milestone-233
+make verify-milestone-221
 make verify-milestone-130
 make verify-40-gates
 make verify-13pillar-recovery
@@ -129,7 +138,7 @@ make verify-rp2040-fixture
 make verify-init2-escape
 make verify-post-trial-audit
 
-# 4. Stage-B 全生命周期演练、无线防护、固件实验室（24 审计器）、21 阶段协同仿真与 Stage-A 演练目标
+# 4. Stage-B 全生命周期演练、无线防护、固件实验室（45 审计器）、52 阶段协同仿真与 Stage-A 演练目标
 make stage-b-lifecycle-drill
 make verify-wireless-guard
 make verify-firmware-lab
@@ -161,4 +170,4 @@ make clean-audit
 
 1. **零专有固件分发**：本仓库分发 **0 字节** 索尼闭源二进制固件、加密升级镜像或私有密钥。
 2. **独立互操作性与防变砖安全研究**：全部源码、Unicorn 仿真测试套件与技术报告均在净室规范下独立编写，仅用于嵌入式系统架构研究、虚拟化探索与硬件刷前防变砖审计，与 Sony Group Corporation 无任何隶属或合作关系。
-3. **开源许可**：仓库自研源码采用 MIT 协议发布；针对 QEMU 的补丁遵循 [GPLv2](outputs/fx3-vm/COPYING-QEMU) 协议。
+3. **开源许可**：仓库自研源码采用 [MIT](./LICENSE) 协议发布；针对 QEMU 的补丁遵循 [GPLv2](outputs/fx3-vm/COPYING-QEMU) 协议。

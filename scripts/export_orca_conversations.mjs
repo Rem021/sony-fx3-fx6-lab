@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import os from "node:os";
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -114,10 +115,11 @@ function redactSecrets(text) {
     .replace(/github_pat_[A-Za-z0-9_]{20,}/g, "[REDACTED_GITHUB_PAT]")
     .replace(/sk-[A-Za-z0-9_-]{20,}/g, "[REDACTED_API_KEY]")
     .replace(/AIza[0-9A-Za-z_-]{35}/g, "[REDACTED_GOOGLE_KEY]")
-    .replace(/"authToken"\s*:\s*"[^"]+"/g, '"authToken":"[REDACTED]"');
+    .replace(/"authToken"\s*:\s*"[^"]+"/g, '"authToken":"[REDACTED]"')
+    .replaceAll(os.homedir(), "$HOME");
 }
 
-const dbPath = "/Users/kafu/Library/Application Support/orca/agent-session-journal.db";
+const dbPath = join(os.homedir(), "Library/Application Support/orca/agent-session-journal.db");
 const db = new DatabaseSync(dbPath);
 
 const TargetWids = new Set([

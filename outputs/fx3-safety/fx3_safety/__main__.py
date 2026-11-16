@@ -691,7 +691,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 30. verify-g48-rfnvs-fan-power-guard
     p_g48 = sub.add_parser(
         "verify-g48-rfnvs-fan-power-guard",
-        help="Run Phase 153 Gate G48 (p12/p13 RF NVS Lock, USB MSC 054C:0DA1, Off-in-Rec >=65C 100% PWM & <=6100mV EncWfiStop Guard)",
+        help="Run Phase 153 Gate G48 (p12/p13 RF NVS Lock, USB MSC 054C:0DA1, Off-in-Rec >=65C 100%% PWM & <=6100mV EncWfiStop Guard)",
     )
     p_g48.add_argument(
         "--repo-root",
@@ -926,7 +926,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     # 45. verify-g58-bench-interlock
     p_g58 = sub.add_parser(
         "verify-g58-bench-interlock",
-        help="Run Phase 173 Gate G58 (Two-Step Explicit Human Bench Authorization, NP-FZ100 >= 80%/7400mV & Zero-Auto-Flash Interlock)",
+        help="Run Phase 173 Gate G58 (Two-Step Explicit Human Bench Authorization, NP-FZ100 >= 80%%/7400mV & Zero-Auto-Flash Interlock)",
     )
     p_g58.add_argument(
         "--repo-root",

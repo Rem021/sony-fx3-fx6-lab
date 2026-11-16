@@ -2795,7 +2795,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     for cmd_name, help_msg in (
-        ("verify-donors", "Verify ELF64 offsets, context, adaptation, 100% SHA-256 rollback, and P7 kernel signatures"),
+        ("verify-donors", "Verify ELF64 offsets, context, adaptation, 100%% SHA-256 rollback, and P7 kernel signatures"),
         ("run-unicorn-audit", "Run Unicorn AArch64 audits across P3, P4, P5, P6, P7, P8, P9, Fan, and Tier-0"),
         ("run-rollback-drill", "Build Stage-A CPIO newc RAM-Overlay and execute 4-Layer Fail-Safe rollback drill"),
         ("verify-feature-routing", "Verify 5 core camera feature routing, ELF64 symbol closure, 16x .cube LUT budget, and dual-slot Unicorn contracts"),
@@ -2830,7 +2830,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-realhw-jiritsu-tier0", "Verify Phase 136 Stage-288 libJiritsu.so SET_FILE2 P0 hardening, U4/U5/U6 disassembly closures & Tier-0 cold-backup stop-gate"),
         ("verify-sd-stageb-bundle-uninstaller", "Verify Phase 143 BYOF SD-Card Stage-B bundle builder, im.elf escape-hatch launcher & H0==H3 16-surface atomic uninstaller"),
         ("verify-milestone-147", "Verify Milestone Phase 147 6-Pillar Real-Hardware Bench Readiness Master Gate (44-Gate + >=17 Recovery + >=28 Auditors + >=24 VM + Ph136/143 U4/U5/U6/H0==H3 + FX3 7.02 QEMU R28/R29, realhw_milestone147_master_gate_v1)"),
-        ("preflight-realhw-bench", "Run Phase 154 100% passive zero-USB-packet physical bench preflight, ioreg USB mode classifier, SD staging verifier & dual-copy FX3RCPT1 Go/No-Go receipt generator"),
+        ("preflight-realhw-bench", "Run Phase 154 100%% passive zero-USB-packet physical bench preflight, ioreg USB mode classifier, SD staging verifier & dual-copy FX3RCPT1 Go/No-Go receipt generator"),
         ("verify-milestone-175", "Verify Milestone Phase 175 Grand Unified 6-Pillar Real-Hardware Final Pre-Bench Master Gate (58-Gate + >=22 Recovery + >=36 Auditors + >=30 VM + Ph136/143/154 + FX3 7.02 QEMU R28..R34, realhw_milestone175_master_gate_v1)"),
         ("preflight-card-insert", "Run Phase 186 host-side final card-insert preflight (Slot-1/2 ExFAT geometry & hygiene, dual-media FX3RCPT1 binding, NP-FZ100/thermal/cable interlock, and EH1..EH3 + H0..H3 dry-run)"),
         ("verify-milestone-193", "Verify Grand Milestone Phase 193 Unified 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Pre-Bench Master Gate (66-Gate + >=26 Recovery + >=40 Auditors + >=33 VM + Ph136/143/154/186 + FX3 7.02 QEMU R28..R37, realhw_milestone193_master_gate_v1)"),
@@ -2946,7 +2946,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
             p.add_argument("--recover-image-db", dest="recover_image_db_requested", action="store_true", help="Request [Recover Image DB] repair execution check")
             p.add_argument("--recover-image-db-slot", type=int, default=2, help="Target slot for [Recover Image DB]: 1 or 2")
-            p.add_argument("--battery-soc", dest="battery_soc_pct", type=float, default=88.0, help="NP-FZ100 battery SOC percentage (>=20.0% required for [Recover Image DB])")
+            p.add_argument("--battery-soc", dest="battery_soc_pct", type=float, default=88.0, help="NP-FZ100 battery SOC percentage (>=20.0%% required for [Recover Image DB])")
             p.add_argument("--low-battery-warning", action="store_true", help="Flag low-battery warning active (blocks [Recover Image DB])")
             p.add_argument("--no-slot1-tier0-dump", dest="slot1_contains_tier0_dump", action="store_false", help="Indicate Slot 1 does NOT hold a Tier-0 forensic dump")
             p.add_argument("--slot1-tier0-unverified", dest="slot1_tier0_sha256_verified", action="store_false", help="Indicate Slot 1 Tier-0 SHA-256 has NOT been verified off-camera")
@@ -3022,7 +3022,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--auto-pixel-mapping", default="ON", help="[Auto Pixel Mapping]: ON or OFF")
             p.add_argument("--days-since-pixel-mapping", type=int, default=0, help="Days since manual [Pixel Mapping] when [Auto Pixel Mapping]=[Off] (<=3 days)")
             p.add_argument("--manual-pixel-mapping", action="store_true", help="Request manual [Pixel Mapping] execution check")
-            p.add_argument("--battery-soc", dest="battery_soc_pct", type=float, default=88.0, help="NP-FZ100 battery SOC percentage (>=20.0% required for [Pixel Mapping])")
+            p.add_argument("--battery-soc", dest="battery_soc_pct", type=float, default=88.0, help="NP-FZ100 battery SOC percentage (>=20.0%% required for [Pixel Mapping])")
             p.add_argument("--tier0-dump-active", action="store_true", help="Indicate active Tier-0 cold dump (blocks [Pixel Mapping])")
             p.add_argument("--unguarded-calibration", action="store_true", help="Flag unguarded cnflasha calibration write attempt (blocked by O_RDONLY firewall)")
             p.add_argument("--ntsc-pal-selector", default="NTSC", help="[NTSC/PAL Selector]: NTSC or PAL")
@@ -3144,7 +3144,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
             p.add_argument("--simulate-ready-bench", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
             p.add_argument("--power-source", default="USB_PD_BODY", help="Bench power mode: USB_PD_BODY or DC_C1_COUPLER")
-            p.add_argument("--battery-soc", type=float, default=88.0, help="NP-FZ100 battery state-of-charge percentage (>= 51.0% for USB_PD_BODY)")
+            p.add_argument("--battery-soc", type=float, default=88.0, help="NP-FZ100 battery state-of-charge percentage (>= 51.0%% for USB_PD_BODY)")
             p.add_argument("--battery-voltage", type=float, default=8.00, help="NP-FZ100 battery voltage in Volts (7.20V..8.50V)")
             p.add_argument("--dc-c1-watts", type=float, default=65.0, help="DC-C1 USB-PD adapter rated wattage (>= 65.0W)")
             p.add_argument("--dc-c1-cable-amps", type=float, default=5.0, help="DC-C1 USB-C cable current rating in Amps (>= 5.0A)")

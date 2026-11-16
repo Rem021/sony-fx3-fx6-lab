@@ -1,17 +1,15 @@
-# Sony FX3 & FX6 Porting, QEMU Virtual Machine & Clean-Room Compatibility Lab (`sony-fx3-fx6-lab`)
+# Sony FX3 / FX6 Lab · Research Guide
 
-[![简体中文](https://img.shields.io/badge/Language-简体中文-0969da?style=flat)](./README.zh-CN.md)
-[![Bilingual](https://img.shields.io/badge/Master_Doc-README.md_(EN_%2B_ZH)-1a7f37?style=flat)](./README.md)
-[![Stage-B Architecture & Safety](https://img.shields.io/badge/Stage--B_Arch_%26_Safety-40--Gate_%7C_docs%2FSTAGE--B-8957e5?style=flat)](./docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md)
-[![Operator SOP & Unbrick](https://img.shields.io/badge/Operator_SOP_%26_Unbrick-13--Pillar_%7C_EN_%2B_ZH-d97706?style=flat)](./docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)
-[![Platform](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
-[![Target](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)_%2B_CXD90058_(ARMv7--R)-orange?style=flat)](#)
-[![Tests](https://img.shields.io/badge/Automated_Tests-3,743_Local_%7C_3,685_Clean--Room_(7_Suites)-brightgreen?style=flat)](#4-quick-start--verification)
-[![Clean-Room CI](https://img.shields.io/badge/Clean--Room_CI-Ubuntu_%2B_macOS_(0_Donors)-0969da?style=flat)](./.github/workflows/clean-room-ci.yml)
-[![FX6 Cold-Boot & Hybrid GPE0](https://img.shields.io/badge/FX6_GPE0-nop__count%3D0_r1a..r24e_(18%2F18%2B45%2F45%2B55%2F55%2B60%2F60)-success?style=flat)](#the-7-unified-verification-suites-make-test--3743-local-donor--3685-clean-room)
-[![License](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](#5-legal--clean-room-compliance-notice)
+**Explore Sony FX3 and FX6 firmware with QEMU, browser menu tools, and offline checks.**
 
-> **Switch Language / Deep Reference**: [**👉 简体中文完整版 (`README.zh-CN.md`)**](./README.zh-CN.md) · [**Bilingual Master (`README.md`)**](./README.md) · [**Stage-B Architecture & 40-Gate Safety (`docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md`)**](./docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md) · [**Operator SOP & Unbrick Runbook (`docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md`)**](./docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)
+For camera firmware researchers. Emulator and offline results do not establish physical-device readiness. Cross-model/persistent flashing of a real FX3 remains **hard-locked OFF (`BLOCKED / NO-GO`)**.
+
+[Project overview](README.md) · [简体中文](README.zh-CN.md) · **[Prepare firmware](docs/BYOF-REPRODUCTION.md)** · **[Real-HW Deployment Dossier](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)** · [Run checks](#4-quick-start--verification)
+
+[![Clean-Room CI](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml/badge.svg)](./.github/workflows/clean-room-ci.yml)
+[![Tests](https://img.shields.io/badge/Automated_Tests-12,101_Local_%7C_12,043_Clean--Room_(7_Suites)-brightgreen?style=flat)](#4-quick-start--verification)
+[![Milestone 264](https://img.shields.io/badge/Master_Gate-Milestone_264_%7C_Phases_1..268_%7C_Rounds_1..53-1a7f37?style=flat)](#1-engineering-milestones-phases-1268--rounds-153--waves-145)
+[![License](https://img.shields.io/badge/License-MIT_%2F_GPLv2_(QEMU)-656d76?style=flat)](./LICENSE)
 
 **`sony-fx3-fx6-lab`** is a clean-room systems engineering, multi-ISA QEMU virtualization, hardware-compatibility verification, and anti-brick safety research repository for the **Sony Cinema Line ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`)** and **ILME-FX6 (`Ver. 6.01`, Model ID `0x91040086`, `CHAPLIN`)** digital cinema cameras, both powered by the **Sony CXD90057 (`AArch64` CE Linux `4.9.337-scel+`)** AP and **CXD90058 (`ARMv7-R` TOPPERS-FMP 1.4.0 `cpapp-b.bin @ 0x00108000`)** co-processor.
 
@@ -21,13 +19,18 @@
 
 > [!IMPORTANT]
 > **Clean-Room Open-Source Boundary (BYOF — Bring Your Own Firmware)**  
-> This repository contains **0 bytes of proprietary Sony firmware binaries** (no `BODYDATA.DAT`, `vmlinux.bin`, `appFw.so`, `cpapp-b.bin`, `nflasha*` dumps, or `.cpio` rootfs images) and **0 vendor AES/RSA private keys**. All `7` verification suites (`3,685` clean-room tests) plus `Milestone Phase 130 Master Gate`, `40-Gate`, `13-Pillar Recovery`, `Milestone Phase 110`, `32-Gate`, `Milestone Phase 90`, `24-Gate`, `RP2040`, `init2`, `Tier-0 GF(256)`, `OTP/RPMB Anti-Rollback`, and `Post-Trial` CLI gates execute cleanly in donorless mode (`FX3_FX6_FORCE_CLEAN_ROOM=1 make test`) on `ubuntu-latest` + `macos-latest` via [`.github/workflows/clean-room-ci.yml`](./.github/workflows/clean-room-ci.yml). See **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)** (guarded automatically by `make verify-byof`) for exact SHA-256 hashes when reproducing interactive VM sessions with your own official firmware files.
+> This repository contains **0 bytes of proprietary Sony firmware binaries** (no `BODYDATA.DAT`, `vmlinux.bin`, `appFw.so`, `cpapp-b.bin`, `nflasha*` dumps, or `.cpio` rootfs images) and **0 vendor AES/RSA private keys**. All `7` verification suites (**`12,043` clean-room tests** / **`12,101` local-donor tests**) plus `Grand Milestone Phase 264 Master Gate` (`make verify-milestone-264`), `108-Gate` (`verify-108-gates`), `45-Pillar Recovery` (`verify-45pillar-recovery`), `52-Stage VM Co-Emulation`, and `45 Keyless Firmware Auditors` execute cleanly in donorless mode (`FX3_FX6_FORCE_CLEAN_ROOM=1 make test`) on `ubuntu-latest` + `macos-latest` via [`.github/workflows/clean-room-ci.yml`](./.github/workflows/clean-room-ci.yml). See **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)** (guarded automatically by `make verify-byof`).
 
 ---
 
-## 1. Engineering Milestones (`Phases 1–130` · `Rounds 1–24` · `Waves 1–14`)
+## 1. Engineering Milestones (`Phases 1–268` · `Rounds 1–53` · `Waves 1–45`)
 
-### The 7 Unified Verification Suites (`make test` — `3,743` Local Donor / `3,685` Clean-Room)
+> **Latest Closure Baseline (`Grand Milestone Phase 264` + `Phases 265–268` + `Waves 1–45`)**:
+> - **Master Gate**: `make verify-milestone-264` (`6/6` pillars green in both `LOCAL_DONOR_O_RDONLY` and `CLEAN_ROOM_SYNTHETIC`, [Phase 264 Report](reports/2026-11-15-phase264-milestone264-master-closure-gate/README.md), [Deployment Dossier](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)).
+> - **Safety & Recovery**: **`108/108` Safety Gates** (`G01..G108`, `verify-108-gates`) · **`45/45` Offline Recovery Pillars** (`verify-45pillar-recovery`) · **`6` Physical Bench Preflights** (`Ph186/204/216/227/248/261`).
+> - **Emulation & Firmware Lab**: **`52/52` VM HIL Co-Emulation Stages** (`make verify-coemulation`) · **`45/45` Keyless Firmware Auditors** (`make verify-firmware-lab`) · **`26/26` Real-HW `ILME-FX3 Ver. 7.02` ARM64 QEMU Rounds** (`r28..r53`, `78/78` runs, `52/52` sanitized PNGs `< 28 KiB`).
+
+### The 7 Unified Verification Suites (`make test` — `12,101` Local Donor / `12,043` Clean-Room: `2,341`/`2,283` + `2,613` + `1,485` + `429` + `1,170` + `2,325` + `1,738`)
 
 1. **[`outputs/fx3-recovery-adapter/`](outputs/fx3-recovery-adapter/README.md) (`557` Local Donor / `499` Clean-Room tests)**
    - **13-Pillar Recovery Master Suite (`make verify-13pillar-recovery`)**: Composes all `10` foundational & Phase 94/101/106 recovery pillars (`macOS IOUSBHost`, `RP2040-Zero -DOPEN_DRAIN` `make verify-rp2040-fixture`, `< 1s` `FX3_SAFE_STOCK.FLG` `init2` escape + WDT `make verify-init2-escape`, `GF(256)` RAID-6 Tier-0 healer `make verify-tier0-backup`, `OTP/RPMB` anti-rollback `make verify-antirollback-guard`, `Tier-0..Tier-4` ladder, passive `1.8V` RX-only UART `S0..S6` `passive_tx_bytes_emitted == 0`, GPT CRC32/RPMB replay, SVR4 `newc` cpio/`EXT_CSD[267..269]` Pre-EOL, and FDT `/chosen/bootargs` `ro`/ARM64 `Image`) **plus** **Pillar 11 (Ph113)** Dual-Bank A/B & interrupted `BODYDATA.DAT` OTA triage ([Phase 113 Report](reports/2026-11-14-phase113-ab-bank-interrupted-ota-recovery/README.md)), **Pillar 12 (Ph119)** SquashFS `4.0` `hsqs` & Warp-Boot `hibdrv` `WBI2` triage ([Phase 119 Report](reports/2026-11-14-phase119-squashfs-wbi-hibdrv-recovery/README.md)), and **Pillar 13 (Ph124)** Mask-BootROM USB & JEDEC eMMC `BOOT0/BOOT1` `EXT_CSD[179/177/173/226]` triage ([Phase 124 Report](reports/2026-11-14-phase124-bootrom-usb-emmc-bootpart-recovery/README.md)).
@@ -105,18 +108,24 @@ sony-fx3-fx6-lab/
 
 ## 4. Quick Start & Verification
 
-### 4.1 Unified Test Suite, Clean-Room CI, Milestone-130, 40-Gate, 13-Pillar Recovery, Firmware Lab & Co-Emulation Targets
+### 4.1 Unified Test Suite, Clean-Room CI, Milestone-264, 108-Gate, 45-Pillar Recovery, Firmware Lab & Co-Emulation Targets
 
 ```bash
-# 1. Run all 3,743 Local Donor tests across all 7 suites (557 + 665 + 559 + 367 + 198 + 684 + 713) + BYOF (57+57) + hygiene check
+# 1. Run all 12,101 Local Donor tests across all 7 suites (2,341 + 2,613 + 1,485 + 429 + 1,170 + 2,325 + 1,738) + BYOF (57+57) + hygiene check
 make test
 make test-json
 
-# 2. Simulate donorless Clean-Room CI locally (3,685 tests across 7 suites, zero Sony firmware blobs — identical to GitHub Actions)
+# 2. Simulate donorless Clean-Room CI locally (12,043 tests across 7 suites, zero Sony firmware blobs — identical to GitHub Actions)
 FX3_FX6_FORCE_CLEAN_ROOM=1 make verify-byof && FX3_FX6_FORCE_CLEAN_ROOM=1 make test
 FX3_FX6_FORCE_CLEAN_ROOM=1 make clean-audit
 
-# 3. Milestone Phase 130 6-Pillar Master Gate (< 2.5s) + 40-Gate + 13-Pillar Recovery + Legacy Gates (BOTH modes)
+# 3. Grand Milestone Phase 264 6-Pillar Master Gate + 108-Gate + 45-Pillar Recovery + Historical Gates (BOTH modes)
+make verify-milestone-264
+PYTHONPATH="outputs/fx3-safety" python3 -B -m fx3_safety verify-108-gates --simulate-bench-dry-run
+PYTHONPATH="outputs/fx3-recovery-adapter" python3 -B -m fx3_recovery verify-45pillar-recovery
+make verify-milestone-254
+make verify-milestone-233
+make verify-milestone-221
 make verify-milestone-130
 make verify-40-gates
 make verify-13pillar-recovery
@@ -132,7 +141,7 @@ make verify-rp2040-fixture
 make verify-init2-escape
 make verify-post-trial-audit
 
-# 4. Stage-B Lifecycle Drill, Wireless Guard, Firmware Lab (24 Auditors), 21-Stage Co-Emulation & Stage-A Lifecycle targets
+# 4. Stage-B Lifecycle Drill, Wireless Guard, Firmware Lab (45 Auditors), 52-Stage Co-Emulation & Stage-A Lifecycle targets
 make stage-b-lifecycle-drill
 make verify-wireless-guard
 make verify-firmware-lab
@@ -166,4 +175,4 @@ After preparing your own official firmware files per **[docs/BYOF-REPRODUCTION.m
 
 1. **Zero Proprietary Firmware**: This repository distributes **0 bytes** of Sony binary firmware, encrypted update images, or private cryptographic keys.
 2. **Independent Interoperability & Safety Research**: All source code, Unicorn emulation harnesses, and technical reports are authored independently for embedded systems research, virtualization, and hardware anti-brick safety auditing, with no affiliation with Sony Group Corporation.
-3. **Licensing**: Repository source code is released under the MIT license; QEMU patches follow [GPLv2](outputs/fx3-vm/COPYING-QEMU).
+3. **Licensing**: Repository source code is released under the [MIT](./LICENSE) license; QEMU patches follow [GPLv2](outputs/fx3-vm/COPYING-QEMU).

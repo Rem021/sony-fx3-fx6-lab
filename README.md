@@ -1,47 +1,83 @@
-# Sony FX3 & FX6 Porting, QEMU Virtual Machine & Clean-Room Compatibility Lab (`sony-fx3-fx6-lab`)
+# Sony FX3 / FX6 Lab
 
-[![English Standalone](https://img.shields.io/badge/Standalone_EN-README.en.md-0969da?style=flat)](./README.en.md)
-[![简体中文独立版](https://img.shields.io/badge/独立中文版-README.zh--CN.md-0969da?style=flat)](./README.zh-CN.md)
-[![Stage-B Architecture & Safety](https://img.shields.io/badge/Stage--B_Arch_%26_Safety-40--Gate_%7C_EN_%2B_ZH-8957e5?style=flat)](./docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md)
-[![Operator SOP & Unbrick](https://img.shields.io/badge/Operator_SOP_%26_Unbrick-13--Pillar_%7C_EN_%2B_ZH-d97706?style=flat)](./docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)
-[![Platform](https://img.shields.io/badge/Host-macOS_Apple_Silicon_(MTTCG)-blue?style=flat)](#)
-[![Target](https://img.shields.io/badge/SoC-Sony_CXD90057_(AArch64)_%2B_CXD90058_(ARMv7--R)-orange?style=flat)](#)
-[![Automated Tests](https://img.shields.io/badge/Automated_Tests-3,743_Local_%7C_3,685_Clean--Room_(7_Suites)-brightgreen?style=flat)](#4-quick-start--verification)
-[![Clean-Room CI](https://img.shields.io/badge/Clean--Room_CI-Ubuntu_%2B_macOS_(0_Donors)-0969da?style=flat)](./.github/workflows/clean-room-ci.yml)
-[![FX6 Cold-Boot & Hybrid GPE0](https://img.shields.io/badge/FX6_GPE0-nop__count%3D0_r1a..r24e_(18%2F18%2B45%2F45%2B55%2F55%2B60%2F60)-success?style=flat)](#5-outputsfx6-native-presenter-closure-198-tests)
-[![Milestone Phase 130](https://img.shields.io/badge/Milestone_Phase_130-Phases_1..130_%7C_Rounds_1..24_%7C_Waves_1..14-1a7f37?style=flat)](#3-outputsfx6-on-fx3-closure-559-tests)
+**Explore Sony FX3 and FX6 firmware with QEMU, browser menu tools, and offline checks.**
 
-> **Language Navigation / 语言切换**: **[English Documentation](#english-documentation)** · **[简体中文文档](#简体中文文档)** · **[Stage-B Architecture & 40-Gate Safety (`docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md`)](./docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md)** · **[Operator SOP & Unbrick Runbook (`docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md`)](./docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)** · **[Standalone `README.en.md`](./README.en.md)** · **[独立中文版 `README.zh-CN.md`](./README.zh-CN.md)**
+用 QEMU、浏览器菜单工具和离线校验研究索尼 FX3 / FX6 固件。
 
-> [!CAUTION]
-> **STRICT HARDWARE FLASH LOCK (`persistent_emmc_writes_authorized = False` / `NO-GO` FOR PERSISTENT FLASHING)**  
-> **硬件写入硬锁状态（严禁持久化刷写真机 eMMC / SPI NOR）**  
-> Persistent flashing & hardware attach remain **hard-locked OFF (`NO-GO`)**: `persistent_emmc_writes_authorized = False`, `persistent_write_release = False`, `hardware_live_attachment_authorized = False`, `edisx_repartition_forbidden = True` (`sector0_mutation_bytes = 0`), `p8_cp_mutation_forbidden = True` (`cp_mutation_bytes = 0`), `wbi_p5_write_and_hibernation_forbidden = True` (`wbi_mutation_bytes = 0`), `calibration_mutation_bytes = 0`, `otp_fuse_touches = 0`, `rpmb_counter_increments = 0`, `emmc_flash_mutation_bytes = 0`, and `passive_tx_bytes_emitted = 0`. All Stage-A/Stage-B overlays target volatile DDR (`tmpfs`) only, read donor blobs strictly via `os.O_RDONLY`, support `< 1s` `FX3_SAFE_STOCK.FLG` zero-cable SD escape, and revert instantaneously to 100% stock Sony ILME-FX3 `Ver. 7.02` upon power-cycle.
+For firmware researchers and developers interested in camera internals. This repository contains research tools and evidence; it is not a ready-to-flash camera upgrade.
+
+**[Start here](#start-here)** · [English research guide](README.en.md) · [中文研究文档](README.zh-CN.md) · [Firmware setup](docs/BYOF-REPRODUCTION.md) · [Real-HW Deployment Dossier](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)
+
+[![Clean-room CI](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml/badge.svg)](https://github.com/Rem021/sony-fx3-fx6-lab/actions/workflows/clean-room-ci.yml) [![Tests](https://img.shields.io/badge/Automated_Tests-12,101_Local_%7C_12,043_Clean--Room_(7_Suites)-brightgreen?style=flat-square)](#latest-mainline-snapshot) [![Milestone 264](https://img.shields.io/badge/Master_Gate-Milestone_264_%7C_Phases_1..268_%7C_Rounds_1..53-1a7f37?style=flat-square)](#latest-mainline-snapshot) [![License](https://img.shields.io/badge/license-MIT_%2F_GPLv2-blue?style=flat-square)](./LICENSE)
 
 > [!IMPORTANT]
-> **Clean-Room Open-Source Boundary (BYOF — Bring Your Own Firmware) / 净室开源合规边界**  
-> This repository contains **0 bytes of proprietary Sony firmware binaries** (no `BODYDATA.DAT`, `vmlinux.bin`, `appFw.so`, `cpapp-b.bin`, `nflasha*` dumps, or `.cpio` images) and **0 vendor AES/RSA private keys**. Donorless clean-room verification (`3,685` tests across all `7` suites + `Milestone Phase 130 Master Gate`, `40-Gate`, `13-Pillar Recovery`, `Milestone Phase 110`, `32-Gate`, `Milestone Phase 90`, `24-Gate`, `RP2040`, `init2`, `Tier-0 GF(256)`, `OTP/RPMB Anti-Rollback`, and `Post-Trial` CLI gates) runs cleanly via `FX3_FX6_FORCE_CLEAN_ROOM=1 make test` and [`.github/workflows/clean-room-ci.yml`](./.github/workflows/clean-room-ci.yml). See **[docs/BYOF-REPRODUCTION.md](docs/BYOF-REPRODUCTION.md)** (guarded by `make verify-byof`, `57+57` SHA-256 entries + `46` code constants).
+> Firmware-dependent experiments require your own matching official firmware (BYOF). Sony proprietary firmware is not distributed here (`0` bytes of vendor binaries or keys). Offline tests and emulator results do not establish safe operation on a physical camera. Persistent/cross-model flashing of a real FX3 remains **hard-locked OFF (`BLOCKED / NO-GO`)**.
+>
+> 固件实验需自备匹配版本的官方固件；仓库不分发索尼专有固件或私钥（`0` 字节闭源二进制）。离线与模拟器结果不代表真机安全验收，真实物理 FX3 跨机型持久化刷写仍为硬锁禁止状态（**`BLOCKED / NO-GO`**）。
 
----
+## What you can explore
+
+| Area | Start with |
+| :--- | :--- |
+| **Camera menus** | [FX3 / FX6 browser menu runners (`8768`)](outputs/fx3-vm-trial/README.md), after BYOF setup |
+| **Emulation & HIL co-emulation** | [52-stage virtual camera HIL suite](outputs/fx3-vm/README.md), [QEMU Round 1–53 closures](outputs/fx6-native-presenter-closure/README.md), and [research guide](README.en.md) |
+| **Safety, closure & recovery** | [108-gate safety preflight](outputs/fx3-safety/README.md), [45-pillar offline recovery adapter](outputs/fx3-recovery-adapter/README.md), [Stage-B & Milestone-264 closure](outputs/fx6-on-fx3-closure/README.md), and [45 keyless firmware auditors](outputs/fx3-firmware-lab/README.md) |
+| **Reproduction & bench rules** | [BYOF SHA-256 requirements](docs/BYOF-REPRODUCTION.md) and [ILME-FX3 Ver. 7.02 deployment dossier](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md) |
+
+## Start here
+
+To inspect and verify a source checkout without camera hardware or Sony firmware, install Python 3 and GNU Make, then run the clean-room audits:
+
+```bash
+git clone https://github.com/Rem021/sony-fx3-fx6-lab.git
+cd sony-fx3-fx6-lab
+PYTHON=python3 make clean-audit
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHON=python3 make verify-byof
+make verify-milestone-264
+```
+
+The audits verify the clean-room boundary, manifest parity, and 6-pillar offline/synthetic gates; they do not run a physical camera flash or certify hardware attachment (`overall_ready_for_hardware_attach = False`). For firmware-dependent QEMU menus, follow the [BYOF guide](docs/BYOF-REPRODUCTION.md) before launching a runner.
+
+## Latest mainline snapshot
+
+Current verified mainline state across **`Phases 1–268`**, **`Grand Milestone Phase 264`**, **`Rounds 1–53`**, and **Sony Help Guide (`ilc/2210`) Primary-Source `Waves 1–45`**:
+
+| Pillar / Suite | Verified Baseline | Quick Verification Command |
+| :--- | :--- | :--- |
+| **7 Unified Test Suites** | **`12,101`** Local Donor / **`12,043`** Clean-Room tests (`2,341`/`2,283` recovery · `2,613` safety · `1,485` closure · `429` vm-trial · `1,170` presenter-closure · `2,325` fx3-vm · `1,738` firmware-lab) | `FX3_FX6_FORCE_CLEAN_ROOM=1 make test` |
+| **Grand Milestone 264 Master Gate** | **6/6** pillars (`LOCAL_DONOR_O_RDONLY` & `CLEAN_ROOM_SYNTHETIC`), `16/16` `H0 == H3` immutability, `0` leaked bytes | `make verify-milestone-264` |
+| **Safety Preflight Engine (`Ph268`)** | **`108/108`** gates (`G01..G108`: `105/108` offline truthful block, `108/108` bench dry-run rehearsal) | `PYTHONPATH=outputs/fx3-safety python3 -B -m fx3_safety verify-108-gates --simulate-bench-dry-run` |
+| **Offline Recovery Master (`Ph265`)** | **`45/45`** pillars (`Tier-0..4`, `GF(256)` RAID-6, `OTP/RPMB`, `1.8V` RX-only UART, `cnflasha` `O_RDONLY`, Slot-1 vault firewall) | `PYTHONPATH=outputs/fx3-recovery-adapter python3 -B -m fx3_recovery verify-45pillar-recovery` |
+| **VM HIL Co-Emulation (`Ph267`)** | **`52/52`** full-board HIL co-emulation stages (`stage1..stage52`) | `make verify-coemulation` |
+| **Keyless Firmware Lab** | **`45/45`** clean-room binary/synthetic auditors (`audit-all`) | `make verify-firmware-lab` |
+| **Live `FX3 7.02` ARM64 QEMU (`R53`)** | **`26/26`** unmodified `ILME-FX3 Ver. 7.02` (`4.9.337-scel+`) real-HW QEMU rounds (`r28..r53`, **`78/78`** runs, **`52/52`** PNGs `< 28 KiB`) + `Rounds 1..27` | `python3 -B -m unittest discover -s outputs/fx6-native-presenter-closure/tests` |
+| **Physical Bench Preflights** | **`6`** host-side passive verifiers (`Ph186`, `Ph204`, `Ph216`, `Ph227`, `Ph248`, `Ph261`; `usb_tx_packets = 0`) | See [`docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md`](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md) |
+
+## Engineering record
+
+The dated record below preserves historical architectural notes, commands, and bilingual milestone summaries.
+
+<details>
+<summary>Expand the full bilingual engineering record / 展开中英双语工程记录</summary>
 
 # English Documentation
 
-## 1. Executive Summary (`Phases 1–130` · `Rounds 1–24` · `Waves 1–14`)
+## 1. Historical Architecture & Foundation Summary (`Phases 1–130` -> Extended through `Phase 268` / `Milestone 264`)
 
 **`sony-fx3-fx6-lab`** is a clean-room systems engineering, multi-ISA QEMU virtualization, cross-model firmware compatibility, and anti-brick safety laboratory targeting the **Sony Cinema Line ILME-FX3 (`Ver. 7.02`, Model ID `0x91030080`, `ALCIN_UUD`)** and **ILME-FX6 (`Ver. 6.01`, Model ID `0x91040086`, `CHAPLIN`)**, both powered by the **Sony CXD90057 (`AArch64` CE Linux `4.9.337-scel+`)** AP and **CXD90058 (`ARMv7-R` TOPPERS-FMP 1.4.0 `cpapp-b.bin @ 0x00108000`)** co-processor.
 
-Across **`Phases 1–130`**, **`Rounds 1–24`**, and **`Global Intel Waves 1–14`**, the lab integrates **7 unified verification suites (`3,743` Local Donor / `3,685` Clean-Room passing tests via `make test`)** and the **Milestone Phase 130 Six-Pillar Master Gate (`make verify-milestone-130`, `< 2.5s`)**:
-- **Stage-B Volatile RAM-Overlay (`P1..P12 + Fan`, `13/13` Verify-Before-Mount)** with FX3 physical button remap (`P10`), AP-side UIPC-CP shim (`P11`, preserving `XLR-H1` & 5-axis IBIS center-lock), `WF-12` bootloop immunity (`P12`), `< 48 MiB` SVR4 `070701` CPIO packaging, Phase 52/76 Candidate Integrator & Release Dossier v3, Phase 62/68/83 `16`-surface `H0 == H2` Post-Trial Forensic & Capstone Auditor, Phase 90/110 Master Gates, and **Milestone Phase 130 6-Pillar Master Gate** ([Phase 130 Report](reports/2026-11-14-phase130-milestone-master-gate-and-docs-sync/README.md)).
-- **40-Gate Master Preflight (`G01..G40`) & 13-Pillar Recovery Master Suite (`Phases 47..124`)**: Extends `G01..G32` (`C2PA 2.1`, `exFAT`, wired `USB-LAN`/`PTP-IP`, D-Tap/HDMI `V_LENS` crowbar, `NP-FZ100 >= 15%` UPS, `+48V` XLR, gimbal torque, Magnus dew-point `TEC`, PMIC `5V 900 mA`, Sigma fan intake/`1/4-20` tripod, `IMX510` laser/curtain/`-20C`, `5G/6G` EMI/`>6h` CFexpress, PL cantilever/`>8.4V` OVP) with **Ph108 (`G33..G34`)** coastal salt-spray/glycol haze & wireless follow-focus CoG, **Ph115 (`G35..G36`)** HDMI AOC Pin-18 `+5V` backfeed & CFexpress VPG/NVMe thermal/door-open flush, **Ph120 (`G37..G38`)** `20V` USB-C PD decoy/dual-power/UVC 4K30p thermal & 15-pin Multi-Terminal `LTC`/`3.3V` UART/`CRSDK` PTP firewall, and **Ph125 (`G39..G40`)** tropical monsoon wet 24-pin MI-Shoe short/open-flap capillary & `XLR-H1` whip shear/`1/4"-20 > 3.5 N*m` strip/cage-twist `18.00 mm` E-Mount FFD warp; paired with **`13` unified recovery pillars** (`Pillars 1..10` + **Ph113** Dual-Bank A/B & interrupted `BODYDATA.DAT` OTA, **Ph119** SquashFS `4.0` `hsqs` & Warp-Boot `hibdrv` `WBI2`, and **Ph124** Mask-BootROM USB & JEDEC eMMC `BOOT0/BOOT1` `EXT_CSD[179/177/173/226]`).
-- **Live Port `8768` Multilingual QEMU Console (`FX6菜单.command`), `21-Stage` Co-Emulation (`fx3-vm`), `24` Unified `fx3-firmware-lab` Auditors & `Rounds 1–24` (`18/18` + `10/10` Status `45/45` + `11/11` Full-Menu `55/55` + `Rounds 20–24 5/5 60/60` at `nop_count = 0`)**: Adds **Ph109** Monitor & Control 4-Cam wired Gang-REC + HDMI->12G-SDI `AVI`/`RP 188` + E-Mount/PL shading + `C2PA 2.1` provenance HUD, **Ph116** `HLG1/2/3 BT.2100` + `Display Assist` clean-out + `CTA-861.3 (0x87)` + external `ProRes RAW`/`BRAW` + Focus Breathing HUD, and **Ph123** USB-C `UVC 1.5/UAC 2.0` (`480M` stepdown, 0 OSD) + wired `CDC-NCM P12-Safe SRT/RTMPS TLS 1.3` + `CRSDK PTP` flash-opcode (`0x9280..0x92FF`) firewall HUD, alongside `21-Stage` VM co-emulation and `24` keyless auditors.
+Across **`Phases 1–268`**, **`Rounds 1–53`**, and **`Global Intel Waves 1–45`**, the lab integrates **7 unified verification suites (`12,101` Local Donor / `12,043` Clean-Room passing tests via `make test`)** and the **Grand Milestone Phase 264 Six-Pillar Master Gate (`make verify-milestone-264`)** (building upon the foundational Phase 90/110/130/147/175/193/209/221/233/254 master gates documented below):
+- **Stage-B Volatile RAM-Overlay (`P1..P12 + Fan`, `13/13` Verify-Before-Mount)** with FX3 physical button remap (`P10`), AP-side UIPC-CP shim (`P11`, preserving `XLR-H1` & 5-axis IBIS center-lock), `WF-12` bootloop immunity (`P12`), `< 48 MiB` SVR4 `070701` CPIO packaging, Phase 52/76 Candidate Integrator & Release Dossier v3, Phase 62/68/83 `16`-surface `H0 == H2` / `H0 == H3` Post-Trial Forensic & Capstone Auditor, Phase 90/110/130 Master Gates, and **Grand Milestone Phase 264 6-Pillar Master Gate** ([Phase 264 Report](reports/2026-11-15-phase264-milestone264-master-closure-gate/README.md), [Phase 130 Report](reports/2026-11-14-phase130-milestone-master-gate-and-docs-sync/README.md)).
+- **108-Gate Master Preflight (`G01..G108`, building on `G01..G40`) & 45-Pillar Recovery Master Suite (`Phases 47..268`)**: Extends `G01..G32` (`C2PA 2.1`, `exFAT`, wired `USB-LAN`/`PTP-IP`, D-Tap/HDMI `V_LENS` crowbar, `NP-FZ100 >= 15%` UPS, `+48V` XLR, gimbal torque, Magnus dew-point `TEC`, PMIC `5V 900 mA`, Sigma fan intake/`1/4-20` tripod, `IMX510` laser/curtain/`-20C`, `5G/6G` EMI/`>6h` CFexpress, PL cantilever/`>8.4V` OVP) with **Ph108 (`G33..G34`)** coastal salt-spray/glycol haze & wireless follow-focus CoG, **Ph115 (`G35..G36`)** HDMI AOC Pin-18 `+5V` backfeed & CFexpress VPG/NVMe thermal/door-open flush, **Ph120 (`G37..G38`)** `20V` USB-C PD decoy/dual-power/UVC 4K30p thermal & 15-pin Multi-Terminal `LTC`/`3.3V` UART/`CRSDK` PTP firewall, **Ph125 (`G39..G40`)** tropical monsoon wet 24-pin MI-Shoe short/open-flap capillary & `XLR-H1` whip shear/`1/4"-20 > 3.5 N*m` strip/cage-twist `18.00 mm` E-Mount FFD warp, and **Phases 131–268 (`G41..G108`)** real-hardware bench, `ilc/2210` operational, and Slot-1 vault guards; paired with **`45` unified recovery pillars** (`verify-45pillar-recovery`).
+- **Live Port `8768` Multilingual QEMU Console (`FX6菜单.command`), `52-Stage` Co-Emulation (`fx3-vm`), `45` Unified `fx3-firmware-lab` Auditors & `Rounds 1–53` (`26/26` live `FX3 7.02` ARM64 QEMU rounds `r28..r53` / `78/78` runs / `52/52` `<28 KiB` PNGs + `Rounds 1–27` at `nop_count = 0`)**: Adds **Ph109** Monitor & Control 4-Cam wired Gang-REC + HDMI->12G-SDI `AVI`/`RP 188` + E-Mount/PL shading + `C2PA 2.1` provenance HUD, **Ph116** `HLG1/2/3 BT.2100` + `Display Assist` clean-out + `CTA-861.3 (0x87)` + external `ProRes RAW`/`BRAW` + Focus Breathing HUD, **Ph123** USB-C `UVC 1.5/UAC 2.0` (`480M` stepdown, 0 OSD) + wired `CDC-NCM P12-Safe SRT/RTMPS TLS 1.3` + `CRSDK PTP` flash-opcode (`0x9280..0x92FF`) firewall HUD, and `Rounds 28–53` unmodified `ILME-FX3 Ver. 7.02` (`4.9.337-scel+`) QEMU GPE0 rehearsals.
 
-For complete architectural & field manuals, see **[docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md](docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md)** and **[docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md](docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)**.
+For complete architectural & field manuals, see **[docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md](docs/REAL-HARDWARE-FX3-702-DEPLOYMENT-DOSSIER.md)**, **[docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md](docs/STAGE-B-ARCHITECTURE-AND-SAFETY.md)**, and **[docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md](docs/STAGE-B-OPERATOR-SOP-AND-UNBRICK-RUNBOOK.md)**.
 
 ---
 
-## 2. The 7 Unified Verification Suites (`make test` — `3,743` Local Donor / `3,685` Clean-Room)
+## 2. The 7 Unified Verification Suites (`make test` — `12,101` Local Donor / `12,043` Clean-Room)
 
-Running `make test` executes all **7 suites (`3,743` Local Donor / `3,685` Clean-Room)**, the bilingual `docs/BYOF-REPRODUCTION.md` manifest audit (`57+57` entries, `46` constants), and the `git status --porcelain` zero-binary/zero-`.pyc` hygiene sweep:
+Running `make test` executes all **7 suites (`12,101` Local Donor / `12,043` Clean-Room)**, the bilingual `docs/BYOF-REPRODUCTION.md` manifest audit (`57+57` entries, `46` constants), and the `git status --porcelain` zero-binary/zero-`.pyc` hygiene sweep:
 
 ### 1. [`outputs/fx3-recovery-adapter/`](outputs/fx3-recovery-adapter/README.md) (`557` Local Donor / `499` Clean-Room tests)
 - **13-Pillar Recovery Master Suite (`make verify-13pillar-recovery`)**: Composes Pillars `1..10` (`macOS 26 IOUSBHost`, `RP2040-Zero -DOPEN_DRAIN` `make verify-rp2040-fixture`, `<1s` `FX3_SAFE_STOCK.FLG` `init2` escape + WDT `make verify-init2-escape`, `GF(256)` RAID-6 Tier-0 healer `make verify-tier0-backup`, `OTP/RPMB` anti-rollback `make verify-antirollback-guard`, Tier-0..4 ladder, passive `1.8V` RX-only UART `S0..S6` `passive_tx_bytes_emitted == 0`, Ph94 GPT CRC32/RPMB, Ph101 SVR4 `cpio`/`EXT_CSD` Pre-EOL, Ph106 FDT `/chosen/bootargs` `ro`/ARM64 `Image`) **plus** **Pillar 11 (Ph113)** Dual-Bank A/B & interrupted `BODYDATA.DAT` OTA ([Phase 113](reports/2026-11-14-phase113-ab-bank-interrupted-ota-recovery/README.md)), **Pillar 12 (Ph119)** SquashFS `4.0` & `hibdrv` `WBI2` ([Phase 119](reports/2026-11-14-phase119-squashfs-wbi-hibdrv-recovery/README.md)), and **Pillar 13 (Ph124)** Mask-BootROM USB & JEDEC eMMC `BOOT0/BOOT1` ([Phase 124](reports/2026-11-14-phase124-bootrom-usb-emmc-bootpart-recovery/README.md)).
@@ -255,4 +291,6 @@ make clean-audit
 ## 四、多智能体归档与开源协议 (Archives & License)
 
 - **工程对话归档**：5 大专题工作区多智能体研究对话已按净室规范分类归档至 **[conversations/README.md](conversations/README.md)**。
-- **免责与开源协议**：本仓库包含 **0 字节** 索尼专有二进制固件或私有密钥，与 Sony Group Corporation 无任何隶属或合作关系。自研源码采用 MIT 协议，QEMU 补丁遵循 [GPLv2](outputs/fx3-vm/COPYING-QEMU) 协议。
+- **免责与开源协议**：本仓库包含 **0 字节** 索尼专有二进制固件或私有密钥，与 Sony Group Corporation 无任何隶属或合作关系。自研源码采用 [MIT](./LICENSE) 协议，QEMU 补丁遵循 [GPLv2](outputs/fx3-vm/COPYING-QEMU) 协议。
+
+</details>

@@ -24,6 +24,12 @@ def _ensure_lab_sibling_paths() -> None:
 
 _ensure_lab_sibling_paths()
 
+from .donor_paths import (
+    ensure_unicorn_site_on_sys_path as _ensure_unicorn_site_on_sys_path,
+)
+
+_ensure_unicorn_site_on_sys_path()
+
 __version__ = "26.0.0"
 
 from .ap_cp_imaging_pipeline_verifier import (

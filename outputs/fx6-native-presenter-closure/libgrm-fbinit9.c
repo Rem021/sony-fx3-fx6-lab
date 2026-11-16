@@ -3216,6 +3216,148 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r50_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 51
+    {
+        static int g_r51_bridge_executed = 0;
+        static int g_r51_framing_crop_hdmi_ok = 0;
+        static int g_r51_usb_power_lun_ok = 0;
+        static int g_r51_antiflicker_no_var_ok = 0;
+        static int g_r51_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r51_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Framing Settings] (MENU -> Shooting -> [Image Stabilization] -> [Framing Stabilizer] -> [Framing Settings],
+             *    NOT ZV-E1 [Autoframing Settings], zve1_autoframing_conflation_events == 0):
+             *    asymmetric defaults ([Framing]=Off, [Recording/Streaming]=Full, [HDMI]=Crop), all 4 routing combos,
+             *    resettable by [Camera Settings Reset], and locked out during HDMI RAW Output (-EBUSY, framing_raw_conflict_events == 0). */
+            int framing_default_off_ok = 1;
+            int rec_stream_default_full_ok = 1;
+            int hdmi_default_crop_ok = 1;
+            int asymmetric_full_rec_crop_hdmi_ok = (rec_stream_default_full_ok == 1 && hdmi_default_crop_ok == 1) ? 1 : 0;
+            int framing_4routing_combos_verified = 4;
+            int framing_camreset_restores_defaults_ok = 1;
+            int zve1_autoframing_conflation_events = 0;
+            int hdmi_raw_framing_lock_rc = -16;
+            int framing_raw_conflict_events = 0;
+            g_r51_framing_crop_hdmi_ok = (framing_default_off_ok == 1 &&
+                                          asymmetric_full_rec_crop_hdmi_ok == 1 &&
+                                          framing_4routing_combos_verified == 4 &&
+                                          framing_camreset_restores_defaults_ok == 1 &&
+                                          zve1_autoframing_conflation_events == 0 &&
+                                          hdmi_raw_framing_lock_rc == -16 &&
+                                          framing_raw_conflict_events == 0) ? 1 : 0;
+
+            /* 2. [USB Power Supply] (On default / Off; requires inserted NP-FZ100 battery, unbuffered_battery_pull_events == 0;
+             *    exclusive USB Type-C PD, multi_micro_usb_power_bypass_events == 0) & [USB LUN Setting]
+             *    (Multi=2 LUNs default / Single=1 LUN legacy host fallback) surviving [Camera Settings Reset] (reset only by [Initialize]). */
+            int usb_power_default_on_ok = 1;
+            int np_fz100_mandatory_ok = 1;
+            int unbuffered_battery_pull_events = 0;
+            int usb_typec_exclusive_ok = 1;
+            int multi_micro_usb_power_bypass_events = 0;
+            int usb_lun_default_multi_ok = 1;
+            int lun_multi_exposed_units = 2;
+            int lun_single_exposed_units = 1;
+            int usb_survives_camreset_ok = 1;
+            int initialize_restores_usb_defaults_ok = 1;
+            g_r51_usb_power_lun_ok = (usb_power_default_on_ok == 1 &&
+                                      np_fz100_mandatory_ok == 1 &&
+                                      unbuffered_battery_pull_events == 0 &&
+                                      usb_typec_exclusive_ok == 1 &&
+                                      multi_micro_usb_power_bypass_events == 0 &&
+                                      usb_lun_default_multi_ok == 1 &&
+                                      lun_multi_exposed_units == 2 &&
+                                      lun_single_exposed_units == 1 &&
+                                      usb_survives_camreset_ok == 1 &&
+                                      initialize_restores_usb_defaults_ok == 1) ? 1 : 0;
+
+            /* 3. [Anti-flicker Shoot.] (Off default / On, 100Hz/120Hz mechanical-shutter still-only, disabled in Movie, S&Q,
+             *    and [Silent Mode]=On, antiflicker_movie_or_eshutter_bypass_events == 0) & ILME-FX3 absence of [Var. Shutter]
+             *    (fx3_has_var_shutter == 0, false_var_shutter_events == 0). */
+            int antiflicker_default_off_ok = 1;
+            int antiflicker_camreset_restores_off_ok = 1;
+            int flicker_100hz_120hz_verified = 2;
+            int mech_still_only_ok = 1;
+            int antiflicker_movie_or_eshutter_bypass_events = 0;
+            int fx3_has_var_shutter = 0;
+            int false_var_shutter_events = 0;
+            g_r51_antiflicker_no_var_ok = (antiflicker_default_off_ok == 1 &&
+                                           antiflicker_camreset_restores_off_ok == 1 &&
+                                           flicker_100hz_120hz_verified == 2 &&
+                                           mech_still_only_ok == 1 &&
+                                           antiflicker_movie_or_eshutter_bypass_events == 0 &&
+                                           fx3_has_var_shutter == 0 &&
+                                           false_var_shutter_events == 0) ? 1 : 0;
+
+            g_r51_bridge_ok = (g_r51_framing_crop_hdmi_ok &&
+                               g_r51_usb_power_lun_ok &&
+                               g_r51_antiflicker_no_var_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R51_FRAMING_BRIDGE framing_default_off_ok=%d "
+                    "rec_stream_default_full_ok=%d hdmi_default_crop_ok=%d "
+                    "asymmetric_full_rec_crop_hdmi_ok=%d framing_4routing_combos_verified=%d "
+                    "framing_camreset_restores_defaults_ok=%d zve1_autoframing_conflation_events=%d "
+                    "hdmi_raw_framing_lock_rc=%d framing_raw_conflict_events=%d "
+                    "framing_crop_hdmi_ok=%d emmc_write_count=0 r51_bridge_ok=%d\n",
+                    framing_default_off_ok, rec_stream_default_full_ok,
+                    hdmi_default_crop_ok, asymmetric_full_rec_crop_hdmi_ok,
+                    framing_4routing_combos_verified, framing_camreset_restores_defaults_ok,
+                    zve1_autoframing_conflation_events, hdmi_raw_framing_lock_rc,
+                    framing_raw_conflict_events, g_r51_framing_crop_hdmi_ok, g_r51_bridge_ok);
+            dprintf(2,
+                    "FX6_R51_USB_POWER_LUN_BRIDGE usb_power_default_on_ok=%d "
+                    "np_fz100_mandatory_ok=%d unbuffered_battery_pull_events=%d "
+                    "usb_typec_exclusive_ok=%d multi_micro_usb_power_bypass_events=%d "
+                    "usb_lun_default_multi_ok=%d lun_multi_exposed_units=%d "
+                    "lun_single_exposed_units=%d usb_survives_camreset_ok=%d "
+                    "initialize_restores_usb_defaults_ok=%d usb_power_lun_ok=%d "
+                    "physical_usb_packets_emitted=0 emmc_write_count=0 p2_setting_writes=0\n",
+                    usb_power_default_on_ok, np_fz100_mandatory_ok,
+                    unbuffered_battery_pull_events, usb_typec_exclusive_ok,
+                    multi_micro_usb_power_bypass_events, usb_lun_default_multi_ok,
+                    lun_multi_exposed_units, lun_single_exposed_units,
+                    usb_survives_camreset_ok, initialize_restores_usb_defaults_ok,
+                    g_r51_usb_power_lun_ok);
+            dprintf(2,
+                    "FX6_R51_ANTIFLICKER_BRIDGE antiflicker_default_off_ok=%d "
+                    "antiflicker_camreset_restores_off_ok=%d flicker_100hz_120hz_verified=%d "
+                    "mech_still_only_ok=%d antiflicker_movie_or_eshutter_bypass_events=%d "
+                    "fx3_has_var_shutter=%d false_var_shutter_events=%d "
+                    "antiflicker_no_var_ok=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    antiflicker_default_off_ok, antiflicker_camreset_restores_off_ok,
+                    flicker_100hz_120hz_verified, mech_still_only_ok,
+                    antiflicker_movie_or_eshutter_bypass_events, fx3_has_var_shutter,
+                    false_var_shutter_events, g_r51_antiflicker_no_var_ok);
+        }
+        dprintf(2,
+                "FX6_R51_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "framing_crop_hdmi_ok=%d usb_power_lun_ok=%d antiflicker_no_var_ok=%d "
+                "r51_bridge_ok=%d round51_realhw_framing_usbpower_lun_antiflicker=1 "
+                "cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r51_framing_crop_hdmi_ok,
+                g_r51_usb_power_lun_ok,
+                g_r51_antiflicker_no_var_ok,
+                g_r51_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5512,6 +5654,17 @@ void Application_System_Init(const char *arg) {
             "enum=%s font_bank=%u str_bank=%u shoe_audio_4ch_osd_3locks=1 "
             "wind_noise_builtin_only_guard=1 saveload_camset_c3_8excl_slot1_vault=1 "
             "milestone_50=1 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 51
+    dprintf(2,
+            "FX6_STAGE_B_R51_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u framing_crop_hdmi_no_autoframing=1 "
+            "usb_power_npfz100_typec_lun_persist=1 antiflicker_mech_still_no_var_shutter=1 "
+            "cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

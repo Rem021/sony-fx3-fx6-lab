@@ -17765,6 +17765,940 @@ static int run_r50_saveload_c3_vault_probe(void) {
     return ok ? 0 : 248;
 }
 
+/* ==========================================================================
+ * Round 51 (Wave-37 / 24th Real-HW QEMU Round):
+ *   1. r51a (setup_r51_framing_settings_crop_hdmi_probe + SChinese Big6 fb0):
+ *      [Framing Settings] (MENU -> Shooting -> [Image Stabilization] ->
+ *      [Framing Stabilizer] -> [Framing Settings] / Monitor & Control remote,
+ *      strictly NOT consumer ZV-E1 [Autoframing Settings],
+ *      zve1_autoframing_conflation_events == 0):
+ *      [Framing]=Off (default)/On, asymmetric defaults [Recording/Streaming]=Full
+ *      vs [HDMI]=Crop, all 4 (Full/Crop) routing pairs, resettable via
+ *      [Camera Settings Reset], and locked out during HDMI RAW Output
+ *      (-EBUSY, framing_raw_conflict_events == 0).
+ *   2. r51b (--r51-usb-power-lun-guard):
+ *      [Setup] -> [USB] -> [USB Power Supply] (On default / Off) requiring an
+ *      inserted NP-FZ100 battery pack (or DC-C1 coupler; -ENODEV on empty bay,
+ *      -EBUSY live pull guard, unbuffered_battery_pull_events == 0) and operating
+ *      exclusively over USB Type-C (-EOPNOTSUPP on Multi/Micro USB terminal,
+ *      multi_micro_usb_power_bypass_events == 0), plus [USB LUN Setting]
+ *      (Multi default = 2 LUNs / Single = 1 LUN legacy host fallback) surviving
+ *      [Camera Settings Reset] (cleared only by [Initialize]).
+ *   3. r51c (--r51-antiflicker-no-var-shutter-h0-h3):
+ *      ILME-FX3 (ilc/2210) [Anti-flicker Shoot.] (Off default / On, 100Hz/120Hz
+ *      strictly during mechanical-shutter still shooting; disabled with
+ *      -EOPNOTSUPP in Movie, S&Q, and [Silent Mode]=On / electronic shutter,
+ *      antiflicker_movie_or_eshutter_bypass_events == 0) and proving ILME-FX3
+ *      has NO [Var. Shutter] or FX6 ECS menu (fx3_has_var_shutter == 0,
+ *      false_var_shutter_events == 0), plus guest dlopen("/tmp/jiritsu/libJit.so")
+ *      and 16/16 Tier-0 H0 == H3.
+ * ========================================================================== */
+
+typedef enum {
+    R51_FRAMING_OFF     = 0, /* Factory default */
+    R51_FRAMING_ON      = 1,
+    R51_FRAMING_INVALID = 2
+} r51_framing_onoff_t;
+
+typedef enum {
+    R51_FRAMING_OUT_FULL    = 0, /* Factory default for [Recording/Streaming] */
+    R51_FRAMING_OUT_CROP    = 1, /* Factory default for [HDMI] */
+    R51_FRAMING_OUT_INVALID = 2
+} r51_framing_crop_mode_t;
+
+static const char * const k_r51_framing_out_labels[2] = {
+    "Full",
+    "Crop"
+};
+
+typedef struct {
+    int framing_enable;     /* R51_FRAMING_OFF (default) / ON; reset by [Camera Settings Reset] */
+    int rec_streaming_mode; /* R51_FRAMING_OUT_FULL (default) / CROP; reset by [Camera Settings Reset] */
+    int hdmi_mode;          /* R51_FRAMING_OUT_CROP (default) / FULL; reset by [Camera Settings Reset] */
+    int hdmi_raw_output_on; /* 0 = normal HDMI, 1 = HDMI RAW Output active (locks out [Framing]=On) */
+} r51_framing_state_t;
+
+typedef struct {
+    int effective_framing_active;
+    int effective_rec_streaming_crop; /* 0 = Full, 1 = Crop */
+    int effective_hdmi_crop;          /* 0 = Full, 1 = Crop */
+    int monitor_and_control_remote_ready;
+} r51_framing_eval_t;
+
+__attribute__((noinline)) static int r51_lookup_framing_menu_node(const char *menu_name) {
+    if (!menu_name) return -EINVAL;
+    if (strcmp(menu_name, "Framing Settings") == 0 ||
+        strcmp(menu_name, "MENU -> Shooting -> [Image Stabilization] -> [Framing Stabilizer] -> [Framing Settings]") == 0) {
+        return 0;
+    }
+    /* Reject consumer ZV-E1 [Autoframing Settings] conflation on ILME-FX3 (ilc/2210) */
+    if (strcmp(menu_name, "Autoframing Settings") == 0) {
+        return -ENOENT;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r51_framing_initialize_defaults(r51_framing_state_t *st) {
+    if (!st) return;
+    st->framing_enable = R51_FRAMING_OFF;
+    st->rec_streaming_mode = R51_FRAMING_OUT_FULL;
+    st->hdmi_mode = R51_FRAMING_OUT_CROP;
+    st->hdmi_raw_output_on = 0;
+}
+
+__attribute__((noinline)) static void r51_framing_camera_settings_reset(r51_framing_state_t *st) {
+    if (!st) return;
+    /* Official Sony ILME-FX3 Help Guide: [Framing], [Recording/Streaming], and [HDMI]
+     * under [Framing Settings] are ALL restored to factory defaults (Off / Full / Crop)
+     * by [Camera Settings Reset]. */
+    st->framing_enable = R51_FRAMING_OFF;
+    st->rec_streaming_mode = R51_FRAMING_OUT_FULL;
+    st->hdmi_mode = R51_FRAMING_OUT_CROP;
+}
+
+__attribute__((noinline)) static int r51_set_framing_enable(
+    r51_framing_state_t *st, int enable
+) {
+    if (!st) return -EINVAL;
+    if (enable < R51_FRAMING_OFF || enable >= R51_FRAMING_INVALID) {
+        return -EINVAL;
+    }
+    /* Official Sony boundary: HDMI RAW output cannot be combined with cropped [Framing]=On */
+    if (st->hdmi_raw_output_on != 0 && enable == R51_FRAMING_ON) {
+        return -EBUSY;
+    }
+    st->framing_enable = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r51_set_framing_routing(
+    r51_framing_state_t *st, int rec_stream_mode, int hdmi_mode
+) {
+    if (!st) return -EINVAL;
+    if (rec_stream_mode < R51_FRAMING_OUT_FULL || rec_stream_mode >= R51_FRAMING_OUT_INVALID ||
+        hdmi_mode < R51_FRAMING_OUT_FULL || hdmi_mode >= R51_FRAMING_OUT_INVALID) {
+        return -EINVAL;
+    }
+    st->rec_streaming_mode = rec_stream_mode;
+    st->hdmi_mode = hdmi_mode;
+    return 0;
+}
+
+__attribute__((noinline)) static void r51_set_hdmi_raw_output(
+    r51_framing_state_t *st, int raw_on
+) {
+    if (!st) return;
+    st->hdmi_raw_output_on = raw_on ? 1 : 0;
+    if (st->hdmi_raw_output_on != 0 && st->framing_enable == R51_FRAMING_ON) {
+        st->framing_enable = R51_FRAMING_OFF;
+    }
+}
+
+__attribute__((noinline)) static void r51_eval_framing_outputs(
+    const r51_framing_state_t *st, r51_framing_eval_t *out
+) {
+    if (!out) return;
+    memset(out, 0, sizeof(*out));
+    if (!st) return;
+    if (st->hdmi_raw_output_on != 0 || st->framing_enable != R51_FRAMING_ON) {
+        out->effective_framing_active = 0;
+        out->effective_rec_streaming_crop = 0;
+        out->effective_hdmi_crop = 0;
+        out->monitor_and_control_remote_ready = (st->hdmi_raw_output_on == 0) ? 1 : 0;
+        return;
+    }
+    out->effective_framing_active = 1;
+    out->effective_rec_streaming_crop = (st->rec_streaming_mode == R51_FRAMING_OUT_CROP) ? 1 : 0;
+    out->effective_hdmi_crop = (st->hdmi_mode == R51_FRAMING_OUT_CROP) ? 1 : 0;
+    out->monitor_and_control_remote_ready = 1;
+}
+
+static int setup_r51_framing_settings_crop_hdmi_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r51_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r51_cnflasha_init", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r51_p2_init");
+    (void)umount("/mnt/r51_cnflasha_init");
+    if (mount("tmpfs", "/mnt/r51_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r51_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 43U + 0x51U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 71U + 0x15U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r51_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r51_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r51_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r51_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r51_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r51_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    /* 1. Model-exact [Framing Settings] menu path vs ZV-E1 [Autoframing Settings] rejection */
+    int fx3_framing_node_ok =
+        (r51_lookup_framing_menu_node("Framing Settings") == 0 &&
+         r51_lookup_framing_menu_node(
+             "MENU -> Shooting -> [Image Stabilization] -> [Framing Stabilizer] -> [Framing Settings]") == 0) ? 1 : 0;
+    int zve1_autoframing_reject_rc = r51_lookup_framing_menu_node("Autoframing Settings");
+    unsigned int zve1_autoframing_conflation_events =
+        (zve1_autoframing_reject_rc == 0) ? 1U : 0U;
+
+    /* 2. Asymmetric factory defaults: [Framing]=Off, [Recording/Streaming]=Full, [HDMI]=Crop */
+    r51_framing_state_t st;
+    r51_framing_initialize_defaults(&st);
+    int framing_default_off_ok =
+        (st.framing_enable == R51_FRAMING_OFF &&
+         strcmp(k_r51_framing_out_labels[st.rec_streaming_mode], "Full") == 0 &&
+         strcmp(k_r51_framing_out_labels[st.hdmi_mode], "Crop") == 0) ? 1 : 0;
+
+    int invalid_enable_rc = r51_set_framing_enable(&st, R51_FRAMING_INVALID);
+    int invalid_route_rc = r51_set_framing_routing(&st, R51_FRAMING_OUT_INVALID, R51_FRAMING_OUT_CROP);
+    int invalid_framing_enum_reject_rc =
+        (invalid_enable_rc == -EINVAL && invalid_route_rc == -EINVAL) ? -EINVAL : 0;
+
+    r51_framing_eval_t ev_off;
+    r51_eval_framing_outputs(&st, &ev_off);
+
+    (void)r51_set_framing_enable(&st, R51_FRAMING_ON);
+    r51_framing_eval_t ev_asym_on;
+    r51_eval_framing_outputs(&st, &ev_asym_on);
+    int asymmetric_full_rec_crop_hdmi_ok =
+        (ev_off.effective_framing_active == 0 &&
+         ev_off.effective_rec_streaming_crop == 0 &&
+         ev_off.effective_hdmi_crop == 0 &&
+         ev_asym_on.effective_framing_active == 1 &&
+         ev_asym_on.effective_rec_streaming_crop == 0 &&
+         ev_asym_on.effective_hdmi_crop == 1 &&
+         ev_asym_on.monitor_and_control_remote_ready == 1) ? 1 : 0;
+
+    /* 3. Verify all 4 ([Recording/Streaming], [HDMI]) Full/Crop routing pairs */
+    int framing_4routing_combos_verified = 0;
+    for (int rm = R51_FRAMING_OUT_FULL; rm <= R51_FRAMING_OUT_CROP; rm++) {
+        for (int hm = R51_FRAMING_OUT_FULL; hm <= R51_FRAMING_OUT_CROP; hm++) {
+            if (r51_set_framing_routing(&st, rm, hm) == 0) {
+                r51_framing_eval_t ev_pair;
+                r51_eval_framing_outputs(&st, &ev_pair);
+                if (ev_pair.effective_framing_active == 1 &&
+                    ev_pair.effective_rec_streaming_crop == rm &&
+                    ev_pair.effective_hdmi_crop == hm) {
+                    framing_4routing_combos_verified++;
+                }
+            }
+        }
+    }
+
+    /* 4. [Camera Settings Reset] & [Initialize] restore Off / Full / Crop */
+    (void)r51_set_framing_enable(&st, R51_FRAMING_ON);
+    (void)r51_set_framing_routing(&st, R51_FRAMING_OUT_CROP, R51_FRAMING_OUT_FULL);
+    r51_framing_camera_settings_reset(&st);
+    int framing_camreset_restores_defaults_ok =
+        (st.framing_enable == R51_FRAMING_OFF &&
+         st.rec_streaming_mode == R51_FRAMING_OUT_FULL &&
+         st.hdmi_mode == R51_FRAMING_OUT_CROP) ? 1 : 0;
+
+    (void)r51_set_framing_enable(&st, R51_FRAMING_ON);
+    (void)r51_set_framing_routing(&st, R51_FRAMING_OUT_CROP, R51_FRAMING_OUT_FULL);
+    r51_framing_initialize_defaults(&st);
+    int initialize_restores_defaults_ok =
+        (st.framing_enable == R51_FRAMING_OFF &&
+         st.rec_streaming_mode == R51_FRAMING_OUT_FULL &&
+         st.hdmi_mode == R51_FRAMING_OUT_CROP) ? 1 : 0;
+
+    /* 5. HDMI RAW Output mutual-exclusion lock (-EBUSY & automatic clamp off) */
+    unsigned int framing_raw_conflict_events = 0U;
+    (void)r51_set_framing_enable(&st, R51_FRAMING_ON);
+    r51_set_hdmi_raw_output(&st, 1);
+    int raw_enable_clamps_framing_off_ok = (st.framing_enable == R51_FRAMING_OFF) ? 1 : 0;
+    int hdmi_raw_framing_lock_rc = r51_set_framing_enable(&st, R51_FRAMING_ON);
+    r51_framing_eval_t ev_raw;
+    r51_eval_framing_outputs(&st, &ev_raw);
+    if (st.hdmi_raw_output_on != 0 &&
+        (st.framing_enable == R51_FRAMING_ON ||
+         ev_raw.effective_framing_active != 0 ||
+         ev_raw.effective_hdmi_crop != 0)) {
+        framing_raw_conflict_events++;
+    }
+
+    errno = 0;
+    int ro_fd = open("/mnt/r51_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r51_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r51_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r51_p2_init");
+    (void)umount("/mnt/r51_cnflasha_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R51_FRAMING_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_framing_node_ok == 1 &&
+              zve1_autoframing_reject_rc == -ENOENT &&
+              zve1_autoframing_conflation_events == 0U &&
+              framing_default_off_ok == 1 &&
+              invalid_framing_enum_reject_rc == -EINVAL &&
+              asymmetric_full_rec_crop_hdmi_ok == 1 &&
+              framing_4routing_combos_verified == 4 &&
+              framing_camreset_restores_defaults_ok == 1 &&
+              initialize_restores_defaults_ok == 1 &&
+              raw_enable_clamps_framing_off_ok == 1 &&
+              hdmi_raw_framing_lock_rc == -EBUSY &&
+              framing_raw_conflict_events == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R51_FRAMING_INIT fx3_framing_node_ok=%d zve1_autoframing_reject_rc=%d "
+            "zve1_autoframing_conflation_events=%u framing_default_off_ok=%d "
+            "invalid_framing_enum_reject_rc=%d asymmetric_full_rec_crop_hdmi_ok=%d "
+            "framing_4routing_combos_verified=%d framing_camreset_restores_defaults_ok=%d "
+            "initialize_restores_defaults_ok=%d raw_enable_clamps_framing_off_ok=%d "
+            "hdmi_raw_framing_lock_rc=%d framing_raw_conflict_events=%u "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "cnflasha_writes=0 appfw_present=%d shim_present=%d emmc_write_count=0 "
+            "r51_init_ok=%d verify_us=%lld\n",
+            fx3_framing_node_ok, zve1_autoframing_reject_rc,
+            zve1_autoframing_conflation_events, framing_default_off_ok,
+            invalid_framing_enum_reject_rc, asymmetric_full_rec_crop_hdmi_ok,
+            framing_4routing_combos_verified, framing_camreset_restores_defaults_ok,
+            initialize_restores_defaults_ok, raw_enable_clamps_framing_off_ok,
+            hdmi_raw_framing_lock_rc, framing_raw_conflict_events,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+/* --- r51b: [USB Power Supply] (NP-FZ100 + Type-C Exclusivity) & [USB LUN Setting] (Multi/Single) --- */
+
+typedef enum {
+    R51_USB_POWER_OFF     = 0,
+    R51_USB_POWER_ON      = 1, /* Factory default */
+    R51_USB_POWER_INVALID = 2
+} r51_usb_power_supply_t;
+
+typedef enum {
+    R51_USB_LUN_MULTI   = 0, /* Factory default: Slot 1 + Slot 2 (2 LUNs) */
+    R51_USB_LUN_SINGLE  = 1, /* Legacy host fallback: 1 primary LUN */
+    R51_USB_LUN_INVALID = 2
+} r51_usb_lun_mode_t;
+
+typedef enum {
+    R51_BATT_BAY_EMPTY         = 0,
+    R51_BATT_BAY_NP_FZ100      = 1,
+    R51_BATT_BAY_DC_C1_COUPLER = 2
+} r51_battery_bay_state_t;
+
+typedef enum {
+    R51_USB_PORT_NONE            = 0,
+    R51_USB_PORT_TYPE_C_PD       = 1, /* Exclusive USB PD power/charging port on ILME-FX3 */
+    R51_USB_PORT_MULTI_MICRO_USB = 2  /* Cannot power or charge ILME-FX3 */
+} r51_usb_port_kind_t;
+
+typedef struct {
+    int usb_power_supply;             /* R51_USB_POWER_ON (default) / OFF; survives [Camera Settings Reset] */
+    int usb_lun_setting;              /* R51_USB_LUN_MULTI (default) / SINGLE; survives [Camera Settings Reset] */
+    int usb_conn_sel_when_connect;    /* 1 = Sel. When Connect (default); survives [Camera Settings Reset] */
+    int shooting_framing_enable;      /* Shooting-tier setting reset by [Camera Settings Reset] */
+    int battery_bay;                  /* r51_battery_bay_state_t */
+    int usb_port;                     /* r51_usb_port_kind_t */
+    int live_host_usb_blocked;        /* 1 = lab bench live USB packet block */
+} r51_usb_setup_state_t;
+
+__attribute__((noinline)) static void r51_usb_setup_initialize_defaults(r51_usb_setup_state_t *st) {
+    if (!st) return;
+    st->usb_power_supply = R51_USB_POWER_ON;
+    st->usb_lun_setting = R51_USB_LUN_MULTI;
+    st->usb_conn_sel_when_connect = 1;
+    st->shooting_framing_enable = R51_FRAMING_OFF;
+    st->battery_bay = R51_BATT_BAY_NP_FZ100;
+    st->usb_port = R51_USB_PORT_TYPE_C_PD;
+    st->live_host_usb_blocked = 1;
+}
+
+__attribute__((noinline)) static void r51_usb_setup_camera_settings_reset(r51_usb_setup_state_t *st) {
+    if (!st) return;
+    /* Official Sony ILME-FX3 List of default setting values:
+     * [Setup] -> [USB] items ([USB Connection Mode], [USB LUN Setting], [USB Power Supply])
+     * SURVIVE [Camera Settings Reset] and reset ONLY on [Initialize], whereas shooting-tier
+     * [Framing Settings] resets to Off. */
+    st->shooting_framing_enable = R51_FRAMING_OFF;
+}
+
+__attribute__((noinline)) static int r51_set_usb_power_supply(
+    r51_usb_setup_state_t *st, int mode
+) {
+    if (!st) return -EINVAL;
+    if (mode < R51_USB_POWER_OFF || mode >= R51_USB_POWER_INVALID) {
+        return -EINVAL;
+    }
+    st->usb_power_supply = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r51_set_usb_lun_setting(
+    r51_usb_setup_state_t *st, int mode
+) {
+    if (!st) return -EINVAL;
+    if (mode < R51_USB_LUN_MULTI || mode >= R51_USB_LUN_INVALID) {
+        return -EINVAL;
+    }
+    st->usb_lun_setting = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r51_eval_usb_power_delivery(
+    const r51_usb_setup_state_t *st,
+    int bay_state,
+    int port_kind,
+    int *out_usb_power_active,
+    int *out_camera_stays_on
+) {
+    if (out_usb_power_active) *out_usb_power_active = 0;
+    if (out_camera_stays_on) *out_camera_stays_on = 0;
+    if (!st) return -EINVAL;
+
+    /* Hardware Interlock 1: Turning on or staying powered without an inserted NP-FZ100
+     * (or DC-C1 coupler in battery bay) is unavailable even on USB Type-C PD wall power. */
+    if (bay_state == R51_BATT_BAY_EMPTY) {
+        return -ENODEV;
+    }
+
+    /* Hardware Interlock 2: Multi/Micro USB terminal CANNOT supply power or charge ILME-FX3;
+     * USB PD power/charging operates exclusively via the USB Type-C port. */
+    if (port_kind == R51_USB_PORT_MULTI_MICRO_USB) {
+        if (out_camera_stays_on) *out_camera_stays_on = 1; /* Runs solely off NP-FZ100 battery */
+        return -EOPNOTSUPP;
+    }
+
+    if (out_camera_stays_on) *out_camera_stays_on = 1;
+    if (port_kind == R51_USB_PORT_TYPE_C_PD && st->usb_power_supply == R51_USB_POWER_ON) {
+        if (out_usb_power_active) *out_usb_power_active = 1;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r51_guard_live_battery_pull(
+    const r51_usb_setup_state_t *st
+) {
+    if (!st) return -EINVAL;
+    /* Bench safety interlock blocks hot-pulling NP-FZ100 under USB wall power to prevent
+     * immediate unbuffered power loss. */
+    if (st->battery_bay == R51_BATT_BAY_NP_FZ100 &&
+        st->usb_port == R51_USB_PORT_TYPE_C_PD) {
+        return -EBUSY;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static unsigned int r51_eval_usb_msc_exposed_luns(
+    const r51_usb_setup_state_t *st
+) {
+    if (!st) return 0U;
+    return (st->usb_lun_setting == R51_USB_LUN_SINGLE) ? 1U : 2U;
+}
+
+static int run_r51_usb_power_lun_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r51_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r51_cnflasha_ro", 0755) != 0) {
+        return 249;
+    }
+    (void)umount("/mnt/r51_p2_ro");
+    (void)umount("/mnt/r51_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r51_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r51_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 249;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 37U + 0x51U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 53U + 0x1bU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r51_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r51_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 249;
+    }
+    if (mount(NULL, "/mnt/r51_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r51_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 249;
+    }
+
+    r51_usb_setup_state_t st;
+    r51_usb_setup_initialize_defaults(&st);
+
+    /* 1. Defaults & enum validation for [USB Power Supply] (On) & [USB LUN Setting] (Multi) */
+    int usb_power_default_on_ok = (st.usb_power_supply == R51_USB_POWER_ON) ? 1 : 0;
+    int usb_lun_default_multi_ok = (st.usb_lun_setting == R51_USB_LUN_MULTI) ? 1 : 0;
+    int invalid_usb_power_rc = r51_set_usb_power_supply(&st, R51_USB_POWER_INVALID);
+    int invalid_usb_lun_rc = r51_set_usb_lun_setting(&st, R51_USB_LUN_INVALID);
+
+    int usb_power_2modes_verified = 0;
+    for (int m = R51_USB_POWER_OFF; m <= R51_USB_POWER_ON; m++) {
+        if (r51_set_usb_power_supply(&st, m) == 0 && st.usb_power_supply == m) {
+            usb_power_2modes_verified++;
+        }
+    }
+
+    int usb_lun_2modes_verified = 0;
+    for (int m = R51_USB_LUN_MULTI; m <= R51_USB_LUN_SINGLE; m++) {
+        if (r51_set_usb_lun_setting(&st, m) == 0 && st.usb_lun_setting == m) {
+            usb_lun_2modes_verified++;
+        }
+    }
+    (void)r51_set_usb_lun_setting(&st, R51_USB_LUN_MULTI);
+    unsigned int lun_multi_exposed_units = r51_eval_usb_msc_exposed_luns(&st);
+    (void)r51_set_usb_lun_setting(&st, R51_USB_LUN_SINGLE);
+    unsigned int lun_single_exposed_units = r51_eval_usb_msc_exposed_luns(&st);
+
+    /* 2. [USB Power Supply] mandatory NP-FZ100 insertion + USB Type-C exclusivity */
+    r51_usb_setup_initialize_defaults(&st);
+    int usb_active = 0, cam_on = 0;
+    int typec_fz100_rc = r51_eval_usb_power_delivery(
+        &st, R51_BATT_BAY_NP_FZ100, R51_USB_PORT_TYPE_C_PD, &usb_active, &cam_on);
+    int usb_typec_pd_power_ok = (typec_fz100_rc == 0 && usb_active == 1 && cam_on == 1) ? 1 : 0;
+
+    int dcc1_active = 0, dcc1_on = 0;
+    int dcc1_rc = r51_eval_usb_power_delivery(
+        &st, R51_BATT_BAY_DC_C1_COUPLER, R51_USB_PORT_TYPE_C_PD, &dcc1_active, &dcc1_on);
+    int dcc1_coupler_supported_ok = (dcc1_rc == 0 && dcc1_active == 1 && dcc1_on == 1) ? 1 : 0;
+
+    int empty_usb_active = 0, empty_cam_on = 0;
+    int poweron_without_battery_reject_rc = r51_eval_usb_power_delivery(
+        &st, R51_BATT_BAY_EMPTY, R51_USB_PORT_TYPE_C_PD, &empty_usb_active, &empty_cam_on);
+    int raw_pull_causes_immediate_poweroff_ok =
+        (poweron_without_battery_reject_rc == -ENODEV &&
+         empty_usb_active == 0 && empty_cam_on == 0) ? 1 : 0;
+
+    unsigned int unbuffered_battery_pull_events = 0U;
+    int live_battery_pull_guard_rc = 0;
+    for (unsigned int cyc = 0U; cyc < 32U; cyc++) {
+        int grc = r51_guard_live_battery_pull(&st);
+        live_battery_pull_guard_rc = grc;
+        if (grc != -EBUSY) {
+            unbuffered_battery_pull_events++;
+        }
+    }
+
+    unsigned int multi_micro_usb_power_bypass_events = 0U;
+    int micro_usb_active = 0, micro_cam_on = 0;
+    int multi_micro_usb_power_reject_rc = r51_eval_usb_power_delivery(
+        &st, R51_BATT_BAY_NP_FZ100, R51_USB_PORT_MULTI_MICRO_USB, &micro_usb_active, &micro_cam_on);
+    if (multi_micro_usb_power_reject_rc != -EOPNOTSUPP || micro_usb_active != 0) {
+        multi_micro_usb_power_bypass_events++;
+    }
+
+    /* 3. [Camera Settings Reset] survival vs [Initialize] full restore */
+    (void)r51_set_usb_power_supply(&st, R51_USB_POWER_OFF);
+    (void)r51_set_usb_lun_setting(&st, R51_USB_LUN_SINGLE);
+    st.shooting_framing_enable = R51_FRAMING_ON;
+    r51_usb_setup_camera_settings_reset(&st);
+    int usb_power_survives_camreset_ok = (st.usb_power_supply == R51_USB_POWER_OFF) ? 1 : 0;
+    int usb_lun_survives_camreset_ok = (st.usb_lun_setting == R51_USB_LUN_SINGLE) ? 1 : 0;
+    int shooting_tier_reset_split_ok = (st.shooting_framing_enable == R51_FRAMING_OFF) ? 1 : 0;
+
+    r51_usb_setup_initialize_defaults(&st);
+    int initialize_restores_usb_defaults_ok =
+        (st.usb_power_supply == R51_USB_POWER_ON &&
+         st.usb_lun_setting == R51_USB_LUN_MULTI) ? 1 : 0;
+
+    unsigned int physical_usb_packets_emitted = st.live_host_usb_blocked ? 0U : 1U;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r51_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r51_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    (void)umount("/mnt/r51_p2_ro");
+    (void)umount("/mnt/r51_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R51_USB_POWER_LUN_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (usb_power_default_on_ok == 1 &&
+              usb_lun_default_multi_ok == 1 &&
+              invalid_usb_power_rc == -EINVAL &&
+              invalid_usb_lun_rc == -EINVAL &&
+              usb_power_2modes_verified == 2 &&
+              usb_lun_2modes_verified == 2 &&
+              lun_multi_exposed_units == 2U &&
+              lun_single_exposed_units == 1U &&
+              usb_typec_pd_power_ok == 1 &&
+              dcc1_coupler_supported_ok == 1 &&
+              poweron_without_battery_reject_rc == -ENODEV &&
+              raw_pull_causes_immediate_poweroff_ok == 1 &&
+              live_battery_pull_guard_rc == -EBUSY &&
+              unbuffered_battery_pull_events == 0U &&
+              multi_micro_usb_power_reject_rc == -EOPNOTSUPP &&
+              multi_micro_usb_power_bypass_events == 0U &&
+              usb_power_survives_camreset_ok == 1 &&
+              usb_lun_survives_camreset_ok == 1 &&
+              shooting_tier_reset_split_ok == 1 &&
+              initialize_restores_usb_defaults_ok == 1 &&
+              physical_usb_packets_emitted == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R51_USB_POWER_LUN_GUARD usb_power_default_on_ok=%d usb_lun_default_multi_ok=%d "
+            "invalid_usb_power_rc=%d invalid_usb_lun_rc=%d usb_power_2modes_verified=%d "
+            "usb_lun_2modes_verified=%d lun_multi_exposed_units=%u lun_single_exposed_units=%u "
+            "usb_typec_pd_power_ok=%d dcc1_coupler_supported_ok=%d "
+            "poweron_without_battery_reject_rc=%d raw_pull_causes_immediate_poweroff_ok=%d "
+            "live_battery_pull_guard_rc=%d unbuffered_battery_pull_events=%u "
+            "multi_micro_usb_power_reject_rc=%d multi_micro_usb_power_bypass_events=%u "
+            "usb_power_survives_camreset_ok=%d usb_lun_survives_camreset_ok=%d "
+            "shooting_tier_reset_split_ok=%d initialize_restores_usb_defaults_ok=%d "
+            "physical_usb_packets_emitted=%u p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r51b_ok=%d verify_us=%lld\n",
+            usb_power_default_on_ok, usb_lun_default_multi_ok,
+            invalid_usb_power_rc, invalid_usb_lun_rc, usb_power_2modes_verified,
+            usb_lun_2modes_verified, lun_multi_exposed_units, lun_single_exposed_units,
+            usb_typec_pd_power_ok, dcc1_coupler_supported_ok,
+            poweron_without_battery_reject_rc, raw_pull_causes_immediate_poweroff_ok,
+            live_battery_pull_guard_rc, unbuffered_battery_pull_events,
+            multi_micro_usb_power_reject_rc, multi_micro_usb_power_bypass_events,
+            usb_power_survives_camreset_ok, usb_lun_survives_camreset_ok,
+            shooting_tier_reset_split_ok, initialize_restores_usb_defaults_ok,
+            physical_usb_packets_emitted, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 249;
+}
+
+/* --- r51c: [Anti-flicker Shoot.] Mechanical-Still-Only & FX3 No-[Var. Shutter] Guard + 16/16 H0==H3 --- */
+
+typedef enum {
+    R51_ANTIFLICKER_OFF     = 0, /* Factory default */
+    R51_ANTIFLICKER_ON      = 1,
+    R51_ANTIFLICKER_INVALID = 2
+} r51_antiflicker_mode_t;
+
+typedef enum {
+    R51_DOMAIN_STILL_PHOTO = 0,
+    R51_DOMAIN_MOVIE       = 1,
+    R51_DOMAIN_SQ_MOTION   = 2
+} r51_camera_shoot_domain_t;
+
+typedef enum {
+    R51_SHUTTER_MECHANICAL = 0,
+    R51_SHUTTER_ELECTRONIC = 1
+} r51_shutter_drive_t;
+
+typedef enum {
+    R51_BODY_ILME_FX3_2210  = 0, /* NO [Var. Shutter] / NO ECS */
+    R51_BODY_ILME_FX30_2220 = 1, /* Has [Var. Shutter] */
+    R51_BODY_ILCE_6700_2320 = 2, /* Has [Var. Shutter] */
+    R51_BODY_ILME_FX6_ECS   = 3  /* Has ECS (Extended Clear Scan) */
+} r51_sony_body_model_t;
+
+typedef struct {
+    int body_model;        /* r51_sony_body_model_t */
+    int antiflicker_shoot; /* R51_ANTIFLICKER_OFF (default) / ON; resettable via [Camera Settings Reset] */
+    int shoot_domain;      /* r51_camera_shoot_domain_t */
+    int shutter_drive;     /* r51_shutter_drive_t */
+    int silent_mode_on;    /* 1 = [Silent Mode]=On -> forces electronic shutter */
+} r51_antiflicker_state_t;
+
+__attribute__((noinline)) static void r51_antiflicker_initialize_defaults(r51_antiflicker_state_t *st) {
+    if (!st) return;
+    st->body_model = R51_BODY_ILME_FX3_2210;
+    st->antiflicker_shoot = R51_ANTIFLICKER_OFF;
+    st->shoot_domain = R51_DOMAIN_STILL_PHOTO;
+    st->shutter_drive = R51_SHUTTER_MECHANICAL;
+    st->silent_mode_on = 0;
+}
+
+__attribute__((noinline)) static void r51_antiflicker_camera_settings_reset(r51_antiflicker_state_t *st) {
+    if (!st) return;
+    /* Official Sony ILME-FX3 Help Guide: [Anti-flicker Shoot.] IS reset to [Off]
+     * by [Camera Settings Reset]. */
+    st->antiflicker_shoot = R51_ANTIFLICKER_OFF;
+    st->silent_mode_on = 0;
+    st->shutter_drive = R51_SHUTTER_MECHANICAL;
+}
+
+__attribute__((noinline)) static int r51_set_antiflicker_shoot(
+    r51_antiflicker_state_t *st, int mode
+) {
+    if (!st) return -EINVAL;
+    if (mode < R51_ANTIFLICKER_OFF || mode >= R51_ANTIFLICKER_INVALID) {
+        return -EINVAL;
+    }
+    /* Official Sony boundary: [Anti-flicker Shoot.] functions strictly during still-image
+     * shooting with the mechanical shutter; unavailable in Movie, S&Q, or Electronic/Silent shutter. */
+    if (st->shoot_domain != R51_DOMAIN_STILL_PHOTO ||
+        st->silent_mode_on != 0 ||
+        st->shutter_drive == R51_SHUTTER_ELECTRONIC) {
+        return -EOPNOTSUPP;
+    }
+    st->antiflicker_shoot = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r51_eval_antiflicker_sync_active(
+    const r51_antiflicker_state_t *st, int mains_hz
+) {
+    if (!st) return 0;
+    if (st->antiflicker_shoot != R51_ANTIFLICKER_ON) return 0;
+    if (st->shoot_domain != R51_DOMAIN_STILL_PHOTO) return 0;
+    if (st->silent_mode_on != 0 || st->shutter_drive != R51_SHUTTER_MECHANICAL) return 0;
+    if (mains_hz != 100 && mains_hz != 120) return 0;
+    return 1;
+}
+
+__attribute__((noinline)) static int r51_probe_high_res_var_shutter_menu(
+    int body_model, const char *node_name
+) {
+    if (!node_name) return -EINVAL;
+    if (body_model == R51_BODY_ILME_FX3_2210) {
+        /* Official Sony ILME-FX3 (ilc/2210 through Ver. 7.02) does NOT implement
+         * [Var. Shutter] or FX6 [ECS] anywhere in its [Shutter/Silent] / [Anti-flicker] tree. */
+        return -ENOENT;
+    }
+    if ((body_model == R51_BODY_ILME_FX30_2220 || body_model == R51_BODY_ILCE_6700_2320) &&
+        strcmp(node_name, "Var. Shutter") == 0) {
+        return 0;
+    }
+    if (body_model == R51_BODY_ILME_FX6_ECS && strcmp(node_name, "ECS") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+static int run_r51_antiflicker_no_var_shutter_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r51_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r51_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r51_cnflasha_ro", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r51_surfaces");
+    (void)umount("/mnt/r51_p2_ro");
+    (void)umount("/mnt/r51_cnflasha_ro");
+    if (mount("tmpfs", "/mnt/r51_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r51_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r51_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 41U + i * 23U + 0x51U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r51_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return 250;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 29U + 0x53U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x29U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r51_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r51_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r51_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r51_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r51_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    r51_antiflicker_state_t st;
+    r51_antiflicker_initialize_defaults(&st);
+
+    /* 1. Default [Off], Off/On modes, & [Camera Settings Reset] / [Initialize] restore */
+    int antiflicker_default_off_ok = (st.antiflicker_shoot == R51_ANTIFLICKER_OFF) ? 1 : 0;
+    int invalid_antiflicker_rc = r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_INVALID);
+
+    int antiflicker_2modes_verified = 0;
+    for (int m = R51_ANTIFLICKER_OFF; m <= R51_ANTIFLICKER_ON; m++) {
+        if (r51_set_antiflicker_shoot(&st, m) == 0 && st.antiflicker_shoot == m) {
+            antiflicker_2modes_verified++;
+        }
+    }
+
+    (void)r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_ON);
+    int flicker_100hz_120hz_verified = 0;
+    if (r51_eval_antiflicker_sync_active(&st, 100) == 1) flicker_100hz_120hz_verified++;
+    if (r51_eval_antiflicker_sync_active(&st, 120) == 1) flicker_100hz_120hz_verified++;
+    int mech_still_antiflicker_active_ok =
+        (flicker_100hz_120hz_verified == 2 &&
+         r51_eval_antiflicker_sync_active(&st, 60) == 0) ? 1 : 0;
+
+    r51_antiflicker_camera_settings_reset(&st);
+    int antiflicker_camreset_restores_off_ok =
+        (st.antiflicker_shoot == R51_ANTIFLICKER_OFF) ? 1 : 0;
+
+    (void)r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_ON);
+    r51_antiflicker_initialize_defaults(&st);
+    int initialize_restores_off_ok =
+        (st.antiflicker_shoot == R51_ANTIFLICKER_OFF) ? 1 : 0;
+
+    /* 2. Disqualified in Movie, S&Q, Electronic Shutter, and [Silent Mode]=On */
+    unsigned int antiflicker_movie_or_eshutter_bypass_events = 0U;
+    (void)r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_ON);
+
+    st.shoot_domain = R51_DOMAIN_MOVIE;
+    int movie_mode_lock_rc = r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_ON);
+    if (movie_mode_lock_rc != -EOPNOTSUPP ||
+        r51_eval_antiflicker_sync_active(&st, 100) != 0 ||
+        r51_eval_antiflicker_sync_active(&st, 120) != 0) {
+        antiflicker_movie_or_eshutter_bypass_events++;
+    }
+
+    st.shoot_domain = R51_DOMAIN_SQ_MOTION;
+    int sq_mode_lock_rc = r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_ON);
+    if (sq_mode_lock_rc != -EOPNOTSUPP ||
+        r51_eval_antiflicker_sync_active(&st, 100) != 0 ||
+        r51_eval_antiflicker_sync_active(&st, 120) != 0) {
+        antiflicker_movie_or_eshutter_bypass_events++;
+    }
+
+    st.shoot_domain = R51_DOMAIN_STILL_PHOTO;
+    st.silent_mode_on = 1;
+    st.shutter_drive = R51_SHUTTER_ELECTRONIC;
+    int silent_eshutter_lock_rc = r51_set_antiflicker_shoot(&st, R51_ANTIFLICKER_ON);
+    if (silent_eshutter_lock_rc != -EOPNOTSUPP ||
+        r51_eval_antiflicker_sync_active(&st, 100) != 0 ||
+        r51_eval_antiflicker_sync_active(&st, 120) != 0) {
+        antiflicker_movie_or_eshutter_bypass_events++;
+    }
+
+    /* 3. Prove ILME-FX3 (ilc/2210) has NO [Var. Shutter] / ECS menu */
+    int var_shutter_lookup_rc =
+        r51_probe_high_res_var_shutter_menu(R51_BODY_ILME_FX3_2210, "Var. Shutter");
+    int fx6_ecs_lookup_rc =
+        r51_probe_high_res_var_shutter_menu(R51_BODY_ILME_FX3_2210, "ECS");
+    int fx3_has_var_shutter = (var_shutter_lookup_rc == 0 || fx6_ecs_lookup_rc == 0) ? 1 : 0;
+    unsigned int false_var_shutter_events = (unsigned int)fx3_has_var_shutter;
+    int cross_model_var_shutter_contrast_ok =
+        (r51_probe_high_res_var_shutter_menu(R51_BODY_ILME_FX30_2220, "Var. Shutter") == 0 &&
+         r51_probe_high_res_var_shutter_menu(R51_BODY_ILCE_6700_2320, "Var. Shutter") == 0 &&
+         r51_probe_high_res_var_shutter_menu(R51_BODY_ILME_FX6_ECS, "ECS") == 0) ? 1 : 0;
+
+    /* 4. Read-only p2/cnflasha, guest dlopen("/tmp/jiritsu/libJit.so"), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r51_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r51_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r51_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r51_surfaces");
+    (void)umount("/mnt/r51_p2_ro");
+    (void)umount("/mnt/r51_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (antiflicker_default_off_ok == 1 &&
+              invalid_antiflicker_rc == -EINVAL &&
+              antiflicker_2modes_verified == 2 &&
+              flicker_100hz_120hz_verified == 2 &&
+              mech_still_antiflicker_active_ok == 1 &&
+              antiflicker_camreset_restores_off_ok == 1 &&
+              initialize_restores_off_ok == 1 &&
+              movie_mode_lock_rc == -EOPNOTSUPP &&
+              sq_mode_lock_rc == -EOPNOTSUPP &&
+              silent_eshutter_lock_rc == -EOPNOTSUPP &&
+              antiflicker_movie_or_eshutter_bypass_events == 0U &&
+              var_shutter_lookup_rc == -ENOENT &&
+              fx6_ecs_lookup_rc == -ENOENT &&
+              fx3_has_var_shutter == 0 &&
+              false_var_shutter_events == 0U &&
+              cross_model_var_shutter_contrast_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R51_ANTIFLICKER_NO_VAR antiflicker_default_off_ok=%d "
+            "invalid_antiflicker_rc=%d antiflicker_2modes_verified=%d "
+            "flicker_100hz_120hz_verified=%d mech_still_antiflicker_active_ok=%d "
+            "antiflicker_camreset_restores_off_ok=%d initialize_restores_off_ok=%d "
+            "movie_mode_lock_rc=%d sq_mode_lock_rc=%d silent_eshutter_lock_rc=%d "
+            "antiflicker_movie_or_eshutter_bypass_events=%u var_shutter_lookup_rc=%d "
+            "fx6_ecs_lookup_rc=%d fx3_has_var_shutter=%d false_var_shutter_events=%u "
+            "cross_model_var_shutter_contrast_ok=%d p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d cnflasha_writes=0 dlopen_ok=%d "
+            "surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 emmc_write_count=0 "
+            "r51c_ok=%d verify_us=%lld\n",
+            antiflicker_default_off_ok, invalid_antiflicker_rc,
+            antiflicker_2modes_verified, flicker_100hz_120hz_verified,
+            mech_still_antiflicker_active_ok, antiflicker_camreset_restores_off_ok,
+            initialize_restores_off_ok, movie_mode_lock_rc, sq_mode_lock_rc,
+            silent_eshutter_lock_rc, antiflicker_movie_or_eshutter_bypass_events,
+            var_shutter_lookup_rc, fx6_ecs_lookup_rc, fx3_has_var_shutter,
+            false_var_shutter_events, cross_model_var_shutter_contrast_ok,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -17905,6 +18839,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r50-saveload-c3-vault-h0-h3") == 0) {
         return run_r50_saveload_c3_vault_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r51-usb-power-lun-guard") == 0) {
+        return run_r51_usb_power_lun_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r51-antiflicker-no-var-shutter-h0-h3") == 0) {
+        return run_r51_antiflicker_no_var_shutter_probe();
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -18051,6 +18991,12 @@ int main(int argc, char **argv) {
     if (stat("/etc/fx6_stage_r50", &r50_st) == 0) {
         if (setup_r50_shoe_audio_4ch_osd_probe() != 0) {
             return 69;
+        }
+    }
+    struct stat r51_st;
+    if (stat("/etc/fx6_stage_r51", &r51_st) == 0) {
+        if (setup_r51_framing_settings_crop_hdmi_probe() != 0) {
+            return 70;
         }
     }
     if (verify_ram_shadow_bk4("/etc/fx6_ram_shadow_bk4.bin") != 0) {

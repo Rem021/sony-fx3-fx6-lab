@@ -1344,3 +1344,29 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-98-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
+
+---
+
+## 50. Phase 256 Grand Milestone (`100/100` Safety Gates): `ILME-FX3` (`Ver. 7.02`) `[Different Set for Still/Mv]` 8-Item Asymmetric Transitions & `[Shutter Mode] = [Angle]` Override Guard (`Gate G99`), `[Custom Key/Dial Set.]` `ISO/EI` Firewall & `[Remain Shoot Display]` EVF-Less Guard (`Gate G100`), and Unified 100-Gate Master Preflight (`realhw_diff_set_still_mv_custom_key_remain_shoot_and_100gate_guard.py`)
+
+`realhw_diff_set_still_mv_custom_key_remain_shoot_and_100gate_guard.py` (`realhw_diff_set_still_mv_custom_key_remain_shoot_and_100gate_guard_v1`) delegates `G01..G98` directly to `evaluate_98gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-98-gates`) and adds Wave-40 real-hardware safety gates **`G99`** and **`G100`** (`100th` Grand Milestone Gate) into the unified **`100`-Gate Master Safety Preflight (`G01..G100` / `run_100_gate_preflight` / `evaluate_100gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[Different Set for Still/Mv]` 8-Item Asymmetric State Transitions, Reset Survival & `[Shutter Mode] = [Angle]` Independence Override Guard (`verify_diff_set_still_mv_and_shutter_angle_guard`, Gate `G99`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libgpe.so`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin`, `libInfraDial.so`, and `libInfraInput.so` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` synthetic fallback.
+   - Enforces `MENU -> Setup -> [Operation Customize] -> [Different Set for Still/Mv]` across the exact `8` checkable items (`Aperture`, `Shutter Speed`, `ISO`, `Exposure Comp.`, `Metering Mode`, `White Balance`, `Picture Profile`, `Focus Mode`), verifying survival across **both `[Camera Settings Reset]` and `[Reset Network Set.]`** (restored to unchecked factory defaults **exclusively by `[Initialize]`**).
+   - Enforces `Common -> Separate` (copies current values to Still & Movie **except `Custom White Balance`**, which applies only to Still), `Separate -> Common` (returns items to initial factory defaults **except `Aperture`, `Shutter Speed`, and `Custom White Balance`**, which retain Still values; `diff_set_transition_corruption_events == 0`), and `Ver. 6.00+` / `Ver. 7.02` `[Shutter Mode] = [Angle]` override (Still Shutter Speed and Movie Shutter Angle remain independent even when `Shutter Speed` is Common; `shutter_angle_common_bleed_events == 0`).
+2. **`ILME-FX3` (`Ver. 7.02`) `[Custom Key/Dial Set.]` 3-Domain Keymaps / `ISO/EI` Auto-Adapt / Slot-1 `CAMSET01.DAT` `O_RDONLY` Firewall & `[Remain Shoot Display]` Still-Buffer + EVF-Less Topology Guard (`verify_custom_key_dial_iso_ei_and_remain_shoot_guard`, Gate `G100`)**:
+   - Enforces `MENU -> Setup -> [Operation Customize] -> [Custom Key/Dial Set.]` (`Still` / `Movie` / `Playback` keymaps, Cinema-Line factory dial defaults `Front dial = Aperture`, `Rear dial = ISO/EI` auto-adapting between `ISO` and `Exposure Index (EI)`, `Control Wheel = Shutter Speed`, `[Follow Custom]` Movie inheritance, `[My Dial 1..3]`, `[Recall Custom hold 1..3]`), surviving **both `[Camera Settings Reset]` and `[Reset Network Set.]`** and enforcing the Slot-1 Tier-0 `CAMSET01.DAT` `os.O_RDONLY` load-only firewall (`slot1_custom_key_vault_mutation_bytes == 0`).
+   - Enforces `MENU -> Setup -> [Display Option] -> [Remain Shoot Display]` (`Not Displayed` factory default / `Always Display` / `Shoot-Only Display` still-buffer-only scope, surviving `[Camera Settings Reset]` and `[Reset Network Set.]`) and guards the EVF-less `ILME-FX3` (`ilc/2210`) monitor topology (`fx3_has_builtin_evf == False`, `evf_finder_monitor_spoof_events == 0`).
+3. **Unified `100`-Gate Grand Milestone Master Preflight (`evaluate_100gate_preflight` / `verify-100-gates`)**:
+   - **Offline default mode**: `97/100` gates pass (`VERIFIED_97_OF_100_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `100/100` simulation gates pass (`VERIFIED_ALL_100_GATES_DRY_RUN_SIMULATED_BACKUP`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-diff-set-still-mv-shutter-angle-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-custom-key-dial-remain-shoot-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-100-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```

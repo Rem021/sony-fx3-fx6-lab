@@ -68,6 +68,7 @@ import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
 import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
+import realhw_apsc_s35_face_eye_af_version_coemulator as p267  # noqa: E402
 import realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator as p262  # noqa: E402
 import realhw_big6_noend_camset_slot1_vmcbncm1_coemulator as p202  # noqa: E402
 import realhw_body_peripheral_ibis_fan_power_coemulator as p150  # noqa: E402
@@ -199,6 +200,9 @@ class CoEmulationConfig:
     include_stage50: bool = True
     include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil: bool = True
     include_stage51: bool = True
+    include_phase267_realhw_apsc_s35_face_eye_af_version_hil: bool = True
+    include_stage52: bool = True
+    stage52_realhw_apsc_s35_face_eye_af_version_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -3226,6 +3230,75 @@ def run_stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil(
     }
 
 
+def run_stage52_realhw_apsc_s35_face_eye_af_version_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 52 (Phase 267, 52/52): Real-Hardware ILME-FX3 Wave-42 APS-C S35 Shooting 12.1MP 4K/RAW Lockout, BIONZ XR Face/Eye AF Clean-HDMI Frame Isolation & Face Memory Persistence, and Version Read-Only Inspection & BODYDATA.DAT Hard-Blocked Flash Guard HIL."""
+    config.validate()
+    rep = p267.run_phase267_realhw_apsc_s35_face_eye_af_version_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage52_realhw_apsc_s35_face_eye_af_version_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "bodydata_update_execution_blocked": red["bodydata_update_execution_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "apsc_s35_4k_or_raw_bypass_events": red["apsc_s35_4k_or_raw_bypass_events"],
+        "ai_coprocessor_subject_spoof_events": red["ai_coprocessor_subject_spoof_events"],
+        "hdmi_clean_feed_eye_frame_baked_pixels": red["hdmi_clean_feed_eye_frame_baked_pixels"],
+        "face_memory_camera_reset_wipe_events": red["face_memory_camera_reset_wipe_events"],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "bodydata_flash_execution_events": red["bodydata_flash_execution_events"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_apsc_s35_4k_raw_lockout_hil": rep[
+            "pillar_a_apsc_s35_4k_raw_lockout_hil"
+        ],
+        "pillar_b_face_eye_af_clean_hdmi_and_face_memory_hil": rep[
+            "pillar_b_face_eye_af_clean_hdmi_and_face_memory_hil"
+        ],
+        "pillar_c_d_version_readonly_bodydata_guard_and_redlines": rep[
+            "pillar_c_d_version_readonly_bodydata_guard_and_redlines"
+        ],
+        "phase267_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -3236,7 +3309,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 51-stage (Phase 33..262, 51/51) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 52-stage (Phase 33..267, 52/52) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -3486,6 +3559,15 @@ def run_fx3_vm_coemulation_suite(
         if (
             cfg.include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil
             and cfg.include_stage51
+        )
+        else None
+    )
+    stage52: Optional[Dict[str, object]] = (
+        run_stage52_realhw_apsc_s35_face_eye_af_version_hil(cfg, env=env)
+        if (
+            cfg.include_phase267_realhw_apsc_s35_face_eye_af_version_hil
+            and cfg.include_stage52
+            and cfg.stage52_realhw_apsc_s35_face_eye_af_version_hil
         )
         else None
     )
@@ -4675,6 +4757,45 @@ def run_fx3_vm_coemulation_suite(
         and stage51["appfw_crashes"] == 0
         and stage51["raw_firmware_bytes_leaked"] == 0
     )
+    stage52_ok = True if stage52 is None else (
+        bool(stage52["all_checks_passed"])
+        and stage52["nop_count"] == 0
+        and stage52["guest_code_modification_bytes"] == 0
+        and stage52["cp_mutation_bytes"] == 0
+        and stage52["wbi_mutation_bytes"] == 0
+        and stage52["calibration_mutation_bytes"] == 0
+        and stage52["cnflasha_mutation_bytes"] == 0
+        and bool(stage52["cnflasha_userspace_write_blocked"])
+        and bool(stage52["bodydata_update_execution_blocked"])
+        and stage52["nvram_persistent_writes"] == 0
+        and stage52["bk4_persistent_nvram_writes"] == 0
+        and stage52["physical_device_writes"] == 0
+        and (not stage52["persistent_emmc_writes_authorized"])
+        and (not stage52["hardware_live_attachment_authorized"])
+        and (not stage52["overall_ready_for_hardware_attach"])
+        and (not stage52["isp_write_authorized"])
+        and stage52["emmc_nflasha_write_count"] == 0
+        and stage52["emmc_mutation_bytes"] == 0
+        and stage52["emmc_corruptions"] == 0
+        and (not stage52["spi_nor_write_authorized"])
+        and stage52["spi_nor_mutation_bytes"] == 0
+        and (not stage52["el3_payload_transmit_authorized"])
+        and stage52["otp_fuse_touches"] == 0
+        and stage52["rpmb_counter_increments"] == 0
+        and stage52["apsc_s35_4k_or_raw_bypass_events"] == 0
+        and stage52["ai_coprocessor_subject_spoof_events"] == 0
+        and stage52["hdmi_clean_feed_eye_frame_baked_pixels"] == 0
+        and stage52["face_memory_camera_reset_wipe_events"] == 0
+        and stage52["passive_tx_bytes_emitted"] == 0
+        and stage52["bodydata_flash_execution_events"] == 0
+        and stage52["rsv_orphan_count"] == 0
+        and stage52["null_gpio_derefs"] == 0
+        and stage52["mailbox_stalls"] == 0
+        and stage52["stock_cp_fault_count"] == 0
+        and stage52["wf12_00342260_hits"] == 0
+        and stage52["appfw_crashes"] == 0
+        and stage52["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -4729,6 +4850,7 @@ def run_fx3_vm_coemulation_suite(
         and stage49_ok
         and stage50_ok
         and stage51_ok
+        and stage52_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -4848,6 +4970,21 @@ def run_fx3_vm_coemulation_suite(
             "include_stage51": (
                 cfg.include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil
                 and cfg.include_stage51
+            ),
+            "include_phase267_realhw_apsc_s35_face_eye_af_version_hil": (
+                cfg.include_phase267_realhw_apsc_s35_face_eye_af_version_hil
+                and cfg.include_stage52
+                and cfg.stage52_realhw_apsc_s35_face_eye_af_version_hil
+            ),
+            "include_stage52": (
+                cfg.include_phase267_realhw_apsc_s35_face_eye_af_version_hil
+                and cfg.include_stage52
+                and cfg.stage52_realhw_apsc_s35_face_eye_af_version_hil
+            ),
+            "stage52_realhw_apsc_s35_face_eye_af_version_hil": (
+                cfg.include_phase267_realhw_apsc_s35_face_eye_af_version_hil
+                and cfg.include_stage52
+                and cfg.stage52_realhw_apsc_s35_face_eye_af_version_hil
             ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
@@ -4969,6 +5106,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage50_realhw_diff_set_still_mv_custom_key_remain_shoot_hil"] = stage50
     if stage51 is not None:
         core_payload["stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil"] = stage51
+    if stage52 is not None:
+        core_payload["stage52_realhw_apsc_s35_face_eye_af_version_hil"] = stage52
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -4980,7 +5119,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 (51/51) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 (52/52) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -5339,6 +5478,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 51 (Phase 262 51/51 Real-Hardware ILME-FX3 Wave-41 Auto Slow Shutter 6-Condition Lockout & Shutter Angle Disjointness, HDMI Output Settings REC Control <- Time Code Output Gate & 4ch Audio + Slot-1 Vault Guard, and Breathing Comp. Movie-Only Compliant-Lens Crop & RAW/240p Lockout HIL)",
     )
     parser.add_argument(
+        "--include-stage52",
+        dest="include_stage52",
+        action="store_true",
+        default=True,
+        help="Include Stage 52 (Phase 267 52/52 Real-Hardware ILME-FX3 Wave-42 APS-C S35 Shooting 12.1MP 4K/RAW Lockout, BIONZ XR Face/Eye AF Clean-HDMI Frame Isolation & Face Memory Persistence, and Version Read-Only Inspection & BODYDATA.DAT Hard-Blocked Flash Guard HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage52",
+        "--no-include-stage52",
+        dest="skip_stage52",
+        action="store_true",
+        help="Skip optional Stage 52 (alias for --skip-phase267)",
+    )
+    parser.add_argument(
+        "--skip-phase267",
+        action="store_true",
+        help="Skip optional Stage 52 (Phase 267 52/52 Real-Hardware ILME-FX3 Wave-42 APS-C S35 Shooting 12.1MP 4K/RAW Lockout, BIONZ XR Face/Eye AF Clean-HDMI Frame Isolation & Face Memory Persistence, and Version Read-Only Inspection & BODYDATA.DAT Hard-Blocked Flash Guard HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -5406,6 +5564,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage49 = bool(args.include_stage49) and (not args.skip_phase257) and (not args.skip_stage49)
     enable_stage50 = bool(args.include_stage50) and (not args.skip_phase258) and (not args.skip_stage50)
     enable_stage51 = bool(args.include_stage51) and (not args.skip_phase262) and (not args.skip_stage51)
+    enable_stage52 = bool(args.include_stage52) and (not args.skip_phase267) and (not args.skip_stage52)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -5468,6 +5627,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_stage50=enable_stage50,
         include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil=enable_stage51,
         include_stage51=enable_stage51,
+        include_phase267_realhw_apsc_s35_face_eye_af_version_hil=enable_stage52,
+        include_stage52=enable_stage52,
+        stage52_realhw_apsc_s35_face_eye_af_version_hil=enable_stage52,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -5528,6 +5690,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s49 = rep.get("stage49_realhw_display_quality_bt_rmt_mymenu_hil")
         s50 = rep.get("stage50_realhw_diff_set_still_mv_custom_key_remain_shoot_hil")
         s51 = rep.get("stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil")
+        s52 = rep.get("stage52_realhw_apsc_s35_face_eye_af_version_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -5974,6 +6137,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s51, dict)
             else ""
         )
+        s52_str = (
+            f" | realhw_apsc_s35_face_eye_af_version_hil={s52['source_mode']}("
+            f"apsc={len(s52['pillar_a_apsc_s35_4k_raw_lockout_hil']['hard_locked_4k_and_raw_formats'])}fmt,"
+            f"byp={s52['apsc_s35_4k_or_raw_bypass_events']},"
+            f"feye={len(s52['pillar_b_face_eye_af_clean_hdmi_and_face_memory_hil']['four_menu_items'])}item,"
+            f"spoof={s52['ai_coprocessor_subject_spoof_events']},"
+            f"hbake={s52['hdmi_clean_feed_eye_frame_baked_pixels']},"
+            f"tx={s52['passive_tx_bytes_emitted']},"
+            f"bblk={int(bool(s52['bodydata_update_execution_blocked']))},"
+            f"emmc_wr={s52['emmc_nflasha_write_count']})"
+            if isinstance(s52, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -5982,7 +6158,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

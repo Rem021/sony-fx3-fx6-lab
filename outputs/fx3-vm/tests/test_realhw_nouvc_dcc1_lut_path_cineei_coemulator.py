@@ -624,7 +624,7 @@ class TestPhase194NoUvcDcc1LutPathCineEiCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_sum = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_nouvc_dcc1_lut_path_cineei_coemulator.py"),
                 "--self-test",
@@ -641,7 +641,7 @@ class TestPhase194NoUvcDcc1LutPathCineEiCoEmulator(unittest.TestCase):
 
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_nouvc_dcc1_lut_path_cineei_coemulator.py"),
                 "--self-test",
@@ -700,7 +700,7 @@ class TestPhase194NoUvcDcc1LutPathCineEiCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -717,7 +717,7 @@ class TestPhase194NoUvcDcc1LutPathCineEiCoEmulator(unittest.TestCase):
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -752,7 +752,7 @@ class TestPhase194NoUvcDcc1LutPathCineEiCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

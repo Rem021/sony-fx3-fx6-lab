@@ -952,7 +952,7 @@ fi
 rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR"
 CHECKLIST_FILE="${{WORK_DIR}}/stage_b_13.checklist"
-sed -n 's/^[[:space:]]*"\\([0-9a-f]\\{{64\\}}\\)\\|\\([^"]*\\)".*/\\1 \\2/p' "$MANIFEST_FILE" > "$CHECKLIST_FILE"
+sed -n 's/^[[:space:]]*"\\([0-9a-f]\\{{64\\}}\\)[|]\\([^"]*\\)".*/\\1 \\2/p' "$MANIFEST_FILE" > "$CHECKLIST_FILE"
 CHECK_ROWS=$(wc -l < "$CHECKLIST_FILE" | tr -d ' ')
 if [ "${{CHECK_ROWS:-0}}" -lt 13 ]; then
     rm -rf "$WORK_DIR"

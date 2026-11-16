@@ -472,7 +472,7 @@ class EmmcDumpForensicVerifierTests(unittest.TestCase):
         env["PYTHONPATH"] = f"{ROOT / 'outputs' / 'fx3-safety'}:{ROOT / 'outputs' / 'fx3-recovery-adapter'}"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 "-m",
                 "fx3_recovery",
@@ -508,7 +508,7 @@ class EmmcDumpForensicVerifierTests(unittest.TestCase):
         env["PYTHONPATH"] = f"{ROOT / 'outputs' / 'fx3-safety'}:{ROOT / 'outputs' / 'fx3-recovery-adapter'}"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 "-m",
                 "fx3_recovery",

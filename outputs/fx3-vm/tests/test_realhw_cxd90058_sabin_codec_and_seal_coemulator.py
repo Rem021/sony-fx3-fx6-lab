@@ -490,7 +490,7 @@ class TestStage29CliSuiteAndHygiene(unittest.TestCase):
         env["FX3_FX6_FORCE_CLEAN_ROOM"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_cxd90058_sabin_codec_and_seal_coemulator.py"),
                 "--self-test",
@@ -544,7 +544,7 @@ class TestStage29CliSuiteAndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -561,7 +561,7 @@ class TestStage29CliSuiteAndHygiene(unittest.TestCase):
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -596,7 +596,7 @@ class TestStage29CliSuiteAndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_clean = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

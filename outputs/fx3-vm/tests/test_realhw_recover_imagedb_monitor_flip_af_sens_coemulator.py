@@ -818,7 +818,7 @@ class TestPhase239RecoverImageDbMonitorFlipAfSensCoEmulator(unittest.TestCase):
             FX3_VM_DIR / "realhw_recover_imagedb_monitor_flip_af_sens_coemulator.py"
         )
         p_sum = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--summary"],
+            [sys.executable, "-B", script_path, "--self-test", "--summary"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,
@@ -829,7 +829,7 @@ class TestPhase239RecoverImageDbMonitorFlipAfSensCoEmulator(unittest.TestCase):
         self.assertIn("[PASS] Phase 239 Stage 44 (44/44)", p_sum.stdout)
 
         p_json = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--clean-room", "--json"],
+            [sys.executable, "-B", script_path, "--self-test", "--clean-room", "--json"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,

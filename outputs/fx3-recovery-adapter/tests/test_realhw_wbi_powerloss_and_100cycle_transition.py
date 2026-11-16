@@ -562,7 +562,7 @@ class TestPhase176TopLevelSuiteAndCli(unittest.TestCase):
         env["PYTHONPATH"] = str(ADAPTER_ROOT)
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
-            ["/usr/bin/python3", "-B", "-m", "fx3_recovery", "verify-wbi-powerloss-recovery", "--force-clean-room", "--json"],
+            [sys.executable, "-B", "-m", "fx3_recovery", "verify-wbi-powerloss-recovery", "--force-clean-room", "--json"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,
@@ -586,7 +586,7 @@ class TestPhase176TopLevelSuiteAndCli(unittest.TestCase):
         out_dir.parent.mkdir(parents=True, exist_ok=True)
         try:
             proc = subprocess.run(
-                ["/usr/bin/python3", "-B", "-m", "fx3_recovery", "verify-wbi-powerloss-recovery", "--out", str(out_dir)],
+                [sys.executable, "-B", "-m", "fx3_recovery", "verify-wbi-powerloss-recovery", "--out", str(out_dir)],
                 cwd=str(REPO_ROOT),
                 env=env,
                 capture_output=True,
@@ -710,7 +710,7 @@ class TestPhase176TopLevelSuiteAndCli(unittest.TestCase):
         env["PYTHONPATH"] = str(ADAPTER_ROOT)
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
-            ["/usr/bin/python3", "-B", "-m", "fx3_recovery", "--help"],
+            [sys.executable, "-B", "-m", "fx3_recovery", "--help"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,

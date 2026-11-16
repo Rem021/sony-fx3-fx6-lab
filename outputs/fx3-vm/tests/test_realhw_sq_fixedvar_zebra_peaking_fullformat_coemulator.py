@@ -1060,7 +1060,7 @@ class TestPhase232SqFixedVarZebraPeakingFullFormatCoEmulator(unittest.TestCase):
             FX3_VM_DIR / "realhw_sq_fixedvar_zebra_peaking_fullformat_coemulator.py"
         )
         p_sum = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--summary"],
+            [sys.executable, "-B", script_path, "--self-test", "--summary"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,
@@ -1071,7 +1071,7 @@ class TestPhase232SqFixedVarZebraPeakingFullFormatCoEmulator(unittest.TestCase):
         self.assertIn("[PASS] Phase 232 Stage 42 (42/42)", p_sum.stdout)
 
         p_json = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--clean-room", "--json"],
+            [sys.executable, "-B", script_path, "--self-test", "--clean-room", "--json"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,

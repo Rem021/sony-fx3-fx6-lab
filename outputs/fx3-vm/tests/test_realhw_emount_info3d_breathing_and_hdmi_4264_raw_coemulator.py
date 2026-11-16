@@ -503,7 +503,7 @@ class TestPhase182EmountInfo3dHdmiRawCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_sum = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py"),
                 "--self-test",
@@ -523,7 +523,7 @@ class TestPhase182EmountInfo3dHdmiRawCoEmulator(unittest.TestCase):
 
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_emount_info3d_breathing_and_hdmi_4264_raw_coemulator.py"),
                 "--clean-room",
@@ -583,7 +583,7 @@ class TestPhase182EmountInfo3dHdmiRawCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -600,7 +600,7 @@ class TestPhase182EmountInfo3dHdmiRawCoEmulator(unittest.TestCase):
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -635,7 +635,7 @@ class TestPhase182EmountInfo3dHdmiRawCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

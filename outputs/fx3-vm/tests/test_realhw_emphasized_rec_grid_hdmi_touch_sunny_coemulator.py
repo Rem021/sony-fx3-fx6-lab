@@ -995,7 +995,7 @@ class TestPhase242EmphasizedRecGridHdmiTouchSunnyCoEmulator(unittest.TestCase):
             FX3_VM_DIR / "realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator.py"
         )
         p_sum = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--summary"],
+            [sys.executable, "-B", script_path, "--self-test", "--summary"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,
@@ -1006,7 +1006,7 @@ class TestPhase242EmphasizedRecGridHdmiTouchSunnyCoEmulator(unittest.TestCase):
         self.assertIn("[PASS] Phase 242 Stage 45 (45/45)", p_sum.stdout)
 
         p_json = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--clean-room", "--json"],
+            [sys.executable, "-B", script_path, "--self-test", "--clean-room", "--json"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,

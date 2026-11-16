@@ -546,7 +546,7 @@ class TestStage5CoEmulationIntegrationCliAndHygiene(unittest.TestCase):
         env["FX3_FX6_FORCE_CLEAN_ROOM"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "imx510_xavc_cfexpress_pipeline_emulator.py"),
                 "--self-test",

@@ -421,7 +421,7 @@ class TestCliAndSourceHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

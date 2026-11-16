@@ -15,8 +15,10 @@ import json
 import mmap
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
+import tempfile
 
 HERE = Path(__file__).resolve().parent
 SRC_DIR = HERE / "src"
@@ -35,6 +37,9 @@ def resolve_default_zig() -> Path:
     for cand in candidates:
         if cand.is_file():
             return cand
+    which_zig = shutil.which("zig")
+    if which_zig:
+        return Path(which_zig)
     return candidates[0]
 
 
@@ -109,7 +114,7 @@ def scan_newc_cpio(buf: mmap.mmap | bytes) -> list[dict]:
 def compile_shim(zig: Path, out_so: Path) -> dict:
     if not zig.is_file():
         raise FileNotFoundError(f"Zig toolchain not found at {zig}")
-    cache_root = Path("/private/tmp/fx6-live700-zig-cache")
+    cache_root = Path(tempfile.gettempdir()) / "fx6-live700-zig-cache"
     (cache_root / "local").mkdir(parents=True, exist_ok=True)
     (cache_root / "global").mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()

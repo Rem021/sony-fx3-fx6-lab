@@ -18,6 +18,7 @@ jobs:
   clean-room-verify:
     name: Clean-Room Suite (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:

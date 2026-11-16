@@ -519,7 +519,7 @@ class TestPhase188Fx3aFirewallAndXlrH1MiShoeCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_sum = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py"),
                 "--self-test",
@@ -536,7 +536,7 @@ class TestPhase188Fx3aFirewallAndXlrH1MiShoeCoEmulator(unittest.TestCase):
 
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator.py"),
                 "--self-test",
@@ -597,7 +597,7 @@ class TestPhase188Fx3aFirewallAndXlrH1MiShoeCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -614,7 +614,7 @@ class TestPhase188Fx3aFirewallAndXlrH1MiShoeCoEmulator(unittest.TestCase):
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -649,7 +649,7 @@ class TestPhase188Fx3aFirewallAndXlrH1MiShoeCoEmulator(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

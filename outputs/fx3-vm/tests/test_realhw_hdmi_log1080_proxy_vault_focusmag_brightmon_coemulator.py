@@ -877,7 +877,7 @@ class TestPhase213HdmiLog1080ProxyVaultFocusMagBrightMonCoEmulator(unittest.Test
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_sum = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(
                     FX3_VM_DIR
@@ -897,7 +897,7 @@ class TestPhase213HdmiLog1080ProxyVaultFocusMagBrightMonCoEmulator(unittest.Test
 
         p_json = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(
                     FX3_VM_DIR
@@ -976,7 +976,7 @@ class TestPhase213HdmiLog1080ProxyVaultFocusMagBrightMonCoEmulator(unittest.Test
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -996,7 +996,7 @@ class TestPhase213HdmiLog1080ProxyVaultFocusMagBrightMonCoEmulator(unittest.Test
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

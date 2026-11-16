@@ -490,7 +490,7 @@ class TestStage30CliSuite30of30AndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator.py"),
                 "--self-test",
@@ -545,7 +545,7 @@ class TestStage30CliSuite30of30AndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -562,7 +562,7 @@ class TestStage30CliSuite30of30AndHygiene(unittest.TestCase):
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -597,7 +597,7 @@ class TestStage30CliSuite30of30AndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_clean = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

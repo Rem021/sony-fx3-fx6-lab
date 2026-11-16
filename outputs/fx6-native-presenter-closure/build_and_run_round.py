@@ -57,11 +57,21 @@ def _resolve_migrated_path(
     return candidates[0]
 
 
-ZIG = _resolve_migrated_path(
-    "FX6_ZIG",
-    "work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
-    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
-)
+def _resolve_zig_compiler() -> pathlib.Path:
+    cand = _resolve_migrated_path(
+        "FX6_ZIG",
+        "work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    )
+    if cand.is_file() or os.environ.get("FX6_ZIG", "").strip():
+        return cand
+    which_zig = shutil.which("zig")
+    if which_zig:
+        return pathlib.Path(which_zig)
+    return cand
+
+
+ZIG = _resolve_zig_compiler()
 QEMU_BIN = _resolve_migrated_path(
     "FX6_QEMU_BIN",
     "work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",

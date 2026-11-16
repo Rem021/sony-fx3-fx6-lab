@@ -900,7 +900,7 @@ class TestPhase236SilentAutoPixelMapMarkerFlexExpCoEmulator(unittest.TestCase):
             FX3_VM_DIR / "realhw_silent_autopixelmap_marker_flexexp_coemulator.py"
         )
         p_sum = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--summary"],
+            [sys.executable, "-B", script_path, "--self-test", "--summary"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,
@@ -911,7 +911,7 @@ class TestPhase236SilentAutoPixelMapMarkerFlexExpCoEmulator(unittest.TestCase):
         self.assertIn("[PASS] Phase 236 Stage 43 (43/43)", p_sum.stdout)
 
         p_json = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--clean-room", "--json"],
+            [sys.executable, "-B", script_path, "--self-test", "--clean-room", "--json"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,

@@ -388,7 +388,7 @@ class TestCoEmulationIntegrationCliAndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "cxd90057_dtb_and_mhlx_emulator.py"),
                 "--self-test",

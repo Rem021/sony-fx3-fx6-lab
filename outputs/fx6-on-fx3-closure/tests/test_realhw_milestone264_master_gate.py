@@ -1214,7 +1214,11 @@ class TestRealHwMilestone264MasterGate(unittest.TestCase):
         )
         self.assertEqual(rep.verification_mode, "CLEAN_ROOM_SYNTHETIC")
         self.assertTrue(rep.all_pillars_milestone_ready)
-        budget = 3.5 if _is_forced_clean_room() else 6.5
+        budget = (
+            15.0
+            if __import__("os").environ.get("GITHUB_ACTIONS") == "true"
+            else (3.5 if _is_forced_clean_room() else 6.5)
+        )
         self.assertLess(self.default_elapsed_s, budget)
 
 

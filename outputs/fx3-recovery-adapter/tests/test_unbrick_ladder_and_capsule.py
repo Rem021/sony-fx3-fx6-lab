@@ -421,7 +421,7 @@ class UnbrickLadderAndCapsuleTests(unittest.TestCase):
         env["PYTHONPATH"] = str(ROOT / "outputs" / "fx3-recovery-adapter")
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 "-m",
                 "fx3_recovery",

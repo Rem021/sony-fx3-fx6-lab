@@ -385,7 +385,7 @@ class TestStage6CoEmulationSuiteCliAndHygiene(unittest.TestCase):
         env["FX3_FX6_FORCE_CLEAN_ROOM"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_hil_fault_harness.py"),
                 "--self-test",

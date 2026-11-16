@@ -993,7 +993,7 @@ class TestPhase226SteadyShotActiveCiz4LocksPowerSaveAutoTempCoEmulator(unittest.
             / "realhw_steadyshot_active_ciz_4locks_powersave_autotemp_coemulator.py"
         )
         p_sum = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--summary"],
+            [sys.executable, "-B", script_path, "--self-test", "--summary"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,
@@ -1004,7 +1004,7 @@ class TestPhase226SteadyShotActiveCiz4LocksPowerSaveAutoTempCoEmulator(unittest.
         self.assertIn("[PASS] Phase 226 Stage 41 (41/41)", p_sum.stdout)
 
         p_json = subprocess.run(
-            ["/usr/bin/python3", "-B", script_path, "--self-test", "--clean-room", "--json"],
+            [sys.executable, "-B", script_path, "--self-test", "--clean-room", "--json"],
             cwd=str(REPO_ROOT),
             env=env,
             capture_output=True,

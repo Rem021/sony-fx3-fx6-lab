@@ -575,7 +575,7 @@ class TestStage28SuiteOrchestrationCliAndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         proc = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -592,7 +592,7 @@ class TestStage28SuiteOrchestrationCliAndHygiene(unittest.TestCase):
 
         proc_skip = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",
@@ -627,7 +627,7 @@ class TestStage28SuiteOrchestrationCliAndHygiene(unittest.TestCase):
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         p_clean = subprocess.run(
             [
-                "/usr/bin/python3",
+                sys.executable,
                 "-B",
                 str(FX3_VM_DIR / "fx3_vm_coemulation_suite.py"),
                 "--clean-room",

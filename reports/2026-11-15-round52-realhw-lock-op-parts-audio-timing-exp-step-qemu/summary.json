@@ -1,0 +1,977 @@
+{
+  "schema": "fx6-on-fx3-round52-realhw-lock-op-parts-audio-timing-exp-step-qemu-v1",
+  "round": 52,
+  "milestone": "52nd Milestone (Wave-38 / 25th Real-HW QEMU Round in R28..R52, 75 Live Runs)",
+  "date": "2026-11-15",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "lock_op_parts_menu_fn_5s_chord_no_menu_delete_confusion_and_mydial_override_init": {
+      "fx3_lock_op_node_ok": 1,
+      "lock_op_default_off_ok": 1,
+      "invalid_lock_op_rc": -22,
+      "lock_op_4modes_verified": 4,
+      "lock_op_survives_camreset_ok": 1,
+      "lock_op_survives_netreset_ok": 1,
+      "initialize_restores_lock_op_off_ok": 1,
+      "fn_hold_3s_toggle_ok": 1,
+      "mydial_1_3_temp_override_verified": 3,
+      "mydial_release_relocks_ok": 1,
+      "menu_fn_5s_fullbody_lock_ok": 1,
+      "shutter_exempt_ok": 1,
+      "menu_fn_3s_fullbody_release_ok": 1,
+      "menu_delete_2s_blocked_rc": -1,
+      "destructive_menu_delete_confusions": 0,
+      "slot1_vault_format_events": 0,
+      "slot2_format_events": 0,
+      "slot1_vault_sha256_match": 1,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "cnflasha_sha256_match": 1,
+      "cnflasha_writes": 0,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r52_init_ok": 1,
+      "verify_us": 918522
+    },
+    "lock_op_parts_chord_and_mydial_stage_b_bridge": {
+      "lock_op_default_off_ok": 1,
+      "lock_op_4modes_verified": 4,
+      "lock_op_survives_camreset_netreset_ok": 1,
+      "fn_hold_3s_toggle_ok": 1,
+      "menu_fn_5s_lock_3s_release_ok": 1,
+      "destructive_menu_delete_confusions": 0,
+      "slot1_vault_format_events": 0,
+      "mydial_1_3_temp_override_verified": 3,
+      "lock_op_parts_ok": 1,
+      "emmc_write_count": 0,
+      "r52_bridge_ok": 1
+    },
+    "audio_out_timing_vs_audio_signals_stage_b_bridge": {
+      "audio_out_timing_default_live_ok": 1,
+      "audio_out_timing_2modes_verified": 2,
+      "audio_out_timing_camreset_ok": 1,
+      "audio_signals_default_on_all_ok": 1,
+      "audio_signals_3modes_verified": 3,
+      "audio_signals_survives_camreset_ok": 1,
+      "silent_mode_audio_signal_leak_events": 0,
+      "audio_timing_signals_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "exposure_step_vs_shutter_angle_stage_b_bridge": {
+      "exposure_step_default_03ev_ok": 1,
+      "exposure_step_2modes_verified": 2,
+      "exposure_step_camreset_ok": 1,
+      "exp_step_4domains_requantized_ok": 1,
+      "shutter_angle_5anchors_verified": 5,
+      "shutter_angle_exposure_step_drift_events": 0,
+      "exp_step_shutter_angle_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0
+    },
+    "audio_out_timing_vs_audio_signals_and_silent_mode_hard_mute_guard": {
+      "audio_out_timing_default_live_ok": 1,
+      "audio_signals_default_on_all_ok": 1,
+      "invalid_audio_timing_rc": -22,
+      "invalid_audio_signals_rc": -22,
+      "audio_out_timing_2modes_verified": 2,
+      "audio_signals_3modes_verified": 3,
+      "shutter_only_selectivity_ok": 1,
+      "audio_out_timing_camreset_restores_live_ok": 1,
+      "audio_signals_survives_camreset_ok": 1,
+      "shooting_vs_setup_audio_reset_split_ok": 1,
+      "initialize_restores_audio_defaults_ok": 1,
+      "sq_motion_audio_timing_lock_rc": -95,
+      "audio_rec_off_timing_lock_rc": -95,
+      "audio_out_timing_sq_or_recoff_bypass_events": 0,
+      "silent_mode_audio_signals_lock_rc": -16,
+      "silent_mode_audio_signal_leak_events": 0,
+      "silent_off_restores_audio_signals_ok": 1,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0,
+      "r52b_ok": 1,
+      "verify_us": 821608
+    },
+    "exposure_step_4domain_requantization_vs_shutter_angle_constant_table_and_16_h0_h3": {
+      "exposure_step_default_03ev_ok": 1,
+      "invalid_exposure_step_rc": -22,
+      "exposure_step_2modes_verified": 2,
+      "exposure_step_camreset_restores_03ev_ok": 1,
+      "initialize_restores_03ev_ok": 1,
+      "exp_step_domains_requantized": 4,
+      "exp_step_4domains_requantized_ok": 1,
+      "shutter_angle_min_deg10": 56,
+      "shutter_angle_max_deg10": 3600,
+      "shutter_angle_5anchors_verified": 5,
+      "shutter_angle_constant_table_immune_ok": 1,
+      "shutter_angle_exposure_step_drift_events": 0,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "cnflasha_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "emmc_write_count": 0,
+      "r52c_ok": 1,
+      "verify_us": 238514
+    }
+  },
+  "runs": {
+    "r52a_lock_op_parts_mydial_big6_schinese": {
+      "run_id": "round52-lock-op-parts-mydial-big6",
+      "round": 52,
+      "lang": "schinese",
+      "r52_mode": "lock_op_parts_chord_mydial_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Lock Operation Parts] (MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]: Off default / Multi-Slct Only / Dial/Wheel / Dial+Wheel+MSlct, surviving [Camera Settings Reset] & [Reset Network Set.]), Fn >=3s toggle, full-body lock chord MENU+Fn >=5s (MENU+Fn >=3s release, shutter button exempt), strict -EPERM block against destructive MENU+Delete >=2s Slot-1/Slot-2 Full Format confusion (destructive_menu_delete_confusions=0, slot1_vault_format_events=0), [My Dial 1..3] temporary dial override while standard dials are locked, -EROFS (-30) p2:/setting & cnflasha protection, and Stage-B Big-6 Home render (sid=0x0a, schinese, 346,686 non-zero GPE0 pixels)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 76.18,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "eafd7ddd87356829d478605c4ba7425233292bc790771f93ae93fb9b5556a651"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r52": {
+          "r52_mode": "lock_op_parts_chord_mydial_big6",
+          "lock_op_parts_menu_path": "MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]",
+          "lock_op_parts_modes": [
+            "Off",
+            "Multi-Slct Only",
+            "Dial/Wheel",
+            "Dial+Wheel+MSlct"
+          ],
+          "lock_op_parts_default": "Off",
+          "lock_op_parts_survives_camera_settings_reset": true,
+          "lock_op_parts_survives_reset_network_settings": true,
+          "lock_op_parts_reset_only_by_initialize": true,
+          "fn_hold_toggle_ms": 3000,
+          "full_body_lock_chord": "MENU+Fn>=5000ms",
+          "full_body_unlock_chord": "MENU+Fn>=3000ms",
+          "full_body_lock_shutter_button_exempt": true,
+          "destructive_slot_full_format_chord_blocked": "MENU+Delete>=2000ms",
+          "destructive_menu_delete_confusions": 0,
+          "slot1_vault_format_events": 0,
+          "my_dial_banks_temporary_override": [
+            "My Dial 1",
+            "My Dial 2",
+            "My Dial 3"
+          ],
+          "audio_out_timing_menu_item": "Audio Out Timing",
+          "audio_out_timing_modes": [
+            "Live",
+            "Lip Sync"
+          ],
+          "audio_out_timing_default": "Live",
+          "audio_out_timing_reset_by_camera_settings_reset": true,
+          "audio_out_timing_locked_in_sq_and_audio_rec_off": true,
+          "audio_signals_menu_item": "Audio signals",
+          "audio_signals_modes": [
+            "On: all",
+            "On: shutter only",
+            "Off: all"
+          ],
+          "audio_signals_default": "On: all",
+          "audio_signals_survives_camera_settings_reset": true,
+          "audio_signals_forcibly_muted_in_silent_mode": true,
+          "silent_mode_audio_signal_leak_events": 0,
+          "exposure_step_menu_item": "Exposure step",
+          "exposure_step_modes": [
+            "0.3EV",
+            "0.5EV"
+          ],
+          "exposure_step_default": "0.3EV",
+          "exposure_step_reset_by_camera_settings_reset": true,
+          "exposure_step_requantized_domains": [
+            "Aperture",
+            "Shutter Speed ([Speed])",
+            "ISO",
+            "Exposure Comp."
+          ],
+          "shutter_angle_constant_table_deg": [
+            5.6,
+            90.0,
+            172.8,
+            180.0,
+            360.0
+          ],
+          "shutter_angle_immune_to_exposure_step": true,
+          "shutter_angle_exposure_step_drift_events": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r52_telemetry": {
+        "audio_timing_signals_rc": null,
+        "exp_step_shutter_angle_rc": null,
+        "lock_op_init": {
+          "fx3_lock_op_node_ok": 1,
+          "lock_op_default_off_ok": 1,
+          "invalid_lock_op_rc": -22,
+          "lock_op_4modes_verified": 4,
+          "lock_op_survives_camreset_ok": 1,
+          "lock_op_survives_netreset_ok": 1,
+          "initialize_restores_lock_op_off_ok": 1,
+          "fn_hold_3s_toggle_ok": 1,
+          "mydial_1_3_temp_override_verified": 3,
+          "mydial_release_relocks_ok": 1,
+          "menu_fn_5s_fullbody_lock_ok": 1,
+          "shutter_exempt_ok": 1,
+          "menu_fn_3s_fullbody_release_ok": 1,
+          "menu_delete_2s_blocked_rc": -1,
+          "destructive_menu_delete_confusions": 0,
+          "slot1_vault_format_events": 0,
+          "slot2_format_events": 0,
+          "slot1_vault_sha256_match": 1,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r52_init_ok": 1,
+          "verify_us": 918522
+        },
+        "lock_op_parts_bridge": {
+          "lock_op_default_off_ok": 1,
+          "lock_op_4modes_verified": 4,
+          "lock_op_survives_camreset_netreset_ok": 1,
+          "fn_hold_3s_toggle_ok": 1,
+          "menu_fn_5s_lock_3s_release_ok": 1,
+          "destructive_menu_delete_confusions": 0,
+          "slot1_vault_format_events": 0,
+          "mydial_1_3_temp_override_verified": 3,
+          "lock_op_parts_ok": 1,
+          "emmc_write_count": 0,
+          "r52_bridge_ok": 1
+        },
+        "audio_timing_signals_bridge": {
+          "audio_out_timing_default_live_ok": 1,
+          "audio_out_timing_2modes_verified": 2,
+          "audio_out_timing_camreset_ok": 1,
+          "audio_signals_default_on_all_ok": 1,
+          "audio_signals_3modes_verified": 3,
+          "audio_signals_survives_camreset_ok": 1,
+          "silent_mode_audio_signal_leak_events": 0,
+          "audio_timing_signals_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "exp_step_shutter_angle_bridge": {
+          "exposure_step_default_03ev_ok": 1,
+          "exposure_step_2modes_verified": 2,
+          "exposure_step_camreset_ok": 1,
+          "exp_step_4domains_requantized_ok": 1,
+          "shutter_angle_5anchors_verified": 5,
+          "shutter_angle_exposure_step_drift_events": 0,
+          "exp_step_shutter_angle_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "audio_timing_signals_guard": {},
+        "exp_step_shutter_angle": {},
+        "lang_telemetry": {
+          "reason": "gpermDrawFlush",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 27290,
+          "glyph_blits": 14296,
+          "icon_blits": 17626,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "lock_op_parts_ok": 1,
+          "audio_timing_signals_ok": 1,
+          "exp_step_shutter_angle_ok": 1,
+          "r52_bridge_ok": 1,
+          "round52_realhw_lock_op_parts_audio_timing_exp_step": 1,
+          "milestone_25th_realhw_75th_run": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 52,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lock_op_parts_menu_fn_5s_mydial_override": 1,
+          "audio_out_timing_vs_audio_signals_guard": 1,
+          "exp_step_vs_shutter_angle_immune": 1,
+          "milestone_25th_realhw_75th_run": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "alpha_png": "reports/2026-11-15-round52-realhw-lock-op-parts-audio-timing-exp-step-qemu/assets/r52a-lock-op-parts-mydial-big6-schinese-alpha.png",
+        "alpha_bytes": 27132,
+        "alpha_sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57",
+        "composited_png": "reports/2026-11-15-round52-realhw-lock-op-parts-audio-timing-exp-step-qemu/assets/r52a-lock-op-parts-mydial-big6-schinese-composited.png",
+        "composited_bytes": 27467,
+        "composited_sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 158,
+        "FX6_STAGE_B_": 81,
+        "FX6_R30_": 156,
+        "FX6_R31_": 156,
+        "FX6_R32_": 159,
+        "FX6_R33_": 156,
+        "FX6_R34_": 156,
+        "FX6_R35_": 156,
+        "FX6_R36_": 156,
+        "FX6_R37_": 157,
+        "FX6_R38_": 157,
+        "FX6_R39_": 157,
+        "FX6_R40_": 157,
+        "FX6_R41_": 157,
+        "FX6_R42_": 158,
+        "FX6_R43_": 158,
+        "FX6_R44_": 158,
+        "FX6_R45_": 158,
+        "FX6_R46_": 158,
+        "FX6_R47_": 158,
+        "FX6_R48_": 158,
+        "FX6_R49_": 158,
+        "FX6_R50_": 158,
+        "FX6_R51_": 158,
+        "FX6_R52_": 158,
+        "FX6_WAIT_SNAPSHOT": 24,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 156,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 109,
+        "FX6_R10_": 154,
+        "FX6_R11_": 165,
+        "FX6_R12_": 157,
+        "FX6_R13_": 154,
+        "FX6_R14_": 154,
+        "FX6_R15_": 154,
+        "FX6_R16_": 154,
+        "FX6_R17_": 154,
+        "FX6_R18_": 154,
+        "FX6_R19_": 154,
+        "FX6_R20_": 154,
+        "FX6_R21_": 154,
+        "FX6_R22_": 154,
+        "FX6_R23_": 154,
+        "FX6_R24_": 154,
+        "FX6_R25_": 154,
+        "FX6_R26_": 154,
+        "FX6_R27_": 154,
+        "FX6_R29_": 156,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 816,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 54,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 507,
+        "FX6_FONT_": 94,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r52b_audio_out_timing_vs_audio_signals_guard": {
+      "run_id": "round52-audio-out-timing-vs-audio-signals-guard",
+      "round": 52,
+      "lang": "en",
+      "r52_mode": "audio_out_timing_vs_audio_signals_guard",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Audio Out Timing] (Live default / Lip Sync, resettable by [Camera Settings Reset], hardware-locked -EOPNOTSUPP -95 in S&Q Motion & when [Audio Recording]=Off) vs [Audio signals] (On: all default / On: shutter only / Off: all, Setup-tier survival across [Camera Settings Reset] and forcible -EBUSY -16 mute when [Silent Mode]=On with silent_mode_audio_signal_leak_events=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 7.62,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "134b719ee388038506f46bd25a2953cf7da3892804b6815d30059ffd1457f130"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r52": {
+          "r52_mode": "audio_out_timing_vs_audio_signals_guard",
+          "lock_op_parts_menu_path": "MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]",
+          "lock_op_parts_modes": [
+            "Off",
+            "Multi-Slct Only",
+            "Dial/Wheel",
+            "Dial+Wheel+MSlct"
+          ],
+          "lock_op_parts_default": "Off",
+          "lock_op_parts_survives_camera_settings_reset": true,
+          "lock_op_parts_survives_reset_network_settings": true,
+          "lock_op_parts_reset_only_by_initialize": true,
+          "fn_hold_toggle_ms": 3000,
+          "full_body_lock_chord": "MENU+Fn>=5000ms",
+          "full_body_unlock_chord": "MENU+Fn>=3000ms",
+          "full_body_lock_shutter_button_exempt": true,
+          "destructive_slot_full_format_chord_blocked": "MENU+Delete>=2000ms",
+          "destructive_menu_delete_confusions": 0,
+          "slot1_vault_format_events": 0,
+          "my_dial_banks_temporary_override": [
+            "My Dial 1",
+            "My Dial 2",
+            "My Dial 3"
+          ],
+          "audio_out_timing_menu_item": "Audio Out Timing",
+          "audio_out_timing_modes": [
+            "Live",
+            "Lip Sync"
+          ],
+          "audio_out_timing_default": "Live",
+          "audio_out_timing_reset_by_camera_settings_reset": true,
+          "audio_out_timing_locked_in_sq_and_audio_rec_off": true,
+          "audio_signals_menu_item": "Audio signals",
+          "audio_signals_modes": [
+            "On: all",
+            "On: shutter only",
+            "Off: all"
+          ],
+          "audio_signals_default": "On: all",
+          "audio_signals_survives_camera_settings_reset": true,
+          "audio_signals_forcibly_muted_in_silent_mode": true,
+          "silent_mode_audio_signal_leak_events": 0,
+          "exposure_step_menu_item": "Exposure step",
+          "exposure_step_modes": [
+            "0.3EV",
+            "0.5EV"
+          ],
+          "exposure_step_default": "0.3EV",
+          "exposure_step_reset_by_camera_settings_reset": true,
+          "exposure_step_requantized_domains": [
+            "Aperture",
+            "Shutter Speed ([Speed])",
+            "ISO",
+            "Exposure Comp."
+          ],
+          "shutter_angle_constant_table_deg": [
+            5.6,
+            90.0,
+            172.8,
+            180.0,
+            360.0
+          ],
+          "shutter_angle_immune_to_exposure_step": true,
+          "shutter_angle_exposure_step_drift_events": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r52_telemetry": {
+        "audio_timing_signals_rc": 0,
+        "exp_step_shutter_angle_rc": null,
+        "lock_op_init": {},
+        "lock_op_parts_bridge": {},
+        "audio_timing_signals_bridge": {},
+        "exp_step_shutter_angle_bridge": {},
+        "audio_timing_signals_guard": {
+          "audio_out_timing_default_live_ok": 1,
+          "audio_signals_default_on_all_ok": 1,
+          "invalid_audio_timing_rc": -22,
+          "invalid_audio_signals_rc": -22,
+          "audio_out_timing_2modes_verified": 2,
+          "audio_signals_3modes_verified": 3,
+          "shutter_only_selectivity_ok": 1,
+          "audio_out_timing_camreset_restores_live_ok": 1,
+          "audio_signals_survives_camreset_ok": 1,
+          "shooting_vs_setup_audio_reset_split_ok": 1,
+          "initialize_restores_audio_defaults_ok": 1,
+          "sq_motion_audio_timing_lock_rc": -95,
+          "audio_rec_off_timing_lock_rc": -95,
+          "audio_out_timing_sq_or_recoff_bypass_events": 0,
+          "silent_mode_audio_signals_lock_rc": -16,
+          "silent_mode_audio_signal_leak_events": 0,
+          "silent_off_restores_audio_signals_ok": 1,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "r52b_ok": 1,
+          "verify_us": 821608
+        },
+        "exp_step_shutter_angle": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R52_": 3
+      }
+    },
+    "r52c_exposure_step_vs_shutter_angle_h0_h3": {
+      "run_id": "round52-exposure-step-vs-shutter-angle-h0-h3",
+      "round": 52,
+      "lang": "en",
+      "r52_mode": "exposure_step_vs_shutter_angle_guard",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 [Exposure step] (0.3EV default / 0.5EV, resettable by [Camera Settings Reset]) re-quantizing Aperture, Shutter Speed ([Speed]), ISO, and Exposure Comp. while Ver. 7.02 [Shutter Mode]=[Angle] (5.6..360 deg: 5.6, 90, 172.8, 180, 360) stays 100% constant-table immune (shutter_angle_exposure_step_drift_events=0), guest dlopen(/tmp/jiritsu/libJit.so), and 16/16 H0 == H3",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 6.23,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "134b719ee388038506f46bd25a2953cf7da3892804b6815d30059ffd1457f130"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r52": {
+          "r52_mode": "exposure_step_vs_shutter_angle_guard",
+          "lock_op_parts_menu_path": "MENU -> Setup -> [Dial Customize] -> [Lock Operation Parts]",
+          "lock_op_parts_modes": [
+            "Off",
+            "Multi-Slct Only",
+            "Dial/Wheel",
+            "Dial+Wheel+MSlct"
+          ],
+          "lock_op_parts_default": "Off",
+          "lock_op_parts_survives_camera_settings_reset": true,
+          "lock_op_parts_survives_reset_network_settings": true,
+          "lock_op_parts_reset_only_by_initialize": true,
+          "fn_hold_toggle_ms": 3000,
+          "full_body_lock_chord": "MENU+Fn>=5000ms",
+          "full_body_unlock_chord": "MENU+Fn>=3000ms",
+          "full_body_lock_shutter_button_exempt": true,
+          "destructive_slot_full_format_chord_blocked": "MENU+Delete>=2000ms",
+          "destructive_menu_delete_confusions": 0,
+          "slot1_vault_format_events": 0,
+          "my_dial_banks_temporary_override": [
+            "My Dial 1",
+            "My Dial 2",
+            "My Dial 3"
+          ],
+          "audio_out_timing_menu_item": "Audio Out Timing",
+          "audio_out_timing_modes": [
+            "Live",
+            "Lip Sync"
+          ],
+          "audio_out_timing_default": "Live",
+          "audio_out_timing_reset_by_camera_settings_reset": true,
+          "audio_out_timing_locked_in_sq_and_audio_rec_off": true,
+          "audio_signals_menu_item": "Audio signals",
+          "audio_signals_modes": [
+            "On: all",
+            "On: shutter only",
+            "Off: all"
+          ],
+          "audio_signals_default": "On: all",
+          "audio_signals_survives_camera_settings_reset": true,
+          "audio_signals_forcibly_muted_in_silent_mode": true,
+          "silent_mode_audio_signal_leak_events": 0,
+          "exposure_step_menu_item": "Exposure step",
+          "exposure_step_modes": [
+            "0.3EV",
+            "0.5EV"
+          ],
+          "exposure_step_default": "0.3EV",
+          "exposure_step_reset_by_camera_settings_reset": true,
+          "exposure_step_requantized_domains": [
+            "Aperture",
+            "Shutter Speed ([Speed])",
+            "ISO",
+            "Exposure Comp."
+          ],
+          "shutter_angle_constant_table_deg": [
+            5.6,
+            90.0,
+            172.8,
+            180.0,
+            360.0
+          ],
+          "shutter_angle_immune_to_exposure_step": true,
+          "shutter_angle_exposure_step_drift_events": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r52_telemetry": {
+        "audio_timing_signals_rc": null,
+        "exp_step_shutter_angle_rc": 0,
+        "lock_op_init": {},
+        "lock_op_parts_bridge": {},
+        "audio_timing_signals_bridge": {},
+        "exp_step_shutter_angle_bridge": {},
+        "audio_timing_signals_guard": {},
+        "exp_step_shutter_angle": {
+          "exposure_step_default_03ev_ok": 1,
+          "invalid_exposure_step_rc": -22,
+          "exposure_step_2modes_verified": 2,
+          "exposure_step_camreset_restores_03ev_ok": 1,
+          "initialize_restores_03ev_ok": 1,
+          "exp_step_domains_requantized": 4,
+          "exp_step_4domains_requantized_ok": 1,
+          "shutter_angle_min_deg10": 56,
+          "shutter_angle_max_deg10": 3600,
+          "shutter_angle_5anchors_verified": 5,
+          "shutter_angle_constant_table_immune_ok": 1,
+          "shutter_angle_exposure_step_drift_events": 0,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "cnflasha_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "emmc_write_count": 0,
+          "r52c_ok": 1,
+          "verify_us": 238514
+        },
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R52_": 3
+      }
+    }
+  },
+  "r52_realhw_lock_op_parts_audio_timing_exp_step_audit": {
+    "round": 52,
+    "milestone": 52,
+    "milestone233_qemu_rounds": 25,
+    "milestone233_qemu_runs": 75,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "all_3_runs_cnflasha_write_zero": true,
+    "r52a_lock_op_parts_menu_fn_5s_chord_no_menu_delete_confusion_and_mydial_override_verified": true,
+    "r52a_stageb_big6_sid_0a_exact_346686_pixels_verified": true,
+    "r52b_audio_out_timing_vs_audio_signals_and_silent_mode_mute_guard_verified": true,
+    "r52c_exposure_step_4domain_requantization_and_shutter_angle_constant_table_immunity_verified": true,
+    "r52c_dlopen_libjit_and_16_h0_eq_h3_rollback_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical ILME-FX3 (Ver. 7.02) body tactile button/dial test bench verifying MENU + Fn >= 5s full-body physical control lock (and >= 3s release, shutter button exempt) during unattended Tier-0 bench dumps, Fn ~3s toggle across [Off] / [Multi-Slct Only] / [Dial/Wheel] / [Dial+Wheel+MSlct], and [My Dial 1..3] momentary/toggle dial override remain unexecuted on a physical camera body.",
+    "Physical ILME-FX3 (Ver. 7.02) 3.5 mm headphone latency oscilloscope & acoustic chamber bench measuring [Audio Out Timing] = [Live] vs [Lip Sync] analog headphone phase offset (and S&Q / [Audio Recording]=Off gray-out) alongside piezo/speaker [Audio signals] ([On: all] / [On: shutter only] / [Off: all]) silence under [Silent Mode] = [On] remain unexecuted on physical hardware.",
+    "Physical ILME-FX3 (Ver. 7.02) E-mount lens aperture/shutter/ISO dial detent bench comparing [Exposure step] = [0.3EV] vs [0.5EV] step quantization in [Shutter Mode] = [Speed] against invariant cine shutter-angle increments (5.6 deg .. 360 deg: 90 deg, 172.8 deg, 180 deg, 360 deg) in [Shutter Mode] = [Angle] remain unexecuted on a physical camera body."
+  ]
+}

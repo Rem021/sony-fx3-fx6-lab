@@ -1691,3 +1691,35 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 267：Stage 52（`52/52`）真实硬件主线 — Wave-42 `[APS-C S35 Shooting]` `12.1 MP` `4K` / `HDMI RAW` 硬锁定与 `Clear Image Zoom` 严格区分、BIONZ XR `[Face/Eye AF]` 4 项菜单与独立 AI 协处理器伪造主体拒绝及纯净外录 HDMI 框隔离 + `[Face Memory]` 跨相机重置留存、以及 `[Version]` 只读核验、`Airplane Mode = On` 零射频红点抑制与 `BODYDATA.DAT` 刷写硬阻断 HIL 协同仿真器
+
+[`realhw_apsc_s35_face_eye_af_version_coemulator.py`](realhw_apsc_s35_face_eye_af_version_coemulator.py) 作为 **Phase 267 Stage 52（`52/52`，Schema `realhw_apsc_s35_face_eye_af_version_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase267_realhw_apsc_s35_face_eye_af_version_hil=True` / `include_stage52=True` / `stage52_realhw_apsc_s35_face_eye_af_version_hil=True`，支持显式 `--include-stage52` 以及通过 `--skip-phase267` / `--skip-stage52` / `--no-include-stage52` 跳过；本地只读供体 52 阶段全板协同仿真 `< 3.5s`、洁净室模式 `< 1.5s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、**`bodydata_update_execution_blocked == True`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`apsc_s35_4k_or_raw_bypass_events == 0`、`ai_coprocessor_subject_spoof_events == 0`、`hdmi_clean_feed_eye_frame_baked_pixels == 0`、`face_memory_camera_reset_wipe_events == 0`、`passive_tx_bytes_emitted == 0`、`bodydata_flash_execution_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模 18 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 严格通过 `os.O_RDONLY` 核验 FX3 `Ver. 7.02` 与 FX6 `Ver. 6.01` 的 **18 份真实供体**（精确锁定字节数与完整 64 位 SHA-256）：新增 `libInfraGetVersion.so`（`10,144 B`：`InfraGetVersion` / `InfraGetVersionLens`）、`libupdatermedia.so`（`10,144 B`：`UDTR_MEDIA` / `udtr_get_media_path`）与 `libupdaterufp.so`（`22,768 B`：`/BODYDATA.DAT` / `LENSDATA.DAT` / `/dev/nflasha1` / `udtr_write_firm_from_media`），联合 `string_english_f.uxc`（`373,820 B`：`APS-C/Super 35mm` / `Clear Image Zoom` / `Face/Eye AF` / `Face/Eye Priority in AF` / `Face/Eye Subject` / `Right/Left Eye Select` / `Face/Eye Frame Display` / `Regist. Faces Priority` / `Face Memory` / `HDMI Info. Display` / `Version` / `Airplane Mode`）、`appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4`；同时支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 52A — `[APS-C S35 Shooting]` `12.1 MP` `4K` / `HDMI RAW` 硬锁定与 `Clear Image Zoom` 严格区分 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting]`（`Auto` 出厂默认 / `On` / `Off`，受 `[Camera Settings Reset]` 与 `[Initialize]` 复位、跨 `[Reset Network Set.]` 存活）：因 `ILME-FX3` 全画幅传感器为 `12.1 MP`（`4240 × 2832`），`1.5×` APS-C / Super 35mm 子窗口（`2560 × 1440` 16:9）不具备原生 `3840 × 2160` 像素，故在全部 `4K` 格式（`XAVC HS 4K`、`XAVC S 4K`、`XAVC S-I 4K`、`DCI 4K`）及 `4264 × 2408` `HDMI RAW Output` 下**强制硬锁定 `Off` / 不可选**（`apsc_s35_4k_or_raw_bypass_events == 0`），仅在 `HD`（`XAVC S HD` / `XAVC S-I HD`）与静态照片（`~5.1 MP` `2768 × 1848`）下生效，并与 `4K` 下最高 `1.5×` 的 BIONZ XR `Clear Image Zoom` 清晰缩放严格区分。
+3. **Sub-Model 52B — BIONZ XR `[Face/Eye AF]` 4 项菜单、AI 协处理器伪造拒绝、纯净 HDMI 框隔离与 `[Face Memory]` 持久化 HIL**：
+   - 协同仿真 `MENU -> Focus -> [Face/Eye AF]`（`Face/Eye Priority in AF`、`Subject Recognition in AF` `Human`/`Animal`、`Right/Left Eye Select` `Auto`/`Right Eye`/`Left Eye`、`Face/Eye Frame Display` `On`/`Off`）与 `[Registered Faces Priority]`；严格拒绝 `ILME-FX2` / `ZV-E1` 独立 AI 协处理器伪造主体（`Bird`、`Insect`、`Car/Train`、`Airplane`；`EOPNOTSUPP = 95`，`ai_coprocessor_subject_spoof_events == 0`）；强制当 `HDMI Info. Display = Off`（或 `HDMI RAW Output = On`）时人脸/眼部对焦框仅在机身 LCD 渲染、**绝不烧录进纯净外录 HDMI 画面**（`hdmi_clean_feed_eye_frame_baked_pixels == 0`）；并验证 `[Face Memory]` 跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整留存，仅由 `[Delete]` 或 `[Initialize]` 清空。
+4. **Sub-Model 52C & Redlines — `[Version]` 只读核验、`Airplane Mode = On` 零射频徽标抑制与 `BODYDATA.DAT` 刷写硬阻断 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Setup Option] -> [Version]` 只读展示机身 `ILME-FX3 Ver. 7.02` 与电子 E 卡口镜头固件版本（`flash_partitions_touched == 0`）；在 `Airplane Mode = On` 零射频台架下抑制 Creators' App 远程升级红点提醒（`passive_tx_bytes_emitted == 0`）；并无条件硬阻断任何 `[Version Update]` / `BODYDATA.DAT` / `LENSDATA.DAT` 卡槽刷写请求（`EROFS = 30`，`bodydata_update_execution_blocked == True`，`physical_device_writes == 0`，`emmc_corruptions == 0`），同时锁死全部 16 项硬件安全红线探针。
+
+### Phase 267 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 267 Stage 52（52/52）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_apsc_s35_face_eye_af_version_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_apsc_s35_face_eye_af_version_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_apsc_s35_face_eye_af_version_coemulator.py --self-test --json
+
+# 2. 全板 52 阶段（Stage 1..52, 52/52）统一校验（支持 --include-stage52 与 --skip-phase267）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage52 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 267 双模 70 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_apsc_s35_face_eye_af_version_coemulator.py' -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_apsc_s35_face_eye_af_version_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

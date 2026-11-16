@@ -1629,3 +1629,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 258：Stage 50（`50/50` 大里程碑 / Grand Milestone）真实硬件主线 — Wave-40 `[Different Set for Still/Mv]` 8 项非对称跃迁与 `Ver. 7.02` `[Shutter Angle]` 独立覆盖、`[Custom Key/Dial Set.]` 3 域键位与 `ISO/EI` 自适应及 Slot-1 `CAMSET01.DAT` `O_RDONLY` 保险箱往返、以及 `[Remain Shoot Display]` 连拍缓存边界与无 EVF `ILME-FX3` 监视拓扑护栏 HIL 协同仿真器
+
+[`realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator.py`](realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator.py) 作为 **Phase 258 Stage 50（`50/50` 大里程碑，Schema `realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase258_realhw_diff_set_still_mv_custom_key_remain_shoot_hil=True` / `include_stage50=True`，支持显式 `--include-stage50` 以及通过 `--skip-phase258` / `--skip-stage50` / `--no-include-stage50` 跳过；本地只读供体 50 阶段全板协同仿真 `< 3.5s`、洁净室模式 `< 1.5s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`diff_set_transition_corruption_events == 0`、`shutter_angle_common_bleed_events == 0`、`slot1_custom_key_vault_mutation_bytes == 0`、`fx3_has_builtin_evf == False`、`evf_finder_monitor_spoof_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **15 份真实供体**：`string_english_f.uxc`（`373,820 B`：证实 `Different Set for Still/Mv` / 全部 8 项 `Aperture`、`Shutter Speed`、`ISO`、`Exposure Comp.`、`Metering Mode`、`White Balance`、`Picture Profile`、`Focus Mode` / `Shutter Mode` / `Angle` / `Custom Key/Dial Set.` / `ISO/EI` / `Control Wheel` / `Follow Custom` / `My Dial` / `Recall Custom hold` / `Cine EI` / `Remain Shoot Display` / `Not Displayed` / `Always Display` / `Shoot-Only Display` / `Save/Load Settings` / `Camera Settings Reset` / `Reset Network Set.` / `Initialize`）、`libInfraAdjMedia.so`、`libIMDB.so`、`libUsbBusPower.so`、`libInfraMscServer.so`、`libInfraMediaConfig.so` 及 FX6 `string_english.uxc`，并对 `appFw.so`（`SHUTTER` / `APERTURE` / `CUSTOM` / `DIAL` / `CAMSET` / `REMAIN` / `MONITOR` / `RESET`）、`cpapp-b.bin`（`Shutter` / `Custom` / `Dial` / `Display` / `Monitor` / `Initialize`）、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 50A — `[Different Set for Still/Mv]` 8 项非对称状态跃迁与 `Ver. 7.02` `[Shutter Angle]` 独立覆盖 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Operation Customize] -> [Different Set for Still/Mv]` 精确 8 项（`Aperture`、`Shutter Speed`、`ISO`、`Exposure Comp.`、`Metering Mode`、`White Balance`、`Picture Profile`、`Focus Mode`），跨 **`[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整存活**，仅由 **`[Initialize]`** 恢复为未勾选出厂默认；精确执行 `Common -> Separate`（复制当前值至照片与视频寄存器，**唯独 `Custom White Balance` 保持照片专属**）与 `Separate -> Common`（将标准项复位为初始出厂默认，**唯独 `Aperture`、`Shutter Speed` 与 `Custom White Balance` 保留照片端设定值**，`diff_set_transition_corruption_events == 0`）；同时验证 `Ver. 7.02`（`Ver. 6.00+`）`[Shutter Mode] = [Angle]` 覆盖规则：即便 `Shutter Speed` 未勾选（设为 Common），照片快门速度与视频快门角度依然独立运行互不串写（`shutter_angle_common_bleed_events == 0`）。
+3. **Sub-Model 50B — `[Custom Key/Dial Set.]` 3 域键位、`ISO/EI` 自适应与 Slot-1 `CAMSET01.DAT` `O_RDONLY` 往返 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Operation Customize] -> [Custom Key/Dial Set.]`（`Still` / `Movie` / `Playback` 三域键位、电影机线三拨轮出厂默认 `Front dial=Aperture`、`Rear dial=ISO/EI` 在 `Off`/`Flexible ISO` 与 `Cine EI`/`Cine EI Quick` 间自动切换 `ISO` 与 `Exposure Index (EI)`、`Control Wheel=Shutter Speed`，以及视频 `[Follow Custom]` 继承、`[My Dial 1..3]` 临时拨轮交换与 `[Recall Custom hold 1..3]`）；验证跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 持久存活（仅 `[Initialize]` 复位），支持 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 无损还原，并拦截向 Slot-1 Tier-0 保险箱写入 `CAMSET01.DAT` 的行为（`EROFS = 30`，`slot1_custom_key_vault_mutation_bytes == 0`）。
+4. **Sub-Model 50C & Redlines — `[Remain Shoot Display]` 连拍缓存边界与无 EVF `ILME-FX3` 监视拓扑护栏 HIL**：
+   - 协同仿真 `MENU -> Setup -> [Display Option] -> [Remain Shoot Display]`（`Not Displayed` 默认 / `Always Display` / `Shoot-Only Display`），严格限定仅显示照片连拍缓存余量（`displays_movie_card_remaining_time == False`）且跨双重重置存活；同时硬锁 `ILME-FX3`（`ilc/2210`）无内置 EVF、无 `[Finder/Monitor]` 眼控切换的硬件拓扑边界（`fx3_has_builtin_evf == False`，伪造 EVF / `Finder/Monitor` 触发 `EOPNOTSUPP = 95`，`evf_finder_monitor_spoof_events == 0`），并锁死全部 14 项硬件安全红线探针。
+
+### Phase 258 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 258 Stage 50（50/50 大里程碑）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator.py --self-test --json
+
+# 2. 全板 50 阶段（Stage 1..50, 50/50 大里程碑）统一校验（支持 --include-stage50 与 --skip-phase258）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage50 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 258 双模 68 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_diff_set_still_mv_custom_key_remain_shoot_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

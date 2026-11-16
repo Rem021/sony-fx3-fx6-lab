@@ -68,6 +68,7 @@ import lut3d_tetrahedral_subzero_sdi_emulator as p99  # noqa: E402
 import mxf_mp4_ptpv2_tally_monsoon_emulator as p127  # noqa: E402
 import playback_shotmark_dewpoint_emulator as p87  # noqa: E402
 import qmp_guest_introspection_tracer as p58  # noqa: E402
+import realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator as p262  # noqa: E402
 import realhw_big6_noend_camset_slot1_vmcbncm1_coemulator as p202  # noqa: E402
 import realhw_body_peripheral_ibis_fan_power_coemulator as p150  # noqa: E402
 import realhw_c2pa_tc_gyro_and_prebench_gonogo_coemulator as p172  # noqa: E402
@@ -196,6 +197,8 @@ class CoEmulationConfig:
     include_stage49: bool = True
     include_phase258_realhw_diff_set_still_mv_custom_key_remain_shoot_hil: bool = True
     include_stage50: bool = True
+    include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil: bool = True
+    include_stage51: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -3157,6 +3160,72 @@ def run_stage50_realhw_diff_set_still_mv_custom_key_remain_shoot_hil(
     }
 
 
+def run_stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 51 (Phase 262, 51/51): Real-Hardware ILME-FX3 Wave-41 Auto Slow Shutter 6-Condition Lockout & Shutter Angle Disjointness, HDMI Output Settings REC Control <- Time Code Output Gate & 4ch Audio + Slot-1 Vault Guard, and Breathing Comp. Movie-Only Compliant-Lens Crop & RAW/240p Lockout HIL."""
+    config.validate()
+    rep = p262.run_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "auto_slow_shutter_lockout_bypass_events": red["auto_slow_shutter_lockout_bypass_events"],
+        "auto_slow_shutter_angle_overlap_events": red["auto_slow_shutter_angle_overlap_events"],
+        "hdmi_rec_ctrl_without_tc_violations": red["hdmi_rec_ctrl_without_tc_violations"],
+        "slot1_hdmi_rec_vault_mutation_bytes": red["slot1_hdmi_rec_vault_mutation_bytes"],
+        "breathing_comp_raw_or_240p_bypass_events": red["breathing_comp_raw_or_240p_bypass_events"],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_auto_slow_shutter_6locks_and_angle_disjoint_hil": rep[
+            "pillar_a_auto_slow_shutter_6locks_and_angle_disjoint_hil"
+        ],
+        "pillar_b_hdmi_reccontrol_tcout_4chaudio_and_vault_hil": rep[
+            "pillar_b_hdmi_reccontrol_tcout_4chaudio_and_vault_hil"
+        ],
+        "pillar_c_d_breathing_comp_and_redlines": rep[
+            "pillar_c_d_breathing_comp_and_redlines"
+        ],
+        "phase262_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -3167,7 +3236,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 50-stage (Phase 33..258, 50/50 Grand Milestone) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 51-stage (Phase 33..262, 51/51) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -3409,6 +3478,14 @@ def run_fx3_vm_coemulation_suite(
         if (
             cfg.include_phase258_realhw_diff_set_still_mv_custom_key_remain_shoot_hil
             and cfg.include_stage50
+        )
+        else None
+    )
+    stage51: Optional[Dict[str, object]] = (
+        run_stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil(cfg, env=env)
+        if (
+            cfg.include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil
+            and cfg.include_stage51
         )
         else None
     )
@@ -4562,6 +4639,42 @@ def run_fx3_vm_coemulation_suite(
         and stage50["appfw_crashes"] == 0
         and stage50["raw_firmware_bytes_leaked"] == 0
     )
+    stage51_ok = True if stage51 is None else (
+        bool(stage51["all_checks_passed"])
+        and stage51["nop_count"] == 0
+        and stage51["guest_code_modification_bytes"] == 0
+        and stage51["cp_mutation_bytes"] == 0
+        and stage51["wbi_mutation_bytes"] == 0
+        and stage51["calibration_mutation_bytes"] == 0
+        and stage51["cnflasha_mutation_bytes"] == 0
+        and bool(stage51["cnflasha_userspace_write_blocked"])
+        and stage51["nvram_persistent_writes"] == 0
+        and stage51["bk4_persistent_nvram_writes"] == 0
+        and stage51["physical_device_writes"] == 0
+        and (not stage51["persistent_emmc_writes_authorized"])
+        and (not stage51["hardware_live_attachment_authorized"])
+        and (not stage51["overall_ready_for_hardware_attach"])
+        and (not stage51["isp_write_authorized"])
+        and stage51["emmc_nflasha_write_count"] == 0
+        and stage51["emmc_mutation_bytes"] == 0
+        and (not stage51["spi_nor_write_authorized"])
+        and stage51["spi_nor_mutation_bytes"] == 0
+        and (not stage51["el3_payload_transmit_authorized"])
+        and stage51["otp_fuse_touches"] == 0
+        and stage51["rpmb_counter_increments"] == 0
+        and stage51["auto_slow_shutter_lockout_bypass_events"] == 0
+        and stage51["auto_slow_shutter_angle_overlap_events"] == 0
+        and stage51["hdmi_rec_ctrl_without_tc_violations"] == 0
+        and stage51["slot1_hdmi_rec_vault_mutation_bytes"] == 0
+        and stage51["breathing_comp_raw_or_240p_bypass_events"] == 0
+        and stage51["rsv_orphan_count"] == 0
+        and stage51["null_gpio_derefs"] == 0
+        and stage51["mailbox_stalls"] == 0
+        and stage51["stock_cp_fault_count"] == 0
+        and stage51["wf12_00342260_hits"] == 0
+        and stage51["appfw_crashes"] == 0
+        and stage51["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -4615,6 +4728,7 @@ def run_fx3_vm_coemulation_suite(
         and stage48_ok
         and stage49_ok
         and stage50_ok
+        and stage51_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -4726,6 +4840,14 @@ def run_fx3_vm_coemulation_suite(
             "include_stage50": (
                 cfg.include_phase258_realhw_diff_set_still_mv_custom_key_remain_shoot_hil
                 and cfg.include_stage50
+            ),
+            "include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil": (
+                cfg.include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil
+                and cfg.include_stage51
+            ),
+            "include_stage51": (
+                cfg.include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil
+                and cfg.include_stage51
             ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
@@ -4845,6 +4967,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage49_realhw_display_quality_bt_rmt_mymenu_hil"] = stage49
     if stage50 is not None:
         core_payload["stage50_realhw_diff_set_still_mv_custom_key_remain_shoot_hil"] = stage50
+    if stage51 is not None:
+        core_payload["stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil"] = stage51
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -4856,7 +4980,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 (50/50 Grand Milestone) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 (51/51) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -5196,6 +5320,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 50 (Phase 258 50/50 Grand Milestone Real-Hardware ILME-FX3 Wave-40 Different Set for Still/Mv 8-Item Asymmetric Transitions & Shutter Angle Override, Custom Key/Dial Set. 3-Domain ISO/EI Auto-Adaptation & Slot-1 CAMSET01.DAT Vault, and Remain Shoot Display Still-Buffer Scope & EVF-Less Monitor Topology HIL)",
     )
     parser.add_argument(
+        "--include-stage51",
+        dest="include_stage51",
+        action="store_true",
+        default=True,
+        help="Include Stage 51 (Phase 262 51/51 Real-Hardware ILME-FX3 Wave-41 Auto Slow Shutter 6-Condition Lockout & Shutter Angle Disjointness, HDMI Output Settings REC Control <- Time Code Output Gate & 4ch Audio + Slot-1 Vault Guard, and Breathing Comp. Movie-Only Compliant-Lens Crop & RAW/240p Lockout HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage51",
+        "--no-include-stage51",
+        dest="skip_stage51",
+        action="store_true",
+        help="Skip optional Stage 51 (alias for --skip-phase262)",
+    )
+    parser.add_argument(
+        "--skip-phase262",
+        action="store_true",
+        help="Skip optional Stage 51 (Phase 262 51/51 Real-Hardware ILME-FX3 Wave-41 Auto Slow Shutter 6-Condition Lockout & Shutter Angle Disjointness, HDMI Output Settings REC Control <- Time Code Output Gate & 4ch Audio + Slot-1 Vault Guard, and Breathing Comp. Movie-Only Compliant-Lens Crop & RAW/240p Lockout HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -5262,6 +5405,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage48 = bool(args.include_stage48) and (not args.skip_phase253) and (not args.skip_stage48)
     enable_stage49 = bool(args.include_stage49) and (not args.skip_phase257) and (not args.skip_stage49)
     enable_stage50 = bool(args.include_stage50) and (not args.skip_phase258) and (not args.skip_stage50)
+    enable_stage51 = bool(args.include_stage51) and (not args.skip_phase262) and (not args.skip_stage51)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -5322,6 +5466,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_stage49=enable_stage49,
         include_phase258_realhw_diff_set_still_mv_custom_key_remain_shoot_hil=enable_stage50,
         include_stage50=enable_stage50,
+        include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil=enable_stage51,
+        include_stage51=enable_stage51,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -5381,6 +5527,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s48 = rep.get("stage48_realhw_lock_op_parts_audio_timing_exp_step_hil")
         s49 = rep.get("stage49_realhw_display_quality_bt_rmt_mymenu_hil")
         s50 = rep.get("stage50_realhw_diff_set_still_mv_custom_key_remain_shoot_hil")
+        s51 = rep.get("stage51_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -5813,6 +5960,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s50, dict)
             else ""
         )
+        s51_str = (
+            f" | realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil={s51['source_mode']}("
+            f"auto_slow={len(s51['pillar_a_auto_slow_shutter_6locks_and_angle_disjoint_hil']['all_6_lockout_ids'])}l,"
+            f"byp={s51['auto_slow_shutter_lockout_bypass_events']},"
+            f"ovlp={s51['auto_slow_shutter_angle_overlap_events']},"
+            f"hdmi={len(s51['pillar_b_hdmi_reccontrol_tcout_4chaudio_and_vault_hil']['all_2_hdmi_4ch_audio_modes'])}ch,"
+            f"tcviol={s51['hdmi_rec_ctrl_without_tc_violations']},"
+            f"vmut={s51['slot1_hdmi_rec_vault_mutation_bytes']},"
+            f"breath={len(s51['pillar_c_d_breathing_comp_and_redlines']['compliant_lenses'])}lens,"
+            f"bbyp={s51['breathing_comp_raw_or_240p_bypass_events']},"
+            f"emmc_wr={s51['emmc_nflasha_write_count']})"
+            if isinstance(s51, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -5821,7 +5982,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

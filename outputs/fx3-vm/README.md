@@ -1660,3 +1660,34 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unit
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 262：Stage 51（`51/51`）真实硬件主线 — Wave-41 `[Auto Slow Shutter]` 6 项禁能互锁与 `Ver. 7.02` `[Shutter Angle]` 严格互斥、`[HDMI Output Settings]` `REC Control` <- `Time Code Output` 前置门控与 `4ch Audio Output` + Slot-1 保险箱护栏、以及 `[Lens Compensation]` -> `[Breathing Comp.]` 视频专属兼容镜头裁切与 `RAW` / `240p` 锁定 HIL 协同仿真器
+
+[`realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator.py`](realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator.py) 作为 **Phase 262 Stage 51（`51/51`，Schema `realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase262_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_hil=True` / `include_stage51=True`，支持显式 `--include-stage51` 以及通过 `--skip-phase262` / `--skip-stage51` / `--no-include-stage51` 跳过；本地只读供体 51 阶段全板协同仿真 `< 3.5s`、洁净室模式 `< 1.5s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`auto_slow_shutter_lockout_bypass_events == 0`、`auto_slow_shutter_angle_overlap_events == 0`、`hdmi_rec_ctrl_without_tc_violations == 0`、`slot1_hdmi_rec_vault_mutation_bytes == 0`、`breathing_comp_raw_or_240p_bypass_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模只读供体审计（`LOCAL_DONOR_O_RDONLY` `<= 4096 B` 有界读取 `< 0.02s` 冷启动 + 进程级缓存 + `CLEAN_ROOM_SYNTHETIC` 回退）**：
+   - 核验 FX3 `7.02` 与 FX6 `6.01` 的 **15 份真实供体**：`string_english_f.uxc`（`373,820 B`：证实 `Auto Slow Shutter` / `Exposure` / `Shutter Mode` / `Angle` / `Speed` / `Flexible Exp. Mode` / `Log Shooting` / `Cine EI Quick` / `Cine EI` / `ISO AUTO` / `HDMI Output Settings` / `REC Control` / `Time Code Output` / `4ch Audio Output` / `CH1/CH2` / `CH3/CH4` / `Rec. Media dur HDMI Output` / `Proxy Recording` / `RAW Output` / `Lens Compensation` / `Breathing Comp.` / `Camera Settings Reset` / `Reset Network Set.` / `Initialize`）、`libInfraAdjMedia.so`、`libIMDB.so`、`libUsbBusPower.so`、`libInfraMscServer.so`、`libInfraMediaConfig.so` 及 FX6 `string_english.uxc`，并对 `appFw.so`（`SHUTTER` / `HDMI` / `AUDIO` / `TIMECODE` / `BREATH` / `LENS` / `PROXY` / `RESET`）、`cpapp-b.bin`（`Shutter` / `HDMI` / `Audio` / `Timecode` / `Lens` / `Breathing` / `Reset` / `Initialize`）、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；当 `FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 51A — `[Auto Slow Shutter]` 6 项精确禁能互锁与 `Ver. 7.02` `[Shutter Angle]` 严格互斥 HIL**：
+   - 协同仿真 `MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter]`（`On` 出厂默认 / `Off`，受 `[Camera Settings Reset]` 与 `[Initialize]` 复位、不受 `[Reset Network Set.]` 影响），验证索尼官方全部 6 项禁能互锁条件（① `S&Q` 慢快动作、② `Shutter Priority` 快门优先、③ `Manual Exposure` 手动曝光、④ `[ISO] != [ISO AUTO]`、⑤ `[Flexible Exp. Mode]` 手动快门、⑥ `[Log Shooting] = Cine EI Quick` / `Cine EI`；`auto_slow_shutter_lockout_bypass_events == 0`），并穷举 `768` 组曝光状态矩阵证明其与 `Ver. 7.02`（`Ver. 6.00+`）`[Shutter Mode] = [Angle]` 严格互斥、绝不同时主导曝光时间（`auto_slow_shutter_angle_overlap_events == 0`）。
+3. **Sub-Model 51B — `[HDMI Output Settings]` `REC Control` <- `Time Code Output` 前置门控、`4ch Audio Output` 与 Slot-1 保险箱护栏 HIL**：
+   - 协同仿真 `MENU -> Setup -> [External Output] -> [HDMI Output Settings]`，跨 **`[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整存活**（仅由 `[Initialize]` 恢复出厂默认）；强制 `[REC Control]`（`Off` 默认 / `On`）必须以 `[Time Code Output] = [On]` 为前置硬件条件（`hdmi_rec_ctrl_without_tc_violations == 0`），验证 `[4ch Audio Output]`（`CH1/CH2` 默认 vs `CH3/CH4` MI 热靴路由）与 `[Rec. Media dur HDMI Output]`（`Off` 时抑制机内 Slot-1/Slot-2 素材及 `[Proxy Recording]` 写入，且拦截向 Slot-1 Tier-0 恢复保险箱的写操作 `EROFS = 30`，`slot1_hdmi_rec_vault_mutation_bytes == 0`）。
+4. **Sub-Model 51C & Redlines — `[Lens Compensation]` -> `[Breathing Comp.]` 视频专属兼容镜头裁切与 `RAW` / `240p` 锁定 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.]`（`Off` 默认 / `On`，`Ver. 3.00+`，受 `[Camera Settings Reset]` 复位、跨 `[Reset Network Set.]` 存活），严格限定仅对视频模式且装载呼吸补偿兼容索尼 E 卡口镜头（如 `SEL2470GM2`、`SEL50F12GM`、`SELP1635G`、`SEL70200GM2`）施加轻微视角裁切（照片模式与非兼容镜头保持 `1.0x` 无裁切），并在 `4264x2408` 16-bit 线性 HDMI `RAW Output` 及 `S&Q` `239.76p` / `200p` 下强制禁能锁定（`breathing_comp_raw_or_240p_bypass_events == 0`），同时锁死全部 15 项硬件安全红线探针。
+
+### Phase 262 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 262 Stage 51（51/51）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator.py --self-test --json
+
+# 2. 全板 51 阶段（Stage 1..51, 51/51）统一校验（支持 --include-stage51 与 --skip-phase262）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage51 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 262 双模 66 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator.py' -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_realhw_auto_slow_shutter_hdmi_reccontrol_breathing_coemulator.py' -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

@@ -2561,6 +2561,210 @@ def _cmd_verify_milestone_254(
     )
 
 
+def _cmd_preflight_diffset_customkey_autoslow_and_apsc(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    reset_action: str,
+    diff_set_transition: str,
+    diff_set_shutter_checked: bool,
+    movie_shutter_mode: str,
+    expect_cwb_movie_copy: bool,
+    expect_angle_merge: bool,
+    rear_dial_assignment: str,
+    slot1_contains_tier0_dump: bool,
+    slot1_wp_locked: bool,
+    slot1_custom_key_access: str,
+    remain_shoot_display: str,
+    expect_remain_movie_time: bool,
+    expect_builtin_evf: bool,
+    auto_slow_shutter: str,
+    exposure_ctrl_type: str,
+    exposure_mode: str,
+    flexible_shutter_mode: str,
+    iso_mode: str,
+    log_shooting_mode: str,
+    sq_mode_enabled: bool,
+    expect_auto_slow_active: bool,
+    expect_auto_slow_angle_overlap: bool,
+    hdmi_time_code_output: str,
+    hdmi_rec_control: str,
+    hdmi_4ch_audio_output: str,
+    mi_shoe_4ch_audio_active: bool,
+    rec_media_dur_hdmi_output: str,
+    breathing_comp: str,
+    breathing_comp_compliant_lens: bool,
+    hdmi_raw_output: bool,
+    sq_240p_or_200p_active: bool,
+    expect_breathing_still: bool,
+    apsc_s35_shooting: str,
+    movie_file_format: str,
+    expect_apsc_in_4k_or_raw: bool,
+    face_eye_prior_in_af: str,
+    face_eye_subject: str,
+    right_left_eye_select: str,
+    face_eye_frame_disp: str,
+    expect_ai_subject_recog_menu: bool,
+    hdmi_info_display: str,
+    expect_eye_frame_clean_hdmi: bool,
+    airplane_mode: str,
+    slot1_bodydata_flash_requested: bool,
+    release_wo_card: str,
+    release_wo_lens: str,
+    card_inserted_for_movie_rec: bool,
+    movie_internal_rec_requested: bool,
+    expect_movie_rec_without_card: bool,
+    production_shoot_mode: bool,
+    body_only_or_pl_adapter_bench: bool,
+    audio_rec_level: int,
+    disp_audio_meter_enabled: bool,
+    expect_v1_audio_level_menu: bool,
+    write_copyright_info: str,
+    photographer_text: str,
+    copyright_text: str,
+    clean_room_pii_hygiene: bool,
+    expect_copyright_movies: bool,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_diffset_customkey_autoslow_and_apsc_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        P261_GO_NO_GO_DIFFSET_CUSTOMKEY_AUTOSLOW_APSC_VERIFIED,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+        evaluate_realhw_diffset_customkey_autoslow_and_apsc_readiness,
+        render_phase261_markdown,
+        verify_phase261_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = evaluate_realhw_diffset_customkey_autoslow_and_apsc_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        reset_action=reset_action,
+        diff_set_shutter_speed_checked=diff_set_shutter_checked,
+        diff_set_transition=diff_set_transition,
+        expect_custom_wb_copied_to_movie_on_common_to_separate=expect_cwb_movie_copy,
+        movie_shutter_mode=movie_shutter_mode,
+        expect_common_shutter_merges_movie_shutter_angle=expect_angle_merge,
+        rear_dial_assignment=rear_dial_assignment,
+        slot1_contains_tier0_dump=slot1_contains_tier0_dump,
+        slot1_wp_locked=slot1_wp_locked,
+        slot1_camset_custom_key_access_mode=slot1_custom_key_access,
+        remain_shoot_display=remain_shoot_display,
+        expect_remain_shoot_displays_movie_card_time=expect_remain_movie_time,
+        expect_builtin_evf_or_finder_monitor_switch=expect_builtin_evf,
+        auto_slow_shutter=auto_slow_shutter,
+        exposure_ctrl_type=exposure_ctrl_type,
+        exposure_mode=exposure_mode,
+        flexible_shutter_mode=flexible_shutter_mode,
+        iso_mode=iso_mode,
+        log_shooting_mode=log_shooting_mode,
+        sq_mode_enabled=sq_mode_enabled,
+        expect_auto_slow_shutter_active=expect_auto_slow_active,
+        expect_auto_slow_shutter_with_shutter_angle=expect_auto_slow_angle_overlap,
+        hdmi_time_code_output=hdmi_time_code_output,
+        hdmi_rec_control=hdmi_rec_control,
+        hdmi_4ch_audio_output=hdmi_4ch_audio_output,
+        mi_shoe_4ch_audio_active=mi_shoe_4ch_audio_active,
+        rec_media_dur_hdmi_output=rec_media_dur_hdmi_output,
+        breathing_comp=breathing_comp,
+        breathing_comp_compliant_lens=breathing_comp_compliant_lens,
+        hdmi_raw_output=hdmi_raw_output,
+        sq_240p_or_200p_active=sq_240p_or_200p_active,
+        expect_breathing_comp_in_still_image=expect_breathing_still,
+        apsc_s35_shooting=apsc_s35_shooting,
+        movie_file_format=movie_file_format,
+        expect_apsc_s35_active_in_4k_or_raw=expect_apsc_in_4k_or_raw,
+        face_eye_prior_in_af=face_eye_prior_in_af,
+        face_eye_subject=face_eye_subject,
+        right_left_eye_select=right_left_eye_select,
+        face_eye_frame_disp=face_eye_frame_disp,
+        expect_dedicated_ai_subject_recog_menu=expect_ai_subject_recog_menu,
+        hdmi_info_display=hdmi_info_display,
+        expect_eye_frame_baked_on_clean_hdmi_or_raw=expect_eye_frame_clean_hdmi,
+        airplane_mode=airplane_mode,
+        slot1_bodydata_flash_requested=slot1_bodydata_flash_requested,
+        release_wo_card=release_wo_card,
+        release_wo_lens=release_wo_lens,
+        card_inserted_for_movie_rec=card_inserted_for_movie_rec,
+        movie_internal_rec_requested=movie_internal_rec_requested,
+        expect_movie_internal_rec_without_card=expect_movie_rec_without_card,
+        production_shoot_mode=production_shoot_mode,
+        body_only_or_pl_adapter_bench=body_only_or_pl_adapter_bench,
+        audio_rec_level=audio_rec_level,
+        disp_screen_disp_audio_meter_enabled=disp_audio_meter_enabled,
+        expect_standalone_v1_audio_level_display_menu=expect_v1_audio_level_menu,
+        write_copyright_info=write_copyright_info,
+        photographer_text=photographer_text,
+        copyright_text=copyright_text,
+        clean_room_pii_hygiene_enforced=clean_room_pii_hygiene,
+        expect_copyright_exif_written_to_movies=expect_copyright_movies,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase261_markdown(rep), encoding="utf-8")
+    v_res = verify_phase261_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        P261_GO_NO_GO_DIFFSET_CUSTOMKEY_AUTOSLOW_APSC_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"e_nd_uart={rep.e_nd_uart_bytes_transmitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 2
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
@@ -2616,6 +2820,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-233", "Verify Grand Milestone Phase 233 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=90-Gate + >=38 Recovery + >=45 Auditors + >=44 VM + Quad Bench Preflights Ph186/Ph204/Ph216/Ph227 + FX3 7.02 QEMU R28..R47+, realhw_milestone233_master_gate_v1)"),
         ("preflight-imagedb-touch-shoeaudio-and-lockop", "Run Phase 248 5th physical bench & pre-shoot media/audio/vault readiness verifier (Recover Image DB battery & Slot-1 Tier-0 vault guard + Monitor Flip playback non-inversion, Touch Operation 4-item guard & Off(HDMI Only)/RAW clean-feed + indoor Sunny Weather/Display Quality=Standard conservation, Shoe Audio 48kHz/24bit 4ch 3-lockout + Wind Noise Reduct. built-in-only + Save/Load C3 exclusions & Slot-1 firewall, and Lock Operation Parts MENU+Fn 5s chord + USB Power NP-FZ100 + Exposure step vs Shutter Angle)"),
         ("verify-milestone-254", "Verify Grand Milestone Phase 254 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=96-Gate + >=41 Recovery + >=45 Auditors + >=47 VM + Quintuple Bench Preflights Ph186/Ph204/Ph216/Ph227/Ph248 + FX3 7.02 QEMU R28..R50+, realhw_milestone254_master_gate_v1)"),
+        ("preflight-diffset-customkey-autoslow-and-apsc", "Run Phase 261 6th physical bench & pre-shoot readiness verifier (Waves 40-43 ilc/2210: Different Set 8-item transitions & Shutter Angle override + Custom Key 3-domain ISO/EI Slot-1 O_RDONLY firewall & EVF-less FX3, Auto Slow Shutter 6-lockout & HDMI REC Control <- TC Output + Breathing Comp., APS-C S35 12.1MP 4K/RAW lockout + Face/Eye AF clean-HDMI & Version read-only, and Release w/o Card/Lens zero-E-ND + v7.02 Audio 5-item DISP meter + Copyright 46-char PII hygiene)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -2639,10 +2844,79 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-diffset-customkey-autoslow-and-apsc":
+            p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 261 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, RESET_NETWORK_SET, INITIALIZE")
+            p.add_argument("--diff-set-transition", default="COMMON_TO_SEPARATE", help="[Different Set for Still/Mv] transition: NONE, COMMON_TO_SEPARATE, SEPARATE_TO_COMMON")
+            p.add_argument("--diff-set-shutter-checked", action="store_true", help="Mark Shutter Speed checked in [Different Set for Still/Mv]")
+            p.add_argument("--movie-shutter-mode", default="SHUTTER_ANGLE", help="Movie [Shutter Mode]: SHUTTER_ANGLE or SHUTTER_SPEED")
+            p.add_argument("--expect-cwb-movie-copy", action="store_true", help="Flag invalid expectation that Custom WB copies to Movie on Common->Separate")
+            p.add_argument("--expect-angle-merge", action="store_true", help="Flag invalid expectation that unchecked Shutter Speed merges movie [Shutter Angle]")
+            p.add_argument("--rear-dial-assignment", default="ISO/EI", help="[Custom Key/Dial Set.] Rear dial assignment (default ISO/EI)")
+            p.add_argument("--no-slot1-tier0-dump", dest="slot1_contains_tier0_dump", action="store_false", help="Indicate Slot 1 does NOT hold a Tier-0 forensic dump")
+            p.add_argument("--slot1-wp-unlocked", dest="slot1_wp_locked", action="store_false", help="Indicate Slot 1 SDXC WP physical switch is unlocked")
+            p.add_argument("--slot1-custom-key-access", default="O_RDONLY", help="Slot 1 CAMSET01.DAT custom-key access mode: NONE, O_RDONLY, WRITE")
+            p.add_argument("--remain-shoot-display", default="NOT_DISPLAYED", help="[Remain Shoot Display]: NOT_DISPLAYED, ALWAYS_DISPLAY, SHOOT_ONLY_DISPLAY")
+            p.add_argument("--expect-remain-movie-time", action="store_true", help="Flag invalid expectation that [Remain Shoot Display] shows movie card time")
+            p.add_argument("--expect-builtin-evf", action="store_true", help="Flag invalid expectation of built-in EVF or [Finder/Monitor] on ILME-FX3")
+            p.add_argument("--auto-slow-shutter", default="ON", help="[Auto Slow Shutter]: ON or OFF")
+            p.add_argument("--exposure-ctrl-type", default="FLEXIBLE_EXP_MODE", help="[Exposure Ctrl Type]: P_A_S_M_MODE or FLEXIBLE_EXP_MODE")
+            p.add_argument("--exposure-mode", default="MANUAL_EXPOSURE", help="Exposure mode: PROGRAM_AUTO, APERTURE_PRIORITY, SHUTTER_PRIORITY, MANUAL_EXPOSURE, INTELLIGENT_AUTO")
+            p.add_argument("--flexible-shutter-mode", default="MANUAL", help="Flexible Exp. shutter mode: AUTO or MANUAL")
+            p.add_argument("--iso-mode", default="CINE_EI_BASE", help="ISO mode: ISO_AUTO or manual/Cine EI fixed ISO")
+            p.add_argument("--log-shooting-mode", default="CINE_EI", help="[Log Shooting]: OFF, CINE_EI_QUICK, CINE_EI, FLEXIBLE_ISO")
+            p.add_argument("--sq-enabled", dest="sq_mode_enabled", action="store_true", help="Enable S&Q Motion shooting")
+            p.add_argument("--expect-auto-slow-active", action="store_true", help="Assert [Auto Slow Shutter] is actively governing exposure")
+            p.add_argument("--expect-auto-slow-angle-overlap", action="store_true", help="Flag invalid overlap between [Auto Slow Shutter] and [Shutter Angle]")
+            p.add_argument("--hdmi-time-code-output", default="ON", help="[HDMI Output Settings] -> [Time Code Output]: ON or OFF")
+            p.add_argument("--hdmi-rec-control", default="OFF", help="[HDMI Output Settings] -> [REC Control]: OFF or ON (requires Time Code Output=ON)")
+            p.add_argument("--hdmi-4ch-audio-output", default="CH1_CH2", help="[HDMI Output Settings] -> [4ch Audio Output]: CH1_CH2 or CH3_CH4")
+            p.add_argument("--no-mi-shoe-4ch-audio", dest="mi_shoe_4ch_audio_active", action="store_false", help="Indicate 4ch MI-shoe digital audio is inactive")
+            p.add_argument("--rec-media-dur-hdmi", dest="rec_media_dur_hdmi_output", default="OFF_HDMI_ONLY", help="[Rec. Media dur HDMI Output]: ON, OFF, OFF_HDMI_ONLY")
+            p.add_argument("--breathing-comp", default="OFF", help="[Breathing Comp.]: OFF or ON")
+            p.add_argument("--non-compliant-breathing-lens", dest="breathing_comp_compliant_lens", action="store_false", help="Simulate non-compliant lens for [Breathing Comp.]")
+            p.add_argument("--hdmi-raw-output", action="store_true", help="Enable 4264x2408 16-bit HDMI RAW Output")
+            p.add_argument("--sq-240p-active", dest="sq_240p_or_200p_active", action="store_true", help="Enable S&Q 239.76p/200p high-frame-rate mode")
+            p.add_argument("--expect-breathing-still", action="store_true", help="Flag invalid expectation of [Breathing Comp.] on still images")
+            p.add_argument("--apsc-s35-shooting", default="AUTO", help="[APS-C S35 Shooting]: AUTO, ON, OFF (locked OFF in 4K/RAW)")
+            p.add_argument("--movie-file-format", default="XAVC_S_I_4K", help="Movie file format: XAVC_HS_4K, XAVC_S_4K, XAVC_S_I_4K, XAVC_S_HD, XAVC_S_I_HD")
+            p.add_argument("--expect-apsc-in-4k-or-raw", action="store_true", help="Flag invalid expectation of APS-C S35 crop in 4K or HDMI RAW")
+            p.add_argument("--face-eye-prior", dest="face_eye_prior_in_af", default="ON", help="[Face/Eye Prior. in AF]: ON or OFF")
+            p.add_argument("--face-eye-subject", default="HUMAN", help="[Face/Eye Subject]: HUMAN, ANIMAL, BIRD")
+            p.add_argument("--right-left-eye-select", default="AUTO", help="[Right/Left Eye Select]: AUTO, RIGHT_EYE, LEFT_EYE")
+            p.add_argument("--face-eye-frame-disp", default="ON", help="[Face/Eye Frame Disp.]: ON or OFF")
+            p.add_argument("--expect-ai-subject-recog-menu", action="store_true", help="Flag invalid dedicated AI-unit [Subject Recog in AF] menu expectation")
+            p.add_argument("--hdmi-info-display", default="OFF", help="[HDMI Info. Display]: OFF or ON")
+            p.add_argument("--expect-eye-frame-clean-hdmi", action="store_true", help="Flag invalid expectation of Face/Eye frame baked onto clean HDMI or RAW")
+            p.add_argument("--airplane-mode", default="ON", help="[Airplane Mode]: ON or OFF")
+            p.add_argument("--slot1-bodydata-flash-requested", action="store_true", help="Attempt hard-blocked Slot-1 BODYDATA.DAT firmware flash")
+            p.add_argument("--release-wo-card", default="DISABLE", help="[Release w/o Card]: DISABLE or ENABLE")
+            p.add_argument("--release-wo-lens", default="ENABLE", help="[Release w/o Lens]: ENABLE or DISABLE")
+            p.add_argument("--card-inserted-for-movie-rec", action="store_true", help="Indicate writable card inserted for internal movie recording")
+            p.add_argument("--movie-internal-rec-requested", action="store_true", help="Request internal movie recording")
+            p.add_argument("--expect-movie-rec-without-card", action="store_true", help="Flag invalid expectation of internal movie recording without card")
+            p.add_argument("--production-shoot-mode", action="store_true", help="Enforce production shoot [Release w/o Card]=DISABLE guard")
+            p.add_argument("--electronic-emount-lens-attached", dest="body_only_or_pl_adapter_bench", action="store_false", help="Indicate electronic E-mount lens attached instead of body-only bench")
+            p.add_argument("--audio-rec-level", type=int, default=16, help="[Audio Rec Level] 0..31")
+            p.add_argument("--no-disp-audio-meter", dest="disp_audio_meter_enabled", action="store_false", help="Disable audio level meter in DISP (Screen Disp) Set")
+            p.add_argument("--expect-v1-audio-level-menu", action="store_true", help="Flag legacy Ver. 1.x standalone [Audio Level Display] menu expectation")
+            p.add_argument("--write-copyright-info", default="OFF", help="[Write Copyright Info]: OFF or ON")
+            p.add_argument("--photographer-text", default="", help="[Set Photographer] <= 46 ASCII chars")
+            p.add_argument("--copyright-text", default="", help="[Set Copyright] <= 46 ASCII chars")
+            p.add_argument("--allow-custom-copyright-pii", dest="clean_room_pii_hygiene", action="store_false", help="Disable clean-room zero-PII enforcement")
+            p.add_argument("--expect-copyright-movies", action="store_true", help="Flag invalid expectation that [Copyright Info] writes to movies")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-imagedb-touch-shoeaudio-and-lockop":
             p.add_argument("--output", type=Path, default=None, help="Optional JSON file path to write Phase 248 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -3470,6 +3744,81 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-diffset-customkey-autoslow-and-apsc":
+        return _cmd_preflight_diffset_customkey_autoslow_and_apsc(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.reset_action,
+            args.diff_set_transition,
+            args.diff_set_shutter_checked,
+            args.movie_shutter_mode,
+            args.expect_cwb_movie_copy,
+            args.expect_angle_merge,
+            args.rear_dial_assignment,
+            args.slot1_contains_tier0_dump,
+            args.slot1_wp_locked,
+            args.slot1_custom_key_access,
+            args.remain_shoot_display,
+            args.expect_remain_movie_time,
+            args.expect_builtin_evf,
+            args.auto_slow_shutter,
+            args.exposure_ctrl_type,
+            args.exposure_mode,
+            args.flexible_shutter_mode,
+            args.iso_mode,
+            args.log_shooting_mode,
+            args.sq_mode_enabled,
+            args.expect_auto_slow_active,
+            args.expect_auto_slow_angle_overlap,
+            args.hdmi_time_code_output,
+            args.hdmi_rec_control,
+            args.hdmi_4ch_audio_output,
+            args.mi_shoe_4ch_audio_active,
+            args.rec_media_dur_hdmi_output,
+            args.breathing_comp,
+            args.breathing_comp_compliant_lens,
+            args.hdmi_raw_output,
+            args.sq_240p_or_200p_active,
+            args.expect_breathing_still,
+            args.apsc_s35_shooting,
+            args.movie_file_format,
+            args.expect_apsc_in_4k_or_raw,
+            args.face_eye_prior_in_af,
+            args.face_eye_subject,
+            args.right_left_eye_select,
+            args.face_eye_frame_disp,
+            args.expect_ai_subject_recog_menu,
+            args.hdmi_info_display,
+            args.expect_eye_frame_clean_hdmi,
+            args.airplane_mode,
+            args.slot1_bodydata_flash_requested,
+            args.release_wo_card,
+            args.release_wo_lens,
+            args.card_inserted_for_movie_rec,
+            args.movie_internal_rec_requested,
+            args.expect_movie_rec_without_card,
+            args.production_shoot_mode,
+            args.body_only_or_pl_adapter_bench,
+            args.audio_rec_level,
+            args.disp_audio_meter_enabled,
+            args.expect_v1_audio_level_menu,
+            args.write_copyright_info,
+            args.photographer_text,
+            args.copyright_text,
+            args.clean_room_pii_hygiene,
+            args.expect_copyright_movies,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
         )
     return 2
 

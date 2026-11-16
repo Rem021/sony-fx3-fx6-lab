@@ -142,6 +142,11 @@ from .realhw_auto_slow_shutter_hdmi_reccontrol_breathing_and_102gate_guard impor
     evaluate_g101_auto_slow_shutter_and_breathing_comp_guard,
     evaluate_g102_hdmi_reccontrol_tcout_4chaudio_guard,
 )
+from .realhw_apsc_s35_face_eye_af_version_and_104gate_guard import (
+    evaluate_104gate_preflight,
+    evaluate_g103_apsc_s35_and_face_eye_af_guard,
+    evaluate_g104_version_readonly_and_bodydata_flash_block_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2706,6 +2711,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G102 gates can be rehearsed offline",
     )
     p_102.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 113. verify-apsc-s35-face-eye-af-guard
+    p_g103 = sub.add_parser(
+        "verify-apsc-s35-face-eye-af-guard",
+        aliases=["verify-g103-apsc-s35-face-eye-af"],
+        help="Verify Gate G103: [APS-C S35 Shooting] 12.1MP 4K Movie Lockout & [Face/Eye AF] Clean-HDMI Isolation Guard",
+    )
+    p_g103.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g103.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g103.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g103.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 114. verify-version-readonly-bodydata-flash-block-guard
+    p_g104 = sub.add_parser(
+        "verify-version-readonly-bodydata-flash-block-guard",
+        aliases=["verify-g104-version-bodydata-block"],
+        help="Verify Gate G104: [Version] Read-Only Inspection, Zero-RF Badge Suppression & Hard-Blocked BODYDATA.DAT Flash Guard",
+    )
+    p_g104.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g104.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g104.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g104.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 115. verify-104-gates
+    p_104 = sub.add_parser(
+        "verify-104-gates",
+        help="Run Phase 263 Unified 104-Gate Master Safety Preflight Engine (G01..G104)",
+    )
+    p_104.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_104.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_104.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G104 gates can be rehearsed offline",
+    )
+    p_104.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -5413,6 +5504,108 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_102_gates_verified if args.dry_run_simulated else report.offline_99_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-apsc-s35-face-eye-af-guard",
+        "verify-g103-apsc-s35-face-eye-af",
+    ):
+        verdict, res = evaluate_g103_apsc_s35_and_face_eye_af_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.apsc_s35_face_eye_af_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} apsc_s35={guard['effective_apsc_s35_state']}"
+                f"(locked_off={guard['apsc_s35_hardware_locked_to_off']},"
+                f"bypass={guard['apsc_s35_4k_or_raw_bypass_events']}) "
+                f"face_eye_af={guard['face_eye_af_menu_label']}"
+                f"(spoof={guard['ai_unit_subject_recog_spoof_events']},"
+                f"eye={guard['effective_post_reset_right_left_eye_select']},"
+                f"clean_hdmi_baked={guard['hdmi_clean_feed_eye_frame_baked_pixels']},"
+                f"face_memory={guard['effective_post_reset_registered_face_memory_count']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-version-readonly-bodydata-flash-block-guard",
+        "verify-g104-version-bodydata-block",
+    ):
+        verdict, res = evaluate_g104_version_readonly_and_bodydata_flash_block_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.version_bodydata_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} body={guard['formatted_body_version']}"
+                f"(flash_writes={guard['version_dialog_flash_writes']}) "
+                f"airplane={guard['airplane_mode']}"
+                f"(badge_suppressed={guard['update_notification_badge_suppressed']},"
+                f"tx={guard['passive_tx_bytes_emitted']}) "
+                f"bodydata_blocked={guard['bodydata_flash_attempts_blocked']}"
+                f"(mut_bytes={guard['slot1_bodydata_vault_mutation_bytes']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-104-gates":
+        report = evaluate_104gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/104 "
+                f"g103_to_g104_all_passed={report.g103_to_g104_all_passed} "
+                f"all_104_gates_verified={report.all_104_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_104_gates_verified if args.dry_run_simulated else report.offline_101_gates_verified
         return 0 if ok else 1
 
     return 2

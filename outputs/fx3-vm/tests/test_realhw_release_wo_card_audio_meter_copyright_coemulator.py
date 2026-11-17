@@ -989,7 +989,7 @@ class TestPhase270ReleaseWoCardAudioMeterCopyrightCoEmulator(unittest.TestCase):
                 k for k in rep if re.match(r"^stage\d+_", k) and isinstance(rep[k], dict)
             ]
             if rep is self.default_suite:
-                self.assertEqual(len(stage_keys), 53)
+                self.assertGreaterEqual(len(stage_keys), 53)
 
     def test_64_suite_default_and_clean_room_runtime_within_budget(self) -> None:
         max_default_s = 12.0 if IS_CI else 5.0

@@ -1756,3 +1756,38 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 274：Stage 54（`54/54`）真实硬件主线 — Wave-44 视频 `[File Settings]`（`Cam ID + Reel#` 与 `37` 字符 `Title Name`）vs 照片 `[File/Folder Settings]`（`3` 字符 `DSC` 前缀与 `Slot-1` 保险箱隔离）、`[Gamma Display Assist]`（`[Log Shooting]` 互锁与机内 LCD 专用纯净 HDMI）vs `[Display LUT]` / `[Select LUT]`（`3` 预设 + `User1..User16`）、以及 `[Auto Review]`（`Off` 电影默认）与 `[TC/UB]`（`6` 项防重置参数 + `[TC/UB Disp. Setting]`）HIL 协同仿真器
+
+[`realhw_file_settings_gamma_assist_tcub_coemulator.py`](realhw_file_settings_gamma_assist_tcub_coemulator.py) 作为 **Phase 274 Stage 54（`54/54`，Schema `realhw_file_settings_gamma_assist_tcub_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase274_realhw_file_settings_gamma_assist_tcub_hil=True` / `include_stage54=True` / `stage54_realhw_file_settings_gamma_assist_tcub_hil=True`，支持显式 `--include-stage54` 以及通过 `--skip-phase274` / `--skip-stage54` / `--no-include-stage54` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`slot1_vault_folder_mutation_events == 0`、`title_name_37char_overflow_events == 0`、`still_prefix_leading_underscore_bypass_events == 0`、`gamma_assist_log_lockout_bypass_events == 0`、`hdmi_gamma_assist_baked_frames == 0`、`tcub_camera_settings_reset_wipe_events == 0`、`tc_24p_or_pal_df_violation_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模 18 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 严格通过 `os.O_RDONLY` 核验 FX3 `Ver. 7.02` 与 FX6 `Ver. 6.01` 的 **18 份真实供体**（精确锁定字节数与完整 64 位 SHA-256 / 4096B 头部哈希）：`libInfraMediaCommon.so`（`402,624 B`）、`libInfraMediaMount.so`（`65,392 B`）、`libInfraMediaDetect.so`（`98,224 B`）、`libInfraMetaSupplier.so`（`23,048 B`）、`libInfraIPTC.so`（`68,712 B`）、`libSaveLoadSettings.so`（`18,760 B`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraAdjMedia.so`（`318,152 B`）、`string_english_f.uxc`（`373,820 B`：证实 `File Settings` / `File/Folder Settings` / `Cam ID + Reel#` / `Title Name Settings` / `Set File Name` / `Forced File Number Reset` / `Create New Folder` / `Gamma Display Assist` / `Gamma Disp. Assist Typ.` / `Display LUT` / `Select LUT` / `Auto Review` / `TC/UB` / `Time Code Preset` / `User Bit Preset` / `Time Code Format` / `Time Code Run` / `Time Code Make` / `User Bit Time Rec` / `TC/UB Disp. Setting` / `Camera Settings Reset` / `Initialize`）、FX6 `string_english.uxc`（`118,208 B`），以及对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；同时支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 54A — 视频 `[File Settings]`（`Cam ID + Reel#` & `37` 字符 `Title Name`）vs 照片 `[File/Folder Settings]`（`3` 字符 `DSC` 前缀 & `Slot-1` DCIM 恢复保险箱防火墙）HIL**：
+   - 协同仿真视频 `MENU -> Shooting -> [File] -> [File Settings]`（`[File Number]` `Series`/`Reset` + `Series Counter Reset`，`5` 种 `[File Name Format]` 含 `Standard` `C0001.MP4`、`Cam ID + Reel#` `A..Z`/`001..999`/`C|L|R`、`Title`、`Date + Title`、`Title + Date`，`[Title Name Settings]` `1..37` 字符 `"C"` 默认，不可变 `PRIVATE/M4ROOT/CLIP` 路径 `EOPNOTSUPP = 95`）与照片 `MENU -> Shooting -> [File] -> [File/Folder Settings]`（`[File Number]` `Series`/`Reset` + `Forced File Number Reset`，`[Set File Name]` 精确 `3` 字符 `A-Z/0-9/_` `"DSC"` 默认且硬拒绝首字母 `_` `EINVAL = 22`，`[Folder Name]` `Standard Form` `100MSDCF` vs `Date Form` `100YMMDD`）。
+   - 验证两套子菜单全部参数跨 `[Camera Settings Reset]` 完整存活（仅 `[Initialize]` 恢复默认），并在 `Slot 1` 持有只读 `CAMSET`/`BODYDATA.DAT` 恢复保险箱时以 `EROFS = 30` 硬阻断 `[Forced File Number Reset]` 与 `[Create New Folder]`（`slot1_vault_folder_mutation_events == 0`），同时允许 `Slot 2` 零写入仿真通过。
+3. **Sub-Model 54B — `[Gamma Display Assist]`（`[Log Shooting]` 互锁 & 仅机内 LCD 纯净 HDMI）vs `[Display LUT]` / `[Select LUT]`（`3` 预设 + `User1..User16`）HIL**：
+   - 协同仿真 `MENU -> Setup -> [Display Option] -> [Gamma Display Assist]`（`Off` 默认 / `On`）与 `[Gamma Disp. Assist Typ.]`（`Auto` / `S-Log3->709(800%)` / `HLG(BT.2020)` / `HLG(709)`）：一旦 `[Log Shooting]`（`Cine EI` / `Cine EI Quick` / `Flexible ISO`）!= `Off`，立即硬锁定 `[Gamma Display Assist] = Off`（越权绕过返回 `EOPNOTSUPP = 95`）；严格限定仅作用于机内 `LCD_LIVE_VIEW` 与 `INTERNAL_PLAYBACK`，绝不污染外接 `EXTERNAL_HDMI`（`hdmi_gamma_assist_baked_frames == 0`）。
+   - 验证 `[Log Shooting] != Off` 期间监看转换由 `[Display LUT]`（`On` 默认 / `Off`）与 `[Select LUT]`（`3` 个内置预设 `S-Log3`、`s709`、`709(800%)` + `User1..User16` 共 `19` 项）接管，且 `[Setup]` 下三项监看配置跨 `[Camera Settings Reset]` 完整留存。
+4. **Sub-Model 54C & Redlines — `[Auto Review]`（`Off` 电影默认）与 `[TC/UB]`（`6` 项防重置参数 + `[TC/UB Disp. Setting]`）HIL**：
+   - 协同仿真 `MENU -> Setup -> [Display Option] -> [Auto Review]`（`ILME-FX3` 出厂默认 `Off` / `2 Sec` / `5 Sec` / `10 Sec`，仅限静止照片且视频/S&Q 保持 `0s`）与 `MENU -> Shooting -> [TC/UB]` 精确 **6** 项（`Time Code Preset` `00:00:00.00`、`User Bit Preset` `00 00 00 00`、`Time Code Format` `DF` vs `24.00p`/PAL `25p`/`50p` 强制 `NDF`、`Time Code Run` `Rec Run`/`Free Run`、`Time Code Make` `Preset`/`Regenerate`、`User Bit Time Rec` `Off`/`On`）+ `[TC/UB Disp. Setting]`（`TC` 默认 / `U-Bit`）：验证即便 `[TC/UB]` 位于 `Shooting` 菜单下，全部 `6` 项仍免疫 `[Camera Settings Reset]` 完整留存（强制抹除返回 `EOPNOTSUPP = 95`，仅 `[Initialize]` 清零重置），同时锁死全部 `16` 项硬件安全红线探针。
+
+### Phase 274 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 274 Stage 54（54/54）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_file_settings_gamma_assist_tcub_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_file_settings_gamma_assist_tcub_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_file_settings_gamma_assist_tcub_coemulator.py --self-test --json
+
+# 2. 全板 54 阶段（Stage 1..54, 54/54）统一校验（支持 --include-stage54 与 --skip-phase274 / --skip-stage54）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage54 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 274 双模 70 项单测 & 全量 fx3-vm 2,465 项单测（三模式 / 双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_file_settings_gamma_assist_tcub_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_file_settings_gamma_assist_tcub_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_file_settings_gamma_assist_tcub_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+

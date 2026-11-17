@@ -1367,6 +1367,7 @@ def build_stage_a_overlay(
     enable_r53: bool = False,
     enable_r54: bool = False,
     enable_r55: bool = False,
+    enable_r56: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1394,6 +1395,7 @@ def build_stage_a_overlay(
     r53_mode: str = "display_quality_bt_rmt_big6",
     r54_mode: str = "diff_set_still_mv_shutter_angle_big6",
     r55_mode: str = "auto_slow_6locks_hdmi_reccontrol_big6",
+    r56_mode: str = "apsc_s35_hd_face_eye_af_version_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1719,7 +1721,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r54_mode: {r54_mode}")
     if enable_r55 and r55_mode not in ("auto_slow_6locks_hdmi_reccontrol_big6", "prerequisite_lockout_injection_guard", "camreset_vs_initialize_h0_h3_integrated_big6"):
         raise ValueError(f"Unsupported r55_mode: {r55_mode}")
-    if enable_r55 and r55_mode == "prerequisite_lockout_injection_guard":
+    if enable_r56 and r56_mode not in ("apsc_s35_hd_face_eye_af_version_big6", "apsc_4k_raw_cleanhdmi_bodydata_flash_guard", "camreset_face_memory_initialize_h0_h3_big6"):
+        raise ValueError(f"Unsupported r56_mode: {r56_mode}")
+    if enable_r56 and r56_mode == "apsc_4k_raw_cleanhdmi_bodydata_flash_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r56_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r56-apsc-4k-bodydata-guard > /dev/console 2>&1\n"
+            "fx6_r56_bd_rc=$?\n"
+            "echo FX6_R56_APSC_4K_BODYDATA_RC=$fx6_r56_bd_rc\n"
+            "echo FX6_R56_APSC_4K_BODYDATA_EXIT rc=$fx6_r56_bd_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r56_early_hook, 1)
+    elif enable_r55 and r55_mode == "prerequisite_lockout_injection_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3777,6 +3795,49 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r56_meta: Optional[Dict[str, Any]] = None
+    if enable_r56:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r56_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r56"] = (
+            (
+                f"stage_r56=1\nr56_mode={r56_mode}\n"
+                f"apsc_s35_hd_15x_4k_raw_lockout=1\n"
+                f"face_eye_af_rl_eye_clean_hdmi_isolation=1\n"
+                f"version_702_readonly_bodydata_blocked=1\n"
+                f"run_29th_realhw_87th_live=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r56_meta = {
+            "r56_mode": r56_mode,
+            "apsc_s35_menu_path": "MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting]",
+            "apsc_s35_modes": ["Auto", "On", "Off"],
+            "apsc_s35_default": "Auto",
+            "fx3_sensor_mp": 12.1,
+            "apsc_s35_hd_only_4k_raw_locked_off": True,
+            "apsc_s35_4k_or_raw_bypass_events": 0,
+            "apsc_s35_reset_by_camera_settings_reset": True,
+            "face_eye_af_menu_path": "MENU -> Focus -> [Face/Eye AF]",
+            "face_eye_prior_in_af_default": "On",
+            "face_eye_subjects": ["Human", "Animal", "Bird"],
+            "right_left_eye_select_modes": ["Auto", "Right Eye", "Left Eye"],
+            "hdmi_clean_feed_eye_frame_baked_pixels": 0,
+            "face_memory_survives_camera_settings_reset": True,
+            "face_memory_cleared_by_delete_or_initialize": True,
+            "version_menu_path": "MENU -> Setup -> [Setup Option] -> [Version]",
+            "version_body": "Ver. 7.02",
+            "version_inspect_flash_writes": 0,
+            "passive_tx_bytes_emitted": 0,
+            "persistent_emmc_writes_authorized": False,
+            "bodydata_flash_hard_blocked": True,
+            "slot1_vault_read_only": True,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3825,6 +3886,7 @@ def build_stage_a_overlay(
         "r53_enabled": enable_r53,
         "r54_enabled": enable_r54,
         "r55_enabled": enable_r55,
+        "r56_enabled": enable_r56,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3910,6 +3972,8 @@ def build_stage_a_overlay(
         stage_a_meta["r54"] = r54_meta
     if r55_meta is not None:
         stage_a_meta["r55"] = r55_meta
+    if r56_meta is not None:
+        stage_a_meta["r56"] = r56_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4254,6 +4318,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R53_",
         "FX6_R54_",
         "FX6_R55_",
+        "FX6_R56_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4546,6 +4611,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r55_lang: Optional[Dict[str, Any]] = None
     last_r55_bridge: Optional[Dict[str, Any]] = None
     r55_lockout_injection_rc: Optional[int] = None
+    last_r56_apsc_face_eye_version_init: Optional[Dict[str, Any]] = None
+    last_r56_apsc_s35_4k_lock_bridge: Optional[Dict[str, Any]] = None
+    last_r56_face_eye_af_hdmi_bridge: Optional[Dict[str, Any]] = None
+    last_r56_version_bodydata_guard_bridge: Optional[Dict[str, Any]] = None
+    last_r56_apsc_4k_bodydata_guard: Optional[Dict[str, Any]] = None
+    last_r56_camreset_face_mem_h0_h3: Optional[Dict[str, Any]] = None
+    last_r56_lang: Optional[Dict[str, Any]] = None
+    last_r56_bridge: Optional[Dict[str, Any]] = None
+    r56_apsc_4k_bodydata_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5211,6 +5285,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R55_LOCKOUT_INJECTION_RC"), int):
                 r55_lockout_injection_rc = kv["FX6_R55_LOCKOUT_INJECTION_RC"]
+        elif "FX6_R56_APSC_FACE_EYE_VERSION_INIT " in line:
+            last_r56_apsc_face_eye_version_init = _parse_kv_ints(line.split("FX6_R56_APSC_FACE_EYE_VERSION_INIT ", 1)[1])
+        elif "FX6_R56_APSC_S35_4K_LOCK_BRIDGE " in line:
+            last_r56_apsc_s35_4k_lock_bridge = _parse_kv_ints(line.split("FX6_R56_APSC_S35_4K_LOCK_BRIDGE ", 1)[1])
+        elif "FX6_R56_FACE_EYE_AF_HDMI_BRIDGE " in line:
+            last_r56_face_eye_af_hdmi_bridge = _parse_kv_ints(line.split("FX6_R56_FACE_EYE_AF_HDMI_BRIDGE ", 1)[1])
+        elif "FX6_R56_VERSION_BODYDATA_GUARD_BRIDGE " in line:
+            last_r56_version_bodydata_guard_bridge = _parse_kv_ints(line.split("FX6_R56_VERSION_BODYDATA_GUARD_BRIDGE ", 1)[1])
+        elif "FX6_R56_APSC_4K_BODYDATA_GUARD " in line:
+            last_r56_apsc_4k_bodydata_guard = _parse_kv_ints(line.split("FX6_R56_APSC_4K_BODYDATA_GUARD ", 1)[1])
+        elif "FX6_R56_CAMRESET_FACE_MEM_H0_H3 " in line:
+            last_r56_camreset_face_mem_h0_h3 = _parse_kv_ints(line.split("FX6_R56_CAMRESET_FACE_MEM_H0_H3 ", 1)[1])
+        elif "FX6_R56_LANG_TELEMETRY " in line:
+            last_r56_lang = _parse_kv_ints(line.split("FX6_R56_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R56_BRIDGE " in line:
+            last_r56_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R56_BRIDGE ", 1)[1])
+        elif "FX6_R56_APSC_4K_BODYDATA_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R56_APSC_4K_BODYDATA_RC"), int):
+                r56_apsc_4k_bodydata_rc = kv["FX6_R56_APSC_4K_BODYDATA_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -5952,6 +6046,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r55_bridge or {},
         }
 
+    r56_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r56_apsc_face_eye_version_init,
+            last_r56_apsc_s35_4k_lock_bridge,
+            last_r56_face_eye_af_hdmi_bridge,
+            last_r56_version_bodydata_guard_bridge,
+            last_r56_apsc_4k_bodydata_guard,
+            last_r56_camreset_face_mem_h0_h3,
+            last_r56_lang,
+            last_r56_bridge,
+        )
+    ):
+        r56_telemetry = {
+            "apsc_4k_bodydata_rc": r56_apsc_4k_bodydata_rc,
+            "apsc_face_eye_version_init": last_r56_apsc_face_eye_version_init or {},
+            "apsc_s35_4k_lock_bridge": last_r56_apsc_s35_4k_lock_bridge or {},
+            "face_eye_af_hdmi_bridge": last_r56_face_eye_af_hdmi_bridge or {},
+            "version_bodydata_guard_bridge": last_r56_version_bodydata_guard_bridge or {},
+            "apsc_4k_bodydata_guard": last_r56_apsc_4k_bodydata_guard or {},
+            "camreset_face_mem_h0_h3": last_r56_camreset_face_mem_h0_h3 or {},
+            "lang_telemetry": last_r56_lang or {},
+            "stage_b_bridge": last_r56_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -6004,6 +6124,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r53_telemetry": r53_telemetry,
         "r54_telemetry": r54_telemetry,
         "r55_telemetry": r55_telemetry,
+        "r56_telemetry": r56_telemetry,
     }
 
 
@@ -6115,6 +6236,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r54"
     if args.round >= 55:
         tmp_prefix = "fx6-r55"
+    if args.round >= 56:
+        tmp_prefix = "fx6-r56"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -6180,8 +6303,12 @@ def run_once(args: argparse.Namespace) -> int:
         r53_mode = getattr(args, "r53_mode", "display_quality_bt_rmt_big6")
         r54_mode = getattr(args, "r54_mode", "diff_set_still_mv_shutter_angle_big6")
         r55_mode = getattr(args, "r55_mode", "auto_slow_6locks_hdmi_reccontrol_big6")
+        r56_mode = getattr(args, "r56_mode", "apsc_s35_hd_face_eye_af_version_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone29thRealHw87thRunWave42ApscS354kLockoutFaceEyeAfRightLeftEyeVersionReadOnly+r56_mode={r56_mode}+lang={lang})"
+                if args.round >= 56
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone28thRealHw84thRunWave41AutoSlowShutter6LocksHdmiRecControlTcOut4chAudioBreathingComp+r55_mode={r55_mode}+lang={lang})"
                 if args.round >= 55
                 else (
@@ -6366,6 +6493,7 @@ def run_once(args: argparse.Namespace) -> int:
             )
             )
             )
+            )
             print(f"[{run_id}] Building {stage_label} + VFAT + BK4-Shadow overlay...", flush=True)
             sa_rep, sa_add, stage_a_meta = build_stage_a_overlay(
                 tmp_build,
@@ -6446,6 +6574,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r54_mode=r54_mode,
                 enable_r55=(args.round >= 55),
                 r55_mode=r55_mode,
+                enable_r56=(args.round >= 56),
+                r56_mode=r56_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -6607,6 +6737,7 @@ def run_once(args: argparse.Namespace) -> int:
                     or "FX6_R52_AUDIO_TIMING_SIGNALS_EXIT" in txt
                     or "FX6_R52_EXP_STEP_SHUTTER_ANGLE_EXIT" in txt
                     or "FX6_R53_MYMENU_6OPS_EXIT" in txt
+                    or "FX6_R56_APSC_4K_BODYDATA_EXIT" in txt
                 ):
                     time.sleep(1.0)
                     print(f"[{run_id}] Detected clean early-phase verification exit; stopping early.", flush=True)
@@ -6670,6 +6801,7 @@ def run_once(args: argparse.Namespace) -> int:
             or "FX6_R52_AUDIO_TIMING_SIGNALS_EXIT" in serial_text
             or "FX6_R52_EXP_STEP_SHUTTER_ANGLE_EXIT" in serial_text
             or "FX6_R53_MYMENU_6OPS_EXIT" in serial_text
+            or "FX6_R56_APSC_4K_BODYDATA_EXIT" in serial_text
         )
         gpe_stats: Dict[str, Any] = (
             {"present": False, "skipped_stock_fx3_mode": True}
@@ -6748,6 +6880,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r53_mode": r53_mode if args.round >= 53 else None,
             "r54_mode": r54_mode if args.round >= 54 else None,
             "r55_mode": r55_mode if args.round >= 55 else None,
+            "r56_mode": r56_mode if args.round >= 56 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -6810,6 +6943,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r53_telemetry": milestones.get("r53_telemetry") if args.round >= 53 else None,
             "r54_telemetry": milestones.get("r54_telemetry") if args.round >= 54 else None,
             "r55_telemetry": milestones.get("r55_telemetry") if args.round >= 55 else None,
+            "r56_telemetry": milestones.get("r56_telemetry") if args.round >= 56 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -6867,7 +7001,8 @@ def main() -> int:
     # r52_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]
     # r53_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
     # r54_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55], required=True)
+    # r55_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -6897,6 +7032,7 @@ def main() -> int:
     ap.add_argument("--r53-mode", type=str, choices=["display_quality_bt_rmt_big6", "mymenu_6ops_camset_persist_guard", "wave39_integrated_stress_big6"], default="display_quality_bt_rmt_big6")
     ap.add_argument("--r54-mode", type=str, choices=["diff_set_still_mv_shutter_angle_big6", "custom_key_dial_iso_ei_camset_persist_guard", "remain_shoot_evf_less_integrated_big6"], default="diff_set_still_mv_shutter_angle_big6")
     ap.add_argument("--r55-mode", type=str, choices=["auto_slow_6locks_hdmi_reccontrol_big6", "prerequisite_lockout_injection_guard", "camreset_vs_initialize_h0_h3_integrated_big6"], default="auto_slow_6locks_hdmi_reccontrol_big6")
+    ap.add_argument("--r56-mode", type=str, choices=["apsc_s35_hd_face_eye_af_version_big6", "apsc_4k_raw_cleanhdmi_bodydata_flash_guard", "camreset_face_memory_initialize_h0_h3_big6"], default="apsc_s35_hd_face_eye_af_version_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

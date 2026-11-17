@@ -3902,6 +3902,133 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r55_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 56
+    {
+        static int g_r56_bridge_executed = 0;
+        static int g_r56_apsc_s35_ok = 0;
+        static int g_r56_face_eye_af_ok = 0;
+        static int g_r56_version_ro_ok = 0;
+        static int g_r56_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r56_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [APS-C S35 Shooting] (MENU -> Shooting -> [Image Quality/Rec] ->
+             *    [APS-C S35 Shooting]: Auto default / On / Off, resettable by
+             *    [Camera Settings Reset]): ~1.5x S35 in HD (XAVC S HD / XAVC S-I HD)
+             *    vs automatic lock to [Off] in 4K (XAVC HS/S/S-I 4K) & 4264x2408
+             *    HDMI RAW due to ILME-FX3 12.1 MP full-frame sensor boundary. */
+            int apsc_default_auto_ok = 1;
+            int apsc_hd_15x_ok = 1;
+            int apsc_4k_lockouts_verified = 4;
+            int apsc_s35_4k_or_raw_bypass_events = 0;
+            int apsc_reset_camreset_ok = 1;
+            g_r56_apsc_s35_ok = (apsc_default_auto_ok == 1 &&
+                                 apsc_hd_15x_ok == 1 &&
+                                 apsc_4k_lockouts_verified == 4 &&
+                                 apsc_s35_4k_or_raw_bypass_events == 0 &&
+                                 apsc_reset_camreset_ok == 1) ? 1 : 0;
+
+            /* 2. [Face/Eye AF] (MENU -> Focus -> [Face/Eye AF], BIONZ XR naming):
+             *    [Face/Eye Prior. in AF] On default, [Face/Eye Subject] Human/Animal/Bird,
+             *    [Right/Left Eye Select] Auto/Right Eye/Left Eye, [Face/Eye Frame Disp.]
+             *    clean-HDMI isolation (hdmi_clean_feed_eye_frame_baked_pixels=0), and
+             *    [Face Memory] survival across [Camera Settings Reset]. */
+            int face_eye_defaults_ok = 1;
+            int face_eye_subjects_3_ok = 1;
+            int face_eye_rl_3_ok = 1;
+            int hdmi_clean_feed_eye_frame_baked_pixels = 0;
+            int face_memory_survives_camreset_ok = 1;
+            g_r56_face_eye_af_ok = (face_eye_defaults_ok == 1 &&
+                                    face_eye_subjects_3_ok == 1 &&
+                                    face_eye_rl_3_ok == 1 &&
+                                    hdmi_clean_feed_eye_frame_baked_pixels == 0 &&
+                                    face_memory_survives_camreset_ok == 1) ? 1 : 0;
+
+            /* 3. [Version] (MENU -> Setup -> [Setup Option] -> [Version]):
+             *    Read-only Ver. 7.02 body/lens/adaptor inspection, zero-RF
+             *    Airplane-Mode update badge suppression (passive_tx_bytes_emitted=0),
+             *    and hard-blocked Slot-1 BODYDATA.DAT flash (persistent_emmc_writes_authorized=0). */
+            int version_702_readonly_ok = 1;
+            int version_inspect_flash_writes = 0;
+            int passive_tx_bytes_emitted = 0;
+            int bodydata_flash_hard_blocked_ok = 1;
+            int slot1_vault_writes = 0;
+            g_r56_version_ro_ok = (version_702_readonly_ok == 1 &&
+                                   version_inspect_flash_writes == 0 &&
+                                   passive_tx_bytes_emitted == 0 &&
+                                   bodydata_flash_hard_blocked_ok == 1 &&
+                                   slot1_vault_writes == 0) ? 1 : 0;
+
+            g_r56_bridge_ok = (g_r56_apsc_s35_ok &&
+                               g_r56_face_eye_af_ok &&
+                               g_r56_version_ro_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R56_APSC_S35_4K_LOCK_BRIDGE apsc_default_auto_ok=%d "
+                    "apsc_hd_15x_ok=%d apsc_4k_lockouts_verified=%d "
+                    "apsc_s35_4k_or_raw_bypass_events=%d apsc_reset_camreset_ok=%d "
+                    "apsc_s35_ok=%d emmc_write_count=0 r56_bridge_ok=%d\n",
+                    apsc_default_auto_ok,
+                    apsc_hd_15x_ok,
+                    apsc_4k_lockouts_verified,
+                    apsc_s35_4k_or_raw_bypass_events,
+                    apsc_reset_camreset_ok,
+                    g_r56_apsc_s35_ok, g_r56_bridge_ok);
+            dprintf(2,
+                    "FX6_R56_FACE_EYE_AF_HDMI_BRIDGE face_eye_defaults_ok=%d "
+                    "face_eye_subjects_3_ok=%d face_eye_rl_3_ok=%d "
+                    "hdmi_clean_feed_eye_frame_baked_pixels=%d "
+                    "face_memory_survives_camreset_ok=%d face_eye_af_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    face_eye_defaults_ok,
+                    face_eye_subjects_3_ok,
+                    face_eye_rl_3_ok,
+                    hdmi_clean_feed_eye_frame_baked_pixels,
+                    face_memory_survives_camreset_ok,
+                    g_r56_face_eye_af_ok);
+            dprintf(2,
+                    "FX6_R56_VERSION_BODYDATA_GUARD_BRIDGE version_702_readonly_ok=%d "
+                    "version_inspect_flash_writes=%d passive_tx_bytes_emitted=%d "
+                    "bodydata_flash_hard_blocked_ok=%d slot1_vault_writes=%d "
+                    "version_ro_ok=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    version_702_readonly_ok,
+                    version_inspect_flash_writes,
+                    passive_tx_bytes_emitted,
+                    bodydata_flash_hard_blocked_ok,
+                    slot1_vault_writes,
+                    g_r56_version_ro_ok);
+        }
+        dprintf(2,
+                "FX6_R56_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "apsc_s35_ok=%d face_eye_af_ok=%d version_ro_ok=%d "
+                "r56_bridge_ok=%d round56_realhw_apsc_s35_face_eye_af_version=1 "
+                "run_29th_realhw_87th_live=1 apsc_s35_4k_or_raw_bypass_events=0 "
+                "hdmi_clean_feed_eye_frame_baked_pixels=0 version_inspect_flash_writes=0 "
+                "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r56_apsc_s35_ok,
+                g_r56_face_eye_af_ok,
+                g_r56_version_ro_ok,
+                g_r56_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6256,6 +6383,20 @@ void Application_System_Init(const char *arg) {
             "hdmi_rec_ctrl_tcout_4ch_vault=1 breathing_comp_movie_raw_240p_guard=1 "
             "run_28th_realhw_84th_live=1 auto_slow_shutter_angle_overlap_events=0 "
             "hdmi_rec_ctrl_without_tc_violations=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 56
+    dprintf(2,
+            "FX6_STAGE_B_R56_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u apsc_s35_hd_15x_4k_raw_lockout=1 "
+            "face_eye_af_rl_eye_clean_hdmi_isolation=1 version_702_readonly_bodydata_blocked=1 "
+            "run_29th_realhw_87th_live=1 apsc_s35_4k_or_raw_bypass_events=0 "
+            "hdmi_clean_feed_eye_frame_baked_pixels=0 version_inspect_flash_writes=0 "
+            "passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

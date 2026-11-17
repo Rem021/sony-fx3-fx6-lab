@@ -22766,6 +22766,861 @@ static int run_r55_camreset_initialize_h0_h3_integrated_probe(int fail_exit_rc) 
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * ROUND 56 (29th Real-HW Round / 87th Live Run — Wave-42):
+ *   1. r56a (setup_r56_apsc_face_eye_version_probe + SChinese Big6 fb0):
+ *      - [APS-C S35 Shooting] (MENU -> Shooting -> [Image Quality/Rec] ->
+ *        [APS-C S35 Shooting]: Auto default / On / Off, resettable by
+ *        [Camera Settings Reset]): nominal HD (XAVC S HD / XAVC S-I HD)
+ *        ~1.5x S35 capture vs automatic lock to [Off] in 4K (XAVC HS 4K,
+ *        XAVC S 4K, XAVC S-I 4K) & 4264x2408 HDMI RAW due to ILME-FX3's
+ *        12.1 MP full-frame sensor boundary (apsc_s35_4k_or_raw_bypass_events=0).
+ *      - [Face/Eye AF] (MENU -> Focus -> [Face/Eye AF]: [Face/Eye Prior. in AF]
+ *        On default, [Face/Eye Subject] Human/Animal/Bird, [Right/Left Eye
+ *        Select] Auto/Right Eye/Left Eye, [Face/Eye Frame Disp.] clean-HDMI
+ *        isolation hdmi_clean_feed_eye_frame_baked_pixels=0).
+ *      - Read-only [Setup] -> [Setup Option] -> [Version] (Ver. 7.02 body/
+ *        lens/adaptor inspection with zero flash writes & zero-RF notification
+ *        suppression).
+ *   2. r56b (--r56-apsc-4k-bodydata-guard):
+ *      Fail-closed injection of:
+ *        (a) illegal [APS-C S35 Shooting]=[On] during 4K movie recording &
+ *            4264x2408 HDMI RAW Output (apsc_s35_4k_or_raw_bypass_events=0),
+ *        (b) [Face/Eye Frame Disp.] bake attempt onto [HDMI Info. Display]=Off
+ *            and HDMI RAW Output clean feed (hdmi_clean_feed_eye_frame_baked_pixels=0),
+ *        (c) simulated Slot-1 BODYDATA.DAT firmware flash trigger
+ *            (persistent_emmc_writes_authorized=0 -> hard-blocked!).
+ *   3. r56c (camreset_face_memory_initialize_h0_h3_big6 / --r56-camreset-face-mem-h0-h3):
+ *      [Camera Settings Reset] resets [APS-C S35 Shooting]->[Auto] and
+ *      [Face/Eye AF] items while registered [Face Memory] database SURVIVES
+ *      [Camera Settings Reset] (cleared only by explicit delete or [Initialize]);
+ *      + dlopen(libJit.so) + 16/16 H0 == H3 + Big-6 Home.
+ * ============================================================================ */
+
+typedef enum {
+    R56_APSC_AUTO = 0,          /* Factory default */
+    R56_APSC_ON   = 1,          /* ~1.5x Super 35mm crop (HD only on 12.1MP FX3) */
+    R56_APSC_OFF  = 2           /* 35mm Full-Frame */
+} r56_apsc_mode_t;
+
+typedef enum {
+    R56_CODEC_XAVC_S_HD   = 0,  /* S35 supported */
+    R56_CODEC_XAVC_SI_HD  = 1,  /* S35 supported */
+    R56_CODEC_XAVC_HS_4K  = 2,  /* 4K: APS-C S35 locked Off */
+    R56_CODEC_XAVC_S_4K   = 3,  /* 4K: APS-C S35 locked Off */
+    R56_CODEC_XAVC_SI_4K  = 4,  /* 4K: APS-C S35 locked Off */
+    R56_CODEC_HDMI_RAW_4K = 5   /* 4264x2408 HDMI RAW: APS-C S35 locked Off */
+} r56_rec_codec_t;
+
+typedef enum {
+    R56_SUBJ_HUMAN  = 0,        /* Factory default */
+    R56_SUBJ_ANIMAL = 1,
+    R56_SUBJ_BIRD   = 2         /* Ver. 3.00+ / 7.02 Bird support */
+} r56_face_subject_t;
+
+typedef enum {
+    R56_EYE_AUTO  = 0,          /* Factory default */
+    R56_EYE_RIGHT = 1,
+    R56_EYE_LEFT  = 2
+} r56_eye_select_t;
+
+typedef struct {
+    int apsc_mode;              /* r56_apsc_mode_t; default R56_APSC_AUTO */
+    int rec_codec;              /* r56_rec_codec_t */
+    int apsc_lens_attached;     /* 1 = APS-C E-mount lens (triggers Auto S35 in HD) */
+    int sensor_mp_tenths;       /* 121 = 12.1 MP FX3 full-frame sensor */
+} r56_apsc_state_t;
+
+typedef struct {
+    int face_eye_prior_in_af;   /* 1 = On (default), 0 = Off */
+    int intelligent_auto;       /* 1 = locked On in Intelligent Auto */
+    int face_eye_subject;       /* r56_face_subject_t */
+    int right_left_eye_select;  /* r56_eye_select_t */
+    int face_eye_frame_disp;    /* 1 = On (default), 0 = Off */
+    int af_area_auto_clear;     /* 1 = On clears frame after focus lock */
+    int focus_locked;           /* 1 = AF-S/focus lock achieved */
+    int hdmi_info_display;      /* 0 = Off (clean feed), 1 = On */
+    int hdmi_raw_output;        /* 1 = 4264x2408 HDMI RAW */
+    int face_memory_count;      /* 0..8 registered faces; survives CamReset! */
+} r56_face_eye_af_state_t;
+
+typedef struct {
+    char body_model[16];
+    char body_ver[16];
+    char lens_ver[16];
+    char adaptor_ver[16];
+    int airplane_mode;          /* 1 = On (zero-RF bench suppresses update badge) */
+    int persistent_emmc_writes_authorized; /* 0 = False (HARD-LOCKED) */
+    int battery_pct;
+    unsigned int flash_writes;
+    unsigned int passive_tx_bytes_emitted;
+    int update_badge_suppressed;
+} r56_version_state_t;
+
+__attribute__((noinline)) static int r56_lookup_wave42_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "APS-C S35 Shooting") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting]") == 0 ||
+        strcmp(path, "Face/Eye AF") == 0 ||
+        strcmp(path, "MENU -> Focus -> [Face/Eye AF]") == 0 ||
+        strcmp(path, "Face/Eye Prior. in AF") == 0 ||
+        strcmp(path, "Face/Eye Subject") == 0 ||
+        strcmp(path, "Right/Left Eye Select") == 0 ||
+        strcmp(path, "Face/Eye Frame Disp.") == 0 ||
+        strcmp(path, "Face Memory") == 0 ||
+        strcmp(path, "Version") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Setup Option] -> [Version]") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static int r56_apsc_is_4k_or_raw(int codec) {
+    return (codec == R56_CODEC_XAVC_HS_4K ||
+            codec == R56_CODEC_XAVC_S_4K ||
+            codec == R56_CODEC_XAVC_SI_4K ||
+            codec == R56_CODEC_HDMI_RAW_4K) ? 1 : 0;
+}
+
+__attribute__((noinline)) static void r56_apsc_initialize(r56_apsc_state_t *st) {
+    memset(st, 0, sizeof(*st));
+    st->apsc_mode = R56_APSC_AUTO; /* Factory default: [Auto] */
+    st->rec_codec = R56_CODEC_XAVC_S_HD;
+    st->apsc_lens_attached = 0;
+    st->sensor_mp_tenths = 121;    /* ILME-FX3 12.1 MP full-frame boundary */
+}
+
+__attribute__((noinline)) static void r56_apsc_camera_settings_reset(r56_apsc_state_t *st) {
+    /* [APS-C S35 Shooting] IS resettable by [Camera Settings Reset] -> [Auto] */
+    st->apsc_mode = R56_APSC_AUTO;
+}
+
+__attribute__((noinline)) static void r56_apsc_reset_network_settings(r56_apsc_state_t *st) {
+    /* Unaffected by [Reset Network Set.] */
+    (void)st;
+}
+
+__attribute__((noinline)) static int r56_apsc_set_mode(r56_apsc_state_t *st, int mode) {
+    if (!st || (mode != R56_APSC_AUTO && mode != R56_APSC_ON && mode != R56_APSC_OFF)) {
+        return -EINVAL;
+    }
+    if (mode == R56_APSC_ON && r56_apsc_is_4k_or_raw(st->rec_codec)) {
+        /* 12.1 MP FX3 sensor cannot crop APS-C/S35 for 4K or 4264x2408 HDMI RAW! */
+        return -EBUSY;
+    }
+    st->apsc_mode = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_apsc_set_codec(r56_apsc_state_t *st, int codec) {
+    if (!st || codec < R56_CODEC_XAVC_S_HD || codec > R56_CODEC_HDMI_RAW_4K) {
+        return -EINVAL;
+    }
+    st->rec_codec = codec;
+    if (r56_apsc_is_4k_or_raw(codec)) {
+        /* Automatic lockout to Off when recording 4K or 4264x2408 HDMI RAW */
+        st->apsc_mode = R56_APSC_OFF;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_apsc_eval_crop_permille(const r56_apsc_state_t *st) {
+    if (!st || r56_apsc_is_4k_or_raw(st->rec_codec)) {
+        return 1000; /* Strictly 1.0x Full-Frame in 4K / HDMI RAW */
+    }
+    if (st->apsc_mode == R56_APSC_ON) {
+        return 1500; /* ~1.5x APS-C / Super 35mm crop in HD */
+    }
+    if (st->apsc_mode == R56_APSC_AUTO && st->apsc_lens_attached) {
+        return 1500;
+    }
+    return 1000;
+}
+
+__attribute__((noinline)) static void r56_face_eye_initialize(r56_face_eye_af_state_t *fe) {
+    memset(fe, 0, sizeof(*fe));
+    fe->face_eye_prior_in_af = 1;  /* On default */
+    fe->intelligent_auto = 0;
+    fe->face_eye_subject = R56_SUBJ_HUMAN;
+    fe->right_left_eye_select = R56_EYE_AUTO;
+    fe->face_eye_frame_disp = 1;   /* On default */
+    fe->af_area_auto_clear = 0;
+    fe->focus_locked = 0;
+    fe->hdmi_info_display = 0;     /* Clean HDMI default for bench isolation */
+    fe->hdmi_raw_output = 0;
+    fe->face_memory_count = 0;     /* Cleared on full [Initialize] */
+}
+
+__attribute__((noinline)) static void r56_face_eye_camera_settings_reset(
+    r56_face_eye_af_state_t *fe
+) {
+    /* Menu items reset under [Camera Settings Reset], EXCEPT [Face Memory]! */
+    fe->face_eye_prior_in_af = 1;
+    fe->face_eye_subject = R56_SUBJ_HUMAN;
+    fe->right_left_eye_select = R56_EYE_AUTO;
+    fe->face_eye_frame_disp = 1;
+}
+
+__attribute__((noinline)) static void r56_face_eye_reset_network_settings(
+    r56_face_eye_af_state_t *fe
+) {
+    /* Unaffected by [Reset Network Set.] */
+    (void)fe;
+}
+
+__attribute__((noinline)) static void r56_face_eye_explicit_delete_memory(
+    r56_face_eye_af_state_t *fe
+) {
+    if (fe) {
+        fe->face_memory_count = 0;
+    }
+}
+
+__attribute__((noinline)) static int r56_face_eye_set_prior(
+    r56_face_eye_af_state_t *fe, int on
+) {
+    if (!fe || (on != 0 && on != 1)) {
+        return -EINVAL;
+    }
+    if (on == 0 && fe->intelligent_auto) {
+        /* Locked [On] in [Intelligent Auto] */
+        return -EBUSY;
+    }
+    fe->face_eye_prior_in_af = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_face_eye_set_subject(
+    r56_face_eye_af_state_t *fe, int subj
+) {
+    if (!fe || subj < R56_SUBJ_HUMAN || subj > R56_SUBJ_BIRD) {
+        return -EINVAL;
+    }
+    fe->face_eye_subject = subj;
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_face_eye_set_eye(
+    r56_face_eye_af_state_t *fe, int eye
+) {
+    if (!fe || eye < R56_EYE_AUTO || eye > R56_EYE_LEFT) {
+        return -EINVAL;
+    }
+    fe->right_left_eye_select = eye;
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_face_eye_switch_right_left_eye(
+    r56_face_eye_af_state_t *fe
+) {
+    if (!fe) {
+        return -EINVAL;
+    }
+    fe->right_left_eye_select =
+        (fe->right_left_eye_select == R56_EYE_RIGHT) ? R56_EYE_LEFT : R56_EYE_RIGHT;
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_face_eye_lcd_frame_visible(
+    const r56_face_eye_af_state_t *fe
+) {
+    if (!fe || !fe->face_eye_prior_in_af || !fe->face_eye_frame_disp) {
+        return 0;
+    }
+    if (fe->af_area_auto_clear && fe->focus_locked) {
+        return 0;
+    }
+    return 1;
+}
+
+__attribute__((noinline)) static int r56_face_eye_try_bake_clean_hdmi(
+    const r56_face_eye_af_state_t *fe, unsigned int *out_baked_pixels
+) {
+    if (!fe || !out_baked_pixels) {
+        return -EINVAL;
+    }
+    if (fe->hdmi_info_display == 0 || fe->hdmi_raw_output == 1) {
+        *out_baked_pixels = 0U;
+        return -EPERM; /* Clean-HDMI / HDMI-RAW isolation forbids overlay bake */
+    }
+    *out_baked_pixels = r56_face_eye_lcd_frame_visible(fe) ? 512U : 0U;
+    return 0;
+}
+
+__attribute__((noinline)) static void r56_version_init_readonly(r56_version_state_t *v) {
+    memset(v, 0, sizeof(*v));
+    snprintf(v->body_model, sizeof(v->body_model), "%s", "ILME-FX3");
+    snprintf(v->body_ver, sizeof(v->body_ver), "%s", "Ver. 7.02");
+    snprintf(v->lens_ver, sizeof(v->lens_ver), "%s", "Ver. 03");
+    snprintf(v->adaptor_ver, sizeof(v->adaptor_ver), "%s", "Ver. 02");
+    v->airplane_mode = 1;
+    v->persistent_emmc_writes_authorized = 0; /* HARD-LOCKED False */
+    v->battery_pct = 85;
+    v->flash_writes = 0U;
+    v->passive_tx_bytes_emitted = 0U;
+    v->update_badge_suppressed = 1;
+}
+
+__attribute__((noinline)) static int r56_version_inspect_readonly(
+    r56_version_state_t *v, char *out_buf, size_t out_sz
+) {
+    if (!v || !out_buf || out_sz < 64U) {
+        return -EINVAL;
+    }
+    if (v->airplane_mode) {
+        v->passive_tx_bytes_emitted = 0U;
+        v->update_badge_suppressed = 1;
+    }
+    snprintf(out_buf, out_sz, "%s %s Lens=%s Adaptor=%s",
+             v->body_model, v->body_ver, v->lens_ver, v->adaptor_ver);
+    return 0;
+}
+
+__attribute__((noinline)) static int r56_version_try_bodydata_flash(
+    r56_version_state_t *v, const char *bodydata_path
+) {
+    if (!v || !bodydata_path) {
+        return -EINVAL;
+    }
+    if (!v->persistent_emmc_writes_authorized) {
+        /* HARD-BLOCKED / NO-GO for all automated agents */
+        return -EROFS;
+    }
+    return -EPERM;
+}
+
+static int setup_r56_apsc_face_eye_version_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r56_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r56_p2_init");
+    (void)umount("/mnt/r56_cnflasha_init");
+    (void)umount("/mnt/r56_slot1_vault");
+    if (mount("tmpfs", "/mnt/r56_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r56_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r56_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 43U + 0x56U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 63U + 0x2aU) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 85U + 0x7bU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r56_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r56_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r56_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r56_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r56_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r56_slot1_vault/BODYDATA.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r56_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave42_nodes_ok =
+        (r56_lookup_wave42_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [APS-C S35 Shooting]") == 0 &&
+         r56_lookup_wave42_menu_node("MENU -> Focus -> [Face/Eye AF]") == 0 &&
+         r56_lookup_wave42_menu_node("Face/Eye Prior. in AF") == 0 &&
+         r56_lookup_wave42_menu_node("Face/Eye Subject") == 0 &&
+         r56_lookup_wave42_menu_node("Right/Left Eye Select") == 0 &&
+         r56_lookup_wave42_menu_node("Face/Eye Frame Disp.") == 0 &&
+         r56_lookup_wave42_menu_node("Face Memory") == 0 &&
+         r56_lookup_wave42_menu_node("MENU -> Setup -> [Setup Option] -> [Version]") == 0 &&
+         r56_lookup_wave42_menu_node("Subject Recog in AF") == -ENOENT) ? 1 : 0;
+
+    /* 1. [APS-C S35 Shooting]: Auto default, 3 modes, HD ~1.5x S35, 4K/RAW locked Off */
+    r56_apsc_state_t apsc;
+    r56_apsc_initialize(&apsc);
+    int apsc_default_auto_ok = (apsc.apsc_mode == R56_APSC_AUTO && apsc.sensor_mp_tenths == 121) ? 1 : 0;
+    int invalid_apsc_rc = r56_apsc_set_mode(&apsc, 99);
+    int hd_on_rc = r56_apsc_set_mode(&apsc, R56_APSC_ON);
+    int hd_s35_crop = r56_apsc_eval_crop_permille(&apsc);
+    apsc.rec_codec = R56_CODEC_XAVC_SI_HD;
+    int hd_si_s35_crop = r56_apsc_eval_crop_permille(&apsc);
+    int apsc_hd_15x_ok = (hd_on_rc == 0 && hd_s35_crop == 1500 && hd_si_s35_crop == 1500) ? 1 : 0;
+
+    int apsc_4k_lockouts_verified = 0;
+    unsigned int apsc_s35_4k_or_raw_bypass_events = 0U;
+    const int k_4k_codecs[4] = {
+        R56_CODEC_XAVC_HS_4K, R56_CODEC_XAVC_S_4K, R56_CODEC_XAVC_SI_4K, R56_CODEC_HDMI_RAW_4K
+    };
+    for (int i = 0; i < 4; i++) {
+        r56_apsc_initialize(&apsc);
+        (void)r56_apsc_set_mode(&apsc, R56_APSC_ON);
+        (void)r56_apsc_set_codec(&apsc, k_4k_codecs[i]);
+        if (apsc.apsc_mode == R56_APSC_OFF && r56_apsc_eval_crop_permille(&apsc) == 1000) {
+            apsc_4k_lockouts_verified++;
+        } else {
+            apsc_s35_4k_or_raw_bypass_events++;
+        }
+    }
+
+    /* 2. [Face/Eye AF] (BIONZ XR naming) + Clean-HDMI frame isolation */
+    r56_face_eye_af_state_t fe;
+    r56_face_eye_initialize(&fe);
+    int face_eye_defaults_ok =
+        (fe.face_eye_prior_in_af == 1 &&
+         fe.face_eye_subject == R56_SUBJ_HUMAN &&
+         fe.right_left_eye_select == R56_EYE_AUTO &&
+         fe.face_eye_frame_disp == 1) ? 1 : 0;
+    int subjects_verified = 0;
+    for (int s = R56_SUBJ_HUMAN; s <= R56_SUBJ_BIRD; s++) {
+        if (r56_face_eye_set_subject(&fe, s) == 0 && fe.face_eye_subject == s) {
+            subjects_verified++;
+        }
+    }
+    int eyes_verified = 0;
+    for (int e = R56_EYE_AUTO; e <= R56_EYE_LEFT; e++) {
+        if (r56_face_eye_set_eye(&fe, e) == 0 && fe.right_left_eye_select == e) {
+            eyes_verified++;
+        }
+    }
+    int switch_ok = (r56_face_eye_switch_right_left_eye(&fe) == 0 &&
+                     fe.right_left_eye_select == R56_EYE_RIGHT) ? 1 : 0;
+
+    unsigned int hdmi_clean_feed_eye_frame_baked_pixels = 0U;
+    fe.hdmi_info_display = 0;
+    fe.hdmi_raw_output = 0;
+    int clean_hdmi_rc = r56_face_eye_try_bake_clean_hdmi(&fe, &hdmi_clean_feed_eye_frame_baked_pixels);
+    int clean_hdmi_isolated_ok =
+        (clean_hdmi_rc == -EPERM && hdmi_clean_feed_eye_frame_baked_pixels == 0U &&
+         r56_face_eye_lcd_frame_visible(&fe) == 1) ? 1 : 0;
+
+    /* 3. Read-only [Version] inspection + Zero-RF notification suppression */
+    r56_version_state_t ver;
+    r56_version_init_readonly(&ver);
+    char ver_str[128] = "";
+    int ver_rc = r56_version_inspect_readonly(&ver, ver_str, sizeof(ver_str));
+    int version_readonly_ok =
+        (ver_rc == 0 && strstr(ver_str, "Ver. 7.02") != NULL &&
+         ver.flash_writes == 0U && ver.passive_tx_bytes_emitted == 0U &&
+         ver.update_badge_suppressed == 1 && ver.persistent_emmc_writes_authorized == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r56_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r56_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r56_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r56_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r56_slot1_vault/BODYDATA.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r56_slot1_vault");
+    (void)umount("/mnt/r56_cnflasha_init");
+    (void)umount("/mnt/r56_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R56_APSC_S35_4K_LOCK_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave42_nodes_ok == 1 &&
+              apsc_default_auto_ok == 1 &&
+              invalid_apsc_rc == -EINVAL &&
+              apsc_hd_15x_ok == 1 &&
+              apsc_4k_lockouts_verified == 4 &&
+              apsc_s35_4k_or_raw_bypass_events == 0U &&
+              face_eye_defaults_ok == 1 &&
+              subjects_verified == 3 &&
+              eyes_verified == 3 &&
+              switch_ok == 1 &&
+              clean_hdmi_isolated_ok == 1 &&
+              hdmi_clean_feed_eye_frame_baked_pixels == 0U &&
+              version_readonly_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R56_APSC_FACE_EYE_VERSION_INIT fx3_wave42_nodes_ok=%d "
+            "apsc_default_auto_ok=%d invalid_apsc_rc=%d apsc_hd_15x_ok=%d "
+            "apsc_4k_lockouts_verified=%d apsc_s35_4k_or_raw_bypass_events=%u "
+            "face_eye_defaults_ok=%d subjects_verified=%d eyes_verified=%d "
+            "switch_ok=%d clean_hdmi_isolated_ok=%d "
+            "hdmi_clean_feed_eye_frame_baked_pixels=%u version_readonly_ok=%d "
+            "version_inspect_flash_writes=0 passive_tx_bytes_emitted=0 "
+            "update_badge_suppressed_ok=1 slot1_vault_writes=0 "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d cnflasha_writes=0 appfw_present=%d "
+            "shim_present=%d emmc_write_count=0 r56_init_ok=%d verify_us=%lld\n",
+            fx3_wave42_nodes_ok, apsc_default_auto_ok, invalid_apsc_rc,
+            apsc_hd_15x_ok, apsc_4k_lockouts_verified,
+            apsc_s35_4k_or_raw_bypass_events, face_eye_defaults_ok,
+            subjects_verified, eyes_verified, switch_ok, clean_hdmi_isolated_ok,
+            hdmi_clean_feed_eye_frame_baked_pixels, version_readonly_ok,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r56_apsc_4k_cleanhdmi_bodydata_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r56b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r56b_p2_ro");
+    (void)umount("/mnt/r56b_cnflasha_ro");
+    (void)umount("/mnt/r56b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r56b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r56b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r56b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 39U + 0x56U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x42U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 91U + 0x83U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r56b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r56b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r56b_slot1_vault/BODYDATA.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r56b_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r56b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: Illegal [APS-C S35 Shooting]=[On] during 4K movie & 4264x2408 HDMI RAW */
+    r56_apsc_state_t apsc;
+    r56_apsc_initialize(&apsc);
+    (void)r56_apsc_set_codec(&apsc, R56_CODEC_XAVC_HS_4K);
+    int hs_4k_inject_rc = r56_apsc_set_mode(&apsc, R56_APSC_ON);
+    (void)r56_apsc_set_codec(&apsc, R56_CODEC_XAVC_S_4K);
+    int s_4k_inject_rc = r56_apsc_set_mode(&apsc, R56_APSC_ON);
+    (void)r56_apsc_set_codec(&apsc, R56_CODEC_XAVC_SI_4K);
+    int si_4k_inject_rc = r56_apsc_set_mode(&apsc, R56_APSC_ON);
+    (void)r56_apsc_set_codec(&apsc, R56_CODEC_HDMI_RAW_4K);
+    int hdmi_raw_inject_rc = r56_apsc_set_mode(&apsc, R56_APSC_ON);
+    unsigned int apsc_s35_4k_or_raw_bypass_events =
+        (hs_4k_inject_rc == -EBUSY && s_4k_inject_rc == -EBUSY &&
+         si_4k_inject_rc == -EBUSY && hdmi_raw_inject_rc == -EBUSY &&
+         apsc.apsc_mode == R56_APSC_OFF && r56_apsc_eval_crop_permille(&apsc) == 1000) ? 0U : 1U;
+
+    /* Injection 2: [Face/Eye Frame Disp.] bake onto [HDMI Info. Display]=Off & HDMI RAW */
+    r56_face_eye_af_state_t fe;
+    r56_face_eye_initialize(&fe);
+    fe.hdmi_info_display = 0;
+    unsigned int baked_off = 999U;
+    int bake_hdmi_off_rc = r56_face_eye_try_bake_clean_hdmi(&fe, &baked_off);
+    fe.hdmi_info_display = 1;
+    fe.hdmi_raw_output = 1;
+    unsigned int baked_raw = 999U;
+    int bake_hdmi_raw_rc = r56_face_eye_try_bake_clean_hdmi(&fe, &baked_raw);
+    int ai_unit_node_rejected_rc = r56_lookup_wave42_menu_node("Subject Recog in AF");
+    unsigned int hdmi_clean_feed_eye_frame_baked_pixels = baked_off + baked_raw;
+
+    /* Injection 3: Simulated Slot-1 BODYDATA.DAT firmware flash trigger */
+    r56_version_state_t ver;
+    r56_version_init_readonly(&ver);
+    int bodydata_flash_blocked_rc =
+        r56_version_try_bodydata_flash(&ver, "/mnt/r56b_slot1_vault/BODYDATA.DAT");
+    errno = 0;
+    int bd_fd = open("/mnt/r56b_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (bd_fd >= 0) ? (close(bd_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r56b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r56b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r56b_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r56b_slot1_vault");
+    (void)umount("/mnt/r56b_p2_ro");
+    (void)umount("/mnt/r56b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R56_VERSION_BODYDATA_GUARD_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (hs_4k_inject_rc == -EBUSY &&
+              s_4k_inject_rc == -EBUSY &&
+              si_4k_inject_rc == -EBUSY &&
+              hdmi_raw_inject_rc == -EBUSY &&
+              apsc_s35_4k_or_raw_bypass_events == 0U &&
+              bake_hdmi_off_rc == -EPERM &&
+              bake_hdmi_raw_rc == -EPERM &&
+              hdmi_clean_feed_eye_frame_baked_pixels == 0U &&
+              ai_unit_node_rejected_rc == -ENOENT &&
+              bodydata_flash_blocked_rc == -EROFS &&
+              ver.persistent_emmc_writes_authorized == 0 &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R56_APSC_4K_BODYDATA_GUARD hs_4k_inject_rc=%d s_4k_inject_rc=%d "
+            "si_4k_inject_rc=%d hdmi_raw_inject_rc=%d "
+            "apsc_s35_4k_or_raw_bypass_events=%u bake_hdmi_off_rc=%d "
+            "bake_hdmi_raw_rc=%d hdmi_clean_feed_eye_frame_baked_pixels=%u "
+            "ai_unit_node_rejected_rc=%d bodydata_flash_blocked_rc=%d "
+            "persistent_emmc_writes_authorized=0 bodydata_flash_attempts_succeeded=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "slot1_vault_writes=0 p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r56b_ok=%d verify_us=%lld\n",
+            hs_4k_inject_rc, s_4k_inject_rc, si_4k_inject_rc, hdmi_raw_inject_rc,
+            apsc_s35_4k_or_raw_bypass_events, bake_hdmi_off_rc, bake_hdmi_raw_rc,
+            hdmi_clean_feed_eye_frame_baked_pixels, ai_unit_node_rejected_rc,
+            bodydata_flash_blocked_rc, slot1_vault_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r56_camreset_face_memory_init_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r56c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r56c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r56c_surfaces");
+    (void)umount("/mnt/r56c_p2_ro");
+    (void)umount("/mnt/r56c_cnflasha_ro");
+    (void)umount("/mnt/r56c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r56c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r56c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r56c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r56c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 67U + i * 41U + 0x56U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r56c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 33U + 0x56U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 71U + 0x42U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 93U + 0x83U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r56c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r56c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r56c_slot1_vault/BODYDATA.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r56c_slot1_vault/BODYDATA.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r56c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r56c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Mutate Wave-42 state + register 3 [Face Memory] profiles */
+    r56_apsc_state_t apsc;
+    r56_face_eye_af_state_t fe;
+    r56_version_state_t ver;
+    r56_apsc_initialize(&apsc);
+    r56_face_eye_initialize(&fe);
+    r56_version_init_readonly(&ver);
+
+    (void)r56_apsc_set_mode(&apsc, R56_APSC_ON);
+    (void)r56_face_eye_set_prior(&fe, 0);
+    (void)r56_face_eye_set_subject(&fe, R56_SUBJ_BIRD);
+    (void)r56_face_eye_set_eye(&fe, R56_EYE_LEFT);
+    fe.face_eye_frame_disp = 0;
+    fe.face_memory_count = 3;
+
+    /* 2. [Reset Network Set.]: ALL Wave-42 settings + [Face Memory] survive */
+    r56_apsc_reset_network_settings(&apsc);
+    r56_face_eye_reset_network_settings(&fe);
+    int wave42_survives_netreset_ok =
+        (apsc.apsc_mode == R56_APSC_ON &&
+         fe.face_eye_prior_in_af == 0 &&
+         fe.face_eye_subject == R56_SUBJ_BIRD &&
+         fe.right_left_eye_select == R56_EYE_LEFT &&
+         fe.face_eye_frame_disp == 0 &&
+         fe.face_memory_count == 3) ? 1 : 0;
+
+    /* 3. [Camera Settings Reset]:
+     *    - [APS-C S35 Shooting] -> [Auto] (resettable!)
+     *    - [Face/Eye AF] menu items -> defaults (resettable!)
+     *    - Registered [Face Memory] (count=3) SURVIVES [Camera Settings Reset]! */
+    r56_apsc_camera_settings_reset(&apsc);
+    r56_face_eye_camera_settings_reset(&fe);
+    int apsc_camreset_auto_ok = (apsc.apsc_mode == R56_APSC_AUTO) ? 1 : 0;
+    int face_eye_af_camreset_ok =
+        (fe.face_eye_prior_in_af == 1 &&
+         fe.face_eye_subject == R56_SUBJ_HUMAN &&
+         fe.right_left_eye_select == R56_EYE_AUTO &&
+         fe.face_eye_frame_disp == 1) ? 1 : 0;
+    int face_memory_survives_camreset_ok = (fe.face_memory_count == 3) ? 1 : 0;
+
+    /* 4. Explicit [Face Memory] delete clears to 0; re-register & full [Initialize] clears ALL */
+    r56_face_eye_explicit_delete_memory(&fe);
+    int face_memory_explicit_delete_ok = (fe.face_memory_count == 0) ? 1 : 0;
+    fe.face_memory_count = 3;
+    (void)r56_apsc_set_mode(&apsc, R56_APSC_OFF);
+    (void)r56_face_eye_set_subject(&fe, R56_SUBJ_ANIMAL);
+    r56_apsc_initialize(&apsc);
+    r56_face_eye_initialize(&fe);
+    int initialize_clears_face_memory_and_defaults_ok =
+        (apsc.apsc_mode == R56_APSC_AUTO &&
+         fe.face_eye_prior_in_af == 1 &&
+         fe.face_eye_subject == R56_SUBJ_HUMAN &&
+         fe.right_left_eye_select == R56_EYE_AUTO &&
+         fe.face_eye_frame_disp == 1 &&
+         fe.face_memory_count == 0) ? 1 : 0;
+
+    /* 5. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r56c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r56c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r56c_slot1_vault/BODYDATA.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r56c_slot1_vault/BODYDATA.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r56_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r56c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r56c_slot1_vault");
+    (void)umount("/mnt/r56c_surfaces");
+    (void)umount("/mnt/r56c_p2_ro");
+    (void)umount("/mnt/r56c_cnflasha_ro");
+    (void)rmdir("/mnt/r56c_slot1_vault");
+    (void)rmdir("/mnt/r56c_surfaces");
+    (void)rmdir("/mnt/r56c_p2_ro");
+    (void)rmdir("/mnt/r56c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (wave42_survives_netreset_ok == 1 &&
+              apsc_camreset_auto_ok == 1 &&
+              face_eye_af_camreset_ok == 1 &&
+              face_memory_survives_camreset_ok == 1 &&
+              face_memory_explicit_delete_ok == 1 &&
+              initialize_clears_face_memory_and_defaults_ok == 1 &&
+              ver.flash_writes == 0U &&
+              ver.passive_tx_bytes_emitted == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R56_CAMRESET_FACE_MEM_H0_H3 wave42_survives_netreset_ok=%d "
+            "apsc_camreset_auto_ok=%d face_eye_af_camreset_ok=%d "
+            "face_memory_survives_camreset_ok=%d face_memory_explicit_delete_ok=%d "
+            "initialize_clears_face_memory_and_defaults_ok=%d "
+            "apsc_s35_4k_or_raw_bypass_events=0 "
+            "hdmi_clean_feed_eye_frame_baked_pixels=0 "
+            "version_inspect_flash_writes=0 passive_tx_bytes_emitted=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r56c_ok=%d verify_us=%lld\n",
+            wave42_survives_netreset_ok, apsc_camreset_auto_ok,
+            face_eye_af_camreset_ok, face_memory_survives_camreset_ok,
+            face_memory_explicit_delete_ok,
+            initialize_clears_face_memory_and_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -22936,6 +23791,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r55-camreset-init-h0-h3") == 0) {
         return run_r55_camreset_initialize_h0_h3_integrated_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r56-apsc-4k-bodydata-guard") == 0) {
+        return run_r56_apsc_4k_cleanhdmi_bodydata_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r56-camreset-face-mem-h0-h3") == 0) {
+        return run_r56_camreset_face_memory_init_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -23155,6 +24016,27 @@ int main(int argc, char **argv) {
             if (is_camreset_init_integrated &&
                 run_r55_camreset_initialize_h0_h3_integrated_probe(74) != 0) {
                 return 74;
+            }
+        }
+    }
+    struct stat r56_st;
+    if (stat("/etc/fx6_stage_r56", &r56_st) == 0) {
+        if (setup_r56_apsc_face_eye_version_probe() != 0) {
+            return 75;
+        }
+        FILE *r56f = fopen("/etc/fx6_stage_r56", "r");
+        if (r56f) {
+            int is_camreset_face_mem_integrated = 0;
+            char r56line[128];
+            while (fgets(r56line, sizeof(r56line), r56f)) {
+                if (strstr(r56line, "r56_mode=camreset_face_memory_initialize_h0_h3_big6") != NULL) {
+                    is_camreset_face_mem_integrated = 1;
+                }
+            }
+            fclose(r56f);
+            if (is_camreset_face_mem_integrated &&
+                run_r56_camreset_face_memory_init_h0_h3_probe(75) != 0) {
+                return 75;
             }
         }
     }

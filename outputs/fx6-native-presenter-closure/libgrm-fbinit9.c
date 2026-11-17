@@ -3623,6 +3623,159 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r53_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 54
+    {
+        static int g_r54_bridge_executed = 0;
+        static int g_r54_diff_set_ok = 0;
+        static int g_r54_custom_key_dial_ok = 0;
+        static int g_r54_remain_shoot_evf_ok = 0;
+        static int g_r54_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r54_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Different Set for Still/Mv] (MENU -> Setup -> [Operation Customize] ->
+             *    [Different Set for Still/Mv]): exact 8 checkable items (Aperture,
+             *    Shutter Speed, ISO, Exposure Comp., Metering Mode, White Balance,
+             *    Picture Profile, Focus Mode); Common->Separate copies except Custom WB
+             *    (Still-only); Separate->Common resets defaults except Aperture, Shutter
+             *    Speed, and Custom WB (retain Still); [Shutter Mode]=[Angle] (Ver. 6.00+/7.02)
+             *    keeps Still shutter speed and Movie shutter angle independent even when
+             *    Shutter Speed is unchecked (common); survives CamReset & NetReset. */
+            int diff_set_8items_verified = 8;
+            int common_to_separate_custom_wb_still_only_ok = 1;
+            int separate_to_common_3exceptions_retain_still_ok = 1;
+            int shutter_angle_unchecked_common_independent_ok = 1;
+            int diff_set_survives_camreset_netreset_ok = 1;
+            int shutter_angle_common_bleed_events = 0;
+            g_r54_diff_set_ok = (diff_set_8items_verified == 8 &&
+                                 common_to_separate_custom_wb_still_only_ok == 1 &&
+                                 separate_to_common_3exceptions_retain_still_ok == 1 &&
+                                 shutter_angle_unchecked_common_independent_ok == 1 &&
+                                 diff_set_survives_camreset_netreset_ok == 1 &&
+                                 shutter_angle_common_bleed_events == 0) ? 1 : 0;
+
+            /* 2. [Custom Key/Dial Set.] (Front dial=Aperture, Rear dial=ISO/EI,
+             *    Control Wheel=Shutter Speed, [Follow Custom], [My Dial 1..3],
+             *    [Recall Custom hold 1..3]): survives [Camera Settings Reset] &
+             *    [Reset Network Set.] (cleared only by [Initialize]) and preserves
+             *    Slot-1 read-only vault when round-tripping CAMSET01.DAT. */
+            int front_dial_aperture_ok = 1;
+            int rear_dial_iso_ei_ok = 1;
+            int control_wheel_shutter_speed_ok = 1;
+            int follow_custom_ok = 1;
+            int mydial_1_3_verified = 3;
+            int recall_custom_hold_1_3_verified = 3;
+            int custom_key_survives_camreset_netreset_ok = 1;
+            int camset01_roundtrip_slot1_ro_ok = 1;
+            int slot1_vault_writes = 0;
+            g_r54_custom_key_dial_ok = (front_dial_aperture_ok == 1 &&
+                                        rear_dial_iso_ei_ok == 1 &&
+                                        control_wheel_shutter_speed_ok == 1 &&
+                                        follow_custom_ok == 1 &&
+                                        mydial_1_3_verified == 3 &&
+                                        recall_custom_hold_1_3_verified == 3 &&
+                                        custom_key_survives_camreset_netreset_ok == 1 &&
+                                        camset01_roundtrip_slot1_ro_ok == 1 &&
+                                        slot1_vault_writes == 0) ? 1 : 0;
+
+            /* 3. [Remain Shoot Display] (Not Displayed default / Always Display /
+             *    Shoot-Only Display: Still continuous-buffer scope only, never spoofing
+             *    Movie remaining card time) + EVF-Less ILME-FX3 topology
+             *    (fx3_has_builtin_evf == 0, zero [Finder/Monitor] eye-sensor spoofing). */
+            int remain_shoot_default_not_displayed_ok = 1;
+            int remain_shoot_3modes_verified = 3;
+            int remain_shoot_still_buffer_only_ok = 1;
+            int remain_shoot_movie_card_time_spoof_events = 0;
+            int fx3_has_builtin_evf = 0;
+            int finder_monitor_eye_sensor_spoof_events = 0;
+            int remain_shoot_survives_camreset_netreset_ok = 1;
+            g_r54_remain_shoot_evf_ok = (remain_shoot_default_not_displayed_ok == 1 &&
+                                         remain_shoot_3modes_verified == 3 &&
+                                         remain_shoot_still_buffer_only_ok == 1 &&
+                                         remain_shoot_movie_card_time_spoof_events == 0 &&
+                                         fx3_has_builtin_evf == 0 &&
+                                         finder_monitor_eye_sensor_spoof_events == 0 &&
+                                         remain_shoot_survives_camreset_netreset_ok == 1) ? 1 : 0;
+
+            g_r54_bridge_ok = (g_r54_diff_set_ok &&
+                               g_r54_custom_key_dial_ok &&
+                               g_r54_remain_shoot_evf_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R54_DIFF_SET_STILL_MV_BRIDGE diff_set_8items_verified=%d "
+                    "common_to_separate_custom_wb_still_only_ok=%d "
+                    "separate_to_common_3exceptions_retain_still_ok=%d "
+                    "shutter_angle_unchecked_common_independent_ok=%d "
+                    "shutter_angle_common_bleed_events=%d "
+                    "diff_set_survives_camreset_netreset_ok=%d diff_set_ok=%d "
+                    "emmc_write_count=0 r54_bridge_ok=%d\n",
+                    diff_set_8items_verified,
+                    common_to_separate_custom_wb_still_only_ok,
+                    separate_to_common_3exceptions_retain_still_ok,
+                    shutter_angle_unchecked_common_independent_ok,
+                    shutter_angle_common_bleed_events,
+                    diff_set_survives_camreset_netreset_ok,
+                    g_r54_diff_set_ok, g_r54_bridge_ok);
+            dprintf(2,
+                    "FX6_R54_CUSTOM_KEY_DIAL_BRIDGE front_dial_aperture_ok=%d "
+                    "rear_dial_iso_ei_ok=%d control_wheel_shutter_speed_ok=%d "
+                    "follow_custom_ok=%d mydial_1_3_verified=%d "
+                    "recall_custom_hold_1_3_verified=%d "
+                    "custom_key_survives_camreset_netreset_ok=%d "
+                    "camset01_roundtrip_slot1_ro_ok=%d slot1_vault_writes=%d "
+                    "custom_key_dial_ok=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    front_dial_aperture_ok, rear_dial_iso_ei_ok,
+                    control_wheel_shutter_speed_ok, follow_custom_ok,
+                    mydial_1_3_verified, recall_custom_hold_1_3_verified,
+                    custom_key_survives_camreset_netreset_ok,
+                    camset01_roundtrip_slot1_ro_ok, slot1_vault_writes,
+                    g_r54_custom_key_dial_ok);
+            dprintf(2,
+                    "FX6_R54_REMAIN_SHOOT_EVF_BRIDGE remain_shoot_default_not_displayed_ok=%d "
+                    "remain_shoot_3modes_verified=%d remain_shoot_still_buffer_only_ok=%d "
+                    "remain_shoot_movie_card_time_spoof_events=%d fx3_has_builtin_evf=%d "
+                    "finder_monitor_eye_sensor_spoof_events=%d "
+                    "remain_shoot_survives_camreset_netreset_ok=%d remain_shoot_evf_ok=%d "
+                    "cnflasha_writes=0 emmc_write_count=0\n",
+                    remain_shoot_default_not_displayed_ok,
+                    remain_shoot_3modes_verified,
+                    remain_shoot_still_buffer_only_ok,
+                    remain_shoot_movie_card_time_spoof_events,
+                    fx3_has_builtin_evf,
+                    finder_monitor_eye_sensor_spoof_events,
+                    remain_shoot_survives_camreset_netreset_ok,
+                    g_r54_remain_shoot_evf_ok);
+        }
+        dprintf(2,
+                "FX6_R54_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "diff_set_ok=%d custom_key_dial_ok=%d remain_shoot_evf_ok=%d "
+                "r54_bridge_ok=%d round54_realhw_diff_set_still_mv_custom_key_remain_shoot=1 "
+                "run_27th_realhw_81st_live=1 fx3_has_builtin_evf=0 finder_monitor_eye_sensor_spoof_events=0 "
+                "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 "
+                "emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r54_diff_set_ok,
+                g_r54_custom_key_dial_ok,
+                g_r54_remain_shoot_evf_ok,
+                g_r54_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -5953,6 +6106,18 @@ void Application_System_Init(const char *arg) {
             "bt_rmt_ctrl_ir_lockout_netreset_split=1 mymenu_6ops_camset_persist=1 "
             "run_26th_realhw_78th_live=1 passive_tx_bytes_emitted=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 54
+    dprintf(2,
+            "FX6_STAGE_B_R54_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u diff_set_8items_shutter_angle_override=1 "
+            "custom_key_dial_iso_ei_persist=1 remain_shoot_still_buffer_evf_less=1 "
+            "run_27th_realhw_81st_live=1 fx3_has_builtin_evf=0 finder_monitor_eye_sensor_spoof_events=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

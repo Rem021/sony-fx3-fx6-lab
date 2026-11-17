@@ -1581,4 +1581,33 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   python3 -B -m fx3_safety verify-116-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 59. Phase 283 (`118/118` Safety Gates, Task H326, Wave-49): Still `[Image Quality Settings]` `RAW`/`HEIF`/`[HLG Still Image]` & `[Color Space]` `AdobeRGB` `_DSC` Rule (`Gate G117`), 2-Option `[Shutter Type]` / `[e-Front Curtain Shut.]` / `1/250 s` Flash Sync & NR/`[Drive Mode]` `10 fps` Couplings (`Gate G118`), and Unified `118`-Gate Preflight (`realhw_raw_heif_colorspace_shuttertype_nr_drive_and_118gate_guard.py`)
+
+`realhw_raw_heif_colorspace_shuttertype_nr_drive_and_118gate_guard.py` (`realhw_raw_heif_colorspace_shuttertype_nr_drive_and_118gate_guard_v1`) delegates `G01..G116` directly to `evaluate_116gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-116-gates`) and adds Wave-49 real-hardware safety gates **`G117`** and **`G118`** into the unified **`118`-Gate Master Safety Preflight (`G01..G118` / `run_118_gate_preflight` / `evaluate_118gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **Still `[Image Quality Settings]` (`RAW` 2-Option `Compressed`/`Uncompressed` vs Dormant `Lossless Comp` Trap, `JPEG/HEIF 4:2:0/4:2:2`, `[HLG Still Image]`) & `[Color Space]` DCF 2.0 `AdobeRGB` `_DSC` Filename Prefix Rule (`verify_raw_heif_colorspace_guard`, Gate `G117`)**:
+   - Performs a fast `< 0.20s` `os.open(..., os.O_RDONLY)` + targeted `os.pread` local donor audit across FX3 `appFw.so` (`79,015,712 B`, 20 Wave-49 slices), 4-language `_f.uxc` packs (`string_english_f.uxc`, `string_simplifiedchinese_f.uxc`, `string_traditionalchinese_f.uxc`, `string_japanese_f.uxc`), `string_english.uxc`, `string_english_g.uxc`, `FX3-CX95900_ALLLANG-Backup.bin`, and FX6 `appFw.so` (`50,520,424 B`, 4 slices) + `string_english.uxc` + `string_english_2.uxc` (`raw_firmware_bytes_leaked == 0`), with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` fallback.
+   - Enforces stock `ILME-FX3` (`12MP IMX510`, `Ver. 7.02`, `ilc/2210`) 2-option `[RAW File Type]` (`BKID_APP_setting_still_raw_file_type`, `_f.uxc` `0x6ff2`): **`Compressed` (default)** and **`Uncompressed`** 14-bit `.ARW`; blocks any spoofed dormant `Lossless Comp` (`0x6b56` / `RAW_FILE_TYPE_LOSSLESS`) with `STATUS_BLOCKED_G117_FX3_DORMANT_LOSSLESS_RAW_SPOOF_VIOLATION`, contrasting still-less `ILME-FX6 Ver. 6.01` (`PRODUCT_MODEL_CHAPLIN`, `mechanical_shutter == False`, movie RAW SDI/HDMI only).
+   - Enforces `[JPEG/HEIF Switch]` (`JPEG` default, `HEIF(4:2:0)`, `HEIF(4:2:2)`, `0x742a`) & `[HLG Still Image]` (`Off` default, `0x76c8`): `[HLG Still Image] = [On]` requires `HEIF` + `File Format = HEIF` only + `P/A/S/M`, locks out `Picture Profile`, `Creative Look`, `D-Range Optimizer`, and `DRO Bracket`, and overrides `[Color Space]` to `BT.2100`/`BT.2020` (`STATUS_BLOCKED_G117_HLG_STILL_PREREQ_OR_LOCKOUT_VIOLATION`).
+   - Enforces `[Color Space]` (`MENU -> Shooting -> [Image Quality/Rec] -> [Color Space]`, `0x68b7`): `sRGB` (`0xe07d` default -> `DSC00001`) vs `AdobeRGB` (`0xe07e` -> DCF 2.0 `_DSC0001` automatic leading `_`), forbidding manual leading `_` in `[Set File Name]` (`0x6993`, survives `[Camera Settings Reset]`), while `HEIF` ignores `sRGB`/`AdobeRGB` selection (`STATUS_BLOCKED_G117_COLORSPACE_ADOBERGB_PREFIX_VIOLATION`) across `648` matrix states.
+2. **2-Option `[Shutter Type]` (`Mechanical` vs `Electronic`, No `Auto`!), `[e-Front Curtain Shut.]`, `1/250 s` Flash Sync & 5-Function Electronic Lockout, & `[Long Exposure NR]` / `[High ISO NR]` / `[Drive Mode]` `10 fps` Couplings (`verify_shutter_type_nr_drive_guard`, Gate `G118`)**:
+   - Enforces stock `ILME-FX3` 2-option `[Shutter Type]` (`BKID_APP_setting_still_shutter_type`, `_f.uxc` `0x7aa9`): **`Mechanical Shutter` (default)** and **`Electronic Shutter`** (`P/A/S/M` only; forced `Electronic` when `[Silent Mode] = [On]` `0x7a53`), blocking any spoofed `Auto` shutter type (`STATUS_BLOCKED_G118_FX3_SHUTTER_TYPE_AUTO_SPOOF_VIOLATION`), and enforcing `[e-Front Curtain Shut.]` (`BKID_APP_setting_front_curtaion_shutter` `0x64c6`, `On` default) survival across `[Camera Settings Reset]`.
+   - Enforces `ILME-FX3`'s strict **`1/250 s`** mechanical flash sync ceiling (`0x759b`, no `1/320 s` APS-C sync) and 5-function lockout (`Flash shooting`, `Long Exposure NR`, `e-Front Curtain Shut.`, `BULB`, `Anti-flicker Shoot.`) whenever `[Electronic Shutter]` or `[Silent Mode] = [On]` is active (`STATUS_BLOCKED_G118_ELECTRONIC_SHUTTER_5LOCK_OR_SYNC_VIOLATION`).
+   - Enforces `[Long Exposure NR]` (`On` default `0x6cd7`, `>= 1 s` dark frame, blocked in `Cont. Shooting`/`Cont. Bracket`/`Electronic Shutter`), `[High ISO NR]` (`Normal` default `0x650b`, unavailable for `RAW`-only and never alters `.ARW` raw data), and `[Drive Mode]` (`8` modes, `Cont. Shooting: Hi+` `10 fps` `0x68d1` speed drop on `Uncompressed` RAW or Flash, `Hi+/Hi/Mid` AF lock to first frame at `> F11`, and `DRO Bracket` lockout under `HLG Still Image = On`, `STATUS_BLOCKED_G118_NR_OR_DRIVE_CONT_BOUNDARY_VIOLATION`) across `384` matrix states.
+3. **Unified `118`-Gate Master Preflight (`evaluate_118gate_preflight` / `verify-118-gates`)**:
+   - **Offline default mode**: `115/118` gates pass (`VERIFIED_115_OF_118_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `118/118` simulation gates pass (`VERIFIED_ALL_118_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_118_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-raw-heif-colorspace-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-shutter-type-nr-drive-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-118-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
+
 

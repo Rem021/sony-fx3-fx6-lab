@@ -1527,7 +1527,30 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   python3 -B -m fx3_safety verify-112-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
 
+## 57. Phase 276 (`114/114` Safety Gates, Task H315, Wave-47): `[USB Connection Mode]` 4-Mode vs Dormant `NOUVC` `[USB Streaming]`, Data-Isolated PD & `[HDMI Info. Display]` (`Gate G113`), `[Protect]` vs `[Format]` `Slot-1` WP Firewall & `[Reset Network Set.]` Zero-RF (`Gate G114`), and Unified `114`-Gate Preflight (`realhw_usb_mode_hdmi_info_protect_network_reset_and_114gate_guard.py`)
 
+`realhw_usb_mode_hdmi_info_protect_network_reset_and_114gate_guard.py` (`realhw_usb_mode_hdmi_info_protect_network_reset_and_114gate_guard_v1`) delegates `G01..G112` directly to `evaluate_112gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-112-gates`) and adds Wave-47 real-hardware safety gates **`G113`** and **`G114`** into the unified **`114`-Gate Master Safety Preflight (`G01..G114` / `run_114_gate_preflight` / `evaluate_114gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
 
+1. **`[USB Connection Mode]` 4-Mode vs Dormant `NOUVC` `[USB Streaming]`, `[USB LUN]` / `[USB Power Supply]` Data-Isolated PD Guard & `[HDMI Info. Display]` LCD-Blanking / `1080` Clamp / `4K` Clean-Feed Override (`verify_usb_mode_and_hdmi_info_guard`, Gate `G113`)**:
+   - Performs a fast `< 0.20s` `os.open(..., os.O_RDONLY)` + targeted `os.pread` local donor audit across FX3 `appFw.so` (`79,015,712 B`, 19 Wave-47 slices), `string_english_f.uxc`, `string_english.uxc`, `string_english_g.uxc`, dormant `usb_f_uvc.ko` (`78,840 B`), `FX3-CX95900_ALLLANG-Backup.bin`, and FX6 `appFw.so` (`50,520,424 B`, 6 slices) + `string_english.uxc` + `string_english_2.uxc` (`raw_firmware_bytes_leaked == 0`), with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` fallback.
+   - Enforces stock `ILME-FX3 Ver. 7.02` (`ilc/2210`) `4`-mode `[USB Connection Mode]` (`BKID_APP_setting_usb_connection_method`, `_f.uxc` `0x69a2`): `Sel. When Connect` (`0x7738` factory default), `MassStorage(MSC)` (`0x6c54`, `054C:0DA1`, `USB_CONNECTION_METHOD_MASS_STRAGE`), `MTP` (`0xe24b`), `Remote Shoot (PC Remote)` (`0x60aa`/`0x7c6f`). Blocks any spoofed `ILME-FX3` native `[USB Streaming]` UVC/UAC UI (`NOUVC` dormant split: `_f.uxc` `0x7399` + `usb_f_uvc.ko` `78,840 B`) with `STATUS_BLOCKED_G113_FX3_NOUVC_USB_STREAMING_SPOOF_VIOLATION`.
+   - Enforces air-gapped Tier-0 USB host data isolation (`STATUS_BLOCKED_G113_AIRGAPPED_USB_DATA_ENUMERATION_HAZARD`): prohibits `MassStorage(MSC)`, `MTP`, `Remote Shoot`, and `USB-LAN` host enumeration; `[USB Power Supply]` (`On` default `0x721e`, USB Type-C only + NP-FZ100 inserted; `[USB LUN Setting]` `Multi` `0xe631` / `Single` `0x776d`) is permitted ONLY when USB `D+/D-` & SuperSpeed data lines are physically isolated.
+   - Enforces `[HDMI Info. Display]` (`0x6e7c`, `On` default blanks built-in LCD `CAUTION_ID_FACTOR_HDMI_INFO_DISPLAY_ON` and disables LCD touch-focus vs `Off` clean feed), `1080` clamp when internal rec (`On`) + `Log Shooting != Off` or `PPLUT1..4`, `4K` clean-feed forced-Off override when `Rec. Media dur HDMI Output = Off(HDMI Only)` (`0x6573`) or `RAW Output = On` (`0x6e97`, disabled in `S&Q`), and `(Setup)` reset survival vs `Framing Settings (HDMI)` exception across all `256` matrix states.
+2. **`[Protect]` Scopes vs `[Format]` Override (`Slot-1` Dual-Layer Hardware WP + Firewall Mandate) & `[Reset Network Set.]` Auto-Reboot + Post-Reboot `[Airplane Mode] = [On]` Zero-RF Sequence (`verify_protect_and_network_reset_guard`, Gate `G114`)**:
+   - Enforces `[Protect]` (`0xe2c9`) exact `5` scopes (`Single` `0xe2c9`, `Multiple Img.` `0xe2ca`, `All in this Folder` `0x6848`, `All with this date` `0x69f7`, `All Images in This Group` `0xe826`) blocking `[Delete]`/`[Delete pressing twice]` and stripping protect on card copy, while recognizing `[Format]` (`0xe449`/`0xe414`) wipes protected files and `M1..M4`. Rejects software `[Protect]`-only posture on `Slot 1` recovery vaults without physical SD `WP` (`MR_MEMORY_ERROR_CARD_WRITE_PROTECT_SLOT1`) + `slot1_format_hard_locked == True` (`STATUS_BLOCKED_G114_PROTECT_ONLY_WITHOUT_SLOT1_WP_FIREWALL_VIOLATION`).
+   - Enforces `[Reset Network Set.]` (`FUNC_reset_network_settings`, `SETTING_RESET_NW`, `0x60d3`/`0x65d3`) 3-way reset boundary (clears `(Network)` credentials, preserves `(Shooting)`/`(Exposure/Color)`/`(Focus)`/`(Setup)`/`(Playback)`/`CAMSET`), mandatory auto-reboot (`BKID_APP_is_shutdown_factor_network_reset`), and post-reboot `[Airplane Mode] = [On]` Zero-RF re-assertion (`STATUS_BLOCKED_G114_POST_NETWORK_RESET_AIRPLANE_OFF_RF_HAZARD`) across all `160` matrix states.
+3. **Unified `114`-Gate Master Preflight (`evaluate_114gate_preflight` / `verify-114-gates`)**:
+   - **Offline default mode**: `111/114` gates pass (`VERIFIED_111_OF_114_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `114/114` simulation gates pass (`VERIFIED_ALL_114_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_114_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-usb-mode-hdmi-info-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-protect-and-network-reset-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-114-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
 

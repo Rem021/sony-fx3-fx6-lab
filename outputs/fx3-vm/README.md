@@ -1723,3 +1723,36 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest 
 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 270（`270th` Milestone）：Stage 53（`53/53`）真实硬件主线 — Wave-43 `[Release w/o Card]` 静态照片专属作用域 vs 视频内录门控与 `[Release w/o Lens]`（`e_nd_actuator_tx_count == 0` 零 E 卡口镜头通信）、`Ver. 7.02`（`ilc/2210`）精确 5 项 `[Audio Recording]` vs `Ver. 1.x`（`ilc/2035`）`[Audio Level Display]` 伪造拦截与 `[DISP (Screen Disp) Set]` 音频表隔离、以及 `[Copyright Info]` `<= 46` 字符静态 EXIF 卫生与洁净室 PII 归零 HIL 协同仿真器
+
+[`realhw_release_wo_card_audio_meter_copyright_coemulator.py`](realhw_release_wo_card_audio_meter_copyright_coemulator.py) 作为 **Phase 270（第 270 阶段里程碑）Stage 53（`53/53`，Schema `realhw_release_wo_card_audio_meter_copyright_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase270_realhw_release_wo_card_audio_meter_copyright_hil=True` / `include_stage53=True` / `stage53_realhw_release_wo_card_audio_meter_copyright_hil=True`，支持显式 `--include-stage53` 以及通过 `--skip-phase270` / `--skip-stage53` / `--no-include-stage53` 跳过；本地只读供体 53 阶段全板协同仿真 `< 4.0s`、洁净室模式 `< 1.5s`），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`fx3_has_builtin_end_filter == False`、`e_nd_actuator_tx_count == 0`、`cardless_unrecorded_production_violations == 0`、`legacy_v1_audio_level_menu_spoof_events == 0`、`hdmi_clean_feed_audio_meter_baked_pixels == 0`、`photographer_copyright_pii_leaked_bytes == 0`、`slot1_copyright_vault_mutation_bytes == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模 18 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 严格通过 `os.O_RDONLY` 核验 FX3 `Ver. 7.02` 与 FX6 `Ver. 6.01` 的 **18 份真实供体**（精确锁定字节数与完整 64 位 SHA-256 / 4096B 头部哈希）：`libInfraLensCommunicator.so`、`libInfraMediaDetect.so`、`libInfraMetaSupplier.so`、`libInfraIPTC.so`（`64,256 B`）、`libInfraHotshoe.so`、`libSaveLoadSettings.so`、`libInfraMediaConfig.so`、`libInfraAdjMedia.so`、`string_english_f.uxc`（`373,820 B`：证实 `Release w/o Card` / `Release w/o Lens` / `Audio Recording` / `Audio Rec Level` / `Audio Out Timing` / `Wind Noise Reduct.` / `Shoe Audio Set.` / `DISP` / `Copyright Info` / `Write Copyright Info` / `Set Photographer` / `Set Copyright` / `Disp. Copyright Info` / `Camera Settings Reset` / `Reset Network Set.` / `Initialize`）、FX6 `string_english.uxc`，以及对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；同时支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 53A — `[Release w/o Card]` 静态专属作用域 vs 视频内录门控 & `[Release w/o Lens]`（`e_nd_actuator_tx_count == 0`）HIL**：
+   - 协同仿真 `MENU -> Shooting -> [Shutter/Silent] -> [Release w/o Card]`（`Enable` 出厂默认 / `Disable`，仅限 Still 静态照片作用域）与 `[Release w/o Lens]`（`Enable` 出厂默认 / `Disable`，覆盖 `Still` + `Movie` + `S&Q` 三域），跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 存活，仅由 `[Initialize]` 恢复 `Enable`；穷举 `768` 组工作流状态矩阵，验证 `CARDLESS_DIAGNOSTIC_BENCH`（`Enable` 允许零写卡静态快门测试，双槽为空时视频/S&Q 内录仍被阻断，外录 HDMI 受 `[Rec. Media dur HDMI Output]` 控制）vs `PRODUCTION_SHOOT`（`Disable` 防止漏插卡误拍，`cardless_unrecorded_production_violations == 0`），以及无镜头/PL 机械转接环下零 E 卡口 UART 通信与零电控 ND 通信（`fx3_has_builtin_end_filter == False`，`e_nd_actuator_tx_count == 0`）。
+3. **Sub-Model 53B — `Ver. 2.00+`/`7.02`（`ilc/2210`）精确 5 项 `[Audio Recording]` vs `Ver. 1.x`（`ilc/2035`）伪造拒绝与 `DISP` 音频表 HIL**：
+   - 强制锁定 `MENU -> Shooting -> [Audio Recording]` 精确 5 项（`Audio Recording` `On`/`Off`、`Audio Rec Level` `0..31`、`Audio Out Timing` `Live`/`Lip Sync`、`Wind Noise Reduct.` `On`/`Off`、`Shoe Audio Set.` `48kHz/24bit 2ch` / `48kHz/24bit 4ch` / `48kHz/16bit 2ch`），拒绝 `Ver. 1.x`（`ilc/2035`）遗留独立 `[Audio Level Display]` 菜单伪造（`EOPNOTSUPP = 95`，`legacy_v1_audio_level_menu_spoof_events == 0`）；同时建模 `Setup > Operation Customize > [DISP (Screen Disp) Set]` 2ch / 4ch MI 热靴音频电平表在 `S&Q` 或 `Audio Recording = Off` 下的自动抑制及纯洁外录 HDMI 零烧录隔离（`hdmi_clean_feed_audio_meter_baked_pixels == 0`）。
+4. **Sub-Model 53C & Redlines — `[Copyright Info]` `<= 46` 字符静态 EXIF 卫生与洁净室 PII 归零 HIL**：
+   - 协同仿真 `MENU -> Shooting -> [File] -> [Copyright Info]`（`Write Copyright Info` `Off` 默认 / `On`、`Set Photographer` `<= 46` 字符、`Set Copyright` `<= 46` 字符、`Disp. Copyright Info` 只读弹窗），强制 `<= 46` 字符可打印 ASCII 边界（47 字符与控制字符返回 `EINVAL = 22`）、仅写入 Still JPEG/HEIF EXIF（绝不篡改 `XAVC` / `HDMI RAW` 视频流或 Slot-1 Tier-0 恢复保险箱 `EROFS = 30`）、`[Camera Settings Reset]` 保留字串同时将写入开关复位为 `Off` vs `[Initialize]` 全清空、以及 `CLEAN_ROOM_SYNTHETIC` 下操作者 PII 归零（`photographer_copyright_pii_leaked_bytes == 0`、`camset_copyright_pii_leaked_bytes == 0`），并锁死全部 16 项硬件安全红线探针。
+
+### Phase 270 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 270 Stage 53（53/53, 270th Milestone）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_release_wo_card_audio_meter_copyright_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_release_wo_card_audio_meter_copyright_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_release_wo_card_audio_meter_copyright_coemulator.py --self-test --json
+
+# 2. 全板 53 阶段（Stage 1..53, 53/53）统一校验（支持 --include-stage53 与 --skip-phase270 / --skip-stage53）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage53 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 270 双模 70 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_release_wo_card_audio_meter_copyright_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_release_wo_card_audio_meter_copyright_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+

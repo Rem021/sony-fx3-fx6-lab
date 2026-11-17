@@ -177,6 +177,11 @@ from .realhw_pp_scinetone_creativelook_dro_wb_metering_and_116gate_guard import 
     evaluate_g115_pp_scinetone_creativelook_dro_guard,
     evaluate_g116_wb_cineei_and_metering_guard,
 )
+from .realhw_raw_heif_colorspace_shuttertype_nr_drive_and_118gate_guard import (
+    evaluate_118gate_preflight,
+    evaluate_g117_raw_heif_colorspace_guard,
+    evaluate_g118_shutter_type_nr_drive_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3343,6 +3348,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G116 gates can be rehearsed offline",
     )
     p_116.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 134. verify-raw-heif-colorspace-guard
+    p_g117 = sub.add_parser(
+        "verify-raw-heif-colorspace-guard",
+        aliases=["verify-g117-raw-heif-colorspace"],
+        help="Verify Gate G117: Still [Image Quality Settings] 2-Option Compressed/Uncompressed RAW vs Dormant Lossless Comp, JPEG/HEIF 4:2:0/4:2:2, [HLG Still Image], and [Color Space] AdobeRGB _DSC Prefix Rule",
+    )
+    p_g117.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g117.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g117.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g117.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 135. verify-shutter-type-nr-drive-guard
+    p_g118 = sub.add_parser(
+        "verify-shutter-type-nr-drive-guard",
+        aliases=["verify-g118-shutter-type-nr-drive"],
+        help="Verify Gate G118: 2-Option [Shutter Type] Mechanical/Electronic (No Auto), [e-Front Curtain Shut.], 1/250 s Flash Sync & 5-Function Electronic Lockout, [Long Exposure NR], [High ISO NR], and [Drive Mode] 10 fps Couplings",
+    )
+    p_g118.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g118.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g118.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g118.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 136. verify-118-gates
+    p_118 = sub.add_parser(
+        "verify-118-gates",
+        help="Run Phase 283 Unified 118-Gate Master Safety Preflight Engine (G01..G118)",
+    )
+    p_118.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_118.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_118.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G118 gates can be rehearsed offline",
+    )
+    p_118.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -6770,6 +6861,110 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_116_gates_verified if args.dry_run_simulated else report.offline_113_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-raw-heif-colorspace-guard",
+        "verify-g117-raw-heif-colorspace",
+    ):
+        verdict, res = evaluate_g117_raw_heif_colorspace_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.raw_heif_colorspace_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} raw={guard['effective_raw_file_type']}"
+                f"(2opt={len(guard['fx3_exact_2_raw_file_types'])},"
+                f"lossless_blk={guard['fx3_dormant_lossless_raw_blocked']}) "
+                f"jh={guard['effective_jpeg_heif_switch']}/{guard['effective_file_format']} "
+                f"hlg={guard['effective_hlg_still_image']} "
+                f"cs={guard['effective_color_space']}"
+                f"(prefix={guard['effective_dcf_filename_prefix']},"
+                f"sample={guard['example_still_filename']}) "
+                f"fx6_still={guard['fx6_still_pipeline_supported']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-shutter-type-nr-drive-guard",
+        "verify-g118-shutter-type-nr-drive",
+    ):
+        verdict, res = evaluate_g118_shutter_type_nr_drive_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.shutter_type_nr_drive_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} shutter={guard['effective_shutter_type']}"
+                f"(2opt={len(guard['fx3_exact_2_shutter_types'])},"
+                f"no_auto={guard['fx3_auto_shutter_type_blocked']},"
+                f"efront={guard['effective_e_front_curtain']},"
+                f"sync={guard['fx3_flash_sync_ceiling_label']}) "
+                f"lenr={guard['effective_long_exposure_nr']} "
+                f"hinr={guard['effective_high_iso_nr']} "
+                f"drive={guard['effective_drive_mode']}(modes={len(guard['fx3_exact_8_drive_modes'])}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-118-gates":
+        report = evaluate_118gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/118 "
+                f"g117_to_g118_all_passed={report.g117_to_g118_all_passed} "
+                f"all_118_gates_verified={report.all_118_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_118_gates_verified if args.dry_run_simulated else report.offline_115_gates_verified
         return 0 if ok else 1
 
     return 2

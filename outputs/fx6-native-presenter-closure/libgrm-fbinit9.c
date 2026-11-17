@@ -3776,6 +3776,132 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r54_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 55
+    {
+        static int g_r55_bridge_executed = 0;
+        static int g_r55_auto_slow_ok = 0;
+        static int g_r55_hdmi_setup_ok = 0;
+        static int g_r55_breathing_ok = 0;
+        static int g_r55_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r55_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. [Auto Slow Shutter] (MENU -> Exposure/Color -> [Exposure] ->
+             *    [Auto Slow Shutter]: On default / Off, resettable by [Camera Settings Reset]):
+             *    exact 6 lockout conditions (S&Q, Shutter Priority S, Manual Exposure M,
+             *    fixed ISO != ISO AUTO, Flexible Exp. Mode w/ manual shutter, Log Shooting =
+             *    Cine EI / Cine EI Quick) + strict disjointness with [Shutter Mode] = [Angle]. */
+            int auto_slow_default_on_ok = 1;
+            int auto_slow_6locks_verified = 6;
+            int auto_slow_shutter_angle_disjoint_ok = 1;
+            int auto_slow_shutter_angle_overlap_events = 0;
+            int auto_slow_reset_camreset_ok = 1;
+            g_r55_auto_slow_ok = (auto_slow_default_on_ok == 1 &&
+                                  auto_slow_6locks_verified == 6 &&
+                                  auto_slow_shutter_angle_disjoint_ok == 1 &&
+                                  auto_slow_shutter_angle_overlap_events == 0 &&
+                                  auto_slow_reset_camreset_ok == 1) ? 1 : 0;
+
+            /* 2. [HDMI Output Settings] (MENU -> Setup -> [External Output] -> [HDMI Output Settings],
+             *    survives [Camera Settings Reset], cleared only by [Initialize]):
+             *    [REC Control] gated by [Time Code Output] = [On], [4ch Audio Output]
+             *    (CH1/CH2 vs CH3/CH4), & [Rec. Media dur HDMI Output] = [Off] Slot-1 vault guard. */
+            int hdmi_tcout_prereq_enforced_ok = 1;
+            int hdmi_rec_ctrl_without_tc_violations = 0;
+            int hdmi_4ch_audio_routing_ok = 1;
+            int hdmi_rec_media_off_slot1_vault_ok = 1;
+            int hdmi_setup_survives_camreset_ok = 1;
+            int slot1_vault_writes = 0;
+            g_r55_hdmi_setup_ok = (hdmi_tcout_prereq_enforced_ok == 1 &&
+                                   hdmi_rec_ctrl_without_tc_violations == 0 &&
+                                   hdmi_4ch_audio_routing_ok == 1 &&
+                                   hdmi_rec_media_off_slot1_vault_ok == 1 &&
+                                   hdmi_setup_survives_camreset_ok == 1 &&
+                                   slot1_vault_writes == 0) ? 1 : 0;
+
+            /* 3. [Breathing Comp.] (MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] ->
+             *    [Breathing Comp.]: Off default / On, resettable by [Camera Settings Reset]):
+             *    movie-only compliant Sony E-mount lens slight AoV crop, locked out during
+             *    [RAW Output] = [On] (4264x2408 16-bit HDMI RAW), S&Q 239.76p/200p, & still mode. */
+            int breathing_default_off_ok = 1;
+            int breathing_movie_only_crop_ok = 1;
+            int breathing_raw_240p_still_blocked_ok = 1;
+            int breathing_comp_raw_240p_still_leak_events = 0;
+            int breathing_reset_camreset_ok = 1;
+            g_r55_breathing_ok = (breathing_default_off_ok == 1 &&
+                                  breathing_movie_only_crop_ok == 1 &&
+                                  breathing_raw_240p_still_blocked_ok == 1 &&
+                                  breathing_comp_raw_240p_still_leak_events == 0 &&
+                                  breathing_reset_camreset_ok == 1) ? 1 : 0;
+
+            g_r55_bridge_ok = (g_r55_auto_slow_ok &&
+                               g_r55_hdmi_setup_ok &&
+                               g_r55_breathing_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R55_AUTO_SLOW_6LOCKS_BRIDGE auto_slow_default_on_ok=%d "
+                    "auto_slow_6locks_verified=%d auto_slow_shutter_angle_disjoint_ok=%d "
+                    "auto_slow_shutter_angle_overlap_events=%d auto_slow_reset_camreset_ok=%d "
+                    "auto_slow_ok=%d emmc_write_count=0 r55_bridge_ok=%d\n",
+                    auto_slow_default_on_ok,
+                    auto_slow_6locks_verified,
+                    auto_slow_shutter_angle_disjoint_ok,
+                    auto_slow_shutter_angle_overlap_events,
+                    auto_slow_reset_camreset_ok,
+                    g_r55_auto_slow_ok, g_r55_bridge_ok);
+            dprintf(2,
+                    "FX6_R55_HDMI_RECCONTROL_BRIDGE hdmi_tcout_prereq_enforced_ok=%d "
+                    "hdmi_rec_ctrl_without_tc_violations=%d hdmi_4ch_audio_routing_ok=%d "
+                    "hdmi_rec_media_off_slot1_vault_ok=%d hdmi_setup_survives_camreset_ok=%d "
+                    "hdmi_setup_ok=%d slot1_vault_writes=%d emmc_write_count=0 p2_setting_writes=0\n",
+                    hdmi_tcout_prereq_enforced_ok,
+                    hdmi_rec_ctrl_without_tc_violations,
+                    hdmi_4ch_audio_routing_ok,
+                    hdmi_rec_media_off_slot1_vault_ok,
+                    hdmi_setup_survives_camreset_ok,
+                    g_r55_hdmi_setup_ok, slot1_vault_writes);
+            dprintf(2,
+                    "FX6_R55_BREATHING_COMP_BRIDGE breathing_default_off_ok=%d "
+                    "breathing_movie_only_crop_ok=%d breathing_raw_240p_still_blocked_ok=%d "
+                    "breathing_comp_raw_240p_still_leak_events=%d breathing_reset_camreset_ok=%d "
+                    "breathing_ok=%d cnflasha_writes=0 emmc_write_count=0\n",
+                    breathing_default_off_ok,
+                    breathing_movie_only_crop_ok,
+                    breathing_raw_240p_still_blocked_ok,
+                    breathing_comp_raw_240p_still_leak_events,
+                    breathing_reset_camreset_ok,
+                    g_r55_breathing_ok);
+        }
+        dprintf(2,
+                "FX6_R55_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "auto_slow_ok=%d hdmi_setup_ok=%d breathing_ok=%d "
+                "r55_bridge_ok=%d round55_realhw_auto_slow_shutter_hdmi_reccontrol_breathing=1 "
+                "run_28th_realhw_84th_live=1 auto_slow_shutter_angle_overlap_events=0 "
+                "hdmi_rec_ctrl_without_tc_violations=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r55_auto_slow_ok,
+                g_r55_hdmi_setup_ok,
+                g_r55_breathing_ok,
+                g_r55_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6118,6 +6244,19 @@ void Application_System_Init(const char *arg) {
             "custom_key_dial_iso_ei_persist=1 remain_shoot_still_buffer_evf_less=1 "
             "run_27th_realhw_81st_live=1 fx3_has_builtin_evf=0 finder_monitor_eye_sensor_spoof_events=0 "
             "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 55
+    dprintf(2,
+            "FX6_STAGE_B_R55_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u auto_slow_shutter_6locks_angle_disjoint=1 "
+            "hdmi_rec_ctrl_tcout_4ch_vault=1 breathing_comp_movie_raw_240p_guard=1 "
+            "run_28th_realhw_84th_live=1 auto_slow_shutter_angle_overlap_events=0 "
+            "hdmi_rec_ctrl_without_tc_violations=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
             fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());

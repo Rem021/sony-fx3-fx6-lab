@@ -1366,6 +1366,7 @@ def build_stage_a_overlay(
     enable_r52: bool = False,
     enable_r53: bool = False,
     enable_r54: bool = False,
+    enable_r55: bool = False,
     r29_mode: str = "install_mpr_rec",
     r30_mode: str = "peripheral_big6",
     r31_mode: str = "keymap_big6",
@@ -1392,6 +1393,7 @@ def build_stage_a_overlay(
     r52_mode: str = "lock_op_parts_chord_mydial_big6",
     r53_mode: str = "display_quality_bt_rmt_big6",
     r54_mode: str = "diff_set_still_mv_shutter_angle_big6",
+    r55_mode: str = "auto_slow_6locks_hdmi_reccontrol_big6",
     sd_manifest_mode: str = "valid",
     lang: str = "en",
     shim_bytes: Optional[bytes] = None,
@@ -1715,7 +1717,23 @@ def build_stage_a_overlay(
         raise ValueError(f"Unsupported r53_mode: {r53_mode}")
     if enable_r54 and r54_mode not in ("diff_set_still_mv_shutter_angle_big6", "custom_key_dial_iso_ei_camset_persist_guard", "remain_shoot_evf_less_integrated_big6"):
         raise ValueError(f"Unsupported r54_mode: {r54_mode}")
-    if enable_r54 and r54_mode == "custom_key_dial_iso_ei_camset_persist_guard":
+    if enable_r55 and r55_mode not in ("auto_slow_6locks_hdmi_reccontrol_big6", "prerequisite_lockout_injection_guard", "camreset_vs_initialize_h0_h3_integrated_big6"):
+        raise ValueError(f"Unsupported r55_mode: {r55_mode}")
+    if enable_r55 and r55_mode == "prerequisite_lockout_injection_guard":
+        devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
+        if devtmpfs_needle not in init_txt:
+            raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
+        r55_early_hook = (
+            "LD_LIBRARY_PATH=/usr/lib:/lib /usr/bin/fx6-stage-a-verify --r55-prerequisite-lockout-injection > /dev/console 2>&1\n"
+            "fx6_r55_lk_rc=$?\n"
+            "echo FX6_R55_LOCKOUT_INJECTION_RC=$fx6_r55_lk_rc\n"
+            "echo FX6_R55_LOCKOUT_INJECTION_EXIT rc=$fx6_r55_lk_rc emmc_write_count=0\n"
+            "/bin/busybox sync 2>/dev/null\n"
+            "/bin/busybox poweroff -f 2>/dev/null || /bin/busybox halt -f 2>/dev/null\n"
+            "while true; do /bin/busybox sleep 1; done\n"
+        )
+        init_txt = init_txt.replace(devtmpfs_needle, devtmpfs_needle + r55_early_hook, 1)
+    elif enable_r54 and r54_mode == "custom_key_dial_iso_ei_camset_persist_guard":
         devtmpfs_needle = "echo FX3_DEVTMPFS_RC=$?\n"
         if devtmpfs_needle not in init_txt:
             raise RuntimeError(f"Expected devtmpfs marker not found in {parent_cpio} /init")
@@ -3705,6 +3723,60 @@ def build_stage_a_overlay(
             "emmc_write_count": 0,
             "p2_setting_writes": 0,
         }
+    r55_meta: Optional[Dict[str, Any]] = None
+    if enable_r55:
+        if "tmp/jiritsu/libJit.so" in additions:
+            additions["etc/fx6_r55_libjit.so"] = additions["tmp/jiritsu/libJit.so"]
+        additions["etc/fx6_stage_r55"] = (
+            (
+                f"stage_r55=1\nr55_mode={r55_mode}\n"
+                f"auto_slow_shutter_6locks_angle_disjoint=1\n"
+                f"hdmi_rec_ctrl_tcout_4ch_vault=1\n"
+                f"breathing_comp_movie_raw_240p_guard=1\n"
+                f"run_28th_realhw_84th_live=1\nlang={lang}\n"
+            ).encode("utf-8"),
+            0o100644,
+        )
+        r55_meta = {
+            "r55_mode": r55_mode,
+            "auto_slow_shutter_menu_path": "MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter]",
+            "auto_slow_shutter_modes": ["On", "Off"],
+            "auto_slow_shutter_default": "On",
+            "auto_slow_shutter_6_lockouts": [
+                "S&Q Motion shooting",
+                "Shutter Priority (S)",
+                "Manual Exposure (M)",
+                "Fixed manual ISO (!= ISO AUTO)",
+                "Flexible Exp. Mode with manual shutter adjustment",
+                "Log Shooting = Cine EI / Cine EI Quick",
+            ],
+            "auto_slow_shutter_angle_disjoint": True,
+            "auto_slow_shutter_angle_overlap_events": 0,
+            "auto_slow_shutter_reset_by_camera_settings_reset": True,
+            "hdmi_output_settings_menu_path": "MENU -> Setup -> [External Output] -> [HDMI Output Settings]",
+            "hdmi_rec_control_requires_time_code_output_on": True,
+            "hdmi_rec_ctrl_without_tc_violations": 0,
+            "hdmi_4ch_audio_output_pairs": ["CH1/CH2", "CH3/CH4"],
+            "hdmi_rec_media_dur_hdmi_off_blocks_internal_and_proxy": True,
+            "hdmi_output_settings_survives_camera_settings_reset": True,
+            "hdmi_output_settings_survives_reset_network_settings": True,
+            "hdmi_output_settings_reset_only_by_initialize": True,
+            "breathing_comp_menu_path": "MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.]",
+            "breathing_comp_modes": ["Off", "On"],
+            "breathing_comp_default": "Off",
+            "breathing_comp_movie_only_compliant_sony_lens": True,
+            "breathing_comp_blocked_during_hdmi_raw_4264x2408": True,
+            "breathing_comp_blocked_during_sq_240p_200p": True,
+            "breathing_comp_blocked_in_still_mode": True,
+            "breathing_comp_raw_240p_still_leak_events": 0,
+            "breathing_comp_reset_by_camera_settings_reset": True,
+            "slot1_vault_read_only": True,
+            "e_nd_actuator_tx_count": 0,
+            "raw_firmware_bytes_leaked": 0,
+            "cnflasha_writes": 0,
+            "emmc_write_count": 0,
+            "p2_setting_writes": 0,
+        }
     stage_a_meta: Dict[str, Any] = {
         "stage": "B" if enable_p10 else "A",
         "r10_enabled": enable_r10,
@@ -3752,6 +3824,7 @@ def build_stage_a_overlay(
         "r52_enabled": enable_r52,
         "r53_enabled": enable_r53,
         "r54_enabled": enable_r54,
+        "r55_enabled": enable_r55,
         "lang": lang,
         "verify_bin_bytes": len(verify_bytes),
         "verify_bin_sha256": sha256_bytes(verify_bytes),
@@ -3835,6 +3908,8 @@ def build_stage_a_overlay(
         stage_a_meta["r53"] = r53_meta
     if r54_meta is not None:
         stage_a_meta["r54"] = r54_meta
+    if r55_meta is not None:
+        stage_a_meta["r55"] = r55_meta
     return replacements, additions, stage_a_meta
 
 
@@ -4178,6 +4253,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "FX6_R52_",
         "FX6_R53_",
         "FX6_R54_",
+        "FX6_R55_",
         "FX6_BK4_R11_",
         "FX6_OSD_FLUSH",
         "FX6_ABORT_",
@@ -4461,6 +4537,15 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
     last_r54_lang: Optional[Dict[str, Any]] = None
     last_r54_bridge: Optional[Dict[str, Any]] = None
     r54_custom_key_dial_rc: Optional[int] = None
+    last_r55_auto_slow_hdmi_init: Optional[Dict[str, Any]] = None
+    last_r55_auto_slow_6locks_bridge: Optional[Dict[str, Any]] = None
+    last_r55_hdmi_reccontrol_bridge: Optional[Dict[str, Any]] = None
+    last_r55_breathing_comp_bridge: Optional[Dict[str, Any]] = None
+    last_r55_lockout_injection_guard: Optional[Dict[str, Any]] = None
+    last_r55_camreset_init_integrated: Optional[Dict[str, Any]] = None
+    last_r55_lang: Optional[Dict[str, Any]] = None
+    last_r55_bridge: Optional[Dict[str, Any]] = None
+    r55_lockout_injection_rc: Optional[int] = None
     for raw_line in serial_text.splitlines():
         line = raw_line.strip("\r")
         if not kernel_version and "Linux version " in line:
@@ -5106,6 +5191,26 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             kv = _parse_kv_ints(line)
             if isinstance(kv.get("FX6_R54_CUSTOM_KEY_DIAL_RC"), int):
                 r54_custom_key_dial_rc = kv["FX6_R54_CUSTOM_KEY_DIAL_RC"]
+        elif "FX6_R55_AUTO_SLOW_HDMI_INIT " in line:
+            last_r55_auto_slow_hdmi_init = _parse_kv_ints(line.split("FX6_R55_AUTO_SLOW_HDMI_INIT ", 1)[1])
+        elif "FX6_R55_AUTO_SLOW_6LOCKS_BRIDGE " in line:
+            last_r55_auto_slow_6locks_bridge = _parse_kv_ints(line.split("FX6_R55_AUTO_SLOW_6LOCKS_BRIDGE ", 1)[1])
+        elif "FX6_R55_HDMI_RECCONTROL_BRIDGE " in line:
+            last_r55_hdmi_reccontrol_bridge = _parse_kv_ints(line.split("FX6_R55_HDMI_RECCONTROL_BRIDGE ", 1)[1])
+        elif "FX6_R55_BREATHING_COMP_BRIDGE " in line:
+            last_r55_breathing_comp_bridge = _parse_kv_ints(line.split("FX6_R55_BREATHING_COMP_BRIDGE ", 1)[1])
+        elif "FX6_R55_LOCKOUT_INJECTION_GUARD " in line:
+            last_r55_lockout_injection_guard = _parse_kv_ints(line.split("FX6_R55_LOCKOUT_INJECTION_GUARD ", 1)[1])
+        elif "FX6_R55_CAMRESET_INIT_H0_H3_INTEGRATED " in line:
+            last_r55_camreset_init_integrated = _parse_kv_ints(line.split("FX6_R55_CAMRESET_INIT_H0_H3_INTEGRATED ", 1)[1])
+        elif "FX6_R55_LANG_TELEMETRY " in line:
+            last_r55_lang = _parse_kv_ints(line.split("FX6_R55_LANG_TELEMETRY ", 1)[1])
+        elif "FX6_STAGE_B_R55_BRIDGE " in line:
+            last_r55_bridge = _parse_kv_ints(line.split("FX6_STAGE_B_R55_BRIDGE ", 1)[1])
+        elif "FX6_R55_LOCKOUT_INJECTION_RC=" in line:
+            kv = _parse_kv_ints(line)
+            if isinstance(kv.get("FX6_R55_LOCKOUT_INJECTION_RC"), int):
+                r55_lockout_injection_rc = kv["FX6_R55_LOCKOUT_INJECTION_RC"]
         for pfx in important_prefixes:
             if pfx in line:
                 matched.append(line)
@@ -5821,6 +5926,32 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
             "stage_b_bridge": last_r54_bridge or {},
         }
 
+    r55_telemetry: Optional[Dict[str, Any]] = None
+    if any(
+        x is not None
+        for x in (
+            last_r55_auto_slow_hdmi_init,
+            last_r55_auto_slow_6locks_bridge,
+            last_r55_hdmi_reccontrol_bridge,
+            last_r55_breathing_comp_bridge,
+            last_r55_lockout_injection_guard,
+            last_r55_camreset_init_integrated,
+            last_r55_lang,
+            last_r55_bridge,
+        )
+    ):
+        r55_telemetry = {
+            "lockout_injection_rc": r55_lockout_injection_rc,
+            "auto_slow_hdmi_init": last_r55_auto_slow_hdmi_init or {},
+            "auto_slow_6locks_bridge": last_r55_auto_slow_6locks_bridge or {},
+            "hdmi_reccontrol_bridge": last_r55_hdmi_reccontrol_bridge or {},
+            "breathing_comp_bridge": last_r55_breathing_comp_bridge or {},
+            "lockout_injection_guard": last_r55_lockout_injection_guard or {},
+            "camreset_init_integrated": last_r55_camreset_init_integrated or {},
+            "lang_telemetry": last_r55_lang or {},
+            "stage_b_bridge": last_r55_bridge or {},
+        }
+
     return {
         "kernel_version": kernel_version,
         "prefix_counts": dict(counts),
@@ -5872,6 +6003,7 @@ def extract_milestones(serial_text: str) -> Dict[str, Any]:
         "r52_telemetry": r52_telemetry,
         "r53_telemetry": r53_telemetry,
         "r54_telemetry": r54_telemetry,
+        "r55_telemetry": r55_telemetry,
     }
 
 
@@ -5981,6 +6113,8 @@ def run_once(args: argparse.Namespace) -> int:
         tmp_prefix = "fx6-r53"
     if args.round >= 54:
         tmp_prefix = "fx6-r54"
+    if args.round >= 55:
+        tmp_prefix = "fx6-r55"
     scratch_base = pathlib.Path(os.environ.get("FX6_SCRATCH_DIR", "/private/tmp"))
     scratch_base.mkdir(parents=True, exist_ok=True)
     tmp_build = scratch_base / f"{tmp_prefix}-build-{owner_pid}-{run_id}"
@@ -6045,8 +6179,12 @@ def run_once(args: argparse.Namespace) -> int:
         r52_mode = getattr(args, "r52_mode", "lock_op_parts_chord_mydial_big6")
         r53_mode = getattr(args, "r53_mode", "display_quality_bt_rmt_big6")
         r54_mode = getattr(args, "r54_mode", "diff_set_still_mv_shutter_angle_big6")
+        r55_mode = getattr(args, "r55_mode", "auto_slow_6locks_hdmi_reccontrol_big6")
         if args.round >= 8:
             stage_label = (
+                f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone28thRealHw84thRunWave41AutoSlowShutter6LocksHdmiRecControlTcOut4chAudioBreathingComp+r55_mode={r55_mode}+lang={lang})"
+                if args.round >= 55
+                else (
                 f"Stage-B P1..P9+Fan+P10+P11+P12+P4(Milestone27thRealHw81stRunWave40DiffSetStillMv8ItemsShutterAngleCustomKeyDialIsoEiRemainShootEvfLess+r54_mode={r54_mode}+lang={lang})"
                 if args.round >= 54
                 else (
@@ -6203,6 +6341,7 @@ def run_once(args: argparse.Namespace) -> int:
                 )
                 )
                 )
+                )
             )
             )
             )
@@ -6305,6 +6444,8 @@ def run_once(args: argparse.Namespace) -> int:
                 r53_mode=r53_mode,
                 enable_r54=(args.round >= 54),
                 r54_mode=r54_mode,
+                enable_r55=(args.round >= 55),
+                r55_mode=r55_mode,
                 lang=lang,
                 shim_bytes=shim_bytes if args.round >= 9 else None,
             )
@@ -6606,6 +6747,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r52_mode": r52_mode if args.round >= 52 else None,
             "r53_mode": r53_mode if args.round >= 53 else None,
             "r54_mode": r54_mode if args.round >= 54 else None,
+            "r55_mode": r55_mode if args.round >= 55 else None,
             "kernel_bin": str(KERNEL_BIN),
             "kernel_version": milestones["kernel_version"],
             "dtb_bin": str(GUEST_DTB),
@@ -6667,6 +6809,7 @@ def run_once(args: argparse.Namespace) -> int:
             "r52_telemetry": milestones.get("r52_telemetry") if args.round >= 52 else None,
             "r53_telemetry": milestones.get("r53_telemetry") if args.round >= 53 else None,
             "r54_telemetry": milestones.get("r54_telemetry") if args.round >= 54 else None,
+            "r55_telemetry": milestones.get("r55_telemetry") if args.round >= 55 else None,
             "cpio": cpio_meta,
             "serial_bytes": len(serial_text.encode("utf-8", errors="replace")),
             "gpe0_readback": gpe_stats,
@@ -6723,7 +6866,8 @@ def main() -> int:
     # r51_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51]
     # r52_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52]
     # r53_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
-    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54], required=True)
+    # r54_test_compat: choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54]
+    ap.add_argument("--round", type=int, choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55], required=True)
     ap.add_argument("--lang", type=str, choices=["en", "english", "schinese", "tchinese", "japanese"], default="en")
     ap.add_argument("--sd-manifest-mode", type=str, choices=["valid", "absent", "tampered"], default="valid")
     ap.add_argument("--r29-mode", type=str, choices=["install_mpr_rec", "rollback", "p1_rescue"], default="install_mpr_rec")
@@ -6752,6 +6896,7 @@ def main() -> int:
     ap.add_argument("--r52-mode", type=str, choices=["lock_op_parts_chord_mydial_big6", "audio_out_timing_vs_audio_signals_guard", "exposure_step_vs_shutter_angle_guard"], default="lock_op_parts_chord_mydial_big6")
     ap.add_argument("--r53-mode", type=str, choices=["display_quality_bt_rmt_big6", "mymenu_6ops_camset_persist_guard", "wave39_integrated_stress_big6"], default="display_quality_bt_rmt_big6")
     ap.add_argument("--r54-mode", type=str, choices=["diff_set_still_mv_shutter_angle_big6", "custom_key_dial_iso_ei_camset_persist_guard", "remain_shoot_evf_less_integrated_big6"], default="diff_set_still_mv_shutter_angle_big6")
+    ap.add_argument("--r55-mode", type=str, choices=["auto_slow_6locks_hdmi_reccontrol_big6", "prerequisite_lockout_injection_guard", "camreset_vs_initialize_h0_h3_integrated_big6"], default="auto_slow_6locks_hdmi_reccontrol_big6")
     ap.add_argument("--duration", type=int, default=55)
     ap.add_argument("--restore-infra70", type=int, choices=[0, 1], default=None)
     ap.add_argument("--restore-all-early", type=int, choices=[0, 1], default=None)

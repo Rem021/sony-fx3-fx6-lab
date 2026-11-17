@@ -2787,10 +2787,219 @@ def _cmd_preflight_diffset_customkey_autoslow_and_apsc(
     return 0 if ok else 2
 
 
+def _cmd_preflight_file_settings_gamma_assist_focus_mag_and_videolight(
+    fx6_lib_dir: Path,
+    fx3_modules_dir: Path,
+    force_clean_room: bool,
+    simulate_bench_dry_run: bool,
+    json_output: bool,
+    markdown_out: Optional[Path],
+    output_path: Optional[Path],
+    reset_action: str,
+    movie_file_number: str,
+    movie_file_name_format: str,
+    camera_id: str,
+    reel_number: int,
+    camera_position: str,
+    title_name: str,
+    custom_movie_folder_requested: bool,
+    still_file_number: str,
+    still_file_prefix: str,
+    still_folder_name: str,
+    slot1_contains_tier0_dump: bool,
+    still_forced_file_number_reset_slot: Optional[int],
+    still_create_new_folder_slot: Optional[int],
+    auto_review: str,
+    tc_format: str,
+    rec_frame_rate_fps: float,
+    video_system: str,
+    tc_run: str,
+    tc_make: str,
+    tcub_disp_setting: str,
+    log_shooting_mode: str,
+    gamma_display_assist: str,
+    gamma_disp_assist_type: str,
+    display_lut: str,
+    select_lut: str,
+    auto_magnifier_in_mf: str,
+    focus_magnif_time: str,
+    initial_focus_mag_still: str,
+    initial_focus_mag_movie: str,
+    af_in_focus_mag: str,
+    hdmi_raw_output: bool,
+    focus_magnifier_active: bool,
+    peaking_display: str,
+    peaking_level: str,
+    peaking_color: str,
+    af_illuminator: str,
+    shoot_mode: str,
+    focus_mode: str,
+    creators_app_location_linkage: str,
+    airplane_mode: str,
+    bluetooth_function: str,
+    video_light_mode: str,
+    mi_shoe_5v_current_ma: int,
+    hdmi_resolution: str,
+    rec_media_dur_hdmi_output: str,
+    power_save_start_time: str,
+    auto_power_off_temp: str,
+    power_source: str,
+    air_gapped_battery_bench: bool,
+    power_save_deactivation_conditions: List[str],
+    headless_monitor_power_linkage_mode: str,
+    selected_lang: str,
+    volume_settings: int,
+    xlr_h1_attached: bool,
+    four_ch_audio_monitoring: str,
+    delete_confirm: str,
+    delete_pressing_twice: str,
+    slot1_delete_requested: bool,
+    slot1_format_requested: bool,
+    receipt_a: Optional[Path],
+    receipt_b: Optional[Path],
+    model_id: Optional[str],
+    body_fw: str,
+    body_serial: Optional[str],
+    emmc_cid: Optional[str],
+) -> int:
+    from .realhw_card_insert_readiness_verifier import (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        TARGET_MODEL_ID_INT,
+        build_default_h0_baselines,
+    )
+    from .realhw_file_settings_gamma_assist_focus_mag_and_videolight_verifier import (
+        P275_GO_NO_GO_FILE_SETTINGS_GAMMA_ASSIST_FOCUS_MAG_VIDEOLIGHT_VERIFIED,
+        evaluate_realhw_file_settings_gamma_assist_focus_mag_and_videolight_readiness,
+        render_phase275_markdown,
+        verify_phase275_report,
+    )
+
+    parsed_model_id = int(model_id, 0) if model_id else TARGET_MODEL_ID_INT
+    h0_a = None
+    h0_b = None
+    if (receipt_a is not None or receipt_b is not None) and body_serial and emmc_cid:
+        h0_a = build_default_h0_baselines(body_serial=body_serial, emmc_cid=emmc_cid)
+        h0_b = dict(h0_a)
+
+    rep = evaluate_realhw_file_settings_gamma_assist_focus_mag_and_videolight_readiness(
+        simulate_bench_dry_run=simulate_bench_dry_run,
+        force_clean_room=True if force_clean_room else None,
+        fx6_lib_dir=fx6_lib_dir,
+        fx3_modules_dir=fx3_modules_dir,
+        body_model_id=parsed_model_id,
+        body_fw=body_fw,
+        reset_action=reset_action,
+        movie_file_number=movie_file_number,
+        movie_file_name_format=movie_file_name_format,
+        camera_id=camera_id,
+        reel_number=reel_number,
+        camera_position=camera_position,
+        title_name=title_name,
+        custom_movie_folder_requested=custom_movie_folder_requested,
+        still_file_number=still_file_number,
+        still_file_prefix=still_file_prefix,
+        still_folder_name=still_folder_name,
+        slot1_contains_tier0_dump=slot1_contains_tier0_dump,
+        still_forced_file_number_reset_slot=still_forced_file_number_reset_slot,
+        still_create_new_folder_slot=still_create_new_folder_slot,
+        auto_review=auto_review,
+        tc_format=tc_format,
+        rec_frame_rate_fps=rec_frame_rate_fps,
+        video_system=video_system,
+        tc_run=tc_run,
+        tc_make=tc_make,
+        tcub_disp_setting=tcub_disp_setting,
+        log_shooting_mode=log_shooting_mode,
+        gamma_display_assist=gamma_display_assist,
+        gamma_disp_assist_type=gamma_disp_assist_type,
+        display_lut=display_lut,
+        select_lut=select_lut,
+        auto_magnifier_in_mf=auto_magnifier_in_mf,
+        focus_magnif_time=focus_magnif_time,
+        initial_focus_mag_still=initial_focus_mag_still,
+        initial_focus_mag_movie=initial_focus_mag_movie,
+        af_in_focus_mag=af_in_focus_mag,
+        hdmi_raw_output=hdmi_raw_output,
+        focus_magnifier_active=focus_magnifier_active,
+        peaking_display=peaking_display,
+        peaking_level=peaking_level,
+        peaking_color=peaking_color,
+        af_illuminator=af_illuminator,
+        shoot_mode=shoot_mode,
+        focus_mode=focus_mode,
+        creators_app_location_linkage=creators_app_location_linkage,
+        airplane_mode=airplane_mode,
+        bluetooth_function=bluetooth_function,
+        video_light_mode=video_light_mode,
+        mi_shoe_5v_current_ma=mi_shoe_5v_current_ma,
+        hdmi_resolution=hdmi_resolution,
+        rec_media_dur_hdmi_output=rec_media_dur_hdmi_output,
+        power_save_start_time=power_save_start_time,
+        auto_power_off_temp=auto_power_off_temp,
+        power_source=power_source,
+        air_gapped_battery_bench=air_gapped_battery_bench,
+        power_save_deactivation_conditions=tuple(power_save_deactivation_conditions),
+        headless_monitor_power_linkage_mode=headless_monitor_power_linkage_mode,
+        selected_lang=selected_lang,
+        volume_settings=volume_settings,
+        xlr_h1_attached=xlr_h1_attached,
+        four_ch_audio_monitoring=four_ch_audio_monitoring,
+        delete_confirm=delete_confirm,
+        delete_pressing_twice=delete_pressing_twice,
+        slot1_delete_requested=slot1_delete_requested,
+        slot1_format_requested=slot1_format_requested,
+        receipt_a_path=receipt_a,
+        receipt_b_path=receipt_b,
+        body_serial=body_serial,
+        emmc_cid=emmc_cid,
+        h0_baselines_a=h0_a,
+        h0_baselines_b=h0_b,
+    )
+    rendered = rep.to_deterministic_json(indent=2)
+    if output_path is not None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+    if markdown_out is not None:
+        markdown_out.parent.mkdir(parents=True, exist_ok=True)
+        markdown_out.write_text(render_phase275_markdown(rep), encoding="utf-8")
+    v_res = verify_phase275_report(rep.to_dict())
+    ok = v_res.valid and rep.go_no_go in (
+        GO_NO_GO_DRY_RUN_SIMULATED_READY,
+        P275_GO_NO_GO_FILE_SETTINGS_GAMMA_ASSIST_FOCUS_MAG_VIDEOLIGHT_VERIFIED,
+    )
+    try:
+        if json_output:
+            sys.stdout.write(rendered)
+        else:
+            summary = (
+                f"OVERALL={rep.overall_status} "
+                f"go_no_go={rep.go_no_go} "
+                f"mode={rep.verification_mode} "
+                f"simulate_dry_run={rep.simulate_bench_dry_run} "
+                f"check_groups={rep.check_groups_passed}/{rep.check_group_count} "
+                f"tier0={rep.tier0_receipt_verified} "
+                f"h0_eq_h3={rep.h0_equals_h3_count}/{rep.h0_h3_surface_count} "
+                f"ready_attach={rep.overall_ready_for_hardware_attach} "
+                f"live_attach_auth={rep.hardware_live_attachment_authorized} "
+                f"emmc_writes_auth={rep.persistent_emmc_writes_authorized} "
+                f"spi_nor_auth={rep.spi_nor_write_authorized} "
+                f"el3_tx_auth={rep.el3_payload_transmit_authorized} "
+                f"usb_pkts={rep.usb_packets_transmitted} "
+                f"passive_tx={rep.passive_tx_bytes_emitted} "
+                f"leaked_bytes={rep.raw_firmware_bytes_leaked} "
+                f"report_sha256={rep.report_sha256[:16]}...\n"
+            )
+            sys.stdout.write(summary)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        pass
+    return 0 if ok else 2
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx6_closure",
-        description="FX6-on-FX3 Phase 264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
+        description="FX6-on-FX3 Phase 264/254/233/221/209/193/175/147 Real-Hardware Master Gates, Phase 275/261/248/227/216/204/186/154 Bench & Pre-Shoot Readiness Verifiers, Phase 130/110/90 Milestone Master Gates, U1-U6 Blueprint Closure, p1 Recovery Bridge, Atomic Stage-A/B Boot Orchestrator, Stage-A Kmod/Dev/ELF64 ABI Closure, Peripheral UX/Audio Closure, AP<->Stock-CP Imaging/IBIS Closure, Unified Stage-B Candidate Integrator, Post-Trial Forensic Auditor, Stage-B R0..R6 Rehearsal, Unified Stage-B Release Dossier v3 & Capstone 22-Gate Verifier CLI",
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
@@ -2844,6 +3053,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         ("verify-milestone-254", "Verify Grand Milestone Phase 254 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=96-Gate + >=41 Recovery + >=45 Auditors + >=47 VM + Quintuple Bench Preflights Ph186/Ph204/Ph216/Ph227/Ph248 + FX3 7.02 QEMU R28..R50+, realhw_milestone254_master_gate_v1)"),
         ("preflight-diffset-customkey-autoslow-and-apsc", "Run Phase 261 6th physical bench & pre-shoot readiness verifier (Waves 40-43 ilc/2210: Different Set 8-item transitions & Shutter Angle override + Custom Key 3-domain ISO/EI Slot-1 O_RDONLY firewall & EVF-less FX3, Auto Slow Shutter 6-lockout & HDMI REC Control <- TC Output + Breathing Comp., APS-C S35 12.1MP 4K/RAW lockout + Face/Eye AF clean-HDMI & Version read-only, and Release w/o Card/Lens zero-E-ND + v7.02 Audio 5-item DISP meter + Copyright 46-char PII hygiene)"),
         ("verify-milestone-264", "Verify Grand Milestone Phase 264 6-Pillar Real-Hardware ILME-FX3 Ver. 7.02 Master Gate (>=102-Gate + >=44 Recovery + >=45 Auditors + >=50 VM + Sextuple Bench Preflights Ph186/Ph204/Ph216/Ph227/Ph248/Ph261 + FX3 7.02 QEMU R28..R52+, realhw_milestone264_master_gate_v1)"),
+        ("preflight-file-settings-gamma-assist-focus-mag-and-videolight", "Run Phase 275 7th physical bench readiness verifier (Waves 44-46 ilc/2210: Movie CamID+Reel# 37-char & Still 3-char DSC prefix / Auto Review Off / 6-item TC/UB persistence, Gamma Display Assist Log lockout & LCD-only clean-HDMI vs Display LUT + Select LUT User1..16, 4.0x Auto Magnifier in MF / Peaking / AF Illuminator / Zero-RF Area/Date/Time / MI-Shoe 5V <= 900mA Video Light / Log 1080p HDMI Resolution, and 2-item Power Setting Option vs appFw Power Save by Monitor 4-mode split / BK_LANG 0x02cf019c 34 vs 29 / Volume 0..15 & 5-route 4ch Monitoring / Delete confirm. Cancel-first + Slot-1 vault guard)"),
     ):
         p = sub.add_parser(cmd_name, help=help_msg)
         if cmd_name not in ("verify-post-trial", "verify-realhw-jiritsu-tier0"):
@@ -2867,10 +3077,80 @@ def main(argv: Optional[List[str]] = None) -> int:
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force clean-room synthetic offline verification mode")
         if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "rehearse-stage-b-closed-loop", "verify-sd-stageb-bundle-uninstaller"):
             p.add_argument("--lang", default="en", choices=["en", "schinese", "tchinese", "japanese"], help="Select Stage-B BK_LANG (0x02cf019c) shadow language")
-        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264"):
+        if cmd_name in ("verify-stage-b-ram-overlay", "verify-stage-b-candidate", "audit-stage-b-post-trial", "rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-realhw-jiritsu-tier0", "verify-sd-stageb-bundle-uninstaller", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight"):
             p.add_argument("--json", action="store_true", help="Emit full deterministic JSON report to stdout")
-        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264"):
+        if cmd_name in ("rehearse-stage-b-closed-loop", "build-stage-b-dossier-v3", "verify-stage-b-capstone", "verify-milestone-90", "verify-milestone-110", "verify-milestone-130", "verify-milestone-147", "preflight-realhw-bench", "verify-milestone-175", "preflight-card-insert", "verify-milestone-193", "preflight-bench-cable-fan-slot1", "verify-milestone-209", "preflight-hdmi-proxy-desqueeze-and-simult", "verify-milestone-221", "preflight-pixelmap-ntscpal-powersave-and-autotemp", "verify-milestone-233", "preflight-imagedb-touch-shoeaudio-and-lockop", "verify-milestone-254", "preflight-diffset-customkey-autoslow-and-apsc", "verify-milestone-264", "preflight-file-settings-gamma-assist-focus-mag-and-videolight"):
             p.add_argument("--markdown-out", type=Path, default=None, help="Optional Markdown report path to write certificate/dossier")
+        if cmd_name == "preflight-file-settings-gamma-assist-focus-mag-and-videolight":
+            p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 275 preflight report")
+            p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
+            p.add_argument("--simulate-bench-dry-run", "--simulate-ready-bench", dest="simulate_bench_dry_run", action="store_true", help="Synthesize deterministic dry-run Tier-0 dual-media receipts without authorizing live hardware attachment")
+            p.add_argument("--reset-action", default="NONE", help="Reset operation modeled: NONE, CAMERA_SETTINGS_RESET, RESET_NETWORK_SET, INITIALIZE")
+            p.add_argument("--movie-file-number", default="SERIES", help="Movie [File Number]: SERIES or RESET")
+            p.add_argument("--movie-file-name-format", default="CAM_ID_PLUS_REEL", help="Movie [File Name Format]: STANDARD, CAM_ID_PLUS_REEL, TITLE, DATE_PLUS_TITLE, TITLE_PLUS_DATE")
+            p.add_argument("--camera-id", default="A", help="Movie [Camera ID]: A..Z")
+            p.add_argument("--reel-number", type=int, default=1, help="Movie [Reel Number]: 1..999")
+            p.add_argument("--camera-position", default="C", help="Movie [Camera Position]: C, L, R")
+            p.add_argument("--title-name", default="C", help="Movie [Title Name Settings] <= 37 ASCII chars (default C)")
+            p.add_argument("--custom-movie-folder-requested", action="store_true", help="Request custom movie folder outside PRIVATE/M4ROOT/CLIP (blocked)")
+            p.add_argument("--still-file-number", default="SERIES", help="Still [File Number]: SERIES or RESET")
+            p.add_argument("--still-file-prefix", default="DSC", help="Still 3-char prefix (leading _ rejected, default DSC)")
+            p.add_argument("--still-folder-name", default="STANDARD_FORM", help="Still [Folder Name]: STANDARD_FORM or DATE_FORM")
+            p.add_argument("--no-slot1-tier0-dump", dest="slot1_contains_tier0_dump", action="store_false", help="Indicate Slot 1 does NOT hold a Tier-0 forensic dump")
+            p.add_argument("--still-forced-file-number-reset-slot", type=int, default=None, help="Target slot for [Forced File Number Reset] (1 blocked when Slot-1 holds vault)")
+            p.add_argument("--still-create-new-folder-slot", type=int, default=None, help="Target slot for [Create New Folder] (1 blocked when Slot-1 holds vault)")
+            p.add_argument("--auto-review", default="OFF", help="[Auto Review]: OFF, 2_SEC, 5_SEC, 10_SEC")
+            p.add_argument("--tc-format", default="NDF", help="[TC Format]: NDF or DF (NDF forced on 24.00p/PAL)")
+            p.add_argument("--rec-fps", dest="rec_frame_rate_fps", type=float, default=23.98, help="Recording frame rate in fps (default 23.98)")
+            p.add_argument("--video-system", default="NTSC", help="Video system: NTSC or PAL")
+            p.add_argument("--tc-run", default="FREE_RUN", help="[Time Code Run]: FREE_RUN or REC_RUN")
+            p.add_argument("--tc-make", default="PRESET", help="[Time Code Make]: PRESET or REGENERATE")
+            p.add_argument("--tcub-disp-setting", default="TC", help="[TC/UB Disp. Setting]: TC or UB")
+            p.add_argument("--log-shooting-mode", default="CINE_EI", help="[Log Shooting]: OFF, CINE_EI_QUICK, CINE_EI, FLEXIBLE_ISO")
+            p.add_argument("--gamma-display-assist", default="OFF", help="[Gamma Display Assist]: OFF or ON (locked OFF under Log Shooting)")
+            p.add_argument("--gamma-disp-assist-type", default="AUTO", help="[Gamma Disp. Assist Typ.]: AUTO, S_LOG3_TO_709_800PCT, HLG_BT2020, HLG_709")
+            p.add_argument("--display-lut", default="ON", help="[Display LUT]: ON or OFF")
+            p.add_argument("--select-lut", default="s709", help="[Select LUT]: S-Log3, s709, 709(800%%), User1..User16")
+            p.add_argument("--auto-magnifier-in-mf", default="ON", help="[Auto Magnifier in MF]: ON or OFF")
+            p.add_argument("--focus-magnif-time", default="NO_LIMIT", help="[Focus Magnif. Time]: NO_LIMIT, 2_SEC, 5_SEC")
+            p.add_argument("--initial-focus-mag-still", default="X1_0", help="Still [Initial Focus Mag.]: X1_0 or X4_0")
+            p.add_argument("--initial-focus-mag-movie", default="X1_0", help="Movie [Initial Focus Mag.]: X1_0 or X4_0")
+            p.add_argument("--af-in-focus-mag", default="ON", help="[AF in Focus Mag.]: ON or OFF")
+            p.add_argument("--hdmi-raw-output", action="store_true", help="Enable HDMI RAW Output (locks out Focus Magnifier & 2160P)")
+            p.add_argument("--focus-magnifier-active", action="store_true", help="Simulate Focus Magnifier actively engaged")
+            p.add_argument("--peaking-display", default="OFF", help="[Peaking Display]: OFF or ON")
+            p.add_argument("--peaking-level", default="MID", help="[Peaking Level]: HIGH, MID, LOW")
+            p.add_argument("--peaking-color", default="WHITE", help="[Peaking Color]: RED, YELLOW, BLUE, WHITE")
+            p.add_argument("--af-illuminator", default="AUTO", help="[AF Illuminator]: AUTO or OFF (still-only)")
+            p.add_argument("--shoot-mode", default="MOVIE", help="[Shoot Mode]: PHOTO, MOVIE, S_AND_Q")
+            p.add_argument("--focus-mode", default="MF", help="[Focus Mode]: AF_S, AF_C, DMF, MF")
+            p.add_argument("--creators-app-location-linkage", default="OFF", help="Creators' App [Location Information Linkage]: OFF or ON")
+            p.add_argument("--airplane-mode", default="ON", help="[Airplane Mode]: ON or OFF")
+            p.add_argument("--bluetooth-function", default="OFF", help="[Bluetooth Function]: OFF or ON")
+            p.add_argument("--video-light-mode", default="POWER_LINK", help="[Video Light Mode]: POWER_LINK, REC_LINK, REC_LINK_AND_STBY, AUTO")
+            p.add_argument("--mi-shoe-5v-current-ma", type=int, default=0, help="MI-Shoe 5V load current in mA (<= 900mA)")
+            p.add_argument("--hdmi-resolution", default="AUTO", help="[HDMI Resolution]: AUTO, 2160P, 1080P, 1080I")
+            p.add_argument("--rec-media-dur-hdmi", dest="rec_media_dur_hdmi_output", default="ON", help="[Rec. Media dur HDMI Output]: ON, OFF, OFF_HDMI_ONLY")
+            p.add_argument("--power-save-start-time", default="OFF", help="[Power Save Start Time]: OFF, 30_MIN, 5_MIN, 2_MIN, 1_MIN, 10_SEC")
+            p.add_argument("--auto-power-off-temp", default="HIGH", help="[Auto Power OFF Temp.]: STANDARD or HIGH")
+            p.add_argument("--power-source", default="INTERNAL_NP_FZ100", help="Power source: INTERNAL_NP_FZ100, USB_PD_BODY, DC_C1_COUPLER")
+            p.add_argument("--non-airgapped-bench", dest="air_gapped_battery_bench", action="store_false", help="Indicate bench is not air-gapped on battery")
+            p.add_argument("--power-save-deactivation", dest="power_save_deactivation_conditions", action="append", default=[], help="Active [Power Save Start Time] deactivation condition from the 9 documented conditions")
+            p.add_argument("--headless-monitor-power-linkage-mode", default="DOES_NOT_LINK", help="appFw [Power Save by Monitor] headless mode: DOES_NOT_LINK or OPEN_RETURN")
+            p.add_argument("--lang", dest="selected_lang", default="en", choices=["en", "japanese", "tchinese", "schinese"], help="BK_LANG (0x02cf019c) language selection")
+            p.add_argument("--volume-settings", type=int, default=7, help="[Volume Settings] 0..15 (default 7)")
+            p.add_argument("--xlr-h1-attached", action="store_true", help="Indicate XLR-H1 top handle is attached")
+            p.add_argument("--four-ch-audio-monitoring", default="CH1_CH2", help="[4ch Audio Monitoring]: CH1_CH2, CH3_CH4, CH1_3_CH2_4, CH1_CH1, CH2_CH2")
+            p.add_argument("--delete-confirm", default="CANCEL_FIRST", help="[Delete confirm.]: CANCEL_FIRST or DELETE_FIRST")
+            p.add_argument("--delete-pressing-twice", default="OFF", help="[Delete Pressing Twice]: OFF or ON")
+            p.add_argument("--slot1-delete-requested", action="store_true", help="Attempt Slot-1 Tier-0 vault file delete (hard-blocked)")
+            p.add_argument("--slot1-format-requested", action="store_true", help="Attempt Slot-1 Tier-0 vault format (hard-blocked)")
+            p.add_argument("--receipt-a", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy A")
+            p.add_argument("--receipt-b", type=Path, default=None, help="Path to Tier-0 528-byte FX3RCPT1 receipt Copy B (distinct st_dev)")
+            p.add_argument("--model-id", default=None, help="Expected Sony PRODUCT_MODEL hex/int (default 0x91030080)")
+            p.add_argument("--body-fw", default="7.02", help="Target FX3 body firmware version (7.02)")
+            p.add_argument("--body-serial", default=None, help="Target FX3 body serial identifier")
+            p.add_argument("--emmc-cid", default=None, help="Target FX3 128-bit eMMC CID hex identifier")
         if cmd_name == "preflight-diffset-customkey-autoslow-and-apsc":
             p.add_argument("--output", "--out", dest="output", type=Path, default=None, help="Optional JSON file path to write Phase 261 preflight report")
             p.add_argument("--force-clean-room", "--clean-room", dest="force_clean_room", action="store_true", help="Force deterministic clean-room synthetic verification mode")
@@ -3852,6 +4132,82 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.json,
             args.markdown_out,
             args.output,
+        )
+    if args.cmd == "preflight-file-settings-gamma-assist-focus-mag-and-videolight":
+        return _cmd_preflight_file_settings_gamma_assist_focus_mag_and_videolight(
+            args.fx6_lib_dir,
+            args.fx3_modules_dir,
+            args.force_clean_room,
+            args.simulate_bench_dry_run,
+            args.json,
+            args.markdown_out,
+            args.output,
+            args.reset_action,
+            args.movie_file_number,
+            args.movie_file_name_format,
+            args.camera_id,
+            args.reel_number,
+            args.camera_position,
+            args.title_name,
+            args.custom_movie_folder_requested,
+            args.still_file_number,
+            args.still_file_prefix,
+            args.still_folder_name,
+            args.slot1_contains_tier0_dump,
+            args.still_forced_file_number_reset_slot,
+            args.still_create_new_folder_slot,
+            args.auto_review,
+            args.tc_format,
+            args.rec_frame_rate_fps,
+            args.video_system,
+            args.tc_run,
+            args.tc_make,
+            args.tcub_disp_setting,
+            args.log_shooting_mode,
+            args.gamma_display_assist,
+            args.gamma_disp_assist_type,
+            args.display_lut,
+            args.select_lut,
+            args.auto_magnifier_in_mf,
+            args.focus_magnif_time,
+            args.initial_focus_mag_still,
+            args.initial_focus_mag_movie,
+            args.af_in_focus_mag,
+            args.hdmi_raw_output,
+            args.focus_magnifier_active,
+            args.peaking_display,
+            args.peaking_level,
+            args.peaking_color,
+            args.af_illuminator,
+            args.shoot_mode,
+            args.focus_mode,
+            args.creators_app_location_linkage,
+            args.airplane_mode,
+            args.bluetooth_function,
+            args.video_light_mode,
+            args.mi_shoe_5v_current_ma,
+            args.hdmi_resolution,
+            args.rec_media_dur_hdmi_output,
+            args.power_save_start_time,
+            args.auto_power_off_temp,
+            args.power_source,
+            args.air_gapped_battery_bench,
+            args.power_save_deactivation_conditions,
+            args.headless_monitor_power_linkage_mode,
+            args.selected_lang,
+            args.volume_settings,
+            args.xlr_h1_attached,
+            args.four_ch_audio_monitoring,
+            args.delete_confirm,
+            args.delete_pressing_twice,
+            args.slot1_delete_requested,
+            args.slot1_format_requested,
+            args.receipt_a,
+            args.receipt_b,
+            args.model_id,
+            args.body_fw,
+            args.body_serial,
+            args.emmc_cid,
         )
     return 2
 

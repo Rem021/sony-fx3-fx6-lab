@@ -162,6 +162,11 @@ from .realhw_focus_mag_datetime_videolight_hdmires_and_110gate_guard import (
     evaluate_g109_focus_mag_peaking_af_illuminator_guard,
     evaluate_g110_area_datetime_videolight_hdmires_guard,
 )
+from .realhw_power_save_monitor_language_volume_delete_and_112gate_guard import (
+    evaluate_112gate_preflight,
+    evaluate_g111_power_save_monitor_and_language_guard,
+    evaluate_g112_volume_4chmon_delete_confirm_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3070,6 +3075,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G110 gates can be rehearsed offline",
     )
     p_110.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 125. verify-power-save-monitor-language-guard
+    p_g111 = sub.add_parser(
+        "verify-power-save-monitor-language-guard",
+        aliases=["verify-g111-power-save-monitor-language"],
+        help="Verify Gate G111: [Power Save by Monitor] appFw.so 4-Mode vs ILME-FX3 2-Item [Power Setting Option], [Power Save Start Time] 9-Deactivation Bench Guard, and [Language] BK_LANG 34-vs-29 Parity",
+    )
+    p_g111.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g111.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g111.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g111.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 126. verify-volume-4chmon-delete-confirm-guard
+    p_g112 = sub.add_parser(
+        "verify-volume-4chmon-delete-confirm-guard",
+        aliases=["verify-g112-volume-4chmon-delete-confirm"],
+        help="Verify Gate G112: [Volume Settings] 0..15 Default 7, [4ch Audio Monitoring] 5 Routes vs HDMI Output, and [Delete confirm.] Cancel First + Slot-1 Vault Delete/Format Firewall",
+    )
+    p_g112.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g112.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g112.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g112.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 127. verify-112-gates
+    p_112 = sub.add_parser(
+        "verify-112-gates",
+        help="Run Phase 273 Unified 112-Gate Master Safety Preflight Engine (G01..G112)",
+    )
+    p_112.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_112.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_112.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G112 gates can be rehearsed offline",
+    )
+    p_112.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -6192,6 +6283,107 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_110_gates_verified if args.dry_run_simulated else report.offline_107_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-power-save-monitor-language-guard",
+        "verify-g111-power-save-monitor-language",
+    ):
+        verdict, res = evaluate_g111_power_save_monitor_and_language_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.power_save_monitor_language_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} fx3_mon_ui={guard['fx3_ui_exposes_power_save_by_monitor']}"
+                f"(items={len(guard['power_setting_option_items'])},spoof={guard['power_save_monitor_ui_spoof_events']},"
+                f"appfw_modes={len(guard['appfw_monitor_power_linkage_modes'])}) "
+                f"start_time={guard['effective_post_reset_power_save_start_time']}"
+                f"(cond9={len(guard['nine_deactivation_conditions'])},idle_sleep={guard['battery_bench_idle_sleep_events']}) "
+                f"lang={guard['effective_post_reset_language']}"
+                f"(bk={guard['bk_lang_property_id_hex']},fx3={guard['fx3_language_count']},fx6={guard['fx6_language_count']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-volume-4chmon-delete-confirm-guard",
+        "verify-g112-volume-4chmon-delete-confirm",
+    ):
+        verdict, res = evaluate_g112_volume_4chmon_delete_confirm_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.volume_4chmon_delete_confirm_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} vol={guard['effective_post_reset_volume_setting']}"
+                f"(xlr_fb={guard['xlr_acoustic_feedback_events']}) "
+                f"mon4ch={guard['effective_post_reset_4ch_audio_monitoring']}"
+                f"(hp_ch={guard['headphone_35mm_output_channels']},hdmi={guard['hdmi_4ch_audio_output']}) "
+                f"del_conf={guard['effective_post_reset_delete_confirm']}"
+                f"(twice={guard['effective_post_reset_delete_pressing_twice']},"
+                f"slot1_del={guard['slot1_vault_delete_events']},slot1_fmt_lock={guard['slot1_format_hard_locked']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-112-gates":
+        report = evaluate_112gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/112 "
+                f"g111_to_g112_all_passed={report.g111_to_g112_all_passed} "
+                f"all_112_gates_verified={report.all_112_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_112_gates_verified if args.dry_run_simulated else report.offline_109_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -139,6 +139,12 @@ from .realhw_47pillar_focus_mag_datetime_videolight_hdmires_vault_verifier impor
     verify_47pillar_recovery_suite,
     verify_focus_mag_datetime_videolight_hdmires_and_vault,
 )
+from .realhw_48pillar_power_save_monitor_language_volume_delete_vault_verifier import (
+    P277_ENV_CLEAN_ROOM_TEST,
+    run_pillar48_standalone_suite,
+    verify_48pillar_recovery_suite,
+    verify_power_save_monitor_language_volume_delete_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -492,6 +498,14 @@ def main():
     p272_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p272_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p272_master.add_argument('--out', help='optional exclusive new output directory for 47pillar-recovery-master-report.json')
+    p277_p48 = sub.add_parser('verify-power-save-monitor-language-volume-delete-vault', help='Phase 277 Pillar 48 Power Save by Monitor reality split & Power Save Start Time 9-condition recovery guard, Language BK_LANG 4-language Stage-B parity, Volume Settings 0..15 + XLR-H1 feedback guard, 4ch Audio Monitoring 5 routes, Delete confirm. Cancel-first & Slot-1 vault delete/format firewall verifier')
+    p277_p48.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p277_p48.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p277_p48.add_argument('--out', help='optional exclusive new output directory for pillar48-power-save-monitor-language-volume-delete-vault-report.json')
+    p277_master = sub.add_parser('verify-48pillar-recovery', help='Phase 277 unified 48/48 real-hardware recovery master aggregator (Pillars 1..47 + Pillar 48)')
+    p277_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p277_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p277_master.add_argument('--out', help='optional exclusive new output directory for 48pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -2920,6 +2934,94 @@ def main():
                     f"unbuffered_battery_pull_events={report.unbuffered_battery_pull_events} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_47pillar_sha256={report.master_47pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-power-save-monitor-language-volume-delete-vault':
+            report = run_pillar48_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'pillar48-power-save-monitor-language-volume-delete-vault-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_48a={report.pillar_48a_power_save_monitor_language_vault.scenarios_passed}/{report.pillar_48a_power_save_monitor_language_vault.scenarios_total} "
+                    f"pillar_48b={report.pillar_48b_volume_4ch_mon_delete_confirm_slot1_vault.scenarios_passed}/{report.pillar_48b_volume_4ch_mon_delete_confirm_slot1_vault.scenarios_total} "
+                    f"fx3_ui_exposes_power_save_by_monitor={report.fx3_ui_exposes_power_save_by_monitor} "
+                    f"legacy_power_save_monitor_spoof_events={report.legacy_power_save_monitor_spoof_events} "
+                    f"unsafe_power_save_sleep_interference_events={report.unsafe_power_save_sleep_interference_events} "
+                    f"bk_lang_parity_drift_events={report.bk_lang_parity_drift_events} "
+                    f"stage_b_4lang_uxc_ltt_drift_events={report.stage_b_4lang_uxc_ltt_drift_events} "
+                    f"xlrh1_acoustic_feedback_violations={report.xlrh1_acoustic_feedback_violations} "
+                    f"audio_mon_4ch_hdmi_confusion_events={report.audio_mon_4ch_hdmi_confusion_events} "
+                    f"destructive_delete_confirm_drift_events={report.destructive_delete_confirm_drift_events} "
+                    f"slot1_vault_delete_events={report.slot1_vault_delete_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-48pillar-recovery':
+            report = verify_48pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'48pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_2s_fast_cli_budget={report.under_2s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar48_a={report.pillar48_a_power_save_monitor_language_vault.scenarios_passed}/{report.pillar48_a_power_save_monitor_language_vault.scenarios_total} "
+                    f"pillar48_b={report.pillar48_b_volume_4ch_mon_delete_confirm_slot1_vault.scenarios_passed}/{report.pillar48_b_volume_4ch_mon_delete_confirm_slot1_vault.scenarios_total} "
+                    f"fx3_ui_exposes_power_save_by_monitor={report.fx3_ui_exposes_power_save_by_monitor} "
+                    f"legacy_power_save_monitor_spoof_events={report.legacy_power_save_monitor_spoof_events} "
+                    f"unsafe_power_save_sleep_interference_events={report.unsafe_power_save_sleep_interference_events} "
+                    f"bk_lang_parity_drift_events={report.bk_lang_parity_drift_events} "
+                    f"stage_b_4lang_uxc_ltt_drift_events={report.stage_b_4lang_uxc_ltt_drift_events} "
+                    f"xlrh1_acoustic_feedback_violations={report.xlrh1_acoustic_feedback_violations} "
+                    f"audio_mon_4ch_hdmi_confusion_events={report.audio_mon_4ch_hdmi_confusion_events} "
+                    f"destructive_delete_confirm_drift_events={report.destructive_delete_confirm_drift_events} "
+                    f"slot1_vault_delete_events={report.slot1_vault_delete_events} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_48pillar_sha256={report.master_48pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

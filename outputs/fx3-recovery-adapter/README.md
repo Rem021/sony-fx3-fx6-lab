@@ -1067,5 +1067,27 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   /usr/bin/python3 -B -m fx3_recovery verify-47pillar-recovery --clean-room --json
 ```
 
+## Phase 277 — 真机主线 Part 36（Pillar 48 / `48/48` 统一恢复总检）：`[Power Save by Monitor]` 现实分歧与 `[Power Save Start Time]` 9 条件无射频护栏、`[Language]` `BK_LANG` (`0x02cf019c`) 4 语言 Stage-B 等价、`[Volume Settings]` `0..15` (`7`) + `XLR-H1`、`[4ch Audio Monitoring]` 5 路由、`[Delete confirm.]` (`"Cancel" first`) 与 `Slot-1` 金库删格防火墙（`verify-48pillar-recovery` / `verify-power-save-monitor-language-volume-delete-vault`）
+
+- **[`realhw_48pillar_power_save_monitor_language_volume_delete_vault_verifier.py`](fx3_recovery/realhw_48pillar_power_save_monitor_language_volume_delete_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-46）落地 **Phase 277 Pillar 48（`48/48`）** 并将全套恢复总检推进至 **`48/48`（`VERIFIED_48OF48_PILLAR_RECOVERY_MASTER`）**（`< 2.0s` CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..47pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`P277_SLOT1_FORMAT_HARD_LOCKED = True`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **18 项** 供体（`< 0.15s`，CI 下放宽至 `< 0.50s`），同时支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 48A — `[Power Save by Monitor]` 现实分歧、`[Power Save Start Time]` 9 条件恢复护栏与 `[Language]` `BK_LANG` 4 语言 Stage-B 等价（`6/6`）**：
+    - `P48A1`..`P48A6`：精确验证原厂 `ILME-FX3 Ver. 7.02` `[Setup] -> [Power Setting Option]` 仅暴露 `[Power Save Start Time]`（`Off`、`30 Min`、`5 Min` 默认、`2 Min`、`1 Min`、`10 Sec`）与 `[Auto Power OFF Temp.]`（`Standard` 默认、`High`）两项（`fx3_ui_exposes_power_save_by_monitor == False`），同时核对共享 `appFw.so`（`BKID_APP_setting_monitor_power_linkage`）与 `string_*_f.uxc`（`0x60b9`）编入的精确 4 模式（`Both Linked` `0x6db5`、`Open: Return` `0x6db6`、`Close: Power Save` `0x60a8`、`Does Not Link` `0x6b2e`），驳回 `"Open: On/Close: Off"` 伪造；在无任何 9 项停用条件激活的无射频电池 Tier-0 恢复会话中强制 `[Power Save Start Time]` ∈ `{Off, 30 Min}`；校验 `BK_LANG`（`0x02cf019c`）在 `FX3-CX95900_ALLLANG-Backup.bin`（`4 B @ 0x90ff0 = 0x00`，`34` 语言）与 `FX6` `CX95898_NTSC.bin`（`0x00`）/ `CX95899_CN1.bin`（`0x19`，`1 B @ 0x89242`，`29` 语言）及 Stage-B 4 语言 `.uxc` + `.ltt` 字库表一致性，并验证 `(Setup)` 跨越 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 留存、仅经 `[Initialize]` 复位。
+  - **支柱 48B — `[Volume Settings]`（`0..15` 默认 `7`）+ `XLR-H1` 啸叫护栏、`[4ch Audio Monitoring]`（5 路由）与 `[Delete confirm.]`（`"Cancel" first`）`Slot-1` 删格防火墙（`6/6`）**：
+    - `P48B1`..`P48B6`：精确建模 `[Volume Settings]`（`BKID_APP_setting_volume_settings`，`0xe8c9`，离散 `0..15` 默认 `7`）及 `XLR-H1` 机内扬声器声反馈护栏（`<= 4` 或声学隔离）、`[4ch Audio Monitoring]`（`CH1/CH2` 默认 `0x713b`、`CH3/CH4` `0x6bf6`、`CH1+3/CH2+4` `0x6c2e`、`CH1/CH1` `0x6f9c`、`CH2/CH2` `0x7a26`）与 HDMI `[4ch Audio Output]`（`0x6aa0`）及 3.5mm 双声道边界隔离、`[Delete confirm.]`（`"Cancel" first` 默认 `0xe724`/`0x6a5e` vs `"Delete" first` `0xe725`/`0x6e0a`）+ `[Delete pressing twice]`（`Off` 默认 `0x74db`）跨越 `[Camera Settings Reset]` 留存，以及针对 `Slot 1`（`CAMSET`/`BODYDATA.DAT` 恢复金库）全部删除/双击删除/格式化操作硬阻断（`slot1_vault_delete_events == 0`、`slot1_format_hard_locked == True`、`slot1_vault_mutation_bytes == 0`）。
+  - **统一 `48/48` 恢复总检聚合器与 CLI（`evaluate_realhw_48pillar_recovery_master` / `evaluate_48pillar_recovery_master` / `verify-48pillar-recovery` / `verify-power-save-monitor-language-volume-delete-vault`）**：
+    - 并发调用 `evaluate_realhw_47pillar_recovery_master`（`Pillars 1..47`）+ **Pillar 48**（`run_pillar48_standalone_suite`），汇总产出 **`48/48`**（`VERIFIED_48OF48_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_48pillar_power_save_monitor_language_volume_delete_vault_verifier.py`](tests/test_realhw_48pillar_power_save_monitor_language_volume_delete_vault_verifier.py) 提供 `>= 72` 项双模快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-power-save-monitor-language-volume-delete-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-48pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  python3 -B -m fx3_recovery verify-48pillar-recovery --clean-room --json
+```
+
+
 
 

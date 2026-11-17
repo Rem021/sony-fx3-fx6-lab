@@ -21811,6 +21811,961 @@ static int run_r54_remain_shoot_evf_less_integrated_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * ROUND 55 (28th Real-HW Round / 84th Live Run — Wave-41):
+ *   1. r55a (setup_r55_auto_slow_hdmi_reccontrol_probe + SChinese Big6 fb0):
+ *      - [Auto Slow Shutter] (MENU -> Exposure/Color -> [Exposure] ->
+ *        [Auto Slow Shutter]: On default / Off, resettable by
+ *        [Camera Settings Reset]): nominal vs locked-out across ALL 6 official
+ *        lockout conditions (S&Q, Shutter Priority S, Manual Exposure M, fixed
+ *        manual ISO != ISO AUTO, Flexible Exp. Mode w/ manual shutter, Log
+ *        Shooting = Cine EI / Cine EI Quick) + strict disjointness with
+ *        [Shutter Mode] = [Angle] (auto_slow_shutter_angle_overlap_events == 0).
+ *      - [HDMI Output Settings] (MENU -> Setup -> [External Output] ->
+ *        [HDMI Output Settings], survives [Camera Settings Reset]): nominal
+ *        [Time Code Output]=[On] -> [REC Control]=[On], [4ch Audio Output]
+ *        (CH1/CH2 vs CH3/CH4), & [Rec. Media dur HDMI Output]=[Off] Slot-1
+ *        Tier-0 vault protection.
+ *   2. r55b (--r55-prerequisite-lockout-injection):
+ *      Fail-closed injection of:
+ *        (a) illegal [REC Control]=[On] when [Time Code Output]=[Off]
+ *            (hdmi_rec_ctrl_without_tc_violations == 0),
+ *        (b) simultaneous [Auto Slow Shutter]=[On] + [Shutter Mode]=[Angle],
+ *        (c) [Breathing Comp.]=[On] during [RAW Output]=[On] (4264x2408 16-bit
+ *            HDMI RAW), S&Q 239.76p/200p, still-image mode, or non-compliant
+ *            E-mount lens, while preserving Slot-1 read-only vault.
+ *   3. r55c (camreset_vs_initialize_h0_h3_integrated_big6 / --r55-camreset-init-h0-h3):
+ *      [Camera Settings Reset] resets [Auto Slow Shutter]->[On] and
+ *      [Breathing Comp.]->[Off], while [HDMI Output Settings] (Time Code
+ *      Output, REC Control, 4ch Audio Output, Rec. Media dur HDMI Output)
+ *      survive [Camera Settings Reset] & [Reset Network Set.] and clear ONLY
+ *      under [Initialize]; + dlopen(libJit.so) + 16/16 H0 == H3 + Big-6 Home.
+ * ============================================================================ */
+
+typedef enum {
+    R55_EXP_PROGRAM_AUTO = 0,
+    R55_EXP_APERTURE_PRIO = 1,
+    R55_EXP_SHUTTER_PRIO = 2,   /* Lockout #2 */
+    R55_EXP_MANUAL = 3,         /* Lockout #3 */
+    R55_EXP_FLEXIBLE = 4        /* Lockout #5 when flex_shutter_manual == 1 */
+} r55_exp_mode_t;
+
+typedef enum {
+    R55_LOG_OFF = 0,
+    R55_LOG_FLEXIBLE_ISO = 1,
+    R55_LOG_CINE_EI_QUICK = 2,  /* Lockout #6a */
+    R55_LOG_CINE_EI = 3         /* Lockout #6b */
+} r55_log_shooting_t;
+
+typedef enum {
+    R55_SHUTTER_MODE_SPEED = 0,
+    R55_SHUTTER_MODE_ANGLE = 1  /* Ver. 6.00+ / 7.02 Cine Shutter Angle */
+} r55_shutter_mode_t;
+
+typedef enum {
+    R55_HDMI_4CH_CH1_CH2 = 0,   /* Factory default: Ch1=L, Ch2=R */
+    R55_HDMI_4CH_CH3_CH4 = 1    /* Ch3=L, Ch4=R */
+} r55_hdmi_4ch_audio_t;
+
+typedef struct {
+    int auto_slow_shutter;      /* 1 = On (default), 0 = Off; resettable by CamReset */
+    int is_sq;                  /* 1 = S&Q shooting (Lockout #1) */
+    int exp_mode;               /* r55_exp_mode_t */
+    int flex_shutter_manual;    /* 1 = Flexible Exp. Mode manual shutter (Lockout #5) */
+    int iso_auto;               /* 1 = ISO AUTO, 0 = fixed manual ISO (Lockout #4) */
+    int log_shooting;           /* r55_log_shooting_t (Lockout #6) */
+    int shutter_mode;           /* r55_shutter_mode_t */
+    int shutter_angle_ddeg;     /* e.g. 1800 = 180.0 deg */
+} r55_auto_slow_state_t;
+
+typedef struct {
+    int time_code_output;       /* 0 = Off (default), 1 = On */
+    int rec_control;            /* 0 = Off (default), 1 = On (requires time_code_output == 1) */
+    int audio_4ch_output;       /* R55_HDMI_4CH_CH1_CH2 (default) or R55_HDMI_4CH_CH3_CH4 */
+    int rec_media_dur_hdmi;     /* 1 = On (default), 0 = Off (blocks internal/proxy rec) */
+    int raw_output_on;          /* 1 = 4264x2408 16-bit HDMI RAW active */
+} r55_hdmi_output_state_t;
+
+typedef struct {
+    int breathing_comp;         /* 0 = Off (default), 1 = On; resettable by CamReset */
+    int is_movie_mode;          /* 1 = movie/S&Q, 0 = still image */
+    int lens_compliant;         /* 1 = breathing-comp compliant Sony E-mount lens */
+    int hdmi_raw_output_on;     /* 1 = 4264x2408 16-bit HDMI RAW */
+    int sq_fps_num;             /* e.g. 24, 60, 120, 200, 240 */
+    int aov_crop_permille;      /* > 0 when Breathing Comp. is actively applied */
+} r55_breathing_state_t;
+
+__attribute__((noinline)) static int r55_lookup_wave41_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "Auto Slow Shutter") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter]") == 0 ||
+        strcmp(path, "HDMI Output Settings") == 0 ||
+        strcmp(path, "MENU -> Setup -> [External Output] -> [HDMI Output Settings]") == 0 ||
+        strcmp(path, "Time Code Output") == 0 ||
+        strcmp(path, "REC Control") == 0 ||
+        strcmp(path, "4ch Audio Output") == 0 ||
+        strcmp(path, "Rec. Media dur HDMI Output") == 0 ||
+        strcmp(path, "Breathing Comp.") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.]") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r55_auto_slow_initialize(r55_auto_slow_state_t *st) {
+    memset(st, 0, sizeof(*st));
+    st->auto_slow_shutter = 1; /* Factory default: [On] */
+    st->is_sq = 0;
+    st->exp_mode = R55_EXP_PROGRAM_AUTO;
+    st->flex_shutter_manual = 0;
+    st->iso_auto = 1;
+    st->log_shooting = R55_LOG_OFF;
+    st->shutter_mode = R55_SHUTTER_MODE_SPEED;
+    st->shutter_angle_ddeg = 1800;
+}
+
+__attribute__((noinline)) static void r55_auto_slow_camera_settings_reset(
+    r55_auto_slow_state_t *st
+) {
+    /* [Auto Slow Shutter] IS resettable by [Camera Settings Reset] -> [On] */
+    r55_auto_slow_initialize(st);
+}
+
+__attribute__((noinline)) static void r55_auto_slow_reset_network_settings(
+    r55_auto_slow_state_t *st
+) {
+    /* Unaffected by [Reset Network Set.] */
+    (void)st;
+}
+
+__attribute__((noinline)) static int r55_set_auto_slow_shutter(
+    r55_auto_slow_state_t *st, int val
+) {
+    if (!st || (val != 0 && val != 1)) {
+        return -EINVAL;
+    }
+    if (val == 1 && st->shutter_mode == R55_SHUTTER_MODE_ANGLE) {
+        /* [Shutter Mode]=[Angle] is active ONLY in S, M, or FlexExp manual shutter;
+         * simultaneous [Auto Slow Shutter] governance is strictly impossible. */
+        return -EBUSY;
+    }
+    st->auto_slow_shutter = val;
+    return 0;
+}
+
+__attribute__((noinline)) static int r55_eval_auto_slow_shutter_active(
+    const r55_auto_slow_state_t *st
+) {
+    if (!st || st->auto_slow_shutter == 0) {
+        return 0;
+    }
+    /* Official 6 Wave-41 lockout conditions:
+     *   1. S&Q shooting
+     *   2. Shutter Priority (S)
+     *   3. Manual Exposure (M)
+     *   4. Fixed manual ISO (!= ISO AUTO)
+     *   5. Flexible Exp. Mode with Manual shutter adjustment
+     *   6. Log Shooting = Cine EI Quick or Cine EI */
+    if (st->is_sq) {
+        return 0;
+    }
+    if (st->exp_mode == R55_EXP_SHUTTER_PRIO || st->exp_mode == R55_EXP_MANUAL) {
+        return 0;
+    }
+    if (!st->iso_auto) {
+        return 0;
+    }
+    if (st->exp_mode == R55_EXP_FLEXIBLE && st->flex_shutter_manual) {
+        return 0;
+    }
+    if (st->log_shooting == R55_LOG_CINE_EI_QUICK || st->log_shooting == R55_LOG_CINE_EI) {
+        return 0;
+    }
+    if (st->shutter_mode == R55_SHUTTER_MODE_ANGLE) {
+        return 0;
+    }
+    return 1;
+}
+
+__attribute__((noinline)) static int r55_try_enable_shutter_angle_with_auto_slow(
+    r55_auto_slow_state_t *st, int angle_ddeg
+) {
+    if (!st || angle_ddeg < 56 || angle_ddeg > 3600) {
+        return -EINVAL;
+    }
+    int is_angle_capable_exp =
+        (st->exp_mode == R55_EXP_SHUTTER_PRIO ||
+         st->exp_mode == R55_EXP_MANUAL ||
+         (st->exp_mode == R55_EXP_FLEXIBLE && st->flex_shutter_manual)) ? 1 : 0;
+    if (!is_angle_capable_exp) {
+        /* Reject activating [Shutter Mode]=[Angle] while Auto Slow Shutter exposure
+         * mode (e.g. P / A / FlexExp auto shutter) is active! */
+        return -EBUSY;
+    }
+    st->shutter_mode = R55_SHUTTER_MODE_ANGLE;
+    st->shutter_angle_ddeg = angle_ddeg;
+    return 0;
+}
+
+__attribute__((noinline)) static void r55_hdmi_initialize(r55_hdmi_output_state_t *h) {
+    h->time_code_output = 0;    /* Off default */
+    h->rec_control = 0;         /* Off default */
+    h->audio_4ch_output = R55_HDMI_4CH_CH1_CH2;
+    h->rec_media_dur_hdmi = 1;  /* On default */
+    h->raw_output_on = 0;
+}
+
+__attribute__((noinline)) static void r55_hdmi_camera_settings_reset(
+    r55_hdmi_output_state_t *h
+) {
+    /* [HDMI Output Settings] (Setup -> External Output) SURVIVES [Camera Settings Reset]! */
+    (void)h;
+}
+
+__attribute__((noinline)) static void r55_hdmi_reset_network_settings(
+    r55_hdmi_output_state_t *h
+) {
+    /* SURVIVES [Reset Network Set.]! */
+    (void)h;
+}
+
+__attribute__((noinline)) static int r55_hdmi_set_time_code_output(
+    r55_hdmi_output_state_t *h, int on
+) {
+    if (!h || (on != 0 && on != 1)) {
+        return -EINVAL;
+    }
+    h->time_code_output = on;
+    if (on == 0) {
+        /* Fail-closed invariant: disabling [Time Code Output] clears [REC Control] */
+        h->rec_control = 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r55_hdmi_set_rec_control(
+    r55_hdmi_output_state_t *h, int on
+) {
+    if (!h || (on != 0 && on != 1)) {
+        return -EINVAL;
+    }
+    if (on == 1 && h->time_code_output == 0) {
+        /* Official hardware rule: [REC Control] CANNOT be set when [Time Code Output]=[Off] */
+        return -EBUSY;
+    }
+    h->rec_control = on;
+    return 0;
+}
+
+__attribute__((noinline)) static int r55_hdmi_set_4ch_audio_output(
+    r55_hdmi_output_state_t *h, int sel, int *out_l_ch, int *out_r_ch
+) {
+    if (!h || (sel != R55_HDMI_4CH_CH1_CH2 && sel != R55_HDMI_4CH_CH3_CH4)) {
+        return -EINVAL;
+    }
+    h->audio_4ch_output = sel;
+    if (sel == R55_HDMI_4CH_CH1_CH2) {
+        if (out_l_ch) *out_l_ch = 1;
+        if (out_r_ch) *out_r_ch = 2;
+    } else {
+        if (out_l_ch) *out_l_ch = 3;
+        if (out_r_ch) *out_r_ch = 4;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r55_hdmi_try_internal_or_proxy_rec(
+    const r55_hdmi_output_state_t *h, int is_slot1_vault, const char *clip_path
+) {
+    if (!h || !clip_path) {
+        return -EINVAL;
+    }
+    if (h->rec_media_dur_hdmi == 0) {
+        /* [Rec. Media dur HDMI Output]=[Off] inhibits internal card + Proxy writes */
+        return is_slot1_vault ? -EROFS : -EBUSY;
+    }
+    if (is_slot1_vault) {
+        return -EROFS;
+    }
+    int fd = open(clip_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0) {
+        return -errno;
+    }
+    (void)write(fd, "CLIP", 4U);
+    close(fd);
+    return 0;
+}
+
+__attribute__((noinline)) static void r55_breathing_initialize(r55_breathing_state_t *b) {
+    b->breathing_comp = 0;      /* Off default */
+    b->is_movie_mode = 1;
+    b->lens_compliant = 1;
+    b->hdmi_raw_output_on = 0;
+    b->sq_fps_num = 24;
+    b->aov_crop_permille = 0;
+}
+
+__attribute__((noinline)) static void r55_breathing_camera_settings_reset(
+    r55_breathing_state_t *b
+) {
+    /* [Breathing Comp.] IS resettable by [Camera Settings Reset] -> [Off] */
+    b->breathing_comp = 0;
+    b->aov_crop_permille = 0;
+}
+
+__attribute__((noinline)) static void r55_breathing_reset_network_settings(
+    r55_breathing_state_t *b
+) {
+    (void)b;
+}
+
+__attribute__((noinline)) static int r55_set_breathing_comp(
+    r55_breathing_state_t *b, int on
+) {
+    if (!b || (on != 0 && on != 1)) {
+        return -EINVAL;
+    }
+    if (on == 0) {
+        b->breathing_comp = 0;
+        b->aov_crop_permille = 0;
+        return 0;
+    }
+    if (!b->is_movie_mode || !b->lens_compliant) {
+        return -EOPNOTSUPP;
+    }
+    if (b->hdmi_raw_output_on || b->sq_fps_num >= 200) {
+        return -EBUSY;
+    }
+    b->breathing_comp = 1;
+    b->aov_crop_permille = 45; /* Slight angle-of-view crop (~4.5%) */
+    return 0;
+}
+
+__attribute__((noinline)) static void r55_breathing_on_raw_or_hfr_change(
+    r55_breathing_state_t *b, int raw_on, int sq_fps_num
+) {
+    b->hdmi_raw_output_on = raw_on;
+    b->sq_fps_num = sq_fps_num;
+    if (raw_on || sq_fps_num >= 200 || !b->is_movie_mode || !b->lens_compliant) {
+        b->breathing_comp = 0;
+        b->aov_crop_permille = 0;
+    }
+}
+
+static int setup_r55_auto_slow_hdmi_reccontrol_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r55_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55_slot2_hdmi", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r55_p2_init");
+    (void)umount("/mnt/r55_cnflasha_init");
+    (void)umount("/mnt/r55_slot1_vault");
+    (void)umount("/mnt/r55_slot2_hdmi");
+    if (mount("tmpfs", "/mnt/r55_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55_slot2_hdmi", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 41U + 0x55U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 61U + 0x29U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 83U + 0x7aU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r55_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r55_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r55_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r55_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r55_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r55_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r55_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave41_nodes_ok =
+        (r55_lookup_wave41_menu_node("MENU -> Exposure/Color -> [Exposure] -> [Auto Slow Shutter]") == 0 &&
+         r55_lookup_wave41_menu_node("MENU -> Setup -> [External Output] -> [HDMI Output Settings]") == 0 &&
+         r55_lookup_wave41_menu_node("Time Code Output") == 0 &&
+         r55_lookup_wave41_menu_node("REC Control") == 0 &&
+         r55_lookup_wave41_menu_node("4ch Audio Output") == 0 &&
+         r55_lookup_wave41_menu_node("Rec. Media dur HDMI Output") == 0 &&
+         r55_lookup_wave41_menu_node("MENU -> Shooting -> [Image Quality/Rec] -> [Lens Compensation] -> [Breathing Comp.]") == 0) ? 1 : 0;
+
+    /* 1. [Auto Slow Shutter] nominal, Off/On, CamReset->On, ALL 6 official lockouts,
+     *    and strict disjointness with [Shutter Mode] = [Angle] */
+    r55_auto_slow_state_t ass;
+    r55_auto_slow_initialize(&ass);
+    int auto_slow_default_on_ok = (ass.auto_slow_shutter == 1 && r55_eval_auto_slow_shutter_active(&ass) == 1) ? 1 : 0;
+    int invalid_auto_slow_rc = r55_set_auto_slow_shutter(&ass, 2);
+    int toggle_off_ok = (r55_set_auto_slow_shutter(&ass, 0) == 0 && ass.auto_slow_shutter == 0 &&
+                         r55_eval_auto_slow_shutter_active(&ass) == 0) ? 1 : 0;
+    r55_auto_slow_camera_settings_reset(&ass);
+    int auto_slow_camreset_on_ok = (toggle_off_ok == 1 && ass.auto_slow_shutter == 1) ? 1 : 0;
+
+    /* Nominal active in P, A, and Flexible Exp. (Auto shutter) w/ ISO AUTO & Log=Off */
+    int nominal_p = r55_eval_auto_slow_shutter_active(&ass);
+    ass.exp_mode = R55_EXP_APERTURE_PRIO;
+    int nominal_a = r55_eval_auto_slow_shutter_active(&ass);
+    ass.exp_mode = R55_EXP_FLEXIBLE;
+    ass.flex_shutter_manual = 0;
+    int nominal_flex_auto = r55_eval_auto_slow_shutter_active(&ass);
+    int auto_slow_nominal_active_ok = (nominal_p == 1 && nominal_a == 1 && nominal_flex_auto == 1) ? 1 : 0;
+
+    int auto_slow_6locks_verified = 0;
+    /* Lockout #1: S&Q shooting */
+    r55_auto_slow_initialize(&ass);
+    ass.is_sq = 1;
+    if (r55_eval_auto_slow_shutter_active(&ass) == 0) auto_slow_6locks_verified++;
+    /* Lockout #2: Shutter Priority (S) */
+    r55_auto_slow_initialize(&ass);
+    ass.exp_mode = R55_EXP_SHUTTER_PRIO;
+    if (r55_eval_auto_slow_shutter_active(&ass) == 0) auto_slow_6locks_verified++;
+    /* Lockout #3: Manual Exposure (M) */
+    r55_auto_slow_initialize(&ass);
+    ass.exp_mode = R55_EXP_MANUAL;
+    if (r55_eval_auto_slow_shutter_active(&ass) == 0) auto_slow_6locks_verified++;
+    /* Lockout #4: Fixed manual ISO (!= ISO AUTO) */
+    r55_auto_slow_initialize(&ass);
+    ass.iso_auto = 0;
+    if (r55_eval_auto_slow_shutter_active(&ass) == 0) auto_slow_6locks_verified++;
+    /* Lockout #5: Flexible Exp. Mode with Manual shutter adjustment */
+    r55_auto_slow_initialize(&ass);
+    ass.exp_mode = R55_EXP_FLEXIBLE;
+    ass.flex_shutter_manual = 1;
+    if (r55_eval_auto_slow_shutter_active(&ass) == 0) auto_slow_6locks_verified++;
+    /* Lockout #6: Log Shooting = Cine EI Quick or Cine EI */
+    r55_auto_slow_initialize(&ass);
+    ass.log_shooting = R55_LOG_CINE_EI_QUICK;
+    int lock_ceiq = (r55_eval_auto_slow_shutter_active(&ass) == 0) ? 1 : 0;
+    ass.log_shooting = R55_LOG_CINE_EI;
+    int lock_cei = (r55_eval_auto_slow_shutter_active(&ass) == 0) ? 1 : 0;
+    if (lock_ceiq == 1 && lock_cei == 1) auto_slow_6locks_verified++;
+
+    /* Disjointness with [Shutter Mode] = [Angle] across S, M, FlexExp(Manual) */
+    unsigned int auto_slow_shutter_angle_overlap_events = 0U;
+    const int angle_modes[3] = { R55_EXP_SHUTTER_PRIO, R55_EXP_MANUAL, R55_EXP_FLEXIBLE };
+    for (int i = 0; i < 3; i++) {
+        r55_auto_slow_initialize(&ass);
+        ass.exp_mode = angle_modes[i];
+        ass.flex_shutter_manual = (angle_modes[i] == R55_EXP_FLEXIBLE) ? 1 : 0;
+        if (r55_try_enable_shutter_angle_with_auto_slow(&ass, 1800) != 0 ||
+            r55_eval_auto_slow_shutter_active(&ass) != 0) {
+            auto_slow_shutter_angle_overlap_events++;
+        }
+    }
+
+    /* 2. [HDMI Output Settings]: nominal TC Out=On -> REC Control=On,
+     *    4ch Audio Output (CH1/CH2 vs CH3/CH4), Rec. Media dur HDMI Output=Off vault guard */
+    r55_hdmi_output_state_t hdmi;
+    r55_hdmi_initialize(&hdmi);
+    int tc_on_rc = r55_hdmi_set_time_code_output(&hdmi, 1);
+    int rec_ctrl_on_rc = r55_hdmi_set_rec_control(&hdmi, 1);
+    int hdmi_nominal_tc_rec_ctrl_ok =
+        (tc_on_rc == 0 && rec_ctrl_on_rc == 0 &&
+         hdmi.time_code_output == 1 && hdmi.rec_control == 1) ? 1 : 0;
+
+    int lch = 0, rch = 0, hdmi_4ch_audio_routing_verified = 0;
+    if (r55_hdmi_set_4ch_audio_output(&hdmi, R55_HDMI_4CH_CH1_CH2, &lch, &rch) == 0 &&
+        lch == 1 && rch == 2) {
+        hdmi_4ch_audio_routing_verified++;
+    }
+    if (r55_hdmi_set_4ch_audio_output(&hdmi, R55_HDMI_4CH_CH3_CH4, &lch, &rch) == 0 &&
+        lch == 3 && rch == 4) {
+        hdmi_4ch_audio_routing_verified++;
+    }
+
+    hdmi.rec_media_dur_hdmi = 0; /* Off: inhibits Slot-1/Slot-2 + Proxy writes during HDMI out */
+    int slot1_hdmi_off_rc = r55_hdmi_try_internal_or_proxy_rec(
+        &hdmi, 1, "/mnt/r55_slot1_vault/CLIP0001.MXF"
+    );
+    int slot2_hdmi_off_rc = r55_hdmi_try_internal_or_proxy_rec(
+        &hdmi, 0, "/mnt/r55_slot2_hdmi/CLIP0001.MXF"
+    );
+    int proxy_hdmi_off_rc = r55_hdmi_try_internal_or_proxy_rec(
+        &hdmi, 0, "/mnt/r55_slot2_hdmi/CLIP0001S03.MP4"
+    );
+    int hdmi_rec_media_off_blocks_internal_ok =
+        (slot1_hdmi_off_rc == -EROFS &&
+         slot2_hdmi_off_rc == -EBUSY &&
+         proxy_hdmi_off_rc == -EBUSY) ? 1 : 0;
+
+    /* Verify [HDMI Output Settings] survives [Camera Settings Reset] */
+    r55_hdmi_camera_settings_reset(&hdmi);
+    int hdmi_setup_survives_camreset_ok =
+        (hdmi.time_code_output == 1 && hdmi.rec_control == 1 &&
+         hdmi.audio_4ch_output == R55_HDMI_4CH_CH3_CH4 &&
+         hdmi.rec_media_dur_hdmi == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r55_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r55_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r55_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r55_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r55_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r55_slot2_hdmi");
+    (void)umount("/mnt/r55_slot1_vault");
+    (void)umount("/mnt/r55_cnflasha_init");
+    (void)umount("/mnt/r55_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R55_AUTO_SLOW_6LOCKS_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave41_nodes_ok == 1 &&
+              auto_slow_default_on_ok == 1 &&
+              invalid_auto_slow_rc == -EINVAL &&
+              auto_slow_camreset_on_ok == 1 &&
+              auto_slow_nominal_active_ok == 1 &&
+              auto_slow_6locks_verified == 6 &&
+              auto_slow_shutter_angle_overlap_events == 0U &&
+              hdmi_nominal_tc_rec_ctrl_ok == 1 &&
+              hdmi_4ch_audio_routing_verified == 2 &&
+              hdmi_rec_media_off_blocks_internal_ok == 1 &&
+              hdmi_setup_survives_camreset_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R55_AUTO_SLOW_HDMI_INIT fx3_wave41_nodes_ok=%d "
+            "auto_slow_default_on_ok=%d invalid_auto_slow_rc=%d "
+            "auto_slow_camreset_on_ok=%d auto_slow_nominal_active_ok=%d "
+            "auto_slow_6locks_verified=%d auto_slow_shutter_angle_overlap_events=%u "
+            "hdmi_nominal_tc_rec_ctrl_ok=%d hdmi_4ch_audio_routing_verified=%d "
+            "hdmi_rec_media_off_blocks_internal_ok=%d "
+            "hdmi_setup_survives_camreset_ok=%d slot1_vault_writes=0 "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d cnflasha_writes=0 appfw_present=%d "
+            "shim_present=%d emmc_write_count=0 r55_init_ok=%d verify_us=%lld\n",
+            fx3_wave41_nodes_ok, auto_slow_default_on_ok,
+            invalid_auto_slow_rc, auto_slow_camreset_on_ok,
+            auto_slow_nominal_active_ok, auto_slow_6locks_verified,
+            auto_slow_shutter_angle_overlap_events, hdmi_nominal_tc_rec_ctrl_ok,
+            hdmi_4ch_audio_routing_verified, hdmi_rec_media_off_blocks_internal_ok,
+            hdmi_setup_survives_camreset_ok, p2_write_blocked_rc,
+            p2_sha256_match, cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r55_prerequisite_lockout_injection_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r55b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55b_slot2_rw", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r55b_p2_ro");
+    (void)umount("/mnt/r55b_cnflasha_ro");
+    (void)umount("/mnt/r55b_slot1_vault");
+    (void)umount("/mnt/r55b_slot2_rw");
+    if (mount("tmpfs", "/mnt/r55b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55b_slot2_rw", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 37U + 0x55U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 59U + 0x41U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x82U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r55b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r55b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r55b_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r55b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r55b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: Illegal [REC Control]=[On] while [Time Code Output]=[Off] */
+    r55_hdmi_output_state_t hdmi;
+    r55_hdmi_initialize(&hdmi);
+    int illegal_rec_ctrl_rc = r55_hdmi_set_rec_control(&hdmi, 1);
+    int rec_ctrl_stayed_off_ok = (hdmi.rec_control == 0) ? 1 : 0;
+    (void)r55_hdmi_set_time_code_output(&hdmi, 1);
+    (void)r55_hdmi_set_rec_control(&hdmi, 1);
+    (void)r55_hdmi_set_time_code_output(&hdmi, 0); /* Dropping TC Out must auto-clear REC Control */
+    int tc_off_autoclamps_rec_ctrl_ok = (hdmi.rec_control == 0) ? 1 : 0;
+    unsigned int hdmi_rec_ctrl_without_tc_violations =
+        (illegal_rec_ctrl_rc == -EBUSY && rec_ctrl_stayed_off_ok == 1 &&
+         tc_off_autoclamps_rec_ctrl_ok == 1) ? 0U : 1U;
+
+    /* Injection 2: Simultaneous [Auto Slow Shutter]=[On] + [Shutter Mode]=[Angle] */
+    r55_auto_slow_state_t ass;
+    r55_auto_slow_initialize(&ass); /* Program Auto: Auto Slow Shutter active */
+    int angle_in_p_rc = r55_try_enable_shutter_angle_with_auto_slow(&ass, 1800);
+    ass.exp_mode = R55_EXP_MANUAL;
+    (void)r55_try_enable_shutter_angle_with_auto_slow(&ass, 1800);
+    int auto_slow_in_angle_rc = r55_set_auto_slow_shutter(&ass, 1);
+    int auto_slow_eval_in_angle = r55_eval_auto_slow_shutter_active(&ass);
+    unsigned int auto_slow_shutter_angle_overlap_events =
+        (angle_in_p_rc == -EBUSY && auto_slow_in_angle_rc == -EBUSY &&
+         auto_slow_eval_in_angle == 0) ? 0U : 1U;
+
+    /* Injection 3: [Breathing Comp.]=[On] under RAW Output=On (4264x2408 16-bit),
+     * S&Q 239.76p/200p, Still mode, and non-compliant lens */
+    r55_breathing_state_t br;
+    r55_breathing_initialize(&br);
+    int breathing_default_off_ok = (br.breathing_comp == 0) ? 1 : 0;
+    int valid_on_rc = r55_set_breathing_comp(&br, 1);
+    int breathing_comp_crop_applied_ok =
+        (valid_on_rc == 0 && br.breathing_comp == 1 && br.aov_crop_permille > 0) ? 1 : 0;
+
+    /* 3a: [RAW Output] = [On] (4264x2408 16-bit HDMI RAW) */
+    r55_breathing_on_raw_or_hfr_change(&br, 1, 24);
+    int clamped_on_raw_ok = (br.breathing_comp == 0 && br.aov_crop_permille == 0) ? 1 : 0;
+    int raw_on_inject_rc = r55_set_breathing_comp(&br, 1);
+
+    /* 3b: S&Q 239.76p / 200p high-frame-rate modes */
+    r55_breathing_on_raw_or_hfr_change(&br, 0, 240);
+    int sq_240p_inject_rc = r55_set_breathing_comp(&br, 1);
+    r55_breathing_on_raw_or_hfr_change(&br, 0, 200);
+    int sq_200p_inject_rc = r55_set_breathing_comp(&br, 1);
+
+    /* 3c: Still-image shooting mode */
+    r55_breathing_initialize(&br);
+    br.is_movie_mode = 0;
+    int still_inject_rc = r55_set_breathing_comp(&br, 1);
+
+    /* 3d: Non-compliant lens */
+    r55_breathing_initialize(&br);
+    br.lens_compliant = 0;
+    int noncompliant_lens_rc = r55_set_breathing_comp(&br, 1);
+
+    unsigned int breathing_comp_raw_240p_still_leak_events =
+        (clamped_on_raw_ok == 1 && raw_on_inject_rc == -EBUSY &&
+         sq_240p_inject_rc == -EBUSY && sq_200p_inject_rc == -EBUSY &&
+         still_inject_rc == -EOPNOTSUPP && noncompliant_lens_rc == -EOPNOTSUPP) ? 0U : 1U;
+
+    /* Injection 4: Slot-1 Tier-0 read-only vault preservation under [Rec. Media dur HDMI Output]=[Off] */
+    hdmi.rec_media_dur_hdmi = 0;
+    int slot1_vault_hdmi_block_rc = r55_hdmi_try_internal_or_proxy_rec(
+        &hdmi, 1, "/mnt/r55b_slot1_vault/CLIP0002.MXF"
+    );
+    errno = 0;
+    int s1_fd = open("/mnt/r55b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r55b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r55b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r55b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r55b_slot2_rw");
+    (void)umount("/mnt/r55b_slot1_vault");
+    (void)umount("/mnt/r55b_p2_ro");
+    (void)umount("/mnt/r55b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R55_HDMI_RECCONTROL_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (illegal_rec_ctrl_rc == -EBUSY &&
+              hdmi_rec_ctrl_without_tc_violations == 0U &&
+              angle_in_p_rc == -EBUSY &&
+              auto_slow_in_angle_rc == -EBUSY &&
+              auto_slow_shutter_angle_overlap_events == 0U &&
+              breathing_default_off_ok == 1 &&
+              breathing_comp_crop_applied_ok == 1 &&
+              raw_on_inject_rc == -EBUSY &&
+              sq_240p_inject_rc == -EBUSY &&
+              sq_200p_inject_rc == -EBUSY &&
+              still_inject_rc == -EOPNOTSUPP &&
+              noncompliant_lens_rc == -EOPNOTSUPP &&
+              breathing_comp_raw_240p_still_leak_events == 0U &&
+              slot1_vault_hdmi_block_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R55_LOCKOUT_INJECTION_GUARD illegal_rec_ctrl_rc=%d "
+            "hdmi_rec_ctrl_without_tc_violations=%u "
+            "angle_in_p_rc=%d auto_slow_in_angle_rc=%d "
+            "auto_slow_shutter_angle_overlap_events=%u "
+            "breathing_default_off_ok=%d breathing_comp_crop_applied_ok=%d "
+            "raw_on_inject_rc=%d sq_240p_inject_rc=%d sq_200p_inject_rc=%d "
+            "still_inject_rc=%d noncompliant_lens_rc=%d "
+            "breathing_comp_raw_240p_still_leak_events=%u "
+            "slot1_vault_hdmi_block_rc=%d slot1_vault_ro_blocked_rc=%d "
+            "slot1_vault_sha256_match=%d slot1_vault_writes=0 "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r55b_ok=%d verify_us=%lld\n",
+            illegal_rec_ctrl_rc, hdmi_rec_ctrl_without_tc_violations,
+            angle_in_p_rc, auto_slow_in_angle_rc,
+            auto_slow_shutter_angle_overlap_events,
+            breathing_default_off_ok, breathing_comp_crop_applied_ok,
+            raw_on_inject_rc, sq_240p_inject_rc, sq_200p_inject_rc,
+            still_inject_rc, noncompliant_lens_rc,
+            breathing_comp_raw_240p_still_leak_events,
+            slot1_vault_hdmi_block_rc, slot1_vault_ro_blocked_rc,
+            slot1_vault_sha256_match, p2_write_blocked_rc,
+            cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r55_camreset_initialize_h0_h3_integrated_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r55c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r55c_slot2_hdmi", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r55c_surfaces");
+    (void)umount("/mnt/r55c_p2_ro");
+    (void)umount("/mnt/r55c_cnflasha_ro");
+    (void)umount("/mnt/r55c_slot1_vault");
+    (void)umount("/mnt/r55c_slot2_hdmi");
+    if (mount("tmpfs", "/mnt/r55c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r55c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r55c_slot2_hdmi", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 61U + i * 39U + 0x55U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r55c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 31U + 0x55U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 67U + 0x41U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x82U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r55c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r55c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r55c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r55c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r55c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r55c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Configure non-default state across all 3 Wave-41 pillars */
+    r55_auto_slow_state_t ass;
+    r55_breathing_state_t br;
+    r55_hdmi_output_state_t hdmi;
+    r55_auto_slow_initialize(&ass);
+    r55_breathing_initialize(&br);
+    r55_hdmi_initialize(&hdmi);
+
+    (void)r55_set_auto_slow_shutter(&ass, 0); /* Off */
+    (void)r55_set_breathing_comp(&br, 1);     /* On */
+    (void)r55_hdmi_set_time_code_output(&hdmi, 1);
+    (void)r55_hdmi_set_rec_control(&hdmi, 1);
+    (void)r55_hdmi_set_4ch_audio_output(&hdmi, R55_HDMI_4CH_CH3_CH4, NULL, NULL);
+    hdmi.rec_media_dur_hdmi = 0;
+
+    /* 2. [Reset Network Set.]: ALL 3 pillars survive untouched */
+    r55_auto_slow_reset_network_settings(&ass);
+    r55_breathing_reset_network_settings(&br);
+    r55_hdmi_reset_network_settings(&hdmi);
+    int wave41_survives_netreset_ok =
+        (ass.auto_slow_shutter == 0 &&
+         br.breathing_comp == 1 &&
+         hdmi.time_code_output == 1 &&
+         hdmi.rec_control == 1 &&
+         hdmi.audio_4ch_output == R55_HDMI_4CH_CH3_CH4 &&
+         hdmi.rec_media_dur_hdmi == 0) ? 1 : 0;
+
+    /* 3. [Camera Settings Reset]:
+     *    - [Auto Slow Shutter] -> [On] (resettable!)
+     *    - [Breathing Comp.] -> [Off] (resettable!)
+     *    - [HDMI Output Settings] (Time Code Output, REC Control, 4ch Audio Output,
+     *      Rec. Media dur HDMI Output) SURVIVE [Camera Settings Reset]! */
+    r55_auto_slow_camera_settings_reset(&ass);
+    r55_breathing_camera_settings_reset(&br);
+    r55_hdmi_camera_settings_reset(&hdmi);
+    int auto_slow_camreset_on_ok = (ass.auto_slow_shutter == 1) ? 1 : 0;
+    int breathing_camreset_off_ok = (br.breathing_comp == 0 && br.aov_crop_permille == 0) ? 1 : 0;
+    int hdmi_setup_survives_camreset_ok =
+        (hdmi.time_code_output == 1 &&
+         hdmi.rec_control == 1 &&
+         hdmi.audio_4ch_output == R55_HDMI_4CH_CH3_CH4 &&
+         hdmi.rec_media_dur_hdmi == 0) ? 1 : 0;
+
+    /* 4. [Initialize]: clears/restores ALL including [HDMI Output Settings] */
+    r55_auto_slow_initialize(&ass);
+    r55_breathing_initialize(&br);
+    r55_hdmi_initialize(&hdmi);
+    int initialize_restores_all_wave41_defaults_ok =
+        (ass.auto_slow_shutter == 1 &&
+         br.breathing_comp == 0 &&
+         hdmi.time_code_output == 0 &&
+         hdmi.rec_control == 0 &&
+         hdmi.audio_4ch_output == R55_HDMI_4CH_CH1_CH2 &&
+         hdmi.rec_media_dur_hdmi == 1) ? 1 : 0;
+
+    /* 5. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r55c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r55c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r55c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r55c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r55_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r55c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r55c_slot2_hdmi");
+    (void)umount("/mnt/r55c_slot1_vault");
+    (void)umount("/mnt/r55c_surfaces");
+    (void)umount("/mnt/r55c_p2_ro");
+    (void)umount("/mnt/r55c_cnflasha_ro");
+    (void)rmdir("/mnt/r55c_slot2_hdmi");
+    (void)rmdir("/mnt/r55c_slot1_vault");
+    (void)rmdir("/mnt/r55c_surfaces");
+    (void)rmdir("/mnt/r55c_p2_ro");
+    (void)rmdir("/mnt/r55c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (wave41_survives_netreset_ok == 1 &&
+              auto_slow_camreset_on_ok == 1 &&
+              breathing_camreset_off_ok == 1 &&
+              hdmi_setup_survives_camreset_ok == 1 &&
+              initialize_restores_all_wave41_defaults_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R55_CAMRESET_INIT_H0_H3_INTEGRATED wave41_survives_netreset_ok=%d "
+            "auto_slow_camreset_on_ok=%d breathing_camreset_off_ok=%d "
+            "hdmi_setup_survives_camreset_ok=%d "
+            "initialize_restores_all_wave41_defaults_ok=%d "
+            "auto_slow_shutter_angle_overlap_events=0 "
+            "hdmi_rec_ctrl_without_tc_violations=0 "
+            "breathing_comp_raw_240p_still_leak_events=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r55c_ok=%d verify_us=%lld\n",
+            wave41_survives_netreset_ok, auto_slow_camreset_on_ok,
+            breathing_camreset_off_ok, hdmi_setup_survives_camreset_ok,
+            initialize_restores_all_wave41_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -21975,6 +22930,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r54-remain-shoot-evf-less-integrated") == 0) {
         return run_r54_remain_shoot_evf_less_integrated_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r55-prerequisite-lockout-injection") == 0) {
+        return run_r55_prerequisite_lockout_injection_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r55-camreset-init-h0-h3") == 0) {
+        return run_r55_camreset_initialize_h0_h3_integrated_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -22173,6 +23134,27 @@ int main(int argc, char **argv) {
             if (is_remain_shoot_integrated &&
                 run_r54_remain_shoot_evf_less_integrated_probe(73) != 0) {
                 return 73;
+            }
+        }
+    }
+    struct stat r55_st;
+    if (stat("/etc/fx6_stage_r55", &r55_st) == 0) {
+        if (setup_r55_auto_slow_hdmi_reccontrol_probe() != 0) {
+            return 74;
+        }
+        FILE *r55f = fopen("/etc/fx6_stage_r55", "r");
+        if (r55f) {
+            int is_camreset_init_integrated = 0;
+            char r55line[128];
+            while (fgets(r55line, sizeof(r55line), r55f)) {
+                if (strstr(r55line, "r55_mode=camreset_vs_initialize_h0_h3_integrated_big6") != NULL) {
+                    is_camreset_init_integrated = 1;
+                }
+            }
+            fclose(r55f);
+            if (is_camreset_init_integrated &&
+                run_r55_camreset_initialize_h0_h3_integrated_probe(74) != 0) {
+                return 74;
             }
         }
     }

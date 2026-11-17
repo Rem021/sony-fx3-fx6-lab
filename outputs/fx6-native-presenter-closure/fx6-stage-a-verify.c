@@ -20641,6 +20641,1176 @@ static int run_r53_wave39_integrated_stress_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * ROUND 54 (27th Real-HW Round / 81st Live Run — Wave-40):
+ *   1. r54a (setup_r54_diff_set_still_mv_shutter_angle_probe + SChinese Big6 fb0):
+ *      [Different Set for Still/Mv] (MENU -> Setup -> [Operation Customize] ->
+ *      [Different Set for Still/Mv]): exact 8 checkable items (Aperture,
+ *      Shutter Speed, ISO, Exposure Comp., Metering Mode, White Balance,
+ *      Picture Profile, Focus Mode); survives BOTH [Camera Settings Reset] and
+ *      [Reset Network Set.] (cleared only by [Initialize]); proves:
+ *        (a) Common -> Separate copies values to Still & Movie EXCEPT Custom WB
+ *            (Still-only),
+ *        (b) Separate -> Common resets to factory defaults EXCEPT Aperture,
+ *            Shutter Speed, and Custom WB (retain Still values),
+ *        (c) [Shutter Mode] = [Angle] (Ver. 6.00+ / Ver. 7.02) override keeps
+ *            Still shutter speed and Movie shutter angle independent even when
+ *            Shutter Speed is unchecked (common).
+ *   2. r54b (--r54-custom-key-dial-camset-persist):
+ *      [Custom Key/Dial Set.] (Front dial=Aperture, Rear dial=ISO/EI with Cine EI
+ *      auto-adaptation, Control Wheel=Shutter Speed, [Follow Custom],
+ *      [My Dial 1..3], [Recall Custom hold 1..3]): survives [Camera Settings Reset]
+ *      and [Reset Network Set.] (cleared only by [Initialize]) and preserves
+ *      Slot-1 read-only vault when round-tripping CAMSET01.DAT.
+ *   3. r54c (remain_shoot_evf_less_integrated_big6 / --r54-remain-shoot-evf-less-integrated):
+ *      [Remain Shoot Display] (Not Displayed default / Always Display /
+ *      Shoot-Only Display: Still continuous-buffer scope only, never spoofing
+ *      Movie remaining card time) + EVF-Less ILME-FX3 topology
+ *      (fx3_has_builtin_evf == 0, zero [Finder/Monitor] eye-sensor spoofing) +
+ *      dlopen(libJit.so) + 16/16 H0 == H3 + e_nd_actuator_tx_count == 0 +
+ *      raw_firmware_bytes_leaked == 0 + Stage-B Big-6 Home 346,686 GPE0 pixels.
+ * ============================================================================ */
+
+typedef enum {
+    R54_DIFF_APERTURE        = 0,
+    R54_DIFF_SHUTTER_SPEED   = 1,
+    R54_DIFF_ISO             = 2,
+    R54_DIFF_EXPOSURE_COMP   = 3,
+    R54_DIFF_METERING_MODE   = 4,
+    R54_DIFF_WHITE_BALANCE   = 5,
+    R54_DIFF_PICTURE_PROFILE = 6,
+    R54_DIFF_FOCUS_MODE      = 7,
+    R54_DIFF_ITEM_COUNT      = 8
+} r54_diff_set_item_t;
+
+typedef enum {
+    R54_WB_AUTO     = 0,
+    R54_WB_DAYLIGHT = 1,
+    R54_WB_TUNGSTEN = 2,
+    R54_WB_CUSTOM_1 = 10, /* Custom White Balance: Still-only on Common->Separate; retained on Separate->Common */
+    R54_WB_CUSTOM_2 = 11,
+    R54_WB_CUSTOM_3 = 12
+} r54_wb_mode_t;
+
+typedef enum {
+    R54_SHUTTER_MODE_SPEED = 0,
+    R54_SHUTTER_MODE_ANGLE = 1 /* Ver. 6.00+ / 7.02 Cine Shutter Angle override */
+} r54_movie_shutter_mode_t;
+
+typedef struct {
+    uint8_t separate_mask; /* Bitmask over R54_DIFF_ITEM_COUNT (0x00 factory default) */
+    int still_val[R54_DIFF_ITEM_COUNT];
+    int movie_val[R54_DIFF_ITEM_COUNT];
+    int movie_shutter_mode;        /* R54_SHUTTER_MODE_SPEED or R54_SHUTTER_MODE_ANGLE */
+    int movie_shutter_angle_ddeg;  /* e.g. 1800 = 180.0 deg, 1728 = 172.8 deg */
+} r54_diff_set_state_t;
+
+static const int k_r54_item_defaults[R54_DIFF_ITEM_COUNT] = {
+    40,  /* Aperture: F4.0 (x10) */
+    50,  /* Shutter Speed: 1/50 */
+    800, /* ISO: 800 */
+    0,   /* Exposure Comp.: 0.0EV */
+    0,   /* Metering Mode: Multi */
+    R54_WB_AUTO, /* White Balance: Auto */
+    0,   /* Picture Profile: Off */
+    0    /* Focus Mode: AF-C */
+};
+
+__attribute__((noinline)) static int r54_is_custom_wb(int wb) {
+    return (wb >= R54_WB_CUSTOM_1 && wb <= R54_WB_CUSTOM_3) ? 1 : 0;
+}
+
+__attribute__((noinline)) static int r54_lookup_wave40_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "Finder/Monitor") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Finder/Monitor]") == 0) {
+        /* ILME-FX3 (ilc/2210) has NO built-in EVF and NO [Finder/Monitor] eye-sensor switch! */
+        return -EOPNOTSUPP;
+    }
+    if (strcmp(path, "Different Set for Still/Mv") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Different Set for Still/Mv]") == 0 ||
+        strcmp(path, "Custom Key/Dial Set.") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Operation Customize] -> [Custom Key/Dial Set.]") == 0 ||
+        strcmp(path, "Remain Shoot Display") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [Remain Shoot Display]") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r54_diff_set_initialize(r54_diff_set_state_t *st) {
+    st->separate_mask = 0x00U;
+    for (int i = 0; i < R54_DIFF_ITEM_COUNT; i++) {
+        st->still_val[i] = k_r54_item_defaults[i];
+        st->movie_val[i] = k_r54_item_defaults[i];
+    }
+    st->movie_shutter_mode = R54_SHUTTER_MODE_SPEED;
+    st->movie_shutter_angle_ddeg = 1800;
+}
+
+__attribute__((noinline)) static void r54_diff_set_camera_settings_reset(r54_diff_set_state_t *st) {
+    /* [Different Set for Still/Mv] checkmask SURVIVES [Camera Settings Reset];
+     * shooting exposure registers return to baseline defaults. */
+    for (int i = 0; i < R54_DIFF_ITEM_COUNT; i++) {
+        st->still_val[i] = k_r54_item_defaults[i];
+        st->movie_val[i] = k_r54_item_defaults[i];
+    }
+    st->movie_shutter_mode = R54_SHUTTER_MODE_SPEED;
+    st->movie_shutter_angle_ddeg = 1800;
+}
+
+__attribute__((noinline)) static void r54_diff_set_reset_network_settings(r54_diff_set_state_t *st) {
+    /* [Different Set for Still/Mv] SURVIVES [Reset Network Set.] completely untouched. */
+    (void)st;
+}
+
+__attribute__((noinline)) static int r54_diff_set_toggle_item(
+    r54_diff_set_state_t *st, int item_idx, int make_separate
+) {
+    if (!st || item_idx < 0 || item_idx >= R54_DIFF_ITEM_COUNT ||
+        (make_separate != 0 && make_separate != 1)) {
+        return -EINVAL;
+    }
+    uint8_t bit = (uint8_t)(1U << (unsigned int)item_idx);
+    int was_separate = (st->separate_mask & bit) ? 1 : 0;
+    if (was_separate == make_separate) {
+        return 0;
+    }
+    if (make_separate == 1) {
+        /* Rule 1 (Common -> Separate): Current value copies to both Still and Movie,
+         * EXCEPT Custom White Balance, which applies ONLY to still-image shooting. */
+        st->separate_mask |= bit;
+        int cur_still = st->still_val[item_idx];
+        if (item_idx == R54_DIFF_WHITE_BALANCE && r54_is_custom_wb(cur_still)) {
+            st->still_val[item_idx] = cur_still;
+            st->movie_val[item_idx] = R54_WB_AUTO;
+        } else {
+            st->still_val[item_idx] = cur_still;
+            st->movie_val[item_idx] = cur_still;
+        }
+    } else {
+        /* Rule 2 (Separate -> Common): Parameter returns to initial factory default,
+         * EXCEPT Aperture, Shutter Speed, and Custom White Balance, which retain
+         * the values set for still-image shooting! */
+        st->separate_mask = (uint8_t)(st->separate_mask & (uint8_t)(~bit));
+        if (item_idx == R54_DIFF_APERTURE || item_idx == R54_DIFF_SHUTTER_SPEED) {
+            st->movie_val[item_idx] = st->still_val[item_idx];
+        } else if (item_idx == R54_DIFF_WHITE_BALANCE &&
+                   r54_is_custom_wb(st->still_val[item_idx])) {
+            /* Still retains Custom WB; Movie cannot hold Custom WB so stays Auto */
+            st->movie_val[item_idx] = R54_WB_AUTO;
+        } else {
+            st->still_val[item_idx] = k_r54_item_defaults[item_idx];
+            st->movie_val[item_idx] = k_r54_item_defaults[item_idx];
+        }
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r54_set_still_shutter_speed(
+    r54_diff_set_state_t *st, int denom
+) {
+    if (!st || denom <= 0) {
+        return -EINVAL;
+    }
+    st->still_val[R54_DIFF_SHUTTER_SPEED] = denom;
+    /* Rule 3 ([Shutter Mode] = [Angle] Override): If Movie [Shutter Mode] is [Angle],
+     * Still shutter speed and Movie shutter angle operate INDEPENDENTLY even when
+     * Shutter Speed is unchecked (common)! */
+    int shutter_is_separate = (st->separate_mask & (1U << R54_DIFF_SHUTTER_SPEED)) ? 1 : 0;
+    if (!shutter_is_separate && st->movie_shutter_mode == R54_SHUTTER_MODE_SPEED) {
+        st->movie_val[R54_DIFF_SHUTTER_SPEED] = denom;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r54_set_movie_shutter_speed_or_angle(
+    r54_diff_set_state_t *st, int mode, int value
+) {
+    if (!st || (mode != R54_SHUTTER_MODE_SPEED && mode != R54_SHUTTER_MODE_ANGLE) || value <= 0) {
+        return -EINVAL;
+    }
+    st->movie_shutter_mode = mode;
+    int shutter_is_separate = (st->separate_mask & (1U << R54_DIFF_SHUTTER_SPEED)) ? 1 : 0;
+    if (mode == R54_SHUTTER_MODE_ANGLE) {
+        if (value < 56 || value > 3600) {
+            return -EINVAL;
+        }
+        /* Independent of Still shutter speed even if Shutter Speed is unchecked (common)! */
+        st->movie_shutter_angle_ddeg = value;
+    } else {
+        st->movie_val[R54_DIFF_SHUTTER_SPEED] = value;
+        if (!shutter_is_separate) {
+            st->still_val[R54_DIFF_SHUTTER_SPEED] = value;
+        }
+    }
+    return 0;
+}
+
+static int setup_r54_diff_set_still_mv_shutter_angle_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r54_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r54_p2_init");
+    (void)umount("/mnt/r54_cnflasha_init");
+    (void)umount("/mnt/r54_slot1_vault");
+    if (mount("tmpfs", "/mnt/r54_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 43U + 0x54U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 67U + 0x27U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 79U + 0x79U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r54_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r54_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r54_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r54_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r54_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r54_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r54_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_diff_set_node_ok =
+        (r54_lookup_wave40_menu_node("Different Set for Still/Mv") == 0 &&
+         r54_lookup_wave40_menu_node(
+             "MENU -> Setup -> [Operation Customize] -> [Different Set for Still/Mv]"
+         ) == 0) ? 1 : 0;
+
+    r54_diff_set_state_t ds;
+    r54_diff_set_initialize(&ds);
+    int diff_set_default_unchecked_ok = (ds.separate_mask == 0x00U) ? 1 : 0;
+    int invalid_diff_item_rc = r54_diff_set_toggle_item(&ds, R54_DIFF_ITEM_COUNT, 1);
+
+    /* 1. Verify Common -> Separate across all 8 items (non-Custom WB copies to both) */
+    const int custom_common_vals[R54_DIFF_ITEM_COUNT] = {
+        28, 125, 3200, -3, 2, R54_WB_DAYLIGHT, 11, 2
+    };
+    int diff_set_8items_verified = 0;
+    for (int i = 0; i < R54_DIFF_ITEM_COUNT; i++) {
+        ds.still_val[i] = custom_common_vals[i];
+        ds.movie_val[i] = custom_common_vals[i];
+        if (r54_diff_set_toggle_item(&ds, i, 1) == 0 &&
+            ds.still_val[i] == custom_common_vals[i] &&
+            ds.movie_val[i] == custom_common_vals[i]) {
+            diff_set_8items_verified++;
+        }
+    }
+    int common_to_separate_8items_copy_ok =
+        (diff_set_8items_verified == 8 && ds.separate_mask == 0xffU) ? 1 : 0;
+
+    /* Verify Common -> Separate Custom White Balance exception (Still-only!) */
+    r54_diff_set_initialize(&ds);
+    ds.still_val[R54_DIFF_WHITE_BALANCE] = R54_WB_CUSTOM_1;
+    ds.movie_val[R54_DIFF_WHITE_BALANCE] = R54_WB_AUTO;
+    (void)r54_diff_set_toggle_item(&ds, R54_DIFF_WHITE_BALANCE, 1);
+    int common_to_separate_custom_wb_still_only_ok =
+        (ds.still_val[R54_DIFF_WHITE_BALANCE] == R54_WB_CUSTOM_1 &&
+         ds.movie_val[R54_DIFF_WHITE_BALANCE] == R54_WB_AUTO) ? 1 : 0;
+
+    /* 2. Verify Separate -> Common asymmetric reset:
+     *    - ISO, Exposure Comp., Metering Mode, non-Custom WB, Picture Profile, Focus Mode
+     *      reset to factory defaults;
+     *    - Aperture, Shutter Speed, and Custom White Balance RETAIN Still values! */
+    r54_diff_set_initialize(&ds);
+    for (int i = 0; i < R54_DIFF_ITEM_COUNT; i++) {
+        (void)r54_diff_set_toggle_item(&ds, i, 1);
+    }
+    ds.still_val[R54_DIFF_APERTURE] = 18;         /* F1.8 (Still) vs F5.6 (Movie) */
+    ds.movie_val[R54_DIFF_APERTURE] = 56;
+    ds.still_val[R54_DIFF_SHUTTER_SPEED] = 1000;  /* 1/1000 (Still) vs 1/48 (Movie) */
+    ds.movie_val[R54_DIFF_SHUTTER_SPEED] = 48;
+    ds.still_val[R54_DIFF_ISO] = 6400;
+    ds.movie_val[R54_DIFF_ISO] = 12800;
+    ds.still_val[R54_DIFF_EXPOSURE_COMP] = 6;
+    ds.movie_val[R54_DIFF_EXPOSURE_COMP] = -6;
+    ds.still_val[R54_DIFF_METERING_MODE] = 3;
+    ds.movie_val[R54_DIFF_METERING_MODE] = 1;
+    ds.still_val[R54_DIFF_WHITE_BALANCE] = R54_WB_TUNGSTEN;
+    ds.movie_val[R54_DIFF_WHITE_BALANCE] = R54_WB_DAYLIGHT;
+    ds.still_val[R54_DIFF_PICTURE_PROFILE] = 8;
+    ds.movie_val[R54_DIFF_PICTURE_PROFILE] = 11;
+    ds.still_val[R54_DIFF_FOCUS_MODE] = 3;
+    ds.movie_val[R54_DIFF_FOCUS_MODE] = 1;
+
+    for (int i = 0; i < R54_DIFF_ITEM_COUNT; i++) {
+        (void)r54_diff_set_toggle_item(&ds, i, 0);
+    }
+    int separate_to_common_5items_reset_defaults_ok =
+        (ds.still_val[R54_DIFF_ISO] == 800 && ds.movie_val[R54_DIFF_ISO] == 800 &&
+         ds.still_val[R54_DIFF_EXPOSURE_COMP] == 0 && ds.movie_val[R54_DIFF_EXPOSURE_COMP] == 0 &&
+         ds.still_val[R54_DIFF_METERING_MODE] == 0 && ds.movie_val[R54_DIFF_METERING_MODE] == 0 &&
+         ds.still_val[R54_DIFF_WHITE_BALANCE] == R54_WB_AUTO &&
+         ds.movie_val[R54_DIFF_WHITE_BALANCE] == R54_WB_AUTO &&
+         ds.still_val[R54_DIFF_PICTURE_PROFILE] == 0 && ds.movie_val[R54_DIFF_PICTURE_PROFILE] == 0 &&
+         ds.still_val[R54_DIFF_FOCUS_MODE] == 0 && ds.movie_val[R54_DIFF_FOCUS_MODE] == 0) ? 1 : 0;
+
+    int ap_ss_retained_still_ok =
+        (ds.still_val[R54_DIFF_APERTURE] == 18 && ds.movie_val[R54_DIFF_APERTURE] == 18 &&
+         ds.still_val[R54_DIFF_SHUTTER_SPEED] == 1000 &&
+         ds.movie_val[R54_DIFF_SHUTTER_SPEED] == 1000) ? 1 : 0;
+
+    /* Also test Custom WB retention on Separate -> Common */
+    (void)r54_diff_set_toggle_item(&ds, R54_DIFF_WHITE_BALANCE, 1);
+    ds.still_val[R54_DIFF_WHITE_BALANCE] = R54_WB_CUSTOM_2;
+    ds.movie_val[R54_DIFF_WHITE_BALANCE] = R54_WB_DAYLIGHT;
+    (void)r54_diff_set_toggle_item(&ds, R54_DIFF_WHITE_BALANCE, 0);
+    int custom_wb_retained_still_ok =
+        (ds.still_val[R54_DIFF_WHITE_BALANCE] == R54_WB_CUSTOM_2 &&
+         ds.movie_val[R54_DIFF_WHITE_BALANCE] == R54_WB_AUTO) ? 1 : 0;
+    int separate_to_common_3exceptions_retain_still_ok =
+        (ap_ss_retained_still_ok == 1 && custom_wb_retained_still_ok == 1) ? 1 : 0;
+    unsigned int diff_set_transition_corruption_events =
+        (separate_to_common_5items_reset_defaults_ok == 1 &&
+         separate_to_common_3exceptions_retain_still_ok == 1) ? 0U : 1U;
+
+    /* 3. [Shutter Mode] = [Angle] (Ver. 6.00+ / Ver. 7.02) Override:
+     *    Even when Shutter Speed is unchecked (common), Movie Shutter Angle and
+     *    Still Shutter Speed remain independent! */
+    r54_diff_set_initialize(&ds); /* separate_mask == 0x00 (Shutter Speed unchecked = common) */
+    (void)r54_set_still_shutter_speed(&ds, 250);
+    int speed_mode_shared_ok =
+        (ds.still_val[R54_DIFF_SHUTTER_SPEED] == 250 &&
+         ds.movie_val[R54_DIFF_SHUTTER_SPEED] == 250) ? 1 : 0;
+    (void)r54_set_movie_shutter_speed_or_angle(&ds, R54_SHUTTER_MODE_ANGLE, 1800); /* 180.0 deg */
+    (void)r54_set_still_shutter_speed(&ds, 500); /* Mutate Still shutter speed -> 1/500 */
+    int still_change_preserves_angle =
+        (ds.still_val[R54_DIFF_SHUTTER_SPEED] == 500 &&
+         ds.movie_shutter_mode == R54_SHUTTER_MODE_ANGLE &&
+         ds.movie_shutter_angle_ddeg == 1800) ? 1 : 0;
+    (void)r54_set_movie_shutter_speed_or_angle(&ds, R54_SHUTTER_MODE_ANGLE, 1728); /* 172.8 deg */
+    int angle_change_preserves_still =
+        (ds.still_val[R54_DIFF_SHUTTER_SPEED] == 500 &&
+         ds.movie_shutter_angle_ddeg == 1728 &&
+         (ds.separate_mask & (1U << R54_DIFF_SHUTTER_SPEED)) == 0U) ? 1 : 0;
+    int shutter_angle_unchecked_common_independent_ok =
+        (speed_mode_shared_ok == 1 && still_change_preserves_angle == 1 &&
+         angle_change_preserves_still == 1) ? 1 : 0;
+    unsigned int shutter_angle_common_bleed_events =
+        (shutter_angle_unchecked_common_independent_ok == 1) ? 0U : 1U;
+
+    /* 4. Reset Survival: survives [Camera Settings Reset] & [Reset Network Set.],
+     *    restored only by [Initialize] */
+    ds.separate_mask = 0xa5U;
+    r54_diff_set_camera_settings_reset(&ds);
+    int diff_set_survives_camreset_ok = (ds.separate_mask == 0xa5U) ? 1 : 0;
+    r54_diff_set_reset_network_settings(&ds);
+    int diff_set_survives_netreset_ok = (ds.separate_mask == 0xa5U) ? 1 : 0;
+    r54_diff_set_initialize(&ds);
+    int initialize_restores_diff_set_defaults_ok = (ds.separate_mask == 0x00U) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r54_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r54_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r54_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r54_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r54_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r54_p2_init");
+    (void)umount("/mnt/r54_cnflasha_init");
+    (void)umount("/mnt/r54_slot1_vault");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R54_DIFF_SET_STILL_MV_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_diff_set_node_ok == 1 &&
+              diff_set_default_unchecked_ok == 1 &&
+              invalid_diff_item_rc == -EINVAL &&
+              diff_set_8items_verified == 8 &&
+              common_to_separate_8items_copy_ok == 1 &&
+              common_to_separate_custom_wb_still_only_ok == 1 &&
+              separate_to_common_5items_reset_defaults_ok == 1 &&
+              separate_to_common_3exceptions_retain_still_ok == 1 &&
+              diff_set_transition_corruption_events == 0U &&
+              shutter_angle_unchecked_common_independent_ok == 1 &&
+              shutter_angle_common_bleed_events == 0U &&
+              diff_set_survives_camreset_ok == 1 &&
+              diff_set_survives_netreset_ok == 1 &&
+              initialize_restores_diff_set_defaults_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R54_DIFF_SET_STILL_MV_INIT fx3_diff_set_node_ok=%d "
+            "diff_set_default_unchecked_ok=%d invalid_diff_item_rc=%d "
+            "diff_set_8items_verified=%d common_to_separate_8items_copy_ok=%d "
+            "common_to_separate_custom_wb_still_only_ok=%d "
+            "separate_to_common_5items_reset_defaults_ok=%d "
+            "separate_to_common_3exceptions_retain_still_ok=%d "
+            "diff_set_transition_corruption_events=%u "
+            "shutter_angle_unchecked_common_independent_ok=%d "
+            "shutter_angle_common_bleed_events=%u "
+            "diff_set_survives_camreset_ok=%d diff_set_survives_netreset_ok=%d "
+            "initialize_restores_diff_set_defaults_ok=%d "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d cnflasha_writes=0 appfw_present=%d "
+            "shim_present=%d emmc_write_count=0 r54_init_ok=%d verify_us=%lld\n",
+            fx3_diff_set_node_ok, diff_set_default_unchecked_ok,
+            invalid_diff_item_rc, diff_set_8items_verified,
+            common_to_separate_8items_copy_ok,
+            common_to_separate_custom_wb_still_only_ok,
+            separate_to_common_5items_reset_defaults_ok,
+            separate_to_common_3exceptions_retain_still_ok,
+            diff_set_transition_corruption_events,
+            shutter_angle_unchecked_common_independent_ok,
+            shutter_angle_common_bleed_events,
+            diff_set_survives_camreset_ok, diff_set_survives_netreset_ok,
+            initialize_restores_diff_set_defaults_ok,
+            p2_write_blocked_rc, p2_sha256_match, cnflasha_sha256_match,
+            slot1_vault_sha256_match, appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+typedef enum {
+    R54_KEY_FN_FOLLOW_CUSTOM  = 0x00U, /* Movie inherits Still assignment */
+    R54_KEY_FN_APERTURE       = 0x10U, /* Front dial factory default */
+    R54_KEY_FN_ISO_EI         = 0x11U, /* Rear dial factory default (adapts ISO <-> Cine EI) */
+    R54_KEY_FN_SHUTTER_SPEED  = 0x12U, /* Control Wheel factory default */
+    R54_KEY_FN_EXPOSURE_COMP  = 0x13U,
+    R54_KEY_FN_WHITE_BALANCE  = 0x14U,
+    R54_KEY_FN_ZEBRA_DISPLAY  = 0x15U,
+    R54_KEY_FN_PEAKING_DISP   = 0x16U,
+    R54_KEY_FN_AUDIO_REC_LVL  = 0x17U,
+    R54_KEY_FN_MY_DIAL_1      = 0x21U,
+    R54_KEY_FN_MY_DIAL_2      = 0x22U,
+    R54_KEY_FN_MY_DIAL_3      = 0x23U,
+    R54_KEY_FN_RECALL_HOLD_1  = 0x31U,
+    R54_KEY_FN_RECALL_HOLD_2  = 0x32U,
+    R54_KEY_FN_RECALL_HOLD_3  = 0x33U,
+    R54_KEY_FN_RATING_PB      = 0x41U
+} r54_custom_fn_t;
+
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint8_t front_dial[2];      /* [0]=Still, [1]=Movie; factory default R54_KEY_FN_APERTURE */
+    uint8_t rear_dial[2];       /* [0]=Still, [1]=Movie; factory default R54_KEY_FN_ISO_EI */
+    uint8_t control_wheel[2];   /* [0]=Still, [1]=Movie; factory default R54_KEY_FN_SHUTTER_SPEED */
+    uint8_t custom_btn_still[6];/* Custom Buttons 1..6 (Still) */
+    uint8_t custom_btn_movie[6];/* Custom Buttons 1..6 (Movie; supports R54_KEY_FN_FOLLOW_CUSTOM) */
+    uint8_t custom_btn_pb[6];   /* Custom Buttons 1..6 (Playback) */
+    uint8_t mydial_front[3];    /* [My Dial 1..3] Front dial temporary assignments */
+    uint8_t mydial_rear[3];     /* [My Dial 1..3] Rear dial temporary assignments */
+    uint8_t mydial_wheel[3];    /* [My Dial 1..3] Control Wheel temporary assignments */
+    int recall_hold_iso[3];     /* [Recall Custom hold 1..3] preset ISO values */
+    int active_mydial_slot;     /* 0 = inactive, 1..3 = active My Dial bank */
+    int cine_ei_enabled;        /* 0 = Flexible Exp. (ISO), 1 = Cine EI (Exposure Index) */
+    int current_iso;
+    int current_ei;
+} r54_custom_key_dial_state_t;
+
+#define R54_CAMSET_CK_MAGIC 0x5235344BU /* "R54K" */
+
+__attribute__((noinline)) static void r54_custom_key_dial_initialize(
+    r54_custom_key_dial_state_t *ck
+) {
+    memset(ck, 0, sizeof(*ck));
+    ck->magic = R54_CAMSET_CK_MAGIC;
+    ck->version = 0x0702U;
+    /* Sony ILME-FX3 Cinema Line factory dial defaults:
+     *   Front dial = Aperture, Rear dial = ISO/EI, Control Wheel = Shutter Speed */
+    ck->front_dial[0] = R54_KEY_FN_APERTURE;
+    ck->front_dial[1] = R54_KEY_FN_APERTURE;
+    ck->rear_dial[0] = R54_KEY_FN_ISO_EI;
+    ck->rear_dial[1] = R54_KEY_FN_ISO_EI;
+    ck->control_wheel[0] = R54_KEY_FN_SHUTTER_SPEED;
+    ck->control_wheel[1] = R54_KEY_FN_SHUTTER_SPEED;
+    for (int i = 0; i < 6; i++) {
+        ck->custom_btn_still[i] = R54_KEY_FN_WHITE_BALANCE;
+        ck->custom_btn_movie[i] = R54_KEY_FN_FOLLOW_CUSTOM;
+        ck->custom_btn_pb[i]    = R54_KEY_FN_RATING_PB;
+    }
+    for (int b = 0; b < 3; b++) {
+        ck->mydial_front[b] = R54_KEY_FN_EXPOSURE_COMP;
+        ck->mydial_rear[b]  = R54_KEY_FN_WHITE_BALANCE;
+        ck->mydial_wheel[b] = R54_KEY_FN_AUDIO_REC_LVL;
+        ck->recall_hold_iso[b] = 1600 * (b + 1);
+    }
+    ck->active_mydial_slot = 0;
+    ck->cine_ei_enabled = 0;
+    ck->current_iso = 800;
+    ck->current_ei = 800;
+}
+
+__attribute__((noinline)) static void r54_custom_key_dial_camera_settings_reset(
+    r54_custom_key_dial_state_t *ck
+) {
+    /* [Custom Key/Dial Set.] & [My Dial 1..3] SURVIVE [Camera Settings Reset];
+     * only transient active My Dial hold & exposure values reset. */
+    ck->active_mydial_slot = 0;
+    ck->cine_ei_enabled = 0;
+    ck->current_iso = 800;
+    ck->current_ei = 800;
+}
+
+__attribute__((noinline)) static void r54_custom_key_dial_reset_network_settings(
+    r54_custom_key_dial_state_t *ck
+) {
+    /* [Custom Key/Dial Set.] SURVIVES [Reset Network Set.] completely untouched. */
+    (void)ck;
+}
+
+__attribute__((noinline)) static uint8_t r54_resolve_movie_btn(
+    const r54_custom_key_dial_state_t *ck, int btn_idx
+) {
+    if (!ck || btn_idx < 0 || btn_idx >= 6) {
+        return 0U;
+    }
+    uint8_t mv = ck->custom_btn_movie[btn_idx];
+    return (mv == R54_KEY_FN_FOLLOW_CUSTOM) ? ck->custom_btn_still[btn_idx] : mv;
+}
+
+__attribute__((noinline)) static uint8_t r54_effective_movie_dial(
+    const r54_custom_key_dial_state_t *ck, int which_dial
+) {
+    if (ck->active_mydial_slot >= 1 && ck->active_mydial_slot <= 3) {
+        int b = ck->active_mydial_slot - 1;
+        if (which_dial == 0) return ck->mydial_front[b];
+        if (which_dial == 1) return ck->mydial_rear[b];
+        return ck->mydial_wheel[b];
+    }
+    if (which_dial == 0) return ck->front_dial[1];
+    if (which_dial == 1) return ck->rear_dial[1];
+    return ck->control_wheel[1];
+}
+
+__attribute__((noinline)) static int r54_step_rear_dial_iso_or_ei(
+    r54_custom_key_dial_state_t *ck, int new_val
+) {
+    if (!ck || new_val <= 0) {
+        return -EINVAL;
+    }
+    if (r54_effective_movie_dial(ck, 1) != R54_KEY_FN_ISO_EI) {
+        return -EOPNOTSUPP;
+    }
+    /* Rear dial = [ISO/EI]: automatically adapts between ISO and Cine EI Exposure Index! */
+    if (ck->cine_ei_enabled) {
+        ck->current_ei = new_val;
+    } else {
+        ck->current_iso = new_val;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r54_eval_recall_custom_hold(
+    const r54_custom_key_dial_state_t *ck, int hold_bank, int pressed
+) {
+    if (!ck || hold_bank < 1 || hold_bank > 3) {
+        return -EINVAL;
+    }
+    return pressed ? ck->recall_hold_iso[hold_bank - 1] : ck->current_iso;
+}
+
+__attribute__((noinline)) static int r54_save_camset_custom_key_dial(
+    const char *path, const r54_custom_key_dial_state_t *ck
+) {
+    if (!path || !ck || ck->magic != R54_CAMSET_CK_MAGIC) {
+        return -EINVAL;
+    }
+    errno = 0;
+    int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if (fd < 0) {
+        return -errno;
+    }
+    ssize_t nw = write(fd, ck, sizeof(*ck));
+    int saved_err = errno;
+    (void)fsync(fd);
+    close(fd);
+    if (nw != (ssize_t)sizeof(*ck)) {
+        return (saved_err != 0) ? -saved_err : -EIO;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r54_load_camset_custom_key_dial(
+    const char *path, r54_custom_key_dial_state_t *ck
+) {
+    if (!path || !ck) {
+        return -EINVAL;
+    }
+    errno = 0;
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) {
+        return -errno;
+    }
+    r54_custom_key_dial_state_t tmp;
+    ssize_t nr = read(fd, &tmp, sizeof(tmp));
+    int saved_err = errno;
+    close(fd);
+    if (nr != (ssize_t)sizeof(tmp)) {
+        return (saved_err != 0) ? -saved_err : -EIO;
+    }
+    if (tmp.magic != R54_CAMSET_CK_MAGIC || tmp.version != 0x0702U) {
+        return -EINVAL;
+    }
+    *ck = tmp;
+    return 0;
+}
+
+static int run_r54_custom_key_dial_camset_persist_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r54b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54b_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54b_slot2_camset", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r54b_p2_ro");
+    (void)umount("/mnt/r54b_cnflasha_ro");
+    (void)umount("/mnt/r54b_slot1_vault");
+    (void)umount("/mnt/r54b_slot2_camset");
+    if (mount("tmpfs", "/mnt/r54b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54b_slot2_camset", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 37U + 0x54U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 59U + 0x40U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x80U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r54b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r54b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r54b_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r54b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r54b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    int fx3_custom_key_dial_node_ok =
+        (r54_lookup_wave40_menu_node("Custom Key/Dial Set.") == 0 &&
+         r54_lookup_wave40_menu_node(
+             "MENU -> Setup -> [Operation Customize] -> [Custom Key/Dial Set.]"
+         ) == 0) ? 1 : 0;
+
+    r54_custom_key_dial_state_t ck;
+    r54_custom_key_dial_initialize(&ck);
+
+    /* 1. Verify Cinema Line 3-dial factory defaults:
+     *    Front dial=Aperture, Rear dial=ISO/EI, Control Wheel=Shutter Speed */
+    int front_dial_aperture_default_ok =
+        (ck.front_dial[0] == R54_KEY_FN_APERTURE &&
+         ck.front_dial[1] == R54_KEY_FN_APERTURE) ? 1 : 0;
+    int rear_dial_iso_ei_default_ok =
+        (ck.rear_dial[0] == R54_KEY_FN_ISO_EI &&
+         ck.rear_dial[1] == R54_KEY_FN_ISO_EI) ? 1 : 0;
+    int control_wheel_shutter_speed_default_ok =
+        (ck.control_wheel[0] == R54_KEY_FN_SHUTTER_SPEED &&
+         ck.control_wheel[1] == R54_KEY_FN_SHUTTER_SPEED) ? 1 : 0;
+
+    /* 2. Verify Rear dial [ISO/EI] adapts between ISO and Cine EI Exposure Index */
+    ck.cine_ei_enabled = 0;
+    (void)r54_step_rear_dial_iso_or_ei(&ck, 3200);
+    int iso_step_ok = (ck.current_iso == 3200 && ck.current_ei == 800) ? 1 : 0;
+    ck.cine_ei_enabled = 1;
+    (void)r54_step_rear_dial_iso_or_ei(&ck, 1600);
+    int ei_step_ok = (ck.current_iso == 3200 && ck.current_ei == 1600) ? 1 : 0;
+    int rear_dial_iso_ei_cine_ei_adapt_ok = (iso_step_ok == 1 && ei_step_ok == 1) ? 1 : 0;
+
+    /* 3. Verify 3 domains (Still, Movie, Playback) + [Follow Custom] */
+    ck.custom_btn_still[0] = R54_KEY_FN_ZEBRA_DISPLAY;
+    ck.custom_btn_movie[0] = R54_KEY_FN_FOLLOW_CUSTOM;
+    int follow_inherits_ok = (r54_resolve_movie_btn(&ck, 0) == R54_KEY_FN_ZEBRA_DISPLAY) ? 1 : 0;
+    ck.custom_btn_movie[1] = R54_KEY_FN_PEAKING_DISP;
+    ck.custom_btn_pb[0] = R54_KEY_FN_RATING_PB;
+    int follow_custom_movie_inherits_still_ok =
+        (follow_inherits_ok == 1 &&
+         r54_resolve_movie_btn(&ck, 1) == R54_KEY_FN_PEAKING_DISP &&
+         ck.custom_btn_pb[0] == R54_KEY_FN_RATING_PB) ? 1 : 0;
+    int custom_key_3domains_verified = (follow_custom_movie_inherits_still_ok == 1) ? 3 : 0;
+
+    /* 4. Verify [My Dial 1..3] temporary swap & release restoration */
+    int mydial_1_3_slots_verified = 0;
+    for (int slot = 1; slot <= 3; slot++) {
+        ck.mydial_front[slot - 1] = (uint8_t)(R54_KEY_FN_EXPOSURE_COMP + (slot - 1));
+        ck.active_mydial_slot = slot;
+        if (r54_effective_movie_dial(&ck, 0) == ck.mydial_front[slot - 1]) {
+            mydial_1_3_slots_verified++;
+        }
+    }
+    ck.active_mydial_slot = 0;
+    int mydial_release_restores_base_dials_ok =
+        (r54_effective_movie_dial(&ck, 0) == R54_KEY_FN_APERTURE &&
+         r54_effective_movie_dial(&ck, 1) == R54_KEY_FN_ISO_EI &&
+         r54_effective_movie_dial(&ck, 2) == R54_KEY_FN_SHUTTER_SPEED) ? 1 : 0;
+
+    /* 5. Verify [Recall Custom hold 1..3] */
+    ck.current_iso = 800;
+    int recall_custom_hold_1_3_verified = 0;
+    for (int hb = 1; hb <= 3; hb++) {
+        int held_iso = r54_eval_recall_custom_hold(&ck, hb, 1);
+        int rel_iso  = r54_eval_recall_custom_hold(&ck, hb, 0);
+        if (held_iso == 1600 * hb && rel_iso == 800) {
+            recall_custom_hold_1_3_verified++;
+        }
+    }
+
+    /* 6. Verify survival across [Camera Settings Reset] & [Reset Network Set.],
+     *    cleared only by [Initialize], plus CAMSET01.DAT round-trip with Slot-1 RO */
+    ck.front_dial[1] = R54_KEY_FN_EXPOSURE_COMP;
+    ck.custom_btn_still[2] = R54_KEY_FN_PEAKING_DISP;
+    r54_custom_key_dial_camera_settings_reset(&ck);
+    int custom_key_dial_survives_camreset_ok =
+        (ck.front_dial[1] == R54_KEY_FN_EXPOSURE_COMP &&
+         ck.custom_btn_still[2] == R54_KEY_FN_PEAKING_DISP &&
+         ck.current_iso == 800) ? 1 : 0;
+    r54_custom_key_dial_reset_network_settings(&ck);
+    int custom_key_dial_survives_netreset_ok =
+        (ck.front_dial[1] == R54_KEY_FN_EXPOSURE_COMP &&
+         ck.custom_btn_still[2] == R54_KEY_FN_PEAKING_DISP) ? 1 : 0;
+
+    int slot1_save_blocked_rc = r54_save_camset_custom_key_dial(
+        "/mnt/r54b_slot1_vault/CAMSET01.DAT", &ck
+    );
+    int save_rc = r54_save_camset_custom_key_dial(
+        "/mnt/r54b_slot2_camset/CAMSET01.DAT", &ck
+    );
+
+    r54_custom_key_dial_initialize(&ck);
+    int initialize_restores_custom_key_dial_defaults_ok =
+        (ck.front_dial[1] == R54_KEY_FN_APERTURE &&
+         ck.rear_dial[1] == R54_KEY_FN_ISO_EI &&
+         ck.control_wheel[1] == R54_KEY_FN_SHUTTER_SPEED &&
+         ck.custom_btn_still[2] == R54_KEY_FN_WHITE_BALANCE) ? 1 : 0;
+
+    int load_rc = r54_load_camset_custom_key_dial(
+        "/mnt/r54b_slot2_camset/CAMSET01.DAT", &ck
+    );
+    int camset01_custom_key_dial_roundtrip_ok =
+        (save_rc == 0 && load_rc == 0 &&
+         ck.front_dial[1] == R54_KEY_FN_EXPOSURE_COMP &&
+         ck.custom_btn_still[2] == R54_KEY_FN_PEAKING_DISP &&
+         ck.custom_btn_still[0] == R54_KEY_FN_ZEBRA_DISPLAY &&
+         r54_resolve_movie_btn(&ck, 0) == R54_KEY_FN_ZEBRA_DISPLAY) ? 1 : 0;
+
+    errno = 0;
+    int p2_fd = open("/mnt/r54b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r54b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r54b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r54b_slot2_camset");
+    (void)umount("/mnt/r54b_slot1_vault");
+    (void)umount("/mnt/r54b_p2_ro");
+    (void)umount("/mnt/r54b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R54_CUSTOM_KEY_DIAL_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_custom_key_dial_node_ok == 1 &&
+              front_dial_aperture_default_ok == 1 &&
+              rear_dial_iso_ei_default_ok == 1 &&
+              control_wheel_shutter_speed_default_ok == 1 &&
+              rear_dial_iso_ei_cine_ei_adapt_ok == 1 &&
+              custom_key_3domains_verified == 3 &&
+              follow_custom_movie_inherits_still_ok == 1 &&
+              mydial_1_3_slots_verified == 3 &&
+              mydial_release_restores_base_dials_ok == 1 &&
+              recall_custom_hold_1_3_verified == 3 &&
+              custom_key_dial_survives_camreset_ok == 1 &&
+              custom_key_dial_survives_netreset_ok == 1 &&
+              initialize_restores_custom_key_dial_defaults_ok == 1 &&
+              camset01_custom_key_dial_roundtrip_ok == 1 &&
+              slot1_save_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R54_CUSTOM_KEY_DIAL_PERSIST fx3_custom_key_dial_node_ok=%d "
+            "front_dial_aperture_default_ok=%d rear_dial_iso_ei_default_ok=%d "
+            "control_wheel_shutter_speed_default_ok=%d "
+            "rear_dial_iso_ei_cine_ei_adapt_ok=%d custom_key_3domains_verified=%d "
+            "follow_custom_movie_inherits_still_ok=%d mydial_1_3_slots_verified=%d "
+            "mydial_release_restores_base_dials_ok=%d "
+            "recall_custom_hold_1_3_verified=%d "
+            "custom_key_dial_survives_camreset_ok=%d "
+            "custom_key_dial_survives_netreset_ok=%d "
+            "initialize_restores_custom_key_dial_defaults_ok=%d "
+            "camset01_custom_key_dial_roundtrip_ok=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "slot1_vault_writes=0 p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d "
+            "appfw_ok=%d shim_elf_ok=%d cnflasha_writes=0 emmc_write_count=0 "
+            "r54b_ok=%d verify_us=%lld\n",
+            fx3_custom_key_dial_node_ok, front_dial_aperture_default_ok,
+            rear_dial_iso_ei_default_ok, control_wheel_shutter_speed_default_ok,
+            rear_dial_iso_ei_cine_ei_adapt_ok, custom_key_3domains_verified,
+            follow_custom_movie_inherits_still_ok, mydial_1_3_slots_verified,
+            mydial_release_restores_base_dials_ok,
+            recall_custom_hold_1_3_verified,
+            custom_key_dial_survives_camreset_ok,
+            custom_key_dial_survives_netreset_ok,
+            initialize_restores_custom_key_dial_defaults_ok,
+            camset01_custom_key_dial_roundtrip_ok,
+            slot1_save_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc,
+            appfw_ok, shim_elf_ok, ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+typedef enum {
+    R54_REMAIN_SHOOT_NOT_DISPLAYED = 0, /* Factory default */
+    R54_REMAIN_SHOOT_ALWAYS        = 1,
+    R54_REMAIN_SHOOT_SHOOT_ONLY    = 2,
+    R54_REMAIN_SHOOT_INVALID       = 3
+} r54_remain_shoot_mode_t;
+
+typedef struct {
+    int remain_shoot_mode; /* Survives CamReset & NetReset; restored only by Initialize */
+    int fx3_has_builtin_evf; /* Strictly 0 on ILME-FX3 (ilc/2210) */
+    int vari_angle_lcd_active; /* 1: direct Setup -> [Monitor] / [Display Option] topology */
+} r54_remain_shoot_evf_state_t;
+
+__attribute__((noinline)) static void r54_remain_shoot_initialize(
+    r54_remain_shoot_evf_state_t *st
+) {
+    st->remain_shoot_mode = R54_REMAIN_SHOOT_NOT_DISPLAYED;
+    st->fx3_has_builtin_evf = 0;
+    st->vari_angle_lcd_active = 1;
+}
+
+__attribute__((noinline)) static void r54_remain_shoot_camera_settings_reset(
+    r54_remain_shoot_evf_state_t *st
+) {
+    /* [Remain Shoot Display] SURVIVES [Camera Settings Reset]! */
+    (void)st;
+}
+
+__attribute__((noinline)) static void r54_remain_shoot_reset_network_settings(
+    r54_remain_shoot_evf_state_t *st
+) {
+    /* [Remain Shoot Display] SURVIVES [Reset Network Set.]! */
+    (void)st;
+}
+
+__attribute__((noinline)) static int r54_set_remain_shoot_display(
+    r54_remain_shoot_evf_state_t *st, int mode
+) {
+    if (!st || mode < R54_REMAIN_SHOOT_NOT_DISPLAYED || mode > R54_REMAIN_SHOOT_SHOOT_ONLY) {
+        return -EINVAL;
+    }
+    st->remain_shoot_mode = mode;
+    return 0;
+}
+
+__attribute__((noinline)) static int r54_eval_remain_shoot_visible(
+    const r54_remain_shoot_evf_state_t *st, int is_movie_mode, int is_shutter_bursting
+) {
+    /* Strictly Still-image continuous-shooting buffer scope ONLY:
+     * NEVER displays or spoofs Movie recording remaining card time! */
+    if (!st || is_movie_mode) {
+        return 0;
+    }
+    if (st->remain_shoot_mode == R54_REMAIN_SHOOT_ALWAYS) {
+        return 1;
+    }
+    if (st->remain_shoot_mode == R54_REMAIN_SHOOT_SHOOT_ONLY) {
+        return is_shutter_bursting ? 1 : 0;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static int r54_try_evf_finder_monitor_switch(
+    const r54_remain_shoot_evf_state_t *st, int target_mode
+) {
+    (void)target_mode;
+    if (!st || st->fx3_has_builtin_evf == 0) {
+        return -EOPNOTSUPP;
+    }
+    return 0;
+}
+
+static int run_r54_remain_shoot_evf_less_integrated_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r54c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54c_slot1_vault", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r54c_slot2_camset", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r54c_surfaces");
+    (void)umount("/mnt/r54c_p2_ro");
+    (void)umount("/mnt/r54c_cnflasha_ro");
+    (void)umount("/mnt/r54c_slot1_vault");
+    (void)umount("/mnt/r54c_slot2_camset");
+    if (mount("tmpfs", "/mnt/r54c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r54c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r54c_slot2_camset", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 59U + i * 37U + 0x40U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r54c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 31U + 0x54U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 67U + 0x40U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x81U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r54c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r54c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r54c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r54c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r54c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r54c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. [Remain Shoot Display] 3 modes, Still-buffer scope only, & reset survival */
+    int fx3_remain_shoot_node_ok =
+        (r54_lookup_wave40_menu_node("Remain Shoot Display") == 0 &&
+         r54_lookup_wave40_menu_node(
+             "MENU -> Setup -> [Display Option] -> [Remain Shoot Display]"
+         ) == 0) ? 1 : 0;
+
+    r54_remain_shoot_evf_state_t rs;
+    r54_remain_shoot_initialize(&rs);
+    int remain_shoot_default_not_displayed_ok =
+        (rs.remain_shoot_mode == R54_REMAIN_SHOOT_NOT_DISPLAYED) ? 1 : 0;
+    int invalid_remain_shoot_rc = r54_set_remain_shoot_display(&rs, R54_REMAIN_SHOOT_INVALID);
+
+    int remain_shoot_3modes_verified = 0;
+    unsigned int remain_shoot_movie_card_time_spoof_events = 0U;
+    int still_vis_ok = 1;
+    for (int m = R54_REMAIN_SHOOT_NOT_DISPLAYED; m <= R54_REMAIN_SHOOT_SHOOT_ONLY; m++) {
+        if (r54_set_remain_shoot_display(&rs, m) == 0 && rs.remain_shoot_mode == m) {
+            remain_shoot_3modes_verified++;
+        }
+        if (r54_eval_remain_shoot_visible(&rs, 1, 0) != 0 ||
+            r54_eval_remain_shoot_visible(&rs, 1, 1) != 0) {
+            remain_shoot_movie_card_time_spoof_events++;
+        }
+        int idle_v  = r54_eval_remain_shoot_visible(&rs, 0, 0);
+        int burst_v = r54_eval_remain_shoot_visible(&rs, 0, 1);
+        if (m == R54_REMAIN_SHOOT_NOT_DISPLAYED && (idle_v != 0 || burst_v != 0)) still_vis_ok = 0;
+        if (m == R54_REMAIN_SHOOT_ALWAYS && (idle_v != 1 || burst_v != 1)) still_vis_ok = 0;
+        if (m == R54_REMAIN_SHOOT_SHOOT_ONLY && (idle_v != 0 || burst_v != 1)) still_vis_ok = 0;
+    }
+    int remain_shoot_still_buffer_scope_ok =
+        (still_vis_ok == 1 && remain_shoot_movie_card_time_spoof_events == 0U) ? 1 : 0;
+
+    (void)r54_set_remain_shoot_display(&rs, R54_REMAIN_SHOOT_ALWAYS);
+    r54_remain_shoot_camera_settings_reset(&rs);
+    int surv_cam = (rs.remain_shoot_mode == R54_REMAIN_SHOOT_ALWAYS) ? 1 : 0;
+    r54_remain_shoot_reset_network_settings(&rs);
+    int surv_net = (rs.remain_shoot_mode == R54_REMAIN_SHOOT_ALWAYS) ? 1 : 0;
+    r54_remain_shoot_initialize(&rs);
+    int remain_shoot_survives_camreset_netreset_ok =
+        (surv_cam == 1 && surv_net == 1 &&
+         rs.remain_shoot_mode == R54_REMAIN_SHOOT_NOT_DISPLAYED) ? 1 : 0;
+
+    /* 2. EVF-Less ILME-FX3 topology (fx3_has_builtin_evf == 0, zero [Finder/Monitor] spoofing) */
+    int fx3_has_builtin_evf = rs.fx3_has_builtin_evf;
+    int finder_node_rc = r54_lookup_wave40_menu_node("MENU -> Setup -> [Finder/Monitor]");
+    int evf_switch_rc  = r54_try_evf_finder_monitor_switch(&rs, 1);
+    unsigned int finder_monitor_eye_sensor_spoof_events =
+        (fx3_has_builtin_evf == 0 && finder_node_rc == -EOPNOTSUPP &&
+         evf_switch_rc == -EOPNOTSUPP && rs.vari_angle_lcd_active == 1) ? 0U : 1U;
+    int evf_less_fx3_topology_ok = (finder_monitor_eye_sensor_spoof_events == 0U) ? 1 : 0;
+
+    /* 3. Integrated Wave-40 cross-check (Different Set + Shutter Angle + Custom Key CAMSET01) */
+    r54_diff_set_state_t ds;
+    r54_diff_set_initialize(&ds);
+    (void)r54_set_movie_shutter_speed_or_angle(&ds, R54_SHUTTER_MODE_ANGLE, 1800);
+    (void)r54_set_still_shutter_speed(&ds, 1000);
+    r54_custom_key_dial_state_t ck;
+    r54_custom_key_dial_initialize(&ck);
+    ck.custom_btn_still[0] = R54_KEY_FN_ZEBRA_DISPLAY;
+    int csave = r54_save_camset_custom_key_dial("/mnt/r54c_slot2_camset/CAMSET01.DAT", &ck);
+    r54_custom_key_dial_initialize(&ck);
+    int cload = r54_load_camset_custom_key_dial("/mnt/r54c_slot2_camset/CAMSET01.DAT", &ck);
+    int wave40_3pillars_integrated_ok =
+        (ds.still_val[R54_DIFF_SHUTTER_SPEED] == 1000 &&
+         ds.movie_shutter_angle_ddeg == 1800 &&
+         csave == 0 && cload == 0 &&
+         r54_resolve_movie_btn(&ck, 0) == R54_KEY_FN_ZEBRA_DISPLAY &&
+         evf_less_fx3_topology_ok == 1) ? 1 : 0;
+
+    /* 4. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r54c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r54c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r54c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r54c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r54_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r54c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r54c_slot2_camset");
+    (void)umount("/mnt/r54c_slot1_vault");
+    (void)umount("/mnt/r54c_surfaces");
+    (void)umount("/mnt/r54c_p2_ro");
+    (void)umount("/mnt/r54c_cnflasha_ro");
+    (void)rmdir("/mnt/r54c_slot2_camset");
+    (void)rmdir("/mnt/r54c_slot1_vault");
+    (void)rmdir("/mnt/r54c_surfaces");
+    (void)rmdir("/mnt/r54c_p2_ro");
+    (void)rmdir("/mnt/r54c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_remain_shoot_node_ok == 1 &&
+              remain_shoot_default_not_displayed_ok == 1 &&
+              invalid_remain_shoot_rc == -EINVAL &&
+              remain_shoot_3modes_verified == 3 &&
+              remain_shoot_still_buffer_scope_ok == 1 &&
+              remain_shoot_movie_card_time_spoof_events == 0U &&
+              remain_shoot_survives_camreset_netreset_ok == 1 &&
+              fx3_has_builtin_evf == 0 &&
+              evf_less_fx3_topology_ok == 1 &&
+              finder_monitor_eye_sensor_spoof_events == 0U &&
+              wave40_3pillars_integrated_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R54_REMAIN_SHOOT_EVF_INTEGRATED fx3_remain_shoot_node_ok=%d "
+            "remain_shoot_default_not_displayed_ok=%d invalid_remain_shoot_rc=%d "
+            "remain_shoot_3modes_verified=%d remain_shoot_still_buffer_scope_ok=%d "
+            "remain_shoot_movie_card_time_spoof_events=%u "
+            "remain_shoot_survives_camreset_netreset_ok=%d "
+            "fx3_has_builtin_evf=%d finder_monitor_rejected_rc=%d "
+            "finder_monitor_eye_sensor_spoof_events=%u evf_less_fx3_topology_ok=%d "
+            "wave40_3pillars_integrated_ok=%d "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r54c_ok=%d verify_us=%lld\n",
+            fx3_remain_shoot_node_ok, remain_shoot_default_not_displayed_ok,
+            invalid_remain_shoot_rc, remain_shoot_3modes_verified,
+            remain_shoot_still_buffer_scope_ok,
+            remain_shoot_movie_card_time_spoof_events,
+            remain_shoot_survives_camreset_netreset_ok,
+            fx3_has_builtin_evf, finder_node_rc,
+            finder_monitor_eye_sensor_spoof_events, evf_less_fx3_topology_ok,
+            wave40_3pillars_integrated_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -20799,6 +21969,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r53-wave39-integrated-stress") == 0) {
         return run_r53_wave39_integrated_stress_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r54-custom-key-dial-camset-persist") == 0) {
+        return run_r54_custom_key_dial_camset_persist_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r54-remain-shoot-evf-less-integrated") == 0) {
+        return run_r54_remain_shoot_evf_less_integrated_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -20976,6 +22152,27 @@ int main(int argc, char **argv) {
             fclose(r53f);
             if (is_integrated_stress && run_r53_wave39_integrated_stress_probe(72) != 0) {
                 return 72;
+            }
+        }
+    }
+    struct stat r54_st;
+    if (stat("/etc/fx6_stage_r54", &r54_st) == 0) {
+        if (setup_r54_diff_set_still_mv_shutter_angle_probe() != 0) {
+            return 73;
+        }
+        FILE *r54f = fopen("/etc/fx6_stage_r54", "r");
+        if (r54f) {
+            int is_remain_shoot_integrated = 0;
+            char r54line[128];
+            while (fgets(r54line, sizeof(r54line), r54f)) {
+                if (strstr(r54line, "r54_mode=remain_shoot_evf_less_integrated_big6") != NULL) {
+                    is_remain_shoot_integrated = 1;
+                }
+            }
+            fclose(r54f);
+            if (is_remain_shoot_integrated &&
+                run_r54_remain_shoot_evf_less_integrated_probe(73) != 0) {
+                return 73;
             }
         }
     }

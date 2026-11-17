@@ -1474,6 +1474,33 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-108-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 55. Phase 271 Milestone (`110/110` Safety Gates, Task H306, Wave-45): `ILME-FX3` (`Ver. 7.02`) `[Focus Assistant]` (`[Auto Magnifier in MF]`, `Custom Button 5`, `[Initial Focus Mag.]` `x1.0`), `[Peaking Display]` Clean-HDMI Isolation & Still-Only `[AF Illuminator]` Guard (`Gate G109`), `[Area/Date/Time Setting]` Zero-RF Sync Suppression, `[Video Light Mode]` (`Power Link` + `5V <= 900 mA`) & `[HDMI Resolution]` (`Auto` + Log `1080p` Downshift) Guard (`Gate G110`), and Unified 110-Gate Master Preflight (`realhw_focus_mag_datetime_videolight_hdmires_and_110gate_guard.py`)
+
+`realhw_focus_mag_datetime_videolight_hdmires_and_110gate_guard.py` (`realhw_focus_mag_datetime_videolight_hdmires_and_110gate_guard_v1`) delegates `G01..G108` directly to `evaluate_108gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-108-gates`) and adds Wave-45 real-hardware safety gates **`G109`** and **`G110`** into the unified **`110`-Gate Master Safety Preflight (`G01..G110` / `run_110_gate_preflight` / `evaluate_110gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`ILME-FX3` (`Ver. 7.02`) `[Focus Assistant]`, `[Peaking Display]` Clean-HDMI Isolation & Still-Only `[AF Illuminator]` Guard (`verify_focus_mag_peaking_af_illuminator_guard`, Gate `G109`)**:
+   - Performs a bounded `< 0.10s` `os.open(..., os.O_RDONLY)` local donor audit across `cpapp-b.bin`, `libgpe.so`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin`, `libInfraDial.so`, and `CX95898_NTSC.bin` (`raw_firmware_bytes_leaked == 0`) with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` synthetic fallback.
+   - Enforces `MENU -> Focus -> [Focus Assistant]` exact `ilc/2210` nomenclature (`[Auto Magnifier in MF] = [On]` default, rejecting legacy `"MF Assist"` nomenclature spoofing with `legacy_mf_assist_spoof_events == 0`; `[Focus Magnifier]` assigned to `Custom Button 5`; `[Focus Magnif. Time] = [No Limit]` default across `2 Sec` / `5 Sec` / `No Limit`; separate Still & Movie `[Initial Focus Mag.]` registers defaulting to `[x1.0]` across `x1.0` / `x4.0`; Still-only `[AF in Focus Mag.] = [On]` default) and `[Peaking Display]` (`Off` default, `[Peaking Level] = [Mid]`, `[Peaking Color] = [White]`, `[Peaking Display Select] = Control Wheel Right`).
+   - Enforces clean-HDMI isolation (`[HDMI Info. Display] = [Off]` or `HDMI RAW` -> `hdmi_clean_feed_focus_mag_or_peaking_leak_pixels == 0`) and strictly Still-only `[AF Illuminator]` (`Auto` default / `Off` -> `movie_sq_af_illuminator_fire_events == 0`) across all `144` matrix states.
+2. **`ILME-FX3` (`Ver. 7.02`) `[Area/Date/Time Setting]` Zero-RF Sync Suppression, `[Video Light Mode]` `Power Link` + `5V <= 900 mA` & `[HDMI Resolution]` Log `1080p` Downshift Guard (`verify_area_datetime_videolight_hdmires_guard`, Gate `G110`)**:
+   - Enforces `MENU -> Setup -> [Area/Date] -> [Area/Date/Time Setting]` (rejecting legacy `"Date/Time Setup"` spoofing with `legacy_datetime_setup_spoof_events == 0`; `[Area Setting]` `—`, `[Daylight Savings] = [Off]` default, `[Date/Time]`, `[Date Format]`), survival across `[Camera Settings Reset]` (cleared only by `[Initialize]` or RTC battery loss), and zero-RF bench hard suppression of Creators' App `[Auto Time Correction]` / `[Auto Area Adjustment]` under `[Airplane Mode] = [On]` (`passive_tx_bytes_emitted == 0`, `unsolicited_rtc_timezone_jump_events == 0`).
+   - Enforces `[Video Light Mode]` (`[Power Link]` default / `[REC Link]` / `[REC Link & STBY]` / `[Auto]`) `[Setup]` reset survival and MI-Shoe `5V <= 900 mA` (`G24`) rail budget (`mishoe_5v_overcurrent_events == 0`), plus `[HDMI Resolution]` (`[Auto]` default / `2160p` / `1080p` / `1080i`) `[Setup]` reset survival and hardware Log internal-recording `1080p` downshift override when `Rec. Media dur HDMI Output = On` (`hdmi_res_log_internal_rec_2160p_bypass_events == 0`) across all `256` matrix states.
+3. **Unified `110`-Gate Master Milestone Preflight (`evaluate_110gate_preflight` / `verify-110-gates`)**:
+   - **Offline default mode**: `107/110` gates pass (`VERIFIED_107_OF_110_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `110/110` simulation gates pass (`VERIFIED_ALL_110_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_110_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-focus-mag-peaking-af-illuminator-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-area-datetime-videolight-hdmires-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  /usr/bin/python3 -B -m fx3_safety verify-110-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
+
 
 
 

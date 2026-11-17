@@ -167,6 +167,11 @@ from .realhw_power_save_monitor_language_volume_delete_and_112gate_guard import 
     evaluate_g111_power_save_monitor_and_language_guard,
     evaluate_g112_volume_4chmon_delete_confirm_guard,
 )
+from .realhw_usb_mode_hdmi_info_protect_network_reset_and_114gate_guard import (
+    evaluate_114gate_preflight,
+    evaluate_g113_usb_mode_and_hdmi_info_guard,
+    evaluate_g114_protect_and_network_reset_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3161,6 +3166,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G112 gates can be rehearsed offline",
     )
     p_112.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 128. verify-usb-mode-hdmi-info-guard
+    p_g113 = sub.add_parser(
+        "verify-usb-mode-hdmi-info-guard",
+        aliases=["verify-g113-usb-mode-hdmi-info"],
+        help="Verify Gate G113: [USB Connection Mode] 4-Mode vs Dormant NOUVC [USB Streaming], Data-Isolated PD Guard, and [HDMI Info. Display] LCD Blanking / 1080 Clamp / 4K Clean-Feed Override",
+    )
+    p_g113.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g113.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g113.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g113.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 129. verify-protect-and-network-reset-guard
+    p_g114 = sub.add_parser(
+        "verify-protect-and-network-reset-guard",
+        aliases=["verify-g114-protect-network-reset"],
+        help="Verify Gate G114: [Protect] Scopes vs [Format] Slot-1 Dual-Layer Hardware WP Firewall and [Reset Network Set.] Auto-Reboot + Post-Reboot [Airplane Mode] = [On] Zero-RF Sequence",
+    )
+    p_g114.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g114.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g114.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g114.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 130. verify-114-gates
+    p_114 = sub.add_parser(
+        "verify-114-gates",
+        help="Run Phase 276 Unified 114-Gate Master Safety Preflight Engine (G01..G114)",
+    )
+    p_114.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_114.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_114.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G114 gates can be rehearsed offline",
+    )
+    p_114.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -6384,6 +6475,109 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_112_gates_verified if args.dry_run_simulated else report.offline_109_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-usb-mode-hdmi-info-guard",
+        "verify-g113-usb-mode-hdmi-info",
+    ):
+        verdict, res = evaluate_g113_usb_mode_and_hdmi_info_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.usb_mode_hdmi_info_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} usb_modes={len(guard['fx3_stock_4_usb_modes'])}"
+                f"(sel={guard['effective_post_reset_usb_connection_mode']},"
+                f"nouvc_spoof={guard['usb_streaming_spoof_events']},"
+                f"pd={guard['effective_post_reset_usb_power_supply']},"
+                f"data_iso={guard['usb_data_lines_physically_isolated']}) "
+                f"hdmi_info={guard['effective_hdmi_info_display']}"
+                f"(lcd_blank={guard['lcd_blanked']},"
+                f"out_res={guard['effective_hdmi_output_resolution']},"
+                f"clean4k={guard['hdmi_clean_feed_4k_forced_off_active']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-protect-and-network-reset-guard",
+        "verify-g114-protect-network-reset",
+    ):
+        verdict, res = evaluate_g114_protect_and_network_reset_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.protect_and_network_reset_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} scope={guard['protect_scope']}"
+                f"(slot1_wp={guard['slot1_sd_physical_wp_locked']},"
+                f"fmt_lock={guard['slot1_format_hard_locked']},"
+                f"wp_viol={guard['slot1_wp_firewall_violation_events']}) "
+                f"nw_reset_reboot={guard['auto_reboot_triggered']} "
+                f"post_air={guard['post_reset_airplane_mode']}"
+                f"(rf_haz={guard['post_network_reset_rf_hazard_events']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-114-gates":
+        report = evaluate_114gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/114 "
+                f"g113_to_g114_all_passed={report.g113_to_g114_all_passed} "
+                f"all_114_gates_verified={report.all_114_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_114_gates_verified if args.dry_run_simulated else report.offline_111_gates_verified
         return 0 if ok else 1
 
     return 2

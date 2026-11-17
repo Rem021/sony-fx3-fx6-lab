@@ -1046,4 +1046,26 @@ FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-
   /usr/bin/python3 -B -m fx3_recovery verify-46pillar-recovery --clean-room --json
 ```
 
+## Phase 272 — 真机主线 Part 35（Pillar 47 / `47/47` 统一恢复总检）：`[Focus Assistant]`（`[Auto Magnifier in MF]` vs 历史 `MF Assist`、`Custom Button 5`、双 `[Initial Focus Mag.] = [x1.0]`、纯静态 `[AF in Focus Mag.]` / `[AF Illuminator]` 与纯净 HDMI `[Peaking Display]`）+ `[Area/Date/Time Setting]` 零射频保护、`[Video Light Mode]` `5V <= 900mA` & `[HDMI Resolution]` Log `1080p` 降档与 Slot-1 金库（`verify-47pillar-recovery` / `verify-focus-mag-datetime-videolight-hdmires-vault`）
+
+- **[`realhw_47pillar_focus_mag_datetime_videolight_hdmires_vault_verifier.py`](fx3_recovery/realhw_47pillar_focus_mag_datetime_videolight_hdmires_vault_verifier.py)**：面向物理 `Sony ILME-FX3`（`Ver. 7.02`，`0x91030080`，`ilc/2210`，Wave-45）落地 **Phase 272 Pillar 47（`47/47`）** 并将全套恢复总检推进至 **`47/47`（`VERIFIED_47OF47_PILLAR_RECOVERY_MASTER`）**（`< 2.0s` CLI 预算、`< 4.0s` 标称、`< 6.0s` 并发上限，保持 `verify-22..46pillar-recovery` 100% 向后兼容）；硬锁定 `CNFLASHA_USERSPACE_WRITE_BLOCKED = True`、`PERSISTENT_EMMC_WRITES_AUTHORIZED = False`、`SPI_NOR_WRITE_AUTHORIZED = False`、`EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`、`ISP_WRITE_AUTHORIZED = False`、`HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`、`OTP_FUSE_TOUCHES = 0`、`RPMB_COUNTER_INCREMENTS = 0`、`PASSIVE_TX_BYTES_EMITTED = 0`、`PHYSICAL_USB_PACKETS_EMITTED = 0`、`PHYSICAL_DEVICE_WRITES = 0`、`RAW_FIRMWARE_BYTES_LEAKED = 0`，严格经 `os.open(..., os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)` 有界只读检查本地 `FX3 7.02` 与 `FX6 6.01` 共 **16 项** 供体（`< 0.15s`，CI 下放宽至 `< 0.50s`），同时支持 `FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 或供体缺席时自动切换 `CLEAN_ROOM_SYNTHETIC` 洁净室模式：
+  - **支柱 47A — `[Focus Assistant]` 命名规范、双 `[Initial Focus Mag.] = [x1.0]`、纯净 HDMI `[Peaking Display]` 与纯静态 `[AF Illuminator]`（`6/6`）**：
+    - `P47A1`..`P47A6`：精确建模 `MENU` -> `Focus` -> `[Focus Assistant]`，校验 `[Auto Magnifier in MF] = [On]` 出厂默认并严格拦截历史 `"MF Assist"` 命名伪造（`legacy_mf_assist_spoof_events == 0`）、`[Focus Magnifier]` 默认绑定 `Custom Button 5`、`[Focus Magnif. Time] = [No Limit]` 默认、照片与视频各自独立的 `[Initial Focus Mag.] = [x1.0]` 寄存器（`still_movie_initial_mag_couplings == 0`）、仅限静态照片生效的 `[AF in Focus Mag.] = [On]`（`movie_af_in_focus_mag_events == 0`）、`[Peaking Display]`（默认 `Off` / `Control Wheel Right` / `Mid` / `White`）机内 LCD 专属隔离（`hdmi_clean_feed_focus_mag_or_peaking_leak_pixels == 0`）以及仅限静态照片生效的 `[AF Illuminator]`（`Auto` 默认，`movie_sq_af_illuminator_fire_events == 0`），并在 `144` 组合矩阵下验证 `[Camera Settings Reset]` vs `[Reset Network Set.]` vs `[Initialize]` 复位边界与 `O_RDONLY` Slot-1 `CAMSET01.DAT` `[Load]` 恢复。
+  - **支柱 47B — `[Area/Date/Time Setting]` 零射频取证时间戳完整性、`[Video Light Mode]` `5V <= 900mA` 供电护栏、`[HDMI Resolution]` Log `1080p` 降档与 Slot-1 金库只读锁（`6/6`）**：
+    - `P47B1`..`P47B6`：精确建模 `MENU` -> `Setup` -> `[Area/Date]` -> `[Area/Date/Time Setting]`（拦截历史 `"Date/Time Setup"` 伪造，`legacy_datetime_setup_spoof_events == 0`）全部 4 项子菜单（`Area Setting`、`Daylight Savings = Off`、`Date/Time`、`Date Format`）、`[Camera Settings Reset]` 留存（仅 `[Initialize]` 或 RTC 后备电池失电清除）、以及 `[Airplane Mode] = [On]` 下强制抑制 Creators' App `[Auto Time Correction]` 与 `[Auto Area Adjustment]`（`unsolicited_rtc_timezone_jump_events == 0`）以保障 `H0..H3` 取证时间戳；校验 `[Video Light Mode]`（`Power Link` 默认）MI 热靴 `5V <= 900 mA`（Gate G24）预算护栏（`mishoe_5v_overcurrent_events == 0`）、`[HDMI Resolution]`（`Auto` 默认，跨 `[Camera Settings Reset]` 留存）在 `[Log Shooting] != Off` 机内录制时的强制 `1080p` 降档（`hdmi_res_log_internal_rec_2160p_bypass_events == 0`）、以及 Slot-1 只读金库与 `16/16` Tier-0 `Backup.bin` `H0 == H3` 不变性（`slot1_vault_mutation_bytes == 0`，覆盖 `256` 组合矩阵）。
+  - **统一 `47/47` 恢复总检聚合器与 CLI（`evaluate_realhw_47pillar_recovery_master` / `evaluate_47pillar_recovery_master` / `verify-47pillar-recovery` / `verify-focus-mag-datetime-videolight-hdmires-vault`）**：
+    - 并发调用 `evaluate_realhw_46pillar_recovery_master`（`Pillars 1..46`）+ **Pillar 47**（`run_pillar47_standalone_suite`），汇总产出 **`47/47`**（`VERIFIED_47OF47_PILLAR_RECOVERY_MASTER`）与规范摘要哈希；[`tests/test_realhw_47pillar_focus_mag_datetime_videolight_hdmires_vault_verifier.py`](tests/test_realhw_47pillar_focus_mag_datetime_videolight_hdmires_vault_verifier.py) 提供双模快速单元测试。
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-focus-mag-datetime-videolight-hdmires-vault --json
+
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-47pillar-recovery --json
+
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-recovery-adapter \
+  /usr/bin/python3 -B -m fx3_recovery verify-47pillar-recovery --clean-room --json
+```
+
+
 

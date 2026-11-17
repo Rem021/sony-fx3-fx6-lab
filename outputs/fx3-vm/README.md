@@ -1791,3 +1791,38 @@ PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 278：Stage 55（`55/55`）真实硬件主线 — Wave-45 `[Focus Assistant]`（`Focus Magnifier` / `Auto Magnifier in MF` / `Initial Focus Mag.` `x1.0` / `AF in Focus Mag.`）& `[Peaking Display]` / `[AF Illuminator]`、`[Area/Date/Time Setting]` 零射频隔断、以及 `[Video Light Mode]`（`Power Link` / MI 热靴 `5V <= 900 mA`）& `[HDMI Resolution]`（`Auto` / Log `1080p` 下变换）HIL 协同仿真器
+
+[`realhw_focus_mag_datetime_videolight_hdmires_coemulator.py`](realhw_focus_mag_datetime_videolight_hdmires_coemulator.py) 作为 **Phase 278 Stage 55（`55/55`，Schema `realhw_focus_mag_datetime_videolight_hdmires_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil=True` / `include_stage55=True` / `stage55_realhw_focus_mag_datetime_videolight_hdmires_hil=True`，支持显式 `--include-stage55` 以及通过 `--skip-phase278` / `--skip-stage55` / `--no-include-stage55` 跳过），在严格保持 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`legacy_mf_assist_spoof_events == 0`、`hdmi_clean_feed_mag_or_peaking_leaked_pixels == 0`、`af_illuminator_movie_or_sq_fire_events == 0`、`legacy_date_time_setup_spoof_events == 0`、`passive_tx_bytes_emitted == 0`、`creators_app_rtc_sync_jump_events == 0`、`mishoe_5v_900ma_overcurrent_events == 0`、`hdmi_log_1080p_downshift_bypass_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大核心闭环：
+
+1. **高速双模 18 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 严格通过 `os.O_RDONLY` 核验 FX3 `Ver. 7.02` 与 FX6 `Ver. 6.01` 的 **18 份真实供体**（精确锁定字节数与完整 64 位 SHA-256 / 4096B 头部哈希）：`libInfraAdjMedia.so`（`318,152 B`）、`libInfraAirplaneMode.so`（`14,488 B`）、`libSaveLoadSettings.so`（`18,760 B`）、`libBusPower.so`（`43,968 B`）、`libInfraMediaConfig.so`（`52,312 B`）、`libInfraMediaCommon.so`（`402,624 B`）、`libInfraBluetoothCore.so`（`267,592 B`）、`libWlanControlCommon.so`（`18,528 B`）、FX3 `string_english_f.uxc`（`373,820 B`：证实 `Auto Magnifier in MF` / `Focus Magnif. Time` / `Initial Focus Mag.` / `AF in Focus Mag.` / `Peaking Display` / `Peaking Level` / `Peaking Color` / `AF Illuminator` / `Area/Date/Time Setting` / `Location Info. Link` / `Auto Time Correction` / `Auto Area Adjustment` / `Airplane Mode` / `Video Light Mode` / `Power Link` / `REC Link` / `HDMI Resolution` / `2160p` / `1080p` / `Off(HDMI Only)` / `Camera Settings Reset` / `Initialize`）、FX6 `string_english.uxc`（`118,208 B`），以及对 `appFw.so`、`cpapp-b.bin`、`libmpr.so` 与 `BK4` 执行 `<= 4096 B` 有界窗口只读核验；同时支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 55A — `[Focus Assistant]`、`[Peaking Display]` 与 `[AF Illuminator]`（仅限静态照片）HIL**：
+   - 协同仿真 `MENU -> Focus -> [Focus Assistant]`：严格强制 `ilc/2210` 官方标题 `[Auto Magnifier in MF]`（`On` 默认，以 `EOPNOTSUPP = 95` 硬拒绝旧款 `"MF Assist"` 伪造）、`[Focus Magnifier]`（`Custom Button 5` 默认 + `Touch Operation = On` 时 MF/DMF 液晶屏双击触发）、`[Focus Magnif. Time]`（`No Limit` 默认 / `2 Sec` / `5 Sec`）、独立的 Still 与 Movie `[Initial Focus Mag.]` 寄存器（`x1.0` 默认 / `x4.0`）、Still 专属 `[AF in Focus Mag.]`（`On` 默认 / `Off`）、HDMI 纯净输出退出与 `RAW Output = On` 硬锁定放大输出（`hdmi_clean_feed_mag_or_peaking_leaked_pixels == 0`）。
+   - 协同仿真 `[Peaking Display]`（`Off` 默认，`Mid` 级别默认 `High`/`Mid`/`Low`，`White` 颜色默认 `Red`/`Yellow`/`Blue`/`White`，仅限机内 LCD 绝不污染外接 HDMI）与 `[AF Illuminator]`（`Auto` 默认 / `Off`，**严格仅限 Still 静态照片 AF**，在 `Movie` / `S&Q` 域绝对零点亮，`af_illuminator_movie_or_sq_fire_events == 0`）。
+3. **Sub-Model 55B — `[Area/Date/Time Setting]`（`Setup > Area/Date`）与零射频 Creators' App 同步隔断 HIL**：
+   - 严格强制 `ilc/2210` 官方标题 `[Area/Date/Time Setting]`（以 `EOPNOTSUPP = 95` 硬拒绝旧款 `"Date/Time Setup"` 伪造），建模 `[Area Setting]`（初始未配置 `"—"`）、`[Daylight Savings]`（`Off` 默认 / `On`）、`[Date/Time]` 与 `[Date Format]`（`Y-M-D` / `M-D-Y` / `D-M-Y`）；验证其驻留 `[Setup]` 菜单下跨 `[Camera Settings Reset]` 与 `[Reset Network Set.]` 完整存活，仅由 `[Initialize]` 或 RTC 后备电池耗尽触发清零重设。
+   - 在零射频气隙台架（`[Airplane Mode] = [On]`，`passive_tx_bytes_emitted == 0`）下硬阻断 Creators' App `[Location Information Linkage]`（`[Auto Time Correction]` / `[Auto Area Adjustment]`）蓝牙/Wi-Fi 同步，保障 `H0..H3` 取证 RTC 时标绝不意外跳变（`creators_app_rtc_sync_jump_events == 0`）。
+4. **Sub-Model 55C & Redlines — `[Video Light Mode]`（`Power Link` 默认 & MI 热靴 `5V <= 900 mA`）与 `[HDMI Resolution]`（`Auto` 默认 & Log `1080p` 下变换）HIL**：
+   - 协同仿真 `MENU -> Setup -> [Video Light Mode]`（`Power Link` 默认 / `REC Link` / `REC Link & STBY` / `Auto`，跨 `[Camera Settings Reset]` 存活），叠加 MI 热靴 `5V <= 900 mA` 供电轨过流门控保护（`Gate G24` 对等，`> 900 mA` 返回 `EACCES = 13` 硬件关断，`mishoe_5v_900ma_overcurrent_events == 0`）。
+   - 协同仿真 `MENU -> Setup -> [External Output] -> [HDMI Resolution]`（`Auto` 默认 / `2160p` / `1080p` / `1080i`，跨 `[Camera Settings Reset]` 存活，仅 `[Initialize]` 恢复 `Auto`）：建模 `[Log Shooting] != Off` 且正在机内录制时自动将外部 HDMI 下变换至 `1080p`（除非 `Rec. Media dur HDMI Output = Off(HDMI Only)`），强行绕过返回 `EOPNOTSUPP = 95`（`hdmi_log_1080p_downshift_bypass_events == 0`），同时锁死全部 `16` 项硬件安全红线探针。
+
+### Phase 278 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 278 Stage 55（55/55）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_focus_mag_datetime_videolight_hdmires_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_focus_mag_datetime_videolight_hdmires_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_focus_mag_datetime_videolight_hdmires_coemulator.py --self-test --json
+
+# 2. 全板 55 阶段（Stage 1..55, 55/55）统一校验（支持 --include-stage55 与 --skip-phase278 / --skip-stage55）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage55 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 278 三模式 72 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_focus_mag_datetime_videolight_hdmires_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_focus_mag_datetime_videolight_hdmires_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_focus_mag_datetime_videolight_hdmires_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```

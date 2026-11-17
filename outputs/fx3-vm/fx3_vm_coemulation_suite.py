@@ -83,6 +83,7 @@ import realhw_emphasized_rec_grid_hdmi_touch_sunny_coemulator as p242  # noqa: E
 import realhw_fan_pwm_shutter_angle_lut_split_coemulator as p200  # noqa: E402
 import realhw_file_settings_gamma_assist_tcub_coemulator as p274  # noqa: E402
 import realhw_filesettings_shotmark_tcregen_reclamp_coemulator as p217  # noqa: E402
+import realhw_focus_mag_datetime_videolight_hdmires_coemulator as p278  # noqa: E402
 import realhw_framing_usbpower_lun_antiflicker_coemulator as p250  # noqa: E402
 import realhw_fx3a_branch_firewall_and_xlrh1_4ch_mishoe_coemulator as p188  # noqa: E402
 import realhw_hdmi_log1080_proxy_vault_focusmag_brightmon_coemulator as p213  # noqa: E402
@@ -211,6 +212,9 @@ class CoEmulationConfig:
     include_phase274_realhw_file_settings_gamma_assist_tcub_hil: bool = True
     include_stage54: bool = True
     stage54_realhw_file_settings_gamma_assist_tcub_hil: bool = True
+    include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil: bool = True
+    include_stage55: bool = True
+    stage55_realhw_focus_mag_datetime_videolight_hdmires_hil: bool = True
     xavc_resolution: str = p45.RES_QFHD_4K
     xavc_fps: str = "59.94p"
     xavc_codec: str = p45.CODEC_XAVC_I
@@ -3474,6 +3478,84 @@ def run_stage54_realhw_file_settings_gamma_assist_tcub_hil(
     }
 
 
+def run_stage55_realhw_focus_mag_datetime_videolight_hdmires_hil(
+    config: CoEmulationConfig,
+    *,
+    env: Optional[Mapping[str, str]] = None,
+) -> Dict[str, object]:
+    """Run Stage 55 (Phase 278, 55/55): Real-Hardware ILME-FX3 Wave-45 Focus Assistant & Peaking Display / Still-Only AF Illuminator, Area/Date/Time Setting Zero-RF Creators' App Isolation, and Video Light Mode (MI-Shoe 5V<=900mA) & HDMI Resolution (Auto & Log 1080p Override) HIL."""
+    config.validate()
+    rep = p278.run_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil(
+        force_clean_room=config.force_clean_room,
+        env=env,
+    )
+    red = rep["redlines"]
+    return {
+        "stage": "stage55_realhw_focus_mag_datetime_videolight_hdmires_hil",
+        "schema": rep["schema"],
+        "phase_number": rep["phase_number"],
+        "milestone": rep["milestone"],
+        "all_checks_passed": bool(rep["all_checks_passed"]),
+        "source_mode": rep["source_mode"],
+        "nop_count": red["nop_count"],
+        "guest_code_modification_bytes": red["guest_code_modification_bytes"],
+        "cp_mutation_bytes": red["cp_mutation_bytes"],
+        "wbi_mutation_bytes": red["wbi_mutation_bytes"],
+        "calibration_mutation_bytes": red["calibration_mutation_bytes"],
+        "cnflasha_mutation_bytes": red["cnflasha_mutation_bytes"],
+        "cnflasha_userspace_write_blocked": red["cnflasha_userspace_write_blocked"],
+        "nvram_persistent_writes": red["nvram_persistent_writes"],
+        "bk4_persistent_nvram_writes": red["bk4_persistent_nvram_writes"],
+        "physical_device_writes": red["physical_device_writes"],
+        "persistent_emmc_writes_authorized": red["persistent_emmc_writes_authorized"],
+        "hardware_live_attachment_authorized": red["hardware_live_attachment_authorized"],
+        "overall_ready_for_hardware_attach": red["overall_ready_for_hardware_attach"],
+        "isp_write_authorized": red["isp_write_authorized"],
+        "emmc_nflasha_write_count": red["emmc_nflasha_write_count"],
+        "emmc_mutation_bytes": red["emmc_mutation_bytes"],
+        "emmc_corruptions": red["emmc_corruptions"],
+        "spi_nor_write_authorized": red["spi_nor_write_authorized"],
+        "spi_nor_mutation_bytes": red["spi_nor_mutation_bytes"],
+        "el3_payload_transmit_authorized": red["el3_payload_transmit_authorized"],
+        "otp_fuse_touches": red["otp_fuse_touches"],
+        "rpmb_counter_increments": red["rpmb_counter_increments"],
+        "legacy_mf_assist_spoof_events": red["legacy_mf_assist_spoof_events"],
+        "hdmi_clean_feed_mag_or_peaking_leaked_pixels": red[
+            "hdmi_clean_feed_mag_or_peaking_leaked_pixels"
+        ],
+        "af_illuminator_movie_or_sq_fire_events": red[
+            "af_illuminator_movie_or_sq_fire_events"
+        ],
+        "legacy_date_time_setup_spoof_events": red[
+            "legacy_date_time_setup_spoof_events"
+        ],
+        "passive_tx_bytes_emitted": red["passive_tx_bytes_emitted"],
+        "creators_app_rtc_sync_jump_events": red["creators_app_rtc_sync_jump_events"],
+        "mishoe_5v_900ma_overcurrent_events": red["mishoe_5v_900ma_overcurrent_events"],
+        "hdmi_log_1080p_downshift_bypass_events": red[
+            "hdmi_log_1080p_downshift_bypass_events"
+        ],
+        "rsv_orphan_count": red["rsv_orphan_count"],
+        "null_gpio_derefs": red["null_gpio_derefs"],
+        "mailbox_stalls": red["mailbox_stalls"],
+        "stock_cp_fault_count": red["stock_cp_fault_count"],
+        "wf12_00342260_hits": red["wf12_00342260_hits"],
+        "appfw_crashes": red["appfw_crashes"],
+        "raw_firmware_bytes_leaked": red["raw_firmware_bytes_leaked"],
+        "donor_audit": rep["donor_audit"],
+        "pillar_a_focus_assistant_and_peaking_hil": rep[
+            "pillar_a_focus_assistant_and_peaking_hil"
+        ],
+        "pillar_b_area_datetime_and_zero_rf_hil": rep[
+            "pillar_b_area_datetime_and_zero_rf_hil"
+        ],
+        "pillar_c_d_video_light_hdmi_res_and_redlines": rep[
+            "pillar_c_d_video_light_hdmi_res_and_redlines"
+        ],
+        "phase278_audit_digest_sha256": rep["audit_digest_sha256"],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Unified Full-Board Co-Emulation Orchestrator
 # ---------------------------------------------------------------------------
@@ -3484,7 +3566,7 @@ def run_fx3_vm_coemulation_suite(
     *,
     env: Optional[Mapping[str, str]] = None,
 ) -> Dict[str, object]:
-    """Run the unified 54-stage (Phase 33..274, 54/54) Full-Board Co-Emulation Pipeline."""
+    """Run the unified 55-stage (Phase 33..278, 55/55) Full-Board Co-Emulation Pipeline."""
     cfg = CoEmulationConfig() if config is None else config
     cfg.validate()
 
@@ -3761,6 +3843,15 @@ def run_fx3_vm_coemulation_suite(
             cfg.include_phase274_realhw_file_settings_gamma_assist_tcub_hil
             and cfg.include_stage54
             and cfg.stage54_realhw_file_settings_gamma_assist_tcub_hil
+        )
+        else None
+    )
+    stage55: Optional[Dict[str, object]] = (
+        run_stage55_realhw_focus_mag_datetime_videolight_hdmires_hil(cfg, env=env)
+        if (
+            cfg.include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil
+            and cfg.include_stage55
+            and cfg.stage55_realhw_focus_mag_datetime_videolight_hdmires_hil
         )
         else None
     )
@@ -5070,6 +5161,46 @@ def run_fx3_vm_coemulation_suite(
         and stage54["appfw_crashes"] == 0
         and stage54["raw_firmware_bytes_leaked"] == 0
     )
+    stage55_ok = True if stage55 is None else (
+        bool(stage55["all_checks_passed"])
+        and stage55["nop_count"] == 0
+        and stage55["guest_code_modification_bytes"] == 0
+        and stage55["cp_mutation_bytes"] == 0
+        and stage55["wbi_mutation_bytes"] == 0
+        and stage55["calibration_mutation_bytes"] == 0
+        and stage55["cnflasha_mutation_bytes"] == 0
+        and bool(stage55["cnflasha_userspace_write_blocked"])
+        and stage55["nvram_persistent_writes"] == 0
+        and stage55["bk4_persistent_nvram_writes"] == 0
+        and stage55["physical_device_writes"] == 0
+        and (not stage55["persistent_emmc_writes_authorized"])
+        and (not stage55["hardware_live_attachment_authorized"])
+        and (not stage55["overall_ready_for_hardware_attach"])
+        and (not stage55["isp_write_authorized"])
+        and stage55["emmc_nflasha_write_count"] == 0
+        and stage55["emmc_mutation_bytes"] == 0
+        and stage55["emmc_corruptions"] == 0
+        and (not stage55["spi_nor_write_authorized"])
+        and stage55["spi_nor_mutation_bytes"] == 0
+        and (not stage55["el3_payload_transmit_authorized"])
+        and stage55["otp_fuse_touches"] == 0
+        and stage55["rpmb_counter_increments"] == 0
+        and stage55["legacy_mf_assist_spoof_events"] == 0
+        and stage55["hdmi_clean_feed_mag_or_peaking_leaked_pixels"] == 0
+        and stage55["af_illuminator_movie_or_sq_fire_events"] == 0
+        and stage55["legacy_date_time_setup_spoof_events"] == 0
+        and stage55["passive_tx_bytes_emitted"] == 0
+        and stage55["creators_app_rtc_sync_jump_events"] == 0
+        and stage55["mishoe_5v_900ma_overcurrent_events"] == 0
+        and stage55["hdmi_log_1080p_downshift_bypass_events"] == 0
+        and stage55["rsv_orphan_count"] == 0
+        and stage55["null_gpio_derefs"] == 0
+        and stage55["mailbox_stalls"] == 0
+        and stage55["stock_cp_fault_count"] == 0
+        and stage55["wf12_00342260_hits"] == 0
+        and stage55["appfw_crashes"] == 0
+        and stage55["raw_firmware_bytes_leaked"] == 0
+    )
 
     all_passed = (
         bool(stage1["all_checks_passed"])
@@ -5127,6 +5258,7 @@ def run_fx3_vm_coemulation_suite(
         and stage52_ok
         and stage53_ok
         and stage54_ok
+        and stage55_ok
     )
 
     core_payload: Dict[str, object] = {
@@ -5292,6 +5424,21 @@ def run_fx3_vm_coemulation_suite(
                 and cfg.include_stage54
                 and cfg.stage54_realhw_file_settings_gamma_assist_tcub_hil
             ),
+            "include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil": (
+                cfg.include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil
+                and cfg.include_stage55
+                and cfg.stage55_realhw_focus_mag_datetime_videolight_hdmires_hil
+            ),
+            "include_stage55": (
+                cfg.include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil
+                and cfg.include_stage55
+                and cfg.stage55_realhw_focus_mag_datetime_videolight_hdmires_hil
+            ),
+            "stage55_realhw_focus_mag_datetime_videolight_hdmires_hil": (
+                cfg.include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil
+                and cfg.include_stage55
+                and cfg.stage55_realhw_focus_mag_datetime_videolight_hdmires_hil
+            ),
             "xavc_resolution": cfg.xavc_resolution,
             "xavc_fps": cfg.xavc_fps,
             "xavc_codec": cfg.xavc_codec,
@@ -5418,6 +5565,8 @@ def run_fx3_vm_coemulation_suite(
         core_payload["stage53_realhw_release_wo_card_audio_meter_copyright_hil"] = stage53
     if stage54 is not None:
         core_payload["stage54_realhw_file_settings_gamma_assist_tcub_hil"] = stage54
+    if stage55 is not None:
+        core_payload["stage55_realhw_focus_mag_datetime_videolight_hdmires_hil"] = stage55
 
     digest = hashlib.sha256(
         json.dumps(core_payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -5429,7 +5578,7 @@ def run_fx3_vm_coemulation_suite(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         prog="fx3_vm_coemulation_suite.py",
-        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 (54/54) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
+        description="Phase 33 + 41 + 45 + 53 + 58 + 63 + 67 + 71 + 78 + 82 + 87 + 91 + 96 + 99 + 103 + 107 + 112 + 117 + 121 + 127 + 132 + 141 + 145 + 150 + 157 + 162 + 167 + 172 + 178 + 182 + 188 + 194 + 200 + 202 + 207 + 213 + 217 + 222 + 226 + 232 + 236 + 239 + 242 + 244 + 250 + 253 + 257 + 258 + 262 + 267 + 270 + 274 + 278 (55/55) Unified FX3-VM Full-Board Co-Emulation Orchestrator & CLI",
     )
     parser.add_argument("--clean-room", action="store_true", help="Force clean-room synthetic mode")
     parser.add_argument("--json", action="store_true", help="Emit deterministic JSON audit summary (default)")
@@ -5845,6 +5994,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         help="Skip optional Stage 54 (Phase 274 54/54 Real-Hardware ILME-FX3 Wave-44 Movie File Settings Cam ID + Reel# & 37-Char Title vs Still File/Folder Settings & Slot-1 Vault, Gamma Display Assist Log Lockout & Clean HDMI vs Display LUT / Select LUT, and Auto Review Off Default & 6 Non-Resettable TC/UB Parameters HIL)",
     )
     parser.add_argument(
+        "--include-stage55",
+        dest="include_stage55",
+        action="store_true",
+        default=True,
+        help="Include Stage 55 (Phase 278 55/55 Real-Hardware ILME-FX3 Wave-45 Focus Assistant Auto Magnifier in MF & Initial Focus Mag. x1.0 / Peaking Display / Still-Only AF Illuminator, Area/Date/Time Setting Zero-RF Creators' App Isolation, and Video Light Mode Power Link MI-Shoe 5V<=900mA & HDMI Resolution Auto / Log 1080p Override HIL; enabled by default)",
+    )
+    parser.add_argument(
+        "--skip-stage55",
+        "--no-include-stage55",
+        dest="skip_stage55",
+        action="store_true",
+        help="Skip optional Stage 55 (alias for --skip-phase278)",
+    )
+    parser.add_argument(
+        "--skip-phase278",
+        action="store_true",
+        help="Skip optional Stage 55 (Phase 278 55/55 Real-Hardware ILME-FX3 Wave-45 Focus Assistant Auto Magnifier in MF & Initial Focus Mag. x1.0 / Peaking Display / Still-Only AF Illuminator, Area/Date/Time Setting Zero-RF Creators' App Isolation, and Video Light Mode Power Link MI-Shoe 5V<=900mA & HDMI Resolution Auto / Log 1080p Override HIL)",
+    )
+    parser.add_argument(
         "--bt-mode",
         choices=p29.ALL_BT_OPERATING_MODES,
         default=p29.BT_MODE_HEALTHY,
@@ -5915,6 +6083,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     enable_stage52 = bool(args.include_stage52) and (not args.skip_phase267) and (not args.skip_stage52)
     enable_stage53 = bool(args.include_stage53) and (not args.skip_phase270) and (not args.skip_stage53)
     enable_stage54 = bool(args.include_stage54) and (not args.skip_phase274) and (not args.skip_stage54)
+    enable_stage55 = bool(args.include_stage55) and (not args.skip_phase278) and (not args.skip_stage55)
     cfg = CoEmulationConfig(
         bt_mode=args.bt_mode,
         cine_ei_iso=args.cine_ei_iso,
@@ -5986,6 +6155,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         include_phase274_realhw_file_settings_gamma_assist_tcub_hil=enable_stage54,
         include_stage54=enable_stage54,
         stage54_realhw_file_settings_gamma_assist_tcub_hil=enable_stage54,
+        include_phase278_realhw_focus_mag_datetime_videolight_hdmires_hil=enable_stage55,
+        include_stage55=enable_stage55,
+        stage55_realhw_focus_mag_datetime_videolight_hdmires_hil=enable_stage55,
         xavc_resolution=args.xavc_resolution,
         xavc_fps=args.xavc_fps,
         xavc_codec=args.xavc_codec,
@@ -6049,6 +6221,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         s52 = rep.get("stage52_realhw_apsc_s35_face_eye_af_version_hil")
         s53 = rep.get("stage53_realhw_release_wo_card_audio_meter_copyright_hil")
         s54 = rep.get("stage54_realhw_file_settings_gamma_assist_tcub_hil")
+        s55 = rep.get("stage55_realhw_focus_mag_datetime_videolight_hdmires_hil")
         s4_str = (
             f" | dtb_mhlx={s4['source_mode']}({s4['fdt_synthesis_and_audit']['totalsize_bytes']}B)"
             if isinstance(s4, dict)
@@ -6534,6 +6707,17 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             if isinstance(s54, dict)
             else ""
         )
+        s55_str = (
+            f" | realhw_focus_mag_datetime_videolight_hdmires_hil={s55['source_mode']}("
+            f"mfspf={s55['legacy_mf_assist_spoof_events']},"
+            f"dtspf={s55['legacy_date_time_setup_spoof_events']},"
+            f"tx={s55['passive_tx_bytes_emitted']},"
+            f"mioc={s55['mishoe_5v_900ma_overcurrent_events']},"
+            f"log1080byp={s55['hdmi_log_1080p_downshift_bypass_events']},"
+            f"emmc_wr={s55['emmc_nflasha_write_count']})"
+            if isinstance(s55, dict)
+            else ""
+        )
         status = "PASS" if rep["all_checks_passed"] else "FAIL"
         sys.stdout.write(
             f"[{status}] Phase 33 FX3-VM Co-Emulation | bt={s1['active_bt_mode']} "
@@ -6542,7 +6726,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             f"ibis={s2['ibis_mode']} cp_mut={s2['cp_mutation_bytes']} | "
             f"gpe={s3['source_mode']} sprites={s3['total_sprites']} "
             f"ramfb_sha={s3['ramfb_scanout']['ramfb_xrgb8888_sha256'][:12]}"
-            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str} | "
+            f"{s4_str}{s5_str}{s6_str}{s7_str}{s8_str}{s9_str}{s10_str}{s11_str}{s12_str}{s13_str}{s14_str}{s15_str}{s16_str}{s17_str}{s18_str}{s19_str}{s20_str}{s21_str}{s22_str}{s23_str}{s24_str}{s25_str}{s26_str}{s27_str}{s28_str}{s29_str}{s30_str}{s31_str}{s32_str}{s33_str}{s34_str}{s35_str}{s36_str}{s37_str}{s38_str}{s39_str}{s40_str}{s41_str}{s42_str}{s43_str}{s44_str}{s45_str}{s46_str}{s47_str}{s48_str}{s49_str}{s50_str}{s51_str}{s52_str}{s53_str}{s54_str}{s55_str} | "
             f"digest={rep['audit_digest_sha256'][:12]}\n"
         )
     else:

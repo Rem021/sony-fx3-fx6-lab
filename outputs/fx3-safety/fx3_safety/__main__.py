@@ -157,6 +157,11 @@ from .realhw_file_settings_gamma_assist_tcub_and_108gate_guard import (
     evaluate_g107_movie_file_settings_still_dsc_and_slot1_vault_guard,
     evaluate_g108_gamma_disp_assist_log_lockout_auto_review_and_tcub_guard,
 )
+from .realhw_focus_mag_datetime_videolight_hdmires_and_110gate_guard import (
+    evaluate_110gate_preflight,
+    evaluate_g109_focus_mag_peaking_af_illuminator_guard,
+    evaluate_g110_area_datetime_videolight_hdmires_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -2979,6 +2984,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G108 gates can be rehearsed offline",
     )
     p_108.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 122. verify-focus-mag-peaking-af-illuminator-guard
+    p_g109 = sub.add_parser(
+        "verify-focus-mag-peaking-af-illuminator-guard",
+        aliases=["verify-g109-focus-mag-peaking"],
+        help="Verify Gate G109: [Focus Assistant] [Auto Magnifier in MF] vs MF Assist, Custom Button 5, [Initial Focus Mag.] x1.0, [Peaking Display] Clean-HDMI & Still-Only [AF Illuminator] Guard",
+    )
+    p_g109.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g109.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g109.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g109.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 123. verify-area-datetime-videolight-hdmires-guard
+    p_g110 = sub.add_parser(
+        "verify-area-datetime-videolight-hdmires-guard",
+        aliases=["verify-g110-datetime-videolight-hdmires"],
+        help="Verify Gate G110: [Area/Date/Time Setting], Zero-RF Creators' App Suppression, [Video Light Mode] Power Link & MI-Shoe 5V <= 900 mA & [HDMI Resolution] Auto / Log 1080p Override Guard",
+    )
+    p_g110.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g110.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g110.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g110.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 124. verify-110-gates
+    p_110 = sub.add_parser(
+        "verify-110-gates",
+        help="Run Phase 271 (110/110 Milestone) Unified 110-Gate Master Safety Preflight Engine (G01..G110)",
+    )
+    p_110.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_110.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_110.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G110 gates can be rehearsed offline",
+    )
+    p_110.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -5997,6 +6088,110 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_108_gates_verified if args.dry_run_simulated else report.offline_105_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-focus-mag-peaking-af-illuminator-guard",
+        "verify-g109-focus-mag-peaking",
+    ):
+        verdict, res = evaluate_g109_focus_mag_peaking_af_illuminator_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.focus_mag_peaking_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} auto_mag={guard['effective_post_reset_auto_mag_in_mf']}"
+                f"(btn={guard['focus_magnifier_custom_button']},time={guard['effective_post_reset_focus_mag_time']},spoof={guard['legacy_mf_assist_spoof_events']}) "
+                f"init_mag=Still:{guard['effective_post_reset_still_initial_focus_mag']}/"
+                f"Movie:{guard['effective_post_reset_movie_initial_focus_mag']} "
+                f"peaking={guard['effective_post_reset_peaking_display']}"
+                f"({guard['effective_post_reset_peaking_level']}/{guard['effective_post_reset_peaking_color']},"
+                f"hdmi_leak={guard['hdmi_clean_feed_focus_mag_or_peaking_leak_pixels']}) "
+                f"af_illum={guard['effective_post_reset_af_illuminator']}"
+                f"(mv_sq_fire={guard['movie_sq_af_illuminator_fire_events']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-area-datetime-videolight-hdmires-guard",
+        "verify-g110-datetime-videolight-hdmires",
+    ):
+        verdict, res = evaluate_g110_area_datetime_videolight_hdmires_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.area_datetime_videolight_hdmires_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} area_dt={guard['area_datetime_menu_label']}"
+                f"(dst={guard['effective_post_reset_daylight_savings']},spoof={guard['legacy_datetime_setup_spoof_events']},"
+                f"airplane={guard['airplane_mode']},tx={guard['passive_tx_bytes_emitted']},jumps={guard['unsolicited_rtc_timezone_jump_events']}) "
+                f"vlight={guard['effective_post_reset_video_light_mode']}"
+                f"(5v={guard['mishoe_5v_draw_ma']}/{guard['mishoe_5v_budget_ma']}mA) "
+                f"hdmi_res={guard['effective_post_reset_hdmi_resolution']}->"
+                f"{guard['effective_hdmi_output_resolution']}"
+                f"(bypass={guard['hdmi_res_log_internal_rec_2160p_bypass_events']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-110-gates":
+        report = evaluate_110gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/110 "
+                f"g109_to_g110_all_passed={report.g109_to_g110_all_passed} "
+                f"all_110_gates_verified={report.all_110_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_110_gates_verified if args.dry_run_simulated else report.offline_107_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -172,6 +172,11 @@ from .realhw_usb_mode_hdmi_info_protect_network_reset_and_114gate_guard import (
     evaluate_g113_usb_mode_and_hdmi_info_guard,
     evaluate_g114_protect_and_network_reset_guard,
 )
+from .realhw_pp_scinetone_creativelook_dro_wb_metering_and_116gate_guard import (
+    evaluate_116gate_preflight,
+    evaluate_g115_pp_scinetone_creativelook_dro_guard,
+    evaluate_g116_wb_cineei_and_metering_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -3252,6 +3257,92 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Supply simulated dry-run Tier-0 bench inputs so all G01..G114 gates can be rehearsed offline",
     )
     p_114.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 131. verify-pp-scinetone-creativelook-dro-guard
+    p_g115 = sub.add_parser(
+        "verify-pp-scinetone-creativelook-dro-guard",
+        aliases=["verify-g115-pp-scinetone-creativelook-dro"],
+        help="Verify Gate G115: [Picture Profile] PP11 (S-Cinetone) Default vs [Creative Look] (10 Looks) & [D-Range Optimizer] under [Log Shooting], PPLUT1..4 Clamp & [PPx] -> [Reset] Trap",
+    )
+    p_g115.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g115.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g115.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g115.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 132. verify-wb-cineei-and-metering-guard
+    p_g116 = sub.add_parser(
+        "verify-wb-cineei-and-metering-guard",
+        aliases=["verify-g116-wb-cineei-metering"],
+        help="Verify Gate G116: [White Balance] (2500K..9900K, Custom 1..3, Cine EI AWB Lockout, Custom Setup Trap) & [Metering Mode] (6 Modes, De-Squeeze Lockout, Cine EI Base ISO M.M.)",
+    )
+    p_g116.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g116.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g116.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g116.add_argument("--json", action="store_true", help="Emit structured JSON report")
+
+    # 133. verify-116-gates
+    p_116 = sub.add_parser(
+        "verify-116-gates",
+        help="Run Phase 280 Milestone Unified 116-Gate Master Safety Preflight Engine (G01..G116)",
+    )
+    p_116.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_116.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_116.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G116 gates can be rehearsed offline",
+    )
+    p_116.add_argument("--json", action="store_true", help="Emit structured JSON report")
 
     args = parser.parse_args(argv)
 
@@ -6578,6 +6669,107 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_114_gates_verified if args.dry_run_simulated else report.offline_111_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-pp-scinetone-creativelook-dro-guard",
+        "verify-g115-pp-scinetone-creativelook-dro",
+    ):
+        verdict, res = evaluate_g115_pp_scinetone_creativelook_dro_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.pp_scinetone_creativelook_dro_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} pp={guard['effective_picture_profile']}"
+                f"(diff={guard['different_set_pp_checked']},"
+                f"internal_cleared={guard['pp_internal_params_cleared']}) "
+                f"cl={guard['effective_creative_look']} dro={guard['effective_dro']} "
+                f"log={guard['log_shooting']} "
+                f"hdmi_out={guard['effective_hdmi_output_resolution']} "
+                f"hdmi_clamp={guard['pplut_hdmi_1080p_clamped']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-wb-cineei-and-metering-guard",
+        "verify-g116-wb-cineei-metering",
+    ):
+        verdict, res = evaluate_g116_wb_cineei_and_metering_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(res.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.wb_cineei_and_metering_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} wb={guard['effective_white_balance']}"
+                f"(k={guard['color_temp_k']},priority={guard['effective_priority_set_in_awb']},"
+                f"custom_camset_excl={guard['custom_wb_excluded_from_camset']}) "
+                f"metering={guard['effective_metering_mode']}"
+                f"(face={guard['effective_face_priority_in_multi']},"
+                f"spot={guard['effective_spot_metering_point']},"
+                f"mm_passive={guard['metering_drives_mm_monitoring_only']}) "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-116-gates":
+        report = evaluate_116gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            try:
+                sys.stdout.write(json.dumps(report.to_dict(), indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/116 "
+                f"g115_to_g116_all_passed={report.g115_to_g116_all_passed} "
+                f"all_116_gates_verified={report.all_116_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_116_gates_verified if args.dry_run_simulated else report.offline_113_gates_verified
         return 0 if ok else 1
 
     return 2

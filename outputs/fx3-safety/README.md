@@ -1500,6 +1500,33 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
   /usr/bin/python3 -B -m fx3_safety verify-110-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
 ```
 
+---
+
+## 56. Phase 273 (`112/112` Safety Gates, Task H309, Wave-46): `[Power Save by Monitor]` Reality Split & `[Power Save Start Time]` 9-Deactivation / `[Language]` `BK_LANG` (`0x02cf019c`) 34-vs-29 Parity (`Gate G111`), `[Volume Settings]` (`0..15`, Default `7`), `[4ch Audio Monitoring]` (`5` Routes) & `[Delete confirm.]` `"Cancel" first` + `Slot-1` Vault Firewall (`Gate G112`), and Unified `112`-Gate Preflight (`realhw_power_save_monitor_language_volume_delete_and_112gate_guard.py`)
+
+`realhw_power_save_monitor_language_volume_delete_and_112gate_guard.py` (`realhw_power_save_monitor_language_volume_delete_and_112gate_guard_v1`) delegates `G01..G110` directly to `evaluate_110gate_preflight()` (preserving `100%` backward compatibility across `verify-58-gates` through `verify-110-gates`) and adds Wave-46 real-hardware safety gates **`G111`** and **`G112`** into the unified **`112`-Gate Master Safety Preflight (`G01..G112` / `run_112_gate_preflight` / `evaluate_112gate_preflight`)**, hard-locking `EL3_PAYLOAD_TRANSMIT_AUTHORIZED = False`, `SPI_NOR_WRITE_AUTHORIZED = False`, `PERSISTENT_EMMC_WRITES_AUTHORIZED = False`, `HARDWARE_LIVE_ATTACHMENT_AUTHORIZED = False`, `USB_PACKETS_TRANSMITTED = 0`, `RAW_FIRMWARE_BYTES_LEAKED = 0`, and `overall_ready_for_hardware_attach = False`:
+
+1. **`[Power Save by Monitor]` Reality Split, `[Power Save Start Time]` 9-Condition Bench Guard & `[Language]` `BK_LANG` 34-vs-29 Parity (`verify_power_save_monitor_and_language_guard`, Gate `G111`)**:
+   - Performs a fast `< 0.20s` `os.open(..., os.O_RDONLY)` + targeted `os.pread` local donor audit across `appFw.so` (`79,015,712 B`, 16 Wave-46 slices), `string_english_f.uxc`, FX3 `string_english.uxc`, `libSaveLoadSettings.so`, `FX3-CX95900_ALLLANG-Backup.bin` (`BK_LANG @ 0x90ff0 = 0`), FX6 `CX95898_NTSC.bin` (`BK_LANG @ 0x89242 = 0x00`), FX6 `CX95899_CN1.bin` (`BK_LANG @ 0x89242 = 0x19`), and FX6 `string_english.uxc` (`raw_firmware_bytes_leaked == 0`), with deterministic `FX3_FX6_FORCE_CLEAN_ROOM=1` / `FX3_CLEAN_ROOM_TEST=1` fallback.
+   - Enforces the stock `ILME-FX3 Ver. 7.02` (`ilc/2210`) UI reality split: `[Setup] -> [Power Setting Option]` exposes ONLY `2` items (`[Power Save Start Time]` and `[Auto Power OFF Temp.]`), `fx3_ui_exposes_power_save_by_monitor == False`, and rejects spoofed `"Open: On/Close: Off"` strings (`power_save_monitor_ui_spoof_events == 0`). Models shared `appFw.so` `BKID_APP_setting_monitor_power_linkage` `4` modes (`Both Linked` `0x6db5`, `Open: Return` `0x6db6`, `Close: Power Save` `0x60a8`, `Does Not Link` `0x6b2e`) requiring `Does Not Link` or `Open: Return` when a sibling body closes LCD in headless HDMI capture.
+   - Models all `9` Sony `[Power Save Start Time]` deactivation conditions and blocks air-gapped battery bench runs with zero active bypasses unless set to `Off` or `30 Min`, plus `[Language]` (`BK_LANG` `0x02cf019c`, FX3 `34` vs FX6 `29` languages, Stage-B `en=0x00` / `schinese=0x19` / `tchinese=0x18` / `japanese=0x01` parity, and `(Setup)` survival across `[Camera Settings Reset]` + `[Reset Network Set.]`, cleared only by `[Initialize]`) across `192` matrix states.
+2. **`[Volume Settings]` (`0..15`, Default `7`), `[4ch Audio Monitoring]` (`5` Routes) & `[Delete confirm.]` `"Cancel" first` + `Slot-1` Vault Firewall (`verify_volume_4chmon_delete_confirm_guard`, Gate `G112`)**:
+   - Enforces `MENU -> Setup -> [Sound Option] -> [Volume Settings]` (`0..15`, factory default `7`, distinct from `[Audio signals]`), enforcing acoustic feedback lockout when `XLR-H1` MI-Shoe mic is active on internal speaker at volume `> 7` without headphones.
+   - Enforces `MENU -> Setup -> [Sound Option] -> [4ch Audio Monitoring]` exact `5` stereo-summed monitor routes (`CH1/CH2` default `0x713b`, `CH3/CH4` `0x6bf6`, `CH1+3/CH2+4` `0x6c2e`, `CH1/CH1` `0x6f9c`, `CH2/CH2` `0x7a26`), distinct from HDMI `[4ch Audio Output]` (`CH1/CH2` vs `CH3/CH4`, `0x6aa0`) and the `3.5 mm` 2ch headphone jack hardware boundary.
+   - Enforces `MENU -> Playback -> [Delete] -> [Delete confirm.]` (`"Cancel" first` default `0xe724`/`0x6a5e` vs `"Delete" first` `0xe725`/`0x6e0a`) + `[Delete pressing twice]` (`Off` default `0x74db`), `(Playback)` survival across `[Camera Settings Reset]` (reset only via `[Initialize]`), and hard `Slot-1` recovery vault delete/format firewall (`slot1_vault_delete_events == 0`, `slot1_format_hard_locked == True`) across `240` matrix states.
+3. **Unified `112`-Gate Master Preflight (`evaluate_112gate_preflight` / `verify-112-gates`)**:
+   - **Offline default mode**: `109/112` gates pass (`VERIFIED_109_OF_112_AWAITING_PHYSICAL_TIER0`, `overall_ready_for_hardware_attach = False`).
+   - **`--simulate-bench-dry-run` rehearsal mode**: `112/112` simulation gates pass (`VERIFIED_ALL_112_GATES_DRY_RUN_SIMULATED_BACKUP`, `all_112_gates_verified = True`, `dry_run_rehearsal_only = True`) while all hardware write/live-attach redlines remain `False` and `usb_packets_transmitted == 0`.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-power-save-monitor-language-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-volume-4chmon-delete-confirm-guard [--force-clean-room] [--json]
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-safety \
+  python3 -B -m fx3_safety verify-112-gates [--force-clean-room] [--simulate-bench-dry-run] [--json]
+```
+
 
 
 

@@ -1932,3 +1932,41 @@ FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm p
 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
+
+## Phase 293 Stage 59（59/59）— 真实硬件 Wave-49：`[Image Quality Settings]` Still `RAW`（`Compressed` / `Uncompressed` vs 休眠 `Lossless Comp` 门控）、`JPEG/HEIF Switch`（`JPEG / HEIF(4:2:0) / HEIF(4:2:2)` `10-bit` `.HIF`）& `[HLG Still Image]` `BT.2100` 接管、`[Color Space]` `AdobeRGB` `_DSC` 前缀 & `[Set File Name]` 首字符 `_` 禁令，以及 `[Shutter Type]` 精确 2 选（无 `Auto`）/ Electronic-Silent 5 锁 / NR / `10 fps` Drive Mode `Slot-1` 保险库协同仿真台架
+
+[`realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py`](realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py) 作为 **Phase 293 Stage 59（`59/59`，Schema `realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator_v1`）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启 `include_phase293_realhw_raw_heif_colorspace_shuttertype_nr_drive_hil=True` / `include_stage59=True` / `stage59_realhw_raw_heif_colorspace_shuttertype_nr_drive_hil=True`，支持显式 `--include-stage59` 以及 `--skip-phase293` / `--skip-stage59` / `--no-include-stage59` 跳过），在严格锁定 **`persistent_emmc_writes_authorized == False`**、**`hardware_live_attachment_authorized == False`**、**`overall_ready_for_hardware_attach == False`**、`spi_nor_write_authorized == False`、`el3_payload_transmit_authorized == False`、`isp_write_authorized == False`、**`cnflasha_userspace_write_blocked == True`**、`cnflasha_mutation_bytes == 0`、`physical_device_writes == 0`、`emmc_nflasha_write_count == 0`、`emmc_corruptions == 0`、`nop_count == 0`、`guest_code_modification_bytes == 0`、`physical_usb_packets_emitted == 0`、`dormant_lossless_raw_exposed_events == 0`、`hlg_still_prerequisite_bypass_events == 0`、`color_space_leading_underscore_bypass_events == 0`、`shutter_type_auto_or_5lock_bypass_events == 0`、`slot1_vault_still_or_burst_write_events == 0` 与 **`raw_firmware_bytes_leaked == 0`** 的前提下完成四大闭环：
+
+1. **高速双模 11 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` `< 0.2s` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **11 份真实供体**：FX3 `string_*_f.uxc` 4 语种全集（`en_f=373,820 B`、`sc_f=322,652 B`、`tc_f=324,148 B`、`ja_f=447,840 B`）、FX3 `string_english.uxc`（`165,740 B`）、FX3 `string_english_g.uxc`（`69,600 B`）、FX6 `string_english.uxc`（`118,208 B`）与 `string_english_2.uxc`（`118,676 B`），以及 `FX3 appFw.so`（`79,015,712 B`）、`FX3 BK4`（`2,229,740 B`）与 `FX6 appFw.so`（`50,520,424 B`）；支持 `FX3_CLEAN_ROOM_TEST=1` 与 `FX3_FX6_FORCE_CLEAN_ROOM=1` 双环境变量触发确定性 `CLEAN_ROOM_SYNTHETIC` 基线。
+2. **Sub-Model 59A — Still `[Image Quality Settings]`（`RAW` `Compressed`/`Uncompressed` vs 休眠 `Lossless Comp` 门控、`JPEG/HEIF Switch` `10-bit` `.HIF` & `[HLG Still Image]` `BT.2100` 接管 vs Still-Less `ILME-FX6`）**：
+   - 精确建模 `ILME-FX3 Ver. 7.02`（`12 MP IMX510`）仅暴露 `[Compressed]`（默认）与 `[Uncompressed]` 14-bit `.ARW`——`appFw.so` 中的休眠 `Lossless Comp` / `Lossless Comp (L)/(M)/(S)`（`_f.uxc` `0x6b56`）被门控拦截并返回 `EOPNOTSUPP = 95`，对照 `ILME-FX6 Ver. 6.01` 完全不存在 `DCIM`/`.ARW`/`.JPG`/`.HIF` 静态照片流水线（`still_pipeline_present = False`）。
+   - `[HLG Still Image] = On` 强制前置：`HEIF(4:2:0)` 或 `HEIF(4:2:2)` 10-bit + `File Format = HEIF` 单选 + `P/A/S/M`（在 `JPEG`、`RAW`、`RAW & HEIF` 或 `iAuto` 下 `EOPNOTSUPP = 95`），同时硬锁 `Picture Profile` / `Creative Look` / `D-Range Optimizer` / `DRO Bracket`，覆盖色彩空间为 `BT.2100`（`BT.2020`），并路由 `Gamma Display Assist`（`Auto` / `HLG(BT.2020)`）。
+3. **Sub-Model 59B — `[Color Space]`（`sRGB` 默认 vs `AdobeRGB` `_DSC` 前缀）与 `[Set File Name]` 首字符 `_` 禁令 HIL**：
+   - `MENU -> Shooting -> [Image Quality/Rec] -> [Color Space]`：`sRGB` 生成 `DSC00001.JPG/.ARW`，切换 `AdobeRGB` 时系统自动在前缀首部插入 `_` 生成 `_DSC0001.JPG/.ARW`（DCF 2.0 `100MSDCF`）。
+   - `[Set File Name]`（默认 `DSC`，跨 `[Camera Settings Reset]` 存活，仅 `[Initialize]` 恢复）允许 3 位字符（`A-Z0-9_`），**但严格禁止将 `_` 设为第 1 个字符**（`EINVAL = 22`）；在 `HEIF` 模式下 `[Color Space]` 被忽略（`HLG Still Image = Off` 为 `sRGB`，`On` 为 `BT.2100`）。
+4. **Sub-Model 59C & Redlines — `[Shutter Type]` 精确 2 选（无 `Auto`）、Electronic/Silent 5 锁矩阵、NR、`10 fps` Drive Mode 与 `Slot-1` Tier-0 保险库防火墙 HIL**：
+   - `ILME-FX3 Ver. 7.02` 仅暴露 **2 项** `[Shutter Type]`（`Mechanical Shutter` 默认 vs `Electronic Shutter`，不存在 `Auto`，请求 `Auto` 返回 `EINVAL = 22`），而 `ILME-FX6` 无机械快门（`mechanical_shutter_present = False`，请求机械快门返回 `EOPNOTSUPP = 95`）。
+   - `Electronic Shutter`（及未通过 `Target Function` 覆写的 `Silent Mode = On`）强制锁定 5 项功能（`EOPNOTSUPP = 95`）：① `Flash`（`1/250 s` 全画幅闪光同步仅限机械快门）、② `Long Exposure NR`（`>= 1 s` 暗帧减除）、③ `e-Front Curtain Shut.`（默认 `On`，跨 `Camera Settings Reset` 存活）、④ `BULB`、⑤ `Anti-flicker Shoot.`。
+   - 建模 `[High ISO NR]` 对 RAW `.ARW` 的免处理边界、11 态 `[Drive Mode]`（`Cont. Shooting: Hi+` 最高 `10 fps`，`Uncompressed RAW` 与闪光降至 `8 fps`，连拍 `>= 1000` 帧触发 `SLOW` 降速，`> F11` 锁 AF），并对只读 `Slot 1` 强制实施 fail-closed `EROFS = 30` / `EBUSY = 16` Tier-0 保险库写拦截与全套 16 项红线探针。
+
+### Phase 293 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 293 Stage 59（59/59）自检
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py --self-test --json
+
+# 2. 全板 59 阶段（Stage 1..59, 59/59）统一校验（支持 --include-stage59 与 --skip-phase293 / --skip-stage59）
+PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage59 --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 293 三模式 >=76 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_raw_heif_colorspace_shuttertype_nr_drive_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+

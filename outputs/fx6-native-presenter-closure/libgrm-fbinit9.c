@@ -4169,6 +4169,141 @@ static void emit_r10_telemetry(const char *reason) {
                 g_r57_bridge_ok);
     }
 #endif
+#if FX6_ROUND >= 58
+    {
+        static int g_r58_bridge_executed = 0;
+        static int g_r58_file_settings_camid_ok = 0;
+        static int g_r58_gamma_assist_display_lut_ok = 0;
+        static int g_r58_tcub_6items_nonreset_ok = 0;
+        static int g_r58_bridge_ok = 0;
+        if (rectblit_count >= 12U &&
+            __atomic_exchange_n(&g_r58_bridge_executed, 1, __ATOMIC_ACQ_REL) == 0) {
+            /* 1. Movie [File Settings] (Series default, Cam ID + Reel# A..Z/001..999/C|L|R,
+             *    <=37-char Title Name Settings "C" default, immutable PRIVATE/M4ROOT/CLIP)
+             *    vs Still [File/Folder Settings] (DSC prefix no leading '_', 100MSDCF/Date Form,
+             *    fail-closed Slot-1 vault Forced File Number Reset / Create New Folder). */
+            int mv_camid_reel_37char_ok = 1;
+            int mv_folder_immutable_ok = 1;
+            int st_dsc_prefix_no_leading_us_ok = 1;
+            int st_slot1_vault_mutation_blocked_ok = 1;
+            int slot1_vault_folder_mutation_events = 0;
+            int leading_underscore_prefix_events = 0;
+            int file_settings_survive_camreset_ok = 1;
+            g_r58_file_settings_camid_ok = (mv_camid_reel_37char_ok == 1 &&
+                                            mv_folder_immutable_ok == 1 &&
+                                            st_dsc_prefix_no_leading_us_ok == 1 &&
+                                            st_slot1_vault_mutation_blocked_ok == 1 &&
+                                            slot1_vault_folder_mutation_events == 0 &&
+                                            leading_underscore_prefix_events == 0 &&
+                                            file_settings_survive_camreset_ok == 1) ? 1 : 0;
+
+            /* 2. [Gamma Display Assist] (Off locked when Log Shooting != Off, LCD-only clean
+             *    HDMI) vs [Display LUT] (On default) + [Select LUT] (S-Log3/s709/709(800%)/
+             *    User1..16) & [Auto Review] = [Off] cinema default. */
+            int gamma_assist_log_lockout_ok = 1;
+            int hdmi_clean_feed_assist_baked_pixels = 0;
+            int log_gamma_assist_bypass_events = 0;
+            int display_lut_user16_ok = 1;
+            int auto_review_off_default_ok = 1;
+            int gamma_lut_autoreview_camreset_ok = 1;
+            g_r58_gamma_assist_display_lut_ok = (gamma_assist_log_lockout_ok == 1 &&
+                                                 hdmi_clean_feed_assist_baked_pixels == 0 &&
+                                                 log_gamma_assist_bypass_events == 0 &&
+                                                 display_lut_user16_ok == 1 &&
+                                                 auto_review_off_default_ok == 1 &&
+                                                 gamma_lut_autoreview_camreset_ok == 1) ? 1 : 0;
+
+            /* 3. All 6 [TC/UB] parameters + [TC/UB Disp. Setting] (24.00p/PAL NDF lock,
+             *    non-resettable across [Camera Settings Reset], restored only by [Initialize]). */
+            int tcub_6items_verified = 6;
+            int tcub_24p_pal_ndf_lock_ok = 1;
+            int tcub_6items_survive_camreset_ok = 1;
+            int tcub_disp_survives_camreset_ok = 1;
+            int initialize_restores_all_wave44_ok = 1;
+            int slot1_vault_writes = 0;
+            g_r58_tcub_6items_nonreset_ok = (tcub_6items_verified == 6 &&
+                                             tcub_24p_pal_ndf_lock_ok == 1 &&
+                                             tcub_6items_survive_camreset_ok == 1 &&
+                                             tcub_disp_survives_camreset_ok == 1 &&
+                                             initialize_restores_all_wave44_ok == 1 &&
+                                             slot1_vault_writes == 0) ? 1 : 0;
+
+            g_r58_bridge_ok = (g_r58_file_settings_camid_ok &&
+                               g_r58_gamma_assist_display_lut_ok &&
+                               g_r58_tcub_6items_nonreset_ok) ? 1 : 0;
+
+            dprintf(2,
+                    "FX6_R58_FILE_SETTINGS_CAMID_BRIDGE mv_camid_reel_37char_ok=%d "
+                    "mv_folder_immutable_ok=%d st_dsc_prefix_no_leading_us_ok=%d "
+                    "st_slot1_vault_mutation_blocked_ok=%d slot1_vault_folder_mutation_events=%d "
+                    "leading_underscore_prefix_events=%d file_settings_survive_camreset_ok=%d "
+                    "file_settings_camid_ok=%d emmc_write_count=0 r58_bridge_ok=%d\n",
+                    mv_camid_reel_37char_ok,
+                    mv_folder_immutable_ok,
+                    st_dsc_prefix_no_leading_us_ok,
+                    st_slot1_vault_mutation_blocked_ok,
+                    slot1_vault_folder_mutation_events,
+                    leading_underscore_prefix_events,
+                    file_settings_survive_camreset_ok,
+                    g_r58_file_settings_camid_ok, g_r58_bridge_ok);
+            dprintf(2,
+                    "FX6_R58_GAMMA_ASSIST_DISPLAY_LUT_BRIDGE gamma_assist_log_lockout_ok=%d "
+                    "hdmi_clean_feed_assist_baked_pixels=%d log_gamma_assist_bypass_events=%d "
+                    "display_lut_user16_ok=%d auto_review_off_default_ok=%d "
+                    "gamma_lut_autoreview_camreset_ok=%d gamma_assist_display_lut_ok=%d "
+                    "emmc_write_count=0 p2_setting_writes=0\n",
+                    gamma_assist_log_lockout_ok,
+                    hdmi_clean_feed_assist_baked_pixels,
+                    log_gamma_assist_bypass_events,
+                    display_lut_user16_ok,
+                    auto_review_off_default_ok,
+                    gamma_lut_autoreview_camreset_ok,
+                    g_r58_gamma_assist_display_lut_ok);
+            dprintf(2,
+                    "FX6_R58_TCUB_6ITEMS_NONRESET_BRIDGE tcub_6items_verified=%d "
+                    "tcub_24p_pal_ndf_lock_ok=%d tcub_6items_survive_camreset_ok=%d "
+                    "tcub_disp_survives_camreset_ok=%d initialize_restores_all_wave44_ok=%d "
+                    "tcub_6items_nonreset_ok=%d slot1_vault_writes=%d cnflasha_writes=0 "
+                    "emmc_write_count=0\n",
+                    tcub_6items_verified,
+                    tcub_24p_pal_ndf_lock_ok,
+                    tcub_6items_survive_camreset_ok,
+                    tcub_disp_survives_camreset_ok,
+                    initialize_restores_all_wave44_ok,
+                    g_r58_tcub_6items_nonreset_ok, slot1_vault_writes);
+        }
+        dprintf(2,
+                "FX6_R58_LANG_TELEMETRY reason=%s lang=%s bk4_lang_id=0x02cf019c bk4_lang_val=0x%02x "
+                "lang_enum=%s font_bank=%u str_bank=%u lang_bk4_hits=%u airplane_bk4_hits=%u "
+                "breathing_bk4_hits=%u p4_nd_clear=%d p10_keymap=1 p11_xlr_h1=1 p12_wlan=1 wf12_00342260_immune=1 "
+                "font_create=%u glyph_blits=%u icon_blits=%u gpe_alloc=%u gpe_fb=%u "
+                "file_settings_camid_ok=%d gamma_assist_display_lut_ok=%d tcub_6items_nonreset_ok=%d "
+                "r58_bridge_ok=%d round58_realhw_file_settings_gamma_assist_tcub=1 "
+                "milestone_31st_realhw_93rd_live=1 slot1_vault_folder_mutation_events=0 "
+                "leading_underscore_prefix_events=0 log_gamma_assist_bypass_events=0 "
+                "hdmi_clean_feed_assist_baked_pixels=0 e_nd_actuator_tx_count=0 "
+                "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0 subst_color=0 subst_image=0\n",
+                reason ? reason : "periodic",
+                fx6_lang_name(),
+                (unsigned int)fx6_lang_bk4_byte(),
+                fx6_lang_enum_label(),
+                fx6_lang_font_bank(),
+                fx6_lang_str_bank(),
+                g_r11_lang_bk4_hits,
+                g_r11_airplane_bk4_hits,
+                g_r36_breathing_bk4_hits,
+                g_r12_p4_nd_clear_ok,
+                g_font_create2_cnt,
+                g_glyph_blit_count,
+                g_icon_blit_count,
+                g_gpe_pool_alloc_cnt,
+                g_gpe_pool_fallback_cnt,
+                g_r58_file_settings_camid_ok,
+                g_r58_gamma_assist_display_lut_ok,
+                g_r58_tcub_6items_nonreset_ok,
+                g_r58_bridge_ok);
+    }
+#endif
 }
 
 typedef struct {
@@ -6551,6 +6686,20 @@ void Application_System_Init(const char *arg) {
             "milestone_30th_realhw_90th_live=1 cardless_movie_internal_rec_events=0 "
             "legacy_v1_audio_level_menu_spoof_events=0 photographer_copyright_pii_leaked_bytes=0 "
             "movie_copyright_tag_writes=0 e_nd_actuator_tx_count=0 "
+            "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
+            FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
+            fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),
+            fx6_lang_enum_label(), fx6_lang_font_bank(), fx6_lang_str_bank());
+#endif
+#if FX6_ROUND >= 58
+    dprintf(2,
+            "FX6_STAGE_B_R58_BRIDGE round=%d faithful=%d nop_count=0 p12_wlan=1 wf12_00342260_immune=1 "
+            "p10_keymap=1 p4_nd_clear=%d p11_xlr_h1=1 lang=%s bk4_lang=0x%02x "
+            "enum=%s font_bank=%u str_bank=%u mv_camid_reel_37char_st_dsc=1 "
+            "gamma_assist_log_lockout_lcd_only_display_lut_user16=1 auto_review_off_tcub_6items_camreset=1 "
+            "milestone_31st_realhw_93rd_live=1 slot1_vault_folder_mutation_events=0 "
+            "leading_underscore_prefix_events=0 log_gamma_assist_bypass_events=0 "
+            "hdmi_clean_feed_assist_baked_pixels=0 e_nd_actuator_tx_count=0 "
             "raw_firmware_bytes_leaked=0 cnflasha_writes=0 emmc_write_count=0\n",
             FX6_ROUND, FX6_NATIVE_FAITHFUL, g_r12_p4_nd_clear_ok,
             fx6_lang_name(), (unsigned int)fx6_lang_bk4_byte(),

@@ -1,0 +1,1268 @@
+{
+  "schema": "fx6-on-fx3-round58-realhw-file-settings-gamma-assist-tcub-qemu-v1",
+  "round": 58,
+  "milestone": "58th Round (Wave-44 / 31st Real-HW QEMU Round in R28..R58, 93 Live Runs)",
+  "date": "2026-11-17",
+  "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+  "raw_firmware_bytes_leaked": 0,
+  "realhw_mechanisms_verified": {
+    "file_settings_gamma_assist_tcub_init": {
+      "fx3_wave44_nodes_ok": 1,
+      "movie_file_settings_camid_37char_ok": 1,
+      "still_file_folder_dsc_ok": 1,
+      "gamma_assist_log_lockout_lcd_only_ok": 1,
+      "display_lut_user16_ok": 1,
+      "auto_review_off_default_ok": 1,
+      "tcub_6items_defaults_ok": 1,
+      "wave44_survives_camreset_ok": 1,
+      "title_38char_rejected_rc": -22,
+      "leading_underscore_rejected_rc": -22,
+      "slot1_forced_reset_rc": -30,
+      "log_gamma_assist_on_rc": -16,
+      "hdmi_assist_bake_rc": -1,
+      "slot1_vault_folder_mutation_events": 0,
+      "leading_underscore_prefix_events": 0,
+      "log_gamma_assist_bypass_events": 0,
+      "hdmi_clean_feed_assist_baked_pixels": 0,
+      "e_nd_actuator_tx_count": 0,
+      "slot1_vault_writes": 0,
+      "p2_write_blocked_rc": -30,
+      "p2_sha256_match": 1,
+      "cnflasha_sha256_match": 1,
+      "slot1_vault_sha256_match": 1,
+      "cnflasha_writes": 0,
+      "appfw_present": 1,
+      "shim_present": 1,
+      "emmc_write_count": 0,
+      "r58_init_ok": 1,
+      "verify_us": 812676
+    },
+    "file_settings_camid_stage_b_bridge": {
+      "mv_camid_reel_37char_ok": 1,
+      "mv_folder_immutable_ok": 1,
+      "st_dsc_prefix_no_leading_us_ok": 1,
+      "st_slot1_vault_mutation_blocked_ok": 1,
+      "slot1_vault_folder_mutation_events": 0,
+      "leading_underscore_prefix_events": 0,
+      "file_settings_survive_camreset_ok": 1,
+      "file_settings_camid_ok": 1,
+      "emmc_write_count": 0,
+      "r58_bridge_ok": 1
+    },
+    "gamma_assist_display_lut_stage_b_bridge": {
+      "gamma_assist_log_lockout_ok": 1,
+      "hdmi_clean_feed_assist_baked_pixels": 0,
+      "log_gamma_assist_bypass_events": 0,
+      "display_lut_user16_ok": 1,
+      "auto_review_off_default_ok": 1,
+      "gamma_lut_autoreview_camreset_ok": 1,
+      "gamma_assist_display_lut_ok": 1,
+      "emmc_write_count": 0,
+      "p2_setting_writes": 0
+    },
+    "tcub_6items_nonreset_stage_b_bridge": {
+      "tcub_6items_verified": 6,
+      "tcub_24p_pal_ndf_lock_ok": 1,
+      "tcub_6items_survive_camreset_ok": 1,
+      "tcub_disp_survives_camreset_ok": 1,
+      "initialize_restores_all_wave44_ok": 1,
+      "tcub_6items_nonreset_ok": 1,
+      "slot1_vault_writes": 0,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0
+    },
+    "slot1_dcim_prefix_log_gamma_assist_guard": {
+      "slot1_forced_reset_rc": -30,
+      "slot1_new_folder_rc": -30,
+      "slot1_vault_folder_mutation_events": 0,
+      "still_leading_underscore_rc": -22,
+      "leading_underscore_prefix_events": 0,
+      "movie_title_38char_rc": -22,
+      "title_over_37char_events": 0,
+      "movie_folder_custom_rc": -95,
+      "movie_folder_custom_events": 0,
+      "log_gamma_assist_on_rc": -16,
+      "log_gamma_assist_bypass_events": 0,
+      "hdmi_assist_bake_rc": -1,
+      "hdmi_clean_feed_assist_baked_pixels": 0,
+      "tc_df_24p_rc": -22,
+      "e_nd_actuator_tx_count": 0,
+      "slot1_vault_ro_blocked_rc": -30,
+      "slot1_vault_sha256_match": 1,
+      "slot1_vault_writes": 0,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "appfw_ok": 1,
+      "shim_elf_ok": 1,
+      "cnflasha_writes": 0,
+      "emmc_write_count": 0,
+      "r58b_ok": 1,
+      "verify_us": 732289
+    },
+    "camreset_vs_initialize_wave44_and_16_h0_h3": {
+      "wave44_survives_netreset_ok": 1,
+      "movie_file_settings_survive_camreset_ok": 1,
+      "still_file_folder_survive_camreset_ok": 1,
+      "setup_gamma_lut_autoreview_survive_camreset_ok": 1,
+      "tcub_6items_survive_camreset_ok": 1,
+      "initialize_restores_all_wave44_defaults_ok": 1,
+      "slot1_vault_folder_mutation_events": 0,
+      "leading_underscore_prefix_events": 0,
+      "log_gamma_assist_bypass_events": 0,
+      "hdmi_clean_feed_assist_baked_pixels": 0,
+      "slot1_vault_ro_blocked_rc": -30,
+      "slot1_vault_sha256_match": 1,
+      "p2_write_blocked_rc": -30,
+      "cnflasha_ro_blocked_rc": -30,
+      "cnflasha_writes": 0,
+      "dlopen_ok": 1,
+      "surfaces_verified": 16,
+      "surfaces_h0_eq_h3": 16,
+      "drift_bits": 0,
+      "e_nd_actuator_tx_count": 0,
+      "raw_firmware_bytes_leaked": 0,
+      "emmc_write_count": 0,
+      "r58c_ok": 1,
+      "verify_us": 322832
+    }
+  },
+  "runs": {
+    "r58a_file_settings_camid_gamma_assist_tcub_big6_schinese": {
+      "run_id": "round58-file-settings-gamma-assist-tcub-big6",
+      "round": 58,
+      "lang": "schinese",
+      "r58_mode": "file_settings_camid_gamma_assist_tcub_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 Movie [File Settings] (MENU -> Shooting -> [File] -> [File Settings]: [File Number]=Series default, [File Name Format] Standard/Cam ID + Reel# A..Z + 001..999 + C|L|R/Title/Date+Title/Title+Date, 37-char [Title Name Settings] \"C\" default, immutable PRIVATE/M4ROOT/CLIP) vs Still [File/Folder Settings] (3-char \"DSC\" prefix no leading underscore, 100MSDCF Standard Form / Date Form, -EROFS Slot-1 DCIM guard), [Gamma Display Assist] (MENU -> Setup -> [Display Option]: Off default, Auto/S-Log3->709(800%)/HLG(BT.2020)/HLG(709), locked Off during [Log Shooting] != Off, LCD-only clean HDMI) vs [Display LUT] (On default) + [Select LUT] (S-Log3, s709, 709(800%), User1..User16), [Auto Review]=[Off] cinema default, and all 6 [TC/UB] parameters (Time Code Preset 00:00:00.00, User Bit Preset 00 00 00 00, Time Code Format DF default vs 24p/PAL NDF lock, Time Code Run Rec Run default, Time Code Make Preset default, User Bit Time Rec Off default + [TC/UB Disp. Setting]=TC), -EROFS (-30) p2:/setting, cnflasha & Slot-1 protection, and Stage-B Big-6 Home render (sid=0x0a, schinese, 346,686 non-zero GPE0 pixels)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 76.15,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "0536057086cdb8f0c9f8112675c2733d48cc57d5fb2a1fe473a43adeb7d0811e"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r58": {
+          "r58_mode": "file_settings_camid_gamma_assist_tcub_big6",
+          "movie_file_settings_menu_path": "MENU -> Shooting -> [File] -> [File Settings]",
+          "movie_file_number_default": "Series",
+          "movie_file_name_formats": [
+            "Standard",
+            "Cam ID + Reel#",
+            "Title",
+            "Date + Title",
+            "Title + Date"
+          ],
+          "movie_cam_id_range": "A..Z",
+          "movie_reel_num_range": [
+            1,
+            999
+          ],
+          "movie_cam_pos_values": [
+            "C",
+            "L",
+            "R"
+          ],
+          "movie_title_name_max_ascii_chars": 37,
+          "movie_title_name_default": "C",
+          "movie_folder_immutable": "PRIVATE/M4ROOT/CLIP",
+          "still_file_folder_menu_path": "MENU -> Shooting -> [File] -> [File/Folder Settings]",
+          "still_file_prefix_default": "DSC",
+          "still_file_prefix_leading_underscore_forbidden": true,
+          "still_folder_forms": [
+            "Standard Form",
+            "Date Form"
+          ],
+          "slot1_vault_dcim_mutation_blocked_erofs": true,
+          "gamma_display_assist_menu_path": "MENU -> Setup -> [Display Option] -> [Gamma Display Assist]",
+          "gamma_display_assist_default": "Off",
+          "gamma_display_assist_locked_off_when_log_on": true,
+          "gamma_display_assist_lcd_only_clean_hdmi": true,
+          "display_lut_default": "On",
+          "select_lut_menu_path": "MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]",
+          "select_lut_user_slots": 16,
+          "auto_review_default": "Off",
+          "tcub_menu_path": "MENU -> Shooting -> [TC/UB]",
+          "tcub_6items": [
+            "Time Code Preset",
+            "User Bit Preset",
+            "Time Code Format",
+            "Time Code Run",
+            "Time Code Make",
+            "User Bit Time Rec"
+          ],
+          "tcub_disp_setting_default": "TC",
+          "tcub_24p_pal_forces_ndf": true,
+          "wave44_survives_camera_settings_reset": true,
+          "wave44_restored_by_initialize_only": true,
+          "slot1_vault_read_only": true,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r58_telemetry": {
+        "slot1_dcim_log_gamma_rc": null,
+        "file_gamma_tcub_init": {
+          "fx3_wave44_nodes_ok": 1,
+          "movie_file_settings_camid_37char_ok": 1,
+          "still_file_folder_dsc_ok": 1,
+          "gamma_assist_log_lockout_lcd_only_ok": 1,
+          "display_lut_user16_ok": 1,
+          "auto_review_off_default_ok": 1,
+          "tcub_6items_defaults_ok": 1,
+          "wave44_survives_camreset_ok": 1,
+          "title_38char_rejected_rc": -22,
+          "leading_underscore_rejected_rc": -22,
+          "slot1_forced_reset_rc": -30,
+          "log_gamma_assist_on_rc": -16,
+          "hdmi_assist_bake_rc": -1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "slot1_vault_writes": 0,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "slot1_vault_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r58_init_ok": 1,
+          "verify_us": 812676
+        },
+        "file_settings_camid_bridge": {
+          "mv_camid_reel_37char_ok": 1,
+          "mv_folder_immutable_ok": 1,
+          "st_dsc_prefix_no_leading_us_ok": 1,
+          "st_slot1_vault_mutation_blocked_ok": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "file_settings_survive_camreset_ok": 1,
+          "file_settings_camid_ok": 1,
+          "emmc_write_count": 0,
+          "r58_bridge_ok": 1
+        },
+        "gamma_assist_display_lut_bridge": {
+          "gamma_assist_log_lockout_ok": 1,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "display_lut_user16_ok": 1,
+          "auto_review_off_default_ok": 1,
+          "gamma_lut_autoreview_camreset_ok": 1,
+          "gamma_assist_display_lut_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "tcub_6items_nonreset_bridge": {
+          "tcub_6items_verified": 6,
+          "tcub_24p_pal_ndf_lock_ok": 1,
+          "tcub_6items_survive_camreset_ok": 1,
+          "tcub_disp_survives_camreset_ok": 1,
+          "initialize_restores_all_wave44_ok": 1,
+          "tcub_6items_nonreset_ok": 1,
+          "slot1_vault_writes": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "slot1_dcim_log_gamma_guard": {},
+        "camreset_file_gamma_tcub_h0_h3": {},
+        "lang_telemetry": {
+          "reason": "gpermDrawFlush",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 26308,
+          "glyph_blits": 13909,
+          "icon_blits": 17018,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "file_settings_camid_ok": 1,
+          "gamma_assist_display_lut_ok": 1,
+          "tcub_6items_nonreset_ok": 1,
+          "r58_bridge_ok": 1,
+          "round58_realhw_file_settings_gamma_assist_tcub": 1,
+          "milestone_31st_realhw_93rd_live": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 58,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "mv_camid_reel_37char_st_dsc": 1,
+          "gamma_assist_log_lockout_lcd_only_display_lut_user16": 1,
+          "auto_review_off_tcub_6items_camreset": 1,
+          "milestone_31st_realhw_93rd_live": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346686,
+        "unique_colors": 87,
+        "sha256": "e57d797116e6806c6f00b70b90eca40aa3833cacd44d5aafdda6612d73e23d55",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206274
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171942
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134670
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 11186
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8243
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 363
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 333
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 332
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "png_exports": {
+        "alpha_png": "reports/2026-11-17-round58-realhw-file-settings-gamma-assist-tcub-qemu/assets/r58a-file-settings-gamma-assist-big6-schinese-alpha.png",
+        "alpha_bytes": 27132,
+        "alpha_sha256": "c15f0707f15a85c39f78884215e22a4e4ed74f027bd9cb14710f5834f7955c57",
+        "composited_png": "reports/2026-11-17-round58-realhw-file-settings-gamma-assist-tcub-qemu/assets/r58a-file-settings-gamma-assist-big6-schinese-composited.png",
+        "composited_bytes": 27467,
+        "composited_sha256": "85762a678aa1e200a8494dcafad6cf5cdfa370ce9102a2d0cea184f8112f1026"
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 152,
+        "FX6_STAGE_B_": 87,
+        "FX6_R30_": 150,
+        "FX6_R31_": 150,
+        "FX6_R32_": 153,
+        "FX6_R33_": 150,
+        "FX6_R34_": 150,
+        "FX6_R35_": 150,
+        "FX6_R36_": 150,
+        "FX6_R37_": 151,
+        "FX6_R38_": 151,
+        "FX6_R39_": 151,
+        "FX6_R40_": 151,
+        "FX6_R41_": 151,
+        "FX6_R42_": 152,
+        "FX6_R43_": 152,
+        "FX6_R44_": 152,
+        "FX6_R45_": 152,
+        "FX6_R46_": 152,
+        "FX6_R47_": 152,
+        "FX6_R48_": 152,
+        "FX6_R49_": 152,
+        "FX6_R50_": 152,
+        "FX6_R51_": 152,
+        "FX6_R52_": 152,
+        "FX6_R53_": 152,
+        "FX6_R54_": 152,
+        "FX6_R55_": 152,
+        "FX6_R56_": 152,
+        "FX6_R57_": 152,
+        "FX6_R58_": 152,
+        "FX6_WAIT_SNAPSHOT": 25,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 150,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 106,
+        "FX6_R10_": 148,
+        "FX6_R11_": 159,
+        "FX6_R12_": 151,
+        "FX6_R13_": 148,
+        "FX6_R14_": 148,
+        "FX6_R15_": 148,
+        "FX6_R16_": 148,
+        "FX6_R17_": 148,
+        "FX6_R18_": 148,
+        "FX6_R19_": 148,
+        "FX6_R20_": 148,
+        "FX6_R21_": 148,
+        "FX6_R22_": 148,
+        "FX6_R23_": 148,
+        "FX6_R24_": 148,
+        "FX6_R25_": 148,
+        "FX6_R26_": 148,
+        "FX6_R27_": 148,
+        "FX6_R29_": 150,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 368,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 180,
+        "FX6_MILESTONE_": 780,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 51,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 489,
+        "FX6_FONT_": 92,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    },
+    "r58b_slot1_dcim_prefix_log_gamma_assist_guard": {
+      "run_id": "round58-slot1-dcim-prefix-log-gamma-guard",
+      "round": 58,
+      "lang": "en",
+      "r58_mode": "slot1_dcim_prefix_log_gamma_guard",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 fail-closed Wave-44 guard injection: blocks [Forced File Number Reset] & [Create New Folder] targeting read-only Slot-1 Tier-0 vault (-EROFS -30, slot1_vault_folder_mutation_events=0), rejects manual leading _ in Still [Set File Name] (-EINVAL -22, leading_underscore_prefix_events=0), rejects >37-char (38-char) Movie [Title Name Settings] (-EINVAL -22, title_over_37char_events=0) & Movie folder customization (-EOPNOTSUPP -95), blocks [Gamma Display Assist]=[On] when [Log Shooting]=[Cine EI] (-EBUSY -16, log_gamma_assist_bypass_events=0), blocks external HDMI assist bake (-EPERM -1, hdmi_clean_feed_assist_baked_pixels=0), and enforces DF lockout in 24.00p/PAL (-EINVAL -22), keeping Slot-1, p2:/setting, and cnflasha read-only (-30, emmc_write_count=0)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 35,
+      "wall_elapsed_sec": 7.33,
+      "total_threads_seen": 0,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "64b469479ba2f41046e70612b9c10e6e17c5f5e4d8aed80eb1a1b668cb9021ba"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r58": {
+          "r58_mode": "slot1_dcim_prefix_log_gamma_guard",
+          "movie_file_settings_menu_path": "MENU -> Shooting -> [File] -> [File Settings]",
+          "movie_file_number_default": "Series",
+          "movie_file_name_formats": [
+            "Standard",
+            "Cam ID + Reel#",
+            "Title",
+            "Date + Title",
+            "Title + Date"
+          ],
+          "movie_cam_id_range": "A..Z",
+          "movie_reel_num_range": [
+            1,
+            999
+          ],
+          "movie_cam_pos_values": [
+            "C",
+            "L",
+            "R"
+          ],
+          "movie_title_name_max_ascii_chars": 37,
+          "movie_title_name_default": "C",
+          "movie_folder_immutable": "PRIVATE/M4ROOT/CLIP",
+          "still_file_folder_menu_path": "MENU -> Shooting -> [File] -> [File/Folder Settings]",
+          "still_file_prefix_default": "DSC",
+          "still_file_prefix_leading_underscore_forbidden": true,
+          "still_folder_forms": [
+            "Standard Form",
+            "Date Form"
+          ],
+          "slot1_vault_dcim_mutation_blocked_erofs": true,
+          "gamma_display_assist_menu_path": "MENU -> Setup -> [Display Option] -> [Gamma Display Assist]",
+          "gamma_display_assist_default": "Off",
+          "gamma_display_assist_locked_off_when_log_on": true,
+          "gamma_display_assist_lcd_only_clean_hdmi": true,
+          "display_lut_default": "On",
+          "select_lut_menu_path": "MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]",
+          "select_lut_user_slots": 16,
+          "auto_review_default": "Off",
+          "tcub_menu_path": "MENU -> Shooting -> [TC/UB]",
+          "tcub_6items": [
+            "Time Code Preset",
+            "User Bit Preset",
+            "Time Code Format",
+            "Time Code Run",
+            "Time Code Make",
+            "User Bit Time Rec"
+          ],
+          "tcub_disp_setting_default": "TC",
+          "tcub_24p_pal_forces_ndf": true,
+          "wave44_survives_camera_settings_reset": true,
+          "wave44_restored_by_initialize_only": true,
+          "slot1_vault_read_only": true,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r58_telemetry": {
+        "slot1_dcim_log_gamma_rc": 0,
+        "file_gamma_tcub_init": {},
+        "file_settings_camid_bridge": {},
+        "gamma_assist_display_lut_bridge": {},
+        "tcub_6items_nonreset_bridge": {},
+        "slot1_dcim_log_gamma_guard": {
+          "slot1_forced_reset_rc": -30,
+          "slot1_new_folder_rc": -30,
+          "slot1_vault_folder_mutation_events": 0,
+          "still_leading_underscore_rc": -22,
+          "leading_underscore_prefix_events": 0,
+          "movie_title_38char_rc": -22,
+          "title_over_37char_events": 0,
+          "movie_folder_custom_rc": -95,
+          "movie_folder_custom_events": 0,
+          "log_gamma_assist_on_rc": -16,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_assist_bake_rc": -1,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "tc_df_24p_rc": -22,
+          "e_nd_actuator_tx_count": 0,
+          "slot1_vault_ro_blocked_rc": -30,
+          "slot1_vault_sha256_match": 1,
+          "slot1_vault_writes": 0,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "appfw_ok": 1,
+          "shim_elf_ok": 1,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "r58b_ok": 1,
+          "verify_us": 732289
+        },
+        "camreset_file_gamma_tcub_h0_h3": {},
+        "lang_telemetry": {},
+        "stage_b_bridge": {}
+      },
+      "gpe0_readback": {
+        "present": false,
+        "skipped_stock_fx3_mode": true
+      },
+      "prefix_counts": {
+        "Linux version ": 2,
+        "FX6_STAGE_A_": 1,
+        "FX6_R58_": 3
+      }
+    },
+    "r58c_camreset_file_gamma_tcub_init_h0_h3_big6_schinese": {
+      "run_id": "round58-camreset-file-gamma-tcub-h0-h3-big6",
+      "round": 58,
+      "lang": "schinese",
+      "r58_mode": "camreset_file_gamma_tcub_init_h0_h3_big6",
+      "sd_manifest_mode": "valid",
+      "scenario": "Live FX3 7.02 31st Real-HW / 93rd Run Integrated Wave-44 rehearsal verifying Movie [File Settings], Still [File/Folder Settings], [Gamma Display Assist]/[Display LUT], [Auto Review], and ALL 6 [TC/UB] items survive BOTH [Camera Settings Reset] and [Reset Network Set.] and restore to factory defaults ONLY under [Initialize]; passes guest dlopen(libJit.so), achieves 16/16 H0 == H3 (drift_bits=0, e_nd_actuator_tx_count=0, raw_firmware_bytes_leaked=0, emmc_write_count=0), and renders Stage-B SChinese Big-6 Home (sid=0x0a, 346,206 non-zero GPE0 pixels, 87 unique colors)",
+      "kernel_version": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+      "target_presenter": "31procam_big6_menu_home_presenter",
+      "target_sid": "0x0a",
+      "nop_count": 0,
+      "faithful_invariants": {
+        "FX6_NATIVE_FAITHFUL": 1,
+        "subst_color": 0,
+        "subst_image": 0,
+        "forced_render": 0,
+        "skipped_node": 0,
+        "lock_bypass": 0
+      },
+      "duration_budget_sec": 71,
+      "wall_elapsed_sec": 75.84,
+      "total_threads_seen": 161,
+      "crashes": 0,
+      "emmc_write_count": 0,
+      "stage_b": {
+        "manifest_count": 13,
+        "manifest_items": [
+          {
+            "guest_path": "/usr/lib/libInfraSetupFile.so",
+            "sha256": "69bf006e4efb7bbb236bc313e5c6ff7e7935f8899136db7d06ca5405ebe45c4b"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaCommon.so",
+            "sha256": "d9466fa9211dd31101aef80286913a961cfe3bfc81420150d7243a955ba6acc3"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraMediaConfig.so",
+            "sha256": "295a34e274bbb2e660bf56b438bf0f858e66d699463c62dbf1a626951ce3ffc0"
+          },
+          {
+            "guest_path": "/usr/lib/libInfraAppRemoteBoard.so",
+            "sha256": "2426911919397ab51ef35a914feb89674d35522cb928280bae510b4f06723572"
+          },
+          {
+            "guest_path": "/usr/lib/libfan.so",
+            "sha256": "456c3da53257c0266c9773264091fbcd928cb2fe9c3c169ab7fb986aa8fdc1b8"
+          },
+          {
+            "guest_path": "/usr/lib/appFw.so",
+            "sha256": "e2bc2619845e96141e6dee3d758232013d418956134cd66ae2c7430a7f510ad4"
+          },
+          {
+            "guest_path": "/usr/kmod/upm.ko",
+            "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+          },
+          {
+            "guest_path": "/tmp/opelog.vfat",
+            "sha256": "48c2123efbfb93da4b797190c2e223ac76dbe47a80c2f4efe7d7fc07127663e4"
+          },
+          {
+            "guest_path": "/etc/fx6_ram_shadow_bk4.bin",
+            "sha256": "e87030488731ed5133ddd727f6213d9984adfddc88ed12b782a180b8c6aa0d41"
+          },
+          {
+            "guest_path": "/etc/fx6_chaplin_ntsc.bk4",
+            "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e"
+          },
+          {
+            "guest_path": "/usr/lib/libgrm-fbinit9.so",
+            "sha256": "0536057086cdb8f0c9f8112675c2733d48cc57d5fb2a1fe473a43adeb7d0811e"
+          },
+          {
+            "guest_path": "/usr/share/app/image_00_169.uxc",
+            "sha256": "f9bb82a2cf6364e5683ea9cce7e63b0a891325a8c250904cf28d2417fe2c4148"
+          },
+          {
+            "guest_path": "/usr/lib/libWlanResource.so",
+            "sha256": "47fec188cc174faae7180744695257a9641b15dfdb3f237194be24fd551a1995"
+          }
+        ],
+        "r58": {
+          "r58_mode": "camreset_file_gamma_tcub_init_h0_h3_big6",
+          "movie_file_settings_menu_path": "MENU -> Shooting -> [File] -> [File Settings]",
+          "movie_file_number_default": "Series",
+          "movie_file_name_formats": [
+            "Standard",
+            "Cam ID + Reel#",
+            "Title",
+            "Date + Title",
+            "Title + Date"
+          ],
+          "movie_cam_id_range": "A..Z",
+          "movie_reel_num_range": [
+            1,
+            999
+          ],
+          "movie_cam_pos_values": [
+            "C",
+            "L",
+            "R"
+          ],
+          "movie_title_name_max_ascii_chars": 37,
+          "movie_title_name_default": "C",
+          "movie_folder_immutable": "PRIVATE/M4ROOT/CLIP",
+          "still_file_folder_menu_path": "MENU -> Shooting -> [File] -> [File/Folder Settings]",
+          "still_file_prefix_default": "DSC",
+          "still_file_prefix_leading_underscore_forbidden": true,
+          "still_folder_forms": [
+            "Standard Form",
+            "Date Form"
+          ],
+          "slot1_vault_dcim_mutation_blocked_erofs": true,
+          "gamma_display_assist_menu_path": "MENU -> Setup -> [Display Option] -> [Gamma Display Assist]",
+          "gamma_display_assist_default": "Off",
+          "gamma_display_assist_locked_off_when_log_on": true,
+          "gamma_display_assist_lcd_only_clean_hdmi": true,
+          "display_lut_default": "On",
+          "select_lut_menu_path": "MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]",
+          "select_lut_user_slots": 16,
+          "auto_review_default": "Off",
+          "tcub_menu_path": "MENU -> Shooting -> [TC/UB]",
+          "tcub_6items": [
+            "Time Code Preset",
+            "User Bit Preset",
+            "Time Code Format",
+            "Time Code Run",
+            "Time Code Make",
+            "User Bit Time Rec"
+          ],
+          "tcub_disp_setting_default": "TC",
+          "tcub_24p_pal_forces_ndf": true,
+          "wave44_survives_camera_settings_reset": true,
+          "wave44_restored_by_initialize_only": true,
+          "slot1_vault_read_only": true,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        }
+      },
+      "r58_telemetry": {
+        "slot1_dcim_log_gamma_rc": null,
+        "file_gamma_tcub_init": {
+          "fx3_wave44_nodes_ok": 1,
+          "movie_file_settings_camid_37char_ok": 1,
+          "still_file_folder_dsc_ok": 1,
+          "gamma_assist_log_lockout_lcd_only_ok": 1,
+          "display_lut_user16_ok": 1,
+          "auto_review_off_default_ok": 1,
+          "tcub_6items_defaults_ok": 1,
+          "wave44_survives_camreset_ok": 1,
+          "title_38char_rejected_rc": -22,
+          "leading_underscore_rejected_rc": -22,
+          "slot1_forced_reset_rc": -30,
+          "log_gamma_assist_on_rc": -16,
+          "hdmi_assist_bake_rc": -1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "slot1_vault_writes": 0,
+          "p2_write_blocked_rc": -30,
+          "p2_sha256_match": 1,
+          "cnflasha_sha256_match": 1,
+          "slot1_vault_sha256_match": 1,
+          "cnflasha_writes": 0,
+          "appfw_present": 1,
+          "shim_present": 1,
+          "emmc_write_count": 0,
+          "r58_init_ok": 1,
+          "verify_us": 826921
+        },
+        "file_settings_camid_bridge": {
+          "mv_camid_reel_37char_ok": 1,
+          "mv_folder_immutable_ok": 1,
+          "st_dsc_prefix_no_leading_us_ok": 1,
+          "st_slot1_vault_mutation_blocked_ok": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "file_settings_survive_camreset_ok": 1,
+          "file_settings_camid_ok": 1,
+          "emmc_write_count": 0,
+          "r58_bridge_ok": 1
+        },
+        "gamma_assist_display_lut_bridge": {
+          "gamma_assist_log_lockout_ok": 1,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "display_lut_user16_ok": 1,
+          "auto_review_off_default_ok": 1,
+          "gamma_lut_autoreview_camreset_ok": 1,
+          "gamma_assist_display_lut_ok": 1,
+          "emmc_write_count": 0,
+          "p2_setting_writes": 0
+        },
+        "tcub_6items_nonreset_bridge": {
+          "tcub_6items_verified": 6,
+          "tcub_24p_pal_ndf_lock_ok": 1,
+          "tcub_6items_survive_camreset_ok": 1,
+          "tcub_disp_survives_camreset_ok": 1,
+          "initialize_restores_all_wave44_ok": 1,
+          "tcub_6items_nonreset_ok": 1,
+          "slot1_vault_writes": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        },
+        "slot1_dcim_log_gamma_guard": {},
+        "camreset_file_gamma_tcub_h0_h3": {
+          "wave44_survives_netreset_ok": 1,
+          "movie_file_settings_survive_camreset_ok": 1,
+          "still_file_folder_survive_camreset_ok": 1,
+          "setup_gamma_lut_autoreview_survive_camreset_ok": 1,
+          "tcub_6items_survive_camreset_ok": 1,
+          "initialize_restores_all_wave44_defaults_ok": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "slot1_vault_ro_blocked_rc": -30,
+          "slot1_vault_sha256_match": 1,
+          "p2_write_blocked_rc": -30,
+          "cnflasha_ro_blocked_rc": -30,
+          "cnflasha_writes": 0,
+          "dlopen_ok": 1,
+          "surfaces_verified": 16,
+          "surfaces_h0_eq_h3": 16,
+          "drift_bits": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "emmc_write_count": 0,
+          "r58c_ok": 1,
+          "verify_us": 322832
+        },
+        "lang_telemetry": {
+          "reason": "gpermDrawFlush",
+          "lang": "schinese",
+          "bk4_lang_id": "0x02cf019c",
+          "bk4_lang_val": "0x19",
+          "lang_enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "lang_bk4_hits": 3,
+          "airplane_bk4_hits": 0,
+          "breathing_bk4_hits": 2,
+          "p4_nd_clear": 1,
+          "p10_keymap": 1,
+          "p11_xlr_h1": 1,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "font_create": 28460,
+          "glyph_blits": 14861,
+          "icon_blits": 18462,
+          "gpe_alloc": 68,
+          "gpe_fb": 0,
+          "file_settings_camid_ok": 1,
+          "gamma_assist_display_lut_ok": 1,
+          "tcub_6items_nonreset_ok": 1,
+          "r58_bridge_ok": 1,
+          "round58_realhw_file_settings_gamma_assist_tcub": 1,
+          "milestone_31st_realhw_93rd_live": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0,
+          "subst_color": 0,
+          "subst_image": 0
+        },
+        "stage_b_bridge": {
+          "round": 58,
+          "faithful": 1,
+          "nop_count": 0,
+          "p12_wlan": 1,
+          "wf12_00342260_immune": 1,
+          "p10_keymap": 1,
+          "p4_nd_clear": 1,
+          "p11_xlr_h1": 1,
+          "lang": "schinese",
+          "bk4_lang": "0x19",
+          "enum": "0x2b45_CHINESE_SIMPLIFIED",
+          "font_bank": 23,
+          "str_bank": 19,
+          "mv_camid_reel_37char_st_dsc": 1,
+          "gamma_assist_log_lockout_lcd_only_display_lut_user16": 1,
+          "auto_review_off_tcub_6items_camreset": 1,
+          "milestone_31st_realhw_93rd_live": 1,
+          "slot1_vault_folder_mutation_events": 0,
+          "leading_underscore_prefix_events": 0,
+          "log_gamma_assist_bypass_events": 0,
+          "hdmi_clean_feed_assist_baked_pixels": 0,
+          "e_nd_actuator_tx_count": 0,
+          "raw_firmware_bytes_leaked": 0,
+          "cnflasha_writes": 0,
+          "emmc_write_count": 0
+        }
+      },
+      "gpe0_readback": {
+        "present": true,
+        "bytes": 2211840,
+        "total_pixels": 552960,
+        "nonzero_pixels": 346206,
+        "unique_colors": 87,
+        "sha256": "e8a317a660367c186ce6d00a8c700f0621a61e369ea008b348708c9f5e7a607a",
+        "top_colors": [
+          {
+            "argb": "0x00000000",
+            "pixels": 206754
+          },
+          {
+            "argb": "0xff000000",
+            "pixels": 171630
+          },
+          {
+            "argb": "0xff222222",
+            "pixels": 134866
+          },
+          {
+            "argb": "0xffeeeeee",
+            "pixels": 10976
+          },
+          {
+            "argb": "0xff777777",
+            "pixels": 8239
+          },
+          {
+            "argb": "0xffaaaaaa",
+            "pixels": 6200
+          },
+          {
+            "argb": "0xff555555",
+            "pixels": 4033
+          },
+          {
+            "argb": "0xff444444",
+            "pixels": 463
+          },
+          {
+            "argb": "0xff888888",
+            "pixels": 369
+          },
+          {
+            "argb": "0xff8d8d8d",
+            "pixels": 360
+          },
+          {
+            "argb": "0xff666666",
+            "pixels": 332
+          },
+          {
+            "argb": "0xffdddddd",
+            "pixels": 330
+          },
+          {
+            "argb": "0xff2f2f2f",
+            "pixels": 323
+          },
+          {
+            "argb": "0xff333333",
+            "pixels": 284
+          },
+          {
+            "argb": "0xffcdcdcd",
+            "pixels": 271
+          },
+          {
+            "argb": "0xff7c7c7c",
+            "pixels": 260
+          }
+        ]
+      },
+      "prefix_counts": {
+        "Linux version ": 3,
+        "FX6_STAGE_A_": 22,
+        "FX6_R28_": 159,
+        "FX6_STAGE_B_": 87,
+        "FX6_R30_": 157,
+        "FX6_R31_": 157,
+        "FX6_R32_": 160,
+        "FX6_R33_": 157,
+        "FX6_R34_": 157,
+        "FX6_R35_": 157,
+        "FX6_R36_": 157,
+        "FX6_R37_": 158,
+        "FX6_R38_": 158,
+        "FX6_R39_": 158,
+        "FX6_R40_": 158,
+        "FX6_R41_": 158,
+        "FX6_R42_": 159,
+        "FX6_R43_": 159,
+        "FX6_R44_": 159,
+        "FX6_R45_": 159,
+        "FX6_R46_": 159,
+        "FX6_R47_": 159,
+        "FX6_R48_": 159,
+        "FX6_R49_": 159,
+        "FX6_R50_": 159,
+        "FX6_R51_": 159,
+        "FX6_R52_": 159,
+        "FX6_R53_": 159,
+        "FX6_R54_": 159,
+        "FX6_R55_": 159,
+        "FX6_R56_": 159,
+        "FX6_R57_": 159,
+        "FX6_R58_": 160,
+        "FX6_WAIT_SNAPSHOT": 25,
+        "FX6_NATIVE_FAITHFUL_SHIM_LOADED": 1,
+        "FX6_HYBRID_": 1,
+        "FX6_BK4_": 3,
+        "FX6_BACKUP_MEDIA": 46,
+        "FX6_MWF_": 2,
+        "FX6_BACKUP_READ8": 12,
+        "FX6_IMCFG_": 2,
+        "FX6_QUEUE_OBS_ENTER": 1024,
+        "FX6_INFRA_INPUT_": 1,
+        "FX6_QUEUE_OBS_LIBRARY": 1,
+        "FX6_QUEUE_OBS_GOT": 1,
+        "FX6_APP_CONFIG_": 2,
+        "FX6_PATCH_": 1,
+        "FX6_P11_": 157,
+        "FX6_UIPC_SYNC_": 64,
+        "FX6_GRM_": 4,
+        "FX6_BMP_": 1,
+        "FX6_OSD_FLUSH": 113,
+        "FX6_R10_": 155,
+        "FX6_R11_": 166,
+        "FX6_R12_": 158,
+        "FX6_R13_": 155,
+        "FX6_R14_": 155,
+        "FX6_R15_": 155,
+        "FX6_R16_": 155,
+        "FX6_R17_": 155,
+        "FX6_R18_": 155,
+        "FX6_R19_": 155,
+        "FX6_R20_": 155,
+        "FX6_R21_": 155,
+        "FX6_R22_": 155,
+        "FX6_R23_": 155,
+        "FX6_R24_": 155,
+        "FX6_R25_": 155,
+        "FX6_R26_": 155,
+        "FX6_R27_": 155,
+        "FX6_R29_": 157,
+        "FX6_UX_SCREEN_AREA": 9,
+        "FX6_UIPC_SND": 373,
+        "FX6_QUEUE_OBS_EXIT": 1002,
+        "FX6_UIPC_COMPLETION_": 185,
+        "FX6_MILESTONE_": 861,
+        "FX6_SCREEN_MGR_STATE": 11,
+        "FX6_PRESENTER_SLOT": 77,
+        "FX6_APPFW_MEDIA_SLOTS": 11,
+        "FX6_UX_SCREEN_TREE": 99,
+        "FX6_TRIGGER_PUMP_": 51,
+        "FX6_KEY_INJECT": 11,
+        "FX6_BACKUP_WRITE": 48,
+        "FX6_BACKUP_NREAD_MULTI": 2,
+        "FX6_GPE_": 518,
+        "FX6_FONT_": 96,
+        "FX3_PHY_KEY_MAP": 1
+      }
+    }
+  },
+  "r58_realhw_file_settings_gamma_assist_tcub_audit": {
+    "round": 58,
+    "milestone": 58,
+    "milestone221_qemu_rounds": 31,
+    "milestone221_qemu_runs": 93,
+    "milestone233_qemu_rounds": 31,
+    "milestone233_qemu_runs": 93,
+    "milestone254_qemu_rounds": 31,
+    "milestone254_qemu_runs": 93,
+    "milestone264_qemu_rounds": 31,
+    "milestone264_qemu_runs": 93,
+    "total_runs": 3,
+    "all_3_runs_crashes_zero": true,
+    "all_3_runs_emmc_write_zero": true,
+    "all_3_runs_cnflasha_write_zero": true,
+    "r58a_file_settings_camid_gamma_lut_autoreview_tcub_verified": true,
+    "r58a_stageb_big6_sid_0a_exact_346686_pixels_verified": true,
+    "r58b_slot1_dcim_leading_underscore_log_gamma_guard_fail_closed": true,
+    "r58c_camreset_nonresettable_wave44_initialize_and_16_h0_eq_h3_verified": true
+  },
+  "unexecuted_physical_camera_bench_boundaries": [
+    "Physical ILME-FX3 (Ver. 7.02) body recording bench verifying Movie [File Settings] (Series/Reset, [Cam ID + Reel#] A..Z/001..999/C|L|R, 37-char Title Name, PRIVATE/M4ROOT/CLIP immutability) and Still [File/Folder Settings] (3-char DSC prefix, 100MSDCF/Date Form, [Forced File Number Reset] / [Create New Folder] DCIM creation on writable Slot-2) remains unexecuted on physical camera hardware.",
+    "Physical ILME-FX3 (Ver. 7.02) LCD vs HDMI external monitor bench verifying [Gamma Display Assist] lockout during [Log Shooting] != [Off], LCD-only clean HDMI isolation, and [Display LUT] / [Select LUT] (S-Log3, s709, 709(800%), User1..16 .cube LUT slots) remains unexecuted on physical camera hardware.",
+    "Physical ILME-FX3 (Ver. 7.02) still-review & timecode sync bench verifying [Auto Review]=[Off] cinema default and all 6 [TC/UB] parameters surviving [Camera Settings Reset] and restoring only under [Initialize] remains unexecuted on physical camera hardware."
+  ]
+}

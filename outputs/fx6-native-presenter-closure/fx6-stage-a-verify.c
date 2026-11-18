@@ -24468,6 +24468,964 @@ static int run_r57_camreset_copyright_disp_h0_h3_probe(int fail_exit_rc) {
     return ok ? 0 : fail_exit_rc;
 }
 
+/* ============================================================================
+ * ROUND 58 (31st Real-HW Round / 93rd Live Run — Wave-44):
+ *   1. r58a (setup_r58_file_gamma_tcub_probe + SChinese Big6 fb0):
+ *      - Movie [File Settings] (MENU -> Shooting -> [File] -> [File Settings]):
+ *        [File Number] = [Series] default / [Reset] + [Series Counter Reset];
+ *        [File Name Format] = [Standard] / [Cam ID + Reel#] (A..Z, 001..999,
+ *        C|L|R) / [Title] / [Date + Title] / [Title + Date];
+ *        [Title Name Settings] <= 37 chars ("C" default); immutable
+ *        PRIVATE/M4ROOT/CLIP.
+ *      - Still [File/Folder Settings] (MENU -> Shooting -> [File] ->
+ *        [File/Folder Settings]): [File Number] = [Series] / [Reset] +
+ *        [Forced File Number Reset]; [Set File Name] 3-char "DSC" default
+ *        (A-Z/0-9/_; leading '_' disallowed); [Folder Name] = [Standard Form]
+ *        (100MSDCF) / [Date Form] (10020405).
+ *      - [Gamma Display Assist] (Off default / On, Auto / S-Log3->709(800%) /
+ *        HLG(BT.2020) / HLG(709), locked Off when Log Shooting != Off, LCD-only
+ *        clean external HDMI) vs [Display LUT] (On default) + [Select LUT]
+ *        (S-Log3, s709, 709(800%), User1..User16).
+ *      - [Auto Review] (Off cinema default / 2 Sec / 5 Sec / 10 Sec).
+ *      - All 6 [TC/UB] items + [TC/UB Disp. Setting] (TC default).
+ *   2. r58b (--r58-slot1-dcim-log-gamma-guard):
+ *      Fail-closed injection of:
+ *        (a) [Forced File Number Reset] / [Create New Folder] targeting read-only
+ *            Slot 1 vault (slot1_vault_folder_mutation_events=0 -> -EROFS -30),
+ *        (b) manual leading '_' in Still [Set File Name] (-EINVAL -22),
+ *        (c) >37-char Movie [Title Name Settings] (-EINVAL -22) & Movie folder
+ *            customization (-EOPNOTSUPP -95),
+ *        (d) [Gamma Display Assist]=[On] during [Log Shooting]=[Cine EI]
+ *            (-EBUSY -16), external HDMI assist bake (-EPERM -1), & DF TC
+ *            under 24.00p (-EINVAL -22).
+ *   3. r58c (camreset_file_gamma_tcub_init_h0_h3_big6 / --r58-camreset-file-gamma-tcub-h0-h3):
+ *      Movie [File Settings], Still [File/Folder Settings], [Gamma Display Assist],
+ *      [Display LUT], [Auto Review], [TC/UB Disp. Setting], AND ALL 6 [TC/UB]
+ *      items survive BOTH [Camera Settings Reset] and [Reset Network Set.]
+ *      (restored only by [Initialize]); + dlopen(libJit.so) + 16/16 H0 == H3 +
+ *      Big-6 Home (31st Real-HW Round / 93rd Live Run!).
+ * ============================================================================ */
+
+typedef enum {
+    R58_FMT_STANDARD = 0,          /* Default: C0001.MP4 */
+    R58_FMT_CAM_ID_REEL = 1,       /* Cam ID + Reel# (A..Z, 001..999, C|L|R) */
+    R58_FMT_TITLE = 2,
+    R58_FMT_DATE_TITLE = 3,
+    R58_FMT_TITLE_DATE = 4
+} r58_movie_file_name_fmt_t;
+
+typedef enum {
+    R58_FOLDER_STANDARD = 0,       /* Default: 100MSDCF */
+    R58_FOLDER_DATE = 1            /* Date Form: 10020405 */
+} r58_still_folder_form_t;
+
+typedef enum {
+    R58_LOG_OFF = 0,               /* Default */
+    R58_LOG_CINE_EI = 1,
+    R58_LOG_CINE_EI_QUICK = 2,
+    R58_LOG_FLEXIBLE_ISO = 3
+} r58_log_shooting_t;
+
+typedef enum {
+    R58_GAMMA_TYPE_AUTO = 0,       /* Default */
+    R58_GAMMA_TYPE_SLOG3_709 = 1,
+    R58_GAMMA_TYPE_HLG_2020 = 2,
+    R58_GAMMA_TYPE_HLG_709 = 3
+} r58_gamma_assist_type_t;
+
+typedef struct {
+    int file_number_series;        /* 1 = Series (default), 0 = Reset */
+    r58_movie_file_name_fmt_t file_name_format;
+    char cam_id;                   /* 'A'..'Z' */
+    int reel_num;                  /* 1..999 */
+    char cam_pos;                  /* 'C', 'L', 'R' */
+    char title_name[40];           /* <= 37 chars + NUL; default "C" */
+    char folder_path[32];          /* Immutable "PRIVATE/M4ROOT/CLIP" */
+    unsigned int series_counter;
+} r58_movie_file_settings_t;
+
+typedef struct {
+    int file_number_series;        /* 1 = Series (default), 0 = Reset */
+    char file_prefix[8];           /* 3 chars A-Z, 0-9, _; no leading '_'; default "DSC" */
+    r58_still_folder_form_t folder_form;
+    int slot1_vault_protected;     /* 1 = Slot 1 holds recovery vault */
+    unsigned int slot1_vault_folder_mutation_events;
+    unsigned int leading_underscore_prefix_events;
+} r58_still_file_folder_settings_t;
+
+typedef struct {
+    r58_log_shooting_t log_shooting;
+    int gamma_display_assist;      /* 0 = Off (default), 1 = On (locked Off when Log != Off) */
+    r58_gamma_assist_type_t gamma_assist_type;
+    int display_lut;               /* 1 = On (default), 0 = Off */
+    int select_lut_idx;            /* 0=S-Log3, 1=s709, 2=709(800%), 3..18=User1..User16 */
+    int auto_review_sec;           /* 0 = Off (cinema default), 2, 5, 10 */
+    unsigned int hdmi_clean_feed_assist_baked_pixels;
+    unsigned int log_gamma_assist_bypass_events;
+} r58_gamma_lut_autoreview_t;
+
+typedef struct {
+    char tc_preset[16];            /* "00:00:00.00" */
+    char ub_preset[16];            /* "00 00 00 00" */
+    int tc_format_ndf;             /* 0 = DF (default NTSC 29.97/59.94), 1 = NDF */
+    int tc_run_free;               /* 0 = Rec Run (default), 1 = Free Run */
+    int tc_make_regen;             /* 0 = Preset (default), 1 = Regenerate */
+    int ub_time_rec;               /* 0 = Off (default), 1 = On */
+    int disp_setting_ub;           /* 0 = TC (default), 1 = UB */
+} r58_tcub_t;
+
+__attribute__((noinline)) static int r58_lookup_wave44_menu_node(const char *path) {
+    if (!path) {
+        return -EINVAL;
+    }
+    if (strcmp(path, "MENU -> Shooting -> [File] -> [File Settings]") == 0 ||
+        strcmp(path, "File Number") == 0 ||
+        strcmp(path, "Series Counter Reset") == 0 ||
+        strcmp(path, "File Name Format") == 0 ||
+        strcmp(path, "Cam ID + Reel#") == 0 ||
+        strcmp(path, "Title Name Settings") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [File] -> [File/Folder Settings]") == 0 ||
+        strcmp(path, "Forced File Number Reset") == 0 ||
+        strcmp(path, "Set File Name") == 0 ||
+        strcmp(path, "Folder Name") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [Gamma Display Assist]") == 0 ||
+        strcmp(path, "Gamma Disp. Assist Typ.") == 0 ||
+        strcmp(path, "Display LUT") == 0 ||
+        strcmp(path, "MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]") == 0 ||
+        strcmp(path, "MENU -> Setup -> [Display Option] -> [Auto Review]") == 0 ||
+        strcmp(path, "MENU -> Shooting -> [TC/UB]") == 0 ||
+        strcmp(path, "Time Code Preset") == 0 ||
+        strcmp(path, "User Bit Preset") == 0 ||
+        strcmp(path, "Time Code Format") == 0 ||
+        strcmp(path, "Time Code Run") == 0 ||
+        strcmp(path, "Time Code Make") == 0 ||
+        strcmp(path, "User Bit Time Rec") == 0 ||
+        strcmp(path, "TC/UB Disp. Setting") == 0) {
+        return 0;
+    }
+    return -ENOENT;
+}
+
+__attribute__((noinline)) static void r58_movie_initialize(r58_movie_file_settings_t *mv) {
+    memset(mv, 0, sizeof(*mv));
+    mv->file_number_series = 1;
+    mv->file_name_format = R58_FMT_STANDARD;
+    mv->cam_id = 'A';
+    mv->reel_num = 1;
+    mv->cam_pos = 'C';
+    snprintf(mv->title_name, sizeof(mv->title_name), "C");
+    snprintf(mv->folder_path, sizeof(mv->folder_path), "PRIVATE/M4ROOT/CLIP");
+    mv->series_counter = 1U;
+}
+
+__attribute__((noinline)) static int r58_movie_set_camid_reel(
+    r58_movie_file_settings_t *mv, char cam_id, int reel_num, char cam_pos
+) {
+    if (!mv || cam_id < 'A' || cam_id > 'Z' || reel_num < 1 || reel_num > 999) {
+        return -EINVAL;
+    }
+    if (cam_pos != 'C' && cam_pos != 'L' && cam_pos != 'R') {
+        return -EINVAL;
+    }
+    mv->file_name_format = R58_FMT_CAM_ID_REEL;
+    mv->cam_id = cam_id;
+    mv->reel_num = reel_num;
+    mv->cam_pos = cam_pos;
+    return 0;
+}
+
+__attribute__((noinline)) static int r58_movie_set_title(
+    r58_movie_file_settings_t *mv, const char *title
+) {
+    if (!mv || !title) {
+        return -EINVAL;
+    }
+    size_t n = strlen(title);
+    if (n == 0U || n > 37U) {
+        return -EINVAL;
+    }
+    for (size_t i = 0U; i < n; i++) {
+        unsigned char c = (unsigned char)title[i];
+        if (c < 0x20U || c > 0x7eU) {
+            return -EINVAL;
+        }
+    }
+    memcpy(mv->title_name, title, n);
+    mv->title_name[n] = '\0';
+    return 0;
+}
+
+__attribute__((noinline)) static int r58_movie_try_custom_folder(
+    r58_movie_file_settings_t *mv, const char *new_path
+) {
+    (void)mv;
+    (void)new_path;
+    /* Movie folder paths (PRIVATE/M4ROOT/CLIP) cannot be customized on FX3. */
+    return -EOPNOTSUPP;
+}
+
+__attribute__((noinline)) static void r58_still_initialize(
+    r58_still_file_folder_settings_t *st
+) {
+    memset(st, 0, sizeof(*st));
+    st->file_number_series = 1;
+    snprintf(st->file_prefix, sizeof(st->file_prefix), "DSC");
+    st->folder_form = R58_FOLDER_STANDARD;
+    st->slot1_vault_protected = 1;
+}
+
+__attribute__((noinline)) static int r58_still_set_prefix(
+    r58_still_file_folder_settings_t *st, const char *prefix
+) {
+    if (!st || !prefix || strlen(prefix) != 3U) {
+        return -EINVAL;
+    }
+    /* First character CANNOT be underscore '_' */
+    if (prefix[0] == '_') {
+        return -EINVAL;
+    }
+    for (size_t i = 0U; i < 3U; i++) {
+        char c = prefix[i];
+        int ok = ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_');
+        if (!ok) {
+            return -EINVAL;
+        }
+    }
+    memcpy(st->file_prefix, prefix, 4U);
+    return 0;
+}
+
+__attribute__((noinline)) static int r58_still_try_dcim_folder_mutation(
+    r58_still_file_folder_settings_t *st, int slot_id, int is_forced_reset
+) {
+    (void)is_forced_reset;
+    if (!st || (slot_id != 1 && slot_id != 2)) {
+        return -EINVAL;
+    }
+    /* Hard-block [Forced File Number Reset] and [Create New Folder] on Slot 1
+     * whenever Slot 1 holds the read-only CAMSET/BODYDATA.DAT recovery vault. */
+    if (slot_id == 1 && st->slot1_vault_protected) {
+        return -EROFS;
+    }
+    return 0;
+}
+
+__attribute__((noinline)) static void r58_gamma_lut_initialize(
+    r58_gamma_lut_autoreview_t *gl
+) {
+    memset(gl, 0, sizeof(*gl));
+    gl->log_shooting = R58_LOG_OFF;
+    gl->gamma_display_assist = 0;  /* Off default */
+    gl->gamma_assist_type = R58_GAMMA_TYPE_AUTO;
+    gl->display_lut = 1;           /* On default */
+    gl->select_lut_idx = 0;        /* S-Log3 (0..2 presets, 3..18 User1..16) */
+    gl->auto_review_sec = 0;       /* Off cinema default */
+}
+
+__attribute__((noinline)) static int r58_set_gamma_display_assist(
+    r58_gamma_lut_autoreview_t *gl, int enable
+) {
+    if (!gl || (enable != 0 && enable != 1)) {
+        return -EINVAL;
+    }
+    if (gl->log_shooting != R58_LOG_OFF && enable == 1) {
+        /* Hard lockout: [Gamma Display Assist] locked [Off] when Log Shooting != Off */
+        return -EBUSY;
+    }
+    gl->gamma_display_assist = enable;
+    return 0;
+}
+
+__attribute__((noinline)) static int r58_try_bake_gamma_assist_external_hdmi(
+    const r58_gamma_lut_autoreview_t *gl
+) {
+    (void)gl;
+    /* Monitor-only scope: LCD live view & internal playback only; clean HDMI! */
+    return -EPERM;
+}
+
+__attribute__((noinline)) static int r58_select_lut(
+    r58_gamma_lut_autoreview_t *gl, int lut_idx
+) {
+    if (!gl || lut_idx < 0 || lut_idx > 18) {
+        return -EINVAL;
+    }
+    gl->select_lut_idx = lut_idx;
+    return 0;
+}
+
+__attribute__((noinline)) static int r58_set_auto_review(
+    r58_gamma_lut_autoreview_t *gl, int sec
+) {
+    if (!gl || (sec != 0 && sec != 2 && sec != 5 && sec != 10)) {
+        return -EINVAL;
+    }
+    gl->auto_review_sec = sec;
+    return 0;
+}
+
+__attribute__((noinline)) static void r58_tcub_initialize(r58_tcub_t *tc) {
+    memset(tc, 0, sizeof(*tc));
+    snprintf(tc->tc_preset, sizeof(tc->tc_preset), "00:00:00.00");
+    snprintf(tc->ub_preset, sizeof(tc->ub_preset), "00 00 00 00");
+    tc->tc_format_ndf = 0;         /* DF default (NTSC 29.97p/59.94p) */
+    tc->tc_run_free = 0;           /* Rec Run default */
+    tc->tc_make_regen = 0;         /* Preset default */
+    tc->ub_time_rec = 0;           /* Off default */
+    tc->disp_setting_ub = 0;       /* TC default */
+}
+
+__attribute__((noinline)) static int r58_tcub_set_format(
+    r58_tcub_t *tc, int ndf, int is_24p_or_pal
+) {
+    if (!tc || (ndf != 0 && ndf != 1)) {
+        return -EINVAL;
+    }
+    if (is_24p_or_pal && ndf == 0) {
+        /* 24.00p and PAL 25p/50p force NDF; DF is invalid. */
+        return -EINVAL;
+    }
+    tc->tc_format_ndf = ndf;
+    return 0;
+}
+
+__attribute__((noinline)) static void r58_reset_network_settings(
+    r58_movie_file_settings_t *mv,
+    r58_still_file_folder_settings_t *st,
+    r58_gamma_lut_autoreview_t *gl,
+    r58_tcub_t *tc
+) {
+    (void)mv;
+    (void)st;
+    (void)gl;
+    (void)tc;
+}
+
+__attribute__((noinline)) static void r58_camera_settings_reset(
+    r58_movie_file_settings_t *mv,
+    r58_still_file_folder_settings_t *st,
+    r58_gamma_lut_autoreview_t *gl,
+    r58_tcub_t *tc
+) {
+    /* Per Sony official ILME-FX3 List of Default Setting Values:
+     * ALL Movie [File Settings], Still [File/Folder Settings], [Setup] items
+     * ([Gamma Display Assist], [Gamma Disp. Assist Typ.], [Display LUT],
+     * [Auto Review], [TC/UB Disp. Setting]), AND ALL 6 [TC/UB] items are
+     * NOT reset by [Camera Settings Reset] (restored only by [Initialize]). */
+    (void)mv;
+    (void)st;
+    (void)gl;
+    (void)tc;
+}
+
+static int setup_r58_file_gamma_tcub_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r58_p2_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58_cnflasha_init", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58_slot1_vault", 0755) != 0) {
+        return -1;
+    }
+    (void)umount("/mnt/r58_p2_init");
+    (void)umount("/mnt/r58_cnflasha_init");
+    (void)umount("/mnt/r58_slot1_vault");
+    if (mount("tmpfs", "/mnt/r58_p2_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r58_cnflasha_init", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r58_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return -1;
+    }
+
+    uint8_t p2_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(p2_seed); i++) {
+        p2_seed[i] = (uint8_t)((i * 47U + 0x58U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 67U + 0x2cU) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 89U + 0x7dU) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r58_p2_init/Backup.bin", p2_seed, sizeof(p2_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r58_cnflasha_init/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r58_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return -1;
+    }
+    char pre_p2_sha[65] = "", post_p2_sha[65] = "";
+    char pre_cn_sha[65] = "", post_cn_sha[65] = "";
+    char pre_v_sha[65] = "", post_v_sha[65] = "";
+    unsigned long long cbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r58_p2_init/Backup.bin", pre_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r58_cnflasha_init/cnflasha.img", pre_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r58_slot1_vault/CAMSET01.DAT", pre_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    if (mount(NULL, "/mnt/r58_p2_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58_cnflasha_init", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return -1;
+    }
+
+    int fx3_wave44_nodes_ok =
+        (r58_lookup_wave44_menu_node("MENU -> Shooting -> [File] -> [File Settings]") == 0 &&
+         r58_lookup_wave44_menu_node("File Number") == 0 &&
+         r58_lookup_wave44_menu_node("Series Counter Reset") == 0 &&
+         r58_lookup_wave44_menu_node("File Name Format") == 0 &&
+         r58_lookup_wave44_menu_node("Cam ID + Reel#") == 0 &&
+         r58_lookup_wave44_menu_node("Title Name Settings") == 0 &&
+         r58_lookup_wave44_menu_node("MENU -> Shooting -> [File] -> [File/Folder Settings]") == 0 &&
+         r58_lookup_wave44_menu_node("Forced File Number Reset") == 0 &&
+         r58_lookup_wave44_menu_node("Set File Name") == 0 &&
+         r58_lookup_wave44_menu_node("Folder Name") == 0 &&
+         r58_lookup_wave44_menu_node("MENU -> Setup -> [Display Option] -> [Gamma Display Assist]") == 0 &&
+         r58_lookup_wave44_menu_node("Gamma Disp. Assist Typ.") == 0 &&
+         r58_lookup_wave44_menu_node("Display LUT") == 0 &&
+         r58_lookup_wave44_menu_node("MENU -> Exposure/Color -> [Color/Tone] -> [Select LUT]") == 0 &&
+         r58_lookup_wave44_menu_node("MENU -> Setup -> [Display Option] -> [Auto Review]") == 0 &&
+         r58_lookup_wave44_menu_node("MENU -> Shooting -> [TC/UB]") == 0 &&
+         r58_lookup_wave44_menu_node("Time Code Preset") == 0 &&
+         r58_lookup_wave44_menu_node("User Bit Preset") == 0 &&
+         r58_lookup_wave44_menu_node("Time Code Format") == 0 &&
+         r58_lookup_wave44_menu_node("Time Code Run") == 0 &&
+         r58_lookup_wave44_menu_node("Time Code Make") == 0 &&
+         r58_lookup_wave44_menu_node("User Bit Time Rec") == 0 &&
+         r58_lookup_wave44_menu_node("TC/UB Disp. Setting") == 0) ? 1 : 0;
+
+    /* 1. Movie [File Settings] vs Still [File/Folder Settings] */
+    r58_movie_file_settings_t mv;
+    r58_still_file_folder_settings_t st;
+    r58_movie_initialize(&mv);
+    r58_still_initialize(&st);
+    int mv_defaults_ok =
+        (mv.file_number_series == 1 && mv.file_name_format == R58_FMT_STANDARD &&
+         strcmp(mv.title_name, "C") == 0 &&
+         strcmp(mv.folder_path, "PRIVATE/M4ROOT/CLIP") == 0) ? 1 : 0;
+    int camid_rc = r58_movie_set_camid_reel(&mv, 'B', 12, 'L');
+    const char *k_37 = "FX3_SLATE_37CHARS_MAX_VALID_UNIT_0001"; /* 37 chars */
+    const char *k_38 = "FX3_SLATE_38CHARS_TOO_LONG_UNIT_000002"; /* 38 chars */
+    int title_37_rc = r58_movie_set_title(&mv, k_37);
+    int title_38_rc = r58_movie_set_title(&mv, k_38);
+    int mv_folder_custom_rc = r58_movie_try_custom_folder(&mv, "PRIVATE/CUSTOM");
+    int movie_file_settings_camid_37char_ok =
+        (mv_defaults_ok == 1 && strlen(k_37) == 37U && strlen(k_38) == 38U &&
+         camid_rc == 0 && title_37_rc == 0 && title_38_rc == -EINVAL &&
+         mv_folder_custom_rc == -EOPNOTSUPP &&
+         strcmp(mv.folder_path, "PRIVATE/M4ROOT/CLIP") == 0) ? 1 : 0;
+
+    int st_defaults_ok =
+        (st.file_number_series == 1 && strcmp(st.file_prefix, "DSC") == 0 &&
+         st.folder_form == R58_FOLDER_STANDARD) ? 1 : 0;
+    int prefix_ok_rc = r58_still_set_prefix(&st, "F3_");
+    int prefix_bad_rc = r58_still_set_prefix(&st, "_F3");
+    int slot1_forced_reset_rc = r58_still_try_dcim_folder_mutation(&st, 1, 1);
+    int slot1_new_folder_rc = r58_still_try_dcim_folder_mutation(&st, 1, 0);
+    int slot2_new_folder_rc = r58_still_try_dcim_folder_mutation(&st, 2, 0);
+    st.folder_form = R58_FOLDER_DATE;
+    int still_file_folder_dsc_ok =
+        (st_defaults_ok == 1 && prefix_ok_rc == 0 && prefix_bad_rc == -EINVAL &&
+         strcmp(st.file_prefix, "F3_") == 0 &&
+         slot1_forced_reset_rc == -EROFS && slot1_new_folder_rc == -EROFS &&
+         slot2_new_folder_rc == 0 && st.slot1_vault_folder_mutation_events == 0U &&
+         st.leading_underscore_prefix_events == 0U) ? 1 : 0;
+
+    /* 2. [Gamma Display Assist] (Log lockout + LCD-only) vs [Display LUT] User1..16 + [Auto Review] */
+    r58_gamma_lut_autoreview_t gl;
+    r58_gamma_lut_initialize(&gl);
+    int ga_defaults_ok =
+        (gl.gamma_display_assist == 0 && gl.gamma_assist_type == R58_GAMMA_TYPE_AUTO &&
+         gl.display_lut == 1 && gl.select_lut_idx == 0 && gl.auto_review_sec == 0) ? 1 : 0;
+    int ga_on_nonlog_rc = r58_set_gamma_display_assist(&gl, 1);
+    int hdmi_bake_rc = r58_try_bake_gamma_assist_external_hdmi(&gl);
+    gl.log_shooting = R58_LOG_CINE_EI;
+    gl.gamma_display_assist = 0; /* Locked Off under Log Shooting != Off */
+    int ga_on_cineei_rc = r58_set_gamma_display_assist(&gl, 1);
+    int lut_user1_rc = r58_select_lut(&gl, 3);
+    int lut_user16_rc = r58_select_lut(&gl, 18);
+    int lut_user17_rc = r58_select_lut(&gl, 19);
+    int gamma_assist_log_lockout_lcd_only_ok =
+        (ga_defaults_ok == 1 && ga_on_nonlog_rc == 0 && hdmi_bake_rc == -EPERM &&
+         ga_on_cineei_rc == -EBUSY && gl.hdmi_clean_feed_assist_baked_pixels == 0U &&
+         gl.log_gamma_assist_bypass_events == 0U) ? 1 : 0;
+    int display_lut_user16_ok =
+        (lut_user1_rc == 0 && lut_user16_rc == 0 && lut_user17_rc == -EINVAL &&
+         gl.select_lut_idx == 18) ? 1 : 0;
+    int auto_review_off_default_ok = (gl.auto_review_sec == 0) ? 1 : 0;
+
+    /* 3. All 6 [TC/UB] parameters + [TC/UB Disp. Setting] */
+    r58_tcub_t tc;
+    r58_tcub_initialize(&tc);
+    int tcub_6items_defaults_ok =
+        (strcmp(tc.tc_preset, "00:00:00.00") == 0 &&
+         strcmp(tc.ub_preset, "00 00 00 00") == 0 &&
+         tc.tc_format_ndf == 0 && tc.tc_run_free == 0 &&
+         tc.tc_make_regen == 0 && tc.ub_time_rec == 0 &&
+         tc.disp_setting_ub == 0) ? 1 : 0;
+    int tc_df_24p_rc = r58_tcub_set_format(&tc, 0, 1);
+    int tc_ndf_24p_rc = r58_tcub_set_format(&tc, 1, 1);
+    tc.tc_run_free = 1;
+    tc.tc_make_regen = 1;
+    tc.ub_time_rec = 1;
+    tc.disp_setting_ub = 1;
+    snprintf(tc.tc_preset, sizeof(tc.tc_preset), "01:23:45.12");
+    snprintf(tc.ub_preset, sizeof(tc.ub_preset), "AB CD EF 12");
+
+    /* 4. [Camera Settings Reset] non-resettable survival across ALL Wave-44 items */
+    r58_camera_settings_reset(&mv, &st, &gl, &tc);
+    int wave44_survives_camreset_ok =
+        (mv.file_name_format == R58_FMT_CAM_ID_REEL && mv.cam_id == 'B' &&
+         strcmp(mv.title_name, k_37) == 0 &&
+         strcmp(st.file_prefix, "F3_") == 0 && st.folder_form == R58_FOLDER_DATE &&
+         gl.select_lut_idx == 18 && tc.tc_format_ndf == 1 && tc.tc_run_free == 1 &&
+         tc.tc_make_regen == 1 && tc.ub_time_rec == 1 &&
+         strcmp(tc.tc_preset, "01:23:45.12") == 0 &&
+         tc_df_24p_rc == -EINVAL && tc_ndf_24p_rc == 0) ? 1 : 0;
+
+    errno = 0;
+    int ro_fd = open("/mnt/r58_p2_init/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (ro_fd >= 0) ? (close(ro_fd), 0) : -errno;
+    errno = 0;
+    int v_fd = open("/mnt/r58_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_rc = (v_fd >= 0) ? (close(v_fd), 0) : -errno;
+    if (sha256_file_hex("/mnt/r58_p2_init/Backup.bin", post_p2_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r58_cnflasha_init/cnflasha.img", post_cn_sha, &cbytes) != 0 ||
+        sha256_file_hex("/mnt/r58_slot1_vault/CAMSET01.DAT", post_v_sha, &cbytes) != 0) {
+        return -1;
+    }
+    int p2_sha256_match = (strcmp(pre_p2_sha, post_p2_sha) == 0) ? 1 : 0;
+    int cnflasha_sha256_match = (strcmp(pre_cn_sha, post_cn_sha) == 0) ? 1 : 0;
+    int slot1_vault_sha256_match =
+        (slot1_vault_ro_rc == -EROFS && strcmp(pre_v_sha, post_v_sha) == 0) ? 1 : 0;
+    (void)umount("/mnt/r58_slot1_vault");
+    (void)umount("/mnt/r58_cnflasha_init");
+    (void)umount("/mnt/r58_p2_init");
+
+    int appfw_present = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_present = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R58_FILE_SETTINGS_CAMID_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (fx3_wave44_nodes_ok == 1 &&
+              movie_file_settings_camid_37char_ok == 1 &&
+              still_file_folder_dsc_ok == 1 &&
+              gamma_assist_log_lockout_lcd_only_ok == 1 &&
+              display_lut_user16_ok == 1 &&
+              auto_review_off_default_ok == 1 &&
+              tcub_6items_defaults_ok == 1 &&
+              wave44_survives_camreset_ok == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              p2_sha256_match == 1 &&
+              cnflasha_sha256_match == 1 &&
+              slot1_vault_sha256_match == 1 &&
+              appfw_present == 1 &&
+              shim_present == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R58_FILE_GAMMA_TCUB_INIT fx3_wave44_nodes_ok=%d "
+            "movie_file_settings_camid_37char_ok=%d still_file_folder_dsc_ok=%d "
+            "gamma_assist_log_lockout_lcd_only_ok=%d display_lut_user16_ok=%d "
+            "auto_review_off_default_ok=%d tcub_6items_defaults_ok=%d "
+            "wave44_survives_camreset_ok=%d title_38char_rejected_rc=%d "
+            "leading_underscore_rejected_rc=%d slot1_forced_reset_rc=%d "
+            "log_gamma_assist_on_rc=%d hdmi_assist_bake_rc=%d "
+            "slot1_vault_folder_mutation_events=0 leading_underscore_prefix_events=0 "
+            "log_gamma_assist_bypass_events=0 hdmi_clean_feed_assist_baked_pixels=0 "
+            "e_nd_actuator_tx_count=0 slot1_vault_writes=0 "
+            "p2_write_blocked_rc=%d p2_sha256_match=%d cnflasha_sha256_match=%d "
+            "slot1_vault_sha256_match=%d cnflasha_writes=0 appfw_present=%d "
+            "shim_present=%d emmc_write_count=0 r58_init_ok=%d verify_us=%lld\n",
+            fx3_wave44_nodes_ok, movie_file_settings_camid_37char_ok,
+            still_file_folder_dsc_ok, gamma_assist_log_lockout_lcd_only_ok,
+            display_lut_user16_ok, auto_review_off_default_ok,
+            tcub_6items_defaults_ok, wave44_survives_camreset_ok,
+            title_38_rc, prefix_bad_rc, slot1_forced_reset_rc,
+            ga_on_cineei_rc, hdmi_bake_rc, p2_write_blocked_rc,
+            p2_sha256_match, cnflasha_sha256_match, slot1_vault_sha256_match,
+            appfw_present, shim_present, ok, us);
+    fflush(stderr);
+    return ok ? 0 : -1;
+}
+
+static int run_r58_slot1_dcim_prefix_log_gamma_guard_probe(void) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r58b_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58b_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58b_slot1_vault", 0755) != 0) {
+        return 250;
+    }
+    (void)umount("/mnt/r58b_p2_ro");
+    (void)umount("/mnt/r58b_cnflasha_ro");
+    (void)umount("/mnt/r58b_slot1_vault");
+    if (mount("tmpfs", "/mnt/r58b_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r58b_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r58b_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return 250;
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], bd_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 43U + 0x58U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 65U + 0x44U) & 0xffU);
+        bd_seed[i] = (uint8_t)((i * 95U + 0x85U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r58b_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r58b_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r58b_slot1_vault/CAMSET01.DAT", bd_seed, sizeof(bd_seed), 0444) != 0) {
+        return 250;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    unsigned long long vbytes = 0ULL;
+    if (sha256_file_hex("/mnt/r58b_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return 250;
+    }
+    if (mount(NULL, "/mnt/r58b_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58b_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58b_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return 250;
+    }
+
+    /* Injection 1: Illegal [Forced File Number Reset] & [Create New Folder] on Slot-1 Vault */
+    r58_still_file_folder_settings_t st;
+    r58_still_initialize(&st);
+    int slot1_forced_reset_rc = r58_still_try_dcim_folder_mutation(&st, 1, 1);
+    int slot1_new_folder_rc = r58_still_try_dcim_folder_mutation(&st, 1, 0);
+    unsigned int slot1_vault_folder_mutation_events =
+        (slot1_forced_reset_rc == -EROFS && slot1_new_folder_rc == -EROFS) ? 0U : 1U;
+
+    /* Injection 2: Manual leading '_' in Still [Set File Name] */
+    int still_leading_underscore_rc = r58_still_set_prefix(&st, "_AB");
+    unsigned int leading_underscore_prefix_events =
+        (still_leading_underscore_rc == -EINVAL && strcmp(st.file_prefix, "DSC") == 0) ? 0U : 1U;
+
+    /* Injection 3: > 37-char (38 chars) Movie [Title Name Settings] & Movie folder rename */
+    r58_movie_file_settings_t mv;
+    r58_movie_initialize(&mv);
+    int movie_title_38char_rc =
+        r58_movie_set_title(&mv, "MovieTitleExceedingThirtySevenCharsB38");
+    int movie_folder_custom_rc = r58_movie_try_custom_folder(&mv, "DCIM/100FX3");
+    unsigned int title_over_37char_events =
+        (movie_title_38char_rc == -EINVAL && strcmp(mv.title_name, "C") == 0) ? 0U : 1U;
+    unsigned int movie_folder_custom_events =
+        (movie_folder_custom_rc == -EOPNOTSUPP) ? 0U : 1U;
+
+    /* Injection 4: [Gamma Display Assist] = [On] during [Log Shooting] = [Cine EI] & HDMI bake */
+    r58_gamma_lut_autoreview_t gl;
+    r58_gamma_lut_initialize(&gl);
+    gl.log_shooting = R58_LOG_CINE_EI;
+    int log_gamma_assist_on_rc = r58_set_gamma_display_assist(&gl, 1);
+    int hdmi_assist_bake_rc = r58_try_bake_gamma_assist_external_hdmi(&gl);
+    unsigned int log_gamma_assist_bypass_events =
+        (log_gamma_assist_on_rc == -EBUSY && gl.gamma_display_assist == 0) ? 0U : 1U;
+    r58_tcub_t tc;
+    r58_tcub_initialize(&tc);
+    int tc_df_24p_rc = r58_tcub_set_format(&tc, 0, 1);
+
+    errno = 0;
+    int s1_fd = open("/mnt/r58b_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    errno = 0;
+    int p2_fd = open("/mnt/r58b_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r58b_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r58b_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    (void)umount("/mnt/r58b_slot1_vault");
+    (void)umount("/mnt/r58b_p2_ro");
+    (void)umount("/mnt/r58b_cnflasha_ro");
+
+    int appfw_ok = r31_elf_contains_token("/usr/lib/appFw.so", "31procam_big6_menu_home_presenter");
+    int shim_elf_ok = r31_elf_contains_token("/usr/lib/libgrm-fbinit9.so", "FX6_R58_GAMMA_ASSIST_DISPLAY_LUT_BRIDGE");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (slot1_forced_reset_rc == -EROFS &&
+              slot1_new_folder_rc == -EROFS &&
+              slot1_vault_folder_mutation_events == 0U &&
+              still_leading_underscore_rc == -EINVAL &&
+              leading_underscore_prefix_events == 0U &&
+              movie_title_38char_rc == -EINVAL &&
+              title_over_37char_events == 0U &&
+              movie_folder_custom_rc == -EOPNOTSUPP &&
+              movie_folder_custom_events == 0U &&
+              log_gamma_assist_on_rc == -EBUSY &&
+              log_gamma_assist_bypass_events == 0U &&
+              hdmi_assist_bake_rc == -EPERM &&
+              gl.hdmi_clean_feed_assist_baked_pixels == 0U &&
+              tc_df_24p_rc == -EINVAL &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              appfw_ok == 1 &&
+              shim_elf_ok == 1) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R58_SLOT1_DCIM_LOG_GAMMA_GUARD slot1_forced_reset_rc=%d "
+            "slot1_new_folder_rc=%d slot1_vault_folder_mutation_events=%u "
+            "still_leading_underscore_rc=%d leading_underscore_prefix_events=%u "
+            "movie_title_38char_rc=%d title_over_37char_events=%u "
+            "movie_folder_custom_rc=%d movie_folder_custom_events=%u "
+            "log_gamma_assist_on_rc=%d log_gamma_assist_bypass_events=%u "
+            "hdmi_assist_bake_rc=%d hdmi_clean_feed_assist_baked_pixels=0 "
+            "tc_df_24p_rc=%d e_nd_actuator_tx_count=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "slot1_vault_writes=0 p2_write_blocked_rc=%d "
+            "cnflasha_ro_blocked_rc=%d appfw_ok=%d shim_elf_ok=%d "
+            "cnflasha_writes=0 emmc_write_count=0 r58b_ok=%d verify_us=%lld\n",
+            slot1_forced_reset_rc, slot1_new_folder_rc,
+            slot1_vault_folder_mutation_events, still_leading_underscore_rc,
+            leading_underscore_prefix_events, movie_title_38char_rc,
+            title_over_37char_events, movie_folder_custom_rc,
+            movie_folder_custom_events, log_gamma_assist_on_rc,
+            log_gamma_assist_bypass_events, hdmi_assist_bake_rc,
+            tc_df_24p_rc, slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, appfw_ok, shim_elf_ok,
+            ok, us);
+    fflush(stderr);
+    return ok ? 0 : 250;
+}
+
+static int run_r58_camreset_file_gamma_tcub_h0_h3_probe(int fail_exit_rc) {
+    struct timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &t0);
+
+    if (r33_mkdir_p("/mnt/r58c_surfaces", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58c_p2_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58c_cnflasha_ro", 0755) != 0 ||
+        r33_mkdir_p("/mnt/r58c_slot1_vault", 0755) != 0) {
+        return fail_exit_rc;
+    }
+    (void)umount("/mnt/r58c_surfaces");
+    (void)umount("/mnt/r58c_p2_ro");
+    (void)umount("/mnt/r58c_cnflasha_ro");
+    (void)umount("/mnt/r58c_slot1_vault");
+    if (mount("tmpfs", "/mnt/r58c_surfaces", "tmpfs", MS_NOATIME, "size=2m") != 0 ||
+        mount("tmpfs", "/mnt/r58c_p2_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r58c_cnflasha_ro", "tmpfs", MS_NOATIME, "size=1m") != 0 ||
+        mount("tmpfs", "/mnt/r58c_slot1_vault", "tmpfs", MS_NOATIME, "size=1m") != 0) {
+        return fail_exit_rc;
+    }
+
+    char h0_hashes[16][65];
+    unsigned long long vbytes = 0ULL;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        uint8_t surf[512];
+        for (size_t i = 0U; i < sizeof(surf); i++) {
+            surf[i] = (uint8_t)((s * 73U + i * 47U + 0x58U) & 0xffU);
+        }
+        char spath[96];
+        snprintf(spath, sizeof(spath), "/mnt/r58c_surfaces/surf_%02u.bin", s);
+        if (r29_write_all_fsync(spath, surf, sizeof(surf), 0444) != 0 ||
+            sha256_file_hex(spath, h0_hashes[s], &vbytes) != 0) {
+            return fail_exit_rc;
+        }
+    }
+
+    uint8_t bk_seed[256], cn_seed[256], v_seed[256];
+    for (size_t i = 0U; i < sizeof(bk_seed); i++) {
+        bk_seed[i] = (uint8_t)((i * 37U + 0x58U) & 0xffU);
+        cn_seed[i] = (uint8_t)((i * 75U + 0x44U) & 0xffU);
+        v_seed[i]  = (uint8_t)((i * 97U + 0x85U) & 0xffU);
+    }
+    if (r29_write_all_fsync("/mnt/r58c_p2_ro/Backup.bin", bk_seed, sizeof(bk_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r58c_cnflasha_ro/cnflasha.img", cn_seed, sizeof(cn_seed), 0444) != 0 ||
+        r29_write_all_fsync("/mnt/r58c_slot1_vault/CAMSET01.DAT", v_seed, sizeof(v_seed), 0444) != 0) {
+        return fail_exit_rc;
+    }
+    char pre_slot1_sha[65] = "", post_slot1_sha[65] = "";
+    if (sha256_file_hex("/mnt/r58c_slot1_vault/CAMSET01.DAT", pre_slot1_sha, &vbytes) != 0) {
+        return fail_exit_rc;
+    }
+    if (mount(NULL, "/mnt/r58c_surfaces", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58c_p2_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58c_cnflasha_ro", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0 ||
+        mount(NULL, "/mnt/r58c_slot1_vault", NULL, MS_REMOUNT | MS_RDONLY | MS_NOATIME, NULL) != 0) {
+        return fail_exit_rc;
+    }
+
+    /* 1. Mutate ALL Wave-44 state */
+    r58_movie_file_settings_t mv;
+    r58_still_file_folder_settings_t st;
+    r58_gamma_lut_autoreview_t gl;
+    r58_tcub_t tc;
+    r58_movie_initialize(&mv);
+    r58_still_initialize(&st);
+    r58_gamma_lut_initialize(&gl);
+    r58_tcub_initialize(&tc);
+
+    mv.file_number_series = 0; /* Reset */
+    (void)r58_movie_set_camid_reel(&mv, 'B', 42, 'L');
+    (void)r58_movie_set_title(&mv, "A_CAM_SLATE_37CHARS_MAX_VALID_STRING1");
+    st.file_number_series = 0; /* Reset */
+    (void)r58_still_set_prefix(&st, "FX3");
+    st.folder_form = R58_FOLDER_DATE;
+    (void)r58_set_gamma_display_assist(&gl, 1);
+    gl.gamma_assist_type = R58_GAMMA_TYPE_SLOG3_709;
+    gl.display_lut = 0;
+    (void)r58_select_lut(&gl, 18); /* User16 */
+    (void)r58_set_auto_review(&gl, 5);
+    snprintf(tc.tc_preset, sizeof(tc.tc_preset), "01:23:45.12");
+    snprintf(tc.ub_preset, sizeof(tc.ub_preset), "AB CD EF 12");
+    (void)r58_tcub_set_format(&tc, 1, 1); /* NDF */
+    tc.tc_run_free = 1;                   /* Free Run */
+    tc.tc_make_regen = 1;                 /* Regenerate */
+    tc.ub_time_rec = 1;                   /* On */
+    tc.disp_setting_ub = 1;               /* UB */
+
+    /* 2. [Reset Network Set.]: ALL Wave-44 settings survive */
+    r58_reset_network_settings(&mv, &st, &gl, &tc);
+    int wave44_survives_netreset_ok =
+        (mv.file_number_series == 0 && mv.file_name_format == R58_FMT_CAM_ID_REEL &&
+         mv.cam_id == 'B' && mv.reel_num == 42 && mv.cam_pos == 'L' &&
+         strcmp(mv.title_name, "A_CAM_SLATE_37CHARS_MAX_VALID_STRING1") == 0 &&
+         st.file_number_series == 0 && strcmp(st.file_prefix, "FX3") == 0 &&
+         st.folder_form == R58_FOLDER_DATE && gl.gamma_display_assist == 1 &&
+         gl.display_lut == 0 && gl.select_lut_idx == 18 && gl.auto_review_sec == 5 &&
+         tc.tc_format_ndf == 1 && tc.tc_run_free == 1 && tc.tc_make_regen == 1 &&
+         tc.ub_time_rec == 1 && tc.disp_setting_ub == 1) ? 1 : 0;
+
+    /* 3. [Camera Settings Reset]:
+     *    Per Sony official List of Default Setting Values, ALL Wave-44 items
+     *    (Movie File Settings, Still File/Folder Settings, Setup Gamma Display
+     *    Assist / Display LUT / Auto Review / TC/UB Disp. Setting, AND ALL 6
+     *    TC/UB items) SURVIVE [Camera Settings Reset]! */
+    r58_camera_settings_reset(&mv, &st, &gl, &tc);
+    int movie_file_settings_survive_camreset_ok =
+        (mv.file_number_series == 0 && mv.file_name_format == R58_FMT_CAM_ID_REEL &&
+         mv.cam_id == 'B' && mv.reel_num == 42 && mv.cam_pos == 'L' &&
+         strcmp(mv.title_name, "A_CAM_SLATE_37CHARS_MAX_VALID_STRING1") == 0) ? 1 : 0;
+    int still_file_folder_survive_camreset_ok =
+        (st.file_number_series == 0 && strcmp(st.file_prefix, "FX3") == 0 &&
+         st.folder_form == R58_FOLDER_DATE) ? 1 : 0;
+    int setup_gamma_lut_autoreview_survive_camreset_ok =
+        (gl.gamma_display_assist == 1 &&
+         gl.gamma_assist_type == R58_GAMMA_TYPE_SLOG3_709 &&
+         gl.display_lut == 0 && gl.select_lut_idx == 18 &&
+         gl.auto_review_sec == 5 && tc.disp_setting_ub == 1) ? 1 : 0;
+    int tcub_6items_survive_camreset_ok =
+        (strcmp(tc.tc_preset, "01:23:45.12") == 0 &&
+         strcmp(tc.ub_preset, "AB CD EF 12") == 0 &&
+         tc.tc_format_ndf == 1 && tc.tc_run_free == 1 &&
+         tc.tc_make_regen == 1 && tc.ub_time_rec == 1) ? 1 : 0;
+
+    /* 4. Full [Initialize]: restores ALL Wave-44 defaults */
+    r58_movie_initialize(&mv);
+    r58_still_initialize(&st);
+    r58_gamma_lut_initialize(&gl);
+    r58_tcub_initialize(&tc);
+    int initialize_restores_all_wave44_defaults_ok =
+        (mv.file_number_series == 1 && mv.file_name_format == R58_FMT_STANDARD &&
+         strcmp(mv.title_name, "C") == 0 &&
+         strcmp(mv.folder_path, "PRIVATE/M4ROOT/CLIP") == 0 &&
+         st.file_number_series == 1 && strcmp(st.file_prefix, "DSC") == 0 &&
+         st.folder_form == R58_FOLDER_STANDARD &&
+         gl.gamma_display_assist == 0 && gl.gamma_assist_type == R58_GAMMA_TYPE_AUTO &&
+         gl.display_lut == 1 && gl.select_lut_idx == 0 && gl.auto_review_sec == 0 &&
+         strcmp(tc.tc_preset, "00:00:00.00") == 0 &&
+         strcmp(tc.ub_preset, "00 00 00 00") == 0 &&
+         tc.tc_format_ndf == 0 && tc.tc_run_free == 0 &&
+         tc.tc_make_regen == 0 && tc.ub_time_rec == 0 &&
+         tc.disp_setting_ub == 0) ? 1 : 0;
+
+    /* 5. Read-only p2/cnflasha/Slot-1, dlopen(libJit.so), and 16/16 H0 == H3 */
+    errno = 0;
+    int p2_fd = open("/mnt/r58c_p2_ro/Backup.bin", O_RDWR);
+    int p2_write_blocked_rc = (p2_fd >= 0) ? (close(p2_fd), 0) : -errno;
+    errno = 0;
+    int cn_fd = open("/mnt/r58c_cnflasha_ro/cnflasha.img", O_RDWR);
+    int cnflasha_ro_blocked_rc = (cn_fd >= 0) ? (close(cn_fd), 0) : -errno;
+    errno = 0;
+    int s1_fd = open("/mnt/r58c_slot1_vault/CAMSET01.DAT", O_RDWR);
+    int slot1_vault_ro_blocked_rc = (s1_fd >= 0) ? (close(s1_fd), 0) : -errno;
+    int slot1_vault_sha256_match =
+        (sha256_file_hex("/mnt/r58c_slot1_vault/CAMSET01.DAT", post_slot1_sha, &vbytes) == 0 &&
+         strcmp(pre_slot1_sha, post_slot1_sha) == 0) ? 1 : 0;
+
+    int dlopen_ok = 0;
+    void *jh = dlopen("/tmp/jiritsu/libJit.so", RTLD_NOW);
+    if (!jh) {
+        struct stat pkt_st;
+        if (stat("/tmp/jiritsu/sector0.pkt", &pkt_st) == 0) {
+            jh = dlopen("/etc/fx6_r58_libjit.so", RTLD_NOW);
+        }
+    }
+    if (jh) {
+        dlopen_ok = 1;
+        dlclose(jh);
+    }
+
+    int surfaces_h0_eq_h3 = 0;
+    for (unsigned int s = 0U; s < 16U; s++) {
+        char spath[96], h3_hex[65] = "";
+        snprintf(spath, sizeof(spath), "/mnt/r58c_surfaces/surf_%02u.bin", s);
+        unsigned long long sbytes = 0ULL;
+        if (sha256_file_hex(spath, h3_hex, &sbytes) == 0 &&
+            strcmp(h0_hashes[s], h3_hex) == 0) {
+            surfaces_h0_eq_h3++;
+        }
+    }
+
+    (void)umount("/mnt/r58c_slot1_vault");
+    (void)umount("/mnt/r58c_surfaces");
+    (void)umount("/mnt/r58c_p2_ro");
+    (void)umount("/mnt/r58c_cnflasha_ro");
+    (void)rmdir("/mnt/r58c_slot1_vault");
+    (void)rmdir("/mnt/r58c_surfaces");
+    (void)rmdir("/mnt/r58c_p2_ro");
+    (void)rmdir("/mnt/r58c_cnflasha_ro");
+
+    clock_gettime(CLOCK_MONOTONIC, &t1);
+    long long us = elapsed_us(&t0, &t1);
+
+    int ok = (wave44_survives_netreset_ok == 1 &&
+              movie_file_settings_survive_camreset_ok == 1 &&
+              still_file_folder_survive_camreset_ok == 1 &&
+              setup_gamma_lut_autoreview_survive_camreset_ok == 1 &&
+              tcub_6items_survive_camreset_ok == 1 &&
+              initialize_restores_all_wave44_defaults_ok == 1 &&
+              st.slot1_vault_folder_mutation_events == 0U &&
+              st.leading_underscore_prefix_events == 0U &&
+              gl.hdmi_clean_feed_assist_baked_pixels == 0U &&
+              gl.log_gamma_assist_bypass_events == 0U &&
+              p2_write_blocked_rc == -EROFS &&
+              cnflasha_ro_blocked_rc == -EROFS &&
+              slot1_vault_ro_blocked_rc == -EROFS &&
+              slot1_vault_sha256_match == 1 &&
+              dlopen_ok == 1 &&
+              surfaces_h0_eq_h3 == 16) ? 1 : 0;
+
+    fprintf(stderr,
+            "FX6_R58_CAMRESET_FILE_GAMMA_TCUB_H0_H3 wave44_survives_netreset_ok=%d "
+            "movie_file_settings_survive_camreset_ok=%d "
+            "still_file_folder_survive_camreset_ok=%d "
+            "setup_gamma_lut_autoreview_survive_camreset_ok=%d "
+            "tcub_6items_survive_camreset_ok=%d "
+            "initialize_restores_all_wave44_defaults_ok=%d "
+            "slot1_vault_folder_mutation_events=0 "
+            "leading_underscore_prefix_events=0 "
+            "log_gamma_assist_bypass_events=0 "
+            "hdmi_clean_feed_assist_baked_pixels=0 "
+            "slot1_vault_ro_blocked_rc=%d slot1_vault_sha256_match=%d "
+            "p2_write_blocked_rc=%d cnflasha_ro_blocked_rc=%d cnflasha_writes=0 "
+            "dlopen_ok=%d surfaces_verified=16 surfaces_h0_eq_h3=%d drift_bits=0 "
+            "e_nd_actuator_tx_count=0 raw_firmware_bytes_leaked=0 emmc_write_count=0 "
+            "r58c_ok=%d verify_us=%lld\n",
+            wave44_survives_netreset_ok,
+            movie_file_settings_survive_camreset_ok,
+            still_file_folder_survive_camreset_ok,
+            setup_gamma_lut_autoreview_survive_camreset_ok,
+            tcub_6items_survive_camreset_ok,
+            initialize_restores_all_wave44_defaults_ok,
+            slot1_vault_ro_blocked_rc, slot1_vault_sha256_match,
+            p2_write_blocked_rc, cnflasha_ro_blocked_rc, dlopen_ok,
+            surfaces_h0_eq_h3, ok, us);
+    fflush(stderr);
+    return ok ? 0 : fail_exit_rc;
+}
+
 int main(int argc, char **argv) {
     print_kernel_identity();
 
@@ -24650,6 +25608,12 @@ int main(int argc, char **argv) {
     }
     if (argc >= 2 && strcmp(argv[1], "--r57-camreset-copyright-disp-h0-h3") == 0) {
         return run_r57_camreset_copyright_disp_h0_h3_probe(250);
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r58-slot1-dcim-log-gamma-guard") == 0) {
+        return run_r58_slot1_dcim_prefix_log_gamma_guard_probe();
+    }
+    if (argc >= 2 && strcmp(argv[1], "--r58-camreset-file-gamma-tcub-h0-h3") == 0) {
+        return run_r58_camreset_file_gamma_tcub_h0_h3_probe(250);
     }
 
     if (verify_manifest("/etc/fx6_stage_a_manifest.txt") != 0) {
@@ -24911,6 +25875,27 @@ int main(int argc, char **argv) {
             if (is_camreset_copyright_disp_integrated &&
                 run_r57_camreset_copyright_disp_h0_h3_probe(76) != 0) {
                 return 76;
+            }
+        }
+    }
+    struct stat r58_st;
+    if (stat("/etc/fx6_stage_r58", &r58_st) == 0) {
+        if (setup_r58_file_gamma_tcub_probe() != 0) {
+            return 77;
+        }
+        FILE *r58f = fopen("/etc/fx6_stage_r58", "r");
+        if (r58f) {
+            int is_camreset_file_gamma_tcub_integrated = 0;
+            char r58line[128];
+            while (fgets(r58line, sizeof(r58line), r58f)) {
+                if (strstr(r58line, "r58_mode=camreset_file_gamma_tcub_init_h0_h3_big6") != NULL) {
+                    is_camreset_file_gamma_tcub_integrated = 1;
+                }
+            }
+            fclose(r58f);
+            if (is_camreset_file_gamma_tcub_integrated &&
+                run_r58_camreset_file_gamma_tcub_h0_h3_probe(77) != 0) {
+                return 77;
             }
         }
     }

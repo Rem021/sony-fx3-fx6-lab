@@ -558,15 +558,52 @@ class RealHwRecMediaAutoswitchProxyCloudMyMenuFtpesReport:
         return asdict(self)
 
     def to_deterministic_json(self, indent: int = 2) -> str:
-        return json.dumps(self.to_dict(), indent=indent, sort_keys=True) + "\n"
+        return json.dumps(_zero_timing_fields(self.to_dict()), indent=indent, sort_keys=True) + "\n"
+
+
+def _is_timing_key(key: str) -> bool:
+    return key in (
+        "elapsed_seconds",
+        "elapsed_s",
+        "elapsed_ms",
+        "inspection_elapsed_ms",
+        "wall_seconds",
+    ) or key.endswith(("_elapsed_ms", "_elapsed_s", "_elapsed_seconds"))
+
+
+def _zero_timing_fields(obj: Any) -> Any:
+    if isinstance(obj, Mapping):
+        out: Dict[str, Any] = {}
+        for k, v in obj.items():
+            ks = str(k)
+            if _is_timing_key(ks) and isinstance(v, (int, float)) and not isinstance(v, bool):
+                out[ks] = 0.0
+            else:
+                out[ks] = _zero_timing_fields(v)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [_zero_timing_fields(x) for x in obj]
+    return obj
+
+
+def _strip_timing_fields(obj: Any) -> Any:
+    if isinstance(obj, Mapping):
+        out: Dict[str, Any] = {}
+        for k, v in obj.items():
+            ks = str(k)
+            if _is_timing_key(ks):
+                continue
+            out[ks] = _strip_timing_fields(v)
+        return out
+    if isinstance(obj, (list, tuple)):
+        return [_strip_timing_fields(x) for x in obj]
+    return obj
 
 
 def _canonical_sha256_dict(payload: Mapping[str, Any]) -> str:
     clone = json.loads(json.dumps(dict(payload)))
     clone.pop("report_sha256", None)
-    donor_block = clone.get("donor_inspection")
-    if isinstance(donor_block, dict):
-        donor_block.pop("elapsed_seconds", None)
+    clone = _strip_timing_fields(clone)
     encoded = json.dumps(clone, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
 

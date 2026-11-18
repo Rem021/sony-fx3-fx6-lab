@@ -222,6 +222,11 @@ from .realhw_steadyshot_selftimer_zebra_streaming_and_134gate_guard import (
     evaluate_g133_steadyshot_selftimer_guard,
     evaluate_g134_zebra_streaming_firewall_guard,
 )
+from .realhw_bright_mon_shotmark_usblan_bulb_dormant_and_136gate_guard import (
+    evaluate_136gate_preflight,
+    evaluate_g135_bright_mon_shotmark_vault_guard,
+    evaluate_g136_tc_link_wifi_usblan_bulb_dormant_guard,
+)
 from .realhw_c2pa_tc_gyro_and_56gate_guard import (
     evaluate_56gate_preflight,
     evaluate_g55_c2pa_cert,
@@ -4180,6 +4185,95 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     p_134.add_argument("--json", action="store_true", help="Emit structured JSON report")
     p_134.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 161. verify-bright-mon-shotmark-vault-guard
+    p_g135 = sub.add_parser(
+        "verify-bright-mon-shotmark-vault-guard",
+        aliases=["verify-g135-bright-mon-shotmark-vault"],
+        help="Verify Gate G135: Custom-key-only Bright Monitoring + Ver. 7.00+ Focus Magnifier coexistence, Monitor Brightness Manual (-2..+2) / Sunny Weather vs FX6 VF Setting / AE Backlight, and Shot Mark 1/2 + Clip Flag + Create Divider Frame Slot-1 Tier-0 Vault Firewall (EROFS=30 / EBUSY=16)",
+    )
+    p_g135.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g135.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g135.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g135.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g135.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 162. verify-tc-link-wifi-usblan-bulb-dormant-guard
+    p_g136 = sub.add_parser(
+        "verify-tc-link-wifi-usblan-bulb-dormant-guard",
+        aliases=["verify-g136-tc-link-wifi-usblan-bulb-dormant"],
+        help="Verify Gate G136: Zero Bluetooth Timecode Link vs wired VMC-BNCM1 EXT-LK & FX6 BNC TC IN/OUT, Wi-Fi WPA2-PSK/WPA3-SAE SKU (WW728473 vs WW558244) + USB-LAN CDC-NCM/r8152/ASIX Zero-RF isolation, and dormant Bulb Timer / Auto HDR vs mechanical-only Still BULB + DRO Lock Guard",
+    )
+    p_g136.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_g136.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_g136.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Optional dry-run rehearsal compatibility flag",
+    )
+    p_g136.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_g136.add_argument("--summary", action="store_true", help="Emit concise summary output")
+
+    # 163. verify-136-gates
+    p_136 = sub.add_parser(
+        "verify-136-gates",
+        help="Run Phase 310 Wave-58 Unified 136-Gate Master Safety Preflight Engine (G01..G136)",
+    )
+    p_136.add_argument(
+        "--repo-root",
+        type=Path,
+        default=DEFAULT_REPO_ROOT,
+        help="Path to sony-fx3-fx6-lab repository root",
+    )
+    p_136.add_argument(
+        "--force-clean-room",
+        "--clean-room",
+        dest="force_clean_room",
+        action="store_true",
+        help="Force clean-room donorless mode",
+    )
+    p_136.add_argument(
+        "--simulate-bench-dry-run",
+        "--dry-run-simulated",
+        "--dry-run-simulated-backup",
+        dest="dry_run_simulated",
+        action="store_true",
+        help="Supply simulated dry-run Tier-0 bench inputs so all G01..G136 gates can be rehearsed offline",
+    )
+    p_136.add_argument("--json", action="store_true", help="Emit structured JSON report")
+    p_136.add_argument("--summary", action="store_true", help="Emit concise summary output")
 
     args = parser.parse_args(argv)
 
@@ -8812,6 +8906,161 @@ def main(argv: Optional[List[str]] = None) -> int:
                 f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
             )
         ok = report.all_134_gates_verified if args.dry_run_simulated else report.offline_131_gates_verified
+        return 0 if ok else 1
+
+    if args.cmd in (
+        "verify-bright-mon-shotmark-vault-guard",
+        "verify-g135-bright-mon-shotmark-vault",
+    ):
+        verdict, res = evaluate_g135_bright_mon_shotmark_vault_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.bright_mon_shotmark_vault_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "effective_bright_monitoring_active": guard["effective_bright_monitoring_active"],
+                    "effective_live_view_display": guard["effective_live_view_display"],
+                    "focus_magnifier_coexists_with_bright_monitoring": guard[
+                        "focus_magnifier_coexists_with_bright_monitoring"
+                    ],
+                    "effective_monitor_brightness_mode": guard["effective_monitor_brightness_mode"],
+                    "effective_monitor_brightness_level": guard["effective_monitor_brightness_level"],
+                    "requested_card_op": guard["requested_card_op"],
+                    "slot_1_contains_tier0_vault": guard["slot_1_contains_tier0_vault"],
+                    "slot1_data_sector_writes": guard["slot1_data_sector_writes"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.bright_mon_shotmark_vault_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} bright_mon={guard['effective_bright_monitoring_active']} "
+                f"lv={guard['effective_live_view_display']} "
+                f"mon={guard['effective_monitor_brightness_mode']}({guard['effective_monitor_brightness_level']}) "
+                f"op={guard['requested_card_op']} "
+                f"slot1_vault={guard['slot_1_contains_tier0_vault']} "
+                f"s1_writes={guard['slot1_data_sector_writes']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd in (
+        "verify-tc-link-wifi-usblan-bulb-dormant-guard",
+        "verify-g136-tc-link-wifi-usblan-bulb-dormant",
+    ):
+        verdict, res = evaluate_g136_tc_link_wifi_usblan_bulb_dormant_guard(
+            repo_root=args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+        )
+        if args.json:
+            guard = res.tc_link_wifi_usblan_bulb_dormant_guard
+            payload = (
+                {
+                    "gate": verdict.gate_id,
+                    "status": res.status,
+                    "verification_mode": res.verification_mode,
+                    "valid": res.valid,
+                    "fx3_bluetooth_tc_link_symbols": guard["fx3_bluetooth_tc_link_symbols"],
+                    "ext_tc_lock_status": guard["ext_tc_lock_status"],
+                    "fx3_sku_code": guard["fx3_sku_code"],
+                    "requested_wifi_security": guard["requested_wifi_security"],
+                    "usb_lan_active": guard["usb_lan_active"],
+                    "effective_airplane_mode": guard["effective_airplane_mode"],
+                    "wireless_packets_emitted": guard["wireless_packets_emitted"],
+                    "effective_bulb_active": guard["effective_bulb_active"],
+                    "effective_dro_mode": guard["effective_dro_mode"],
+                    "persistent_emmc_writes_authorized": res.persistent_emmc_writes_authorized,
+                    "raw_firmware_bytes_leaked": res.raw_firmware_bytes_leaked,
+                }
+                if args.summary
+                else res.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            guard = res.tc_link_wifi_usblan_bulb_dormant_guard
+            sys.stdout.write(
+                f"gate={verdict.gate_id} status={res.status} mode={res.verification_mode} "
+                f"valid={res.valid} bt_tc={guard['fx3_bluetooth_tc_link_symbols']} "
+                f"ext_lk={guard['ext_tc_lock_status']} sku={guard['fx3_sku_code']} "
+                f"wifi_sec={guard['requested_wifi_security']} usblan={guard['usb_lan_active']} "
+                f"air={guard['effective_airplane_mode']} rf_pkts={guard['wireless_packets_emitted']} "
+                f"bulb={guard['effective_bulb_active']} dro={guard['effective_dro_mode']} "
+                f"persistent_emmc_writes_authorized={res.persistent_emmc_writes_authorized}\n"
+            )
+        return 0 if res.valid else 1
+
+    if args.cmd == "verify-136-gates":
+        report = evaluate_136gate_preflight(
+            args.repo_root,
+            force_clean_room=True if args.force_clean_room else None,
+            dry_run_simulated=bool(args.dry_run_simulated),
+        )
+        if args.json:
+            payload = (
+                {
+                    "status": report.status,
+                    "verification_mode": report.verification_mode,
+                    "summary": report.summary,
+                    "g135_status": report.g135_result["status"],
+                    "g136_status": report.g136_result["status"],
+                }
+                if args.summary
+                else report.to_dict()
+            )
+            try:
+                sys.stdout.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                import os as _os
+
+                devnull = _os.open(_os.devnull, _os.O_WRONLY)
+                _os.dup2(devnull, sys.stdout.fileno())
+                _os.close(devnull)
+        else:
+            sys.stdout.write(
+                f"status={report.status} mode={report.verification_mode} "
+                f"verified={report.summary['verified_gates']}/136 "
+                f"g135_to_g136_all_passed={report.g135_to_g136_all_passed} "
+                f"all_136_gates_verified={report.all_136_gates_verified} "
+                f"dry_run_rehearsal_only={report.dry_run_rehearsal_only} "
+                f"agent_auto_flash_blocked={report.agent_auto_flash_blocked} "
+                f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                f"usb_packets_transmitted={report.usb_packets_transmitted} "
+                f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}\n"
+            )
+        ok = report.all_136_gates_verified if args.dry_run_simulated else report.offline_133_gates_verified
         return 0 if ok else 1
 
     return 2

@@ -199,6 +199,12 @@ from .realhw_57pillar_touch_disp_zero_evf_flash_interval_pb_vault_verifier impor
     verify_57pillar_recovery_suite,
     verify_touch_disp_zero_evf_flash_interval_pb_and_vault,
 )
+from .realhw_58pillar_dial_customize_mydial_fn12x2_liveview_lut_embed_vault_verifier import (
+    P326_ENV_CLEAN_ROOM_TEST,
+    run_pillar58_standalone_suite,
+    verify_58pillar_recovery_suite,
+    verify_dial_customize_mydial_fn12x2_liveview_lut_embed_and_vault,
+)
 from .realhw_adjustcontrol_streaming_backup_client import run_adjustcontrol_streaming_backup_suite
 from .realhw_airgap_sd_bundle_manifest_verifier import run_airgap_sd_bundle_manifest_suite
 from .realhw_bootrom_el3_and_ufu_stock_reflash_verifier import run_realhw_bootrom_el3_and_ufu_stock_reflash_suite
@@ -632,6 +638,14 @@ def main():
     p320_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
     p320_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
     p320_master.add_argument('--out', help='optional exclusive new output directory for 57pillar-recovery-master-report.json')
+    p326_p58 = sub.add_parser('verify-pillar58-dial-customize-mydial-fn12x2-liveview-lut-embed-vault', help='Phase 326 Pillar 58 Wave-56 Dial Customize 5-item Initialize-only tree vs dormant Dial Setup/Dial-Wheel Lock/Rear Dial L-R (EOPNOTSUPP=95), My Dial 1..3 skip-empty + Lock override, Operation Customize -> Fn Menu Settings 12+12 slots vs FX6 Multi Function/Grip/Handle/IRIS/ND Dial, Still-only Live View Display Set. 3-item reset split (Frame Rate Low Limit Resettable) + Bright Monitoring OFF, Grid Line Clean-HDMI/RAW OSD isolation, and Manage User LUTs / Select LUT (s709 vs 709(800%%)) / Log Shooting Embed LUT File container embed vs PPLUT1..4 bake & Slot-1 Tier-0 EROFS=30 Vault Firewall verifier')
+    p326_p58.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p326_p58.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p326_p58.add_argument('--out', help='optional exclusive new output directory for pillar58-dial-customize-mydial-fn12x2-liveview-lut-embed-vault-report.json')
+    p326_master = sub.add_parser('verify-58pillar-recovery', help='Phase 326 (58/58 Recovery Pillars) unified 58/58 real-hardware recovery master aggregator (Pillars 1..57 + Pillar 58)')
+    p326_master.add_argument('--force-clean-room', '--clean-room', dest='force_clean_room', action='store_true', help='force clean-room synthetic mode without local donor files')
+    p326_master.add_argument('--json', action='store_true', help='emit full structured JSON report')
+    p326_master.add_argument('--out', help='optional exclusive new output directory for 58pillar-recovery-master-report.json')
     args = p.parse_args()
     try:
         if args.command == 'inspect':
@@ -3989,6 +4003,104 @@ def main():
                     f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
                     f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
                     f"master_57pillar_sha256={report.master_57pillar_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-pillar58-dial-customize-mydial-fn12x2-liveview-lut-embed-vault':
+            report = run_pillar58_standalone_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(
+                    args.out,
+                    {'pillar58-dial-customize-mydial-fn12x2-liveview-lut-embed-vault-report.json': encode(result)},
+                )
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillar_58a={report.pillar_58a_dial_customize_mydial_fn12x2_vault.scenarios_passed}/{report.pillar_58a_dial_customize_mydial_fn12x2_vault.scenarios_total} "
+                    f"pillar_58b={report.pillar_58b_liveview_grid_lut_embed_pplut_vault.scenarios_passed}/{report.pillar_58b_liveview_grid_lut_embed_pplut_vault.scenarios_total} "
+                    f"dial_customize_dormant_trap_or_reset_drift_events={report.dial_customize_dormant_trap_or_reset_drift_events} "
+                    f"rear_dial_lr_or_mydial_override_drift_events={report.rear_dial_lr_or_mydial_override_drift_events} "
+                    f"fn_menu_12x2_or_fx6_dial_spoof_events={report.fn_menu_12x2_or_fx6_dial_spoof_events} "
+                    f"live_view_display_reset_split_or_mode_drift_events={report.live_view_display_reset_split_or_mode_drift_events} "
+                    f"grid_line_or_hdmi_clean_feed_leak_events={report.grid_line_or_hdmi_clean_feed_leak_events} "
+                    f"lut_path_embed_sidecar_or_slot1_vault_bypass_events={report.lut_path_embed_sidecar_or_slot1_vault_bypass_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_lut_mutation_bytes={report.slot1_lut_mutation_bytes} "
+                    f"slot1_avf_info_mutated={report.slot1_avf_info_mutated} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"suite_sha256={report.suite_sha256[:16]} "
+                    f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
+                    f"otp_fuse_touches={report.otp_fuse_touches} "
+                    f"rpmb_counter_increments={report.rpmb_counter_increments} "
+                    f"passive_tx_bytes_emitted={report.passive_tx_bytes_emitted} "
+                    f"physical_usb_packets_emitted={report.physical_usb_packets_emitted} "
+                    f"el3_payload_transmit_authorized={report.el3_payload_transmit_authorized} "
+                    f"isp_write_authorized={report.isp_write_authorized} "
+                    f"spi_nor_write_authorized={report.spi_nor_write_authorized} "
+                    f"persistent_emmc_writes_authorized={report.persistent_emmc_writes_authorized} "
+                    f"physical_device_writes={report.physical_device_writes} "
+                    f"raw_firmware_bytes_leaked={report.raw_firmware_bytes_leaked}"
+                )
+            return 0 if report.all_passed else 2
+        elif args.command == 'verify-58pillar-recovery':
+            report = verify_58pillar_recovery_suite(
+                force_clean_room=True if args.force_clean_room else None,
+            )
+            result = report.to_dict()
+            if args.out:
+                new_directory(args.out, {'58pillar-recovery-master-report.json': encode(result)})
+            if args.json:
+                print(json.dumps(result, ensure_ascii=False, sort_keys=True, allow_nan=False))
+            else:
+                print(
+                    f"status={report.status} mode={report.verification_mode} "
+                    f"all_passed={report.all_passed} "
+                    f"pillars={report.pillars_passed}/{report.pillar_count} "
+                    f"elapsed_seconds={report.elapsed_seconds:.3f} "
+                    f"under_1_5s_fast_cli_budget={report.under_1_5s_fast_cli_budget} "
+                    f"under_2_5s_fast_cli_budget={report.under_2_5s_fast_cli_budget} "
+                    f"under_6s_budget={report.under_6s_budget} "
+                    f"nominal_under_4_0s={report.nominal_under_4_0s} "
+                    f"pillar58_a={report.pillar58_a_dial_customize_mydial_fn12x2_vault.scenarios_passed}/{report.pillar58_a_dial_customize_mydial_fn12x2_vault.scenarios_total} "
+                    f"pillar58_b={report.pillar58_b_liveview_grid_lut_embed_pplut_vault.scenarios_passed}/{report.pillar58_b_liveview_grid_lut_embed_pplut_vault.scenarios_total} "
+                    f"dial_customize_dormant_trap_or_reset_drift_events={report.dial_customize_dormant_trap_or_reset_drift_events} "
+                    f"rear_dial_lr_or_mydial_override_drift_events={report.rear_dial_lr_or_mydial_override_drift_events} "
+                    f"fn_menu_12x2_or_fx6_dial_spoof_events={report.fn_menu_12x2_or_fx6_dial_spoof_events} "
+                    f"live_view_display_reset_split_or_mode_drift_events={report.live_view_display_reset_split_or_mode_drift_events} "
+                    f"grid_line_or_hdmi_clean_feed_leak_events={report.grid_line_or_hdmi_clean_feed_leak_events} "
+                    f"lut_path_embed_sidecar_or_slot1_vault_bypass_events={report.lut_path_embed_sidecar_or_slot1_vault_bypass_events} "
+                    f"slot1_data_sector_writes={report.slot1_data_sector_writes} "
+                    f"slot1_lut_mutation_bytes={report.slot1_lut_mutation_bytes} "
+                    f"slot1_avf_info_mutated={report.slot1_avf_info_mutated} "
+                    f"slot1_vault_mutation_bytes={report.slot1_vault_mutation_bytes} "
+                    f"slot1_format_hard_locked={report.slot1_format_hard_locked} "
+                    f"slot1_vault_erofs_eopnotsupp_enforced={report.slot1_vault_erofs_eopnotsupp_enforced} "
+                    f"overall_ready_for_hardware_attach={report.overall_ready_for_hardware_attach} "
+                    f"cross_model_flash_authorized={report.cross_model_flash_authorized} "
+                    f"hardware_live_attachment_authorized={report.hardware_live_attachment_authorized} "
+                    f"master_58pillar_sha256={report.master_58pillar_sha256[:16]} "
                     f"cnflasha_userspace_write_blocked={report.cnflasha_userspace_write_blocked} "
                     f"otp_fuse_touches={report.otp_fuse_touches} "
                     f"rpmb_counter_increments={report.rpmb_counter_increments} "

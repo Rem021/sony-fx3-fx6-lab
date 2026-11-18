@@ -2228,3 +2228,41 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unitt
 FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
 ```
 
+## Phase 322（Stage 67 — 67/67 Milestone）：Wave-57 `ILME-FX3 Ver. 7.02` vs `ILME-FX6 Ver. 6.01` 5 轴 IBIS 4 锁 `Active` 与精确 47 档 `[Focal Length]`、休眠动态 `[Self-timer]` 拦截 vs 静态 LED #8 & `[Audio signals]`、`[Zebra Display]` Custom1/2 IRE & 4 色 `[Peaking]` 干净 HDMI 隔离 vs `FX6` `Off/Zebra1/Zebra2`，以及 `[Network Streaming]`（`RTMP`/`RTMPS`/`SRT`）零 24p/4K 锁 + 零射频 / `Slot-1` `EROFS=30` Vault 协同仿真
+
+[`realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py`](realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py)（Schema `realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator_v1`）作为 **Stage 67（`67/67` Milestone！）** 接入 [`fx3_vm_coemulation_suite.py`](fx3_vm_coemulation_suite.py)（默认开启，可通过 `--skip-phase322` / `--skip-stage67` / `--no-include-stage67` 跳过，支持 `--include-stage67`），严格遵循 `os.O_RDONLY`、`<= 4096 B` 受界窗口、`physical_device_writes == 0`、`rf_packets_transmitted == 0`、`slot1_data_sector_writes == 0` 与 `raw_firmware_bytes_leaked == 0`：
+
+1. **高速双模 17 供体 `O_RDONLY` 字节与 SHA-256 精确锚定审计（`LOCAL_DONOR_O_RDONLY` + `CLEAN_ROOM_SYNTHETIC` 对等回退）**：
+   - 通过受界 `os.O_RDONLY`（`<= 4096 B`）核验 `ILME-FX3 Ver. 7.02` 与 `ILME-FX6 Ver. 6.01` 的 **17 份真实供体**，支持无供体 CI 环境下 `work_root is None`、`FX3_CLEAN_ROOM_TEST=1`、`FX3_FX6_FORCE_CLEAN_ROOM=1` 与 CLI `--clean-room` 自动对等回退至 `CLEAN_ROOM_SYNTHETIC`。
+2. **Sub-Model 67A — 5 轴 IBIS `[SteadyShot]`、`Active` 4 重互斥锁与精确 `47` 档 `[Focal Length]` vs 零 IBIS `ILME-FX6`**：
+   - 建模 `MENU -> (Shooting) -> [Image Stabilization]`（`_g 0x6214`，全部 4 项支持 `[Camera Settings Reset]`）：Movie `[SteadyShot]`（`Active` `_f 0x714f` 收窄视角并锁定 `[Distortion Comp.] = Auto` / `Standard` 默认 / `Off`）、Still `[SteadyShot]`（`On` 默认 / `Off`）、`[SteadyShot Adjust.]`（`Auto` 默认 / `Manual`）与精确 **47 档 `[Focal Length]`**（`8..1000 mm`，默认 `8mm`）；
+   - 强制执行 **4 条件 Movie `Active` 锁定**（`EOPNOTSUPP=95` / 回退）：① Movie `Rec Frame Rate >= 100p / 119.88p`；② `S&Q Frame Rate >= 100fps / 120fps`；③ HDMI `[RAW Output] == On`；④ `[De-Squeeze Display]` 启用；对休眠 `[Dynamic active]`（`_f 0x741c`，`ilc/2210` 零命中）fail-closed 返回 `EOPNOTSUPP=95`；对比零 IBIS 的 `ILME-FX6 Ver. 6.01`（`TYPE_STEADYSHOT_EQUIP_WITH_BODY_UNSUPPORTED`、6 轴陀螺仪 RTMD 要求 Catalyst 拍摄前关闭镜头 OSS）。
+3. **Sub-Model 67B — 休眠 Movie `[Self-timer]` 拒绝 vs 静态 `[Drive Mode]` 自拍、前部模块 `#8` 复用与 `[Audio signals]`**：
+   - Fail-closed `EOPNOTSUPP=95` 拦截休眠 `BKID_APP_setting_movie_self_timer`（`Rec Start delay: Off/3 s/5 s/10 s`）、`Single Burst Self-timer` 与 `Self-portrait`；
+   - 建模 Still `[Self-timer(Single)]`（`10s/5s/2s`）、`[Self-timer(Cont)]`（`6` 档）、`[Selftimer during Bracket]`（`Off/2/5/10s`），驱动**前部复合部件 `#8`（`AF illuminator / Self-timer lamp / Visible+IR sensor`，与前端红色 REC 提示灯物理分离）**，及 `Initialize`-only `[Audio signals]`（`On`/`Off`，在 `Silent Mode == On` 或 Movie HDMI 音频激活时静音）；对比 `ILME-FX6` `Picture Cache Rec`（强制 Free Run TC）与 `Interval Rec`（含 `Pre-Lighting`）。
+4. **Sub-Model 67C — `[Zebra Display]`（`Custom1` `Std+Range` / `Custom2` `Lower Limit` `0..109+`）与 4 色 `[Peaking]` 干净 HDMI 隔离 vs `FX6`**：
+   - FX3 `[Zebra Display]`（默认 `Off`，拨轮左键默认绑定）、`[Zebra Level]`（`70..100+` + `Custom1`/`Custom2`）、`[Peaking Display]`（`High/Mid/Low`、`Red/Yellow/Blue/White` 默认 `White`，拨轮右键默认绑定）全为 **`Initialize`-only**（抗 `[Camera Settings Reset]`）且**永不经由干净 HDMI 输出**；`[Display LUT] = On` 将 Zebra 采样点从原始 S-Log3（18% 灰 `41%` / 裁切 `~94%`）切换至 LUT 后显示亮度；对比 `ILME-FX6` `Monitoring > Zebra > Setting` **`Off / Zebra1 / Zebra2` 三选一独占开关**（拒绝 `Both` 返回 `EOPNOTSUPP=95`）与 `Peaking Color`（`B&W / Red / Yellow / Blue`）。
+5. **Sub-Model 67D & Redlines — `[Network Streaming]`（`RTMP`/`RTMPS`/`SRT` 加密、零 `23.98p/24p`、`[Movie Rec During Streaming]` 4K 锁）与零射频 / `Slot-1` `EROFS=30` Vault 防火墙**：
+   - FX3 Ver. 6.00+/7.02 `[Network Streaming]`（`_f 0x6cb2`：`RTMP` H.264、`RTMPS` TLS+H.264、`SRT` H.265/H.264 + AES-128/256；支持 `4K/2K/1080p/720p` @ `59.94p/50p/29.97p/25p`，**`23.98p/24.00p` 推流拒绝返回 `EOPNOTSUPP=95`**；`[Movie Rec During Streaming]` 强制同帧率且在 `4K` / `2K 59.94p/50p` 推流时锁定禁止机内 4K 录制）；对比 `ILME-FX6`（休眠 `BKID_APP_RTMP/SRT_SETTINGS1..8_*` & `QoS Streaming` 未在 `5-024-458-18` 开放）；
+   - 强制台架**零射频（`Airplane Mode == On`、`rf_packets_transmitted == 0`、仅允许有线 `USB-LAN CDC-NCM`）**与 **`Slot-1` Tier-0 Vault `EROFS=30` 防写防火墙**（拦截 `Slot 1` 推流同录与 FTP 写入，`slot1_data_sector_writes == 0`）。
+
+### Phase 322 CLI 运行与测试命令
+
+```sh
+# 1. 本地只读供体模式 & 洁净室模式 Phase 322 Stage 67（67/67 里程碑！）自检
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py --self-test --summary
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py --self-test --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py --self-test --json
+
+# 2. 全板 67 阶段（Stage 1..67, 67/67 里程碑！）统一校验（支持 --include-stage67 与 --skip-phase322 / --skip-stage67 / --no-include-stage67）
+PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --include-stage67 --summary
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 /usr/bin/python3 -B outputs/fx3-vm/fx3_vm_coemulation_suite.py --summary
+
+# 3. 单独运行 Phase 322 三模式 90 项单测 & 全量 fx3-vm 单测（双模）
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py -v
+FX3_CLEAN_ROOM_TEST=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py -v
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest outputs/fx3-vm/tests/test_realhw_steadyshot_47focal_selftimer_zebra_streaming_coemulator.py -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+FX3_FX6_FORCE_CLEAN_ROOM=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=outputs/fx3-vm /usr/bin/python3 -B -m unittest discover -s outputs/fx3-vm/tests -p 'test_*.py'
+```
+
